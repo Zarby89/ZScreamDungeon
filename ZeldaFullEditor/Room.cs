@@ -212,7 +212,6 @@ namespace ZeldaFullEditor
                         b2 = ROM.DATA[Constants.torch_data + i + 1];
                        
                         if (b1 == 0xFF && b2 == 0xFF) { break; }
-                        Console.WriteLine(b1.ToString("X2") + ", " + b2.ToString("X2") + " , i:" + i.ToString("X2"));
                         int b = ((((b2 << 8) + b1) & 0x1FFF) >> 1);
                         float a = ((float)b / 64);
                         int py = (((((b2 << 8) + b1) & 0x1FFF) >> 1) / 64);
