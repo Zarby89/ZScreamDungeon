@@ -41,11 +41,23 @@ namespace ZeldaFullEditor
         Room room;
         private void openRomFileDialog_FileOk(object sender, CancelEventArgs e)
         {
-
+            byte[] tempRom;
             FileStream fs = new FileStream(openRomFileDialog.FileName,FileMode.Open ,FileAccess.Read );
-            ROM.DATA = new byte[fs.Length];
-            fs.Read(ROM.DATA, 0, (int)fs.Length);
+            tempRom = new byte[fs.Length];
+            fs.Read(tempRom, 0, (int)fs.Length);
             fs.Close();
+            
+            if (tempRom.Length == 0x100200)
+            {
+                ROM.DATA = new byte[0x100000];
+                Array.Copy(tempRom, 0x200, ROM.DATA, 0x00, 0x100000);
+            }
+            else
+            {
+                ROM.DATA = new byte[tempRom.Length];
+                tempRom.CopyTo(ROM.DATA, 0x0);
+            }
+
             //56 54 43
             //5A 45 4C 44 41 4E
             if (ROM.DATA[0x07FC0] == 0x56 && ROM.DATA[0x07FC1] == 0x54 && ROM.DATA[0x07FC2] == 0x43)
@@ -81,11 +93,16 @@ namespace ZeldaFullEditor
             GFX.graphictilebuffer = Graphics.FromImage(GFX.tilebufferbitmap);
             byte[] bpp3data = Compression.DecompressTiles();
             GFX.gfxdata = Compression.bpp3tobpp4(bpp3data);
-            GFX.load4bpp(GFX.gfxdata, new byte[] { 0, 1, 16, 6, 14, 31, 24, 15, 92, 94 }, 0);
+            GFX.load4bpp(GFX.gfxdata, new byte[] { 0, 1, 16, 6, 14, 31, 24, 15, 92, 94,1,2,3,4 }, 0);
+            GFX.load4bppItems(GFX.gfxdata, new byte[] { });
             GFX.LoadDungeonPalette(0);
+            GFX.LoadItemsPalette(0);
+            GFX.LoadSpritesPalette(0);
+            GFX.create_items_gfxs();
             GFX.create_gfxs();
             GFX.animate_gfxs();
             pictureBox1.Image = new Bitmap(512, 512);
+            
 
             listBox1.Items.Clear();
             Room_Name room_names = new Room_Name();
@@ -134,7 +151,7 @@ namespace ZeldaFullEditor
                 room = new Room(formGoto.selectedRoom);
 
                 pictureBox1.Image = room.room_bitmap;
-
+               
 
                 pictureBox1.Refresh();
             }
@@ -145,9 +162,9 @@ namespace ZeldaFullEditor
             room = new Room(listBox1.SelectedIndex);
 
             pictureBox1.Image = room.room_bitmap;
-
-
-            pictureBox1.Refresh();
+            pictureBox2.Image = GFX.blocksets[8];
+            
+            //pictureBox1.Refresh();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

@@ -30,6 +30,7 @@ namespace ZeldaFullEditor
         public static int room_chest = 0xE96E; //JP 0xE96C
         public static int block_data = 0x271DE; //JP 0x26EBE
         public static int torch_data = 0x2736A; //JP 0x2704A
+        public static int sprite_blockset_pointer = 0x5B57;
         //0000
         //TODO : On ROM Load if Pointers are at original location
         //Expand ROM to 2MB if US, 4MB if VT, move Headers to new location

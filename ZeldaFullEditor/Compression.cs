@@ -119,7 +119,7 @@ namespace ZeldaFullEditor
 
         public static byte[] DecompressTiles() //to gfx.bin
         {
-            byte[] buffer = new byte[0x30800];// (97)
+            byte[] buffer = new byte[0x5C000];// (184)
             byte[] bufferBlock;
             int bufferPos = 0;
             for (int i = 0; i < 96; i++)
@@ -133,13 +133,44 @@ namespace ZeldaFullEditor
                     bufferPos++;
                 }
             }
+
+            for (int i = 115; i < 216; i++)
+            {
+                if (i < 115 || i > 126)
+                {
+                    byte[] b = new byte[] { ROM.DATA[Constants.gfx_pointer_3 + i], ROM.DATA[Constants.gfx_pointer_2 + i], ROM.DATA[Constants.gfx_pointer_1 + i], 0 };
+                    int addr = BitConverter.ToInt32(b, 0);
+                    bufferBlock = Decompress(Addresses.snestopc(addr), ROM.DATA);
+                    if (bufferBlock.Length == 0x600)
+                    {
+                        for (int j = 0; j < bufferBlock.Length; j++)
+                        {
+                            buffer[bufferPos] = bufferBlock[j];
+                            bufferPos++;
+                        }
+                    }
+                }
+                else
+                {
+                    byte[] b = new byte[] { ROM.DATA[Constants.gfx_pointer_3 + i], ROM.DATA[Constants.gfx_pointer_2 + i], ROM.DATA[Constants.gfx_pointer_1 + i], 0 };
+                    int addr = BitConverter.ToInt32(b, 0);
+                    addr = Addresses.snestopc(addr);
+                    for (int j = 0; j < 0x600; j++)
+                    {
+                        buffer[bufferPos] = ROM.DATA[addr+j];
+                        bufferPos++;
+                    }
+                }
+            }
+
+   
             return buffer;
         }
 
         public static byte[] bpp3tobpp4(byte[] bpp3_data) //to gfx.bin
         {
             List<byte> buffer = new List<byte>();// (97)
-                for (int j = 0; j < 64 * 96; j++) //number of 8x8 blocks
+                for (int j = 0; j < 64 * 192; j++) //number of 8x8 blocks
             {
                 for (int i = 0; i < 16; i++) //those remain the same
                 {
@@ -151,8 +182,9 @@ namespace ZeldaFullEditor
                     buffer.Add(0);
                 }
             }
-
-
+            FileStream fs = new FileStream("testgfx.gfx", FileMode.OpenOrCreate, FileAccess.Write);
+            fs.Write(buffer.ToArray(), 0, buffer.Count);
+            fs.Close();
             return buffer.ToArray();
 
         }
