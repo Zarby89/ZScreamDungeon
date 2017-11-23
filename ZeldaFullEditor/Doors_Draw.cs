@@ -128,7 +128,7 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[0x4EC6 + ((id >> 8) & 0xFF) +1] << 8) + ROM.DATA[0x4EC6 + ((id >> 8) & 0xFF)]);
             name = "Door right";
             addTiles(12, pos);//??
-            Console.WriteLine("Right Door ID : " + ((id >> 8) & 0xFF));
+            //Console.WriteLine("Right Door ID : " + ((id >> 8) & 0xFF));
         }
         public override void Draw()
         {

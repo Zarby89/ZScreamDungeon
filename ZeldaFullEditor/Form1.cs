@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
-
+using System.Diagnostics;
 
 namespace ZeldaFullEditor
 {
@@ -93,8 +93,13 @@ namespace ZeldaFullEditor
             GFX.graphictilebuffer = Graphics.FromImage(GFX.tilebufferbitmap);
             byte[] bpp3data = Compression.DecompressTiles();
             GFX.gfxdata = Compression.bpp3tobpp4(bpp3data);
+
             GFX.load4bpp(GFX.gfxdata, new byte[] { 0, 1, 16, 6, 14, 31, 24, 15, 92, 94,1,2,3,4 }, 0);
-            GFX.load4bppItems(GFX.gfxdata, new byte[] { });
+            
+
+
+
+            //GFX.load4bppItems(GFX.gfxdata, new byte[] { });
             GFX.LoadDungeonPalette(0);
             GFX.LoadItemsPalette(0);
             GFX.LoadSpritesPalette(0);
@@ -159,9 +164,12 @@ namespace ZeldaFullEditor
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            
+            
             room = new Room(listBox1.SelectedIndex);
 
             pictureBox1.Image = room.room_bitmap;
+
             pictureBox2.Image = GFX.blocksets[8];
             
             //pictureBox1.Refresh();

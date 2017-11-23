@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -151,70 +153,96 @@ namespace ZeldaFullEditor
 
         }
 
+        public static byte[] blocksetData;
+
+        public static byte[] currentData;
+        public static IntPtr currentPtr;
+        public static BitmapData currentbmpData;
+
+        public static void begin_draw(Bitmap b)
+        {
+            currentbmpData = b.LockBits(new Rectangle(0,0,512,512), ImageLockMode.ReadWrite, b.PixelFormat);
+            currentPtr = currentbmpData.Scan0;
+            int bytes = Math.Abs(currentbmpData.Stride) * b.Height;
+            currentData = new byte[bytes];
+            Marshal.Copy(currentPtr, currentData, 0, bytes);
+        }
+
+        public static void end_draw(Bitmap b)
+        {
+            int bytes = Math.Abs(currentbmpData.Stride) * b.Height;
+            Marshal.Copy(currentData, 0, currentPtr, bytes);
+            b.UnlockBits(currentbmpData);
+        }
+
 
         public static void create_gfxs()
         {
             blocksets = new Bitmap[14];
             for (int j = 0; j < 14; j++)
             {
-                blocksets[j] = new Bitmap(128, 448, System.Drawing.Imaging.PixelFormat.Format24bppRgb);
+                blocksets[j] = new Bitmap(128, 448, PixelFormat.Format32bppArgb);
             }
 
             for (int j = 2; j < 14; j++)
             {
                 Rectangle rect = new Rectangle(0, 0, blocksets[j].Width, blocksets[j].Height);
-                System.Drawing.Imaging.BitmapData bmpData =
-                    blocksets[j].LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite,
+                BitmapData bmpData =
+                    blocksets[j].LockBits(rect, ImageLockMode.ReadWrite,
                     blocksets[j].PixelFormat);
 
                 IntPtr ptr = bmpData.Scan0;
                 int bytes = Math.Abs(bmpData.Stride) * blocksets[j].Height;
                 byte[] rgbValues = new byte[bytes];
 
-                System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
+                Marshal.Copy(ptr, rgbValues, 0, bytes);
                 int pp; //palete position
-                for (int i = 2; i < (rgbValues.Length); i += 3)
+                for (int i = 3; i < (rgbValues.Length); i += 4)
                 {
-                    if (singledata[(i / 3)] != 0)
+                    if (singledata[(i / 4)] != 0)
                     {
                         pp = 0;
                         
-                        if ((i) < (49152)) //half of gfx use right side of palette other part use left side
+                        if ((i) < (60000)) //half of gfx use right side of palette other part use left side
                         {
                             if (j < 8)
                             {
                                 pp = 8;
-                                rgbValues[(i - 2)] = (byte)(GFX.loadedPalettes[singledata[(i / 3)] + pp, j - 2].B);
-                                rgbValues[(i) - 1] = (byte)(GFX.loadedPalettes[singledata[(i / 3)] + pp, j - 2].G);
-                                rgbValues[(i)] = (byte)(GFX.loadedPalettes[singledata[(i / 3)] + pp, j - 2].R);
+                                rgbValues[(i - 3)] = (byte)(GFX.loadedPalettes[singledata[(i / 4)] + pp, j - 2].B);
+                                rgbValues[(i - 2)] = (byte)(GFX.loadedPalettes[singledata[(i / 4)] + pp, j - 2].G);
+                                rgbValues[(i) - 1] = (byte)(GFX.loadedPalettes[singledata[(i / 4)] + pp, j - 2].R);
+                                rgbValues[(i)] = 255;
                             }
                         }
-                        else if (i >= 122880)
+                        /*else if (i >= 122880)
                         {
 
                             rgbValues[(i - 2)] = (byte)(GFX.spritesPalettes[singledata[(i / 3)], j - 2].B);
                             rgbValues[(i) - 1] = (byte)(GFX.spritesPalettes[singledata[(i / 3)] + pp, j - 2].G);
                             rgbValues[(i)] = (byte)(GFX.spritesPalettes[singledata[(i / 3)] + pp, j - 2].R);
-                        }
+                        }*/
                         else
                         {
                             if (j < 8)
                             {
-                                rgbValues[(i - 2)] = (byte)(GFX.loadedPalettes[singledata[(i / 3)] + pp, j - 2].B);
-                                rgbValues[(i) - 1] = (byte)(GFX.loadedPalettes[singledata[(i / 3)] + pp, j - 2].G);
-                                rgbValues[(i)] = (byte)(GFX.loadedPalettes[singledata[(i / 3)] + pp, j - 2].R);
+                                //pp = 8;
+                                rgbValues[(i - 3)] = (byte)(GFX.loadedPalettes[singledata[(i / 4)] + pp, j - 2].B);
+                                rgbValues[(i - 2)] = (byte)(GFX.loadedPalettes[singledata[(i / 4)] + pp, j - 2].G);
+                                rgbValues[(i) - 1] = (byte)(GFX.loadedPalettes[singledata[(i / 4)] + pp, j - 2].R);
+                                rgbValues[(i)] = 255;
                             }
                         }
                     }
                 }
 
-                System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
-
+               Marshal.Copy(rgbValues, 0, ptr, bytes);
+                
                 blocksets[j].UnlockBits(bmpData);
 
             }
         }
 
+        
 
         public static void animate_gfxs()
         {
@@ -340,7 +368,7 @@ namespace ZeldaFullEditor
             byte sprite1_palette_ptr = ROM.DATA[Constants.dungeons_palettes_groups + (id * 4) + 1]; //id of the 1st group of 4
             byte sprite2_palette_ptr = ROM.DATA[Constants.dungeons_palettes_groups + (id * 4) + 2]; //id of the 1st group of 4
             byte sprite3_palette_ptr = ROM.DATA[Constants.dungeons_palettes_groups + (id * 4) + 3]; //id of the 1st group of 4
-            Console.WriteLine(sprite2_palette_ptr);
+           // Console.WriteLine(sprite2_palette_ptr);
             short palette_pos1 = (short)((ROM.DATA[0xDEBC6 + sprite1_palette_ptr ]));
             short palette_pos2 = (short)((ROM.DATA[0xDEBD6 + sprite2_palette_ptr + 1] << 8) + ROM.DATA[0xDEBD6 + sprite2_palette_ptr]);
             short palette_pos3 = (short)((ROM.DATA[0xDEBD6 + sprite3_palette_ptr + 1 ] << 8) + ROM.DATA[0xDEBD6 + sprite3_palette_ptr]);

@@ -45,17 +45,40 @@ namespace ZeldaFullEditor
             this.palette = (byte)((b2 >> 2) & 0x07);
         }
 
+
+
         public void Draw(int x, int y, Bitmap floor)
         {
-            using (Bitmap b = new Bitmap(8, 8))
+            //y * image width *8 position * pixel data (rgba 32bit),
+            int ty = (id / 16);
+            int tx = id - (ty * 16);
+           
+            for (int xx = 0; xx < 8; xx++)
             {
-                int ty = (id / 16);
-                int tx = id - (ty * 16);
+                for (int yy = 0; yy < 8; yy++)
+                {
+                    //(((((y * (512)) * 8) + (yy * 512)) * 4) + ((x * 8) * 4) + (xx * 4));
+                    int x_dest = ((x * 8) + (xx)) * 4;
+                    int y_dest = (((y * 8) + (yy)) * 512) * 4;
+                    int dest = x_dest + y_dest;
+
+                    int x_src = ((tx * 8) + (xx)) * 4;
+                    int y_src = (((ty * 8) + (yy)) * 128) * 4;
+                    int src = x_src + y_src;
+                    GFX.currentData[dest] = GFX.blocksetData[src];
+                    GFX.currentData[dest + 1] = GFX.blocksetData[src + 1];
+                    GFX.currentData[dest + 2] = GFX.blocksetData[src + 2];
+                    GFX.currentData[dest + 3] = 255;//A
+                }
+            }
+            
+            /*using (Bitmap b = new Bitmap(8, 8))
+            {
+
                 using (Graphics g = Graphics.FromImage(b))
                 {
                     g.DrawImage(GFX.blocksets[palette], new Rectangle(0, 0, 8, 8), tx * 8, ty * 8, 8, 8, GraphicsUnit.Pixel);
                 }
-
 
                 if (mirror_x) //mirror x
                     b.RotateFlip(RotateFlipType.RotateNoneFlipX);
@@ -67,7 +90,7 @@ namespace ZeldaFullEditor
                     g.DrawImage(b, new Point(x * 8, y * 8));
                 }
 
-            }
+            }*/
         }
 
     }

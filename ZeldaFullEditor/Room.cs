@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -68,11 +71,18 @@ namespace ZeldaFullEditor
             }
             blocks[8] = 92;
             blocks[9] = ROM.DATA[Constants.gfx_animated + blockset];
+
+            
             GFX.LoadDungeonPalette(palette);
             GFX.LoadSpritesPalette(palette);
+
+
             GFX.load4bpp(GFX.gfxdata, blocks);
+
             GFX.create_gfxs();
+
             GFX.animate_gfxs();
+
             loadTilesObjects(); //add all objects in tilesObjects array
 
             /*for (int i = 0; i < 24; i+=2)
@@ -90,14 +100,23 @@ namespace ZeldaFullEditor
             addBlocks();
             addTorches();
 
-
+           
             createBitmaps();
+            //
+
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             DrawFloors();
+
+            sw.Stop();
+            Console.WriteLine(sw.ElapsedMilliseconds);
+
             InitDrawObjects();
 
             InitItemsDraw();
-            
-            
+
+
+
             DrawObjects(); //called every x frame for update
             
             redrawRoom();
@@ -490,7 +509,7 @@ namespace ZeldaFullEditor
                 {
                     //there's a chest in that room !
                     chests_in_room.Add(ROM.DATA[Constants.room_chest + (i * 3) + 2]);
-                    Console.WriteLine((Constants.room_chest + (i * 3) + 2).ToString("X3") + " : " + ROM.DATA[Constants.room_chest + (i * 3) + 2] + " : " + chest_items_name.name[ROM.DATA[Constants.room_chest + (i * 3) + 2]]);
+                    //Console.WriteLine((Constants.room_chest + (i * 3) + 2).ToString("X3") + " : " + ROM.DATA[Constants.room_chest + (i * 3) + 2] + " : " + chest_items_name.name[ROM.DATA[Constants.room_chest + (i * 3) + 2]]);
                 }
             }
 
@@ -1807,6 +1826,19 @@ namespace ZeldaFullEditor
 
         public void DrawFloors()
         {
+
+            BitmapData bdata = GFX.blocksets[2].LockBits(new Rectangle(0, 0, 128, 384), ImageLockMode.ReadWrite, GFX.blocksets[2].PixelFormat);
+            IntPtr ptrx = bdata.Scan0;
+            int bytes = Math.Abs(bdata.Stride) * GFX.blocksets[4].Height;
+            GFX.blocksetData = new byte[bytes];
+            Marshal.Copy(ptrx, GFX.blocksetData, 0, bytes);
+            GFX.blocksets[2].UnlockBits(bdata);
+            GFX.begin_draw(floor1_bitmap);
+
+            
+
+            
+
             byte f = (byte)(floor1 << 4);
             //x x 4
             Tile floorTile1 = new Tile(ROM.DATA[Constants.tile_address + f], ROM.DATA[Constants.tile_address + f + 1]);
@@ -1819,19 +1851,17 @@ namespace ZeldaFullEditor
             Tile floorTile7 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 4], ROM.DATA[Constants.tile_address_floor + f + 5]);
             Tile floorTile8 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 6], ROM.DATA[Constants.tile_address_floor + f + 7]);
 
-
             for (int xx = 0; xx < 16; xx++)
             {
                 for (int yy = 0; yy < 32; yy++)
                 {
-                    floorTile1.Draw((xx * 4), (yy * 2),floor1_bitmap); floorTile2.Draw((xx * 4) + 1, (yy * 2), floor1_bitmap);
+                    floorTile1.Draw((xx * 4), (yy * 2), floor1_bitmap); floorTile2.Draw((xx * 4) + 1, (yy * 2), floor1_bitmap);
                     floorTile3.Draw((xx * 4) + 2, (yy * 2), floor1_bitmap); floorTile4.Draw((xx * 4) + 3, (yy * 2), floor1_bitmap);
 
                     floorTile5.Draw((xx * 4), (yy * 2) + 1, floor1_bitmap); floorTile6.Draw((xx * 4) + 1, (yy * 2) + 1, floor1_bitmap);
                     floorTile7.Draw((xx * 4) + 2, (yy * 2) + 1, floor1_bitmap); floorTile8.Draw((xx * 4) + 3, (yy * 2) + 1, floor1_bitmap);
                 }
             }
-
 
             f = (byte)(floor2 << 4);
             //x x 4
@@ -1857,20 +1887,12 @@ namespace ZeldaFullEditor
                     floorTile7.Draw((xx * 4) + 2, (yy * 2) + 1, floor2_bitmap); floorTile8.Draw((xx * 4) + 3, (yy * 2) + 1, floor2_bitmap);
                 }
             }
+            GFX.end_draw(floor1_bitmap);
         }
 
 
         public void Draw()
         {
-
-            /*foreach (Subtype_Object o in layouttilesObjects)
-            {
-                o.Draw();
-                
-            }*/
-
-
-
 
             
         }
@@ -1883,7 +1905,7 @@ namespace ZeldaFullEditor
             }
 
             //sword and shield
-            draw_item_tile(items_image[0], - 1, 0, 8, 16, 0x21, 0);
+            draw_item_tile(items_image[0], -1, 0, 8, 16, 0x21, 0);
             draw_item_tile(items_image[0], 3, 0, 16, 16, 0x0E, 0);
 
             //swords - need to do something else?
