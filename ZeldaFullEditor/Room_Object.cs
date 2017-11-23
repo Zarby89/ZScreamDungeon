@@ -20,7 +20,6 @@ namespace ZeldaFullEditor
         public short id; 
         public string name; //name of the object will be shown on the form
         public byte layer = 0;
-        public Bitmap bitmap;
         public Room room;
         public int drawYFix = 0;
         public Room_Object(short id,byte x,byte y,byte size,byte layer = 0)
@@ -46,7 +45,7 @@ namespace ZeldaFullEditor
 
         public void DrawOnBitmap()
         {
-            if (image_size_x == 0 && image_size_y == 0)
+            /*if (image_size_x == 0 && image_size_y == 0)
             {
                 bitmap = new Bitmap((8), (8));
             }
@@ -60,7 +59,7 @@ namespace ZeldaFullEditor
                 g.DrawImage(GFX.tilebufferbitmap, new Rectangle(0, 0, image_size_x, image_size_y), 0, 0, image_size_x, image_size_y, GraphicsUnit.Pixel);
 
 
-            }
+            }*/
         }
 
 
@@ -122,35 +121,78 @@ namespace ZeldaFullEditor
 
         public void draw_tile(Tile t, int x, int y, int yfix = 0)
         {
-            y = y + yfix;
 
-            if ((x + 8) >= image_size_x)
+
+            int ty = (t.id / 16);
+            int tx = t.id - (ty * 16);
+            int mx = 0;
+            int my = 0;
+
+
+            if (t.mirror_x == true)
             {
-                image_size_x = (x+8);
-            }
-            if ((y + 8) >= image_size_y)
-            {
-                image_size_y = (y+8);
+                mx = 8;
             }
 
-            using (Bitmap b = new Bitmap(8, 8))
+            for (int xx = 0; xx < 8; xx++)
             {
-                int ty = (t.id / 16);
-                int tx = t.id - (ty * 16);
-                using (Graphics g = Graphics.FromImage(b))
+                if (mx > 0)
                 {
-                    g.DrawImage(GFX.blocksets[t.palette], new Rectangle(0, 0, 8, 8), tx * 8, ty * 8, 8, 8, GraphicsUnit.Pixel);
+                    mx--;
                 }
+                if (t.mirror_y == true)
+                {
+                    my = 8;
+                }
+                for (int yy = 0; yy < 8; yy++)
+                {
+                    if (my > 0)
+                    {
+                        my--;
+                    }
+                    int x_dest = ((this.x * 8) + x + (xx)) * 4;
+                    int y_dest = (((this.y * 8) + y + (yy)) * 512) * 4;
+                    int dest = x_dest + y_dest;
 
-
-                if (t.mirror_x) //mirror x
-                    b.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                if (t.mirror_y) //mirror y
-                    b.RotateFlip(RotateFlipType.RotateNoneFlipY);
-
-                GFX.graphictilebuffer.DrawImage(b, x, y);
+                    int x_src = ((tx * 8) + mx + (xx));
+                    if (t.mirror_x)
+                    {
+                        x_src = ((tx * 8) + mx);
+                    }
+                    int y_src = (((ty * 8) + my + (yy)) * 128);
+                    if (t.mirror_y)
+                    {
+                        y_src = (((ty * 8) + my) * 128);
+                    }
+                    
+                    int src = x_src + y_src;
+                    int pp = 0;
+                    if (src < 16384)
+                    {
+                        pp = 8;
+                    }
+                    if (dest < GFX.currentData.Length)
+                    {
+                        byte alpha = 255;
+                        if (GFX.singledata[(src)] == 0)
+                        {
+                            if (room.bg2 != 0)
+                            {
+                                if (layer != 1)
+                                {
+                                    alpha = 0;
+                                }
+                            }
+                        }
+                        GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].B);
+                        GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].G);
+                        GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].R);
+                        GFX.currentData[dest + 3] = alpha;//A
+                    }
+                }
             }
         }
+
 
         public void makeTileTransparent(Bitmap b)
         {

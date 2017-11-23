@@ -21,7 +21,7 @@ namespace ZeldaFullEditor
         byte spriteset;
         byte palette;
         byte collision; //Need a better name for that
-        byte bg2; //TODO : struct
+        public byte bg2; //TODO : struct
         byte effect;//TODO : struct
         byte tag1;//TODO : struct
         byte tag2;//TODO : struct
@@ -42,13 +42,8 @@ namespace ZeldaFullEditor
         public Bitmap[] items_image = new Bitmap[75];
         public List<Chest> chest_list = new List<Chest>();
         //all room bitmap for tiles/floors all 512x512
-        Bitmap floor1_bitmap; //used to draw the floor on
-        Bitmap floor2_bitmap; //used to draw the floor on
-        Bitmap bg2_buffer_bitmap;
-        Bitmap bg2_bitmap;
         Bitmap bg1_bitmap;
         public Bitmap room_bitmap; //picturebox show that bitmap
-        Bitmap tilebuffer_bitmap;
         public List<Room_Object> tilesObjects = new List<Room_Object>();
         public List<Room_Object> layouttilesObjects = new List<Room_Object>();
         public ChestItems_Name chest_items_name = new ChestItems_Name();
@@ -79,19 +74,11 @@ namespace ZeldaFullEditor
 
             GFX.load4bpp(GFX.gfxdata, blocks);
 
-            GFX.create_gfxs();
+           // GFX.create_gfxs();
 
-            GFX.animate_gfxs();
+           // GFX.animate_gfxs();
 
             loadTilesObjects(); //add all objects in tilesObjects array
-
-            /*for (int i = 0; i < 24; i+=2)
-            {
-                tilesObjects.Add(new object_door_up((short)i, 0, 0, 0, 0));
-                tilesObjects.Add(new object_door_down((short)i, 0, 0, 0, 0));
-                tilesObjects.Add(new object_door_left((short)i, 0, 0, 0, 0));
-                tilesObjects.Add(new object_door_right((short)i, 0, 0, 0, 0));
-            }*/
 
             addDoors();
 
@@ -103,26 +90,77 @@ namespace ZeldaFullEditor
            
             createBitmaps();
             //
-
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            DrawFloors();
-
-            sw.Stop();
-            Console.WriteLine(sw.ElapsedMilliseconds);
-
-            InitDrawObjects();
-
-            InitItemsDraw();
+            //Stopwatch sw = new Stopwatch();
+            //sw.Start();
+            update();
+            //sw.Stop();
+            //Console.WriteLine(sw.ElapsedMilliseconds);
+            // InitItemsDraw();
 
 
 
-            DrawObjects(); //called every x frame for update
+            //DrawObjects(); //called every x frame for update
             
-            redrawRoom();
-            drawChestsItem();
-            drawSprites();
-            drawItems();
+            //redrawRoom();
+            //drawChestsItem();
+            //drawSprites();
+           // drawItems();
+        }
+
+        public void update()
+        {
+            using (Graphics g = Graphics.FromImage(room_bitmap))
+            {
+                g.Clear(Color.Black);
+            }
+            if (bg2 == 0) //off
+            {
+
+                GFX.begin_draw(room_bitmap);
+                DrawFloors();
+                InitDrawObjects();
+                GFX.end_draw(room_bitmap);
+            }
+            else if (bg2 == 3) //on top
+            {
+
+                GFX.begin_draw(room_bitmap);
+                DrawFloors();
+                InitDrawObjects();
+                GFX.end_draw(room_bitmap);
+                GFX.begin_draw(bg1_bitmap);
+                DrawFloors(2);
+                InitDrawObjects(1);
+                GFX.end_draw(bg1_bitmap);
+
+            }
+            else if (bg2 == 7) //transparent
+            {
+                GFX.begin_draw(room_bitmap);
+                DrawFloors();
+                InitDrawObjects();
+                GFX.end_draw(room_bitmap);
+            }
+            else
+            {
+
+                GFX.begin_draw(room_bitmap);
+                DrawFloors(2);
+                InitDrawObjects(1);
+                GFX.end_draw(room_bitmap);
+
+                GFX.begin_draw(bg1_bitmap);
+                DrawFloors();
+                InitDrawObjects(0);
+                GFX.end_draw(bg1_bitmap);
+                using (Graphics g = Graphics.FromImage(room_bitmap))
+                {
+                    g.DrawImage(bg1_bitmap, 0, 0);
+                }
+            }
+
+
+
         }
 
         public void addDoors()
@@ -291,13 +329,8 @@ namespace ZeldaFullEditor
 
         public void createBitmaps()
         {
-            floor1_bitmap = new Bitmap(512,512, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            floor2_bitmap = new Bitmap(512, 512, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            bg2_buffer_bitmap = new Bitmap(512, 512, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            bg2_bitmap = new Bitmap(512, 512);
-            bg1_bitmap = new Bitmap(512, 512,System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            room_bitmap = new Bitmap(512, 512, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-            tilebuffer_bitmap = new Bitmap(512, 512);
+            bg1_bitmap = new Bitmap(512, 512,PixelFormat.Format32bppArgb);
+            room_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb); //act as bg2
         }
         //Lockbit Variables 
         Rectangle rect;
@@ -308,177 +341,52 @@ namespace ZeldaFullEditor
         public void redrawRoom() //redraw all layer over others
         {
 
-            using (Graphics g = Graphics.FromImage(room_bitmap))
-            {
-                if (bg2 == 0) //off
-                {
-                    g.DrawImage(bg1_bitmap, 0, 0);
-                    //g.DrawImage(bg2_buffer_bitmap, 0, 0);
-                }
-                else   if (bg2 == 3) //on top
-                {
-                    rect = new Rectangle(0, 0, 512, 512);
-                    bmpData =
-                        bg2_buffer_bitmap.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite,
-                        bg2_buffer_bitmap.PixelFormat);
 
-                    ptr = bmpData.Scan0;
-                    bytes = Math.Abs(bmpData.Stride) * bg1_bitmap.Height;
-                    rgbValues = new byte[bytes];
-
-                    System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
-
-                    for (int i = 3; i < (rgbValues.Length); i += 4)
-                    {
-                        if (rgbValues[i - 1] == 0 && rgbValues[i - 2] == 0 && rgbValues[i - 3] == 0) // color = black then transparent
-                        {
-                            rgbValues[(i)] = 0;
-                        }
-                    }
-
-                    System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
-
-                    bg2_buffer_bitmap.UnlockBits(bmpData);
-
-                    g.DrawImage(bg1_bitmap, 0, 0);
-                    g.DrawImage(bg2_buffer_bitmap, 0, 0);
-
-                }
-                else if (bg2 == 7) //transparent
-                {
-                    rect = new Rectangle(0, 0, 512, 512);
-                    bmpData =
-                        bg2_buffer_bitmap.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite,
-                        bg2_buffer_bitmap.PixelFormat);
-
-                    ptr = bmpData.Scan0;
-                    bytes = Math.Abs(bmpData.Stride) * bg1_bitmap.Height;
-                    rgbValues = new byte[bytes];
-
-                    System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
-
-                    for (int i = 3; i < (rgbValues.Length); i += 4)
-                    {
-                        if (rgbValues[i - 1] == 0 && rgbValues[i - 2] == 0 && rgbValues[i - 3] == 0) // color = black then transparent
-                        {
-                            rgbValues[(i)] = 0;
-                        }
-                        else
-                        {
-                            rgbValues[(i)] = 128;
-                        }
-                    }
-
-                    System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
-
-                    bg2_buffer_bitmap.UnlockBits(bmpData);
-
-                    g.DrawImage(bg1_bitmap, 0, 0);
-                    g.DrawImage(bg2_buffer_bitmap, 0, 0);
-
-                }
-                else
-                {
-
-
-                    rect = new Rectangle(0, 0, 512, 512);
-                    bmpData =
-                        bg1_bitmap.LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite,
-                        bg1_bitmap.PixelFormat);
-
-                    ptr = bmpData.Scan0;
-                    bytes = Math.Abs(bmpData.Stride) * bg1_bitmap.Height;
-                    rgbValues = new byte[bytes];
-
-                    System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
-
-                    for (int i = 3; i < (rgbValues.Length); i += 4)
-                    {
-                        if (rgbValues[i - 1] == 0 && rgbValues[i - 2] == 0 && rgbValues[i - 3] == 0) // color = black then transparent
-                        {
-                            rgbValues[(i)] = 0;
-                        }
-                    }
-
-                    System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
-
-                    bg1_bitmap.UnlockBits(bmpData);
-
-                    g.DrawImage(bg2_buffer_bitmap, 0, 0);
-                    g.DrawImage(bg1_bitmap, 0, 0);
-
-                }
-                               
-
-            }
 
         }
 
         public void DrawObjects()
         {
-            /*using (Graphics g = Graphics.FromImage(bg1_bitmap))
-            {
-                g.Clear(Color.Transparent);
-            }*/
-            using (Graphics g = Graphics.FromImage(bg1_bitmap))
-            {
-                g.DrawImage(floor1_bitmap, 0, 0);
-            }
-            using (Graphics g = Graphics.FromImage(bg2_buffer_bitmap))
-            {
-                g.DrawImage(floor2_bitmap, 0, 0);
-            }
+ 
 
+        }
+        public void InitDrawObjects(byte layer = 255)
+        {
             foreach (Room_Object o in tilesObjects)
             {
+
                 if (o.id == 0xFF3)//full bg2 overlay
                 {
                     o.x = 0;
                     o.y = 0;
-                };
-
-
+                }
                 if (o.allBgs)
                 {
-
-                    using (Graphics g = Graphics.FromImage(bg1_bitmap))
-                    {
-                        
-                        g.DrawImage(o.bitmap, o.x * 8, (o.y+o.drawYFix) * 8);
-                    }
-                    using (Graphics g = Graphics.FromImage(bg2_buffer_bitmap))
-                    {
-                        g.DrawImage(o.bitmap, o.x * 8, (o.y + o.drawYFix) * 8);
-                    }
+                    o.Draw();
                 }
                 else
                 {
-                    if (o.layer == 1)
+                    if (layer == 255)
                     {
-                        using (Graphics g = Graphics.FromImage(bg2_buffer_bitmap))
+                        o.Draw();
+                    }
+                    else if (layer == 1)
+                    {
+                        if (o.layer == 1)
                         {
-                            g.DrawImage(o.bitmap, o.x * 8, (o.y + o.drawYFix)  * 8);
+                            o.Draw();
                         }
                     }
                     else
                     {
-                        using (Graphics g = Graphics.FromImage(bg1_bitmap))
+                        if (o.layer != 1)
                         {
-                           g.DrawImage(o.bitmap, o.x * 8, (o.y + o.drawYFix) * 8);
+                            o.Draw();
                         }
                     }
                 }
             }
 
-        }
-        public void InitDrawObjects()
-        {
-            foreach (Room_Object o in tilesObjects)
-            {
-                GFX.graphictilebuffer.Clear(Color.Transparent);
-                o.Draw();
-                o.DrawOnBitmap();
-            }
         }
 
         public void loadTilesObjects()
@@ -1824,70 +1732,40 @@ namespace ZeldaFullEditor
         }
 
 
-        public void DrawFloors()
+        public void DrawFloors(byte floor = 0)
         {
-
-            BitmapData bdata = GFX.blocksets[2].LockBits(new Rectangle(0, 0, 128, 384), ImageLockMode.ReadWrite, GFX.blocksets[2].PixelFormat);
-            IntPtr ptrx = bdata.Scan0;
-            int bytes = Math.Abs(bdata.Stride) * GFX.blocksets[4].Height;
-            GFX.blocksetData = new byte[bytes];
-            Marshal.Copy(ptrx, GFX.blocksetData, 0, bytes);
-            GFX.blocksets[2].UnlockBits(bdata);
-            GFX.begin_draw(floor1_bitmap);
-
-            
-
-            
-
             byte f = (byte)(floor1 << 4);
+            if (floor == 2)
+            {
+                f = (byte)(floor2 << 4);
+            }
             //x x 4
             Tile floorTile1 = new Tile(ROM.DATA[Constants.tile_address + f], ROM.DATA[Constants.tile_address + f + 1]);
-            Tile floorTile2 = new Tile(ROM.DATA[Constants.tile_address + f + 2], ROM.DATA[Constants.tile_address + f + 3]);
-            Tile floorTile3 = new Tile(ROM.DATA[Constants.tile_address + f + 4], ROM.DATA[Constants.tile_address + f + 5]);
-            Tile floorTile4 = new Tile(ROM.DATA[Constants.tile_address + f + 6], ROM.DATA[Constants.tile_address + f + 7]);
+                Tile floorTile2 = new Tile(ROM.DATA[Constants.tile_address + f + 2], ROM.DATA[Constants.tile_address + f + 3]);
+                Tile floorTile3 = new Tile(ROM.DATA[Constants.tile_address + f + 4], ROM.DATA[Constants.tile_address + f + 5]);
+                Tile floorTile4 = new Tile(ROM.DATA[Constants.tile_address + f + 6], ROM.DATA[Constants.tile_address + f + 7]);
 
-            Tile floorTile5 = new Tile(ROM.DATA[Constants.tile_address_floor + f], ROM.DATA[Constants.tile_address_floor + f + 1]);
-            Tile floorTile6 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 2], ROM.DATA[Constants.tile_address_floor + f + 3]);
-            Tile floorTile7 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 4], ROM.DATA[Constants.tile_address_floor + f + 5]);
-            Tile floorTile8 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 6], ROM.DATA[Constants.tile_address_floor + f + 7]);
+                Tile floorTile5 = new Tile(ROM.DATA[Constants.tile_address_floor + f], ROM.DATA[Constants.tile_address_floor + f + 1]);
+                Tile floorTile6 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 2], ROM.DATA[Constants.tile_address_floor + f + 3]);
+                Tile floorTile7 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 4], ROM.DATA[Constants.tile_address_floor + f + 5]);
+                Tile floorTile8 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 6], ROM.DATA[Constants.tile_address_floor + f + 7]);
 
-            for (int xx = 0; xx < 16; xx++)
-            {
-                for (int yy = 0; yy < 32; yy++)
+                for (int xx = 0; xx < 16; xx++)
                 {
-                    floorTile1.Draw((xx * 4), (yy * 2), floor1_bitmap); floorTile2.Draw((xx * 4) + 1, (yy * 2), floor1_bitmap);
-                    floorTile3.Draw((xx * 4) + 2, (yy * 2), floor1_bitmap); floorTile4.Draw((xx * 4) + 3, (yy * 2), floor1_bitmap);
+                    for (int yy = 0; yy < 32; yy++)
+                    {
+                        floorTile1.Draw((xx * 4), (yy * 2)); floorTile2.Draw((xx * 4) + 1, (yy * 2));
+                        floorTile3.Draw((xx * 4) + 2, (yy * 2)); floorTile4.Draw((xx * 4) + 3, (yy * 2));
 
-                    floorTile5.Draw((xx * 4), (yy * 2) + 1, floor1_bitmap); floorTile6.Draw((xx * 4) + 1, (yy * 2) + 1, floor1_bitmap);
-                    floorTile7.Draw((xx * 4) + 2, (yy * 2) + 1, floor1_bitmap); floorTile8.Draw((xx * 4) + 3, (yy * 2) + 1, floor1_bitmap);
+                        floorTile5.Draw((xx * 4), (yy * 2) + 1); floorTile6.Draw((xx * 4) + 1, (yy * 2) + 1);
+                        floorTile7.Draw((xx * 4) + 2, (yy * 2) + 1); floorTile8.Draw((xx * 4) + 3, (yy * 2) + 1);
+                    }
                 }
-            }
 
-            f = (byte)(floor2 << 4);
-            //x x 4
-            floorTile1 = new Tile(ROM.DATA[Constants.tile_address + f], ROM.DATA[Constants.tile_address + f + 1]);
-            floorTile2 = new Tile(ROM.DATA[Constants.tile_address + f + 2], ROM.DATA[Constants.tile_address + f + 3]);
-            floorTile3 = new Tile(ROM.DATA[Constants.tile_address + f + 4], ROM.DATA[Constants.tile_address + f + 5]);
-            floorTile4 = new Tile(ROM.DATA[Constants.tile_address + f + 6], ROM.DATA[Constants.tile_address + f + 7]);
-
-            floorTile5 = new Tile(ROM.DATA[Constants.tile_address_floor + f], ROM.DATA[Constants.tile_address_floor + f + 1]);
-            floorTile6 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 2], ROM.DATA[Constants.tile_address_floor + f + 3]);
-            floorTile7 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 4], ROM.DATA[Constants.tile_address_floor + f + 5]);
-            floorTile8 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 6], ROM.DATA[Constants.tile_address_floor + f + 7]);
+            
 
 
-            for (int xx = 0; xx < 16; xx++)
-            {
-                for (int yy = 0; yy < 32; yy++)
-                {
-                    floorTile1.Draw((xx * 4), (yy * 2), floor2_bitmap); floorTile2.Draw((xx * 4) + 1, (yy * 2), floor2_bitmap);
-                    floorTile3.Draw((xx * 4) + 2, (yy * 2), floor2_bitmap); floorTile4.Draw((xx * 4) + 3, (yy * 2), floor2_bitmap);
 
-                    floorTile5.Draw((xx * 4), (yy * 2) + 1, floor2_bitmap); floorTile6.Draw((xx * 4) + 1, (yy * 2) + 1, floor2_bitmap);
-                    floorTile7.Draw((xx * 4) + 2, (yy * 2) + 1, floor2_bitmap); floorTile8.Draw((xx * 4) + 3, (yy * 2) + 1, floor2_bitmap);
-                }
-            }
-            GFX.end_draw(floor1_bitmap);
         }
 
 

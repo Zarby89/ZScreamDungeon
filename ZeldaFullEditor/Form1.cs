@@ -104,8 +104,8 @@ namespace ZeldaFullEditor
             GFX.LoadItemsPalette(0);
             GFX.LoadSpritesPalette(0);
             GFX.create_items_gfxs();
-            GFX.create_gfxs();
-            GFX.animate_gfxs();
+            //GFX.create_gfxs();
+            //GFX.animate_gfxs();
             pictureBox1.Image = new Bitmap(512, 512);
             
 
@@ -121,8 +121,9 @@ namespace ZeldaFullEditor
         private void updateTimer_Tick(object sender, EventArgs e)
         {
 
-            room.DrawObjects();
-            room.redrawRoom();
+            //room.DrawObjects();
+            //room.redrawRoom();
+            room.update();
             pictureBox1.Refresh();
         }
 
@@ -137,7 +138,13 @@ namespace ZeldaFullEditor
         int last_my = 0;
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-
+            if (mouse_down)
+            {
+                //room.tilesObjects[44].x = (byte)(e.X / 8);
+                //room.tilesObjects[44].y = (byte)(e.Y / 8);
+                //room.update();
+               // pictureBox1.Refresh();
+            }
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
@@ -170,7 +177,7 @@ namespace ZeldaFullEditor
 
             pictureBox1.Image = room.room_bitmap;
 
-            pictureBox2.Image = GFX.blocksets[8];
+            //pictureBox2.Image = GFX.blocksets[8];
             
             //pictureBox1.Refresh();
         }

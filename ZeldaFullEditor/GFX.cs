@@ -40,10 +40,10 @@ namespace ZeldaFullEditor
                 {
                     for (int i = 0; i < 16; i++)
                     {
-                        int offset = ((pos * 0x800))+ ((j * 32) * 16) + (i * 32);
+                        int offset = ((pos * 0x800)) + ((j * 32) * 16) + (i * 32);
                         if (b >= 10)
                         {
-                            offset = (((pos+96) * 0x800)) + ((j * 32) * 16) + (i * 32);
+                            offset = (((pos + 96) * 0x800)) + ((j * 32) * 16) + (i * 32);
                         }
                         for (int x = 0; x < 8; x++)
                         {
@@ -75,17 +75,86 @@ namespace ZeldaFullEditor
                         // pos++;
                     }
                 }
+                //8 and 9
 
-
-                
-                for (int y = 0; y < 32; y++)
-                {
-                    for (int x = 0; x < 128; x++)
+                    for (int y = 0; y < 32; y++)
                     {
+                        for (int x = 0; x < 128; x++)
+                        {
 
-                        singledata[n] = imgdata[x, y];
-                        n++;
+                            singledata[n] = imgdata[x, y];
+                            n++;
 
+                        }
+                    }
+            }
+
+
+            for (int b = 8; b < 10; b++)
+            {
+                pos = blocks[b];
+                for (int j = 0; j < 4; j++) //4 par y
+                {
+                    for (int i = 0; i < 16; i++)
+                    {
+                        int offset = ((pos * 0x800)) + ((j * 32) * 16) + (i * 32);
+                        if (b >= 10)
+                        {
+                            offset = (((pos + 96) * 0x800)) + ((j * 32) * 16) + (i * 32);
+                        }
+                        for (int x = 0; x < 8; x++)
+                        {
+                            for (int y = 0; y < 8; y++)
+                            {
+                                byte tmpbyte = 0;
+
+                                if ((data[offset + (x * 2)] & positions[y]) == positions[y])
+                                {
+                                    tmpbyte += 1;
+                                }
+                                if ((data[offset + (x * 2) + 1] & positions[y]) == positions[y])
+                                {
+                                    tmpbyte += 2;
+                                }
+
+                                if ((data[offset + 16 + (x * 2)] & positions[y]) == positions[y])
+                                {
+                                    tmpbyte += 4;
+                                }
+                                if ((data[offset + 16 + (x * 2) + 1] & positions[y]) == positions[y])
+                                {
+                                    tmpbyte += 8;
+                                }
+
+                                imgdata[y + (i * 8), x + (j * 8)] = tmpbyte;
+                            }
+                        }
+                        // pos++;
+                    }
+                }
+                if (b == 8)
+                {
+                    int nn = 0;
+                    for (int y = 0; y < 8; y++)
+                    {
+                        for (int x = 0; x < 128; x++)
+                        {
+                            singledata[0x7000 + nn] = imgdata[x, y];
+                            nn++;
+                        }
+                    }
+
+                }
+                else if (b == 9)
+                {
+                    int nn = 0;
+                    for (int y = 0; y < 8; y++)
+                    {
+                        for (int x = 0; x < 128; x++)
+                        {
+                            singledata[0x6C00 + nn] = imgdata[x, y];
+                            nn++;
+                        }
                     }
                 }
             }
@@ -176,7 +245,7 @@ namespace ZeldaFullEditor
         }
 
 
-        public static void create_gfxs()
+ /*       public static void create_gfxs()
         {
             blocksets = new Bitmap[14];
             for (int j = 0; j < 14; j++)
@@ -214,13 +283,13 @@ namespace ZeldaFullEditor
                                 rgbValues[(i)] = 255;
                             }
                         }
-                        /*else if (i >= 122880)
-                        {
+                        //else if (i >= 122880)
+                        //{
 
-                            rgbValues[(i - 2)] = (byte)(GFX.spritesPalettes[singledata[(i / 3)], j - 2].B);
-                            rgbValues[(i) - 1] = (byte)(GFX.spritesPalettes[singledata[(i / 3)] + pp, j - 2].G);
-                            rgbValues[(i)] = (byte)(GFX.spritesPalettes[singledata[(i / 3)] + pp, j - 2].R);
-                        }*/
+                        //    rgbValues[(i - 2)] = (byte)(GFX.spritesPalettes[singledata[(i / 3)], j - 2].B);
+                        //    rgbValues[(i) - 1] = (byte)(GFX.spritesPalettes[singledata[(i / 3)] + pp, j - 2].G);
+                        //    rgbValues[(i)] = (byte)(GFX.spritesPalettes[singledata[(i / 3)] + pp, j - 2].R);
+                        //}
                         else
                         {
                             if (j < 8)
@@ -240,11 +309,11 @@ namespace ZeldaFullEditor
                 blocksets[j].UnlockBits(bmpData);
 
             }
-        }
+        }*/
 
         
 
-        public static void animate_gfxs()
+        /*public static void animate_gfxs()
         {
             for (int j = 2; j < 8; j++)
             {
@@ -282,7 +351,7 @@ namespace ZeldaFullEditor
                 blocksets[j].UnlockBits(bmpData);
             }
         }
-
+        */
         public static Color getColor(short c)
         {
             return Color.FromArgb(((c & 0x1F) * 8), ((c & 0x3E0) >> 5) * 8, ((c & 0x7C00) >> 10) * 8);
@@ -293,18 +362,25 @@ namespace ZeldaFullEditor
         public static Color[,] spritesPalettes;
         public static void LoadDungeonPalette(byte id)
         {
-            Color[,] palettes = new Color[16,6];
+            Color[,] palettes = new Color[16,8];
             //id = dungeon palette id
             byte dungeon_palette_ptr = ROM.DATA[Constants.dungeons_palettes_groups + (id * 4)]; //id of the 1st group of 4
             short palette_pos = (short)((ROM.DATA[0xDEC4B+ dungeon_palette_ptr +1] << 8) + ROM.DATA[0xDEC4B+dungeon_palette_ptr]);
             int i = 0;
-            for (int y = 0; y < 6; y ++)
+            for (int y = 0; y < 2; y++)
+            {
+                for (int x = 0; x < 16; x++)
+                {
+                    palettes[x, y] = Color.Black;
+                }
+            }
+            for (int y = 2; y < 8; y++)
             {
                 for (int x = 0; x < 16; x++)
                 {
                     if (x == 0) { continue; };
                     palettes[x, y] = getColor((short)((ROM.DATA[Constants.dungeons_palettes + palette_pos + 1 + i] << 8) + ROM.DATA[Constants.dungeons_palettes + palette_pos + i]));
-                    i+=2;
+                    i += 2;
                 }
             }
             loadedPalettes = palettes;

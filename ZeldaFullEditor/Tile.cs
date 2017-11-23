@@ -47,51 +47,87 @@ namespace ZeldaFullEditor
 
 
 
-        public void Draw(int x, int y, Bitmap floor)
+        public void Draw(int x, int y)
         {
-            //y * image width *8 position * pixel data (rgba 32bit),
+
+
             int ty = (id / 16);
             int tx = id - (ty * 16);
-           
+            int mx = 0;
+            int my = 0;
+
+
+            if (mirror_x == true)
+            {
+                mx = 8;
+            }
+
             for (int xx = 0; xx < 8; xx++)
             {
+                if (mx > 0)
+                {
+                    mx--;
+                }
+                if (mirror_y == true)
+                {
+                    my = 8;
+                }
                 for (int yy = 0; yy < 8; yy++)
                 {
-                    //(((((y * (512)) * 8) + (yy * 512)) * 4) + ((x * 8) * 4) + (xx * 4));
+                    if (my > 0)
+                    {
+                        my--;
+                    }
                     int x_dest = ((x * 8) + (xx)) * 4;
                     int y_dest = (((y * 8) + (yy)) * 512) * 4;
                     int dest = x_dest + y_dest;
 
-                    int x_src = ((tx * 8) + (xx)) * 4;
-                    int y_src = (((ty * 8) + (yy)) * 128) * 4;
+                    int x_src = ((tx * 8) + mx + (xx));
+                    if (mirror_x)
+                    {
+                        x_src = ((tx * 8) + mx);
+                    }
+                    int y_src = (((ty * 8) + my + (yy)) * 128);
+                    if (mirror_y)
+                    {
+                        y_src = (((ty * 8) + my) * 128);
+                    }
+
                     int src = x_src + y_src;
-                    GFX.currentData[dest] = GFX.blocksetData[src];
-                    GFX.currentData[dest + 1] = GFX.blocksetData[src + 1];
-                    GFX.currentData[dest + 2] = GFX.blocksetData[src + 2];
-                    GFX.currentData[dest + 3] = 255;//A
+                    int pp = 0;
+                    if (src < 16384)
+                    {
+                        pp = 8;
+                    }
+                    if (dest < GFX.currentData.Length)
+                    {
+                        GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, palette].B);
+                        GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, palette].G);
+                        GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, palette].R);
+                        GFX.currentData[dest + 3] = 255;//A
+                    }
                 }
             }
-            
-            /*using (Bitmap b = new Bitmap(8, 8))
-            {
-
-                using (Graphics g = Graphics.FromImage(b))
-                {
-                    g.DrawImage(GFX.blocksets[palette], new Rectangle(0, 0, 8, 8), tx * 8, ty * 8, 8, 8, GraphicsUnit.Pixel);
-                }
-
-                if (mirror_x) //mirror x
-                    b.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                if (mirror_y) //mirror y
-                    b.RotateFlip(RotateFlipType.RotateNoneFlipY);
-
-                using (Graphics g = Graphics.FromImage(floor))
-                {
-                    g.DrawImage(b, new Point(x * 8, y * 8));
-                }
-
-            }*/
         }
+        /*using (Bitmap b = new Bitmap(8, 8))
+        {
 
+            using (Graphics g = Graphics.FromImage(b))
+            {
+                g.DrawImage(GFX.blocksets[palette], new Rectangle(0, 0, 8, 8), tx * 8, ty * 8, 8, 8, GraphicsUnit.Pixel);
+            }
+
+            if (mirror_x) //mirror x
+                b.RotateFlip(RotateFlipType.RotateNoneFlipX);
+            if (mirror_y) //mirror y
+                b.RotateFlip(RotateFlipType.RotateNoneFlipY);
+
+            using (Graphics g = Graphics.FromImage(floor))
+            {
+                g.DrawImage(b, new Point(x * 8, y * 8));
+            }
+
+        }*/
     }
+
 }
