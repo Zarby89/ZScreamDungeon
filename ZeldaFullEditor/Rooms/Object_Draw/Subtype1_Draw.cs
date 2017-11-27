@@ -4408,14 +4408,63 @@ namespace ZeldaFullEditor
         public object_C1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Chest Contour Floor?";
-            addTiles(1, pos);//??
+            name = "Chest Contour Floor";
+            addTiles(68, pos);//??
         }
 
         public override void Draw()
         {
-            //TODO: Check disassembly lol
+            int sizex = ((size >> 2) & 0x03);
+            int sizey = ((size) & 0x03);
 
+
+            int i = 0;
+            for (int xx = 0; xx < 3; xx++)
+            {
+                for (int yy = 0; yy < 3; yy++)
+                {
+                    draw_tile(tiles[i], xx * 8, yy * 8); //top left corner
+                    draw_tile(tiles[i + 15], (xx + ((sizex + 4) * 2) + 3) * 8, yy * 8); //top right corner
+                    draw_tile(tiles[i+40], xx * 8, (yy + ((sizey + 1) * 2) + 3) * 8);//bottom left corner
+                    draw_tile(tiles[i + 55], (xx + ((sizex + 4) * 2) + 3) * 8, (yy + ((sizey + 1) * 2) + 3) * 8);//bottom left corner
+                    i++;
+                }
+            }
+
+            for (int sx = 0; sx < sizex + 4; sx++)
+            {
+                for (int sy = 0; sy < sizey + 1; sy++)
+                {
+                    draw_tile(tiles[30], (3 + (sx * 2)) * 8, (3 + (sy * 2)) * 8); draw_tile(tiles[31], (4 + (sx * 2)) * 8, (3 + (sy * 2)) *8);
+                    draw_tile(tiles[32], (3 + (sx * 2)) * 8, (4 + (sy * 2)) * 8); draw_tile(tiles[33], (4 + (sx * 2)) * 8, (4 + (sy * 2)) *8);
+                }
+            }
+
+            draw_tile(tiles[64], (6 + (sizex * 1)) * 8, (3 + (sizey * 1)) * 8); draw_tile(tiles[66], (7 + (sizex * 1)) * 8, (3 + (sizey * 1)) * 8);
+            draw_tile(tiles[65], (6 + (sizex * 1)) * 8, (4 + (sizey * 1)) * 8); draw_tile(tiles[67], (7 + (sizex * 1)) * 8, (4 + (sizey * 1)) * 8);
+
+            for (int sx = 0; sx < sizex + 4; sx++)
+            {
+                draw_tile(tiles[9], (3 + (sx * 2)) * 8, 0 * 8); draw_tile(tiles[12], (4 + (sx * 2)) * 8, 0 * 8);
+                draw_tile(tiles[10], (3 + (sx * 2)) * 8, 1 * 8); draw_tile(tiles[13], (4 + (sx * 2)) * 8, 1 * 8);
+                draw_tile(tiles[11], (3 + (sx * 2)) * 8, 2 * 8); draw_tile(tiles[14], (4 + (sx * 2)) * 8, 2 * 8);
+
+                draw_tile(tiles[49], (3 + (sx * 2)) * 8, (((sizey + 1) * 2) + 3) * 8); draw_tile(tiles[52], (4 + (sx * 2)) * 8, (((sizey + 1) * 2) + 3) * 8);
+                draw_tile(tiles[50], (3 + (sx * 2)) * 8, (((sizey + 1) * 2) + 4) * 8); draw_tile(tiles[53], (4 + (sx * 2)) * 8, (((sizey + 1) * 2) + 4) * 8);
+                draw_tile(tiles[51], (3 + (sx * 2)) * 8, (((sizey + 1) * 2) + 5) * 8); draw_tile(tiles[54], (4 + (sx * 2)) * 8, (((sizey + 1) * 2) + 5) * 8);
+            }
+            //30,31
+            //32,33 //middle
+
+
+            for (int sy = 0; sy < sizey +1; sy++)
+            {
+                draw_tile(tiles[24], (0) * 8, (3+sy*2) * 8); draw_tile(tiles[25], (1) * 8, (3 + sy * 2) * 8); draw_tile(tiles[26], (2) * 8, (3 + sy * 2) * 8);
+                draw_tile(tiles[27], (0) * 8, (4 + sy * 2) * 8); draw_tile(tiles[28], (1) * 8, (4 + sy * 2) * 8); draw_tile(tiles[29], (2) * 8, (4 + sy * 2) * 8);
+
+                draw_tile(tiles[34], (((sizex + 4) * 2) + 3) * 8, (3 + sy * 2) * 8); draw_tile(tiles[35], (((sizex + 4) * 2) + 4) * 8, (3 + sy * 2) * 8); draw_tile(tiles[36], (((sizex + 4) * 2) + 5) * 8, (3 + sy * 2) * 8);
+                draw_tile(tiles[37], (((sizex + 4) * 2) + 3) * 8, (4 + sy * 2) * 8); draw_tile(tiles[38], (((sizex + 4) * 2) + 4) * 8, (4 + sy * 2) * 8); draw_tile(tiles[39], (((sizex + 4) * 2) + 5) * 8, (4 + sy * 2) * 8);
+            }
         }
     }
 
@@ -4427,6 +4476,8 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             name = "Bg2 Large Overlay";
             addTiles(1, pos);//??
+
+
         }
 
         public override void Draw()
@@ -5009,15 +5060,34 @@ namespace ZeldaFullEditor
         public object_D7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
 
-
-            name = "???";
+            int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
+            name = "overlay tile?";
+            addTiles(1, pos);//??
 
         }
 
 
         public override void Draw()
         {
+            int sizex = ((size >> 2) & 0x03);
+            int sizey = ((size) & 0x03);
 
+            for (int xx = 0; xx < sizex + 1; xx++)
+            {
+                for (int yy = 0; yy < sizey + 1; yy++)
+                {
+                    draw_tile(tiles[0], (xx * 3) * 8, (yy * 3) * 8); draw_tile(tiles[0], ((xx * 3) + 1) * 8, (yy * 3) * 8);
+                    draw_tile(tiles[0], ((xx * 3) + 2) * 8, (yy * 3) * 8);
+
+                    draw_tile(tiles[0], (xx * 3) * 8, ((yy * 3) + 1) * 8); draw_tile(tiles[0], ((xx * 3) + 1) * 8, ((yy * 3) + 1) * 8);
+                    draw_tile(tiles[0], ((xx * 3) + 2) * 8, ((yy * 3) + 1) * 8);
+
+                    draw_tile(tiles[0], (xx * 3) * 8, ((yy * 3) + 2) * 8); draw_tile(tiles[0], ((xx * 3) + 1) * 8, ((yy * 3) + 2) * 8);
+                    draw_tile(tiles[0], ((xx * 3) + 2) * 8, ((yy * 3) + 2) * 8); 
+
+
+                }
+            }
         }
     }
 
@@ -5346,11 +5416,11 @@ namespace ZeldaFullEditor
             {
                 for (int yy = 0; yy < sizey + 1; yy++)
                 {
-                    draw_tile(tiles[0], (0 + (xx * 2)) * 8, (1 + (yy * 2)) * 8); //middle top
-                    draw_tile(tiles[2], (1 + (xx * 2)) * 8, (1 + (yy * 2)) * 8); //middle top
+                    draw_tile(tiles[0], (0 + (xx * 2)) * 8, (0 + (yy * 2)) * 8); //middle top
+                    draw_tile(tiles[2], (1 + (xx * 2)) * 8, (0 + (yy * 2)) * 8); //middle top
 
-                    draw_tile(tiles[1], (0 + (xx * 2)) * 8, (2 + (yy * 2)) * 8); //middle bottom
-                    draw_tile(tiles[3], (1 + (xx * 2)) * 8, (2 + (yy * 2)) * 8); //middle bottom
+                    draw_tile(tiles[1], (0 + (xx * 2)) * 8, (1 + (yy * 2)) * 8); //middle bottom
+                    draw_tile(tiles[3], (1 + (xx * 2)) * 8, (1 + (yy * 2)) * 8); //middle bottom
                 }
             }
         }

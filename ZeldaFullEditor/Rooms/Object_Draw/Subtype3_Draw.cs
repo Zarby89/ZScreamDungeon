@@ -2169,26 +2169,28 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
             name = "???";
-            addTiles(16, pos);//??
+            addTiles(32, pos);//??
         }
         public override void Draw()
         {
             int tid = 0;
+
+
             for (int xx = 0; xx < 3; xx++)
             {
+                tid = 0+xx;
                 for (int yy = 0; yy < 1; yy++)
                 {
                     draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
-                    tid++;
                 }
-
+                tid = 1+xx;
                 for (int yy = 0; yy < 3; yy++)
                 {
                     draw_tile(tiles[tid], (xx) * 8, (yy + 1) * 8);
                     draw_tile(tiles[tid + 1], (xx) * 8, (yy + 1) * 8);
                     draw_tile(tiles[tid + 2], (xx) * 8, (yy + 1) * 8);
                 }
-                tid += 3;
+                tid = 6 + xx;
                 for (int yy = 0; yy < 1; yy++)
                 {
                     draw_tile(tiles[tid], (xx) * 8, (yy + 4) * 8);
@@ -2774,13 +2776,13 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-            for (int yy = 0; yy < 64; yy++)
+           /* for (int yy = 0; yy < 64; yy++)
             {
                 for (int xx = 0; xx < 64; xx++)
                 {
                     draw_tile(tiles[0], (xx) * 8, (yy) * 8);
                 }
-            }
+            }*/
         }
     }
 

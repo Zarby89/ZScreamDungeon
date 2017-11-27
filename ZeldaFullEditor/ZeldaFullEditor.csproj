@@ -67,51 +67,63 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AboutBox1.cs">
+    <Compile Include="Gui\AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AboutBox1.Designer.cs">
+    <Compile Include="Gui\AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
     <Compile Include="Addresses.cs" />
-    <Compile Include="Chest.cs" />
-    <Compile Include="ChestItems_Name.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Compression.cs" />
-    <Compile Include="Doors_Draw.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="Gui\HowToUse.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
+    <Compile Include="Gui\HowToUse.Designer.cs">
+      <DependentUpon>HowToUse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Rooms\Background2.cs" />
+    <Compile Include="Rooms\Chests\Chest.cs" />
+    <Compile Include="Rooms\Chests\ChestItems_Name.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Compression.cs" />
+    <Compile Include="Rooms\Items\Items_Draw.cs" />
+    <Compile Include="Rooms\Object_Draw\Doors_Draw.cs" />
+    <Compile Include="Gui\Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="GFX.cs" />
-    <Compile Include="GotoRoom.cs">
+    <Compile Include="Gui\GotoRoom.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GotoRoom.Designer.cs">
+    <Compile Include="Gui\GotoRoom.Designer.cs">
       <DependentUpon>GotoRoom.cs</DependentUpon>
     </Compile>
     <Compile Include="PotItems_Name.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ROM.cs" />
-    <Compile Include="Room.cs" />
-    <Compile Include="Room_Name.cs" />
-    <Compile Include="Sprites_Names.cs" />
-    <Compile Include="Subtype1_Draw.cs" />
-    <Compile Include="Subtype2_Multiple.cs" />
-    <Compile Include="Room_Object.cs" />
-    <Compile Include="Subtype3_Draw.cs" />
+    <Compile Include="Rooms\Room.cs" />
+    <Compile Include="Rooms\Room_Name.cs" />
+    <Compile Include="Rooms\Sprites\Sprites_Names.cs" />
+    <Compile Include="Rooms\Object_Draw\Subtype1_Draw.cs" />
+    <Compile Include="Rooms\Object_Draw\Subtype2_Multiple.cs" />
+    <Compile Include="Rooms\Room_Object.cs" />
+    <Compile Include="Rooms\Object_Draw\Subtype3_Draw.cs" />
+    <Compile Include="Rooms\Sprites\Sprite.cs" />
     <Compile Include="Tile.cs" />
-    <EmbeddedResource Include="AboutBox1.resx">
+    <EmbeddedResource Include="Gui\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
+    <EmbeddedResource Include="Gui\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GotoRoom.resx">
+    <EmbeddedResource Include="Gui\GotoRoom.resx">
       <DependentUpon>GotoRoom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\HowToUse.resx">
+      <DependentUpon>HowToUse.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -136,7 +148,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Image1.png" />
     <Content Include="screamlink.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +162,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

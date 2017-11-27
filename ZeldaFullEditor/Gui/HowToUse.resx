@@ -117,17 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="logoPictureBox.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAACxMAAAsTAQCanBgAAAAHdElNRQfhCwoDCCoYhU51AAABUklEQVRYR82UoXHDQBBF
-        VUJgoKDKMQwMdAkqwVAlpIRAwxRgkBICAwPFlNnLvMze995J8oxlgQf2a/f/T07N5TI9lFDcklCs0XXd
-        VCO6qRGKNaJQT3RTIxQjCDgMTxn9uU0w+zJG5OUJxQgMfbhx9wIY+VCD4BLszRUJRc9mBXSRGca+SfgS
-        hgayxx269zLIeXwBhJ+3Y4L5+/U9wQwElNB9LaA5+y+g8L3E3P5+C5yPbWJpkaXggy856PsrwKwGt6I+
-        +yugPx5d6IcxMY5/qA7o7Kmuvv8/ot0UABa8uaEFTp9jBroWAL5rXjYYLKrBZgWAA+AZLUXvowwjFA01
-        iEJq6H2UYVwJHHwNhwx0Aj6e2wwNLt1rXjYYcwabFSjBc9IC+sxKaF42GNGRZ7MCp5ccb7KE0r3mZYMx
-        Z7CU0r3mZYOx1kBZe58NxloDZd391PwCUyfiWVZEL1oAAAAASUVORK5CYII=
-</value>
+  <data name="richTextBox1.Text" xml:space="preserve">
+    <value>How to use V0.1 :scream:
+
+in chest mode : 
+Double click chest to change his item
+
+in sprite mode :
+Double click sprite to change the sprite
+Hold mouse click and move to move the sprite
+you can change the sprites GFX used by the room otherwise you'll get glitchy GFX
+
+in items pots mode :
+Double click sprite to change the item
+Hold mouse click and move to move the item</value>
   </data>
 </root>

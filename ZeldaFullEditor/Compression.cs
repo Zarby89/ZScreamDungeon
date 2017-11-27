@@ -13,7 +13,7 @@ namespace ZeldaFullEditor
     public static class Compression
     {
         //Tiles graphics decompression set it on 0x600bytes no matter what to prevent bugs
-        public static byte[] Decompress(int pos, byte[] ROM_DATA)
+        public static byte[] Decompress(int pos, byte[] ROM_DATA,bool reversed = false)
         {
             List<byte> dataBuffer = new List<byte>();
             bool done = false;
@@ -103,6 +103,11 @@ namespace ZeldaFullEditor
                     byte copiedByte = ROM.DATA[pos];
                     byte copiedByte2 = ROM.DATA[pos + 1];
                     int pos2 = BitConverter.ToInt16(new byte[] { copiedByte, copiedByte2 }, 0);
+                    if (reversed)
+                    {
+                        pos2 = BitConverter.ToInt16(new byte[] { copiedByte2, copiedByte }, 0);
+                    }
+
                     pos += 2;
                     for (int i = 0; i < length; i++)
                     {
@@ -119,7 +124,7 @@ namespace ZeldaFullEditor
 
         public static byte[] DecompressTiles() //to gfx.bin
         {
-            byte[] buffer = new byte[0x5C000];// (184)
+            byte[] buffer = new byte[0x63000];// (185)
             byte[] bufferBlock;
             int bufferPos = 0;
             for (int i = 0; i < 96; i++)
@@ -162,15 +167,25 @@ namespace ZeldaFullEditor
                     }
                 }
             }
+            if (Constants.Rando)
+            {
+                bufferBlock = Decompress(0x18A800, ROM.DATA);
+                for (int j = 0; j < 0x600; j++)
+                {
+                    buffer[bufferPos] = bufferBlock[j];
+                    bufferPos++;
+                }
+            }
 
-   
+
+
             return buffer;
         }
 
         public static byte[] bpp3tobpp4(byte[] bpp3_data) //to gfx.bin
         {
             List<byte> buffer = new List<byte>();// (97)
-                for (int j = 0; j < 64 * 192; j++) //number of 8x8 blocks
+                for (int j = 0; j < 64 * 198; j++) //number of 8x8 blocks
             {
                 for (int i = 0; i < 16; i++) //those remain the same
                 {

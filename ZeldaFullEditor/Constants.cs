@@ -34,7 +34,8 @@ namespace ZeldaFullEditor
         //0000
         //TODO : On ROM Load if Pointers are at original location
         //Expand ROM to 2MB if US, 4MB if VT, move Headers to new location
-        public static void Init_Jp()
+        public static bool Rando = false; //is it a rando rom?
+        public static void Init_Jp(bool rando = false)
         {
             //04EF2F
             gfx_pointer_1 = 0x4FC0;
@@ -49,6 +50,8 @@ namespace ZeldaFullEditor
             room_chest = 0xE96C;
             block_data = 0x26EBE;
             torch_data = 0x2704A;
+            sprite_blockset_pointer = 0x5B97;
+            Rando = rando;
         }
 
 

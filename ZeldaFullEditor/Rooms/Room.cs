@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -10,9 +12,10 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-    public class Room
+    public partial class Room
     {
-        int index;
+        List<SpriteName> stringtodraw = new List<SpriteName>();
+        public int index;
         int header_location;
         byte layout;
         public byte floor1;
@@ -21,7 +24,7 @@ namespace ZeldaFullEditor
         byte spriteset;
         byte palette;
         byte collision; //Need a better name for that
-        public byte bg2; //TODO : struct
+        public Background2 bg2;
         byte effect;//TODO : struct
         byte tag1;//TODO : struct
         byte tag2;//TODO : struct
@@ -38,7 +41,7 @@ namespace ZeldaFullEditor
         byte staircase4_plane;
         byte messageid;
         bool damagepit;
-
+        public byte[] blocks = new byte[24];
         public Bitmap[] items_image = new Bitmap[75];
         public List<Chest> chest_list = new List<Chest>();
         //all room bitmap for tiles/floors all 512x512
@@ -49,12 +52,16 @@ namespace ZeldaFullEditor
         public ChestItems_Name chest_items_name = new ChestItems_Name();
         public Sprites_Names sprites_name = new Sprites_Names();
         public PotItems_Name items_name = new PotItems_Name();
+        public List<Sprite> sprites = new List<Sprite>();
+
+        public Object selectedObject;
+
         public Room(int index)
         {
+
             this.index = index;
             loadHeader();
 
-            byte[] blocks = new byte[14];
             for(int i = 0;i<8;i++)
             {
                 blocks[i] = ROM.DATA[Constants.gfx_groups + (blockset * 8)+i];
@@ -64,86 +71,136 @@ namespace ZeldaFullEditor
             {
                 blocks[10+i] = ROM.DATA[Constants.sprite_blockset_pointer + ((spriteset+64) * 4) + i];
             }
-            blocks[8] = 92;
+
+            blocks[8] = 92; //static animated tile
             blocks[9] = ROM.DATA[Constants.gfx_animated + blockset];
 
-            
+            blocks[14] = 0;blocks[15] = 10; blocks[16] = 6; blocks[17] = 7; //Static Sprites Blocksets (fairy,pot,ect...)
+            blocks[18] = 90; blocks[19] = 91; blocks[20] = 92; blocks[21] = 93;//Items Sprites
+            if (Constants.Rando)
+            {
+                blocks[22] = 101;//rando sprites
+                blocks[23] = 96;//rando sprites
+            }
+            else
+            {
+                blocks[22] = 0;
+                blocks[23] = 0;
+            }
+
             GFX.LoadDungeonPalette(palette);
             GFX.LoadSpritesPalette(palette);
 
-
             GFX.load4bpp(GFX.gfxdata, blocks);
 
-           // GFX.create_gfxs();
-
-           // GFX.animate_gfxs();
-
-            loadTilesObjects(); //add all objects in tilesObjects array
-
-            addDoors();
-
-
-
-            addBlocks();
-            addTorches();
-
-           
+            loadTilesObjects();
+            addSprites();
+            addBlocks(); //TODO : Change them to have their own GFX
+            addTorches(); //TODO : Change them to have their own GFX
+            addDoors(); //TODO : Fix exploded wall doors
             createBitmaps();
-            //
-            //Stopwatch sw = new Stopwatch();
-            //sw.Start();
             update();
-            //sw.Stop();
-            //Console.WriteLine(sw.ElapsedMilliseconds);
-            // InitItemsDraw();
+
+        }
+
+        public void addSprites()
+        {
+
+            //sprites_name.name
+            int sprite_address_snes = (09 << 16) +
+            (ROM.DATA[Constants.room_sprites_pointers + (index * 2) + 1] << 8) +
+            ROM.DATA[Constants.room_sprites_pointers + (index * 2)];
+            int sprite_address = Addresses.snestopc(sprite_address_snes) + 1;
 
 
+            while (true)
+            {
+                byte b1 = ROM.DATA[sprite_address];
+                byte b2 = ROM.DATA[sprite_address + 1];
+                byte b3 = ROM.DATA[sprite_address + 2];
 
-            //DrawObjects(); //called every x frame for update
-            
-            //redrawRoom();
-            //drawChestsItem();
-            //drawSprites();
-           // drawItems();
+
+                if (b1 == 0xFF) { break; }
+
+                sprites.Add(new Sprite(this, b3, (byte)(b2 & 0x1F), (byte)(b1 & 0x1F), sprites_name.name[b3], (byte)((b2 & 0xE0) >> 5), (byte)((b1 & 0x60) >> 5), (byte)((b1 & 0x80)>>6)));
+
+                sprite_address += 3;
+
+            }
         }
 
         public void update()
         {
-            using (Graphics g = Graphics.FromImage(room_bitmap))
+            using (Graphics g = Graphics.FromImage(bg1_bitmap))
             {
-                g.Clear(Color.Black);
+                g.Clear(Color.Transparent);
             }
-            if (bg2 == 0) //off
+            if (bg2 == Background2.Off) //off
             {
 
                 GFX.begin_draw(room_bitmap);
                 DrawFloors();
                 InitDrawObjects();
+
+                foreach(Sprite spr in sprites)
+                {
+                    if (selectedObject != null)
+                    {
+                        if (selectedObject.GetType() == typeof(Sprite))
+                        {
+                            if (selectedObject != spr)
+                            {
+                                spr.Draw();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        spr.Draw();
+                    }
+                }
+
+
+                //drawSprites();
                 GFX.end_draw(room_bitmap);
             }
-            else if (bg2 == 3) //on top
+            else if (bg2 == Background2.OnTop) //on top
             {
 
                 GFX.begin_draw(room_bitmap);
                 DrawFloors();
-                InitDrawObjects();
+                InitDrawObjects(0);
+                //drawSprites();
                 GFX.end_draw(room_bitmap);
+
                 GFX.begin_draw(bg1_bitmap);
-                DrawFloors(2);
+                InitDrawObjects(1);
+
+                GFX.end_draw(bg1_bitmap);
+                using (Graphics g = Graphics.FromImage(room_bitmap))
+                {
+                    g.DrawImage(bg1_bitmap, 0, 0);
+                }
+
+            }
+            else if (bg2 == Background2.Transparent) //transparent
+            {
+                GFX.begin_draw(room_bitmap);
+                DrawFloors();
+                InitDrawObjects(0);
+                //drawSprites();
+                GFX.end_draw(room_bitmap);
+
+                GFX.begin_draw(bg1_bitmap);
                 InitDrawObjects(1);
                 GFX.end_draw(bg1_bitmap);
-
-            }
-            else if (bg2 == 7) //transparent
-            {
-                GFX.begin_draw(room_bitmap);
-                DrawFloors();
-                InitDrawObjects();
-                GFX.end_draw(room_bitmap);
+                using (Graphics g = Graphics.FromImage(room_bitmap))
+                {
+                    g.DrawImage(bg1_bitmap, 0, 0);
+                }
             }
             else
             {
-
                 GFX.begin_draw(room_bitmap);
                 DrawFloors(2);
                 InitDrawObjects(1);
@@ -152,6 +209,7 @@ namespace ZeldaFullEditor
                 GFX.begin_draw(bg1_bitmap);
                 DrawFloors();
                 InitDrawObjects(0);
+                //drawSprites();
                 GFX.end_draw(bg1_bitmap);
                 using (Graphics g = Graphics.FromImage(room_bitmap))
                 {
@@ -159,9 +217,17 @@ namespace ZeldaFullEditor
                 }
             }
 
-
-
+            using (Graphics g = Graphics.FromImage(room_bitmap))
+            {
+                GFX.begin_draw(room_bitmap);
+                drawChestsItem();
+                drawItems();
+                GFX.end_draw(room_bitmap);
+                
+            }
         }
+
+        
 
         public void addDoors()
         {
@@ -306,13 +372,14 @@ namespace ZeldaFullEditor
 
                         b3 += 23;
                     }
-                    g.FillEllipse(Brushes.Red, new Rectangle(((px) * 8), ((py) * 8), 16, 16));
-                    g.DrawString(items_name.name[b3], new Font("Arial", 10, FontStyle.Bold), Brushes.Violet, new Point(((px) * 8), ((py) * 8)));
+                    //g.FillEllipse(Brushes.Red, new Rectangle(((px) * 8), ((py) * 8), 16, 16));
+                    //g.DrawString(items_name.name[b3], new Font("Arial", 10, FontStyle.Bold), Brushes.Violet, new Point(((px) * 8), ((py) * 8)));
+                    PotsItemsDraw(b3, ((px) * 8), ((py) * 8));
                     item_address += 3;
                 }
             }
         }
-
+        
         public void drawChestsItem()
         {
             using (Graphics g = Graphics.FromImage(room_bitmap))
@@ -320,36 +387,37 @@ namespace ZeldaFullEditor
                 foreach (Chest c in chest_list)
                 {
                     //g.DrawString(chest_items_name.name[c.item], new Font("Arial", 10,FontStyle.Bold), Brushes.White, new Point(((c.x-1) * 8), ((c.y - 2) * 8)));
-                    g.DrawImage(items_image[c.item], new Point((c.x*8), (c.y*8) - 16));
-                    
+                    ItemsDraw(c.item,(c.x*8),((c.y-2)*8));
+                    //Console.WriteLine((byte)(c.x * 8) +","+ (byte)(c.y * 8));
                 }
             }
         }
 
 
+
         public void createBitmaps()
         {
+
             bg1_bitmap = new Bitmap(512, 512,PixelFormat.Format32bppArgb);
             room_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb); //act as bg2
         }
-        //Lockbit Variables 
-        Rectangle rect;
-        IntPtr ptr;
-        int bytes;
-        byte[] rgbValues;
-        System.Drawing.Imaging.BitmapData bmpData;
-        public void redrawRoom() //redraw all layer over others
+
+        Bitmap text = new Bitmap(256, 24,PixelFormat.Format32bppArgb);
+        public void DrawSpritesNames(Graphics g)
         {
-
-
-
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            foreach (SpriteName sprname in stringtodraw)
+            {
+                    GraphicsPath gpath = new GraphicsPath();
+                    gpath.AddString(sprname.name, new FontFamily("Consolas"), 1, 12, new Point(sprname.x, sprname.y), StringFormat.GenericDefault);
+                    Pen pen = new Pen(Color.FromArgb(30, 30, 30), 2);
+                    g.DrawPath(pen, gpath);
+                    SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255));
+                    g.FillPath(brush, gpath);
+            }
         }
 
-        public void DrawObjects()
-        {
- 
-
-        }
         public void InitDrawObjects(byte layer = 255)
         {
             foreach (Room_Object o in tilesObjects)
@@ -405,11 +473,10 @@ namespace ZeldaFullEditor
 
             layout = (byte)((ROM.DATA[objects_location + 1] >> 2) & 0x07);
             int layout_address = (ROM.DATA[Constants.room_object_layout_pointers + 2  + (layout * 3)] << 16) +
-    (ROM.DATA[(Constants.room_object_layout_pointers + 1) + (layout * 3)] << 8) +
-    ROM.DATA[(Constants.room_object_layout_pointers) + 0 + (layout * 3)];
+                                (ROM.DATA[(Constants.room_object_layout_pointers + 1) + (layout * 3)] << 8) +
+                                ROM.DATA[(Constants.room_object_layout_pointers) + 0 + (layout * 3)];
             int layout_location = Addresses.snestopc(layout_address);
 
-            //(((ROM.DATA[Constants.room_chest + (i*3) +1] << 8) + (ROM.DATA[Constants.room_chest + (i * 3)])) & 0x7FFF) 
             List<byte> chests_in_room = new List<byte>();
             for(int i = 0; i<290;i++)
             {
@@ -417,11 +484,8 @@ namespace ZeldaFullEditor
                 {
                     //there's a chest in that room !
                     chests_in_room.Add(ROM.DATA[Constants.room_chest + (i * 3) + 2]);
-                    //Console.WriteLine((Constants.room_chest + (i * 3) + 2).ToString("X3") + " : " + ROM.DATA[Constants.room_chest + (i * 3) + 2] + " : " + chest_items_name.name[ROM.DATA[Constants.room_chest + (i * 3) + 2]]);
                 }
             }
-
-
 
             int pos = layout_location;
 
@@ -535,14 +599,11 @@ namespace ZeldaFullEditor
                         if (b3 >= 0xF8) //subtype3 (scalable x,y) //  && b3 < 0xFC
                         {
                             oid = (short)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
-                            //Console.WriteLine(oid.ToString("X4"));
                             posX = (byte)((b1 & 0xFC) >> 2);
                             posY = (byte)((b2 & 0xFC) >> 2);
                             sizeX = (byte)((b1 & 0x03));
                             sizeY = (byte)((b2 & 0x03));
                             sizeXY = (byte)(((sizeX << 2) + sizeY));
-                            //Subtype 3, | 0xFXX 
-
                         }
                         else //subtype1
                         {
@@ -554,8 +615,6 @@ namespace ZeldaFullEditor
                             sizeX = (byte)((b1 & 0x03));
                             sizeY = (byte)((b2 & 0x03));
                             sizeXY = (byte)(((sizeX << 2) + sizeY));
-                            //subtype1 == XX
-
                         }
                         if (b1 >= 0xFC) //subtype2 (not scalable? )
                         {
@@ -568,9 +627,8 @@ namespace ZeldaFullEditor
                             sizeX = 0;
                             sizeY = 0;
                             sizeXY = 0;
-                            //subtype2 = 1XX
                         }
-                        //tilesObjects.Add(new object_F99(0xF99, posX, posY, 0, 0));
+
                         addObject(oid, posX, posY, sizeXY, (byte)layer);
 
                         //IF Object is a chest loaded and there's object in the list chest
@@ -1731,6 +1789,7 @@ namespace ZeldaFullEditor
             }
         }
 
+        public Bitmap selectedObjects = new Bitmap(512,512);
 
         public void DrawFloors(byte floor = 0)
         {
@@ -1775,108 +1834,7 @@ namespace ZeldaFullEditor
             
         }
 
-        public void InitItemsDraw()
-        {
-            for(int i = 0;i<75;i++)
-            {
-                items_image[i] = new Bitmap(16, 16);
-            }
 
-            //sword and shield
-            draw_item_tile(items_image[0], -1, 0, 8, 16, 0x21, 0);
-            draw_item_tile(items_image[0], 3, 0, 16, 16, 0x0E, 0);
-
-            //swords - need to do something else?
-            draw_item_tile(items_image[1], 4, 0, 8, 16, 0x21, 0);
-            draw_item_tile(items_image[2], 4, 0, 8, 16, 0x21, 0);
-            draw_item_tile(items_image[3], 4, 0, 8, 16, 0x21, 0);
-
-
-            //shields - need to do something else?
-            draw_item_tile(items_image[4], 0, 0, 16, 16, 0x0E, 0);
-            draw_item_tile(items_image[5], 0, 0, 16, 16, 0x0C, 2);
-            draw_item_tile(items_image[6], 0, 0, 16, 16, 0xA4, 2);
-            
-            draw_item_tile(items_image[7], 4, 0, 8, 16, 0x24, 1);
-            draw_item_tile(items_image[8], 4, 0, 8, 16, 0x24, 0);
-            draw_item_tile(items_image[9], 4, 0, 8, 16, 0x25, 1);
-            draw_item_tile(items_image[10], 4, 0, 8, 16, 0x23, 1);
-            draw_item_tile(items_image[11], 4, 0, 8, 16, 0x20, 1);
-            draw_item_tile(items_image[12], 4, 0, 8, 16, 0x2F, 0);
-            draw_item_tile(items_image[13], 0, 0, 16, 16, 0x26, 0);
-            draw_item_tile(items_image[14], 0, 0, 16, 16, 0x8D, 0);
-            draw_item_tile(items_image[15], 0, 0, 16, 16, 0x60, 2);
-            draw_item_tile(items_image[16], 0, 0, 16, 16, 0x62, 2);
-            draw_item_tile(items_image[17], 0, 0, 16, 16, 0x64, 2);
-            draw_item_tile(items_image[18], 0, 0, 16, 16, 0x46, 1);
-            draw_item_tile(items_image[19], 4, 0, 8, 16, 0x4F, 0);
-            draw_item_tile(items_image[20], 0, 0, 16, 16, 0xA2, 0);
-            draw_item_tile(items_image[21], 4, 0, 8, 16, 0x22, 1);
-            draw_item_tile(items_image[22], 0, 0, 16, 16, 0x66, 0);
-            draw_item_tile(items_image[23], 0, 0, 16, 16, 0xA0, 1);
-            draw_item_tile(items_image[24], 4, 0, 8, 16, 0x22, 0);
-            draw_item_tile(items_image[25], 0, 0, 16, 16, 0x48, 1);
-            draw_item_tile(items_image[26], 0, 0, 16, 16, 0x42, 0);
-            draw_item_tile(items_image[27], 0, 0, 16, 16, 0x2A, 1);
-            draw_item_tile(items_image[28], 0, 0, 16, 16, 0x2A, 2);
-            draw_item_tile(items_image[29], 0, 0, 16, 16, 0x2C, 2);
-            draw_item_tile(items_image[30], 0, 0, 16, 16, 0x40, 0);
-            draw_item_tile(items_image[31], 0, 0, 16, 16, 0x4C, 1);
-            draw_item_tile(items_image[32], 0, 0, 16, 16, 0x85, 0);
-            draw_item_tile(items_image[33], 0, 0, 16, 16, 0x83, 1);
-            draw_item_tile(items_image[34], 0, 0, 16, 16, 0x08, 0);//blue mail
-            draw_item_tile(items_image[35], 0, 0, 16, 16, 0x08, 1);
-            draw_item_tile(items_image[36], 4, 0, 8, 16, 0x2E, 2);
-            draw_item_tile(items_image[37], 0, 0, 16, 16, 0x4A, 0);
-            draw_item_tile(items_image[38], 0, 0, 16, 16, 0x06, 1); //liar heart? lol
-            draw_item_tile(items_image[39], 0, 0, 16, 16, 0x44, 0);
-            draw_item_tile(items_image[40], 0, 0, 16, 16, 0x02, 0);
-            draw_item_tile(items_image[41], 0, 0, 16, 16, 0x6A, 2);
-            draw_item_tile(items_image[42], 4, 0, 8, 16, 0x2F, 1);
-            draw_item_tile(items_image[43], 0, 0, 16, 16, 0x00, 1);
-            draw_item_tile(items_image[44], 0, 0, 16, 16, 0x00, 2);
-            draw_item_tile(items_image[45], 0, 0, 16, 16, 0x00, 0);
-            draw_item_tile(items_image[46], 0, 0, 16, 16, 0x00, 1);
-            draw_item_tile(items_image[47], 0, 0, 16, 16, 0x00, 2);
-            draw_item_tile(items_image[48], 0, 0, 16, 16, 0x00, 0);
-            draw_item_tile(items_image[49], 0, 0, 16, 16, 0x28, 0);
-            draw_item_tile(items_image[50], 0, 0, 16, 16, 0x6E, 2);
-            draw_item_tile(items_image[51], 0, 0, 16, 16, 0x6C, 2);
-            draw_item_tile(items_image[52], 4, 0, 8, 16, 0x81, 2);
-            draw_item_tile(items_image[53], 4, 0, 8, 16, 0x81, 0);
-            draw_item_tile(items_image[54], 4, 0, 8, 16, 0x81, 1);
-            draw_item_tile(items_image[55], 4, 0, 8, 16, 0xC4, 2);
-            draw_item_tile(items_image[56], 4, 0, 8, 16, 0xC4, 0);
-            draw_item_tile(items_image[57], 4, 0, 8, 16, 0xC4, 1);
-            draw_item_tile(items_image[58], 0, 0, 16, 16, 0x89, 0);
-            draw_item_tile(items_image[59], 0, 0, 16, 16, 0x87, 1);
-            draw_item_tile(items_image[60], 0, 0, 16, 16, 0x8D, 0);
-            draw_item_tile(items_image[61], 0, 0, 16, 16, 0x8B, 0);
-            draw_item_tile(items_image[62], 0, 0, 16, 16, 0x06, 1); //boss heart
-            draw_item_tile(items_image[63], 0, 0, 16, 16, 0x06, 1); //sanc heart?
-            draw_item_tile(items_image[64], 0, 0, 16, 16, 0xA9, 2);
-            draw_item_tile(items_image[65], 0, 0, 16, 16, 0xAB, 2);
-            draw_item_tile(items_image[66], 4, 0, 8, 16, 0xA6, 1);
-            draw_item_tile(items_image[67], 4, 0, 8, 16, 0xA8, 0);
-            draw_item_tile(items_image[68], 0, 0, 16, 16, 0x04, 0);
-            draw_item_tile(items_image[69], 4, 0, 8, 16, 0xA7, 0);
-            draw_item_tile(items_image[70], 0, 0, 16, 16, 0xAD, 2);
-            draw_item_tile(items_image[71], 0, 0, 16, 16, 0xC0, 2);
-            draw_item_tile(items_image[72], 0, 0, 16, 16, 0x8B, 0);
-            draw_item_tile(items_image[73], 4, 0, 8, 16, 0x21, 0);
-            draw_item_tile(items_image[74], 0, 0, 16, 16, 0xA2, 0);
-        }
-
-        public void draw_item_tile(Bitmap b,int x,int y,int sx,int sy,int tid,int pid)
-        {
-            using (Graphics g = Graphics.FromImage(b))
-            {
-                int ty = (tid / 16);
-                int tx = tid - (ty * 16);
-                g.DrawImage(GFX.blocksets_items[pid], new Rectangle(x, y, sx, sy), tx * 8, ty * 8, sx, sy, GraphicsUnit.Pixel);
-            }
-            b.MakeTransparent(Color.Black);
-        }
 
 
         public void loadHeader()
@@ -1888,7 +1846,7 @@ namespace ZeldaFullEditor
 
             header_location = Addresses.snestopc(address);
 
-            bg2 = (byte)((ROM.DATA[header_location] >> 5) & 0x07);
+            bg2 = (Background2)((ROM.DATA[header_location] >> 5) & 0x07);
             collision = (byte)((ROM.DATA[header_location] >> 2) & 0x07);
             light = (((ROM.DATA[header_location]) & 0x01) == 0 ? true : false);
 
@@ -1914,383 +1872,24 @@ namespace ZeldaFullEditor
         }
 
 
-        public void drawSprites()
-        {
-            //sprites_name.name
-            int sprite_address_snes = (09 << 16) +
-            (ROM.DATA[Constants.room_sprites_pointers + (index * 2) + 1] << 8) +
-            ROM.DATA[Constants.room_sprites_pointers + (index * 2)];
-            int sprite_address = Addresses.snestopc(sprite_address_snes) + 1;
 
+        
 
-
-
-            using (Graphics g = Graphics.FromImage(room_bitmap))
-            {
-                while (true)
-                {
-                    byte b1 = ROM.DATA[sprite_address];
-                    byte b2 = ROM.DATA[sprite_address + 1];
-                    byte b3 = ROM.DATA[sprite_address + 2];
-
-                    if (b1 == 0xFF) { break; }
-                    //g.FillEllipse(Brushes.Fuchsia, new Rectangle(((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 16, 16));
-                    //g.DrawString(sprites_name.name[b3*2], new Font("Arial", 10, FontStyle.Bold), Brushes.Blue, new Point(((b2 & 0x1F) * 16)-1, ((b1 & 0x1F) * 16)));
-
-                    if (b3 == 0x00)
-                    {
-                        //9x10
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 4, 14,10);
-                    }
-                    else if (b3 == 0x01)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 4, 9, 10, false, false, 1, 4);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16) + 8, ((b1 & 0x1F) * 16), 4, 9, 10, true, false, 1, 4);
-                    }
-                    else if (b3 == 0x02)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 0, 0, 10);
-                    }
-                    else if (b3 == 0x03)
-                    {
-
-                    }
-                    else if (b3 == 0x04)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 12, 2);//TODO: Change palette
-                    }
-                    else if (b3 == 0x05)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 12, 2);//TODO: Change palette
-                    }
-                    else if (b3 == 0x06)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 12, 2);//TODO: Change palette
-                    }
-                    else if (b3 == 0x07)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 12, 2);//TODO: Change palette
-                    }
-                    else if (b3 == 0x08)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 0, 8, 6);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16)+4, ((b1 & 0x1F) * 16)+6, 0, 8, 6,false,false,1,1);
-                    }
-                    else if (b3 == 0x09) //boss moldorm
-                    {
-                        //drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 0, 8, 4);
-                        
-                    }
-                    else if (b3 == 0x0A)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 0, 8, 6);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16) + 4, ((b1 & 0x1F) * 16) + 6, 0, 8, 6, false, false, 1, 1);
-                    }
-                    else if (b3 == 0x0B)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 10, 14, 10);
-                    }
-                    else if (b3 == 0x0C)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 0, 8, 8);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16) + 4, ((b1 & 0x1F) * 16) + 6, 0, 8, 8, false, false, 1, 1);
-                    }
-                    else if (b3 == 0x0D)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 12, 6);
-                    }
-                    else if (b3 == 0x0E)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 8, 2, 10, false,false,3,2);
-                    }
-                    else if (b3 == 0x0F)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 8, 8, false, false, 2, 3);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16)+16, ((b1 & 0x1F) * 16), 14, 8, 8, true, false, 1, 3);
-                    }
-                    else if (b3 == 0x10)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 12, 15, 8, false, false, 1, 1);
-                    }
-                    else if (b3 == 0x11)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 6, 0, 8, false, false, 2, 2); //feet
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16) - 8, ((b1 & 0x1F) * 16) + 8, 4, 2, 8, false, false, 2, 2); //body1
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16) + 8, ((b1 & 0x1F) * 16) + 8, 4, 2, 8, true, false, 2, 2); //body2
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16) + 16, 0, 0, 8, false, false, 2, 2); //head
-                    }
-                    else if (b3 == 0x12)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16)+8, 8, 10, 8);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 6, 8, 8);
-                    }
-                    else if (b3 == 0x13)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 4, 6, 12);
-                    }
-                    else if (b3 == 0x14)
-                    {
-                        //TT Gate
-                    }
-                    else if (b3 == 0x15)
-                    {
-                        //Antifairy
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16)+2, ((b1 & 0x1F) * 16) + 8, 3, 14, 5, false, false, 1, 1);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16) + 8, ((b1 & 0x1F) * 16)+2, 3, 14, 5, false, false, 1, 1);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16) + 14, ((b1 & 0x1F) * 16)+8, 3, 14, 5, false, false, 1, 1);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16)+8, ((b1 & 0x1F) * 16) + 14, 3, 14, 5, false, false, 1, 1);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16)+8, ((b1 & 0x1F) * 16)+8, 1, 14, 5,false,false,1,1); //middle
-                    }
-                    else if (b3 == 0x16)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16)+8, 2, 10, 12);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 0, 10, 12);
-                    }
-                    else if (b3 == 0x17) //bush hoarder
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 8, 14, 10);
-                    }
-                    else if (b3 == 0x18) //mini moldorm
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16)+13, ((b1 & 0x1F) * 16)+17, 13, 5, 8,false,false,1,1); //tail
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16)+5, ((b1 & 0x1F) * 16)+8, 2, 6, 8); //body
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 0, 6, 8); //head
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16)-4, 13, 4, 8,false,false,1,1); //eyes
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16)-4, ((b1 & 0x1F) * 16), 13, 4, 8,false,false,1,1); //eyes
-                    }
-                    else if (b3 == 0x19) //poe - ghost
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 6, 15, 12); //
-                    }
-                    else if (b3 == 0x1A) //smith
-                    {
-                        //drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 2, 4, 10,true); //smitty
-                        //drawSpriteTile(g, ((b2 & 0x1F) * 16)+12, ((b1 & 0x1F) * 16) - 7, 0, 6, 10); //hammer
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 4, 6, 10);
-                    }
-                    else if (b3 == 0x1B) //arrow in wall
-                    {
-                        
-                    }
-                    else if (b3 == 0x1C) //Statue
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16)+8, 0, 12, 10); //TODO : FIND PALETTE
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16) , 2, 12, 10, false, false, 1, 1);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16) + 8, ((b1 & 0x1F) * 16) , 2, 12, 10, true, false, 1, 1);
-                    }
-                    else if (b3 == 0x1D) //weathervane
-                    {
-
-                    }
-                    else if (b3 == 0x1E) //crystal switch
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16) , 4, 14, 5);
-                    }
-                    else if (b3 == 0x1F) //sick kid
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16)-8, ((b1 & 0x1F) * 16)+8, 10, 0, 10);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16)+16-8, ((b1 & 0x1F) * 16)+8, 10, 0, 10,true);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16)-8, ((b1 & 0x1F) * 16)+16, 10, 0, 10, false,true,2,1);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16)+16-8, ((b1 & 0x1F) * 16) + 16, 10, 0, 10, true, true, 2, 1);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16)-4 , 14, 0, 10);
-                    }
-                    else if (b3 == 0x20) 
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 2, 8, 7);
-                    }
-                    else if (b3 == 0x21) //push switch
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16) - 14, ((b1 & 0x1F) * 16), 10, 12, 12, false, false, 2, 1); //TODO: find palette
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 10, 12, 12); //TODO: find palette
-                    }
-                    else if (b3 == 0x22) //rope
-                    {
-                      
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 8, 10, 5);
-                    }
-                    else if (b3 == 0x23) //red bari
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 2, 2, 4,false,false,1,2);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16)+8, ((b1 & 0x1F) * 16), 2, 2, 4, true, false, 1,2 ); 
-                    }
-                    else if (b3 == 0x24) //blue bari
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 2, 2, 6, false, false, 1, 2);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16) + 8, ((b1 & 0x1F) * 16), 2, 2, 6, true, false, 1, 2);
-                    }
-                    else if (b3 == 0x25) //red bari
-                    {
-
-                    }
-                    else if (b3 == 0x26) //hardhat beetle
-                    {
-                        if (((b2 & 0x1F) & 0x01) == 0x00)
-                        {
-                            drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 4, 4, 8);
-                            drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16) - 6, 0, 4, 8);
-                        }
-                        else
-                        {
-                            drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 4, 4, 10);
-                            drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16) - 6, 0, 4, 10);
-                        }
-                        
-                    }
-                    else if (b3 == 0x27) //deadrock
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 2, 14, 10);
-                    }
-                    else if (b3 == 0x28) //npcs
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x29) //npcs
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x2A) //npcs
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x2B) //???
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x2C) //npcs
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x2D) //npcs
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x2E) //npcs
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x2F) //npcs
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x30) //npcs
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x31) //npcs
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x32) //npcs
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x33) //npcs
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x34) //npcs
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x35) //npcs
-                    {
-
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x36) //npcs
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x37) //npcs
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x38) //npcs
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x39) //npcs
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x3A) //npcs
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x3B) //npcs
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x3C) //npcs
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x3D) //npcs
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x3E) //npcs
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-                    else if (b3 == 0x3F) //npcs
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 14, 6, 10);
-                    }
-
-                    else if (b3 == 0xAD)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16) + 8, 14, 10, 10);
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 12, 10, 10);
-                    }
-                    else if (b3 == 0x6F)
-                    {
-                        drawSpriteTile(g, ((b2 & 0x1F) * 16), ((b1 & 0x1F) * 16), 4, 8, 10);
-                    }
-
-
-
-                    sprite_address += 3;
-                }
-            }
-        }
-
-        public void drawSpriteTile(Graphics g, int x, int y, int srcx, int srcy, int pal,bool mx = false,bool my = false, int sx = 2, int sy = 2)
-        {
-            using (Bitmap b = new Bitmap(sx * 8, sy * 8))
-            {
-                using (Graphics gg = Graphics.FromImage(b))
-                {
-                    gg.DrawImage(GFX.blocksets[pal], new Rectangle(0, 0, sx * 8, sy * 8), (srcx * 8), (srcy * 8) + 320, sx * 8, sy * 8, GraphicsUnit.Pixel);
-                }
-                b.MakeTransparent(Color.Black);
-
-                if (mx) //mirror x
-                    b.RotateFlip(RotateFlipType.RotateNoneFlipX);
-                if (my) //mirror y
-                    b.RotateFlip(RotateFlipType.RotateNoneFlipY);
-
-                g.DrawImage(b, x, y);
-            }
-        }
 
 
     }
 
-
+    public class SpriteName
+    {
+        public int x;
+        public int y;
+        public string name;
+        public SpriteName(int x,int y,string name)
+        {
+            this.x = x;
+            this.y = y;
+            this.name = name;
+        }
+    }
 
 }

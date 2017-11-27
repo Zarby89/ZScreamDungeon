@@ -119,79 +119,111 @@ namespace ZeldaFullEditor
         int image_size_y = 0;
 
 
-        public void draw_tile(Tile t, int x, int y, int yfix = 0)
+    public void draw_tile(Tile t, int x, int y, int yfix = 0)
+    {
+
+
+        int ty = (t.id / 16);
+        int tx = t.id - (ty * 16);
+        int mx = 0;
+        int my = 0;
+
+
+        if (t.mirror_x == true)
         {
+            mx = 8;
+        }
 
-
-            int ty = (t.id / 16);
-            int tx = t.id - (ty * 16);
-            int mx = 0;
-            int my = 0;
-
-
-            if (t.mirror_x == true)
+        for (int xx = 0; xx < 8; xx++)
+        {
+            if (mx > 0)
             {
-                mx = 8;
+                mx--;
             }
-
-            for (int xx = 0; xx < 8; xx++)
+            if (t.mirror_y == true)
             {
-                if (mx > 0)
+                my = 8;
+            }
+            for (int yy = 0; yy < 8; yy++)
+            {
+                if (my > 0)
                 {
-                    mx--;
+                    my--;
                 }
-                if (t.mirror_y == true)
-                {
-                    my = 8;
-                }
-                for (int yy = 0; yy < 8; yy++)
-                {
-                    if (my > 0)
-                    {
-                        my--;
-                    }
-                    int x_dest = ((this.x * 8) + x + (xx)) * 4;
-                    int y_dest = (((this.y * 8) + y + (yy)) * 512) * 4;
-                    int dest = x_dest + y_dest;
+                int x_dest = ((this.x * 8) + x + (xx)) * 4;
+                int y_dest = (((this.y * 8) + y + (yy)) * 512) * 4;
+                int dest = x_dest + y_dest;
 
-                    int x_src = ((tx * 8) + mx + (xx));
-                    if (t.mirror_x)
-                    {
-                        x_src = ((tx * 8) + mx);
-                    }
-                    int y_src = (((ty * 8) + my + (yy)) * 128);
-                    if (t.mirror_y)
-                    {
-                        y_src = (((ty * 8) + my) * 128);
-                    }
+                int x_src = ((tx * 8) + mx + (xx));
+                if (t.mirror_x)
+                {
+                    x_src = ((tx * 8) + mx);
+                }
+                int y_src = (((ty * 8) + my + (yy)) * 128);
+                if (t.mirror_y)
+                {
+                    y_src = (((ty * 8) + my) * 128);
+                }
                     
-                    int src = x_src + y_src;
-                    int pp = 0;
-                    if (src < 16384)
+                int src = x_src + y_src;
+                int pp = 0;
+                if (src < 16384)
+                {
+                    pp = 8;
+                }
+                if (dest < GFX.currentData.Length)
+                {
+                    byte alpha = 255;
+
+                    if (GFX.singledata[(src)] == 0)
                     {
-                        pp = 8;
-                    }
-                    if (dest < GFX.currentData.Length)
-                    {
-                        byte alpha = 255;
-                        if (GFX.singledata[(src)] == 0)
+                        if (room.bg2 != 0)
                         {
-                            if (room.bg2 != 0)
+                            if (layer != 1)
                             {
-                                if (layer != 1)
-                                {
-                                    alpha = 0;
-                                }
+                                alpha = 0;
                             }
                         }
-                        GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].B);
-                        GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].G);
-                        GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].R);
-                        GFX.currentData[dest + 3] = alpha;//A
+                        if (room.bg2 == Background2.OnTop)
+                        {
+                            if (layer != 0)
+                            {
+                                alpha = 0;
+                            }
+                            else
+                            {
+                                alpha = 255;
+                            }
+                        }
+                        if (room.bg2 == Background2.Transparent)
+                        {
+                            alpha = 0;
+                        }
+
                     }
+                    else
+                    {
+                        if (room.bg2 == Background2.Transparent)
+                        {
+                            if (layer == 1)
+                            {
+                                alpha = 128;
+                            }
+                        }
+                    }
+
+                    if (allBgs)
+                    {
+                        alpha = 255;
+                    }
+                    GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].B);
+                    GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].G);
+                    GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].R);
+                    GFX.currentData[dest + 3] = alpha;//A
                 }
             }
         }
+    }
 
 
         public void makeTileTransparent(Bitmap b)
