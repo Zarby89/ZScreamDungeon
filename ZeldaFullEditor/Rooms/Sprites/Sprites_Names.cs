@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-  public class Sprites_Names
+  public static class Sprites_Names
   {
 
-    public string[] name = new string[] {
+    static public string[] name = new string[] {
 "00 Raven",
 "01 Vulture",
 "02 Flying Stalfos Head",

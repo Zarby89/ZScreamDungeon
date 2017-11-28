@@ -163,15 +163,15 @@
   <data name="toolStripButton4.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHBSURBVDhPjVJNSwJhEN4ygiIKgi7VqfoB0cd/iK59QBQE
-        1SG6apF90KFDp/BS4CEzkz5OGR4iIqU8iNllC0sil7IMJWwRdfVgMc28vdqKsvXAsO/uPPPMzPOuoAYA
-        1GUyGSNGIBKJ5DA+8XyLMa8oSgs+IZ1Oh/Dcykt+kc1mOzD5sH1+D92zDqgatoBuyAI9cw6wuYOQTCaf
-        o/EE6K3eUhHqTMVTm5cgDGyVjVGTC8IxmZ3zIrxcEHC0BepMycpBC6wcXIP09gGhtzgs7fnZJJTr1B8V
-        BGkdXs4EAl2GnyQV43gu6kAkCueVBPVjtkJxicDrayRHO1PiKSoD+tFGO5LItNlTVJiPPwXoe16knDdF
-        Aki860W3KcFXOENja3mOidANqKNIAF8WrSoTzacBIvjw6po4RRvULZVKSepRl/f9dFWPuE47p2mDfiTs
-        GDbseAsiExsXkEor77hGD6dpA4nNOLpocopsFRLpWz2BeCKp4DT9nKYNWZYbyMRDzwPUjFiZCP3OYlD6
-        wiknOU0b6Ek1iuy6b16gcdzORNaPRWYs5nScpg0kVqDImijFwGj3MUP/fStqoMgMdo6Vvw1B+AYqadgo
-        Vrw8YgAAAABJRU5ErkJggg==
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAHASURBVDhPjVJNSwJhEN4ygiIKgi7VqfoBUfYfomsfEAVB
+        dYiuWmQfdOjQKbwUeMjMpI9ThoeISCkPYgZhoYWolAuihC2irh4sppm3V1tJth4Y9t2dZ56Zed4VlACA
+        pnw+b8AIiKJYxPjA8yPGkizLHfiEXC4XwXMnL/lBoVDowWRo7+oJ+hfsUDdmBs2oGbSLdrC6niGTybwm
+        UmnQWTy/RagzFc/u3IAwvFs1JoxOiCUldi6J8HJBwNGWqTMla0fMsH58B9H4O0TiKVg99LFJKNerOy0L
+        0jq8nAkE+vTfSSrG8ZzUgUgUjtsoNE9ay8W/BGIxsUg7U+IlIQH60UU7ksicyV1RWIo/Beh7SaSaNxUC
+        SAwOoNuU4CtcorGNPMdE6AaUUSGALysWhYmmiwARvHh1bZyiDuqWzWajylHXjnx0VWFcp5vT1EE/EnaM
+        6fc9ZZHp7WvI5uQ3XEPLaepAYjuO7jc6/GwVEhncOIdUOiPjNEOcpg5JklrIxBN3CBrGLUyEfuf7YPgT
+        p5zhNHWgJ/UocuB6EKF1ysZEts78zFjMaThNHUisQZFNfzQJBpuXGfrvW1ECReaxc7L6bQjCF9YY2AoZ
+        oX5DAAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="bg1modeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
@@ -240,6 +240,9 @@
         Qd07eAM6TfCdUHfRHhSf5Dg8XAAAAABJRU5ErkJggg==
 </value>
   </data>
+  <metadata name="spriteImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>517, 17</value>
+  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>81</value>
   </metadata>

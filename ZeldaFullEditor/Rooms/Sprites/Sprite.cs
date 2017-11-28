@@ -18,10 +18,10 @@ namespace ZeldaFullEditor
         public byte layer = 0;
         byte subtype = 0;
         byte overlord = 0;
-        string name;
+        public string name;
         Room room;
         public Rectangle boundingbox;
-
+        bool picker = false;
         public Sprite(Room room, byte id, byte x, byte y, string name, byte overlord, byte subtype, byte layer)
         {
             this.id = id;
@@ -34,9 +34,17 @@ namespace ZeldaFullEditor
             this.layer = layer;
         }
 
-        public void Draw()
+        public void updateBBox()
         {
-
+            lowerX = 0;
+            lowerY = 0;
+            higherX = 16;
+            higherY = 16;
+        }
+        
+        public void Draw(bool picker = false)
+        {
+            this.picker = picker;
 
 
             if (id == 0x00)
@@ -908,34 +916,52 @@ namespace ZeldaFullEditor
             boundingbox = new Rectangle((lowerX+(x*16)),(lowerY+(y*16)) , width,height);
 
         }
-        int lowerX = 64;
-        int lowerY = 64;
+
+        public void update()
+        {
+
+        }
+
+        int lowerX = 32;
+        int lowerY = 32;
+        int higherX = 0;
+        int higherY = 0;
         int width = 16;
         int height = 16;
         public void drawSpriteTile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sx = 2, int sy = 2)
         {
+            int zx = x-(this.x * 16);
+            int zy = y-(this.y * 16);
 
-            if (lowerX > (x - (this.x * 16)))
+            if (lowerX > zx)
             {
-                lowerX = (x - (this.x * 16));
+            lowerX = zx;
             }
 
-            if (y > lowerY - (this.y * 16))
+            if (lowerY > zy)
             {
-                lowerY = (y - (this.y * 16));
+            lowerY = zy;
             }
 
-            if (width < (x - (this.x * 16)) + (sx * 8))
+            if (higherX < zx+(sx*8))
             {
-                width = (x - (this.x * 16)) + (sx * 8);
+            higherX = zx + (sx * 8);
             }
 
-            if (height < (y - (this.y * 16) + (sy * 8)))
+            if (higherY < zy + (sy * 8))
             {
-                height = (y - (this.y * 16) + (sy * 8));
+            higherY = zy + (sy * 8);
             }
 
-            int ty = srcy + 40;
+            width = higherX - lowerX;
+            height = higherY - lowerY;
+            if (picker)
+            {
+                x += 8;
+                y += 8;
+            }
+
+                int ty = srcy + 40;
             int tx = srcx;
             int mx = 0;
             int my = 0;
@@ -961,8 +987,15 @@ namespace ZeldaFullEditor
                     {
                         my--;
                     }
+
+
+                       
                     int x_dest = ((x) + (xx)) * 4;
                     int y_dest = (((y) + (yy)) * 512) * 4;
+                    if (picker)
+                    {
+                        y_dest = (((y) + (yy)) * 32) * 4;
+                    }
                     int dest = x_dest + y_dest;
 
                     int x_src = ((tx * 8) + (xx));

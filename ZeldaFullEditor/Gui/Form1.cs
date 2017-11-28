@@ -85,8 +85,8 @@ namespace ZeldaFullEditor
             {
                 Constants.Init_Jp(true); //VT
                 load_default_room();
-                //ROM.DATA = null;
-                //MessageBox.Show("Sorry that ROM is not supported :(", "Error");
+                ROM.DATA = null;
+                MessageBox.Show("Sorry that ROM is not supported :(", "Error");
             }
         }
 
@@ -162,41 +162,82 @@ namespace ZeldaFullEditor
         {
             //Not sure if i'll use that or not maybe for animation?
         }
-
+        bool found = false;
+        Object tempSelectedObject = null;
+        bool moved = false;
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
-            mouse_down = true;
+            if (mouse_down == false)
+            {
+                found = false;
+                if (spritemodeButton.Checked)
+                {
+                    foreach (Sprite spr in room.sprites)
+                    {
+
+                        if (e.X >= spr.boundingbox.X && e.X <= spr.boundingbox.X + spr.boundingbox.Width &&
+                            e.Y >= spr.boundingbox.Y && e.Y <= spr.boundingbox.Y + spr.boundingbox.Height)
+                        {
+                            tempSelectedObject = spr;
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found == false)
+                    {
+                        tempSelectedObject = null;
+                        room.selectedObject = null;
+                        room.update();
+                        drawRoom();
+                    }
+                }
+
+                mouse_down = true;
+            }
         }
+
         bool mouse_down = false;
         int mx = 0;
         int my = 0;
         int last_mx = 0;
         int last_my = 0;
-        Object lastSelectedObject = null;
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
+            mx = ((e.X) / 8);
+            my = ((e.Y) / 8);
             if (mouse_down)
             {
-                mx = e.X / 8;
-                my = e.Y / 8;
+
                 if (mx != last_mx || my != last_my)
                 {
-                    drawRoom();
-                    if (lastSelectedObject != room.selectedObject)
+                    if (tempSelectedObject != null)
                     {
+                        room.selectedObject = tempSelectedObject;
                         room.update();
-                        lastSelectedObject = room.selectedObject;
+                        tempSelectedObject = null;
+                        anychange = true;
                     }
+                    moved = true;
+                    drawRoom();
                 }
 
-                last_mx = mx;
-                last_my = my;
+
             }
+            last_mx = mx;
+            last_my = my;
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             mouse_down = false;
+            moved = false;
+            if (tempSelectedObject != null)
+            {
+                room.selectedObject = tempSelectedObject;
+                room.update();
+                tempSelectedObject = null;
+            }
+            drawRoom();
         }
 
         private void gotoRoomToolStripMenuItem_Click(object sender, EventArgs e)
@@ -209,11 +250,53 @@ namespace ZeldaFullEditor
                 drawRoom();
             }
         }
-
+        int lastRoom = 260;
+        bool anychange = false;
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            room = new Room((roomListBox.SelectedItem as ListRoomName).id);
-            drawRoom();
+            if (anychange)
+            {
+                if (roomListBox.SelectedIndex != lastRoom)
+                {
+                    DialogResult dialogResult = MessageBox.Show("That room has changed do you want to save change?", "Save", MessageBoxButtons.YesNoCancel);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+
+                        //save here
+
+
+                        room = new Room((roomListBox.SelectedItem as ListRoomName).id);
+                        room.selectedObject = null;
+                        tempSelectedObject = null;
+                        drawRoom();
+                        lastRoom = roomListBox.SelectedIndex;
+                        anychange = false;
+                        
+                    }
+                    else if (dialogResult == DialogResult.Cancel)
+                    {
+                        roomListBox.SelectedIndex = lastRoom;
+
+                    }
+                    else
+                    {
+                        room = new Room((roomListBox.SelectedItem as ListRoomName).id);
+                        room.selectedObject = null;
+                        tempSelectedObject = null;
+                        drawRoom();
+                        lastRoom = roomListBox.SelectedIndex;
+                        anychange = false;
+                    }
+                }
+            }
+            else
+            {
+                room = new Room((roomListBox.SelectedItem as ListRoomName).id);
+                room.selectedObject = null;
+                tempSelectedObject = null;
+                drawRoom();
+                lastRoom = roomListBox.SelectedIndex;
+            }
 
         }
 
@@ -223,17 +306,30 @@ namespace ZeldaFullEditor
             using (Graphics g = Graphics.FromImage(roomBitmap))
             {
                 g.DrawImage(room.room_bitmap,0,0);
-                
-                room.selectedObject = room.sprites[0];
-                
                 if (room.selectedObject is Sprite)
                 {
+                    if (moved == true)
+                    {
+                        (room.selectedObject as Sprite).x = (byte)((mx) / 2);
+                        (room.selectedObject as Sprite).y = (byte)((my) / 2);
+                        moved = false;
+                    }
                     GFX.begin_draw(roomBitmap);
-                    (room.selectedObject as Sprite).x = (byte)(mx / 2);
-                    (room.selectedObject as Sprite).y = (byte)(my / 2);
-                    (room.selectedObject as Sprite).Draw();
-                    GFX.end_draw(roomBitmap);
-                    g.DrawRectangle(new Pen(Brushes.LightGreen), (room.selectedObject as Sprite).boundingbox);
+                        
+
+                        (room.selectedObject as Sprite).Draw();
+                        GFX.end_draw(roomBitmap);
+                        if (mouse_down)
+                        {
+                            g.DrawRectangle(new Pen(Brushes.LightGreen), (room.selectedObject as Sprite).boundingbox);
+                        }
+                        else
+                        {
+                            g.DrawRectangle(new Pen(Brushes.Green), (room.selectedObject as Sprite).boundingbox);
+                        }
+                        
+                    
+                    
                 }
                 
 
@@ -269,12 +365,58 @@ namespace ZeldaFullEditor
                 (toolStrip1.Items[i] as ToolStripButton).Checked = false;
             }
             (sender as ToolStripButton).Checked = true;
+            tempSelectedObject = null;
+            room.selectedObject = null;
+            room.update();
+            drawRoom();
         }
+
+        public Bitmap[] sprites_bitmap = new Bitmap[0xF3];
 
         private void howToUseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             HowToUse howBox = new HowToUse();
             howBox.ShowDialog();
+        }
+
+        private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (room.selectedObject != null)
+            {
+                if (room.selectedObject is Sprite)
+                {
+                    PickSprite spritepicker = new PickSprite();
+                    for (int i = 0;i<0xF3;i++)
+                    {
+                        sprites_bitmap[i] = new Bitmap(32, 32, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                        GFX.begin_draw(sprites_bitmap[i], 32, 32);
+                        new Sprite(room, (byte)i, 0, 0, Sprites_Names.name[i], 0, 0, 0).Draw(true);
+                        GFX.end_draw(sprites_bitmap[i]);
+                        
+                        spritepicker.listView1.Items.Add(Sprites_Names.name[i]);
+                        spritepicker.listView1.Items[i].ImageIndex = i;
+                    }
+                    //spritepicker.listView1.LargeImageList = new ImageList();
+                    // spritepicker.listView1.LargeImageList
+                    spriteImageList.Images.Clear();
+                    spriteImageList.Images.AddRange(sprites_bitmap);
+                    spritepicker.listView1.LargeImageList = spriteImageList;
+                    //recreate all sprites images
+                    
+                    
+                    if (spritepicker.ShowDialog() == DialogResult.OK)
+                    {
+                        (room.selectedObject as Sprite).id = (byte)spritepicker.listView1.SelectedIndices[0];
+                        (room.selectedObject as Sprite).updateBBox();
+                        room.update();
+                        drawRoom();
+
+                    }
+
+
+                }
+                
+            }
         }
     }
 
@@ -289,5 +431,15 @@ namespace ZeldaFullEditor
             this.Name = name;
         }
         
+    }
+
+    public class Action
+    {
+
+    }
+
+    public enum ActionType
+    {
+        Move,Delete,Add,Change
     }
 }

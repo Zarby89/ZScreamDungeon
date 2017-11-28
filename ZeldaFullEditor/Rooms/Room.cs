@@ -50,12 +50,11 @@ namespace ZeldaFullEditor
         public List<Room_Object> tilesObjects = new List<Room_Object>();
         public List<Room_Object> layouttilesObjects = new List<Room_Object>();
         public ChestItems_Name chest_items_name = new ChestItems_Name();
-        public Sprites_Names sprites_name = new Sprites_Names();
         public PotItems_Name items_name = new PotItems_Name();
         public List<Sprite> sprites = new List<Sprite>();
 
         public Object selectedObject;
-
+       
         public Room(int index)
         {
 
@@ -122,7 +121,7 @@ namespace ZeldaFullEditor
 
                 if (b1 == 0xFF) { break; }
 
-                sprites.Add(new Sprite(this, b3, (byte)(b2 & 0x1F), (byte)(b1 & 0x1F), sprites_name.name[b3], (byte)((b2 & 0xE0) >> 5), (byte)((b1 & 0x60) >> 5), (byte)((b1 & 0x80)>>6)));
+                sprites.Add(new Sprite(this, b3, (byte)(b2 & 0x1F), (byte)(b1 & 0x1F), Sprites_Names.name[b3], (byte)((b2 & 0xE0) >> 5), (byte)((b1 & 0x60) >> 5), (byte)((b1 & 0x80)>>6)));
 
                 sprite_address += 3;
 

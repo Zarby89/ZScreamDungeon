@@ -45,6 +45,7 @@
             this.showBG2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showBG1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openRomFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -71,7 +72,7 @@
             this.chestmodeButton = new System.Windows.Forms.ToolStripButton();
             this.potmodeButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.spriteImageList = new System.Windows.Forms.ImageList(this.components);
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.toolStrip1.SuspendLayout();
@@ -197,10 +198,17 @@
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
             // 
+            // howToUseToolStripMenuItem
+            // 
+            this.howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
+            this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.howToUseToolStripMenuItem.Text = "How to Use";
+            this.howToUseToolStripMenuItem.Click += new System.EventHandler(this.howToUseToolStripMenuItem_Click);
+            // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -217,6 +225,7 @@
             this.pictureBox1.Size = new System.Drawing.Size(512, 512);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDoubleClick);
             this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
             this.pictureBox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
             this.pictureBox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseUp);
@@ -469,12 +478,11 @@
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
-            // howToUseToolStripMenuItem
+            // spriteImageList
             // 
-            this.howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
-            this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.howToUseToolStripMenuItem.Text = "How to Use";
-            this.howToUseToolStripMenuItem.Click += new System.EventHandler(this.howToUseToolStripMenuItem_Click);
+            this.spriteImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
+            this.spriteImageList.ImageSize = new System.Drawing.Size(32, 32);
+            this.spriteImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // Form1
             // 
@@ -550,6 +558,7 @@
         private System.Windows.Forms.ToolStripButton potmodeButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem howToUseToolStripMenuItem;
+        private System.Windows.Forms.ImageList spriteImageList;
     }
 }
 

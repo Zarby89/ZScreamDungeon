@@ -80,6 +80,12 @@
     <Compile Include="Gui\HowToUse.Designer.cs">
       <DependentUpon>HowToUse.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\PickSprite.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\PickSprite.Designer.cs">
+      <DependentUpon>PickSprite.cs</DependentUpon>
+    </Compile>
     <Compile Include="Rooms\Background2.cs" />
     <Compile Include="Rooms\Chests\Chest.cs" />
     <Compile Include="Rooms\Chests\ChestItems_Name.cs" />
@@ -124,6 +130,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\HowToUse.resx">
       <DependentUpon>HowToUse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\PickSprite.resx">
+      <DependentUpon>PickSprite.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
