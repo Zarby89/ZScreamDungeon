@@ -24,7 +24,7 @@ namespace ZeldaFullEditor
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            actionsListbox.DisplayMember = "Name";
 
 
         }
@@ -163,13 +163,16 @@ namespace ZeldaFullEditor
             //Not sure if i'll use that or not maybe for animation?
         }
         bool found = false;
-        Object tempSelectedObject = null;
+        bool alreadyin = false;
         bool moved = false;
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             if (mouse_down == false)
             {
                 found = false;
+                alreadyin = false;
+                dragx = ((e.X) / 16);
+                dragy = ((e.Y) / 16);
                 if (spritemodeButton.Checked)
                 {
                     foreach (Sprite spr in room.sprites)
@@ -178,15 +181,54 @@ namespace ZeldaFullEditor
                         if (e.X >= spr.boundingbox.X && e.X <= spr.boundingbox.X + spr.boundingbox.Width &&
                             e.Y >= spr.boundingbox.Y && e.Y <= spr.boundingbox.Y + spr.boundingbox.Height)
                         {
-                            tempSelectedObject = spr;
+
+
+
+                            //IF WE ARE HOLDING SHIFT THEN ADD
+                            if (ModifierKeys == Keys.Shift)
+                            {
+
+                            }
+                            else
+                            {
+                                //IF SHIFT IS NOT HOLD THEN CLEAR BEFORE ADD
+                                if (room.selectedObject.Count == 1)
+                                {
+                                    room.selectedObject.Clear();
+                                }
+                            }
+                            foreach (Object o in room.selectedObject)
+                            {
+                                if (o == spr)
+                                {
+                                    alreadyin = true;
+                                    break;
+                                }
+                            }
+                            if (ModifierKeys == Keys.Shift)
+                            {
+                                if (alreadyin == false)//prevent adding multiple time the same object
+                                {
+                                    room.selectedObject.Add(spr);
+                                }
+                            }
+                            else
+                            {
+                                if (alreadyin == false)
+                                {
+                                    room.selectedObject.Clear();
+                                    room.selectedObject.Add(spr);
+                                }
+                            }
+                            room.update();
+                            drawRoom();
                             found = true;
                             break;
                         }
                     }
                     if (found == false)
                     {
-                        tempSelectedObject = null;
-                        room.selectedObject = null;
+                        room.selectedObject.Clear();
                         room.update();
                         drawRoom();
                     }
@@ -201,26 +243,31 @@ namespace ZeldaFullEditor
         int my = 0;
         int last_mx = 0;
         int last_my = 0;
+        int dragx = 0;
+        int dragy = 0;
+        int move_x = 0;
+        int move_y = 0;
+        List<Object> oldObjectList = new List<object>();
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-            mx = ((e.X) / 8);
-            my = ((e.Y) / 8);
+            mx = ((e.X) / 16);
+            my = ((e.Y) / 16);
+            move_x = mx - dragx; //mx = 24, dragx = 28, mx-dragx = move_x = -4, so x = dragx + move_x
+            move_y = my - dragy;
             if (mouse_down)
             {
-
-                if (mx != last_mx || my != last_my)
-                {
-                    if (tempSelectedObject != null)
+                    if (mx != last_mx || my != last_my)
                     {
-                        room.selectedObject = tempSelectedObject;
-                        room.update();
-                        tempSelectedObject = null;
-                        anychange = true;
-                    }
-                    moved = true;
-                    drawRoom();
-                }
+                        if (oldObjectList != room.selectedObject)
+                        {
+                            room.update(); //Slow function prevent room from updating everyframe if object didnt changed
+                            oldObjectList = room.selectedObject;
+                        }
 
+                        anychange = true;
+                        moved = true;
+                        drawRoom();
+                    }
 
             }
             last_mx = mx;
@@ -230,13 +277,56 @@ namespace ZeldaFullEditor
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             mouse_down = false;
-            moved = false;
-            if (tempSelectedObject != null)
+            if (spritemodeButton.Checked)
             {
-                room.selectedObject = tempSelectedObject;
-                room.update();
-                tempSelectedObject = null;
+                List<Object> parameters = new List<Object>();
+                List<Sprite> moved_sprites = new List<Sprite>();
+                List<int> x_pos = new List<int>();
+                List<int> y_pos = new List<int>();
+                if (room.selectedObject.Count > 0)
+                {
+                    if (moved == true)
+                    {
+                        foreach (Object o in room.selectedObject)
+                        {
+                            moved_sprites.Add((o as Sprite));
+                            x_pos.Add((o as Sprite).x);
+                            y_pos.Add((o as Sprite).y);
+                            (o as Sprite).x = (o as Sprite).nx;
+                            (o as Sprite).y = (o as Sprite).ny;
+                        }
+                        parameters.Add(moved_sprites.ToArray());
+                        parameters.Add(x_pos.ToArray());
+                        parameters.Add(y_pos.ToArray());
+                        actionsListbox.Items.Add(new DoAction(ActionType.Move, parameters.ToArray()));
+
+                        tempActionList.Clear();
+                    }
+                }
+                else
+                {
+                    foreach (Sprite spr in room.sprites)
+                    {
+                        int rx = dragx;
+                        int ry = dragy;
+                        if (move_x < 0)
+                        {
+                            Math.Abs(rx = dragx + move_x);
+                        }
+                        if (move_y < 0)
+                        {
+                            Math.Abs(ry = dragy + move_y);
+                        }
+
+                        if (spr.boundingbox.IntersectsWith(new Rectangle(rx * 16, ry * 16, Math.Abs(move_x) * 16, Math.Abs(move_y) * 16)))
+                        {
+                            room.selectedObject.Add(spr);
+                        }
+                    }
+                }
             }
+            moved = false;
+            room.update();
             drawRoom();
         }
 
@@ -254,24 +344,30 @@ namespace ZeldaFullEditor
         bool anychange = false;
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            change_room();
+
+        }
+
+        public void change_room()
+        {
             if (anychange)
             {
                 if (roomListBox.SelectedIndex != lastRoom)
                 {
-                    DialogResult dialogResult = MessageBox.Show("That room has changed do you want to save change?", "Save", MessageBoxButtons.YesNoCancel);
+                    DialogResult dialogResult = MessageBox.Show("Room has changed. Do you want to save changes?", "Save", MessageBoxButtons.YesNoCancel);
                     if (dialogResult == DialogResult.Yes)
                     {
 
                         //save here
 
-
                         room = new Room((roomListBox.SelectedItem as ListRoomName).id);
-                        room.selectedObject = null;
-                        tempSelectedObject = null;
+                        tempActionList.Clear();
+                        actionsListbox.Items.Clear();
+                        room.selectedObject.Clear();
                         drawRoom();
                         lastRoom = roomListBox.SelectedIndex;
                         anychange = false;
-                        
+
                     }
                     else if (dialogResult == DialogResult.Cancel)
                     {
@@ -281,8 +377,9 @@ namespace ZeldaFullEditor
                     else
                     {
                         room = new Room((roomListBox.SelectedItem as ListRoomName).id);
-                        room.selectedObject = null;
-                        tempSelectedObject = null;
+                        room.selectedObject.Clear();
+                        actionsListbox.Items.Clear();
+                        room.selectedObject.Clear();
                         drawRoom();
                         lastRoom = roomListBox.SelectedIndex;
                         anychange = false;
@@ -292,46 +389,89 @@ namespace ZeldaFullEditor
             else
             {
                 room = new Room((roomListBox.SelectedItem as ListRoomName).id);
-                room.selectedObject = null;
-                tempSelectedObject = null;
+                room.selectedObject.Clear();
                 drawRoom();
                 lastRoom = roomListBox.SelectedIndex;
             }
-
+            /*using (Graphics g = Graphics.FromImage(pictureBox1.Image))
+            {
+                g.Clear(Color.Black);
+                for (int y = 0; y < 16; y++)
+                {
+                    for (int x = 0; x < 8; x++)
+                    {
+                        g.FillRectangle(new SolidBrush(GFX.spritesPalettes[x, y]), new Rectangle(x * 16, y * 16, 16, 16));
+                    }
+                }
+            }*/
         }
 
+
+
+
+
+        List<Rectangle> drawRectangles = new List<Rectangle>();
         public void drawRoom()
         {
             Bitmap roomBitmap = new Bitmap(512, 512);
             using (Graphics g = Graphics.FromImage(roomBitmap))
             {
+                drawRectangles.Clear();
                 g.DrawImage(room.room_bitmap,0,0);
-                if (room.selectedObject is Sprite)
+                if (room.selectedObject.Count>0)
                 {
-                    if (moved == true)
-                    {
-                        (room.selectedObject as Sprite).x = (byte)((mx) / 2);
-                        (room.selectedObject as Sprite).y = (byte)((my) / 2);
-                        moved = false;
-                    }
                     GFX.begin_draw(roomBitmap);
-                        
+                    foreach (Object o in room.selectedObject)
+                    {
+                        if (o is Sprite)
+                        {
+                            if (moved == true)
+                            {
+                                (o as Sprite).nx = (byte)((o as Sprite).x + move_x);
+                                (o as Sprite).ny = (byte)((o as Sprite).y + move_y);
+                            }
 
-                        (room.selectedObject as Sprite).Draw();
-                        GFX.end_draw(roomBitmap);
-                        if (mouse_down)
-                        {
-                            g.DrawRectangle(new Pen(Brushes.LightGreen), (room.selectedObject as Sprite).boundingbox);
+                            (o as Sprite).Draw();
+                            drawRectangles.Add((o as Sprite).boundingbox);
                         }
-                        else
+
+                    }
+                    GFX.end_draw(roomBitmap);
+
+                    if (mouse_down)
+                    {
+                        foreach (Rectangle r in drawRectangles)
                         {
-                            g.DrawRectangle(new Pen(Brushes.Green), (room.selectedObject as Sprite).boundingbox);
+                            g.DrawRectangle(new Pen(Brushes.LightGreen), r);
                         }
-                        
-                    
+                    }
+                    else
+                    {
+                        foreach (Rectangle r in drawRectangles)
+                        {
+                            g.DrawRectangle(new Pen(Brushes.Green), r);
+                        }
+                    }
                     
                 }
-                
+                else
+                {
+                    if (mouse_down)
+                    {
+                        int rx = dragx;
+                        int ry = dragy;
+                        if (move_x < 0)
+                        {
+                            Math.Abs(rx = dragx + move_x);
+                        }
+                        if (move_y < 0)
+                        {
+                            Math.Abs(ry = dragy + move_y);
+                        }
+
+                        g.DrawRectangle(new Pen(Brushes.White), new Rectangle(rx * 16, ry * 16, Math.Abs(move_x) * 16, Math.Abs(move_y) * 16));
+                    }
+                }
 
             }
 
@@ -365,14 +505,13 @@ namespace ZeldaFullEditor
                 (toolStrip1.Items[i] as ToolStripButton).Checked = false;
             }
             (sender as ToolStripButton).Checked = true;
-            tempSelectedObject = null;
-            room.selectedObject = null;
+            room.selectedObject.Clear();
             room.update();
             drawRoom();
         }
 
         public Bitmap[] sprites_bitmap = new Bitmap[0xF3];
-
+        public Bitmap[] chest_items_bitmap = new Bitmap[176];
         private void howToUseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             HowToUse howBox = new HowToUse();
@@ -381,18 +520,63 @@ namespace ZeldaFullEditor
 
         private void pictureBox1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            if (room.selectedObject != null)
+            if (spritemodeButton.Checked)
             {
-                if (room.selectedObject is Sprite)
+                if (room.selectedObject.Count > 0)
+                {
+                    if (room.selectedObject[0] is Sprite)
+                    {
+                        PickSprite spritepicker = new PickSprite();
+                        for (int i = 0; i < 0xF3; i++)
+                        {
+                            sprites_bitmap[i] = new Bitmap(32, 32, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                            GFX.begin_draw(sprites_bitmap[i], 32, 32);
+                            new Sprite(room, (byte)i, 0, 0, Sprites_Names.name[i], 0, 0, 0).Draw(true);
+                            GFX.end_draw(sprites_bitmap[i]);
+
+                            spritepicker.listView1.Items.Add(Sprites_Names.name[i]);
+                            spritepicker.listView1.Items[i].ImageIndex = i;
+                        }
+                        //spritepicker.listView1.LargeImageList = new ImageList();
+                        // spritepicker.listView1.LargeImageList
+                        spriteImageList.Images.Clear();
+                        spriteImageList.Images.AddRange(sprites_bitmap);
+                        spritepicker.listView1.LargeImageList = spriteImageList;
+                        //recreate all sprites images
+
+
+                        if (spritepicker.ShowDialog() == DialogResult.OK)
+                        {
+                            List<Object> parameters = new List<Object>();
+                            List<Sprite> changed_sprites = new List<Sprite>();
+                            List<int> old_id = new List<int>();
+                            foreach (Object o in room.selectedObject)
+                            {
+                                changed_sprites.Add((o as Sprite));
+                                old_id.Add((o as Sprite).id);
+                                (o as Sprite).id = (byte)spritepicker.listView1.SelectedIndices[0];
+                                (o as Sprite).updateBBox();
+                            }
+                            parameters.Add(changed_sprites.ToArray());
+                            parameters.Add(old_id.ToArray());
+                            actionsListbox.Items.Add(new DoAction(ActionType.Change, parameters.ToArray()));
+                            room.update();
+                            drawRoom();
+
+                        }
+                    }
+
+                }
+                else
                 {
                     PickSprite spritepicker = new PickSprite();
-                    for (int i = 0;i<0xF3;i++)
+                    for (int i = 0; i < 0xF3; i++)
                     {
                         sprites_bitmap[i] = new Bitmap(32, 32, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
                         GFX.begin_draw(sprites_bitmap[i], 32, 32);
                         new Sprite(room, (byte)i, 0, 0, Sprites_Names.name[i], 0, 0, 0).Draw(true);
                         GFX.end_draw(sprites_bitmap[i]);
-                        
+
                         spritepicker.listView1.Items.Add(Sprites_Names.name[i]);
                         spritepicker.listView1.Items[i].ImageIndex = i;
                     }
@@ -401,22 +585,211 @@ namespace ZeldaFullEditor
                     spriteImageList.Images.Clear();
                     spriteImageList.Images.AddRange(sprites_bitmap);
                     spritepicker.listView1.LargeImageList = spriteImageList;
-                    //recreate all sprites images
-                    
-                    
+
                     if (spritepicker.ShowDialog() == DialogResult.OK)
                     {
-                        (room.selectedObject as Sprite).id = (byte)spritepicker.listView1.SelectedIndices[0];
-                        (room.selectedObject as Sprite).updateBBox();
+                        List<Object> parameters = new List<Object>();
+                        List<Sprite> new_sprite = new List<Sprite>();
+                        List<int> old_id = new List<int>();
+                        Sprite o = new Sprite(room, (byte)spritepicker.listView1.SelectedIndices[0], (byte)mx, (byte)my, Sprites_Names.name[spritepicker.listView1.SelectedIndices[0]], 0, 0, 0);
+                        new_sprite.Add((o as Sprite));
+                        parameters.Add(new_sprite.ToArray());
+                        room.sprites.Add(o);
+                        actionsListbox.Items.Add(new DoAction(ActionType.Add, parameters.ToArray()));
+
                         room.update();
                         drawRoom();
 
                     }
+                }
+            }
+            else if (chestmodeButton.Checked)
+            {
+               
+               
+                foreach (Chest c in room.chest_list)
+                {
+                    Console.WriteLine((c.x*16) + "," + (c.y*16));
+                    Console.WriteLine("Mouse:" +e.X + "," + e.Y);
+                    if (e.X >= (c.x * 8) && e.X <= (c.x * 8) + 16 &&
+                        e.Y >= (c.y * 8) && e.Y <= (c.y * 8) + 16)
+                    {
+                        PickChestItem chestpicker = new PickChestItem();
+                        for (int i = 0; i < 176; i++)
+                        {
+                            chest_items_bitmap[i] = new Bitmap(16, 16, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+                            GFX.begin_draw(chest_items_bitmap[i], 16, 16);
+                            new Chest(0, 0, (byte)i,true).ItemsDraw((byte)i, 0, 0); ;
+                            
+                            GFX.end_draw(chest_items_bitmap[i]);
+
+                            chestpicker.listView1.Items.Add(ChestItems_Name.name[i]);
+                            chestpicker.listView1.Items[i].ImageIndex = i;
+
+                        }
+                        chestpicker.chestItemsImagesList.Images.AddRange(chest_items_bitmap);
+                        chestpicker.listView1.LargeImageList = chestpicker.chestItemsImagesList;
+                        if (chestpicker.ShowDialog() == DialogResult.OK)
+                        {
+                            //change chest item
+                            c.item = (byte)chestpicker.listView1.SelectedIndices[0];
+                            room.update();
+                            drawRoom();
+                        }
 
 
+                        break;
+                    }
                 }
                 
             }
+        }
+
+        List<DoAction> tempActionList = new List<DoAction>();
+
+        private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<Object> parameters = new List<Object>();
+            List<Sprite> deleted_sprites = new List<Sprite>();
+            List<int> deleted_index = new List<int>();
+            foreach (Object o in room.selectedObject)
+            {
+                deleted_sprites.Add((Sprite)o);
+                deleted_index.Add(room.sprites.FindIndex(a => a == o));
+                room.sprites.Remove((o as Sprite));
+            }
+            parameters.Add(deleted_sprites.ToArray());
+            parameters.Add(deleted_index.ToArray());
+            
+            actionsListbox.Items.Add(new DoAction(ActionType.Delete, parameters.ToArray()));
+            tempActionList.Clear(); //reset the temp actionlist we can't redo anymore since we changed something
+            room.selectedObject.Clear();
+            room.update();
+            drawRoom();
+        }
+
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (actionsListbox.Items.Count > 0)
+            {
+                (actionsListbox.Items[actionsListbox.Items.Count-1] as DoAction).undo(room,tempActionList);
+                actionsListbox.Items.RemoveAt(actionsListbox.Items.Count - 1);
+            }
+            room.selectedObject.Clear();
+            room.update();
+            drawRoom();
+
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tempActionList.Count > 0)
+            {
+                (tempActionList[0] as DoAction).redo(room,actionsListbox);
+                tempActionList.RemoveAt(0);
+            }
+            room.selectedObject.Clear();
+            room.update();
+            drawRoom();
+        }
+
+        private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (Sprite spr in room.sprites)
+            {
+               room.selectedObject.Add(spr);
+            }
+            room.update();
+            drawRoom();
+        }
+        
+        private void cutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.Clear();
+            List<SaveObject> odata = new List<SaveObject>();
+            foreach (Sprite o in room.selectedObject)
+            {
+                odata.Add(new SaveObject(o));
+            }
+            Clipboard.SetData("ObjectZ",odata);
+            
+            List<Object> parameters = new List<Object>();
+            List<Sprite> deleted_sprites = new List<Sprite>();
+            List<int> deleted_index = new List<int>();
+            foreach (Object o in room.selectedObject)
+            {
+                deleted_sprites.Add((Sprite)o);
+                deleted_index.Add(room.sprites.FindIndex(a => a == o));
+                room.sprites.Remove((o as Sprite));
+            }
+            parameters.Add(deleted_sprites.ToArray());
+            parameters.Add(deleted_index.ToArray());
+
+            actionsListbox.Items.Add(new DoAction(ActionType.Delete, parameters.ToArray()));
+            tempActionList.Clear(); //reset the temp actionlist we can't redo anymore since we changed something
+            room.selectedObject.Clear();
+            room.update();
+            drawRoom();
+
+        }
+
+
+
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            List<SaveObject> data = (List<SaveObject>)Clipboard.GetData("ObjectZ");
+            List<Object> parameters = new List<Object>();
+            List<Sprite> new_sprite = new List<Sprite>();
+            int most_x = 512;
+            int most_y = 512;
+            foreach (SaveObject o in data)
+            {
+                if (data.Count > 0)
+                {
+                    if (o.x < most_x)
+                    {
+                        most_x = o.x;
+                    }
+                    if (o.y < most_y)
+                    {
+                        most_y = o.y;
+                    }
+                }
+                else
+                {
+                    most_x = 0;
+                    most_y = 0;
+                }
+            }
+            room.selectedObject.Clear();
+            foreach (SaveObject o in data)
+            {
+                Sprite spr = (new Sprite(room, o.id, (byte)(o.x-most_x), (byte)(o.y-most_y), Sprites_Names.name[o.id], o.overlord, o.subtype, o.layer));
+                new_sprite.Add(spr);
+                room.sprites.Add(spr);
+                room.selectedObject.Add(spr);
+            }
+            dragx = 0;
+            dragy = 0;
+            mouse_down = true;
+            moved = true;
+            parameters.Add(new_sprite.ToArray());
+            actionsListbox.Items.Add(new DoAction(ActionType.Add, parameters.ToArray()));
+            room.update();
+            drawRoom();
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.Clear();
+            List<SaveObject> odata = new List<SaveObject>();
+            foreach (Sprite o in room.selectedObject)
+            {
+                odata.Add(new SaveObject(o));
+            }
+            Clipboard.SetData("ObjectZ", odata);
+
         }
     }
 
@@ -433,13 +806,194 @@ namespace ZeldaFullEditor
         
     }
 
-    public class Action
+    
+
+    public class DoAction
     {
+        public ActionType type;
+        public object[] parameters;
+        public string Name { get; set; } //Used to display name in action list
+        public DoAction(ActionType type, object[] parameters)
+        {
+            this.type = type;
+            this.parameters = parameters;
+            if (type == ActionType.Delete) //parameters = Object[],position in array
+            {
+                if (parameters[0] is Sprite[]) //deleted sprites
+                {
+                    if ((parameters[0] as Sprite[]).Length == 1)
+                    {
+                        Name = "Sprite[" + (parameters[0] as Sprite[])[0].id + "]" + "Deleted from pos : " + (parameters[1] as int[])[0].ToString();
+                    }
+                    else
+                    {
+                        Name = "Group of sprites Deleted";
+                    }
+                }
+            }
+            else if (type == ActionType.Move) //parameters = Object[],old_x,old_y
+            {
+                if (parameters[0] is Sprite[]) //deleted sprites
+                {
+                    if ((parameters[0] as Sprite[]).Length == 1)
+                    {
+                        Name = "Sprite[" + (parameters[0] as Sprite[])[0].id + "]" + "Moved from pos : X:" + (parameters[1] as int[])[0].ToString() + ",Y:" + (parameters[2] as int[])[0].ToString();
+                    }
+                    else
+                    {
+                        Name = "Group of sprites Moved";
+                    }
+                }
+            }
+            else if (type == ActionType.Change)
+            {
+                if ((parameters[0] as Sprite[]).Length == 1)
+                {
+                    Name = "Sprite[" + (parameters[0] as Sprite[])[0].id + "]" + "Changed to id : :" + (parameters[1] as int[])[0].ToString();
+                }
+                else
+                {
+                    Name = "Group of sprites Changed Id";
+                }
+            }
+        }
+
+        public void undo(Room room, List<DoAction> tempAction)
+        {
+            if (type == ActionType.Delete)
+            {
+                if (parameters[0] is Sprite[]) //deleted sprites
+                {
+                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
+                    {
+                        room.sprites.Insert((parameters[1] as int[])[i], (parameters[0] as Sprite[])[i]);
+                    }
+                }
+            }
+            else if (type == ActionType.Move)
+            {
+                if (parameters[0] is Sprite[]) //moved sprites
+                {
+                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
+                    {
+                        int new_old_x = (parameters[0] as Sprite[])[i].x;
+                        int new_old_y = (parameters[0] as Sprite[])[i].y;
+                        (parameters[0] as Sprite[])[i].x = (byte)(parameters[1] as int[])[i]; //return to old_x
+                        (parameters[0] as Sprite[])[i].y = (byte)(parameters[2] as int[])[i]; //return to old_y
+                        (parameters[0] as Sprite[])[i].nx = (parameters[0] as Sprite[])[i].x;
+                        (parameters[0] as Sprite[])[i].ny = (parameters[0] as Sprite[])[i].y;
+                        (parameters[1] as int[])[i] = new_old_x;//set them to oldpos for the redo function
+                        (parameters[2] as int[])[i] = new_old_y;//set them to oldpos for the redo function
+                    }
+                }
+            }
+            else if (type == ActionType.Change)
+            {
+                if (parameters[0] is Sprite[]) //changed sprites
+                {
+                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
+                    {
+                        int new_old_id = (parameters[0] as Sprite[])[i].id;
+                        (parameters[0] as Sprite[])[i].id = (byte)(parameters[1] as int[])[i]; //return to old_x
+                        (parameters[1] as int[])[i] = new_old_id;//set them to oldid for the undo function
+                        (parameters[0] as Sprite[])[i].updateBBox();
+                    }
+                }
+            }
+            else if (type == ActionType.Add)
+            {
+                if (parameters[0] is Sprite[]) //changed sprites
+                {
+                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
+                    {
+                        room.sprites.Remove((parameters[0] as Sprite[])[i]);
+                    }
+                }
+            }
+            tempAction.Insert(0,new DoAction(type, parameters));
+
+        }
+
+        public void redo(Room room, ListBox actionlist)
+        {
+            if (type == ActionType.Delete)
+            {
+                if (parameters[0] is Sprite[]) //deleted sprites
+                {
+                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
+                    {
+                        room.sprites.Remove((parameters[0] as Sprite[])[i]);
+                    }
+                }
+            }
+            else if (type == ActionType.Move)
+            {
+                if (parameters[0] is Sprite[]) //moved sprites
+                {
+                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
+                    {
+                        int new_old_x = (parameters[0] as Sprite[])[i].x;
+                        int new_old_y = (parameters[0] as Sprite[])[i].y;
+                        (parameters[0] as Sprite[])[i].x = (byte)(parameters[1] as int[])[i]; //return to old_x
+                        (parameters[0] as Sprite[])[i].y = (byte)(parameters[2] as int[])[i]; //return to old_y
+                        (parameters[0] as Sprite[])[i].nx = (parameters[0] as Sprite[])[i].x;
+                        (parameters[0] as Sprite[])[i].ny = (parameters[0] as Sprite[])[i].y;
+                        (parameters[1] as int[])[i] = new_old_x;//set them to oldpos for the undo function
+                        (parameters[2] as int[])[i] = new_old_y;//set them to oldpos for the undo function
+                    }
+                }
+            }
+            else if (type == ActionType.Change)
+            {
+                if (parameters[0] is Sprite[]) //changed sprites
+                {
+                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
+                    {
+                        int new_old_id = (parameters[0] as Sprite[])[i].id;
+                        (parameters[0] as Sprite[])[i].id = (byte)(parameters[1] as int[])[i]; //return to old_x
+                        (parameters[1] as int[])[i] = new_old_id;//set them to oldid for the undo function
+                        (parameters[0] as Sprite[])[i].updateBBox();
+                    }
+                }
+            }
+            else if (type == ActionType.Add)
+            {
+                if (parameters[0] is Sprite[]) //changed sprites
+                {
+                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
+                    {
+                        room.sprites.Add((parameters[0] as Sprite[])[i]);
+                    }
+                }
+            }
+            actionlist.Items.Add(new DoAction(type, parameters));
+        }
 
     }
 
     public enum ActionType
     {
         Move,Delete,Add,Change
+    }
+
+    [Serializable]
+    public class SaveObject
+    {
+        public byte x { get; set; }
+        public byte y { get; set; }
+        public byte layer { get; set; }
+        public byte subtype { get; set; }
+        public byte overlord { get; set; }
+        public byte id { get; set; }
+
+        public SaveObject(Sprite sprite) //Sprite Format
+        {
+            this.x = sprite.x;
+            this.y = sprite.y;
+            this.id = sprite.id;
+            this.layer = sprite.layer;
+            this.subtype = sprite.subtype;
+            this.overlord = sprite.overlord;
+        }
     }
 }

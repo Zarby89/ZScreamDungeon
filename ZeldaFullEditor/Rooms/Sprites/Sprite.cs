@@ -15,13 +15,15 @@ namespace ZeldaFullEditor
     public class Sprite
     {
         public byte x, y, id;
+        public byte nx, ny;
         public byte layer = 0;
-        byte subtype = 0;
-        byte overlord = 0;
+        public byte subtype = 0;
+        public byte overlord = 0;
         public string name;
         Room room;
         public Rectangle boundingbox;
         bool picker = false;
+        public bool selected = false;
         public Sprite(Room room, byte id, byte x, byte y, string name, byte overlord, byte subtype, byte layer)
         {
             this.id = id;
@@ -32,14 +34,43 @@ namespace ZeldaFullEditor
             this.overlord = overlord;
             this.subtype = subtype;
             this.layer = layer;
+            this.nx = x;
+            this.ny = y;
         }
 
         public void updateBBox()
         {
-            lowerX = 0;
-            lowerY = 0;
-            higherX = 16;
-            higherY = 16;
+            lowerX = 1;
+            lowerY = 1;
+            higherX = 15;
+            higherY = 15;
+        }
+        //from data
+        public Sprite(Room room, string data)
+        {
+            this.id = Convert.ToByte(data[0]);
+            this.x = Convert.ToByte(data[1]);
+            this.y = Convert.ToByte(data[2]);
+            this.overlord = Convert.ToByte(data[3]);
+            this.subtype = Convert.ToByte(data[4]);
+            this.layer = Convert.ToByte(data[5]);
+            this.name = Sprites_Names.name[id];
+            this.room = room;
+            this.nx = x;
+            this.ny = y;
+        }
+
+
+        public string GetData()
+        {
+            string s = "";
+            s += (char)id;
+            s += (char)x;
+            s += (char)y;
+            s += (char)overlord;
+            s += (char)subtype;
+            s += (char)layer;
+            return s;
         }
         
         public void Draw(bool picker = false)
@@ -913,7 +944,14 @@ namespace ZeldaFullEditor
                 //stringtodraw.Add(new SpriteName(x, (y*16), sprites_name.name[id]));
 
             }
-            boundingbox = new Rectangle((lowerX+(x*16)),(lowerY+(y*16)) , width,height);
+            if (nx != this.x || ny != this.y)
+            {
+                boundingbox = new Rectangle((lowerX + (nx * 16)), (lowerY + (ny * 16)), width, height);
+            }
+            else
+            {
+                boundingbox = new Rectangle((lowerX + (x * 16)), (lowerY + (y * 16)), width, height);
+            }
 
         }
 
@@ -961,7 +999,15 @@ namespace ZeldaFullEditor
                 y += 8;
             }
 
-                int ty = srcy + 40;
+            if (nx != this.x || ny != this.y)
+            {
+                x -= (this.x*16);
+                y -= (this.y*16);
+                x += (this.nx*16);
+                y += (this.ny*16);
+            }
+
+            int ty = srcy + 40;
             int tx = srcx;
             int mx = 0;
             int my = 0;

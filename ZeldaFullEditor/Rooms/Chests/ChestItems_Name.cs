@@ -7,9 +7,9 @@ using System.Collections;
 namespace ZeldaFullEditor
 {
 
-    public class ChestItems_Name
+    public static class ChestItems_Name
     {
-        public string[] name = new string[]{
+        public static string[] name = new string[]{
 "L1SwordAndShield",
 "L2 master Sword",
 "L3 tempered Sword",
@@ -85,7 +85,7 @@ namespace ZeldaFullEditor
  "Bottle with Gold Bee",
 "L1 fighter Sword",
 "Ocarina Active",
-"Pegasus Boots",
+"Pegasus Boots", //75
 "Max Bombs(VT)",
 "Max Arrows(VT)",
 "Half Magic(VT)",
@@ -109,9 +109,11 @@ namespace ZeldaFullEditor
 "Progressive Armor(VT)",
 "Progressive Lifting Glove(VT)",
  "RNG Pool Item (Single)(VT)",
-"RNG Pool Item (Multi)(VT)",
- "Goal Item (Single/Triforce)(VT)",
-"Goal Item (Multi/Power Star)(VT)",
+"RNG Pool Item (Multi)(VT)",//99
+"","","","","","","",
+ "Goal Item (Single/Triforce)(VT)",//
+"Goal Item (Multi/Power Star)(VT)",//6B
+"","","",
 "Escape Map(VT)",
 "Hyrule Castle Map(VT)",
 "Eastern Map(VT)",

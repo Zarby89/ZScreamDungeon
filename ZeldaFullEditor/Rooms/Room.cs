@@ -25,14 +25,11 @@ namespace ZeldaFullEditor
         byte palette;
         byte collision; //Need a better name for that
         public Background2 bg2;
-        byte effect;//TODO : struct
-        byte tag1;//TODO : struct
-        byte tag2;//TODO : struct
+        byte effect;//TODO : enum
+        byte tag1;//TODO : enum
+        byte tag2;//TODO : enum
         byte holewarp;
-        byte staircase1;
-        byte staircase2;
-        byte staircase3;
-        byte staircase4;
+        byte[] staircase_rooms = new byte[4];
         bool light;
         byte holewarp_plane;
         byte staircase1_plane;
@@ -49,15 +46,15 @@ namespace ZeldaFullEditor
         public Bitmap room_bitmap; //picturebox show that bitmap
         public List<Room_Object> tilesObjects = new List<Room_Object>();
         public List<Room_Object> layouttilesObjects = new List<Room_Object>();
-        public ChestItems_Name chest_items_name = new ChestItems_Name();
         public PotItems_Name items_name = new PotItems_Name();
         public List<Sprite> sprites = new List<Sprite>();
-
-        public Object selectedObject;
+        
+        public List<Object> selectedObject = new List<object>();
        
         public Room(int index)
         {
-
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             this.index = index;
             loadHeader();
 
@@ -70,6 +67,10 @@ namespace ZeldaFullEditor
             {
                 blocks[10+i] = ROM.DATA[Constants.sprite_blockset_pointer + ((spriteset+64) * 4) + i];
             }
+           // blocks[5] = 37;
+            //blocks[5] = 0;
+            //blocks[6] = 27;
+            //blocks[7] = 27;
 
             blocks[8] = 92; //static animated tile
             blocks[9] = ROM.DATA[Constants.gfx_animated + blockset];
@@ -99,7 +100,8 @@ namespace ZeldaFullEditor
             addDoors(); //TODO : Fix exploded wall doors
             createBitmaps();
             update();
-
+            sw.Stop();
+            Console.WriteLine(sw.ElapsedMilliseconds);
         }
 
         public void addSprites()
@@ -140,27 +142,7 @@ namespace ZeldaFullEditor
                 GFX.begin_draw(room_bitmap);
                 DrawFloors();
                 InitDrawObjects();
-
-                foreach(Sprite spr in sprites)
-                {
-                    if (selectedObject != null)
-                    {
-                        if (selectedObject.GetType() == typeof(Sprite))
-                        {
-                            if (selectedObject != spr)
-                            {
-                                spr.Draw();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        spr.Draw();
-                    }
-                }
-
-
-                //drawSprites();
+                drawSprites();
                 GFX.end_draw(room_bitmap);
             }
             else if (bg2 == Background2.OnTop) //on top
@@ -169,13 +151,13 @@ namespace ZeldaFullEditor
                 GFX.begin_draw(room_bitmap);
                 DrawFloors();
                 InitDrawObjects(0);
-                //drawSprites();
+                drawSprites();
                 GFX.end_draw(room_bitmap);
 
                 GFX.begin_draw(bg1_bitmap);
                 InitDrawObjects(1);
-
                 GFX.end_draw(bg1_bitmap);
+
                 using (Graphics g = Graphics.FromImage(room_bitmap))
                 {
                     g.DrawImage(bg1_bitmap, 0, 0);
@@ -187,7 +169,7 @@ namespace ZeldaFullEditor
                 GFX.begin_draw(room_bitmap);
                 DrawFloors();
                 InitDrawObjects(0);
-                //drawSprites();
+                drawSprites();
                 GFX.end_draw(room_bitmap);
 
                 GFX.begin_draw(bg1_bitmap);
@@ -208,7 +190,7 @@ namespace ZeldaFullEditor
                 GFX.begin_draw(bg1_bitmap);
                 DrawFloors();
                 InitDrawObjects(0);
-                //drawSprites();
+                drawSprites();
                 GFX.end_draw(bg1_bitmap);
                 using (Graphics g = Graphics.FromImage(room_bitmap))
                 {
@@ -222,8 +204,43 @@ namespace ZeldaFullEditor
                 drawChestsItem();
                 drawItems();
                 GFX.end_draw(room_bitmap);
-                
+                DrawStairsId(g);
+                //DrawSpritesNames(g);
             }
+        }
+
+        public void drawSprites()
+        {
+            foreach (Sprite spr in sprites)
+            {
+                spr.selected = false;
+            }
+            if (selectedObject.Count > 0)
+            {
+                foreach (Object o in selectedObject)
+                {
+                    if (o is Sprite)
+                    {
+                        (o as Sprite).selected = true;
+                    }
+                }
+
+                foreach (Sprite spr in sprites)
+                {
+                    if (spr.selected == false)
+                    {
+                        spr.Draw();
+                    }
+                }
+            }
+            else
+            {
+                foreach (Sprite spr in sprites)
+                {
+                    spr.Draw();
+                }
+
+             }
         }
 
         
@@ -275,7 +292,8 @@ namespace ZeldaFullEditor
             }
         }
 
-
+        short[] stairsObjects = new short[] { 0x139, 0x138, 0x12E, 0x12D };
+        public List<StaircaseRoom> staircaseRooms = new List<StaircaseRoom>();
 
         public void addBlocks()
         {
@@ -357,11 +375,11 @@ namespace ZeldaFullEditor
                 byte b1 = ROM.DATA[item_address];
                 byte b2 = ROM.DATA[item_address + 1];
                 byte b3 = ROM.DATA[item_address + 2];
-
+                    //0x20 = bg2
                     if (b1 == 0xFF && b2 == 0xFF) { break; }
-                    int b = (((b2 << 8) + b1) >> 1);
+                    int b = ((((b2 & 0x1F) << 8) + (b1)) >> 1);
                     float a = ((float)b / 64);
-                    int py = ((((b2 << 8) + b1) >> 1) / 64);
+                    int py = (((((b2 & 0x1F) << 8) + (b1)) >> 1) / 64);
                     a = (a - py) * 64;
                     int px = (int)a;
                     if ((b3 & 0x80) == 0x80)
@@ -386,7 +404,7 @@ namespace ZeldaFullEditor
                 foreach (Chest c in chest_list)
                 {
                     //g.DrawString(chest_items_name.name[c.item], new Font("Arial", 10,FontStyle.Bold), Brushes.White, new Point(((c.x-1) * 8), ((c.y - 2) * 8)));
-                    ItemsDraw(c.item,(c.x*8),((c.y-2)*8));
+                    c.ItemsDraw(c.item,(c.x*8),((c.y-2)*8));
                     //Console.WriteLine((byte)(c.x * 8) +","+ (byte)(c.y * 8));
                 }
             }
@@ -414,6 +432,21 @@ namespace ZeldaFullEditor
                     g.DrawPath(pen, gpath);
                     SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255));
                     g.FillPath(brush, gpath);
+            }
+        }
+
+        public void DrawStairsId(Graphics g)
+        {
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            foreach (StaircaseRoom r in staircaseRooms)
+            {
+                GraphicsPath gpath = new GraphicsPath();
+                gpath.AddString(r.name, new FontFamily("Consolas"), 1, 12, new Point(r.x*8, r.y*8), StringFormat.GenericDefault);
+                Pen pen = new Pen(Color.FromArgb(30, 30, 30), 2);
+                g.DrawPath(pen, gpath);
+                SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255));
+                g.FillPath(brush, gpath);
             }
         }
 
@@ -485,6 +518,9 @@ namespace ZeldaFullEditor
                     chests_in_room.Add(ROM.DATA[Constants.room_chest + (i * 3) + 2]);
                 }
             }
+
+            staircaseRooms.Clear();
+            int nbr_of_staircase = 0;
 
             int pos = layout_location;
 
@@ -629,6 +665,22 @@ namespace ZeldaFullEditor
                         }
 
                         addObject(oid, posX, posY, sizeXY, (byte)layer);
+
+                        foreach(short stair in stairsObjects)
+                        {
+                            if (stair == oid) //we found stairs that lead to another room
+                            {
+                                if (nbr_of_staircase < 4)
+                                {
+                                    staircaseRooms.Add(new StaircaseRoom(posX, posY, "To " + staircase_rooms[nbr_of_staircase]));
+                                    nbr_of_staircase++;
+                                }
+                                else
+                                {
+                                    staircaseRooms.Add(new StaircaseRoom(posX, posY, "To ???"));
+                                }
+                            }
+                        }
 
                         //IF Object is a chest loaded and there's object in the list chest
                         if (oid == 0xF99)
@@ -1863,11 +1915,10 @@ namespace ZeldaFullEditor
             staircase4_plane = (byte)((ROM.DATA[header_location + 8]) & 0x03 );
 
             holewarp = (byte)((ROM.DATA[header_location + 9]));
-            staircase1 = (byte)((ROM.DATA[header_location + 10]));
-            staircase2 = (byte)((ROM.DATA[header_location + 11]));
-            staircase3 = (byte)((ROM.DATA[header_location + 12]));
-            staircase4 = (byte)((ROM.DATA[header_location + 13]));
-
+            staircase_rooms[0] = (byte)((ROM.DATA[header_location + 10]));
+            staircase_rooms[1] = (byte)((ROM.DATA[header_location + 11]));
+            staircase_rooms[2] = (byte)((ROM.DATA[header_location + 12]));
+            staircase_rooms[3] = (byte)((ROM.DATA[header_location + 13]));
         }
 
 
@@ -1891,4 +1942,16 @@ namespace ZeldaFullEditor
         }
     }
 
+    public class StaircaseRoom
+    {
+        public int x;
+        public int y;
+        public string name;
+        public StaircaseRoom(int x, int y,string name)
+        {
+            this.x = x;
+            this.y = y;
+            this.name = name;
+        }
+    }
 }
