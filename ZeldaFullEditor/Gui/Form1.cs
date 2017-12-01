@@ -26,7 +26,11 @@ namespace ZeldaFullEditor
             palettePicturebox.Image = new Bitmap(256, 256);
 
             Mapper.Initialize(cfg => {
-                cfg.CreateMap<Room, Room>();
+               // cfg.CreateMap<Sprite, Sprite>();
+                cfg.CreateMap<List<Sprite>, List<Sprite>>();
+                //cfg.CreateMap<Room, Room>();
+
+
             });
 
         }
@@ -389,10 +393,10 @@ namespace ZeldaFullEditor
             bool found_saved_room = false;
             foreach (Room r in saved_rooms)
             {
-                if (r.index == (roomListBox.SelectedItem as ListRoomName).id)
+                if (r.index == ((roomListBox.SelectedItem as ListRoomName).id))
                 {
-                    room = Mapper.Map(r,room);
-                    //room = (Room)r.Clone();
+                    room = Mapper.Map<Room,Room>(r,room);
+
                     room.reloadGfx();
                     found_saved_room = true;
                     break;
@@ -406,7 +410,7 @@ namespace ZeldaFullEditor
             bool found_saved_room = false;
             foreach (Room r in saved_rooms)
             {
-                if (r.index == (roomListBox.SelectedItem as ListRoomName).id)
+                if (r.index == (lastRoom))
                 {
                     found_saved_room = true;
                     break;
@@ -464,7 +468,6 @@ namespace ZeldaFullEditor
                         {
                             room = new Room((roomListBox.SelectedItem as ListRoomName).id);
                         }
-
 
                         drawRoom();
                         lastRoom = roomListBox.SelectedIndex;
