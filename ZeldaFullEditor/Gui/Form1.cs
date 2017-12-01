@@ -384,41 +384,6 @@ namespace ZeldaFullEditor
 
         }
 
-        public bool check_saved_room()
-        {
-            bool found_saved_room = false;
-            foreach (Room r in saved_rooms)
-            {
-                if (r.index == (roomListBox.SelectedItem as ListRoomName).id)
-                {
-                    room = Mapper.Map(r,room);
-                    //room = (Room)r.Clone();
-                    room.reloadGfx();
-                    found_saved_room = true;
-                    break;
-                }
-            }
-            return found_saved_room;
-        }
-
-        public bool save_room()
-        {
-            bool found_saved_room = false;
-            foreach (Room r in saved_rooms)
-            {
-                if (r.index == (roomListBox.SelectedItem as ListRoomName).id)
-                {
-                    found_saved_room = true;
-                    break;
-                }
-            }
-            if (found_saved_room == false)
-            {
-                saved_rooms.Add(room);
-            }
-            return found_saved_room;
-        }
-
         public void clear_room()
         {
             if (room != null)
@@ -442,7 +407,7 @@ namespace ZeldaFullEditor
 
                         //save here
                         clear_room();
-                        save_room();
+                        save_room(lastRoom);
                         if (check_saved_room() == false)
                         {
                             room = new Room((roomListBox.SelectedItem as ListRoomName).id);
@@ -503,6 +468,41 @@ namespace ZeldaFullEditor
                 SpritesetcomboBox.SelectedIndex = room.spriteset;
             }
             room_loaded = true;
+        }
+
+        public bool save_room(int roomId)
+        {
+            bool found_saved_room = false;
+            foreach (Room r in saved_rooms)
+            {
+                if (r.index == roomId)
+                {
+                    found_saved_room = true;
+                    break;
+                }
+            }
+            if (found_saved_room == false)
+            {
+                saved_rooms.Add(room);
+            }
+            return found_saved_room;
+        }
+
+        public bool check_saved_room()
+        {
+            bool found_saved_room = false;
+            foreach (Room r in saved_rooms)
+            {
+                if (r.index == (roomListBox.SelectedItem as ListRoomName).id)
+                {
+                    //room = Mapper.Map(r, room);
+                    room = (Room)r.Clone();
+                    room.reloadGfx();
+                    found_saved_room = true;
+                    break;
+                }
+            }
+            return found_saved_room;
         }
 
 

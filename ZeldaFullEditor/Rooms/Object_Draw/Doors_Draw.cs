@@ -40,7 +40,7 @@ namespace ZeldaFullEditor
     4EC6,Y
          */
 
-    public class object_door_up : Room_Object
+    [Serializable] public class object_door_up : Room_Object
     {
         public object_door_up(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -67,7 +67,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_door_down : Room_Object
+    [Serializable] public class object_door_down : Room_Object
     {
         public object_door_down(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -94,7 +94,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_door_left : Room_Object
+    [Serializable] public class object_door_left : Room_Object
     {
         public object_door_left(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -121,7 +121,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_door_right : Room_Object
+    [Serializable] public class object_door_right : Room_Object
     {
         public object_door_right(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {

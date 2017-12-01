@@ -7,6 +7,7 @@ using System.Collections;
 namespace ZeldaFullEditor
 {
 
+    [Serializable]
     public static class ChestItems_Name
     {
         public static string[] name = new string[]{
