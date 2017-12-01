@@ -20,9 +20,9 @@ namespace ZeldaFullEditor
         byte layout;
         public byte floor1;
         public byte floor2;
-        byte blockset;
-        byte spriteset;
-        byte palette;
+        public byte blockset;
+        public byte spriteset;
+        public byte palette;
         byte collision; //Need a better name for that
         public Background2 bg2;
         byte effect;//TODO : enum
@@ -102,7 +102,48 @@ namespace ZeldaFullEditor
             update();
             sw.Stop();
             Console.WriteLine(sw.ElapsedMilliseconds);
+            
         }
+
+        public void reloadGfx(bool noPalette = false)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                blocks[i] = ROM.DATA[Constants.gfx_groups + (blockset * 8) + i];
+            }
+
+            for (int i = 0; i < 4; i++)
+            {
+                blocks[10 + i] = ROM.DATA[Constants.sprite_blockset_pointer + ((spriteset + 64) * 4) + i];
+            }
+
+            blocks[8] = 92; //static animated tile
+            blocks[9] = ROM.DATA[Constants.gfx_animated + blockset];
+
+            blocks[14] = 0; blocks[15] = 10; blocks[16] = 6; blocks[17] = 7; //Static Sprites Blocksets (fairy,pot,ect...)
+            blocks[18] = 90; blocks[19] = 91; blocks[20] = 92; blocks[21] = 93;//Items Sprites
+            if (Constants.Rando)
+            {
+                blocks[22] = 101;//rando sprites
+                blocks[23] = 96;//rando sprites
+            }
+            else
+            {
+                blocks[22] = 0;
+                blocks[23] = 0;
+            }
+            
+
+            if (noPalette == false)
+            {
+                GFX.LoadDungeonPalette(palette);
+                GFX.LoadSpritesPalette(palette);
+            }
+            GFX.load4bpp(GFX.gfxdata, blocks);
+
+            update();
+        }
+
 
         public void addSprites()
         {
@@ -489,7 +530,7 @@ namespace ZeldaFullEditor
 
         }
 
-        public void loadTilesObjects()
+        public void loadTilesObjects(bool floor = true)
         {
             //adddress of the room objects
             int room_address = Constants.room_object_pointers + (index * 3);
@@ -499,10 +540,11 @@ namespace ZeldaFullEditor
 
             int objects_location = Addresses.snestopc(tile_address);
 
-
-            floor1 = (byte)(ROM.DATA[objects_location] & 0x0F);
-            floor2 = (byte)((ROM.DATA[objects_location] >> 4) & 0x0F);
-
+            if (floor)
+            {
+                floor1 = (byte)(ROM.DATA[objects_location] & 0x0F);
+                floor2 = (byte)((ROM.DATA[objects_location] >> 4) & 0x0F);
+            }
             layout = (byte)((ROM.DATA[objects_location + 1] >> 2) & 0x07);
             int layout_address = (ROM.DATA[Constants.room_object_layout_pointers + 2  + (layout * 3)] << 16) +
                                 (ROM.DATA[(Constants.room_object_layout_pointers + 1) + (layout * 3)] << 8) +
@@ -1921,9 +1963,6 @@ namespace ZeldaFullEditor
             staircase_rooms[3] = (byte)((ROM.DATA[header_location + 13]));
         }
 
-
-
-        
 
 
 

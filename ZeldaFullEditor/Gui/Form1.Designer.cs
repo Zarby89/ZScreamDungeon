@@ -46,6 +46,7 @@
             this.selectAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.moveDownToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bringToBackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gotoRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,12 +85,37 @@
             this.potmodeButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.spriteImageList = new System.Windows.Forms.ImageList(this.components);
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.selectedNameLabel = new System.Windows.Forms.Label();
+            this.paletteUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
+            this.SpritesetcomboBox = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.roomgfxUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.floor2UpDown = new System.Windows.Forms.NumericUpDown();
+            this.floor1UpDown = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.palettePicturebox = new System.Windows.Forms.PictureBox();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.toolStrip1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.roomgfxUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.floor2UpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.floor1UpDown)).BeginInit();
+            this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -144,7 +170,8 @@
             this.toolStripSeparator5,
             this.selectAllToolStripMenuItem,
             this.toolStripSeparator6,
-            this.moveDownToolStripMenuItem});
+            this.moveDownToolStripMenuItem,
+            this.bringToBackToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
@@ -224,7 +251,13 @@
             // 
             this.moveDownToolStripMenuItem.Name = "moveDownToolStripMenuItem";
             this.moveDownToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
-            this.moveDownToolStripMenuItem.Text = "Move Down";
+            this.moveDownToolStripMenuItem.Text = "Bring to Front";
+            // 
+            // bringToBackToolStripMenuItem
+            // 
+            this.bringToBackToolStripMenuItem.Name = "bringToBackToolStripMenuItem";
+            this.bringToBackToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
+            this.bringToBackToolStripMenuItem.Text = "Bring to Back";
             // 
             // projectToolStripMenuItem
             // 
@@ -337,10 +370,13 @@
             // 
             // roomListBox
             // 
+            this.roomListBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.roomListBox.FormattingEnabled = true;
-            this.roomListBox.Location = new System.Drawing.Point(530, 76);
+            this.roomListBox.Location = new System.Drawing.Point(3, 39);
             this.roomListBox.Name = "roomListBox";
-            this.roomListBox.Size = new System.Drawing.Size(289, 329);
+            this.roomListBox.Size = new System.Drawing.Size(289, 303);
             this.roomListBox.TabIndex = 2;
             this.roomListBox.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -353,7 +389,7 @@
             // 
             this.radioButton1.AutoSize = true;
             this.radioButton1.Checked = true;
-            this.radioButton1.Location = new System.Drawing.Point(530, 53);
+            this.radioButton1.Location = new System.Drawing.Point(3, 6);
             this.radioButton1.Name = "radioButton1";
             this.radioButton1.Size = new System.Drawing.Size(36, 17);
             this.radioButton1.TabIndex = 4;
@@ -364,7 +400,7 @@
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(572, 53);
+            this.radioButton2.Location = new System.Drawing.Point(45, 6);
             this.radioButton2.Name = "radioButton2";
             this.radioButton2.Size = new System.Drawing.Size(95, 17);
             this.radioButton2.TabIndex = 5;
@@ -392,7 +428,7 @@
             "Caves",
             "House",
             "Empty"});
-            this.comboBox1.Location = new System.Drawing.Point(668, 49);
+            this.comboBox1.Location = new System.Drawing.Point(141, 2);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(152, 21);
             this.comboBox1.TabIndex = 6;
@@ -402,7 +438,7 @@
             // actionsListbox
             // 
             this.actionsListbox.FormattingEnabled = true;
-            this.actionsListbox.Location = new System.Drawing.Point(531, 388);
+            this.actionsListbox.Location = new System.Drawing.Point(204, 388);
             this.actionsListbox.Name = "actionsListbox";
             this.actionsListbox.Size = new System.Drawing.Size(290, 17);
             this.actionsListbox.TabIndex = 7;
@@ -411,7 +447,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(528, 372);
+            this.label1.Location = new System.Drawing.Point(230, 408);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(163, 13);
             this.label1.TabIndex = 8;
@@ -594,39 +630,225 @@
             this.spriteImageList.ImageSize = new System.Drawing.Size(32, 32);
             this.spriteImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Location = new System.Drawing.Point(530, 53);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(302, 514);
+            this.tabControl1.TabIndex = 11;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.groupBox1);
+            this.tabPage1.Controls.Add(this.radioButton1);
+            this.tabPage1.Controls.Add(this.roomListBox);
+            this.tabPage1.Controls.Add(this.radioButton2);
+            this.tabPage1.Controls.Add(this.comboBox1);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(294, 488);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Rooms";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.selectedNameLabel);
-            this.groupBox1.Location = new System.Drawing.Point(531, 411);
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.paletteUpDown);
+            this.groupBox1.Controls.Add(this.label6);
+            this.groupBox1.Controls.Add(this.SpritesetcomboBox);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.roomgfxUpDown);
+            this.groupBox1.Controls.Add(this.label4);
+            this.groupBox1.Controls.Add(this.floor2UpDown);
+            this.groupBox1.Controls.Add(this.floor1UpDown);
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Location = new System.Drawing.Point(6, 348);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(290, 156);
-            this.groupBox1.TabIndex = 10;
+            this.groupBox1.Size = new System.Drawing.Size(280, 134);
+            this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Selected Object Properties : ";
-            this.groupBox1.Visible = false;
+            this.groupBox1.Text = "Room Settings";
             // 
-            // selectedNameLabel
+            // paletteUpDown
             // 
-            this.selectedNameLabel.AutoSize = true;
-            this.selectedNameLabel.Location = new System.Drawing.Point(6, 16);
-            this.selectedNameLabel.Name = "selectedNameLabel";
-            this.selectedNameLabel.Size = new System.Drawing.Size(44, 13);
-            this.selectedNameLabel.TabIndex = 0;
-            this.selectedNameLabel.Text = "Name : ";
+            this.paletteUpDown.Location = new System.Drawing.Point(171, 32);
+            this.paletteUpDown.Maximum = new decimal(new int[] {
+            71,
+            0,
+            0,
+            0});
+            this.paletteUpDown.Name = "paletteUpDown";
+            this.paletteUpDown.Size = new System.Drawing.Size(48, 20);
+            this.paletteUpDown.TabIndex = 9;
+            this.paletteUpDown.ValueChanged += new System.EventHandler(this.floor1UpDown_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(168, 16);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(49, 13);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Palette : ";
+            // 
+            // SpritesetcomboBox
+            // 
+            this.SpritesetcomboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.SpritesetcomboBox.FormattingEnabled = true;
+            this.SpritesetcomboBox.Location = new System.Drawing.Point(9, 71);
+            this.SpritesetcomboBox.Name = "SpritesetcomboBox";
+            this.SpritesetcomboBox.Size = new System.Drawing.Size(265, 21);
+            this.SpritesetcomboBox.TabIndex = 7;
+            this.SpritesetcomboBox.SelectedIndexChanged += new System.EventHandler(this.floor1UpDown_ValueChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 55);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(54, 13);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Spriteset :";
+            // 
+            // roomgfxUpDown
+            // 
+            this.roomgfxUpDown.Location = new System.Drawing.Point(117, 32);
+            this.roomgfxUpDown.Maximum = new decimal(new int[] {
+            23,
+            0,
+            0,
+            0});
+            this.roomgfxUpDown.Name = "roomgfxUpDown";
+            this.roomgfxUpDown.Size = new System.Drawing.Size(48, 20);
+            this.roomgfxUpDown.TabIndex = 5;
+            this.roomgfxUpDown.ValueChanged += new System.EventHandler(this.floor1UpDown_ValueChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(114, 16);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(57, 13);
+            this.label4.TabIndex = 4;
+            this.label4.Text = "Blockset : ";
+            // 
+            // floor2UpDown
+            // 
+            this.floor2UpDown.Location = new System.Drawing.Point(63, 32);
+            this.floor2UpDown.Maximum = new decimal(new int[] {
+            14,
+            0,
+            0,
+            0});
+            this.floor2UpDown.Name = "floor2UpDown";
+            this.floor2UpDown.Size = new System.Drawing.Size(48, 20);
+            this.floor2UpDown.TabIndex = 3;
+            this.floor2UpDown.ValueChanged += new System.EventHandler(this.floor1UpDown_ValueChanged);
+            // 
+            // floor1UpDown
+            // 
+            this.floor1UpDown.Location = new System.Drawing.Point(9, 32);
+            this.floor1UpDown.Maximum = new decimal(new int[] {
+            14,
+            0,
+            0,
+            0});
+            this.floor1UpDown.Name = "floor1UpDown";
+            this.floor1UpDown.Size = new System.Drawing.Size(48, 20);
+            this.floor1UpDown.TabIndex = 2;
+            this.floor1UpDown.ValueChanged += new System.EventHandler(this.floor1UpDown_ValueChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(60, 16);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(48, 13);
+            this.label3.TabIndex = 1;
+            this.label3.Text = "Floor 2 : ";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(48, 13);
+            this.label2.TabIndex = 0;
+            this.label2.Text = "Floor 1 : ";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(294, 488);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Settings";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(294, 488);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Overworld";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.label7);
+            this.tabPage4.Controls.Add(this.palettePicturebox);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(294, 488);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Palettes";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(3, 212);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(237, 26);
+            this.label7.TabIndex = 1;
+            this.label7.Text = "Hold right click to turn color temporary to Fuschia\r\nDouble click the color the c" +
+    "hange it";
+            // 
+            // palettePicturebox
+            // 
+            this.palettePicturebox.Location = new System.Drawing.Point(3, 3);
+            this.palettePicturebox.Name = "palettePicturebox";
+            this.palettePicturebox.Size = new System.Drawing.Size(288, 206);
+            this.palettePicturebox.TabIndex = 0;
+            this.palettePicturebox.TabStop = false;
+            this.palettePicturebox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDoubleClick);
+            this.palettePicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDown);
+            this.palettePicturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseUp);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(832, 579);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.actionsListbox);
-            this.Controls.Add(this.comboBox1);
-            this.Controls.Add(this.radioButton2);
-            this.Controls.Add(this.radioButton1);
-            this.Controls.Add(this.roomListBox);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -640,8 +862,18 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.roomgfxUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.floor2UpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.floor1UpDown)).EndInit();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -692,7 +924,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripMenuItem howToUseToolStripMenuItem;
         private System.Windows.Forms.ImageList spriteImageList;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
@@ -704,7 +935,26 @@
         private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
         private System.Windows.Forms.ToolStripMenuItem moveDownToolStripMenuItem;
-        private System.Windows.Forms.Label selectedNameLabel;
+        private System.Windows.Forms.ToolStripMenuItem bringToBackToolStripMenuItem;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.NumericUpDown floor2UpDown;
+        private System.Windows.Forms.NumericUpDown floor1UpDown;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown roomgfxUpDown;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown paletteUpDown;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.ComboBox SpritesetcomboBox;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.PictureBox palettePicturebox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.ColorDialog colorDialog1;
     }
 }
 

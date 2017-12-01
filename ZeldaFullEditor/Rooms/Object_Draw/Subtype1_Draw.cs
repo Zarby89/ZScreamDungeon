@@ -5220,6 +5220,7 @@ namespace ZeldaFullEditor
 
             byte f = (byte)(room.floor2 << 4);
             int pos = Constants.tile_address + f;
+            tiles.Clear();
             addTiles(8, pos);//??
 
             for (int xx = 0; xx < sizex + 1; xx++)

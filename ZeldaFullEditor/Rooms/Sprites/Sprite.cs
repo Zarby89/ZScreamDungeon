@@ -714,29 +714,29 @@ namespace ZeldaFullEditor
             else if (id == 0x82)//circle antifairy
             {
                 //Antifairy top
-                drawSpriteTile((x + 2) - 4, (y + 8) - 16, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 8) - 4, (y + 2) - 16, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 14) - 4, (y + 8) - 16, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 8) - 4, (y + 14) - 16, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 8) - 4, (y + 8) - 16, 1, 14, 5, false, false, 1, 1); //middle
+                drawSpriteTile((x*16 + 2) - 4, (y*16 + 8) - 16, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 8) - 4, (y*16 + 2) - 16, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 14) - 4, (y*16 + 8) - 16, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 8) - 4, (y*16 + 14) - 16, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 8) - 4, (y*16 + 8) - 16, 1, 14, 5, false, false, 1, 1); //middle
                                                                                          //left
-                drawSpriteTile((x + 2) - 16, (y + 8) - 4, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 8) - 16, (y + 2) - 4, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 14) - 16, (y + 8) - 4, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 8) - 16, (y + 14) - 4, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 8) - 16, (y + 8) - 4, 1, 14, 5, false, false, 1, 1); //middle
+                drawSpriteTile((x*16 + 2) - 16, (y*16 + 8) - 4, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 8) - 16, (y*16 + 2) - 4, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 14) - 16, (y*16 + 8) - 4, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 8) - 16, (y*16 + 14) - 4, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 8) - 16, (y*16 + 8) - 4, 1, 14, 5, false, false, 1, 1); //middle
 
-                drawSpriteTile((x + 2) - 4, (y + 8) + 8, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 8) - 4, (y + 2) + 8, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 14) - 4, (y + 8) + 8, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 8) - 4, (y + 14) + 8, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 8) - 4, (y + 8) + 8, 1, 14, 5, false, false, 1, 1); //middle
+                drawSpriteTile((x*16 + 2) - 4, (y*16 + 8) + 8, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 8) - 4, (y*16 + 2) + 8, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 14) - 4, (y*16 + 8) + 8, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 8) - 4, (y*16 + 14) + 8, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 8) - 4, (y*16 + 8) + 8, 1, 14, 5, false, false, 1, 1); //middle
                                                                                         //left
-                drawSpriteTile((x + 2) + 8, (y + 8) - 4, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 8) + 8, (y + 2) - 4, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 14) + 8, (y + 8) - 4, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 8) + 8, (y + 14) - 4, 3, 14, 5, false, false, 1, 1);
-                drawSpriteTile((x + 8) + 8, (y + 8) - 4, 1, 14, 5, false, false, 1, 1); //middle
+                drawSpriteTile((x*16 + 2) + 8, (y*16 + 8) - 4, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 8) + 8, (y*16 + 2) - 4, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 14) + 8, (y*16 + 8) - 4, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 8) + 8, (y*16 + 14) - 4, 3, 14, 5, false, false, 1, 1);
+                drawSpriteTile((x*16 + 8) + 8, (y*16 + 8) - 4, 1, 14, 5, false, false, 1, 1); //middle
             }
             else if (id == 0x83) //green eyegore
             {
