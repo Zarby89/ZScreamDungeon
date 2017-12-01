@@ -5,14 +5,17 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-    public partial class Room
+    [Serializable]
+    public partial class Room : ICloneable
     {
         List<SpriteName> stringtodraw = new List<SpriteName>();
         public int index;
@@ -1963,11 +1966,20 @@ namespace ZeldaFullEditor
             staircase_rooms[3] = (byte)((ROM.DATA[header_location + 13]));
         }
 
+        public object Clone()
+        {
+            using (var ms = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, this);
+                ms.Position = 0;
 
-
-
+                return (Room)formatter.Deserialize(ms);
+            }
+        }
     }
 
+    [Serializable]
     public class SpriteName
     {
         public int x;
@@ -1981,6 +1993,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class StaircaseRoom
     {
         public int x;

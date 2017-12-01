@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
+    [Serializable]
     public class Subtype2_Multiple : Room_Object
     {
         public int tx = 0;

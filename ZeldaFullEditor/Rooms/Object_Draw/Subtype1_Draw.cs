@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
+    [Serializable]
     public class object_00 : Room_Object
     {
 
@@ -31,6 +32,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_01 : Room_Object
     {
 
@@ -59,6 +61,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_02 : Room_Object
     {
 
@@ -85,6 +88,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_03 : Room_Object
     {
 
@@ -108,6 +112,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_04 : Room_Object
     {
 
@@ -131,6 +136,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_05 : Room_Object
     {
 
@@ -153,6 +159,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_06 : Room_Object
     {
 
@@ -175,6 +182,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_07 : Room_Object
     {
 
@@ -195,6 +203,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_08 : Room_Object
     {
 
@@ -215,6 +224,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_09 : Room_Object
     {
 
@@ -231,6 +241,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_0A : Room_Object
     {
 
@@ -247,6 +258,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_0B : Room_Object
     {
 
@@ -263,6 +275,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_0C : Room_Object
     {
 
@@ -280,6 +293,7 @@ namespace ZeldaFullEditor
     }
 
 
+    [Serializable]
     public class object_0D : Room_Object
     {
 
@@ -296,6 +310,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_0E : Room_Object
     {
 
@@ -312,6 +327,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_0F : Room_Object
     {
 
@@ -328,6 +344,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_10 : Room_Object
     {
 
@@ -344,6 +361,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_11 : Room_Object
     {
 
@@ -360,6 +378,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_12 : Room_Object
     {
 
@@ -376,6 +395,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_13 : Room_Object
     {
 
@@ -392,6 +412,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_14 : Room_Object
     {
 
@@ -408,6 +429,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_15 : Room_Object
     {
 
@@ -425,6 +447,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_16 : Room_Object
     {
 
@@ -442,6 +465,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_17 : Room_Object
     {
 
@@ -459,6 +483,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_18 : Room_Object
     {
 
@@ -476,6 +501,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_19 : Room_Object
     {
 
@@ -493,6 +519,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_1A : Room_Object
     {
 
@@ -510,6 +537,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_1B : Room_Object
     {
 
@@ -527,6 +555,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_1C : Room_Object
     {
 
@@ -544,6 +573,7 @@ namespace ZeldaFullEditor
         }
     }
 
+    [Serializable]
     public class object_1D : Room_Object
     {
 
@@ -561,7 +591,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_1E : Room_Object
+    [Serializable] public class object_1E : Room_Object
     {
 
         public object_1E(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -578,7 +608,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_1F : Room_Object
+    [Serializable] public class object_1F : Room_Object
     {
 
         public object_1F(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -595,7 +625,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_20 : Room_Object
+    [Serializable] public class object_20 : Room_Object
     {
 
         public object_20(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -613,7 +643,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_21 : Room_Object
+    [Serializable] public class object_21 : Room_Object
     {
 
         public object_21(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -645,7 +675,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_22 : Room_Object
+    [Serializable] public class object_22 : Room_Object
     {
 
         public object_22(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -669,7 +699,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_23 : Room_Object
+    [Serializable] public class object_23 : Room_Object
     {
 
         public object_23(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -693,7 +723,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_24 : Room_Object
+    [Serializable] public class object_24 : Room_Object
     {
 
         public object_24(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -717,7 +747,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_25 : Room_Object
+    [Serializable] public class object_25 : Room_Object
     {
 
         public object_25(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -739,7 +769,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_26 : Room_Object
+    [Serializable] public class object_26 : Room_Object
     {
 
         public object_26(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -763,7 +793,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_27 : Room_Object
+    [Serializable] public class object_27 : Room_Object
     {
 
         public object_27(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -787,7 +817,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_28 : Room_Object
+    [Serializable] public class object_28 : Room_Object
     {
 
         public object_28(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -811,7 +841,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_29 : Room_Object
+    [Serializable] public class object_29 : Room_Object
     {
 
         public object_29(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -835,7 +865,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_2A : Room_Object
+    [Serializable] public class object_2A : Room_Object
     {
 
         public object_2A(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -859,7 +889,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_2B : Room_Object
+    [Serializable] public class object_2B : Room_Object
     {
 
         public object_2B(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -883,7 +913,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_2C : Room_Object
+    [Serializable] public class object_2C : Room_Object
     {
 
         public object_2C(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -907,7 +937,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_2D : Room_Object
+    [Serializable] public class object_2D : Room_Object
     {
 
         public object_2D(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -931,7 +961,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_2E : Room_Object
+    [Serializable] public class object_2E : Room_Object
     {
 
         public object_2E(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -955,7 +985,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_2F : Room_Object
+    [Serializable] public class object_2F : Room_Object
     {
 
         public object_2F(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -986,7 +1016,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_30 : Room_Object
+    [Serializable] public class object_30 : Room_Object
     {
 
         public object_30(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1015,7 +1045,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_31 : Room_Object
+    [Serializable] public class object_31 : Room_Object
     {
 
         public object_31(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1030,7 +1060,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_32 : Room_Object
+    [Serializable] public class object_32 : Room_Object
     {
 
         public object_32(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1044,7 +1074,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_33 : Room_Object
+    [Serializable] public class object_33 : Room_Object
     {
 
         public object_33(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1073,7 +1103,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_34 : Room_Object
+    [Serializable] public class object_34 : Room_Object
     {
 
         public object_34(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1094,7 +1124,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_35 : Room_Object
+    [Serializable] public class object_35 : Room_Object
     {
 
         public object_35(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1108,7 +1138,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_36 : Room_Object
+    [Serializable] public class object_36 : Room_Object
     {
 
         public object_36(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1137,7 +1167,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_37 : Room_Object
+    [Serializable] public class object_37 : Room_Object
     {
 
         public object_37(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1167,7 +1197,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_38 : Room_Object
+    [Serializable] public class object_38 : Room_Object
     {
 
         public object_38(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1190,7 +1220,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_39 : Room_Object
+    [Serializable] public class object_39 : Room_Object
     {
 
         public object_39(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1215,7 +1245,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_3A : Room_Object
+    [Serializable] public class object_3A : Room_Object
     {
 
         public object_3A(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1244,7 +1274,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_3B : Room_Object
+    [Serializable] public class object_3B : Room_Object
     {
 
         public object_3B(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1273,7 +1303,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_3C : Room_Object
+    [Serializable] public class object_3C : Room_Object
     {
 
         public object_3C(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1298,7 +1328,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_3D : Room_Object
+    [Serializable] public class object_3D : Room_Object
     {
 
         public object_3D(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1323,7 +1353,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_3E : Room_Object
+    [Serializable] public class object_3E : Room_Object
     {
 
         public object_3E(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1349,7 +1379,7 @@ namespace ZeldaFullEditor
 
 
 
-    public class object_3F : Room_Object
+    [Serializable] public class object_3F : Room_Object
     {
 
         public object_3F(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1373,7 +1403,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_40 : Room_Object
+    [Serializable] public class object_40 : Room_Object
     {
 
         public object_40(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1397,7 +1427,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_41 : Room_Object
+    [Serializable] public class object_41 : Room_Object
     {
 
         public object_41(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1421,7 +1451,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_42 : Room_Object
+    [Serializable] public class object_42 : Room_Object
     {
 
         public object_42(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1445,7 +1475,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_43 : Room_Object
+    [Serializable] public class object_43 : Room_Object
     {
 
         public object_43(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1469,7 +1499,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_44 : Room_Object
+    [Serializable] public class object_44 : Room_Object
     {
 
         public object_44(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1494,7 +1524,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_45 : Room_Object
+    [Serializable] public class object_45 : Room_Object
     {
 
         public object_45(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1519,7 +1549,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_46 : Room_Object
+    [Serializable] public class object_46 : Room_Object
     {
 
         public object_46(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1543,7 +1573,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_47 : Room_Object
+    [Serializable] public class object_47 : Room_Object
     {
 
         public object_47(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1557,7 +1587,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_48 : Room_Object
+    [Serializable] public class object_48 : Room_Object
     {
 
         public object_48(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1571,7 +1601,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_49 : Room_Object
+    [Serializable] public class object_49 : Room_Object
     {
 
         public object_49(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1592,7 +1622,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_4A : Room_Object
+    [Serializable] public class object_4A : Room_Object
     {
 
         public object_4A(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1613,7 +1643,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_4B : Room_Object
+    [Serializable] public class object_4B : Room_Object
     {
 
         public object_4B(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1637,7 +1667,7 @@ namespace ZeldaFullEditor
 
 
 
-    public class object_4C : Room_Object
+    [Serializable] public class object_4C : Room_Object
     {
 
         public object_4C(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1668,7 +1698,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_4D : Room_Object
+    [Serializable] public class object_4D : Room_Object
     {
 
         public object_4D(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1701,7 +1731,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_4E : Room_Object
+    [Serializable] public class object_4E : Room_Object
     {
 
         public object_4E(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1734,7 +1764,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_4F : Room_Object
+    [Serializable] public class object_4F : Room_Object
     {
 
         public object_4F(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1767,7 +1797,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_50 : Room_Object
+    [Serializable] public class object_50 : Room_Object
     {
 
         public object_50(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1790,7 +1820,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_51 : Room_Object
+    [Serializable] public class object_51 : Room_Object
     {
 
         public object_51(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1820,7 +1850,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_52 : Room_Object
+    [Serializable] public class object_52 : Room_Object
     {
 
         public object_52(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1850,7 +1880,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_53 : Room_Object
+    [Serializable] public class object_53 : Room_Object
     {
 
         public object_53(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1871,7 +1901,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_54 : Room_Object
+    [Serializable] public class object_54 : Room_Object
     {
 
         public object_54(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1885,7 +1915,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_55 : Room_Object
+    [Serializable] public class object_55 : Room_Object
     {
 
         public object_55(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1906,7 +1936,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_56 : Room_Object
+    [Serializable] public class object_56 : Room_Object
     {
 
         public object_56(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1927,7 +1957,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_57 : Room_Object
+    [Serializable] public class object_57 : Room_Object
     {
 
         public object_57(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1941,7 +1971,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_58 : Room_Object
+    [Serializable] public class object_58 : Room_Object
     {
 
         public object_58(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1955,7 +1985,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_59 : Room_Object
+    [Serializable] public class object_59 : Room_Object
     {
 
         public object_59(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1969,7 +1999,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_5A : Room_Object
+    [Serializable] public class object_5A : Room_Object
     {
 
         public object_5A(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1983,7 +2013,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_5B : Room_Object
+    [Serializable] public class object_5B : Room_Object
     {
 
         public object_5B(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2013,7 +2043,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_5C : Room_Object
+    [Serializable] public class object_5C : Room_Object
     {
 
         public object_5C(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2044,7 +2074,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_5D : Room_Object
+    [Serializable] public class object_5D : Room_Object
     {
 
         public object_5D(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2075,7 +2105,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_5E : Room_Object
+    [Serializable] public class object_5E : Room_Object
     {
 
         public object_5E(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2100,7 +2130,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_5F : Room_Object
+    [Serializable] public class object_5F : Room_Object
     {
 
         public object_5F(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2123,7 +2153,7 @@ namespace ZeldaFullEditor
 
         }
     }
-    public class object_60 : Room_Object
+    [Serializable] public class object_60 : Room_Object
     {
 
         public object_60(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2148,7 +2178,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_61 : Room_Object
+    [Serializable] public class object_61 : Room_Object
     {
 
         public object_61(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2174,7 +2204,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_62 : Room_Object
+    [Serializable] public class object_62 : Room_Object
     {
 
         public object_62(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2198,7 +2228,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_63 : Room_Object
+    [Serializable] public class object_63 : Room_Object
     {
 
         public object_63(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2219,7 +2249,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_64 : Room_Object
+    [Serializable] public class object_64 : Room_Object
     {
 
         public object_64(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2241,7 +2271,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_65 : Room_Object
+    [Serializable] public class object_65 : Room_Object
     {
 
         public object_65(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2263,7 +2293,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_66 : Room_Object
+    [Serializable] public class object_66 : Room_Object
     {
 
         public object_66(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2284,7 +2314,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_67 : Room_Object
+    [Serializable] public class object_67 : Room_Object
     {
 
         public object_67(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2305,7 +2335,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_68 : Room_Object
+    [Serializable] public class object_68 : Room_Object
     {
 
         public object_68(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2327,7 +2357,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_69 : Room_Object
+    [Serializable] public class object_69 : Room_Object
     {
 
         public object_69(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2352,7 +2382,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_6A : Room_Object
+    [Serializable] public class object_6A : Room_Object
     {
 
         public object_6A(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2372,7 +2402,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_6B : Room_Object
+    [Serializable] public class object_6B : Room_Object
     {
 
         public object_6B(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2393,7 +2423,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_6C : Room_Object
+    [Serializable] public class object_6C : Room_Object
     {
 
         public object_6C(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2424,7 +2454,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_6D : Room_Object
+    [Serializable] public class object_6D : Room_Object
     {
 
         public object_6D(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2455,7 +2485,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_6E : Room_Object
+    [Serializable] public class object_6E : Room_Object
     {
 
         public object_6E(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2470,7 +2500,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_6F : Room_Object
+    [Serializable] public class object_6F : Room_Object
     {
 
         public object_6F(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2485,7 +2515,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_70 : Room_Object
+    [Serializable] public class object_70 : Room_Object
     {
 
         public object_70(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2514,7 +2544,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_71 : Room_Object
+    [Serializable] public class object_71 : Room_Object
     {
 
         public object_71(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2535,7 +2565,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_72 : Room_Object
+    [Serializable] public class object_72 : Room_Object
     {
 
         public object_72(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2549,7 +2579,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_73 : Room_Object
+    [Serializable] public class object_73 : Room_Object
     {
 
         public object_73(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2578,7 +2608,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_74 : Room_Object
+    [Serializable] public class object_74 : Room_Object
     {
 
         public object_74(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2608,7 +2638,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_75 : Room_Object
+    [Serializable] public class object_75 : Room_Object
     {
 
         public object_75(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2632,7 +2662,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_76 : Room_Object
+    [Serializable] public class object_76 : Room_Object
     {
 
         public object_76(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2662,7 +2692,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_77 : Room_Object
+    [Serializable] public class object_77 : Room_Object
     {
 
         public object_77(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2691,7 +2721,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_78 : Room_Object
+    [Serializable] public class object_78 : Room_Object
     {
 
         public object_78(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2720,7 +2750,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_79 : Room_Object
+    [Serializable] public class object_79 : Room_Object
     {
 
         public object_79(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2740,7 +2770,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_7A : Room_Object
+    [Serializable] public class object_7A : Room_Object
     {
 
         public object_7A(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2760,7 +2790,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_7B : Room_Object
+    [Serializable] public class object_7B : Room_Object
     {
 
         public object_7B(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2789,7 +2819,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_7C : Room_Object
+    [Serializable] public class object_7C : Room_Object
     {
 
         public object_7C(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2809,7 +2839,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_7D : Room_Object
+    [Serializable] public class object_7D : Room_Object
     {
 
         public object_7D(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2839,7 +2869,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_7E : Room_Object
+    [Serializable] public class object_7E : Room_Object
     {
 
         public object_7E(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2853,7 +2883,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_7F : Room_Object
+    [Serializable] public class object_7F : Room_Object
     {
 
         public object_7F(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2883,7 +2913,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_80 : Room_Object
+    [Serializable] public class object_80 : Room_Object
     {
 
         public object_80(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2913,7 +2943,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_81 : Room_Object
+    [Serializable] public class object_81 : Room_Object
     {
 
         public object_81(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2942,7 +2972,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_82 : Room_Object
+    [Serializable] public class object_82 : Room_Object
     {
 
         public object_82(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2971,7 +3001,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_83 : Room_Object
+    [Serializable] public class object_83 : Room_Object
     {
 
         public object_83(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3000,7 +3030,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_84 : Room_Object
+    [Serializable] public class object_84 : Room_Object
     {
 
         public object_84(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3029,7 +3059,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_85 : Room_Object
+    [Serializable] public class object_85 : Room_Object
     {
 
         public object_85(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3046,7 +3076,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_86 : Room_Object
+    [Serializable] public class object_86 : Room_Object
     {
 
         public object_86(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3063,7 +3093,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_87 : Room_Object
+    [Serializable] public class object_87 : Room_Object
     {
 
         public object_87(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3087,7 +3117,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_88 : Room_Object
+    [Serializable] public class object_88 : Room_Object
     {
 
         public object_88(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3113,7 +3143,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_89 : Room_Object
+    [Serializable] public class object_89 : Room_Object
     {
 
         public object_89(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3135,7 +3165,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_8A : Room_Object
+    [Serializable] public class object_8A : Room_Object
     {
 
         public object_8A(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3157,7 +3187,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_8B : Room_Object
+    [Serializable] public class object_8B : Room_Object
     {
 
         public object_8B(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3178,7 +3208,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_8C : Room_Object
+    [Serializable] public class object_8C : Room_Object
     {
 
         public object_8C(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3199,7 +3229,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_8D : Room_Object
+    [Serializable] public class object_8D : Room_Object
     {
 
         public object_8D(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3219,7 +3249,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_8E : Room_Object
+    [Serializable] public class object_8E : Room_Object
     {
 
         public object_8E(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3239,7 +3269,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_8F : Room_Object
+    [Serializable] public class object_8F : Room_Object
     {
 
         public object_8F(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3263,7 +3293,7 @@ namespace ZeldaFullEditor
 
 
 
-    public class object_90 : Room_Object
+    [Serializable] public class object_90 : Room_Object
     {
 
         public object_90(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3289,7 +3319,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_91 : Room_Object
+    [Serializable] public class object_91 : Room_Object
     {
 
         public object_91(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3314,7 +3344,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_92 : Room_Object
+    [Serializable] public class object_92 : Room_Object
     {
 
         public object_92(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3341,7 +3371,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_93 : Room_Object
+    [Serializable] public class object_93 : Room_Object
     {
 
         public object_93(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3369,7 +3399,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_94 : Room_Object
+    [Serializable] public class object_94 : Room_Object
     {
 
         public object_94(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3398,7 +3428,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_95 : Room_Object
+    [Serializable] public class object_95 : Room_Object
     {
 
         public object_95(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3421,7 +3451,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_96 : Room_Object
+    [Serializable] public class object_96 : Room_Object
     {
 
         public object_96(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3444,7 +3474,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_97 : Room_Object
+    [Serializable] public class object_97 : Room_Object
     {
         public object_97(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3457,7 +3487,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_98 : Room_Object
+    [Serializable] public class object_98 : Room_Object
     {
         public object_98(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3470,7 +3500,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_99 : Room_Object
+    [Serializable] public class object_99 : Room_Object
     {
         public object_99(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3483,7 +3513,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_9A : Room_Object
+    [Serializable] public class object_9A : Room_Object
     {
         public object_9A(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3496,7 +3526,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_9B : Room_Object
+    [Serializable] public class object_9B : Room_Object
     {
         public object_9B(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3509,7 +3539,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_9C : Room_Object
+    [Serializable] public class object_9C : Room_Object
     {
         public object_9C(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3522,7 +3552,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_9D : Room_Object
+    [Serializable] public class object_9D : Room_Object
     {
         public object_9D(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3535,7 +3565,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_9E : Room_Object
+    [Serializable] public class object_9E : Room_Object
     {
         public object_9E(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3548,7 +3578,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_9F : Room_Object
+    [Serializable] public class object_9F : Room_Object
     {
         public object_9F(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3561,7 +3591,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_A0 : Room_Object
+    [Serializable] public class object_A0 : Room_Object
     {
         public object_A0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3587,7 +3617,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_A1 : Room_Object
+    [Serializable] public class object_A1 : Room_Object
     {
         public object_A1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3613,7 +3643,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_A2 : Room_Object
+    [Serializable] public class object_A2 : Room_Object
     {
         public object_A2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3639,7 +3669,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_A3 : Room_Object
+    [Serializable] public class object_A3 : Room_Object
     {
         public object_A3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3665,7 +3695,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_A4 : Room_Object
+    [Serializable] public class object_A4 : Room_Object
     {
         public object_A4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3707,7 +3737,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_A5 : Room_Object
+    [Serializable] public class object_A5 : Room_Object
     {
         public object_A5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3733,7 +3763,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_A6 : Room_Object
+    [Serializable] public class object_A6 : Room_Object
     {
         public object_A6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3759,7 +3789,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_A7 : Room_Object
+    [Serializable] public class object_A7 : Room_Object
     {
         public object_A7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3785,7 +3815,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_A8 : Room_Object
+    [Serializable] public class object_A8 : Room_Object
     {
         public object_A8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3811,7 +3841,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_A9 : Room_Object
+    [Serializable] public class object_A9 : Room_Object
     {
         public object_A9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3837,7 +3867,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_AA : Room_Object
+    [Serializable] public class object_AA : Room_Object
     {
         public object_AA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3863,7 +3893,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_AB : Room_Object
+    [Serializable] public class object_AB : Room_Object
     {
         public object_AB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3889,7 +3919,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_AC : Room_Object
+    [Serializable] public class object_AC : Room_Object
     {
         public object_AC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3916,7 +3946,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_AD : Room_Object
+    [Serializable] public class object_AD : Room_Object
     {
         public object_AD(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3931,7 +3961,7 @@ namespace ZeldaFullEditor
             draw_tile(tiles[0], ((0) * 8), (0) * 8);
         }
     }
-    public class object_AE : Room_Object
+    [Serializable] public class object_AE : Room_Object
     {
         public object_AE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3946,7 +3976,7 @@ namespace ZeldaFullEditor
             draw_tile(tiles[0], ((0) * 8), (0) * 8);
         }
     }
-    public class object_AF : Room_Object
+    [Serializable] public class object_AF : Room_Object
     {
         public object_AF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
@@ -3962,7 +3992,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_B0 : Room_Object
+    [Serializable] public class object_B0 : Room_Object
     {
 
         public object_B0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3983,7 +4013,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_B1 : Room_Object
+    [Serializable] public class object_B1 : Room_Object
     {
 
         public object_B1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4005,7 +4035,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_B2 : Room_Object
+    [Serializable] public class object_B2 : Room_Object
     {
 
         public object_B2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4034,7 +4064,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_B3 : Room_Object
+    [Serializable] public class object_B3 : Room_Object
     {
 
         public object_B3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4058,7 +4088,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_B4 : Room_Object
+    [Serializable] public class object_B4 : Room_Object
     {
 
         public object_B4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4082,7 +4112,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_B5 : Room_Object
+    [Serializable] public class object_B5 : Room_Object
     {
 
         public object_B5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4111,7 +4141,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_B6 : Room_Object
+    [Serializable] public class object_B6 : Room_Object
     {
 
         public object_B6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4140,7 +4170,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_B7 : Room_Object
+    [Serializable] public class object_B7 : Room_Object
     {
 
         public object_B7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4170,7 +4200,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_B8 : Room_Object
+    [Serializable] public class object_B8 : Room_Object
     {
 
         public object_B8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4204,7 +4234,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_B9 : Room_Object
+    [Serializable] public class object_B9 : Room_Object
     {
 
         public object_B9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4237,7 +4267,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_BA : Room_Object
+    [Serializable] public class object_BA : Room_Object
     {
 
         public object_BA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4266,7 +4296,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_BB : Room_Object
+    [Serializable] public class object_BB : Room_Object
     {
 
         public object_BB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4290,7 +4320,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_BC : Room_Object
+    [Serializable] public class object_BC : Room_Object
     {
 
         public object_BC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4315,7 +4345,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_BD : Room_Object
+    [Serializable] public class object_BD : Room_Object
     {
 
         public object_BD(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4340,7 +4370,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_BE : Room_Object
+    [Serializable] public class object_BE : Room_Object
     {
 
         public object_BE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4356,7 +4386,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_BF : Room_Object
+    [Serializable] public class object_BF : Room_Object
     {
 
         public object_BF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4370,7 +4400,7 @@ namespace ZeldaFullEditor
 
         }
     }
-    public class object_C0 : Room_Object
+    [Serializable] public class object_C0 : Room_Object
     {
 
         public object_C0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4402,7 +4432,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_C1 : Room_Object
+    [Serializable] public class object_C1 : Room_Object
     {
 
         public object_C1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4468,7 +4498,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_C2 : Room_Object
+    [Serializable] public class object_C2 : Room_Object
     {
 
         public object_C2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4502,7 +4532,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_C3 : Room_Object
+    [Serializable] public class object_C3 : Room_Object
     {
 
         public object_C3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4534,7 +4564,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_C4 : Room_Object
+    [Serializable] public class object_C4 : Room_Object
     {
 
         public object_C4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4575,7 +4605,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_C5 : Room_Object
+    [Serializable] public class object_C5 : Room_Object
     {
 
         public object_C5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4612,7 +4642,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_C6 : Room_Object
+    [Serializable] public class object_C6 : Room_Object
     {
 
         public object_C6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4648,7 +4678,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_C7 : Room_Object
+    [Serializable] public class object_C7 : Room_Object
     {
 
         public object_C7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4685,7 +4715,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_C8 : Room_Object
+    [Serializable] public class object_C8 : Room_Object
     {
 
         public object_C8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4724,7 +4754,7 @@ namespace ZeldaFullEditor
 
 
 
-    public class object_C9 : Room_Object
+    [Serializable] public class object_C9 : Room_Object
     {
 
         public object_C9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4762,7 +4792,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_CA : Room_Object
+    [Serializable] public class object_CA : Room_Object
     {
 
         public object_CA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4799,7 +4829,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_CB : Room_Object
+    [Serializable] public class object_CB : Room_Object
     {
 
         public object_CB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4817,7 +4847,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_CC : Room_Object
+    [Serializable] public class object_CC : Room_Object
     {
 
         public object_CC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4835,7 +4865,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_CD : Room_Object
+    [Serializable] public class object_CD : Room_Object
     {
 
         public object_CD(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4853,7 +4883,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_CE : Room_Object
+    [Serializable] public class object_CE : Room_Object
     {
 
         public object_CE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4871,7 +4901,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_CF : Room_Object
+    [Serializable] public class object_CF : Room_Object
     {
 
         public object_CF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4889,7 +4919,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_D0 : Room_Object
+    [Serializable] public class object_D0 : Room_Object
     {
 
         public object_D0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4907,7 +4937,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_D1 : Room_Object
+    [Serializable] public class object_D1 : Room_Object
     {
 
         public object_D1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4945,7 +4975,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_D2 : Room_Object
+    [Serializable] public class object_D2 : Room_Object
     {
 
         public object_D2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -4982,7 +5012,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_D3 : Room_Object
+    [Serializable] public class object_D3 : Room_Object
     {
 
         public object_D3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5000,7 +5030,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_D4 : Room_Object
+    [Serializable] public class object_D4 : Room_Object
     {
 
         public object_D4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5018,7 +5048,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_D5 : Room_Object
+    [Serializable] public class object_D5 : Room_Object
     {
 
         public object_D5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5036,7 +5066,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_D6 : Room_Object
+    [Serializable] public class object_D6 : Room_Object
     {
 
         public object_D6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5054,7 +5084,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_D7 : Room_Object
+    [Serializable] public class object_D7 : Room_Object
     {
 
         public object_D7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5092,7 +5122,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_D8 : Room_Object
+    [Serializable] public class object_D8 : Room_Object
     {
 
         public object_D8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5129,7 +5159,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_D9 : Room_Object
+    [Serializable] public class object_D9 : Room_Object
     {
 
         public object_D9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5166,7 +5196,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_DA : Room_Object
+    [Serializable] public class object_DA : Room_Object
     {
 
         public object_DA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5203,7 +5233,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_DB : Room_Object
+    [Serializable] public class object_DB : Room_Object
     {
 
         public object_DB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5243,7 +5273,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_DC : Room_Object
+    [Serializable] public class object_DC : Room_Object
     {
 
         public object_DC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5343,7 +5373,7 @@ namespace ZeldaFullEditor
 
     }
 
-    public class object_DD : Room_Object
+    [Serializable] public class object_DD : Room_Object
     {
 
         public object_DD(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5396,7 +5426,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_DE : Room_Object
+    [Serializable] public class object_DE : Room_Object
     {
 
         public object_DE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5428,7 +5458,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_DF : Room_Object
+    [Serializable] public class object_DF : Room_Object
     {
 
         public object_DF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5466,7 +5496,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_E0 : Room_Object
+    [Serializable] public class object_E0 : Room_Object
     {
 
         public object_E0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5503,7 +5533,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_E1 : Room_Object
+    [Serializable] public class object_E1 : Room_Object
     {
 
         public object_E1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5540,7 +5570,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_E2 : Room_Object
+    [Serializable] public class object_E2 : Room_Object
     {
 
         public object_E2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5577,7 +5607,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_E3 : Room_Object
+    [Serializable] public class object_E3 : Room_Object
     {
 
         public object_E3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5614,7 +5644,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_E4 : Room_Object
+    [Serializable] public class object_E4 : Room_Object
     {
 
         public object_E4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5651,7 +5681,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_E5 : Room_Object
+    [Serializable] public class object_E5 : Room_Object
     {
 
         public object_E5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5688,7 +5718,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_E6 : Room_Object
+    [Serializable] public class object_E6 : Room_Object
     {
 
         public object_E6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5726,7 +5756,7 @@ namespace ZeldaFullEditor
     }
 
 
-    public class object_E7 : Room_Object
+    [Serializable] public class object_E7 : Room_Object
     {
 
         public object_E7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5763,7 +5793,7 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_E8 : Room_Object
+    [Serializable] public class object_E8 : Room_Object
     {
 
         public object_E8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -5800,105 +5830,105 @@ namespace ZeldaFullEditor
         }
     }
 
-    public class object_E9 : Room_Object
+    [Serializable] public class object_E9 : Room_Object
     {
         public object_E9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_EA : Room_Object
+    [Serializable] public class object_EA : Room_Object
     {
         public object_EA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_EB : Room_Object
+    [Serializable] public class object_EB : Room_Object
     {
         public object_EB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_EC : Room_Object
+    [Serializable] public class object_EC : Room_Object
     {
         public object_EC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_ED : Room_Object
+    [Serializable] public class object_ED : Room_Object
     {
         public object_ED(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_EE : Room_Object
+    [Serializable] public class object_EE : Room_Object
     {
         public object_EE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_EF : Room_Object
+    [Serializable] public class object_EF : Room_Object
     {
         public object_EF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_F0 : Room_Object
+    [Serializable] public class object_F0 : Room_Object
     {
         public object_F0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_F1 : Room_Object
+    [Serializable] public class object_F1 : Room_Object
     {
         public object_F1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_F2 : Room_Object
+    [Serializable] public class object_F2 : Room_Object
     {
         public object_F2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_F3 : Room_Object
+    [Serializable] public class object_F3 : Room_Object
     {
         public object_F3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_F4 : Room_Object
+    [Serializable] public class object_F4 : Room_Object
     {
         public object_F4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_F5 : Room_Object
+    [Serializable] public class object_F5 : Room_Object
     {
         public object_F5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_F6 : Room_Object
+    [Serializable] public class object_F6 : Room_Object
     {
         public object_F6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             name = "Unused";
         }
     }
-    public class object_F7 : Room_Object
+    [Serializable] public class object_F7 : Room_Object
     {
         public object_F7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {

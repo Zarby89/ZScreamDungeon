@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
+    [Serializable]
   public static class Sprites_Names
   {
 
