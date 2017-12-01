@@ -20,6 +20,7 @@ namespace ZeldaFullEditor
     //o - on top?
     //c - the 9th(and most significant) bit of the character number for this sprite.
 
+        [Serializable]
     public class Tile
     {
         public int id = 0;

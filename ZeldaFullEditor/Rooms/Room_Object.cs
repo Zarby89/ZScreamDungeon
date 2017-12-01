@@ -11,6 +11,7 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
+    [Serializable]
     public class Room_Object
     {
         public byte x, y; //position of the object in the room (*8 for draw)

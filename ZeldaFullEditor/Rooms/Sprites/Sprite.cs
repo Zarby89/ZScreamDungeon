@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
+    [Serializable]
     public class Sprite
     {
         public byte x, y, id;

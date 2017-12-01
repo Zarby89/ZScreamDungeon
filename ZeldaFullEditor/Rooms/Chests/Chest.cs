@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
+    [Serializable]
     public class Chest
     {
         public byte x, y, item;
