@@ -46,20 +46,6 @@ namespace ZeldaFullEditor
             higherX = 15;
             higherY = 15;
         }
-        //from data
-        public Sprite(Room room, string data)
-        {
-            this.id = Convert.ToByte(data[0]);
-            this.x = Convert.ToByte(data[1]);
-            this.y = Convert.ToByte(data[2]);
-            this.overlord = Convert.ToByte(data[3]);
-            this.subtype = Convert.ToByte(data[4]);
-            this.layer = Convert.ToByte(data[5]);
-            this.name = Sprites_Names.name[id];
-            this.room = room;
-            this.nx = x;
-            this.ny = y;
-        }
 
 
         public string GetData()
@@ -77,7 +63,10 @@ namespace ZeldaFullEditor
         public void Draw(bool picker = false)
         {
             this.picker = picker;
-
+            if (overlord == 0x07)
+            {
+                return;
+            }
 
             if (id == 0x00)
             {
@@ -658,8 +647,8 @@ namespace ZeldaFullEditor
                 if (room.index == 260)//link's house draw uncle sit
                 {
 
-                    drawSpriteTile((x * 16) + 8, (y * 16), 6, 0, 10);
-                    drawSpriteTile((x * 16) + 8, (y * 16) - 12, 0, 0, 10);
+                    drawSpriteTile((x * 16) + 8, (y * 16), 6, 0,12);
+                    drawSpriteTile((x * 16) + 8, (y * 16) - 10, 0, 0, 10);
                 }
                 else if (room.index == 85)
                 {
@@ -943,7 +932,7 @@ namespace ZeldaFullEditor
             else
             {
                 //stringtodraw.Add(new SpriteName(x, (y*16), sprites_name.name[id]));
-
+                drawSpriteTile((x * 16), (y * 16), 4, 22, 5);
             }
             if (nx != this.x || ny != this.y)
             {

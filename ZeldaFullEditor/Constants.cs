@@ -22,15 +22,17 @@ namespace ZeldaFullEditor
         public static int dungeons_main_bg_palette_pointers = 0xDEC4B; //JP Same
         public static int dungeons_palettes = 0xDD734; //JP Same (where all dungeons palettes are) 
         public static int room_object_pointers = 0xF8000; //JP Same (3 bytes LONG pointers)
-        public static int room_object_layout_pointers = 0x26F2F; //JP 0x26C0F 00027065
+        public static int room_object_layout_pointers = 0x26F2F; //JP 0x26C0F                 00027065    Conker 026FA1
         public static int room_items_pointers = 0xDB69;//JP 0xDB67
-        public static int room_sprites_pointers = 0x4D62E; //JP same
+        public static int room_sprites_pointers = 0x4D62E; //JP same 0x4CD3E Conker?
         public static int room_header_pointers = 0x27502; //JP 0x271E2
         public static int room_header_pointers_bank = 0xB5E7; //JP Same
         public static int room_chest = 0xE96E; //JP 0xE96C
         public static int block_data = 0x271DE; //JP 0x26EBE
         public static int torch_data = 0x2736A; //JP 0x2704A
         public static int sprite_blockset_pointer = 0x5B57;
+        public static int sprites_data = 0x4D880; //JP : //It use the unused pointers to have more space
+        public static int sprites_data_empty_room = 0x4D87E;
         //0000
         //TODO : On ROM Load if Pointers are at original location
         //Expand ROM to 2MB if US, 4MB if VT, move Headers to new location

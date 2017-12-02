@@ -101,6 +101,7 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.palettePicturebox = new System.Windows.Forms.PictureBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
@@ -496,6 +497,7 @@
             this.toolStripButton2.Name = "toolStripButton2";
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton2.Text = "Save ROM";
+            this.toolStripButton2.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
@@ -749,7 +751,7 @@
             // 
             this.floor2UpDown.Location = new System.Drawing.Point(63, 32);
             this.floor2UpDown.Maximum = new decimal(new int[] {
-            14,
+            15,
             0,
             0,
             0});
@@ -762,7 +764,7 @@
             // 
             this.floor1UpDown.Location = new System.Drawing.Point(9, 32);
             this.floor1UpDown.Maximum = new decimal(new int[] {
-            14,
+            15,
             0,
             0,
             0});
@@ -805,11 +807,12 @@
             this.tabPage3.Name = "tabPage3";
             this.tabPage3.Size = new System.Drawing.Size(294, 488);
             this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Overworld";
+            this.tabPage3.Text = "Randomizer";
             this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.button1);
             this.tabPage4.Controls.Add(this.label7);
             this.tabPage4.Controls.Add(this.palettePicturebox);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
@@ -818,6 +821,16 @@
             this.tabPage4.TabIndex = 3;
             this.tabPage4.Text = "Palettes";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(6, 241);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(280, 23);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "Generate a Random Palette";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label7
             // 
@@ -955,6 +968,7 @@
         private System.Windows.Forms.PictureBox palettePicturebox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ColorDialog colorDialog1;
+        private System.Windows.Forms.Button button1;
     }
 }
 

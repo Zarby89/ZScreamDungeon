@@ -11,12 +11,14 @@ namespace ZeldaFullEditor
     {
         public byte x, y, item;
         public bool picker = false;
-        public Chest(byte x,byte y, byte item,bool picker = false)
+        public bool bigChest = false;
+        public Chest(byte x,byte y, byte item,bool bigChest,bool picker = false)
         {
             this.x = x;
             this.y = y;
             this.item = item;
             this.picker = picker;
+            this.bigChest = bigChest;
         }
 
 

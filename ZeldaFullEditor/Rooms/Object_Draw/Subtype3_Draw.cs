@@ -2204,6 +2204,7 @@ namespace ZeldaFullEditor
     {
         public object_FDC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
+            
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
             name = "???";
             addTiles(24, pos);//??

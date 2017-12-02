@@ -25,6 +25,9 @@ namespace ZeldaFullEditor
         public static byte[,] imgdata = new byte[128, 32];
         public static byte[] singledata = new byte[128 * 800];
 
+        public static Bitmap bg1_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
+        public static Bitmap room_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb); //act as bg2
+
         public static int[] positions = new int[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
         public static int superpos = 0;
         public static void load4bpp(byte[] data, byte[] blocks, int pos = 0)
@@ -182,114 +185,6 @@ namespace ZeldaFullEditor
             b.UnlockBits(currentbmpData);
         }
 
-
- /*       public static void create_gfxs()
-        {
-            blocksets = new Bitmap[14];
-            for (int j = 0; j < 14; j++)
-            {
-                blocksets[j] = new Bitmap(128, 448, PixelFormat.Format32bppArgb);
-            }
-
-            for (int j = 2; j < 14; j++)
-            {
-                Rectangle rect = new Rectangle(0, 0, blocksets[j].Width, blocksets[j].Height);
-                BitmapData bmpData =
-                    blocksets[j].LockBits(rect, ImageLockMode.ReadWrite,
-                    blocksets[j].PixelFormat);
-
-                IntPtr ptr = bmpData.Scan0;
-                int bytes = Math.Abs(bmpData.Stride) * blocksets[j].Height;
-                byte[] rgbValues = new byte[bytes];
-
-                Marshal.Copy(ptr, rgbValues, 0, bytes);
-                int pp; //palete position
-                for (int i = 3; i < (rgbValues.Length); i += 4)
-                {
-                    if (singledata[(i / 4)] != 0)
-                    {
-                        pp = 0;
-                        
-                        if ((i) < (60000)) //half of gfx use right side of palette other part use left side
-                        {
-                            if (j < 8)
-                            {
-                                pp = 8;
-                                rgbValues[(i - 3)] = (byte)(GFX.loadedPalettes[singledata[(i / 4)] + pp, j - 2].B);
-                                rgbValues[(i - 2)] = (byte)(GFX.loadedPalettes[singledata[(i / 4)] + pp, j - 2].G);
-                                rgbValues[(i) - 1] = (byte)(GFX.loadedPalettes[singledata[(i / 4)] + pp, j - 2].R);
-                                rgbValues[(i)] = 255;
-                            }
-                        }
-                        //else if (i >= 122880)
-                        //{
-
-                        //    rgbValues[(i - 2)] = (byte)(GFX.spritesPalettes[singledata[(i / 3)], j - 2].B);
-                        //    rgbValues[(i) - 1] = (byte)(GFX.spritesPalettes[singledata[(i / 3)] + pp, j - 2].G);
-                        //    rgbValues[(i)] = (byte)(GFX.spritesPalettes[singledata[(i / 3)] + pp, j - 2].R);
-                        //}
-                        else
-                        {
-                            if (j < 8)
-                            {
-                                //pp = 8;
-                                rgbValues[(i - 3)] = (byte)(GFX.loadedPalettes[singledata[(i / 4)] + pp, j - 2].B);
-                                rgbValues[(i - 2)] = (byte)(GFX.loadedPalettes[singledata[(i / 4)] + pp, j - 2].G);
-                                rgbValues[(i) - 1] = (byte)(GFX.loadedPalettes[singledata[(i / 4)] + pp, j - 2].R);
-                                rgbValues[(i)] = 255;
-                            }
-                        }
-                    }
-                }
-
-               Marshal.Copy(rgbValues, 0, ptr, bytes);
-                
-                blocksets[j].UnlockBits(bmpData);
-
-            }
-        }*/
-
-        
-
-        /*public static void animate_gfxs()
-        {
-            for (int j = 2; j < 8; j++)
-            {
-                int frame = 0;
-                Rectangle rect = new Rectangle(0, 216, 128, 16);
-                System.Drawing.Imaging.BitmapData bmpData =
-                blocksets[j].LockBits(rect, System.Drawing.Imaging.ImageLockMode.ReadWrite,
-                blocksets[j].PixelFormat);
-
-                IntPtr ptr = bmpData.Scan0;
-                int bytes = Math.Abs(bmpData.Stride) * 16;
-                byte[] rgbValues = new byte[bytes];
-
-                System.Runtime.InteropServices.Marshal.Copy(ptr, rgbValues, 0, bytes);
-                int p = 0;
-                for (int i = 2; i < (rgbValues.Length); i += 3)
-                {
-
-                    if ((i / 3) > 1024)
-                    {
-                        p = -5120;
-
-                    }
-                    if (singledata[36864 + p + (frame * 1024) + (i / 3)] != 0)
-                    {
-                        rgbValues[(i - 2)] = (byte)(GFX.loadedPalettes[singledata[(36864) + p + (frame * 1024) + (i / 3)], j - 2].B);
-                        rgbValues[(i) - 1] = (byte)(GFX.loadedPalettes[singledata[(36864) + p + (frame * 1024) + (i / 3)], j - 2].G);
-                        rgbValues[(i)] = (byte)(GFX.loadedPalettes[singledata[(36864) + p + (frame * 1024) + (i / 3)], j - 2].R);
-
-                    }
-                }
-
-                System.Runtime.InteropServices.Marshal.Copy(rgbValues, 0, ptr, bytes);
-
-                blocksets[j].UnlockBits(bmpData);
-            }
-        }
-        */
         public static Color getColor(short c)
         {
             return Color.FromArgb(((c & 0x1F) * 8), ((c & 0x3E0) >> 5) * 8, ((c & 0x7C00) >> 10) * 8);
