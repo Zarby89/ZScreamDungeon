@@ -33,6 +33,7 @@ namespace ZeldaFullEditor
         public static int sprite_blockset_pointer = 0x5B57;
         public static int sprites_data = 0x4D880; //JP : //It use the unused pointers to have more space
         public static int sprites_data_empty_room = 0x4D87E;
+        
         //0000
         //TODO : On ROM Load if Pointers are at original location
         //Expand ROM to 2MB if US, 4MB if VT, move Headers to new location
@@ -54,6 +55,10 @@ namespace ZeldaFullEditor
             torch_data = 0x2704A;
             sprite_blockset_pointer = 0x5B97;
             Rando = rando;
+            if (rando == true)
+            {
+
+            }
         }
 
 

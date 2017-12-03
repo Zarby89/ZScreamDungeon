@@ -143,6 +143,7 @@ namespace ZeldaFullEditor
 
 
 
+
         public void draw_item_tile(int x, int y, int sx, int sy, int tid, int pid, byte sheet = 18)
         {
 

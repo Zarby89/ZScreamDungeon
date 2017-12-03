@@ -15,6 +15,7 @@ namespace ZeldaFullEditor
     public class Room_Object
     {
         public byte x, y; //position of the object in the room (*8 for draw)
+        public byte nx, ny;
         public byte size; //size of the object
         public bool allBgs = false; //if the object is drawn on BG1 and BG2 regardless of type of BG
         public List<Tile> tiles = new List<Tile>();
@@ -23,6 +24,11 @@ namespace ZeldaFullEditor
         public byte layer = 0;
         public Room room;
         public int drawYFix = 0;
+        public bool selected = false;
+        public bool is_stair = false;
+        public bool is_chest = false;
+        public bool is_bgr = false;
+        public Rectangle boundingBox;
         public Room_Object(short id,byte x,byte y,byte size,byte layer = 0)
         {
             this.x = x;
@@ -30,7 +36,8 @@ namespace ZeldaFullEditor
             this.size = size;
             this.id = id;
             this.layer = layer;
-            
+            this.nx = x;
+            this.ny = y;
             //GFX.tilebufferbitmap.MakeTransparent(Color.Black);
         }
 
@@ -46,21 +53,7 @@ namespace ZeldaFullEditor
 
         public void DrawOnBitmap()
         {
-            /*if (image_size_x == 0 && image_size_y == 0)
-            {
-                bitmap = new Bitmap((8), (8));
-            }
-            else
-            {
-                bitmap = new Bitmap(((image_size_x)), ((image_size_y)));
-            }
 
-            using (Graphics g = Graphics.FromImage(bitmap))
-            {
-                g.DrawImage(GFX.tilebufferbitmap, new Rectangle(0, 0, image_size_x, image_size_y), 0, 0, image_size_x, image_size_y, GraphicsUnit.Pixel);
-
-
-            }*/
         }
 
 
@@ -116,115 +109,170 @@ namespace ZeldaFullEditor
         //              3 6 9
         //Objects Draw
 
+        public void resetBbox()
+        {
+
+            int lowerX = 0;
+            int lowerY = 0;
+            int higherX = 0;
+            int higherY = 0;
+            int width = 16;
+            int height = 16;
+        }
+
+        public void updateBbox()
+        {
+            boundingBox = new Rectangle((this.x * 8), (this.y * 8), width- (this.x * 8), height - (this.y * 8));
+        }
+
         int image_size_x = 0;
         int image_size_y = 0;
 
-
-    public void draw_tile(Tile t, int x, int y, int yfix = 0)
-    {
-
-
-        int ty = (t.id / 16);
-        int tx = t.id - (ty * 16);
-        int mx = 0;
-        int my = 0;
-
-
-        if (t.mirror_x == true)
+        int lowerX = 0;
+        int lowerY = 0;
+        int higherX = 0;
+        int higherY = 0;
+        int width = 16;
+        int height = 16;
+        public void draw_tile(Tile t, int x, int y, int yfix = 0)
         {
-            mx = 8;
-        }
 
-        for (int xx = 0; xx < 8; xx++)
-        {
-            if (mx > 0)
+            int zx = (x * 8) - (this.x * 8);
+            int zy = (y * 8) - (this.y * 8);
+
+            if (lowerX > zx)
             {
-                mx--;
+                lowerX = zx;
             }
-            if (t.mirror_y == true)
+
+            if (lowerY > zy)
             {
-                my = 8;
+                lowerY = zy;
             }
-            for (int yy = 0; yy < 8; yy++)
+
+            if (higherX < x + 8)
             {
-                if (my > 0)
-                {
-                    my--;
-                }
-                int x_dest = ((this.x * 8) + x + (xx)) * 4;
-                int y_dest = (((this.y * 8) + y + (yy)) * 512) * 4;
-                int dest = x_dest + y_dest;
+                higherX = x + 8;
+            }
 
-                int x_src = ((tx * 8) + mx + (xx));
-                if (t.mirror_x)
-                {
-                    x_src = ((tx * 8) + mx);
-                }
-                int y_src = (((ty * 8) + my + (yy)) * 128);
-                if (t.mirror_y)
-                {
-                    y_src = (((ty * 8) + my) * 128);
-                }
-                    
-                int src = x_src + y_src;
-                int pp = 0;
-                if (src < 16384)
-                {
-                    pp = 8;
-                }
-                if (dest < GFX.currentData.Length)
-                {
-                    byte alpha = 255;
+            if (higherY < y + 8)
+            {
+                higherY = y + 8;
+            }
 
-                    if (GFX.singledata[(src)] == 0)
+            width = higherX - lowerX;
+            height = higherY - lowerY;
+
+            if (nx != this.x || ny != this.y)
+            {
+                this.x = (byte)(this.nx/8);
+                this.y = (byte)(this.ny/8);
+            }
+
+
+            updateBbox();
+
+            int ty = (t.id / 16);
+            int tx = t.id - (ty * 16);
+            int mx = 0;
+            int my = 0;
+
+
+            if (t.mirror_x == true)
+            {
+                mx = 8;
+            }
+
+            for (int xx = 0; xx < 8; xx++)
+            {
+                if (mx > 0)
+                {
+                    mx--;
+                }
+                if (t.mirror_y == true)
+                {
+                    my = 8;
+                }
+                for (int yy = 0; yy < 8; yy++)
+                {
+                    if (my > 0)
                     {
-                        if (room.bg2 != 0)
+                        my--;
+                    }
+                    int x_dest = ((this.x * 8) + x + (xx)) * 4;
+                    int y_dest = (((this.y * 8) + y + (yy)) * 512) * 4;
+                    int dest = x_dest + y_dest;
+
+                    int x_src = ((tx * 8) + mx + (xx));
+                    if (t.mirror_x)
+                    {
+                        x_src = ((tx * 8) + mx);
+                    }
+                    int y_src = (((ty * 8) + my + (yy)) * 128);
+                    if (t.mirror_y)
+                    {
+                        y_src = (((ty * 8) + my) * 128);
+                    }
+
+                    int src = x_src + y_src;
+                    int pp = 0;
+                    if (src < 16384)
+                    {
+                        pp = 8;
+                    }
+                    if (dest < GFX.currentData.Length)
+                    {
+                        byte alpha = 255;
+
+                        if (GFX.singledata[(src)] == 0)
                         {
-                            if (layer != 1)
+                            if (room.bg2 != 0)
+                            {
+                                if (layer != 1)
+                                {
+                                    alpha = 0;
+                                }
+                            }
+                            if (room.bg2 == Background2.OnTop)
+                            {
+                                if (layer != 0)
+                                {
+                                    alpha = 0;
+                                }
+                                else
+                                {
+                                    alpha = 255;
+                                }
+                            }
+                            if (room.bg2 == Background2.Transparent)
                             {
                                 alpha = 0;
                             }
+
                         }
-                        if (room.bg2 == Background2.OnTop)
+                        else
                         {
-                            if (layer != 0)
+                            if (room.bg2 == Background2.Transparent)
                             {
-                                alpha = 0;
+                                if (layer == 1)
+                                {
+                                    alpha = 128;
+                                }
                             }
-                            else
-                            {
-                                alpha = 255;
-                            }
-                        }
-                        if (room.bg2 == Background2.Transparent)
-                        {
-                            alpha = 0;
                         }
 
-                    }
-                    else
-                    {
-                        if (room.bg2 == Background2.Transparent)
+                        if (allBgs)
                         {
-                            if (layer == 1)
-                            {
-                                alpha = 128;
-                            }
+                            alpha = 255;
                         }
+                        GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].B);
+                        GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].G);
+                        GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].R);
+                        GFX.currentData[dest + 3] = alpha;//A
                     }
-
-                    if (allBgs)
-                    {
-                        alpha = 255;
-                    }
-                    GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].B);
-                    GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].G);
-                    GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].R);
-                    GFX.currentData[dest + 3] = alpha;//A
                 }
             }
         }
-    }
 
 
         public void makeTileTransparent(Bitmap b)

@@ -50,8 +50,6 @@ namespace ZeldaFullEditor
 
         public void Draw(int x, int y)
         {
-
-
             int ty = (id / 16);
             int tx = id - (ty * 16);
             int mx = 0;
@@ -110,25 +108,6 @@ namespace ZeldaFullEditor
                 }
             }
         }
-        /*using (Bitmap b = new Bitmap(8, 8))
-        {
-
-            using (Graphics g = Graphics.FromImage(b))
-            {
-                g.DrawImage(GFX.blocksets[palette], new Rectangle(0, 0, 8, 8), tx * 8, ty * 8, 8, 8, GraphicsUnit.Pixel);
-            }
-
-            if (mirror_x) //mirror x
-                b.RotateFlip(RotateFlipType.RotateNoneFlipX);
-            if (mirror_y) //mirror y
-                b.RotateFlip(RotateFlipType.RotateNoneFlipY);
-
-            using (Graphics g = Graphics.FromImage(floor))
-            {
-                g.DrawImage(b, new Point(x * 8, y * 8));
-            }
-
-        }*/
     }
 
 }

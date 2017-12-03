@@ -83,6 +83,7 @@
             this.torchmodeButton = new System.Windows.Forms.ToolStripButton();
             this.chestmodeButton = new System.Windows.Forms.ToolStripButton();
             this.potmodeButton = new System.Windows.Forms.ToolStripButton();
+            this.stairswarptoolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.spriteImageList = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -90,7 +91,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.paletteUpDown = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
-            this.SpritesetcomboBox = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.roomgfxUpDown = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
@@ -377,7 +377,7 @@
             this.roomListBox.FormattingEnabled = true;
             this.roomListBox.Location = new System.Drawing.Point(3, 39);
             this.roomListBox.Name = "roomListBox";
-            this.roomListBox.Size = new System.Drawing.Size(289, 303);
+            this.roomListBox.Size = new System.Drawing.Size(289, 238);
             this.roomListBox.TabIndex = 2;
             this.roomListBox.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -472,6 +472,7 @@
             this.torchmodeButton,
             this.chestmodeButton,
             this.potmodeButton,
+            this.stairswarptoolStripButton,
             this.toolStripSeparator3});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
@@ -492,6 +493,7 @@
             // toolStripButton2
             // 
             this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Enabled = false;
             this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
             this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton2.Name = "toolStripButton2";
@@ -507,6 +509,7 @@
             // toolStripButton3
             // 
             this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.Enabled = false;
             this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
             this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton3.Name = "toolStripButton3";
@@ -517,6 +520,7 @@
             // toolStripButton4
             // 
             this.toolStripButton4.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton4.Enabled = false;
             this.toolStripButton4.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton4.Image")));
             this.toolStripButton4.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton4.Name = "toolStripButton4";
@@ -568,6 +572,7 @@
             this.spritemodeButton.CheckOnClick = true;
             this.spritemodeButton.CheckState = System.Windows.Forms.CheckState.Checked;
             this.spritemodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.spritemodeButton.Enabled = false;
             this.spritemodeButton.Image = ((System.Drawing.Image)(resources.GetObject("spritemodeButton.Image")));
             this.spritemodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.spritemodeButton.Name = "spritemodeButton";
@@ -603,6 +608,7 @@
             // 
             this.chestmodeButton.CheckOnClick = true;
             this.chestmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.chestmodeButton.Enabled = false;
             this.chestmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("chestmodeButton.Image")));
             this.chestmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.chestmodeButton.Name = "chestmodeButton";
@@ -614,12 +620,24 @@
             // 
             this.potmodeButton.CheckOnClick = true;
             this.potmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.potmodeButton.Enabled = false;
             this.potmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("potmodeButton.Image")));
             this.potmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.potmodeButton.Name = "potmodeButton";
             this.potmodeButton.Size = new System.Drawing.Size(23, 22);
             this.potmodeButton.Text = "Pots Item Mode";
             this.potmodeButton.Click += new System.EventHandler(this.update_modes_buttons);
+            // 
+            // stairswarptoolStripButton
+            // 
+            this.stairswarptoolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.stairswarptoolStripButton.Enabled = false;
+            this.stairswarptoolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("stairswarptoolStripButton.Image")));
+            this.stairswarptoolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.stairswarptoolStripButton.Name = "stairswarptoolStripButton";
+            this.stairswarptoolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.stairswarptoolStripButton.Text = "Stairs / Warp";
+            this.stairswarptoolStripButton.Click += new System.EventHandler(this.update_modes_buttons);
             // 
             // toolStripSeparator3
             // 
@@ -641,6 +659,7 @@
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Enabled = false;
             this.tabControl1.Location = new System.Drawing.Point(530, 53);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
@@ -664,11 +683,8 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.paletteUpDown);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.SpritesetcomboBox);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.roomgfxUpDown);
             this.groupBox1.Controls.Add(this.label4);
@@ -676,9 +692,10 @@
             this.groupBox1.Controls.Add(this.floor1UpDown);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(6, 348);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBox1.Location = new System.Drawing.Point(3, 286);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(280, 134);
+            this.groupBox1.Size = new System.Drawing.Size(288, 199);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Room Settings";
@@ -704,17 +721,6 @@
             this.label6.Size = new System.Drawing.Size(49, 13);
             this.label6.TabIndex = 8;
             this.label6.Text = "Palette : ";
-            // 
-            // SpritesetcomboBox
-            // 
-            this.SpritesetcomboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.SpritesetcomboBox.FormattingEnabled = true;
-            this.SpritesetcomboBox.Location = new System.Drawing.Point(9, 71);
-            this.SpritesetcomboBox.Name = "SpritesetcomboBox";
-            this.SpritesetcomboBox.Size = new System.Drawing.Size(265, 21);
-            this.SpritesetcomboBox.TabIndex = 7;
-            this.SpritesetcomboBox.SelectedIndexChanged += new System.EventHandler(this.floor1UpDown_ValueChanged);
             // 
             // label5
             // 
@@ -866,7 +872,6 @@
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
-            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "ZScream Magic";
             this.Load += new System.EventHandler(this.Form1_Load);
@@ -963,12 +968,12 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown paletteUpDown;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox SpritesetcomboBox;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox palettePicturebox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStripButton stairswarptoolStripButton;
     }
 }
 

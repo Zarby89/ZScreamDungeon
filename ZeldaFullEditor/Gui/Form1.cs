@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using System.Diagnostics;
-using AutoMapper;
+
 namespace ZeldaFullEditor
 {
 
@@ -25,10 +25,16 @@ namespace ZeldaFullEditor
             actionsListbox.DisplayMember = "Name";
             palettePicturebox.Image = new Bitmap(256, 256);
 
+            //Console.WriteLine(sw.ElapsedMilliseconds);
+
+
+
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
+
+            //Expand ROM to 2MB
             if (anychange == true)
             {
                 DialogResult dialogResult = MessageBox.Show("Room has changed. Do you want to save changes?", "Save", MessageBoxButtons.YesNoCancel);
@@ -37,16 +43,79 @@ namespace ZeldaFullEditor
                     all_rooms[room.index] = room;
                 }
             }
+            if (ROM.DATA.Length <= 0x100000)
+            {
+                DialogResult dialogResult = MessageBox.Show("Your ROM will be expanded to 2MB and move the rooms header to 0x110000", "Expand", MessageBoxButtons.OK);
+                Array.Resize(ref ROM.DATA, 0x200000);
+                ROM.DATA[0x07FD7] = 0x0B;
+            }
+
+            saveRoomsHeaders();
+
             saveallChests();
             saveallSprites();
             FileStream fs = new FileStream(openRomFileDialog.FileName, FileMode.Open, FileAccess.Write);
-            fs.Write(ROM.DATA, 0, (int)fs.Length);
+            fs.Write(ROM.DATA, 0, 0x200000);
             fs.Close();
         }
 
+        public void saveRoomsHeaders()
+        {
+            if (Constants.Rando)
+            {
+                //24
+
+                ROM.DATA[Constants.room_header_pointers_bank] = 0x24;
+                for (int i = 0; i < 296; i++)
+                {
+                    ROM.DATA[Constants.room_header_pointers + (i * 2)] = (byte)((Addresses.pctosnes(0x120090 + (i * 14)) & 0xFF));
+                    ROM.DATA[Constants.room_header_pointers + (i * 2) + 1] = (byte)((Addresses.pctosnes(0x120090 + (i * 14)) >> 8) & 0xFF);
+                    saveHeader(0x120090,i);
+                }
+            }
+            else
+            {
+                ROM.DATA[Constants.room_header_pointers_bank] = 0x22;
+                for (int i = 0; i < 296; i++)
+                {
+                    ROM.DATA[Constants.room_header_pointers + (i * 2)] = (byte)((Addresses.pctosnes(0x110000 + (i * 14)) & 0xFF));
+                    ROM.DATA[Constants.room_header_pointers + (i * 2) + 1] = (byte)((Addresses.pctosnes(0x110000 + (i * 14)) >> 8) & 0xFF);
+                    saveHeader(0x110000, i);
+                }
+            }
+
+
+        }
+
+        public void saveHeader(int pos,int i)
+        {
+            ROM.DATA[pos + 0 + (i * 14)] = (byte)(((byte)all_rooms[i].bg2 << 5) + (all_rooms[i].collision << 2) + (all_rooms[i].light == true ? 1 : 0));
+            ROM.DATA[pos + 1 + (i * 14)] = ((byte)all_rooms[i].palette);
+            ROM.DATA[pos + 2 + (i * 14)] = ((byte)all_rooms[i].blockset);
+            ROM.DATA[pos + 3 + (i * 14)] = ((byte)all_rooms[i].spriteset);
+            ROM.DATA[pos + 4 + (i * 14)] = ((byte)all_rooms[i].effect);
+            ROM.DATA[pos + 5 + (i * 14)] = ((byte)all_rooms[i].tag1);
+            ROM.DATA[pos + 6 + (i * 14)] = ((byte)all_rooms[i].tag2);
+            ROM.DATA[pos + 7 + (i * 14)] = (byte)((all_rooms[i].holewarp_plane) + (all_rooms[i].staircase_plane[0] << 2) + (all_rooms[i].staircase_plane[1] << 4) + (all_rooms[i].staircase_plane[2] << 6));
+            ROM.DATA[pos + 8 + (i * 14)] = (byte)(all_rooms[i].staircase_plane[3]);
+            ROM.DATA[pos + 9 + (i * 14)] = (byte)(all_rooms[i].holewarp);
+            ROM.DATA[pos + 10 + (i * 14)] = (byte)(all_rooms[i].staircase_rooms[0]);
+            ROM.DATA[pos + 11 + (i * 14)] = (byte)(all_rooms[i].staircase_rooms[1]);
+            ROM.DATA[pos + 12 + (i * 14)] = (byte)(all_rooms[i].staircase_rooms[2]);
+            ROM.DATA[pos + 13 + (i * 14)] = (byte)(all_rooms[i].staircase_rooms[3]);
+
+            //floor 1, floor2
+            ROM.DATA[Constants.tile_address] = all_rooms[i].floor1;
+            ROM.DATA[Constants.tile_address + 1] = all_rooms[i].floor2;
+        }
+
+
         public void saveAllRooms()//room settings floor1, floor2, blockset, spriteset, palette
         {
-
+            /*for (int i = 0; i < 296; i++)
+            {
+                all_rooms[i]
+            }*/
         }
 
         public void savePalettes()//room settings floor1, floor2, blockset, spriteset, palette
@@ -222,7 +291,7 @@ namespace ZeldaFullEditor
             dungeons_rooms[12] = new short[] { 0, 3, 8, 16, 24, 44, 47, 60, 223, 225, 226, 227, 228, 229, 230, 231, 232, 234, 235, 237, 238, 239, 240, 241, 248, 249, 250, 251, 253, 254, 255, 266, 267, 268, 269, 270, 274, 275, 276, 277, 278, 279, 283, 286, 288, 291, 292, 293, 294, 295 };
             dungeons_rooms[13] = new short[] { 242, 243, 244, 245, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 271, 272, 273, 280, 281, 282, 284, 285, 287 };
             dungeons_rooms[14] = new short[] { 5, 15, 37, 45, 71, 72, 105, 111, 120, 121, 122, 134, 136, 138, 143, 148, 154, 173, 189, 202, 205, 207, 211, 212, 215, 221, 233, 236, 246, 247, 252 };
-                        if (radioButton2.Checked == true)
+            if (radioButton2.Checked == true)
             {
                 roomListBox.Items.Clear();
                 if (comboBox1.SelectedIndex != -1)
@@ -251,6 +320,7 @@ namespace ZeldaFullEditor
 
         public void load_default_room()
         {
+            tabControl1.Enabled = true;
             for (int i = 0; i < 60; i++)
             {
                 string ts = "[" + i.ToString() + "] ";
@@ -261,9 +331,8 @@ namespace ZeldaFullEditor
                         ts += Sprite_SubsetNames.names[ROM.DATA[(Constants.sprite_blockset_pointer + ((i + 64) * 4) + j)]] + "|";
                     }
                 }
-                SpritesetcomboBox.Items.Add(ts);
+                //SpritesetcomboBox.Items.Add(ts);
             }
-
 
             byte[] bpp3data = Compression.DecompressTiles(); //decompress almost all the gfx from the game
             GFX.gfxdata = Compression.bpp3tobpp4(bpp3data); //transform them into 4bpp
@@ -281,7 +350,13 @@ namespace ZeldaFullEditor
             roomListBox.SelectedIndex = 260;//set start room on link's house
             updatePalettebox();
 
-
+            toolStrip1.Items[0].Enabled = true;
+            toolStrip1.Items[1].Enabled = true;
+            toolStrip1.Items[9].Enabled = true;
+            toolStrip1.Items[6].Enabled = true;
+            toolStrip1.Items[12].Enabled = true;
+            toolStrip1.Items[13].Enabled = true;
+            toolStrip1.Items[14].Enabled = true;
             //Load sprites group and store them into
 
         }
@@ -306,11 +381,13 @@ namespace ZeldaFullEditor
         {
             //Not sure if i'll use that or not maybe for animation?
         }
+
         bool found = false;
         bool alreadyin = false;
         bool moved = false;
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
+
             if (mouse_down == false)
             {
                 found = false;
@@ -381,63 +458,127 @@ namespace ZeldaFullEditor
                     dragx = ((e.X) / 8);
                     dragy = ((e.Y) / 8);
                     foreach (PotItem item in room.pot_items)
-                        {
+                    {
 
-                            if (e.X >= (item.x*8) && e.X <= (item.x*8)+16 &&
-                                e.Y >= (item.y*8) && e.Y <= (item.y*8)+16)
-                            {
-                                //IF WE ARE HOLDING SHIFT THEN ADD
-                                if (ModifierKeys == Keys.Shift)
-                                {
-                                    
-                                }
-                                else
-                                {
-                                    //IF SHIFT IS NOT HOLD THEN CLEAR BEFORE ADD
-                                    if (room.selectedObject.Count == 1)
-                                    {
-                                        room.selectedObject.Clear();
-                                    }
-                                }
-                                foreach (Object o in room.selectedObject)
-                                {
-                                    if (o == item)
-                                    {
-                                        alreadyin = true;
-                                        break;
-                                    }
-                                }
-                                if (ModifierKeys == Keys.Shift)
-                                {
-                                    if (alreadyin == false)//prevent adding multiple time the same object
-                                    {
-                                        room.selectedObject.Add(item);
-                                    }
-                                }
-                                else
-                                {
-                                    if (alreadyin == false)
-                                    {
-                                        room.selectedObject.Clear();
-                                        room.selectedObject.Add(item);
-                                    }
-                                }
-                                room.update();
-                                drawRoom();
-                                found = true;
-                                break;
-                            }
-                        }
-                        if (found == false)
+                        if (e.X >= (item.x * 8) && e.X <= (item.x * 8) + 16 &&
+                            e.Y >= (item.y * 8) && e.Y <= (item.y * 8) + 16)
                         {
-                            room.selectedObject.Clear();
+                            //IF WE ARE HOLDING SHIFT THEN ADD
+                            if (ModifierKeys == Keys.Shift)
+                            {
+
+                            }
+                            else
+                            {
+                                //IF SHIFT IS NOT HOLD THEN CLEAR BEFORE ADD
+                                if (room.selectedObject.Count == 1)
+                                {
+                                    room.selectedObject.Clear();
+                                }
+                            }
+                            foreach (Object o in room.selectedObject)
+                            {
+                                if (o == item)
+                                {
+                                    alreadyin = true;
+                                    break;
+                                }
+                            }
+                            if (ModifierKeys == Keys.Shift)
+                            {
+                                if (alreadyin == false)//prevent adding multiple time the same object
+                                {
+                                    room.selectedObject.Add(item);
+                                }
+                            }
+                            else
+                            {
+                                if (alreadyin == false)
+                                {
+                                    room.selectedObject.Clear();
+                                    room.selectedObject.Add(item);
+                                }
+                            }
                             room.update();
                             drawRoom();
+                            found = true;
+                            break;
                         }
                     }
+                    if (found == false)
+                    {
+                        room.selectedObject.Clear();
+                        room.update();
+                        drawRoom();
+                    }
+                }
+                else if (bg1modeButton.Checked)
+                {
+                    dragx = ((e.X) / 8);
+                    dragy = ((e.Y) / 8);
+                    foreach (Room_Object ro in room.tilesObjects)
+                    {
 
-                mouse_down = true;
+                        if (e.X >= (ro.boundingBox.X) && e.X <= (ro.x) + ro.boundingBox.Width &&
+                            e.Y >= (ro.boundingBox.Y) && e.Y <= (ro.y) + ro.boundingBox.Height)
+                        {
+                            //IF WE ARE HOLDING SHIFT THEN ADD
+                            if (ModifierKeys == Keys.Shift)
+                            {
+
+                            }
+                            else
+                            {
+                                //IF SHIFT IS NOT HOLD THEN CLEAR BEFORE ADD
+                                if (room.selectedObject.Count == 1)
+                                {
+                                    room.selectedObject.Clear();
+                                }
+                            }
+                            foreach (Object o in room.selectedObject)
+                            {
+                                if (o == ro)
+                                {
+                                    alreadyin = true;
+                                    break;
+                                }
+                            }
+                            if (ModifierKeys == Keys.Shift)
+                            {
+                                if (alreadyin == false)//prevent adding multiple time the same object
+                                {
+                                    room.selectedObject.Add(ro);
+                                }
+                            }
+                            else
+                            {
+                                if (alreadyin == false)
+                                {
+                                    room.selectedObject.Clear();
+                                    room.selectedObject.Add(ro);
+                                }
+                            }
+                            room.update();
+                            drawRoom();
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (found == false)
+                    {
+                        room.selectedObject.Clear();
+                        room.update();
+                        drawRoom();
+                    }
+                }
+
+                    mouse_down = true;
+                move_x = dragx;
+                move_y = dragy;
+                mx = dragx;
+                my = dragy;
             }
+
         }
 
         bool mouse_down = false;
@@ -458,6 +599,11 @@ namespace ZeldaFullEditor
                 my = ((e.Y) / 16);
             }
             else if (potmodeButton.Checked)
+            {
+                mx = ((e.X) / 8);
+                my = ((e.Y) / 8);
+            }
+            else if (bg1modeButton.Checked)
             {
                 mx = ((e.X) / 8);
                 my = ((e.Y) / 8);
@@ -584,6 +730,58 @@ namespace ZeldaFullEditor
                     }
                 }
             }
+            else if (bg1modeButton.Checked)
+            {
+                List<Object> parameters = new List<Object>();
+                List<Room_Object> moved_items = new List<Room_Object>();
+                List<int> x_pos = new List<int>();
+                List<int> y_pos = new List<int>();
+                if (room.selectedObject.Count > 0)
+                {
+                    if (moved == true)
+                    {
+                        foreach (Object o in room.selectedObject)
+                        {
+                            moved_items.Add((o as Room_Object));
+                            x_pos.Add((o as Room_Object).x);
+                            y_pos.Add((o as Room_Object).y);
+                            (o as Room_Object).x = (o as Room_Object).nx;
+                            (o as Room_Object).y = (o as Room_Object).ny;
+                            (o as Room_Object).updateBbox();
+                        }
+                        parameters.Add(moved_items.ToArray());
+                        parameters.Add(x_pos.ToArray());
+                        parameters.Add(y_pos.ToArray());
+                        actionsListbox.Items.Add(new DoAction(ActionType.Move, parameters.ToArray()));
+                        
+                        tempActionList.Clear();
+                    }
+                }
+                else
+                {
+                    if (moved)
+                    {
+                        foreach (Room_Object item in room.tilesObjects)
+                        {
+                            int rx = dragx;
+                            int ry = dragy;
+                            if (move_x < 0)
+                            {
+                                Math.Abs(rx = dragx + move_x);
+                            }
+                            if (move_y < 0)
+                            {
+                                Math.Abs(ry = dragy + move_y);
+                            }
+
+                            if (item.boundingBox.IntersectsWith(new Rectangle((rx * 8)+2, (ry * 8)+2, (Math.Abs(move_x) * 8)-4, (Math.Abs(move_y) * 8)-4)))
+                            {
+                                room.selectedObject.Add(item);
+                            }
+                        }
+                    }
+                }
+            }
             moved = false;
             room.update();
             drawRoom();
@@ -681,10 +879,10 @@ namespace ZeldaFullEditor
             roomgfxUpDown.Value = room.blockset;
             paletteUpDown.Value =  room.palette;
 
-            if (SpritesetcomboBox.Items.Count > 0)
+            /*if (SpritesetcomboBox.Items.Count > 0)
             {
                 SpritesetcomboBox.SelectedIndex = room.spriteset;
-            }
+            }*/
             room_loaded = true;
         }
 
@@ -707,6 +905,10 @@ namespace ZeldaFullEditor
                 g.DrawImage(GFX.room_bitmap,0,0);
                 if (room.selectedObject.Count>0)
                 {
+                    foreach (Object o in room.tilesObjects)
+                    {
+                        (o as Room_Object).Draw();
+                    }
                     GFX.begin_draw(roomBitmap);
                     foreach (Object o in room.selectedObject)
                     {
@@ -732,9 +934,22 @@ namespace ZeldaFullEditor
                             (o as PotItem).Draw();
                             drawRectangles.Add(new Rectangle((o as PotItem).nx*8, (o as PotItem).ny*8,16,16));
                         }
-
+                        else if (o is Room_Object)
+                        {
+                            if (moved == true)
+                            {
+                                (o as Room_Object).nx = (byte)((o as Room_Object).x + (move_x));
+                                (o as Room_Object).ny = (byte)((o as Room_Object).y + (move_y));
+                            }
+                            (o as Room_Object).resetBbox();
+                            (o as Room_Object).Draw();
+                            drawRectangles.Add((o as Room_Object).boundingBox);
+                            
+                        }
                     }
-                    GFX.end_draw(roomBitmap);
+
+
+                        GFX.end_draw(roomBitmap);
 
                     if (mouse_down)
                     {
@@ -775,6 +990,10 @@ namespace ZeldaFullEditor
                         {
                             g.DrawRectangle(new Pen(Brushes.White), new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8));
                         }
+                        else if (bg1modeButton.Checked)
+                        {
+                            g.DrawRectangle(new Pen(Brushes.White), new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8));
+                        }
                     }
                 }
 
@@ -805,7 +1024,7 @@ namespace ZeldaFullEditor
 
         public void update_modes_buttons(object sender, EventArgs e)
         {
-            for(int i = 6;i<14;i++)
+            for(int i = 6;i<15;i++)
             {
                 (toolStrip1.Items[i] as ToolStripButton).Checked = false;
             }
@@ -1106,7 +1325,7 @@ namespace ZeldaFullEditor
             {
                 room.floor1 = (byte)floor1UpDown.Value;
                 room.floor2 = (byte)floor2UpDown.Value;
-                room.spriteset = (byte)SpritesetcomboBox.SelectedIndex;
+                //room.spriteset = (byte)SpritesetcomboBox.SelectedIndex;
                 room.palette = (byte)paletteUpDown.Value;
                 room.blockset = (byte)roomgfxUpDown.Value;
                 
@@ -1280,173 +1499,7 @@ namespace ZeldaFullEditor
 
     
 
-    public class DoAction
-    {
-        public ActionType type;
-        public object[] parameters;
-        public string Name { get; set; } //Used to display name in action list
-        public DoAction(ActionType type, object[] parameters)
-        {
-            this.type = type;
-            this.parameters = parameters;
-            if (type == ActionType.Delete) //parameters = Object[],position in array
-            {
-                if (parameters[0] is Sprite[]) //deleted sprites
-                {
-                    if ((parameters[0] as Sprite[]).Length == 1)
-                    {
-                        Name = "Sprite[" + (parameters[0] as Sprite[])[0].id + "]" + "Deleted from pos : " + (parameters[1] as int[])[0].ToString();
-                    }
-                    else
-                    {
-                        Name = "Group of sprites Deleted";
-                    }
-                }
-            }
-            else if (type == ActionType.Move) //parameters = Object[],old_x,old_y
-            {
-                if (parameters[0] is Sprite[]) //deleted sprites
-                {
-                    if ((parameters[0] as Sprite[]).Length == 1)
-                    {
-                        Name = "Sprite[" + (parameters[0] as Sprite[])[0].id + "]" + "Moved from pos : X:" + (parameters[1] as int[])[0].ToString() + ",Y:" + (parameters[2] as int[])[0].ToString();
-                    }
-                    else
-                    {
-                        Name = "Group of sprites Moved";
-                    }
-                }
-            }
-            else if (type == ActionType.Change)
-            {
-                if ((parameters[0] as Sprite[]).Length == 1)
-                {
-                    Name = "Sprite[" + (parameters[0] as Sprite[])[0].id + "]" + "Changed to id : :" + (parameters[1] as int[])[0].ToString();
-                }
-                else
-                {
-                    Name = "Group of sprites Changed Id";
-                }
-            }
-        }
 
-        public void undo(Room room, List<DoAction> tempAction)
-        {
-            if (type == ActionType.Delete)
-            {
-                if (parameters[0] is Sprite[]) //deleted sprites
-                {
-                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
-                    {
-                        room.sprites.Insert((parameters[1] as int[])[i], (parameters[0] as Sprite[])[i]);
-                    }
-                }
-            }
-            else if (type == ActionType.Move)
-            {
-                if (parameters[0] is Sprite[]) //moved sprites
-                {
-                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
-                    {
-                        int new_old_x = (parameters[0] as Sprite[])[i].x;
-                        int new_old_y = (parameters[0] as Sprite[])[i].y;
-                        (parameters[0] as Sprite[])[i].x = (byte)(parameters[1] as int[])[i]; //return to old_x
-                        (parameters[0] as Sprite[])[i].y = (byte)(parameters[2] as int[])[i]; //return to old_y
-                        (parameters[0] as Sprite[])[i].nx = (parameters[0] as Sprite[])[i].x;
-                        (parameters[0] as Sprite[])[i].ny = (parameters[0] as Sprite[])[i].y;
-                        (parameters[1] as int[])[i] = new_old_x;//set them to oldpos for the redo function
-                        (parameters[2] as int[])[i] = new_old_y;//set them to oldpos for the redo function
-                    }
-                }
-            }
-            else if (type == ActionType.Change)
-            {
-                if (parameters[0] is Sprite[]) //changed sprites
-                {
-                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
-                    {
-                        int new_old_id = (parameters[0] as Sprite[])[i].id;
-                        (parameters[0] as Sprite[])[i].id = (byte)(parameters[1] as int[])[i]; //return to old_x
-                        (parameters[1] as int[])[i] = new_old_id;//set them to oldid for the undo function
-                        (parameters[0] as Sprite[])[i].updateBBox();
-                    }
-                }
-            }
-            else if (type == ActionType.Add)
-            {
-                if (parameters[0] is Sprite[]) //changed sprites
-                {
-                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
-                    {
-                        room.sprites.Remove((parameters[0] as Sprite[])[i]);
-                    }
-                }
-            }
-            tempAction.Insert(0,new DoAction(type, parameters));
-
-        }
-
-        public void redo(Room room, ListBox actionlist)
-        {
-            if (type == ActionType.Delete)
-            {
-                if (parameters[0] is Sprite[]) //deleted sprites
-                {
-                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
-                    {
-                        room.sprites.Remove((parameters[0] as Sprite[])[i]);
-                    }
-                }
-            }
-            else if (type == ActionType.Move)
-            {
-                if (parameters[0] is Sprite[]) //moved sprites
-                {
-                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
-                    {
-                        int new_old_x = (parameters[0] as Sprite[])[i].x;
-                        int new_old_y = (parameters[0] as Sprite[])[i].y;
-                        (parameters[0] as Sprite[])[i].x = (byte)(parameters[1] as int[])[i]; //return to old_x
-                        (parameters[0] as Sprite[])[i].y = (byte)(parameters[2] as int[])[i]; //return to old_y
-                        (parameters[0] as Sprite[])[i].nx = (parameters[0] as Sprite[])[i].x;
-                        (parameters[0] as Sprite[])[i].ny = (parameters[0] as Sprite[])[i].y;
-                        (parameters[1] as int[])[i] = new_old_x;//set them to oldpos for the undo function
-                        (parameters[2] as int[])[i] = new_old_y;//set them to oldpos for the undo function
-                    }
-                }
-            }
-            else if (type == ActionType.Change)
-            {
-                if (parameters[0] is Sprite[]) //changed sprites
-                {
-                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
-                    {
-                        int new_old_id = (parameters[0] as Sprite[])[i].id;
-                        (parameters[0] as Sprite[])[i].id = (byte)(parameters[1] as int[])[i]; //return to old_x
-                        (parameters[1] as int[])[i] = new_old_id;//set them to oldid for the undo function
-                        (parameters[0] as Sprite[])[i].updateBBox();
-                    }
-                }
-            }
-            else if (type == ActionType.Add)
-            {
-                if (parameters[0] is Sprite[]) //changed sprites
-                {
-                    for (int i = 0; i < (parameters[0] as Sprite[]).Length; i++)
-                    {
-                        room.sprites.Add((parameters[0] as Sprite[])[i]);
-                    }
-                }
-            }
-            actionlist.Items.Add(new DoAction(type, parameters));
-        }
-
-    }
-
-    public enum ActionType
-    {
-        Move,Delete,Add,Change
-    }
 
     [Serializable]
     public class SaveObject

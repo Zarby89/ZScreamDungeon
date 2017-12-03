@@ -15,32 +15,29 @@ using System.Threading.Tasks;
 namespace ZeldaFullEditor
 {
     [Serializable]
-    public partial class Room : ICloneable
+    public class Room : ICloneable
     {
-        List<SpriteName> stringtodraw = new List<SpriteName>();
+        //List<SpriteName> stringtodraw = new List<SpriteName>();
         public int index;
         int header_location;
-        byte layout;
+        public byte layout;
         public byte floor1;
         public byte floor2;
         public byte blockset;
         public byte spriteset;
         public byte palette;
-        byte collision; //Need a better name for that
+        public byte collision; //Need a better name for that
         public Background2 bg2;
-        byte effect;//TODO : enum
-        byte tag1;//TODO : enum
-        byte tag2;//TODO : enum
-        byte holewarp;
-        byte[] staircase_rooms = new byte[4];
-        bool light;
-        byte holewarp_plane;
-        byte staircase1_plane;
-        byte staircase2_plane;
-        byte staircase3_plane;
-        byte staircase4_plane;
-        byte messageid;
-        bool damagepit;
+        public byte effect;//TODO : enum
+        public byte tag1;//TODO : enum
+        public byte tag2;//TODO : enum
+        public byte holewarp;
+        public byte[] staircase_rooms = new byte[4];
+        public byte[] staircase_plane = new byte[4];
+        public bool light;
+        public byte holewarp_plane;
+        public byte messageid;
+        public bool damagepit;
         public byte[] blocks = new byte[24];
         public List<Chest> chest_list = new List<Chest>();
         public List<Room_Object> tilesObjects = new List<Room_Object>();
@@ -138,6 +135,7 @@ namespace ZeldaFullEditor
             {
                 g.Clear(Color.Transparent);
             }
+
             if (bg2 == Background2.Off) //off
             {
 
@@ -449,7 +447,7 @@ namespace ZeldaFullEditor
 
 
         
-        public void DrawSpritesNames(Graphics g)
+        /*public void DrawSpritesNames(Graphics g)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.InterpolationMode = InterpolationMode.HighQualityBicubic;
@@ -462,7 +460,7 @@ namespace ZeldaFullEditor
                     SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255));
                     g.FillPath(brush, gpath);
             }
-        }
+        }*/
 
         public void DrawStairsId(Graphics g)
         {
@@ -481,41 +479,71 @@ namespace ZeldaFullEditor
 
         public void InitDrawObjects(byte layer = 255)
         {
+
             foreach (Room_Object o in tilesObjects)
             {
+                o.selected = false;
+            }
+            if (selectedObject.Count > 0)
+            {
+                foreach (Object o in selectedObject)
+                {
+                    if (o is Room_Object)
+                    {
+                        (o as Room_Object).selected = true;
+                    }
+                }
 
-                if (o.id == 0xFF3)//full bg2 overlay
+                foreach (Room_Object o in tilesObjects)
                 {
-                    o.x = 0;
-                    o.y = 0;
-                }
-                if (o.allBgs)
-                {
-                    o.Draw();
-                }
-                else
-                {
-                    if (layer == 255)
+                    if (o.selected == false)
                     {
-                        o.Draw();
-                    }
-                    else if (layer == 1)
-                    {
-                        if (o.layer == 1)
-                        {
-                            o.Draw();
-                        }
-                    }
-                    else
-                    {
-                        if (o.layer != 1)
-                        {
-                            o.Draw();
-                        }
+                        draw_tiles(o,layer);
                     }
                 }
             }
+            else
+            {
+                foreach (Room_Object o in tilesObjects)
+                {
+                    draw_tiles(o, layer);
+                }
+            }
+        }
 
+        public void draw_tiles(Room_Object o,byte layer = 255)
+        {
+
+            if (o.id == 0xFF3)//full bg2 overlay
+            {
+                o.x = 0;
+                o.y = 0;
+            }
+            if (o.allBgs)
+            {
+                o.Draw();
+            }
+            else
+            {
+                if (layer == 255)
+                {
+                    o.Draw();
+                }
+                else if (layer == 1)
+                {
+                    if (o.layer == 1)
+                    {
+                        o.Draw();
+                    }
+                }
+                else
+                {
+                    if (o.layer != 1)
+                    {
+                        o.Draw();
+                    }
+                }
+            }
         }
 
         public void loadTilesObjects(bool floor = true)
@@ -706,15 +734,20 @@ namespace ZeldaFullEditor
                         {
                             if (stair == oid) //we found stairs that lead to another room
                             {
+                                
                                 if (nbr_of_staircase < 4)
                                 {
+                                    tilesObjects[tilesObjects.Count - 1].is_stair = true;
                                     staircaseRooms.Add(new StaircaseRoom(posX, posY, "To " + staircase_rooms[nbr_of_staircase]));
                                     nbr_of_staircase++;
+                                    
                                 }
                                 else
                                 {
+                                    tilesObjects[tilesObjects.Count - 1].is_stair = true;
                                     staircaseRooms.Add(new StaircaseRoom(posX, posY, "To ???"));
                                 }
+                                
                             }
                         }
 
@@ -723,6 +756,7 @@ namespace ZeldaFullEditor
                         {
                             if (chests_in_room.Count > 0)
                             {
+                                tilesObjects[tilesObjects.Count - 1].is_chest = true;
                                 chest_list.Add(new Chest(posX, posY, chests_in_room[0].itemIn, chests_in_room[0].bigChest));
                                 chests_in_room.RemoveAt(0);
 
@@ -732,6 +766,7 @@ namespace ZeldaFullEditor
                         {
                             if (chests_in_room.Count > 0)
                             {
+                                tilesObjects[tilesObjects.Count - 1].is_chest = true;
                                 chest_list.Add(new Chest((byte)(posX+1), posY, chests_in_room[0].itemIn, chests_in_room[0].bigChest));
                                 chests_in_room.RemoveAt(0);
 
@@ -1876,8 +1911,6 @@ namespace ZeldaFullEditor
             }
         }
 
-        public Bitmap selectedObjects = new Bitmap(512,512);
-
         public void DrawFloors(byte floor = 0)
         {
             byte f = (byte)(floor1 << 4);
@@ -1945,10 +1978,10 @@ namespace ZeldaFullEditor
             tag2 = (byte)((ROM.DATA[header_location + 6]));
 
             holewarp_plane = (byte)((ROM.DATA[header_location + 7]) & 0x03);
-            staircase1_plane = (byte)((ROM.DATA[header_location + 7]>>2) & 0x03);
-            staircase2_plane = (byte)((ROM.DATA[header_location + 7]>>4) & 0x03);
-            staircase3_plane = (byte)((ROM.DATA[header_location + 7]>>6) & 0x03);
-            staircase4_plane = (byte)((ROM.DATA[header_location + 8]) & 0x03 );
+            staircase_plane[0] = (byte)((ROM.DATA[header_location + 7]>>2) & 0x03);
+            staircase_plane[1] = (byte)((ROM.DATA[header_location + 7]>>4) & 0x03);
+            staircase_plane[2] = (byte)((ROM.DATA[header_location + 7]>>6) & 0x03);
+            staircase_plane[3] = (byte)((ROM.DATA[header_location + 8]) & 0x03 );
 
             holewarp = (byte)((ROM.DATA[header_location + 9]));
             staircase_rooms[0] = (byte)((ROM.DATA[header_location + 10]));
