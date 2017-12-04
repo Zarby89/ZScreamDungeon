@@ -499,7 +499,7 @@ namespace ZeldaFullEditor
                                     room.selectedObject.Add(item);
                                 }
                             }
-                            room.update();
+                            room.update(false);
                             drawRoom();
                             found = true;
                             break;
@@ -508,7 +508,7 @@ namespace ZeldaFullEditor
                     if (found == false)
                     {
                         room.selectedObject.Clear();
-                        room.update();
+                        room.update(false);
                         drawRoom();
                     }
                 }
@@ -519,9 +519,10 @@ namespace ZeldaFullEditor
                     foreach (Room_Object ro in room.tilesObjects)
                     {
 
-                        if (e.X >= (ro.boundingBox.X) && e.X <= (ro.x) + ro.boundingBox.Width &&
-                            e.Y >= (ro.boundingBox.Y) && e.Y <= (ro.y) + ro.boundingBox.Height)
+                        if (e.X >= (ro.boundingBox.X) && e.X <= (ro.boundingBox.X) + ro.boundingBox.Width &&
+                            e.Y >= (ro.boundingBox.Y) && e.Y <= (ro.boundingBox.Y) + ro.boundingBox.Height)
                         {
+                            if (ro.is_bgr) { continue; };
                             //IF WE ARE HOLDING SHIFT THEN ADD
                             if (ModifierKeys == Keys.Shift)
                             {
@@ -532,6 +533,7 @@ namespace ZeldaFullEditor
                                 //IF SHIFT IS NOT HOLD THEN CLEAR BEFORE ADD
                                 if (room.selectedObject.Count == 1)
                                 {
+                                    
                                     room.selectedObject.Clear();
                                 }
                             }
@@ -558,7 +560,7 @@ namespace ZeldaFullEditor
                                     room.selectedObject.Add(ro);
                                 }
                             }
-                            room.update();
+                            room.update(false);
                             drawRoom();
                             found = true;
                             break;
@@ -567,7 +569,7 @@ namespace ZeldaFullEditor
                     if (found == false)
                     {
                         room.selectedObject.Clear();
-                        room.update();
+                        room.update(false);
                         drawRoom();
                     }
                 }
@@ -613,18 +615,30 @@ namespace ZeldaFullEditor
 
             if (mouse_down)
             {
-                    if (mx != last_mx || my != last_my)
+                if (mx != last_mx || my != last_my)
+                {
+                    if (oldObjectList != room.selectedObject)
                     {
-                        if (oldObjectList != room.selectedObject)
-                        {
-                            room.update(); //Slow function prevent room from updating everyframe if object didnt changed
-                            oldObjectList = room.selectedObject;
-                        }
-
-                        anychange = true;
-                        moved = true;
-                        drawRoom();
+                        room.update(true); //Slow function prevent room from updating everyframe if object didnt changed
+                        oldObjectList = room.selectedObject;
                     }
+                    else
+                    {
+                        if (bg1modeButton.Checked)
+                        {
+                            foreach (Object o in room.selectedObject)
+                            {
+                                (o as Room_Object).x = (o as Room_Object).nx;
+                                (o as Room_Object).y = (o as Room_Object).ny;
+
+                            }
+                        }
+                        room.update(false);
+                    }
+                    anychange = true;
+                    moved = true;
+                    drawRoom();
+                }
 
             }
             last_mx = mx;
@@ -747,7 +761,10 @@ namespace ZeldaFullEditor
                             y_pos.Add((o as Room_Object).y);
                             (o as Room_Object).x = (o as Room_Object).nx;
                             (o as Room_Object).y = (o as Room_Object).ny;
+                            (o as Room_Object).ox = (o as Room_Object).x;
+                            (o as Room_Object).oy = (o as Room_Object).y;
                             (o as Room_Object).updateBbox();
+
                         }
                         parameters.Add(moved_items.ToArray());
                         parameters.Add(x_pos.ToArray());
@@ -773,17 +790,20 @@ namespace ZeldaFullEditor
                             {
                                 Math.Abs(ry = dragy + move_y);
                             }
-
+                            
                             if (item.boundingBox.IntersectsWith(new Rectangle((rx * 8)+2, (ry * 8)+2, (Math.Abs(move_x) * 8)-4, (Math.Abs(move_y) * 8)-4)))
                             {
-                                room.selectedObject.Add(item);
+                                if (item.is_bgr == false)
+                                {
+                                    room.selectedObject.Add(item);
+                                }
                             }
                         }
                     }
                 }
             }
             moved = false;
-            room.update();
+            room.update(true);
             drawRoom();
         }
 
@@ -831,7 +851,7 @@ namespace ZeldaFullEditor
                         save_room(lastRoom);
                         room = (Room)all_rooms[(roomListBox.SelectedItem as ListRoomName).id].Clone();
                         room.reloadGfx();
-                        room.update();
+                        //room.update(false);
                         
                         drawRoom();
                         lastRoom = roomListBox.SelectedIndex;
@@ -847,7 +867,7 @@ namespace ZeldaFullEditor
                         clear_room();
                             room = (Room)all_rooms[(roomListBox.SelectedItem as ListRoomName).id].Clone();
                             room.reloadGfx();
-                            room.update();
+                            //room.update(false);
                         drawRoom();
                         lastRoom = roomListBox.SelectedIndex;
                         anychange = false;
@@ -859,7 +879,7 @@ namespace ZeldaFullEditor
                 clear_room();
                 room = (Room)all_rooms[(roomListBox.SelectedItem as ListRoomName).id].Clone();
                 room.reloadGfx();
-                room.update();
+                //room.update(false);
                 drawRoom();
                 lastRoom = roomListBox.SelectedIndex;
             }
@@ -905,10 +925,6 @@ namespace ZeldaFullEditor
                 g.DrawImage(GFX.room_bitmap,0,0);
                 if (room.selectedObject.Count>0)
                 {
-                    foreach (Object o in room.tilesObjects)
-                    {
-                        (o as Room_Object).Draw();
-                    }
                     GFX.begin_draw(roomBitmap);
                     foreach (Object o in room.selectedObject)
                     {
@@ -938,11 +954,13 @@ namespace ZeldaFullEditor
                         {
                             if (moved == true)
                             {
-                                (o as Room_Object).nx = (byte)((o as Room_Object).x + (move_x));
-                                (o as Room_Object).ny = (byte)((o as Room_Object).y + (move_y));
+                                (o as Room_Object).nx = (byte)((o as Room_Object).ox + (move_x));
+                                (o as Room_Object).ny = (byte)((o as Room_Object).oy + (move_y));
+                                //(o as Room_Object).resetBbox();
                             }
-                            (o as Room_Object).resetBbox();
-                            (o as Room_Object).Draw();
+                            
+
+                            //(o as Room_Object).Draw();
                             drawRectangles.Add((o as Room_Object).boundingBox);
                             
                         }
@@ -950,8 +968,12 @@ namespace ZeldaFullEditor
 
 
                         GFX.end_draw(roomBitmap);
+                    /*if (room.selectedObject.Count > 0)
+                    {
+                        room.update(false);
+                    }*/
 
-                    if (mouse_down)
+                        if (mouse_down)
                     {
                         foreach (Rectangle r in drawRectangles)
                         {
@@ -1366,6 +1388,7 @@ namespace ZeldaFullEditor
                 palette_mouse_down = false;
                 room.reloadGfx(true);
                 drawRoom();
+                
             }
         }
 

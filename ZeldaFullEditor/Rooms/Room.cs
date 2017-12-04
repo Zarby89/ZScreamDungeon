@@ -99,7 +99,7 @@ namespace ZeldaFullEditor
             }
             GFX.load4bpp(GFX.gfxdata, blocks);
 
-            update();
+            update(true);
         }
 
 
@@ -129,33 +129,40 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void update()
+        public void update(bool bgr = false)
         {
             using (Graphics g = Graphics.FromImage(GFX.bg1_bitmap))
             {
                 g.Clear(Color.Transparent);
             }
-
+            if (bgr == true)
+            {
+                GFX.begin_draw(GFX.bgr_bitmap);
+                DrawFloors();
+                
+                GFX.end_draw(GFX.bgr_bitmap);
+            }
             if (bg2 == Background2.Off) //off
             {
-
                 GFX.begin_draw(GFX.room_bitmap);
-                DrawFloors();
                 InitDrawObjects();
                 drawSprites();
                 GFX.end_draw(GFX.room_bitmap);
             }
-            else if (bg2 == Background2.OnTop) //on top
+            /*else if (bg2 == Background2.OnTop) //on top
             {
 
                 GFX.begin_draw(GFX.room_bitmap);
-                DrawFloors();
-                InitDrawObjects(0);
+                if (bgr)
+                {
+                    DrawFloors();
+                }
+                InitDrawObjects(0,bgr);
                 drawSprites();
                 GFX.end_draw(GFX.room_bitmap);
 
                 GFX.begin_draw(GFX.bg1_bitmap);
-                InitDrawObjects(1);
+                InitDrawObjects(1, bgr);
                 GFX.end_draw(GFX.bg1_bitmap);
 
                 using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
@@ -167,13 +174,16 @@ namespace ZeldaFullEditor
             else if (bg2 == Background2.Transparent) //transparent
             {
                 GFX.begin_draw(GFX.room_bitmap);
-                DrawFloors();
-                InitDrawObjects(0);
+                if (bgr)
+                {
+                    DrawFloors();
+                }
+                InitDrawObjects(0,bgr);
                 drawSprites();
                 GFX.end_draw(GFX.room_bitmap);
 
                 GFX.begin_draw(GFX.bg1_bitmap);
-                InitDrawObjects(1);
+                InitDrawObjects(1,bgr);
                 GFX.end_draw(GFX.bg1_bitmap);
                 using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
                 {
@@ -183,13 +193,19 @@ namespace ZeldaFullEditor
             else
             {
                 GFX.begin_draw(GFX.room_bitmap);
-                DrawFloors(2);
-                InitDrawObjects(1);
+                if (bgr)
+                {
+                    DrawFloors(2);
+                }
+                InitDrawObjects(1,bgr);
                 GFX.end_draw(GFX.room_bitmap);
 
                 GFX.begin_draw(GFX.bg1_bitmap);
-                DrawFloors();
-                InitDrawObjects(0);
+                if (bgr)
+                {
+                    DrawFloors();
+                }
+                InitDrawObjects(0,bgr);
                 drawSprites();
                 GFX.end_draw(GFX.bg1_bitmap);
                 using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
@@ -197,7 +213,7 @@ namespace ZeldaFullEditor
                     g.DrawImage(GFX.bg1_bitmap, 0, 0);
                 }
             }
-
+            */
             using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
             {
                 GFX.begin_draw(GFX.room_bitmap);
@@ -295,6 +311,8 @@ namespace ZeldaFullEditor
                     float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
                     o.x = (byte)n;
                     o.y = (byte)(pos / 64);
+                    o.is_door = true;
+                    o.is_bgr = true;
                 }
                 if (o.GetType() == typeof(object_door_down))
                 {
@@ -303,6 +321,8 @@ namespace ZeldaFullEditor
                     o.x = (byte)n;
                     o.y = (byte)(pos / 64);
                     o.y += 1;
+                    o.is_door = true;
+                    o.is_bgr = true;
                 }
 
                 if (o.GetType() == typeof(object_door_left))
@@ -311,6 +331,8 @@ namespace ZeldaFullEditor
                     float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
                     o.x = (byte)n;
                     o.y = (byte)(pos / 64);
+                    o.is_door = true;
+                    o.is_bgr = true;
                 }
                 if (o.GetType() == typeof(object_door_right))
                 {
@@ -322,6 +344,8 @@ namespace ZeldaFullEditor
                     //{
                     o.x += 1;
                     //}
+                    o.is_door = true;
+                    o.is_bgr = true;
                 }
             }
         }
@@ -477,38 +501,30 @@ namespace ZeldaFullEditor
             }
         }
 
+
+        public void InitDrawBgr()
+        {
+            foreach (Room_Object o in tilesObjects)
+            {
+                if (o.is_bgr)
+                {
+                    draw_tiles(o,255);
+                }
+            }
+        }
+
         public void InitDrawObjects(byte layer = 255)
         {
 
             foreach (Room_Object o in tilesObjects)
             {
-                o.selected = false;
-            }
-            if (selectedObject.Count > 0)
-            {
-                foreach (Object o in selectedObject)
-                {
-                    if (o is Room_Object)
-                    {
-                        (o as Room_Object).selected = true;
-                    }
-                }
-
-                foreach (Room_Object o in tilesObjects)
-                {
-                    if (o.selected == false)
-                    {
-                        draw_tiles(o,layer);
-                    }
-                }
-            }
-            else
-            {
-                foreach (Room_Object o in tilesObjects)
+                if (o.is_bgr == false)
                 {
                     draw_tiles(o, layer);
+                    o.resetBbox();
                 }
             }
+
         }
 
         public void draw_tiles(Room_Object o,byte layer = 255)
@@ -654,7 +670,7 @@ namespace ZeldaFullEditor
                         sizeXY = (byte)(((sizeX << 2) + sizeY));
                     }
                     addObject(oid, posX, posY, sizeXY,(byte)layer);
-
+                    tilesObjects[tilesObjects.Count - 1].is_bgr = true;
 
 
                 }

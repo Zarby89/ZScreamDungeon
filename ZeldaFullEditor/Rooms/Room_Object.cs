@@ -16,6 +16,7 @@ namespace ZeldaFullEditor
     {
         public byte x, y; //position of the object in the room (*8 for draw)
         public byte nx, ny;
+        public byte ox, oy;
         public byte size; //size of the object
         public bool allBgs = false; //if the object is drawn on BG1 and BG2 regardless of type of BG
         public List<Tile> tiles = new List<Tile>();
@@ -24,10 +25,11 @@ namespace ZeldaFullEditor
         public byte layer = 0;
         public Room room;
         public int drawYFix = 0;
-        public bool selected = false;
         public bool is_stair = false;
         public bool is_chest = false;
         public bool is_bgr = false;
+        public bool redraw = false;
+        public bool is_door = false;
         public Rectangle boundingBox;
         public Room_Object(short id,byte x,byte y,byte size,byte layer = 0)
         {
@@ -38,6 +40,8 @@ namespace ZeldaFullEditor
             this.layer = layer;
             this.nx = x;
             this.ny = y;
+            this.ox = x;
+            this.oy = y;
             //GFX.tilebufferbitmap.MakeTransparent(Color.Black);
         }
 
@@ -112,12 +116,12 @@ namespace ZeldaFullEditor
         public void resetBbox()
         {
 
-            int lowerX = 0;
-            int lowerY = 0;
-            int higherX = 0;
-            int higherY = 0;
-            int width = 16;
-            int height = 16;
+            lowerX = 0;
+            lowerY = 0;
+            higherX = 0;
+            higherY = 0;
+            width = 16;
+            height = 16;
         }
 
         public void updateBbox()
@@ -125,8 +129,11 @@ namespace ZeldaFullEditor
             boundingBox = new Rectangle((this.x * 8), (this.y * 8), width- (this.x * 8), height - (this.y * 8));
         }
 
-        int image_size_x = 0;
-        int image_size_y = 0;
+        public void updatePos()
+        {
+            this.x = nx;
+            this.y = ny;
+        }
 
         int lowerX = 0;
         int lowerY = 0;
@@ -163,11 +170,7 @@ namespace ZeldaFullEditor
             width = higherX - lowerX;
             height = higherY - lowerY;
 
-            if (nx != this.x || ny != this.y)
-            {
-                this.x = (byte)(this.nx/8);
-                this.y = (byte)(this.ny/8);
-            }
+            
 
 
             updateBbox();

@@ -25,6 +25,7 @@ namespace ZeldaFullEditor
         public static byte[,] imgdata = new byte[128, 32];
         public static byte[] singledata = new byte[128 * 800];
 
+        public static Bitmap bgr_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap bg1_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap room_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb); //act as bg2
 
@@ -163,12 +164,14 @@ namespace ZeldaFullEditor
         }
 
 
+        public static Bitmap
+
         public static byte[] blocksetData;
 
         public static byte[] currentData;
         public static IntPtr currentPtr;
         public static BitmapData currentbmpData;
-
+        
         public static void begin_draw(Bitmap b, int width = 512, int height = 512)
         {
             currentbmpData = b.LockBits(new Rectangle(0,0,width,height), ImageLockMode.ReadWrite, b.PixelFormat);
