@@ -164,7 +164,7 @@ namespace ZeldaFullEditor
         }
 
 
-        public static Bitmap
+       // public static Bitmap
 
         public static byte[] blocksetData;
 
