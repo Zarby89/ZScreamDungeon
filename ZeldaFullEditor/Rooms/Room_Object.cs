@@ -44,6 +44,8 @@ namespace ZeldaFullEditor
         public byte scroll_y = 2;
         public byte base_width = 2;
         public byte base_height = 2;
+        public byte oldSize = 0;
+        public byte special_zero_size = 0;
         public Room_Object(short id,byte x,byte y,byte size,byte layer = 0)
         {
             this.x = x;
@@ -61,15 +63,32 @@ namespace ZeldaFullEditor
 
         public void get_scroll_x()
         {
+
+            if (id == 0x00)
+            {
+                scroll_x = 2;
+                special_zero_size = 32;
+                base_width = 2;
+                return;
+            }
+            else if (id == 0x01 || id == 0x02)
+            {
+                scroll_x = 2;
+                special_zero_size = 26;
+                base_width = 2;
+                return;
+            }
+
             byte oldSize = size;
             size = 1;
             checksize = true;
             Draw();
-            scroll_x = (byte)((width / 8) / 2);
+            scroll_x = (byte)((width / 8));
             size = 0;
             resetSize();
             Draw();
             base_width = (byte)(width / 8);
+            scroll_x -= base_width;
             size = oldSize;
             resetSize();
             checksize = false;
@@ -82,11 +101,12 @@ namespace ZeldaFullEditor
             size = 1;
             checksize = true;
             Draw();
-            scroll_y = (byte)((height / 8) / 2);
+            scroll_y = (byte)((height / 8));
             size = 0;
             resetSize();
             Draw();
             base_height = (byte)(height / 8);
+            scroll_y -= base_height;
             size = oldSize;
             resetSize();
             checksize = false;

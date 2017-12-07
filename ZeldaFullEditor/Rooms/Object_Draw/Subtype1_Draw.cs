@@ -15,14 +15,15 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
             name = "Ceiling";
-            if (this.size == 0)
-            {
-                this.size = 32;
-            }
+
         }
 
         public override void Draw()
         {
+            if (this.size == 0)
+            {
+                this.size = 32;
+            }
             for (int s = 0; s < size; s++)
             {
                 draw_tile(tiles[0], ((s * 2)) * 8, 0); draw_tile(tiles[2], (1 + (s * 2)) * 8, 0);
@@ -41,15 +42,16 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
             name = "Top Wall Horiz.";
-            if (this.size == 0)
-            {
-                this.size = 26;
-            }
+
 
         }
 
         public override void Draw()
         {
+            if (this.size == 0)
+            {
+                this.size = 26;
+            }
             for (int s = 0; s < size; s++)
             {
                 draw_tile(tiles[0], ((s * 2)) * 8, (0) * 8); draw_tile(tiles[4], (1 + (s * 2)) * 8, (0) * 8);
@@ -70,14 +72,15 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
             name = "Bottom Wall Horiz.";
-            if (this.size == 0)
-            {
-                this.size = 26;
-            }
+
         }
 
         public override void Draw()
         {
+            if (this.size == 0)
+            {
+                this.size = 26;
+            }
             for (int s = 0; s < size; s++)
             {
                 draw_tile(tiles[0], ((s * 2)) * 8, (0) * 8); draw_tile(tiles[4], (1 + (s * 2)) * 8, (0) * 8);

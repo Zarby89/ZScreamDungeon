@@ -424,7 +424,7 @@ namespace ZeldaFullEditor
                     mouse_down = true;
                     dragx = ((e.X) / 8);
                     dragy = ((e.Y) / 8);
-                    
+                    (room.selectedObject[0] as Room_Object).oldSize = (room.selectedObject[0] as Room_Object).size;
                     return;
                 }
                 found = false;
@@ -621,6 +621,12 @@ namespace ZeldaFullEditor
                                 if (resizing == Resize.Right)
                                 {
                                     Cursor.Current = Cursors.SizeWE;
+                                    dragx = (room.selectedObject[0] as Room_Object).x;
+                                }
+                                else if (resizing == Resize.Left)
+                                {
+                                    Cursor.Current = Cursors.SizeWE;
+                                    dragx = (room.selectedObject[0] as Room_Object).x;
                                 }
                             }
                         }
@@ -646,10 +652,7 @@ namespace ZeldaFullEditor
                         mx = ((e.X) / 8);
                         my = ((e.Y) / 8);
                     }
-                    if (selection_resize == true)
-                    {
-                        dragx = (room.selectedObject[0] as Room_Object).x;
-                    }
+
                     move_x = mx - dragx; //number of tiles mouse is compared to starting drag point X
                     move_y = my - dragy; //number of tiles mouse is compared to starting drag point Y
 
@@ -673,34 +676,7 @@ namespace ZeldaFullEditor
                     }
                     else
                     {
-                        if (mx != last_mx || my != last_my)
-                        {
-                            anychange = true; //will prompt room has changed dialog
-                            last_mx = mx;
-                            last_my = my;
-                            need_refresh = true;
-                            
-                            //move_x = nbr of tiles the mouse moved x axis from drag
-                            //move_y = nbr of tiles the mouse moved y axis from drag
-                            if (resizing == Resize.Right)
-                            {
-                                //check possible new size
-                                if (move_x > (room.selectedObject[0] as Room_Object).base_width)
-                                {
-                                    Console.WriteLine((room.selectedObject[0] as Room_Object).base_width +" + "+ (room.selectedObject[0] as Room_Object).scroll_x);
-                                        (room.selectedObject[0] as Room_Object).size = (byte)(((move_x)/((room.selectedObject[0] as Room_Object).scroll_x)));
-                                        if (((room.selectedObject[0] as Room_Object).size >= 15))
-                                        {
-                                            (room.selectedObject[0] as Room_Object).size = 15;
-                                        }
-                                }
-                                else
-                                {
-                                    (room.selectedObject[0] as Room_Object).size = 0;
-                                }
-                            }
-
-                        }
+                        resizing_objects();
                     }
 
                 }
@@ -721,10 +697,73 @@ namespace ZeldaFullEditor
                     setObjectsPosition();
                 }
                 mouse_down = false;
-                //drawRoom();
+                
             }
             
         }
+
+        public void resizing_objects()
+        {
+            //object_00,01,02 = special
+            
+            if (mx != last_mx || my != last_my)
+            {
+                anychange = true; //will prompt room has changed dialog
+                last_mx = mx;
+                last_my = my;
+                need_refresh = true;
+                Room_Object obj = (room.selectedObject[0] as Room_Object);
+                //move_x = nbr of tiles the mouse moved x axis from drag
+                //move_y = nbr of tiles the mouse moved y axis from drag
+                if (resizing == Resize.Right)
+                {
+                    if ((obj.id >= 0x00 && obj.id <= 0x5F) || (obj.id >= 0xA0 && obj.id <= 0xBF)) //horizontally scrollable
+                    {
+                        //check possible new size
+                        if (move_x > obj.base_width)
+                        {
+                            obj.size = (byte)((move_x - obj.base_width) / obj.scroll_x);
+                            if ((obj.size >= 15))
+                            {
+                                if (obj.special_zero_size != 0)
+                                {
+                                    obj.size = 0;
+                                }
+                                else
+                                {
+                                    obj.size = 15;
+                                }
+                            }
+                            else if (obj.size <= 0)
+                            {
+                                if (obj.special_zero_size != 0)
+                                {
+                                    obj.size = 1;
+                                }
+                                else
+                                {
+                                    obj.size = 0;
+                                }
+                            }
+                        }
+                        else if (move_x < 0)
+                        {
+                            if (obj.special_zero_size != 0)
+                            {
+                                obj.size = 1;
+                            }
+                            else
+                            {
+                                obj.size = 0;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+
 
         private void gotoRoomToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1649,6 +1688,7 @@ namespace ZeldaFullEditor
                         (o as Room_Object).y = (o as Room_Object).ny;
                         (o as Room_Object).ox = (o as Room_Object).x;
                         (o as Room_Object).oy = (o as Room_Object).y;
+                        (o as Room_Object).oldSize = (o as Room_Object).size;
                     }
                     parameters.Add(moved_items.ToArray());
                     parameters.Add(x_pos.ToArray());
