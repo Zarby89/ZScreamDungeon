@@ -98,12 +98,15 @@ namespace ZeldaFullEditor
                     {
                         pp = 8;
                     }
-                    if (dest < GFX.currentData.Length)
+                    if (dest < (1048576))
                     {
-                        GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, palette].B);
-                        GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, palette].G);
-                        GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, palette].R);
-                        GFX.currentData[dest + 3] = 255;//A
+                        unsafe
+                        {
+                            GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, palette].B);
+                            GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, palette].G);
+                            GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, palette].R);
+                            GFX.currentData[dest + 3] = 255;//A
+                        }
                     }
                 }
             }

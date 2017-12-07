@@ -246,6 +246,6 @@ namespace ZeldaFullEditor
 
     public enum ActionType
     {
-        Move, Delete, Add, Change
+        Move, Delete, Add, Change, Resize
     }
 }

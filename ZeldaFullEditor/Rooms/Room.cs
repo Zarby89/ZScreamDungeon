@@ -46,7 +46,7 @@ namespace ZeldaFullEditor
         public List<Sprite> sprites = new List<Sprite>();
         public List<PotItem> pot_items = new List<PotItem>();
         public List<Object> selectedObject = new List<object>();
-       
+        public bool objectInitialized = false;
         public Room(int index)
         {
             this.index = index;
@@ -63,7 +63,7 @@ namespace ZeldaFullEditor
 
         public void reloadGfx(bool noPalette = false)
         {
-            
+
 
             for (int i = 0; i < 8; i++)
             {
@@ -90,7 +90,7 @@ namespace ZeldaFullEditor
                 blocks[22] = 0;
                 blocks[23] = 0;
             }
-            
+
 
             if (noPalette == false)
             {
@@ -99,7 +99,10 @@ namespace ZeldaFullEditor
             }
             GFX.load4bpp(GFX.gfxdata, blocks);
 
-            update(true);
+
+
+            objectInitialized = false;
+            update();
         }
 
 
@@ -122,113 +125,53 @@ namespace ZeldaFullEditor
 
                 if (b1 == 0xFF) { break; }
 
-                sprites.Add(new Sprite(this, b3, (byte)(b2 & 0x1F), (byte)(b1 & 0x1F), Sprites_Names.name[b3], (byte)((b2 & 0xE0) >> 5), (byte)((b1 & 0x60) >> 5), (byte)((b1 & 0x80)>>6)));
+                sprites.Add(new Sprite(this, b3, (byte)(b2 & 0x1F), (byte)(b1 & 0x1F), Sprites_Names.name[b3], (byte)((b2 & 0xE0) >> 5), (byte)((b1 & 0x60) >> 5), (byte)((b1 & 0x80) >> 6)));
 
                 sprite_address += 3;
 
             }
         }
 
-        public void update(bool bgr = false)
+        public void update()
         {
-            using (Graphics g = Graphics.FromImage(GFX.bg1_bitmap))
-            {
-                g.Clear(Color.Transparent);
-            }
-            if (bgr == true)
-            {
-                GFX.begin_draw(GFX.bgr_bitmap);
-                DrawFloors();
-                
-                GFX.end_draw(GFX.bgr_bitmap);
-            }
-            if (bg2 == Background2.Off) //off
-            {
-                GFX.begin_draw(GFX.room_bitmap);
-                InitDrawObjects();
-                drawSprites();
-                GFX.end_draw(GFX.room_bitmap);
-            }
-            /*else if (bg2 == Background2.OnTop) //on top
-            {
 
-                GFX.begin_draw(GFX.room_bitmap);
-                if (bgr)
+
+            foreach (Room_Object ro in tilesObjects)
+            {
+                if (objectInitialized == false)
                 {
-                    DrawFloors();
-                }
-                InitDrawObjects(0,bgr);
-                drawSprites();
-                GFX.end_draw(GFX.room_bitmap);
-
-                GFX.begin_draw(GFX.bg1_bitmap);
-                InitDrawObjects(1, bgr);
-                GFX.end_draw(GFX.bg1_bitmap);
-
-                using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
-                {
-                    g.DrawImage(GFX.bg1_bitmap, 0, 0);
-                }
-
-            }
-            else if (bg2 == Background2.Transparent) //transparent
-            {
-                GFX.begin_draw(GFX.room_bitmap);
-                if (bgr)
-                {
-                    DrawFloors();
-                }
-                InitDrawObjects(0,bgr);
-                drawSprites();
-                GFX.end_draw(GFX.room_bitmap);
-
-                GFX.begin_draw(GFX.bg1_bitmap);
-                InitDrawObjects(1,bgr);
-                GFX.end_draw(GFX.bg1_bitmap);
-                using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
-                {
-                    g.DrawImage(GFX.bg1_bitmap, 0, 0);
+                    //ro.DrawOnBitmap();
                 }
             }
-            else
-            {
-                GFX.begin_draw(GFX.room_bitmap);
-                if (bgr)
-                {
-                    DrawFloors(2);
-                }
-                InitDrawObjects(1,bgr);
-                GFX.end_draw(GFX.room_bitmap);
+            objectInitialized = true;
+            
+            GFX.begin_draw(GFX.bg1_bitmap);
+            int tile_count = 0;
 
-                GFX.begin_draw(GFX.bg1_bitmap);
-                if (bgr)
-                {
-                    DrawFloors();
-                }
-                InitDrawObjects(0,bgr);
-                drawSprites();
-                GFX.end_draw(GFX.bg1_bitmap);
-                using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
-                {
-                    g.DrawImage(GFX.bg1_bitmap, 0, 0);
-                }
-            }
-            */
-            using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
+            DrawFloors();
+            DrawLayout();
+            GFX.end_draw(GFX.bg1_bitmap);
+
+        }
+
+
+        public void DrawLayout()
+        {
+            foreach (Room_Object ro in tilesObjects)
             {
-                GFX.begin_draw(GFX.room_bitmap);
-                drawChestsItem();
-                 drawPotsItems();
-                GFX.end_draw(GFX.room_bitmap);
-                DrawStairsId(g);
-               
-                //DrawSpritesNames(g);
+                //if (ro.is_bgr == true)
+                //{
+                ro.resetSize();
+                ro.get_scroll_x();
+                ro.get_scroll_y();
+                ro.Draw();
+                //}
             }
         }
 
         public void drawSprites()
         {
-            foreach (Sprite spr in sprites)
+            /*foreach (Sprite spr in sprites)
             {
                 spr.selected = false;
             }
@@ -249,8 +192,8 @@ namespace ZeldaFullEditor
                         spr.Draw();
                     }
                 }
-            }
-            else
+            }*/
+            //else
             {
                 foreach (Sprite spr in sprites)
                 {
@@ -263,7 +206,7 @@ namespace ZeldaFullEditor
 
         public void drawPotsItems()
         {
-            foreach (PotItem item in pot_items)
+            /*foreach (PotItem item in pot_items)
             {
                 item.selected = false;
             }
@@ -286,7 +229,7 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-            else
+            else*/
             {
                 foreach (PotItem item in pot_items)
                 {
@@ -312,7 +255,10 @@ namespace ZeldaFullEditor
                     o.x = (byte)n;
                     o.y = (byte)(pos / 64);
                     o.is_door = true;
-                    o.is_bgr = true;
+                    o.nx = o.x;
+                    o.ny = o.y;
+                    o.ox = o.x;
+                    o.oy = o.y;
                 }
                 if (o.GetType() == typeof(object_door_down))
                 {
@@ -322,7 +268,10 @@ namespace ZeldaFullEditor
                     o.y = (byte)(pos / 64);
                     o.y += 1;
                     o.is_door = true;
-                    o.is_bgr = true;
+                    o.nx = o.x;
+                    o.ny = o.y;
+                    o.ox = o.x;
+                    o.oy = o.y;
                 }
 
                 if (o.GetType() == typeof(object_door_left))
@@ -332,7 +281,11 @@ namespace ZeldaFullEditor
                     o.x = (byte)n;
                     o.y = (byte)(pos / 64);
                     o.is_door = true;
-                    o.is_bgr = true;
+                    o.nx = o.x;
+                    o.ny = o.y;
+                    o.ox = o.x;
+                    o.oy = o.y;
+
                 }
                 if (o.GetType() == typeof(object_door_right))
                 {
@@ -345,7 +298,10 @@ namespace ZeldaFullEditor
                     o.x += 1;
                     //}
                     o.is_door = true;
-                    o.is_bgr = true;
+                    o.nx = o.x;
+                    o.ny = o.y;
+                    o.ox = o.x;
+                    o.oy = o.y;
                 }
             }
         }
@@ -520,9 +476,11 @@ namespace ZeldaFullEditor
             {
                 if (o.is_bgr == false)
                 {
-                    draw_tiles(o, layer);
-                    o.resetBbox();
+                    //o.DrawOnBitmap();
+                    //draw_tiles(o);
+                    o.Draw();
                 }
+
             }
 
         }
@@ -537,26 +495,38 @@ namespace ZeldaFullEditor
             }
             if (o.allBgs)
             {
-                o.Draw();
+                using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
+                {
+                    g.DrawImage(o.bitmap, new Point(o.x, o.y));
+                }
             }
             else
             {
                 if (layer == 255)
                 {
-                    o.Draw();
+                    using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
+                    {
+                        g.DrawImage(o.bitmap, new Point(o.x, o.y));
+                    }
                 }
                 else if (layer == 1)
                 {
                     if (o.layer == 1)
                     {
-                        o.Draw();
+                        using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
+                        {
+                            g.DrawImage(o.bitmap, new Point(o.x, o.y));
+                        }
                     }
                 }
                 else
                 {
                     if (o.layer != 1)
                     {
-                        o.Draw();
+                        using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
+                        {
+                            g.DrawImage(o.bitmap, new Point(o.x, o.y));
+                        }
                     }
                 }
             }

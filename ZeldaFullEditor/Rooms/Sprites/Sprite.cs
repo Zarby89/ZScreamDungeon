@@ -1046,22 +1046,25 @@ namespace ZeldaFullEditor
                     }
 
                     int src = x_src + y_src;
-                    if (dest < GFX.currentData.Length)
+                    unsafe
                     {
-                        if (dest > 0)
+                        if (dest < 1048576)
                         {
-                            byte alpha = 255;
+                            if (dest > 0)
+                            {
+                                byte alpha = 255;
 
-                            if (GFX.singledata[(src)] == 0)
-                            {
-                                alpha = 0;
-                            }
-                            else
-                            {
-                                GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].B);
-                                GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].G);
-                                GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].R);
-                                GFX.currentData[dest + 3] = 255;
+                                if (GFX.singledata[(src)] == 0)
+                                {
+                                    alpha = 0;
+                                }
+                                else
+                                {
+                                    GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].B);
+                                    GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].G);
+                                    GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].R);
+                                    GFX.currentData[dest + 3] = 255;
+                                }
                             }
                         }
                     }

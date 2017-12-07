@@ -5390,6 +5390,27 @@ namespace ZeldaFullEditor
             int sizex = ((size >> 2) & 0x03);
             int sizey = ((size) & 0x03);
 
+            for (int xx = 0; xx < sizex + 1; xx++)
+            {
+                for (int yy = 0; yy < sizey + 1; yy++)
+                {
+                    draw_tile(tiles[5], (1 + (xx * 2)) * 8, (1 + (yy * 2)) * 8); //middle top
+                    draw_tile(tiles[6], (2 + (xx * 2)) * 8, (1 + (yy * 2)) * 8); //middle top
+
+                    draw_tile(tiles[9], (1 + (xx * 2)) * 8, (2 + (yy * 2)) * 8); //middle bottom
+                    draw_tile(tiles[10], (2 + (xx * 2)) * 8, (2 + (yy * 2)) * 8); //middle bottom
+                }
+            }
+
+            for (int yy = 0; yy < sizey + 1; yy++)
+            {
+                draw_tile(tiles[4], (0) * 8, (1 + (yy * 2)) * 8); //left border
+                draw_tile(tiles[8], (0) * 8, (2 + (yy * 2)) * 8); //left border
+
+                draw_tile(tiles[7], (3 + (sizex * 2)) * 8, (1 + (yy * 2)) * 8); //right border
+                draw_tile(tiles[11], (3 + (sizex * 2)) * 8, (2 + (yy * 2)) * 8); //right border
+            }
+
             draw_tile(tiles[0], (0) * 8, (0) * 8); //top left corner
             draw_tile(tiles[12], (0) * 8, (3 + (sizey * 2)) * 8); //bottom left corner
             for (int xx = 0; xx < sizex + 1; xx++)
@@ -5402,27 +5423,10 @@ namespace ZeldaFullEditor
             }
             draw_tile(tiles[3], (3 + (sizex * 2)) * 8, (0) * 8); //top right corner
             draw_tile(tiles[15], (3 + (sizex * 2)) * 8, (3 + (sizey * 2)) * 8); //bottom right corner
-            //12
-            for (int yy = 0; yy < sizey + 1; yy++)
-            {
-                draw_tile(tiles[4], (0) * 8, (1 + (yy * 2)) * 8); //left border
-                draw_tile(tiles[8], (0) * 8, (2 + (yy * 2)) * 8); //left border
+            
 
-                draw_tile(tiles[7], (3 + (sizex * 2)) * 8, (1 + (yy * 2)) * 8); //right border
-                draw_tile(tiles[11], (3 + (sizex * 2)) * 8, (2 + (yy * 2)) * 8); //right border
-            }
+            
 
-            for (int xx = 0; xx < sizex + 1; xx++)
-            {
-                for (int yy = 0; yy < sizey + 1; yy++)
-                {
-                    draw_tile(tiles[5], (1 + (xx * 2)) * 8, (1 + (yy * 2)) * 8); //middle top
-                    draw_tile(tiles[6], (2 + (xx * 2)) * 8, (1 + (yy * 2)) * 8); //middle top
-
-                    draw_tile(tiles[9], (1 + (xx * 2)) * 8, (2 + (yy * 2)) * 8); //middle bottom
-                    draw_tile(tiles[10], (2 + (xx * 2)) * 8, (2 + (yy * 2)) * 8); //middle bottom
-                }
-            }
         }
     }
 

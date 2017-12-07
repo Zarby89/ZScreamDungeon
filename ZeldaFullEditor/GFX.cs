@@ -164,27 +164,20 @@ namespace ZeldaFullEditor
         }
 
 
-       // public static Bitmap
-
         public static byte[] blocksetData;
 
-        public static byte[] currentData;
+        public static unsafe byte* currentData;
         public static IntPtr currentPtr;
         public static BitmapData currentbmpData;
-        
-        public static void begin_draw(Bitmap b, int width = 512, int height = 512)
+
+        public static unsafe void begin_draw(Bitmap b, int width = 512, int height = 512)
         {
-            currentbmpData = b.LockBits(new Rectangle(0,0,width,height), ImageLockMode.ReadWrite, b.PixelFormat);
-            currentPtr = currentbmpData.Scan0;
-            int bytes = Math.Abs(currentbmpData.Stride) * b.Height;
-            currentData = new byte[bytes];
-            Marshal.Copy(currentPtr, currentData, 0, bytes);
+            currentbmpData = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            currentData = (byte*)currentbmpData.Scan0.ToPointer();
         }
 
         public static void end_draw(Bitmap b)
         {
-            int bytes = Math.Abs(currentbmpData.Stride) * b.Height;
-            Marshal.Copy(currentData, 0, currentPtr, bytes);
             b.UnlockBits(currentbmpData);
         }
 
