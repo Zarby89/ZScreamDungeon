@@ -383,7 +383,7 @@
             // 
             // updateTimer
             // 
-            this.updateTimer.Interval = 16;
+            this.updateTimer.Interval = 8;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
             // radioButton1

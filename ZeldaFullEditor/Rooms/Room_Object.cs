@@ -122,16 +122,18 @@ namespace ZeldaFullEditor
              
         }
 
-        /*public void DrawOnBitmap()
+
+
+        public void DrawOnBitmap()
         {
-            checksize = false;
-            Draw(); //check the size of the image
             checksize = true;
+            Draw();
+            checksize = false;
             bitmap = new Bitmap(width, height,PixelFormat.Format32bppArgb);
             GFX.begin_draw(bitmap, width, height);
             Draw();
             GFX.end_draw(bitmap);
-        }*/
+        }
 
         public void resetSize()
         {
@@ -151,7 +153,7 @@ namespace ZeldaFullEditor
         {
             for (int s = 0; s < size + 6; s++)
             {
-                draw_tile(tiles[0], ( (s)) * 8, (0 - s) * 8,((size+6)*8));
+                draw_tile(tiles[0], ( (s)) * 8, (0 - s) * 8, ((size + 6) * 8));
                 draw_tile(tiles[1], ( (s)) * 8, (1 - s) * 8, ((size + 6) * 8));
                 draw_tile(tiles[2], ( (s)) * 8, (2 - s) * 8, ((size + 6) * 8));
                 draw_tile(tiles[3], ( (s)) * 8, (3 - s) * 8, ((size + 6) * 8));
@@ -186,20 +188,20 @@ namespace ZeldaFullEditor
 
         public void draw_tile(Tile t, int x, int y, int yfix = 0)
         {
-
-            int zx = x + 8;
-            int zy = y + 8;
-
-            if (zx > width)
-            {
-                width = zx;
-            }
-            if (zy > height)
-            {
-                height = zy;
-            }
             if (checksize)
             {
+                int zx = x + 8;
+                int zy = (y + 8 + yfix);
+
+                if (zx > width)
+                {
+                    width = zx;
+                }
+                if (zy > height)
+                {
+                    height = zy;
+                }
+
                 return;
             }
 
@@ -233,8 +235,8 @@ namespace ZeldaFullEditor
                         //int x_dest = ((this.x * 8) + x + (xx)) * 4;
                         //int y_dest = (((this.y * 8) + y + (yy)) * 512) * 4;
 
-                        int x_dest = ((this.nx * 8) + x + (xx)) * 4;
-                        int y_dest = (((this.ny * 8)+(y) + (yy)) * 512) * 4;
+                        int x_dest = (x + (xx)) * 4;
+                        int y_dest = (((y+yfix) + (yy)) * width) * 4;
                         int dest = x_dest + y_dest;
 
                         int x_src = ((tx * 8) + mx + (xx));
@@ -254,7 +256,7 @@ namespace ZeldaFullEditor
                         {
                             pp = 8;
                         }
-                    if (dest < (1048576))
+                    if (dest < (width * height * 4))
                         {
                             byte alpha = 255;
 
@@ -301,10 +303,20 @@ namespace ZeldaFullEditor
                             }
                         unsafe
                         {
-                            GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].B);
-                            GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].G);
-                            GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].R);
-                            GFX.currentData[dest + 3] = alpha;//A
+                            if (alpha == 0)
+                            {
+                                GFX.currentData[dest] = 255;
+                                GFX.currentData[dest + 1] = 0;
+                                GFX.currentData[dest + 2] = 255;
+                                GFX.currentData[dest + 3] = 255;
+                            }
+                            else
+                            {
+                                GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].B);
+                                GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].G);
+                                GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].R);
+                                GFX.currentData[dest + 3] = 255;
+                            }
                         }
                         }
                     }
@@ -314,6 +326,8 @@ namespace ZeldaFullEditor
 
 
     }
+
+
 
 
 

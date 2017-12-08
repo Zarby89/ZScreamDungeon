@@ -26,6 +26,7 @@ namespace ZeldaFullEditor
         public static byte[] singledata = new byte[128 * 800];
 
         public static Bitmap bgr_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
+        public static Bitmap floor2_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap bg1_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap room_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb); //act as bg2
 
@@ -172,7 +173,7 @@ namespace ZeldaFullEditor
 
         public static unsafe void begin_draw(Bitmap b, int width = 512, int height = 512)
         {
-            currentbmpData = b.LockBits(new Rectangle(0, 0, b.Width, b.Height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+            currentbmpData = b.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
             currentData = (byte*)currentbmpData.Scan0.ToPointer();
         }
 
@@ -180,6 +181,7 @@ namespace ZeldaFullEditor
         {
             b.UnlockBits(currentbmpData);
         }
+
 
         public static Color getColor(short c)
         {

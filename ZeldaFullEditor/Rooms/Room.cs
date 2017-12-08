@@ -140,17 +140,29 @@ namespace ZeldaFullEditor
             {
                 if (objectInitialized == false)
                 {
-                    //ro.DrawOnBitmap();
+                    ro.get_scroll_x();
+                    ro.get_scroll_y();
+                    ro.DrawOnBitmap();
                 }
             }
+
+            if (objectInitialized == false)
+            {
+                GFX.begin_draw(GFX.bg1_bitmap);
+                DrawFloors();
+                GFX.end_draw(GFX.bg1_bitmap);
+                GFX.begin_draw(GFX.floor2_bitmap);
+                DrawFloors(2);
+                GFX.end_draw(GFX.floor2_bitmap);
+                GFX.bgr_bitmap = (Bitmap)GFX.bg1_bitmap.Clone();
+            }
+
             objectInitialized = true;
             
-            GFX.begin_draw(GFX.bg1_bitmap);
-            int tile_count = 0;
-
-            DrawFloors();
+            /*GFX.begin_draw(GFX.bg1_bitmap);
+            //DrawFloors();
             DrawLayout();
-            GFX.end_draw(GFX.bg1_bitmap);
+            GFX.end_draw(GFX.bg1_bitmap);*/
 
         }
 
@@ -159,13 +171,10 @@ namespace ZeldaFullEditor
         {
             foreach (Room_Object ro in tilesObjects)
             {
-                //if (ro.is_bgr == true)
-                //{
                 ro.resetSize();
                 ro.get_scroll_x();
                 ro.get_scroll_y();
                 ro.Draw();
-                //}
             }
         }
 

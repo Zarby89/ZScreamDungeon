@@ -11,6 +11,7 @@ using System.IO;
 using System.Diagnostics;
 using System.Drawing.Imaging;
 
+
 namespace ZeldaFullEditor
 {
 
@@ -21,16 +22,17 @@ namespace ZeldaFullEditor
             InitializeComponent();
         }
 
+
+
         private void Form1_Load(object sender, EventArgs e)
         {
             actionsListbox.DisplayMember = "Name";
             palettePicturebox.Image = new Bitmap(256, 256);
-
             //Console.WriteLine(sw.ElapsedMilliseconds);
-
-
-
         }
+
+  
+
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -795,6 +797,7 @@ namespace ZeldaFullEditor
 
         public void change_room()
         {
+            need_refresh = true;
             room_loaded = false;
             if (anychange)
             {
@@ -883,8 +886,6 @@ namespace ZeldaFullEditor
             all_rooms[roomId] = room;
         }
 
-
-
         Graphics g;
         Bitmap roomBitmap = new Bitmap(512, 512,PixelFormat.Format32bppArgb);
         public void drawRoom()
@@ -892,13 +893,41 @@ namespace ZeldaFullEditor
 
             if (need_refresh)
             {
-                room.update();
+                g.DrawImage(GFX.floor2_bitmap, 0, 0);
+                //draw floor
+                using (Graphics gg = Graphics.FromImage(GFX.bg1_bitmap))
+                {
+                    gg.DrawImage(GFX.bgr_bitmap, 0, 0);
+                    foreach (Room_Object o in room.tilesObjects)
+                    {
+                        if (o.allBgs == true)
+                        {
+                            gg.DrawImage(o.bitmap, o.nx * 8,(o.drawYFix * 8) + o.ny * 8);
+                            g.DrawImage(o.bitmap, o.nx * 8, (o.drawYFix * 8) + o.ny * 8);
+                        }
+                        else if (o.layer != 1)
+                        {
+                            gg.DrawImage(o.bitmap, o.nx * 8, (o.drawYFix * 8) + o.ny * 8);
+                        }
+                        else if (o.layer == 1)
+                        {
+                            g.DrawImage(o.bitmap, o.nx * 8, (o.drawYFix * 8) + o.ny * 8);
+                        }
+                        
+                        
+
+                    }
+                }
+                GFX.bg1_bitmap.MakeTransparent(Color.Fuchsia);
+                g.DrawImage(GFX.bg1_bitmap, 0, 0);
+                
+
             }
 
 
-                if (mouse_down)
+            if (mouse_down)
                 {
-                    g.DrawImage(GFX.bg1_bitmap, 0, 0);
+                    
 
                     int rx = dragx;
                     int ry = dragy;
@@ -935,12 +964,11 @@ namespace ZeldaFullEditor
                 }
 
             pictureBox1.Refresh();
-            
+
             /*GFX.begin_draw(roomBitmap);
             room.drawSprites();
             room.drawPotsItems();
             GFX.end_draw(roomBitmap);*/
-
             need_refresh = false;
             
         }
@@ -1392,7 +1420,7 @@ namespace ZeldaFullEditor
                 //room.spriteset = (byte)SpritesetcomboBox.SelectedIndex;
                 room.palette = (byte)paletteUpDown.Value;
                 room.blockset = (byte)roomgfxUpDown.Value;
-                
+                need_refresh = true;
                 room.reloadGfx();
                 drawRoom();
             }
