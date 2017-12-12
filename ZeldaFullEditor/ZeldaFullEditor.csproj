@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A634564E-5323-48FE-A54C-B42AF25C5315}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ZeldaFullEditor</RootNamespace>
     <AssemblyName>ZeldaFullEditor</AssemblyName>
@@ -56,6 +56,7 @@
     <ApplicationIcon>screamlink.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -84,6 +85,12 @@
     <Compile Include="Gui\HowToUse.Designer.cs">
       <DependentUpon>HowToUse.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\PickObject.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\PickObject.Designer.cs">
+      <DependentUpon>PickObject.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\PickSprite.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +103,7 @@
     <Compile Include="Gui\PickChestItem.Designer.cs">
       <DependentUpon>PickChestItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="PaletteViewer.cs" />
     <Compile Include="Rooms\Background2.cs" />
     <Compile Include="Rooms\Chests\Chest.cs" />
     <Compile Include="Rooms\Chests\ChestItems_Name.cs" />
@@ -128,8 +136,10 @@
     <Compile Include="Rooms\Room_Object.cs" />
     <Compile Include="Rooms\Object_Draw\Subtype3_Draw.cs" />
     <Compile Include="Rooms\Sprites\Sprite.cs" />
+    <Compile Include="Save.cs" />
     <Compile Include="Sprite_SubsetNames.cs" />
     <Compile Include="Tile.cs" />
+    <Compile Include="UndoRedo.cs" />
     <EmbeddedResource Include="Gui\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>
@@ -141,6 +151,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\HowToUse.resx">
       <DependentUpon>HowToUse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\PickObject.resx">
+      <DependentUpon>PickObject.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\PickSprite.resx">
       <DependentUpon>PickSprite.cs</DependentUpon>
@@ -156,6 +169,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -172,6 +186,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Mblock.png" />
     <Content Include="screamlink.ico" />
   </ItemGroup>
   <ItemGroup>

@@ -75,6 +75,13 @@ namespace ZeldaFullEditor
                         room.pot_items.Insert((parameters[1] as int[])[i], (parameters[0] as PotItem[])[i]);
                     }
                 }
+                else if (parameters[0] is Room_Object[]) //deleted sprites
+                {
+                    for (int i = 0; i < (parameters[0] as Room_Object[]).Length; i++)
+                    {
+                        room.tilesObjects.Insert((parameters[1] as int[])[i], (parameters[0] as Room_Object[])[i]);
+                    }
+                }
             }
             else if (type == ActionType.Move)
             {
@@ -106,6 +113,20 @@ namespace ZeldaFullEditor
                         (parameters[2] as int[])[i] = new_old_y;//set them to oldpos for the redo function
                     }
                 }
+                else if (parameters[0] is Room_Object[]) //moved tiles
+                {
+                    for (int i = 0; i < (parameters[0] as Room_Object[]).Length; i++)
+                    {
+                        int new_old_x = (parameters[0] as Room_Object[])[i].x;
+                        int new_old_y = (parameters[0] as Room_Object[])[i].y;
+                        (parameters[0] as Room_Object[])[i].x = (byte)(parameters[1] as int[])[i]; //return to old_x
+                        (parameters[0] as Room_Object[])[i].y = (byte)(parameters[2] as int[])[i]; //return to old_y
+                        (parameters[0] as Room_Object[])[i].nx = (byte)(parameters[1] as int[])[i];
+                        (parameters[0] as Room_Object[])[i].ny = (byte)(parameters[2] as int[])[i];
+                        (parameters[1] as int[])[i] = new_old_x;//set them to oldpos for the redo function
+                        (parameters[2] as int[])[i] = new_old_y;//set them to oldpos for the redo function
+                    }
+                }
             }
             else if (type == ActionType.Change)
             {
@@ -128,6 +149,15 @@ namespace ZeldaFullEditor
                         (parameters[1] as int[])[i] = new_old_id;//set them to oldid for the undo function
                     }
                 }
+                else if (parameters[0] is Room_Object[]) //changed sprites
+                {
+                    for (int i = 0; i < (parameters[0] as Room_Object[]).Length; i++)
+                    {
+                        int new_old_id = (parameters[0] as Room_Object[])[i].id;
+                        (parameters[0] as Room_Object[])[i].id = (byte)(parameters[1] as int[])[i]; //return to old_x
+                        (parameters[1] as int[])[i] = new_old_id;//set them to oldid for the undo function
+                    }
+                }
             }
             else if (type == ActionType.Add)
             {
@@ -143,6 +173,13 @@ namespace ZeldaFullEditor
                     for (int i = 0; i < (parameters[0] as PotItem[]).Length; i++)
                     {
                         room.pot_items.Remove((parameters[0] as PotItem[])[i]);
+                    }
+                }
+                else if (parameters[0] is Room_Object[]) //changed sprites
+                {
+                    for (int i = 0; i < (parameters[0] as Room_Object[]).Length; i++)
+                    {
+                        room.tilesObjects.Remove((parameters[0] as Room_Object[])[i]);
                     }
                 }
             }
@@ -165,6 +202,13 @@ namespace ZeldaFullEditor
                     for (int i = 0; i < (parameters[0] as PotItem[]).Length; i++)
                     {
                         room.pot_items.Remove((parameters[0] as PotItem[])[i]);
+                    }
+                }
+                else if (parameters[0] is Room_Object[])
+                {
+                    for (int i = 0; i < (parameters[0] as Room_Object[]).Length; i++)
+                    {
+                        room.tilesObjects.Remove((parameters[0] as Room_Object[])[i]);
                     }
                 }
             }
@@ -194,6 +238,20 @@ namespace ZeldaFullEditor
                         (parameters[0] as PotItem[])[i].y = (byte)(parameters[2] as int[])[i]; //return to old_y
                         (parameters[0] as PotItem[])[i].nx = (parameters[0] as PotItem[])[i].x;
                         (parameters[0] as PotItem[])[i].ny = (parameters[0] as PotItem[])[i].y;
+                        (parameters[1] as int[])[i] = new_old_x;//set them to oldpos for the undo function
+                        (parameters[2] as int[])[i] = new_old_y;//set them to oldpos for the undo function
+                    }
+                }
+                else if (parameters[0] is Room_Object[]) //moved sprites
+                {
+                    for (int i = 0; i < (parameters[0] as Room_Object[]).Length; i++)
+                    {
+                        int new_old_x = (parameters[0] as Room_Object[])[i].x;
+                        int new_old_y = (parameters[0] as Room_Object[])[i].y;
+                        (parameters[0] as Room_Object[])[i].x = (byte)(parameters[1] as int[])[i]; //return to old_x
+                        (parameters[0] as Room_Object[])[i].y = (byte)(parameters[2] as int[])[i]; //return to old_y
+                        (parameters[0] as Room_Object[])[i].nx = (parameters[0] as Room_Object[])[i].x;
+                        (parameters[0] as Room_Object[])[i].ny = (parameters[0] as Room_Object[])[i].y;
                         (parameters[1] as int[])[i] = new_old_x;//set them to oldpos for the undo function
                         (parameters[2] as int[])[i] = new_old_y;//set them to oldpos for the undo function
                     }
@@ -221,6 +279,16 @@ namespace ZeldaFullEditor
                         //(parameters[0] as PotItem[])[i].updateBBox();
                     }
                 }
+                else if (parameters[0] is Room_Object[]) //changed sprites
+                {
+                    for (int i = 0; i < (parameters[0] as Room_Object[]).Length; i++)
+                    {
+                        int new_old_id = (parameters[0] as Room_Object[])[i].id;
+                        (parameters[0] as Room_Object[])[i].id = (byte)(parameters[1] as int[])[i]; //return to old_x
+                        (parameters[1] as int[])[i] = new_old_id;//set them to oldid for the undo function
+                        //(parameters[0] as PotItem[])[i].updateBBox();
+                    }
+                }
             }
             else if (type == ActionType.Add)
             {
@@ -236,6 +304,13 @@ namespace ZeldaFullEditor
                     for (int i = 0; i < (parameters[0] as PotItem[]).Length; i++)
                     {
                         room.pot_items.Add((parameters[0] as PotItem[])[i]);
+                    }
+                }
+                else if (parameters[0] is Room_Object[]) //added pot item
+                {
+                    for (int i = 0; i < (parameters[0] as Room_Object[]).Length; i++)
+                    {
+                        room.tilesObjects.Add((parameters[0] as Room_Object[])[i]);
                     }
                 }
             }

@@ -85,6 +85,7 @@
             this.potmodeButton = new System.Windows.Forms.ToolStripButton();
             this.stairswarptoolStripButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.saveLayoutButton = new System.Windows.Forms.ToolStripButton();
             this.spriteImageList = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -101,10 +102,12 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.palettePicturebox = new System.Windows.Forms.PictureBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.loadlayoutButton = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.toolStrip1.SuspendLayout();
@@ -308,25 +311,31 @@
             // 
             // showGridToolStripMenuItem
             // 
+            this.showGridToolStripMenuItem.CheckOnClick = true;
             this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
             this.showGridToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.showGridToolStripMenuItem.Text = "Show Grid";
+            this.showGridToolStripMenuItem.Click += new System.EventHandler(this.showBG1ToolStripMenuItem_Click);
             // 
             // showBG2ToolStripMenuItem
             // 
             this.showBG2ToolStripMenuItem.Checked = true;
+            this.showBG2ToolStripMenuItem.CheckOnClick = true;
             this.showBG2ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showBG2ToolStripMenuItem.Name = "showBG2ToolStripMenuItem";
             this.showBG2ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.showBG2ToolStripMenuItem.Text = "Show BG2";
+            this.showBG2ToolStripMenuItem.Click += new System.EventHandler(this.showBG1ToolStripMenuItem_Click);
             // 
             // showBG1ToolStripMenuItem
             // 
             this.showBG1ToolStripMenuItem.Checked = true;
+            this.showBG1ToolStripMenuItem.CheckOnClick = true;
             this.showBG1ToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showBG1ToolStripMenuItem.Name = "showBG1ToolStripMenuItem";
             this.showBG1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.showBG1ToolStripMenuItem.Text = "Show BG1";
+            this.showBG1ToolStripMenuItem.Click += new System.EventHandler(this.showBG1ToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -473,7 +482,9 @@
             this.chestmodeButton,
             this.potmodeButton,
             this.stairswarptoolStripButton,
-            this.toolStripSeparator3});
+            this.toolStripSeparator3,
+            this.saveLayoutButton,
+            this.loadlayoutButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(832, 25);
@@ -643,6 +654,16 @@
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // saveLayoutButton
+            // 
+            this.saveLayoutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.saveLayoutButton.Image = ((System.Drawing.Image)(resources.GetObject("saveLayoutButton.Image")));
+            this.saveLayoutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.saveLayoutButton.Name = "saveLayoutButton";
+            this.saveLayoutButton.Size = new System.Drawing.Size(23, 22);
+            this.saveLayoutButton.Text = "toolStripButton5";
+            this.saveLayoutButton.Click += new System.EventHandler(this.saveLayoutButton_Click);
             // 
             // spriteImageList
             // 
@@ -818,6 +839,7 @@
             // 
             // tabPage4
             // 
+            this.tabPage4.Controls.Add(this.button2);
             this.tabPage4.Controls.Add(this.button1);
             this.tabPage4.Controls.Add(this.label7);
             this.tabPage4.Controls.Add(this.palettePicturebox);
@@ -828,9 +850,19 @@
             this.tabPage4.Text = "Palettes";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(6, 401);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(280, 23);
+            this.button2.TabIndex = 3;
+            this.button2.Text = "Save to YY-CHR Palettes";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(6, 241);
+            this.button1.Location = new System.Drawing.Point(6, 372);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(280, 23);
             this.button1.TabIndex = 2;
@@ -841,7 +873,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(3, 212);
+            this.label7.Location = new System.Drawing.Point(3, 343);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(237, 26);
             this.label7.TabIndex = 1;
@@ -852,12 +884,22 @@
             // 
             this.palettePicturebox.Location = new System.Drawing.Point(3, 3);
             this.palettePicturebox.Name = "palettePicturebox";
-            this.palettePicturebox.Size = new System.Drawing.Size(288, 206);
+            this.palettePicturebox.Size = new System.Drawing.Size(288, 337);
             this.palettePicturebox.TabIndex = 0;
             this.palettePicturebox.TabStop = false;
             this.palettePicturebox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDoubleClick);
             this.palettePicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDown);
             this.palettePicturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseUp);
+            // 
+            // loadlayoutButton
+            // 
+            this.loadlayoutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.loadlayoutButton.Image = ((System.Drawing.Image)(resources.GetObject("loadlayoutButton.Image")));
+            this.loadlayoutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.loadlayoutButton.Name = "loadlayoutButton";
+            this.loadlayoutButton.Size = new System.Drawing.Size(23, 22);
+            this.loadlayoutButton.Text = "toolStripButton5";
+            this.loadlayoutButton.Click += new System.EventHandler(this.loadlayoutButton_Click);
             // 
             // Form1
             // 
@@ -974,6 +1016,9 @@
         private System.Windows.Forms.ColorDialog colorDialog1;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.ToolStripButton stairswarptoolStripButton;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.ToolStripButton saveLayoutButton;
+        private System.Windows.Forms.ToolStripButton loadlayoutButton;
     }
 }
 

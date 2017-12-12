@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor
 {
@@ -47,6 +48,7 @@ namespace ZeldaFullEditor
         public List<PotItem> pot_items = new List<PotItem>();
         public List<Object> selectedObject = new List<object>();
         public bool objectInitialized = false;
+        public bool needGfxRefresh = false;
         public Room(int index)
         {
             this.index = index;
@@ -100,7 +102,7 @@ namespace ZeldaFullEditor
             GFX.load4bpp(GFX.gfxdata, blocks);
 
 
-
+            needGfxRefresh = true;
             objectInitialized = false;
             update();
         }
@@ -134,15 +136,24 @@ namespace ZeldaFullEditor
 
         public void update()
         {
+            Bitmap mblockBitmap = (Bitmap)Properties.Resources.Mblock;
 
 
             foreach (Room_Object ro in tilesObjects)
             {
                 if (objectInitialized == false)
                 {
+                    ro.resetSize();
                     ro.get_scroll_x();
                     ro.get_scroll_y();
                     ro.DrawOnBitmap();
+                    if (ro.is_block)
+                    {
+                        using (Graphics g = Graphics.FromImage(ro.bitmap))
+                        {
+                            g.DrawImage(mblockBitmap, 0, 0);
+                        }
+                    }
                 }
             }
 
@@ -158,12 +169,6 @@ namespace ZeldaFullEditor
             }
 
             objectInitialized = true;
-            
-            /*GFX.begin_draw(GFX.bg1_bitmap);
-            //DrawFloors();
-            DrawLayout();
-            GFX.end_draw(GFX.bg1_bitmap);*/
-
         }
 
 
@@ -171,7 +176,7 @@ namespace ZeldaFullEditor
         {
             foreach (Room_Object ro in tilesObjects)
             {
-                ro.resetSize();
+                
                 ro.get_scroll_x();
                 ro.get_scroll_y();
                 ro.Draw();
@@ -180,29 +185,6 @@ namespace ZeldaFullEditor
 
         public void drawSprites()
         {
-            /*foreach (Sprite spr in sprites)
-            {
-                spr.selected = false;
-            }
-            if (selectedObject.Count > 0)
-            {
-                foreach (Object o in selectedObject)
-                {
-                    if (o is Sprite)
-                    {
-                        (o as Sprite).selected = true;
-                    }
-                }
-
-                foreach (Sprite spr in sprites)
-                {
-                    if (spr.selected == false)
-                    {
-                        spr.Draw();
-                    }
-                }
-            }*/
-            //else
             {
                 foreach (Sprite spr in sprites)
                 {
@@ -215,37 +197,10 @@ namespace ZeldaFullEditor
 
         public void drawPotsItems()
         {
-            /*foreach (PotItem item in pot_items)
+            foreach (PotItem item in pot_items)
             {
-                item.selected = false;
-            }
 
-            if (selectedObject.Count > 0)
-            {
-                foreach (Object o in selectedObject)
-                {
-                    if (o is PotItem)
-                    {
-                        (o as PotItem).selected = true;
-                    }
-                }
-
-                foreach (PotItem item in pot_items)
-                {
-                    if (item.selected == false)
-                    {
-                        item.Draw();
-                    }
-                }
-            }
-            else*/
-            {
-                foreach (PotItem item in pot_items)
-                {
-
-                     item.Draw();
-                }
-
+                    item.Draw();
             }
         }
 
@@ -336,8 +291,8 @@ namespace ZeldaFullEditor
                     a = (a - py) *64;
                     int px = (int)a;
 
-                    addObject(0x5E, (byte)(px), (byte)(py), 0, 0);
-                   
+                    addObject(0x0E00, (byte)(px), (byte)(py), 0, 0);
+                    tilesObjects[tilesObjects.Count - 1].is_block = true;
                 }
 
             }
@@ -367,6 +322,7 @@ namespace ZeldaFullEditor
                         int px = (int)a;
 
                         addObject(0x120, (byte)px, (byte)py, 0, 0);
+                        tilesObjects[tilesObjects.Count - 1].is_torch = true;
                         i += 2;
                     }
                 }
@@ -451,20 +407,7 @@ namespace ZeldaFullEditor
             }
         }*/
 
-        public void DrawStairsId(Graphics g)
-        {
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            foreach (StaircaseRoom r in staircaseRooms)
-            {
-                GraphicsPath gpath = new GraphicsPath();
-                gpath.AddString(r.name, new FontFamily("Consolas"), 1, 12, new Point(r.x*8, r.y*8), StringFormat.GenericDefault);
-                Pen pen = new Pen(Color.FromArgb(30, 30, 30), 2);
-                g.DrawPath(pen, gpath);
-                SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255));
-                g.FillPath(brush, gpath);
-            }
-        }
+
 
 
         public void InitDrawBgr()
@@ -1536,13 +1479,13 @@ namespace ZeldaFullEditor
             }
             else
             {
-                //subtype2
-                if ((oid & 0x100) == 0x100) //subtype2? non scalable
+                if (oid == 0xE00) //Block
                 {
-                    tilesObjects.Add(new Subtype2_Multiple(oid, x, y, 0,layer));
+                    tilesObjects.Add(new object_Block(oid, x, y, 0, layer));
                 }
-                //subtype3
-                if ((oid & 0xF00) == 0xF00)
+
+
+                if (oid  >= 0xF00)                //subtype3
                 {
                     switch (oid)
                     {
@@ -1901,6 +1844,10 @@ namespace ZeldaFullEditor
                             tilesObjects.Add(new object_FF5(oid, x, y, size, layer));
                             break;
                     }
+                }
+                else if ((oid & 0x100) == 0x100) //subtype2? non scalable
+                {
+                    tilesObjects.Add(new Subtype2_Multiple(oid, x, y, 0, layer));
                 }
 
             }

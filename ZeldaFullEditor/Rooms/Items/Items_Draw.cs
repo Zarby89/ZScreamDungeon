@@ -12,6 +12,7 @@ namespace ZeldaFullEditor
         public byte x, y, id;
         public byte nx, ny;
         public bool selected = false;
+        public byte layer = 0;
         public PotItem(byte id, byte x, byte y)
         {
             this.id = id;
