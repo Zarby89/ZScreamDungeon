@@ -42,6 +42,8 @@ namespace ZeldaFullEditor
 
     [Serializable] public class object_door_up : Room_Object
     {
+        public byte door_pos = 0;
+        public byte door_dir = 0;
         public object_door_up(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[(0x4D9E + ((id>>8) & 0xFF))+1] << 8) + ROM.DATA[0x4D9E + ((id >> 8) & 0xFF)]);
@@ -53,8 +55,6 @@ namespace ZeldaFullEditor
             if ((((id >> 8) & 0xFF) != 22) && (((id >> 8) & 0xFF) != 18))
             {
                 int tid = 0;
-
-                
                 for (int xx = 0; xx < 4; xx++)
                 {
                     for (int yy = 0; yy < 3; yy++)
@@ -69,6 +69,8 @@ namespace ZeldaFullEditor
 
     [Serializable] public class object_door_down : Room_Object
     {
+        public byte door_pos = 0;
+        public byte door_dir = 0;
         public object_door_down(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[0x4E06+ ((id >> 8) & 0xFF)+1] << 8) + ROM.DATA[0x4E06+ ((id >> 8) & 0xFF)]);
@@ -96,6 +98,8 @@ namespace ZeldaFullEditor
 
     [Serializable] public class object_door_left : Room_Object
     {
+        public byte door_pos = 0;
+        public byte door_dir = 0;
         public object_door_left(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[0x4E66+ ((id >> 8) & 0xFF) +1] << 8) + ROM.DATA[0x4E66+ ((id >> 8) & 0xFF)]);
@@ -123,6 +127,8 @@ namespace ZeldaFullEditor
 
     [Serializable] public class object_door_right : Room_Object
     {
+        public byte door_pos = 0;
+        public byte door_dir = 0;
         public object_door_right(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[0x4EC6 + ((id >> 8) & 0xFF) +1] << 8) + ROM.DATA[0x4EC6 + ((id >> 8) & 0xFF)]);

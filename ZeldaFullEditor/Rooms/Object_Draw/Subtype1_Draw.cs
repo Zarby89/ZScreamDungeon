@@ -2226,7 +2226,7 @@ namespace ZeldaFullEditor
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
             draw_tile(tiles[0], (0) * 8, (0) * 8);
-            draw_tile(tiles[2], ((size + 22) + 1) * 8, (0) * 8);
+            draw_tile(tiles[2], ((size + 22) ) * 8, (0) * 8);
 
         }
     }

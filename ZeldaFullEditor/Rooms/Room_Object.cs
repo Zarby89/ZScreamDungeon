@@ -27,15 +27,11 @@ namespace ZeldaFullEditor
         public byte layer = 0;
         public Room room;
         public int drawYFix = 0;
-        public bool is_stair = false;
-        public bool is_chest = false;
-        public bool is_torch = false;
-        public bool is_block = false;
-        public bool is_bgr = false;
-        public bool redraw = false;
-        public bool is_door = false;
+        public ObjectOption options = 0;//
+
         public bool checksize = false;
         public bool selected = false;
+        public bool redraw = false;
         public Bitmap bitmap;
         int lowerX = 0;
         int lowerY = 0;
@@ -64,6 +60,7 @@ namespace ZeldaFullEditor
             this.oy = y;
             this.oldSize = size;
             this.savedSize = size;
+            
         }
 
         public void get_scroll_x()
@@ -317,22 +314,10 @@ namespace ZeldaFullEditor
                             }
                             else
                             {
-                                /*if (is_torch || is_block)
-                                {
-                                    Color c = Color.FromArgb((GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].R), (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].G), (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].B));
-                                    Color c2 = Color.FromArgb((c.R ^ 0xFF), (c.G ^ 0xFF), (c.B ^ 0xFF));
-                                    GFX.currentData[dest] = c2.B;
-                                    GFX.currentData[dest + 1] = c2.G;
-                                    GFX.currentData[dest + 2] = c2.R;
-                                    GFX.currentData[dest + 3] = 200;
-                                }
-                                else
-                                {*/
                                 GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].B);
                                 GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].G);
                                 GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].R);
                                 GFX.currentData[dest + 3] = 255;
-                                //}
                             }
                         }
                     }
@@ -349,7 +334,11 @@ namespace ZeldaFullEditor
     {
         All = 0, Wall = 1, Horizontal = 2, Vertical = 4, NonScalable = 8, Dungeons = 16,Floors = 32, Stairs = 64
     }
-
+    [Flags]
+    public enum ObjectOption
+    {
+        Nothing = 0, Door = 1, Chest = 2, Block = 4, Torch = 8, Bgr = 16, Stairs = 32
+    }
 
     public static class EnumEx
     {

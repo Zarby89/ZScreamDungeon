@@ -28,7 +28,10 @@ namespace ZeldaFullEditor
         public static Bitmap bgr_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap floor2_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap bg1_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
-        public static Bitmap room_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb); //act as bg2
+        public static Bitmap bg2_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
+        public static Bitmap room_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
+        public static Bitmap[] chestitems_bitmap = new Bitmap[75];
+
 
         public static int[] positions = new int[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
         public static int superpos = 0;

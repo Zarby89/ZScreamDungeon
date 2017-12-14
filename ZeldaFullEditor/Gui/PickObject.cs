@@ -17,7 +17,7 @@ namespace ZeldaFullEditor
             InitializeComponent();
         }
 
-        List<Room_Object> roomObjects = new List<Room_Object>();
+        public List<Room_Object> roomObjects = new List<Room_Object>();
         public Room room;
         private void PickObject_Load(object sender, EventArgs e)
         {

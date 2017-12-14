@@ -104,6 +104,12 @@
       <DependentUpon>PickChestItem.cs</DependentUpon>
     </Compile>
     <Compile Include="PaletteViewer.cs" />
+    <Compile Include="RoomLayout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RoomLayout.Designer.cs">
+      <DependentUpon>RoomLayout.cs</DependentUpon>
+    </Compile>
     <Compile Include="Rooms\Background2.cs" />
     <Compile Include="Rooms\Chests\Chest.cs" />
     <Compile Include="Rooms\Chests\ChestItems_Name.cs" />
@@ -171,6 +177,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="RoomLayout.resx">
+      <DependentUpon>RoomLayout.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

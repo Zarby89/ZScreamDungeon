@@ -147,7 +147,7 @@ namespace ZeldaFullEditor
                     ro.get_scroll_x();
                     ro.get_scroll_y();
                     ro.DrawOnBitmap();
-                    if (ro.is_block)
+                    if ((ro.options & ObjectOption.Block) == ObjectOption.Block)
                     {
                         using (Graphics g = Graphics.FromImage(ro.bitmap))
                         {
@@ -159,13 +159,12 @@ namespace ZeldaFullEditor
 
             if (objectInitialized == false)
             {
-                GFX.begin_draw(GFX.bg1_bitmap);
+                GFX.begin_draw(GFX.bgr_bitmap);
                 DrawFloors();
-                GFX.end_draw(GFX.bg1_bitmap);
+                GFX.end_draw(GFX.bgr_bitmap);
                 GFX.begin_draw(GFX.floor2_bitmap);
                 DrawFloors(2);
                 GFX.end_draw(GFX.floor2_bitmap);
-                GFX.bgr_bitmap = (Bitmap)GFX.bg1_bitmap.Clone();
             }
 
             objectInitialized = true;
@@ -194,6 +193,279 @@ namespace ZeldaFullEditor
              }
         }
 
+        public byte[] getTilesBytes()
+        {
+            List<byte> objectsBytes = new List<byte>();
+            List<byte> doorsBytes = new List<byte>();
+            bool found_door = false;
+
+            byte floorbyte = (byte)((floor2 << 4) + floor1);
+            byte layoutbyte = (byte)(layout<<2);
+            objectsBytes.Add(floorbyte);
+            objectsBytes.Add(layoutbyte);
+
+            for (int j = 0; j < tilesObjects.Count; j++) // save layer1 object 
+            {
+                Room_Object o = tilesObjects[j];
+                if ((o.options  & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Bgr) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
+                {
+                    if (o.layer == 0)
+                    {
+                        //if we encounter a door store it somewhere else for now and wait the end of objects layer1
+                        if ((tilesObjects[j].options & ObjectOption.Door) == ObjectOption.Door)
+                        {
+                            byte p = 0;
+                            if (o is object_door_up)
+                            {
+                                p = 0;
+                            }
+                            if (o is object_door_down)
+                            {
+                                p = 1;
+                            }
+                            if (o is object_door_left)
+                            {
+                                p = 2;
+                            }
+                            if (o is object_door_right)
+                            {
+                                p = 3;
+                            }
+                            byte b1 = (byte)(((o.id & 0x1E) << 3) + p);
+                            byte b2 = (byte)(((o.id & 0xFF00) >> 8));
+                            doorsBytes.Add(b1);
+                            doorsBytes.Add(b2);
+                            found_door = true;
+                        }
+                        else
+                        {
+                            if ((tilesObjects[j].id & 0xF00) == 0xF00) // type3
+                            {
+                                //xxxxxxii yyyyyyii 11111iii
+                                byte b3 = (byte)(o.id >> 4);
+                                byte b1 = (byte)((o.x << 2) + (o.id & 0x03));
+                                byte b2 = (byte)((o.y << 2) + ((o.id >> 2) & 0x03));
+                                objectsBytes.Add(b1);
+                                objectsBytes.Add(b2);
+                                objectsBytes.Add(b3);
+                            }
+                            else if ((tilesObjects[j].id & 0x100) == 0x100) // type2
+                            {
+                                //111111xx xxxxyyyy yyiiiiii
+                                byte b1 = (byte)(0xFC + (((o.x & 0x30) >> 4)));
+                                byte b2 = (byte)(((o.x & 0x0F) << 4) + ((o.y & 0x3C)>>2));
+                                byte b3 = (byte)(((o.y & 0x03) << 6) + ((o.id & 0x3F))); //wtf? 
+                                objectsBytes.Add(b1);
+                                objectsBytes.Add(b2);
+                                objectsBytes.Add(b3);
+                            }
+                            else //type1
+                            {
+                                //xxxxxxss yyyyyyss iiiiiiii
+                                byte b1 = (byte)((o.x << 2) + ((o.size >> 2) & 0x03));
+                                byte b2 = (byte)((o.y << 2) + (o.size & 0x03));
+                                byte b3 = (byte)(o.id);
+                                objectsBytes.Add(b1);
+                                objectsBytes.Add(b2);
+                                objectsBytes.Add(b3);
+
+                            }
+
+
+                        }
+                    }
+                }
+
+
+            }
+            if (found_door)//if we found door during layer1
+            {
+                objectsBytes.Add(0xF0);
+                objectsBytes.Add(0xFF);
+                foreach (byte b in doorsBytes)
+                {
+                    objectsBytes.Add(b);
+                }
+
+            }
+            objectsBytes.Add(0xFF);//end layer1
+            objectsBytes.Add(0xFF);//end layer1
+
+            found_door = false;
+            for (int j = 0; j < tilesObjects.Count; j++) // save layer2 object
+            {
+                Room_Object o = tilesObjects[j];
+                if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Bgr) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
+                {
+                    if (o.layer == 1)
+                    {
+                        //if we encounter a door store it somewhere else for now and wait the end of objects layer1
+                        if ((tilesObjects[j].options & ObjectOption.Door) == ObjectOption.Door)
+                        {
+                            byte p = 0;
+                            if (o is object_door_up)
+                            {
+                                p = 0;
+                            }
+                            if (o is object_door_down)
+                            {
+                                p = 1;
+                            }
+                            if (o is object_door_left)
+                            {
+                                p = 2;
+                            }
+                            if (o is object_door_right)
+                            {
+                                p = 3;
+                            }
+                            byte b1 = (byte)(((o.id & 0x1E) << 3) + p);
+                            byte b2 = (byte)(((o.id & 0xFF00) >> 8));
+                            doorsBytes.Add(b1);
+                            doorsBytes.Add(b2);
+                            found_door = true;
+                        }
+                        else
+                        {
+                            if ((tilesObjects[j].id & 0xF00) == 0xF00) // type3
+                            {
+                                //xxxxxxii yyyyyyii 11111iii
+                                byte b3 = (byte)(o.id >> 4);
+                                byte b1 = (byte)((o.x << 2) + (o.id & 0x03));
+                                byte b2 = (byte)((o.y << 2) + ((o.id >> 2) & 0x03));
+                                objectsBytes.Add(b1);
+                                objectsBytes.Add(b2);
+                                objectsBytes.Add(b3);
+                            }
+                            else if ((tilesObjects[j].id & 0x100) == 0x100) // type2
+                            {
+                                //111111xx xxxxyyyy yyiiiiii
+                                byte b1 = (byte)(0xFC + (((o.x & 0x30) >> 4)));
+                                byte b2 = (byte)(((o.x & 0x0F) << 4) + ((o.y & 0x3C) >> 2));
+                                byte b3 = (byte)(((o.y & 0x03) << 6) + ((o.id & 0x3F))); //wtf? 
+                                objectsBytes.Add(b1);
+                                objectsBytes.Add(b2);
+                                objectsBytes.Add(b3);
+                            }
+                            else //type1
+                            {
+                                byte b1 = (byte)((o.x << 2) + ((o.size >> 2) & 0x03));
+                                byte b2 = (byte)((o.y << 2) + (o.size & 0x03));
+                                byte b3 = (byte)(o.id);
+                                objectsBytes.Add(b1);
+                                objectsBytes.Add(b2);
+                                objectsBytes.Add(b3);
+
+                            }
+
+
+                        }
+                    }
+                }
+
+
+            }
+            if (found_door)//if we found door during layer1
+            {
+                objectsBytes.Add(0xF0);
+                objectsBytes.Add(0xFF);
+                foreach (byte b in doorsBytes)
+                {
+                    objectsBytes.Add(b);
+                }
+
+            }
+            objectsBytes.Add(0xFF);//end layer1
+            objectsBytes.Add(0xFF);//end layer1
+            found_door = false;
+            for (int j = 0; j < tilesObjects.Count; j++) // save layer3 object
+            {
+                Room_Object o = tilesObjects[j];
+                if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Bgr) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
+                {
+                    if (o.layer == 2)
+                    {
+                        //if we encounter a door store it somewhere else for now and wait the end of objects layer1
+                        if ((tilesObjects[j].options & ObjectOption.Door) == ObjectOption.Door)
+                        {
+                            byte p = 0;
+                            if (o is object_door_up)
+                            {
+                                p = 0;
+                            }
+                            if (o is object_door_down)
+                            {
+                                p = 1;
+                            }
+                            if (o is object_door_left)
+                            {
+                                p = 2;
+                            }
+                            if (o is object_door_right)
+                            {
+                                p = 3;
+                            }
+                            byte b1 = (byte)(((o.id & 0x1E) << 3) + p);
+                            byte b2 = (byte)(((o.id & 0xFF00) >> 8));
+                            doorsBytes.Add(b1);
+                            doorsBytes.Add(b2);
+                            found_door = true;
+                        }
+                        else
+                        {
+                            if ((o.id & 0xF00) == 0xF00) // type3
+                            {
+                                //xxxxxxii yyyyyyii 11111iii
+                                byte b3 = (byte)(o.id >> 4);
+                                byte b1 = (byte)((o.x << 2) + (o.id & 0x03));
+                                byte b2 = (byte)((o.y << 2) + ((o.id >> 2) & 0x03));
+                                objectsBytes.Add(b1);
+                                objectsBytes.Add(b2);
+                                objectsBytes.Add(b3);
+                            }
+                            else if ((o.id & 0x100) == 0x100) // type2
+                            {
+                                //111111xx xxxxyyyy yyiiiiii
+                                byte b1 = (byte)(0xFC + (((o.x & 0x30) >> 4)));
+                                byte b2 = (byte)(((o.x & 0x0F) << 4) + ((o.y & 0x3C) >> 2));
+                                byte b3 = (byte)(((o.y & 0x03) << 6) + ((o.id & 0x3F))); //wtf? 
+                                objectsBytes.Add(b1);
+                                objectsBytes.Add(b2);
+                                objectsBytes.Add(b3);
+                            }
+                            else //type1
+                            {
+                                byte b1 = (byte)((o.x << 2) + ((o.size >> 2) & 0x03));
+                                byte b2 = (byte)((o.y << 2) + (o.size & 0x03));
+                                byte b3 = (byte)(o.id);
+                                objectsBytes.Add(b1);
+                                objectsBytes.Add(b2);
+                                objectsBytes.Add(b3);
+
+                            }
+
+
+                        }
+                    }
+                }
+
+
+            }
+            if (found_door)//if we found door during layer1
+            {
+                objectsBytes.Add(0xF0);
+                objectsBytes.Add(0xFF);
+                foreach (byte b in doorsBytes)
+                {
+                    objectsBytes.Add(b);
+                }
+
+            }
+            objectsBytes.Add(0xFF);//end layer1
+            objectsBytes.Add(0xFF);//end layer1
+            return objectsBytes.ToArray();
+        }
+
 
         public void drawPotsItems()
         {
@@ -210,6 +482,7 @@ namespace ZeldaFullEditor
         {
             foreach (Room_Object o in tilesObjects)
             {
+
                 o.setRoom(this);
 
                 if (o.GetType() == typeof(object_door_up))
@@ -218,11 +491,12 @@ namespace ZeldaFullEditor
                     float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
                     o.x = (byte)n;
                     o.y = (byte)(pos / 64);
-                    o.is_door = true;
+                    o.options |= ObjectOption.Door;
                     o.nx = o.x;
                     o.ny = o.y;
                     o.ox = o.x;
                     o.oy = o.y;
+                    
                 }
                 if (o.GetType() == typeof(object_door_down))
                 {
@@ -231,7 +505,7 @@ namespace ZeldaFullEditor
                     o.x = (byte)n;
                     o.y = (byte)(pos / 64);
                     o.y += 1;
-                    o.is_door = true;
+                    o.options |= ObjectOption.Door;
                     o.nx = o.x;
                     o.ny = o.y;
                     o.ox = o.x;
@@ -244,7 +518,7 @@ namespace ZeldaFullEditor
                     float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
                     o.x = (byte)n;
                     o.y = (byte)(pos / 64);
-                    o.is_door = true;
+                    o.options |= ObjectOption.Door;
                     o.nx = o.x;
                     o.ny = o.y;
                     o.ox = o.x;
@@ -261,7 +535,7 @@ namespace ZeldaFullEditor
                     //{
                     o.x += 1;
                     //}
-                    o.is_door = true;
+                    o.options |= ObjectOption.Door;
                     o.nx = o.x;
                     o.ny = o.y;
                     o.ox = o.x;
@@ -290,9 +564,13 @@ namespace ZeldaFullEditor
                     int py = (((((b4 << 8) + b3) & 0x1FFF) >> 1)/64);
                     a = (a - py) *64;
                     int px = (int)a;
-
-                    addObject(0x0E00, (byte)(px), (byte)(py), 0, 0);
-                    tilesObjects[tilesObjects.Count - 1].is_block = true;
+                    Room_Object r = addObject(0x0E00, (byte)(px), (byte)(py), 0, 0);
+                    if (r != null)
+                    {
+                        r.options |= ObjectOption.Block;
+                        tilesObjects.Add(r);
+                    }
+                    //tilesObjects[tilesObjects.Count - 1].is_block = true;
                 }
 
             }
@@ -321,8 +599,13 @@ namespace ZeldaFullEditor
                         a = (a - py) * 64;
                         int px = (int)a;
 
-                        addObject(0x120, (byte)px, (byte)py, 0, 0);
-                        tilesObjects[tilesObjects.Count - 1].is_torch = true;
+                        Room_Object r = addObject(0x120, (byte)px, (byte)py, 0, 0);
+                        if (r != null)
+                        {
+                            r.options |= ObjectOption.Torch;
+                            tilesObjects.Add(r);
+                        }
+                        //tilesObjects[tilesObjects.Count - 1].is_torch = true;
                         i += 2;
                     }
                 }
@@ -375,23 +658,7 @@ namespace ZeldaFullEditor
                 }
         }
         
-        public void drawChestsItem()
-        {
-            using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
-            {
-                foreach (Chest c in chest_list)
-                {
-                    //g.DrawString(chest_items_name.name[c.item], new Font("Arial", 10,FontStyle.Bold), Brushes.White, new Point(((c.x-1) * 8), ((c.y - 2) * 8)));
-                    c.ItemsDraw(c.item,(c.x*8),((c.y-2)*8));
-                    //Console.WriteLine((byte)(c.x * 8) +","+ (byte)(c.y * 8));
-                }
-            }
-        }
 
-
-
-
-        
         /*public void DrawSpritesNames(Graphics g)
         {
             g.SmoothingMode = SmoothingMode.AntiAlias;
@@ -414,7 +681,7 @@ namespace ZeldaFullEditor
         {
             foreach (Room_Object o in tilesObjects)
             {
-                if (o.is_bgr)
+                if ((o.options & ObjectOption.Bgr) == ObjectOption.Bgr)
                 {
                     draw_tiles(o,255);
                 }
@@ -426,7 +693,7 @@ namespace ZeldaFullEditor
 
             foreach (Room_Object o in tilesObjects)
             {
-                if (o.is_bgr == false)
+                if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr)
                 {
                     //o.DrawOnBitmap();
                     //draw_tiles(o);
@@ -570,7 +837,7 @@ namespace ZeldaFullEditor
                     }
                     else if (b1 >= 0xFC) //subtype2 (not scalable? )
                     {
-
+                        
                         oid = (short)((b3 & 0x3F) + 0x100);
                         
                         posX = (byte)(((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));
@@ -591,9 +858,13 @@ namespace ZeldaFullEditor
                         sizeY = (byte)((b2 & 0x03));
                         sizeXY = (byte)(((sizeX << 2) + sizeY));
                     }
-                    addObject(oid, posX, posY, sizeXY,(byte)layer);
-                    tilesObjects[tilesObjects.Count - 1].is_bgr = true;
 
+                    Room_Object r = addObject(oid, posX, posY, sizeXY,(byte)layer);
+                    if (r != null)
+                    {
+                        r.options |= ObjectOption.Bgr;
+                        tilesObjects.Add(r);
+                    }
 
                 }
                 else
@@ -635,11 +906,12 @@ namespace ZeldaFullEditor
                     {
                         if (b3 >= 0xF8) //subtype3 (scalable x,y) //  && b3 < 0xFC
                         {
+                            //xxxxxxii yyyyyyii 11111iii
                             oid = (short)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
                             posX = (byte)((b1 & 0xFC) >> 2);
                             posY = (byte)((b2 & 0xFC) >> 2);
-                            sizeX = (byte)((b1 & 0x03));
-                            sizeY = (byte)((b2 & 0x03));
+                            sizeX = (byte)((b1 & 0x03));//not needed
+                            sizeY = (byte)((b2 & 0x03));//not needed
                             sizeXY = (byte)(((sizeX << 2) + sizeY));
                         }
                         else //subtype1
@@ -655,7 +927,7 @@ namespace ZeldaFullEditor
                         }
                         if (b1 >= 0xFC) //subtype2 (not scalable? )
                         {
-                            //Console.WriteLine(oid.ToString("X4"));
+                            //111111xx xxxxyyyy yyiiiiii
                             oid = (short)((b3 & 0x3F) + 0x100);
 
                             posX = (byte)(((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));
@@ -665,8 +937,13 @@ namespace ZeldaFullEditor
                             sizeY = 0;
                             sizeXY = 0;
                         }
-
-                        addObject(oid, posX, posY, sizeXY, (byte)layer);
+                        Room_Object r = addObject(oid, posX, posY, sizeXY, (byte)layer);
+                        if (r != null)
+                        {
+                            tilesObjects.Add(r);
+                        }
+                            
+                        
 
                         foreach(short stair in stairsObjects)
                         {
@@ -675,14 +952,14 @@ namespace ZeldaFullEditor
                                 
                                 if (nbr_of_staircase < 4)
                                 {
-                                    tilesObjects[tilesObjects.Count - 1].is_stair = true;
+                                    tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Stairs;
                                     staircaseRooms.Add(new StaircaseRoom(posX, posY, "To " + staircase_rooms[nbr_of_staircase]));
                                     nbr_of_staircase++;
                                     
                                 }
                                 else
                                 {
-                                    tilesObjects[tilesObjects.Count - 1].is_stair = true;
+                                    tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Stairs;
                                     staircaseRooms.Add(new StaircaseRoom(posX, posY, "To ???"));
                                 }
                                 
@@ -694,7 +971,7 @@ namespace ZeldaFullEditor
                         {
                             if (chests_in_room.Count > 0)
                             {
-                                tilesObjects[tilesObjects.Count - 1].is_chest = true;
+                                tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Chest;
                                 chest_list.Add(new Chest(posX, posY, chests_in_room[0].itemIn, chests_in_room[0].bigChest));
                                 chests_in_room.RemoveAt(0);
 
@@ -704,7 +981,7 @@ namespace ZeldaFullEditor
                         {
                             if (chests_in_room.Count > 0)
                             {
-                                tilesObjects[tilesObjects.Count - 1].is_chest = true;
+                                tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Chest;
                                 chest_list.Add(new Chest((byte)(posX+1), posY, chests_in_room[0].itemIn, chests_in_room[0].bigChest));
                                 chests_in_room.RemoveAt(0);
 
@@ -749,739 +1026,739 @@ namespace ZeldaFullEditor
 
         }
 
-        public void addObject(short oid,byte x, byte y, byte size,byte layer)
+        public Room_Object addObject(short oid,byte x, byte y, byte size,byte layer)
         {
             if (oid <= 0xFF)
             {
                 switch (oid)
                 {
                     case 0x00:
-                        tilesObjects.Add(new object_00(oid, x, y, size,layer));
-                        break;
+                       return new object_00(oid, x, y, size,layer);
+                        
                     case 0x01:
-                        tilesObjects.Add(new object_01(oid, x, y, size, layer));
-                        break;
+                       return new object_01(oid, x, y, size, layer);
+                        
                     case 0x02:
-                        tilesObjects.Add(new object_02(oid, x, y, size, layer));
-                        break;
+                       return new object_02(oid, x, y, size, layer);
+                        
                     case 0x03:
-                        tilesObjects.Add(new object_03(oid, x, y, size, layer));
-                        break;
+                       return new object_03(oid, x, y, size, layer);
+                        
                     case 0x04:
-                        tilesObjects.Add(new object_04(oid, x, y, size, layer));
-                        break;
+                       return new object_04(oid, x, y, size, layer);
+                        
                     case 0x05:
-                        tilesObjects.Add(new object_05(oid, x, y, size, layer));
-                        break;
+                       return new object_05(oid, x, y, size, layer);
+                        
                     case 0x06:
-                        tilesObjects.Add(new object_06(oid, x, y, size, layer));
-                        break;
+                       return new object_06(oid, x, y, size, layer);
+                        
                     case 0x07:
-                        tilesObjects.Add(new object_07(oid, x, y, size, layer));
-                        break;
+                       return new object_07(oid, x, y, size, layer);
+                        
                     case 0x08:
-                        tilesObjects.Add(new object_08(oid, x, y, size, layer));
-                        break;
+                       return new object_08(oid, x, y, size, layer);
+                        
                     case 0x09:
-                        tilesObjects.Add(new object_09(oid, x, y, size,layer));
-                        break;
+                       return new object_09(oid, x, y, size,layer);
+                        
                     case 0x0A:
-                        tilesObjects.Add(new object_0A(oid, x, y, size,layer));
-                        break;
+                       return new object_0A(oid, x, y, size,layer);
+                        
                     case 0x0B:
-                        tilesObjects.Add(new object_0B(oid, x, y, size,layer));
-                        break;
+                       return new object_0B(oid, x, y, size,layer);
+                        
                     case 0x0C:
-                        tilesObjects.Add(new object_0C(oid, x, y, size,layer));
-                        break;
+                       return new object_0C(oid, x, y, size,layer);
+                        
                     case 0x0D:
-                        tilesObjects.Add(new object_0D(oid, x, y, size,layer));
-                        break;
+                       return new object_0D(oid, x, y, size,layer);
+                        
                     case 0x0E:
-                        tilesObjects.Add(new object_0E(oid, x, y, size,layer));
-                        break;
+                       return new object_0E(oid, x, y, size,layer);
+                        
                     case 0x0F:
-                        tilesObjects.Add(new object_0F(oid, x, y, size,layer));
-                        break;
+                       return new object_0F(oid, x, y, size,layer);
+                        
                     case 0x10:
-                        tilesObjects.Add(new object_10(oid, x, y, size,layer));
-                        break;
+                       return new object_10(oid, x, y, size,layer);
+                        
                     case 0x11:
-                        tilesObjects.Add(new object_11(oid, x, y, size,layer));
-                        break;
+                       return new object_11(oid, x, y, size,layer);
+                        
                     case 0x12:
-                        tilesObjects.Add(new object_12(oid, x, y, size,layer));
-                        break;
+                       return new object_12(oid, x, y, size,layer);
+                        
                     case 0x13:
-                        tilesObjects.Add(new object_13(oid, x, y, size,layer));
-                        break;
+                       return new object_13(oid, x, y, size,layer);
+                        
                     case 0x14:
-                        tilesObjects.Add(new object_14(oid, x, y, size,layer));
-                        break;
+                       return new object_14(oid, x, y, size,layer);
+                        
                     case 0x15:
-                        tilesObjects.Add(new object_15(oid, x, y, size,layer));
-                        break;
+                       return new object_15(oid, x, y, size,layer);
+                        
                     case 0x16:
-                        tilesObjects.Add(new object_16(oid, x, y, size,layer));
-                        break;
+                       return new object_16(oid, x, y, size,layer);
+                        
                     case 0x17:
-                        tilesObjects.Add(new object_17(oid, x, y, size,layer));
-                        break;
+                       return new object_17(oid, x, y, size,layer);
+                        
                     case 0x18:
-                        tilesObjects.Add(new object_18(oid, x, y, size,layer));
-                        break;
+                       return new object_18(oid, x, y, size,layer);
+                        
                     case 0x19:
-                        tilesObjects.Add(new object_19(oid, x, y, size,layer));
-                        break;
+                       return new object_19(oid, x, y, size,layer);
+                        
                     case 0x1A:
-                        tilesObjects.Add(new object_1A(oid, x, y, size,layer));
-                        break;
+                       return new object_1A(oid, x, y, size,layer);
+                        
                     case 0x1B:
-                        tilesObjects.Add(new object_1B(oid, x, y, size,layer));
-                        break;
+                       return new object_1B(oid, x, y, size,layer);
+                        
                     case 0x1C:
-                        tilesObjects.Add(new object_1C(oid, x, y, size,layer));
-                        break;
+                       return new object_1C(oid, x, y, size,layer);
+                        
                     case 0x1D:
-                        tilesObjects.Add(new object_1D(oid, x, y, size,layer));
-                        break;
+                       return new object_1D(oid, x, y, size,layer);
+                        
                     case 0x1E:
-                        tilesObjects.Add(new object_1E(oid, x, y, size,layer));
-                        break;
+                       return new object_1E(oid, x, y, size,layer);
+                        
                     case 0x1F:
-                        tilesObjects.Add(new object_1F(oid, x, y, size,layer));
-                        break;
+                       return new object_1F(oid, x, y, size,layer);
+                        
                     case 0x20:
-                        tilesObjects.Add(new object_20(oid, x, y, size,layer));
-                        break;
+                       return new object_20(oid, x, y, size,layer);
+                        
                     case 0x21:
-                        tilesObjects.Add(new object_21(oid, x, y, size,layer));
-                        break;
+                       return new object_21(oid, x, y, size,layer);
+                        
                     case 0x22:
-                        tilesObjects.Add(new object_22(oid, x, y, size,layer));
-                        break;
+                       return new object_22(oid, x, y, size,layer);
+                        
                     case 0x23:
-                        tilesObjects.Add(new object_23(oid, x, y, size,layer));
-                        break;
+                       return new object_23(oid, x, y, size,layer);
+                        
                     case 0x24:
-                        tilesObjects.Add(new object_24(oid, x, y, size,layer));
-                        break;
+                       return new object_24(oid, x, y, size,layer);
+                        
                     case 0x25:
-                        tilesObjects.Add(new object_25(oid, x, y, size,layer));
-                        break;
+                       return new object_25(oid, x, y, size,layer);
+                        
                     case 0x26:
-                        tilesObjects.Add(new object_26(oid, x, y, size,layer));
-                        break;
+                       return new object_26(oid, x, y, size,layer);
+                        
                     case 0x27:
-                        tilesObjects.Add(new object_27(oid, x, y, size,layer));
-                        break;
+                       return new object_27(oid, x, y, size,layer);
+                        
                     case 0x28:
-                        tilesObjects.Add(new object_28(oid, x, y, size,layer));
-                        break;
+                       return new object_28(oid, x, y, size,layer);
+                        
                     case 0x29:
-                        tilesObjects.Add(new object_29(oid, x, y, size,layer));
-                        break;
+                       return new object_29(oid, x, y, size,layer);
+                        
                     case 0x2A:
-                        tilesObjects.Add(new object_2A(oid, x, y, size,layer));
-                        break;
+                       return new object_2A(oid, x, y, size,layer);
+                        
                     case 0x2B:
-                        tilesObjects.Add(new object_2B(oid, x, y, size,layer));
-                        break;
+                       return new object_2B(oid, x, y, size,layer);
+                        
                     case 0x2C:
-                        tilesObjects.Add(new object_2C(oid, x, y, size,layer));
-                        break;
+                       return new object_2C(oid, x, y, size,layer);
+                        
                     case 0x2D:
-                        tilesObjects.Add(new object_2D(oid, x, y, size,layer));
-                        break;
+                       return new object_2D(oid, x, y, size,layer);
+                        
                     case 0x2E:
-                        tilesObjects.Add(new object_2E(oid, x, y, size,layer));
-                        break;
+                       return new object_2E(oid, x, y, size,layer);
+                        
                     case 0x2F:
-                        tilesObjects.Add(new object_2F(oid, x, y, size,layer));
-                        break;
+                       return new object_2F(oid, x, y, size,layer);
+                        
                     case 0x30:
-                        tilesObjects.Add(new object_30(oid, x, y, size,layer));
-                        break;
+                       return new object_30(oid, x, y, size,layer);
+                        
                     case 0x31:
-                        tilesObjects.Add(new object_31(oid, x, y, size,layer));
-                        break;
+                       return new object_31(oid, x, y, size,layer);
+                        
                     case 0x32:
-                        tilesObjects.Add(new object_32(oid, x, y, size,layer));
-                        break;
+                       return new object_32(oid, x, y, size,layer);
+                        
                     case 0x33:
-                        tilesObjects.Add(new object_33(oid, x, y, size,layer));
-                        break;
+                       return new object_33(oid, x, y, size,layer);
+                        
                     case 0x34:
-                        tilesObjects.Add(new object_34(oid, x, y, size,layer));
-                        break;
+                       return new object_34(oid, x, y, size,layer);
+                        
                     case 0x35:
-                        tilesObjects.Add(new object_35(oid, x, y, size,layer));
-                        break;
+                       return new object_35(oid, x, y, size,layer);
+                        
                     case 0x36:
-                        tilesObjects.Add(new object_36(oid, x, y, size,layer));
-                        break;
+                       return new object_36(oid, x, y, size,layer);
+                        
                     case 0x37:
-                        tilesObjects.Add(new object_37(oid, x, y, size,layer));
-                        break;
+                       return new object_37(oid, x, y, size,layer);
+                        
                     case 0x38:
-                        tilesObjects.Add(new object_38(oid, x, y, size,layer));
-                        break;
+                       return new object_38(oid, x, y, size,layer);
+                        
                     case 0x39:
-                        tilesObjects.Add(new object_39(oid, x, y, size,layer));
-                        break;
+                       return new object_39(oid, x, y, size,layer);
+                        
                     case 0x3A:
-                        tilesObjects.Add(new object_3A(oid, x, y, size,layer));
-                        break;
+                       return new object_3A(oid, x, y, size,layer);
+                        
                     case 0x3B:
-                        tilesObjects.Add(new object_3B(oid, x, y, size,layer));
-                        break;
+                       return new object_3B(oid, x, y, size,layer);
+                        
                     case 0x3C:
-                        tilesObjects.Add(new object_3C(oid, x, y, size,layer));
-                        break;
+                       return new object_3C(oid, x, y, size,layer);
+                        
                     case 0x3D:
-                        tilesObjects.Add(new object_3D(oid, x, y, size,layer));
-                        break;
+                       return new object_3D(oid, x, y, size,layer);
+                        
                     case 0x3E:
-                        tilesObjects.Add(new object_3E(oid, x, y, size,layer));
-                        break;
+                       return new object_3E(oid, x, y, size,layer);
+                        
                     case 0x3F:
-                        tilesObjects.Add(new object_3F(oid, x, y, size,layer));
-                        break;
+                       return new object_3F(oid, x, y, size,layer);
+                        
                     case 0x40:
-                        tilesObjects.Add(new object_40(oid, x, y, size,layer));
-                        break;
+                       return new object_40(oid, x, y, size,layer);
+                        
                     case 0x41:
-                        tilesObjects.Add(new object_41(oid, x, y, size,layer));
-                        break;
+                       return new object_41(oid, x, y, size,layer);
+                        
                     case 0x42:
-                        tilesObjects.Add(new object_42(oid, x, y, size,layer));
-                        break;
+                       return new object_42(oid, x, y, size,layer);
+                        
                     case 0x43:
-                        tilesObjects.Add(new object_43(oid, x, y, size,layer));
-                        break;
+                       return new object_43(oid, x, y, size,layer);
+                        
                     case 0x44:
-                        tilesObjects.Add(new object_44(oid, x, y, size,layer));
-                        break;
+                       return new object_44(oid, x, y, size,layer);
+                        
                     case 0x45:
-                        tilesObjects.Add(new object_45(oid, x, y, size,layer));
-                        break;
+                       return new object_45(oid, x, y, size,layer);
+                        
                     case 0x46:
-                        tilesObjects.Add(new object_46(oid, x, y, size,layer));
-                        break;
+                       return new object_46(oid, x, y, size,layer);
+                        
                     case 0x47:
-                        tilesObjects.Add(new object_47(oid, x, y, size,layer));
-                        break;
+                       return new object_47(oid, x, y, size,layer);
+                        
                     case 0x48:
-                        tilesObjects.Add(new object_48(oid, x, y, size,layer));
-                        break;
+                       return new object_48(oid, x, y, size,layer);
+                        
                     case 0x49:
-                        tilesObjects.Add(new object_49(oid, x, y, size,layer));
-                        break;
+                       return new object_49(oid, x, y, size,layer);
+                        
                     case 0x4A:
-                        tilesObjects.Add(new object_4A(oid, x, y, size,layer));
-                        break;
+                       return new object_4A(oid, x, y, size,layer);
+                        
                     case 0x4B:
-                        tilesObjects.Add(new object_4B(oid, x, y, size,layer));
-                        break;
+                       return new object_4B(oid, x, y, size,layer);
+                        
                     case 0x4C:
-                        tilesObjects.Add(new object_4C(oid, x, y, size,layer));
-                        break;
+                       return new object_4C(oid, x, y, size,layer);
+                        
                     case 0x4D:
-                        tilesObjects.Add(new object_4D(oid, x, y, size,layer));
-                        break;
+                       return new object_4D(oid, x, y, size,layer);
+                        
                     case 0x4E:
-                        tilesObjects.Add(new object_4E(oid, x, y, size,layer));
-                        break;
+                       return new object_4E(oid, x, y, size,layer);
+                        
                     case 0x4F:
-                        tilesObjects.Add(new object_4F(oid, x, y, size,layer));
-                        break;
+                       return new object_4F(oid, x, y, size,layer);
+                        
                     case 0x50:
-                        tilesObjects.Add(new object_50(oid, x, y, size,layer));
-                        break;
+                       return new object_50(oid, x, y, size,layer);
+                        
                     case 0x51:
-                        tilesObjects.Add(new object_51(oid, x, y, size,layer));
-                        break;
+                       return new object_51(oid, x, y, size,layer);
+                        
                     case 0x52:
-                        tilesObjects.Add(new object_52(oid, x, y, size,layer));
-                        break;
+                       return new object_52(oid, x, y, size,layer);
+                        
                     case 0x53:
-                        tilesObjects.Add(new object_53(oid, x, y, size,layer));
-                        break;
+                       return new object_53(oid, x, y, size,layer);
+                        
                     case 0x54:
-                        tilesObjects.Add(new object_54(oid, x, y, size,layer));
-                        break;
+                       return new object_54(oid, x, y, size,layer);
+                        
                     case 0x55:
-                        tilesObjects.Add(new object_55(oid, x, y, size,layer));
-                        break;
+                       return new object_55(oid, x, y, size,layer);
+                        
                     case 0x56:
-                        tilesObjects.Add(new object_56(oid, x, y, size,layer));
-                        break;
+                       return new object_56(oid, x, y, size,layer);
+                        
                     case 0x57:
-                        tilesObjects.Add(new object_57(oid, x, y, size,layer));
-                        break;
+                       return new object_57(oid, x, y, size,layer);
+                        
                     case 0x58:
-                        tilesObjects.Add(new object_58(oid, x, y, size,layer));
-                        break;
+                       return new object_58(oid, x, y, size,layer);
+                        
                     case 0x59:
-                        tilesObjects.Add(new object_59(oid, x, y, size,layer));
-                        break;
+                       return new object_59(oid, x, y, size,layer);
+                        
                     case 0x5A:
-                        tilesObjects.Add(new object_5A(oid, x, y, size,layer));
-                        break;
+                       return new object_5A(oid, x, y, size,layer);
+                        
                     case 0x5B:
-                        tilesObjects.Add(new object_5B(oid, x, y, size,layer));
-                        break;
+                       return new object_5B(oid, x, y, size,layer);
+                        
                     case 0x5C:
-                        tilesObjects.Add(new object_5C(oid, x, y, size,layer));
-                        break;
+                       return new object_5C(oid, x, y, size,layer);
+                        
                     case 0x5D:
-                        tilesObjects.Add(new object_5D(oid, x, y, size,layer));
-                        break;
+                       return new object_5D(oid, x, y, size,layer);
+                        
                     case 0x5E:
-                        tilesObjects.Add(new object_5E(oid, x, y, size,layer));
-                        break;
+                       return new object_5E(oid, x, y, size,layer);
+                        
                     case 0x5F:
-                        tilesObjects.Add(new object_5F(oid, x, y, size,layer));
-                        break;
+                       return new object_5F(oid, x, y, size,layer);
+                        
                     case 0x60:
-                        tilesObjects.Add(new object_60(oid, x, y, size,layer));
-                        break;
+                       return new object_60(oid, x, y, size,layer);
+                        
                     case 0x61:
-                        tilesObjects.Add(new object_61(oid, x, y, size,layer));
-                        break;
+                       return new object_61(oid, x, y, size,layer);
+                        
                     case 0x62:
-                        tilesObjects.Add(new object_62(oid, x, y, size,layer));
-                        break;
+                       return new object_62(oid, x, y, size,layer);
+                        
                     case 0x63:
-                        tilesObjects.Add(new object_63(oid, x, y, size,layer));
-                        break;
+                       return new object_63(oid, x, y, size,layer);
+                        
                     case 0x64:
-                        tilesObjects.Add(new object_64(oid, x, y, size,layer));
-                        break;
+                       return new object_64(oid, x, y, size,layer);
+                        
                     case 0x65:
-                        tilesObjects.Add(new object_65(oid, x, y, size,layer));
-                        break;
+                       return new object_65(oid, x, y, size,layer);
+                        
                     case 0x66:
-                        tilesObjects.Add(new object_66(oid, x, y, size,layer));
-                        break;
+                       return new object_66(oid, x, y, size,layer);
+                        
                     case 0x67:
-                        tilesObjects.Add(new object_67(oid, x, y, size,layer));
-                        break;
+                       return new object_67(oid, x, y, size,layer);
+                        
                     case 0x68:
-                        tilesObjects.Add(new object_68(oid, x, y, size,layer));
-                        break;
+                       return new object_68(oid, x, y, size,layer);
+                        
                     case 0x69:
-                        tilesObjects.Add(new object_69(oid, x, y, size,layer));
-                        break;
+                       return new object_69(oid, x, y, size,layer);
+                        
                     case 0x6A:
-                        tilesObjects.Add(new object_6A(oid, x, y, size,layer));
-                        break;
+                       return new object_6A(oid, x, y, size,layer);
+                        
                     case 0x6B:
-                        tilesObjects.Add(new object_6B(oid, x, y, size,layer));
-                        break;
+                       return new object_6B(oid, x, y, size,layer);
+                        
                     case 0x6C:
-                        tilesObjects.Add(new object_6C(oid, x, y, size,layer));
-                        break;
+                       return new object_6C(oid, x, y, size,layer);
+                        
                     case 0x6D:
-                        tilesObjects.Add(new object_6D(oid, x, y, size,layer));
-                        break;
+                       return new object_6D(oid, x, y, size,layer);
+                        
                     case 0x6E:
-                        tilesObjects.Add(new object_6E(oid, x, y, size,layer));
-                        break;
+                       return new object_6E(oid, x, y, size,layer);
+                        
                     case 0x6F:
-                        tilesObjects.Add(new object_6F(oid, x, y, size,layer));
-                        break;
+                       return new object_6F(oid, x, y, size,layer);
+                        
                     case 0x70:
-                        tilesObjects.Add(new object_70(oid, x, y, size,layer));
-                        break;
+                       return new object_70(oid, x, y, size,layer);
+                        
                     case 0x71:
-                        tilesObjects.Add(new object_71(oid, x, y, size,layer));
-                        break;
+                       return new object_71(oid, x, y, size,layer);
+                        
                     case 0x72:
-                        tilesObjects.Add(new object_72(oid, x, y, size,layer));
-                        break;
+                       return new object_72(oid, x, y, size,layer);
+                        
                     case 0x73:
-                        tilesObjects.Add(new object_73(oid, x, y, size,layer));
-                        break;
+                       return new object_73(oid, x, y, size,layer);
+                        
                     case 0x74:
-                        tilesObjects.Add(new object_74(oid, x, y, size,layer));
-                        break;
+                       return new object_74(oid, x, y, size,layer);
+                        
                     case 0x75:
-                        tilesObjects.Add(new object_75(oid, x, y, size,layer));
-                        break;
+                       return new object_75(oid, x, y, size,layer);
+                        
                     case 0x76:
-                        tilesObjects.Add(new object_76(oid, x, y, size,layer));
-                        break;
+                       return new object_76(oid, x, y, size,layer);
+                        
                     case 0x77:
-                        tilesObjects.Add(new object_77(oid, x, y, size,layer));
-                        break;
+                       return new object_77(oid, x, y, size,layer);
+                        
                     case 0x78:
-                        tilesObjects.Add(new object_78(oid, x, y, size,layer));
-                        break;
+                       return new object_78(oid, x, y, size,layer);
+                        
                     case 0x79:
-                        tilesObjects.Add(new object_79(oid, x, y, size,layer));
-                        break;
+                       return new object_79(oid, x, y, size,layer);
+                        
                     case 0x7A:
-                        tilesObjects.Add(new object_7A(oid, x, y, size,layer));
-                        break;
+                       return new object_7A(oid, x, y, size,layer);
+                        
                     case 0x7B:
-                        tilesObjects.Add(new object_7B(oid, x, y, size,layer));
-                        break;
+                       return new object_7B(oid, x, y, size,layer);
+                        
                     case 0x7C:
-                        tilesObjects.Add(new object_7C(oid, x, y, size,layer));
-                        break;
+                       return new object_7C(oid, x, y, size,layer);
+                        
                     case 0x7D:
-                        tilesObjects.Add(new object_7D(oid, x, y, size,layer));
-                        break;
+                       return new object_7D(oid, x, y, size,layer);
+                        
                     case 0x7E:
-                        tilesObjects.Add(new object_7E(oid, x, y, size,layer));
-                        break;
+                       return new object_7E(oid, x, y, size,layer);
+                        
                     case 0x7F:
-                        tilesObjects.Add(new object_7F(oid, x, y, size,layer));
-                        break;
+                       return new object_7F(oid, x, y, size,layer);
+                        
                     case 0x80:
-                        tilesObjects.Add(new object_80(oid, x, y, size,layer));
-                        break;
+                       return new object_80(oid, x, y, size,layer);
+                        
                     case 0x81:
-                        tilesObjects.Add(new object_81(oid, x, y, size,layer));
-                        break;
+                       return new object_81(oid, x, y, size,layer);
+                        
                     case 0x82:
-                        tilesObjects.Add(new object_82(oid, x, y, size,layer));
-                        break;
+                       return new object_82(oid, x, y, size,layer);
+                        
                     case 0x83:
-                        tilesObjects.Add(new object_83(oid, x, y, size,layer));
-                        break;
+                       return new object_83(oid, x, y, size,layer);
+                        
                     case 0x84:
-                        tilesObjects.Add(new object_84(oid, x, y, size,layer));
-                        break;
+                       return new object_84(oid, x, y, size,layer);
+                        
                     case 0x85:
-                        tilesObjects.Add(new object_85(oid, x, y, size,layer));
-                        break;
+                       return new object_85(oid, x, y, size,layer);
+                        
                     case 0x86:
-                        tilesObjects.Add(new object_86(oid, x, y, size,layer));
-                        break;
+                       return new object_86(oid, x, y, size,layer);
+                        
                     case 0x87:
-                        tilesObjects.Add(new object_87(oid, x, y, size,layer));
-                        break;
+                       return new object_87(oid, x, y, size,layer);
+                        
                     case 0x88:
-                        tilesObjects.Add(new object_88(oid, x, y, size,layer));
-                        break;
+                       return new object_88(oid, x, y, size,layer);
+                        
                     case 0x89:
-                        tilesObjects.Add(new object_89(oid, x, y, size,layer));
-                        break;
+                       return new object_89(oid, x, y, size,layer);
+                        
                     case 0x8A:
-                        tilesObjects.Add(new object_8A(oid, x, y, size,layer));
-                        break;
+                       return new object_8A(oid, x, y, size,layer);
+                        
                     case 0x8B:
-                        tilesObjects.Add(new object_8B(oid, x, y, size,layer));
-                        break;
+                       return new object_8B(oid, x, y, size,layer);
+                        
                     case 0x8C:
-                        tilesObjects.Add(new object_8C(oid, x, y, size,layer));
-                        break;
+                       return new object_8C(oid, x, y, size,layer);
+                        
                     case 0x8D:
-                        tilesObjects.Add(new object_8D(oid, x, y, size,layer));
-                        break;
+                       return new object_8D(oid, x, y, size,layer);
+                        
                     case 0x8E:
-                        tilesObjects.Add(new object_8E(oid, x, y, size,layer));
-                        break;
+                       return new object_8E(oid, x, y, size,layer);
+                        
                     case 0x8F:
-                        tilesObjects.Add(new object_8F(oid, x, y, size,layer));
-                        break;
+                       return new object_8F(oid, x, y, size,layer);
+                        
                     case 0x90:
-                        tilesObjects.Add(new object_90(oid, x, y, size,layer));
-                        break;
+                       return new object_90(oid, x, y, size,layer);
+                        
                     case 0x91:
-                        tilesObjects.Add(new object_91(oid, x, y, size,layer));
-                        break;
+                       return new object_91(oid, x, y, size,layer);
+                        
                     case 0x92:
-                        tilesObjects.Add(new object_92(oid, x, y, size,layer));
-                        break;
+                       return new object_92(oid, x, y, size,layer);
+                        
                     case 0x93:
-                        tilesObjects.Add(new object_93(oid, x, y, size,layer));
-                        break;
+                       return new object_93(oid, x, y, size,layer);
+                        
                     case 0x94:
-                        tilesObjects.Add(new object_94(oid, x, y, size,layer));
-                        break;
+                       return new object_94(oid, x, y, size,layer);
+                        
                     case 0x95:
-                        tilesObjects.Add(new object_95(oid, x, y, size,layer));
-                        break;
+                       return new object_95(oid, x, y, size,layer);
+                        
                     case 0x96:
-                        tilesObjects.Add(new object_96(oid, x, y, size,layer));
-                        break;
+                       return new object_96(oid, x, y, size,layer);
+                        
                     case 0x97:
-                        tilesObjects.Add(new object_97(oid, x, y, size,layer));
-                        break;
+                       return new object_97(oid, x, y, size,layer);
+                        
                     case 0x98:
-                        tilesObjects.Add(new object_98(oid, x, y, size,layer));
-                        break;
+                       return new object_98(oid, x, y, size,layer);
+                        
                     case 0x99:
-                        tilesObjects.Add(new object_99(oid, x, y, size,layer));
-                        break;
+                       return new object_99(oid, x, y, size,layer);
+                        
                     case 0x9A:
-                        tilesObjects.Add(new object_9A(oid, x, y, size,layer));
-                        break;
+                       return new object_9A(oid, x, y, size,layer);
+                        
                     case 0x9B:
-                        tilesObjects.Add(new object_9B(oid, x, y, size,layer));
-                        break;
+                       return new object_9B(oid, x, y, size,layer);
+                        
                     case 0x9C:
-                        tilesObjects.Add(new object_9C(oid, x, y, size,layer));
-                        break;
+                       return new object_9C(oid, x, y, size,layer);
+                        
                     case 0x9D:
-                        tilesObjects.Add(new object_9D(oid, x, y, size,layer));
-                        break;
+                       return new object_9D(oid, x, y, size,layer);
+                        
                     case 0x9E:
-                        tilesObjects.Add(new object_9E(oid, x, y, size,layer));
-                        break;
+                       return new object_9E(oid, x, y, size,layer);
+                        
                     case 0x9F:
-                        tilesObjects.Add(new object_9F(oid, x, y, size,layer));
-                        break;
+                       return new object_9F(oid, x, y, size,layer);
+                        
                     case 0xA0:
-                        tilesObjects.Add(new object_A0(oid, x, y, size,layer));
-                        break;
+                       return new object_A0(oid, x, y, size,layer);
+                        
                     case 0xA1:
-                        tilesObjects.Add(new object_A1(oid, x, y, size,layer));
-                        break;
+                       return new object_A1(oid, x, y, size,layer);
+                        
                     case 0xA2:
-                        tilesObjects.Add(new object_A2(oid, x, y, size,layer));
-                        break;
+                       return new object_A2(oid, x, y, size,layer);
+                        
                     case 0xA3:
-                        tilesObjects.Add(new object_A3(oid, x, y, size,layer));
-                        break;
+                       return new object_A3(oid, x, y, size,layer);
+                        
                     case 0xA4:
-                        tilesObjects.Add(new object_A4(oid, x, y, size,layer));
-                        break;
+                       return new object_A4(oid, x, y, size,layer);
+                        
                     case 0xA5:
-                        tilesObjects.Add(new object_A5(oid, x, y, size,layer));
-                        break;
+                       return new object_A5(oid, x, y, size,layer);
+                        
                     case 0xA6:
-                        tilesObjects.Add(new object_A6(oid, x, y, size,layer));
-                        break;
+                       return new object_A6(oid, x, y, size,layer);
+                        
                     case 0xA7:
-                        tilesObjects.Add(new object_A7(oid, x, y, size,layer));
-                        break;
+                       return new object_A7(oid, x, y, size,layer);
+                        
                     case 0xA8:
-                        tilesObjects.Add(new object_A8(oid, x, y, size,layer));
-                        break;
+                       return new object_A8(oid, x, y, size,layer);
+                        
                     case 0xA9:
-                        tilesObjects.Add(new object_A9(oid, x, y, size,layer));
-                        break;
+                       return new object_A9(oid, x, y, size,layer);
+                        
                     case 0xAA:
-                        tilesObjects.Add(new object_AA(oid, x, y, size,layer));
-                        break;
+                       return new object_AA(oid, x, y, size,layer);
+                        
                     case 0xAB:
-                        tilesObjects.Add(new object_AB(oid, x, y, size,layer));
-                        break;
+                       return new object_AB(oid, x, y, size,layer);
+                        
                     case 0xAC:
-                        tilesObjects.Add(new object_AC(oid, x, y, size,layer));
-                        break;
+                       return new object_AC(oid, x, y, size,layer);
+                        
                     case 0xAD:
-                        tilesObjects.Add(new object_AD(oid, x, y, size,layer));
-                        break;
+                       return new object_AD(oid, x, y, size,layer);
+                        
                     case 0xAE:
-                        tilesObjects.Add(new object_AE(oid, x, y, size,layer));
-                        break;
+                       return new object_AE(oid, x, y, size,layer);
+                        
                     case 0xAF:
-                        tilesObjects.Add(new object_AF(oid, x, y, size,layer));
-                        break;
+                       return new object_AF(oid, x, y, size,layer);
+                        
                     case 0xB0:
-                        tilesObjects.Add(new object_B0(oid, x, y, size,layer));
-                        break;
+                       return new object_B0(oid, x, y, size,layer);
+                        
                     case 0xB1:
-                        tilesObjects.Add(new object_B1(oid, x, y, size,layer));
-                        break;
+                       return new object_B1(oid, x, y, size,layer);
+                        
                     case 0xB2:
-                        tilesObjects.Add(new object_B2(oid, x, y, size,layer));
-                        break;
+                       return new object_B2(oid, x, y, size,layer);
+                        
                     case 0xB3:
-                        tilesObjects.Add(new object_B3(oid, x, y, size,layer));
-                        break;
+                       return new object_B3(oid, x, y, size,layer);
+                        
                     case 0xB4:
-                        tilesObjects.Add(new object_B4(oid, x, y, size,layer));
-                        break;
+                       return new object_B4(oid, x, y, size,layer);
+                        
                     case 0xB5:
-                        tilesObjects.Add(new object_B5(oid, x, y, size,layer));
-                        break;
+                       return new object_B5(oid, x, y, size,layer);
+                        
                     case 0xB6:
-                        tilesObjects.Add(new object_B6(oid, x, y, size,layer));
-                        break;
+                       return new object_B6(oid, x, y, size,layer);
+                        
                     case 0xB7:
-                        tilesObjects.Add(new object_B7(oid, x, y, size,layer));
-                        break;
+                       return new object_B7(oid, x, y, size,layer);
+                        
                     case 0xB8:
-                        tilesObjects.Add(new object_B8(oid, x, y, size,layer));
-                        break;
+                       return new object_B8(oid, x, y, size,layer);
+                        
                     case 0xB9:
-                        tilesObjects.Add(new object_B9(oid, x, y, size,layer));
-                        break;
+                       return new object_B9(oid, x, y, size,layer);
+                        
                     case 0xBA:
-                        tilesObjects.Add(new object_BA(oid, x, y, size,layer));
-                        break;
+                       return new object_BA(oid, x, y, size,layer);
+                        
                     case 0xBB:
-                        tilesObjects.Add(new object_BB(oid, x, y, size,layer));
-                        break;
+                       return new object_BB(oid, x, y, size,layer);
+                        
                     case 0xBC:
-                        tilesObjects.Add(new object_BC(oid, x, y, size,layer));
-                        break;
+                       return new object_BC(oid, x, y, size,layer);
+                        
                     case 0xBD:
-                        tilesObjects.Add(new object_BD(oid, x, y, size,layer));
-                        break;
+                       return new object_BD(oid, x, y, size,layer);
+                        
                     case 0xBE:
-                        tilesObjects.Add(new object_BE(oid, x, y, size,layer));
-                        break;
+                       return new object_BE(oid, x, y, size,layer);
+                        
                     case 0xBF:
-                        tilesObjects.Add(new object_BF(oid, x, y, size,layer));
-                        break;
+                       return new object_BF(oid, x, y, size,layer);
+                        
                     case 0xC0:
-                        tilesObjects.Add(new object_C0(oid, x, y, size, layer));
-                        break;
+                       return new object_C0(oid, x, y, size, layer);
+                        
                     case 0xC1:
-                        tilesObjects.Add(new object_C1(oid, x, y, size, layer));
-                        break;
+                       return new object_C1(oid, x, y, size, layer);
+                        
                     case 0xC2:
-                        tilesObjects.Add(new object_C2(oid, x, y, size, layer));
-                        break;
+                       return new object_C2(oid, x, y, size, layer);
+                        
                     case 0xC3:
-                        tilesObjects.Add(new object_C3(oid, x, y, size, layer));
-                        break;
+                       return new object_C3(oid, x, y, size, layer);
+                        
                     case 0xC4:
-                        tilesObjects.Add(new object_C4(oid, x, y, size, layer));
-                        break;
+                       return new object_C4(oid, x, y, size, layer);
+                        
                     case 0xC5:
-                        tilesObjects.Add(new object_C5(oid, x, y, size, layer));
-                        break;
+                       return new object_C5(oid, x, y, size, layer);
+                        
                     case 0xC6:
-                        tilesObjects.Add(new object_C6(oid, x, y, size, layer));
-                        break;
+                       return new object_C6(oid, x, y, size, layer);
+                        
                     case 0xC7:
-                        tilesObjects.Add(new object_C7(oid, x, y, size, layer));
-                        break;
+                       return new object_C7(oid, x, y, size, layer);
+                        
                     case 0xC8:
-                        tilesObjects.Add(new object_C8(oid, x, y, size, layer));
-                        break;
+                       return new object_C8(oid, x, y, size, layer);
+                        
                     case 0xC9:
-                        tilesObjects.Add(new object_C9(oid, x, y, size, layer));
-                        break;
+                       return new object_C9(oid, x, y, size, layer);
+                        
                     case 0xCA:
-                        tilesObjects.Add(new object_CA(oid, x, y, size, layer));
-                        break;
+                       return new object_CA(oid, x, y, size, layer);
+                        
                     case 0xCB:
-                        tilesObjects.Add(new object_CB(oid, x, y, size, layer));
-                        break;
+                       return new object_CB(oid, x, y, size, layer);
+                        
                     case 0xCC:
-                        tilesObjects.Add(new object_CC(oid, x, y, size, layer));
-                        break;
+                       return new object_CC(oid, x, y, size, layer);
+                        
                     case 0xCD:
-                        tilesObjects.Add(new object_CD(oid, x, y, size, layer));
-                        break;
+                       return new object_CD(oid, x, y, size, layer);
+                        
                     case 0xCE:
-                        tilesObjects.Add(new object_CE(oid, x, y, size, layer));
-                        break;
+                       return new object_CE(oid, x, y, size, layer);
+                        
                     case 0xCF:
-                        tilesObjects.Add(new object_CF(oid, x, y, size, layer));
-                        break;
+                       return new object_CF(oid, x, y, size, layer);
+                        
                     case 0xD0:
-                        tilesObjects.Add(new object_D0(oid, x, y, size, layer));
-                        break;
+                       return new object_D0(oid, x, y, size, layer);
+                        
                     case 0xD1:
-                        tilesObjects.Add(new object_D1(oid, x, y, size, layer));
-                        break;
+                       return new object_D1(oid, x, y, size, layer);
+                        
                     case 0xD2:
-                        tilesObjects.Add(new object_D2(oid, x, y, size, layer));
-                        break;
+                       return new object_D2(oid, x, y, size, layer);
+                        
                     case 0xD3:
-                        tilesObjects.Add(new object_D3(oid, x, y, size, layer));
-                        break;
+                       return new object_D3(oid, x, y, size, layer);
+                        
                     case 0xD4:
-                        tilesObjects.Add(new object_D4(oid, x, y, size, layer));
-                        break;
+                       return new object_D4(oid, x, y, size, layer);
+                        
                     case 0xD5:
-                        tilesObjects.Add(new object_D5(oid, x, y, size, layer));
-                        break;
+                       return new object_D5(oid, x, y, size, layer);
+                        
                     case 0xD6:
-                        tilesObjects.Add(new object_D6(oid, x, y, size, layer));
-                        break;
+                       return new object_D6(oid, x, y, size, layer);
+                        
                     case 0xD7:
-                        tilesObjects.Add(new object_D7(oid, x, y, size, layer));
-                        break;
+                       return new object_D7(oid, x, y, size, layer);
+                        
                     case 0xD8:
-                        tilesObjects.Add(new object_D8(oid, x, y, size, layer));
-                        break;
+                       return new object_D8(oid, x, y, size, layer);
+                        
                     case 0xD9:
-                        tilesObjects.Add(new object_D9(oid, x, y, size, layer));
-                        break;
+                       return new object_D9(oid, x, y, size, layer);
+                        
                     case 0xDA:
-                        tilesObjects.Add(new object_DA(oid, x, y, size, layer));
-                        break;
+                       return new object_DA(oid, x, y, size, layer);
+                        
                     case 0xDB:
-                        tilesObjects.Add(new object_DB(oid, x, y, size, layer));
-                        break;
+                       return new object_DB(oid, x, y, size, layer);
+                        
                     case 0xDC:
-                        tilesObjects.Add(new object_DC(oid, x, y, size, layer));
-                        break;
+                       return new object_DC(oid, x, y, size, layer);
+                        
                     case 0xDD:
-                        tilesObjects.Add(new object_DD(oid, x, y, size, layer));
-                        break;
+                       return new object_DD(oid, x, y, size, layer);
+                        
                     case 0xDE:
-                        tilesObjects.Add(new object_DE(oid, x, y, size, layer));
-                        break;
+                       return new object_DE(oid, x, y, size, layer);
+                        
                     case 0xDF:
-                        tilesObjects.Add(new object_DF(oid, x, y, size, layer));
-                        break;
+                       return new object_DF(oid, x, y, size, layer);
+                        
                     case 0xE0:
-                        tilesObjects.Add(new object_E0(oid, x, y, size, layer));
-                        break;
+                       return new object_E0(oid, x, y, size, layer);
+                        
                     case 0xE1:
-                        tilesObjects.Add(new object_E1(oid, x, y, size, layer));
-                        break;
+                       return new object_E1(oid, x, y, size, layer);
+                        
                     case 0xE2:
-                        tilesObjects.Add(new object_E2(oid, x, y, size, layer));
-                        break;
+                       return new object_E2(oid, x, y, size, layer);
+                        
                     case 0xE3:
-                        tilesObjects.Add(new object_E3(oid, x, y, size, layer));
-                        break;
+                       return new object_E3(oid, x, y, size, layer);
+                        
                     case 0xE4:
-                        tilesObjects.Add(new object_E4(oid, x, y, size, layer));
-                        break;
+                       return new object_E4(oid, x, y, size, layer);
+                        
                     case 0xE5:
-                        tilesObjects.Add(new object_E5(oid, x, y, size, layer));
-                        break;
+                       return new object_E5(oid, x, y, size, layer);
+                        
                     case 0xE6:
-                        tilesObjects.Add(new object_E6(oid, x, y, size, layer));
-                        break;
+                       return new object_E6(oid, x, y, size, layer);
+                        
                     case 0xE7:
-                        tilesObjects.Add(new object_E7(oid, x, y, size, layer));
-                        break;
+                       return new object_E7(oid, x, y, size, layer);
+                        
                     case 0xE8:
-                        tilesObjects.Add(new object_E8(oid, x, y, size, layer));
-                        break;
+                       return new object_E8(oid, x, y, size, layer);
+                        
                     case 0xE9:
-                        tilesObjects.Add(new object_E9(oid, x, y, size, layer));
-                        break;
+                       return new object_E9(oid, x, y, size, layer);
+                        
                     case 0xEA:
-                        tilesObjects.Add(new object_EA(oid, x, y, size, layer));
-                        break;
+                       return new object_EA(oid, x, y, size, layer);
+                        
                     case 0xEB:
-                        tilesObjects.Add(new object_EB(oid, x, y, size, layer));
-                        break;
+                       return new object_EB(oid, x, y, size, layer);
+                        
                     case 0xEC:
-                        tilesObjects.Add(new object_EC(oid, x, y, size, layer));
-                        break;
+                       return new object_EC(oid, x, y, size, layer);
+                        
                     case 0xED:
-                        tilesObjects.Add(new object_ED(oid, x, y, size, layer));
-                        break;
+                       return new object_ED(oid, x, y, size, layer);
+                        
                     case 0xEE:
-                        tilesObjects.Add(new object_EE(oid, x, y, size, layer));
-                        break;
+                       return new object_EE(oid, x, y, size, layer);
+                        
                     case 0xEF:
-                        tilesObjects.Add(new object_EF(oid, x, y, size, layer));
-                        break;
+                       return new object_EF(oid, x, y, size, layer);
+                        
                 }
             }
             else
             {
                 if (oid == 0xE00) //Block
                 {
-                    tilesObjects.Add(new object_Block(oid, x, y, 0, layer));
+                   return new object_Block(oid, x, y, 0, layer);
                 }
 
 
@@ -1490,367 +1767,368 @@ namespace ZeldaFullEditor
                     switch (oid)
                     {
                         case 0xF80:
-                            tilesObjects.Add(new object_F80(oid, x, y, size, layer));
-                            break;
+                           return new object_F80(oid, x, y, size, layer);
+                            
                         case 0xF81:
-                            tilesObjects.Add(new object_F81(oid, x, y, size, layer));
-                            break;
+                           return new object_F81(oid, x, y, size, layer);
+                            
                         case 0xF82:
-                            tilesObjects.Add(new object_F82(oid, x, y, size, layer));
-                            break;
+                           return new object_F82(oid, x, y, size, layer);
+                            
                         case 0xF83:
-                            tilesObjects.Add(new object_F83(oid, x, y, size, layer));
-                            break;
+                           return new object_F83(oid, x, y, size, layer);
+                            
                         case 0xF84:
-                            tilesObjects.Add(new object_F84(oid, x, y, size, layer));
-                            break;
+                           return new object_F84(oid, x, y, size, layer);
+                            
                         case 0xF85:
-                            tilesObjects.Add(new object_F85(oid, x, y, size, layer));
-                            break;
+                           return new object_F85(oid, x, y, size, layer);
+                            
                         case 0xF86:
-                            tilesObjects.Add(new object_F86(oid, x, y, size, layer));
-                            break;
+                           return new object_F86(oid, x, y, size, layer);
+                            
                         case 0xF87:
-                            tilesObjects.Add(new object_F87(oid, x, y, size, layer));
-                            break;
+                           return new object_F87(oid, x, y, size, layer);
+                            
                         case 0xF88:
-                            tilesObjects.Add(new object_F88(oid, x, y, size, layer));
-                            break;
+                           return new object_F88(oid, x, y, size, layer);
+                            
                         case 0xF89:
-                            tilesObjects.Add(new object_F89(oid, x, y, size, layer));
-                            break;
+                           return new object_F89(oid, x, y, size, layer);
+                            
                         case 0xF8A:
-                            tilesObjects.Add(new object_F8A(oid, x, y, size, layer));
-                            break;
+                           return new object_F8A(oid, x, y, size, layer);
+                            
                         case 0xF8B:
-                            tilesObjects.Add(new object_F8B(oid, x, y, size, layer));
-                            break;
+                           return new object_F8B(oid, x, y, size, layer);
+                            
                         case 0xF8C:
-                            tilesObjects.Add(new object_F8C(oid, x, y, size, layer));
-                            break;
+                           return new object_F8C(oid, x, y, size, layer);
+                            
                         case 0xF8D:
-                            tilesObjects.Add(new object_F8D(oid, x, y, size, layer));
-                            break;
+                           return new object_F8D(oid, x, y, size, layer);
+                            
                         case 0xF8E:
-                            tilesObjects.Add(new object_F8E(oid, x, y, size, layer));
-                            break;
+                           return new object_F8E(oid, x, y, size, layer);
+                            
                         case 0xF8F:
-                            tilesObjects.Add(new object_F8F(oid, x, y, size, layer));
-                            break;
+                           return new object_F8F(oid, x, y, size, layer);
+                            
                         case 0xF90:
-                            tilesObjects.Add(new object_F90(oid, x, y, size, layer));
-                            break;
+                           return new object_F90(oid, x, y, size, layer);
+                            
                         case 0xF91:
-                            tilesObjects.Add(new object_F91(oid, x, y, size, layer));
-                            break;
+                           return new object_F91(oid, x, y, size, layer);
+                            
                         case 0xF92:
-                            tilesObjects.Add(new object_F92(oid, x, y, size, layer));
-                            break;
+                           return new object_F92(oid, x, y, size, layer);
+                            
                         case 0xF93:
-                            tilesObjects.Add(new object_F93(oid, x, y, size, layer));
-                            break;
+                           return new object_F93(oid, x, y, size, layer);
+                            
                         case 0xF94:
-                            tilesObjects.Add(new object_F94(oid, x, y, size, layer));
-                            break;
+                           return new object_F94(oid, x, y, size, layer);
+                            
                         case 0xF95:
-                            tilesObjects.Add(new object_F95(oid, x, y, size, layer));
-                            break;
+                           return new object_F95(oid, x, y, size, layer);
+                            
                         case 0xF96:
-                            tilesObjects.Add(new object_F96(oid, x, y, size, layer));
-                            break;
+                           return new object_F96(oid, x, y, size, layer);
+                            
                         case 0xF97:
-                            tilesObjects.Add(new object_F97(oid, x, y, size, layer));
-                            break;
+                           return new object_F97(oid, x, y, size, layer);
+                            
                         case 0xF98:
-                            tilesObjects.Add(new object_F98(oid, x, y, size, layer));
-                            break;
+                           return new object_F98(oid, x, y, size, layer);
+                            
                         case 0xF99:
-                            tilesObjects.Add(new object_F99(oid, x, y, size, layer));
-                            break;
+                           return new object_F99(oid, x, y, size, layer);
+                            
                         case 0xF9A:
-                            tilesObjects.Add(new object_F9A(oid, x, y, size, layer));
-                            break;
+                           return new object_F9A(oid, x, y, size, layer);
+                            
                         case 0xF9B:
-                            tilesObjects.Add(new object_F9B(oid, x, y, size, layer));
-                            break;
+                           return new object_F9B(oid, x, y, size, layer);
+                            
                         case 0xF9C:
-                            tilesObjects.Add(new object_F9C(oid, x, y, size, layer));
-                            break;
+                           return new object_F9C(oid, x, y, size, layer);
+                            
                         case 0xF9D:
-                            tilesObjects.Add(new object_F9D(oid, x, y, size, layer));
-                            break;
+                           return new object_F9D(oid, x, y, size, layer);
+                            
                         case 0xF9E:
-                            tilesObjects.Add(new object_F9E(oid, x, y, size, layer));
-                            break;
+                           return new object_F9E(oid, x, y, size, layer);
+                            
                         case 0xF9F:
-                            tilesObjects.Add(new object_F9F(oid, x, y, size, layer));
-                            break;
+                           return new object_F9F(oid, x, y, size, layer);
+                            
                         case 0xFA0:
-                            tilesObjects.Add(new object_FA0(oid, x, y, size, layer));
-                            break;
+                           return new object_FA0(oid, x, y, size, layer);
+                            
                         case 0xFA1:
-                            tilesObjects.Add(new object_FA1(oid, x, y, size, layer));
-                            break;
+                           return new object_FA1(oid, x, y, size, layer);
+                            
                         case 0xFA2:
-                            tilesObjects.Add(new object_FA2(oid, x, y, size, layer));
-                            break;
+                           return new object_FA2(oid, x, y, size, layer);
+                            
                         case 0xFA3:
-                            tilesObjects.Add(new object_FA3(oid, x, y, size, layer));
-                            break;
+                           return new object_FA3(oid, x, y, size, layer);
+                            
                         case 0xFA4:
-                            tilesObjects.Add(new object_FA4(oid, x, y, size, layer));
-                            break;
+                           return new object_FA4(oid, x, y, size, layer);
+                            
                         case 0xFA5:
-                            tilesObjects.Add(new object_FA5(oid, x, y, size, layer));
-                            break;
+                           return new object_FA5(oid, x, y, size, layer);
+                            
                         case 0xFA6:
-                            tilesObjects.Add(new object_FA6(oid, x, y, size, layer));
-                            break;
+                           return new object_FA6(oid, x, y, size, layer);
+                            
                         case 0xFA7:
-                            tilesObjects.Add(new object_FA7(oid, x, y, size, layer));
-                            break;
+                           return new object_FA7(oid, x, y, size, layer);
+                            
                         case 0xFA8:
-                            tilesObjects.Add(new object_FA8(oid, x, y, size, layer));
-                            break;
+                           return new object_FA8(oid, x, y, size, layer);
+                            
                         case 0xFA9:
-                            tilesObjects.Add(new object_FA9(oid, x, y, size, layer));
-                            break;
+                           return new object_FA9(oid, x, y, size, layer);
+                            
                         case 0xFAA:
-                            tilesObjects.Add(new object_FAA(oid, x, y, size, layer));
-                            break;
+                           return new object_FAA(oid, x, y, size, layer);
+                            
                         case 0xFAB:
-                            tilesObjects.Add(new object_FAB(oid, x, y, size, layer));
-                            break;
+                           return new object_FAB(oid, x, y, size, layer);
+                            
                         case 0xFAC:
-                            tilesObjects.Add(new object_FAC(oid, x, y, size, layer));
-                            break;
+                           return new object_FAC(oid, x, y, size, layer);
+                            
                         case 0xFAD:
-                            tilesObjects.Add(new object_FAD(oid, x, y, size, layer));
-                            break;
+                           return new object_FAD(oid, x, y, size, layer);
+                            
                         case 0xFAE:
-                            tilesObjects.Add(new object_FAE(oid, x, y, size, layer));
-                            break;
+                           return new object_FAE(oid, x, y, size, layer);
+                            
                         case 0xFAF:
-                            tilesObjects.Add(new object_FAF(oid, x, y, size, layer));
-                            break;
+                           return new object_FAF(oid, x, y, size, layer);
+                            
                         case 0xFB0:
-                            tilesObjects.Add(new object_FB0(oid, x, y, size, layer));
-                            break;
+                           return new object_FB0(oid, x, y, size, layer);
+                            
                         case 0xFB1:
-                            tilesObjects.Add(new object_FB1(oid, x, y, size, layer));
-                            break;
+                           return new object_FB1(oid, x, y, size, layer);
+                            
                         case 0xFB2:
-                            tilesObjects.Add(new object_FB2(oid, x, y, size, layer));
-                            break;
+                           return new object_FB2(oid, x, y, size, layer);
+                            
                         case 0xFB3:
-                            tilesObjects.Add(new object_FB3(oid, x, y, size, layer));
-                            break;
+                           return new object_FB3(oid, x, y, size, layer);
+                            
                         case 0xFB4:
-                            tilesObjects.Add(new object_FB4(oid, x, y, size, layer));
-                            break;
+                           return new object_FB4(oid, x, y, size, layer);
+                            
                         case 0xFB5:
-                            tilesObjects.Add(new object_FB5(oid, x, y, size, layer));
-                            break;
+                           return new object_FB5(oid, x, y, size, layer);
+                            
                         case 0xFB6:
-                            tilesObjects.Add(new object_FB6(oid, x, y, size, layer));
-                            break;
+                           return new object_FB6(oid, x, y, size, layer);
+                            
                         case 0xFB7:
-                            tilesObjects.Add(new object_FB7(oid, x, y, size, layer));
-                            break;
+                           return new object_FB7(oid, x, y, size, layer);
+                            
                         case 0xFB8:
-                            tilesObjects.Add(new object_FB8(oid, x, y, size, layer));
-                            break;
+                           return new object_FB8(oid, x, y, size, layer);
+                            
                         case 0xFB9:
-                            tilesObjects.Add(new object_FB9(oid, x, y, size, layer));
-                            break;
+                           return new object_FB9(oid, x, y, size, layer);
+                            
                         case 0xFBA:
-                            tilesObjects.Add(new object_FBA(oid, x, y, size, layer));
-                            break;
+                           return new object_FBA(oid, x, y, size, layer);
+                            
                         case 0xFBB:
-                            tilesObjects.Add(new object_FBA(oid, x, y, size, layer));
-                            break;
+                           return new object_FBA(oid, x, y, size, layer);
+                            
                         case 0xFBC:
-                            tilesObjects.Add(new object_FBC(oid, x, y, size, layer));
-                            break;
+                           return new object_FBC(oid, x, y, size, layer);
+                            
                         case 0xFBD:
-                            tilesObjects.Add(new object_FBD(oid, x, y, size, layer));
-                            break;
+                           return new object_FBD(oid, x, y, size, layer);
+                            
                         case 0xFBE:
-                            tilesObjects.Add(new object_FBE(oid, x, y, size, layer));
-                            break;
+                           return new object_FBE(oid, x, y, size, layer);
+                            
                         case 0xFBF:
-                            tilesObjects.Add(new object_FBF(oid, x, y, size, layer));
-                            break;
+                           return new object_FBF(oid, x, y, size, layer);
+                            
                         case 0xFC0:
-                            tilesObjects.Add(new object_FC0(oid, x, y, size, layer));
-                            break;
+                           return new object_FC0(oid, x, y, size, layer);
+                            
                         case 0xFC1:
-                            tilesObjects.Add(new object_FC1(oid, x, y, size, layer));
-                            break;
+                           return new object_FC1(oid, x, y, size, layer);
+                            
                         case 0xFC2:
-                            tilesObjects.Add(new object_FC2(oid, x, y, size, layer));
-                            break;
+                           return new object_FC2(oid, x, y, size, layer);
+                            
                         case 0xFC3:
-                            tilesObjects.Add(new object_FC3(oid, x, y, size, layer));
-                            break;
+                           return new object_FC3(oid, x, y, size, layer);
+                            
                         case 0xFC4:
-                            tilesObjects.Add(new object_FC4(oid, x, y, size, layer));
-                            break;
+                           return new object_FC4(oid, x, y, size, layer);
+                            
                         case 0xFC5:
-                            tilesObjects.Add(new object_FC5(oid, x, y, size, layer));
-                            break;
+                           return new object_FC5(oid, x, y, size, layer);
+                            
                         case 0xFC6:
-                            tilesObjects.Add(new object_FC6(oid, x, y, size, layer));
-                            break;
+                           return new object_FC6(oid, x, y, size, layer);
+                            
                         case 0xFC7:
-                            tilesObjects.Add(new object_FC7(oid, x, y, size, layer));
-                            break;
+                           return new object_FC7(oid, x, y, size, layer);
+                            
                         case 0xFC8:
-                            tilesObjects.Add(new object_FC8(oid, x, y, size, layer));
-                            break;
+                           return new object_FC8(oid, x, y, size, layer);
+                            
                         case 0xFC9:
-                            tilesObjects.Add(new object_FC9(oid, x, y, size, layer));
-                            break;
+                           return new object_FC9(oid, x, y, size, layer);
+                            
                         case 0xFCA:
-                            tilesObjects.Add(new object_FCA(oid, x, y, size, layer));
-                            break;
+                           return new object_FCA(oid, x, y, size, layer);
+                            
                         case 0xFCB:
-                            tilesObjects.Add(new object_FCB(oid, x, y, size, layer));
-                            break;
+                           return new object_FCB(oid, x, y, size, layer);
+                            
                         case 0xFCC:
-                            tilesObjects.Add(new object_FCC(oid, x, y, size, layer));
-                            break;
+                           return new object_FCC(oid, x, y, size, layer);
+                            
                         case 0xFCD:
-                            tilesObjects.Add(new object_FCD(oid, x, y, size, layer));
-                            break;
+                           return new object_FCD(oid, x, y, size, layer);
+                            
                         case 0xFCE:
-                            tilesObjects.Add(new object_FCE(oid, x, y, size, layer));
-                            break;
+                           return new object_FCE(oid, x, y, size, layer);
+                            
                         case 0xFCF:
-                            tilesObjects.Add(new object_FCF(oid, x, y, size, layer));
-                            break;
+                           return new object_FCF(oid, x, y, size, layer);
+                            
                         case 0xFD0:
-                            tilesObjects.Add(new object_FD0(oid, x, y, size, layer));
-                            break;
+                           return new object_FD0(oid, x, y, size, layer);
+                            
                         case 0xFD1:
-                            tilesObjects.Add(new object_FD1(oid, x, y, size, layer));
-                            break;
+                           return new object_FD1(oid, x, y, size, layer);
+                            
                         case 0xFD2:
-                            tilesObjects.Add(new object_FD2(oid, x, y, size, layer));
-                            break;
+                           return new object_FD2(oid, x, y, size, layer);
+                            
                         case 0xFD3:
-                            tilesObjects.Add(new object_FD3(oid, x, y, size, layer));
-                            break;
+                           return new object_FD3(oid, x, y, size, layer);
+                            
                         case 0xFD4:
-                            tilesObjects.Add(new object_FD4(oid, x, y, size, layer));
-                            break;
+                           return new object_FD4(oid, x, y, size, layer);
+                            
                         case 0xFD5:
-                            tilesObjects.Add(new object_FD5(oid, x, y, size, layer));
-                            break;
+                           return new object_FD5(oid, x, y, size, layer);
+                            
                         case 0xFD6:
-                            tilesObjects.Add(new object_FD6(oid, x, y, size, layer));
-                            break;
+                           return new object_FD6(oid, x, y, size, layer);
+                            
                         case 0xFD7:
-                            tilesObjects.Add(new object_FD7(oid, x, y, size, layer));
-                            break;
+                           return new object_FD7(oid, x, y, size, layer);
+                            
                         case 0xFD8:
-                            tilesObjects.Add(new object_FD8(oid, x, y, size, layer));
-                            break;
+                           return new object_FD8(oid, x, y, size, layer);
+                            
                         case 0xFD9:
-                            tilesObjects.Add(new object_FD9(oid, x, y, size, layer));
-                            break;
+                           return new object_FD9(oid, x, y, size, layer);
+                            
                         case 0xFDA:
-                            tilesObjects.Add(new object_FDA(oid, x, y, size, layer));
-                            break;
+                           return new object_FDA(oid, x, y, size, layer);
+                            
                         case 0xFDB:
-                            tilesObjects.Add(new object_FDB(oid, x, y, size, layer));
-                            break;
+                           return new object_FDB(oid, x, y, size, layer);
+                            
                         case 0xFDC:
-                            tilesObjects.Add(new object_FDC(oid, x, y, size, layer));
-                            break;
+                           return new object_FDC(oid, x, y, size, layer);
+                            
                         case 0xFDD:
-                            tilesObjects.Add(new object_FDD(oid, x, y, size, layer));
-                            break;
+                           return new object_FDD(oid, x, y, size, layer);
+                            
                         case 0xFDE:
-                            tilesObjects.Add(new object_FDE(oid, x, y, size, layer));
-                            break;
+                           return new object_FDE(oid, x, y, size, layer);
+                            
                         case 0xFDF:
-                            tilesObjects.Add(new object_FDF(oid, x, y, size, layer));
-                            break;
+                           return new object_FDF(oid, x, y, size, layer);
+                            
                         case 0xFE0:
-                            tilesObjects.Add(new object_FE0(oid, x, y, size, layer));
-                            break;
+                           return new object_FE0(oid, x, y, size, layer);
+                            
                         case 0xFE1:
-                            tilesObjects.Add(new object_FE1(oid, x, y, size, layer));
-                            break;
+                           return new object_FE1(oid, x, y, size, layer);
+                            
                         case 0xFE2:
-                            tilesObjects.Add(new object_FE2(oid, x, y, size, layer));
-                            break;
+                           return new object_FE2(oid, x, y, size, layer);
+                            
                         case 0xFE3:
-                            tilesObjects.Add(new object_FE3(oid, x, y, size, layer));
-                            break;
+                           return new object_FE3(oid, x, y, size, layer);
+                            
                         case 0xFE4:
-                            tilesObjects.Add(new object_FE4(oid, x, y, size, layer));
-                            break;
+                           return new object_FE4(oid, x, y, size, layer);
+                            
                         case 0xFE5:
-                            tilesObjects.Add(new object_FE5(oid, x, y, size, layer));
-                            break;
+                           return new object_FE5(oid, x, y, size, layer);
+                            
                         case 0xFE6:
-                            tilesObjects.Add(new object_FE6(oid, x, y, size, layer));
-                            break;
+                           return new object_FE6(oid, x, y, size, layer);
+                            
                         case 0xFE7:
-                            tilesObjects.Add(new object_FE7(oid, x, y, size, layer));
-                            break;
+                           return new object_FE7(oid, x, y, size, layer);
+                            
                         case 0xFE8:
-                            tilesObjects.Add(new object_FE8(oid, x, y, size, layer));
-                            break;
+                           return new object_FE8(oid, x, y, size, layer);
+                            
                         case 0xFE9:
-                            tilesObjects.Add(new object_FE9(oid, x, y, size, layer));
-                            break;
+                           return new object_FE9(oid, x, y, size, layer);
+                            
                         case 0xFEA:
-                            tilesObjects.Add(new object_FEA(oid, x, y, size, layer));
-                            break;
+                           return new object_FEA(oid, x, y, size, layer);
+                            
                         case 0xFEB:
-                            tilesObjects.Add(new object_FEB(oid, x, y, size, layer));
-                            break;
+                           return new object_FEB(oid, x, y, size, layer);
+                            
                         case 0xFEC:
-                            tilesObjects.Add(new object_FEC(oid, x, y, size, layer));
-                            break;
+                           return new object_FEC(oid, x, y, size, layer);
+                            
                         case 0xFED:
-                            tilesObjects.Add(new object_FED(oid, x, y, size, layer));
-                            break;
+                           return new object_FED(oid, x, y, size, layer);
+                            
                         case 0xFEE:
-                            tilesObjects.Add(new object_FEE(oid, x, y, size, layer));
-                            break;
+                           return new object_FEE(oid, x, y, size, layer);
+                            
                         case 0xFEF:
-                            tilesObjects.Add(new object_FEF(oid, x, y, size, layer));
-                            break;
+                           return new object_FEF(oid, x, y, size, layer);
+                            
                         case 0xFF0:
-                            tilesObjects.Add(new object_FF0(oid, x, y, size, layer));
-                            break;
+                           return new object_FF0(oid, x, y, size, layer);
+                            
                         case 0xFF1:
-                            tilesObjects.Add(new object_FF1(oid, x, y, size, layer));
-                            break;
+                           return new object_FF1(oid, x, y, size, layer);
+                            
                         case 0xFF2:
-                            tilesObjects.Add(new object_FF2(oid, x, y, size, layer));
-                            break;
+                           return new object_FF2(oid, x, y, size, layer);
+                            
                         case 0xFF3:
-                            tilesObjects.Add(new object_FF3(oid, x, y, size, layer));
-                            break;
+                           return new object_FF3(oid, x, y, size, layer);
+                            
                         case 0xFF4:
-                            tilesObjects.Add(new object_FF4(oid, x, y, size, layer));
-                            break;
+                           return new object_FF4(oid, x, y, size, layer);
+                            
                         case 0xFF5:
-                            tilesObjects.Add(new object_FF5(oid, x, y, size, layer));
-                            break;
+                           return new object_FF5(oid, x, y, size, layer);
+                            
                     }
                 }
                 else if ((oid & 0x100) == 0x100) //subtype2? non scalable
                 {
-                    tilesObjects.Add(new Subtype2_Multiple(oid, x, y, 0, layer));
+                   return new Subtype2_Multiple(oid, x, y, 0, layer);
                 }
 
             }
+            return null;
         }
 
         public void DrawFloors(byte floor = 0)
