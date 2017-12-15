@@ -221,6 +221,7 @@ namespace ZeldaFullEditor
 
 
             objectSelector.room = all_rooms[260];
+            room.bg2 = Background2.Normal;
             objectSelector.createObjects();
 
             roomListBox.SelectedIndex = 260;//set start room on link's house
@@ -360,144 +361,64 @@ namespace ZeldaFullEditor
                     }
                     else if (selectedLayer >= 0)
                     {
-                        if (room.selectedObject.Count == 1)
-                        {
-                            if (ModifierKeys == Keys.Shift)
-                            {
-
-                            }
-                            else
-                            {
-                                room.selectedObject.Clear();
-                            }
-                        }
 
                         dragx = ((e.X) / 8);
                         dragy = ((e.Y) / 8);
-
-                        if (room.selectedObject.Count == 0)
-                        {
-                            for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
-                            {
-                                Room_Object obj = room.tilesObjects[i];
-                                if (isMouseCollidingWith(obj, e))
-                                {
-                                    if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr)
-                                    {
-                                        if (selectedLayer == 3)
-                                        {
-                                            room.selectedObject.Add(obj);
-                                            found = true;
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            if (selectedLayer == obj.layer)
-                                            {
-                                                room.selectedObject.Add(obj);
-                                                found = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-
-                            }
-                            mouse_down = true;
-                            move_x = 0;
-                            move_y = 0;
-                            mx = dragx;
-                            my = dragy;
-                            return;
-                        }
-
-
-
-
+                        bool already_in = false;
+                        Room_Object objectFound = null;
+                        found = false;
                         for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
                         {
                             Room_Object obj = room.tilesObjects[i];
-                            if (isMouseCollidingWith(obj, e))
+                            if (isMouseCollidingWith(obj,e))
                             {
                                 if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr)
                                 {
-                                    if (selectedLayer == 3)
+                                    if (room.selectedObject.Count == 0)
                                     {
-                                        if (ModifierKeys == Keys.Shift)
+                                        room.selectedObject.Add(obj);
+                                    }
+                                    else //there's already objects selected
+                                    {
+                                        //check if the object we found is already in selected object if so do nothing
+                                        //otherwise clear objects and select the new one
+                                        foreach(Room_Object o in room.selectedObject)
                                         {
-                                            room.selectedObject.Add(obj);
-                                            found = true;
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            found = false;
-                                            foreach (Room_Object ro in room.selectedObject)
+                                            if (o == obj)
                                             {
-                                                if (ro == obj)
-                                                {
-                                                    if (ModifierKeys == Keys.Control)
-                                                    {
-                                                        room.selectedObject.Remove(obj);
-                                                    }
-                                                    found = true;
-                                                    break;
-                                                }
-                                            }
-                                            if (found == false)
-                                            {
-                                                room.selectedObject.Clear();
-                                                room.selectedObject.Add(obj);
-                                                found = true;
+                                                objectFound = o;
+                                                already_in = true;
                                                 break;
                                             }
                                         }
-                                    }
-                                    else
-                                    {
-                                        if (selectedLayer == obj.layer)
+                                        if (already_in == false)
                                         {
+                                            //objectToRemove
                                             if (ModifierKeys == Keys.Shift)
                                             {
                                                 room.selectedObject.Add(obj);
-                                                found = true;
-                                                break;
                                             }
                                             else
                                             {
-                                                found = false;
-                                                foreach (Room_Object ro in room.selectedObject)
-                                                {
-                                                    if (ro == obj)
-                                                    {
-                                                        if (ModifierKeys == Keys.Control)
-                                                        {
-                                                            room.selectedObject.Remove(obj);
-                                                        }
-                                                        found = true;
-                                                        break;
-                                                    }
-                                                }
-                                                if (found == false)
-                                                {
-                                                    room.selectedObject.Clear();
-                                                    room.selectedObject.Add(obj);
-                                                    found = true;
-                                                    break;
-                                                }
-
+                                                room.selectedObject.Clear();
+                                                room.selectedObject.Add(obj);
                                             }
-
                                         }
-
+                                        else //if item is already in but we hold control then remove it instead
+                                        {
+                                            if (ModifierKeys == Keys.Control)
+                                            {
+                                                room.selectedObject.Remove(objectFound);
+                                            }
+                                        }
                                     }
+                                    found = true;
+                                    break;
                                 }
                             }
                         }
-                        
                         if (found == false) //we didnt find any Tiles to click on so just clear the selection
                         {
-
                             room.selectedObject.Clear();
                         }
                     }
@@ -908,8 +829,8 @@ namespace ZeldaFullEditor
             
             if (room.needGfxRefresh)
             {
-                objectSelector.room = room;
-                objectSelector.setupObjects();
+                //objectSelector.room = room;
+                //objectSelector.setupObjects();
                 room.needGfxRefresh = false;
             }
 
@@ -1030,7 +951,10 @@ namespace ZeldaFullEditor
                     }
                     foreach (Chest c in room.chest_list)
                     {
-                        g.DrawImage(GFX.chestitems_bitmap[c.item], (c.x * 8), (c.y - 2) * 8);
+                        if (c.item < 75)
+                        {
+                            g.DrawImage(GFX.chestitems_bitmap[c.item], (c.x * 8), (c.y - 2) * 8);
+                        }
                     }
                 }
 

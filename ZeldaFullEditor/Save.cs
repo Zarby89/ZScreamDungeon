@@ -89,8 +89,8 @@ namespace ZeldaFullEditor
                 all_rooms[i]
             }*/
         }
-        int currentRegion = 3;
-        int currentPos = 0x148100;
+        int currentRegion = 0;
+        int currentPos = 0x50000;
         int saddr = 0;
         public void saveAllObjects()
         {
@@ -101,13 +101,13 @@ namespace ZeldaFullEditor
                 {
                     continue;
                 }
-                
+
                 byte[] roomBytes = all_rooms[i].getTilesBytes();
                 if (currentRegion == 0)
                 {
                     if ((currentPos + roomBytes.Length) >= 0x5374F)
                     {
-                        Console.WriteLine("Room " + i + "no space jump to 0xF878A");
+                        Console.WriteLine("Room " + i + " no more space jump to 0xF878A");
                         //move to F8 region
                         currentPos = 0xF878A;
                         currentRegion++;
@@ -129,11 +129,11 @@ namespace ZeldaFullEditor
                 }
                 if (currentRegion == 1)
                 {
-                    if ((currentPos + roomBytes.Length) >= 0xFFFFF)
+                    if ((currentPos + roomBytes.Length) >= 0xFFFF7)
                     {
-                        Console.WriteLine("Room " + i + "no space jump to 0x1EBA0");
+                        Console.WriteLine("Room " + i + " no more space jump to 0x1EBA0");
                         //move to 1E region
-                        currentPos = 0x1EBA0;
+                        currentPos = 0x1EB90;
                         currentRegion++;
                     }
                     else
@@ -152,10 +152,10 @@ namespace ZeldaFullEditor
                 }
                 if (currentRegion == 2)
                 {
-                    if ((currentPos + roomBytes.Length) >= 0xFFFFF)
+                    if ((currentPos + roomBytes.Length) >= 0x1FFFF)
                     {
                         //move to EXPANDED region
-                        Console.WriteLine("Room " + i + "no space jump to 0x120100");
+                        Console.WriteLine("Room " + i + " no more space jump to 0x120100");
                         currentPos = 0x120100;
                         MessageBox.Show("We are running out space in the original portion of the ROM next data will be writed to : 0x120100");
                         currentRegion++;
@@ -188,11 +188,12 @@ namespace ZeldaFullEditor
                     continue;
                 }
                 //0x50000 to 0x5374F
-                //0xF878A to 0xFFFFF
-                //0x1EBA0 to 0x1FFFF
+                //0xF878A to 0xFFFF7
+                //0x1EB90 to 0x01FFFF
+
 
             }
-
+        }
             /*byte[] objects_array = all_rooms[260].getTilesBytes();
             int jump = 0;
             Console.WriteLine("New Data : ");
@@ -209,39 +210,8 @@ namespace ZeldaFullEditor
                 }
 
             }
-            jump = 0;
-            Console.WriteLine("\nOriginal Data : ");
-
-            for (int i = 0; i < objects_array.Length; i += 1)
-            {
-
-                Console.Write(ROM.DATA[0x50000 + i].ToString("X2") + " ");
-
-
-                jump++;
-                if (jump >= 16)
-                {
-                    Console.Write("\n");
-                    jump = 0;
-                }
-
-            }
-
             
-            Console.Write("\n");*/
-            /*Console.WriteLine("Original Data : ");
-            for (int i = 0; i < objects_array.Length; i++)
-            {
-                
-                jump++;
-                if (jump >= 3)
-                {
-                    jump = 0;
-                    Console.Write("\n");
-                }
-            }*/
-            
-        }
+        }*/
 
         public void savePalettes()//room settings floor1, floor2, blockset, spriteset, palette
         {
