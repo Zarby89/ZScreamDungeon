@@ -127,7 +127,7 @@ namespace ZeldaFullEditor
 
                 if (b1 == 0xFF) { break; }
 
-                sprites.Add(new Sprite(this, b3, (byte)(b2 & 0x1F), (byte)(b1 & 0x1F), Sprites_Names.name[b3], (byte)((b2 & 0xE0) >> 5), (byte)((b1 & 0x60) >> 5), (byte)((b1 & 0x80) >> 6)));
+                sprites.Add(new Sprite(this, b3, (byte)(b2 & 0x1F), (byte)(b1 & 0x1F), Sprites_Names.name[b3], (byte)((b2 & 0xE0) >> 5), (byte)((b1 & 0x60) >> 5), (byte)((b1 & 0x80) >> 7)));
 
                 sprite_address += 3;
 
@@ -207,7 +207,7 @@ namespace ZeldaFullEditor
             for (int j = 0; j < tilesObjects.Count; j++) // save layer1 object 
             {
                 Room_Object o = tilesObjects[j];
-                if ((o.options  & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Bgr) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
+                if ((o.options  & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Block) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
                 {
                     if (o.layer == 0)
                     {
@@ -295,7 +295,7 @@ namespace ZeldaFullEditor
             for (int j = 0; j < tilesObjects.Count; j++) // save layer2 object
             {
                 Room_Object o = tilesObjects[j];
-                if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Bgr) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
+                if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Block) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
                 {
                     if (o.layer == 1)
                     {
@@ -381,7 +381,7 @@ namespace ZeldaFullEditor
             for (int j = 0; j < tilesObjects.Count; j++) // save layer3 object
             {
                 Room_Object o = tilesObjects[j];
-                if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Bgr) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
+                if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Block) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
                 {
                     if (o.layer == 2)
                     {
@@ -750,7 +750,7 @@ namespace ZeldaFullEditor
                 }
             }
         }
-
+        public int roomSize = 0;
         public void loadTilesObjects(bool floor = true)
         {
             //adddress of the room objects
@@ -818,6 +818,7 @@ namespace ZeldaFullEditor
                     if (b1 == 0xFF && b2 == 0xFF)
                     {
                         pos = objects_location + 2;
+
                         drawlayout = false;
                         //endRead = true;
                         continue;
@@ -955,7 +956,6 @@ namespace ZeldaFullEditor
                                     tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Stairs;
                                     staircaseRooms.Add(new StaircaseRoom(posX, posY, "To " + staircase_rooms[nbr_of_staircase]));
                                     nbr_of_staircase++;
-                                    
                                 }
                                 else
                                 {
@@ -1023,7 +1023,7 @@ namespace ZeldaFullEditor
                 }
 
             }
-
+            roomSize = (pos - objects_location);
         }
 
         public Room_Object addObject(short oid,byte x, byte y, byte size,byte layer)
@@ -2188,7 +2188,7 @@ namespace ZeldaFullEditor
 
             bg2 = (Background2)((ROM.DATA[header_location] >> 5) & 0x07);
             collision = (byte)((ROM.DATA[header_location] >> 2) & 0x07);
-            light = (((ROM.DATA[header_location]) & 0x01) == 0 ? true : false);
+            light = (((ROM.DATA[header_location]) & 0x01) == 1 ? true : false);
 
             palette = (byte)((ROM.DATA[header_location + 1] & 0x3F));
             blockset = (byte)((ROM.DATA[header_location + 2]));

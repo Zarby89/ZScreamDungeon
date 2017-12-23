@@ -54,9 +54,9 @@ namespace ZeldaFullEditor
 
 
             Save save = new Save(all_rooms);
-            //save.saveRoomsHeaders();
-            //save.saveallChests();
-            //save.saveallSprites();
+            save.saveRoomsHeaders();
+            save.saveallChests();
+            save.saveallSprites();
             save.saveAllObjects();
 
 
@@ -201,10 +201,14 @@ namespace ZeldaFullEditor
             byte[] bpp3data = Compression.DecompressTiles(); //decompress almost all the gfx from the game
             GFX.gfxdata = Compression.bpp3tobpp4(bpp3data); //transform them into 4bpp
 
+            int totalSize = 0;
             for (int i = 0; i < 296; i++)
             {
                 all_rooms[i] = (new Room(i)); // create all rooms
+                totalSize += all_rooms[i].roomSize;
             }
+            Console.WriteLine(totalSize.ToString("X6"));
+            
 
             roomListBox.Items.Clear();
             roomListBox.ValueMember = "Name";
@@ -372,7 +376,7 @@ namespace ZeldaFullEditor
                             Room_Object obj = room.tilesObjects[i];
                             if (isMouseCollidingWith(obj,e))
                             {
-                                if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr)
+                                if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr && (obj.options & ObjectOption.Door) != ObjectOption.Door && (obj.options & ObjectOption.Torch) != ObjectOption.Torch && (obj.options & ObjectOption.Block) != ObjectOption.Block)
                                 {
                                     if (room.selectedObject.Count == 0)
                                     {
@@ -829,6 +833,7 @@ namespace ZeldaFullEditor
             
             if (room.needGfxRefresh)
             {
+                room.bg2 = Background2.Normal;
                 //objectSelector.room = room;
                 //objectSelector.setupObjects();
                 room.needGfxRefresh = false;
@@ -957,8 +962,11 @@ namespace ZeldaFullEditor
                         }
                     }
                 }
-
-
+                GFX.begin_draw(roomBitmap);
+                room.drawSprites();
+                GFX.end_draw(roomBitmap);
+                
+                DrawSpritesTexts();
             }
 
 
@@ -1017,9 +1025,8 @@ namespace ZeldaFullEditor
                     g.DrawRectangle(Pens.Green, new Rectangle(((o as Room_Object).nx) * 8, ((o as Room_Object).ny + (o as Room_Object).drawYFix) * 8, (o as Room_Object).width, (o as Room_Object).height));
                 }
             }
-            DrawTestTexts();
-            pictureBox1.Refresh();
 
+            pictureBox1.Refresh();
             /*GFX.begin_draw(roomBitmap);
             room.drawSprites();
             room.drawPotsItems();
@@ -1028,25 +1035,14 @@ namespace ZeldaFullEditor
 
         }
 
-        public void DrawTestTexts()
+        public void DrawSpritesTexts()
         {
-            // g.SmoothingMode = SmoothingMode.AntiAlias;
-            //g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            /*FontFamily[] ff = new FontFamily[10] { new FontFamily("Consolas"), new FontFamily("Arial"), new FontFamily("Calibri"), new FontFamily("Comic Sans MS"), new FontFamily("Candara"), new FontFamily("Courier New"), new FontFamily("Constantia"), new FontFamily("Segoe UI"), new FontFamily("Arial Black"), new FontFamily("Corbel") };
-            for (int i = 0;i<10;i++)
+            foreach (Sprite spr in room.sprites)
             {
-                for (int j = 0; j < 3; j++)
-                {
-                    GraphicsPath gpath = new GraphicsPath();
-                    gpath.AddString("Test Font", ff[i], 1, 12, new Point(32 + (j*64), 32 + (i * 24)), StringFormat.GenericDefault);
-                    Pen pen = new Pen(Color.FromArgb(30, 30, 30), j);
-                    g.DrawPath(pen, gpath);
-                    SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255));
-                    g.FillPath(brush, gpath);
-                }
-            }*/
-            g.SmoothingMode = SmoothingMode.Default;
-            g.InterpolationMode = InterpolationMode.NearestNeighbor;
+
+                g.DrawString("(" + spr.layer + ") "+spr.name , this.Font, Brushes.Azure, new Point(spr.x * 16, spr.y * 16));
+            }
+
         }
 
         /*public void DrawStairsId()
@@ -1647,7 +1643,7 @@ namespace ZeldaFullEditor
 
                         if ((new Rectangle((o as Room_Object).x * 8, ((o as Room_Object).y + (o as Room_Object).drawYFix) * 8, (o as Room_Object).width, (o as Room_Object).height)).IntersectsWith(new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8)))
                         {
-                            if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Door) != ObjectOption.Door)
+                            if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Door) != ObjectOption.Door && (o.options & ObjectOption.Torch) != ObjectOption.Torch && (o.options & ObjectOption.Block) != ObjectOption.Block)
                             {
                                 if (selectedLayer == 3)
                                 {
