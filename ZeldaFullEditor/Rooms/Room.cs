@@ -61,6 +61,7 @@ namespace ZeldaFullEditor
             addDoors(); //TODO : Fix exploded wall doors
             addPotsItems();
 
+
         }
 
         public void reloadGfx(bool noPalette = false)
@@ -99,6 +100,16 @@ namespace ZeldaFullEditor
                 GFX.LoadDungeonPalette(palette);
                 GFX.LoadSpritesPalette(palette);
             }
+
+            foreach (Room_Object o in tilesObjects)
+            {
+                if ((o.options & ObjectOption.Door) == ObjectOption.Door)
+                {
+                    Console.WriteLine("Door found");
+                }
+            }
+
+
             GFX.load4bpp(GFX.gfxdata, blocks);
 
 
@@ -193,23 +204,15 @@ namespace ZeldaFullEditor
              }
         }
 
-        public byte[] getTilesBytes()
+        public bool getLayerTiles(byte layer, ref List<byte> objectsBytes, ref List<byte> doorsBytes)
         {
-            List<byte> objectsBytes = new List<byte>();
-            List<byte> doorsBytes = new List<byte>();
-            bool found_door = false;
-
-            byte floorbyte = (byte)((floor2 << 4) + floor1);
-            byte layoutbyte = (byte)(layout<<2);
-            objectsBytes.Add(floorbyte);
-            objectsBytes.Add(layoutbyte);
-
+            bool doorfound = false;
             for (int j = 0; j < tilesObjects.Count; j++) // save layer1 object 
             {
                 Room_Object o = tilesObjects[j];
-                if ((o.options  & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Block) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
+                if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Block) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
                 {
-                    if (o.layer == 0)
+                    if (o.layer == layer)
                     {
                         //if we encounter a door store it somewhere else for now and wait the end of objects layer1
                         if ((tilesObjects[j].options & ObjectOption.Door) == ObjectOption.Door)
@@ -231,11 +234,11 @@ namespace ZeldaFullEditor
                             {
                                 p = 3;
                             }
+                            doorfound = true;
                             byte b1 = (byte)(((o.id & 0x1E) << 3) + p);
                             byte b2 = (byte)(((o.id & 0xFF00) >> 8));
                             doorsBytes.Add(b1);
                             doorsBytes.Add(b2);
-                            found_door = true;
                         }
                         else
                         {
@@ -253,7 +256,7 @@ namespace ZeldaFullEditor
                             {
                                 //111111xx xxxxyyyy yyiiiiii
                                 byte b1 = (byte)(0xFC + (((o.x & 0x30) >> 4)));
-                                byte b2 = (byte)(((o.x & 0x0F) << 4) + ((o.y & 0x3C)>>2));
+                                byte b2 = (byte)(((o.x & 0x0F) << 4) + ((o.y & 0x3C) >> 2));
                                 byte b3 = (byte)(((o.y & 0x03) << 6) + ((o.id & 0x3F))); //wtf? 
                                 objectsBytes.Add(b1);
                                 objectsBytes.Add(b2);
@@ -270,14 +273,27 @@ namespace ZeldaFullEditor
                                 objectsBytes.Add(b3);
 
                             }
-
-
                         }
                     }
                 }
-
-
             }
+            return doorfound;
+        }
+
+        public byte[] getTilesBytes()
+        {
+            List<byte> objectsBytes = new List<byte>();
+            List<byte> doorsBytes = new List<byte>();
+            bool found_door = false;
+
+            byte floorbyte = (byte)((floor2 << 4) + floor1);
+            byte layoutbyte = (byte)(layout<<2);
+            objectsBytes.Add(floorbyte);
+            objectsBytes.Add(layoutbyte);
+
+            doorsBytes.Clear();
+            found_door = getLayerTiles(0, ref objectsBytes, ref doorsBytes);
+  
             if (found_door)//if we found door during layer1
             {
                 objectsBytes.Add(0xF0);
@@ -291,81 +307,10 @@ namespace ZeldaFullEditor
             objectsBytes.Add(0xFF);//end layer1
             objectsBytes.Add(0xFF);//end layer1
 
-            found_door = false;
-            for (int j = 0; j < tilesObjects.Count; j++) // save layer2 object
-            {
-                Room_Object o = tilesObjects[j];
-                if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Block) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
-                {
-                    if (o.layer == 1)
-                    {
-                        //if we encounter a door store it somewhere else for now and wait the end of objects layer1
-                        if ((tilesObjects[j].options & ObjectOption.Door) == ObjectOption.Door)
-                        {
-                            byte p = 0;
-                            if (o is object_door_up)
-                            {
-                                p = 0;
-                            }
-                            if (o is object_door_down)
-                            {
-                                p = 1;
-                            }
-                            if (o is object_door_left)
-                            {
-                                p = 2;
-                            }
-                            if (o is object_door_right)
-                            {
-                                p = 3;
-                            }
-                            byte b1 = (byte)(((o.id & 0x1E) << 3) + p);
-                            byte b2 = (byte)(((o.id & 0xFF00) >> 8));
-                            doorsBytes.Add(b1);
-                            doorsBytes.Add(b2);
-                            found_door = true;
-                        }
-                        else
-                        {
-                            if ((tilesObjects[j].id & 0xF00) == 0xF00) // type3
-                            {
-                                //xxxxxxii yyyyyyii 11111iii
-                                byte b3 = (byte)(o.id >> 4);
-                                byte b1 = (byte)((o.x << 2) + (o.id & 0x03));
-                                byte b2 = (byte)((o.y << 2) + ((o.id >> 2) & 0x03));
-                                objectsBytes.Add(b1);
-                                objectsBytes.Add(b2);
-                                objectsBytes.Add(b3);
-                            }
-                            else if ((tilesObjects[j].id & 0x100) == 0x100) // type2
-                            {
-                                //111111xx xxxxyyyy yyiiiiii
-                                byte b1 = (byte)(0xFC + (((o.x & 0x30) >> 4)));
-                                byte b2 = (byte)(((o.x & 0x0F) << 4) + ((o.y & 0x3C) >> 2));
-                                byte b3 = (byte)(((o.y & 0x03) << 6) + ((o.id & 0x3F))); //wtf? 
-                                objectsBytes.Add(b1);
-                                objectsBytes.Add(b2);
-                                objectsBytes.Add(b3);
-                            }
-                            else //type1
-                            {
-                                byte b1 = (byte)((o.x << 2) + ((o.size >> 2) & 0x03));
-                                byte b2 = (byte)((o.y << 2) + (o.size & 0x03));
-                                byte b3 = (byte)(o.id);
-                                objectsBytes.Add(b1);
-                                objectsBytes.Add(b2);
-                                objectsBytes.Add(b3);
+            doorsBytes.Clear();
+            found_door = getLayerTiles(1, ref objectsBytes, ref doorsBytes);
 
-                            }
-
-
-                        }
-                    }
-                }
-
-
-            }
-            if (found_door)//if we found door during layer1
+            if (found_door)//if we found door during layer2
             {
                 objectsBytes.Add(0xF0);
                 objectsBytes.Add(0xFF);
@@ -375,83 +320,14 @@ namespace ZeldaFullEditor
                 }
 
             }
-            objectsBytes.Add(0xFF);//end layer1
-            objectsBytes.Add(0xFF);//end layer1
-            found_door = false;
-            for (int j = 0; j < tilesObjects.Count; j++) // save layer3 object
-            {
-                Room_Object o = tilesObjects[j];
-                if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Block) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
-                {
-                    if (o.layer == 2)
-                    {
-                        //if we encounter a door store it somewhere else for now and wait the end of objects layer1
-                        if ((tilesObjects[j].options & ObjectOption.Door) == ObjectOption.Door)
-                        {
-                            byte p = 0;
-                            if (o is object_door_up)
-                            {
-                                p = 0;
-                            }
-                            if (o is object_door_down)
-                            {
-                                p = 1;
-                            }
-                            if (o is object_door_left)
-                            {
-                                p = 2;
-                            }
-                            if (o is object_door_right)
-                            {
-                                p = 3;
-                            }
-                            byte b1 = (byte)(((o.id & 0x1E) << 3) + p);
-                            byte b2 = (byte)(((o.id & 0xFF00) >> 8));
-                            doorsBytes.Add(b1);
-                            doorsBytes.Add(b2);
-                            found_door = true;
-                        }
-                        else
-                        {
-                            if ((o.id & 0xF00) == 0xF00) // type3
-                            {
-                                //xxxxxxii yyyyyyii 11111iii
-                                byte b3 = (byte)(o.id >> 4);
-                                byte b1 = (byte)((o.x << 2) + (o.id & 0x03));
-                                byte b2 = (byte)((o.y << 2) + ((o.id >> 2) & 0x03));
-                                objectsBytes.Add(b1);
-                                objectsBytes.Add(b2);
-                                objectsBytes.Add(b3);
-                            }
-                            else if ((o.id & 0x100) == 0x100) // type2
-                            {
-                                //111111xx xxxxyyyy yyiiiiii
-                                byte b1 = (byte)(0xFC + (((o.x & 0x30) >> 4)));
-                                byte b2 = (byte)(((o.x & 0x0F) << 4) + ((o.y & 0x3C) >> 2));
-                                byte b3 = (byte)(((o.y & 0x03) << 6) + ((o.id & 0x3F))); //wtf? 
-                                objectsBytes.Add(b1);
-                                objectsBytes.Add(b2);
-                                objectsBytes.Add(b3);
-                            }
-                            else //type1
-                            {
-                                byte b1 = (byte)((o.x << 2) + ((o.size >> 2) & 0x03));
-                                byte b2 = (byte)((o.y << 2) + (o.size & 0x03));
-                                byte b3 = (byte)(o.id);
-                                objectsBytes.Add(b1);
-                                objectsBytes.Add(b2);
-                                objectsBytes.Add(b3);
-
-                            }
+            objectsBytes.Add(0xFF);//end layer2
+            objectsBytes.Add(0xFF);//end layer2
 
 
-                        }
-                    }
-                }
+            doorsBytes.Clear();
+            found_door = getLayerTiles(2, ref objectsBytes, ref doorsBytes);
 
-
-            }
-            if (found_door)//if we found door during layer1
+            if (found_door)//if we found door during layer3
             {
                 objectsBytes.Add(0xF0);
                 objectsBytes.Add(0xFF);
@@ -461,8 +337,10 @@ namespace ZeldaFullEditor
                 }
 
             }
-            objectsBytes.Add(0xFF);//end layer1
-            objectsBytes.Add(0xFF);//end layer1
+            objectsBytes.Add(0xFF);//end layer3
+            objectsBytes.Add(0xFF);//end layer3
+
+
             return objectsBytes.ToArray();
         }
 
@@ -998,7 +876,7 @@ namespace ZeldaFullEditor
                             tilesObjects.Add(new object_door_up((short)((door_type <<8) + door_pos),0,0,0,(byte)layer));
                             if (door_pos >= 12)
                             {
-                                tilesObjects.Add(new object_door_down((short)((door_type << 8) + (door_pos-12)), 0, 0, 0, (byte)layer));
+                                //tilesObjects.Add(new object_door_down((short)((door_type << 8) + (door_pos-12)), 0, 0, 0, (byte)layer));
                             }
                         }
                         if ((b1 & 0x03) == 01) //down
@@ -1010,7 +888,7 @@ namespace ZeldaFullEditor
                             tilesObjects.Add(new object_door_left((short)((door_type << 8) + door_pos), 0, 0, 0, (byte)layer));
                             if (door_pos >= 12)
                             {
-                                tilesObjects.Add(new object_door_right((short)((door_type << 8) + (door_pos - 12)), 0, 0, 0, (byte)layer));
+                                //tilesObjects.Add(new object_door_right((short)((door_type << 8) + (door_pos - 12)), 0, 0, 0, (byte)layer));
                             }
                         }
                         if ((b1 & 0x03) == 03) //right
@@ -1023,7 +901,12 @@ namespace ZeldaFullEditor
                 }
 
             }
-            roomSize = (pos - objects_location);
+
+            roomSize = (pos - objects_location) ;
+            if (roomSize < 12)
+            {
+                roomSize = 0;
+            }
         }
 
         public Room_Object addObject(short oid,byte x, byte y, byte size,byte layer)

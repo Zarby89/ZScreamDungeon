@@ -46,6 +46,7 @@ namespace ZeldaFullEditor
         public byte door_dir = 0;
         public object_door_up(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
+            options |= ObjectOption.Door;
             int pos = Constants.tile_address + (short)((ROM.DATA[(0x4D9E + ((id>>8) & 0xFF))+1] << 8) + ROM.DATA[0x4D9E + ((id >> 8) & 0xFF)]);
             name = "Door Up";
             addTiles(12, pos);//??
@@ -73,6 +74,7 @@ namespace ZeldaFullEditor
         public byte door_dir = 0;
         public object_door_down(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
+            options |= ObjectOption.Door;
             int pos = Constants.tile_address + (short)((ROM.DATA[0x4E06+ ((id >> 8) & 0xFF)+1] << 8) + ROM.DATA[0x4E06+ ((id >> 8) & 0xFF)]);
             name = "Door down";
             addTiles(12, pos);//??
@@ -102,6 +104,7 @@ namespace ZeldaFullEditor
         public byte door_dir = 0;
         public object_door_left(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
+            options |= ObjectOption.Door;
             int pos = Constants.tile_address + (short)((ROM.DATA[0x4E66+ ((id >> 8) & 0xFF) +1] << 8) + ROM.DATA[0x4E66+ ((id >> 8) & 0xFF)]);
             name = "Door left";
             addTiles(12, pos);//??
@@ -131,6 +134,7 @@ namespace ZeldaFullEditor
         public byte door_dir = 0;
         public object_door_right(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
+            options |= ObjectOption.Door;
             int pos = Constants.tile_address + (short)((ROM.DATA[0x4EC6 + ((id >> 8) & 0xFF) +1] << 8) + ROM.DATA[0x4EC6 + ((id >> 8) & 0xFF)]);
             name = "Door right";
             addTiles(12, pos);//??

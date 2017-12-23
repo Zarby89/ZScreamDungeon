@@ -95,7 +95,7 @@ namespace ZeldaFullEditor
                 }
                 
                 byte[] roomBytes = all_rooms[i].getTilesBytes();
-                
+                Console.WriteLine("Room :" + i + " Difference load to save" + (all_rooms[i].roomSize - roomBytes.Length));
                 totalBytes += roomBytes.Length;
                 if (currentRegion == 0)
                 {
