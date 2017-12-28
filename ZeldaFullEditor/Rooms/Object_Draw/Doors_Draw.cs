@@ -13,8 +13,6 @@ namespace ZeldaFullEditor
 
     doors are 4x3 up/down, 3x4 left/right
 
-        TODO : Put those in Constants
-
     X = position(0, 2, 4, ..., 24)
 
     Door_Up
@@ -49,6 +47,7 @@ namespace ZeldaFullEditor
             options |= ObjectOption.Door;
             int pos = Constants.tile_address + (short)((ROM.DATA[(0x4D9E + ((id>>8) & 0xFF))+1] << 8) + ROM.DATA[0x4D9E + ((id >> 8) & 0xFF)]);
             name = "Door Up";
+            door_pos =(byte)(id & 0xFF);
             addTiles(12, pos);//??
         }
         public override void Draw()
@@ -77,6 +76,7 @@ namespace ZeldaFullEditor
             options |= ObjectOption.Door;
             int pos = Constants.tile_address + (short)((ROM.DATA[0x4E06+ ((id >> 8) & 0xFF)+1] << 8) + ROM.DATA[0x4E06+ ((id >> 8) & 0xFF)]);
             name = "Door down";
+            door_pos = (byte)(id & 0xFF);
             addTiles(12, pos);//??
         }
         public override void Draw()
@@ -107,6 +107,7 @@ namespace ZeldaFullEditor
             options |= ObjectOption.Door;
             int pos = Constants.tile_address + (short)((ROM.DATA[0x4E66+ ((id >> 8) & 0xFF) +1] << 8) + ROM.DATA[0x4E66+ ((id >> 8) & 0xFF)]);
             name = "Door left";
+            door_pos = (byte)(id & 0xFF);
             addTiles(12, pos);//??
         }
         public override void Draw()
@@ -137,6 +138,7 @@ namespace ZeldaFullEditor
             options |= ObjectOption.Door;
             int pos = Constants.tile_address + (short)((ROM.DATA[0x4EC6 + ((id >> 8) & 0xFF) +1] << 8) + ROM.DATA[0x4EC6 + ((id >> 8) & 0xFF)]);
             name = "Door right";
+            door_pos = (byte)(id & 0xFF);
             addTiles(12, pos);//??
             //Console.WriteLine("Right Door ID : " + ((id >> 8) & 0xFF));
         }

@@ -85,6 +85,65 @@ namespace ZeldaFullEditor
         int totalBytes = 0;
         public void saveAllObjects()
         {
+            var section1Index = 0x50000; //0x50000 to 0x5374F
+            var section2Index = 0xF878A; //0xF878A to 0xFFFF7
+            var section3Index = 0x1EB90; //0x1EB90 to 0x1FFFF
+            var section4Index = 0x121210; // 0x121210 to ????? expanded region. need to find max safe for rando roms
+
+            for (int i = 0; i < 296; i++)
+            {
+                var roomBytes = all_rooms[i].getTilesBytes();
+                Console.WriteLine("Room :" + i + " Difference load to save" + (all_rooms[i].roomSize - roomBytes.Length));
+
+                if (section1Index + roomBytes.Length <= 0x5374F) //0x50000 to 0x5374F
+                {
+                    // write the room
+                    saveObjectBytes(i, section1Index, roomBytes);
+                    section1Index += roomBytes.Length;
+                    continue;
+                }
+                else if (section2Index + roomBytes.Length <= 0xFFFF7) //0xF878A to 0xFFFF7
+                {
+                    // write the room
+                    saveObjectBytes(i, section2Index, roomBytes);
+                    section2Index += roomBytes.Length;
+                    continue;
+                }
+                else if (section3Index + roomBytes.Length <= 0x1FFFF) //0x1EB90 to 0x1FFFF
+                {
+                    // write the room
+                    saveObjectBytes(i, section3Index, roomBytes);
+                    section3Index += roomBytes.Length;
+                    continue;
+                }
+                else
+                {
+                    // ran out of space
+                    // write the room
+                    saveObjectBytes(i, section4Index, roomBytes);
+                    section4Index += roomBytes.Length;
+
+                    //move to EXPANDED region
+                    //Console.WriteLine("Room " + i + " no more space jump to 0x121210");
+                    //currentPos = 0x121210;
+                    //MessageBox.Show("We are running out space in the original portion of the ROM next data will be writed to : 0x121210");
+                }
+            }
+        }
+
+        void saveObjectBytes(int roomId, int position, byte[] bytes)
+        {
+            saddr = Addresses.pctosnes(position);
+            // update the index
+            ROM.DATA[0xF8000 + (roomId * 3)] = (byte)(saddr & 0xFF);
+            ROM.DATA[0xF8000 + (roomId * 3) + 1] = (byte)((saddr >> 8) & 0xFF);
+            ROM.DATA[0xF8000 + (roomId * 3) + 2] = (byte)((saddr >> 16) & 0xFF);
+
+            Array.Copy(bytes, 0, ROM.DATA, position, bytes.Length);
+        }
+
+        public void saveAllObjectsOld()
+        {
             List<short> roomFitted = new List<short>();
             for (int i = 0; i < 296; i++)
             {
@@ -357,7 +416,8 @@ namespace ZeldaFullEditor
 
         public void saveallChests()
         {
-            int pos = Constants.room_chest;
+            int cpos = (ROM.DATA[Constants.chests_data_pointer1 + 2] << 16) + (ROM.DATA[Constants.chests_data_pointer1 + 1] << 8) + (ROM.DATA[Constants.chests_data_pointer1]);
+            cpos = Addresses.snestopc(cpos);
             for (int i = 0; i < 296; i++)
             {
                 foreach (Chest c in all_rooms[i].chest_list)
@@ -367,12 +427,50 @@ namespace ZeldaFullEditor
                     {
                         room_index += 0x8000;
                     }
-                    ROM.DATA[pos] = (byte)(room_index & 0xFF);
-                    ROM.DATA[pos + 1] = (byte)((room_index >> 8) & 0xFF);
-                    ROM.DATA[pos + 2] = (byte)(c.item);
-                    pos += 3;
+                    ROM.DATA[cpos] = (byte)(room_index & 0xFF);
+                    ROM.DATA[cpos + 1] = (byte)((room_index >> 8) & 0xFF);
+                    ROM.DATA[cpos + 2] = (byte)(c.item);
+                    cpos += 3;
                 }
             }
+        }
+
+        public void saveallPots()
+        {
+            int pos = Constants.items_data_start+2; //skip 2 FF FF that are empty pointer
+            for (int i = 0; i < 296; i++)
+            {
+                if (all_rooms[i].pot_items.Count == 0)
+                {
+                    ROM.DATA[Constants.room_items_pointers + (i * 2)] = (byte)((Addresses.pctosnes(Constants.items_data_start) & 0xFF));
+                    ROM.DATA[Constants.room_items_pointers + (i * 2) + 1] = (byte)((Addresses.pctosnes(Constants.items_data_start) >> 8) & 0xFF);
+                    continue;
+                }
+                //pointer
+                ROM.DATA[Constants.room_items_pointers + (i * 2)] = (byte)((Addresses.pctosnes(pos) & 0xFF));
+                ROM.DATA[Constants.room_items_pointers + (i * 2) + 1] = (byte)((Addresses.pctosnes(pos) >> 8) & 0xFF);
+                for (int j = 0; j < all_rooms[i].pot_items.Count;j++)
+                {
+
+                    int xy = (((all_rooms[i].pot_items[j].y * 64) + all_rooms[i].pot_items[j].x) << 1);
+                    ROM.DATA[pos] = (byte)(xy & 0xFF);
+                    pos++;
+                    ROM.DATA[pos] = (byte)(((xy>>8) & 0xFF) + (all_rooms[i].pot_items[j].bg2 == true ? 0x80 : 0x00));
+                    pos++;
+                    ROM.DATA[pos] = all_rooms[i].pot_items[j].id;
+                    pos++;
+                }
+                ROM.DATA[pos] = 0xFF;
+                pos++;
+                ROM.DATA[pos] = 0xFF;
+                pos++;
+                if (pos > Constants.items_data_end)
+                {
+                    Console.WriteLine("Warning items are outside of the allowed range!");
+                }
+            }
+
+
         }
 
 

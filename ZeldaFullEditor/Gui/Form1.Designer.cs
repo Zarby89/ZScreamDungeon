@@ -66,7 +66,6 @@
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.actionsListbox = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -92,7 +91,9 @@
             this.spriteImageList = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.mapPicturebox = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.paletteUpDown = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
@@ -103,6 +104,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.objectstabPage = new System.Windows.Forms.TabPage();
+            this.objectinfoLabel = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
@@ -131,21 +133,29 @@
             this.bringToFrontToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.sendToBackToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.roomgfxUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.floor2UpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.floor1UpDown)).BeginInit();
+            this.objectstabPage.SuspendLayout();
             this.tabPage4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).BeginInit();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
             this.groupselectedcontextMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -332,18 +342,22 @@
             // 
             // textSpriteToolStripMenuItem
             // 
+            this.textSpriteToolStripMenuItem.CheckOnClick = true;
             this.textSpriteToolStripMenuItem.Name = "textSpriteToolStripMenuItem";
             this.textSpriteToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.textSpriteToolStripMenuItem.Text = "Text Sprite";
+            this.textSpriteToolStripMenuItem.Click += new System.EventHandler(this.textSpriteToolStripMenuItem_Click);
             // 
             // textChestItemToolStripMenuItem
             // 
+            this.textChestItemToolStripMenuItem.CheckOnClick = true;
             this.textChestItemToolStripMenuItem.Name = "textChestItemToolStripMenuItem";
             this.textChestItemToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.textChestItemToolStripMenuItem.Text = "Text ChestItem";
             // 
             // textPotItemToolStripMenuItem
             // 
+            this.textPotItemToolStripMenuItem.CheckOnClick = true;
             this.textPotItemToolStripMenuItem.Name = "textPotItemToolStripMenuItem";
             this.textPotItemToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.textPotItemToolStripMenuItem.Text = "Text PotItem";
@@ -449,49 +463,22 @@
             this.radioButton1.Checked = true;
             this.radioButton1.Location = new System.Drawing.Point(3, 6);
             this.radioButton1.Name = "radioButton1";
-            this.radioButton1.Size = new System.Drawing.Size(36, 17);
+            this.radioButton1.Size = new System.Drawing.Size(41, 17);
             this.radioButton1.TabIndex = 4;
             this.radioButton1.TabStop = true;
-            this.radioButton1.Text = "All";
+            this.radioButton1.Text = "List";
             this.radioButton1.UseVisualStyleBackColor = true;
             // 
             // radioButton2
             // 
             this.radioButton2.AutoSize = true;
-            this.radioButton2.Location = new System.Drawing.Point(45, 6);
+            this.radioButton2.Location = new System.Drawing.Point(50, 6);
             this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(95, 17);
+            this.radioButton2.Size = new System.Drawing.Size(49, 17);
             this.radioButton2.TabIndex = 5;
-            this.radioButton2.Text = "By Dungeons :";
+            this.radioButton2.Text = "Map ";
             this.radioButton2.UseVisualStyleBackColor = true;
             this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Enabled = false;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Hyrule Castle",
-            "Eastern Palace",
-            "Desert Palace",
-            "Hera Tower",
-            "Palace of Darkness",
-            "Swamp Palace",
-            "Thieves Town",
-            "Skull Woods",
-            "Ice Palace",
-            "Misery Mire",
-            "Turtle Rock",
-            "Ganon Tower",
-            "Caves",
-            "House",
-            "Empty"});
-            this.comboBox1.Location = new System.Drawing.Point(141, 2);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(152, 21);
-            this.comboBox1.TabIndex = 6;
-            this.comboBox1.Text = "Hyrule Castle";
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // actionsListbox
             // 
@@ -727,7 +714,7 @@
             this.saveLayoutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveLayoutButton.Name = "saveLayoutButton";
             this.saveLayoutButton.Size = new System.Drawing.Size(23, 22);
-            this.saveLayoutButton.Text = "toolStripButton5";
+            this.saveLayoutButton.Text = "Save layout";
             this.saveLayoutButton.Click += new System.EventHandler(this.saveLayoutButton_Click);
             // 
             // loadlayoutButton
@@ -737,7 +724,7 @@
             this.loadlayoutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.loadlayoutButton.Name = "loadlayoutButton";
             this.loadlayoutButton.Size = new System.Drawing.Size(23, 22);
-            this.loadlayoutButton.Text = "toolStripButton5";
+            this.loadlayoutButton.Text = "Load Layout";
             this.loadlayoutButton.Click += new System.EventHandler(this.loadlayoutButton_Click);
             // 
             // spriteImageList
@@ -752,6 +739,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage3);
             this.tabControl1.Controls.Add(this.objectstabPage);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage4);
@@ -764,11 +752,11 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.mapPicturebox);
             this.tabPage1.Controls.Add(this.groupBox1);
             this.tabPage1.Controls.Add(this.radioButton1);
             this.tabPage1.Controls.Add(this.roomListBox);
             this.tabPage1.Controls.Add(this.radioButton2);
-            this.tabPage1.Controls.Add(this.comboBox1);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -777,8 +765,19 @@
             this.tabPage1.Text = "Rooms";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
+            // mapPicturebox
+            // 
+            this.mapPicturebox.Location = new System.Drawing.Point(3, 28);
+            this.mapPicturebox.Name = "mapPicturebox";
+            this.mapPicturebox.Size = new System.Drawing.Size(256, 256);
+            this.mapPicturebox.TabIndex = 13;
+            this.mapPicturebox.TabStop = false;
+            this.mapPicturebox.Visible = false;
+            this.mapPicturebox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.mapPicturebox_MouseClick);
+            // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label8);
             this.groupBox1.Controls.Add(this.paletteUpDown);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label5);
@@ -795,6 +794,15 @@
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Room Settings";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 55);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(35, 13);
+            this.label8.TabIndex = 10;
+            this.label8.Text = "label8";
             // 
             // paletteUpDown
             // 
@@ -821,7 +829,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 55);
+            this.label5.Location = new System.Drawing.Point(6, 142);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(54, 13);
             this.label5.TabIndex = 6;
@@ -895,12 +903,21 @@
             // 
             // objectstabPage
             // 
+            this.objectstabPage.Controls.Add(this.objectinfoLabel);
             this.objectstabPage.Location = new System.Drawing.Point(4, 22);
             this.objectstabPage.Name = "objectstabPage";
             this.objectstabPage.Size = new System.Drawing.Size(294, 488);
             this.objectstabPage.TabIndex = 4;
             this.objectstabPage.Text = "Objects";
             this.objectstabPage.UseVisualStyleBackColor = true;
+            // 
+            // objectinfoLabel
+            // 
+            this.objectinfoLabel.AutoSize = true;
+            this.objectinfoLabel.Location = new System.Drawing.Point(3, 3);
+            this.objectinfoLabel.Name = "objectinfoLabel";
+            this.objectinfoLabel.Size = new System.Drawing.Size(0, 13);
+            this.objectinfoLabel.TabIndex = 0;
             // 
             // tabPage2
             // 
@@ -1061,7 +1078,7 @@
             this.sendToBackToolStripMenuItem1,
             this.toolStripMenuItem4});
             this.groupselectedcontextMenu.Name = "nothingselectedcontextMenu";
-            this.groupselectedcontextMenu.Size = new System.Drawing.Size(174, 202);
+            this.groupselectedcontextMenu.Size = new System.Drawing.Size(174, 180);
             // 
             // toolStripMenuItem2
             // 
@@ -1112,11 +1129,50 @@
             this.toolStripMenuItem4.Text = "Save as new layout";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Location = new System.Drawing.Point(114, 55);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(256, 512);
+            this.pictureBox2.TabIndex = 12;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Visible = false;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.groupBox2);
+            this.tabPage3.Controls.Add(this.listBox1);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(294, 488);
+            this.tabPage3.TabIndex = 5;
+            this.tabPage3.Text = "Entrances";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(3, 3);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(289, 238);
+            this.listBox1.TabIndex = 0;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBox2.Location = new System.Drawing.Point(0, 247);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(294, 241);
+            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Entrance Settings";
+            // 
             // zscreamForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(832, 579);
+            this.Controls.Add(this.pictureBox2);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.label1);
@@ -1136,18 +1192,23 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.roomgfxUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.floor2UpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.floor1UpDown)).EndInit();
+            this.objectstabPage.ResumeLayout(false);
+            this.objectstabPage.PerformLayout();
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).EndInit();
             this.nothingselectedcontextMenu.ResumeLayout(false);
             this.singleselectedcontextMenu.ResumeLayout(false);
             this.groupselectedcontextMenu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1170,7 +1231,6 @@
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem textSpriteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem textChestItemToolStripMenuItem;
@@ -1256,6 +1316,13 @@
         private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem bringToFrontToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem sendToBackToolStripMenuItem1;
+        private System.Windows.Forms.Label objectinfoLabel;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.PictureBox mapPicturebox;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }
 

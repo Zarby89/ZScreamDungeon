@@ -46,25 +46,24 @@ namespace ZeldaFullEditor
             higherX = 15;
             higherY = 15;
         }
-
-
-        public string GetData()
-        {
-            string s = "";
-            s += (char)id;
-            s += (char)x;
-            s += (char)y;
-            s += (char)overlord;
-            s += (char)subtype;
-            s += (char)layer;
-            return s;
-        }
         
+        public void DrawKey()
+        {
+            int dx = (boundingbox.X + boundingbox.Width/2)-4;
+            int dy = boundingbox.Y-10;
+            drawSpriteTile(dx, dy, 11, 22, 11, false, false, 1, 2, true);
+        }
+
+
         public void Draw(bool picker = false)
         {
             this.picker = picker;
             if (overlord == 0x07)
             {
+                if (id == 0x1A)
+                {
+                    drawSpriteTile((x * 16) , (y * 16), 14, 22, 11);//bomb
+                }
                 return;
             }
 
@@ -863,8 +862,8 @@ namespace ZeldaFullEditor
             }
             else if (id == 0xA1)
             {
-                drawSpriteTile((x * 16), (y * 16) + 8, 6, 10, 14);
-                drawSpriteTile((x * 16) + 16, (y * 16) + 8, 6, 10, 14, true);
+                drawSpriteTile((x * 16)-8, (y * 16) + 8, 6, 10, 14);
+                drawSpriteTile((x * 16) + 8, (y * 16) + 8, 6, 10, 14, true);
             }
             else if (id == 0xA2)
             {
@@ -925,6 +924,10 @@ namespace ZeldaFullEditor
             {
                 drawSpriteTile((x * 16), (y * 16), 10, 30, 10);
             }
+            else if (id == 0xE4)//key
+            {
+                drawSpriteTile((x * 16), (y * 16), 11, 22, 11,false,false,1,2);
+            }
             else if (id == 0xEB)
             {
                 drawSpriteTile((x * 16), (y * 16), 0, 30, 5);
@@ -956,47 +959,50 @@ namespace ZeldaFullEditor
         int higherY = 0;
         int width = 16;
         int height = 16;
-        public void drawSpriteTile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sx = 2, int sy = 2)
+        public void drawSpriteTile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sx = 2, int sy = 2,bool iskey = false)
         {
-            int zx = x-(this.x * 16);
-            int zy = y-(this.y * 16);
-
-            if (lowerX > zx)
+            int zx = x - (this.x * 16);
+            int zy = y - (this.y * 16);
+            if (iskey == false)
             {
-            lowerX = zx;
-            }
 
-            if (lowerY > zy)
-            {
-            lowerY = zy;
-            }
 
-            if (higherX < zx+(sx*8))
-            {
-            higherX = zx + (sx * 8);
-            }
+                if (lowerX > zx)
+                {
+                    lowerX = zx;
+                }
 
-            if (higherY < zy + (sy * 8))
-            {
-            higherY = zy + (sy * 8);
-            }
+                if (lowerY > zy)
+                {
+                    lowerY = zy;
+                }
 
-            width = higherX - lowerX;
-            height = higherY - lowerY;
-            if (picker)
-            {
-                x += 8;
-                y += 8;
-            }
+                if (higherX < zx + (sx * 8))
+                {
+                    higherX = zx + (sx * 8);
+                }
 
-            if (nx != this.x || ny != this.y)
-            {
-                x -= (this.x*16);
-                y -= (this.y*16);
-                x += (this.nx*16);
-                y += (this.ny*16);
-            }
+                if (higherY < zy + (sy * 8))
+                {
+                    higherY = zy + (sy * 8);
+                }
 
+                width = higherX - lowerX;
+                height = higherY - lowerY;
+                if (picker)
+                {
+                    x += 8;
+                    y += 8;
+                }
+
+                if (nx != this.x || ny != this.y)
+                {
+                    x -= (this.x * 16);
+                    y -= (this.y * 16);
+                    x += (this.nx * 16);
+                    y += (this.ny * 16);
+                }
+            }
             int ty = srcy + 40;
             int tx = srcx;
             int mx = 0;
@@ -1054,16 +1060,27 @@ namespace ZeldaFullEditor
                             {
                                 byte alpha = 255;
 
+
                                 if (GFX.singledata[(src)] == 0)
                                 {
                                     alpha = 0;
                                 }
                                 else
                                 {
-                                    GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].B);
-                                    GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].G);
-                                    GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].R);
-                                    GFX.currentData[dest + 3] = 255;
+                                    /*if (iskey)
+                                    {
+                                        GFX.currentData[dest] = (byte)(GFX.spritesPalettes[GFX.singledata[(src)], pal].B ^ 0xFF);
+                                        GFX.currentData[dest + 1] = (byte)(GFX.spritesPalettes[GFX.singledata[(src)], pal].G ^ 0xFF);
+                                        GFX.currentData[dest + 2] = (byte)(GFX.spritesPalettes[GFX.singledata[(src)], pal].R ^ 0xFF);
+                                        GFX.currentData[dest + 3] = 255;
+                                    }
+                                    else
+                                    {*/
+                                        GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].B);
+                                        GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].G);
+                                        GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].R);
+                                        GFX.currentData[dest + 3] = 255;
+                                    //}
                                 }
                             }
                         }

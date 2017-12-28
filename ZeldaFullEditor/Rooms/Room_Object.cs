@@ -28,7 +28,7 @@ namespace ZeldaFullEditor
         public Room room;
         public int drawYFix = 0;
         public ObjectOption options = 0;//
-
+        public bool specialDraw = false;
         public bool checksize = false;
         public bool selected = false;
         public bool redraw = false;
@@ -190,6 +190,7 @@ namespace ZeldaFullEditor
 
         public void draw_tile(Tile t, int x, int y, int yfix = 0)
         {
+
             if (checksize)
             {
                 int zx = x + 8;
@@ -264,13 +265,11 @@ namespace ZeldaFullEditor
 
                         if (GFX.singledata[(src)] == 0)
                         {
-                            if (room.bg2 != 0)
+                            if (room.bg2 == Background2.Normal || room.bg2 == Background2.Parallax)
                             {
-                                if (layer != 1)
-                                {
-                                    alpha = 0;
-                                }
+                                alpha = 0;
                             }
+                            
                             if (room.bg2 == Background2.OnTop)
                             {
                                 if (layer != 0)
@@ -284,9 +283,8 @@ namespace ZeldaFullEditor
                             }
                             if (room.bg2 == Background2.Transparent)
                             {
-                                alpha = 0;
+                                alpha = 128;
                             }
-
                         }
                         else
                         {
@@ -317,7 +315,7 @@ namespace ZeldaFullEditor
                                 GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].B);
                                 GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].G);
                                 GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].R);
-                                GFX.currentData[dest + 3] = 255;
+                                GFX.currentData[dest + 3] = alpha;
                             }
                         }
                     }

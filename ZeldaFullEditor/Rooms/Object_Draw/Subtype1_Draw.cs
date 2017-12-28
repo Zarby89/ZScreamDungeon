@@ -2455,12 +2455,12 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-            
 
-            for (int s = 0; s < size + 2; s++)
+                for (int s = 0; s < size + 2; s++)
             {
                 draw_tile(tiles[1], (0) * 8, (1 + (s * 1)) * 8);
             }
+
             draw_tile(tiles[0], (0) * 8, (0) * 8);
             draw_tile(tiles[2], (0) * 8, ((size + 2) + 1) * 8);
 
@@ -5315,7 +5315,7 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-            int sizex = ((size >> 2) & 0x03);
+            /*int sizex = ((size >> 2) & 0x03);
             int sizey = ((size) & 0x03);
 
             for (int xx = 0; xx < sizex + 1; xx++)
@@ -5334,7 +5334,7 @@ namespace ZeldaFullEditor
                     draw_tile(tiles[4], (xx * 4) * 8, ((yy * 4) + 3) * 8); draw_tile(tiles[5], ((xx * 4) + 1) * 8, ((yy * 4) + 3) * 8);
                     draw_tile(tiles[6], ((xx * 4) + 2) * 8, ((yy * 4) + 3) * 8); draw_tile(tiles[7], ((xx * 4) + 3) * 8, ((yy * 4) + 3) * 8);
                 }
-            }
+            }*/
         }
     }
 

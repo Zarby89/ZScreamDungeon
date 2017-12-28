@@ -13,19 +13,28 @@ namespace ZeldaFullEditor
         public byte nx, ny;
         public bool selected = false;
         public byte layer = 0;
-        public PotItem(byte id, byte x, byte y)
+        public bool bg2 = false;
+        public PotItem(byte id, byte x, byte y,bool bg2)
         {
             this.id = id;
             this.x = x;
             this.y = y;
             this.nx = x;
             this.ny = y;
+            this.bg2 = bg2;
+
+
         }
 
         //pots items
         public void Draw()
         {
-
+            int id = this.id;
+            if ((id & 0x80) == 0x80)
+            {
+                id = (byte)((id - 0x80) / 2);
+                id += 23;
+            }
 
             if (id == 0)//Nothing
             {
@@ -81,7 +90,7 @@ namespace ZeldaFullEditor
             }
             else if (id == 13)//big magic - need gfx
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0xA7, 11);
+                draw_item_tile((x*8+4), y*8, 8, 16, 0x22, 11,15); //2x22
             }
             else if (id == 14)//chicken
             {

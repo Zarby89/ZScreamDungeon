@@ -178,7 +178,7 @@ namespace ZeldaFullEditor
             }
             else if (oid == 0x37)
             {
-                setdata("Water Gate",  4, 4);
+                setdata("Water Gate",  10, 4);
                 sort = Sorting.NonScalable;
             }
             else if (oid == 0x38)
@@ -221,8 +221,17 @@ namespace ZeldaFullEditor
                 setdata("???", 8, 7);
                 sort = Sorting.NonScalable;
             }
-
-            
+            else if (oid == 0x50) //special object id doesnt matter (Torches)
+            {
+                //setdata("Torch", 2, 2);
+                tiles.Add(new Tile(480, false, false, 0, 3));
+                tiles.Add(new Tile(496, false, false, 0, 3));
+                tiles.Add(new Tile(480, true, false, 0, 3));
+                tiles.Add(new Tile(496, true, false, 0, 3));
+                this.name = "Torch";
+                tx = 2;
+                ty = 2;
+            }
         }
 
 
@@ -257,7 +266,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void setdata(string name, int tx, int ty,bool allbg = false)
+        public void setdata(string name, int tx, int ty, bool allbg = false)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype2_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype2_tiles + ((id & 0xFF) * 2)]);
             addTiles(tx*ty, pos);

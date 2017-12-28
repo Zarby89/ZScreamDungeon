@@ -29,6 +29,7 @@ namespace ZeldaFullEditor
         public static Bitmap floor2_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap bg1_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap bg2_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
+        public static Bitmap bg2_trans_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap room_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap[] chestitems_bitmap = new Bitmap[75];
 
@@ -185,6 +186,28 @@ namespace ZeldaFullEditor
             b.UnlockBits(currentbmpData);
         }
 
+        public static Bitmap singletobmp()
+        {
+            Bitmap b = new Bitmap(128,512);
+            begin_draw(b, 128, 512);
+            unsafe
+            {
+                for (int x = 0; x < 128; x++)
+                {
+                    for (int y = 0; y < 512; y++)
+                    {
+                        int dest = (x + (y * 128))*4;
+                        GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(dest/4)],4].B);
+                        GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.singledata[(dest/4)], 4].G);
+                        GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.singledata[(dest/4)], 4].R);
+                        GFX.currentData[dest + 3] = 255;
+                    }
+                }
+            }
+            end_draw(b);
+            return b;
+        }
+
 
         public static Color getColor(short c)
         {
@@ -230,7 +253,6 @@ namespace ZeldaFullEditor
             }
             loadedPalettes = palettes;
             //return palettes;
-            //TODO : Sprites Palettes loaded from dungeons
             //int spr1_dungeon_palette = Constants.dungeons_palettes_groups + (id * 4) + 1;
             //int spr2_dungeon_palette = Constants.dungeons_palettes_groups + (id * 4) + 2;
             //int spr3_dungeon_palette = Constants.dungeons_palettes_groups + (id * 4) + 3;

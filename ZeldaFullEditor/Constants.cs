@@ -27,8 +27,26 @@ namespace ZeldaFullEditor
         public static int room_sprites_pointers = 0x4D62E; //JP same 0x4CD3E Conker?
         public static int room_header_pointers = 0x27502; //JP 0x271E2
         public static int room_header_pointers_bank = 0xB5E7; //JP Same
-        public static int room_chest = 0xE96E; //JP 0xE96C
-        public static int block_data = 0x271DE; //JP 0x26EBE
+        //public static int room_chest = 0xE96E; //JP 0xE96C
+        //public static int block_data = 0x271DE; //JP 0x26EBE
+        public static int items_data_start = 0xDDE9;
+        public static int items_data_end = 0xE6B2;
+
+        public static int chests_length_pointer = 0xEBF6;
+        public static int chests_data_pointer1 = 0xEBFB;
+        //public static int chests_data_pointer2 = 0xEC0A; //Disabled for now could be used for expansion
+        //public static int chests_data_pointer3 = 0xEC10; //Disabled for now could be used for expansion
+
+        public static int blocks_length = 0x8896; //word value 
+        public static int blocks_pointer1 = 0x15AFA; 
+        public static int blocks_pointer2 = 0x15B01; 
+        public static int blocks_pointer3 = 0x15B08; 
+        public static int blocks_pointer4 = 0x15B0F;
+
+
+
+        
+
         public static int torch_data = 0x2736A; //JP 0x2704A
         public static int sprite_blockset_pointer = 0x5B57;
         public static int sprites_data = 0x4D880; //JP : //It use the unused pointers to have more space
@@ -50,10 +68,19 @@ namespace ZeldaFullEditor
             room_header_pointers = 0x271E2;
             gfx_groups = 0x60B3;
             gfx_animated = 0x1002E;
-            room_chest = 0xE96C;
-            block_data = 0x26EBE;
+            //room_chest = 0xE96C;
+            //block_data = 0x26EBE;
             torch_data = 0x2704A;
             sprite_blockset_pointer = 0x5B97;
+            blocks_pointer1 = 0x1585E;
+            blocks_pointer2 = 0x15865;
+            blocks_pointer3 = 0x1586C;
+            blocks_pointer4 = 0x15873;
+            chests_length_pointer = 0xEBF4;
+            chests_data_pointer1 = 0xEBF9;
+
+            items_data_start = 0xDDE7;
+            items_data_end = 0xE6B0;
             Rando = rando;
             if (rando == true)
             {
