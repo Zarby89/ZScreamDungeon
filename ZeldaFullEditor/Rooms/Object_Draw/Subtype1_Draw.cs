@@ -6107,7 +6107,7 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-            //TODO : VERIFY IF THAT CODE IS RIGHT
+
             for (int s = 0; s < size + 1; s++)
             {
                 draw_tile(tiles[0], (0 + (s * 4)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 4)) * 8, (0) * 8);

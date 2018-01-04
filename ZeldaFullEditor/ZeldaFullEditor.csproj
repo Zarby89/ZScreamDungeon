@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Charactertable.cs" />
     <Compile Include="DoAction.cs" />
     <Compile Include="Gui\AboutBox1.cs">
       <SubType>Form</SubType>
@@ -79,12 +80,6 @@
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
     <Compile Include="Addresses.cs" />
-    <Compile Include="Gui\HowToUse.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\HowToUse.Designer.cs">
-      <DependentUpon>HowToUse.cs</DependentUpon>
-    </Compile>
     <Compile Include="Gui\PickObject.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -153,9 +148,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\GotoRoom.resx">
       <DependentUpon>GotoRoom.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\HowToUse.resx">
-      <DependentUpon>HowToUse.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\PickObject.resx">
       <DependentUpon>PickObject.cs</DependentUpon>

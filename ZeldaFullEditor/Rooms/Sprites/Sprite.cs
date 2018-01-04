@@ -525,44 +525,88 @@ namespace ZeldaFullEditor
             else if (id == 0x5D) //roller vertical1
             {
                 //subset3
-                drawSpriteTile((x * 16) - 8, (y * 16), 8, 8, 11);
-                for (int i = 0; i < 7; i++)
+                if (((y * 16) & 0x10) == 0x10)
                 {
-                    drawSpriteTile((x * 16) + 8 + (i * 16), (y * 16), 9, 8, 11);
+                    drawSpriteTile((x * 16), (y * 16), 8, 8, 11);
+                    for (int i = 0; i < 7; i++)
+                    {
+                        drawSpriteTile((x * 16) + 8 + (i * 16), (y * 16), 9, 8, 11);
+                    }
+                    drawSpriteTile((x * 16) + (16 * 7), (y * 16), 8, 8, 11, true);
                 }
-                drawSpriteTile((x * 16) + 8 + (16 * 7), (y * 16), 8, 8, 11, true);
+                else
+                {
+                    drawSpriteTile((x * 16), (y * 16), 8, 8, 11);
+                    drawSpriteTile((x * 16) + 16, (y * 16), 9, 8, 11);
+                    drawSpriteTile((x * 16) + 32, (y * 16), 9, 8, 11);
+                    drawSpriteTile((x * 16) + 48, (y * 16), 8, 8, 11, true);
+
+                }
 
             }
             else if (id == 0x5E) //roller vertical2
             {
-                //TODO
                 //subset3
-                drawSpriteTile((x * 16) - 8, (y * 16), 8, 8, 11);
-                for (int i = 0; i < 7; i++)
+                if (((y * 16) & 0x10) == 0x10)
                 {
-                    drawSpriteTile((x * 16) + 8 + (i * 16), (y * 16), 9, 8, 11);
+                    drawSpriteTile((x * 16), (y * 16), 8, 8, 11);
+                    for (int i = 0; i < 7; i++)
+                    {
+                        drawSpriteTile((x * 16) + 8 + (i * 16), (y * 16), 9, 8, 11);
+                    }
+                    drawSpriteTile((x * 16) + (16 * 7), (y * 16), 8, 8, 11, true);
                 }
-                drawSpriteTile((x * 16) + 8 + (16 * 7), (y * 16), 8, 8, 11, true);
+                else
+                {
+                    drawSpriteTile((x * 16), (y * 16), 8, 8, 11);
+                    drawSpriteTile((x * 16) + 16, (y * 16), 9, 8, 11);
+                    drawSpriteTile((x * 16) + 32, (y * 16), 9, 8, 11);
+                    drawSpriteTile((x * 16) + 48, (y * 16), 8, 8, 11, true);
+
+                }
 
             }
             else if (id == 0x5F) //roller horizontal
             {
-                drawSpriteTile((x * 16), (y * 16), 14, 8, 11);
-                drawSpriteTile((x * 16), (y * 16) + 16, 14, 9, 11);
-                drawSpriteTile((x * 16), (y * 16) + 32, 14, 9, 11);
-                drawSpriteTile((x * 16), (y * 16) + 48, 14, 8, 11, false, true);
-
+                if (((x * 16) & 0x10) == 0x10)
+                {
+                    drawSpriteTile((x * 16), (y * 16), 14, 8, 11);
+                    drawSpriteTile((x * 16), (y * 16) + 16, 14, 9, 11);
+                    drawSpriteTile((x * 16), (y * 16) + 32, 14, 9, 11);
+                    drawSpriteTile((x * 16), (y * 16) + 48, 14, 8, 11, false, true);
+                }
+                else
+                {
+                    
+                    for (int i = 0; i < 7; i++)
+                    {
+                        drawSpriteTile((x * 16), (y * 16) + i * 16, 14, 9, 11);
+                    }
+                    drawSpriteTile((x * 16), (y * 16), 14, 8, 11);
+                    drawSpriteTile((x * 16), (y * 16) + (7*16), 14, 8, 11, false, true);
+                }
 
             }
-            else if (id == 0x60) //roller horizontal2
+            else if (id == 0x60) //roller horizontal2 (right to left)
             {
                 //subset3
-                drawSpriteTile((x * 16), (y * 16), 14, 8, 4);
-                for (int i = 0; i < 6; i++)
+                if (((x * 16) & 0x10) ==  0x10)
                 {
-                    drawSpriteTile((x * 16), (y * 16) + 16 + (i * 16), 14, 9, 4);
+                    drawSpriteTile((x * 16), (y * 16), 14, 8, 11);
+                    drawSpriteTile((x * 16), (y * 16) + 16, 14, 9, 11);
+                    drawSpriteTile((x * 16), (y * 16) + 32, 14, 9, 11);
+                    drawSpriteTile((x * 16), (y * 16) + 48, 14, 8, 11, false, true);
                 }
-                drawSpriteTile((x * 16), (y * 16) + (16 * 7), 14, 8, 4, false, true);
+                else
+                {
+
+                    for (int i = 0; i < 7; i++)
+                    {
+                        drawSpriteTile((x * 16), (y * 16) + i * 16, 14, 9, 11);
+                    }
+                    drawSpriteTile((x * 16), (y * 16), 14, 8, 11);
+                    drawSpriteTile((x * 16), (y * 16) + (7 * 16), 14, 8, 11, false, true);
+                }
 
             }
             else if (id == 0x61) //beamos
@@ -674,7 +718,6 @@ namespace ZeldaFullEditor
             }
             else if (id == 0x7E) //guruguru clockwise
             {
-                drawSpriteTile((x * 16), (y * 16), 8, 2, 4); //
                 drawSpriteTile((x * 16), (y * 16) - 14, 8, 2, 4); //
                 drawSpriteTile((x * 16), (y * 16) - 28, 8, 2, 4); //
                 drawSpriteTile((x * 16), (y * 16) - 42, 8, 2, 4); //
@@ -682,7 +725,6 @@ namespace ZeldaFullEditor
             }
             else if (id == 0x7F) //guruguru Counterclockwise
             {
-                drawSpriteTile((x * 16), (y * 16), 8, 2, 4); //
                 drawSpriteTile((x * 16), (y * 16) - 14, 8, 2, 4); //
                 drawSpriteTile((x * 16), (y * 16) - 28, 8, 2, 4); //
                 drawSpriteTile((x * 16), (y * 16) - 42, 8, 2, 4); //

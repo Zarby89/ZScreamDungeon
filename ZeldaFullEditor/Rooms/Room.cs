@@ -42,35 +42,65 @@ namespace ZeldaFullEditor
         public byte[] blocks = new byte[24];
         public List<Chest> chest_list = new List<Chest>();
         public List<Room_Object> tilesObjects = new List<Room_Object>();
-        public List<Room_Object> layouttilesObjects = new List<Room_Object>();
+        public List<Room_Object> tilesLayoutObjects = new List<Room_Object>();
         public PotItems_Name items_name = new PotItems_Name();
         public List<Sprite> sprites = new List<Sprite>();
         public List<PotItem> pot_items = new List<PotItem>();
         public List<Object> selectedObject = new List<object>();
         public bool objectInitialized = false;
         public bool needGfxRefresh = false;
+        public bool onlyLayout = false;
+
         public Room(int index)
         {
             this.index = index;
             loadHeader();
-
+            loadLayoutObjects();
             loadTilesObjects();
             addSprites();
-            addBlocks(); //TODO : Change them to have their own GFX
-            addTorches(); //TODO : Change them to have their own GFX
-            addDoors(); //TODO : Fix exploded wall doors
+            addBlocks(); 
+            addTorches(); 
+            setObjectsRoom();
             addPotsItems();
+            isdamagePit();
+        }
+        public void reloadLayout()
+        {
+            tilesLayoutObjects.Clear();
+            loadLayoutObjects();
 
+            foreach(Room_Object o in tilesLayoutObjects)
+            {
+                o.setRoom(this);
+                o.resetSize();
+                o.get_scroll_x();
+                o.get_scroll_y();
+                o.DrawOnBitmap();
+            }
 
+        }
+        public void isdamagePit()
+        {
+            int pitCount = (ROM.DATA[Constants.pit_count] / 2);
+            int pitPointer = (ROM.DATA[Constants.pit_pointer+2] << 16)+ (ROM.DATA[Constants.pit_pointer + 1] << 8)+ (ROM.DATA[Constants.pit_pointer]);
+            pitPointer = Addresses.snestopc(pitPointer);
+            for(int i = 0;i<pitCount;i++)
+            {
+                if (((ROM.DATA[pitPointer+1 + (i*2)] << 8) + (ROM.DATA[pitPointer+(i*2)])) == index)
+                {
+                    damagepit = true;
+                    return;
+                }
+            }
         }
 
         public void reloadGfx(bool noPalette = false)
         {
-
-
+            int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer+1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
+            gfxPointer = Addresses.snestopc(gfxPointer);
             for (int i = 0; i < 8; i++)
             {
-                blocks[i] = ROM.DATA[Constants.gfx_groups + (blockset * 8) + i];
+                blocks[i] = ROM.DATA[gfxPointer + (blockset * 8) + i];
             }
 
             for (int i = 0; i < 4; i++)
@@ -79,7 +109,9 @@ namespace ZeldaFullEditor
             }
 
             blocks[8] = 92; //static animated tile
-            blocks[9] = ROM.DATA[Constants.gfx_animated + blockset];
+            int gfxanimatedPointer = (ROM.DATA[Constants.gfx_animated_pointer + 2] << 16) + (ROM.DATA[Constants.gfx_animated_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_animated_pointer]);
+            gfxanimatedPointer = Addresses.snestopc(gfxanimatedPointer);
+            blocks[9] = ROM.DATA[gfxanimatedPointer + blockset];
 
             blocks[14] = 0; blocks[15] = 10; blocks[16] = 6; blocks[17] = 7; //Static Sprites Blocksets (fairy,pot,ect...)
             blocks[18] = 90; blocks[19] = 91; blocks[20] = 92; blocks[21] = 93;//Items Sprites
@@ -101,19 +133,12 @@ namespace ZeldaFullEditor
                 GFX.LoadSpritesPalette(palette);
             }
 
-            foreach (Room_Object o in tilesObjects)
-            {
-                if ((o.options & ObjectOption.Door) == ObjectOption.Door)
-                {
-                    Console.WriteLine("Door found");
-                }
-            }
-
 
             GFX.load4bpp(GFX.gfxdata, blocks);
 
 
             needGfxRefresh = true;
+            reloadLayout();
             objectInitialized = false;
             update();
         }
@@ -121,13 +146,12 @@ namespace ZeldaFullEditor
 
         public void addSprites()
         {
-
-            //sprites_name.name
-            int sprite_address_snes = (09 << 16) +
-            (ROM.DATA[Constants.room_sprites_pointers + (index * 2) + 1] << 8) +
-            ROM.DATA[Constants.room_sprites_pointers + (index * 2)];
+            int spritePointer = (04 << 16) + (ROM.DATA[Constants.rooms_sprite_pointer + 1] << 8) + (ROM.DATA[Constants.rooms_sprite_pointer]);
+            //09 bank ? Need to check if HM change that
+            int sprite_address_snes = (09 << 16) + 
+            (ROM.DATA[spritePointer + (index * 2) + 1] << 8) +
+            ROM.DATA[spritePointer + (index * 2)];
             int sprite_address = Addresses.snestopc(sprite_address_snes) + 1;
-
 
             while (true)
             {
@@ -182,17 +206,6 @@ namespace ZeldaFullEditor
         }
 
 
-        public void DrawLayout()
-        {
-            foreach (Room_Object ro in tilesObjects)
-            {
-                
-                ro.get_scroll_x();
-                ro.get_scroll_y();
-                ro.Draw();
-            }
-        }
-
         public void drawSprites()
         {
             Sprite prevSprite = null;
@@ -228,26 +241,10 @@ namespace ZeldaFullEditor
                         //if we encounter a door store it somewhere else for now and wait the end of objects layer1
                         if ((tilesObjects[j].options & ObjectOption.Door) == ObjectOption.Door)
                         {
-                            byte p = 0;
-                            if (o is object_door_up)
-                            {
-                                p = 0;
-                            }
-                            if (o is object_door_down)
-                            {
-                                p = 1;
-                            }
-                            if (o is object_door_left)
-                            {
-                                p = 2;
-                            }
-                            if (o is object_door_right)
-                            {
-                                p = 3;
-                            }
+                            byte p = (o as object_door).door_dir;
                             doorfound = true;
-                            byte b1 = (byte)(((o.id & 0x1E) << 3) + p);
-                            byte b2 = (byte)(((o.id & 0xFF00) >> 8));
+                            byte b1 = (byte)((((o as object_door).door_pos) << 3) + p);
+                            byte b2 = (byte)(((o as object_door).door_type));
                             doorsBytes.Add(b1);
                             doorsBytes.Add(b2);
                         }
@@ -364,72 +361,71 @@ namespace ZeldaFullEditor
             }
         }
 
+        public Rectangle[] getAllDoorPosition(Room_Object o)
+        {
+            Rectangle[] rects = new Rectangle[48];
+            short pos = 0;
+            int xf = 0;
+            int yf = 0;
+            int wf = 0;
+            int hf = 0;
+            for (int i = 0; i < 24; i += 2) // top
+            {
+                pos = (short)(((ROM.DATA[(0x197E + 1 + (i & 0xFF))] << 8) + ROM.DATA[(0x197E + (i & 0xFF))]) / 2);
+                hf = 24;
+                wf = 32;
+                float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
+                rects[(i / 2)] = new Rectangle(((byte)n + xf) * 8, (byte)((pos / 64) + yf) * 8, wf, hf);
+            }
+            xf = 0;
+            yf = 0;
+            wf = 0;
+            hf = 0;
+            for (int i = 0; i < 24; i += 2) // down
+            {
+                pos = (short)(((ROM.DATA[(0x1996 + 1 + (i & 0xFF))] << 8) + ROM.DATA[(0x1996 + (i & 0xFF))]) / 2);
+                yf = 1;
+                hf = 24;
+                wf = 32;
+                float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
+                rects[(i / 2)+12] = new Rectangle(((byte)n + xf) * 8, (byte)((pos / 64) + yf) * 8, wf, hf);
+            }
+            xf = 0;
+            yf = 0;
+            wf = 0;
+            hf = 0;
+            for (int i = 0; i < 24; i += 2) //left
+            {
+                pos = (short)(((ROM.DATA[(0x19AE + 1 + (i & 0xFF))] << 8) + ROM.DATA[(0x19AE + (i & 0xFF))]) / 2);
+                hf = 32;
+                wf = 24;
+                float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
+                rects[(i / 2) + 24] = new Rectangle(((byte)n + xf) * 8, (byte)((pos / 64) + yf) * 8, wf, hf);
+            }
+            xf = 0;
+            yf = 0;
+            wf = 0;
+            hf = 0;
+            for (int i = 0; i < 24; i += 2)//right
+            {
+                xf = 1;
+                pos = (short)(((ROM.DATA[(0x19C6 + 1 + (i & 0xFF))] << 8) + ROM.DATA[(0x19C6 + (i & 0xFF))]) / 2);
+                hf = 32;
+                wf = 24;
+                float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
+                rects[(i / 2) + 36] = new Rectangle(((byte)n + xf) * 8, (byte)((pos / 64) + yf) * 8, wf, hf);
+            }
 
+            return rects;
+        }
 
-        public void addDoors()
+        public void setObjectsRoom()
         {
             foreach (Room_Object o in tilesObjects)
             {
-
                 o.setRoom(this);
-
-                if (o.GetType() == typeof(object_door_up))
-                {
-                    short pos = (short)(((ROM.DATA[(0x197E + 1 + (o.id & 0xFF))] << 8) + ROM.DATA[(0x197E + (o.id & 0xFF))]) / 2);
-                    float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
-                    o.x = (byte)n;
-                    o.y = (byte)(pos / 64);
-                    o.options |= ObjectOption.Door;
-                    o.nx = o.x;
-                    o.ny = o.y;
-                    o.ox = o.x;
-                    o.oy = o.y;
-                    
-                }
-                if (o.GetType() == typeof(object_door_down))
-                {
-                    short pos = (short)(((ROM.DATA[(0x1996 + 1 + (o.id & 0xFF))] << 8) + ROM.DATA[(0x1996 + (o.id & 0xFF))]) / 2);
-                    float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
-                    o.x = (byte)n;
-                    o.y = (byte)(pos / 64);
-                    o.y += 1;
-                    o.options |= ObjectOption.Door;
-                    o.nx = o.x;
-                    o.ny = o.y;
-                    o.ox = o.x;
-                    o.oy = o.y;
-                }
-
-                if (o.GetType() == typeof(object_door_left))
-                {
-                    short pos = (short)(((ROM.DATA[(0x19AE + 1 + (o.id & 0xFF))] << 8) + ROM.DATA[(0x19AE + (o.id & 0xFF))]) / 2);
-                    float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
-                    o.x = (byte)n;
-                    o.y = (byte)(pos / 64);
-                    o.options |= ObjectOption.Door;
-                    o.nx = o.x;
-                    o.ny = o.y;
-                    o.ox = o.x;
-                    o.oy = o.y;
-
-                }
-                if (o.GetType() == typeof(object_door_right))
-                {
-                    short pos = (short)(((ROM.DATA[(0x19C6 + 1 + (o.id & 0xFF))] << 8) + ROM.DATA[(0x19C6 + (o.id & 0xFF))]) / 2);
-                    float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
-                    o.x = (byte)n;
-                    o.y = (byte)(pos / 64);
-                    //if ((o.id & 0xFF) >= 12)
-                    //{
-                    o.x += 1;
-                    //}
-                    o.options |= ObjectOption.Door;
-                    o.nx = o.x;
-                    o.ny = o.y;
-                    o.ox = o.x;
-                    o.oy = o.y;
-                }
             }
+
         }
 
         short[] stairsObjects = new short[] { 0x139, 0x138,0x13B, 0x12E, 0x12D };
@@ -450,8 +446,14 @@ namespace ZeldaFullEditor
             {
                 blocksdata[i] = (ROM.DATA[i + pos1]);
                 blocksdata[i + 0x80] = (ROM.DATA[i + pos2]);
-                blocksdata[i + 0x100] = (ROM.DATA[i + pos3]);
-                blocksdata[i + 0x180] = (ROM.DATA[i + pos4]);
+                if (i + 0x100 < maxCount)
+                {
+                    blocksdata[i + 0x100] = (ROM.DATA[i + pos3]);
+                }
+                if (i + 0x180 < maxCount)
+                {
+                    blocksdata[i + 0x180] = (ROM.DATA[i + pos4]);
+                }
             }
         }
 
@@ -460,11 +462,10 @@ namespace ZeldaFullEditor
             //288
             
             int blocksCount = (short)((ROM.DATA[Constants.blocks_length+1]<<8) + ROM.DATA[Constants.blocks_length]);
-            byte[] blocksdata = new byte[blocksCount * 4];
+            byte[] blocksdata = new byte[blocksCount];
             //int blocksCount = (short)((ROM.DATA[Constants.blocks_length + 1] << 8) + ROM.DATA[Constants.blocks_length]);
             addlistBlock(ref blocksdata, blocksCount);
-
-            for (int i = 0;i<blocksdata.Length;i+=4)
+            for (int i = 0;i< blocksCount; i+=4)
             {
                 byte b1 = blocksdata[i];
                 byte b2 = blocksdata[i+1];
@@ -472,30 +473,27 @@ namespace ZeldaFullEditor
                 byte b4 = blocksdata[i+3];
                 if (((b2 << 8) + b1) == index)
                 {
-                    int b = ((((b4 << 8) + b3) & 0x1FFF)>> 1);
-                    float a = ((float)b / 64);
-                    int py = (((((b4 << 8) + b3) & 0x1FFF) >> 1)/64);
-                    a = (a - py) *64;
-                    int px = (int)a;
-                    Room_Object r = addObject(0x0E00, (byte)(px), (byte)(py), 0, 0);
+                    if (b3 == 0xFF && b4 == 0xFF) { break; }
+                    int address = ((b4 & 0x1F) << 8 | b3) >> 1;
+                    int px = address % 64;
+                    int py = address >> 6;
+                    Room_Object r = addObject(0x0E00, (byte)(px), (byte)(py), 0, (byte)((b4 & 0x20) >> 5));
                     if (r != null)
                     {
                         r.options |= ObjectOption.Block;
                         tilesObjects.Add(r);
                     }
                 }
-
             }
         }
         public void addTorches()
         {
             for (int i = 0; i < 288; i += 2)
             {
-                //Console.WriteLine(i);
                 byte b1 = ROM.DATA[Constants.torch_data + i];
                 byte b2 = ROM.DATA[Constants.torch_data + i + 1];
                 if (b1 == 0xFF && b2 == 0xFF) { continue; }
-                if (((b2 << 8) + b1) == index)
+                if (((b2 << 8) + b1) == index) // if roomindex = indexread
                 {
                     i += 2;
                     while (true)
@@ -560,23 +558,6 @@ namespace ZeldaFullEditor
         }
         
 
-        /*public void DrawSpritesNames(Graphics g)
-        {
-            g.SmoothingMode = SmoothingMode.AntiAlias;
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-            foreach (SpriteName sprname in stringtodraw)
-            {
-                    GraphicsPath gpath = new GraphicsPath();
-                    gpath.AddString(sprname.name, new FontFamily("Consolas"), 1, 12, new Point(sprname.x, sprname.y), StringFormat.GenericDefault);
-                    Pen pen = new Pen(Color.FromArgb(30, 30, 30), 2);
-                    g.DrawPath(pen, gpath);
-                    SolidBrush brush = new SolidBrush(Color.FromArgb(255, 255, 255));
-                    g.FillPath(brush, gpath);
-            }
-        }*/
-
-
-
 
         public void InitDrawBgr()
         {
@@ -596,8 +577,6 @@ namespace ZeldaFullEditor
             {
                 if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr)
                 {
-                    //o.DrawOnBitmap();
-                    //draw_tiles(o);
                     o.Draw();
                 }
 
@@ -681,7 +660,9 @@ namespace ZeldaFullEditor
         public void loadTilesObjects(bool floor = true)
         {
             //adddress of the room objects
-            int room_address = Constants.room_object_pointers + (index * 3);
+            int objectPointer = (ROM.DATA[Constants.room_object_pointer + 2] << 16) + (ROM.DATA[Constants.room_object_pointer + 1] << 8) + (ROM.DATA[Constants.room_object_pointer]);
+            objectPointer = Addresses.snestopc(objectPointer);
+            int room_address = objectPointer + (index * 3);
             int tile_address = (ROM.DATA[room_address + 2] << 16) +
                 (ROM.DATA[room_address + 1] << 8) +
                 ROM.DATA[room_address];
@@ -694,10 +675,6 @@ namespace ZeldaFullEditor
                 floor2 = (byte)((ROM.DATA[objects_location] >> 4) & 0x0F);
             }
             layout = (byte)((ROM.DATA[objects_location + 1] >> 2) & 0x07);
-            int layout_address = (ROM.DATA[Constants.room_object_layout_pointers + 2  + (layout * 3)] << 16) +
-                                (ROM.DATA[(Constants.room_object_layout_pointers + 1) + (layout * 3)] << 8) +
-                                ROM.DATA[(Constants.room_object_layout_pointers) + 0 + (layout * 3)];
-            int layout_location = Addresses.snestopc(layout_address);
 
             List<ChestData> chests_in_room = new List<ChestData>();
             loadChests(ref chests_in_room);
@@ -705,8 +682,7 @@ namespace ZeldaFullEditor
             staircaseRooms.Clear();
             int nbr_of_staircase = 0;
 
-            int pos = layout_location;
-
+            int pos = objects_location+2;
             byte b1 = 0;
             byte b2 = 0;
             byte b3 = 0;
@@ -719,64 +695,11 @@ namespace ZeldaFullEditor
             int layer = 0;
             bool door = false;
             bool endRead = false;
-            bool drawlayout = true;
-            bool fix = true;
             while (endRead == false)
             {
-                if (drawlayout == true)
-                {
-
+ 
                     b1 = ROM.DATA[pos];
                     b2 = ROM.DATA[pos + 1];
-                    fix = false;
-                    if (b1 == 0xFF && b2 == 0xFF)
-                    {
-                        pos = objects_location + 2;
-
-                        drawlayout = false;
-                        //endRead = true;
-                        continue;
-                    }
-                    b3 = ROM.DATA[pos + 2];
-                    pos += 3; //we jump to layer2
-
-                    if (b3 >= 0xF8)
-                    {
-                        oid = (short)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
-                        posX = (byte)((b1 & 0xFC) >> 2);
-                        posY = (byte)((b2 & 0xFC) >> 2);
-                        sizeXY = (byte)((((b1 & 0x03) << 2) + (b2 & 0x03)));
-                    }
-                    else //subtype1
-                    {
-                        oid = b3;
-                        posX = (byte)((b1 & 0xFC) >> 2);
-                        posY = (byte)((b2 & 0xFC) >> 2);
-                        sizeX = (byte)((b1 & 0x03));
-                        sizeY = (byte)((b2 & 0x03));
-                        sizeXY = (byte)(((sizeX << 2) + sizeY));
-                    }
-                    if (b1 >= 0xFC) //subtype2 (not scalable? )
-                    {
-                        oid = (short)((b3 & 0x3F) + 0x100);
-                        posX = (byte)(((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));
-                        posY = (byte)(((b2 & 0x0F) << 2) + ((b3 & 0xC0) >> 6));
-                        sizeXY = 0;
-                    }
-
-                    Room_Object r = addObject(oid, posX, posY, sizeXY, (byte)layer);
-                    if (r != null)
-                    {
-                        r.options |= ObjectOption.Bgr;
-                        tilesObjects.Add(r);
-                    }
-
-                }
-                else
-                {
-                    b1 = ROM.DATA[pos];
-                    b2 = ROM.DATA[pos + 1];
-                    fix = true;
                     if (b1 == 0xFF && b2 == 0xFF)
                     {
                         pos += 2; //we jump to layer2
@@ -878,48 +801,96 @@ namespace ZeldaFullEditor
 
                             }
                         }
-                    }
+
+
+                }
                     else
                     {
-                        byte door_pos = (byte)((b1 & 0xF0) >> 3);
-                        byte door_type = b2;
-
-                        if ((b1 & 0x03) == 00) //up
-                        {
-                            tilesObjects.Add(new object_door_up((short)((door_type <<8) + door_pos),0,0,0,(byte)layer));
-                            if (door_pos >= 12)
-                            {
-                                //tilesObjects.Add(new object_door_down((short)((door_type << 8) + (door_pos-12)), 0, 0, 0, (byte)layer));
-                            }
-                        }
-                        if ((b1 & 0x03) == 01) //down
-                        {
-                            tilesObjects.Add(new object_door_down((short)((door_type << 8) + door_pos), 0, 0, 0, (byte)layer));
-                        }
-                        if ((b1 & 0x03) == 02) //left
-                        {
-                            tilesObjects.Add(new object_door_left((short)((door_type << 8) + door_pos), 0, 0, 0, (byte)layer));
-                            if (door_pos >= 12)
-                            {
-                                //tilesObjects.Add(new object_door_right((short)((door_type << 8) + (door_pos - 12)), 0, 0, 0, (byte)layer));
-                            }
-                        }
-                        if ((b1 & 0x03) == 03) //right
-                        {
-                            tilesObjects.Add(new object_door_right((short)((door_type << 8) + door_pos), 0, 0, 0, (byte)layer));
-
-                        }
+                        //byte door_pos = b1;//(byte)((b1 & 0xF0) >> 3);
+                        //byte door_type = b2;
+                        tilesObjects.Add(new object_door((short)((b2 << 8) + b1), 0, 0, 0, (byte)layer));
                         continue;
                     }
+
+
+
+            }
+        }
+
+        public void loadLayoutObjects(bool floor = true)
+        {
+            //different bank?? it a long address :scream:
+            int pointer = ((ROM.DATA[Constants.room_object_layout_pointer + 2] << 16) + (ROM.DATA[Constants.room_object_layout_pointer + 1] << 8) + ROM.DATA[Constants.room_object_layout_pointer]);
+            pointer = Addresses.snestopc(pointer);
+            int layout_address = (ROM.DATA[pointer + 2 + (layout * 3)] << 16) +
+                                (ROM.DATA[pointer + 1 + (layout * 3)] << 8) +
+                                ROM.DATA[pointer + 0 + (layout * 3)];
+            int layout_location = Addresses.snestopc(layout_address);
+
+            int pos = layout_location;
+            byte b1 = 0;
+            byte b2 = 0;
+            byte b3 = 0;
+            byte posX = 0;
+            byte posY = 0;
+            byte sizeX = 0;
+            byte sizeY = 0;
+            byte sizeXY = 0;
+            short oid = 0;
+            int layer = 0;
+
+            while (true)
+            {
+                b1 = ROM.DATA[pos];
+                b2 = ROM.DATA[pos + 1];
+                if (b1 == 0xFF && b2 == 0xFF)
+                {
+                    break;
+                }
+                b3 = ROM.DATA[pos + 2];
+                pos += 3; //we jump to layer2
+
+                if (b3 >= 0xF8)
+                {
+                    oid = (short)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
+                    posX = (byte)((b1 & 0xFC) >> 2);
+                    posY = (byte)((b2 & 0xFC) >> 2);
+                    sizeXY = (byte)((((b1 & 0x03) << 2) + (b2 & 0x03)));
+                }
+                else //subtype1
+                {
+                    oid = b3;
+                    posX = (byte)((b1 & 0xFC) >> 2);
+                    posY = (byte)((b2 & 0xFC) >> 2);
+                    sizeX = (byte)((b1 & 0x03));
+                    sizeY = (byte)((b2 & 0x03));
+                    sizeXY = (byte)(((sizeX << 2) + sizeY));
+                }
+                if (b1 >= 0xFC) //subtype2 (not scalable? )
+                {
+                    oid = (short)((b3 & 0x3F) + 0x100);
+                    posX = (byte)(((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));
+                    posY = (byte)(((b2 & 0x0F) << 2) + ((b3 & 0xC0) >> 6));
+                    sizeXY = 0;
+                }
+
+                Room_Object r = addObject(oid, posX, posY, sizeXY, (byte)layer);
+                if (r != null)
+                {
+                    r.options |= ObjectOption.Bgr;
+                    tilesLayoutObjects.Add(r);
                 }
 
             }
-
-
         }
 
         public Room_Object addObject(short oid,byte x, byte y, byte size,byte layer)
         {
+            if (oid == 0xE00) //Block
+            {
+                return new object_Block(oid, x, y, 0, layer);
+            }
+
             if (oid <= 0xFF)
             {
                 switch (oid)
@@ -1648,12 +1619,6 @@ namespace ZeldaFullEditor
             }
             else
             {
-                if (oid == 0xE00) //Block
-                {
-                   return new object_Block(oid, x, y, 0, layer);
-                }
-
-
                 if (oid  >= 0xF00)                //subtype3
                 {
                     switch (oid)
@@ -2072,9 +2037,11 @@ namespace ZeldaFullEditor
         public void loadHeader()
         {
             //address of the room header
+            int headerPointer = (ROM.DATA[Constants.room_header_pointer + 2] << 16) + (ROM.DATA[Constants.room_header_pointer + 1] << 8) + (ROM.DATA[Constants.room_header_pointer]);
+            headerPointer = Addresses.snestopc(headerPointer);
             int address = (ROM.DATA[Constants.room_header_pointers_bank] << 16) +
-                            (ROM.DATA[(Constants.room_header_pointers + 1)+ (index * 2)] << 8) +
-                            ROM.DATA[(Constants.room_header_pointers) + (index*2)];
+                            (ROM.DATA[(headerPointer + 1)+ (index * 2)] << 8) +
+                            ROM.DATA[(headerPointer) + (index*2)];
 
             header_location = Addresses.snestopc(address);
 
@@ -2153,4 +2120,6 @@ namespace ZeldaFullEditor
             this.bigChest = bigChest;
         }
     }
+
+
 }

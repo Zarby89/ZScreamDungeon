@@ -85,32 +85,69 @@
             this.chestmodeButton = new System.Windows.Forms.ToolStripButton();
             this.potmodeButton = new System.Windows.Forms.ToolStripButton();
             this.doormodeButton = new System.Windows.Forms.ToolStripButton();
+            this.warpmodeButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.saveLayoutButton = new System.Windows.Forms.ToolStripButton();
             this.loadlayoutButton = new System.Windows.Forms.ToolStripButton();
             this.spriteImageList = new System.Windows.Forms.ImageList(this.components);
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.roomtabPage = new System.Windows.Forms.TabPage();
             this.mapPicturebox = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.collisioncomboBox = new System.Windows.Forms.ComboBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tag2comboBox = new System.Windows.Forms.ComboBox();
+            this.tag1comboBox = new System.Windows.Forms.ComboBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.messageshowButton = new System.Windows.Forms.Button();
+            this.messageidUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label10 = new System.Windows.Forms.Label();
+            this.pithurtcheckbox = new System.Windows.Forms.CheckBox();
             this.label8 = new System.Windows.Forms.Label();
+            this.effectcomboBox = new System.Windows.Forms.ComboBox();
+            this.layoutUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.spritesetUpDown = new System.Windows.Forms.NumericUpDown();
             this.paletteUpDown = new System.Windows.Forms.NumericUpDown();
             this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
             this.roomgfxUpDown = new System.Windows.Forms.NumericUpDown();
             this.label4 = new System.Windows.Forms.Label();
             this.floor2UpDown = new System.Windows.Forms.NumericUpDown();
             this.floor1UpDown = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.entrancetabPage = new System.Windows.Forms.TabPage();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.entranceposCheckbox = new System.Windows.Forms.CheckBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.entranceLabel = new System.Windows.Forms.Label();
+            this.entranceListBox = new System.Windows.Forms.ListBox();
             this.objectstabPage = new System.Windows.Forms.TabPage();
+            this.checkBox5 = new System.Windows.Forms.CheckBox();
+            this.checkBox4 = new System.Windows.Forms.CheckBox();
+            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.button4 = new System.Windows.Forms.Button();
             this.objectinfoLabel = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.settingstabPage = new System.Windows.Forms.TabPage();
+            this.label13 = new System.Windows.Forms.Label();
+            this.button5 = new System.Windows.Forms.Button();
+            this.palettestabPage = new System.Windows.Forms.TabPage();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.palettePicturebox = new System.Windows.Forms.PictureBox();
+            this.gfxtabPage = new System.Windows.Forms.TabPage();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.texttabPage = new System.Windows.Forms.TabPage();
+            this.label15 = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.commandstextBox = new System.Windows.Forms.TextBox();
+            this.messageUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label14 = new System.Windows.Forms.Label();
+            this.messagetextBox = new System.Windows.Forms.TextBox();
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.nothingselectedcontextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.insertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -133,29 +170,34 @@
             this.bringToFrontToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.sendToBackToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
+            this.roomtabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.messageidUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spritesetUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.roomgfxUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.floor2UpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.floor1UpDown)).BeginInit();
+            this.entrancetabPage.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.objectstabPage.SuspendLayout();
-            this.tabPage4.SuspendLayout();
+            this.settingstabPage.SuspendLayout();
+            this.palettestabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).BeginInit();
+            this.gfxtabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.texttabPage.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.messageUpDown)).BeginInit();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
             this.groupselectedcontextMenu.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            this.tabPage3.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -168,9 +210,10 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(832, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(844, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // fileToolStripMenuItem
             // 
@@ -448,7 +491,7 @@
             this.roomListBox.FormattingEnabled = true;
             this.roomListBox.Location = new System.Drawing.Point(3, 39);
             this.roomListBox.Name = "roomListBox";
-            this.roomListBox.Size = new System.Drawing.Size(289, 238);
+            this.roomListBox.Size = new System.Drawing.Size(301, 277);
             this.roomListBox.TabIndex = 2;
             this.roomListBox.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
@@ -518,12 +561,13 @@
             this.chestmodeButton,
             this.potmodeButton,
             this.doormodeButton,
+            this.warpmodeButton,
             this.toolStripSeparator3,
             this.saveLayoutButton,
             this.loadlayoutButton});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(832, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(844, 25);
             this.toolStrip1.TabIndex = 9;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -702,6 +746,18 @@
             this.doormodeButton.Text = "Stairs / Warp";
             this.doormodeButton.Click += new System.EventHandler(this.update_modes_buttons);
             // 
+            // warpmodeButton
+            // 
+            this.warpmodeButton.CheckOnClick = true;
+            this.warpmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.warpmodeButton.Enabled = false;
+            this.warpmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("warpmodeButton.Image")));
+            this.warpmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.warpmodeButton.Name = "warpmodeButton";
+            this.warpmodeButton.Size = new System.Drawing.Size(23, 22);
+            this.warpmodeButton.Text = "warp/stairs/teleport";
+            this.warpmodeButton.Click += new System.EventHandler(this.update_modes_buttons);
+            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
@@ -710,6 +766,7 @@
             // saveLayoutButton
             // 
             this.saveLayoutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.saveLayoutButton.Enabled = false;
             this.saveLayoutButton.Image = ((System.Drawing.Image)(resources.GetObject("saveLayoutButton.Image")));
             this.saveLayoutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveLayoutButton.Name = "saveLayoutButton";
@@ -720,6 +777,7 @@
             // loadlayoutButton
             // 
             this.loadlayoutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.loadlayoutButton.Enabled = false;
             this.loadlayoutButton.Image = ((System.Drawing.Image)(resources.GetObject("loadlayoutButton.Image")));
             this.loadlayoutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.loadlayoutButton.Name = "loadlayoutButton";
@@ -738,38 +796,41 @@
             this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.roomtabPage);
+            this.tabControl1.Controls.Add(this.entrancetabPage);
             this.tabControl1.Controls.Add(this.objectstabPage);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.settingstabPage);
+            this.tabControl1.Controls.Add(this.palettestabPage);
+            this.tabControl1.Controls.Add(this.gfxtabPage);
+            this.tabControl1.Controls.Add(this.texttabPage);
             this.tabControl1.Enabled = false;
-            this.tabControl1.Location = new System.Drawing.Point(530, 53);
+            this.tabControl1.Location = new System.Drawing.Point(530, 27);
+            this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(302, 514);
+            this.tabControl1.Size = new System.Drawing.Size(314, 540);
             this.tabControl1.TabIndex = 11;
             // 
-            // tabPage1
+            // roomtabPage
             // 
-            this.tabPage1.Controls.Add(this.mapPicturebox);
-            this.tabPage1.Controls.Add(this.groupBox1);
-            this.tabPage1.Controls.Add(this.radioButton1);
-            this.tabPage1.Controls.Add(this.roomListBox);
-            this.tabPage1.Controls.Add(this.radioButton2);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(294, 488);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Rooms";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.roomtabPage.Controls.Add(this.mapPicturebox);
+            this.roomtabPage.Controls.Add(this.groupBox1);
+            this.roomtabPage.Controls.Add(this.radioButton1);
+            this.roomtabPage.Controls.Add(this.roomListBox);
+            this.roomtabPage.Controls.Add(this.radioButton2);
+            this.roomtabPage.Location = new System.Drawing.Point(4, 40);
+            this.roomtabPage.Name = "roomtabPage";
+            this.roomtabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.roomtabPage.Size = new System.Drawing.Size(306, 496);
+            this.roomtabPage.TabIndex = 0;
+            this.roomtabPage.Text = "Rooms";
+            this.roomtabPage.UseVisualStyleBackColor = true;
             // 
             // mapPicturebox
             // 
             this.mapPicturebox.Location = new System.Drawing.Point(3, 28);
             this.mapPicturebox.Name = "mapPicturebox";
-            this.mapPicturebox.Size = new System.Drawing.Size(256, 256);
+            this.mapPicturebox.Size = new System.Drawing.Size(256, 304);
             this.mapPicturebox.TabIndex = 13;
             this.mapPicturebox.TabStop = false;
             this.mapPicturebox.Visible = false;
@@ -777,10 +838,23 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.collisioncomboBox);
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.tag2comboBox);
+            this.groupBox1.Controls.Add(this.tag1comboBox);
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.messageshowButton);
+            this.groupBox1.Controls.Add(this.messageidUpDown);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.pithurtcheckbox);
             this.groupBox1.Controls.Add(this.label8);
+            this.groupBox1.Controls.Add(this.effectcomboBox);
+            this.groupBox1.Controls.Add(this.layoutUpDown);
+            this.groupBox1.Controls.Add(this.label5);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.spritesetUpDown);
             this.groupBox1.Controls.Add(this.paletteUpDown);
             this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.roomgfxUpDown);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.floor2UpDown);
@@ -788,25 +862,314 @@
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(3, 286);
+            this.groupBox1.Location = new System.Drawing.Point(3, 338);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(288, 199);
+            this.groupBox1.Size = new System.Drawing.Size(300, 155);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Room Settings";
+            this.groupBox1.Text = "Room and Header Settings";
+            // 
+            // collisioncomboBox
+            // 
+            this.collisioncomboBox.FormattingEnabled = true;
+            this.collisioncomboBox.Items.AddRange(new object[] {
+            "One",
+            "Both",
+            "Both With Scroll",
+            "Moving Floor",
+            "Moving Water"});
+            this.collisioncomboBox.Location = new System.Drawing.Point(63, 71);
+            this.collisioncomboBox.Name = "collisioncomboBox";
+            this.collisioncomboBox.Size = new System.Drawing.Size(100, 21);
+            this.collisioncomboBox.TabIndex = 26;
+            this.collisioncomboBox.Text = "One";
+            this.collisioncomboBox.SelectedIndexChanged += new System.EventHandler(this.floor1UpDown_ValueChanged);
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(60, 55);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(75, 13);
+            this.label12.TabIndex = 25;
+            this.label12.Text = "Collision ??? : ";
+            // 
+            // tag2comboBox
+            // 
+            this.tag2comboBox.FormattingEnabled = true;
+            this.tag2comboBox.Items.AddRange(new object[] {
+            "Nothing",
+            "NW Kill Enemy to Open",
+            "NE Kill Enemy to Open",
+            "SW Kill Enemy to Open",
+            "SE Kill Enemy to Open",
+            "W Kill Enemy to Open",
+            "E Kill Enemy to Open",
+            "N Kill Enemy to Open",
+            "S Kill Enemy to Open",
+            "Clear Quadrant to Open",
+            "Clear Room to Open",
+            "NW Push Block to Open",
+            "NE Push Block to Open",
+            "SW Push Block to Open",
+            "SE Push Block to Open",
+            "W Push Block to Open",
+            "E Push Block to Open",
+            "N Push Block to Open",
+            "S Push Block to Open",
+            "Push Block to Open",
+            "Pull Lever to Open",
+            "Clear Level to Open",
+            "Switch Open Door(Hold)",
+            "Switch Open Door(Toggle)",
+            "Turn off Water",
+            "Turn on Water",
+            "Water Gate",
+            "Water Twin",
+            "Secret Wall Right",
+            "Secret Wall Left",
+            "Crash",
+            "Crash",
+            "Pull Switch to bomb Wall",
+            "Holes 0",
+            "Open Chest (Holes 0)",
+            "Holes 1",
+            "Holes 2",
+            "Kill Enemy to clear level",
+            "SE Kill enemy to move block",
+            "Trigger activated Chest",
+            "Pull lever to bomb wall",
+            "NW Kill Enemy for chest",
+            "NE Kill Enemy for chest",
+            "SW Kill Enemy for chest",
+            "SE Kill Enemy for chest",
+            "W Kill Enemy for chest",
+            "E Kill Enemy for chest",
+            "N Kill Enemy for chest",
+            "S Kill Enemy for chest",
+            "Clear Quadrant for chest",
+            "Clear Room for chest",
+            "Light Torches to open",
+            "Holes 3",
+            "Holes 4",
+            "Holes 5",
+            "Holes 6",
+            "Agahnim Room",
+            "Holes 7",
+            "Holes 8",
+            "Open Chest for Holes 8",
+            "Push block for Chest",
+            "Kill to open Ganon Door",
+            "Light Torches to get Chest",
+            "Kill boss Again"});
+            this.tag2comboBox.Location = new System.Drawing.Point(9, 130);
+            this.tag2comboBox.Name = "tag2comboBox";
+            this.tag2comboBox.Size = new System.Drawing.Size(154, 21);
+            this.tag2comboBox.TabIndex = 24;
+            this.tag2comboBox.Text = "Nothing";
+            this.tag2comboBox.SelectedIndexChanged += new System.EventHandler(this.floor1UpDown_ValueChanged);
+            // 
+            // tag1comboBox
+            // 
+            this.tag1comboBox.FormattingEnabled = true;
+            this.tag1comboBox.Items.AddRange(new object[] {
+            "Nothing",
+            "NW Kill Enemy to Open",
+            "NE Kill Enemy to Open",
+            "SW Kill Enemy to Open",
+            "SE Kill Enemy to Open",
+            "W Kill Enemy to Open",
+            "E Kill Enemy to Open",
+            "N Kill Enemy to Open",
+            "S Kill Enemy to Open",
+            "Clear Quadrant to Open",
+            "Clear Room to Open",
+            "NW Push Block to Open",
+            "NE Push Block to Open",
+            "SW Push Block to Open",
+            "SE Push Block to Open",
+            "W Push Block to Open",
+            "E Push Block to Open",
+            "N Push Block to Open",
+            "S Push Block to Open",
+            "Push Block to Open",
+            "Pull Lever to Open",
+            "Clear Level to Open",
+            "Switch Open Door(Hold)",
+            "Switch Open Door(Toggle)",
+            "Turn off Water",
+            "Turn on Water",
+            "Water Gate",
+            "Water Twin",
+            "Secret Wall Right",
+            "Secret Wall Left",
+            "Crash",
+            "Crash",
+            "Pull Switch to bomb Wall",
+            "Holes 0",
+            "Open Chest (Holes 0)",
+            "Holes 1",
+            "Holes 2",
+            "Kill Enemy to clear level",
+            "SE Kill enemy to move block",
+            "Trigger activated Chest",
+            "Pull lever to bomb wall",
+            "NW Kill Enemy for chest",
+            "NE Kill Enemy for chest",
+            "SW Kill Enemy for chest",
+            "SE Kill Enemy for chest",
+            "W Kill Enemy for chest",
+            "E Kill Enemy for chest",
+            "N Kill Enemy for chest",
+            "S Kill Enemy for chest",
+            "Clear Quadrant for chest",
+            "Clear Room for chest",
+            "Light Torches to open",
+            "Holes 3",
+            "Holes 4",
+            "Holes 5",
+            "Holes 6",
+            "Agahnim Room",
+            "Holes 7",
+            "Holes 8",
+            "Open Chest for Holes 8",
+            "Push block for Chest",
+            "Kill to open Ganon Door",
+            "Light Torches to get Chest",
+            "Kill boss Again"});
+            this.tag1comboBox.Location = new System.Drawing.Point(9, 109);
+            this.tag1comboBox.Name = "tag1comboBox";
+            this.tag1comboBox.Size = new System.Drawing.Size(154, 21);
+            this.tag1comboBox.TabIndex = 23;
+            this.tag1comboBox.Text = "Nothing";
+            this.tag1comboBox.SelectedIndexChanged += new System.EventHandler(this.floor1UpDown_ValueChanged);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 94);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(43, 13);
+            this.label11.TabIndex = 22;
+            this.label11.Text = "Tags  : ";
+            // 
+            // messageshowButton
+            // 
+            this.messageshowButton.Location = new System.Drawing.Point(219, 108);
+            this.messageshowButton.Name = "messageshowButton";
+            this.messageshowButton.Size = new System.Drawing.Size(75, 23);
+            this.messageshowButton.TabIndex = 21;
+            this.messageshowButton.Text = "Show";
+            this.messageshowButton.UseVisualStyleBackColor = true;
+            // 
+            // messageidUpDown
+            // 
+            this.messageidUpDown.Location = new System.Drawing.Point(169, 111);
+            this.messageidUpDown.Maximum = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            this.messageidUpDown.Name = "messageidUpDown";
+            this.messageidUpDown.Size = new System.Drawing.Size(48, 20);
+            this.messageidUpDown.TabIndex = 20;
+            this.messageidUpDown.ValueChanged += new System.EventHandler(this.floor1UpDown_ValueChanged);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(166, 95);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(76, 13);
+            this.label10.TabIndex = 19;
+            this.label10.Text = "Message ID  : ";
+            // 
+            // pithurtcheckbox
+            // 
+            this.pithurtcheckbox.AutoSize = true;
+            this.pithurtcheckbox.Location = new System.Drawing.Point(233, 132);
+            this.pithurtcheckbox.Name = "pithurtcheckbox";
+            this.pithurtcheckbox.Size = new System.Drawing.Size(61, 17);
+            this.pithurtcheckbox.TabIndex = 18;
+            this.pithurtcheckbox.Text = "Pit Hurt";
+            this.pithurtcheckbox.UseVisualStyleBackColor = true;
+            this.pithurtcheckbox.CheckedChanged += new System.EventHandler(this.pithurtcheckbox_CheckedChanged);
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 55);
+            this.label8.Location = new System.Drawing.Point(166, 55);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(35, 13);
-            this.label8.TabIndex = 10;
-            this.label8.Text = "label8";
+            this.label8.Size = new System.Drawing.Size(44, 13);
+            this.label8.TabIndex = 16;
+            this.label8.Text = "Effect : ";
+            // 
+            // effectcomboBox
+            // 
+            this.effectcomboBox.FormattingEnabled = true;
+            this.effectcomboBox.Items.AddRange(new object[] {
+            "Nothing",
+            "01",
+            "Moving Floor",
+            "Moving Water",
+            "04",
+            "Red Flashes",
+            "Light Torch to See Floor",
+            "Ganon Room"});
+            this.effectcomboBox.Location = new System.Drawing.Point(169, 71);
+            this.effectcomboBox.Name = "effectcomboBox";
+            this.effectcomboBox.Size = new System.Drawing.Size(125, 21);
+            this.effectcomboBox.TabIndex = 15;
+            this.effectcomboBox.Text = "Nothing";
+            this.effectcomboBox.SelectedIndexChanged += new System.EventHandler(this.floor1UpDown_ValueChanged);
+            // 
+            // layoutUpDown
+            // 
+            this.layoutUpDown.Location = new System.Drawing.Point(9, 71);
+            this.layoutUpDown.Maximum = new decimal(new int[] {
+            15,
+            0,
+            0,
+            0});
+            this.layoutUpDown.Name = "layoutUpDown";
+            this.layoutUpDown.Size = new System.Drawing.Size(48, 20);
+            this.layoutUpDown.TabIndex = 14;
+            this.layoutUpDown.ValueChanged += new System.EventHandler(this.floor1UpDown_ValueChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 55);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 13);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Layout : ";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(220, 16);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(57, 13);
+            this.label9.TabIndex = 12;
+            this.label9.Text = "Spriteset : ";
+            // 
+            // spritesetUpDown
+            // 
+            this.spritesetUpDown.Location = new System.Drawing.Point(223, 32);
+            this.spritesetUpDown.Maximum = new decimal(new int[] {
+            64,
+            0,
+            0,
+            0});
+            this.spritesetUpDown.Name = "spritesetUpDown";
+            this.spritesetUpDown.Size = new System.Drawing.Size(48, 20);
+            this.spritesetUpDown.TabIndex = 11;
+            this.spritesetUpDown.ValueChanged += new System.EventHandler(this.floor1UpDown_ValueChanged);
             // 
             // paletteUpDown
             // 
-            this.paletteUpDown.Location = new System.Drawing.Point(171, 32);
+            this.paletteUpDown.Location = new System.Drawing.Point(115, 32);
             this.paletteUpDown.Maximum = new decimal(new int[] {
             71,
             0,
@@ -820,24 +1183,15 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(168, 16);
+            this.label6.Location = new System.Drawing.Point(114, 16);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(49, 13);
             this.label6.TabIndex = 8;
             this.label6.Text = "Palette : ";
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 142);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(54, 13);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Spriteset :";
-            // 
             // roomgfxUpDown
             // 
-            this.roomgfxUpDown.Location = new System.Drawing.Point(117, 32);
+            this.roomgfxUpDown.Location = new System.Drawing.Point(169, 32);
             this.roomgfxUpDown.Maximum = new decimal(new int[] {
             23,
             0,
@@ -851,7 +1205,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(114, 16);
+            this.label4.Location = new System.Drawing.Point(166, 16);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(57, 13);
             this.label4.TabIndex = 4;
@@ -901,15 +1255,150 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Floor 1 : ";
             // 
+            // entrancetabPage
+            // 
+            this.entrancetabPage.Controls.Add(this.groupBox2);
+            this.entrancetabPage.Controls.Add(this.entranceListBox);
+            this.entrancetabPage.Location = new System.Drawing.Point(4, 40);
+            this.entrancetabPage.Name = "entrancetabPage";
+            this.entrancetabPage.Size = new System.Drawing.Size(306, 496);
+            this.entrancetabPage.TabIndex = 5;
+            this.entrancetabPage.Text = "Entrances";
+            this.entrancetabPage.UseVisualStyleBackColor = true;
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.entranceposCheckbox);
+            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Controls.Add(this.entranceLabel);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBox2.Location = new System.Drawing.Point(0, 255);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(306, 241);
+            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Entrance Settings";
+            // 
+            // entranceposCheckbox
+            // 
+            this.entranceposCheckbox.AutoSize = true;
+            this.entranceposCheckbox.Checked = true;
+            this.entranceposCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.entranceposCheckbox.Location = new System.Drawing.Point(3, 218);
+            this.entranceposCheckbox.Name = "entranceposCheckbox";
+            this.entranceposCheckbox.Size = new System.Drawing.Size(139, 17);
+            this.entranceposCheckbox.TabIndex = 2;
+            this.entranceposCheckbox.Text = "Show Entrance Position";
+            this.entranceposCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(211, 212);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 1;
+            this.button3.Text = "Load";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // entranceLabel
+            // 
+            this.entranceLabel.AutoSize = true;
+            this.entranceLabel.Location = new System.Drawing.Point(6, 16);
+            this.entranceLabel.Name = "entranceLabel";
+            this.entranceLabel.Size = new System.Drawing.Size(35, 13);
+            this.entranceLabel.TabIndex = 0;
+            this.entranceLabel.Text = "label9";
+            // 
+            // entranceListBox
+            // 
+            this.entranceListBox.FormattingEnabled = true;
+            this.entranceListBox.Location = new System.Drawing.Point(3, 3);
+            this.entranceListBox.Name = "entranceListBox";
+            this.entranceListBox.Size = new System.Drawing.Size(289, 238);
+            this.entranceListBox.TabIndex = 0;
+            this.entranceListBox.SelectedIndexChanged += new System.EventHandler(this.entranceListBox_SelectedIndexChanged);
+            // 
             // objectstabPage
             // 
+            this.objectstabPage.Controls.Add(this.checkBox5);
+            this.objectstabPage.Controls.Add(this.checkBox4);
+            this.objectstabPage.Controls.Add(this.checkBox3);
+            this.objectstabPage.Controls.Add(this.checkBox2);
+            this.objectstabPage.Controls.Add(this.checkBox1);
+            this.objectstabPage.Controls.Add(this.button4);
             this.objectstabPage.Controls.Add(this.objectinfoLabel);
-            this.objectstabPage.Location = new System.Drawing.Point(4, 22);
+            this.objectstabPage.Location = new System.Drawing.Point(4, 40);
             this.objectstabPage.Name = "objectstabPage";
-            this.objectstabPage.Size = new System.Drawing.Size(294, 488);
+            this.objectstabPage.Size = new System.Drawing.Size(306, 496);
             this.objectstabPage.TabIndex = 4;
             this.objectstabPage.Text = "Objects";
             this.objectstabPage.UseVisualStyleBackColor = true;
+            // 
+            // checkBox5
+            // 
+            this.checkBox5.AutoSize = true;
+            this.checkBox5.Location = new System.Drawing.Point(6, 466);
+            this.checkBox5.Name = "checkBox5";
+            this.checkBox5.Size = new System.Drawing.Size(77, 17);
+            this.checkBox5.TabIndex = 6;
+            this.checkBox5.Text = "Bomb door";
+            this.checkBox5.UseVisualStyleBackColor = true;
+            this.checkBox5.Visible = false;
+            // 
+            // checkBox4
+            // 
+            this.checkBox4.AutoSize = true;
+            this.checkBox4.Location = new System.Drawing.Point(90, 443);
+            this.checkBox4.Name = "checkBox4";
+            this.checkBox4.Size = new System.Drawing.Size(83, 17);
+            this.checkBox4.TabIndex = 5;
+            this.checkBox4.Text = "Curtain door";
+            this.checkBox4.UseVisualStyleBackColor = true;
+            this.checkBox4.Visible = false;
+            // 
+            // checkBox3
+            // 
+            this.checkBox3.AutoSize = true;
+            this.checkBox3.Location = new System.Drawing.Point(90, 420);
+            this.checkBox3.Name = "checkBox3";
+            this.checkBox3.Size = new System.Drawing.Size(82, 17);
+            this.checkBox3.TabIndex = 4;
+            this.checkBox3.Text = "Layer2 door";
+            this.checkBox3.UseVisualStyleBackColor = true;
+            this.checkBox3.Visible = false;
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.AutoSize = true;
+            this.checkBox2.Location = new System.Drawing.Point(6, 443);
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Size = new System.Drawing.Size(67, 17);
+            this.checkBox2.TabIndex = 3;
+            this.checkBox2.Text = "Exit door";
+            this.checkBox2.UseVisualStyleBackColor = true;
+            this.checkBox2.Visible = false;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(6, 420);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(72, 17);
+            this.checkBox1.TabIndex = 2;
+            this.checkBox1.Text = "Trap door";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.Visible = false;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(223, 462);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 1;
+            this.button4.Text = "Swap BG";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
             // objectinfoLabel
             // 
@@ -919,28 +1408,49 @@
             this.objectinfoLabel.Size = new System.Drawing.Size(0, 13);
             this.objectinfoLabel.TabIndex = 0;
             // 
-            // tabPage2
+            // settingstabPage
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(294, 488);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Settings";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.settingstabPage.Controls.Add(this.label13);
+            this.settingstabPage.Controls.Add(this.button5);
+            this.settingstabPage.Location = new System.Drawing.Point(4, 40);
+            this.settingstabPage.Name = "settingstabPage";
+            this.settingstabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.settingstabPage.Size = new System.Drawing.Size(306, 496);
+            this.settingstabPage.TabIndex = 1;
+            this.settingstabPage.Text = "Settings";
+            this.settingstabPage.UseVisualStyleBackColor = true;
             // 
-            // tabPage4
+            // label13
             // 
-            this.tabPage4.Controls.Add(this.button2);
-            this.tabPage4.Controls.Add(this.button1);
-            this.tabPage4.Controls.Add(this.label7);
-            this.tabPage4.Controls.Add(this.palettePicturebox);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(294, 488);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Palettes";
-            this.tabPage4.UseVisualStyleBackColor = true;
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(3, 3);
+            this.label13.MaximumSize = new System.Drawing.Size(300, 0);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(0, 13);
+            this.label13.TabIndex = 2;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(113, 404);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(75, 23);
+            this.button5.TabIndex = 0;
+            this.button5.Text = "DEBUG";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // palettestabPage
+            // 
+            this.palettestabPage.Controls.Add(this.button2);
+            this.palettestabPage.Controls.Add(this.button1);
+            this.palettestabPage.Controls.Add(this.label7);
+            this.palettestabPage.Controls.Add(this.palettePicturebox);
+            this.palettestabPage.Location = new System.Drawing.Point(4, 40);
+            this.palettestabPage.Name = "palettestabPage";
+            this.palettestabPage.Size = new System.Drawing.Size(306, 496);
+            this.palettestabPage.TabIndex = 3;
+            this.palettestabPage.Text = "Palettes";
+            this.palettestabPage.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
@@ -982,6 +1492,102 @@
             this.palettePicturebox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDoubleClick);
             this.palettePicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDown);
             this.palettePicturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseUp);
+            // 
+            // gfxtabPage
+            // 
+            this.gfxtabPage.Controls.Add(this.pictureBox2);
+            this.gfxtabPage.Location = new System.Drawing.Point(4, 40);
+            this.gfxtabPage.Name = "gfxtabPage";
+            this.gfxtabPage.Size = new System.Drawing.Size(306, 496);
+            this.gfxtabPage.TabIndex = 6;
+            this.gfxtabPage.Text = "Gfx";
+            this.gfxtabPage.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(256, 512);
+            this.pictureBox2.TabIndex = 12;
+            this.pictureBox2.TabStop = false;
+            // 
+            // texttabPage
+            // 
+            this.texttabPage.Controls.Add(this.label15);
+            this.texttabPage.Controls.Add(this.groupBox3);
+            this.texttabPage.Controls.Add(this.messageUpDown);
+            this.texttabPage.Controls.Add(this.label14);
+            this.texttabPage.Controls.Add(this.messagetextBox);
+            this.texttabPage.Location = new System.Drawing.Point(4, 40);
+            this.texttabPage.Name = "texttabPage";
+            this.texttabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.texttabPage.Size = new System.Drawing.Size(306, 496);
+            this.texttabPage.TabIndex = 7;
+            this.texttabPage.Text = "Texts";
+            this.texttabPage.UseVisualStyleBackColor = true;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(6, 176);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(246, 13);
+            this.label15.TabIndex = 4;
+            this.label15.Text = "Command Format : [CMD XX] arguments are in hex";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.commandstextBox);
+            this.groupBox3.Location = new System.Drawing.Point(9, 192);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(291, 298);
+            this.groupBox3.TabIndex = 3;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "List of Commands";
+            this.groupBox3.Enter += new System.EventHandler(this.groupBox3_Enter);
+            // 
+            // commandstextBox
+            // 
+            this.commandstextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.commandstextBox.Location = new System.Drawing.Point(7, 15);
+            this.commandstextBox.Multiline = true;
+            this.commandstextBox.Name = "commandstextBox";
+            this.commandstextBox.ReadOnly = true;
+            this.commandstextBox.Size = new System.Drawing.Size(278, 277);
+            this.commandstextBox.TabIndex = 1;
+            // 
+            // messageUpDown
+            // 
+            this.messageUpDown.Location = new System.Drawing.Point(82, 140);
+            this.messageUpDown.Maximum = new decimal(new int[] {
+            400,
+            0,
+            0,
+            0});
+            this.messageUpDown.Name = "messageUpDown";
+            this.messageUpDown.Size = new System.Drawing.Size(75, 20);
+            this.messageUpDown.TabIndex = 2;
+            this.messageUpDown.ValueChanged += new System.EventHandler(this.messageUpDown_ValueChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 142);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(70, 13);
+            this.label14.TabIndex = 1;
+            this.label14.Text = "Message id : ";
+            // 
+            // messagetextBox
+            // 
+            this.messagetextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.messagetextBox.Location = new System.Drawing.Point(6, 6);
+            this.messagetextBox.Multiline = true;
+            this.messagetextBox.Name = "messagetextBox";
+            this.messagetextBox.Size = new System.Drawing.Size(294, 131);
+            this.messagetextBox.TabIndex = 0;
             // 
             // nothingselectedcontextMenu
             // 
@@ -1129,50 +1735,11 @@
             this.toolStripMenuItem4.Text = "Save as new layout";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
             // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Location = new System.Drawing.Point(114, 55);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(256, 512);
-            this.pictureBox2.TabIndex = 12;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Visible = false;
-            // 
-            // tabPage3
-            // 
-            this.tabPage3.Controls.Add(this.groupBox2);
-            this.tabPage3.Controls.Add(this.listBox1);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(294, 488);
-            this.tabPage3.TabIndex = 5;
-            this.tabPage3.Text = "Entrances";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(3, 3);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(289, 238);
-            this.listBox1.TabIndex = 0;
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox2.Location = new System.Drawing.Point(0, 247);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(294, 241);
-            this.groupBox2.TabIndex = 8;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Entrance Settings";
-            // 
             // zscreamForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(832, 579);
-            this.Controls.Add(this.pictureBox2);
+            this.ClientSize = new System.Drawing.Size(844, 579);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.label1);
@@ -1190,25 +1757,38 @@
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage1.PerformLayout();
+            this.roomtabPage.ResumeLayout(false);
+            this.roomtabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.messageidUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.layoutUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spritesetUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.roomgfxUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.floor2UpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.floor1UpDown)).EndInit();
+            this.entrancetabPage.ResumeLayout(false);
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.objectstabPage.ResumeLayout(false);
             this.objectstabPage.PerformLayout();
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage4.PerformLayout();
+            this.settingstabPage.ResumeLayout(false);
+            this.settingstabPage.PerformLayout();
+            this.palettestabPage.ResumeLayout(false);
+            this.palettestabPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).EndInit();
+            this.gfxtabPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.texttabPage.ResumeLayout(false);
+            this.texttabPage.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.messageUpDown)).EndInit();
             this.nothingselectedcontextMenu.ResumeLayout(false);
             this.singleselectedcontextMenu.ResumeLayout(false);
             this.groupselectedcontextMenu.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            this.tabPage3.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1271,9 +1851,9 @@
         private System.Windows.Forms.ToolStripMenuItem moveFrontToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bringToBackToolStripMenuItem;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage roomtabPage;
+        private System.Windows.Forms.TabPage settingstabPage;
+        private System.Windows.Forms.TabPage palettestabPage;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.NumericUpDown floor2UpDown;
         private System.Windows.Forms.NumericUpDown floor1UpDown;
@@ -1283,7 +1863,6 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.NumericUpDown paletteUpDown;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.PictureBox palettePicturebox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ColorDialog colorDialog1;
@@ -1318,11 +1897,45 @@
         private System.Windows.Forms.ToolStripMenuItem sendToBackToolStripMenuItem1;
         private System.Windows.Forms.Label objectinfoLabel;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.PictureBox mapPicturebox;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage entrancetabPage;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox entranceListBox;
+        private System.Windows.Forms.Label entranceLabel;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.CheckBox entranceposCheckbox;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.NumericUpDown spritesetUpDown;
+        private System.Windows.Forms.TabPage gfxtabPage;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.CheckBox checkBox5;
+        private System.Windows.Forms.CheckBox checkBox4;
+        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.NumericUpDown layoutUpDown;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ToolStripButton warpmodeButton;
+        private System.Windows.Forms.ComboBox effectcomboBox;
+        private System.Windows.Forms.CheckBox pithurtcheckbox;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.ComboBox collisioncomboBox;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.ComboBox tag2comboBox;
+        private System.Windows.Forms.ComboBox tag1comboBox;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Button messageshowButton;
+        private System.Windows.Forms.NumericUpDown messageidUpDown;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TabPage texttabPage;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.NumericUpDown messageUpDown;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.TextBox messagetextBox;
+        private System.Windows.Forms.TextBox commandstextBox;
     }
 }
 

@@ -13,13 +13,22 @@ namespace ZeldaFullEditor
     public static class Compression
     {
         //Tiles graphics decompression set it on 0x600bytes no matter what to prevent bugs
-        public static byte[] Decompress(int pos, byte[] ROM_DATA,bool reversed = false)
+        public static byte[] Decompress(int pos, byte[] ROM_DATA, bool reversed = false, int maxLength = 0)
         {
+
             List<byte> dataBuffer = new List<byte>();
             bool done = false;
 
             while (done == false)
             {
+                if (maxLength != 0)
+                {
+                    if (dataBuffer.Count >= maxLength)
+                    {
+                        done = true;
+                    }
+                }
+
                 bool expand = false;
                 byte b = ROM.DATA[pos];
 
@@ -121,7 +130,6 @@ namespace ZeldaFullEditor
             return dataBuffer.ToArray();
         }
 
-
         public static byte[] DecompressTiles() //to gfx.bin
         {
             byte[] buffer = new byte[0x63000];// (185)
@@ -129,7 +137,10 @@ namespace ZeldaFullEditor
             int bufferPos = 0;
             for (int i = 0; i < 96; i++)
             {
-                byte[] b = new byte[] { ROM.DATA[Constants.gfx_pointer_3 + i], ROM.DATA[Constants.gfx_pointer_2 + i], ROM.DATA[Constants.gfx_pointer_1 + i], 0 };
+                int gfxPointer1 = Addresses.snestopc((ROM.DATA[Constants.gfx_1_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_1_pointer]));
+                int gfxPointer2 = Addresses.snestopc((ROM.DATA[Constants.gfx_2_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_2_pointer]));
+                int gfxPointer3 = Addresses.snestopc((ROM.DATA[Constants.gfx_3_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_3_pointer]));
+                byte[] b = new byte[] { ROM.DATA[gfxPointer3 + i], ROM.DATA[gfxPointer2 + i], ROM.DATA[gfxPointer1 + i], 0 };
                 int addr = BitConverter.ToInt32(b, 0);
                 bufferBlock = Decompress(Addresses.snestopc(addr), ROM.DATA);
                 for (int j = 0; j < bufferBlock.Length; j++)
@@ -143,7 +154,10 @@ namespace ZeldaFullEditor
             {
                 if (i < 115 || i > 126)
                 {
-                    byte[] b = new byte[] { ROM.DATA[Constants.gfx_pointer_3 + i], ROM.DATA[Constants.gfx_pointer_2 + i], ROM.DATA[Constants.gfx_pointer_1 + i], 0 };
+                    int gfxPointer1 = Addresses.snestopc((ROM.DATA[Constants.gfx_1_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_1_pointer]));
+                    int gfxPointer2 = Addresses.snestopc((ROM.DATA[Constants.gfx_2_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_2_pointer]));
+                    int gfxPointer3 = Addresses.snestopc((ROM.DATA[Constants.gfx_3_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_3_pointer]));
+                    byte[] b = new byte[] { ROM.DATA[gfxPointer3 + i], ROM.DATA[gfxPointer2 + i], ROM.DATA[gfxPointer1 + i], 0 };
                     int addr = BitConverter.ToInt32(b, 0);
                     bufferBlock = Decompress(Addresses.snestopc(addr), ROM.DATA);
                     if (bufferBlock.Length == 0x600)
@@ -157,7 +171,10 @@ namespace ZeldaFullEditor
                 }
                 else
                 {
-                    byte[] b = new byte[] { ROM.DATA[Constants.gfx_pointer_3 + i], ROM.DATA[Constants.gfx_pointer_2 + i], ROM.DATA[Constants.gfx_pointer_1 + i], 0 };
+                    int gfxPointer1 = Addresses.snestopc((ROM.DATA[Constants.gfx_1_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_1_pointer]));
+                    int gfxPointer2 = Addresses.snestopc((ROM.DATA[Constants.gfx_2_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_2_pointer]));
+                    int gfxPointer3 = Addresses.snestopc((ROM.DATA[Constants.gfx_3_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_3_pointer]));
+                    byte[] b = new byte[] { ROM.DATA[gfxPointer3 + i], ROM.DATA[gfxPointer2 + i], ROM.DATA[gfxPointer1 + i], 0 };
                     int addr = BitConverter.ToInt32(b, 0);
                     addr = Addresses.snestopc(addr);
                     for (int j = 0; j < 0x600; j++)

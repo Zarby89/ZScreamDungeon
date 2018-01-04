@@ -29,19 +29,23 @@ namespace ZeldaFullEditor
                 }
             }
 
+
         }
 
-        public void saveRoomsHeaders()
+        public bool saveRoomsHeaders()
         {
+            //long??
+            int headerPointer = (ROM.DATA[Constants.room_header_pointer + 2] << 16) + (ROM.DATA[Constants.room_header_pointer + 1] << 8) + (ROM.DATA[Constants.room_header_pointer]);
+            headerPointer = Addresses.snestopc(headerPointer);
+            //headerPointer = 04F1E2 topc -> 0271E2
             if (Constants.Rando)
             {
                 //24
-
                 ROM.DATA[Constants.room_header_pointers_bank] = 0x24;
                 for (int i = 0; i < 296; i++)
                 {
-                    ROM.DATA[Constants.room_header_pointers + (i * 2)] = (byte)((Addresses.pctosnes(0x120090 + (i * 14)) & 0xFF));
-                    ROM.DATA[Constants.room_header_pointers + (i * 2) + 1] = (byte)((Addresses.pctosnes(0x120090 + (i * 14)) >> 8) & 0xFF);
+                    ROM.DATA[headerPointer + (i * 2)] = (byte)((Addresses.pctosnes(0x120090 + (i * 14)) & 0xFF));
+                    ROM.DATA[headerPointer + (i * 2) + 1] = (byte)((Addresses.pctosnes(0x120090 + (i * 14)) >> 8) & 0xFF);
                     saveHeader(0x120090, i);
                 }
             }
@@ -50,13 +54,66 @@ namespace ZeldaFullEditor
                 ROM.DATA[Constants.room_header_pointers_bank] = 0x22;
                 for (int i = 0; i < 296; i++)
                 {
-                    ROM.DATA[Constants.room_header_pointers + (i * 2)] = (byte)((Addresses.pctosnes(0x110000 + (i * 14)) & 0xFF));
-                    ROM.DATA[Constants.room_header_pointers + (i * 2) + 1] = (byte)((Addresses.pctosnes(0x110000 + (i * 14)) >> 8) & 0xFF);
+                    ROM.DATA[headerPointer + (i * 2)] = (byte)((Addresses.pctosnes(0x110000 + (i * 14)) & 0xFF));
+                    ROM.DATA[headerPointer + (i * 2) + 1] = (byte)((Addresses.pctosnes(0x110000 + (i * 14)) >> 8) & 0xFF);
                     saveHeader(0x110000, i);
                 }
             }
+            return false; // False = no error
 
+        }
+        public int getLongPointerSnestoPc(int pos)
+        {
+            int p = (ROM.DATA[pos + 2] << 16) + (ROM.DATA[pos + 1] << 8) + (ROM.DATA[pos]);
+            return (Addresses.snestopc(p));
+        }
 
+        public bool saveBlocks()
+        {
+             //if we reach 0x80 size jump to pointer2 etc...
+            int[] region = new int[4] { Constants.blocks_pointer1, Constants.blocks_pointer2, Constants.blocks_pointer3, Constants.blocks_pointer4 };
+            int blockCount = 0;
+            int r = 0;
+            int pos = getLongPointerSnestoPc(region[r]);
+            int count = 0;
+            for (int i = 0; i < 296; i++)
+            {
+                foreach(Room_Object o in all_rooms[i].tilesObjects)
+                {
+                    if ((o.options & ObjectOption.Block) == ObjectOption.Block) //if we find a block save it
+                    {
+                        ROM.DATA[pos] = (byte)((i & 0xFF));
+                        pos++;
+                        ROM.DATA[pos] = (byte)(((i>> 8) & 0xFF));
+                        pos++;
+                        int xy = (((o.y * 64) + o.x) << 1);
+                        ROM.DATA[pos] = (byte)(xy & 0xFF);
+                        pos++;
+                        ROM.DATA[pos] = (byte)((byte)(((xy >> 8) & 0xFF) + (o.layer*0x80)));
+                        pos++;
+
+                        count += 4;
+                        if (count >= 0x80)
+                        {
+                            r++;
+                            pos = getLongPointerSnestoPc(region[r]);
+                            count = 0;
+                        }
+                        blockCount++;
+                    }
+                    
+                }
+            }
+            if (blockCount > 99)
+            {
+                return true; // False = no error
+            }
+            /*if (b3 == 0xFF && b4 == 0xFF) { break; }
+            int address = ((b4 & 0x1F) << 8 | b3) >> 1;
+            int px = address % 64;
+            int py = address >> 6;
+            Room_Object r = addObject(0x0E00, (byte)(px), (byte)(py), 0, (byte)((b4 & 0x20) >> 5));*/
+            return false; // False = no error
         }
 
         public void saveHeader(int pos, int i)
@@ -78,22 +135,46 @@ namespace ZeldaFullEditor
         }
 
 
-
-        int currentRegion = 0;
-        int currentPos = 0x50000;
-        int saddr = 0;
-        int totalBytes = 0;
-        public void saveAllObjects()
+        public bool saveAllPits()
         {
-            var section1Index = 0x50000; //0x50000 to 0x5374F
+            int pitCount = (ROM.DATA[Constants.pit_count] / 2);
+            int pitPointer = (ROM.DATA[Constants.pit_pointer + 2] << 16) + (ROM.DATA[Constants.pit_pointer + 1] << 8) + (ROM.DATA[Constants.pit_pointer]);
+            pitPointer = Addresses.snestopc(pitPointer);
+            int pitCountNew = 0;
+            for (int i = 0; i < 296; i++)
+            {
+                if (all_rooms[i].damagepit)
+                {
+                    ROM.DATA[pitPointer+1] = (byte)(all_rooms[i].index >> 8);
+                    ROM.DATA[pitPointer] = (byte)(all_rooms[i].index);
+                    pitPointer += 2;
+                    pitCountNew++;
+                }
+            }
+            return false;
+        }
+
+
+
+        int saddr = 0;
+        public bool saveAllObjects()
+        {
+            var section1Index = 0x50008; //0x50000 to 0x5374F
             var section2Index = 0xF878A; //0xF878A to 0xFFFF7
             var section3Index = 0x1EB90; //0x1EB90 to 0x1FFFF
             var section4Index = 0x121210; // 0x121210 to ????? expanded region. need to find max safe for rando roms
 
             for (int i = 0; i < 296; i++)
             {
+                int objectPointer = (ROM.DATA[Constants.room_object_pointer + 2] << 16) + (ROM.DATA[Constants.room_object_pointer + 1] << 8) + (ROM.DATA[Constants.room_object_pointer]);
+                objectPointer = Addresses.snestopc(objectPointer);
+
                 var roomBytes = all_rooms[i].getTilesBytes();
-                Console.WriteLine("Room :" + i + " Difference load to save" + (all_rooms[i].roomSize - roomBytes.Length));
+                if (roomBytes.Length < 10)
+                {
+                    saveObjectBytes(i, 0x50000, roomBytes); //empty room pointer
+                    continue;
+                }
 
                 if (section1Index + roomBytes.Length <= 0x5374F) //0x50000 to 0x5374F
                 {
@@ -129,297 +210,36 @@ namespace ZeldaFullEditor
                     //MessageBox.Show("We are running out space in the original portion of the ROM next data will be writed to : 0x121210");
                 }
             }
+            return false; // False = no error
         }
 
         void saveObjectBytes(int roomId, int position, byte[] bytes)
         {
+            int objectPointer = (ROM.DATA[Constants.room_object_pointer + 2] << 16) + (ROM.DATA[Constants.room_object_pointer + 1] << 8) + (ROM.DATA[Constants.room_object_pointer]);
+            objectPointer = Addresses.snestopc(objectPointer);
             saddr = Addresses.pctosnes(position);
             // update the index
-            ROM.DATA[0xF8000 + (roomId * 3)] = (byte)(saddr & 0xFF);
-            ROM.DATA[0xF8000 + (roomId * 3) + 1] = (byte)((saddr >> 8) & 0xFF);
-            ROM.DATA[0xF8000 + (roomId * 3) + 2] = (byte)((saddr >> 16) & 0xFF);
+            ROM.DATA[objectPointer + (roomId * 3)] = (byte)(saddr & 0xFF);
+            ROM.DATA[objectPointer + (roomId * 3) + 1] = (byte)((saddr >> 8) & 0xFF);
+            ROM.DATA[objectPointer + (roomId * 3) + 2] = (byte)((saddr >> 16) & 0xFF);
 
             Array.Copy(bytes, 0, ROM.DATA, position, bytes.Length);
         }
-
-        public void saveAllObjectsOld()
-        {
-            List<short> roomFitted = new List<short>();
-            for (int i = 0; i < 296; i++)
-            {
-                int addr = Addresses.snestopc((ROM.DATA[Constants.room_object_pointers + (i * 3) + 2] << 16) + (ROM.DATA[Constants.room_object_pointers + (i * 3) + 1] << 8) + ROM.DATA[Constants.room_object_pointers + (i * 3) + 0]);
-                if (addr == 0xF8780) //Clone Rooms // skip them for now
-                {
-                    continue;
-                }
-                
-                byte[] roomBytes = all_rooms[i].getTilesBytes();
-                Console.WriteLine("Room :" + i + " Difference load to save" + (all_rooms[i].roomSize - roomBytes.Length));
-                totalBytes += roomBytes.Length;
-                if (currentRegion == 0)
-                {
-                    if ((currentPos + roomBytes.Length) >= 0x5374F)
-                    {
-                        //save current i
-                        for(int j = 0;j<296;j++)
-                        {
-                            if (j > i)
-                            {
-                                byte[] jroomBytes = all_rooms[j].getTilesBytes();
-                                if (jroomBytes.Length < roomBytes.Length)
-                                {
-                                    //check if it fit otherwise continue
-                                    if ((currentPos + jroomBytes.Length) >= 0x5374F)
-                                    {
-                                        continue;
-                                    }
-                                    else
-                                    {
-                                        //is the room already in the forced room?
-                                        if (roomFitted.Contains((short)i))
-                                        {
-                                            continue;
-                                        }
-                                        else
-                                        {
-                                            saddr = Addresses.pctosnes(currentPos);
-                                            ROM.DATA[0xF8000 + (j * 3)] = (byte)(saddr & 0xFF);
-                                            ROM.DATA[0xF8000 + (j * 3) + 1] = (byte)((saddr >> 8) & 0xFF);
-                                            ROM.DATA[0xF8000 + (j * 3) + 2] = (byte)((saddr >> 16) & 0xFF);
-                                            for (int k = 0; k < roomBytes.Length; k++)
-                                            {
-                                                ROM.DATA[currentPos] = roomBytes[k];
-                                                currentPos++;
-                                            }
-                                            roomFitted.Add((short)j);
-                                            break;
-                                        }
-                                    }
-                                    
-                                }
-                            }
-                        }
-
-                        Console.WriteLine("Room " + i + " no more space jump to 0xF878A");
-
-
-
-                        //move to F8 region
-                        currentPos = 0xF878A;
-                        currentRegion++;
-                    }
-                    else
-                    {
-                        //save new pointer
-                        saddr = Addresses.pctosnes(currentPos);
-                        ROM.DATA[0xF8000 + (i * 3)] = (byte)(saddr & 0xFF);
-                        ROM.DATA[0xF8000 + (i * 3) + 1] = (byte)((saddr >> 8) & 0xFF);
-                        ROM.DATA[0xF8000 + (i * 3) + 2] = (byte)((saddr >> 16) & 0xFF);
-                        for (int j = 0; j < roomBytes.Length; j++)
-                        {
-                            ROM.DATA[currentPos] = roomBytes[j];
-                            currentPos++;
-                        }
-                        continue;
-                    }
-                }
-                if (currentRegion == 1)
-                {
-                    if ((currentPos + roomBytes.Length) >= 0xFFFF7)
-                    {
-                        //save current i
-                        for (int j = 0; j < 296; j++)
-                        {
-                            if (j > i)
-                            {
-                                byte[] jroomBytes = all_rooms[j].getTilesBytes();
-                                if (jroomBytes.Length < roomBytes.Length)
-                                {
-                                    //check if it fit otherwise continue
-                                    if ((currentPos + jroomBytes.Length) >= 0xFFFF7)
-                                    {
-                                        continue;
-                                    }
-                                    else
-                                    {
-                                        //is the room already in the forced room?
-                                        if (roomFitted.Contains((short)i))
-                                        {
-                                            continue;
-                                        }
-                                        else
-                                        {
-                                            saddr = Addresses.pctosnes(currentPos);
-                                            ROM.DATA[0xF8000 + (j * 3)] = (byte)(saddr & 0xFF);
-                                            ROM.DATA[0xF8000 + (j * 3) + 1] = (byte)((saddr >> 8) & 0xFF);
-                                            ROM.DATA[0xF8000 + (j * 3) + 2] = (byte)((saddr >> 16) & 0xFF);
-                                            for (int k = 0; k < roomBytes.Length; k++)
-                                            {
-                                                ROM.DATA[currentPos] = roomBytes[k];
-                                                currentPos++;
-                                            }
-                                            roomFitted.Add((short)j);
-                                            break;
-                                        }
-                                    }
-
-                                }
-                            }
-                        }
-                        Console.WriteLine("Room " + i + " no more space jump to 0x1EBA0");
-                        //move to 1E region
-                        currentPos = 0x1EB90;
-                        currentRegion++;
-                    }
-                    else
-                    {
-                        if (roomFitted.Contains((short)i))
-                        {
-                            continue;
-                        }
-                        saddr = Addresses.pctosnes(currentPos);
-                        ROM.DATA[0xF8000 + (i * 3)] = (byte)(saddr & 0xFF);
-                        ROM.DATA[0xF8000 + (i * 3) + 1] = (byte)((saddr >> 8) & 0xFF);
-                        ROM.DATA[0xF8000 + (i * 3) + 2] = (byte)((saddr >> 16) & 0xFF);
-                        for (int j = 0; j < roomBytes.Length; j++)
-                        {
-                            ROM.DATA[currentPos] = roomBytes[j];
-                            currentPos++;
-                        }
-                        continue;
-                    }
-                }
-                if (currentRegion == 2)
-                {
-
-                    if ((currentPos + roomBytes.Length) >= 0x1FFFF)
-                    {
-                        //save current i
-                        for (int j = 0; j < 296; j++)
-                        {
-                            if (j > i)
-                            {
-                                byte[] jroomBytes = all_rooms[j].getTilesBytes();
-                                if (jroomBytes.Length < roomBytes.Length)
-                                {
-                                    //check if it fit otherwise continue
-                                    if ((currentPos + jroomBytes.Length) >= 0x1FFFF)
-                                    {
-                                        continue;
-                                    }
-                                    else
-                                    {
-                                        //is the room already in the forced room?
-                                        if (roomFitted.Contains((short)i))
-                                        {
-                                            continue;
-                                        }
-                                        else
-                                        {
-                                            saddr = Addresses.pctosnes(currentPos);
-                                            ROM.DATA[0xF8000 + (j * 3)] = (byte)(saddr & 0xFF);
-                                            ROM.DATA[0xF8000 + (j * 3) + 1] = (byte)((saddr >> 8) & 0xFF);
-                                            ROM.DATA[0xF8000 + (j * 3) + 2] = (byte)((saddr >> 16) & 0xFF);
-                                            for (int k = 0; k < roomBytes.Length; k++)
-                                            {
-                                                ROM.DATA[currentPos] = roomBytes[k];
-                                                currentPos++;
-                                            }
-                                            roomFitted.Add((short)j);
-                                            break;
-                                        }
-                                    }
-
-                                }
-                            }
-                        }
-                        //move to EXPANDED region
-                        Console.WriteLine("Room " + i + " no more space jump to 0x121210");
-                        currentPos = 0x121210;
-                        MessageBox.Show("We are running out space in the original portion of the ROM next data will be writed to : 0x121210");
-                        currentRegion++;
-                    }
-                    else
-                    {
-                        if (roomFitted.Contains((short)i))
-                        {
-                            continue;
-                        }
-                        saddr = Addresses.pctosnes(currentPos);
-                        ROM.DATA[0xF8000 + (i * 3)] = (byte)(saddr & 0xFF);
-                        ROM.DATA[0xF8000 + (i * 3) + 1] = (byte)((saddr >> 8) & 0xFF);
-                        ROM.DATA[0xF8000 + (i * 3) + 2] = (byte)((saddr >> 16) & 0xFF);
-                        for (int j = 0; j < roomBytes.Length; j++)
-                        {
-                            ROM.DATA[currentPos] = roomBytes[j];
-                            currentPos++;
-                        }
-                        continue;
-                    }
-                }
-                if (currentRegion == 3)
-                {
-                    if (roomFitted.Contains((short)i))
-                    {
-                        continue;
-                    }
-                    saddr = Addresses.pctosnes(currentPos);
-                    ROM.DATA[0xF8000 + (i * 3)] = (byte)(saddr & 0xFF);
-                    ROM.DATA[0xF8000 + (i * 3) + 1] = (byte)((saddr >> 8) & 0xFF);
-                    ROM.DATA[0xF8000 + (i * 3) + 2] = (byte)((saddr >> 16) & 0xFF);
-                    for (int j = 0; j < roomBytes.Length; j++)
-                    {
-                        ROM.DATA[currentPos] = roomBytes[j];
-                        currentPos++;
-                    }
-                    continue;
-                }
-                //0x50000 to 0x5374F
-                //0xF878A to 0xFFFF7
-                //0x1EB90 to 0x01FFFF
-
-
-            }
-            Console.WriteLine("Number of bytes total loaded/saved : " + totalBytes.ToString("X6"));
-            if (currentRegion == 3)
-            {
-                Console.WriteLine("Had to save some room in expanded rom :(");
-            }
-            else
-            {
-                Console.WriteLine("no need expanded rom :) (last room : " + currentPos.ToString("X6"));
-            }
-        }
-            /*byte[] objects_array = all_rooms[260].getTilesBytes();
-            int jump = 0;
-            Console.WriteLine("New Data : ");
-            for(int i = 0;i<objects_array.Length;i+=1)
-            {
-                ROM.DATA[0x50000 + i] = objects_array[i];
-                Console.Write(objects_array[i].ToString("X2") + " ");
-
-                jump++;
-                if (jump >= 16)
-                {
-                    Console.Write("\n");
-                    jump = 0;
-                }
-
-            }
-            
-        }*/
 
         public void savePalettes()//room settings floor1, floor2, blockset, spriteset, palette
         {
 
         }
 
-        public void saveallChests()
+        public bool saveallChests()
         {
             int cpos = (ROM.DATA[Constants.chests_data_pointer1 + 2] << 16) + (ROM.DATA[Constants.chests_data_pointer1 + 1] << 8) + (ROM.DATA[Constants.chests_data_pointer1]);
             cpos = Addresses.snestopc(cpos);
+            int chestCount = 0;
+
             for (int i = 0; i < 296; i++)
             {
+                //number of possible chests
                 foreach (Chest c in all_rooms[i].chest_list)
                 {
                     ushort room_index = (ushort)i;
@@ -431,11 +251,17 @@ namespace ZeldaFullEditor
                     ROM.DATA[cpos + 1] = (byte)((room_index >> 8) & 0xFF);
                     ROM.DATA[cpos + 2] = (byte)(c.item);
                     cpos += 3;
+                    chestCount++;
                 }
             }
+            if (chestCount > 168)
+            {
+                return true; // False = no error
+            }
+            return false; // False = no error
         }
 
-        public void saveallPots()
+        public bool saveallPots()
         {
             int pos = Constants.items_data_start+2; //skip 2 FF FF that are empty pointer
             for (int i = 0; i < 296; i++)
@@ -469,12 +295,12 @@ namespace ZeldaFullEditor
                     Console.WriteLine("Warning items are outside of the allowed range!");
                 }
             }
-
+            return false; // False = no error
 
         }
 
 
-        public void saveallSprites()
+        public bool saveallSprites()
         {
 
             byte[] sprites_buffer = new byte[0x1670];
@@ -523,14 +349,14 @@ namespace ZeldaFullEditor
                         pos++;
                     }
                 }
-
-                sprites_buffer.CopyTo(ROM.DATA, Constants.room_sprites_pointers);
+                int spritePointer = (04 << 16) + (ROM.DATA[Constants.rooms_sprite_pointer + 1] << 8) + (ROM.DATA[Constants.rooms_sprite_pointer]);
+                sprites_buffer.CopyTo(ROM.DATA, spritePointer);
             }
             catch (Exception e)
             {
                 MessageBox.Show(e.Message);
             }
-
+            return false; // False = no error
         }
 
 

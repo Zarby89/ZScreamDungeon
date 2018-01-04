@@ -16,148 +16,110 @@ namespace ZeldaFullEditor
     X = position(0, 2, 4, ..., 24)
 
     Door_Up
-    197E,X /2 = numberoftiles 8x8 from 0,0 to the position
-    Door_Down
-    1996,X
-    Door_Left
-    19AE,X
-    Door_Right
-    19C6,X
 
-
-    Y = ??
-
-    GFX TILESET FOR DOORS 
-    Door_Up
-    4D9E,Y
-    Door_Down
-    4E06,Y
-    Door_Left
-    4E66,Y
-    Door_Right
-    4EC6,Y
          */
+    //TODO : Fix exploded wall doors
 
-    [Serializable] public class object_door_up : Room_Object
+    [Serializable]
+    public class object_door : Room_Object
     {
         public byte door_pos = 0;
         public byte door_dir = 0;
-        public object_door_up(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+        public byte door_type = 0;
+        public object_door(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             options |= ObjectOption.Door;
-            int pos = Constants.tile_address + (short)((ROM.DATA[(0x4D9E + ((id>>8) & 0xFF))+1] << 8) + ROM.DATA[0x4D9E + ((id >> 8) & 0xFF)]);
-            name = "Door Up";
-            door_pos =(byte)(id & 0xFF);
-            addTiles(12, pos);//??
+            door_pos = (byte)((id & 0xF0) >> 3);
+            door_dir = (byte)((id & 0x03));
+            door_type = (byte)((id >> 8) & 0xFF);
+            name = "Door";
+
         }
+
+        public void updateId()
+        {
+            byte b1 = (byte)((door_pos << 3) + door_dir);
+            byte b2 = door_type;
+            id = (short)((b2 << 8) + b1);
+
+        }
+
+       /* public void setDoorDir(byte dir)
+        {
+            id = (short)((id & 0xFFFC)+dir);
+            door_dir = dir;
+        }
+
+        public void setDoorPos(byte pos)
+        {
+            door_pos = pos;
+            id = (short)(id | (short)(pos << 4));
+        }*/
+
         public override void Draw()
         {
-            if ((((id >> 8) & 0xFF) != 22) && (((id >> 8) & 0xFF) != 18))
+
+            tiles.Clear();
+            int address = 0;
+            if (door_dir == 0) { address = Constants.door_gfx_up; }
+            if (door_dir == 1) { address = Constants.door_gfx_down; }
+            if (door_dir == 2) { address = Constants.door_gfx_left; }
+            if (door_dir == 3) { address = Constants.door_gfx_right; }
+            int pos = Constants.tile_address + (short)((ROM.DATA[(address + ((id >> 8) & 0xFF)) + 1] << 8) + ROM.DATA[address + ((id >> 8) & 0xFF)]);
+            addTiles(12, pos);//??
+
+            int addresspos = 0;
+            if (door_dir == 0) { addresspos = Constants.door_pos_up; }
+            if (door_dir == 1) { addresspos = Constants.door_pos_down; }
+            if (door_dir == 2) { addresspos = Constants.door_pos_left; }
+            if (door_dir == 3) { addresspos = Constants.door_pos_right; }
+
+            short posxy = (short)(((ROM.DATA[(addresspos + 1 + (door_pos))] << 8) + ROM.DATA[(addresspos + (door_pos))]) / 2);
+            float n = (((float)posxy / 64) - (byte)(posxy / 64)) * 64;
+            x = (byte)n;
+            y = (byte)(posxy / 64);
+
+
+            int w = 0, h = 0;
+            if (door_dir == 0 || door_dir == 1) //up / down
             {
+                w = 4;
+                h = 3;
+            }
+            if (door_dir == 1)
+            {
+                y += 1;
+            }
+            else if (door_dir == 2 || door_dir == 3)//left / right
+            {
+                h = 4;
+                w = 3;
+            }
+            if (door_dir == 3)
+            {
+                x += 1;
+            }
+            nx = x;
+            ny = y;
+            ox = x;
+            oy = y;
+            if ((((id >> 8) & 0xFF) == 22) || (((id >> 8) & 0xFF) == 18))
+            {
+                tiles.Clear();
+                addTiles(12, 0);//??
+            }
+
                 int tid = 0;
-                for (int xx = 0; xx < 4; xx++)
+                for (int xx = 0; xx < w; xx++)
                 {
-                    for (int yy = 0; yy < 3; yy++)
+                    for (int yy = 0; yy < h; yy++)
                     {
                         draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
                         tid++;
                     }
                 }
-            }
+            
         }
-    }
 
-    [Serializable] public class object_door_down : Room_Object
-    {
-        public byte door_pos = 0;
-        public byte door_dir = 0;
-        public object_door_down(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
-        {
-            options |= ObjectOption.Door;
-            int pos = Constants.tile_address + (short)((ROM.DATA[0x4E06+ ((id >> 8) & 0xFF)+1] << 8) + ROM.DATA[0x4E06+ ((id >> 8) & 0xFF)]);
-            name = "Door down";
-            door_pos = (byte)(id & 0xFF);
-            addTiles(12, pos);//??
-        }
-        public override void Draw()
-        {
-            if ((((id >> 8) & 0xFF) != 22) && (((id >> 8) & 0xFF) != 18))
-            {
-                int tid = 0;
-
-
-                for (int xx = 0; xx < 4; xx++)
-                {
-                    for (int yy = 0; yy < 3; yy++)
-                    {
-                        draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
-                        tid++;
-                    }
-                }
-            }
-        }
-    }
-
-    [Serializable] public class object_door_left : Room_Object
-    {
-        public byte door_pos = 0;
-        public byte door_dir = 0;
-        public object_door_left(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
-        {
-            options |= ObjectOption.Door;
-            int pos = Constants.tile_address + (short)((ROM.DATA[0x4E66+ ((id >> 8) & 0xFF) +1] << 8) + ROM.DATA[0x4E66+ ((id >> 8) & 0xFF)]);
-            name = "Door left";
-            door_pos = (byte)(id & 0xFF);
-            addTiles(12, pos);//??
-        }
-        public override void Draw()
-        {
-            if ((((id >> 8) & 0xFF) != 22) && (((id >> 8) & 0xFF) != 18))
-            {
-                int tid = 0;
-
-
-                for (int xx = 0; xx < 3; xx++)
-                {
-                    for (int yy = 0; yy < 4; yy++)
-                    {
-                        draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
-                        tid++;
-                    }
-                }
-            }
-        }
-    }
-
-    [Serializable] public class object_door_right : Room_Object
-    {
-        public byte door_pos = 0;
-        public byte door_dir = 0;
-        public object_door_right(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
-        {
-            options |= ObjectOption.Door;
-            int pos = Constants.tile_address + (short)((ROM.DATA[0x4EC6 + ((id >> 8) & 0xFF) +1] << 8) + ROM.DATA[0x4EC6 + ((id >> 8) & 0xFF)]);
-            name = "Door right";
-            door_pos = (byte)(id & 0xFF);
-            addTiles(12, pos);//??
-            //Console.WriteLine("Right Door ID : " + ((id >> 8) & 0xFF));
-        }
-        public override void Draw()
-        {
-            if ((((id >> 8) & 0xFF) != 22) && (((id >> 8) & 0xFF) != 18))
-            {
-                int tid = 0;
-
-
-                for (int xx = 0; xx < 3; xx++)
-                {
-                    for (int yy = 0; yy < 4; yy++)
-                    {
-                        draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
-                        tid++;
-                    }
-                }
-            }
-        }
     }
 }

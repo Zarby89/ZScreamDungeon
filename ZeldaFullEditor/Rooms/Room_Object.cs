@@ -80,6 +80,23 @@ namespace ZeldaFullEditor
                 base_width = 2;
                 return;
             }
+            else if ((id >= 0xC0 && id <= 0xF7))
+            {
+                byte oldBaseSize2 = size;
+                size = 4;
+                checksize = true;
+                Draw();
+                scroll_x = (byte)((width / 8));
+                size = 0;
+                resetSize();
+                Draw();
+                base_width = (byte)(width / 8);
+                scroll_x -= base_width;
+                size = oldBaseSize2;
+                resetSize();
+                checksize = false;
+                return;
+            }
 
             byte oldBaseSize = size;
             size = 1;
