@@ -83,6 +83,7 @@
             this.Controls.Add(this.button1);
             this.Name = "GotoRoom";
             this.Text = "GotoRoom";
+            this.Load += new System.EventHandler(this.GotoRoom_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

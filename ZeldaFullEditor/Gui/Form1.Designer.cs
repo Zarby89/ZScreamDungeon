@@ -142,6 +142,8 @@
             this.gfxtabPage = new System.Windows.Forms.TabPage();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.texttabPage = new System.Windows.Forms.TabPage();
+            this.textpreviewButton = new System.Windows.Forms.Button();
+            this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.commandstextBox = new System.Windows.Forms.TextBox();
@@ -151,6 +153,7 @@
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.nothingselectedcontextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.insertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.singleselectedcontextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.changeObjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -170,6 +173,10 @@
             this.bringToFrontToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.sendToBackToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.entranceXUpDown = new System.Windows.Forms.NumericUpDown();
+            this.entranceYUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label17 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.toolStrip1.SuspendLayout();
@@ -198,6 +205,8 @@
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
             this.groupselectedcontextMenu.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.entranceXUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.entranceYUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -352,6 +361,7 @@
             this.bringToBackToolStripMenuItem.Name = "bringToBackToolStripMenuItem";
             this.bringToBackToolStripMenuItem.Size = new System.Drawing.Size(164, 22);
             this.bringToBackToolStripMenuItem.Text = "Send to Back";
+            this.bringToBackToolStripMenuItem.Click += new System.EventHandler(this.bringToBackToolStripMenuItem_Click);
             // 
             // projectToolStripMenuItem
             // 
@@ -497,7 +507,7 @@
             // 
             // updateTimer
             // 
-            this.updateTimer.Interval = 8;
+            this.updateTimer.Interval = 16;
             this.updateTimer.Tick += new System.EventHandler(this.updateTimer_Tick);
             // 
             // radioButton1
@@ -743,7 +753,7 @@
             this.doormodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.doormodeButton.Name = "doormodeButton";
             this.doormodeButton.Size = new System.Drawing.Size(23, 22);
-            this.doormodeButton.Text = "Stairs / Warp";
+            this.doormodeButton.Text = "Doors";
             this.doormodeButton.Click += new System.EventHandler(this.update_modes_buttons);
             // 
             // warpmodeButton
@@ -1061,6 +1071,7 @@
             this.messageshowButton.TabIndex = 21;
             this.messageshowButton.Text = "Show";
             this.messageshowButton.UseVisualStyleBackColor = true;
+            this.messageshowButton.Click += new System.EventHandler(this.messageshowButton_Click);
             // 
             // messageidUpDown
             // 
@@ -1268,6 +1279,9 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label17);
+            this.groupBox2.Controls.Add(this.entranceYUpDown);
+            this.groupBox2.Controls.Add(this.entranceXUpDown);
             this.groupBox2.Controls.Add(this.entranceposCheckbox);
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.entranceLabel);
@@ -1306,9 +1320,9 @@
             this.entranceLabel.AutoSize = true;
             this.entranceLabel.Location = new System.Drawing.Point(6, 16);
             this.entranceLabel.Name = "entranceLabel";
-            this.entranceLabel.Size = new System.Drawing.Size(35, 13);
+            this.entranceLabel.Size = new System.Drawing.Size(54, 13);
             this.entranceLabel.TabIndex = 0;
-            this.entranceLabel.Text = "label9";
+            this.entranceLabel.Text = "Position X";
             // 
             // entranceListBox
             // 
@@ -1437,6 +1451,7 @@
             this.button5.TabIndex = 0;
             this.button5.Text = "DEBUG";
             this.button5.UseVisualStyleBackColor = true;
+            this.button5.Visible = false;
             this.button5.Click += new System.EventHandler(this.button5_Click);
             // 
             // palettestabPage
@@ -1460,6 +1475,7 @@
             this.button2.TabIndex = 3;
             this.button2.Text = "Save to YY-CHR Palettes";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button1
@@ -1470,6 +1486,7 @@
             this.button1.TabIndex = 2;
             this.button1.Text = "Generate a Random Palette";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Visible = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // label7
@@ -1495,6 +1512,7 @@
             // 
             // gfxtabPage
             // 
+            this.gfxtabPage.AutoScroll = true;
             this.gfxtabPage.Controls.Add(this.pictureBox2);
             this.gfxtabPage.Location = new System.Drawing.Point(4, 40);
             this.gfxtabPage.Name = "gfxtabPage";
@@ -1507,12 +1525,14 @@
             // 
             this.pictureBox2.Location = new System.Drawing.Point(3, 3);
             this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(256, 512);
+            this.pictureBox2.Size = new System.Drawing.Size(256, 1024);
             this.pictureBox2.TabIndex = 12;
             this.pictureBox2.TabStop = false;
             // 
             // texttabPage
             // 
+            this.texttabPage.Controls.Add(this.textpreviewButton);
+            this.texttabPage.Controls.Add(this.label16);
             this.texttabPage.Controls.Add(this.label15);
             this.texttabPage.Controls.Add(this.groupBox3);
             this.texttabPage.Controls.Add(this.messageUpDown);
@@ -1526,10 +1546,30 @@
             this.texttabPage.Text = "Texts";
             this.texttabPage.UseVisualStyleBackColor = true;
             // 
+            // textpreviewButton
+            // 
+            this.textpreviewButton.Location = new System.Drawing.Point(9, 170);
+            this.textpreviewButton.Name = "textpreviewButton";
+            this.textpreviewButton.Size = new System.Drawing.Size(148, 23);
+            this.textpreviewButton.TabIndex = 6;
+            this.textpreviewButton.Text = "Show Preview";
+            this.textpreviewButton.UseVisualStyleBackColor = true;
+            this.textpreviewButton.Click += new System.EventHandler(this.textpreviewButton_Click);
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(163, 142);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(54, 13);
+            this.label16.TabIndex = 5;
+            this.label16.Text = "Address : ";
+            this.label16.Click += new System.EventHandler(this.label16_Click);
+            // 
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(6, 176);
+            this.label15.Location = new System.Drawing.Point(6, 196);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(246, 13);
             this.label15.TabIndex = 4;
@@ -1538,9 +1578,9 @@
             // groupBox3
             // 
             this.groupBox3.Controls.Add(this.commandstextBox);
-            this.groupBox3.Location = new System.Drawing.Point(9, 192);
+            this.groupBox3.Location = new System.Drawing.Point(9, 212);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(291, 298);
+            this.groupBox3.Size = new System.Drawing.Size(291, 278);
             this.groupBox3.TabIndex = 3;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "List of Commands";
@@ -1554,17 +1594,14 @@
             this.commandstextBox.Multiline = true;
             this.commandstextBox.Name = "commandstextBox";
             this.commandstextBox.ReadOnly = true;
+            this.commandstextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.commandstextBox.Size = new System.Drawing.Size(278, 277);
             this.commandstextBox.TabIndex = 1;
+            this.commandstextBox.Text = resources.GetString("commandstextBox.Text");
             // 
             // messageUpDown
             // 
             this.messageUpDown.Location = new System.Drawing.Point(82, 140);
-            this.messageUpDown.Maximum = new decimal(new int[] {
-            400,
-            0,
-            0,
-            0});
             this.messageUpDown.Name = "messageUpDown";
             this.messageUpDown.Size = new System.Drawing.Size(75, 20);
             this.messageUpDown.TabIndex = 2;
@@ -1588,19 +1625,29 @@
             this.messagetextBox.Name = "messagetextBox";
             this.messagetextBox.Size = new System.Drawing.Size(294, 131);
             this.messagetextBox.TabIndex = 0;
+            this.messagetextBox.TextChanged += new System.EventHandler(this.messagetextBox_TextChanged);
             // 
             // nothingselectedcontextMenu
             // 
             this.nothingselectedcontextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.insertToolStripMenuItem});
+            this.insertToolStripMenuItem,
+            this.pasteToolStripMenuItem3});
             this.nothingselectedcontextMenu.Name = "nothingselectedcontextMenu";
-            this.nothingselectedcontextMenu.Size = new System.Drawing.Size(129, 26);
+            this.nothingselectedcontextMenu.Size = new System.Drawing.Size(129, 48);
             // 
             // insertToolStripMenuItem
             // 
             this.insertToolStripMenuItem.Name = "insertToolStripMenuItem";
             this.insertToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.insertToolStripMenuItem.Text = "Insert new";
+            this.insertToolStripMenuItem.Click += new System.EventHandler(this.insertToolStripMenuItem_Click);
+            // 
+            // pasteToolStripMenuItem3
+            // 
+            this.pasteToolStripMenuItem3.Name = "pasteToolStripMenuItem3";
+            this.pasteToolStripMenuItem3.Size = new System.Drawing.Size(128, 22);
+            this.pasteToolStripMenuItem3.Text = "Paste";
+            this.pasteToolStripMenuItem3.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
             // singleselectedcontextMenu
             // 
@@ -1622,6 +1669,7 @@
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(151, 22);
             this.toolStripMenuItem1.Text = "Insert new";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.insertToolStripMenuItem_Click);
             // 
             // changeObjectToolStripMenuItem
             // 
@@ -1634,36 +1682,42 @@
             this.cutToolStripMenuItem1.Name = "cutToolStripMenuItem1";
             this.cutToolStripMenuItem1.Size = new System.Drawing.Size(151, 22);
             this.cutToolStripMenuItem1.Text = "Cut";
+            this.cutToolStripMenuItem1.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
             // 
             // copyToolStripMenuItem1
             // 
             this.copyToolStripMenuItem1.Name = "copyToolStripMenuItem1";
             this.copyToolStripMenuItem1.Size = new System.Drawing.Size(151, 22);
             this.copyToolStripMenuItem1.Text = "Copy";
+            this.copyToolStripMenuItem1.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // pasteToolStripMenuItem1
             // 
             this.pasteToolStripMenuItem1.Name = "pasteToolStripMenuItem1";
             this.pasteToolStripMenuItem1.Size = new System.Drawing.Size(151, 22);
             this.pasteToolStripMenuItem1.Text = "Paste";
+            this.pasteToolStripMenuItem1.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem1
             // 
             this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
             this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(151, 22);
             this.deleteToolStripMenuItem1.Text = "Delete";
+            this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // bringToFrontToolStripMenuItem
             // 
             this.bringToFrontToolStripMenuItem.Name = "bringToFrontToolStripMenuItem";
             this.bringToFrontToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.bringToFrontToolStripMenuItem.Text = "Bring to Front";
+            this.bringToFrontToolStripMenuItem.Click += new System.EventHandler(this.moveDownToolStripMenuItem_Click);
             // 
             // sendToBackToolStripMenuItem
             // 
             this.sendToBackToolStripMenuItem.Name = "sendToBackToolStripMenuItem";
             this.sendToBackToolStripMenuItem.Size = new System.Drawing.Size(151, 22);
             this.sendToBackToolStripMenuItem.Text = "Send to Back";
+            this.sendToBackToolStripMenuItem.Click += new System.EventHandler(this.bringToBackToolStripMenuItem_Click);
             // 
             // editGfxToolStripMenuItem
             // 
@@ -1691,42 +1745,49 @@
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
             this.toolStripMenuItem2.Size = new System.Drawing.Size(173, 22);
             this.toolStripMenuItem2.Text = "Insert new";
+            this.toolStripMenuItem2.Click += new System.EventHandler(this.insertToolStripMenuItem_Click);
             // 
             // cutToolStripMenuItem2
             // 
             this.cutToolStripMenuItem2.Name = "cutToolStripMenuItem2";
             this.cutToolStripMenuItem2.Size = new System.Drawing.Size(173, 22);
             this.cutToolStripMenuItem2.Text = "Cut";
+            this.cutToolStripMenuItem2.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
             // 
             // copyToolStripMenuItem2
             // 
             this.copyToolStripMenuItem2.Name = "copyToolStripMenuItem2";
             this.copyToolStripMenuItem2.Size = new System.Drawing.Size(173, 22);
             this.copyToolStripMenuItem2.Text = "Copy";
+            this.copyToolStripMenuItem2.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // pasteToolStripMenuItem2
             // 
             this.pasteToolStripMenuItem2.Name = "pasteToolStripMenuItem2";
             this.pasteToolStripMenuItem2.Size = new System.Drawing.Size(173, 22);
             this.pasteToolStripMenuItem2.Text = "Paste";
+            this.pasteToolStripMenuItem2.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
             this.toolStripMenuItem3.Size = new System.Drawing.Size(173, 22);
             this.toolStripMenuItem3.Text = "Delete";
+            this.toolStripMenuItem3.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
             // bringToFrontToolStripMenuItem1
             // 
             this.bringToFrontToolStripMenuItem1.Name = "bringToFrontToolStripMenuItem1";
             this.bringToFrontToolStripMenuItem1.Size = new System.Drawing.Size(173, 22);
             this.bringToFrontToolStripMenuItem1.Text = "Bring to Front";
+            this.bringToFrontToolStripMenuItem1.Click += new System.EventHandler(this.moveDownToolStripMenuItem_Click);
             // 
             // sendToBackToolStripMenuItem1
             // 
             this.sendToBackToolStripMenuItem1.Name = "sendToBackToolStripMenuItem1";
             this.sendToBackToolStripMenuItem1.Size = new System.Drawing.Size(173, 22);
             this.sendToBackToolStripMenuItem1.Text = "Send to Back";
+            this.sendToBackToolStripMenuItem1.Click += new System.EventHandler(this.bringToBackToolStripMenuItem_Click);
             // 
             // toolStripMenuItem4
             // 
@@ -1734,6 +1795,45 @@
             this.toolStripMenuItem4.Size = new System.Drawing.Size(173, 22);
             this.toolStripMenuItem4.Text = "Save as new layout";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
+            // 
+            // toolTip1
+            // 
+            this.toolTip1.AutoPopDelay = 5000;
+            this.toolTip1.InitialDelay = 100;
+            this.toolTip1.ReshowDelay = 100;
+            // 
+            // entranceXUpDown
+            // 
+            this.entranceXUpDown.Location = new System.Drawing.Point(9, 32);
+            this.entranceXUpDown.Maximum = new decimal(new int[] {
+            512,
+            0,
+            0,
+            0});
+            this.entranceXUpDown.Name = "entranceXUpDown";
+            this.entranceXUpDown.Size = new System.Drawing.Size(54, 20);
+            this.entranceXUpDown.TabIndex = 3;
+            // 
+            // entranceYUpDown
+            // 
+            this.entranceYUpDown.Location = new System.Drawing.Point(69, 32);
+            this.entranceYUpDown.Maximum = new decimal(new int[] {
+            512,
+            0,
+            0,
+            0});
+            this.entranceYUpDown.Name = "entranceYUpDown";
+            this.entranceYUpDown.Size = new System.Drawing.Size(54, 20);
+            this.entranceYUpDown.TabIndex = 4;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(66, 16);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(54, 13);
+            this.label17.TabIndex = 5;
+            this.label17.Text = "Position Y";
             // 
             // zscreamForm
             // 
@@ -1789,6 +1889,8 @@
             this.nothingselectedcontextMenu.ResumeLayout(false);
             this.singleselectedcontextMenu.ResumeLayout(false);
             this.groupselectedcontextMenu.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.entranceXUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.entranceYUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1936,6 +2038,13 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox messagetextBox;
         private System.Windows.Forms.TextBox commandstextBox;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.ToolTip toolTip1;
+        private System.Windows.Forms.Button textpreviewButton;
+        private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem3;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.NumericUpDown entranceYUpDown;
+        private System.Windows.Forms.NumericUpDown entranceXUpDown;
     }
 }
 

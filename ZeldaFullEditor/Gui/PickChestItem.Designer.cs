@@ -97,6 +97,7 @@
             this.Controls.Add(this.listView1);
             this.Name = "PickChestItem";
             this.Text = "PickChestItem";
+            this.Load += new System.EventHandler(this.PickChestItem_Load);
             this.ResumeLayout(false);
 
         }

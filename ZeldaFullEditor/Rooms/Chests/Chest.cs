@@ -93,11 +93,11 @@ namespace ZeldaFullEditor
             }
             else if (id == 15)//bombos
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x60, 11);
+                draw_item_tile(x + 0, y + 0, 16, 16, 0x62, 11);
             }
             else if (id == 16)
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x62, 11);
+                draw_item_tile(x + 0, y + 0, 16, 16, 0x60, 11);
             }
             else if (id == 17)
             {
@@ -384,6 +384,18 @@ namespace ZeldaFullEditor
             {
                 draw_item_tile(x, y + 0, 8, 16, 0xC8, 8);//null item?
             }
+            else if (id == 91)
+            {
+                draw_item_tile(x, y + 0, 16, 16, 0x68, 10, true);
+            }
+            else if (id == 92)
+            {
+                draw_item_tile(x, y + 0, 16, 16, 0x68, 7, true);
+            }
+            else if (id == 93)
+            {
+                draw_item_tile(x, y + 0, 16, 16, 0x68, 11, true);
+            }
             else if (id == 94)
             {
                 draw_item_tile(x, y + 0, 16, 16, 0x22, 11, true);//sword
@@ -410,7 +422,7 @@ namespace ZeldaFullEditor
             }
             else if (id >= 144 && id < 160)
             {
-                draw_item_tile(x, y + 0, 16, 16, 0x4A, 11);//Big Keys
+                draw_item_tile(x + 0, y + 0, 16, 16, 0x6E, 11);//Big Keys
             }
             else if (id >= 160 && id < 176)
             {

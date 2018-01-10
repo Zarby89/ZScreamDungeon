@@ -51,8 +51,11 @@ namespace ZeldaFullEditor
         public static int blocks_pointer2 = 0x15B01; 
         public static int blocks_pointer3 = 0x15B08; 
         public static int blocks_pointer4 = 0x15B0F;
-
+        
         public static int torch_data = 0x2736A; //JP 0x2704A
+        public static int torches_length_pointer = 0x88C1;
+
+
         public static int sprite_blockset_pointer = 0x5B57;
         public static int sprites_data = 0x4D880; //JP : //It use the unused pointers to have more space //Save purpose
         public static int sprites_data_empty_room = 0x4D87E;
@@ -92,9 +95,10 @@ namespace ZeldaFullEditor
         public static int entrance_music = 0x1582E; //0x15592
         public static int items_data_start = 0xDDE9; //save purpose
         public static int items_data_end = 0xE6B2; //save purpose
+        public static int hud_palettes = 0xDD660;
+        
+        public static int messages_id_dungeon = 0x3F61D;
 
-
-        public static int game_font = 0x70000;
         public static string[] RoomEffect = new string[]
         {
             "Nothing", "01", "Moving Floor", "Moving Water", "04", "Red Flashes", "Light Torchto See Floor", "Ganon Room"
@@ -117,11 +121,12 @@ namespace ZeldaFullEditor
         {
             pit_pointer = 0x394A2;
             pit_count = 0x3949D;
-            game_font = 0x70000; //compressed 2bpp
             //04EF2F
             dungeons_palettes_groups = 0x67DD0;
             room_items_pointers = 0xDB67;
             torch_data = 0x2704A;
+
+
             sprite_blockset_pointer = 0x5B97;
             blocks_pointer1 = 0x1585E;
             blocks_pointer2 = 0x15865;
@@ -135,10 +140,10 @@ namespace ZeldaFullEditor
             gfx_1_pointer = 0x67D0; //2byte pointer bank 00 -> pc 0x4FC0
             gfx_2_pointer = 0x67D5;
             gfx_3_pointer = 0x67DA;
-
+            messages_id_dungeon = 0x3F5F7;
             gfx_animated_pointer = 0x10624;
-
             
+
 
             //Entrances
             entrance_room = 0x14577; //word value for each room

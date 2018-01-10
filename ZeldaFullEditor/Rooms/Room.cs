@@ -37,7 +37,7 @@ namespace ZeldaFullEditor
         public byte[] staircase_plane = new byte[4];
         public bool light;
         public byte holewarp_plane;
-        public byte messageid;
+        public short messageid;
         public bool damagepit;
         public byte[] blocks = new byte[24];
         public List<Chest> chest_list = new List<Chest>();
@@ -63,6 +63,7 @@ namespace ZeldaFullEditor
             setObjectsRoom();
             addPotsItems();
             isdamagePit();
+            messageid = (short)((ROM.DATA[Constants.messages_id_dungeon + (index * 2) + 1] << 8 ) + ROM.DATA[Constants.messages_id_dungeon + (index * 2)]);
         }
         public void reloadLayout()
         {
@@ -488,7 +489,9 @@ namespace ZeldaFullEditor
         }
         public void addTorches()
         {
-            for (int i = 0; i < 288; i += 2)
+            int bytes_count = (ROM.DATA[Constants.torches_length_pointer + 1] << 8) + ROM.DATA[Constants.torches_length_pointer];
+           
+            for (int i = 0; i < bytes_count; i += 2)
             {
                 byte b1 = ROM.DATA[Constants.torch_data + i];
                 byte b2 = ROM.DATA[Constants.torch_data + i + 1];
@@ -501,15 +504,13 @@ namespace ZeldaFullEditor
                        
                         b1 = ROM.DATA[Constants.torch_data + i];
                         b2 = ROM.DATA[Constants.torch_data + i + 1];
-                       
-                        if (b1 == 0xFF && b2 == 0xFF) { break; }
-                        int b = ((((b2 << 8) + b1) & 0x1FFF) >> 1);
-                        float a = ((float)b / 64);
-                        int py = (((((b2 << 8) + b1) & 0x1FFF) >> 1) / 64);
-                        a = (a - py) * 64;
-                        int px = (int)a;
 
-                        Room_Object r = addObject(0x150, (byte)px, (byte)py, 0, 0);
+                        if (b1 == 0xFF && b2 == 0xFF) { break; }
+                        int address = ((b2 & 0x1F) << 8 | b1) >> 1;
+                        int px = address % 64;
+                        int py = address >> 6;
+
+                        Room_Object r = addObject(0x150, (byte)px, (byte)py, 0, (byte)((b2 & 0x20) >> 5));
                         if (r != null)
                         {
                             r.options |= ObjectOption.Torch;

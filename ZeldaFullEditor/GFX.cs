@@ -31,7 +31,7 @@ namespace ZeldaFullEditor
         public static Bitmap bg2_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap bg2_trans_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap room_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
-        public static Bitmap[] chestitems_bitmap = new Bitmap[75];
+        public static Bitmap[] chestitems_bitmap = new Bitmap[175];
 
 
         public static int[] positions = new int[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
@@ -188,13 +188,13 @@ namespace ZeldaFullEditor
 
         public static Bitmap singletobmp()
         {
-            Bitmap b = new Bitmap(128,512);
-            begin_draw(b, 128, 512);
+            Bitmap b = new Bitmap(128,1024);
+            begin_draw(b, 128, 1024);
             unsafe
             {
                 for (int x = 0; x < 128; x++)
                 {
-                    for (int y = 0; y < 512; y++)
+                    for (int y = 0; y < 768; y++)
                     {
                         int dest = (x + (y * 128))*4;
                         GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(dest/4)],4].B);
@@ -302,6 +302,21 @@ namespace ZeldaFullEditor
                 i += 2;
             }
             itemsPalettes = palettes;
+        }
+
+        public static Color[,] hudPalettes = new Color[4,16];
+        public static void LoadHudPalettes()
+        {
+
+            for (int i = 0; i < 16; i++)
+            {
+                for (int x = 0; x < 4; x++)
+                {
+                    hudPalettes[x, i] = getColor((short)((ROM.DATA[(Constants.hud_palettes + 1) + (i * 8) + (x * 2)] << 8) + ROM.DATA[(Constants.hud_palettes) + (i * 8) + (x * 2)]));
+                }
+
+            }
+
         }
 
 

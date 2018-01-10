@@ -16,10 +16,10 @@ namespace ZeldaFullEditor
         public RoomLayout()
         {
             InitializeComponent();
-            foreach (string s in Directory.EnumerateDirectories("Layout\\"))
+            /*foreach (string s in Directory.EnumerateDirectories("Layout\\"))
             {
                 tabControl1.TabPages.Add(Path.GetFileName(s));
-            }
+            }*/
 
 
 

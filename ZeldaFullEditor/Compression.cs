@@ -13,21 +13,14 @@ namespace ZeldaFullEditor
     public static class Compression
     {
         //Tiles graphics decompression set it on 0x600bytes no matter what to prevent bugs
-        public static byte[] Decompress(int pos, byte[] ROM_DATA, bool reversed = false, int maxLength = 0)
+        public static byte[] Decompress(int pos, byte[] ROM_DATA, bool reversed = false, bool showcount = false)
         {
 
             List<byte> dataBuffer = new List<byte>();
             bool done = false;
-
+            int count = 0;
             while (done == false)
             {
-                if (maxLength != 0)
-                {
-                    if (dataBuffer.Count >= maxLength)
-                    {
-                        done = true;
-                    }
-                }
 
                 bool expand = false;
                 byte b = ROM.DATA[pos];
@@ -124,9 +117,9 @@ namespace ZeldaFullEditor
                         pos2++;
                     }
                 }
-
+                
             }
-
+            
             return dataBuffer.ToArray();
         }
 
@@ -142,6 +135,7 @@ namespace ZeldaFullEditor
                 int gfxPointer3 = Addresses.snestopc((ROM.DATA[Constants.gfx_3_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_3_pointer]));
                 byte[] b = new byte[] { ROM.DATA[gfxPointer3 + i], ROM.DATA[gfxPointer2 + i], ROM.DATA[gfxPointer1 + i], 0 };
                 int addr = BitConverter.ToInt32(b, 0);
+                //Console.WriteLine(Addresses.snestopc(addr).ToString("X6"));
                 bufferBlock = Decompress(Addresses.snestopc(addr), ROM.DATA);
                 for (int j = 0; j < bufferBlock.Length; j++)
                 {
@@ -214,9 +208,9 @@ namespace ZeldaFullEditor
                     buffer.Add(0);
                 }
             }
-            FileStream fs = new FileStream("testgfx.gfx", FileMode.OpenOrCreate, FileAccess.Write);
-            fs.Write(buffer.ToArray(), 0, buffer.Count);
-            fs.Close();
+            //FileStream fs = new FileStream("testgfx.gfx", FileMode.OpenOrCreate, FileAccess.Write);
+            //fs.Write(buffer.ToArray(), 0, buffer.Count);
+            //fs.Close();
             return buffer.ToArray();
 
         }

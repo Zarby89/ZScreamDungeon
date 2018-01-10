@@ -139,6 +139,9 @@
     <Compile Include="Rooms\Sprites\Sprite.cs" />
     <Compile Include="Save.cs" />
     <Compile Include="Sprite_SubsetNames.cs" />
+    <Compile Include="TextPreview.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Tile.cs" />
     <EmbeddedResource Include="Gui\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
@@ -170,6 +173,9 @@
     </Compile>
     <EmbeddedResource Include="RoomLayout.resx">
       <DependentUpon>RoomLayout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextPreview.resx">
+      <DependentUpon>TextPreview.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

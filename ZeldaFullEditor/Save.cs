@@ -32,6 +32,26 @@ namespace ZeldaFullEditor
 
         }
 
+        public bool saveTexts(string[] texts, Charactertable table)
+        {
+            int pos = 0xE0000;
+            for(int i = 0;i<395;i++)
+            {
+                byte[] b = table.textToHex(texts[i]);
+                for (int j = 0; j < b.Length; j++)
+                {
+                    ROM.DATA[pos] = b[j];
+                    pos++;
+                }
+            }
+
+            if (pos > 0xE7355)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public bool saveRoomsHeaders()
         {
             //long??
@@ -116,6 +136,62 @@ namespace ZeldaFullEditor
             return false; // False = no error
         }
 
+
+        public bool saveTorches()
+        {
+            int bytes_count = (ROM.DATA[Constants.torches_length_pointer + 1] << 8) + ROM.DATA[Constants.torches_length_pointer];
+            int pos = Constants.torch_data;
+            
+            for (int i = 0; i < 296; i++)
+            {
+                bool room = false;
+                foreach (Room_Object o in all_rooms[i].tilesObjects)
+                {
+                    if ((o.options & ObjectOption.Torch) == ObjectOption.Torch) //if we find a torch
+                    {
+                        //if we find a torch then store room if it not stored
+                        
+                        if (room == false)
+                        {
+                            ROM.DATA[pos] = (byte)((i & 0xFF));
+                            pos++;
+                            ROM.DATA[pos] = (byte)(((i >> 8) & 0xFF));
+                            pos++;
+                            room = true;
+                        }
+
+                        int xy = (((o.y * 64) + o.x) << 1);
+                        ROM.DATA[pos] = (byte)(xy & 0xFF);
+                        pos++;
+                        ROM.DATA[pos] = (byte)((byte)(((xy >> 8) & 0xFF) + (o.layer * 0x80)));
+                        pos++;
+
+                    }
+                }
+                if (room == true)
+                {
+                    ROM.DATA[pos] = (byte)(0xFF);
+                    pos++;
+                    ROM.DATA[pos] = (byte)(0xFF);
+                    pos++;
+                }
+            }
+
+            if ((pos - Constants.torch_data) > bytes_count)
+            {
+                return true;
+            }
+            else
+            {
+                for(int i = (pos - Constants.torch_data);i < bytes_count;i++)
+                {
+                    ROM.DATA[i] = 0xFF;
+                }
+            }
+            return false; // False = no error
+        }
+
+
         public void saveHeader(int pos, int i)
         {
             ROM.DATA[pos + 0 + (i * 14)] = (byte)((((byte)all_rooms[i].bg2 & 0x07) << 5) + (all_rooms[i].collision << 2) + (all_rooms[i].light == true ? 1 : 0));
@@ -151,6 +227,10 @@ namespace ZeldaFullEditor
                     pitCountNew++;
                 }
             }
+            if (pitCountNew > pitCount)
+            {
+                return true;
+            }
             return false;
         }
 
@@ -162,7 +242,7 @@ namespace ZeldaFullEditor
             var section1Index = 0x50008; //0x50000 to 0x5374F
             var section2Index = 0xF878A; //0xF878A to 0xFFFF7
             var section3Index = 0x1EB90; //0x1EB90 to 0x1FFFF
-            var section4Index = 0x121210; // 0x121210 to ????? expanded region. need to find max safe for rando roms
+           // var section4Index = 0x121210; // 0x121210 to ????? expanded region. need to find max safe for rando roms
 
             for (int i = 0; i < 296; i++)
             {
@@ -201,8 +281,10 @@ namespace ZeldaFullEditor
                 {
                     // ran out of space
                     // write the room
-                    saveObjectBytes(i, section4Index, roomBytes);
-                    section4Index += roomBytes.Length;
+                    //saveObjectBytes(i, section4Index, roomBytes);
+                    //section4Index += roomBytes.Length;
+
+                    return true;
 
                     //move to EXPANDED region
                     //Console.WriteLine("Room " + i + " no more space jump to 0x121210");
@@ -292,7 +374,7 @@ namespace ZeldaFullEditor
                 pos++;
                 if (pos > Constants.items_data_end)
                 {
-                    Console.WriteLine("Warning items are outside of the allowed range!");
+                    return true;
                 }
             }
             return false; // False = no error
@@ -354,7 +436,7 @@ namespace ZeldaFullEditor
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message);
+                return true;
             }
             return false; // False = no error
         }

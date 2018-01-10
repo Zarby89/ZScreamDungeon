@@ -6,22 +6,224 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-    class Charactertable
+    public class Charactertable
     {
         Dictionary<string, byte> kanji = new Dictionary<string, byte>();
         Dictionary<string, byte> tablechar = new Dictionary<string, byte>();
 
+        public byte[] textToHex(string text)
+        {
+            text = text.Replace("\n", String.Empty).Replace("\t", String.Empty).Replace("\r", String.Empty);
+            int pos = 0;
+            List<byte> bytes = new List<byte>();
+            while (pos < text.Length)
+            {
+                //F6
+                if ((text[pos] == '[') && (text[pos + 1] == 'S') && (text[pos + 2] == 'C') && (text[pos + 3] == 'L') && (text[pos + 4] == ']'))
+                {
+                    bytes.Add(0xF6);
+                    pos += 5;
+                    continue;
+                }
+                //F7
+                if ((text[pos] == '[') && (text[pos + 1] == 'L') && (text[pos + 2] == 'N') && (text[pos + 3] == '1') && (text[pos + 4] == ']'))
+                {
+                    pos += 5;
+                    bytes.Add(0xF7);
+                    continue;
+                }
+                //F8
+                if ((text[pos] == '[') && (text[pos + 1] == 'L') && (text[pos + 2] == 'N') && (text[pos + 3] == '2') && (text[pos + 4] == ']'))
+                {
+                    pos += 5;
+                    bytes.Add(0xF8);
+                    continue;
+                }
+                //F9
+                if ((text[pos] == '[') && (text[pos + 1] == 'L') && (text[pos + 2] == 'N') && (text[pos + 3] == '3') && (text[pos + 4] == ']'))
+                {
+                    pos += 5;
+                    bytes.Add(0xF9);
+                    continue;
+                }
+                //FA
+                if ((text[pos] == '[') && (text[pos + 1] == 'N') && (text[pos + 2] == 'W') && (text[pos + 3] == 'L') && (text[pos + 4] == ']'))
+                {
+                    pos += 5;
+                    bytes.Add(0xFA);
+                    continue;
+                }
+                //FC
+                if ((text[pos] == '[') && (text[pos + 1] == 'S') && (text[pos + 2] == 'P') && (text[pos + 3] == 'D') && (text[pos + 4] == ' ') && (text[pos + 7] == ']'))
+                {
+                    bytes.Add(0xFC);
+                    bytes.Add(byte.Parse(text[pos + 5].ToString() + text[pos + 6].ToString(), System.Globalization.NumberStyles.HexNumber));
+                    pos += 8;
+                    continue;
+                }
+                //FE67
+                if ((text[pos] == '[') && (text[pos + 1] == 'P') && (text[pos + 2] == 'I') && (text[pos + 3] == 'C') && (text[pos + 4] == ']'))
+                {
+                    bytes.Add(0xFE);
+                    bytes.Add(0x67);
+                    pos += 5;
+                    continue;
+                }
+                //FE68
+                if ((text[pos] == '[') && (text[pos + 1] == 'C') && (text[pos + 2] == 'H') && (text[pos + 3] == '1') && (text[pos + 4] == ']'))
+                {
+                    bytes.Add(0xFE);
+                    bytes.Add(0x68);
+                    pos += 5;
+                    continue;
+                }
+                //FE71
+                if ((text[pos] == '[') && (text[pos + 1] == 'C') && (text[pos + 2] == 'H') && (text[pos + 3] == '2') && (text[pos + 4] == ']'))
+                {
+                    bytes.Add(0xFE);
+                    bytes.Add(0x71);
+                    pos += 5;
+                    continue;
+                }
+                //FE72
+                if ((text[pos] == '[') && (text[pos + 1] == 'C') && (text[pos + 2] == 'H') && (text[pos + 3] == '3') && (text[pos + 4] == ']'))
+                {
+                    bytes.Add(0xFE);
+                    bytes.Add(0x72);
+                    pos += 5;
+                    continue;
+                }
+                //FE69
+                if ((text[pos] == '[') && (text[pos + 1] == 'I') && (text[pos + 2] == 'T') && (text[pos + 3] == 'M') && (text[pos + 4] == ']'))
+                {
+                    bytes.Add(0xFE);
+                    bytes.Add(0x69);
+                    pos += 5;
+                    continue;
+                }
+                //FE6A
+                if ((text[pos] == '[') && (text[pos + 1] == 'N') && (text[pos + 2] == 'A') && (text[pos + 3] == 'M') && (text[pos + 4] == ']'))
+                {
+                    bytes.Add(0xFE);
+                    bytes.Add(0x6A);
+                    pos += 5;
+                    continue;
+                }
+                //FE6B
+                if ((text[pos] == '[') && (text[pos + 1] == 'W') && (text[pos + 2] == 'I') && (text[pos + 3] == 'N') && (text[pos + 4] == ' ') && (text[pos + 7] == ']'))
+                {
+                    bytes.Add(0xFE);
+                    bytes.Add(0x6B);
+                    bytes.Add(byte.Parse(text[pos + 5].ToString() + text[pos + 6].ToString(), System.Globalization.NumberStyles.HexNumber));
+                    //text = text.Replace("[NAM]", "NAME");
+                    pos += 8;
+                    continue;
+                }
+                //FE6C
+                if ((text[pos] == '[') && (text[pos + 1] == 'N') && (text[pos + 2] == 'B') && (text[pos + 3] == 'R') && (text[pos + 4] == ' ') && (text[pos + 7] == ']'))
+                {
+                    bytes.Add(0xFE);
+                    bytes.Add(0x6C);
+                    bytes.Add(byte.Parse(text[pos + 5].ToString() + text[pos + 6].ToString(), System.Globalization.NumberStyles.HexNumber));
+                    pos += 8;
+                    continue;
+                }
+                //FE6D
+                if ((text[pos] == '[') && (text[pos + 1] == 'P') && (text[pos + 2] == 'O') && (text[pos + 3] == 'S') && (text[pos + 4] == ' ') && (text[pos + 7] == ']'))
+                {
+                    bytes.Add(0xFE);
+                    bytes.Add(0x6D);
+                    bytes.Add(byte.Parse(text[pos + 5].ToString() + text[pos + 6].ToString(), System.Globalization.NumberStyles.HexNumber));
+                    //arguments = text[pos + 5], text[pos + 6]
+                    pos += 8;
+                    continue;
+                }
+                //FE6E
+                if ((text[pos] == '[') && (text[pos + 1] == 'S') && (text[pos + 2] == 'C') && (text[pos + 3] == 'S') && (text[pos + 4] == ' ') && (text[pos + 7] == ']'))
+                {
+                    bytes.Add(0xFE);
+                    bytes.Add(0x6E);
+                    bytes.Add(byte.Parse(text[pos + 5].ToString() + text[pos + 6].ToString(), System.Globalization.NumberStyles.HexNumber));
+                    //arguments = text[pos + 5], text[pos + 6]
+                    pos += 8;
+                    continue;
+                }
+                //FE77
+                if ((text[pos] == '[') && (text[pos + 1] == 'C') && (text[pos + 2] == 'O') && (text[pos + 3] == 'L') && (text[pos + 4] == ' ') && (text[pos + 7] == ']'))
+                {
+                    bytes.Add(0xFE);
+                    bytes.Add(0x77);
+                    bytes.Add(byte.Parse(text[pos + 5].ToString() + text[pos + 6].ToString(), System.Globalization.NumberStyles.HexNumber));
+                    pos += 8;
+                    continue;
+                }
+                //FE78
+                if ((text[pos] == '[') && (text[pos + 1] == 'W') && (text[pos + 2] == 'A') && (text[pos + 3] == 'I') && (text[pos + 4] == ' ') && (text[pos + 7] == ']'))
+                {
+                    bytes.Add(0xFE);
+                    bytes.Add(0x78);
+                    bytes.Add(byte.Parse(text[pos + 5].ToString() + text[pos + 6].ToString(), System.Globalization.NumberStyles.HexNumber));
+                    pos += 8;
+                    continue;
+                }
+                //FE79
+                if ((text[pos] == '[') && (text[pos + 1] == 'S') && (text[pos + 2] == 'N') && (text[pos + 3] == 'D') && (text[pos + 4] == ' ') && (text[pos + 7] == ']'))
+                {
+                    bytes.Add(0xFE);
+                    bytes.Add(0x79);
+                    bytes.Add(byte.Parse(text[pos + 5].ToString() + text[pos + 6].ToString(), System.Globalization.NumberStyles.HexNumber));
+                    //arguments = text[pos + 5], text[pos + 6]
+                    pos += 8;
+                    continue;
+                }
+                //FE
+                if ((text[pos] == '[') && (text[pos + 3] == ']'))
+                {
+                    bytes.Add(byte.Parse(text[pos + 1].ToString() + text[pos + 2].ToString(), System.Globalization.NumberStyles.HexNumber));
+                    pos += 4;
+                    continue;
+                }
+
+                if (text[pos] == ' ')
+                {
+                    bytes.Add(0xFF);
+                    pos += 1;
+                    continue;
+                }
+                if (text[pos] == '[')
+                {
+                    Console.WriteLine(text);
+                }
+                    ushort cvalue = charToHex(text[pos].ToString());
+                if ((cvalue & 0xFD00) == 0xFD00)
+                {
+                    bytes.Add(0xFD); bytes.Add((byte)(cvalue & 0xFF));
+                }
+                else
+                {
+                    bytes.Add((byte)cvalue);
+                }
+                pos++;
+
+            }
+
+            bytes.Add(0xFB);
+
+            return bytes.ToArray();
+            
+
+        }
+
+
         public string hexToChar(byte hex, bool iskanji = false)
         {
-
-
             if (hex >= 0xA0 && hex <= 0xA9) // 0-9
             {
                 hex -= 0x70;
                 return ((char)hex).ToString(); //A-Z
             }
 
-            if (hex >= 0xAA && hex <= 0xAA + 26)
+            if (hex >= 0xAA && hex < 0xAA + 26)
             {
                 hex -= 0x69;
                 return ((char)hex).ToString();
@@ -48,11 +250,11 @@ namespace ZeldaFullEditor
 
         public ushort charToHex(string c)
         {
-            if (c == "娘")
+            if (c == "あ")
             {
                 return 0x00;
             }
-            if (c == "あ")
+            if (c == "娘")
             {
                 return (ushort)(0xFD00);
             }
@@ -69,8 +271,19 @@ namespace ZeldaFullEditor
             {
                 return (ushort)((0xFD00) + hex.Value);
             }
+            //48-57 numeric
+            //65-90 A-Z
+            /*if ( hex.Value >= 48 && hex.Value <= 57)//return number
+            {
+                return (ushort)(hex.Value +0x70);
+            }
 
+            if (hex.Value >= 65 && hex.Value <= 90)//return letter
+            {
+                return (ushort)(hex.Value + 0x69);
+            }*/
             //if code reach here for whatever reason return 0xFFFF as error result
+            Console.WriteLine("Reached FFFF in chartohex : " + c);
             return (ushort)(0xFFFF);
 
         }
@@ -335,6 +548,44 @@ namespace ZeldaFullEditor
                 kanji.Add("服", 0xFD);
                 kanji.Add("月", 0xFE);
                 kanji.Add("姫", 0xFF);
+
+                tablechar.Add("0", 0xA0);
+                tablechar.Add("1", 0xA1);
+                tablechar.Add("2", 0xA2);
+                tablechar.Add("3", 0xA3);
+                tablechar.Add("4", 0xA4);
+                tablechar.Add("5", 0xA5);
+                tablechar.Add("6", 0xA6);
+                tablechar.Add("7", 0xA7);
+                tablechar.Add("8", 0xA8);
+                tablechar.Add("9", 0xA9);
+                tablechar.Add("A", 0xAA);
+                tablechar.Add("B", 0xAB);
+                tablechar.Add("C", 0xAC);
+                tablechar.Add("D", 0xAD);
+                tablechar.Add("E", 0xAE);
+                tablechar.Add("F", 0xAF);
+                tablechar.Add("G", 0xB0);
+                tablechar.Add("H", 0xB1);
+                tablechar.Add("I", 0xB2);
+                tablechar.Add("J", 0xB3);
+                tablechar.Add("K", 0xB4);
+                tablechar.Add("L", 0xB5);
+                tablechar.Add("M", 0xB6);
+                tablechar.Add("N", 0xB7);
+                tablechar.Add("O", 0xB8);
+                tablechar.Add("P", 0xB9);
+                tablechar.Add("Q", 0xBA);
+                tablechar.Add("R", 0xBB);
+                tablechar.Add("S", 0xBC);
+                tablechar.Add("T", 0xBD);
+                tablechar.Add("U", 0xBE);
+                tablechar.Add("V", 0xBF);
+                tablechar.Add("W", 0xC0);
+                tablechar.Add("X", 0xC1);
+                tablechar.Add("Y", 0xC2);
+                tablechar.Add("Z", 0xC3);
+
                 tablechar.Add("『", 0xC4);
                 tablechar.Add("』", 0xC5);
                 tablechar.Add("?",0xC6);

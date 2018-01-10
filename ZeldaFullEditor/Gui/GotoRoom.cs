@@ -21,5 +21,10 @@ namespace ZeldaFullEditor
         {
             selectedRoom = Convert.ToInt32(textBox1.Text);
         }
+
+        private void GotoRoom_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

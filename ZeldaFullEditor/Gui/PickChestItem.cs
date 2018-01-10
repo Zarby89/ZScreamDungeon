@@ -16,5 +16,10 @@ namespace ZeldaFullEditor
         {
             InitializeComponent();
         }
+
+        private void PickChestItem_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

@@ -33,6 +33,7 @@ namespace ZeldaFullEditor
             using (Graphics g = Graphics.FromImage(pb.Image))
             {
                 g.Clear(Color.Black);
+                GFX.LoadHudPalettes();
                 //blockset
                 /*for (int y = 0; y < 8; y++)
                 {
@@ -42,11 +43,12 @@ namespace ZeldaFullEditor
                     }
                 }*/
                 //spriteset
-                for (int y = 0; y < 16; y++)
+                for (int y = 0; y < 8; y++)
                 {
-                    for (int x = 0; x < 8; x++)
+                    for (int x = 0; x < 4; x++)
                     {
-                        g.FillRectangle(new SolidBrush(GFX.spritesPalettes[x, y]), new Rectangle(x * 16, y * 16, 16, 16));
+                        //g.FillRectangle(new SolidBrush(GFX.spritesPalettes[x, y]), new Rectangle(x * 16, y * 16, 16, 16));
+                        g.FillRectangle(new SolidBrush(GFX.hudPalettes[x, y]), new Rectangle(x * 16, y * 16, 16, 16));
                     }
                 }
                 g.DrawString((GFX.paletteid/180).ToString(), new Font("Arial", 10, FontStyle.Regular), Brushes.White, new Point(4, 4));
