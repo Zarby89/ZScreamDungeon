@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -11,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor
@@ -21,6 +23,7 @@ namespace ZeldaFullEditor
         //List<SpriteName> stringtodraw = new List<SpriteName>();
         public int index;
         int header_location;
+
         public byte layout;
         public byte floor1;
         public byte floor2;
@@ -29,14 +32,14 @@ namespace ZeldaFullEditor
         public byte palette;
         public byte collision; //Need a better name for that
         public Background2 bg2;
-        public byte effect;//TODO : enum
-        public byte tag1;//TODO : enum
-        public byte tag2;//TODO : enum
+        public byte effect;
+        public TagKey tag1;
+        public TagKey tag2;
         public byte holewarp;
+        public byte holewarp_plane;
         public byte[] staircase_rooms = new byte[4];
         public byte[] staircase_plane = new byte[4];
         public bool light;
-        public byte holewarp_plane;
         public short messageid;
         public bool damagepit;
         public byte[] blocks = new byte[24];
@@ -50,6 +53,335 @@ namespace ZeldaFullEditor
         public bool objectInitialized = false;
         public bool needGfxRefresh = false;
         public bool onlyLayout = false;
+
+
+        [DisplayName("Room Layout"), Description("Room layout used as a default model for the room"), Category("Header")]
+        public byte Layout
+        {
+            get
+            {
+                return layout;
+            }
+            set
+            {
+                layout = value;
+                if (layout >= 8)
+                {
+                    layout = 7;
+                }
+            }
+        }
+        [DisplayName("Room Floor 1"), Description("Main floor gfx for the room"), Category("Header")]
+        public byte Floor1
+        {
+            get
+            {
+                return floor1;
+            }
+            set
+            {
+                floor1 = value;
+                if (floor1 >= 16)
+                {
+                    floor1 = 15;
+                }
+            }
+        }
+        [DisplayName("Room Floor 2"), Description("Secondary floor gfx for the room"), Category("Header")]
+        public byte Floor2
+        {
+            get
+            {
+                return floor2;
+            }
+            set
+            {
+                floor2 = value;
+                if (floor2 >= 16)
+                {
+                    floor2 = 15;
+                }
+            }
+        }
+
+        [DisplayName("Blockset"), Description("The gfx id used for that room"), Category("Header")]
+        public byte Blockset
+        {
+            get
+            {
+                return blockset;
+            }
+            set
+            {
+                blockset = value;
+                if (blockset >= 24)
+                {
+                    blockset = 23;
+                }
+            }
+        }
+        [DisplayName("Spriteset"), Description("The sprite gfx id used for that room"), Category("Header")]
+        public byte Spriteset
+        {
+            get
+            {
+                return spriteset;
+            }
+            set
+            {
+                spriteset = value;
+                if (spriteset >= 65)
+                {
+                    spriteset = 64;
+                }
+            }
+        }
+        [DisplayName("Palette Set"), Description("The palette set used for that room"), Category("Header")]
+        public byte Palette
+        {
+            get
+            {
+                return palette;
+            }
+            set
+            {
+                palette = value;
+                if (palette >= 72)
+                {
+                    palette = 71;
+                }
+            }
+        }
+
+        [DisplayName("Background Type"), Description("Type of background used for that room, to handle transparancy, multiple layers etc..."), Category("Header")]
+        public Background2 Bg2
+        {
+            get
+            {
+                return bg2;
+            }
+            set
+            {
+                bg2 = value;
+                if (bg2 == Background2.DarkRoom)
+                {
+                    light = true;
+                }
+                else
+                {
+                    light = false;
+                }
+
+            }
+        }
+
+        [DisplayName("Tag 1"), Description("Tag of the room used to spawn chest, open doors when enemies killed, etc..."), Category("Header")]
+        public TagKey Tag1
+        {
+            get
+            {
+                return tag1;
+            }
+            set
+            {
+                tag1 = value;
+            }
+        }
+
+        [DisplayName("Tag 2"), Description("Tag of the room used to spawn chest, open doors when enemies killed, etc..."), Category("Header")]
+        public TagKey Tag2
+        {
+            get
+            {
+                return tag2;
+            }
+            set
+            {
+                tag2 = value;
+            }
+        }
+
+        [DisplayName("Collision"), Description("Used for special collision rooms like water / moving floor"), Category("Header")]
+        public CollisionKey Collision
+        {
+            get
+            {
+                return (CollisionKey)collision;
+            }
+            set
+            {
+                collision = (byte)value;
+            }
+        }
+
+        [DisplayName("Effect"), Description("Used for special collision rooms like water / moving floor"), Category("Header")]
+        public EffectKey Effect
+        {
+            get
+            {
+                return (EffectKey)effect;
+            }
+            set
+            {
+                effect = (byte)value;
+            }
+        }
+
+        [DisplayName("Hole / Warp"), Description("The destination room of holes and warps for that room"), Category("Transitions")]
+        public byte HoleWarp
+        {
+            get
+            {
+                return holewarp;
+            }
+            set
+            {
+                holewarp = value;
+            }
+        }
+        [DisplayName("Hole / Warp - Plane"), Description("The destination Plane for the hole and warps, for example in a multiple floor room 1 would put you on top floor, 0 on the floor below"), Category("Transitions")]
+        public byte HoleWarpPlane
+        {
+            get
+            {
+                return holewarp_plane;
+            }
+            set
+            {
+                holewarp_plane = value;
+            }
+        }
+
+        [DisplayName("Message Id"), Description("Define the message id used by the room"), Category("Misc")]
+        public short Messageid
+        {
+            get
+            {
+                return messageid;
+            }
+            set
+            {
+                messageid = value;
+                if (messageid >= 398)
+                {
+                    messageid = 397;
+                }
+            }
+        }
+
+        [DisplayName("Damage Pit"), Description("Do the hole does damage when you fall in?"), Category("Misc")]
+        public bool Damagepit
+        {
+            get
+            {
+                return damagepit;
+            }
+            set
+            {
+                damagepit = value;
+
+            }
+        }
+
+
+        [DisplayName("Staircase 1"), Description("The destination Room for the first stair/staircase in the room in object order"), Category("Transitions")]
+        public byte Staircase1
+        {
+            get
+            {
+                return staircase_rooms[0];
+            }
+            set
+            {
+                staircase_rooms[0] = value;
+            }
+        }
+        [DisplayName("Staircase 2"), Description("The destination Room for the second stair/staircase in the room in object order"), Category("Transitions")]
+        public byte Staircase2
+        {
+            get
+            {
+                return staircase_rooms[1];
+            }
+            set
+            {
+                staircase_rooms[1] = value;
+            }
+        }
+        [DisplayName("Staircase 3"), Description("The destination Room for the third stair/staircase in the room in object order"), Category("Transitions")]
+        public byte Staircase3
+        {
+            get
+            {
+                return staircase_rooms[2];
+            }
+            set
+            {
+                staircase_rooms[2] = value;
+            }
+        }
+        [DisplayName("Staircase 4"), Description("The destination Room for the fourth stair/staircase in the room in object order"), Category("Transitions")]
+        public byte Staircase4
+        {
+            get
+            {
+                return staircase_rooms[3];
+            }
+            set
+            {
+                staircase_rooms[3] = value;
+            }
+        }
+
+
+        [DisplayName("Staircase 1 - Plane"), Description("The destination Plane for the first stair/staircase in the room in object order for example in a multiple floor room 1 would put you on top floor, 0 on the floor below"), Category("Transitions")]
+        public byte Staircase1Plane
+        {
+            get
+            {
+                return staircase_plane[0];
+            }
+            set
+            {
+                staircase_plane[0] = value;
+            }
+        }
+        [DisplayName("Staircase 2 - Plane"), Description("The destination Plane for the second stair/staircase in the room in object order for example in a multiple floor room 1 would put you on top floor, 0 on the floor below"), Category("Transitions")]
+        public byte Staircase2Plane
+        {
+            get
+            {
+                return staircase_plane[1];
+            }
+            set
+            {
+                staircase_plane[1] = value;
+            }
+        }
+        [DisplayName("Staircase 3 - Plane"), Description("The destination Plane for the third stair/staircase in the room in object order for example in a multiple floor room 1 would put you on top floor, 0 on the floor below"), Category("Transitions")]
+        public byte Staircase3Plane
+        {
+            get
+            {
+                return staircase_plane[2];
+            }
+            set
+            {
+                staircase_plane[2] = value;
+            }
+        }
+        [DisplayName("Staircase 4 - Plane"), Description("The destination Plane for the fourth stair/staircase in the room in object order for example in a multiple floor room 1 would put you on top floor, 0 on the floor below"), Category("Transitions")]
+        public byte Staircase4Plane
+        {
+            get
+            {
+                return staircase_plane[3];
+            }
+            set
+            {
+                staircase_plane[3] = value;
+            }
+        }
 
         public Room(int index)
         {
@@ -95,14 +427,25 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void reloadGfx(bool noPalette = false)
+        public void reloadGfx(bool noPalette = false,byte entrance_blockset = 0xFF)
         {
             int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer+1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
             gfxPointer = Addresses.snestopc(gfxPointer);
             for (int i = 0; i < 8; i++)
             {
                 blocks[i] = ROM.DATA[gfxPointer + (blockset * 8) + i];
+                if (i >= 6 && i <= 6)
+                {
+                    if (entrance_blockset != 0xFF) //3-6
+                    {
+                        if (ROM.DATA[(Constants.entrance_gfx_group + (i - 3)) + (4 * entrance_blockset)] != 0)
+                        {
+                            blocks[i] = ROM.DATA[(Constants.entrance_gfx_group + (i-3)) + (4 * entrance_blockset)];
+                        }
+                    }
+                }
             }
+
 
             for (int i = 0; i < 4; i++)
             {
@@ -113,7 +456,7 @@ namespace ZeldaFullEditor
             int gfxanimatedPointer = (ROM.DATA[Constants.gfx_animated_pointer + 2] << 16) + (ROM.DATA[Constants.gfx_animated_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_animated_pointer]);
             gfxanimatedPointer = Addresses.snestopc(gfxanimatedPointer);
             blocks[9] = ROM.DATA[gfxanimatedPointer + blockset];
-
+            //blocks[13] = 7;
             blocks[14] = 0; blocks[15] = 10; blocks[16] = 6; blocks[17] = 7; //Static Sprites Blocksets (fairy,pot,ect...)
             blocks[18] = 90; blocks[19] = 91; blocks[20] = 92; blocks[21] = 93;//Items Sprites
             if (Constants.Rando)
@@ -207,23 +550,37 @@ namespace ZeldaFullEditor
         }
 
 
-        public void drawSprites()
+        public void drawSprites(bool layer1 = true,bool layer2 = true)
         {
             Sprite prevSprite = null;
             foreach (Sprite spr in sprites)
             {
-                
-                if (spr.id != 0xE4)
+                if (layer1 == false)
                 {
-                    spr.Draw();
-                }
-                if (spr.id == 0xE4 && spr.x == 0x00 && spr.y == 0x1E && spr.layer == 1 && ((spr.subtype << 3)+spr.overlord)== 0x18)
-                {
-                    if (prevSprite != null)
+                    if (spr.layer == 0)
                     {
-                        prevSprite.DrawKey();
+                        continue;
                     }
                 }
+                if (layer2 == false)
+                {
+                    if (spr.layer == 1)
+                    {
+                        continue;
+                    }
+                }
+                if (spr.id != 0xE4)
+                    {
+                        spr.Draw();
+                    }
+                    if (spr.id == 0xE4 && spr.x == 0x00 && spr.y == 0x1E && spr.layer == 1 && ((spr.subtype << 3) + spr.overlord) == 0x18)
+                    {
+                        if (prevSprite != null)
+                        {
+                            prevSprite.DrawKey();
+                        }
+                    }
+                
 
                 prevSprite = spr;
             }
@@ -789,7 +1146,6 @@ namespace ZeldaFullEditor
                                 tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Chest;
                                 chest_list.Add(new Chest(posX, posY, chests_in_room[0].itemIn, chests_in_room[0].bigChest));
                                 chests_in_room.RemoveAt(0);
-
                             }
                         }
                         else if (oid == 0xFB1)
@@ -2049,13 +2405,14 @@ namespace ZeldaFullEditor
             bg2 = (Background2)((ROM.DATA[header_location] >> 5) & 0x07);
             collision = (byte)((ROM.DATA[header_location] >> 2) & 0x07);
             light = (((ROM.DATA[header_location]) & 0x01) == 1 ? true : false);
+            //WTF oh i see this is bad :D
 
             palette = (byte)((ROM.DATA[header_location + 1] & 0x3F));
             blockset = (byte)((ROM.DATA[header_location + 2]));
             spriteset = (byte)((ROM.DATA[header_location + 3]));
             effect = (byte)((ROM.DATA[header_location + 4]));
-            tag1 = (byte)((ROM.DATA[header_location + 5]));
-            tag2 = (byte)((ROM.DATA[header_location + 6]));
+            tag1 = (TagKey)((ROM.DATA[header_location + 5]));
+            tag2 = (TagKey)((ROM.DATA[header_location + 6]));
 
             holewarp_plane = (byte)((ROM.DATA[header_location + 7]) & 0x03);
             staircase_plane[0] = (byte)((ROM.DATA[header_location + 7]>>2) & 0x03);

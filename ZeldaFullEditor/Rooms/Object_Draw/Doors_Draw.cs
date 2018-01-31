@@ -86,7 +86,7 @@ namespace ZeldaFullEditor
                 w = 4;
                 h = 3;
             }
-            if (door_dir == 1)
+            if (door_dir == 1) //if direction is down y+=1 ? why
             {
                 y += 1;
             }
@@ -99,26 +99,113 @@ namespace ZeldaFullEditor
             {
                 x += 1;
             }
-            nx = x;
-            ny = y;
-            ox = x;
-            oy = y;
             if ((((id >> 8) & 0xFF) == 22) || (((id >> 8) & 0xFF) == 18))
             {
                 tiles.Clear();
                 addTiles(12, 0);//??
             }
-
-                int tid = 0;
-                for (int xx = 0; xx < w; xx++)
+            if ((((id >> 8) & 0xFF) == 0x0E))
+            {
+                tiles.Clear();
+                addTiles(16, Constants.tile_address + 0x26F6);
+                w = 4;
+                h = 4;
+                y -= 1;
+            }
+            int tid = 0;
+            if ((((id >> 8) & 0xFF) == 0x0A))
+            {
+                tiles.Clear();
+                addTiles(80, Constants.tile_address + 0x2656);
+                w = 10;
+                h = 8;
+                x -= 3;
+                y -= 5;
+                nx = x;
+                ny = y;
+                ox = x;
+                oy = y;
+                for (int yy = 0; yy < h; yy++)
                 {
-                    for (int yy = 0; yy < h; yy++)
-                    {
+                    for (int xx = 0; xx < w; xx++)
+                {
+
                         draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
                         tid++;
                     }
                 }
+                return;
+            }
+            if ((((id >> 8) & 0xFF) == 0x30))
+            {
+                tiles.Clear();
+                addTiles(6, Constants.tile_address + 0x2BE8);
+                addTiles(6, 0x1B5E + 0x2926);
+                nx = x;
+                ny = y;
+                ox = x;
+                oy = y;
+                h = 6;
+                w = 0x12;
+                for (int yy = 5; yy >= 0; yy--)
+                {
+                    draw_tile(tiles[tid], (0) * 8, (yy) * 8);
+                    tid++;
+                }
+                for (int yy = 5; yy >= 0; yy--)
+                {
+                    draw_tile(tiles[tid], (1) * 8, (yy) * 8);
+                    tid++;
+                }
+                tiles.Clear();
+                addTiles(1, Constants.tile_address + 0x293E);
+                tid = 0;
+                for (int xx = 0; xx < w; xx++)
+                {
+                    for (int yy = 0; yy < h; yy++) //FAcePALM
+                    {
+                        draw_tile(tiles[tid], (xx+2) * 8, (yy) * 8); //??
+                    }
+                }
+
+
+                return;
+            }
+            if ((((id >> 8) & 0xFF) == 0x32))
+            {
+                tiles.Clear();
+                addTiles(16, Constants.tile_address + 0x078A);
+                nx = x;
+                ny = y;
+                ox = x;
+                oy = y;
+                h = 4;
+                w = 4;
+
+            }
+
+                //078A
+                nx = x;
+            ny = y;
+            ox = x;
+            oy = y;
+
             
+            for (int xx = 0; xx < w; xx++)
+            {
+                for (int yy = 0; yy < h; yy++)
+                {
+                    draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
+                    tid++;
+                }
+            }
+
+
+            // 26F6
+
+
+
+
         }
 
     }

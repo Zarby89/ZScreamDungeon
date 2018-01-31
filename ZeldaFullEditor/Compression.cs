@@ -8,17 +8,25 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Runtime.InteropServices;
+
 namespace ZeldaFullEditor
 {
     public static class Compression
     {
+
+        //[DllImport("zelda3compression.dll")]
+        //public static extern unsafe IntPtr alttp_decompress_gfx(string c_data, uint start, uint max_lenght, uint uncompressed_data_size, uint compressed_lenght);
+        //static public extern unsafe byte* alttp_decompress_gfx(byte[] data, uint start, uint max_length, ref uint uncompress_data_size, ref uint compressed_lenght);
+
+       
+        //alttp_decompress_gfx(const char* c_data, const unsigned int start, unsigned int max_lenght, unsigned int* uncompressed_data_size, unsigned int* compressed_lenght);
         //Tiles graphics decompression set it on 0x600bytes no matter what to prevent bugs
         public static byte[] Decompress(int pos, byte[] ROM_DATA, bool reversed = false, bool showcount = false)
         {
 
             List<byte> dataBuffer = new List<byte>();
             bool done = false;
-            int count = 0;
             while (done == false)
             {
 

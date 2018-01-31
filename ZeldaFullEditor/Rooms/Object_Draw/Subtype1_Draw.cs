@@ -4711,7 +4711,7 @@ namespace ZeldaFullEditor
             int sizex = ((size >> 2) & 0x03);
             int sizey = ((size) & 0x03);
 
-            byte f = (byte)(room.floor1 << 4);
+            byte f = (byte)(room.floor1 << 4); //how can it be null oO ?
             int pos = Constants.tile_address + f;
             addTiles(8, pos);//??
 

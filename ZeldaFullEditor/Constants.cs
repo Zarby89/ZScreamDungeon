@@ -64,7 +64,9 @@ namespace ZeldaFullEditor
         public static int pit_count = 0x394A6;
         //doors
         public static int door_gfx_up = 0x4D9E;
+        //
         public static int door_gfx_down = 0x4E06;
+        public static int door_gfx_cavexit_down = 0x4E06;
         public static int door_gfx_left = 0x4E66;
         public static int door_gfx_right = 0x4EC6;
 
@@ -84,6 +86,8 @@ namespace ZeldaFullEditor
         public static int entrance_xposition = 0x15063;// 0x14DC7 2bytes
         public static int entrance_camerayposition = 0x1516D;// 0x14ED1 2bytes
         public static int entrance_cameraxposition = 0x15277;// 0x14FDB 2bytes
+
+        public static int entrance_gfx_group = 0x5D97;
         public static int entrance_blockset = 0x15381; //0x150E5 1byte
         public static int entrance_floor = 0x15406; // 0x1516A 1byte
         public static int entrance_dungeon = 0x1548B; // 0x151EF 1byte (dungeon id)
@@ -93,10 +97,34 @@ namespace ZeldaFullEditor
         public static int entrance_scrollquadrant = 0x1569F; //0x15403 1byte
         public static int entrance_exit = 0x15724; //0x15488 //2byte word
         public static int entrance_music = 0x1582E; //0x15592
+
+        public static int startingentrance_room = 0x15B6E; //0x158D2 //word value for each room
+        public static int startingentrance_scrolledge = 0x15B7C; //0x158E0 //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+        public static int startingentrance_yscroll = 0x15BB4; // 0x14AA9 //2bytes each room
+        public static int startingentrance_xscroll = 0x15BC2; // 0x14BB3 //2bytes
+        public static int startingentrance_yposition = 0x15BD0; //0x14CBD 2bytes
+        public static int startingentrance_xposition = 0x15BDE;// 0x14DC7 2bytes
+        public static int startingentrance_camerayposition = 0x15BEC;// 0x14ED1 2bytes
+        public static int startingentrance_cameraxposition = 0x15BFA;// 0x14FDB 2bytes
+
+
+        public static int startingentrance_blockset = 0x15C08; //0x150E5 1byte
+        public static int startingentrance_floor = 0x15C0F; // 0x1516A 1byte
+        public static int startingentrance_dungeon = 0x15C16; // 0x151EF 1byte (dungeon id)
+
+        public static int startingentrance_door = 0x15C2B; // 0x15274 1byte
+
+        public static int startingentrance_ladderbg = 0x15C1D; //0x152F9 //1 byte, ---b ---a b = bg2, a = need to check -_-
+        public static int startingentrance_scrolling = 0x1561A;//0x1537E //1byte --h- --v- 
+        public static int startingentrance_scrollquadrant = 0x1569F; //0x15403 1byte
+        public static int startingentrance_exit = 0x15C32; //0x15488 //2byte word
+        public static int startingentrance_music = 0x15C4E; //0x15592
+        public static int startingentrance_entrance = 0x15C40;
+
         public static int items_data_start = 0xDDE9; //save purpose
         public static int items_data_end = 0xE6B2; //save purpose
         public static int hud_palettes = 0xDD660;
-        
+        public static int initial_equipement = 0x271A6;
         public static int messages_id_dungeon = 0x3F61D;
 
         public static string[] RoomEffect = new string[]
@@ -126,7 +154,7 @@ namespace ZeldaFullEditor
             room_items_pointers = 0xDB67;
             torch_data = 0x2704A;
 
-
+            entrance_gfx_group = 0x5DD7;
             sprite_blockset_pointer = 0x5B97;
             blocks_pointer1 = 0x1585E;
             blocks_pointer2 = 0x15865;
@@ -142,7 +170,7 @@ namespace ZeldaFullEditor
             gfx_3_pointer = 0x67DA;
             messages_id_dungeon = 0x3F5F7;
             gfx_animated_pointer = 0x10624;
-            
+            initial_equipement = 0x183000;
 
 
             //Entrances
@@ -163,6 +191,31 @@ namespace ZeldaFullEditor
             entrance_scrollquadrant = 0x15403;// 1byte
             entrance_exit = 0x15488; //2byte word
             entrance_music = 0x15592;
+
+
+            startingentrance_room -= 0x29C; //0x158D2 //word value for each room
+            startingentrance_scrolledge -= 0x29C; //0x158E0 //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+            startingentrance_yscroll -= 0x29C; // 0x14AA9 //2bytes each room
+            startingentrance_xscroll -= 0x29C; // 0x14BB3 //2bytes
+            startingentrance_yposition -= 0x29C; //0x14CBD 2bytes
+            startingentrance_xposition -= 0x29C;// 0x14DC7 2bytes
+            startingentrance_camerayposition -= 0x29C;// 0x14ED1 2bytes
+            startingentrance_cameraxposition -= 0x29C;// 0x14FDB 2bytes
+
+
+            startingentrance_blockset -= 0x29C; //0x150E5 1byte
+            startingentrance_floor -= 0x29C; // 0x1516A 1byte
+            startingentrance_dungeon -= 0x29C;// 0x151EF 1byte (dungeon id)
+
+            startingentrance_door -= 0x29C; // 0x15274 1byte
+
+            startingentrance_ladderbg -= 0x29C; //0x152F9 //1 byte, ---b ---a b = bg2, a = need to check -_-
+            startingentrance_scrolling -= 0x29C;//0x1537E //1byte --h- --v- 
+            startingentrance_scrollquadrant -= 0x29C; //0x15403 1byte
+            startingentrance_exit -= 0x29C; //0x15488 //2byte word
+            startingentrance_music -= 0x29C; //0x15592
+            startingentrance_entrance -= 0x29C;
+
 
 
 

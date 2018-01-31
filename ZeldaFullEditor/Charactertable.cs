@@ -148,7 +148,7 @@ namespace ZeldaFullEditor
                     pos += 8;
                     continue;
                 }
-                //FE77
+                //FE77 oO what is wrong
                 if ((text[pos] == '[') && (text[pos + 1] == 'C') && (text[pos + 2] == 'O') && (text[pos + 3] == 'L') && (text[pos + 4] == ' ') && (text[pos + 7] == ']'))
                 {
                     bytes.Add(0xFE);
@@ -190,10 +190,7 @@ namespace ZeldaFullEditor
                     pos += 1;
                     continue;
                 }
-                if (text[pos] == '[')
-                {
-                    Console.WriteLine(text);
-                }
+
                     ushort cvalue = charToHex(text[pos].ToString());
                 if ((cvalue & 0xFD00) == 0xFD00)
                 {
@@ -217,6 +214,16 @@ namespace ZeldaFullEditor
 
         public string hexToChar(byte hex, bool iskanji = false)
         {
+            var c = kanji.FirstOrDefault(x => x.Value == hex);
+            if (iskanji == true)
+            {
+                c = kanji.FirstOrDefault(x => x.Value == hex);
+                if (c.Key != null)
+                {
+                    return c.Key;
+                }
+            }
+
             if (hex >= 0xA0 && hex <= 0xA9) // 0-9
             {
                 hex -= 0x70;
@@ -229,22 +236,13 @@ namespace ZeldaFullEditor
                 return ((char)hex).ToString();
             }
 
-            if (iskanji == true)
+
+            c = tablechar.FirstOrDefault(x => x.Value == hex);
+            if (c.Key != null)
             {
-                var c = kanji.FirstOrDefault(x => x.Value == hex);
-                if (c.Key != null)
-                {
-                    return c.Key;
-                }
+                return c.Key;
             }
-            else
-            {
-                var c = tablechar.FirstOrDefault(x => x.Value == hex);
-                if (c.Key != null)
-                {
-                    return c.Key;
-                }
-            }
+           
             return null;
         }
 

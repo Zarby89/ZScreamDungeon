@@ -33,10 +33,6 @@ namespace ZeldaFullEditor
         public bool selected = false;
         public bool redraw = false;
         public Bitmap bitmap;
-        int lowerX = 0;
-        int lowerY = 0;
-        int higherX = 0;
-        int higherY = 0;
         public int width = 16;
         public int height = 16;
         public byte scroll_x = 2;
@@ -66,14 +62,14 @@ namespace ZeldaFullEditor
         public void get_scroll_x()
         {
 
-            if (id == 0x00 || id == 0x60)
+            if (id == 0x00)
             {
                 scroll_x = 2;
                 special_zero_size = 32;
                 base_width = 2;
                 return;
             }
-            else if (id == 0x01 || id == 0x02 || id == 0xB9 || id == 0xB8 || id == 0x61 || id == 0x62 || id == 0x90 || id == 0x91 || id == 0x92 || id == 0x93)
+            else if (id == 0x01 || id == 0x02 || id == 0xB9 || id == 0xB8)
             {
                 scroll_x = 2;
                 special_zero_size = 26;
@@ -116,6 +112,20 @@ namespace ZeldaFullEditor
 
         public void get_scroll_y()
         {
+            if (id == 0x60) //WTF !?!
+            {
+                scroll_y = 2;
+                special_zero_size = 32;
+                base_height = 2;
+                return;
+            }
+            else if (id == 0x61 || id == 0x62 || id == 0x90 || id == 0x91 || id == 0x92 || id == 0x93)
+            {
+                scroll_y = 2;
+                special_zero_size = 26;
+                base_height = 2;
+                return;
+            }
             byte oldBaseSize = size;
             size = 1;
             checksize = true;
@@ -207,6 +217,10 @@ namespace ZeldaFullEditor
 
         public void draw_tile(Tile t, int x, int y, int yfix = 0)
         {
+            if (id == 0x94 || id == 0xBA) // transparent tiles !
+            {
+                t.palette = 6;
+            }
 
             if (checksize)
             {

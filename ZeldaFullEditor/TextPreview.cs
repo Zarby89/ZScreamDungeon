@@ -12,6 +12,8 @@ namespace ZeldaFullEditor
     public partial class TextPreview : Form
     {
         byte[] tiles;
+        private Button button1;
+        private Button button2;
         public Charactertable table;
         public TextPreview(Charactertable table)
         {
@@ -135,6 +137,8 @@ namespace ZeldaFullEditor
         private void InitializeComponent()
         {
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -146,11 +150,34 @@ namespace ZeldaFullEditor
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(281, 122);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Scroll";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(200, 122);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "Scroll Back";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // TextPreview
             // 
-            this.ClientSize = new System.Drawing.Size(368, 129);
+            this.ClientSize = new System.Drawing.Size(368, 161);
+            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.pictureBox1);
             this.Name = "TextPreview";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Text Preview";
             this.Load += new System.EventHandler(this.TextPreview_Load);
             this.Shown += new System.EventHandler(this.TextPreview_Shown);
@@ -164,11 +191,15 @@ namespace ZeldaFullEditor
 
         }
         public string text = "THE BLACK CATS[LN2]ARE HUNGRY.[LN3]COME BACK WITH";
-
+        public int scroll_max = 0;
+        public int scroll = 0;
+        Bitmap previewBitmap = new Bitmap(172, 520, PixelFormat.Format32bppArgb); //TODO : Add dynamic bitmap size
         private void TextPreview_Shown(object sender, EventArgs e)
         {
-            Bitmap b = new Bitmap(172, 52, PixelFormat.Format32bppArgb);
-            Graphics g = Graphics.FromImage(b);
+
+            scroll = 0;
+            Graphics g = Graphics.FromImage(previewBitmap);
+            g.Clear(Color.Black);
             //3,11 starting draw pos
             //14 character * 3, 3 pixel between lines
             int pos = 0;
@@ -180,7 +211,7 @@ namespace ZeldaFullEditor
             {
 
                 //F7
-                if ((text[pos] == '[') && (text[pos+1] == 'L') && (text[pos + 2] == 'N') && (text[pos + 3] == '1') && (text[pos + 4] == ']'))
+                if ((text[pos] == '[') && (text[pos + 1] == 'L') && (text[pos + 2] == 'N') && (text[pos + 3] == '1') && (text[pos + 4] == ']'))
                 {
                     linePos = 0;
                     line = 0;
@@ -221,34 +252,34 @@ namespace ZeldaFullEditor
                 {
                     linePos = 0;
                     line += 1;
-                    pos += 6;
+                    pos += 5;
                     continue;
                 }
-                
+
                 if ((text[pos] == '[') && (text[pos + 1] == 'P') && (text[pos + 2] == 'I') && (text[pos + 3] == 'C') && (text[pos + 4] == ']'))
                 {
-                    pos += 6;
+                    pos += 5;
                     continue;
                 }
 
                 if ((text[pos] == '[') && (text[pos + 1] == 'C') && (text[pos + 2] == 'H') && (text[pos + 3] == '1') && (text[pos + 4] == ']'))
                 {
-                    pos += 6;
+                    pos += 5;
                     continue;
                 }
                 if ((text[pos] == '[') && (text[pos + 1] == 'C') && (text[pos + 2] == 'H') && (text[pos + 3] == '2') && (text[pos + 4] == ']'))
                 {
-                    pos += 6;
+                    pos += 5;
                     continue;
                 }
                 if ((text[pos] == '[') && (text[pos + 1] == 'C') && (text[pos + 2] == 'H') && (text[pos + 3] == '3') && (text[pos + 4] == ']'))
                 {
-                    pos += 6;
+                    pos += 5;
                     continue;
                 }
                 if ((text[pos] == '[') && (text[pos + 1] == 'I') && (text[pos + 2] == 'T') && (text[pos + 3] == 'M') && (text[pos + 4] == ']'))
                 {
-                    pos += 6;
+                    pos += 5;
                     continue;
                 }
                 if ((text[pos] == '[') && (text[pos + 1] == 'N') && (text[pos + 2] == 'A') && (text[pos + 3] == 'M') && (text[pos + 4] == ']'))
@@ -318,7 +349,7 @@ namespace ZeldaFullEditor
                     pos += 8;
                     continue;
                 }
-                if ((text[pos] == '[') && (text[pos+3] == ']'))
+                if ((text[pos] == '[') && (text[pos + 3] == ']'))
                 {
                     g.DrawImage(getBitmap(byte.Parse(text[pos + 1].ToString() + text[pos + 2].ToString(), System.Globalization.NumberStyles.HexNumber), colorIndex), 5 + (linePos * 11), 1 + (line * 16));
                     pos += 4;
@@ -354,7 +385,7 @@ namespace ZeldaFullEditor
 
                 linePos++;
                 pos++;
-                if (linePos>=15)
+                if (linePos >= 15)
                 {
                     linePos = 0;
                     line++;
@@ -364,11 +395,40 @@ namespace ZeldaFullEditor
             Graphics gg = Graphics.FromImage(bb);
             gg.Clear(Color.Black);
             gg.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-            gg.DrawImage(b, new Rectangle(0, 0, 344, 104));
-           
+            gg.DrawImage(previewBitmap, new Rectangle(0, 0, 344, 104), 0, 0, 172, 52 + (17*scroll), GraphicsUnit.Pixel);
+            
+
             pictureBox1.Image = bb;
-            
-            
+
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (scroll < 10)
+            {
+                scroll++;
+                Bitmap bb = new Bitmap(344, 104, PixelFormat.Format32bppArgb);
+                Graphics gg = Graphics.FromImage(bb);
+                gg.Clear(Color.Black);
+                gg.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                gg.DrawImage(previewBitmap, new Rectangle(0, 0, 344, 104), 0, (16 * scroll), 172, 52, GraphicsUnit.Pixel);
+                pictureBox1.Image = bb;
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (scroll > 0)
+            {
+                scroll--;
+                Bitmap bb = new Bitmap(344, 104, PixelFormat.Format32bppArgb);
+                Graphics gg = Graphics.FromImage(bb);
+                gg.Clear(Color.Black);
+                gg.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                gg.DrawImage(previewBitmap, new Rectangle(0, 0, 344, 104), 0, (16 * scroll), 172, 52, GraphicsUnit.Pixel);
+                pictureBox1.Image = bb;
+            }
         }
     }
 }

@@ -10,7 +10,7 @@ namespace ZeldaFullEditor
   public class Room_Name
   {
 
-    public string[] room_name = new string[]{
+        public string[] room_name = new string[]{
       "Ganon","Hyrule Castle (North Corridor)","Behind Sanctuary (Switch)",
       "Houlihan","Turtle Rock (Crysta-Roller)",
       "Empty","Swamp Palace (Arrghus[Boss])",
@@ -98,5 +98,5 @@ namespace ZeldaFullEditor
       "Shop","Ice Cave","Smith","Fortune Teller","MiniMoldorm Cave","Under Rock Caves","Smith","Cave","Mazeblock Cave",
       "Smith Peg Cave"
     };
-  }
+    }
 }

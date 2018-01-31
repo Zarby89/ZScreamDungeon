@@ -523,6 +523,7 @@ namespace ZeldaFullEditor
             name = "Chest";
             sort = Sorting.NonScalable;
             addTiles(4, pos);//??
+            this.options |= ObjectOption.Chest;
         }
         public override void Draw()
         {
@@ -991,15 +992,23 @@ namespace ZeldaFullEditor
             int tid = 0;
             for (int yy = 0; yy < 14; yy++)
             {
+                //390
+
                 tiles[tid].mirror_x = false;
                 draw_tile(tiles[tid], (0) * 8, (yy) * 8);
+                tiles[tid + 14].mirror_x = false;
                 draw_tile(tiles[tid+14], (1) * 8, (yy) * 8);
                 draw_tile(tiles[tid+14], (2) * 8, (yy) * 8);
+                tiles[tid + 28].mirror_x = false;
                 draw_tile(tiles[tid+28], (3) * 8, (yy) * 8);
+                tiles[tid + 48].mirror_x = true;
                 draw_tile(tiles[tid+42], (4) * 8, (yy) * 8);
+                tiles[tid + 56].mirror_x = false;
                 draw_tile(tiles[tid + 56], (5) * 8, (yy) * 8);
+
+                tiles[tid + 70].mirror_x = false;
                 draw_tile(tiles[tid + 70], (6) * 8, (yy) * 8);
-                tiles[tid+70].mirror_x = true;
+                tiles[tid + 70].mirror_x = true;
                 draw_tile(tiles[tid + 70], (7) * 8, (yy) * 8);
                 tiles[tid + 56].mirror_x = true;
                 draw_tile(tiles[tid + 56], (8) * 8, (yy) * 8);
@@ -1203,6 +1212,7 @@ namespace ZeldaFullEditor
             name = "Big Chest";
             addTiles(12, pos);//??
             sort = Sorting.NonScalable | Sorting.Dungeons;
+            options |= ObjectOption.Chest;
         }
         public override void Draw()
         {

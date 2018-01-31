@@ -84,29 +84,29 @@ namespace ZeldaFullEditor
             {
                 byte p = 3;
                 if (room.blocks[13] == 83) { p = 15; };
-                drawSpriteTile((x * 16), (y * 16), 14, 12, p);//TODO: Change palette
-                drawSpriteTile((x * 16), (y * 16), 14, 14, p);//TODO: Change palette
+                drawSpriteTile((x * 16), (y * 16), 14, 12, p);
+                drawSpriteTile((x * 16), (y * 16), 14, 14, p);
             }
             else if (id == 0x05)
             {
                 byte p = 3;
                 if (room.blocks[13] == 83) { p = 15; };
-                drawSpriteTile((x * 16), (y * 16), 14, 12, p);//TODO: Change palette
-                drawSpriteTile((x * 16), (y * 16), 14, 14, p);//TODO: Change palette
+                drawSpriteTile((x * 16), (y * 16), 14, 12, p);
+                drawSpriteTile((x * 16), (y * 16), 14, 14, p);
             }
             else if (id == 0x06)
             {
                 byte p = 3;
                 if (room.blocks[13] == 83) { p = 15; };
-                drawSpriteTile((x * 16), (y * 16), 14, 12, p);//TODO: Change palette
-                drawSpriteTile((x * 16), (y * 16), 14, 14, p);//TODO: Change palette
+                drawSpriteTile((x * 16), (y * 16), 14, 12, p);
+                drawSpriteTile((x * 16), (y * 16), 14, 14, p);
             }
             else if (id == 0x07)
             {
                 byte p = 3;
                 if (room.blocks[13] == 83) { p = 15; };
-                drawSpriteTile((x * 16), (y * 16), 14, 12, p);//TODO: Change palette
-                drawSpriteTile((x * 16), (y * 16), 14, 14, p);//TODO: Change palette
+                drawSpriteTile((x * 16), (y * 16), 14, 12, p);
+                drawSpriteTile((x * 16), (y * 16), 14, 14, p);
             }
             else if (id == 0x08)
             {
@@ -198,7 +198,7 @@ namespace ZeldaFullEditor
             }
             else if (id == 0x1C) //Statue
             {
-                drawSpriteTile((x * 16), (y * 16) + 8, 0, 12, 15); //TODO : FIND PALETTE
+                drawSpriteTile((x * 16), (y * 16) + 8, 0, 12, 15); 
                 drawSpriteTile((x * 16), (y * 16), 2, 12, 15, false, false, 1, 1);
                 drawSpriteTile((x * 16) + 8, (y * 16), 2, 12, 15, true, false, 1, 1);
             }
@@ -1100,29 +1100,12 @@ namespace ZeldaFullEditor
                         {
                             if (dest > 0)
                             {
-                                byte alpha = 255;
-
-
-                                if (GFX.singledata[(src)] == 0)
+                                if (GFX.singledata[(src)] != 0)
                                 {
-                                    alpha = 0;
-                                }
-                                else
-                                {
-                                    /*if (iskey)
-                                    {
-                                        GFX.currentData[dest] = (byte)(GFX.spritesPalettes[GFX.singledata[(src)], pal].B ^ 0xFF);
-                                        GFX.currentData[dest + 1] = (byte)(GFX.spritesPalettes[GFX.singledata[(src)], pal].G ^ 0xFF);
-                                        GFX.currentData[dest + 2] = (byte)(GFX.spritesPalettes[GFX.singledata[(src)], pal].R ^ 0xFF);
-                                        GFX.currentData[dest + 3] = 255;
-                                    }
-                                    else
-                                    {*/
-                                        GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].B);
-                                        GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].G);
-                                        GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].R);
-                                        GFX.currentData[dest + 3] = 255;
-                                    //}
+                                    GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].B);
+                                    GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].G);
+                                    GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].R);
+                                    GFX.currentData[dest + 3] = 255;
                                 }
                             }
                         }

@@ -30,6 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.nonscalableCheckbox = new System.Windows.Forms.CheckBox();
+            this.verticalCheckbox = new System.Windows.Forms.CheckBox();
+            this.horizontalCheckbox = new System.Windows.Forms.CheckBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.sortingCombobox = new System.Windows.Forms.ComboBox();
@@ -37,12 +40,9 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.tileobjectsListview = new System.Windows.Forms.ListView();
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.okButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.horizontalCheckbox = new System.Windows.Forms.CheckBox();
-            this.verticalCheckbox = new System.Windows.Forms.CheckBox();
-            this.nonscalableCheckbox = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -62,12 +62,52 @@
             this.panel1.Size = new System.Drawing.Size(640, 52);
             this.panel1.TabIndex = 1;
             // 
+            // nonscalableCheckbox
+            // 
+            this.nonscalableCheckbox.AutoSize = true;
+            this.nonscalableCheckbox.Checked = true;
+            this.nonscalableCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.nonscalableCheckbox.Location = new System.Drawing.Point(365, 8);
+            this.nonscalableCheckbox.Name = "nonscalableCheckbox";
+            this.nonscalableCheckbox.Size = new System.Drawing.Size(90, 17);
+            this.nonscalableCheckbox.TabIndex = 5;
+            this.nonscalableCheckbox.Text = "Non-Scalable";
+            this.nonscalableCheckbox.UseVisualStyleBackColor = true;
+            this.nonscalableCheckbox.CheckedChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // verticalCheckbox
+            // 
+            this.verticalCheckbox.AutoSize = true;
+            this.verticalCheckbox.Checked = true;
+            this.verticalCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.verticalCheckbox.Location = new System.Drawing.Point(298, 8);
+            this.verticalCheckbox.Name = "verticalCheckbox";
+            this.verticalCheckbox.Size = new System.Drawing.Size(61, 17);
+            this.verticalCheckbox.TabIndex = 4;
+            this.verticalCheckbox.Text = "Vertical";
+            this.verticalCheckbox.UseVisualStyleBackColor = true;
+            this.verticalCheckbox.CheckedChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
+            // horizontalCheckbox
+            // 
+            this.horizontalCheckbox.AutoSize = true;
+            this.horizontalCheckbox.Checked = true;
+            this.horizontalCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.horizontalCheckbox.Location = new System.Drawing.Point(219, 8);
+            this.horizontalCheckbox.Name = "horizontalCheckbox";
+            this.horizontalCheckbox.Size = new System.Drawing.Size(73, 17);
+            this.horizontalCheckbox.TabIndex = 3;
+            this.horizontalCheckbox.Text = "Horizontal";
+            this.horizontalCheckbox.UseVisualStyleBackColor = true;
+            this.horizontalCheckbox.CheckedChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
             // textBox1
             // 
             this.textBox1.Location = new System.Drawing.Point(45, 6);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(168, 20);
             this.textBox1.TabIndex = 2;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // label1
             // 
@@ -81,6 +121,7 @@
             // sortingCombobox
             // 
             this.sortingCombobox.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.sortingCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.sortingCombobox.FormattingEnabled = true;
             this.sortingCombobox.Location = new System.Drawing.Point(0, 31);
             this.sortingCombobox.Name = "sortingCombobox";
@@ -118,7 +159,7 @@
             this.tileobjectsListview.Name = "tileobjectsListview";
             this.tileobjectsListview.Size = new System.Drawing.Size(374, 296);
             this.tileobjectsListview.TabIndex = 3;
-            this.tileobjectsListview.TileSize = new System.Drawing.Size(370, 32);
+            this.tileobjectsListview.TileSize = new System.Drawing.Size(370, 16);
             this.tileobjectsListview.UseCompatibleStateImageBehavior = false;
             this.tileobjectsListview.View = System.Windows.Forms.View.Tile;
             this.tileobjectsListview.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listView1_ItemSelectionChanged);
@@ -130,74 +171,42 @@
             this.imageList1.ImageSize = new System.Drawing.Size(32, 32);
             this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
-            // button1
+            // okButton
             // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(553, 324);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Ok";
-            this.button1.UseVisualStyleBackColor = true;
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.okButton.Location = new System.Drawing.Point(553, 324);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.TabIndex = 4;
+            this.okButton.Text = "Ok";
+            this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
-            // button2
+            // cancelButton
             // 
-            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(472, 324);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Cancel";
-            this.button2.UseVisualStyleBackColor = true;
+            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButton.Location = new System.Drawing.Point(472, 324);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 5;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
             // timer1
             // 
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // horizontalCheckbox
-            // 
-            this.horizontalCheckbox.AutoSize = true;
-            this.horizontalCheckbox.Checked = true;
-            this.horizontalCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.horizontalCheckbox.Location = new System.Drawing.Point(219, 8);
-            this.horizontalCheckbox.Name = "horizontalCheckbox";
-            this.horizontalCheckbox.Size = new System.Drawing.Size(73, 17);
-            this.horizontalCheckbox.TabIndex = 3;
-            this.horizontalCheckbox.Text = "Horizontal";
-            this.horizontalCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // verticalCheckbox
-            // 
-            this.verticalCheckbox.AutoSize = true;
-            this.verticalCheckbox.Checked = true;
-            this.verticalCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.verticalCheckbox.Location = new System.Drawing.Point(298, 8);
-            this.verticalCheckbox.Name = "verticalCheckbox";
-            this.verticalCheckbox.Size = new System.Drawing.Size(61, 17);
-            this.verticalCheckbox.TabIndex = 4;
-            this.verticalCheckbox.Text = "Vertical";
-            this.verticalCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // nonscalableCheckbox
-            // 
-            this.nonscalableCheckbox.AutoSize = true;
-            this.nonscalableCheckbox.Checked = true;
-            this.nonscalableCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.nonscalableCheckbox.Location = new System.Drawing.Point(365, 8);
-            this.nonscalableCheckbox.Name = "nonscalableCheckbox";
-            this.nonscalableCheckbox.Size = new System.Drawing.Size(90, 17);
-            this.nonscalableCheckbox.TabIndex = 5;
-            this.nonscalableCheckbox.Text = "Non-Scalable";
-            this.nonscalableCheckbox.UseVisualStyleBackColor = true;
-            // 
             // PickObject
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(640, 354);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.cancelButton);
+            this.Controls.Add(this.okButton);
             this.Controls.Add(this.tileobjectsListview);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -220,8 +229,8 @@
         private System.Windows.Forms.ComboBox sortingCombobox;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.CheckBox verticalCheckbox;

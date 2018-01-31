@@ -15,18 +15,27 @@ namespace ZeldaFullEditor
         public PickObject()
         {
             InitializeComponent();
+           
         }
-
+        public bool alreadyInit = false;
         public List<Room_Object> roomObjects = new List<Room_Object>();
         public Room room;
         private void PickObject_Load(object sender, EventArgs e)
         {
-
+            
         }
-        public void createObjects()
+        
+        public void createObjects(Room room)
         {
+            
+            this.room = room;
+            if (alreadyInit == true)
+            {
+                return;
+            }
+            alreadyInit = true;
             //Parallel.For(0, 0xE8, i => //all type 1 objects
-            for(int i = 0;i<0xE8;i++)
+            for (int i = 0;i<0xE8;i++)
             {
                 addObject((short)i, 0, 0, 0, 0);
             }//);
@@ -91,6 +100,7 @@ namespace ZeldaFullEditor
 
         public void sortObject()
         {
+
             tileobjectsListview.BeginUpdate();
             tileobjectsListview.Items.Clear();
             //Sorting sort;
@@ -108,11 +118,13 @@ namespace ZeldaFullEditor
             {
                 sortsizing = sortsizing | Sorting.NonScalable;
             }
+
             //listView1
             tileobjectsListview.Items.AddRange(roomObjects
                 .Where(x => x != null)
                 .Where(x => sort == 0 || (x.sort & sort) > 0)
                 .Where(x => (x.sort & sortsizing) > 0)
+                .Where(x => (x.name.ToLower().Contains(searchText)))
                 .OrderBy(x => x.id)
                 .Select(x => new ListViewItem(x.id.ToString("X3") + " " + x.name) { ImageKey = x.id.ToString(), Tag = x.id })
                 .ToArray());
@@ -1232,19 +1244,30 @@ namespace ZeldaFullEditor
 
         private void listView1_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            pictureBox1.Image = new Bitmap(256, 256);
-            using (Graphics g = Graphics.FromImage(pictureBox1.Image))
-            {
-                g.Clear(Color.Azure);
-                if (tileobjectsListview.SelectedItems.Count > 0)
-                {
-                    if (tileobjectsListview.SelectedItems[0] != null)
-                    {
-                        Bitmap b = roomObjects.Find(x => x.id == (short)tileobjectsListview.SelectedItems[0].Tag).bitmap;
-                        g.DrawImage(b, 128 - (b.Width / 2), 128 - (b.Height / 2));
-                    }
-                }
-            }
+             pictureBox1.Image = new Bitmap(256, 256);
+             using (Graphics g = Graphics.FromImage(pictureBox1.Image))
+             {
+                
+                 g.Clear(Color.Azure);
+                 if (tileobjectsListview.SelectedItems.Count > 0)
+                 {
+                     if (tileobjectsListview.SelectedItems[0] != null)
+                     {
+                        Room_Object o = roomObjects.Find(x => x.id == (short)tileobjectsListview.SelectedItems[0].Tag);
+                        o.setRoom(room);
+                        o.resetSize();
+                        o.get_scroll_x();
+                        o.get_scroll_y();
+                        o.DrawOnBitmap();
+                        g.DrawImage(o.bitmap, 128 - (o.bitmap.Width / 2), 128 - (o.bitmap.Height / 2));
+                     }
+                 }
+             }
+
+            //o.setRoom(room);
+            //o.DrawOnBitmap();
+
+
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -1255,6 +1278,31 @@ namespace ZeldaFullEditor
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            sortObject();
+        }
+        public short selectedObject = -1;
+        private void okButton_Click(object sender, EventArgs e)
+        {
+            if (tileobjectsListview.SelectedItems.Count > 0)
+            {
+                selectedObject = (short)tileobjectsListview.SelectedItems[0].Tag;
+                this.Close();
+            }
+            else
+            {
+                MessageBox.Show("You must select an object");
+            }
+
+        }
+
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+        string searchText = "";
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            searchText = textBox1.Text.ToLower();
             sortObject();
         }
     }

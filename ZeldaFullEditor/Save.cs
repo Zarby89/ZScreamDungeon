@@ -67,6 +67,11 @@ namespace ZeldaFullEditor
                     ROM.DATA[headerPointer + (i * 2)] = (byte)((Addresses.pctosnes(0x120090 + (i * 14)) & 0xFF));
                     ROM.DATA[headerPointer + (i * 2) + 1] = (byte)((Addresses.pctosnes(0x120090 + (i * 14)) >> 8) & 0xFF);
                     saveHeader(0x120090, i);
+                    //savetext
+                    //(short)((ROM.DATA[Constants.messages_id_dungeon + (index * 2) + 1] << 8) + ROM.DATA[Constants.messages_id_dungeon + (index * 2)])
+                    ROM.DATA[Constants.messages_id_dungeon + (i * 2)] = (byte)(all_rooms[i].messageid & 0xFF);
+                    ROM.DATA[Constants.messages_id_dungeon + (i * 2)+1] = (byte)((all_rooms[i].messageid >> 8) & 0xFF);
+
                 }
             }
             else
