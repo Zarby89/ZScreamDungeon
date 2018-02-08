@@ -217,6 +217,9 @@ namespace ZeldaFullEditor
 
         public void draw_tile(Tile t, int x, int y, int yfix = 0)
         {
+            int tid = t.id;
+            if (tid >= 448 & tid < 464) { tid = 512 + (t.id - 448) + (16 * GFX.animated_frame); };
+            if (tid >= 432 & tid < 448) { tid = 576 + (t.id - 432) + (16 * GFX.animated_frame); };
             if (id == 0x94 || id == 0xBA) // transparent tiles !
             {
                 t.palette = 6;
@@ -239,8 +242,8 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            int ty = (t.id / 16);
-            int tx = t.id - (ty * 16);
+            int ty = (tid / 16);
+            int tx = tid - (ty * 16);
             int mx = 0;
             int my = 0;
 

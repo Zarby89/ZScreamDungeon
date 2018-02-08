@@ -14,7 +14,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Ceiling";
+            name = "Ceiling ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -40,7 +40,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Top Wall Horiz.";
+            name = "Top Wall Horiz. ↔";
             sort = Sorting.Horizontal | Sorting.Wall;
 
         }
@@ -70,7 +70,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Bottom Wall Horiz.";
+            name = "Bottom Wall Horiz. ↔";
             sort = Sorting.Horizontal | Sorting.Wall;
         }
 
@@ -99,7 +99,7 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
             allBgs = true;
-            name = "Top Wall Horiz. (Lower)";
+            name = "Top Wall Horiz. (Lower) ↔";
             sort = Sorting.Horizontal | Sorting.Wall;
         }
 
@@ -124,7 +124,7 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
             allBgs = true;
-            name = "Bottom Wall Horiz. (Lower)";
+            name = "Bottom Wall Horiz. (Lower) ↔";
             sort = Sorting.Horizontal | Sorting.Wall;
         }
 
@@ -148,7 +148,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Top Wall Column";
+            name = "Top Wall Column ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -172,7 +172,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Bottom Wall Column";
+            name = "Bottom Wall Column ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -196,7 +196,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Top Wall Pit";
+            name = "Top Wall Pit ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -218,7 +218,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Bottom Wall Pit";
+            name = "Bottom Wall Pit ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -240,7 +240,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◤";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
@@ -258,7 +258,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◣";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
@@ -276,7 +276,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◥";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
@@ -294,7 +294,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◢";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
@@ -313,7 +313,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◤";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
@@ -331,7 +331,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◣";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
@@ -349,7 +349,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◥";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
@@ -367,7 +367,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◢";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
@@ -385,7 +385,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◤";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
@@ -403,7 +403,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◣";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
@@ -421,7 +421,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◥";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
@@ -439,7 +439,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◢ ";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
         }
 
@@ -457,7 +457,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◤";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -476,7 +476,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◣";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -495,7 +495,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◥";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -514,7 +514,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◢";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -533,7 +533,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◤";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -552,7 +552,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◣";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -571,7 +571,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◥";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -590,7 +590,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◢";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -609,7 +609,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◤";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -627,7 +627,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◣";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -645,7 +645,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◥";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -663,7 +663,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(5, pos);
-            name = "Diagonal Wall";
+            name = "Diagonal Wall ◢";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -682,7 +682,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(9, pos);
-            name = "Mini Stairs";
+            name = "Mini Stairs ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -715,7 +715,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Horizontal Rail";
+            name = "Horizontal Rail ↔";
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
@@ -740,7 +740,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Pit Top Edge";
+            name = "Pit Top Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -765,7 +765,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Pit Top Edge";
+            name = "Pit Top Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -790,7 +790,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Pit Top Edge";
+            name = "Pit Top Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -813,7 +813,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Pit Top Edge";
+            name = "Pit Top Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -838,7 +838,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Pit Top Edge";
+            name = "Pit Top Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -863,7 +863,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Pit Bottom Edge";
+            name = "Pit Bottom Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -888,7 +888,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Pit Edge";
+            name = "Pit Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -913,7 +913,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Pit Edge";
+            name = "Pit Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -938,7 +938,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Pit Edge";
+            name = "Pit Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -963,7 +963,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Pit Edge";
+            name = "Pit Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -988,7 +988,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Pit Edge";
+            name = "Pit Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1013,7 +1013,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Pit Edge";
+            name = "Pit Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1038,7 +1038,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(6, pos);
-            name = "Rail Wall";
+            name = "Rail Wall ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1070,7 +1070,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(6, pos);
-            name = "Rail Wall";
+            name = "Rail Wall ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1129,7 +1129,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Carpet Floor";
+            name = "Carpet Floor ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1159,7 +1159,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Carpet Contour";
+            name = "Carpet Contour ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1195,7 +1195,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Curtain";
+            name = "Curtain ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1225,7 +1225,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Side Curtain?";
+            name = "Side Curtain? ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1256,7 +1256,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(6, pos);
-            name = "Statue";
+            name = "Statue ↔";
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
@@ -1280,7 +1280,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Column";
+            name = "Column ↔";
         }
 
         public override void Draw()
@@ -1305,7 +1305,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(12, pos);
-            name = "Top Wall Decoration";
+            name = "Top Wall Decoration ↔";
         }
 
         public override void Draw()
@@ -1334,7 +1334,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(12, pos);
-            name = "Bottom Wall Decoration";
+            name = "Bottom Wall Decoration ↔";
         }
 
         public override void Draw()
@@ -1363,7 +1363,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Double Chair";
+            name = "Double Chair ↔";
         }
 
         public override void Draw()
@@ -1388,7 +1388,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Floor Torch";
+            name = "Floor Torch ↔";
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
@@ -1414,7 +1414,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Top Wall Column";
+            name = "Top Wall Column ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1441,7 +1441,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Water Edge";
+            name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1466,7 +1466,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Water Edge";
+            name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1491,7 +1491,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Water Edge";
+            name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1516,7 +1516,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Water Edge";
+            name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1541,7 +1541,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Water Edge";
+            name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1566,7 +1566,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Water Edge";
+            name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1592,7 +1592,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Water Edge";
+            name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1618,7 +1618,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Water Edge";
+            name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1641,7 +1641,7 @@ namespace ZeldaFullEditor
 
         public object_47(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
-            name = "Unused Waterfall";
+            name = "Unused Waterfall ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1656,7 +1656,7 @@ namespace ZeldaFullEditor
 
         public object_48(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
-            name = "Unused Waterfall";
+            name = "Unused Waterfall ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1715,7 +1715,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Bottom Wall Column";
+            name = "Bottom Wall Column ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1740,7 +1740,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(9, pos);
-            name = "Bar";
+            name = "Bar ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1772,7 +1772,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Shelf";
+            name = "Shelf ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1806,7 +1806,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Shelf";
+            name = "Shelf ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1840,7 +1840,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Shelf";
+            name = "Shelf ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1874,7 +1874,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "???";
+            name = "??? ↔";
         }
 
         public override void Draw()
@@ -1897,7 +1897,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(18, pos);
-            name = "Canon Hole";
+            name = "Canon Hole ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1928,7 +1928,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(18, pos);
-            name = "Canon Hole";
+            name = "Canon Hole ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -1959,7 +1959,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "???";
+            name = "??? ↔";
         }
 
         public override void Draw()
@@ -1978,7 +1978,7 @@ namespace ZeldaFullEditor
 
         public object_54(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
-            name = "Unused";
+            name = "Unused ↔";
         }
 
         public override void Draw()
@@ -1994,7 +1994,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Wall Torches";
+            name = "Wall Torches ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -2016,7 +2016,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Wall Torches";
+            name = "Wall Torches ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -2094,7 +2094,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(18, pos);
-            name = "Canon Hole";
+            name = "Canon Hole ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -2125,7 +2125,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(18, pos);
-            name = "Canon Hole";
+            name = "Canon Hole ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -2157,7 +2157,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(15, pos);
-            name = "Large Horizontal Rail";
+            name = "Large Horizontal Rail ↔";
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
@@ -2189,7 +2189,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Block";
+            name = "Block ↔";
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
@@ -2213,7 +2213,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Long Horizontal Rail";
+            name = "Long Horizontal Rail ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -2237,7 +2237,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Ceiling";
+            name = "Ceiling ↕";
             sort = Sorting.Vertical;
 
         }
@@ -2264,7 +2264,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Left Wall Vertic.";
+            name = "Left Wall Vertic. ↕";
             sort = Sorting.Vertical | Sorting.Wall;
 
         }
@@ -2291,7 +2291,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Right Wall Horiz.";
+            name = "Right Wall Horiz. ↕";
             sort = Sorting.Vertical | Sorting.Wall;
         }
 
@@ -2316,7 +2316,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Left Wall Horiz. (Lower)";
+            name = "Left Wall Horiz. (Lower) ↕";
             sort = Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -2338,7 +2338,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Right Wall Horiz. (Lower)";
+            name = "Right Wall Horiz. (Lower) ↕";
             sort = Sorting.Vertical | Sorting.Wall;
             allBgs = true;
         }
@@ -2361,7 +2361,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Left Wall Column";
+            name = "Left Wall Column ↕";
             sort = Sorting.Vertical;
 
         }
@@ -2384,7 +2384,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Right Wall Column";
+            name = "Right Wall Column ↕";
             sort = Sorting.Vertical;
 
         }
@@ -2406,7 +2406,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Left Wall Pit";
+            name = "Left Wall Pit ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2427,7 +2427,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Right Wall Pit";
+            name = "Right Wall Pit ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2449,7 +2449,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Vertical Rail";
+            name = "Vertical Rail ↕";
             sort = Sorting.Vertical | Sorting.Dungeons;
         }
 
@@ -2475,7 +2475,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Left Pit Edge";
+            name = "Left Pit Edge ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2496,7 +2496,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Right Pit Edge";
+            name = "Right Pit Edge ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2518,7 +2518,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(6, pos);
-            name = "Rail Wall Left";
+            name = "Rail Wall Left ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2550,7 +2550,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(6, pos);
-            name = "Rail Wall Right";
+            name = "Rail Wall Right ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2612,7 +2612,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Carpet Floor";
+            name = "Carpet Floor ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2642,7 +2642,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Carpet Floor Contour";
+            name = "Carpet Floor Contour ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2678,7 +2678,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Left Curtain";
+            name = "Left Curtain ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2708,7 +2708,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Right Curtain";
+            name = "Right Curtain ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2739,7 +2739,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Column";
+            name = "Column ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2764,7 +2764,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Left Wall Decoration";
+            name = "Left Wall Decoration ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2795,7 +2795,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Right Wall Decoration";
+            name = "Right Wall Decoration ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2825,7 +2825,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Left Wall Top Column";
+            name = "Left Wall Top Column ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2855,7 +2855,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Water Edge";
+            name = "Water Edge ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2876,7 +2876,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Water Edge";
+            name = "Water Edge ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2897,7 +2897,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Right Wall Top Column";
+            name = "Right Wall Top Column ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2927,7 +2927,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Water Edge";
+            name = "Water Edge ↕";
             sort = Sorting.Vertical;
         }
 
@@ -2992,7 +2992,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Left Wall Torches";
+            name = "Left Wall Torches ↕";
             sort = Sorting.Vertical;
         }
 
@@ -3023,7 +3023,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Right Wall Torches";
+            name = "Right Wall Torches ↕";
             sort = Sorting.Vertical;
         }
 
@@ -3054,7 +3054,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(12, pos);
-            name = "Left Wall Decoration";
+            name = "Left Wall Decoration ↕";
             sort = Sorting.Vertical;
         }
 
@@ -3084,7 +3084,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(12, pos);
-            name = "Right Wall Decoration";
+            name = "Right Wall Decoration ↕";
             sort = Sorting.Vertical;
         }
 
@@ -3114,7 +3114,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(12, pos);
-            name = "Left Wall Decoration??";
+            name = "Left Wall Decoration?? ↕";
             sort = Sorting.Vertical;
         }
 
@@ -3144,7 +3144,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(12, pos);
-            name = "Right Wall Decoration??";
+            name = "Right Wall Decoration?? ↕";
             sort = Sorting.Vertical;
         }
 
@@ -3174,7 +3174,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(18, pos);
-            name = "Left Wall Canon Hole";
+            name = "Left Wall Canon Hole ↕";
             sort = Sorting.Vertical;
         }
 
@@ -3192,7 +3192,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(18, pos);
-            name = "Right Wall Canon Hole";
+            name = "Right Wall Canon Hole ↕";
             sort = Sorting.Vertical;
         }
 
@@ -3210,7 +3210,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Floor Torch";
+            name = "Floor Torch ↕";
             sort = Sorting.Vertical |Sorting.Dungeons;
         }
 
@@ -3235,7 +3235,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(12, pos);
-            name = "Large Vertical Rail";
+            name = "Large Vertical Rail ↕";
             sort = Sorting.Vertical | Sorting.Dungeons;
         }
 
@@ -3262,7 +3262,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Block Vertical";
+            name = "Block Vertical ↕";
             sort = Sorting.Vertical | Sorting.Dungeons;
         }
 
@@ -3285,7 +3285,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Long Vertical Rail";
+            name = "Long Vertical Rail ↕";
         }
 
         public override void Draw()
@@ -3307,7 +3307,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Left Vertical Jump Edge";
+            name = "Left Vertical Jump Edge ↕";
             sort = Sorting.Vertical;
 
         }
@@ -3329,7 +3329,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
-            name = "Right Vertical Jump Edge";
+            name = "Right Vertical Jump Edge ↕";
             sort = Sorting.Vertical;
         }
 
@@ -3351,7 +3351,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Left Edge";
+            name = "Left Edge ↕";
             sort = Sorting.Vertical;
         }
 
@@ -3372,7 +3372,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Right Edge";
+            name = "Right Edge ↕";
             sort = Sorting.Vertical;
         }
 
@@ -3417,7 +3417,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Left Wall Vertic.";
+            name = "Left Wall Vertic. ↕";
             sort = Sorting.Vertical | Sorting.Wall;
 
         }
@@ -3444,7 +3444,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Right Wall Horiz.";
+            name = "Right Wall Horiz. ↕";
             sort = Sorting.Vertical | Sorting.Wall;
         }
 
@@ -3470,7 +3470,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Blue Peg Block";
+            name = "Blue Peg Block ↕";
             sort = Sorting.Vertical | Sorting.Dungeons;
 
         }
@@ -3498,7 +3498,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Orange Peg Block";
+            name = "Orange Peg Block ↕";
             sort = Sorting.Vertical | Sorting.Dungeons;
 
         }
@@ -3526,7 +3526,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Invisible Floor";
+            name = "Invisible Floor ↕";
             sort = Sorting.Vertical | Sorting.Dungeons | Sorting.Floors;
         }
 
@@ -3556,7 +3556,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Fake Pot";
+            name = "Fake Pot ↕";
             sort = Sorting.Vertical;
         }
 
@@ -3579,7 +3579,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Hammer Peg Block";
+            name = "Hammer Peg Block ↕";
             sort = Sorting.Vertical | Sorting.Dungeons;
         }
 
@@ -3718,7 +3718,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Diagonal Ceiling";
+            name = "Diagonal Ceiling ◤";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
@@ -3744,7 +3744,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Diagonal Ceiling";
+            name = "Diagonal Ceiling ◣";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
@@ -3770,7 +3770,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Diagonal Ceiling";
+            name = "Diagonal Ceiling ◥";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
@@ -3796,7 +3796,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Diagonal Ceiling";
+            name = "Diagonal Ceiling ◢";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
@@ -3822,7 +3822,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(24, pos);
-            name = "Hole";
+            name = "Hole ↔ ↕";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
         //TODO: Take the draw code from disassembly ("HARDCODED")
@@ -3864,7 +3864,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Diagonal Ceiling";
+            name = "Diagonal Ceiling ◤";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
@@ -3890,7 +3890,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Diagonal Ceiling";
+            name = "Diagonal Ceiling ◣";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
@@ -3916,7 +3916,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Diagonal Ceiling";
+            name = "Diagonal Ceiling ◥";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
@@ -3942,7 +3942,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Diagonal Ceiling";
+            name = "Diagonal Ceiling ◢";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
@@ -3969,7 +3969,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Diagonal Ceiling";
+            name = "Diagonal Ceiling ◤";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
@@ -3995,7 +3995,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Diagonal Ceiling";
+            name = "Diagonal Ceiling ◣";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
@@ -4021,7 +4021,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Diagonal Ceiling";
+            name = "Diagonal Ceiling ◥";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
@@ -4047,7 +4047,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Diagonal Ceiling";
+            name = "Diagonal Ceiling ◢";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
 
@@ -4121,7 +4121,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Bottom Horizontal Jump Edge";
+            name = "Bottom Horizontal Jump Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -4142,7 +4142,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
-            name = "Bottom Horizontal Jump Edge";
+            name = "Bottom Horizontal Jump Edge ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -4164,7 +4164,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Floor?";
+            name = "Floor? ↔";
             sort = Sorting.Horizontal | Sorting.Floors;
         }
 
@@ -4271,7 +4271,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Top Wall?";
+            name = "Top Wall? ↔";
             sort = Sorting.Horizontal | Sorting.Wall;
         }
 
@@ -4301,14 +4301,14 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(8, pos);
-            name = "Bottom Wall";
+            name = "Bottom Wall ↔";
             sort = Sorting.Horizontal | Sorting.Wall;
         }
 
         public override void Draw()
         {
 
-            for (int s = 0; s < size + 1; s++)
+            for (int s = 0; s < size; s++)
             {
                 int tid = 0;
                 for (int xx = 0; xx < 2; xx++)
@@ -4332,7 +4332,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Blue Switch Block";
+            name = "Blue Switch Block ↔";
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
         
@@ -4366,7 +4366,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Red Switch Block";
+            name = "Red Switch Block ↔";
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
@@ -4399,7 +4399,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(16, pos);
-            name = "Invisible Floor";
+            name = "Invisible Floor ↔";
             sort = Sorting.Horizontal | Sorting.Floors;
         }
 
@@ -4453,7 +4453,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "fake pots";
+            name = "fake pots ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -4479,7 +4479,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Hammer Pegs";
+            name = "Hammer Pegs ↔";
             sort = Sorting.Horizontal;
         }
 
@@ -4534,7 +4534,7 @@ namespace ZeldaFullEditor
         public object_C0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Ceiling Large";
+            name = "Ceiling Large ↔ ↕";
             sort = Sorting.Horizontal | Sorting.Vertical;
             addTiles(1, pos);
         }
@@ -4567,7 +4567,7 @@ namespace ZeldaFullEditor
         public object_C1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Chest Contour Floor";
+            name = "Chest Contour Floor ↔ ↕";
             addTiles(68, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
@@ -4634,7 +4634,7 @@ namespace ZeldaFullEditor
         public object_C2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Bg2 Large Overlay";
+            name = "Bg2 Large Overlay ↔ ↕";
             addTiles(1, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical;
 
@@ -4668,7 +4668,7 @@ namespace ZeldaFullEditor
         public object_C3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Bg2 Medium Overlay";
+            name = "Bg2 Medium Overlay ↔ ↕";
             addTiles(1, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
@@ -4701,7 +4701,7 @@ namespace ZeldaFullEditor
         public object_C4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
-            name = "Floor1";
+            name = "Floor1 ↔ ↕";
         }
 
 
@@ -4743,7 +4743,7 @@ namespace ZeldaFullEditor
         {
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Floor3";
+            name = "Floor3 ↔ ↕";
             addTiles(8, pos);//??
         }
 
@@ -4779,7 +4779,7 @@ namespace ZeldaFullEditor
         public object_C6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Bg2 Large Overlay";
+            name = "Bg2 Large Overlay ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
@@ -4817,7 +4817,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Floor4";
+            name = "Floor4 ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
@@ -4855,7 +4855,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Water Floor";
+            name = "Water Floor ↔ ↕";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
             addTiles(8, pos);//??
         }
@@ -4895,7 +4895,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Water Floor2";
+            name = "Water Floor2 ↔ ↕";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
             addTiles(8, pos);//??
         }
@@ -4934,7 +4934,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Floor5";
+            name = "Floor5 ↔ ↕";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
             addTiles(8, pos);//??
         }
@@ -5008,7 +5008,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Moving Wall Left";
+            name = "Moving Wall Left ↔ ↕";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             addTiles(8, pos);//??
         }
@@ -5027,7 +5027,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Moving Wall Left";
+            name = "Moving Wall Left ↔ ↕";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
             addTiles(8, pos);//??
         }
@@ -5082,7 +5082,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Water Floor3";
+            name = "Water Floor3 ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
@@ -5121,7 +5121,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Floor6";
+            name = "Floor6 ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
@@ -5231,7 +5231,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "overlay tile?";
+            name = "overlay tile? ↔ ↕";
             addTiles(1, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
@@ -5269,7 +5269,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Lava Background?";
+            name = "Lava Background? ↔ ↕";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
             addTiles(8, pos);//??
         }
@@ -5307,7 +5307,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Hole??";
+            name = "Hole?? ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
@@ -5345,7 +5345,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Lava Background 2";
+            name = "Lava Background 2 ↔ ↕";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
             addTiles(8, pos);//??
         }
@@ -5382,7 +5382,7 @@ namespace ZeldaFullEditor
         public object_DB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
-            name = "Floor2";
+            name = "Floor2 ↔ ↕";
         }
 
 
@@ -5423,7 +5423,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Chest Platform?";
+            name = "Chest Platform? ↔ ↕";
             addTiles(21, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
@@ -5523,7 +5523,7 @@ namespace ZeldaFullEditor
         public object_DD(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Table / Rock";
+            name = "Table / Rock ↔ ↕";
             sort = Sorting.Horizontal | Sorting.Vertical;
             addTiles(16, pos);
 
@@ -5581,7 +5581,7 @@ namespace ZeldaFullEditor
         public object_DE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Spike Block";
+            name = "Spike Block ↔ ↕";
             addTiles(4, pos);
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
@@ -5613,7 +5613,7 @@ namespace ZeldaFullEditor
         public object_DF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Spike Floor";
+            name = "Spike Floor ↔ ↕";
             addTiles(8, pos);
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
@@ -5652,7 +5652,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Floor7";
+            name = "Floor7 ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
@@ -5690,7 +5690,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Floor9";
+            name = "Floor9 ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
@@ -5728,7 +5728,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Rupee Floor";
+            name = "Rupee Floor ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
@@ -5766,7 +5766,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Moving Floor Up";
+            name = "Moving Floor Up ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
@@ -5804,7 +5804,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Moving Floor Down";
+            name = "Moving Floor Down ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
@@ -5842,7 +5842,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Moving Floor Left";
+            name = "Moving Floor Left ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
@@ -5880,7 +5880,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Moveing Floor Right";
+            name = "Moveing Floor Right ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
@@ -5919,7 +5919,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Moving Floor?";
+            name = "Moving Floor? ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }
@@ -5957,7 +5957,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Weird Floor?";
+            name = "Weird Floor? ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }

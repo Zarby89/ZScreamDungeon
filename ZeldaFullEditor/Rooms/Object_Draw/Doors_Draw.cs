@@ -29,7 +29,7 @@ namespace ZeldaFullEditor
         public object_door(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             options |= ObjectOption.Door;
-            door_pos = (byte)((id & 0xF0) >> 3);
+            door_pos = (byte)((id & 0xF0) >> 3);//*2
             door_dir = (byte)((id & 0x03));
             door_type = (byte)((id >> 8) & 0xFF);
             name = "Door";

@@ -234,11 +234,11 @@ namespace ZeldaFullEditor
                     pos += 5;
                     continue;
                 }
-                if ((text[pos] == '[') && (text[pos + 1] == 'N') && (text[pos + 2] == 'W') && (text[pos + 3] == 'L') && (text[pos + 4] == ']'))
+                if ((text[pos] == '[') && (text[pos + 1] == 'W') && (text[pos + 2] == 'F') && (text[pos + 3] == 'K') && (text[pos + 4] == ']'))
                 {
                     pos += 5;
-                    line++;
-                    linePos = 0;
+                    //line++;
+                    //linePos = 0;
                     continue;
                 }
                 if ((text[pos] == '[') && (text[pos + 1] == 'S') && (text[pos + 2] == 'P') && (text[pos + 3] == 'D') && (text[pos + 4] == ' ') && (text[pos + 7] == ']'))

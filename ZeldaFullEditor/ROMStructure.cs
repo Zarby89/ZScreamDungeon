@@ -228,11 +228,11 @@ namespace ZeldaFullEditor
 
         static public void saveProjectFile(string gameVersion, string filename)
         {
-
-            FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Write);
+            filename = "Test.zsc";
+            FileStream fs = new FileStream("testSS.zsc", FileMode.OpenOrCreate, FileAccess.Write);
             fs.Position = 0x100000; //Keep 1mb data for the project file settings stuff
             fs.Write(ROM.DATA, 0, ROM.DATA.Length);
-
+            
             fs.Position = 0;
             BinaryWriter bw = new BinaryWriter(fs);
             bw.Write("ZScream Project File"); //Header to detect if the file is a project or not
@@ -252,12 +252,12 @@ namespace ZeldaFullEditor
                 bw.Write(dungeonsRoomList[i].name); //WTF
             }
 
-
+            
 
             bw.Close();
         }
 
-        static public void loadProject(string filename)
+        static public bool loadProject(string filename)
         {
             FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
 
@@ -265,15 +265,15 @@ namespace ZeldaFullEditor
             fs.Position = 0;
             BinaryReader br = new BinaryReader(fs);
             string zproject = br.ReadString();
-            string projectVersion;
-            string projectName;
-            string gameVersion;
+            //string projectVersion;
+            //string projectName;
+            //string gameVersion;
             if (zproject == "ZScream Project File")//it is a zscream project
             {
                 dungeonsRoomList.Clear();
-                projectVersion = br.ReadString();
-                projectName = br.ReadString();
-                gameVersion = br.ReadString();
+                ROMStructure.ConstantVersion = br.ReadString();
+                ROMStructure.ProjectName = br.ReadString();
+                ROMStructure.GameVersion = br.ReadString();
                 for (int i = 0; i < 17; i++)
                 {
                     dungeonsNames[i] = br.ReadString();//read all the dungeons names
@@ -293,11 +293,13 @@ namespace ZeldaFullEditor
                 ROM.DATA = new byte[(fs.Length - 0x100000)];
                 fs.Read(ROM.DATA, 0, (int)(fs.Length - 0x100000));
                 br.Close();
+                return true;
             }
             else
             {
                 br.Close();
                 MessageBox.Show("This is not a valid ZScream project file !", "Error");
+                return false;
                 //return an error
             }
 
@@ -310,6 +312,10 @@ namespace ZeldaFullEditor
             defaultDungeonRooms();
             
         }
+
+
+
+
 
     }
 }

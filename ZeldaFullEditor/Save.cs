@@ -32,6 +32,16 @@ namespace ZeldaFullEditor
 
         }
 
+        public bool saveEntrances(Entrance[] entrances)
+        {
+            for(int i = 0;i<0x84;i++)
+            {
+                entrances[i].save(i);
+            }
+
+            return false;
+        }
+
         public bool saveTexts(string[] texts, Charactertable table)
         {
             int pos = 0xE0000;
@@ -107,14 +117,15 @@ namespace ZeldaFullEditor
                 {
                     if ((o.options & ObjectOption.Block) == ObjectOption.Block) //if we find a block save it
                     {
-                        ROM.DATA[pos] = (byte)((i & 0xFF));
+                        ROM.DATA[pos] = (byte)((i & 0xFF));//b1
                         pos++;
-                        ROM.DATA[pos] = (byte)(((i>> 8) & 0xFF));
+                        ROM.DATA[pos] = (byte)(((i>> 8) & 0xFF));//b2
                         pos++;
                         int xy = (((o.y * 64) + o.x) << 1);
-                        ROM.DATA[pos] = (byte)(xy & 0xFF);
+                        ROM.DATA[pos] = (byte)(xy & 0xFF);//b3
                         pos++;
-                        ROM.DATA[pos] = (byte)((byte)(((xy >> 8) & 0xFF) + (o.layer*0x80)));
+                        ROM.DATA[pos] = (byte)((byte)(((xy >> 8) & 0x1F) + (o.layer*0x20)));//b4
+                        //((b4 & 0x20) >> 5)
                         pos++;
 
                         count += 4;
@@ -249,36 +260,37 @@ namespace ZeldaFullEditor
             var section3Index = 0x1EB90; //0x1EB90 to 0x1FFFF
            // var section4Index = 0x121210; // 0x121210 to ????? expanded region. need to find max safe for rando roms
 
+            //reorder room from bigger to lower
+
             for (int i = 0; i < 296; i++)
             {
-                int objectPointer = (ROM.DATA[Constants.room_object_pointer + 2] << 16) + (ROM.DATA[Constants.room_object_pointer + 1] << 8) + (ROM.DATA[Constants.room_object_pointer]);
-                objectPointer = Addresses.snestopc(objectPointer);
+
 
                 var roomBytes = all_rooms[i].getTilesBytes();
                 if (roomBytes.Length < 10)
                 {
-                    saveObjectBytes(i, 0x50000, roomBytes); //empty room pointer
+                    saveObjectBytes(all_rooms[i].index, 0x50000, roomBytes); //empty room pointer
                     continue;
                 }
 
                 if (section1Index + roomBytes.Length <= 0x5374F) //0x50000 to 0x5374F
                 {
                     // write the room
-                    saveObjectBytes(i, section1Index, roomBytes);
+                    saveObjectBytes(all_rooms[i].index, section1Index, roomBytes);
                     section1Index += roomBytes.Length;
                     continue;
                 }
                 else if (section2Index + roomBytes.Length <= 0xFFFF7) //0xF878A to 0xFFFF7
                 {
                     // write the room
-                    saveObjectBytes(i, section2Index, roomBytes);
+                    saveObjectBytes(all_rooms[i].index, section2Index, roomBytes);
                     section2Index += roomBytes.Length;
                     continue;
                 }
                 else if (section3Index + roomBytes.Length <= 0x1FFFF) //0x1EB90 to 0x1FFFF
                 {
                     // write the room
-                    saveObjectBytes(i, section3Index, roomBytes);
+                    saveObjectBytes(all_rooms[i].index, section3Index, roomBytes);
                     section3Index += roomBytes.Length;
                     continue;
                 }
@@ -364,11 +376,19 @@ namespace ZeldaFullEditor
                 ROM.DATA[Constants.room_items_pointers + (i * 2) + 1] = (byte)((Addresses.pctosnes(pos) >> 8) & 0xFF);
                 for (int j = 0; j < all_rooms[i].pot_items.Count;j++)
                 {
+                    if (all_rooms[i].pot_items[j].layer == 0)
+                    {
+                        all_rooms[i].pot_items[j].bg2 = false;
+                    }
+                    else
+                    {
+                        all_rooms[i].pot_items[j].bg2 = true;
+                    }
 
                     int xy = (((all_rooms[i].pot_items[j].y * 64) + all_rooms[i].pot_items[j].x) << 1);
                     ROM.DATA[pos] = (byte)(xy & 0xFF);
                     pos++;
-                    ROM.DATA[pos] = (byte)(((xy>>8) & 0xFF) + (all_rooms[i].pot_items[j].bg2 == true ? 0x80 : 0x00));
+                    ROM.DATA[pos] = (byte)(((xy>>8) & 0xFF) + (all_rooms[i].pot_items[j].bg2 == true ? 0x20 : 0x00));
                     pos++;
                     ROM.DATA[pos] = all_rooms[i].pot_items[j].id;
                     pos++;
@@ -417,10 +437,6 @@ namespace ZeldaFullEditor
                         pos++;
                         foreach (Sprite spr in all_rooms[i].sprites) //3bytes
                         {
-                            //BG2, Subtype, Y Position
-                            //b1 = BSSY YYYY
-                            //Overlord, X Position 
-                            //b2 = OOOX XXXX
                             byte b1 = (byte)((spr.layer << 7) + (spr.subtype << 5) + spr.y);
                             byte b2 = (byte)((spr.overlord << 5) + spr.x);
                             byte b3 = (byte)((spr.id));
@@ -431,6 +447,34 @@ namespace ZeldaFullEditor
                             pos++;
                             sprites_buffer[pos] = b3;
                             pos++;
+
+                            //if current sprite hold a key then save it before 
+                            if (spr.keyDrop == 1)
+                            {
+                                byte bb1 = (byte)(0xFE);
+                                byte bb2 = (byte)(0x00);
+                                byte bb3 = (byte)(0xE4);
+
+                                sprites_buffer[pos] = bb1;
+                                pos++;
+                                sprites_buffer[pos] = bb2;
+                                pos++;
+                                sprites_buffer[pos] = bb3;
+                                pos++;
+                            }
+                            if (spr.keyDrop == 2)
+                            {
+                                byte bb1 = (byte)(0xFD);
+                                byte bb2 = (byte)(0x00);
+                                byte bb3 = (byte)(0xE4);
+
+                                sprites_buffer[pos] = bb1;
+                                pos++;
+                                sprites_buffer[pos] = bb2;
+                                pos++;
+                                sprites_buffer[pos] = bb3;
+                                pos++;
+                            }
                         }
                         sprites_buffer[pos] = 0xFF;//End of sprites
                         pos++;

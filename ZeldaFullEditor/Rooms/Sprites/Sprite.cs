@@ -21,6 +21,7 @@ namespace ZeldaFullEditor
         public byte subtype = 0;
         public byte overlord = 0;
         public string name;
+        public byte keyDrop = 0;
         Room room;
         public Rectangle boundingbox;
         bool picker = false;
@@ -47,11 +48,20 @@ namespace ZeldaFullEditor
             higherY = 15;
         }
         
-        public void DrawKey()
+        public void DrawKey(bool bigKey = false)
         {
-            int dx = (boundingbox.X + boundingbox.Width/2)-4;
-            int dy = boundingbox.Y-10;
-            drawSpriteTile(dx, dy, 11, 22, 11, false, false, 1, 2, true);
+            if (bigKey == false)
+            {
+                int dx = (boundingbox.X + boundingbox.Width / 2) - 4;
+                int dy = boundingbox.Y - 10;
+                drawSpriteTile(dx, dy, 11, 22, 11, false, false, 1, 2, true);
+            }
+            else
+            {
+                int dx = (boundingbox.X + boundingbox.Width / 2) - 4;
+                int dy = boundingbox.Y - 10;
+                drawSpriteTile(dx, dy, 14, 38, 11, false, false, 2, 2, true);
+            }
         }
 
 
@@ -1078,7 +1088,7 @@ namespace ZeldaFullEditor
                     int y_dest = (((y) + (yy)) * 512) * 4;
                     if (picker)
                     {
-                        y_dest = (((y) + (yy)) * 32) * 4;
+                        y_dest = (((y) + (yy)) * GFX.currentWidth) * 4;
                     }
                     int dest = x_dest + y_dest;
 

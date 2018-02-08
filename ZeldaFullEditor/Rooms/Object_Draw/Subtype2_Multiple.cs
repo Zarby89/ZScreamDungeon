@@ -15,11 +15,45 @@ namespace ZeldaFullEditor
         public Subtype2_Multiple(short id, byte x, byte y, byte size,byte layer) : base(id, x, y, size,layer)
         {
             byte oid = (byte)(id & 0xFF);
-            if (oid >= 0 && oid <= 7)
+            if (oid == 0)
             {
-                setdata("Wall Corner", 4, 4);
+                setdata("Wall Inner Corner ▛", 4, 4);
                 sort = Sorting.Wall | Sorting.NonScalable;
-                
+            }
+            if (oid == 1)
+            {
+                setdata("Wall Inner Corner ▙", 4, 4);
+                sort = Sorting.Wall | Sorting.NonScalable;
+            }
+            if (oid == 2)
+            {
+                setdata("Wall Inner Corner ▜", 4, 4);
+                sort = Sorting.Wall | Sorting.NonScalable;
+            }
+            if (oid == 3)
+            {
+                setdata("Wall Inner Corner ▟", 4, 4);
+                sort = Sorting.Wall | Sorting.NonScalable;
+            }
+            if (oid == 4)
+            {
+                setdata("Wall Outer Corner ▟", 4, 4);
+                sort = Sorting.Wall | Sorting.NonScalable;
+            }
+            if (oid == 5)
+            {
+                setdata("Wall Outer Corner ▜", 4, 4);
+                sort = Sorting.Wall | Sorting.NonScalable;
+            }
+            if (oid == 6)
+            {
+                setdata("Wall Outer Corner ▙", 4, 4);
+                sort = Sorting.Wall | Sorting.NonScalable;
+            }
+            if (oid == 7)
+            {
+                setdata("Wall Outer Corner ▛", 4, 4);
+                sort = Sorting.Wall | Sorting.NonScalable;
             }
             if (oid >= 8 && oid <= 15)
             {

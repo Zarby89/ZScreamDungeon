@@ -23,6 +23,7 @@ namespace ZeldaFullEditor
         //List<SpriteName> stringtodraw = new List<SpriteName>();
         public int index;
         int header_location;
+        public bool has_changed = false;
 
         public byte layout;
         public byte floor1;
@@ -46,7 +47,6 @@ namespace ZeldaFullEditor
         public List<Chest> chest_list = new List<Chest>();
         public List<Room_Object> tilesObjects = new List<Room_Object>();
         public List<Room_Object> tilesLayoutObjects = new List<Room_Object>();
-        public PotItems_Name items_name = new PotItems_Name();
         public List<Sprite> sprites = new List<Sprite>();
         public List<PotItem> pot_items = new List<PotItem>();
         public List<Object> selectedObject = new List<object>();
@@ -54,8 +54,7 @@ namespace ZeldaFullEditor
         public bool needGfxRefresh = false;
         public bool onlyLayout = false;
 
-
-        [DisplayName("Room Layout"), Description("Room layout used as a default model for the room"), Category("Header")]
+        [DisplayName("Layout"), Description("Room layout used as a default model for the room"), Category("Header")]
         public byte Layout
         {
             get
@@ -473,8 +472,8 @@ namespace ZeldaFullEditor
 
             if (noPalette == false)
             {
-                GFX.LoadDungeonPalette(palette);
-                GFX.LoadSpritesPalette(palette);
+                GFX.loadedPalettes = GFX.LoadDungeonPalette(palette);
+                GFX.spritesPalettes = GFX.LoadSpritesPalette(palette);
             }
 
 
@@ -485,6 +484,15 @@ namespace ZeldaFullEditor
             reloadLayout();
             objectInitialized = false;
             update();
+        }
+
+        public void clearGFX()
+        {
+            foreach(Room_Object tile in tilesObjects)
+            {
+                tile.bitmap = null;
+
+            }
         }
 
 
@@ -507,6 +515,31 @@ namespace ZeldaFullEditor
                 if (b1 == 0xFF) { break; }
 
                 sprites.Add(new Sprite(this, b3, (byte)(b2 & 0x1F), (byte)(b1 & 0x1F), Sprites_Names.name[b3], (byte)((b2 & 0xE0) >> 5), (byte)((b1 & 0x60) >> 5), (byte)((b1 & 0x80) >> 7)));
+                
+                if (sprites.Count > 1)
+                {
+                    Sprite spr = sprites[sprites.Count - 1];
+                    Sprite prevSprite = sprites[sprites.Count - 2];
+                    if (spr.id == 0xE4 && spr.x == 0x00 && spr.y == 0x1E && spr.layer == 1 && ((spr.subtype << 3) + spr.overlord) == 0x18)
+                    {
+                        if (prevSprite != null)
+                        {
+
+                            prevSprite.keyDrop = 1;
+                            sprites.RemoveAt(sprites.Count - 1);
+                        }
+                    }
+                    if (spr.id == 0xE4 && spr.x == 0x00 && spr.y == 0x1D && spr.layer == 1 && ((spr.subtype << 3) + spr.overlord) == 0x18)
+                    {
+                        if (prevSprite != null)
+                        {
+
+                            prevSprite.keyDrop = 2;
+                            sprites.RemoveAt(sprites.Count - 1);
+                        }
+                    }
+                }
+
 
                 sprite_address += 3;
 
@@ -552,7 +585,7 @@ namespace ZeldaFullEditor
 
         public void drawSprites(bool layer1 = true,bool layer2 = true)
         {
-            Sprite prevSprite = null;
+
             foreach (Sprite spr in sprites)
             {
                 if (layer1 == false)
@@ -572,17 +605,17 @@ namespace ZeldaFullEditor
                 if (spr.id != 0xE4)
                     {
                         spr.Draw();
-                    }
-                    if (spr.id == 0xE4 && spr.x == 0x00 && spr.y == 0x1E && spr.layer == 1 && ((spr.subtype << 3) + spr.overlord) == 0x18)
-                    {
-                        if (prevSprite != null)
-                        {
-                            prevSprite.DrawKey();
-                        }
-                    }
-                
+                    }//1D big key
+                if (spr.keyDrop == 1)
+                {
+                    spr.DrawKey();
+                }
+                if (spr.keyDrop == 2)
+                {
+                    spr.DrawKey(true);
+                }
 
-                prevSprite = spr;
+                
             }
         }
 
@@ -836,6 +869,7 @@ namespace ZeldaFullEditor
                     int px = address % 64;
                     int py = address >> 6;
                     Room_Object r = addObject(0x0E00, (byte)(px), (byte)(py), 0, (byte)((b4 & 0x20) >> 5));
+                    
                     if (r != null)
                     {
                         r.options |= ObjectOption.Block;
@@ -893,7 +927,7 @@ namespace ZeldaFullEditor
 
         public void addPotsItems()
         {
-            //WTF is that (01 << 16) ??
+            //WTF is that (01 << 16) ?? this is the bank -_-
             int item_address_snes = (01 << 16) +
             (ROM.DATA[Constants.room_items_pointers + (index * 2) + 1] << 8) +
             ROM.DATA[Constants.room_items_pointers + (index * 2)];
@@ -910,7 +944,21 @@ namespace ZeldaFullEditor
                 int address = ((b2 & 0x1F) << 8 | b1) >> 1;
                 int px = address % 64;
                 int py = address >> 6;
-                pot_items.Add(new PotItem(b3, (byte)((px)), (byte)((py)),(b2 & 0x20) == 0x20 ? true : false ));
+                PotItem p = new PotItem(b3, (byte)((px)), (byte)((py)), (b2 & 0x20) == 0x20 ? true : false);
+                if (p.bg2 == true)
+                {
+                    p.layer = 1;
+                }
+                else
+                {
+                    p.layer = 0;
+                }
+                pot_items.Add(p);
+                
+
+                //bit 7 is set if the object is a special object holes, switches
+                //after 0x16 it goes to 0x80
+
                 item_address += 3; 
                 }
         }
@@ -1003,7 +1051,7 @@ namespace ZeldaFullEditor
                 {
                     //there's a chest in that room !
                     bool big = false;
-                    if ((((ROM.DATA[cpos + (i * 3) + 1] << 8) + (ROM.DATA[cpos + (i * 3)])) & 0x8000) == 0x800)
+                    if ((((ROM.DATA[cpos + (i * 3) + 1] << 8) + (ROM.DATA[cpos + (i * 3)])) & 0x8000) == 0x8000) //????? 
                     {
                         big = true;
                     }
@@ -1144,7 +1192,7 @@ namespace ZeldaFullEditor
                             if (chests_in_room.Count > 0)
                             {
                                 tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Chest;
-                                chest_list.Add(new Chest(posX, posY, chests_in_room[0].itemIn, chests_in_room[0].bigChest));
+                                chest_list.Add(new Chest(posX, posY, chests_in_room[0].itemIn, false));
                                 chests_in_room.RemoveAt(0);
                             }
                         }
@@ -1153,7 +1201,7 @@ namespace ZeldaFullEditor
                             if (chests_in_room.Count > 0)
                             {
                                 tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Chest;
-                                chest_list.Add(new Chest((byte)(posX+1), posY, chests_in_room[0].itemIn, chests_in_room[0].bigChest));
+                                chest_list.Add(new Chest((byte)(posX+1), posY, chests_in_room[0].itemIn, true));
                                 chests_in_room.RemoveAt(0);
 
                             }
@@ -2333,7 +2381,24 @@ namespace ZeldaFullEditor
                             
                         case 0xFF5:
                            return new object_FF5(oid, x, y, size, layer);
-                            
+                        case 0xFF6:
+                            return new object_FF6(oid, x, y, size, layer);
+                        case 0xFF7:
+                            return new object_FF7(oid, x, y, size, layer);
+                        case 0xFF8:
+                            return new object_FF8(oid, x, y, size, layer);
+                        case 0xFF9:
+                            return new object_FF9(oid, x, y, size, layer);
+                        case 0xFFA:
+                            return new object_FFA(oid, x, y, size, layer);
+                        case 0xFFB:
+                            return new object_FFB(oid, x, y, size, layer);
+                        case 0xFFC:
+                            return new object_FFC(oid, x, y, size, layer);
+                        case 0xFFD:
+                            return new object_FFD(oid, x, y, size, layer);
+                        case 0xFFE:
+                            return new object_FFE(oid, x, y, size, layer);
                     }
                 }
                 else if ((oid & 0x100) == 0x100) //subtype2? non scalable
@@ -2405,7 +2470,10 @@ namespace ZeldaFullEditor
             bg2 = (Background2)((ROM.DATA[header_location] >> 5) & 0x07);
             collision = (byte)((ROM.DATA[header_location] >> 2) & 0x07);
             light = (((ROM.DATA[header_location]) & 0x01) == 1 ? true : false);
-            //WTF oh i see this is bad :D
+            if (light)
+            {
+                bg2 = Background2.DarkRoom;
+            }
 
             palette = (byte)((ROM.DATA[header_location + 1] & 0x3F));
             blockset = (byte)((ROM.DATA[header_location + 2]));

@@ -32,26 +32,30 @@ namespace ZeldaFullEditor
         {
             using (Graphics g = Graphics.FromImage(pb.Image))
             {
-                g.Clear(Color.Black);
+                g.Clear(pb.BackColor);
                 GFX.LoadHudPalettes();
+
                 //blockset
-                /*for (int y = 0; y < 8; y++)
+                if (GFX.editingPalettes != null)
                 {
-                    for (int x = 0; x < 16; x++)
+                    for (int y = 0; y < GFX.editingPalettes.GetLength(1); y++)
                     {
-                        g.FillRectangle(new SolidBrush(GFX.loadedPalettes[x, y]), new Rectangle(x * 16, y * 16, 16, 16));
+                        for (int x = 0; x < GFX.editingPalettes.GetLength(0); x++)
+                        {
+                            g.FillRectangle(new SolidBrush(GFX.editingPalettes[x, y]), new Rectangle(x * 16, y * 16, 16, 16));
+                        }
                     }
-                }*/
+                }
                 //spriteset
-                for (int y = 0; y < 16; y++)
+                /*for (int y = 0; y < 16; y++)
                 {
                     for (int x = 0; x < 8; x++)
                     {
-                       // g.FillRectangle(new SolidBrush(GFX.spritesPalettes[x, y]), new Rectangle(x * 16, y * 16, 16, 16));
+                        //g.FillRectangle(new SolidBrush(GFX.spritesPalettes[x, y]), new Rectangle(x * 16, y * 16, 16, 16));
                         //g.FillRectangle(new SolidBrush(GFX.hudPalettes[x, y]), new Rectangle(x * 16, y * 16, 16, 16));
                     }
-                }
-                g.DrawString((GFX.paletteid/180).ToString(), new Font("Arial", 10, FontStyle.Regular), Brushes.White, new Point(4, 4));
+                }*/
+                //g.DrawString((GFX.paletteid/180).ToString(), new Font("Arial", 10, FontStyle.Regular), Brushes.White, new Point(4, 4));
             }
 
             pb.Refresh();

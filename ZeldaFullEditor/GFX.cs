@@ -32,7 +32,8 @@ namespace ZeldaFullEditor
         public static Bitmap bg2_trans_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap room_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap[] chestitems_bitmap = new Bitmap[175];
-
+        public static int animated_frame = 0;
+        public static int animation_timer = 0;
 
         public static int[] positions = new int[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
         public static int superpos = 0;
@@ -174,11 +175,14 @@ namespace ZeldaFullEditor
         public static unsafe byte* currentData;
         public static IntPtr currentPtr;
         public static BitmapData currentbmpData;
-
+        public static int currentWidth;
+        public static int currentHeight;
         public static unsafe void begin_draw(Bitmap b, int width = 512, int height = 512)
         {
             currentbmpData = b.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
             currentData = (byte*)currentbmpData.Scan0.ToPointer();
+            currentWidth = width;
+            currentHeight = height;
         }
 
         public static void end_draw(Bitmap b)
@@ -213,12 +217,12 @@ namespace ZeldaFullEditor
         {
             return Color.FromArgb(((c & 0x1F) * 8), ((c & 0x3E0) >> 5) * 8, ((c & 0x7C00) >> 10) * 8);
         }
-
+        public static Color[,] editingPalettes; //dynamic
         public static Color[,] loadedPalettes;
         public static Color[,] itemsPalettes;
         public static Color[,] spritesPalettes;
         public static short paletteid;
-        public static void LoadDungeonPalette(byte id)
+        public static Color[,] LoadDungeonPalette(byte id)
         {
             Color[,] palettes = new Color[16,10];
             //id = dungeon palette id
@@ -251,7 +255,9 @@ namespace ZeldaFullEditor
                     i += 2;
                 }
             }
-            loadedPalettes = palettes;
+            return palettes;
+
+            //loadedPalettes = palettes;
             //return palettes;
             //int spr1_dungeon_palette = Constants.dungeons_palettes_groups + (id * 4) + 1;
             //int spr2_dungeon_palette = Constants.dungeons_palettes_groups + (id * 4) + 2;
@@ -260,7 +266,7 @@ namespace ZeldaFullEditor
 
 
         }
-                             
+
         public static Color[,] testpalette;
         public static void LoadTestPalette(byte id)
         {
@@ -320,7 +326,7 @@ namespace ZeldaFullEditor
         }
 
 
-        public static void LoadSpritesPalette(byte id)
+        public static Color[,] LoadSpritesPalette(byte id)
         {
             Color[,] palettes = new Color[8, 16];
             byte sprite1_palette_ptr = ROM.DATA[Constants.dungeons_palettes_groups + (id * 4) + 1]; //id of the 1st group of 4
@@ -375,7 +381,8 @@ namespace ZeldaFullEditor
 
                 i += 2;
             }
-            spritesPalettes = palettes;
+            return palettes;
+            
         }
 
 

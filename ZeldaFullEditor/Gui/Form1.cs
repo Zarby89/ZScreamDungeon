@@ -15,7 +15,7 @@ using ZeldaFullEditor.Properties;
 using Microsoft.VisualBasic;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
-
+using WeifenLuo.WinFormsUI.Docking;
 namespace ZeldaFullEditor
 {
 
@@ -24,129 +24,179 @@ namespace ZeldaFullEditor
         public zscreamForm()
         {
             InitializeComponent();
-            
+
         }
 
-
-
-        Room room;
-        Room[] all_rooms = new Room[296];
+        public Room[] all_rooms = new Room[296];
         int lastRoom = 32;
         bool anychange = false;
-        bool project_loaded = false;
         PaletteViewer paletteViewer;
-        Scene scene;
         string version = "us";
-
+        public List<DScene> rooms = new List<DScene>();
         Charactertable table_char = new Charactertable(true);
+        bool projectLoaded = false;
+
+
+        List<string> recentProjects = new List<string>();
+
+
+        private void Tsi_Click(object sender, EventArgs e)
+        {
+            string fileName = (sender as ToolStripMenuItem).Text;
+            LoadProject(fileName);
+        }
+        DockPanel dockPanel = new DockPanel();
         private void Form1_Load(object sender, EventArgs e)
         {
+            //settings.cfg format
+            //5 last projects - string dynamic
+            //
+            searchtextListbox.DisplayMember = "Name";
+            spritesListbox.DisplayMember = "Name";
+            if (File.Exists("settings.cfg"))
+            {
+                BinaryReader br = new BinaryReader(new FileStream("settings.cfg", FileMode.Open, FileAccess.Read));
+                for (int i = 0; i < 5; i++)
+                {
+                    string name = br.ReadString();
+                    if (name != "")
+                    {
+                        recentProjects.Add(name);
+                    }
+                }
+                br.Close();
+            }
+
+            if (recentProjects.Count > 0)
+            {
+                foreach (string s in recentProjects)
+                {
+                    ToolStripMenuItem tsi = new ToolStripMenuItem(s);
+                    tsi.Click += Tsi_Click;
+                    fileToolStripMenuItem.DropDownItems.Add(tsi);
+
+                }
+            }
+
+
             ROMStructure.loadDefaultProject();
-            scene = new Scene(this);
-            scene.Enabled = false;
-            splitContainer1.Panel2.Controls.Add(scene);
-            //this.Controls.Add();
-            scene.Location = new Point(0, 0);
-            scene.Size = new Size(512, 512);
+
+            Controls.Add(dockPanel);
+            dockPanel.BringToFront();
+            dockPanel.Dock = DockStyle.Fill;
+            dockPanel.ActiveDocumentChanged += DockPanel_ActiveDocumentChanged;
+
             actionsListbox.DisplayMember = "Name";
             palettePicturebox.Image = new Bitmap(256, 340);
             paletteViewer = new PaletteViewer(palettePicturebox);
             mapPicturebox.Image = new Bitmap(256, 304);
             layoutForm = new RoomLayout(this);
-
-            /*#if DEBUG
-                        openRomFileDialog.FileName = "C:\\zscream\\randotest.sfc";
-                        byte[] tempRom;
-                        FileStream fs = new FileStream("C:\\zscream\\randotest.sfc", FileMode.Open, FileAccess.Read);
-                        tempRom = new byte[fs.Length];
-                        fs.Read(tempRom, 0, (int)fs.Length);
-                        fs.Close();
-
-                        if (tempRom.Length == 0x100200)
-                        {
-                            ROM.DATA = new byte[0x100000];
-                            Array.Copy(tempRom, 0x200, ROM.DATA, 0x00, 0x100000);
-                        }
-                        else
-                        {
-                            ROM.DATA = new byte[tempRom.Length];
-                            tempRom.CopyTo(ROM.DATA, 0x0);
-                        }
-                        version = checkFileSupport();
-                        load_default_room();
-            #endif*/
         }
 
+        private void DockPanel_ActiveDocumentChanged(object sender, EventArgs e)
+        {
+            if (dockPanel.DocumentsCount > 0)
+            {
+                activeScene = (dockPanel.ActiveDocument as DScene).scene;
+                propertyGrid1.SelectedObject = activeScene.room;
+            }
+            else
+            {
+                activeScene.Clear();
+            }
+        }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Save Functions
             //Expand ROM to 2MB
-            if (scene.sceneChanged == true)
+            bool anychange = false;
+
+            foreach (DScene ds in rooms)
             {
-                DialogResult dialogResult = MessageBox.Show("Room has changed. Do you want to save changes?", "Save", MessageBoxButtons.YesNoCancel);
+                if (ds.scene.room.has_changed)
+                {
+                    anychange = true;
+                }
+            }
+
+            if (anychange == true)
+            {
+                DialogResult dialogResult = MessageBox.Show("Rooms has changed. Do you want to save changes?", "Save", MessageBoxButtons.YesNoCancel);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    all_rooms[room.index] = room;
+                    foreach (DScene ds in rooms)
+                    {
+                        ds.scene.room.has_changed = false;
+                        all_rooms[ds.scene.room.index] = (Room)ds.scene.room.Clone();
+                        ds.Text = ds.Text.Trim('*');
+                        ds.namedChanged = false;
+                    }
+
                 }
             }
 
             byte[] romBackup = (byte[])ROM.DATA.Clone();
             Save save = new Save(all_rooms);
-            if (save.saveRoomsHeaders())
+            if (save.saveRoomsHeaders()) //no protection always the same size so we don't care :)
             {
 
             }
-            if (save.saveallChests())
+            if (save.saveallChests()) //chest there's a protection when there's too many chest - tested it works fine
             {
                 MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            if (save.saveallSprites())
+            if (save.saveallSprites())//sprites, there's a protection -NOT TESTED-
             {
                 MessageBox.Show("Failed to save, there is too many sprites", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            if (save.saveAllObjects())
+            if (save.saveAllObjects())//There is a protection - Tested
             {
                 MessageBox.Show("Failed to save, there is too many tiles objects", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            if (save.saveallPots())
+            if (save.saveallPots())//There is a protection - Tested
             {
                 MessageBox.Show("Failed to save, there is too many pot items", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            if (save.saveBlocks())
+            if (save.saveBlocks())//There is a protection - Tested
             {
                 MessageBox.Show("Failed to save, there is too many pushable blocks", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            if (save.saveTorches())
+            if (save.saveTorches())//There is a protection Tested
             {
                 MessageBox.Show("Failed to save, there is too many torches", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            if (save.saveAllPits())
+            if (save.saveAllPits())//There is a protection - Tested
             {
                 MessageBox.Show("Failed to save, there is too many damage pits", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            if (save.saveTexts(messages, table_char))
+            if (save.saveTexts(messages, table_char))//There is a protection - Tested
             {
                 MessageBox.Show("Failed to save, there is too many texts", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-
-            saveInitialStuff();
+            if (save.saveEntrances(entrances))
+            {
+                MessageBox.Show("Failed to save entrances ?? no idea why LUL", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+            saveInitialStuff(); //can't overwrite anything
 
             anychange = false;
             saved_changed = false;
@@ -158,28 +208,45 @@ namespace ZeldaFullEditor
 
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //need to be replaced by open project
             OpenFileDialog projectFile = new OpenFileDialog();
             if (projectFile.ShowDialog() == DialogResult.OK)
             {
                 LoadProject(projectFile.FileName);
+                foreach (string s in recentProjects)
+                {
+                    if (s == projectFile.FileName)
+                    {
+                        return;
+                    }
+                }
+                recentProjects.Insert(0, projectFile.FileName);
             }
 
         }
         string projectFilename;
         public void LoadProject(string filename)
         {
-            ROMStructure.loadProject(filename);
-            version = "jp";
-            Constants.Init_Jp(true);
-            load_default_room();
-            projectFilename = filename;
-            this.Text = "ZScream Magic - " + filename;
+            if (ROMStructure.loadProject(filename))
+            {
+                version = ROMStructure.GameVersion;
+                if (version == "vt")
+                {
+                    Constants.Init_Jp(true);
+                }
+                else if (version == "jp")
+                {
+                    Constants.Init_Jp();
+                }
+
+                initProject();
+                projectFilename = filename;
+                this.Text = "ZScream Magic - " + filename;
+            }
         }
 
         public void CreateProject(string romFile) //use 5MB File, 4MB for the rom, 1MB for project data
         {
-            
+
             //Chose a rom if that rom have header remove the header
             byte[] tempRom;
             FileStream fs = new FileStream(romFile, FileMode.Open, FileAccess.Read);
@@ -201,15 +268,15 @@ namespace ZeldaFullEditor
             if (version != "error")
             {
                 ROMStructure.createProjectFile(version);
-                load_default_room();
+                initProject();
             }
             else
             {
-                MessageBox.Show("Failed to create a project from that rom","Error");
+                MessageBox.Show("Failed to create a project from that rom", "Error");
             }
 
             //Check the version of the rom, known version are "us","jp","vt", others are unknown or not allowed to load
-            
+
 
         }
 
@@ -218,26 +285,36 @@ namespace ZeldaFullEditor
         {
             string v = "";
             string title = getHeaderTitle();
-            if (title == "VTC")
+
+            if (title == "VT")
             {
+                if (ROM.DATA[0x07FC2] == 0x20)
+                {
+                    ROM.DATA = null;
+                    MessageBox.Show("Sorry that ROM is not supported :(", "Error");
+                    v = "error";
+                    return "error";
+                }
                 Constants.Init_Jp(true); //VT
                 v = "vt";
             }
-            else if (title == "ZEL")
+            else if (title == "ZE")
             {
                 Constants.Init_Jp(); //JP
                 v = "jp";
             }
-            else if (title == "THE")
+            else if (title == "TH")
             {
                 v = "us";
             }
             else
             {
-                v = "error";
+                v = "us";
                 ROM.DATA = null;
                 MessageBox.Show("Sorry that ROM is not supported :(", "Error");
-                load_default_room();
+                //load_default_room();
+                v = "error";
+                return "error";
             }
 
             return v;
@@ -246,7 +323,7 @@ namespace ZeldaFullEditor
         public string getHeaderTitle()
         {
             string title = "";
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
                 title += (char)ROM.DATA[0x07FC0 + i];
             }
@@ -255,30 +332,38 @@ namespace ZeldaFullEditor
 
         short[][] dungeons_rooms = new short[15][];
 
-        public void loadRoomList(int roomId)
+        public void initRoomsMap()
         {
-            if (radioButton1.Checked)
-            {
-                roomListView.Nodes.Clear();
-                for (int i = 0; i < 17; i++)
-                {
-                    TreeNode node = new TreeNode(ROMStructure.dungeonsNames[i]);
-                    roomListView.Nodes.Add(node);
-                }
-                foreach (DataRoom r in ROMStructure.dungeonsRoomList)
-                {
-                    TreeNode subnode = new TreeNode("[" + r.id + "] " + r.name);
-                    subnode.Tag = r.id;
-                    roomListView.Nodes[r.dungeonId].Nodes.Add(subnode);
-                }
-                //roomListView.SelectedNode = roomListView.Nodes[260]; //why ?
-
-            }
-            else if (radioButton2.Checked)
+            using (Graphics g = Graphics.FromImage(mapPicturebox.Image))
             {
                 int xd = 0;
                 int yd = 0;
+                g.Clear(Color.Black);
+                for (int i = 0; i < 296; i++)
+                {
+                    if (all_rooms[i].tilesObjects.Count > 0)
+                    {
+                        g.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(all_rooms[i].palette)[4, 2]), new Rectangle(xd * 16, yd * 16, 16, 16));
+                    }
+                    xd++;
+                    if (xd == 16)
+                    {
+                        yd++;
+                        xd = 0;
+                    }
+                }
+            }
+            GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
+            mapPicturebox.Refresh();
+        }
 
+
+        public void loadRoomList(int roomId)
+        {
+            if (radioButton2.Checked)
+            {
+                int xd = 0;
+                int yd = 0;
                 using (Graphics g = Graphics.FromImage(mapPicturebox.Image))
                 {
                     g.Clear(Color.Black);
@@ -286,8 +371,17 @@ namespace ZeldaFullEditor
                     {
                         if (all_rooms[i].tilesObjects.Count > 0)
                         {
-                            GFX.LoadDungeonPalette(all_rooms[i].palette);
-                            g.FillRectangle(new SolidBrush(GFX.loadedPalettes[4, 2]), new Rectangle(xd * 16, yd * 16, 16, 16));
+
+                            g.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(all_rooms[i].palette)[4, 2]), new Rectangle(xd * 16, yd * 16, 16, 16));
+
+                            foreach (short s in selectedMapPng)
+                            {
+                                if (s == i)
+                                {
+                                    g.DrawRectangle(new Pen(Color.Aqua, 2), new Rectangle((xd * 16), (yd * 16), 16, 16));
+                                }
+                            }
+
                         }
                         xd++;
                         if (xd == 16)
@@ -301,11 +395,26 @@ namespace ZeldaFullEditor
                         g.DrawLine(Pens.White, 0, i * 16, 256, i * 16);
                         g.DrawLine(Pens.White, i * 16, 0, i * 16, 304);
                     }
-                    yd = (roomId / 16);
-                    xd = roomId - (yd * 16);
-                    g.DrawRectangle(new Pen(Color.Red, 2), new Rectangle((xd * 16), (yd * 16), 16, 16));
-
+                    xd = 0;
+                    yd = 0;
+                    for (int i = 0; i < 296; i++)
+                    {
+                        foreach (DScene ds in rooms)
+                        {
+                            if (ds.scene.room.index == (short)i)
+                            {
+                                g.DrawRectangle(new Pen(Color.YellowGreen, 2), new Rectangle((xd * 16), (yd * 16), 16, 16));
+                            }
+                        }
+                        xd++;
+                        if (xd == 16)
+                        {
+                            yd++;
+                            xd = 0;
+                        }
+                    }
                 }
+                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
                 mapPicturebox.Refresh();
             }
 
@@ -313,7 +422,10 @@ namespace ZeldaFullEditor
 
         }
         TextPreview previewText;
-        public void load_default_room()
+        Entrance[] entrances = new Entrance[0x84];
+        List<dataObject> listoftilesobjects = new List<dataObject>();
+        List<dataObject> listofspritesobjects = new List<dataObject>();
+        public void initProject() //first load of project need to be changed entirely
         {
             tabControl1.Enabled = true;
 
@@ -325,37 +437,155 @@ namespace ZeldaFullEditor
                 all_rooms[i] = (new Room(i)); // create all rooms
             }
 
-
-            roomListView.Nodes.Clear();
-            Room_Name room_names = new Room_Name();
-            if (version == "jp")
+            if (version == "jp" || version == "vt")
             {
-                if (Constants.Rando)
-                {
-                    readAllText();
-                }
+                readAllText();//TODO : Change that to have it own class
                 messageidUpDown.Maximum = messageUpDown.Maximum;
             }
-            loadRoomList(260);
-            scene.Enabled = true;
 
-            //roomListView.SelectedNode = roomListView.Nodes[260];//set start room on link's house
 
-            paletteViewer.update();
+            initRoomsList();
+
             GFX.LoadHudPalettes();
             previewText = new TextPreview(table_char);
+            enableProjectButtons();
 
+
+            Room r = (Room)all_rooms[260].Clone();
+            DScene ds = new DScene(this, "Room : " + r.index);
+            Scene s = ds.scene;
+
+            s.room = r;
+            propertyGrid1.SelectedObject = r;
+            rooms.Add(ds); //add the double clicked room into rooms list            
+            s.need_refresh = true;
+            s.room.reloadGfx(false);
+            paletteViewer.update();
+            s.initChestGfx();
+            s.Enabled = true;
+            s.Dock = DockStyle.Fill;
+            pictureBox2.Image = GFX.singletobmp((int)numericUpDown1.Value);
+            room_loaded = true;
+            s.selectedMode = ObjectMode.Bg1mode;
+            s.Enabled = true;
+            ds.Text = "Room : " + r.index;
+            ds.Show(dockPanel);
+            ds.Controls.Add(s);
+            s.BringToFront();
+            s.Size = new Size(512, 512);
+
+            activeScene = s;
+
+            //scene.room = room;
+
+            //Initialize the map draw
+            initRoomsMap();
+            //Initialize the entrances list
+            initEntrancesList();
+            //Initialize the tiles and sprites objects list - Require a temproom loaded
+            initObjectsList();
+            //Load initial equipment
+            loadInitialStuff();
+            projectLoaded = true;
+            //Start the update timer to refresh the screen
+            updateTimer.Enabled = true;
+            paletteViewer.update();
+        }
+
+        public void initObjectsList()
+        {
+            for (int i = 0; i < 0xE8; i++) //Type 1 objects 
+            {
+                Room_Object o = activeScene.room.addObject((short)i, 0, 0, 0, 0);
+                if (o != null)
+                {
+                    //objectsListbox.Items.Add(new dataObject((short)i,i.ToString("X3") +" "+ o.name));
+                    listoftilesobjects.Add(new dataObject((short)i, i.ToString("X3") + " " + o.name));
+                }
+            }
+            for (int i = 0x100; i < 0x140; i++) //Type 2 objects 
+            {
+                Room_Object o = activeScene.room.addObject((short)i, 0, 0, 0, 0);
+                if (o != null)
+                {
+                    //objectsListbox.Items.Add(new dataObject((short)i, i.ToString("X3") + " " + o.name));
+                    listoftilesobjects.Add(new dataObject((short)i, i.ToString("X3") + " " + o.name));
+                }
+            }
+            for (int i = 0xF80; i < 0xFFF; i++) //Type 3 objects 
+            {
+
+                Room_Object o = activeScene.room.addObject((short)i, 0, 0, 0, 0);
+                if (o != null)
+                {
+                    //objectsListbox.Items.Add(new dataObject((short)i, i.ToString("X3") + " " + o.name));
+                    listoftilesobjects.Add(new dataObject((short)i, i.ToString("X3") + " " + o.name));
+                }
+            }
+
+            for (int i = 0; i < 0xF2; i++)
+            {
+                listofspritesobjects.Add(new dataObject((byte)i, Sprites_Names.name[i]));
+            }
+            spritesListbox.Items.AddRange(listofspritesobjects.ToArray());
+            objectsListbox.DisplayMember = "Name";
+            sortObject();
+        }
+
+        public void initEntrancesList()
+        {
+            //entrances
+            for (int i = 0; i < 0x84; i++)
+            {
+                entrances[i] = new Entrance((byte)i, false);
+                string tname = "[" + i.ToString("X2") + "] -> ";
+                foreach (DataRoom d in ROMStructure.dungeonsRoomList)
+                {
+                    if (d.id == entrances[i].Room)
+                    {
+                        tname += "[" + d.id.ToString() + "]" + d.name;
+                        break;
+                    }
+                }
+                TreeNode tn = new TreeNode(tname);
+                tn.Tag = i;
+                entrancetreeView.Nodes[0].Nodes.Add(tn);
+            }
+        }
+
+        public void initRoomsList()
+        {
+            roomListView.Nodes.Clear();
+            //create the 16 dungeons
+            for (int i = 0; i < 17; i++)
+            {
+                TreeNode node = new TreeNode(ROMStructure.dungeonsNames[i]);
+                roomListView.Nodes.Add(node);
+            }
+            //create the rooms inside the dungeons
+            foreach (DataRoom r in ROMStructure.dungeonsRoomList)
+            {
+                TreeNode subnode = new TreeNode("[" + r.id + "] " + r.name);
+                subnode.Tag = r.id;
+                roomListView.Nodes[r.dungeonId].Nodes.Add(subnode);
+            }
+        }
+
+        public void enableProjectButtons()
+        {
+            
+            allbgsButton.Enabled = true;
             bg3modeButton.Enabled = true;
             bg2modeButton.Enabled = true;
             bg1modeButton.Enabled = true;
-            allbgsButton.Enabled = true;
             chestmodeButton.Enabled = true;
             saveButton.Enabled = true;
+            doormodeButton.Enabled = true; //door mode changed on bg
             blockmodeButton.Enabled = true;
             torchmodeButton.Enabled = true;
             spritemodeButton.Enabled = true;
-            potmodeButton.Enabled = true;
-            doormodeButton.Enabled = true;
+            runtestButton.Enabled = true;
+            potmodeButton.Enabled = true; //cant change to sprite since sprites are using 16x16
             saveToolStripMenuItem.Enabled = true;
             warpmodeButton.Enabled = true;
             saveLayoutButton.Enabled = true;
@@ -368,37 +598,44 @@ namespace ZeldaFullEditor
                     (ti as ToolStripDropDownItem).Enabled = true;
                 }
             }
-            //pictureBox2.Image = GFX.singletobmp();
-            entranceListBox.Items.Clear();
-            for (int i = 0; i < 0x84; i++)
-            {
-                entranceListBox.Items.Add("Entrance " + i.ToString("X2"));
-            }
-            for (int i = 0; i < 0x07; i++)
-            {
-                entranceListBox.Items.Add("Starting Entrance " + i.ToString("X2"));
-            }
-            entranceListBox.SelectedIndex = 0;
-            loadInitialStuff();
-            project_loaded = true;
-            updateTimer.Enabled = true;
-            //pictureBox1.Image = roomBitmap;
-
-            scene.need_refresh = true;
-
         }
+
 
         private void updateTimer_Tick(object sender, EventArgs e)
         {
-            if (project_loaded == true)
+            foreach (DScene ds in rooms)
             {
-                undoredoButtonsEnables();
-                scene.drawRoom();
-                splitContainer1.Panel2.Enabled = true;
+                if (ds.scene.room.has_changed == true)
+                {
+                    if (ds.namedChanged == false)
+                    {
+                        ds.Text += "*";
+                        ds.namedChanged = true;
+                    }
+
+                }
+                //ds.scene.drawRoom();
             }
+            activeScene.drawRoom();
+            if (animated)
+            {
+                GFX.animation_timer++;
+                if (GFX.animation_timer >= 8)
+                {
+                    activeScene.room.reloadGfx();
+                    activeScene.need_refresh = true;
+                    GFX.animation_timer = 0;
+                    GFX.animated_frame++;
+                    if (GFX.animated_frame >= 3)
+                    {
+                        GFX.animated_frame = 0;
+                    }
+                }
+            }
+
         }
 
-        public enum ObjectResize
+        public enum ObjectResize //TODO : ASAP the scaling from top/left cause that's annoying to not have them :p
         {
             None, Left, Right, Up, Down, UpLeft, UpRight, DownLeft, DownRight
         }
@@ -417,353 +654,20 @@ namespace ZeldaFullEditor
 
         public void clear_room()
         {
-            if (room != null)
+            if (activeScene.room != null)
             {
-                scene.redoRooms.Clear();
                 actionsListbox.Items.Clear();
-                room.selectedObject.Clear();
+                activeScene.room.selectedObject.Clear();
             }
         }
         bool saved_changed = false;
         public TreeNode lastNode = null;
-        public void change_room(int roomId)
-        {
-            if (radioButton1.Checked)
-            {
-                room = (Room)all_rooms[(short)roomListView.SelectedNode.Tag].Clone();
-            }
-            else
-            {
-                room = (Room)all_rooms[(short)roomId].Clone();
-            }
-            scene.room = room;
-            scene.project_loaded = true;
-            propertyGrid1.SelectedObject = room;
-            scene.need_refresh = true;
-            room.reloadGfx(false);
-            paletteViewer.update();
-            floor1UpDown.Value = room.floor1;
-            floor2UpDown.Value = room.floor2;
-            roomgfxUpDown.Value = room.blockset;
-            paletteUpDown.Value = room.palette;
-            spritesetUpDown.Value = room.spriteset;
-            layoutUpDown.Value = room.layout;
-            collisioncomboBox.SelectedIndex = room.collision;
-            //tag1comboBox.SelectedIndex = room.tag1;
-            //tag2comboBox.SelectedIndex = room.tag2;
-            effectcomboBox.SelectedIndex = room.effect;
-            if (room.light)
-            {
-                bg2comboBox.SelectedIndex = 8;
-            }
-            else
-            {
-                bg2comboBox.SelectedIndex = (byte)room.bg2;
-            }
-            if (version == "jp")
-            {
-                messageidUpDown.Value = room.messageid;
-            }
-
-            scene.initChestGfx();
-            pithurtcheckbox.Checked = room.damagepit;
-            scene.undoRooms.Clear();
-            scene.redoRooms.Clear();
-            pictureBox2.Image = GFX.singletobmp((int)numericUpDown1.Value);
-            room_loaded = true;
-        }
-
-        private void loadInitialStuff()
-        {
-            foreach (Control c in groupBox5.Controls)
-            {
-                if (c.GetType() == typeof(CheckBox))
-                {
-                    (c as CheckBox).Checked = false;
-                }
-            }
-
-            if (ROM.DATA[Constants.initial_equipement] == 1)
-            {
-                equipBowCheckbox.Checked = true;
-            }
-
-            if (ROM.DATA[Constants.initial_equipement] == 3)
-            {
-                equipSilverarrowCheckBox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 1] == 1)
-            {
-                equipBoomerangCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 1] == 2)
-            {
-                equipBoomerangredCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 2] == 1)
-            {
-                equipHookshotCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 3] == 10)
-            {
-                equipBombsCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 4] == 1)
-            {
-                equipMushroomCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 4] == 2)
-            {
-                equipPowderCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 5] == 1)
-            {
-                equipFirerodCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 6] == 1)
-            {
-                equipIcerodCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 7] == 1)
-            {
-                equipBombosCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 8] == 1)
-            {
-                equipEtherCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 9] == 1)
-            {
-                equipQuakeCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 10] == 1)
-            {
-                equipLanternCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 11] == 1)
-            {
-                equipHammerCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 12] == 1)
-            {
-                equipShovelCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 12] == 2)
-            {
-                equipFluteCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 12] == 3)
-            {
-                equipFluteactiveCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 13] == 1)
-            {
-                equipNetCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 14] == 1)
-            {
-                equipBookCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 16] == 1)
-            {
-                equipSomariaCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 17] == 1)
-            {
-                equipByrnaCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 18] == 1)
-            {
-                equipCapeCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 19] == 1)
-            {
-                equipMirrorCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 21] == 1)
-            {
-                equipBootsCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 22] == 1)
-            {
-                equipFlippersCheckbox.Checked = true;
-            }
-            if (ROM.DATA[Constants.initial_equipement + 23] == 1)
-            {
-                equipMoonpearlCheckbox.Checked = true;
-            }
-
-            (equipGlovescomboBox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 20];
-            (equipSwordcomboBox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 25];
-            (equipShieldcomboBox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 26];
-            (equipMailcomboBox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 27];
-            (equipBottle1Combobox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 28];
-            (equipBottle2Combobox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 29];
-            (equipBottle3Combobox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 30];
-            (equipBottle4Combobox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 31];
-
-            byte[] rupeec = new byte[2];
-
-            rupeec[0] = ROM.DATA[Constants.initial_equipement + 32];
-            rupeec[1] = ROM.DATA[Constants.initial_equipement + 33];
-            rupeeNumericupdown.Value = BitConverter.ToInt16(rupeec, 0);
-        }
-        private void saveInitialStuff()
-        {
-            for (int i = 0; i < 35; i++)
-            {
-                ROM.DATA[Constants.initial_equipement + i] = 0;
-            }
-
-            if (equipBowCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement] = 1;
-            }
-            if (equipSilverarrowCheckBox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement] = 3;
-            }
-            if (equipBoomerangCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 1] = 1;
-            }
-            if (equipBoomerangredCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 1] = 2;
-            }
-            if (equipHookshotCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 2] = 1;
-            }
-            if (equipBombsCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 3] = 10;
-            }
-            if (equipMushroomCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 4] = 1;
-            }
-            if (equipPowderCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 4] = 2;
-            }
-            if (equipFirerodCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 5] = 1;
-            }
-            if (equipIcerodCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 6] = 1;
-            }
-            if (equipBombosCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 7] = 1;
-            }
-            if (equipEtherCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 8] = 1;
-            }
-            if (equipQuakeCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 9] = 1;
-            }
-            if (equipLanternCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 10] = 1;
-            }
-            if (equipHammerCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 11] = 1;
-            }
-            if (equipShovelCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 12] = 1;
-            }
-            if (equipFluteCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 12] = 2;
-            }
-            if (equipFluteactiveCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 12] = 3;
-            }
-            if (equipNetCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 13] = 1;
-            }
-            if (equipBookCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 14] = 1;
-            }
-
-            if (equipSomariaCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 16] = 1;
-            }
-            if (equipByrnaCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 17] = 1;
-            }
-            if (equipCapeCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 18] = 1;
-            }
-            if (equipMirrorCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 19] = 1;
-            }
-
-            if (equipBootsCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 21] = 1;
-            }
-            if (equipFlippersCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 22] = 1;
-            }
-            if (equipMoonpearlCheckbox.Checked)
-            {
-                ROM.DATA[Constants.initial_equipement + 23] = 1;
-            }
-
-            ROM.DATA[Constants.initial_equipement + 20] = (byte)(equipGlovescomboBox.SelectedIndex);
-            ROM.DATA[Constants.initial_equipement + 25] = (byte)(equipSwordcomboBox.SelectedIndex);
-            ROM.DATA[Constants.initial_equipement + 26] = (byte)(equipShieldcomboBox.SelectedIndex);
-            ROM.DATA[Constants.initial_equipement + 27] = (byte)(equipMailcomboBox.SelectedIndex);
-            ROM.DATA[Constants.initial_equipement + 28] = (byte)(equipBottle1Combobox.SelectedIndex);
-            ROM.DATA[Constants.initial_equipement + 29] = (byte)(equipBottle2Combobox.SelectedIndex);
-            ROM.DATA[Constants.initial_equipement + 30] = (byte)(equipBottle3Combobox.SelectedIndex);
-            ROM.DATA[Constants.initial_equipement + 31] = (byte)(equipBottle4Combobox.SelectedIndex);
-            if (equipBottle1Combobox.SelectedIndex != 0 || equipBottle2Combobox.SelectedIndex != 0 ||
-                equipBottle3Combobox.SelectedIndex != 0 || equipBottle4Combobox.SelectedIndex != 0)
-            {
-                ROM.DATA[Constants.initial_equipement + 15] = 1;
-            }
-            else
-            {
-                ROM.DATA[Constants.initial_equipement + 15] = 0;
-            }
-
-            byte[] rupeec = new byte[2];
-            BitConverter.ToInt16(rupeec, 0);
-            rupeec = BitConverter.GetBytes((int)rupeeNumericupdown.Value);
-            //ROM.DATA[Constants.initial_equipement + 32] = rupeec[0]; //30, 31
-            //ROM.DATA[Constants.initial_equipement + 33] = rupeec[1]; //30, 31
-            //31,30,29,28
-            ROM.DATA[Constants.initial_equipement + 32] = rupeec[0]; //30, 31
-            ROM.DATA[Constants.initial_equipement + 33] = rupeec[1]; //30, 31
-            ROM.DATA[Constants.initial_equipement + 34] = rupeec[0]; //30, 31
-            ROM.DATA[Constants.initial_equipement + 35] = rupeec[1]; //30, 31
-        }
 
         public void save_room(int roomId)
         {
-            all_rooms[roomId] = room;
+            all_rooms[roomId] = (Room)activeScene.room.Clone();
+            all_rooms[roomId].clearGFX();
         }
-
-
-
-
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -771,37 +675,23 @@ namespace ZeldaFullEditor
             aboutBox.ShowDialog();
         }
 
-        public void undoredoButtonsEnables()
-        {
-            if (scene.undoRooms.Count > 0)
-            {
-                undoButton.Enabled = true;
-            }
-            else
-            {
-                undoButton.Enabled = false;
-            }
-            if (scene.redoRooms.Count > 0)
-            {
-                redoButton.Enabled = true;
-            }
-            else
-            {
-                redoButton.Enabled = false;
-            }
-        }
-
-
         Room_Name room_names = new Room_Name();
         private void radioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            loadRoomList(lastRoom);
-            mapPicturebox.Refresh();
-            scene.need_refresh = true;
             if (radioButton2.Checked)
             {
                 mapPicturebox.Visible = true;
                 roomListView.Visible = false;
+                if (roomListView.SelectedNode != null)
+                {
+                    if (roomListView.SelectedNode.Tag != null)
+                    {
+                        loadRoomList((short)roomListView.SelectedNode.Tag); //WHY ? for the map :D
+                    }
+                }
+                loadRoomList(activeScene.room.index);
+                mapPicturebox.Refresh();
+                // scene.need_refresh = true;
             }
             else
             {
@@ -816,68 +706,97 @@ namespace ZeldaFullEditor
             loadRoomList(260);
         }
         int selectedLayer = -1;
+        public Scene activeScene;
+
+        public void setmodeAllScene(ObjectMode mode)
+        {
+            foreach (DScene ds in rooms)
+            {
+                ds.scene.selectedMode = mode;
+            }
+        }
+
+        public void updateScenesMode()
+        {
+            foreach (DScene ds in rooms)
+            {
+                ds.scene.room.selectedObject.Clear();
+            }
+            objectsListbox.Enabled = false;
+            spritesListbox.Enabled = false;
+            setmodeAllScene(ObjectMode.Bgallmode);
+            if (allbgsButton.Checked)
+            {
+                setmodeAllScene(ObjectMode.Bgallmode);
+                selectedLayer = 3;
+            }
+            else if (bg1modeButton.Checked)
+            {
+                setmodeAllScene(ObjectMode.Bg1mode);
+                selectedLayer = 0;
+                objectsListbox.Enabled = true;
+            }
+            else if (bg2modeButton.Checked)
+            {
+                setmodeAllScene(ObjectMode.Bg2mode);
+                selectedLayer = 1;
+                objectsListbox.Enabled = true;
+            }
+            else if (bg3modeButton.Checked)
+            {
+                setmodeAllScene(ObjectMode.Bg3mode);
+                selectedLayer = 2;
+                objectsListbox.Enabled = true;
+            }
+            else if (spritemodeButton.Checked)
+            {
+                setmodeAllScene(ObjectMode.Spritemode);
+                spritesListbox.Enabled = true;
+            }
+            else if (potmodeButton.Checked)
+            {
+                setmodeAllScene(ObjectMode.Itemmode);
+            }
+            else if (torchmodeButton.Checked)
+            {
+                setmodeAllScene(ObjectMode.Torchmode);
+            }
+            else if (blockmodeButton.Checked)
+            {
+                setmodeAllScene(ObjectMode.Blockmode);
+            }
+            else if (doormodeButton.Checked)
+            {
+                setmodeAllScene(ObjectMode.Doormode);
+            }
+            else if (warpmodeButton.Checked)
+            {
+                setmodeAllScene(ObjectMode.Warpmode);
+            }
+            else if (chestmodeButton.Checked)
+            {
+                setmodeAllScene(ObjectMode.Chestmode);
+            }
+        }
+
         public void update_modes_buttons(object sender, EventArgs e)
         {
-            for (int i = 6; i < 17; i++)
+            foreach (DScene ds in rooms)
+            {
+                ds.scene.selectedDragObject = null;
+                ds.scene.selectedDragSprite = null;
+            }
+
+            for (int i = 8; i < 19; i++)
             {
                 (toolStrip1.Items[i] as ToolStripButton).Checked = false;
             }
             selectedLayer = -1;
             (sender as ToolStripButton).Checked = true;
-            room.selectedObject.Clear();
-            scene.selectedMode = ObjectMode.Bgallmode;
-            if (allbgsButton.Checked)
-            {
-                scene.selectedMode = ObjectMode.Bgallmode;
-                selectedLayer = 3;
-            }
-            else if (bg1modeButton.Checked)
-            {
-                scene.selectedMode = ObjectMode.Bg1mode;
-                selectedLayer = 0;
-            }
-            else if (bg2modeButton.Checked)
-            {
-                scene.selectedMode = ObjectMode.Bg2mode;
-                selectedLayer = 1;
-            }
-            else if (bg3modeButton.Checked)
-            {
-                scene.selectedMode = ObjectMode.Bg3mode;
-                selectedLayer = 2;
-            }
-            else if (spritemodeButton.Checked)
-            {
-                scene.selectedMode = ObjectMode.Spritemode;
-            }
-            else if (potmodeButton.Checked)
-            {
-                scene.selectedMode = ObjectMode.Itemmode;
-            }
-            else if (torchmodeButton.Checked)
-            {
-                scene.selectedMode = ObjectMode.Torchmode;
-            }
-            else if (blockmodeButton.Checked)
-            {
-                scene.selectedMode = ObjectMode.Blockmode;
-            }
-            else if (doormodeButton.Checked)
-            {
-                scene.selectedMode = ObjectMode.Doormode;
-            }
-            else if (warpmodeButton.Checked)
-            {
-                scene.selectedMode = ObjectMode.Warpmode;
-            }
-            else if (chestmodeButton.Checked)
-            {
-                scene.selectedMode = ObjectMode.Chestmode;
-            }
+            updateScenesMode();
+            activeScene.room.update();
+            activeScene.need_refresh = true;
 
-            //room.update();
-            scene.need_refresh = true;
-            scene.drawRoom();
         }
 
         public Bitmap[] sprites_bitmap = new Bitmap[0xF3];
@@ -893,25 +812,25 @@ namespace ZeldaFullEditor
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            scene.deleteSelected();
+            activeScene.deleteSelected();
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            scene.Undo();
+            //scene.Undo();
         }
 
 
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            scene.Redo();
+            //scene.Redo();
 
         }
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            scene.selectAll();
+            activeScene.selectAll();
         }
 
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -922,7 +841,7 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            scene.cut();
+            activeScene.cut();
         }
 
 
@@ -934,7 +853,7 @@ namespace ZeldaFullEditor
                 messagetextBox.Paste();
                 return;
             }
-            scene.paste();
+            activeScene.paste();
 
 
         }
@@ -946,7 +865,7 @@ namespace ZeldaFullEditor
                 messagetextBox.Copy();
                 return;
             }
-            scene.copy();
+            activeScene.copy();
 
         }
         bool room_loaded = false;
@@ -960,8 +879,8 @@ namespace ZeldaFullEditor
         {
             if (paletteViewer.mouseDown(e))
             {
-                room.reloadGfx(true, entrance_blockset);
-                scene.need_refresh = true;
+                activeScene.room.reloadGfx(true, entrance_blockset);
+                activeScene.need_refresh = true;
             }
         }
 
@@ -969,8 +888,8 @@ namespace ZeldaFullEditor
         {
             if (paletteViewer.mouseUp(e))
             {
-                room.reloadGfx(true, entrance_blockset);
-                scene.need_refresh = true;
+                activeScene.room.reloadGfx(true, entrance_blockset);
+                activeScene.need_refresh = true;
             }
         }
 
@@ -978,16 +897,16 @@ namespace ZeldaFullEditor
         {
             if (paletteViewer.mouseDoubleclick(e, colorDialog1))
             {
-                room.reloadGfx(true, entrance_blockset);
-                scene.need_refresh = true;
+                activeScene.room.reloadGfx(true, entrance_blockset);
+                activeScene.need_refresh = true;
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            paletteViewer.randomizePalette(room.palette);
-            room.reloadGfx(true, entrance_blockset);
-            scene.need_refresh = true;
+            paletteViewer.randomizePalette(activeScene.room.palette);
+            activeScene.room.reloadGfx(true, entrance_blockset);
+            activeScene.need_refresh = true;
         }
 
 
@@ -998,8 +917,11 @@ namespace ZeldaFullEditor
 
         private void showBG1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            scene.showLayer1 = showBG1ToolStripMenuItem.Checked;
-            scene.need_refresh = true;
+            foreach (DScene ds in rooms)
+            {
+                ds.scene.showLayer1 = showBG1ToolStripMenuItem.Checked;
+            }
+            activeScene.need_refresh = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -1047,7 +969,7 @@ namespace ZeldaFullEditor
             }
             else
             {
-                foreach (Object o in room.selectedObject)
+                foreach (Object o in activeScene.room.selectedObject)
                 {
                     if (selectedLayer >= 0)
                     {
@@ -1106,14 +1028,14 @@ namespace ZeldaFullEditor
         private void loadlayoutButton_Click(object sender, EventArgs e)
         {
             //scene.loadLayout();
-            if ((byte)scene.selectedMode > 3)
+            if ((byte)activeScene.selectedMode > 3)
             {
                 bg1modeButton.Checked = true;
-                update_modes_buttons(bg1modeButton,new EventArgs());
-               // scene.selectedMode = ObjectMode.Bg1mode;
+                update_modes_buttons(bg1modeButton, new EventArgs());
+                // scene.selectedMode = ObjectMode.Bg1mode;
             }
-            layoutForm.scene.room = (Room)room.Clone();
-            room.selectedObject.Clear();
+            layoutForm.scene.room = (Room)activeScene.room.Clone();
+            activeScene.room.selectedObject.Clear();
             if (layoutForm.ShowDialog() == DialogResult.OK)
             {
 
@@ -1143,40 +1065,39 @@ namespace ZeldaFullEditor
                 {
                     o.x = (byte)(o.x - most_x);
                     o.y = (byte)(o.y - most_y);
-                    room.tilesObjects.Add(o);
-                    room.selectedObject.Add(o);
-                    
+                    activeScene.room.tilesObjects.Add(o);
+                    activeScene.room.selectedObject.Add(o);
+
                 }
-                
-                scene.dragx = 0;
-                scene.dragy = 0;
-                scene.mouse_down = true;
-                scene.need_refresh = true;
-                room.reloadGfx(false);
+                activeScene.dragx = 0;
+                activeScene.dragy = 0;
+                activeScene.mouse_down = true;
+                activeScene.need_refresh = true;
+                activeScene.room.reloadGfx(false);
             }
         }
 
         private void moveDownToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (room.selectedObject.Count > 0)
+            if (activeScene.room.selectedObject.Count > 0)
             {
-                if (room.selectedObject[0] is Room_Object)
+                if (activeScene.room.selectedObject[0] is Room_Object)
                 {
-                    foreach (Room_Object o in room.selectedObject)
+                    foreach (Room_Object o in activeScene.room.selectedObject)
                     {
-                        for (int i = 0; i < room.tilesObjects.Count; i++)
+                        for (int i = 0; i < activeScene.room.tilesObjects.Count; i++)
                         {
 
-                            if (o == room.tilesObjects[i])
+                            if (o == activeScene.room.tilesObjects[i])
                             {
-                                room.tilesObjects.RemoveAt(i);
-                                room.tilesObjects.Add(o);
+                                activeScene.room.tilesObjects.RemoveAt(i);
+                                activeScene.room.tilesObjects.Add(o);
                                 break;
                             }
                         }
                     }
                 }
-                scene.need_refresh = true;
+                //scene.need_refresh = true;
 
             }
         }
@@ -1188,60 +1109,19 @@ namespace ZeldaFullEditor
 
         private void textSpriteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            scene.showSpriteText = textSpriteToolStripMenuItem.Checked;
-            scene.need_refresh = true;
+            // scene.showSpriteText = textSpriteToolStripMenuItem.Checked;
+            //scene.need_refresh = true;
         }
-
+        List<short> selectedMapPng = new List<short>();
         private void mapPicturebox_MouseClick(object sender, MouseEventArgs e)
         {
-            int x = (e.X / 16);
-            int y = (e.Y / 16);
-            int roomId = x + (y * 16);
-            if (roomId <= 296)
-            {
-                change_room(roomId);
-                loadRoomList(roomId);
-            }
+
         }
 
         private void entranceListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            short roomId = (short)((ROM.DATA[(Constants.entrance_room + (entranceListBox.SelectedIndex * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_room + (entranceListBox.SelectedIndex * 2)]);
-            short yPosition = (short)(((ROM.DATA[(Constants.entrance_yposition + (entranceListBox.SelectedIndex * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.entrance_yposition + (entranceListBox.SelectedIndex * 2)]);
-            short xPosition = (short)(((ROM.DATA[(Constants.entrance_xposition + (entranceListBox.SelectedIndex * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.entrance_xposition + (entranceListBox.SelectedIndex * 2)]);
-            short xScroll = (short)(((ROM.DATA[(Constants.entrance_yscroll + (entranceListBox.SelectedIndex * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.entrance_yscroll + (entranceListBox.SelectedIndex * 2)]);
-            short yScroll = (short)(((ROM.DATA[(Constants.entrance_xscroll + (entranceListBox.SelectedIndex * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.entrance_xscroll + (entranceListBox.SelectedIndex * 2)]);
-            short yCamera = (short)(((ROM.DATA[(Constants.entrance_camerayposition + (entranceListBox.SelectedIndex * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.entrance_camerayposition + (entranceListBox.SelectedIndex * 2)]);
-            short xCamera = (short)(((ROM.DATA[(Constants.entrance_cameraxposition + (entranceListBox.SelectedIndex * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.entrance_cameraxposition + (entranceListBox.SelectedIndex * 2)]);
-            byte blockset = (byte)(ROM.DATA[(Constants.entrance_blockset + entranceListBox.SelectedIndex)]);
-            byte music = (byte)(ROM.DATA[(Constants.entrance_music + entranceListBox.SelectedIndex)]);
-            byte dungeonid = (byte)(ROM.DATA[(Constants.entrance_dungeon + entranceListBox.SelectedIndex)]);
 
-            if (entranceListBox.SelectedIndex >= 0x84)
-            {
-                roomId = (short)((ROM.DATA[(Constants.startingentrance_room + ((entranceListBox.SelectedIndex - 0x84) * 2)) + 1] << 8) + ROM.DATA[Constants.startingentrance_room + ((entranceListBox.SelectedIndex - 0x84) * 2)]);
-                yPosition = (short)(((ROM.DATA[(Constants.startingentrance_yposition + ((entranceListBox.SelectedIndex - 0x84) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_yposition + ((entranceListBox.SelectedIndex - 0x84) * 2)]);
-                xPosition = (short)(((ROM.DATA[(Constants.startingentrance_xposition + ((entranceListBox.SelectedIndex - 0x84) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_xposition + ((entranceListBox.SelectedIndex - 0x84) * 2)]);
-                xScroll = (short)(((ROM.DATA[(Constants.startingentrance_yscroll + ((entranceListBox.SelectedIndex - 0x84) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_yscroll + ((entranceListBox.SelectedIndex - 0x84) * 2)]);
-                yScroll = (short)(((ROM.DATA[(Constants.startingentrance_xscroll + ((entranceListBox.SelectedIndex - 0x84) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_xscroll + ((entranceListBox.SelectedIndex - 0x84) * 2)]);
-                yCamera = (short)(((ROM.DATA[(Constants.startingentrance_camerayposition + ((entranceListBox.SelectedIndex - 0x84) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_camerayposition + ((entranceListBox.SelectedIndex - 0x84) * 2)]);
-                xCamera = (short)(((ROM.DATA[(Constants.startingentrance_cameraxposition + ((entranceListBox.SelectedIndex - 0x84) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_cameraxposition + ((entranceListBox.SelectedIndex - 0x84) * 2)]);
-                blockset = (byte)(ROM.DATA[(Constants.startingentrance_blockset + entranceListBox.SelectedIndex - 0x84)]);
-                music = (byte)(ROM.DATA[(Constants.startingentrance_music + entranceListBox.SelectedIndex - 0x84)]);
-                dungeonid = (byte)(ROM.DATA[(Constants.startingentrance_dungeon + entranceListBox.SelectedIndex - 0x84)]);
-            }
-
-            entranceXUpDown.Value = xPosition;
-            entranceYUpDown.Value = yPosition;
-            entranceRoomUpDown.Value = roomId;
-            entrancescrollxUpDown.Value = xScroll;
-            entrancescrollyUpDown.Value = yScroll;
-            entrancecameraxUpDown.Value = xCamera;
-            entrancecamerayUpDown.Value = yCamera;
-            entrancemusicUpDown.Value = music;
-            entrancedungidUpDown.Value = dungeonid;
-            entranceblocksetUpDown.Value = blockset;
             //entranceLabel.Text = "Room : " + roomId.ToString() + "\nX Position : " + xPosition.ToString() + "\nY Position : " + yPosition.ToString();
         }
         byte entrance_blockset = 0xFF;
@@ -1249,35 +1129,12 @@ namespace ZeldaFullEditor
         {
             //byte blockset = (byte)(ROM.DATA[(Constants.entrance_blockset + entranceListBox.SelectedIndex)]);
             //entrance_blockset = blockset;
-            if (entranceListBox.SelectedIndex >= 0x84)
+            if (entrancetreeView.SelectedNode.Tag != null)
             {
-                change_room((short)((ROM.DATA[(Constants.startingentrance_room + ((entranceListBox.SelectedIndex - 0x84) * 2)) + 1] << 8) + ROM.DATA[Constants.startingentrance_room + ((entranceListBox.SelectedIndex - 0x84) * 2)]));
-            }
-            else
-            {
-                change_room((short)((ROM.DATA[(Constants.entrance_room + (entranceListBox.SelectedIndex * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_room + (entranceListBox.SelectedIndex * 2)]));
+
             }
             //roomgfxUpDown.Value = blockset;
 
-        }
-
-        private void button4_Click(object sender, EventArgs e)//What is button4 ?
-        {
-            //Switch layer button
-            //TODO : Replace that button by a real thing
-            if (room.selectedObject.Count > 0)
-            {
-                scene.need_refresh = true;
-                if ((room.selectedObject[0] is Room_Object))
-                {
-                    Room_Object o = room.selectedObject[0] as Room_Object;
-                    if ((o.options & ObjectOption.Block) == ObjectOption.Block)
-                    {
-                        o.layer ^= 1;
-
-                    }
-                }
-            }
         }
 
 
@@ -1286,15 +1143,6 @@ namespace ZeldaFullEditor
         {
 
         }
-
-        private void pithurtcheckbox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (room_loaded)
-            {
-
-            }
-        }
-
 
 
 
@@ -1414,19 +1262,19 @@ namespace ZeldaFullEditor
                     }
                     if (ROM.DATA[pos] == 0xF8)
                     {
-                        messages[msgid] += "[LN2]\n";
+                        messages[msgid] += "\r\n[LN2]\r\n";
                         pos++;
                         continue;
                     }
                     if (ROM.DATA[pos] == 0xF9)
                     {
-                        messages[msgid] += "[LN3]\n";
+                        messages[msgid] += "\r\n[LN3]\r\n";
                         pos++;
                         continue;
                     }
                     if (ROM.DATA[pos] == 0xF6)
                     {
-                        messages[msgid] += "[SCL]";
+                        messages[msgid] += "\r\n[SCL]\r\n";
                         pos++;
                         continue;
                     }
@@ -1534,10 +1382,10 @@ namespace ZeldaFullEditor
                         continue;
                     }
 
-                    if (ROM.DATA[pos] == 0xFA) //NewLine
+                    if (ROM.DATA[pos] == 0xFA) //wait for key
                     {
                         pos++;
-                        messages[msgid] += "[NWL]\n";
+                        messages[msgid] += "[WFK]";
                         continue;
                     }
                     messages[msgid] += "[" + ROM.DATA[pos].ToString("X2") + "]";
@@ -1558,7 +1406,7 @@ namespace ZeldaFullEditor
 
         private void button5_Click(object sender, EventArgs e)
         {
-            readAllText();
+            //readAllText();
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
@@ -1573,7 +1421,7 @@ namespace ZeldaFullEditor
 
         private void messageUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (version == "jp")
+            if (version == "jp" || version == "vt")
             {
                 if (messages[(int)messageUpDown.Value] != null)
                 {
@@ -1590,26 +1438,26 @@ namespace ZeldaFullEditor
 
         private void messageshowButton_Click(object sender, EventArgs e)
         {
-            if (version == "jp")
+            if (version == "jp" || version == "vt")
             {
                 tabControl1.SelectTab("texttabPage");
-                messageUpDown.Value = room.messageid;
+                messageUpDown.Value = activeScene.room.messageid;
             }
         }
 
         private void insertToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            scene.insertNew();
+            activeScene.insertNew();
         }
 
         private void bringToBackToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            scene.SendSelectedToBack();
+            activeScene.SendSelectedToBack();
         }
 
         private void textpreviewButton_Click(object sender, EventArgs e)
         {
-            if (version == "jp")
+            if (version == "jp" || version == "vt")
             {
                 previewText.text = messagetextBox.Text;
                 previewText.ShowDialog();
@@ -1619,54 +1467,63 @@ namespace ZeldaFullEditor
 
         private void messagetextBox_TextChanged(object sender, EventArgs e)
         {
-            if (version == "jp")
+            if (version == "jp" || version == "vt")
             {
-                messages[(int)messageUpDown.Value] = messagetextBox.Text;
+                messages[(int)messageUpDown.Value] = messagetextBox.Text.ToUpper();
+
             }
         }
 
         private void sendToBg1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (room.selectedObject.Count > 0)
+
+            if (activeScene.room.selectedObject.Count > 0)
             {
-                if (room.selectedObject[0] is Room_Object)
+                debuglabel.Text = activeScene.room.selectedObject[0].GetType().ToString();
+                if (activeScene.room.selectedObject[0] is Room_Object)
                 {
-                    foreach (Room_Object o in room.selectedObject)
+                    activeScene.updating_info = true;
+                    foreach (Room_Object o in activeScene.room.selectedObject)
                     {
                         o.layer = 0;
                     }
+                    activeScene.updating_info = false;
                 }
-                scene.need_refresh = true;
+                activeScene.need_refresh = true;
             }
         }
 
         private void sendToBg1ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if (room.selectedObject.Count > 0)
+            if (activeScene.room.selectedObject.Count > 0)
             {
-                if (room.selectedObject[0] is Room_Object)
+                if (activeScene.room.selectedObject[0] is Room_Object)
                 {
-                    foreach (Room_Object o in room.selectedObject)
+                    activeScene.updating_info = true;
+                    foreach (Room_Object o in activeScene.room.selectedObject)
                     {
                         o.layer = 1;
                     }
+                    activeScene.updating_info = false;
                 }
-                scene.need_refresh = true;
+                activeScene.need_refresh = true;
             }
         }
 
         private void sendToBg1ToolStripMenuItem2_Click(object sender, EventArgs e)
         {
-            if (room.selectedObject.Count > 0)
+            if (activeScene.room.selectedObject.Count > 0)
             {
-                if (room.selectedObject[0] is Room_Object)
+                if (activeScene.room.selectedObject[0] is Room_Object)
                 {
-                    foreach (Room_Object o in room.selectedObject)
+                    activeScene.updating_info = true;
+                    foreach (Room_Object o in activeScene.room.selectedObject)
                     {
                         o.layer = 2;
                     }
+                    activeScene.updating_info = false;
                 }
-                scene.need_refresh = true;
+                 activeScene.need_refresh = true;
             }
         }
 
@@ -1678,14 +1535,31 @@ namespace ZeldaFullEditor
         private void changeObjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //delete the selected object and add the new one
-            scene.changeObject();
+            activeScene.changeObject();
         }
 
         private void zscreamForm_FormClosing_1(object sender, FormClosingEventArgs e)
         {
+
+            BinaryWriter br = new BinaryWriter(new FileStream("settings.cfg", FileMode.OpenOrCreate, FileAccess.Write));
+            for (int i = 0; i < 5; i++)
+            {
+                if (recentProjects.Count > i)
+                {
+                    br.Write(recentProjects[i]);
+                }
+                else
+                {
+                    br.Write("");
+                }
+
+            }
+            br.Close();
+
+
             if (anychange)
             {
-                all_rooms[room.index] = room;
+                all_rooms[activeScene.room.index] = activeScene.room;
                 anychange = false;
                 this.saved_changed = true;
             }
@@ -1706,47 +1580,6 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void entranceRoomUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (entranceListBox.SelectedIndex <= 0x83)
-            {
-                ROM.DATA[Constants.entrance_room + (entranceListBox.SelectedIndex * 2)] = (byte)((short)entranceRoomUpDown.Value & 0xFF);
-                ROM.DATA[Constants.entrance_room + (entranceListBox.SelectedIndex * 2) + 1] = (byte)(((short)entranceRoomUpDown.Value >> 8) & 0xFF);
-            }
-            else
-            {
-                ROM.DATA[Constants.startingentrance_room + ((entranceListBox.SelectedIndex - 0x84) * 2)] = (byte)((short)entranceRoomUpDown.Value & 0xFF);
-                ROM.DATA[Constants.startingentrance_room + ((entranceListBox.SelectedIndex - 0x84) * 2) + 1] = (byte)(((short)entranceRoomUpDown.Value >> 8) & 0xFF);
-            }
-        }
-
-        private void entranceblocksetUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            if (entranceListBox.SelectedIndex <= 0x83)
-            {
-                ROM.DATA[Constants.entrance_blockset + (entranceListBox.SelectedIndex)] = (byte)((short)entranceblocksetUpDown.Value & 0xFF);
-            }
-            else
-            {
-                ROM.DATA[Constants.startingentrance_blockset + ((entranceListBox.SelectedIndex - 0x84))] = (byte)((short)entranceblocksetUpDown.Value & 0xFF);
-            }
-
-        }
-
-        private void roomListView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-
-        }
-
-        private void roomListView_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-            
-            if (e.Node.Tag != null)
-            {
-                change_room(((short)e.Node.Tag));
-            }
-        }
-
         private void createProjectFromROMToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //openRomFileDialog.ShowDialog();
@@ -1755,14 +1588,7 @@ namespace ZeldaFullEditor
             {
                 CreateProject(projectFile.FileName);
             }
-
         }
-
-        private void openProjectFileDialog_FileOk(object sender, CancelEventArgs e)
-        {
-
-        }
-
 
         private void darkThemeToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1775,7 +1601,7 @@ namespace ZeldaFullEditor
             Point targetPoint = roomListView.PointToClient(new Point(e.X, e.Y));
 
             // Retrieve the node at the drop location.
-            
+
             TreeNode targetNode = roomListView.GetNodeAt(targetPoint);
             if (targetNode.Tag != null)
             {
@@ -1791,11 +1617,11 @@ namespace ZeldaFullEditor
                 targetNode.Nodes.Add(draggedNode);
                 //targetNode.Expand();
 
-                for(int i = 0;i<17;i++)
+                for (int i = 0; i < 17; i++)
                 {
                     if (targetNode == roomListView.Nodes[i])
                     {
-   
+
                         DataRoom dr = ROMStructure.dungeonsRoomList.Where(o => (o.id == (short)draggedNode.Tag)).ToArray()[0];
                         dr.dungeonId = (byte)i;
                         break;
@@ -1809,7 +1635,7 @@ namespace ZeldaFullEditor
         {
             if ((e.Item as TreeNode).Tag != null)
             {
-                
+
                 DoDragDrop(e.Item, DragDropEffects.Move);
             }
         }
@@ -1828,7 +1654,7 @@ namespace ZeldaFullEditor
             }
             else //this is a dungeon
             {
-                for(int i = 0;i<17;i++)
+                for (int i = 0; i < 17; i++)
                 {
                     if (roomListView.Nodes[i] == e.Node)
                     {
@@ -1841,14 +1667,15 @@ namespace ZeldaFullEditor
 
         private void propertyGrid1_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
-            scene.need_refresh = true;
-            room.reloadLayout();
-            room.reloadGfx(false, entrance_blockset);
-            scene.sceneChanged = true;
+            activeScene.need_refresh = true;
+            activeScene.room.reloadLayout();
+            activeScene.room.has_changed = true;
+            activeScene.room.reloadGfx(false, entrance_blockset);
+            //scene.sceneChanged = true;
             anychange = true;
 
 
-            if (room.damagepit == true)
+            if (activeScene.room.damagepit == true)
             {
                 int pitCount = (ROM.DATA[Constants.pit_count] / 2);
                 int pitPointer = (ROM.DATA[Constants.pit_pointer + 2] << 16) + (ROM.DATA[Constants.pit_pointer + 1] << 8) + (ROM.DATA[Constants.pit_pointer]);
@@ -1864,25 +1691,25 @@ namespace ZeldaFullEditor
                 if (pitCountNew > pitCount)
                 {
                     MessageBox.Show("Can't add more pit damage !");
-                    room.damagepit = false;
+                    activeScene.room.damagepit = false;
                 }
                 else
                 {
-                    room.damagepit = true;
+                    activeScene.room.damagepit = true;
                 }
             }
             else
             {
 
-                room.damagepit = false;
+                activeScene.room.damagepit = false;
             }
 
         }
 
         private void showBG2ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            scene.showLayer2 = showBG2ToolStripMenuItem.Checked;
-            scene.need_refresh = true;
+            activeScene.showLayer2 = showBG2ToolStripMenuItem.Checked;
+            activeScene.need_refresh = true;
         }
 
         private void exportProjectAsROMToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1896,148 +1723,907 @@ namespace ZeldaFullEditor
                 fs.Write(ROM.DATA, 0, ROM.DATA.Length);
                 fs.Close();
             }
-
         }
 
         private void roomListView_BeforeSelect(object sender, TreeViewCancelEventArgs e)
         {
-            if (scene.project_loaded)
+
+        }
+
+        private void loadInitialStuff()
+        {
+            if (version == "vt" || version == "jp")
             {
-                scene.need_refresh = true;
-                room_loaded = false;
-                if (scene.sceneChanged)
+
+
+                foreach (Control c in groupBox5.Controls)
                 {
-                    if (lastNode != roomListView.SelectedNode)
+                    if (c.GetType() == typeof(CheckBox))
                     {
-                        DialogResult dialogResult = MessageBox.Show("Room has changed. Do you want to keep changes?", "Keep Changes", MessageBoxButtons.YesNoCancel);
-                        if (dialogResult == DialogResult.Yes)
-                        {
-                            clear_room();
-                            save_room((short)roomListView.SelectedNode.Tag);
-                            saved_changed = true;
-                            scene.sceneChanged = false;
-                        }
-                        else if (dialogResult == DialogResult.Cancel)
-                        { 
-                            e.Cancel = true; //prevent list from going on the new room if we cancel
-                        }
-                        else //if we just press no to not save
-                        {
-                            clear_room();
-                            scene.sceneChanged = false;
-                        }
+                        (c as CheckBox).Checked = false;
                     }
                 }
-                else //if there was no change we can change rooms
+
+                if (ROM.DATA[Constants.initial_equipement] == 1)
                 {
-                    clear_room();
-                    saved_changed = true;
-                    scene.sceneChanged = false;
+                    equipBowCheckbox.Checked = true;
+                }
+
+                if (ROM.DATA[Constants.initial_equipement] == 3)
+                {
+                    equipSilverarrowCheckBox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 1] == 1)
+                {
+                    equipBoomerangCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 1] == 2)
+                {
+                    equipBoomerangredCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 2] == 1)
+                {
+                    equipHookshotCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 3] == 10)
+                {
+                    equipBombsCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 4] == 1)
+                {
+                    equipMushroomCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 4] == 2)
+                {
+                    equipPowderCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 5] == 1)
+                {
+                    equipFirerodCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 6] == 1)
+                {
+                    equipIcerodCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 7] == 1)
+                {
+                    equipBombosCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 8] == 1)
+                {
+                    equipEtherCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 9] == 1)
+                {
+                    equipQuakeCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 10] == 1)
+                {
+                    equipLanternCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 11] == 1)
+                {
+                    equipHammerCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 12] == 1)
+                {
+                    equipShovelCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 12] == 2)
+                {
+                    equipFluteCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 12] == 3)
+                {
+                    equipFluteactiveCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 13] == 1)
+                {
+                    equipNetCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 14] == 1)
+                {
+                    equipBookCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 16] == 1)
+                {
+                    equipSomariaCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 17] == 1)
+                {
+                    equipByrnaCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 18] == 1)
+                {
+                    equipCapeCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 19] == 1)
+                {
+                    equipMirrorCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 21] == 1)
+                {
+                    equipBootsCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 22] == 1)
+                {
+                    equipFlippersCheckbox.Checked = true;
+                }
+                if (ROM.DATA[Constants.initial_equipement + 23] == 1)
+                {
+                    equipMoonpearlCheckbox.Checked = true;
+                }
+
+            (equipGlovescomboBox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 20];
+                (equipSwordcomboBox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 25];
+                (equipShieldcomboBox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 26];
+                (equipMailcomboBox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 27];
+                (equipBottle1Combobox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 28];
+                (equipBottle2Combobox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 29];
+                (equipBottle3Combobox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 30];
+                (equipBottle4Combobox.SelectedIndex) = ROM.DATA[Constants.initial_equipement + 31];
+
+                byte[] rupeec = new byte[2];
+
+                rupeec[0] = ROM.DATA[Constants.initial_equipement + 32];
+                rupeec[1] = ROM.DATA[Constants.initial_equipement + 33];
+                rupeeNumericupdown.Value = BitConverter.ToInt16(rupeec, 0);
+            }
+        }
+        private void saveInitialStuff()
+        {
+            for (int i = 0; i < 35; i++)
+            {
+                ROM.DATA[Constants.initial_equipement + i] = 0;
+            }
+
+            if (equipBowCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement] = 1;
+            }
+            if (equipSilverarrowCheckBox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement] = 3;
+            }
+            if (equipBoomerangCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 1] = 1;
+            }
+            if (equipBoomerangredCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 1] = 2;
+            }
+            if (equipHookshotCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 2] = 1;
+            }
+            if (equipBombsCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 3] = 10;
+            }
+            if (equipMushroomCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 4] = 1;
+            }
+            if (equipPowderCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 4] = 2;
+            }
+            if (equipFirerodCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 5] = 1;
+            }
+            if (equipIcerodCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 6] = 1;
+            }
+            if (equipBombosCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 7] = 1;
+            }
+            if (equipEtherCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 8] = 1;
+            }
+            if (equipQuakeCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 9] = 1;
+            }
+            if (equipLanternCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 10] = 1;
+            }
+            if (equipHammerCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 11] = 1;
+            }
+            if (equipShovelCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 12] = 1;
+            }
+            if (equipFluteCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 12] = 2;
+            }
+            if (equipFluteactiveCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 12] = 3;
+            }
+            if (equipNetCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 13] = 1;
+            }
+            if (equipBookCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 14] = 1;
+            }
+
+            if (equipSomariaCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 16] = 1;
+            }
+            if (equipByrnaCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 17] = 1;
+            }
+            if (equipCapeCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 18] = 1;
+            }
+            if (equipMirrorCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 19] = 1;
+            }
+
+            if (equipBootsCheckbox.Checked) //79
+            {
+                ROM.DATA[Constants.initial_equipement + 21] = 1;
+                ROM.DATA[Constants.initial_equipement + 57] |= 0x04;
+            }
+            if (equipFlippersCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 22] = 1;
+            }
+            if (equipMoonpearlCheckbox.Checked)
+            {
+                ROM.DATA[Constants.initial_equipement + 23] = 1;
+            }
+
+            ROM.DATA[Constants.initial_equipement + 20] = (byte)(equipGlovescomboBox.SelectedIndex);
+            ROM.DATA[Constants.initial_equipement + 25] = (byte)(equipSwordcomboBox.SelectedIndex);
+            ROM.DATA[Constants.initial_equipement + 26] = (byte)(equipShieldcomboBox.SelectedIndex);
+            ROM.DATA[Constants.initial_equipement + 27] = (byte)(equipMailcomboBox.SelectedIndex);
+            ROM.DATA[Constants.initial_equipement + 28] = (byte)(equipBottle1Combobox.SelectedIndex);
+            ROM.DATA[Constants.initial_equipement + 29] = (byte)(equipBottle2Combobox.SelectedIndex);
+            ROM.DATA[Constants.initial_equipement + 30] = (byte)(equipBottle3Combobox.SelectedIndex);
+            ROM.DATA[Constants.initial_equipement + 31] = (byte)(equipBottle4Combobox.SelectedIndex);
+            if (equipBottle1Combobox.SelectedIndex != 0 || equipBottle2Combobox.SelectedIndex != 0 ||
+                equipBottle3Combobox.SelectedIndex != 0 || equipBottle4Combobox.SelectedIndex != 0)
+            {
+                ROM.DATA[Constants.initial_equipement + 15] = 1;
+            }
+            else
+            {
+                ROM.DATA[Constants.initial_equipement + 15] = 0;
+            }
+
+            byte[] rupeec = new byte[2];
+            BitConverter.ToInt16(rupeec, 0);
+            rupeec = BitConverter.GetBytes((int)rupeeNumericupdown.Value);
+            //ROM.DATA[Constants.initial_equipement + 32] = rupeec[0]; //30, 31
+            //ROM.DATA[Constants.initial_equipement + 33] = rupeec[1]; //30, 31
+            //31,30,29,28
+            ROM.DATA[Constants.initial_equipement + 32] = rupeec[0]; //30, 31
+            ROM.DATA[Constants.initial_equipement + 33] = rupeec[1]; //30, 31
+            ROM.DATA[Constants.initial_equipement + 34] = rupeec[0]; //30, 31
+            ROM.DATA[Constants.initial_equipement + 35] = rupeec[1]; //30, 31
+        }
+
+        private void entrancetreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            if (e.Node.Tag != null)
+            {
+                propertyGrid2.SelectedObject = entrances[(int)e.Node.Tag];
+            }
+        }
+
+        private void objectsListbox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (objectsListbox.SelectedIndex != -1)
+            {
+                activeScene.selectedDragObject = (dataObject)objectsListbox.Items[objectsListbox.SelectedIndex];
+                Room_Object ro = activeScene.room.addObject((objectsListbox.SelectedItem as dataObject).id, 0, 0, 0, 0);
+                ro.setRoom(activeScene.room);
+                ro.resetSize();
+                ro.get_scroll_x();
+                ro.get_scroll_y();
+
+                if (ro.special_zero_size != 0)
+                {
+                    ro.size = 1;
+                }
+
+                ro.DrawOnBitmap();
+
+                Bitmap b = new Bitmap(previewObjectPicturebox.Width, previewObjectPicturebox.Height);
+
+
+                using (Graphics g = Graphics.FromImage(b))
+                {
+                    g.DrawImage(ro.bitmap, (previewObjectPicturebox.Width / 2) - (ro.bitmap.Width / 2), (previewObjectPicturebox.Height / 2) - (ro.bitmap.Height / 2));
+                    previewObjectPicturebox.Image = b;
+                }
+            }
+            else
+            {
+                activeScene.selectedDragObject = null;
+            }
+        }
+
+
+
+        public void sortObject()
+        {
+
+            objectsListbox.BeginUpdate();
+            objectsListbox.Items.Clear();
+            //Sorting sort;
+            Sorting sortsizing = Sorting.All;
+            string searchText = searchTextbox.Text.ToLower();
+            //listView1
+            objectsListbox.Items.AddRange(listoftilesobjects
+                .Where(x => x != null)
+                //.Where(x => sort == 0 || (x.sort & sort) > 0)
+                //.Where(x => (x.sort & sortsizing) > 0) //TODO : add sorting in the objectDATA
+                .Where(x => (x.Name.ToLower().Contains(searchText)))
+                .OrderBy(x => x.id)
+                .Select(x => x) //?
+                .ToArray());
+            objectsListbox.EndUpdate();
+        }
+
+        public void sortSprite()
+        {
+
+            spritesListbox.BeginUpdate();
+            spritesListbox.Items.Clear();
+            string searchText = searchspriteTextbox.Text.ToLower();
+
+            spritesListbox.Items.AddRange(listofspritesobjects
+                .Where(x => x != null)
+                .Where(x => (x.Name.ToLower().Contains(searchText)))
+                .OrderBy(x => x.id)
+                .Select(x => x) //?
+                .ToArray());
+            spritesListbox.EndUpdate();
+
+        }
+
+
+        private void searchTextbox_TextChanged(object sender, EventArgs e)
+        {
+            sortObject();
+        }
+
+        private void objectsListbox_DragLeave(object sender, EventArgs e)
+        {
+
+        }
+        private void objectsListbox_MouseDown(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void selectedXNumericUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (activeScene.room.selectedObject.Count == 1)
+            {
+                if (activeScene.room.selectedObject[0] is Room_Object)
+                {
+
+                    Room_Object o = activeScene.room.selectedObject[0] as Room_Object;
+
+                    //use linq to iterate with layers
+                    if (activeScene.updating_info == false)
+                    {
+
+                        o.nx = (byte)selectedXNumericUpDown.Value;
+                        o.ny = (byte)selectedYNumericUpDown.Value;
+                        o.ox = (byte)selectedXNumericUpDown.Value;
+                        o.oy = (byte)selectedYNumericUpDown.Value;
+                        o.x = (byte)selectedXNumericUpDown.Value;
+                        o.y = (byte)selectedYNumericUpDown.Value;
+                        o.size = (byte)selectedSizeNumericUpDown.Value;
+                        o.layer = (byte)selectedLayerNumericUpDown.Value;
+                        o.resetSize();
+                        o.DrawOnBitmap();
+                        activeScene.need_refresh = true;
+                    }
+                }
+                else if (activeScene.room.selectedObject[0] is Sprite)
+                {
+                    Sprite o = activeScene.room.selectedObject[0] as Sprite;
+
+                    if (activeScene.updating_info == false)
+                    {
+
+                        o.nx = (byte)selectedXNumericUpDown.Value;
+                        o.ny = (byte)selectedYNumericUpDown.Value;
+                        o.x = (byte)selectedXNumericUpDown.Value;
+                        o.y = (byte)selectedYNumericUpDown.Value;
+                        o.layer = (byte)selectedLayerNumericUpDown.Value;
+                        o.subtype = (byte)spritesubtypeUpDown.Value;
+                        o.overlord = (byte)(spriteoverlordCheckbox.Checked == true ? 1 : 0);
+                        if ((o.subtype & 0xE0) == 0xE0)
+                        {
+                            //it an overlord
+                        }
+                    }
+                    activeScene.need_refresh = true;
+                }
+                else if (activeScene.room.selectedObject[0] is PotItem)
+                {
+
+                    PotItem o = activeScene.room.selectedObject[0] as PotItem;
+
+                    if (activeScene.updating_info == false)
+                    {
+
+                        o.nx = (byte)selectedXNumericUpDown.Value;
+                        o.ny = (byte)selectedYNumericUpDown.Value;
+                        o.x = (byte)selectedXNumericUpDown.Value;
+                        o.y = (byte)selectedYNumericUpDown.Value;
+                        o.layer = (byte)selectedLayerNumericUpDown.Value;
+                    }
+                    activeScene.need_refresh = true;
+
                 }
             }
         }
 
-       
-
-        private void propertyGrid1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        private void showGridToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // scene.showGrid = showGridToolStripMenuItem.Checked;
+            // scene.need_refresh = true;
+        }
+
+        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedIndex != -1)
+            {
+                if (comboBox1.SelectedIndex > 0)
+                {
+                    foreach (Sprite spr in activeScene.room.sprites)
+                    {
+                        spr.keyDrop = 0;
+                    }
+
+                }
+                (activeScene.room.selectedObject[0] as Sprite).keyDrop = (byte)comboBox1.SelectedIndex;
+                activeScene.need_refresh = true;
+            }
+        }
+
+        private void messagetextBox_Validated(object sender, EventArgs e)
+        {
+            messagetextBox.Text = messagetextBox.Text.ToUpper();
+            messages[(int)messageUpDown.Value] = messagetextBox.Text.ToUpper();
+        }
+
+        private void searchtextListbox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            messageUpDown.Value = (searchtextListbox.Items[searchtextListbox.SelectedIndex] as dataObject).id;
+        }
+
+        private void searchtextTextbox_TextChanged(object sender, EventArgs e)
+        {
+            string searchtextText = searchtextTextbox.Text.ToUpper();
+
+            if (searchtextText != "")
+            {
+                searchtextListbox.BeginUpdate();
+                searchtextListbox.Items.Clear();
+                string[] result = messages
+                .Where(x => x != null)
+                .Where(x => (x.ToUpper().Contains(searchtextText)))
+                .Select((x, i) => x)
+                .ToArray();
+
+
+
+
+                for (int i = 0; i < result.Length; i++)
+                {
+                    int index = Array.IndexOf(messages, result[i]);
+                    searchtextListbox.Items.Add(new dataObject((short)index, result[i]));
+                }
+
+
+                searchtextListbox.EndUpdate();
+            }
+            else
+            {
+                searchtextListbox.BeginUpdate();
+                for (int i = 0; i < 400; i++)
+                {
+                    if (messages[i] != null)
+                    {
+                        searchtextListbox.Items.Add(new dataObject((short)i, messages[i]));
+                    }
+                }
+                searchtextListbox.EndUpdate();
+            }
+        }
+
+
+
+        private void spritesListbox_MouseDown(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void spritesListbox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (spritesListbox.SelectedIndex != -1)
+            {
+                dataObject sprdata = (spritesListbox.Items[spritesListbox.SelectedIndex] as dataObject);
+                activeScene.selectedDragSprite = sprdata;
+                Sprite spr = new Sprite(activeScene.room, (byte)sprdata.id, 0, 0, sprdata.Name, 0, 0, 0);
+
+                Bitmap b = new Bitmap(spritePreviewBox.Width, spritePreviewBox.Height, PixelFormat.Format32bppArgb);
+                GFX.begin_draw(b, spritePreviewBox.Width, spritePreviewBox.Height);
+                spr.Draw(true);
+                GFX.end_draw(b);
+                spritePreviewBox.Image = b;
+
+                //update_modes_buttons(spritemodeButton, new EventArgs());
+            }
+            else
+            {
+                activeScene.selectedDragSprite = null;
+            }
+        }
+
+        private void searchspriteTextbox_TextChanged(object sender, EventArgs e)
+        {
+            sortSprite();
+        }
+
+        private void spritesubtypeUpDown_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void palettesTreeview_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+        }
+
+        private void selectedZUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            activeScene.UpdateSelectedZ((int)selectedZUpDown.Value);
+        }
+
+        private void selectedZUpDown_ValueChanged_1(object sender, EventArgs e)
+        {
+            //scene.UpdateSelectedZ((int)selectedZUpDown.Value);
+        }
+
+        private void decreaseZToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            selectedZUpDown.Value -= 1;
+            //scene.need_refresh = true;
+        }
+
+        private void increaseZToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //scene.IncreaseSelectedZ();
+            selectedZUpDown.Value += 1;
+            //scene.need_refresh = true;
+        }
+
+        private void selecteditemobjectCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (selecteditemobjectCombobox.SelectedIndex != -1)
+            {
+                if (activeScene.room.selectedObject.Count > 0)
+                {
+                    if (activeScene.room.selectedObject[0] is PotItem)
+                    {
+                        PotItem oo = activeScene.room.selectedObject[0] as PotItem;
+
+                        if (selecteditemobjectCombobox.SelectedIndex > 0x16)
+                        {
+                            oo.id = (byte)(0x80 + ((selecteditemobjectCombobox.SelectedIndex - 0x17) * 2));
+                        }
+                        else
+                        {
+                            oo.id = (byte)(selecteditemobjectCombobox.SelectedIndex);
+                        }
+                        // scene.need_refresh = true;
+                    }
+                    activeScene.need_refresh = true;
+                }
+            }
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            //check what's the higher map and the left most, we don't care about right bottom
+
+            //(map / 16) = Y position
+            //map - (Y*16) = X position
+            int lowerX = 16; //what we need to remove from the image to the left
+            int lowerY = 16; //what we need to remove from the image to the right
+            int higherX = 0; //what we need to remove from the image to the left
+            int higherY = 0; //what we need to remove from the image to the right
+            Room savedRoom = activeScene.room;
+
+            if (selectedMapPng.Count > 0)
+            {
+                Bitmap b = new Bitmap(8192, 8192);
+                using (Graphics gb = Graphics.FromImage(b))
+                {
+
+                    foreach (short s in selectedMapPng)
+                    {
+                        int cx = 0;
+                        int cy = 0;
+                        cy = (s / 16);
+                        cx = s - (cy * 16);
+                        if (cx < lowerX) { lowerX = cx; }
+                        if (cy < lowerY) { lowerY = cy; }
+                        if (cx > higherX) { higherX = cx; }
+                        if (cy > higherY) { higherY = cy; }
+
+                        activeScene.room = all_rooms[s];
+                        activeScene.room.reloadGfx();
+                        activeScene.need_refresh = true;
+                        activeScene.drawRoom();
+                        gb.DrawImage(activeScene.scene_bitmap, new Point(cx * 512, cy * 512));
+                    }
+                }
+                int image_size_x = ((higherX - lowerX) * 512) + 512;
+                int image_size_y = ((higherY - lowerY) * 512) + 512;
+                int image_start_x = lowerX * 512;
+                int image_start_y = lowerY * 512;
+                Bitmap nb = new Bitmap(image_size_x, image_size_y);
+                using (Graphics gb = Graphics.FromImage(nb))
+                {
+                    gb.DrawImage(b, 0, 0, new Rectangle(image_start_x, image_start_y, image_size_x, image_size_y), GraphicsUnit.Pixel);
+                }
+
+                nb.Save("MapTest.png");
+                b = null;
+                nb = null;
+            }
+            else
+            {
+
+                //scene.scene_bitmap.Save("singlemap.png");
+            }
+            activeScene.room = savedRoom;
+            activeScene.room.reloadGfx();
+            activeScene.need_refresh = true;
+            activeScene.drawRoom();
+
+        }
+
+
+        private void mapPicturebox_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void roomListView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Tag != null) //tag = room id
+            {
+                addRoomTab((short)e.Node.Tag);
+            }
+        }
+
+        public void addRoomTab(short roomId)
+        {
+
+            bool alreadyFound = false;
+            foreach (DScene ds in rooms)
+            {
+                if (ds.scene.room.index == roomId)
+                {
+                    alreadyFound = true;
+                    break;
+                }
+            }
+            if (alreadyFound == true)
+            {
+                //display message error room already opened
+                MessageBox.Show("That room is already opened !");
+                return;
+            }
+            else
+            {
+                Room r = (Room)all_rooms[roomId].Clone();
+                DScene ds = new DScene(this, "Room : " + r.index);
+                Scene s = ds.scene;
+                s.room = r;
+                propertyGrid1.SelectedObject = r;
+                rooms.Add(ds); //add the double clicked room into rooms list            
+                s.need_refresh = true;
+                s.room.reloadGfx(false);
+                s.canSelectUnselectedBG = unselectedBGTransparentToolStripMenuItem.Checked;
+                paletteViewer.update();
+                s.initChestGfx();
+                s.Enabled = true;
+                s.Dock = DockStyle.Fill;
+                pictureBox2.Image = GFX.singletobmp((int)numericUpDown1.Value);
+                room_loaded = true;
+                s.selectedMode = ObjectMode.Bg1mode;
+                s.Enabled = true;
+                ds.Text = "Room : " + r.index;
+                ds.Show(dockPanel);
+                ds.Controls.Add(s);
+                s.BringToFront();
+                s.Size = new Size(512, 512);
+                objectsListbox.ClearSelected();
+                spritesListbox.ClearSelected();
+                updateScenesMode();
+            }
+
+        }
+
+        public void updateTabsRooms()
+        {
+
             
         }
 
-        private void propertyGrid1_CausesValidationChanged(object sender, EventArgs e)
+
+
+        private void rightSideToolboxToolStripMenuItem_Click(object sender, EventArgs e)
         {
-   
-        }
-    }
-
-
-
-
-
-
-
-    public class ListRoomName
-    {
-        public string Name { get; set; }
-        public int id;
-
-        public ListRoomName(int id,string name)
-        {
-            this.id = id;
-            this.Name = name;
-        }
-        
-    }
-
-    [Serializable]
-    public class SaveObject
-    {
-        public byte x { get; set; }
-        public byte y { get; set; }
-        public byte layer { get; set; }
-        public byte subtype { get; set; }
-        public byte overlord { get; set; }
-        public byte id { get; set; }
-        public short tid { get; set; }
-        public byte size { get; set; }
-        public ObjectOption options { get; set; }
-
-        public Type type;
-        public SaveObject(Sprite sprite) //Sprite Format
-        {
-            this.x = sprite.x;
-            this.y = sprite.y;
-            this.id = sprite.id;
-            this.layer = sprite.layer;
-            this.subtype = sprite.subtype;
-            this.overlord = sprite.overlord;
-            type = typeof(Sprite);
-        }
-
-        public SaveObject(Room_Object o) //Room_Object
-        {
-            this.x = o.x;
-            this.y = o.y;
-            this.tid = o.id;
-            this.layer = o.layer;
-            this.size = o.size;
-            this.options = o.options;
-            type = typeof(Room_Object);
-        }
-
-        public SaveObject(PotItem o) //Pot Item
-        {
-            this.x = o.x;
-            this.y = o.y;
-            this.tid = o.id;
-            this.layer = (byte)(o.bg2 == true ? 1 : 0);
-            type = typeof(PotItem);
-        }
-
-        public void saveToFile(BinaryWriter bw)
-        {
-            if (type == typeof(Room_Object))
+            if (rightSideToolboxToolStripMenuItem.Checked)
             {
-                bw.Write(tid);
-                bw.Write(x);
-                bw.Write(y);
-                bw.Write(layer);
-                bw.Write(size);
-                bw.Write((byte)options);
+                toolboxPanel.Dock = DockStyle.Right;
+                splitter1.Dock = DockStyle.Right;
+            }
+            else
+            {
+                toolboxPanel.Dock = DockStyle.Left;
+                splitter1.Dock = DockStyle.Left;
+            }
+        }
+        public bool animated = false;
+        private void animatedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            animated = animatedToolStripMenuItem.Checked;
+        }
+
+        private void entrancetreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Tag != null)
+            {
+                addRoomTab(entrances[(int)e.Node.Tag].Room);
             }
         }
 
-        public SaveObject(BinaryReader br,Type type) // from file
+        private void mapPicturebox_MouseDoubleClick_1(object sender, MouseEventArgs e)
+        {
+            int x = (e.X / 16);
+            int y = (e.Y / 16);
+            int roomId = x + (y * 16);
+            if (ModifierKeys == Keys.Control)
+            {
+                //check if map is already in
+                short alreadyIn = -1;
+                foreach (short s in selectedMapPng)
+                {
+                    //if it was already in delete it
+                    if (s == (short)roomId)
+                    {
+                        alreadyIn = s;
+                    }
+                }
+                if (alreadyIn != -1)
+                {
+                    selectedMapPng.Remove(alreadyIn);
+                }
+                else
+                {
+                    selectedMapPng.Add((short)roomId);
+                }
+                loadRoomList(roomId);
+
+            }
+            else
+            {
+                if (roomId < 296)
+                {
+                    
+                    addRoomTab((short)roomId);
+                    loadRoomList(roomId);
+                }
+            }
+        }
+
+        private void runtestButton_Click(object sender, EventArgs e)
+        {
+            saveToolStripMenuItem_Click(this, new EventArgs());
+            if (File.Exists("temp.sfc"))
+            {
+                File.Delete("temp.sfc");
+            }
+            FileStream fs = new FileStream("temp.sfc", FileMode.CreateNew, FileAccess.Write);
+            fs.Write(ROM.DATA, 0, ROM.DATA.Length);
+            fs.Close();
+            Process p = Process.Start("temp.sfc");
+            
+        }
+
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog open = new OpenFileDialog();
+            if (open.ShowDialog() == DialogResult.OK)
+            {
+                FileStream fs = new FileStream(open.FileName, FileMode.Open, FileAccess.Read);
+                fs.Read(ROM.DATA, 0, (int)fs.Length);
+                fs.Close();
+            }
+
+        }
+
+        private void unselectedBGTransparentToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (DScene ds in rooms)
+            {
+                ds.scene.canSelectUnselectedBG = unselectedBGTransparentToolStripMenuItem.Checked;
+            }
+        }
+
+        public byte[] door_index = new byte[] { 0x00, 0x02,0x40, 0x1C, 0x26,0x0C,0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16 };
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
-            tid = br.ReadInt16();
-            x = br.ReadByte();
-            y = br.ReadByte();
-            layer = br.ReadByte();
-            size = br.ReadByte();
-            options = (ObjectOption)br.ReadByte();
-            this.type = type;
+            if (comboBox2.SelectedIndex != -1)
+            {
+                if (activeScene.room.selectedObject.Count == 1)
+                {
+                    if (activeScene.room.selectedObject[0] is Room_Object)
+                    {
+                        if (activeScene.updating_info == false)
+                        {
+                            Room_Object o = (activeScene.room.selectedObject[0] as Room_Object);
+                            if (o.options == ObjectOption.Door)
+                            {
+                                (o as object_door).door_type = ((byte)(door_index[comboBox2.SelectedIndex]));
+                                (o as object_door).updateId();
+                                (o as object_door).DrawOnBitmap();
+                                activeScene.room.has_changed = true;
+                                activeScene.room.reloadGfx();
+                                activeScene.need_refresh = true;
+                            }
+                        }
+                    }
+                }
+            }
         }
 
     }
+
+    public class dataObject
+    {
+        public short id;
+        public string Name { get; set; }
+        
+        public dataObject(short id, string name)
+        {
+            this.Name = name;
+            this.id = id;
+        }
+
+
+    }
+
+
 }

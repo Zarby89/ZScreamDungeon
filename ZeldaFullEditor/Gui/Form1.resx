@@ -146,6 +146,24 @@
         SUVORK5CYII=
 </value>
   </data>
+  <data name="debugtestButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACjSURBVDhPY0AGfz6+Pv/zy0sDKJd08OfL6//fvzx//+fL
+        mwSoEGkAZMCDKcb/fzy/+P/359fz/7+/LwCVIg6ADDhcJfP/UrP8/4/nl/wn2UswA2D45cYs0ryEbgAI
+        k+QlbAaAMNFewmUADBP0EiEDnq9JIM8AkBfen5xBnhdAgfjt/kHyAhHs5OfXSY9Gop2MDkAGkORkdAAy
+        gLLMRHJ2ZmAAANO7OynrANZ3AAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="runtestButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACjSURBVDhPY0AG3759O//lyxcDKJd0ADTgPxC///79ewJU
+        iDQAMiBmXsT/ey/v/f/69ev89+/fC0CliAMgAyy6TP67THT4v/vKTpBrSPMSzAAY7t7ZSZqX0A0AYZK8
+        hM0AECbaS7gMgGGCXiJkQP3mWvIMAHlh/bm15HkBFIiXHl0iLxBBTn7+/Dnp0Ui0k9EByACSnIwOQAYA
+        MUWZicTszMAAALXNKJGYqAh4AAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="undoButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
@@ -281,8 +299,31 @@
         j3YaIAffyN0G6G/OG3tPn0wD/K6tvAA/fw/wfijiNwAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="toolStripButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB4SURBVDhPYxg84Nu3b/9JwVBtCAASdHJyIgrjNeDD+494
+        MckG+Pr6oogTbcDTJ8/gGkCGEG0ASCPMVpghyJigATCN69etx2CfP3+BsAHItsI0gvCunbvgbLwGIDsX
+        ZgiMffTIUdINQMcEDSAG4zSAFAzVNuCAgQEAuCvAvi/QapkAAAAASUVORK5CYII=
+</value>
+  </data>
   <metadata name="spriteImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>517, 17</value>
+  </metadata>
+  <metadata name="colorDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>651, 17</value>
+  </metadata>
+  <metadata name="nothingselectedcontextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>772, 17</value>
+  </metadata>
+  <metadata name="singleselectedcontextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 42</value>
+  </metadata>
+  <metadata name="groupselectedcontextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>176, 42</value>
+  </metadata>
+  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>373, 42</value>
   </metadata>
   <data name="commandstextBox.Text" xml:space="preserve">
     <value>[SPD XX] : Set Text Speed
@@ -290,6 +331,7 @@
 [LN2] : Write on Line 2
 [LN3] : Write on Line 3
 [SCL] : Scroll for more text
+[WFK] : Wait For Key
 [PIC] : Change Picture?
 [CH1] : Choice 1
 [ITM] : Ask for item (waterfall)
@@ -309,21 +351,6 @@
 [E8][E9] : 3/4 Heart
 [EA][EB] : Full Heart</value>
   </data>
-  <metadata name="colorDialog1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>651, 17</value>
-  </metadata>
-  <metadata name="nothingselectedcontextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>772, 17</value>
-  </metadata>
-  <metadata name="singleselectedcontextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 42</value>
-  </metadata>
-  <metadata name="groupselectedcontextMenu.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>176, 42</value>
-  </metadata>
-  <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>373, 42</value>
-  </metadata>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>81</value>
   </metadata>

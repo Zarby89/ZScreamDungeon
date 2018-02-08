@@ -47,7 +47,7 @@ namespace ZeldaFullEditor
                     continue;
                 }
                 //FA
-                if ((text[pos] == '[') && (text[pos + 1] == 'N') && (text[pos + 2] == 'W') && (text[pos + 3] == 'L') && (text[pos + 4] == ']'))
+                if ((text[pos] == '[') && (text[pos + 1] == 'W') && (text[pos + 2] == 'F') && (text[pos + 3] == 'K') && (text[pos + 4] == ']'))
                 {
                     pos += 5;
                     bytes.Add(0xFA);
