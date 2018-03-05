@@ -450,6 +450,14 @@ namespace ZeldaFullEditor
                             mainForm.doorselectPanel.Visible = true;
                             int apos = mainForm.door_index.Select((s, i) => new { s, i }).Where(x => x.s == (oo as object_door).door_type).Select(x => x.i).ToArray()[0];
                             mainForm.comboBox2.SelectedIndex = apos;
+                            for (int i = 0; i < room.tilesObjects.Count; i++)
+                            {
+                                if (room.tilesObjects[i] == oo)
+                                {
+                                    mainForm.selectedZUpDown.Value = i;
+                                }
+                            }
+                            updateSelectionObject(oo);
                         }
                         else
                         {
@@ -1393,6 +1401,35 @@ namespace ZeldaFullEditor
                     }*/
 
                 }
+                else if (o is object_door)
+                {
+                    mainForm.selectedXNumericUpDown.Maximum = 64;
+                    mainForm.selectedYNumericUpDown.Maximum = 64;
+                    mainForm.selectedSizeNumericUpDown.Maximum = 16;
+                    mainForm.selectedLayerNumericUpDown.Maximum = 2;
+                    if ((o as object_door).nx >= 63)
+                    {
+                        (o as object_door).nx = 63;
+                    }
+                    if ((o as object_door).ny >= 63)
+                    {
+                        (o as object_door).ny = 63;
+                    }
+                    if ((o as object_door).size >= 16)
+                    {
+                        (o as object_door).size = 0;
+                    }
+                    if ((o as object_door).layer >= 3)
+                    {
+                        (o as object_door).size = 2;
+                    }
+
+
+                    mainForm.selectedXNumericUpDown.Value = (o as object_door).nx;
+                    mainForm.selectedYNumericUpDown.Value = (o as object_door).ny;
+                    mainForm.selectedSizeNumericUpDown.Value = (o as object_door).size;
+                    mainForm.selectedLayerNumericUpDown.Value = (o as object_door).layer;
+                }
                 else if (o is Sprite)
                 {
 
@@ -1459,6 +1496,7 @@ namespace ZeldaFullEditor
 
             if (room.needGfxRefresh)
             {
+                room.reloadGfx();
                 room.needGfxRefresh = false;
             }
 
@@ -2604,13 +2642,18 @@ namespace ZeldaFullEditor
                     scene.room.has_changed = false;
                     mainform.all_rooms[scene.room.index] = (Room)scene.room.Clone();
                     scene.room.clearGFX();
+                   
                     mainform.rooms.Remove(this);
+                    mainform.loadRoomList(0);
+                    mainform.mapPicturebox.Refresh();
                 }
                 else if (dialogResult == DialogResult.No)
                 {
-
+                   
                     scene.room.clearGFX();
                     mainform.rooms.Remove(this);
+                    mainform.loadRoomList(0);
+                    mainform.mapPicturebox.Refresh();
                 }
                 else
                 {
@@ -2622,6 +2665,8 @@ namespace ZeldaFullEditor
             {
                 scene.room.clearGFX();
                 mainform.rooms.Remove(this);
+                mainform.loadRoomList(0);
+                mainform.mapPicturebox.Refresh();
             }
         }
 

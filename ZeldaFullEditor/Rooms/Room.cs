@@ -24,7 +24,7 @@ namespace ZeldaFullEditor
         public int index;
         int header_location;
         public bool has_changed = false;
-
+        public string name;
         public byte layout;
         public byte floor1;
         public byte floor2;
@@ -43,7 +43,7 @@ namespace ZeldaFullEditor
         public bool light;
         public short messageid;
         public bool damagepit;
-        public byte[] blocks = new byte[24];
+        public byte[] blocks = new byte[16];
         public List<Chest> chest_list = new List<Chest>();
         public List<Room_Object> tilesObjects = new List<Room_Object>();
         public List<Room_Object> tilesLayoutObjects = new List<Room_Object>();
@@ -53,7 +53,7 @@ namespace ZeldaFullEditor
         public bool objectInitialized = false;
         public bool needGfxRefresh = false;
         public bool onlyLayout = false;
-
+        public bool sortSprites = false;
         [DisplayName("Layout"), Description("Room layout used as a default model for the room"), Category("Header")]
         public byte Layout
         {
@@ -282,6 +282,20 @@ namespace ZeldaFullEditor
             }
         }
 
+        [DisplayName("Sort Sprites"), Description("Allow sprites to move on layer2 without affecting layer1"), Category("Misc")]
+        public bool SortSprites
+        {
+            get
+            {
+                return sortSprites;
+            }
+            set
+            {
+                sortSprites = value;
+
+            }
+        }
+
 
         [DisplayName("Staircase 1"), Description("The destination Room for the first stair/staircase in the room in object order"), Category("Transitions")]
         public byte Staircase1
@@ -394,6 +408,7 @@ namespace ZeldaFullEditor
             setObjectsRoom();
             addPotsItems();
             isdamagePit();
+            this.name = ROMStructure.roomsNames[index];
             messageid = (short)((ROM.DATA[Constants.messages_id_dungeon + (index * 2) + 1] << 8 ) + ROM.DATA[Constants.messages_id_dungeon + (index * 2)]);
         }
         public void reloadLayout()
@@ -444,31 +459,24 @@ namespace ZeldaFullEditor
                     }
                 }
             }
+            //blocks[7] = 15;//?
 
-
+            //*confusing !, 7, 8, 9 are actually forming blockset 7
+            //blocks[8] = 92; //static animated tile
+            //blocks[9] = ROM.DATA[gfxanimatedPointer + blockset];
+            blocks[8] = 115+0; blocks[9] = 115 + 10; blocks[10] = 115 + 6; blocks[11] = 115 + 7; //Static Sprites Blocksets (fairy,pot,ect...)
             for (int i = 0; i < 4; i++)
             {
-                blocks[10 + i] = ROM.DATA[Constants.sprite_blockset_pointer + ((spriteset + 64) * 4) + i];
-            }
+                blocks[12 + i] = (byte)(ROM.DATA[Constants.sprite_blockset_pointer + ((spriteset + 64) * 4) + i] + 115);
+            } //12-16 sprites
 
-            blocks[8] = 92; //static animated tile
-            int gfxanimatedPointer = (ROM.DATA[Constants.gfx_animated_pointer + 2] << 16) + (ROM.DATA[Constants.gfx_animated_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_animated_pointer]);
-            gfxanimatedPointer = Addresses.snestopc(gfxanimatedPointer);
-            blocks[9] = ROM.DATA[gfxanimatedPointer + blockset];
+            
+
+            
             //blocks[13] = 7;
-            blocks[14] = 0; blocks[15] = 10; blocks[16] = 6; blocks[17] = 7; //Static Sprites Blocksets (fairy,pot,ect...)
-            blocks[18] = 90; blocks[19] = 91; blocks[20] = 92; blocks[21] = 93;//Items Sprites
-            if (Constants.Rando)
-            {
-                blocks[22] = 101;//rando sprites
-                blocks[23] = 96;//rando sprites
-            }
-            else
-            {
-                blocks[22] = 0;
-                blocks[23] = 0;
-            }
 
+
+            //17?
 
             if (noPalette == false)
             {
@@ -476,8 +484,40 @@ namespace ZeldaFullEditor
                 GFX.spritesPalettes = GFX.LoadSpritesPalette(palette);
             }
 
-
-            GFX.load4bpp(GFX.gfxdata, blocks);
+            int gfxanimatedPointer = (ROM.DATA[Constants.gfx_animated_pointer + 2] << 16) + (ROM.DATA[Constants.gfx_animated_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_animated_pointer]);
+            gfxanimatedPointer = Addresses.snestopc(gfxanimatedPointer);
+            GFX.singledata = new byte[blocks.Length * 0x1000];
+            for (int i = 0;i<blocks.Length;i++)
+            {
+                byte[] d = GFX.bpp3snestoindexed(GFX.gfxdata, blocks[i]);
+                byte[] dd = new byte[0];
+                if (i == 6)
+                {
+                    dd = GFX.bpp3snestoindexed(GFX.gfxdata, ROM.DATA[gfxanimatedPointer + blockset]); //static animated gfx1
+                }
+                if (i == 7)
+                {
+                    dd = GFX.bpp3snestoindexed(GFX.gfxdata, 92); //static animated gfx1
+                }
+                for (int j = 0; j < d.Length; j++)
+                {
+                    GFX.singledata[(i * 0x1000) + j] = d[j];
+                    if (i == 6)
+                    {
+                        if (j >= 0xC00)
+                        {
+                            GFX.singledata[(i * 0x1000) + j] = dd[j - 0xC00];
+                        }
+                    }
+                    if (i == 7)
+                    {
+                        if (j < 0x400)
+                        {
+                            GFX.singledata[(i * 0x1000) + j] = dd[j];
+                        }
+                    }
+                }
+            }
 
 
             needGfxRefresh = true;
@@ -503,8 +543,9 @@ namespace ZeldaFullEditor
             int sprite_address_snes = (09 << 16) + 
             (ROM.DATA[spritePointer + (index * 2) + 1] << 8) +
             ROM.DATA[spritePointer + (index * 2)];
-            int sprite_address = Addresses.snestopc(sprite_address_snes) + 1;
-
+            int sprite_address = Addresses.snestopc(sprite_address_snes);
+            sortSprites = ROM.DATA[sprite_address] == 1 ? true : false;
+            sprite_address += 1;
             while (true)
             {
                 byte b1 = ROM.DATA[sprite_address];
@@ -603,9 +644,9 @@ namespace ZeldaFullEditor
                     }
                 }
                 if (spr.id != 0xE4)
-                    {
-                        spr.Draw();
-                    }//1D big key
+                {
+                    spr.Draw();
+                }//1D big key
                 if (spr.keyDrop == 1)
                 {
                     spr.DrawKey();
@@ -1088,7 +1129,7 @@ namespace ZeldaFullEditor
             staircaseRooms.Clear();
             int nbr_of_staircase = 0;
 
-            int pos = objects_location+2;
+            int pos = objects_location + 2;
             byte b1 = 0;
             byte b2 = 0;
             byte b3 = 0;
@@ -1103,119 +1144,120 @@ namespace ZeldaFullEditor
             bool endRead = false;
             while (endRead == false)
             {
- 
-                    b1 = ROM.DATA[pos];
-                    b2 = ROM.DATA[pos + 1];
-                    if (b1 == 0xFF && b2 == 0xFF)
-                    {
-                        pos += 2; //we jump to layer2
-                        layer++;
-                        door = false;
-                        if (layer == 3)
-                        {
-                            endRead = true;
-                            break;
-                        }
-                        continue;
-                    }
 
-                    if (b1 == 0xF0 && b2 == 0xFF)
+                b1 = ROM.DATA[pos];
+                b2 = ROM.DATA[pos + 1];
+                if (b1 == 0xFF && b2 == 0xFF)
+                {
+                    pos += 2; //we jump to layer2
+                    layer++;
+                    door = false;
+                    if (layer == 3)
                     {
-                        pos += 2; //we jump to layer2
-                        door = true;
-                        continue;
+                        endRead = true;
+                        break;
                     }
-                    b3 = ROM.DATA[pos + 2];
-                    if (door)
-                    {
-                        pos += 2;
+                    continue;
+                }
 
-                    }
-                    else
-                    {
-                        pos += 3;
-                    }
+                if (b1 == 0xF0 && b2 == 0xFF)
+                {
+                    pos += 2; //we jump to layer2
+                    door = true;
+                    continue;
+                }
+                b3 = ROM.DATA[pos + 2];
+                if (door)
+                {
+                    pos += 2;
 
-                    if (door == false)
+                }
+                else
+                {
+                    pos += 3;
+                }
+
+                if (door == false)
+                {
+                    if (b3 >= 0xF8)
                     {
-                        if (b3 >= 0xF8)
+                        oid = (short)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
+                        posX = (byte)((b1 & 0xFC) >> 2);
+                        posY = (byte)((b2 & 0xFC) >> 2);
+                        sizeXY = (byte)((((b1 & 0x03) << 2) + (b2 & 0x03)));
+                    }
+                    else //subtype1
+                    {
+                        oid = b3;
+                        posX = (byte)((b1 & 0xFC) >> 2);
+                        posY = (byte)((b2 & 0xFC) >> 2);
+                        sizeX = (byte)((b1 & 0x03));
+                        sizeY = (byte)((b2 & 0x03));
+                        sizeXY = (byte)(((sizeX << 2) + sizeY));
+                    }
+                    if (b1 >= 0xFC) //subtype2 (not scalable? )
+                    {
+                        oid = (short)((b3 & 0x3F) + 0x100);
+                        posX = (byte)(((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));
+                        posY = (byte)(((b2 & 0x0F) << 2) + ((b3 & 0xC0) >> 6));
+                        sizeXY = 0;
+                    }
+                    Room_Object r = addObject(oid, posX, posY, sizeXY, (byte)layer);
+                    if (r != null)
+                    {
+                        tilesObjects.Add(r);
+                    }
+                    foreach (short stair in stairsObjects)
+                    {
+                        if (stair == oid) //we found stairs that lead to another room
                         {
-                            oid = (short)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
-                            posX = (byte)((b1 & 0xFC) >> 2);
-                            posY = (byte)((b2 & 0xFC) >> 2);
-                            sizeXY = (byte)((((b1 & 0x03) << 2) + (b2 & 0x03)));
-                        }
-                        else //subtype1
-                        {
-                            oid = b3;
-                            posX = (byte)((b1 & 0xFC) >> 2);
-                            posY = (byte)((b2 & 0xFC) >> 2);
-                            sizeX = (byte)((b1 & 0x03));
-                            sizeY = (byte)((b2 & 0x03));
-                            sizeXY = (byte)(((sizeX << 2) + sizeY));
-                        }
-                        if (b1 >= 0xFC) //subtype2 (not scalable? )
-                        {
-                            oid = (short)((b3 & 0x3F) + 0x100);
-                            posX = (byte)(((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));
-                            posY = (byte)(((b2 & 0x0F) << 2) + ((b3 & 0xC0) >> 6));
-                            sizeXY = 0;
-                        }
-                        Room_Object r = addObject(oid, posX, posY, sizeXY, (byte)layer);
-                        if (r != null)
-                        {
-                            tilesObjects.Add(r);
-                        }
-                        foreach (short stair in stairsObjects)
-                        {
-                            if (stair == oid) //we found stairs that lead to another room
+
+                            if (nbr_of_staircase < 4)
                             {
-                                
-                                if (nbr_of_staircase < 4)
-                                {
-                                    tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Stairs;
-                                    staircaseRooms.Add(new StaircaseRoom(posX, posY, "To " + staircase_rooms[nbr_of_staircase]));
-                                    nbr_of_staircase++;
-                                }
-                                else
-                                {
-                                    tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Stairs;
-                                    staircaseRooms.Add(new StaircaseRoom(posX, posY, "To ???"));
-                                }
-                                
+                                tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Stairs;
+                                staircaseRooms.Add(new StaircaseRoom(posX, posY, "To " + staircase_rooms[nbr_of_staircase]));
+                                nbr_of_staircase++;
                             }
-                        }
-
-                        //IF Object is a chest loaded and there's object in the list chest
-                        if (oid == 0xF99)
-                        {
-                            if (chests_in_room.Count > 0)
+                            else
                             {
-                                tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Chest;
-                                chest_list.Add(new Chest(posX, posY, chests_in_room[0].itemIn, false));
-                                chests_in_room.RemoveAt(0);
+                                tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Stairs;
+                                staircaseRooms.Add(new StaircaseRoom(posX, posY, "To ???"));
                             }
-                        }
-                        else if (oid == 0xFB1)
-                        {
-                            if (chests_in_room.Count > 0)
-                            {
-                                tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Chest;
-                                chest_list.Add(new Chest((byte)(posX+1), posY, chests_in_room[0].itemIn, true));
-                                chests_in_room.RemoveAt(0);
 
-                            }
                         }
+                    }
+
+                    //IF Object is a chest loaded and there's object in the list chest
+                    if (oid == 0xF99)
+                    {
+                        if (chests_in_room.Count > 0)
+                        {
+                            tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Chest;
+                            chest_list.Add(new Chest(posX, posY, chests_in_room[0].itemIn, false));
+                            chests_in_room.RemoveAt(0);
+                        }
+                    }
+                    else if (oid == 0xFB1)
+                    {
+                        if (chests_in_room.Count > 0)
+                        {
+                            tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Chest;
+                            chest_list.Add(new Chest((byte)(posX + 1), posY, chests_in_room[0].itemIn, true));
+                            chests_in_room.RemoveAt(0);
+
+                        }
+                    }
 
 
                 }
-                    else
-                    {
-                        //byte door_pos = b1;//(byte)((b1 & 0xF0) >> 3);
-                        //byte door_type = b2;
-                        tilesObjects.Add(new object_door((short)((b2 << 8) + b1), 0, 0, 0, (byte)layer));
-                        continue;
-                    }
+                else
+                {
+
+                    //byte door_pos = b1;//(byte)((b1 & 0xF0) >> 3);
+                    //byte door_type = b2;
+                    tilesObjects.Add(new object_door((short)((b2 << 8) + b1), 0, 0, 0, (byte)layer));
+                    continue;
+                }
 
 
 

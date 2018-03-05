@@ -6103,6 +6103,7 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((0x5E & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((0x5E & 0xFF) * 2)]);
             addTiles(4, pos);
             name = "Pushable Block";//ID E00
+            options = ObjectOption.Block;
         }
 
         public override void Draw()

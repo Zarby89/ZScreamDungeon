@@ -262,6 +262,7 @@ namespace ZeldaFullEditor
                 tiles.Add(new Tile(496, false, false, 0, 3));
                 tiles.Add(new Tile(480, true, false, 0, 3));
                 tiles.Add(new Tile(496, true, false, 0, 3));
+                options |= ObjectOption.Torch;
                 this.name = "Torch";
                 tx = 2;
                 ty = 2;

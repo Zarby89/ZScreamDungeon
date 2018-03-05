@@ -166,8 +166,8 @@ namespace ZeldaFullEditor
             items_data_start = 0xDDE7;
             items_data_end = 0xE6B0;
             gfx_1_pointer = 0x67D0; //2byte pointer bank 00 -> pc 0x4FC0
-            gfx_2_pointer = 0x67D5;
-            gfx_3_pointer = 0x67DA;
+            gfx_2_pointer = 0x67D5; //509F
+            gfx_3_pointer = 0x67DA; //517E
             messages_id_dungeon = 0x3F5F7;
             gfx_animated_pointer = 0x10624;
             initial_equipement = 0x183000;

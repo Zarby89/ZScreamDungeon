@@ -1,22 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.IO.Compression;
 namespace ZeldaFullEditor
 {
     class Save
     {
+
+        //ROM.DATA is a base rom loaded to get basic information it can either be JP1.0 or US1.2
+        //can still use it for load but must not be used 
+
         Room[] all_rooms;
-        public Save(Room[] all_rooms)
+        Entrance[] entrances;
+        string[] texts;
+        string debugstring = "";
+        public Save(Room[] all_rooms, Entrance[] entrances, string[] texts)
         {
             this.all_rooms = all_rooms;
+            this.entrances = entrances;
+            this.texts = texts;
+            //TODO : Change Header location to be dynamic instead of static
+            
 
             if (ROM.DATA.Length <= 0x100000)
             {
-                DialogResult dialogResult = MessageBox.Show("Your ROM will be expanded to 2MB and move the rooms header to 0x110000", "Expand", MessageBoxButtons.OKCancel);
+                DialogResult dialogResult = MessageBox.Show("Your ROM will be expanded to 2MB and rooms header moved to 0x110000", "Expand", MessageBoxButtons.OKCancel);
                 if (dialogResult == DialogResult.Yes)
                 {
                     Array.Resize(ref ROM.DATA, 0x200000);
@@ -30,7 +42,336 @@ namespace ZeldaFullEditor
             }
 
 
+
+
+            /*if (!File.Exists("PROJECTFILE.zip"))
+            {
+                FileStream f = File.Create("PROJECTFILE.zip");
+                f.Close();
+            }
+            ZipArchive zipfile = new ZipArchive(new FileStream("PROJECTFILE.zip", FileMode.Open), ZipArchiveMode.Create);
+
+            writeProjectConfig(zipfile);
+            writeRooms(zipfile);
+            writeEntrances(zipfile);
+            writePalettes(zipfile);
+            writeText(zipfile);
+
+            zipfile.Dispose();
+            */
+
+
+
+
+            //File.WriteAllText("Debug.log", debugstring);
+
+            //*****GFX*****
+            //Export the 223 gfx files as 1 file, rebuild them on ???filechange???
+            //Add a button reload gfx?, compress them on patch
+
+            //*****Starting Equipment******
+            //save the array of byte
+
+            //*****Misc?*****
+
+            //*****Text***** That is a problem :Thinking:
+            //create a folder for JP and US? if it doesnt exist when loading a project then load from ROM
+
+
+
+            //Remaining stuff to save : Gfx, Starting Equipment, Misc
+
+
         }
+
+        public void writeGfx(ZipArchive zipfile)
+        {
+            ZipArchiveEntry entry = zipfile.CreateEntry("Gfx\\" + "allgfx.bin");
+            using (BinaryWriter bw = new BinaryWriter(entry.Open()))
+            {
+                for (int i = 0; i < texts.Length; i++)
+                {
+                    if (texts[i] != null)
+                    {
+                        bw.Write(texts[i]);
+                    }
+                }
+                bw.Close();
+            }
+        }
+
+        public void writeText(ZipArchive zipfile)
+        {
+            //if baserom == JP
+            ZipArchiveEntry entry = zipfile.CreateEntry("Texts\\JP\\" + "texts.bin");
+            using (BinaryWriter bw = new BinaryWriter(entry.Open()))
+            {
+                for (int i = 0; i < texts.Length; i++)
+                {
+                    if (texts[i] != null)
+                    {
+                        bw.Write(texts[i]);
+                    }
+                }
+
+                bw.Close();
+            }
+        }
+
+        public void writePalettes(ZipArchive zipfile)
+        {
+            //save them into yy-chr format
+            ZipArchiveEntry entry = zipfile.CreateEntry("Palettes\\AllPalettes" + ".bin");
+            using (BinaryWriter bw = new BinaryWriter(entry.Open()))
+            {
+                for (int i = 0; i < 0x199C; i++)
+                {
+                    bw.Write(ROM.DATA[0xDD218 + i]);
+                }
+                bw.Close();
+                
+            }
+        }
+
+        public void writeProjectConfig(ZipArchive zipfile)
+        {
+            //ProjectName - string
+            //ProjectVersion - string
+
+            //AllDungeonNames - string[17]
+            //AllRoomsNames,dungeonin - string[296],byte[296]
+            ZipArchiveEntry entry = zipfile.CreateEntry("Config.cfg");
+            using (BinaryWriter bw = new BinaryWriter(entry.Open()))
+            {
+                bw.Write("Project Name"); //NEED TO BE REPLACED BY THE ACTUAL PROJECT NAME
+                bw.Write(ROMStructure.ProjectVersion);
+
+                for (int i = 0; i < 17; i++) //DungeonNames
+                {
+                    bw.Write(ROMStructure.dungeonsNames[i]);
+                }
+
+             DataRoom[] dr =  ROMStructure.dungeonsRoomList
+            .Where(x => x != null)
+            .OrderBy(x => x.id)
+            .Select(x => x) //?
+            .ToArray();
+
+                for (int i = 0; i < 296; i++) //DungeonId
+                {
+                    bw.Write(dr[i].name);
+                    bw.Write(dr[i].dungeonId);
+                }
+                bw.Close();
+            }
+        }
+
+        public void writeEntrances(ZipArchive zipfile)
+        {
+
+            for (int i = 0; i < 0x84; i++) // Entrances
+            {
+                ZipArchiveEntry entry = zipfile.CreateEntry("Entrances\\Entrance" + i.ToString("D3") + ".zen");
+                using (BinaryWriter bw = new BinaryWriter(entry.Open()))
+                {
+                    bw.Write(entrances[i].Room); //short room id
+                    bw.Write(entrances[i].YPosition);//short Y Position *NOT FINAL*
+                    bw.Write(entrances[i].XPosition);//short X Position *NOT FINAL*
+                    bw.Write(entrances[i].XScroll);//short X Scroll *NOT FINAL*
+                    bw.Write(entrances[i].YScroll);//short Y Scroll *NOT FINAL*
+                    bw.Write(entrances[i].XCamera);//short XCAM Position *NOT FINAL*
+                    bw.Write(entrances[i].YCamera);//short YCAM Position *NOT FINAL*
+                    bw.Write(entrances[i].Blockset);//byte blockset
+                    bw.Write(entrances[i].Music);//byte music
+                    bw.Write(entrances[i].Dungeon);//byte dungeon id
+                    //bw.Write(entrances[i].door);//MISSING DATA?
+                    bw.Write(entrances[i].Floor);//byte Floor
+                    bw.Write(entrances[i].Ladderbg);//byte ladderbg
+                    bw.Write(entrances[i].Scrolling);//byte scrolling (bitwise stuff)
+                    bw.Write(entrances[i].Scrollquadrant);//byte scrollingquadrant
+                    //TODO : **IMPORTANT** ADD MISSING STUFF
+                    //**MISSING LOTS OF STUFF**//
+
+                    bw.Close();
+                }
+            }
+        }
+
+        public void writeRooms(ZipArchive zipfile)
+        {
+            //-----------------------------------------------------------------------
+            //ROOM Save Format
+            //-----------------------------------------------------------------------
+            //Room Format
+            //Header - 14bytes
+            //message id - short
+            //pit damage - bool
+            //layout - 1byte
+            //floor1 - 1byte
+            //floor2 - 1byte
+            //Number of Tiles Objects - short
+            //<Tiles Objects Data> - Blocks and Torches data are part of the tiles
+            //Number of Sprites - short
+            //<Sprites data>
+            //Number of Items - short
+            //<Items Data>
+            //Number of Chests - short
+            //<Chests Data>
+            for (int i = 0; i < 296; i++)
+            {
+                //if (all_rooms[i].has_changed == true)
+                //{
+                debugstring = "";
+                ZipArchiveEntry entry = zipfile.CreateEntry("Rooms\\Room" + i.ToString("D3") + ".zrm");
+
+                using (BinaryWriter bw = new BinaryWriter(entry.Open()))
+                {
+                    writeHeader(bw, i);
+                    
+                    bw.Write(all_rooms[i].messageid);
+                    debugstring += "MessageID:" + (all_rooms[i].messageid).ToString() + "\n";
+                    bw.Write(all_rooms[i].damagepit);
+                    debugstring += "DamagePit:" + (all_rooms[i].damagepit).ToString() + "\n";
+                    bw.Write(all_rooms[i].layout);
+                    debugstring += "Layout:" + (all_rooms[i].layout).ToString() + "\n";
+                    bw.Write(all_rooms[i].floor1);
+                    debugstring += "Floor1:" + (all_rooms[i].floor1).ToString() + "\n";
+                    bw.Write(all_rooms[i].floor2);
+                    debugstring += "Floor2:" + (all_rooms[i].floor2).ToString() + "\n";
+                    writeTiles(bw, i);
+                    writeSprites(bw, i);
+                    writeItems(bw, i);
+                    writeChests(bw, i);
+                    bw.Close();
+                    all_rooms[i].has_changed = false;
+                }
+
+                //}
+            }
+        }
+
+
+
+        public void writeTiles(BinaryWriter bw, int i)
+        {
+            debugstring += "----------------------------------------------------------------\n";
+            debugstring += "TILES OBJECTS                                                   \n";
+            debugstring += "----------------------------------------------------------------\n";
+            bw.Write((short)all_rooms[i].tilesObjects.Count);
+            debugstring += "Object Count : " + all_rooms[i].tilesObjects.Count.ToString() + "\n";
+
+            for (int j = 0; j < all_rooms[i].tilesObjects.Count; j++)
+            {
+                //<Tiles Objects Data>
+                //short ID ,byte X, byte Y, byte Layer
+
+                bw.Write(all_rooms[i].tilesObjects[j].id);
+                bw.Write(all_rooms[i].tilesObjects[j].x);
+                bw.Write(all_rooms[i].tilesObjects[j].y);
+                bw.Write(all_rooms[i].tilesObjects[j].size);
+                bw.Write(all_rooms[i].tilesObjects[j].layer);
+                bw.Write((byte)all_rooms[i].tilesObjects[j].options);
+
+                debugstring += "ID: " + all_rooms[i].tilesObjects[j].id.ToString("X2") + ", X:" + all_rooms[i].tilesObjects[j].x.ToString() +
+                ",Y:" + all_rooms[i].tilesObjects[j].y.ToString() + ",Size:" + all_rooms[i].tilesObjects[j].size + ",Layer:" + all_rooms[i].tilesObjects[j].layer +",Options:"+ (byte)all_rooms[i].tilesObjects[j].options + "\n";
+
+            }
+        }
+
+        public void writeSprites(BinaryWriter bw, int i)
+        {
+            debugstring += "----------------------------------------------------------------\n";
+            debugstring += "SPRITES OBJECTS                                                 \n";
+            debugstring += "----------------------------------------------------------------\n";
+            bw.Write((short)all_rooms[i].sprites.Count);
+            debugstring += "Sprites Count : " + all_rooms[i].sprites.Count.ToString() + "\n";
+            for (int j = 0; j < all_rooms[i].sprites.Count; j++)
+            {
+                //<Sprites Data>
+                //byte ID ,byte X, byte Y, byte Layer, byte KeyDrop, byte overlord, byte subtype
+                bw.Write(all_rooms[i].sprites[j].id);
+                bw.Write(all_rooms[i].sprites[j].x);
+                bw.Write(all_rooms[i].sprites[j].y);
+                bw.Write(all_rooms[i].sprites[j].layer);
+                bw.Write(all_rooms[i].sprites[j].keyDrop);
+                bw.Write(all_rooms[i].sprites[j].overlord);
+                bw.Write(all_rooms[i].sprites[j].subtype);
+                debugstring += "ID: " + all_rooms[i].sprites[j].id.ToString() + ", X:" + all_rooms[i].sprites[j].x.ToString() +
+    ",Y:" + all_rooms[i].sprites[j].y.ToString() + "Layer:" + all_rooms[i].sprites[j].layer + "Key:" + all_rooms[i].sprites[j].keyDrop +
+    "Overlord:" + all_rooms[i].sprites[j].overlord + "Subtype:" + all_rooms[i].sprites[j].subtype + "\n";
+
+            }
+        }
+
+        public void writeItems(BinaryWriter bw, int i)
+        {
+            debugstring += "----------------------------------------------------------------\n";
+            debugstring += "ITEMS OBJECTS                                                   \n";
+            debugstring += "----------------------------------------------------------------\n";
+            bw.Write((short)all_rooms[i].pot_items.Count);
+            debugstring += "Items Count : " + all_rooms[i].pot_items.Count.ToString() + "\n";
+            for (int j = 0; j < all_rooms[i].pot_items.Count; j++)
+            {
+                //<Items Data>
+                //byte ID ,byte X, byte Y, byte Layer
+                bw.Write(all_rooms[i].pot_items[j].id);
+                bw.Write(all_rooms[i].pot_items[j].x);
+                bw.Write(all_rooms[i].pot_items[j].y);
+                bw.Write(all_rooms[i].pot_items[j].bg2);
+                debugstring += "ID: " + all_rooms[i].pot_items[j].id.ToString("X2") + ", X:" + all_rooms[i].pot_items[j].x.ToString() +
+                ",Y:" + all_rooms[i].pot_items[j].y.ToString() + "BG2:" + all_rooms[i].pot_items[j].bg2 +"\n";
+
+            }
+        }
+
+        public void writeChests(BinaryWriter bw, int i)
+        {
+            debugstring += "----------------------------------------------------------------\n";
+            debugstring += "CHEST OBJECTS                                                   \n";
+            debugstring += "----------------------------------------------------------------\n";
+            bw.Write((short)all_rooms[i].chest_list.Count);
+            debugstring += "Chest Count : " + all_rooms[i].chest_list.Count.ToString() + "\n";
+            for (int j = 0; j < all_rooms[i].chest_list.Count; j++)
+            {
+                //<Items Data>
+                //byte Item ID, bool isBigChest
+                bw.Write(all_rooms[i].chest_list[j].item);
+                bw.Write(all_rooms[i].chest_list[j].bigChest);
+                debugstring += "ID: " + all_rooms[i].chest_list[j].item.ToString() + ", BigChest?:" + all_rooms[i].chest_list[j].bigChest.ToString()+ "\n";
+            }
+        }
+
+        public void writeHeader(BinaryWriter bw,int i)
+        {
+            debugstring += "----------------------------------------------------------------\n";
+            debugstring += "ROOM HEADER                                                     \n";
+            debugstring += "----------------------------------------------------------------\n";
+            bw.Write((byte)((((byte)all_rooms[i].bg2 & 0x07) << 5) + (all_rooms[i].collision << 2) + (all_rooms[i].light == true ? 1 : 0)));
+            debugstring += "BG2:" + ((byte)all_rooms[i].bg2 & 0x07).ToString() + ", Collision:" + (all_rooms[i].collision).ToString() +", Light:"+ (all_rooms[i].light == true ? 1 : 0).ToString() + "\n";
+            bw.Write((byte)all_rooms[i].palette);
+            debugstring += "Palette:" + ((byte)all_rooms[i].palette).ToString() + "\n";
+            bw.Write((byte)all_rooms[i].blockset);
+            debugstring += "Blockset:" + ((byte)all_rooms[i].blockset).ToString() + "\n";
+            bw.Write((byte)all_rooms[i].spriteset);
+            debugstring += "Spriteset:" + ((byte)all_rooms[i].spriteset).ToString() + "\n";
+            bw.Write((byte)all_rooms[i].effect);
+            debugstring += "Effect:" + ((byte)all_rooms[i].effect).ToString() + "\n";
+            bw.Write((byte)all_rooms[i].tag1);
+            debugstring += "Tag1:" + ((byte)all_rooms[i].tag1).ToString() + "\n";
+            bw.Write((byte)all_rooms[i].tag2);
+            debugstring += "Tag2:" + ((byte)all_rooms[i].tag2).ToString() + "\n";
+            bw.Write((byte)((all_rooms[i].holewarp_plane) + (all_rooms[i].staircase_plane[0] << 2) + (all_rooms[i].staircase_plane[1] << 4) + (all_rooms[i].staircase_plane[2] << 6)));
+            debugstring += "Planes: (Hole)" + all_rooms[i].holewarp_plane.ToString() +",(Stairs):"+ (all_rooms[i].staircase_plane[0].ToString()) +","+ (all_rooms[i].staircase_plane[1].ToString()) +","+ (all_rooms[i].staircase_plane[2].ToString()) +","+ (all_rooms[i].staircase_plane[3])+ "\n";
+            bw.Write((byte)all_rooms[i].staircase_plane[3]);
+            bw.Write((byte)all_rooms[i].holewarp);
+            bw.Write((byte)(all_rooms[i].staircase_rooms[0]));
+            bw.Write((byte)(all_rooms[i].staircase_rooms[1]));
+            bw.Write((byte)(all_rooms[i].staircase_rooms[2]));
+            bw.Write((byte)(all_rooms[i].staircase_rooms[3]));
+            //missing 1byte?
+            debugstring += "WarpRoom: (Hole)" + (all_rooms[i].holewarp).ToString() + ",(Stairs)" + (all_rooms[i].staircase_rooms[0]) + "," + (all_rooms[i].staircase_rooms[1]) + "," + (all_rooms[i].staircase_rooms[2]) + "," + (all_rooms[i].staircase_rooms[3]);
+        }
+
 
         public bool saveEntrances(Entrance[] entrances)
         {
@@ -199,10 +540,14 @@ namespace ZeldaFullEditor
             }
             else
             {
-                for(int i = (pos - Constants.torch_data);i < bytes_count;i++)
+                //(ROM.DATA[Constants.torches_length_pointer + 1] << 8) + ROM.DATA[Constants.torches_length_pointer]
+                short npos = (short)(pos - Constants.torch_data);
+                ROM.DATA[Constants.torches_length_pointer] = (byte)(npos & 0xFF);
+                ROM.DATA[Constants.torches_length_pointer + 1] = (byte)((npos >> 8) & 0xFF);
+                /*for(int i = (pos - Constants.torch_data);i < bytes_count;i++)
                 {
                     ROM.DATA[i] = 0xFF;
-                }
+                }*/
             }
             return false; // False = no error
         }
@@ -409,7 +754,7 @@ namespace ZeldaFullEditor
 
         public bool saveallSprites()
         {
-
+            
             byte[] sprites_buffer = new byte[0x1670];
             //empty room data = 0x250
             //start of data = 0x252
@@ -432,8 +777,8 @@ namespace ZeldaFullEditor
                         //pointer : 
                         sprites_buffer[(i * 2)] = (byte)((Addresses.pctosnes(Constants.sprites_data + (pos - 0x252)) & 0xFF));
                         sprites_buffer[(i * 2) + 1] = (byte)((Addresses.pctosnes(Constants.sprites_data + (pos - 0x252)) >> 8) & 0xFF);
-
-                        sprites_buffer[pos] = 0x00;//Unknown byte??
+                        //ROM.DATA[sprite_address] == 1 ? true : false;
+                        sprites_buffer[pos] = (byte)(all_rooms[i].sortSprites == true ? 0x01 : 0x00);//Unknown byte??
                         pos++;
                         foreach (Sprite spr in all_rooms[i].sprites) //3bytes
                         {

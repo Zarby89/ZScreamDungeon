@@ -12,7 +12,7 @@ namespace ZeldaFullEditor
         public byte x, y, item;
         public bool picker = false;
         public bool bigChest = false;
-        public Chest(byte x,byte y, byte item,bool bigChest,bool picker = false)
+        public Chest(byte x, byte y, byte item, bool bigChest, bool picker = false)
         {
             this.x = x;
             this.y = y;
@@ -434,7 +434,7 @@ namespace ZeldaFullEditor
         public void draw_item_tile(int x, int y, int sx, int sy, int tid, int pid, bool rando = false)
         {
 
-            int ty = 72 + ((tid & 0xF0) >> 4);
+            int ty = ((tid & 0xF0) >> 4);
             if (rando == true) { ty += 16; };
             int tx = tid & 0x0F;
 
@@ -462,20 +462,20 @@ namespace ZeldaFullEditor
                     int src = x_src + y_src;
                     unsafe
                     {
-                        if (dest < 1048576)
+                        if (dest < 4096)
                         {
                             if (dest > 0)
                             {
 
-                                if (GFX.singledata[(src)] == 0)
+                                if (GFX.itemsdataEDITOR[(src)] == 0)
                                 {
 
                                 }
                                 else
                                 {
-                                    GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(src)], pid - 2].B);
-                                    GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.singledata[(src)], pid - 2].G);
-                                    GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.singledata[(src)], pid - 2].R);
+                                    GFX.currentData[dest] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pid - 2].B);
+                                    GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pid - 2].G);
+                                    GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pid - 2].R);
                                     GFX.currentData[dest + 3] = 255;
                                 }
                             }

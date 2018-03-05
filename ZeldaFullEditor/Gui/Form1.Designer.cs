@@ -70,6 +70,7 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createProjectFromROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportProjectAsROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
@@ -88,6 +89,10 @@
             this.bringToBackToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gotoRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.globalOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.patchROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textSpriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textChestItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -102,7 +107,6 @@
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -180,7 +184,6 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cameraboxCheckbox = new System.Windows.Forms.CheckBox();
             this.entranceposCheckbox = new System.Windows.Forms.CheckBox();
-            this.button3 = new System.Windows.Forms.Button();
             this.objectstabPage = new System.Windows.Forms.TabPage();
             this.splitContainer4 = new System.Windows.Forms.SplitContainer();
             this.objectsListbox = new System.Windows.Forms.ListBox();
@@ -207,9 +210,21 @@
             this.button1 = new System.Windows.Forms.Button();
             this.palettePicturebox = new System.Windows.Forms.PictureBox();
             this.gfxtabPage = new System.Windows.Forms.TabPage();
+            this.gfxPicturebox = new System.Windows.Forms.PictureBox();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.gfx8NumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.gfx7NumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.gfx6NumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.gfx5NumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.gfxgroupindexUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label32 = new System.Windows.Forms.Label();
+            this.gfxfromroomButton = new System.Windows.Forms.Button();
+            this.gfx4NumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.gfx3NumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.gfx2NumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.gfx1NumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label29 = new System.Windows.Forms.Label();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.gfxgroupCombobox = new System.Windows.Forms.ComboBox();
             this.texttabPage = new System.Windows.Forms.TabPage();
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -323,15 +338,15 @@
             this.doorselectPanel = new System.Windows.Forms.Panel();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
-            this.potitemobjectPanel = new System.Windows.Forms.Panel();
-            this.selecteditemobjectCombobox = new System.Windows.Forms.ComboBox();
-            this.label31 = new System.Windows.Forms.Label();
             this.spritepropertyPanel = new System.Windows.Forms.Panel();
             this.spriteoverlordCheckbox = new System.Windows.Forms.CheckBox();
             this.label26 = new System.Windows.Forms.Label();
             this.spritesubtypeUpDown = new System.Windows.Forms.NumericUpDown();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label23 = new System.Windows.Forms.Label();
+            this.potitemobjectPanel = new System.Windows.Forms.Panel();
+            this.selecteditemobjectCombobox = new System.Windows.Forms.ComboBox();
+            this.label31 = new System.Windows.Forms.Label();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -368,8 +383,17 @@
             this.splitContainer6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).BeginInit();
             this.gfxtabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfxPicturebox)).BeginInit();
+            this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx8NumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx7NumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx6NumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx5NumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfxgroupindexUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx4NumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx3NumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx2NumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx1NumericUpDown)).BeginInit();
             this.texttabPage.SuspendLayout();
             this.tabControl2.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -402,9 +426,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.selectedYNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedXNumericUpDown)).BeginInit();
             this.doorselectPanel.SuspendLayout();
-            this.potitemobjectPanel.SuspendLayout();
             this.spritepropertyPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).BeginInit();
+            this.potitemobjectPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -414,8 +438,7 @@
             this.editToolStripMenuItem,
             this.projectToolStripMenuItem,
             this.viewToolStripMenuItem,
-            this.helpToolStripMenuItem,
-            this.testToolStripMenuItem});
+            this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(844, 24);
@@ -428,6 +451,7 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
+            this.saveasToolStripMenuItem,
             this.createProjectFromROMToolStripMenuItem,
             this.exportProjectAsROMToolStripMenuItem,
             this.toolStripSeparator7});
@@ -451,6 +475,15 @@
             this.saveToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.saveToolStripMenuItem.Text = "Save Project";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
+            // saveasToolStripMenuItem
+            // 
+            this.saveasToolStripMenuItem.Enabled = false;
+            this.saveasToolStripMenuItem.Name = "saveasToolStripMenuItem";
+            this.saveasToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
+            this.saveasToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.saveasToolStripMenuItem.Text = "Save Project As...";
+            this.saveasToolStripMenuItem.Click += new System.EventHandler(this.saveasToolStripMenuItem_Click);
             // 
             // createProjectFromROMToolStripMenuItem
             // 
@@ -587,7 +620,11 @@
             // projectToolStripMenuItem
             // 
             this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gotoRoomToolStripMenuItem});
+            this.gotoRoomToolStripMenuItem,
+            this.importRoomToolStripMenuItem,
+            this.globalOptionsToolStripMenuItem,
+            this.exportRoomToolStripMenuItem,
+            this.patchROMToolStripMenuItem});
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
             this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.projectToolStripMenuItem.Text = "Project";
@@ -596,9 +633,36 @@
             // 
             this.gotoRoomToolStripMenuItem.Enabled = false;
             this.gotoRoomToolStripMenuItem.Name = "gotoRoomToolStripMenuItem";
-            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
             this.gotoRoomToolStripMenuItem.Text = "Goto Room";
             this.gotoRoomToolStripMenuItem.Click += new System.EventHandler(this.gotoRoomToolStripMenuItem_Click);
+            // 
+            // importRoomToolStripMenuItem
+            // 
+            this.importRoomToolStripMenuItem.Name = "importRoomToolStripMenuItem";
+            this.importRoomToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.importRoomToolStripMenuItem.Text = "Import Room";
+            this.importRoomToolStripMenuItem.Click += new System.EventHandler(this.importRoomToolStripMenuItem_Click);
+            // 
+            // globalOptionsToolStripMenuItem
+            // 
+            this.globalOptionsToolStripMenuItem.Name = "globalOptionsToolStripMenuItem";
+            this.globalOptionsToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.globalOptionsToolStripMenuItem.Text = "Global Options";
+            this.globalOptionsToolStripMenuItem.Click += new System.EventHandler(this.globalOptionsToolStripMenuItem_Click);
+            // 
+            // exportRoomToolStripMenuItem
+            // 
+            this.exportRoomToolStripMenuItem.Name = "exportRoomToolStripMenuItem";
+            this.exportRoomToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.exportRoomToolStripMenuItem.Text = "Export Room";
+            this.exportRoomToolStripMenuItem.Click += new System.EventHandler(this.exportRoomToolStripMenuItem_Click);
+            // 
+            // patchROMToolStripMenuItem
+            // 
+            this.patchROMToolStripMenuItem.Name = "patchROMToolStripMenuItem";
+            this.patchROMToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.patchROMToolStripMenuItem.Text = "Patch ROM";
             // 
             // viewToolStripMenuItem
             // 
@@ -724,13 +788,6 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // testToolStripMenuItem
-            // 
-            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
-            this.testToolStripMenuItem.Size = new System.Drawing.Size(104, 20);
-            this.testToolStripMenuItem.Text = "Patch New Rom";
-            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
-            // 
             // updateTimer
             // 
             this.updateTimer.Interval = 16;
@@ -798,6 +855,7 @@
             this.debugtestButton.Name = "debugtestButton";
             this.debugtestButton.Size = new System.Drawing.Size(23, 22);
             this.debugtestButton.Text = "Save and Debug in emulator";
+            this.debugtestButton.Click += new System.EventHandler(this.debugtestButton_Click);
             // 
             // runtestButton
             // 
@@ -1432,7 +1490,7 @@
             // 
             this.splitContainer3.Panel2.Controls.Add(this.propertyGrid2);
             this.splitContainer3.Size = new System.Drawing.Size(292, 476);
-            this.splitContainer3.SplitterDistance = 245;
+            this.splitContainer3.SplitterDistance = 244;
             this.splitContainer3.TabIndex = 9;
             // 
             // entrancetreeView
@@ -1448,7 +1506,7 @@
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2});
-            this.entrancetreeView.Size = new System.Drawing.Size(292, 245);
+            this.entrancetreeView.Size = new System.Drawing.Size(292, 244);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
             this.entrancetreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.entrancetreeView_NodeMouseDoubleClick);
@@ -1458,14 +1516,13 @@
             this.propertyGrid2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.propertyGrid2.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid2.Name = "propertyGrid2";
-            this.propertyGrid2.Size = new System.Drawing.Size(292, 227);
+            this.propertyGrid2.Size = new System.Drawing.Size(292, 228);
             this.propertyGrid2.TabIndex = 24;
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.cameraboxCheckbox);
             this.groupBox2.Controls.Add(this.entranceposCheckbox);
-            this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.groupBox2.Location = new System.Drawing.Point(0, 476);
             this.groupBox2.Name = "groupBox2";
@@ -1498,16 +1555,6 @@
             this.entranceposCheckbox.Text = "Show Entrance Position";
             this.entranceposCheckbox.UseVisualStyleBackColor = true;
             // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(215, 42);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 1;
-            this.button3.Text = "Load";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
             // objectstabPage
             // 
             this.objectstabPage.Controls.Add(this.splitContainer4);
@@ -1534,7 +1581,7 @@
             // 
             this.splitContainer4.Panel2.Controls.Add(this.previewObjectPicturebox);
             this.splitContainer4.Size = new System.Drawing.Size(292, 548);
-            this.splitContainer4.SplitterDistance = 331;
+            this.splitContainer4.SplitterDistance = 330;
             this.splitContainer4.TabIndex = 0;
             // 
             // objectsListbox
@@ -1543,7 +1590,7 @@
             this.objectsListbox.FormattingEnabled = true;
             this.objectsListbox.Location = new System.Drawing.Point(0, 26);
             this.objectsListbox.Name = "objectsListbox";
-            this.objectsListbox.Size = new System.Drawing.Size(292, 305);
+            this.objectsListbox.Size = new System.Drawing.Size(292, 304);
             this.objectsListbox.TabIndex = 0;
             this.objectsListbox.SelectedIndexChanged += new System.EventHandler(this.objectsListbox_SelectedIndexChanged);
             // 
@@ -1580,7 +1627,7 @@
             this.previewObjectPicturebox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.previewObjectPicturebox.Location = new System.Drawing.Point(0, 0);
             this.previewObjectPicturebox.Name = "previewObjectPicturebox";
-            this.previewObjectPicturebox.Size = new System.Drawing.Size(292, 213);
+            this.previewObjectPicturebox.Size = new System.Drawing.Size(292, 214);
             this.previewObjectPicturebox.TabIndex = 0;
             this.previewObjectPicturebox.TabStop = false;
             // 
@@ -1808,7 +1855,7 @@
             this.button2.TabIndex = 3;
             this.button2.Text = "Save to YY-CHR Palettes";
             this.button2.UseVisualStyleBackColor = true;
-            this.button2.Visible = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click_1);
             // 
             // button1
             // 
@@ -1832,9 +1879,8 @@
             // gfxtabPage
             // 
             this.gfxtabPage.AutoScroll = true;
-            this.gfxtabPage.Controls.Add(this.label29);
-            this.gfxtabPage.Controls.Add(this.numericUpDown1);
-            this.gfxtabPage.Controls.Add(this.pictureBox2);
+            this.gfxtabPage.Controls.Add(this.gfxPicturebox);
+            this.gfxtabPage.Controls.Add(this.groupBox3);
             this.gfxtabPage.Location = new System.Drawing.Point(4, 40);
             this.gfxtabPage.Name = "gfxtabPage";
             this.gfxtabPage.Size = new System.Drawing.Size(292, 548);
@@ -1842,34 +1888,197 @@
             this.gfxtabPage.Text = "Gfx";
             this.gfxtabPage.UseVisualStyleBackColor = true;
             // 
-            // label29
+            // gfxPicturebox
             // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(137, 376);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(40, 13);
-            this.label29.TabIndex = 14;
-            this.label29.Text = "Palette";
+            this.gfxPicturebox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gfxPicturebox.Location = new System.Drawing.Point(0, 145);
+            this.gfxPicturebox.Name = "gfxPicturebox";
+            this.gfxPicturebox.Size = new System.Drawing.Size(275, 512);
+            this.gfxPicturebox.TabIndex = 12;
+            this.gfxPicturebox.TabStop = false;
             // 
-            // numericUpDown1
+            // groupBox3
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(140, 392);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
-            this.numericUpDown1.TabIndex = 13;
-            this.numericUpDown1.Value = new decimal(new int[] {
-            4,
+            this.groupBox3.Controls.Add(this.gfx8NumericUpDown);
+            this.groupBox3.Controls.Add(this.gfx7NumericUpDown);
+            this.groupBox3.Controls.Add(this.gfx6NumericUpDown);
+            this.groupBox3.Controls.Add(this.gfx5NumericUpDown);
+            this.groupBox3.Controls.Add(this.gfxgroupindexUpDown);
+            this.groupBox3.Controls.Add(this.label32);
+            this.groupBox3.Controls.Add(this.gfxfromroomButton);
+            this.groupBox3.Controls.Add(this.gfx4NumericUpDown);
+            this.groupBox3.Controls.Add(this.gfx3NumericUpDown);
+            this.groupBox3.Controls.Add(this.gfx2NumericUpDown);
+            this.groupBox3.Controls.Add(this.gfx1NumericUpDown);
+            this.groupBox3.Controls.Add(this.label29);
+            this.groupBox3.Controls.Add(this.gfxgroupCombobox);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox3.Location = new System.Drawing.Point(0, 0);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(275, 145);
+            this.groupBox3.TabIndex = 13;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Gfx Groups";
+            // 
+            // gfx8NumericUpDown
+            // 
+            this.gfx8NumericUpDown.Location = new System.Drawing.Point(177, 89);
+            this.gfx8NumericUpDown.Maximum = new decimal(new int[] {
+            223,
             0,
             0,
             0});
+            this.gfx8NumericUpDown.Name = "gfx8NumericUpDown";
+            this.gfx8NumericUpDown.Size = new System.Drawing.Size(51, 20);
+            this.gfx8NumericUpDown.TabIndex = 12;
+            this.gfx8NumericUpDown.ValueChanged += new System.EventHandler(this.gfxsinglechanged);
             // 
-            // pictureBox2
+            // gfx7NumericUpDown
             // 
-            this.pictureBox2.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(128, 1024);
-            this.pictureBox2.TabIndex = 12;
-            this.pictureBox2.TabStop = false;
+            this.gfx7NumericUpDown.Location = new System.Drawing.Point(120, 89);
+            this.gfx7NumericUpDown.Maximum = new decimal(new int[] {
+            223,
+            0,
+            0,
+            0});
+            this.gfx7NumericUpDown.Name = "gfx7NumericUpDown";
+            this.gfx7NumericUpDown.Size = new System.Drawing.Size(51, 20);
+            this.gfx7NumericUpDown.TabIndex = 11;
+            this.gfx7NumericUpDown.ValueChanged += new System.EventHandler(this.gfxsinglechanged);
+            // 
+            // gfx6NumericUpDown
+            // 
+            this.gfx6NumericUpDown.Location = new System.Drawing.Point(63, 89);
+            this.gfx6NumericUpDown.Maximum = new decimal(new int[] {
+            223,
+            0,
+            0,
+            0});
+            this.gfx6NumericUpDown.Name = "gfx6NumericUpDown";
+            this.gfx6NumericUpDown.Size = new System.Drawing.Size(51, 20);
+            this.gfx6NumericUpDown.TabIndex = 10;
+            this.gfx6NumericUpDown.ValueChanged += new System.EventHandler(this.gfxsinglechanged);
+            // 
+            // gfx5NumericUpDown
+            // 
+            this.gfx5NumericUpDown.Location = new System.Drawing.Point(6, 89);
+            this.gfx5NumericUpDown.Maximum = new decimal(new int[] {
+            223,
+            0,
+            0,
+            0});
+            this.gfx5NumericUpDown.Name = "gfx5NumericUpDown";
+            this.gfx5NumericUpDown.Size = new System.Drawing.Size(51, 20);
+            this.gfx5NumericUpDown.TabIndex = 9;
+            this.gfx5NumericUpDown.ValueChanged += new System.EventHandler(this.gfxsinglechanged);
+            // 
+            // gfxgroupindexUpDown
+            // 
+            this.gfxgroupindexUpDown.Location = new System.Drawing.Point(120, 36);
+            this.gfxgroupindexUpDown.Maximum = new decimal(new int[] {
+            223,
+            0,
+            0,
+            0});
+            this.gfxgroupindexUpDown.Name = "gfxgroupindexUpDown";
+            this.gfxgroupindexUpDown.Size = new System.Drawing.Size(108, 20);
+            this.gfxgroupindexUpDown.TabIndex = 8;
+            this.gfxgroupindexUpDown.ValueChanged += new System.EventHandler(this.gfxgroupindexUpDown_ValueChanged);
+            // 
+            // label32
+            // 
+            this.label32.AutoSize = true;
+            this.label32.Location = new System.Drawing.Point(117, 20);
+            this.label32.Name = "label32";
+            this.label32.Size = new System.Drawing.Size(39, 13);
+            this.label32.TabIndex = 7;
+            this.label32.Text = "Index :";
+            // 
+            // gfxfromroomButton
+            // 
+            this.gfxfromroomButton.Location = new System.Drawing.Point(6, 116);
+            this.gfxfromroomButton.Name = "gfxfromroomButton";
+            this.gfxfromroomButton.Size = new System.Drawing.Size(258, 23);
+            this.gfxfromroomButton.TabIndex = 6;
+            this.gfxfromroomButton.Text = "Load Index from selected room";
+            this.gfxfromroomButton.UseVisualStyleBackColor = true;
+            this.gfxfromroomButton.Click += new System.EventHandler(this.gfxfromroomButton_Click);
+            // 
+            // gfx4NumericUpDown
+            // 
+            this.gfx4NumericUpDown.Location = new System.Drawing.Point(177, 63);
+            this.gfx4NumericUpDown.Maximum = new decimal(new int[] {
+            223,
+            0,
+            0,
+            0});
+            this.gfx4NumericUpDown.Name = "gfx4NumericUpDown";
+            this.gfx4NumericUpDown.Size = new System.Drawing.Size(51, 20);
+            this.gfx4NumericUpDown.TabIndex = 5;
+            this.gfx4NumericUpDown.ValueChanged += new System.EventHandler(this.gfxsinglechanged);
+            // 
+            // gfx3NumericUpDown
+            // 
+            this.gfx3NumericUpDown.Location = new System.Drawing.Point(120, 63);
+            this.gfx3NumericUpDown.Maximum = new decimal(new int[] {
+            223,
+            0,
+            0,
+            0});
+            this.gfx3NumericUpDown.Name = "gfx3NumericUpDown";
+            this.gfx3NumericUpDown.Size = new System.Drawing.Size(51, 20);
+            this.gfx3NumericUpDown.TabIndex = 4;
+            this.gfx3NumericUpDown.ValueChanged += new System.EventHandler(this.gfxsinglechanged);
+            // 
+            // gfx2NumericUpDown
+            // 
+            this.gfx2NumericUpDown.Location = new System.Drawing.Point(63, 63);
+            this.gfx2NumericUpDown.Maximum = new decimal(new int[] {
+            223,
+            0,
+            0,
+            0});
+            this.gfx2NumericUpDown.Name = "gfx2NumericUpDown";
+            this.gfx2NumericUpDown.Size = new System.Drawing.Size(51, 20);
+            this.gfx2NumericUpDown.TabIndex = 3;
+            this.gfx2NumericUpDown.ValueChanged += new System.EventHandler(this.gfxsinglechanged);
+            // 
+            // gfx1NumericUpDown
+            // 
+            this.gfx1NumericUpDown.Location = new System.Drawing.Point(6, 63);
+            this.gfx1NumericUpDown.Maximum = new decimal(new int[] {
+            223,
+            0,
+            0,
+            0});
+            this.gfx1NumericUpDown.Name = "gfx1NumericUpDown";
+            this.gfx1NumericUpDown.Size = new System.Drawing.Size(51, 20);
+            this.gfx1NumericUpDown.TabIndex = 2;
+            this.gfx1NumericUpDown.ValueChanged += new System.EventHandler(this.gfxsinglechanged);
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(6, 20);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(40, 13);
+            this.label29.TabIndex = 1;
+            this.label29.Text = "Type : ";
+            // 
+            // gfxgroupCombobox
+            // 
+            this.gfxgroupCombobox.FormattingEnabled = true;
+            this.gfxgroupCombobox.Items.AddRange(new object[] {
+            "Main Blockset",
+            "Entrance Blockset",
+            "Sprite Blockset",
+            "Palettes"});
+            this.gfxgroupCombobox.Location = new System.Drawing.Point(6, 36);
+            this.gfxgroupCombobox.Name = "gfxgroupCombobox";
+            this.gfxgroupCombobox.Size = new System.Drawing.Size(108, 21);
+            this.gfxgroupCombobox.TabIndex = 0;
+            this.gfxgroupCombobox.Text = "Main Blockset";
+            this.gfxgroupCombobox.SelectedIndexChanged += new System.EventHandler(this.gfxgroupCombobox_SelectedIndexChanged);
             // 
             // texttabPage
             // 
@@ -2036,7 +2245,7 @@
             this.panel1.Controls.Add(this.bossroom1UpDown);
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(640, 135);
+            this.panel1.Size = new System.Drawing.Size(861, 135);
             this.panel1.TabIndex = 0;
             // 
             // label20
@@ -3162,7 +3371,6 @@
             this.selectedGroupbox.Controls.Add(this.selectedXNumericUpDown);
             this.selectedGroupbox.Controls.Add(this.doorselectPanel);
             this.selectedGroupbox.Controls.Add(this.potitemobjectPanel);
-            this.selectedGroupbox.Controls.Add(this.spritepropertyPanel);
             this.selectedGroupbox.Dock = System.Windows.Forms.DockStyle.Top;
             this.selectedGroupbox.Location = new System.Drawing.Point(300, 49);
             this.selectedGroupbox.Name = "selectedGroupbox";
@@ -3263,9 +3471,11 @@
             // 
             // doorselectPanel
             // 
-            this.doorselectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.doorselectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.doorselectPanel.Controls.Add(this.comboBox2);
             this.doorselectPanel.Controls.Add(this.label25);
+            this.doorselectPanel.Controls.Add(this.spritepropertyPanel);
             this.doorselectPanel.Location = new System.Drawing.Point(301, 16);
             this.doorselectPanel.Name = "doorselectPanel";
             this.doorselectPanel.Size = new System.Drawing.Size(240, 50);
@@ -3274,6 +3484,8 @@
             // 
             // comboBox2
             // 
+            this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox2.FormattingEnabled = true;
             this.comboBox2.Items.AddRange(new object[] {
@@ -3295,7 +3507,8 @@
             "Entrance Door (bottom only) 0x0A",
             "Explosion Wall (wrong draw) 0x30",
             "Exit Door (to combine with other door) 0x12",
-            "ToBg2 Door (to combine with other door) 0x16"});
+            "ToBg2 Door (to combine with other door) 0x16",
+            "Curtain Door 0x32"});
             this.comboBox2.Location = new System.Drawing.Point(6, 26);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(225, 21);
@@ -3304,6 +3517,8 @@
             // 
             // label25
             // 
+            this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label25.AutoSize = true;
             this.label25.Location = new System.Drawing.Point(3, 8);
             this.label25.Name = "label25";
@@ -3311,74 +3526,16 @@
             this.label25.TabIndex = 9;
             this.label25.Text = "Door Type : ";
             // 
-            // potitemobjectPanel
-            // 
-            this.potitemobjectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.potitemobjectPanel.Controls.Add(this.selecteditemobjectCombobox);
-            this.potitemobjectPanel.Controls.Add(this.label31);
-            this.potitemobjectPanel.Location = new System.Drawing.Point(301, 16);
-            this.potitemobjectPanel.Name = "potitemobjectPanel";
-            this.potitemobjectPanel.Size = new System.Drawing.Size(240, 50);
-            this.potitemobjectPanel.TabIndex = 17;
-            this.potitemobjectPanel.Visible = false;
-            // 
-            // selecteditemobjectCombobox
-            // 
-            this.selecteditemobjectCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.selecteditemobjectCombobox.FormattingEnabled = true;
-            this.selecteditemobjectCombobox.Items.AddRange(new object[] {
-            "Nothing",
-            "Rupee",
-            "RockCrab",
-            "Bee",
-            "Random",
-            "Bomb",
-            "Rupee",
-            "Blue Rupee",
-            "Key",
-            "Arrow",
-            "Bomb",
-            "Heart",
-            "Magic",
-            "Big Magic",
-            "Chicken",
-            "Green Soldier",
-            "AliveRock?",
-            "Blue Soldier",
-            "Ground Bomb",
-            "Heart",
-            "Fairy",
-            "Heart",
-            "Nothing",
-            "Hole",
-            "Warp",
-            "Staircase",
-            "Bombable",
-            "Switch "});
-            this.selecteditemobjectCombobox.Location = new System.Drawing.Point(6, 26);
-            this.selecteditemobjectCombobox.Name = "selecteditemobjectCombobox";
-            this.selecteditemobjectCombobox.Size = new System.Drawing.Size(225, 21);
-            this.selecteditemobjectCombobox.TabIndex = 8;
-            this.selecteditemobjectCombobox.SelectedIndexChanged += new System.EventHandler(this.selecteditemobjectCombobox_SelectedIndexChanged);
-            // 
-            // label31
-            // 
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(3, 10);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(33, 13);
-            this.label31.TabIndex = 9;
-            this.label31.Text = "Item :";
-            // 
             // spritepropertyPanel
             // 
-            this.spritepropertyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.spritepropertyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.spritepropertyPanel.Controls.Add(this.spriteoverlordCheckbox);
             this.spritepropertyPanel.Controls.Add(this.label26);
             this.spritepropertyPanel.Controls.Add(this.spritesubtypeUpDown);
             this.spritepropertyPanel.Controls.Add(this.comboBox1);
             this.spritepropertyPanel.Controls.Add(this.label23);
-            this.spritepropertyPanel.Location = new System.Drawing.Point(301, 16);
+            this.spritepropertyPanel.Location = new System.Drawing.Point(0, 0);
             this.spritepropertyPanel.Name = "spritepropertyPanel";
             this.spritepropertyPanel.Size = new System.Drawing.Size(240, 50);
             this.spritepropertyPanel.TabIndex = 12;
@@ -3418,6 +3575,8 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.comboBox1.Enabled = false;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
@@ -3433,12 +3592,78 @@
             // 
             // label23
             // 
+            this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label23.AutoSize = true;
             this.label23.Location = new System.Drawing.Point(171, 10);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(60, 13);
             this.label23.TabIndex = 9;
             this.label23.Text = "Drop Key ?";
+            // 
+            // potitemobjectPanel
+            // 
+            this.potitemobjectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.potitemobjectPanel.Controls.Add(this.selecteditemobjectCombobox);
+            this.potitemobjectPanel.Controls.Add(this.label31);
+            this.potitemobjectPanel.Location = new System.Drawing.Point(301, 16);
+            this.potitemobjectPanel.Name = "potitemobjectPanel";
+            this.potitemobjectPanel.Size = new System.Drawing.Size(240, 50);
+            this.potitemobjectPanel.TabIndex = 17;
+            this.potitemobjectPanel.Visible = false;
+            // 
+            // selecteditemobjectCombobox
+            // 
+            this.selecteditemobjectCombobox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.selecteditemobjectCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.selecteditemobjectCombobox.FormattingEnabled = true;
+            this.selecteditemobjectCombobox.Items.AddRange(new object[] {
+            "Nothing",
+            "Rupee",
+            "RockCrab",
+            "Bee",
+            "Random",
+            "Bomb",
+            "Rupee",
+            "Blue Rupee",
+            "Key",
+            "Arrow",
+            "Bomb",
+            "Heart",
+            "Magic",
+            "Big Magic",
+            "Chicken",
+            "Green Soldier",
+            "AliveRock?",
+            "Blue Soldier",
+            "Ground Bomb",
+            "Heart",
+            "Fairy",
+            "Heart",
+            "Nothing",
+            "Hole",
+            "Warp",
+            "Staircase",
+            "Bombable",
+            "Switch "});
+            this.selecteditemobjectCombobox.Location = new System.Drawing.Point(6, 26);
+            this.selecteditemobjectCombobox.Name = "selecteditemobjectCombobox";
+            this.selecteditemobjectCombobox.Size = new System.Drawing.Size(225, 21);
+            this.selecteditemobjectCombobox.TabIndex = 8;
+            this.selecteditemobjectCombobox.SelectedIndexChanged += new System.EventHandler(this.selecteditemobjectCombobox_SelectedIndexChanged);
+            // 
+            // label31
+            // 
+            this.label31.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(3, 10);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(33, 13);
+            this.label31.TabIndex = 9;
+            this.label31.Text = "Item :";
             // 
             // splitter1
             // 
@@ -3508,9 +3733,18 @@
             this.splitContainer6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).EndInit();
             this.gfxtabPage.ResumeLayout(false);
-            this.gfxtabPage.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfxPicturebox)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx8NumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx7NumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx6NumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx5NumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfxgroupindexUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx4NumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx3NumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx2NumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.gfx1NumericUpDown)).EndInit();
             this.texttabPage.ResumeLayout(false);
             this.texttabPage.PerformLayout();
             this.tabControl2.ResumeLayout(false);
@@ -3553,11 +3787,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.selectedXNumericUpDown)).EndInit();
             this.doorselectPanel.ResumeLayout(false);
             this.doorselectPanel.PerformLayout();
-            this.potitemobjectPanel.ResumeLayout(false);
-            this.potitemobjectPanel.PerformLayout();
             this.spritepropertyPanel.ResumeLayout(false);
             this.spritepropertyPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).EndInit();
+            this.potitemobjectPanel.ResumeLayout(false);
+            this.potitemobjectPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3663,7 +3897,6 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage roomtabPage;
         private System.Windows.Forms.SplitContainer splitContainer2;
-        private System.Windows.Forms.PictureBox mapPicturebox;
         private System.Windows.Forms.TreeView roomListView;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.RadioButton radioButton1;
@@ -3675,7 +3908,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox cameraboxCheckbox;
         private System.Windows.Forms.CheckBox entranceposCheckbox;
-        private System.Windows.Forms.Button button3;
         private System.Windows.Forms.TabPage objectstabPage;
         private System.Windows.Forms.SplitContainer splitContainer4;
         private System.Windows.Forms.Panel searchobjectPanel;
@@ -3701,9 +3933,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox palettePicturebox;
         private System.Windows.Forms.TabPage gfxtabPage;
-        private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox gfxPicturebox;
         private System.Windows.Forms.TabPage texttabPage;
         private System.Windows.Forms.TabControl tabControl2;
         private System.Windows.Forms.TabPage tabPage2;
@@ -3831,7 +4061,26 @@
         private System.Windows.Forms.ToolStripMenuItem animatedToolStripMenuItem;
         public System.Windows.Forms.ListBox objectsListbox;
         public System.Windows.Forms.ListBox spritesListbox;
-        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importRoomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem globalOptionsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportRoomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem patchROMToolStripMenuItem;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.NumericUpDown gfx4NumericUpDown;
+        private System.Windows.Forms.NumericUpDown gfx3NumericUpDown;
+        private System.Windows.Forms.NumericUpDown gfx2NumericUpDown;
+        private System.Windows.Forms.NumericUpDown gfx1NumericUpDown;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.ComboBox gfxgroupCombobox;
+        private System.Windows.Forms.NumericUpDown gfx8NumericUpDown;
+        private System.Windows.Forms.NumericUpDown gfx7NumericUpDown;
+        private System.Windows.Forms.NumericUpDown gfx6NumericUpDown;
+        private System.Windows.Forms.NumericUpDown gfx5NumericUpDown;
+        private System.Windows.Forms.NumericUpDown gfxgroupindexUpDown;
+        private System.Windows.Forms.Label label32;
+        private System.Windows.Forms.Button gfxfromroomButton;
+        public System.Windows.Forms.PictureBox mapPicturebox;
+        private System.Windows.Forms.ToolStripMenuItem saveasToolStripMenuItem;
     }
 }
 

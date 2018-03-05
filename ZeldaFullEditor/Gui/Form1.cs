@@ -16,6 +16,8 @@ using Microsoft.VisualBasic;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
 using WeifenLuo.WinFormsUI.Docking;
+
+
 namespace ZeldaFullEditor
 {
 
@@ -35,9 +37,9 @@ namespace ZeldaFullEditor
         public List<DScene> rooms = new List<DScene>();
         Charactertable table_char = new Charactertable(true);
         bool projectLoaded = false;
+        bool schedulegfxSave = false;
 
-
-        List<string> recentProjects = new List<string>();
+        //List<string> recentProjects = new List<string>();
 
 
         private void Tsi_Click(object sender, EventArgs e)
@@ -53,7 +55,7 @@ namespace ZeldaFullEditor
             //
             searchtextListbox.DisplayMember = "Name";
             spritesListbox.DisplayMember = "Name";
-            if (File.Exists("settings.cfg"))
+            /*if (File.Exists("settings.cfg"))
             {
                 BinaryReader br = new BinaryReader(new FileStream("settings.cfg", FileMode.Open, FileAccess.Read));
                 for (int i = 0; i < 5; i++)
@@ -76,7 +78,7 @@ namespace ZeldaFullEditor
                     fileToolStripMenuItem.DropDownItems.Add(tsi);
 
                 }
-            }
+            }*/
 
 
             ROMStructure.loadDefaultProject();
@@ -136,11 +138,14 @@ namespace ZeldaFullEditor
                 }
             }
 
+            //TODO : MOVE ALL THAT CODE TO PATCH ROM INSTEAD OF SAVE
+
+
             byte[] romBackup = (byte[])ROM.DATA.Clone();
-            Save save = new Save(all_rooms);
+            Save save = new Save(all_rooms,entrances,messages);
             if (save.saveRoomsHeaders()) //no protection always the same size so we don't care :)
             {
-
+                MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
             }
             if (save.saveallChests()) //chest there's a protection when there's too many chest - tested it works fine
             {
@@ -212,14 +217,14 @@ namespace ZeldaFullEditor
             if (projectFile.ShowDialog() == DialogResult.OK)
             {
                 LoadProject(projectFile.FileName);
-                foreach (string s in recentProjects)
+                /*foreach (string s in recentProjects)
                 {
                     if (s == projectFile.FileName)
                     {
                         return;
                     }
                 }
-                recentProjects.Insert(0, projectFile.FileName);
+                recentProjects.Insert(0, projectFile.FileName);*/
             }
 
         }
@@ -272,6 +277,9 @@ namespace ZeldaFullEditor
             }
             else
             {
+
+                version = "error";
+                ROM.DATA = null;
                 MessageBox.Show("Failed to create a project from that rom", "Error");
             }
 
@@ -310,7 +318,7 @@ namespace ZeldaFullEditor
             else
             {
                 v = "us";
-                ROM.DATA = null;
+
                 MessageBox.Show("Sorry that ROM is not supported :(", "Error");
                 //load_default_room();
                 v = "error";
@@ -423,15 +431,30 @@ namespace ZeldaFullEditor
         }
         TextPreview previewText;
         Entrance[] entrances = new Entrance[0x84];
+        Entrance[] starting_entrances = new Entrance[0x07];
         List<dataObject> listoftilesobjects = new List<dataObject>();
         List<dataObject> listofspritesobjects = new List<dataObject>();
         public void initProject() //first load of project need to be changed entirely
         {
             tabControl1.Enabled = true;
 
-            byte[] bpp3data = Compression.DecompressTiles(); //decompress almost all the gfx from the game
-            GFX.gfxdata = Compression.bpp3tobpp4(bpp3data); //transform them into 4bpp
-
+            GFX.gfxdata = Compression.DecompressTiles(); //decompress all the gfx from the game
+            for (int i = 0; i < 5; i++)
+            {
+                byte[] d = new byte[0];
+                if (i != 4)
+                {
+                    d = GFX.bpp3snestoindexed(GFX.gfxdata, 205+i);
+                }
+                else
+                {
+                    d = GFX.bpp3snestoindexed(GFX.gfxdata, 165);
+                }
+                for (int j = 0; j < 0x1000; j++)
+                {
+                        GFX.itemsdataEDITOR[(i * 0x1000) + j] = d[j];
+                }
+            }
             for (int i = 0; i < 296; i++)
             {
                 all_rooms[i] = (new Room(i)); // create all rooms
@@ -442,7 +465,6 @@ namespace ZeldaFullEditor
                 readAllText();//TODO : Change that to have it own class
                 messageidUpDown.Maximum = messageUpDown.Maximum;
             }
-
 
             initRoomsList();
 
@@ -461,10 +483,12 @@ namespace ZeldaFullEditor
             s.need_refresh = true;
             s.room.reloadGfx(false);
             paletteViewer.update();
-            s.initChestGfx();
+            
             s.Enabled = true;
             s.Dock = DockStyle.Fill;
-            pictureBox2.Image = GFX.singletobmp((int)numericUpDown1.Value);
+            gfxPicturebox.Image = GFX.selectedtobmp(new byte[] { 0, 1, 2, 3 }, (int)gfx2NumericUpDown.Value);
+
+            s.initChestGfx();
             room_loaded = true;
             s.selectedMode = ObjectMode.Bg1mode;
             s.Enabled = true;
@@ -535,6 +559,24 @@ namespace ZeldaFullEditor
         public void initEntrancesList()
         {
             //entrances
+
+            for(int i = 0; i <0x07;i++)
+            {
+                starting_entrances[i] = new Entrance((byte)i, true);
+                string tname = "[" + i.ToString("X2") + "] -> ";
+                foreach (DataRoom d in ROMStructure.dungeonsRoomList)
+                {
+                    if (d.id == starting_entrances[i].Room)
+                    {
+                        tname += "[" + d.id.ToString() + "]" + d.name;
+                        break;
+                    }
+                }
+                TreeNode tn = new TreeNode(tname);
+                tn.Tag = i;
+                entrancetreeView.Nodes[1].Nodes.Add(tn);
+            }
+
             for (int i = 0; i < 0x84; i++)
             {
                 entrances[i] = new Entrance((byte)i, false);
@@ -587,6 +629,7 @@ namespace ZeldaFullEditor
             runtestButton.Enabled = true;
             potmodeButton.Enabled = true; //cant change to sprite since sprites are using 16x16
             saveToolStripMenuItem.Enabled = true;
+            saveasToolStripMenuItem.Enabled = true;
             warpmodeButton.Enabled = true;
             saveLayoutButton.Enabled = true;
             loadlayoutButton.Enabled = true;
@@ -598,6 +641,42 @@ namespace ZeldaFullEditor
                     (ti as ToolStripDropDownItem).Enabled = true;
                 }
             }
+        }
+
+        public void updategfxinrom()
+        {
+            int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer + 1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
+            gfxPointer = Addresses.snestopc(gfxPointer);
+
+            if (gfxgroupCombobox.SelectedIndex == 0) //main gfx
+            {
+                if (gfxgroupindexUpDown.Value > 36) { gfxgroupindexUpDown.Value = 0; }
+                ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 0] = (byte)gfx1NumericUpDown.Value;
+                ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 1] = (byte)gfx2NumericUpDown.Value;
+                ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 2] = (byte)gfx3NumericUpDown.Value;
+                ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 3] = (byte)gfx4NumericUpDown.Value;
+                ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 4] = (byte)gfx5NumericUpDown.Value;
+                ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 5] = (byte)gfx6NumericUpDown.Value;
+                ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 6] = (byte)gfx7NumericUpDown.Value;
+                ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 7] = (byte)gfx8NumericUpDown.Value;
+            }
+            else if (gfxgroupCombobox.SelectedIndex == 1) //entrances
+            {
+                if (gfxgroupindexUpDown.Value > 81) { gfxgroupindexUpDown.Value = 0; }
+                ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 0)] = (byte)gfx1NumericUpDown.Value;
+                ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 1)] = (byte)gfx2NumericUpDown.Value;
+                ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 2)] = (byte)gfx3NumericUpDown.Value;
+                ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 3)] = (byte)gfx4NumericUpDown.Value;
+            }
+            else if (gfxgroupCombobox.SelectedIndex == 2) //sprites
+            {
+                if (gfxgroupindexUpDown.Value > 143) { gfxgroupindexUpDown.Value = 0; }
+                ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 0] = (byte)gfx1NumericUpDown.Value;
+                ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 1] = (byte)gfx2NumericUpDown.Value;
+                ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 2] = (byte)gfx3NumericUpDown.Value;
+                ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 3] = (byte)gfx4NumericUpDown.Value;
+            }
+            activeScene.room.needGfxRefresh = true;
         }
 
 
@@ -631,6 +710,14 @@ namespace ZeldaFullEditor
                         GFX.animated_frame = 0;
                     }
                 }
+            }
+
+            if (schedulegfxSave)
+            {
+                
+                updategfxinrom();
+                schedulegfxSave = false;
+                activeScene.need_refresh = true;
             }
 
         }
@@ -1109,8 +1196,8 @@ namespace ZeldaFullEditor
 
         private void textSpriteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // scene.showSpriteText = textSpriteToolStripMenuItem.Checked;
-            //scene.need_refresh = true;
+            activeScene.showSpriteText = textSpriteToolStripMenuItem.Checked;
+            activeScene.need_refresh = true;
         }
         List<short> selectedMapPng = new List<short>();
         private void mapPicturebox_MouseClick(object sender, MouseEventArgs e)
@@ -1529,7 +1616,7 @@ namespace ZeldaFullEditor
 
         private void numericUpDown1_ValueChanged_1(object sender, EventArgs e)
         {
-            pictureBox2.Image = GFX.singletobmp((int)numericUpDown1.Value);
+            gfxPicturebox.Image = GFX.selectedtobmp(new byte[] {0,1,2,3 },(int)gfx2NumericUpDown.Value);
         }
 
         private void changeObjectToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1541,7 +1628,7 @@ namespace ZeldaFullEditor
         private void zscreamForm_FormClosing_1(object sender, FormClosingEventArgs e)
         {
 
-            BinaryWriter br = new BinaryWriter(new FileStream("settings.cfg", FileMode.OpenOrCreate, FileAccess.Write));
+           /* BinaryWriter br = new BinaryWriter(new FileStream("settings.cfg", FileMode.OpenOrCreate, FileAccess.Write));
             for (int i = 0; i < 5; i++)
             {
                 if (recentProjects.Count > i)
@@ -1554,7 +1641,7 @@ namespace ZeldaFullEditor
                 }
 
             }
-            br.Close();
+            br.Close();*/
 
 
             if (anychange)
@@ -2457,7 +2544,7 @@ namespace ZeldaFullEditor
                 s.initChestGfx();
                 s.Enabled = true;
                 s.Dock = DockStyle.Fill;
-                pictureBox2.Image = GFX.singletobmp((int)numericUpDown1.Value);
+                //gfxPicturebox.Image = GFX.singletobmp(new byte[] { 0, 1, 2, 3 }, (int)gfx2NumericUpDown.Value);
                 room_loaded = true;
                 s.selectedMode = ObjectMode.Bg1mode;
                 s.Enabled = true;
@@ -2504,7 +2591,14 @@ namespace ZeldaFullEditor
         {
             if (e.Node.Tag != null)
             {
-                addRoomTab(entrances[(int)e.Node.Tag].Room);
+                if (e.Node.Parent == entrancetreeView.Nodes[0])
+                {
+                    addRoomTab(entrances[(int)e.Node.Tag].Room);
+                }
+                else
+                {
+                    addRoomTab(starting_entrances[(int)e.Node.Tag].Room);
+                }
             }
         }
 
@@ -2549,12 +2643,79 @@ namespace ZeldaFullEditor
 
         private void runtestButton_Click(object sender, EventArgs e)
         {
-            saveToolStripMenuItem_Click(this, new EventArgs());
+            //saveToolStripMenuItem_Click(this, new EventArgs());
             if (File.Exists("temp.sfc"))
             {
                 File.Delete("temp.sfc");
             }
+            FileStream brom = new FileStream("randobase.sfc", FileMode.Open, FileAccess.Read);
+            brom.Read(ROM.DATA, 0, (int)brom.Length);
+            brom.Close();
+
+            byte[] romBackup = (byte[])ROM.DATA.Clone();
+            Save save = new Save(all_rooms, entrances, messages);
+            if (save.saveRoomsHeaders()) //no protection always the same size so we don't care :)
+            {
+                MessageBox.Show("Failed to save header??", "Bad Error", MessageBoxButtons.OK);
+            }
+            if (save.saveallChests()) //chest there's a protection when there's too many chest - tested it works fine
+            {
+                MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+            if (save.saveallSprites())//sprites, there's a protection -NOT TESTED-
+            {
+                MessageBox.Show("Failed to save, there is too many sprites", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+            if (save.saveAllObjects())//There is a protection - Tested
+            {
+                MessageBox.Show("Failed to save, there is too many tiles objects", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+            if (save.saveallPots())//There is a protection - Tested
+            {
+                MessageBox.Show("Failed to save, there is too many pot items", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+            if (save.saveBlocks())//There is a protection - Tested
+            {
+                MessageBox.Show("Failed to save, there is too many pushable blocks", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+            if (save.saveTorches())//There is a protection Tested
+            {
+                MessageBox.Show("Failed to save, there is too many torches", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+            if (save.saveAllPits())//There is a protection - Tested
+            {
+                MessageBox.Show("Failed to save, there is too many damage pits", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+            if (save.saveTexts(messages, table_char))//There is a protection - Tested
+            {
+                MessageBox.Show("Failed to save, there is too many texts", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+            if (save.saveEntrances(entrances))
+            {
+                MessageBox.Show("Failed to save entrances ?? no idea why LUL", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+            saveInitialStuff(); //can't overwrite anything
+            
             FileStream fs = new FileStream("temp.sfc", FileMode.CreateNew, FileAccess.Write);
+
             fs.Write(ROM.DATA, 0, ROM.DATA.Length);
             fs.Close();
             Process p = Process.Start("temp.sfc");
@@ -2563,13 +2724,43 @@ namespace ZeldaFullEditor
 
         private void testToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            OpenFileDialog open = new OpenFileDialog();
+            /*OpenFileDialog open = new OpenFileDialog();
             if (open.ShowDialog() == DialogResult.OK)
             {
                 FileStream fs = new FileStream(open.FileName, FileMode.Open, FileAccess.Read);
                 fs.Read(ROM.DATA, 0, (int)fs.Length);
                 fs.Close();
+            }*/
+            int keyCount = 0;
+            foreach(Room r in all_rooms)
+            {
+                foreach(PotItem p in r.pot_items)
+                {
+                    if (p.id == 0x08)
+                    {
+                        keyCount++;
+                    }
+                }
+                foreach(Sprite spr in r.sprites)
+                {
+                    if (spr.id == 0xE4)
+                    {
+                        keyCount++;
+                    }
+                    if (spr.keyDrop == 1)
+                    {
+                        keyCount++;
+                    }
+                }
+                foreach (Chest c in r.chest_list)
+                {
+                    if (c.item == 36)
+                    {
+                        keyCount++;
+                    }
+                }
             }
+            Console.WriteLine(keyCount);
 
         }
 
@@ -2581,7 +2772,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        public byte[] door_index = new byte[] { 0x00, 0x02,0x40, 0x1C, 0x26,0x0C,0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16 };
+        public byte[] door_index = new byte[] { 0x00, 0x02,0x40, 0x1C, 0x26,0x0C,0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16,0x32 };
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -2609,6 +2800,193 @@ namespace ZeldaFullEditor
             }
         }
 
+        private void importRoomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Load loader = new Load();
+            loader.loadSingleRoom(185, activeScene);
+        }
+
+        private void globalOptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void exportRoomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string debugstring = "";
+            debugstring += "----------------------------------------------------------------\n";
+            debugstring += "TILES OBJECTS                                                   \n";
+            debugstring += "----------------------------------------------------------------\n";
+            int i = 185;
+
+                debugstring += "Object Count : " + all_rooms[i].tilesObjects.Count.ToString() + "\n";
+
+            for (int j = 0; j < all_rooms[i].tilesObjects.Count; j++)
+            {
+                debugstring += "ID: " + all_rooms[i].tilesObjects[j].id.ToString("X2") + ", X:" + all_rooms[i].tilesObjects[j].x.ToString() +
+                ",Y:" + all_rooms[i].tilesObjects[j].y.ToString() + "Size:" + all_rooms[i].tilesObjects[j].size + "Layer:" + all_rooms[i].tilesObjects[j].layer + "\n";
+            }
+
+            File.WriteAllText("Room185LOG", debugstring);
+        }
+
+        private void gfxgroupCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (gfxgroupCombobox.SelectedIndex == 0)
+            {
+                gfx5NumericUpDown.Enabled = true;
+                gfx6NumericUpDown.Enabled = true;
+                gfx7NumericUpDown.Enabled = true;
+                gfx8NumericUpDown.Enabled = true;
+            }
+            else
+            {
+                gfx5NumericUpDown.Enabled = false;
+                gfx6NumericUpDown.Enabled = false;
+                gfx7NumericUpDown.Enabled = false;
+                gfx8NumericUpDown.Enabled = false;
+            }
+
+            loadGfxGroups();
+
+        }
+
+        public void loadGfxGroups()
+        {
+            int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer + 1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
+            gfxPointer = Addresses.snestopc(gfxPointer);
+            if (gfxgroupCombobox.SelectedIndex == 0) //main gfx
+            {
+                if (gfxgroupindexUpDown.Value > 36) { gfxgroupindexUpDown.Value = 0; }
+                gfx1NumericUpDown.Value = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 0];
+                gfx2NumericUpDown.Value = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 1];
+                gfx3NumericUpDown.Value = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 2];
+                gfx4NumericUpDown.Value = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 3];
+                gfx5NumericUpDown.Value = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 4];
+                gfx6NumericUpDown.Value = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 5];
+                gfx7NumericUpDown.Value = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 6];
+                gfx8NumericUpDown.Value = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 7];
+            }
+            else if (gfxgroupCombobox.SelectedIndex == 1) //entrances
+            {
+                if (gfxgroupindexUpDown.Value > 81) { gfxgroupindexUpDown.Value = 0; }
+                gfx1NumericUpDown.Value = ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 0)];
+                gfx2NumericUpDown.Value = ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 1)];
+                gfx3NumericUpDown.Value = ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 2)];
+                gfx4NumericUpDown.Value = ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 3)];
+            }
+            else if (gfxgroupCombobox.SelectedIndex == 2) //sprites
+            {
+                if (gfxgroupindexUpDown.Value > 143) { gfxgroupindexUpDown.Value = 0; }
+                gfx1NumericUpDown.Value = ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 0];
+                gfx2NumericUpDown.Value = ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 1];
+                gfx3NumericUpDown.Value = ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 2];
+                gfx4NumericUpDown.Value = ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 3];
+            }
+        }
+
+        private void gfxsinglechanged(object sender, EventArgs e)
+        {
+            gfxPicturebox.Image.Dispose();
+            byte[] blocksetGfx = new byte[0];
+            bool spr = false;
+            if (gfxgroupCombobox.SelectedIndex == 0)
+            {
+                blocksetGfx = new byte[8] { (byte)gfx1NumericUpDown.Value, (byte)gfx2NumericUpDown.Value, (byte)gfx3NumericUpDown.Value, (byte)gfx4NumericUpDown.Value,
+                (byte)gfx5NumericUpDown.Value, (byte)gfx6NumericUpDown.Value, (byte)gfx7NumericUpDown.Value, (byte)gfx8NumericUpDown.Value };
+            }
+            else if (gfxgroupCombobox.SelectedIndex == 1) //entrances
+            {
+                blocksetGfx = new byte[4] { (byte)gfx1NumericUpDown.Value, (byte)gfx2NumericUpDown.Value, (byte)gfx3NumericUpDown.Value, (byte)gfx4NumericUpDown.Value };
+            }
+            else if (gfxgroupCombobox.SelectedIndex == 2) //sprites
+            {
+                blocksetGfx = new byte[4] { (byte)(gfx1NumericUpDown.Value+115), (byte)(gfx2NumericUpDown.Value+115), (byte)(gfx3NumericUpDown.Value+115), (byte)(gfx4NumericUpDown.Value+115) };
+                spr = true;
+            }
+            Bitmap b = GFX.selectedtobmp(blocksetGfx, (int)5, spr); ;
+            gfxPicturebox.Image = new Bitmap(256, 1024);
+            using (Graphics gfxG = Graphics.FromImage(gfxPicturebox.Image))
+            {
+                //gfxPicturebox.Image =
+                gfxG.InterpolationMode = InterpolationMode.NearestNeighbor;
+                gfxG.Clear(Color.Black);
+                gfxG.DrawImage(b, 0, 0, b.Width * 2, b.Height * 2);
+            }
+            gfxPicturebox.Refresh();
+            schedulegfxSave = true;
+
+
+        }
+
+
+
+        private void gfxfromroomButton_Click(object sender, EventArgs e)
+        {
+            //gfxPicturebox.Image = GFX.singletobmp(GFX.gfxdata, 0, 5, false); //FULL ROOM GFX
+
+            if (gfxgroupCombobox.SelectedIndex == 0)
+            {
+                gfxgroupindexUpDown.Value = activeScene.room.blockset;
+            }
+            else if (gfxgroupCombobox.SelectedIndex == 1) //entrances
+            {
+                
+            }
+            else if (gfxgroupCombobox.SelectedIndex == 2) //sprites
+            {
+                gfxgroupindexUpDown.Value = activeScene.room.spriteset + 64;
+            }
+
+        }
+
+        private void gfxgroupindexUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            loadGfxGroups();
+        }
+
+        private void debugtestButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void saveasToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sf = new SaveFileDialog();
+            if (sf.ShowDialog() == DialogResult.OK)
+            {
+                projectFilename = sf.FileName;
+                saveToolStripMenuItem_Click(sender, e);
+            }
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            byte[] data = new byte[16 * 16 * 3];
+            FileStream fs = new FileStream(activeScene.room.name+".pal", FileMode.OpenOrCreate, FileAccess.Write);
+            int i = 0;
+            for (int y = 0; y < 16; y++)
+            {
+                for (int x = 0; x < 16; x++)
+                {
+                    if (x < 8)
+                    {
+                        data[i] = GFX.spritesPalettes[x, y].R;
+                        data[i + 1] = GFX.spritesPalettes[x, y].G;
+                        data[i + 2] = GFX.spritesPalettes[x, y].B;
+                    }
+                    else
+                    {
+                        data[i] = 0x00;
+                        data[i + 1] = 0x00;
+                        data[i + 2] = 0x00;
+                    }
+                    i += 3;
+                }
+            }
+            fs.Write(data, 0, data.Length);
+            fs.Close();
+        }
     }
 
     public class dataObject

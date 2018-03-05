@@ -57,9 +57,15 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -74,12 +80,22 @@
       <HintPath>..\packages\DockPanelSuite.3.0.3\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ZCompressLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\Downloads\ZCompressLibrary-master\ZCompressLibrary\bin\Debug\ZCompressLibrary.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Charactertable.cs" />
     <Compile Include="DataRoom.cs" />
     <Compile Include="DoAction.cs" />
     <Compile Include="Entrance.cs" />
+    <Compile Include="GlobalOptionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GlobalOptionForm.Designer.cs">
+      <DependentUpon>GlobalOptionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,7 +121,9 @@
     <Compile Include="Gui\PickChestItem.Designer.cs">
       <DependentUpon>PickChestItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="Load.cs" />
     <Compile Include="ObjectMode.cs" />
+    <Compile Include="Palette.cs" />
     <Compile Include="PaletteViewer.cs" />
     <Compile Include="ROMStructure.cs" />
     <Compile Include="RoomLayout.cs">
@@ -157,6 +175,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Tile.cs" />
+    <EmbeddedResource Include="GlobalOptionForm.resx">
+      <DependentUpon>GlobalOptionForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>

@@ -17,14 +17,16 @@ namespace ZeldaFullEditor
 
         public static Graphics graphictilebuffer;
 
-        public static Bitmap tilebufferbitmap;
+        //public static Bitmap tilebufferbitmap;
 
-        public static Bitmap[] blocksets;
+        //public static Bitmap[] blocksets;
         public static byte[] gfxdata;
 
         public static byte[,] imgdata = new byte[128, 32];
         public static byte[] singledata = new byte[128 * 800];
+        public static byte[] itemsdataEDITOR = new byte[0x1000*6];
 
+        
         public static Bitmap bgr_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap floor2_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
         public static Bitmap bg1_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
@@ -37,137 +39,122 @@ namespace ZeldaFullEditor
 
         public static int[] positions = new int[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
         public static int superpos = 0;
-        public static void load4bpp(byte[] data, byte[] blocks, int pos = 0)
+
+        public static byte[] bpp3snestoindexed(byte[] data, int index)
         {
+            //3BPP
+            //[r0, bp1], [r0, bp2], [r1, bp1], [r1, bp2], [r2, bp1], [r2, bp2], [r3, bp1], [r3, bp2]
+            //[r4, bp1], [r4, bp2], [r5, bp1], [r5, bp2], [r6, bp1], [r6, bp2], [r7, bp1], [r7, bp2]
+            //[r0, bp3], [r1, bp3], [r2, bp3], [r3, bp3], [r4, bp3], [r5, bp3], [r6, bp3], [r7, bp3]
+            //2BPP
+            //[r0, bp1], [r0, bp2], [r1, bp1], [r1, bp2], [r2, bp1], [r2, bp2], [r3, bp1], [r3, bp2]
+            //[r4, bp1], [r4, bp2], [r5, bp1], [r5, bp2], [r6, bp1], [r6, bp2], [r7, bp1], [r7, bp2]
+
+            byte[] buffer = new byte[128 * 32];
+            byte[,] imgdata = new byte[128, 32];
+            int yy = 0;
+            int xx = 0;
+            int pos = 0;
+
+            for (int i = 0; i < index; i++)
+            {
+                if (Compression.bpp[i] == 3)
+                {
+                    pos += 64;
+                }
+                else
+                {
+                    pos += 128;
+                }
+            }
+
+            if (Compression.bpp[index] == 3)
+            {
+                int ypos = 0;
+                for (int i = 0; i < 64; i++) //for each tiles //16 per lines
+                {
+                    for (int y = 0; y < 8; y++)//for each lines
+                    {
+                        //[0] + [1] + [16]
+                        for (int x = 0; x < 8; x++)
+                        {
+                            byte[] bitmask = new byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
+                            byte b1 = (byte)((data[(y * 2) + (24 * pos)] & (bitmask[x])));
+                            byte b2 = (byte)(data[((y * 2) + (24 * pos)) + 1] & (bitmask[x]));
+                            byte b3 = (byte)(data[(16 + y) + (24 * pos)] & (bitmask[x]));
+                            byte b = 0;
+                            if (b1 != 0) { b |= 1; };
+                            if (b2 != 0) { b |= 2; };
+                            if (b3 != 0) { b |= 4; };
+                            imgdata[x + xx, y + (yy * 8)] = b;
+                        }
+
+                    }
+                    pos++;
+                    ypos++;
+                    xx += 8;
+                    if (ypos >= 16)
+                    {
+                        yy++;
+                        xx = 0;
+                        ypos = 0;
+
+                    }
+
+                }
+            }
+            else if (Compression.bpp[index] == 2)
+            {
+                imgdata = new byte[128, 64];
+                int ypos = 0;
+                for (int i = 0; i < 128; i++) //for each tiles //16 per lines
+                {
+                    for (int y = 0; y < 8; y++)//for each lines
+                    {
+                        //[0] + [1] + [16]
+                        for (int x = 0; x < 8; x++)
+                        {
+                            byte[] bitmask = new byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
+                            byte b1 = (byte)((data[(y * 2) + (16 * pos)] & (bitmask[x])));
+                            byte b2 = (byte)(data[((y * 2) + (16 * pos)) + 1] & (bitmask[x]));
+                            byte b = 0;
+                            if (b1 != 0) { b |= 1; };
+                            if (b2 != 0) { b |= 2; };
+                            imgdata[x + xx, y + (yy * 8)] = b;
+                        }
+
+                    }
+                    pos++;
+                    ypos++;
+                    xx += 8;
+                    if (ypos >= 16)
+                    {
+                        yy++;
+                        xx = 0;
+                        ypos = 0;
+
+                    }
+
+                }
+            }
             int n = 0;
-            for (int b = 0; b < 24; b++)
+            for (int y = 0; y < 32; y++)
             {
-
-                pos = blocks[b];
-
-                for (int j = 0; j < 4; j++) //4 par y
+                for (int x = 0; x < 128; x++)
                 {
-                    for (int i = 0; i < 16; i++)
-                    {
-                        int offset = ((pos * 0x800)) + ((j * 32) * 16) + (i * 32);
-                        if (b >= 10)
-                        {
-                            offset = (((pos + 96) * 0x800)) + ((j * 32) * 16) + (i * 32);
-                        }
-    
-                        for (int x = 0; x < 8; x++)
-                        {
-                            for (int y = 0; y < 8; y++)
-                            {
-                                byte tmpbyte = 0;
 
-                                if ((data[offset + (x * 2)] & positions[y]) == positions[y])
-                                {
-                                    tmpbyte += 1;
-                                }
-                                if ((data[offset + (x * 2) + 1] & positions[y]) == positions[y])
-                                {
-                                    tmpbyte += 2;
-                                }
+                    buffer[n] = imgdata[x, y];
+                    n++;
 
-                                if ((data[offset + 16 + (x * 2)] & positions[y]) == positions[y])
-                                {
-                                    tmpbyte += 4;
-                                }
-                                if ((data[offset + 16 + (x * 2) + 1] & positions[y]) == positions[y])
-                                {
-                                    tmpbyte += 8;
-                                }
-
-                                imgdata[y + (i * 8), x + (j * 8)] = tmpbyte;
-                            }
-                        }
-                        // pos++;
-                    }
-                }
-
-
-                    for (int y = 0; y < 32; y++)
-                    {
-                        for (int x = 0; x < 128; x++)
-                        {
-
-                            singledata[n] = imgdata[x, y];
-                            n++;
-
-                        }
-                    }
-            }
-
-            for (int b = 8; b < 10; b++)
-            {
-                pos = blocks[b];
-                for (int j = 0; j < 4; j++) //4 par y
-                {
-                    for (int i = 0; i < 16; i++)
-                    {
-                        int offset = ((pos * 0x800)) + ((j * 32) * 16) + (i * 32);
-                        if (b >= 10)
-                        {
-                            offset = (((pos + 96) * 0x800)) + ((j * 32) * 16) + (i * 32);
-                        }
-                        for (int x = 0; x < 8; x++)
-                        {
-                            for (int y = 0; y < 8; y++)
-                            {
-                                byte tmpbyte = 0;
-
-                                if ((data[offset + (x * 2)] & positions[y]) == positions[y])
-                                {
-                                    tmpbyte += 1;
-                                }
-                                if ((data[offset + (x * 2) + 1] & positions[y]) == positions[y])
-                                {
-                                    tmpbyte += 2;
-                                }
-
-                                if ((data[offset + 16 + (x * 2)] & positions[y]) == positions[y])
-                                {
-                                    tmpbyte += 4;
-                                }
-                                if ((data[offset + 16 + (x * 2) + 1] & positions[y]) == positions[y])
-                                {
-                                    tmpbyte += 8;
-                                }
-
-                                imgdata[y + (i * 8), x + (j * 8)] = tmpbyte;
-                            }
-                        }
-                        // pos++;
-                    }
-                }
-                if (b == 8)
-                {
-                    int nn = 0;
-                    for (int y = 0; y < 8; y++)
-                    {
-                        for (int x = 0; x < 128; x++)
-                        {
-                            singledata[0x7000 + nn] = imgdata[x, y];
-                            nn++;
-                        }
-                    }
-
-                }
-                else if (b == 9)
-                {
-                    int nn = 0;
-                    for (int y = 0; y < 8; y++)
-                    {
-                        for (int x = 0; x < 128; x++)
-                        {
-                            singledata[0x6C00 + nn] = imgdata[x, y];
-                            nn++;
-                        }
-                    }
                 }
             }
+            return buffer;//buffer.ToArray();
         }
+
+
+
+
+
 
 
         public static byte[] blocksetData;
@@ -190,21 +177,106 @@ namespace ZeldaFullEditor
             b.UnlockBits(currentbmpData);
         }
 
-        public static Bitmap singletobmp(int p = 4)
+        public static Bitmap singletobmp(byte[] data, int index, int p = 4, bool trans = false)
         {
-            Bitmap b = new Bitmap(128,1024);
-            begin_draw(b, 128, 1024);
+            Bitmap b = new Bitmap(128, 128);
+            
+            begin_draw(b, 128, 128);
             unsafe
             {
                 for (int x = 0; x < 128; x++)
                 {
-                    for (int y = 0; y < 768; y++)
+                    for (int y = 0; y < 128; y++)
                     {
-                        int dest = (x + (y * 128))*4;
-                        GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(dest/4)],p].B);
-                        GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.singledata[(dest/4)], p].G);
-                        GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.singledata[(dest/4)], p].R);
-                        GFX.currentData[dest + 3] = 255;
+
+                        int dest = (x + (y * 128)) * 4;
+                        if (trans)
+                        {
+                            if (GFX.singledata[(dest / 4)] == 0)
+                            {
+                                continue;
+                            }
+                        }
+                        currentData[dest] = (spritesPalettes[GFX.itemsdataEDITOR[(dest / 4)], p].B);
+                        currentData[dest + 1] = (spritesPalettes[GFX.itemsdataEDITOR[(dest / 4)], p].G);
+                        currentData[dest + 2] = (spritesPalettes[GFX.itemsdataEDITOR[(dest / 4)], p].R);
+                        currentData[dest + 3] = 255;
+                    }
+                }
+            }
+            end_draw(b);
+            return b;
+        }
+        
+
+
+        public static Bitmap selectedtobmp(byte[] sheets, int p = 4,bool sprite = false)
+        {
+            byte[] blocks = new byte[24];
+            byte[] data = new byte[blocks.Length * 0x1000];
+            int gfxanimatedPointer = (ROM.DATA[Constants.gfx_animated_pointer + 2] << 16) + (ROM.DATA[Constants.gfx_animated_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_animated_pointer]);
+            gfxanimatedPointer = Addresses.snestopc(gfxanimatedPointer);
+            for (int i = 0; i < blocks.Length; i++)
+            {
+                if (i < sheets.Length)
+                {
+                    byte[] d = GFX.bpp3snestoindexed(GFX.gfxdata, sheets[i]);
+                    byte[] dd = new byte[0];
+                    if (i == 6)
+                    {
+                        dd = GFX.bpp3snestoindexed(GFX.gfxdata, ROM.DATA[gfxanimatedPointer + 0]); //static animated gfx1
+                    }
+                    if (i == 7)
+                    {
+                        dd = GFX.bpp3snestoindexed(GFX.gfxdata, 92); //static animated gfx1
+                    }
+                    for (int j = 0; j < d.Length; j++)
+                    {
+                        data[(i * 0x1000) + j] = d[j];
+                        if (i == 6)
+                        {
+                            if (j >= 0xC00)
+                            {
+                                data[(i * 0x1000) + j] = dd[j-0xC00];
+                            }
+                        }
+                        if (i == 7)
+                        {
+                            if (j < 0x400)
+                            {
+                                data[(i * 0x1000) + j] = dd[j];
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
+            Bitmap b = new Bitmap(128, 256);
+            begin_draw(b, 128, 256);
+            unsafe
+            {
+                for (int x = 0; x < 128; x++)
+                {
+                    for (int y = 0; y < 32*sheets.Length; y++)
+                    {
+                        int dest = (x + (y * 128)) * 4;
+                        if (sprite == true)
+                        {
+                            GFX.currentData[dest] = (GFX.spritesPalettes[data[(dest / 4)], p].B);
+                            GFX.currentData[dest + 1] = (GFX.spritesPalettes[data[(dest / 4)], p].G);
+                            GFX.currentData[dest + 2] = (GFX.spritesPalettes[data[(dest / 4)], p].R);
+                            GFX.currentData[dest + 3] = 255;
+                        }
+                        else
+                        {
+                            GFX.currentData[dest] = (GFX.loadedPalettes[data[(dest / 4)], p].B);
+                            GFX.currentData[dest + 1] = (GFX.loadedPalettes[data[(dest / 4)], p].G);
+                            GFX.currentData[dest + 2] = (GFX.loadedPalettes[data[(dest / 4)], p].R);
+                            GFX.currentData[dest + 3] = 255;
+                        }
                     }
                 }
             }
@@ -217,6 +289,8 @@ namespace ZeldaFullEditor
         {
             return Color.FromArgb(((c & 0x1F) * 8), ((c & 0x3E0) >> 5) * 8, ((c & 0x7C00) >> 10) * 8);
         }
+        
+
         public static Color[,] editingPalettes; //dynamic
         public static Color[,] loadedPalettes;
         public static Color[,] itemsPalettes;
@@ -224,6 +298,7 @@ namespace ZeldaFullEditor
         public static short paletteid;
         public static Color[,] LoadDungeonPalette(byte id)
         {
+            
             Color[,] palettes = new Color[16,10];
             //id = dungeon palette id
             byte dungeon_palette_ptr = ROM.DATA[Constants.dungeons_palettes_groups + (id * 4)]; //id of the 1st group of 4

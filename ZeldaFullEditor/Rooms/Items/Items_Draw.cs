@@ -29,7 +29,7 @@ namespace ZeldaFullEditor
         //pots items
         public void Draw()
         {
-            int id = this.id;
+            /*int id = this.id;
             if ((id & 0x80) == 0x80)
             {
                 id = (byte)((id - 0x80) / 2);
@@ -147,7 +147,7 @@ namespace ZeldaFullEditor
             else if (id == 27)//switch
             {
                 draw_item_tile(x*8, y*8, 8, 16, 0x0B, 5, 4);
-            }
+            }*/
         }
 
 

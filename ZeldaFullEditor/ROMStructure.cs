@@ -11,7 +11,7 @@ namespace ZeldaFullEditor
 {
     public static class ROMStructure
     {
-        static string ConstantVersion = "v1.0";
+        public static string ProjectVersion = "v1.0";
         public static string ProjectName = "";
         public static string GameVersion = "us";
 
@@ -196,7 +196,7 @@ namespace ZeldaFullEditor
                 fs.Position = 0;
                 BinaryWriter bw = new BinaryWriter(fs);
                 bw.Write("ZScream Project File"); //Header to detect if the file is a project or not
-                bw.Write(ConstantVersion); //the version of ZScream that was used to make that project file
+                bw.Write(ProjectVersion); //the version of ZScream that was used to make that project file
                 bw.Write(f);//Project Name
                 bw.Write(gameVersion); //Game version used in the project, us,jp,vt
 
@@ -228,15 +228,15 @@ namespace ZeldaFullEditor
 
         static public void saveProjectFile(string gameVersion, string filename)
         {
-            filename = "Test.zsc";
-            FileStream fs = new FileStream("testSS.zsc", FileMode.OpenOrCreate, FileAccess.Write);
+
+            FileStream fs = new FileStream("Projects\\"+ProjectName+".zsc", FileMode.OpenOrCreate, FileAccess.Write);
             fs.Position = 0x100000; //Keep 1mb data for the project file settings stuff
             fs.Write(ROM.DATA, 0, ROM.DATA.Length);
             
             fs.Position = 0;
             BinaryWriter bw = new BinaryWriter(fs);
             bw.Write("ZScream Project File"); //Header to detect if the file is a project or not
-            bw.Write(ConstantVersion); //the version of ZScream that was used to make that project file
+            bw.Write(ProjectVersion); //the version of ZScream that was used to make that project file
             bw.Write(ProjectName);//Project Name
             bw.Write(gameVersion); //Game version used in the project, us,jp,vt
 
@@ -271,7 +271,7 @@ namespace ZeldaFullEditor
             if (zproject == "ZScream Project File")//it is a zscream project
             {
                 dungeonsRoomList.Clear();
-                ROMStructure.ConstantVersion = br.ReadString();
+                ROMStructure.ProjectVersion = br.ReadString();
                 ROMStructure.ProjectName = br.ReadString();
                 ROMStructure.GameVersion = br.ReadString();
                 for (int i = 0; i < 17; i++)

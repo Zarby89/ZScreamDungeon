@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -218,8 +219,8 @@ namespace ZeldaFullEditor
         public void draw_tile(Tile t, int x, int y, int yfix = 0)
         {
             int tid = t.id;
-            if (tid >= 448 & tid < 464) { tid = 512 + (t.id - 448) + (16 * GFX.animated_frame); };
-            if (tid >= 432 & tid < 448) { tid = 576 + (t.id - 432) + (16 * GFX.animated_frame); };
+            //if (tid >= 448 & tid < 464) { tid = 512 + (t.id - 448) + (16 * GFX.animated_frame); };
+            //if (tid >= 432 & tid < 448) { tid = 576 + (t.id - 432) + (16 * GFX.animated_frame); };
             if (id == 0x94 || id == 0xBA) // transparent tiles !
             {
                 t.palette = 6;
