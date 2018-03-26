@@ -9,17 +9,79 @@ namespace ZeldaFullEditor
     public static class Constants
     {
 
+        
+        //===========================================================================================
+        //GFX Related Variables
+        //===========================================================================================
         public static int tile_address = 0x1B52; // JP = Same //i don't think that need a pointer
         public static int tile_address_floor = 0x1B5A; // JP = Same //i don't think that need a pointer
-
         public static int subtype1_tiles = 0x8000; // JP = Same //i don't think that need a pointer
         public static int subtype2_tiles = 0x83F0; // JP = Same //i don't think that need a pointer
         public static int subtype3_tiles = 0x84F0; // JP = Same //i don't think that need a pointer
-
-       
-
         public static int gfx_animated_pointer = 0x10275; //JP 0x10624 //long pointer
 
+        public static int gfx_1_pointer = 0x6790; //2byte pointer bank 00 pc -> 0x4320
+        public static int gfx_2_pointer = 0x6795;
+        public static int gfx_3_pointer = 0x679A;
+        public static int hud_palettes = 0xDD660;
+
+        //===========================================================================================
+        //Overworld Related Variables
+        //===========================================================================================
+        public static int compressedAllMap32PointersHigh = 0x1794D;
+        public static int compressedAllMap32PointersLow = 0x17B2D;
+        public static int overworldgfxGroups = 0x05D97;
+        public static int map16Tiles = 0x78000;
+        public static int map32TilesTL = 0x18000;
+        public static int map32TilesTR = 0x1B400;
+        public static int map32TilesBL = 0x20000;
+        public static int map32TilesBR = 0x23400;
+        public static int overworldPalGroup1 = 0xDE6C8;
+        public static int overworldPalGroup2 = 0xDE86C;
+        public static int overworldPalGroup3 = 0xDE604;
+        public static int overworldMapPalette = 0x7D1C;
+        public static int overworldSpritePalette = 0x7B81;
+        public static int overworldMapPaletteGroup = 0x75504;
+        public static int overworldSpriteset = 0x7A81;
+        public static int overworldSpritesBegining = 0x4C881;
+        public static int overworldSpritesLW = 0x4C901;
+        public static int overworldSpritesDW = 0x4CA21;
+        public static int overworldItemsPointers = 0xDC2F9;
+        public static int overworldItemsBank = 0x1B;
+        public static int overworldMapSize = 0x12844;
+        public static int hardcodedGrassLW = 0x75645;
+        public static int hardcodedGrassDW = 0x7564F;
+        public static int hardcodedGrassSpecial = 0x75640;
+        public static int mapGfx = 0x7C9C;
+        public static int overlayPointers = 0x77664;
+        public static int overlayPointersBank = 0x0E;
+        public static int overworldTilesType = 0x71459;
+        //===========================================================================================
+        //Overworld Exits/Entrances Variables
+        //===========================================================================================
+        public static int OWExitRoomId = 0x15D8A;
+        public static int OWExitMapId = 0x15E28;
+        public static int OWExitVram = 0x15E77;
+        public static int OWExitYScroll = 0x15F15;
+        public static int OWExitXScroll = 0x15FB3;
+        public static int OWExitYPlayer = 0x16051;
+        public static int OWExitXPlayer = 0x160EF;
+        public static int OWExitYCamera = 0x1618D;
+        public static int OWExitXCamera = 0x1622B;
+        public static int OWExitUnk1 = 0x162C9;
+        public static int OWExitUnk2 = 0x16318;
+        public static int OWExitDoorType1 = 0x16367;
+        public static int OWExitDoorType2 = 0x16405;
+        public static int OWEntranceMap = 0xDB96F;
+        public static int OWEntrancePos = 0xDBA71;
+        public static int OWEntranceEntranceId = 0xDBB73;
+        public static int OWHolePos = 0xDB800;//(0x13 entries, 2 bytes each) modified(less 0x400) map16 coordinates for each hole
+        public static int OWHoleArea = 0xDB826;//(0x13 entries, 2 bytes each) corresponding area numbers for each hole
+        public static int OWHoleEntrance = 0xDB84C;//(0x13 entries, 1 byte each)  corresponding entrance numbers
+
+        //===========================================================================================
+        //Dungeon Related Variables
+        //===========================================================================================
         //That could be turned into a pointer : 
         public static int dungeons_palettes_groups = 0x75460; //JP 0x67DD0
         public static int dungeons_main_bg_palette_pointers = 0xDEC4B; //JP Same
@@ -32,9 +94,6 @@ namespace ZeldaFullEditor
         public static int room_header_pointer = 0xB5DD; //LONG
         public static int room_header_pointers_bank = 0xB5E7; //JP Same
 
-        public static int gfx_1_pointer = 0x6790; //2byte pointer bank 00 pc -> 0x4320
-        public static int gfx_2_pointer = 0x6795;
-        public static int gfx_3_pointer = 0x679A;
 
         public static int gfx_groups_pointer = 0x6237;
         public static int room_object_layout_pointer = 0x882D;
@@ -62,6 +121,9 @@ namespace ZeldaFullEditor
 
         public static int pit_pointer = 0x394AB;
         public static int pit_count = 0x394A6;
+
+        public static int doorPointers = 0xF83C0;
+
         //doors
         public static int door_gfx_up = 0x4D9E;
         //
@@ -76,8 +138,9 @@ namespace ZeldaFullEditor
         public static int door_pos_right = 0x19C6;
 
 
-        //Entrances
-
+        //===========================================================================================
+        //Dungeon Entrances Related Variables
+        //===========================================================================================
         public static int entrance_room = 0x14813; //0x14577 //word value for each room
         public static int entrance_scrolledge = 0x1491D; //0x14681 //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
         public static int entrance_yscroll = 0x14D45; // 0x14AA9 //2bytes each room
@@ -107,7 +170,6 @@ namespace ZeldaFullEditor
         public static int startingentrance_camerayposition = 0x15BEC;// 0x14ED1 2bytes
         public static int startingentrance_cameraxposition = 0x15BFA;// 0x14FDB 2bytes
 
-
         public static int startingentrance_blockset = 0x15C08; //0x150E5 1byte
         public static int startingentrance_floor = 0x15C0F; // 0x1516A 1byte
         public static int startingentrance_dungeon = 0x15C16; // 0x151EF 1byte (dungeon id)
@@ -123,7 +185,6 @@ namespace ZeldaFullEditor
 
         public static int items_data_start = 0xDDE9; //save purpose
         public static int items_data_end = 0xE6B2; //save purpose
-        public static int hud_palettes = 0xDD660;
         public static int initial_equipement = 0x271A6;
         public static int messages_id_dungeon = 0x3F61D;
 
@@ -217,8 +278,47 @@ namespace ZeldaFullEditor
             startingentrance_entrance -= 0x29C;
 
 
+                    //us = 0x05D97 / jp = 0x05DD7
+            overworldgfxGroups = 0x05DD7;
+            hardcodedGrassLW = 0x67FE6;
+            hardcodedGrassDW = 0x67FF0;//map>40
+            hardcodedGrassSpecial = 0x67FE1;//map 183,182,180
+
+            OWExitRoomId = 0x15D8A - 0x29C; 
+            OWExitMapId = 0x15E28 - 0x29C; 
+            OWExitVram = 0x15E77 - 0x29C; 
+            OWExitYScroll = 0x15F15 - 0x29C;
+            OWExitXScroll = 0x15FB3 - 0x29C;
+            OWExitYPlayer = 0x16051 - 0x29C;
+            OWExitXPlayer = 0x160EF - 0x29C;
+            OWExitYCamera = 0x1618D - 0x29C;
+            OWExitXCamera = 0x1622B - 0x29C;
+            OWExitUnk1 = 0x162C9 - 0x29C;
+            OWExitUnk2 = 0x16318 - 0x29C;
+            OWExitDoorType1 = 0x16367 - 0x29C;
+            OWExitDoorType2 = 0x16405 - 0x29C;
+            
 
 
+
+
+       /* public static int map32TilesTL = 0x18000;
+        public static int map32TilesTR = 0x1B400;
+        public static int map32TilesBL = 0x20000;
+        public static int map32TilesBR = 0x23400;*/
+
+            map32TilesTL = 0x18000;
+            map32TilesTR = 0x1B3C0;
+            map32TilesBL = 0x20000;
+            map32TilesBR = 0x233C0;
+            compressedAllMap32PointersHigh = 0x176B1; //LONGPointers all tiles of maps[High] (mapid* 3)
+            compressedAllMap32PointersLow = 0x17891; //LONGPointers all tiles of maps[Low] (mapid* 3)
+            overworldMapPalette = 0x7D1C; //JP
+            overworldMapPaletteGroup = 0x67E74;
+            overworldMapSize = 0x1273B; //JP
+            overlayPointers = 0x3FAF4;
+            overlayPointersBank = 0x07;
+            overworldTilesType = 0x7FD94;
             Rando = rando;
             if (rando == true)
             {

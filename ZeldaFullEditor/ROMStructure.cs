@@ -28,6 +28,7 @@ namespace ZeldaFullEditor
         //Rooms Names - 296 dynamic strings
         static public string[] dungeonsNames = new string[17];
         static public string[] roomsNames;
+        static public string[] mapsNames;
         static public short[][] dungeonsRooms = new short[17][];
         static public List<DataRoom> dungeonsRoomList = new List<DataRoom>();
         static public void defaultDungeonNames()
@@ -176,20 +177,44 @@ namespace ZeldaFullEditor
        };
         }
 
+        static public void defaultMapsNames()
+        {
+            //DP = Duplicate
+            mapsNames = new string[]{
+                //LW
+                "Lost Woods","DP","Lumberjack","DM Hera Tower","DP","DM Wall of Caves","DP","DM Turtle Rock",
+                "DP","DP","Death Mountain Entrance","DP","DP","DP","DP","Hidden Waterfall",
+                "Woods Entrance","Top of Kakariko","Whirlpool Lake?","Sanctuary","Cemetery","River","Witch","Way to Zora",
+                "Kakariko","DP","West of Castle","Castle","DP","Wooden Bridge","Eastern Palace","DP",
+                "DP","DP","Blacksmith","DP","DP","Octoroks","DP","DP",
+                "Race Game","Library","Flute Grove","West of Link's House","Link's House","Stone Bridge","Top of Hylia Lake","Flute #5",
+                "Desert","DP","Grove Ledge","North of Dam","South of Link's House","Lake Hylia","DP","Shopping Mall",
+                "DP","DP","Purple Chest Guy","Dam","East of Dam","DP","DP","South East Hylia",
+
+                //DW
+                "Skulls Woods","DP","Lumberjack","DM Ganon Tower","DP","DM Wall of Caves","DP","DM Turtle Rock",
+                "DP","DP","Death Mountain Entrance","DP","DP","DP","DP","Catfish",
+                "Woods Entrance","Top of Village of Outcast","Lake?","Sanctuary Cave","Cemetery","River","Witch","Way to Catfish",
+                "Village of Outcast","DP","Lost Shop","Pyramid","DP","Wooden Bridge","Palace of Darkness","DP",
+                "DP","DP","Smith House","DP","DP","Rocky Area","DP","DP",
+                "Digging","Archery Minigame","Haunted Grove","West of Link's House","Link's House","Peg Bridge","Top of Hylia Lake","Flute #5",
+                "Misery Mire","DP","South of Grove","North of Swamp Palace","South of Link's House","Ice Palace","DP","Shopping Mall",
+                "DP","DP","Purple Chest Guy","Swamp","East of Swamp","DP","DP","South East Ice Palace"
+            };
+        }
+
         static public void createProjectFile(string gameVersion)
         {
             //Ask for name 
 
-            string f = Interaction.InputBox("New Project", "Name?", "ZScream Project");
+            SaveFileDialog sf = new SaveFileDialog();
+            sf.Filter = "ZScream project file .zsc|*.zsc";
+            sf.DefaultExt = ".zsc";
 
-
-            if (f != "") //if project name is null then throw an error
+            if (sf.ShowDialog() == DialogResult.OK) //if project name is null then throw an error
             {
-                if (!Directory.Exists("Projects"))
-                {
-                    Directory.CreateDirectory("Projects");
-                }
-                FileStream fs = new FileStream("Projects\\" + f + ".zsc", FileMode.CreateNew, FileAccess.Write);
+                ProjectName = sf.FileName;
+                FileStream fs = new FileStream( sf.FileName , FileMode.CreateNew, FileAccess.Write);
                 fs.Position = 0x100000; //Keep 1mb data for the project file settings stuff
                 fs.Write(ROM.DATA, 0, ROM.DATA.Length);
 
@@ -197,7 +222,7 @@ namespace ZeldaFullEditor
                 BinaryWriter bw = new BinaryWriter(fs);
                 bw.Write("ZScream Project File"); //Header to detect if the file is a project or not
                 bw.Write(ProjectVersion); //the version of ZScream that was used to make that project file
-                bw.Write(f);//Project Name
+                bw.Write(sf.FileName);//Project Name
                 bw.Write(gameVersion); //Game version used in the project, us,jp,vt
 
                 for (int i = 0; i < 17; i++)
@@ -215,13 +240,8 @@ namespace ZeldaFullEditor
 
 
                 bw.Close();
-                MessageBox.Show("Project " + f + " Has been created in the project folder of ZScream : " + Path.GetFullPath("Projects\\" + f + ".zsc"));
+                MessageBox.Show("Project " + sf.FileName + " Has been created");
             }
-            else
-            {
-                MessageBox.Show("Project must have a name !");
-            }
-            //show message project "name" has been created in the project folder
 
         }
 
@@ -229,7 +249,7 @@ namespace ZeldaFullEditor
         static public void saveProjectFile(string gameVersion, string filename)
         {
 
-            FileStream fs = new FileStream("Projects\\"+ProjectName+".zsc", FileMode.OpenOrCreate, FileAccess.Write);
+            FileStream fs = new FileStream(ProjectName, FileMode.OpenOrCreate, FileAccess.Write);
             fs.Position = 0x100000; //Keep 1mb data for the project file settings stuff
             fs.Write(ROM.DATA, 0, ROM.DATA.Length);
             
@@ -272,7 +292,8 @@ namespace ZeldaFullEditor
             {
                 dungeonsRoomList.Clear();
                 ROMStructure.ProjectVersion = br.ReadString();
-                ROMStructure.ProjectName = br.ReadString();
+                //ROMStructure.ProjectName = 
+                br.ReadString();
                 ROMStructure.GameVersion = br.ReadString();
                 for (int i = 0; i < 17; i++)
                 {
@@ -309,6 +330,7 @@ namespace ZeldaFullEditor
         {
             defaultDungeonNames();
             defaultRoomsNames();
+            defaultMapsNames();
             defaultDungeonRooms();
             
         }

@@ -68,12 +68,12 @@
             treeNode19});
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createProjectFromROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createProjectFromROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportProjectAsROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.changeBaseROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -176,7 +176,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.propertyGrid1 = new System.Windows.Forms.PropertyGrid();
+            this.mapPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.entrancetabPage = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.entrancetreeView = new System.Windows.Forms.TreeView();
@@ -192,7 +192,10 @@
             this.searchTextbox = new System.Windows.Forms.TextBox();
             this.previewObjectPicturebox = new System.Windows.Forms.PictureBox();
             this.settingstabPage = new System.Windows.Forms.TabPage();
-            this.debuglabel = new System.Windows.Forms.Label();
+            this.DEBUGMirrorCheckbox = new System.Windows.Forms.CheckBox();
+            this.DEBUGWallCheckbox = new System.Windows.Forms.CheckBox();
+            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.DEBUGEquipmentCheckbox = new System.Windows.Forms.CheckBox();
             this.checkBox5 = new System.Windows.Forms.CheckBox();
             this.checkBox4 = new System.Windows.Forms.CheckBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
@@ -239,39 +242,11 @@
             this.label14 = new System.Windows.Forms.Label();
             this.messagetextBox = new System.Windows.Forms.TextBox();
             this.randoPage = new System.Windows.Forms.TabPage();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.label20 = new System.Windows.Forms.Label();
-            this.label28 = new System.Windows.Forms.Label();
-            this.label27 = new System.Windows.Forms.Label();
-            this.bossroom1UpDown = new System.Windows.Forms.NumericUpDown();
-            this.actionsListbox = new System.Windows.Forms.ListBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label30 = new System.Windows.Forms.Label();
-            this.bg2comboBox = new System.Windows.Forms.ComboBox();
-            this.collisioncomboBox = new System.Windows.Forms.ComboBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this.tag2comboBox = new System.Windows.Forms.ComboBox();
-            this.tag1comboBox = new System.Windows.Forms.ComboBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.messageshowButton = new System.Windows.Forms.Button();
-            this.messageidUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label10 = new System.Windows.Forms.Label();
-            this.pithurtcheckbox = new System.Windows.Forms.CheckBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.effectcomboBox = new System.Windows.Forms.ComboBox();
-            this.layoutUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
-            this.spritesetUpDown = new System.Windows.Forms.NumericUpDown();
-            this.paletteUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label6 = new System.Windows.Forms.Label();
-            this.roomgfxUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.floor2UpDown = new System.Windows.Forms.NumericUpDown();
-            this.floor1UpDown = new System.Windows.Forms.NumericUpDown();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.button3 = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.button7 = new System.Windows.Forms.Button();
+            this.button8 = new System.Windows.Forms.Button();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
             this.rupeeNumericupdown = new System.Windows.Forms.NumericUpDown();
@@ -324,9 +299,22 @@
             this.spritesListbox = new System.Windows.Forms.ListBox();
             this.searchspriteTextbox = new System.Windows.Forms.TextBox();
             this.spritePreviewBox = new System.Windows.Forms.PictureBox();
+            this.OverworldPage = new System.Windows.Forms.TabPage();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.owMapList = new System.Windows.Forms.TreeView();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.button9 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
+            this.propertyGrid3 = new System.Windows.Forms.PropertyGrid();
             this.selectedGroupbox = new System.Windows.Forms.GroupBox();
             this.selectedZUpDown = new System.Windows.Forms.NumericUpDown();
             this.label24 = new System.Windows.Forms.Label();
+            this.spritepropertyPanel = new System.Windows.Forms.Panel();
+            this.spriteoverlordCheckbox = new System.Windows.Forms.CheckBox();
+            this.label26 = new System.Windows.Forms.Label();
+            this.spritesubtypeUpDown = new System.Windows.Forms.NumericUpDown();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label23 = new System.Windows.Forms.Label();
             this.selectedLayerNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.label22 = new System.Windows.Forms.Label();
             this.label21 = new System.Windows.Forms.Label();
@@ -338,12 +326,6 @@
             this.doorselectPanel = new System.Windows.Forms.Panel();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
-            this.spritepropertyPanel = new System.Windows.Forms.Panel();
-            this.spriteoverlordCheckbox = new System.Windows.Forms.CheckBox();
-            this.label26 = new System.Windows.Forms.Label();
-            this.spritesubtypeUpDown = new System.Windows.Forms.NumericUpDown();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.label23 = new System.Windows.Forms.Label();
             this.potitemobjectPanel = new System.Windows.Forms.Panel();
             this.selecteditemobjectCombobox = new System.Windows.Forms.ComboBox();
             this.label31 = new System.Windows.Forms.Label();
@@ -400,16 +382,8 @@
             this.tabPage3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.messageUpDown)).BeginInit();
             this.randoPage.SuspendLayout();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bossroom1UpDown)).BeginInit();
-            this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.messageidUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spritesetUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.roomgfxUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.floor2UpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.floor1UpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.tabPage1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.rupeeNumericupdown)).BeginInit();
@@ -419,15 +393,21 @@
             this.splitContainer5.Panel2.SuspendLayout();
             this.splitContainer5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spritePreviewBox)).BeginInit();
+            this.OverworldPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.selectedGroupbox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectedZUpDown)).BeginInit();
+            this.spritepropertyPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedLayerNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedSizeNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedYNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedXNumericUpDown)).BeginInit();
             this.doorselectPanel.SuspendLayout();
-            this.spritepropertyPanel.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).BeginInit();
             this.potitemobjectPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -449,21 +429,29 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createProjectFromROMToolStripMenuItem,
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.saveasToolStripMenuItem,
-            this.createProjectFromROMToolStripMenuItem,
             this.exportProjectAsROMToolStripMenuItem,
-            this.toolStripSeparator7});
+            this.changeBaseROMToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
+            this.fileToolStripMenuItem.Click += new System.EventHandler(this.fileToolStripMenuItem_Click);
+            // 
+            // createProjectFromROMToolStripMenuItem
+            // 
+            this.createProjectFromROMToolStripMenuItem.Name = "createProjectFromROMToolStripMenuItem";
+            this.createProjectFromROMToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.createProjectFromROMToolStripMenuItem.Text = "Create new Project";
+            this.createProjectFromROMToolStripMenuItem.Click += new System.EventHandler(this.createProjectFromROMToolStripMenuItem_Click);
             // 
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
             this.openToolStripMenuItem.Text = "Open Project";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -472,7 +460,7 @@
             this.saveToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
             this.saveToolStripMenuItem.Text = "Save Project";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -481,28 +469,23 @@
             this.saveasToolStripMenuItem.Enabled = false;
             this.saveasToolStripMenuItem.Name = "saveasToolStripMenuItem";
             this.saveasToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveasToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.saveasToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
             this.saveasToolStripMenuItem.Text = "Save Project As...";
             this.saveasToolStripMenuItem.Click += new System.EventHandler(this.saveasToolStripMenuItem_Click);
-            // 
-            // createProjectFromROMToolStripMenuItem
-            // 
-            this.createProjectFromROMToolStripMenuItem.Name = "createProjectFromROMToolStripMenuItem";
-            this.createProjectFromROMToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.createProjectFromROMToolStripMenuItem.Text = "Create project from ROM";
-            this.createProjectFromROMToolStripMenuItem.Click += new System.EventHandler(this.createProjectFromROMToolStripMenuItem_Click);
             // 
             // exportProjectAsROMToolStripMenuItem
             // 
             this.exportProjectAsROMToolStripMenuItem.Name = "exportProjectAsROMToolStripMenuItem";
-            this.exportProjectAsROMToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.exportProjectAsROMToolStripMenuItem.Text = "Export project as ROM";
+            this.exportProjectAsROMToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.exportProjectAsROMToolStripMenuItem.Text = "Patch a ROM";
             this.exportProjectAsROMToolStripMenuItem.Click += new System.EventHandler(this.exportProjectAsROMToolStripMenuItem_Click);
             // 
-            // toolStripSeparator7
+            // changeBaseROMToolStripMenuItem
             // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(204, 6);
+            this.changeBaseROMToolStripMenuItem.Name = "changeBaseROMToolStripMenuItem";
+            this.changeBaseROMToolStripMenuItem.Size = new System.Drawing.Size(203, 22);
+            this.changeBaseROMToolStripMenuItem.Text = "Change Base ROM";
+            this.changeBaseROMToolStripMenuItem.Click += new System.EventHandler(this.changeBaseROMToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -1355,6 +1338,7 @@
             this.tabControl1.Controls.Add(this.randoPage);
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.OverworldPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Enabled = false;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -1391,14 +1375,14 @@
             // 
             // splitContainer2.Panel2
             // 
-            this.splitContainer2.Panel2.Controls.Add(this.propertyGrid1);
+            this.splitContainer2.Panel2.Controls.Add(this.mapPropertyGrid);
             this.splitContainer2.Size = new System.Drawing.Size(286, 542);
             this.splitContainer2.SplitterDistance = 320;
             this.splitContainer2.TabIndex = 0;
             // 
             // mapPicturebox
             // 
-            this.mapPicturebox.Location = new System.Drawing.Point(0, 26);
+            this.mapPicturebox.Location = new System.Drawing.Point(-3, 29);
             this.mapPicturebox.Name = "mapPicturebox";
             this.mapPicturebox.Size = new System.Drawing.Size(256, 304);
             this.mapPicturebox.TabIndex = 13;
@@ -1414,7 +1398,7 @@
             this.roomListView.LabelEdit = true;
             this.roomListView.Location = new System.Drawing.Point(0, 26);
             this.roomListView.Name = "roomListView";
-            this.roomListView.Size = new System.Drawing.Size(269, 304);
+            this.roomListView.Size = new System.Drawing.Size(269, 307);
             this.roomListView.TabIndex = 8;
             this.roomListView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.roomListView_AfterLabelEdit);
             this.roomListView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.roomListView_ItemDrag);
@@ -1455,14 +1439,14 @@
             this.radioButton2.UseVisualStyleBackColor = true;
             this.radioButton2.CheckedChanged += new System.EventHandler(this.radioButton2_CheckedChanged);
             // 
-            // propertyGrid1
+            // mapPropertyGrid
             // 
-            this.propertyGrid1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertyGrid1.Location = new System.Drawing.Point(0, 0);
-            this.propertyGrid1.Name = "propertyGrid1";
-            this.propertyGrid1.Size = new System.Drawing.Size(286, 218);
-            this.propertyGrid1.TabIndex = 14;
-            this.propertyGrid1.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid1_PropertyValueChanged);
+            this.mapPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mapPropertyGrid.Location = new System.Drawing.Point(0, 0);
+            this.mapPropertyGrid.Name = "mapPropertyGrid";
+            this.mapPropertyGrid.Size = new System.Drawing.Size(286, 218);
+            this.mapPropertyGrid.TabIndex = 14;
+            this.mapPropertyGrid.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid1_PropertyValueChanged);
             // 
             // entrancetabPage
             // 
@@ -1490,7 +1474,7 @@
             // 
             this.splitContainer3.Panel2.Controls.Add(this.propertyGrid2);
             this.splitContainer3.Size = new System.Drawing.Size(292, 476);
-            this.splitContainer3.SplitterDistance = 244;
+            this.splitContainer3.SplitterDistance = 242;
             this.splitContainer3.TabIndex = 9;
             // 
             // entrancetreeView
@@ -1506,7 +1490,7 @@
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2});
-            this.entrancetreeView.Size = new System.Drawing.Size(292, 244);
+            this.entrancetreeView.Size = new System.Drawing.Size(292, 242);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
             this.entrancetreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.entrancetreeView_NodeMouseDoubleClick);
@@ -1516,7 +1500,7 @@
             this.propertyGrid2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.propertyGrid2.Location = new System.Drawing.Point(0, 0);
             this.propertyGrid2.Name = "propertyGrid2";
-            this.propertyGrid2.Size = new System.Drawing.Size(292, 228);
+            this.propertyGrid2.Size = new System.Drawing.Size(292, 230);
             this.propertyGrid2.TabIndex = 24;
             // 
             // groupBox2
@@ -1581,7 +1565,7 @@
             // 
             this.splitContainer4.Panel2.Controls.Add(this.previewObjectPicturebox);
             this.splitContainer4.Size = new System.Drawing.Size(292, 548);
-            this.splitContainer4.SplitterDistance = 330;
+            this.splitContainer4.SplitterDistance = 329;
             this.splitContainer4.TabIndex = 0;
             // 
             // objectsListbox
@@ -1590,7 +1574,7 @@
             this.objectsListbox.FormattingEnabled = true;
             this.objectsListbox.Location = new System.Drawing.Point(0, 26);
             this.objectsListbox.Name = "objectsListbox";
-            this.objectsListbox.Size = new System.Drawing.Size(292, 304);
+            this.objectsListbox.Size = new System.Drawing.Size(292, 303);
             this.objectsListbox.TabIndex = 0;
             this.objectsListbox.SelectedIndexChanged += new System.EventHandler(this.objectsListbox_SelectedIndexChanged);
             // 
@@ -1627,13 +1611,16 @@
             this.previewObjectPicturebox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.previewObjectPicturebox.Location = new System.Drawing.Point(0, 0);
             this.previewObjectPicturebox.Name = "previewObjectPicturebox";
-            this.previewObjectPicturebox.Size = new System.Drawing.Size(292, 214);
+            this.previewObjectPicturebox.Size = new System.Drawing.Size(292, 215);
             this.previewObjectPicturebox.TabIndex = 0;
             this.previewObjectPicturebox.TabStop = false;
             // 
             // settingstabPage
             // 
-            this.settingstabPage.Controls.Add(this.debuglabel);
+            this.settingstabPage.Controls.Add(this.DEBUGMirrorCheckbox);
+            this.settingstabPage.Controls.Add(this.DEBUGWallCheckbox);
+            this.settingstabPage.Controls.Add(this.checkBox6);
+            this.settingstabPage.Controls.Add(this.DEBUGEquipmentCheckbox);
             this.settingstabPage.Controls.Add(this.checkBox5);
             this.settingstabPage.Controls.Add(this.checkBox4);
             this.settingstabPage.Controls.Add(this.checkBox3);
@@ -1648,17 +1635,55 @@
             this.settingstabPage.Padding = new System.Windows.Forms.Padding(3);
             this.settingstabPage.Size = new System.Drawing.Size(292, 548);
             this.settingstabPage.TabIndex = 1;
-            this.settingstabPage.Text = "Settings";
+            this.settingstabPage.Text = "Debug";
             this.settingstabPage.UseVisualStyleBackColor = true;
             // 
-            // debuglabel
+            // DEBUGMirrorCheckbox
             // 
-            this.debuglabel.AutoSize = true;
-            this.debuglabel.Location = new System.Drawing.Point(7, 10);
-            this.debuglabel.Name = "debuglabel";
-            this.debuglabel.Size = new System.Drawing.Size(41, 13);
-            this.debuglabel.TabIndex = 14;
-            this.debuglabel.Text = "label25";
+            this.DEBUGMirrorCheckbox.AutoSize = true;
+            this.DEBUGMirrorCheckbox.Checked = true;
+            this.DEBUGMirrorCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DEBUGMirrorCheckbox.Location = new System.Drawing.Point(9, 55);
+            this.DEBUGMirrorCheckbox.Name = "DEBUGMirrorCheckbox";
+            this.DEBUGMirrorCheckbox.Size = new System.Drawing.Size(104, 17);
+            this.DEBUGMirrorCheckbox.TabIndex = 17;
+            this.DEBUGMirrorCheckbox.Text = "Mirror both world";
+            this.DEBUGMirrorCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // DEBUGWallCheckbox
+            // 
+            this.DEBUGWallCheckbox.AutoSize = true;
+            this.DEBUGWallCheckbox.Checked = true;
+            this.DEBUGWallCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DEBUGWallCheckbox.Location = new System.Drawing.Point(9, 32);
+            this.DEBUGWallCheckbox.Name = "DEBUGWallCheckbox";
+            this.DEBUGWallCheckbox.Size = new System.Drawing.Size(169, 17);
+            this.DEBUGWallCheckbox.TabIndex = 16;
+            this.DEBUGWallCheckbox.Text = "Walk Through Wall (R Button)";
+            this.DEBUGWallCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // checkBox6
+            // 
+            this.checkBox6.AutoSize = true;
+            this.checkBox6.Enabled = false;
+            this.checkBox6.Location = new System.Drawing.Point(9, 78);
+            this.checkBox6.Name = "checkBox6";
+            this.checkBox6.Size = new System.Drawing.Size(154, 17);
+            this.checkBox6.TabIndex = 15;
+            this.checkBox6.Text = "Start in room opened (WIP)";
+            this.checkBox6.UseVisualStyleBackColor = true;
+            // 
+            // DEBUGEquipmentCheckbox
+            // 
+            this.DEBUGEquipmentCheckbox.AutoSize = true;
+            this.DEBUGEquipmentCheckbox.Checked = true;
+            this.DEBUGEquipmentCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.DEBUGEquipmentCheckbox.Location = new System.Drawing.Point(9, 9);
+            this.DEBUGEquipmentCheckbox.Name = "DEBUGEquipmentCheckbox";
+            this.DEBUGEquipmentCheckbox.Size = new System.Drawing.Size(95, 17);
+            this.DEBUGEquipmentCheckbox.TabIndex = 14;
+            this.DEBUGEquipmentCheckbox.Text = "All Equipments";
+            this.DEBUGEquipmentCheckbox.UseVisualStyleBackColor = true;
             // 
             // checkBox5
             // 
@@ -1781,7 +1806,7 @@
             this.splitContainer6.Panel2.Controls.Add(this.button1);
             this.splitContainer6.Panel2.Controls.Add(this.palettePicturebox);
             this.splitContainer6.Size = new System.Drawing.Size(292, 548);
-            this.splitContainer6.SplitterDistance = 303;
+            this.splitContainer6.SplitterDistance = 302;
             this.splitContainer6.TabIndex = 1;
             // 
             // label7
@@ -1844,7 +1869,7 @@
             this.palettesTreeview.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode5,
             treeNode20});
-            this.palettesTreeview.Size = new System.Drawing.Size(292, 303);
+            this.palettesTreeview.Size = new System.Drawing.Size(292, 302);
             this.palettesTreeview.TabIndex = 0;
             // 
             // button2
@@ -1872,7 +1897,7 @@
             this.palettePicturebox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.palettePicturebox.Location = new System.Drawing.Point(0, 0);
             this.palettePicturebox.Name = "palettePicturebox";
-            this.palettePicturebox.Size = new System.Drawing.Size(292, 241);
+            this.palettePicturebox.Size = new System.Drawing.Size(292, 242);
             this.palettePicturebox.TabIndex = 0;
             this.palettePicturebox.TabStop = false;
             // 
@@ -2072,7 +2097,8 @@
             "Main Blockset",
             "Entrance Blockset",
             "Sprite Blockset",
-            "Palettes"});
+            "Palettes",
+            "Room Vram"});
             this.gfxgroupCombobox.Location = new System.Drawing.Point(6, 36);
             this.gfxgroupCombobox.Name = "gfxgroupCombobox";
             this.gfxgroupCombobox.Size = new System.Drawing.Size(108, 21);
@@ -2224,10 +2250,11 @@
             // randoPage
             // 
             this.randoPage.AutoScroll = true;
-            this.randoPage.Controls.Add(this.panel1);
-            this.randoPage.Controls.Add(this.actionsListbox);
-            this.randoPage.Controls.Add(this.label1);
-            this.randoPage.Controls.Add(this.groupBox1);
+            this.randoPage.Controls.Add(this.pictureBox1);
+            this.randoPage.Controls.Add(this.button3);
+            this.randoPage.Controls.Add(this.numericUpDown1);
+            this.randoPage.Controls.Add(this.button7);
+            this.randoPage.Controls.Add(this.button8);
             this.randoPage.Location = new System.Drawing.Point(4, 40);
             this.randoPage.Name = "randoPage";
             this.randoPage.Size = new System.Drawing.Size(292, 548);
@@ -2235,513 +2262,55 @@
             this.randoPage.Text = "Rando";
             this.randoPage.UseVisualStyleBackColor = true;
             // 
-            // panel1
+            // pictureBox1
             // 
-            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Controls.Add(this.label20);
-            this.panel1.Controls.Add(this.label28);
-            this.panel1.Controls.Add(this.label27);
-            this.panel1.Controls.Add(this.bossroom1UpDown);
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(861, 135);
-            this.panel1.TabIndex = 0;
+            this.pictureBox1.Location = new System.Drawing.Point(8, 5);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(272, 231);
+            this.pictureBox1.TabIndex = 7;
+            this.pictureBox1.TabStop = false;
             // 
-            // label20
+            // button3
             // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(145, 64);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(56, 13);
-            this.label20.TabIndex = 4;
-            this.label20.Text = "Boss Drop";
+            this.button3.Location = new System.Drawing.Point(146, 329);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 0;
+            this.button3.Text = "Open";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
-            // label28
+            // numericUpDown1
             // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(56, 64);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(83, 13);
-            this.label28.TabIndex = 3;
-            this.label28.Text = "Pendant/Crystal";
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(3, 64);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(47, 13);
-            this.label27.TabIndex = 2;
-            this.label27.Text = "Room Id";
-            // 
-            // bossroom1UpDown
-            // 
-            this.bossroom1UpDown.Location = new System.Drawing.Point(6, 80);
-            this.bossroom1UpDown.Maximum = new decimal(new int[] {
-            296,
+            this.numericUpDown1.Location = new System.Drawing.Point(79, 271);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            160,
             0,
             0,
             0});
-            this.bossroom1UpDown.Name = "bossroom1UpDown";
-            this.bossroom1UpDown.Size = new System.Drawing.Size(44, 20);
-            this.bossroom1UpDown.TabIndex = 1;
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDown1.TabIndex = 2;
             // 
-            // actionsListbox
+            // button7
             // 
-            this.actionsListbox.FormattingEnabled = true;
-            this.actionsListbox.Location = new System.Drawing.Point(5, 144);
-            this.actionsListbox.Name = "actionsListbox";
-            this.actionsListbox.Size = new System.Drawing.Size(290, 17);
-            this.actionsListbox.TabIndex = 7;
-            this.actionsListbox.Visible = false;
+            this.button7.Location = new System.Drawing.Point(124, 242);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(75, 23);
+            this.button7.TabIndex = 5;
+            this.button7.Text = "button7";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
-            // label1
+            // button8
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(31, 164);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(163, 13);
-            this.label1.TabIndex = 8;
-            this.label1.Text = "List of actions (Debug purpose) : ";
-            this.label1.Visible = false;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.label30);
-            this.groupBox1.Controls.Add(this.bg2comboBox);
-            this.groupBox1.Controls.Add(this.collisioncomboBox);
-            this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.tag2comboBox);
-            this.groupBox1.Controls.Add(this.tag1comboBox);
-            this.groupBox1.Controls.Add(this.label11);
-            this.groupBox1.Controls.Add(this.messageshowButton);
-            this.groupBox1.Controls.Add(this.messageidUpDown);
-            this.groupBox1.Controls.Add(this.label10);
-            this.groupBox1.Controls.Add(this.pithurtcheckbox);
-            this.groupBox1.Controls.Add(this.label8);
-            this.groupBox1.Controls.Add(this.effectcomboBox);
-            this.groupBox1.Controls.Add(this.layoutUpDown);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.label9);
-            this.groupBox1.Controls.Add(this.spritesetUpDown);
-            this.groupBox1.Controls.Add(this.paletteUpDown);
-            this.groupBox1.Controls.Add(this.label6);
-            this.groupBox1.Controls.Add(this.roomgfxUpDown);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.floor2UpDown);
-            this.groupBox1.Controls.Add(this.floor1UpDown);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(5, 167);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(300, 155);
-            this.groupBox1.TabIndex = 7;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Room and Header Settings";
-            this.groupBox1.Visible = false;
-            // 
-            // label30
-            // 
-            this.label30.AutoSize = true;
-            this.label30.Location = new System.Drawing.Point(169, 118);
-            this.label30.Name = "label30";
-            this.label30.Size = new System.Drawing.Size(28, 13);
-            this.label30.TabIndex = 28;
-            this.label30.Text = "BG2";
-            // 
-            // bg2comboBox
-            // 
-            this.bg2comboBox.FormattingEnabled = true;
-            this.bg2comboBox.Items.AddRange(new object[] {
-            "Off",
-            "Parallax",
-            "Dark",
-            "OnTop",
-            "Translucent",
-            "Addition",
-            "Normal",
-            "Transparent",
-            "Dark Room"});
-            this.bg2comboBox.Location = new System.Drawing.Point(169, 134);
-            this.bg2comboBox.Name = "bg2comboBox";
-            this.bg2comboBox.Size = new System.Drawing.Size(125, 21);
-            this.bg2comboBox.TabIndex = 27;
-            this.bg2comboBox.Text = "Off";
-            // 
-            // collisioncomboBox
-            // 
-            this.collisioncomboBox.FormattingEnabled = true;
-            this.collisioncomboBox.Items.AddRange(new object[] {
-            "One",
-            "Both",
-            "Both With Scroll",
-            "Moving Floor",
-            "Moving Water"});
-            this.collisioncomboBox.Location = new System.Drawing.Point(63, 71);
-            this.collisioncomboBox.Name = "collisioncomboBox";
-            this.collisioncomboBox.Size = new System.Drawing.Size(100, 21);
-            this.collisioncomboBox.TabIndex = 26;
-            this.collisioncomboBox.Text = "One";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(60, 55);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(75, 13);
-            this.label12.TabIndex = 25;
-            this.label12.Text = "Collision ??? : ";
-            // 
-            // tag2comboBox
-            // 
-            this.tag2comboBox.FormattingEnabled = true;
-            this.tag2comboBox.Items.AddRange(new object[] {
-            "Nothing",
-            "NW Kill Enemy to Open",
-            "NE Kill Enemy to Open",
-            "SW Kill Enemy to Open",
-            "SE Kill Enemy to Open",
-            "W Kill Enemy to Open",
-            "E Kill Enemy to Open",
-            "N Kill Enemy to Open",
-            "S Kill Enemy to Open",
-            "Clear Quadrant to Open",
-            "Clear Room to Open",
-            "NW Push Block to Open",
-            "NE Push Block to Open",
-            "SW Push Block to Open",
-            "SE Push Block to Open",
-            "W Push Block to Open",
-            "E Push Block to Open",
-            "N Push Block to Open",
-            "S Push Block to Open",
-            "Push Block to Open",
-            "Pull Lever to Open",
-            "Clear Level to Open",
-            "Switch Open Door(Hold)",
-            "Switch Open Door(Toggle)",
-            "Turn off Water",
-            "Turn on Water",
-            "Water Gate",
-            "Water Twin",
-            "Secret Wall Right",
-            "Secret Wall Left",
-            "Crash",
-            "Crash",
-            "Pull Switch to bomb Wall",
-            "Holes 0",
-            "Open Chest (Holes 0)",
-            "Holes 1",
-            "Holes 2",
-            "Kill Enemy to clear level",
-            "SE Kill enemy to move block",
-            "Trigger activated Chest",
-            "Pull lever to bomb wall",
-            "NW Kill Enemy for chest",
-            "NE Kill Enemy for chest",
-            "SW Kill Enemy for chest",
-            "SE Kill Enemy for chest",
-            "W Kill Enemy for chest",
-            "E Kill Enemy for chest",
-            "N Kill Enemy for chest",
-            "S Kill Enemy for chest",
-            "Clear Quadrant for chest",
-            "Clear Room for chest",
-            "Light Torches to open",
-            "Holes 3",
-            "Holes 4",
-            "Holes 5",
-            "Holes 6",
-            "Agahnim Room",
-            "Holes 7",
-            "Holes 8",
-            "Open Chest for Holes 8",
-            "Push block for Chest",
-            "Kill to open Ganon Door",
-            "Light Torches to get Chest",
-            "Kill boss Again"});
-            this.tag2comboBox.Location = new System.Drawing.Point(9, 130);
-            this.tag2comboBox.Name = "tag2comboBox";
-            this.tag2comboBox.Size = new System.Drawing.Size(154, 21);
-            this.tag2comboBox.TabIndex = 24;
-            this.tag2comboBox.Text = "Nothing";
-            // 
-            // tag1comboBox
-            // 
-            this.tag1comboBox.FormattingEnabled = true;
-            this.tag1comboBox.Items.AddRange(new object[] {
-            "Nothing",
-            "NW Kill Enemy to Open",
-            "NE Kill Enemy to Open",
-            "SW Kill Enemy to Open",
-            "SE Kill Enemy to Open",
-            "W Kill Enemy to Open",
-            "E Kill Enemy to Open",
-            "N Kill Enemy to Open",
-            "S Kill Enemy to Open",
-            "Clear Quadrant to Open",
-            "Clear Room to Open",
-            "NW Push Block to Open",
-            "NE Push Block to Open",
-            "SW Push Block to Open",
-            "SE Push Block to Open",
-            "W Push Block to Open",
-            "E Push Block to Open",
-            "N Push Block to Open",
-            "S Push Block to Open",
-            "Push Block to Open",
-            "Pull Lever to Open",
-            "Clear Level to Open",
-            "Switch Open Door(Hold)",
-            "Switch Open Door(Toggle)",
-            "Turn off Water",
-            "Turn on Water",
-            "Water Gate",
-            "Water Twin",
-            "Secret Wall Right",
-            "Secret Wall Left",
-            "Crash",
-            "Crash",
-            "Pull Switch to bomb Wall",
-            "Holes 0",
-            "Open Chest (Holes 0)",
-            "Holes 1",
-            "Holes 2",
-            "Kill Enemy to clear level",
-            "SE Kill enemy to move block",
-            "Trigger activated Chest",
-            "Pull lever to bomb wall",
-            "NW Kill Enemy for chest",
-            "NE Kill Enemy for chest",
-            "SW Kill Enemy for chest",
-            "SE Kill Enemy for chest",
-            "W Kill Enemy for chest",
-            "E Kill Enemy for chest",
-            "N Kill Enemy for chest",
-            "S Kill Enemy for chest",
-            "Clear Quadrant for chest",
-            "Clear Room for chest",
-            "Light Torches to open",
-            "Holes 3",
-            "Holes 4",
-            "Holes 5",
-            "Holes 6",
-            "Agahnim Room",
-            "Holes 7",
-            "Holes 8",
-            "Open Chest for Holes 8",
-            "Push block for Chest",
-            "Kill to open Ganon Door",
-            "Light Torches to get Chest",
-            "Kill boss Again"});
-            this.tag1comboBox.Location = new System.Drawing.Point(9, 109);
-            this.tag1comboBox.Name = "tag1comboBox";
-            this.tag1comboBox.Size = new System.Drawing.Size(154, 21);
-            this.tag1comboBox.TabIndex = 23;
-            this.tag1comboBox.Text = "Nothing";
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(6, 94);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(43, 13);
-            this.label11.TabIndex = 22;
-            this.label11.Text = "Tags  : ";
-            // 
-            // messageshowButton
-            // 
-            this.messageshowButton.Location = new System.Drawing.Point(271, 109);
-            this.messageshowButton.Name = "messageshowButton";
-            this.messageshowButton.Size = new System.Drawing.Size(23, 23);
-            this.messageshowButton.TabIndex = 21;
-            this.messageshowButton.Text = "Show";
-            this.messageshowButton.UseVisualStyleBackColor = true;
-            // 
-            // messageidUpDown
-            // 
-            this.messageidUpDown.Location = new System.Drawing.Point(222, 111);
-            this.messageidUpDown.Maximum = new decimal(new int[] {
-            400,
-            0,
-            0,
-            0});
-            this.messageidUpDown.Name = "messageidUpDown";
-            this.messageidUpDown.Size = new System.Drawing.Size(43, 20);
-            this.messageidUpDown.TabIndex = 20;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(219, 95);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(76, 13);
-            this.label10.TabIndex = 19;
-            this.label10.Text = "Message ID  : ";
-            // 
-            // pithurtcheckbox
-            // 
-            this.pithurtcheckbox.AutoSize = true;
-            this.pithurtcheckbox.Location = new System.Drawing.Point(233, 54);
-            this.pithurtcheckbox.Name = "pithurtcheckbox";
-            this.pithurtcheckbox.Size = new System.Drawing.Size(61, 17);
-            this.pithurtcheckbox.TabIndex = 18;
-            this.pithurtcheckbox.Text = "Pit Hurt";
-            this.pithurtcheckbox.UseVisualStyleBackColor = true;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(166, 55);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(44, 13);
-            this.label8.TabIndex = 16;
-            this.label8.Text = "Effect : ";
-            // 
-            // effectcomboBox
-            // 
-            this.effectcomboBox.FormattingEnabled = true;
-            this.effectcomboBox.Items.AddRange(new object[] {
-            "Nothing",
-            "01",
-            "Moving Floor",
-            "Moving Water",
-            "04",
-            "Red Flashes",
-            "Light Torch to See Floor",
-            "Ganon Room"});
-            this.effectcomboBox.Location = new System.Drawing.Point(169, 71);
-            this.effectcomboBox.Name = "effectcomboBox";
-            this.effectcomboBox.Size = new System.Drawing.Size(125, 21);
-            this.effectcomboBox.TabIndex = 15;
-            this.effectcomboBox.Text = "Nothing";
-            // 
-            // layoutUpDown
-            // 
-            this.layoutUpDown.Location = new System.Drawing.Point(9, 71);
-            this.layoutUpDown.Maximum = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.layoutUpDown.Name = "layoutUpDown";
-            this.layoutUpDown.Size = new System.Drawing.Size(48, 20);
-            this.layoutUpDown.TabIndex = 14;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 55);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(48, 13);
-            this.label5.TabIndex = 13;
-            this.label5.Text = "Layout : ";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(220, 16);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(57, 13);
-            this.label9.TabIndex = 12;
-            this.label9.Text = "Spriteset : ";
-            // 
-            // spritesetUpDown
-            // 
-            this.spritesetUpDown.Location = new System.Drawing.Point(223, 32);
-            this.spritesetUpDown.Maximum = new decimal(new int[] {
-            64,
-            0,
-            0,
-            0});
-            this.spritesetUpDown.Name = "spritesetUpDown";
-            this.spritesetUpDown.Size = new System.Drawing.Size(48, 20);
-            this.spritesetUpDown.TabIndex = 11;
-            // 
-            // paletteUpDown
-            // 
-            this.paletteUpDown.Location = new System.Drawing.Point(115, 32);
-            this.paletteUpDown.Maximum = new decimal(new int[] {
-            71,
-            0,
-            0,
-            0});
-            this.paletteUpDown.Name = "paletteUpDown";
-            this.paletteUpDown.Size = new System.Drawing.Size(48, 20);
-            this.paletteUpDown.TabIndex = 9;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(114, 16);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(49, 13);
-            this.label6.TabIndex = 8;
-            this.label6.Text = "Palette : ";
-            // 
-            // roomgfxUpDown
-            // 
-            this.roomgfxUpDown.Location = new System.Drawing.Point(169, 32);
-            this.roomgfxUpDown.Maximum = new decimal(new int[] {
-            23,
-            0,
-            0,
-            0});
-            this.roomgfxUpDown.Name = "roomgfxUpDown";
-            this.roomgfxUpDown.Size = new System.Drawing.Size(48, 20);
-            this.roomgfxUpDown.TabIndex = 5;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(166, 16);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(57, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Blockset : ";
-            // 
-            // floor2UpDown
-            // 
-            this.floor2UpDown.Location = new System.Drawing.Point(63, 32);
-            this.floor2UpDown.Maximum = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.floor2UpDown.Name = "floor2UpDown";
-            this.floor2UpDown.Size = new System.Drawing.Size(48, 20);
-            this.floor2UpDown.TabIndex = 3;
-            // 
-            // floor1UpDown
-            // 
-            this.floor1UpDown.Location = new System.Drawing.Point(9, 32);
-            this.floor1UpDown.Maximum = new decimal(new int[] {
-            15,
-            0,
-            0,
-            0});
-            this.floor1UpDown.Name = "floor1UpDown";
-            this.floor1UpDown.Size = new System.Drawing.Size(48, 20);
-            this.floor1UpDown.TabIndex = 2;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(60, 16);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(48, 13);
-            this.label3.TabIndex = 1;
-            this.label3.Text = "Floor 2 : ";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 16);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(48, 13);
-            this.label2.TabIndex = 0;
-            this.label2.Text = "Floor 1 : ";
+            this.button8.Location = new System.Drawing.Point(205, 242);
+            this.button8.Name = "button8";
+            this.button8.Size = new System.Drawing.Size(75, 23);
+            this.button8.TabIndex = 6;
+            this.button8.Text = "button8";
+            this.button8.UseVisualStyleBackColor = true;
+            this.button8.Click += new System.EventHandler(this.button8_Click);
             // 
             // tabPage1
             // 
@@ -3330,6 +2899,7 @@
             // spritesListbox
             // 
             this.spritesListbox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.spritesListbox.Enabled = false;
             this.spritesListbox.FormattingEnabled = true;
             this.spritesListbox.Location = new System.Drawing.Point(0, 20);
             this.spritesListbox.Name = "spritesListbox";
@@ -3356,11 +2926,93 @@
             this.spritePreviewBox.TabIndex = 0;
             this.spritePreviewBox.TabStop = false;
             // 
+            // OverworldPage
+            // 
+            this.OverworldPage.Controls.Add(this.splitContainer1);
+            this.OverworldPage.Location = new System.Drawing.Point(4, 40);
+            this.OverworldPage.Name = "OverworldPage";
+            this.OverworldPage.Size = new System.Drawing.Size(292, 548);
+            this.OverworldPage.TabIndex = 11;
+            this.OverworldPage.Text = "Overworld";
+            this.OverworldPage.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.AutoScroll = true;
+            this.splitContainer1.Panel1.Controls.Add(this.owMapList);
+            this.splitContainer1.Panel1.Controls.Add(this.panel1);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.propertyGrid3);
+            this.splitContainer1.Size = new System.Drawing.Size(292, 548);
+            this.splitContainer1.SplitterDistance = 323;
+            this.splitContainer1.TabIndex = 16;
+            // 
+            // owMapList
+            // 
+            this.owMapList.AllowDrop = true;
+            this.owMapList.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.owMapList.HideSelection = false;
+            this.owMapList.LabelEdit = true;
+            this.owMapList.Location = new System.Drawing.Point(0, 27);
+            this.owMapList.Name = "owMapList";
+            this.owMapList.Size = new System.Drawing.Size(292, 296);
+            this.owMapList.TabIndex = 8;
+            this.owMapList.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.owMapList_NodeMouseDoubleClick);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.button9);
+            this.panel1.Controls.Add(this.button6);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(292, 27);
+            this.panel1.TabIndex = 14;
+            // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(82, 2);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(75, 23);
+            this.button9.TabIndex = 1;
+            this.button9.Text = "Import .tmx";
+            this.button9.UseVisualStyleBackColor = true;
+            this.button9.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(1, 2);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(75, 23);
+            this.button6.TabIndex = 0;
+            this.button6.Text = "Export .tmx";
+            this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click_1);
+            // 
+            // propertyGrid3
+            // 
+            this.propertyGrid3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertyGrid3.Location = new System.Drawing.Point(0, 0);
+            this.propertyGrid3.Name = "propertyGrid3";
+            this.propertyGrid3.Size = new System.Drawing.Size(292, 221);
+            this.propertyGrid3.TabIndex = 14;
+            this.propertyGrid3.PropertyValueChanged += new System.Windows.Forms.PropertyValueChangedEventHandler(this.propertyGrid3_PropertyValueChanged);
+            // 
             // selectedGroupbox
             // 
             this.selectedGroupbox.BackColor = System.Drawing.SystemColors.Control;
             this.selectedGroupbox.Controls.Add(this.selectedZUpDown);
             this.selectedGroupbox.Controls.Add(this.label24);
+            this.selectedGroupbox.Controls.Add(this.spritepropertyPanel);
             this.selectedGroupbox.Controls.Add(this.selectedLayerNumericUpDown);
             this.selectedGroupbox.Controls.Add(this.label22);
             this.selectedGroupbox.Controls.Add(this.label21);
@@ -3400,6 +3052,81 @@
             this.label24.Size = new System.Drawing.Size(49, 13);
             this.label24.TabIndex = 10;
             this.label24.Text = "Z Order :";
+            // 
+            // spritepropertyPanel
+            // 
+            this.spritepropertyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.spritepropertyPanel.Controls.Add(this.spriteoverlordCheckbox);
+            this.spritepropertyPanel.Controls.Add(this.label26);
+            this.spritepropertyPanel.Controls.Add(this.spritesubtypeUpDown);
+            this.spritepropertyPanel.Controls.Add(this.comboBox1);
+            this.spritepropertyPanel.Controls.Add(this.label23);
+            this.spritepropertyPanel.Location = new System.Drawing.Point(301, 16);
+            this.spritepropertyPanel.Name = "spritepropertyPanel";
+            this.spritepropertyPanel.Size = new System.Drawing.Size(240, 50);
+            this.spritepropertyPanel.TabIndex = 12;
+            this.spritepropertyPanel.Visible = false;
+            // 
+            // spriteoverlordCheckbox
+            // 
+            this.spriteoverlordCheckbox.AutoSize = true;
+            this.spriteoverlordCheckbox.Location = new System.Drawing.Point(79, 28);
+            this.spriteoverlordCheckbox.Name = "spriteoverlordCheckbox";
+            this.spriteoverlordCheckbox.Size = new System.Drawing.Size(66, 17);
+            this.spriteoverlordCheckbox.TabIndex = 16;
+            this.spriteoverlordCheckbox.Text = "Overlord";
+            this.spriteoverlordCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(3, 10);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(46, 13);
+            this.label26.TabIndex = 15;
+            this.label26.Text = "Subtype";
+            // 
+            // spritesubtypeUpDown
+            // 
+            this.spritesubtypeUpDown.Location = new System.Drawing.Point(6, 27);
+            this.spritesubtypeUpDown.Maximum = new decimal(new int[] {
+            31,
+            0,
+            0,
+            0});
+            this.spritesubtypeUpDown.Name = "spritesubtypeUpDown";
+            this.spritesubtypeUpDown.Size = new System.Drawing.Size(57, 20);
+            this.spritesubtypeUpDown.TabIndex = 14;
+            this.spritesubtypeUpDown.ValueChanged += new System.EventHandler(this.spritesubtypeUpDown_ValueChanged);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox1.Enabled = false;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "No",
+            "Small Key",
+            "Big Key"});
+            this.comboBox1.Location = new System.Drawing.Point(174, 26);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(57, 21);
+            this.comboBox1.TabIndex = 8;
+            this.comboBox1.Text = "No";
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
+            // 
+            // label23
+            // 
+            this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(171, 10);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(60, 13);
+            this.label23.TabIndex = 9;
+            this.label23.Text = "Drop Key ?";
             // 
             // selectedLayerNumericUpDown
             // 
@@ -3475,7 +3202,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.doorselectPanel.Controls.Add(this.comboBox2);
             this.doorselectPanel.Controls.Add(this.label25);
-            this.doorselectPanel.Controls.Add(this.spritepropertyPanel);
             this.doorselectPanel.Location = new System.Drawing.Point(301, 16);
             this.doorselectPanel.Name = "doorselectPanel";
             this.doorselectPanel.Size = new System.Drawing.Size(240, 50);
@@ -3525,81 +3251,6 @@
             this.label25.Size = new System.Drawing.Size(66, 13);
             this.label25.TabIndex = 9;
             this.label25.Text = "Door Type : ";
-            // 
-            // spritepropertyPanel
-            // 
-            this.spritepropertyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.spritepropertyPanel.Controls.Add(this.spriteoverlordCheckbox);
-            this.spritepropertyPanel.Controls.Add(this.label26);
-            this.spritepropertyPanel.Controls.Add(this.spritesubtypeUpDown);
-            this.spritepropertyPanel.Controls.Add(this.comboBox1);
-            this.spritepropertyPanel.Controls.Add(this.label23);
-            this.spritepropertyPanel.Location = new System.Drawing.Point(0, 0);
-            this.spritepropertyPanel.Name = "spritepropertyPanel";
-            this.spritepropertyPanel.Size = new System.Drawing.Size(240, 50);
-            this.spritepropertyPanel.TabIndex = 12;
-            this.spritepropertyPanel.Visible = false;
-            // 
-            // spriteoverlordCheckbox
-            // 
-            this.spriteoverlordCheckbox.AutoSize = true;
-            this.spriteoverlordCheckbox.Location = new System.Drawing.Point(79, 28);
-            this.spriteoverlordCheckbox.Name = "spriteoverlordCheckbox";
-            this.spriteoverlordCheckbox.Size = new System.Drawing.Size(66, 17);
-            this.spriteoverlordCheckbox.TabIndex = 16;
-            this.spriteoverlordCheckbox.Text = "Overlord";
-            this.spriteoverlordCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(3, 10);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(46, 13);
-            this.label26.TabIndex = 15;
-            this.label26.Text = "Subtype";
-            // 
-            // spritesubtypeUpDown
-            // 
-            this.spritesubtypeUpDown.Location = new System.Drawing.Point(6, 27);
-            this.spritesubtypeUpDown.Maximum = new decimal(new int[] {
-            31,
-            0,
-            0,
-            0});
-            this.spritesubtypeUpDown.Name = "spritesubtypeUpDown";
-            this.spritesubtypeUpDown.Size = new System.Drawing.Size(57, 20);
-            this.spritesubtypeUpDown.TabIndex = 14;
-            this.spritesubtypeUpDown.ValueChanged += new System.EventHandler(this.spritesubtypeUpDown_ValueChanged);
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox1.Enabled = false;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "No",
-            "Small Key",
-            "Big Key"});
-            this.comboBox1.Location = new System.Drawing.Point(174, 26);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(57, 21);
-            this.comboBox1.TabIndex = 8;
-            this.comboBox1.Text = "No";
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
-            // 
-            // label23
-            // 
-            this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(171, 10);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(60, 13);
-            this.label23.TabIndex = 9;
-            this.label23.Text = "Drop Key ?";
             // 
             // potitemobjectPanel
             // 
@@ -3754,19 +3405,8 @@
             this.tabPage3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.messageUpDown)).EndInit();
             this.randoPage.ResumeLayout(false);
-            this.randoPage.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bossroom1UpDown)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.messageidUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.layoutUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.spritesetUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.roomgfxUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.floor2UpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.floor1UpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.tabPage1.ResumeLayout(false);
             this.groupBox5.ResumeLayout(false);
             this.groupBox5.PerformLayout();
@@ -3778,18 +3418,24 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer5)).EndInit();
             this.splitContainer5.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.spritePreviewBox)).EndInit();
+            this.OverworldPage.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.selectedGroupbox.ResumeLayout(false);
             this.selectedGroupbox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.selectedZUpDown)).EndInit();
+            this.spritepropertyPanel.ResumeLayout(false);
+            this.spritepropertyPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedLayerNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedSizeNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedYNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.selectedXNumericUpDown)).EndInit();
             this.doorselectPanel.ResumeLayout(false);
             this.doorselectPanel.PerformLayout();
-            this.spritepropertyPanel.ResumeLayout(false);
-            this.spritepropertyPanel.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).EndInit();
             this.potitemobjectPanel.ResumeLayout(false);
             this.potitemobjectPanel.PerformLayout();
             this.ResumeLayout(false);
@@ -3883,7 +3529,6 @@
         private System.Windows.Forms.ToolStripMenuItem createProjectFromROMToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem darkThemeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportProjectAsROMToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem increaseZToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem bringToFrontToolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem decreaseZToolStripMenuItem;
@@ -3915,7 +3560,6 @@
         private System.Windows.Forms.TextBox searchTextbox;
         private System.Windows.Forms.PictureBox previewObjectPicturebox;
         private System.Windows.Forms.TabPage settingstabPage;
-        private System.Windows.Forms.Label debuglabel;
         private System.Windows.Forms.CheckBox checkBox5;
         private System.Windows.Forms.CheckBox checkBox4;
         private System.Windows.Forms.CheckBox checkBox3;
@@ -3948,39 +3592,6 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.TextBox messagetextBox;
         private System.Windows.Forms.TabPage randoPage;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.Label label27;
-        private System.Windows.Forms.NumericUpDown bossroom1UpDown;
-        private System.Windows.Forms.ListBox actionsListbox;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Label label30;
-        private System.Windows.Forms.ComboBox bg2comboBox;
-        private System.Windows.Forms.ComboBox collisioncomboBox;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.ComboBox tag2comboBox;
-        private System.Windows.Forms.ComboBox tag1comboBox;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Button messageshowButton;
-        private System.Windows.Forms.NumericUpDown messageidUpDown;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.CheckBox pithurtcheckbox;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ComboBox effectcomboBox;
-        private System.Windows.Forms.NumericUpDown layoutUpDown;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.NumericUpDown spritesetUpDown;
-        private System.Windows.Forms.NumericUpDown paletteUpDown;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.NumericUpDown roomgfxUpDown;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown floor2UpDown;
-        private System.Windows.Forms.NumericUpDown floor1UpDown;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.GroupBox groupBox5;
         private System.Windows.Forms.NumericUpDown rupeeNumericupdown;
@@ -4057,7 +3668,6 @@
         public System.Windows.Forms.NumericUpDown selectedXNumericUpDown;
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.ToolStripMenuItem rightSideToolboxToolStripMenuItem;
-        public System.Windows.Forms.PropertyGrid propertyGrid1;
         private System.Windows.Forms.ToolStripMenuItem animatedToolStripMenuItem;
         public System.Windows.Forms.ListBox objectsListbox;
         public System.Windows.Forms.ListBox spritesListbox;
@@ -4081,6 +3691,24 @@
         private System.Windows.Forms.Button gfxfromroomButton;
         public System.Windows.Forms.PictureBox mapPicturebox;
         private System.Windows.Forms.ToolStripMenuItem saveasToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem changeBaseROMToolStripMenuItem;
+        private System.Windows.Forms.CheckBox DEBUGEquipmentCheckbox;
+        private System.Windows.Forms.CheckBox DEBUGWallCheckbox;
+        private System.Windows.Forms.CheckBox checkBox6;
+        private System.Windows.Forms.CheckBox DEBUGMirrorCheckbox;
+        private System.Windows.Forms.TabPage OverworldPage;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.TreeView owMapList;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button8;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button button6;
+        public System.Windows.Forms.PropertyGrid mapPropertyGrid;
+        public System.Windows.Forms.PropertyGrid propertyGrid3;
     }
 }
 

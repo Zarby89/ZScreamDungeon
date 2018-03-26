@@ -13,7 +13,7 @@ namespace ZeldaFullEditor
 
         //ROM.DATA is a base rom loaded to get basic information it can either be JP1.0 or US1.2
         //can still use it for load but must not be used 
-
+        public int newHeaderPos = 0x122000;
         Room[] all_rooms;
         Entrance[] entrances;
         string[] texts;
@@ -415,9 +415,9 @@ namespace ZeldaFullEditor
                 ROM.DATA[Constants.room_header_pointers_bank] = 0x24;
                 for (int i = 0; i < 296; i++)
                 {
-                    ROM.DATA[headerPointer + (i * 2)] = (byte)((Addresses.pctosnes(0x120090 + (i * 14)) & 0xFF));
-                    ROM.DATA[headerPointer + (i * 2) + 1] = (byte)((Addresses.pctosnes(0x120090 + (i * 14)) >> 8) & 0xFF);
-                    saveHeader(0x120090, i);
+                    ROM.DATA[headerPointer + (i * 2)] = (byte)((Addresses.pctosnes(newHeaderPos + (i * 14)) & 0xFF));
+                    ROM.DATA[headerPointer + (i * 2) + 1] = (byte)((Addresses.pctosnes(newHeaderPos + (i * 14)) >> 8) & 0xFF);
+                    saveHeader(newHeaderPos, i);
                     //savetext
                     //(short)((ROM.DATA[Constants.messages_id_dungeon + (index * 2) + 1] << 8) + ROM.DATA[Constants.messages_id_dungeon + (index * 2)])
                     ROM.DATA[Constants.messages_id_dungeon + (i * 2)] = (byte)(all_rooms[i].messageid & 0xFF);
@@ -610,32 +610,52 @@ namespace ZeldaFullEditor
             for (int i = 0; i < 296; i++)
             {
 
-
+                
                 var roomBytes = all_rooms[i].getTilesBytes();
+                int doorPos = roomBytes.Length-2;
+
+
                 if (roomBytes.Length < 10)
                 {
-                    saveObjectBytes(all_rooms[i].index, 0x50000, roomBytes); //empty room pointer
+                    saveObjectBytes(all_rooms[i].index, 0x50000, roomBytes, doorPos); //empty room pointer
                     continue;
+                }
+                while (true)
+                {
+                    
+                    if (doorPos >= 04)
+                    {
+                        if (roomBytes[doorPos] == 0xF0 && roomBytes[doorPos+1] == 0xFF)
+                        {
+                            doorPos += 2;
+                            break;
+                        }
+                        doorPos -= 2;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
 
                 if (section1Index + roomBytes.Length <= 0x5374F) //0x50000 to 0x5374F
                 {
                     // write the room
-                    saveObjectBytes(all_rooms[i].index, section1Index, roomBytes);
+                    saveObjectBytes(all_rooms[i].index, section1Index, roomBytes,doorPos);
                     section1Index += roomBytes.Length;
                     continue;
                 }
                 else if (section2Index + roomBytes.Length <= 0xFFFF7) //0xF878A to 0xFFFF7
                 {
                     // write the room
-                    saveObjectBytes(all_rooms[i].index, section2Index, roomBytes);
+                    saveObjectBytes(all_rooms[i].index, section2Index, roomBytes, doorPos);
                     section2Index += roomBytes.Length;
                     continue;
                 }
                 else if (section3Index + roomBytes.Length <= 0x1FFFF) //0x1EB90 to 0x1FFFF
                 {
                     // write the room
-                    saveObjectBytes(all_rooms[i].index, section3Index, roomBytes);
+                    saveObjectBytes(all_rooms[i].index, section3Index, roomBytes, doorPos);
                     section3Index += roomBytes.Length;
                     continue;
                 }
@@ -657,15 +677,20 @@ namespace ZeldaFullEditor
             return false; // False = no error
         }
 
-        void saveObjectBytes(int roomId, int position, byte[] bytes)
+        void saveObjectBytes(int roomId, int position, byte[] bytes, int doorOffset)
         {
             int objectPointer = (ROM.DATA[Constants.room_object_pointer + 2] << 16) + (ROM.DATA[Constants.room_object_pointer + 1] << 8) + (ROM.DATA[Constants.room_object_pointer]);
             objectPointer = Addresses.snestopc(objectPointer);
             saddr = Addresses.pctosnes(position);
+            int daddr = Addresses.pctosnes(position+doorOffset);
             // update the index
             ROM.DATA[objectPointer + (roomId * 3)] = (byte)(saddr & 0xFF);
             ROM.DATA[objectPointer + (roomId * 3) + 1] = (byte)((saddr >> 8) & 0xFF);
             ROM.DATA[objectPointer + (roomId * 3) + 2] = (byte)((saddr >> 16) & 0xFF);
+
+            ROM.DATA[Constants.doorPointers + (roomId * 3)] = (byte)(daddr & 0xFF);
+            ROM.DATA[Constants.doorPointers + (roomId * 3) + 1] = (byte)((daddr >> 8) & 0xFF);
+            ROM.DATA[Constants.doorPointers + (roomId * 3) + 2] = (byte)((daddr >> 16) & 0xFF);
 
             Array.Copy(bytes, 0, ROM.DATA, position, bytes.Length);
         }
@@ -698,6 +723,7 @@ namespace ZeldaFullEditor
                     chestCount++;
                 }
             }
+            Console.WriteLine("Nbr of chests : " + chestCount);
             if (chestCount > 168)
             {
                 return true; // False = no error

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-    class Entrance //can be used for starting entrance as well
+    public class Entrance //can be used for starting entrance as well
     {
         short room;//word value for each room
         /*

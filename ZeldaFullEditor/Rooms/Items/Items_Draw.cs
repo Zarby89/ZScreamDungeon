@@ -29,7 +29,7 @@ namespace ZeldaFullEditor
         //pots items
         public void Draw()
         {
-            /*int id = this.id;
+            int id = this.id;
             if ((id & 0x80) == 0x80)
             {
                 id = (byte)((id - 0x80) / 2);
@@ -38,7 +38,7 @@ namespace ZeldaFullEditor
 
             if (id == 0)//Nothing
             {
-
+                draw_item_tile(x * 8, y * 8, 16, 16, 0x6C, 10, true);
             }
             else if (id == 1)//rupee
             {
@@ -46,15 +46,15 @@ namespace ZeldaFullEditor
             }
             else if (id == 2) //Rock Crab
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0x46, 10, 10);
+                draw_item_tile(x * 8, y * 8, 16, 16, 0x46, 10, true);
             }
             else if (id == 3) //bee
             {
-                draw_item_tile(x*8, y*8, 8, 16, 0x80, 11);
+                draw_item_tile((x * 8)+4, (y * 8)+4, 8, 8, 0xE4, 10, false, true);
             }
             else if (id == 4) //Random
             {
-                draw_item_tile(x*8+4, y*8+4, 8, 8, 0x6A, 10, 10);
+                draw_item_tile(x*8+4, y*8+4, 8, 8, 0x6A, 10, false);
             }
             else if (id == 5) //bomb
             {
@@ -90,27 +90,27 @@ namespace ZeldaFullEditor
             }
             else if (id == 13)//big magic - need gfx
             {
-                draw_item_tile((x*8+4), y*8, 8, 16, 0x22, 11,15); //2x22
+                draw_item_tile((x*8+4), y*8, 8, 16, 0x62, 11,false,true); //2x22
             }
-            else if (id == 14)//chicken
+            else if (id == 14)//chicken 
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0xEA, 10,14);
+                draw_item_tile(x*8, y*8, 16, 16, 0xEA, 10,true, true);
             }
             else if (id == 15)//green soldier
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0x40, 12, 14);
+                draw_item_tile(x*8, y*8, 16, 16, 0x40, 12, true, true);
             }
             else if (id == 16)//alive rock
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0x46, 10, 10);
+                draw_item_tile(x*8, y*8, 16, 16, 0x46, 10, true);
             }
             else if (id == 17)//blue soldier
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0x40, 10, 14);
+                draw_item_tile(x*8, y*8, 16, 16, 0x40, 10, true, true);
             }
             else if (id == 18)//ground bomb
             {
-
+                draw_item_tile(x * 8, y * 8, 16, 16, 0x48, 10, true);
             }
             else if (id == 19)//heart
             {
@@ -118,7 +118,7 @@ namespace ZeldaFullEditor
             }
             else if (id == 20)//fairy*8
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0xEC, 10, 10);
+                draw_item_tile(x*8, y*8, 16, 16, 0xEC, 10, false, true);
             }
             else if (id == 21)//heart
             {
@@ -126,11 +126,11 @@ namespace ZeldaFullEditor
             }
             else if (id == 22)//nothing
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0x6C, 10, 10);
+                draw_item_tile(x*8, y*8, 16, 16, 0x6C, 10, true);
             }
             else if (id == 23)//hole
             {
-
+                draw_item_tile(x * 8, y * 8, 16, 16, 0x60, 9, false);
             }
             else if (id == 24)//warp
             {
@@ -146,15 +146,15 @@ namespace ZeldaFullEditor
             }
             else if (id == 27)//switch
             {
-                draw_item_tile(x*8, y*8, 8, 16, 0x0B, 5, 4);
-            }*/
+                draw_item_tile(x*8, y*8, 8, 16, 0x0B, 5, true);
+            }
         }
 
 
 
 
 
-        public void draw_item_tile(int x, int y, int sx, int sy, int tid, int pid, byte sheet = 18)
+        public void draw_item_tile(int x, int y, int sx, int sy, int tid, int pid, bool nsheet = false,bool sprite = false)
         {
 
             if (nx != this.x || ny != this.y)
@@ -165,7 +165,15 @@ namespace ZeldaFullEditor
                 y += (this.ny * 8);
             }
 
-            int ty = (sheet * 4) + ((tid & 0xF0) >> 4);
+            int ty = ((tid & 0xF0) >> 4);
+            if (nsheet)
+            {
+                ty += 16;
+            }
+            if (sprite)
+            {
+                ty += 32;
+            }
             int tx = tid & 0x0F;
             for (int xx = 0; xx < (sx); xx++)
             {
@@ -185,17 +193,25 @@ namespace ZeldaFullEditor
                         {
                             if (dest > 0)
                             {
-
-                                if (GFX.singledata[(src)] == 0)
+                                if (sprite == false)
                                 {
-
+                                    if (GFX.itemsdataEDITOR[(src)] != 0)
+                                    { 
+                                        GFX.currentData[dest] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pid - 2].B);
+                                        GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pid - 2].G);
+                                        GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pid - 2].R);
+                                        GFX.currentData[dest + 3] = 255;
+                                    }
                                 }
                                 else
                                 {
-                                    GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(src)], pid - 2].B);
-                                    GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.singledata[(src)], pid - 2].G);
-                                    GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.singledata[(src)], pid - 2].R);
-                                    GFX.currentData[dest + 3] = 255;
+                                    if (GFX.singledata[(src)] != 0)
+                                    {
+                                        GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(src)], pid - 2].B);
+                                        GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.singledata[(src)], pid - 2].G);
+                                        GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.singledata[(src)], pid - 2].R);
+                                        GFX.currentData[dest + 3] = 255;
+                                    }
                                 }
                             }
                         }

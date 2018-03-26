@@ -518,7 +518,7 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-
+            
 
             needGfxRefresh = true;
             reloadLayout();
@@ -580,10 +580,7 @@ namespace ZeldaFullEditor
                         }
                     }
                 }
-
-
                 sprite_address += 3;
-
             }
         }
 

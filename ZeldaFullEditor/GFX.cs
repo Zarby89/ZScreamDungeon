@@ -39,6 +39,87 @@ namespace ZeldaFullEditor
 
         public static int[] positions = new int[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
         public static int superpos = 0;
+        public static List<Tile16> tiles16 = new List<Tile16>();
+        public static List<Tile32> tiles32 = new List<Tile32>();
+        public static void AssembleMap16Tiles()
+        {
+            int tpos = Constants.map16Tiles;
+            for (int i = 0; i < 3760; i += 1)
+            {
+                TileInfo t0 = gettilesinfo(BitConverter.ToInt16(ROM.DATA, (tpos)));
+                tpos += 2;
+                TileInfo t1 = gettilesinfo(BitConverter.ToInt16(ROM.DATA, (tpos)));
+                tpos += 2;
+                TileInfo t2 = gettilesinfo(BitConverter.ToInt16(ROM.DATA, (tpos)));
+                tpos += 2;
+                TileInfo t3 = gettilesinfo(BitConverter.ToInt16(ROM.DATA, (tpos)));
+                tpos += 2;
+                tiles16.Add(new Tile16(t0, t1, t2, t3));
+            }
+        }
+
+
+
+        public static void AssembleMap32Tiles()
+        {
+
+            for (int i = 0; i < 0x33C0; i += 6)
+            {
+                
+
+                ushort tl = (ushort)(ROM.DATA[Constants.map32TilesTL + (i)] + (((ROM.DATA[Constants.map32TilesTL + (i) + 4] >> 4) & 0x0f) * 256));
+                ushort tr = (ushort)(ROM.DATA[Constants.map32TilesTR + (i)] + (((ROM.DATA[Constants.map32TilesTR + (i) + 4] >> 4) & 0x0f) * 256));
+                ushort bl = (ushort)(ROM.DATA[Constants.map32TilesBL + (i)] + (((ROM.DATA[Constants.map32TilesBL + (i) + 4] >> 4) & 0x0f) * 256));
+                ushort br = (ushort)(ROM.DATA[Constants.map32TilesBR + (i)] + (((ROM.DATA[Constants.map32TilesBR + (i) + 4] >> 4) & 0x0f) * 256));
+                tiles32.Add(new Tile32(tl, tr, bl, br));
+
+
+                tl = (ushort)(ROM.DATA[Constants.map32TilesTL + 1 + (i)] + (((ROM.DATA[Constants.map32TilesTL + (i) + 4]) & 0x0f) * 256));
+                tr = (ushort)(ROM.DATA[Constants.map32TilesTR + 1 + (i)] + (((ROM.DATA[Constants.map32TilesTR + (i) + 4]) & 0x0f) * 256));
+                bl = (ushort)(ROM.DATA[Constants.map32TilesBL + 1 + (i)] + (((ROM.DATA[Constants.map32TilesBL + (i) + 4]) & 0x0f) * 256));
+                br = (ushort)(ROM.DATA[Constants.map32TilesBR + 1 + (i)] + (((ROM.DATA[Constants.map32TilesBR + (i) + 4]) & 0x0f) * 256));
+                tiles32.Add(new Tile32(tl, tr, bl, br));
+
+                tl = (ushort)(ROM.DATA[Constants.map32TilesTL + 2 + (i)] + (((ROM.DATA[Constants.map32TilesTL + (i) + 5] >> 4) & 0x0f) * 256));
+                tr = (ushort)(ROM.DATA[Constants.map32TilesTR + 2 + (i)] + (((ROM.DATA[Constants.map32TilesTR + (i) + 5] >> 4) & 0x0f) * 256));
+                bl = (ushort)(ROM.DATA[Constants.map32TilesBL + 2 + (i)] + (((ROM.DATA[Constants.map32TilesBL + (i) + 5] >> 4) & 0x0f) * 256));
+                br = (ushort)(ROM.DATA[Constants.map32TilesBR + 2 + (i)] + (((ROM.DATA[Constants.map32TilesBR + (i) + 5] >> 4) & 0x0f) * 256));
+                tiles32.Add(new Tile32(tl, tr, bl, br));
+
+
+                tl = (ushort)(ROM.DATA[Constants.map32TilesTL + 3 + (i)] + (((ROM.DATA[Constants.map32TilesTL + (i) + 5]) & 0x0f) * 256));
+                tr = (ushort)(ROM.DATA[Constants.map32TilesTR + 3 + (i)] + (((ROM.DATA[Constants.map32TilesTR + (i) + 5]) & 0x0f) * 256));
+                bl = (ushort)(ROM.DATA[Constants.map32TilesBL + 3 + (i)] + (((ROM.DATA[Constants.map32TilesBL + (i) + 5]) & 0x0f) * 256));
+                br = (ushort)(ROM.DATA[Constants.map32TilesBR + 3 + (i)] + (((ROM.DATA[Constants.map32TilesBR + (i) + 5]) & 0x0f) * 256));
+                tiles32.Add(new Tile32(tl, tr, bl, br));
+            }
+
+        }
+
+
+        public static TileInfo gettilesinfo(short tile)
+        {
+            //vhopppcc cccccccc
+            bool o = false;
+            bool v = false;
+            bool h = false;
+            short tid = (short)(tile & 0x3FF);
+            byte p = (byte)((tile >> 10) & 0x07);
+            if ((tile & 0x2000) == 0x2000)
+            {
+                o = true;
+            }
+            if ((tile & 0x4000) == 0x4000)
+            {
+                h = true;
+            }
+            if ((tile & 0x8000) == 0x8000)
+            {
+                v = true;
+            }
+            return new TileInfo(tid, p, v, h, o);
+
+        }
 
         public static byte[] bpp3snestoindexed(byte[] data, int index)
         {
@@ -179,14 +260,14 @@ namespace ZeldaFullEditor
 
         public static Bitmap singletobmp(byte[] data, int index, int p = 4, bool trans = false)
         {
-            Bitmap b = new Bitmap(128, 128);
+            Bitmap b = new Bitmap(128, 256); //128 = 4
             
-            begin_draw(b, 128, 128);
+            begin_draw(b, 128, 256);
             unsafe
             {
                 for (int x = 0; x < 128; x++)
                 {
-                    for (int y = 0; y < 128; y++)
+                    for (int y = 0; y < 256; y++)
                     {
 
                         int dest = (x + (y * 128)) * 4;
@@ -197,9 +278,9 @@ namespace ZeldaFullEditor
                                 continue;
                             }
                         }
-                        currentData[dest] = (spritesPalettes[GFX.itemsdataEDITOR[(dest / 4)], p].B);
-                        currentData[dest + 1] = (spritesPalettes[GFX.itemsdataEDITOR[(dest / 4)], p].G);
-                        currentData[dest + 2] = (spritesPalettes[GFX.itemsdataEDITOR[(dest / 4)], p].R);
+                        currentData[dest] = (loadedPalettes[GFX.singledata[(dest / 4)], p].B);
+                        currentData[dest + 1] = (loadedPalettes[GFX.singledata[(dest / 4)], p].G);
+                        currentData[dest + 2] = (loadedPalettes[GFX.singledata[(dest / 4)], p].R);
                         currentData[dest + 3] = 255;
                     }
                 }

@@ -34,10 +34,12 @@ namespace ZeldaFullEditor
         bool anychange = false;
         PaletteViewer paletteViewer;
         string version = "us";
-        public List<DScene> rooms = new List<DScene>();
+        public List<DockContent> rooms = new List<DockContent>();
+        public List<DockContent> maps = new List<DockContent>();
         Charactertable table_char = new Charactertable(true);
         bool projectLoaded = false;
         bool schedulegfxSave = false;
+        public Scene activeScene;
 
         //List<string> recentProjects = new List<string>();
 
@@ -48,6 +50,7 @@ namespace ZeldaFullEditor
             LoadProject(fileName);
         }
         DockPanel dockPanel = new DockPanel();
+        string baseROM = "";
         private void Form1_Load(object sender, EventArgs e)
         {
             //settings.cfg format
@@ -81,6 +84,8 @@ namespace ZeldaFullEditor
             }*/
 
 
+
+
             ROMStructure.loadDefaultProject();
 
             Controls.Add(dockPanel);
@@ -88,7 +93,6 @@ namespace ZeldaFullEditor
             dockPanel.Dock = DockStyle.Fill;
             dockPanel.ActiveDocumentChanged += DockPanel_ActiveDocumentChanged;
 
-            actionsListbox.DisplayMember = "Name";
             palettePicturebox.Image = new Bitmap(256, 340);
             paletteViewer = new PaletteViewer(palettePicturebox);
             mapPicturebox.Image = new Bitmap(256, 304);
@@ -99,8 +103,17 @@ namespace ZeldaFullEditor
         {
             if (dockPanel.DocumentsCount > 0)
             {
-                activeScene = (dockPanel.ActiveDocument as DScene).scene;
-                propertyGrid1.SelectedObject = activeScene.room;
+                /*if (activeScene is SceneUW)
+                {
+                    activeScene = (dockPanel.ActiveDocument as DScene).scene;
+                    propertyGrid1.SelectedObject = activeScene.room;
+                }
+                else if(activeScene is SceneOW)
+                {
+                    activeScene = (dockPanel.ActiveDocument as DOWScene).scene;
+                    propertyGrid1.SelectedObject = (activeScene as SceneOW).room;
+                }*/
+                
             }
             else
             {
@@ -214,17 +227,12 @@ namespace ZeldaFullEditor
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog projectFile = new OpenFileDialog();
+            projectFile.Filter = "ZScream Project File .zsc|*.zsc";
+            projectFile.DefaultExt = ".zsc";
             if (projectFile.ShowDialog() == DialogResult.OK)
             {
+                ROMStructure.ProjectName = projectFile.FileName;
                 LoadProject(projectFile.FileName);
-                /*foreach (string s in recentProjects)
-                {
-                    if (s == projectFile.FileName)
-                    {
-                        return;
-                    }
-                }
-                recentProjects.Insert(0, projectFile.FileName);*/
             }
 
         }
@@ -430,7 +438,7 @@ namespace ZeldaFullEditor
 
         }
         TextPreview previewText;
-        Entrance[] entrances = new Entrance[0x84];
+        public Entrance[] entrances = new Entrance[0x85];
         Entrance[] starting_entrances = new Entrance[0x07];
         List<dataObject> listoftilesobjects = new List<dataObject>();
         List<dataObject> listofspritesobjects = new List<dataObject>();
@@ -439,22 +447,15 @@ namespace ZeldaFullEditor
             tabControl1.Enabled = true;
 
             GFX.gfxdata = Compression.DecompressTiles(); //decompress all the gfx from the game
-            for (int i = 0; i < 5; i++)
-            {
-                byte[] d = new byte[0];
-                if (i != 4)
-                {
-                    d = GFX.bpp3snestoindexed(GFX.gfxdata, 205+i);
-                }
-                else
-                {
-                    d = GFX.bpp3snestoindexed(GFX.gfxdata, 165);
-                }
-                for (int j = 0; j < 0x1000; j++)
-                {
-                        GFX.itemsdataEDITOR[(i * 0x1000) + j] = d[j];
-                }
-            }
+
+            additemGfx(205);
+            additemGfx(206);
+            additemGfx(207);
+            additemGfx(208);
+            additemGfx(165);
+            additemGfx(116);
+            GFX.AssembleMap16Tiles();
+            GFX.AssembleMap32Tiles();
             for (int i = 0; i < 296; i++)
             {
                 all_rooms[i] = (new Room(i)); // create all rooms
@@ -463,7 +464,7 @@ namespace ZeldaFullEditor
             if (version == "jp" || version == "vt")
             {
                 readAllText();//TODO : Change that to have it own class
-                messageidUpDown.Maximum = messageUpDown.Maximum;
+                
             }
 
             initRoomsList();
@@ -472,32 +473,38 @@ namespace ZeldaFullEditor
             previewText = new TextPreview(table_char);
             enableProjectButtons();
 
-
             Room r = (Room)all_rooms[260].Clone();
             DScene ds = new DScene(this, "Room : " + r.index);
-            Scene s = ds.scene;
+            SceneUW s = ds.scene;
 
             s.room = r;
-            propertyGrid1.SelectedObject = r;
-            rooms.Add(ds); //add the double clicked room into rooms list            
+            mapPropertyGrid.SelectedObject = r;
+            rooms.Add(ds); //add the double clicked room into rooms list       
+
             s.need_refresh = true;
             s.room.reloadGfx(false);
             paletteViewer.update();
             
             s.Enabled = true;
             s.Dock = DockStyle.Fill;
+
             gfxPicturebox.Image = GFX.selectedtobmp(new byte[] { 0, 1, 2, 3 }, (int)gfx2NumericUpDown.Value);
 
             s.initChestGfx();
             room_loaded = true;
             s.selectedMode = ObjectMode.Bg1mode;
-            s.Enabled = true;
             ds.Text = "Room : " + r.index;
             ds.Show(dockPanel);
             ds.Controls.Add(s);
             s.BringToFront();
             s.Size = new Size(512, 512);
 
+            Compression.DecompressAllMapTiles();
+            Compression.createMap32TilesFrom16();
+
+            OverworldGlobal.loadExits();
+            OverworldGlobal.loadEntrances();
+            OverworldGlobal.loadHoles();
             activeScene = s;
 
             //scene.room = room;
@@ -514,6 +521,20 @@ namespace ZeldaFullEditor
             //Start the update timer to refresh the screen
             updateTimer.Enabled = true;
             paletteViewer.update();
+        }
+        int itemGfxPos = 0;
+        public void additemGfx(int index)
+        {
+            byte[] d = new byte[0];
+
+            d = GFX.bpp3snestoindexed(GFX.gfxdata, index); //205
+            //165
+
+            for (int j = 0; j < 0x1000; j++)
+            {
+                GFX.itemsdataEDITOR[(itemGfxPos * 0x1000) + j] = d[j];
+            }
+            itemGfxPos++;
         }
 
         public void initObjectsList()
@@ -577,7 +598,7 @@ namespace ZeldaFullEditor
                 entrancetreeView.Nodes[1].Nodes.Add(tn);
             }
 
-            for (int i = 0; i < 0x84; i++)
+            for (int i = 0; i < 0x85; i++)
             {
                 entrances[i] = new Entrance((byte)i, false);
                 string tname = "[" + i.ToString("X2") + "] -> ";
@@ -611,6 +632,61 @@ namespace ZeldaFullEditor
                 subnode.Tag = r.id;
                 roomListView.Nodes[r.dungeonId].Nodes.Add(subnode);
             }
+
+
+            owMapList.Nodes.Clear();
+            //create the 4 categories, Light World, Dark World, Special, Backgrounds
+            owMapList.Nodes.Add("Light World");
+            owMapList.Nodes.Add("Dark World");
+            owMapList.Nodes.Add("Special");
+            owMapList.Nodes.Add("Background");
+            //create the rooms inside the dungeons
+            for (int i = 0; i < 64; i++)
+            {
+                TreeNode subnode = new TreeNode(i.ToString("X2") + " "+ ROMStructure.mapsNames[i]);
+                TreeNode subnode2 = new TreeNode((i + 64).ToString("X2")+" "+ ROMStructure.mapsNames[i+64]);
+                subnode.Tag = (short)(i);
+                subnode2.Tag = (short)(i + 64);
+                owMapList.Nodes[0].Nodes.Add(subnode);
+                owMapList.Nodes[1].Nodes.Add(subnode2);
+            }
+            List<TreeNode> nodetoRemove = new List<TreeNode>();
+            for (int i = 0; i < owMapList.Nodes[0].GetNodeCount(false); i++)
+            {
+
+                if (ROM.DATA[Constants.overworldMapSize + ((short)owMapList.Nodes[0].Nodes[i].Tag & 0x3F)] != 0)
+                {
+                    bool alreadyFound = false;
+                    foreach (TreeNode n in nodetoRemove)
+                    {
+                        if (n == owMapList.Nodes[0].Nodes[i])
+                        {
+                            alreadyFound = true;
+                            continue;
+                        }
+                    }
+                    if (!alreadyFound)
+                    {
+                        nodetoRemove.Add(owMapList.Nodes[0].Nodes[i + 1]);
+                        nodetoRemove.Add(owMapList.Nodes[0].Nodes[i + 8]);
+                        nodetoRemove.Add(owMapList.Nodes[0].Nodes[i + 9]);
+                        nodetoRemove.Add(owMapList.Nodes[1].Nodes[i + 1]);
+                        nodetoRemove.Add(owMapList.Nodes[1].Nodes[i + 8]);
+                        nodetoRemove.Add(owMapList.Nodes[1].Nodes[i + 9]);
+                    }
+                }
+
+            }
+
+            foreach (TreeNode n in nodetoRemove)
+            {
+                n.Remove();
+            }
+        }
+
+        public void removeNodeFromTag(TreeView tv,short tag)
+        {
+
         }
 
         public void enableProjectButtons()
@@ -626,6 +702,7 @@ namespace ZeldaFullEditor
             blockmodeButton.Enabled = true;
             torchmodeButton.Enabled = true;
             spritemodeButton.Enabled = true;
+            debugtestButton.Enabled = true;
             runtestButton.Enabled = true;
             potmodeButton.Enabled = true; //cant change to sprite since sprites are using 16x16
             saveToolStripMenuItem.Enabled = true;
@@ -682,44 +759,60 @@ namespace ZeldaFullEditor
 
         private void updateTimer_Tick(object sender, EventArgs e)
         {
-            foreach (DScene ds in rooms)
+            foreach (object ds in rooms)
             {
-                if (ds.scene.room.has_changed == true)
+                if (ds is DScene)
                 {
-                    if (ds.namedChanged == false)
+                    
+                    if ((ds as DScene).scene.room.has_changed == true)
                     {
-                        ds.Text += "*";
-                        ds.namedChanged = true;
-                    }
+                        if ((ds as DScene).namedChanged == false)
+                        {
+                            (ds as DScene).Text += "*";
+                            (ds as DScene).namedChanged = true;
+                        }
 
+                    }
+                }
+                if (ds is DOWScene)
+                {
+                   /* if ((ds as DOWScene).scene == true)
+                    {
+                        if ((ds as DOWScene).namedChanged == false)
+                        {
+                            (ds as DOWScene).Text += "*";
+                            (ds as DOWScene).namedChanged = true;
+                        }
+
+                    }*/
                 }
                 //ds.scene.drawRoom();
             }
-            activeScene.drawRoom();
-            if (animated)
-            {
-                GFX.animation_timer++;
-                if (GFX.animation_timer >= 8)
+
+                activeScene.drawRoom();
+                if (animated)
                 {
-                    activeScene.room.reloadGfx();
-                    activeScene.need_refresh = true;
-                    GFX.animation_timer = 0;
-                    GFX.animated_frame++;
-                    if (GFX.animated_frame >= 3)
+                    GFX.animation_timer++;
+                    if (GFX.animation_timer >= 8)
                     {
-                        GFX.animated_frame = 0;
+                        activeScene.room.reloadGfx();
+                        activeScene.need_refresh = true;
+                        GFX.animation_timer = 0;
+                        GFX.animated_frame++;
+                        if (GFX.animated_frame >= 3)
+                        {
+                            GFX.animated_frame = 0;
+                        }
                     }
                 }
-            }
 
-            if (schedulegfxSave)
-            {
-                
-                updategfxinrom();
-                schedulegfxSave = false;
-                activeScene.need_refresh = true;
-            }
+                if (schedulegfxSave)
+                {
 
+                    updategfxinrom();
+                    schedulegfxSave = false;
+                    activeScene.need_refresh = true;
+                }
         }
 
         public enum ObjectResize //TODO : ASAP the scaling from top/left cause that's annoying to not have them :p
@@ -743,7 +836,6 @@ namespace ZeldaFullEditor
         {
             if (activeScene.room != null)
             {
-                actionsListbox.Items.Clear();
                 activeScene.room.selectedObject.Clear();
             }
         }
@@ -793,21 +885,35 @@ namespace ZeldaFullEditor
             loadRoomList(260);
         }
         int selectedLayer = -1;
-        public Scene activeScene;
+        
 
         public void setmodeAllScene(ObjectMode mode)
         {
-            foreach (DScene ds in rooms)
+            foreach (object ds in rooms)
             {
-                ds.scene.selectedMode = mode;
+                if (ds is DScene)
+                {
+                    (ds as DScene).scene.selectedMode = mode;
+                }
+                else if (ds is DOWScene)
+                {
+                    (ds as DOWScene).scene.selectedMode = mode;
+                }
             }
         }
 
         public void updateScenesMode()
         {
-            foreach (DScene ds in rooms)
+            foreach (object ds in rooms)
             {
-                ds.scene.room.selectedObject.Clear();
+                if (ds is DScene)
+                {
+                    (ds as DScene).scene.room.selectedObject.Clear();
+                }
+                else if (ds is DOWScene)
+                {
+                    //(ds as DOWScene).scene.room.selectedObject.Clear();
+                }
             }
             objectsListbox.Enabled = false;
             spritesListbox.Enabled = false;
@@ -1566,7 +1672,7 @@ namespace ZeldaFullEditor
 
             if (activeScene.room.selectedObject.Count > 0)
             {
-                debuglabel.Text = activeScene.room.selectedObject[0].GetType().ToString();
+                //debuglabel.Text = activeScene.room.selectedObject[0].GetType().ToString();
                 if (activeScene.room.selectedObject[0] is Room_Object)
                 {
                     activeScene.updating_info = true;
@@ -1608,7 +1714,7 @@ namespace ZeldaFullEditor
                     {
                         o.layer = 2;
                     }
-                    activeScene.updating_info = false;
+                   activeScene.updating_info = false;
                 }
                  activeScene.need_refresh = true;
             }
@@ -1670,11 +1776,11 @@ namespace ZeldaFullEditor
         private void createProjectFromROMToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //openRomFileDialog.ShowDialog();
-            OpenFileDialog projectFile = new OpenFileDialog();
-            if (projectFile.ShowDialog() == DialogResult.OK)
-            {
-                CreateProject(projectFile.FileName);
-            }
+            //OpenFileDialog projectFile = new OpenFileDialog();
+            //if (projectFile.ShowDialog() == DialogResult.OK)
+            //{
+                CreateProject(baseROM);
+            //}
         }
 
         private void darkThemeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2100,6 +2206,7 @@ namespace ZeldaFullEditor
             //ROM.DATA[Constants.initial_equipement + 32] = rupeec[0]; //30, 31
             //ROM.DATA[Constants.initial_equipement + 33] = rupeec[1]; //30, 31
             //31,30,29,28
+
             ROM.DATA[Constants.initial_equipement + 32] = rupeec[0]; //30, 31
             ROM.DATA[Constants.initial_equipement + 33] = rupeec[1]; //30, 31
             ROM.DATA[Constants.initial_equipement + 34] = rupeec[0]; //30, 31
@@ -2533,9 +2640,9 @@ namespace ZeldaFullEditor
             {
                 Room r = (Room)all_rooms[roomId].Clone();
                 DScene ds = new DScene(this, "Room : " + r.index);
-                Scene s = ds.scene;
+                SceneUW s = ds.scene;
                 s.room = r;
-                propertyGrid1.SelectedObject = r;
+                mapPropertyGrid.SelectedObject = r;
                 rooms.Add(ds); //add the double clicked room into rooms list            
                 s.need_refresh = true;
                 s.room.reloadGfx(false);
@@ -2648,71 +2755,12 @@ namespace ZeldaFullEditor
             {
                 File.Delete("temp.sfc");
             }
-            FileStream brom = new FileStream("randobase.sfc", FileMode.Open, FileAccess.Read);
+
+            FileStream brom = new FileStream(baseROM, FileMode.Open, FileAccess.Read);
             brom.Read(ROM.DATA, 0, (int)brom.Length);
             brom.Close();
 
-            byte[] romBackup = (byte[])ROM.DATA.Clone();
-            Save save = new Save(all_rooms, entrances, messages);
-            if (save.saveRoomsHeaders()) //no protection always the same size so we don't care :)
-            {
-                MessageBox.Show("Failed to save header??", "Bad Error", MessageBoxButtons.OK);
-            }
-            if (save.saveallChests()) //chest there's a protection when there's too many chest - tested it works fine
-            {
-                MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
-                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                return;
-            }
-            if (save.saveallSprites())//sprites, there's a protection -NOT TESTED-
-            {
-                MessageBox.Show("Failed to save, there is too many sprites", "Bad Error", MessageBoxButtons.OK);
-                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                return;
-            }
-            if (save.saveAllObjects())//There is a protection - Tested
-            {
-                MessageBox.Show("Failed to save, there is too many tiles objects", "Bad Error", MessageBoxButtons.OK);
-                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                return;
-            }
-            if (save.saveallPots())//There is a protection - Tested
-            {
-                MessageBox.Show("Failed to save, there is too many pot items", "Bad Error", MessageBoxButtons.OK);
-                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                return;
-            }
-            if (save.saveBlocks())//There is a protection - Tested
-            {
-                MessageBox.Show("Failed to save, there is too many pushable blocks", "Bad Error", MessageBoxButtons.OK);
-                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                return;
-            }
-            if (save.saveTorches())//There is a protection Tested
-            {
-                MessageBox.Show("Failed to save, there is too many torches", "Bad Error", MessageBoxButtons.OK);
-                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                return;
-            }
-            if (save.saveAllPits())//There is a protection - Tested
-            {
-                MessageBox.Show("Failed to save, there is too many damage pits", "Bad Error", MessageBoxButtons.OK);
-                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                return;
-            }
-            if (save.saveTexts(messages, table_char))//There is a protection - Tested
-            {
-                MessageBox.Show("Failed to save, there is too many texts", "Bad Error", MessageBoxButtons.OK);
-                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                return;
-            }
-            if (save.saveEntrances(entrances))
-            {
-                MessageBox.Show("Failed to save entrances ?? no idea why LUL", "Bad Error", MessageBoxButtons.OK);
-                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                return;
-            }
-            saveInitialStuff(); //can't overwrite anything
+            saveToolStripMenuItem_Click(sender, e);
             
             FileStream fs = new FileStream("temp.sfc", FileMode.CreateNew, FileAccess.Write);
 
@@ -2839,6 +2887,18 @@ namespace ZeldaFullEditor
                 gfx7NumericUpDown.Enabled = true;
                 gfx8NumericUpDown.Enabled = true;
             }
+            else if (gfxgroupCombobox.SelectedIndex == 4)
+            {
+                gfx5NumericUpDown.Enabled = false;
+                gfx6NumericUpDown.Enabled = false;
+                gfx7NumericUpDown.Enabled = false;
+                gfx8NumericUpDown.Enabled = false;
+                gfx1NumericUpDown.Enabled = false;
+                gfx2NumericUpDown.Enabled = false;
+                gfx3NumericUpDown.Enabled = false;
+                gfx4NumericUpDown.Enabled = false;
+                gfxsinglechanged(sender, e);
+            }
             else
             {
                 gfx5NumericUpDown.Enabled = false;
@@ -2905,6 +2965,10 @@ namespace ZeldaFullEditor
                 spr = true;
             }
             Bitmap b = GFX.selectedtobmp(blocksetGfx, (int)5, spr); ;
+            if (gfxgroupCombobox.SelectedIndex == 4)
+            {
+                b = GFX.singletobmp(blocksetGfx, (int)5) ;
+            }
             gfxPicturebox.Image = new Bitmap(256, 1024);
             using (Graphics gfxG = Graphics.FromImage(gfxPicturebox.Image))
             {
@@ -2935,7 +2999,14 @@ namespace ZeldaFullEditor
             }
             else if (gfxgroupCombobox.SelectedIndex == 2) //sprites
             {
-                gfxgroupindexUpDown.Value = activeScene.room.spriteset + 64;
+                if (activeScene.isDungeon)
+                {
+                    gfxgroupindexUpDown.Value = activeScene.room.spriteset + 64;
+                }
+                else
+                {
+                    gfxgroupindexUpDown.Value = (activeScene as SceneOW).room.spriteset;
+                }
             }
 
         }
@@ -2947,15 +3018,79 @@ namespace ZeldaFullEditor
 
         private void debugtestButton_Click(object sender, EventArgs e)
         {
+            if (File.Exists("temp.sfc"))
+            {
+                File.Delete("temp.sfc");
+            }
 
+            FileStream brom = new FileStream(baseROM, FileMode.Open, FileAccess.Read);
+            brom.Read(ROM.DATA, 0, (int)brom.Length);
+            brom.Close();
+
+            saveToolStripMenuItem_Click(sender, e);
+            if (DEBUGEquipmentCheckbox.Checked)
+            {
+                for (int i = 0; i < 35; i++)
+                {
+                    ROM.DATA[Constants.initial_equipement + i] = 1;
+                }
+                ROM.DATA[Constants.initial_equipement + 57] |= 0x04;
+                ROM.DATA[Constants.initial_equipement + 20] = (byte)(2);
+                ROM.DATA[Constants.initial_equipement + 25] = (byte)(4);
+                ROM.DATA[Constants.initial_equipement + 26] = (byte)(3);
+                ROM.DATA[Constants.initial_equipement + 27] = (byte)(2);
+                ROM.DATA[Constants.initial_equipement + 28] = (byte)(1);
+                ROM.DATA[Constants.initial_equipement + 44] = (byte)(0xA0);
+                ROM.DATA[Constants.initial_equipement + 45] = (byte)(0xA0);
+                ROM.DATA[Constants.initial_equipement + 12] = (byte)(0x03);//flute activated
+                ROM.DATA[0x180043] = 0x04; //sword extra
+            }
+            if (DEBUGWallCheckbox.Checked)
+            {
+                ROM.DATA[0x03B5BF] = 0x22;
+                ROM.DATA[0x03B5BF + 1] = 0x00;
+                ROM.DATA[0x03B5BF + 2] = 0x91;
+                ROM.DATA[0x03B5BF + 3] = 0x24;
+
+                ROM.DATA[0x121100] = 0xA5;
+                ROM.DATA[0x121100+1] = 0xFA;
+                ROM.DATA[0x121100+2] = 0x29;
+                ROM.DATA[0x121100+3] = 0x10;
+                ROM.DATA[0x121100+4] = 0xF0;
+                ROM.DATA[0x121100+5] = 0x02;
+                ROM.DATA[0x121100+6] = 0xA9;
+                ROM.DATA[0x121100+7] = 0x01;
+                ROM.DATA[0x121100+8] = 0x8D;
+                ROM.DATA[0x121100+9] = 0x7F;
+                ROM.DATA[0x121100+10] = 0x03;
+                ROM.DATA[0x121100+11] = 0xA5;
+                ROM.DATA[0x121100+12] = 0x3B;
+                ROM.DATA[0x121100+13] = 0x29;
+                ROM.DATA[0x121100+14] = 0x80;
+                ROM.DATA[0x121100+15] = 0x6B;
+
+            }
+            if (DEBUGMirrorCheckbox.Checked)
+            {
+                ROM.DATA[0x03A943] = 0x80;
+            }
+
+            FileStream fs = new FileStream("temp.sfc", FileMode.CreateNew, FileAccess.Write);
+
+            fs.Write(ROM.DATA, 0, ROM.DATA.Length);
+            fs.Close();
+            Process p = Process.Start("temp.sfc");
         }
 
         private void saveasToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog sf = new SaveFileDialog();
+            sf.DefaultExt = ".zsc";
+            sf.Filter = "ZScream Project File .zsc|*.zsc";
             if (sf.ShowDialog() == DialogResult.OK)
             {
                 projectFilename = sf.FileName;
+                ROMStructure.ProjectName = sf.FileName;
                 saveToolStripMenuItem_Click(sender, e);
             }
         }
@@ -2986,6 +3121,252 @@ namespace ZeldaFullEditor
             }
             fs.Write(data, 0, data.Length);
             fs.Close();
+        }
+
+        private void changeBaseROMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog of = new OpenFileDialog();
+            of.DefaultExt = ".sfc";
+            of.Filter = "ALTTP RANDOMIZER ROM .sfc|*.sfc";
+            if (of.ShowDialog() == DialogResult.OK)
+            {
+                IniFile file = new IniFile("settings.ini");
+                file.SetValue("Global Setting", "BaseROM", of.FileName);
+                baseROM = of.FileName;
+                file.save();
+            }
+        }
+
+        private void fileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (File.Exists("settings.ini"))
+            {
+                IniFile file = new IniFile("settings.ini");
+                baseROM = file.GetValue("Global Setting", "BaseROM");
+
+            }
+            else
+            {
+                FileStream f = File.Create("settings.ini");
+                f.Close();
+
+                MessageBox.Show("Please choose a Base Randomizer ROM that will be used to load default values for the editor\nThis can be changed anytime that file won't be modified in any ways");
+
+                OpenFileDialog of = new OpenFileDialog();
+                of.DefaultExt = ".sfc";
+                of.Filter = "ALTTP RANDOMIZER ROM .sfc|*.sfc";
+                if (of.ShowDialog() == DialogResult.OK)
+                {
+                    IniFile file = new IniFile("settings.ini");
+                    file.SetValue("Global Setting", "BaseROM", of.FileName);
+                    baseROM = of.FileName;
+                    file.save();
+                }
+                else
+                {
+                    MessageBox.Show("You must set a base rom !");
+                }
+            }
+
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        public void addMapTab(short roomId)
+        {
+
+            bool alreadyFound = false;
+            foreach (DOWScene ds in maps)
+            {
+                if (ds.scene.room.index == roomId)
+                {
+                    alreadyFound = true;
+                    break;
+                }
+            }
+            if (alreadyFound == true)
+            {
+                //display message error room already opened
+                MessageBox.Show("That room is already opened !");
+                return;
+            }
+            else
+            {
+                
+                DOWScene ds = new DOWScene(this, "Map : " + roomId);
+                SceneOW s = ds.scene;
+                //s.mapId = roomId;
+                s.room = new RoomOW(roomId);//(RoomOW)all_rooms[0].Clone();
+                //propertyGrid1.SelectedObject = r;
+                maps.Add(ds); //add the double clicked room into rooms list            
+                s.need_refresh = true;
+                
+                s.canSelectUnselectedBG = unselectedBGTransparentToolStripMenuItem.Checked;
+                paletteViewer.update();
+                s.initChestGfx();
+                s.Enabled = true;
+                s.Dock = DockStyle.Fill;
+                //gfxPicturebox.Image = GFX.singletobmp(new byte[] { 0, 1, 2, 3 }, (int)gfx2NumericUpDown.Value);
+                room_loaded = true;
+                s.selectedMode = ObjectMode.Bg1mode;
+                s.Enabled = true;
+                ds.Text = "Map : " + roomId;
+                ds.Show(dockPanel);
+                ds.Controls.Add(s);
+                s.BringToFront();
+                s.Size = new Size(512, 512);
+                objectsListbox.ClearSelected();
+                spritesListbox.ClearSelected();
+                updateScenesMode();
+            }
+
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+
+            //(activeScene as SceneOW).createTileset();
+            ushort[] tiledata = new ushort[]
+            {
+                1,2,3,1,2,3,1,2,3,1,4,5,6,7,8,9,10,8,9,10,8,9,40,41,5,89,90,9,10,8,9,10,8,9,10,8,9,10,8,9,10,8,9,10,50,51,26,27,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,
+                11,12,13,11,12,13,11,12,14,15,5,5,16,17,18,19,20,18,19,20,18,19,20,45,77,97,18,19,20,18,19,20,18,19,20,18,19,20,18,19,20,18,19,20,57,58,33,34,5,130,26,27,5,5,5,5,130,89,90,91,40,41,5,5,
+                21,22,23,21,22,23,21,22,24,25,26,27,5,28,2,3,1,2,3,1,2,3,1,4,5,28,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,2,3,1,4,5,5,5,5,5,33,34,5,5,26,27,5,97,18,19,20,45,5,5,
+                29,30,31,29,30,31,29,30,32,5,33,34,35,36,12,13,11,12,14,15,37,38,15,81,82,83,37,38,15,37,38,15,37,38,15,37,69,11,12,14,131,132,38,15,133,49,49,49,49,49,49,49,101,5,33,34,5,28,2,3,1,60,5,5,
+                10,8,9,10,8,9,10,8,39,40,41,5,42,21,22,23,21,22,24,25,43,44,25,95,87,96,43,44,25,43,44,25,43,44,25,43,84,21,22,24,135,136,137,135,53,141,142,53,53,53,53,53,110,101,5,130,5,68,37,38,15,126,5,5,
+                20,18,19,20,18,19,20,18,19,20,45,5,46,29,30,31,29,30,47,48,49,49,49,98,99,100,49,49,49,49,49,49,49,101,5,5,46,29,30,119,53,53,53,53,53,151,152,53,54,54,53,53,53,110,101,5,5,5,43,44,25,5,5,5,
+                1,2,3,1,2,3,1,2,3,1,4,5,6,7,8,9,10,50,51,52,55,55,53,103,104,105,53,540,53,53,53,54,53,106,89,90,120,10,139,140,53,53,141,142,53,53,53,53,143,144,53,53,55,55,110,49,49,101,5,5,130,5,5,5,
+                11,12,13,11,12,13,11,12,14,15,56,5,16,17,18,19,20,57,58,52,53,53,53,53,53,53,53,540,53,53,53,59,53,106,97,18,19,20,149,150,53,53,151,152,141,142,53,53,153,154,175,176,127,128,53,53,53,106,5,5,5,26,27,5,
+                21,22,23,21,22,23,21,22,24,25,26,27,5,28,2,3,1,60,5,52,61,62,63,53,53,53,64,65,65,66,61,62,63,106,102,2,3,1,125,53,53,53,53,53,151,152,53,53,53,53,177,21,22,169,53,53,53,106,5,5,5,33,34,5,
+                29,30,31,29,30,31,29,30,47,5,67,34,5,68,37,69,11,70,71,72,73,74,75,65,65,65,76,77,5,72,73,74,117,163,36,12,13,11,127,128,53,54,53,54,53,53,53,53,53,54,138,29,30,119,53,53,53,106,26,27,5,5,5,5,
+                10,8,9,10,50,78,79,80,51,26,27,5,26,27,43,84,21,22,85,5,86,87,88,5,89,90,91,40,41,5,86,87,107,42,21,22,23,21,22,169,66,53,55,55,53,143,144,53,54,53,145,146,147,140,53,53,64,76,33,34,5,5,5,5,
+                20,18,19,20,57,92,93,94,58,33,34,5,33,34,5,46,29,30,32,5,95,87,96,5,97,18,19,20,45,5,95,87,96,46,29,30,31,29,30,47,52,53,55,55,53,153,154,53,53,53,155,156,157,150,53,64,76,5,130,5,5,5,130,5,
+                1,2,3,1,4,48,49,49,49,49,49,49,101,5,5,6,79,80,51,5,86,87,96,5,102,2,3,1,4,5,95,87,96,6,7,8,9,10,50,51,52,53,53,53,53,53,54,53,53,53,53,53,53,64,65,76,5,5,5,5,5,5,5,5,
+                11,12,14,15,56,52,53,53,53,55,55,54,106,26,27,16,93,94,58,5,95,87,107,5,108,37,69,11,70,71,95,87,96,16,17,18,19,20,57,123,111,141,142,53,53,53,175,176,127,128,53,53,64,76,35,36,70,179,36,70,71,5,5,5,
+                21,22,24,25,5,52,53,227,53,55,55,54,106,33,34,48,49,49,49,101,86,87,96,26,27,43,84,21,22,85,95,87,96,5,28,2,3,1,60,52,53,151,152,53,53,53,177,21,22,169,53,53,106,5,42,21,22,23,21,22,85,5,26,27,
+                29,30,32,5,5,72,66,53,54,53,53,109,110,49,49,111,578,579,53,106,95,87,96,33,34,77,46,29,30,32,95,87,107,26,27,37,38,15,56,52,53,53,54,53,53,53,138,29,30,119,53,53,106,5,46,29,30,31,29,30,32,5,33,34,
+                10,8,91,40,41,130,72,66,53,226,53,53,53,55,55,53,580,581,53,113,98,99,100,101,89,90,39,10,50,51,86,87,96,33,34,43,44,25,5,52,53,53,53,53,53,53,145,146,147,140,53,53,110,101,6,7,50,78,79,80,51,5,5,5,
+                20,18,19,20,45,5,5,72,66,53,53,227,53,55,55,53,582,583,53,53,103,104,105,106,97,18,19,20,57,58,95,87,96,5,5,48,49,49,49,111,53,53,54,53,53,53,155,156,157,150,53,53,53,106,16,93,94,58,187,188,58,5,5,5,
+                1,2,3,1,4,5,77,5,72,66,53,53,53,53,53,226,53,54,53,53,53,53,64,76,102,2,3,1,4,48,98,99,100,49,49,111,53,53,53,53,53,53,53,55,55,53,53,53,53,53,53,53,53,110,49,101,5,130,33,34,130,5,5,5,
+                11,12,13,11,70,71,5,77,5,72,65,65,66,53,53,227,53,59,53,53,53,53,106,35,36,12,14,15,56,52,103,104,105,53,141,142,53,114,175,176,127,128,53,55,55,55,55,55,53,53,141,142,53,53,53,110,49,49,49,101,5,5,5,5,
+                21,22,23,21,22,85,5,5,5,77,130,77,52,53,54,53,53,53,64,65,65,65,76,42,21,22,24,25,48,111,53,54,53,53,151,152,53,53,177,21,22,169,53,53,234,235,235,236,237,53,151,152,53,53,53,53,53,551,552,106,5,5,5,5,
+                29,30,31,29,30,47,5,5,77,5,5,48,111,53,54,53,64,65,76,77,5,5,77,46,29,30,47,48,111,53,53,59,53,53,141,142,53,53,138,29,30,119,53,53,238,239,239,240,241,53,53,54,53,53,53,53,53,553,554,106,5,5,5,5,
+                10,8,9,10,50,51,5,5,5,130,77,52,53,53,53,64,76,5,89,90,91,40,118,39,10,50,51,72,66,53,53,53,114,53,151,152,53,53,145,146,147,140,54,53,238,239,239,240,241,53,53,53,53,53,175,176,127,178,176,70,179,36,70,71,
+                20,18,19,20,57,58,5,77,5,5,130,52,53,53,64,76,130,5,97,18,19,20,18,19,20,57,58,5,72,66,53,53,53,53,143,144,53,53,155,156,157,150,54,53,244,246,247,248,241,53,54,53,64,65,177,21,22,23,21,22,23,21,22,85,
+                1,2,3,1,4,5,130,5,77,5,48,111,54,226,110,101,5,5,102,2,3,1,2,3,1,4,5,48,49,112,65,65,65,66,153,154,53,53,53,53,53,53,54,53,1472,252,253,1473,256,53,53,64,76,5,46,29,30,31,29,30,31,29,30,32,
+                15,37,38,15,5,5,5,5,5,48,111,53,53,53,53,110,101,5,130,37,69,11,12,13,11,70,71,52,53,110,49,49,49,111,53,53,53,53,53,53,53,53,53,54,159,381,53,53,53,182,183,39,40,118,120,10,8,9,10,50,78,79,80,51,
+                25,43,44,25,5,5,5,5,48,111,226,227,53,53,53,53,110,101,5,43,84,21,22,23,21,22,85,72,66,54,53,53,53,54,53,53,53,53,53,54,53,53,53,53,174,173,53,258,53,186,18,19,20,18,19,20,18,19,20,57,92,187,188,58,
+                5,5,5,5,5,5,5,48,111,53,53,53,53,53,53,53,53,106,5,77,46,29,30,31,29,30,47,5,72,66,53,53,53,175,176,127,128,53,53,175,176,127,128,53,53,53,53,114,53,191,2,3,1,2,3,1,2,3,1,60,130,33,34,130,
+                5,5,77,5,5,5,48,111,53,227,53,53,64,65,65,66,53,106,5,5,6,7,8,120,10,8,9,40,41,52,53,53,53,177,21,22,169,53,53,177,21,22,169,53,53,53,53,53,175,176,12,13,11,12,13,11,12,14,15,126,48,49,101,35,
+                5,5,5,5,5,48,111,53,55,53,53,53,106,26,27,52,53,110,49,101,16,17,18,19,20,18,19,20,45,52,53,53,53,138,29,30,119,53,53,138,29,30,119,53,53,53,53,64,177,21,22,23,21,22,23,21,22,24,25,48,111,53,106,42,
+                5,5,5,5,5,52,53,53,55,53,53,53,106,33,34,52,53,53,53,106,5,28,2,3,1,2,3,1,4,52,53,55,53,145,146,147,140,53,53,145,146,147,140,53,53,55,64,76,46,29,30,31,29,30,31,29,30,47,48,111,53,109,106,46,
+                5,5,5,5,5,52,53,53,55,53,53,53,106,26,27,52,54,53,53,106,5,5,37,38,15,37,38,15,48,111,53,53,53,155,156,157,150,53,53,155,156,157,150,53,55,55,106,5,6,7,8,9,10,50,78,79,80,51,52,109,577,53,106,6,
+                5,5,5,5,48,111,114,53,55,53,53,53,106,33,34,52,54,53,64,76,26,27,43,44,25,43,44,25,52,53,175,176,127,128,175,176,127,128,53,55,55,53,53,53,53,53,106,5,16,17,18,19,20,57,92,187,188,58,52,53,53,109,106,16,
+                77,5,5,5,72,66,53,109,55,53,53,53,110,49,49,111,53,64,76,5,33,34,5,26,27,5,5,48,111,53,177,21,22,169,177,21,22,169,53,55,53,53,53,141,142,53,106,130,130,28,2,3,1,60,5,33,34,48,111,53,53,53,106,5,
+                5,35,36,70,71,52,53,55,55,141,142,53,53,53,59,53,53,110,101,77,5,5,5,33,34,5,48,111,53,53,138,29,30,119,138,29,30,119,53,53,53,53,53,151,152,53,106,5,35,36,12,14,15,126,48,49,49,111,53,53,53,53,106,5,
+                5,42,21,22,85,52,53,55,55,151,152,53,53,53,53,53,53,53,110,49,49,49,49,49,49,49,111,53,53,53,145,146,147,140,145,146,147,140,114,53,175,176,127,128,53,53,106,5,42,21,22,24,25,48,111,53,53,53,53,53,54,53,106,5,
+                5,46,29,30,32,52,53,55,55,55,53,53,53,53,53,159,381,53,53,143,144,53,53,53,53,53,54,54,53,53,155,156,157,150,155,156,157,150,54,53,177,21,22,169,53,53,106,5,46,29,30,47,48,111,53,54,53,53,54,53,53,64,76,5,
+                5,6,79,80,51,52,53,55,55,55,55,55,53,53,53,174,173,53,53,153,154,53,55,53,53,53,53,54,53,53,53,53,53,53,53,53,53,53,53,53,138,29,30,119,53,53,106,5,6,79,80,51,52,53,53,53,53,53,53,53,53,106,26,27,
+                5,16,93,94,58,52,53,53,55,55,55,55,53,53,53,53,53,53,109,53,54,53,55,53,53,53,53,53,59,54,53,55,53,53,53,53,53,53,53,53,145,146,147,140,53,53,110,101,16,93,94,58,52,53,53,64,65,65,66,53,53,106,33,34,
+                5,5,5,5,5,52,53,55,55,55,53,141,142,53,53,53,53,53,55,55,59,53,53,53,141,142,55,55,53,109,59,53,54,53,53,53,53,53,53,54,155,156,157,150,53,114,53,110,49,49,49,49,111,53,64,76,48,49,112,66,53,110,49,49,
+                26,27,5,5,5,72,66,55,55,55,55,151,152,53,53,53,53,53,53,53,53,53,53,53,151,152,55,55,53,53,109,53,53,53,53,53,53,53,53,53,159,381,53,53,53,53,53,53,53,53,53,53,53,53,106,48,111,528,110,111,53,53,53,53,
+                33,34,5,5,5,48,111,53,55,55,55,55,53,53,53,53,109,53,53,53,53,53,53,53,53,53,53,53,59,53,55,53,53,53,53,61,62,63,53,53,170,378,53,182,183,39,121,122,53,54,54,53,53,54,110,112,65,65,66,53,53,53,54,53,
+                5,5,5,5,5,52,53,141,142,53,55,55,53,53,53,53,53,64,65,65,66,53,53,55,55,55,53,53,53,53,55,55,53,53,64,73,74,75,65,66,170,378,53,186,18,19,20,124,53,53,53,577,53,53,53,110,49,49,111,159,381,53,53,54,
+                5,5,77,5,48,111,53,151,152,53,53,53,53,53,53,53,53,106,26,27,52,53,53,53,53,53,53,53,55,53,64,65,65,65,76,95,87,88,48,111,174,173,53,191,2,3,1,125,53,53,53,53,53,53,53,53,53,53,53,170,378,53,54,54,
+                130,5,5,48,111,53,53,55,55,53,53,53,53,53,53,53,64,76,33,34,72,65,65,65,65,65,65,65,65,65,76,48,49,49,101,95,87,96,52,159,381,53,175,176,12,13,11,127,178,176,127,128,53,53,54,53,53,54,53,170,502,160,160,161,
+                5,5,48,111,114,55,55,55,55,55,53,109,53,53,53,64,76,5,5,5,26,27,5,5,5,5,5,5,130,5,5,52,55,55,106,86,87,96,52,174,173,64,42,21,22,23,21,22,23,21,22,169,53,53,53,53,53,53,54,174,166,166,166,167,
+                5,77,72,66,53,53,53,55,55,53,53,53,53,53,64,76,35,36,70,71,33,34,5,5,77,130,5,5,5,5,5,52,55,55,106,95,87,96,52,53,53,106,46,29,30,31,29,30,31,29,30,47,66,54,53,53,53,53,53,53,53,182,183,39,
+                5,5,5,72,65,65,66,53,55,53,53,64,65,65,76,5,42,21,22,85,5,5,5,130,5,5,5,77,5,5,5,72,65,65,76,86,87,96,52,53,53,106,6,7,8,9,10,50,78,79,80,51,52,53,53,53,53,54,53,53,53,186,18,19,
+                5,5,77,5,5,5,72,66,53,53,64,76,5,5,5,5,46,29,30,32,5,5,5,5,26,27,5,5,5,5,5,48,49,49,101,95,87,96,72,65,65,76,16,17,18,19,20,57,92,93,94,123,111,53,53,54,53,53,53,53,53,191,2,3,
+                5,5,5,5,5,130,5,72,65,65,76,5,5,77,5,77,6,79,80,51,5,130,5,5,33,34,5,5,5,77,5,52,53,53,113,98,99,100,49,49,49,101,5,28,2,3,1,60,5,48,49,111,53,53,54,54,53,175,176,127,178,176,12,13,
+                5,5,130,5,5,35,36,70,71,5,5,77,5,5,5,130,16,93,94,58,5,5,5,77,5,5,5,5,5,5,5,52,53,53,53,103,104,105,53,53,59,113,101,68,37,38,15,126,48,111,53,53,53,53,55,55,53,177,21,22,23,21,22,23,
+                5,5,5,26,27,42,21,22,85,5,5,5,5,5,130,5,5,5,5,5,5,5,5,5,5,77,5,5,5,5,5,72,66,53,54,54,53,53,53,53,53,53,106,5,43,44,25,48,111,53,53,53,53,53,54,53,53,138,29,30,31,29,30,31,
+                5,5,5,33,34,46,29,30,32,5,77,5,26,27,5,130,5,5,5,5,5,5,5,5,5,35,36,70,71,5,77,48,111,53,54,53,53,53,53,53,53,53,110,49,49,49,49,111,53,53,53,53,53,53,53,53,53,145,591,8,120,10,8,9,
+                5,5,5,5,5,6,79,80,51,5,5,5,33,34,5,5,5,5,5,5,26,27,5,5,5,42,21,22,85,5,5,52,53,53,53,54,53,53,141,142,55,53,53,53,53,53,53,114,53,53,53,53,55,53,53,54,53,155,223,18,19,20,18,19,
+                35,36,70,71,5,16,93,94,58,5,5,5,5,35,36,70,71,5,5,5,33,34,5,5,5,46,29,30,32,5,5,52,53,53,53,53,53,53,151,152,53,53,53,53,53,53,53,53,54,54,53,55,55,53,53,54,53,53,191,2,3,1,2,3,
+                42,21,22,85,5,5,5,5,26,27,5,5,5,42,21,22,85,5,5,5,5,5,5,5,5,6,79,80,51,5,5,52,53,141,142,53,53,53,55,55,53,53,53,53,53,53,53,53,53,53,53,55,55,55,175,176,127,178,176,12,13,11,12,13,
+                46,29,30,32,5,5,5,5,33,34,5,5,5,46,29,30,32,5,5,5,5,35,36,70,71,16,93,94,58,5,5,52,53,151,152,53,53,53,141,142,53,53,53,53,64,65,65,65,66,53,53,54,55,55,177,21,22,23,21,22,23,21,22,23,
+                6,79,80,51,5,5,5,5,5,5,5,5,5,6,79,80,51,5,5,5,5,42,21,22,85,5,5,5,5,5,5,72,66,53,53,53,53,54,151,152,53,64,65,65,76,5,5,5,72,65,66,53,53,53,138,29,30,31,29,30,31,29,30,31,
+                16,93,94,58,5,5,5,5,5,5,5,5,5,16,93,94,58,5,5,5,5,46,29,30,32,5,5,5,5,5,5,5,72,65,66,53,53,109,53,54,53,106,89,90,39,40,90,91,40,41,52,53,54,53,145,591,8,9,10,8,9,10,8,9,
+                5,5,5,5,5,5,5,5,35,36,70,71,5,5,5,5,5,5,5,5,5,6,79,80,51,5,5,5,5,5,35,36,70,71,72,66,53,53,53,59,53,106,97,18,19,20,18,19,20,45,52,53,53,53,155,223,18,19,20,18,19,20,18,19,
+                5,5,5,26,27,5,5,5,42,21,22,85,5,5,5,5,5,26,27,5,5,16,93,94,58,5,5,5,5,5,42,21,22,85,5,72,65,65,65,65,65,76,102,2,3,1,2,3,1,4,72,66,53,53,53,191,2,3,1,2,3,1,2,3,
+                5,5,5,33,34,5,5,5,46,29,30,32,5,5,5,5,5,33,34,5,5,5,5,5,5,26,27,5,5,5,46,29,30,32,5,5,5,5,35,36,70,179,36,12,13,11,12,13,11,12,71,72,66,53,175,176,12,13,11,12,13,11,12,13,
+                5,5,5,5,5,26,27,5,6,79,80,51,5,5,5,5,5,5,5,5,5,5,5,5,5,33,34,5,5,5,6,79,80,51,5,5,5,5,42,21,22,23,21,22,23,21,22,23,21,22,85,5,72,65,177,21,22,23,21,22,23,21,22,23,
+                5,5,5,5,5,33,34,5,16,93,94,58,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,5,16,93,94,58,5,5,5,5,46,29,30,31,29,30,31,29,30,31,29,30,32,5,5,5,46,29,30,31,29,30,31,29,30,31
+
+            };
+
+            ushort[,] tiledata2 = new ushort[64, 64];
+            int tpos = 0;
+            for (int y = 0; y < 64; y++)
+            {
+                for (int x = 0; x < 64; x++)
+                {
+                    tiledata2[x, y] = (ushort)(tiledata[tpos]-1);
+                    tpos++;
+                }
+                
+            }
+            Compression.AllMapTilesFromMap(0, tiledata2,true);
+            //Compression.AllMapTilesFromMap((activeScene as SceneOW).room.index,(activeScene as SceneOW).mapData16);
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+            Compression.createMap32TilesFrom16();
+            sw.Stop();
+            Console.WriteLine(sw.ElapsedMilliseconds);
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            Compression.savemapstorom();
+        }
+
+        private void button6_Click_1(object sender, EventArgs e)
+        {
+            (activeScene as SceneOW).createTmx();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            (activeScene as SceneOW).loadTmx();
+            
+
+        }
+
+        private void owMapList_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Tag != null)
+            {
+                addMapTab((short)e.Node.Tag);
+                propertyGrid3.SelectedObject = (RoomOW)(activeScene as SceneOW).room;
+                (activeScene as SceneOW).DrawMap32Tiles();
+
+                //Palettes OW CODE :
+
+                Bitmap palette_bitmap = new Bitmap(256, 96);
+                pictureBox1.Image = palette_bitmap;
+                Graphics gpalette = Graphics.FromImage(pictureBox1.Image);
+                for (int x = 0; x < 16; x++)
+                {
+                    for (int y = 0; y < 6; y++)
+                    {
+                        gpalette.FillRectangle(new SolidBrush(GFX.loadedPalettes[x, y]), new Rectangle(x * 16, y * 16, 16, 16));
+                    }
+                }
+                pictureBox1.Refresh();
+            }
+        }
+
+        private void propertyGrid3_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            (activeScene as SceneOW).need_refresh = true;
         }
     }
 

@@ -21,14 +21,14 @@ namespace ZeldaFullEditor
                 tabControl1.TabPages.Add(Path.GetFileName(s));
             }*/
 
-            scene = new Scene(f);
+            scene = new SceneUW(f);
             Controls.Add(scene);
             scene.Size = new Size(512, 512);
             scene.Location = new Point(176, 23);
             scene.Enabled = false;
 
         }
-        public Scene scene;
+        public SceneUW scene;
         private void RoomLayout_Load(object sender, EventArgs e)
         {
             clearRoom();

@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A634564E-5323-48FE-A54C-B42AF25C5315}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ZeldaFullEditor</RootNamespace>
     <AssemblyName>ZeldaFullEditor</AssemblyName>
@@ -90,6 +90,8 @@
     <Compile Include="DataRoom.cs" />
     <Compile Include="DoAction.cs" />
     <Compile Include="Entrance.cs" />
+    <Compile Include="EntranceOW.cs" />
+    <Compile Include="ExitOW.cs" />
     <Compile Include="GlobalOptionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -121,8 +123,10 @@
     <Compile Include="Gui\PickChestItem.Designer.cs">
       <DependentUpon>PickChestItem.cs</DependentUpon>
     </Compile>
+    <Compile Include="IniFile.cs" />
     <Compile Include="Load.cs" />
     <Compile Include="ObjectMode.cs" />
+    <Compile Include="OverworldGlobal.cs" />
     <Compile Include="Palette.cs" />
     <Compile Include="PaletteViewer.cs" />
     <Compile Include="ROMStructure.cs" />
@@ -132,6 +136,7 @@
     <Compile Include="RoomLayout.Designer.cs">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </Compile>
+    <Compile Include="RoomOW.cs" />
     <Compile Include="Rooms\Background2.cs" />
     <Compile Include="Rooms\Chests\Chest.cs" />
     <Compile Include="Rooms\Chests\ChestItems_Name.cs" />
@@ -166,7 +171,13 @@
     <Compile Include="Rooms\Sprites\Sprite.cs" />
     <Compile Include="Save.cs" />
     <Compile Include="SaveObject.cs" />
-    <Compile Include="Scene.cs">
+    <Compile Include="SceneUW.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SceneBase.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SceneOW.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Sprite_SubsetNames.cs" />
@@ -175,6 +186,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Tile.cs" />
+    <Compile Include="Tile16.cs" />
+    <Compile Include="Tile32.cs" />
+    <Compile Include="TileInfo.cs" />
     <EmbeddedResource Include="GlobalOptionForm.resx">
       <DependentUpon>GlobalOptionForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -209,8 +223,11 @@
     <EmbeddedResource Include="RoomLayout.resx">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Scene.resx">
-      <DependentUpon>Scene.cs</DependentUpon>
+    <EmbeddedResource Include="SceneOW.resx">
+      <DependentUpon>SceneOW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SceneUW.resx">
+      <DependentUpon>SceneUW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TextPreview.resx">
       <DependentUpon>TextPreview.cs</DependentUpon>
