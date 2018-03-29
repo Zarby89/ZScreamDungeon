@@ -22,8 +22,8 @@ namespace ZeldaFullEditor
     {
         public bool active = false;
         public Graphics graphics;
-        public Bitmap scene_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppRgb);
-        public Bitmap scene_bitmap_overlay = new Bitmap(1024,1024, PixelFormat.Format32bppRgb);
+        public Bitmap scene_bitmap = new Bitmap(512, 512, PixelFormat.Format32bppArgb);
+        public Bitmap scene_bitmap_overlay = new Bitmap(1024,1024, PixelFormat.Format32bppArgb);
         public bool found = false;
         public bool mouse_down = false;
         public int mx = 0;
@@ -377,7 +377,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void drawSprites()
+        public virtual void drawSprites()
         {
             GFX.begin_draw(scene_bitmap);
             room.drawSprites(showLayer1, showLayer2);

@@ -3366,7 +3366,7 @@ namespace ZeldaFullEditor
 
         private void propertyGrid3_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
         {
-            (activeScene as SceneOW).need_refresh = true;
+            (activeScene as SceneOW).need_refresh_gfx = true;
         }
     }
 

@@ -85,7 +85,8 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-            
+            need_refresh = true;
+
 
         }
 
@@ -153,17 +154,25 @@ namespace ZeldaFullEditor
             {
                 room.GetSelectedMapGfx();
                 DrawMap32Tiles();//draw everything back
-                this.Image = scene_bitmap;
+                
                 need_refresh_gfx = false;
+                need_refresh = true;
             }
 
 
             if (need_refresh)
             {
+                graphicsOverlay.Clear(Color.Transparent);
                 //this.Image = scene_bitmap;
+                drawExits();
+                drawEntrances();
+                drawHoles();
+                drawItems();
+                drawSprites();
                 graphics.DrawImage(map_bitmap, 0, 0);
                 graphics.DrawImage(scene_bitmap_overlay, 0, 0);
                 need_refresh = false;
+                this.Image = scene_bitmap;
             }
 
 
@@ -175,20 +184,7 @@ namespace ZeldaFullEditor
         public void DrawMap32Tiles()
         {
             drawDecompressedTiles(room.index, 0, 0);
-            drawExits();
-            drawEntrances();
-            drawHoles();
-            drawItems();
-            if (room.largeMap)
-            {
-                //GFX.begin_draw(scene_bitmap, 1024, 1024);
-                drawSprites(1024);
-            }
-            else
-            {
-                //GFX.begin_draw(scene_bitmap);
-                drawSprites(512);
-            }
+
             
             //GFX.end_draw(scene_bitmap);
 
@@ -607,7 +603,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void drawSprites(int sizeMap)
+        public override void drawSprites()
         {
             Brush bgrBrush = Brushes.Fuchsia;
             Pen contourPen = Pens.Black;
@@ -981,7 +977,6 @@ namespace ZeldaFullEditor
                 scene.room.palette = (byte)(ROM.DATA[Constants.overworldMapPalette + scene.room.index] << 2);
                 scene.room.blockset = ROM.DATA[Constants.mapGfx + scene.room.index];
                 scene.room.sprite_palette = (byte)(ROM.DATA[Constants.overworldSpritePalette + scene.room.index]);
-                scene.need_refresh = true;
                 scene.need_refresh_gfx = true;
                 init = true;
             }
