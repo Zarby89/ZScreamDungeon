@@ -30,42 +30,42 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode22 = new System.Windows.Forms.TreeNode("Starting Entrances");
-            System.Windows.Forms.TreeNode treeNode23 = new System.Windows.Forms.TreeNode("Main Dungeon Palette");
-            System.Windows.Forms.TreeNode treeNode24 = new System.Windows.Forms.TreeNode("Sprite Palettes");
-            System.Windows.Forms.TreeNode treeNode25 = new System.Windows.Forms.TreeNode("Current Room", new System.Windows.Forms.TreeNode[] {
-            treeNode23,
-            treeNode24});
-            System.Windows.Forms.TreeNode treeNode26 = new System.Windows.Forms.TreeNode("Dungeon Palettes");
-            System.Windows.Forms.TreeNode treeNode27 = new System.Windows.Forms.TreeNode("Sword Palettes");
-            System.Windows.Forms.TreeNode treeNode28 = new System.Windows.Forms.TreeNode("Shield Palettes");
-            System.Windows.Forms.TreeNode treeNode29 = new System.Windows.Forms.TreeNode("Armor Palettes");
-            System.Windows.Forms.TreeNode treeNode30 = new System.Windows.Forms.TreeNode("Static Sprite Palettes");
-            System.Windows.Forms.TreeNode treeNode31 = new System.Windows.Forms.TreeNode("Dynamic Sprite Palette");
-            System.Windows.Forms.TreeNode treeNode32 = new System.Windows.Forms.TreeNode("Overworld Main Palettes");
-            System.Windows.Forms.TreeNode treeNode33 = new System.Windows.Forms.TreeNode("Overworld Aux Palettes");
-            System.Windows.Forms.TreeNode treeNode34 = new System.Windows.Forms.TreeNode("Overworld Animated Palettes");
-            System.Windows.Forms.TreeNode treeNode35 = new System.Windows.Forms.TreeNode("Overworld Map Palettes");
-            System.Windows.Forms.TreeNode treeNode36 = new System.Windows.Forms.TreeNode("Dungeon Map Palettes");
-            System.Windows.Forms.TreeNode treeNode37 = new System.Windows.Forms.TreeNode("Hud Palettes");
-            System.Windows.Forms.TreeNode treeNode38 = new System.Windows.Forms.TreeNode("Crystal Palettes");
-            System.Windows.Forms.TreeNode treeNode39 = new System.Windows.Forms.TreeNode("Triforce Palette");
-            System.Windows.Forms.TreeNode treeNode40 = new System.Windows.Forms.TreeNode("All Palettes", new System.Windows.Forms.TreeNode[] {
-            treeNode26,
-            treeNode27,
-            treeNode28,
-            treeNode29,
-            treeNode30,
-            treeNode31,
-            treeNode32,
-            treeNode33,
-            treeNode34,
-            treeNode35,
-            treeNode36,
-            treeNode37,
-            treeNode38,
-            treeNode39});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Starting Entrances");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Main Dungeon Palette");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Sprite Palettes");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Current Room", new System.Windows.Forms.TreeNode[] {
+            treeNode3,
+            treeNode4});
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Dungeon Palettes");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Sword Palettes");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Shield Palettes");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Armor Palettes");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Static Sprite Palettes");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Dynamic Sprite Palette");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Overworld Main Palettes");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Overworld Aux Palettes");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Overworld Animated Palettes");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Overworld Map Palettes");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Dungeon Map Palettes");
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Hud Palettes");
+            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Crystal Palettes");
+            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Triforce Palette");
+            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("All Palettes", new System.Windows.Forms.TreeNode[] {
+            treeNode6,
+            treeNode7,
+            treeNode8,
+            treeNode9,
+            treeNode10,
+            treeNode11,
+            treeNode12,
+            treeNode13,
+            treeNode14,
+            treeNode15,
+            treeNode16,
+            treeNode17,
+            treeNode18,
+            treeNode19});
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -1065,6 +1065,7 @@
             // toolStripButton1
             // 
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Enabled = false;
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
@@ -2060,13 +2061,13 @@
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode21.Name = "EntranceNode";
-            treeNode21.Text = "Entrances";
-            treeNode22.Name = "StartingEntranceNode";
-            treeNode22.Text = "Starting Entrances";
+            treeNode1.Name = "EntranceNode";
+            treeNode1.Text = "Entrances";
+            treeNode2.Name = "StartingEntranceNode";
+            treeNode2.Text = "Starting Entrances";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode21,
-            treeNode22});
+            treeNode1,
+            treeNode2});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 238);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -2544,7 +2545,7 @@
             // 
             this.splitContainer6.Panel2.Controls.Add(this.palettePicturebox);
             this.splitContainer6.Size = new System.Drawing.Size(292, 548);
-            this.splitContainer6.SplitterDistance = 298;
+            this.splitContainer6.SplitterDistance = 297;
             this.splitContainer6.TabIndex = 1;
             // 
             // button2
@@ -2581,51 +2582,51 @@
             this.palettesTreeview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.palettesTreeview.Location = new System.Drawing.Point(0, 0);
             this.palettesTreeview.Name = "palettesTreeview";
-            treeNode23.Name = "MainRoomPalette";
-            treeNode23.Tag = "Main";
-            treeNode23.Text = "Main Dungeon Palette";
-            treeNode24.Name = "currentSpritePalette";
-            treeNode24.Tag = "Sprite";
-            treeNode24.Text = "Sprite Palettes";
-            treeNode25.Name = "currentRoom";
-            treeNode25.Text = "Current Room";
-            treeNode25.ToolTipText = "Currently Used Palettes";
-            treeNode26.Name = "Node6";
-            treeNode26.Text = "Dungeon Palettes";
-            treeNode27.Name = "SwordPalettes";
-            treeNode27.Text = "Sword Palettes";
-            treeNode28.Name = "ShieldPalettes";
-            treeNode28.Text = "Shield Palettes";
-            treeNode29.Name = "ArmorPalettes";
-            treeNode29.Text = "Armor Palettes";
-            treeNode29.ToolTipText = "Mail Palettes - Usually setted by the sprite file if used";
-            treeNode30.Name = "StaticSpritePalette";
-            treeNode30.Text = "Static Sprite Palettes";
-            treeNode30.ToolTipText = "Sprite Palettes always loaded everywhere depends on the world you are in";
-            treeNode31.Name = "DynamicSpritePalette";
-            treeNode31.Text = "Dynamic Sprite Palette";
-            treeNode32.Name = "OverworldPalettes";
-            treeNode32.Text = "Overworld Main Palettes";
-            treeNode33.Name = "OverworldAuxPalettes";
-            treeNode33.Text = "Overworld Aux Palettes";
-            treeNode34.Name = "OverworldAnimatedPalettes";
-            treeNode34.Text = "Overworld Animated Palettes";
-            treeNode35.Name = "OverworldMapPalettes";
-            treeNode35.Text = "Overworld Map Palettes";
-            treeNode36.Name = "DungeonMap";
-            treeNode36.Text = "Dungeon Map Palettes";
-            treeNode37.Name = "HudPalettes";
-            treeNode37.Text = "Hud Palettes";
-            treeNode38.Name = "CrystalPalettes";
-            treeNode38.Text = "Crystal Palettes";
-            treeNode39.Name = "TriforcePalette";
-            treeNode39.Text = "Triforce Palette";
-            treeNode40.Name = "allPalettes";
-            treeNode40.Text = "All Palettes";
+            treeNode3.Name = "MainRoomPalette";
+            treeNode3.Tag = "Main";
+            treeNode3.Text = "Main Dungeon Palette";
+            treeNode4.Name = "currentSpritePalette";
+            treeNode4.Tag = "Sprite";
+            treeNode4.Text = "Sprite Palettes";
+            treeNode5.Name = "currentRoom";
+            treeNode5.Text = "Current Room";
+            treeNode5.ToolTipText = "Currently Used Palettes";
+            treeNode6.Name = "Node6";
+            treeNode6.Text = "Dungeon Palettes";
+            treeNode7.Name = "SwordPalettes";
+            treeNode7.Text = "Sword Palettes";
+            treeNode8.Name = "ShieldPalettes";
+            treeNode8.Text = "Shield Palettes";
+            treeNode9.Name = "ArmorPalettes";
+            treeNode9.Text = "Armor Palettes";
+            treeNode9.ToolTipText = "Mail Palettes - Usually setted by the sprite file if used";
+            treeNode10.Name = "StaticSpritePalette";
+            treeNode10.Text = "Static Sprite Palettes";
+            treeNode10.ToolTipText = "Sprite Palettes always loaded everywhere depends on the world you are in";
+            treeNode11.Name = "DynamicSpritePalette";
+            treeNode11.Text = "Dynamic Sprite Palette";
+            treeNode12.Name = "OverworldPalettes";
+            treeNode12.Text = "Overworld Main Palettes";
+            treeNode13.Name = "OverworldAuxPalettes";
+            treeNode13.Text = "Overworld Aux Palettes";
+            treeNode14.Name = "OverworldAnimatedPalettes";
+            treeNode14.Text = "Overworld Animated Palettes";
+            treeNode15.Name = "OverworldMapPalettes";
+            treeNode15.Text = "Overworld Map Palettes";
+            treeNode16.Name = "DungeonMap";
+            treeNode16.Text = "Dungeon Map Palettes";
+            treeNode17.Name = "HudPalettes";
+            treeNode17.Text = "Hud Palettes";
+            treeNode18.Name = "CrystalPalettes";
+            treeNode18.Text = "Crystal Palettes";
+            treeNode19.Name = "TriforcePalette";
+            treeNode19.Text = "Triforce Palette";
+            treeNode20.Name = "allPalettes";
+            treeNode20.Text = "All Palettes";
             this.palettesTreeview.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode25,
-            treeNode40});
-            this.palettesTreeview.Size = new System.Drawing.Size(292, 298);
+            treeNode5,
+            treeNode20});
+            this.palettesTreeview.Size = new System.Drawing.Size(292, 297);
             this.palettesTreeview.TabIndex = 0;
             // 
             // palettePicturebox
@@ -2634,7 +2635,7 @@
             this.palettePicturebox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.palettePicturebox.Location = new System.Drawing.Point(0, 0);
             this.palettePicturebox.Name = "palettePicturebox";
-            this.palettePicturebox.Size = new System.Drawing.Size(292, 246);
+            this.palettePicturebox.Size = new System.Drawing.Size(292, 247);
             this.palettePicturebox.TabIndex = 0;
             this.palettePicturebox.TabStop = false;
             this.palettePicturebox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDoubleClick);

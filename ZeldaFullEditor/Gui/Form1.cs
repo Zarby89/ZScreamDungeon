@@ -42,8 +42,6 @@ namespace ZeldaFullEditor
         List<short> selectedMapPng = new List<short>();
         public ChestPicker chestPicker = new ChestPicker();
         public byte[] door_index = new byte[] { 0x00, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32 };
-        //List<dataObject> listoftilesobjects = new List<dataObject>();
-        //List<dataObject> listofspritesobjects = new List<dataObject>();
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -482,7 +480,7 @@ namespace ZeldaFullEditor
             warpmodeButton.Enabled = true;
             saveLayoutButton.Enabled = true;
             loadlayoutButton.Enabled = true;
-
+            toolStripButton1.Enabled = true;
             foreach (object ti in editToolStripMenuItem.DropDownItems)
             {
                 if (ti is ToolStripDropDownItem)
@@ -699,6 +697,10 @@ namespace ZeldaFullEditor
 
         private void saveLayoutButton_Click(object sender, EventArgs e)
         {
+            if (!Directory.Exists("Layout"))
+            {
+                Directory.CreateDirectory("Layout");
+            }
             saveLayout();
         }
 
@@ -756,6 +758,11 @@ namespace ZeldaFullEditor
         private void loadlayoutButton_Click(object sender, EventArgs e)
         {
             //scene.loadLayout();
+            if (!Directory.Exists("Layout"))
+            {
+                Directory.CreateDirectory("Layout");
+            }
+
             if ((byte)activeScene.selectedMode > 3)
             {
                 bg1modeButton.Checked = true;
