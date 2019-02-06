@@ -293,6 +293,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="spriteFont.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\Mblock.png" />
     <Content Include="screamlink.ico" />
   </ItemGroup>
