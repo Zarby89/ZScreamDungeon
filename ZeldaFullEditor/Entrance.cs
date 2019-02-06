@@ -272,12 +272,18 @@ namespace ZeldaFullEditor
             if (startingEntrance == true)
             {
                 room = (short)((ROM.DATA[(Constants.startingentrance_room + ((entranceId) * 2)) + 1] << 8) + ROM.DATA[Constants.startingentrance_room + ((entranceId) * 2)]);
-                yposition = (short)(((ROM.DATA[(Constants.startingentrance_yposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_yposition + ((entranceId) * 2)]);
-                xposition = (short)(((ROM.DATA[(Constants.startingentrance_xposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_xposition + ((entranceId) * 2)]);
-                xscroll = (short)(((ROM.DATA[(Constants.startingentrance_xscroll + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_xscroll + ((entranceId) * 2)]);
-                yscroll = (short)(((ROM.DATA[(Constants.startingentrance_yscroll + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_yscroll + ((entranceId) * 2)]);
-                ycamera = (short)(((ROM.DATA[(Constants.startingentrance_camerayposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_camerayposition + ((entranceId) * 2)]);
-                xcamera = (short)(((ROM.DATA[(Constants.startingentrance_cameraxposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_cameraxposition + ((entranceId) * 2)]);
+                //yposition = (short)(((ROM.DATA[(Constants.startingentrance_yposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_yposition + ((entranceId) * 2)]);
+                //xposition = (short)(((ROM.DATA[(Constants.startingentrance_xposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_xposition + ((entranceId) * 2)]);
+                //xscroll = (short)(((ROM.DATA[(Constants.startingentrance_xscroll + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_xscroll + ((entranceId) * 2)]);
+                //yscroll = (short)(((ROM.DATA[(Constants.startingentrance_yscroll + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_yscroll + ((entranceId) * 2)]);
+                //ycamera = (short)(((ROM.DATA[(Constants.startingentrance_camerayposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_camerayposition + ((entranceId) * 2)]);
+                //xcamera = (short)(((ROM.DATA[(Constants.startingentrance_cameraxposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_cameraxposition + ((entranceId) * 2)]);
+                yposition = (short)(((ROM.DATA[(Constants.startingentrance_yposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_yposition + (entranceId * 2)]);
+                xposition = (short)(((ROM.DATA[(Constants.startingentrance_xposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_xposition + (entranceId * 2)]);
+                xscroll = (short)(((ROM.DATA[(Constants.startingentrance_xscroll + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_xscroll + (entranceId * 2)]);
+                yscroll = (short)(((ROM.DATA[(Constants.startingentrance_yscroll + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_yscroll + (entranceId * 2)]);
+                ycamera = (short)(((ROM.DATA[(Constants.startingentrance_camerayposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_camerayposition + (entranceId * 2)]);
+                xcamera = (short)(((ROM.DATA[(Constants.startingentrance_cameraxposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_cameraxposition + (entranceId * 2)]);
                 blockset = (byte)(ROM.DATA[(Constants.startingentrance_blockset + entranceId)]);
                 music = (byte)(ROM.DATA[(Constants.startingentrance_music + entranceId)]);
                 dungeon = (byte)(ROM.DATA[(Constants.startingentrance_dungeon + entranceId)]);
@@ -291,37 +297,72 @@ namespace ZeldaFullEditor
         }
 
 
-        public void save(int entranceId)
+        public void save(int entranceId, bool startingentrance = false)
         {
-            ROM.DATA[(Constants.entrance_room + (entranceId * 2) + 1)] = (byte)((room >> 8) & 0xFF);
-            ROM.DATA[Constants.entrance_room + (entranceId * 2)] = (byte)(room & 0xFF);
+            if (startingentrance == false)
+            {
+                ROM.DATA[(Constants.entrance_room + (entranceId * 2) + 1)] = (byte)((room >> 8) & 0xFF);
+                ROM.DATA[Constants.entrance_room + (entranceId * 2)] = (byte)(room & 0xFF);
 
-            ROM.DATA[(Constants.entrance_yposition + (entranceId * 2)) + 1] = (byte)((yposition >> 8) & 0xFF);
-            ROM.DATA[Constants.entrance_yposition + (entranceId * 2)] = (byte)(yposition & 0xFF);
+                ROM.DATA[(Constants.entrance_yposition + (entranceId * 2)) + 1] = (byte)((yposition >> 8) & 0xFF);
+                ROM.DATA[Constants.entrance_yposition + (entranceId * 2)] = (byte)(yposition & 0xFF);
 
-            ROM.DATA[(Constants.entrance_xposition + (entranceId * 2)) + 1] = (byte)((xposition >> 8) & 0xFF);
-            ROM.DATA[Constants.entrance_xposition + (entranceId * 2)] = (byte)(xposition & 0xFF);
+                ROM.DATA[(Constants.entrance_xposition + (entranceId * 2)) + 1] = (byte)((xposition >> 8) & 0xFF);
+                ROM.DATA[Constants.entrance_xposition + (entranceId * 2)] = (byte)(xposition & 0xFF);
 
-            ROM.DATA[(Constants.entrance_xscroll + (entranceId * 2)) + 1] = (byte)((xscroll >> 8) & 0xFF);
-            ROM.DATA[Constants.entrance_xscroll + (entranceId * 2)] = (byte)(xscroll & 0xFF);
+                ROM.DATA[(Constants.entrance_xscroll + (entranceId * 2)) + 1] = (byte)((xscroll >> 8) & 0xFF);
+                ROM.DATA[Constants.entrance_xscroll + (entranceId * 2)] = (byte)(xscroll & 0xFF);
 
-            ROM.DATA[(Constants.entrance_yscroll + (entranceId * 2)) + 1] = (byte)((yscroll >> 8) & 0xFF);
-            ROM.DATA[Constants.entrance_yscroll + (entranceId * 2)] = (byte)(yscroll & 0xFF);
+                ROM.DATA[(Constants.entrance_yscroll + (entranceId * 2)) + 1] = (byte)((yscroll >> 8) & 0xFF);
+                ROM.DATA[Constants.entrance_yscroll + (entranceId * 2)] = (byte)(yscroll & 0xFF);
 
-            ROM.DATA[(Constants.entrance_cameraxposition + (entranceId * 2)) + 1] = (byte)((xcamera >> 8) & 0xFF);
-            ROM.DATA[Constants.entrance_cameraxposition + (entranceId * 2)] = (byte)(xcamera & 0xFF);
+                ROM.DATA[(Constants.entrance_cameraxposition + (entranceId * 2)) + 1] = (byte)((xcamera >> 8) & 0xFF);
+                ROM.DATA[Constants.entrance_cameraxposition + (entranceId * 2)] = (byte)(xcamera & 0xFF);
 
-            ROM.DATA[(Constants.entrance_camerayposition + (entranceId * 2)) + 1] = (byte)((ycamera >> 8) & 0xFF);
-            ROM.DATA[Constants.entrance_camerayposition + (entranceId * 2)] = (byte)(ycamera & 0xFF);
+                ROM.DATA[(Constants.entrance_camerayposition + (entranceId * 2)) + 1] = (byte)((ycamera >> 8) & 0xFF);
+                ROM.DATA[Constants.entrance_camerayposition + (entranceId * 2)] = (byte)(ycamera & 0xFF);
 
-            ROM.DATA[Constants.entrance_blockset + entranceId] = (byte)(blockset & 0xFF);
-            ROM.DATA[Constants.entrance_music + entranceId] = (byte)(music & 0xFF);
-            ROM.DATA[Constants.entrance_dungeon + entranceId] = (byte)(dungeon & 0xFF);
-            ROM.DATA[Constants.entrance_door + entranceId] = (byte)(door & 0xFF);
-            ROM.DATA[Constants.entrance_floor + entranceId] = (byte)(floor & 0xFF);
-            ROM.DATA[Constants.entrance_ladderbg + entranceId] = (byte)(ladderbg & 0xFF);
-            ROM.DATA[Constants.entrance_scrolling + entranceId] = (byte)(scrolling & 0xFF);
-            ROM.DATA[Constants.entrance_scrollquadrant + entranceId] = (byte)(scrollquadrant & 0xFF);
+                ROM.DATA[Constants.entrance_blockset + entranceId] = (byte)(blockset & 0xFF);
+                ROM.DATA[Constants.entrance_music + entranceId] = (byte)(music & 0xFF);
+                ROM.DATA[Constants.entrance_dungeon + entranceId] = (byte)(dungeon & 0xFF);
+                ROM.DATA[Constants.entrance_door + entranceId] = (byte)(door & 0xFF);
+                ROM.DATA[Constants.entrance_floor + entranceId] = (byte)(floor & 0xFF);
+                ROM.DATA[Constants.entrance_ladderbg + entranceId] = (byte)(ladderbg & 0xFF);
+                ROM.DATA[Constants.entrance_scrolling + entranceId] = (byte)(scrolling & 0xFF);
+                ROM.DATA[Constants.entrance_scrollquadrant + entranceId] = (byte)(scrollquadrant & 0xFF);
+            }
+            else
+            {
+                ROM.DATA[(Constants.startingentrance_room + (entranceId * 2) + 1)] = (byte)((room >> 8) & 0xFF);
+                ROM.DATA[Constants.startingentrance_room + (entranceId * 2)] = (byte)(room & 0xFF);
+
+                ROM.DATA[(Constants.startingentrance_yposition + (entranceId * 2)) + 1] = (byte)((yposition >> 8) & 0xFF);
+                ROM.DATA[Constants.startingentrance_yposition + (entranceId * 2)] = (byte)(yposition & 0xFF);
+
+                ROM.DATA[(Constants.startingentrance_xposition + (entranceId * 2)) + 1] = (byte)((xposition >> 8) & 0xFF);
+                ROM.DATA[Constants.startingentrance_xposition + (entranceId * 2)] = (byte)(xposition & 0xFF);
+
+                ROM.DATA[(Constants.startingentrance_xscroll + (entranceId * 2)) + 1] = (byte)((xscroll >> 8) & 0xFF);
+                ROM.DATA[Constants.startingentrance_xscroll + (entranceId * 2)] = (byte)(xscroll & 0xFF);
+
+                ROM.DATA[(Constants.startingentrance_yscroll + (entranceId * 2)) + 1] = (byte)((yscroll >> 8) & 0xFF);
+                ROM.DATA[Constants.startingentrance_yscroll + (entranceId * 2)] = (byte)(yscroll & 0xFF);
+
+                ROM.DATA[(Constants.startingentrance_cameraxposition + (entranceId * 2)) + 1] = (byte)((xcamera >> 8) & 0xFF);
+                ROM.DATA[Constants.startingentrance_cameraxposition + (entranceId * 2)] = (byte)(xcamera & 0xFF);
+
+                ROM.DATA[(Constants.startingentrance_camerayposition + (entranceId * 2)) + 1] = (byte)((ycamera >> 8) & 0xFF);
+                ROM.DATA[Constants.startingentrance_camerayposition + (entranceId * 2)] = (byte)(ycamera & 0xFF);
+
+                ROM.DATA[Constants.startingentrance_blockset + entranceId] = (byte)(blockset & 0xFF);
+                ROM.DATA[Constants.startingentrance_music + entranceId] = (byte)(music & 0xFF);
+                ROM.DATA[Constants.startingentrance_dungeon + entranceId] = (byte)(dungeon & 0xFF);
+                ROM.DATA[Constants.startingentrance_door + entranceId] = (byte)(door & 0xFF);
+                ROM.DATA[Constants.startingentrance_floor + entranceId] = (byte)(floor & 0xFF);
+                ROM.DATA[Constants.startingentrance_ladderbg + entranceId] = (byte)(ladderbg & 0xFF);
+                ROM.DATA[Constants.startingentrance_scrolling + entranceId] = (byte)(scrolling & 0xFF);
+                ROM.DATA[Constants.startingentrance_scrollquadrant + entranceId] = (byte)(scrollquadrant & 0xFF);
+            }
         }
 
 

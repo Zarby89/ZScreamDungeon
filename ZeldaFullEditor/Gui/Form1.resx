@@ -301,10 +301,23 @@
   </data>
   <data name="toolStripButton1.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAB4SURBVDhPYxg84Nu3b/9JwVBtCAASdHJyIgrjNeDD+494
-        MckG+Pr6oogTbcDTJ8/gGkCGEG0ASCPMVpghyJigATCN69etx2CfP3+BsAHItsI0gvCunbvgbLwGIDsX
-        ZgiMffTIUdINQMcEDSAG4zSAFAzVNuCAgQEAuCvAvi/QapkAAAAASUVORK5CYII=
+        iVBORw0KGgoAAAANSUhEUgAAABEAAAARCAYAAAA7bUf6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAFHSURBVDhPnZI7TsNAEIZ9A7gBnIAjRLkAR0DiAEi0lCmh
+        o4xCASWPBlFzABQhhS7ipWAJOWuBTCIU73ophpnZR7wrDMLFp9mR9/88u3ai9Rc4Kq0tuK7MWmFVqjK1
+        woprkecwFQ4BLEn2xq2RUkFCb6MmmIDf+vMUhLTUJGYSFw6OQUFfQ4GTlCzBTV5iw/lcwUO+sAIrwVAo
+        wXAsWQY0bJ2+wtr+I4i5bBBEEgp5CT48unnnnuj0XwLB+V0BYiZZwHexlJizkWSYfsJq795LiOPbGV/4
+        wMp3LjMWcBj7YBIafePw2YfrjDIFu1f4P9j+bFTEEjMJ3YPbFLN+8ASTQsOKnZLq9KPktZHgWeuBJrqD
+        FHrXb77fPEm5lqWEhC7MPfiL7YvMT+NY/FdCdPqToG8liTESe8ttYYn7VG3xkl/BTbSxGQnfSTZ3a+1Z
+        9RgAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="toolStripButton2.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACeSURBVDhPxYwBCoAwDAP3/2f4On8xa2hrbLdOUDBwgy3Z
+        tf5xXNhaS8SMNgw2OCV43PYLHXDShvlViM7gDaP7uzBgwX0kYXR//SriwkochRhX6KckMqSDB6ekHBsm
+        nwAPTslocEOFq6wXkv+F+DDB+4kwbf3x/BCxkfV658RuKXT0HhO7Whh5LTzfjXhntHskLHsmCSesegZb
+        nJ+l9wMEgh1YBf/QTwAAAABJRU5ErkJggg==
 </value>
   </data>
   <metadata name="spriteImageList.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -325,34 +338,8 @@
   <metadata name="toolTip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>373, 42</value>
   </metadata>
-  <data name="commandstextBox.Text" xml:space="preserve">
-    <value>[SPD XX] : Set Text Speed
-[LN1] : Write on Line 1
-[LN2] : Write on Line 2
-[LN3] : Write on Line 3
-[SCL] : Scroll for more text
-[WFK] : Wait For Key
-[PIC] : Change Picture?
-[CH1] : Choice 1
-[ITM] : Ask for item (waterfall)
-[NAM] : Display Player Name
-[WIN XX] : Change Window 
-[NBR XX] : Display Number?
-[POS XX] : Position of window
-[SCS XX] : Scroll Speed
-[CH2] : Choice 2
-[CH3] : Choice 3
-[COL] : Text Color
-[WAI XX] : Pause for XX time
-[SND XX] : Play Sound
-[D2][D3] : Link's Face
-[E5][E7] : 1/4 Heart
-[E6][E7] : 1/2 Heart
-[E8][E9] : 3/4 Heart
-[EA][EB] : Full Heart</value>
-  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>81</value>
+    <value>25</value>
   </metadata>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

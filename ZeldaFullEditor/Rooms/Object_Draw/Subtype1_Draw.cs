@@ -727,7 +727,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8,tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 2) + 1) * 8, (0) * 8);
 
         }
@@ -752,7 +752,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], 0, (0) * 8);
+            draw_tile(tiles[0], 0, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -777,7 +777,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -790,6 +790,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Pit Top Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -800,7 +801,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -813,6 +814,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Pit Top Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -825,7 +827,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -838,6 +840,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Pit Top Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -850,7 +853,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -863,6 +866,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Pit Bottom Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -875,7 +879,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -888,6 +892,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Pit Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -900,7 +905,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -913,6 +918,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Pit Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -925,7 +931,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -938,6 +944,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Pit Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -950,7 +957,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -964,6 +971,7 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
             name = "Pit Edge ↔";
+            
             sort = Sorting.Horizontal;
         }
 
@@ -975,7 +983,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -989,6 +997,7 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
             name = "Pit Edge ↔";
+            
             sort = Sorting.Horizontal;
         }
 
@@ -1000,7 +1009,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -1014,6 +1023,7 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
             name = "Pit Edge ↔";
+            
             sort = Sorting.Horizontal;
         }
 
@@ -1025,7 +1035,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -1441,6 +1451,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -1453,7 +1464,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -1466,6 +1477,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -1478,7 +1490,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -1491,6 +1503,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -1503,7 +1516,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -1516,6 +1529,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -1528,7 +1542,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -1541,6 +1555,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -1553,7 +1568,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -1566,6 +1581,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -1578,7 +1594,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -1592,6 +1608,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -1604,7 +1621,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -1618,6 +1635,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Water Edge ↔";
             sort = Sorting.Horizontal;
         }
@@ -1630,7 +1648,7 @@ namespace ZeldaFullEditor
             {
                 draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
             }
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
 
         }
@@ -2449,6 +2467,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(3, pos);
+            
             name = "Vertical Rail ↕";
             sort = Sorting.Vertical | Sorting.Dungeons;
         }
@@ -2456,13 +2475,15 @@ namespace ZeldaFullEditor
         public override void Draw()
         {
 
-                for (int s = 0; s < size + 2; s++)
+            for (int s = 0; s < size + 2; s++)
             {
                 draw_tile(tiles[1], (0) * 8, (1 + (s * 1)) * 8);
             }
 
-            draw_tile(tiles[0], (0) * 8, (0) * 8);
+            draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
             draw_tile(tiles[2], (0) * 8, ((size + 2) + 1) * 8);
+            
+
 
         }
     }
@@ -2475,6 +2496,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(1, pos);
+
             name = "Left Pit Edge ↕";
             sort = Sorting.Vertical;
         }
@@ -3068,7 +3090,7 @@ namespace ZeldaFullEditor
                 {
                     for (int yy = 0; yy < 4; yy++)
                     {
-                        draw_tile(tiles[tid], (xx) * 8, (yy + (s * 8)) * 8);
+                        draw_tile(tiles[tid], (xx) * 8, (yy + (s * 6)) * 8);
                         tid++;
                     }
                 }
@@ -3098,7 +3120,7 @@ namespace ZeldaFullEditor
                 {
                     for (int yy = 0; yy < 4; yy++)
                     {
-                        draw_tile(tiles[tid], (xx) * 8, (yy + (s * 8)) * 8);
+                        draw_tile(tiles[tid], (xx) * 8, (yy + (s * 6)) * 8);
                         tid++;
                     }
                 }
@@ -3808,11 +3830,11 @@ namespace ZeldaFullEditor
             {
                 for (int i = 0; i < lenght; i++)
                 {
-                    draw_tile(tiles[0], ((i) + s) * 8, (0 - (s)) * 8, ((size + 4) * 8));
+                    draw_tile(tiles[0], ((i) + s) * 8, (0 - (s)) * 8);
                 }
                 lenght -= 1;
             }
-            drawYFix = -(size + 4);
+          
         }
     }
 
@@ -3953,10 +3975,9 @@ namespace ZeldaFullEditor
             {
                 for (int i = 0; i < lenght; i++)
                 {
-                    draw_tile(tiles[0], ((i) + s) * 8, (0 - (s)) * 8, ((size + 4) * 8));
+                    draw_tile(tiles[0], ((i) + s) * 8, (0 - (s)) * 8);
                 }
                 lenght -= 1;
-                drawYFix = -(size + 4);
             }
 
         }
@@ -4058,11 +4079,11 @@ namespace ZeldaFullEditor
             {
                 for (int i = 0; i < lenght; i++)
                 {
-                    draw_tile(tiles[0], ((i) + s) * 8, (0 - (s)) * 8,((4+size)*8));
+                    draw_tile(tiles[0], ((i) + s) * 8, (0 - (s)) * 8);
                 }
                 lenght -= 1;
             }
-            drawYFix = -(size + 4);
+            
 
         }
     }

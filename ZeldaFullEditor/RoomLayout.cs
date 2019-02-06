@@ -13,7 +13,7 @@ namespace ZeldaFullEditor
 {
     public partial class RoomLayout : Form
     {
-        public RoomLayout(zscreamForm f)
+        public RoomLayout(Form1 f)
         {
             InitializeComponent();
             /*foreach (string s in Directory.EnumerateDirectories("Layout\\"))
@@ -32,7 +32,8 @@ namespace ZeldaFullEditor
         private void RoomLayout_Load(object sender, EventArgs e)
         {
             clearRoom();
-            scene.drawRoom();
+            scene.DrawRoom();
+            scene.Refresh();
             listBox1.Items.Clear();
 
             string[] files = Directory.GetFiles("Layout");
@@ -84,7 +85,8 @@ namespace ZeldaFullEditor
             }
             scene.room.reloadGfx();
 
-            scene.drawRoom();
+            scene.DrawRoom();
+            scene.Refresh();
         }
 
         private void button1_Click(object sender, EventArgs e)

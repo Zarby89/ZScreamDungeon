@@ -16,7 +16,7 @@ namespace ZeldaFullEditor
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new zscreamForm());
+            Application.Run(new Form1());
         }
     }
 }

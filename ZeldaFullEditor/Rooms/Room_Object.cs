@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,35 +14,33 @@ using System.Windows.Forms;
 namespace ZeldaFullEditor
 {
     [Serializable]
-    public class Room_Object
+    public unsafe class Room_Object
     {
+        //==========================================================================================
+        //Game Related Variables that are used to save data in the rom 
+        //==========================================================================================
         public byte x, y; //position of the object in the room (*8 for draw)
-        public byte nx, ny;
-        public byte ox, oy;
+        public byte layer = 0;
         public byte size; //size of the object
         public bool allBgs = false; //if the object is drawn on BG1 and BG2 regardless of type of BG
+        //==========================================================================================
+        //Editor Related Variables that are used to draw/position objects
+        //==========================================================================================
         public List<Tile> tiles = new List<Tile>();
         public short id;
+        public int tileIndex = 0;
         public string name; //name of the object will be shown on the form
-        public byte layer = 0;
+        public byte nx, ny;
+        public byte ox, oy;
+        public int width, height;
         public Room room;
-        public int drawYFix = 0;
         public ObjectOption options = 0;//
         public bool specialDraw = false;
-        public bool checksize = false;
         public bool selected = false;
         public bool redraw = false;
-        public Bitmap bitmap;
-        public int width = 16;
-        public int height = 16;
-        public byte scroll_x = 2;
-        public byte scroll_y = 2;
-        public byte base_width = 2;
-        public byte base_height = 2;
-        public byte oldSize = 0;
-        public byte savedSize = 0;
-        public byte special_zero_size = 0;
         public Sorting sort = Sorting.All;
+        public bool preview = false;
+        public int previewId = 0;
         public Room_Object(short id, byte x, byte y, byte size, byte layer = 0)
         {
             this.x = x;
@@ -55,91 +52,7 @@ namespace ZeldaFullEditor
             this.ny = y;
             this.ox = x;
             this.oy = y;
-            this.oldSize = size;
-            this.savedSize = size;
-            
-        }
 
-        public void get_scroll_x()
-        {
-
-            if (id == 0x00)
-            {
-                scroll_x = 2;
-                special_zero_size = 32;
-                base_width = 2;
-                return;
-            }
-            else if (id == 0x01 || id == 0x02 || id == 0xB9 || id == 0xB8)
-            {
-                scroll_x = 2;
-                special_zero_size = 26;
-                base_width = 2;
-                return;
-            }
-            else if ((id >= 0xC0 && id <= 0xF7))
-            {
-                byte oldBaseSize2 = size;
-                size = 4;
-                checksize = true;
-                Draw();
-                scroll_x = (byte)((width / 8));
-                size = 0;
-                resetSize();
-                Draw();
-                base_width = (byte)(width / 8);
-                scroll_x -= base_width;
-                size = oldBaseSize2;
-                resetSize();
-                checksize = false;
-                return;
-            }
-
-            byte oldBaseSize = size;
-            size = 1;
-            checksize = true;
-            Draw();
-            scroll_x = (byte)((width / 8));
-            size = 0;
-            resetSize();
-            Draw();
-            base_width = (byte)(width / 8);
-            scroll_x -= base_width;
-            size = oldBaseSize;
-            resetSize();
-            checksize = false;
-        }
-
-
-        public void get_scroll_y()
-        {
-            if (id == 0x60) //WTF !?!
-            {
-                scroll_y = 2;
-                special_zero_size = 32;
-                base_height = 2;
-                return;
-            }
-            else if (id == 0x61 || id == 0x62 || id == 0x90 || id == 0x91 || id == 0x92 || id == 0x93)
-            {
-                scroll_y = 2;
-                special_zero_size = 26;
-                base_height = 2;
-                return;
-            }
-            byte oldBaseSize = size;
-            size = 1;
-            checksize = true;
-            Draw();
-            scroll_y = (byte)((height / 8));
-            size = 0;
-            resetSize();
-            Draw();
-            base_height = (byte)(height / 8);
-            scroll_y -= base_height;
-            size = oldBaseSize;
-            resetSize();
-            checksize = false;
         }
 
         public void setRoom(Room r)
@@ -149,26 +62,13 @@ namespace ZeldaFullEditor
 
         public virtual void Draw()
         {
-
+            
         }
 
-
-
-        public void DrawOnBitmap()
+        public void UpdateSize()
         {
-            checksize = true;
-            Draw();
-            checksize = false;
-            bitmap = new Bitmap(width, height, PixelFormat.Format32bppArgb);
-            GFX.begin_draw(bitmap, width, height);
-            Draw();
-            GFX.end_draw(bitmap);
-        }
-
-        public void resetSize()
-        {
-            width = 8;
-            height = 8;
+            width = 16;
+            height = 16;
         }
 
         public void addTiles(int nbr, int pos)
@@ -183,12 +83,11 @@ namespace ZeldaFullEditor
         {
             for (int s = 0; s < size + 6; s++)
             {
-                draw_tile(tiles[0], ((s)) * 8, (0 - s) * 8, ((size + 6) * 8));
-                draw_tile(tiles[1], ((s)) * 8, (1 - s) * 8, ((size + 6) * 8));
-                draw_tile(tiles[2], ((s)) * 8, (2 - s) * 8, ((size + 6) * 8));
-                draw_tile(tiles[3], ((s)) * 8, (3 - s) * 8, ((size + 6) * 8));
-                draw_tile(tiles[4], ((s)) * 8, (4 - s) * 8, ((size + 6) * 8));
-                drawYFix = -(size + 6);
+                draw_tile(tiles[0], ((s)) * 8, (0 - s) * 8);
+                draw_tile(tiles[1], ((s)) * 8, (1 - s) * 8);
+                draw_tile(tiles[2], ((s)) * 8, (2 - s) * 8);
+                draw_tile(tiles[3], ((s)) * 8, (3 - s) * 8);
+                draw_tile(tiles[4], ((s)) * 8, (4 - s) * 8);
             }
         }
 
@@ -214,148 +113,81 @@ namespace ZeldaFullEditor
             this.x = nx;
             this.y = ny;
         }
+        int lowestX = 0;
+        int lowestY = 0;
 
-
-        public void draw_tile(Tile t, int x, int y, int yfix = 0)
+        public unsafe void draw_tile(Tile t, int xx, int yy, ushort tileUnder = 0xFFFF)
         {
-            int tid = t.id;
-            //if (tid >= 448 & tid < 464) { tid = 512 + (t.id - 448) + (16 * GFX.animated_frame); };
-            //if (tid >= 432 & tid < 448) { tid = 576 + (t.id - 432) + (16 * GFX.animated_frame); };
-            if (id == 0x94 || id == 0xBA) // transparent tiles !
+            if (preview)
             {
-                t.palette = 6;
-            }
-
-            if (checksize)
-            {
-                int zx = x + 8;
-                int zy = (y + 8 + yfix);
-
-                if (zx > width)
+                if (xx < 57 && yy < 57 && xx >= 0 && yy >= 0)
                 {
-                    width = zx;
-                }
-                if (zy > height)
-                {
-                    height = zy;
-                }
-
-                return;
-            }
-
-            int ty = (tid / 16);
-            int tx = tid - (ty * 16);
-            int mx = 0;
-            int my = 0;
-
-
-            if (t.mirror_x == true)
-            {
-                mx = 8;
-            }
-
-            for (int xx = 0; xx < 8; xx++)
-            {
-                if (mx > 0)
-                {
-                    mx--;
-                }
-                if (t.mirror_y == true)
-                {
-                    my = 8;
-                }
-                for (int yy = 0; yy < 8; yy++)
-                {
-                    if (my > 0)
+                    var alltilesData = (byte*)GFX.currentgfx16Ptr.ToPointer();
+                    byte* ptr = (byte*)GFX.previewObjectsPtr[previewId].ToPointer();
+                    TileInfo ti = t.GetTileInfo();
+                    for (var yl = 0; yl < 8; yl++)
                     {
-                        my--;
-                    }
-                    //int x_dest = ((this.x * 8) + x + (xx)) * 4;
-                    //int y_dest = (((this.y * 8) + y + (yy)) * 512) * 4;
-
-                    int x_dest = (x + (xx)) * 4;
-                    int y_dest = (((y + yfix) + (yy)) * width) * 4;
-                    int dest = x_dest + y_dest;
-
-                    int x_src = ((tx * 8) + mx + (xx));
-                    if (t.mirror_x)
-                    {
-                        x_src = ((tx * 8) + mx);
-                    }
-                    int y_src = (((ty * 8) + my + (yy)) * 128);
-                    if (t.mirror_y)
-                    {
-                        y_src = (((ty * 8) + my) * 128);
-                    }
-
-                    int src = x_src + y_src;
-                    int pp = 0;
-                    if (src < 16384)
-                    {
-                        pp = 8;
-                    }
-                    if (dest < (width * height * 4))
-                    {
-                        byte alpha = 255;
-
-                        if (GFX.singledata[(src)] == 0)
+                        for (var xl = 0; xl < 4; xl++)
                         {
-                            if (room.bg2 == Background2.Normal || room.bg2 == Background2.Parallax)
-                            {
-                                alpha = 0;
-                            }
-                            
-                            if (room.bg2 == Background2.OnTop)
-                            {
-                                if (layer != 0)
-                                {
-                                    alpha = 0;
-                                }
-                                else
-                                {
-                                    alpha = 255;
-                                }
-                            }
-                            if (room.bg2 == Background2.Transparent)
-                            {
-                                alpha = 128;
-                            }
-                        }
-                        else
-                        {
-                            if (room.bg2 == Background2.Transparent)
-                            {
-                                if (layer == 1)
-                                {
-                                    alpha = 128;
-                                }
-                            }
-                        }
+                            int mx = xl;
+                            int my = yl;
+                            byte r = 0;
 
-                        if (allBgs)
-                        {
-                            alpha = 255;
-                        }
-                        unsafe
-                        {
-                            if (alpha == 0)
+                            if (ti.h)
                             {
-                                GFX.currentData[dest] = 255;
-                                GFX.currentData[dest + 1] = 0;
-                                GFX.currentData[dest + 2] = 255;
-                                GFX.currentData[dest + 3] = 255;
+                                mx = 3 - xl;
+                                r = 1;
                             }
-                            else
+                            if (ti.v)
                             {
-                                GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].B);
-                                GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].G);
-                                GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, t.palette].R);
-                                GFX.currentData[dest + 3] = alpha;
+                                my = 7 - yl;
                             }
+                            //Formula information to get tile index position in the array
+                            //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
+                            int tx = ((ti.id / 16) * 512) + ((ti.id - ((ti.id / 16) * 16)) * 4);
+                            var pixel = alltilesData[tx + (yl * 64) + xl];
+                            //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
+
+                            int index = ((xx/8) * 8) + ((yy/8) * 512) + ((mx * 2) + (my * 64));
+                            ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + ti.palette * 16);
+                            ptr[index + r] = (byte)(((pixel >> 4) & 0x0F) + ti.palette * 16);
                         }
                     }
                 }
             }
+            else
+            {
+                if (((xx / 8) + nx) + ((ny + (yy / 8)) * 64) < 4096 && ((xx / 8) + nx) + ((ny + (yy / 8)) * 64) >= 0)
+                {
+                    ushort td = GFX.getshortilesinfo(t.GetTileInfo());
+                    if (layer == 0 || layer == 2 || allBgs)
+                    {
+
+                        if (tileUnder == GFX.tilesBg1Buffer[((xx / 8) + nx) + ((ny + (yy / 8)) * 64)])
+                        {
+                            return;
+                        }
+                        GFX.tilesBg1Buffer[((xx / 8) + nx) + ((ny + (yy / 8)) * 64)] = td;
+                    }
+                    if (layer == 1 || allBgs)
+                    {
+                        if (tileUnder == GFX.tilesBg2Buffer[((xx / 8) + nx) + ((ny + (yy / 8)) * 64)])
+                        {
+                            return;
+                        }
+                        GFX.tilesBg2Buffer[((xx / 8) + nx) + ((ny + (yy / 8)) * 64)] = td;
+                    }
+                    if (width < xx + 8)
+                    {
+                        width = xx + 8;
+                    }
+                    if (height < yy + 8)
+                    {
+                        height = yy + 8;
+                    }
+                }
+            }
+
         }
 
 

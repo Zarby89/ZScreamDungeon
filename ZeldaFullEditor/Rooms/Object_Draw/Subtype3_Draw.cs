@@ -411,6 +411,7 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
             name = "Kholdstare Shell";
             sort = Sorting.NonScalable;
+            
             addTiles(80, pos);//??
         }
         public override void Draw()
@@ -1765,22 +1766,26 @@ namespace ZeldaFullEditor
         public object_FC7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Bomb Floor";
             addTiles(16, pos);//??
             sort = Sorting.NonScalable;
         }
         public override void Draw()
         {
+            //00 04 02 06
+            //08 12 10 14
+            //01 05 03 07
+            //09 13 11 15
             int tid = 0;
-            for (int xx = 0; xx < 4; xx++)
+            for (int xx = 0; xx < 16; xx++)
             {
-                for (int yy = 0; yy < 4; yy++)
-                {
-                    draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
-                    tid++;
-                }
+                Console.WriteLine(tiles[xx].id.ToString());
             }
 
+            draw_tile(tiles[00], (0) * 8, (0) * 8); draw_tile(tiles[04], (1) * 8, (0) * 8); draw_tile(tiles[02], (2) * 8, (0) * 8); draw_tile(tiles[06], (3) * 8, (0) * 8);
+            draw_tile(tiles[08], (0) * 8, (1) * 8); draw_tile(tiles[12], (1) * 8, (1) * 8); draw_tile(tiles[10], (2) * 8, (1) * 8); draw_tile(tiles[14], (3) * 8, (1) * 8);
+            draw_tile(tiles[01], (0) * 8, (2) * 8); draw_tile(tiles[05], (1) * 8, (2) * 8); draw_tile(tiles[03], (2) * 8, (2) * 8); draw_tile(tiles[07], (3) * 8, (2) * 8);
+            draw_tile(tiles[09], (0) * 8, (3) * 8); draw_tile(tiles[13], (1) * 8, (3) * 8); draw_tile(tiles[11], (2) * 8, (3) * 8); draw_tile(tiles[15], (3) * 8, (3) * 8);
         }
     }
 
@@ -1789,7 +1794,7 @@ namespace ZeldaFullEditor
         public object_FC8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Fake Bomb Floor";
             addTiles(16, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -1819,6 +1824,7 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {

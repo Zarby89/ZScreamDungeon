@@ -64,8 +64,6 @@ namespace ZeldaFullEditor
                 byte layer = br.ReadByte();
                 ObjectOption options = (ObjectOption)br.ReadByte();
 
-
-
                 if ((options & ObjectOption.Door) == ObjectOption.Door)
                 {
                     Room_Object o = new object_door(id, x, y, size, layer);

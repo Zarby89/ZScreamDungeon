@@ -23,12 +23,12 @@ namespace ZeldaFullEditor
         [Serializable]
     public class Tile
     {
-        public int id = 0;
+        public ushort id = 0;
         public bool mirror_x = false;
         public bool mirror_y = false;
-        public byte ontop = 0;
+        public bool ontop = false;
         public byte palette = 4;
-        public Tile(int id, bool mirror_x = false, bool mirror_y = false, byte ontop = 0, byte palette = 4) //custom tile
+        public Tile(ushort id, bool mirror_x = false, bool mirror_y = false, bool ontop = false, byte palette = 4) //custom tile
         {
             this.id = id;
             this.mirror_x = mirror_x;
@@ -37,94 +37,69 @@ namespace ZeldaFullEditor
             this.palette = palette;
         }
 
+
+        public TileInfo GetTileInfo()
+        {
+            return new TileInfo(id, palette, mirror_y, mirror_x,ontop);
+        }
+
         public Tile(byte b1, byte b2) //tile from game data
         {
-            this.id = ((b2 & 0x01) << 8)+(b1);
+            this.id = (ushort)(((b2 & 0x01) << 8)+(b1));
             this.mirror_y = ((b2 & 0x80) == 0x80) ? true : false;
             this.mirror_x = ((b2 & 0x40) == 0x40) ? true : false;
-            this.ontop = (byte)((b2 >> 4) & 0x03);
+            this.ontop = ((b2 & 0x10) == 0x10) ? true : false;
             this.palette = (byte)((b2 >> 2) & 0x07);
         }
 
-
-
-        public void Draw(int x, int y)
+        public unsafe void SetTile(int xx, int yy, byte layer)
         {
-            int ty = (id / 16);
-            int tx = id - (ty * 16);
-            int mx = 0;
-            int my = 0;
+            if (xx + (yy * 64) < 4096)
+            {
+                ushort t = GFX.getshortilesinfo(GetTileInfo());
+                if (layer == 0)
+                {
 
+                    GFX.tilesBg1Buffer[xx + (yy * 64)] = t;
+                }
+                else
+                {
+                    GFX.tilesBg2Buffer[xx + (yy * 64)] = t;
+                }
+            }
+            
+        }
 
+        public ushort getshortileinfo()
+        {
+            ushort tinfo = 0;
+            //vhopppcc cccccccc
+            tinfo |= (ushort)(id);
+            tinfo |= (ushort)(palette << 10);
+            if (ontop == true)
+            {
+                tinfo |= 0x2000;
+            }
             if (mirror_x == true)
             {
-                mx = 8;
+                tinfo |= 0x4000;
             }
-
-            for (int xx = 0; xx < 8; xx++)
+            if (mirror_y == true)
             {
-                if (mx > 0)
-                {
-                    mx--;
-                }
-                if (mirror_y == true)
-                {
-                    my = 8;
-                }
-                for (int yy = 0; yy < 8; yy++)
-                {
-                    if (my > 0)
-                    {
-                        my--;
-                    }
-                    int x_dest = ((x * 8) + (xx)) * 4;
-                    int y_dest = (((y * 8) + (yy)) * 512) * 4;
-                    int dest = x_dest + y_dest;
-
-                    int x_src = ((tx * 8) + mx + (xx));
-                    if (mirror_x)
-                    {
-                        x_src = ((tx * 8) + mx);
-                    }
-                    int y_src = (((ty * 8) + my + (yy)) * 128);
-                    if (mirror_y)
-                    {
-                        y_src = (((ty * 8) + my) * 128);
-                    }
-
-                    int src = x_src + y_src;
-                    int pp = 0;
-                    if (src < 16384)
-                    {
-                        pp = 8;
-                    }
-                    if (dest < (1048576))
-                    {
-                        unsafe
-                        {
-                            int alpha = 255;
-                            if (GFX.singledata[(src)] == 0)
-                            {
-                                alpha = 0;
-                            }
-                            if (alpha == 0)
-                            {
-                                GFX.currentData[dest] = 255;
-                                GFX.currentData[dest + 1] = 0;
-                                GFX.currentData[dest + 2] = 255;
-                                GFX.currentData[dest + 3] = 255;
-                            }
-                            else
-                            {
-                                GFX.currentData[dest] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, palette].B);
-                                GFX.currentData[dest + 1] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, palette].G);
-                                GFX.currentData[dest + 2] = (GFX.loadedPalettes[GFX.singledata[(src)] + pp, palette].R);
-                                GFX.currentData[dest + 3] = 255;
-                            }
-                        }
-                    }
-                }
+                tinfo |= 0x8000;
             }
+            return tinfo;
+
+        }
+
+        public unsafe void Draw(IntPtr bitmapPointer)
+        {
+
+        }
+
+        public unsafe void CopyTile(int x, int y, int xx, int yy)
+        {
+
         }
     }
 

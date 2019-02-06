@@ -29,6 +29,8 @@ namespace ZeldaFullEditor
         //pots items
         public void Draw()
         {
+            byte x = nx;
+            byte y = ny;
             int id = this.id;
             if ((id & 0x80) == 0x80)
             {
@@ -38,103 +40,104 @@ namespace ZeldaFullEditor
 
             if (id == 0)//Nothing
             {
-                draw_item_tile(x * 8, y * 8, 16, 16, 0x6C, 10, true);
+                //draw_item_tile(x * 8, y * 8, 16, 16, 0x6C, 10, true);
             }
             else if (id == 1)//rupee
             {
-                draw_item_tile(x*8 + 4, y*8, 8, 16, 0x80, 11);
+                draw_item_tile(x*8 +4, y*8, 0, 828, 11, false, false, 1);
             }
             else if (id == 2) //Rock Crab
             {
-                draw_item_tile(x * 8, y * 8, 16, 16, 0x46, 10, true);
+                draw_item_tile(x * 8, y * 8, 10, 520, 5);
             }
             else if (id == 3) //bee
             {
-                draw_item_tile((x * 8)+4, (y * 8)+4, 8, 8, 0xE4, 10, false, true);
+                drawSpriteTile((x * 8)+4, (y * 8)+4, 4, 14, 11, false, false, 1, 1);
             }
             else if (id == 4) //Random
             {
-                draw_item_tile(x*8+4, y*8+4, 8, 8, 0x6A, 10, false);
+                //draw_item_tile(x*8+4, y*8+4, 8, 8);
             }
             else if (id == 5) //bomb
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0x44, 7);
+                draw_item_tile(x*8 + 0, y*8 + 0, 4, 824, 7);
             }
             else if (id == 6)//rupee
             {
-                draw_item_tile(x*8 + 4, y*8, 8, 16, 0x80, 11);
+                draw_item_tile(x * 8 +4, y * 8, 0, 828, 11, false, false, 1);
             }
             else if (id == 7)//blue rupee
             {
-                draw_item_tile(x*8 + 4, y*8, 8, 16, 0x80, 7);
+                draw_item_tile(x * 8 +4, y * 8, 0, 828, 7, false, false, 1);
             }
             else if (id == 8)//key*8
             {
-                draw_item_tile(x*8 + 4, y*8, 8, 16, 0x2E, 11);
+                draw_item_tile(x*8 + 4, y*8 + 0, 14, 822, 11, false, false, 1);
             }
             else if (id == 9)//arrow
             {
-                draw_item_tile(x*8 + 4, y*8, 8, 16, 0xA8, 11);
+                draw_item_tile(x*8 + 4, y*8, 8, 830, 11, false, false, 1);
             }
             else if (id == 10)//1bomb
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0x44, 7);
+                draw_item_tile(x * 8 + 0, y * 8 + 0, 4, 824, 7);
             }
             else if (id == 11)//heart
             {
-                draw_item_tile(x*8 + 4, y*8, 8, 16, 0xA6, 5);
+                draw_item_tile(x*8 + 4, y*8, 6, 830, 5, false, false, 1);
             }
             else if (id == 12)//magic
             {
-                draw_item_tile(x*8 + 4, y*8, 8, 16, 0xA7, 11);
+                draw_item_tile(x*8 + 4, y*8, 7, 830, 11, false, false, 1);
             }
             else if (id == 13)//big magic - need gfx
             {
-                draw_item_tile((x*8+4), y*8, 8, 16, 0x62, 11,false,true); //2x22
+                draw_item_tile(x * 8 + 4, y * 8, 2, 466, 11, false, false, 1);
             }
             else if (id == 14)//chicken 
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0xEA, 10,true, true);
+                drawSpriteTile((x * 8), (y * 8), 10, 30, 5);
             }
             else if (id == 15)//green soldier
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0x40, 12, true, true);
+                drawSpriteTile((x * 8), (y * 8), 0, 20, 12);
             }
             else if (id == 16)//alive rock
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0x46, 10, true);
+                draw_item_tile(x * 8, y * 8, 10, 520, 5);
             }
             else if (id == 17)//blue soldier
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0x40, 10, true, true);
+                drawSpriteTile((x * 8), (y * 8), 0, 20, 10);
             }
             else if (id == 18)//ground bomb
             {
-                draw_item_tile(x * 8, y * 8, 16, 16, 0x48, 10, true);
+                draw_item_tile(x * 8, y * 8 +4, 0, 467, 7,false,false,1,1);
+                draw_item_tile(x * 8 + 8, y * 8+4, 0, 467, 7, true, false, 1, 1);
             }
             else if (id == 19)//heart
             {
-                draw_item_tile(x*8 + 4, y*8, 8, 16, 0xA6, 5);
+                draw_item_tile(x * 8 + 4, y * 8, 6, 830, 5, false, false, 1);
             }
             else if (id == 20)//fairy*8
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0xEC, 10, false, true);
+                draw_item_tile(x * 8, y * 8, 10, 490, 10);
             }
             else if (id == 21)//heart
             {
-                draw_item_tile(x*8 + 4, y*8, 8, 16, 0xA6, 5);
+                draw_item_tile(x * 8 + 4, y * 8, 6, 830, 5, false, false, 1);
             }
             else if (id == 22)//nothing
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0x6C, 10, true);
+                //draw_item_tile(x*8, y*8, 16, 16, 0x6C, 10, true);
             }
             else if (id == 23)//hole
             {
-                draw_item_tile(x * 8, y * 8, 16, 16, 0x60, 9, false);
+                //draw_item_tile(x * 8, y * 8, 16, 16, 0x60, 9, false);
             }
             else if (id == 24)//warp
             {
-                draw_item_tile(x*8, y*8, 16, 16, 0xC6, 11);
+                draw_item_tile(x*8, y*8, 6, 832, 11);
             }
             else if (id == 25)//staircase
             {
@@ -146,7 +149,7 @@ namespace ZeldaFullEditor
             }
             else if (id == 27)//switch
             {
-                draw_item_tile(x*8, y*8, 8, 16, 0x0B, 5, true);
+                draw_item_tile(x * 8, y * 8, 11, 56, 5,false,false,1);
             }
         }
 
@@ -154,70 +157,89 @@ namespace ZeldaFullEditor
 
 
 
-        public void draw_item_tile(int x, int y, int sx, int sy, int tid, int pid, bool nsheet = false,bool sprite = false)
+        public unsafe void draw_item_tile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2)
         {
+            var alltilesData = (byte*)GFX.allgfx16Ptr.ToPointer();
+            byte* ptr = (byte*)GFX.roomBg1Ptr.ToPointer();
 
-            if (nx != this.x || ny != this.y)
+            int drawid = (srcx + (srcy * 16));
+            for (var yl = 0; yl < sizey * 8; yl++)
             {
-                x -= (this.x * 8);
-                y -= (this.y * 8);
-                x += (this.nx * 8);
-                y += (this.ny * 8);
-            }
-
-            int ty = ((tid & 0xF0) >> 4);
-            if (nsheet)
-            {
-                ty += 16;
-            }
-            if (sprite)
-            {
-                ty += 32;
-            }
-            int tx = tid & 0x0F;
-            for (int xx = 0; xx < (sx); xx++)
-            {
-                for (int yy = 0; yy < (sy); yy++)
+                for (var xl = 0; xl < (sizex * 8) / 2; xl++)
                 {
-                    int x_dest = ((x) + (xx)) * 4;
-                    int y_dest = (((y) + (yy)) * 512) * 4;
-                    int dest = x_dest + y_dest;
+                    int mx = xl;
+                    int my = yl;
+                    byte r = 0;
 
-                    int x_src = ((tx * 8) + (xx));
-                    int y_src = (((ty * 8) + (yy)) * 128);
-
-                    int src = x_src + y_src;
-                    unsafe
+                    if (mirror_x)
                     {
-                        if (dest < 1048576)
-                        {
-                            if (dest > 0)
-                            {
-                                if (sprite == false)
-                                {
-                                    if (GFX.itemsdataEDITOR[(src)] != 0)
-                                    { 
-                                        GFX.currentData[dest] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pid - 2].B);
-                                        GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pid - 2].G);
-                                        GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pid - 2].R);
-                                        GFX.currentData[dest + 3] = 255;
-                                    }
-                                }
-                                else
-                                {
-                                    if (GFX.singledata[(src)] != 0)
-                                    {
-                                        GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(src)], pid - 2].B);
-                                        GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.singledata[(src)], pid - 2].G);
-                                        GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.singledata[(src)], pid - 2].R);
-                                        GFX.currentData[dest + 3] = 255;
-                                    }
-                                }
-                            }
-                        }
+                        mx = (((sizex * 8) / 2) - 1) - xl;
+                        r = 1;
+                    }
+                    if (mirror_y)
+                    {
+                        my = (((sizey * 8)) - 1) - yl;
+                    }
+                    //Formula information to get tile index position in the array
+                    //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
+                    int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
+                    var pixel = alltilesData[tx + (yl * 64) + xl];
+                    //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
+                    int index = (x) + (y * 512) + ((mx * 2) + (my * (512)));
+                    if ((pixel & 0x0F) != 0)
+                    {
+                        ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + 112 + (pal * 8));
+                    }
+                    if (((pixel >> 4) & 0x0F) != 0)
+                    {
+                        ptr[index + r] = (byte)(((pixel >> 4) & 0x0F) + 112 + (pal * 8));
                     }
                 }
             }
         }
+
+        public unsafe void drawSpriteTile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2, bool iskey = false)
+        {
+            var alltilesData = (byte*)GFX.currentgfx16Ptr.ToPointer();
+            byte* ptr = (byte*)GFX.roomBg1Ptr.ToPointer();
+            int drawid = (srcx + (srcy * 16)) + 512;
+            for (var yl = 0; yl < sizey * 8; yl++)
+            {
+                for (var xl = 0; xl < (sizex * 8) / 2; xl++)
+                {
+                    int mx = xl;
+                    int my = yl;
+                    byte r = 0;
+
+                    if (mirror_x)
+                    {
+                        mx = (((sizex * 8) / 2) - 1) - xl;
+                        r = 1;
+                    }
+                    if (mirror_y)
+                    {
+                        my = (((sizey * 8)) - 1) - yl;
+                    }
+                    //Formula information to get tile index position in the array
+                    //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
+                    int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
+                    var pixel = alltilesData[tx + (yl * 64) + xl];
+                    //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
+                    int index = (x) + (y * 512) + ((mx * 2) + (my * (512)));
+                    if ((pixel & 0x0F) != 0)
+                    {
+                        ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + 112 + (pal * 8));
+                    }
+                    if (((pixel >> 4) & 0x0F) != 0)
+                    {
+                        ptr[index + r] = (byte)(((pixel >> 4) & 0x0F) + 112 + (pal * 8));
+                    }
+                }
+            }
+        }
+
+
     }
+
+
 }

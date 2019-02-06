@@ -184,147 +184,35 @@ namespace ZeldaFullEditor
                 //LW
                 "Lost Woods","DP","Lumberjack","DM Hera Tower","DP","DM Wall of Caves","DP","DM Turtle Rock",
                 "DP","DP","Death Mountain Entrance","DP","DP","DP","DP","Hidden Waterfall",
-                "Woods Entrance","Top of Kakariko","Whirlpool Lake?","Sanctuary","Cemetery","River","Witch","Way to Zora",
+                "Woods Entrance","Top of Kakariko","Whirlpool Lake","Sanctuary","Cemetery","River","Witch","Way to Zora",
                 "Kakariko","DP","West of Castle","Castle","DP","Wooden Bridge","Eastern Palace","DP",
                 "DP","DP","Blacksmith","DP","DP","Octoroks","DP","DP",
                 "Race Game","Library","Flute Grove","West of Link's House","Link's House","Stone Bridge","Top of Hylia Lake","Flute #5",
-                "Desert","DP","Grove Ledge","North of Dam","South of Link's House","Lake Hylia","DP","Shopping Mall",
+                "Desert","DP","Grove Ledge","North of Dam","South of Links House","Lake Hylia","DP","Shopping Mall",
                 "DP","DP","Purple Chest Guy","Dam","East of Dam","DP","DP","South East Hylia",
 
                 //DW
                 "Skulls Woods","DP","Lumberjack","DM Ganon Tower","DP","DM Wall of Caves","DP","DM Turtle Rock",
                 "DP","DP","Death Mountain Entrance","DP","DP","DP","DP","Catfish",
-                "Woods Entrance","Top of Village of Outcast","Lake?","Sanctuary Cave","Cemetery","River","Witch","Way to Catfish",
+                "Woods Entrance","Top of Village of Outcast","Lake","Sanctuary Cave","Cemetery","River","Witch","Way to Catfish",
                 "Village of Outcast","DP","Lost Shop","Pyramid","DP","Wooden Bridge","Palace of Darkness","DP",
                 "DP","DP","Smith House","DP","DP","Rocky Area","DP","DP",
-                "Digging","Archery Minigame","Haunted Grove","West of Link's House","Link's House","Peg Bridge","Top of Hylia Lake","Flute #5",
+                "Digging","Archery Minigame","Haunted Grove","West of Link's House","Links House","Peg Bridge","Top of Hylia Lake","Flute #5",
                 "Misery Mire","DP","South of Grove","North of Swamp Palace","South of Link's House","Ice Palace","DP","Shopping Mall",
-                "DP","DP","Purple Chest Guy","Swamp","East of Swamp","DP","DP","South East Ice Palace"
+                "DP","DP","Purple Chest Guy","Swamp","East of Swamp","DP","DP","South East Ice Palace",
+
+                //Specials
+                "Master Sword/Under Bridge","Zora Domain","Unused","Unused","Unused","Unused","Unused","Unused",
+                "Unused","Unused","Unused","Unused","Unused","Unused","Unused","Unused","Unused","Unused","Unused",
+
+                //Backgrounds
+                "Triforce Room", "Master Sword/Under Bridge Mask", "Death Mountain BGR", "Pyramid BGR", "Forest BGR",
+                "Unused", "Unused", "Unused", "Unused", "???", "Cloud Overlay", "Tree Overlay", "Rain Overlay"
+
             };
         }
 
-        static public void createProjectFile(string gameVersion)
-        {
-            //Ask for name 
 
-            SaveFileDialog sf = new SaveFileDialog();
-            sf.Filter = "ZScream project file .zsc|*.zsc";
-            sf.DefaultExt = ".zsc";
-
-            if (sf.ShowDialog() == DialogResult.OK) //if project name is null then throw an error
-            {
-                ProjectName = sf.FileName;
-                FileStream fs = new FileStream( sf.FileName , FileMode.CreateNew, FileAccess.Write);
-                fs.Position = 0x100000; //Keep 1mb data for the project file settings stuff
-                fs.Write(ROM.DATA, 0, ROM.DATA.Length);
-
-                fs.Position = 0;
-                BinaryWriter bw = new BinaryWriter(fs);
-                bw.Write("ZScream Project File"); //Header to detect if the file is a project or not
-                bw.Write(ProjectVersion); //the version of ZScream that was used to make that project file
-                bw.Write(sf.FileName);//Project Name
-                bw.Write(gameVersion); //Game version used in the project, us,jp,vt
-
-                for (int i = 0; i < 17; i++)
-                {
-                    bw.Write(dungeonsNames[i]); //write all the dungeons names
-                }
-                //Missing 2 room
-                for (int i = 0; i < 296; i++) //for each room save short for room id followed by 1byte dungeon id in
-                {
-                    bw.Write(dungeonsRoomList[i].id); //write all the dungeons rooms
-                    bw.Write(dungeonsRoomList[i].dungeonId);//the dungeon they belong to
-                    bw.Write(dungeonsRoomList[i].name);
-                }
-
-
-
-                bw.Close();
-                MessageBox.Show("Project " + sf.FileName + " Has been created");
-            }
-
-        }
-
-
-        static public void saveProjectFile(string gameVersion, string filename)
-        {
-
-            FileStream fs = new FileStream(ProjectName, FileMode.OpenOrCreate, FileAccess.Write);
-            fs.Position = 0x100000; //Keep 1mb data for the project file settings stuff
-            fs.Write(ROM.DATA, 0, ROM.DATA.Length);
-            
-            fs.Position = 0;
-            BinaryWriter bw = new BinaryWriter(fs);
-            bw.Write("ZScream Project File"); //Header to detect if the file is a project or not
-            bw.Write(ProjectVersion); //the version of ZScream that was used to make that project file
-            bw.Write(ProjectName);//Project Name
-            bw.Write(gameVersion); //Game version used in the project, us,jp,vt
-
-            for (int i = 0; i < 17; i++)
-            {
-                bw.Write(dungeonsNames[i]); //write all the dungeons names
-            }
-
-            for (int i = 0; i < 296; i++) //for each room save short for room id followed by 1byte dungeon id in
-            {
-                bw.Write(dungeonsRoomList[i].id); //write all the dungeons rooms
-                bw.Write(dungeonsRoomList[i].dungeonId);//the dungeon they belong to
-                bw.Write(dungeonsRoomList[i].name); //WTF
-            }
-
-            
-
-            bw.Close();
-        }
-
-        static public bool loadProject(string filename)
-        {
-            FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
-
-
-            fs.Position = 0;
-            BinaryReader br = new BinaryReader(fs);
-            string zproject = br.ReadString();
-            //string projectVersion;
-            //string projectName;
-            //string gameVersion;
-            if (zproject == "ZScream Project File")//it is a zscream project
-            {
-                dungeonsRoomList.Clear();
-                ROMStructure.ProjectVersion = br.ReadString();
-                //ROMStructure.ProjectName = 
-                br.ReadString();
-                ROMStructure.GameVersion = br.ReadString();
-                for (int i = 0; i < 17; i++)
-                {
-                    dungeonsNames[i] = br.ReadString();//read all the dungeons names
-                }
-
-
-                for (int i = 0; i < 296; i++) //for each room save short for room id followed by 1byte dungeon id in
-                {
-                    short id = br.ReadInt16();
-                    byte dungeonid = br.ReadByte();
-                    string dungeoname = br.ReadString();
-                    dungeonsRoomList.Add(new DataRoom(id, dungeonid, dungeoname));
-                }
-               
-
-                fs.Position = 0x100000; //Keep 1mb data for the project file settings stuff
-                ROM.DATA = new byte[(fs.Length - 0x100000)];
-                fs.Read(ROM.DATA, 0, (int)(fs.Length - 0x100000));
-                br.Close();
-                return true;
-            }
-            else
-            {
-                br.Close();
-                MessageBox.Show("This is not a valid ZScream project file !", "Error");
-                return false;
-                //return an error
-            }
-
-        }
 
         static public void loadDefaultProject()
         {

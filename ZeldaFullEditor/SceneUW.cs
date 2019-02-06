@@ -11,528 +11,124 @@ using System.Diagnostics;
 using ZeldaFullEditor.Properties;
 using Microsoft.VisualBasic;
 using System.IO.Compression;
-using static ZeldaFullEditor.zscreamForm;
+using static ZeldaFullEditor.Form1;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
-using WeifenLuo.WinFormsUI.Docking;
 
 namespace ZeldaFullEditor
 {
     public class SceneUW : Scene
     {
 
-        public SceneUW(zscreamForm f)
+        public SceneUW(Form1 f)
         {
-            graphics = Graphics.FromImage(scene_bitmap);
+            //graphics = Graphics.FromImage(scene_bitmap);
             
             this.MouseDown += new MouseEventHandler(onMouseDown);
             this.MouseUp += new MouseEventHandler(onMouseUp);
             this.MouseMove += new MouseEventHandler(onMouseMove);
             this.MouseDoubleClick += new MouseEventHandler(onMouseDoubleClick);
-            
+            this.MouseWheel += SceneUW_MouseWheel;
+            this.Paint += SceneUW_Paint;
             mainForm = f;
+
         }
 
-        public override void Clear()
+        Rectangle lastSelectedRectangle;
+        byte[] spriteFontSpacing = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4 };
+        private void SceneUW_MouseWheel(object sender, MouseEventArgs e)
         {
-            graphics.Clear(this.BackColor);
-        }
-
-        public void ChangeRoom(Room room)
-        {
-            this.room = room;
-        }
-
-        private void onMouseDown(object sender, MouseEventArgs e)
-        {
-            this.Focus();
-            mainForm.activeScene = this;
-            mainForm.mapPropertyGrid.SelectedObject = room;
-            room.reloadGfx();
-            need_refresh = true;
-            if (e.Button == MouseButtons.Left)
+            if (room.selectedObject.Count > 0)
             {
-
-                if (selectedDragObject != null)
+                if (room.selectedObject[0] is Room_Object)
                 {
-                    
-                    room.selectedObject.Clear();
-                    Room_Object ro = room.addObject(selectedDragObject.id, (byte)0, (byte)0, 0, (byte)selectedMode);
-                    if (ro != null)
+                    if (e.Delta > 0)
                     {
-                        ro.setRoom(room);
-                        ro.get_scroll_x();
-                        ro.get_scroll_y();
-                        if (ro.special_zero_size != 0)
+                        if ((room.selectedObject[0] as Room_Object).size < 15)
                         {
-                            ro.size = 1;
+                            (room.selectedObject[0] as Room_Object).UpdateSize();
+                            (room.selectedObject[0] as Room_Object).size++;
                         }
-
-
-                        room.tilesObjects.Add(ro);
-                        room.selectedObject.Add(ro);
-                        dragx = 0;
-                        dragy = 0;
 
                     }
-                    room.has_changed = true;
-                    mouse_down = true;
-                    need_refresh = true;
-                    room.reloadGfx(false);
-                    mainForm.objectsListbox.ClearSelected();
-                    selectedDragObject = null;
-                }
-
-                if (selectedDragSprite != null)
-                {
-                    room.selectedObject.Clear();
-                    Sprite spr = new Sprite(room, (byte)selectedDragSprite.id, 0, 0, selectedDragSprite.Name, 0, 0, 0);
-                    room.sprites.Add(spr);
-                    room.selectedObject.Add(spr);
-                    mouse_down = true;
-                    dragx = 0;
-                    dragy = 0;
-                    room.has_changed = true;
-                    need_refresh = true;
-                    //reloadgfx ?
-                    mainForm.spritesListbox.ClearSelected();
-                    selectedDragSprite = null;
-                }
-
-
-
-
-
-
-                if (mouse_down == false)
-                {
-                    doorArray = new Rectangle[48];
-                    if (resizing != ObjectResize.None)
+                    else if (e.Delta < 0)
                     {
-                        selection_resize = true;
-                        mouse_down = true;
-                        dragx = ((e.X) / 8);
-                        dragy = ((e.Y) / 8);
-                        (room.selectedObject[0] as Room_Object).oldSize = (room.selectedObject[0] as Room_Object).size;
-                        (room.selectedObject[0] as Room_Object).savedSize = (room.selectedObject[0] as Room_Object).size;
-                        return;
-                    }
-                    found = false;
-                    if (selectedMode == ObjectMode.Spritemode)
-                    {
-                        dragx = ((e.X) / 16);
-                        dragy = ((e.Y) / 16);
-                        if (room.selectedObject.Count == 1)
+                        if ((room.selectedObject[0] as Room_Object).size > 0)
                         {
-                            room.selectedObject.Clear();
+                            (room.selectedObject[0] as Room_Object).UpdateSize();
+                            (room.selectedObject[0] as Room_Object).size--;
                         }
-                        foreach (Sprite spr in room.sprites)
-                        {
-                            if (isMouseCollidingWith(spr, e))
-                            {
-                                if (spr.selected == false)
-                                {
-                                    room.selectedObject.Add(spr);
-                                    found = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (found == false) //we didnt find any sprites to click on so just clear the selection
-                        {
-                            room.selectedObject.Clear();
-                        }
-                    }
-                    else if (selectedMode == ObjectMode.Itemmode)
-                    {
-                        dragx = ((e.X) / 8);
-                        dragy = ((e.Y) / 8);
-                        if (room.selectedObject.Count == 1)
-                        {
-                            foreach (Object o in room.pot_items)
-                            {
-                                //(o as PotItem).selected = false;
-                            }
-                            room.selectedObject.Clear();
-                        }
-                        foreach (PotItem item in room.pot_items)
-                        {
-                            if (isMouseCollidingWith(item, e))
-                            {
-                                if (item.selected == false)
-                                {
-                                    room.selectedObject.Add(item);
-                                    found = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (found == false) //we didnt find any items to click on so just clear the selection
-                        {
-                            room.selectedObject.Clear();
-                        }
-                    }
-                    else if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
-                    {
-
-                        dragx = ((e.X) / 8);
-                        dragy = ((e.Y) / 8);
-                        bool already_in = false;
-                        Room_Object objectFound = null;
-                        found = false;
-                        for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
-                        {
-                            Room_Object obj = room.tilesObjects[i];
-                            if (isMouseCollidingWith(obj, e))
-                            {
-                                if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr && (obj.options & ObjectOption.Door) != ObjectOption.Door && (obj.options & ObjectOption.Torch) != ObjectOption.Torch && (obj.options & ObjectOption.Block) != ObjectOption.Block)
-                                {
-                                    if (room.selectedObject.Count == 0)
-                                    {
-                                        //(byte)selectedMode >= 0 && (byte)selectedMode <= 3
-                                        if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
-                                        {
-                                            room.selectedObject.Add(obj);
-                                            found = true;
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            continue;
-                                        }
-                                    }
-                                    else //there's already objects selected
-                                    {
-                                        //check if the object we found is already in selected object if so do nothing
-                                        //otherwise clear objects and select the new one
-                                        foreach (Room_Object o in room.selectedObject)
-                                        {
-                                            if (o == obj)
-                                            {
-                                                if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
-                                                {
-                                                    found = true;
-                                                    objectFound = o;
-                                                    already_in = true;
-                                                    break;
-                                                }
-                                                else
-                                                {
-                                                    continue;
-                                                }
-                                            }
-                                        }
-                                        if (already_in == false)
-                                        {
-
-                                            //objectToRemove
-                                            if (ModifierKeys == Keys.Shift)
-                                            {
-                                                if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
-                                                {
-                                                    room.selectedObject.Add(obj);
-                                                }
-                                                else
-                                                {
-                                                    continue;
-                                                }
-                                            }
-                                            else
-                                            {
-                                                room.selectedObject.Clear();
-                                                if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
-                                                {
-                                                    room.selectedObject.Add(obj);
-                                                }
-                                                else
-                                                {
-                                                    continue;
-                                                }
-                                            }
-
-                                        }
-                                        else //if item is already in but we hold control then remove it instead
-                                        {
-                                            if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
-                                            {
-                                                if (ModifierKeys == Keys.Control)
-                                                {
-                                                    room.selectedObject.Remove(objectFound);
-                                                }
-                                                else
-                                                {
-                                                    continue;
-                                                }
-                                            }
-                                        }
-                                    }
-                                    found = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (found == false) //we didnt find any Tiles to click on so just clear the selection
-                        {
-                            if (ModifierKeys != Keys.Shift && ModifierKeys != Keys.Control)
-                            {
-                                //Console.WriteLine("we didnt find any object so clear all");
-                                room.selectedObject.Clear();
-                            }
-                        }
-                    }
-                    else if (selectedMode == ObjectMode.Doormode)
-                    {
-                        room.selectedObject.Clear();
-                        dragx = ((e.X) / 8);
-                        dragy = ((e.Y) / 8);
-                        for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
-                        {
-                            Room_Object obj = room.tilesObjects[i];
-                            if (isMouseCollidingWith(obj, e))
-                            {
-                                if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr && (obj.options & ObjectOption.Door) == ObjectOption.Door)
-                                {
-                                    //we found a door
-                                    room.selectedObject.Add(obj);
-                                    obj.selected = true;
-                                    doorArray = room.getAllDoorPosition(obj);
-                                    need_refresh = true;
-                                    break;
-                                }
-
-                            }
-
-                        }
-                    }
-                    else if (selectedMode == ObjectMode.Blockmode)
-                    {
-                        room.selectedObject.Clear();
-                        dragx = ((e.X) / 8);
-                        dragy = ((e.Y) / 8);
-                        for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
-                        {
-                            Room_Object obj = room.tilesObjects[i];
-                            if (isMouseCollidingWith(obj, e))
-                            {
-                                if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr && (obj.options & ObjectOption.Block) == ObjectOption.Block)
-                                {
-                                    room.selectedObject.Add(obj);
-                                    need_refresh = true;
-                                    break;
-                                }
-
-                            }
-
-                        }
-                    }
-                    else if (selectedMode == ObjectMode.Torchmode)
-                    {
-                        room.selectedObject.Clear();
-                        dragx = ((e.X) / 8);
-                        dragy = ((e.Y) / 8);
-                        for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
-                        {
-                            Room_Object obj = room.tilesObjects[i];
-                            if (isMouseCollidingWith(obj, e))
-                            {
-                                if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr && (obj.options & ObjectOption.Torch) == ObjectOption.Torch)
-                                {
-                                    //we found a door
-                                    room.selectedObject.Add(obj);
-                                    need_refresh = true;
-                                    break;
-                                }
-
-                            }
-
-                        }
-                    }
-                    else if (selectedMode == ObjectMode.Warpmode)
-                    {
-                        room.selectedObject.Clear();
-                        dragx = ((e.X) / 8);
-                        dragy = ((e.Y) / 8);
-                        int doorCount = 0;
-                        foreach (Room_Object o in room.tilesObjects)
-                        {
-                            if (doorsObject.Contains(o.id))
-                            {
-                                if (isMouseCollidingWith(o, e))
-                                {
-                                    string warpid = Interaction.InputBox("New Warp Room", "Room Id", room.staircase_rooms[doorCount].ToString());
-                                    byte b;
-                                    if (byte.TryParse(warpid, out b))
-                                    {
-                                        room.staircase_rooms[doorCount] = b;
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("The value need to be a number between 0-256");
-                                    }
-
-
-                                }
-                                doorCount++;
-                            }
-                            else if (o.id == 0xFCA)
-                            {
-                                if (isMouseCollidingWith(o, e))
-                                {
-                                    string warpid = Interaction.InputBox("New Warp Room", "Room Id", room.holewarp.ToString());
-                                    byte b;
-                                    if (byte.TryParse(warpid, out b))
-                                    {
-                                        room.holewarp = b;
-                                    }
-                                    else
-                                    {
-                                        MessageBox.Show("The value need to be a number between 0-256");
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-                    mouse_down = true;
-                    move_x = 0;
-                    move_y = 0;
-                    mx = dragx;
-                    my = dragy;
-                    last_mx = mx;
-                    last_my = my;
-                }
-                mainForm.spritepropertyPanel.Visible = false;
-                mainForm.potitemobjectPanel.Visible = false;
-                mainForm.doorselectPanel.Visible = false;
-                if (room.selectedObject.Count > 0)
-                {
-                    if (room.selectedObject[0] is Room_Object)
-                    {
-                        updating_info = true;
-                        Room_Object oo = room.selectedObject[0] as Room_Object;
-                        if (oo.options == ObjectOption.Door)
-                        {
-                            string name = oo.name;
-                            string id = oo.id.ToString("X4");
-                            mainForm.comboBox1.Enabled = false;
-                            mainForm.selectedGroupbox.Text = "Selected Object : " + id + " " + name;
-                            mainForm.doorselectPanel.Visible = true;
-                            int apos = mainForm.door_index.Select((s, i) => new { s, i }).Where(x => x.s == (oo as object_door).door_type).Select(x => x.i).ToArray()[0];
-                            mainForm.comboBox2.SelectedIndex = apos;
-                            for (int i = 0; i < room.tilesObjects.Count; i++)
-                            {
-                                if (room.tilesObjects[i] == oo)
-                                {
-                                    mainForm.selectedZUpDown.Value = i;
-                                }
-                            }
-                            updateSelectionObject(oo);
-                        }
-                        else
-                        {
-                           
-
-                            string name = oo.name;
-                            string id = oo.id.ToString("X4");
-                            mainForm.comboBox1.Enabled = false;
-                            mainForm.selectedGroupbox.Text = "Selected Object : " + id + " " + name;
-
-                            for (int i = 0; i < room.tilesObjects.Count; i++)
-                            {
-                                if (room.tilesObjects[i] == oo)
-                                {
-                                    mainForm.selectedZUpDown.Value = i;
-                                }
-                            }
-
-                            updateSelectionObject(oo);
-                        }
-                    }
-                    else if (room.selectedObject[0] is Sprite)
-                    {
-                        mainForm.spritepropertyPanel.Visible = true;
-                        updating_info = true;
-                        Sprite oo = room.selectedObject[0] as Sprite;
-                        string name = oo.name;
-                        string id = oo.id.ToString("X4");
-                        mainForm.selectedGroupbox.Text = "Selected Sprite : " + id + " " + name;
-                        mainForm.comboBox1.Enabled = true;
-                        updateSelectionObject(oo);
-                    }
-                    else if (room.selectedObject[0] is PotItem)
-                    {
-
-                        updating_info = true;//?
-                        PotItem oo = room.selectedObject[0] as PotItem;
-                        mainForm.potitemobjectPanel.Visible = true; //oO why this is not appearing
-                        int dropboxid = oo.id;
-                        if ((oo.id & 0x80) == 0x80) //it is a special object
-                        {
-                            dropboxid = ((oo.id - 0x80) / 2) + 0x17; //no idea if it will work
-                        }
-                        //if for some reason the dropboxid >= 28
-                        if (dropboxid >= 28)
-                        {
-                            dropboxid = 27; //prevent crash :yay:
-                        }
-                        string name = PotItems_Name.name[dropboxid];
-                        string id = oo.id.ToString("X4");
-                        mainForm.selectedGroupbox.Text = "Selected Item : " + id + " " + name;
-                        mainForm.selecteditemobjectCombobox.SelectedIndex = dropboxid;
-
                     }
                 }
+            }
+            this.DrawRoom();
+            this.Refresh();
+        }
+        
+        public void drawText(Graphics g, int x, int y, string text)
+        {
+            text = text.ToUpper();
+            int cpos = 0;
+            for (int i = 0;i<text.Length;i++)
+            {
+                byte arrayPos = (byte)(text[i]-32);
 
-
+                g.DrawImage(mainForm.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos*8, 0, 8, 8, GraphicsUnit.Pixel);
+                cpos += spriteFontSpacing[arrayPos];
             }
         }
 
-
-
-        Rectangle lastSelectedRectangle = new Rectangle();
-        bool colliding_chest = false;
         private void onMouseMove(object sender, MouseEventArgs e)
         {
-
-                colliding_chest = false;
-                if (selectedMode == ObjectMode.Chestmode)
+            bool colliding_chest = false;
+            if (selectedMode == ObjectMode.Chestmode)
+            {
+                foreach (Chest c in room.chest_list)
                 {
-                    foreach (Chest c in room.chest_list)
+                    if (e.X >= (c.x * 8) && e.Y >= (c.y * 8) - 16 && e.X <= (c.x * 8) + 16 && e.Y <= (c.y * 8) + 16)
                     {
-                        if (e.X >= (c.x * 8) && e.Y >= (c.y * 8) - 16 && e.X <= (c.x * 8) + 16 && e.Y <= (c.y * 8) + 16)
+                        mainForm.toolTip1.Show(ChestItems_Name.name[c.item] + " " + c.item.ToString("X2"), this, new Point(e.X, e.Y + 16));
+                        colliding_chest = true;
+                    }
+                }
+            }
+            if (colliding_chest == false)
+            {
+                mainForm.toolTip1.Hide(this);
+            }
+            /*if (mouse_down)
+            {
+                updating_info = true;
+                setMouseSizeMode(e);
+                //define the size of mx,my for each mode
+                if (selectedMode != ObjectMode.Doormode)
+                {
+                    if (mx != last_mx || my != last_my)
+                    {
+                        if (room.selectedObject.Count > 0)
                         {
-                            mainForm.toolTip1.Show(ChestItems_Name.name[c.item] +" " + c.item.ToString("X2"), this, new Point(e.X, e.Y + 16));
-                            colliding_chest = true;
+                            move_objects();
+                            room.has_changed = true;
+                            mainForm.checkAnyChanges();
+                            last_mx = mx;
+                            last_my = my;
+                            updateSelectionObject(room.selectedObject[0]);
                         }
+                        DrawRoom();
+                        Refresh();
                     }
                 }
-                if (colliding_chest == false)
-                {
-                    mainForm.toolTip1.Hide(this);
-                }
+            }*/
 
-                //Cursor.Current = Cursors.Default;
-                if (room.selectedObject.Count == 1)
-                {
-                    if (room.selectedObject[0] is Room_Object)
-                    {
-                        objects_ResizeMouseMove(e); //show the arrows on selected object to resize them
-                    }
-                }
+
 
             if (mouse_down)
             {
                 updating_info = true;
 
-
-
-
-
                 setMouseSizeMode(e); //define the size of mx,my for each mode
                 if (selectedMode != ObjectMode.Doormode)
                 {
-                    if (selection_resize == false)
-                    {
                         if (mx != last_mx || my != last_my)
                         {
                             need_refresh = true;
@@ -548,12 +144,6 @@ namespace ZeldaFullEditor
                                 updateSelectionObject(room.selectedObject[0]);
                             }
                         }
-
-                    }
-                    else
-                    {
-                        resizing_objects();
-                    }
                 }
                 else //if it a door
                 {
@@ -578,12 +168,11 @@ namespace ZeldaFullEditor
                                                 (room.selectedObject[0] as object_door).door_pos = (((byte)((i - (doordir * 12)) * 2)));
                                                 (room.selectedObject[0] as object_door).door_dir = ((byte)(doordir));
                                                 (room.selectedObject[0] as object_door).updateId();
-                                                (room.selectedObject[0] as object_door).DrawOnBitmap();
+                                                (room.selectedObject[0] as object_door).Draw();
                                                 room.has_changed = true;
-                                                room.reloadGfx();
-                                                need_refresh = true;
+
                                             }
-                                            
+
                                             break;
 
                                         }
@@ -593,137 +182,10 @@ namespace ZeldaFullEditor
                         }
                     }
                 }
-            }
-        }
-
-        private void onMouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                updating_info = false;
-                selection_resize = false;
-
-                if (mouse_down == true)
-                {
-                    mouse_down = false;
-                    need_refresh = true;
-                    if (room.selectedObject.Count == 0) //if we don't have any objects select we select what is in the rectangle
-                    {
-                        getObjectsRectangle();
-                    }
-                    else
-                    {
-                        setObjectsPosition();
-                    }
-
-                }
-            }
-            else if (e.Button == MouseButtons.Right) //that's a problem
-            {
-                mainForm.nothingselectedcontextMenu.Items[0].Enabled = true;
-                mainForm.singleselectedcontextMenu.Items[0].Enabled = true;
-                mainForm.groupselectedcontextMenu.Items[0].Enabled = true;
-                string nname = "Unknown";
-                if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
-                {
-                    nname = "Object";
-                    if (selectedMode == ObjectMode.Bgallmode)
-                    {
-                        mainForm.nothingselectedcontextMenu.Items[0].Enabled = false;
-                        mainForm.singleselectedcontextMenu.Items[0].Enabled = false;
-                        mainForm.groupselectedcontextMenu.Items[0].Enabled = false;
-                    }
-                }
-                else if (selectedMode == ObjectMode.Spritemode)
-                {
-                    nname = "Sprite";
-                }
-                else if (selectedMode == ObjectMode.Chestmode)
-                {
-                    nname = "Chest Item";
-                }
-                else if (selectedMode == ObjectMode.Itemmode)
-                {
-                    nname = "Pot Item";
-                }
-                else if (selectedMode == ObjectMode.Blockmode)
-                {
-                    nname = "Block";
-                }
-                else if (selectedMode == ObjectMode.Torchmode)
-                {
-                    nname = "Torch";
-                }
-                else if (selectedMode == ObjectMode.Doormode)
-                {
-                    nname = "Door";
-                }
-                mainForm.nothingselectedcontextMenu.Items[0].Text = "Insert new " + nname;
-                mainForm.singleselectedcontextMenu.Items[0].Text = "Insert new " + nname;
-                mainForm.groupselectedcontextMenu.Items[0].Text = "Insert new " + nname;
-                if (room.selectedObject.Count == 0)
-                {
-                    mainForm.nothingselectedcontextMenu.Show(Cursor.Position);
-                }
-                else if (room.selectedObject.Count == 1)
-                {
-                    mainForm.singleselectedcontextMenu.Show(Cursor.Position);
-                }
-                else if (room.selectedObject.Count > 1)
-                {
-                    mainForm.groupselectedcontextMenu.Show(Cursor.Position);
-                }
+                DrawRoom();
+                Refresh();
             }
 
-        }
-
-        private void onMouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (selectedMode == ObjectMode.Chestmode)
-            {
-                Chest chestToRemove = null;
-                bool foundChest = false;
-                foreach (Chest c in room.chest_list)
-                {
-                    if (e.X >= (c.x * 8) && e.X <= (c.x * 8) + 16 &&
-                        e.Y >= ((c.y - 2) * 8) && e.Y <= ((c.y) * 8) + 16)
-                    {
-                        chestpicker.button3.Enabled = true; 
-                        DialogResult result = chestpicker.ShowDialog();
-                        if (result == DialogResult.OK)
-                        {
-                            //change chest item
-                            c.item = (byte)chestpicker.listView1.SelectedIndices[0];
-                            room.has_changed = true;
-                        }
-                        else if (result == DialogResult.No)
-                        {
-                            chestToRemove = c;
-                        }
-                        foundChest = true;
-                        break;
-                    }
-                }
-                if (foundChest == false)
-                {
-                    chestpicker.button3.Enabled = false;
-                    DialogResult result = chestpicker.ShowDialog();
-                    if (result == DialogResult.OK)
-                    {
-                        room.has_changed = true;
-                        //change chest item
-                        Chest c = new Chest((byte)(e.X / 8), (byte)(e.Y / 8), (byte)chestpicker.listView1.SelectedIndices[0], false, false);
-                        room.chest_list.Add(c);
-                    }
-                }
-
-                if (chestToRemove != null)
-                {
-                    room.chest_list.Remove(chestToRemove);
-                }
-
-                need_refresh = true;
-            }
         }
 
         public void move_objects()
@@ -775,12 +237,926 @@ namespace ZeldaFullEditor
 
         }
 
+
+        private unsafe void SceneUW_Paint(object sender, PaintEventArgs e)
+        {
+            
+            e.Graphics.SetClip(new Rectangle(0, 0, 512, 512));
+            e.Graphics.Clear(Color.Black);
+            if (room.bg2 != Background2.Translucent || room.bg2 != Background2.Transparent || room.bg2 != Background2.OnTop || room.bg2 != Background2.Off)
+            {
+                e.Graphics.DrawImage(GFX.roomBg2Bitmap, 0, 0);
+            }
+
+
+            //e.Graphics.DrawImage(GFX.roomBgLayoutBitmap,0,0);
+            e.Graphics.DrawImage(GFX.roomBg1Bitmap, 0, 0);
+
+            if (room.bg2 == Background2.Translucent || room.bg2 == Background2.Transparent)
+            {
+                float[][] matrixItems ={
+               new float[] {1f, 0, 0, 0, 0},
+               new float[] {0, 1f, 0, 0, 0},
+               new float[] {0, 0, 1f, 0, 0},
+               new float[] {0, 0, 0, 0.5f, 0},
+               new float[] {0, 0, 0, 0, 1}};
+                ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
+
+                // Create an ImageAttributes object and set its color matrix.
+                ImageAttributes imageAtt = new ImageAttributes();
+                imageAtt.SetColorMatrix(
+                   colorMatrix,
+                   ColorMatrixFlag.Default,
+                   ColorAdjustType.Bitmap);
+                //GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
+                e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
+            }
+            else if (room.bg2 == Background2.OnTop)
+            {
+                e.Graphics.DrawImage(GFX.roomBg2Bitmap, 0, 0);
+            }
+
+
+            //e.Graphics.DrawImage(GFX.currentgfx16Bitmap, 0, -256);
+            drawSelection(e.Graphics);
+
+            drawGrid(e.Graphics);
+            int superY = (room.index / 16);
+            int superX = room.index - (superY * 16);
+
+            int roomX = superX * 512;
+            int roomY = superY * 512;
+            if (mainForm.cameraboxCheckbox.Checked)
+            {
+
+                if (mainForm.selectedEntrance != null)
+                {
+                    int localCameraX = mainForm.selectedEntrance.XCamera - 128;
+                    int localCameraY = mainForm.selectedEntrance.YCamera - 116;
+
+                    e.Graphics.DrawRectangle(Pens.Orange, new Rectangle(localCameraX, localCameraY, 256, 224));
+                    Console.WriteLine(localCameraX + "," + localCameraY);
+                }
+            }
+
+            if (mainForm.entranceposCheckbox.Checked)
+            {
+                if (mainForm.selectedEntrance != null)
+                {
+                    int xpos = mainForm.selectedEntrance.XPosition - roomX;
+                    int ypos = mainForm.selectedEntrance.YPosition - roomY;
+                    e.Graphics.DrawLine(Pens.White, xpos - 4, ypos, xpos + 4, ypos);
+                    e.Graphics.DrawLine(Pens.White, xpos, ypos - 4, xpos, ypos + 4);
+                }
+            }
+
+            //e.Graphics.DrawImage(GFX.roomObjectsBitmap,0,0);
+            //e.Graphics.DrawImage(GFX., 0, -512);
+            //drawText(e.Graphics,4,4, "This is a test? []()abc 1234567890-+");
+            int stairCount = 0;
+            foreach(Room_Object o in room.tilesObjects)
+            {
+                if (o.options == ObjectOption.Door)
+                {
+                    if ((o.id >> 8) == 18) //exit door
+                    {
+                        drawText(e.Graphics, (o.x*8)+6, (o.y*8)+8, "Exit");
+                    }
+                    else if ((o.id >> 8) == 0x16) //exit door
+                    {
+                        drawText(e.Graphics, (o.x * 8) + 6, (o.y * 8) + 8, "to");
+                        drawText(e.Graphics, (o.x * 8) + 4, (o.y * 8) + 16, "bg2");
+                    }
+                }
+                if (o.id == 0x138 || o.id == 0x139 || o.id == 0x13A || o.id == 0x13B || o.id == 0xF9E || o.id == 0xF9F || o.id == 0xFA0)
+                {
+                    drawText(e.Graphics, o.nx*8, o.ny*8, "to : " + room.staircase_rooms[stairCount].ToString());
+                    stairCount++;
+                }
+
+            }
+
+            drawDoorsPosition(e.Graphics);
+
+        }
+
+        public void drawDoorsPosition(Graphics g)
+        {
+            if (mouse_down)
+            {
+                if (room.selectedObject.Count > 0)
+                {
+                    if (room.selectedObject[0] is Room_Object)
+                    {
+                        if (((room.selectedObject[0] as Room_Object).options & ObjectOption.Door) == ObjectOption.Door)
+                        {
+                            //for (int i = 0; i < 12; i++)
+                            //{
+                                g.DrawRectangles(new Pen(new SolidBrush(Color.FromArgb(100, 0, 200, 0))), doorArray);
+                               // drawText(g,doorArray)
+                            //}
+                        }
+                    }
+                }
+            }
+        }
+
+        public override void Clear()
+        {
+            //graphics.Clear(this.BackColor);
+        }
+
+
+        bool clickedObject = false;
+        private void onMouseDown(object sender, MouseEventArgs e)
+        {
+            this.Focus();
+            mainForm.activeScene = this;
+
+            if (mainForm.tabControl1.SelectedIndex == 2)//if we are on object tab
+            {
+                if ((byte)selectedMode <= 2) //if selected mode == bg1,bg2,bg3
+                {
+                    if (selectedDragObject != null) //if there's an object selected
+                    {
+                        room.selectedObject.Clear(); //clear the object buffer
+                        //add the new object in the buffer
+                        Room_Object ro = room.addObject(selectedDragObject.id, (byte)0, (byte)0, 0, (byte)selectedMode);
+                        if (ro != null)
+                        {
+                            ro.setRoom(room);
+                            room.tilesObjects.Add(ro);
+                            room.selectedObject.Add(ro);
+                            dragx = 0;
+                            dragy = 0;
+                        }
+
+                        room.has_changed = true;
+                        mouse_down = true;
+                        selectedDragObject = null;
+                        mainForm.objectViewer1.selectedObject = null;
+                        mainForm.objectViewer1.Refresh();
+
+                    }
+                }
+                else // if we are on a different tab than objects
+                {
+                    if (selectedDragObject != null) //if there's an object selected
+                    {
+                        selectedDragObject = null; //set the object null
+                        mainForm.objectViewer1.selectedIndex = -1;
+                        mainForm.objectViewer1.selectedObject = null;
+                        mainForm.objectViewer1.Refresh();
+                        mouse_down = false;
+                        MessageBox.Show("You must be selected on bg 1-3 to place new objects");
+                        return;
+                    }
+                }
+            }
+            else if (mainForm.tabControl1.SelectedIndex == 3)
+            {
+                if (selectedDragSprite != null)
+                {
+                    room.selectedObject.Clear();
+                    Sprite spr = new Sprite(room, (byte)selectedDragSprite.id, 0, 0, selectedDragSprite.Name, 0, 0, 0);
+                        
+                    if (spr != null)
+                    {
+                        mainForm.update_modes_buttons(mainForm.spritemodeButton, new EventArgs());
+                        room.selectedObject.Add(spr);
+                        dragx = 0;
+                        dragy = 0;
+                        room.sprites.Add(spr);
+                    }
+                    
+                    room.has_changed = true;
+                    mouse_down = true;
+                    selectedDragObject = null;
+                    selectedDragSprite = null;
+
+                    mainForm.spritesView1.selectedObject = null;
+                    mainForm.spritesView1.Refresh();
+
+                }
+            }
+
+
+            if (mouse_down == false)
+            {
+                doorArray = new Rectangle[48];
+                found = false;
+                if (selectedMode == ObjectMode.Spritemode)
+                {
+                    dragx = ((e.X) / 16);
+                    dragy = ((e.Y) / 16);
+                    if (room.selectedObject.Count == 1)
+                    {
+                        room.selectedObject.Clear();
+                    }
+                    foreach (Sprite spr in room.sprites)
+                    {
+                        if (isMouseCollidingWith(spr, e))
+                        {
+                            if (spr.selected == false)
+                            {
+                                room.selectedObject.Add(spr);
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (found == false) //we didnt find any sprites to click on so just clear the selection
+                    {
+                        room.selectedObject.Clear();
+                    }
+                }
+                else if (selectedMode == ObjectMode.Itemmode)
+                {
+                    dragx = ((e.X) / 8);
+                    dragy = ((e.Y) / 8);
+                    if (room.selectedObject.Count == 1)
+                    {
+                        foreach (Object o in room.pot_items)
+                        {
+                            //(o as PotItem).selected = false;
+                        }
+                        room.selectedObject.Clear();
+                    }
+                    foreach (PotItem item in room.pot_items)
+                    {
+                        if (isMouseCollidingWith(item, e))
+                        {
+                            if (item.selected == false)
+                            {
+                                room.selectedObject.Add(item);
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (found == false) //we didnt find any items to click on so just clear the selection
+                    {
+                        room.selectedObject.Clear();
+                    }
+                }
+                else if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
+                {
+
+                    dragx = ((e.X) / 8);
+                    dragy = ((e.Y) / 8);
+                    bool already_in = false;
+                    Room_Object objectFound = null;
+                    found = false;
+                    for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
+                    {
+                        Room_Object obj = room.tilesObjects[i];
+                        if (isMouseCollidingWith(obj, e))
+                        {
+                            if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr && (obj.options & ObjectOption.Door) != ObjectOption.Door && (obj.options & ObjectOption.Torch) != ObjectOption.Torch && (obj.options & ObjectOption.Block) != ObjectOption.Block)
+                            {
+                                if (room.selectedObject.Count == 0)
+                                {
+                                    //(byte)selectedMode >= 0 && (byte)selectedMode <= 3
+                                    if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
+                                    {
+                                        room.selectedObject.Add(obj);
+                                        found = true;
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        continue;
+                                    }
+                                }
+                                else //there's already objects selected
+                                {
+                                    //check if the object we found is already in selected object if so do nothing
+                                    //otherwise clear objects and select the new one
+                                    foreach (Room_Object o in room.selectedObject)
+                                    {
+                                        if (o == obj)
+                                        {
+                                            if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
+                                            {
+                                                found = true;
+                                                objectFound = o;
+                                                already_in = true;
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                    if (already_in == false)
+                                    {
+
+                                        //objectToRemove
+                                        if (ModifierKeys == Keys.Shift)
+                                        {
+                                            if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
+                                            {
+                                                room.selectedObject.Add(obj);
+                                            }
+                                            else
+                                            {
+                                                continue;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            room.selectedObject.Clear();
+                                            if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
+                                            {
+                                                room.selectedObject.Add(obj);
+                                            }
+                                            else
+                                            {
+                                                continue;
+                                            }
+                                        }
+
+                                    }
+                                    else //if item is already in but we hold control then remove it instead
+                                    {
+                                        if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
+                                        {
+                                            if (ModifierKeys == Keys.Control)
+                                            {
+                                                room.selectedObject.Remove(objectFound);
+                                            }
+                                            else
+                                            {
+                                                continue;
+                                            }
+                                        }
+                                    }
+                                }
+                                found = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (found == false) //we didnt find any Tiles to click on so just clear the selection
+                    {
+                        if (ModifierKeys != Keys.Shift && ModifierKeys != Keys.Control)
+                        {
+                            //Console.WriteLine("we didnt find any object so clear all");
+                            room.selectedObject.Clear();
+                        }
+                    }
+                }
+                else if (selectedMode == ObjectMode.Doormode)
+                {
+                    Console.Write("Door mode");
+                    room.selectedObject.Clear();
+                    dragx = ((e.X) / 8);
+                    dragy = ((e.Y) / 8);
+                    for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
+                    {
+                        Room_Object obj = room.tilesObjects[i];
+                        if (isMouseCollidingWith(obj, e))
+                        {
+                            if ((obj.options & ObjectOption.Door) == ObjectOption.Door)
+                            {
+                                //we found a door
+                                room.selectedObject.Add(obj);
+                                obj.selected = true;
+                                doorArray = room.getAllDoorPosition(obj);
+                                need_refresh = true;
+                                break;
+                            }
+
+                        }
+
+                    }
+                }
+                else if (selectedMode == ObjectMode.Blockmode)
+                {
+                    room.selectedObject.Clear();
+                    dragx = ((e.X) / 8);
+                    dragy = ((e.Y) / 8);
+                    for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
+                    {
+                        Room_Object obj = room.tilesObjects[i];
+                        if (isMouseCollidingWith(obj, e))
+                        {
+                            if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr && (obj.options & ObjectOption.Block) == ObjectOption.Block)
+                            {
+                                room.selectedObject.Add(obj);
+                                need_refresh = true;
+                                break;
+                            }
+
+                        }
+
+                    }
+                }
+                else if (selectedMode == ObjectMode.Torchmode)
+                {
+                    room.selectedObject.Clear();
+                    dragx = ((e.X) / 8);
+                    dragy = ((e.Y) / 8);
+                    for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
+                    {
+                        Room_Object obj = room.tilesObjects[i];
+                        if (isMouseCollidingWith(obj, e))
+                        {
+                            if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr && (obj.options & ObjectOption.Torch) == ObjectOption.Torch)
+                            {
+                                //we found a door
+                                room.selectedObject.Add(obj);
+                                need_refresh = true;
+                                DrawRoom();
+                                Refresh();
+                                break;
+                            }
+
+                        }
+
+                    }
+                }
+                else if (selectedMode == ObjectMode.Warpmode)
+                {
+                    room.selectedObject.Clear();
+                    dragx = ((e.X) / 8);
+                    dragy = ((e.Y) / 8);
+                    int doorCount = 0;
+                    foreach (Room_Object o in room.tilesObjects)
+                    {
+                        if (doorsObject.Contains(o.id))
+                        {
+                            if (isMouseCollidingWith(o, e))
+                            {
+                                string warpid = Interaction.InputBox("New Warp Room", "Room Id", room.staircase_rooms[doorCount].ToString());
+                                byte b;
+                                if (byte.TryParse(warpid, out b))
+                                {
+                                    room.staircase_rooms[doorCount] = b;
+                                    updateRoomInfos(mainForm);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("The value need to be a number between 0-256");
+                                }
+
+
+                            }
+                            doorCount++;
+                        }
+                        else if (o.id == 0xFCA)
+                        {
+                            if (isMouseCollidingWith(o, e))
+                            {
+                                string warpid = Interaction.InputBox("New Warp Room", "Room Id", room.holewarp.ToString());
+                                byte b;
+                                if (byte.TryParse(warpid, out b))
+                                {
+                                    room.holewarp = b;
+                                    updateRoomInfos(mainForm);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("The value need to be a number between 0-256");
+                                }
+
+                            }
+                        }
+                    }
+                }
+                mouse_down = true;
+                move_x = 0;
+                move_y = 0;
+                mx = dragx;
+                my = dragy;
+                last_mx = mx;
+                last_my = my;
+            }
+            mainForm.spritepropertyPanel.Visible = false;
+            mainForm.potitemobjectPanel.Visible = false;
+            mainForm.doorselectPanel.Visible = false;
+            if (room.selectedObject.Count > 0)
+            {
+                if (room.selectedObject[0] is Room_Object)
+                {
+                    updating_info = true;
+                    Room_Object oo = room.selectedObject[0] as Room_Object;
+                    if (oo.options == ObjectOption.Door)
+                    {
+                        string name = oo.name;
+                        string id = oo.id.ToString("X4");
+                        mainForm.comboBox1.Enabled = false;
+                        mainForm.selectedGroupbox.Text = "Selected Object : " + id + " " + name;
+                        mainForm.doorselectPanel.Visible = true;
+                        int apos = mainForm.door_index.Select((s, i) => new { s, i }).Where(x => x.s == (oo as object_door).door_type).Select(x => x.i).ToArray()[0];
+                        mainForm.comboBox2.SelectedIndex = apos;
+                        for (int i = 0; i < room.tilesObjects.Count; i++)
+                        {
+                            if (room.tilesObjects[i] == oo)
+                            {
+                                //mainForm.selectedZUpDown.Value = i;
+                            }
+                        }
+                        updateSelectionObject(oo);
+                    }
+                    else
+                    {
+
+
+                        string name = oo.name;
+                        string id = oo.id.ToString("X4");
+                        mainForm.comboBox1.Enabled = false;
+                        mainForm.selectedGroupbox.Text = "Selected Object : " + id + " " + name;
+
+                        for (int i = 0; i < room.tilesObjects.Count; i++)
+                        {
+                            if (room.tilesObjects[i] == oo)
+                            {
+                                //mainForm.selectedZUpDown.Value = i;
+                            }
+                        }
+
+                        updateSelectionObject(oo);
+                    }
+                }
+                else if (room.selectedObject[0] is Sprite)
+                {
+                    mainForm.spritepropertyPanel.Visible = true;
+                    updating_info = true;
+                    Sprite oo = room.selectedObject[0] as Sprite;
+                    string name = oo.name;
+                    string id = oo.id.ToString("X4");
+                    mainForm.selectedGroupbox.Text = "Selected Sprite : " + id + " " + name;
+                    mainForm.comboBox1.Enabled = true;
+                    updateSelectionObject(oo);
+                }
+                else if (room.selectedObject[0] is PotItem)
+                {
+
+                    updating_info = true;//?
+                    PotItem oo = room.selectedObject[0] as PotItem;
+                    mainForm.potitemobjectPanel.Visible = true; //oO why this is not appearing
+                    int dropboxid = oo.id;
+                    if ((oo.id & 0x80) == 0x80) //it is a special object
+                    {
+                        dropboxid = ((oo.id - 0x80) / 2) + 0x17; //no idea if it will work
+                    }
+                    //if for some reason the dropboxid >= 28
+                    if (dropboxid >= 28)
+                    {
+                        dropboxid = 27; //prevent crash :yay:
+                    }
+                    string name = PotItems_Name.name[dropboxid];
+                    string id = oo.id.ToString("X4");
+                    mainForm.selectedGroupbox.Text = "Selected Item : " + id + " " + name;
+                    mainForm.selecteditemobjectCombobox.SelectedIndex = dropboxid;
+
+                }
+            }
+    }
+
+        public unsafe void ClearBgGfx()
+        {
+            byte* bg1data = (byte*)GFX.roomBg1Ptr.ToPointer();
+            byte* bg2data = (byte*)GFX.roomBg2Ptr.ToPointer();
+            for (int i = 0; i < 512 * 512; i++)
+            {
+                bg1data[i] = 0;
+                bg2data[i] = 0;
+            }
+        }
+
+        public unsafe void DrawRoom()
+        {
+            //Tile t = new Tile(0, false, false, 0, 0);
+            //t.Draw(0, 0);
+            ClearBgGfx(); //technically not required
+            if (showLayer1)
+            {
+                room.DrawFloor1();
+            }
+            if (room.bg2 != Background2.Off)
+            {
+                SetPalettesTransparent();
+                if (showLayer2)
+                {
+                    room.DrawFloor2();
+                }
+            }
+            else
+            {
+                SetPalettesBlack();
+                
+            }
+
+
+            room.reloadLayout();
+            foreach (Room_Object o in room.tilesLayoutObjects)
+            {
+                o.Draw();
+            }
+            //draw object on bitmap
+
+            foreach (Room_Object o in room.tilesObjects)
+            {
+                if (o.layer != 2)
+                {
+                    o.Draw();
+                }
+                if (o.options == ObjectOption.Door)
+                {
+                    o.Draw();
+                }
+            }
+            foreach (Room_Object o in room.tilesObjects)
+            {
+                //Draw doors here since they'll all be put on bg3 anyways
+                if (o.layer == 2)
+                {
+                    o.Draw();
+                }
+
+            }
+
+            
+
+
+            if (showLayer1)
+            {
+                GFX.DrawBG1();
+            }
+            if (showLayer2)
+            {
+                GFX.DrawBG2();
+            }
+            /*foreach (Sprite spr in room.sprites)
+            {
+                spr.Draw();
+            }*/
+            
+            room.drawSprites();
+            drawChests();
+            room.drawPotsItems();
+
+        }
+
+        public void drawChests()
+        {
+            if (room.chest_list.Count > 0)
+            {
+                int chest_count = 0;
+                foreach (Room_Object o in room.tilesObjects)
+                {
+                    if (((o as Room_Object).options & ObjectOption.Chest) == ObjectOption.Chest)
+                    {
+                        if (room.chest_list.Count > chest_count)
+                        {
+                            room.chest_list[chest_count].x = (o as Room_Object).nx;
+                            room.chest_list[chest_count].y = (o as Room_Object).ny;
+                            if (o.id == 0xFB1)
+                            {
+                                room.chest_list[chest_count].bigChest = true;
+                            }
+                        }
+
+                        chest_count++;
+                    }
+                }
+                foreach (Chest c in room.chest_list)
+                {
+                    if (c.item <= 75)
+                    {
+                        //g.DrawRectangle(Pens.Blue,(c.x * 8), (c.y - 2) * 8, 16, 16);
+                        
+                        if (c.bigChest)
+                        {
+                            c.ItemsDraw(c.item, (c.x+1) * 8, (c.y - 2) * 8);
+                        }
+                        else
+                        {
+                            c.ItemsDraw(c.item, c.x * 8, (c.y - 2) * 8);
+                        }
+                        //graphics.DrawImage(GFX.chestitems_bitmap[c.item], (c.x * 8), (c.y - 2) * 8);
+                    }
+                }
+
+            }
+        }
+
+
+
+        public void drawGrid(Graphics graphics)
+        {
+            if (showGrid)
+            {
+                int s = mainForm.gridSize;
+                int wh = (512 / s)+1;
+
+                for (int x = 0; x < wh; x++)
+                {
+                    graphics.DrawLine(new Pen(Color.FromArgb(128, 255, 255, 255)), x * s, 0, x * s, 512);
+                }
+                for (int y = 0; y < wh; y++)
+                {
+                    graphics.DrawLine(new Pen(Color.FromArgb(128, 255, 255, 255)), 0, y * s, 512, y * s);
+                }
+            }
+        }
+
+
+        public void SetPalettesTransparent()
+        {
+            int pindex = 0;
+            ColorPalette palettes = GFX.roomBg1Bitmap.Palette;
+            for (int y = 0; y < GFX.loadedPalettes.GetLength(1); y++)
+            {
+                for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
+                {
+                    palettes.Entries[pindex] = GFX.loadedPalettes[x, y];
+                    pindex++;
+                }
+            }
+
+            for (int y = 0; y < GFX.loadedSprPalettes.GetLength(1); y++)
+            {
+                for (int x = 0; x < GFX.loadedSprPalettes.GetLength(0); x++)
+                {
+                    if (pindex < 256)
+                    {
+                        palettes.Entries[pindex] = GFX.loadedSprPalettes[x, y];
+                        pindex++;
+                    }
+                }
+            }
+
+            for (int i = 0; i < 16; i++)
+            {
+                palettes.Entries[i * 16] = Color.Transparent;
+                palettes.Entries[(i * 16) + 8] = Color.Transparent;
+            }
+            GFX.roomBg1Bitmap.Palette = palettes;
+            GFX.roomBg2Bitmap.Palette = palettes;
+            GFX.roomBgLayoutBitmap.Palette = palettes;
+        }
+
+        public void SetPalettesBlack()
+        {
+            int pindex = 0;
+            ColorPalette palettes = GFX.roomBg1Bitmap.Palette;
+            for (int y = 0; y < GFX.loadedPalettes.GetLength(1); y++)
+            {
+                for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
+                {
+                    palettes.Entries[pindex] = GFX.loadedPalettes[x, y];
+                    pindex++;
+                }
+            }
+
+            for (int i = 0; i < 16; i++)
+            {
+                palettes.Entries[i * 16] = Color.Black;
+                palettes.Entries[(i * 16) + 8] = Color.Black;
+            }
+            GFX.roomBg1Bitmap.Palette = palettes;
+            GFX.roomBg2Bitmap.Palette = palettes;
+            GFX.roomBgLayoutBitmap.Palette = palettes;
+        }
+
+        private unsafe void onMouseUp(object sender, MouseEventArgs e)
+        {
+            
+
+            if (mouse_down == true)
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    setMouseSizeMode(e);
+                    mouse_down = false;
+                    if (room.selectedObject.Count == 0) //if we don't have any objects select we select what is in the rectangle
+                    {
+                        getObjectsRectangle();
+                    }
+                    else
+                    {
+                        setObjectsPosition();
+                    }
+
+                }
+                else if (e.Button == MouseButtons.Right) //that's a problem
+                {
+                    mainForm.nothingselectedcontextMenu.Items[0].Enabled = true;
+                    mainForm.singleselectedcontextMenu.Items[0].Enabled = true;
+                    mainForm.groupselectedcontextMenu.Items[0].Enabled = true;
+                    string nname = "Unknown";
+                    if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
+                    {
+                        nname = "Object";
+                        if (selectedMode == ObjectMode.Bgallmode)
+                        {
+                            mainForm.nothingselectedcontextMenu.Items[0].Enabled = false;
+                            mainForm.singleselectedcontextMenu.Items[0].Enabled = false;
+                            mainForm.groupselectedcontextMenu.Items[0].Enabled = false;
+                        }
+                    }
+                    else if (selectedMode == ObjectMode.Spritemode)
+                    {
+                        nname = "Sprite";
+                    }
+                    else if (selectedMode == ObjectMode.Chestmode)
+                    {
+                        nname = "Chest Item";
+                    }
+                    else if (selectedMode == ObjectMode.Itemmode)
+                    {
+                        nname = "Pot Item";
+                    }
+                    else if (selectedMode == ObjectMode.Blockmode)
+                    {
+                        nname = "Block";
+                    }
+                    else if (selectedMode == ObjectMode.Torchmode)
+                    {
+                        nname = "Torch";
+                    }
+                    else if (selectedMode == ObjectMode.Doormode)
+                    {
+                        nname = "Door";
+                    }
+                    mainForm.nothingselectedcontextMenu.Items[0].Text = "Insert new " + nname;
+                    mainForm.singleselectedcontextMenu.Items[0].Text = "Insert new " + nname;
+                    mainForm.groupselectedcontextMenu.Items[0].Text = "Insert new " + nname;
+                    if (room.selectedObject.Count == 0)
+                    {
+                        mainForm.nothingselectedcontextMenu.Show(Cursor.Position);
+                    }
+                    else if (room.selectedObject.Count == 1)
+                    {
+                        mainForm.singleselectedcontextMenu.Show(Cursor.Position);
+                    }
+                    else if (room.selectedObject.Count > 1)
+                    {
+                        mainForm.groupselectedcontextMenu.Show(Cursor.Position);
+                    }
+                }
+            }
+            DrawRoom();
+            Refresh();
+
+        }
+        
+        private void onMouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            if (selectedMode == ObjectMode.Chestmode)
+            {
+                Chest chestToRemove = null;
+                bool foundChest = false;
+                foreach (Chest c in room.chest_list)
+                {
+                    if (e.X >= (c.x * 8) && e.X <= (c.x * 8) + 16 &&
+                        e.Y >= ((c.y - 2) * 8) && e.Y <= ((c.y) * 8) + 16)
+                    {
+                        mainForm.chestPicker.button1.Enabled = true;//enable delete button
+                        DialogResult result = mainForm.chestPicker.ShowDialog();
+                        if (result == DialogResult.OK)
+                        {
+                            //change chest item
+                            c.item = (byte)mainForm.chestPicker.chestviewer1.selectedIndex;
+                            room.has_changed = true;
+                        }
+                        else if (result == DialogResult.Abort)
+                        {
+                            chestToRemove = c;
+                        }
+                        foundChest = true;
+                        break;
+                    }
+                }
+                if (foundChest == false)
+                {
+                    mainForm.chestPicker.button1.Enabled = false;//disable delete button
+                    DialogResult result = mainForm.chestPicker.ShowDialog();
+                    if (result == DialogResult.OK)
+                    {
+                        room.has_changed = true;
+                        //change chest item
+                        Chest c = new Chest((byte)(e.X / 8), (byte)(e.Y / 8), (byte)mainForm.chestPicker.chestviewer1.selectedIndex, false, false);
+                        room.chest_list.Add(c);
+                    }
+                }
+
+                if (chestToRemove != null)
+                {
+                    room.chest_list.Remove(chestToRemove);
+                }
+
+                need_refresh = true;
+            }
+        }
+
         public void clearUselessRoomStuff(Room r)
         {
-            foreach (Object o in r.tilesObjects)
-            {
-                (o as Room_Object).bitmap = null;
-            }
+
 
         }
 
@@ -788,9 +1164,6 @@ namespace ZeldaFullEditor
         {
             if (room.selectedObject.Count > 0)
             {
-                //Room r = (Room)room.Clone();
-                //clearUselessRoomStuff(r);
-                //undoRooms.Add(r); //TODO : Global Undo thing?
 
                 if (selectedMode == ObjectMode.Spritemode)
                 {
@@ -809,7 +1182,7 @@ namespace ZeldaFullEditor
                         (o as PotItem).y = (o as PotItem).ny;
                     }
                 }
-                else if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3) //nop nevermind
+                else if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
                 {
                     foreach (Object o in room.selectedObject)
                     {
@@ -817,8 +1190,6 @@ namespace ZeldaFullEditor
                         (o as Room_Object).y = (o as Room_Object).ny;
                         (o as Room_Object).ox = (o as Room_Object).x;
                         (o as Room_Object).oy = (o as Room_Object).y;
-                        (o as Room_Object).savedSize = (o as Room_Object).size;
-                        (o as Room_Object).oldSize = (o as Room_Object).size;
                     }
                 }
                 else if (selectedMode == ObjectMode.Torchmode)
@@ -829,8 +1200,6 @@ namespace ZeldaFullEditor
                         (o as Room_Object).y = (o as Room_Object).ny;
                         (o as Room_Object).ox = (o as Room_Object).x;
                         (o as Room_Object).oy = (o as Room_Object).y;
-                        (o as Room_Object).savedSize = (o as Room_Object).size;
-                        (o as Room_Object).oldSize = (o as Room_Object).size;
                     }
                 }
                 else if (selectedMode == ObjectMode.Blockmode)
@@ -841,99 +1210,16 @@ namespace ZeldaFullEditor
                         (o as Room_Object).y = (o as Room_Object).ny;
                         (o as Room_Object).ox = (o as Room_Object).x;
                         (o as Room_Object).oy = (o as Room_Object).y;
-                        (o as Room_Object).savedSize = (o as Room_Object).size;
-                        (o as Room_Object).oldSize = (o as Room_Object).size;
                     }
                 }
-                
-                need_refresh = true;
-                //redoRooms.Clear(); //TODO change undo redo stuff... ... ... change it into scene directly instead of global !
+
             }
+
         }
 
         public void objects_ResizeMouseMove(MouseEventArgs e)
         {
-            int rightBorder = ((room.selectedObject[0] as Room_Object).x * 8) + (room.selectedObject[0] as Room_Object).width;
-            int bottomBorder = ((room.selectedObject[0] as Room_Object).y * 8) + (room.selectedObject[0] as Room_Object).height;
-            int leftBorder = ((room.selectedObject[0] as Room_Object).x * 8);
-            int topBorder = ((room.selectedObject[0] as Room_Object).y * 8);
-
-            if (mouse_down == false)
-            {
-                resizing = ObjectResize.None;
-                Room_Object obj = (room.selectedObject[0] as Room_Object);
-                if ((obj.id >= 0x00 && obj.id <= 0x5F) || (obj.id >= 0xA0 && obj.id <= 0xBF) || (obj.id >= 0xC0 && obj.id <= 0xF7)) //horizontally scrollable
-                {
-                    if (e.X >= (rightBorder - 2) && e.X <= (rightBorder + 4) && //right
-                        e.Y >= topBorder + 1 && e.Y <= bottomBorder - 1)
-                    {
-                        Cursor.Current = Cursors.SizeWE;
-                        resizing = ObjectResize.Right;
-
-                    }
-                }
-                /*else if (e.X >= (leftBorder - 4) && e.X <= (leftBorder + 2) && //left
-                    e.Y >= topBorder + 2 && e.Y <= bottomBorder - 2)
-                {
-                    Cursor.Current = Cursors.SizeWE;
-                    resizing = ObjectResize.Left;
-                }
-                else if (e.X >= (leftBorder + 4) && e.X <= (rightBorder - 4) && //up
-                    e.Y >= topBorder - 4 && e.Y <= topBorder + 2)
-                {
-                    Cursor.Current = Cursors.SizeNS;
-                    resizing = ObjectResize.Up;
-                }*/
-                if ((obj.id >= 0x60 && obj.id <= 0x96) || (obj.id >= 0xA0 && obj.id <= 0xAF) || (obj.id >= 0xC0 && obj.id <= 0xF7))
-                {
-                    if (e.X >= (leftBorder + 1) && e.X <= (rightBorder - 1) && //down 
-                    e.Y >= bottomBorder - 2 && e.Y <= bottomBorder + 4)
-                    {
-                        Cursor.Current = Cursors.SizeNS;
-                        resizing = ObjectResize.Down;
-                    }
-                }
-                /*else if (e.X >= (leftBorder - 4) && e.X <= (leftBorder + 2) && //diagonal up left
-                    e.Y >= topBorder - 4 && e.Y <= topBorder + 2)
-                {
-                    Cursor.Current = Cursors.SizeNWSE;
-                    resizing = ObjectResize.UpLeft;
-                }
-                else if (e.X >= (rightBorder - 2) && e.X <= (rightBorder + 4) && //diagonal bottom right
-                    e.Y >= bottomBorder - 2 && e.Y <= bottomBorder + 4)
-                {
-                    Cursor.Current = Cursors.SizeNWSE;
-                    resizing = ObjectResize.DownRight;
-                }
-                else if (e.X >= (rightBorder - 2) && e.X <= (rightBorder + 4) && //diagonal up right
-                    e.Y >= topBorder - 4 && e.Y <= topBorder + 2)
-                {
-                    Cursor.Current = Cursors.SizeNESW;
-                    resizing = ObjectResize.UpRight;
-                }
-                else if (e.X >= (leftBorder - 4) && e.X <= (leftBorder + 2) && //diagonal bottom left
-                    e.Y >= bottomBorder - 2 && e.Y <= bottomBorder + 4)
-                {
-                    Cursor.Current = Cursors.SizeNESW;
-                    resizing = ObjectResize.DownLeft;
-                }*/
-            }
-            else
-            {
-                if (resizing != ObjectResize.None)
-                {
-                    if (resizing == ObjectResize.Right)
-                    {
-                        Cursor.Current = Cursors.SizeWE;
-                        dragx = (room.selectedObject[0] as Room_Object).x;
-                    }
-                    else if (resizing == ObjectResize.Down)
-                    {
-                        Cursor.Current = Cursors.SizeNS;
-                        dragy = (room.selectedObject[0] as Room_Object).y;
-                    }
-                }
-            }
+            
         }
 
         public void setMouseSizeMode(MouseEventArgs e)
@@ -963,253 +1249,6 @@ namespace ZeldaFullEditor
             move_y = my - dragy; //number of tiles mouse is compared to starting drag point Y
         }
 
-        public void resizing_objects()
-        {
-            if (mx != last_mx || my != last_my)
-            {
-                //TODO : Finish resizing objects, only right side is working !
-                room.has_changed = true; //will prompt room has changed dialog
-                last_mx = mx;
-                last_my = my;
-                need_refresh = true;
-                Room_Object obj = (room.selectedObject[0] as Room_Object);
-                //move_x = nbr of tiles the mouse moved x axis from drag
-                //move_y = nbr of tiles the mouse moved y axis from drag
-                if (resizing == ObjectResize.Right)
-                {
-
-                    //0C0 to 0F7
-
-                    if ((obj.id >= 0x00 && obj.id <= 0x5F) || (obj.id >= 0xA0 && obj.id <= 0xBF) || (obj.id >= 0xC0 && obj.id <= 0xF7)) //horizontally scrollable
-                    {
-                        byte w = obj.base_width;
-                        if ((obj.id >= 0xC0 && obj.id <= 0xF7))
-                        {
-                            if (move_x > w - 1)
-                            {
-                                byte sizeX = (byte)((move_x - w) / obj.scroll_x);
-
-                                if ((sizeX >= 03))
-                                {
-                                    sizeX = 03;
-                                }
-                                else if (sizeX <= 0)
-                                {
-                                    sizeX = 0;
-                                }
-                                obj.size = (byte)(((sizeX & 03) << 2) + (obj.size & 0x03));
-                                if (obj.oldSize != obj.size)
-                                {
-                                    obj.resetSize();
-                                    obj.DrawOnBitmap();
-                                    obj.oldSize = obj.size;
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (obj.special_zero_size != 0)
-                            {
-                                w = 0;
-                            }
-                            if (move_x > w - 1)
-                            {
-                                obj.size = (byte)((move_x - w) / obj.scroll_x);
-
-                                if ((obj.size >= 15))
-                                {
-                                    if (obj.special_zero_size != 0)
-                                    {
-                                        obj.size = 0;
-                                    }
-                                    else
-                                    {
-                                        obj.size = 15;
-                                    }
-                                }
-                                else if (obj.size <= 0)
-                                {
-                                    if (obj.special_zero_size != 0)
-                                    {
-                                        obj.size = 1;
-                                    }
-                                    else
-                                    {
-                                        obj.size = 0;
-                                        obj.DrawOnBitmap();
-                                    }
-                                }
-
-                                if (obj.oldSize != obj.size)
-                                {
-                                    obj.resetSize();
-                                    obj.DrawOnBitmap();
-                                    obj.oldSize = obj.size;
-                                }
-                            }
-                            else if (move_x < obj.base_width)
-                            {
-                                if (obj.special_zero_size != 0)
-                                {
-                                    obj.size = 1;
-                                }
-                                else
-                                {
-                                    obj.size = 0;
-                                    obj.DrawOnBitmap();
-                                }
-                            }
-                        }
-                    }
-
-                }
-                else if (resizing == ObjectResize.Down)
-                {
-                    if ((obj.id >= 0x60 && obj.id <= 0x96) || (obj.id >= 0xA0 && obj.id <= 0xAF) || (obj.id >= 0xC0 && obj.id <= 0xF7)) //vertically scrollable
-                    {
-                        byte h = obj.base_height;
-                        //Objects that are resizable from both side
-                        if ((obj.id >= 0xC0 && obj.id <= 0xF7))
-                        {
-
-                            if (move_y > h - 1)
-                            {
-                                byte sizeY = (byte)((move_y - h) / obj.scroll_y);
-
-                                if ((sizeY >= 03))
-                                {
-                                    sizeY = 03;
-                                }
-                                else if (sizeY <= 0)
-                                {
-                                    sizeY = 0;
-                                }
-                                obj.size = (byte)(((obj.size & 0x0C)) + (sizeY & 03));
-                                if (obj.oldSize != obj.size)
-                                {
-                                    obj.resetSize();
-                                    obj.DrawOnBitmap();
-                                    obj.oldSize = obj.size;
-                                }
-                            }
-                        }
-                        else //Object that are just resizable on Y axis
-                        {
-
-                            if (obj.special_zero_size != 0)
-                            {
-                                h = 0;
-                            }
-                            if (move_y > h - 1)
-                            {
-                                obj.size = (byte)((move_y - h) / obj.scroll_y);
-
-                                if ((obj.size >= 15))
-                                {
-                                    if (obj.special_zero_size != 0)
-                                    {
-                                        obj.size = 0;
-                                    }
-                                    else
-                                    {
-                                        obj.size = 15;
-                                    }
-                                }
-                                else if (obj.size <= 0)
-                                {
-                                    if (obj.special_zero_size != 0)
-                                    {
-                                        obj.size = 1;
-                                    }
-                                    else
-                                    {
-                                        obj.size = 0;
-                                        obj.DrawOnBitmap();
-                                    }
-                                }
-
-                                if (obj.oldSize != obj.size)
-                                {
-                                    obj.resetSize();
-                                    obj.DrawOnBitmap();
-                                    obj.oldSize = obj.size;
-                                }
-                            }
-                            else if (move_y < obj.base_height)
-                            {
-                                if (obj.special_zero_size != 0)
-                                {
-                                    obj.size = 1;
-                                }
-                                else
-                                {
-                                    obj.size = 0;
-                                    obj.DrawOnBitmap();
-                                }
-                            }
-                        }
-
-
-                        /*
-
-                        if (obj.special_zero_size != 0)
-                        {
-                            h = 0;
-                        }
-                        if (move_y > h - 1)
-                        {
-                            obj.size = (byte)((move_y - h) / obj.scroll_y);
-
-                            if ((obj.size >= 15))
-                            {
-                                if (obj.special_zero_size != 0)
-                                {
-                                    obj.size = 0;
-                                }
-                                else
-                                {
-                                    obj.size = 15;
-                                }
-                            }
-                            else if (obj.size <= 0)
-                            {
-                                if (obj.special_zero_size != 0)
-                                {
-                                    obj.size = 1;
-                                }
-                                else
-                                {
-                                    obj.size = 0;
-                                    obj.DrawOnBitmap();
-                                }
-                            }
-
-                            if (obj.oldSize != obj.size)
-                            {
-                                obj.resetSize();
-                                obj.DrawOnBitmap();
-                                obj.oldSize = obj.size;
-                            }
-                        }
-                        else if (move_y < obj.base_width)
-                        {
-                            if (obj.special_zero_size != 0)
-                            {
-                                obj.size = 1;
-                            }
-                            else
-                            {
-                                obj.size = 0;
-                                obj.DrawOnBitmap();
-                            }
-                        }
-                    }*/
-                    }
-                }
-                updating_info = true;
-                updateSelectionObject(obj);
-            }
-        }
 
 
 
@@ -1239,11 +1278,14 @@ namespace ZeldaFullEditor
             }
             else if (o is Room_Object)
             {
-                if (e.X >= ((o as Room_Object).x * 8) && e.X <= (((o as Room_Object).x) * 8) + (o as Room_Object).width &&
-                e.Y >= (((o as Room_Object).y + (o as Room_Object).drawYFix) * 8) && e.Y <= ((((o as Room_Object).y + (o as Room_Object).drawYFix)) * 8) + (o as Room_Object).height)
-                {
-                    return true;
-                }
+                //if ((o as Room_Object).layer == (byte)selectedMode || selectedMode == ObjectMode.Bgallmode)
+                //{
+                    if (e.X >= ((o as Room_Object).x*8) && e.X <= ((o as Room_Object).x*8) + ((o as Room_Object).width) &&
+                        e.Y >= ((o as Room_Object).y*8) && e.Y <= ((o as Room_Object).y*8) + ((o as Room_Object).height))
+                    {
+                        return true;
+                    }
+               //}
             }
             return false;
         }
@@ -1284,7 +1326,6 @@ namespace ZeldaFullEditor
                 }
                 else if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)//we're looking for tiles
                 {
-
                     foreach (Room_Object o in room.tilesObjects)
                     {
                         int rx = dragx;
@@ -1292,7 +1333,8 @@ namespace ZeldaFullEditor
                         if (move_x < 0) { Math.Abs(rx = dragx + move_x); }
                         if (move_y < 0) { Math.Abs(ry = dragy + move_y); }
 
-                        if ((new Rectangle((o as Room_Object).x * 8, ((o as Room_Object).y + (o as Room_Object).drawYFix) * 8, (o as Room_Object).width, (o as Room_Object).height)).IntersectsWith(new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8)))
+                        
+                            if ((new Rectangle(((o as Room_Object).x) * 8, ((o as Room_Object).y) * 8, ((o as Room_Object).width), ((o as Room_Object).height))).IntersectsWith(new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8)))
                         {
                             if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Door) != ObjectOption.Door && (o.options & ObjectOption.Torch) != ObjectOption.Torch && (o.options & ObjectOption.Block) != ObjectOption.Block)
                             {
@@ -1319,6 +1361,7 @@ namespace ZeldaFullEditor
 
         }
 
+
         public void updateSelectionObject(object o)
         {
             if (room.selectedObject.Count == 1)
@@ -1326,10 +1369,6 @@ namespace ZeldaFullEditor
                 if (o is Room_Object)
                 {
 
-                    mainForm.selectedXNumericUpDown.Maximum = 64;
-                    mainForm.selectedYNumericUpDown.Maximum = 64;
-                    mainForm.selectedSizeNumericUpDown.Maximum = 16;
-                    mainForm.selectedLayerNumericUpDown.Maximum = 2;
                     if ((o as Room_Object).nx >= 63)
                     {
                         (o as Room_Object).nx = 63;
@@ -1348,11 +1387,23 @@ namespace ZeldaFullEditor
                     }
 
 
-                    mainForm.selectedXNumericUpDown.Value = (o as Room_Object).nx;
-                    mainForm.selectedYNumericUpDown.Value = (o as Room_Object).ny;
-                    mainForm.selectedSizeNumericUpDown.Value = (o as Room_Object).size;
-                    mainForm.selectedLayerNumericUpDown.Value = (o as Room_Object).layer;
-                    
+                    mainForm.object_x_label.Text = "X: " + (o as Room_Object).nx.ToString();
+                    mainForm.object_y_label.Text = "Y: " + (o as Room_Object).ny;
+                    mainForm.object_size_label.Text = "Size: " + (o as Room_Object).size;
+                    mainForm.object_layer_label.Text = "Layer: " + (o as Room_Object).layer;
+                    int z = 0;
+                    foreach (Room_Object door in room.tilesObjects)
+                    {
+                        if (door.options == ObjectOption.Door)
+                        {
+                            if (door == o)
+                            {
+                                mainForm.object_z_label.Text = "Z: " + z.ToString(); //where's my door 0 :scream:
+                                break;
+                            }
+                            z++;
+                        }
+                    }
                     /*
                     if ((o.options & ObjectOption.Door) == ObjectOption.Door)
                     {
@@ -1371,10 +1422,6 @@ namespace ZeldaFullEditor
                 }
                 else if (o is object_door)
                 {
-                    mainForm.selectedXNumericUpDown.Maximum = 64;
-                    mainForm.selectedYNumericUpDown.Maximum = 64;
-                    mainForm.selectedSizeNumericUpDown.Maximum = 16;
-                    mainForm.selectedLayerNumericUpDown.Maximum = 2;
                     if ((o as object_door).nx >= 63)
                     {
                         (o as object_door).nx = 63;
@@ -1392,18 +1439,16 @@ namespace ZeldaFullEditor
                         (o as object_door).size = 2;
                     }
 
+                    mainForm.object_x_label.Text = "X: " + (o as object_door).nx.ToString();
+                    mainForm.object_y_label.Text = "Y: " + (o as object_door).ny;
+                    mainForm.object_size_label.Text = "Size: " + (o as object_door).size;
+                    mainForm.object_layer_label.Text = "Layer: " + (o as object_door).layer;
 
-                    mainForm.selectedXNumericUpDown.Value = (o as object_door).nx;
-                    mainForm.selectedYNumericUpDown.Value = (o as object_door).ny;
-                    mainForm.selectedSizeNumericUpDown.Value = (o as object_door).size;
-                    mainForm.selectedLayerNumericUpDown.Value = (o as object_door).layer;
+
                 }
                 else if (o is Sprite)
                 {
 
-                    mainForm.selectedXNumericUpDown.Maximum = 32;
-                    mainForm.selectedYNumericUpDown.Maximum = 32;
-                    mainForm.selectedLayerNumericUpDown.Maximum = 1;
                     if ((o as Sprite).nx >= 31)
                     {
                         (o as Sprite).nx = 31;
@@ -1416,10 +1461,11 @@ namespace ZeldaFullEditor
                     {
                         (o as Sprite).layer = 1;
                     }
+                    mainForm.object_x_label.Text = "X: " + (o as Sprite).nx;
+                    mainForm.object_y_label.Text = "Y: " + (o as Sprite).ny;
+ 
+                    mainForm.object_layer_label.Text = "Layer: " + (o as Sprite).layer;
 
-                    mainForm.selectedXNumericUpDown.Value = (o as Sprite).nx;
-                    mainForm.selectedYNumericUpDown.Value = (o as Sprite).ny;
-                    mainForm.selectedLayerNumericUpDown.Value = (o as Sprite).layer;
                     mainForm.comboBox1.SelectedIndex = (o as Sprite).keyDrop;
 
  
@@ -1427,9 +1473,7 @@ namespace ZeldaFullEditor
                 }
                 else if (o is PotItem)
                 {
-                    mainForm.selectedXNumericUpDown.Maximum = 64;
-                    mainForm.selectedYNumericUpDown.Maximum = 64;
-                    mainForm.selectedLayerNumericUpDown.Maximum = 1;
+
                     if ((o as PotItem).nx >= 63)
                     {
                         (o as PotItem).nx = 63;
@@ -1443,60 +1487,13 @@ namespace ZeldaFullEditor
                         (o as PotItem).layer = 1;
                     }
 
-                    mainForm.selectedXNumericUpDown.Value = (o as PotItem).nx;
-                    mainForm.selectedYNumericUpDown.Value = (o as PotItem).ny;
-                    mainForm.selectedLayerNumericUpDown.Value = (o as PotItem).layer;
+                    mainForm.object_x_label.Text = "X: " + (o as PotItem).nx;
+                    mainForm.object_y_label.Text = "Y: " + (o as PotItem).ny;
+                    mainForm.object_layer_label.Text = "Layer: " + (o as PotItem).layer;
 
                 }
             }
         }
-
-
-
-        public override void drawRoom()
-        {
-            if (room == null)
-            {
-                //Console.WriteLine("Problem!");
-                //need_refresh = false;
-                return;
-            }
-
-            if (room.needGfxRefresh)
-            {
-                room.reloadGfx();
-                room.needGfxRefresh = false;
-            }
-
-            if (need_refresh)
-            {
-                //updateSelectionObject();
-                addSpecialErasedDraw();
-                drawLayout();
-                drawLayer1and3plusDoors();
-                drawLayer2();
-                drawLayersOnBgr();
-                drawChests();
-                drawSprites();
-                GFX.begin_draw(scene_bitmap);
-                room.drawPotsItems();
-                GFX.end_draw(scene_bitmap);
-                drawWarp();
-                drawGrid();
-                drawSelection();
-                drawEntrancePosition();
-                drawDoorsPosition();
-                this.Image = scene_bitmap;
-                this.Refresh();
-                need_refresh = false;
-            }
-
-        }
-
-
-
-
-
 
 
         public void Undo()
@@ -1542,13 +1539,14 @@ namespace ZeldaFullEditor
 
                 }
             }
-            need_refresh = true;
+            Refresh();
         }
 
         public override void deleteSelected()
         {
 
             room.has_changed = true;
+            mainForm.checkAnyChanges();
             foreach (Object o in room.selectedObject)
             {
                 if (o is Room_Object)
@@ -1564,11 +1562,9 @@ namespace ZeldaFullEditor
                     room.pot_items.Remove((o as PotItem));
                 }
             }
-            resizing = ObjectResize.None;
-            selection_resize = false;
-            //redoRooms.Clear();
             room.selectedObject.Clear();
-            need_refresh = true;
+            DrawRoom();
+            Refresh();
 
         }
 
@@ -1606,6 +1602,7 @@ namespace ZeldaFullEditor
                     {
                         if (o.type == typeof(Sprite))
                         {
+                            selectedMode = ObjectMode.Spritemode;
                             Sprite spr = (new Sprite(room, o.id, (byte)(o.x - most_x), (byte)(o.y - most_y), Sprites_Names.name[o.id], o.overlord, o.subtype, o.layer));
                             room.sprites.Add(spr);
                             room.selectedObject.Add(spr);
@@ -1614,6 +1611,7 @@ namespace ZeldaFullEditor
                         {
                             if ((o.options & ObjectOption.Door) == ObjectOption.Door)
                             {
+                                selectedMode = ObjectMode.Doormode;
                                 object_door ro = new object_door(o.tid, o.x, o.y, 0, o.layer);
                                 ro.setRoom(room);
                                 ro.options = (ObjectOption)o.options;
@@ -1623,9 +1621,23 @@ namespace ZeldaFullEditor
                             }
                             else
                             {
+
                                 Room_Object ro = room.addObject(o.tid, (byte)(o.x - most_x), (byte)(o.y - most_y), o.size, o.layer);
+                                
                                 if (ro != null)
                                 {
+                                    if ((byte)selectedMode > 3) //if it not BGAll or bg1-3
+                                    {
+                                        selectedMode = ObjectMode.Bg1mode; //set it on bg1 by default
+                                    }
+                                    else if ((byte)selectedMode == 3) //if it bgall do nothing
+                                    {
+
+                                    }
+                                    else //if it actually a layer set the roomobject on the current selected layer
+                                    {
+                                        ro.layer = (byte)selectedMode;
+                                    }
                                     ro.setRoom(room);
                                     ro.options = (ObjectOption)o.options;
                                     room.tilesObjects.Add(ro);
@@ -1635,6 +1647,7 @@ namespace ZeldaFullEditor
                         }
                         else if (o.type == typeof(PotItem))
                         {
+                            selectedMode = ObjectMode.Itemmode;
                             PotItem item = (new PotItem((byte)o.tid, (byte)(o.x - most_x), (byte)(o.y - most_y), (o.layer == 1 ? true : false)));
                             room.pot_items.Add(item);
                             room.selectedObject.Add(item);
@@ -1644,9 +1657,10 @@ namespace ZeldaFullEditor
                     dragx = 0;
                     dragy = 0;
                     mouse_down = true;
-                    need_refresh = true;
-                    room.reloadGfx(false);
+                    
                 }
+                DrawRoom();
+                Refresh();
             }
         }
 
@@ -1675,9 +1689,6 @@ namespace ZeldaFullEditor
 
         public override void loadLayout()
         {
-            //Room r = (Room)room.Clone();
-            //clearUselessRoomStuff(r);
-            //undoRooms.Add(r);
 
             string f = Interaction.InputBox("Name of the layout to load", "Name?", "Layout00");
             BinaryReader br = new BinaryReader(new FileStream("Layout\\" + f, FileMode.Open, FileAccess.Read));
@@ -1738,8 +1749,6 @@ namespace ZeldaFullEditor
                 dragx = 0;
                 dragy = 0;
                 mouse_down = true;
-                need_refresh = true;
-                room.reloadGfx(false);
             }
         }
 
@@ -1750,6 +1759,7 @@ namespace ZeldaFullEditor
             //Room r = (Room)room.Clone();
             //clearUselessRoomStuff(r);
             room.has_changed = true;
+            mainForm.checkAnyChanges();
             //undoRooms.Add(r);
 
             List<SaveObject> odata = new List<SaveObject>();
@@ -1787,8 +1797,8 @@ namespace ZeldaFullEditor
                 }
             }
             room.selectedObject.Clear();
-            need_refresh = true;
-            //redoRooms.Clear();
+            DrawRoom();
+            Refresh();
         }
 
         public override void insertNew()
@@ -1807,8 +1817,6 @@ namespace ZeldaFullEditor
                     dragx = 0;
                     dragy = 0;
                     mouse_down = true;
-                    need_refresh = true;
-                    room.reloadGfx(false);
                 }
             }
             else if (selectedMode == ObjectMode.Itemmode)
@@ -1820,8 +1828,6 @@ namespace ZeldaFullEditor
                     dragx = 0;
                     dragy = 0;
                     mouse_down = true;
-                    need_refresh = true;
-                    room.reloadGfx(false);
             }
             else if (selectedMode == ObjectMode.Torchmode)
             {
@@ -1836,8 +1842,6 @@ namespace ZeldaFullEditor
                     dragx = 0;
                     dragy = 0;
                     mouse_down = true;
-                    need_refresh = true;
-                    room.reloadGfx(false);
                 }
             }
             else if (selectedMode == ObjectMode.Doormode)
@@ -1850,16 +1854,14 @@ namespace ZeldaFullEditor
                     ro.options = ObjectOption.Door;
                     room.tilesObjects.Add(ro);
                     room.selectedObject.Add(ro);
-                    need_refresh = true;
-                    room.reloadGfx(false);
                 }
             }
             else if ((byte)selectedMode >= 0 && (byte)selectedMode < 3) //if != allbg
             {
                 //picker object :thinking:
-                pObj.createObjects(room);
-                pObj.ShowDialog();
-                if (pObj.selectedObject != -1)
+                //pObj.createObjects(room);
+                //pObj.ShowDialog();
+                /*if (pObj.selectedObject != -1)
                 {
                     room.selectedObject.Clear();
                     Room_Object ro = room.addObject(pObj.selectedObject, (byte)0, (byte)0, 0, (byte)selectedMode);
@@ -1883,7 +1885,7 @@ namespace ZeldaFullEditor
                         room.reloadGfx();
                     }
 
-                }
+                }*/
 
             }
         }
@@ -1908,7 +1910,9 @@ namespace ZeldaFullEditor
                         }
                     }
                 }
-                need_refresh = true;
+                DrawRoom();
+                Refresh();
+                mouse_down = false;
             }
         }
 
@@ -1936,7 +1940,9 @@ namespace ZeldaFullEditor
                         }
                     }
                 }
-                need_refresh = true;
+                DrawRoom();
+                Refresh();
+                mouse_down = false;
             }
         }
 
@@ -1963,7 +1969,9 @@ namespace ZeldaFullEditor
                         }
                     }
                 }
-                need_refresh = true;
+                DrawRoom();
+                Refresh();
+                mouse_down = false;
             }
         }
 
@@ -1971,7 +1979,7 @@ namespace ZeldaFullEditor
         {
             if ((byte)selectedMode >= 0 && (byte)selectedMode < 3)
             {
-                pObj.createObjects(room);
+                /*pObj.createObjects(room);
                 if (pObj.ShowDialog() == DialogResult.OK)
                 {
                     if (room.selectedObject.Count == 1)
@@ -2007,7 +2015,7 @@ namespace ZeldaFullEditor
 
                         }
                     }
-                }
+                }*/
             }
         }
 
@@ -2029,9 +2037,40 @@ namespace ZeldaFullEditor
         {
 
         }
+
+        public void updateRoomInfos(Form1 mainForm)
+        {
+            mainForm.propertiesChangedFromForm = true;
+            mainForm.roomProperty_bg2.SelectedIndex = (int)room.Bg2;
+            mainForm.roomProperty_blockset.Text = room.Blockset.ToString();
+            mainForm.roomProperty_tag1.SelectedIndex = (int)room.Tag1;
+            mainForm.roomProperty_tag2.SelectedIndex = (int)room.Tag2;
+            mainForm.roomProperty_effect.SelectedIndex = (int)room.Effect;
+            mainForm.roomProperty_collision.SelectedIndex = (int)room.Collision;
+            mainForm.roomProperty_floor1.Text = room.Floor1.ToString();
+            mainForm.roomProperty_floor2.Text = room.Floor2.ToString();
+            mainForm.roomProperty_hole.Text = room.HoleWarp.ToString();
+            mainForm.roomProperty_holeplane.Text = room.HoleWarpPlane.ToString();
+            mainForm.roomProperty_layout.Text = room.Layout.ToString();
+            mainForm.roomProperty_msgid.Text = room.Messageid.ToString();
+            mainForm.roomProperty_palette.Text = room.Palette.ToString();
+            mainForm.roomProperty_pit.Checked = room.Damagepit;
+            mainForm.roomProperty_sortsprite.Checked = room.SortSprites;
+            mainForm.roomProperty_spriteset.Text = room.Spriteset.ToString();
+            mainForm.roomProperty_stair1.Text = room.Staircase1.ToString();
+            mainForm.roomProperty_stair1plane.Text = room.Staircase1Plane.ToString();
+            mainForm.roomProperty_stair2.Text = room.Staircase2.ToString();
+            mainForm.roomProperty_stair2plane.Text = room.Staircase2Plane.ToString();
+            mainForm.roomProperty_stair3.Text = room.Staircase3.ToString();
+            mainForm.roomProperty_stair3plane.Text = room.Staircase3Plane.ToString();
+            mainForm.roomProperty_stair4.Text = room.Staircase4.ToString();
+            mainForm.roomProperty_stair4plane.Text = room.Staircase4Plane.ToString();
+            mainForm.propertiesChangedFromForm = false;
+        }
+
     }
 
-    public class DScene : DockContent
+    /*public class DScene : DockContent
     {
         public SceneUW scene;
         zscreamForm mainform;
@@ -2060,7 +2099,6 @@ namespace ZeldaFullEditor
                 {
                     scene.room.has_changed = false;
                     mainform.all_rooms[scene.room.index] = (Room)scene.room.Clone();
-                    scene.room.clearGFX();
                    
                     mainform.rooms.Remove(this);
                     mainform.loadRoomList(0);
@@ -2069,7 +2107,6 @@ namespace ZeldaFullEditor
                 else if (dialogResult == DialogResult.No)
                 {
                    
-                    scene.room.clearGFX();
                     mainform.rooms.Remove(this);
                     mainform.loadRoomList(0);
                     mainform.mapPicturebox.Refresh();
@@ -2082,7 +2119,6 @@ namespace ZeldaFullEditor
             }
             else
             {
-                scene.room.clearGFX();
                 mainform.rooms.Remove(this);
                 mainform.loadRoomList(0);
                 mainform.mapPicturebox.Refresh();
@@ -2092,11 +2128,25 @@ namespace ZeldaFullEditor
         private void DScene_GotFocus(object sender, EventArgs e)
         {
             mainform.activeScene = this.scene;
-            mainform.mapPropertyGrid.SelectedObject = scene.room;
+            //mainform.mapPropertyGrid.SelectedObject = scene.room;
+            scene.updateRoomInfos(mainform);
+
+
+
             scene.room.reloadGfx();
             scene.need_refresh = true;
+            GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.room.palette);
+            GFX.loadedSprPalettes = GFX.LoadSpritesPalette(scene.room.palette);
+
+            scene.DrawRoom();
+            scene.Refresh();
+            
         }
-    }
+
+
+
+        
+    }*/
 
 
 }

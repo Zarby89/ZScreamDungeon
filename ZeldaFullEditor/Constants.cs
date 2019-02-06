@@ -20,9 +20,9 @@ namespace ZeldaFullEditor
         public static int subtype3_tiles = 0x84F0; // JP = Same //i don't think that need a pointer
         public static int gfx_animated_pointer = 0x10275; //JP 0x10624 //long pointer
 
-        public static int gfx_1_pointer = 0x6790; //2byte pointer bank 00 pc -> 0x4320
-        public static int gfx_2_pointer = 0x6795;
-        public static int gfx_3_pointer = 0x679A;
+        public static int gfx_1_pointer = 0x6790; //2byte pointer bank 00 pc -> 0x4320  CF80
+        public static int gfx_2_pointer = 0x6795; //D05F
+        public static int gfx_3_pointer = 0x679A; //D13E
         public static int hud_palettes = 0xDD660;
 
         //===========================================================================================
@@ -68,6 +68,7 @@ namespace ZeldaFullEditor
         public static int OWExitXPlayer = 0x160EF;
         public static int OWExitYCamera = 0x1618D;
         public static int OWExitXCamera = 0x1622B;
+        public static int OWExitDoorPosition = 0x15724;
         public static int OWExitUnk1 = 0x162C9;
         public static int OWExitUnk2 = 0x16318;
         public static int OWExitDoorType1 = 0x16367;
@@ -116,8 +117,8 @@ namespace ZeldaFullEditor
 
 
         public static int sprite_blockset_pointer = 0x5B57;
-        public static int sprites_data = 0x4D880; //JP : //It use the unused pointers to have more space //Save purpose
-        public static int sprites_data_empty_room = 0x4D87E;
+        public static int sprites_data = 0x4D8B0;//It use the unused pointers to have more space //Save purpose
+        public static int sprites_data_empty_room = 0x4D8AE;
 
         public static int pit_pointer = 0x394AB;
         public static int pit_count = 0x394A6;
@@ -237,8 +238,8 @@ namespace ZeldaFullEditor
             //Entrances
             entrance_room = 0x14577; //word value for each room
             entrance_scrolledge = 0x1491D; //0x14681 //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-            entrance_yscroll = 0x14AA9; //2bytes each room
-            entrance_xscroll = 0x14BB3; //2bytes
+            entrance_xscroll = 0x14AA9; //2bytes each room
+            entrance_yscroll = 0x14BB3; //2bytes
             entrance_yposition = 0x14CBD;// 2bytes
             entrance_xposition = 0x14DC7;// 2bytes
             entrance_camerayposition = 0x14ED1;// 2bytes

@@ -27,458 +27,401 @@ namespace ZeldaFullEditor
         {
             if (id == 0)
             {
+                //TODO : NEED TO CHANGE PALETTE TO SWORD & SHIELD PALETTE
                 //sword and shield
-                draw_item_tile(-1 + x, y + 0, 8, 16, 0x21, 5);
-                draw_item_tile(x + 3, y + 0, 16, 16, 0x0E, 5);
+                draw_item_tile(x, y + 0, 14, 824, 7,false,false,1);
+                draw_item_tile(x + 8, y + 0, 15, 828, 7,false,false,1);
             }
             else if (id == 1)
             {
-                //swords - need to do something else?
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x21, 5);
+                //sword2 - need to do something else?
+                draw_item_tile(x+4, y + 0, 14, 824, 7, false, false, 1);
             }
             else if (id == 2)
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x21, 5);
+                //sword3
+                draw_item_tile(x + 4, y + 0, 14, 824, 7, false, false, 1);
             }
             else if (id == 3)
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x21, 5);
+                //sword4
+                draw_item_tile(x + 4, y + 0, 14, 824, 5, false, false, 1);
             }
             else if (id == 4)
             {
 
                 //shields - need to do something else?
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x0E, 7);
+                draw_item_tile(x, y + 0, 14, 820, 7);
             }
             else if (id == 5)
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x0C, 11);
+                //shield2
+                draw_item_tile(x , y + 0, 12, 820, 11);
             }
             else if (id == 6)
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0xA4, 11);
+                //shield3
+                draw_item_tile(x , y, 4, 830, 11);
             }
             else if (id == 7)//fire rod
             {
 
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x24, 5);
+                draw_item_tile(x + 4, y + 0, 4, 822, 5, false, false, 1);
             }
-            else if (id == 8)
+            else if (id == 8)//ice rod
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x24, 7);
+                draw_item_tile(x + 4, y + 0, 4, 822, 7, false, false, 1);
             }
-            else if (id == 9)
+            else if (id == 9) //hammer
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x25, 11);
+                draw_item_tile(x + 4, y + 0, 5, 822, 5, false, false, 1);
             }
-            else if (id == 10)
+            else if (id == 10)//Hookshot
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x23, 5);
+                draw_item_tile(x + 4, y + 0, 3, 822, 5, false, false, 1);
             }
             else if (id == 11)//bow
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x20, 5);
+                draw_item_tile(x + 4, y + 0, 0, 822, 5, false, false, 1);
             }
-            else if (id == 12)
+            else if (id == 12)//Boomerang
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x2F, 7);
+                draw_item_tile(x + 4, y + 0, 15, 822, 7, false, false, 1);
             }
             else if (id == 13)//powder
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x26, 7);
+                draw_item_tile(x, y + 0, 6, 822, 7);
             }
             else if (id == 14) //bee
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x8D, 7);
+                draw_item_tile(x + 0, y + 0, 13, 828, 7);
             }
             else if (id == 15)//bombos
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x62, 11);
+                draw_item_tile(x + 0, y + 0, 2, 826, 11);
             }
-            else if (id == 16)
+            else if (id == 16)//ether
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x60, 11);
+                draw_item_tile(x + 0, y + 0, 0, 826, 11);
             }
-            else if (id == 17)
+            else if (id == 17)//quake
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x64, 11);
+                draw_item_tile(x + 0, y + 0, 4, 826, 11);
             }
-            else if (id == 18)
+            else if (id == 18)//lamp
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x46, 5);//lamp
+                draw_item_tile(x , y, 6, 824, 5);//lamp
             }
-            else if (id == 19)
+            else if (id == 19)//shovel
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x4F, 5);
+                draw_item_tile(x+4, y + 0, 15, 824, 5, false, false, 1);
             }
-            else if (id == 20)
+            else if (id == 20)//flute
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0xA2, 7);
+                draw_item_tile(x, y, 2, 830, 7);
             }
-            else if (id == 21)
+            else if (id == 21)//somaria
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x22, 5);
+                draw_item_tile(x + 4, y + 0, 2, 822, 5, false, false, 1);
             }
-            else if (id == 22)
+            else if (id == 22)//bottle
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x66, 7);
+                draw_item_tile(x + 0, y + 0, 6, 826, 11);
             }
-            else if (id == 23)
+            else if (id == 23)//heart piece
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0xA0, 5);
+                draw_item_tile(x, y, 0, 830, 5);
             }
-            else if (id == 24)
+            else if (id == 24)//byrna
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x22, 7);
+                draw_item_tile(x + 4, y + 0, 2, 822, 7, false, false, 1);
             }
-            else if (id == 25)
+            else if (id == 25)//cape
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x48, 5);
+                draw_item_tile(x, y, 8, 824, 5);//lamp
             }
-            else if (id == 26)
+            else if (id == 26)//mirror
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x42, 7);
+                draw_item_tile(x + 0, y + 0, 2, 824, 7);
             }
-            else if (id == 27)
+            else if (id == 27)//power glove
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x2A, 5);
+                draw_item_tile(x , y + 0, 10, 822, 5);
             }
-            else if (id == 28)
+            else if (id == 28)//titan mitts
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x2A, 11);
+                draw_item_tile(x , y + 0, 10, 822, 11);
             }
-            else if (id == 29)
+            else if (id == 29)//book
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x2C, 11);
+                draw_item_tile(x , y + 0, 12, 822, 11);
             }
-            else if (id == 30)
+            else if (id == 30)//flippers
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x40, 7);
+                draw_item_tile(x + 0, y + 0, 0, 824, 7);
             }
-            else if (id == 31)
+            else if (id == 31)//moon pearl
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x4C, 5);
+                draw_item_tile(x, y + 0, 12, 824, 5);
             }
-            else if (id == 32)
+            else if (id == 32)//crystal
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x85, 7);
+                draw_item_tile(x + 0, y + 0, 5, 828, 6);
             }
-            else if (id == 33)
+            else if (id == 33)//net
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x83, 5);
+                draw_item_tile(x + 0, y + 0, 3, 828, 5);
             }
-            else if (id == 34)
+            else if (id == 34)//blue mail
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x08, 7);//blue mail
+                draw_item_tile(x, y + 0, 8, 820, 7);
             }
-            else if (id == 35)
+            else if (id == 35)//red mail
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x08, 5);
+                draw_item_tile(x, y + 0, 8, 820, 5);
             }
-            else if (id == 36)
+            else if (id == 36)//Key
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x2E, 11);
+                draw_item_tile(x+4, y + 0, 14, 822, 11,false,false,1);
             }
-            else if (id == 37)
+            else if (id == 37)//compass
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x4A, 7);
+                draw_item_tile(x, y + 0, 10, 824, 7);
             }
-            else if (id == 38)
+            else if (id == 38)//liar heart?
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x06, 5); //liar heart? lol
+                draw_item_tile(x, y + 0, 6, 820, 5);
             }
-            else if (id == 39)
+            else if (id == 39)//Bomb
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x44, 7);
+                draw_item_tile(x + 0, y + 0, 4, 824, 7);
             }
-            else if (id == 40)
+            else if (id == 40)//3Bombs
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x02, 7);
+                draw_item_tile(x, y + 0, 2, 820, 7);
             }
-            else if (id == 41)
+            else if (id == 41)//Mushroom
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x6A, 11);
+                draw_item_tile(x, y + 0, 10, 826, 11);
             }
-            else if (id == 42)
+            else if (id == 42)//Red Boomerang
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x2F, 5);
+                draw_item_tile(x + 4, y + 0, 15, 822, 5, false, false, 1);
             }
-            else if (id == 43)
+            else if (id == 43) //red pot
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x00, 5);
+                draw_item_tile(x, y, 8, 826, 5);
             }
-            else if (id == 44)
+            else if (id == 44) //green pot
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x00, 11);
+                draw_item_tile(x, y, 8, 826, 11);
             }
-            else if (id == 45)
+            else if (id == 45) //blue pot
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x00, 7);
+                draw_item_tile(x, y, 8, 826, 7);
             }
-            else if (id == 46)
+            else if (id == 46)//red pot
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x00, 5);
+                draw_item_tile(x, y + 0, 0, 820, 5);
             }
-            else if (id == 47)
+            else if (id == 47)//green pot
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x00, 11);
+                draw_item_tile(x, y + 0, 0, 820,11);
             }
-            else if (id == 48)
+            else if (id == 48) //blue pot
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x00, 7);
+                draw_item_tile(x, y + 0, 0, 820, 7);
             }
-            else if (id == 49)
+            else if (id == 49)//10 bombs
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x28, 7);
+                draw_item_tile(x, y + 0, 8, 822, 7);
             }
-            else if (id == 50)
+            else if (id == 50)//Big Key
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x6E, 11);
+                draw_item_tile(x, y + 0, 14, 826, 11);
             }
-            else if (id == 51)
+            else if (id == 51)//map
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x6C, 11);
+                draw_item_tile(x, y + 0, 12, 826, 11);
             }
-            else if (id == 52)
+            else if (id == 52)//1 rupee
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x81, 11);
+                draw_item_tile(x + 4, y + 0, 0, 828, 11, false, false, 1);
             }
-            else if (id == 53)
+            else if (id == 53)//5 rupee
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x81, 7);
+                draw_item_tile(x + 4, y + 0, 0, 828, 7, false, false, 1);
             }
-            else if (id == 54)
+            else if (id == 54)//20 rupees
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x81, 5);
+                draw_item_tile(x + 4, y + 0, 0, 828, 5, false, false, 1);
             }
-            else if (id == 55)
+            else if (id == 55)//Green Pendant
             {
-                draw_item_tile(x, y + 0, 16, 16, 0xC4, 11);
+                draw_item_tile(x + 0, y + 0, 4, 832, 11);
             }
-            else if (id == 56)
+            else if (id == 56)//Blue Pendant
             {
-                draw_item_tile(x, y + 0, 16, 16, 0xC4, 7);
+                draw_item_tile(x + 0, y + 0, 4, 832, 7);
             }
-            else if (id == 57)
+            else if (id == 57) //Red Pendant
             {
-                draw_item_tile(x, y + 0, 16, 16, 0xC4, 5);
+                draw_item_tile(x + 0, y + 0, 4, 832, 5);
             }
-            else if (id == 58)
+            else if (id == 58)//Bow & Arrows
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x89, 7);
+                draw_item_tile(x + 0, y + 0, 7, 828, 5);
             }
-            else if (id == 59)
+            else if (id == 59)//Bow & Silver Arrows
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x87, 5);
+                draw_item_tile(x + 0, y + 0, 9, 828, 7);
             }
-            else if (id == 60)
+            else if (id == 60) //Bee
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x8D, 7);
+                draw_item_tile(x + 0, y + 0, 13, 828, 7);
             }
-            else if (id == 61)
+            else if (id == 61)//Fairy
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x8B, 7);
+                draw_item_tile(x + 0, y + 0, 11, 828, 7);
             }
-            else if (id == 62)
+            else if (id == 62)//Boss Heart
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x06, 5); //boss heart
+                draw_item_tile(x, y + 0, 6, 820, 5);
             }
-            else if (id == 63)
+            else if (id == 63)//sanc heart?
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x06, 5); //sanc heart?
+                draw_item_tile(x, y + 0, 6, 820, 5);
             }
-            else if (id == 64)
+            else if (id == 64)//100 rupees
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0xA9, 11);
+                draw_item_tile(x, y, 9, 830, 11);
             }
-            else if (id == 65)
+            else if (id == 65)//50 rupees
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0xAB, 11);
+                draw_item_tile(x, y, 11, 830, 11);
             }
-            else if (id == 66)
+            else if (id == 66)//small heart
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0xA6, 5);
+                draw_item_tile(x+4, y, 6, 830, 5,false,false,1);
             }
-            else if (id == 67)
+            else if (id == 67)//1 Arrow
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0xA8, 7);
+                draw_item_tile(x+4, y, 8, 830, 11, false, false, 1);
             }
-            else if (id == 68)
+            else if (id == 68)//10 Arrow
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x04, 7);
+                draw_item_tile(x, y + 0, 4, 820, 11);
             }
-            else if (id == 69)
+            else if (id == 69)//Magic
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0xA7, 7);
+                draw_item_tile(x+4, y, 7, 830, 11, false, false, 1);
             }
-            else if (id == 70)
+            else if (id == 70)//300 Rupees
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0xAD, 11);
+                draw_item_tile(x, y, 13, 830, 11);
             }
-            else if (id == 71)
+            else if (id == 71)//20 rupees
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0xC0, 11);
+                draw_item_tile(x + 0, y + 0, 0, 832, 11);
             }
-            else if (id == 72)
+            else if (id == 72)//bee
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x8D, 7);
+                draw_item_tile(x + 0, y + 0, 13, 828, 7);
             }
-            else if (id == 73)
+            else if (id == 73)//sword 1
             {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x21, 7);
+                draw_item_tile(x + 4, y + 0, 1, 822, 7, false, false, 1);
             }
-            else if (id == 74)
+            else if (id == 74) //flute activated
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0xA2, 7);
+                draw_item_tile(x, y, 2, 830, 7);
             }
-            else if (id == 75)
+            else if (id == 75) //Boots
             {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0xC2, 5);
+                draw_item_tile(x + 0, y + 0, 2, 832, 5);
             }
-            //ADDED RANDOMIZER
-            else if (id == 76)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x00, 11, true);//Bomb Updgrade
-            }
-            else if (id == 77)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x02, 11, true);//Arrow Upgrade
-            }
-            else if (id == 78)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x04, 11, true);//halfmagic
-            }
-            else if (id == 79)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x06, 11, true);//quartermagic
-            }
-            else if (id == 80)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x24, 7, true);//sword
-            }
-            else if (id == 81)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x08, 11, true);//Bomb Updgrade
-            }
-            else if (id == 82)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x0A, 11, true);//Bomb Updgrade
-            }
-            else if (id == 83)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x0C, 11, true);//Arrow Upgrade
-            }
-            else if (id == 84)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x0E, 11, true);//Arrow Upgrade
-            }
-            else if (id == 88)
-            {
-                draw_item_tile(x, y + 0, 8, 16, 0x20, 5, true);//silver arrows
-            }
-            else if (id == 89)
-            {
-                draw_item_tile(x, y + 0, 8, 16, 0x80, 9);//rupoor
-            }
-            else if (id == 90)
-            {
-                draw_item_tile(x, y + 0, 8, 16, 0xC8, 8);//null item?
-            }
-            else if (id == 91)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x68, 10, true);
-            }
-            else if (id == 92)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x68, 7, true);
-            }
-            else if (id == 93)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x68, 11, true);
-            }
-            else if (id == 94)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x22, 11, true);//sword
-            }
-            else if (id == 95)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x0E, 11);//shield
-            }
-            else if (id == 96)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x08, 11);//armor
-            }
-            else if (id == 97)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x2A, 11);//armor
-            }
-            else if (id >= 112 && id < 128)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x6C, 11);//map
-            }
-            else if (id >= 128 && id < 144)
-            {
-                draw_item_tile(x, y + 0, 16, 16, 0x4A, 5);//compass
-            }
-            else if (id >= 144 && id < 160)
-            {
-                draw_item_tile(x + 0, y + 0, 16, 16, 0x6E, 11);//Big Keys
-            }
-            else if (id >= 160 && id < 176)
-            {
-                draw_item_tile(x + 4, y + 0, 8, 16, 0x2E, 11);//Small keys
-            }
+
         }
 
 
-        public void draw_item_tile(int x, int y, int sx, int sy, int tid, int pid, bool rando = false)
+        public unsafe void draw_item_tile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2)
         {
 
-            int ty = ((tid & 0xF0) >> 4);
-            if (rando == true) { ty += 16; };
-            int tx = tid & 0x0F;
+            var alltilesData = (byte*)GFX.allgfx16Ptr.ToPointer();
+            byte* ptr = (byte*)GFX.roomBg1Ptr.ToPointer();
 
-            if (picker)
+            if (picker == false)
             {
-                x = 0;//x - this.x;
-                y = 0;//y - this.y;
-            }
 
-            for (int xx = 0; xx < (sx); xx++)
-            {
-                for (int yy = 0; yy < (sy); yy++)
+                int drawid = (srcx + (srcy * 16));
+                for (var yl = 0; yl < sizey * 8; yl++)
                 {
-                    int x_dest = ((x) + (xx)) * 4;
-                    int y_dest = (((y) + (yy)) * 512) * 4;
-                    if (picker)
+                    for (var xl = 0; xl < (sizex * 8) / 2; xl++)
                     {
-                        y_dest = (((y) + (yy)) * 16) * 4;
-                    }
-                    int dest = x_dest + y_dest;
+                        int mx = xl;
+                        int my = yl;
+                        byte r = 0;
 
-                    int x_src = ((tx * 8) + (xx));
-                    int y_src = (((ty * 8) + (yy)) * 128);
-
-                    int src = x_src + y_src;
-                    unsafe
-                    {
-                        if (dest < 4096)
+                        if (mirror_x)
                         {
-                            if (dest > 0)
-                            {
+                            mx = (((sizex * 8) / 2) - 1) - xl;
+                            r = 1;
+                        }
+                        if (mirror_y)
+                        {
+                            my = (((sizey * 8)) - 1) - yl;
+                        }
+                        //Formula information to get tile index position in the array
+                        //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
+                        int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
+                        var pixel = alltilesData[tx + (yl * 64) + xl];
+                        //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
+                        int index = (x) + (y * 512) + ((mx * 2) + (my * (512)));
+                        if ((pixel & 0x0F) != 0)
+                        {
+                            ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + 112 + (pal * 8));
+                        }
+                        if (((pixel >> 4) & 0x0F) != 0)
+                        {
+                            ptr[index + r] = (byte)(((pixel >> 4) & 0x0F) + 112 + (pal * 8));
+                        }
+                    }
+                }
+            }
+            else
+            {
+                ptr = (byte*)GFX.previewChestsPtr[item].ToPointer();
+                int drawid = (srcx + (srcy * 16));
+                for (var yl = 0; yl < sizey * 8; yl++)
+                {
+                    for (var xl = 0; xl < (sizex * 8) / 2; xl++)
+                    {
+                        int mx = xl;
+                        int my = yl;
+                        byte r = 0;
 
-                                if (GFX.itemsdataEDITOR[(src)] == 0)
-                                {
-
-                                }
-                                else
-                                {
-                                    GFX.currentData[dest] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pid - 2].B);
-                                    GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pid - 2].G);
-                                    GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pid - 2].R);
-                                    GFX.currentData[dest + 3] = 255;
-                                }
-                            }
+                        if (mirror_x)
+                        {
+                            mx = (((sizex * 8) / 2) - 1) - xl;
+                            r = 1;
+                        }
+                        if (mirror_y)
+                        {
+                            my = (((sizey * 8)) - 1) - yl;
+                        }
+                        //Formula information to get tile index position in the array
+                        //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
+                        int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
+                        var pixel = alltilesData[tx + (yl * 64) + xl];
+                        //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
+                        int index = (x) + (y * 64) + ((mx * 2) + (my * (64)));
+                        if ((pixel & 0x0F) != 0)
+                        {
+                            ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + 112 + (pal * 8));
+                        }
+                        if (((pixel >> 4) & 0x0F) != 0)
+                        {
+                            ptr[index + r] = (byte)(((pixel >> 4) & 0x0F) + 112 + (pal * 8));
                         }
                     }
                 }

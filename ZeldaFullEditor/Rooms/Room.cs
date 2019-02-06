@@ -51,7 +51,6 @@ namespace ZeldaFullEditor
         public List<PotItem> pot_items = new List<PotItem>();
         public List<Object> selectedObject = new List<object>();
         public bool objectInitialized = false;
-        public bool needGfxRefresh = false;
         public bool onlyLayout = false;
         public bool sortSprites = false;
         [DisplayName("Layout"), Description("Room layout used as a default model for the room"), Category("Header")]
@@ -411,21 +410,20 @@ namespace ZeldaFullEditor
             this.name = ROMStructure.roomsNames[index];
             messageid = (short)((ROM.DATA[Constants.messages_id_dungeon + (index * 2) + 1] << 8 ) + ROM.DATA[Constants.messages_id_dungeon + (index * 2)]);
         }
+
         public void reloadLayout()
         {
             tilesLayoutObjects.Clear();
             loadLayoutObjects();
 
-            foreach(Room_Object o in tilesLayoutObjects)
+            foreach (Room_Object o in tilesLayoutObjects)
             {
                 o.setRoom(this);
-                o.resetSize();
-                o.get_scroll_x();
-                o.get_scroll_y();
-                o.DrawOnBitmap();
             }
 
         }
+
+
         public void isdamagePit()
         {
             int pitCount = (ROM.DATA[Constants.pit_count] / 2);
@@ -441,8 +439,28 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void reloadGfx(bool noPalette = false,byte entrance_blockset = 0xFF)
+        public unsafe void reloadAnimatedGfx()
         {
+            int gfxanimatedPointer = (ROM.DATA[Constants.gfx_animated_pointer + 2] << 16) + (ROM.DATA[Constants.gfx_animated_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_animated_pointer]);
+            gfxanimatedPointer = Addresses.snestopc(gfxanimatedPointer);
+            byte* newPdata = (byte*)GFX.allgfx16Ptr.ToPointer(); //turn gfx16 (all 222 of them)
+            byte* sheetsData = (byte*)GFX.currentgfx16Ptr.ToPointer(); //into "room gfx16" 16 of them
+            int data = 0;
+            while (data < 512)
+            {
+                byte mapByte = newPdata[data + (92 * 2048) + (512 * GFX.animated_frame)];
+                sheetsData[data + (7 * 2048)] = mapByte;
+
+                mapByte = newPdata[data + (ROM.DATA[gfxanimatedPointer + blockset] * 2048) + (512 * GFX.animated_frame)];
+                sheetsData[data + (7 * 2048) - 512] = mapByte;
+                data++;
+            }
+        }
+
+            public void reloadGfx(byte entrance_blockset = 0xFF)
+        {
+
+
             int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer+1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
             gfxPointer = Addresses.snestopc(gfxPointer);
             for (int i = 0; i < 8; i++)
@@ -452,6 +470,8 @@ namespace ZeldaFullEditor
                 {
                     if (entrance_blockset != 0xFF) //3-6
                     {
+                        //6 is wrong for the entrance? -NOP need to fix that 
+                        //TODO: Find why this is wrong
                         if (ROM.DATA[(Constants.entrance_gfx_group + (i - 3)) + (4 * entrance_blockset)] != 0)
                         {
                             blocks[i] = ROM.DATA[(Constants.entrance_gfx_group + (i-3)) + (4 * entrance_blockset)];
@@ -459,82 +479,49 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-            //blocks[7] = 15;//?
 
-            //*confusing !, 7, 8, 9 are actually forming blockset 7
-            //blocks[8] = 92; //static animated tile
-            //blocks[9] = ROM.DATA[gfxanimatedPointer + blockset];
             blocks[8] = 115+0; blocks[9] = 115 + 10; blocks[10] = 115 + 6; blocks[11] = 115 + 7; //Static Sprites Blocksets (fairy,pot,ect...)
             for (int i = 0; i < 4; i++)
             {
                 blocks[12 + i] = (byte)(ROM.DATA[Constants.sprite_blockset_pointer + ((spriteset + 64) * 4) + i] + 115);
             } //12-16 sprites
 
-            
 
-            
-            //blocks[13] = 7;
-
-
-            //17?
-
-            if (noPalette == false)
+            unsafe
             {
-                GFX.loadedPalettes = GFX.LoadDungeonPalette(palette);
-                GFX.spritesPalettes = GFX.LoadSpritesPalette(palette);
-            }
-
-            int gfxanimatedPointer = (ROM.DATA[Constants.gfx_animated_pointer + 2] << 16) + (ROM.DATA[Constants.gfx_animated_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_animated_pointer]);
-            gfxanimatedPointer = Addresses.snestopc(gfxanimatedPointer);
-            GFX.singledata = new byte[blocks.Length * 0x1000];
-            for (int i = 0;i<blocks.Length;i++)
-            {
-                byte[] d = GFX.bpp3snestoindexed(GFX.gfxdata, blocks[i]);
-                byte[] dd = new byte[0];
-                if (i == 6)
+                byte* newPdata = (byte*)GFX.allgfx16Ptr.ToPointer(); //turn gfx16 (all 222 of them)
+                byte* sheetsData = (byte*)GFX.currentgfx16Ptr.ToPointer(); //into "room gfx16" 16 of them
+                int sheetPos = 0;
+                for (int i = 0; i < 16; i++)
                 {
-                    dd = GFX.bpp3snestoindexed(GFX.gfxdata, ROM.DATA[gfxanimatedPointer + blockset]); //static animated gfx1
-                }
-                if (i == 7)
-                {
-                    dd = GFX.bpp3snestoindexed(GFX.gfxdata, 92); //static animated gfx1
-                }
-                for (int j = 0; j < d.Length; j++)
-                {
-                    GFX.singledata[(i * 0x1000) + j] = d[j];
-                    if (i == 6)
+                    int d = 0;
+                    while (d < 2048)
                     {
-                        if (j >= 0xC00)
+                        //NOTE LOAD BLOCKSETS SOMEWHERE FIRST
+                        byte mapByte = newPdata[d + (blocks[i] * 2048)];
+                        switch (i)
                         {
-                            GFX.singledata[(i * 0x1000) + j] = dd[j - 0xC00];
-                        }
+                            case 0:
+                            case 1:
+                            case 2:
+                            case 3:
+                            
+                            //case 5:
+                                mapByte += 0x88;
+                                break;
+
+                        } //last line of 6, first line of 7 ?
+
+                        sheetsData[d + (sheetPos * 2048)] = mapByte;
+                        d++;
                     }
-                    if (i == 7)
-                    {
-                        if (j < 0x400)
-                        {
-                            GFX.singledata[(i * 0x1000) + j] = dd[j];
-                        }
-                    }
+                    sheetPos++;
                 }
-            }
-            
-
-            needGfxRefresh = true;
-            reloadLayout();
-            objectInitialized = false;
-            update();
-        }
-
-        public void clearGFX()
-        {
-            foreach(Room_Object tile in tilesObjects)
-            {
-                tile.bitmap = null;
+                reloadAnimatedGfx();
 
             }
-        }
 
+        }
 
         public void addSprites()
         {
@@ -588,33 +575,9 @@ namespace ZeldaFullEditor
         {
             Bitmap mblockBitmap = (Bitmap)Properties.Resources.Mblock;
 
-
-            foreach (Room_Object ro in tilesObjects)
-            {
-                if (objectInitialized == false)
-                {
-                    ro.resetSize();
-                    ro.get_scroll_x();
-                    ro.get_scroll_y();
-                    ro.DrawOnBitmap();
-                    if ((ro.options & ObjectOption.Block) == ObjectOption.Block)
-                    {
-                        using (Graphics g = Graphics.FromImage(ro.bitmap))
-                        {
-                            g.DrawImage(mblockBitmap, 0, 0);
-                        }
-                    }
-                }
-            }
-
             if (objectInitialized == false)
             {
-                GFX.begin_draw(GFX.bgr_bitmap);
-                DrawFloors();
-                GFX.end_draw(GFX.bgr_bitmap);
-                GFX.begin_draw(GFX.floor2_bitmap);
-                DrawFloors(2);
-                GFX.end_draw(GFX.floor2_bitmap);
+
             }
 
             objectInitialized = true;
@@ -716,11 +679,13 @@ namespace ZeldaFullEditor
             }
             return doorfound;
         }
-
+        byte[] keysDoors = new byte[] { 0x1C, 0x26, 0x1E, 0x2E, 0x28, 0x32, 0x30 };
+        byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38 };
         public byte[] getTilesBytes()
         {
             List<byte> objectsBytes = new List<byte>();
             List<byte> doorsBytes = new List<byte>();
+            List<byte> newdoorsBytes = new List<byte>();
             bool found_door = false;
 
             byte floorbyte = (byte)((floor2 << 4) + floor1);
@@ -729,13 +694,41 @@ namespace ZeldaFullEditor
             objectsBytes.Add(layoutbyte);
 
             doorsBytes.Clear();
+            newdoorsBytes.Clear();
             found_door = getLayerTiles(0, ref objectsBytes, ref doorsBytes);
   
-            if (found_door)//if we found door during layer1
+            if (found_door)//if we found door during layer1 WTF oO
             {
-                objectsBytes.Add(0xF0);
+                objectsBytes.Add(0xF0); 
                 objectsBytes.Add(0xFF);
-                foreach (byte b in doorsBytes)
+
+                //Rearrange doorsBytes to have all specials doors first keys door then shutter doors
+                for(int i = 0;i<doorsBytes.Count/2;i++)
+                {
+                    if (keysDoors.Contains(doorsBytes[(i*2)+1])) //if it a key door 
+                    {
+                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
+                         newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
+                    }
+                }
+                for (int i = 0; i < doorsBytes.Count / 2; i++)
+                {
+                    if (shutterDoors.Contains(doorsBytes[(i * 2) + 1])) //if it a shutter door 
+                    {
+                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
+                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
+                    }
+                }
+                for (int i = 0; i < doorsBytes.Count / 2; i++)
+                {
+                    if (!keysDoors.Contains(doorsBytes[(i * 2) + 1]) && !shutterDoors.Contains(doorsBytes[(i * 2) + 1])) //normal doors
+                    {
+                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
+                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
+                    }
+                }
+
+                foreach (byte b in newdoorsBytes)
                 {
                     objectsBytes.Add(b);
                 }
@@ -751,7 +744,34 @@ namespace ZeldaFullEditor
             {
                 objectsBytes.Add(0xF0);
                 objectsBytes.Add(0xFF);
-                foreach (byte b in doorsBytes)
+
+                //Rearrange doorsBytes to have all specials doors first keys door then shutter doors
+                for (int i = 0; i < doorsBytes.Count / 2; i++)
+                {
+                    if (keysDoors.Contains(doorsBytes[(i * 2) + 1])) //if it a key door 
+                    {
+                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
+                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
+                    }
+                }
+                for (int i = 0; i < doorsBytes.Count / 2; i++)
+                {
+                    if (shutterDoors.Contains(doorsBytes[(i * 2) + 1])) //if it a shutter door 
+                    {
+                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
+                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
+                    }
+                }
+                for (int i = 0; i < doorsBytes.Count / 2; i++)
+                {
+                    if (!keysDoors.Contains(doorsBytes[(i * 2) + 1]) && !shutterDoors.Contains(doorsBytes[(i * 2) + 1])) //normal doors
+                    {
+                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
+                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
+                    }
+                }
+
+                foreach (byte b in newdoorsBytes)
                 {
                     objectsBytes.Add(b);
                 }
@@ -768,7 +788,33 @@ namespace ZeldaFullEditor
             {
                 objectsBytes.Add(0xF0);
                 objectsBytes.Add(0xFF);
-                foreach (byte b in doorsBytes)
+                //Rearrange doorsBytes to have all specials doors first keys door then shutter doors
+                for (int i = 0; i < doorsBytes.Count / 2; i++)
+                {
+                    if (keysDoors.Contains(doorsBytes[(i * 2) + 1])) //if it a key door 
+                    {
+                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
+                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
+                    }
+                }
+                for (int i = 0; i < doorsBytes.Count / 2; i++)
+                {
+                    if (shutterDoors.Contains(doorsBytes[(i * 2) + 1])) //if it a shutter door 
+                    {
+                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
+                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
+                    }
+                }
+                for (int i = 0; i < doorsBytes.Count / 2; i++)
+                {
+                    if (!keysDoors.Contains(doorsBytes[(i * 2) + 1]) && !shutterDoors.Contains(doorsBytes[(i * 2) + 1])) //normal doors
+                    {
+                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
+                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
+                    }
+                }
+
+                foreach (byte b in newdoorsBytes)
                 {
                     objectsBytes.Add(b);
                 }
@@ -1014,65 +1060,9 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void InitDrawObjects(byte layer = 255)
-        {
-
-            foreach (Room_Object o in tilesObjects)
-            {
-                if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr)
-                {
-                    o.Draw();
-                }
-
-            }
-
-        }
-
         public void draw_tiles(Room_Object o,byte layer = 255)
         {
 
-            if (o.id == 0xFF3)//full bg2 overlay
-            {
-                o.x = 0;
-                o.y = 0;
-            }
-            if (o.allBgs)
-            {
-                using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
-                {
-                    g.DrawImage(o.bitmap, new Point(o.x, o.y));
-                }
-            }
-            else
-            {
-                if (layer == 255)
-                {
-                    using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
-                    {
-                        g.DrawImage(o.bitmap, new Point(o.x, o.y));
-                    }
-                }
-                else if (layer == 1)
-                {
-                    if (o.layer == 1)
-                    {
-                        using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
-                        {
-                            g.DrawImage(o.bitmap, new Point(o.x, o.y));
-                        }
-                    }
-                }
-                else
-                {
-                    if (o.layer != 1)
-                    {
-                        using (Graphics g = Graphics.FromImage(GFX.room_bitmap))
-                        {
-                            g.DrawImage(o.bitmap, new Point(o.x, o.y));
-                        }
-                    }
-                }
-            }
         }
         public int roomSize = 0;
 
@@ -2449,41 +2439,65 @@ namespace ZeldaFullEditor
             return null;
         }
 
-        public void DrawFloors(byte floor = 0)
+        public void DrawFloor2()
         {
-            byte f = (byte)(floor1 << 4);
-            if (floor == 2)
-            {
-                f = (byte)(floor2 << 4);
-            }
+            byte layer = 1;
+            byte f = (byte)(floor2 << 4);
             //x x 4
             Tile floorTile1 = new Tile(ROM.DATA[Constants.tile_address + f], ROM.DATA[Constants.tile_address + f + 1]);
-                Tile floorTile2 = new Tile(ROM.DATA[Constants.tile_address + f + 2], ROM.DATA[Constants.tile_address + f + 3]);
-                Tile floorTile3 = new Tile(ROM.DATA[Constants.tile_address + f + 4], ROM.DATA[Constants.tile_address + f + 5]);
-                Tile floorTile4 = new Tile(ROM.DATA[Constants.tile_address + f + 6], ROM.DATA[Constants.tile_address + f + 7]);
+            Tile floorTile2 = new Tile(ROM.DATA[Constants.tile_address + f + 2], ROM.DATA[Constants.tile_address + f + 3]);
+            Tile floorTile3 = new Tile(ROM.DATA[Constants.tile_address + f + 4], ROM.DATA[Constants.tile_address + f + 5]);
+            Tile floorTile4 = new Tile(ROM.DATA[Constants.tile_address + f + 6], ROM.DATA[Constants.tile_address + f + 7]);
 
-                Tile floorTile5 = new Tile(ROM.DATA[Constants.tile_address_floor + f], ROM.DATA[Constants.tile_address_floor + f + 1]);
-                Tile floorTile6 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 2], ROM.DATA[Constants.tile_address_floor + f + 3]);
-                Tile floorTile7 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 4], ROM.DATA[Constants.tile_address_floor + f + 5]);
-                Tile floorTile8 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 6], ROM.DATA[Constants.tile_address_floor + f + 7]);
+            Tile floorTile5 = new Tile(ROM.DATA[Constants.tile_address_floor + f], ROM.DATA[Constants.tile_address_floor + f + 1]);
+            Tile floorTile6 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 2], ROM.DATA[Constants.tile_address_floor + f + 3]);
+            Tile floorTile7 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 4], ROM.DATA[Constants.tile_address_floor + f + 5]);
+            Tile floorTile8 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 6], ROM.DATA[Constants.tile_address_floor + f + 7]);
 
-                for (int xx = 0; xx < 16; xx++)
+
+            for (int xx = 0; xx < 16; xx++)
+            {
+                for (int yy = 0; yy < 32; yy++)
                 {
-                    for (int yy = 0; yy < 32; yy++)
-                    {
-                        floorTile1.Draw((xx * 4), (yy * 2)); floorTile2.Draw((xx * 4) + 1, (yy * 2));
-                        floorTile3.Draw((xx * 4) + 2, (yy * 2)); floorTile4.Draw((xx * 4) + 3, (yy * 2));
+                    floorTile1.SetTile((xx * 4), (yy * 2), layer); floorTile2.SetTile((xx * 4) + 1, (yy * 2), layer);
+                    floorTile3.SetTile((xx * 4) + 2, (yy * 2), layer); floorTile4.SetTile((xx * 4) + 3, (yy * 2), layer);
 
-                        floorTile5.Draw((xx * 4), (yy * 2) + 1); floorTile6.Draw((xx * 4) + 1, (yy * 2) + 1);
-                        floorTile7.Draw((xx * 4) + 2, (yy * 2) + 1); floorTile8.Draw((xx * 4) + 3, (yy * 2) + 1);
-                    }
+                    floorTile5.SetTile((xx * 4), (yy * 2) + 1, layer); floorTile6.SetTile((xx * 4) + 1, (yy * 2) + 1, layer);
+                    floorTile7.SetTile((xx * 4) + 2, (yy * 2) + 1, layer); floorTile8.SetTile((xx * 4) + 3, (yy * 2) + 1, layer);
                 }
+            }
+        }
 
-            
+            public void DrawFloor1()
+            {
+            byte layer = 0;
+            byte f = (byte)(floor1 << 4);
+            //x x 4
+            Tile floorTile1 = new Tile(ROM.DATA[Constants.tile_address + f], ROM.DATA[Constants.tile_address + f + 1]);
+            Tile floorTile2 = new Tile(ROM.DATA[Constants.tile_address + f + 2], ROM.DATA[Constants.tile_address + f + 3]);
+            Tile floorTile3 = new Tile(ROM.DATA[Constants.tile_address + f + 4], ROM.DATA[Constants.tile_address + f + 5]);
+            Tile floorTile4 = new Tile(ROM.DATA[Constants.tile_address + f + 6], ROM.DATA[Constants.tile_address + f + 7]);
+
+            Tile floorTile5 = new Tile(ROM.DATA[Constants.tile_address_floor + f], ROM.DATA[Constants.tile_address_floor + f + 1]);
+            Tile floorTile6 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 2], ROM.DATA[Constants.tile_address_floor + f + 3]);
+            Tile floorTile7 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 4], ROM.DATA[Constants.tile_address_floor + f + 5]);
+            Tile floorTile8 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 6], ROM.DATA[Constants.tile_address_floor + f + 7]);
 
 
+            for (int xx = 0; xx < 16; xx++)
+            {
+                for (int yy = 0; yy < 32; yy++)
+                {
+                    floorTile1.SetTile((xx * 4), (yy * 2), layer); floorTile2.SetTile((xx * 4) + 1, (yy * 2), layer);
+                    floorTile3.SetTile((xx * 4) + 2, (yy * 2), layer); floorTile4.SetTile((xx * 4) + 3, (yy * 2), layer);
+
+                    floorTile5.SetTile((xx * 4), (yy * 2) + 1, layer); floorTile6.SetTile((xx * 4) + 1, (yy * 2) + 1, layer);
+                    floorTile7.SetTile((xx * 4) + 2, (yy * 2) + 1, layer); floorTile8.SetTile((xx * 4) + 3, (yy * 2) + 1, layer);
+                }
+            }
 
         }
+
 
 
         public void Draw()

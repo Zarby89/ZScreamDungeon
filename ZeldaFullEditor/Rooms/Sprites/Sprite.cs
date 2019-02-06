@@ -23,6 +23,9 @@ namespace ZeldaFullEditor
         public string name;
         public byte keyDrop = 0;
         public int sizeMap = 512;
+
+        public bool preview = false;
+
         Room room;
         public Rectangle boundingbox;
         bool picker = false;
@@ -53,21 +56,24 @@ namespace ZeldaFullEditor
         {
             if (bigKey == false)
             {
-                int dx = (boundingbox.X + boundingbox.Width / 2) - 4;
+                int dx = (boundingbox.X + boundingbox.Width / 2) - 8;
                 int dy = boundingbox.Y - 10;
-                drawSpriteTile(dx, dy, 14, 2, 11, false, false, 1, 2, true);
+                draw_item_tile(dx + 4, dy + 0, 14, 822, 11, false, false, 1);
             }
             else
             {
-                int dx = (boundingbox.X + boundingbox.Width / 2) - 4;
+                int dx = (boundingbox.X + boundingbox.Width / 2) - 8;
                 int dy = boundingbox.Y - 10;
-                drawSpriteTile(dx, dy, 14, 6, 11, false, false, 2, 2, true);
+                draw_item_tile(dx, dy + 0, 14, 826, 11);
             }
         }
 
 
         public void Draw(bool picker = false)
         {
+
+            byte x = this.nx;
+            byte y = this.ny;
             this.picker = picker;
             if (overlord == 0x07)
             {
@@ -89,7 +95,6 @@ namespace ZeldaFullEditor
                 }
                 return;
             }
-
 
             if (id == 0x00)
             {
@@ -1094,15 +1099,8 @@ namespace ZeldaFullEditor
                 //stringtodraw.Add(new SpriteName(x, (y*16), sprites_name.name[id]));
                 drawSpriteTile((x * 16), (y * 16), 4, 4, 5);
             }
-            if (nx != this.x || ny != this.y)
-            {
-                boundingbox = new Rectangle((lowerX + (nx * 16)), (lowerY + (ny * 16)), width, height);
-            }
-            else
-            {
-                boundingbox = new Rectangle((lowerX + (x * 16)), (lowerY + (y * 16)), width, height);
-            }
 
+                boundingbox = new Rectangle((lowerX + (x * 16)), (lowerY + (y * 16)), width, height);
         }
 
         public void update()
@@ -1116,137 +1114,158 @@ namespace ZeldaFullEditor
         int higherY = 0;
         int width = 16;
         int height = 16;
-        public void drawSpriteTile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sx = 2, int sy = 2, bool iskey = false)
+        public unsafe void drawSpriteTile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2, bool iskey = false)
         {
+            var alltilesData = (byte*)GFX.currentgfx16Ptr.ToPointer();
 
-
-
-            int zx = x - (this.x * 16);
-            int zy = y - (this.y * 16);
-            if (iskey == false)
+            if (preview)
             {
-
-                if (lowerX > zx)
+                byte* ptr = (byte*)GFX.previewSpritesPtr[id].ToPointer();
+                x += 16;
+                y += 16;
+                int drawid = (srcx + (srcy * 16)) + 512;
+                for (var yl = 0; yl < sizey * 8; yl++)
                 {
-                    lowerX = zx;
-                }
-
-                if (lowerY > zy)
-                {
-                    lowerY = zy;
-                }
-
-                if (higherX < zx + (sx * 8))
-                {
-                    higherX = zx + (sx * 8);
-                }
-
-                if (higherY < zy + (sy * 8))
-                {
-                    higherY = zy + (sy * 8);
-                }
-
-                width = higherX - lowerX;
-                height = higherY - lowerY;
-                if (picker)
-                {
-                    x += 8;
-                    y += 8;
-                }
-
-                if (nx != this.x || ny != this.y)
-                {
-                    x -= (this.x * 16);
-                    y -= (this.y * 16);
-                    x += (this.nx * 16);
-                    y += (this.ny * 16);
-                }
-            }
-            int ty = srcy + 32; 
-            if (iskey)
-            {
-                ty = srcy;
-            }
-            int tx = srcx;
-            int mx = 0;
-            int my = 0;
-            pal = pal - 2;
-            if (mirror_x == true)
-            {
-                mx = sx * 8;
-            }
-
-            for (int xx = 0; xx < (sx * 8); xx++)
-            {
-                if (mx > 0)
-                {
-                    mx--;
-                }
-                if (mirror_y == true)
-                {
-                    my = sy * 8;
-                }
-                for (int yy = 0; yy < (sy * 8); yy++)
-                {
-                    if (my > 0)
+                    for (var xl = 0; xl < (sizex * 8) / 2; xl++)
                     {
-                        my--;
-                    }
+                        int mx = xl;
+                        int my = yl;
+                        byte r = 0;
 
-
-                       
-                    int x_dest = ((x) + (xx)) * 4;
-                    int y_dest = (((y) + (yy)) * GFX.currentWidth) * 4;
-                    if (picker)
-                    {
-                        y_dest = (((y) + (yy)) * GFX.currentWidth) * 4;
-                    }
-                    int dest = x_dest + y_dest;
-
-                    int x_src = ((tx * 8) + (xx));
-                    if (mirror_x)
-                    {
-                        x_src = ((tx * 8) + mx);
-                    }
-                    int y_src = (((ty * 8) + (yy)) * 128);
-                    if (mirror_y)
-                    {
-                        y_src = (((ty * 8) + my) * 128);
-                    }
-
-                    int src = x_src + y_src;
-                    unsafe
-                    {
-                        if (dest < (GFX.currentWidth * GFX.currentHeight * 4))
+                        if (mirror_x)
                         {
-                            if (dest > 0)
+                            mx = (((sizex * 8) / 2) - 1) - xl;
+                            r = 1;
+                        }
+                        if (mirror_y)
+                        {
+                            my = (((sizey * 8)) - 1) - yl;
+                        }
+                        //Formula information to get tile index position in the array
+                        //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
+                        int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
+                        var pixel = alltilesData[tx + (yl * 64) + xl];
+                        //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
+                        int index = (x) + (y * 64) + ((mx * 2) + (my * (64)));
+                        if (index >= 0 && index <= 4096)
+                        {
+                            if ((pixel & 0x0F) != 0)
                             {
-                                if (!iskey)
-                                {
-                                    if (GFX.singledata[(src)] != 0)
-                                    {
-                                        GFX.currentData[dest] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].B);
-                                        GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].G);
-                                        GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.singledata[(src)], pal].R);
-                                        GFX.currentData[dest + 3] = 255;
-                                    }
-                                }
-                                else
-                                {
-                                    if (GFX.itemsdataEDITOR[(src)] != 0)
-                                    {
-                                        GFX.currentData[dest] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pal].B);
-                                        GFX.currentData[dest + 1] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pal].G);
-                                        GFX.currentData[dest + 2] = (GFX.spritesPalettes[GFX.itemsdataEDITOR[(src)], pal].R);
-                                        GFX.currentData[dest + 3] = 255;
-                                    }
-                                }
+                                ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + 112 + (pal * 8));
+                            }
+                            if (((pixel >> 4) & 0x0F) != 0)
+                            {
+                                ptr[index + r] = (byte)(((pixel >> 4) & 0x0F) + 112 + (pal * 8));
                             }
                         }
                     }
                 }
             }
-        }
+            else
+            {
+                byte* ptr = (byte*)GFX.roomBg1Ptr.ToPointer();
+                if (iskey == false)
+                {
+                    if (lowerX > (x - (this.nx * 16)))
+                    {
+                        lowerX = (x - (this.nx * 16));
+                    }
+                    if (lowerY > (y - (this.ny * 16)))
+                    {
+                        lowerY = (y - (this.ny * 16));
+                    }
+                    if (higherX < x + (sizex * 8) - (this.nx * 16))
+                    {
+                        higherX = x + (sizex * 8) - (this.nx * 16);
+                    }
+                    if (higherY < y + (sizey * 8) - (this.ny * 16))
+                    {
+                        higherY = y + (sizey * 8) - (this.ny * 16);
+                    }
+                    width = (higherX - lowerX);
+                    height = (higherY - lowerY);
+                }
+                int drawid = (srcx + (srcy * 16)) + 512;
+                for (var yl = 0; yl < sizey * 8; yl++)
+                {
+                    for (var xl = 0; xl < (sizex * 8) / 2; xl++)
+                    {
+                        int mx = xl;
+                        int my = yl;
+                        byte r = 0;
 
+                        if (mirror_x)
+                        {
+                            mx = (((sizex * 8) / 2) - 1) - xl;
+                            r = 1;
+                        }
+                        if (mirror_y)
+                        {
+                            my = (((sizey * 8)) - 1) - yl;
+                        }
+                        //Formula information to get tile index position in the array
+                        //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
+                        int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
+                        var pixel = alltilesData[tx + (yl * 64) + xl];
+                        //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
+                        int index = (x) + (y * 512) + ((mx * 2) + (my * (512)));
+                        if (index >= 0 && index <= 262144)
+                        {
+                            if ((pixel & 0x0F) != 0)
+                            {
+                                ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + 112 + (pal * 8));
+                            }
+                            if (((pixel >> 4) & 0x0F) != 0)
+                            {
+                                ptr[index + r] = (byte)(((pixel >> 4) & 0x0F) + 112 + (pal * 8));
+                            }
+                        }
+                    }
+                }
+            }
+            }
+
+
+            public unsafe void draw_item_tile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2)
+            {
+                var alltilesData = (byte*)GFX.allgfx16Ptr.ToPointer();
+                byte* ptr = (byte*)GFX.roomBg1Ptr.ToPointer();
+
+                int drawid = (srcx + (srcy * 16));
+                for (var yl = 0; yl < sizey * 8; yl++)
+                {
+                    for (var xl = 0; xl < (sizex * 8) / 2; xl++)
+                    {
+                        int mx = xl;
+                        int my = yl;
+                        byte r = 0;
+
+                        if (mirror_x)
+                        {
+                            mx = (((sizex * 8) / 2) - 1) - xl;
+                            r = 1;
+                        }
+                        if (mirror_y)
+                        {
+                            my = (((sizey * 8)) - 1) - yl;
+                        }
+                        //Formula information to get tile index position in the array
+                        //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
+                        int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
+                        var pixel = alltilesData[tx + (yl * 64) + xl];
+                        //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
+                        int index = (x) + (y * 512) + ((mx * 2) + (my * (512)));
+                        if ((pixel & 0x0F) != 0)
+                        {
+                            ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + 112 + (pal * 8));
+                        }
+                        if (((pixel >> 4) & 0x0F) != 0)
+                        {
+                            ptr[index + r] = (byte)(((pixel >> 4) & 0x0F) + 112 + (pal * 8));
+                        }
+                    }
+                }
+            }
+        
     }
 }

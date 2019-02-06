@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A634564E-5323-48FE-A54C-B42AF25C5315}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ZeldaFullEditor</RootNamespace>
     <AssemblyName>ZeldaFullEditor</AssemblyName>
@@ -58,10 +58,6 @@
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="netstandard, Version=2.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51" />
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -76,19 +72,33 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
-    <Reference Include="WeifenLuo.WinFormsUI.Docking, Version=3.0.3.0, Culture=neutral, PublicKeyToken=5cded1a1a0a7b481, processorArchitecture=MSIL">
-      <HintPath>..\packages\DockPanelSuite.3.0.3\lib\net40\WeifenLuo.WinFormsUI.Docking.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="ZCompressLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Downloads\ZCompressLibrary-master\ZCompressLibrary\bin\Debug\ZCompressLibrary.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Charactertable.cs" />
+    <Compile Include="ChestDraw.cs" />
+    <Compile Include="ChestPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ChestPicker.Designer.cs">
+      <DependentUpon>ChestPicker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Chestviewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Chestviewer.Designer.cs">
+      <DependentUpon>Chestviewer.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CustomPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="DataRoom.cs" />
     <Compile Include="DoAction.cs" />
+    <Compile Include="DungeonGenerator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DungeonGenerator.Designer.cs">
+      <DependentUpon>DungeonGenerator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Entrance.cs" />
     <Compile Include="EntranceOW.cs" />
     <Compile Include="ExitOW.cs" />
@@ -105,9 +115,7 @@
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
     <Compile Include="Addresses.cs" />
-    <Compile Include="Gui\PickObject.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="Gui\PickObject.cs" />
     <Compile Include="Gui\PickObject.Designer.cs">
       <DependentUpon>PickObject.cs</DependentUpon>
     </Compile>
@@ -125,7 +133,19 @@
     </Compile>
     <Compile Include="IniFile.cs" />
     <Compile Include="Load.cs" />
+    <Compile Include="MovePointer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MovePointer.Designer.cs">
+      <DependentUpon>MovePointer.cs</DependentUpon>
+    </Compile>
     <Compile Include="ObjectMode.cs" />
+    <Compile Include="ObjectViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="ObjectViewer.Designer.cs">
+      <DependentUpon>ObjectViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="OverworldGlobal.cs" />
     <Compile Include="Palette.cs" />
     <Compile Include="PaletteViewer.cs" />
@@ -136,12 +156,10 @@
     <Compile Include="RoomLayout.Designer.cs">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </Compile>
-    <Compile Include="RoomOW.cs" />
     <Compile Include="Rooms\Background2.cs" />
     <Compile Include="Rooms\Chests\Chest.cs" />
     <Compile Include="Rooms\Chests\ChestItems_Name.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="Compression.cs" />
     <Compile Include="Rooms\Items\Items_Draw.cs" />
     <Compile Include="Rooms\Object_Draw\Doors_Draw.cs" />
     <Compile Include="Gui\Form1.cs">
@@ -177,18 +195,37 @@
     <Compile Include="SceneBase.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SceneOW.cs">
-      <SubType>Component</SubType>
+    <Compile Include="SpritesView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="SpritesView.Designer.cs">
+      <DependentUpon>SpritesView.cs</DependentUpon>
     </Compile>
     <Compile Include="Sprite_SubsetNames.cs" />
     <Compile Include="TagKey.cs" />
     <Compile Include="TextPreview.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="TileOrig.cs" />
     <Compile Include="Tile.cs" />
     <Compile Include="Tile16.cs" />
     <Compile Include="Tile32.cs" />
     <Compile Include="TileInfo.cs" />
+    <Compile Include="Utils.cs" />
+    <Compile Include="ZCompressLibrary\Common.cs" />
+    <Compile Include="ZCompressLibrary\Compress.cs" />
+    <Compile Include="ZCompressLibrary\compression_piece.cs" />
+    <Compile Include="ZCompressLibrary\Decompress.cs" />
+    <Compile Include="ZCompressLibrary\fake_mem.cs" />
+    <EmbeddedResource Include="ChestPicker.resx">
+      <DependentUpon>ChestPicker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Chestviewer.resx">
+      <DependentUpon>Chestviewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DungeonGenerator.resx">
+      <DependentUpon>DungeonGenerator.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GlobalOptionForm.resx">
       <DependentUpon>GlobalOptionForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -210,6 +247,12 @@
     <EmbeddedResource Include="Gui\PickChestItem.resx">
       <DependentUpon>PickChestItem.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MovePointer.resx">
+      <DependentUpon>MovePointer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ObjectViewer.resx">
+      <DependentUpon>ObjectViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -223,11 +266,14 @@
     <EmbeddedResource Include="RoomLayout.resx">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SceneOW.resx">
-      <DependentUpon>SceneOW.cs</DependentUpon>
+    <EmbeddedResource Include="SceneBase.resx">
+      <DependentUpon>SceneBase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SceneUW.resx">
       <DependentUpon>SceneUW.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SpritesView.resx">
+      <DependentUpon>SpritesView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TextPreview.resx">
       <DependentUpon>TextPreview.cs</DependentUpon>
@@ -253,7 +299,7 @@
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 et x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

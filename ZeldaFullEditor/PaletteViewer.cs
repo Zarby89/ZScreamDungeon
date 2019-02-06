@@ -33,19 +33,27 @@ namespace ZeldaFullEditor
             using (Graphics g = Graphics.FromImage(pb.Image))
             {
                 g.Clear(pb.BackColor);
-                GFX.LoadHudPalettes();
 
                 //blockset
-                if (GFX.editingPalettes != null)
+                /*if (GFX.loadedPalettes != null)
                 {
-                    for (int y = 0; y < GFX.editingPalettes.GetLength(1); y++)
+                    for (int y = 0; y < GFX.loadedPalettes.GetLength(1); y++)
                     {
-                        for (int x = 0; x < GFX.editingPalettes.GetLength(0); x++)
+                        for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
                         {
-                            g.FillRectangle(new SolidBrush(GFX.editingPalettes[x, y]), new Rectangle(x * 16, y * 16, 16, 16));
+                            g.FillRectangle(new SolidBrush(GFX.loadedPalettes[x, y]), new Rectangle(x * 16, y * 16, 16, 16));
                         }
                     }
+                }*/
+
+                ColorPalette palettes = GFX.roomBg1Bitmap.Palette;
+                for(int i = 0; i<256;i++)
+                {
+                    int x = i % 16;
+                    int y = i / 16;
+                    g.FillRectangle(new SolidBrush(palettes.Entries[i]), new Rectangle(x * 16, y * 16, 16, 16));
                 }
+
                 //spriteset
                 /*for (int y = 0; y < 16; y++)
                 {
@@ -129,13 +137,13 @@ namespace ZeldaFullEditor
             Floor2 Color: G
             Pot Color: P
             Treasure Chest Color: T*/
-            Color W = Color.FromArgb(60 + rand.Next(180), 60 + rand.Next(180), 60 + rand.Next(180));
-            Color E = Color.FromArgb(60 + rand.Next(180), 60 + rand.Next(180), 60 + rand.Next(180));
-            Color C = Color.FromArgb(60 + rand.Next(180), 60 + rand.Next(180), 60 + rand.Next(180));
-            Color F = Color.FromArgb(60 + rand.Next(180), 60 + rand.Next(180), 60 + rand.Next(180));
-            Color G = Color.FromArgb(60 + rand.Next(180), 60 + rand.Next(180), 60 + rand.Next(180));
-            Color P = Color.FromArgb(60 + rand.Next(180), 60 + rand.Next(180), 60 + rand.Next(180));
-            Color T = Color.FromArgb(60 + rand.Next(180), 60 + rand.Next(180), 60 + rand.Next(180));
+            Color W = Color.FromArgb(50 + rand.Next(180), 50 + rand.Next(180), 50 + rand.Next(180));
+            Color E = Color.FromArgb(50 + rand.Next(180), 50 + rand.Next(180), 50 + rand.Next(180));
+            Color C = Color.FromArgb(50 + rand.Next(180), 50 + rand.Next(180), 50 + rand.Next(180));
+            Color F = Color.FromArgb(50 + rand.Next(180), 50 + rand.Next(180), 50 + rand.Next(180));
+            Color G = Color.FromArgb(50 + rand.Next(180), 50 + rand.Next(180), 50 + rand.Next(180));
+            Color P = Color.FromArgb(50 + rand.Next(180), 50 + rand.Next(180), 50 + rand.Next(180));
+            Color T = Color.FromArgb(50 + rand.Next(180), 50 + rand.Next(180), 50 + rand.Next(180));
             bool N = false;
             Object[] colors = new Object[] 
             {
@@ -240,6 +248,7 @@ namespace ZeldaFullEditor
             b = (int)((float)b / 255f * 0x1F);
 
             GFX.loadedPalettes[x, y] = Color.FromArgb(r * 8, g * 8, b * 8);
+
         }
 
 

@@ -10,8 +10,8 @@ namespace ZeldaFullEditor
     {
         public bool o, v, h; //o = over, v = vertical mirror, h = horizontal mirror
         public byte palette;
-        public short id;
-        public TileInfo(short id, byte palette, bool v, bool h, bool o)
+        public ushort id;
+        public TileInfo(ushort id, byte palette, bool v, bool h, bool o)
         {
             this.id = id;
             this.palette = palette;
