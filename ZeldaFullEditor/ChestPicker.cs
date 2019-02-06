@@ -1,0 +1,31 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace ZeldaFullEditor
+{
+    public partial class ChestPicker : Form
+    {
+        public ChestPicker()
+        {
+            InitializeComponent();
+        }
+
+        private void ChestPicker_Load(object sender, EventArgs e)
+        {
+            chestviewer1.items.Clear();
+            for (int i = 0; i < 75; i++)
+            {
+                Chest c = new Chest(0, 0, (byte)i, false, true);
+                chestviewer1.items.Add(c);
+            }
+            chestviewer1.updateSize();
+        }
+    }
+}
