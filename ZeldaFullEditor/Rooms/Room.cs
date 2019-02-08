@@ -683,9 +683,46 @@ namespace ZeldaFullEditor
         byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38 };
         public byte[] getTilesBytes()
         {
+            List<Room_Object> shutterdoors = new List<Room_Object>();
+            List<Room_Object> keydoors = new List<Room_Object>();
+            List<Room_Object> normaldoors = new List<Room_Object>();
+            
+            foreach (Room_Object o in tilesObjects)
+            {
+                if (o.options == ObjectOption.Door)
+                {
+                    if (keysDoors.Contains((byte)(o.id >> 8)))
+                    {
+                        keydoors.Add(o);
+                    }
+                    else if (shutterDoors.Contains((byte)(o.id >> 8)))
+                    {
+                        shutterdoors.Add(o);
+                    }
+                    else
+                    {
+                        normaldoors.Add(o);
+                    }
+                }
+            }
+            foreach(Room_Object o in keydoors)
+            {
+                tilesObjects.Remove(o);
+                tilesObjects.Add(o);
+            }
+            foreach (Room_Object o in shutterdoors)
+            {
+                tilesObjects.Remove(o);
+                tilesObjects.Add(o);
+            }
+            foreach (Room_Object o in normaldoors)
+            {
+                tilesObjects.Remove(o);
+                tilesObjects.Add(o);
+            }
+
             List<byte> objectsBytes = new List<byte>();
             List<byte> doorsBytes = new List<byte>();
-            List<byte> newdoorsBytes = new List<byte>();
             bool found_door = false;
 
             byte floorbyte = (byte)((floor2 << 4) + floor1);
@@ -694,7 +731,6 @@ namespace ZeldaFullEditor
             objectsBytes.Add(layoutbyte);
 
             doorsBytes.Clear();
-            newdoorsBytes.Clear();
             found_door = getLayerTiles(0, ref objectsBytes, ref doorsBytes);
   
             if (found_door)//if we found door during layer1 WTF oO
@@ -702,33 +738,7 @@ namespace ZeldaFullEditor
                 objectsBytes.Add(0xF0); 
                 objectsBytes.Add(0xFF);
 
-                //Rearrange doorsBytes to have all specials doors first keys door then shutter doors
-                for(int i = 0;i<doorsBytes.Count/2;i++)
-                {
-                    if (keysDoors.Contains(doorsBytes[(i*2)+1])) //if it a key door 
-                    {
-                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
-                         newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
-                    }
-                }
-                for (int i = 0; i < doorsBytes.Count / 2; i++)
-                {
-                    if (shutterDoors.Contains(doorsBytes[(i * 2) + 1])) //if it a shutter door 
-                    {
-                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
-                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
-                    }
-                }
-                for (int i = 0; i < doorsBytes.Count / 2; i++)
-                {
-                    if (!keysDoors.Contains(doorsBytes[(i * 2) + 1]) && !shutterDoors.Contains(doorsBytes[(i * 2) + 1])) //normal doors
-                    {
-                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
-                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
-                    }
-                }
-
-                foreach (byte b in newdoorsBytes)
+                foreach (byte b in doorsBytes)
                 {
                     objectsBytes.Add(b);
                 }
@@ -745,33 +755,7 @@ namespace ZeldaFullEditor
                 objectsBytes.Add(0xF0);
                 objectsBytes.Add(0xFF);
 
-                //Rearrange doorsBytes to have all specials doors first keys door then shutter doors
-                for (int i = 0; i < doorsBytes.Count / 2; i++)
-                {
-                    if (keysDoors.Contains(doorsBytes[(i * 2) + 1])) //if it a key door 
-                    {
-                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
-                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
-                    }
-                }
-                for (int i = 0; i < doorsBytes.Count / 2; i++)
-                {
-                    if (shutterDoors.Contains(doorsBytes[(i * 2) + 1])) //if it a shutter door 
-                    {
-                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
-                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
-                    }
-                }
-                for (int i = 0; i < doorsBytes.Count / 2; i++)
-                {
-                    if (!keysDoors.Contains(doorsBytes[(i * 2) + 1]) && !shutterDoors.Contains(doorsBytes[(i * 2) + 1])) //normal doors
-                    {
-                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
-                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
-                    }
-                }
-
-                foreach (byte b in newdoorsBytes)
+                foreach (byte b in doorsBytes)
                 {
                     objectsBytes.Add(b);
                 }
@@ -788,33 +772,8 @@ namespace ZeldaFullEditor
             {
                 objectsBytes.Add(0xF0);
                 objectsBytes.Add(0xFF);
-                //Rearrange doorsBytes to have all specials doors first keys door then shutter doors
-                for (int i = 0; i < doorsBytes.Count / 2; i++)
-                {
-                    if (keysDoors.Contains(doorsBytes[(i * 2) + 1])) //if it a key door 
-                    {
-                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
-                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
-                    }
-                }
-                for (int i = 0; i < doorsBytes.Count / 2; i++)
-                {
-                    if (shutterDoors.Contains(doorsBytes[(i * 2) + 1])) //if it a shutter door 
-                    {
-                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
-                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
-                    }
-                }
-                for (int i = 0; i < doorsBytes.Count / 2; i++)
-                {
-                    if (!keysDoors.Contains(doorsBytes[(i * 2) + 1]) && !shutterDoors.Contains(doorsBytes[(i * 2) + 1])) //normal doors
-                    {
-                        newdoorsBytes.Add(doorsBytes[(i * 2)]);
-                        newdoorsBytes.Add(doorsBytes[(i * 2) + 1]);
-                    }
-                }
 
-                foreach (byte b in newdoorsBytes)
+                foreach (byte b in doorsBytes)
                 {
                     objectsBytes.Add(b);
                 }
