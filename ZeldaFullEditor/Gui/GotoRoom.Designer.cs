@@ -28,72 +28,77 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GotoRoom));
+            this.btnGo = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.chkParseAsHex = new System.Windows.Forms.CheckBox();
+            this.tbxRoomNumber = new System.Windows.Forms.TextBox();
+            this.gbxRoomNumber = new System.Windows.Forms.GroupBox();
+            this.gbxRoomNumber.SuspendLayout();
             this.SuspendLayout();
             // 
-            // button1
+            // btnGo
             // 
-            this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(119, 9);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(78, 23);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Go !";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            resources.ApplyResources(this.btnGo, "btnGo");
+            this.btnGo.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.btnGo.Name = "btnGo";
+            this.btnGo.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnCancel
             // 
-            this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(119, 34);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(78, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Cancel";
-            this.button2.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.btnCancel, "btnCancel");
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // checkBox1
+            // chkParseAsHex
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(12, 38);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(87, 17);
-            this.checkBox1.TabIndex = 2;
-            this.checkBox1.Text = "Hexadecimal";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            resources.ApplyResources(this.chkParseAsHex, "chkParseAsHex");
+            this.chkParseAsHex.Name = "chkParseAsHex";
+            this.chkParseAsHex.UseVisualStyleBackColor = true;
+            this.chkParseAsHex.CheckedChanged += new System.EventHandler(this.ParseAsHex_CheckedChanged);
             // 
-            // textBox1
+            // tbxRoomNumber
             // 
-            this.textBox1.Location = new System.Drawing.Point(13, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 3;
+            resources.ApplyResources(this.tbxRoomNumber, "tbxRoomNumber");
+            this.tbxRoomNumber.Name = "tbxRoomNumber";
+            this.tbxRoomNumber.TextChanged += new System.EventHandler(this.RoomNumber_TextChanged);
+            // 
+            // gbxRoomNumber
+            // 
+            resources.ApplyResources(this.gbxRoomNumber, "gbxRoomNumber");
+            this.gbxRoomNumber.Controls.Add(this.tbxRoomNumber);
+            this.gbxRoomNumber.Controls.Add(this.chkParseAsHex);
+            this.gbxRoomNumber.Name = "gbxRoomNumber";
+            this.gbxRoomNumber.TabStop = false;
             // 
             // GotoRoom
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AcceptButton = this.btnGo;
+            resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(209, 63);
-            this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.CancelButton = this.btnCancel;
+            this.Controls.Add(this.gbxRoomNumber);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnGo);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "GotoRoom";
-            this.Text = "GotoRoom";
-            this.Load += new System.EventHandler(this.GotoRoom_Load);
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.gbxRoomNumber.ResumeLayout(false);
+            this.gbxRoomNumber.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.Button btnGo;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.CheckBox chkParseAsHex;
+        private System.Windows.Forms.TextBox tbxRoomNumber;
+        private System.Windows.Forms.GroupBox gbxRoomNumber;
     }
 }
