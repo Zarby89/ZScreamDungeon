@@ -58,7 +58,8 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-            allBgs = true;
+            layer = 3;
+            //allBgs = true;
             tiles.Clear();
             DrawMirror();
             tiles.Clear();
@@ -105,7 +106,7 @@ namespace ZeldaFullEditor
             //0x26,0x40,0x46,0x0C
             if ((((id >> 8) & 0xFF) == 0x26) || (((id >> 8) & 0xFF) == 0x40) || (((id >> 8) & 0xFF) == 0x46) || (((id >> 8) & 0xFF) == 0x0C))
             {
-                layer = 1;
+                //layer = 1;
             }
             if ((((id >> 8) & 0xFF) == 22) || (((id >> 8) & 0xFF) == 18))
             {
