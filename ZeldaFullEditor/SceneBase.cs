@@ -35,7 +35,7 @@ namespace ZeldaFullEditor
         public Rectangle[] doorArray = new Rectangle[48];
         public Room room;
         public ObjectMode selectedMode;
-        public short[] doorsObject = new short[] { 0x13B, 0x138, 0x139, 0x12E, 0x12D, 0x4632, 0x4693 };
+        
         public bool showLayer1 = true;
         public bool showLayer2 = true;
         public bool showGrid = false;

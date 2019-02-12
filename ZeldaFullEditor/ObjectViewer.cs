@@ -161,20 +161,23 @@ namespace ZeldaFullEditor
             this.Size = new Size(this.Size.Width, h);
             foreach (Room_Object o in items)
             {
-                Rectangle itemRect = new Rectangle(xpos * 64, ypos * 64, 64, 64);
-                if (itemRect.Contains(new Point(e.X,e.Y)))
+                if (index < items.Count)
                 {
-                    selectedIndex = index;
-                    selectedObject = o;
-                }
-                xpos++;
-                if (xpos >= w)
-                {
-                    xpos = 0;
-                    ypos++;
+                    Rectangle itemRect = new Rectangle(xpos * 64, ypos * 64, 64, 64);
+                    if (itemRect.Contains(new Point(e.X, e.Y)))
+                    {
+                        selectedIndex = index;
+                        selectedObject = o;
+                    }
+                    xpos++;
+                    if (xpos >= w)
+                    {
+                        xpos = 0;
+                        ypos++;
 
+                    }
+                    index++;
                 }
-                index++;
             }
             OnValueChanged(new EventArgs());
             Refresh();

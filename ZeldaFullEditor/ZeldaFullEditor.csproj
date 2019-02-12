@@ -88,6 +88,7 @@
     <Compile Include="Chestviewer.Designer.cs">
       <DependentUpon>Chestviewer.cs</DependentUpon>
     </Compile>
+    <Compile Include="ConstantsJP.cs" />
     <Compile Include="CustomPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -115,6 +116,12 @@
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
     <Compile Include="Addresses.cs" />
+    <Compile Include="Gui\JPExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\JPExport.Designer.cs">
+      <DependentUpon>JPExport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\PickObject.cs" />
     <Compile Include="Gui\PickObject.Designer.cs">
       <DependentUpon>PickObject.cs</DependentUpon>
@@ -187,6 +194,7 @@
     <Compile Include="Rooms\Room_Object.cs" />
     <Compile Include="Rooms\Object_Draw\Subtype3_Draw.cs" />
     <Compile Include="Rooms\Sprites\Sprite.cs" />
+    <Compile Include="SaveJP.cs" />
     <Compile Include="Save.cs" />
     <Compile Include="SaveObject.cs" />
     <Compile Include="SceneUW.cs">
@@ -237,6 +245,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\GotoRoom.resx">
       <DependentUpon>GotoRoom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\JPExport.resx">
+      <DependentUpon>JPExport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\PickObject.resx">
       <DependentUpon>PickObject.cs</DependentUpon>
@@ -293,10 +304,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="spriteFont.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Content Include="PatchNotes.txt" />
     <None Include="Resources\Mblock.png" />
+    <None Include="Resources\spriteFont.png" />
     <Content Include="screamlink.ico" />
   </ItemGroup>
   <ItemGroup>

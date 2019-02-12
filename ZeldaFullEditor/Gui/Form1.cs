@@ -42,7 +42,8 @@ namespace ZeldaFullEditor
         List<short> selectedMapPng = new List<short>();
         public ChestPicker chestPicker = new ChestPicker();
         public byte[] door_index = new byte[] { 0x00, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32 };
-
+        public Bitmap spriteFont;
+        public Bitmap moveableBlock;
         private void Form1_Load(object sender, EventArgs e)
         {
             layoutForm = new RoomLayout(this);
@@ -53,7 +54,8 @@ namespace ZeldaFullEditor
             mapPicturebox.Location = new Point(0, 26);
             palettePicturebox.Image = new Bitmap(256, 256);
             paletteViewer = new PaletteViewer(palettePicturebox);
-            
+            spriteFont = new Bitmap(Resources.spriteFont);
+            moveableBlock = new Bitmap(Resources.Mblock);
         }
 
         public void initialize_gfx()
@@ -136,7 +138,6 @@ namespace ZeldaFullEditor
                 tabControl2.Refresh();
             }
 
-            //TODO : MOVE ALL THAT CODE TO PATCH ROM INSTEAD OF SAVE
             byte[] romBackup = (byte[])ROM.DATA.Clone();
             Save save = new Save(all_rooms);
             
@@ -214,7 +215,7 @@ namespace ZeldaFullEditor
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog projectFile = new OpenFileDialog();
-            projectFile.Filter = "Alttp US ROM .sfc|*.sfc";
+            projectFile.Filter = "Alttp US ROM .sfc|*.sfc;*.smc";
             projectFile.DefaultExt = ".sfc";
             if (projectFile.ShowDialog() == DialogResult.OK)
             {
@@ -236,6 +237,9 @@ namespace ZeldaFullEditor
                 }
             }
         }
+
+        //TODO: Redo the map data add border between EG Maps
+        
 
         public void LoadProject(string filename)
         {
@@ -1083,7 +1087,7 @@ namespace ZeldaFullEditor
 
         }
         public Entrance selectedEntrance = null;
-        public Bitmap spriteFont = new Bitmap("spriteFont.png");
+
         private void entrancetreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
                 propertiesChangedFromForm = true;
@@ -1099,21 +1103,28 @@ namespace ZeldaFullEditor
                 }
                     //propertyGrid2.SelectedObject = entrances[(int)e.Node.Tag];
                     
-                    entranceProperty_room.Text = en.Room.ToString();
-                    entranceProperty_floor.Text = en.Floor.ToString();
-                    entranceProperty_scrollx.Text = en.XScroll.ToString();
-                    entranceProperty_scrolly.Text = en.YScroll.ToString();
-                    entranceProperty_xpos.Text = en.XPosition.ToString();
-                    entranceProperty_ypos.Text = en.YPosition.ToString();
-                    entranceProperty_camx.Text = en.XCamera.ToString();
-                    entranceProperty_camy.Text = en.YCamera.ToString();
-                    entranceProperty_exit.Text = en.Exit.ToString();
-                    entranceProperty_dungeon.Text = en.Dungeon.ToString();
-                    entranceProperty_blockset.Text = en.Blockset.ToString();
-                    entranceProperty_music.Text = en.Music.ToString();
+                entranceProperty_room.Text = en.Room.ToString();
+                entranceProperty_floor.Text = en.Floor.ToString();
+                entranceProperty_scrollx.Text = en.XScroll.ToString();
+                entranceProperty_scrolly.Text = en.YScroll.ToString();
+                entranceProperty_xpos.Text = en.XPosition.ToString();
+                entranceProperty_ypos.Text = en.YPosition.ToString();
+                entranceProperty_camx.Text = en.XCamera.ToString();
+                entranceProperty_camy.Text = en.YCamera.ToString();
+                entranceProperty_exit.Text = en.Exit.ToString();
+                entranceProperty_dungeon.Text = en.Dungeon.ToString();
+                entranceProperty_blockset.Text = en.Blockset.ToString();
+                entranceProperty_music.Text = en.Music.ToString();
+                entranceProperty_FU.Text = en.scrolledge_FU.ToString();
+                entranceProperty_HU.Text = en.scrolledge_HU.ToString();
+                entranceProperty_HD.Text = en.scrolledge_HD.ToString();
+                entranceProperty_FD.Text = en.scrolledge_FD.ToString();
+                entranceProperty_FL.Text = en.scrolledge_FL.ToString();
+                entranceProperty_FR.Text = en.scrolledge_FR.ToString();
+                entranceProperty_HL.Text = en.scrolledge_HL.ToString();
+                entranceProperty_HR.Text = en.scrolledge_HR.ToString();
 
-
-                    if ((en.Ladderbg & 0x10) == 0x10 )
+                if ((en.Ladderbg & 0x10) == 0x10 )
                     {
                         entranceProperty_bg.Checked = true;
                     }
@@ -1147,7 +1158,6 @@ namespace ZeldaFullEditor
                     {
                         b = true; //0xX2
                     }
-                    label39.Text = en.Scrollquadrant.ToString("X2");
 
 
                     /*if (b && r) //bottom right
@@ -1224,6 +1234,7 @@ namespace ZeldaFullEditor
                 .Select(x => x) //?
                 .ToArray());
 
+            panel1.VerticalScroll.Value = 0;
             objectViewer1.Refresh();
         }
 
@@ -1237,7 +1248,7 @@ namespace ZeldaFullEditor
                 .OrderBy(x => x.id)
                 .Select(x => x) //?
                 .ToArray());
-
+            customPanel1.VerticalScroll.Value = 0;
             spritesView1.Refresh();
         }
 
@@ -1978,6 +1989,46 @@ namespace ZeldaFullEditor
                 {
                     selectedEntrance.Blockset = 0;
                 }
+                if (int.TryParse(entranceProperty_HU.Text, out r))
+                {
+                    selectedEntrance.scrolledge_HU = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_FU.Text, out r))
+                {
+                    selectedEntrance.scrolledge_FU = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_HD.Text, out r))
+                {
+                    selectedEntrance.scrolledge_HD = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_FD.Text, out r))
+                {
+                    selectedEntrance.scrolledge_FD = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_HL.Text, out r))
+                {
+                    selectedEntrance.scrolledge_HL = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_HR.Text, out r))
+                {
+                    selectedEntrance.scrolledge_HR = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_FL.Text, out r))
+                {
+                    selectedEntrance.scrolledge_FL = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_FR.Text, out r))
+                {
+                    selectedEntrance.scrolledge_FR = (byte)r;
+                }
+
 
                 if (int.TryParse(entranceProperty_room.Text, out r))
                 {
@@ -2296,15 +2347,20 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 0xF2; i++)
             {
-                Sprite s = new Sprite(activeScene.room, (byte)i, 0, 0, Sprites_Names.name[i], 0, 0, 0);
+                Sprite s = new Sprite(activeScene.room, (byte)i, 0, 0, 0, 0, 0);
+                s.preview = true;
+                listofspritesobjects.Add(s);
+            }
+            for (int i = 1; i < 0x19; i++)
+            {
+                Sprite s = new Sprite(activeScene.room, (byte)i, 0, 0, 7, 0, 0);
                 s.preview = true;
                 listofspritesobjects.Add(s);
             }
 
 
-
-            //sortObject();
-        }
+                //sortObject();
+            }
         List<Chest> listofchests = new List<Chest>();
 
         private void objectViewer1_Load(object sender, EventArgs e)
@@ -2433,7 +2489,7 @@ namespace ZeldaFullEditor
 
         private void spritesView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            activeScene.selectedDragSprite = new dataObject(spritesView1.selectedObject.id, spritesView1.selectedObject.name);
+            activeScene.selectedDragSprite = new dataObject(spritesView1.selectedObject.id, spritesView1.selectedObject.name,spritesView1.selectedObject.overlord);
         }
 
         private void gfxPicturebox_Paint(object sender, PaintEventArgs e)
@@ -2543,17 +2599,192 @@ namespace ZeldaFullEditor
         {
             //Facepalm
         }
+
+        private void litCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (activeScene.updating_info == false)
+            {
+                
+            }
+            else
+            {
+                if (activeScene.room.tilesObjects[0] is Room_Object)
+                {
+                    activeScene.room.tilesObjects[0].lit = litCheckbox.Checked;
+                }
+            }
+        }
+
+        private void patchNotesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sf = new SaveFileDialog();
+            sf.DefaultExt = ".pal";
+            if (sf.ShowDialog() == DialogResult.OK)
+            {
+                FileStream fs = new FileStream(sf.FileName, FileMode.Create, FileAccess.Write);
+                ColorPalette cp = GFX.roomBg1Bitmap.Palette;
+                foreach (Color c in cp.Entries)
+                {
+                    fs.WriteByte(c.R);
+                    fs.WriteByte(c.G);
+                    fs.WriteByte(c.B);
+                }
+                fs.Close();
+            }
+            
+        }
+
+        private void exportOnJPROMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            byte[] USromBackup = (byte[])ROM.DATA.Clone();
+            MessageBox.Show("This will overwrite the selected ROM");
+            OpenFileDialog of = new OpenFileDialog();
+            if (of.ShowDialog() == DialogResult.OK)
+            {
+                FileStream fs = new FileStream(of.FileName, FileMode.Open, FileAccess.Read);
+                ROM.DATA = new byte[0x200000];
+                fs.Read(ROM.DATA, 0, (int)fs.Length);
+                fs.Close();
+
+                Gui.JPExport jPExport = new Gui.JPExport();
+                
+                if (jPExport.ShowDialog() == DialogResult.OK)
+                {
+                    ConstantsJP.Init_Jp();
+                    byte[] romBackup = (byte[])ROM.DATA.Clone();
+                    SaveJP save = new SaveJP(all_rooms);
+                    if (jPExport.roomheaderbox.Checked)
+                    {
+                        if (save.saveRoomsHeaders()) //no protection always the same size so we don't care :)
+                        {
+                            //MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
+                        }
+                    }
+                    if (jPExport.chestsbox.Checked)
+                    {
+                        if (save.saveallChests()) //chest there's a protection when there's too many chest - tested it works fine
+                        {
+                            MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
+                            ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                            return;
+                        }
+                    }
+                    if (jPExport.spritebox.Checked)
+                    {
+                        if (save.saveallSprites())//sprites, there's a protection Tests
+                        {
+                            MessageBox.Show("Failed to save, there is too many sprites", "Bad Error", MessageBoxButtons.OK);
+                            ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                            return;
+                        }
+                    }
+                    if (jPExport.tilesbox.Checked)
+                    {
+                        if (save.saveAllObjects())//There is a protection - Tested
+                        {
+                            MessageBox.Show("Failed to save, there is too many tiles objects", "Bad Error", MessageBoxButtons.OK);
+                            ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                            return;
+                        }
+                    }
+                    if (jPExport.itemsbox.Checked)
+                    {
+                        if (save.saveallPots())//There is a protection - Tested
+                        {
+                            MessageBox.Show("Failed to save, there is too many pot items", "Bad Error", MessageBoxButtons.OK);
+                            ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                            return;
+                        }
+                    }
+                    if (jPExport.blockbox.Checked)
+                    {
+                        if (save.saveBlocks())//There is a protection - Tested
+                        {
+                            MessageBox.Show("Failed to save, there is too many pushable blocks", "Bad Error", MessageBoxButtons.OK);
+                            ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                            return;
+                        }
+                    }
+                    if (jPExport.torchesbox.Checked)
+                    {
+                        if (save.saveTorches())//There is a protection Tested
+                        {
+                            MessageBox.Show("Failed to save, there is too many torches", "Bad Error", MessageBoxButtons.OK);
+                            ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                            return;
+                        }
+                    }
+                    if (jPExport.checkBox1.Checked)
+                    {
+                        if (save.saveAllPits())//There is a protection - Tested
+                        {
+                            MessageBox.Show("Failed to save, there is too many damage pits", "Bad Error", MessageBoxButtons.OK);
+                            ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                            return;
+                        }
+                    }
+                    if (jPExport.entranceBox.Checked)
+                    {
+                        if (save.saveEntrances(entrances, starting_entrances))
+                        {
+                            MessageBox.Show("Failed to save entrances ?? no idea why LUL", "Bad Error", MessageBoxButtons.OK);
+                            ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                            return;
+                        }
+                    }
+
+                    if (save.saveOWExits())
+                    {
+                        MessageBox.Show("Failed to save ??, no idea why ", "Bad Error", MessageBoxButtons.OK);
+                        ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                        return;
+                    }
+
+                    fs = new FileStream(of.FileName, FileMode.Create, FileAccess.Write);
+                    fs.Write(ROM.DATA, 0, ROM.DATA.Length);
+                    fs.Close();
+
+                    ROM.DATA = (byte[])USromBackup.Clone();
+                }
+            }
+    }
+
+        private void spritesubtypeUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (!activeScene.updating_info)
+            {
+                if (activeScene.room.selectedObject[0] is Sprite)
+                {
+                    (activeScene.room.selectedObject[0] as Sprite).subtype = (byte)spritesubtypeUpDown.Value;
+                }
+            }
+        }
+
+        private void gotoRoomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            GotoRoom gotoRoom = new GotoRoom();
+            if (gotoRoom.ShowDialog() == DialogResult.OK)
+            {
+                addRoomTab((short)gotoRoom.SelectedRoom);
+            }
+        }
     }
 
     public class dataObject
     {
         public short id;
         public string Name { get; set; }
-        
-        public dataObject(short id, string name)
+        public byte option = 0;
+        public dataObject(short id, string name, byte option = 0)
         {
             this.Name = name;
             this.id = id;
+            this.option = option;
         }
 
 

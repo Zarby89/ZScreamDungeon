@@ -33,7 +33,8 @@ namespace ZeldaFullEditor
             mainForm = f;
 
         }
-
+        
+        public short[] doorsObject = new short[] { 0x138, 0x139, 0x13A, 0x13B, 0xF9E, 0xF9F, 0xFA0, 0x12D, 0x12E, 0x12F, 0x12E, 0x12D, 0x4632, 0x4693 };
         Rectangle lastSelectedRectangle;
         byte[] spriteFontSpacing = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4 };
         private void SceneUW_MouseWheel(object sender, MouseEventArgs e)
@@ -328,7 +329,13 @@ namespace ZeldaFullEditor
                         drawText(e.Graphics, (o.x * 8) + 4, (o.y * 8) + 16, "bg2");
                     }
                 }
-                if (o.id == 0x138 || o.id == 0x139 || o.id == 0x13A || o.id == 0x13B || o.id == 0xF9E || o.id == 0xF9F || o.id == 0xFA0)
+
+                if (o.options == ObjectOption.Block)
+                {
+                    e.Graphics.DrawImage(mainForm.moveableBlock, o.nx*8, o.ny*8);
+                }
+
+                if (doorsObject.Contains(o.id))
                 {
                     drawText(e.Graphics, o.nx*8, o.ny*8, "to : " + room.staircase_rooms[stairCount].ToString());
                     stairCount++;
@@ -336,7 +343,7 @@ namespace ZeldaFullEditor
 
             }
 
-            drawDoorsPosition(e.Graphics);
+                    drawDoorsPosition(e.Graphics);
 
         }
 
@@ -418,7 +425,8 @@ namespace ZeldaFullEditor
                 if (selectedDragSprite != null)
                 {
                     room.selectedObject.Clear();
-                    Sprite spr = new Sprite(room, (byte)selectedDragSprite.id, 0, 0, selectedDragSprite.Name, 0, 0, 0);
+
+                    Sprite spr = new Sprite(room, (byte)selectedDragSprite.id, 0, 0, selectedDragSprite.option, 0, 0);
                         
                     if (spr != null)
                     {
@@ -736,6 +744,7 @@ namespace ZeldaFullEditor
             mainForm.spritepropertyPanel.Visible = false;
             mainForm.potitemobjectPanel.Visible = false;
             mainForm.doorselectPanel.Visible = false;
+            mainForm.litCheckbox.Visible = false;
             if (room.selectedObject.Count > 0)
             {
                 if (room.selectedObject[0] is Room_Object)
@@ -760,10 +769,19 @@ namespace ZeldaFullEditor
                         }
                         updateSelectionObject(oo);
                     }
+                    else if (oo.options == ObjectOption.Torch)
+                    {
+                        updating_info = true;
+                        mainForm.litCheckbox.Visible = true;
+                        mainForm.litCheckbox.Checked = oo.lit;
+                        updateSelectionObject(oo);
+                        updating_info = false;
+
+                    }
                     else
                     {
-
-
+                        
+                        
                         string name = oo.name;
                         string id = oo.id.ToString("X4");
                         mainForm.comboBox1.Enabled = false;
@@ -785,7 +803,19 @@ namespace ZeldaFullEditor
                     mainForm.spritepropertyPanel.Visible = true;
                     updating_info = true;
                     Sprite oo = room.selectedObject[0] as Sprite;
-                    string name = oo.name;
+                    string name = Sprites_Names.name[oo.id];
+                    if (oo.overlord != 0)
+                    {
+                        if (oo.id <= 0x19 && oo.id > 0)
+                        {
+                            name = Sprites_Names.overlordnames[oo.id - 1];
+                        }
+                        mainForm.spriteoverlordCheckbox.Checked = true;
+                    }
+                    else
+                    {
+                        mainForm.spriteoverlordCheckbox.Checked = false;
+                    }
                     string id = oo.id.ToString("X4");
                     mainForm.selectedGroupbox.Text = "Selected Sprite : " + id + " " + name;
                     mainForm.comboBox1.Enabled = true;
@@ -1390,7 +1420,7 @@ namespace ZeldaFullEditor
                     mainForm.object_x_label.Text = "X: " + (o as Room_Object).nx.ToString();
                     mainForm.object_y_label.Text = "Y: " + (o as Room_Object).ny;
                     mainForm.object_size_label.Text = "Size: " + (o as Room_Object).size;
-                    mainForm.object_layer_label.Text = "Layer: " + (o as Room_Object).layer;
+                    mainForm.object_layer_label.Text = "Layer (BG): " + (o as Room_Object).layer+1;
                     int z = 0;
                     foreach (Room_Object door in room.tilesObjects)
                     {
@@ -1465,7 +1495,15 @@ namespace ZeldaFullEditor
                     mainForm.object_y_label.Text = "Y: " + (o as Sprite).ny;
  
                     mainForm.object_layer_label.Text = "Layer: " + (o as Sprite).layer;
-
+                    mainForm.spritesubtypeUpDown.Value = (o as Sprite).subtype;
+                    if ((o as Sprite).overlord == 0)
+                    {
+                        mainForm.spriteoverlordCheckbox.Checked = false;
+                    }
+                    else
+                    {
+                        mainForm.spriteoverlordCheckbox.Checked = true;
+                    }
                     mainForm.comboBox1.SelectedIndex = (o as Sprite).keyDrop;
 
  
@@ -1603,7 +1641,7 @@ namespace ZeldaFullEditor
                         if (o.type == typeof(Sprite))
                         {
                             selectedMode = ObjectMode.Spritemode;
-                            Sprite spr = (new Sprite(room, o.id, (byte)(o.x - most_x), (byte)(o.y - most_y), Sprites_Names.name[o.id], o.overlord, o.subtype, o.layer));
+                            Sprite spr = (new Sprite(room, o.id, (byte)(o.x - most_x), (byte)(o.y - most_y), o.overlord, o.subtype, o.layer));
                             room.sprites.Add(spr);
                             room.selectedObject.Add(spr);
                         }
@@ -1729,7 +1767,7 @@ namespace ZeldaFullEditor
                 {
                     if (o.type == typeof(Sprite))
                     {
-                        Sprite spr = (new Sprite(room, o.id, (byte)(o.x - most_x), (byte)(o.y - most_y), Sprites_Names.name[o.id], o.overlord, o.subtype, o.layer));
+                        Sprite spr = (new Sprite(room, o.id, (byte)(o.x - most_x), (byte)(o.y - most_y), o.overlord, o.subtype, o.layer));
                         room.sprites.Add(spr);
                         room.selectedObject.Add(spr);
                     }

@@ -342,11 +342,10 @@ namespace ZeldaFullEditor
 
         public bool saveRoomsHeaders()
         {
-            
+
             //long??
             int headerPointer = getLongPointerSnestoPc(Constants.room_header_pointer);
-            Console.WriteLine("Header : " + headerPointer.ToString("X6"));
-            if (headerPointer == 0x027502)
+            if (headerPointer < 0x100000)
             {
                 MovePointer mp = new MovePointer();
                 mp.ShowDialog();
@@ -364,6 +363,9 @@ namespace ZeldaFullEditor
                 ROM.DATA[(headerPointer) + (i * 2)] = (byte)((Addresses.pctosnes((headerPointer + 640) + (i * 14)) & 0xFF));
                 ROM.DATA[(headerPointer) + (i * 2) + 1] = (byte)((Addresses.pctosnes((headerPointer + 640) + (i * 14)) >> 8) & 0xFF);
                 saveHeader((headerPointer + 640), i);
+
+                ROM.DATA[Constants.messages_id_dungeon + (i * 2) + 1] = (byte)((all_rooms[i].Messageid << 8) & 0xFF);
+                ROM.DATA[Constants.messages_id_dungeon + (i * 2)] = (byte)((all_rooms[i].Messageid) & 0xFF); ;
             }
             return false; // False = no error
 
@@ -470,9 +472,13 @@ namespace ZeldaFullEditor
                         }
 
                         int xy = (((o.y * 64) + o.x) << 1);
-                        ROM.DATA[pos] = (byte)(xy & 0xFF);
+                        byte b1 = (byte)(xy & 0xFF);
+                        ROM.DATA[pos] = b1;
                         pos++;
-                        ROM.DATA[pos] = (byte)((byte)(((xy >> 8) & 0xFF) + (o.layer * 0x80)));
+                        byte b2 = (byte)((xy >> 8) & 0xFF);
+                        if (o.layer == 1){b2 |= 0x20;}
+                        b2 |= (byte)((o.lit ? 1:0) << 7);
+                        ROM.DATA[pos] = b2;
                         pos++;
 
                     }

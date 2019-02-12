@@ -53,7 +53,14 @@ namespace ZeldaFullEditor
                     e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(50, 0, 0, 255)), new Rectangle(xpos * 64, (ypos * 64), 64, 64));
                 }
                 e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos * 64, ypos * 64, 64, 64));
-                e.Graphics.DrawString(o.name, this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 40, 64, 24));
+                if (o.overlord == 0)
+                {
+                    e.Graphics.DrawString(Sprites_Names.name[o.id], this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 40, 64, 24));
+                }
+                else
+                {
+                    e.Graphics.DrawString(Sprites_Names.overlordnames[o.id-1], this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 40, 64, 24));
+                }
                 xpos++;
                 if (xpos >= w)
                 {
@@ -90,6 +97,7 @@ namespace ZeldaFullEditor
 
         public void updateSize()
         {
+
             int w = (this.Size.Width / 64);
             int h = (((items.Count / w) + 1) * 64);
             this.Size = new Size(this.Size.Width, h);
@@ -134,7 +142,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-
+                        
 
         }
 
@@ -153,22 +161,26 @@ namespace ZeldaFullEditor
             this.Size = new Size(this.Size.Width, h);
             foreach (Sprite o in items)
             {
-                Rectangle itemRect = new Rectangle(xpos * 64, ypos * 64, 64, 64);
-                if (itemRect.Contains(new Point(e.X, e.Y)))
+                if (index < items.Count)
                 {
-                    selectedIndex = index;
-                    selectedObject = o;
-                }
-                xpos++;
-                if (xpos >= w)
-                {
-                    xpos = 0;
-                    ypos++;
+                    Rectangle itemRect = new Rectangle(xpos * 64, ypos * 64, 64, 64);
+                    if (itemRect.Contains(new Point(e.X, e.Y)))
+                    {
+                        selectedIndex = index;
+                        selectedObject = o;
+                        OnValueChanged(new EventArgs());
+                    }
+                    xpos++;
+                    if (xpos >= w)
+                    {
+                        xpos = 0;
+                        ypos++;
 
+                    }
+                    index++;
                 }
-                index++;
             }
-            OnValueChanged(new EventArgs());
+            
             Refresh();
         }
     }

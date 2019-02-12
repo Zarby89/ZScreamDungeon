@@ -30,18 +30,23 @@ namespace ZeldaFullEditor
         public Rectangle boundingbox;
         bool picker = false;
         public bool selected = false;
-        public Sprite(Room room,byte id, byte x, byte y, string name, byte overlord, byte subtype, byte layer)
+        public Sprite(Room room,byte id, byte x, byte y, byte overlord, byte subtype, byte layer)
         {
             this.id = id;
             this.x = x;
             this.y = y;
-            this.name = name;
             this.room = room;
             this.overlord = overlord;
             this.subtype = subtype;
             this.layer = layer;
             this.nx = x;
             this.ny = y;
+            this.name = Sprites_Names.name[id];
+            if (overlord != 0)
+            {
+                if (id > 0 && id <= 0x19)
+                this.name = Sprites_Names.overlordnames[id-1];
+            }
         }
 
         public void updateBBox()
@@ -751,7 +756,7 @@ namespace ZeldaFullEditor
                         drawSpriteTile((x * 16) + 8, (y * 16), 6, 16, 12);
                         drawSpriteTile((x * 16) + 8, (y * 16) - 10, 0, 16, 10);
                     }
-                    else if (room.index == 85)
+                    else
                     {
                         drawSpriteTile((x * 16) - 8, (y * 16) - 16, 0, 18, 10);
                         drawSpriteTile((x * 16) + 8, (y * 16) - 16, 0, 18, 10, true);

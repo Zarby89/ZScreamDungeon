@@ -71,6 +71,7 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportOnJPROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,6 +113,7 @@
             this.hideChestItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.patchNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
@@ -239,6 +241,22 @@
             this.entrancetabPage = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.entrancetreeView = new System.Windows.Forms.TreeView();
+            this.label52 = new System.Windows.Forms.Label();
+            this.label53 = new System.Windows.Forms.Label();
+            this.entranceProperty_FR = new System.Windows.Forms.TextBox();
+            this.entranceProperty_HR = new System.Windows.Forms.TextBox();
+            this.entranceProperty_FL = new System.Windows.Forms.TextBox();
+            this.entranceProperty_HL = new System.Windows.Forms.TextBox();
+            this.label54 = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label49 = new System.Windows.Forms.Label();
+            this.entranceProperty_FD = new System.Windows.Forms.TextBox();
+            this.entranceProperty_HD = new System.Windows.Forms.TextBox();
+            this.entranceProperty_FU = new System.Windows.Forms.TextBox();
+            this.entranceProperty_HU = new System.Windows.Forms.TextBox();
+            this.label50 = new System.Windows.Forms.Label();
+            this.label51 = new System.Windows.Forms.Label();
             this.entranceProperty_bg = new System.Windows.Forms.CheckBox();
             this.entranceProperty_quadbr = new System.Windows.Forms.RadioButton();
             this.entranceProperty_quadtr = new System.Windows.Forms.RadioButton();
@@ -288,8 +306,6 @@
             this.palettestabPage = new System.Windows.Forms.TabPage();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
             this.button2 = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
             this.palettesTreeview = new System.Windows.Forms.TreeView();
             this.palettePicturebox = new System.Windows.Forms.PictureBox();
             this.gfxtabPage = new System.Windows.Forms.TabPage();
@@ -320,6 +336,7 @@
             this.previewPaletteTextbox = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
             this.selectedGroupbox = new System.Windows.Forms.GroupBox();
+            this.litCheckbox = new System.Windows.Forms.CheckBox();
             this.object_z_label = new System.Windows.Forms.Label();
             this.spritepropertyPanel = new System.Windows.Forms.Panel();
             this.spriteoverlordCheckbox = new System.Windows.Forms.CheckBox();
@@ -405,7 +422,8 @@
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
-            this.saveasToolStripMenuItem});
+            this.saveasToolStripMenuItem,
+            this.exportOnJPROMToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -414,7 +432,7 @@
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
             this.openToolStripMenuItem.Text = "Open ROM";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -423,7 +441,7 @@
             this.saveToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
             this.saveToolStripMenuItem.Text = "Save ROM";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -432,9 +450,16 @@
             this.saveasToolStripMenuItem.Enabled = false;
             this.saveasToolStripMenuItem.Name = "saveasToolStripMenuItem";
             this.saveasToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveasToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
+            this.saveasToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
             this.saveasToolStripMenuItem.Text = "Save ROM As...";
             this.saveasToolStripMenuItem.Click += new System.EventHandler(this.saveasToolStripMenuItem_Click);
+            // 
+            // exportOnJPROMToolStripMenuItem
+            // 
+            this.exportOnJPROMToolStripMenuItem.Name = "exportOnJPROMToolStripMenuItem";
+            this.exportOnJPROMToolStripMenuItem.Size = new System.Drawing.Size(241, 22);
+            this.exportOnJPROMToolStripMenuItem.Text = "Export Current ROM on JP ROM";
+            this.exportOnJPROMToolStripMenuItem.Click += new System.EventHandler(this.exportOnJPROMToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -582,15 +607,15 @@
             // 
             // gotoRoomToolStripMenuItem
             // 
-            this.gotoRoomToolStripMenuItem.Enabled = false;
             this.gotoRoomToolStripMenuItem.Name = "gotoRoomToolStripMenuItem";
-            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.gotoRoomToolStripMenuItem.Text = "Goto Room";
+            this.gotoRoomToolStripMenuItem.Click += new System.EventHandler(this.gotoRoomToolStripMenuItem_Click);
             // 
             // globalOptionsToolStripMenuItem
             // 
             this.globalOptionsToolStripMenuItem.Name = "globalOptionsToolStripMenuItem";
-            this.globalOptionsToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.globalOptionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.globalOptionsToolStripMenuItem.Text = "Global Options";
             // 
             // viewToolStripMenuItem
@@ -774,6 +799,7 @@
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.howToUseToolStripMenuItem,
+            this.patchNotesToolStripMenuItem,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -782,14 +808,21 @@
             // howToUseToolStripMenuItem
             // 
             this.howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
-            this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.howToUseToolStripMenuItem.Text = "How to Use";
             this.howToUseToolStripMenuItem.Click += new System.EventHandler(this.howToUseToolStripMenuItem_Click);
+            // 
+            // patchNotesToolStripMenuItem
+            // 
+            this.patchNotesToolStripMenuItem.Name = "patchNotesToolStripMenuItem";
+            this.patchNotesToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.patchNotesToolStripMenuItem.Text = "Patch Notes";
+            this.patchNotesToolStripMenuItem.Click += new System.EventHandler(this.patchNotesToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -1463,7 +1496,7 @@
             // 
             // mapPicturebox
             // 
-            this.mapPicturebox.Location = new System.Drawing.Point(0, 26);
+            this.mapPicturebox.Location = new System.Drawing.Point(0, 104);
             this.mapPicturebox.Name = "mapPicturebox";
             this.mapPicturebox.Size = new System.Drawing.Size(256, 304);
             this.mapPicturebox.TabIndex = 13;
@@ -1479,7 +1512,7 @@
             this.roomListView.LabelEdit = true;
             this.roomListView.Location = new System.Drawing.Point(0, 26);
             this.roomListView.Name = "roomListView";
-            this.roomListView.Size = new System.Drawing.Size(269, 304);
+            this.roomListView.Size = new System.Drawing.Size(269, 382);
             this.roomListView.TabIndex = 8;
             this.roomListView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.roomListView_AfterLabelEdit);
             this.roomListView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.roomListView_ItemDrag);
@@ -2017,6 +2050,22 @@
             // 
             // splitContainer3.Panel2
             // 
+            this.splitContainer3.Panel2.Controls.Add(this.label52);
+            this.splitContainer3.Panel2.Controls.Add(this.label53);
+            this.splitContainer3.Panel2.Controls.Add(this.entranceProperty_FR);
+            this.splitContainer3.Panel2.Controls.Add(this.entranceProperty_HR);
+            this.splitContainer3.Panel2.Controls.Add(this.entranceProperty_FL);
+            this.splitContainer3.Panel2.Controls.Add(this.entranceProperty_HL);
+            this.splitContainer3.Panel2.Controls.Add(this.label54);
+            this.splitContainer3.Panel2.Controls.Add(this.label55);
+            this.splitContainer3.Panel2.Controls.Add(this.label7);
+            this.splitContainer3.Panel2.Controls.Add(this.label49);
+            this.splitContainer3.Panel2.Controls.Add(this.entranceProperty_FD);
+            this.splitContainer3.Panel2.Controls.Add(this.entranceProperty_HD);
+            this.splitContainer3.Panel2.Controls.Add(this.entranceProperty_FU);
+            this.splitContainer3.Panel2.Controls.Add(this.entranceProperty_HU);
+            this.splitContainer3.Panel2.Controls.Add(this.label50);
+            this.splitContainer3.Panel2.Controls.Add(this.label51);
             this.splitContainer3.Panel2.Controls.Add(this.entranceProperty_bg);
             this.splitContainer3.Panel2.Controls.Add(this.entranceProperty_quadbr);
             this.splitContainer3.Panel2.Controls.Add(this.entranceProperty_quadtr);
@@ -2051,8 +2100,8 @@
             this.splitContainer3.Panel2.Controls.Add(this.label21);
             this.splitContainer3.Panel2.Controls.Add(this.label19);
             this.splitContainer3.Panel2.Controls.Add(this.label18);
-            this.splitContainer3.Size = new System.Drawing.Size(292, 476);
-            this.splitContainer3.SplitterDistance = 238;
+            this.splitContainer3.Size = new System.Drawing.Size(292, 505);
+            this.splitContainer3.SplitterDistance = 166;
             this.splitContainer3.TabIndex = 9;
             // 
             // entrancetreeView
@@ -2068,10 +2117,146 @@
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2});
-            this.entrancetreeView.Size = new System.Drawing.Size(292, 238);
+            this.entrancetreeView.Size = new System.Drawing.Size(292, 166);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
             this.entrancetreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.entrancetreeView_NodeMouseDoubleClick);
+            // 
+            // label52
+            // 
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(206, 280);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(49, 13);
+            this.label52.TabIndex = 57;
+            this.label52.Text = "Edge FR";
+            // 
+            // label53
+            // 
+            this.label53.AutoSize = true;
+            this.label53.Location = new System.Drawing.Point(137, 280);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(51, 13);
+            this.label53.TabIndex = 56;
+            this.label53.Text = "Edge HR";
+            // 
+            // entranceProperty_FR
+            // 
+            this.entranceProperty_FR.Location = new System.Drawing.Point(206, 296);
+            this.entranceProperty_FR.Name = "entranceProperty_FR";
+            this.entranceProperty_FR.Size = new System.Drawing.Size(60, 20);
+            this.entranceProperty_FR.TabIndex = 55;
+            this.entranceProperty_FR.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
+            // 
+            // entranceProperty_HR
+            // 
+            this.entranceProperty_HR.Location = new System.Drawing.Point(140, 296);
+            this.entranceProperty_HR.Name = "entranceProperty_HR";
+            this.entranceProperty_HR.Size = new System.Drawing.Size(60, 20);
+            this.entranceProperty_HR.TabIndex = 54;
+            this.entranceProperty_HR.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
+            // 
+            // entranceProperty_FL
+            // 
+            this.entranceProperty_FL.Location = new System.Drawing.Point(74, 296);
+            this.entranceProperty_FL.Name = "entranceProperty_FL";
+            this.entranceProperty_FL.Size = new System.Drawing.Size(60, 20);
+            this.entranceProperty_FL.TabIndex = 53;
+            this.entranceProperty_FL.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
+            // 
+            // entranceProperty_HL
+            // 
+            this.entranceProperty_HL.Location = new System.Drawing.Point(8, 296);
+            this.entranceProperty_HL.Name = "entranceProperty_HL";
+            this.entranceProperty_HL.Size = new System.Drawing.Size(60, 20);
+            this.entranceProperty_HL.TabIndex = 52;
+            this.entranceProperty_HL.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
+            // 
+            // label54
+            // 
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(71, 280);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(47, 13);
+            this.label54.TabIndex = 51;
+            this.label54.Text = "Edge FL";
+            // 
+            // label55
+            // 
+            this.label55.AutoSize = true;
+            this.label55.Location = new System.Drawing.Point(5, 280);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(49, 13);
+            this.label55.TabIndex = 50;
+            this.label55.Text = "Edge HL";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(206, 241);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(49, 13);
+            this.label7.TabIndex = 49;
+            this.label7.Text = "Edge FD";
+            // 
+            // label49
+            // 
+            this.label49.AutoSize = true;
+            this.label49.Location = new System.Drawing.Point(137, 241);
+            this.label49.Name = "label49";
+            this.label49.Size = new System.Drawing.Size(51, 13);
+            this.label49.TabIndex = 48;
+            this.label49.Text = "Edge HD";
+            // 
+            // entranceProperty_FD
+            // 
+            this.entranceProperty_FD.Location = new System.Drawing.Point(206, 257);
+            this.entranceProperty_FD.Name = "entranceProperty_FD";
+            this.entranceProperty_FD.Size = new System.Drawing.Size(60, 20);
+            this.entranceProperty_FD.TabIndex = 47;
+            this.entranceProperty_FD.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
+            // 
+            // entranceProperty_HD
+            // 
+            this.entranceProperty_HD.Location = new System.Drawing.Point(140, 257);
+            this.entranceProperty_HD.Name = "entranceProperty_HD";
+            this.entranceProperty_HD.Size = new System.Drawing.Size(60, 20);
+            this.entranceProperty_HD.TabIndex = 46;
+            this.entranceProperty_HD.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
+            // 
+            // entranceProperty_FU
+            // 
+            this.entranceProperty_FU.Location = new System.Drawing.Point(74, 257);
+            this.entranceProperty_FU.Name = "entranceProperty_FU";
+            this.entranceProperty_FU.Size = new System.Drawing.Size(60, 20);
+            this.entranceProperty_FU.TabIndex = 45;
+            this.entranceProperty_FU.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
+            // 
+            // entranceProperty_HU
+            // 
+            this.entranceProperty_HU.Location = new System.Drawing.Point(8, 257);
+            this.entranceProperty_HU.Name = "entranceProperty_HU";
+            this.entranceProperty_HU.Size = new System.Drawing.Size(60, 20);
+            this.entranceProperty_HU.TabIndex = 44;
+            this.entranceProperty_HU.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Location = new System.Drawing.Point(71, 241);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(49, 13);
+            this.label50.TabIndex = 43;
+            this.label50.Text = "Edge FU";
+            // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(5, 241);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(51, 13);
+            this.label51.TabIndex = 42;
+            this.label51.Text = "Edge HU";
             // 
             // entranceProperty_bg
             // 
@@ -2392,9 +2577,9 @@
             this.groupBox2.Controls.Add(this.cameraboxCheckbox);
             this.groupBox2.Controls.Add(this.entranceposCheckbox);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox2.Location = new System.Drawing.Point(0, 476);
+            this.groupBox2.Location = new System.Drawing.Point(0, 505);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(292, 72);
+            this.groupBox2.Size = new System.Drawing.Size(292, 43);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "View Settings";
@@ -2416,7 +2601,7 @@
             this.entranceposCheckbox.AutoSize = true;
             this.entranceposCheckbox.Checked = true;
             this.entranceposCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.entranceposCheckbox.Location = new System.Drawing.Point(6, 42);
+            this.entranceposCheckbox.Location = new System.Drawing.Point(125, 19);
             this.entranceposCheckbox.Name = "entranceposCheckbox";
             this.entranceposCheckbox.Size = new System.Drawing.Size(139, 17);
             this.entranceposCheckbox.TabIndex = 2;
@@ -2537,49 +2722,29 @@
             // splitContainer6.Panel1
             // 
             this.splitContainer6.Panel1.Controls.Add(this.button2);
-            this.splitContainer6.Panel1.Controls.Add(this.label7);
-            this.splitContainer6.Panel1.Controls.Add(this.button1);
             this.splitContainer6.Panel1.Controls.Add(this.palettesTreeview);
             // 
             // splitContainer6.Panel2
             // 
             this.splitContainer6.Panel2.Controls.Add(this.palettePicturebox);
             this.splitContainer6.Size = new System.Drawing.Size(292, 548);
-            this.splitContainer6.SplitterDistance = 297;
+            this.splitContainer6.SplitterDistance = 295;
             this.splitContainer6.TabIndex = 1;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(11, 223);
+            this.button2.Location = new System.Drawing.Point(3, 270);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(280, 23);
+            this.button2.Size = new System.Drawing.Size(286, 23);
             this.button2.TabIndex = 3;
-            this.button2.Text = "Save to YY-CHR Palettes";
+            this.button2.Text = "Save Current Palette to YY-CHR Palettes";
             this.button2.UseVisualStyleBackColor = true;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(8, 278);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(237, 26);
-            this.label7.TabIndex = 1;
-            this.label7.Text = "Hold right click to turn color temporary to Fuschia\r\nDouble click the color the c" +
-    "hange it";
-            this.label7.Visible = false;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(12, 252);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(280, 23);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Generate a Random Palette";
-            this.button1.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // palettesTreeview
             // 
             this.palettesTreeview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.palettesTreeview.Enabled = false;
             this.palettesTreeview.Location = new System.Drawing.Point(0, 0);
             this.palettesTreeview.Name = "palettesTreeview";
             treeNode3.Name = "MainRoomPalette";
@@ -2626,7 +2791,7 @@
             this.palettesTreeview.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode5,
             treeNode20});
-            this.palettesTreeview.Size = new System.Drawing.Size(292, 297);
+            this.palettesTreeview.Size = new System.Drawing.Size(292, 295);
             this.palettesTreeview.TabIndex = 0;
             // 
             // palettePicturebox
@@ -2635,7 +2800,7 @@
             this.palettePicturebox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.palettePicturebox.Location = new System.Drawing.Point(0, 0);
             this.palettePicturebox.Name = "palettePicturebox";
-            this.palettePicturebox.Size = new System.Drawing.Size(292, 247);
+            this.palettePicturebox.Size = new System.Drawing.Size(292, 249);
             this.palettePicturebox.TabIndex = 0;
             this.palettePicturebox.TabStop = false;
             this.palettePicturebox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDoubleClick);
@@ -2921,6 +3086,7 @@
             // selectedGroupbox
             // 
             this.selectedGroupbox.BackColor = System.Drawing.SystemColors.Control;
+            this.selectedGroupbox.Controls.Add(this.litCheckbox);
             this.selectedGroupbox.Controls.Add(this.object_z_label);
             this.selectedGroupbox.Controls.Add(this.spritepropertyPanel);
             this.selectedGroupbox.Controls.Add(this.object_layer_label);
@@ -2936,6 +3102,18 @@
             this.selectedGroupbox.TabIndex = 0;
             this.selectedGroupbox.TabStop = false;
             this.selectedGroupbox.Text = "Selected Object : ";
+            // 
+            // litCheckbox
+            // 
+            this.litCheckbox.AutoSize = true;
+            this.litCheckbox.Location = new System.Drawing.Point(229, 16);
+            this.litCheckbox.Name = "litCheckbox";
+            this.litCheckbox.Size = new System.Drawing.Size(81, 17);
+            this.litCheckbox.TabIndex = 19;
+            this.litCheckbox.Text = "Already Lit?";
+            this.litCheckbox.UseVisualStyleBackColor = true;
+            this.litCheckbox.Visible = false;
+            this.litCheckbox.CheckedChanged += new System.EventHandler(this.litCheckbox_CheckedChanged);
             // 
             // object_z_label
             // 
@@ -2991,6 +3169,7 @@
             this.spritesubtypeUpDown.Name = "spritesubtypeUpDown";
             this.spritesubtypeUpDown.Size = new System.Drawing.Size(57, 20);
             this.spritesubtypeUpDown.TabIndex = 14;
+            this.spritesubtypeUpDown.ValueChanged += new System.EventHandler(this.spritesubtypeUpDown_ValueChanged);
             // 
             // comboBox1
             // 
@@ -3215,7 +3394,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "ZScream Magic - 1.0 Alpha Version";
+            this.Text = "ZScream Magic - 1.1 Alpha Version";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.zscreamForm_FormClosing_1);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -3252,7 +3431,6 @@
             this.customPanel1.ResumeLayout(false);
             this.palettestabPage.ResumeLayout(false);
             this.splitContainer6.Panel1.ResumeLayout(false);
-            this.splitContainer6.Panel1.PerformLayout();
             this.splitContainer6.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).EndInit();
             this.splitContainer6.ResumeLayout(false);
@@ -3386,10 +3564,8 @@
         private System.Windows.Forms.TextBox searchTextbox;
         private System.Windows.Forms.TabPage palettestabPage;
         private System.Windows.Forms.SplitContainer splitContainer6;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TreeView palettesTreeview;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.PictureBox palettePicturebox;
         private System.Windows.Forms.TabPage gfxtabPage;
         private System.Windows.Forms.PictureBox gfxPicturebox;
@@ -3403,7 +3579,6 @@
         public System.Windows.Forms.ComboBox selecteditemobjectCombobox;
         public System.Windows.Forms.Label label31;
         public System.Windows.Forms.Panel spritepropertyPanel;
-        private System.Windows.Forms.CheckBox spriteoverlordCheckbox;
         private System.Windows.Forms.Label label26;
         public System.Windows.Forms.NumericUpDown spritesubtypeUpDown;
         public System.Windows.Forms.ComboBox comboBox1;
@@ -3558,6 +3733,26 @@
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.TextBox previewPaletteGfxTextbox;
         private CustomPanel customPanel2;
+        public System.Windows.Forms.CheckBox litCheckbox;
+        private System.Windows.Forms.ToolStripMenuItem patchNotesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportOnJPROMToolStripMenuItem;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label49;
+        public System.Windows.Forms.TextBox entranceProperty_FD;
+        public System.Windows.Forms.TextBox entranceProperty_HD;
+        public System.Windows.Forms.TextBox entranceProperty_FU;
+        public System.Windows.Forms.TextBox entranceProperty_HU;
+        private System.Windows.Forms.Label label50;
+        private System.Windows.Forms.Label label51;
+        private System.Windows.Forms.Label label52;
+        private System.Windows.Forms.Label label53;
+        public System.Windows.Forms.TextBox entranceProperty_FR;
+        public System.Windows.Forms.TextBox entranceProperty_HR;
+        public System.Windows.Forms.TextBox entranceProperty_FL;
+        public System.Windows.Forms.TextBox entranceProperty_HL;
+        private System.Windows.Forms.Label label54;
+        private System.Windows.Forms.Label label55;
+        public System.Windows.Forms.CheckBox spriteoverlordCheckbox;
     }
 }
 

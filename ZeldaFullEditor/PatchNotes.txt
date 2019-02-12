@@ -1,0 +1,15 @@
+﻿V1.1 Alpha Added
+  Automated Doors fixed
+  Torches Lit Option added
+  New buttons GFX added
+  Fixed out of bound click on sprites/objects tab
+  Added .smc extension
+  Fixed the export palette (YY-CHR) button
+  Fixed rooms messageid not saved
+  Added block overlay
+  Goto Room fixed
+  Sprites Overlord / subtypes working
+  Added scrolling edges for camera entrances
+  Added export to JP version
+  Fixed door bg issue
+  

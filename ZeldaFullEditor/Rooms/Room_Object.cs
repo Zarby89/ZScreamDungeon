@@ -26,6 +26,7 @@ namespace ZeldaFullEditor
         //==========================================================================================
         //Editor Related Variables that are used to draw/position objects
         //==========================================================================================
+        public bool lit = false;
         public List<Tile> tiles = new List<Tile>();
         public short id;
         public int tileIndex = 0;

@@ -108,7 +108,7 @@ namespace ZeldaFullEditor
                 byte keyDrop = br.ReadByte();
                 byte overlord = br.ReadByte();
                 byte subtype = br.ReadByte();
-                Sprite spr = new Sprite(activeScene.room, id, x, y, Sprites_Names.name[id], overlord, subtype, layer);
+                Sprite spr = new Sprite(activeScene.room, id, x, y, overlord, subtype, layer);
                 activeScene.room.sprites.Add(spr);
             }
         }

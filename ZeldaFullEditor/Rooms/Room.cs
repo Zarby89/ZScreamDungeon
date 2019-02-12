@@ -542,7 +542,7 @@ namespace ZeldaFullEditor
 
                 if (b1 == 0xFF) { break; }
 
-                sprites.Add(new Sprite(this, b3, (byte)(b2 & 0x1F), (byte)(b1 & 0x1F), Sprites_Names.name[b3], (byte)((b2 & 0xE0) >> 5), (byte)((b1 & 0x60) >> 5), (byte)((b1 & 0x80) >> 7)));
+                sprites.Add(new Sprite(this, b3, (byte)(b2 & 0x1F), (byte)(b1 & 0x1F), (byte)((b2 & 0xE0) >> 5), (byte)((b1 & 0x60) >> 5), (byte)((b1 & 0x80) >> 7)));
                 
                 if (sprites.Count > 1)
                 {
@@ -573,7 +573,6 @@ namespace ZeldaFullEditor
 
         public void update()
         {
-            Bitmap mblockBitmap = (Bitmap)Properties.Resources.Mblock;
 
             if (objectInitialized == false)
             {
@@ -603,10 +602,10 @@ namespace ZeldaFullEditor
                         continue;
                     }
                 }
-                if (spr.id != 0xE4)
-                {
+                //if (spr.id != 0xE4)
+                //{
                     spr.Draw();
-                }//1D big key
+                //}//1D big key
                 if (spr.keyDrop == 1)
                 {
                     spr.DrawKey();
@@ -945,6 +944,10 @@ namespace ZeldaFullEditor
                         int py = address >> 6;
 
                         Room_Object r = addObject(0x150, (byte)px, (byte)py, 0, (byte)((b2 & 0x20) >> 5));
+                        if ((b2 & 0x80) == 0x80)
+                        {
+                            r.lit = true;
+                        }
                         if (r != null)
                         {
                             r.options |= ObjectOption.Torch;
