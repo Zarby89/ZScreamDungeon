@@ -685,22 +685,35 @@ namespace ZeldaFullEditor
             List<Room_Object> shutterdoors = new List<Room_Object>();
             List<Room_Object> keydoors = new List<Room_Object>();
             List<Room_Object> normaldoors = new List<Room_Object>();
-            
+
+            keydoors.Clear();
+            shutterdoors.Clear();
+            normaldoors.Clear();
             foreach (Room_Object o in tilesObjects)
             {
                 if (o.options == ObjectOption.Door)
                 {
                     if (keysDoors.Contains((byte)(o.id >> 8)))
                     {
-                        keydoors.Add(o);
+                        if (!keydoors.Contains(o))
+                        {
+                            keydoors.Add(o);
+                        }
+                        
                     }
                     else if (shutterDoors.Contains((byte)(o.id >> 8)))
                     {
-                        shutterdoors.Add(o);
+                        if (!shutterdoors.Contains(o))
+                        {
+                            shutterdoors.Add(o);
+                        }
                     }
                     else
                     {
-                        normaldoors.Add(o);
+                        if (!normaldoors.Contains(o))
+                        {
+                            normaldoors.Add(o);
+                        }
                     }
                 }
             }

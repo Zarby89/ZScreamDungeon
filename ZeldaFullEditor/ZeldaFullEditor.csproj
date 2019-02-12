@@ -92,6 +92,12 @@
     <Compile Include="CustomPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="CustomTabControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="CustomTabControl.Designer.cs">
+      <DependentUpon>CustomTabControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataRoom.cs" />
     <Compile Include="DoAction.cs" />
     <Compile Include="DungeonGenerator.cs">
@@ -230,6 +236,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Chestviewer.resx">
       <DependentUpon>Chestviewer.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomTabControl.resx">
+      <DependentUpon>CustomTabControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DungeonGenerator.resx">
       <DependentUpon>DungeonGenerator.cs</DependentUpon>
