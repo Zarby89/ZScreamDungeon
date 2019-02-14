@@ -178,8 +178,8 @@ namespace ZeldaFullEditor
         public static int startingentrance_door = 0x15C2B; // 0x15274 1byte
 
         public static int startingentrance_ladderbg = 0x15C1D; //0x152F9 //1 byte, ---b ---a b = bg2, a = need to check -_-
-        public static int startingentrance_scrolling = 0x1561A;//0x1537E //1byte --h- --v- 
-        public static int startingentrance_scrollquadrant = 0x1569F; //0x15403 1byte
+        public static int startingentrance_scrolling = 0x15C24;//0x1537E //1byte --h- --v- 
+        public static int startingentrance_scrollquadrant = 0x15C2B; //0x15403 1byte
         public static int startingentrance_exit = 0x15C32; //0x15488 //2byte word
         public static int startingentrance_music = 0x15C4E; //0x15592
         public static int startingentrance_entrance = 0x15C40;
@@ -188,6 +188,21 @@ namespace ZeldaFullEditor
         public static int items_data_end = 0xE6B2; //save purpose
         public static int initial_equipement = 0x271A6;
         public static int messages_id_dungeon = 0x3F61D;
+
+        public static int chests_backupitems = 0x3B528; //item id you get instead if you already have that item
+        public static int chests_yoffset = 0x4836C;
+        public static int chests_xoffset = 0x4836C + (76*1);
+        public static int chests_itemsgfx = 0x4836C + (76*2);
+        public static int chests_itemswide = 0x4836C + (76 * 3);
+        public static int chests_itemsproperties = 0x4836C + (76 * 4);
+        public static int chests_sramaddress = 0x4836C + (76 * 5);
+        public static int chests_sramvalue = 0x4836C + (76 * 7);
+        public static int chests_msgid = 0x442DD;
+
+        public static int dungeons_startrooms = 0x7939;
+        public static int dungeons_endrooms = 0x792D;
+        public static int dungeons_bossrooms = 0x10954;//short value
+
 
         public static string[] RoomEffect = new string[]
         {

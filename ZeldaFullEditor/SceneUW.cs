@@ -315,10 +315,26 @@ namespace ZeldaFullEditor
             //e.Graphics.DrawImage(GFX., 0, -512);
             //drawText(e.Graphics,4,4, "This is a test? []()abc 1234567890-+");
             int stairCount = 0;
+            int chestCount = 0;
+            int doorCount = 0;
             foreach(Room_Object o in room.tilesObjects)
             {
+                if (mainForm.showChestIDs)
+                {
+                    if (o.id == 0xF99 || o.id == 0xFB1)
+                    {
+                        drawText(e.Graphics, (o.nx * 8) + 6, (o.ny * 8) + 8, chestCount.ToString());
+                        chestCount++;
+                    }
+                }
+
                 if (o.options == ObjectOption.Door)
                 {
+                    if (mainForm.showDoorsIDs)
+                    {
+                        drawText(e.Graphics, (o.x * 8) + 12, (o.y * 8), doorCount.ToString());
+                    }
+                    doorCount++;
                     if ((o.id >> 8) == 18) //exit door
                     {
                         drawText(e.Graphics, (o.x*8)+6, (o.y*8)+8, "Exit");
@@ -343,9 +359,45 @@ namespace ZeldaFullEditor
 
             }
 
-                    drawDoorsPosition(e.Graphics);
+            if (mainForm.showSpriteText)
+            {
+                foreach (Sprite spr in room.sprites)
+                {
+                    drawText(e.Graphics, spr.nx*16, spr.ny*16, spr.name);
+                }
+            }
+
+            if (mainForm.showChestText)
+            {
+                foreach (Chest c in room.chest_list)
+                {
+                    drawText(e.Graphics, c.x*8, c.y*8, ChestItems_Name.name[c.item]);
+                }
+            }
+
+            if (mainForm.showItemsText)
+            {
+                foreach (PotItem c in room.pot_items)
+                {
+                    int dropboxid = c.id;
+                    if ((c.id & 0x80) == 0x80) //it is a special object
+                    {
+                        dropboxid = ((c.id - 0x80) / 2) + 0x17; //no idea if it will work
+                    }
+                    //if for some reason the dropboxid >= 28
+                    if (dropboxid >= 28)
+                    {
+                        dropboxid = 27; //prevent crash :yay:
+                    }
+                    string name = PotItems_Name.name[dropboxid];
+                    drawText(e.Graphics, c.nx*8, c.ny*8, name);
+                }
+            }
+
+            drawDoorsPosition(e.Graphics);
 
         }
+
 
         public void drawDoorsPosition(Graphics g)
         {
@@ -745,6 +797,7 @@ namespace ZeldaFullEditor
             mainForm.potitemobjectPanel.Visible = false;
             mainForm.doorselectPanel.Visible = false;
             mainForm.litCheckbox.Visible = false;
+            updating_info = false;
             if (room.selectedObject.Count > 0)
             {
                 if (room.selectedObject[0] is Room_Object)
@@ -771,6 +824,7 @@ namespace ZeldaFullEditor
                     }
                     else if (oo.options == ObjectOption.Torch)
                     {
+                        mainForm.selectedGroupbox.Text = "Selected Object : " + oo.id + " " + "Torch";
                         updating_info = true;
                         mainForm.litCheckbox.Visible = true;
                         mainForm.litCheckbox.Checked = oo.lit;
@@ -806,7 +860,7 @@ namespace ZeldaFullEditor
                     string name = Sprites_Names.name[oo.id];
                     if (oo.overlord != 0)
                     {
-                        if (oo.id <= 0x19 && oo.id > 0)
+                        if (oo.id <= 0x1A && oo.id > 0)
                         {
                             name = Sprites_Names.overlordnames[oo.id - 1];
                         }
@@ -841,7 +895,7 @@ namespace ZeldaFullEditor
                     string id = oo.id.ToString("X4");
                     mainForm.selectedGroupbox.Text = "Selected Item : " + id + " " + name;
                     mainForm.selecteditemobjectCombobox.SelectedIndex = dropboxid;
-
+                    updating_info = false;
                 }
             }
     }
@@ -920,14 +974,21 @@ namespace ZeldaFullEditor
             {
                 GFX.DrawBG2();
             }
-            /*foreach (Sprite spr in room.sprites)
+
+            if (mainForm.showSprite)
             {
-                spr.Draw();
-            }*/
-            
-            room.drawSprites();
-            drawChests();
-            room.drawPotsItems();
+                room.drawSprites();
+            }
+            if (mainForm.showChest)
+            {
+                drawChests();
+            }
+            if (mainForm.showItems)
+            {
+                room.drawPotsItems();
+            }
+
+
 
         }
 
@@ -1151,7 +1212,13 @@ namespace ZeldaFullEditor
                         if (result == DialogResult.OK)
                         {
                             //change chest item
-                            c.item = (byte)mainForm.chestPicker.chestviewer1.selectedIndex;
+                            int r = 0;
+                            if (int.TryParse(mainForm.chestPicker.idtextbox.Text,out r))
+                            {
+                                c.item = (byte)r;
+                            }
+
+                            
                             room.has_changed = true;
                         }
                         else if (result == DialogResult.Abort)

@@ -916,14 +916,23 @@ namespace ZeldaFullEditor
     {
         public object_FAA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
+            allBgs = true;
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "LAMP !? WTF";
+            name = "LAMP";
             addTiles(16, pos);//??
             sort = Sorting.NonScalable;
         }
         public override void Draw()
         {
-
+            int tid = 0;
+            for (int xx = 0; xx < 4; xx++)
+            {
+                for (int yy = 0; yy < 4; yy++)
+                {
+                    draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
+                    tid++;
+                }
+            }
         }
     }
 

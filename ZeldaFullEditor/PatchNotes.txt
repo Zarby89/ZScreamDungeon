@@ -1,4 +1,20 @@
-﻿V1.1 Alpha Added
+﻿V1.2 Alpha
+  Boots and a way to manually enter id in chest picker
+  Entrances problems fixed
+  Fixed Starting Entrances Addresses
+  Instead of showing an error opening a room already opened switch the tabs
+  Added an advanced chest editor, to edit chests properties
+  Modified the map so we can see opened map
+  Added order numbers on chests and doors
+  Added options to hide numbers on chests and doors
+  Fixed the options to hide/displays stuff under View
+  Added dungeon properties
+  Some of the rooms properties are now scrollable with mouse
+  Added more sprites draw
+  lamp cone for dark room is drawn/selectable
+
+
+V1.1 Alpha
   Automated Doors fixed
   Torches Lit Option added
   New buttons GFX added
@@ -12,4 +28,3 @@
   Added scrolling edges for camera entrances
   Added export to JP version
   Fixed door bg issue
-  

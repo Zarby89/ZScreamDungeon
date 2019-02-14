@@ -270,14 +270,14 @@ namespace ZeldaFullEditor
             scrollquadrant = (byte)(ROM.DATA[(Constants.entrance_scrollquadrant + entranceId)]);
             exit = (short)(((ROM.DATA[(Constants.entrance_exit + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_exit + (entranceId * 2)]);
 
-            scrolledge_HU = (ROM.DATA[(Constants.entrance_scrolledge + 0)]);//8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-            scrolledge_FU = (ROM.DATA[(Constants.entrance_scrolledge + 1)]);
-            scrolledge_HD = (ROM.DATA[(Constants.entrance_scrolledge + 2)]);
-            scrolledge_FD = (ROM.DATA[(Constants.entrance_scrolledge + 3)]);
-            scrolledge_HL = (ROM.DATA[(Constants.entrance_scrolledge + 4)]);
-            scrolledge_FL = (ROM.DATA[(Constants.entrance_scrolledge + 5)]);
-            scrolledge_HR = (ROM.DATA[(Constants.entrance_scrolledge + 6)]);
-            scrolledge_FR = (ROM.DATA[(Constants.entrance_scrolledge + 7)]);
+            scrolledge_HU = (ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))]);//8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+            scrolledge_FU = (ROM.DATA[(Constants.entrance_scrolledge + 1 + (entranceId * 8))]);
+            scrolledge_HD = (ROM.DATA[(Constants.entrance_scrolledge + 2 + (entranceId * 8))]);
+            scrolledge_FD = (ROM.DATA[(Constants.entrance_scrolledge + 3 + (entranceId * 8))]);
+            scrolledge_HL = (ROM.DATA[(Constants.entrance_scrolledge + 4 + (entranceId * 8))]);
+            scrolledge_FL = (ROM.DATA[(Constants.entrance_scrolledge + 5 + (entranceId * 8))]);
+            scrolledge_HR = (ROM.DATA[(Constants.entrance_scrolledge + 6 + (entranceId * 8))]);
+            scrolledge_FR = (ROM.DATA[(Constants.entrance_scrolledge + 7 + (entranceId * 8))]);
 
 
             if (startingEntrance == true)
@@ -304,14 +304,14 @@ namespace ZeldaFullEditor
                 scrolling = (byte)(ROM.DATA[(Constants.startingentrance_scrolling + entranceId)]);
                 scrollquadrant = (byte)(ROM.DATA[(Constants.startingentrance_scrollquadrant + entranceId)]);
                 exit = (short)(((ROM.DATA[(Constants.startingentrance_exit + (entranceId * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_exit + (entranceId * 2)]);
-                scrolledge_HU = (ROM.DATA[(Constants.startingentrance_scrolledge + 0)]);//8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                scrolledge_FU = (ROM.DATA[(Constants.startingentrance_scrolledge + 1)]);
-                scrolledge_HD = (ROM.DATA[(Constants.startingentrance_scrolledge + 2)]);
-                scrolledge_FD = (ROM.DATA[(Constants.startingentrance_scrolledge + 3)]);
-                scrolledge_HL = (ROM.DATA[(Constants.startingentrance_scrolledge + 4)]);
-                scrolledge_FL = (ROM.DATA[(Constants.startingentrance_scrolledge + 5)]);
-                scrolledge_HR = (ROM.DATA[(Constants.startingentrance_scrolledge + 6)]);
-                scrolledge_FR = (ROM.DATA[(Constants.startingentrance_scrolledge + 7)]);
+                scrolledge_HU = (ROM.DATA[(Constants.startingentrance_scrolledge + 0 + (entranceId * 8))]);//8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+                scrolledge_FU = (ROM.DATA[(Constants.startingentrance_scrolledge + 1 + (entranceId * 8))]);
+                scrolledge_HD = (ROM.DATA[(Constants.startingentrance_scrolledge + 2 + (entranceId * 8))]);
+                scrolledge_FD = (ROM.DATA[(Constants.startingentrance_scrolledge + 3 + (entranceId * 8))]);
+                scrolledge_HL = (ROM.DATA[(Constants.startingentrance_scrolledge + 4 + (entranceId * 8))]);
+                scrolledge_FL = (ROM.DATA[(Constants.startingentrance_scrolledge + 5 + (entranceId * 8))]);
+                scrolledge_HR = (ROM.DATA[(Constants.startingentrance_scrolledge + 6 + (entranceId * 8))]);
+                scrolledge_FR = (ROM.DATA[(Constants.startingentrance_scrolledge + 7 + (entranceId * 8))]);
             }
         }
 
@@ -352,14 +352,14 @@ namespace ZeldaFullEditor
                     ROM.DATA[ConstantsJP.entrance_ladderbg + entranceId] = (byte)(ladderbg & 0xFF);
                     ROM.DATA[ConstantsJP.entrance_scrolling + entranceId] = (byte)(scrolling & 0xFF);
                     ROM.DATA[ConstantsJP.entrance_scrollquadrant + entranceId] = (byte)(scrollquadrant & 0xFF);
-                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 0)]) = scrolledge_HU; //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 1)]) = scrolledge_FU;
-                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 2)]) = scrolledge_HD;
-                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 3)]) = scrolledge_FD;
-                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 4)]) = scrolledge_HL;
-                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 5)]) = scrolledge_FL;
-                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 6)]) = scrolledge_HR;
-                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 7)]) = scrolledge_FR;
+                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 0 + (entranceId * 8))]) = scrolledge_HU; //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 1 + (entranceId * 8))]) = scrolledge_FU;
+                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 2 + (entranceId * 8))]) = scrolledge_HD;
+                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 3 + (entranceId * 8))]) = scrolledge_FD;
+                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 4 + (entranceId * 8))]) = scrolledge_HL;
+                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 5 + (entranceId * 8))]) = scrolledge_FL;
+                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 6 + (entranceId * 8))]) = scrolledge_HR;
+                    (ROM.DATA[(ConstantsJP.entrance_scrolledge + 7 + (entranceId * 8))]) = scrolledge_FR;
 
 
                 }
@@ -394,14 +394,14 @@ namespace ZeldaFullEditor
                     ROM.DATA[ConstantsJP.startingentrance_ladderbg + entranceId] = (byte)(ladderbg & 0xFF);
                     ROM.DATA[ConstantsJP.startingentrance_scrolling + entranceId] = (byte)(scrolling & 0xFF);
                     ROM.DATA[ConstantsJP.startingentrance_scrollquadrant + entranceId] = (byte)(scrollquadrant & 0xFF);
-                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 0)]) = scrolledge_HU; //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 1)]) = scrolledge_FU;
-                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 2)]) = scrolledge_HD;
-                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 3)]) = scrolledge_FD;
-                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 4)]) = scrolledge_HL;
-                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 5)]) = scrolledge_FL;
-                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 6)]) = scrolledge_HR;
-                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 7)]) = scrolledge_FR;
+                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 0 + (entranceId * 8))]) = scrolledge_HU; //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 1 + (entranceId * 8))]) = scrolledge_FU;
+                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 2 + (entranceId * 8))]) = scrolledge_HD;
+                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 3 + (entranceId * 8))]) = scrolledge_FD;
+                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 4 + (entranceId * 8))]) = scrolledge_HL;
+                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 5 + (entranceId * 8))]) = scrolledge_FL;
+                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 6 + (entranceId * 8))]) = scrolledge_HR;
+                    (ROM.DATA[(ConstantsJP.startingentrance_scrolledge + 7 + (entranceId * 8))]) = scrolledge_FR;
                 }
             }
             else
@@ -437,14 +437,14 @@ namespace ZeldaFullEditor
                     ROM.DATA[Constants.entrance_ladderbg + entranceId] = (byte)(ladderbg & 0xFF);
                     ROM.DATA[Constants.entrance_scrolling + entranceId] = (byte)(scrolling & 0xFF);
                     ROM.DATA[Constants.entrance_scrollquadrant + entranceId] = (byte)(scrollquadrant & 0xFF);
-                    (ROM.DATA[(Constants.entrance_scrolledge + 0)]) = scrolledge_HU; //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                    (ROM.DATA[(Constants.entrance_scrolledge + 1)]) = scrolledge_FU;
-                    (ROM.DATA[(Constants.entrance_scrolledge + 2)]) = scrolledge_HD;
-                    (ROM.DATA[(Constants.entrance_scrolledge + 3)]) = scrolledge_FD;
-                    (ROM.DATA[(Constants.entrance_scrolledge + 4)]) = scrolledge_HL;
-                    (ROM.DATA[(Constants.entrance_scrolledge + 5)]) = scrolledge_FL;
-                    (ROM.DATA[(Constants.entrance_scrolledge + 6)]) = scrolledge_HR;
-                    (ROM.DATA[(Constants.entrance_scrolledge + 7)]) = scrolledge_FR;
+                    (ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))]) = scrolledge_HU; //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+                    (ROM.DATA[(Constants.entrance_scrolledge + 1 + (entranceId * 8))]) = scrolledge_FU;
+                    (ROM.DATA[(Constants.entrance_scrolledge + 2 + (entranceId * 8))]) = scrolledge_HD;
+                    (ROM.DATA[(Constants.entrance_scrolledge + 3 + (entranceId * 8))]) = scrolledge_FD;
+                    (ROM.DATA[(Constants.entrance_scrolledge + 4 + (entranceId * 8))]) = scrolledge_HL;
+                    (ROM.DATA[(Constants.entrance_scrolledge + 5 + (entranceId * 8))]) = scrolledge_FL;
+                    (ROM.DATA[(Constants.entrance_scrolledge + 6 + (entranceId * 8))]) = scrolledge_HR;
+                    (ROM.DATA[(Constants.entrance_scrolledge + 7 + (entranceId * 8))]) = scrolledge_FR;
 
 
                 }
@@ -479,14 +479,14 @@ namespace ZeldaFullEditor
                     ROM.DATA[Constants.startingentrance_ladderbg + entranceId] = (byte)(ladderbg & 0xFF);
                     ROM.DATA[Constants.startingentrance_scrolling + entranceId] = (byte)(scrolling & 0xFF);
                     ROM.DATA[Constants.startingentrance_scrollquadrant + entranceId] = (byte)(scrollquadrant & 0xFF);
-                    (ROM.DATA[(Constants.startingentrance_scrolledge + 0)]) = scrolledge_HU; //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                    (ROM.DATA[(Constants.startingentrance_scrolledge + 1)]) = scrolledge_FU;
-                    (ROM.DATA[(Constants.startingentrance_scrolledge + 2)]) = scrolledge_HD;
-                    (ROM.DATA[(Constants.startingentrance_scrolledge + 3)]) = scrolledge_FD;
-                    (ROM.DATA[(Constants.startingentrance_scrolledge + 4)]) = scrolledge_HL;
-                    (ROM.DATA[(Constants.startingentrance_scrolledge + 5)]) = scrolledge_FL;
-                    (ROM.DATA[(Constants.startingentrance_scrolledge + 6)]) = scrolledge_HR;
-                    (ROM.DATA[(Constants.startingentrance_scrolledge + 7)]) = scrolledge_FR;
+                    ROM.DATA[(Constants.startingentrance_scrolledge + 0 + (entranceId*8))] = scrolledge_HU; //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+                    ROM.DATA[(Constants.startingentrance_scrolledge + 1 + (entranceId * 8))] = scrolledge_FU;
+                    ROM.DATA[(Constants.startingentrance_scrolledge + 2 + (entranceId * 8))] = scrolledge_HD;
+                    ROM.DATA[(Constants.startingentrance_scrolledge + 3 + (entranceId * 8))] = scrolledge_FD;
+                    ROM.DATA[(Constants.startingentrance_scrolledge + 4 + (entranceId * 8))] = scrolledge_HL;
+                    ROM.DATA[(Constants.startingentrance_scrolledge + 5 + (entranceId * 8))] = scrolledge_FL;
+                    ROM.DATA[(Constants.startingentrance_scrolledge + 6 + (entranceId * 8))] = scrolledge_HR;
+                    ROM.DATA[(Constants.startingentrance_scrolledge + 7 + (entranceId * 8))] = scrolledge_FR;
                 }
             }
         }

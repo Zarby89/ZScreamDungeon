@@ -32,6 +32,8 @@
             this.button2 = new System.Windows.Forms.Button();
             this.customPanel1 = new ZeldaFullEditor.CustomPanel();
             this.chestviewer1 = new ZeldaFullEditor.Chestviewer();
+            this.idtextbox = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.customPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -77,12 +79,32 @@
             this.chestviewer1.Name = "chestviewer1";
             this.chestviewer1.Size = new System.Drawing.Size(592, 410);
             this.chestviewer1.TabIndex = 0;
+            this.chestviewer1.SelectedIndexChanged += new System.EventHandler(this.chestviewer1_SelectedIndexChanged);
+            // 
+            // idtextbox
+            // 
+            this.idtextbox.Location = new System.Drawing.Point(334, 385);
+            this.idtextbox.Name = "idtextbox";
+            this.idtextbox.Size = new System.Drawing.Size(100, 20);
+            this.idtextbox.TabIndex = 3;
+            this.idtextbox.Text = "0";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(259, 388);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(69, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Selected ID :";
             // 
             // ChestPicker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(609, 411);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.idtextbox);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.customPanel1);
@@ -91,6 +113,7 @@
             this.Load += new System.EventHandler(this.ChestPicker_Load);
             this.customPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -100,5 +123,7 @@
         private System.Windows.Forms.Button button2;
         public System.Windows.Forms.Button button1;
         public Chestviewer chestviewer1;
+        private System.Windows.Forms.Label label1;
+        public System.Windows.Forms.TextBox idtextbox;
     }
 }

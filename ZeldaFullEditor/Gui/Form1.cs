@@ -56,7 +56,14 @@ namespace ZeldaFullEditor
             paletteViewer = new PaletteViewer(palettePicturebox);
             spriteFont = new Bitmap(Resources.spriteFont);
             moveableBlock = new Bitmap(Resources.Mblock);
+
+            roomProperty_floor1.MouseWheel += RoomProperty_MouseWheel;
+            roomProperty_floor2.MouseWheel += RoomProperty_MouseWheel;
+            roomProperty_spriteset.MouseWheel += RoomProperty_MouseWheel;
+            roomProperty_blockset.MouseWheel += RoomProperty_MouseWheel;
+            roomProperty_palette.MouseWheel += RoomProperty_MouseWheel;
         }
+
 
         public void initialize_gfx()
         {
@@ -264,7 +271,7 @@ namespace ZeldaFullEditor
 
         public void initRoomsMap()
         {
-            using (Graphics g = Graphics.FromImage(mapPicturebox.Image))
+            /*using (Graphics g = Graphics.FromImage(mapPicturebox.Image))
             {
                 int xd = 0;
                 int yd = 0;
@@ -282,72 +289,15 @@ namespace ZeldaFullEditor
                         xd = 0;
                     }
                 }
-            }
-
-            mapPicturebox.Refresh();
+            }*/
         }
 
         public void loadRoomList(int roomId)
         {
             if (radioButton2.Checked)
             {
-                int xd = 0;
-                int yd = 0;
-                using (Graphics g = Graphics.FromImage(mapPicturebox.Image))
-                {
-                    g.Clear(Color.Black);
-                    for (int i = 0; i < 296; i++)
-                    {
-                        if (all_rooms[i].tilesObjects.Count > 0)
-                        {
-
-                            g.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(all_rooms[i].palette)[4, 2]), new Rectangle(xd * 16, yd * 16, 16, 16));
-
-                            foreach (short s in selectedMapPng)
-                            {
-                                if (s == i)
-                                {
-                                    g.DrawRectangle(new Pen(Color.Aqua, 2), new Rectangle((xd * 16), (yd * 16), 16, 16));
-                                }
-                            }
-
-                        }
-                        xd++;
-                        if (xd == 16)
-                        {
-                            yd++;
-                            xd = 0;
-                        }
-                    }
-                    for (int i = 0; i < 19; i++)
-                    {
-                        g.DrawLine(Pens.White, 0, i * 16, 256, i * 16);
-                        g.DrawLine(Pens.White, i * 16, 0, i * 16, 304);
-                    }
-                    xd = 0;
-                    yd = 0;
-                    for (int i = 0; i < 296; i++)
-                    {
-                        foreach (Room room in opened_rooms)
-                        {
-                            if (room.index == (short)i)
-                            {
-                                g.DrawRectangle(new Pen(Color.YellowGreen, 2), new Rectangle((xd * 16), (yd * 16), 16, 16));
-                            }
-                        }
-                        xd++;
-                        if (xd == 16)
-                        {
-                            yd++;
-                            xd = 0;
-                        }
-                    }
-                }
-                mapPicturebox.Refresh();
+                
             }
-
-
-
         }
 
         public void initProject() //first load of project need to be changed entirely
@@ -372,8 +322,8 @@ namespace ZeldaFullEditor
             GFX.previewObjectsBitmap = new Bitmap[600];
             GFX.previewSpritesPtr = new IntPtr[256];
             GFX.previewSpritesBitmap = new Bitmap[256];
-            GFX.previewChestsPtr = new IntPtr[75];
-            GFX.previewChestsBitmap = new Bitmap[75];
+            GFX.previewChestsPtr = new IntPtr[76];
+            GFX.previewChestsBitmap = new Bitmap[76];
             for (int i = 0; i < 600; i++)
             {
                 GFX.previewObjectsPtr[i] = Marshal.AllocHGlobal(64 * 64);
@@ -384,7 +334,7 @@ namespace ZeldaFullEditor
                 GFX.previewSpritesPtr[i] = Marshal.AllocHGlobal(64 * 64);
                 GFX.previewSpritesBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, GFX.previewSpritesPtr[i]);
             }
-            for (int i = 0; i < 75; i++)
+            for (int i = 0; i < 76; i++)
             {
                 GFX.previewChestsPtr[i] = Marshal.AllocHGlobal(64 * 64);
                 GFX.previewChestsBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, GFX.previewChestsPtr[i]);
@@ -527,7 +477,7 @@ namespace ZeldaFullEditor
                     }
                 }
                 loadRoomList(activeScene.room.index);
-                mapPicturebox.Refresh();
+                
             }
             else
             {
@@ -698,6 +648,8 @@ namespace ZeldaFullEditor
             activeScene.DrawRoom();
             activeScene.Refresh();
         }
+
+
 
         private void saveLayoutButton_Click(object sender, EventArgs e)
         {
@@ -1101,8 +1053,14 @@ namespace ZeldaFullEditor
                         en = starting_entrances[(int)e.Node.Tag];
                     }
                 }
-                    //propertyGrid2.SelectedObject = entrances[(int)e.Node.Tag];
-                    
+                //propertyGrid2.SelectedObject = entrances[(int)e.Node.Tag];
+                entranceProperty_bg.Checked = false;
+                entranceProperty_vscroll.Checked = false;
+                entranceProperty_hscroll.Checked = false;
+                entranceProperty_quadbr.Checked = false;
+                entranceProperty_quadbl.Checked = false;
+                entranceProperty_quadtl.Checked = false;
+                entranceProperty_quadtr.Checked = false;
                 entranceProperty_room.Text = en.Room.ToString();
                 entranceProperty_floor.Text = en.Floor.ToString();
                 entranceProperty_scrollx.Text = en.XScroll.ToString();
@@ -1340,7 +1298,16 @@ namespace ZeldaFullEditor
             if (alreadyFound == true)
             {
                 //display message error room already opened
-                MessageBox.Show("That room is already opened !");
+                //MessageBox.Show("That room is already opened !");
+                foreach(TabPage tp in tabControl2.TabPages)
+                {
+                    if ((tp.Tag as Room).index == roomId)
+                    {
+                        tabControl2.SelectTab(tp);
+                        break;
+                        //tp.Select();
+                    }
+                }
                 return;
             }
             else
@@ -2148,6 +2115,22 @@ namespace ZeldaFullEditor
                     b += 0x02;
                 }
 
+                if (entranceProperty_quadbr.Checked) //bottom right
+                {
+                    selectedEntrance.Scrollquadrant = 0x12;
+                }
+                else if (entranceProperty_quadbl.Checked) //bottom left
+                {
+                    selectedEntrance.Scrollquadrant = 0x02;
+                }
+                else if (entranceProperty_quadtl.Checked) //top left
+                {
+                    selectedEntrance.Scrollquadrant = 0x00;
+                }
+                else if (entranceProperty_quadtr.Checked) //top right
+                {
+                    selectedEntrance.Scrollquadrant = 0x10;
+                }
                 //if (entranceProperty_quadbl)
 
                 selectedEntrance.Scrolling = b;
@@ -2298,6 +2281,7 @@ namespace ZeldaFullEditor
             {
                 activeScene.Clear();
             }
+            mapPicturebox.Refresh();
         }
         List<Room_Object> listoftilesobjects = new List<Room_Object>();
         List<Sprite> listofspritesobjects = new List<Sprite>();
@@ -2351,7 +2335,7 @@ namespace ZeldaFullEditor
                 s.preview = true;
                 listofspritesobjects.Add(s);
             }
-            for (int i = 1; i < 0x19; i++)
+            for (int i = 1; i < 0x1B; i++)
             {
                 Sprite s = new Sprite(activeScene.room, (byte)i, 0, 0, 7, 0, 0);
                 s.preview = true;
@@ -2481,7 +2465,7 @@ namespace ZeldaFullEditor
             hovergfxTile = tx + (ty * 16);
             if (hovergfxTile != lasthovergfxTile)
             {
-                hovergfxLabel.Text = "Hovered Tile : " + "X:"+tx.ToString() + " Y:"+ty.ToString() + " (HEX:" + hovergfxTile.ToString("X3")+ ")";
+                hovergfxLabel.Text = "Hovered Tile : " + "X:"+tx.ToString() + " Y:"+(ty-32).ToString() + " (HEX:" + hovergfxTile.ToString("X3")+ ")";
                 pictureBox1.Refresh();
                 lasthovergfxTile = hovergfxTile;
             }
@@ -2602,22 +2586,19 @@ namespace ZeldaFullEditor
 
         private void litCheckbox_CheckedChanged(object sender, EventArgs e)
         {
-            if (activeScene.updating_info == false)
+            if (activeScene.updating_info)
             {
-                
-            }
-            else
-            {
-                if (activeScene.room.tilesObjects[0] is Room_Object)
+                if (activeScene.room.selectedObject[0] is Room_Object)
                 {
-                    activeScene.room.tilesObjects[0].lit = litCheckbox.Checked;
+                    (activeScene.room.selectedObject[0] as Room_Object).lit = litCheckbox.Checked;
                 }
             }
+
         }
 
         private void patchNotesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            Process.Start("https://github.com/Zarby89/ZScreamDungeon/blob/master/ZeldaFullEditor/PatchNotes.txt");
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -2772,6 +2753,192 @@ namespace ZeldaFullEditor
             {
                 addRoomTab((short)gotoRoom.SelectedRoom);
             }
+        }
+
+        private void advancedChestEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Gui.AdvancedChestEditorForm chestEditorForm = new Gui.AdvancedChestEditorForm();
+            chestEditorForm.ShowDialog();
+
+        }
+
+
+        private void RoomProperty_MouseWheel(object sender, MouseEventArgs e)
+        {
+            if (e.Delta > 0)
+            {
+                if (sender == roomProperty_spriteset)
+                {
+                    activeScene.room.Spriteset++;
+                }
+                if (sender == roomProperty_blockset)
+                {
+                    activeScene.room.Blockset++;
+                }
+                if (sender == roomProperty_palette)
+                {
+                    activeScene.room.Palette++;
+                }
+                if (sender == roomProperty_floor1)
+                {
+                    activeScene.room.Floor1++;
+                }
+                if (sender == roomProperty_floor2)
+                {
+                    activeScene.room.Floor2++;
+                }
+            }
+            else if (e.Delta < 0)
+            {
+                if (sender == roomProperty_spriteset)
+                {
+                    if (activeScene.room.Spriteset > 0)
+                    {
+                        activeScene.room.Spriteset--;
+                    }
+                }
+                if (sender == roomProperty_blockset)
+                {
+                    if (activeScene.room.Blockset > 0)
+                    {
+                        activeScene.room.Blockset--;
+                    }
+                }
+                if (sender == roomProperty_palette)
+                {
+                    if (activeScene.room.Palette > 0)
+                    {
+                        activeScene.room.Palette--;
+                    }
+                }
+                if (sender == roomProperty_floor1)
+                {
+                    if (activeScene.room.Floor1 > 0)
+                    {
+                        activeScene.room.Floor1--;
+                    }
+                }
+                if (sender == roomProperty_floor2)
+                {
+                    if (activeScene.room.Floor2 > 0)
+                    {
+                        activeScene.room.Floor2--;
+                    }
+                }
+
+            }
+            activeScene.updateRoomInfos(this);
+            GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
+            GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
+            activeScene.SetPalettesTransparent();
+            activeScene.room.reloadGfx(selectedEntrance.Blockset);
+            activeScene.DrawRoom();
+            activeScene.Refresh();
+            ((HandledMouseEventArgs)e).Handled = true;
+        }
+
+        private void mapPicturebox_Paint(object sender, PaintEventArgs e)
+        {
+            int xd = 0;
+            int yd = 0;
+            e.Graphics.Clear(Color.Black);
+            for (int i = 0; i < 296; i++)
+            {
+                if (all_rooms[i].tilesObjects.Count > 0)
+                {
+
+                    e.Graphics.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(all_rooms[i].palette)[4, 2]), new Rectangle(xd * 16, yd * 16, 16, 16));
+
+                    foreach (short s in selectedMapPng)
+                    {
+                        if (s == i)
+                        {
+                            e.Graphics.DrawRectangle(new Pen(Color.Aqua, 2), new Rectangle((xd * 16), (yd * 16), 16, 16));
+                        }
+                    }
+
+                }
+                xd++;
+                if (xd == 16)
+                {
+                    yd++;
+                    xd = 0;
+                }
+            }
+            for (int i = 0; i < 19; i++)
+            {
+                e.Graphics.DrawLine(Pens.White, 0, i * 16, 256, i * 16);
+                e.Graphics.DrawLine(Pens.White, i * 16, 0, i * 16, 304);
+            }
+            xd = 0;
+            yd = 0;
+            int selectedxd = 0;
+            int selectedyd = 0;
+            for (int i = 0; i < 296; i++)
+            {
+                
+                foreach (TabPage tp in tabControl2.TabPages)
+                {
+                    if ((tp.Tag as Room).index == (short)i)
+                    {
+                        if (tabControl2.SelectedTab == tp)
+                        {
+                            selectedxd = xd;
+                            selectedyd = yd;
+                        }
+                        else
+                        {
+                            e.Graphics.DrawRectangle(new Pen(Color.DarkGreen, 2), new Rectangle((xd * 16), (yd * 16), 16, 16));
+                        }
+
+                    }
+                }
+
+
+                xd++;
+                if (xd == 16)
+                {
+                    yd++;
+                    xd = 0;
+                }
+            }
+            e.Graphics.DrawRectangle(new Pen(Color.YellowGreen, 2), new Rectangle((selectedxd * 16), (selectedyd * 16), 16, 16));
+
+
+        }
+        //Groups of options for the Scene
+        public bool showSprite = true;
+        public bool showChest = true;
+        public bool showItems = true;
+        public bool showDoorsIDs = true;
+        public bool showChestIDs = true;
+
+        public bool showSpriteText = false;
+        public bool showChestText = false;
+        public bool showItemsText = false;
+
+        private void hideSpritesToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
+        {
+            showSprite = hideSpritesToolStripMenuItem.Checked;
+            showChest = hideChestItemsToolStripMenuItem.Checked;
+            showItems = hideItemsToolStripMenuItem.Checked;
+            showDoorsIDs = showDoorIDsToolStripMenuItem.Checked;
+            showChestIDs = showChestsIDsToolStripMenuItem.Checked;
+            showSpriteText = textSpriteToolStripMenuItem.Checked;
+            showChestText = textChestItemToolStripMenuItem.Checked;
+            showItemsText = textPotItemToolStripMenuItem.Checked;
+        }
+
+        private void hideItemsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dungeonsPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Gui.DungeonPropertiesForm propertiesEditorForm = new Gui.DungeonPropertiesForm();
+            propertiesEditorForm.ShowDialog();
+            
         }
     }
 

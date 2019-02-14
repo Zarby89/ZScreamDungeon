@@ -122,6 +122,18 @@
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
     <Compile Include="Addresses.cs" />
+    <Compile Include="Gui\AdvancedChestEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\AdvancedChestEditorForm.Designer.cs">
+      <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\DungeonPropertiesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\DungeonPropertiesForm.Designer.cs">
+      <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\JPExport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -248,6 +260,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\AdvancedChestEditorForm.resx">
+      <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\DungeonPropertiesForm.resx">
+      <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>

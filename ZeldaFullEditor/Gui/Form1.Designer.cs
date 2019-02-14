@@ -91,6 +91,7 @@
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gotoRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.advancedChestEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textSpriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textChestItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -104,13 +105,13 @@
             this.showBG2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showBG1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.unselectedBGTransparentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.animatedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.darkThemeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.rightSideToolboxToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideSpritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.hideAllTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.hideChestItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showDoorIDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showChestsIDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.patchNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -295,13 +296,9 @@
             this.cameraboxCheckbox = new System.Windows.Forms.CheckBox();
             this.entranceposCheckbox = new System.Windows.Forms.CheckBox();
             this.objectstabPage = new System.Windows.Forms.TabPage();
-            this.panel1 = new ZeldaFullEditor.CustomPanel();
-            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
             this.showNameObjectCheckbox = new System.Windows.Forms.CheckBox();
             this.searchTextbox = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
-            this.spritesView1 = new ZeldaFullEditor.SpritesView();
             this.searchspriteTextbox = new System.Windows.Forms.TextBox();
             this.palettestabPage = new System.Windows.Forms.TabPage();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
@@ -309,8 +306,6 @@
             this.palettesTreeview = new System.Windows.Forms.TreeView();
             this.palettePicturebox = new System.Windows.Forms.PictureBox();
             this.gfxtabPage = new System.Windows.Forms.TabPage();
-            this.customPanel2 = new ZeldaFullEditor.CustomPanel();
-            this.gfxPicturebox = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label41 = new System.Windows.Forms.Label();
             this.previewPaletteGfxTextbox = new System.Windows.Forms.TextBox();
@@ -356,6 +351,13 @@
             this.label31 = new System.Windows.Forms.Label();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.tabControl2 = new System.Windows.Forms.TabControl();
+            this.dungeonsPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel1 = new ZeldaFullEditor.CustomPanel();
+            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
+            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
+            this.spritesView1 = new ZeldaFullEditor.SpritesView();
+            this.customPanel2 = new ZeldaFullEditor.CustomPanel();
+            this.gfxPicturebox = new System.Windows.Forms.PictureBox();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
@@ -377,9 +379,7 @@
             this.splitContainer3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.objectstabPage.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.customPanel1.SuspendLayout();
             this.palettestabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
             this.splitContainer6.Panel1.SuspendLayout();
@@ -387,8 +387,6 @@
             this.splitContainer6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).BeginInit();
             this.gfxtabPage.SuspendLayout();
-            this.customPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gfxPicturebox)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gfxgroupindexUpDown)).BeginInit();
             this.debugtabPage.SuspendLayout();
@@ -401,6 +399,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).BeginInit();
             this.doorselectPanel.SuspendLayout();
             this.potitemobjectPanel.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.customPanel1.SuspendLayout();
+            this.customPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gfxPicturebox)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -600,7 +602,9 @@
             // 
             this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.gotoRoomToolStripMenuItem,
-            this.globalOptionsToolStripMenuItem});
+            this.globalOptionsToolStripMenuItem,
+            this.advancedChestEditorToolStripMenuItem,
+            this.dungeonsPropertiesToolStripMenuItem});
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
             this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.projectToolStripMenuItem.Text = "Project";
@@ -608,15 +612,22 @@
             // gotoRoomToolStripMenuItem
             // 
             this.gotoRoomToolStripMenuItem.Name = "gotoRoomToolStripMenuItem";
-            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.gotoRoomToolStripMenuItem.Text = "Goto Room";
             this.gotoRoomToolStripMenuItem.Click += new System.EventHandler(this.gotoRoomToolStripMenuItem_Click);
             // 
             // globalOptionsToolStripMenuItem
             // 
             this.globalOptionsToolStripMenuItem.Name = "globalOptionsToolStripMenuItem";
-            this.globalOptionsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.globalOptionsToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.globalOptionsToolStripMenuItem.Text = "Global Options";
+            // 
+            // advancedChestEditorToolStripMenuItem
+            // 
+            this.advancedChestEditorToolStripMenuItem.Name = "advancedChestEditorToolStripMenuItem";
+            this.advancedChestEditorToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.advancedChestEditorToolStripMenuItem.Text = "Advanced Chest Editor";
+            this.advancedChestEditorToolStripMenuItem.Click += new System.EventHandler(this.advancedChestEditorToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -628,13 +639,13 @@
             this.showBG2ToolStripMenuItem,
             this.showBG1ToolStripMenuItem,
             this.unselectedBGTransparentToolStripMenuItem,
-            this.animatedToolStripMenuItem,
             this.darkThemeToolStripMenuItem,
             this.rightSideToolboxToolStripMenuItem,
             this.hideSpritesToolStripMenuItem,
             this.hideItemsToolStripMenuItem,
-            this.hideAllTextToolStripMenuItem,
-            this.hideChestItemsToolStripMenuItem});
+            this.hideChestItemsToolStripMenuItem,
+            this.showDoorIDsToolStripMenuItem,
+            this.showChestsIDsToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -645,7 +656,7 @@
             this.textSpriteToolStripMenuItem.Name = "textSpriteToolStripMenuItem";
             this.textSpriteToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.textSpriteToolStripMenuItem.Text = "Text Sprite";
-            this.textSpriteToolStripMenuItem.Click += new System.EventHandler(this.textSpriteToolStripMenuItem_Click);
+            this.textSpriteToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.hideSpritesToolStripMenuItem_CheckStateChanged);
             // 
             // textChestItemToolStripMenuItem
             // 
@@ -653,6 +664,7 @@
             this.textChestItemToolStripMenuItem.Name = "textChestItemToolStripMenuItem";
             this.textChestItemToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.textChestItemToolStripMenuItem.Text = "Text ChestItem";
+            this.textChestItemToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.hideSpritesToolStripMenuItem_CheckStateChanged);
             // 
             // textPotItemToolStripMenuItem
             // 
@@ -660,6 +672,7 @@
             this.textPotItemToolStripMenuItem.Name = "textPotItemToolStripMenuItem";
             this.textPotItemToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.textPotItemToolStripMenuItem.Text = "Text PotItem";
+            this.textPotItemToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.hideSpritesToolStripMenuItem_CheckStateChanged);
             // 
             // showGridToolStripMenuItem
             // 
@@ -745,13 +758,6 @@
             this.unselectedBGTransparentToolStripMenuItem.Text = "Unselected BG Transparent";
             this.unselectedBGTransparentToolStripMenuItem.Click += new System.EventHandler(this.unselectedBGTransparentToolStripMenuItem_Click);
             // 
-            // animatedToolStripMenuItem
-            // 
-            this.animatedToolStripMenuItem.CheckOnClick = true;
-            this.animatedToolStripMenuItem.Name = "animatedToolStripMenuItem";
-            this.animatedToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.animatedToolStripMenuItem.Text = "Animated";
-            // 
             // darkThemeToolStripMenuItem
             // 
             this.darkThemeToolStripMenuItem.CheckOnClick = true;
@@ -769,31 +775,53 @@
             // 
             // hideSpritesToolStripMenuItem
             // 
+            this.hideSpritesToolStripMenuItem.Checked = true;
             this.hideSpritesToolStripMenuItem.CheckOnClick = true;
+            this.hideSpritesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.hideSpritesToolStripMenuItem.Name = "hideSpritesToolStripMenuItem";
             this.hideSpritesToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.hideSpritesToolStripMenuItem.Text = "Hide Sprites";
+            this.hideSpritesToolStripMenuItem.Text = "Show Sprites";
+            this.hideSpritesToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.hideSpritesToolStripMenuItem_CheckStateChanged);
             // 
             // hideItemsToolStripMenuItem
             // 
+            this.hideItemsToolStripMenuItem.Checked = true;
             this.hideItemsToolStripMenuItem.CheckOnClick = true;
+            this.hideItemsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.hideItemsToolStripMenuItem.Name = "hideItemsToolStripMenuItem";
             this.hideItemsToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.hideItemsToolStripMenuItem.Text = "Hide Items";
-            // 
-            // hideAllTextToolStripMenuItem
-            // 
-            this.hideAllTextToolStripMenuItem.CheckOnClick = true;
-            this.hideAllTextToolStripMenuItem.Name = "hideAllTextToolStripMenuItem";
-            this.hideAllTextToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.hideAllTextToolStripMenuItem.Text = "Hide All Text";
+            this.hideItemsToolStripMenuItem.Text = "Show Items";
+            this.hideItemsToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.hideSpritesToolStripMenuItem_CheckStateChanged);
             // 
             // hideChestItemsToolStripMenuItem
             // 
+            this.hideChestItemsToolStripMenuItem.Checked = true;
             this.hideChestItemsToolStripMenuItem.CheckOnClick = true;
+            this.hideChestItemsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.hideChestItemsToolStripMenuItem.Name = "hideChestItemsToolStripMenuItem";
             this.hideChestItemsToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.hideChestItemsToolStripMenuItem.Text = "Hide Chest Items";
+            this.hideChestItemsToolStripMenuItem.Text = "Show Chest Items";
+            this.hideChestItemsToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.hideSpritesToolStripMenuItem_CheckStateChanged);
+            // 
+            // showDoorIDsToolStripMenuItem
+            // 
+            this.showDoorIDsToolStripMenuItem.Checked = true;
+            this.showDoorIDsToolStripMenuItem.CheckOnClick = true;
+            this.showDoorIDsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showDoorIDsToolStripMenuItem.Name = "showDoorIDsToolStripMenuItem";
+            this.showDoorIDsToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.showDoorIDsToolStripMenuItem.Text = "Show Door IDs";
+            this.showDoorIDsToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.hideSpritesToolStripMenuItem_CheckStateChanged);
+            // 
+            // showChestsIDsToolStripMenuItem
+            // 
+            this.showChestsIDsToolStripMenuItem.Checked = true;
+            this.showChestsIDsToolStripMenuItem.CheckOnClick = true;
+            this.showChestsIDsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showChestsIDsToolStripMenuItem.Name = "showChestsIDsToolStripMenuItem";
+            this.showChestsIDsToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.showChestsIDsToolStripMenuItem.Text = "Show Chests IDs";
+            this.showChestsIDsToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.hideSpritesToolStripMenuItem_CheckStateChanged);
             // 
             // helpToolStripMenuItem
             // 
@@ -1502,6 +1530,7 @@
             this.mapPicturebox.TabIndex = 13;
             this.mapPicturebox.TabStop = false;
             this.mapPicturebox.Visible = false;
+            this.mapPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.mapPicturebox_Paint);
             this.mapPicturebox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.mapPicturebox_MouseDoubleClick_1);
             // 
             // roomListView
@@ -2100,8 +2129,8 @@
             this.splitContainer3.Panel2.Controls.Add(this.label21);
             this.splitContainer3.Panel2.Controls.Add(this.label19);
             this.splitContainer3.Panel2.Controls.Add(this.label18);
-            this.splitContainer3.Size = new System.Drawing.Size(292, 505);
-            this.splitContainer3.SplitterDistance = 166;
+            this.splitContainer3.Size = new System.Drawing.Size(292, 523);
+            this.splitContainer3.SplitterDistance = 169;
             this.splitContainer3.TabIndex = 9;
             // 
             // entrancetreeView
@@ -2117,7 +2146,7 @@
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2});
-            this.entrancetreeView.Size = new System.Drawing.Size(292, 166);
+            this.entrancetreeView.Size = new System.Drawing.Size(292, 169);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
             this.entrancetreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.entrancetreeView_NodeMouseDoubleClick);
@@ -2267,7 +2296,7 @@
             this.entranceProperty_bg.TabIndex = 41;
             this.entranceProperty_bg.Text = "BG2";
             this.entranceProperty_bg.UseVisualStyleBackColor = true;
-            this.entranceProperty_bg.CheckedChanged += new System.EventHandler(this.entranceProperty_vscroll_CheckedChanged);
+            this.entranceProperty_bg.CheckStateChanged += new System.EventHandler(this.entranceProperty_vscroll_CheckedChanged);
             // 
             // entranceProperty_quadbr
             // 
@@ -2335,7 +2364,7 @@
             this.entranceProperty_vscroll.TabIndex = 35;
             this.entranceProperty_vscroll.Text = "V. Scroll";
             this.entranceProperty_vscroll.UseVisualStyleBackColor = true;
-            this.entranceProperty_vscroll.CheckedChanged += new System.EventHandler(this.entranceProperty_vscroll_CheckedChanged);
+            this.entranceProperty_vscroll.CheckStateChanged += new System.EventHandler(this.entranceProperty_vscroll_CheckedChanged);
             // 
             // entranceProperty_hscroll
             // 
@@ -2346,7 +2375,7 @@
             this.entranceProperty_hscroll.TabIndex = 34;
             this.entranceProperty_hscroll.Text = "H. Scroll";
             this.entranceProperty_hscroll.UseVisualStyleBackColor = true;
-            this.entranceProperty_hscroll.CheckedChanged += new System.EventHandler(this.entranceProperty_vscroll_CheckedChanged);
+            this.entranceProperty_hscroll.CheckStateChanged += new System.EventHandler(this.entranceProperty_vscroll_CheckedChanged);
             // 
             // entranceProperty_scrolly
             // 
@@ -2577,7 +2606,7 @@
             this.groupBox2.Controls.Add(this.cameraboxCheckbox);
             this.groupBox2.Controls.Add(this.entranceposCheckbox);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox2.Location = new System.Drawing.Point(0, 505);
+            this.groupBox2.Location = new System.Drawing.Point(0, 523);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(292, 43);
             this.groupBox2.TabIndex = 8;
@@ -2620,27 +2649,6 @@
             this.objectstabPage.Text = "Objects";
             this.objectstabPage.UseVisualStyleBackColor = true;
             // 
-            // panel1
-            // 
-            this.panel1.AutoScroll = true;
-            this.panel1.Controls.Add(this.objectViewer1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 37);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(292, 511);
-            this.panel1.TabIndex = 1;
-            // 
-            // objectViewer1
-            // 
-            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
-            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
-            this.objectViewer1.Name = "objectViewer1";
-            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
-            this.objectViewer1.TabIndex = 0;
-            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
-            this.objectViewer1.Load += new System.EventHandler(this.objectViewer1_Load);
-            // 
             // showNameObjectCheckbox
             // 
             this.showNameObjectCheckbox.AutoSize = true;
@@ -2672,26 +2680,6 @@
             this.tabPage4.TabIndex = 10;
             this.tabPage4.Text = "Sprites";
             this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // customPanel1
-            // 
-            this.customPanel1.AutoScroll = true;
-            this.customPanel1.Controls.Add(this.spritesView1);
-            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel1.Location = new System.Drawing.Point(0, 20);
-            this.customPanel1.Name = "customPanel1";
-            this.customPanel1.Size = new System.Drawing.Size(292, 528);
-            this.customPanel1.TabIndex = 2;
-            // 
-            // spritesView1
-            // 
-            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.spritesView1.Location = new System.Drawing.Point(0, 0);
-            this.spritesView1.Name = "spritesView1";
-            this.spritesView1.Size = new System.Drawing.Size(292, 374);
-            this.spritesView1.TabIndex = 0;
-            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
-            this.spritesView1.Load += new System.EventHandler(this.spritesView1_Load);
             // 
             // searchspriteTextbox
             // 
@@ -2727,8 +2715,8 @@
             // splitContainer6.Panel2
             // 
             this.splitContainer6.Panel2.Controls.Add(this.palettePicturebox);
-            this.splitContainer6.Size = new System.Drawing.Size(292, 548);
-            this.splitContainer6.SplitterDistance = 295;
+            this.splitContainer6.Size = new System.Drawing.Size(292, 566);
+            this.splitContainer6.SplitterDistance = 301;
             this.splitContainer6.TabIndex = 1;
             // 
             // button2
@@ -2791,7 +2779,7 @@
             this.palettesTreeview.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode5,
             treeNode20});
-            this.palettesTreeview.Size = new System.Drawing.Size(292, 295);
+            this.palettesTreeview.Size = new System.Drawing.Size(292, 301);
             this.palettesTreeview.TabIndex = 0;
             // 
             // palettePicturebox
@@ -2800,7 +2788,7 @@
             this.palettePicturebox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.palettePicturebox.Location = new System.Drawing.Point(0, 0);
             this.palettePicturebox.Name = "palettePicturebox";
-            this.palettePicturebox.Size = new System.Drawing.Size(292, 249);
+            this.palettePicturebox.Size = new System.Drawing.Size(292, 261);
             this.palettePicturebox.TabIndex = 0;
             this.palettePicturebox.TabStop = false;
             this.palettePicturebox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDoubleClick);
@@ -2818,26 +2806,6 @@
             this.gfxtabPage.TabIndex = 6;
             this.gfxtabPage.Text = "Gfx";
             this.gfxtabPage.UseVisualStyleBackColor = true;
-            // 
-            // customPanel2
-            // 
-            this.customPanel2.AutoScroll = true;
-            this.customPanel2.Controls.Add(this.gfxPicturebox);
-            this.customPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel2.Location = new System.Drawing.Point(0, 167);
-            this.customPanel2.Name = "customPanel2";
-            this.customPanel2.Size = new System.Drawing.Size(292, 381);
-            this.customPanel2.TabIndex = 14;
-            // 
-            // gfxPicturebox
-            // 
-            this.gfxPicturebox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gfxPicturebox.Location = new System.Drawing.Point(0, 0);
-            this.gfxPicturebox.Name = "gfxPicturebox";
-            this.gfxPicturebox.Size = new System.Drawing.Size(275, 1024);
-            this.gfxPicturebox.TabIndex = 12;
-            this.gfxPicturebox.TabStop = false;
-            this.gfxPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.gfxPicturebox_Paint);
             // 
             // groupBox3
             // 
@@ -3379,6 +3347,74 @@
             this.tabControl2.SizeChanged += new System.EventHandler(this.tabControl2_SizeChanged);
             this.tabControl2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tabControl2_MouseClick);
             // 
+            // dungeonsPropertiesToolStripMenuItem
+            // 
+            this.dungeonsPropertiesToolStripMenuItem.Name = "dungeonsPropertiesToolStripMenuItem";
+            this.dungeonsPropertiesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.dungeonsPropertiesToolStripMenuItem.Text = "Dungeons Properties";
+            this.dungeonsPropertiesToolStripMenuItem.Click += new System.EventHandler(this.dungeonsPropertiesToolStripMenuItem_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.objectViewer1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 37);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(292, 529);
+            this.panel1.TabIndex = 1;
+            // 
+            // objectViewer1
+            // 
+            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
+            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
+            this.objectViewer1.Name = "objectViewer1";
+            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
+            this.objectViewer1.TabIndex = 0;
+            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
+            this.objectViewer1.Load += new System.EventHandler(this.objectViewer1_Load);
+            // 
+            // customPanel1
+            // 
+            this.customPanel1.AutoScroll = true;
+            this.customPanel1.Controls.Add(this.spritesView1);
+            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.customPanel1.Location = new System.Drawing.Point(0, 20);
+            this.customPanel1.Name = "customPanel1";
+            this.customPanel1.Size = new System.Drawing.Size(292, 546);
+            this.customPanel1.TabIndex = 2;
+            // 
+            // spritesView1
+            // 
+            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.spritesView1.Location = new System.Drawing.Point(0, 0);
+            this.spritesView1.Name = "spritesView1";
+            this.spritesView1.Size = new System.Drawing.Size(292, 374);
+            this.spritesView1.TabIndex = 0;
+            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
+            this.spritesView1.Load += new System.EventHandler(this.spritesView1_Load);
+            // 
+            // customPanel2
+            // 
+            this.customPanel2.AutoScroll = true;
+            this.customPanel2.Controls.Add(this.gfxPicturebox);
+            this.customPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.customPanel2.Location = new System.Drawing.Point(0, 167);
+            this.customPanel2.Name = "customPanel2";
+            this.customPanel2.Size = new System.Drawing.Size(292, 381);
+            this.customPanel2.TabIndex = 14;
+            // 
+            // gfxPicturebox
+            // 
+            this.gfxPicturebox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gfxPicturebox.Location = new System.Drawing.Point(0, 0);
+            this.gfxPicturebox.Name = "gfxPicturebox";
+            this.gfxPicturebox.Size = new System.Drawing.Size(275, 1024);
+            this.gfxPicturebox.TabIndex = 12;
+            this.gfxPicturebox.TabStop = false;
+            this.gfxPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.gfxPicturebox_Paint);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -3394,7 +3430,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "ZScream Magic - 1.1 Alpha Version";
+            this.Text = "ZScream Magic - 1.2 Alpha Version";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.zscreamForm_FormClosing_1);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -3425,10 +3461,8 @@
             this.groupBox2.PerformLayout();
             this.objectstabPage.ResumeLayout(false);
             this.objectstabPage.PerformLayout();
-            this.panel1.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
-            this.customPanel1.ResumeLayout(false);
             this.palettestabPage.ResumeLayout(false);
             this.splitContainer6.Panel1.ResumeLayout(false);
             this.splitContainer6.Panel2.ResumeLayout(false);
@@ -3436,8 +3470,6 @@
             this.splitContainer6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).EndInit();
             this.gfxtabPage.ResumeLayout(false);
-            this.customPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gfxPicturebox)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gfxgroupindexUpDown)).EndInit();
@@ -3456,6 +3488,10 @@
             this.doorselectPanel.PerformLayout();
             this.potitemobjectPanel.ResumeLayout(false);
             this.potitemobjectPanel.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.customPanel1.ResumeLayout(false);
+            this.customPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gfxPicturebox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3585,7 +3621,6 @@
         public System.Windows.Forms.Label label23;
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.ToolStripMenuItem rightSideToolboxToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem animatedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem globalOptionsToolStripMenuItem;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.Label label29;
@@ -3597,7 +3632,6 @@
         private System.Windows.Forms.ToolStripMenuItem saveasToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem hideSpritesToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem hideItemsToolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem hideAllTextToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem hideChestItemsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem selectAllMapForExportToolStripMenuItem;
@@ -3753,6 +3787,10 @@
         private System.Windows.Forms.Label label54;
         private System.Windows.Forms.Label label55;
         public System.Windows.Forms.CheckBox spriteoverlordCheckbox;
+        private System.Windows.Forms.ToolStripMenuItem advancedChestEditorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showDoorIDsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showChestsIDsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dungeonsPropertiesToolStripMenuItem;
     }
 }
 
