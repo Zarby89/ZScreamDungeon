@@ -1456,6 +1456,11 @@ namespace ZeldaFullEditor
                 }
             }
 
+            /*foreach(Room_Object o in room.selectedObject)
+            {
+                Console.WriteLine(o.id.ToString("X4") + o.name);
+            }*/
+
         }
 
 

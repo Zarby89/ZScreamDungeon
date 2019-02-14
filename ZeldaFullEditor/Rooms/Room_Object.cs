@@ -53,6 +53,8 @@ namespace ZeldaFullEditor
             this.ny = y;
             this.ox = x;
             this.oy = y;
+            width = 16;
+            height = 16;
 
         }
 

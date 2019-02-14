@@ -1194,6 +1194,10 @@ namespace ZeldaFullEditor
 
             panel1.VerticalScroll.Value = 0;
             objectViewer1.Refresh();
+
+ 
+
+
         }
 
         public void sortSprite()

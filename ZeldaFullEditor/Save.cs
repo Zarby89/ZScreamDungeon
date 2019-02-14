@@ -751,6 +751,7 @@ namespace ZeldaFullEditor
 
                 for (int i = 0; i < 320; i++)
                 {
+                        
                     if (i >= 296 || all_rooms[i].sprites.Count <= 0)
                     {
                         sprites_buffer[(i * 2)] = (byte)((Addresses.pctosnes(Constants.sprites_data_empty_room) & 0xFF));
@@ -758,9 +759,39 @@ namespace ZeldaFullEditor
                     }
                     else
                     {
-                        //pointer : 
-                        sprites_buffer[(i * 2)] = (byte)((Addresses.pctosnes(Constants.sprites_data + (pos - 0x282)) & 0xFF));
-                        sprites_buffer[(i * 2) + 1] = (byte)((Addresses.pctosnes(Constants.sprites_data + (pos - 0x282)) >> 8) & 0xFF);
+                        bool pointer = false;
+                        for (int j = 0; j < i; j++)
+                        {
+                            if (all_rooms[i].sprites.Count == all_rooms[i].sprites.Count)
+                            {
+                                //IF it have the same amount of sprites it might be similar
+                                //copy all object in a new array length using linq
+                                int count = all_rooms[i].sprites
+                                .Where(x => all_rooms[j].sprites.Select(x1 => x1.id).Contains(x.id))
+                                .Where(x => all_rooms[j].sprites.Select(x1 => x1.x).Contains(x.x))
+                                .Where(x => all_rooms[j].sprites.Select(x1 => x1.y).Contains(x.y))
+                                .Where(x => all_rooms[j].sprites.Select(x1 => x1.overlord).Contains(x.overlord))
+                                .Where(x => all_rooms[j].sprites.Select(x1 => x1.subtype).Contains(x.subtype))
+                                .Where(x => all_rooms[j].sprites.Select(x1 => x1.layer).Contains(x.layer))
+                                .Select(x => x)
+                                .ToArray().Length;
+                                //check if the array length is still the same count
+                                if (count == all_rooms[i].sprites.Count)
+                                {
+                                    pointer = true;
+                                    //Same data as room all_rooms[j], use pointer id j
+                                    sprites_buffer[(i * 2)] = (byte)((Addresses.pctosnes(Constants.sprites_data + (pos - 0x282)) & 0xFF));
+                                    sprites_buffer[(i * 2) + 1] = (byte)((Addresses.pctosnes(Constants.sprites_data + (pos - 0x282)) >> 8) & 0xFF);
+                                }
+                            }
+                        }
+
+                        if (pointer == false)
+                        {
+                            //pointer : 
+                            sprites_buffer[(i * 2)] = (byte)((Addresses.pctosnes(Constants.sprites_data + (pos - 0x282)) & 0xFF));
+                            sprites_buffer[(i * 2) + 1] = (byte)((Addresses.pctosnes(Constants.sprites_data + (pos - 0x282)) >> 8) & 0xFF);
+                        }
                         //ROM.DATA[sprite_address] == 1 ? true : false;
                         sprites_buffer[pos] = (byte)(all_rooms[i].sortSprites == true ? 0x01 : 0x00);//Unknown byte??
                         pos++;
