@@ -263,7 +263,7 @@ namespace ZeldaFullEditor
             activeScene = new SceneUW(this);
             activeScene.Location = new Point(tabControl2.Location.X, tabControl2.Location.Y + 24);
             activeScene.Size = new Size(512, 512);
-            this.Controls.Add(activeScene);
+            this.customPanel3.Controls.Add(activeScene);
             initProject();
             projectFilename = filename;
             this.Text = "ZScream Magic - " + filename;
@@ -764,7 +764,15 @@ namespace ZeldaFullEditor
                 activeScene.dragy = 0;
                 activeScene.mouse_down = true;
                 activeScene.need_refresh = true;
-                activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                if (!visibleEntranceGFX)
+                {
+                    activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                }
+                else
+                {
+                    activeScene.room.reloadGfx();
+                }
+                
             }
         }
         //Bring to front -_-
@@ -1158,7 +1166,14 @@ namespace ZeldaFullEditor
 
                     
                     selectedEntrance = en;
+                if (!visibleEntranceGFX)
+                {
                     activeScene.room.reloadGfx(en.Blockset);
+                }
+                else
+                {
+                    activeScene.room.reloadGfx();
+                }
                     activeScene.DrawRoom();
                     activeScene.Refresh();
 
@@ -1326,7 +1341,15 @@ namespace ZeldaFullEditor
                 //objectsListbox.ClearSelected();
                 tabControl2.SelectedTab = tp;
 
-                activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                if (!visibleEntranceGFX)
+                {
+                    activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                }
+                else
+                {
+                    activeScene.room.reloadGfx();
+                }
+                
                 GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
                 GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
                 activeScene.SetPalettesBlack();
@@ -1605,7 +1628,14 @@ namespace ZeldaFullEditor
                     if (int.TryParse(gfx4textBox.Text, out r)) { ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 3] = (byte)r; };
                 }
 
-                activeScene.room.reloadGfx(selectedEntrance.Blockset);
+                if (!visibleEntranceGFX)
+                {
+                    activeScene.room.reloadGfx(selectedEntrance.Blockset);
+                }
+                else
+                {
+                    activeScene.room.reloadGfx();
+                }
                 activeScene.DrawRoom();
                 activeScene.Refresh();
                 gfxPicturebox.Refresh();
@@ -1935,7 +1965,15 @@ namespace ZeldaFullEditor
                     activeScene.room.Staircase4Plane = 0;
                 }
 
-                activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                if (!visibleEntranceGFX)
+                {
+                    activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                }
+                else
+                {
+                    activeScene.room.reloadGfx();
+                }
+
                 GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
                 GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
                 activeScene.SetPalettesBlack();
@@ -2142,7 +2180,14 @@ namespace ZeldaFullEditor
                 GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
                 GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
                 activeScene.SetPalettesBlack();
-                activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                if (!visibleEntranceGFX)
+                {
+                    activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                }
+                else
+                {
+                    activeScene.room.reloadGfx();
+                }
                 activeScene.DrawRoom();
                 activeScene.Refresh();
                 activeScene.room.has_changed = true;
@@ -2253,19 +2298,21 @@ namespace ZeldaFullEditor
             loadRoomList(0);
         }
 
-        private void ZscreamForm_MouseClick(object sender, MouseEventArgs e)
-        {
-
-        }
-
         private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabControl2.TabPages.Count > 0)
             {
                 activeScene.room = (tabControl2.TabPages[tabControl2.SelectedIndex].Tag as Room);
                 activeScene.updateRoomInfos(this);
-                activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
-                
+                if (!visibleEntranceGFX)
+                {
+                    activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                }
+                else
+                {
+                    activeScene.room.reloadGfx();
+                }
+
                 GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
                 GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
                 activeScene.SetPalettesBlack();
@@ -2835,7 +2882,14 @@ namespace ZeldaFullEditor
             GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
             GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
             activeScene.SetPalettesTransparent();
-            activeScene.room.reloadGfx(selectedEntrance.Blockset);
+            if (!visibleEntranceGFX)
+            {
+                activeScene.room.reloadGfx(selectedEntrance.Blockset);
+            }
+            else
+            {
+                activeScene.room.reloadGfx();
+            }
             activeScene.DrawRoom();
             activeScene.Refresh();
             ((HandledMouseEventArgs)e).Handled = true;
@@ -2921,6 +2975,9 @@ namespace ZeldaFullEditor
         public bool showChestText = false;
         public bool showItemsText = false;
 
+        public bool visibleEntranceGFX = false;
+        public bool x2zoom = false;
+
         private void hideSpritesToolStripMenuItem_CheckStateChanged(object sender, EventArgs e)
         {
             showSprite = hideSpritesToolStripMenuItem.Checked;
@@ -2931,6 +2988,19 @@ namespace ZeldaFullEditor
             showSpriteText = textSpriteToolStripMenuItem.Checked;
             showChestText = textChestItemToolStripMenuItem.Checked;
             showItemsText = textPotItemToolStripMenuItem.Checked;
+            visibleEntranceGFX = disableEntranceGFXToolStripMenuItem.Checked;
+            x2zoom = xScreenToolStripMenuItem.Checked;
+
+            if (x2zoom)
+            {
+                activeScene.Size = new Size(1024, 1024);
+            }
+            else
+            {
+                activeScene.Size = new Size(512, 512);
+            }
+            activeScene.Refresh();
+
         }
 
         private void hideItemsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2943,6 +3013,14 @@ namespace ZeldaFullEditor
             Gui.DungeonPropertiesForm propertiesEditorForm = new Gui.DungeonPropertiesForm();
             propertiesEditorForm.ShowDialog();
             
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (tabControl2.SelectedIndex != -1)
+            {
+                this.tabControl2.TabPages.RemoveAt(tabControl2.SelectedIndex);
+            }
         }
     }
 

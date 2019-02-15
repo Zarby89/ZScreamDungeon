@@ -738,8 +738,11 @@ namespace ZeldaFullEditor
 
         public bool saveallSprites()
         {
-            
-            byte[] sprites_buffer = new byte[0x1670];
+
+
+            int spritePointer = (09 << 16) + (ROM.DATA[Constants.rooms_sprite_pointer + 1] << 8) + (ROM.DATA[Constants.rooms_sprite_pointer]);
+            int spritePointerPC = Addresses.snestopc(spritePointer);
+            byte[] sprites_buffer = new byte[Constants.sprites_end_data - Addresses.snestopc(spritePointer)];
             //empty room data = 0x280
             //start of data = 0x282
             try
@@ -751,15 +754,15 @@ namespace ZeldaFullEditor
 
                 for (int i = 0; i < 320; i++)
                 {
-                        
+
                     if (i >= 296 || all_rooms[i].sprites.Count <= 0)
                     {
-                        sprites_buffer[(i * 2)] = (byte)((Addresses.pctosnes(Constants.sprites_data_empty_room) & 0xFF));
-                        sprites_buffer[(i * 2) + 1] = (byte)((Addresses.pctosnes(Constants.sprites_data_empty_room) >> 8) & 0xFF);
+                        sprites_buffer[(i * 2)] = (byte)((Addresses.pctosnes(Addresses.snestopc(spritePointer + 0x280)) & 0xFF));
+                        sprites_buffer[(i * 2) + 1] = (byte)(((Addresses.snestopc(spritePointer + 0x280)) >> 8) & 0xFF);
                     }
                     else
                     {
-                        bool pointer = false;
+                        /*bool pointer = false;
                         for (int j = 0; j < i; j++)
                         {
                             if (all_rooms[i].sprites.Count == all_rooms[i].sprites.Count)
@@ -780,18 +783,16 @@ namespace ZeldaFullEditor
                                 {
                                     pointer = true;
                                     //Same data as room all_rooms[j], use pointer id j
-                                    sprites_buffer[(i * 2)] = (byte)((Addresses.pctosnes(Constants.sprites_data + (pos - 0x282)) & 0xFF));
-                                    sprites_buffer[(i * 2) + 1] = (byte)((Addresses.pctosnes(Constants.sprites_data + (pos - 0x282)) >> 8) & 0xFF);
+                                    sprites_buffer[(i * 2)] = (byte)((Addresses.pctosnes(Addresses.snestopc(spritePointer) + pos) & 0xFF));
+                                    sprites_buffer[(i * 2) + 1] = (byte)((Addresses.pctosnes(Addresses.snestopc(spritePointer) + pos) >> 8) & 0xFF);
                                 }
                             }
-                        }
+                        }*/
 
-                        if (pointer == false)
-                        {
                             //pointer : 
-                            sprites_buffer[(i * 2)] = (byte)((Addresses.pctosnes(Constants.sprites_data + (pos - 0x282)) & 0xFF));
-                            sprites_buffer[(i * 2) + 1] = (byte)((Addresses.pctosnes(Constants.sprites_data + (pos - 0x282)) >> 8) & 0xFF);
-                        }
+                            sprites_buffer[(i * 2)] = (byte)((Addresses.pctosnes(Addresses.snestopc(spritePointer + pos)) & 0xFF));
+                            sprites_buffer[(i * 2) + 1] = (byte)((Addresses.pctosnes(Addresses.snestopc(spritePointer + pos)) >> 8) & 0xFF);
+                        
                         //ROM.DATA[sprite_address] == 1 ? true : false;
                         sprites_buffer[pos] = (byte)(all_rooms[i].sortSprites == true ? 0x01 : 0x00);//Unknown byte??
                         pos++;
@@ -840,16 +841,16 @@ namespace ZeldaFullEditor
                         pos++;
                     }
                 }
-                int spritePointer = (04 << 16) + (ROM.DATA[Constants.rooms_sprite_pointer + 1] << 8) + (ROM.DATA[Constants.rooms_sprite_pointer]);
-                sprites_buffer.CopyTo(ROM.DATA, spritePointer);
+
+                sprites_buffer.CopyTo(ROM.DATA, spritePointerPC);
             }
             catch (Exception e)
             {
                 return true;
             }
             return false; // False = no error
-        }
 
+        }
 
     }
 }

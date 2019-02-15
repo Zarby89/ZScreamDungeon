@@ -365,20 +365,35 @@ namespace ZeldaFullEditor
         public static short paletteid;
         public static Color[,] LoadDungeonPalette(byte id)
         {
-            
+
             Color[,] palettes = new Color[16,8];
+
+
             //id = dungeon palette id
             byte dungeon_palette_ptr = ROM.DATA[Constants.dungeons_palettes_groups + (id * 4)]; //id of the 1st group of 4
             short palette_pos = (short)((ROM.DATA[0xDEC4B+ dungeon_palette_ptr +1] << 8) + ROM.DATA[0xDEC4B+dungeon_palette_ptr]);
             paletteid = palette_pos;
+
+ 
+
             int i = 0;
-            for (int y = 0; y < 2; y++)
+            /*for (int y = 0; y < 2; y++)
             {
                 for (int x = 0; x < 16; x++)
                 {
                     palettes[x, y] = Color.Black;
                 }
+            }*/
+            int j = 0;
+            for (int y = 0; y < 2; y++)
+            {
+                for (int x = 0; x < 16; x++)
+                {
+                    palettes[x, y] = getColor((short)((ROM.DATA[0xDD660 + 1 + j] << 8) + (ROM.DATA[0xDD660 + j])));
+                    j += 2;
+                }
             }
+
             for (int y = 2; y < 8; y++)
             {
                 for (int x = 0; x < 16; x++)

@@ -92,6 +92,7 @@
             this.gotoRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.advancedChestEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dungeonsPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textSpriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textChestItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,6 +113,8 @@
             this.hideChestItemsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showDoorIDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showChestsIDsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disableEntranceGFXToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.xScreenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.patchNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -350,8 +353,10 @@
             this.selecteditemobjectCombobox = new System.Windows.Forms.ComboBox();
             this.label31 = new System.Windows.Forms.Label();
             this.splitter1 = new System.Windows.Forms.Splitter();
+            this.customPanel3 = new ZeldaFullEditor.CustomPanel();
             this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.dungeonsPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.customPanel4 = new ZeldaFullEditor.CustomPanel();
+            this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new ZeldaFullEditor.CustomPanel();
             this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
             this.customPanel1 = new ZeldaFullEditor.CustomPanel();
@@ -399,6 +404,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).BeginInit();
             this.doorselectPanel.SuspendLayout();
             this.potitemobjectPanel.SuspendLayout();
+            this.customPanel3.SuspendLayout();
+            this.customPanel4.SuspendLayout();
             this.panel1.SuspendLayout();
             this.customPanel1.SuspendLayout();
             this.customPanel2.SuspendLayout();
@@ -629,6 +636,13 @@
             this.advancedChestEditorToolStripMenuItem.Text = "Advanced Chest Editor";
             this.advancedChestEditorToolStripMenuItem.Click += new System.EventHandler(this.advancedChestEditorToolStripMenuItem_Click);
             // 
+            // dungeonsPropertiesToolStripMenuItem
+            // 
+            this.dungeonsPropertiesToolStripMenuItem.Name = "dungeonsPropertiesToolStripMenuItem";
+            this.dungeonsPropertiesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.dungeonsPropertiesToolStripMenuItem.Text = "Dungeons Properties";
+            this.dungeonsPropertiesToolStripMenuItem.Click += new System.EventHandler(this.dungeonsPropertiesToolStripMenuItem_Click);
+            // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -645,7 +659,9 @@
             this.hideItemsToolStripMenuItem,
             this.hideChestItemsToolStripMenuItem,
             this.showDoorIDsToolStripMenuItem,
-            this.showChestsIDsToolStripMenuItem});
+            this.showChestsIDsToolStripMenuItem,
+            this.disableEntranceGFXToolStripMenuItem,
+            this.xScreenToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -822,6 +838,22 @@
             this.showChestsIDsToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.showChestsIDsToolStripMenuItem.Text = "Show Chests IDs";
             this.showChestsIDsToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.hideSpritesToolStripMenuItem_CheckStateChanged);
+            // 
+            // disableEntranceGFXToolStripMenuItem
+            // 
+            this.disableEntranceGFXToolStripMenuItem.CheckOnClick = true;
+            this.disableEntranceGFXToolStripMenuItem.Name = "disableEntranceGFXToolStripMenuItem";
+            this.disableEntranceGFXToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.disableEntranceGFXToolStripMenuItem.Text = "Disable Entrance GFX";
+            this.disableEntranceGFXToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.hideSpritesToolStripMenuItem_CheckStateChanged);
+            // 
+            // xScreenToolStripMenuItem
+            // 
+            this.xScreenToolStripMenuItem.CheckOnClick = true;
+            this.xScreenToolStripMenuItem.Name = "xScreenToolStripMenuItem";
+            this.xScreenToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.xScreenToolStripMenuItem.Text = "2X Screen";
+            this.xScreenToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.hideSpritesToolStripMenuItem_CheckStateChanged);
             // 
             // helpToolStripMenuItem
             // 
@@ -1415,7 +1447,7 @@
             this.toolboxPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.toolboxPanel.Location = new System.Drawing.Point(0, 49);
             this.toolboxPanel.Name = "toolboxPanel";
-            this.toolboxPanel.Size = new System.Drawing.Size(300, 592);
+            this.toolboxPanel.Size = new System.Drawing.Size(300, 618);
             this.toolboxPanel.TabIndex = 14;
             // 
             // tabControl1
@@ -1433,7 +1465,7 @@
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(300, 592);
+            this.tabControl1.Size = new System.Drawing.Size(300, 618);
             this.tabControl1.TabIndex = 12;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -1443,7 +1475,7 @@
             this.roomtabPage.Location = new System.Drawing.Point(4, 40);
             this.roomtabPage.Name = "roomtabPage";
             this.roomtabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.roomtabPage.Size = new System.Drawing.Size(292, 548);
+            this.roomtabPage.Size = new System.Drawing.Size(292, 574);
             this.roomtabPage.TabIndex = 0;
             this.roomtabPage.Text = "Rooms";
             this.roomtabPage.UseVisualStyleBackColor = true;
@@ -1518,8 +1550,8 @@
             this.splitContainer2.Panel2.Controls.Add(this.roomProperty_bg2);
             this.splitContainer2.Panel2.Controls.Add(this.label2);
             this.splitContainer2.Panel2.Controls.Add(this.label1);
-            this.splitContainer2.Size = new System.Drawing.Size(286, 542);
-            this.splitContainer2.SplitterDistance = 264;
+            this.splitContainer2.Size = new System.Drawing.Size(286, 568);
+            this.splitContainer2.SplitterDistance = 276;
             this.splitContainer2.TabIndex = 0;
             // 
             // mapPicturebox
@@ -2061,7 +2093,7 @@
             this.entrancetabPage.Controls.Add(this.groupBox2);
             this.entrancetabPage.Location = new System.Drawing.Point(4, 40);
             this.entrancetabPage.Name = "entrancetabPage";
-            this.entrancetabPage.Size = new System.Drawing.Size(292, 548);
+            this.entrancetabPage.Size = new System.Drawing.Size(292, 574);
             this.entrancetabPage.TabIndex = 5;
             this.entrancetabPage.Text = "Entrances";
             this.entrancetabPage.UseVisualStyleBackColor = true;
@@ -2129,8 +2161,8 @@
             this.splitContainer3.Panel2.Controls.Add(this.label21);
             this.splitContainer3.Panel2.Controls.Add(this.label19);
             this.splitContainer3.Panel2.Controls.Add(this.label18);
-            this.splitContainer3.Size = new System.Drawing.Size(292, 523);
-            this.splitContainer3.SplitterDistance = 169;
+            this.splitContainer3.Size = new System.Drawing.Size(292, 549);
+            this.splitContainer3.SplitterDistance = 176;
             this.splitContainer3.TabIndex = 9;
             // 
             // entrancetreeView
@@ -2146,7 +2178,7 @@
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2});
-            this.entrancetreeView.Size = new System.Drawing.Size(292, 169);
+            this.entrancetreeView.Size = new System.Drawing.Size(292, 176);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
             this.entrancetreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.entrancetreeView_NodeMouseDoubleClick);
@@ -2606,7 +2638,7 @@
             this.groupBox2.Controls.Add(this.cameraboxCheckbox);
             this.groupBox2.Controls.Add(this.entranceposCheckbox);
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox2.Location = new System.Drawing.Point(0, 523);
+            this.groupBox2.Location = new System.Drawing.Point(0, 549);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(292, 43);
             this.groupBox2.TabIndex = 8;
@@ -2644,7 +2676,7 @@
             this.objectstabPage.Controls.Add(this.searchTextbox);
             this.objectstabPage.Location = new System.Drawing.Point(4, 40);
             this.objectstabPage.Name = "objectstabPage";
-            this.objectstabPage.Size = new System.Drawing.Size(292, 548);
+            this.objectstabPage.Size = new System.Drawing.Size(292, 574);
             this.objectstabPage.TabIndex = 4;
             this.objectstabPage.Text = "Objects";
             this.objectstabPage.UseVisualStyleBackColor = true;
@@ -2676,7 +2708,7 @@
             this.tabPage4.Controls.Add(this.searchspriteTextbox);
             this.tabPage4.Location = new System.Drawing.Point(4, 40);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(292, 548);
+            this.tabPage4.Size = new System.Drawing.Size(292, 574);
             this.tabPage4.TabIndex = 10;
             this.tabPage4.Text = "Sprites";
             this.tabPage4.UseVisualStyleBackColor = true;
@@ -2695,7 +2727,7 @@
             this.palettestabPage.Controls.Add(this.splitContainer6);
             this.palettestabPage.Location = new System.Drawing.Point(4, 40);
             this.palettestabPage.Name = "palettestabPage";
-            this.palettestabPage.Size = new System.Drawing.Size(292, 548);
+            this.palettestabPage.Size = new System.Drawing.Size(292, 574);
             this.palettestabPage.TabIndex = 3;
             this.palettestabPage.Text = "Palettes";
             this.palettestabPage.UseVisualStyleBackColor = true;
@@ -2715,8 +2747,8 @@
             // splitContainer6.Panel2
             // 
             this.splitContainer6.Panel2.Controls.Add(this.palettePicturebox);
-            this.splitContainer6.Size = new System.Drawing.Size(292, 566);
-            this.splitContainer6.SplitterDistance = 301;
+            this.splitContainer6.Size = new System.Drawing.Size(292, 592);
+            this.splitContainer6.SplitterDistance = 313;
             this.splitContainer6.TabIndex = 1;
             // 
             // button2
@@ -2779,7 +2811,7 @@
             this.palettesTreeview.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode5,
             treeNode20});
-            this.palettesTreeview.Size = new System.Drawing.Size(292, 301);
+            this.palettesTreeview.Size = new System.Drawing.Size(292, 313);
             this.palettesTreeview.TabIndex = 0;
             // 
             // palettePicturebox
@@ -2788,7 +2820,7 @@
             this.palettePicturebox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.palettePicturebox.Location = new System.Drawing.Point(0, 0);
             this.palettePicturebox.Name = "palettePicturebox";
-            this.palettePicturebox.Size = new System.Drawing.Size(292, 261);
+            this.palettePicturebox.Size = new System.Drawing.Size(292, 275);
             this.palettePicturebox.TabIndex = 0;
             this.palettePicturebox.TabStop = false;
             this.palettePicturebox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDoubleClick);
@@ -2802,7 +2834,7 @@
             this.gfxtabPage.Controls.Add(this.groupBox3);
             this.gfxtabPage.Location = new System.Drawing.Point(4, 40);
             this.gfxtabPage.Name = "gfxtabPage";
-            this.gfxtabPage.Size = new System.Drawing.Size(292, 548);
+            this.gfxtabPage.Size = new System.Drawing.Size(292, 574);
             this.gfxtabPage.TabIndex = 6;
             this.gfxtabPage.Text = "Gfx";
             this.gfxtabPage.UseVisualStyleBackColor = true;
@@ -2976,7 +3008,7 @@
             this.debugtabPage.Controls.Add(this.groupBox1);
             this.debugtabPage.Location = new System.Drawing.Point(4, 40);
             this.debugtabPage.Name = "debugtabPage";
-            this.debugtabPage.Size = new System.Drawing.Size(292, 548);
+            this.debugtabPage.Size = new System.Drawing.Size(292, 574);
             this.debugtabPage.TabIndex = 11;
             this.debugtabPage.Text = "Debug";
             this.debugtabPage.UseVisualStyleBackColor = true;
@@ -2988,7 +3020,7 @@
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(292, 548);
+            this.groupBox1.Size = new System.Drawing.Size(292, 574);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Currently Loaded GFX";
@@ -3000,7 +3032,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(3, 65);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(286, 480);
+            this.panel3.Size = new System.Drawing.Size(286, 506);
             this.panel3.TabIndex = 1;
             // 
             // pictureBox1
@@ -3327,19 +3359,30 @@
             // 
             this.splitter1.Location = new System.Drawing.Point(300, 118);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 523);
+            this.splitter1.Size = new System.Drawing.Size(3, 549);
             this.splitter1.TabIndex = 15;
             this.splitter1.TabStop = false;
+            // 
+            // customPanel3
+            // 
+            this.customPanel3.AutoScroll = true;
+            this.customPanel3.Controls.Add(this.tabControl2);
+            this.customPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.customPanel3.Location = new System.Drawing.Point(303, 118);
+            this.customPanel3.Name = "customPanel3";
+            this.customPanel3.Size = new System.Drawing.Size(548, 549);
+            this.customPanel3.TabIndex = 19;
             // 
             // tabControl2
             // 
             this.tabControl2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tabControl2.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
             this.tabControl2.ItemSize = new System.Drawing.Size(48, 18);
-            this.tabControl2.Location = new System.Drawing.Point(303, 118);
+            this.tabControl2.Location = new System.Drawing.Point(0, 0);
+            this.tabControl2.Margin = new System.Windows.Forms.Padding(0);
             this.tabControl2.Name = "tabControl2";
+            this.tabControl2.Padding = new System.Drawing.Point(3, 3);
             this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(571, 22);
+            this.tabControl2.Size = new System.Drawing.Size(548, 24);
             this.tabControl2.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
             this.tabControl2.TabIndex = 17;
             this.tabControl2.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl2_DrawItem);
@@ -3347,12 +3390,26 @@
             this.tabControl2.SizeChanged += new System.EventHandler(this.tabControl2_SizeChanged);
             this.tabControl2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tabControl2_MouseClick);
             // 
-            // dungeonsPropertiesToolStripMenuItem
+            // customPanel4
             // 
-            this.dungeonsPropertiesToolStripMenuItem.Name = "dungeonsPropertiesToolStripMenuItem";
-            this.dungeonsPropertiesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.dungeonsPropertiesToolStripMenuItem.Text = "Dungeons Properties";
-            this.dungeonsPropertiesToolStripMenuItem.Click += new System.EventHandler(this.dungeonsPropertiesToolStripMenuItem_Click);
+            this.customPanel4.Controls.Add(this.button1);
+            this.customPanel4.Dock = System.Windows.Forms.DockStyle.Right;
+            this.customPanel4.Location = new System.Drawing.Point(851, 118);
+            this.customPanel4.Name = "customPanel4";
+            this.customPanel4.Size = new System.Drawing.Size(23, 549);
+            this.customPanel4.TabIndex = 20;
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.Location = new System.Drawing.Point(0, 0);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(23, 23);
+            this.button1.TabIndex = 18;
+            this.button1.Text = "X";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // panel1
             // 
@@ -3361,7 +3418,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 37);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(292, 529);
+            this.panel1.Size = new System.Drawing.Size(292, 555);
             this.panel1.TabIndex = 1;
             // 
             // objectViewer1
@@ -3382,7 +3439,7 @@
             this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.customPanel1.Location = new System.Drawing.Point(0, 20);
             this.customPanel1.Name = "customPanel1";
-            this.customPanel1.Size = new System.Drawing.Size(292, 546);
+            this.customPanel1.Size = new System.Drawing.Size(292, 572);
             this.customPanel1.TabIndex = 2;
             // 
             // spritesView1
@@ -3402,7 +3459,7 @@
             this.customPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.customPanel2.Location = new System.Drawing.Point(0, 167);
             this.customPanel2.Name = "customPanel2";
-            this.customPanel2.Size = new System.Drawing.Size(292, 381);
+            this.customPanel2.Size = new System.Drawing.Size(292, 407);
             this.customPanel2.TabIndex = 14;
             // 
             // gfxPicturebox
@@ -3420,8 +3477,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(874, 641);
-            this.Controls.Add(this.tabControl2);
+            this.ClientSize = new System.Drawing.Size(874, 667);
+            this.Controls.Add(this.customPanel3);
+            this.Controls.Add(this.customPanel4);
             this.Controls.Add(this.splitter1);
             this.Controls.Add(this.selectedGroupbox);
             this.Controls.Add(this.toolboxPanel);
@@ -3488,6 +3546,8 @@
             this.doorselectPanel.PerformLayout();
             this.potitemobjectPanel.ResumeLayout(false);
             this.potitemobjectPanel.PerformLayout();
+            this.customPanel3.ResumeLayout(false);
+            this.customPanel4.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.customPanel1.ResumeLayout(false);
             this.customPanel2.ResumeLayout(false);
@@ -3791,6 +3851,11 @@
         private System.Windows.Forms.ToolStripMenuItem showDoorIDsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showChestsIDsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dungeonsPropertiesToolStripMenuItem;
+        private System.Windows.Forms.Button button1;
+        private CustomPanel customPanel3;
+        private CustomPanel customPanel4;
+        private System.Windows.Forms.ToolStripMenuItem disableEntranceGFXToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem xScreenToolStripMenuItem;
     }
 }
 
