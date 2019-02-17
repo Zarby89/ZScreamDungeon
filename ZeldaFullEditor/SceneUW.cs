@@ -1392,15 +1392,6 @@ namespace ZeldaFullEditor
             move_y = my - dragy; //number of tiles mouse is compared to starting drag point Y
         }
 
-
-
-
-
-
-
-
-
-
         public bool isMouseCollidingWith(Object o, MouseEventArgs e)
         {
             int MX = e.X;
