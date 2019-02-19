@@ -39,7 +39,7 @@ namespace ZeldaFullEditor
         public bool specialDraw = false;
         public bool selected = false;
         public bool redraw = false;
-        public Sorting sort = Sorting.All;
+        public RoomObjectType sort = RoomObjectType.All;
         public bool preview = false;
         public int previewId = 0;
         public Room_Object(short id, byte x, byte y, byte size, byte layer = 0)
@@ -198,7 +198,7 @@ namespace ZeldaFullEditor
     }
 
     [Flags]
-    public enum Sorting
+    public enum RoomObjectType
     {
         All = 0, Wall = 1, Horizontal = 2, Vertical = 4, NonScalable = 8, Dungeons = 16,Floors = 32, Stairs = 64
     }

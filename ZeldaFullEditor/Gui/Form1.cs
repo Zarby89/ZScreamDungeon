@@ -1197,7 +1197,7 @@ namespace ZeldaFullEditor
             //objectViewer1.BeginUpdate();
             objectViewer1.items.Clear();
             //Sorting sort;
-            Sorting sortsizing = Sorting.All;
+            RoomObjectType sortsizing = RoomObjectType.All;
             string searchText = searchTextbox.Text.ToLower();
             //listView1
             objectViewer1.items.AddRange(listoftilesobjects
