@@ -167,26 +167,6 @@ namespace ZeldaFullEditor
 
         }
 
-        public void drawDoorsPosition()
-        {
-            /*if (mouse_down)
-            {
-                if (room.selectedObject.Count > 0)
-                {
-                    if (room.selectedObject[0] is Room_Object)
-                    {
-                        if (((room.selectedObject[0] as Room_Object).options & ObjectOption.Door) == ObjectOption.Door)
-                        {
-                            for (int i = 0; i < 12; i++)
-                            {
-                                graphics.DrawRectangles(new Pen(new SolidBrush(Color.FromArgb(10, 0, 200, 0))), doorArray);
-                            }
-                        }
-                    }
-                }
-            }*/
-        }
-
         //END OF DRAW CODE
 
     }
