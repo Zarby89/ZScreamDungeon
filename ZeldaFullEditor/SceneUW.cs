@@ -36,7 +36,8 @@ namespace ZeldaFullEditor
         Bitmap tempBitmap = new Bitmap(512,512);
         public short[] doorsObject = new short[] { 0x138, 0x139, 0x13A, 0x13B, 0xF9E, 0xF9F, 0xFA0, 0x12D, 0x12E, 0x12F, 0x12E, 0x12D, 0x4632, 0x4693 };
         Rectangle lastSelectedRectangle;
-        byte[] spriteFontSpacing = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4 };
+        DragMode dragMode = DragMode.none;
+        
         private void SceneUW_MouseWheel(object sender, MouseEventArgs e)
         {
             if (room.selectedObject.Count > 0)
@@ -64,19 +65,6 @@ namespace ZeldaFullEditor
             }
             this.DrawRoom();
             this.Refresh();
-        }
-        
-        public void drawText(Graphics g, int x, int y, string text)
-        {
-            text = text.ToUpper();
-            int cpos = 0;
-            for (int i = 0;i<text.Length;i++)
-            {
-                byte arrayPos = (byte)(text[i]-32);
-
-                g.DrawImage(mainForm.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos*8, 0, 8, 8, GraphicsUnit.Pixel);
-                cpos += spriteFontSpacing[arrayPos];
-            }
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -111,6 +99,85 @@ namespace ZeldaFullEditor
             {
                 mainForm.toolTip1.Hide(this);
             }
+
+            /*
+            //If there's at least more than one object selected
+            if (room.selectedObject.Count == 1)
+            {
+                if (!resizing)
+                {
+                    dragMode = DragMode.none;
+                    Room_Object obj = (room.selectedObject[0] as Room_Object);
+                    int yfix = 0;
+                    if (obj.diagonalFix)
+                    {
+                        yfix = -(6 + obj.size);
+                    }
+
+                    if (e.X >= (obj.x + obj.offsetX) * 8 && e.X <= ((obj.x + obj.offsetX) * 8) + obj.width)
+                    {
+                        //Are we inside from Left to Right
+                        //TOP RESIZE
+                        if (e.Y >= ((obj.y + obj.offsetY + yfix) * 8) - 4 && e.Y <= ((obj.y + obj.offsetY + yfix) * 8) + 4)
+                        {
+                            Cursor.Current = Cursors.SizeNS;
+                            dragMode = DragMode.top;
+                        }
+
+                        //BOTTOM RESIZE
+                        if (e.Y >= ((obj.y + obj.offsetY + yfix) * 8) + obj.height - 4 && e.Y <= ((obj.y + obj.offsetY + yfix) * 8) + obj.height + 4)
+                        {
+                            Cursor.Current = Cursors.SizeNS;
+                            dragMode = DragMode.down;
+                        }
+                    }
+
+                    if (e.Y >= (obj.y + obj.offsetY + yfix) * 8 && e.Y <= ((obj.y + obj.offsetY + yfix) * 8) + obj.height)
+                    {
+                        //Are we inside from Left to Right
+                        //LEFT RESIZE
+                        if (e.X >= ((obj.x + obj.offsetX) * 8) - 4 && e.X <= ((obj.x + obj.offsetX) * 8) + 4)
+                        {
+                            Cursor.Current = Cursors.SizeWE;
+                            dragMode = DragMode.left;
+                        }
+
+                        //RIGHT RESIZE
+                        if (e.X >= ((obj.x + obj.offsetX) * 8) + obj.width - 4 && e.X <= ((obj.x + obj.offsetX) * 8) + obj.width + 4)
+                        {
+                            Cursor.Current = Cursors.SizeWE;
+                            dragMode = DragMode.right;
+                        }
+
+                    }
+                }
+                else
+                {
+                    Room_Object obj = (room.selectedObject[0] as Room_Object);
+                    if (obj.sort == Sorting.Horizontal)
+                    {
+                        if (dragMode == DragMode.right)
+                        {
+
+                            if ((((e.X / 8) - dragx) * 8)+obj.width > (obj.sizewidth*(obj.size+1)))
+                            {
+                                if (obj.size < 15)
+                                {
+                                    obj.UpdateSize();
+                                    obj.size++;
+                                    
+                                }
+                            }
+                        }
+                    }
+                    DrawRoom();
+                    Refresh();
+                    return;
+                }
+
+            }
+            */
+
             /*if (mouse_down)
             {
                 updating_info = true;
@@ -134,7 +201,7 @@ namespace ZeldaFullEditor
                     }
                 }
             }*/
-
+            
 
 
             if (mouse_down)
@@ -162,7 +229,6 @@ namespace ZeldaFullEditor
                 }
                 else //if it a door
                 {
-                    //TODO : Fix door draw when dragged on side position are not accurate anymore
                     if (room.selectedObject.Count > 0)
                     {
                         if (room.selectedObject[0] is object_door)
@@ -316,7 +382,7 @@ namespace ZeldaFullEditor
                     int localCameraY = mainForm.selectedEntrance.YCamera - 116;
 
                     g.DrawRectangle(Pens.Orange, new Rectangle(localCameraX, localCameraY, 256, 224));
-                    Console.WriteLine(localCameraX + "," + localCameraY);
+                    //Console.WriteLine(localCameraX + "," + localCameraY);
                 }
             }
 
@@ -449,8 +515,7 @@ namespace ZeldaFullEditor
         {
             //graphics.Clear(this.BackColor);
         }
-
-
+        bool resizing = false;
         bool clickedObject = false;
         private void onMouseDown(object sender, MouseEventArgs e)
         {
@@ -464,7 +529,23 @@ namespace ZeldaFullEditor
             this.Focus();
             mainForm.activeScene = this;
 
-            if (mainForm.tabControl1.SelectedIndex == 2)//if we are on object tab
+            if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
+            {
+                if (room.selectedObject.Count == 1)
+                {
+                    if (dragMode != DragMode.none)
+                    {
+                        Room_Object obj = (room.selectedObject[0] as Room_Object);
+                        mouse_down = true;
+                        resizing = true;
+                        dragx = ((MX) / 8);
+                        dragy = ((MY) / 8);
+                        return;
+                    }
+                }
+            }
+
+                if (mainForm.tabControl1.SelectedIndex == 2)//if we are on object tab
             {
                 if ((byte)selectedMode <= 2) //if selected mode == bg1,bg2,bg3
                 {
@@ -594,6 +675,8 @@ namespace ZeldaFullEditor
                 else if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
                 {
 
+
+
                     dragx = ((MX) / 8);
                     dragy = ((MY) / 8);
                     bool already_in = false;
@@ -701,7 +784,7 @@ namespace ZeldaFullEditor
                 }
                 else if (selectedMode == ObjectMode.Doormode)
                 {
-                    Console.Write("Door mode");
+                   // Console.Write("Door mode");
                     room.selectedObject.Clear();
                     dragx = ((MX) / 8);
                     dragy = ((MY) / 8);
@@ -843,7 +926,12 @@ namespace ZeldaFullEditor
                         mainForm.comboBox1.Enabled = false;
                         mainForm.selectedGroupbox.Text = "Selected Object : " + id + " " + name;
                         mainForm.doorselectPanel.Visible = true;
-                        int apos = mainForm.door_index.Select((s, i) => new { s, i }).Where(x => x.s == (oo as object_door).door_type).Select(x => x.i).ToArray()[0];
+                        int[] aposes = mainForm.door_index.Select((s, i) => new { s, i }).Where(x => x.s == (oo as object_door).door_type).Select(x => x.i).ToArray();
+                        int apos = 0;
+                        if (aposes.Length > 0)
+                        {
+                            apos = aposes[0];   
+                        }
                         mainForm.comboBox2.SelectedIndex = apos;
                         for (int i = 0; i < room.tilesObjects.Count; i++)
                         {
@@ -1148,8 +1236,8 @@ namespace ZeldaFullEditor
 
         private unsafe void onMouseUp(object sender, MouseEventArgs e)
         {
-            
 
+            resizing = false;
             if (mouse_down == true)
             {
                 if (e.Button == MouseButtons.Left)
@@ -1421,8 +1509,17 @@ namespace ZeldaFullEditor
             {
                 //if ((o as Room_Object).layer == (byte)selectedMode || selectedMode == ObjectMode.Bgallmode)
                 //{
-                    if (MX >= ((o as Room_Object).x*8) && MX <= ((o as Room_Object).x*8) + ((o as Room_Object).width) &&
-                        MY >= ((o as Room_Object).y*8) && MY <= ((o as Room_Object).y*8) + ((o as Room_Object).height))
+
+
+                Room_Object obj = (o as Room_Object);
+                int yfix = 0;
+                if (obj.diagonalFix)
+                {
+                    yfix = -(6 + obj.size);
+                }
+
+                if (MX >= ((obj.x+obj.offsetX)*8) && MX <= ((obj.x+obj.offsetX)*8) + (obj.width) &&
+                        MY >= ((obj.y + obj.offsetY +yfix) *8) && MY <= ((obj.y + obj.offsetY+yfix) *8) + (obj.height))
                     {
                         return true;
                     }
@@ -1474,8 +1571,15 @@ namespace ZeldaFullEditor
                         if (move_x < 0) { Math.Abs(rx = dragx + move_x); }
                         if (move_y < 0) { Math.Abs(ry = dragy + move_y); }
 
-                        
-                            if ((new Rectangle(((o as Room_Object).x) * 8, ((o as Room_Object).y) * 8, ((o as Room_Object).width), ((o as Room_Object).height))).IntersectsWith(new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8)))
+                        Room_Object obj = (o as Room_Object);
+
+                        int yfix = 0;
+                        if (obj.diagonalFix)
+                        {
+                            yfix = -(6+obj.size);
+                        }
+
+                        if ((new Rectangle((obj.x+obj.offsetX) * 8, (obj.y + obj.offsetY + yfix) * 8, (obj.width + obj.offsetX), (obj.height + obj.offsetY + yfix))).IntersectsWith(new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8)))
                         {
                             if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Door) != ObjectOption.Door && (o.options & ObjectOption.Torch) != ObjectOption.Torch && (o.options & ObjectOption.Block) != ObjectOption.Block)
                             {
@@ -2007,7 +2111,9 @@ namespace ZeldaFullEditor
                     ro.setRoom(room);
                     ro.options = ObjectOption.Door;
                     room.tilesObjects.Add(ro);
-                    room.selectedObject.Add(ro);
+                    this.Focus();
+                    mainForm.activeScene = this;
+                    //room.selectedObject.Add(ro);
                 }
             }
             else if ((byte)selectedMode >= 0 && (byte)selectedMode < 3) //if != allbg

@@ -281,7 +281,7 @@ namespace ZeldaFullEditor
                 return (ushort)(hex.Value + 0x69);
             }*/
             //if code reach here for whatever reason return 0xFFFF as error result
-            Console.WriteLine("Reached FFFF in chartohex : " + c);
+           // Console.WriteLine("Reached FFFF in chartohex : " + c);
             return (ushort)(0xFFFF);
 
         }

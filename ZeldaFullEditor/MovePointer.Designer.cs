@@ -38,9 +38,10 @@
             // 
             this.textBox1.Location = new System.Drawing.Point(12, 77);
             this.textBox1.Name = "textBox1";
+            this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(407, 20);
             this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "110000";
+            this.textBox1.Text = "100000";
             // 
             // label1
             // 
@@ -82,9 +83,8 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button1;
+        public System.Windows.Forms.TextBox textBox1;
     }
 }

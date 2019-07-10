@@ -19,7 +19,7 @@ namespace ZeldaFullEditor
         public static int subtype2_tiles = 0x83F0; // JP = Same //i don't think that need a pointer
         public static int subtype3_tiles = 0x84F0; // JP = Same //i don't think that need a pointer
         public static int gfx_animated_pointer = 0x10275; //JP 0x10624 //long pointer
-
+        public static int overworldgfxGroups2 = 0x6073;
         public static int gfx_1_pointer = 0x6790; //2byte pointer bank 00 pc -> 0x4320  CF80
         public static int gfx_2_pointer = 0x6795; //D05F
         public static int gfx_3_pointer = 0x679A; //D13E
@@ -40,22 +40,29 @@ namespace ZeldaFullEditor
         public static int overworldPalGroup2 = 0xDE86C;
         public static int overworldPalGroup3 = 0xDE604;
         public static int overworldMapPalette = 0x7D1C;
-        public static int overworldSpritePalette = 0x7B81;
+        public static int overworldSpritePalette = 0x7B41;
         public static int overworldMapPaletteGroup = 0x75504;
-        public static int overworldSpriteset = 0x7A81;
+        public static int overworldSpritePaletteGroup = 0x75580;
+        public static int overworldSpriteset = 0x7A41;
+
         public static int overworldSpritesBegining = 0x4C881;
-        public static int overworldSpritesLW = 0x4C901;
-        public static int overworldSpritesDW = 0x4CA21;
+        public static int overworldSpritesAgahnim = 0x4CA21;
+        public static int overworldSpritesZelda = 0x4C901;
+
+        public static int overworldSpritesBeginingEditor = 0x108100;
+        public static int overworldSpritesAgahnimEditor = 0x108180;
+        public static int overworldSpritesZeldaEditor = 0x1082A0;
+
         public static int overworldItemsPointers = 0xDC2F9;
-        public static int overworldItemsBank = 0x1B;
+        public static int overworldItemsAddress = 0xDC8B9;
+        public static int overworldItemsBank = 0xDC8BF;
         public static int overworldMapSize = 0x12844;
-        public static int hardcodedGrassLW = 0x75645;
-        public static int hardcodedGrassDW = 0x7564F;
-        public static int hardcodedGrassSpecial = 0x75640;
         public static int mapGfx = 0x7C9C;
         public static int overlayPointers = 0x77664;
         public static int overlayPointersBank = 0x0E;
         public static int overworldTilesType = 0x71459;
+        public static int overworldMessages = 0x3F51D;
+
         //===========================================================================================
         //Overworld Exits/Entrances Variables
         //===========================================================================================
@@ -79,6 +86,18 @@ namespace ZeldaFullEditor
         public static int OWHolePos = 0xDB800;//(0x13 entries, 2 bytes each) modified(less 0x400) map16 coordinates for each hole
         public static int OWHoleArea = 0xDB826;//(0x13 entries, 2 bytes each) corresponding area numbers for each hole
         public static int OWHoleEntrance = 0xDB84C;//(0x13 entries, 1 byte each)  corresponding entrance numbers
+
+        public static int OWExitMapIdWhirlpool = 0x16AE5;
+        public static int OWExitVramWhirlpool = 0x16B07;
+        public static int OWExitYScrollWhirlpool = 0x16B29;
+        public static int OWExitXScrollWhirlpool = 0x16B4B;
+        public static int OWExitYPlayerWhirlpool = 0x16B6D;
+        public static int OWExitXPlayerWhirlpool = 0x16B8F;
+        public static int OWExitYCameraWhirlpool = 0x16BB1;
+        public static int OWExitXCameraWhirlpool = 0x16BD3;
+        public static int OWExitUnk1Whirlpool = 0x16BF5;
+        public static int OWExitUnk2Whirlpool = 0x16C17;
+        public static int OWWhirlpoolPosition = 0x16CF8;
 
         //===========================================================================================
         //Dungeon Related Variables
@@ -206,6 +225,28 @@ namespace ZeldaFullEditor
         public static int dungeons_bossrooms = 0x10954;//short value
 
 
+        //===========================================================================================
+        //Palettes Related Variables - This contain all the palettes of the game
+        //===========================================================================================
+        public static int overworldPaletteMain = 0xDE6C8;
+        public static int overworldPaletteAuxialiary = 0xDE86C;
+        public static int overworldPaletteAnimated = 0xDE604;
+        public static int globalSpritePalettesLW = 0xDD218;
+        public static int globalSpritePalettesDW = 0xDD290;
+        public static int armorPalettes = 0xDD308;//Green, Blue, Red, Bunny, Electrocuted (15 colors each)
+        public static int spritePalettesAux1 = 0xDD39E; //7 colors each
+        public static int spritePalettesAux2 = 0xDD446; //7 colors each
+        public static int spritePalettesAux3 = 0xDD4E0; //7 colors each
+        public static int swordPalettes = 0xDD630;//3 colors each - 4 entries
+        public static int shieldPalettes = 0xDD648;//4 colors each - 3 entries
+        public static int hudPalettes = 0xDD660;
+        public static int dungeonMapPalettes = 0xDD70A; //21 colors
+        public static int dungeonMainPalettes = 0xDD734;//(15*6) colors each - 20 entries
+        public static int dungeonMapBgPalettes = 0xDE544; //16*6
+        public static int hardcodedGrassLW = 0x5FEA9;//Mirrored Value at 0x75645 : 0x75625
+        public static int hardcodedGrassDW = 0x05FEB3;//0x7564F;
+        public static int hardcodedGrassSpecial = 0x75640;
+
         public static string[] RoomEffect = new string[]
         {
             "Nothing", "01", "Moving Floor", "Moving Water", "04", "Red Flashes", "Light Torchto See Floor", "Ganon Room"
@@ -221,8 +262,6 @@ namespace ZeldaFullEditor
         };
 
 
-        //TODO : On ROM Load if Pointers are at original location
-        //Expand ROM to 2MB if US, 4MB if VT, move Headers to new location
         public static bool Rando = false; //is it a rando rom?
         public static void Init_Jp(bool rando = false)
         {

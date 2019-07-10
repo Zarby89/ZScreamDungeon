@@ -19,7 +19,22 @@ namespace ZeldaFullEditor
         
         public static IntPtr currentgfx16Ptr = Marshal.AllocHGlobal((128 * 512) / 2);
         public static Bitmap currentgfx16Bitmap;
-        
+
+        public static IntPtr currentOWgfx16Ptr = Marshal.AllocHGlobal((128 * 512) / 2);
+        public static Bitmap currentOWgfx16Bitmap;
+
+        public static IntPtr previewgfx16Ptr = Marshal.AllocHGlobal((128 * 512) / 2);
+        public static Bitmap previewgfx16Bitmap;
+
+        public static IntPtr editort16Ptr = Marshal.AllocHGlobal((128 * 512));
+        public static Bitmap editort16Bitmap;
+
+        public static IntPtr editortilePtr = Marshal.AllocHGlobal((256));
+        public static Bitmap editortileBitmap;
+
+        public static IntPtr mapgfx16Ptr = Marshal.AllocHGlobal(1048576);
+        public static Bitmap mapgfx16Bitmap;
+
         public static bool[] isbpp3 = new bool[223];
 
         public static byte[] gfxdata;
@@ -52,6 +67,7 @@ namespace ZeldaFullEditor
         public static int animated_frame = 0;
         public static int animation_timer = 0;
 
+        public static bool useOverworldGFX = false;
         public unsafe static void DrawBG1()
         {
             var alltilesData = (byte*)currentgfx16Ptr.ToPointer();
@@ -142,8 +158,26 @@ namespace ZeldaFullEditor
                 }
             }
         }
-
-        public static byte[] CreateAllGfxDataRaw(byte[] romData)
+        public static void initGfx()
+        {
+            roomBgLayoutBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBgLayoutPtr);
+            roomBg1Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg1Ptr);
+            roomBg2Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg2Ptr);
+            allgfxBitmap = new Bitmap(128, 7104, 64, PixelFormat.Format4bppIndexed, allgfx16Ptr);
+            currentgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentgfx16Ptr);
+            roomObjectsBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomObjectsPtr);
+            currentOWgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentOWgfx16Ptr);
+            previewgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, previewgfx16Ptr);
+            mapgfx16Bitmap = new Bitmap(128, 7520 ,128,PixelFormat.Format8bppIndexed,mapgfx16Ptr);
+            editort16Bitmap = new Bitmap(128, 512, 128, PixelFormat.Format8bppIndexed, editort16Ptr);
+            editortileBitmap = new Bitmap(16, 16, 16, PixelFormat.Format8bppIndexed, editortilePtr);
+            for (int i = 0; i < 4096; i++)
+            {
+                tilesBg1Buffer[i] = 0xFFFF;
+                tilesBg2Buffer[i] = 0xFFFF;
+            }
+        }
+    public static byte[] CreateAllGfxDataRaw(byte[] romData)
         {
 
             //0-112 -> compressed 3bpp bgr -> (decompressed each) 0x600 bytes
@@ -206,6 +240,24 @@ namespace ZeldaFullEditor
             return buffer;
         }
 
+        public static unsafe void CopyTile8bpp16(int x, int y, int tile,int sizeX, IntPtr destbmpPtr, IntPtr sourcebmpPtr)
+        {
+            int sourceY = (tile / 8);
+            int sourceX = (tile) - ((sourceY) * 8);
+            int sourcePtrPos = ((tile - ((tile / 8) * 8)) * 16) + ((tile / 8) * 2048);//(sourceX * 16) + (sourceY * 128);
+            byte* sourcePtr = (byte*)sourcebmpPtr.ToPointer();
+
+            int destPtrPos = (x + (y * sizeX));
+            byte* destPtr = (byte*)destbmpPtr.ToPointer();
+
+            for (int ystrip = 0; ystrip < 16; ystrip++)
+            {
+                for (int xstrip = 0; xstrip < 16; xstrip++)
+                {
+                    destPtr[destPtrPos + xstrip + (ystrip * sizeX)] = sourcePtr[sourcePtrPos + xstrip + (ystrip * 128)];
+                }
+            }
+        }
 
         public static void CreateAllGfxData(byte[] romData)
         {
@@ -360,6 +412,14 @@ namespace ZeldaFullEditor
         }
         
 
+
+        //Todo: Change palette system entirely
+        //Palettes must be loaded on rom load then being able to be modified - Done
+        //without affecting the rom directly - Done
+        //Change the way the room load the palettes, here change the code to load from the Palettes class
+
+
+
         public static Color[,] editingPalettes; //dynamic
         public static Color[,] loadedPalettes = new Color[1,1];
         public static short paletteid;
@@ -372,6 +432,7 @@ namespace ZeldaFullEditor
             //id = dungeon palette id
             byte dungeon_palette_ptr = ROM.DATA[Constants.dungeons_palettes_groups + (id * 4)]; //id of the 1st group of 4
             short palette_pos = (short)((ROM.DATA[0xDEC4B+ dungeon_palette_ptr +1] << 8) + ROM.DATA[0xDEC4B+dungeon_palette_ptr]);
+            int pId = (palette_pos / 180);
             paletteid = palette_pos;
 
  
@@ -389,8 +450,10 @@ namespace ZeldaFullEditor
             {
                 for (int x = 0; x < 16; x++)
                 {
-                    palettes[x, y] = getColor((short)((ROM.DATA[0xDD660 + 1 + j] << 8) + (ROM.DATA[0xDD660 + j])));
-                    j += 2;
+                    //Hud Palette load from hud array instead of rom
+                    //getColor((short)((ROM.DATA[0xDD660 + 1 + j] << 8) + (ROM.DATA[0xDD660 + j])));
+                    palettes[x, y] = Palettes.HudPalettes[0][j];
+                    j += 1;
                 }
             }
 
@@ -403,13 +466,14 @@ namespace ZeldaFullEditor
                         palettes[x, y] = Color.Black;
                         continue;
                     }
-
-                    palettes[x, y] = getColor((short)((ROM.DATA[Constants.dungeons_palettes + palette_pos + 1 + i] << 8) + ROM.DATA[Constants.dungeons_palettes + palette_pos + i]));
+                    //Dungeon Palette
+                    //palettes[x, y] = getColor((short)((ROM.DATA[Constants.dungeons_palettes + palette_pos + 1 + i] << 8) + ROM.DATA[Constants.dungeons_palettes + palette_pos + i]));
+                    palettes[x, y] = Palettes.dungeonsMain_Palettes[pId][i];
                     if (x == 8)
                     {
                         palettes[x, y] = Color.Black;
                     }
-                    i += 2;
+                    i += 1;
                 }
             }
             return palettes;
@@ -417,58 +481,65 @@ namespace ZeldaFullEditor
         public static Color[,] loadedSprPalettes = new Color[1, 1];
         public static Color[,] LoadSpritesPalette(byte id)
         {
-            Color[,] palettes = new Color[8, 16];
+            Color[,] palettes = new Color[16, 8];
             byte sprite1_palette_ptr = ROM.DATA[Constants.dungeons_palettes_groups + (id * 4) + 1]; //id of the 1st group of 4
             byte sprite2_palette_ptr = (byte)(ROM.DATA[Constants.dungeons_palettes_groups + (id * 4) + 2] * 2); //id of the 1st group of 4
             byte sprite3_palette_ptr = (byte)(ROM.DATA[Constants.dungeons_palettes_groups + (id * 4) + 3] * 2); //id of the 1st group of 4
                                                                                                                 // Console.WriteLine(sprite2_palette_ptr);
-            short palette_pos1 = (short)((ROM.DATA[0xDEBC6 + sprite1_palette_ptr]));
-            short palette_pos2 = (short)((ROM.DATA[0xDEBD6 + sprite2_palette_ptr + 1] << 8) + ROM.DATA[0xDEBD6 + sprite2_palette_ptr]);
-            short palette_pos3 = (short)((ROM.DATA[0xDEBD6 + sprite3_palette_ptr + 1] << 8) + ROM.DATA[0xDEBD6 + sprite3_palette_ptr]);
-            short palette_pos4 = (short)(ROM.DATA[0xDEBC6 + 10]);
+            short palette_pos1 = (short)((ROM.DATA[0xDEBC6 + sprite1_palette_ptr])); // /14
+            short palette_pos2 = (short)((ROM.DATA[0xDEBD6 + sprite2_palette_ptr + 1] << 8) + ROM.DATA[0xDEBD6 + sprite2_palette_ptr]);// /14
+            short palette_pos3 = (short)((ROM.DATA[0xDEBD6 + sprite3_palette_ptr + 1] << 8) + ROM.DATA[0xDEBD6 + sprite3_palette_ptr]);// /14
+            short palette_pos4 = (short)(ROM.DATA[0xDEBC6 + 10]); //140?
             //id = dungeon palette id
             int i = 0;
-            for (int x = 0; x < 7; x++)
+            palettes[9, 5] = Palettes.swords_Palettes[0][0];
+            palettes[10, 5] = Palettes.swords_Palettes[0][1];
+            palettes[11, 5] = Palettes.swords_Palettes[0][2];
+            palettes[12, 5] = Palettes.shields_Palettes[0][0];
+            palettes[13, 5] = Palettes.shields_Palettes[0][1];
+            palettes[14, 5] = Palettes.shields_Palettes[0][2];
+            palettes[15, 5] = Palettes.shields_Palettes[0][3];
+
+            for (int x = 0; x < 15; x++)
             {
-                if (x == 0)
+                if (x < 7)
                 {
-                    for (int y = 0; y < 16; y++)
+                    palettes[x + 1, 0] = Palettes.spritesAux1_Palettes[(palette_pos1 / 14)][x];
+                    palettes[x + 1, 5] = Palettes.spritesAux3_Palettes[(palette_pos2 / 14)][x];
+                    palettes[x + 1, 6] = Palettes.spritesAux3_Palettes[(palette_pos3 / 14)][x];
+                    
+                }
+                else
+                {
+                    palettes[x+1, 0] = GFX.loadedPalettes[x - 7, 2];
+                    if (x < 14)
                     {
-                        palettes[0, y] = Color.Black;
+                        palettes[x + 2, 6] = Palettes.spritesAux2_Palettes[10][x - 7];
                     }
                 }
 
-
-                //
-                //variable SP-0
-                palettes[x + 1, 0] = getColor((short)((ROM.DATA[0xDD39E + palette_pos1 + i + 1] << 8) + ROM.DATA[0xDD39E + palette_pos1 + i]));
-                palettes[x + 1, 1] = GFX.loadedPalettes[x + 1, 2];
                 //SP-1
-                palettes[x + 1, 2] = getColor((short)((ROM.DATA[0xDD218 + i + 1] << 8) + ROM.DATA[0xDD218 + i]));
-                palettes[x + 1, 3] = getColor((short)((ROM.DATA[0xDD228 + i + 1] << 8) + ROM.DATA[0xDD228 + i]));
+                //getColor((short)((ROM.DATA[0xDD218 + i + 1] << 8) + ROM.DATA[0xDD218 + i]));
+                palettes[x + 1, 1] = Palettes.globalSprite_Palettes[0][x];
                 //SP-2
-                palettes[x + 1, 4] = getColor((short)((ROM.DATA[0xDD236 + i + 1] << 8) + ROM.DATA[0xDD236 + i]));
-                palettes[x + 1, 5] = getColor((short)((ROM.DATA[0xDD246 + i + 1] << 8) + ROM.DATA[0xDD246 + i]));
+                palettes[x + 1, 2] = Palettes.globalSprite_Palettes[0][x + (15)];
                 //SP-3
-                palettes[x + 1, 6] = getColor((short)((ROM.DATA[0xDD254 + i + 1] << 8) + ROM.DATA[0xDD254 + i]));
-                palettes[x + 1, 7] = getColor((short)((ROM.DATA[0xDD264 + i + 1] << 8) + ROM.DATA[0xDD264 + i]));
+                palettes[x + 1, 3] = Palettes.globalSprite_Palettes[0][x + (30)];
                 //SP-4
-                palettes[x + 1, 8] = getColor((short)((ROM.DATA[0xDD272 + i + 1] << 8) + ROM.DATA[0xDD272 + i]));
-                palettes[x + 1, 9] = getColor((short)((ROM.DATA[0xDD282 + i + 1] << 8) + ROM.DATA[0xDD282 + i]));
-                //SP-5
-                palettes[x + 1, 10] = getColor((short)((ROM.DATA[0xDD4E0 + palette_pos2 + i + 1] << 8) + ROM.DATA[0xDD4E0 + palette_pos2 + i]));
-                palettes[x + 1, 11] = Color.Black; //SWORD AND SHIELD
+                palettes[x + 1, 4] = Palettes.globalSprite_Palettes[0][x + (45)];
+
+                
                 //SP-6
-                palettes[x + 1, 12] = getColor((short)((ROM.DATA[0xDD4E0 + palette_pos3 + i + 1] << 8) + ROM.DATA[0xDD4E0 + palette_pos3 + i]));
-                palettes[x + 1, 13] = getColor((short)((ROM.DATA[0xDD446 + palette_pos4 + i + 1] << 8) + ROM.DATA[0xDD446 + palette_pos4 + i])); //liftable objects
+                /*palettes[x + 1, 12] = getColor((short)((ROM.DATA[0xDD4E0 AUX3 + palette_pos3 + i + 1] << 8) + ROM.DATA[0xDD4E0 + palette_pos3 + i]));
+                palettes[x + 1, 13] = getColor((short)((ROM.DATA[0xDD446 AUX2 + palette_pos4 + i + 1] << 8) + ROM.DATA[0xDD446 + palette_pos4 + i])); //liftable objects
+                */
+
 
 
 
                 //IF GHOST PALETTE?
                 //SP-7 ???? WTF IT LINK PALETTE
-                palettes[x + 1, 14] = getColor((short)((ROM.DATA[0xDD39E + palette_pos1 + i + 1] << 8) + ROM.DATA[0xDD39E + palette_pos1 + i]));
-
-                i += 2;
+                //palettes[x + 1, 14] = getColor((short)((ROM.DATA[0xDD39E + palette_pos1 + i + 1] << 8) + ROM.DATA[0xDD39E + palette_pos1 + i]));
             }
             return palettes;
 

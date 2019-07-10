@@ -34,14 +34,19 @@ namespace ZeldaFullEditor
         public byte nx, ny;
         public byte ox, oy;
         public int width, height;
+        public int basewidth, baseheight;
+        public int sizewidth, sizeheight;
         public Room room;
         public ObjectOption options = 0;//
-        public bool specialDraw = false;
+        public int offsetX = 0;
+        public int offsetY = 0;
+        public bool diagonalFix = false;
         public bool selected = false;
         public bool redraw = false;
         public Sorting sort = Sorting.All;
         public bool preview = false;
         public int previewId = 0;
+        byte previousSize = 0;
         public Room_Object(short id, byte x, byte y, byte size, byte layer = 0)
         {
             this.x = x;
@@ -55,7 +60,34 @@ namespace ZeldaFullEditor
             this.oy = y;
             width = 16;
             height = 16;
+        }
 
+        public void getObjectSize()
+        {
+            previousSize = size;
+            size = 1;
+            Draw();
+            getBaseSize();
+            UpdateSize();
+            size = 2;
+            Draw();
+            getSizeSized();
+            UpdateSize();
+            size = previousSize;
+        }
+
+
+        public void getBaseSize()
+        {
+            //set size on 1
+            basewidth = width;
+            baseheight = height;
+        }
+
+        public void getSizeSized()
+        {
+            sizewidth = (width - basewidth);
+            sizeheight = (height - baseheight);
         }
 
         public void setRoom(Room r)
@@ -84,6 +116,9 @@ namespace ZeldaFullEditor
 
         public void draw_diagonal_up()
         {
+            height = (size + 10) * 8;
+            width = (size + 6) * 8;
+            diagonalFix = true;
             for (int s = 0; s < size + 6; s++)
             {
                 draw_tile(tiles[0], ((s)) * 8, (0 - s) * 8);
@@ -160,7 +195,7 @@ namespace ZeldaFullEditor
             }
             else
             {
-                if (((xx / 8) + nx) + ((ny + (yy / 8)) * 64) < 4096 && ((xx / 8) + nx) + ((ny + (yy / 8)) * 64) >= 0)
+                if (((xx / 8) + nx + offsetX) + ((ny + offsetY + (yy / 8)) * 64) < 4096 && ((xx / 8) + nx + offsetX) + ((ny + offsetY + (yy / 8)) * 64) >= 0)
                 {
                     ushort td = GFX.getshortilesinfo(t.GetTileInfo());
                     if (layer == 0 || layer == 2 || allBgs)
@@ -174,11 +209,11 @@ namespace ZeldaFullEditor
                     }
                     if (layer == 1 || allBgs)
                     {
-                        if (tileUnder == GFX.tilesBg2Buffer[((xx / 8) + nx) + ((ny + (yy / 8)) * 64)])
+                        if (tileUnder == GFX.tilesBg2Buffer[((xx / 8) + nx + offsetX) + ((ny + offsetY + (yy / 8)) * 64)])
                         {
                             return;
                         }
-                        GFX.tilesBg2Buffer[((xx / 8) + nx) + ((ny + (yy / 8)) * 64)] = td;
+                        GFX.tilesBg2Buffer[((xx / 8) + nx) + offsetX + ((ny + offsetY + (yy / 8)) * 64)] = td;
                     }
                     if (width < xx + 8)
                     {

@@ -1786,10 +1786,6 @@ namespace ZeldaFullEditor
             //01 05 03 07
             //09 13 11 15
             int tid = 0;
-            for (int xx = 0; xx < 16; xx++)
-            {
-                Console.WriteLine(tiles[xx].id.ToString());
-            }
 
             draw_tile(tiles[00], (0) * 8, (0) * 8); draw_tile(tiles[04], (1) * 8, (0) * 8); draw_tile(tiles[02], (2) * 8, (0) * 8); draw_tile(tiles[06], (3) * 8, (0) * 8);
             draw_tile(tiles[08], (0) * 8, (1) * 8); draw_tile(tiles[12], (1) * 8, (1) * 8); draw_tile(tiles[10], (2) * 8, (1) * 8); draw_tile(tiles[14], (3) * 8, (1) * 8);

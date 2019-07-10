@@ -471,7 +471,7 @@ namespace ZeldaFullEditor
                     if (entrance_blockset != 0xFF) //3-6
                     {
                         //6 is wrong for the entrance? -NOP need to fix that 
-                        //TODO: Find why this is wrong
+                        //TODO: Find why this is wrong - Thats because of the stairs need to find a workaround
                         if (ROM.DATA[(Constants.entrance_gfx_group + (i - 3)) + (4 * entrance_blockset)] != 0)
                         {
                             blocks[i] = ROM.DATA[(Constants.entrance_gfx_group + (i-3)) + (4 * entrance_blockset)];
@@ -664,6 +664,10 @@ namespace ZeldaFullEditor
                             else //type1
                             {
                                 //xxxxxxss yyyyyyss iiiiiiii
+                                if (o.size > 16)
+                                {
+                                    o.size = 0;
+                                }
                                 byte b1 = (byte)((o.x << 2) + ((o.size >> 2) & 0x03));
                                 byte b2 = (byte)((o.y << 2) + (o.size & 0x03));
                                 byte b3 = (byte)(o.id);
@@ -870,6 +874,7 @@ namespace ZeldaFullEditor
             foreach (Room_Object o in tilesObjects)
             {
                 o.setRoom(this);
+                o.getObjectSize();
             }
 
         }
@@ -1024,21 +1029,6 @@ namespace ZeldaFullEditor
         
 
 
-        public void InitDrawBgr()
-        {
-            foreach (Room_Object o in tilesObjects)
-            {
-                if ((o.options & ObjectOption.Bgr) == ObjectOption.Bgr)
-                {
-                    draw_tiles(o,255);
-                }
-            }
-        }
-
-        public void draw_tiles(Room_Object o,byte layer = 255)
-        {
-
-        }
         public int roomSize = 0;
 
 

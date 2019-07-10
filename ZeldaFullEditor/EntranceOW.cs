@@ -6,18 +6,50 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-    public class EntranceOW
+    [Serializable]
+    public class EntranceOWEditor
     {
-        public short mapPos = 0;
-        public short mapId = 0;
-        public short entranceId = 0;
-        public bool selected = false;
-        public EntranceOW(short mapId, short mapPos, byte entranceId)
+        public int x;
+        public int y;
+        public ushort mapPos;
+        public byte entranceId;
+        public short mapId;
+        public bool isHole = false;
+        public bool deleted = false;
+        //mapId might be useless but we will need it to check if the entrance is in the darkworld or lightworld
+        public EntranceOWEditor(int x, int y, byte entranceId, short mapId, ushort mapPos)
         {
-            this.mapPos = mapPos;
-            this.mapId = mapId;
+            this.x = x;
+            this.y = y;
             this.entranceId = entranceId;
-           
+            this.mapId = mapId;
+            this.mapPos = mapPos;
+            //
+
+        }
+
+        public EntranceOWEditor Copy()
+        {
+            return new EntranceOWEditor(this.x,this.y,this.entranceId,this.mapId,this.mapPos);
+        }
+
+        public void updateMapStuff(short mapId)
+        {
+            this.mapId = mapId;
+
+            if (mapId >= 64)
+            {
+                mapId -= 64;
+            }
+            int mx = (mapId - ((mapId / 8) * 8));
+            int my = ((mapId / 8));
+
+            byte xx = (byte)((x - (mx * 512)) / 16);
+            byte yy = (byte)((y - (my * 512)) / 16);
+
+            mapPos = (ushort)((((yy) << 6) | (xx & 0x3F)) << 1);
+            //Console.WriteLine(xx + ", " +yy+ ", " +mapPos);
+
         }
 
     }

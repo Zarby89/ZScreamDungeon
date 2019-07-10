@@ -15,7 +15,8 @@ using ZeldaFullEditor.Properties;
 using Microsoft.VisualBasic;
 using System.IO.Compression;
 using System.Runtime.InteropServices;
-
+using System.Threading;
+using ZeldaFullEditor.Gui;
 
 namespace ZeldaFullEditor
 {
@@ -33,6 +34,7 @@ namespace ZeldaFullEditor
         PaletteViewer paletteViewer;
         public List<Room> opened_rooms = new List<Room>();
         public SceneUW activeScene;
+        public SceneOW activeOverworldScene;
         string projectFilename;
         public Entrance[] entrances = new Entrance[0x85];
         Entrance[] starting_entrances = new Entrance[0x07];
@@ -44,11 +46,14 @@ namespace ZeldaFullEditor
         public byte[] door_index = new byte[] { 0x00, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32 };
         public Bitmap spriteFont;
         public Bitmap moveableBlock;
+        
+        public List<tileGroup> tilesGroup = new List<tileGroup>();
+        
         private void Form1_Load(object sender, EventArgs e)
         {
             layoutForm = new RoomLayout(this);
             initialize_properties();
-            initialize_gfx();
+            GFX.initGfx();
             ROMStructure.loadDefaultProject();
             mapPicturebox.Image = new Bitmap(256, 304);
             mapPicturebox.Location = new Point(0, 26);
@@ -62,21 +67,10 @@ namespace ZeldaFullEditor
             roomProperty_spriteset.MouseWheel += RoomProperty_MouseWheel;
             roomProperty_blockset.MouseWheel += RoomProperty_MouseWheel;
             roomProperty_palette.MouseWheel += RoomProperty_MouseWheel;
-        }
 
-
-        public void initialize_gfx()
-        {
-            GFX.roomBgLayoutBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, GFX.roomBgLayoutPtr);
-            GFX.roomBg1Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, GFX.roomBg1Ptr);
-            GFX.roomBg2Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, GFX.roomBg2Ptr);
-            GFX.allgfxBitmap = new Bitmap(128, 7104, 64, PixelFormat.Format4bppIndexed, GFX.allgfx16Ptr);
-            GFX.currentgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, GFX.currentgfx16Ptr);
-            GFX.roomObjectsBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, GFX.roomObjectsPtr);
-            for (int i = 0; i < 4096; i++)
+            if (!Directory.Exists("GroupTiles"))
             {
-                GFX.tilesBg1Buffer[i] = 0xFFFF;
-                GFX.tilesBg2Buffer[i] = 0xFFFF;
+                Directory.CreateDirectory("GroupTiles");
             }
         }
 
@@ -201,11 +195,61 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            if (save.saveOWExits())
+            Palettes.SavePalettesToROM(ROM.DATA);
+
+            if (save.saveOWExits(activeOverworldScene))
             {
                 MessageBox.Show("Failed to save ??, no idea why ", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
+            }
+
+            if (save.saveOWEntrances(activeOverworldScene))
+            {
+                MessageBox.Show("Failed to save ??, no idea why ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+            if (save.saveOWItems(activeOverworldScene))
+            {
+                MessageBox.Show("Failed to save overworld items out of range ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+            if (save.SaveOWSprites(activeOverworldScene))
+            {
+                MessageBox.Show("Failed to save overworld sprites out of range ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+            if (save.saveOWTransports(activeOverworldScene))
+            {
+                MessageBox.Show("Failed to save overworld transports out of range ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+            if (save.saveMapProperties(activeOverworldScene))
+            {
+                MessageBox.Show("Failed to save overworld map properties ??? ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+            activeOverworldScene.SaveTiles();
+
+            Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
+            AsarCLR.Asar.init();
+            AsarCLR.Asar.patch("spritesmove.asm", ref ROM.DATA);
+
+
+            
+            foreach(AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
+            {
+                Console.WriteLine(error.Fullerrdata.ToString());
             }
 
             anychange = false;
@@ -246,10 +290,11 @@ namespace ZeldaFullEditor
         }
 
         //TODO: Redo the map data add border between EG Maps
-        
+
 
         public void LoadProject(string filename)
         {
+
             ROMStructure.loadDefaultProject();
             FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
             int size = (int)fs.Length;
@@ -260,14 +305,120 @@ namespace ZeldaFullEditor
             ROM.DATA = new byte[size];
             fs.Read(ROM.DATA, 0, (int)fs.Length);
             fs.Close();
+            //Randomize_Dungeons_Palettes();
+            //Randomize_Overworld_Palettes();
+            LoadPalettes();
+
             activeScene = new SceneUW(this);
             activeScene.Location = new Point(tabControl2.Location.X, tabControl2.Location.Y + 24);
             activeScene.Size = new Size(512, 512);
-            this.customPanel3.Controls.Add(activeScene);
+
+
+
+
+            activeOverworldScene = new SceneOW(this);
+            //activeOverworldScene.Location = new Point(groupBox4.Location.X, groupBox4.Location.Y+64);
+            activeOverworldScene.Size = new Size(4096, 4096);
+
+
+
+            this.panel5.Controls.Add(activeOverworldScene);
+
             initProject();
             projectFilename = filename;
             this.Text = "ZScream Magic - " + filename;
+
         }
+
+        public void LoadPalettes()
+        {
+            Palettes.CreateAllPalettes(ROM.DATA);
+            //Dungeons Palettes
+            for (int i = 0; i < 20; i++)
+            {
+                TreeNode tn = new TreeNode("Dungeon Pal - " + i.ToString());
+                tn.Tag = Palettes.dungeonsMain_Palettes[i];
+                palettesTreeview.Nodes["allPalettes"].Nodes[0].Nodes.Add(tn);
+            }
+            //Sword Palettes
+            for (int i = 0; i < 4; i++)
+            {
+                TreeNode tn = new TreeNode("Sword - " + i.ToString());
+                tn.Tag = Palettes.swords_Palettes[i];
+                palettesTreeview.Nodes["allPalettes"].Nodes[1].Nodes.Add(tn);
+            }
+            for (int i = 0; i < 3; i++)
+            {
+                TreeNode tn = new TreeNode("Shield - " + i.ToString());
+                tn.Tag = Palettes.shields_Palettes[i];
+                palettesTreeview.Nodes["allPalettes"].Nodes[2].Nodes.Add(tn);
+            }
+
+            for (int i = 0; i < 3; i++)
+            {
+                TreeNode tn = new TreeNode("Armor - " + i.ToString());
+                tn.Tag = Palettes.armors_Palettes[i];
+                palettesTreeview.Nodes["allPalettes"].Nodes[3].Nodes.Add(tn);
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                TreeNode tn = new TreeNode("Global Sprites - " + i.ToString());
+                tn.Tag = Palettes.globalSprite_Palettes[i];
+                palettesTreeview.Nodes["allPalettes"].Nodes[4].Nodes.Add(tn);
+            }
+
+            for (int i = 0; i < 12; i++)
+            {
+                TreeNode tn = new TreeNode("Sprite Aux1 - " + i.ToString());
+                tn.Tag = Palettes.spritesAux1_Palettes[i];
+                palettesTreeview.Nodes["allPalettes"].Nodes[5].Nodes.Add(tn);
+            }
+            for (int i = 0; i < 11; i++)
+            {
+                TreeNode tn = new TreeNode("Sprite Aux2 - " + i.ToString());
+                tn.Tag = Palettes.spritesAux2_Palettes[i];
+                palettesTreeview.Nodes["allPalettes"].Nodes[5].Nodes.Add(tn);
+            }
+            for (int i = 0; i < 24; i++)
+            {
+                TreeNode tn = new TreeNode("Sprite Aux3 - " + i.ToString());
+                tn.Tag = Palettes.spritesAux3_Palettes[i];
+                palettesTreeview.Nodes["allPalettes"].Nodes[5].Nodes.Add(tn);
+            }
+
+            for (int i = 0; i < 6; i++)
+            {
+                TreeNode tn = new TreeNode("Overworld Main - " + i.ToString());
+                tn.Tag = Palettes.overworld_MainPalettes[i];
+                palettesTreeview.Nodes["allPalettes"].Nodes[6].Nodes.Add(tn);
+            }
+
+            for (int i = 0; i < 20; i++)
+            {
+                TreeNode tn = new TreeNode("Overworld Aux - " + i.ToString());
+                tn.Tag = Palettes.overworld_AuxPalettes[i];
+                palettesTreeview.Nodes["allPalettes"].Nodes[7].Nodes.Add(tn);
+            }
+
+            for (int i = 0; i < 14; i++)
+            {
+                TreeNode tn = new TreeNode("Overworld Animated - " + i.ToString());
+                tn.Tag = Palettes.overworld_AnimatedPalettes[i];
+                palettesTreeview.Nodes["allPalettes"].Nodes[8].Nodes.Add(tn);
+            }
+            //TODO : Add Missing Palettes here
+
+            for (int i = 0; i < 2; i++)
+            {
+                TreeNode tn = new TreeNode("Hud Pal - " + i.ToString());
+                tn.Tag = Palettes.HudPalettes[i];
+                palettesTreeview.Nodes["allPalettes"].Nodes[11].Nodes.Add(tn);
+            }
+
+
+        }
+
 
         public void initRoomsMap()
         {
@@ -300,24 +451,577 @@ namespace ZeldaFullEditor
             }
         }
 
+        public void Randomize_Dungeons_Palettes()
+        {
+            for (int i = 0; i < 20; i++)
+            {
+                randomize_wall(i);
+                randomize_floors(i);
+            }
+        }
+
+        public void randomize_wall(int dungeon, int brigthness = 60)
+        {
+
+            Color wall_color = getColorBrigthness();
+
+            for (int i = 0; i < 5; i++)
+            {
+                //166
+                byte shadex = (byte)(10 - (i * 2));
+                setColor((0x0DD734 + (0xB4 * dungeon)) + (i * 2), wall_color, shadex);
+                setColor((0x0DD770 + (0xB4 * dungeon)) + (i * 2), wall_color, shadex);
+                setColor((0x0DD744 + (0xB4 * dungeon)) + (i * 2), wall_color, shadex);
+
+                if (dungeon == 0)
+                {
+                    setColor((0x0DD7CA + (0xB4 * dungeon)) + (i * 2), wall_color, shadex);
+                }
+            }
+
+            if (dungeon == 2)
+            {
+                setColor((0x0DD74E + (0xB4 * dungeon)), wall_color, 3);
+                setColor((0x0DD74E + 2 + (0xB4 * dungeon)), wall_color, 5);
+                setColor((0x0DD73E + (0xB4 * dungeon)), wall_color, 3);
+                setColor((0x0DD73E + 2 + (0xB4 * dungeon)), wall_color, 5);
+
+            }
+
+            //Ceiling
+            setColor(0x0DD7E4 + (0xB4 * dungeon), wall_color, (byte)(4)); //outer wall darker
+            setColor(0x0DD7E6 + (0xB4 * dungeon), wall_color, (byte)(2)); //outter wall brighter
+
+            //pits walls
+            setColor(0x0DD7DA + (0xB4 * dungeon), wall_color, (byte)(10));
+            setColor(0x0DD7DC + (0xB4 * dungeon), wall_color, (byte)(8));
+
+
+            Color pot_color = getColorBrigthness();
+            //Pots
+            setColor(0x0DD75A + (0xB4 * dungeon), pot_color, 7);
+            setColor(0x0DD75C + (0xB4 * dungeon), pot_color, 1);
+            setColor(0x0DD75E + (0xB4 * dungeon), pot_color, 3);
+
+            //Wall Contour?
+            //f,c,m
+            setColor(0x0DD76A + (0xB4 * dungeon), wall_color, 7);
+            setColor(0x0DD76C + (0xB4 * dungeon), wall_color, 2);
+            setColor(0x0DD76E + (0xB4 * dungeon), wall_color, 4);
+
+
+            Color chest_color = getColorBrigthness();
+            setColor(0x0DD7AE + (0xB4 * dungeon), chest_color, 2);
+            setColor(0x0DD7B0 + (0xB4 * dungeon), chest_color, 0);
+
+        }
+        Random rand = new Random();
+        public Color getColorBrigthness()
+        {
+            int brigthness = 60;
+            int r = brigthness + rand.Next(240 - brigthness);
+            int g = brigthness + rand.Next(240 - brigthness);
+            int b = brigthness + rand.Next(240 - brigthness);
+
+            return Color.FromArgb(r, g, b);
+        }
+
+        public void randomize_floors(int dungeon, int brigthness = 60)
+        {
+
+            Color floor_color1 = getColorBrigthness();
+            Color floor_color2 = getColorBrigthness();
+            Color floor_color3 = getColorBrigthness();
+
+            for (int i = 0; i < 3; i++)
+            {
+                byte shadex = (byte)(6 - (i * 2));
+                setColor(0x0DD764 + (0xB4 * dungeon) + (i * 2), floor_color1, shadex);
+                setColor(0x0DD782 + (0xB4 * dungeon) + (i * 2), floor_color1, (byte)(shadex + 3));
+
+                setColor(0x0DD7A0 + (0xB4 * dungeon) + (i * 2), floor_color2, shadex);
+                setColor(0x0DD7BE + (0xB4 * dungeon) + (i * 2), floor_color2, (byte)(shadex + 3));
+            }
+
+            setColor(0x0DD7E2 + (0xB4 * dungeon), floor_color3, 3);
+            setColor(0x0DD796 + (0xB4 * dungeon), floor_color3, 4);
+        }
+
+        public void setColor(int address, Color col, byte shade)
+        {
+            int r = col.R;
+            int g = col.G;
+            int b = col.B;
+
+            for (int i = 0; i < shade; i++)
+            {
+                r = (r - (r / 5));
+                g = (g - (g / 5));
+                b = (b - (b / 5));
+            }
+
+            r = (int)((float)r / 255f * 0x1F);
+            g = (int)((float)g / 255f * 0x1F);
+            b = (int)((float)b / 255f * 0x1F);
+
+
+            short s = (short)(((b) << 10) | ((g) << 5) | ((r) << 0));
+
+            ROM.DATA[address] = (byte)(s & 0x00FF);
+            ROM.DATA[address + 1] = (byte)((s >> 8) & 0x00FF);
+        }
+
+
+        public void Randomize_Overworld_Palettes()
+        {
+            Color grass = Color.FromArgb(60 + (rand.Next(155)), 60 + rand.Next(155), 60 + rand.Next(155));
+            Color grass2 = Color.FromArgb(60 + (rand.Next(155)), 60 + rand.Next(155), 60 + rand.Next(155));
+            Color grass3 = Color.FromArgb(60 + (rand.Next(155)), 60 + rand.Next(155), 60 + rand.Next(155));
+            Color dirt = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
+            Color dirt2 = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
+            //Color grass = Color.FromArgb(230, 230, 230);
+            //Color dirt = Color.FromArgb(140,120,64);
+
+            // TODO: unused?
+            Color wall = Color.FromArgb(rand.Next(255), rand.Next(255), rand.Next(255));
+
+            // TODO: unused?
+            Color roof = Color.FromArgb(rand.Next(255), rand.Next(255), rand.Next(255));
+
+
+            Color btreetrunk = Color.FromArgb(172, 144, 96);
+
+            // TODO: unused?
+            Color treetrunk = Color.FromArgb(btreetrunk.R - 40 + rand.Next(80), btreetrunk.G - 20 + rand.Next(30), btreetrunk.B - 30 + rand.Next(60));
+
+
+            Color treeleaf = Color.FromArgb(grass.R - 20 + rand.Next(30), grass.G - 20 + rand.Next(30), grass.B - 20 + rand.Next(30));
+
+            // TODO: unused?
+            Color bridge = Color.FromArgb(rand.Next(255), rand.Next(255), rand.Next(255));
+
+            //Hardcoded Grass (hobo an special area?)
+            setColor(0x67FB4, grass, 0);
+            setColor(0x67F94, grass, 0);
+            setColor(0x67FC6, grass, 0);
+            setColor(0x67FE6, grass, 0);
+
+            setColor(0x05FEA9, grass, 0);//hardcoded grass palette LW
+
+            setColor(0x0DD4AC, grass, 2); //desert shadow
+
+            setColor(0x0DE6DE, grass2, 2);
+            setColor(0x0DE75C, grass2, 2);
+            setColor(0x0DE786, grass2, 2);
+            setColor(0x0DE794, grass2, 2);
+            setColor(0x0DE99A, grass2, 2);
+
+            setColor(0x0DE6E0, grass2, 1);
+            setColor(0x0DE6E2, grass2, 0);
+
+            setColor(0x0DD4AE, grass2, 1);
+            setColor(0x0DE6E0, grass2, 1);
+            setColor(0x0DE9FA, grass2, 1);
+            setColor(0x0DEA0E, grass2, 1);
+
+            setColor(0x0DE9FE, grass2, 0);
+
+            setColor(0x0DD3D2, grass2, 2);
+            setColor(0x0DE88C, grass2, 2);
+            setColor(0x0DE8A8, grass2, 2);
+            setColor(0x0DE9F8, grass2, 2);
+            setColor(0x0DEA4E, grass2, 2);
+            setColor(0x0DEAF6, grass2, 2);
+            setColor(0x0DEB2E, grass2, 2);
+            setColor(0x0DEB4A, grass2, 2);
+
+            int i = 0;
+            setColor(0x0DE892 + (i * 70), grass, 1);
+            setColor(0x0DE886 + (i * 70), grass, 0);
+
+            setColor(0x0DE6D0 + (i * 70), grass, 1);//grass shade
+            setColor(0x0DE6D2 + (i * 70), grass, 0); //grass
+
+
+
+            setColor(0x0DE6FA + (i * 70), grass, 3);
+            setColor(0x0DE6FC + (i * 70), grass, 0);//grass shade2
+            setColor(0x0DE6FE + (i * 70), grass, 0);//??
+
+            setColor(0x0DE884 + (i * 70), grass, 4);//tree shadow
+
+
+            setColor(0x0DE70A + (i * 70), grass, 0); //grass?
+            setColor(0x0DE708 + (i * 70), grass, 2); //bush?
+
+            setColor(0x0DE70C + (i * 70), grass, 1); //bush?
+
+            setColor(0x0DE6D4 + (i * 70), dirt, 2);
+
+            setColor(0x0DE6CA + (i * 70), dirt, 5);
+            setColor(0x0DE6CC + (i * 70), dirt, 4);
+            setColor(0x0DE6CE + (i * 70), dirt, 3);
+            setColor(0x0DE6E2 + (i * 70), dirt, 2);
+
+            setColor(0x0DE6D8 + (i * 70), dirt, 5);
+            setColor(0x0DE6DA + (i * 70), dirt, 4);
+            setColor(0x0DE6DC + (i * 70), dirt, 2);
+            setColor(0x0DE6F0 + (i * 70), dirt, 2);
+
+            setColor(0x0DE6E6 + (i * 70), dirt, 5);
+            setColor(0x0DE6E8 + (i * 70), dirt, 4);
+            setColor(0x0DE6EA + (i * 70), dirt, 2);
+            setColor(0x0DE6EC + (i * 70), dirt, 4);
+            setColor(0x0DE6EE + (i * 70), dirt, 2);
+            setColor(0x0DE6F0 + (i * 70), dirt, 2);
+
+            
+
+
+            //lake borders
+            setColor(0x0DE91E, grass, 0);
+            setColor(0x0DE920, dirt, 2);
+            setColor(0x0DE916, dirt, 3);
+
+
+            setColor(0x0DE932, dirt, 2);
+            setColor(0x0DE934, dirt, 3);
+            setColor(0x0DE936, dirt, 4);
+            setColor(0x0DE93C, dirt, 1);
+
+
+            setColor(0x0DE938, grass, 2);
+            setColor(0x0DE93A, grass, 0);
+
+
+
+
+            setColor(0x0DE92C, grass, 0);
+            setColor(0x0DE93A, grass, 0);
+            setColor(0x0DE93C, dirt, 2);
+
+
+            setColor(0x0DE91C, grass, 1);
+
+            setColor(0x0DE92A, grass, 1);
+            setColor(0x0DE938, grass, 1);//darker?
+
+            //zora domain
+            setColor(0x0DEA1C, grass, 0);
+            setColor(0x0DEA2A, grass, 0);
+            setColor(0x0DEA30, grass, 0);
+
+            setColor(0x0DEA2E, dirt, 5);
+            setColor(0X067FE1, grass, 3); //Zora Domain Shadow
+
+            setColor(0xDE9F2, dirt, 3); //Desert edges
+
+            setColor(0X0DE6D0, grass, 3); //Test2
+            setColor(0x0DE884, grass, 3);
+            setColor(0x0DE8AE, grass, 3);
+            setColor(0x0DE8BE, grass, 3);
+            setColor(0x0DE8E4, grass, 3);
+            setColor(0x0DE938, grass, 3);
+            setColor(0x0DE9C4, grass, 3);
+
+
+            setColor(0x0DE6D0, grass, 4);//tree shadow
+
+            setColor(0x0DE890, treeleaf, 1);
+            setColor(0x0DE894, treeleaf, 0);
+
+            Color water = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
+            setColor(0x0DE924, water, 3);//water dark
+            setColor(0x0DE668, water, 3);//water dark
+            setColor(0x0DE66A, water, 2);//water light
+            setColor(0x0DE670, water, 1); // water light
+            setColor(0x0DE918, water, 1);// water light
+            setColor(0x0DE66C, water, 0); //water lighter
+            setColor(0x0DE91A, water, 0); //water lighter
+            setColor(0x0DE92E, water, 1);// water light
+
+            setColor(0x0DEA1A, water, 1);//light
+            setColor(0x0DEA16, water, 3);//dark
+            setColor(0x0DEA10, water, 4);//darker
+
+
+            setColor(0x0DE66E, dirt, 3); //ground dark
+
+            setColor(0x0DE672, dirt, 2);  // ground light
+
+
+            setColor(0x0DE932, dirt, 4);  //ground darker
+            setColor(0x0DE934, dirt, 3);  //ground dark
+            setColor(0x0DE936, dirt, 2);  // ground light
+            setColor(0x0DE93C, dirt, 1);  // ground lighter
+
+            setColor(0x0DE756, dirt2, 4);
+            setColor(0x0DE764, dirt2, 4);
+            setColor(0x0DE772, dirt2, 4);
+            setColor(0x0DE994, dirt2, 4);
+            setColor(0x0DE9A2, dirt2, 4);
+
+            setColor(0x0DE758, dirt2, 3);
+            setColor(0x0DE766, dirt2, 3);
+            setColor(0x0DE774, dirt2, 3);
+            setColor(0x0DE996, dirt2, 3);
+            setColor(0x0DE9A4, dirt2, 3);
+
+
+            setColor(0x0DE75A, dirt2, 2);
+            setColor(0x0DE768, dirt2, 2);
+            setColor(0x0DE776, dirt2, 2);
+            setColor(0x0DE778, dirt2, 2);
+            setColor(0x0DE998, dirt2, 2);
+            setColor(0x0DE9A6, dirt2, 2);
+
+
+            setColor(0x0DE9AC, dirt2, 1);
+            setColor(0x0DE99E, dirt2, 1);
+            setColor(0x0DE760, dirt2, 1);
+            setColor(0x0DE77A, dirt2, 1);
+            setColor(0x0DE77C, dirt2, 1);
+            setColor(0x0DE798, dirt2, 1);
+            setColor(0x0DE664, dirt2, 1);
+            setColor(0x0DE980, dirt2, 1);
+
+
+
+            setColor(0x0DE75C, grass3, 2);
+            setColor(0x0DE786, grass3, 2);
+            setColor(0x0DE794, grass3, 2);
+            setColor(0x0DE99A, grass3, 2);
+
+            setColor(0x0DE75E, grass3, 1);
+            setColor(0x0DE788, grass3, 1);
+            setColor(0x0DE796, grass3, 1);
+            setColor(0x0DE99C, grass3, 1);
+
+
+            Color clouds = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
+            setColor(0x0DE76A, clouds, 2);
+            setColor(0x0DE9A8, clouds, 2);
+
+            setColor(0x0DE76E, clouds, 0);
+            setColor(0x0DE9AA, clouds, 0);
+            //setColor(0x0DE8E8, clouds,0);
+            setColor(0x0DE8DA, clouds, 0);
+            setColor(0x0DE8D8, clouds, 0);
+            setColor(0x0DE8D0, clouds, 0);
+
+            setColor(0x0DE98C, clouds, 2);
+            setColor(0x0DE990, clouds, 0);
+
+
+
+            //DW
+            Color dwdirt = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
+            Color dwgrass = Color.FromArgb(60 + (rand.Next(155)), 60 + rand.Next(155), 60 + rand.Next(155));
+            Color dwwater = Color.FromArgb(60 + (rand.Next(155)), 60 + rand.Next(155), 60 + rand.Next(155));
+            Color dwtree = Color.FromArgb(dwgrass.R - 20 + rand.Next(30), dwgrass.G - 20 + rand.Next(30), dwgrass.B - 20 + rand.Next(30));
+
+
+            setColor(0x05FEB3, dwgrass, 1);//hardcoded grass color in dw
+
+
+            setColor(0x0DEB34, dwtree, 4);
+            setColor(0x0DEB30, dwtree, 3);
+            setColor(0x0DEB32, dwtree, 1);
+
+            //dwdirt - dark to light
+            setColor(0x0DE710, dwdirt, 5);
+            setColor(0x0DE71E, dwdirt, 5);
+            setColor(0x0DE72C, dwdirt, 5);
+            setColor(0x0DEAD6, dwdirt, 5);
+
+            setColor(0x0DE712, dwdirt, 4);
+            setColor(0x0DE720, dwdirt, 4);
+            setColor(0x0DE72E, dwdirt, 4);
+            setColor(0x0DE660, dwdirt, 4);
+            setColor(0x0DEAD8, dwdirt, 4);
+
+            setColor(0x0DEADA, dwdirt, 3);
+            setColor(0x0DE714, dwdirt, 3);
+            setColor(0x0DE722, dwdirt, 3);
+            setColor(0x0DE730, dwdirt, 3);
+            setColor(0x0DE732, dwdirt, 3);
+
+            setColor(0x0DE734, dwdirt, 2);
+            setColor(0x0DE736, dwdirt, 2);
+            setColor(0x0DE728, dwdirt, 2);
+            setColor(0x0DE71A, dwdirt, 2);
+            setColor(0x0DE664, dwdirt, 2);
+            setColor(0x0DEAE0, dwdirt, 2);
+
+
+            //grass
+            setColor(0x0DE716, dwgrass, 3);
+            setColor(0x0DE740, dwgrass, 3);
+            setColor(0x0DE74E, dwgrass, 3);
+            setColor(0x0DEAC0, dwgrass, 3);
+            setColor(0x0DEACE, dwgrass, 3);
+            setColor(0x0DEADC, dwgrass, 3);
+            setColor(0x0DEB24, dwgrass, 3);
+
+            setColor(0x0DE752, dwgrass, 2);
+
+            setColor(0x0DE718, dwgrass, 1);
+            setColor(0x0DE742, dwgrass, 1);
+            setColor(0x0DE750, dwgrass, 1);
+            setColor(0x0DEB26, dwgrass, 1);
+            setColor(0x0DEAC2, dwgrass, 1);
+            setColor(0x0DEAD0, dwgrass, 1);
+            setColor(0x0DEADE, dwgrass, 1);
+
+
+
+            //water
+
+            setColor(0x0DE65A, dwwater, 5); //very dark water
+
+            setColor(0x0DE65C, dwwater, 3); //main water color
+            setColor(0x0DEAC8, dwwater, 3); //main water color
+            setColor(0x0DEAD2, dwwater, 2); //main water color
+            setColor(0x0DEABC, dwwater, 2);//light
+            setColor(0x0DE662, dwwater, 2); //light
+            setColor(0x0DE65E, dwwater, 1); //lighter
+            setColor(0x0DEABE, dwwater, 1);//lighter
+            setColor(0x0DEA98, dwwater, 2);//light
+
+            setColor(0xDE86C + 0x232, dwwater, 2); //main water color
+            setColor(0xDE86C + 0x240, dwwater, 3); //main water color
+            setColor(0xDE86C + 0x242, dwwater, 3); //main water color
+            setColor(0xDE86C + 0x24A, dwwater, 2); //main water color
+
+            //Death Mountain
+
+
+            //dw dm
+            //dirt
+            Color dwdmdirt = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
+            Color dwdmgrass = Color.FromArgb(60 + (rand.Next(155)), 60 + rand.Next(155), 60 + rand.Next(155));
+
+
+            //Flashes on DM
+            setColor(0x0DEA1A, dwdmgrass, 1);
+            
+            setColor(0x0DEA16, dwdmgrass, 1);
+            
+
+            setColor(0x067FE1, dwdmgrass, 1);
+            
+            setColor(0x067F94, dwdmgrass, 1);
+            
+            setColor(0x067FB4, dwdmgrass, 1);
+            
+            setColor(0x067FC6, dwdmgrass, 1);
+            
+            setColor(0x067FE6, dwdmgrass, 1);
+
+            setColor(0x0DD4A0, dwdmgrass, 1);
+            
+            setColor(0x0DE8E6, dwdmgrass, 1); ////grass
+
+
+            setColor(0x0DEA1C, dwdmgrass, 1);////grass
+
+
+
+            setColor(0x0DE79A, dwdmdirt, 6); //super dark (6)
+            setColor(0x0DE7A8, dwdmdirt, 6);
+            setColor(0x0DE7B6, dwdmdirt, 6);
+            setColor(0x0DEB60, dwdmdirt, 6);
+            setColor(0x0DEB6E, dwdmdirt, 6);
+            setColor(0x0DE93E, dwdmdirt, 6);
+            setColor(0x0DE94C, dwdmdirt, 6);
+            setColor(0x0DEBA6, dwdmdirt, 6);
+
+            setColor(0x0DE79C, dwdmdirt, 4); //dark (4)
+            setColor(0x0DE7AA, dwdmdirt, 4);
+            setColor(0x0DE7B8, dwdmdirt, 4);
+            setColor(0x0DE7BE, dwdmdirt, 4);
+            setColor(0x0DE7CC, dwdmdirt, 4);
+            setColor(0x0DE7DA, dwdmdirt, 4);
+            setColor(0x0DEB70, dwdmdirt, 4);
+            setColor(0x0DEBA8, dwdmdirt, 4);
+            setColor(0x0DEB72, dwdmdirt, 3);
+            setColor(0x0DEB74, dwdmdirt, 3);
+            //light (3)
+            setColor(0x0DE79E, dwdmdirt, 3);
+            setColor(0x0DE7AC, dwdmdirt, 3);
+            setColor(0x0DEB6A, dwdmdirt, 3);
+            setColor(0x0DE948, dwdmdirt, 3);
+            setColor(0x0DE956, dwdmdirt, 3);
+            setColor(0x0DE964, dwdmdirt, 3);
+            setColor(0x0DEBAA, dwdmdirt, 3);
+            setColor(0x0DE7A0, dwdmdirt, 3);
+            setColor(0x0DE7BC, dwdmgrass, 3);
+
+            //lighter (2)
+            setColor(0x0DEBAC, dwdmdirt, 2);
+
+            setColor(0x0DE7AE, dwdmdirt, 2);
+            setColor(0x0DE7C2, dwdmdirt, 2);
+            setColor(0x0DE7A6, dwdmdirt, 2);
+            setColor(0x0DEB7A, dwdmdirt, 2);
+            setColor(0x0DEB6C, dwdmdirt, 2);
+            setColor(0x0DE7C0, dwdmdirt, 2);
+
+            //grass
+            setColor(0x0DE7A2, dwdmgrass, 3);
+            setColor(0x0DE7BE, dwdmgrass, 3);
+            setColor(0x0DE7CC, dwdmgrass, 3);
+            setColor(0x0DE7DA, dwdmgrass, 3);
+            setColor(0x0DEB6A, dwdmgrass, 3);
+            setColor(0x0DE948, dwdmgrass, 3);
+            setColor(0x0DE956, dwdmgrass, 3);
+            setColor(0x0DE964, dwdmgrass, 3);
+
+
+            setColor(0x0DE7CE, dwdmgrass, 1);
+            setColor(0x0DE7A4, dwdmgrass, 1);
+            setColor(0x0DEBA2, dwdmgrass, 1);
+            setColor(0x0DEBB0, dwdmgrass, 1);
+
+            Color dwdmclouds1 = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
+            Color dwdmclouds2 = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
+            //clouds 1
+            setColor(0x0DE644, dwdmclouds1, 2); //dark
+            setColor(0x0DEB84, dwdmclouds1, 2);
+
+            setColor(0x0DE648, dwdmclouds1, 1); //light dark
+            setColor(0x0DEB88, dwdmclouds1, 1);
+
+            //clouds2
+            setColor(0x0DEBAE, dwdmclouds2, 2); //dark
+            setColor(0x0DE7B0, dwdmclouds2, 2);
+
+
+            setColor(0x0DE7B4, dwdmclouds2, 0);//light dark
+            setColor(0x0DEB78, dwdmclouds2, 0);
+            setColor(0x0DEBB2, dwdmclouds2, 0);
+        }
+
         public void initProject() //first load of project need to be changed entirely
         {
             tabControl1.Enabled = true;
 
             GFX.CreateAllGfxData(ROM.DATA);
 
+
+
             for (int i = 0; i < 296; i++)
             {
                 all_rooms[i] = (new Room(i)); // create all rooms
             }
             initEntrancesList();
+            this.customPanel3.Controls.Add(activeScene);
             addRoomTab(260);
             tabControl2_SelectedIndexChanged(tabControl2.TabPages[0], new EventArgs());
             
             initRoomsList();
             enableProjectButtons();
             //Initialize the map draw
-            initRoomsMap();
             GFX.previewObjectsPtr = new IntPtr[600];
             GFX.previewObjectsBitmap = new Bitmap[600];
             GFX.previewSpritesPtr = new IntPtr[256];
@@ -347,8 +1051,20 @@ namespace ZeldaFullEditor
             spritesView1.updateSize();
             activeScene.DrawRoom();
             activeScene.Refresh();
-            //Initialize the entrances list
 
+            undoButton.Enabled = true;
+            redoButton.Enabled = true;
+
+            //Initialize the entrances list
+            if (activeOverworldScene.initialized == false)
+            {
+                activeOverworldScene.ow = new Overworld();
+                activeOverworldScene.initialized = true;
+                activeOverworldScene.CreateScene();
+                activeOverworldScene.updateMapGfx();
+                comboBox3.SelectedIndex = 1;
+                activeOverworldScene.Refresh();
+            }
         }
 
 
@@ -584,17 +1300,33 @@ namespace ZeldaFullEditor
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeScene.deleteSelected();
+            if (overworldButton.Checked)
+            {
+                activeOverworldScene.deleteSelected();
+            }
+            else if (dungeonButton.Checked)
+            {
+                activeScene.deleteSelected();
+            }
+            
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //scene.Undo();
+            if (overworldButton.Checked)
+            {
+                activeOverworldScene.Undo();
+            }
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //scene.Redo();
+            if (overworldButton.Checked)
+            {
+                activeOverworldScene.Redo();
+            }
         }
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -604,25 +1336,50 @@ namespace ZeldaFullEditor
 
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeScene.cut();
+            if (overworldButton.Checked)
+            {
+                activeOverworldScene.cut();
+            }
+            else
+            {
+                activeScene.cut();
+            }
         }
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeScene.paste();
+            if (overworldButton.Checked)
+            {
+                activeOverworldScene.paste();
+            }
+            else
+            {
+                activeScene.paste();
+            }
         }
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeScene.copy();
-
+            if (overworldButton.Checked)
+            {
+                activeOverworldScene.copy();
+            }
+            else
+            {
+                activeScene.copy();
+            }
         }
 
         private void palettePicturebox_MouseDown(object sender, MouseEventArgs e)
         {
             if (paletteViewer.mouseDown(e))
             {
-
+                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
+                GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
+                activeScene.DrawRoom();
+                activeScene.Refresh();
+                activeOverworldScene.ReLoadPalettes();
+                activeOverworldScene.Refresh();
             }
         }
 
@@ -630,7 +1387,12 @@ namespace ZeldaFullEditor
         {
             if (paletteViewer.mouseUp(e))
             {
-
+                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
+                GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
+                activeScene.DrawRoom();
+                activeScene.Refresh();
+                activeOverworldScene.ReLoadPalettes();
+                activeOverworldScene.Refresh();
             }
         }
 
@@ -638,7 +1400,12 @@ namespace ZeldaFullEditor
         {
             if (paletteViewer.mouseDoubleclick(e, colorDialog1))
             {
-
+                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
+                GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
+                activeScene.DrawRoom();
+                activeScene.Refresh();
+                activeOverworldScene.ReLoadPalettes();
+                activeOverworldScene.Refresh();
             }
         }
 
@@ -657,6 +1424,7 @@ namespace ZeldaFullEditor
             {
                 Directory.CreateDirectory("Layout");
             }
+
             saveLayout();
         }
 
@@ -1210,9 +1978,6 @@ namespace ZeldaFullEditor
             panel1.VerticalScroll.Value = 0;
             objectViewer1.Refresh();
 
- 
-
-
         }
 
         public void sortSprite()
@@ -1353,7 +2118,7 @@ namespace ZeldaFullEditor
                 GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
                 GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
                 activeScene.SetPalettesBlack();
-                paletteViewer.update();
+                //paletteViewer.update();
                 activeScene.DrawRoom();
                 activeScene.Refresh();
                 
@@ -1573,7 +2338,10 @@ namespace ZeldaFullEditor
                 gfx2textBox.Text = ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 1].ToString();
                 gfx3textBox.Text = ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 2].ToString();
                 gfx4textBox.Text = ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 3].ToString();
+                
             }
+            Buildtileset();
+            gfxPicturebox.Refresh();
             propertiesChangedFromForm = false;
         }
 
@@ -1672,22 +2440,26 @@ namespace ZeldaFullEditor
 
         private void debugtestButton_Click(object sender, EventArgs e)
         {
-            /* if (File.Exists("temp.sfc"))
+             if (File.Exists("temp.sfc"))
              {
                  File.Delete("temp.sfc");
              }
-
-             FileStream brom = new FileStream(baseROM, FileMode.Open, FileAccess.Read);
-             brom.Read(ROM.DATA, 0, (int)brom.Length);
-             brom.Close();
-
+            byte[] data = new byte[ROM.DATA.Length];
+            ROM.DATA.CopyTo(data,0);
              saveToolStripMenuItem_Click(sender, e);
+            AsarCLR.Asar.init();
+            AsarCLR.Asar.patch("debug.asm", ref data);
 
-             FileStream fs = new FileStream("temp.sfc", FileMode.CreateNew, FileAccess.Write);
 
-             fs.Write(ROM.DATA, 0, ROM.DATA.Length);
+            foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
+            {
+                Console.WriteLine(error.Fullerrdata.ToString());
+            }
+
+            FileStream fs = new FileStream("temp.sfc", FileMode.CreateNew, FileAccess.Write);
+             fs.Write(data, 0, data.Length);
              fs.Close();
-             Process p = Process.Start("temp.sfc");*/
+             Process p = Process.Start("temp.sfc");
         }
 
         private void saveasToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1861,7 +2633,15 @@ namespace ZeldaFullEditor
 
                 if (Byte.TryParse(roomProperty_palette.Text, out r))
                 {
-                    activeScene.room.Palette = r;
+                    if (r <= 40)
+                    {
+                        activeScene.room.Palette = r;
+                    }
+                    else
+                    {
+                        roomProperty_palette.Text = "40";
+                        activeScene.room.Palette = 40;
+                    }
                 }
                 else
                 {
@@ -2404,10 +3184,10 @@ namespace ZeldaFullEditor
             {
                 objectViewer1.items.Add((o));
             }
-            foreach(Sprite spr in listofspritesobjects)
+            /*foreach(Sprite spr in listofspritesobjects)
             {
                 spritesView1.items.Add(spr);
-            }
+            }*/
 
 
         }
@@ -2424,7 +3204,10 @@ namespace ZeldaFullEditor
 
         private void objectViewer1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            activeScene.selectedDragObject = new dataObject(objectViewer1.selectedObject.id, objectViewer1.selectedObject.name);
+            if (activeScene.mouse_down == false)
+            {
+                activeScene.selectedDragObject = new dataObject(objectViewer1.selectedObject.id, objectViewer1.selectedObject.name);
+            }
         }
 
         private void tabControl2_SizeChanged(object sender, EventArgs e)
@@ -2524,11 +3307,30 @@ namespace ZeldaFullEditor
 
         private void spritesView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            activeScene.selectedDragSprite = new dataObject(spritesView1.selectedObject.id, spritesView1.selectedObject.name,spritesView1.selectedObject.overlord);
+            if (GFX.useOverworldGFX)
+            {
+                activeOverworldScene.selectedFormSprite = new Sprite(0, spritesView1.selectedObject.id, 0, 0, activeOverworldScene.ow.allmaps, 0, 0);
+                activeOverworldScene.mouse_down = true;
+                activeOverworldScene.selectedMode = ObjectMode.Spritemode;
+                tileModeButton.Checked = false;
+                spriteModeOWButton.Checked = false;
+                itemModeOWButton.Checked = false;
+                fluteModeOWButton.Checked = false;
+                entranceModeOWButton.Checked = false;
+                exitModeOWButton.Checked = false;
+                spriteModeOWButton.Checked = true;
+                ChangeOWMode();
+
+            }
+            else
+            {
+                activeScene.selectedDragSprite = new dataObject(spritesView1.selectedObject.id, spritesView1.selectedObject.name, spritesView1.selectedObject.overlord);
+            }
         }
 
         private void gfxPicturebox_Paint(object sender, PaintEventArgs e)
         {
+
             int c = 0;
             if (int.TryParse(previewPaletteGfxTextbox.Text, out c))
             {
@@ -2540,19 +3342,86 @@ namespace ZeldaFullEditor
                 {
                     c = 0;
                 }
-                ColorPalette cp = GFX.currentgfx16Bitmap.Palette;
-                for (int i = 0; i < 16; i++)
+                if (!overworldButton.Checked)
                 {
-                    cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[i + (c * 16)];
+                    ColorPalette cp = GFX.currentgfx16Bitmap.Palette;
+                    for (int i = 0; i < 16; i++)
+                    {
+                        cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[i + (c * 16)];
+                    }
+                    GFX.currentgfx16Bitmap.Palette = cp;
                 }
-                GFX.currentgfx16Bitmap.Palette = cp;
+                else
+                {
+                    ColorPalette cp = GFX.currentOWgfx16Bitmap.Palette;
+                    for (int i = 0; i < 16; i++)
+                    {
+                        cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[i + (c * 16)];
+                    }
+                    GFX.currentOWgfx16Bitmap.Palette = cp;
+                    GFX.previewgfx16Bitmap.Palette = cp;
+                }
                 pictureBox1.Refresh();
             }
-
-
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-            e.Graphics.DrawImage(GFX.currentgfx16Bitmap, new Rectangle(0, 0, GFX.currentgfx16Bitmap.Width * 2, GFX.currentgfx16Bitmap.Height * 2), 0, 0, GFX.currentgfx16Bitmap.Width, GFX.currentgfx16Bitmap.Height, GraphicsUnit.Pixel);
+            if (!overworldButton.Checked)
+            {
+                
+                e.Graphics.DrawImage(GFX.currentgfx16Bitmap, new Rectangle(0, 0, GFX.currentgfx16Bitmap.Width * 2, GFX.currentgfx16Bitmap.Height * 2), 0, 0, GFX.currentgfx16Bitmap.Width, GFX.currentgfx16Bitmap.Height, GraphicsUnit.Pixel);
+                e.Graphics.DrawImage(GFX.previewgfx16Bitmap, new Rectangle(0, 0, GFX.currentOWgfx16Bitmap.Width * 2, GFX.currentOWgfx16Bitmap.Height * 2), 0, 0, GFX.currentOWgfx16Bitmap.Width, GFX.currentOWgfx16Bitmap.Height, GraphicsUnit.Pixel);
+            }
+            else
+            {
+                e.Graphics.DrawImage(GFX.previewgfx16Bitmap, new Rectangle(0, 0, GFX.currentOWgfx16Bitmap.Width * 2, GFX.currentOWgfx16Bitmap.Height * 2), 0, 0, GFX.currentOWgfx16Bitmap.Width, GFX.currentOWgfx16Bitmap.Height, GraphicsUnit.Pixel);
+            }
 
+        }
+
+        public void Buildtileset()
+        {
+
+
+            byte[] staticgfx = new byte[16];
+            for (int i = 0; i < 16; i++)
+            {
+                staticgfx[i] = 0;
+            }
+            staticgfx[8] = 115 + 0;
+            staticgfx[9] = 115 + 1;
+            staticgfx[10] = 115 + 6;
+            staticgfx[11] = 115 + 7;
+            if (gfxgroupCombobox.SelectedIndex == 2) //sprites
+            {
+                staticgfx[12] = (byte)(115 + ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 0]);
+                staticgfx[13] = (byte)(115 + ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 1]);
+                staticgfx[14] = (byte)(115 + ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 2]);
+                staticgfx[15] = (byte)(115 + ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 3]);
+            }
+
+            unsafe
+            {
+                //NEED TO BE EXECUTED AFTER THE TILESET ARE LOADED NOT BEFORE -_-
+                byte* currentmapgfx8Data = (byte*)GFX.previewgfx16Ptr.ToPointer();//loaded gfx for the current map (empty at this point)
+                byte* allgfxData = (byte*)GFX.allgfx16Ptr.ToPointer(); //all gfx of the game pack of 2048 bytes (4bpp)
+                for (int i = 0; i < 16; i++)
+                {
+                    for (int j = 0; j < 2048; j++)
+                    {
+                        byte mapByte = allgfxData[j + (staticgfx[i] * 2048)];
+                        switch (i)
+                        {
+                            case 0:
+                            case 3:
+                            case 4:
+                            case 5:
+                                mapByte += 0x88;
+                                break;
+                        }
+
+                        currentmapgfx8Data[(i * 2048) + j] = mapByte; //Upload used gfx data
+                    }
+                }
+            }
         }
 
         private void previewPaletteGfxTextbox_TextChanged(object sender, EventArgs e)
@@ -2770,12 +3639,12 @@ namespace ZeldaFullEditor
                         }
                     }
 
-                    if (save.saveOWExits())
+                    /*if (save.saveOWExits())
                     {
                         MessageBox.Show("Failed to save ??, no idea why ", "Bad Error", MessageBoxButtons.OK);
                         ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                         return;
-                    }
+                    }*/
 
                     fs = new FileStream(of.FileName, FileMode.Create, FileAccess.Write);
                     fs.Write(ROM.DATA, 0, ROM.DATA.Length);
@@ -2828,7 +3697,10 @@ namespace ZeldaFullEditor
                 }
                 if (sender == roomProperty_palette)
                 {
-                    activeScene.room.Palette++;
+                    if (activeScene.room.Palette < 40)
+                    {
+                        activeScene.room.Palette++;
+                    }
                 }
                 if (sender == roomProperty_floor1)
                 {
@@ -3030,7 +3902,7 @@ namespace ZeldaFullEditor
             int cpos = (ROM.DATA[Constants.chests_data_pointer1 + 2] << 16) + (ROM.DATA[Constants.chests_data_pointer1 + 1] << 8) + (ROM.DATA[Constants.chests_data_pointer1]);
             cpos = Addresses.snestopc(cpos);
             int clength = (ROM.DATA[Constants.chests_length_pointer + 1] << 8) + (ROM.DATA[Constants.chests_length_pointer]);
-            Console.WriteLine(clength);
+            //Console.WriteLine(clength);
             for (int index = 0; index < 296; index++)
             {
                 for (int i = 0; i < clength; i++)
@@ -3055,8 +3927,823 @@ namespace ZeldaFullEditor
             File.WriteAllLines("ChestsAddresses.txt", chestsaddress.ToArray());
         }
 
+        private void palettesTreeview_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            
+            if (e.Node.Name == "currentRoom")
+            {
+                if (overworldButton.Checked)
+                {
+                    paletteViewer.update(true,false);
+                }
+                else if (dungeonButton.Checked)
+                {
+                    paletteViewer.update(true,true);
+                }
+            }
 
+            if (e.Node.Tag != null)
+            {
+
+                if (e.Node.Parent.Name == "DungeonPalettes")
+                {
+                    paletteViewer.xSize = 15;
+                }
+
+                if (e.Node.Parent.Name == "SwordPalettes")
+                {
+                    paletteViewer.xSize = 3;
+                }
+
+                if (e.Node.Parent.Name == "ShieldPalettes")
+                {
+                    paletteViewer.xSize = 4;
+                }
+
+                if (e.Node.Parent.Name == "ArmorPalettes")
+                {
+                    paletteViewer.xSize = 15;
+                }
+
+                if (e.Node.Parent.Name == "StaticSpritePalette")
+                {
+                    paletteViewer.xSize = 15;
+                }
+
+                if (e.Node.Parent.Name == "DynamicSpritePalette")
+                {
+                    paletteViewer.xSize = 7;
+
+                }
+
+                if (e.Node.Parent.Name == "OverworldPalettes")
+                {
+                    paletteViewer.xSize = 7;
+                }
+
+
+                if (e.Node.Parent.Name == "OverworldAuxPalettes")
+                {
+                    paletteViewer.xSize = 7;
+                }
+
+                if (e.Node.Parent.Name == "OverworldAnimatedPalettes")
+                {
+                    paletteViewer.xSize = 7;
+                }
+
+                if (e.Node.Parent.Name == "HudPalettes")
+                {
+                    paletteViewer.xSize = 16;//15 or 16?
+
+                }
+                if (e.Node.Tag.GetType() == typeof(Color[]))
+                {
+                    paletteViewer.setColor(e.Node.Tag as Color[]);
+                    paletteViewer.update();
+                }
+                //TODO:  Add missing palettes here
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            paletteViewer.resetColor();
+        }
+
+        private void globalOptionsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void overworldButton_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        public void dungeonButton_Click(object sender, EventArgs e)
+        {
+            
+            dungeonButton.Checked = true;
+            overworldButton.Checked = false;
+            if (overworldButton.Checked)
+            {
+                customPanel3.Visible = true;
+                GFX.useOverworldGFX = true;
+                spritesView1.updateSize();
+                spritesView1.Refresh();
+                panel5.Visible = true;
+                selectedGroupbox.Visible = false;
+                groupBox4.Visible = true;
+            }
+            else
+            {
+                customPanel3.Visible = true;
+                GFX.useOverworldGFX = false;
+                spritesView1.updateSize();
+                spritesView1.Refresh();
+                panel5.Visible = false;
+                selectedGroupbox.Visible = true;
+                groupBox4.Visible = false;
+                allbgsButton.Visible = true;
+                bg1modeButton.Visible = true;
+                bg2modeButton.Visible = true;
+                bg3modeButton.Visible = true;
+                spritemodeButton.Visible = true;
+                blockmodeButton.Visible = true;
+                torchmodeButton.Visible = true;
+                doormodeButton.Visible = true;
+                chestmodeButton.Visible = true;
+                potmodeButton.Visible = true;
+                warpmodeButton.Visible = true;
+                toolStripButton1.Visible = true;
+                toolStripButton2.Visible = true;
+                toolStripSeparator3.Visible = true;
+                saveLayoutButton.Visible = true;
+                loadlayoutButton.Visible = true;
+                tileModeButton.Visible = false;
+                spriteModeOWButton.Visible = false;
+                itemModeOWButton.Visible = false;
+                fluteModeOWButton.Visible = false;
+                entranceModeOWButton.Visible = false;
+                exitModeOWButton.Visible = false;
+                toolStripButton3.Visible = false;
+
+            }
+            activeScene.Location = new Point(tabControl2.Location.X, tabControl2.Location.Y + 24);
+            //panel5.Location = new Point(groupBox4.Location.X, groupBox4.Location.Y + 64);
+            //activeOverworldScene.Location = new Point(activeOverworldScene.Location.X, groupBox4.Location.Y + 64);
+        }
+
+        private void overworldButton_Click(object sender, EventArgs e)
+        {
+            dungeonButton.Checked = false;
+            overworldButton.Checked = true;
+            if (overworldButton.Checked)
+            {
+                customPanel3.Visible = true;
+                GFX.useOverworldGFX = true;
+                panel5.Visible = true;
+                selectedGroupbox.Visible = false;
+                groupBox4.Visible = true;
+                allbgsButton.Visible = false;
+                bg1modeButton.Visible = false;
+                bg2modeButton.Visible = false;
+                bg3modeButton.Visible = false;
+                spritemodeButton.Visible = false;
+                blockmodeButton.Visible = false;
+                torchmodeButton.Visible = false;
+                doormodeButton.Visible = false;
+                chestmodeButton.Visible = false;
+                potmodeButton.Visible = false;
+                warpmodeButton.Visible = false;
+                toolStripButton1.Visible = false;
+                toolStripButton2.Visible = false;
+                toolStripSeparator3.Visible = false;
+                saveLayoutButton.Visible = false;
+                loadlayoutButton.Visible = false;
+                tileModeButton.Visible = true;
+                spriteModeOWButton.Visible = true;
+                itemModeOWButton.Visible = true;
+                fluteModeOWButton.Visible = true;
+                entranceModeOWButton.Visible = true;
+                exitModeOWButton.Visible = true;
+                toolStripButton3.Visible = true;
+                spritesView1.updateSize();
+                spritesView1.Refresh();
+            }
+            else
+            {
+                customPanel3.Visible = true;
+                
+                panel5.Visible = false;
+                selectedGroupbox.Visible = true;
+                groupBox4.Visible = false;
+                GFX.useOverworldGFX = false;
+                spritesView1.updateSize();
+                spritesView1.Refresh();
+
+            }
+            //panel5.Location = new Point(groupBox4.Location.X, groupBox4.Location.Y + 64);
+            //activeOverworldScene.Location = new Point(activeOverworldScene.Location.X, groupBox4.Location.Y + 64);
+        }
+
+        private void customPanel5_Scroll(object sender, ScrollEventArgs e)
+        {
+            
+        }
+
+        private void panel5_Scroll(object sender, ScrollEventArgs e)
+        {
+            /*if (e.Type == ScrollEventType.First)
+            {
+                LockWindowUpdate(this.Handle);
+            }
+            else
+            {
+                LockWindowUpdate(IntPtr.Zero);
+                panel5.Update();
+                if (e.Type != ScrollEventType.Last) LockWindowUpdate(this.Handle);
+            }*/
+        }
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern bool LockWindowUpdate(IntPtr hWnd);
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                const int WS_EX_COMPOSITED = 0x02000000;
+                var cp = base.CreateParams;
+                cp.ExStyle |= WS_EX_COMPOSITED;
+                return cp;
+            }
+        }
+
+        private void saveOverworldToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            /*FileStream fs = new FileStream(projectFilename, FileMode.OpenOrCreate, FileAccess.Write);
+            fs.Write(ROM.DATA, 0, ROM.DATA.Length);
+            fs.Close();*/
+        }
+
+        private void pictureboxOWTiles_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.CompositingMode = CompositingMode.SourceCopy;
+            e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
+            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+            e.Graphics.DrawImage(activeOverworldScene.tileBitmap, new Rectangle(0, 0, 128, 4096), new Rectangle(0, 0, 128, 4096),GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(activeOverworldScene.tileBitmap, new Rectangle(128, 0, 128, 4096), new Rectangle(0, 4096, 128, 4096), GraphicsUnit.Pixel);
+
+            for (int i = 0;i< activeOverworldScene.selectedTile.Length; i++)
+            {
+                int ySel = (activeOverworldScene.selectedTile[i] / 8);
+                int xSel = (activeOverworldScene.selectedTile[i]) - (ySel*8);
+                if (ySel>=256)
+                {
+                    ySel = (ySel-256);
+                    xSel += 8;
+                }
+                e.Graphics.DrawRectangle(Pens.LightGreen, new Rectangle(xSel*16, ySel*16, 16, 16));
+            }
+        }
+
+        private void pictureboxOWTiles_MouseDown(object sender, MouseEventArgs e)
+        {
+            ushort tid = 0;
+            int xSel = (e.X / 16);
+            int ySel = (e.Y / 16);
+
+            tid = (ushort)(xSel + (ySel * 8));
+
+            if (xSel >= 8)
+            {
+                tid += 2040;
+                xSel -= 8;
+            }
+
+            activeOverworldScene.selectedTile = new ushort[] { tid };
+            this.Refresh();
+        }
+
+        private void pictureGroupTiles_Paint(object sender, PaintEventArgs e)
+        {
+
+            int x = 0;
+            int y = 0;
+            foreach(tileGroup tg in tilesGroup)
+            {
+                tg.updateGfx(activeOverworldScene.tileBitmap.Palette, activeOverworldScene.tileBitmapPtr);
+                e.Graphics.DrawImage(tg.gfxBitmap, 0, y);
+
+                y += ((tg.tiles.GetLength(1)) * 16);
+            }
+
+            if (selecting)
+            {
+                int mxd = (realMxDownGroup / 16);
+                int myd = (realMyDownGroup / 16);
+                int mx = (realMxGroup / 16);
+                int my = (realMyGroup / 16);
+                e.Graphics.DrawRectangle(Pens.White, new Rectangle(mxd*16,myd*16,
+                    ((mx-mxd)*16)+16,((my-myd)*16)+16));
+            }
+            else
+            {
+                e.Graphics.DrawRectangle(Pens.White, groupSelection);
+            }
+
+        }
+
+        private void tabControl3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl3.SelectedIndex == 1)
+            {
+                foreach (tileGroup t in tilesGroup) //Free the memory used
+                {
+                    t.Dispose();
+                }
+                tilesGroup.Clear();
+                string[] files = Directory.GetFiles("GroupTiles\\");
+                foreach (string s in files)
+                {
+                    BinaryReader br = new BinaryReader(new FileStream(s, FileMode.Open, FileAccess.Read));
+                    ushort l = br.ReadUInt16();//length
+                    ushort sx = br.ReadUInt16();//sizeX
+                    ushort[] tiles = new ushort[l];
+                    for (int i = 0; i < l; i++)
+                    {
+                        tiles[i] = br.ReadUInt16();
+                    }
+                    br.Close();
+                    tilesGroup.Add(new tileGroup(sx, tiles, activeOverworldScene.tileBitmapPtr));
+                }
+                foreach (tileGroup t in tilesGroup) //Free the memory used
+                {
+                    t.updateGfx(activeOverworldScene.tileBitmap.Palette, activeOverworldScene.tileBitmapPtr);
+                }
+                //Load tiles groups
+                //tilesGroup
+            }
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            string[] files = Directory.GetFiles("GroupTiles\\");
+            if (activeOverworldScene.selectedTile.Length >= 1)
+            {
+                BinaryWriter bw = new BinaryWriter(new FileStream("GroupTiles\\Group"+files.Length.ToString("D3"), FileMode.CreateNew, FileAccess.Write));
+                bw.Write((ushort)activeOverworldScene.selectedTile.Length);
+                bw.Write((ushort)activeOverworldScene.selectedTileSizeX);
+                for (int i = 0; i < activeOverworldScene.selectedTile.Length; i++)
+                {
+                    bw.Write((ushort)activeOverworldScene.selectedTile[i]);
+                }
+                bw.Close();
+            }
+            
+        }
+        bool mDown = false;
+        bool selecting = false;
+        int mxDown = 0;
+        int myDown = 0;
+        int realMyDownGroup = 0;
+        int realMxDownGroup = 0;
+        int selGroupDown = 0;
+        Rectangle groupSelection = new Rectangle();
+        int realMxGroup = 0;
+        int realMyGroup = 0;
+        private void pictureGroupTiles_MouseDown(object sender, MouseEventArgs e)
+        {
+            realMxDownGroup = e.X;
+            realMyDownGroup = e.Y;
+            if (mDown == false)
+            {
+                int yoffset = 0;
+
+                for(int j = 0;j<tilesGroup.Count;j++)
+                {
+                    if (((e.Y / 16)) < (tilesGroup[j].tiles.GetLength(1)) + yoffset)
+                    {
+                        selGroupDown = j;
+                        break;
+                    }
+                    yoffset += tilesGroup[j].tiles.GetLength(1);
+                }
+                mxDown = (e.X / 16);
+                myDown = ((e.Y) / 16) - yoffset;
+
+
+                mDown = true;
+                selecting = true;
+
+                //activeOverworldScene.selectedTile = new ushort[1] { tilesGroup[selGroupDown].tiles[0, 0] };
+                //activeOverworldScene.selectedTileSizeX = tilesGroup[selGroupDown].sizeX;
+            }
+        }
+
+        private void pictureGroupTiles_MouseUp(object sender, MouseEventArgs e)
+        {
+            int selGroup = 0;
+            if (selecting)
+            {
+                int yoffset = 0;
+
+                for (int j = 0; j < tilesGroup.Count; j++)
+                {
+                    if (((e.Y / 16)) < (tilesGroup[j].tiles.GetLength(1)) + yoffset)
+                    {
+                        selGroup = j;
+                        break;
+                    }
+                    yoffset += tilesGroup[j].tiles.GetLength(1);
+                }
+                int mxUp = e.X / 16;
+                int myUp = ((e.Y) / 16) - yoffset;
+
+                if (selGroup == selGroupDown)
+                {
+                    
+
+                    int lx = (mxUp - mxDown) + 1;
+                    int ly = (myUp - myDown) + 1;
+                    groupSelection = new Rectangle(mxDown * 16, (myDown + yoffset) * 16, lx*16,ly*16);
+                    pictureGroupTiles.Refresh();
+                    ushort[] newerTiles = new ushort[lx * ly];
+                    int j = 0;
+                    for (int yy = 0; yy < ly; yy++)
+                    {
+                        for (int xx = 0; xx < lx; xx++)
+                        {
+                            newerTiles[j] = tilesGroup[selGroupDown].tiles[xx+mxDown, yy+myDown];
+                            j++;
+                        }
+                    }
+
+                    activeOverworldScene.selectedTile = newerTiles;
+                    activeOverworldScene.selectedTileSizeX = lx;
+
+                }
+                selecting = false;
+                mDown = false;
+            }
+
+
+        }
+
+        private void generateSpriteDropToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            List<string> dropindex = new List<string>();
+            
+            for (int index = 0; index < 0xFF; index++)
+            {
+                dropindex.Add(Sprites_Names.name[index] + " : " + (ROM.DATA[0x6B632+index] & 0x0F).ToString("D2"));
+            }
+
+            File.WriteAllLines("drops.txt", dropindex.ToArray());
+        }
+
+        private void pictureGroupTiles_MouseMove(object sender, MouseEventArgs e)
+        {
+            realMxGroup = e.X;
+            realMyGroup = e.Y;
+            pictureGroupTiles.Refresh();
+        }
+
+        private void OW_tilesetGFX_TextChanged(object sender, EventArgs e)
+        {
+            if (propertiesChangedFromForm == false)
+            {
+                byte result = 0;
+                OverworldMap mapParent = activeOverworldScene.ow.allmaps[activeOverworldScene.ow.allmaps[activeOverworldScene.selectedMap].parent];
+                if (activeOverworldScene.ow.allmaps[activeOverworldScene.selectedMap].parent == 255)
+                {
+                    mapParent = activeOverworldScene.ow.allmaps[activeOverworldScene.selectedMap];
+                }
+                
+                if (byte.TryParse(OW_tilesetGFX.Text, out result))
+                {
+                    mapParent.gfx = result;
+                }
+                if (byte.TryParse(OW_spriteGFX.Text, out result))
+                {
+                    if (mapParent.index >= 64)
+                    {
+                        mapParent.sprgfx[0] = result;
+                    }
+                    else
+                    {
+                        mapParent.sprgfx[activeOverworldScene.ow.gameState] = result;
+                    }
+                }
+                if (byte.TryParse(OW_spritePAL.Text, out result))
+                {
+                    if (mapParent.index >= 64)
+                    {
+                        mapParent.sprpalette[0] = result;
+                    }
+                    else
+                    {
+                        mapParent.sprpalette[activeOverworldScene.ow.gameState] = result;
+                    }
+                   
+                }
+                if (byte.TryParse(OW_tilesetPAL.Text, out result))
+                {
+                    mapParent.palette = result;
+                }
+
+
+
+               
+                if (mapParent.largeMap)
+                {
+                   
+                    activeOverworldScene.ow.allmaps[mapParent.index + 1].gfx = mapParent.gfx;
+                    activeOverworldScene.ow.allmaps[mapParent.index + 1].sprgfx = mapParent.sprgfx;
+                    activeOverworldScene.ow.allmaps[mapParent.index + 1].palette = mapParent.palette;
+                    activeOverworldScene.ow.allmaps[mapParent.index + 1].sprpalette = mapParent.sprpalette;
+
+                    activeOverworldScene.ow.allmaps[mapParent.index + 8].gfx = mapParent.gfx;
+                    activeOverworldScene.ow.allmaps[mapParent.index + 8].sprgfx = mapParent.sprgfx;
+                    activeOverworldScene.ow.allmaps[mapParent.index + 8].palette = mapParent.palette;
+                    activeOverworldScene.ow.allmaps[mapParent.index + 8].sprpalette = mapParent.sprpalette;
+
+                    activeOverworldScene.ow.allmaps[mapParent.index + 9].gfx = mapParent.gfx;
+                    activeOverworldScene.ow.allmaps[mapParent.index + 9].sprgfx = mapParent.sprgfx;
+                    activeOverworldScene.ow.allmaps[mapParent.index + 9].palette = mapParent.palette;
+                    activeOverworldScene.ow.allmaps[mapParent.index + 9].sprpalette = mapParent.sprpalette;
+
+                    mapParent.BuildMap();
+                    activeOverworldScene.ow.allmaps[mapParent.index + 1].BuildMap();
+                    activeOverworldScene.ow.allmaps[mapParent.index + 8].BuildMap();
+                    activeOverworldScene.ow.allmaps[mapParent.index + 9].BuildMap();
+                }
+                else
+                {
+                    mapParent.BuildMap();
+                }
+                activeOverworldScene.Refresh();
+            }
+        }
+
+        private void pictureboxOWTiles_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            ushort tid = 0;
+            int xSel = (e.X / 16);
+            int ySel = (e.Y / 16);
+
+            tid = (ushort)(xSel + (ySel * 8));
+
+            if (xSel >= 8)
+            {
+                tid += 2048;
+                xSel -= 8;
+            }
+            int tileCount = 0;
+            for (int x = 0; x < 256; x++)
+            {
+                for (int y = 0; y < 256; y++)
+                {
+                    if (activeOverworldScene.ow.allmapsTilesLW[x, y] == tid)
+                    {
+                        tileCount++;
+                    }
+                    if (activeOverworldScene.ow.allmapsTilesDW[x, y] == tid)
+                    {
+                        tileCount++;
+                    }
+                    if (activeOverworldScene.ow.allmapsTilesSP[x, y] == tid)
+                    {
+                        tileCount++;
+                    }
+                }
+            }
+            Tile16Editor t16editor = new Tile16Editor();
+            t16editor.editingTile = tid;
+            t16editor.tileCount = tileCount;
+            t16editor.sceneOW = activeOverworldScene;
+            activeOverworldScene.ow.allmaps[activeOverworldScene.selectedMap].Buildtileset();
+            if (t16editor.ShowDialog() == DialogResult.OK)
+            {
+
+                activeOverworldScene.ow.tiles16[tid] = new Tile16(t16editor.tinfos[0], t16editor.tinfos[1], t16editor.tinfos[2], t16editor.tinfos[3]);
+                //TODO : Find a better way to do that
+                BuildAllMaps().
+                  ContinueWith(t => BuildAllMaps(),
+                  TaskContinuationOptions.OnlyOnFaulted);
+            }
+            this.Refresh();
+        }
+
+        public async Task BuildAllMaps()
+        {
+            for (int i = 0; i < 160; i++)
+            {
+                await Task.Run(() => { activeOverworldScene.ow.allmaps[i].BuildMap(); });
+
+            }
+            
+        }
+
+        private void generatePotShuffleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ExportPotsForm epf = new ExportPotsForm();
+            //int xy = (((all_rooms[4].pot_items[0].y * 64) + all_rooms[i].pot_items[j].x) << 1);
+            
+            string s = "Rooms[" + activeScene.room.index.ToString() + "] = [";
+            int i = 0;
+            foreach (PotItem p in activeScene.room.pot_items)
+            {
+                short xy = (short)(((activeScene.room.pot_items[i].y * 64) + activeScene.room.pot_items[i].x) << 1);
+                if (p.id == 0)
+                {
+                    s += "[ 0x" + (xy & 0xFF).ToString("X2") + ", 0x" + ((((xy >> 8) & 0xFF) + (p.bg2 == true ? 0x20 : 0x00))).ToString("X2") + ", " + "\"E\"" + "], ";
+                }
+                else if (p.id == 8)
+                {
+                    s += "[ 0x" + (xy & 0xFF).ToString("X2") + ", 0x" + ((((xy >> 8) & 0xFF) + (p.bg2 == true ? 0x20 : 0x00))).ToString("X2") + ", " + "\"K\"" + "], ";
+                }
+                else if (p.id == 23)
+                {
+                    s += "[ 0x" + (xy & 0xFF).ToString("X2") + ", 0x" + ((((xy >> 8) & 0xFF) + (p.bg2 == true ? 0x20 : 0x00))).ToString("X2") + ", " + "\"H\"" + "], ";
+                }
+                else if (p.id == 27)
+                {
+                    s += "[ 0x" + (xy & 0xFF).ToString("X2") + ", 0x" + ((((xy >> 8) & 0xFF) + (p.bg2 == true ? 0x20 : 0x00))).ToString("X2") + ", " + "\"S\"" + "], ";
+                }
+                else if (p.id == 136)
+                {
+                    s += "[ 0x" + (xy & 0xFF).ToString("X2") + ", 0x" + ((((xy >> 8) & 0xFF) + (p.bg2 == true ? 0x20 : 0x00))).ToString("X2") + ", " + "\"S\"" + "], ";
+                }
+                else
+                {
+                    s += "[ 0x" + (xy & 0xFF).ToString("X2") + ", 0x" + ((((xy >> 8) & 0xFF) + (p.bg2 == true ? 0x20 : 0x00))).ToString("X2") + ", " + p.id + "], ";
+                }
+                i++;
+            }
+            s += "]";
+            epf.richTextBox1.Text = s;
+            epf.ShowDialog();
+        }
+
+        private void tileModeButton_Click(object sender, EventArgs e)
+        {
+
+
+        }
+
+        private void ChangeOWMode()
+        {
+            if (tileModeButton.Checked)
+            {
+                activeOverworldScene.selectedMode = ObjectMode.Tile;
+            }
+            else if (spriteModeOWButton.Checked)
+            {
+                activeOverworldScene.selectedMode = ObjectMode.Spritemode;
+            }
+            else if (itemModeOWButton.Checked)
+            {
+                activeOverworldScene.selectedMode = ObjectMode.Itemmode;
+            }
+            else if (entranceModeOWButton.Checked)
+            {
+                activeOverworldScene.selectedMode = ObjectMode.Entrances;
+            }
+            else if (exitModeOWButton.Checked)
+            {
+                activeOverworldScene.selectedMode = ObjectMode.Exits;
+            }
+            else if (fluteModeOWButton.Checked)
+            {
+                activeOverworldScene.selectedMode = ObjectMode.Flute;
+            }
+        }
+
+        private void checkBox1_CheckedChanged_1(object sender, EventArgs e)
+        {
+            activeOverworldScene.showFlute = showFluteCheckbox.Checked;
+            activeOverworldScene.showGrid = showGridCheckbox.Checked;
+            activeOverworldScene.showItems = showItemsCheckbox.Checked;
+            activeOverworldScene.showSprites = showSpritesCheckbox.Checked;
+            activeOverworldScene.showExits = showExitsCheckbox.Checked;
+            activeOverworldScene.showEntrances = showEntranceCheckbox.Checked;
+            if (!showSpriteText)
+            {
+                activeOverworldScene.ow.showSprites = showSpritesCheckbox.Checked;
+            }
+            else
+            {
+                activeOverworldScene.ow.showSprites = false;
+                activeOverworldScene.ow.allmaps[activeOverworldScene.selectedMap].DrawSprites(activeOverworldScene.ow.gameState);
+            }
+            OW_tilesetGFX_TextChanged(null, null);
+            activeOverworldScene.Invalidate(new Rectangle(panel5.HorizontalScroll.Value, panel5.VerticalScroll.Value, panel5.Width, panel5.Height));
+        }
+
+        private void textSpriteToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            showSpriteText = textSpriteToolStripMenuItem.Checked;
+            activeOverworldScene.ow.showSprites = !showSpriteText;
+            OW_tilesetGFX_TextChanged(null, null);
+            activeOverworldScene.Invalidate(new Rectangle(panel5.HorizontalScroll.Value, panel5.VerticalScroll.Value, panel5.Width, panel5.Height));
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            activeOverworldScene.ow.gameState = (byte)comboBox3.SelectedIndex;
+            activeOverworldScene.updateMapGfx();
+            OW_tilesetGFX_TextChanged(null, null);
+            
+            activeOverworldScene.Invalidate(new Rectangle(panel5.HorizontalScroll.Value, panel5.VerticalScroll.Value, panel5.Width, panel5.Height));
+        }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            
+            OW_tilesetGFX_TextChanged(null, null);
+            
+            activeOverworldScene.ow.allmaps[activeOverworldScene.selectedMap].DrawSprites(activeOverworldScene.ow.gameState);
+            activeOverworldScene.hideText = true;
+            activeOverworldScene.Invalidate(new Rectangle(panel5.HorizontalScroll.Value, panel5.VerticalScroll.Value, panel5.Width, panel5.Height));
+           // activeOverworldScene.ow.allmaps[activeOverworldScene.selectedMap].BuildMap();
+        }
+
+        private void tileModeButton_Click_1(object sender, EventArgs e)
+        {
+            tileModeButton.Checked = false;
+            spriteModeOWButton.Checked = false;
+            itemModeOWButton.Checked = false;
+            fluteModeOWButton.Checked = false;
+            entranceModeOWButton.Checked = false;
+            exitModeOWButton.Checked = false;
+            (sender as ToolStripButton).Checked = true;
+            ChangeOWMode();
+        }
+
+        private void importAllOverworldMapsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            activeOverworldScene.ow.ImportMaps();
+        }
+
+        private void exportAllOverworldMapsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            activeOverworldScene.ow.ExportMaps();
+        }
+
+        private void dungeonMakerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DungeonDesigner dd = new DungeonDesigner();
+            dd.ShowDialog();
+        }
+
+        private void exportAllOverworldDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void importDataFromROMToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            RomImporter ri = new RomImporter();
+            ri.ow = activeOverworldScene.ow;
+            ri.ShowDialog();
+
+        }
+
+        private void duplicateSpriteStateToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DuplicateSpriteStateForm dssf = new DuplicateSpriteStateForm();
+            dssf.scene = activeOverworldScene;
+            dssf.ShowDialog();
+        }
+
+        private void owcombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+            if (owcombobox.SelectedIndex != -1)
+            {
+                if (activeOverworldScene.selectedMode == ObjectMode.Itemmode)
+                {
+                    if (activeOverworldScene.itemMode.lastselectedItem != null)
+                    {
+                        RoomPotSaveEditor oo = activeOverworldScene.itemMode.lastselectedItem;
+
+                        if (owcombobox.SelectedIndex > 0x16)
+                        {
+                            oo.id = (byte)(0x80 + ((owcombobox.SelectedIndex - 0x17) * 2));
+                        }
+                        else
+                        {
+                            oo.id = (byte)(owcombobox.SelectedIndex);
+                        }
+                    }
+
+                    activeOverworldScene.Invalidate(new Rectangle(panel5.HorizontalScroll.Value, panel5.VerticalScroll.Value, panel5.Width, panel5.Height));
+                }
+            }
+        }
+
+        private void worldButton_Click(object sender, EventArgs e)
+        {
+            if (activeOverworldScene.ow.worldOffset == 0)
+            {
+                activeOverworldScene.ow.worldOffset = 64;
+                worldButton.Text = "Lightworld";
+            }
+            else
+            {
+                activeOverworldScene.ow.worldOffset = 0;
+                worldButton.Text = "Darkworld";
+            }
+            activeOverworldScene.Invalidate(new Rectangle(panel5.HorizontalScroll.Value, panel5.VerticalScroll.Value, panel5.Width, panel5.Height));
+        }
     }
+
+
 
     public class dataObject
     {

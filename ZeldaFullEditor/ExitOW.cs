@@ -6,24 +6,36 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
+    [Serializable]
     public class ExitOW
     {
 
-        public short roomId = 0;
-        public byte mapId = 0;
-        public short vramLocation = 0;
-        public short xScroll;
-        public short yScroll;
-        public short playerX;
-        public short playerY;
-        public short cameraX;
-        public short cameraY;
-        public byte unk1;
-        public byte unk2;
-        public byte doorType1;
-        public byte doorType2;
-        public bool selected = false;
-        public ExitOW(short roomId,byte mapId,short vramLocation, short yScroll,short xScroll,short playerY, short playerX,short cameraY, short cameraX, byte unk1,byte unk2,byte doorType1,byte doorType2)
+        public byte
+            mapId,
+            unk1,
+            unk2,
+            doorXEditor,
+            doorYEditor;
+
+        public short
+            vramLocation,
+            roomId,
+            xScroll,
+            yScroll,
+            cameraX,
+            cameraY,
+            doorType1,
+            doorType2;
+
+        public ushort
+            playerX,
+            playerY;
+
+
+        public bool isAutomatic = true;
+        public bool deleted = false;
+
+        public ExitOW(short roomId, byte mapId, short vramLocation, short yScroll, short xScroll, ushort playerY, ushort playerX, short cameraY, short cameraX, byte unk1, byte unk2, short doorType1, short doorType2)
         {
             this.roomId = roomId;
             this.mapId = mapId;
@@ -38,8 +50,95 @@ namespace ZeldaFullEditor
             this.unk2 = unk2;
             this.doorType1 = doorType1;
             this.doorType2 = doorType2;
+
+            if (doorType1 != 0)
+            {
+                int p = (doorType1 & 0x7FFF) >> 1;
+                doorXEditor = (byte)(p % 64);
+                doorYEditor = (byte)(p >> 6);
+            }
+            if (doorType2 != 0)
+            {
+                int p = (doorType2 & 0x7FFF) >> 1;
+                doorXEditor = (byte)(p % 64);
+                doorYEditor = (byte)(p >> 6);
+            }
+
         }
 
+        public ExitOW Copy()
+        {
+            return new ExitOW(
+            roomId,
+            mapId,
+            vramLocation,
+            xScroll,
+            yScroll,
+            playerX,
+            playerY,
+            cameraX,
+            cameraY,
+            unk1,
+            unk2,
+            doorType1,
+            doorType2);
+        }
 
+        public void updateMapStuff(byte mapId,Overworld ow)
+        {
+            this.mapId = mapId;
+
+
+            int large = 256;
+            int mapid = mapId;
+            if (mapId < 128)
+            {
+                large = ow.allmaps[mapId].largeMap ? 768 : 256;
+                if (ow.allmaps[mapId].parent != mapId)
+                {
+                    mapid = ow.allmaps[mapId].parent;
+                }
+            }
+
+            //if map is large, large = 768, otherwise 256
+
+            //mapx, mapy = "super map" position on the grid *512
+
+            if (mapId >= 64)
+            {
+                mapId -= 64;
+            }
+
+            int mapx = (mapId & 7) << 9;
+            int mapy = ((mapId & 56) << 6);
+            if (isAutomatic)
+            {
+                xScroll = (short)(playerX - 134);
+                yScroll = (short)(playerY - 78);
+
+                if (xScroll < mapx) { xScroll = (short)((mapx)); }
+                if (yScroll < mapy) { yScroll = (short)((mapy)); }
+
+                if (xScroll > mapx + large) { xScroll = (short)((mapx) + large); }
+                if (yScroll > (mapy + large) + 30) { yScroll = (short)(((mapy) + large) + 30); }
+
+                cameraX = (short)(playerX);
+                cameraY = (short)(playerY + 19);
+
+                if (cameraX < mapx + 127) { cameraX = (short)(mapx + 127); }
+                if (cameraY < mapy + 111) { cameraY = (short)(mapy + 111); }
+
+                if (cameraX > mapx + 127 + large) { cameraX = (short)(mapx + 127 + large); }
+                if (cameraY > mapy + 143 + large) { cameraY = (short)(mapy + 143 + large); }
+
+            }
+            short vramXScroll = (short)(xScroll - mapx);
+            short vramYScroll = (short)(yScroll - mapy);
+
+
+
+            vramLocation = (short)(((vramYScroll & 0xFFF0) << 3) | ((vramXScroll & 0xFFF0) >> 3));
+
+        }
     }
 }

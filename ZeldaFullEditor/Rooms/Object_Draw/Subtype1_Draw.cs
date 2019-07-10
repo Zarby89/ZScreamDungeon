@@ -247,6 +247,7 @@ namespace ZeldaFullEditor
         public override void Draw()
         {
             draw_diagonal_up();
+            
         }
     }
 
@@ -1921,7 +1922,6 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-            //TODO : VERIFY IF THAT CODE IS RIGHT
             for (int s = 0; s < size; s++)
             {
                 draw_tile(tiles[6], (2 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[9], (3 + (s * 2)) * 8, (0) * 8);
@@ -1952,7 +1952,6 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-            //TODO : VERIFY IF THAT CODE IS RIGHT
             for (int s = 0; s < size; s++)
             {
                 draw_tile(tiles[6], (2 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[9], (3 + (s * 2)) * 8, (0) * 8);
@@ -2118,7 +2117,6 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-            //TODO : VERIFY IF THAT CODE IS RIGHT
             for (int s = 0; s < size; s++)
             {
                 draw_tile(tiles[6], (2 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[9], (3 + (s * 2)) * 8, (0) * 8);
@@ -2149,7 +2147,6 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-            //TODO : VERIFY IF THAT CODE IS RIGHT
             for (int s = 0; s < size; s++)
             {
                 draw_tile(tiles[6], (2 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[9], (3 + (s * 2)) * 8, (0) * 8);
@@ -2181,7 +2178,6 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-            //TODO : VERIFY IF THAT CODE IS RIGHT
             for (int s = 0; s < size + 2; s++)
             {
                 draw_tile(tiles[6], (2 + (s * 1)) * 8, (0) * 8);
@@ -2213,7 +2209,6 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-            //TODO : VERIFY IF THAT CODE IS RIGHT
             for (int s = 0; s < size + 1; s++)
             {
                 draw_tile(tiles[0], (0 + (s * 4)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 4)) * 8, (0) * 8);
@@ -3847,7 +3842,7 @@ namespace ZeldaFullEditor
             name = "Hole ↔ ↕";
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
-        //TODO: Take the draw code from disassembly ("HARDCODED")
+
         public override void Draw()
         {
             draw_tile(tiles[8], (0) * 8, (0) * 8);//top left corner
@@ -4455,7 +4450,7 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-            //TODO : VERIFY IF THAT CODE IS RIGHT
+
             for (int s = 0; s < size + 1; s++)
             {
                 draw_tile(tiles[0], (0 + (s * 4)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 4)) * 8, (0) * 8);
@@ -4480,7 +4475,6 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-            //TODO : VERIFY IF THAT CODE IS RIGHT
             for (int s = 0; s < size + 1; s++)
             {
                 draw_tile(tiles[0], (0 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 2)) * 8, (0) * 8);
@@ -4505,8 +4499,7 @@ namespace ZeldaFullEditor
         }
 
         public override void Draw()
-        {
-            //TODO : VERIFY IF THAT CODE IS RIGHT
+        { 
             for (int s = 0; s < size + 1; s++)
             {
                 draw_tile(tiles[0], (0 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 2)) * 8, (0) * 8);
@@ -5029,15 +5022,42 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Moving Wall Left ↔ ↕";
+            name = "Moving Wall Right ↔ ↕";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
-            addTiles(8, pos);//??
+            addTiles(24, pos);//??
+            pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((0 & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((0 & 0xFF) * 2)]);
+            addTiles(4, pos);
+            offsetX = -8;
         }
 
 
         public override void Draw()
         {
-            //TODO : Check Disassembly
+            int sizey = ((size >> 2) & 0x03);
+            int sizex = ((size) & 0x03);
+            draw_tile(tiles[0], ((sizex * 8) + 8) * 8, (0) * 8); draw_tile(tiles[3], ((sizex * 8) + 9) * 8, (0) * 8); draw_tile(tiles[6], ((sizex * 8) + 10) * 8, (0) * 8);
+            draw_tile(tiles[1], ((sizex * 8) + 8) * 8, (1) * 8); draw_tile(tiles[4], ((sizex * 8) + 9) * 8, (1) * 8); draw_tile(tiles[7], ((sizex * 8) + 10) * 8, (1) * 8);
+            draw_tile(tiles[2], ((sizex * 8) + 8) * 8, (2) * 8); draw_tile(tiles[5], ((sizex * 8) + 9) * 8, (2) * 8); draw_tile(tiles[8], ((sizex * 8) + 10) * 8, (2) * 8);
+
+
+            draw_tile(tiles[15], ((sizex * 8) + 8) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[18], ((sizex * 8) + 9) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[21], ((sizex * 8) + 10) * 8, ((0 + 13) + sizey * 4) * 8);
+            draw_tile(tiles[16], ((sizex * 8) + 8) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[19], ((sizex * 8) + 9) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[22], ((sizex * 8) + 10) * 8, ((1 + 13) + sizey * 4) * 8);
+            draw_tile(tiles[17], ((sizex * 8) + 8) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(tiles[20], ((sizex * 8) + 9) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(tiles[23], ((sizex * 8) + 10) * 8, ((2 + 13) + sizey * 4) * 8);
+
+            for (int xx = 0; xx < 4 + (sizex * 4); xx++)
+            {
+                for (int yy = 0; yy < 8 + (sizey * 2); yy++)
+                {
+                    draw_tile(tiles[24], ((xx * 2)) * 8, (yy * 2) * 8); draw_tile(tiles[25], ((xx * 2)+1) * 8, (yy * 2) * 8);
+                    draw_tile(tiles[26], ((xx * 2)) * 8, ((yy * 2) + 1) * 8); draw_tile(tiles[27], ((xx * 2)+1) * 8, ((yy * 2) + 1) * 8);
+                }
+            }
+
+            for (int yy = 0; yy < 5 + (sizey * 2); yy++)
+            {
+                draw_tile(tiles[9], ((sizex * 8) + 8) * 8, ((yy * 2) + 3) * 8); draw_tile(tiles[10], ((sizex * 8) + 9) * 8, ((yy * 2) + 3) * 8); draw_tile(tiles[11], ((sizex * 8) + 10)*8, ((yy * 2) + 3) * 8);
+                draw_tile(tiles[12], ((sizex * 8) + 8) * 8, ((yy * 2) + 4) * 8); draw_tile(tiles[13], ((sizex * 8) + 9) * 8, ((yy * 2) + 4) * 8); draw_tile(tiles[14], ((sizex * 8) + 10) *8, ((yy * 2) + 4) * 8);
+            }
         }
     }
 
@@ -5050,13 +5070,42 @@ namespace ZeldaFullEditor
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             name = "Moving Wall Left ↔ ↕";
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
-            addTiles(8, pos);//??
+            addTiles(24, pos);//??
+            //ceiling tiles
+            pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((0 & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((0 & 0xFF) * 2)]);
+            addTiles(4, pos);
         }
 
 
         public override void Draw()
         {
-            //TODO : Check Disassembly
+            
+            int sizey = ((size >> 2) & 0x03);
+            int sizex = ((size) & 0x03);
+
+            draw_tile(tiles[0], (0) * 8, (0) * 8); draw_tile(tiles[3], (1) * 8, (0) * 8); draw_tile(tiles[6], (2) * 8, (0) * 8);
+            draw_tile(tiles[1], (0) * 8, (1) * 8); draw_tile(tiles[4], (1) * 8, (1) * 8); draw_tile(tiles[7], (2) * 8, (1) * 8);
+            draw_tile(tiles[2], (0) * 8, (2) * 8); draw_tile(tiles[5], (1) * 8, (2) * 8); draw_tile(tiles[8], (2) * 8, (2) * 8);
+
+            draw_tile(tiles[15], (0) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[18], (1) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[21], (2) * 8, ((0 + 13) + sizey * 4) * 8);
+            draw_tile(tiles[16], (0) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[19], (1) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[22], (2) * 8, ((1 + 13) + sizey*4) * 8);
+            draw_tile(tiles[17], (0) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(tiles[20], (1) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(tiles[23], (2) * 8, ((2 + 13) + sizey * 4) * 8);
+            
+            for(int xx = 0; xx < 4 + (sizex * 4) ;xx++)
+            {
+                for (int yy = 0; yy < 8 + (sizey*2); yy++)
+                {
+                    draw_tile(tiles[24], ((xx * 2) + 3) * 8, (yy * 2) * 8); draw_tile(tiles[25], ((xx * 2) + 4) * 8, (yy * 2) * 8);
+                    draw_tile(tiles[26], ((xx * 2) + 3) * 8, ((yy * 2)+1) * 8); draw_tile(tiles[27], ((xx * 2) + 4) * 8, ((yy * 2)+1) * 8);
+                }
+            }
+
+            for (int yy = 0; yy < 5 + (sizey * 2); yy++)
+            {
+                draw_tile(tiles[9], (0) * 8, ((yy * 2)+3) * 8); draw_tile(tiles[10], (1) * 8, ((yy * 2)+3) * 8); draw_tile(tiles[11], (2) * 8, ((yy * 2)+3) * 8);
+                draw_tile(tiles[12], (0) * 8, ((yy * 2)+4) * 8); draw_tile(tiles[13], (1) * 8, ((yy * 2) + 4) * 8); draw_tile(tiles[14], (2) * 8, ((yy * 2) + 4) * 8);
+            }
+
         }
     }
 
@@ -5092,6 +5141,7 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
+
 
         }
     }

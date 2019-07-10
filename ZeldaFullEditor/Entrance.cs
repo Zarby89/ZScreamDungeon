@@ -172,7 +172,7 @@ namespace ZeldaFullEditor
 
             }
         }
-        //TODO : Change that to be a dropdown
+
         [DisplayName("Ladder Bg"), Description("Used to determine the layer we will be on when entering"), Category("Entrance")]
         public byte Ladderbg
         {
@@ -189,7 +189,7 @@ namespace ZeldaFullEditor
                 }*/
             }
         }
-        //TODO: Change that to use either checkbox or drop down
+
         [DisplayName("Scrolling"), Description("Used to determine if you can scroll or not the room you are entering"), Category("Entrance")]
         public byte Scrolling
         {
@@ -206,7 +206,7 @@ namespace ZeldaFullEditor
                 }*/
             }
         }
-        //TODO : Find what it for?
+        
         [DisplayName("Scroll Quadrant"), Description("Used to determine if you can scrollquadrant or not the room you are entering"), Category("Entrance")]
         public byte Scrollquadrant
         {

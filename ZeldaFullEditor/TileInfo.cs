@@ -19,5 +19,17 @@ namespace ZeldaFullEditor
             this.h = h;
             this.o = o;
         }
+
+        public ushort toShort()
+        {
+            ushort value = 0;
+            //vhopppcc cccccccc
+            if (this.o) { value |= 0x2000; };
+            if (this.h) { value |= 0x4000; };
+            if (this.v) { value |= 0x8000; };
+            value |= (ushort)((this.palette << 10)&0x1C00);
+            value |= (ushort)(this.id & 0x3FF);
+            return value;
+        }
     }
 }

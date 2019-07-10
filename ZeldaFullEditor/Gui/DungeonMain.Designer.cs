@@ -32,26 +32,24 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Starting Entrances");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Main Dungeon Palette");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Sprite Palettes");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Current Room", new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Dungeon Palettes");
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Sword Palettes");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Shield Palettes");
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Armor Palettes");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Static Sprite Palettes");
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Dynamic Sprite Palette");
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Overworld Main Palettes");
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Overworld Aux Palettes");
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Overworld Animated Palettes");
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Overworld Map Palettes");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Dungeon Map Palettes");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Hud Palettes");
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("Crystal Palettes");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("Triforce Palette");
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("All Palettes", new System.Windows.Forms.TreeNode[] {
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Current Room / Map");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Dungeon Palettes");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Sword Palettes");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Shield Palettes");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Armor Palettes");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Static Sprite Palettes");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Dynamic Sprite Palette");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Overworld Main Palettes");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Overworld Aux Palettes");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Overworld Animated Palettes");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Overworld Map Palettes");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Dungeon Map Palettes");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("Hud Palettes");
+            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("Crystal Palettes");
+            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Triforce Palette");
+            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("All Palettes", new System.Windows.Forms.TreeNode[] {
+            treeNode4,
+            treeNode5,
             treeNode6,
             treeNode7,
             treeNode8,
@@ -63,9 +61,7 @@
             treeNode14,
             treeNode15,
             treeNode16,
-            treeNode17,
-            treeNode18,
-            treeNode19});
+            treeNode17});
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -93,6 +89,14 @@
             this.globalOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.advancedChestEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dungeonsPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generateChestsAddressesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generateSpriteDropToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.generatePotShuffleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importAllOverworldMapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportAllOverworldMapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dungeonMakerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importDataFromROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.duplicateSpriteStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textSpriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textChestItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -145,6 +149,15 @@
             this.loadlayoutButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.overworldButton = new System.Windows.Forms.ToolStripButton();
+            this.dungeonButton = new System.Windows.Forms.ToolStripButton();
+            this.tileModeButton = new System.Windows.Forms.ToolStripButton();
+            this.spriteModeOWButton = new System.Windows.Forms.ToolStripButton();
+            this.itemModeOWButton = new System.Windows.Forms.ToolStripButton();
+            this.entranceModeOWButton = new System.Windows.Forms.ToolStripButton();
+            this.exitModeOWButton = new System.Windows.Forms.ToolStripButton();
+            this.fluteModeOWButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.spriteImageList = new System.Windows.Forms.ImageList(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.nothingselectedcontextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -309,8 +322,9 @@
             this.searchspriteTextbox = new System.Windows.Forms.TextBox();
             this.palettestabPage = new System.Windows.Forms.TabPage();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
-            this.button2 = new System.Windows.Forms.Button();
             this.palettesTreeview = new System.Windows.Forms.TreeView();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.palettePicturebox = new System.Windows.Forms.PictureBox();
             this.gfxtabPage = new System.Windows.Forms.TabPage();
             this.customPanel2 = new ZeldaFullEditor.CustomPanel();
@@ -339,6 +353,38 @@
             this.hovergfxLabel = new System.Windows.Forms.Label();
             this.previewPaletteTextbox = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
+            this.Overworld = new System.Windows.Forms.TabPage();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabControl3 = new System.Windows.Forms.TabControl();
+            this.allTiles = new System.Windows.Forms.TabPage();
+            this.pictureboxOWTiles = new System.Windows.Forms.PictureBox();
+            this.CustomTiles = new System.Windows.Forms.TabPage();
+            this.pictureGroupTiles = new System.Windows.Forms.PictureBox();
+            this.showGridCheckbox = new System.Windows.Forms.CheckBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.showFluteCheckbox = new System.Windows.Forms.CheckBox();
+            this.showItemsCheckbox = new System.Windows.Forms.CheckBox();
+            this.showSpritesCheckbox = new System.Windows.Forms.CheckBox();
+            this.showExitsCheckbox = new System.Windows.Forms.CheckBox();
+            this.showEntranceCheckbox = new System.Windows.Forms.CheckBox();
+            this.label61 = new System.Windows.Forms.Label();
+            this.OW_spritePAL = new System.Windows.Forms.TextBox();
+            this.label60 = new System.Windows.Forms.Label();
+            this.OW_spriteGFX = new System.Windows.Forms.TextBox();
+            this.OW_tilesetPAL = new System.Windows.Forms.TextBox();
+            this.label59 = new System.Windows.Forms.Label();
+            this.label58 = new System.Windows.Forms.Label();
+            this.OW_tilesetGFX = new System.Windows.Forms.TextBox();
+            this.splitter1 = new System.Windows.Forms.Splitter();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.worldButton = new System.Windows.Forms.Button();
+            this.itemOWGroupbox = new System.Windows.Forms.GroupBox();
+            this.owcombobox = new System.Windows.Forms.ComboBox();
+            this.comboBox3 = new System.Windows.Forms.ComboBox();
+            this.label57 = new System.Windows.Forms.Label();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.customPanel3 = new ZeldaFullEditor.CustomPanel();
+            this.tabControl2 = new System.Windows.Forms.TabControl();
             this.selectedGroupbox = new System.Windows.Forms.GroupBox();
             this.litCheckbox = new System.Windows.Forms.CheckBox();
             this.object_z_label = new System.Windows.Forms.Label();
@@ -358,12 +404,6 @@
             this.potitemobjectPanel = new System.Windows.Forms.Panel();
             this.selecteditemobjectCombobox = new System.Windows.Forms.ComboBox();
             this.label31 = new System.Windows.Forms.Label();
-            this.splitter1 = new System.Windows.Forms.Splitter();
-            this.customPanel3 = new ZeldaFullEditor.CustomPanel();
-            this.tabControl2 = new System.Windows.Forms.TabControl();
-            this.customPanel4 = new ZeldaFullEditor.CustomPanel();
-            this.button1 = new System.Windows.Forms.Button();
-            this.generateChestsAddressesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
@@ -404,13 +444,24 @@
             this.panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel4.SuspendLayout();
+            this.Overworld.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
+            this.tabControl3.SuspendLayout();
+            this.allTiles.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureboxOWTiles)).BeginInit();
+            this.CustomTiles.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureGroupTiles)).BeginInit();
+            this.groupBox4.SuspendLayout();
+            this.itemOWGroupbox.SuspendLayout();
+            this.customPanel3.SuspendLayout();
             this.selectedGroupbox.SuspendLayout();
             this.spritepropertyPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).BeginInit();
             this.doorselectPanel.SuspendLayout();
             this.potitemobjectPanel.SuspendLayout();
-            this.customPanel3.SuspendLayout();
-            this.customPanel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -423,7 +474,7 @@
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(874, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1008, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -613,7 +664,14 @@
             this.globalOptionsToolStripMenuItem,
             this.advancedChestEditorToolStripMenuItem,
             this.dungeonsPropertiesToolStripMenuItem,
-            this.generateChestsAddressesToolStripMenuItem});
+            this.generateChestsAddressesToolStripMenuItem,
+            this.generateSpriteDropToolStripMenuItem,
+            this.generatePotShuffleToolStripMenuItem,
+            this.importAllOverworldMapsToolStripMenuItem,
+            this.exportAllOverworldMapsToolStripMenuItem,
+            this.dungeonMakerToolStripMenuItem,
+            this.importDataFromROMToolStripMenuItem,
+            this.duplicateSpriteStateToolStripMenuItem});
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
             this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.projectToolStripMenuItem.Text = "Project";
@@ -621,29 +679,86 @@
             // gotoRoomToolStripMenuItem
             // 
             this.gotoRoomToolStripMenuItem.Name = "gotoRoomToolStripMenuItem";
-            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.gotoRoomToolStripMenuItem.Text = "Goto Room";
             this.gotoRoomToolStripMenuItem.Click += new System.EventHandler(this.gotoRoomToolStripMenuItem_Click);
             // 
             // globalOptionsToolStripMenuItem
             // 
             this.globalOptionsToolStripMenuItem.Name = "globalOptionsToolStripMenuItem";
-            this.globalOptionsToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.globalOptionsToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.globalOptionsToolStripMenuItem.Text = "Global Options";
+            this.globalOptionsToolStripMenuItem.Click += new System.EventHandler(this.globalOptionsToolStripMenuItem_Click);
             // 
             // advancedChestEditorToolStripMenuItem
             // 
             this.advancedChestEditorToolStripMenuItem.Name = "advancedChestEditorToolStripMenuItem";
-            this.advancedChestEditorToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.advancedChestEditorToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.advancedChestEditorToolStripMenuItem.Text = "Advanced Chest Editor";
             this.advancedChestEditorToolStripMenuItem.Click += new System.EventHandler(this.advancedChestEditorToolStripMenuItem_Click);
             // 
             // dungeonsPropertiesToolStripMenuItem
             // 
             this.dungeonsPropertiesToolStripMenuItem.Name = "dungeonsPropertiesToolStripMenuItem";
-            this.dungeonsPropertiesToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.dungeonsPropertiesToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.dungeonsPropertiesToolStripMenuItem.Text = "Dungeons Properties";
             this.dungeonsPropertiesToolStripMenuItem.Click += new System.EventHandler(this.dungeonsPropertiesToolStripMenuItem_Click);
+            // 
+            // generateChestsAddressesToolStripMenuItem
+            // 
+            this.generateChestsAddressesToolStripMenuItem.Name = "generateChestsAddressesToolStripMenuItem";
+            this.generateChestsAddressesToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.generateChestsAddressesToolStripMenuItem.Text = "Generate Chests Addresses";
+            this.generateChestsAddressesToolStripMenuItem.Click += new System.EventHandler(this.generateChestsAddressesToolStripMenuItem_Click);
+            // 
+            // generateSpriteDropToolStripMenuItem
+            // 
+            this.generateSpriteDropToolStripMenuItem.Name = "generateSpriteDropToolStripMenuItem";
+            this.generateSpriteDropToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.generateSpriteDropToolStripMenuItem.Text = "Generate Sprite Drop";
+            this.generateSpriteDropToolStripMenuItem.Click += new System.EventHandler(this.generateSpriteDropToolStripMenuItem_Click);
+            // 
+            // generatePotShuffleToolStripMenuItem
+            // 
+            this.generatePotShuffleToolStripMenuItem.Name = "generatePotShuffleToolStripMenuItem";
+            this.generatePotShuffleToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.generatePotShuffleToolStripMenuItem.Text = "Generate Pot Shuffle";
+            this.generatePotShuffleToolStripMenuItem.Click += new System.EventHandler(this.generatePotShuffleToolStripMenuItem_Click);
+            // 
+            // importAllOverworldMapsToolStripMenuItem
+            // 
+            this.importAllOverworldMapsToolStripMenuItem.Name = "importAllOverworldMapsToolStripMenuItem";
+            this.importAllOverworldMapsToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.importAllOverworldMapsToolStripMenuItem.Text = "Import All Overworld Maps";
+            this.importAllOverworldMapsToolStripMenuItem.Click += new System.EventHandler(this.importAllOverworldMapsToolStripMenuItem_Click);
+            // 
+            // exportAllOverworldMapsToolStripMenuItem
+            // 
+            this.exportAllOverworldMapsToolStripMenuItem.Name = "exportAllOverworldMapsToolStripMenuItem";
+            this.exportAllOverworldMapsToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.exportAllOverworldMapsToolStripMenuItem.Text = "Export All Overworld Maps";
+            this.exportAllOverworldMapsToolStripMenuItem.Click += new System.EventHandler(this.exportAllOverworldMapsToolStripMenuItem_Click);
+            // 
+            // dungeonMakerToolStripMenuItem
+            // 
+            this.dungeonMakerToolStripMenuItem.Name = "dungeonMakerToolStripMenuItem";
+            this.dungeonMakerToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.dungeonMakerToolStripMenuItem.Text = "Dungeon Maker";
+            this.dungeonMakerToolStripMenuItem.Click += new System.EventHandler(this.dungeonMakerToolStripMenuItem_Click);
+            // 
+            // importDataFromROMToolStripMenuItem
+            // 
+            this.importDataFromROMToolStripMenuItem.Name = "importDataFromROMToolStripMenuItem";
+            this.importDataFromROMToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.importDataFromROMToolStripMenuItem.Text = "Import Data from ROM";
+            this.importDataFromROMToolStripMenuItem.Click += new System.EventHandler(this.importDataFromROMToolStripMenuItem_Click);
+            // 
+            // duplicateSpriteStateToolStripMenuItem
+            // 
+            this.duplicateSpriteStateToolStripMenuItem.Name = "duplicateSpriteStateToolStripMenuItem";
+            this.duplicateSpriteStateToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.duplicateSpriteStateToolStripMenuItem.Text = "Duplicate Sprite State";
+            this.duplicateSpriteStateToolStripMenuItem.Click += new System.EventHandler(this.duplicateSpriteStateToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -675,6 +790,7 @@
             this.textSpriteToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.textSpriteToolStripMenuItem.Text = "Text Sprite";
             this.textSpriteToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.hideSpritesToolStripMenuItem_CheckStateChanged);
+            this.textSpriteToolStripMenuItem.Click += new System.EventHandler(this.textSpriteToolStripMenuItem_Click_1);
             // 
             // textChestItemToolStripMenuItem
             // 
@@ -914,10 +1030,19 @@
             this.saveLayoutButton,
             this.loadlayoutButton,
             this.toolStripButton1,
-            this.toolStripButton2});
+            this.toolStripButton2,
+            this.overworldButton,
+            this.dungeonButton,
+            this.tileModeButton,
+            this.spriteModeOWButton,
+            this.itemModeOWButton,
+            this.entranceModeOWButton,
+            this.exitModeOWButton,
+            this.fluteModeOWButton,
+            this.toolStripButton3});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(874, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(1008, 25);
             this.toolStrip1.TabIndex = 9;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -1179,6 +1304,120 @@
             this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton2.Text = "Dungeon Generator";
             this.toolStripButton2.Click += new System.EventHandler(this.tabControl2_Click);
+            // 
+            // overworldButton
+            // 
+            this.overworldButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.overworldButton.CheckOnClick = true;
+            this.overworldButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.overworldButton.Image = ((System.Drawing.Image)(resources.GetObject("overworldButton.Image")));
+            this.overworldButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.overworldButton.Name = "overworldButton";
+            this.overworldButton.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.overworldButton.Size = new System.Drawing.Size(100, 22);
+            this.overworldButton.Text = "Overworld Editor";
+            this.overworldButton.CheckedChanged += new System.EventHandler(this.overworldButton_CheckedChanged);
+            this.overworldButton.Click += new System.EventHandler(this.overworldButton_Click);
+            // 
+            // dungeonButton
+            // 
+            this.dungeonButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.dungeonButton.Checked = true;
+            this.dungeonButton.CheckOnClick = true;
+            this.dungeonButton.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.dungeonButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.dungeonButton.Image = ((System.Drawing.Image)(resources.GetObject("dungeonButton.Image")));
+            this.dungeonButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.dungeonButton.Name = "dungeonButton";
+            this.dungeonButton.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.dungeonButton.Size = new System.Drawing.Size(94, 22);
+            this.dungeonButton.Text = "Dungeon Editor";
+            this.dungeonButton.Click += new System.EventHandler(this.dungeonButton_Click);
+            // 
+            // tileModeButton
+            // 
+            this.tileModeButton.Checked = true;
+            this.tileModeButton.CheckOnClick = true;
+            this.tileModeButton.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.tileModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.tileModeButton.Image = ((System.Drawing.Image)(resources.GetObject("tileModeButton.Image")));
+            this.tileModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tileModeButton.Name = "tileModeButton";
+            this.tileModeButton.Size = new System.Drawing.Size(23, 22);
+            this.tileModeButton.Text = "Tile16 Editor";
+            this.tileModeButton.Visible = false;
+            this.tileModeButton.Click += new System.EventHandler(this.tileModeButton_Click_1);
+            // 
+            // spriteModeOWButton
+            // 
+            this.spriteModeOWButton.CheckOnClick = true;
+            this.spriteModeOWButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.spriteModeOWButton.Image = ((System.Drawing.Image)(resources.GetObject("spriteModeOWButton.Image")));
+            this.spriteModeOWButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.spriteModeOWButton.Name = "spriteModeOWButton";
+            this.spriteModeOWButton.Size = new System.Drawing.Size(23, 22);
+            this.spriteModeOWButton.Text = "toolStripButton4";
+            this.spriteModeOWButton.Visible = false;
+            this.spriteModeOWButton.Click += new System.EventHandler(this.tileModeButton_Click_1);
+            // 
+            // itemModeOWButton
+            // 
+            this.itemModeOWButton.CheckOnClick = true;
+            this.itemModeOWButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.itemModeOWButton.Image = ((System.Drawing.Image)(resources.GetObject("itemModeOWButton.Image")));
+            this.itemModeOWButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.itemModeOWButton.Name = "itemModeOWButton";
+            this.itemModeOWButton.Size = new System.Drawing.Size(23, 22);
+            this.itemModeOWButton.Text = "toolStripButton4";
+            this.itemModeOWButton.Visible = false;
+            this.itemModeOWButton.Click += new System.EventHandler(this.tileModeButton_Click_1);
+            // 
+            // entranceModeOWButton
+            // 
+            this.entranceModeOWButton.CheckOnClick = true;
+            this.entranceModeOWButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.entranceModeOWButton.Image = ((System.Drawing.Image)(resources.GetObject("entranceModeOWButton.Image")));
+            this.entranceModeOWButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.entranceModeOWButton.Name = "entranceModeOWButton";
+            this.entranceModeOWButton.Size = new System.Drawing.Size(23, 22);
+            this.entranceModeOWButton.Text = "toolStripButton4";
+            this.entranceModeOWButton.Visible = false;
+            this.entranceModeOWButton.Click += new System.EventHandler(this.tileModeButton_Click_1);
+            // 
+            // exitModeOWButton
+            // 
+            this.exitModeOWButton.CheckOnClick = true;
+            this.exitModeOWButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.exitModeOWButton.Image = ((System.Drawing.Image)(resources.GetObject("exitModeOWButton.Image")));
+            this.exitModeOWButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.exitModeOWButton.Name = "exitModeOWButton";
+            this.exitModeOWButton.Size = new System.Drawing.Size(23, 22);
+            this.exitModeOWButton.Text = "toolStripButton5";
+            this.exitModeOWButton.Visible = false;
+            this.exitModeOWButton.Click += new System.EventHandler(this.tileModeButton_Click_1);
+            // 
+            // fluteModeOWButton
+            // 
+            this.fluteModeOWButton.CheckOnClick = true;
+            this.fluteModeOWButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.fluteModeOWButton.Image = ((System.Drawing.Image)(resources.GetObject("fluteModeOWButton.Image")));
+            this.fluteModeOWButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.fluteModeOWButton.Name = "fluteModeOWButton";
+            this.fluteModeOWButton.Size = new System.Drawing.Size(23, 22);
+            this.fluteModeOWButton.Text = "toolStripButton4";
+            this.fluteModeOWButton.Visible = false;
+            this.fluteModeOWButton.Click += new System.EventHandler(this.tileModeButton_Click_1);
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton3.Text = "toolStripButton3";
+            this.toolStripButton3.Visible = false;
+            this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
             // spriteImageList
             // 
@@ -1461,6 +1700,7 @@
             this.tabControl1.Controls.Add(this.palettestabPage);
             this.tabControl1.Controls.Add(this.gfxtabPage);
             this.tabControl1.Controls.Add(this.debugtabPage);
+            this.tabControl1.Controls.Add(this.Overworld);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Enabled = false;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -1558,7 +1798,7 @@
             // 
             // mapPicturebox
             // 
-            this.mapPicturebox.Location = new System.Drawing.Point(0, 104);
+            this.mapPicturebox.Location = new System.Drawing.Point(0, 1066);
             this.mapPicturebox.Name = "mapPicturebox";
             this.mapPicturebox.Size = new System.Drawing.Size(256, 304);
             this.mapPicturebox.TabIndex = 13;
@@ -1575,7 +1815,7 @@
             this.roomListView.LabelEdit = true;
             this.roomListView.Location = new System.Drawing.Point(0, 26);
             this.roomListView.Name = "roomListView";
-            this.roomListView.Size = new System.Drawing.Size(269, 382);
+            this.roomListView.Size = new System.Drawing.Size(269, 1344);
             this.roomListView.TabIndex = 8;
             this.roomListView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.roomListView_AfterLabelEdit);
             this.roomListView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.roomListView_ItemDrag);
@@ -2164,7 +2404,7 @@
             this.splitContainer3.Panel2.Controls.Add(this.label19);
             this.splitContainer3.Panel2.Controls.Add(this.label18);
             this.splitContainer3.Size = new System.Drawing.Size(292, 531);
-            this.splitContainer3.SplitterDistance = 170;
+            this.splitContainer3.SplitterDistance = 154;
             this.splitContainer3.TabIndex = 9;
             // 
             // entrancetreeView
@@ -2180,7 +2420,7 @@
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2});
-            this.entrancetreeView.Size = new System.Drawing.Size(292, 170);
+            this.entrancetreeView.Size = new System.Drawing.Size(292, 154);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
             this.entrancetreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.entrancetreeView_NodeMouseDoubleClick);
@@ -2778,92 +3018,101 @@
             // splitContainer6
             // 
             this.splitContainer6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer6.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer6.Location = new System.Drawing.Point(0, 0);
             this.splitContainer6.Name = "splitContainer6";
             this.splitContainer6.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer6.Panel1
             // 
-            this.splitContainer6.Panel1.Controls.Add(this.button2);
             this.splitContainer6.Panel1.Controls.Add(this.palettesTreeview);
             // 
             // splitContainer6.Panel2
             // 
+            this.splitContainer6.Panel2.Controls.Add(this.button2);
+            this.splitContainer6.Panel2.Controls.Add(this.button3);
             this.splitContainer6.Panel2.Controls.Add(this.palettePicturebox);
+            this.splitContainer6.Panel2MinSize = 312;
             this.splitContainer6.Size = new System.Drawing.Size(292, 574);
-            this.splitContainer6.SplitterDistance = 303;
+            this.splitContainer6.SplitterDistance = 258;
             this.splitContainer6.TabIndex = 1;
+            // 
+            // palettesTreeview
+            // 
+            this.palettesTreeview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.palettesTreeview.Location = new System.Drawing.Point(0, 0);
+            this.palettesTreeview.Name = "palettesTreeview";
+            treeNode3.Name = "currentRoom";
+            treeNode3.Text = "Current Room / Map";
+            treeNode3.ToolTipText = "Currently Used Palettes";
+            treeNode4.Name = "DungeonPalettes";
+            treeNode4.Text = "Dungeon Palettes";
+            treeNode5.Name = "SwordPalettes";
+            treeNode5.Text = "Sword Palettes";
+            treeNode6.Name = "ShieldPalettes";
+            treeNode6.Text = "Shield Palettes";
+            treeNode7.Name = "ArmorPalettes";
+            treeNode7.Text = "Armor Palettes";
+            treeNode7.ToolTipText = "Mail Palettes - Usually setted by the sprite file if used";
+            treeNode8.Name = "StaticSpritePalette";
+            treeNode8.Text = "Static Sprite Palettes";
+            treeNode8.ToolTipText = "Sprite Palettes always loaded everywhere depends on the world you are in";
+            treeNode9.Name = "DynamicSpritePalette";
+            treeNode9.Text = "Dynamic Sprite Palette";
+            treeNode10.Name = "OverworldPalettes";
+            treeNode10.Text = "Overworld Main Palettes";
+            treeNode11.Name = "OverworldAuxPalettes";
+            treeNode11.Text = "Overworld Aux Palettes";
+            treeNode12.Name = "OverworldAnimatedPalettes";
+            treeNode12.Text = "Overworld Animated Palettes";
+            treeNode13.Name = "OverworldMapPalettes";
+            treeNode13.Text = "Overworld Map Palettes";
+            treeNode14.Name = "DungeonMap";
+            treeNode14.Text = "Dungeon Map Palettes";
+            treeNode15.Name = "HudPalettes";
+            treeNode15.Text = "Hud Palettes";
+            treeNode16.Name = "CrystalPalettes";
+            treeNode16.Text = "Crystal Palettes";
+            treeNode17.Name = "TriforcePalette";
+            treeNode17.Text = "Triforce Palette";
+            treeNode18.Name = "allPalettes";
+            treeNode18.Text = "All Palettes";
+            this.palettesTreeview.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode3,
+            treeNode18});
+            this.palettesTreeview.Size = new System.Drawing.Size(292, 258);
+            this.palettesTreeview.TabIndex = 0;
+            this.palettesTreeview.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.palettesTreeview_NodeMouseClick);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(3, 270);
+            this.button2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button2.Location = new System.Drawing.Point(0, 279);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(286, 23);
+            this.button2.Size = new System.Drawing.Size(292, 23);
             this.button2.TabIndex = 3;
             this.button2.Text = "Save Current Palette to YY-CHR Palettes";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // palettesTreeview
+            // button3
             // 
-            this.palettesTreeview.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.palettesTreeview.Enabled = false;
-            this.palettesTreeview.Location = new System.Drawing.Point(0, 0);
-            this.palettesTreeview.Name = "palettesTreeview";
-            treeNode3.Name = "MainRoomPalette";
-            treeNode3.Tag = "Main";
-            treeNode3.Text = "Main Dungeon Palette";
-            treeNode4.Name = "currentSpritePalette";
-            treeNode4.Tag = "Sprite";
-            treeNode4.Text = "Sprite Palettes";
-            treeNode5.Name = "currentRoom";
-            treeNode5.Text = "Current Room";
-            treeNode5.ToolTipText = "Currently Used Palettes";
-            treeNode6.Name = "Node6";
-            treeNode6.Text = "Dungeon Palettes";
-            treeNode7.Name = "SwordPalettes";
-            treeNode7.Text = "Sword Palettes";
-            treeNode8.Name = "ShieldPalettes";
-            treeNode8.Text = "Shield Palettes";
-            treeNode9.Name = "ArmorPalettes";
-            treeNode9.Text = "Armor Palettes";
-            treeNode9.ToolTipText = "Mail Palettes - Usually setted by the sprite file if used";
-            treeNode10.Name = "StaticSpritePalette";
-            treeNode10.Text = "Static Sprite Palettes";
-            treeNode10.ToolTipText = "Sprite Palettes always loaded everywhere depends on the world you are in";
-            treeNode11.Name = "DynamicSpritePalette";
-            treeNode11.Text = "Dynamic Sprite Palette";
-            treeNode12.Name = "OverworldPalettes";
-            treeNode12.Text = "Overworld Main Palettes";
-            treeNode13.Name = "OverworldAuxPalettes";
-            treeNode13.Text = "Overworld Aux Palettes";
-            treeNode14.Name = "OverworldAnimatedPalettes";
-            treeNode14.Text = "Overworld Animated Palettes";
-            treeNode15.Name = "OverworldMapPalettes";
-            treeNode15.Text = "Overworld Map Palettes";
-            treeNode16.Name = "DungeonMap";
-            treeNode16.Text = "Dungeon Map Palettes";
-            treeNode17.Name = "HudPalettes";
-            treeNode17.Text = "Hud Palettes";
-            treeNode18.Name = "CrystalPalettes";
-            treeNode18.Text = "Crystal Palettes";
-            treeNode19.Name = "TriforcePalette";
-            treeNode19.Text = "Triforce Palette";
-            treeNode20.Name = "allPalettes";
-            treeNode20.Text = "All Palettes";
-            this.palettesTreeview.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode5,
-            treeNode20});
-            this.palettesTreeview.Size = new System.Drawing.Size(292, 303);
-            this.palettesTreeview.TabIndex = 0;
+            this.button3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.button3.Location = new System.Drawing.Point(0, 256);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(292, 23);
+            this.button3.TabIndex = 4;
+            this.button3.Text = "Restore Current Palette set to previous values";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // palettePicturebox
             // 
             this.palettePicturebox.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.palettePicturebox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.palettePicturebox.Dock = System.Windows.Forms.DockStyle.Top;
             this.palettePicturebox.Location = new System.Drawing.Point(0, 0);
             this.palettePicturebox.Name = "palettePicturebox";
-            this.palettePicturebox.Size = new System.Drawing.Size(292, 267);
+            this.palettePicturebox.Size = new System.Drawing.Size(292, 256);
             this.palettePicturebox.TabIndex = 0;
             this.palettePicturebox.TabStop = false;
             this.palettePicturebox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDoubleClick);
@@ -3146,6 +3395,411 @@
             this.label17.TabIndex = 1;
             this.label17.Text = "Preview Palette : ";
             // 
+            // Overworld
+            // 
+            this.Overworld.Controls.Add(this.splitContainer1);
+            this.Overworld.Location = new System.Drawing.Point(4, 40);
+            this.Overworld.Name = "Overworld";
+            this.Overworld.Size = new System.Drawing.Size(292, 574);
+            this.Overworld.TabIndex = 12;
+            this.Overworld.Text = "Overworld";
+            this.Overworld.UseVisualStyleBackColor = true;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.AutoScroll = true;
+            this.splitContainer1.Panel1.Controls.Add(this.tabControl3);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.AutoScroll = true;
+            this.splitContainer1.Panel2.Controls.Add(this.showGridCheckbox);
+            this.splitContainer1.Panel2.Controls.Add(this.button1);
+            this.splitContainer1.Panel2.Controls.Add(this.showFluteCheckbox);
+            this.splitContainer1.Panel2.Controls.Add(this.showItemsCheckbox);
+            this.splitContainer1.Panel2.Controls.Add(this.showSpritesCheckbox);
+            this.splitContainer1.Panel2.Controls.Add(this.showExitsCheckbox);
+            this.splitContainer1.Panel2.Controls.Add(this.showEntranceCheckbox);
+            this.splitContainer1.Size = new System.Drawing.Size(292, 574);
+            this.splitContainer1.SplitterDistance = 382;
+            this.splitContainer1.TabIndex = 0;
+            // 
+            // tabControl3
+            // 
+            this.tabControl3.Controls.Add(this.allTiles);
+            this.tabControl3.Controls.Add(this.CustomTiles);
+            this.tabControl3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl3.Location = new System.Drawing.Point(0, 0);
+            this.tabControl3.Name = "tabControl3";
+            this.tabControl3.SelectedIndex = 0;
+            this.tabControl3.Size = new System.Drawing.Size(288, 378);
+            this.tabControl3.TabIndex = 0;
+            this.tabControl3.SelectedIndexChanged += new System.EventHandler(this.tabControl3_SelectedIndexChanged);
+            // 
+            // allTiles
+            // 
+            this.allTiles.AutoScroll = true;
+            this.allTiles.Controls.Add(this.pictureboxOWTiles);
+            this.allTiles.Location = new System.Drawing.Point(4, 22);
+            this.allTiles.Name = "allTiles";
+            this.allTiles.Padding = new System.Windows.Forms.Padding(3);
+            this.allTiles.Size = new System.Drawing.Size(280, 352);
+            this.allTiles.TabIndex = 0;
+            this.allTiles.Text = "All Tiles";
+            this.allTiles.UseVisualStyleBackColor = true;
+            // 
+            // pictureboxOWTiles
+            // 
+            this.pictureboxOWTiles.Location = new System.Drawing.Point(0, 0);
+            this.pictureboxOWTiles.Name = "pictureboxOWTiles";
+            this.pictureboxOWTiles.Size = new System.Drawing.Size(256, 4096);
+            this.pictureboxOWTiles.TabIndex = 0;
+            this.pictureboxOWTiles.TabStop = false;
+            this.pictureboxOWTiles.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureboxOWTiles_Paint);
+            this.pictureboxOWTiles.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureboxOWTiles_MouseDoubleClick);
+            this.pictureboxOWTiles.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureboxOWTiles_MouseDown);
+            // 
+            // CustomTiles
+            // 
+            this.CustomTiles.AutoScroll = true;
+            this.CustomTiles.Controls.Add(this.pictureGroupTiles);
+            this.CustomTiles.Location = new System.Drawing.Point(4, 22);
+            this.CustomTiles.Name = "CustomTiles";
+            this.CustomTiles.Padding = new System.Windows.Forms.Padding(3);
+            this.CustomTiles.Size = new System.Drawing.Size(280, 352);
+            this.CustomTiles.TabIndex = 1;
+            this.CustomTiles.Text = "Group Tiles";
+            this.CustomTiles.UseVisualStyleBackColor = true;
+            // 
+            // pictureGroupTiles
+            // 
+            this.pictureGroupTiles.Location = new System.Drawing.Point(0, 0);
+            this.pictureGroupTiles.Name = "pictureGroupTiles";
+            this.pictureGroupTiles.Size = new System.Drawing.Size(256, 4096);
+            this.pictureGroupTiles.TabIndex = 1;
+            this.pictureGroupTiles.TabStop = false;
+            this.pictureGroupTiles.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureGroupTiles_Paint);
+            this.pictureGroupTiles.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureGroupTiles_MouseDown);
+            this.pictureGroupTiles.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureGroupTiles_MouseMove);
+            this.pictureGroupTiles.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pictureGroupTiles_MouseUp);
+            // 
+            // showGridCheckbox
+            // 
+            this.showGridCheckbox.AutoSize = true;
+            this.showGridCheckbox.Location = new System.Drawing.Point(6, 109);
+            this.showGridCheckbox.Name = "showGridCheckbox";
+            this.showGridCheckbox.Size = new System.Drawing.Size(75, 17);
+            this.showGridCheckbox.TabIndex = 7;
+            this.showGridCheckbox.Text = "Show Grid";
+            this.showGridCheckbox.UseVisualStyleBackColor = true;
+            this.showGridCheckbox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged_1);
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(6, 132);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.TabIndex = 8;
+            this.button1.Text = "Show Sprite";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // showFluteCheckbox
+            // 
+            this.showFluteCheckbox.AutoSize = true;
+            this.showFluteCheckbox.Checked = true;
+            this.showFluteCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showFluteCheckbox.Location = new System.Drawing.Point(6, 89);
+            this.showFluteCheckbox.Name = "showFluteCheckbox";
+            this.showFluteCheckbox.Size = new System.Drawing.Size(106, 17);
+            this.showFluteCheckbox.TabIndex = 6;
+            this.showFluteCheckbox.Text = "Show Transports";
+            this.showFluteCheckbox.UseVisualStyleBackColor = true;
+            this.showFluteCheckbox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged_1);
+            // 
+            // showItemsCheckbox
+            // 
+            this.showItemsCheckbox.AutoSize = true;
+            this.showItemsCheckbox.Checked = true;
+            this.showItemsCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showItemsCheckbox.Location = new System.Drawing.Point(6, 66);
+            this.showItemsCheckbox.Name = "showItemsCheckbox";
+            this.showItemsCheckbox.Size = new System.Drawing.Size(81, 17);
+            this.showItemsCheckbox.TabIndex = 5;
+            this.showItemsCheckbox.Text = "Show Items";
+            this.showItemsCheckbox.UseVisualStyleBackColor = true;
+            this.showItemsCheckbox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged_1);
+            // 
+            // showSpritesCheckbox
+            // 
+            this.showSpritesCheckbox.AutoSize = true;
+            this.showSpritesCheckbox.Checked = true;
+            this.showSpritesCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showSpritesCheckbox.Location = new System.Drawing.Point(6, 46);
+            this.showSpritesCheckbox.Name = "showSpritesCheckbox";
+            this.showSpritesCheckbox.Size = new System.Drawing.Size(88, 17);
+            this.showSpritesCheckbox.TabIndex = 4;
+            this.showSpritesCheckbox.Text = "Show Sprites";
+            this.showSpritesCheckbox.UseVisualStyleBackColor = true;
+            this.showSpritesCheckbox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged_1);
+            // 
+            // showExitsCheckbox
+            // 
+            this.showExitsCheckbox.AutoSize = true;
+            this.showExitsCheckbox.Checked = true;
+            this.showExitsCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showExitsCheckbox.Location = new System.Drawing.Point(6, 3);
+            this.showExitsCheckbox.Name = "showExitsCheckbox";
+            this.showExitsCheckbox.Size = new System.Drawing.Size(78, 17);
+            this.showExitsCheckbox.TabIndex = 3;
+            this.showExitsCheckbox.Text = "Show Exits";
+            this.showExitsCheckbox.UseVisualStyleBackColor = true;
+            this.showExitsCheckbox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged_1);
+            // 
+            // showEntranceCheckbox
+            // 
+            this.showEntranceCheckbox.AutoSize = true;
+            this.showEntranceCheckbox.Checked = true;
+            this.showEntranceCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.showEntranceCheckbox.Location = new System.Drawing.Point(6, 23);
+            this.showEntranceCheckbox.Name = "showEntranceCheckbox";
+            this.showEntranceCheckbox.Size = new System.Drawing.Size(104, 17);
+            this.showEntranceCheckbox.TabIndex = 2;
+            this.showEntranceCheckbox.Text = "Show Entrances";
+            this.showEntranceCheckbox.UseVisualStyleBackColor = true;
+            this.showEntranceCheckbox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged_1);
+            // 
+            // label61
+            // 
+            this.label61.AutoSize = true;
+            this.label61.Location = new System.Drawing.Point(273, 45);
+            this.label61.Name = "label61";
+            this.label61.Size = new System.Drawing.Size(55, 13);
+            this.label61.TabIndex = 7;
+            this.label61.Text = "Sprite Pal.";
+            // 
+            // OW_spritePAL
+            // 
+            this.OW_spritePAL.Location = new System.Drawing.Point(355, 38);
+            this.OW_spritePAL.Name = "OW_spritePAL";
+            this.OW_spritePAL.Size = new System.Drawing.Size(48, 20);
+            this.OW_spritePAL.TabIndex = 6;
+            this.OW_spritePAL.TextChanged += new System.EventHandler(this.OW_tilesetGFX_TextChanged);
+            // 
+            // label60
+            // 
+            this.label60.AutoSize = true;
+            this.label60.Location = new System.Drawing.Point(273, 15);
+            this.label60.Name = "label60";
+            this.label60.Size = new System.Drawing.Size(64, 13);
+            this.label60.TabIndex = 5;
+            this.label60.Text = "Sprite GFX :";
+            // 
+            // OW_spriteGFX
+            // 
+            this.OW_spriteGFX.Location = new System.Drawing.Point(355, 12);
+            this.OW_spriteGFX.Name = "OW_spriteGFX";
+            this.OW_spriteGFX.Size = new System.Drawing.Size(48, 20);
+            this.OW_spriteGFX.TabIndex = 4;
+            this.OW_spriteGFX.TextChanged += new System.EventHandler(this.OW_tilesetGFX_TextChanged);
+            // 
+            // OW_tilesetPAL
+            // 
+            this.OW_tilesetPAL.Location = new System.Drawing.Point(213, 38);
+            this.OW_tilesetPAL.Name = "OW_tilesetPAL";
+            this.OW_tilesetPAL.Size = new System.Drawing.Size(48, 20);
+            this.OW_tilesetPAL.TabIndex = 3;
+            this.OW_tilesetPAL.TextChanged += new System.EventHandler(this.OW_tilesetGFX_TextChanged);
+            // 
+            // label59
+            // 
+            this.label59.AutoSize = true;
+            this.label59.Location = new System.Drawing.Point(131, 41);
+            this.label59.Name = "label59";
+            this.label59.Size = new System.Drawing.Size(59, 13);
+            this.label59.TabIndex = 2;
+            this.label59.Text = "Tileset Pal.";
+            // 
+            // label58
+            // 
+            this.label58.AutoSize = true;
+            this.label58.Location = new System.Drawing.Point(131, 15);
+            this.label58.Name = "label58";
+            this.label58.Size = new System.Drawing.Size(68, 13);
+            this.label58.TabIndex = 1;
+            this.label58.Text = "Tileset GFX :";
+            // 
+            // OW_tilesetGFX
+            // 
+            this.OW_tilesetGFX.Location = new System.Drawing.Point(213, 12);
+            this.OW_tilesetGFX.Name = "OW_tilesetGFX";
+            this.OW_tilesetGFX.Size = new System.Drawing.Size(48, 20);
+            this.OW_tilesetGFX.TabIndex = 0;
+            this.OW_tilesetGFX.TextChanged += new System.EventHandler(this.OW_tilesetGFX_TextChanged);
+            // 
+            // splitter1
+            // 
+            this.splitter1.Location = new System.Drawing.Point(300, 49);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(3, 618);
+            this.splitter1.TabIndex = 15;
+            this.splitter1.TabStop = false;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.BackColor = System.Drawing.SystemColors.Control;
+            this.groupBox4.Controls.Add(this.worldButton);
+            this.groupBox4.Controls.Add(this.itemOWGroupbox);
+            this.groupBox4.Controls.Add(this.label61);
+            this.groupBox4.Controls.Add(this.comboBox3);
+            this.groupBox4.Controls.Add(this.OW_spritePAL);
+            this.groupBox4.Controls.Add(this.label57);
+            this.groupBox4.Controls.Add(this.label58);
+            this.groupBox4.Controls.Add(this.label60);
+            this.groupBox4.Controls.Add(this.OW_tilesetGFX);
+            this.groupBox4.Controls.Add(this.OW_spriteGFX);
+            this.groupBox4.Controls.Add(this.label59);
+            this.groupBox4.Controls.Add(this.OW_tilesetPAL);
+            this.groupBox4.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox4.Location = new System.Drawing.Point(303, 49);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(705, 63);
+            this.groupBox4.TabIndex = 20;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Overworld : ";
+            this.groupBox4.Visible = false;
+            // 
+            // worldButton
+            // 
+            this.worldButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.worldButton.Location = new System.Drawing.Point(477, 16);
+            this.worldButton.Name = "worldButton";
+            this.worldButton.Size = new System.Drawing.Size(75, 44);
+            this.worldButton.TabIndex = 9;
+            this.worldButton.Text = "Darkworld";
+            this.worldButton.UseVisualStyleBackColor = true;
+            this.worldButton.Click += new System.EventHandler(this.worldButton_Click);
+            // 
+            // itemOWGroupbox
+            // 
+            this.itemOWGroupbox.Controls.Add(this.owcombobox);
+            this.itemOWGroupbox.Dock = System.Windows.Forms.DockStyle.Right;
+            this.itemOWGroupbox.Location = new System.Drawing.Point(552, 16);
+            this.itemOWGroupbox.Name = "itemOWGroupbox";
+            this.itemOWGroupbox.Size = new System.Drawing.Size(150, 44);
+            this.itemOWGroupbox.TabIndex = 8;
+            this.itemOWGroupbox.TabStop = false;
+            this.itemOWGroupbox.Text = "Selected Item :";
+            this.itemOWGroupbox.Visible = false;
+            // 
+            // owcombobox
+            // 
+            this.owcombobox.FormattingEnabled = true;
+            this.owcombobox.Items.AddRange(new object[] {
+            "Nothing",
+            "Rupee",
+            "RockCrab",
+            "Bee",
+            "Random",
+            "Bomb",
+            "Rupee",
+            "Blue Rupee",
+            "Key",
+            "Arrow",
+            "Bomb",
+            "Rupee",
+            "Magic",
+            "Big Magic",
+            "Chicken",
+            "Green Soldier",
+            "AliveRock",
+            "Blue Soldier",
+            "Ground Bomb",
+            "Heart",
+            "Fairy",
+            "Heart",
+            "Nothing",
+            "Hole",
+            "Warp",
+            "Staircase",
+            "Bombable",
+            "Switch"});
+            this.owcombobox.Location = new System.Drawing.Point(6, 17);
+            this.owcombobox.Name = "owcombobox";
+            this.owcombobox.Size = new System.Drawing.Size(138, 21);
+            this.owcombobox.TabIndex = 0;
+            this.owcombobox.SelectedIndexChanged += new System.EventHandler(this.owcombobox_SelectedIndexChanged);
+            // 
+            // comboBox3
+            // 
+            this.comboBox3.FormattingEnabled = true;
+            this.comboBox3.Items.AddRange(new object[] {
+            "0:Beginning",
+            "1:Zelda Rescued",
+            "2:Agahnim Dead"});
+            this.comboBox3.Location = new System.Drawing.Point(12, 32);
+            this.comboBox3.Name = "comboBox3";
+            this.comboBox3.Size = new System.Drawing.Size(113, 21);
+            this.comboBox3.TabIndex = 1;
+            this.comboBox3.Text = "1:Zelda Rescued";
+            this.comboBox3.SelectedIndexChanged += new System.EventHandler(this.comboBox3_SelectedIndexChanged);
+            // 
+            // label57
+            // 
+            this.label57.AutoSize = true;
+            this.label57.Location = new System.Drawing.Point(9, 16);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(116, 13);
+            this.label57.TabIndex = 0;
+            this.label57.Text = "World State ($7EF3C5)";
+            // 
+            // panel5
+            // 
+            this.panel5.AutoScroll = true;
+            this.panel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel5.Location = new System.Drawing.Point(303, 112);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(705, 555);
+            this.panel5.TabIndex = 21;
+            this.panel5.Visible = false;
+            this.panel5.Scroll += new System.Windows.Forms.ScrollEventHandler(this.panel5_Scroll);
+            // 
+            // customPanel3
+            // 
+            this.customPanel3.AutoScroll = true;
+            this.customPanel3.Controls.Add(this.tabControl2);
+            this.customPanel3.Controls.Add(this.selectedGroupbox);
+            this.customPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.customPanel3.Location = new System.Drawing.Point(303, 49);
+            this.customPanel3.Name = "customPanel3";
+            this.customPanel3.Size = new System.Drawing.Size(705, 618);
+            this.customPanel3.TabIndex = 19;
+            // 
+            // tabControl2
+            // 
+            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tabControl2.ItemSize = new System.Drawing.Size(48, 18);
+            this.tabControl2.Location = new System.Drawing.Point(0, 69);
+            this.tabControl2.Margin = new System.Windows.Forms.Padding(0);
+            this.tabControl2.Name = "tabControl2";
+            this.tabControl2.Padding = new System.Drawing.Point(3, 3);
+            this.tabControl2.SelectedIndex = 0;
+            this.tabControl2.Size = new System.Drawing.Size(705, 24);
+            this.tabControl2.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+            this.tabControl2.TabIndex = 17;
+            this.tabControl2.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl2_DrawItem);
+            this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
+            this.tabControl2.SizeChanged += new System.EventHandler(this.tabControl2_SizeChanged);
+            this.tabControl2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tabControl2_MouseClick);
+            // 
             // selectedGroupbox
             // 
             this.selectedGroupbox.BackColor = System.Drawing.SystemColors.Control;
@@ -3159,9 +3813,9 @@
             this.selectedGroupbox.Controls.Add(this.doorselectPanel);
             this.selectedGroupbox.Controls.Add(this.potitemobjectPanel);
             this.selectedGroupbox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.selectedGroupbox.Location = new System.Drawing.Point(300, 49);
+            this.selectedGroupbox.Location = new System.Drawing.Point(0, 0);
             this.selectedGroupbox.Name = "selectedGroupbox";
-            this.selectedGroupbox.Size = new System.Drawing.Size(574, 69);
+            this.selectedGroupbox.Size = new System.Drawing.Size(705, 69);
             this.selectedGroupbox.TabIndex = 0;
             this.selectedGroupbox.TabStop = false;
             this.selectedGroupbox.Text = "Selected Object : ";
@@ -3198,7 +3852,7 @@
             this.spritepropertyPanel.Controls.Add(this.label23);
             this.spritepropertyPanel.Location = new System.Drawing.Point(301, 16);
             this.spritepropertyPanel.Name = "spritepropertyPanel";
-            this.spritepropertyPanel.Size = new System.Drawing.Size(270, 50);
+            this.spritepropertyPanel.Size = new System.Drawing.Size(401, 50);
             this.spritepropertyPanel.TabIndex = 12;
             this.spritepropertyPanel.Visible = false;
             // 
@@ -3246,7 +3900,7 @@
             "Big Key"});
             this.comboBox1.Location = new System.Drawing.Point(174, 26);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(87, 21);
+            this.comboBox1.Size = new System.Drawing.Size(218, 21);
             this.comboBox1.TabIndex = 8;
             this.comboBox1.Text = "No";
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
@@ -3306,7 +3960,7 @@
             this.doorselectPanel.Controls.Add(this.label25);
             this.doorselectPanel.Location = new System.Drawing.Point(301, 16);
             this.doorselectPanel.Name = "doorselectPanel";
-            this.doorselectPanel.Size = new System.Drawing.Size(270, 50);
+            this.doorselectPanel.Size = new System.Drawing.Size(401, 50);
             this.doorselectPanel.TabIndex = 18;
             this.doorselectPanel.Visible = false;
             // 
@@ -3339,7 +3993,7 @@
             "Curtain Door 0x32"});
             this.comboBox2.Location = new System.Drawing.Point(6, 26);
             this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(255, 21);
+            this.comboBox2.Size = new System.Drawing.Size(386, 21);
             this.comboBox2.TabIndex = 8;
             this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
             // 
@@ -3362,7 +4016,7 @@
             this.potitemobjectPanel.Controls.Add(this.label31);
             this.potitemobjectPanel.Location = new System.Drawing.Point(301, 16);
             this.potitemobjectPanel.Name = "potitemobjectPanel";
-            this.potitemobjectPanel.Size = new System.Drawing.Size(270, 50);
+            this.potitemobjectPanel.Size = new System.Drawing.Size(401, 50);
             this.potitemobjectPanel.TabIndex = 17;
             this.potitemobjectPanel.Visible = false;
             // 
@@ -3384,7 +4038,7 @@
             "Key",
             "Arrow",
             "Bomb",
-            "Heart",
+            "Rupee",
             "Magic",
             "Big Magic",
             "Chicken",
@@ -3403,7 +4057,7 @@
             "Switch "});
             this.selecteditemobjectCombobox.Location = new System.Drawing.Point(6, 26);
             this.selecteditemobjectCombobox.Name = "selecteditemobjectCombobox";
-            this.selecteditemobjectCombobox.Size = new System.Drawing.Size(255, 21);
+            this.selecteditemobjectCombobox.Size = new System.Drawing.Size(386, 21);
             this.selecteditemobjectCombobox.TabIndex = 8;
             this.selecteditemobjectCombobox.SelectedIndexChanged += new System.EventHandler(this.selecteditemobjectCombobox_SelectedIndexChanged);
             // 
@@ -3418,86 +4072,23 @@
             this.label31.TabIndex = 9;
             this.label31.Text = "Item :";
             // 
-            // splitter1
-            // 
-            this.splitter1.Location = new System.Drawing.Point(300, 118);
-            this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 549);
-            this.splitter1.TabIndex = 15;
-            this.splitter1.TabStop = false;
-            // 
-            // customPanel3
-            // 
-            this.customPanel3.AutoScroll = true;
-            this.customPanel3.Controls.Add(this.tabControl2);
-            this.customPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel3.Location = new System.Drawing.Point(303, 118);
-            this.customPanel3.Name = "customPanel3";
-            this.customPanel3.Size = new System.Drawing.Size(548, 549);
-            this.customPanel3.TabIndex = 19;
-            // 
-            // tabControl2
-            // 
-            this.tabControl2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.tabControl2.ItemSize = new System.Drawing.Size(48, 18);
-            this.tabControl2.Location = new System.Drawing.Point(0, 0);
-            this.tabControl2.Margin = new System.Windows.Forms.Padding(0);
-            this.tabControl2.Name = "tabControl2";
-            this.tabControl2.Padding = new System.Drawing.Point(3, 3);
-            this.tabControl2.SelectedIndex = 0;
-            this.tabControl2.Size = new System.Drawing.Size(548, 24);
-            this.tabControl2.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-            this.tabControl2.TabIndex = 17;
-            this.tabControl2.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabControl2_DrawItem);
-            this.tabControl2.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
-            this.tabControl2.SizeChanged += new System.EventHandler(this.tabControl2_SizeChanged);
-            this.tabControl2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tabControl2_MouseClick);
-            // 
-            // customPanel4
-            // 
-            this.customPanel4.Controls.Add(this.button1);
-            this.customPanel4.Dock = System.Windows.Forms.DockStyle.Right;
-            this.customPanel4.Location = new System.Drawing.Point(851, 118);
-            this.customPanel4.Name = "customPanel4";
-            this.customPanel4.Size = new System.Drawing.Size(23, 549);
-            this.customPanel4.TabIndex = 20;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.Location = new System.Drawing.Point(0, 0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(23, 23);
-            this.button1.TabIndex = 18;
-            this.button1.Text = "X";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // generateChestsAddressesToolStripMenuItem
-            // 
-            this.generateChestsAddressesToolStripMenuItem.Name = "generateChestsAddressesToolStripMenuItem";
-            this.generateChestsAddressesToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.generateChestsAddressesToolStripMenuItem.Text = "Generate Chests Addresses";
-            this.generateChestsAddressesToolStripMenuItem.Click += new System.EventHandler(this.generateChestsAddressesToolStripMenuItem_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(874, 667);
+            this.ClientSize = new System.Drawing.Size(1008, 667);
+            this.Controls.Add(this.panel5);
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.customPanel3);
-            this.Controls.Add(this.customPanel4);
             this.Controls.Add(this.splitter1);
-            this.Controls.Add(this.selectedGroupbox);
             this.Controls.Add(this.toolboxPanel);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Form1";
-            this.Text = "ZScream Magic - 1.2 Alpha Version";
+            this.Text = "ZScream Magic - 1.5 Beta  Version";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.zscreamForm_FormClosing_1);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.menuStrip1.ResumeLayout(false);
@@ -3550,6 +4141,21 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
+            this.Overworld.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            this.splitContainer1.Panel2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
+            this.tabControl3.ResumeLayout(false);
+            this.allTiles.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureboxOWTiles)).EndInit();
+            this.CustomTiles.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureGroupTiles)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.itemOWGroupbox.ResumeLayout(false);
+            this.customPanel3.ResumeLayout(false);
             this.selectedGroupbox.ResumeLayout(false);
             this.selectedGroupbox.PerformLayout();
             this.spritepropertyPanel.ResumeLayout(false);
@@ -3559,8 +4165,6 @@
             this.doorselectPanel.PerformLayout();
             this.potitemobjectPanel.ResumeLayout(false);
             this.potitemobjectPanel.PerformLayout();
-            this.customPanel3.ResumeLayout(false);
-            this.customPanel4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3860,12 +4464,56 @@
         private System.Windows.Forms.ToolStripMenuItem showDoorIDsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showChestsIDsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem dungeonsPropertiesToolStripMenuItem;
-        private System.Windows.Forms.Button button1;
         private CustomPanel customPanel3;
-        private CustomPanel customPanel4;
         private System.Windows.Forms.ToolStripMenuItem disableEntranceGFXToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem xScreenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem generateChestsAddressesToolStripMenuItem;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ToolStripButton overworldButton;
+        private System.Windows.Forms.TabPage Overworld;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        public System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.ComboBox comboBox3;
+        private System.Windows.Forms.Label label57;
+        public System.Windows.Forms.Panel panel5;
+        public System.Windows.Forms.PictureBox pictureboxOWTiles;
+        private System.Windows.Forms.TabControl tabControl3;
+        private System.Windows.Forms.TabPage allTiles;
+        private System.Windows.Forms.TabPage CustomTiles;
+        public System.Windows.Forms.PictureBox pictureGroupTiles;
+        private System.Windows.Forms.ToolStripMenuItem generateSpriteDropToolStripMenuItem;
+        private System.Windows.Forms.Label label61;
+        private System.Windows.Forms.Label label60;
+        private System.Windows.Forms.Label label59;
+        private System.Windows.Forms.Label label58;
+        public System.Windows.Forms.TextBox OW_spritePAL;
+        public System.Windows.Forms.TextBox OW_spriteGFX;
+        public System.Windows.Forms.TextBox OW_tilesetPAL;
+        public System.Windows.Forms.TextBox OW_tilesetGFX;
+        private System.Windows.Forms.ToolStripMenuItem generatePotShuffleToolStripMenuItem;
+        private System.Windows.Forms.CheckBox showGridCheckbox;
+        private System.Windows.Forms.CheckBox showFluteCheckbox;
+        private System.Windows.Forms.CheckBox showItemsCheckbox;
+        private System.Windows.Forms.CheckBox showSpritesCheckbox;
+        private System.Windows.Forms.CheckBox showExitsCheckbox;
+        private System.Windows.Forms.CheckBox showEntranceCheckbox;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStripButton tileModeButton;
+        private System.Windows.Forms.ToolStripButton spriteModeOWButton;
+        private System.Windows.Forms.ToolStripButton itemModeOWButton;
+        private System.Windows.Forms.ToolStripButton entranceModeOWButton;
+        private System.Windows.Forms.ToolStripButton exitModeOWButton;
+        private System.Windows.Forms.ToolStripButton fluteModeOWButton;
+        private System.Windows.Forms.ToolStripButton toolStripButton3;
+        private System.Windows.Forms.ToolStripMenuItem importAllOverworldMapsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportAllOverworldMapsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dungeonMakerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importDataFromROMToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem duplicateSpriteStateToolStripMenuItem;
+        public System.Windows.Forms.ComboBox owcombobox;
+        private System.Windows.Forms.Button worldButton;
+        public System.Windows.Forms.ToolStripButton dungeonButton;
+        public System.Windows.Forms.GroupBox itemOWGroupbox;
     }
 }
 

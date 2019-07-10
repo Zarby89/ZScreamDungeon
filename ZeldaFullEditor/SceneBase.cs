@@ -50,6 +50,33 @@ namespace ZeldaFullEditor
         public dataObject selectedDragSprite = null;
         public bool updating_info = false;
 
+        byte[] spriteFontSpacing = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4 };
+        public void drawText(Graphics g, int x, int y, string text,ImageAttributes ai = null)
+        {
+            text = text.ToUpper();
+            int cpos = 0;
+            for (int i = 0; i < text.Length; i++)
+            {
+                byte arrayPos = (byte)(text[i] - 32);
+                if ((byte)text[i] == 10)
+                {
+                    y += 10;
+                    cpos = 0;
+                    continue;
+                }
+                if (ai == null)
+                {
+                    g.DrawImage(mainForm.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
+                }
+                else
+                {
+                    g.DrawImage(mainForm.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
+                }
+                
+                cpos += spriteFontSpacing[arrayPos];
+            }
+        }
+
 
         public virtual void Clear()
         {
@@ -120,7 +147,13 @@ namespace ZeldaFullEditor
                 }
                 else if (o is Room_Object)
                 {
-                    graphics.DrawRectangle(Pens.Green, new Rectangle(((o as Room_Object).nx) * 8, ((o as Room_Object).ny) * 8, (o as Room_Object).width, (o as Room_Object).height));
+                    Room_Object obj = (o as Room_Object);
+                    int yfix = 0;
+                    if (obj.diagonalFix)
+                    {
+                        yfix = -(6 + obj.size);
+                    }
+                    graphics.DrawRectangle(Pens.Green, new Rectangle((obj.nx+obj.offsetX) * 8, (obj.ny + obj.offsetY+yfix) * 8, obj.width, obj.height));
                 }
             }
 
@@ -156,7 +189,14 @@ namespace ZeldaFullEditor
                     }
                     else if (o is Room_Object)
                     {
-                        graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(((o as Room_Object).nx) * 8, ((o as Room_Object).ny) * 8, (o as Room_Object).width, (o as Room_Object).height));
+
+                        Room_Object obj = (o as Room_Object);
+                        int yfix = 0;
+                        if (obj.diagonalFix)
+                        {
+                            yfix = -(6 + obj.size);
+                        }
+                        graphics.DrawRectangle(Pens.LimeGreen, new Rectangle((obj.nx+obj.offsetX) * 8, (obj.ny + obj.offsetY+yfix) * 8, obj.width, obj.height));
                     }
                 }
             }

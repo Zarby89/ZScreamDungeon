@@ -18,7 +18,6 @@ namespace ZeldaFullEditor
     Door_Up
 
          */
-    //TODO : Fix exploded wall doors
 
     [Serializable]
     public class object_door : Room_Object

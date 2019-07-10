@@ -18,5 +18,19 @@ namespace ZeldaFullEditor
             this.tile2 = tile2;
             this.tile3 = tile3;
         }
+
+        public Tile32(ulong tiles)
+        {
+            this.tile0 = (ushort)tiles;
+            this.tile1 = (ushort)(tiles >> 16);
+            this.tile2 = (ushort)(tiles >> 32);
+            this.tile3 = (ushort)(tiles >> 48);
+        }
+
+        public ulong getLongValue()
+        {
+            return (ulong)((ulong)tile3 << 48) | ((ulong)tile2 << 32) | ((ulong)tile1 << 16) | (ulong)(tile0); ;
+        }
+
     }
 }

@@ -171,7 +171,7 @@ namespace ZeldaFullEditor
         public string text = "THE BLACK CATS[LN2]ARE HUNGRY.[LN3]COME BACK WITH";
         public int scroll_max = 0;
         public int scroll = 0;
-        Bitmap previewBitmap = new Bitmap(172, 520, PixelFormat.Format32bppArgb); //TODO : Add dynamic bitmap size
+        Bitmap previewBitmap = new Bitmap(172, 520, PixelFormat.Format32bppArgb); 
         private void TextPreview_Shown(object sender, EventArgs e)
         {
 

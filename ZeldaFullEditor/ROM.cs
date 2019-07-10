@@ -9,5 +9,6 @@ namespace ZeldaFullEditor
     public static class ROM
     {
         public static byte[] DATA;
+        public static byte[] IMPORTDATA;
     }
 }

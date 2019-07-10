@@ -56,29 +56,6 @@ namespace ZeldaFullEditor
             return false;
         }
 
-        public bool saveOWExits()
-        {
-            for (int i = 0; i < OverworldGlobal.exits.Count; i++)
-            {
-                ROM.DATA[ConstantsJP.OWExitXPlayer + (i * 2)] = (byte)(OverworldGlobal.exits[i].playerX & 0xFF);
-                ROM.DATA[ConstantsJP.OWExitXPlayer + (i * 2)+1] = (byte)((OverworldGlobal.exits[i].playerX >> 8) & 0xFF);
-                ROM.DATA[ConstantsJP.OWExitYPlayer + (i * 2)] = (byte)(OverworldGlobal.exits[i].playerY & 0xFF);
-                ROM.DATA[ConstantsJP.OWExitYPlayer + (i * 2)+1] = (byte)((OverworldGlobal.exits[i].playerY >> 8) & 0xFF);
-
-
-                ROM.DATA[ConstantsJP.OWExitXCamera + (i * 2)] = (byte)((OverworldGlobal.exits[i].playerX +7) & 0xFF);
-                ROM.DATA[ConstantsJP.OWExitXCamera + (i * 2) + 1] = (byte)(((OverworldGlobal.exits[i].playerX+7) >> 8) & 0x3F);
-                ROM.DATA[ConstantsJP.OWExitYCamera + (i * 2)] = (byte)((OverworldGlobal.exits[i].playerY +31) & 0xFF);
-                ROM.DATA[ConstantsJP.OWExitYCamera + (i * 2) + 1] = (byte)(((OverworldGlobal.exits[i].playerY+31) >> 8) & 0x3F);
-
-                ROM.DATA[ConstantsJP.OWExitXScroll + (i * 2)] = (byte)((OverworldGlobal.exits[i].playerX - 134) & 0xFF);
-                ROM.DATA[ConstantsJP.OWExitXScroll + (i * 2) + 1] = (byte)(((OverworldGlobal.exits[i].playerX-134) >> 8) & 0x3F);
-                ROM.DATA[ConstantsJP.OWExitYScroll + (i * 2)] = (byte)((OverworldGlobal.exits[i].playerY -78) & 0xFF);
-                ROM.DATA[ConstantsJP.OWExitYScroll + (i * 2) + 1] = (byte)(((OverworldGlobal.exits[i].playerY-78) >> 8) & 0x3F);
-
-            }
-            return false;
-        }
 
         public bool saveRoomsHeaders()
         {
@@ -421,7 +398,7 @@ namespace ZeldaFullEditor
                     chestCount++;
                 }
             }
-            Console.WriteLine("Nbr of chests : " + chestCount);
+            //Console.WriteLine("Nbr of chests : " + chestCount);
             if (chestCount > 168)
             {
                 return true; // False = no error

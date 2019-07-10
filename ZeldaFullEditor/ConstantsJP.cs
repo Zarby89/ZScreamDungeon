@@ -204,8 +204,6 @@ namespace ZeldaFullEditor
         };
 
 
-        //TODO : On ROM Load if Pointers are at original location
-        //Expand ROM to 2MB if US, 4MB if VT, move Headers to new location
         public static bool Rando = false; //is it a rando rom?
         public static void Init_Jp(bool rando = false)
         {

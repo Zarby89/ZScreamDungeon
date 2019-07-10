@@ -23,13 +23,16 @@ namespace ZeldaFullEditor
         public string name;
         public byte keyDrop = 0;
         public int sizeMap = 512;
-
+        bool overworld = false;
         public bool preview = false;
-
+        public byte mapid = 0;
+        public int map_x = 0;
+        public int map_y = 0;
         Room room;
         public Rectangle boundingbox;
         bool picker = false;
         public bool selected = false;
+        public OverworldMap[] maps;
         public Sprite(Room room,byte id, byte x, byte y, byte overlord, byte subtype, byte layer)
         {
             this.id = id;
@@ -47,6 +50,21 @@ namespace ZeldaFullEditor
                 if (id > 0 && id <= 0x19)
                 this.name = Sprites_Names.overlordnames[id-1];
             }
+        }
+
+        public Sprite(byte mapid, byte id, byte x, byte y, OverworldMap[] maps, int map_x, int map_y)
+        {
+            overworld = true;
+            this.mapid = mapid;
+            this.id = id;
+            this.x = x;
+            this.y = y;
+            this.nx = x;
+            this.ny = y;
+            this.name = Sprites_Names.name[id];
+            this.maps = maps;
+            this.map_x = map_x;
+            this.map_y = map_y;
         }
 
         public void updateBBox()
@@ -73,7 +91,7 @@ namespace ZeldaFullEditor
             }
         }
 
-
+        
         public void Draw(bool picker = false)
         {
 
@@ -130,8 +148,9 @@ namespace ZeldaFullEditor
             }
             else if (id == 0x01)
             {
-                drawSpriteTile((x * 16), (y * 16), 4, 25, 10, false, false, 1, 4);
-                drawSpriteTile((x * 16) + 8, (y * 16), 4, 25, 10, true, false, 1, 4);
+                drawSpriteTile((x * 16)-8, (y * 16), 6, 24, 12, false, false, 2,2);
+                drawSpriteTile((x * 16) + 8, (y * 16), 6, 24, 12, true, false, 2, 2);
+
             }
             else if (id == 0x02)
             {
@@ -569,7 +588,7 @@ namespace ZeldaFullEditor
             }
             else if (id == 0x4C) //jazzhand
             {
-                drawSpriteTile((x * 16), (y * 16), 0, 26, 12, false, false, 6, 2);
+                drawSpriteTile((x * 16), (y * 16), 0, 26, 14, false, false, 6, 2);
             }
             else if (id == 0x4D) //rabit??
             {
@@ -609,6 +628,11 @@ namespace ZeldaFullEditor
             {
                 drawSpriteTile((x * 16), (y * 16), 10, 20, 2);
                 drawSpriteTile((x * 16), (y * 16) + 8, 8, 30, 2);
+            }
+            else if (id == 0x57) //Desert Rocks
+            {
+                drawSpriteTile((x * 16), (y * 16), 14, 24, 2, false, false, 2, 4);
+                drawSpriteTile((x * 16) + 16, (y * 16), 14, 24, 2, true, false, 2, 4);
             }
             else if (id == 0x58) //crab
             {
@@ -1047,6 +1071,10 @@ namespace ZeldaFullEditor
                 drawSpriteTile((x * 16), (y * 16), 0, 16, 10);
 
             }
+            else if (id == 0xAC)
+            {
+                drawSpriteTile((x * 16), (y * 16), 5, 14, 4);
+            }
             else if (id == 0xAD)
             {
                 drawSpriteTile((x * 16), (y * 16) + 8, 14, 10, 10);
@@ -1068,8 +1096,8 @@ namespace ZeldaFullEditor
             }
             else if (id == 0xC4)
             {
-                drawSpriteTile((x * 16), (y * 16), 0, 18, 12);
-                drawSpriteTile((x * 16), (y * 16) - 8, 0, 16, 12);
+                drawSpriteTile((x * 16), (y * 16), 0, 18, 14);
+                drawSpriteTile((x * 16), (y * 16) - 8, 0, 16, 14);
             }
             else if (id == 0xC5)
             {
@@ -1128,6 +1156,12 @@ namespace ZeldaFullEditor
                 drawSpriteTile((x * 16) + 8, (y * 16) + 8, 7, 13, 11, false, false, 1, 1); //middle
                 //6,7 / 13
             }
+            else if (id == 0xD4)
+            {
+
+                drawSpriteTile((x * 16)-4, (y * 16), 0, 7, 7, false, false, 1, 1);
+                drawSpriteTile((x * 16)+4, (y * 16), 0, 7, 7,true,false,1,1);
+            }
             else if (id == 0xE3) //fairy
             {
                 drawSpriteTile((x * 16), (y * 16), 10, 14, 10);
@@ -1138,7 +1172,7 @@ namespace ZeldaFullEditor
             }
             else if (id == 0xE7)//mushroom
             {
-                drawSpriteTile((x * 16), (y * 16), 14, 30, 12);
+                drawSpriteTile((x * 16), (y * 16), 14, 30, 16);
             }
             else if (id == 0xE8)//fake ms
             {
@@ -1151,8 +1185,8 @@ namespace ZeldaFullEditor
             }
             else if (id == 0xF2)
             {
-                drawSpriteTile((x * 16), (y * 16) - 16, 12, 24, 12, false, false, 2, 4);
-                drawSpriteTile((x * 16) + 16, (y * 16) - 16, 12, 24, 12, true, false, 2, 4);
+                drawSpriteTile((x * 16), (y * 16) - 16, 12, 24, 2, false, false, 2, 4);
+                drawSpriteTile((x * 16) + 16, (y * 16) - 16, 12, 24, 2, true, false, 2, 4);
             }
             else if (id == 0xF4)
             {
@@ -1181,9 +1215,18 @@ namespace ZeldaFullEditor
         public unsafe void drawSpriteTile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2, bool iskey = false)
         {
             var alltilesData = (byte*)GFX.currentgfx16Ptr.ToPointer();
+            if (overworld)
+            {
+                alltilesData = (byte*)GFX.currentOWgfx16Ptr.ToPointer();
+            }
+            
 
             if (preview)
             {
+                if (GFX.useOverworldGFX)
+                {
+                    alltilesData = (byte*)GFX.currentOWgfx16Ptr.ToPointer();
+                }
                 byte* ptr = (byte*)GFX.previewSpritesPtr[id].ToPointer();
                 x += 16;
                 y += 16;
@@ -1227,7 +1270,30 @@ namespace ZeldaFullEditor
             }
             else
             {
+                int subx = 0;
+                int suby = 0;
                 byte* ptr = (byte*)GFX.roomBg1Ptr.ToPointer();
+                if (overworld)
+                {
+                    ptr = (byte*)maps[mapid].gfxPtr;
+                    if (x >= 512)
+                    {
+                        ptr = (byte*)maps[mapid+1].gfxPtr;
+                        subx = -512;
+                    }
+                    if (y >= 512)
+                    {
+                        ptr = (byte*)maps[mapid+8].gfxPtr;
+                        suby = -512;
+                    }
+                    if (x >= 512 && y >= 512)
+                    {
+                        ptr = (byte*)maps[mapid+9].gfxPtr;
+                        subx = -512;
+                        suby = -512;
+                    }
+                }
+
                 if (iskey == false)
                 {
                     if (lowerX > (x - (this.nx * 16)))
@@ -1272,7 +1338,7 @@ namespace ZeldaFullEditor
                         int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
                         var pixel = alltilesData[tx + (yl * 64) + xl];
                         //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
-                        int index = (x) + (y * 512) + ((mx * 2) + (my * (512)));
+                        int index = ((x+subx)) + ((y+suby) * 512) + ((mx * 2) + (my * (512)));
                         if (index >= 0 && index <= 262144)
                         {
                             if ((pixel & 0x0F) != 0)
@@ -1330,6 +1396,27 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-        
+
+
+
+        public void updateMapStuff(short mapId)
+        {
+            this.mapid = (byte)mapId;
+            if (mapId >= 64)
+            {
+                mapId -= 64;
+            }
+
+            int mx = (mapId - ((mapId / 8) * 8));
+            int my = ((mapId / 8));
+
+            x = (byte)((map_x - (mx * 512)) / 16);
+            y = (byte)((map_y - (my * 512)) / 16);
+
+
+            //Console.WriteLine("X:{0} Y:{1}", gameX, gameY);
+
+        }
+
     }
 }

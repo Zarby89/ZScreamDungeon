@@ -37,6 +37,7 @@
             this.DoubleBuffered = true;
             this.Name = "SpritesView";
             this.Size = new System.Drawing.Size(271, 374);
+            this.Load += new System.EventHandler(this.SpritesView_Load);
             this.SizeChanged += new System.EventHandler(this.ObjectViewer_SizeChanged);
             this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ObjectViewer_MouseClick);
             this.ResumeLayout(false);
