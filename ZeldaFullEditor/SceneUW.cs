@@ -1269,10 +1269,14 @@ namespace ZeldaFullEditor
                             mainForm.singleselectedcontextMenu.Items[0].Enabled = false;
                             mainForm.groupselectedcontextMenu.Items[0].Enabled = false;
                         }
+
                     }
                     else if (selectedMode == ObjectMode.Spritemode)
                     {
                         nname = "Sprite";
+                        mainForm.nothingselectedcontextMenu.Items[0].Enabled = false;
+                        mainForm.singleselectedcontextMenu.Items[0].Enabled = false;
+                        mainForm.groupselectedcontextMenu.Items[0].Enabled = false;
                     }
                     else if (selectedMode == ObjectMode.Chestmode)
                     {
@@ -1931,14 +1935,17 @@ namespace ZeldaFullEditor
                 if (o is Sprite)
                 {
                     odata.Add(new SaveObject((Sprite)o));
+                    mouse_down = false;
                 }
                 if (o is PotItem)
                 {
                     odata.Add(new SaveObject((PotItem)o));
+                    mouse_down = false;
                 }
                 if (o is Room_Object)
                 {
                     odata.Add(new SaveObject((Room_Object)o));
+                    mouse_down = false;
                 }
             }
             Clipboard.SetData("ObjectZ", odata);

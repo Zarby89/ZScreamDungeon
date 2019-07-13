@@ -43,7 +43,7 @@ namespace ZeldaFullEditor
         RoomLayout layoutForm;
         List<short> selectedMapPng = new List<short>();
         public ChestPicker chestPicker = new ChestPicker();
-        public byte[] door_index = new byte[] { 0x00, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32 };
+        public byte[] door_index = new byte[] { 0x00, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32,0x20 };
         public Bitmap spriteFont;
         public Bitmap moveableBlock;
         
@@ -1300,6 +1300,7 @@ namespace ZeldaFullEditor
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            activeScene.mouse_down = false;
             if (overworldButton.Checked)
             {
                 activeOverworldScene.deleteSelected();
@@ -1331,11 +1332,13 @@ namespace ZeldaFullEditor
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            activeScene.mouse_down = false;
             activeScene.selectAll();
         }
 
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            activeScene.mouse_down = false;
             if (overworldButton.Checked)
             {
                 activeOverworldScene.cut();
@@ -1360,6 +1363,7 @@ namespace ZeldaFullEditor
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            activeScene.mouse_down = false;
             if (overworldButton.Checked)
             {
                 activeOverworldScene.copy();
@@ -1546,6 +1550,7 @@ namespace ZeldaFullEditor
         //Bring to front -_-
         private void moveDownToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            activeScene.mouse_down = false;
             if (activeScene.room.selectedObject.Count > 0)
             {
                 if (activeScene.room.selectedObject[0] is Room_Object)
@@ -1585,17 +1590,20 @@ namespace ZeldaFullEditor
 
         private void insertToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            activeScene.mouse_down = false;
             activeScene.insertNew();
+            
         }
 
         private void bringToBackToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            activeScene.mouse_down = false;
             activeScene.SendSelectedToBack();
         }
 
         private void sendToBg1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            activeScene.mouse_down = false;
             if (activeScene.room.selectedObject.Count > 0)
             {
                 //debuglabel.Text = activeScene.room.selectedObject[0].GetType().ToString();
@@ -1632,6 +1640,7 @@ namespace ZeldaFullEditor
 
         private void sendToBg1ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
+            activeScene.mouse_down = false;
             if (activeScene.room.selectedObject.Count > 0)
             {
                 if (activeScene.room.selectedObject[0] is Room_Object)
@@ -1669,6 +1678,7 @@ namespace ZeldaFullEditor
 
         private void sendToBg1ToolStripMenuItem2_Click(object sender, EventArgs e)
         {
+            activeScene.mouse_down = false;
             if (activeScene.room.selectedObject.Count > 0)
             {
                 if (activeScene.room.selectedObject[0] is Room_Object)
@@ -1687,6 +1697,7 @@ namespace ZeldaFullEditor
         private void changeObjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //delete the selected object and add the new one
+            activeScene.mouse_down = false;
             activeScene.changeObject();
         }
 
@@ -4740,6 +4751,56 @@ namespace ZeldaFullEditor
                 worldButton.Text = "Darkworld";
             }
             activeOverworldScene.Invalidate(new Rectangle(panel5.HorizontalScroll.Value, panel5.VerticalScroll.Value, panel5.Width, panel5.Height));
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void printRoomObjectsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach(Room_Object o in activeScene.room.tilesObjects)
+            {
+                if (o.options == ObjectOption.Door)
+                {
+                    if (o is object_door)
+                    {
+                        object_door d = (o as object_door);
+                        Console.WriteLine("n:" + d.name + ", door dir:" + d.door_dir + ", door pos:" + d.door_pos + ", door type:" + d.door_type);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("n:" + o.name + ", w:" + o.width + ", h:" + o.height + ", L:" + o.layer);
+                }
+            }
+            
+        }
+
+        private void removeMasksObjectsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<Room_Object> toRemove = new List<Room_Object>();
+            foreach (Room_Object o in activeScene.room.tilesObjects)
+            {
+                if (o.name.ToLower().Contains("bg2"))
+                {
+                    toRemove.Add(o);
+                }
+                else if (o.name.ToLower().Contains("mask"))
+                {
+                    toRemove.Add(o);
+                }
+                if (o.id >= 0xA9 && o.id <= 0xAC)
+                {
+                    toRemove.Add(o);
+                }
+            }
+
+            foreach (Room_Object o in toRemove)
+            {
+                activeScene.room.tilesObjects.Remove(o);
+            }
         }
     }
 

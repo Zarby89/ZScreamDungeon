@@ -97,6 +97,8 @@
             this.dungeonMakerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importDataFromROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateSpriteStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeMasksObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.printRoomObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textSpriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textChestItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -477,6 +479,7 @@
             this.menuStrip1.Size = new System.Drawing.Size(1008, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // fileToolStripMenuItem
             // 
@@ -671,7 +674,9 @@
             this.exportAllOverworldMapsToolStripMenuItem,
             this.dungeonMakerToolStripMenuItem,
             this.importDataFromROMToolStripMenuItem,
-            this.duplicateSpriteStateToolStripMenuItem});
+            this.duplicateSpriteStateToolStripMenuItem,
+            this.removeMasksObjectsToolStripMenuItem,
+            this.printRoomObjectsToolStripMenuItem});
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
             this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.projectToolStripMenuItem.Text = "Project";
@@ -759,6 +764,20 @@
             this.duplicateSpriteStateToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
             this.duplicateSpriteStateToolStripMenuItem.Text = "Duplicate Sprite State";
             this.duplicateSpriteStateToolStripMenuItem.Click += new System.EventHandler(this.duplicateSpriteStateToolStripMenuItem_Click);
+            // 
+            // removeMasksObjectsToolStripMenuItem
+            // 
+            this.removeMasksObjectsToolStripMenuItem.Name = "removeMasksObjectsToolStripMenuItem";
+            this.removeMasksObjectsToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.removeMasksObjectsToolStripMenuItem.Text = "Remove Masks Objects";
+            this.removeMasksObjectsToolStripMenuItem.Click += new System.EventHandler(this.removeMasksObjectsToolStripMenuItem_Click);
+            // 
+            // printRoomObjectsToolStripMenuItem
+            // 
+            this.printRoomObjectsToolStripMenuItem.Name = "printRoomObjectsToolStripMenuItem";
+            this.printRoomObjectsToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
+            this.printRoomObjectsToolStripMenuItem.Text = "Print room objects";
+            this.printRoomObjectsToolStripMenuItem.Click += new System.EventHandler(this.printRoomObjectsToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -3990,7 +4009,8 @@
             "Explosion Wall (wrong draw) 0x30",
             "Exit Door (to combine with other door) 0x12",
             "ToBg2 Door (to combine with other door) 0x16",
-            "Curtain Door 0x32"});
+            "Curtain Door 0x32",
+            "Key Mask (Stairs) 0x20"});
             this.comboBox2.Location = new System.Drawing.Point(6, 26);
             this.comboBox2.Name = "comboBox2";
             this.comboBox2.Size = new System.Drawing.Size(386, 21);
@@ -4514,6 +4534,8 @@
         private System.Windows.Forms.Button worldButton;
         public System.Windows.Forms.ToolStripButton dungeonButton;
         public System.Windows.Forms.GroupBox itemOWGroupbox;
+        private System.Windows.Forms.ToolStripMenuItem removeMasksObjectsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem printRoomObjectsToolStripMenuItem;
     }
 }
 

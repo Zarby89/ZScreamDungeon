@@ -834,10 +834,7 @@ namespace ZeldaFullEditor
 
                 }
             }
-            else if (id == 0x76) //zelda
-            {
 
-            }
             else if (id == 0x79) //bee
             {
                 drawSpriteTile((x * 16), (y * 16), 4, 14, 11, false, false, 1, 1);
