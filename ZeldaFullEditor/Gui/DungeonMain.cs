@@ -4802,6 +4802,47 @@ namespace ZeldaFullEditor
                 activeScene.room.tilesObjects.Remove(o);
             }
         }
+
+        private void gotoRoomToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            GotoRoom gotoRoom = new GotoRoom();
+            if (gotoRoom.ShowDialog() == DialogResult.OK)
+            {
+                addRoomTab((short)gotoRoom.SelectedRoom);
+            }
+        }
+
+        private void printRoomObjectsToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void clearSelectedRoomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            activeScene.room.tilesObjects.Clear();
+            activeScene.room.pot_items.Clear();
+            activeScene.room.sprites.Clear();
+            activeScene.room.chest_list.Clear();
+            activeScene.DrawRoom();
+            activeScene.Refresh();
+        }
+
+        private void clearAllRoomsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to clear every rooms?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                foreach(Room r in all_rooms)
+                {
+                    r.tilesObjects.Clear();
+                    r.pot_items.Clear();
+                    r.sprites.Clear();
+                    r.chest_list.Clear();
+                }
+                activeScene.DrawRoom();
+                activeScene.Refresh();
+            }
+
+        }
     }
 
 

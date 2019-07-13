@@ -85,7 +85,6 @@
             this.selectAllMapForExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deselectedAllMapForExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.gotoRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.globalOptionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.advancedChestEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dungeonsPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -97,8 +96,12 @@
             this.dungeonMakerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importDataFromROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.duplicateSpriteStateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.removeMasksObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.printRoomObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.roomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.gotoRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeMaskObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.printRoomObjectsToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearSelectedRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.clearAllRoomsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textSpriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textChestItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -472,6 +475,7 @@
             this.fileToolStripMenuItem,
             this.editToolStripMenuItem,
             this.projectToolStripMenuItem,
+            this.roomToolStripMenuItem,
             this.viewToolStripMenuItem,
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
@@ -663,7 +667,6 @@
             // projectToolStripMenuItem
             // 
             this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gotoRoomToolStripMenuItem,
             this.globalOptionsToolStripMenuItem,
             this.advancedChestEditorToolStripMenuItem,
             this.dungeonsPropertiesToolStripMenuItem,
@@ -674,19 +677,10 @@
             this.exportAllOverworldMapsToolStripMenuItem,
             this.dungeonMakerToolStripMenuItem,
             this.importDataFromROMToolStripMenuItem,
-            this.duplicateSpriteStateToolStripMenuItem,
-            this.removeMasksObjectsToolStripMenuItem,
-            this.printRoomObjectsToolStripMenuItem});
+            this.duplicateSpriteStateToolStripMenuItem});
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
             this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.projectToolStripMenuItem.Text = "Project";
-            // 
-            // gotoRoomToolStripMenuItem
-            // 
-            this.gotoRoomToolStripMenuItem.Name = "gotoRoomToolStripMenuItem";
-            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.gotoRoomToolStripMenuItem.Text = "Goto Room";
-            this.gotoRoomToolStripMenuItem.Click += new System.EventHandler(this.gotoRoomToolStripMenuItem_Click);
             // 
             // globalOptionsToolStripMenuItem
             // 
@@ -762,22 +756,55 @@
             // 
             this.duplicateSpriteStateToolStripMenuItem.Name = "duplicateSpriteStateToolStripMenuItem";
             this.duplicateSpriteStateToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.duplicateSpriteStateToolStripMenuItem.Text = "Duplicate Sprite State";
+            this.duplicateSpriteStateToolStripMenuItem.Text = "Duplicate Sprite State OW";
             this.duplicateSpriteStateToolStripMenuItem.Click += new System.EventHandler(this.duplicateSpriteStateToolStripMenuItem_Click);
             // 
-            // removeMasksObjectsToolStripMenuItem
+            // roomToolStripMenuItem
             // 
-            this.removeMasksObjectsToolStripMenuItem.Name = "removeMasksObjectsToolStripMenuItem";
-            this.removeMasksObjectsToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.removeMasksObjectsToolStripMenuItem.Text = "Remove Masks Objects";
-            this.removeMasksObjectsToolStripMenuItem.Click += new System.EventHandler(this.removeMasksObjectsToolStripMenuItem_Click);
+            this.roomToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.gotoRoomToolStripMenuItem,
+            this.removeMaskObjectsToolStripMenuItem,
+            this.printRoomObjectsToolStripMenuItem1,
+            this.clearSelectedRoomToolStripMenuItem,
+            this.clearAllRoomsToolStripMenuItem});
+            this.roomToolStripMenuItem.Name = "roomToolStripMenuItem";
+            this.roomToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
+            this.roomToolStripMenuItem.Text = "Room";
             // 
-            // printRoomObjectsToolStripMenuItem
+            // gotoRoomToolStripMenuItem
             // 
-            this.printRoomObjectsToolStripMenuItem.Name = "printRoomObjectsToolStripMenuItem";
-            this.printRoomObjectsToolStripMenuItem.Size = new System.Drawing.Size(217, 22);
-            this.printRoomObjectsToolStripMenuItem.Text = "Print room objects";
-            this.printRoomObjectsToolStripMenuItem.Click += new System.EventHandler(this.printRoomObjectsToolStripMenuItem_Click);
+            this.gotoRoomToolStripMenuItem.Name = "gotoRoomToolStripMenuItem";
+            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.gotoRoomToolStripMenuItem.Text = "Goto Room";
+            this.gotoRoomToolStripMenuItem.Click += new System.EventHandler(this.gotoRoomToolStripMenuItem_Click_1);
+            // 
+            // removeMaskObjectsToolStripMenuItem
+            // 
+            this.removeMaskObjectsToolStripMenuItem.Name = "removeMaskObjectsToolStripMenuItem";
+            this.removeMaskObjectsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.removeMaskObjectsToolStripMenuItem.Text = "Remove Mask Objects";
+            this.removeMaskObjectsToolStripMenuItem.Click += new System.EventHandler(this.removeMasksObjectsToolStripMenuItem_Click);
+            // 
+            // printRoomObjectsToolStripMenuItem1
+            // 
+            this.printRoomObjectsToolStripMenuItem1.Name = "printRoomObjectsToolStripMenuItem1";
+            this.printRoomObjectsToolStripMenuItem1.Size = new System.Drawing.Size(191, 22);
+            this.printRoomObjectsToolStripMenuItem1.Text = "Print Room Objects";
+            this.printRoomObjectsToolStripMenuItem1.Click += new System.EventHandler(this.printRoomObjectsToolStripMenuItem_Click);
+            // 
+            // clearSelectedRoomToolStripMenuItem
+            // 
+            this.clearSelectedRoomToolStripMenuItem.Name = "clearSelectedRoomToolStripMenuItem";
+            this.clearSelectedRoomToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.clearSelectedRoomToolStripMenuItem.Text = "Clear Selected Room";
+            this.clearSelectedRoomToolStripMenuItem.Click += new System.EventHandler(this.clearSelectedRoomToolStripMenuItem_Click);
+            // 
+            // clearAllRoomsToolStripMenuItem
+            // 
+            this.clearAllRoomsToolStripMenuItem.Name = "clearAllRoomsToolStripMenuItem";
+            this.clearAllRoomsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.clearAllRoomsToolStripMenuItem.Text = "Clear All Rooms";
+            this.clearAllRoomsToolStripMenuItem.Click += new System.EventHandler(this.clearAllRoomsToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -4200,7 +4227,6 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.Timer updateTimer;
-        private System.Windows.Forms.ToolStripMenuItem gotoRoomToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem textSpriteToolStripMenuItem;
@@ -4534,8 +4560,12 @@
         private System.Windows.Forms.Button worldButton;
         public System.Windows.Forms.ToolStripButton dungeonButton;
         public System.Windows.Forms.GroupBox itemOWGroupbox;
-        private System.Windows.Forms.ToolStripMenuItem removeMasksObjectsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem printRoomObjectsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem roomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem gotoRoomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeMaskObjectsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem printRoomObjectsToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem clearSelectedRoomToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem clearAllRoomsToolStripMenuItem;
     }
 }
 
