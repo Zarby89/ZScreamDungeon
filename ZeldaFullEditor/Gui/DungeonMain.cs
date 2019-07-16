@@ -46,7 +46,7 @@ namespace ZeldaFullEditor
         public byte[] door_index = new byte[] { 0x00, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32,0x20 };
         public Bitmap spriteFont;
         public Bitmap moveableBlock;
-        
+        public bool settingEntrance = false;
         public List<tileGroup> tilesGroup = new List<tileGroup>();
         
         private void Form1_Load(object sender, EventArgs e)
@@ -1827,136 +1827,121 @@ namespace ZeldaFullEditor
         }
         public Entrance selectedEntrance = null;
 
-        private void entrancetreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        public void entrancetreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-                propertiesChangedFromForm = true;
+            propertiesChangedFromForm = true;
+            Entrance en = selectedEntrance;
+            if (e != null)
+            {
                 if (e.Node.Tag != null)
                 {
-                Entrance en = entrances[(int)e.Node.Tag];
-                if (e.Node.Parent != null)
-                {
-                    if (e.Node.Parent.Name == "StartingEntranceNode")
+                    en = entrances[(int)e.Node.Tag];
+                    if (e.Node.Parent != null)
                     {
-                        en = starting_entrances[(int)e.Node.Tag];
+                        if (e.Node.Parent.Name == "StartingEntranceNode")
+                        {
+                            en = starting_entrances[(int)e.Node.Tag];
+                        }
                     }
                 }
-                //propertyGrid2.SelectedObject = entrances[(int)e.Node.Tag];
-                entranceProperty_bg.Checked = false;
-                entranceProperty_vscroll.Checked = false;
-                entranceProperty_hscroll.Checked = false;
-                entranceProperty_quadbr.Checked = false;
-                entranceProperty_quadbl.Checked = false;
-                entranceProperty_quadtl.Checked = false;
-                entranceProperty_quadtr.Checked = false;
-                entranceProperty_room.Text = en.Room.ToString();
-                entranceProperty_floor.Text = en.Floor.ToString();
-                entranceProperty_scrollx.Text = en.XScroll.ToString();
-                entranceProperty_scrolly.Text = en.YScroll.ToString();
-                entranceProperty_xpos.Text = en.XPosition.ToString();
-                entranceProperty_ypos.Text = en.YPosition.ToString();
-                entranceProperty_camx.Text = en.XCamera.ToString();
-                entranceProperty_camy.Text = en.YCamera.ToString();
-                entranceProperty_exit.Text = en.Exit.ToString();
-                entranceProperty_dungeon.Text = en.Dungeon.ToString();
-                entranceProperty_blockset.Text = en.Blockset.ToString();
-                entranceProperty_music.Text = en.Music.ToString();
-                entranceProperty_FU.Text = en.scrolledge_FU.ToString();
-                entranceProperty_HU.Text = en.scrolledge_HU.ToString();
-                entranceProperty_HD.Text = en.scrolledge_HD.ToString();
-                entranceProperty_FD.Text = en.scrolledge_FD.ToString();
-                entranceProperty_FL.Text = en.scrolledge_FL.ToString();
-                entranceProperty_FR.Text = en.scrolledge_FR.ToString();
-                entranceProperty_HL.Text = en.scrolledge_HL.ToString();
-                entranceProperty_HR.Text = en.scrolledge_HR.ToString();
-
-                if ((en.Ladderbg & 0x10) == 0x10 )
-                    {
-                        entranceProperty_bg.Checked = true;
-                    }
-
-                    if ((en.Scrolling & 0x20) == 0x20)
-                    {
-                        entranceProperty_hscroll.Checked = true;
-                    }
-
-                    if ((en.Scrolling & 0x02) == 0x02)
-                    {
-                        entranceProperty_vscroll.Checked = true;
-                    }
-
-                    bool b = false;
-                    bool r = false;
-                    if ((en.Scrollquadrant & 0xF0) != 0x00)
-                    {
-                        r = false;//0x2X
-                    }
-                    else
-                    {
-                        r = true; //0x0X
-                    }
-
-                    if ((en.Scrollquadrant & 0x0F) == 0x00)
-                    {
-                        b = false; //0xX0
-                    }
-                    else
-                    {
-                        b = true; //0xX2
-                    }
-
-
-                    /*if (b && r) //bottom right
-                    {
-                        entranceProperty_quadbr.Checked = true;
-                    }
-
-                    if (b && !r) //bottom left
-                    {
-                        entranceProperty_quadbl.Checked = true;
-                    }
-
-                    if (!b && r) //top right
-                    {
-                        entranceProperty_quadtl.Checked = true;
-                    }
-
-                    if (!b && !r) //top left
-                    {
-                        entranceProperty_quadtr.Checked = true;
-                    }*/
-                                   
-                    if (en.Scrollquadrant == 0x12) //bottom right
-                    {
-                        entranceProperty_quadbr.Checked = true;
-                    }
-                    else if (en.Scrollquadrant == 0x02) //bottom left
-                    {
-                        entranceProperty_quadbl.Checked = true;
-                    }
-                    else if (en.Scrollquadrant == 0x00) //top left
-                    {
-                        entranceProperty_quadtl.Checked = true;
-                    }
-                    else if (en.Scrollquadrant == 0x10) //top right
-                    {
-                        entranceProperty_quadtr.Checked = true;
-                    }
-
-
-                    
-                    selectedEntrance = en;
-                if (!visibleEntranceGFX)
-                {
-                    activeScene.room.reloadGfx(en.Blockset);
-                }
-                else
-                {
-                    activeScene.room.reloadGfx();
-                }
-                    activeScene.DrawRoom();
-                    activeScene.Refresh();
-
             }
+            //propertyGrid2.SelectedObject = entrances[(int)e.Node.Tag];
+            entranceProperty_bg.Checked = false;
+            entranceProperty_vscroll.Checked = false;
+            entranceProperty_hscroll.Checked = false;
+            entranceProperty_quadbr.Checked = false;
+            entranceProperty_quadbl.Checked = false;
+            entranceProperty_quadtl.Checked = false;
+            entranceProperty_quadtr.Checked = false;
+            entranceProperty_room.Text = en.Room.ToString();
+            entranceProperty_floor.Text = en.Floor.ToString();
+            entranceProperty_scrollx.Text = en.XScroll.ToString();
+            entranceProperty_scrolly.Text = en.YScroll.ToString();
+            entranceProperty_xpos.Text = en.XPosition.ToString();
+            entranceProperty_ypos.Text = en.YPosition.ToString();
+            entranceProperty_camx.Text = en.XCamera.ToString();
+            entranceProperty_camy.Text = en.YCamera.ToString();
+            entranceProperty_exit.Text = en.Exit.ToString();
+            entranceProperty_dungeon.Text = en.Dungeon.ToString();
+            entranceProperty_blockset.Text = en.Blockset.ToString();
+            entranceProperty_music.Text = en.Music.ToString();
+            entranceProperty_FU.Text = en.scrolledge_FU.ToString();
+            entranceProperty_HU.Text = en.scrolledge_HU.ToString();
+            entranceProperty_HD.Text = en.scrolledge_HD.ToString();
+            entranceProperty_FD.Text = en.scrolledge_FD.ToString();
+            entranceProperty_FL.Text = en.scrolledge_FL.ToString();
+            entranceProperty_FR.Text = en.scrolledge_FR.ToString();
+            entranceProperty_HL.Text = en.scrolledge_HL.ToString();
+            entranceProperty_HR.Text = en.scrolledge_HR.ToString();
+
+            if ((en.Ladderbg & 0x10) == 0x10)
+            {
+                entranceProperty_bg.Checked = true;
+            }
+
+            if ((en.Scrolling & 0x20) == 0x20)
+            {
+                entranceProperty_hscroll.Checked = true;
+            }
+
+            if ((en.Scrolling & 0x02) == 0x02)
+            {
+                entranceProperty_vscroll.Checked = true;
+            }
+
+            bool b = false;
+            bool r = false;
+            if ((en.Scrollquadrant & 0xF0) != 0x00)
+            {
+                r = false;//0x2X
+            }
+            else
+            {
+                r = true; //0x0X
+            }
+
+            if ((en.Scrollquadrant & 0x0F) == 0x00)
+            {
+                b = false; //0xX0
+            }
+            else
+            {
+                b = true; //0xX2
+            }
+
+
+            if (en.Scrollquadrant == 0x12) //bottom right
+            {
+                entranceProperty_quadbr.Checked = true;
+            }
+            else if (en.Scrollquadrant == 0x02) //bottom left
+            {
+                entranceProperty_quadbl.Checked = true;
+            }
+            else if (en.Scrollquadrant == 0x00) //top left
+            {
+                entranceProperty_quadtl.Checked = true;
+            }
+            else if (en.Scrollquadrant == 0x10) //top right
+            {
+                entranceProperty_quadtr.Checked = true;
+            }
+
+
+
+            selectedEntrance = en;
+            if (!visibleEntranceGFX)
+            {
+                activeScene.room.reloadGfx(en.Blockset);
+            }
+            else
+            {
+                activeScene.room.reloadGfx();
+            }
+            activeScene.DrawRoom();
+            activeScene.Refresh();
+
+
             propertiesChangedFromForm = false;
 
 
@@ -4842,6 +4827,16 @@ namespace ZeldaFullEditor
                 activeScene.Refresh();
             }
 
+        }
+
+        private void mouseEntranceButton_Click(object sender, EventArgs e)
+        {
+            settingEntrance = true;
+            activeScene.mouse_down = false;
+            activeScene.selectedDragObject = null;
+            activeScene.selectedDragSprite = null;
+            activeScene.room.selectedObject.Clear();
+            activeScene.selectedMode = ObjectMode.EntrancePlacing;
         }
     }
 

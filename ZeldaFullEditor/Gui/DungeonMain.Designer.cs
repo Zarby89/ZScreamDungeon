@@ -263,6 +263,7 @@
             this.entrancetabPage = new System.Windows.Forms.TabPage();
             this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.entrancetreeView = new System.Windows.Forms.TreeView();
+            this.mouseEntranceButton = new System.Windows.Forms.Button();
             this.label52 = new System.Windows.Forms.Label();
             this.label53 = new System.Windows.Forms.Label();
             this.entranceProperty_FR = new System.Windows.Forms.TextBox();
@@ -317,13 +318,9 @@
             this.cameraboxCheckbox = new System.Windows.Forms.CheckBox();
             this.entranceposCheckbox = new System.Windows.Forms.CheckBox();
             this.objectstabPage = new System.Windows.Forms.TabPage();
-            this.panel1 = new ZeldaFullEditor.CustomPanel();
-            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
             this.showNameObjectCheckbox = new System.Windows.Forms.CheckBox();
             this.searchTextbox = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
-            this.spritesView1 = new ZeldaFullEditor.SpritesView();
             this.searchspriteTextbox = new System.Windows.Forms.TextBox();
             this.palettestabPage = new System.Windows.Forms.TabPage();
             this.splitContainer6 = new System.Windows.Forms.SplitContainer();
@@ -332,8 +329,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.palettePicturebox = new System.Windows.Forms.PictureBox();
             this.gfxtabPage = new System.Windows.Forms.TabPage();
-            this.customPanel2 = new ZeldaFullEditor.CustomPanel();
-            this.gfxPicturebox = new System.Windows.Forms.PictureBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.label41 = new System.Windows.Forms.Label();
             this.previewPaletteGfxTextbox = new System.Windows.Forms.TextBox();
@@ -409,6 +404,13 @@
             this.potitemobjectPanel = new System.Windows.Forms.Panel();
             this.selecteditemobjectCombobox = new System.Windows.Forms.ComboBox();
             this.label31 = new System.Windows.Forms.Label();
+            this.panel1 = new ZeldaFullEditor.CustomPanel();
+            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
+            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
+            this.spritesView1 = new ZeldaFullEditor.SpritesView();
+            this.customPanel2 = new ZeldaFullEditor.CustomPanel();
+            this.gfxPicturebox = new System.Windows.Forms.PictureBox();
+            this.gridEntranceCheckbox = new System.Windows.Forms.CheckBox();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
@@ -430,9 +432,7 @@
             this.splitContainer3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.objectstabPage.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.customPanel1.SuspendLayout();
             this.palettestabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer6)).BeginInit();
             this.splitContainer6.Panel1.SuspendLayout();
@@ -440,8 +440,6 @@
             this.splitContainer6.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).BeginInit();
             this.gfxtabPage.SuspendLayout();
-            this.customPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gfxPicturebox)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gfxgroupindexUpDown)).BeginInit();
             this.debugtabPage.SuspendLayout();
@@ -467,6 +465,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).BeginInit();
             this.doorselectPanel.SuspendLayout();
             this.potitemobjectPanel.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.customPanel1.SuspendLayout();
+            this.customPanel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.gfxPicturebox)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -1844,7 +1846,7 @@
             // 
             // mapPicturebox
             // 
-            this.mapPicturebox.Location = new System.Drawing.Point(0, 1066);
+            this.mapPicturebox.Location = new System.Drawing.Point(0, 1170);
             this.mapPicturebox.Name = "mapPicturebox";
             this.mapPicturebox.Size = new System.Drawing.Size(256, 304);
             this.mapPicturebox.TabIndex = 13;
@@ -1861,7 +1863,7 @@
             this.roomListView.LabelEdit = true;
             this.roomListView.Location = new System.Drawing.Point(0, 26);
             this.roomListView.Name = "roomListView";
-            this.roomListView.Size = new System.Drawing.Size(269, 1344);
+            this.roomListView.Size = new System.Drawing.Size(269, 1448);
             this.roomListView.TabIndex = 8;
             this.roomListView.AfterLabelEdit += new System.Windows.Forms.NodeLabelEditEventHandler(this.roomListView_AfterLabelEdit);
             this.roomListView.ItemDrag += new System.Windows.Forms.ItemDragEventHandler(this.roomListView_ItemDrag);
@@ -2399,6 +2401,8 @@
             // 
             // splitContainer3.Panel2
             // 
+            this.splitContainer3.Panel2.Controls.Add(this.gridEntranceCheckbox);
+            this.splitContainer3.Panel2.Controls.Add(this.mouseEntranceButton);
             this.splitContainer3.Panel2.Controls.Add(this.label52);
             this.splitContainer3.Panel2.Controls.Add(this.label53);
             this.splitContainer3.Panel2.Controls.Add(this.entranceProperty_FR);
@@ -2470,6 +2474,16 @@
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
             this.entrancetreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.entrancetreeView_NodeMouseDoubleClick);
+            // 
+            // mouseEntranceButton
+            // 
+            this.mouseEntranceButton.Location = new System.Drawing.Point(8, 322);
+            this.mouseEntranceButton.Name = "mouseEntranceButton";
+            this.mouseEntranceButton.Size = new System.Drawing.Size(258, 23);
+            this.mouseEntranceButton.TabIndex = 58;
+            this.mouseEntranceButton.Text = "Set Entrance position with Mouse";
+            this.mouseEntranceButton.UseVisualStyleBackColor = true;
+            this.mouseEntranceButton.Click += new System.EventHandler(this.mouseEntranceButton_Click);
             // 
             // label52
             // 
@@ -2969,27 +2983,6 @@
             this.objectstabPage.Text = "Objects";
             this.objectstabPage.UseVisualStyleBackColor = true;
             // 
-            // panel1
-            // 
-            this.panel1.AutoScroll = true;
-            this.panel1.Controls.Add(this.objectViewer1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 37);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(292, 537);
-            this.panel1.TabIndex = 1;
-            // 
-            // objectViewer1
-            // 
-            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
-            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
-            this.objectViewer1.Name = "objectViewer1";
-            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
-            this.objectViewer1.TabIndex = 0;
-            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
-            this.objectViewer1.Load += new System.EventHandler(this.objectViewer1_Load);
-            // 
             // showNameObjectCheckbox
             // 
             this.showNameObjectCheckbox.AutoSize = true;
@@ -3021,26 +3014,6 @@
             this.tabPage4.TabIndex = 10;
             this.tabPage4.Text = "Sprites";
             this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // customPanel1
-            // 
-            this.customPanel1.AutoScroll = true;
-            this.customPanel1.Controls.Add(this.spritesView1);
-            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel1.Location = new System.Drawing.Point(0, 20);
-            this.customPanel1.Name = "customPanel1";
-            this.customPanel1.Size = new System.Drawing.Size(292, 554);
-            this.customPanel1.TabIndex = 2;
-            // 
-            // spritesView1
-            // 
-            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.spritesView1.Location = new System.Drawing.Point(0, 0);
-            this.spritesView1.Name = "spritesView1";
-            this.spritesView1.Size = new System.Drawing.Size(292, 374);
-            this.spritesView1.TabIndex = 0;
-            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
-            this.spritesView1.Load += new System.EventHandler(this.spritesView1_Load);
             // 
             // searchspriteTextbox
             // 
@@ -3079,8 +3052,8 @@
             this.splitContainer6.Panel2.Controls.Add(this.button3);
             this.splitContainer6.Panel2.Controls.Add(this.palettePicturebox);
             this.splitContainer6.Panel2MinSize = 312;
-            this.splitContainer6.Size = new System.Drawing.Size(292, 574);
-            this.splitContainer6.SplitterDistance = 258;
+            this.splitContainer6.Size = new System.Drawing.Size(292, 592);
+            this.splitContainer6.SplitterDistance = 276;
             this.splitContainer6.TabIndex = 1;
             // 
             // palettesTreeview
@@ -3126,7 +3099,7 @@
             this.palettesTreeview.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode3,
             treeNode18});
-            this.palettesTreeview.Size = new System.Drawing.Size(292, 258);
+            this.palettesTreeview.Size = new System.Drawing.Size(292, 276);
             this.palettesTreeview.TabIndex = 0;
             this.palettesTreeview.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.palettesTreeview_NodeMouseClick);
             // 
@@ -3176,26 +3149,6 @@
             this.gfxtabPage.TabIndex = 6;
             this.gfxtabPage.Text = "Gfx";
             this.gfxtabPage.UseVisualStyleBackColor = true;
-            // 
-            // customPanel2
-            // 
-            this.customPanel2.AutoScroll = true;
-            this.customPanel2.Controls.Add(this.gfxPicturebox);
-            this.customPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel2.Location = new System.Drawing.Point(0, 167);
-            this.customPanel2.Name = "customPanel2";
-            this.customPanel2.Size = new System.Drawing.Size(292, 407);
-            this.customPanel2.TabIndex = 14;
-            // 
-            // gfxPicturebox
-            // 
-            this.gfxPicturebox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gfxPicturebox.Location = new System.Drawing.Point(0, 0);
-            this.gfxPicturebox.Name = "gfxPicturebox";
-            this.gfxPicturebox.Size = new System.Drawing.Size(275, 1024);
-            this.gfxPicturebox.TabIndex = 12;
-            this.gfxPicturebox.TabStop = false;
-            this.gfxPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.gfxPicturebox_Paint);
             // 
             // groupBox3
             // 
@@ -4119,6 +4072,79 @@
             this.label31.TabIndex = 9;
             this.label31.Text = "Item :";
             // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.objectViewer1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 37);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(292, 555);
+            this.panel1.TabIndex = 1;
+            // 
+            // objectViewer1
+            // 
+            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
+            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
+            this.objectViewer1.Name = "objectViewer1";
+            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
+            this.objectViewer1.TabIndex = 0;
+            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
+            this.objectViewer1.Load += new System.EventHandler(this.objectViewer1_Load);
+            // 
+            // customPanel1
+            // 
+            this.customPanel1.AutoScroll = true;
+            this.customPanel1.Controls.Add(this.spritesView1);
+            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.customPanel1.Location = new System.Drawing.Point(0, 20);
+            this.customPanel1.Name = "customPanel1";
+            this.customPanel1.Size = new System.Drawing.Size(292, 572);
+            this.customPanel1.TabIndex = 2;
+            // 
+            // spritesView1
+            // 
+            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.spritesView1.Location = new System.Drawing.Point(0, 0);
+            this.spritesView1.Name = "spritesView1";
+            this.spritesView1.Size = new System.Drawing.Size(292, 374);
+            this.spritesView1.TabIndex = 0;
+            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
+            this.spritesView1.Load += new System.EventHandler(this.spritesView1_Load);
+            // 
+            // customPanel2
+            // 
+            this.customPanel2.AutoScroll = true;
+            this.customPanel2.Controls.Add(this.gfxPicturebox);
+            this.customPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.customPanel2.Location = new System.Drawing.Point(0, 167);
+            this.customPanel2.Name = "customPanel2";
+            this.customPanel2.Size = new System.Drawing.Size(292, 407);
+            this.customPanel2.TabIndex = 14;
+            // 
+            // gfxPicturebox
+            // 
+            this.gfxPicturebox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.gfxPicturebox.Location = new System.Drawing.Point(0, 0);
+            this.gfxPicturebox.Name = "gfxPicturebox";
+            this.gfxPicturebox.Size = new System.Drawing.Size(275, 1024);
+            this.gfxPicturebox.TabIndex = 12;
+            this.gfxPicturebox.TabStop = false;
+            this.gfxPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.gfxPicturebox_Paint);
+            // 
+            // gridEntranceCheckbox
+            // 
+            this.gridEntranceCheckbox.AutoSize = true;
+            this.gridEntranceCheckbox.Checked = true;
+            this.gridEntranceCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.gridEntranceCheckbox.Location = new System.Drawing.Point(8, 350);
+            this.gridEntranceCheckbox.Name = "gridEntranceCheckbox";
+            this.gridEntranceCheckbox.Size = new System.Drawing.Size(152, 17);
+            this.gridEntranceCheckbox.TabIndex = 59;
+            this.gridEntranceCheckbox.Text = "Use 8x8 grid for placement";
+            this.gridEntranceCheckbox.UseVisualStyleBackColor = true;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4166,10 +4192,8 @@
             this.groupBox2.PerformLayout();
             this.objectstabPage.ResumeLayout(false);
             this.objectstabPage.PerformLayout();
-            this.panel1.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
-            this.customPanel1.ResumeLayout(false);
             this.palettestabPage.ResumeLayout(false);
             this.splitContainer6.Panel1.ResumeLayout(false);
             this.splitContainer6.Panel2.ResumeLayout(false);
@@ -4177,8 +4201,6 @@
             this.splitContainer6.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).EndInit();
             this.gfxtabPage.ResumeLayout(false);
-            this.customPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gfxPicturebox)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gfxgroupindexUpDown)).EndInit();
@@ -4212,6 +4234,10 @@
             this.doorselectPanel.PerformLayout();
             this.potitemobjectPanel.ResumeLayout(false);
             this.potitemobjectPanel.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.customPanel1.ResumeLayout(false);
+            this.customPanel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.gfxPicturebox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -4566,6 +4592,8 @@
         private System.Windows.Forms.ToolStripMenuItem printRoomObjectsToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem clearSelectedRoomToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem clearAllRoomsToolStripMenuItem;
+        private System.Windows.Forms.Button mouseEntranceButton;
+        public System.Windows.Forms.CheckBox gridEntranceCheckbox;
     }
 }
 

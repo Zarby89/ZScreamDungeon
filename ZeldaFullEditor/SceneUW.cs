@@ -33,6 +33,7 @@ namespace ZeldaFullEditor
             mainForm = f;
 
         }
+
         Bitmap tempBitmap = new Bitmap(512,512);
         public short[] doorsObject = new short[] { 0x138, 0x139, 0x13A, 0x13B, 0xF9E, 0xF9F, 0xFA0, 0x12D, 0x12E, 0x12F, 0x12E, 0x12D, 0x4632, 0x4693 };
         Rectangle lastSelectedRectangle;
@@ -82,6 +83,157 @@ namespace ZeldaFullEditor
                 MX = e.X / 2;
                 MY = e.Y / 2;
             }
+
+
+            if (selectedMode == ObjectMode.EntrancePlacing)
+            {
+                if (mainForm.selectedEntrance != null)
+                {
+                    int ey = (room.index / 16);
+                    int ex = room.index - (ey*16);
+                    if (mainForm.gridEntranceCheckbox.Checked)
+                    {
+                        MX = (MX / 8) * 8;
+                        MY = (MY / 8) * 8;
+                    }
+                    mainForm.selectedEntrance.XPosition = (short)(MX + (ex*512));
+                    mainForm.selectedEntrance.YPosition = (short)(MY + (ey*512));
+                    mainForm.selectedEntrance.XCamera = (short)(MX);
+                    mainForm.selectedEntrance.YCamera = (short)(MY);
+                    mainForm.selectedEntrance.Room = (short)room.index;
+                    if (mainForm.selectedEntrance.XCamera > 383)
+                    {
+                        mainForm.selectedEntrance.XCamera = 383;
+
+                    }
+                    if (mainForm.selectedEntrance.YCamera > 392)
+                    {
+                        mainForm.selectedEntrance.YCamera = 392;
+                    }
+
+                    if (mainForm.selectedEntrance.XCamera < 128)
+                    {
+                        mainForm.selectedEntrance.XCamera = 128;
+
+                    }
+                    if (mainForm.selectedEntrance.YCamera < 112)
+                    {
+                        mainForm.selectedEntrance.YCamera = 112;
+                    }
+
+                    mainForm.selectedEntrance.YScroll = (short)(mainForm.selectedEntrance.XCamera + (ex * 512));
+                    mainForm.selectedEntrance.XScroll = (short)(mainForm.selectedEntrance.YCamera + (ey * 512));
+
+                    mainForm.selectedEntrance.scrolledge_HL = (byte)(ex * 2);
+                    mainForm.selectedEntrance.scrolledge_FL = (byte)(ex * 2);
+                    mainForm.selectedEntrance.scrolledge_HR = (byte)(ex * 2);
+                    mainForm.selectedEntrance.scrolledge_FR = (byte)((ex * 2) + 1);
+
+                    mainForm.selectedEntrance.scrolledge_HU = (byte)((ey * 2) + 1);
+                    mainForm.selectedEntrance.scrolledge_FU = (byte)(ey * 2);
+                    mainForm.selectedEntrance.scrolledge_HD = (byte)((ey * 2) + 1);
+                    mainForm.selectedEntrance.scrolledge_FD = (byte)((ey * 2) + 1);
+
+
+                    if (MX < 256 && MY < 256) //top left quadrant
+                    {
+                        mainForm.selectedEntrance.Scrollquadrant = 0x00;
+
+                        mainForm.selectedEntrance.scrolledge_HU = (byte)((ey * 2) + 1);
+                        mainForm.selectedEntrance.scrolledge_FU = (byte)(ey * 2);
+                        mainForm.selectedEntrance.scrolledge_HD = (byte)((ey * 2) + 1);
+                        mainForm.selectedEntrance.scrolledge_FD = (byte)((ey * 2) + 1);
+
+                        mainForm.selectedEntrance.scrolledge_HL = (byte)(ex * 2);
+                        mainForm.selectedEntrance.scrolledge_FL = (byte)(ex * 2);
+                        mainForm.selectedEntrance.scrolledge_HR = (byte)(ex * 2);
+                        mainForm.selectedEntrance.scrolledge_FR = (byte)((ex * 2) + 1);
+                    }
+
+
+                    if (MX > 256 && MY < 256) //top right quadrant
+                    {
+                        mainForm.selectedEntrance.Scrollquadrant = 0x10;
+                        mainForm.selectedEntrance.scrolledge_HU = (byte)((ey * 2)+1);
+                        mainForm.selectedEntrance.scrolledge_FU = (byte)(ey * 2);
+                        mainForm.selectedEntrance.scrolledge_HD = (byte)((ey * 2)+1);
+                        mainForm.selectedEntrance.scrolledge_FD = (byte)((ey * 2)+1);
+
+                        mainForm.selectedEntrance.scrolledge_HL = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.scrolledge_FL = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.scrolledge_HR = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.scrolledge_FR = (byte)((ex * 2) + 2);
+
+                    }
+
+
+                    if (MX < 256 && MY > 256) //bottom left quadrant
+                    {
+                        mainForm.selectedEntrance.Scrollquadrant = 0x02;
+                        mainForm.selectedEntrance.scrolledge_HL = (byte)(ex * 2);
+                        mainForm.selectedEntrance.scrolledge_FL = (byte)(ex * 2);
+                        mainForm.selectedEntrance.scrolledge_HR = (byte)(ex * 2);
+                        mainForm.selectedEntrance.scrolledge_FR = (byte)((ex * 2) + 1);
+                    }
+
+
+                    if (MX > 256 && MY > 256) //bottom right quadrant
+                    {
+                        mainForm.selectedEntrance.Scrollquadrant = 0x12;
+                        mainForm.selectedEntrance.scrolledge_HL = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.scrolledge_FL = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.scrolledge_HR = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.scrolledge_FR = (byte)((ex * 2) + 2);
+                        mainForm.selectedEntrance.YScroll = (short)((ex * 512) + 256);
+                        mainForm.selectedEntrance.XScroll = (short)((ey * 512) + 256);
+                    }
+
+                    mainForm.selectedEntrance.YScroll = (short)(mainForm.selectedEntrance.XPosition);
+                    mainForm.selectedEntrance.XScroll = (short)(mainForm.selectedEntrance.YPosition);
+
+                    int scrollXRange = mainForm.selectedEntrance.XScroll % 512;
+                    if (scrollXRange >= 350)
+                    {
+                        mainForm.selectedEntrance.XScroll = (short)((ey * 512) + 256+16);
+                    }
+                    else if (scrollXRange <= 150)
+                    {
+                        mainForm.selectedEntrance.XScroll = (short)((ey * 512));
+                    }
+                    else
+                    {
+                        mainForm.selectedEntrance.XScroll = (short)(mainForm.selectedEntrance.YPosition - 112);
+                    }
+
+                    int scrollYRange = mainForm.selectedEntrance.YScroll % 512;
+                    if (scrollYRange >= 350)
+                    {
+                        mainForm.selectedEntrance.YScroll = (short)((ex * 512) + 256);
+                    }
+                    else if (scrollYRange <= 150)
+                    {
+                        mainForm.selectedEntrance.YScroll = (short)((ex * 512));
+                    }
+                    else
+                    {
+                        mainForm.selectedEntrance.YScroll = (short)(mainForm.selectedEntrance.XPosition - 128);
+                    }
+
+                    //mainForm.selectedEntrance.YPosition = (short)(e.Y + (ey * 512));
+
+
+                    //mainForm.selectedEntrance.YPosition = (short)(e.Y + (ey * 512));
+
+
+                    DrawRoom();
+                    Refresh();
+                    return;
+                }
+            }
+
+
+
+
 
             bool colliding_chest = false;
             if (selectedMode == ObjectMode.Chestmode)
@@ -529,7 +681,15 @@ namespace ZeldaFullEditor
             this.Focus();
             mainForm.activeScene = this;
 
-            if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
+            if (selectedMode == ObjectMode.EntrancePlacing)
+            {
+                mainForm.entrancetreeView_AfterSelect(null, null);
+                selectedMode = ObjectMode.Bgallmode;
+                return;
+            }
+
+
+                if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
             {
                 if (room.selectedObject.Count == 1)
                 {
@@ -545,7 +705,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-                if (mainForm.tabControl1.SelectedIndex == 2)//if we are on object tab
+            if (mainForm.tabControl1.SelectedIndex == 2)//if we are on object tab
             {
                 if ((byte)selectedMode <= 2) //if selected mode == bg1,bg2,bg3
                 {
@@ -592,7 +752,7 @@ namespace ZeldaFullEditor
                     room.selectedObject.Clear();
 
                     Sprite spr = new Sprite(room, (byte)selectedDragSprite.id, 0, 0, selectedDragSprite.option, 0, 0);
-                        
+
                     if (spr != null)
                     {
                         mainForm.update_modes_buttons(mainForm.spritemodeButton, new EventArgs());
@@ -601,7 +761,7 @@ namespace ZeldaFullEditor
                         dragy = 0;
                         room.sprites.Add(spr);
                     }
-                    
+
                     room.has_changed = true;
                     mouse_down = true;
                     selectedDragObject = null;
@@ -2155,6 +2315,8 @@ namespace ZeldaFullEditor
                 }*/
 
             }
+            DrawRoom();
+            Refresh();
         }
 
         public override void SendSelectedToBack()
