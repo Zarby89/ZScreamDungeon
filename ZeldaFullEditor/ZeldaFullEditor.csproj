@@ -194,6 +194,12 @@
     <Compile Include="Gui\RomImporter.Designer.cs">
       <DependentUpon>RomImporter.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\TagForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\TagForm.Designer.cs">
+      <DependentUpon>TagForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="IniFile.cs" />
     <Compile Include="ItemsNames.cs" />
     <Compile Include="Load.cs" />
@@ -370,6 +376,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\RomImporter.resx">
       <DependentUpon>RomImporter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\TagForm.resx">
+      <DependentUpon>TagForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MovePointer.resx">
       <DependentUpon>MovePointer.cs</DependentUpon>

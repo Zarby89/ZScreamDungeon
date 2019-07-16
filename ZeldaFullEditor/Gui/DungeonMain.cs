@@ -43,7 +43,7 @@ namespace ZeldaFullEditor
         RoomLayout layoutForm;
         List<short> selectedMapPng = new List<short>();
         public ChestPicker chestPicker = new ChestPicker();
-        public byte[] door_index = new byte[] { 0x00, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32,0x20 };
+        public byte[] door_index = new byte[] { 0x00, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32,0x20,0x14 };
         public Bitmap spriteFont;
         public Bitmap moveableBlock;
         public bool settingEntrance = false;
@@ -1295,7 +1295,10 @@ namespace ZeldaFullEditor
 
         private void howToUseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            MessageBox.Show("Sorry this section do not exist yet :)\n" +
+                "you can however find shortcuts not mentionned\n" +
+                "- Mouse Wheel is used to resize objects for now\n" +
+                "- Mouse Wheel Button is used to close rooms tabs");
         }
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4837,6 +4840,16 @@ namespace ZeldaFullEditor
             activeScene.selectedDragSprite = null;
             activeScene.room.selectedObject.Clear();
             activeScene.selectedMode = ObjectMode.EntrancePlacing;
+        }
+
+        private void tag1Button_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("WIP :(");
+        }
+
+        private void tag2Button_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("WIP :(");
         }
     }
 
