@@ -11,7 +11,7 @@ using System.Diagnostics;
 using ZeldaFullEditor.Properties;
 using Microsoft.VisualBasic;
 using System.IO.Compression;
-using static ZeldaFullEditor.Form1;
+using static ZeldaFullEditor.DungeonMain;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 
@@ -20,7 +20,7 @@ namespace ZeldaFullEditor
     public class SceneUW : Scene
     {
 
-        public SceneUW(Form1 f)
+        public SceneUW(DungeonMain f)
         {
             //graphics = Graphics.FromImage(scene_bitmap);
             
@@ -2467,7 +2467,7 @@ namespace ZeldaFullEditor
 
         }
 
-        public void updateRoomInfos(Form1 mainForm)
+        public void updateRoomInfos(DungeonMain mainForm)
         {
             mainForm.propertiesChangedFromForm = true;
             mainForm.roomProperty_bg2.SelectedIndex = (int)room.Bg2;

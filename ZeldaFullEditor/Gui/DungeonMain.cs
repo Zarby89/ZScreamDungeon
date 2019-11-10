@@ -21,9 +21,9 @@ using ZeldaFullEditor.Gui;
 namespace ZeldaFullEditor
 {
 
-    public partial class Form1 : Form
+    public partial class DungeonMain : Form
     {
-        public Form1()
+        public DungeonMain()
         {
             InitializeComponent();
 

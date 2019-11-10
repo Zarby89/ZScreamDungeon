@@ -11,7 +11,7 @@ using System.Diagnostics;
 using ZeldaFullEditor.Properties;
 using Microsoft.VisualBasic;
 using System.IO.Compression;
-using static ZeldaFullEditor.Form1;
+using static ZeldaFullEditor.DungeonMain;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
@@ -61,7 +61,7 @@ namespace ZeldaFullEditor
         public bool showSprites = true;
         public bool hideText = false;
         //int selectedMode = 0;
-        public SceneOW(Form1 f)
+        public SceneOW(DungeonMain f)
         {
             //graphics = Graphics.FromImage(scene_bitmap);
             //this.Image = new Bitmap(4096, 4096);
