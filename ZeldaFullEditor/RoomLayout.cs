@@ -13,7 +13,7 @@ namespace ZeldaFullEditor
 {
     public partial class RoomLayout : Form
     {
-        public RoomLayout(Form1 f)
+        public RoomLayout(DungeonMain f)
         {
             InitializeComponent();
             /*foreach (string s in Directory.EnumerateDirectories("Layout\\"))

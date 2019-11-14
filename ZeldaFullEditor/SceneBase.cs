@@ -11,7 +11,7 @@ using System.Diagnostics;
 using ZeldaFullEditor.Properties;
 using Microsoft.VisualBasic;
 using System.IO.Compression;
-using static ZeldaFullEditor.Form1;
+using static ZeldaFullEditor.DungeonMain;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 
@@ -40,7 +40,7 @@ namespace ZeldaFullEditor
         public bool showLayer2 = true;
         public bool showGrid = false;
         public bool showSpriteText = false;
-        public Form1 mainForm;
+        public DungeonMain mainForm;
         public bool canSelectUnselectedBG = true;
         public bool isDungeon = true;
         //public List<Room> undoRooms = new List<Room>();
