@@ -188,15 +188,15 @@ namespace ZeldaFullEditor
 
                 for (int yy = 5; yy >= 0; yy--)
                 {
-                    tiles[tid].mirror_y = false;
-                    tiles[tid].mirror_x = false;
+                    tiles[tid].mirror_y = 0;
+                    tiles[tid].mirror_x = 0;
                     draw_tile(tiles[tid], (0) * 8, (yy) * 8);
                     tid++;
                 }
                 for (int yy = 5; yy >= 0; yy--)
                 {
-                    tiles[tid].mirror_y = false;
-                    tiles[tid].mirror_x = false;
+                    tiles[tid].mirror_y = 0;
+                    tiles[tid].mirror_x = 0;
                     draw_tile(tiles[tid], (1) * 8, (yy) * 8);
                     tid++;
                 }
@@ -204,15 +204,15 @@ namespace ZeldaFullEditor
                 //Rigt Side Tiles (Must mirror them)
                 for (int yy = 5; yy >= 0; yy--)
                 {
-                    tiles[tid].mirror_y = false;
-                    tiles[tid].mirror_x = true;
+                    tiles[tid].mirror_y = 0;
+                    tiles[tid].mirror_x = 1;
                     draw_tile(tiles[tid], (21) * 8, (yy) * 8);
                     tid++;
                 }
                 for (int yy = 5; yy >= 0; yy--)
                 {
-                    tiles[tid].mirror_y = false;
-                    tiles[tid].mirror_x = true;
+                    tiles[tid].mirror_y = 0;
+                    tiles[tid].mirror_x = 1;
                     draw_tile(tiles[tid], (20) * 8, (yy) * 8);
                     tid++;
                 }
@@ -223,30 +223,30 @@ namespace ZeldaFullEditor
                 //Left Side tiles
                 for (int yy = 5; yy >= 0; yy--)
                 {
-                    tiles[tid].mirror_y = true;
-                    tiles[tid].mirror_x = false;
+                    tiles[tid].mirror_y = 1;
+                    tiles[tid].mirror_x = 0;
                     draw_tile(tiles[tid], (1) * 8, (yy - 6) * 8);
                     tid--;
                 }
                 for (int yy = 5; yy >= 0; yy--)
                 {
-                    tiles[tid].mirror_y = true;
-                    tiles[tid].mirror_x = false;
+                    tiles[tid].mirror_y = 1;
+                    tiles[tid].mirror_x = 0;
                     draw_tile(tiles[tid], (0) * 8, (yy - 6) * 8);
                     tid--;
                 }
                 tid = 11;
                 for (int yy = 5; yy >= 0; yy--)
                 {
-                    tiles[tid].mirror_y = false;
-                    tiles[tid].mirror_x = true;
+                    tiles[tid].mirror_y = 0;
+                    tiles[tid].mirror_x = 1;
                     draw_tile(tiles[tid], (20) * 8, (yy-6) * 8);
                     tid--;
                 }
                 for (int yy = 5; yy >= 0; yy--)
                 {
-                    tiles[tid].mirror_y = false;
-                    tiles[tid].mirror_x = true;
+                    tiles[tid].mirror_y = 0;
+                    tiles[tid].mirror_x = 1;
                     draw_tile(tiles[tid], (21) * 8, (yy-6) * 8);
                     tid--;
                 }
@@ -431,15 +431,15 @@ namespace ZeldaFullEditor
 
                     for (int yy = 5; yy >= 0; yy--)
                     {
-                        tiles[tid].mirror_y = false;
-                        tiles[tid].mirror_x = false;
+                        tiles[tid].mirror_y = 0;
+                        tiles[tid].mirror_x = 0;
                         draw_tile(tiles[tid], (0) * 8, (yy) * 8);
                         tid++;
                     }
                     for (int yy = 5; yy >= 0; yy--)
                     {
-                        tiles[tid].mirror_y = false;
-                        tiles[tid].mirror_x = false;
+                        tiles[tid].mirror_y = 0;
+                        tiles[tid].mirror_x = 0;
                         draw_tile(tiles[tid], (1) * 8, (yy) * 8);
                         tid++;
                     }
@@ -447,15 +447,15 @@ namespace ZeldaFullEditor
                     //Rigt Side Tiles (Must mirror them)
                     for (int yy = 5; yy >= 0; yy--)
                     {
-                        tiles[tid].mirror_y = false;
-                        tiles[tid].mirror_x = true;
+                        tiles[tid].mirror_y = 0;
+                        tiles[tid].mirror_x = 1;
                         draw_tile(tiles[tid], (21) * 8, (yy) * 8);
                         tid++;
                     }
                     for (int yy = 5; yy >= 0; yy--)
                     {
-                        tiles[tid].mirror_y = false;
-                        tiles[tid].mirror_x = true;
+                        tiles[tid].mirror_y = 0;
+                        tiles[tid].mirror_x = 1;
                         draw_tile(tiles[tid], (20) * 8, (yy) * 8);
                         tid++;
                     }
@@ -466,30 +466,30 @@ namespace ZeldaFullEditor
                     //Left Side tiles
                     for (int yy = 5; yy >= 0; yy--)
                     {
-                        tiles[tid].mirror_y = true;
-                        tiles[tid].mirror_x = false;
+                        tiles[tid].mirror_y = 1;
+                        tiles[tid].mirror_x = 0;
                         draw_tile(tiles[tid], (1) * 8, (yy - 6) * 8);
                         tid--;
                     }
                     for (int yy = 5; yy >= 0; yy--)
                     {
-                        tiles[tid].mirror_y = true;
-                        tiles[tid].mirror_x = false;
+                        tiles[tid].mirror_y = 1;
+                        tiles[tid].mirror_x = 0;
                         draw_tile(tiles[tid], (0) * 8, (yy - 6) * 8);
                         tid--;
                     }
                     tid = 11;
                     for (int yy = 5; yy >= 0; yy--)
                     {
-                        tiles[tid].mirror_y = false;
-                        tiles[tid].mirror_x = true;
+                        tiles[tid].mirror_y = 0;
+                        tiles[tid].mirror_x = 1;
                         draw_tile(tiles[tid], (20) * 8, (yy - 6) * 8);
                         tid--;
                     }
                     for (int yy = 5; yy >= 0; yy--)
                     {
-                        tiles[tid].mirror_y = false;
-                        tiles[tid].mirror_x = true;
+                        tiles[tid].mirror_y = 0;
+                        tiles[tid].mirror_x = 1;
                         draw_tile(tiles[tid], (21) * 8, (yy - 6) * 8);
                         tid--;
                     }

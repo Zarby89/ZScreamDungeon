@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor
 {
-    partial class ExportPotsForm
+    partial class VramViewer
     {
         /// <summary>
         /// Required designer variable.
@@ -28,32 +28,38 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.vramPicturebox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.vramPicturebox)).BeginInit();
             this.SuspendLayout();
             // 
-            // richTextBox1
+            // vramPicturebox
             // 
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.Size = new System.Drawing.Size(760, 586);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
+            this.vramPicturebox.Location = new System.Drawing.Point(0, 0);
+            this.vramPicturebox.Name = "vramPicturebox";
+            this.vramPicturebox.Size = new System.Drawing.Size(256, 1024);
+            this.vramPicturebox.TabIndex = 0;
+            this.vramPicturebox.TabStop = false;
+            this.vramPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.vramPicturebox_Paint);
             // 
-            // ExportPotsForm
+            // VramViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(760, 586);
-            this.Controls.Add(this.richTextBox1);
-            this.Name = "ExportPotsForm";
-            this.Text = "ExportPotsForm";
+            this.AutoScroll = true;
+            this.ClientSize = new System.Drawing.Size(273, 511);
+            this.Controls.Add(this.vramPicturebox);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "VramViewer";
+            this.Text = "VramViewer";
+            ((System.ComponentModel.ISupportInitialize)(this.vramPicturebox)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        public System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.PictureBox vramPicturebox;
     }
 }

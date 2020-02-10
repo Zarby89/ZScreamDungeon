@@ -47,6 +47,7 @@ namespace ZeldaFullEditor
         public bool preview = false;
         public int previewId = 0;
         byte previousSize = 0;
+        public bool showRectangle = false;
         public Room_Object(short id, byte x, byte y, byte size, byte layer = 0)
         {
             this.x = x;
@@ -67,11 +68,11 @@ namespace ZeldaFullEditor
             previousSize = size;
             size = 1;
             Draw();
-            getBaseSize();
+            getBaseSize(); //48
             UpdateSize();
             size = 2;
             Draw();
-            getSizeSized();
+            getSizeSized(); //64 - 48
             UpdateSize();
             size = previousSize;
         }
@@ -86,8 +87,9 @@ namespace ZeldaFullEditor
 
         public void getSizeSized()
         {
-            sizewidth = (width - basewidth);
             sizeheight = (height - baseheight);
+            sizewidth = (width - basewidth);
+            
         }
 
         public void setRoom(Room r)
@@ -102,8 +104,8 @@ namespace ZeldaFullEditor
 
         public void UpdateSize()
         {
-            width = 16;
-            height = 16;
+            width = 8;
+            height = 8;
         }
 
         public void addTiles(int nbr, int pos)
@@ -131,6 +133,7 @@ namespace ZeldaFullEditor
 
         public void draw_diagonal_down()
         {
+
             for (int s = 0; s < size + 6; s++)
             {
                 draw_tile(tiles[0], ((s)) * 8, (0 + s) * 8);
@@ -151,11 +154,17 @@ namespace ZeldaFullEditor
             this.x = nx;
             this.y = ny;
         }
-        int lowestX = 0;
-        int lowestY = 0;
 
         public unsafe void draw_tile(Tile t, int xx, int yy, ushort tileUnder = 0xFFFF)
         {
+            if (width < xx + 8)
+            {
+                width = xx + 8;
+            }
+            if (height < yy + 8)
+            {
+                height = yy + 8;
+            }
             if (preview)
             {
                 if (xx < 57 && yy < 57 && xx >= 0 && yy >= 0)
@@ -171,12 +180,12 @@ namespace ZeldaFullEditor
                             int my = yl;
                             byte r = 0;
 
-                            if (ti.h)
+                            if (ti.h != 0)
                             {
                                 mx = 3 - xl;
                                 r = 1;
                             }
-                            if (ti.v)
+                            if (ti.v != 0)
                             {
                                 my = 7 - yl;
                             }
@@ -186,7 +195,7 @@ namespace ZeldaFullEditor
                             var pixel = alltilesData[tx + (yl * 64) + xl];
                             //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
 
-                            int index = ((xx/8) * 8) + ((yy/8) * 512) + ((mx * 2) + (my * 64));
+                            int index = ((xx / 8) * 8) + ((yy / 8) * 512) + ((mx * 2) + (my * 64));
                             ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + ti.palette * 16);
                             ptr[index + r] = (byte)(((pixel >> 4) & 0x0F) + ti.palette * 16);
                         }
@@ -198,6 +207,9 @@ namespace ZeldaFullEditor
                 if (((xx / 8) + nx + offsetX) + ((ny + offsetY + (yy / 8)) * 64) < 4096 && ((xx / 8) + nx + offsetX) + ((ny + offsetY + (yy / 8)) * 64) >= 0)
                 {
                     ushort td = GFX.getshortilesinfo(t.GetTileInfo());
+
+
+
                     if (layer == 0 || layer == 2 || allBgs)
                     {
 
@@ -215,14 +227,7 @@ namespace ZeldaFullEditor
                         }
                         GFX.tilesBg2Buffer[((xx / 8) + nx) + offsetX + ((ny + offsetY + (yy / 8)) * 64)] = td;
                     }
-                    if (width < xx + 8)
-                    {
-                        width = xx + 8;
-                    }
-                    if (height < yy + 8)
-                    {
-                        height = yy + 8;
-                    }
+
                 }
             }
 

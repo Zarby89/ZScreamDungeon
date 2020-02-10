@@ -75,7 +75,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="asar.cs" />
-    <Compile Include="Charactertable.cs" />
     <Compile Include="ChestDraw.cs" />
     <Compile Include="ChestPicker.cs">
       <SubType>Form</SubType>
@@ -89,7 +88,6 @@
     <Compile Include="Chestviewer.Designer.cs">
       <DependentUpon>Chestviewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="ConstantsJP.cs" />
     <Compile Include="CustomPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -102,33 +100,7 @@
     <Compile Include="DataRoom.cs" />
     <Compile Include="DoAction.cs" />
     <Compile Include="DragMode.cs" />
-    <Compile Include="DungeonDesigner.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DungeonDesigner.Designer.cs">
-      <DependentUpon>DungeonDesigner.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DungeonGenerator.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DungeonGenerator.Designer.cs">
-      <DependentUpon>DungeonGenerator.cs</DependentUpon>
-    </Compile>
-    <Compile Include="DuplicateSpriteStateForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DuplicateSpriteStateForm.Designer.cs">
-      <DependentUpon>DuplicateSpriteStateForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Entrance.cs" />
-    <Compile Include="EntranceOW.cs" />
-    <Compile Include="ExitOW.cs" />
-    <Compile Include="ExportPotsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="ExportPotsForm.Designer.cs">
-      <DependentUpon>ExportPotsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="GlobalOptionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -141,7 +113,6 @@
     <Compile Include="Gui\AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Addresses.cs" />
     <Compile Include="Gui\AdvancedChestEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -154,55 +125,21 @@
     <Compile Include="Gui\DungeonPropertiesForm.Designer.cs">
       <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\EntranceForm.cs">
+    <Compile Include="Gui\EntrancePropertyForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\EntranceForm.Designer.cs">
-      <DependentUpon>EntranceForm.cs</DependentUpon>
+    <Compile Include="Gui\EntrancePropertyForm.Designer.cs">
+      <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\ExitEditorForm.cs">
+    <Compile Include="Gui\WarpsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\ExitEditorForm.designer.cs">
-      <DependentUpon>ExitEditorForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\JPExport.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\JPExport.Designer.cs">
-      <DependentUpon>JPExport.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\PickObject.cs" />
-    <Compile Include="Gui\PickObject.Designer.cs">
-      <DependentUpon>PickObject.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\PickSprite.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\PickSprite.Designer.cs">
-      <DependentUpon>PickSprite.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\PickChestItem.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\PickChestItem.Designer.cs">
-      <DependentUpon>PickChestItem.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\RomImporter.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\RomImporter.Designer.cs">
-      <DependentUpon>RomImporter.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\TagForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\TagForm.Designer.cs">
-      <DependentUpon>TagForm.cs</DependentUpon>
+    <Compile Include="Gui\WarpsForm.Designer.cs">
+      <DependentUpon>WarpsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="IniFile.cs" />
-    <Compile Include="ItemsNames.cs" />
-    <Compile Include="Load.cs" />
+    <Compile Include="Project.cs" />
+    <Compile Include="Rooms\Items\ItemsNames.cs" />
     <Compile Include="MovePointer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -216,16 +153,6 @@
     <Compile Include="ObjectViewer.Designer.cs">
       <DependentUpon>ObjectViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Overworld.cs" />
-    <Compile Include="OverworldMap.cs" />
-    <Compile Include="OWSceneModes\ClipboardData\TileData.cs" />
-    <Compile Include="OWSceneModes\EntranceMode.cs" />
-    <Compile Include="OWSceneModes\ExitMode.cs" />
-    <Compile Include="OWSceneModes\DoorMode.cs" />
-    <Compile Include="OWSceneModes\SpriteMode.cs" />
-    <Compile Include="OWSceneModes\ItemMode.cs" />
-    <Compile Include="OWSceneModes\TileMode.cs" />
-    <Compile Include="OWSceneModes\TransportMode.cs" />
     <Compile Include="Palettes.cs" />
     <Compile Include="PaletteViewer.cs" />
     <Compile Include="ROMStructure.cs" />
@@ -255,7 +182,6 @@
     <Compile Include="Gui\GotoRoom.Designer.cs">
       <DependentUpon>GotoRoom.cs</DependentUpon>
     </Compile>
-    <Compile Include="PotItems_Name.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ROM.cs" />
@@ -267,19 +193,15 @@
     <Compile Include="Rooms\Room_Object.cs" />
     <Compile Include="Rooms\Object_Draw\Subtype3_Draw.cs" />
     <Compile Include="Rooms\Sprites\Sprite.cs" />
-    <Compile Include="SaveJP.cs" />
     <Compile Include="Save.cs" />
     <Compile Include="SaveObject.cs" />
-    <Compile Include="SceneOW.cs">
+    <Compile Include="Scene\SceneResizing.cs" />
+    <Compile Include="Scene\SceneUW.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SceneUW.cs">
+    <Compile Include="Scene\SceneBase.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SceneBase.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="SpriteOWEditor.cs" />
     <Compile Include="SpritesView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -288,29 +210,14 @@
     </Compile>
     <Compile Include="Sprite_SubsetNames.cs" />
     <Compile Include="TagKey.cs" />
-    <Compile Include="TextPreview.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Tile16Editor.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Tile16Editor.Designer.cs">
-      <DependentUpon>Tile16Editor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="tileGroup.cs" />
-    <Compile Include="TileOrig.cs" />
     <Compile Include="Tile.cs" />
-    <Compile Include="Tile16.cs" />
-    <Compile Include="Tile32.cs" />
     <Compile Include="TileInfo.cs" />
-    <Compile Include="TileUndo.cs" />
-    <Compile Include="TransportOW.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="WhirlpoolForm.cs">
+    <Compile Include="VramViewer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="WhirlpoolForm.Designer.cs">
-      <DependentUpon>WhirlpoolForm.cs</DependentUpon>
+    <Compile Include="VramViewer.Designer.cs">
+      <DependentUpon>VramViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="ZCompressLibrary\Common.cs" />
     <Compile Include="ZCompressLibrary\Compress.cs" />
@@ -325,18 +232,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="CustomTabControl.resx">
       <DependentUpon>CustomTabControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DungeonDesigner.resx">
-      <DependentUpon>DungeonDesigner.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DungeonGenerator.resx">
-      <DependentUpon>DungeonGenerator.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DuplicateSpriteStateForm.resx">
-      <DependentUpon>DuplicateSpriteStateForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ExportPotsForm.resx">
-      <DependentUpon>ExportPotsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GlobalOptionForm.resx">
       <DependentUpon>GlobalOptionForm.cs</DependentUpon>
@@ -353,32 +248,14 @@
     <EmbeddedResource Include="Gui\DungeonMain.resx">
       <DependentUpon>DungeonMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\EntranceForm.resx">
-      <DependentUpon>EntranceForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExitEditorForm.resx">
-      <DependentUpon>ExitEditorForm.cs</DependentUpon>
+    <EmbeddedResource Include="Gui\EntrancePropertyForm.resx">
+      <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\GotoRoom.resx">
       <DependentUpon>GotoRoom.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\JPExport.resx">
-      <DependentUpon>JPExport.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\PickObject.resx">
-      <DependentUpon>PickObject.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\PickSprite.resx">
-      <DependentUpon>PickSprite.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\PickChestItem.resx">
-      <DependentUpon>PickChestItem.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\RomImporter.resx">
-      <DependentUpon>RomImporter.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\TagForm.resx">
-      <DependentUpon>TagForm.cs</DependentUpon>
+    <EmbeddedResource Include="Gui\WarpsForm.resx">
+      <DependentUpon>WarpsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MovePointer.resx">
       <DependentUpon>MovePointer.cs</DependentUpon>
@@ -400,26 +277,17 @@
     <EmbeddedResource Include="RoomLayout.resx">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SceneBase.resx">
+    <EmbeddedResource Include="Scene\SceneBase.resx">
       <DependentUpon>SceneBase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SceneOW.resx">
-      <DependentUpon>SceneOW.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SceneUW.resx">
+    <EmbeddedResource Include="Scene\SceneUW.resx">
       <DependentUpon>SceneUW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SpritesView.resx">
       <DependentUpon>SpritesView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TextPreview.resx">
-      <DependentUpon>TextPreview.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Tile16Editor.resx">
-      <DependentUpon>Tile16Editor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="WhirlpoolForm.resx">
-      <DependentUpon>WhirlpoolForm.cs</DependentUpon>
+    <EmbeddedResource Include="VramViewer.resx">
+      <DependentUpon>VramViewer.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

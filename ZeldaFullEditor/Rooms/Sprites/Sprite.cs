@@ -23,7 +23,6 @@ namespace ZeldaFullEditor
         public string name;
         public byte keyDrop = 0;
         public int sizeMap = 512;
-        bool overworld = false;
         public bool preview = false;
         public byte mapid = 0;
         public int map_x = 0;
@@ -32,7 +31,6 @@ namespace ZeldaFullEditor
         public Rectangle boundingbox;
         bool picker = false;
         public bool selected = false;
-        public OverworldMap[] maps;
         public Sprite(Room room,byte id, byte x, byte y, byte overlord, byte subtype, byte layer)
         {
             this.id = id;
@@ -50,21 +48,6 @@ namespace ZeldaFullEditor
                 if (id > 0 && id <= 0x19)
                 this.name = Sprites_Names.overlordnames[id-1];
             }
-        }
-
-        public Sprite(byte mapid, byte id, byte x, byte y, OverworldMap[] maps, int map_x, int map_y)
-        {
-            overworld = true;
-            this.mapid = mapid;
-            this.id = id;
-            this.x = x;
-            this.y = y;
-            this.nx = x;
-            this.ny = y;
-            this.name = Sprites_Names.name[id];
-            this.maps = maps;
-            this.map_x = map_x;
-            this.map_y = map_y;
         }
 
         public void updateBBox()
@@ -1212,18 +1195,10 @@ namespace ZeldaFullEditor
         public unsafe void drawSpriteTile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2, bool iskey = false)
         {
             var alltilesData = (byte*)GFX.currentgfx16Ptr.ToPointer();
-            if (overworld)
-            {
-                alltilesData = (byte*)GFX.currentOWgfx16Ptr.ToPointer();
-            }
             
 
             if (preview)
             {
-                if (GFX.useOverworldGFX)
-                {
-                    alltilesData = (byte*)GFX.currentOWgfx16Ptr.ToPointer();
-                }
                 byte* ptr = (byte*)GFX.previewSpritesPtr[id].ToPointer();
                 x += 16;
                 y += 16;
@@ -1270,26 +1245,7 @@ namespace ZeldaFullEditor
                 int subx = 0;
                 int suby = 0;
                 byte* ptr = (byte*)GFX.roomBg1Ptr.ToPointer();
-                if (overworld)
-                {
-                    ptr = (byte*)maps[mapid].gfxPtr;
-                    if (x >= 512)
-                    {
-                        ptr = (byte*)maps[mapid+1].gfxPtr;
-                        subx = -512;
-                    }
-                    if (y >= 512)
-                    {
-                        ptr = (byte*)maps[mapid+8].gfxPtr;
-                        suby = -512;
-                    }
-                    if (x >= 512 && y >= 512)
-                    {
-                        ptr = (byte*)maps[mapid+9].gfxPtr;
-                        subx = -512;
-                        suby = -512;
-                    }
-                }
+
 
                 if (iskey == false)
                 {

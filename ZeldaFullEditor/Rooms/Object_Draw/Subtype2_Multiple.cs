@@ -258,10 +258,10 @@ namespace ZeldaFullEditor
             else if (oid == 0x50) //special object id doesnt matter (Torches)
             {
                 //setdata("Torch", 2, 2);
-                tiles.Add(new Tile(480, false, false, false, 3));
-                tiles.Add(new Tile(496, false, false, false, 3));
-                tiles.Add(new Tile(480, true, false, false, 3));
-                tiles.Add(new Tile(496, true, false, false, 3));
+                tiles.Add(new Tile(480, 0, 0, 0, 3));
+                tiles.Add(new Tile(496, 0, 0, 0, 3));
+                tiles.Add(new Tile(480, 1, 0, 0, 3));
+                tiles.Add(new Tile(496, 1, 0, 0, 3));
                 options |= ObjectOption.Torch;
                 this.name = "Torch";
                 tx = 2;

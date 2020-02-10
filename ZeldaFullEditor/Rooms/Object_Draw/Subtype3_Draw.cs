@@ -234,7 +234,7 @@ namespace ZeldaFullEditor
             sort = Sorting.NonScalable;
             for (int i = 6;i<12;i++)
             {
-                tiles[i].mirror_x = true;
+                tiles[i].mirror_x = 1;
             }
         }
         public override void Draw()
@@ -466,7 +466,7 @@ namespace ZeldaFullEditor
             addTiles(6, pos);
             for (int i = 6; i < 12; i++)
             {
-                tiles[i].mirror_x = true;
+                tiles[i].mirror_x = 1;
             }
         }
         public override void Draw()
@@ -1004,32 +1004,32 @@ namespace ZeldaFullEditor
             {
                 //390
 
-                tiles[tid].mirror_x = false;
+                tiles[tid].mirror_x = 0;
                 draw_tile(tiles[tid], (0) * 8, (yy) * 8);
-                tiles[tid + 14].mirror_x = false;
+                tiles[tid + 14].mirror_x = 0;
                 draw_tile(tiles[tid+14], (1) * 8, (yy) * 8);
                 draw_tile(tiles[tid+14], (2) * 8, (yy) * 8);
-                tiles[tid + 28].mirror_x = false;
+                tiles[tid + 28].mirror_x = 0;
                 draw_tile(tiles[tid+28], (3) * 8, (yy) * 8);
-                tiles[tid + 48].mirror_x = true;
+                tiles[tid + 48].mirror_x = 1;
                 draw_tile(tiles[tid+42], (4) * 8, (yy) * 8);
-                tiles[tid + 56].mirror_x = false;
+                tiles[tid + 56].mirror_x = 0;
                 draw_tile(tiles[tid + 56], (5) * 8, (yy) * 8);
 
-                tiles[tid + 70].mirror_x = false;
+                tiles[tid + 70].mirror_x = 0;
                 draw_tile(tiles[tid + 70], (6) * 8, (yy) * 8);
-                tiles[tid + 70].mirror_x = true;
+                tiles[tid + 70].mirror_x = 1;
                 draw_tile(tiles[tid + 70], (7) * 8, (yy) * 8);
-                tiles[tid + 56].mirror_x = true;
+                tiles[tid + 56].mirror_x = 1;
                 draw_tile(tiles[tid + 56], (8) * 8, (yy) * 8);
-                tiles[tid + 48].mirror_x = true;
+                tiles[tid + 48].mirror_x = 1;
                 draw_tile(tiles[tid + 42], (9) * 8, (yy) * 8);
-                tiles[tid + 28].mirror_x = true;
+                tiles[tid + 28].mirror_x = 1;
                 draw_tile(tiles[tid + 28], (10) * 8, (yy) * 8);
-                tiles[tid + 14].mirror_x = true;
+                tiles[tid + 14].mirror_x = 1;
                 draw_tile(tiles[tid + 14], (11) * 8, (yy) * 8);
                 draw_tile(tiles[tid + 14], (12) * 8, (yy) * 8);
-                tiles[tid].mirror_x = true;
+                tiles[tid].mirror_x = 1;
                 draw_tile(tiles[tid], (13) * 8, (yy) * 8);
                 tid++;
             }
@@ -1075,22 +1075,22 @@ namespace ZeldaFullEditor
             for (int xx = 0; xx < 7; xx++)
             {
                 //5
-                tiles[24].mirror_x = false;
-                tiles[25].mirror_x = false;
-                tiles[26].mirror_x = false;
-                tiles[27].mirror_x = false;
-                tiles[28].mirror_x = false;
+                tiles[24].mirror_x = 0;
+                tiles[25].mirror_x = 0;
+                tiles[26].mirror_x = 0;
+                tiles[27].mirror_x = 0;
+                tiles[28].mirror_x = 0;
                 draw_tile(tiles[24], (8 - xx) * 8, (4 + xx) * 8);
                 draw_tile(tiles[25], (8 - xx) * 8, (5 + xx) * 8);
                 draw_tile(tiles[26], (8 - xx) * 8, (6 + xx) * 8);
                 draw_tile(tiles[27], (8 - xx) * 8, (7 + xx) * 8);
                 draw_tile(tiles[28], (8 - xx) * 8, (8 + xx) * 8);
 
-                tiles[24].mirror_x = true;
-                tiles[25].mirror_x = true;
-                tiles[26].mirror_x = true;
-                tiles[27].mirror_x = true;
-                tiles[28].mirror_x = true;
+                tiles[24].mirror_x = 1;
+                tiles[25].mirror_x = 1;
+                tiles[26].mirror_x = 1;
+                tiles[27].mirror_x = 1;
+                tiles[28].mirror_x = 1;
                 draw_tile(tiles[24], (23 + xx) * 8, (4 + xx) * 8);
                 draw_tile(tiles[25], (23 + xx) * 8, (5 + xx) * 8);
                 draw_tile(tiles[26], (23 + xx) * 8, (6 + xx) * 8);
@@ -1108,9 +1108,9 @@ namespace ZeldaFullEditor
                     for (int xx = 0; xx < 4; xx++)
                     {
                         //5
-                        tiles[tid].mirror_x = false;
+                        tiles[tid].mirror_x = 0;
                         draw_tile(tiles[tid], (2 + xx) * 8, (11 + yy + (i * 6)) * 8);
-                        tiles[tid].mirror_x = true;
+                        tiles[tid].mirror_x = 1;
                         draw_tile(tiles[tid], (29 - xx) * 8, (11 + yy + (i * 6)) * 8);
                         tid++;
                     }
@@ -1128,7 +1128,7 @@ namespace ZeldaFullEditor
                     for (int xx = 0; xx < 6; xx++)
                 {
                         draw_tile(tiles[tid], (12 + xx + (i * 6)) * 8, (9 + yy ) * 8);
-                        //tiles[tid].mirror_x = true;
+                        //tiles[tid].mirror_x = 1;
                         //draw_tile(tiles[tid], (29 - xx + (i * 6)) * 8, (8 + yy ) * 8);
                         tid++;
                     }
@@ -1144,7 +1144,7 @@ namespace ZeldaFullEditor
                     for (int xx = 0; xx < 2; xx++)
                     {
                         draw_tile(tiles[tid], (7 + xx ) * 8, (14 + yy + (i * 6)) * 8);
-                        //tiles[tid].mirror_x = true;
+                        //tiles[tid].mirror_x = 1;
                         //draw_tile(tiles[tid], (29 - xx + (i * 6)) * 8, (8 + yy ) * 8);
                         tid++;
                     }

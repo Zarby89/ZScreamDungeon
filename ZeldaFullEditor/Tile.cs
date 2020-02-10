@@ -20,15 +20,15 @@ namespace ZeldaFullEditor
     //o - on top?
     //c - the 9th(and most significant) bit of the character number for this sprite.
 
-        [Serializable]
+    [Serializable]
     public class Tile
     {
         public ushort id = 0;
-        public bool mirror_x = false;
-        public bool mirror_y = false;
-        public bool ontop = false;
+        public ushort mirror_x = 0;
+        public ushort mirror_y = 0;
+        public ushort ontop = 0;
         public byte palette = 4;
-        public Tile(ushort id, bool mirror_x = false, bool mirror_y = false, bool ontop = false, byte palette = 4) //custom tile
+        public Tile(ushort id, ushort mirror_x = 0, ushort mirror_y = 0, ushort ontop = 0, byte palette = 4) //custom tile
         {
             this.id = id;
             this.mirror_x = mirror_x;
@@ -40,15 +40,15 @@ namespace ZeldaFullEditor
 
         public TileInfo GetTileInfo()
         {
-            return new TileInfo(id, palette, mirror_y, mirror_x,ontop);
+            return new TileInfo(id, palette, mirror_y, mirror_x, ontop);
         }
 
         public Tile(byte b1, byte b2) //tile from game data
         {
-            this.id = (ushort)(((b2 & 0x01) << 8)+(b1));
-            this.mirror_y = ((b2 & 0x80) == 0x80) ? true : false;
-            this.mirror_x = ((b2 & 0x40) == 0x40) ? true : false;
-            this.ontop = ((b2 & 0x10) == 0x10) ? true : false;
+            this.id = (ushort)(((b2 & 0x01) << 8) + (b1));
+            this.mirror_y = (ushort)(((b2 & 0x80) == 0x80) ? 1 : 0);
+            this.mirror_x = (ushort)(((b2 & 0x40) == 0x40) ? 1 : 0);
+            this.ontop = (ushort)(((b2 & 0x20) == 0x20) ? 1 : 0);
             this.palette = (byte)((b2 >> 2) & 0x07);
         }
 
@@ -67,28 +67,19 @@ namespace ZeldaFullEditor
                     GFX.tilesBg2Buffer[xx + (yy * 64)] = t;
                 }
             }
-            
+
         }
 
         public ushort getshortileinfo()
         {
-            ushort tinfo = 0;
+            ushort value = 0;
             //vhopppcc cccccccc
-            tinfo |= (ushort)(id);
-            tinfo |= (ushort)(palette << 10);
-            if (ontop == true)
-            {
-                tinfo |= 0x2000;
-            }
-            if (mirror_x == true)
-            {
-                tinfo |= 0x4000;
-            }
-            if (mirror_y == true)
-            {
-                tinfo |= 0x8000;
-            }
-            return tinfo;
+            if (this.ontop == 1) { value |= 0x2000; };
+            if (this.mirror_x == 1) { value |= 0x4000; };
+            if (this.mirror_y == 1) { value |= 0x8000; };
+            value |= (ushort)((this.palette << 10) & 0x1C00);
+            value |= (ushort)(this.id & 0x3FF);
+            return value;
 
         }
 

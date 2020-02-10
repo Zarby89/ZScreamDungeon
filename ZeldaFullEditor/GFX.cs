@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -9,6 +10,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor
 {
@@ -16,7 +18,7 @@ namespace ZeldaFullEditor
     {
         public static IntPtr allgfx16Ptr = Marshal.AllocHGlobal((128 * 7136) / 2);
         public static Bitmap allgfxBitmap;
-        
+
         public static IntPtr currentgfx16Ptr = Marshal.AllocHGlobal((128 * 512) / 2);
         public static Bitmap currentgfx16Bitmap;
 
@@ -68,8 +70,14 @@ namespace ZeldaFullEditor
         public static int animation_timer = 0;
 
         public static bool useOverworldGFX = false;
+
+        public static Bitmap spriteFont;
+        public static Bitmap moveableBlock;
+
         public unsafe static void DrawBG1()
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             var alltilesData = (byte*)currentgfx16Ptr.ToPointer();
             byte* ptr = (byte*)roomBg1Ptr.ToPointer();
             for (int yy = 0; yy < 64; yy++) //for each tile on the tile buffer
@@ -83,34 +91,35 @@ namespace ZeldaFullEditor
                         {
                             for (var xl = 0; xl < 4; xl++)
                             {
-                                int mx = xl;
-                                int my = yl;
-                                byte r = 0;
+                                int mx = xl * (1 - t.h) + (3 - xl) * (t.h);
+                                int my = yl * (1 - t.v) + (7 - yl) * (t.v);
 
-                                if (t.h)
-                                {
-                                    mx = 3 - xl;
-                                    r = 1;
-                                }
-                                if (t.v)
-                                {
-                                    my = 7 - yl;
-                                }
+
                                 //Formula information to get tile index position in the array
                                 //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
-                                int tx = ((t.id / 16) * 512) + ((t.id - ((t.id / 16) * 16)) * 4);
+                                /*int tx = ((t.id / 16) * 512) + ((t.id - ((t.id / 16) * 16)) * 4);
                                 var pixel = alltilesData[tx + (yl * 64) + xl];
+                                */
+                                int ty = (t.id / 16) * 512;
+                                int tx = (t.id % 16) * 4;
+                                var pixel = alltilesData[(tx + ty) + (yl * 64) + xl];
+
+
                                 //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
 
                                 int index = (xx * 8) + (yy * 4096) + ((mx * 2) + (my * 512));
-                                ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + t.palette * 16);
-                                ptr[index + r] = (byte)(((pixel >> 4) & 0x0F) + t.palette * 16);
+                                ptr[index + t.h ^ 1] = (byte)((pixel & 0x0F) + t.palette * 16);
+                                ptr[index + t.h] = (byte)(((pixel >> 4) & 0x0F) + t.palette * 16);
                             }
                         }
                     }
                 }
             }
+            sw.Stop();
+            Console.WriteLine("Unsafe BG1 Buffer Copy - " + sw.ElapsedMilliseconds + "ms");
         }
+
+
 
         public unsafe static void DrawBG2()
         {
@@ -129,20 +138,8 @@ namespace ZeldaFullEditor
                             for (var xl = 0; xl < 4; xl++)
                             {
 
-
-                                int mx = xl;
-                                int my = yl;
-                                byte r = 0;
-
-                                if (t.h)
-                                {
-                                    mx = 3 - xl;
-                                    r = 1;
-                                }
-                                if (t.v)
-                                {
-                                    my = 7 - yl;
-                                }
+                                int mx = xl * (1 - t.h) + (3 - xl) * (t.h);
+                                int my = yl * (1 - t.v) + (7 - yl) * (t.v);
                                 //Formula information to get tile index position in the array
                                 //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
                                 int tx = ((t.id / 16) * 512) + ((t.id - ((t.id / 16) * 16)) * 4);
@@ -150,8 +147,8 @@ namespace ZeldaFullEditor
                                 //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
 
                                 int index = (xx * 8) + (yy * 4096) + ((mx * 2) + (my * 512));
-                                ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + t.palette * 16);
-                                ptr[index + r] = (byte)(((pixel >> 4) & 0x0F) + t.palette * 16);
+                                ptr[index + t.h ^ 1] = (byte)((pixel & 0x0F) + t.palette * 16);
+                                ptr[index + t.h] = (byte)(((pixel >> 4) & 0x0F) + t.palette * 16);
                             }
                         }
                     }
@@ -168,16 +165,41 @@ namespace ZeldaFullEditor
             roomObjectsBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomObjectsPtr);
             currentOWgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentOWgfx16Ptr);
             previewgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, previewgfx16Ptr);
-            mapgfx16Bitmap = new Bitmap(128, 7520 ,128,PixelFormat.Format8bppIndexed,mapgfx16Ptr);
+            mapgfx16Bitmap = new Bitmap(128, 7520, 128, PixelFormat.Format8bppIndexed, mapgfx16Ptr);
             editort16Bitmap = new Bitmap(128, 512, 128, PixelFormat.Format8bppIndexed, editort16Ptr);
             editortileBitmap = new Bitmap(16, 16, 16, PixelFormat.Format8bppIndexed, editortilePtr);
+            moveableBlock = new Bitmap(Resources.Mblock);
+            spriteFont = new Bitmap(Resources.spriteFont);
+
+            previewObjectsPtr = new IntPtr[600];
+            previewObjectsBitmap = new Bitmap[600];
+            previewSpritesPtr = new IntPtr[256];
+            previewSpritesBitmap = new Bitmap[256];
+            previewChestsPtr = new IntPtr[76];
+            previewChestsBitmap = new Bitmap[76];
+            for (int i = 0; i < 600; i++)
+            {
+                previewObjectsPtr[i] = Marshal.AllocHGlobal(64 * 64);
+                previewObjectsBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, GFX.previewObjectsPtr[i]);
+            }
+            for (int i = 0; i < 256; i++)
+            {
+                previewSpritesPtr[i] = Marshal.AllocHGlobal(64 * 64);
+                previewSpritesBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, GFX.previewSpritesPtr[i]);
+            }
+            for (int i = 0; i < 76; i++)
+            {
+                previewChestsPtr[i] = Marshal.AllocHGlobal(64 * 64);
+                previewChestsBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, GFX.previewChestsPtr[i]);
+            }
+
             for (int i = 0; i < 4096; i++)
             {
                 tilesBg1Buffer[i] = 0xFFFF;
                 tilesBg2Buffer[i] = 0xFFFF;
             }
         }
-    public static byte[] CreateAllGfxDataRaw(byte[] romData)
+        public static byte[] CreateAllGfxDataRaw(byte[] romData)
         {
 
             //0-112 -> compressed 3bpp bgr -> (decompressed each) 0x600 bytes
@@ -217,6 +239,7 @@ namespace ZeldaFullEditor
                 if (c)//if data is compressed decompress it
                 {
                     data = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(romData, GetPCGfxAddress(romData, (byte)i), 0x800, ref compressedSize);
+
                 }
                 else
                 {
@@ -234,13 +257,10 @@ namespace ZeldaFullEditor
                 }
                 bufferPos += data.Length;
             }
-
-
-
             return buffer;
         }
 
-        public static unsafe void CopyTile8bpp16(int x, int y, int tile,int sizeX, IntPtr destbmpPtr, IntPtr sourcebmpPtr)
+        public static unsafe void CopyTile8bpp16(int x, int y, int tile, int sizeX, IntPtr destbmpPtr, IntPtr sourcebmpPtr)
         {
             int sourceY = (tile / 8);
             int sourceX = (tile) - ((sourceY) * 8);
@@ -340,8 +360,6 @@ namespace ZeldaFullEditor
                     allgfx16Data[i] = newData[i];
                 }
             }
-
-
         }
 
         public static int GetPCGfxAddress(byte[] romData, byte id)
@@ -361,24 +379,15 @@ namespace ZeldaFullEditor
         public static TileInfo gettilesinfo(ushort tile)
         {
             //vhopppcc cccccccc
-            bool o = false;
-            bool v = false;
-            bool h = false;
+            ushort o = 0;
+            ushort v = 0;
+            ushort h = 0;
             ushort tid = (ushort)(tile & 0x3FF);
             byte p = (byte)((tile >> 10) & 0x07);
-            
-            if ((tile & 0x2000) == 0x2000)
-            {
-                o = true;
-            }
-            if ((tile & 0x4000) == 0x4000)
-            {
-                h = true;
-            }
-            if ((tile & 0x8000) == 0x8000)
-            {
-                v = true;
-            }
+
+            o = (ushort)((tile & 0x2000) >> 13);
+            h = (ushort)((tile & 0x4000) >> 14);
+            v = (ushort)((tile & 0x8000) >> 15);
             return new TileInfo(tid, p, v, h, o);
 
         }
@@ -391,15 +400,15 @@ namespace ZeldaFullEditor
             //vhopppcc cccccccc
             tinfo |= (ushort)(t.id);
             tinfo |= (ushort)(t.palette << 10);
-            if (t.o == true)
+            if (t.o == 1)
             {
                 tinfo |= 0x2000;
             }
-            if (t.h == true)
+            if (t.h == 1)
             {
                 tinfo |= 0x4000;
             }
-            if (t.v == true)
+            if (t.v == 1)
             {
                 tinfo |= 0x8000;
             }
@@ -410,7 +419,7 @@ namespace ZeldaFullEditor
         {
             return Color.FromArgb(((c & 0x1F) * 8), ((c & 0x3E0) >> 5) * 8, ((c & 0x7C00) >> 10) * 8);
         }
-        
+
 
 
         //Todo: Change palette system entirely
@@ -421,21 +430,21 @@ namespace ZeldaFullEditor
 
 
         public static Color[,] editingPalettes; //dynamic
-        public static Color[,] loadedPalettes = new Color[1,1];
+        public static Color[,] loadedPalettes = new Color[1, 1];
         public static short paletteid;
         public static Color[,] LoadDungeonPalette(byte id)
         {
 
-            Color[,] palettes = new Color[16,8];
+            Color[,] palettes = new Color[16, 8];
 
 
             //id = dungeon palette id
             byte dungeon_palette_ptr = ROM.DATA[Constants.dungeons_palettes_groups + (id * 4)]; //id of the 1st group of 4
-            short palette_pos = (short)((ROM.DATA[0xDEC4B+ dungeon_palette_ptr +1] << 8) + ROM.DATA[0xDEC4B+dungeon_palette_ptr]);
+            short palette_pos = (short)((ROM.DATA[0xDEC4B + dungeon_palette_ptr + 1] << 8) + ROM.DATA[0xDEC4B + dungeon_palette_ptr]);
             int pId = (palette_pos / 180);
             paletteid = palette_pos;
 
- 
+
 
             int i = 0;
             /*for (int y = 0; y < 2; y++)
@@ -507,11 +516,11 @@ namespace ZeldaFullEditor
                     palettes[x + 1, 0] = Palettes.spritesAux1_Palettes[(palette_pos1 / 14)][x];
                     palettes[x + 1, 5] = Palettes.spritesAux3_Palettes[(palette_pos2 / 14)][x];
                     palettes[x + 1, 6] = Palettes.spritesAux3_Palettes[(palette_pos3 / 14)][x];
-                    
+
                 }
                 else
                 {
-                    palettes[x+1, 0] = GFX.loadedPalettes[x - 7, 2];
+                    palettes[x + 1, 0] = GFX.loadedPalettes[x - 7, 2];
                     if (x < 14)
                     {
                         palettes[x + 2, 6] = Palettes.spritesAux2_Palettes[10][x - 7];
@@ -528,7 +537,7 @@ namespace ZeldaFullEditor
                 //SP-4
                 palettes[x + 1, 4] = Palettes.globalSprite_Palettes[0][x + (45)];
 
-                
+
                 //SP-6
                 /*palettes[x + 1, 12] = getColor((short)((ROM.DATA[0xDD4E0 AUX3 + palette_pos3 + i + 1] << 8) + ROM.DATA[0xDD4E0 + palette_pos3 + i]));
                 palettes[x + 1, 13] = getColor((short)((ROM.DATA[0xDD446 AUX2 + palette_pos4 + i + 1] << 8) + ROM.DATA[0xDD446 + palette_pos4 + i])); //liftable objects
@@ -546,5 +555,5 @@ namespace ZeldaFullEditor
         }
 
 
-}
+    }
 }

@@ -8,10 +8,10 @@ namespace ZeldaFullEditor
 {
     public class TileInfo
     {
-        public bool o, v, h; //o = over, v = vertical mirror, h = horizontal mirror
+        public ushort o, v, h; //o = over, v = vertical mirror, h = horizontal mirror
         public byte palette;
         public ushort id;
-        public TileInfo(ushort id, byte palette, bool v, bool h, bool o)
+        public TileInfo(ushort id, byte palette, ushort v, ushort h, ushort o)
         {
             this.id = id;
             this.palette = palette;
@@ -24,10 +24,10 @@ namespace ZeldaFullEditor
         {
             ushort value = 0;
             //vhopppcc cccccccc
-            if (this.o) { value |= 0x2000; };
-            if (this.h) { value |= 0x4000; };
-            if (this.v) { value |= 0x8000; };
-            value |= (ushort)((this.palette << 10)&0x1C00);
+            if (this.o == 1) { value |= 0x2000; };
+            if (this.h == 1) { value |= 0x4000; };
+            if (this.v == 1) { value |= 0x8000; };
+            value |= (ushort)((this.palette << 10) & 0x1C00);
             value |= (ushort)(this.id & 0x3FF);
             return value;
         }

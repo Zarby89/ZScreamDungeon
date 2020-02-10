@@ -3987,6 +3987,7 @@ namespace ZeldaFullEditor
             addTiles(1, pos);
             name = "Diagonal Ceiling ◤";
             sort = Sorting.Horizontal | Sorting.Vertical;
+            showRectangle = true;
         }
 
         public override void Draw()
@@ -4013,6 +4014,7 @@ namespace ZeldaFullEditor
             addTiles(1, pos);
             name = "Diagonal Ceiling ◣";
             sort = Sorting.Horizontal | Sorting.Vertical;
+            showRectangle = true;
         }
 
         public override void Draw()
@@ -4039,6 +4041,7 @@ namespace ZeldaFullEditor
             addTiles(1, pos);
             name = "Diagonal Ceiling ◥";
             sort = Sorting.Horizontal | Sorting.Vertical;
+            showRectangle = true;
         }
 
         public override void Draw()
@@ -4065,6 +4068,10 @@ namespace ZeldaFullEditor
             addTiles(1, pos);
             name = "Diagonal Ceiling ◢";
             sort = Sorting.Horizontal | Sorting.Vertical;
+            showRectangle = true;
+
+            
+            diagonalFix = true;
         }
 
         public override void Draw()
@@ -4078,8 +4085,9 @@ namespace ZeldaFullEditor
                 }
                 lenght -= 1;
             }
-            
 
+            height = (size + 7) * 8;
+            width = (size + 4) * 8;
         }
     }
 
@@ -4651,7 +4659,7 @@ namespace ZeldaFullEditor
             name = "Bg2 Large Overlay ↔ ↕";
             addTiles(1, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical;
-
+            showRectangle = true;
         }
 
         public override void Draw()
@@ -4685,6 +4693,7 @@ namespace ZeldaFullEditor
             name = "Bg2 Medium Overlay ↔ ↕";
             addTiles(1, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical;
+            showRectangle = true;
         }
 
         public override void Draw()
@@ -4796,6 +4805,7 @@ namespace ZeldaFullEditor
             name = "Bg2 Large Overlay ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical;
+            showRectangle = true;
         }
 
         public override void Draw()

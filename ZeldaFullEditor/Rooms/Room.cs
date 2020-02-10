@@ -428,7 +428,7 @@ namespace ZeldaFullEditor
         {
             int pitCount = (ROM.DATA[Constants.pit_count] / 2);
             int pitPointer = (ROM.DATA[Constants.pit_pointer+2] << 16)+ (ROM.DATA[Constants.pit_pointer + 1] << 8)+ (ROM.DATA[Constants.pit_pointer]);
-            pitPointer = Addresses.snestopc(pitPointer);
+            pitPointer = Utils.SnesToPc(pitPointer);
             for(int i = 0;i<pitCount;i++)
             {
                 if (((ROM.DATA[pitPointer+1 + (i*2)] << 8) + (ROM.DATA[pitPointer+(i*2)])) == index)
@@ -442,7 +442,7 @@ namespace ZeldaFullEditor
         public unsafe void reloadAnimatedGfx()
         {
             int gfxanimatedPointer = (ROM.DATA[Constants.gfx_animated_pointer + 2] << 16) + (ROM.DATA[Constants.gfx_animated_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_animated_pointer]);
-            gfxanimatedPointer = Addresses.snestopc(gfxanimatedPointer);
+            gfxanimatedPointer = Utils.SnesToPc(gfxanimatedPointer);
             byte* newPdata = (byte*)GFX.allgfx16Ptr.ToPointer(); //turn gfx16 (all 222 of them)
             byte* sheetsData = (byte*)GFX.currentgfx16Ptr.ToPointer(); //into "room gfx16" 16 of them
             int data = 0;
@@ -462,7 +462,7 @@ namespace ZeldaFullEditor
 
 
             int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer+1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
-            gfxPointer = Addresses.snestopc(gfxPointer);
+            gfxPointer = Utils.SnesToPc(gfxPointer);
             for (int i = 0; i < 8; i++)
             {
                 blocks[i] = ROM.DATA[gfxPointer + (blockset * 8) + i];
@@ -530,7 +530,7 @@ namespace ZeldaFullEditor
             int sprite_address_snes = (09 << 16) + 
             (ROM.DATA[spritePointer + (index * 2) + 1] << 8) +
             ROM.DATA[spritePointer + (index * 2)];
-            int sprite_address = Addresses.snestopc(sprite_address_snes);
+            int sprite_address = Utils.SnesToPc(sprite_address_snes);
             sortSprites = ROM.DATA[sprite_address] == 1 ? true : false;
             sprite_address += 1;
             while (true)
@@ -749,7 +749,7 @@ namespace ZeldaFullEditor
             doorsBytes.Clear();
             found_door = getLayerTiles(0, ref objectsBytes, ref doorsBytes);
   
-            if (found_door)//if we found door during layer1 WTF oO
+            /*if (found_door)//if we found door during layer1 WTF oO
             {
                 objectsBytes.Add(0xF0); 
                 objectsBytes.Add(0xFF);
@@ -759,14 +759,14 @@ namespace ZeldaFullEditor
                     objectsBytes.Add(b);
                 }
 
-            }
+            }*/
             objectsBytes.Add(0xFF);//end layer1
             objectsBytes.Add(0xFF);//end layer1
 
-            doorsBytes.Clear();
+            //doorsBytes.Clear();
             found_door = getLayerTiles(1, ref objectsBytes, ref doorsBytes);
 
-            if (found_door)//if we found door during layer2
+            /*if (found_door)//if we found door during layer2
             {
                 objectsBytes.Add(0xF0);
                 objectsBytes.Add(0xFF);
@@ -776,12 +776,12 @@ namespace ZeldaFullEditor
                     objectsBytes.Add(b);
                 }
 
-            }
+            }*/
             objectsBytes.Add(0xFF);//end layer2
             objectsBytes.Add(0xFF);//end layer2
 
 
-            doorsBytes.Clear();
+            //doorsBytes.Clear();
             found_door = getLayerTiles(2, ref objectsBytes, ref doorsBytes);
 
             if (found_door)//if we found door during layer3
@@ -797,7 +797,7 @@ namespace ZeldaFullEditor
             }
             objectsBytes.Add(0xFF);//end layer3
             objectsBytes.Add(0xFF);//end layer3
-
+            doorsBytes.Clear();
 
             return objectsBytes.ToArray();
         }
@@ -886,13 +886,13 @@ namespace ZeldaFullEditor
         public void addlistBlock(ref byte[] blocksdata, int maxCount)
         {
             int pos1 = (ROM.DATA[Constants.blocks_pointer1 + 2] << 16) + (ROM.DATA[Constants.blocks_pointer1 + 1] << 8) + (ROM.DATA[Constants.blocks_pointer1]);
-            pos1 = Addresses.snestopc(pos1);
+            pos1 = Utils.SnesToPc(pos1);
             int pos2 = (ROM.DATA[Constants.blocks_pointer2 + 2] << 16) + (ROM.DATA[Constants.blocks_pointer2 + 1] << 8) + (ROM.DATA[Constants.blocks_pointer2]);
-            pos2 = Addresses.snestopc(pos2);
+            pos2 = Utils.SnesToPc(pos2);
             int pos3 = (ROM.DATA[Constants.blocks_pointer3 + 2] << 16) + (ROM.DATA[Constants.blocks_pointer3 + 1] << 8) + (ROM.DATA[Constants.blocks_pointer3]);
-            pos3 = Addresses.snestopc(pos3);
+            pos3 = Utils.SnesToPc(pos3);
             int pos4 = (ROM.DATA[Constants.blocks_pointer4 + 2] << 16) + (ROM.DATA[Constants.blocks_pointer4 + 1] << 8) + (ROM.DATA[Constants.blocks_pointer4]);
-            pos4 = Addresses.snestopc(pos4);
+            pos4 = Utils.SnesToPc(pos4);
             for (int i = 0; i < 0x80; i += 1)
             {
                 blocksdata[i] = (ROM.DATA[i + pos1]);
@@ -995,7 +995,7 @@ namespace ZeldaFullEditor
             int item_address_snes = (01 << 16) +
             (ROM.DATA[Constants.room_items_pointers + (index * 2) + 1] << 8) +
             ROM.DATA[Constants.room_items_pointers + (index * 2)];
-            int item_address = Addresses.snestopc(item_address_snes);
+            int item_address = Utils.SnesToPc(item_address_snes);
 
             while (true)
             {
@@ -1035,7 +1035,7 @@ namespace ZeldaFullEditor
         public void loadChests(ref List<ChestData> chests_in_room)
         {
             int cpos = (ROM.DATA[Constants.chests_data_pointer1 + 2] << 16) + (ROM.DATA[Constants.chests_data_pointer1 + 1] << 8) + (ROM.DATA[Constants.chests_data_pointer1]);
-            cpos = Addresses.snestopc(cpos);
+            cpos = Utils.SnesToPc(cpos);
             int clength = (ROM.DATA[Constants.chests_length_pointer + 1] << 8) + (ROM.DATA[Constants.chests_length_pointer]);
 
             for (int i = 0; i < clength; i++)
@@ -1060,13 +1060,13 @@ namespace ZeldaFullEditor
         {
             //adddress of the room objects
             int objectPointer = (ROM.DATA[Constants.room_object_pointer + 2] << 16) + (ROM.DATA[Constants.room_object_pointer + 1] << 8) + (ROM.DATA[Constants.room_object_pointer]);
-            objectPointer = Addresses.snestopc(objectPointer);
+            objectPointer = Utils.SnesToPc(objectPointer);
             int room_address = objectPointer + (index * 3);
             int tile_address = (ROM.DATA[room_address + 2] << 16) +
                 (ROM.DATA[room_address + 1] << 8) +
                 ROM.DATA[room_address];
 
-            int objects_location = Addresses.snestopc(tile_address);
+            int objects_location = Utils.SnesToPc(tile_address);
 
             if (floor)
             {
@@ -1220,11 +1220,11 @@ namespace ZeldaFullEditor
         {
             //different bank?? it a long address :scream:
             int pointer = ((ROM.DATA[Constants.room_object_layout_pointer + 2] << 16) + (ROM.DATA[Constants.room_object_layout_pointer + 1] << 8) + ROM.DATA[Constants.room_object_layout_pointer]);
-            pointer = Addresses.snestopc(pointer);
+            pointer = Utils.SnesToPc(pointer);
             int layout_address = (ROM.DATA[pointer + 2 + (layout * 3)] << 16) +
                                 (ROM.DATA[pointer + 1 + (layout * 3)] << 8) +
                                 ROM.DATA[pointer + 0 + (layout * 3)];
-            int layout_location = Addresses.snestopc(layout_address);
+            int layout_location = Utils.SnesToPc(layout_address);
 
             int pos = layout_location;
             byte b1 = 0;
@@ -1292,6 +1292,7 @@ namespace ZeldaFullEditor
 
             if (oid <= 0xFF)
             {
+
                 switch (oid)
                 {
                     case 0x00:
@@ -2478,12 +2479,12 @@ namespace ZeldaFullEditor
         {
             //address of the room header
             int headerPointer = (ROM.DATA[Constants.room_header_pointer + 2] << 16) + (ROM.DATA[Constants.room_header_pointer + 1] << 8) + (ROM.DATA[Constants.room_header_pointer]);
-            headerPointer = Addresses.snestopc(headerPointer);
+            headerPointer = Utils.SnesToPc(headerPointer);
             int address = (ROM.DATA[Constants.room_header_pointers_bank] << 16) +
                             (ROM.DATA[(headerPointer + 1)+ (index * 2)] << 8) +
                             ROM.DATA[(headerPointer) + (index*2)];
 
-            header_location = Addresses.snestopc(address);
+            header_location = Utils.SnesToPc(address);
 
             bg2 = (Background2)((ROM.DATA[header_location] >> 5) & 0x07);
             collision = (byte)((ROM.DATA[header_location] >> 2) & 0x07);

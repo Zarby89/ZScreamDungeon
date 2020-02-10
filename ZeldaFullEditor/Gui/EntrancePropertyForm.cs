@@ -10,14 +10,14 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-    public partial class JPExport : Form
+    public partial class EntrancePropertyForm : Form
     {
-        public JPExport()
+        public EntrancePropertyForm()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonOk_Click(object sender, EventArgs e)
         {
             this.Close();
         }

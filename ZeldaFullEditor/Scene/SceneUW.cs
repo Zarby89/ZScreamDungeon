@@ -38,7 +38,7 @@ namespace ZeldaFullEditor
         public short[] doorsObject = new short[] { 0x138, 0x139, 0x13A, 0x13B, 0xF9E, 0xF9F, 0xFA0, 0x12D, 0x12E, 0x12F, 0x12E, 0x12D, 0x4632, 0x4693 };
         Rectangle lastSelectedRectangle;
         DragMode dragMode = DragMode.none;
-        
+        SceneResizing resizeType = SceneResizing.none;
         private void SceneUW_MouseWheel(object sender, MouseEventArgs e)
         {
             if (room.selectedObject.Count > 0)
@@ -74,6 +74,200 @@ namespace ZeldaFullEditor
             base.OnMouseDown(e);
         }
 
+        private void ResizeObject(Room_Object lastElement, int x, int y)
+        {
+            lastElement.UpdateSize();
+            //if (8 != 0)
+            //{
+            if ((resizeType & SceneResizing.left) == SceneResizing.left)
+            {
+
+                if (x <= (dragx) - lastElement.sizewidth)
+                {
+                    if (lastElement.size < 15)
+                    {
+                        if (lastElement.sort == (Sorting.Horizontal & Sorting.Vertical))
+                        {
+                            byte bsize = lastElement.size;
+                            int sizex = ((bsize >> 2) & 0x03);
+                            int sizey = ((bsize) & 0x03);
+                            sizex += 1;
+                            lastElement.size = (byte)((sizex << 2) | sizey);
+                        }
+                        else
+                        {
+                            lastElement.size += 1;
+                        }
+                        lastElement.x -= (byte)(lastElement.sizewidth/8); //object length size
+                        lastElement.nx -= (byte)(lastElement.sizewidth / 8); //object length size
+                        dragx -= lastElement.sizewidth;
+                    }
+                }
+                else if (x >= (dragx) + lastElement.sizewidth)
+                {
+                    if (lastElement.size > 0)
+                    {
+                        if (lastElement.sort == (Sorting.Horizontal & Sorting.Vertical))
+                        {
+                            byte bsize = lastElement.size;
+                            int sizex = ((bsize >> 2) & 0x03);
+                            int sizey = ((bsize) & 0x03);
+                            sizex -= 1;
+                            lastElement.size = (byte)((sizex << 2) | sizey);
+                        }
+                        else
+                        {
+                            lastElement.size -= 1;
+                        }
+                        lastElement.x += (byte)(lastElement.sizewidth / 8); //object length size
+                        lastElement.nx += (byte)(lastElement.sizewidth / 8); //object length size
+                        dragx += lastElement.sizewidth;
+                    }
+                }
+            }
+
+                if ((resizeType & SceneResizing.right) == SceneResizing.right)
+                {
+                    if (x >= (dragx) + lastElement.sizewidth)
+                    {
+                        if (lastElement.size < 15)
+                        {
+                            if (lastElement.sort == (Sorting.Horizontal & Sorting.Vertical))
+                            {
+                                byte bsize = lastElement.size;
+                                int sizex = ((bsize >> 2) & 0x03);
+                                int sizey = ((bsize) & 0x03);
+                                sizex += 1;
+                                lastElement.size = (byte)((sizex << 2) | sizey);
+                            }
+                            else
+                            {
+                                lastElement.size += 1;
+                            }
+                            //lastElement.x = 16; //object length size
+                            dragx += lastElement.sizewidth;
+                        }
+                    }
+                    else if (x <= (dragx) - lastElement.sizewidth)
+                    {
+                    if (lastElement.size > 0)
+                    {
+                        if (lastElement.sort == (Sorting.Horizontal & Sorting.Vertical))
+                        {
+                            byte bsize = lastElement.size;
+                            int sizex = ((bsize >> 2) & 0x03);
+                            int sizey = ((bsize) & 0x03);
+                            sizex -= 1;
+                            lastElement.size = (byte)((sizex << 2) | sizey);
+                        }
+                        else
+                        {
+                            lastElement.size -= 1;
+                        }
+                        //lastElement.x += 16; //object length size
+                        dragx -= lastElement.sizewidth;
+                    }
+                    }
+                }
+
+            //}
+            //if (8 != 0)
+            //{
+            if ((resizeType & SceneResizing.down) == SceneResizing.down)
+            {
+                if (y >= (dragy) + lastElement.sizeheight)
+                {
+                    if (lastElement.size < 15)
+                    {
+                        if (lastElement.sort == (Sorting.Horizontal & Sorting.Vertical))
+                        {
+                            byte bsize = lastElement.size;
+                            int sizex = ((bsize >> 2) & 0x03);
+                            int sizey = ((bsize) & 0x03);
+                            sizey += 1;
+                            lastElement.size = (byte)((sizex << 2) | sizey);
+                        }
+                        else
+                        {
+                            //Console.WriteLine(lastElement.sizeheight + "  Base Heigth : " + lastElement.baseheight);
+                            lastElement.size += 1;
+                        }
+                        //lastElement.x = 16; //object length size
+                        dragy += lastElement.sizeheight;
+                    }
+                }
+                else if (y <= (dragy) - lastElement.sizeheight)
+                {
+                    if (lastElement.size > 0)
+                    {
+                        if (lastElement.sort == (Sorting.Horizontal & Sorting.Vertical))
+                        {
+                            byte bsize = lastElement.size;
+                            int sizex = ((bsize >> 2) & 0x03);
+                            int sizey = ((bsize) & 0x03);
+                            sizey -= 1;
+                            lastElement.size = (byte)((sizex << 2) | sizey);
+                        }
+                        else
+                        {
+                            lastElement.size -= 1;
+                        }
+                        //lastElement.x += 16; //object length size
+                        dragy -= lastElement.sizeheight;
+                    }
+                }
+            }
+            if ((resizeType & SceneResizing.up) == SceneResizing.up)
+            {
+                if (y <= (dragy) - lastElement.sizeheight)
+                {
+                    if (lastElement.size < 15)
+                    {
+                        if (lastElement.sort == (Sorting.Horizontal & Sorting.Vertical))
+                        {
+                            byte bsize = lastElement.size;
+                            int sizex = ((bsize >> 2) & 0x03);
+                            int sizey = ((bsize) & 0x03);
+                            sizey += 1;
+                            lastElement.size = (byte)((sizex << 2) | sizey);
+                        }
+                        else
+                        {
+                            lastElement.size += 1;
+                        }
+                        lastElement.y -= (byte)(lastElement.sizeheight / 8); //object length size
+                        lastElement.ny -= (byte)(lastElement.sizeheight / 8); //object length size
+                        dragy -= lastElement.sizeheight;
+                    }
+                }
+                else if (y >= (dragy) + lastElement.sizeheight)
+                {
+                    if (lastElement.size > 0)
+                    {
+                        if (lastElement.sort == (Sorting.Horizontal & Sorting.Vertical))
+                        {
+                            byte bsize = lastElement.size;
+                            int sizex = ((bsize >> 2) & 0x03);
+                            int sizey = ((bsize) & 0x03);
+                            sizey -= 1;
+                            lastElement.size = (byte)((sizex << 2) | sizey);
+                        }
+                        else
+                        {
+                            lastElement.size -= 1;
+                        }
+                        lastElement.y += (byte)(lastElement.sizeheight / 8); //object length size
+                        lastElement.ny += (byte)(lastElement.sizeheight / 8); //object length size
+                        dragy += lastElement.sizeheight;
+                    }
+                }
+            }
+
+            
+            //}
+
+        }
+
         private void onMouseMove(object sender, MouseEventArgs e)
         {
             int MX = e.X;
@@ -83,7 +277,107 @@ namespace ZeldaFullEditor
                 MX = e.X / 2;
                 MY = e.Y / 2;
             }
+            Cursor = Cursors.Default;
+            if (room == null)
+            {
+                return;
+            }
 
+            if (room.selectedObject.Count == 1)
+            {
+                if (room.selectedObject[0] is Room_Object)
+                {
+                    Room_Object lastElement = room.selectedObject[0] as Room_Object;
+
+                    if (resizeType != SceneResizing.none)
+                    {
+                        if (resizing) //just to be sure
+                        {
+                            ResizeObject(lastElement, MX, MY);
+                            DrawRoom();
+                            Refresh();
+                            return;
+                        }
+                    }
+
+
+
+                    resizeType = SceneResizing.none;
+
+                    if ((lastElement.sort & Sorting.Horizontal) == (Sorting.Horizontal))
+                    {
+                        if (e.X >= (lastElement.x * 8) - 2 &&
+                            e.X <= ((lastElement.x * 8) + 2) &&
+                            e.Y >= (lastElement.y * 8) - 2 &&
+                            e.Y <= (lastElement.y * 8) + lastElement.height + 2)
+                        {
+                            resizeType |= SceneResizing.left;
+                        }
+                        if (e.X >= ((lastElement.x * 8) + lastElement.width) - 2 &&
+                            e.X <= (lastElement.x * 8) + lastElement.width + 2 &&
+                                                    e.Y >= (lastElement.y * 8) - 2 &&
+                            e.Y <= (lastElement.y * 8) + lastElement.height + 2)
+                        {
+                            resizeType |= SceneResizing.right;
+                        }
+                    }
+                    if ((lastElement.sort & Sorting.Vertical) == (Sorting.Vertical))
+                    {
+                        if (e.Y >= (lastElement.y * 8) - 2 &&
+                            e.Y <= ((lastElement.y * 8) + 2) &&
+                            e.X >= (lastElement.x * 8) - 2 &&
+                            e.X <= (lastElement.x * 8) + lastElement.width + 2)
+                        {
+                            resizeType |= SceneResizing.up;
+                        }
+
+
+                        if (e.Y >= ((lastElement.y * 8) + lastElement.height) - 2 &&
+                            e.Y <= (lastElement.y * 8) + lastElement.height + 2 &&
+                                                    e.X >= (lastElement.x * 8) - 2 &&
+                            e.X <= (lastElement.x * 8) + lastElement.width + 2)
+
+                        {
+                            resizeType |= SceneResizing.down;
+                        }
+                    }
+                    //debugVariable = (int)resizeType;
+
+                    if (resizeType == (SceneResizing.left | SceneResizing.down))
+                    {
+                        Cursor = Cursors.SizeNESW;
+                    }
+                    else if (resizeType == (SceneResizing.up | SceneResizing.right))
+                    {
+                        Cursor = Cursors.SizeNESW;
+                    }
+                    else if (resizeType == (SceneResizing.up | SceneResizing.left))
+                    {
+                        Cursor = Cursors.SizeNWSE;
+                    }
+                    else if (resizeType == (SceneResizing.down | SceneResizing.right))
+                    {
+                        Cursor = Cursors.SizeNWSE;
+                    }
+                    else if (resizeType == SceneResizing.left || resizeType == SceneResizing.right)
+                    {
+                        Cursor = Cursors.SizeWE;
+                    }
+                    else if (resizeType == SceneResizing.up || resizeType == SceneResizing.down)
+                    {
+                        Cursor = Cursors.SizeNS;
+                    }
+                    else
+                    {
+                        Cursor = Cursors.Default;
+                    }
+
+                    if (resizeType != SceneResizing.none)
+                    {
+                        return;
+                    }
+                }
+            }
 
             if (selectedMode == ObjectMode.EntrancePlacing)
             {
@@ -252,110 +546,6 @@ namespace ZeldaFullEditor
                 mainForm.toolTip1.Hide(this);
             }
 
-            /*
-            //If there's at least more than one object selected
-            if (room.selectedObject.Count == 1)
-            {
-                if (!resizing)
-                {
-                    dragMode = DragMode.none;
-                    Room_Object obj = (room.selectedObject[0] as Room_Object);
-                    int yfix = 0;
-                    if (obj.diagonalFix)
-                    {
-                        yfix = -(6 + obj.size);
-                    }
-
-                    if (e.X >= (obj.x + obj.offsetX) * 8 && e.X <= ((obj.x + obj.offsetX) * 8) + obj.width)
-                    {
-                        //Are we inside from Left to Right
-                        //TOP RESIZE
-                        if (e.Y >= ((obj.y + obj.offsetY + yfix) * 8) - 4 && e.Y <= ((obj.y + obj.offsetY + yfix) * 8) + 4)
-                        {
-                            Cursor.Current = Cursors.SizeNS;
-                            dragMode = DragMode.top;
-                        }
-
-                        //BOTTOM RESIZE
-                        if (e.Y >= ((obj.y + obj.offsetY + yfix) * 8) + obj.height - 4 && e.Y <= ((obj.y + obj.offsetY + yfix) * 8) + obj.height + 4)
-                        {
-                            Cursor.Current = Cursors.SizeNS;
-                            dragMode = DragMode.down;
-                        }
-                    }
-
-                    if (e.Y >= (obj.y + obj.offsetY + yfix) * 8 && e.Y <= ((obj.y + obj.offsetY + yfix) * 8) + obj.height)
-                    {
-                        //Are we inside from Left to Right
-                        //LEFT RESIZE
-                        if (e.X >= ((obj.x + obj.offsetX) * 8) - 4 && e.X <= ((obj.x + obj.offsetX) * 8) + 4)
-                        {
-                            Cursor.Current = Cursors.SizeWE;
-                            dragMode = DragMode.left;
-                        }
-
-                        //RIGHT RESIZE
-                        if (e.X >= ((obj.x + obj.offsetX) * 8) + obj.width - 4 && e.X <= ((obj.x + obj.offsetX) * 8) + obj.width + 4)
-                        {
-                            Cursor.Current = Cursors.SizeWE;
-                            dragMode = DragMode.right;
-                        }
-
-                    }
-                }
-                else
-                {
-                    Room_Object obj = (room.selectedObject[0] as Room_Object);
-                    if (obj.sort == Sorting.Horizontal)
-                    {
-                        if (dragMode == DragMode.right)
-                        {
-
-                            if ((((e.X / 8) - dragx) * 8)+obj.width > (obj.sizewidth*(obj.size+1)))
-                            {
-                                if (obj.size < 15)
-                                {
-                                    obj.UpdateSize();
-                                    obj.size++;
-                                    
-                                }
-                            }
-                        }
-                    }
-                    DrawRoom();
-                    Refresh();
-                    return;
-                }
-
-            }
-            */
-
-            /*if (mouse_down)
-            {
-                updating_info = true;
-                setMouseSizeMode(e);
-                //define the size of mx,my for each mode
-                if (selectedMode != ObjectMode.Doormode)
-                {
-                    if (mx != last_mx || my != last_my)
-                    {
-                        if (room.selectedObject.Count > 0)
-                        {
-                            move_objects();
-                            room.has_changed = true;
-                            mainForm.checkAnyChanges();
-                            last_mx = mx;
-                            last_my = my;
-                            updateSelectionObject(room.selectedObject[0]);
-                        }
-                        DrawRoom();
-                        Refresh();
-                    }
-                }
-            }*/
-            
-
-
             if (mouse_down)
             {
                 updating_info = true;
@@ -474,6 +664,14 @@ namespace ZeldaFullEditor
         private unsafe void SceneUW_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
+
+            if (room == null)
+            {
+                g.Clear(this.BackColor);
+
+                return;
+            }
+
             if (mainForm.x2zoom)
             {
                 g = Graphics.FromImage(tempBitmap);
@@ -525,7 +723,8 @@ namespace ZeldaFullEditor
 
             int roomX = superX * 512;
             int roomY = superY * 512;
-            if (mainForm.cameraboxCheckbox.Checked)
+            
+            if (mainForm.entranceCameraToolStripMenuItem.Checked)
             {
 
                 if (mainForm.selectedEntrance != null)
@@ -538,7 +737,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if (mainForm.entranceposCheckbox.Checked)
+            if (mainForm.entrancePositionToolStripMenuItem.Checked)
             {
                 if (mainForm.selectedEntrance != null)
                 {
@@ -586,7 +785,7 @@ namespace ZeldaFullEditor
 
                 if (o.options == ObjectOption.Block)
                 {
-                    g.DrawImage(mainForm.moveableBlock, o.nx * 8, o.ny * 8);
+                    g.DrawImage(GFX.moveableBlock, o.nx * 8, o.ny * 8);
                 }
 
                 if (doorsObject.Contains(o.id))
@@ -627,7 +826,7 @@ namespace ZeldaFullEditor
                     {
                         dropboxid = 27; //prevent crash :yay:
                     }
-                    string name = PotItems_Name.name[dropboxid];
+                    string name = ItemsNames.name[dropboxid];
                     drawText(g, c.nx * 8, c.ny * 8, name);
                 }
             }
@@ -671,6 +870,10 @@ namespace ZeldaFullEditor
         bool clickedObject = false;
         private void onMouseDown(object sender, MouseEventArgs e)
         {
+            if (room == null)
+            {
+                return;
+            }
             int MX = e.X;
             int MY = e.Y;
             if (mainForm.x2zoom)
@@ -689,23 +892,23 @@ namespace ZeldaFullEditor
             }
 
 
-                if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
+            if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
             {
                 if (room.selectedObject.Count == 1)
                 {
-                    if (dragMode != DragMode.none)
+                    if (resizeType != SceneResizing.none)
                     {
                         Room_Object obj = (room.selectedObject[0] as Room_Object);
                         mouse_down = true;
                         resizing = true;
-                        dragx = ((MX) / 8);
-                        dragy = ((MY) / 8);
+                        dragx = ((MX));
+                        dragy = ((MY));
                         return;
                     }
                 }
             }
 
-            if (mainForm.tabControl1.SelectedIndex == 2)//if we are on object tab
+            if (mainForm.tabControl1.SelectedIndex == 1)//if we are on object tab
             {
                 if ((byte)selectedMode <= 2) //if selected mode == bg1,bg2,bg3
                 {
@@ -714,9 +917,11 @@ namespace ZeldaFullEditor
                         room.selectedObject.Clear(); //clear the object buffer
                         //add the new object in the buffer
                         Room_Object ro = room.addObject(selectedDragObject.id, (byte)0, (byte)0, 0, (byte)selectedMode);
+                        
                         if (ro != null)
                         {
                             ro.setRoom(room);
+                            ro.getObjectSize();
                             room.tilesObjects.Add(ro);
                             room.selectedObject.Add(ro);
                             dragx = 0;
@@ -745,7 +950,7 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-            else if (mainForm.tabControl1.SelectedIndex == 3)
+            else if (mainForm.tabControl1.SelectedIndex == 2)
             {
                 if (selectedDragSprite != null)
                 {
@@ -1171,7 +1376,7 @@ namespace ZeldaFullEditor
                     {
                         dropboxid = 27; //prevent crash :yay:
                     }
-                    string name = PotItems_Name.name[dropboxid];
+                    string name = ItemsNames.name[dropboxid];
                     string id = oo.id.ToString("X4");
                     mainForm.selectedGroupbox.Text = "Selected Item : " + id + " " + name;
                     mainForm.selecteditemobjectCombobox.SelectedIndex = dropboxid;
@@ -1193,6 +1398,10 @@ namespace ZeldaFullEditor
 
         public unsafe void DrawRoom()
         {
+            if (room == null)
+            {
+                return;
+            }
             //Tile t = new Tile(0, false, false, 0, 0);
             //t.Draw(0, 0);
             ClearBgGfx(); //technically not required
@@ -1219,6 +1428,7 @@ namespace ZeldaFullEditor
             foreach (Room_Object o in room.tilesLayoutObjects)
             {
                 o.Draw();
+                
             }
             //draw object on bitmap
 
@@ -1240,7 +1450,6 @@ namespace ZeldaFullEditor
                 {
                     o.Draw();
                 }
-
             }
 
             
@@ -1812,7 +2021,7 @@ namespace ZeldaFullEditor
                         {
                             if (door == o)
                             {
-                                mainForm.object_z_label.Text = "Z: " + z.ToString(); //where's my door 0 :scream:
+                                //mainForm.object_z_label.Text = "Z: " + z.ToString(); //where's my door 0 :scream:
                                 break;
                             }
                             z++;
@@ -2478,104 +2687,23 @@ namespace ZeldaFullEditor
             mainForm.roomProperty_collision.SelectedIndex = (int)room.Collision;
             mainForm.roomProperty_floor1.Text = room.Floor1.ToString();
             mainForm.roomProperty_floor2.Text = room.Floor2.ToString();
-            mainForm.roomProperty_hole.Text = room.HoleWarp.ToString();
-            mainForm.roomProperty_holeplane.Text = room.HoleWarpPlane.ToString();
+
             mainForm.roomProperty_layout.Text = room.Layout.ToString();
             mainForm.roomProperty_msgid.Text = room.Messageid.ToString();
             mainForm.roomProperty_palette.Text = room.Palette.ToString();
             mainForm.roomProperty_pit.Checked = room.Damagepit;
             mainForm.roomProperty_sortsprite.Checked = room.SortSprites;
             mainForm.roomProperty_spriteset.Text = room.Spriteset.ToString();
-            mainForm.roomProperty_stair1.Text = room.Staircase1.ToString();
-            mainForm.roomProperty_stair1plane.Text = room.Staircase1Plane.ToString();
-            mainForm.roomProperty_stair2.Text = room.Staircase2.ToString();
-            mainForm.roomProperty_stair2plane.Text = room.Staircase2Plane.ToString();
-            mainForm.roomProperty_stair3.Text = room.Staircase3.ToString();
-            mainForm.roomProperty_stair3plane.Text = room.Staircase3Plane.ToString();
-            mainForm.roomProperty_stair4.Text = room.Staircase4.ToString();
-            mainForm.roomProperty_stair4plane.Text = room.Staircase4Plane.ToString();
+
+            mainForm.warpPreviewLabel.Text = "Hole:" + room.HoleWarp + "\r\n" +
+            "Stair1:" + room.Staircase1 + "\r\n" +
+            "Stair2:" + room.Staircase2 + "\r\n" +
+            "Stair3:" + room.Staircase3 + "\r\n" +
+            "Stair4:" + room.Staircase4;
             mainForm.propertiesChangedFromForm = false;
         }
 
     }
-
-    /*public class DScene : DockContent
-    {
-        public SceneUW scene;
-        zscreamForm mainform;
-        public string nameText = "";
-        public bool namedChanged = false;
-        public DScene(zscreamForm mainform,string nameText)
-        {
-            scene = new SceneUW(mainform);
-            this.nameText = nameText;
-            this.mainform = mainform;
-            GotFocus += DScene_GotFocus;
-            
-            FormClosing += DScene_FormClosing;
-        }
-
-        private void DScene_FormClosing(object sender, FormClosingEventArgs e)
-        {
-
-
-            if (scene.room.has_changed == true)
-            {
-                //prompt save message
-                //e.Cancel = true;
-                DialogResult dialogResult = MessageBox.Show("Room has changed. Do you want to save changes?", "Save", MessageBoxButtons.YesNoCancel);
-                if (dialogResult == DialogResult.Yes) //save
-                {
-                    scene.room.has_changed = false;
-                    mainform.all_rooms[scene.room.index] = (Room)scene.room.Clone();
-                   
-                    mainform.rooms.Remove(this);
-                    mainform.loadRoomList(0);
-                    mainform.mapPicturebox.Refresh();
-                }
-                else if (dialogResult == DialogResult.No)
-                {
-                   
-                    mainform.rooms.Remove(this);
-                    mainform.loadRoomList(0);
-                    mainform.mapPicturebox.Refresh();
-                }
-                else
-                {
-                    e.Cancel = true;
-                }
-
-            }
-            else
-            {
-                mainform.rooms.Remove(this);
-                mainform.loadRoomList(0);
-                mainform.mapPicturebox.Refresh();
-            }
-        }
-
-        private void DScene_GotFocus(object sender, EventArgs e)
-        {
-            mainform.activeScene = this.scene;
-            //mainform.mapPropertyGrid.SelectedObject = scene.room;
-            scene.updateRoomInfos(mainform);
-
-
-
-            scene.room.reloadGfx();
-            scene.need_refresh = true;
-            GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.room.palette);
-            GFX.loadedSprPalettes = GFX.LoadSpritesPalette(scene.room.palette);
-
-            scene.DrawRoom();
-            scene.Refresh();
-            
-        }
-
-
-
-        
-    }*/
-
+    
 
 }

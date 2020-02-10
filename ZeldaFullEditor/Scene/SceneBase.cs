@@ -40,6 +40,7 @@ namespace ZeldaFullEditor
         public bool showLayer2 = true;
         public bool showGrid = false;
         public bool showSpriteText = false;
+        public bool showBG2Outline = true;
         public DungeonMain mainForm;
         public bool canSelectUnselectedBG = true;
         public bool isDungeon = true;
@@ -66,11 +67,11 @@ namespace ZeldaFullEditor
                 }
                 if (ai == null)
                 {
-                    g.DrawImage(mainForm.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
+                    g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
                 }
                 else
                 {
-                    g.DrawImage(mainForm.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
+                    g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
                 }
                 
                 cpos += spriteFontSpacing[arrayPos];
@@ -157,6 +158,26 @@ namespace ZeldaFullEditor
                 }
             }
 
+            if (showBG2Outline)
+            {
+                if (room.Bg2 != Background2.Off)
+                {
+                    foreach (Room_Object obj in room.tilesObjects)
+                    {
+                        //Draw doors here since they'll all be put on bg3 anyways
+                        if (obj.showRectangle)
+                        {
+                            int yfix = 0;
+                            if (obj.diagonalFix)
+                            {
+                                yfix = -(6 + obj.size);
+                            }
+                            graphics.DrawRectangle(Pens.DarkCyan, new Rectangle((obj.nx + obj.offsetX) * 8, (obj.ny + obj.offsetY + yfix) * 8, obj.width, obj.height));
+                        }
+                    }
+                }
+            }
+
             if (mouse_down)
             {
                 int rx = dragx;
@@ -199,6 +220,8 @@ namespace ZeldaFullEditor
                         graphics.DrawRectangle(Pens.LimeGreen, new Rectangle((obj.nx+obj.offsetX) * 8, (obj.ny + obj.offsetY+yfix) * 8, obj.width, obj.height));
                     }
                 }
+
+
             }
         }
 
