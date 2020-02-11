@@ -883,24 +883,26 @@ namespace ZeldaFullEditor
 
         private void zscreamForm_FormClosing_1(object sender, FormClosingEventArgs e)
         {
+            if (projectLoaded)
+            {
 
-            long parameters = 0;
-            //Properties.Settings.Default.ViewParameters;
-            Settings.Default.spriteText = textSpriteToolStripMenuItem.Checked;
-            Settings.Default.chestText = textChestItemToolStripMenuItem.Checked;
-            Settings.Default.itemText = textPotItemToolStripMenuItem.Checked;
-            Settings.Default.transparentBG = unselectedBGTransparentToolStripMenuItem.Checked;
-            Settings.Default.rightToolbox = rightSideToolboxToolStripMenuItem.Checked;
-            Settings.Default.spriteShow = hideSpritesToolStripMenuItem.Checked;
-            Settings.Default.itemsShow = hideItemsToolStripMenuItem.Checked;
-            Settings.Default.chestitemShow = hideChestItemsToolStripMenuItem.Checked;
-            Settings.Default.dooridShow = showDoorIDsToolStripMenuItem.Checked;
-            Settings.Default.chestidShow = showChestsIDsToolStripMenuItem.Checked;
-            Settings.Default.disableentranceGfx = disableEntranceGFXToolStripMenuItem.Checked;
-            Settings.Default.bg2maskShow = showBG2MaskOutlineToolStripMenuItem.Checked;
-            Settings.Default.entranceCamera = entranceCameraToolStripMenuItem.Checked;
-            Settings.Default.entrancePos = entrancePositionToolStripMenuItem.Checked;
-            Settings.Default.Save();
+                //Properties.Settings.Default.ViewParameters;
+                Settings.Default.spriteText = textSpriteToolStripMenuItem.Checked;
+                Settings.Default.chestText = textChestItemToolStripMenuItem.Checked;
+                Settings.Default.itemText = textPotItemToolStripMenuItem.Checked;
+                Settings.Default.transparentBG = unselectedBGTransparentToolStripMenuItem.Checked;
+                Settings.Default.rightToolbox = rightSideToolboxToolStripMenuItem.Checked;
+                Settings.Default.spriteShow = hideSpritesToolStripMenuItem.Checked;
+                Settings.Default.itemsShow = hideItemsToolStripMenuItem.Checked;
+                Settings.Default.chestitemShow = hideChestItemsToolStripMenuItem.Checked;
+                Settings.Default.dooridShow = showDoorIDsToolStripMenuItem.Checked;
+                Settings.Default.chestidShow = showChestsIDsToolStripMenuItem.Checked;
+                Settings.Default.disableentranceGfx = disableEntranceGFXToolStripMenuItem.Checked;
+                Settings.Default.bg2maskShow = showBG2MaskOutlineToolStripMenuItem.Checked;
+                Settings.Default.entranceCamera = entranceCameraToolStripMenuItem.Checked;
+                Settings.Default.entrancePos = entrancePositionToolStripMenuItem.Checked;
+                Settings.Default.Save();
+            }
 
 
             if (anychange)
@@ -2854,6 +2856,24 @@ namespace ZeldaFullEditor
         private void gfxGroupsetsToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void insertToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            activeScene.mouse_down = false;
+            activeScene.insertNew();
+        }
+
+        private void insertToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            activeScene.mouse_down = false;
+            activeScene.insertNew();
+        }
+
+        private void insertToolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            activeScene.mouse_down = false;
+            activeScene.insertNew();
         }
 
         //Export Palette to YY-CHR Palette Format

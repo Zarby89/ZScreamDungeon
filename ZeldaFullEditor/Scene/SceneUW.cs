@@ -1603,7 +1603,8 @@ namespace ZeldaFullEditor
             GFX.roomBg2Bitmap.Palette = palettes;
             GFX.roomBgLayoutBitmap.Palette = palettes;
         }
-
+        int rmx = 0;
+        int rmy = 0;
         private unsafe void onMouseUp(object sender, MouseEventArgs e)
         {
 
@@ -1626,29 +1627,16 @@ namespace ZeldaFullEditor
                 }
                 else if (e.Button == MouseButtons.Right) //that's a problem
                 {
+                    rmx = e.X;
+                    rmy = e.Y;
                     mainForm.nothingselectedcontextMenu.Items[0].Enabled = true;
                     mainForm.singleselectedcontextMenu.Items[0].Enabled = true;
                     mainForm.groupselectedcontextMenu.Items[0].Enabled = true;
+                    mainForm.nothingselectedcontextMenu.Items[0].Visible = true;
+                    mainForm.singleselectedcontextMenu.Items[0].Visible = true;
+                    mainForm.groupselectedcontextMenu.Items[0].Visible = true;
                     string nname = "Unknown";
-                    if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
-                    {
-                        nname = "Object";
-                        if (selectedMode == ObjectMode.Bgallmode)
-                        {
-                            mainForm.nothingselectedcontextMenu.Items[0].Enabled = false;
-                            mainForm.singleselectedcontextMenu.Items[0].Enabled = false;
-                            mainForm.groupselectedcontextMenu.Items[0].Enabled = false;
-                        }
-
-                    }
-                    else if (selectedMode == ObjectMode.Spritemode)
-                    {
-                        nname = "Sprite";
-                        mainForm.nothingselectedcontextMenu.Items[0].Enabled = false;
-                        mainForm.singleselectedcontextMenu.Items[0].Enabled = false;
-                        mainForm.groupselectedcontextMenu.Items[0].Enabled = false;
-                    }
-                    else if (selectedMode == ObjectMode.Chestmode)
+                    if (selectedMode == ObjectMode.Chestmode)
                     {
                         nname = "Chest Item";
                     }
@@ -1668,9 +1656,25 @@ namespace ZeldaFullEditor
                     {
                         nname = "Door";
                     }
-                    mainForm.nothingselectedcontextMenu.Items[0].Text = "Insert new " + nname;
-                    mainForm.singleselectedcontextMenu.Items[0].Text = "Insert new " + nname;
-                    mainForm.groupselectedcontextMenu.Items[0].Text = "Insert new " + nname;
+
+                    if (selectedMode != ObjectMode.Bg1mode && selectedMode != ObjectMode.Bg2mode && selectedMode != ObjectMode.Bg3mode && selectedMode != ObjectMode.Bgallmode)
+                    {
+                        mainForm.nothingselectedcontextMenu.Items[0].Text = "Insert new " + nname;
+                        mainForm.singleselectedcontextMenu.Items[0].Text = "Insert new " + nname;
+                        mainForm.groupselectedcontextMenu.Items[0].Text = "Insert new " + nname;
+                    }
+                    else
+                    {
+                        mainForm.nothingselectedcontextMenu.Items[0].Visible = false;
+                        mainForm.singleselectedcontextMenu.Items[0].Visible = false;
+                        mainForm.groupselectedcontextMenu.Items[0].Visible = false;
+                    }
+                    if (selectedMode == ObjectMode.Spritemode)
+                    {
+                        mainForm.nothingselectedcontextMenu.Items[0].Visible = false;
+                        mainForm.singleselectedcontextMenu.Items[0].Visible = false;
+                        mainForm.groupselectedcontextMenu.Items[0].Visible = false;
+                    }
                     if (room.selectedObject.Count == 0)
                     {
                         mainForm.nothingselectedcontextMenu.Show(Cursor.Position);
@@ -1683,6 +1687,7 @@ namespace ZeldaFullEditor
                     {
                         mainForm.groupselectedcontextMenu.Show(Cursor.Position);
                     }
+                    mouse_down = false;
                 }
             }
             DrawRoom();
@@ -1692,12 +1697,19 @@ namespace ZeldaFullEditor
         
         private void onMouseDoubleClick(object sender, MouseEventArgs e)
         {
-            int MX = e.X;
-            int MY = e.Y;
+            rmx = e.X;
+            rmy = e.Y;
+            addChest();
+        }
+
+        public void addChest()
+        {
+            int MX = rmx;
+            int MY = rmy;
             if (mainForm.x2zoom)
             {
-                MX = e.X / 2;
-                MY = e.Y / 2;
+                MX = rmx / 2;
+                MY = rmy / 2;
             }
             if (selectedMode == ObjectMode.Chestmode)
             {
@@ -1714,12 +1726,12 @@ namespace ZeldaFullEditor
                         {
                             //change chest item
                             int r = 0;
-                            if (int.TryParse(mainForm.chestPicker.idtextbox.Text,out r))
+                            if (int.TryParse(mainForm.chestPicker.idtextbox.Text, out r))
                             {
                                 c.item = (byte)r;
                             }
 
-                            
+
                             room.has_changed = true;
                         }
                         else if (result == DialogResult.Abort)
@@ -2463,6 +2475,10 @@ namespace ZeldaFullEditor
                     dragx = 0;
                     dragy = 0;
                     mouse_down = true;
+            }
+            else if (selectedMode == ObjectMode.Chestmode)
+            {
+                addChest();
             }
             else if (selectedMode == ObjectMode.Torchmode)
             {
