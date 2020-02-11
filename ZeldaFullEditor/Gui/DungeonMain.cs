@@ -28,24 +28,30 @@ namespace ZeldaFullEditor
             InitializeComponent();
 
         }
-
+        //TODO : Move that to a data class
         public Room[] all_rooms = new Room[296];
-        bool anychange = false;
-        PaletteViewer paletteViewer;
-        public List<Room> opened_rooms = new List<Room>();
-        public SceneUW activeScene;
-        string projectFilename = "";
         public Entrance[] entrances = new Entrance[0x85];
         Entrance[] starting_entrances = new Entrance[0x07];
+
+
+        //TODO : Move that?
+        public byte[] door_index = new byte[] { 0x00, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32, 0x20, 0x14 };
+
+
+        string projectFilename = "";
+        public bool projectLoaded = false;
+        bool anychange = false;
+        public SceneUW activeScene;
+        public List<Room> opened_rooms = new List<Room>();
         bool saved_changed = false;
         public TreeNode lastNode = null;
         RoomLayout layoutForm;
         List<short> selectedMapPng = new List<short>();
         public ChestPicker chestPicker = new ChestPicker();
-        public byte[] door_index = new byte[] { 0x00, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32,0x20,0x14 };
-
         public bool settingEntrance = false;
-        
+        public int selectedLayer = -1;
+        public Entrance selectedEntrance = null;
+
         private void Form1_Load(object sender, EventArgs e)
         {
             layoutForm = new RoomLayout(this);
@@ -53,7 +59,6 @@ namespace ZeldaFullEditor
             GFX.initGfx();
             ROMStructure.loadDefaultProject();
             mapPicturebox.Image = new Bitmap(256, 304);
-            //mapPicturebox.Location = new Point(0, 26);
 
             roomProperty_floor1.MouseWheel += RoomProperty_MouseWheel;
             roomProperty_floor2.MouseWheel += RoomProperty_MouseWheel;
@@ -61,7 +66,7 @@ namespace ZeldaFullEditor
             roomProperty_blockset.MouseWheel += RoomProperty_MouseWheel;
             roomProperty_palette.MouseWheel += RoomProperty_MouseWheel;
         }
-
+        //Need to stay here
         public void initialize_properties()
         {
             Background2[] bg2values = (Background2[])Enum.GetValues(typeof(Background2));
@@ -93,6 +98,8 @@ namespace ZeldaFullEditor
 
         }
 
+
+        //TODO : Move that to the save class
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Save Functions
@@ -183,19 +190,7 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            //Palettes.SavePalettesToROM(ROM.DATA);
 
-           /* Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
-            AsarCLR.Asar.init();
-            AsarCLR.Asar.patch("spritesmove.asm", ref ROM.DATA);*/
-
-
-            /*
-            foreach(AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
-            {
-                Console.WriteLine(error.Fullerrdata.ToString());
-            }
-            */
             anychange = false;
             saved_changed = false;
 
@@ -214,6 +209,7 @@ namespace ZeldaFullEditor
             projectFile.DefaultExt = ".sfc";
             if (projectFile.ShowDialog() == DialogResult.OK)
             {
+                projectFilename = projectFile.FileName;
                 LoadProject(projectFile.FileName);
             }
         }
@@ -233,13 +229,13 @@ namespace ZeldaFullEditor
             }
         }
 
-        //TODO: Redo the map data add border between EG Maps
-
-
         public void LoadProject(string filename)
         {
 
+
             ROMStructure.loadDefaultProject();
+
+
             FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
             int size = (int)fs.Length;
             if (fs.Length == 0x100000)
@@ -249,8 +245,7 @@ namespace ZeldaFullEditor
             ROM.DATA = new byte[size];
             fs.Read(ROM.DATA, 0, (int)fs.Length);
             fs.Close();
-            //Randomize_Dungeons_Palettes();
-            //Randomize_Overworld_Palettes();
+
             LoadPalettes();
 
             activeScene = new SceneUW(this);
@@ -258,687 +253,21 @@ namespace ZeldaFullEditor
             activeScene.Size = new Size(512, 512);
 
             initProject();
-            projectFilename = filename;
+            
             this.Text = "ZScream Magic - " + filename;
 
         }
 
+        //TODO : Move that to a data class
         public void LoadPalettes()
         {
             Palettes.CreateAllPalettes(ROM.DATA);
-            /*//Dungeons Palettes
-            for (int i = 0; i < 20; i++)
-            {
-                TreeNode tn = new TreeNode("Dungeon Pal - " + i.ToString());
-                tn.Tag = Palettes.dungeonsMain_Palettes[i];
-                palettesTreeview.Nodes["allPalettes"].Nodes[0].Nodes.Add(tn);
-            }
-            //Sword Palettes
-            for (int i = 0; i < 4; i++)
-            {
-                TreeNode tn = new TreeNode("Sword - " + i.ToString());
-                tn.Tag = Palettes.swords_Palettes[i];
-                palettesTreeview.Nodes["allPalettes"].Nodes[1].Nodes.Add(tn);
-            }
-            for (int i = 0; i < 3; i++)
-            {
-                TreeNode tn = new TreeNode("Shield - " + i.ToString());
-                tn.Tag = Palettes.shields_Palettes[i];
-                palettesTreeview.Nodes["allPalettes"].Nodes[2].Nodes.Add(tn);
-            }
-
-            for (int i = 0; i < 3; i++)
-            {
-                TreeNode tn = new TreeNode("Armor - " + i.ToString());
-                tn.Tag = Palettes.armors_Palettes[i];
-                palettesTreeview.Nodes["allPalettes"].Nodes[3].Nodes.Add(tn);
-            }
-
-            for (int i = 0; i < 2; i++)
-            {
-                TreeNode tn = new TreeNode("Global Sprites - " + i.ToString());
-                tn.Tag = Palettes.globalSprite_Palettes[i];
-                palettesTreeview.Nodes["allPalettes"].Nodes[4].Nodes.Add(tn);
-            }
-
-            for (int i = 0; i < 12; i++)
-            {
-                TreeNode tn = new TreeNode("Sprite Aux1 - " + i.ToString());
-                tn.Tag = Palettes.spritesAux1_Palettes[i];
-                palettesTreeview.Nodes["allPalettes"].Nodes[5].Nodes.Add(tn);
-            }
-            for (int i = 0; i < 11; i++)
-            {
-                TreeNode tn = new TreeNode("Sprite Aux2 - " + i.ToString());
-                tn.Tag = Palettes.spritesAux2_Palettes[i];
-                palettesTreeview.Nodes["allPalettes"].Nodes[5].Nodes.Add(tn);
-            }
-            for (int i = 0; i < 24; i++)
-            {
-                TreeNode tn = new TreeNode("Sprite Aux3 - " + i.ToString());
-                tn.Tag = Palettes.spritesAux3_Palettes[i];
-                palettesTreeview.Nodes["allPalettes"].Nodes[5].Nodes.Add(tn);
-            }
-
-            for (int i = 0; i < 6; i++)
-            {
-                TreeNode tn = new TreeNode("Overworld Main - " + i.ToString());
-                tn.Tag = Palettes.overworld_MainPalettes[i];
-                palettesTreeview.Nodes["allPalettes"].Nodes[6].Nodes.Add(tn);
-            }
-
-            for (int i = 0; i < 20; i++)
-            {
-                TreeNode tn = new TreeNode("Overworld Aux - " + i.ToString());
-                tn.Tag = Palettes.overworld_AuxPalettes[i];
-                palettesTreeview.Nodes["allPalettes"].Nodes[7].Nodes.Add(tn);
-            }
-
-            for (int i = 0; i < 14; i++)
-            {
-                TreeNode tn = new TreeNode("Overworld Animated - " + i.ToString());
-                tn.Tag = Palettes.overworld_AnimatedPalettes[i];
-                palettesTreeview.Nodes["allPalettes"].Nodes[8].Nodes.Add(tn);
-            }
-            //TODO : Add Missing Palettes here
-
-            for (int i = 0; i < 2; i++)
-            {
-                TreeNode tn = new TreeNode("Hud Pal - " + i.ToString());
-                tn.Tag = Palettes.HudPalettes[i];
-                palettesTreeview.Nodes["allPalettes"].Nodes[11].Nodes.Add(tn);
-            }
-            */
-
         }
 
-
-        public void initRoomsMap()
-        {
-            /*using (Graphics g = Graphics.FromImage(mapPicturebox.Image))
-            {
-                int xd = 0;
-                int yd = 0;
-                g.Clear(Color.Black);
-                for (int i = 0; i < 296; i++)
-                {
-                    if (all_rooms[i].tilesObjects.Count > 0)
-                    {
-                        g.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(all_rooms[i].palette)[4, 2]), new Rectangle(xd * 16, yd * 16, 16, 16));
-                    }
-                    xd++;
-                    if (xd == 16)
-                    {
-                        yd++;
-                        xd = 0;
-                    }
-                }
-            }*/
-        }
-
-        public void loadRoomList(int roomId)
-        {
-
-        }
-
-        public void Randomize_Dungeons_Palettes()
-        {
-            for (int i = 0; i < 20; i++)
-            {
-                randomize_wall(i);
-                randomize_floors(i);
-            }
-        }
-
-        public void randomize_wall(int dungeon, int brigthness = 60)
-        {
-
-            Color wall_color = getColorBrigthness();
-
-            for (int i = 0; i < 5; i++)
-            {
-                //166
-                byte shadex = (byte)(10 - (i * 2));
-                setColor((0x0DD734 + (0xB4 * dungeon)) + (i * 2), wall_color, shadex);
-                setColor((0x0DD770 + (0xB4 * dungeon)) + (i * 2), wall_color, shadex);
-                setColor((0x0DD744 + (0xB4 * dungeon)) + (i * 2), wall_color, shadex);
-
-                if (dungeon == 0)
-                {
-                    setColor((0x0DD7CA + (0xB4 * dungeon)) + (i * 2), wall_color, shadex);
-                }
-            }
-
-            if (dungeon == 2)
-            {
-                setColor((0x0DD74E + (0xB4 * dungeon)), wall_color, 3);
-                setColor((0x0DD74E + 2 + (0xB4 * dungeon)), wall_color, 5);
-                setColor((0x0DD73E + (0xB4 * dungeon)), wall_color, 3);
-                setColor((0x0DD73E + 2 + (0xB4 * dungeon)), wall_color, 5);
-
-            }
-
-            //Ceiling
-            setColor(0x0DD7E4 + (0xB4 * dungeon), wall_color, (byte)(4)); //outer wall darker
-            setColor(0x0DD7E6 + (0xB4 * dungeon), wall_color, (byte)(2)); //outter wall brighter
-
-            //pits walls
-            setColor(0x0DD7DA + (0xB4 * dungeon), wall_color, (byte)(10));
-            setColor(0x0DD7DC + (0xB4 * dungeon), wall_color, (byte)(8));
-
-
-            Color pot_color = getColorBrigthness();
-            //Pots
-            setColor(0x0DD75A + (0xB4 * dungeon), pot_color, 7);
-            setColor(0x0DD75C + (0xB4 * dungeon), pot_color, 1);
-            setColor(0x0DD75E + (0xB4 * dungeon), pot_color, 3);
-
-            //Wall Contour?
-            //f,c,m
-            setColor(0x0DD76A + (0xB4 * dungeon), wall_color, 7);
-            setColor(0x0DD76C + (0xB4 * dungeon), wall_color, 2);
-            setColor(0x0DD76E + (0xB4 * dungeon), wall_color, 4);
-
-
-            Color chest_color = getColorBrigthness();
-            setColor(0x0DD7AE + (0xB4 * dungeon), chest_color, 2);
-            setColor(0x0DD7B0 + (0xB4 * dungeon), chest_color, 0);
-
-        }
-        Random rand = new Random();
-        public Color getColorBrigthness()
-        {
-            int brigthness = 60;
-            int r = brigthness + rand.Next(240 - brigthness);
-            int g = brigthness + rand.Next(240 - brigthness);
-            int b = brigthness + rand.Next(240 - brigthness);
-
-            return Color.FromArgb(r, g, b);
-        }
-
-        public void randomize_floors(int dungeon, int brigthness = 60)
-        {
-
-            Color floor_color1 = getColorBrigthness();
-            Color floor_color2 = getColorBrigthness();
-            Color floor_color3 = getColorBrigthness();
-
-            for (int i = 0; i < 3; i++)
-            {
-                byte shadex = (byte)(6 - (i * 2));
-                setColor(0x0DD764 + (0xB4 * dungeon) + (i * 2), floor_color1, shadex);
-                setColor(0x0DD782 + (0xB4 * dungeon) + (i * 2), floor_color1, (byte)(shadex + 3));
-
-                setColor(0x0DD7A0 + (0xB4 * dungeon) + (i * 2), floor_color2, shadex);
-                setColor(0x0DD7BE + (0xB4 * dungeon) + (i * 2), floor_color2, (byte)(shadex + 3));
-            }
-
-            setColor(0x0DD7E2 + (0xB4 * dungeon), floor_color3, 3);
-            setColor(0x0DD796 + (0xB4 * dungeon), floor_color3, 4);
-        }
-
-        public void setColor(int address, Color col, byte shade)
-        {
-            int r = col.R;
-            int g = col.G;
-            int b = col.B;
-
-            for (int i = 0; i < shade; i++)
-            {
-                r = (r - (r / 5));
-                g = (g - (g / 5));
-                b = (b - (b / 5));
-            }
-
-            r = (int)((float)r / 255f * 0x1F);
-            g = (int)((float)g / 255f * 0x1F);
-            b = (int)((float)b / 255f * 0x1F);
-
-
-            short s = (short)(((b) << 10) | ((g) << 5) | ((r) << 0));
-
-            ROM.DATA[address] = (byte)(s & 0x00FF);
-            ROM.DATA[address + 1] = (byte)((s >> 8) & 0x00FF);
-        }
-
-
-        public void Randomize_Overworld_Palettes()
-        {
-            Color grass = Color.FromArgb(60 + (rand.Next(155)), 60 + rand.Next(155), 60 + rand.Next(155));
-            Color grass2 = Color.FromArgb(60 + (rand.Next(155)), 60 + rand.Next(155), 60 + rand.Next(155));
-            Color grass3 = Color.FromArgb(60 + (rand.Next(155)), 60 + rand.Next(155), 60 + rand.Next(155));
-            Color dirt = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
-            Color dirt2 = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
-            //Color grass = Color.FromArgb(230, 230, 230);
-            //Color dirt = Color.FromArgb(140,120,64);
-
-            // TODO: unused?
-            Color wall = Color.FromArgb(rand.Next(255), rand.Next(255), rand.Next(255));
-
-            // TODO: unused?
-            Color roof = Color.FromArgb(rand.Next(255), rand.Next(255), rand.Next(255));
-
-
-            Color btreetrunk = Color.FromArgb(172, 144, 96);
-
-            // TODO: unused?
-            Color treetrunk = Color.FromArgb(btreetrunk.R - 40 + rand.Next(80), btreetrunk.G - 20 + rand.Next(30), btreetrunk.B - 30 + rand.Next(60));
-
-
-            Color treeleaf = Color.FromArgb(grass.R - 20 + rand.Next(30), grass.G - 20 + rand.Next(30), grass.B - 20 + rand.Next(30));
-
-            // TODO: unused?
-            Color bridge = Color.FromArgb(rand.Next(255), rand.Next(255), rand.Next(255));
-
-            //Hardcoded Grass (hobo an special area?)
-            setColor(0x67FB4, grass, 0);
-            setColor(0x67F94, grass, 0);
-            setColor(0x67FC6, grass, 0);
-            setColor(0x67FE6, grass, 0);
-
-            setColor(0x05FEA9, grass, 0);//hardcoded grass palette LW
-
-            setColor(0x0DD4AC, grass, 2); //desert shadow
-
-            setColor(0x0DE6DE, grass2, 2);
-            setColor(0x0DE75C, grass2, 2);
-            setColor(0x0DE786, grass2, 2);
-            setColor(0x0DE794, grass2, 2);
-            setColor(0x0DE99A, grass2, 2);
-
-            setColor(0x0DE6E0, grass2, 1);
-            setColor(0x0DE6E2, grass2, 0);
-
-            setColor(0x0DD4AE, grass2, 1);
-            setColor(0x0DE6E0, grass2, 1);
-            setColor(0x0DE9FA, grass2, 1);
-            setColor(0x0DEA0E, grass2, 1);
-
-            setColor(0x0DE9FE, grass2, 0);
-
-            setColor(0x0DD3D2, grass2, 2);
-            setColor(0x0DE88C, grass2, 2);
-            setColor(0x0DE8A8, grass2, 2);
-            setColor(0x0DE9F8, grass2, 2);
-            setColor(0x0DEA4E, grass2, 2);
-            setColor(0x0DEAF6, grass2, 2);
-            setColor(0x0DEB2E, grass2, 2);
-            setColor(0x0DEB4A, grass2, 2);
-
-            int i = 0;
-            setColor(0x0DE892 + (i * 70), grass, 1);
-            setColor(0x0DE886 + (i * 70), grass, 0);
-
-            setColor(0x0DE6D0 + (i * 70), grass, 1);//grass shade
-            setColor(0x0DE6D2 + (i * 70), grass, 0); //grass
-
-
-
-            setColor(0x0DE6FA + (i * 70), grass, 3);
-            setColor(0x0DE6FC + (i * 70), grass, 0);//grass shade2
-            setColor(0x0DE6FE + (i * 70), grass, 0);//??
-
-            setColor(0x0DE884 + (i * 70), grass, 4);//tree shadow
-
-
-            setColor(0x0DE70A + (i * 70), grass, 0); //grass?
-            setColor(0x0DE708 + (i * 70), grass, 2); //bush?
-
-            setColor(0x0DE70C + (i * 70), grass, 1); //bush?
-
-            setColor(0x0DE6D4 + (i * 70), dirt, 2);
-
-            setColor(0x0DE6CA + (i * 70), dirt, 5);
-            setColor(0x0DE6CC + (i * 70), dirt, 4);
-            setColor(0x0DE6CE + (i * 70), dirt, 3);
-            setColor(0x0DE6E2 + (i * 70), dirt, 2);
-
-            setColor(0x0DE6D8 + (i * 70), dirt, 5);
-            setColor(0x0DE6DA + (i * 70), dirt, 4);
-            setColor(0x0DE6DC + (i * 70), dirt, 2);
-            setColor(0x0DE6F0 + (i * 70), dirt, 2);
-
-            setColor(0x0DE6E6 + (i * 70), dirt, 5);
-            setColor(0x0DE6E8 + (i * 70), dirt, 4);
-            setColor(0x0DE6EA + (i * 70), dirt, 2);
-            setColor(0x0DE6EC + (i * 70), dirt, 4);
-            setColor(0x0DE6EE + (i * 70), dirt, 2);
-            setColor(0x0DE6F0 + (i * 70), dirt, 2);
-
-            
-
-
-            //lake borders
-            setColor(0x0DE91E, grass, 0);
-            setColor(0x0DE920, dirt, 2);
-            setColor(0x0DE916, dirt, 3);
-
-
-            setColor(0x0DE932, dirt, 2);
-            setColor(0x0DE934, dirt, 3);
-            setColor(0x0DE936, dirt, 4);
-            setColor(0x0DE93C, dirt, 1);
-
-
-            setColor(0x0DE938, grass, 2);
-            setColor(0x0DE93A, grass, 0);
-
-
-
-
-            setColor(0x0DE92C, grass, 0);
-            setColor(0x0DE93A, grass, 0);
-            setColor(0x0DE93C, dirt, 2);
-
-
-            setColor(0x0DE91C, grass, 1);
-
-            setColor(0x0DE92A, grass, 1);
-            setColor(0x0DE938, grass, 1);//darker?
-
-            //zora domain
-            setColor(0x0DEA1C, grass, 0);
-            setColor(0x0DEA2A, grass, 0);
-            setColor(0x0DEA30, grass, 0);
-
-            setColor(0x0DEA2E, dirt, 5);
-            setColor(0X067FE1, grass, 3); //Zora Domain Shadow
-
-            setColor(0xDE9F2, dirt, 3); //Desert edges
-
-            setColor(0X0DE6D0, grass, 3); //Test2
-            setColor(0x0DE884, grass, 3);
-            setColor(0x0DE8AE, grass, 3);
-            setColor(0x0DE8BE, grass, 3);
-            setColor(0x0DE8E4, grass, 3);
-            setColor(0x0DE938, grass, 3);
-            setColor(0x0DE9C4, grass, 3);
-
-
-            setColor(0x0DE6D0, grass, 4);//tree shadow
-
-            setColor(0x0DE890, treeleaf, 1);
-            setColor(0x0DE894, treeleaf, 0);
-
-            Color water = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
-            setColor(0x0DE924, water, 3);//water dark
-            setColor(0x0DE668, water, 3);//water dark
-            setColor(0x0DE66A, water, 2);//water light
-            setColor(0x0DE670, water, 1); // water light
-            setColor(0x0DE918, water, 1);// water light
-            setColor(0x0DE66C, water, 0); //water lighter
-            setColor(0x0DE91A, water, 0); //water lighter
-            setColor(0x0DE92E, water, 1);// water light
-
-            setColor(0x0DEA1A, water, 1);//light
-            setColor(0x0DEA16, water, 3);//dark
-            setColor(0x0DEA10, water, 4);//darker
-
-
-            setColor(0x0DE66E, dirt, 3); //ground dark
-
-            setColor(0x0DE672, dirt, 2);  // ground light
-
-
-            setColor(0x0DE932, dirt, 4);  //ground darker
-            setColor(0x0DE934, dirt, 3);  //ground dark
-            setColor(0x0DE936, dirt, 2);  // ground light
-            setColor(0x0DE93C, dirt, 1);  // ground lighter
-
-            setColor(0x0DE756, dirt2, 4);
-            setColor(0x0DE764, dirt2, 4);
-            setColor(0x0DE772, dirt2, 4);
-            setColor(0x0DE994, dirt2, 4);
-            setColor(0x0DE9A2, dirt2, 4);
-
-            setColor(0x0DE758, dirt2, 3);
-            setColor(0x0DE766, dirt2, 3);
-            setColor(0x0DE774, dirt2, 3);
-            setColor(0x0DE996, dirt2, 3);
-            setColor(0x0DE9A4, dirt2, 3);
-
-
-            setColor(0x0DE75A, dirt2, 2);
-            setColor(0x0DE768, dirt2, 2);
-            setColor(0x0DE776, dirt2, 2);
-            setColor(0x0DE778, dirt2, 2);
-            setColor(0x0DE998, dirt2, 2);
-            setColor(0x0DE9A6, dirt2, 2);
-
-
-            setColor(0x0DE9AC, dirt2, 1);
-            setColor(0x0DE99E, dirt2, 1);
-            setColor(0x0DE760, dirt2, 1);
-            setColor(0x0DE77A, dirt2, 1);
-            setColor(0x0DE77C, dirt2, 1);
-            setColor(0x0DE798, dirt2, 1);
-            setColor(0x0DE664, dirt2, 1);
-            setColor(0x0DE980, dirt2, 1);
-
-
-
-            setColor(0x0DE75C, grass3, 2);
-            setColor(0x0DE786, grass3, 2);
-            setColor(0x0DE794, grass3, 2);
-            setColor(0x0DE99A, grass3, 2);
-
-            setColor(0x0DE75E, grass3, 1);
-            setColor(0x0DE788, grass3, 1);
-            setColor(0x0DE796, grass3, 1);
-            setColor(0x0DE99C, grass3, 1);
-
-
-            Color clouds = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
-            setColor(0x0DE76A, clouds, 2);
-            setColor(0x0DE9A8, clouds, 2);
-
-            setColor(0x0DE76E, clouds, 0);
-            setColor(0x0DE9AA, clouds, 0);
-            //setColor(0x0DE8E8, clouds,0);
-            setColor(0x0DE8DA, clouds, 0);
-            setColor(0x0DE8D8, clouds, 0);
-            setColor(0x0DE8D0, clouds, 0);
-
-            setColor(0x0DE98C, clouds, 2);
-            setColor(0x0DE990, clouds, 0);
-
-
-
-            //DW
-            Color dwdirt = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
-            Color dwgrass = Color.FromArgb(60 + (rand.Next(155)), 60 + rand.Next(155), 60 + rand.Next(155));
-            Color dwwater = Color.FromArgb(60 + (rand.Next(155)), 60 + rand.Next(155), 60 + rand.Next(155));
-            Color dwtree = Color.FromArgb(dwgrass.R - 20 + rand.Next(30), dwgrass.G - 20 + rand.Next(30), dwgrass.B - 20 + rand.Next(30));
-
-
-            setColor(0x05FEB3, dwgrass, 1);//hardcoded grass color in dw
-
-
-            setColor(0x0DEB34, dwtree, 4);
-            setColor(0x0DEB30, dwtree, 3);
-            setColor(0x0DEB32, dwtree, 1);
-
-            //dwdirt - dark to light
-            setColor(0x0DE710, dwdirt, 5);
-            setColor(0x0DE71E, dwdirt, 5);
-            setColor(0x0DE72C, dwdirt, 5);
-            setColor(0x0DEAD6, dwdirt, 5);
-
-            setColor(0x0DE712, dwdirt, 4);
-            setColor(0x0DE720, dwdirt, 4);
-            setColor(0x0DE72E, dwdirt, 4);
-            setColor(0x0DE660, dwdirt, 4);
-            setColor(0x0DEAD8, dwdirt, 4);
-
-            setColor(0x0DEADA, dwdirt, 3);
-            setColor(0x0DE714, dwdirt, 3);
-            setColor(0x0DE722, dwdirt, 3);
-            setColor(0x0DE730, dwdirt, 3);
-            setColor(0x0DE732, dwdirt, 3);
-
-            setColor(0x0DE734, dwdirt, 2);
-            setColor(0x0DE736, dwdirt, 2);
-            setColor(0x0DE728, dwdirt, 2);
-            setColor(0x0DE71A, dwdirt, 2);
-            setColor(0x0DE664, dwdirt, 2);
-            setColor(0x0DEAE0, dwdirt, 2);
-
-
-            //grass
-            setColor(0x0DE716, dwgrass, 3);
-            setColor(0x0DE740, dwgrass, 3);
-            setColor(0x0DE74E, dwgrass, 3);
-            setColor(0x0DEAC0, dwgrass, 3);
-            setColor(0x0DEACE, dwgrass, 3);
-            setColor(0x0DEADC, dwgrass, 3);
-            setColor(0x0DEB24, dwgrass, 3);
-
-            setColor(0x0DE752, dwgrass, 2);
-
-            setColor(0x0DE718, dwgrass, 1);
-            setColor(0x0DE742, dwgrass, 1);
-            setColor(0x0DE750, dwgrass, 1);
-            setColor(0x0DEB26, dwgrass, 1);
-            setColor(0x0DEAC2, dwgrass, 1);
-            setColor(0x0DEAD0, dwgrass, 1);
-            setColor(0x0DEADE, dwgrass, 1);
-
-
-
-            //water
-
-            setColor(0x0DE65A, dwwater, 5); //very dark water
-
-            setColor(0x0DE65C, dwwater, 3); //main water color
-            setColor(0x0DEAC8, dwwater, 3); //main water color
-            setColor(0x0DEAD2, dwwater, 2); //main water color
-            setColor(0x0DEABC, dwwater, 2);//light
-            setColor(0x0DE662, dwwater, 2); //light
-            setColor(0x0DE65E, dwwater, 1); //lighter
-            setColor(0x0DEABE, dwwater, 1);//lighter
-            setColor(0x0DEA98, dwwater, 2);//light
-
-            setColor(0xDE86C + 0x232, dwwater, 2); //main water color
-            setColor(0xDE86C + 0x240, dwwater, 3); //main water color
-            setColor(0xDE86C + 0x242, dwwater, 3); //main water color
-            setColor(0xDE86C + 0x24A, dwwater, 2); //main water color
-
-            //Death Mountain
-
-
-            //dw dm
-            //dirt
-            Color dwdmdirt = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
-            Color dwdmgrass = Color.FromArgb(60 + (rand.Next(155)), 60 + rand.Next(155), 60 + rand.Next(155));
-
-
-            //Flashes on DM
-            setColor(0x0DEA1A, dwdmgrass, 1);
-            
-            setColor(0x0DEA16, dwdmgrass, 1);
-            
-
-            setColor(0x067FE1, dwdmgrass, 1);
-            
-            setColor(0x067F94, dwdmgrass, 1);
-            
-            setColor(0x067FB4, dwdmgrass, 1);
-            
-            setColor(0x067FC6, dwdmgrass, 1);
-            
-            setColor(0x067FE6, dwdmgrass, 1);
-
-            setColor(0x0DD4A0, dwdmgrass, 1);
-            
-            setColor(0x0DE8E6, dwdmgrass, 1); ////grass
-
-
-            setColor(0x0DEA1C, dwdmgrass, 1);////grass
-
-
-
-            setColor(0x0DE79A, dwdmdirt, 6); //super dark (6)
-            setColor(0x0DE7A8, dwdmdirt, 6);
-            setColor(0x0DE7B6, dwdmdirt, 6);
-            setColor(0x0DEB60, dwdmdirt, 6);
-            setColor(0x0DEB6E, dwdmdirt, 6);
-            setColor(0x0DE93E, dwdmdirt, 6);
-            setColor(0x0DE94C, dwdmdirt, 6);
-            setColor(0x0DEBA6, dwdmdirt, 6);
-
-            setColor(0x0DE79C, dwdmdirt, 4); //dark (4)
-            setColor(0x0DE7AA, dwdmdirt, 4);
-            setColor(0x0DE7B8, dwdmdirt, 4);
-            setColor(0x0DE7BE, dwdmdirt, 4);
-            setColor(0x0DE7CC, dwdmdirt, 4);
-            setColor(0x0DE7DA, dwdmdirt, 4);
-            setColor(0x0DEB70, dwdmdirt, 4);
-            setColor(0x0DEBA8, dwdmdirt, 4);
-            setColor(0x0DEB72, dwdmdirt, 3);
-            setColor(0x0DEB74, dwdmdirt, 3);
-            //light (3)
-            setColor(0x0DE79E, dwdmdirt, 3);
-            setColor(0x0DE7AC, dwdmdirt, 3);
-            setColor(0x0DEB6A, dwdmdirt, 3);
-            setColor(0x0DE948, dwdmdirt, 3);
-            setColor(0x0DE956, dwdmdirt, 3);
-            setColor(0x0DE964, dwdmdirt, 3);
-            setColor(0x0DEBAA, dwdmdirt, 3);
-            setColor(0x0DE7A0, dwdmdirt, 3);
-            setColor(0x0DE7BC, dwdmgrass, 3);
-
-            //lighter (2)
-            setColor(0x0DEBAC, dwdmdirt, 2);
-
-            setColor(0x0DE7AE, dwdmdirt, 2);
-            setColor(0x0DE7C2, dwdmdirt, 2);
-            setColor(0x0DE7A6, dwdmdirt, 2);
-            setColor(0x0DEB7A, dwdmdirt, 2);
-            setColor(0x0DEB6C, dwdmdirt, 2);
-            setColor(0x0DE7C0, dwdmdirt, 2);
-
-            //grass
-            setColor(0x0DE7A2, dwdmgrass, 3);
-            setColor(0x0DE7BE, dwdmgrass, 3);
-            setColor(0x0DE7CC, dwdmgrass, 3);
-            setColor(0x0DE7DA, dwdmgrass, 3);
-            setColor(0x0DEB6A, dwdmgrass, 3);
-            setColor(0x0DE948, dwdmgrass, 3);
-            setColor(0x0DE956, dwdmgrass, 3);
-            setColor(0x0DE964, dwdmgrass, 3);
-
-
-            setColor(0x0DE7CE, dwdmgrass, 1);
-            setColor(0x0DE7A4, dwdmgrass, 1);
-            setColor(0x0DEBA2, dwdmgrass, 1);
-            setColor(0x0DEBB0, dwdmgrass, 1);
-
-            Color dwdmclouds1 = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
-            Color dwdmclouds2 = Color.FromArgb(60 + rand.Next(155), 60 + rand.Next(155), 60 + rand.Next(155));
-            //clouds 1
-            setColor(0x0DE644, dwdmclouds1, 2); //dark
-            setColor(0x0DEB84, dwdmclouds1, 2);
-
-            setColor(0x0DE648, dwdmclouds1, 1); //light dark
-            setColor(0x0DEB88, dwdmclouds1, 1);
-
-            //clouds2
-            setColor(0x0DEBAE, dwdmclouds2, 2); //dark
-            setColor(0x0DE7B0, dwdmclouds2, 2);
-
-
-            setColor(0x0DE7B4, dwdmclouds2, 0);//light dark
-            setColor(0x0DEB78, dwdmclouds2, 0);
-            setColor(0x0DEBB2, dwdmclouds2, 0);
-        }
-
-        public void initProject() //first load of project need to be changed entirely
+        public void initProject() 
         {
             tabControl1.Enabled = true;
-
             GFX.CreateAllGfxData(ROM.DATA);
-
-
 
             for (int i = 0; i < 296; i++)
             {
@@ -947,10 +276,12 @@ namespace ZeldaFullEditor
             initEntrancesList();
             this.customPanel3.Controls.Add(activeScene);
             addRoomTab(260);
+            projectLoaded = true;
             tabControl2_SelectedIndexChanged(tabControl2.TabPages[0], new EventArgs());
-            
-            initRoomsList();
             enableProjectButtons();
+
+
+
             //Initialize the map draw
             GFX.previewObjectsPtr = new IntPtr[600];
             GFX.previewObjectsBitmap = new Bitmap[600];
@@ -973,20 +304,88 @@ namespace ZeldaFullEditor
                 GFX.previewChestsPtr[i] = Marshal.AllocHGlobal(64 * 64);
                 GFX.previewChestsBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, GFX.previewChestsPtr[i]);
             }
+            Sprites_Names.loadFromFile();
+            Room_Name.loadFromFile();
+            ChestItems_Name.loadFromFile();
+            ItemsNames.loadFromFile();
+            
             initObjectsList();
+            spritesView1.items.Clear();
+            foreach (Sprite o in listofspritesobjects)
+            {
+                spritesView1.items.Add((o));
+            }
+
+            objectViewer1.items.Clear();
+            foreach (Room_Object o in listoftilesobjects)
+            {
+                objectViewer1.items.Add((o));
+            }
+            selecteditemobjectCombobox.Items.Clear();
+            for (int i = 0; i < ItemsNames.name.Length; i++)
+            {
+                selecteditemobjectCombobox.Items.Add(ItemsNames.name[i]);
+            }
 
             GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
             GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
             objectViewer1.updateSize();
             spritesView1.updateSize();
+
+            textSpriteToolStripMenuItem.Checked = Settings.Default.spriteText;
+            textChestItemToolStripMenuItem.Checked = Settings.Default.chestText;
+            textPotItemToolStripMenuItem.Checked = Settings.Default.itemText;
+            unselectedBGTransparentToolStripMenuItem.Checked = Settings.Default.transparentBG;
+            rightSideToolboxToolStripMenuItem.Checked = Settings.Default.rightToolbox;
+            hideSpritesToolStripMenuItem.Checked = Settings.Default.spriteShow;
+            hideItemsToolStripMenuItem.Checked = Settings.Default.itemsShow;
+            hideChestItemsToolStripMenuItem.Checked = Settings.Default.chestitemShow;
+            showDoorIDsToolStripMenuItem.Checked = Settings.Default.dooridShow;
+            showChestsIDsToolStripMenuItem.Checked = Settings.Default.chestidShow;
+            disableEntranceGFXToolStripMenuItem.Checked = Settings.Default.disableentranceGfx;
+            showBG2MaskOutlineToolStripMenuItem.Checked = Settings.Default.bg2maskShow;
+            entranceCameraToolStripMenuItem.Checked = Settings.Default.entranceCamera;
+            entrancePositionToolStripMenuItem.Checked = Settings.Default.entrancePos;
+
             activeScene.DrawRoom();
             activeScene.Refresh();
 
             undoButton.Enabled = true;
             redoButton.Enabled = true;
 
+            if (Settings.Default.recentFiles.Contains(projectFilename))
+            {
+                Settings.Default.recentFiles.Remove(projectFilename);
+            }
+            Settings.Default.recentFiles.Insert(0, projectFilename);
+            while (Settings.Default.recentFiles.Count > 5)
+            {
+                Settings.Default.recentFiles.RemoveAt(4);
+            }
+            Settings.Default.Save();
+            refreshRecentsFiles();
+
+
         }
 
+        private void OpenRecentProject(object sender, EventArgs e)
+        {
+            LoadProject((sender as ToolStripMenuItem).Name);
+        }
+
+        private void refreshRecentsFiles()
+        {
+            if (Settings.Default.recentFiles != null)
+            {
+                foreach (string s in Settings.Default.recentFiles)
+                {
+                    ToolStripMenuItem tsmi = new ToolStripMenuItem(s);
+                    tsmi.Click += OpenRecentProject;
+                    recentROMToolStripMenuItem.DropDownItems.Add(tsmi);
+
+                }
+            }
+        }
 
         public void initEntrancesList()
         {
@@ -1029,11 +428,6 @@ namespace ZeldaFullEditor
 
             entrancetreeView.SelectedNode = entrancetreeView.Nodes[0].Nodes[0];
             selectedEntrance = entrances[0];
-        }
-
-        public void initRoomsList()
-        {
-
         }
 
         public void enableProjectButtons()
@@ -1084,17 +478,6 @@ namespace ZeldaFullEditor
             AboutBox1 aboutBox = new AboutBox1();
             aboutBox.ShowDialog();
         }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            //loadRoomList(260);
-        }
-        public int selectedLayer = -1;
 
         public void setmodeAllScene(ObjectMode mode)
         {
@@ -1192,17 +575,6 @@ namespace ZeldaFullEditor
         {
             activeScene.mouse_down = false;
             activeScene.deleteSelected();
-            
-        }
-
-        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1228,41 +600,12 @@ namespace ZeldaFullEditor
             activeScene.copy();
         }
 
-        private void palettePicturebox_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (paletteViewer.mouseDown(e))
-            {
-                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
-                GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
-                activeScene.DrawRoom();
-                activeScene.Refresh();
-            }
-        }
-
-        private void palettePicturebox_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (paletteViewer.mouseUp(e))
-            {
-                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
-                GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
-                activeScene.DrawRoom();
-                activeScene.Refresh();
-            }
-        }
-
-        private void palettePicturebox_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-
-        }
-
         private void showBG1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             activeScene.showLayer1 = showBG1ToolStripMenuItem.Checked;
             activeScene.DrawRoom();
             activeScene.Refresh();
         }
-
-
 
         private void saveLayoutButton_Click(object sender, EventArgs e)
         {
@@ -1389,9 +732,11 @@ namespace ZeldaFullEditor
                 
             }
         }
-        //Bring to front -_-
+
+        
         private void moveDownToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //Bring to front -_-
             activeScene.mouse_down = false;
             if (activeScene.room.selectedObject.Count > 0)
             {
@@ -1414,8 +759,6 @@ namespace ZeldaFullEditor
                 activeScene.DrawRoom();
                 activeScene.Refresh();
                 activeScene.mouse_down = false;
-                //scene.need_refresh = true;
-
             }
         }
 
@@ -1476,7 +819,8 @@ namespace ZeldaFullEditor
                     }
                     activeScene.updating_info = false;
                 }
-                activeScene.need_refresh = true;
+                activeScene.DrawRoom();
+                activeScene.Refresh();
             }
         }
 
@@ -1532,19 +876,33 @@ namespace ZeldaFullEditor
                     }
                     activeScene.updating_info = false;
                 }
-                activeScene.need_refresh = true;
+                activeScene.DrawRoom();
+                activeScene.Refresh();
             }
-        }
-
-        private void changeObjectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //delete the selected object and add the new one
-            activeScene.mouse_down = false;
-            activeScene.changeObject();
         }
 
         private void zscreamForm_FormClosing_1(object sender, FormClosingEventArgs e)
         {
+
+            long parameters = 0;
+            //Properties.Settings.Default.ViewParameters;
+            Settings.Default.spriteText = textSpriteToolStripMenuItem.Checked;
+            Settings.Default.chestText = textChestItemToolStripMenuItem.Checked;
+            Settings.Default.itemText = textPotItemToolStripMenuItem.Checked;
+            Settings.Default.transparentBG = unselectedBGTransparentToolStripMenuItem.Checked;
+            Settings.Default.rightToolbox = rightSideToolboxToolStripMenuItem.Checked;
+            Settings.Default.spriteShow = hideSpritesToolStripMenuItem.Checked;
+            Settings.Default.itemsShow = hideItemsToolStripMenuItem.Checked;
+            Settings.Default.chestitemShow = hideChestItemsToolStripMenuItem.Checked;
+            Settings.Default.dooridShow = showDoorIDsToolStripMenuItem.Checked;
+            Settings.Default.chestidShow = showChestsIDsToolStripMenuItem.Checked;
+            Settings.Default.disableentranceGfx = disableEntranceGFXToolStripMenuItem.Checked;
+            Settings.Default.bg2maskShow = showBG2MaskOutlineToolStripMenuItem.Checked;
+            Settings.Default.entranceCamera = entranceCameraToolStripMenuItem.Checked;
+            Settings.Default.entrancePos = entrancePositionToolStripMenuItem.Checked;
+            Settings.Default.Save();
+
+
             if (anychange)
             {
                 all_rooms[activeScene.room.index] = activeScene.room;
@@ -1568,26 +926,6 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void roomListView_DragDrop(object sender, DragEventArgs e)
-        {
-
-        }
-
-        private void roomListView_ItemDrag(object sender, ItemDragEventArgs e)
-        {
-
-        }
-
-        private void roomListView_DragEnter(object sender, DragEventArgs e)
-        {
-
-        }
-
-        private void roomListView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
-        {
-
-        }
-
         private void showBG2ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             activeScene.showLayer2 = showBG2ToolStripMenuItem.Checked;
@@ -1608,20 +946,9 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void roomListView_BeforeSelect(object sender, TreeViewCancelEventArgs e)
-        {
-
-        }
-
-        private void loadInitialStuff()
-        {
-
-        }
-        public Entrance selectedEntrance = null;
-
         public void entrancetreeView_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            if (projectFilename == "")
+            if (!projectLoaded)
             {
                 return;
             }
@@ -1700,12 +1027,6 @@ namespace ZeldaFullEditor
 
         }
 
-        private void objectsListbox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-
-        }
-
         public void sortObject()
         {
             //objectViewer1.BeginUpdate();
@@ -1737,6 +1058,17 @@ namespace ZeldaFullEditor
                 .Select(x => x) //?
                 .ToArray());
             customPanel1.VerticalScroll.Value = 0;
+            
+
+            if (searchText == "")
+            {
+                spritesView1.items.Clear();
+                foreach (Sprite o in listofspritesobjects)
+                {
+                    spritesView1.items.Add((o));
+                }
+
+            }
             spritesView1.Refresh();
         }
 
@@ -1769,11 +1101,6 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void spritesListbox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void searchspriteTextbox_TextChanged(object sender, EventArgs e)
         {
             sortSprite();
@@ -1802,14 +1129,6 @@ namespace ZeldaFullEditor
                     activeScene.DrawRoom();
                     activeScene.Refresh();
                 }
-            }
-        }
-
-        private void roomListView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            if (e.Node.Tag != null) //tag = room id
-            {
-                addRoomTab((short)e.Node.Tag);
             }
         }
 
@@ -1880,6 +1199,8 @@ namespace ZeldaFullEditor
                 activeScene.Refresh();
             }
 
+            cgramViewer.Refresh();
+
         }
 
         private void rightSideToolboxToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1936,7 +1257,7 @@ namespace ZeldaFullEditor
                 {
                     selectedMapPng.Add((short)roomId);
                 }
-                loadRoomList(roomId);
+                //loadRoomList(roomId);
 
             }
             else
@@ -1945,7 +1266,7 @@ namespace ZeldaFullEditor
                 {
 
                     addRoomTab((short)roomId);
-                    loadRoomList(roomId);
+                    //loadRoomList(roomId);
                 }
             }
         }
@@ -1977,13 +1298,12 @@ namespace ZeldaFullEditor
 
         private void unselectedBGTransparentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
             activeScene.canSelectUnselectedBG = unselectedBGTransparentToolStripMenuItem.Checked;
         }
-        //Doors
+        
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            //Doors
             if (comboBox2.SelectedIndex != -1)
             {
                 if (activeScene.room.selectedObject.Count == 1)
@@ -2233,20 +1553,14 @@ namespace ZeldaFullEditor
             {
                 selectedMapPng.Add((short)i);
             }
-            loadRoomList(296);
+            //loadRoomList(296);
         }
 
         private void deselectedAllMapForExportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             selectedMapPng.Clear();
-            loadRoomList(296);
+            //loadRoomList(296);
         }
-
-        private void tabControl2_Click(object sender, EventArgs e)
-        {
-
-        }
-
 
         public int gridSize = 8;
         private void x8ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2285,19 +1599,16 @@ namespace ZeldaFullEditor
         public bool propertiesChangedFromForm = false;
         private void roomProperty_bg2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //
             updateRoomInfos();
         }
 
         private void roomProperty_layout_TextChanged(object sender, EventArgs e)
         {
-            //
             updateRoomInfos();
         }
 
         private void roomProperty_pit_CheckedChanged(object sender, EventArgs e)
         {
-            //
             updateRoomInfos();
         }
 
@@ -2505,16 +1816,6 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void tabControl2_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            if (tabControl2.SelectedIndex == e.Index)
-            {
-                e.Graphics.DrawString("x", e.Font, Brushes.Black, e.Bounds.Right - 15, e.Bounds.Top + 2);
-            }
-            e.Graphics.DrawString(this.tabControl2.TabPages[e.Index].Text, e.Font, Brushes.Black, e.Bounds.Left + 12, e.Bounds.Top + 4);
-            e.DrawFocusRectangle();
-        }
-
         public void closeRoom(int index)
         {
             int closedRoom = -1;
@@ -2534,43 +1835,7 @@ namespace ZeldaFullEditor
 
         private void tabControl2_MouseClick(object sender, MouseEventArgs e)
         {
-            /*if (e.Button == MouseButtons.Left)
-            {
-
-                Rectangle r = tabControl2.GetTabRect(tabControl2.SelectedIndex);
-                //Getting the position of the "x" mark.
-                Rectangle closeButton = new Rectangle(r.Right - 12, r.Top + 2, 10, 10);
-                if (closeButton.Contains(e.Location))
-                {
-                    if ((tabControl2.TabPages[tabControl2.SelectedIndex].Tag as Room).has_changed)
-                    {
-                        DialogResult dr = MessageBox.Show("Room has changed do you want to save?", "Warning", MessageBoxButtons.YesNoCancel);
-                        if (dr == DialogResult.Yes)
-                        {
-                            all_rooms[(tabControl2.TabPages[tabControl2.SelectedIndex].Tag as Room).index] = (Room)(tabControl2.TabPages[tabControl2.SelectedIndex].Tag as Room).Clone();
-                            closeRoom((tabControl2.TabPages[tabControl2.SelectedIndex].Tag as Room).index);
-                            this.tabControl2.TabPages.RemoveAt(tabControl2.SelectedIndex);
-                        }
-                        else if (dr == DialogResult.No)
-                        {
-                            closeRoom((tabControl2.TabPages[tabControl2.SelectedIndex].Tag as Room).index);
-                            this.tabControl2.TabPages.RemoveAt(tabControl2.SelectedIndex);
-                        }
-                        else if (dr == DialogResult.Cancel)
-                        {
-
-                        }
-                    }
-                    else
-                    {
-                        closeRoom((tabControl2.TabPages[tabControl2.SelectedIndex].Tag as Room).index);
-                        this.tabControl2.TabPages.RemoveAt(tabControl2.SelectedIndex);
-                    }
-                   
-                    this.tabControl2.TabPages.RemoveAt(tabControl2.SelectedIndex);
-                }
-            }
-            else */if (e.Button == MouseButtons.Middle)
+            if (e.Button == MouseButtons.Middle)
             {
                 for (int i = 0; i < tabControl2.TabCount; i++)
                 {
@@ -2625,7 +1890,7 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-            loadRoomList(0);
+            //loadRoomList(0);
         }
 
         private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
@@ -2724,44 +1989,10 @@ namespace ZeldaFullEditor
             }
         List<Chest> listofchests = new List<Chest>();
 
-        private void objectViewer1_Load(object sender, EventArgs e)
-        {
-            foreach (Room_Object o in listoftilesobjects)
-            {
-                objectViewer1.items.Add((o));
-            }
-            /*foreach(Sprite spr in listofspritesobjects)
-            {
-                spritesView1.items.Add(spr);
-            }*/
-
-
-        }
-
-        private void objectViewer1_Resize(object sender, EventArgs e)
-        {
-           // Refresh();
-        }
-
-        private void objectViewer1_MouseClick(object sender, MouseEventArgs e)
-        {
-            
-        }
 
         private void objectViewer1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //if (activeScene.mouse_down == false)
-            //{
-                activeScene.selectedDragObject = new dataObject(objectViewer1.selectedObject.id, objectViewer1.selectedObject.name);
-           // }
-        }
-
-        private void tabControl2_SizeChanged(object sender, EventArgs e)
-        {
-            if (activeScene != null)
-            {
-                //activeScene.Location = new Point(tabControl2.Location.X, tabControl2.Location.Y + 24);
-            }
+            activeScene.selectedDragObject = new dataObject(objectViewer1.selectedObject.id, objectViewer1.selectedObject.name);
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -2774,14 +2005,6 @@ namespace ZeldaFullEditor
         {
             objectViewer1.showName = showNameObjectCheckbox.Checked;
             objectViewer1.updateSize();
-        }
-
-        private void spritesView1_Load(object sender, EventArgs e)
-        {
-            foreach (Sprite o in listofspritesobjects)
-            {
-                spritesView1.items.Add((o));
-            }
         }
 
         private void entranceProperty_room_TextChanged(object sender, EventArgs e)
@@ -2799,10 +2022,6 @@ namespace ZeldaFullEditor
             updateEntranceInfos();
         }
 
-        private void label41_MouseMove(object sender, MouseEventArgs e)
-        {
-            
-        }
 
         private void spritesView1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -2961,11 +2180,6 @@ namespace ZeldaFullEditor
 
         }
 
-        private void decreaseZBy1ToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Facepalm
-        }
-
         private void litCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             if (activeScene.updating_info)
@@ -2982,30 +2196,6 @@ namespace ZeldaFullEditor
         {
             Process.Start("https://github.com/Zarby89/ZScreamDungeon/blob/master/ZeldaFullEditor/PatchNotes.txt");
         }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            SaveFileDialog sf = new SaveFileDialog();
-            sf.DefaultExt = ".pal";
-            if (sf.ShowDialog() == DialogResult.OK)
-            {
-                FileStream fs = new FileStream(sf.FileName, FileMode.Create, FileAccess.Write);
-                ColorPalette cp = GFX.roomBg1Bitmap.Palette;
-                foreach (Color c in cp.Entries)
-                {
-                    fs.WriteByte(c.R);
-                    fs.WriteByte(c.G);
-                    fs.WriteByte(c.B);
-                }
-                fs.Close();
-            }
-            
-        }
-
-        private void exportOnJPROMToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-    }
 
         private void spritesubtypeUpDown_ValueChanged(object sender, EventArgs e)
         {
@@ -3033,7 +2223,6 @@ namespace ZeldaFullEditor
             chestEditorForm.ShowDialog();
 
         }
-
 
         private void RoomProperty_MouseWheel(object sender, MouseEventArgs e)
         {
@@ -3121,7 +2310,7 @@ namespace ZeldaFullEditor
 
         private void mapPicturebox_Paint(object sender, PaintEventArgs e)
         {
-            if (projectFilename == "")
+            if (!projectLoaded)
             {
                 return;
             }
@@ -3231,11 +2420,6 @@ namespace ZeldaFullEditor
 
         }
 
-        private void hideItemsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void dungeonsPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Gui.DungeonPropertiesForm propertiesEditorForm = new Gui.DungeonPropertiesForm();
@@ -3251,165 +2435,6 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void generateChestsAddressesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-            List<string> chestsaddress = new List<string>();
-            int cpos = (ROM.DATA[Constants.chests_data_pointer1 + 2] << 16) + (ROM.DATA[Constants.chests_data_pointer1 + 1] << 8) + (ROM.DATA[Constants.chests_data_pointer1]);
-            cpos = Utils.SnesToPc(cpos);
-            int clength = (ROM.DATA[Constants.chests_length_pointer + 1] << 8) + (ROM.DATA[Constants.chests_length_pointer]);
-            //Console.WriteLine(clength);
-            for (int index = 0; index < 296; index++)
-            {
-                for (int i = 0; i < clength; i++)
-                {
-                    if ((((ROM.DATA[cpos + (i * 3) + 1] << 8) + (ROM.DATA[cpos + (i * 3)])) & 0x7FFF) == index)
-                    {
-                        //there's a chest in that room !
-                        bool big = false;
-                        if ((((ROM.DATA[cpos + (i * 3) + 1] << 8) + (ROM.DATA[cpos + (i * 3)])) & 0x8000) == 0x8000) //????? 
-                        {
-                            big = true;
-                        }
-
-                        chestsaddress.Add(ROMStructure.roomsNames[index] + ", " + (cpos+(i*3)).ToString("X6"));
-                        //chests_in_room.Add(new ChestData(ROM.DATA[cpos + (i * 3) + 2], big));
-
-                        //
-                    }
-                }
-            }
-
-            File.WriteAllLines("ChestsAddresses.txt", chestsaddress.ToArray());
-        }
-
-        private void palettesTreeview_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
-        {
-            
-            if (e.Node.Name == "currentRoom")
-            {
-                    paletteViewer.update(true,true);
-            }
-
-            if (e.Node.Tag != null)
-            {
-
-                if (e.Node.Parent.Name == "DungeonPalettes")
-                {
-                    paletteViewer.xSize = 15;
-                }
-
-                if (e.Node.Parent.Name == "SwordPalettes")
-                {
-                    paletteViewer.xSize = 3;
-                }
-
-                if (e.Node.Parent.Name == "ShieldPalettes")
-                {
-                    paletteViewer.xSize = 4;
-                }
-
-                if (e.Node.Parent.Name == "ArmorPalettes")
-                {
-                    paletteViewer.xSize = 15;
-                }
-
-                if (e.Node.Parent.Name == "StaticSpritePalette")
-                {
-                    paletteViewer.xSize = 15;
-                }
-
-                if (e.Node.Parent.Name == "DynamicSpritePalette")
-                {
-                    paletteViewer.xSize = 7;
-
-                }
-
-                if (e.Node.Parent.Name == "OverworldPalettes")
-                {
-                    paletteViewer.xSize = 7;
-                }
-
-
-                if (e.Node.Parent.Name == "OverworldAuxPalettes")
-                {
-                    paletteViewer.xSize = 7;
-                }
-
-                if (e.Node.Parent.Name == "OverworldAnimatedPalettes")
-                {
-                    paletteViewer.xSize = 7;
-                }
-
-                if (e.Node.Parent.Name == "HudPalettes")
-                {
-                    paletteViewer.xSize = 16;//15 or 16?
-
-                }
-                if (e.Node.Tag.GetType() == typeof(Color[]))
-                {
-                    paletteViewer.setColor(e.Node.Tag as Color[]);
-                    paletteViewer.update();
-                }
-                //TODO:  Add missing palettes here
-            }
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            paletteViewer.resetColor();
-        }
-
-        private void globalOptionsToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void overworldButton_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        public void dungeonButton_Click(object sender, EventArgs e)
-        {
-            
-
-                customPanel3.Visible = true;
-                spritesView1.updateSize();
-                spritesView1.Refresh();
-                headerGroupbox.Visible = true;
-                allbgsButton.Visible = true;
-                bg1modeButton.Visible = true;
-                bg2modeButton.Visible = true;
-                bg3modeButton.Visible = true;
-                spritemodeButton.Visible = true;
-                blockmodeButton.Visible = true;
-                torchmodeButton.Visible = true;
-                doormodeButton.Visible = true;
-                chestmodeButton.Visible = true;
-                potmodeButton.Visible = true;
-                warpmodeButton.Visible = true;
-                toolStripButton1.Visible = true;
-                toolStripSeparator3.Visible = true;
-                saveLayoutButton.Visible = true;
-                loadlayoutButton.Visible = true;
-        }
-
-        private void overworldButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void customPanel5_Scroll(object sender, ScrollEventArgs e)
-        {
-            
-        }
-
-        private void panel5_Scroll(object sender, ScrollEventArgs e)
-        {
-
-        }
-
         [DllImport("user32.dll", SetLastError = true)]
         private static extern bool LockWindowUpdate(IntPtr hWnd);
 
@@ -3423,8 +2448,6 @@ namespace ZeldaFullEditor
                 return cp;
             }
         }
-
-
 
 
         private void printRoomObjectsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3518,16 +2541,6 @@ namespace ZeldaFullEditor
             activeScene.selectedMode = ObjectMode.EntrancePlacing;
         }
 
-        private void tag1Button_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("WIP :(");
-        }
-
-        private void tag2Button_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("WIP :(");
-        }
-
         private void exportAsASMToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (SaveFileDialog sf = new SaveFileDialog())
@@ -3542,30 +2555,15 @@ namespace ZeldaFullEditor
                 }
             }
         }
-
+        VramViewer vramViewer = new VramViewer();
         private void vramViewerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            VramViewer vramViewer = new VramViewer();
+            
             vramViewer.TopLevel = false;
             customPanel3.Controls.Add(vramViewer);
             vramViewer.Parent = customPanel3;
             vramViewer.BringToFront();
             vramViewer.Show();
-        }
-
-        private void selectedGroupbox_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void button_holewarp_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void warpPreviewLabel_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void warpButton_Click(object sender, EventArgs e)
@@ -3812,11 +2810,6 @@ namespace ZeldaFullEditor
 
         }
 
-        private void mapPicturebox_Paint_1(object sender, PaintEventArgs e)
-        {
-
-        }
-
         private void entranceCameraToolStripMenuItem_Click(object sender, EventArgs e)
         {
             activeScene.Refresh();
@@ -3826,24 +2819,63 @@ namespace ZeldaFullEditor
         {
             activeScene.Refresh();
         }
-    }
 
-
-
-    public class dataObject
-    {
-        public short id;
-        public string Name { get; set; }
-        public byte option = 0;
-        public dataObject(short id, string name, byte option = 0)
+        private void loadNamesFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Name = name;
-            this.id = id;
-            this.option = option;
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    Sprites_Names.loadFromFile(ofd.FileName);
+                    Room_Name.loadFromFile(ofd.FileName);
+                    ChestItems_Name.loadFromFile(ofd.FileName);
+                    ItemsNames.loadFromFile(ofd.FileName);
+                    selecteditemobjectCombobox.Items.Clear();
+                    for(int i = 0;i<ItemsNames.name.Length;i++)
+                    {
+                        selecteditemobjectCombobox.Items.Add(ItemsNames.name[i]);
+                    }
+                }
+            }
+
+                
+        }
+        public CGRamViewer cgramViewer = new CGRamViewer();
+        private void cGramViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            cgramViewer.TopLevel = false;
+            customPanel3.Controls.Add(cgramViewer);
+            cgramViewer.Parent = customPanel3;
+            cgramViewer.BringToFront();
+            cgramViewer.Show();
         }
 
+        private void gfxGroupsetsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
 
+        }
+
+        //Export Palette to YY-CHR Palette Format
+        /*            
+            SaveFileDialog sf = new SaveFileDialog();
+            sf.DefaultExt = ".pal";
+            if (sf.ShowDialog() == DialogResult.OK)
+            {
+                FileStream fs = new FileStream(sf.FileName, FileMode.Create, FileAccess.Write);
+                ColorPalette cp = GFX.roomBg1Bitmap.Palette;
+                foreach (Color c in cp.Entries)
+                {
+                    fs.WriteByte(c.R);
+                    fs.WriteByte(c.G);
+                    fs.WriteByte(c.B);
+                }
+                fs.Close();
+            }*/
     }
+
+
+
 
 
 }

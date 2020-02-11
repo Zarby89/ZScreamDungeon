@@ -1,0 +1,686 @@
+﻿namespace ZeldaFullEditor.Gui
+{
+    partial class GfxGroupsForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GfxGroupsForm));
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.mainTab = new System.Windows.Forms.TabPage();
+            this.roomTab = new System.Windows.Forms.TabPage();
+            this.spriteTab = new System.Windows.Forms.TabPage();
+            this.paletteTab = new System.Windows.Forms.TabPage();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.okButton = new System.Windows.Forms.Button();
+            this.cancelButton = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.mainBlocksetUpDown = new System.Windows.Forms.NumericUpDown();
+            this.main1Box = new System.Windows.Forms.TextBox();
+            this.mainGroupbox = new System.Windows.Forms.GroupBox();
+            this.main2Box = new System.Windows.Forms.TextBox();
+            this.main3Box = new System.Windows.Forms.TextBox();
+            this.main4Box = new System.Windows.Forms.TextBox();
+            this.main5Box = new System.Windows.Forms.TextBox();
+            this.main6Box = new System.Windows.Forms.TextBox();
+            this.main7Box = new System.Windows.Forms.TextBox();
+            this.main8Box = new System.Windows.Forms.TextBox();
+            this.roomGroupbox = new System.Windows.Forms.GroupBox();
+            this.room4Box = new System.Windows.Forms.TextBox();
+            this.room3Box = new System.Windows.Forms.TextBox();
+            this.room2Box = new System.Windows.Forms.TextBox();
+            this.room1Box = new System.Windows.Forms.TextBox();
+            this.roomUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.spritesGroupbox = new System.Windows.Forms.GroupBox();
+            this.sprite4Box = new System.Windows.Forms.TextBox();
+            this.sprite3Box = new System.Windows.Forms.TextBox();
+            this.sprite2Box = new System.Windows.Forms.TextBox();
+            this.sprite1Box = new System.Windows.Forms.TextBox();
+            this.spriteUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.palette4Box = new System.Windows.Forms.TextBox();
+            this.palette3Box = new System.Windows.Forms.TextBox();
+            this.palette2Box = new System.Windows.Forms.TextBox();
+            this.palette1Box = new System.Windows.Forms.TextBox();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.label7 = new System.Windows.Forms.Label();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tabControl1.SuspendLayout();
+            this.mainTab.SuspendLayout();
+            this.roomTab.SuspendLayout();
+            this.spriteTab.SuspendLayout();
+            this.paletteTab.SuspendLayout();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainBlocksetUpDown)).BeginInit();
+            this.mainGroupbox.SuspendLayout();
+            this.roomGroupbox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.roomUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            this.spritesGroupbox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spriteUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.mainTab);
+            this.tabControl1.Controls.Add(this.roomTab);
+            this.tabControl1.Controls.Add(this.spriteTab);
+            this.tabControl1.Controls.Add(this.paletteTab);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(386, 294);
+            this.tabControl1.TabIndex = 0;
+            // 
+            // mainTab
+            // 
+            this.mainTab.Controls.Add(this.mainGroupbox);
+            this.mainTab.Controls.Add(this.mainBlocksetUpDown);
+            this.mainTab.Controls.Add(this.label2);
+            this.mainTab.Controls.Add(this.label1);
+            this.mainTab.Controls.Add(this.pictureBox1);
+            this.mainTab.Location = new System.Drawing.Point(4, 22);
+            this.mainTab.Name = "mainTab";
+            this.mainTab.Padding = new System.Windows.Forms.Padding(3);
+            this.mainTab.Size = new System.Drawing.Size(378, 268);
+            this.mainTab.TabIndex = 0;
+            this.mainTab.Text = "Main";
+            this.mainTab.UseVisualStyleBackColor = true;
+            // 
+            // roomTab
+            // 
+            this.roomTab.Controls.Add(this.roomGroupbox);
+            this.roomTab.Controls.Add(this.roomUpDown);
+            this.roomTab.Controls.Add(this.label3);
+            this.roomTab.Controls.Add(this.label4);
+            this.roomTab.Controls.Add(this.pictureBox2);
+            this.roomTab.Location = new System.Drawing.Point(4, 22);
+            this.roomTab.Name = "roomTab";
+            this.roomTab.Padding = new System.Windows.Forms.Padding(3);
+            this.roomTab.Size = new System.Drawing.Size(378, 268);
+            this.roomTab.TabIndex = 1;
+            this.roomTab.Text = "Rooms";
+            this.roomTab.UseVisualStyleBackColor = true;
+            // 
+            // spriteTab
+            // 
+            this.spriteTab.Controls.Add(this.spritesGroupbox);
+            this.spriteTab.Controls.Add(this.spriteUpDown);
+            this.spriteTab.Controls.Add(this.label5);
+            this.spriteTab.Controls.Add(this.label6);
+            this.spriteTab.Controls.Add(this.pictureBox3);
+            this.spriteTab.Location = new System.Drawing.Point(4, 22);
+            this.spriteTab.Name = "spriteTab";
+            this.spriteTab.Size = new System.Drawing.Size(378, 268);
+            this.spriteTab.TabIndex = 2;
+            this.spriteTab.Text = "Sprites";
+            this.spriteTab.UseVisualStyleBackColor = true;
+            // 
+            // paletteTab
+            // 
+            this.paletteTab.Controls.Add(this.groupBox1);
+            this.paletteTab.Controls.Add(this.numericUpDown1);
+            this.paletteTab.Controls.Add(this.label7);
+            this.paletteTab.Controls.Add(this.pictureBox4);
+            this.paletteTab.Location = new System.Drawing.Point(4, 22);
+            this.paletteTab.Name = "paletteTab";
+            this.paletteTab.Size = new System.Drawing.Size(378, 268);
+            this.paletteTab.TabIndex = 3;
+            this.paletteTab.Text = "Palettes";
+            this.paletteTab.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.cancelButton);
+            this.panel1.Controls.Add(this.okButton);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 294);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(386, 36);
+            this.panel1.TabIndex = 1;
+            // 
+            // okButton
+            // 
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.okButton.Location = new System.Drawing.Point(299, 6);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.TabIndex = 0;
+            this.okButton.Text = "Ok";
+            this.okButton.UseVisualStyleBackColor = true;
+            // 
+            // cancelButton
+            // 
+            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButton.Location = new System.Drawing.Point(218, 6);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 1;
+            this.cancelButton.Text = "Cancel";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.Location = new System.Drawing.Point(242, 9);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(128, 256);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label1
+            // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 239);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(225, 26);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Main groupset is the gfx set on overworld\r\nand the gfx set on the entrances for d" +
+    "ungeons";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(8, 11);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(102, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Selected Blockset : ";
+            // 
+            // mainBlocksetUpDown
+            // 
+            this.mainBlocksetUpDown.Location = new System.Drawing.Point(116, 9);
+            this.mainBlocksetUpDown.Maximum = new decimal(new int[] {
+            36,
+            0,
+            0,
+            0});
+            this.mainBlocksetUpDown.Name = "mainBlocksetUpDown";
+            this.mainBlocksetUpDown.Size = new System.Drawing.Size(118, 20);
+            this.mainBlocksetUpDown.TabIndex = 3;
+            // 
+            // main1Box
+            // 
+            this.main1Box.Location = new System.Drawing.Point(6, 19);
+            this.main1Box.Name = "main1Box";
+            this.main1Box.Size = new System.Drawing.Size(48, 20);
+            this.main1Box.TabIndex = 4;
+            // 
+            // mainGroupbox
+            // 
+            this.mainGroupbox.Controls.Add(this.main8Box);
+            this.mainGroupbox.Controls.Add(this.main7Box);
+            this.mainGroupbox.Controls.Add(this.main6Box);
+            this.mainGroupbox.Controls.Add(this.main5Box);
+            this.mainGroupbox.Controls.Add(this.main4Box);
+            this.mainGroupbox.Controls.Add(this.main3Box);
+            this.mainGroupbox.Controls.Add(this.main2Box);
+            this.mainGroupbox.Controls.Add(this.main1Box);
+            this.mainGroupbox.Location = new System.Drawing.Point(11, 35);
+            this.mainGroupbox.Name = "mainGroupbox";
+            this.mainGroupbox.Size = new System.Drawing.Size(223, 82);
+            this.mainGroupbox.TabIndex = 5;
+            this.mainGroupbox.TabStop = false;
+            this.mainGroupbox.Text = "Values - 8 subset";
+            // 
+            // main2Box
+            // 
+            this.main2Box.Location = new System.Drawing.Point(60, 19);
+            this.main2Box.Name = "main2Box";
+            this.main2Box.Size = new System.Drawing.Size(48, 20);
+            this.main2Box.TabIndex = 5;
+            // 
+            // main3Box
+            // 
+            this.main3Box.Location = new System.Drawing.Point(114, 19);
+            this.main3Box.Name = "main3Box";
+            this.main3Box.Size = new System.Drawing.Size(48, 20);
+            this.main3Box.TabIndex = 6;
+            // 
+            // main4Box
+            // 
+            this.main4Box.Location = new System.Drawing.Point(168, 19);
+            this.main4Box.Name = "main4Box";
+            this.main4Box.Size = new System.Drawing.Size(48, 20);
+            this.main4Box.TabIndex = 7;
+            // 
+            // main5Box
+            // 
+            this.main5Box.Location = new System.Drawing.Point(6, 45);
+            this.main5Box.Name = "main5Box";
+            this.main5Box.Size = new System.Drawing.Size(48, 20);
+            this.main5Box.TabIndex = 8;
+            // 
+            // main6Box
+            // 
+            this.main6Box.Location = new System.Drawing.Point(60, 45);
+            this.main6Box.Name = "main6Box";
+            this.main6Box.Size = new System.Drawing.Size(48, 20);
+            this.main6Box.TabIndex = 9;
+            // 
+            // main7Box
+            // 
+            this.main7Box.Location = new System.Drawing.Point(114, 45);
+            this.main7Box.Name = "main7Box";
+            this.main7Box.Size = new System.Drawing.Size(48, 20);
+            this.main7Box.TabIndex = 10;
+            // 
+            // main8Box
+            // 
+            this.main8Box.Location = new System.Drawing.Point(168, 45);
+            this.main8Box.Name = "main8Box";
+            this.main8Box.Size = new System.Drawing.Size(48, 20);
+            this.main8Box.TabIndex = 11;
+            // 
+            // roomGroupbox
+            // 
+            this.roomGroupbox.Controls.Add(this.room4Box);
+            this.roomGroupbox.Controls.Add(this.room3Box);
+            this.roomGroupbox.Controls.Add(this.room2Box);
+            this.roomGroupbox.Controls.Add(this.room1Box);
+            this.roomGroupbox.Location = new System.Drawing.Point(11, 35);
+            this.roomGroupbox.Name = "roomGroupbox";
+            this.roomGroupbox.Size = new System.Drawing.Size(223, 50);
+            this.roomGroupbox.TabIndex = 10;
+            this.roomGroupbox.TabStop = false;
+            this.roomGroupbox.Text = "Values - 4 subset (overwrite 4 of main)";
+            // 
+            // room4Box
+            // 
+            this.room4Box.Location = new System.Drawing.Point(168, 19);
+            this.room4Box.Name = "room4Box";
+            this.room4Box.Size = new System.Drawing.Size(48, 20);
+            this.room4Box.TabIndex = 7;
+            // 
+            // room3Box
+            // 
+            this.room3Box.Location = new System.Drawing.Point(114, 19);
+            this.room3Box.Name = "room3Box";
+            this.room3Box.Size = new System.Drawing.Size(48, 20);
+            this.room3Box.TabIndex = 6;
+            // 
+            // room2Box
+            // 
+            this.room2Box.Location = new System.Drawing.Point(60, 19);
+            this.room2Box.Name = "room2Box";
+            this.room2Box.Size = new System.Drawing.Size(48, 20);
+            this.room2Box.TabIndex = 5;
+            // 
+            // room1Box
+            // 
+            this.room1Box.Location = new System.Drawing.Point(6, 19);
+            this.room1Box.Name = "room1Box";
+            this.room1Box.Size = new System.Drawing.Size(48, 20);
+            this.room1Box.TabIndex = 4;
+            // 
+            // roomUpDown
+            // 
+            this.roomUpDown.Location = new System.Drawing.Point(116, 9);
+            this.roomUpDown.Maximum = new decimal(new int[] {
+            81,
+            0,
+            0,
+            0});
+            this.roomUpDown.Name = "roomUpDown";
+            this.roomUpDown.Size = new System.Drawing.Size(118, 20);
+            this.roomUpDown.TabIndex = 9;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(8, 11);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(102, 13);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "Selected Blockset : ";
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(3, 226);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(220, 39);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Room blockset is the blockset used by rooms\r\nto load new room gfx like the floors" +
+    " however\r\nthey are only loaded on warp, stairs, hole";
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox2.Location = new System.Drawing.Point(242, 9);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(128, 256);
+            this.pictureBox2.TabIndex = 6;
+            this.pictureBox2.TabStop = false;
+            // 
+            // spritesGroupbox
+            // 
+            this.spritesGroupbox.Controls.Add(this.sprite4Box);
+            this.spritesGroupbox.Controls.Add(this.sprite3Box);
+            this.spritesGroupbox.Controls.Add(this.sprite2Box);
+            this.spritesGroupbox.Controls.Add(this.sprite1Box);
+            this.spritesGroupbox.Location = new System.Drawing.Point(11, 35);
+            this.spritesGroupbox.Name = "spritesGroupbox";
+            this.spritesGroupbox.Size = new System.Drawing.Size(223, 50);
+            this.spritesGroupbox.TabIndex = 15;
+            this.spritesGroupbox.TabStop = false;
+            this.spritesGroupbox.Text = "Values - 4 subset";
+            // 
+            // sprite4Box
+            // 
+            this.sprite4Box.Location = new System.Drawing.Point(168, 19);
+            this.sprite4Box.Name = "sprite4Box";
+            this.sprite4Box.Size = new System.Drawing.Size(48, 20);
+            this.sprite4Box.TabIndex = 7;
+            // 
+            // sprite3Box
+            // 
+            this.sprite3Box.Location = new System.Drawing.Point(114, 19);
+            this.sprite3Box.Name = "sprite3Box";
+            this.sprite3Box.Size = new System.Drawing.Size(48, 20);
+            this.sprite3Box.TabIndex = 6;
+            // 
+            // sprite2Box
+            // 
+            this.sprite2Box.Location = new System.Drawing.Point(60, 19);
+            this.sprite2Box.Name = "sprite2Box";
+            this.sprite2Box.Size = new System.Drawing.Size(48, 20);
+            this.sprite2Box.TabIndex = 5;
+            // 
+            // sprite1Box
+            // 
+            this.sprite1Box.Location = new System.Drawing.Point(6, 19);
+            this.sprite1Box.Name = "sprite1Box";
+            this.sprite1Box.Size = new System.Drawing.Size(48, 20);
+            this.sprite1Box.TabIndex = 4;
+            // 
+            // spriteUpDown
+            // 
+            this.spriteUpDown.Location = new System.Drawing.Point(116, 9);
+            this.spriteUpDown.Maximum = new decimal(new int[] {
+            143,
+            0,
+            0,
+            0});
+            this.spriteUpDown.Name = "spriteUpDown";
+            this.spriteUpDown.Size = new System.Drawing.Size(118, 20);
+            this.spriteUpDown.TabIndex = 14;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(8, 11);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(102, 13);
+            this.label5.TabIndex = 13;
+            this.label5.Text = "Selected Blockset : ";
+            // 
+            // label6
+            // 
+            this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(3, 226);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(357, 39);
+            this.label6.TabIndex = 12;
+            this.label6.Text = resources.GetString("label6.Text");
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox3.Location = new System.Drawing.Point(242, 9);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(128, 128);
+            this.pictureBox3.TabIndex = 11;
+            this.pictureBox3.TabStop = false;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.label11);
+            this.groupBox1.Controls.Add(this.label10);
+            this.groupBox1.Controls.Add(this.label9);
+            this.groupBox1.Controls.Add(this.palette4Box);
+            this.groupBox1.Controls.Add(this.palette3Box);
+            this.groupBox1.Controls.Add(this.palette2Box);
+            this.groupBox1.Controls.Add(this.palette1Box);
+            this.groupBox1.Location = new System.Drawing.Point(11, 35);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(223, 126);
+            this.groupBox1.TabIndex = 20;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Values - 4 subset";
+            // 
+            // palette4Box
+            // 
+            this.palette4Box.Location = new System.Drawing.Point(169, 95);
+            this.palette4Box.Name = "palette4Box";
+            this.palette4Box.Size = new System.Drawing.Size(48, 20);
+            this.palette4Box.TabIndex = 7;
+            // 
+            // palette3Box
+            // 
+            this.palette3Box.Location = new System.Drawing.Point(169, 69);
+            this.palette3Box.Name = "palette3Box";
+            this.palette3Box.Size = new System.Drawing.Size(48, 20);
+            this.palette3Box.TabIndex = 6;
+            // 
+            // palette2Box
+            // 
+            this.palette2Box.Location = new System.Drawing.Point(169, 43);
+            this.palette2Box.Name = "palette2Box";
+            this.palette2Box.Size = new System.Drawing.Size(48, 20);
+            this.palette2Box.TabIndex = 5;
+            // 
+            // palette1Box
+            // 
+            this.palette1Box.Location = new System.Drawing.Point(169, 17);
+            this.palette1Box.Name = "palette1Box";
+            this.palette1Box.Size = new System.Drawing.Size(48, 20);
+            this.palette1Box.TabIndex = 4;
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(116, 9);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            81,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(118, 20);
+            this.numericUpDown1.TabIndex = 19;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(8, 11);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(108, 13);
+            this.label7.TabIndex = 18;
+            this.label7.Text = "Selected Paletteset : ";
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox4.Location = new System.Drawing.Point(242, 9);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(128, 128);
+            this.pictureBox4.TabIndex = 16;
+            this.pictureBox4.TabStop = false;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(6, 20);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(149, 13);
+            this.label9.TabIndex = 21;
+            this.label9.Text = "Dungeon,Overworld Main Pal.";
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(6, 46);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(144, 13);
+            this.label10.TabIndex = 22;
+            this.label10.Text = "Dungeon,Overworld Aux Pal.";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(6, 72);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(87, 13);
+            this.label11.TabIndex = 23;
+            this.label11.Text = "Sprites Aux1 Pal.";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(6, 98);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(87, 13);
+            this.label12.TabIndex = 24;
+            this.label12.Text = "Sprites Aux2 Pal.";
+            // 
+            // GfxGroupsForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(386, 330);
+            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.panel1);
+            this.Name = "GfxGroupsForm";
+            this.Text = "Gfx Groups Form";
+            this.tabControl1.ResumeLayout(false);
+            this.mainTab.ResumeLayout(false);
+            this.mainTab.PerformLayout();
+            this.roomTab.ResumeLayout(false);
+            this.roomTab.PerformLayout();
+            this.spriteTab.ResumeLayout(false);
+            this.spriteTab.PerformLayout();
+            this.paletteTab.ResumeLayout(false);
+            this.paletteTab.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mainBlocksetUpDown)).EndInit();
+            this.mainGroupbox.ResumeLayout(false);
+            this.mainGroupbox.PerformLayout();
+            this.roomGroupbox.ResumeLayout(false);
+            this.roomGroupbox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.roomUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            this.spritesGroupbox.ResumeLayout(false);
+            this.spritesGroupbox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.spriteUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabPage mainTab;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TabPage roomTab;
+        private System.Windows.Forms.TabPage spriteTab;
+        private System.Windows.Forms.TabPage paletteTab;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button cancelButton;
+        private System.Windows.Forms.Button okButton;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.NumericUpDown mainBlocksetUpDown;
+        private System.Windows.Forms.GroupBox mainGroupbox;
+        private System.Windows.Forms.TextBox main8Box;
+        private System.Windows.Forms.TextBox main7Box;
+        private System.Windows.Forms.TextBox main6Box;
+        private System.Windows.Forms.TextBox main5Box;
+        private System.Windows.Forms.TextBox main4Box;
+        private System.Windows.Forms.TextBox main3Box;
+        private System.Windows.Forms.TextBox main2Box;
+        private System.Windows.Forms.TextBox main1Box;
+        private System.Windows.Forms.GroupBox roomGroupbox;
+        private System.Windows.Forms.TextBox room4Box;
+        private System.Windows.Forms.TextBox room3Box;
+        private System.Windows.Forms.TextBox room2Box;
+        private System.Windows.Forms.TextBox room1Box;
+        private System.Windows.Forms.NumericUpDown roomUpDown;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.GroupBox spritesGroupbox;
+        private System.Windows.Forms.TextBox sprite4Box;
+        private System.Windows.Forms.TextBox sprite3Box;
+        private System.Windows.Forms.TextBox sprite2Box;
+        private System.Windows.Forms.TextBox sprite1Box;
+        private System.Windows.Forms.NumericUpDown spriteUpDown;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.TextBox palette4Box;
+        private System.Windows.Forms.TextBox palette3Box;
+        private System.Windows.Forms.TextBox palette2Box;
+        private System.Windows.Forms.TextBox palette1Box;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.PictureBox pictureBox4;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
+    }
+}

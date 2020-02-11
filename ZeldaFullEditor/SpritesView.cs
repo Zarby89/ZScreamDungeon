@@ -54,8 +54,8 @@ namespace ZeldaFullEditor
                 e.Graphics.DrawRectangle(Pens.LightGray, new Rectangle(xpos * 64 + (xpos * 4), ypos * 64 + (ypos * 4), 64, 64));
                 if (o.overlord == 0)
                 {
-                    e.Graphics.DrawString(Sprites_Names.name[o.id].Substring(2, Sprites_Names.name[o.id].Length - 2), new Font("Arial",7), Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4) + 40, 64, 24));
-                    e.Graphics.DrawString(Sprites_Names.name[o.id].Substring(0, 2), this.Font, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4), 64, 24));
+                    e.Graphics.DrawString(Sprites_Names.name[o.id], new Font("Arial",7), Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4) + 40, 64, 24));
+                    //e.Graphics.DrawString(Sprites_Names.name[o.id].Substring(0, 2), this.Font, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4), 64, 24));
 
                 }
                 else

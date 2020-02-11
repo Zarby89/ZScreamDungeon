@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,39 @@ namespace ZeldaFullEditor
     [Serializable]
   public static class Sprites_Names
   {
+    public static void loadFromFile(string file = "DefaultNames.txt")
+    {
+            string[] s = File.ReadAllLines(file);
+            int l = 0;
+            bool found = false;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == "[Sprites Names]")
+                {
+                    l = 0;
+                    found = true;
+                    continue;
+                }
+
+                if (found)
+                {
+                    if (s[i].Length > 0)
+                    {
+                        if (s[i][0] == '/' && s[i][1] == '/')
+                        {
+                            continue;
+                        }
+                        if (l >= 0xFF)
+                        {
+                            break;
+                        }
+                        name[l] = s[i];
+                        l++;
+                    }
+                }
+            }
+
+    }
 
     static public string[] name = new string[] {
 "00 Raven",

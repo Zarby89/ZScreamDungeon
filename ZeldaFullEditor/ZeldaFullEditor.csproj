@@ -97,10 +97,12 @@
     <Compile Include="CustomTabControl.Designer.cs">
       <DependentUpon>CustomTabControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="dataObject.cs" />
     <Compile Include="DataRoom.cs" />
     <Compile Include="DoAction.cs" />
     <Compile Include="DragMode.cs" />
     <Compile Include="Entrance.cs" />
+    <Compile Include="GfxGroups.cs" />
     <Compile Include="GlobalOptionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -119,6 +121,12 @@
     <Compile Include="Gui\AdvancedChestEditorForm.Designer.cs">
       <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\CGRamViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\CGRamViewer.Designer.cs">
+      <DependentUpon>CGRamViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\DungeonPropertiesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,6 +138,12 @@
     </Compile>
     <Compile Include="Gui\EntrancePropertyForm.Designer.cs">
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\GfxGroupsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\GfxGroupsForm.Designer.cs">
+      <DependentUpon>GfxGroupsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\WarpsForm.cs">
       <SubType>Form</SubType>
@@ -242,6 +256,9 @@
     <EmbeddedResource Include="Gui\AdvancedChestEditorForm.resx">
       <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\CGRamViewer.resx">
+      <DependentUpon>CGRamViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\DungeonPropertiesForm.resx">
       <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -250,6 +267,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\EntrancePropertyForm.resx">
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\GfxGroupsForm.resx">
+      <DependentUpon>GfxGroupsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\GotoRoom.resx">
       <DependentUpon>GotoRoom.cs</DependentUpon>
@@ -308,6 +328,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="debug.asm">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="DefaultNames.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="PatchNotes.txt" />

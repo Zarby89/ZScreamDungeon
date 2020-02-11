@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-    /*This class will contains all information about the project*/
-
-    public static class Project
+    class GfxGroups
     {
- 
+
 
 
     }

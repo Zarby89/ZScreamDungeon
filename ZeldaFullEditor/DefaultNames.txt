@@ -1,0 +1,734 @@
+﻿//Do not use brackets [] in naming
+[Sprites Names]
+00 Raven
+01 Vulture
+02 Flying Stalfos Head
+03 No Pointer (Empty)
+04 Pull Switch (good)
+05 Pull Switch (unused
+06 Pull Switch (bad)
+07 Pull Switch (unused
+08 Octorock (one way)
+09 Moldorm (Boss)
+0A Octorock (four way
+0B Chicken
+0C Octorock (?)
+0D Buzzblock
+0E Snapdragon
+0F Octoballoon
+10 Octoballon Hatchlings
+11 Hinox
+12 Moblin
+13 Mini Helmasaure
+14 Gargoyle's Domain Gate
+15 Antifairy
+16 Sahasrahla / Aginah
+17 Bush Hoarder
+18 Mini Moldorm
+19 Poe
+1A Dwarves
+1B Arrow in wall
+1C Statue
+1D Weathervane
+1E Crystal Switch
+1F Bug-Catching Kid
+20 Sluggula
+21 Push Switch
+22 Ropa
+23 Red Bari
+24 Blue Bari
+25 Talking Tree
+26 Hardhat Beetle
+27 Deadrock
+28 Storytellers
+29 Blind Hideout attendant
+2A Sweeping Lady
+2B Storytellers
+2C Lumberjacks
+2D Telepathic Stones
+2E Multipurpose Sprite
+2F Race Npc
+30 Person?
+31 Fortune Teller
+32 Angry Brothers
+33 Pull for items
+34 Scared Girl
+35 Innkeeper
+36 Witch
+37 Waterfall
+38 Arrow Target
+39 Average Middle
+3A Half Magic Bat
+3B Dash Item
+3C Village Kid
+3D Signs? Chicken lady also showed up / Scared ladies outside houses.
+3E Rock Hoarder
+3F Tutorial Soldier
+40 Lightning Lock
+41 Blue Sword Soldier / Used by guards to detect player
+42 Green Sword Soldier
+43 Red Spear Soldier
+44 Assault Sword Soldier
+45 Green Spear Soldier
+46 Blue Archer
+47 Green Archer
+48 Red Javelin Soldier
+49 Red Javelin Soldier 2
+4A Red Bomb Soldiers
+4B Green Soldier Recruits
+4C Geldman
+4D Rabbit
+4E Popo
+4F Popo 2
+50 Cannon Balls
+51 Armos
+52 Giant Zora
+53 Armos Knights (Boss)
+54 Lanmolas (Boss)
+55 Fireball Zora
+56 Walking Zora
+57 Desert Palace Barriers
+58 Crab
+59 Bird
+5A Squirrel
+5B Spark (Left to Right)
+5C Spark (Right to Left)
+5D Roller (vertical moving
+5E Roller (vertical moving
+5F Roller
+60 Roller (horizontal moving
+61 Beamos
+62 Master Sword
+63 Devalant (Non
+64 Devalant (Shooter
+65 Shooting Gallery Proprietor
+66 Moving Cannon Ball Shooters (Right)
+67 Moving Cannon Ball Shooters (Left)
+68 Moving Cannon Ball Shooters (Down)
+69 Moving Cannon Ball Shooters (Up)
+6A Ball N' Chain Trooper
+6B Cannon Soldier
+6C Mirror Portal
+6D Rat
+6E Rope
+6F Keese
+70 Helmasaur King Fireball
+71 Leever
+72 Activator for the ponds (where you throw in items)
+73 Uncle / Priest
+74 Running Man
+75 Bottle Salesman
+76 Princess Zelda
+77 Antifairy (Alternate
+78 Village Elder
+79 Bee
+7A Agahnim
+7B Agahnim Energy Ball
+7C Hyu
+7D Big Spike Trap
+7E Guruguru Bar (Clockwise)
+7F Guruguru Bar (Counter Clockwise)
+80 Winder
+81 Water Tektite
+82 Antifairy Circle
+83 Green Eyegore
+84 Red Eyegore
+85 Yellow Stalfos
+86 Kodongos
+87 Flames
+88 Mothula (Boss
+89 Mothula's Beam
+8A Spike Trap
+8B Gibdo
+8C Arrghus (Boss
+8D Arrghus spawn
+8E Terrorpin
+8F Slime
+90 Wallmaster
+91 Stalfos Knight
+92 Helmasaur King
+93 Bumper
+94 Swimmers
+95 Eye Laser (Right
+96 Eye Laser (Left
+97 Eye Laser (Down
+98 Eye Laser (Up
+99 Pengator
+9A Kyameron
+9B Wizzrobe
+9C Tadpoles
+9D Tadpoles
+9E Ostrich (Haunted Grove
+9F Flute
+A0 Birds (Haunted Grove
+A1 Freezor
+A2 Kholdstare (Boss
+A3 Kholdstare's Shell
+A4 Falling Ice
+A5 Zazak Fireball
+A6 Red Zazak
+A7 Stalfos
+A8 Bomber Flying Creatures from Darkworld
+A9 Bomber Flying Creatures from Darkworld
+AA Pikit
+AB Maiden
+AC Apple
+AD Lost Old Man
+AE Down Pipe
+AF Up Pipe
+B0 Right Pip
+B1 Left Pipe
+B2 Good bee again?
+B3 Hylian Inscription
+B4 Thief?s chest (not the one that follows you
+B5 Bomb Salesman
+B6 Kiki
+B7 Maiden following you in Blind Dungeon
+B8 Monologue Testing Sprite
+B9 Feuding Friends on Death Mountain
+BA Whirlpool
+BB Salesman / chestgame guy / 300 rupee giver guy / Chest game thief
+BC Drunk in the inn
+BD Vitreous (Large Eyeball)
+BE Vitreous (Small Eyeball)
+BF Vitreous Lightning
+C0 Monster in Lake of Ill Omen / Quake Medallion
+C1 Agahnim teleporting Zelda to dark world
+C2 Boulders
+C3 Gibo
+C4 Thief
+C5 Medusa
+C6 Four Way Fireball Spitters (spit when you use your sword)
+C7 Hokku
+C8 Big Fairy who heals you
+C9 Tektite
+CA Chain Chomp
+CB Trinexx
+CC Another part of trinexx
+CD Yet another part of trinexx
+CE Blind The Thief (Boss)
+CF Swamola
+D0 Lynel
+D1 Bunny Beam
+D2 Flopping fish
+D3 Stal
+D4 Landmine
+D5 Digging Game Proprietor
+D6 Ganon
+D7 Copy of Ganon
+D8 Heart
+D9 Green Rupee
+DA Blue Rupee
+DB Red Rupee
+DC Bomb Refill (1)
+DD Bomb Refill (4)
+DE Bomb Refill (8)
+DF Small Magic Refill
+E0 Full Magic Refill
+E1 Arrow Refill (5)
+E2 Arrow Refill (10)
+E3 Fairy
+E4 Key
+E5 Big Key
+E6 Shield
+E7 Mushroom
+E8 Fake Master Sword
+E9 Magic Shop dude / His items
+EA Heart Container
+EB Heart Piece
+EC Bushes
+ED Cane Of Somaria Platform
+EE Mantle
+EF Cane of Somaria Platform (Unused)
+F0 Cane of Somaria Platform (Unused)
+F1 Cane of Somaria Platform (Unused)
+F2 Medallion Tablet
+F3
+F4
+F5
+F6
+F7
+F8
+F9
+FA
+FB
+FC
+FD
+FE
+FF
+
+//NOT IMPLEMENTED YET!
+//that will changes entrances names as well
+[Rooms Names]
+(000) Ganon
+(001) Hyrule Castle (North Corridor)
+(002) Behind Sanctuary (Switch)
+(003) Houlihan
+(004) Turtle Rock (Crysta-Roller)
+(005) Empty
+(006) Swamp Palace (Arrghus Boss)
+(007) Tower of Hera (Moldorm Boss)
+(008) Cave (Healing Fairy)Palace of Darkness
+(009) Palace of Darkness (Stalfos Trap)
+(010) Palace of Darkness (Turtle)
+(011) Ganon's Tower (Entrance)
+(012) Ganon's Tower (Agahnim2 Boss)
+(013) Ice Palace (Entrance )
+(014) Empty Clone
+(015) Ganon Evacuation Route
+(016) Hyrule Castle (Bombable Stock)
+(017) Sanctuary
+(018) Turtle Rock (Hokku-Bokku Key 2)
+(019) Turtle Rock (Big Key )
+(020) Turtle Rock
+(021) Swamp Palace (Swimming Treadmill)
+(022) Tower of Hera (Moldorm Fall)
+(023) Cave
+(024) Palace of Darkness (Dark Maze)
+(025) Palace of Darkness (Big Chest)
+(026) Palace of Darkness (Mimics / Moving Wall)
+(027) Ganon's Tower (Ice Armos)
+(028) Ganon's Tower (Final Hallway)
+(029) Ice Palace (Bomb Floor / Bari)
+(030) Ice Palace (Pengator / Big Key)
+(031) Agahnim's Tower (Agahnim Boss)
+(032) Hyrule Castle (Key-rat )
+(033) Hyrule Castle (Sewer Text Trigger)
+(034) Turtle Rock (West Exit to Balcony)
+(035) Turtle Rock (Double Hokku-Bokku / Big chest)
+(036) Empty Clone 
+(037) Swamp Palace (Statue)
+(038) Tower of Hera (Big Chest)
+(039) Swamp Palace (Entrance )
+(040) Skull Woods (Mothula Boss)
+(041) Palace of Darkness (Big Hub)
+(042) Palace of Darkness (Map Chest / Fairy)
+(043) Cave
+(044) Empty Clone 
+(045) Ice Palace (Compass)
+(046) Cave (Kakariko Well HP)
+(047) Agahnim's Tower (Maiden Sacrifice Chamber)
+(048) Tower of Hera (Hardhat Beetles)
+(049) Hyrule Castle (Sewer Key Chest)
+(050) Desert Palace (Lanmolas Boss)
+(051) Swamp Palace (Push Block Puzzle / Pre-Big Key)
+(052) Swamp Palace (Big Key / BS)
+(053) Swamp Palace (Big Chest)
+(054) Swamp Palace (Map Chest / Water Fill)
+(055) Swamp Palace (Key Pot)
+(056) Skull Woods (Gibdo Key / Mothula Hole)
+(057) Palace of Darkness (Bombable Floor)
+(058) Palace of Darkness (Spike Block / Conveyor)
+(059) Cave
+(060) Ganon's Tower (Torch 2)
+(061) Ice Palace (Stalfos Knights / Conveyor Hellway)
+(062) Ice Palace (Map Chest)
+(063) Agahnim's Tower (Final Bridge)
+(064) Hyrule Castle (First Dark)
+(065) Hyrule Castle (6 Ropes)
+(066) Desert Palace (Torch Puzzle / Moving Wall)
+(067) Thieves Town (Big Chest)
+(068) Thieves Town (Jail Cells)
+(069) Swamp Palace (Compass Chest)
+(070) Empty Clone 
+(071) Empty Clone 
+(072) Skull Woods (Gibdo Torch Puzzle)
+(073) Palace of Darkness (Entrance)
+(074) Palace of Darkness (Warps / South Mimics)
+(075) Ganon's Tower (Mini-Helmasaur Conveyor)
+(076) Ganon's Tower (Moldorm)
+(077) Ice Palace (Bomb-Jump)
+(078) Ice Palace Clone (Fairy)
+(079) Hyrule Castle (West Corridor)
+(080) Hyrule Castle (Throne)
+(081) Hyrule Castle (East Corridor)
+(082) Desert Palace (Popos 2 / Beamos Hellway)
+(083) Swamp Palace (Upstairs Pits)
+(084) Castle Secret Entrance / Uncle Death 
+(085) Skull Woods (Key Pot / Trap)
+(086) Skull Woods (Big Key)
+(087) Skull Woods (Big Chest)
+(088) Skull Woods (Final Section Entrance)
+(089) Palace of Darkness (Helmasaur King Boss)
+(090) Ganon's Tower (Spike Pit)
+(091) Ganon's Tower (Ganon-Ball Z)
+(092) Ganon's Tower (Gauntlet 1/2/3)
+(093) Ice Palace (Lonely Firebar)
+(094) Ice Palace (Hidden Chest / Spike Floor)
+(095) Hyrule Castle (West Entrance)
+(096) Hyrule Castle (Main Entrance)
+(097) Hyrule Castle (East Entrance)
+(098) Desert Palace (Final Section Entrance)
+(099) Thieves Town (West Attic)
+(100) Thieves Town (East Attic)
+(101) Swamp Palace (Hidden Chest / Hidden Door)
+(102) Skull Woods (Compass Chest)
+(103) Skull Woods (Key Chest / Trap)
+(104) Empty Clone
+(105) Palace of Darkness (Rupee)
+(106) Ganon's Tower (Mimics)
+(107) Ganon's Tower (Lanmolas)
+(108) Ganon's Tower (Gauntlet 4/5)
+(109) Ice Palace (Pengators)
+(110) Empty Clone 
+(111) Hyrule Castle (Small Corridor to Jail Cells)
+(112) Hyrule Castle (Boomerang Chest)
+(113) Hyrule Castle (Map Chest)
+(114) Desert Palace (Big Chest)
+(115) Desert Palace (Map Chest)
+(116) Desert Palace (Big Key Chest)
+(117) Swamp Palace (Water Drain)
+(118) Tower of Hera (Entrance)
+(119) Empty Clone 
+(120) Empty Clone 
+(121) Empty Clone 
+(122) Ganon's Tower
+(123) Ganon's Tower (East Side Collapsing Bridge / Exploding Wall)
+(124) Ganon's Tower (Winder / Warp Maze)
+(125) Ice Palace (Hidden Chest / Bombable Floor)
+(126) Ice Palace ( Big Spike Traps)
+(127) Hyrule Castle (Jail Cell)
+(128) Hyrule Castle
+(129) Hyrule Castle (Basement Chasm)
+(130) Desert Palace (West Entrance)
+(131) Desert Palace (Main Entrance)
+(132) Desert Palace (East Entrance)
+(133) Empty Clone
+(134) Tower of Hera (Tile)
+(135) Empty Clone
+(136) Eastern Palace (Fairy)
+(137) Empty Clone
+(138) Ganon's Tower (Block Puzzle / Spike Skip / Map Chest)
+(139) Ganon's Tower (East and West Downstairs / Big Chest)
+(140) Ganon's Tower (Tile / Torch Puzzle)
+(141) Ice Palace
+(142) Empty Clone 
+(143) Misery Mire (Vitreous Boss)
+(144) Misery Mire (Final Switch )
+(145) Misery Mire (Dark Bomb Wall / Switches )
+(146) Misery Mire (Dark Cane Floor Switch Puzzle )
+(147) Empty Clone 
+(148) Ganon's Tower (Final Collapsing Bridge )
+(149) Ganon's Tower (Torches 1 )
+(150) Misery Mire (Torch Puzzle / Moving Wall )
+(151) Misery Mire (Entrance )
+(152) Eastern Palace (Eyegore Key )
+(153) Empty Clone 
+(154) Ganon's Tower (Many Spikes / Warp Maze )
+(155) Ganon's Tower (Invisible Floor Maze )
+(156) Ganon's Tower (Compass Chest / Invisible Floor )
+(157) Ice Palace (Big Chest )
+(158) Ice Palace
+(159) Misery Mire (Pre-Vitreous )
+(160) Misery Mire (Fish )
+(161) Misery Mire (Bridge Key Chest )
+(162) Misery Mire
+(163) Turtle Rock (Trinexx Boss)
+(164) Ganon's Tower (Wizzrobes s)
+(165) Ganon's Tower (Moldorm Fall )
+(166) Tower of Hera (Fairy )
+(167) Eastern Palace (Stalfos Spawn )
+(168) Eastern Palace (Big Chest )
+(169) Eastern Palace (Map Chest )
+(170) Thieves Town (Moving Spikes / Key Pot )
+(171) Thieves Town (Blind The Thief Boss)
+(172) Empty Clone 
+(173) Ice Palace
+(174) Ice Palace (Ice Bridge )
+(175) Agahnim's Tower (Circle of Pots)
+(176) Misery Mire (Hourglass )
+(177) Misery Mire (Slug )
+(178) Misery Mire (Spike Key Chest )
+(179) Turtle Rock (Pre-Trinexx )
+(180) Turtle Rock (Dark Maze)
+(181) Turtle Rock (Chain Chomps )
+(182) Turtle Rock (Map Chest / Key Chest / Roller )
+(183) Eastern Palace (Big Key )
+(184) Eastern Palace (Lobby Cannonballs )
+(185) Eastern Palace (Dark Antifairy / Key Pot )
+(186) Thieves Town (Hellway)
+(187) Thieves Town (Conveyor Toilet)
+(188) Empty Clone 
+(189) Ice Palace (Block Puzzle )
+(190) Ice Palace Clone (Switch )
+(191) Agahnim's Tower (Dark Bridge )
+(192) Misery Mire (Compass Chest / Tile )
+(193) Misery Mire (Big Hub )
+(194) Misery Mire (Big Chest )
+(195) Turtle Rock (Final Crystal Switch Puzzle )
+(196) Turtle Rock (Laser Bridge)
+(197) Turtle Rock
+(198) Turtle Rock (Torch Puzzle)
+(199) Eastern Palace (Armos Knights Boss)
+(200) Eastern Palace (Entrance )
+(201) ??
+(202) Thieves Town (North West Entrance )
+(203) Thieves Town (North East Entrance )
+(204) Empty Clone 
+(205) Ice Palace (Hole to Kholdstare )
+(206) Empty Clone 
+(207) Agahnim's Tower (Dark Maze)
+(208) Misery Mire (Conveyor Slug / Big Key )
+(209) Misery Mire (Mire02 / Wizzrobes )
+(210) Empty Clone 
+(211) Empty Clone 
+(212) Turtle Rock (Laser Key )
+(213) Turtle Rock (Entrance )
+(214) Empty Clone 
+(215) Eastern Palace (Zeldagamer / Pre-Armos Knights )
+(216) Eastern Palace (Canonball 
+(217) Eastern Palace
+(218) Thieves Town (Main (South West) Entrance )
+(219) Thieves Town (South East Entrance )
+(220) Empty Clone 
+(221) Ice Palace (Kholdstare Boss)
+(222) Cave
+(223) Agahnim's Tower (Entrance )
+(224) Cave (Lost Woods HP)
+(225) Cave (Lumberjack's Tree HP)
+(226) Cave (1/2 Magic)
+(227) Cave (Lost Old Man Final Cave)
+(228) Cave (Lost Old Man Final Cave)
+(229) Cave
+(230) Cave
+(231) Cave
+(232) Empty Clone 
+(233) Cave (Spectacle Rock HP)
+(234) Cave
+(235) Empty Clone 
+(236) Cave
+(237) Cave (Spiral Cave)
+(238) Cave (Crystal Switch / 5 Chests )
+(239) Cave (Lost Old Man Starting Cave)
+(240) Cave (Lost Old Man Starting Cave)
+(241) House
+(242) House (Old Woman (Sahasrahla's Wife?))
+(243) House (Angry Brothers)
+(244) House (Angry Brothers)
+(245) Empty Clone 
+(246) Empty Clone 
+(247) Cave
+(248) Cave
+(249) Cave
+(250) Cave
+(251) Empty Clone 
+(252) Cave
+(253) Cave
+(254) Cave
+(255) Chest Minigame
+(256) Houses
+(257) Sick Boy house
+(258) Tavern
+(259) Link's House
+(260) Sarashrala Hut
+(261) Chest Minigame
+(262) Library
+(263) Chicken House
+(264) Witch Shop
+(265) A Aginah's Cave
+(266) Dam
+(267) Mimic Cave
+(268) Mire Shed
+(269) Cave
+(270) Shop
+(271) Shop
+(272) Archery Minigame
+(273) DW Church/Shop
+(274) Grave Cave
+(275) Fairy Fountain
+(276) Fairy Upgrade
+(277) Pyramid Fairy
+(278) Spike Cave
+(279) Chest Minigame
+(280) Blind Hut
+(281) Bonzai Cave
+(282) Circle of bush Cave
+(283) Big Bomb Shop
+(284) C-House
+(285) Blind Hut 2
+(286) Hype Cave
+(287) Shop
+(288) Ice Cave
+(289) Smith
+(290) Fortune Teller
+(291) MiniMoldorm Cave
+(292) Under Rock Caves
+(293) Smith
+(294) Cave
+(295) Mazeblock Cave
+(296) Smith Peg Cave
+
+[Items Names]
+00 Nothing
+01 Rupee
+02 RockCrab
+03 Bee
+04 Random
+05 Bomb
+06 Heart 
+07 Blue Rupee
+08 Key
+09 Arrow
+0A Bomb 
+0B Heart  
+0C Magic
+0D Big Magic
+0E Chicken
+0F Green Soldier
+10 AliveRock?
+11 Blue Soldier
+12 Ground Bomb
+13 Heart
+14 Fairy
+15 Heart
+16 Nothing 
+80 Hole
+82 Warp
+84 Staircase
+86 Bombable
+88 Switch
+
+[Chests Items]
+00 L1 SwordAndShield
+01 L2 master Sword
+02 L3 tempered Sword
+03 L4 butter Sword
+04 Blue Shield
+05 Red Shield
+06 Mirror Shield
+07 Fire Rod
+08 Ice Rod
+09 Hammer
+0A Hookshot
+0B Bow
+0C Blue Boomerang
+0D Powder
+0E Bee for bottle (no bottle)
+0F Bombos
+10 Ether
+11 Quake
+12 Lamp
+13 Shovel
+14 Ocarina Inactive
+15 Cane of Somaria
+16 Bottle
+17 Piece of Heart
+18 Cane of Byrna
+19 Magic Cape
+1A Magic Mirror
+1B Power Gloves
+1C Titans Mitt
+1D Book of Mudora
+1E Flippers
+1F Moon Pearl
+20 Crystal - Crash Game
+21 Bug Net
+22 Blue Mail
+23 Red Mail
+24 Key
+25 Compass
+26 Heart Container no dialog
+27 Bomb
+28 3 Bombs
+29 Mushroom
+2A Red Boomerang
+2B Bottle with Red Potion
+2C Bottle with Green Potion
+2D Bottle with Blue Potion
+2E Red Potion - fill bottle
+2F Green Potion - fill bottle
+30 Blue Potion - fill bottle
+31 10 Bombs
+32 Big Key
+33 Map
+34 1 Rupee
+35 5 Rupees
+36 20 Rupees
+37 Pendant of Courage
+38 Pendant of Wisdom
+39 Pendant of Power
+3A Bow And Arrows
+3B Bow And Silver Arrows
+3C Bottle With Bee
+3D Bottle With Fairy
+3E Boss Heart
+3F Sanc Heart
+40 100 Rupees
+41 50 Rupees
+42 Heart
+43 1 Arrow
+44 10 Arrows
+45 Small Magic
+46 300 Rupees
+47 20 Rupee2
+48 Bottle with Gold Bee
+49 L1 fighter Sword
+4A Ocarina Active
+4B Pegasus Boots
+
+//NOT IMPLEMENTED YET!!
+[Tags Names]
+Nothing
+NW_Kill_Enemy_to_Open
+NE_Kill_Enemy_to_Open
+SW_Kill_Enemy_to_Open
+SE_Kill_Enemy_to_Open
+W_Kill_Enemy_to_Open
+E_Kill_Enemy_to_Open
+N_Kill_Enemy_to_Open
+S_Kill_Enemy_to_Open
+Clear_Quadrant_to_Open
+Clear_Room_to_Open
+NW_Push_Block_to_Open
+NE_Push_Block_to_Open
+SW_Push_Block_to_Open
+SE_Push_Block_to_Open
+W_Push_Block_to_Open
+E_Push_Block_to_Open
+N_Push_Block_to_Open
+S_Push_Block_to_Open
+Push_Block_to_Open
+Pull_Lever_to_Open
+Clear_Level_to_Open
+Switch_Open_Door_Hold
+Switch_Open_Door_Toggle
+Turn_off_Water
+Turn_on_Water
+Water_Gate
+Water_Twin
+Secret_Wall_Right
+Secret_Wall_Left
+Crash1
+Crash2
+Pull_Switch_to_bomb_Wall
+Holes_0
+Open_Chest_Activate_Holes_0
+Holes_1
+Holes_2
+Kill_Enemy_to_clear_level
+SE_Kill_Enemy_to_Move_Block
+Trigger_activated_Chest
+Pull_lever_to_Bomb_Wall
+NW_Kill_Enemy_for_Chest
+NE_Kill_Enemy_for_Chest
+SW_Kill_Enemy_for_Chest
+SE_Kill_Enemy_for_Chest
+W_Kill_Enemy_for_Chest
+E_Kill_Enemy_for_Chest
+N_Kill_Enemy_for_Chest
+S_Kill_Enemy_for_Chest
+Clear_Quadrant_for_Chest
+Clear_Room_for_Chest
+Light_Torches_to_Open
+Holes_3
+Holes_4
+Holes_5
+Holes_6
+Agahnim_Room
+Holes_7
+Holes_8
+Open_Chest_for_Holes_8
+Push_Block_for_Chest
+Kill_to_open_Ganon_Door
+Light_Torches_to_get_Chest
+Kill_boss_Again

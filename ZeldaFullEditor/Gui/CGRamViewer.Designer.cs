@@ -1,6 +1,6 @@
-﻿namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor.Gui
 {
-    partial class VramViewer
+    partial class CGRamViewer
     {
         /// <summary>
         /// Required designer variable.
@@ -28,40 +28,41 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.vramPicturebox = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.vramPicturebox)).BeginInit();
+            this.cgramPicturebox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.cgramPicturebox)).BeginInit();
             this.SuspendLayout();
             // 
-            // vramPicturebox
+            // cgramPicturebox
             // 
-            this.vramPicturebox.Location = new System.Drawing.Point(0, 0);
-            this.vramPicturebox.Name = "vramPicturebox";
-            this.vramPicturebox.Size = new System.Drawing.Size(256, 1024);
-            this.vramPicturebox.TabIndex = 0;
-            this.vramPicturebox.TabStop = false;
-            this.vramPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.vramPicturebox_Paint);
+            this.cgramPicturebox.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.cgramPicturebox.Location = new System.Drawing.Point(0, 0);
+            this.cgramPicturebox.Name = "cgramPicturebox";
+            this.cgramPicturebox.Size = new System.Drawing.Size(256, 256);
+            this.cgramPicturebox.TabIndex = 0;
+            this.cgramPicturebox.TabStop = false;
+            this.cgramPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.cgramPicturebox_Paint);
             // 
-            // VramViewer
+            // CGRamViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(290, 511);
-            this.Controls.Add(this.vramPicturebox);
+            this.ClientSize = new System.Drawing.Size(256, 256);
+            this.Controls.Add(this.cgramPicturebox);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "VramViewer";
+            this.Name = "CGRamViewer";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.Text = "VramViewer";
-            ((System.ComponentModel.ISupportInitialize)(this.vramPicturebox)).EndInit();
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.Text = "CGRamViewer";
+            ((System.ComponentModel.ISupportInitialize)(this.cgramPicturebox)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.PictureBox vramPicturebox;
+        private System.Windows.Forms.PictureBox cgramPicturebox;
     }
 }

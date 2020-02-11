@@ -41,7 +41,7 @@
             this.textBox1.ReadOnly = true;
             this.textBox1.Size = new System.Drawing.Size(407, 20);
             this.textBox1.TabIndex = 0;
-            this.textBox1.Text = "100000";
+            this.textBox1.Text = "110000";
             // 
             // label1
             // 

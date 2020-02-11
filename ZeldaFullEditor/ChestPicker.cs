@@ -30,7 +30,7 @@ namespace ZeldaFullEditor
 
         private void chestviewer1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            idtextbox.Text = chestviewer1.selectedIndex.ToString();
         }
     }
 }

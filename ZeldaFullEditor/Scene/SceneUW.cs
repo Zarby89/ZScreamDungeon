@@ -1402,6 +1402,7 @@ namespace ZeldaFullEditor
             {
                 return;
             }
+            
             //Tile t = new Tile(0, false, false, 0, 0);
             //t.Draw(0, 0);
             ClearBgGfx(); //technically not required
@@ -1477,7 +1478,7 @@ namespace ZeldaFullEditor
                 room.drawPotsItems();
             }
 
-
+            mainForm.cgramViewer.Refresh();
 
         }
 
@@ -2612,50 +2613,7 @@ namespace ZeldaFullEditor
                 mouse_down = false;
             }
         }
-
-        public override void changeObject()
-        {
-            if ((byte)selectedMode >= 0 && (byte)selectedMode < 3)
-            {
-                /*pObj.createObjects(room);
-                if (pObj.ShowDialog() == DialogResult.OK)
-                {
-                    if (room.selectedObject.Count == 1)
-                    {
-
-                        if (pObj.selectedObject != -1)
-                        {
-                            byte x = (room.selectedObject[0] as Room_Object).x;
-                            byte y = (room.selectedObject[0] as Room_Object).y;
-                            room.tilesObjects.Remove((Room_Object)room.selectedObject[0]);
-                            room.selectedObject.Clear();
-                            Room_Object ro = room.addObject(pObj.selectedObject, (byte)x, (byte)y, 0, (byte)selectedMode);
-                            if (ro != null)
-                            {
-
-                                ro.get_scroll_x();
-                                ro.get_scroll_y();
-                                if (ro.special_zero_size != 0)
-                                {
-                                    ro.size = 1;
-                                }
-
-                                ro.setRoom(room);
-                                ro.options = ObjectOption.Nothing;
-                                room.tilesObjects.Add(ro);
-                                room.selectedObject.Add(ro);
-                                dragx = 0;
-                                dragy = 0;
-                                //mouse_down = true;
-                                need_refresh = true;
-                                room.reloadGfx();
-                            }
-
-                        }
-                    }
-                }*/
-            }
-        }
+        
 
         private void InitializeComponent()
         {
