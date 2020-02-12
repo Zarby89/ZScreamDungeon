@@ -460,21 +460,18 @@ namespace ZeldaFullEditor
             public void reloadGfx(byte entrance_blockset = 0xFF)
         {
 
-
-            int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer+1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
-            gfxPointer = Utils.SnesToPc(gfxPointer);
             for (int i = 0; i < 8; i++)
             {
-                blocks[i] = ROM.DATA[gfxPointer + (blockset * 8) + i];
+                blocks[i] = GfxGroups.mainGfx[blockset][i];
                 if (i >= 6 && i <= 6)
                 {
                     if (entrance_blockset != 0xFF) //3-6
                     {
                         //6 is wrong for the entrance? -NOP need to fix that 
                         //TODO: Find why this is wrong - Thats because of the stairs need to find a workaround
-                        if (ROM.DATA[(Constants.entrance_gfx_group + (i - 3)) + (4 * entrance_blockset)] != 0)
+                        if (GfxGroups.roomGfx[entrance_blockset][i - 3] != 0)
                         {
-                            blocks[i] = ROM.DATA[(Constants.entrance_gfx_group + (i-3)) + (4 * entrance_blockset)];
+                            blocks[i] = GfxGroups.roomGfx[entrance_blockset][i - 3];
                         }
                     }
                 }
@@ -483,7 +480,7 @@ namespace ZeldaFullEditor
             blocks[8] = 115+0; blocks[9] = 115 + 10; blocks[10] = 115 + 6; blocks[11] = 115 + 7; //Static Sprites Blocksets (fairy,pot,ect...)
             for (int i = 0; i < 4; i++)
             {
-                blocks[12 + i] = (byte)(ROM.DATA[Constants.sprite_blockset_pointer + ((spriteset + 64) * 4) + i] + 115);
+                blocks[12 + i] = (byte)(GfxGroups.spriteGfx[spriteset + 64][i]+115);
             } //12-16 sprites
 
 

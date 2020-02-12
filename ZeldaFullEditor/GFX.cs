@@ -22,6 +22,9 @@ namespace ZeldaFullEditor
         public static IntPtr currentgfx16Ptr = Marshal.AllocHGlobal((128 * 512) / 2);
         public static Bitmap currentgfx16Bitmap;
 
+        public static IntPtr currentEditinggfx16Ptr = Marshal.AllocHGlobal((128 * 512) / 2);
+        public static Bitmap currentEditingfx16Bitmap;
+
         public static IntPtr currentOWgfx16Ptr = Marshal.AllocHGlobal((128 * 512) / 2);
         public static Bitmap currentOWgfx16Bitmap;
 
@@ -162,6 +165,7 @@ namespace ZeldaFullEditor
             roomBg2Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg2Ptr);
             allgfxBitmap = new Bitmap(128, 7104, 64, PixelFormat.Format4bppIndexed, allgfx16Ptr);
             currentgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentgfx16Ptr);
+            currentEditingfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentEditinggfx16Ptr);
             roomObjectsBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomObjectsPtr);
             currentOWgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentOWgfx16Ptr);
             previewgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, previewgfx16Ptr);

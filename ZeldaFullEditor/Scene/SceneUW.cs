@@ -881,7 +881,7 @@ namespace ZeldaFullEditor
                 MX = e.X / 2;
                 MY = e.Y / 2;
             }
-            this.Focus();
+            //this.Focus();
             mainForm.activeScene = this;
 
             if (selectedMode == ObjectMode.EntrancePlacing)

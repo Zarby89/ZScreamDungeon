@@ -65,6 +65,7 @@ namespace ZeldaFullEditor
             roomProperty_spriteset.MouseWheel += RoomProperty_MouseWheel;
             roomProperty_blockset.MouseWheel += RoomProperty_MouseWheel;
             roomProperty_palette.MouseWheel += RoomProperty_MouseWheel;
+            refreshRecentsFiles();
         }
         //Need to stay here
         public void initialize_properties()
@@ -267,6 +268,7 @@ namespace ZeldaFullEditor
         public void initProject() 
         {
             tabControl1.Enabled = true;
+            GfxGroups.LoadGfxGroups();
             GFX.CreateAllGfxData(ROM.DATA);
 
             for (int i = 0; i < 296; i++)
@@ -362,7 +364,7 @@ namespace ZeldaFullEditor
             {
                 Settings.Default.recentFiles.RemoveAt(4);
             }
-            Settings.Default.Save();
+            
             refreshRecentsFiles();
 
 
@@ -370,7 +372,8 @@ namespace ZeldaFullEditor
 
         private void OpenRecentProject(object sender, EventArgs e)
         {
-            LoadProject((sender as ToolStripMenuItem).Name);
+            projectFilename = (sender as ToolStripMenuItem).Text;
+            LoadProject((sender as ToolStripMenuItem).Text);
         }
 
         private void refreshRecentsFiles()
@@ -1329,94 +1332,13 @@ namespace ZeldaFullEditor
         private void gfxgroupCombobox_SelectedIndexChanged(object sender, EventArgs e)
         {
             
-            if (gfxgroupCombobox.SelectedIndex == 0)
-            {
-                gfx5textBox.Enabled = true;
-                gfx6textBox.Enabled = true;
-                gfx7textBox.Enabled = true;
-                gfx8textBox.Enabled = true;
-                gfx1textBox.Enabled = true;
-                gfx2textBox.Enabled = true;
-                gfx3textBox.Enabled = true;
-                gfx4textBox.Enabled = true;
-            }
-            else if (gfxgroupCombobox.SelectedIndex == 3)
-            {
-                gfx5textBox.Enabled = false;
-                gfx6textBox.Enabled = false;
-                gfx7textBox.Enabled = false;
-                gfx8textBox.Enabled = false;
-                gfx1textBox.Enabled = false;
-                gfx2textBox.Enabled = false;
-                gfx3textBox.Enabled = false;
-                gfx4textBox.Enabled = false;
-            }
-            else if (gfxgroupCombobox.SelectedIndex == 2)
-            {
-                gfx1textBox.Enabled = true;
-                gfx2textBox.Enabled = true;
-                gfx3textBox.Enabled = true;
-                gfx4textBox.Enabled = true;
-                gfx5textBox.Enabled = false;
-                gfx6textBox.Enabled = false;
-                gfx7textBox.Enabled = false;
-                gfx8textBox.Enabled = false;
-
-            }
-            else if (gfxgroupCombobox.SelectedIndex == 1)
-            {
-                gfx1textBox.Enabled = true;
-                gfx2textBox.Enabled = true;
-                gfx3textBox.Enabled = true;
-                gfx4textBox.Enabled = true;
-                gfx5textBox.Enabled = false;
-                gfx6textBox.Enabled = false;
-                gfx7textBox.Enabled = false;
-                gfx8textBox.Enabled = false;
-
-            }
-
             loadGfxGroups();
             
         }
 
         public void loadGfxGroups()
         {
-            propertiesChangedFromForm = true;
-            int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer + 1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
-            gfxPointer = Utils.SnesToPc(gfxPointer);
-            if (gfxgroupCombobox.SelectedIndex == 0) //main gfx
-            {
-                if (gfxgroupindexUpDown.Value > 36) { gfxgroupindexUpDown.Value = 0; }
-                gfx1textBox.Text = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 0].ToString();
-                gfx2textBox.Text = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 1].ToString();
-                gfx3textBox.Text = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 2].ToString();
-                gfx4textBox.Text = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 3].ToString();
-                gfx5textBox.Text = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 4].ToString();
-                gfx6textBox.Text = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 5].ToString();
-                gfx7textBox.Text = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 6].ToString();
-                gfx8textBox.Text = ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 7].ToString();
-            }
-            else if (gfxgroupCombobox.SelectedIndex == 1) //entrances
-            {
-                if (gfxgroupindexUpDown.Value > 81) { gfxgroupindexUpDown.Value = 0; }
-                gfx1textBox.Text = ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 0)].ToString();
-                gfx2textBox.Text = ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 1)].ToString();
-                gfx3textBox.Text = ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 2)].ToString();
-                gfx4textBox.Text = ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 3)].ToString();
-            }
-            else if (gfxgroupCombobox.SelectedIndex == 2) //sprites
-            {
-                if (gfxgroupindexUpDown.Value > 143) { gfxgroupindexUpDown.Value = 0; }
-                gfx1textBox.Text = ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 0].ToString();
-                gfx2textBox.Text = ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 1].ToString();
-                gfx3textBox.Text = ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 2].ToString();
-                gfx4textBox.Text = ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 3].ToString();
-                
-            }
-            Buildtileset();
-            gfxPicturebox.Refresh();
-            propertiesChangedFromForm = false;
+
         }
 
         private void gfxsinglechanged(object sender, EventArgs e)
@@ -2560,7 +2482,7 @@ namespace ZeldaFullEditor
         VramViewer vramViewer = new VramViewer();
         private void vramViewerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            vramViewer = new VramViewer();
             vramViewer.TopLevel = false;
             customPanel3.Controls.Add(vramViewer);
             vramViewer.Parent = customPanel3;
@@ -2845,7 +2767,7 @@ namespace ZeldaFullEditor
         public CGRamViewer cgramViewer = new CGRamViewer();
         private void cGramViewerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            cgramViewer = new CGRamViewer();
             cgramViewer.TopLevel = false;
             customPanel3.Controls.Add(cgramViewer);
             cgramViewer.Parent = customPanel3;
@@ -2853,9 +2775,14 @@ namespace ZeldaFullEditor
             cgramViewer.Show();
         }
 
+        public GfxGroupsForm gfxGroupsForm;
         private void gfxGroupsetsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            gfxGroupsForm = new GfxGroupsForm(this);
+            gfxGroupsForm.TopLevel = false;
+            customPanel3.Controls.Add(gfxGroupsForm);
+            gfxGroupsForm.BringToFront();
+            gfxGroupsForm.Show();
         }
 
         private void insertToolStripMenuItem_Click_1(object sender, EventArgs e)
