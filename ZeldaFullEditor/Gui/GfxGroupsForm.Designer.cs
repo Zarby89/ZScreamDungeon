@@ -78,11 +78,11 @@
             this.label7 = new System.Windows.Forms.Label();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.paletteRadioButton = new System.Windows.Forms.RadioButton();
+            this.grayscaleRadioButton = new System.Windows.Forms.RadioButton();
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
-            this.grayscaleRadioButton = new System.Windows.Forms.RadioButton();
-            this.paletteRadioButton = new System.Windows.Forms.RadioButton();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.mainGroupbox.SuspendLayout();
@@ -114,7 +114,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(386, 292);
+            this.tabControl1.Size = new System.Drawing.Size(382, 288);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -128,7 +128,7 @@
             this.mainTab.Location = new System.Drawing.Point(4, 22);
             this.mainTab.Name = "mainTab";
             this.mainTab.Padding = new System.Windows.Forms.Padding(3);
-            this.mainTab.Size = new System.Drawing.Size(378, 266);
+            this.mainTab.Size = new System.Drawing.Size(374, 262);
             this.mainTab.TabIndex = 0;
             this.mainTab.Text = "Main";
             this.mainTab.UseVisualStyleBackColor = true;
@@ -146,7 +146,7 @@
             this.mainGroupbox.Location = new System.Drawing.Point(11, 35);
             this.mainGroupbox.Name = "mainGroupbox";
             this.mainGroupbox.Size = new System.Drawing.Size(223, 82);
-            this.mainGroupbox.TabIndex = 5;
+            this.mainGroupbox.TabIndex = 8;
             this.mainGroupbox.TabStop = false;
             this.mainGroupbox.Text = "Values - 8 subset";
             // 
@@ -155,8 +155,7 @@
             this.main8Box.Location = new System.Drawing.Point(168, 45);
             this.main8Box.Name = "main8Box";
             this.main8Box.Size = new System.Drawing.Size(48, 20);
-            this.main8Box.TabIndex = 11;
-            this.main8Box.Click += new System.EventHandler(this.allbox_click);
+            this.main8Box.TabIndex = 7;
             this.main8Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main7Box
@@ -164,8 +163,7 @@
             this.main7Box.Location = new System.Drawing.Point(114, 45);
             this.main7Box.Name = "main7Box";
             this.main7Box.Size = new System.Drawing.Size(48, 20);
-            this.main7Box.TabIndex = 10;
-            this.main7Box.Click += new System.EventHandler(this.allbox_click);
+            this.main7Box.TabIndex = 6;
             this.main7Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main6Box
@@ -173,8 +171,7 @@
             this.main6Box.Location = new System.Drawing.Point(60, 45);
             this.main6Box.Name = "main6Box";
             this.main6Box.Size = new System.Drawing.Size(48, 20);
-            this.main6Box.TabIndex = 9;
-            this.main6Box.Click += new System.EventHandler(this.allbox_click);
+            this.main6Box.TabIndex = 5;
             this.main6Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main5Box
@@ -182,8 +179,7 @@
             this.main5Box.Location = new System.Drawing.Point(6, 45);
             this.main5Box.Name = "main5Box";
             this.main5Box.Size = new System.Drawing.Size(48, 20);
-            this.main5Box.TabIndex = 8;
-            this.main5Box.Click += new System.EventHandler(this.allbox_click);
+            this.main5Box.TabIndex = 4;
             this.main5Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main4Box
@@ -191,8 +187,7 @@
             this.main4Box.Location = new System.Drawing.Point(168, 19);
             this.main4Box.Name = "main4Box";
             this.main4Box.Size = new System.Drawing.Size(48, 20);
-            this.main4Box.TabIndex = 7;
-            this.main4Box.Click += new System.EventHandler(this.allbox_click);
+            this.main4Box.TabIndex = 3;
             this.main4Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main3Box
@@ -200,8 +195,7 @@
             this.main3Box.Location = new System.Drawing.Point(114, 19);
             this.main3Box.Name = "main3Box";
             this.main3Box.Size = new System.Drawing.Size(48, 20);
-            this.main3Box.TabIndex = 6;
-            this.main3Box.Click += new System.EventHandler(this.allbox_click);
+            this.main3Box.TabIndex = 2;
             this.main3Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main2Box
@@ -209,18 +203,15 @@
             this.main2Box.Location = new System.Drawing.Point(60, 19);
             this.main2Box.Name = "main2Box";
             this.main2Box.Size = new System.Drawing.Size(48, 20);
-            this.main2Box.TabIndex = 5;
-            this.main2Box.Click += new System.EventHandler(this.allbox_click);
+            this.main2Box.TabIndex = 1;
             this.main2Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // main1Box
             // 
-            this.main1Box.Cursor = System.Windows.Forms.Cursors.Default;
             this.main1Box.Location = new System.Drawing.Point(6, 19);
             this.main1Box.Name = "main1Box";
             this.main1Box.Size = new System.Drawing.Size(48, 20);
-            this.main1Box.TabIndex = 4;
-            this.main1Box.Click += new System.EventHandler(this.allbox_click);
+            this.main1Box.TabIndex = 0;
             this.main1Box.TextChanged += new System.EventHandler(this.allBox_TextChanged);
             // 
             // mainBlocksetUpDown
@@ -233,7 +224,7 @@
             0});
             this.mainBlocksetUpDown.Name = "mainBlocksetUpDown";
             this.mainBlocksetUpDown.Size = new System.Drawing.Size(118, 20);
-            this.mainBlocksetUpDown.TabIndex = 3;
+            this.mainBlocksetUpDown.TabIndex = 9;
             this.mainBlocksetUpDown.ValueChanged += new System.EventHandler(this.blocksetchanged);
             // 
             // label2
@@ -242,27 +233,27 @@
             this.label2.Location = new System.Drawing.Point(8, 11);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(102, 13);
-            this.label2.TabIndex = 2;
+            this.label2.TabIndex = 10;
             this.label2.Text = "Selected Blockset : ";
             // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 226);
+            this.label1.Location = new System.Drawing.Point(3, 222);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(208, 39);
-            this.label1.TabIndex = 1;
+            this.label1.TabIndex = 11;
             this.label1.Text = "Main groupset is the gfx set on overworld\r\nand the gfx set in the rooms for dunge" +
     "ons\r\nthey are only reloaded on warp, stairs, hole";
             // 
             // pictureBox1
             // 
             this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(242, 9);
+            this.pictureBox1.Location = new System.Drawing.Point(238, 9);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(128, 256);
-            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabIndex = 12;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.allpreviewPaint);
             // 
@@ -276,7 +267,7 @@
             this.roomTab.Location = new System.Drawing.Point(4, 22);
             this.roomTab.Name = "roomTab";
             this.roomTab.Padding = new System.Windows.Forms.Padding(3);
-            this.roomTab.Size = new System.Drawing.Size(378, 266);
+            this.roomTab.Size = new System.Drawing.Size(374, 262);
             this.roomTab.TabIndex = 1;
             this.roomTab.Text = "Entrance";
             this.roomTab.UseVisualStyleBackColor = true;
@@ -356,7 +347,7 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(3, 237);
+            this.label4.Location = new System.Drawing.Point(3, 233);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(254, 26);
             this.label4.TabIndex = 7;
@@ -366,7 +357,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox2.Location = new System.Drawing.Point(242, 9);
+            this.pictureBox2.Location = new System.Drawing.Point(238, 9);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(128, 128);
             this.pictureBox2.TabIndex = 6;
@@ -382,7 +373,7 @@
             this.spriteTab.Controls.Add(this.pictureBox3);
             this.spriteTab.Location = new System.Drawing.Point(4, 22);
             this.spriteTab.Name = "spriteTab";
-            this.spriteTab.Size = new System.Drawing.Size(378, 266);
+            this.spriteTab.Size = new System.Drawing.Size(374, 262);
             this.spriteTab.TabIndex = 2;
             this.spriteTab.Text = "Sprites";
             this.spriteTab.UseVisualStyleBackColor = true;
@@ -462,7 +453,7 @@
             // 
             this.label6.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(3, 224);
+            this.label6.Location = new System.Drawing.Point(3, 220);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(357, 39);
             this.label6.TabIndex = 12;
@@ -471,7 +462,7 @@
             // pictureBox3
             // 
             this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox3.Location = new System.Drawing.Point(242, 9);
+            this.pictureBox3.Location = new System.Drawing.Point(238, 9);
             this.pictureBox3.Name = "pictureBox3";
             this.pictureBox3.Size = new System.Drawing.Size(128, 128);
             this.pictureBox3.TabIndex = 11;
@@ -486,7 +477,7 @@
             this.paletteTab.Controls.Add(this.pictureBox4);
             this.paletteTab.Location = new System.Drawing.Point(4, 22);
             this.paletteTab.Name = "paletteTab";
-            this.paletteTab.Size = new System.Drawing.Size(378, 266);
+            this.paletteTab.Size = new System.Drawing.Size(374, 262);
             this.paletteTab.TabIndex = 3;
             this.paletteTab.Text = "Palettes";
             this.paletteTab.UseVisualStyleBackColor = true;
@@ -515,7 +506,7 @@
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(87, 13);
             this.label12.TabIndex = 24;
-            this.label12.Text = "Sprites Aux2 Pal.";
+            this.label12.Text = "Dungeon Sprite Pal3";
             // 
             // label11
             // 
@@ -524,7 +515,7 @@
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(87, 13);
             this.label11.TabIndex = 23;
-            this.label11.Text = "Sprites Aux1 Pal.";
+            this.label11.Text = "Dungeon Sprite Pal2";
             // 
             // label10
             // 
@@ -533,7 +524,7 @@
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(144, 13);
             this.label10.TabIndex = 22;
-            this.label10.Text = "Dungeon,Overworld Aux Pal.";
+            this.label10.Text = "Dungeon Sprite Pal1";
             // 
             // label9
             // 
@@ -542,7 +533,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(149, 13);
             this.label9.TabIndex = 21;
-            this.label9.Text = "Dungeon,Overworld Main Pal.";
+            this.label9.Text = "Dungeon Main";
             // 
             // palette4Box
             // 
@@ -584,7 +575,7 @@
             // 
             this.paletteUpDown.Location = new System.Drawing.Point(116, 9);
             this.paletteUpDown.Maximum = new decimal(new int[] {
-            81,
+            71,
             0,
             0,
             0});
@@ -605,11 +596,12 @@
             // pictureBox4
             // 
             this.pictureBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox4.Location = new System.Drawing.Point(242, 9);
+            this.pictureBox4.Location = new System.Drawing.Point(238, 9);
             this.pictureBox4.Name = "pictureBox4";
             this.pictureBox4.Size = new System.Drawing.Size(128, 128);
             this.pictureBox4.TabIndex = 16;
             this.pictureBox4.TabStop = false;
+            this.pictureBox4.Paint += new System.Windows.Forms.PaintEventHandler(this.palettepreviewPaint);
             // 
             // panel1
             // 
@@ -619,34 +611,33 @@
             this.panel1.Controls.Add(this.cancelButton);
             this.panel1.Controls.Add(this.okButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 292);
+            this.panel1.Location = new System.Drawing.Point(0, 288);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(386, 40);
+            this.panel1.Size = new System.Drawing.Size(382, 40);
             this.panel1.TabIndex = 1;
             // 
-            // cancelButton
+            // numericUpDown1
             // 
-            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.cancelButton.Location = new System.Drawing.Point(218, 6);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
-            this.cancelButton.TabIndex = 1;
-            this.cancelButton.Text = "Restore";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
+            this.numericUpDown1.Location = new System.Drawing.Point(151, 17);
+            this.numericUpDown1.Maximum = new decimal(new int[] {
+            36,
+            0,
+            0,
+            0});
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(61, 20);
+            this.numericUpDown1.TabIndex = 6;
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.blocksetchanged);
             // 
-            // okButton
+            // paletteRadioButton
             // 
-            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.okButton.Location = new System.Drawing.Point(299, 6);
-            this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(75, 23);
-            this.okButton.TabIndex = 0;
-            this.okButton.Text = "Apply";
-            this.okButton.UseVisualStyleBackColor = true;
-            this.okButton.Click += new System.EventHandler(this.okButton_Click);
+            this.paletteRadioButton.AutoSize = true;
+            this.paletteRadioButton.Location = new System.Drawing.Point(4, 20);
+            this.paletteRadioButton.Name = "paletteRadioButton";
+            this.paletteRadioButton.Size = new System.Drawing.Size(141, 17);
+            this.paletteRadioButton.TabIndex = 3;
+            this.paletteRadioButton.Text = "Use Palettes Tab index :";
+            this.paletteRadioButton.UseVisualStyleBackColor = true;
             // 
             // grayscaleRadioButton
             // 
@@ -660,44 +651,39 @@
             this.grayscaleRadioButton.Text = "Grayscale Palettes";
             this.grayscaleRadioButton.UseVisualStyleBackColor = true;
             // 
-            // paletteRadioButton
+            // cancelButton
             // 
-            this.paletteRadioButton.AutoSize = true;
-            this.paletteRadioButton.Location = new System.Drawing.Point(4, 20);
-            this.paletteRadioButton.Name = "paletteRadioButton";
-            this.paletteRadioButton.Size = new System.Drawing.Size(141, 17);
-            this.paletteRadioButton.TabIndex = 3;
-            this.paletteRadioButton.Text = "Use Palettes Tab index :";
-            this.paletteRadioButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.cancelButton.Location = new System.Drawing.Point(214, 6);
+            this.cancelButton.Name = "cancelButton";
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.TabIndex = 1;
+            this.cancelButton.Text = "Restore";
+            this.cancelButton.UseVisualStyleBackColor = true;
+            this.cancelButton.Click += new System.EventHandler(this.cancelButton_Click);
             // 
-            // numericUpDown1
+            // okButton
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(151, 17);
-            this.numericUpDown1.Maximum = new decimal(new int[] {
-            36,
-            0,
-            0,
-            0});
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(61, 20);
-            this.numericUpDown1.TabIndex = 6;
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.okButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.okButton.Location = new System.Drawing.Point(295, 6);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.TabIndex = 0;
+            this.okButton.Text = "Apply";
+            this.okButton.UseVisualStyleBackColor = true;
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
             // GfxGroupsForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.AutoValidate = System.Windows.Forms.AutoValidate.EnablePreventFocusChange;
-            this.ClientSize = new System.Drawing.Size(386, 332);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "GfxGroupsForm";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
+            this.Size = new System.Drawing.Size(386, 332);
             this.Text = "Gfx Groups Form";
-            this.Load += new System.EventHandler(this.GfxGroupsForm_Load);
-            this.Shown += new System.EventHandler(this.GfxGroupsForm_Shown);
+            this.VisibleChanged += new System.EventHandler(this.GfxGroupsForm_VisibleChanged);
             this.tabControl1.ResumeLayout(false);
             this.mainTab.ResumeLayout(false);
             this.mainTab.PerformLayout();

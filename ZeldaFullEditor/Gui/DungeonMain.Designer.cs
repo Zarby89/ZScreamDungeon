@@ -189,25 +189,6 @@
             this.customPanel1 = new ZeldaFullEditor.CustomPanel();
             this.spritesView1 = new ZeldaFullEditor.SpritesView();
             this.searchspriteTextbox = new System.Windows.Forms.TextBox();
-            this.gfxtabPage = new System.Windows.Forms.TabPage();
-            this.customPanel2 = new ZeldaFullEditor.CustomPanel();
-            this.gfxPicturebox = new System.Windows.Forms.PictureBox();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.label41 = new System.Windows.Forms.Label();
-            this.previewPaletteGfxTextbox = new System.Windows.Forms.TextBox();
-            this.gfx8textBox = new System.Windows.Forms.TextBox();
-            this.gfx7textBox = new System.Windows.Forms.TextBox();
-            this.gfx6textBox = new System.Windows.Forms.TextBox();
-            this.gfx5textBox = new System.Windows.Forms.TextBox();
-            this.gfx4textBox = new System.Windows.Forms.TextBox();
-            this.gfx3textBox = new System.Windows.Forms.TextBox();
-            this.gfx2textBox = new System.Windows.Forms.TextBox();
-            this.gfx1textBox = new System.Windows.Forms.TextBox();
-            this.gfxgroupindexUpDown = new System.Windows.Forms.NumericUpDown();
-            this.label32 = new System.Windows.Forms.Label();
-            this.gfxfromroomButton = new System.Windows.Forms.Button();
-            this.label29 = new System.Windows.Forms.Label();
-            this.gfxgroupCombobox = new System.Windows.Forms.ComboBox();
             this.roomProperty_sortsprite = new System.Windows.Forms.CheckBox();
             this.roomProperty_msgid = new System.Windows.Forms.TextBox();
             this.label20 = new System.Windows.Forms.Label();
@@ -259,6 +240,7 @@
             this.selecteditemobjectCombobox = new System.Windows.Forms.ComboBox();
             this.label31 = new System.Windows.Forms.Label();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
+            this.palettesEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
@@ -276,11 +258,6 @@
             this.panel1.SuspendLayout();
             this.tabPage4.SuspendLayout();
             this.customPanel1.SuspendLayout();
-            this.gfxtabPage.SuspendLayout();
-            this.customPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gfxPicturebox)).BeginInit();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gfxgroupindexUpDown)).BeginInit();
             this.headerGroupbox.SuspendLayout();
             this.selectedGroupbox.SuspendLayout();
             this.roomHeaderPanel.SuspendLayout();
@@ -321,7 +298,7 @@
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.openToolStripMenuItem.Text = "Open ROM";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -330,7 +307,7 @@
             this.saveToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.saveToolStripMenuItem.Text = "Save ROM";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -338,14 +315,14 @@
             // 
             this.saveasToolStripMenuItem.Enabled = false;
             this.saveasToolStripMenuItem.Name = "saveasToolStripMenuItem";
-            this.saveasToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveasToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.saveasToolStripMenuItem.Text = "Save ROM As...";
             this.saveasToolStripMenuItem.Click += new System.EventHandler(this.saveasToolStripMenuItem_Click);
             // 
             // recentROMToolStripMenuItem
             // 
             this.recentROMToolStripMenuItem.Name = "recentROMToolStripMenuItem";
-            this.recentROMToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.recentROMToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.recentROMToolStripMenuItem.Text = "Recent ROM";
             // 
             // editToolStripMenuItem
@@ -818,7 +795,8 @@
             this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.vramViewerToolStripMenuItem,
             this.cGramViewerToolStripMenuItem,
-            this.gfxGroupsetsToolStripMenuItem});
+            this.gfxGroupsetsToolStripMenuItem,
+            this.palettesEditorToolStripMenuItem});
             this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
             this.windowToolStripMenuItem.Size = new System.Drawing.Size(63, 20);
             this.windowToolStripMenuItem.Text = "Window";
@@ -826,21 +804,21 @@
             // vramViewerToolStripMenuItem
             // 
             this.vramViewerToolStripMenuItem.Name = "vramViewerToolStripMenuItem";
-            this.vramViewerToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.vramViewerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.vramViewerToolStripMenuItem.Text = "Vram Viewer";
             this.vramViewerToolStripMenuItem.Click += new System.EventHandler(this.vramViewerToolStripMenuItem_Click);
             // 
             // cGramViewerToolStripMenuItem
             // 
             this.cGramViewerToolStripMenuItem.Name = "cGramViewerToolStripMenuItem";
-            this.cGramViewerToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.cGramViewerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cGramViewerToolStripMenuItem.Text = "CGram Viewer";
             this.cGramViewerToolStripMenuItem.Click += new System.EventHandler(this.cGramViewerToolStripMenuItem_Click);
             // 
             // gfxGroupsetsToolStripMenuItem
             // 
             this.gfxGroupsetsToolStripMenuItem.Name = "gfxGroupsetsToolStripMenuItem";
-            this.gfxGroupsetsToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.gfxGroupsetsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.gfxGroupsetsToolStripMenuItem.Text = "Gfx Groupsets";
             this.gfxGroupsetsToolStripMenuItem.Click += new System.EventHandler(this.gfxGroupsetsToolStripMenuItem_Click);
             // 
@@ -1421,7 +1399,6 @@
             this.tabControl1.Controls.Add(this.entrancetabPage);
             this.tabControl1.Controls.Add(this.objectstabPage);
             this.tabControl1.Controls.Add(this.tabPage4);
-            this.tabControl1.Controls.Add(this.gfxtabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Enabled = false;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
@@ -1752,202 +1729,6 @@
             this.searchspriteTextbox.Size = new System.Drawing.Size(292, 20);
             this.searchspriteTextbox.TabIndex = 1;
             this.searchspriteTextbox.TextChanged += new System.EventHandler(this.searchspriteTextbox_TextChanged);
-            // 
-            // gfxtabPage
-            // 
-            this.gfxtabPage.AutoScroll = true;
-            this.gfxtabPage.Controls.Add(this.customPanel2);
-            this.gfxtabPage.Controls.Add(this.groupBox3);
-            this.gfxtabPage.Location = new System.Drawing.Point(4, 22);
-            this.gfxtabPage.Name = "gfxtabPage";
-            this.gfxtabPage.Size = new System.Drawing.Size(292, 686);
-            this.gfxtabPage.TabIndex = 6;
-            this.gfxtabPage.Text = "Gfx";
-            this.gfxtabPage.UseVisualStyleBackColor = true;
-            // 
-            // customPanel2
-            // 
-            this.customPanel2.AutoScroll = true;
-            this.customPanel2.Controls.Add(this.gfxPicturebox);
-            this.customPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel2.Location = new System.Drawing.Point(0, 167);
-            this.customPanel2.Name = "customPanel2";
-            this.customPanel2.Size = new System.Drawing.Size(292, 519);
-            this.customPanel2.TabIndex = 14;
-            // 
-            // gfxPicturebox
-            // 
-            this.gfxPicturebox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.gfxPicturebox.Location = new System.Drawing.Point(0, 0);
-            this.gfxPicturebox.Name = "gfxPicturebox";
-            this.gfxPicturebox.Size = new System.Drawing.Size(275, 1024);
-            this.gfxPicturebox.TabIndex = 12;
-            this.gfxPicturebox.TabStop = false;
-            this.gfxPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.gfxPicturebox_Paint);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.label41);
-            this.groupBox3.Controls.Add(this.previewPaletteGfxTextbox);
-            this.groupBox3.Controls.Add(this.gfx8textBox);
-            this.groupBox3.Controls.Add(this.gfx7textBox);
-            this.groupBox3.Controls.Add(this.gfx6textBox);
-            this.groupBox3.Controls.Add(this.gfx5textBox);
-            this.groupBox3.Controls.Add(this.gfx4textBox);
-            this.groupBox3.Controls.Add(this.gfx3textBox);
-            this.groupBox3.Controls.Add(this.gfx2textBox);
-            this.groupBox3.Controls.Add(this.gfx1textBox);
-            this.groupBox3.Controls.Add(this.gfxgroupindexUpDown);
-            this.groupBox3.Controls.Add(this.label32);
-            this.groupBox3.Controls.Add(this.gfxfromroomButton);
-            this.groupBox3.Controls.Add(this.label29);
-            this.groupBox3.Controls.Add(this.gfxgroupCombobox);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox3.Location = new System.Drawing.Point(0, 0);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(292, 167);
-            this.groupBox3.TabIndex = 13;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Gfx Groups - Note : Saved on change";
-            // 
-            // label41
-            // 
-            this.label41.AutoSize = true;
-            this.label41.Location = new System.Drawing.Point(3, 148);
-            this.label41.Name = "label41";
-            this.label41.Size = new System.Drawing.Size(87, 13);
-            this.label41.TabIndex = 18;
-            this.label41.Text = "Preview Palette :";
-            // 
-            // previewPaletteGfxTextbox
-            // 
-            this.previewPaletteGfxTextbox.Location = new System.Drawing.Point(96, 145);
-            this.previewPaletteGfxTextbox.Name = "previewPaletteGfxTextbox";
-            this.previewPaletteGfxTextbox.Size = new System.Drawing.Size(168, 20);
-            this.previewPaletteGfxTextbox.TabIndex = 17;
-            this.previewPaletteGfxTextbox.TextChanged += new System.EventHandler(this.previewPaletteGfxTextbox_TextChanged);
-            // 
-            // gfx8textBox
-            // 
-            this.gfx8textBox.Location = new System.Drawing.Point(174, 89);
-            this.gfx8textBox.Name = "gfx8textBox";
-            this.gfx8textBox.Size = new System.Drawing.Size(50, 20);
-            this.gfx8textBox.TabIndex = 16;
-            this.gfx8textBox.TextChanged += new System.EventHandler(this.gfxsinglechanged);
-            // 
-            // gfx7textBox
-            // 
-            this.gfx7textBox.Location = new System.Drawing.Point(118, 89);
-            this.gfx7textBox.Name = "gfx7textBox";
-            this.gfx7textBox.Size = new System.Drawing.Size(50, 20);
-            this.gfx7textBox.TabIndex = 15;
-            this.gfx7textBox.TextChanged += new System.EventHandler(this.gfxsinglechanged);
-            // 
-            // gfx6textBox
-            // 
-            this.gfx6textBox.Location = new System.Drawing.Point(62, 89);
-            this.gfx6textBox.Name = "gfx6textBox";
-            this.gfx6textBox.Size = new System.Drawing.Size(50, 20);
-            this.gfx6textBox.TabIndex = 14;
-            this.gfx6textBox.TextChanged += new System.EventHandler(this.gfxsinglechanged);
-            // 
-            // gfx5textBox
-            // 
-            this.gfx5textBox.Location = new System.Drawing.Point(6, 89);
-            this.gfx5textBox.Name = "gfx5textBox";
-            this.gfx5textBox.Size = new System.Drawing.Size(50, 20);
-            this.gfx5textBox.TabIndex = 13;
-            this.gfx5textBox.TextChanged += new System.EventHandler(this.gfxsinglechanged);
-            // 
-            // gfx4textBox
-            // 
-            this.gfx4textBox.Location = new System.Drawing.Point(174, 63);
-            this.gfx4textBox.Name = "gfx4textBox";
-            this.gfx4textBox.Size = new System.Drawing.Size(50, 20);
-            this.gfx4textBox.TabIndex = 12;
-            this.gfx4textBox.TextChanged += new System.EventHandler(this.gfxsinglechanged);
-            // 
-            // gfx3textBox
-            // 
-            this.gfx3textBox.Location = new System.Drawing.Point(118, 63);
-            this.gfx3textBox.Name = "gfx3textBox";
-            this.gfx3textBox.Size = new System.Drawing.Size(50, 20);
-            this.gfx3textBox.TabIndex = 11;
-            this.gfx3textBox.TextChanged += new System.EventHandler(this.gfxsinglechanged);
-            // 
-            // gfx2textBox
-            // 
-            this.gfx2textBox.Location = new System.Drawing.Point(62, 63);
-            this.gfx2textBox.Name = "gfx2textBox";
-            this.gfx2textBox.Size = new System.Drawing.Size(50, 20);
-            this.gfx2textBox.TabIndex = 10;
-            this.gfx2textBox.TextChanged += new System.EventHandler(this.gfxsinglechanged);
-            // 
-            // gfx1textBox
-            // 
-            this.gfx1textBox.Location = new System.Drawing.Point(6, 63);
-            this.gfx1textBox.Name = "gfx1textBox";
-            this.gfx1textBox.Size = new System.Drawing.Size(50, 20);
-            this.gfx1textBox.TabIndex = 9;
-            this.gfx1textBox.TextChanged += new System.EventHandler(this.gfxsinglechanged);
-            // 
-            // gfxgroupindexUpDown
-            // 
-            this.gfxgroupindexUpDown.Location = new System.Drawing.Point(120, 36);
-            this.gfxgroupindexUpDown.Maximum = new decimal(new int[] {
-            223,
-            0,
-            0,
-            0});
-            this.gfxgroupindexUpDown.Name = "gfxgroupindexUpDown";
-            this.gfxgroupindexUpDown.Size = new System.Drawing.Size(104, 20);
-            this.gfxgroupindexUpDown.TabIndex = 8;
-            this.gfxgroupindexUpDown.ValueChanged += new System.EventHandler(this.gfxgroupindexUpDown_ValueChanged);
-            // 
-            // label32
-            // 
-            this.label32.AutoSize = true;
-            this.label32.Location = new System.Drawing.Point(117, 20);
-            this.label32.Name = "label32";
-            this.label32.Size = new System.Drawing.Size(39, 13);
-            this.label32.TabIndex = 7;
-            this.label32.Text = "Index :";
-            // 
-            // gfxfromroomButton
-            // 
-            this.gfxfromroomButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.gfxfromroomButton.Location = new System.Drawing.Point(6, 116);
-            this.gfxfromroomButton.Name = "gfxfromroomButton";
-            this.gfxfromroomButton.Size = new System.Drawing.Size(275, 23);
-            this.gfxfromroomButton.TabIndex = 6;
-            this.gfxfromroomButton.Text = "Load Index from selected room";
-            this.gfxfromroomButton.UseVisualStyleBackColor = true;
-            this.gfxfromroomButton.Click += new System.EventHandler(this.gfxfromroomButton_Click);
-            // 
-            // label29
-            // 
-            this.label29.AutoSize = true;
-            this.label29.Location = new System.Drawing.Point(6, 20);
-            this.label29.Name = "label29";
-            this.label29.Size = new System.Drawing.Size(40, 13);
-            this.label29.TabIndex = 1;
-            this.label29.Text = "Type : ";
-            // 
-            // gfxgroupCombobox
-            // 
-            this.gfxgroupCombobox.FormattingEnabled = true;
-            this.gfxgroupCombobox.Items.AddRange(new object[] {
-            "Main Blockset",
-            "Entrance Blockset",
-            "Sprite Blockset",
-            "Palettes"});
-            this.gfxgroupCombobox.Location = new System.Drawing.Point(6, 36);
-            this.gfxgroupCombobox.Name = "gfxgroupCombobox";
-            this.gfxgroupCombobox.Size = new System.Drawing.Size(108, 21);
-            this.gfxgroupCombobox.TabIndex = 0;
-            this.gfxgroupCombobox.Text = "Main Blockset";
-            this.gfxgroupCombobox.SelectedIndexChanged += new System.EventHandler(this.gfxgroupCombobox_SelectedIndexChanged);
             // 
             // roomProperty_sortsprite
             // 
@@ -2551,6 +2332,13 @@
             this.customPanel3.Size = new System.Drawing.Size(705, 541);
             this.customPanel3.TabIndex = 19;
             // 
+            // palettesEditorToolStripMenuItem
+            // 
+            this.palettesEditorToolStripMenuItem.Name = "palettesEditorToolStripMenuItem";
+            this.palettesEditorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.palettesEditorToolStripMenuItem.Text = "Palettes Editor";
+            this.palettesEditorToolStripMenuItem.Click += new System.EventHandler(this.palettesEditorToolStripMenuItem_Click);
+            // 
             // DungeonMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2593,12 +2381,6 @@
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
             this.customPanel1.ResumeLayout(false);
-            this.gfxtabPage.ResumeLayout(false);
-            this.customPanel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.gfxPicturebox)).EndInit();
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.gfxgroupindexUpDown)).EndInit();
             this.headerGroupbox.ResumeLayout(false);
             this.headerGroupbox.PerformLayout();
             this.selectedGroupbox.ResumeLayout(false);
@@ -2706,8 +2488,6 @@
         private System.Windows.Forms.TreeView entrancetreeView;
         private System.Windows.Forms.TabPage objectstabPage;
         private System.Windows.Forms.TextBox searchTextbox;
-        private System.Windows.Forms.TabPage gfxtabPage;
-        private System.Windows.Forms.PictureBox gfxPicturebox;
         private System.Windows.Forms.TabPage tabPage4;
         private System.Windows.Forms.TextBox searchspriteTextbox;
         public System.Windows.Forms.GroupBox headerGroupbox;
@@ -2724,12 +2504,6 @@
         public System.Windows.Forms.Label label23;
         private System.Windows.Forms.Splitter splitter1;
         private System.Windows.Forms.ToolStripMenuItem rightSideToolboxToolStripMenuItem;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.Label label29;
-        private System.Windows.Forms.ComboBox gfxgroupCombobox;
-        private System.Windows.Forms.NumericUpDown gfxgroupindexUpDown;
-        private System.Windows.Forms.Label label32;
-        private System.Windows.Forms.Button gfxfromroomButton;
         private System.Windows.Forms.ToolStripMenuItem saveasToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem hideSpritesToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem hideItemsToolStripMenuItem;
@@ -2798,17 +2572,6 @@
         public System.Windows.Forms.ToolStripButton spritemodeButton;
         public System.Windows.Forms.ToolStripButton bg1modeButton;
         public SpritesView spritesView1;
-        private System.Windows.Forms.TextBox gfx8textBox;
-        private System.Windows.Forms.TextBox gfx7textBox;
-        private System.Windows.Forms.TextBox gfx6textBox;
-        private System.Windows.Forms.TextBox gfx5textBox;
-        private System.Windows.Forms.TextBox gfx4textBox;
-        private System.Windows.Forms.TextBox gfx3textBox;
-        private System.Windows.Forms.TextBox gfx2textBox;
-        private System.Windows.Forms.TextBox gfx1textBox;
-        private System.Windows.Forms.Label label41;
-        private System.Windows.Forms.TextBox previewPaletteGfxTextbox;
-        private CustomPanel customPanel2;
         public System.Windows.Forms.CheckBox litCheckbox;
         private System.Windows.Forms.ToolStripMenuItem patchNotesToolStripMenuItem;
         public System.Windows.Forms.CheckBox spriteoverlordCheckbox;
@@ -2846,6 +2609,7 @@
         private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem2;
+        private System.Windows.Forms.ToolStripMenuItem palettesEditorToolStripMenuItem;
     }
 }
 

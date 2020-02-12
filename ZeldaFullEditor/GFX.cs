@@ -443,7 +443,7 @@ namespace ZeldaFullEditor
 
 
             //id = dungeon palette id
-            byte dungeon_palette_ptr = ROM.DATA[Constants.dungeons_palettes_groups + (id * 4)]; //id of the 1st group of 4
+            byte dungeon_palette_ptr = (byte)(GfxGroups.paletteGfx[id][0]); //id of the 1st group of 4
             short palette_pos = (short)((ROM.DATA[0xDEC4B + dungeon_palette_ptr + 1] << 8) + ROM.DATA[0xDEC4B + dungeon_palette_ptr]);
             int pId = (palette_pos / 180);
             paletteid = palette_pos;

@@ -51,6 +51,7 @@ namespace ZeldaFullEditor
         public bool settingEntrance = false;
         public int selectedLayer = -1;
         public Entrance selectedEntrance = null;
+        PaletteEditor paletteForm;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -191,6 +192,10 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
+
+            Palettes.SavePalettesToROM(ROM.DATA);
+            GfxGroups.SaveGroupsToROM();
+
 
             anychange = false;
             saved_changed = false;
@@ -364,7 +369,20 @@ namespace ZeldaFullEditor
             {
                 Settings.Default.recentFiles.RemoveAt(4);
             }
-            
+
+            entrancetreeView_AfterSelect(null, null);
+
+            gfxGroupsForm = new GfxGroupsForm(this);
+            gfxGroupsForm.Visible = false;
+            gfxGroupsForm.Location = new Point(512, 0);
+            customPanel3.Controls.Add(gfxGroupsForm);
+            gfxGroupsForm.BringToFront();
+
+            paletteForm = new PaletteEditor(this);
+            paletteForm.Visible = false;
+            paletteForm.Location = new Point(512, 0);
+            customPanel3.Controls.Add(paletteForm);
+            paletteForm.BringToFront();
             refreshRecentsFiles();
 
 
@@ -445,7 +463,7 @@ namespace ZeldaFullEditor
             blockmodeButton.Enabled = true;
             torchmodeButton.Enabled = true;
             spritemodeButton.Enabled = true;
-            debugtestButton.Enabled = true;
+            debugtestButton.Enabled = false;
             runtestButton.Enabled = true;
             potmodeButton.Enabled = true; //cant change to sprite since sprites are using 16x16
             saveToolStripMenuItem.Enabled = true;
@@ -1329,110 +1347,6 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void gfxgroupCombobox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            
-            loadGfxGroups();
-            
-        }
-
-        public void loadGfxGroups()
-        {
-
-        }
-
-        private void gfxsinglechanged(object sender, EventArgs e)
-        {
-            if (propertiesChangedFromForm == false)
-            {
-                int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer + 1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
-                gfxPointer = Utils.SnesToPc(gfxPointer);
-                if (gfxgroupCombobox.SelectedIndex == 0) //main gfx
-                {
-                    if (gfxgroupindexUpDown.Value > 36) { gfxgroupindexUpDown.Value = 0; }
-                    int r = 0;
-                    if (int.TryParse(gfx1textBox.Text,out r)){ ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 0] = (byte)r; };
-                    r = 0;
-                    if (int.TryParse(gfx2textBox.Text, out r)) { ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 1] = (byte)r; };
-                    r = 0;
-                    if (int.TryParse(gfx3textBox.Text, out r)) { ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 2] = (byte)r; };
-                    r = 0;
-                    if (int.TryParse(gfx4textBox.Text, out r)) { ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 3] = (byte)r; };
-                    r = 0;
-                    if (int.TryParse(gfx5textBox.Text, out r)) { ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 4] = (byte)r; };
-                    r = 0;
-                    if (int.TryParse(gfx6textBox.Text, out r)) { ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 5] = (byte)r; };
-                    r = 0;
-                    if (int.TryParse(gfx7textBox.Text, out r)) { ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 6] = (byte)r; };
-                    r = 0;
-                    if (int.TryParse(gfx8textBox.Text, out r)) { ROM.DATA[gfxPointer + ((int)gfxgroupindexUpDown.Value * 8) + 7] = (byte)r; };
-                }
-                else if (gfxgroupCombobox.SelectedIndex == 1) //entrances
-                {
-                    if (gfxgroupindexUpDown.Value > 81) { gfxgroupindexUpDown.Value = 0; }
-                    int r = 0;
-                    if (int.TryParse(gfx1textBox.Text, out r)) { ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 0)] = (byte)r; };
-                    r = 0;
-                    if (int.TryParse(gfx2textBox.Text, out r)) { ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 1)] = (byte)r; };
-                    r = 0;
-                    if (int.TryParse(gfx3textBox.Text, out r)) { ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 2)] = (byte)r; };
-                    r = 0;
-                    if (int.TryParse(gfx4textBox.Text, out r)) { ROM.DATA[(Constants.entrance_gfx_group + ((int)gfxgroupindexUpDown.Value * 4) + 3)] = (byte)r; };
-                }
-                else if (gfxgroupCombobox.SelectedIndex == 2) //sprites
-                {
-                    if (gfxgroupindexUpDown.Value > 143) { gfxgroupindexUpDown.Value = 0; }
-                    int r = 0;
-                    if (int.TryParse(gfx1textBox.Text, out r)) { ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 0] = (byte)r; };
-                    r = 0;
-                    if (int.TryParse(gfx2textBox.Text, out r)) { ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 1] = (byte)r; };
-                    r = 0;
-                    if (int.TryParse(gfx3textBox.Text, out r)) { ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 2] = (byte)r; };
-                    r = 0;
-                    if (int.TryParse(gfx4textBox.Text, out r)) { ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 3] = (byte)r; };
-                }
-
-                if (!visibleEntranceGFX)
-                {
-                    activeScene.room.reloadGfx(selectedEntrance.Blockset);
-                }
-                else
-                {
-                    activeScene.room.reloadGfx();
-                }
-                activeScene.DrawRoom();
-                activeScene.Refresh();
-                gfxPicturebox.Refresh();
-            }
-
-
-        }
-
-
-
-        private void gfxfromroomButton_Click(object sender, EventArgs e)
-        {
-            //gfxPicturebox.Image = GFX.singletobmp(GFX.gfxdata, 0, 5, false); //FULL ROOM GFX
-
-            if (gfxgroupCombobox.SelectedIndex == 0)
-            {
-                gfxgroupindexUpDown.Value = activeScene.room.blockset;
-            }
-            else if (gfxgroupCombobox.SelectedIndex == 1) //entrances
-            {
-
-            }
-            else if (gfxgroupCombobox.SelectedIndex == 2) //sprites
-            {
-                gfxgroupindexUpDown.Value = activeScene.room.spriteset + 64;
-            }
-
-        }
-
-        private void gfxgroupindexUpDown_ValueChanged(object sender, EventArgs e)
-        {
-            loadGfxGroups();
-        }
 
         private void debugtestButton_Click(object sender, EventArgs e)
         {
@@ -1952,87 +1866,7 @@ namespace ZeldaFullEditor
             activeScene.selectedDragSprite = new dataObject(spritesView1.selectedObject.id, spritesView1.selectedObject.name, spritesView1.selectedObject.overlord);
         }
 
-        private void gfxPicturebox_Paint(object sender, PaintEventArgs e)
-        {
 
-            int c = 0;
-            if (int.TryParse(previewPaletteGfxTextbox.Text, out c))
-            {
-                if (c <= 16)
-                {
-
-                }
-                else
-                {
-                    c = 0;
-                }
-
-                    ColorPalette cp = GFX.currentOWgfx16Bitmap.Palette;
-                    for (int i = 0; i < 16; i++)
-                    {
-                        cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[i + (c * 16)];
-                    }
-                    GFX.currentOWgfx16Bitmap.Palette = cp;
-                    GFX.previewgfx16Bitmap.Palette = cp;
-            }
-            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-
-                e.Graphics.DrawImage(GFX.previewgfx16Bitmap, new Rectangle(0, 0, GFX.currentOWgfx16Bitmap.Width * 2, GFX.currentOWgfx16Bitmap.Height * 2), 0, 0, GFX.currentOWgfx16Bitmap.Width, GFX.currentOWgfx16Bitmap.Height, GraphicsUnit.Pixel);
-            
-
-        }
-
-        public void Buildtileset()
-        {
-
-
-            byte[] staticgfx = new byte[16];
-            for (int i = 0; i < 16; i++)
-            {
-                staticgfx[i] = 0;
-            }
-            staticgfx[8] = 115 + 0;
-            staticgfx[9] = 115 + 1;
-            staticgfx[10] = 115 + 6;
-            staticgfx[11] = 115 + 7;
-            if (gfxgroupCombobox.SelectedIndex == 2) //sprites
-            {
-                staticgfx[12] = (byte)(115 + ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 0]);
-                staticgfx[13] = (byte)(115 + ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 1]);
-                staticgfx[14] = (byte)(115 + ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 2]);
-                staticgfx[15] = (byte)(115 + ROM.DATA[Constants.sprite_blockset_pointer + (((int)gfxgroupindexUpDown.Value) * 4) + 3]);
-            }
-
-            unsafe
-            {
-                //NEED TO BE EXECUTED AFTER THE TILESET ARE LOADED NOT BEFORE -_-
-                byte* currentmapgfx8Data = (byte*)GFX.previewgfx16Ptr.ToPointer();//loaded gfx for the current map (empty at this point)
-                byte* allgfxData = (byte*)GFX.allgfx16Ptr.ToPointer(); //all gfx of the game pack of 2048 bytes (4bpp)
-                for (int i = 0; i < 16; i++)
-                {
-                    for (int j = 0; j < 2048; j++)
-                    {
-                        byte mapByte = allgfxData[j + (staticgfx[i] * 2048)];
-                        switch (i)
-                        {
-                            case 0:
-                            case 3:
-                            case 4:
-                            case 5:
-                                mapByte += 0x88;
-                                break;
-                        }
-
-                        currentmapgfx8Data[(i * 2048) + j] = mapByte; //Upload used gfx data
-                    }
-                }
-            }
-        }
-
-        private void previewPaletteGfxTextbox_TextChanged(object sender, EventArgs e)
-        {
-            gfxPicturebox.Refresh();
-        }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
@@ -2778,11 +2612,7 @@ namespace ZeldaFullEditor
         public GfxGroupsForm gfxGroupsForm;
         private void gfxGroupsetsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            gfxGroupsForm = new GfxGroupsForm(this);
-            gfxGroupsForm.TopLevel = false;
-            customPanel3.Controls.Add(gfxGroupsForm);
-            gfxGroupsForm.BringToFront();
-            gfxGroupsForm.Show();
+            gfxGroupsForm.Visible = !gfxGroupsForm.Visible;
         }
 
         private void insertToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -2801,6 +2631,11 @@ namespace ZeldaFullEditor
         {
             activeScene.mouse_down = false;
             activeScene.insertNew();
+        }
+
+        private void palettesEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            paletteForm.Visible = !paletteForm.Visible;
         }
 
         //Export Palette to YY-CHR Palette Format

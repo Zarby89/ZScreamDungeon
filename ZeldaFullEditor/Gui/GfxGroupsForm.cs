@@ -11,12 +11,13 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-    public partial class GfxGroupsForm : Form
+    public partial class GfxGroupsForm : Panel
     {
         public GfxGroupsForm(DungeonMain mainForm)
         {
             InitializeComponent();
             this.mainForm = mainForm;
+            this.BackColor = Color.FromKnownColor(KnownColor.Control);
         }
         DungeonMain mainForm;
         private void cancelButton_Click(object sender, EventArgs e)
@@ -26,6 +27,10 @@ namespace ZeldaFullEditor.Gui
             {
                 LoadTempGfx();
                 okButton_Click(null, e);
+                reloadGfx();
+                mainForm.activeScene.room.reloadGfx();
+                mainForm.activeScene.DrawRoom();
+                mainForm.activeScene.Refresh();
             }
         }
         public bool editedFromForm = false;
@@ -217,8 +222,7 @@ namespace ZeldaFullEditor.Gui
 
         private void GfxGroupsForm_Shown(object sender, EventArgs e)
         {
-            CreateTempGfx();
-            LoadGfx();
+
         }
 
         private void blocksetchanged(object sender, EventArgs e)
@@ -229,7 +233,7 @@ namespace ZeldaFullEditor.Gui
 
         private void allbox_click(object sender, EventArgs e)
         {
-            (sender as TextBox).SelectionStart = (sender as TextBox).Text.Length;
+            //(sender as TextBox).SelectionStart = (sender as TextBox).Text.Length;
 
         }
 
@@ -317,7 +321,7 @@ namespace ZeldaFullEditor.Gui
             if (grayscaleRadioButton.Checked)
             {
                 ColorPalette cp = GFX.currentEditingfx16Bitmap.Palette;
-                for (int i = 0; i<16;i++)
+                for (int i = 0; i < 16; i++)
                 {
                     cp.Entries[i] = Color.FromArgb(i * 15, i * 15, i * 15);
                 }
@@ -328,7 +332,7 @@ namespace ZeldaFullEditor.Gui
                 ColorPalette cp = GFX.currentEditingfx16Bitmap.Palette;
                 for (int i = 0; i < 16; i++)
                 {
-                    cp.Entries[i] = Color.FromArgb(i * 15, i * 15, i * 15);
+                    cp.Entries[i] = palettes[i + ((int)numericUpDown1.Value * 16)];
                 }
                 GFX.currentEditingfx16Bitmap.Palette = cp;
             }
@@ -336,9 +340,266 @@ namespace ZeldaFullEditor.Gui
             e.Graphics.DrawImage(GFX.currentEditingfx16Bitmap, 0, 0);
         }
 
+        private void palettepreviewPaint(object sender, PaintEventArgs e)
+        {
+            createPalette();
+
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            for (int i = 0; i < 256; i++)
+            {
+                e.Graphics.FillRectangle(new SolidBrush(palettes[i]), new Rectangle(((i % 16) * 8), (i / 16) * 8, 8, 8));
+            }
+        }
+        Color[] palettes = new Color[256];
+        private void createPalette()
+        {
+
+            for(int i = 0; i<256;i++)
+            {
+                palettes[i] = Color.Black;
+            }
+            if (paletteUpDown.Value <= 40)
+            {
+
+                label9.Text = "Dungeon Main";
+                label10.Text = "Dungeon Sprite Pal1";
+                label11.Text = "Dungeon Sprite Pal2";
+                label12.Text = "Dungeon Sprite Pal3";
+                
+                byte dungeon_palette_ptr = (byte)(GfxGroups.paletteGfx[(byte)paletteUpDown.Value][0]);
+                short palette_pos = 0;
+                int pId = 0;
+                int pPos = 32;
+                if (GfxGroups.paletteGfx[(byte)paletteUpDown.Value][0] % 2 == 0)
+                {
+                    palette_pos = (short)((ROM.DATA[0xDEC4B + dungeon_palette_ptr + 1] << 8) + ROM.DATA[0xDEC4B + dungeon_palette_ptr]);
+                    pId = (palette_pos / 180);
+
+                    
+                    for (int i = 0; i < 90; i++)
+                    {
+                        if (pPos % 16 == 0)
+                        {
+                            pPos++;
+                        }
+                        if (pId < Palettes.dungeonsMain_Palettes.Length)
+                        {
+                            palettes[pPos] = Palettes.dungeonsMain_Palettes[pId][i];
+                        }
+                        pPos++;
+                    }
+
+                }
+                pPos = 128;
+                if (GfxGroups.paletteGfx[(int)paletteUpDown.Value][1] != 255)
+                {
+                    for (int i = 0; i < 7; i++)
+                    {
+                        if (pPos % 16 == 0)
+                        {
+                            pPos++;
+                        }
+                        if (GfxGroups.paletteGfx[(int)paletteUpDown.Value][1] < Palettes.spritesAux1_Palettes.Length)
+                        {
+                            palettes[pPos++] = Palettes.spritesAux1_Palettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][1]][i];
+                        }
+                    }
+                }
+                pPos = 208;
+                if (GfxGroups.paletteGfx[(int)paletteUpDown.Value][2] != 255)
+                {
+                    for (int i = 0; i < 7; i++)
+                    {
+                        if (pPos % 16 == 0)
+                        {
+                            pPos++;
+                        }
+                        if (GfxGroups.paletteGfx[(int)paletteUpDown.Value][2] < Palettes.spritesAux3_Palettes.Length)
+                        {
+                            palettes[pPos++] = Palettes.spritesAux3_Palettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][2]][i];
+                        }
+                    }
+                }
+                pPos = 224;
+                if (GfxGroups.paletteGfx[(int)paletteUpDown.Value][3] != 255)
+                {
+                    for (int i = 0; i < 7; i++)
+                    {
+                        if (pPos % 16 == 0)
+                        {
+                            pPos++;
+                        }
+                        if (GfxGroups.paletteGfx[(int)paletteUpDown.Value][3] < Palettes.spritesAux3_Palettes.Length)
+                        {
+                            palettes[pPos] = Palettes.spritesAux3_Palettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][3]][i];
+                        }
+                        pPos++;
+                    }
+                }
+            }
+            else
+            {
+                label9.Text = "Auxiliary Pal1";
+                label10.Text = "Auxiliary Pal2";
+                label11.Text = "Animated Pal";
+                label12.Text = "???";
+                int pPos = 40;
+                if (GfxGroups.paletteGfx[(int)paletteUpDown.Value][0] != 255)
+                {
+                    
+                    for (int i = 0; i < 7; i++)
+                    {
+                        if (pPos % 16 == 0)
+                        {
+                            pPos++;
+                        }
+                        palettes[pPos] = Palettes.overworld_AuxPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][0]][i];
+                        pPos++;
+                    }
+                    pPos = 56;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        if (pPos % 16 == 0)
+                        {
+                            pPos++;
+                        }
+                        palettes[pPos] = Palettes.overworld_AuxPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][0]][i + 7];
+                        pPos++;
+                    }
+                    pPos = 72;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        if (pPos % 16 == 0)
+                        {
+                            pPos++;
+                        }
+                        palettes[pPos] = Palettes.overworld_AuxPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][0]][i + 14];
+                        pPos++;
+                    }
+                }
+
+                pPos = 88;
+                if (GfxGroups.paletteGfx[(int)paletteUpDown.Value][1] != 255)
+                {
+
+                    for (int i = 0; i < 7; i++)
+                    {
+                        if (pPos % 16 == 0)
+                        {
+                            pPos++;
+                        }
+                        palettes[pPos] = Palettes.overworld_AuxPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][1]][i];
+                        pPos++;
+                    }
+                    pPos = 104;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        if (pPos % 16 == 0)
+                        {
+                            pPos++;
+                        }
+                        palettes[pPos] = Palettes.overworld_AuxPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][1]][i + 7];
+                        pPos++;
+                    }
+                    pPos = 120;
+                    for (int i = 0; i < 7; i++)
+                    {
+                        if (pPos % 16 == 0)
+                        {
+                            pPos++;
+                        }
+                        palettes[pPos] = Palettes.overworld_AuxPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][1]][i + 14];
+                        pPos++;
+                    }
+                }
+                pPos = 112;
+                if (GfxGroups.paletteGfx[(int)paletteUpDown.Value][2] != 255)
+                {
+                    for (int i = 0; i < 7; i++)
+                    {
+                        if (pPos % 16 == 0)
+                        {
+                            pPos++;
+                        }
+                        palettes[pPos] = Palettes.overworld_AnimatedPalettes[GfxGroups.paletteGfx[(int)paletteUpDown.Value][2]][i];
+                        pPos++;
+                    }
+                }
+                pPos = 32;
+                for (int i = 0; i < 7; i++)
+                {
+                    if (pPos % 16 == 0)
+                    {
+                        pPos++;
+                    }
+                    palettes[pPos] = Palettes.overworld_MainPalettes[0][i];
+                    pPos++;
+                }
+                pPos = 48;
+                for (int i = 0; i < 7; i++)
+                {
+                    if (pPos % 16 == 0)
+                    {
+                        pPos++;
+                    }
+                    palettes[pPos] = Palettes.overworld_MainPalettes[0][i+7];
+                    pPos++;
+                }
+                pPos = 64;
+                for (int i = 0; i < 7; i++)
+                {
+                    if (pPos % 16 == 0)
+                    {
+                        pPos++;
+                    }
+                    palettes[pPos] = Palettes.overworld_MainPalettes[0][i+14];
+                    pPos++;
+                }
+                pPos = 80;
+                for (int i = 0; i < 7; i++)
+                {
+                    if (pPos % 16 == 0)
+                    {
+                        pPos++;
+                    }
+                    palettes[pPos] = Palettes.overworld_MainPalettes[0][i+21];
+                    pPos++;
+                }
+                pPos = 96;
+                for (int i = 0; i < 7; i++)
+                {
+                    if (pPos % 16 == 0)
+                    {
+                        pPos++;
+                    }
+                    palettes[pPos] = Palettes.overworld_MainPalettes[0][i+28];
+                    pPos++;
+                }
+
+
+            }
+            if (paletteUpDown.Value <= 40)
+            {
+                if (GfxGroups.paletteGfx[(byte)paletteUpDown.Value][0] % 2 == 0)
+                {
+                    GFX.loadedPalettes = GFX.LoadDungeonPalette(mainForm.activeScene.room.Palette);
+                    GFX.loadedSprPalettes = GFX.LoadSpritesPalette(mainForm.activeScene.room.Palette);
+                }
+            }
+        }
+
+
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
             reloadGfx();
+        }
+
+        private void GfxGroupsForm_VisibleChanged(object sender, EventArgs e)
+        {
+            CreateTempGfx();
+            createPalette();
+            reloadGfx();
+            LoadGfx();
         }
     }
 }

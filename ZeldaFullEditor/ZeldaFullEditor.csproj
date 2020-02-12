@@ -145,6 +145,12 @@
     <Compile Include="Gui\GfxGroupsForm.Designer.cs">
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\PaletteEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\PaletteEditor.Designer.cs">
+      <DependentUpon>PaletteEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\WarpsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -273,6 +279,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\GotoRoom.resx">
       <DependentUpon>GotoRoom.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\PaletteEditor.resx">
+      <DependentUpon>PaletteEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\WarpsForm.resx">
       <DependentUpon>WarpsForm.cs</DependentUpon>
