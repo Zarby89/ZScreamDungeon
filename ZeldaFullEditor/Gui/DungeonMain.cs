@@ -1028,20 +1028,21 @@ namespace ZeldaFullEditor
                 entranceProperty_bg.Checked = true;
             }
 
-
-
-            selectedEntrance = en;
-            if (!visibleEntranceGFX)
+            if (activeScene.room != null)
             {
-                activeScene.room.reloadGfx(en.Blockset);
-            }
-            else
-            {
-                activeScene.room.reloadGfx();
-            }
-            activeScene.DrawRoom();
-            activeScene.Refresh();
 
+                selectedEntrance = en;
+                if (!visibleEntranceGFX)
+                {
+                    activeScene.room.reloadGfx(en.Blockset);
+                }
+                else
+                {
+                    activeScene.room.reloadGfx();
+                }
+                activeScene.DrawRoom();
+                activeScene.Refresh();
+            }
 
             propertiesChangedFromForm = false;
 

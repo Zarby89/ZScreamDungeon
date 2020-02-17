@@ -4656,7 +4656,7 @@ namespace ZeldaFullEditor
         public object_C2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Bg2 Large Overlay ↔ ↕";
+            name = "Bg2 HOLE Large Overlay ↔ ↕";
             addTiles(1, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical;
             showRectangle = true;
@@ -4802,7 +4802,7 @@ namespace ZeldaFullEditor
         public object_C6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Bg2 Large Overlay ↔ ↕";
+            name = "Bg2 Large Overlay Mask ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical;
             showRectangle = true;
@@ -5388,7 +5388,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Hole?? ↔ ↕";
+            name = "Bg2 Swim Mask ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical;
         }
