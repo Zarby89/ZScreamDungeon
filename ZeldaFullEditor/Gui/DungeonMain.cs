@@ -35,7 +35,7 @@ namespace ZeldaFullEditor
 
 
         //TODO : Move that?
-        public byte[] door_index = new byte[] { 0x00, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32, 0x20, 0x14 };
+        public byte[] door_index = new byte[] { 0x00, 0x06, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32, 0x20, 0x14 };
 
 
         string projectFilename = "";
@@ -118,20 +118,21 @@ namespace ZeldaFullEditor
 
             if (anychange == true)
             {
-                DialogResult dialogResult = MessageBox.Show("Rooms has changed. Do you want to save changes?", "Save", MessageBoxButtons.YesNoCancel);
+                /*DialogResult dialogResult = MessageBox.Show("Rooms has changed. Do you want to save changes?", "Save", MessageBoxButtons.YesNoCancel);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    foreach (TabPage p in tabControl2.TabPages)
+
+                }*/
+                foreach (TabPage p in tabControl2.TabPages)
+                {
+                    if (p.Text.Contains("*"))
                     {
-                        if (p.Text.Contains("*"))
-                        {
-                            p.Text = p.Text.Trim('*');
-                        }
-                        
-                        all_rooms[(p.Tag as Room).index] = (Room)(p.Tag as Room).Clone();
-                        (p.Tag as Room).has_changed = false;
-                        anychange = false;
+                        p.Text = p.Text.Trim('*');
                     }
+
+                    all_rooms[(p.Tag as Room).index] = (Room)(p.Tag as Room).Clone();
+                    (p.Tag as Room).has_changed = false;
+                    anychange = false;
                 }
                 tabControl2.Refresh();
             }
@@ -240,7 +241,7 @@ namespace ZeldaFullEditor
 
 
             ROMStructure.loadDefaultProject();
-
+            //TODO : Add Headered ROM
 
             FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
             int size = (int)fs.Length;

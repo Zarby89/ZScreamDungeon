@@ -2134,6 +2134,7 @@
             this.comboBox2.Items.AddRange(new object[] {
             "Normal Door 0x00",
             "Normal Layer2 0x02",
+            "Entrance Layer2 0x06",
             "Normal Layer2 (2?) 0x40",
             "Locked Door 0x1C",
             "Locked Layer 2 0x26",

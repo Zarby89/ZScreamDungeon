@@ -737,6 +737,8 @@ namespace ZeldaFullEditor
             List<byte> objectsBytes = new List<byte>();
             List<byte> doorsBytes = new List<byte>();
             bool found_door = false;
+            bool found_door2 = false;
+            bool found_door3 = false;
 
             byte floorbyte = (byte)((floor2 << 4) + floor1);
             byte layoutbyte = (byte)(layout<<2);
@@ -745,43 +747,17 @@ namespace ZeldaFullEditor
 
             doorsBytes.Clear();
             found_door = getLayerTiles(0, ref objectsBytes, ref doorsBytes);
-  
-            /*if (found_door)//if we found door during layer1 WTF oO
-            {
-                objectsBytes.Add(0xF0); 
-                objectsBytes.Add(0xFF);
 
-                foreach (byte b in doorsBytes)
-                {
-                    objectsBytes.Add(b);
-                }
-
-            }*/
             objectsBytes.Add(0xFF);//end layer1
             objectsBytes.Add(0xFF);//end layer1
+            found_door2 = getLayerTiles(1, ref objectsBytes, ref doorsBytes);
 
-            //doorsBytes.Clear();
-            found_door = getLayerTiles(1, ref objectsBytes, ref doorsBytes);
-
-            /*if (found_door)//if we found door during layer2
-            {
-                objectsBytes.Add(0xF0);
-                objectsBytes.Add(0xFF);
-
-                foreach (byte b in doorsBytes)
-                {
-                    objectsBytes.Add(b);
-                }
-
-            }*/
             objectsBytes.Add(0xFF);//end layer2
             objectsBytes.Add(0xFF);//end layer2
 
+            found_door3 = getLayerTiles(2, ref objectsBytes, ref doorsBytes);
 
-            //doorsBytes.Clear();
-            found_door = getLayerTiles(2, ref objectsBytes, ref doorsBytes);
-
-            if (found_door)//if we found door during layer3
+            if (found_door || found_door2 || found_door3)//if we found door during layer3
             {
                 objectsBytes.Add(0xF0);
                 objectsBytes.Add(0xFF);

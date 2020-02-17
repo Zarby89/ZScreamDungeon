@@ -140,7 +140,7 @@
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\GfxGroupsForm.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Gui\GfxGroupsForm.Designer.cs">
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>

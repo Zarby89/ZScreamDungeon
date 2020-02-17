@@ -452,11 +452,11 @@ namespace ZeldaFullEditor
                 {
                     if (room.index == 263)//library
                     {
-                        drawSpriteTile((x * 16), (y * 16), 12, 18, 11); //BONK ITEM MUST BE MODIFIED TO USE ISKEY VALUE
+                        drawSpriteTile((x * 16), (y * 16), 12, 18, 11); //TODO:BONK ITEM MUST BE MODIFIED TO USE ISKEY VALUE
                     }
                     else
                     {
-                        drawSpriteTile((x * 16), (y * 16), 14, 18, 11, false, false, 1, 2); //key
+                        drawSpriteTile((x * 16), (y * 16), 11, 06, 11, false, false, 1, 2);
                     }
                 }
             }

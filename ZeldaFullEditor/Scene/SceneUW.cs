@@ -2214,97 +2214,108 @@ namespace ZeldaFullEditor
 
         public override void paste()
         {
-            List<SaveObject> data = (List<SaveObject>)Clipboard.GetData("ObjectZ");
-            if (data != null)
+            if (mouse_down == false)
             {
-                if (data.Count > 0)
+                List<SaveObject> data = null;
+                try
                 {
-                    int most_x = 512;
-                    int most_y = 512;
-                    foreach (SaveObject o in data)
+                    data = (List<SaveObject>)Clipboard.GetData("ObjectZ");
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+                if (data != null)
+                {
+                    if (data.Count > 0)
                     {
-                        if (data.Count > 0)
+                        int most_x = 512;
+                        int most_y = 512;
+                        foreach (SaveObject o in data)
                         {
-                            if (o.x < most_x)
+                            if (data.Count > 0)
                             {
-                                most_x = o.x;
-                            }
-                            if (o.y < most_y)
-                            {
-                                most_y = o.y;
-                            }
-                        }
-                        else
-                        {
-                            most_x = 0;
-                            most_y = 0;
-                        }
-                    }
-                    room.selectedObject.Clear();
-
-                    foreach (SaveObject o in data)
-                    {
-                        if (o.type == typeof(Sprite))
-                        {
-                            selectedMode = ObjectMode.Spritemode;
-                            Sprite spr = (new Sprite(room, o.id, (byte)(o.x - most_x), (byte)(o.y - most_y), o.overlord, o.subtype, o.layer));
-                            room.sprites.Add(spr);
-                            room.selectedObject.Add(spr);
-                        }
-                        else if (o.type == typeof(Room_Object))
-                        {
-                            if ((o.options & ObjectOption.Door) == ObjectOption.Door)
-                            {
-                                selectedMode = ObjectMode.Doormode;
-                                object_door ro = new object_door(o.tid, o.x, o.y, 0, o.layer);
-                                ro.setRoom(room);
-                                ro.options = (ObjectOption)o.options;
-                                room.tilesObjects.Add(ro);
-                                room.selectedObject.Add(ro);
-
+                                if (o.x < most_x)
+                                {
+                                    most_x = o.x;
+                                }
+                                if (o.y < most_y)
+                                {
+                                    most_y = o.y;
+                                }
                             }
                             else
                             {
+                                most_x = 0;
+                                most_y = 0;
+                            }
+                        }
+                        room.selectedObject.Clear();
 
-                                Room_Object ro = room.addObject(o.tid, (byte)(o.x - most_x), (byte)(o.y - most_y), o.size, o.layer);
-                                
-                                if (ro != null)
+                        foreach (SaveObject o in data)
+                        {
+                            if (o.type == typeof(Sprite))
+                            {
+                                selectedMode = ObjectMode.Spritemode;
+                                Sprite spr = (new Sprite(room, o.id, (byte)(o.x - most_x), (byte)(o.y - most_y), o.overlord, o.subtype, o.layer));
+                                room.sprites.Add(spr);
+                                room.selectedObject.Add(spr);
+                            }
+                            else if (o.type == typeof(Room_Object))
+                            {
+                                if ((o.options & ObjectOption.Door) == ObjectOption.Door)
                                 {
-                                    if ((byte)selectedMode > 3) //if it not BGAll or bg1-3
-                                    {
-                                        selectedMode = ObjectMode.Bg1mode; //set it on bg1 by default
-                                    }
-                                    else if ((byte)selectedMode == 3) //if it bgall do nothing
-                                    {
-
-                                    }
-                                    else //if it actually a layer set the roomobject on the current selected layer
-                                    {
-                                        ro.layer = (byte)selectedMode;
-                                    }
+                                    selectedMode = ObjectMode.Doormode;
+                                    object_door ro = new object_door(o.tid, o.x, o.y, 0, o.layer);
                                     ro.setRoom(room);
                                     ro.options = (ObjectOption)o.options;
                                     room.tilesObjects.Add(ro);
                                     room.selectedObject.Add(ro);
+
+                                }
+                                else
+                                {
+
+                                    Room_Object ro = room.addObject(o.tid, (byte)(o.x - most_x), (byte)(o.y - most_y), o.size, o.layer);
+
+                                    if (ro != null)
+                                    {
+                                        if ((byte)selectedMode > 3) //if it not BGAll or bg1-3
+                                        {
+                                            selectedMode = ObjectMode.Bg1mode; //set it on bg1 by default
+                                        }
+                                        else if ((byte)selectedMode == 3) //if it bgall do nothing
+                                        {
+
+                                        }
+                                        else //if it actually a layer set the roomobject on the current selected layer
+                                        {
+                                            ro.layer = (byte)selectedMode;
+                                        }
+                                        ro.setRoom(room);
+                                        ro.options = (ObjectOption)o.options;
+                                        room.tilesObjects.Add(ro);
+                                        room.selectedObject.Add(ro);
+                                    }
                                 }
                             }
+                            else if (o.type == typeof(PotItem))
+                            {
+                                selectedMode = ObjectMode.Itemmode;
+                                PotItem item = (new PotItem((byte)o.tid, (byte)(o.x - most_x), (byte)(o.y - most_y), (o.layer == 1 ? true : false)));
+                                room.pot_items.Add(item);
+                                room.selectedObject.Add(item);
+                            }
                         }
-                        else if (o.type == typeof(PotItem))
-                        {
-                            selectedMode = ObjectMode.Itemmode;
-                            PotItem item = (new PotItem((byte)o.tid, (byte)(o.x - most_x), (byte)(o.y - most_y), (o.layer == 1 ? true : false)));
-                            room.pot_items.Add(item);
-                            room.selectedObject.Add(item);
-                        }
-                    }
 
-                    dragx = 0;
-                    dragy = 0;
-                    mouse_down = true;
-                    
+                        dragx = 0;
+                        dragy = 0;
+                        mouse_down = true;
+
+                    }
+                    DrawRoom();
+                    Refresh();
                 }
-                DrawRoom();
-                Refresh();
             }
         }
 
