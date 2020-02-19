@@ -1,27 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Imaging;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Imaging;
 
-namespace ZeldaFullEditor
+namespace ZeldaFullEditor.Gui
 {
-    public partial class VramViewer : Form
+    public partial class VramViewer : Panel
     {
         public VramViewer()
         {
             InitializeComponent();
-            
+            this.AutoScroll = true;
+            this.Size = new Size(274, 512);
+            vramBox.Location = new Point(0, 0);
+            vramBox.Size = new Size(256, 1024);
+            vramBox.Paint += VramBox_Paint;
+            this.Controls.Add(vramBox);
         }
 
-        private void vramPicturebox_Paint(object sender, PaintEventArgs e)
+        private void VramBox_Paint(object sender, PaintEventArgs e)
         {
-            
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             using (Bitmap tempBitmap = (Bitmap)GFX.currentgfx16Bitmap.Clone())
             {
@@ -35,5 +39,8 @@ namespace ZeldaFullEditor
 
             }
         }
+
+        public PictureBox vramBox = new PictureBox();
+
     }
 }

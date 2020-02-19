@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.Gui
 {
-    partial class CGRamViewer
+    partial class VramViewer
     {
         /// <summary> 
         /// Variable nécessaire au concepteur.
@@ -29,11 +29,9 @@
         private void InitializeComponent()
         {
             this.SuspendLayout();
-            // 
-            // CGRamViewer
-            // 
-            this.Name = "CGRamViewer";
-            this.Size = new System.Drawing.Size(256, 256);
+
+            this.Name = "VramViewer";
+            this.Size = new System.Drawing.Size(309, 374);
             this.ResumeLayout(false);
 
         }

@@ -122,7 +122,7 @@
       <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\CGRamViewer.cs">
-      <SubType>Form</SubType>
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Gui\CGRamViewer.Designer.cs">
       <DependentUpon>CGRamViewer.cs</DependentUpon>
@@ -151,11 +151,23 @@
     <Compile Include="Gui\PaletteEditor.Designer.cs">
       <DependentUpon>PaletteEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\VramViewer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\VramViewer.Designer.cs">
+      <DependentUpon>VramViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\WarpsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Gui\WarpsForm.Designer.cs">
       <DependentUpon>WarpsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\WindowPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\WindowPanel.Designer.cs">
+      <DependentUpon>WindowPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="IniFile.cs" />
     <Compile Include="Project.cs" />
@@ -233,12 +245,6 @@
     <Compile Include="Tile.cs" />
     <Compile Include="TileInfo.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="VramViewer.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="VramViewer.Designer.cs">
-      <DependentUpon>VramViewer.cs</DependentUpon>
-    </Compile>
     <Compile Include="ZCompressLibrary\Common.cs" />
     <Compile Include="ZCompressLibrary\Compress.cs" />
     <Compile Include="ZCompressLibrary\compression_piece.cs" />
@@ -283,8 +289,14 @@
     <EmbeddedResource Include="Gui\PaletteEditor.resx">
       <DependentUpon>PaletteEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\VramViewer.resx">
+      <DependentUpon>VramViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\WarpsForm.resx">
       <DependentUpon>WarpsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\WindowPanel.resx">
+      <DependentUpon>WindowPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MovePointer.resx">
       <DependentUpon>MovePointer.cs</DependentUpon>
@@ -315,9 +327,6 @@
     <EmbeddedResource Include="SpritesView.resx">
       <DependentUpon>SpritesView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="VramViewer.resx">
-      <DependentUpon>VramViewer.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -343,6 +352,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="PatchNotes.txt" />
+    <None Include="Resources\xbutton.png" />
     <Content Include="spritesmove.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

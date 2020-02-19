@@ -52,15 +52,17 @@ namespace ZeldaFullEditor
         public int selectedLayer = -1;
         public Entrance selectedEntrance = null;
         PaletteEditor paletteForm;
-
+        Bitmap xTabButton;
+        Room previewRoom = null;
         private void Form1_Load(object sender, EventArgs e)
         {
+            xTabButton = new Bitmap(Resources.xbutton);
             layoutForm = new RoomLayout(this);
             initialize_properties();
             GFX.initGfx();
             ROMStructure.loadDefaultProject();
             mapPicturebox.Image = new Bitmap(256, 304);
-
+            thumbnailBox.Size = new Size(256, 256);
             roomProperty_floor1.MouseWheel += RoomProperty_MouseWheel;
             roomProperty_floor2.MouseWheel += RoomProperty_MouseWheel;
             roomProperty_spriteset.MouseWheel += RoomProperty_MouseWheel;
@@ -245,12 +247,24 @@ namespace ZeldaFullEditor
 
             FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
             int size = (int)fs.Length;
-            if (fs.Length == 0x100000)
+            if (fs.Length < 0x200000)
             {
                 size = 0x200000;
             }
             ROM.DATA = new byte[size];
-            fs.Read(ROM.DATA, 0, (int)fs.Length);
+            if ((fs.Length & 0x200) == 0x200)
+            {
+                size = (int)(fs.Length - 0x200);
+                byte[] tempRomData = new byte[fs.Length];
+                fs.Read(tempRomData, 0, (int)fs.Length);
+                Array.Copy(tempRomData, 0x200, ROM.DATA, 0, size);
+            }
+            else
+            {
+                fs.Read(ROM.DATA, 0, (int)fs.Length);
+            }
+            
+            
             fs.Close();
 
             LoadPalettes();
@@ -372,18 +386,11 @@ namespace ZeldaFullEditor
             }
 
             entrancetreeView_AfterSelect(null, null);
-
             gfxGroupsForm = new GfxGroupsForm(this);
-            gfxGroupsForm.Visible = false;
-            gfxGroupsForm.Location = new Point(512, 0);
-            customPanel3.Controls.Add(gfxGroupsForm);
-            gfxGroupsForm.BringToFront();
+            gfxGroupsForm.Location = new Point(0, 0);
 
             paletteForm = new PaletteEditor(this);
-            paletteForm.Visible = false;
-            paletteForm.Location = new Point(512, 0);
-            customPanel3.Controls.Add(paletteForm);
-            paletteForm.BringToFront();
+            paletteForm.Location = new Point(0, 0);
             refreshRecentsFiles();
 
 
@@ -1673,68 +1680,65 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void tabControl2_MouseClick(object sender, MouseEventArgs e)
+        private void CloseTab(int i)
         {
-            if (e.Button == MouseButtons.Middle)
+            if ((tabControl2.TabPages[i].Tag as Room).has_changed)
             {
-                for (int i = 0; i < tabControl2.TabCount; i++)
+                DialogResult dr = MessageBox.Show("Room has changed do you want to save?", "Warning", MessageBoxButtons.YesNoCancel);
+                if (dr == DialogResult.Yes)
                 {
-                    Rectangle r = tabControl2.GetTabRect(i);
-                    if (r.Contains(e.Location))
+                    all_rooms[(tabControl2.TabPages[i].Tag as Room).index] = (Room)(tabControl2.TabPages[i].Tag as Room).Clone();
+                    closeRoom((tabControl2.TabPages[i].Tag as Room).index);
+                    this.tabControl2.TabPages.RemoveAt(i);
+                    if (tabControl2.TabPages.Count == 0)
                     {
-                        if ((tabControl2.TabPages[i].Tag as Room).has_changed)
-                        {
-                            DialogResult dr = MessageBox.Show("Room has changed do you want to save?", "Warning", MessageBoxButtons.YesNoCancel);
-                            if (dr == DialogResult.Yes)
-                            {
-                                all_rooms[(tabControl2.TabPages[i].Tag as Room).index] = (Room)(tabControl2.TabPages[i].Tag as Room).Clone();
-                                closeRoom((tabControl2.TabPages[i].Tag as Room).index);
-                                this.tabControl2.TabPages.RemoveAt(i);
-                                if (tabControl2.TabPages.Count == 0)
-                                {
-                                    activeScene.Clear();
-                                    tabControl2.Visible = false;
-                                    activeScene.Refresh();
-                                }
-                            }
-                            else if (dr == DialogResult.No)
-                            {
-                                closeRoom((tabControl2.TabPages[i].Tag as Room).index);
-                                this.tabControl2.TabPages.RemoveAt(i);
-                                if (tabControl2.TabPages.Count == 0)
-                                {
-                                    activeScene.Clear();
-                                    tabControl2.Visible = false;
-                                    activeScene.Refresh();
-                                }
-                            }
-                            else if (dr == DialogResult.Cancel)
-                            {
-                               
-                            }
-                        }
-                        else
-                        {
-                            closeRoom((tabControl2.TabPages[i].Tag as Room).index);
-                            this.tabControl2.TabPages.RemoveAt(i);
-                            if (tabControl2.TabPages.Count == 0)
-                            {
-                                tabControl2.Visible = false;
-                                activeScene.Clear();
-                                activeScene.room = null;
-                                activeScene.Refresh();
-                            }
-                        }
-                        
-                        break;
+                        activeScene.Clear();
+                        tabControl2.Visible = false;
+                        activeScene.Refresh();
                     }
                 }
+                else if (dr == DialogResult.No)
+                {
+                    closeRoom((tabControl2.TabPages[i].Tag as Room).index);
+                    this.tabControl2.TabPages.RemoveAt(i);
+                    if (tabControl2.TabPages.Count == 0)
+                    {
+                        activeScene.Clear();
+                        tabControl2.Visible = false;
+                        activeScene.Refresh();
+                    }
+                }
+                else if (dr == DialogResult.Cancel)
+                {
+
+                }
             }
+            else
+            {
+                closeRoom((tabControl2.TabPages[i].Tag as Room).index);
+                this.tabControl2.TabPages.RemoveAt(i);
+                if (tabControl2.TabPages.Count == 0)
+                {
+                    tabControl2.Visible = false;
+                    activeScene.Clear();
+                    activeScene.room = null;
+                    activeScene.Refresh();
+                }
+            }
+            tabControl2.Refresh();
+        }
+
+        private void tabControl2_MouseClick(object sender, MouseEventArgs e)
+        {
+
+
+
             //loadRoomList(0);
         }
 
         private void tabControl2_SelectedIndexChanged(object sender, EventArgs e)
         {
+
             if (tabControl2.TabPages.Count > 0)
             {
                 activeScene.room = (tabControl2.TabPages[tabControl2.SelectedIndex].Tag as Room);
@@ -2319,11 +2323,13 @@ namespace ZeldaFullEditor
         private void vramViewerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             vramViewer = new VramViewer();
-            vramViewer.TopLevel = false;
-            customPanel3.Controls.Add(vramViewer);
-            vramViewer.Parent = customPanel3;
-            vramViewer.BringToFront();
-            vramViewer.Show();
+            WindowPanel wp = new WindowPanel();
+            wp.Location = new Point(512, 0);
+            wp.containerPanel.Controls.Add(vramViewer);
+            wp.Tag = "Vram Viewer";
+            wp.Size = new Size(vramViewer.Size.Width + 2, vramViewer.Size.Height + 26);
+            customPanel3.Controls.Add(wp);
+            wp.BringToFront();
         }
 
         private void warpButton_Click(object sender, EventArgs e)
@@ -2604,17 +2610,25 @@ namespace ZeldaFullEditor
         private void cGramViewerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             cgramViewer = new CGRamViewer();
-            cgramViewer.TopLevel = false;
-            customPanel3.Controls.Add(cgramViewer);
-            cgramViewer.Parent = customPanel3;
-            cgramViewer.BringToFront();
-            cgramViewer.Show();
+            WindowPanel wp = new WindowPanel();
+            wp.Tag = "CGRam Viewer - Right click to export palettes";
+            wp.Location = new Point(512, 0);
+            wp.containerPanel.Controls.Add(cgramViewer);
+            wp.Size = new Size(cgramViewer.Size.Width + 2, cgramViewer.Size.Height + 26);
+            customPanel3.Controls.Add(wp);
+            wp.BringToFront();
         }
 
         public GfxGroupsForm gfxGroupsForm;
         private void gfxGroupsetsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            gfxGroupsForm.Visible = !gfxGroupsForm.Visible;
+            WindowPanel wp = new WindowPanel();
+            wp.Tag = "Gfx Groupset Editor";
+            wp.Location = new Point(512, 0);
+            wp.containerPanel.Controls.Add(gfxGroupsForm);
+            wp.Size = new Size(gfxGroupsForm.Size.Width + 2, gfxGroupsForm.Size.Height + 26);
+            customPanel3.Controls.Add(wp);
+            wp.BringToFront();
         }
 
         private void insertToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -2637,25 +2651,474 @@ namespace ZeldaFullEditor
 
         private void palettesEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            paletteForm.Visible = !paletteForm.Visible;
+            WindowPanel wp = new WindowPanel();
+            wp.Tag = "Palettes Editor";
+            wp.Location = new Point(512, 0);
+            wp.containerPanel.Controls.Add(paletteForm);
+            wp.Size = new Size(paletteForm.Size.Width + 2, paletteForm.Size.Height + 26);
+            customPanel3.Controls.Add(wp);
+            paletteForm.BringToFront();
+            wp.BringToFront();
         }
 
         //Export Palette to YY-CHR Palette Format
         /*            
-            SaveFileDialog sf = new SaveFileDialog();
-            sf.DefaultExt = ".pal";
-            if (sf.ShowDialog() == DialogResult.OK)
-            {
-                FileStream fs = new FileStream(sf.FileName, FileMode.Create, FileAccess.Write);
-                ColorPalette cp = GFX.roomBg1Bitmap.Palette;
-                foreach (Color c in cp.Entries)
-                {
-                    fs.WriteByte(c.R);
-                    fs.WriteByte(c.G);
-                    fs.WriteByte(c.B);
-                }
-                fs.Close();
+
             }*/
+        int tpHotTracked = -1;
+        int tpHotTrackedToClose = -1;
+        int tpHotTrackedToCloseLast = -2;
+        int lasttpHotTracked = -2;
+        private void DrawOnTab(object sender, DrawItemEventArgs e)
+        {
+            Graphics g = e.Graphics;
+            Pen p = new Pen(Color.Blue);
+            Font font = (sender as TabControl).Font;
+            SolidBrush b = new SolidBrush(Color.FromKnownColor(KnownColor.Control));
+            SolidBrush bs = new SolidBrush(Color.FromKnownColor(KnownColor.ControlLight));
+            if (tpHotTracked == e.Index || e.State == DrawItemState.Selected)
+            {
+                g.FillRectangle(bs, e.Bounds);
+                g.DrawString(tabControl2.TabPages[e.Index].Text, font, Brushes.Blue, new Rectangle(e.Bounds.X, e.Bounds.Y + 2, 64, 24));
+                if (tpHotTrackedToClose == e.Index)
+                {
+                    g.DrawImage(xTabButton, new Rectangle(e.Bounds.X+30, e.Bounds.Y, 16, 16), 16, 0, 16, 16, GraphicsUnit.Pixel);
+                }
+                else
+                {
+                    g.DrawImage(xTabButton, new Rectangle(e.Bounds.X+30, e.Bounds.Y, 16, 16), 0, 0, 16, 16, GraphicsUnit.Pixel);
+                }
+                
+                //g.DrawString("000", font, Brushes.Blue, new Rectangle(e.Bounds.X, e.Bounds.Y + 4, 64, 24));
+            }
+            else
+            {
+                g.FillRectangle(b, e.Bounds);
+                g.DrawString(tabControl2.TabPages[e.Index].Text, font, Brushes.Black, new Rectangle(e.Bounds.X, e.Bounds.Y + 2, 64, 24));
+            }
+            b.Dispose();
+            bs.Dispose();
+           
+
+        }
+
+        private void tabControl2_MouseMove(object sender, MouseEventArgs e)
+        {
+            tpHotTrackedToClose = -1;
+            for (int i = 0; i < tabControl2.TabPages.Count; i++)
+            {
+                Rectangle itemRect = tabControl2.GetTabRect(i);
+
+                if (itemRect.Contains(e.Location))
+                {
+                    Rectangle xRect = tabControl2.GetTabRect(i);
+                    xRect.X += 30;
+                    xRect.Width = 16;
+
+                    tpHotTracked = i;
+                    if (xRect.Contains(e.Location))
+                    {
+                        tpHotTrackedToClose = i;
+                    }
+                    
+
+                    //tabControl2.TabPages[i].Refresh();
+
+                }
+            }
+            if (lasttpHotTracked != tpHotTracked || tpHotTrackedToCloseLast != tpHotTrackedToClose)
+            {
+                tabControl2.Refresh();
+            }
+            tpHotTrackedToCloseLast = tpHotTrackedToClose;
+            lasttpHotTracked = tpHotTracked;
+
+
+        }
+
+        private void tabControl2_MouseLeave(object sender, EventArgs e)
+        {
+            tpHotTracked = -1;
+            lasttpHotTracked = -2;
+            tpHotTrackedToClose = -1;
+            tpHotTrackedToCloseLast = -2;
+            tabControl2.Refresh();
+
+        }
+
+        private void tabControl2_MouseEnter(object sender, EventArgs e)
+        {
+            tpHotTracked = -1;
+            lasttpHotTracked = -2;
+            tpHotTrackedToClose = -1;
+            tpHotTrackedToCloseLast = -2;
+            tabControl2.Refresh();
+        }
+
+        private void tabControl2_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Middle)
+            {
+                for (int i = 0; i < tabControl2.TabCount; i++)
+                {
+                    Rectangle r = tabControl2.GetTabRect(i);
+                    if (r.Contains(e.Location))
+                    {
+                        CloseTab(i);
+                    }
+                }
+            }
+            else if (e.Button == MouseButtons.Left)
+            {
+                if (tpHotTrackedToClose != -1)
+                {
+                    int ctab = tpHotTrackedToClose;
+                    if (tpHotTrackedToClose == tabControl2.SelectedIndex)
+                    {
+                        tpHotTrackedToClose = -1;
+                        tabControl2.SelectedIndex = 0;
+                    }
+                    CloseTab(ctab);
+
+                }
+
+            }
+        }
+
+        private void tabControl2_Deselecting(object sender, TabControlCancelEventArgs e)
+        {
+            if (tpHotTrackedToClose != -1)
+            {
+                e.Cancel = true;
+            }
+
+        }
+
+        private void customPanel3_MouseMove(object sender, MouseEventArgs e)
+        {
+
+        }
+
+        private void goToRightRoomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void mapPicturebox_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                thumbnailBox.Visible = true;
+                
+                int x = (e.X / 16);
+                int y = (e.Y / 16);
+                int roomId = x + (y * 16);
+
+                previewRoom = all_rooms[roomId];
+                previewRoom.reloadGfx();
+                GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.Palette);
+                DrawRoom();
+                thumbnailBox.Refresh();
+                if (activeScene.room != null)
+                {
+                    GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
+                    activeScene.room.reloadGfx();
+                }
+
+            }
+        }
+
+        public unsafe void ClearBgGfx()
+        {
+            byte* bg1data = (byte*)GFX.roomBg1Ptr.ToPointer();
+            byte* bg2data = (byte*)GFX.roomBg2Ptr.ToPointer();
+            for (int i = 0; i < 512 * 512; i++)
+            {
+                bg1data[i] = 0;
+                bg2data[i] = 0;
+            }
+        }
+
+        public unsafe void DrawRoom()
+        {
+            if (previewRoom == null)
+            {
+                return;
+            }
+
+            //Tile t = new Tile(0, false, false, 0, 0);
+            //t.Draw(0, 0);
+            ClearBgGfx(); //technically not required
+
+            previewRoom.DrawFloor1();
+
+            if (previewRoom.bg2 != Background2.Off)
+            {
+                SetPalettesTransparent();
+                    previewRoom.DrawFloor2();
+            }
+            else
+            {
+                SetPalettesBlack();
+
+            }
+
+
+            previewRoom.reloadLayout();
+            foreach (Room_Object o in previewRoom.tilesLayoutObjects)
+            {
+                o.Draw();
+
+            }
+            //draw object on bitmap
+
+            foreach (Room_Object o in previewRoom.tilesObjects)
+            {
+                if (o.layer != 2)
+                {
+                    o.Draw();
+                }
+                if (o.options == ObjectOption.Door)
+                {
+                    o.Draw();
+                }
+            }
+            foreach (Room_Object o in previewRoom.tilesObjects)
+            {
+                //Draw doors here since they'll all be put on bg3 anyways
+                if (o.layer == 2)
+                {
+                    o.Draw();
+                }
+            }
+                GFX.DrawBG1();
+                GFX.DrawBG2();
+
+        }
+
+        public void SetPalettesTransparent()
+        {
+            int pindex = 0;
+            ColorPalette palettes = GFX.roomBg1Bitmap.Palette;
+            for (int y = 0; y < GFX.loadedPalettes.GetLength(1); y++)
+            {
+                for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
+                {
+                    palettes.Entries[pindex] = GFX.loadedPalettes[x, y];
+                    pindex++;
+                }
+            }
+
+            for (int y = 0; y < GFX.loadedSprPalettes.GetLength(1); y++)
+            {
+                for (int x = 0; x < GFX.loadedSprPalettes.GetLength(0); x++)
+                {
+                    if (pindex < 256)
+                    {
+                        palettes.Entries[pindex] = GFX.loadedSprPalettes[x, y];
+                        pindex++;
+                    }
+                }
+            }
+
+            for (int i = 0; i < 16; i++)
+            {
+                palettes.Entries[i * 16] = Color.Transparent;
+                palettes.Entries[(i * 16) + 8] = Color.Transparent;
+            }
+            GFX.roomBg1Bitmap.Palette = palettes;
+            GFX.roomBg2Bitmap.Palette = palettes;
+            GFX.roomBgLayoutBitmap.Palette = palettes;
+        }
+
+        public void SetPalettesBlack()
+        {
+            int pindex = 0;
+            ColorPalette palettes = GFX.roomBg1Bitmap.Palette;
+            for (int y = 0; y < GFX.loadedPalettes.GetLength(1); y++)
+            {
+                for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
+                {
+                    palettes.Entries[pindex] = GFX.loadedPalettes[x, y];
+                    pindex++;
+                }
+            }
+
+            for (int i = 0; i < 16; i++)
+            {
+                palettes.Entries[i * 16] = Color.Black;
+                palettes.Entries[(i * 16) + 8] = Color.Black;
+            }
+            GFX.roomBg1Bitmap.Palette = palettes;
+            GFX.roomBg2Bitmap.Palette = palettes;
+            GFX.roomBgLayoutBitmap.Palette = palettes;
+        }
+
+        private void thumbnailBox_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
+            e.Graphics.Clear(Color.Black);
+            if (previewRoom.bg2 != Background2.Translucent || previewRoom.bg2 != Background2.Transparent ||
+                previewRoom.bg2 != Background2.OnTop || previewRoom.bg2 != Background2.Off)
+            {
+                e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0,0,256,256),0,0,512,512,GraphicsUnit.Pixel);
+            }
+
+
+            //e.Graphics.DrawImage(GFX.roomBgLayoutBitmap,0,0);
+            e.Graphics.DrawImage(GFX.roomBg1Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+
+            if (previewRoom.bg2 == Background2.Translucent || previewRoom.bg2 == Background2.Transparent)
+            {
+                float[][] matrixItems ={
+               new float[] {1f, 0, 0, 0, 0},
+               new float[] {0, 1f, 0, 0, 0},
+               new float[] {0, 0, 1f, 0, 0},
+               new float[] {0, 0, 0, 0.5f, 0},
+               new float[] {0, 0, 0, 0, 1}};
+                ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
+
+                // Create an ImageAttributes object and set its color matrix.
+                ImageAttributes imageAtt = new ImageAttributes();
+                imageAtt.SetColorMatrix(
+                   colorMatrix,
+                   ColorMatrixFlag.Default,
+                   ColorAdjustType.Bitmap);
+                //GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
+                e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
+            }
+            else if (previewRoom.bg2 == Background2.OnTop)
+            {
+                e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+            }
+
+            activeScene.drawText(e.Graphics, 0, 0,"ROOM : " + lastRoomID.ToString());
+
+        }
+
+        private void mapPicturebox_MouseUp(object sender, MouseEventArgs e)
+        {
+            thumbnailBox.Visible = false;
+        }
+        int lastRoomID = -1; 
+        private void mapPicturebox_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (maphoverCheckbox.Checked)
+            {
+                thumbnailBox.Visible = true;
+
+                int x = (e.X / 16);
+                int y = (e.Y / 16);
+                int roomId = x + (y * 16);
+                if (roomId >= 296)
+                {
+                    thumbnailBox.Visible = false;
+                    return;
+                }
+
+                if (lastRoomID != roomId)
+                {
+                    previewRoom = all_rooms[roomId];
+                    previewRoom.reloadGfx();
+                    GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.Palette);
+                    DrawRoom();
+                    thumbnailBox.Refresh();
+                    if (activeScene.room != null)
+                    {
+                        GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
+                        activeScene.room.reloadGfx();
+                    }
+                }
+
+                lastRoomID = roomId;
+            }
+
+
+        }
+
+        private void mapPicturebox_MouseLeave(object sender, EventArgs e)
+        {
+            thumbnailBox.Visible = false;
+        }
+
+        private void openRightRoomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (activeScene.room != null)
+            {
+                int id = activeScene.room.index + 1;
+                if (id < 296)
+                {
+                    addRoomTab((short)id);
+                }
+                else
+                {
+                    addRoomTab(0);
+                }
+            }
+        }
+
+        private void openLeftRoomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (activeScene.room != null)
+            {
+                int id = activeScene.room.index - 1;
+                if (id >= 0)
+                {
+                    addRoomTab((short)id);
+                }
+                else
+                {
+                    addRoomTab(295);
+                }
+            }
+        }
+
+        private void openUpRoomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (activeScene.room != null)
+            {
+                int id = (activeScene.room.index - 16);
+                if (id >= 0)
+                {
+                    addRoomTab((short)id);
+                }
+                else
+                {
+                    if (304 + id > 295)
+                    {
+                        addRoomTab((short)(295));
+
+                    }
+                    else
+                    {
+                        addRoomTab((short)(304 + id));
+                    }
+                }
+            }
+        }
+
+        private void openDownRoomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (activeScene.room != null)
+            {
+                int id = activeScene.room.index + 16;
+                if (id < 296)
+                {
+                    addRoomTab((short)id);
+                }
+                else
+                {
+                    if (id > 304)
+                    {
+                        addRoomTab((short)(id - 304));
+                    }
+                    else
+                    {
+                        addRoomTab((short)(id - 288));
+                    }
+                }
+            }
+        }
     }
 
 

@@ -43,7 +43,6 @@
             this.mainBlocksetUpDown = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.roomTab = new System.Windows.Forms.TabPage();
             this.roomGroupbox = new System.Windows.Forms.GroupBox();
             this.room4Box = new System.Windows.Forms.TextBox();
@@ -53,7 +52,6 @@
             this.roomUpDown = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.spriteTab = new System.Windows.Forms.TabPage();
             this.spritesGroupbox = new System.Windows.Forms.GroupBox();
             this.sprite4Box = new System.Windows.Forms.TextBox();
@@ -63,7 +61,6 @@
             this.spriteUpDown = new System.Windows.Forms.NumericUpDown();
             this.label5 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.paletteTab = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -76,32 +73,35 @@
             this.palette1Box = new System.Windows.Forms.TextBox();
             this.paletteUpDown = new System.Windows.Forms.NumericUpDown();
             this.label7 = new System.Windows.Forms.Label();
-            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.paletteRadioButton = new System.Windows.Forms.RadioButton();
             this.grayscaleRadioButton = new System.Windows.Forms.RadioButton();
             this.cancelButton = new System.Windows.Forms.Button();
             this.okButton = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             this.mainGroupbox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainBlocksetUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.roomTab.SuspendLayout();
             this.roomGroupbox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.roomUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.spriteTab.SuspendLayout();
             this.spritesGroupbox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spriteUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             this.paletteTab.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -247,16 +247,6 @@
             this.label1.Text = "Main groupset is the gfx set on overworld\r\nand the gfx set in the rooms for dunge" +
     "ons\r\nthey are only reloaded on warp, stairs, hole";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Location = new System.Drawing.Point(238, 9);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(128, 256);
-            this.pictureBox1.TabIndex = 12;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.allpreviewPaint);
-            // 
             // roomTab
             // 
             this.roomTab.Controls.Add(this.roomGroupbox);
@@ -269,7 +259,7 @@
             this.roomTab.Padding = new System.Windows.Forms.Padding(3);
             this.roomTab.Size = new System.Drawing.Size(374, 262);
             this.roomTab.TabIndex = 1;
-            this.roomTab.Text = "Entrance";
+            this.roomTab.Text = "Rooms";
             this.roomTab.UseVisualStyleBackColor = true;
             // 
             // roomGroupbox
@@ -353,16 +343,6 @@
             this.label4.TabIndex = 7;
             this.label4.Text = "Entrance blockset is the blockset used by entrances\r\nto load walls, and other gfx" +
     " on top of the main gfx\r\n";
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox2.Location = new System.Drawing.Point(238, 9);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(128, 128);
-            this.pictureBox2.TabIndex = 6;
-            this.pictureBox2.TabStop = false;
-            this.pictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.allpreviewPaint);
             // 
             // spriteTab
             // 
@@ -459,16 +439,6 @@
             this.label6.TabIndex = 12;
             this.label6.Text = resources.GetString("label6.Text");
             // 
-            // pictureBox3
-            // 
-            this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox3.Location = new System.Drawing.Point(238, 9);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(128, 128);
-            this.pictureBox3.TabIndex = 11;
-            this.pictureBox3.TabStop = false;
-            this.pictureBox3.Paint += new System.Windows.Forms.PaintEventHandler(this.allpreviewPaint);
-            // 
             // paletteTab
             // 
             this.paletteTab.Controls.Add(this.groupBox1);
@@ -504,7 +474,7 @@
             this.label12.AutoSize = true;
             this.label12.Location = new System.Drawing.Point(6, 98);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(87, 13);
+            this.label12.Size = new System.Drawing.Size(105, 13);
             this.label12.TabIndex = 24;
             this.label12.Text = "Dungeon Sprite Pal3";
             // 
@@ -513,7 +483,7 @@
             this.label11.AutoSize = true;
             this.label11.Location = new System.Drawing.Point(6, 72);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(87, 13);
+            this.label11.Size = new System.Drawing.Size(105, 13);
             this.label11.TabIndex = 23;
             this.label11.Text = "Dungeon Sprite Pal2";
             // 
@@ -522,7 +492,7 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(6, 46);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(144, 13);
+            this.label10.Size = new System.Drawing.Size(105, 13);
             this.label10.TabIndex = 22;
             this.label10.Text = "Dungeon Sprite Pal1";
             // 
@@ -531,7 +501,7 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(6, 20);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(149, 13);
+            this.label9.Size = new System.Drawing.Size(77, 13);
             this.label9.TabIndex = 21;
             this.label9.Text = "Dungeon Main";
             // 
@@ -592,16 +562,6 @@
             this.label7.Size = new System.Drawing.Size(108, 13);
             this.label7.TabIndex = 18;
             this.label7.Text = "Selected Paletteset : ";
-            // 
-            // pictureBox4
-            // 
-            this.pictureBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox4.Location = new System.Drawing.Point(238, 9);
-            this.pictureBox4.Name = "pictureBox4";
-            this.pictureBox4.Size = new System.Drawing.Size(128, 128);
-            this.pictureBox4.TabIndex = 16;
-            this.pictureBox4.TabStop = false;
-            this.pictureBox4.Paint += new System.Windows.Forms.PaintEventHandler(this.palettepreviewPaint);
             // 
             // panel1
             // 
@@ -675,6 +635,46 @@
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.Location = new System.Drawing.Point(238, 9);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(128, 256);
+            this.pictureBox1.TabIndex = 12;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.allpreviewPaint);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox2.Location = new System.Drawing.Point(238, 9);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(128, 128);
+            this.pictureBox2.TabIndex = 6;
+            this.pictureBox2.TabStop = false;
+            this.pictureBox2.Paint += new System.Windows.Forms.PaintEventHandler(this.allpreviewPaint);
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox3.Location = new System.Drawing.Point(238, 9);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(128, 128);
+            this.pictureBox3.TabIndex = 11;
+            this.pictureBox3.TabStop = false;
+            this.pictureBox3.Paint += new System.Windows.Forms.PaintEventHandler(this.allpreviewPaint);
+            // 
+            // pictureBox4
+            // 
+            this.pictureBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox4.Location = new System.Drawing.Point(238, 9);
+            this.pictureBox4.Name = "pictureBox4";
+            this.pictureBox4.Size = new System.Drawing.Size(128, 128);
+            this.pictureBox4.TabIndex = 16;
+            this.pictureBox4.TabStop = false;
+            this.pictureBox4.Paint += new System.Windows.Forms.PaintEventHandler(this.palettepreviewPaint);
+            // 
             // GfxGroupsForm
             // 
             this.BackColor = System.Drawing.SystemColors.Control;
@@ -690,28 +690,28 @@
             this.mainGroupbox.ResumeLayout(false);
             this.mainGroupbox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mainBlocksetUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.roomTab.ResumeLayout(false);
             this.roomTab.PerformLayout();
             this.roomGroupbox.ResumeLayout(false);
             this.roomGroupbox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.roomUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.spriteTab.ResumeLayout(false);
             this.spriteTab.PerformLayout();
             this.spritesGroupbox.ResumeLayout(false);
             this.spritesGroupbox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spriteUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             this.paletteTab.ResumeLayout(false);
             this.paletteTab.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             this.ResumeLayout(false);
 
         }

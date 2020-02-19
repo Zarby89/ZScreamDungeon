@@ -496,8 +496,14 @@ namespace ZeldaFullEditor
             var section1Index = 0x50008; //0x50000 to 0x5374F  //53730
             var section2Index = 0xF878A; //0xF878A to 0xFFFFF
             var section3Index = 0x1EB90; //0x1EB90 to 0x1FFFF
-           // var section4Index = 0x121210; // 0x121210 to ????? expanded region. need to find max safe for rando roms
-
+            var section4Index = 0x120000;
+            int section4Start = 0x120000;
+            bool usedSection4 = false;
+            while (ROM.DATA[section4Index] != 0)
+            {
+                section4Index += 0x010000;
+            }
+            section4Start = section4Index;
             //reorder room from bigger to lower
 
             for (int i = 0; i < 296; i++)
@@ -558,14 +564,19 @@ namespace ZeldaFullEditor
                     // write the room
                     //saveObjectBytes(i, section4Index, roomBytes);
                     //section4Index += roomBytes.Length;
-
-                    return true;
-
+                    saveObjectBytes(all_rooms[i].index, section4Index, roomBytes, doorPos);
+                    section4Index += roomBytes.Length;
+                    usedSection4 = true;
+                    continue;
                     //move to EXPANDED region
                     //Console.WriteLine("Room " + i + " no more space jump to 0x121210");
                     //currentPos = 0x121210;
                     //MessageBox.Show("We are running out space in the original portion of the ROM next data will be writed to : 0x121210");
                 }
+            }
+            if (usedSection4)
+            {
+                Console.WriteLine("Used section4 for tiles index at location : " + section4Start.ToString("X6") + "Length of :" + (section4Index-section4Start).ToString("X6"));
             }
             return false; // False = no error
         }
