@@ -32,8 +32,8 @@ namespace ZeldaFullEditor
         public Room[] all_rooms = new Room[296];
         public Entrance[] entrances = new Entrance[0x85];
         Entrance[] starting_entrances = new Entrance[0x07];
-
-
+        public List<Room>[] undoRoom = new List<Room>[296];
+        public List<Room>[] redoRoom = new List<Room>[296];
         //TODO : Move that?
         public byte[] door_index = new byte[] { 0x00, 0x06, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32, 0x20, 0x14 };
 
@@ -285,7 +285,7 @@ namespace ZeldaFullEditor
             Palettes.CreateAllPalettes(ROM.DATA);
         }
 
-        public void initProject() 
+        public unsafe void initProject() 
         {
             tabControl1.Enabled = true;
             GfxGroups.LoadGfxGroups();
@@ -294,11 +294,17 @@ namespace ZeldaFullEditor
             for (int i = 0; i < 296; i++)
             {
                 all_rooms[i] = (new Room(i)); // create all rooms
+                undoRoom[i] = new List<Room>();
+                redoRoom[i] = new List<Room>();
             }
+
+
             initEntrancesList();
             this.customPanel3.Controls.Add(activeScene);
             addRoomTab(260);
+
             projectLoaded = true;
+
             tabControl2_SelectedIndexChanged(tabControl2.TabPages[0], new EventArgs());
             enableProjectButtons();
 
@@ -1178,6 +1184,7 @@ namespace ZeldaFullEditor
             }
             if (alreadyFound == true)
             {
+
                 //display message error room already opened
                 //MessageBox.Show("That room is already opened !");
                 foreach(TabPage tp in tabControl2.TabPages)
@@ -1194,6 +1201,28 @@ namespace ZeldaFullEditor
             else
             {
                 Room r = (Room)all_rooms[roomId].Clone();
+                if (undoRoom[r.index].Count == 0)
+                {
+                    undoRoom[r.index].Add((Room)r.Clone());
+                    redoRoom[r.index].Clear();
+                    undoButton.Enabled = false;
+                    undoToolStripMenuItem.Enabled = false;
+                }
+                else
+                {
+                    undoButton.Enabled = true;
+                    undoToolStripMenuItem.Enabled = true;
+                }
+                if (redoRoom[r.index].Count > 0)
+                {
+                    redoButton.Enabled = true;
+                    redoToolStripMenuItem.Enabled = true;
+                }
+                else
+                {
+                    redoButton.Enabled = false;
+                    redoToolStripMenuItem.Enabled = false;
+                }
                 //mapPropertyGrid.SelectedObject = r;
                 opened_rooms.Add(r); //add the double clicked room into rooms list     
                 activeScene.room = r;
@@ -1565,6 +1594,9 @@ namespace ZeldaFullEditor
                     activeScene.room.reloadGfx();
                 }
 
+                /*undoRoom[activeScene.room.index].Add((Room)activeScene.room.Clone());
+                redoRoom[activeScene.room.index].Clear();
+                */
                 GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
                 GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
                 activeScene.SetPalettesBlack();
@@ -1743,6 +1775,26 @@ namespace ZeldaFullEditor
             {
                 activeScene.room = (tabControl2.TabPages[tabControl2.SelectedIndex].Tag as Room);
                 activeScene.updateRoomInfos(this);
+                if (undoRoom[activeScene.room.index].Count > 0)
+                { 
+                    undoButton.Enabled = true;
+                    undoToolStripMenuItem.Enabled = true;
+                }
+                else
+                {
+                    redoButton.Enabled = false;
+                    redoToolStripMenuItem.Enabled = false;
+                }
+                if (redoRoom[activeScene.room.index].Count > 0)
+                {
+                    redoButton.Enabled = true;
+                    redoToolStripMenuItem.Enabled = true;
+                }
+                else
+                {
+                    redoButton.Enabled = false;
+                    redoToolStripMenuItem.Enabled = false;
+                }
                 if (!visibleEntranceGFX)
                 {
                     activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
@@ -1762,6 +1814,8 @@ namespace ZeldaFullEditor
                 spritesView1.Refresh();
                 objectViewer1.updateSize();
                 objectViewer1.Refresh();
+
+
             }
             else
             {
@@ -2813,7 +2867,10 @@ namespace ZeldaFullEditor
                 int x = (e.X / 16);
                 int y = (e.Y / 16);
                 int roomId = x + (y * 16);
-
+                if (roomId > 295)
+                {
+                    return;
+                }
                 previewRoom = all_rooms[roomId];
                 previewRoom.reloadGfx();
                 GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.Palette);
@@ -2823,6 +2880,7 @@ namespace ZeldaFullEditor
                 {
                     GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
                     activeScene.room.reloadGfx();
+                    activeScene.DrawRoom();
                 }
 
             }
@@ -3027,6 +3085,7 @@ namespace ZeldaFullEditor
                     {
                         GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
                         activeScene.room.reloadGfx();
+                        activeScene.DrawRoom();
                     }
                 }
 
@@ -3119,10 +3178,26 @@ namespace ZeldaFullEditor
                 }
             }
         }
+
+        private void undoButton_Click(object sender, EventArgs e)
+        {
+            activeScene.Undo();
+        }
+
+        private  void redoButton_Click(object sender, EventArgs e)
+        {
+            activeScene.Redo();
+        }
+
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            activeScene.Undo();
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            activeScene.Redo();
+        }
     }
-
-
-
-
 
 }

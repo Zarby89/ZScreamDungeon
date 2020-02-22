@@ -50,6 +50,7 @@ namespace ZeldaFullEditor
         public List<Sprite> sprites = new List<Sprite>();
         public List<PotItem> pot_items = new List<PotItem>();
         public List<Object> selectedObject = new List<object>();
+
         public bool objectInitialized = false;
         public bool onlyLayout = false;
         public bool sortSprites = false;

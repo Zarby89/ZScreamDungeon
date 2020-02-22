@@ -1039,9 +1039,6 @@ namespace ZeldaFullEditor
                 }
                 else if ((byte)selectedMode >= 0 && (byte)selectedMode <= 3)
                 {
-
-
-
                     dragx = ((MX) / 8);
                     dragy = ((MY) / 8);
                     bool already_in = false;
@@ -1050,6 +1047,14 @@ namespace ZeldaFullEditor
                     for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
                     {
                         Room_Object obj = room.tilesObjects[i];
+                        if (selectedMode != ObjectMode.Bgallmode)
+                        {
+                            if ((byte)selectedMode != obj.layer)
+                            {
+                                continue;
+                            }
+                        }
+                            
                         if (isMouseCollidingWith(obj, e))
                         {
                             if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr && (obj.options & ObjectOption.Door) != ObjectOption.Door && (obj.options & ObjectOption.Torch) != ObjectOption.Torch && (obj.options & ObjectOption.Block) != ObjectOption.Block)
@@ -1614,6 +1619,7 @@ namespace ZeldaFullEditor
                 if (e.Button == MouseButtons.Left)
                 {
                     setMouseSizeMode(e);
+                    
                     mouse_down = false;
                     if (room.selectedObject.Count == 0) //if we don't have any objects select we select what is in the rectangle
                     {
@@ -1769,7 +1775,7 @@ namespace ZeldaFullEditor
 
 
         }
-
+        
         public void setObjectsPosition()
         {
             if (room.selectedObject.Count > 0)
@@ -1822,8 +1828,13 @@ namespace ZeldaFullEditor
                         (o as Room_Object).oy = (o as Room_Object).y;
                     }
                 }
-
             }
+            mainForm.undoRoom[room.index].Add((Room)room.Clone());
+            mainForm.redoRoom[room.index].Clear();
+            mainForm.undoButton.Enabled = true;
+            mainForm.undoToolStripMenuItem.Enabled = true;
+            mainForm.redoButton.Enabled = false;
+            mainForm.redoToolStripMenuItem.Enabled = false;
 
         }
 
@@ -2142,14 +2153,51 @@ namespace ZeldaFullEditor
 
         public void Undo()
         {
-            selection_resize = false;
-            room.selectedObject.Clear();
+            
+            if (mainForm.undoRoom[room.index].Count > 0)
+            {
+                mainForm.redoRoom[room.index].Add((Room)room.Clone());
+                room = mainForm.undoRoom[room.index][(mainForm.undoRoom[room.index].Count - 1)];
+                mainForm.undoRoom[room.index].RemoveAt(mainForm.undoRoom[room.index].Count - 1);
+                updateRoomInfos(mainForm);
+                room.reloadGfx();
+                DrawRoom();
+                Refresh();
+                mainForm.redoButton.Enabled = true;
+                mainForm.redoToolStripMenuItem.Enabled = true;
+
+
+            }
+            else
+            {
+                mainForm.undoButton.Enabled = false;
+                mainForm.undoToolStripMenuItem.Enabled = false;
+            }
+            //selection_resize = false;
+            //room.selectedObject.Clear();
 
         }
 
         public void Redo()
         {
+            if (mainForm.redoRoom[room.index].Count > 0)
+            {
+                mainForm.undoRoom[room.index].Add((Room)room.Clone());
+                room = mainForm.redoRoom[room.index][(mainForm.redoRoom[room.index].Count - 1)];
+                mainForm.redoRoom[room.index].RemoveAt(mainForm.redoRoom[room.index].Count - 1);
+                updateRoomInfos(mainForm);
+                room.reloadGfx();
+                DrawRoom();
+                Refresh();
+                mainForm.undoButton.Enabled = true;
+                mainForm.undoToolStripMenuItem.Enabled = true;
+            }
+            else
+            {
 
+                mainForm.redoButton.Enabled = false;
+                mainForm.redoToolStripMenuItem.Enabled = false;
+            }
         }
 
         public override void selectAll()
