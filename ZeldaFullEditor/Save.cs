@@ -203,11 +203,10 @@ namespace ZeldaFullEditor
                 bw.Write(all_rooms[i].sprites[j].y);
                 bw.Write(all_rooms[i].sprites[j].layer);
                 bw.Write(all_rooms[i].sprites[j].keyDrop);
-                bw.Write(all_rooms[i].sprites[j].overlord);
                 bw.Write(all_rooms[i].sprites[j].subtype);
                 debugstring += "ID: " + all_rooms[i].sprites[j].id.ToString() + ", X:" + all_rooms[i].sprites[j].x.ToString() +
     ",Y:" + all_rooms[i].sprites[j].y.ToString() + "Layer:" + all_rooms[i].sprites[j].layer + "Key:" + all_rooms[i].sprites[j].keyDrop +
-    "Overlord:" + all_rooms[i].sprites[j].overlord + "Subtype:" + all_rooms[i].sprites[j].subtype + "\n";
+    "Overlord:" + "Subtype:" + all_rooms[i].sprites[j].subtype + "\n";
 
             }
         }
@@ -387,7 +386,7 @@ namespace ZeldaFullEditor
         {
             int bytes_count = (ROM.DATA[Constants.torches_length_pointer + 1] << 8) + ROM.DATA[Constants.torches_length_pointer];
             int pos = Constants.torch_data;
-            
+            //288 torches?
             for (int i = 0; i < 296; i++)
             {
                 bool room = false;
@@ -717,8 +716,8 @@ namespace ZeldaFullEditor
                         pos++;
                         foreach (Sprite spr in all_rooms[i].sprites) //3bytes
                         {
-                            byte b1 = (byte)((spr.layer << 7) + (spr.subtype << 5) + spr.y);
-                            byte b2 = (byte)((spr.overlord << 5) + spr.x);
+                            byte b1 = (byte)((spr.layer << 7) + ((spr.subtype & 0x18) << 2) + spr.y);
+                            byte b2 = (byte)(((spr.subtype & 0x07) << 5) + spr.x);
                             byte b3 = (byte)((spr.id));
 
                             sprites_buffer[pos] = b1;

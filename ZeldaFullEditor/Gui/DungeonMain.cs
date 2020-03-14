@@ -35,7 +35,7 @@ namespace ZeldaFullEditor
         public List<Room>[] undoRoom = new List<Room>[296];
         public List<Room>[] redoRoom = new List<Room>[296];
         //TODO : Move that?
-        public byte[] door_index = new byte[] { 0x00, 0x06, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32, 0x20, 0x14 };
+        public byte[] door_index = new byte[] { 0x00, 0x06, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32, 0x20, 0x14, 0x2A, 0x22 };
 
 
         string projectFilename = "";
@@ -393,9 +393,11 @@ namespace ZeldaFullEditor
 
             entrancetreeView_AfterSelect(null, null);
             gfxGroupsForm = new GfxGroupsForm(this);
+            gfxGroupsForm.CreateTempGfx();
             gfxGroupsForm.Location = new Point(0, 0);
 
             paletteForm = new PaletteEditor(this);
+           
             paletteForm.Location = new Point(0, 0);
             refreshRecentsFiles();
 
@@ -1871,13 +1873,13 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 0xF2; i++)
             {
-                Sprite s = new Sprite(activeScene.room, (byte)i, 0, 0, 0, 0, 0);
+                Sprite s = new Sprite(activeScene.room, (byte)i, 0, 0, 0, 0);
                 s.preview = true;
                 listofspritesobjects.Add(s);
             }
             for (int i = 1; i < 0x1B; i++)
             {
-                Sprite s = new Sprite(activeScene.room, (byte)i, 0, 0, 7, 0, 0);
+                Sprite s = new Sprite(activeScene.room, (byte)i, 0, 0, 7, 0);
                 s.preview = true;
                 listofspritesobjects.Add(s);
             }
@@ -1923,7 +1925,7 @@ namespace ZeldaFullEditor
 
         private void spritesView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            activeScene.selectedDragSprite = new dataObject(spritesView1.selectedObject.id, spritesView1.selectedObject.name, spritesView1.selectedObject.overlord);
+            activeScene.selectedDragSprite = new dataObject(spritesView1.selectedObject.id, spritesView1.selectedObject.name, spritesView1.selectedObject.subtype);
         }
 
 
@@ -2022,8 +2024,11 @@ namespace ZeldaFullEditor
                 if (activeScene.room.selectedObject[0] is Sprite)
                 {
                     (activeScene.room.selectedObject[0] as Sprite).subtype = (byte)spritesubtypeUpDown.Value;
+                    
                 }
+                Console.WriteLine("WTF!");
             }
+            
         }
 
         private void gotoRoomToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3050,7 +3055,7 @@ namespace ZeldaFullEditor
                 e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
             }
 
-            activeScene.drawText(e.Graphics, 0, 0,"ROOM : " + lastRoomID.ToString());
+            activeScene.drawText(e.Graphics, 0, 0,"ROOM : " + previewRoom.index.ToString());
 
         }
 

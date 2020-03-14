@@ -35,7 +35,7 @@ namespace ZeldaFullEditor
         }
 
         Bitmap tempBitmap = new Bitmap(512,512);
-        public short[] doorsObject = new short[] { 0x138, 0x139, 0x13A, 0x13B, 0xF9E, 0xF9F, 0xFA0, 0x12D, 0x12E, 0x12F, 0x12E, 0x12D, 0x4632, 0x4693 };
+        public short[] doorsObject = new short[] { 0x138, 0x139, 0x13A, 0x13B, 0xF9E, 0xFA9, 0xF9F, 0xFA0, 0x12D, 0x12E, 0x12F, 0x12E, 0x12D, 0x4632, 0x4693 };
         Rectangle lastSelectedRectangle;
         DragMode dragMode = DragMode.none;
         SceneResizing resizeType = SceneResizing.none;
@@ -51,6 +51,7 @@ namespace ZeldaFullEditor
                         {
                             (room.selectedObject[0] as Room_Object).UpdateSize();
                             (room.selectedObject[0] as Room_Object).size++;
+                            updateSelectionObject(room.selectedObject[0]);
                         }
 
                     }
@@ -60,6 +61,11 @@ namespace ZeldaFullEditor
                         {
                             (room.selectedObject[0] as Room_Object).UpdateSize();
                             (room.selectedObject[0] as Room_Object).size--;
+                            if ((room.selectedObject[0] as Room_Object).size >= 16)
+                            {
+                                (room.selectedObject[0] as Room_Object).size = 15;
+                            }
+                            updateSelectionObject(room.selectedObject[0]);
                         }
                     }
                 }
@@ -261,6 +267,7 @@ namespace ZeldaFullEditor
                         dragy += lastElement.sizeheight;
                     }
                 }
+                
             }
 
             
@@ -294,6 +301,7 @@ namespace ZeldaFullEditor
                         if (resizing) //just to be sure
                         {
                             ResizeObject(lastElement, MX, MY);
+                            updateSelectionObject(lastElement);
                             DrawRoom();
                             Refresh();
                             return;
@@ -548,7 +556,7 @@ namespace ZeldaFullEditor
 
             if (mouse_down)
             {
-                updating_info = true;
+                //updating_info = true;
 
                 setMouseSizeMode(e); //define the size of mx,my for each mode
                 if (selectedMode != ObjectMode.Doormode)
@@ -956,7 +964,7 @@ namespace ZeldaFullEditor
                 {
                     room.selectedObject.Clear();
 
-                    Sprite spr = new Sprite(room, (byte)selectedDragSprite.id, 0, 0, selectedDragSprite.option, 0, 0);
+                    Sprite spr = new Sprite(room, (byte)selectedDragSprite.id, 0, 0, selectedDragSprite.option, 0);
 
                     if (spr != null)
                     {
@@ -1348,7 +1356,7 @@ namespace ZeldaFullEditor
                     updating_info = true;
                     Sprite oo = room.selectedObject[0] as Sprite;
                     string name = Sprites_Names.name[oo.id];
-                    if (oo.overlord != 0)
+                    if ((oo.subtype & 0x07) == 0x07)
                     {
                         if (oo.id <= 0x1A && oo.id > 0)
                         {
@@ -1385,10 +1393,12 @@ namespace ZeldaFullEditor
                     string id = oo.id.ToString("X4");
                     mainForm.selectedGroupbox.Text = "Selected Item : " + id + " " + name;
                     mainForm.selecteditemobjectCombobox.SelectedIndex = dropboxid;
+                    updateSelectionObject(oo);
                     updating_info = false;
                 }
             }
-    }
+            updating_info = false;
+        }
 
         public unsafe void ClearBgGfx()
         {
@@ -1829,12 +1839,32 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-            mainForm.undoRoom[room.index].Add((Room)room.Clone());
-            mainForm.redoRoom[room.index].Clear();
-            mainForm.undoButton.Enabled = true;
-            mainForm.undoToolStripMenuItem.Enabled = true;
-            mainForm.redoButton.Enabled = false;
-            mainForm.redoToolStripMenuItem.Enabled = false;
+
+            room.has_changed = true;
+            /*if (mainForm.undoRoom[room.index].Count > 10)
+            {
+                Room a = mainForm.undoRoom[room.index][0];
+                mainForm.undoRoom[room.index].RemoveAt(0);
+                a = null;
+
+
+                mainForm.undoRoom[room.index].Add((Room)room.Clone());
+                mainForm.redoRoom[room.index].Clear();
+                mainForm.undoButton.Enabled = true;
+                mainForm.undoToolStripMenuItem.Enabled = true;
+                mainForm.redoButton.Enabled = false;
+                mainForm.redoToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                mainForm.undoRoom[room.index].Add((Room)room.Clone());
+                mainForm.redoRoom[room.index].Clear();
+                mainForm.undoButton.Enabled = true;
+                mainForm.undoToolStripMenuItem.Enabled = true;
+                mainForm.redoButton.Enabled = false;
+                mainForm.redoToolStripMenuItem.Enabled = false;
+            }*/
+            
 
         }
 
@@ -2112,18 +2142,22 @@ namespace ZeldaFullEditor
                     mainForm.object_y_label.Text = "Y: " + (o as Sprite).ny;
  
                     mainForm.object_layer_label.Text = "Layer: " + (o as Sprite).layer;
+
+                    
                     mainForm.spritesubtypeUpDown.Value = (o as Sprite).subtype;
-                    if ((o as Sprite).overlord == 0)
-                    {
-                        mainForm.spriteoverlordCheckbox.Checked = false;
-                    }
-                    else
+                    
+
+                    if (((o as Sprite).subtype & 0x07) == 0x07)
                     {
                         mainForm.spriteoverlordCheckbox.Checked = true;
                     }
+                    else
+                    {
+                        mainForm.spriteoverlordCheckbox.Checked = false;
+                    }
                     mainForm.comboBox1.SelectedIndex = (o as Sprite).keyDrop;
 
- 
+                    updating_info = false;
                     //info = name + "\nId : " + id + "\nX : " + x + "\nY : " + y + "\nLayer : " + layer;
                 }
                 else if (o is PotItem)
@@ -2305,7 +2339,7 @@ namespace ZeldaFullEditor
                             if (o.type == typeof(Sprite))
                             {
                                 selectedMode = ObjectMode.Spritemode;
-                                Sprite spr = (new Sprite(room, o.id, (byte)(o.x - most_x), (byte)(o.y - most_y), o.overlord, o.subtype, o.layer));
+                                Sprite spr = (new Sprite(room, o.id, (byte)(o.x - most_x), (byte)(o.y - most_y), o.subtype, o.layer));
                                 room.sprites.Add(spr);
                                 room.selectedObject.Add(spr);
                             }
@@ -2435,7 +2469,7 @@ namespace ZeldaFullEditor
                 {
                     if (o.type == typeof(Sprite))
                     {
-                        Sprite spr = (new Sprite(room, o.id, (byte)(o.x - most_x), (byte)(o.y - most_y), o.overlord, o.subtype, o.layer));
+                        Sprite spr = (new Sprite(room, o.id, (byte)(o.x - most_x), (byte)(o.y - most_y), o.subtype, o.layer));
                         room.sprites.Add(spr);
                         room.selectedObject.Add(spr);
                     }

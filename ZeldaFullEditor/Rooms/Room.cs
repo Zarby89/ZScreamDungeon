@@ -540,13 +540,13 @@ namespace ZeldaFullEditor
 
                 if (b1 == 0xFF) { break; }
 
-                sprites.Add(new Sprite(this, b3, (byte)(b2 & 0x1F), (byte)(b1 & 0x1F), (byte)((b2 & 0xE0) >> 5), (byte)((b1 & 0x60) >> 5), (byte)((b1 & 0x80) >> 7)));
+                sprites.Add(new Sprite(this, b3, (byte)(b2 & 0x1F), (byte)(b1 & 0x1F), (byte)(((b2 & 0xE0) >> 5) + ((b1 & 0x60) >> 2)), (byte)((b1 & 0x80) >> 7)));
                 
                 if (sprites.Count > 1)
                 {
                     Sprite spr = sprites[sprites.Count - 1];
                     Sprite prevSprite = sprites[sprites.Count - 2];
-                    if (spr.id == 0xE4 && spr.x == 0x00 && spr.y == 0x1E && spr.layer == 1 && ((spr.subtype << 3) + spr.overlord) == 0x18)
+                    if (spr.id == 0xE4 && spr.x == 0x00 && spr.y == 0x1E && spr.layer == 1 && ((spr.subtype)) == 0x18)
                     {
                         if (prevSprite != null)
                         {
@@ -555,7 +555,7 @@ namespace ZeldaFullEditor
                             sprites.RemoveAt(sprites.Count - 1);
                         }
                     }
-                    if (spr.id == 0xE4 && spr.x == 0x00 && spr.y == 0x1D && spr.layer == 1 && ((spr.subtype << 3) + spr.overlord) == 0x18)
+                    if (spr.id == 0xE4 && spr.x == 0x00 && spr.y == 0x1D && spr.layer == 1 && ((spr.subtype)) == 0x18)
                     {
                         if (prevSprite != null)
                         {
@@ -2499,6 +2499,49 @@ namespace ZeldaFullEditor
                 return (Room)formatter.Deserialize(ms);
             }
         }
+
+        ~Room()
+        {
+            for (int i = 0; i < chest_list.Count;i++)
+            {
+                chest_list[i] = null;
+            }
+            for (int i = 0; i < tilesObjects.Count; i++)
+            {
+                tilesObjects[i].tiles.Clear();
+                tilesObjects[i] = null;
+            }
+            for (int i = 0; i < tilesLayoutObjects.Count; i++)
+            {
+                tilesLayoutObjects[i].tiles.Clear();
+                tilesLayoutObjects[i] = null;
+            }
+            for (int i = 0; i < sprites.Count; i++)
+            {
+                sprites[i] = null;
+            }
+
+            for (int i = 0; i < pot_items.Count; i++)
+            {
+                pot_items[i] = null;
+            }
+
+            for (int i = 0; i < selectedObject.Count; i++)
+            {
+                selectedObject[i] = null;
+            }
+            chest_list = null;
+            tilesObjects = null;
+            tilesLayoutObjects = null;
+            sprites = null;
+            pot_items = null;
+            selectedObject = null;
+
+            Console.WriteLine("Room Got Deleted");
+        }
+
+
+       
     }
 
     [Serializable]

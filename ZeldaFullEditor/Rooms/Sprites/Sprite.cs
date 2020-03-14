@@ -19,7 +19,6 @@ namespace ZeldaFullEditor
         public byte nx, ny;
         public byte layer = 0;
         public byte subtype = 0;
-        public byte overlord = 0;
         public string name;
         public byte keyDrop = 0;
         public int sizeMap = 512;
@@ -31,19 +30,18 @@ namespace ZeldaFullEditor
         public Rectangle boundingbox;
         bool picker = false;
         public bool selected = false;
-        public Sprite(Room room,byte id, byte x, byte y, byte overlord, byte subtype, byte layer)
+        public Sprite(Room room,byte id, byte x, byte y, byte subtype, byte layer)
         {
             this.id = id;
             this.x = x;
             this.y = y;
             this.room = room;
-            this.overlord = overlord;
             this.subtype = subtype;
             this.layer = layer;
             this.nx = x;
             this.ny = y;
             this.name = Sprites_Names.name[id];
-            if (overlord != 0)
+            if ((subtype & 0x07) == 0x07)
             {
                 if (id > 0 && id <= 0x19)
                 this.name = Sprites_Names.overlordnames[id-1];
@@ -81,7 +79,7 @@ namespace ZeldaFullEditor
             byte x = this.nx;
             byte y = this.ny;
             this.picker = picker;
-            if (overlord == 0x07)
+            if ((subtype & 0x07) == 0x07)
             {
                 if (id == 0x1A)
                 {

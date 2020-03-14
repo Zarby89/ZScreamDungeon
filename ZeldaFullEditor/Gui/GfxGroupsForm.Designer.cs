@@ -570,6 +570,7 @@
             this.panel1.Controls.Add(this.grayscaleRadioButton);
             this.panel1.Controls.Add(this.cancelButton);
             this.panel1.Controls.Add(this.okButton);
+            
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 288);
             this.panel1.Name = "panel1";
@@ -580,7 +581,7 @@
             // 
             this.numericUpDown1.Location = new System.Drawing.Point(151, 17);
             this.numericUpDown1.Maximum = new decimal(new int[] {
-            36,
+            15,
             0,
             0,
             0});

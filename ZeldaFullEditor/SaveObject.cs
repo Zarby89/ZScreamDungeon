@@ -28,7 +28,6 @@ namespace ZeldaFullEditor
             this.id = sprite.id;
             this.layer = sprite.layer;
             this.subtype = sprite.subtype;
-            this.overlord = sprite.overlord;
             type = typeof(Sprite);
         }
 

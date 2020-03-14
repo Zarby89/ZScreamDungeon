@@ -46,7 +46,7 @@ namespace ZeldaFullEditor.Gui
 
 
 
-        private void CreateTempGfx()
+        public void CreateTempGfx()
         {
             for (int i = 0; i < 37; i++)
             {
@@ -436,6 +436,22 @@ namespace ZeldaFullEditor.Gui
                         pPos++;
                     }
                 }
+
+                pPos = 145;
+                for (int i = 0; i < 15; i++)
+                {
+                    /*if (pPos % 16 == 0)
+                    {
+                        pPos++;
+                    }*/
+                    palettes[pPos] = Palettes.globalSprite_Palettes[0][i];
+                    palettes[pPos + 16] = Palettes.globalSprite_Palettes[0][i + 15];
+                    palettes[pPos + 32] = Palettes.globalSprite_Palettes[0][i + 30];
+                    palettes[pPos + 48] = Palettes.globalSprite_Palettes[0][i + 45];
+                    pPos++;
+                }
+
+
             }
             else
             {
