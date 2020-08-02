@@ -193,7 +193,20 @@ namespace ZeldaFullEditor.OWSceneModes
                             }
                         }
                     }
-                    
+                    if (scene.selectedTile.Length > 0)
+                    {
+                        int scrollpos = ((scene.selectedTile[0] / 8) * 16);
+                        if (scrollpos >= scene.owForm.splitContainer1.Panel1.VerticalScroll.Maximum)
+                        {
+                            scene.owForm.splitContainer1.Panel1.VerticalScroll.Value = scene.owForm.splitContainer1.Panel1.VerticalScroll.Maximum;
+                        }
+                        else
+                        {
+                            scene.owForm.splitContainer1.Panel1.VerticalScroll.Value = scrollpos;
+                        }
+                        
+                        scene.owForm.tilePictureBox.Refresh();
+                    }
                 }
 
             }
@@ -314,6 +327,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             return;
                         }
                         scene.tilesgfxBitmap.Palette = scene.ow.allmaps[mapId].gfxBitmap.Palette;
+
                         //scene.Invalidate(new Rectangle((scene.owForm.splitContainer1.Panel2.HorizontalScroll.Value), (scene.owForm.splitContainer1.Panel2.VerticalScroll.Value), (scene.owForm.splitContainer1.Panel2.Width), (scene.owForm.splitContainer1.Panel2.Height)));
                         //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                         //this.Refresh();

@@ -101,24 +101,26 @@ namespace ZeldaFullEditor
         {
 
 
-           /* mainForm.groupBox4.Text = "Overworld : Selected Map " + ow.allmaps[selectedMap].parent.ToString() + " Properties : ";
+            owForm.mapGroupbox.Text = "Selected Map - " + ow.allmaps[selectedMap].parent.ToString() + " Properties : ";
 
-            mainForm.propertiesChangedFromForm = true;
+            owForm.propertiesChangedFromForm = true;
             if (selectedMap >= 64)
             {
-                mainForm.OW_tilesetGFX.Text = ow.allmaps[ow.allmaps[selectedMap].parent].gfx.ToString();
-                mainForm.OW_spriteGFX.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprgfx[0].ToString();
-                mainForm.OW_tilesetPAL.Text = ow.allmaps[ow.allmaps[selectedMap].parent].palette.ToString();
-                mainForm.OW_spritePAL.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprpalette[0].ToString();
+                owForm.gfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].gfx.ToString();
+                owForm.sprgfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprgfx[0].ToString();
+                owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].palette.ToString();
+                owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprpalette[0].ToString();
             }
             else
             {
-                mainForm.OW_tilesetGFX.Text = ow.allmaps[ow.allmaps[selectedMap].parent].gfx.ToString();
-                mainForm.OW_spriteGFX.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprgfx[ow.gameState].ToString();
-                mainForm.OW_tilesetPAL.Text = ow.allmaps[ow.allmaps[selectedMap].parent].palette.ToString();
-                mainForm.OW_spritePAL.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprpalette[ow.gameState].ToString();
+                owForm.gfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].gfx.ToString();
+                owForm.sprgfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprgfx[ow.gameState].ToString();
+                owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].palette.ToString();
+                owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprpalette[ow.gameState].ToString();
             }
-            mainForm.propertiesChangedFromForm = false;*/
+            owForm.propertiesChangedFromForm = false;
+
+            owForm.tilePictureBox.Refresh();
         }
 
 

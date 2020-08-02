@@ -3291,22 +3291,50 @@ namespace ZeldaFullEditor
 
         private void undoButton_Click(object sender, EventArgs e)
         {
-            activeScene.Undo();
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                //activeScene.Undo();
+            }
+            else if(editorsTabControl.SelectedIndex == 1) //overworld editor
+            {
+                overworldEditor.scene.Undo();
+            }
         }
 
-        private  void redoButton_Click(object sender, EventArgs e)
+        private void redoButton_Click(object sender, EventArgs e)
         {
-            activeScene.Redo();
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                //activeScene.Redo();
+            }
+            else if(editorsTabControl.SelectedIndex == 1) //overworld editor
+            {
+                overworldEditor.scene.Redo();
+            }
         }
 
         private void undoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeScene.Undo();
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                //activeScene.Undo();
+            }
+            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
+            {
+                overworldEditor.scene.Undo();
+            }
         }
 
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeScene.Redo();
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                //activeScene.Redo();
+            }
+            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
+            {
+                overworldEditor.scene.Redo();
+            }
         }
 
         private void DungeonMain_LocationChanged(object sender, EventArgs e)

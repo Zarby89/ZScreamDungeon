@@ -30,35 +30,46 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(OverworldEditor));
             this.owToolStrip = new System.Windows.Forms.ToolStrip();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.owPropertyPanel = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.stateCombobox = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.tilePictureBox = new System.Windows.Forms.PictureBox();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
             this.saveButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.debugtestButton = new System.Windows.Forms.ToolStripButton();
             this.runtestButton = new System.Windows.Forms.ToolStripButton();
             this.undoButton = new System.Windows.Forms.ToolStripButton();
             this.redoButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.penModeButton = new System.Windows.Forms.ToolStripButton();
             this.fillModeButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.entranceModeButton = new System.Windows.Forms.ToolStripButton();
             this.exitModeButton = new System.Windows.Forms.ToolStripButton();
             this.itemModeButton = new System.Windows.Forms.ToolStripButton();
             this.spriteModeButton = new System.Windows.Forms.ToolStripButton();
             this.transportModeButton = new System.Windows.Forms.ToolStripButton();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.tilePictureBox = new System.Windows.Forms.PictureBox();
-            this.owPropertyPanel = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.stateCombobox = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.mapGroupbox = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.gfxTextbox = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.sprgfxTextbox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.paletteTextbox = new System.Windows.Forms.TextBox();
+            this.sprpaletteTextbox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.selectedTileLabel = new System.Windows.Forms.Label();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).BeginInit();
             this.owPropertyPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).BeginInit();
+            this.mapGroupbox.SuspendLayout();
             this.SuspendLayout();
             // 
             // owToolStrip
@@ -86,6 +97,97 @@
             this.owToolStrip.TabIndex = 0;
             this.owToolStrip.Text = "toolStrip1";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.IsSplitterFixed = true;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 100);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.AutoScroll = true;
+            this.splitContainer1.Panel1.Controls.Add(this.tilePictureBox);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.AutoScroll = true;
+            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
+            this.splitContainer1.Size = new System.Drawing.Size(953, 619);
+            this.splitContainer1.SplitterDistance = 149;
+            this.splitContainer1.TabIndex = 1;
+            // 
+            // owPropertyPanel
+            // 
+            this.owPropertyPanel.Controls.Add(this.mapGroupbox);
+            this.owPropertyPanel.Controls.Add(this.groupBox1);
+            this.owPropertyPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.owPropertyPanel.Location = new System.Drawing.Point(0, 25);
+            this.owPropertyPanel.Name = "owPropertyPanel";
+            this.owPropertyPanel.Size = new System.Drawing.Size(953, 75);
+            this.owPropertyPanel.TabIndex = 0;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.selectedTileLabel);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.stateCombobox);
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(151, 66);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Global Settings";
+            // 
+            // stateCombobox
+            // 
+            this.stateCombobox.FormattingEnabled = true;
+            this.stateCombobox.Items.AddRange(new object[] {
+            "0,1 (Rescue Zelda)",
+            "2 (Zelda Saved)",
+            "3 (Agah. Dead)"});
+            this.stateCombobox.Location = new System.Drawing.Point(6, 31);
+            this.stateCombobox.Name = "stateCombobox";
+            this.stateCombobox.Size = new System.Drawing.Size(138, 21);
+            this.stateCombobox.TabIndex = 1;
+            this.stateCombobox.Text = "0,1 (Rescue Zelda)";
+            this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 16);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(119, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Game State (7EF3C5) : ";
+            // 
+            // tilePictureBox
+            // 
+            this.tilePictureBox.Location = new System.Drawing.Point(3, 3);
+            this.tilePictureBox.Name = "tilePictureBox";
+            this.tilePictureBox.Size = new System.Drawing.Size(128, 4096);
+            this.tilePictureBox.TabIndex = 0;
+            this.tilePictureBox.TabStop = false;
+            this.tilePictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.tilePictureBox_Paint);
+            this.tilePictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tilePictureBox_MouseClick);
+            // 
             // openfileButton
             // 
             this.openfileButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -105,11 +207,6 @@
             this.saveButton.Size = new System.Drawing.Size(23, 22);
             this.saveButton.Text = "Save ROM";
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // debugtestButton
             // 
@@ -151,11 +248,6 @@
             this.redoButton.Size = new System.Drawing.Size(23, 22);
             this.redoButton.Text = "Redo";
             // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
             // penModeButton
             // 
             this.penModeButton.Checked = true;
@@ -179,11 +271,6 @@
             this.fillModeButton.Size = new System.Drawing.Size(23, 22);
             this.fillModeButton.Text = "toolStripButton2";
             this.fillModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-            // 
-            // toolStripSeparator3
-            // 
-            this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
             // entranceModeButton
             // 
@@ -240,77 +327,99 @@
             this.transportModeButton.Text = "toolStripButton8";
             this.transportModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
-            // splitContainer1
+            // mapGroupbox
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 100);
-            this.splitContainer1.Name = "splitContainer1";
+            this.mapGroupbox.Controls.Add(this.label5);
+            this.mapGroupbox.Controls.Add(this.sprpaletteTextbox);
+            this.mapGroupbox.Controls.Add(this.paletteTextbox);
+            this.mapGroupbox.Controls.Add(this.label4);
+            this.mapGroupbox.Controls.Add(this.sprgfxTextbox);
+            this.mapGroupbox.Controls.Add(this.label3);
+            this.mapGroupbox.Controls.Add(this.gfxTextbox);
+            this.mapGroupbox.Controls.Add(this.label2);
+            this.mapGroupbox.Location = new System.Drawing.Point(160, 3);
+            this.mapGroupbox.Name = "mapGroupbox";
+            this.mapGroupbox.Size = new System.Drawing.Size(290, 60);
+            this.mapGroupbox.TabIndex = 1;
+            this.mapGroupbox.TabStop = false;
+            this.mapGroupbox.Text = "Selected Map - ";
             // 
-            // splitContainer1.Panel1
+            // label2
             // 
-            this.splitContainer1.Panel1.AutoScroll = true;
-            this.splitContainer1.Panel1.Controls.Add(this.tilePictureBox);
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 16);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(32, 13);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "Gfx : ";
             // 
-            // splitContainer1.Panel2
+            // gfxTextbox
             // 
-            this.splitContainer1.Panel2.AutoScroll = true;
-            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
-            this.splitContainer1.Size = new System.Drawing.Size(953, 619);
-            this.splitContainer1.SplitterDistance = 149;
-            this.splitContainer1.TabIndex = 1;
+            this.gfxTextbox.Location = new System.Drawing.Point(9, 32);
+            this.gfxTextbox.Name = "gfxTextbox";
+            this.gfxTextbox.Size = new System.Drawing.Size(60, 20);
+            this.gfxTextbox.TabIndex = 3;
+            this.gfxTextbox.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
             // 
-            // tilePictureBox
+            // label3
             // 
-            this.tilePictureBox.Location = new System.Drawing.Point(3, 3);
-            this.tilePictureBox.Name = "tilePictureBox";
-            this.tilePictureBox.Size = new System.Drawing.Size(128, 4096);
-            this.tilePictureBox.TabIndex = 0;
-            this.tilePictureBox.TabStop = false;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(138, 16);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(54, 13);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "Spr. Gfx : ";
             // 
-            // owPropertyPanel
+            // sprgfxTextbox
             // 
-            this.owPropertyPanel.Controls.Add(this.groupBox1);
-            this.owPropertyPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.owPropertyPanel.Location = new System.Drawing.Point(0, 25);
-            this.owPropertyPanel.Name = "owPropertyPanel";
-            this.owPropertyPanel.Size = new System.Drawing.Size(953, 75);
-            this.owPropertyPanel.TabIndex = 0;
+            this.sprgfxTextbox.Location = new System.Drawing.Point(141, 32);
+            this.sprgfxTextbox.Name = "sprgfxTextbox";
+            this.sprgfxTextbox.Size = new System.Drawing.Size(60, 20);
+            this.sprgfxTextbox.TabIndex = 5;
+            this.sprgfxTextbox.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
             // 
-            // groupBox1
+            // label4
             // 
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.stateCombobox);
-            this.groupBox1.Location = new System.Drawing.Point(3, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(151, 66);
-            this.groupBox1.TabIndex = 0;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Global Settings";
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(72, 16);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(49, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Palette : ";
             // 
-            // stateCombobox
+            // paletteTextbox
             // 
-            this.stateCombobox.FormattingEnabled = true;
-            this.stateCombobox.Items.AddRange(new object[] {
-            "0,1 (Rescue Zelda)",
-            "2 (Zelda Saved)",
-            "3 (Agah. Dead)"});
-            this.stateCombobox.Location = new System.Drawing.Point(7, 39);
-            this.stateCombobox.Name = "stateCombobox";
-            this.stateCombobox.Size = new System.Drawing.Size(138, 21);
-            this.stateCombobox.TabIndex = 1;
-            this.stateCombobox.Text = "0,1 (Rescue Zelda)";
-            this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
+            this.paletteTextbox.Location = new System.Drawing.Point(75, 32);
+            this.paletteTextbox.Name = "paletteTextbox";
+            this.paletteTextbox.Size = new System.Drawing.Size(60, 20);
+            this.paletteTextbox.TabIndex = 7;
+            this.paletteTextbox.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
             // 
-            // label1
+            // sprpaletteTextbox
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 23);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(119, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Game State (7EF3C5) : ";
+            this.sprpaletteTextbox.Location = new System.Drawing.Point(207, 32);
+            this.sprpaletteTextbox.Name = "sprpaletteTextbox";
+            this.sprpaletteTextbox.Size = new System.Drawing.Size(60, 20);
+            this.sprpaletteTextbox.TabIndex = 8;
+            this.sprpaletteTextbox.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(204, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(71, 13);
+            this.label5.TabIndex = 9;
+            this.label5.Text = "Spr. Palette : ";
+            // 
+            // selectedTileLabel
+            // 
+            this.selectedTileLabel.AutoSize = true;
+            this.selectedTileLabel.Location = new System.Drawing.Point(3, 55);
+            this.selectedTileLabel.Name = "selectedTileLabel";
+            this.selectedTileLabel.Size = new System.Drawing.Size(78, 13);
+            this.selectedTileLabel.TabIndex = 2;
+            this.selectedTileLabel.Text = "Selected Tile : ";
             // 
             // OverworldEditor
             // 
@@ -326,10 +435,12 @@
             this.splitContainer1.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).EndInit();
             this.owPropertyPanel.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).EndInit();
+            this.mapGroupbox.ResumeLayout(false);
+            this.mapGroupbox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -339,7 +450,6 @@
 
         private System.Windows.Forms.ToolStrip owToolStrip;
         private System.Windows.Forms.Panel owPropertyPanel;
-        private System.Windows.Forms.PictureBox tilePictureBox;
         public System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ToolStripButton openfileButton;
         private System.Windows.Forms.ToolStripButton saveButton;
@@ -360,5 +470,16 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox stateCombobox;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.GroupBox mapGroupbox;
+        public System.Windows.Forms.TextBox gfxTextbox;
+        public System.Windows.Forms.TextBox sprpaletteTextbox;
+        public System.Windows.Forms.TextBox paletteTextbox;
+        public System.Windows.Forms.TextBox sprgfxTextbox;
+        public System.Windows.Forms.PictureBox tilePictureBox;
+        private System.Windows.Forms.Label selectedTileLabel;
     }
 }

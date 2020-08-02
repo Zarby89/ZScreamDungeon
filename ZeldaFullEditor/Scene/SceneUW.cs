@@ -2185,7 +2185,7 @@ namespace ZeldaFullEditor
         }
 
 
-        public void Undo()
+        /*public void Undo()
         {
             
             if (DungeonsData.undoRoom[room.index].Count > 0)
@@ -2210,9 +2210,9 @@ namespace ZeldaFullEditor
             //selection_resize = false;
             //room.selectedObject.Clear();
 
-        }
+        }*/
 
-        public void Redo()
+        /*public void Redo()
         {
             if (DungeonsData.redoRoom[room.index].Count > 0)
             {
@@ -2232,7 +2232,7 @@ namespace ZeldaFullEditor
                 mainForm.redoButton.Enabled = false;
                 mainForm.redoToolStripMenuItem.Enabled = false;
             }
-        }
+        }*/
 
         public override void selectAll()
         {
