@@ -159,6 +159,14 @@ namespace ZeldaFullEditor
         public static int door_pos_left = 0x19AE;
         public static int door_pos_right = 0x19C6;
 
+        //TEXT EDITOR RELATED CONSTANTS
+        public static int gfx_font = 0x70000; //2bpp format
+        public static int text_data = 0xE0000;
+        public static int text_data2 = 0x75F40;
+        public static int pointers_dictionaries = 0x74703;
+        public static int characters_width = 0x74ADF;
+
+
 
         //===========================================================================================
         //Dungeon Entrances Related Variables

@@ -498,10 +498,11 @@ namespace ZeldaFullEditor
             var section4Index = 0x120000;
             int section4Start = 0x120000;
             bool usedSection4 = false;
-            while (ROM.DATA[section4Index] != 0)
+            /*while (ROM.DATA[section4Index] != 0)
             {
-                section4Index += 0x010000;
-            }
+                 //section4Index += 0x010000;
+            }*/
+            //Check if room is already using that space first before skipping position!!
             section4Start = section4Index;
             //reorder room from bigger to lower
 
@@ -678,6 +679,15 @@ namespace ZeldaFullEditor
             }
             return false; // False = no error
 
+        }
+
+        public bool saveAllText(TextEditor te)
+        {
+            if (te.save())
+            {
+                return true;
+            }
+            return false;
         }
 
 

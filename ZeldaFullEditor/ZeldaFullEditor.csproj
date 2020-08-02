@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A634564E-5323-48FE-A54C-B42AF25C5315}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ZeldaFullEditor</RootNamespace>
     <AssemblyName>ZeldaFullEditor</AssemblyName>
@@ -101,7 +101,10 @@
     <Compile Include="DataRoom.cs" />
     <Compile Include="DoAction.cs" />
     <Compile Include="DragMode.cs" />
+    <Compile Include="DungeonsData.cs" />
     <Compile Include="Entrance.cs" />
+    <Compile Include="EntranceOW.cs" />
+    <Compile Include="ExitOW.cs" />
     <Compile Include="GfxGroups.cs" />
     <Compile Include="GlobalOptionForm.cs">
       <SubType>Form</SubType>
@@ -133,23 +136,67 @@
     <Compile Include="Gui\DungeonPropertiesForm.Designer.cs">
       <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\EntranceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\EntranceForm.Designer.cs" />
     <Compile Include="Gui\EntrancePropertyForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Gui\EntrancePropertyForm.Designer.cs">
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\ExitEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExitEditorForm.designer.cs" />
     <Compile Include="Gui\GfxGroupsForm.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Gui\GfxGroupsForm.Designer.cs">
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\ObjectDesigner.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\ObjectDesigner.Designer.cs">
+      <DependentUpon>ObjectDesigner.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\OverworldEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\OverworldEditor.Designer.cs">
+      <DependentUpon>OverworldEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\PaletteEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Gui\PaletteEditor.Designer.cs">
       <DependentUpon>PaletteEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\SaveSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\SaveSettings.Designer.cs">
+      <DependentUpon>SaveSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\TextEditorExtra\DictionariesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\TextEditorExtra\DictionariesForm.Designer.cs">
+      <DependentUpon>DictionariesForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\TextEditorExtra\TextCommands.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\TextEditorExtra\TextCommands.Designer.cs">
+      <DependentUpon>TextCommands.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\VramViewer.cs">
       <SubType>Component</SubType>
@@ -170,6 +217,16 @@
       <DependentUpon>WindowPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="IniFile.cs" />
+    <Compile Include="Overworld.cs" />
+    <Compile Include="OverworldMap.cs" />
+    <Compile Include="OWSceneModes\ClipboardData\TileData.cs" />
+    <Compile Include="OWSceneModes\DoorMode.cs" />
+    <Compile Include="OWSceneModes\EntranceMode.cs" />
+    <Compile Include="OWSceneModes\ExitMode.cs" />
+    <Compile Include="OWSceneModes\ItemMode.cs" />
+    <Compile Include="OWSceneModes\SpriteMode.cs" />
+    <Compile Include="OWSceneModes\TileMode.cs" />
+    <Compile Include="OWSceneModes\TransportMode.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Rooms\Items\ItemsNames.cs" />
     <Compile Include="MovePointer.cs">
@@ -227,6 +284,9 @@
     <Compile Include="Rooms\Sprites\Sprite.cs" />
     <Compile Include="Save.cs" />
     <Compile Include="SaveObject.cs" />
+    <Compile Include="SceneOW.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Scene\SceneResizing.cs" />
     <Compile Include="Scene\SceneUW.cs">
       <SubType>Component</SubType>
@@ -234,6 +294,7 @@
     <Compile Include="Scene\SceneBase.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SpriteOWEditor.cs" />
     <Compile Include="SpritesView.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -241,10 +302,26 @@
       <DependentUpon>SpritesView.cs</DependentUpon>
     </Compile>
     <Compile Include="Sprite_SubsetNames.cs" />
+    <Compile Include="StringByte.cs" />
+    <Compile Include="StringKey.cs" />
     <Compile Include="TagKey.cs" />
+    <Compile Include="TextEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TextEditor.Designer.cs">
+      <DependentUpon>TextEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Tile.cs" />
+    <Compile Include="Tile16.cs" />
+    <Compile Include="Tile32.cs" />
     <Compile Include="TileInfo.cs" />
+    <Compile Include="TileUndo.cs" />
+    <Compile Include="TransportOW.cs" />
     <Compile Include="Utils.cs" />
+    <Compile Include="WhirlpoolForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="WhirlpoolForm.Designer.cs" />
     <Compile Include="ZCompressLibrary\Common.cs" />
     <Compile Include="ZCompressLibrary\Compress.cs" />
     <Compile Include="ZCompressLibrary\compression_piece.cs" />
@@ -277,17 +354,37 @@
     <EmbeddedResource Include="Gui\DungeonMain.resx">
       <DependentUpon>DungeonMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\EntranceForm.resx" />
     <EmbeddedResource Include="Gui\EntrancePropertyForm.resx">
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExitEditorForm.resx" />
     <EmbeddedResource Include="Gui\GfxGroupsForm.resx">
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\GotoRoom.resx">
       <DependentUpon>GotoRoom.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ObjectDesigner.resx">
+      <DependentUpon>ObjectDesigner.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\OverworldEditor.resx">
+      <DependentUpon>OverworldEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\PaletteEditor.resx">
       <DependentUpon>PaletteEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\SaveSettings.resx">
+      <DependentUpon>SaveSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\TextEditorExtra\DictionariesForm.resx">
+      <DependentUpon>DictionariesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\TextEditorExtra\TextCommands.resx">
+      <DependentUpon>TextCommands.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\VramViewer.resx">
       <DependentUpon>VramViewer.cs</DependentUpon>
@@ -318,6 +415,9 @@
     <EmbeddedResource Include="RoomLayout.resx">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="SceneOW.resx">
+      <DependentUpon>SceneOW.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Scene\SceneBase.resx">
       <DependentUpon>SceneBase.cs</DependentUpon>
     </EmbeddedResource>
@@ -326,6 +426,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SpritesView.resx">
       <DependentUpon>SpritesView.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TextEditor.resx">
+      <DependentUpon>TextEditor.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

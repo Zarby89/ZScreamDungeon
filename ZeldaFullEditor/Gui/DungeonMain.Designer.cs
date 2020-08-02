@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Starting Entrances");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Starting Entrances");
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,6 +58,7 @@
             this.advancedChestEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dungeonsPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadNamesFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.roomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gotoRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeMaskObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -194,13 +195,9 @@
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.objectstabPage = new System.Windows.Forms.TabPage();
-            this.panel1 = new ZeldaFullEditor.CustomPanel();
-            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
             this.showNameObjectCheckbox = new System.Windows.Forms.CheckBox();
             this.searchTextbox = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
-            this.spritesView1 = new ZeldaFullEditor.SpritesView();
             this.searchspriteTextbox = new System.Windows.Forms.TextBox();
             this.roomProperty_sortsprite = new System.Windows.Forms.CheckBox();
             this.roomProperty_msgid = new System.Windows.Forms.TextBox();
@@ -252,8 +249,19 @@
             this.potitemobjectPanel = new System.Windows.Forms.Panel();
             this.selecteditemobjectCombobox = new System.Windows.Forms.ComboBox();
             this.label31 = new System.Windows.Forms.Label();
+            this.editorsTabControl = new System.Windows.Forms.TabControl();
+            this.dungeonPage = new System.Windows.Forms.TabPage();
+            this.overworldPage = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.textPage = new System.Windows.Forms.TabPage();
+            this.objDesignerPage = new System.Windows.Forms.TabPage();
             this.thumbnailBox = new System.Windows.Forms.PictureBox();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
+            this.panel1 = new ZeldaFullEditor.CustomPanel();
+            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
+            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
+            this.spritesView1 = new ZeldaFullEditor.SpritesView();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
@@ -268,9 +276,7 @@
             this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).BeginInit();
             this.objectstabPage.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.customPanel1.SuspendLayout();
             this.headerGroupbox.SuspendLayout();
             this.selectedGroupbox.SuspendLayout();
             this.roomHeaderPanel.SuspendLayout();
@@ -278,7 +284,10 @@
             this.spritepropertyPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).BeginInit();
             this.potitemobjectPanel.SuspendLayout();
+            this.editorsTabControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
+            this.panel1.SuspendLayout();
+            this.customPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -480,7 +489,8 @@
             this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.advancedChestEditorToolStripMenuItem,
             this.dungeonsPropertiesToolStripMenuItem,
-            this.loadNamesFileToolStripMenuItem});
+            this.loadNamesFileToolStripMenuItem,
+            this.saveSettingsToolStripMenuItem});
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
             this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.projectToolStripMenuItem.Text = "Project";
@@ -488,23 +498,30 @@
             // advancedChestEditorToolStripMenuItem
             // 
             this.advancedChestEditorToolStripMenuItem.Name = "advancedChestEditorToolStripMenuItem";
-            this.advancedChestEditorToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.advancedChestEditorToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.advancedChestEditorToolStripMenuItem.Text = "Advanced Chest Editor";
             this.advancedChestEditorToolStripMenuItem.Click += new System.EventHandler(this.advancedChestEditorToolStripMenuItem_Click);
             // 
             // dungeonsPropertiesToolStripMenuItem
             // 
             this.dungeonsPropertiesToolStripMenuItem.Name = "dungeonsPropertiesToolStripMenuItem";
-            this.dungeonsPropertiesToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.dungeonsPropertiesToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.dungeonsPropertiesToolStripMenuItem.Text = "Dungeons Properties";
             this.dungeonsPropertiesToolStripMenuItem.Click += new System.EventHandler(this.dungeonsPropertiesToolStripMenuItem_Click);
             // 
             // loadNamesFileToolStripMenuItem
             // 
             this.loadNamesFileToolStripMenuItem.Name = "loadNamesFileToolStripMenuItem";
-            this.loadNamesFileToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.loadNamesFileToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
             this.loadNamesFileToolStripMenuItem.Text = "Load Names File";
             this.loadNamesFileToolStripMenuItem.Click += new System.EventHandler(this.loadNamesFileToolStripMenuItem_Click);
+            // 
+            // saveSettingsToolStripMenuItem
+            // 
+            this.saveSettingsToolStripMenuItem.Name = "saveSettingsToolStripMenuItem";
+            this.saveSettingsToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.saveSettingsToolStripMenuItem.Text = "Save Enable/Disable Settings";
+            this.saveSettingsToolStripMenuItem.Click += new System.EventHandler(this.saveSettingsToolStripMenuItem_Click);
             // 
             // roomToolStripMenuItem
             // 
@@ -1502,7 +1519,7 @@
             this.toolboxPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.toolboxPanel.Location = new System.Drawing.Point(0, 49);
             this.toolboxPanel.Name = "toolboxPanel";
-            this.toolboxPanel.Size = new System.Drawing.Size(300, 712);
+            this.toolboxPanel.Size = new System.Drawing.Size(300, 690);
             this.toolboxPanel.TabIndex = 14;
             // 
             // tabControl1
@@ -1516,7 +1533,7 @@
             this.tabControl1.Multiline = true;
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(300, 712);
+            this.tabControl1.Size = new System.Drawing.Size(300, 690);
             this.tabControl1.TabIndex = 12;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -1525,7 +1542,7 @@
             this.entrancetabPage.Controls.Add(this.splitContainer3);
             this.entrancetabPage.Location = new System.Drawing.Point(4, 22);
             this.entrancetabPage.Name = "entrancetabPage";
-            this.entrancetabPage.Size = new System.Drawing.Size(292, 686);
+            this.entrancetabPage.Size = new System.Drawing.Size(292, 664);
             this.entrancetabPage.TabIndex = 5;
             this.entrancetabPage.Text = "Rooms";
             this.entrancetabPage.UseVisualStyleBackColor = true;
@@ -1564,8 +1581,8 @@
             this.splitContainer3.Panel2.Controls.Add(this.label21);
             this.splitContainer3.Panel2.Controls.Add(this.label19);
             this.splitContainer3.Panel2.Controls.Add(this.label18);
-            this.splitContainer3.Size = new System.Drawing.Size(292, 686);
-            this.splitContainer3.SplitterDistance = 193;
+            this.splitContainer3.Size = new System.Drawing.Size(292, 664);
+            this.splitContainer3.SplitterDistance = 186;
             this.splitContainer3.TabIndex = 9;
             // 
             // entrancetreeView
@@ -1574,14 +1591,14 @@
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode3.Name = "EntranceNode";
-            treeNode3.Text = "Entrances";
-            treeNode4.Name = "StartingEntranceNode";
-            treeNode4.Text = "Starting Entrances";
+            treeNode1.Name = "EntranceNode";
+            treeNode1.Text = "Entrances";
+            treeNode2.Name = "StartingEntranceNode";
+            treeNode2.Text = "Starting Entrances";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
-            this.entrancetreeView.Size = new System.Drawing.Size(292, 193);
+            treeNode1,
+            treeNode2});
+            this.entrancetreeView.Size = new System.Drawing.Size(292, 186);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
             this.entrancetreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.entrancetreeView_NodeMouseDoubleClick);
@@ -1781,30 +1798,10 @@
             this.objectstabPage.Controls.Add(this.searchTextbox);
             this.objectstabPage.Location = new System.Drawing.Point(4, 22);
             this.objectstabPage.Name = "objectstabPage";
-            this.objectstabPage.Size = new System.Drawing.Size(292, 686);
+            this.objectstabPage.Size = new System.Drawing.Size(292, 664);
             this.objectstabPage.TabIndex = 4;
             this.objectstabPage.Text = "Objects";
             this.objectstabPage.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            this.panel1.AutoScroll = true;
-            this.panel1.Controls.Add(this.objectViewer1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 37);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(292, 649);
-            this.panel1.TabIndex = 1;
-            // 
-            // objectViewer1
-            // 
-            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
-            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
-            this.objectViewer1.Name = "objectViewer1";
-            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
-            this.objectViewer1.TabIndex = 0;
-            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
             // 
             // showNameObjectCheckbox
             // 
@@ -1833,29 +1830,10 @@
             this.tabPage4.Controls.Add(this.searchspriteTextbox);
             this.tabPage4.Location = new System.Drawing.Point(4, 22);
             this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(292, 686);
+            this.tabPage4.Size = new System.Drawing.Size(292, 664);
             this.tabPage4.TabIndex = 10;
             this.tabPage4.Text = "Sprites";
             this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // customPanel1
-            // 
-            this.customPanel1.AutoScroll = true;
-            this.customPanel1.Controls.Add(this.spritesView1);
-            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel1.Location = new System.Drawing.Point(0, 20);
-            this.customPanel1.Name = "customPanel1";
-            this.customPanel1.Size = new System.Drawing.Size(292, 666);
-            this.customPanel1.TabIndex = 2;
-            // 
-            // spritesView1
-            // 
-            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.spritesView1.Location = new System.Drawing.Point(0, 0);
-            this.spritesView1.Name = "spritesView1";
-            this.spritesView1.Size = new System.Drawing.Size(292, 374);
-            this.spritesView1.TabIndex = 0;
-            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
             // 
             // searchspriteTextbox
             // 
@@ -2108,7 +2086,7 @@
             // 
             this.splitter1.Location = new System.Drawing.Point(300, 49);
             this.splitter1.Name = "splitter1";
-            this.splitter1.Size = new System.Drawing.Size(3, 712);
+            this.splitter1.Size = new System.Drawing.Size(3, 690);
             this.splitter1.TabIndex = 15;
             this.splitter1.TabStop = false;
             // 
@@ -2469,6 +2447,79 @@
             this.label31.TabIndex = 9;
             this.label31.Text = "Item :";
             // 
+            // editorsTabControl
+            // 
+            this.editorsTabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
+            this.editorsTabControl.Controls.Add(this.dungeonPage);
+            this.editorsTabControl.Controls.Add(this.overworldPage);
+            this.editorsTabControl.Controls.Add(this.tabPage3);
+            this.editorsTabControl.Controls.Add(this.tabPage5);
+            this.editorsTabControl.Controls.Add(this.textPage);
+            this.editorsTabControl.Controls.Add(this.objDesignerPage);
+            this.editorsTabControl.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.editorsTabControl.Location = new System.Drawing.Point(0, 739);
+            this.editorsTabControl.Name = "editorsTabControl";
+            this.editorsTabControl.SelectedIndex = 0;
+            this.editorsTabControl.Size = new System.Drawing.Size(1008, 22);
+            this.editorsTabControl.TabIndex = 22;
+            this.editorsTabControl.SelectedIndexChanged += new System.EventHandler(this.editorsTabControl_SelectedIndexChanged);
+            // 
+            // dungeonPage
+            // 
+            this.dungeonPage.Location = new System.Drawing.Point(4, 25);
+            this.dungeonPage.Name = "dungeonPage";
+            this.dungeonPage.Padding = new System.Windows.Forms.Padding(3);
+            this.dungeonPage.Size = new System.Drawing.Size(1000, 0);
+            this.dungeonPage.TabIndex = 0;
+            this.dungeonPage.Text = "Dungeon Editor";
+            this.dungeonPage.UseVisualStyleBackColor = true;
+            // 
+            // overworldPage
+            // 
+            this.overworldPage.Location = new System.Drawing.Point(4, 25);
+            this.overworldPage.Name = "overworldPage";
+            this.overworldPage.Padding = new System.Windows.Forms.Padding(3);
+            this.overworldPage.Size = new System.Drawing.Size(1000, 0);
+            this.overworldPage.TabIndex = 1;
+            this.overworldPage.Text = "Overworld Editor";
+            this.overworldPage.UseVisualStyleBackColor = true;
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(1000, 0);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "Gfx Editor";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Location = new System.Drawing.Point(4, 25);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(1000, 0);
+            this.tabPage5.TabIndex = 3;
+            this.tabPage5.Text = "Misc Editor";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // textPage
+            // 
+            this.textPage.Location = new System.Drawing.Point(4, 25);
+            this.textPage.Name = "textPage";
+            this.textPage.Size = new System.Drawing.Size(1000, 0);
+            this.textPage.TabIndex = 4;
+            this.textPage.Text = "Text Editor";
+            this.textPage.UseVisualStyleBackColor = true;
+            // 
+            // objDesignerPage
+            // 
+            this.objDesignerPage.Location = new System.Drawing.Point(4, 25);
+            this.objDesignerPage.Name = "objDesignerPage";
+            this.objDesignerPage.Size = new System.Drawing.Size(1000, 0);
+            this.objDesignerPage.TabIndex = 5;
+            this.objDesignerPage.Text = "Object Designer (ext)";
+            this.objDesignerPage.UseVisualStyleBackColor = true;
+            // 
             // thumbnailBox
             // 
             this.thumbnailBox.Location = new System.Drawing.Point(5, 72);
@@ -2486,9 +2537,48 @@
             this.customPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.customPanel3.Location = new System.Drawing.Point(303, 216);
             this.customPanel3.Name = "customPanel3";
-            this.customPanel3.Size = new System.Drawing.Size(705, 545);
+            this.customPanel3.Size = new System.Drawing.Size(705, 523);
             this.customPanel3.TabIndex = 19;
             this.customPanel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.customPanel3_MouseMove);
+            // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.objectViewer1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 37);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(292, 627);
+            this.panel1.TabIndex = 1;
+            // 
+            // objectViewer1
+            // 
+            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
+            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
+            this.objectViewer1.Name = "objectViewer1";
+            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
+            this.objectViewer1.TabIndex = 0;
+            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
+            // 
+            // customPanel1
+            // 
+            this.customPanel1.AutoScroll = true;
+            this.customPanel1.Controls.Add(this.spritesView1);
+            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.customPanel1.Location = new System.Drawing.Point(0, 20);
+            this.customPanel1.Name = "customPanel1";
+            this.customPanel1.Size = new System.Drawing.Size(292, 644);
+            this.customPanel1.TabIndex = 2;
+            // 
+            // spritesView1
+            // 
+            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.spritesView1.Location = new System.Drawing.Point(0, 0);
+            this.spritesView1.Name = "spritesView1";
+            this.spritesView1.Size = new System.Drawing.Size(292, 374);
+            this.spritesView1.TabIndex = 0;
+            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
             // 
             // DungeonMain
             // 
@@ -2504,13 +2594,14 @@
             this.Controls.Add(this.toolboxPanel);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.editorsTabControl);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.IsMdiContainer = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DungeonMain";
             this.Text = "ZScream Magic - 2.2 Beta";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.zscreamForm_FormClosing_1);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.LocationChanged += new System.EventHandler(this.DungeonMain_LocationChanged);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -2529,10 +2620,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).EndInit();
             this.objectstabPage.ResumeLayout(false);
             this.objectstabPage.PerformLayout();
-            this.panel1.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
-            this.customPanel1.ResumeLayout(false);
             this.headerGroupbox.ResumeLayout(false);
             this.headerGroupbox.PerformLayout();
             this.selectedGroupbox.ResumeLayout(false);
@@ -2546,7 +2635,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).EndInit();
             this.potitemobjectPanel.ResumeLayout(false);
             this.potitemobjectPanel.PerformLayout();
+            this.editorsTabControl.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.customPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2634,7 +2726,6 @@
         private System.Windows.Forms.Panel toolboxPanel;
         private System.Windows.Forms.TabPage entrancetabPage;
         private System.Windows.Forms.SplitContainer splitContainer3;
-        private System.Windows.Forms.TreeView entrancetreeView;
         private System.Windows.Forms.TabPage objectstabPage;
         private System.Windows.Forms.TextBox searchTextbox;
         private System.Windows.Forms.TabPage tabPage4;
@@ -2776,6 +2867,15 @@
         public System.Windows.Forms.ToolStripButton redoButton;
         public System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
+        private System.Windows.Forms.TabPage dungeonPage;
+        private System.Windows.Forms.TabPage overworldPage;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.TabPage textPage;
+        private System.Windows.Forms.ToolStripMenuItem saveSettingsToolStripMenuItem;
+        private System.Windows.Forms.TabPage objDesignerPage;
+        public System.Windows.Forms.TabControl editorsTabControl;
+        public System.Windows.Forms.TreeView entrancetreeView;
     }
 }
 

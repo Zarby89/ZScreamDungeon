@@ -29,15 +29,13 @@ namespace ZeldaFullEditor
 
         }
         //TODO : Move that to a data class
-        public Room[] all_rooms = new Room[296];
-        public Entrance[] entrances = new Entrance[0x85];
-        Entrance[] starting_entrances = new Entrance[0x07];
-        public List<Room>[] undoRoom = new List<Room>[296];
-        public List<Room>[] redoRoom = new List<Room>[296];
+
         //TODO : Move that?
         public byte[] door_index = new byte[] { 0x00, 0x06, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32, 0x20, 0x14, 0x2A, 0x22 };
 
-
+        TextEditor textEditor = new TextEditor();
+        OverworldEditor overworldEditor = new OverworldEditor();
+        Object_Designer objDesigner = new Object_Designer();
         string projectFilename = "";
         public bool projectLoaded = false;
         bool anychange = false;
@@ -69,6 +67,17 @@ namespace ZeldaFullEditor
             roomProperty_blockset.MouseWheel += RoomProperty_MouseWheel;
             roomProperty_palette.MouseWheel += RoomProperty_MouseWheel;
             refreshRecentsFiles();
+            textEditor.Visible = false;
+            overworldEditor.Visible = false;
+            objDesigner.Visible = false;
+            objDesigner.Dock = DockStyle.Fill;
+            overworldEditor.Dock = DockStyle.Fill;
+            textEditor.Dock = DockStyle.Fill;
+            Controls.Add(overworldEditor);
+            Controls.Add(textEditor);
+            Controls.Add(objDesigner);
+
+            
         }
         //Need to stay here
         public void initialize_properties()
@@ -132,7 +141,7 @@ namespace ZeldaFullEditor
                         p.Text = p.Text.Trim('*');
                     }
 
-                    all_rooms[(p.Tag as Room).index] = (Room)(p.Tag as Room).Clone();
+                    DungeonsData.all_rooms[(p.Tag as Room).index] = (Room)(p.Tag as Room).Clone();
                     (p.Tag as Room).has_changed = false;
                     anychange = false;
                 }
@@ -140,7 +149,7 @@ namespace ZeldaFullEditor
             }
 
             byte[] romBackup = (byte[])ROM.DATA.Clone();
-            Save save = new Save(all_rooms);
+            Save save = new Save(DungeonsData.all_rooms);
             
             if (save.saveRoomsHeaders()) //no protection always the same size so we don't care :)
             {
@@ -189,12 +198,18 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            if (save.saveEntrances(entrances,starting_entrances))
+            if (save.saveEntrances(DungeonsData.entrances, DungeonsData.starting_entrances))
             {
                 MessageBox.Show("Failed to save entrances ?? no idea why LUL", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
+           /* if (save.saveAllText(textEditor))
+            {
+                MessageBox.Show("Impossible to save Texts", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }*/
 
             Palettes.SavePalettesToROM(ROM.DATA);
             GfxGroups.SaveGroupsToROM();
@@ -293,13 +308,16 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 296; i++)
             {
-                all_rooms[i] = (new Room(i)); // create all rooms
-                undoRoom[i] = new List<Room>();
-                redoRoom[i] = new List<Room>();
+                DungeonsData.all_rooms[i] = (new Room(i)); // create all rooms
+                DungeonsData.undoRoom[i] = new List<Room>();
+                DungeonsData.redoRoom[i] = new List<Room>();
             }
 
 
-            initEntrancesList();
+
+
+
+                initEntrancesList();
             this.customPanel3.Controls.Add(activeScene);
             addRoomTab(260);
 
@@ -400,7 +418,10 @@ namespace ZeldaFullEditor
            
             paletteForm.Location = new Point(0, 0);
             refreshRecentsFiles();
+            overworldEditor.InitOpen(this);
+            textEditor.initOpen();
 
+            
 
         }
 
@@ -429,11 +450,11 @@ namespace ZeldaFullEditor
             //entrances
             for (int i = 0; i < 0x07; i++)
             {
-                starting_entrances[i] = new Entrance((byte)i, true);
+                DungeonsData.starting_entrances[i] = new Entrance((byte)i, true);
                 string tname = "[" + i.ToString("X2") + "] -> ";
                 foreach (DataRoom d in ROMStructure.dungeonsRoomList)
                 {
-                    if (d.id == starting_entrances[i].Room)
+                    if (d.id == DungeonsData.starting_entrances[i].Room)
                     {
                         tname += "[" + d.id.ToString() + "]" + d.name;
                         break;
@@ -446,11 +467,11 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 0x85; i++)
             {
-                entrances[i] = new Entrance((byte)i, false);
+                DungeonsData.entrances[i] = new Entrance((byte)i, false);
                 string tname = "[" + i.ToString("X2") + "] -> ";
                 foreach (DataRoom d in ROMStructure.dungeonsRoomList)
                 {
-                    if (d.id == entrances[i].Room)
+                    if (d.id == DungeonsData.entrances[i].Room)
                     {
                         tname += "[" + d.id.ToString() + "]" + d.name;
                         break;
@@ -464,7 +485,7 @@ namespace ZeldaFullEditor
             }
 
             entrancetreeView.SelectedNode = entrancetreeView.Nodes[0].Nodes[0];
-            selectedEntrance = entrances[0];
+            selectedEntrance = DungeonsData.entrances[0];
         }
 
         public void enableProjectButtons()
@@ -507,7 +528,7 @@ namespace ZeldaFullEditor
 
         public void save_room(int roomId)
         {
-            all_rooms[roomId] = (Room)activeScene.room.Clone();
+            DungeonsData.all_rooms[roomId] = (Room)activeScene.room.Clone();
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -760,7 +781,7 @@ namespace ZeldaFullEditor
                 activeScene.need_refresh = true;
                 if (!visibleEntranceGFX)
                 {
-                    activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                    activeScene.room.reloadGfx(DungeonsData.entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
                 }
                 else
                 {
@@ -944,7 +965,7 @@ namespace ZeldaFullEditor
 
             if (anychange)
             {
-                all_rooms[activeScene.room.index] = activeScene.room;
+                DungeonsData.all_rooms[activeScene.room.index] = activeScene.room;
                 anychange = false;
                 this.saved_changed = true;
             }
@@ -997,12 +1018,12 @@ namespace ZeldaFullEditor
             {
                 if (e.Node.Tag != null)
                 {
-                    en = entrances[(int)e.Node.Tag];
+                    en = DungeonsData.entrances[(int)e.Node.Tag];
                     if (e.Node.Parent != null)
                     {
                         if (e.Node.Parent.Name == "StartingEntranceNode")
                         {
-                            en = starting_entrances[(int)e.Node.Tag];
+                            en = DungeonsData.starting_entrances[(int)e.Node.Tag];
                         }
                     }
                 }
@@ -1202,11 +1223,11 @@ namespace ZeldaFullEditor
             }
             else
             {
-                Room r = (Room)all_rooms[roomId].Clone();
-                if (undoRoom[r.index].Count == 0)
+                Room r = (Room)DungeonsData.all_rooms[roomId].Clone();
+                if (DungeonsData.undoRoom[r.index].Count == 0)
                 {
-                    undoRoom[r.index].Add((Room)r.Clone());
-                    redoRoom[r.index].Clear();
+                    DungeonsData.undoRoom[r.index].Add((Room)r.Clone());
+                    DungeonsData.redoRoom[r.index].Clear();
                     undoButton.Enabled = false;
                     undoToolStripMenuItem.Enabled = false;
                 }
@@ -1215,7 +1236,7 @@ namespace ZeldaFullEditor
                     undoButton.Enabled = true;
                     undoToolStripMenuItem.Enabled = true;
                 }
-                if (redoRoom[r.index].Count > 0)
+                if (DungeonsData.redoRoom[r.index].Count > 0)
                 {
                     redoButton.Enabled = true;
                     redoToolStripMenuItem.Enabled = true;
@@ -1236,7 +1257,7 @@ namespace ZeldaFullEditor
 
                 if (!visibleEntranceGFX)
                 {
-                    activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                    activeScene.room.reloadGfx(DungeonsData.entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
                 }
                 else
                 {
@@ -1286,11 +1307,11 @@ namespace ZeldaFullEditor
             {
                 if (e.Node.Parent == entrancetreeView.Nodes[0])
                 {
-                    addRoomTab(entrances[(int)e.Node.Tag].Room);
+                    addRoomTab(DungeonsData.entrances[(int)e.Node.Tag].Room);
                 }
                 else
                 {
-                    addRoomTab(starting_entrances[(int)e.Node.Tag].Room);
+                    addRoomTab(DungeonsData.starting_entrances[(int)e.Node.Tag].Room);
                 }
             }
         }
@@ -1589,7 +1610,7 @@ namespace ZeldaFullEditor
 
                 if (!visibleEntranceGFX)
                 {
-                    activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                    activeScene.room.reloadGfx(DungeonsData.entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
                 }
                 else
                 {
@@ -1685,7 +1706,7 @@ namespace ZeldaFullEditor
                 activeScene.SetPalettesBlack();
                 if (!visibleEntranceGFX)
                 {
-                    activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                    activeScene.room.reloadGfx(DungeonsData.entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
                 }
                 else
                 {
@@ -1721,7 +1742,7 @@ namespace ZeldaFullEditor
                 DialogResult dr = MessageBox.Show("Room has changed do you want to save?", "Warning", MessageBoxButtons.YesNoCancel);
                 if (dr == DialogResult.Yes)
                 {
-                    all_rooms[(tabControl2.TabPages[i].Tag as Room).index] = (Room)(tabControl2.TabPages[i].Tag as Room).Clone();
+                    DungeonsData.all_rooms[(tabControl2.TabPages[i].Tag as Room).index] = (Room)(tabControl2.TabPages[i].Tag as Room).Clone();
                     closeRoom((tabControl2.TabPages[i].Tag as Room).index);
                     this.tabControl2.TabPages.RemoveAt(i);
                     if (tabControl2.TabPages.Count == 0)
@@ -1777,7 +1798,7 @@ namespace ZeldaFullEditor
             {
                 activeScene.room = (tabControl2.TabPages[tabControl2.SelectedIndex].Tag as Room);
                 activeScene.updateRoomInfos(this);
-                if (undoRoom[activeScene.room.index].Count > 0)
+                if (DungeonsData.undoRoom[activeScene.room.index].Count > 0)
                 { 
                     undoButton.Enabled = true;
                     undoToolStripMenuItem.Enabled = true;
@@ -1787,7 +1808,7 @@ namespace ZeldaFullEditor
                     redoButton.Enabled = false;
                     redoToolStripMenuItem.Enabled = false;
                 }
-                if (redoRoom[activeScene.room.index].Count > 0)
+                if (DungeonsData.redoRoom[activeScene.room.index].Count > 0)
                 {
                     redoButton.Enabled = true;
                     redoToolStripMenuItem.Enabled = true;
@@ -1799,7 +1820,7 @@ namespace ZeldaFullEditor
                 }
                 if (!visibleEntranceGFX)
                 {
-                    activeScene.room.reloadGfx(entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+                    activeScene.room.reloadGfx(DungeonsData.entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
                 }
                 else
                 {
@@ -1959,7 +1980,7 @@ namespace ZeldaFullEditor
                         if (cx > higherX) { higherX = cx; }
                         if (cy > higherY) { higherY = cy; }
 
-                        activeScene.room = all_rooms[s];
+                        activeScene.room = DungeonsData.all_rooms[s];
                         activeScene.room.reloadGfx();
                         GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
                         GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
@@ -2142,10 +2163,10 @@ namespace ZeldaFullEditor
             e.Graphics.Clear(Color.Black);
             for (int i = 0; i < 296; i++)
             {
-                if (all_rooms[i].tilesObjects.Count > 0)
+                if (DungeonsData.all_rooms[i].tilesObjects.Count > 0)
                 {
 
-                    e.Graphics.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(all_rooms[i].palette)[4, 2]), new Rectangle(xd * 16, yd * 16, 16, 16));
+                    e.Graphics.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(DungeonsData.all_rooms[i].palette)[4, 2]), new Rectangle(xd * 16, yd * 16, 16, 16));
 
                     foreach (short s in selectedMapPng)
                     {
@@ -2341,7 +2362,7 @@ namespace ZeldaFullEditor
         {
             if (MessageBox.Show("Are you sure you want to clear every rooms?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                foreach(Room r in all_rooms)
+                foreach(Room r in DungeonsData.all_rooms)
                 {
                     r.tilesObjects.Clear();
                     r.pot_items.Clear();
@@ -2443,12 +2464,12 @@ namespace ZeldaFullEditor
 
             if (entrancetreeView.SelectedNode.Tag != null)
             {
-                en = entrances[(int)entrancetreeView.SelectedNode.Tag];
+                en = DungeonsData.entrances[(int)entrancetreeView.SelectedNode.Tag];
                 if (entrancetreeView.SelectedNode.Parent != null)
                 {
                     if (entrancetreeView.SelectedNode.Parent.Name == "StartingEntranceNode")
                     {
-                        en = starting_entrances[(int)entrancetreeView.SelectedNode.Tag];
+                        en = DungeonsData.starting_entrances[(int)entrancetreeView.SelectedNode.Tag];
                     }
                 }
             }
@@ -2876,7 +2897,7 @@ namespace ZeldaFullEditor
                 {
                     return;
                 }
-                previewRoom = all_rooms[roomId];
+                previewRoom = DungeonsData.all_rooms[roomId];
                 previewRoom.reloadGfx();
                 GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.Palette);
                 DrawRoom();
@@ -3081,7 +3102,7 @@ namespace ZeldaFullEditor
 
                 if (lastRoomID != roomId)
                 {
-                    previewRoom = all_rooms[roomId];
+                    previewRoom = DungeonsData.all_rooms[roomId];
                     previewRoom.reloadGfx();
                     GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.Palette);
                     DrawRoom();
@@ -3203,6 +3224,78 @@ namespace ZeldaFullEditor
         {
             activeScene.Redo();
         }
+
+        private void DungeonMain_LocationChanged(object sender, EventArgs e)
+        {
+            this.Refresh();
+        }
+
+        private void editorsTabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (editorsTabControl.SelectedTab.Name == "textPage")
+            {
+                textEditor.BringToFront();
+                textEditor.Visible = true;
+                
+            }
+            else
+            {
+                textEditor.Visible = false;
+            }
+            if (editorsTabControl.SelectedTab.Name == "dungeonPage")
+            {
+                toolStrip1.Visible = true;
+                panel1.Visible = true;
+                toolboxPanel.Visible = true;
+                customPanel3.Visible = true;
+                headerGroupbox.Visible = true;
+                tabControl2.Visible = true;
+
+            }
+            else
+            {
+                toolStrip1.Visible = false;
+                panel1.Visible = false;
+                toolboxPanel.Visible = false;
+                customPanel3.Visible = false;
+                headerGroupbox.Visible = false;
+                tabControl2.Visible = false;
+            }
+            if (editorsTabControl.SelectedTab.Name == "objDesignerPage")
+            {
+                objDesigner.BringToFront();
+                objDesigner.Visible = true;
+
+            }
+            else
+            {
+                objDesigner.Visible = false;
+            }
+            if (editorsTabControl.SelectedTab.Name == "overworldPage")
+            {
+                overworldEditor.BringToFront();
+                overworldEditor.Visible = true;
+            }
+            else
+            {
+                overworldEditor.Visible = false;
+            }
+        }
+
+        private void saveSettingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveSettings st = new SaveSettings();
+            st.ShowDialog();
+            
+        }
+
+
+
+        public enum Direction
+        {
+            gauche = 0x01, droit = 0x02, haut = 0x04, bas = 0x08
+        };
+
     }
 
 }

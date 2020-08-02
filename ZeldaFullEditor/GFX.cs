@@ -40,6 +40,12 @@ namespace ZeldaFullEditor
         public static IntPtr mapgfx16Ptr = Marshal.AllocHGlobal(1048576);
         public static Bitmap mapgfx16Bitmap;
 
+        public static IntPtr fontgfx16Ptr = Marshal.AllocHGlobal((256 * 256));
+        public static Bitmap fontgfxBitmap;
+
+        public static IntPtr currentfontgfx16Ptr = Marshal.AllocHGlobal(172 * 20000);
+        public static Bitmap currentfontgfx16Bitmap;
+
         public static bool[] isbpp3 = new bool[223];
 
         public static byte[] gfxdata;
@@ -76,6 +82,8 @@ namespace ZeldaFullEditor
 
         public static Bitmap spriteFont;
         public static Bitmap moveableBlock;
+
+        public static Color[] palettes = new Color[256];
 
         public unsafe static void DrawBG1()
         {
@@ -202,7 +210,70 @@ namespace ZeldaFullEditor
                 tilesBg1Buffer[i] = 0xFFFF;
                 tilesBg2Buffer[i] = 0xFFFF;
             }
+
+           
         }
+
+
+
+
+        public static void CreateFontGfxData(byte[] romData)
+        {
+
+            byte[] data = new byte[0x2000];
+            for (int i = 0; i < 0x2000; i++)
+            {
+                data[i] = romData[Constants.gfx_font + i];
+            }
+            byte[] newData = new byte[0x4000]; //NEED TO GET THE APPROPRIATE SIZE FOR THAT
+            byte[] mask = new byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
+            int sheetPosition = 0;
+            //8x8 tile
+            for (int s = 0; s < 4; s++) //Per Sheet
+            {
+                for (int j = 0; j < 4; j++) //Per Tile Line Y
+                {
+                    for (int i = 0; i < 16; i++) //Per Tile Line X
+                    {
+                        for (int y = 0; y < 8; y++) //Per Pixel Line
+                        {
+
+                            byte lineBits0 = data[(y * 2) + (i * 16) + (j * 256) + sheetPosition];
+                            byte lineBits1 = data[(y * 2) + (i * 16) + (j * 256) + 1 + sheetPosition];
+
+                            for (int x = 0; x < 4; x++) //Per Pixel X
+                            {
+                                byte pixdata = 0;
+                                byte pixdata2 = 0;
+
+                                if ((lineBits0 & mask[(x * 2)]) == mask[(x * 2)]) { pixdata += 1; }
+                                if ((lineBits1 & mask[(x * 2)]) == mask[(x * 2)]) { pixdata += 2; }
+
+                                if ((lineBits0 & mask[(x * 2) + 1]) == mask[(x * 2) + 1]) { pixdata2 += 1; }
+                                if ((lineBits1 & mask[(x * 2) + 1]) == mask[(x * 2) + 1]) { pixdata2 += 2; }
+
+                                newData[(y * 64) + (x) + (i * 4) + (j * 512) + (s * 2048)] = (byte)((pixdata << 4) | pixdata2);
+                            }
+
+                        }
+                    }
+                }
+                sheetPosition += 0x400;
+            }
+
+            unsafe
+            {
+
+                byte* fontgfx16Data = (byte*)fontgfx16Ptr.ToPointer();
+                for (int i = 0; i < 0x4000; i++)
+                {
+                    fontgfx16Data[i] = newData[i];
+                }
+            }
+
+
+        }
+
         public static byte[] CreateAllGfxDataRaw(byte[] romData)
         {
 

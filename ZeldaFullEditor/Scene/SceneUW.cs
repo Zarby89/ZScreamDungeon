@@ -2188,11 +2188,11 @@ namespace ZeldaFullEditor
         public void Undo()
         {
             
-            if (mainForm.undoRoom[room.index].Count > 0)
+            if (DungeonsData.undoRoom[room.index].Count > 0)
             {
-                mainForm.redoRoom[room.index].Add((Room)room.Clone());
-                room = mainForm.undoRoom[room.index][(mainForm.undoRoom[room.index].Count - 1)];
-                mainForm.undoRoom[room.index].RemoveAt(mainForm.undoRoom[room.index].Count - 1);
+                DungeonsData.redoRoom[room.index].Add((Room)room.Clone());
+                room = DungeonsData.undoRoom[room.index][(DungeonsData.undoRoom[room.index].Count - 1)];
+                DungeonsData.undoRoom[room.index].RemoveAt(DungeonsData.undoRoom[room.index].Count - 1);
                 updateRoomInfos(mainForm);
                 room.reloadGfx();
                 DrawRoom();
@@ -2214,11 +2214,11 @@ namespace ZeldaFullEditor
 
         public void Redo()
         {
-            if (mainForm.redoRoom[room.index].Count > 0)
+            if (DungeonsData.redoRoom[room.index].Count > 0)
             {
-                mainForm.undoRoom[room.index].Add((Room)room.Clone());
-                room = mainForm.redoRoom[room.index][(mainForm.redoRoom[room.index].Count - 1)];
-                mainForm.redoRoom[room.index].RemoveAt(mainForm.redoRoom[room.index].Count - 1);
+                DungeonsData.undoRoom[room.index].Add((Room)room.Clone());
+                room = DungeonsData.redoRoom[room.index][(DungeonsData.redoRoom[room.index].Count - 1)];
+                DungeonsData.redoRoom[room.index].RemoveAt(DungeonsData.redoRoom[room.index].Count - 1);
                 updateRoomInfos(mainForm);
                 room.reloadGfx();
                 DrawRoom();
