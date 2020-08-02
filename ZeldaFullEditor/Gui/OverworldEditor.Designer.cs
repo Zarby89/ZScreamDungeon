@@ -49,11 +49,16 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tilePictureBox = new System.Windows.Forms.PictureBox();
             this.owPropertyPanel = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.stateCombobox = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).BeginInit();
+            this.owPropertyPanel.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // owToolStrip
@@ -99,6 +104,7 @@
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(23, 22);
             this.saveButton.Text = "Save ROM";
+            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // toolStripSeparator1
             // 
@@ -265,11 +271,46 @@
             // 
             // owPropertyPanel
             // 
+            this.owPropertyPanel.Controls.Add(this.groupBox1);
             this.owPropertyPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.owPropertyPanel.Location = new System.Drawing.Point(0, 25);
             this.owPropertyPanel.Name = "owPropertyPanel";
             this.owPropertyPanel.Size = new System.Drawing.Size(953, 75);
             this.owPropertyPanel.TabIndex = 0;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.stateCombobox);
+            this.groupBox1.Location = new System.Drawing.Point(3, 3);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(151, 66);
+            this.groupBox1.TabIndex = 0;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Global Settings";
+            // 
+            // stateCombobox
+            // 
+            this.stateCombobox.FormattingEnabled = true;
+            this.stateCombobox.Items.AddRange(new object[] {
+            "0,1 (Rescue Zelda)",
+            "2 (Zelda Saved)",
+            "3 (Agah. Dead)"});
+            this.stateCombobox.Location = new System.Drawing.Point(7, 39);
+            this.stateCombobox.Name = "stateCombobox";
+            this.stateCombobox.Size = new System.Drawing.Size(138, 21);
+            this.stateCombobox.TabIndex = 1;
+            this.stateCombobox.Text = "0,1 (Rescue Zelda)";
+            this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 23);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(119, 13);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Game State (7EF3C5) : ";
             // 
             // OverworldEditor
             // 
@@ -286,6 +327,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).EndInit();
+            this.owPropertyPanel.ResumeLayout(false);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -313,5 +357,8 @@
         private System.Windows.Forms.ToolStripButton itemModeButton;
         private System.Windows.Forms.ToolStripButton spriteModeButton;
         private System.Windows.Forms.ToolStripButton transportModeButton;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox stateCombobox;
     }
 }

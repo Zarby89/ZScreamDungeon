@@ -17,8 +17,8 @@ namespace ZeldaFullEditor.Gui
         {
             InitializeComponent();
         }
-        Overworld overworld;
-        SceneOW scene;
+        public Overworld overworld;
+        public SceneOW scene;
 
         public void InitOpen(DungeonMain mainForm)
         {
@@ -63,6 +63,16 @@ namespace ZeldaFullEditor.Gui
             }
             (sender as ToolStripButton).Checked = true;
             scene.selectedMode = (ObjectMode)((sender as ToolStripButton).Tag);
+        }
+
+        private void stateCombobox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            overworld.gameState = (byte)stateCombobox.SelectedIndex;
+        }
+
+        private void saveButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

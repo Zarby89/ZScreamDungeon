@@ -204,12 +204,53 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-           /* if (save.saveAllText(textEditor))
+            if (save.saveAllText(textEditor))
             {
                 MessageBox.Show("Impossible to save Texts", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
-            }*/
+            }
+
+            if (save.saveOWEntrances(overworldEditor.scene))
+            {
+                MessageBox.Show("Failed to save ??, no idea why ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+            if (save.saveOWItems(overworldEditor.scene))
+            {
+                MessageBox.Show("Failed to save overworld items out of range ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+            if (save.SaveOWSprites(overworldEditor.scene))
+            {
+                MessageBox.Show("Failed to save overworld sprites out of range ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+            if (save.saveOWTransports(overworldEditor.scene))
+            {
+                MessageBox.Show("Failed to save overworld transports out of range ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+            if (save.saveMapProperties(overworldEditor.scene))
+            {
+                MessageBox.Show("Failed to save overworld map properties ??? ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+            overworldEditor.scene.SaveTiles();
+
+            Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
+            AsarCLR.Asar.init();
+            AsarCLR.Asar.patch("spritesmove.asm", ref ROM.DATA);
 
             Palettes.SavePalettesToROM(ROM.DATA);
             GfxGroups.SaveGroupsToROM();
@@ -631,38 +672,81 @@ namespace ZeldaFullEditor
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeScene.mouse_down = false;
-            activeScene.deleteSelected();
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                activeScene.mouse_down = false;
+                activeScene.deleteSelected();
+            }
+            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
+            {
+                overworldEditor.scene.mouse_down = false;
+                overworldEditor.scene.deleteSelected();
+            }
         }
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeScene.mouse_down = false;
-            activeScene.selectAll();
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                activeScene.mouse_down = false;
+                activeScene.selectAll();
+            }
+            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
+            {
+                overworldEditor.scene.mouse_down = false;
+                overworldEditor.scene.selectAll();
+            }
         }
 
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeScene.mouse_down = false;
-            activeScene.cut();
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                activeScene.mouse_down = false;
+                activeScene.cut();
+            }
+            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
+            {
+                overworldEditor.scene.mouse_down = false;
+                overworldEditor.scene.cut();
+            }
         }
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeScene.paste();
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                activeScene.paste();
+            }
+            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
+            {
+                overworldEditor.scene.paste();
+            }
         }
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeScene.mouse_down = false;
-            activeScene.copy();
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                activeScene.mouse_down = false;
+                activeScene.copy();
+            }
+            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
+            {
+                overworldEditor.scene.mouse_down = false;
+                overworldEditor.scene.copy();
+            }
         }
 
         private void showBG1ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            activeScene.showLayer1 = showBG1ToolStripMenuItem.Checked;
-            activeScene.DrawRoom();
-            activeScene.Refresh();
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                activeScene.showLayer1 = showBG1ToolStripMenuItem.Checked;
+                activeScene.DrawRoom();
+                activeScene.Refresh();
+            }
+
         }
 
         private void saveLayoutButton_Click(object sender, EventArgs e)

@@ -83,7 +83,7 @@ namespace ZeldaFullEditor
             LoadPalette();
             if (!initializedSprites)
             {
-                //loadSprites();
+                loadSprites();
                 initializedSprites = true;
             }
             int world = 0;
@@ -621,7 +621,7 @@ namespace ZeldaFullEditor
         }
 
 
-        /*public void loadSprites(bool fromImport = false)
+        public void loadSprites(bool fromImport = false)
         {
 
             if (index < 144)
@@ -789,7 +789,7 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-        }*/
+        }
 
     }
 }

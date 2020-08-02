@@ -118,6 +118,12 @@
     <Compile Include="Gui\AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\AddSprite.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\AddSprite.Designer.cs">
+      <DependentUpon>AddSprite.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\AdvancedChestEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -341,6 +347,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\AddSprite.resx">
+      <DependentUpon>AddSprite.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\AdvancedChestEditorForm.resx">
       <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>

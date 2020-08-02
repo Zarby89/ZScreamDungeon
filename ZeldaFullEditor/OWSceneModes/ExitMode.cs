@@ -36,9 +36,13 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void Paste()
         {
-            selectedExit = AddExit(true);
-            lastselectedExit = selectedExit;
-            scene.mouse_down = true;
+            ExitOW ae = AddExit(true);
+            if (ae != null)
+            {
+                selectedExit = ae;
+                lastselectedExit = selectedExit;
+                scene.mouse_down = true;
+            }
         }
 
         public ExitOW AddExit(bool clipboard = false)

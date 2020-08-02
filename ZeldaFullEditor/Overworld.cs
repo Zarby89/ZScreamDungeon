@@ -744,7 +744,7 @@ namespace ZeldaFullEditor
 
         public void savemapstorom()
         {
-            int pos = 0x110000;
+            int pos = 0x120000;
             for (int i = 0; i < 160; i++)
             {
                 int npos = 0;

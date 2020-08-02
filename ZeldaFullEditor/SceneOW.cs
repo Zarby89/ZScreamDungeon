@@ -317,8 +317,7 @@ namespace ZeldaFullEditor
 
         public void SaveTiles()
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
+
 
             if (!ow.createMap32Tilesmap())
             {
@@ -326,8 +325,6 @@ namespace ZeldaFullEditor
                 ow.savemapstorom();
                 ow.SaveMap16Tiles();
             }
-            Console.WriteLine("Overworld Save Elapsed Milliseconds : " + sw.ElapsedMilliseconds);
-            sw.Stop();
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -390,8 +387,8 @@ namespace ZeldaFullEditor
                         int xx = spr.mapid - (yy * 8);
                         drawText(g, (spr.x * 16) + (xx * 512), ((spr.y * 16) - 16) + (yy * 512), spr.name);
                     }
-                }*/
-
+                }
+                */
 
 
                 if (selecting)
