@@ -162,11 +162,10 @@ namespace ZeldaFullEditor.OWSceneModes
         Gui.AddSprite addspr = new Gui.AddSprite();
         private void addSprite_Click(object sender, EventArgs e)
         {
-
             if (addspr.ShowDialog() == DialogResult.OK)
             {
                 byte data = (byte)addspr.spriteListBox.SelectedIndex;
-                scene.selectedFormSprite = new Sprite(0, (byte)data, 0, 0, scene.ow.allmaps, 0, 0);
+                scene.selectedFormSprite = new Sprite(0, (byte)data, 0, 0, scene.ow.allmaps, (scene.mouseX_Real/16), (scene.mouseY_Real / 16));
                 byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
                 if (mid == 255)
                 {
@@ -184,7 +183,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 scene.mouse_down = true;
                 isLeftPress = true;
             }
-            scene.Select();
+
         }
 
         public void onMouseMove(MouseEventArgs e)

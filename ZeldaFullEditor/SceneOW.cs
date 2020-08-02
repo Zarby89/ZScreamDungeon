@@ -170,6 +170,9 @@ namespace ZeldaFullEditor
 
         private unsafe void onMouseUp(object sender, MouseEventArgs e)
         {
+            owForm.objCombobox.Items.Clear();
+            owForm.objCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedSprite;
+            owForm.objCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedItem;
             string text = "Selected Object - ";
             if (selectedMode == ObjectMode.Tile)
             {
@@ -213,6 +216,17 @@ namespace ZeldaFullEditor
 
                         "X : " + itemMode.lastselectedItem.x + "\n" +
                         "Y : " + itemMode.lastselectedItem.y;
+                    owForm.objCombobox.Items.AddRange(ItemsNames.name);
+                    if ((itemMode.lastselectedItem.id & 0x80) == 0x80)
+                    {
+                        owForm.objCombobox.SelectedIndex = (23 + (itemMode.lastselectedItem.id / 2));
+                    }
+                    else
+                    {
+                        owForm.objCombobox.SelectedIndex = itemMode.lastselectedItem.id;
+                    }
+
+                    owForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedItem;
                 }
             }
             else if (selectedMode == ObjectMode.Spritemode)
@@ -225,6 +239,12 @@ namespace ZeldaFullEditor
 
                         "X : " + spriteMode.lastselectedSprite.x + "\n" +
                         "Y : " + spriteMode.lastselectedSprite.y;
+                    owForm.objCombobox.Items.AddRange(Sprites_Names.name);
+                    owForm.objCombobox.SelectedIndex = spriteMode.lastselectedSprite.id;
+
+                    owForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedSprite;
+
+
                 }
             }
             else if (selectedMode == ObjectMode.Flute)
@@ -242,6 +262,28 @@ namespace ZeldaFullEditor
             }
             owForm.objectGroupbox.Text = text;
             Invalidate(new Rectangle((owForm.splitContainer1.Panel2.HorizontalScroll.Value), (owForm.splitContainer1.Panel2.VerticalScroll.Value), (owForm.splitContainer1.Panel2.Width), (owForm.splitContainer1.Panel2.Height)));
+        }
+
+        private void ObjCombobox_SelectedIndexChangedSprite(object sender, EventArgs e)
+        {
+            spriteMode.lastselectedSprite.id = (byte)owForm.objCombobox.SelectedIndex;
+            spriteMode.lastselectedSprite.name = owForm.objCombobox.Text;
+            Invalidate(new Rectangle((owForm.splitContainer1.Panel2.HorizontalScroll.Value), (owForm.splitContainer1.Panel2.VerticalScroll.Value), (owForm.splitContainer1.Panel2.Width), (owForm.splitContainer1.Panel2.Height)));
+
+
+        }
+        private void ObjCombobox_SelectedIndexChangedItem(object sender, EventArgs e)
+        {
+
+            byte id = (byte)owForm.objCombobox.SelectedIndex;
+            if (owForm.objCombobox.SelectedIndex >= 23)
+            {
+                id = (byte)(((owForm.objCombobox.SelectedIndex - 23) * 2) + 0x80);
+                
+            }
+            itemMode.lastselectedItem.id = id;
+            Invalidate(new Rectangle((owForm.splitContainer1.Panel2.HorizontalScroll.Value), (owForm.splitContainer1.Panel2.VerticalScroll.Value), (owForm.splitContainer1.Panel2.Width), (owForm.splitContainer1.Panel2.Height)));
+
         }
 
         private void onMouseMove(object sender, MouseEventArgs e)
