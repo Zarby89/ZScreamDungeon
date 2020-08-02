@@ -19,6 +19,9 @@ namespace ZeldaFullEditor
         public static IntPtr allgfx16Ptr = Marshal.AllocHGlobal((128 * 7136) / 2);
         public static Bitmap allgfxBitmap;
 
+        public static IntPtr allgfx16EDITPtr = Marshal.AllocHGlobal((128 * 7136));
+        public static Bitmap allgfxEDITBitmap;
+
         public static IntPtr currentgfx16Ptr = Marshal.AllocHGlobal((128 * 512) / 2);
         public static Bitmap currentgfx16Bitmap;
 
@@ -172,6 +175,7 @@ namespace ZeldaFullEditor
             roomBg1Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg1Ptr);
             roomBg2Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg2Ptr);
             allgfxBitmap = new Bitmap(128, 7104, 64, PixelFormat.Format4bppIndexed, allgfx16Ptr);
+            allgfxEDITBitmap = new Bitmap(128, 7104, 128, PixelFormat.Format8bppIndexed, allgfx16EDITPtr);
             currentgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentgfx16Ptr);
             currentEditingfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentEditinggfx16Ptr);
             roomObjectsBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomObjectsPtr);
@@ -430,9 +434,13 @@ namespace ZeldaFullEditor
             {
 
                 byte* allgfx16Data = (byte*)allgfx16Ptr.ToPointer();
+                byte* allgfx16Data2 = (byte*)allgfx16EDITPtr.ToPointer();
                 for (int i = 0; i < 0x6F800; i++)
                 {
                     allgfx16Data[i] = newData[i];
+
+                    allgfx16Data2[(i*2)+1] = (byte)(newData[i] & 0x0F);
+                    allgfx16Data2[(i*2)] = (byte)((newData[i] & 0xF0) >> 4);
                 }
             }
         }

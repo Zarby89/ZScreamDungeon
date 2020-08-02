@@ -36,6 +36,7 @@ namespace ZeldaFullEditor
         TextEditor textEditor = new TextEditor();
         OverworldEditor overworldEditor = new OverworldEditor();
         Object_Designer objDesigner = new Object_Designer();
+        GfxEditor gfxEditor = new GfxEditor();
         string projectFilename = "";
         public bool projectLoaded = false;
         bool anychange = false;
@@ -70,13 +71,15 @@ namespace ZeldaFullEditor
             textEditor.Visible = false;
             overworldEditor.Visible = false;
             objDesigner.Visible = false;
+            gfxEditor.Visible = false;
             objDesigner.Dock = DockStyle.Fill;
             overworldEditor.Dock = DockStyle.Fill;
             textEditor.Dock = DockStyle.Fill;
+            gfxEditor.Dock = DockStyle.Fill;
             Controls.Add(overworldEditor);
             Controls.Add(textEditor);
             Controls.Add(objDesigner);
-
+            Controls.Add(gfxEditor);
             
         }
         //Need to stay here
@@ -3375,8 +3378,8 @@ namespace ZeldaFullEditor
             }
             if (editorsTabControl.SelectedTab.Name == "objDesignerPage")
             {
-                objDesigner.BringToFront();
-                objDesigner.Visible = true;
+                //objDesigner.BringToFront();
+                //objDesigner.Visible = true;
 
             }
             else
@@ -3391,6 +3394,15 @@ namespace ZeldaFullEditor
             else
             {
                 overworldEditor.Visible = false;
+            }
+            if (editorsTabControl.SelectedTab.Name == "GfxEditorPage")
+            {
+                //gfxEditor.BringToFront();
+                //gfxEditor.Visible = true;
+            }
+            else
+            {
+                gfxEditor.Visible = false;
             }
         }
 

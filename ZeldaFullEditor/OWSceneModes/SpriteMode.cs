@@ -12,7 +12,7 @@ namespace ZeldaFullEditor.OWSceneModes
     public class SpriteMode
     {
         Sprite selectedSprite;
-        Sprite lastselectedSprite;
+        public Sprite lastselectedSprite;
         SceneOW scene;
         public SpriteMode(SceneOW scene)
         {

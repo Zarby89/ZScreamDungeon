@@ -176,6 +176,7 @@ namespace ZeldaFullEditor.Gui
             scene.selectedTileSizeX = 1;
             scene.selectedTile = new ushort[1] { (ushort)((e.X / 16) + ((e.Y / 16) * 8)) };
             tilePictureBox.Refresh();
+            
         }
     }
 }

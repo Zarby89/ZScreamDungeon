@@ -170,6 +170,7 @@ namespace ZeldaFullEditor
 
         private unsafe void onMouseUp(object sender, MouseEventArgs e)
         {
+            string text = "Selected Object - ";
             if (selectedMode == ObjectMode.Tile)
             {
                 tilemode.OnMouseUp(e);
@@ -177,6 +178,14 @@ namespace ZeldaFullEditor
             else if (selectedMode == ObjectMode.Exits)
             {
                 exitmode.onMouseUp(e);
+                text += "Exit";
+                if (exitmode.lastselectedExit != null)
+                {
+                    owForm.objinfoLabel.Text = "Map ID : " + exitmode.lastselectedExit.mapId + "\n" +
+                        "X : " + exitmode.lastselectedExit.playerX + "\n" +
+                        "Y : " + exitmode.lastselectedExit.playerY;
+
+                }
             }
             else if (selectedMode == ObjectMode.OWDoor)
             {
@@ -185,19 +194,53 @@ namespace ZeldaFullEditor
             else if (selectedMode == ObjectMode.Entrances)
             {
                 entranceMode.onMouseUp(e);
+                text += "Entrance";
+                if (entranceMode.lastselectedEntrance != null)
+                {
+                    owForm.objinfoLabel.Text = "Entrance ID : " + entranceMode.lastselectedEntrance.entranceId + "\n" +
+
+                        "X : " + entranceMode.lastselectedEntrance.x + "\n" +
+                        "Y : " + entranceMode.lastselectedEntrance.y;
+                }
             }
             else if (selectedMode == ObjectMode.Itemmode)
             {
                 itemMode.onMouseUp(e);
+                text += "Item";
+                if (itemMode.lastselectedItem != null)
+                {
+                    owForm.objinfoLabel.Text = "ID : 0x" + itemMode.lastselectedItem.id.ToString("X2") + "\n" +
+
+                        "X : " + itemMode.lastselectedItem.x + "\n" +
+                        "Y : " + itemMode.lastselectedItem.y;
+                }
             }
             else if (selectedMode == ObjectMode.Spritemode)
             {
                 spriteMode.onMouseUp(e);
+                text += "Sprite";
+                if (spriteMode.lastselectedSprite != null)
+                {
+                    owForm.objinfoLabel.Text = "ID : 0x" + spriteMode.lastselectedSprite.id.ToString("X2") + "\n" +
+
+                        "X : " + spriteMode.lastselectedSprite.x + "\n" +
+                        "Y : " + spriteMode.lastselectedSprite.y;
+                }
             }
             else if (selectedMode == ObjectMode.Flute)
             {
                 transportMode.onMouseUp(e);
+                text += "Transport";
+
+                if (transportMode.lastselectedTransport != null)
+                {
+                    owForm.objinfoLabel.Text = "Map ID : " + transportMode.lastselectedTransport.mapId + "\n" +
+
+                        "X : " + transportMode.lastselectedTransport.playerX + "\n" +
+                        "Y : " + transportMode.lastselectedTransport.playerY;
+                }
             }
+            owForm.objectGroupbox.Text = text;
             Invalidate(new Rectangle((owForm.splitContainer1.Panel2.HorizontalScroll.Value), (owForm.splitContainer1.Panel2.VerticalScroll.Value), (owForm.splitContainer1.Panel2.Width), (owForm.splitContainer1.Panel2.Height)));
         }
 

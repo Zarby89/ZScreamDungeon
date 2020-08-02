@@ -156,6 +156,12 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Gui\ExitEditorForm.designer.cs" />
+    <Compile Include="Gui\GfxEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\GfxEditor.Designer.cs">
+      <DependentUpon>GfxEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\GfxGroupsForm.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -368,6 +374,9 @@
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExitEditorForm.resx" />
+    <EmbeddedResource Include="Gui\GfxEditor.resx">
+      <DependentUpon>GfxEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\GfxGroupsForm.resx">
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>
     </EmbeddedResource>
