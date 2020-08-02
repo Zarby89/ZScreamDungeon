@@ -101,15 +101,16 @@ namespace ZeldaFullEditor
         {
 
 
-            owForm.mapGroupbox.Text = "Selected Map - " + ow.allmaps[selectedMap].parent.ToString() + " Properties : ";
+            owForm.mapGroupbox.Text = "Selected Map - " + ow.allmaps[selectedMap+ ow.worldOffset].parent.ToString() + " Properties : ";
 
-            owForm.propertiesChangedFromForm = true;
-            if (selectedMap >= 64)
+            //owForm.propertiesChangedFromForm = true;
+            if (ow.worldOffset >= 64)
             {
-                owForm.gfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].gfx.ToString();
-                owForm.sprgfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprgfx[0].ToString();
-                owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].palette.ToString();
-                owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprpalette[0].ToString();
+
+                owForm.gfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap+ ow.worldOffset].parent].gfx.ToString();
+                owForm.sprgfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap+ ow.worldOffset].parent].sprgfx[0].ToString();
+                owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap+ ow.worldOffset].parent].palette.ToString();
+                owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap+ ow.worldOffset].parent].sprpalette[0].ToString();
             }
             else
             {

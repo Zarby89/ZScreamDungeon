@@ -65,6 +65,9 @@
             this.objectGroupbox = new System.Windows.Forms.GroupBox();
             this.objinfoLabel = new System.Windows.Forms.Label();
             this.objCombobox = new System.Windows.Forms.ComboBox();
+            this.dwButton = new System.Windows.Forms.ToolStripButton();
+            this.lwButton = new System.Windows.Forms.ToolStripButton();
+            this.spButton = new System.Windows.Forms.ToolStripButton();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -94,7 +97,10 @@
             this.exitModeButton,
             this.itemModeButton,
             this.spriteModeButton,
-            this.transportModeButton});
+            this.transportModeButton,
+            this.spButton,
+            this.dwButton,
+            this.lwButton});
             this.owToolStrip.Location = new System.Drawing.Point(0, 0);
             this.owToolStrip.Name = "owToolStrip";
             this.owToolStrip.Size = new System.Drawing.Size(953, 25);
@@ -454,6 +460,39 @@
             this.objCombobox.Size = new System.Drawing.Size(156, 21);
             this.objCombobox.TabIndex = 1;
             // 
+            // dwButton
+            // 
+            this.dwButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.dwButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.dwButton.Image = ((System.Drawing.Image)(resources.GetObject("dwButton.Image")));
+            this.dwButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.dwButton.Name = "dwButton";
+            this.dwButton.Size = new System.Drawing.Size(23, 22);
+            this.dwButton.Text = "toolStripButton1";
+            this.dwButton.Click += new System.EventHandler(this.dwButton_Click);
+            // 
+            // lwButton
+            // 
+            this.lwButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.lwButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.lwButton.Image = ((System.Drawing.Image)(resources.GetObject("lwButton.Image")));
+            this.lwButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.lwButton.Name = "lwButton";
+            this.lwButton.Size = new System.Drawing.Size(23, 22);
+            this.lwButton.Text = "toolStripButton1";
+            this.lwButton.Click += new System.EventHandler(this.lwButton_Click);
+            // 
+            // spButton
+            // 
+            this.spButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.spButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.spButton.Image = ((System.Drawing.Image)(resources.GetObject("spButton.Image")));
+            this.spButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.spButton.Name = "spButton";
+            this.spButton.Size = new System.Drawing.Size(23, 22);
+            this.spButton.Text = "toolStripButton1";
+            this.spButton.Click += new System.EventHandler(this.spButton_Click);
+            // 
             // OverworldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -519,5 +558,8 @@
         public System.Windows.Forms.GroupBox objectGroupbox;
         public System.Windows.Forms.Label objinfoLabel;
         public System.Windows.Forms.ComboBox objCombobox;
+        private System.Windows.Forms.ToolStripButton dwButton;
+        private System.Windows.Forms.ToolStripButton spButton;
+        private System.Windows.Forms.ToolStripButton lwButton;
     }
 }

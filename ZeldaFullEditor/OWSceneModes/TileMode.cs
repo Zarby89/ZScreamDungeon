@@ -228,7 +228,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 int mouseTileY = e.Y / 16;
                 int mapX = (mouseTileX / 32);
                 int mapY = (mouseTileY / 32);
-                scene.mapHover = mapX + (mapY * 8) + scene.ow.worldOffset;
+                scene.mapHover = mapX + (mapY * 8);
                 if (scene.lastTileHoverX != mouseTileX || scene.lastTileHoverY != mouseTileY)
                 {
 

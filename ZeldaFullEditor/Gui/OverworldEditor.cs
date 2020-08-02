@@ -178,5 +178,24 @@ namespace ZeldaFullEditor.Gui
             tilePictureBox.Refresh();
             
         }
+
+        private void spButton_Click(object sender, EventArgs e)
+        {
+            scene.ow.worldOffset = 68;
+            scene.Refresh();
+        }
+
+        private void dwButton_Click(object sender, EventArgs e)
+        {
+            scene.ow.worldOffset = 64;
+            scene.Refresh();
+        }
+
+        private void lwButton_Click(object sender, EventArgs e)
+        {
+            scene.ow.worldOffset = 0;
+            scene.Refresh();
+        }
+
     }
 }

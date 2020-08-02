@@ -65,10 +65,10 @@ namespace ZeldaFullEditor.OWSceneModes
                         selectedTransport.playerX = (short)((e.X / 8) * 8);
                         selectedTransport.playerY = (short)((e.Y / 8) * 8);
                     }
-                    byte mid = scene.ow.allmaps[scene.mapHover].parent;
+                    byte mid = scene.ow.allmaps[scene.mapHover+ scene.ow.worldOffset].parent;
                     if (mid == 255)
                     {
-                        mid = (byte)(scene.mapHover);
+                        mid = (byte)(scene.mapHover + scene.ow.worldOffset);
                     }
                     selectedTransport.updateMapStuff(mid, scene.ow);
 
