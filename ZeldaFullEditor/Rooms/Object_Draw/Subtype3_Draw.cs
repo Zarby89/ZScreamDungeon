@@ -84,7 +84,7 @@ namespace ZeldaFullEditor
         public object_F83(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "?";
+            name = "Somaria End ? Tile";
             sort = Sorting.NonScalable;
             addTiles(1, pos);//??
         }
@@ -99,7 +99,7 @@ namespace ZeldaFullEditor
         public object_F84(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "?";
+            name = "Somaria Intersection All Direction (round)";
             sort = Sorting.NonScalable;
             addTiles(1, pos);//??
         }
@@ -114,7 +114,7 @@ namespace ZeldaFullEditor
         public object_F85(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "?";
+            name = "Somaria TopLeft Corner";
             sort = Sorting.NonScalable;
             addTiles(1, pos);//??
         }
@@ -129,7 +129,7 @@ namespace ZeldaFullEditor
         public object_F86(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "?";
+            name = "Somaria BotLeft Corner";
             sort = Sorting.NonScalable;
             addTiles(1, pos);//??
         }
@@ -143,7 +143,7 @@ namespace ZeldaFullEditor
         public object_F87(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "?";
+            name = "Somaria TopRight Corner";
             sort = Sorting.NonScalable;
             addTiles(1, pos);//??
         }
@@ -157,7 +157,7 @@ namespace ZeldaFullEditor
         public object_F88(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "?";
+            name = "Somaria BotRight Corner";
             sort = Sorting.NonScalable;
             addTiles(1, pos);//??
         }
@@ -172,7 +172,7 @@ namespace ZeldaFullEditor
         public object_F89(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "?";
+            name = "Somaria Intersection L D R";
             sort = Sorting.NonScalable;
             addTiles(1, pos);//??
         }
@@ -186,7 +186,7 @@ namespace ZeldaFullEditor
         public object_F8A(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "?";
+            name = "Somaria Intersection L U R";
             addTiles(1, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -200,7 +200,7 @@ namespace ZeldaFullEditor
         public object_F8B(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "?";
+            name = "Somaria Intersection U R D";
             addTiles(1, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -214,7 +214,7 @@ namespace ZeldaFullEditor
         public object_F8C(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "?";
+            name = "Somaria Intersection U L D";
             addTiles(1, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -275,7 +275,7 @@ namespace ZeldaFullEditor
         public object_F8F(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "?";
+            name = "Somaria Intersection All Direction (square)";
             addTiles(1, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -1823,7 +1823,7 @@ namespace ZeldaFullEditor
         public object_FC9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Unused";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -1872,7 +1872,7 @@ namespace ZeldaFullEditor
         public object_FCB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "smith tools";
             addTiles(24, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -1896,7 +1896,7 @@ namespace ZeldaFullEditor
         public object_FCC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "smith forge";
             addTiles(48, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -1921,7 +1921,7 @@ namespace ZeldaFullEditor
         public object_FCD(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "smith water";
             addTiles(18, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -1950,7 +1950,7 @@ namespace ZeldaFullEditor
         public object_FCE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "smith baguette";
             addTiles(12, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -2025,7 +2025,7 @@ namespace ZeldaFullEditor
         public object_FD1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Weird Skull";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -2100,21 +2100,81 @@ namespace ZeldaFullEditor
         public object_FD4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
-            addTiles(4, pos);//??
+            name = "Fortune Teller Background";
+            addTiles(26, pos);//??
             sort = Sorting.NonScalable;
         }
         public override void Draw()
         {
-            int tid = 0;
-            for (int xx = 0; xx < 2; xx++)
+            for (int xx = 0; xx < 12; xx++)
             {
-                for (int yy = 0; yy < 2; yy++)
+                tiles[1].mirror_x = (ushort)(xx&0x01);
+                for (int yy = 0; yy < 3; yy++)
                 {
-                    draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
+                    if (yy < 2)
+                    {
+                        draw_tile(tiles[0], (xx + 1) * 8, (yy) * 8);
+                    }
+                    else
+                    {
+                        draw_tile(tiles[1], (xx + 1) * 8, (yy) * 8);
+                    }
+                }
+            }
+            for (int xx = 0; xx < 7; xx++)
+            {
+
+                for (int yy = 0; yy < 3; yy++)
+                {
+                    draw_tile(tiles[2+yy], (xx*2) * 8, (yy+3) * 8);
+                    Tile t = new Tile(tiles[2 + yy].id, tiles[2 + yy].mirror_x, tiles[2 + yy].mirror_y, tiles[2 + yy].ontop, tiles[2 + yy].palette);
+                    t.mirror_x = 1;
+                    draw_tile(t, ((1+(xx* 2)) * 8), (yy + 3) * 8);
+                }
+            }
+
+            //xx 4, yy 4
+            for (int xx = 0; xx < 6; xx++)
+            {
+                tiles[6].mirror_x = (ushort)(xx & 0x01);
+                for (int yy = 0; yy < 1; yy++)
+                {
+                    draw_tile(tiles[6], (((xx + 4)) * 8), (yy + 4) * 8);
+                    draw_tile(tiles[7], (((xx + 4)) * 8), (yy + 5) * 8);
+                }
+            }
+            tiles[8].mirror_x = 0;
+            tiles[9].mirror_x = 0;
+            draw_tile(tiles[8], ((0) * 8), (0) * 8);
+            draw_tile(tiles[8], ((0) * 8), (1) * 8);
+            draw_tile(tiles[9], ((0) * 8), (2) * 8);
+            tiles[8].mirror_x = 1;
+            tiles[9].mirror_x = 1;
+            draw_tile(tiles[8], ((13) * 8), (0) * 8);
+            draw_tile(tiles[8], ((13) * 8), (1) * 8);
+            draw_tile(tiles[9], ((13) * 8), (2) * 8);
+
+            int tid = 10;
+            for (int xx = 0; xx < 4; xx++)
+            {
+                for (int yy = 0; yy < 4; yy++)
+                {
+                    tiles[tid].mirror_x = 0;
+                    draw_tile(tiles[tid], (((xx + 3)) * 8), (yy + 10) * 8);
                     tid++;
                 }
             }
+            tid = 10;
+            for (int xx = 4; xx > 0; xx--)
+            {
+                for (int yy = 0; yy < 4; yy++)
+                {
+                    tiles[tid].mirror_x = 1;
+                    draw_tile(tiles[tid], (((xx + 6)) * 8), (yy + 10) * 8);
+                    tid++;
+                }
+            }
+
 
         }
     }
@@ -2124,31 +2184,19 @@ namespace ZeldaFullEditor
         public object_FD5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
-            addTiles(9, pos);//??
+            name = "??? unused";
+            addTiles(16, pos);//??
             sort = Sorting.NonScalable;
         }
         public override void Draw()
         {
             int tid = 0;
-            for (int xx = 0; xx < 3; xx++)
+            for (int xx = 0; xx < 4; xx++)
             {
-                for (int yy = 0; yy < 1; yy++)
+                for (int yy = 0; yy < 4; yy++)
                 {
-                    //draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
+                    draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
                     tid++;
-                }
-
-                for (int yy = 0; yy < 3; yy++)
-                {
-                    //draw_tile(tiles[tid], (xx) * 8, (yy+1) * 8);
-                    //draw_tile(tiles[tid+1], (xx) * 8, (yy+1) * 8);
-                    //draw_tile(tiles[tid+2], (xx) * 8, (yy+1) * 8);
-                }
-                tid += 3;
-                for (int yy = 0; yy < 1; yy++)
-                {
-                    //draw_tile(tiles[tid], (xx) * 8, (yy+4) * 8);
                 }
             }
 
@@ -2160,7 +2208,7 @@ namespace ZeldaFullEditor
         public object_FD6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "bar top left corner";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -2184,7 +2232,7 @@ namespace ZeldaFullEditor
         public object_FD7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "bar bottom left corner";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -2208,7 +2256,7 @@ namespace ZeldaFullEditor
         public object_FD8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "bar top right corner";
             addTiles(6, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -2232,7 +2280,7 @@ namespace ZeldaFullEditor
         public object_FD9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "bar bottom right corner";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -2256,7 +2304,7 @@ namespace ZeldaFullEditor
         public object_FDA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Table Bowl";
             addTiles(8, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -2281,7 +2329,7 @@ namespace ZeldaFullEditor
         public object_FDB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Water Tank";
             addTiles(32, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -2344,7 +2392,7 @@ namespace ZeldaFullEditor
         public object_FDD(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Oven";
             addTiles(18, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -2393,7 +2441,7 @@ namespace ZeldaFullEditor
         public object_FDF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Bar Bottles";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -2476,16 +2524,16 @@ namespace ZeldaFullEditor
         public object_FE2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Vitreous Goo";
             addTiles(242, pos);//??
             sort = Sorting.NonScalable;
         }
         public override void Draw()
         {
             int tid = 0;
-            for (int xx = 0; xx < 2; xx++)
+            for (int xx = 0; xx < 22; xx++)
             {
-                for (int yy = 0; yy < 2; yy++)
+                for (int yy = 0; yy < 11; yy++)
                 {
                     draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
                     tid++;
@@ -2500,7 +2548,7 @@ namespace ZeldaFullEditor
         public object_FE3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Fake Floor Switch";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -2716,7 +2764,7 @@ namespace ZeldaFullEditor
         public object_FEC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Drain Gate Swamp Up";
             sort = Sorting.NonScalable;
             addTiles(12, pos);//??
         }
@@ -2740,7 +2788,7 @@ namespace ZeldaFullEditor
         public object_FED(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Drain Gate Swamp Down";
             sort = Sorting.NonScalable;
             addTiles(12, pos);//??
         }
@@ -2764,7 +2812,7 @@ namespace ZeldaFullEditor
         public object_FEE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Drain Gate Swamp Left";
             sort = Sorting.NonScalable;
             addTiles(12, pos);//??
         }
@@ -2788,7 +2836,7 @@ namespace ZeldaFullEditor
         public object_FEF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Drain Gate Swamp Right";
             sort = Sorting.NonScalable;
             addTiles(12, pos);//??
 
@@ -2857,7 +2905,7 @@ namespace ZeldaFullEditor
         public object_FF1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Blind Light";
             sort = Sorting.NonScalable;
             addTiles(64, pos);//??
         }
@@ -2979,7 +3027,7 @@ namespace ZeldaFullEditor
         public object_FF6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Ganon Door";
             addTiles(24, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -3003,7 +3051,7 @@ namespace ZeldaFullEditor
         public object_FF7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Ganon Triforce Wall";
             addTiles(24, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -3027,13 +3075,41 @@ namespace ZeldaFullEditor
         public object_FF8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
-            addTiles(24, pos);//??
+            name = "Ganon Triforce Tiles";
+            addTiles(32, pos);//??
             sort = Sorting.NonScalable;
         }
         public override void Draw()
         {
+            int tid = 0;
+            //top triforce
+            for (int xx = 0; xx < 4; xx++)
+            {
+                for (int yy = 0; yy < 4; yy++)
+                {
+                    draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
+                    tid++;
+                }
+            }
+            //bottom left
 
+            for (int xx = 0; xx < 4; xx++)
+            {
+                for (int yy = 0; yy < 4; yy++)
+                {
+                    draw_tile(tiles[tid], (xx-2) * 8, (yy+4) * 8);
+                    tid++;
+                }
+            }
+            tid = 16;
+            for (int xx = 0; xx < 4; xx++)
+            {
+                for (int yy = 0; yy < 4; yy++)
+                {
+                    draw_tile(tiles[tid], (xx+2) * 8, (yy + 4) * 8);
+                    tid++;
+                }
+            }
         }
     }
 
@@ -3043,7 +3119,7 @@ namespace ZeldaFullEditor
         public object_FF9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Iceman Hole";
             addTiles(12, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -3067,7 +3143,7 @@ namespace ZeldaFullEditor
         public object_FFA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Skeleton Bone Floor";
             addTiles(16, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -3091,14 +3167,30 @@ namespace ZeldaFullEditor
         public object_FFB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
-            addTiles(12, pos);//??
+            name = "Vitreous Damage Floor";
+            addTiles(8, pos);//??
             sort = Sorting.NonScalable;
         }
         public override void Draw()
         {
 
+            for (int xx = 0; xx < 5; xx++)
+            {
+                for (int yy = 0; yy < 2; yy++)
+                {
+                    draw_tile(tiles[0], (xx * 4) * 8, (yy * 4) * 8); draw_tile(tiles[1], ((xx * 4) + 1) * 8, (yy * 4) * 8);
+                    draw_tile(tiles[2], ((xx * 4) + 2) * 8, (yy * 4) * 8); draw_tile(tiles[3], ((xx * 4) + 3) * 8, (yy * 4) * 8);
 
+                    draw_tile(tiles[4], (xx * 4) * 8, ((yy * 4) + 1) * 8); draw_tile(tiles[5], ((xx * 4) + 1) * 8, ((yy * 4) + 1) * 8);
+                    draw_tile(tiles[6], ((xx * 4) + 2) * 8, ((yy * 4) + 1) * 8); draw_tile(tiles[7], ((xx * 4) + 3) * 8, ((yy * 4) + 1) * 8);
+
+                    draw_tile(tiles[0], (xx * 4) * 8, ((yy * 4) + 2) * 8); draw_tile(tiles[1], ((xx * 4) + 1) * 8, ((yy * 4) + 2) * 8);
+                    draw_tile(tiles[2], ((xx * 4) + 2) * 8, ((yy * 4) + 2) * 8); draw_tile(tiles[3], ((xx * 4) + 3) * 8, ((yy * 4) + 2) * 8);
+
+                    draw_tile(tiles[4], (xx * 4) * 8, ((yy * 4) + 3) * 8); draw_tile(tiles[5], ((xx * 4) + 1) * 8, ((yy * 4) + 3) * 8);
+                    draw_tile(tiles[6], ((xx * 4) + 2) * 8, ((yy * 4) + 3) * 8); draw_tile(tiles[7], ((xx * 4) + 3) * 8, ((yy * 4) + 3) * 8);
+                }
+            }
         }
     }
 
@@ -3107,7 +3199,7 @@ namespace ZeldaFullEditor
         public object_FFC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Floor Arrow UP";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -3130,8 +3222,9 @@ namespace ZeldaFullEditor
     {
         public object_FFD(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
+
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Floor Arrow Down";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -3155,7 +3248,7 @@ namespace ZeldaFullEditor
         public object_FFE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "???";
+            name = "Floor Arrow Left";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }

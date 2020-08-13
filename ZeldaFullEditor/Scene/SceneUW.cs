@@ -34,7 +34,7 @@ namespace ZeldaFullEditor
 
         }
 
-        Bitmap tempBitmap = new Bitmap(512,512);
+        public Bitmap tempBitmap = new Bitmap(512,512);
         public short[] doorsObject = new short[] { 0x138, 0x139, 0x13A, 0x13B, 0xF9E, 0xFA9, 0xF9F, 0xFA0, 0x12D, 0x12E, 0x12F, 0x12E, 0x12D, 0x4632, 0x4693 };
         Rectangle lastSelectedRectangle;
         DragMode dragMode = DragMode.none;
@@ -667,7 +667,7 @@ namespace ZeldaFullEditor
 
 
         }
-
+        public bool forPreview = false;
 
         private unsafe void SceneUW_Paint(object sender, PaintEventArgs e)
         {
@@ -684,6 +684,10 @@ namespace ZeldaFullEditor
             {
                 g = Graphics.FromImage(tempBitmap);
             }
+            if (forPreview)
+            {
+                g = Graphics.FromImage(tempBitmap);
+            }
 
 
             g.SetClip(new Rectangle(0, 0, 512, 512));
@@ -691,6 +695,7 @@ namespace ZeldaFullEditor
             if (room.bg2 != Background2.Translucent || room.bg2 != Background2.Transparent || room.bg2 != Background2.OnTop || room.bg2 != Background2.Off)
             {
                 g.DrawImage(GFX.roomBg2Bitmap, 0, 0);
+                
             }
 
 
@@ -846,6 +851,8 @@ namespace ZeldaFullEditor
                 e.Graphics.DrawImage(tempBitmap, new Rectangle(0, 0, 1024, 1024));
 
             }
+
+            
         }
 
 

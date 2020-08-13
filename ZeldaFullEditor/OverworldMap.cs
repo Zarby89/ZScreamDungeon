@@ -27,13 +27,14 @@ namespace ZeldaFullEditor
         public ushort[,] tilesUsed;
         public List<Sprite>[] sprites = new List<Sprite>[3];
         bool initializedSprites = false;
+        public bool needRefresh = false;
         public OverworldMap(byte index, Overworld ow)
         {
             this.index = index;
             this.ow = ow;
             this.parent = index;
             gfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, gfxPtr);
-            blocksetBitmap = new Bitmap(128, 4096, 128, PixelFormat.Format8bppIndexed, blockset16);
+            blocksetBitmap = new Bitmap(128, 7200, 128, PixelFormat.Format8bppIndexed, blockset16);
 
             if (index != 0x80)
             {
@@ -56,7 +57,7 @@ namespace ZeldaFullEditor
                 sprpalette[1] = ROM.DATA[Constants.overworldSpritePalette + parent + 64];
                 sprpalette[2] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
             }
-            else
+            else if (index < 128)
             {
                 sprgfx[0] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
                 sprgfx[1] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
@@ -66,6 +67,73 @@ namespace ZeldaFullEditor
                 sprpalette[0] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
                 sprpalette[1] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
                 sprpalette[2] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
+            }
+            else
+            {
+
+                if (index == 0x94)
+                {
+                    parent = 128;
+                }
+                else if (index == 0x95)
+                {
+                    parent = 03;
+                }
+                else if (index == 0x96)//pyramid bg use 0x5B map
+                {
+                    parent = 0x5B;
+                }
+                else if (index == 0x97)//pyramid bg use 0x5B map
+                {
+                    parent = 0x00;
+                }
+                else if (index == 156)
+                {
+                    parent = 67;
+                }
+                else if (index == 157)
+                {
+                    parent = 0;
+                }
+                else if (index == 158)
+                {
+                    parent = 0;
+                }
+                else if (index == 159)
+                {
+                    parent = 44;
+                }
+                else if (index == 136)
+                {
+                    parent = 136;
+                }
+
+
+                sprgfx[0] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
+                sprgfx[1] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
+                sprgfx[2] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
+                sprpalette[0] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
+                sprpalette[1] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
+                sprpalette[2] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
+
+
+                palette = ROM.DATA[Constants.overworldSpecialPALGroup + parent - 128];
+                if (index >= 0x80 && index <= 0x8A && index != 0x88)
+                {
+                    gfx = ROM.DATA[Constants.overworldSpecialGFXGroup + (parent - 128)];
+                    palette = ROM.DATA[Constants.overworldSpecialPALGroup + 1];
+                }
+                else if (index == 0x88)
+                {
+                    gfx = 81;
+                    palette = 0;
+                }
+                else//pyramid bg use 0x5B map
+                {
+                    gfx = ROM.DATA[Constants.mapGfx + parent];
+                    palette = ROM.DATA[Constants.overworldMapPalette + parent];
+                }
+
             }
         }
 
@@ -318,11 +386,15 @@ namespace ZeldaFullEditor
                     pal0 = 3;
                 }
             }
-            else if (parent >= 132) //special area like Zora's domain, etc...
+            if (parent == 0x88)
+            {
+                pal0 = 4;
+            }
+            /*else if (parent >= 128) //special area like Zora's domain, etc...
             {
                 bgr = Palettes.overworld_GrassPalettes[2];
                 pal0 = 4;
-            }
+            }*/
 
 
             if (pal0 != 255)
@@ -524,17 +596,20 @@ namespace ZeldaFullEditor
 
 
 
-            int indexWorld = 0x21;
+            int indexWorld = 0x20;
             if (parent < 0x40)
             {
                 indexWorld = 0x20;
             }
-            else if (parent >= 0x40)//&& mapdata.index < 0x80)
+            else if (parent >= 0x40 && parent < 0x80)
             {
                 indexWorld = 0x21;
             }
-
-
+            else if (parent == 0x88)
+            {
+                indexWorld = 36;
+            }
+            
 
 
             //Sprites Blocksets
@@ -550,27 +625,28 @@ namespace ZeldaFullEditor
 
             //Main Blocksets
 
-            for (int i = 0; i < 8; i++)
-            {
-                staticgfx[i] = ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + i];
-            }
+                for (int i = 0; i < 8; i++)
+                {
+                    staticgfx[i] = ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + i];
+                }
 
-            if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4)] != 0)
-            {
-                staticgfx[3] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4)];
-            }
-            if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 1] != 0)
-            {
-                staticgfx[4] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 1];
-            }
-            if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 2] != 0)
-            {
-                staticgfx[5] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 2];
-            }
-            if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 3] != 0)
-            {
-                staticgfx[6] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 3];
-            }
+                if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4)] != 0)
+                {
+                    staticgfx[3] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4)];
+                }
+                if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 1] != 0)
+                {
+                    staticgfx[4] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 1];
+                }
+                if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 2] != 0)
+                {
+                    staticgfx[5] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 2];
+                }
+                if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 3] != 0)
+                {
+                    staticgfx[6] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 3];
+                }
+            
 
 
             //Hardcoded overworld GFX Values, for death mountain
@@ -588,11 +664,11 @@ namespace ZeldaFullEditor
             }
 
 
-            if (parent >= 128 & parent < 148)
+           /* if (parent >= 128 & parent < 148)
             {
                 staticgfx[4] = 71;
                 staticgfx[5] = 72;
-            }
+            }*/
 
             unsafe
             {
@@ -624,7 +700,7 @@ namespace ZeldaFullEditor
         public void loadSprites(bool fromImport = false)
         {
 
-            if (index < 144)
+            if (index <=159)
             {
                 byte[] data = ROM.DATA;
                 if (fromImport)
@@ -652,13 +728,13 @@ namespace ZeldaFullEditor
                         (data[spritesAddress + (parent * 2) + 1] << 8) +
                         data[spritesAddress + (parent * 2)];
 
-                    if (newadress)
+                    /*if (newadress)
                     {
                         spritesAddress = Constants.overworldSpritesZeldaEditor;
                         sprite_address_snes = (0x21 << 16) +
                         (data[spritesAddress + (parent * 2) + 1] << 8) +
                         data[spritesAddress + (parent * 2)];
-                    }
+                    }*/
 
 
                     int sprite_address = Utils.SnesToPc(sprite_address_snes);
@@ -676,6 +752,11 @@ namespace ZeldaFullEditor
                         {
                             fakeid -= 64;
                         }
+                        if (fakeid >= 64)
+                        {
+                            fakeid -= 64;
+                        }
+
                         int my = (fakeid / 8);
                         int mx = fakeid - (my * 8);
 
@@ -701,13 +782,13 @@ namespace ZeldaFullEditor
                         data[spritesAddress + (parent * 2)];
 
 
-                    if (newadress)
+                    /*if (newadress)
                     {
                         spritesAddress = Constants.overworldSpritesBeginingEditor;
                         sprite_address_snes = (0x21 << 16) +
                         (data[spritesAddress + (parent * 2) + 1] << 8) +
                         data[spritesAddress + (parent * 2)];
-                    }
+                    }*/
 
                     sprite_address = Utils.SnesToPc(sprite_address_snes);
                     while (true)
@@ -720,6 +801,10 @@ namespace ZeldaFullEditor
                         if (b1 == 0xFF) { break; }
 
                         int fakeid = parent;
+                        if (fakeid >= 64)
+                        {
+                            fakeid -= 64;
+                        }
                         if (fakeid >= 64)
                         {
                             fakeid -= 64;
@@ -747,13 +832,13 @@ namespace ZeldaFullEditor
                         (data[spritesAddress + (parent * 2) + 1] << 8) +
                         data[spritesAddress + (parent * 2)];
 
-                    if (newadress)
+                    /*if (newadress)
                     {
                         spritesAddress = Constants.overworldSpritesAgahnimEditor;
                         sprite_address_snes = (0x21 << 16) +
                         (data[spritesAddress + (parent * 2) + 1] << 8) +
                         data[spritesAddress + (parent * 2)];
-                    }
+                    }*/
 
                     sprite_address = Utils.SnesToPc(sprite_address_snes);
                     while (true)
@@ -766,6 +851,10 @@ namespace ZeldaFullEditor
                         if (b1 == 0xFF) { break; }
 
                         int fakeid = parent;
+                        if (fakeid >= 64)
+                        {
+                            fakeid -= 64;
+                        }
                         if (fakeid >= 64)
                         {
                             fakeid -= 64;

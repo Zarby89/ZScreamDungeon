@@ -1042,6 +1042,11 @@ namespace ZeldaFullEditor
 
             int objects_location = Utils.SnesToPc(tile_address);
 
+            if (objects_location == 0x52CA2)
+            {
+                Console.WriteLine("Room ID : " + index);
+            }
+
             if (floor)
             {
                 floor1 = (byte)(ROM.DATA[objects_location] & 0x0F);
@@ -1489,7 +1494,8 @@ namespace ZeldaFullEditor
                        return new object_48(oid, x, y, size,layer);
                         
                     case 0x49:
-                       return new object_49(oid, x, y, size,layer);
+                        
+                        return new object_49(oid, x, y, size,layer);
                         
                     case 0x4A:
                        return new object_4A(oid, x, y, size,layer);
@@ -1510,7 +1516,8 @@ namespace ZeldaFullEditor
                        return new object_4F(oid, x, y, size,layer);
                         
                     case 0x50:
-                       return new object_50(oid, x, y, size,layer);
+                       // Console.WriteLine("50 " + index);
+                        return new object_50(oid, x, y, size,layer);
                         
                     case 0x51:
                        return new object_51(oid, x, y, size,layer);
@@ -1699,7 +1706,8 @@ namespace ZeldaFullEditor
                        return new object_8E(oid, x, y, size,layer);
                         
                     case 0x8F:
-                       return new object_8F(oid, x, y, size,layer);
+                        
+                        return new object_8F(oid, x, y, size,layer);
                         
                     case 0x90:
                        return new object_90(oid, x, y, size,layer);
@@ -2217,7 +2225,8 @@ namespace ZeldaFullEditor
                            return new object_FC8(oid, x, y, size, layer);
                             
                         case 0xFC9:
-                           return new object_FC9(oid, x, y, size, layer);
+                            
+                            return new object_FC9(oid, x, y, size, layer);
                             
                         case 0xFCA:
                            return new object_FCA(oid, x, y, size, layer);
@@ -2229,9 +2238,11 @@ namespace ZeldaFullEditor
                            return new object_FCC(oid, x, y, size, layer);
                             
                         case 0xFCD:
-                           return new object_FCD(oid, x, y, size, layer);
+                            
+                            return new object_FCD(oid, x, y, size, layer);
                             
                         case 0xFCE:
+                           
                            return new object_FCE(oid, x, y, size, layer);
                             
                         case 0xFCF:
@@ -2250,28 +2261,28 @@ namespace ZeldaFullEditor
                            return new object_FD3(oid, x, y, size, layer);
                             
                         case 0xFD4:
-                           return new object_FD4(oid, x, y, size, layer);
+                            return new object_FD4(oid, x, y, size, layer);
                             
                         case 0xFD5:
-                           return new object_FD5(oid, x, y, size, layer);
+                            return new object_FD5(oid, x, y, size, layer);
                             
                         case 0xFD6:
-                           return new object_FD6(oid, x, y, size, layer);
+                            return new object_FD6(oid, x, y, size, layer);
                             
                         case 0xFD7:
-                           return new object_FD7(oid, x, y, size, layer);
+                            return new object_FD7(oid, x, y, size, layer);
                             
                         case 0xFD8:
-                           return new object_FD8(oid, x, y, size, layer);
+                            return new object_FD8(oid, x, y, size, layer);
                             
                         case 0xFD9:
-                           return new object_FD9(oid, x, y, size, layer);
+                            return new object_FD9(oid, x, y, size, layer);
                             
                         case 0xFDA:
-                           return new object_FDA(oid, x, y, size, layer);
+                            return new object_FDA(oid, x, y, size, layer);
                             
                         case 0xFDB:
-                           return new object_FDB(oid, x, y, size, layer);
+                            return new object_FDB(oid, x, y, size, layer);
                             
                         case 0xFDC:
                            return new object_FDC(oid, x, y, size, layer);
@@ -2283,7 +2294,8 @@ namespace ZeldaFullEditor
                            return new object_FDE(oid, x, y, size, layer);
                             
                         case 0xFDF:
-                           return new object_FDF(oid, x, y, size, layer);
+                            
+                            return new object_FDF(oid, x, y, size, layer);
                             
                         case 0xFE0:
                            return new object_FE0(oid, x, y, size, layer);
@@ -2295,6 +2307,7 @@ namespace ZeldaFullEditor
                            return new object_FE2(oid, x, y, size, layer);
                             
                         case 0xFE3:
+                            
                            return new object_FE3(oid, x, y, size, layer);
                             
                         case 0xFE4:
@@ -2325,13 +2338,13 @@ namespace ZeldaFullEditor
                            return new object_FEC(oid, x, y, size, layer);
                             
                         case 0xFED:
-                           return new object_FED(oid, x, y, size, layer);
+                            return new object_FED(oid, x, y, size, layer);
                             
                         case 0xFEE:
-                           return new object_FEE(oid, x, y, size, layer);
+                            return new object_FEE(oid, x, y, size, layer);
                             
                         case 0xFEF:
-                           return new object_FEF(oid, x, y, size, layer);
+                            return new object_FEF(oid, x, y, size, layer);
                             
                         case 0xFF0:
                            return new object_FF0(oid, x, y, size, layer);
@@ -2363,10 +2376,13 @@ namespace ZeldaFullEditor
                         case 0xFFB:
                             return new object_FFB(oid, x, y, size, layer);
                         case 0xFFC:
+                            
                             return new object_FFC(oid, x, y, size, layer);
                         case 0xFFD:
+                            
                             return new object_FFD(oid, x, y, size, layer);
                         case 0xFFE:
+
                             return new object_FFE(oid, x, y, size, layer);
                     }
                 }

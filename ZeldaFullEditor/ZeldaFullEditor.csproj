@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A634564E-5323-48FE-A54C-B42AF25C5315}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ZeldaFullEditor</RootNamespace>
     <AssemblyName>ZeldaFullEditor</AssemblyName>
@@ -142,6 +142,12 @@
     <Compile Include="Gui\DungeonPropertiesForm.Designer.cs">
       <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\DungeonViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\DungeonViewer.Designer.cs">
+      <DependentUpon>DungeonViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\EntranceForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,6 +215,12 @@
     </Compile>
     <Compile Include="Gui\TextEditorExtra\TextCommands.Designer.cs">
       <DependentUpon>TextCommands.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Tile16Editor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\Tile16Editor.Designer.cs">
+      <DependentUpon>Tile16Editor.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\VramViewer.cs">
       <SubType>Component</SubType>
@@ -369,6 +381,9 @@
     <EmbeddedResource Include="Gui\DungeonMain.resx">
       <DependentUpon>DungeonMain.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\DungeonViewer.resx">
+      <DependentUpon>DungeonViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\EntranceForm.resx" />
     <EmbeddedResource Include="Gui\EntrancePropertyForm.resx">
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
@@ -403,6 +418,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\TextEditorExtra\TextCommands.resx">
       <DependentUpon>TextCommands.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\Tile16Editor.resx">
+      <DependentUpon>Tile16Editor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\VramViewer.resx">
       <DependentUpon>VramViewer.cs</DependentUpon>

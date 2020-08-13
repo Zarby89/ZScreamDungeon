@@ -311,8 +311,10 @@ namespace ZeldaFullEditor.OWSceneModes
                                 {
                                     break;
                                 }
-
-                                scene.ow.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, scene.ow.allmaps[mapId].blockset16);
+                                if (mapId <= 159)
+                                {
+                                    scene.ow.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, scene.ow.allmaps[mapId].blockset16);
+                                }
                             }
                             x++;
                             if (x >= scene.selectedTileSizeX)
@@ -326,8 +328,10 @@ namespace ZeldaFullEditor.OWSceneModes
                         {
                             return;
                         }
-                        scene.tilesgfxBitmap.Palette = scene.ow.allmaps[mapId].gfxBitmap.Palette;
-
+                        if (mapId <= 159)
+                        {
+                            scene.tilesgfxBitmap.Palette = scene.ow.allmaps[mapId].gfxBitmap.Palette;
+                        }
                         //scene.Invalidate(new Rectangle((scene.owForm.splitContainer1.Panel2.HorizontalScroll.Value), (scene.owForm.splitContainer1.Panel2.VerticalScroll.Value), (scene.owForm.splitContainer1.Panel2.Width), (scene.owForm.splitContainer1.Panel2.Height)));
                         //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                         //this.Refresh();

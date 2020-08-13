@@ -34,8 +34,16 @@ namespace ZeldaFullEditor.OWSceneModes
 
             for (int i = scene.ow.worldOffset; i < 64+ scene.ow.worldOffset; i++)
             {
+                if (i > 159)
+                {
+                    continue;
+                }
                 int gs = scene.ow.gameState;
                 if (i >= 64)
+                {
+                    gs = 0;
+                }
+                if (i >= 128)
                 {
                     gs = 0;
                 }
@@ -242,44 +250,48 @@ namespace ZeldaFullEditor.OWSceneModes
             Brush bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 0, 255));
             Pen contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
             g.CompositingMode = CompositingMode.SourceOver;
-            for (int i = scene.ow.worldOffset; i < 64+ scene.ow.worldOffset; i++)
+            for (int i = scene.ow.worldOffset; i < 64 + scene.ow.worldOffset; i++)
             {
                 int gs = scene.ow.gameState;
-                if (i >= 64)
+                if (i >= 64 && i <= 128)
                 {
                     gs = 0;
                 }
-                foreach (Sprite spr in scene.ow.allmaps[i].sprites[gs])
+                if (i <= 159)
                 {
-
-                    if (selectedSprite == spr)
+                    foreach (Sprite spr in scene.ow.allmaps[i].sprites[gs])
                     {
-                        bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 00, 255, 0));
-                        contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
-                    }
-                    else if (lastselectedSprite == spr)
-                    {
-                        bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 180, 0));
-                        contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
-                    }
-                    else
-                    {
-                        bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 0, 255));
-                        contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
-                    }
 
-                    g.FillRectangle(bgrBrush, new Rectangle((spr.map_x), spr.map_y, 16, 16));
-                    g.DrawRectangle(contourPen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
-                    scene.drawText(g, spr.map_x +4, spr.map_y + 4, spr.name);
+                        if (selectedSprite == spr)
+                        {
+                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 00, 255, 0));
+                            contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
+                        }
+                        else if (lastselectedSprite == spr)
+                        {
+                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 180, 0));
+                            contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
+                        }
+                        else
+                        {
+                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 0, 255));
+                            contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
+                        }
 
+                        g.FillRectangle(bgrBrush, new Rectangle((spr.map_x), spr.map_y, 16, 16));
+                        g.DrawRectangle(contourPen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
+                        scene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.name);
+
+                    }
                 }
-            }
-            
-            if (scene.selectedFormSprite != null)
-            {
-                g.FillRectangle(bgrBrush, new Rectangle((scene.selectedFormSprite.map_x), (scene.selectedFormSprite.map_y), 16, 16));
-                g.DrawRectangle(contourPen, new Rectangle((scene.selectedFormSprite.map_x), (scene.selectedFormSprite.map_y), 16, 16));
-                scene.drawText(g, (scene.selectedFormSprite.map_x) + 4, (scene.selectedFormSprite.map_y) + 4, scene.selectedFormSprite.name);
+
+                if (scene.selectedFormSprite != null)
+                {
+                    g.FillRectangle(bgrBrush, new Rectangle((scene.selectedFormSprite.map_x), (scene.selectedFormSprite.map_y), 16, 16));
+                    g.DrawRectangle(contourPen, new Rectangle((scene.selectedFormSprite.map_x), (scene.selectedFormSprite.map_y), 16, 16));
+                    scene.drawText(g, (scene.selectedFormSprite.map_x) + 4, (scene.selectedFormSprite.map_y) + 4, scene.selectedFormSprite.name);
+                }
+                
             }
             g.CompositingMode = CompositingMode.SourceCopy;
         }

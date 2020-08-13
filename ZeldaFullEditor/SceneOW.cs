@@ -62,6 +62,7 @@ namespace ZeldaFullEditor
         public bool showSprites = true;
         public bool hideText = false;
         public OverworldEditor owForm;
+        public bool entrancePreview = false;
         //int selectedMode = 0;
         public SceneOW(OverworldEditor f,Overworld ow, DungeonMain mform)
         {
@@ -88,8 +89,8 @@ namespace ZeldaFullEditor
 
         public void CreateScene()
         {
-            tileBitmapPtr = ow.allmaps[0].blockset16;
-            tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr);
+            //tileBitmapPtr = ow.allmaps[0].blockset16;
+           // tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr);
         }
 
         private void SceneOW_MouseWheel(object sender, MouseEventArgs e)
@@ -99,29 +100,35 @@ namespace ZeldaFullEditor
 
         public void updateMapGfx()
         {
-
-
-            owForm.mapGroupbox.Text = "Selected Map - " + ow.allmaps[selectedMap+ ow.worldOffset].parent.ToString() + " Properties : ";
-
-            //owForm.propertiesChangedFromForm = true;
-            if (ow.worldOffset >= 64)
+            if (selectedMap + ow.worldOffset <= 159)
             {
+                if (ow.allmaps[selectedMap + ow.worldOffset].needRefresh)
+                {
+                    ow.allmaps[selectedMap + ow.worldOffset].BuildMap();
+                    ow.allmaps[selectedMap + ow.worldOffset].needRefresh = false;
+                }
+                owForm.mapGroupbox.Text = "Selected Map - " + ow.allmaps[selectedMap + ow.worldOffset].parent.ToString() + " Properties : ";
 
-                owForm.gfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap+ ow.worldOffset].parent].gfx.ToString();
-                owForm.sprgfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap+ ow.worldOffset].parent].sprgfx[0].ToString();
-                owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap+ ow.worldOffset].parent].palette.ToString();
-                owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap+ ow.worldOffset].parent].sprpalette[0].ToString();
-            }
-            else
-            {
-                owForm.gfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].gfx.ToString();
-                owForm.sprgfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprgfx[ow.gameState].ToString();
-                owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].palette.ToString();
-                owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprpalette[ow.gameState].ToString();
-            }
-            owForm.propertiesChangedFromForm = false;
+                owForm.propertiesChangedFromForm = true;
+                if (ow.worldOffset >= 64)
+                {
 
-            owForm.tilePictureBox.Refresh();
+                    owForm.gfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].gfx.ToString();
+                    owForm.sprgfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].sprgfx[0].ToString();
+                    owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].palette.ToString();
+                    owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].sprpalette[0].ToString();
+                }
+                else
+                {
+                    owForm.gfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].gfx.ToString();
+                    owForm.sprgfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprgfx[ow.gameState].ToString();
+                    owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].palette.ToString();
+                    owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprpalette[ow.gameState].ToString();
+                }
+                owForm.propertiesChangedFromForm = false;
+
+                owForm.tilePictureBox.Refresh();
+            }
         }
 
 
@@ -442,12 +449,16 @@ namespace ZeldaFullEditor
                 int y = 0;
                 for (int i = (0 + ow.worldOffset); i < 64 + (ow.worldOffset); i++)
                 {
-                    g.DrawImage(ow.allmaps[i].gfxBitmap, new PointF(x * 512, y * 512));
-                    x++;
-                    if (x >= 8)
+                    if (i <= 159)
                     {
-                        x = 0;
-                        y++;
+
+                        g.DrawImage(ow.allmaps[i].gfxBitmap, new PointF(x * 512, y * 512));
+                        x++;
+                        if (x >= 8)
+                        {
+                            x = 0;
+                            y++;
+                        }
                     }
                 }
 
@@ -513,21 +524,65 @@ namespace ZeldaFullEditor
                 {
                     itemMode.Draw(g);
                 }
-                g.CompositingMode = CompositingMode.SourceOver;
+                
                 if (showSprites)
                 {
-                    if (!hideText)
-                    {
+                    //if (!hideText)
+                    //{
                         spriteMode.Draw(g);
-                    }
+                    //}
                 }
 
                 if (showFlute)
                 {
                     transportMode.Draw(g);
                 }
+
+                if (entrancePreview)
+                {
+                    if (entranceMode.selectedEntrance != null)
+                    {
+                        e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
+                        if (mainForm.previewRoom.bg2 != Background2.Translucent || mainForm.previewRoom.bg2 != Background2.Transparent ||
+                         mainForm.previewRoom.bg2 != Background2.OnTop || mainForm.previewRoom.bg2 != Background2.Off)
+                        {
+                            e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+                        }
+
+                        e.Graphics.DrawImage(GFX.roomBg1Bitmap, new Rectangle(entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+
+                        if (mainForm.previewRoom.bg2 == Background2.Translucent || mainForm.previewRoom.bg2 == Background2.Transparent)
+                        {
+                            float[][] matrixItems ={
+               new float[] {1f, 0, 0, 0, 0},
+               new float[] {0, 1f, 0, 0, 0},
+               new float[] {0, 0, 1f, 0, 0},
+               new float[] {0, 0, 0, 0.5f, 0},
+               new float[] {0, 0, 0, 0, 1}};
+                            ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
+
+                            // Create an ImageAttributes object and set its color matrix.
+                            ImageAttributes imageAtt = new ImageAttributes();
+                            imageAtt.SetColorMatrix(
+                               colorMatrix,
+                               ColorMatrixFlag.Default,
+                               ColorAdjustType.Bitmap);
+                            //GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
+                            e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
+                        }
+                        else if (mainForm.previewRoom.bg2 == Background2.OnTop)
+                        {
+                            e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+                        }
+
+                        mainForm.activeScene.drawText(e.Graphics, entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16, "ROOM : " + mainForm.previewRoom.index.ToString());
+                        e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+                    }
+                }
+
+
                 g.CompositingMode = CompositingMode.SourceCopy;
-                hideText = false;
+                //hideText = false;
             }
         }
 

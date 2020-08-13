@@ -194,6 +194,38 @@ namespace ZeldaFullEditor.OWSceneModes
                     }
                 }
             }
+
+
+            if (selectedEntrance != null)
+            {
+                //scene.owForm.thumbnailBox.Visible = true;
+                //scene.owForm.thumbnailBox.Size = new Size(256, 256);
+                int roomId = DungeonsData.entrances[selectedEntrance.entranceId].Room;
+                if (roomId >= 296)
+                {
+                    //scene.owForm.thumbnailBox.Visible = false;
+                    return;
+                }
+
+                if (scene.mainForm.lastRoomID != roomId)
+                {
+                    scene.mainForm.previewRoom = DungeonsData.all_rooms[roomId];
+                    scene.mainForm.previewRoom.reloadGfx();
+                    GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.previewRoom.Palette);
+                    scene.mainForm.DrawRoom();
+                    scene.entrancePreview = true;
+                    scene.Refresh();
+                    //scene.owForm.thumbnailBox.Refresh();
+                    /*if (scene.mainForm.activeScene.room != null)
+                    {
+                        GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.activeScene.room.Palette);
+                        scene.mainForm.activeScene.room.reloadGfx();
+                        scene.mainForm.activeScene.DrawRoom();
+                    }*/
+                }
+
+                scene.mainForm.lastRoomID = roomId;
+            }
  
         }
 

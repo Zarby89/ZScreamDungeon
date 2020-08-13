@@ -37,6 +37,7 @@ namespace ZeldaFullEditor
         OverworldEditor overworldEditor = new OverworldEditor();
         Object_Designer objDesigner = new Object_Designer();
         GfxEditor gfxEditor = new GfxEditor();
+        DungeonViewer dungeonViewer = new DungeonViewer();
         string projectFilename = "";
         public bool projectLoaded = false;
         bool anychange = false;
@@ -52,7 +53,7 @@ namespace ZeldaFullEditor
         public Entrance selectedEntrance = null;
         PaletteEditor paletteForm;
         Bitmap xTabButton;
-        Room previewRoom = null;
+        public Room previewRoom = null;
         private void Form1_Load(object sender, EventArgs e)
         {
             xTabButton = new Bitmap(Resources.xbutton);
@@ -72,15 +73,17 @@ namespace ZeldaFullEditor
             overworldEditor.Visible = false;
             objDesigner.Visible = false;
             gfxEditor.Visible = false;
+            dungeonViewer.Visible = false;
             objDesigner.Dock = DockStyle.Fill;
             overworldEditor.Dock = DockStyle.Fill;
             textEditor.Dock = DockStyle.Fill;
             gfxEditor.Dock = DockStyle.Fill;
+            dungeonViewer.Dock = DockStyle.Fill;
             Controls.Add(overworldEditor);
             Controls.Add(textEditor);
             Controls.Add(objDesigner);
             Controls.Add(gfxEditor);
-            
+            Controls.Add(dungeonViewer);
         }
         //Need to stay here
         public void initialize_properties()
@@ -116,7 +119,7 @@ namespace ZeldaFullEditor
 
 
         //TODO : Move that to the save class
-        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        public void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Save Functions
             //Expand ROM to 2MB
@@ -242,6 +245,13 @@ namespace ZeldaFullEditor
                 return;
             }
 
+            if (save.saveOWExits(overworldEditor.scene))
+            {
+                MessageBox.Show("Failed to save overworld Exits? ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
             if (save.saveMapProperties(overworldEditor.scene))
             {
                 MessageBox.Show("Failed to save overworld map properties ??? ", "Bad Error", MessageBoxButtons.OK);
@@ -249,11 +259,14 @@ namespace ZeldaFullEditor
                 return;
             }
 
+   
             overworldEditor.scene.SaveTiles();
 
-            Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
-            AsarCLR.Asar.init();
-            AsarCLR.Asar.patch("spritesmove.asm", ref ROM.DATA);
+            /* Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
+             AsarCLR.Asar.init();
+             AsarCLR.Asar.patch("spritesmove.asm", ref ROM.DATA);*/
+            overworldEditor.overworld.SaveMap16Tiles();
+
 
             Palettes.SavePalettesToROM(ROM.DATA);
             GfxGroups.SaveGroupsToROM();
@@ -464,8 +477,37 @@ namespace ZeldaFullEditor
             refreshRecentsFiles();
             overworldEditor.InitOpen(this);
             textEditor.initOpen();
+            //InitDungeonViewer();
 
-            
+
+
+
+
+
+        }
+
+        private void InitDungeonViewer()
+        {
+            activeScene.forPreview = true;
+            Bitmap b = new Bitmap(8192, 10752);
+            using (Graphics gb = Graphics.FromImage(b))
+            {
+                for (int i = 0; i < 296; i++)
+                {
+                    activeScene.room = DungeonsData.all_rooms[i];
+                    activeScene.room.reloadGfx();
+                    GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
+                    GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
+                    activeScene.DrawRoom();
+
+                    activeScene.Refresh();
+
+                    gb.DrawImage(activeScene.tempBitmap, new Point((i%16) * 512, (i/16) * 512));
+                    //activeScene.DrawToBitmap(b, new Rectangle(cx * 512, cy * 512, 512, 512));
+                }
+            }
+            dungeonViewer.pictureBox1.Image = b;
+            activeScene.forPreview = false;
 
         }
 
@@ -553,6 +595,7 @@ namespace ZeldaFullEditor
             saveLayoutButton.Enabled = true;
             loadlayoutButton.Enabled = true;
             toolStripButton1.Enabled = true;
+            searchButton.Enabled = true;
             foreach (object ti in editToolStripMenuItem.DropDownItems)
             {
                 if (ti is ToolStripDropDownItem)
@@ -1442,7 +1485,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void runtestButton_Click(object sender, EventArgs e)
+        public void runtestButton_Click(object sender, EventArgs e)
         {
             /*
             if (File.Exists("temp.sfc"))
@@ -2049,7 +2092,7 @@ namespace ZeldaFullEditor
             int higherX = 0; //what we need to remove from the image to the left
             int higherY = 0; //what we need to remove from the image to the right
             Room savedRoom = activeScene.room;
-
+            activeScene.forPreview = true;
             if (selectedMapPng.Count > 0)
             {
                 Bitmap b = new Bitmap(8192, 10752);
@@ -2072,9 +2115,11 @@ namespace ZeldaFullEditor
                         GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
                         GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
                         activeScene.DrawRoom();
+                        
                         activeScene.Refresh();
-                        //gb.DrawImage(, new Point(cx * 512, cy * 512));
-                        activeScene.DrawToBitmap(b, new Rectangle(cx * 512, cy * 512, 512, 512));
+                        
+                        gb.DrawImage(activeScene.tempBitmap, new Point(cx * 512, cy * 512));
+                        //activeScene.DrawToBitmap(b, new Rectangle(cx * 512, cy * 512, 512, 512));
                     }
                 }
                 int image_size_x = ((higherX - lowerX) * 512) + 512;
@@ -2099,12 +2144,14 @@ namespace ZeldaFullEditor
                 activeScene.DrawToBitmap(b, new Rectangle(0, 0, 512, 512));
                 b.Save("singlemap.png");
             }
+            activeScene.forPreview = false;
             activeScene.room = savedRoom;
             activeScene.room.reloadGfx();
             GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
             GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
             activeScene.DrawRoom();
             activeScene.Refresh();
+
 
         }
 
@@ -3171,7 +3218,7 @@ namespace ZeldaFullEditor
         {
             thumbnailBox.Visible = false;
         }
-        int lastRoomID = -1; 
+        public int lastRoomID = -1; 
         private void mapPicturebox_MouseMove(object sender, MouseEventArgs e)
         {
             if (maphoverCheckbox.Checked)
@@ -3292,7 +3339,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void undoButton_Click(object sender, EventArgs e)
+        public void undoButton_Click(object sender, EventArgs e)
         {
             if (editorsTabControl.SelectedIndex == 0) //dungeon editor
             {
@@ -3304,7 +3351,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void redoButton_Click(object sender, EventArgs e)
+        public void redoButton_Click(object sender, EventArgs e)
         {
             if (editorsTabControl.SelectedIndex == 0) //dungeon editor
             {
@@ -3388,8 +3435,15 @@ namespace ZeldaFullEditor
             }
             if (editorsTabControl.SelectedTab.Name == "overworldPage")
             {
-                overworldEditor.BringToFront();
-                overworldEditor.Visible = true;
+                if (overworldEditor.overworld.isLoaded)
+                {
+                    overworldEditor.BringToFront();
+                    overworldEditor.Visible = true;
+                }
+                else
+                {
+                    editorsTabControl.SelectedIndex = 0;
+                }
             }
             else
             {
@@ -3403,6 +3457,15 @@ namespace ZeldaFullEditor
             else
             {
                 gfxEditor.Visible = false;
+            }
+            if (editorsTabControl.SelectedTab.Name == "DungeonViewerPage")
+            {
+                dungeonViewer.BringToFront();
+                dungeonViewer.Visible = true;
+            }
+            else
+            {
+                dungeonViewer.Visible = false;
             }
         }
 

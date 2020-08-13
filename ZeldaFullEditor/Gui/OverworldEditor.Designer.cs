@@ -46,9 +46,17 @@
             this.itemModeButton = new System.Windows.Forms.ToolStripButton();
             this.spriteModeButton = new System.Windows.Forms.ToolStripButton();
             this.transportModeButton = new System.Windows.Forms.ToolStripButton();
+            this.spButton = new System.Windows.Forms.ToolStripButton();
+            this.dwButton = new System.Windows.Forms.ToolStripButton();
+            this.lwButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tilePictureBox = new System.Windows.Forms.PictureBox();
+            this.thumbnailBox = new System.Windows.Forms.PictureBox();
             this.owPropertyPanel = new System.Windows.Forms.Panel();
+            this.objectGroupbox = new System.Windows.Forms.GroupBox();
+            this.objCombobox = new System.Windows.Forms.ComboBox();
+            this.objinfoLabel = new System.Windows.Forms.Label();
             this.mapGroupbox = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.sprpaletteTextbox = new System.Windows.Forms.TextBox();
@@ -62,21 +70,17 @@
             this.selectedTileLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
-            this.objectGroupbox = new System.Windows.Forms.GroupBox();
-            this.objinfoLabel = new System.Windows.Forms.Label();
-            this.objCombobox = new System.Windows.Forms.ComboBox();
-            this.dwButton = new System.Windows.Forms.ToolStripButton();
-            this.lwButton = new System.Windows.Forms.ToolStripButton();
-            this.spButton = new System.Windows.Forms.ToolStripButton();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
             this.owPropertyPanel.SuspendLayout();
+            this.objectGroupbox.SuspendLayout();
             this.mapGroupbox.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.objectGroupbox.SuspendLayout();
             this.SuspendLayout();
             // 
             // owToolStrip
@@ -100,7 +104,8 @@
             this.transportModeButton,
             this.spButton,
             this.dwButton,
-            this.lwButton});
+            this.lwButton,
+            this.toolStripButton1});
             this.owToolStrip.Location = new System.Drawing.Point(0, 0);
             this.owToolStrip.Name = "owToolStrip";
             this.owToolStrip.Size = new System.Drawing.Size(953, 25);
@@ -119,7 +124,6 @@
             // saveButton
             // 
             this.saveButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.saveButton.Enabled = false;
             this.saveButton.Image = ((System.Drawing.Image)(resources.GetObject("saveButton.Image")));
             this.saveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveButton.Name = "saveButton";
@@ -145,32 +149,32 @@
             // runtestButton
             // 
             this.runtestButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.runtestButton.Enabled = false;
             this.runtestButton.Image = ((System.Drawing.Image)(resources.GetObject("runtestButton.Image")));
             this.runtestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.runtestButton.Name = "runtestButton";
             this.runtestButton.Size = new System.Drawing.Size(23, 22);
             this.runtestButton.Text = "Save and Run in emulator";
+            this.runtestButton.Click += new System.EventHandler(this.runtestButton_Click);
             // 
             // undoButton
             // 
             this.undoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.undoButton.Enabled = false;
             this.undoButton.Image = ((System.Drawing.Image)(resources.GetObject("undoButton.Image")));
             this.undoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.undoButton.Name = "undoButton";
             this.undoButton.Size = new System.Drawing.Size(23, 22);
             this.undoButton.Text = "Undo";
+            this.undoButton.Click += new System.EventHandler(this.undoButton_Click);
             // 
             // redoButton
             // 
             this.redoButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.redoButton.Enabled = false;
             this.redoButton.Image = ((System.Drawing.Image)(resources.GetObject("redoButton.Image")));
             this.redoButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.redoButton.Name = "redoButton";
             this.redoButton.Size = new System.Drawing.Size(23, 22);
             this.redoButton.Text = "Redo";
+            this.redoButton.Click += new System.EventHandler(this.redoButton_Click);
             // 
             // toolStripSeparator2
             // 
@@ -198,7 +202,7 @@
             this.fillModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.fillModeButton.Name = "fillModeButton";
             this.fillModeButton.Size = new System.Drawing.Size(23, 22);
-            this.fillModeButton.Text = "toolStripButton2";
+            this.fillModeButton.Text = "Fill Mode";
             this.fillModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // toolStripSeparator3
@@ -214,7 +218,7 @@
             this.entranceModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.entranceModeButton.Name = "entranceModeButton";
             this.entranceModeButton.Size = new System.Drawing.Size(23, 22);
-            this.entranceModeButton.Text = "toolStripButton4";
+            this.entranceModeButton.Text = "Entrance Mode";
             this.entranceModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // exitModeButton
@@ -225,7 +229,7 @@
             this.exitModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.exitModeButton.Name = "exitModeButton";
             this.exitModeButton.Size = new System.Drawing.Size(23, 22);
-            this.exitModeButton.Text = "toolStripButton5";
+            this.exitModeButton.Text = "Exit Mode";
             this.exitModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // itemModeButton
@@ -236,7 +240,7 @@
             this.itemModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.itemModeButton.Name = "itemModeButton";
             this.itemModeButton.Size = new System.Drawing.Size(23, 22);
-            this.itemModeButton.Text = "toolStripButton6";
+            this.itemModeButton.Text = "Item Mode";
             this.itemModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // spriteModeButton
@@ -247,7 +251,7 @@
             this.spriteModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.spriteModeButton.Name = "spriteModeButton";
             this.spriteModeButton.Size = new System.Drawing.Size(23, 22);
-            this.spriteModeButton.Text = "toolStripButton7";
+            this.spriteModeButton.Text = "Sprite Mode";
             this.spriteModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // transportModeButton
@@ -258,8 +262,51 @@
             this.transportModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.transportModeButton.Name = "transportModeButton";
             this.transportModeButton.Size = new System.Drawing.Size(23, 22);
-            this.transportModeButton.Text = "toolStripButton8";
+            this.transportModeButton.Text = "Transport Mode";
             this.transportModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
+            // spButton
+            // 
+            this.spButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.spButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.spButton.Image = ((System.Drawing.Image)(resources.GetObject("spButton.Image")));
+            this.spButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.spButton.Name = "spButton";
+            this.spButton.Size = new System.Drawing.Size(28, 22);
+            this.spButton.Text = "SW";
+            this.spButton.Click += new System.EventHandler(this.spButton_Click);
+            // 
+            // dwButton
+            // 
+            this.dwButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.dwButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.dwButton.Image = ((System.Drawing.Image)(resources.GetObject("dwButton.Image")));
+            this.dwButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.dwButton.Name = "dwButton";
+            this.dwButton.Size = new System.Drawing.Size(30, 22);
+            this.dwButton.Text = "DW";
+            this.dwButton.Click += new System.EventHandler(this.dwButton_Click);
+            // 
+            // lwButton
+            // 
+            this.lwButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.lwButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.lwButton.Image = ((System.Drawing.Image)(resources.GetObject("lwButton.Image")));
+            this.lwButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.lwButton.Name = "lwButton";
+            this.lwButton.Size = new System.Drawing.Size(27, 22);
+            this.lwButton.Text = "LW";
+            this.lwButton.Click += new System.EventHandler(this.lwButton_Click);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // splitContainer1
             // 
@@ -277,7 +324,7 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.AutoScroll = true;
-            this.splitContainer1.Panel2.Paint += new System.Windows.Forms.PaintEventHandler(this.splitContainer1_Panel2_Paint);
+            this.splitContainer1.Panel2.Controls.Add(this.thumbnailBox);
             this.splitContainer1.Size = new System.Drawing.Size(953, 619);
             this.splitContainer1.SplitterDistance = 149;
             this.splitContainer1.TabIndex = 1;
@@ -286,11 +333,22 @@
             // 
             this.tilePictureBox.Location = new System.Drawing.Point(3, 3);
             this.tilePictureBox.Name = "tilePictureBox";
-            this.tilePictureBox.Size = new System.Drawing.Size(128, 4096);
+            this.tilePictureBox.Size = new System.Drawing.Size(128, 7200);
             this.tilePictureBox.TabIndex = 0;
             this.tilePictureBox.TabStop = false;
             this.tilePictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.tilePictureBox_Paint);
+            this.tilePictureBox.DoubleClick += new System.EventHandler(this.tilePictureBox_DoubleClick);
             this.tilePictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tilePictureBox_MouseClick);
+            // 
+            // thumbnailBox
+            // 
+            this.thumbnailBox.Location = new System.Drawing.Point(3, 3);
+            this.thumbnailBox.Name = "thumbnailBox";
+            this.thumbnailBox.Size = new System.Drawing.Size(24, 24);
+            this.thumbnailBox.TabIndex = 22;
+            this.thumbnailBox.TabStop = false;
+            this.thumbnailBox.Visible = false;
+            this.thumbnailBox.Paint += new System.Windows.Forms.PaintEventHandler(this.thumbnailBox_Paint);
             // 
             // owPropertyPanel
             // 
@@ -302,6 +360,34 @@
             this.owPropertyPanel.Name = "owPropertyPanel";
             this.owPropertyPanel.Size = new System.Drawing.Size(953, 75);
             this.owPropertyPanel.TabIndex = 0;
+            // 
+            // objectGroupbox
+            // 
+            this.objectGroupbox.Controls.Add(this.objCombobox);
+            this.objectGroupbox.Controls.Add(this.objinfoLabel);
+            this.objectGroupbox.Location = new System.Drawing.Point(456, 3);
+            this.objectGroupbox.Name = "objectGroupbox";
+            this.objectGroupbox.Size = new System.Drawing.Size(290, 60);
+            this.objectGroupbox.TabIndex = 10;
+            this.objectGroupbox.TabStop = false;
+            this.objectGroupbox.Text = "Selected Object - ";
+            // 
+            // objCombobox
+            // 
+            this.objCombobox.FormattingEnabled = true;
+            this.objCombobox.Location = new System.Drawing.Point(128, 13);
+            this.objCombobox.Name = "objCombobox";
+            this.objCombobox.Size = new System.Drawing.Size(156, 21);
+            this.objCombobox.TabIndex = 1;
+            // 
+            // objinfoLabel
+            // 
+            this.objinfoLabel.AutoSize = true;
+            this.objinfoLabel.Location = new System.Drawing.Point(6, 16);
+            this.objinfoLabel.Name = "objinfoLabel";
+            this.objinfoLabel.Size = new System.Drawing.Size(33, 39);
+            this.objinfoLabel.TabIndex = 0;
+            this.objinfoLabel.Text = "ID : 0\r\nX : 0\r\nY : 0";
             // 
             // mapGroupbox
             // 
@@ -432,67 +518,6 @@
             this.stateCombobox.Text = "0,1 (Rescue Zelda)";
             this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
             // 
-            // objectGroupbox
-            // 
-            this.objectGroupbox.Controls.Add(this.objCombobox);
-            this.objectGroupbox.Controls.Add(this.objinfoLabel);
-            this.objectGroupbox.Location = new System.Drawing.Point(456, 3);
-            this.objectGroupbox.Name = "objectGroupbox";
-            this.objectGroupbox.Size = new System.Drawing.Size(290, 60);
-            this.objectGroupbox.TabIndex = 10;
-            this.objectGroupbox.TabStop = false;
-            this.objectGroupbox.Text = "Selected Object - ";
-            // 
-            // objinfoLabel
-            // 
-            this.objinfoLabel.AutoSize = true;
-            this.objinfoLabel.Location = new System.Drawing.Point(6, 16);
-            this.objinfoLabel.Name = "objinfoLabel";
-            this.objinfoLabel.Size = new System.Drawing.Size(33, 39);
-            this.objinfoLabel.TabIndex = 0;
-            this.objinfoLabel.Text = "ID : 0\r\nX : 0\r\nY : 0";
-            // 
-            // objCombobox
-            // 
-            this.objCombobox.FormattingEnabled = true;
-            this.objCombobox.Location = new System.Drawing.Point(128, 13);
-            this.objCombobox.Name = "objCombobox";
-            this.objCombobox.Size = new System.Drawing.Size(156, 21);
-            this.objCombobox.TabIndex = 1;
-            // 
-            // dwButton
-            // 
-            this.dwButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.dwButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.dwButton.Image = ((System.Drawing.Image)(resources.GetObject("dwButton.Image")));
-            this.dwButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.dwButton.Name = "dwButton";
-            this.dwButton.Size = new System.Drawing.Size(23, 22);
-            this.dwButton.Text = "toolStripButton1";
-            this.dwButton.Click += new System.EventHandler(this.dwButton_Click);
-            // 
-            // lwButton
-            // 
-            this.lwButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.lwButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.lwButton.Image = ((System.Drawing.Image)(resources.GetObject("lwButton.Image")));
-            this.lwButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.lwButton.Name = "lwButton";
-            this.lwButton.Size = new System.Drawing.Size(23, 22);
-            this.lwButton.Text = "toolStripButton1";
-            this.lwButton.Click += new System.EventHandler(this.lwButton_Click);
-            // 
-            // spButton
-            // 
-            this.spButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.spButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.spButton.Image = ((System.Drawing.Image)(resources.GetObject("spButton.Image")));
-            this.spButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.spButton.Name = "spButton";
-            this.spButton.Size = new System.Drawing.Size(23, 22);
-            this.spButton.Text = "toolStripButton1";
-            this.spButton.Click += new System.EventHandler(this.spButton_Click);
-            // 
             // OverworldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -505,16 +530,18 @@
             this.owToolStrip.ResumeLayout(false);
             this.owToolStrip.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
             this.owPropertyPanel.ResumeLayout(false);
+            this.objectGroupbox.ResumeLayout(false);
+            this.objectGroupbox.PerformLayout();
             this.mapGroupbox.ResumeLayout(false);
             this.mapGroupbox.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.objectGroupbox.ResumeLayout(false);
-            this.objectGroupbox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -561,5 +588,7 @@
         private System.Windows.Forms.ToolStripButton dwButton;
         private System.Windows.Forms.ToolStripButton spButton;
         private System.Windows.Forms.ToolStripButton lwButton;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        public System.Windows.Forms.PictureBox thumbnailBox;
     }
 }

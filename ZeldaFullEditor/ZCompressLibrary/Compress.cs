@@ -23,7 +23,7 @@ namespace ZCompressLibrary
             //throw new NotImplementedException();
             // we will realloc later
             int compressed_size = length + 3;
-            byte[] compressed_data = new byte[length + 3]; //(char*)malloc(length + 3); // Worse cas is a copy of the string with extended header (probably should abord if more)
+            byte[] compressed_data = new byte[length + 4]; //(char*)malloc(length + 3); // Worse cas is a copy of the string with extended header (probably should abord if more)
             compression_piece compressed_chain = new compression_piece(1, 1, new byte[] { (byte)'a', (byte)'a' }, 2); //compression_piece* compressed_chain = new_compression_piece(1, 1, "aaa", 2);
             compression_piece compressed_chain_start = compressed_chain; //compression_piece* compressed_chain_start = compressed_chain;
 

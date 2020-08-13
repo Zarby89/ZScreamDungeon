@@ -237,7 +237,7 @@ namespace ZeldaFullEditor
             }
             else if (oid == 0x3C)
             {
-                setdata("Sanctuary Wall", 4, 4);
+                setdata("Sanctuary Wall", 4, 6);
                 sort = Sorting.NonScalable;
             }
             else if (oid == 0x3D)
@@ -273,6 +273,41 @@ namespace ZeldaFullEditor
         public override void Draw()
         {
             byte oid = (byte)(id & 0xFF);
+            if (oid == 0x3C)
+            {
+                //collumn
+                for (int i = 0; i < 2; i++)
+                {
+                    for (int xx = 0; xx < 2; xx++)
+                    {
+                        for (int yy = 0; yy < 6; yy++)
+                        {
+                            tiles[yy].mirror_x = (ushort)(xx & 0x01);
+                            tiles[yy + 6].mirror_x = (ushort)(xx & 0x01);
+                            draw_tile(tiles[(yy)], ((xx + (i * 14))) * 8, (yy) * 8);
+                            draw_tile(tiles[(yy + 6)], (((xx + (i * 14) + 2))) * 8, (yy) * 8);
+
+                            draw_tile(tiles[(yy)], ((xx + (i * 14) + 4)) * 8, (yy) * 8);
+                            draw_tile(tiles[(yy + 6)], (((xx + (i * 14) + 6))) * 8, (yy) * 8);
+
+                            draw_tile(tiles[(yy)], ((xx + (i * 14) + 8)) * 8, (yy) * 8);
+                        }
+                    }
+                }
+                int tid = 12;
+                for (int xx = 0; xx < 4; xx++)
+                {
+                    for (int yy = 0; yy < 3; yy++)
+                    {
+                        draw_tile(tiles[(tid)], (xx +10) * 8, (yy) * 8);
+                        tid++;
+                    }
+                }
+
+                
+                return;
+            }
+
             if (oid == 0x28 || oid == 0x35 || oid == 0x36 || oid == 0x2A)
             {
                 //bed ? WTF WHY THIS IS REVERSED...
@@ -299,6 +334,8 @@ namespace ZeldaFullEditor
                     }
                 }
             }
+
+
         }
 
         public void setdata(string name, int tx, int ty, bool allbg = false)

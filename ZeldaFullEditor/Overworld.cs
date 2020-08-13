@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace ZeldaFullEditor
 {
@@ -48,6 +49,8 @@ namespace ZeldaFullEditor
 
         public byte[] mapParent = new byte[160];
 
+        public bool isLoaded = false;
+
         public Overworld()
         {
             tiles16 = new List<Tile16>();
@@ -58,25 +61,33 @@ namespace ZeldaFullEditor
 
             t32 = new List<ushort>();
 
-
-            AssembleMap32Tiles();
-            AssembleMap16Tiles();
-            DecompressAllMapTiles();
-
-            //Map Initialization :
-            for (int i = 0; i < 160; i++)
+            
+            new Thread(() =>
             {
-                allmaps[i] = new OverworldMap((byte)i, this);
-            }
-            getLargeMaps();
-            for (int i = 0; i < 160; i++)
-            {
-                allmaps[i].BuildMap();
-            }
-            loadExits();
-            loadEntrances();
-            loadItems();
-            loadTransports();
+                Thread.CurrentThread.IsBackground = true;
+                AssembleMap32Tiles();
+                AssembleMap16Tiles();
+                DecompressAllMapTiles();
+                //Map Initialization :
+                for (int i = 0; i < 160; i++)
+                {
+                    allmaps[i] = new OverworldMap((byte)i, this);
+                }
+                getLargeMaps();
+                for (int i = 0; i < 160; i++)
+                {
+                    allmaps[i].BuildMap();
+                }
+                loadExits();
+                loadEntrances();
+                loadItems();
+                loadTransports();
+                isLoaded = true;
+
+            }).Start();
+
+
+
 
 
         }
@@ -88,6 +99,13 @@ namespace ZeldaFullEditor
             {
                 mapParent[i] = 0;
             }
+            mapParent[128] = 128;
+            mapParent[129] = 129;
+            mapParent[130] = 129;
+            mapParent[137] = 129;
+            mapParent[138] = 129;
+            mapParent[136] = 136;
+            allmaps[136].largeMap = false;
             bool[] mapChecked = new bool[64];
             for (int i = 0; i < 64; i++)
             {
@@ -796,6 +814,63 @@ namespace ZeldaFullEditor
             //Console.WriteLine();
             //Save32Tiles();
         }
+
+       /* public void savemapstorom()
+        {
+            int pos = 0x058000;
+            for (int i = 0; i < 160; i++)
+            {
+                int npos = 0;
+                byte[]
+                    singlemap1 = new byte[512],
+                    singlemap2 = new byte[512];
+                for (int y = 0; y < 16; y++)
+                {
+                    for (int x = 0; x < 16; x++)
+                    {
+                        singlemap1[npos] = (byte)(t32[npos + (i * 256)] & 0xFF);
+                        singlemap2[npos] = (byte)((t32[npos + (i * 256)] >> 8) & 0xFF);
+                        npos++;
+                    }
+                }
+                byte[] a = ZCompressLibrary.Compress.ALTTPCompressOverworld(singlemap1, 0, 262);
+                byte[] b = ZCompressLibrary.Compress.ALTTPCompressOverworld(singlemap2, 0, 262);
+
+                int snesPos = Utils.PcToSnes(pos);
+                ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
+                ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
+                ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+
+                //ROM.DATA[pos] = 0xE0;
+                //ROM.DATA[pos + 1] = 0xFF;
+                //pos += 2;
+                for (int j = 0; j < b.Length; j++)
+                {
+                    ROM.DATA[pos] = b[j];
+                    pos += 1;
+                }
+                //ROM.DATA[pos] = 0xFF;
+                //pos += 1;
+                snesPos = Utils.PcToSnes(pos);
+                ROM.DATA[(Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i)] = (byte)((snesPos >> 00) & 0xFF);
+                ROM.DATA[(Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i)] = (byte)((snesPos >> 08) & 0xFF);
+                ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+
+                //ROM.DATA[pos] = 0xE0;
+                //ROM.DATA[pos + 1] = 0xFF;
+                //pos += 2;
+                for (int j = 0; j < a.Length; j++)
+                {
+                    ROM.DATA[pos] = a[j];
+                    pos += 1;
+                }
+                //ROM.DATA[pos] = 0xFF;
+                //pos += 1;
+
+            }
+            Console.WriteLine("Map Pos Length: " + pos.ToString("X6"));
+            //Save32Tiles();
+        }*/
 
         public void loadItems()
         {

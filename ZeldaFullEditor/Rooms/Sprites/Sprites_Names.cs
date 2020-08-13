@@ -289,7 +289,7 @@ namespace ZeldaFullEditor
 "F1 Cane of Somaria Platform (Unused)",
 "F2 Medallion Tablet",
 "F3",
-"F4",
+"F4 Falling Rocks",
 "F5",
 "F6",
 "F7",
