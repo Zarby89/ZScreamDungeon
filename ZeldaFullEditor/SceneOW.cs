@@ -542,41 +542,14 @@ namespace ZeldaFullEditor
                 {
                     if (entranceMode.selectedEntrance != null)
                     {
-                        e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
-                        if (mainForm.previewRoom.bg2 != Background2.Translucent || mainForm.previewRoom.bg2 != Background2.Transparent ||
-                         mainForm.previewRoom.bg2 != Background2.OnTop || mainForm.previewRoom.bg2 != Background2.Off)
-                        {
-                            e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
-                        }
-
-                        e.Graphics.DrawImage(GFX.roomBg1Bitmap, new Rectangle(entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
-
-                        if (mainForm.previewRoom.bg2 == Background2.Translucent || mainForm.previewRoom.bg2 == Background2.Transparent)
-                        {
-                            float[][] matrixItems ={
-               new float[] {1f, 0, 0, 0, 0},
-               new float[] {0, 1f, 0, 0, 0},
-               new float[] {0, 0, 1f, 0, 0},
-               new float[] {0, 0, 0, 0.5f, 0},
-               new float[] {0, 0, 0, 0, 1}};
-                            ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
-
-                            // Create an ImageAttributes object and set its color matrix.
-                            ImageAttributes imageAtt = new ImageAttributes();
-                            imageAtt.SetColorMatrix(
-                               colorMatrix,
-                               ColorMatrixFlag.Default,
-                               ColorAdjustType.Bitmap);
-                            //GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
-                            e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
-                        }
-                        else if (mainForm.previewRoom.bg2 == Background2.OnTop)
-                        {
-                            e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
-                        }
-
-                        mainForm.activeScene.drawText(e.Graphics, entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16, "ROOM : " + mainForm.previewRoom.index.ToString());
-                        e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+                        g.DrawImage(owForm.tmpPreviewBitmap, entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16);
+                    }
+                }
+                if (entrancePreview)
+                {
+                    if (exitmode.selectedExit != null)
+                    {
+                        g.DrawImage(owForm.tmpPreviewBitmap, exitmode.selectedExit.playerX + 16, exitmode.selectedExit.playerY + 16);
                     }
                 }
 

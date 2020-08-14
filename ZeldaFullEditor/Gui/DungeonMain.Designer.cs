@@ -134,6 +134,7 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.saveLayoutButton = new System.Windows.Forms.ToolStripButton();
             this.loadlayoutButton = new System.Windows.Forms.ToolStripButton();
+            this.searchButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.spriteImageList = new System.Windows.Forms.ImageList(this.components);
             this.colorDialog1 = new System.Windows.Forms.ColorDialog();
@@ -251,14 +252,13 @@
             this.label31 = new System.Windows.Forms.Label();
             this.editorsTabControl = new System.Windows.Forms.TabControl();
             this.dungeonPage = new System.Windows.Forms.TabPage();
-            this.DungeonViewerPage = new System.Windows.Forms.TabPage();
             this.overworldPage = new System.Windows.Forms.TabPage();
+            this.DungeonViewerPage = new System.Windows.Forms.TabPage();
             this.GfxEditorPage = new System.Windows.Forms.TabPage();
             this.tabPage5 = new System.Windows.Forms.TabPage();
             this.textPage = new System.Windows.Forms.TabPage();
             this.objDesignerPage = new System.Windows.Forms.TabPage();
             this.thumbnailBox = new System.Windows.Forms.PictureBox();
-            this.searchButton = new System.Windows.Forms.ToolStripButton();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
             this.panel1 = new ZeldaFullEditor.CustomPanel();
             this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
@@ -1247,6 +1247,17 @@
             this.loadlayoutButton.Size = new System.Drawing.Size(23, 22);
             this.loadlayoutButton.Text = "Load Layout";
             this.loadlayoutButton.Click += new System.EventHandler(this.loadlayoutButton_Click);
+            // 
+            // searchButton
+            // 
+            this.searchButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.searchButton.Enabled = false;
+            this.searchButton.Image = ((System.Drawing.Image)(resources.GetObject("searchButton.Image")));
+            this.searchButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.searchButton.Name = "searchButton";
+            this.searchButton.Size = new System.Drawing.Size(23, 22);
+            this.searchButton.Text = "toolStripButton2";
+            this.searchButton.Click += new System.EventHandler(this.searchButton_Click);
             // 
             // toolStripButton1
             // 
@@ -2476,30 +2487,30 @@
             this.dungeonPage.Text = "Dungeon Editor";
             this.dungeonPage.UseVisualStyleBackColor = true;
             // 
-            // DungeonViewerPage
-            // 
-            this.DungeonViewerPage.Location = new System.Drawing.Point(4, 25);
-            this.DungeonViewerPage.Name = "DungeonViewerPage";
-            this.DungeonViewerPage.Size = new System.Drawing.Size(1000, 0);
-            this.DungeonViewerPage.TabIndex = 6;
-            this.DungeonViewerPage.Text = "Dungeon Viewer";
-            this.DungeonViewerPage.UseVisualStyleBackColor = true;
-            // 
             // overworldPage
             // 
             this.overworldPage.Location = new System.Drawing.Point(4, 25);
             this.overworldPage.Name = "overworldPage";
             this.overworldPage.Padding = new System.Windows.Forms.Padding(3);
-            this.overworldPage.Size = new System.Drawing.Size(1000, 0);
+            this.overworldPage.Size = new System.Drawing.Size(1096, 0);
             this.overworldPage.TabIndex = 1;
             this.overworldPage.Text = "Overworld Editor";
             this.overworldPage.UseVisualStyleBackColor = true;
+            // 
+            // DungeonViewerPage
+            // 
+            this.DungeonViewerPage.Location = new System.Drawing.Point(4, 25);
+            this.DungeonViewerPage.Name = "DungeonViewerPage";
+            this.DungeonViewerPage.Size = new System.Drawing.Size(1096, 0);
+            this.DungeonViewerPage.TabIndex = 6;
+            this.DungeonViewerPage.Text = "Dungeon Viewer";
+            this.DungeonViewerPage.UseVisualStyleBackColor = true;
             // 
             // GfxEditorPage
             // 
             this.GfxEditorPage.Location = new System.Drawing.Point(4, 25);
             this.GfxEditorPage.Name = "GfxEditorPage";
-            this.GfxEditorPage.Size = new System.Drawing.Size(1000, 0);
+            this.GfxEditorPage.Size = new System.Drawing.Size(1096, 0);
             this.GfxEditorPage.TabIndex = 2;
             this.GfxEditorPage.Text = "Gfx Import/Export";
             this.GfxEditorPage.UseVisualStyleBackColor = true;
@@ -2508,7 +2519,7 @@
             // 
             this.tabPage5.Location = new System.Drawing.Point(4, 25);
             this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(1000, 0);
+            this.tabPage5.Size = new System.Drawing.Size(1096, 0);
             this.tabPage5.TabIndex = 3;
             this.tabPage5.Text = "Misc Editor";
             this.tabPage5.UseVisualStyleBackColor = true;
@@ -2517,7 +2528,7 @@
             // 
             this.textPage.Location = new System.Drawing.Point(4, 25);
             this.textPage.Name = "textPage";
-            this.textPage.Size = new System.Drawing.Size(1000, 0);
+            this.textPage.Size = new System.Drawing.Size(1096, 0);
             this.textPage.TabIndex = 4;
             this.textPage.Text = "Text Editor";
             this.textPage.UseVisualStyleBackColor = true;
@@ -2526,7 +2537,7 @@
             // 
             this.objDesignerPage.Location = new System.Drawing.Point(4, 25);
             this.objDesignerPage.Name = "objDesignerPage";
-            this.objDesignerPage.Size = new System.Drawing.Size(1000, 0);
+            this.objDesignerPage.Size = new System.Drawing.Size(1096, 0);
             this.objDesignerPage.TabIndex = 5;
             this.objDesignerPage.Text = "Object Designer (ext)";
             this.objDesignerPage.UseVisualStyleBackColor = true;
@@ -2540,16 +2551,6 @@
             this.thumbnailBox.TabStop = false;
             this.thumbnailBox.Visible = false;
             this.thumbnailBox.Paint += new System.Windows.Forms.PaintEventHandler(this.thumbnailBox_Paint);
-            // 
-            // searchButton
-            // 
-            this.searchButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.searchButton.Enabled = false;
-            this.searchButton.Image = ((System.Drawing.Image)(resources.GetObject("searchButton.Image")));
-            this.searchButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.searchButton.Name = "searchButton";
-            this.searchButton.Size = new System.Drawing.Size(23, 22);
-            this.searchButton.Text = "toolStripButton2";
             // 
             // customPanel3
             // 

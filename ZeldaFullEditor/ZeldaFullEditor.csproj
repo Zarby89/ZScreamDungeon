@@ -204,6 +204,12 @@
     <Compile Include="Gui\SaveSettings.Designer.cs">
       <DependentUpon>SaveSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\SearchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\SearchForm.Designer.cs">
+      <DependentUpon>SearchForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\TextEditorExtra\DictionariesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -412,6 +418,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\SaveSettings.resx">
       <DependentUpon>SaveSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\SearchForm.resx">
+      <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\TextEditorExtra\DictionariesForm.resx">
       <DependentUpon>DictionariesForm.cs</DependentUpon>

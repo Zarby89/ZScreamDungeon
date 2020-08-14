@@ -24,6 +24,7 @@ namespace ZeldaFullEditor.Gui
         public SceneOW scene;
         public bool propertiesChangedFromForm = false;
         public DungeonMain mainForm;
+        public Bitmap tmpPreviewBitmap = new Bitmap(256,256);
         public void InitOpen(DungeonMain mainForm)
         {
             overworld = new Overworld();
@@ -245,43 +246,7 @@ namespace ZeldaFullEditor.Gui
 
         private void thumbnailBox_Paint(object sender, PaintEventArgs e)
         {
-            e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
-            e.Graphics.Clear(Color.Black);
-            if (mainForm.previewRoom.bg2 != Background2.Translucent || mainForm.previewRoom.bg2 != Background2.Transparent ||
-                mainForm.previewRoom.bg2 != Background2.OnTop || mainForm.previewRoom.bg2 != Background2.Off)
-            {
-                e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
-            }
 
-
-            //e.Graphics.DrawImage(GFX.roomBgLayoutBitmap,0,0);
-            e.Graphics.DrawImage(GFX.roomBg1Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
-
-            if (mainForm.previewRoom.bg2 == Background2.Translucent || mainForm.previewRoom.bg2 == Background2.Transparent)
-            {
-                float[][] matrixItems ={
-               new float[] {1f, 0, 0, 0, 0},
-               new float[] {0, 1f, 0, 0, 0},
-               new float[] {0, 0, 1f, 0, 0},
-               new float[] {0, 0, 0, 0.5f, 0},
-               new float[] {0, 0, 0, 0, 1}};
-                ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
-
-                // Create an ImageAttributes object and set its color matrix.
-                ImageAttributes imageAtt = new ImageAttributes();
-                imageAtt.SetColorMatrix(
-                   colorMatrix,
-                   ColorMatrixFlag.Default,
-                   ColorAdjustType.Bitmap);
-                //GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
-                e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
-            }
-            else if (mainForm.previewRoom.bg2 == Background2.OnTop)
-            {
-                e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
-            }
-
-            mainForm.activeScene.drawText(e.Graphics, 0, 0, "ROOM : " + mainForm.previewRoom.index.ToString());
         }
 
         private void undoButton_Click(object sender, EventArgs e)

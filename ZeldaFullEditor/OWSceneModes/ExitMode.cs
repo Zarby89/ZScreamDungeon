@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -122,6 +123,40 @@ namespace ZeldaFullEditor.OWSceneModes
 
                     }
                 }
+            }
+
+            if (selectedExit != null)
+            {
+                //scene.owForm.thumbnailBox.Visible = true;
+                //scene.owForm.thumbnailBox.Size = new Size(256, 256);
+                int roomId = selectedExit.roomId;
+                if (roomId >= 296)
+                {
+                    //scene.owForm.thumbnailBox.Visible = false;
+                    return;
+                }
+
+                if (scene.mainForm.lastRoomID != roomId)
+                {
+                    scene.mainForm.previewRoom = DungeonsData.all_rooms[roomId];
+                    scene.mainForm.previewRoom.reloadGfx();
+                    GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.previewRoom.Palette);
+                    scene.mainForm.DrawRoom();
+                    DrawTempExit();
+                    scene.entrancePreview = true;
+                    scene.Refresh();
+
+
+
+                    if (scene.mainForm.activeScene.room != null)
+                    {
+                        GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.activeScene.room.Palette);
+                        scene.mainForm.activeScene.room.reloadGfx();
+                        scene.mainForm.activeScene.DrawRoom();
+                    }
+                }
+
+                scene.mainForm.lastRoomID = roomId;
             }
         }
 
@@ -357,6 +392,47 @@ namespace ZeldaFullEditor.OWSceneModes
 
 
 
+        }
+
+        public void DrawTempExit()
+        {
+            Graphics g = Graphics.FromImage(scene.owForm.tmpPreviewBitmap);
+            g.InterpolationMode = InterpolationMode.Bilinear;
+            if (scene.mainForm.previewRoom.bg2 != Background2.Translucent || scene.mainForm.previewRoom.bg2 != Background2.Transparent ||
+             scene.mainForm.previewRoom.bg2 != Background2.OnTop || scene.mainForm.previewRoom.bg2 != Background2.Off)
+            {
+                g.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+            }
+
+            g.DrawImage(GFX.roomBg1Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+
+            if (scene.mainForm.previewRoom.bg2 == Background2.Translucent || scene.mainForm.previewRoom.bg2 == Background2.Transparent)
+            {
+                float[][] matrixItems ={
+               new float[] {1f, 0, 0, 0, 0},
+               new float[] {0, 1f, 0, 0, 0},
+               new float[] {0, 0, 1f, 0, 0},
+               new float[] {0, 0, 0, 0.5f, 0},
+               new float[] {0, 0, 0, 0, 1}};
+                ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
+
+                // Create an ImageAttributes object and set its color matrix.
+                ImageAttributes imageAtt = new ImageAttributes();
+                imageAtt.SetColorMatrix(
+                   colorMatrix,
+                   ColorMatrixFlag.Default,
+                   ColorAdjustType.Bitmap);
+                //GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
+                g.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
+            }
+            else if (scene.mainForm.previewRoom.bg2 == Background2.OnTop)
+            {
+                g.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+            }
+
+            scene.mainForm.activeScene.drawText(g, 0, 0, "ROOM : " + scene.mainForm.previewRoom.index.ToString());
+            g.InterpolationMode = InterpolationMode.NearestNeighbor;
+            g.Dispose();
         }
     }
 }

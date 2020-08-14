@@ -1976,7 +1976,7 @@ namespace ZeldaFullEditor
             }
             mapPicturebox.Refresh();
         }
-        List<Room_Object> listoftilesobjects = new List<Room_Object>();
+        public List<Room_Object> listoftilesobjects = new List<Room_Object>();
         List<Sprite> listofspritesobjects = new List<Sprite>();
         public void initObjectsList()
         {
@@ -3483,6 +3483,12 @@ namespace ZeldaFullEditor
             gauche = 0x01, droit = 0x02, haut = 0x04, bas = 0x08
         };
 
+        private void searchButton_Click(object sender, EventArgs e)
+        {
+            SearchForm sf = new SearchForm(this);
+            sf.ShowDialog();
+
+        }
     }
 
 }
