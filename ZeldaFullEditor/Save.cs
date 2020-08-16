@@ -1500,10 +1500,109 @@ namespace ZeldaFullEditor
             return false;
         }
 
+        public bool saveMapOverlays(SceneOW scene)
+        {
+
+            //A5 8A ;LDA 8A
+            //4B ; PHK
+            //F4 Addr ; PEA
+            /*
+                lda $8A
+                rep #$30
+                asl
+                clc
+                adc $8A
+                tax
+                lda.l .pointers+0, X
+                sta $00
+                lda.l pointers+2, X
+                sta $02*/
+
+            byte[] newOverlayCode = new byte[]
+            {
+                0xC2, 0x30, //REP #$30
+                0xA5, 0x8A, //LDA $8A
+                0x0A, 0x18, //ASL : CLC
+                0x65, 0x8A, //ADC $8A
+                0xAA, //TAX
+                0xBF, 0x00, 0x00, 0x00, //LDA, X 
+                0x85, 0x00, //STA $00
+                0xBF, 0x00, 0x00, 0x00, //LDA, X +2
+                0x85, 0x02, //STA $02
+                0x4B, //PHK
+                0xF4, 0x00, 0x00, //this position +3 ?
+                0xDC, 0x00, 0x00, //JML [$00 00]
+                0xE2, 0x30, //SEP #$30
+                0xAB, //PLB
+                0x6B //RTL
+            };
+            //Pointers
+            for(int i = 0;i< newOverlayCode.Length;i++)
+            {
+                ROM.DATA[0x77657 + i] = newOverlayCode[i];
+            }
+            int ptrStart = (0x77657 + 32);
+            int snesptrstart = Utils.PcToSnes(ptrStart);
+            //10, 16, 
+            ROM.DATA[0x77657 + 10] = (byte)(snesptrstart & 0xFF);
+            ROM.DATA[0x77657 + 11] = (byte)((snesptrstart>>8) & 0xFF);
+            ROM.DATA[0x77657 + 12] = (byte)((snesptrstart>>16) & 0xFF);
+
+            ROM.DATA[0x77657 + 16] = (byte)((snesptrstart+2) & 0xFF);
+            ROM.DATA[0x77657 + 17] = (byte)(((snesptrstart+2) >> 8) & 0xFF);
+            ROM.DATA[0x77657 + 18] = (byte)(((snesptrstart+2) >> 16) & 0xFF);
+
+            int peaAddr = Utils.PcToSnes(0x77657 + 27);
+
+            ROM.DATA[0x77657 + 23] = (byte)((peaAddr) & 0xFF);
+            ROM.DATA[0x77657 + 24] = (byte)((peaAddr>>8) & 0xFF);
+
+            //TODO : Optimize that routine to be smaller
+
+            //0x058000
+            int pos = 0x58000;
+            int ptrPos = 0x77657+32;
+            for(int i = 0;i<128;i++)
+            {
+                int snesaddr = Utils.PcToSnes(pos);
+                ROM.DATA[ptrPos] = (byte)(snesaddr & 0xFF);
+                ROM.DATA[ptrPos+1] = (byte)((snesaddr>>8) & 0xFF);
+                ROM.DATA[ptrPos+2] = (byte)((snesaddr>>16) & 0xFF);
+                ptrPos += 3;
+
+                for (int t = 0;t < scene.ow.alloverlays[i].tilesData.Count; t++)
+                {
+                    ushort addr = (ushort)((scene.ow.alloverlays[i].tilesData[t].x * 2) + (scene.ow.alloverlays[i].tilesData[t].y * 128) + 0x2000);
+                    //LDA TileID : STA $addr
+                    //A9 (LDA #$)
+                    //A2 (LDX #$)
+                    //8D (STA $xxxx)
+
+                    //LDA :
+                    ROM.DATA[pos] = 0xA9;
+                    ROM.DATA[pos+2] = (byte)((scene.ow.alloverlays[i].tilesData[t].tileId >> 8) & 0xFF);
+                    ROM.DATA[pos+1] = (byte)((scene.ow.alloverlays[i].tilesData[t].tileId) & 0xFF);
+                    pos += 3;
+                    //STA : 
+                    ROM.DATA[pos] = 0x8D;
+                    ROM.DATA[pos + 2] = (byte)((addr >> 8) & 0xFF);
+                    ROM.DATA[pos + 1] = (byte)((addr & 0xFF));
+                    pos += 3;
+
+
+
+                }
+                ROM.DATA[pos] = (byte)(0x6B); //RTL
+                pos++;
+
+            }
+
+            return false;
+        }
 
         //ROM MAP
         //0x110000 (S:228000) are rooms header Length 0x12C0 (Always the same size)
         //120000 to 1343C0 (S:248000 to 26C3C0) are new overworld maps location always same size (fake compressed)
-
+        //0x058000 (OLD MAP DATA) Now Used for Overlays data
     }
 }

@@ -969,14 +969,31 @@ namespace ZeldaFullEditor
 
         public void loadOverlays()
         {
+            /*
+             0x7765B: ;Original byte = 0x0A
+            22 9C 87 00 EA ;JSL long jump table
+
+             */
+
             for (int index = 0; index < 128; index++)
             {
                 alloverlays[index] = new OverlayData();
                 //overlayPointers
+
                 int addr = (Constants.overlayPointersBank << 16) +
-                    (ROM.DATA[Constants.overlayPointers + (index * 2) + 1] << 8) +
-                    ROM.DATA[Constants.overlayPointers + (index * 2)];
+                (ROM.DATA[Constants.overlayPointers + (index * 2) + 1] << 8) +
+                ROM.DATA[Constants.overlayPointers + (index * 2)];
                 addr = Utils.SnesToPc(addr);
+
+                if (ROM.DATA[0x77676] == 0x6B)
+                {
+                    addr = (ROM.DATA[(0x077677 + 2) + (index * 3)] << 16) +
+                    (ROM.DATA[(0x077677 + 1) + (index * 3)] << 8) +
+                    ROM.DATA[(0x077677 + 0) + (index * 3)];
+                    addr = Utils.SnesToPc(addr);
+                    //Load New Address
+                }
+
 
                 int a = 0;
                 int x = 0;
@@ -1017,9 +1034,6 @@ namespace ZeldaFullEditor
                         sta = (ROM.DATA[addr + 2] << 8) +
                         ROM.DATA[addr + 1];
 
-                        //draw tile at sta position
-                        //Console.WriteLine("Draw Tile" + a + " at " + sta.ToString("X4"));
-                        //64
                         sta = sta & 0x1FFF;
                         int yp = ((sta / 2) / 0x40);
                         int xp = (sta / 2) - (yp * 0x40);
@@ -1032,7 +1046,6 @@ namespace ZeldaFullEditor
                         sta = (ROM.DATA[addr + 2] << 8) +
                         ROM.DATA[addr + 1];
                         //draw tile at sta,X position
-                        //Console.WriteLine("Draw Tile" + a + " at " + (sta + x).ToString("X4"));
 
                         int stax = (sta & 0x1FFF) + x;
                         int yp = ((stax / 2) / 0x40);
@@ -1046,8 +1059,7 @@ namespace ZeldaFullEditor
                     {
                         sta = (ROM.DATA[addr + 2] << 8) +
                         ROM.DATA[addr + 1];
-                        //draw tile at sta,X position
-                        //Console.WriteLine("Draw Tile" + a + " at " + (sta + x).ToString("X4"));
+
 
                         int stax = (sta & 0x1FFF) + x;
                         int yp = ((stax / 2) / 0x40);
@@ -1069,9 +1081,14 @@ namespace ZeldaFullEditor
                         (ROM.DATA[addr + 2] << 8) +
                         ROM.DATA[addr + 1];
                         addr = Utils.SnesToPc(addr);
+                        //THAT SHOULD NOT EXIST IN MOVED CODE SO NO NEED TO CHANGE IT
                         continue;
                     }
                     else if (b == 0x60) //RTS
+                    {
+                        break; //just to be sure
+                    }
+                    else if (b == 0x6B) //RTL
                     {
                         break; //just to be sure
                     }

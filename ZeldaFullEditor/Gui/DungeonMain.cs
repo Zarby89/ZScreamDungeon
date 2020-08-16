@@ -260,7 +260,12 @@ namespace ZeldaFullEditor
                 return;
             }
 
-   
+            if (save.saveMapOverlays(overworldEditor.scene))
+            {
+                MessageBox.Show("Failed to save overworld map Overlays ??? ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
             overworldEditor.scene.SaveTiles();
 
             /* Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);

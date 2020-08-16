@@ -581,7 +581,7 @@ namespace ZeldaFullEditor
 
 
 
-            ColorPalette pal = gfxBitmap.Palette;
+            ColorPalette pal = GFX.editort16Bitmap.Palette;
             for (int i = 0; i < 256; i++)
             {
                 pal.Entries[i] = currentPalette[i];
