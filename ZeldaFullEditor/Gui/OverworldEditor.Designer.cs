@@ -50,6 +50,7 @@
             this.dwButton = new System.Windows.Forms.ToolStripButton();
             this.lwButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.refreshToolStrip = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tilePictureBox = new System.Windows.Forms.PictureBox();
             this.thumbnailBox = new System.Windows.Forms.PictureBox();
@@ -70,6 +71,7 @@
             this.selectedTileLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
+            this.overlayButton = new System.Windows.Forms.ToolStripButton();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -105,7 +107,9 @@
             this.spButton,
             this.dwButton,
             this.lwButton,
-            this.toolStripButton1});
+            this.overlayButton,
+            this.toolStripButton1,
+            this.refreshToolStrip});
             this.owToolStrip.Location = new System.Drawing.Point(0, 0);
             this.owToolStrip.Name = "owToolStrip";
             this.owToolStrip.Size = new System.Drawing.Size(953, 25);
@@ -308,6 +312,16 @@
             this.toolStripButton1.Text = "toolStripButton1";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
+            // refreshToolStrip
+            // 
+            this.refreshToolStrip.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.refreshToolStrip.Image = ((System.Drawing.Image)(resources.GetObject("refreshToolStrip.Image")));
+            this.refreshToolStrip.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.refreshToolStrip.Name = "refreshToolStrip";
+            this.refreshToolStrip.Size = new System.Drawing.Size(82, 22);
+            this.refreshToolStrip.Text = "Refresh Maps";
+            this.refreshToolStrip.Click += new System.EventHandler(this.refreshToolStrip_Click);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -336,6 +350,7 @@
             this.tilePictureBox.Size = new System.Drawing.Size(128, 7200);
             this.tilePictureBox.TabIndex = 0;
             this.tilePictureBox.TabStop = false;
+            this.tilePictureBox.Click += new System.EventHandler(this.tilePictureBox_Click);
             this.tilePictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.tilePictureBox_Paint);
             this.tilePictureBox.DoubleClick += new System.EventHandler(this.tilePictureBox_DoubleClick);
             this.tilePictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tilePictureBox_MouseClick);
@@ -518,6 +533,17 @@
             this.stateCombobox.Text = "0,1 (Rescue Zelda)";
             this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
             // 
+            // overlayButton
+            // 
+            this.overlayButton.CheckOnClick = true;
+            this.overlayButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.overlayButton.Image = ((System.Drawing.Image)(resources.GetObject("overlayButton.Image")));
+            this.overlayButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.overlayButton.Name = "overlayButton";
+            this.overlayButton.Size = new System.Drawing.Size(23, 22);
+            this.overlayButton.Text = "Overlay";
+            this.overlayButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
             // OverworldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -590,5 +616,7 @@
         private System.Windows.Forms.ToolStripButton lwButton;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         public System.Windows.Forms.PictureBox thumbnailBox;
+        private System.Windows.Forms.ToolStripButton refreshToolStrip;
+        private System.Windows.Forms.ToolStripButton overlayButton;
     }
 }

@@ -34,7 +34,7 @@ namespace ZeldaFullEditor
             this.ow = ow;
             this.parent = index;
             gfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, gfxPtr);
-            blocksetBitmap = new Bitmap(128, 7200, 128, PixelFormat.Format8bppIndexed, blockset16);
+            blocksetBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, blockset16);
 
             if (index != 0x80)
             {
@@ -181,6 +181,8 @@ namespace ZeldaFullEditor
                     CopyTile8bpp16((x * 16), (y * 16), tilesUsed[x + (superX * 32), y + (superY * 32)], gfxPtr, blockset16);
                 }
             }
+
+
 
         }
 

@@ -31,7 +31,7 @@ namespace ZeldaFullEditor.Gui
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
-            e.Graphics.DrawImage(GFX.allgfxEDITBitmap, new Rectangle(4, 4, 128 * zoomLevel, 7136*zoomLevel),new Rectangle(0,0,128, 7136),GraphicsUnit.Pixel);
+            //e.Graphics.DrawImage(GFX.allgfxEDITBitmap, new Rectangle(4, 4, 128 * zoomLevel, 7136*zoomLevel),new Rectangle(0,0,128, 7136),GraphicsUnit.Pixel);
 
         }
         int[] zoomValues = new int[] { 1, 2, 4, 8, 16 };
@@ -161,13 +161,13 @@ namespace ZeldaFullEditor.Gui
         private void palettesPicturebox_MouseDown(object sender, MouseEventArgs e)
         {
             selectedPal = (e.Y / 8);
-            ColorPalette cp = GFX.allgfxEDITBitmap.Palette;
+            //ColorPalette cp = GFX.allgfxEDITBitmap.Palette;
             for (int i = 0; i < 16; i++)
             {
-                cp.Entries[i] = bigPalettes[i + (selectedPal * 16)];
+                //cp.Entries[i] = bigPalettes[i + (selectedPal * 16)];
                 selectedPalette[i] = bigPalettes[i+(selectedPal*16)];
             }
-            GFX.allgfxEDITBitmap.Palette = cp;
+            //GFX.allgfxEDITBitmap.Palette = cp;
 
             palettesPicturebox.Refresh();
             mainpalettePicturebox.Refresh();
@@ -199,9 +199,9 @@ namespace ZeldaFullEditor.Gui
             {
                 unsafe
                 {
-                    byte* allgfx16Data = (byte*)GFX.allgfx16EDITPtr.ToPointer();
+                    //byte* allgfx16Data = (byte*)GFX.allgfx16EDITPtr.ToPointer();
                     int index = ((e.X) / zoomLevel) + ((e.Y / zoomLevel) * 128);
-                    allgfx16Data[index] = (byte)(0x04);
+                    //allgfx16Data[index] = (byte)(0x04);
 
                 }
                 mainscreenPicturebox.Invalidate();// (new Rectangle(panel2.VerticalScroll.Value, panel2.HorizontalScroll.Value, panel2.Width, panel2.Height));

@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Starting Entrances");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Starting Entrances");
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -196,9 +196,14 @@
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.objectstabPage = new System.Windows.Forms.TabPage();
+            this.panel1 = new ZeldaFullEditor.CustomPanel();
+            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
+            this.favoriteCheckbox = new System.Windows.Forms.CheckBox();
             this.showNameObjectCheckbox = new System.Windows.Forms.CheckBox();
             this.searchTextbox = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
+            this.spritesView1 = new ZeldaFullEditor.SpritesView();
             this.searchspriteTextbox = new System.Windows.Forms.TextBox();
             this.roomProperty_sortsprite = new System.Windows.Forms.CheckBox();
             this.roomProperty_msgid = new System.Windows.Forms.TextBox();
@@ -260,10 +265,6 @@
             this.objDesignerPage = new System.Windows.Forms.TabPage();
             this.thumbnailBox = new System.Windows.Forms.PictureBox();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
-            this.panel1 = new ZeldaFullEditor.CustomPanel();
-            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
-            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
-            this.spritesView1 = new ZeldaFullEditor.SpritesView();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
@@ -278,7 +279,9 @@
             this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).BeginInit();
             this.objectstabPage.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.customPanel1.SuspendLayout();
             this.headerGroupbox.SuspendLayout();
             this.selectedGroupbox.SuspendLayout();
             this.roomHeaderPanel.SuspendLayout();
@@ -288,8 +291,6 @@
             this.potitemobjectPanel.SuspendLayout();
             this.editorsTabControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
-            this.panel1.SuspendLayout();
-            this.customPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -961,21 +962,21 @@
             // howToUseToolStripMenuItem
             // 
             this.howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
-            this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.howToUseToolStripMenuItem.Text = "How to Use";
             this.howToUseToolStripMenuItem.Click += new System.EventHandler(this.howToUseToolStripMenuItem_Click);
             // 
             // patchNotesToolStripMenuItem
             // 
             this.patchNotesToolStripMenuItem.Name = "patchNotesToolStripMenuItem";
-            this.patchNotesToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.patchNotesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.patchNotesToolStripMenuItem.Text = "Patch Notes";
             this.patchNotesToolStripMenuItem.Click += new System.EventHandler(this.patchNotesToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -1603,13 +1604,13 @@
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode1.Name = "EntranceNode";
-            treeNode1.Text = "Entrances";
-            treeNode2.Name = "StartingEntranceNode";
-            treeNode2.Text = "Starting Entrances";
+            treeNode3.Name = "EntranceNode";
+            treeNode3.Text = "Entrances";
+            treeNode4.Name = "StartingEntranceNode";
+            treeNode4.Text = "Starting Entrances";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 186);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -1806,6 +1807,7 @@
             // objectstabPage
             // 
             this.objectstabPage.Controls.Add(this.panel1);
+            this.objectstabPage.Controls.Add(this.favoriteCheckbox);
             this.objectstabPage.Controls.Add(this.showNameObjectCheckbox);
             this.objectstabPage.Controls.Add(this.searchTextbox);
             this.objectstabPage.Location = new System.Drawing.Point(4, 22);
@@ -1814,6 +1816,37 @@
             this.objectstabPage.TabIndex = 4;
             this.objectstabPage.Text = "Objects";
             this.objectstabPage.UseVisualStyleBackColor = true;
+            // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.objectViewer1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 54);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(292, 610);
+            this.panel1.TabIndex = 1;
+            // 
+            // objectViewer1
+            // 
+            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
+            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
+            this.objectViewer1.Name = "objectViewer1";
+            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
+            this.objectViewer1.TabIndex = 0;
+            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
+            // 
+            // favoriteCheckbox
+            // 
+            this.favoriteCheckbox.AutoSize = true;
+            this.favoriteCheckbox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.favoriteCheckbox.Location = new System.Drawing.Point(0, 37);
+            this.favoriteCheckbox.Name = "favoriteCheckbox";
+            this.favoriteCheckbox.Size = new System.Drawing.Size(292, 17);
+            this.favoriteCheckbox.TabIndex = 2;
+            this.favoriteCheckbox.Text = "Show Favorite";
+            this.favoriteCheckbox.UseVisualStyleBackColor = true;
             // 
             // showNameObjectCheckbox
             // 
@@ -1846,6 +1879,25 @@
             this.tabPage4.TabIndex = 10;
             this.tabPage4.Text = "Sprites";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // customPanel1
+            // 
+            this.customPanel1.AutoScroll = true;
+            this.customPanel1.Controls.Add(this.spritesView1);
+            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.customPanel1.Location = new System.Drawing.Point(0, 20);
+            this.customPanel1.Name = "customPanel1";
+            this.customPanel1.Size = new System.Drawing.Size(292, 644);
+            this.customPanel1.TabIndex = 2;
+            // 
+            // spritesView1
+            // 
+            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.spritesView1.Location = new System.Drawing.Point(0, 0);
+            this.spritesView1.Name = "spritesView1";
+            this.spritesView1.Size = new System.Drawing.Size(292, 374);
+            this.spritesView1.TabIndex = 0;
+            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
             // 
             // searchspriteTextbox
             // 
@@ -2464,8 +2516,8 @@
             this.editorsTabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
             this.editorsTabControl.Controls.Add(this.dungeonPage);
             this.editorsTabControl.Controls.Add(this.overworldPage);
-            this.editorsTabControl.Controls.Add(this.DungeonViewerPage);
             this.editorsTabControl.Controls.Add(this.GfxEditorPage);
+            this.editorsTabControl.Controls.Add(this.DungeonViewerPage);
             this.editorsTabControl.Controls.Add(this.tabPage5);
             this.editorsTabControl.Controls.Add(this.textPage);
             this.editorsTabControl.Controls.Add(this.objDesignerPage);
@@ -2563,45 +2615,6 @@
             this.customPanel3.TabIndex = 19;
             this.customPanel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.customPanel3_MouseMove);
             // 
-            // panel1
-            // 
-            this.panel1.AutoScroll = true;
-            this.panel1.Controls.Add(this.objectViewer1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 37);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(292, 627);
-            this.panel1.TabIndex = 1;
-            // 
-            // objectViewer1
-            // 
-            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
-            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
-            this.objectViewer1.Name = "objectViewer1";
-            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
-            this.objectViewer1.TabIndex = 0;
-            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
-            // 
-            // customPanel1
-            // 
-            this.customPanel1.AutoScroll = true;
-            this.customPanel1.Controls.Add(this.spritesView1);
-            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel1.Location = new System.Drawing.Point(0, 20);
-            this.customPanel1.Name = "customPanel1";
-            this.customPanel1.Size = new System.Drawing.Size(292, 644);
-            this.customPanel1.TabIndex = 2;
-            // 
-            // spritesView1
-            // 
-            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.spritesView1.Location = new System.Drawing.Point(0, 0);
-            this.spritesView1.Name = "spritesView1";
-            this.spritesView1.Size = new System.Drawing.Size(292, 374);
-            this.spritesView1.TabIndex = 0;
-            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
-            // 
             // DungeonMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2620,7 +2633,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DungeonMain";
-            this.Text = "ZScream Magic - 2.2 Beta";
+            this.Text = "ZScream Magic - 2.5 Beta";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.zscreamForm_FormClosing_1);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.LocationChanged += new System.EventHandler(this.DungeonMain_LocationChanged);
@@ -2642,8 +2655,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).EndInit();
             this.objectstabPage.ResumeLayout(false);
             this.objectstabPage.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.customPanel1.ResumeLayout(false);
             this.headerGroupbox.ResumeLayout(false);
             this.headerGroupbox.PerformLayout();
             this.selectedGroupbox.ResumeLayout(false);
@@ -2659,8 +2674,6 @@
             this.potitemobjectPanel.PerformLayout();
             this.editorsTabControl.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.customPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2900,6 +2913,7 @@
         public System.Windows.Forms.TreeView entrancetreeView;
         private System.Windows.Forms.TabPage DungeonViewerPage;
         private System.Windows.Forms.ToolStripButton searchButton;
+        private System.Windows.Forms.CheckBox favoriteCheckbox;
     }
 }
 

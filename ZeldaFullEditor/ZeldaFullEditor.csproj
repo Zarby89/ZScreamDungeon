@@ -174,6 +174,12 @@
     <Compile Include="Gui\GfxGroupsForm.Designer.cs">
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\GfxImportExport.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\GfxImportExport.Designer.cs">
+      <DependentUpon>GfxImportExport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -246,7 +252,9 @@
     <Compile Include="Gui\WindowPanel.Designer.cs">
       <DependentUpon>WindowPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="ImgClipboard.cs" />
     <Compile Include="IniFile.cs" />
+    <Compile Include="OverlayData.cs" />
     <Compile Include="Overworld.cs" />
     <Compile Include="OverworldMap.cs" />
     <Compile Include="OWSceneModes\ClipboardData\TileData.cs" />
@@ -255,6 +263,7 @@
     <Compile Include="OWSceneModes\ExitMode.cs" />
     <Compile Include="OWSceneModes\ItemMode.cs" />
     <Compile Include="OWSceneModes\SpriteMode.cs" />
+    <Compile Include="OWSceneModes\OverlayMode.cs" />
     <Compile Include="OWSceneModes\TileMode.cs" />
     <Compile Include="OWSceneModes\TransportMode.cs" />
     <Compile Include="Project.cs" />
@@ -345,6 +354,7 @@
     <Compile Include="Tile16.cs" />
     <Compile Include="Tile32.cs" />
     <Compile Include="TileInfo.cs" />
+    <Compile Include="TilePos.cs" />
     <Compile Include="TileUndo.cs" />
     <Compile Include="TransportOW.cs" />
     <Compile Include="Utils.cs" />
@@ -400,6 +410,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\GfxGroupsForm.resx">
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\GfxImportExport.resx">
+      <DependentUpon>GfxImportExport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\GotoRoom.resx">
       <DependentUpon>GotoRoom.cs</DependentUpon>
@@ -501,6 +514,8 @@
     </Content>
     <Content Include="PatchNotes.txt" />
     <None Include="Resources\xbutton.png" />
+    <None Include="Resources\starn.bmp" />
+    <None Include="Resources\starl.bmp" />
     <Content Include="spritesmove.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

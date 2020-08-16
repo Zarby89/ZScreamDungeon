@@ -19,8 +19,8 @@ namespace ZeldaFullEditor
         public static IntPtr allgfx16Ptr = Marshal.AllocHGlobal((128 * 7136) / 2);
         public static Bitmap allgfxBitmap;
 
-        public static IntPtr allgfx16EDITPtr = Marshal.AllocHGlobal((128 * 7136));
-        public static Bitmap allgfxEDITBitmap;
+        /*public static IntPtr allgfx16EDITPtr = Marshal.AllocHGlobal((128 * 7136));
+        public static Bitmap allgfxEDITBitmap;*/
 
         public static IntPtr currentgfx16Ptr = Marshal.AllocHGlobal((128 * 512) / 2);
         public static Bitmap currentgfx16Bitmap;
@@ -85,6 +85,8 @@ namespace ZeldaFullEditor
 
         public static Bitmap spriteFont;
         public static Bitmap moveableBlock;
+        public static Bitmap favStar1;
+        public static Bitmap favStar2;
 
         public static Color[] palettes = new Color[256];
 
@@ -175,7 +177,7 @@ namespace ZeldaFullEditor
             roomBg1Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg1Ptr);
             roomBg2Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg2Ptr);
             allgfxBitmap = new Bitmap(128, 7104, 64, PixelFormat.Format4bppIndexed, allgfx16Ptr);
-            allgfxEDITBitmap = new Bitmap(128, 7104, 128, PixelFormat.Format8bppIndexed, allgfx16EDITPtr);
+            //allgfxEDITBitmap = new Bitmap(128, 7104, 128, PixelFormat.Format8bppIndexed, allgfx16EDITPtr);
             currentgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentgfx16Ptr);
             currentEditingfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentEditinggfx16Ptr);
             roomObjectsBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomObjectsPtr);
@@ -186,6 +188,11 @@ namespace ZeldaFullEditor
             editortileBitmap = new Bitmap(16, 16, 16, PixelFormat.Format8bppIndexed, editortilePtr);
             moveableBlock = new Bitmap(Resources.Mblock);
             spriteFont = new Bitmap(Resources.spriteFont);
+            favStar1 = new Bitmap(Resources.starn);
+            favStar2 = new Bitmap(Resources.starl);
+
+            favStar1.MakeTransparent(Color.Fuchsia);
+            favStar2.MakeTransparent(Color.Fuchsia);
 
             previewObjectsPtr = new IntPtr[600];
             previewObjectsBitmap = new Bitmap[600];
@@ -434,13 +441,13 @@ namespace ZeldaFullEditor
             {
 
                 byte* allgfx16Data = (byte*)allgfx16Ptr.ToPointer();
-                byte* allgfx16Data2 = (byte*)allgfx16EDITPtr.ToPointer();
+                //byte* allgfx16Data2 = (byte*)allgfx16EDITPtr.ToPointer();
                 for (int i = 0; i < 0x6F800; i++)
                 {
                     allgfx16Data[i] = newData[i];
 
-                    allgfx16Data2[(i*2)+1] = (byte)(newData[i] & 0x0F);
-                    allgfx16Data2[(i*2)] = (byte)((newData[i] & 0xF0) >> 4);
+                   // allgfx16Data2[(i*2)+1] = (byte)(newData[i] & 0x0F);
+                    //allgfx16Data2[(i*2)] = (byte)((newData[i] & 0xF0) >> 4);
                 }
             }
         }
@@ -637,7 +644,137 @@ namespace ZeldaFullEditor
 
         }
 
+        public static byte[] pc4bppto3bppsnes(byte[] sheetData)
+        {
+            //[r0, bp1], [r0, bp2], [r1, bp1], [r1, bp2], [r2, bp1], [r2, bp2], [r3, bp1], [r3, bp2]
+            //[r4, bp1], [r4, bp2], [r5, bp1], [r5, bp2], [r6, bp1], [r6, bp2], [r7, bp1], [r7, bp2]
+            //[r0, bp3], [r1, bp3], [r2, bp3], [r3, bp3], [r4, bp3], [r5, bp3], [r6, bp3], [r7, bp3]
 
+
+
+            //4 bytes = 1 line of a 8x8 tile
+            int dpos = 0; //destination pos
+
+            byte[] blockdata = new byte[24*64];
+            byte l1d = 0;
+            byte l2d = 0;
+            byte l3d = 0;
+            int bpos = 0;
+            for (int b = 0; b < 64; b++)
+            {
+                int y = (b / 16);
+                int x = (b % 16);
+                //do that x8 for each blocks
+
+
+                dpos = 0;
+                for (int l = 0; l < 8; l++)
+                {
+
+                    l1d = 0;
+                    l2d = 0;
+                    l3d = 0;
+                    for (int i = 0; i < 4; i++) //1 line
+                    {
+                        //1111 0000 | 3333 2222 | 5555 4444 | 7777 6666  (4 bytes (i))
+                        l1d += (byte)((sheetData[i + (l * 64) + (y * 512) + (x * 4)] >> 4) & 0x01); //load bpp1 of line1 pixel2 + i (pixel 4, 6, 7)
+                        l1d = (byte)(l1d << 1); //put it in linebpp1data and shift it by 1
+                        l1d += (byte)(sheetData[i + (l * 64) + (y * 512) + (x * 4)] & 0x01); //load bpp1 of line1 pixel1 + i (pixel 3, 5, 7)
+
+                        l2d += (byte)((sheetData[i + (l * 64) + (y * 512) + (x * 4)] >> 5) & 0x01);//load bpp2 of line1 pixel2 + i (pixel 4, 6, 7)
+                        l2d = (byte)(l2d << 1); //put it in linebpp2data and shift it by 1
+                        l2d += (byte)((sheetData[i + (l * 64) + (y * 512) + (x * 4)] >> 1) & 0x01);//load bpp2 of line1 pixel1 + i (pixel 3, 5, 7)
+
+
+                        l3d += (byte)((sheetData[i + (l * 64) + (y * 512) + (x * 4)] >> 6) & 0x01);//load bpp3 of line1 pixel2 + i (pixel 4, 6, 7)
+                        l3d = (byte)(l3d << 1); //put it in linebpp3data and shift it by 1
+                        l3d += (byte)((sheetData[i + (l * 64) + (y * 512) + (x * 4)] >> 2) & 0x01);//load bpp3 of line1 pixel1 + i (pixel 3, 5, 7)
+                        
+
+                        if (i != 3) //shift all the linebpp data for the next bit except for the last one
+                        {
+                            l1d = (byte)(l1d << 1);
+                            l2d = (byte)(l2d << 1);
+                            l3d = (byte)(l3d << 1);
+                        }
+                    }
+                    blockdata[(bpos*24) + 0 + (dpos * 2)] = l1d;
+                    blockdata[(bpos * 24) + 1 + (dpos * 2)] = l2d;
+                    blockdata[(bpos * 24) + 16 + dpos] = l3d;
+                    dpos++;
+                }
+                bpos++;
+            }
+            //l1d = byte0
+            //l2d = byte1
+            //l3d = byte16
+
+
+            return blockdata;
+        }
+
+        public static byte[] pc4bppto2bppsnes(byte[] sheetData)
+        {
+            //[r0, bp1], [r0, bp2], [r1, bp1], [r1, bp2], [r2, bp1], [r2, bp2], [r3, bp1], [r3, bp2]
+            //[r4, bp1], [r4, bp2], [r5, bp1], [r5, bp2], [r6, bp1], [r6, bp2], [r7, bp1], [r7, bp2]
+
+            //4 bytes = 1 line of a 8x8 tile
+            int dpos = 0; //destination pos
+
+            byte[] blockdata = new byte[16 * 128];
+            byte l1d = 0;
+            byte l2d = 0;
+            byte l3d = 0;
+            int bpos = 0;
+            for (int b = 0; b < 128; b++)
+            {
+                int y = (b / 16);
+                int x = (b % 16);
+                //do that x8 for each blocks
+
+
+                dpos = 0;
+                for (int l = 0; l < 8; l++)
+                {
+
+                    l1d = 0;
+                    l2d = 0;
+                    l3d = 0;
+                    for (int i = 0; i < 4; i++) //1 line
+                    {
+                        //1111 0000 | 3333 2222 | 5555 4444 | 7777 6666  (4 bytes (i))
+                        l1d += (byte)((sheetData[i + (l * 64) + (y * 512) + (x * 4)] >> 4) & 0x01); //load bpp1 of line1 pixel2 + i (pixel 4, 6, 7)
+                        l1d = (byte)(l1d << 1); //put it in linebpp1data and shift it by 1
+                        l1d += (byte)(sheetData[i + (l * 64) + (y * 512) + (x * 4)] & 0x01); //load bpp1 of line1 pixel1 + i (pixel 3, 5, 7)
+
+                        l2d += (byte)((sheetData[i + (l * 64) + (y * 512) + (x * 4)] >> 5) & 0x01);//load bpp2 of line1 pixel2 + i (pixel 4, 6, 7)
+                        l2d = (byte)(l2d << 1); //put it in linebpp2data and shift it by 1
+                        l2d += (byte)((sheetData[i + (l * 64) + (y * 512) + (x * 4)] >> 1) & 0x01);//load bpp2 of line1 pixel1 + i (pixel 3, 5, 7)
+
+                        if (i != 3) //shift all the linebpp data for the next bit except for the last one
+                        {
+                            l1d = (byte)(l1d << 1);
+                            l2d = (byte)(l2d << 1);
+                        }
+                    }
+                    blockdata[(bpos * 16) + 0 + (dpos * 2)] = l1d;
+                    blockdata[(bpos * 16) + 1 + (dpos * 2)] = l2d;
+                    dpos++;
+                }
+                bpos++;
+            }
+            //l1d = byte0
+            //l2d = byte1
+            //l3d = byte16
+
+
+            return blockdata;
+        }
+
+        public static byte[] Convert32to4bpp(byte[] data)
+        {
+            return null;
+        }
 
 
     }

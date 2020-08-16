@@ -34,9 +34,9 @@ namespace ZeldaFullEditor
         public byte[] door_index = new byte[] { 0x00, 0x06, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32, 0x20, 0x14, 0x2A, 0x22 };
 
         TextEditor textEditor = new TextEditor();
-        OverworldEditor overworldEditor = new OverworldEditor();
+        public OverworldEditor overworldEditor = new OverworldEditor();
         Object_Designer objDesigner = new Object_Designer();
-        GfxEditor gfxEditor = new GfxEditor();
+        GfxImportExport gfxEditor;
         DungeonViewer dungeonViewer = new DungeonViewer();
         string projectFilename = "";
         public bool projectLoaded = false;
@@ -58,6 +58,7 @@ namespace ZeldaFullEditor
         {
             xTabButton = new Bitmap(Resources.xbutton);
             layoutForm = new RoomLayout(this);
+            gfxEditor = new GfxImportExport(this);
             initialize_properties();
             GFX.initGfx();
             ROMStructure.loadDefaultProject();
@@ -265,7 +266,7 @@ namespace ZeldaFullEditor
             /* Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
              AsarCLR.Asar.init();
              AsarCLR.Asar.patch("spritesmove.asm", ref ROM.DATA);*/
-            overworldEditor.overworld.SaveMap16Tiles();
+            //overworldEditor.overworld.SaveMap16Tiles();
 
 
             Palettes.SavePalettesToROM(ROM.DATA);
@@ -768,6 +769,10 @@ namespace ZeldaFullEditor
             {
                 overworldEditor.scene.paste();
             }
+            else if (editorsTabControl.SelectedIndex == 2)//gfx editor
+            {
+                gfxEditor.paste();
+            }
         }
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
@@ -781,6 +786,10 @@ namespace ZeldaFullEditor
             {
                 overworldEditor.scene.mouse_down = false;
                 overworldEditor.scene.copy();
+            }
+            else if (editorsTabControl.SelectedIndex == 2)//gfx editor
+            {
+                gfxEditor.copy();
             }
         }
 
@@ -3451,8 +3460,8 @@ namespace ZeldaFullEditor
             }
             if (editorsTabControl.SelectedTab.Name == "GfxEditorPage")
             {
-                //gfxEditor.BringToFront();
-                //gfxEditor.Visible = true;
+                gfxEditor.BringToFront();
+                gfxEditor.Visible = true;
             }
             else
             {
@@ -3487,6 +3496,11 @@ namespace ZeldaFullEditor
         {
             SearchForm sf = new SearchForm(this);
             sf.ShowDialog();
+
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
 
         }
     }

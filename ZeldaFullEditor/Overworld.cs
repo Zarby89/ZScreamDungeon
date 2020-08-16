@@ -18,6 +18,7 @@ namespace ZeldaFullEditor
     {
         public List<Tile16> tiles16;
         public List<Tile32> tiles32;
+        
         private int[] map32address;
 
         public Tile32[] map16tiles;
@@ -38,6 +39,8 @@ namespace ZeldaFullEditor
         public EntranceOWEditor[] allentrances = new EntranceOWEditor[129];
         public EntranceOWEditor[] allholes = new EntranceOWEditor[0x13];
         public List<RoomPotSaveEditor> allitems = new List<RoomPotSaveEditor>();
+        public OverlayData[] alloverlays = new OverlayData[128]; 
+
 
         public int worldOffset = 0;
 
@@ -62,33 +65,40 @@ namespace ZeldaFullEditor
             t32 = new List<ushort>();
 
             
+
+
+
+
+            AssembleMap32Tiles();
+            AssembleMap16Tiles();
+            DecompressAllMapTiles();
+            loadOverlays();
+ 
+            //Map Initialization :
+            for (int i = 0; i < 160; i++)
+            {
+                allmaps[i] = new OverworldMap((byte)i, this);
+            }
+            getLargeMaps();
+
+            loadExits();
+            loadEntrances();
+            loadItems();
+            loadTransports();
+
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
-                AssembleMap32Tiles();
-                AssembleMap16Tiles();
-                DecompressAllMapTiles();
-                //Map Initialization :
-                for (int i = 0; i < 160; i++)
-                {
-                    allmaps[i] = new OverworldMap((byte)i, this);
-                }
-                getLargeMaps();
-                for (int i = 0; i < 160; i++)
-                {
-                    allmaps[i].BuildMap();
-                }
-                loadExits();
-                loadEntrances();
-                loadItems();
-                loadTransports();
-                isLoaded = true;
 
+
+            
+            for (int i = 0; i < 160; i++)
+            {
+                allmaps[i].BuildMap();
+            }
             }).Start();
 
-
-
-
+            isLoaded = true;
 
         }
 
@@ -954,6 +964,120 @@ namespace ZeldaFullEditor
                 }
             }
         }*/
+
+
+
+        public void loadOverlays()
+        {
+            for (int index = 0; index < 128; index++)
+            {
+                alloverlays[index] = new OverlayData();
+                //overlayPointers
+                int addr = (Constants.overlayPointersBank << 16) +
+                    (ROM.DATA[Constants.overlayPointers + (index * 2) + 1] << 8) +
+                    ROM.DATA[Constants.overlayPointers + (index * 2)];
+                addr = Utils.SnesToPc(addr);
+
+                int a = 0;
+                int x = 0;
+                int sta = 0;
+                //16-bit mode : 
+                //A9 (LDA #$)
+                //A2 (LDX #$)
+                //8D (STA $xxxx)
+                //9D (STA $xxxx ,x)
+                //8F (STA $xxxxxx)
+                //1A (INC A)
+                //4C (JMP)
+                //60 (END)
+                byte b = 0;
+                while (b != 0x60)
+                {
+                    b = ROM.DATA[addr];
+                    if (b == 0xFF)
+                    {
+                        break;
+                    }
+                    else if (b == 0xA9) //LDA #$xxxx (Increase addr+3)
+                    {
+                        a = (ROM.DATA[addr + 2] << 8) +
+                        ROM.DATA[addr + 1];
+                        addr += 3;
+                        continue;
+                    }
+                    else if (b == 0xA2) //LDX #$xxxx (Increase addr+3)
+                    {
+                        x = (ROM.DATA[addr + 2] << 8) +
+                        ROM.DATA[addr + 1];
+                        addr += 3;
+                        continue;
+                    }
+                    else if (b == 0x8D) //STA $xxxx (Increase addr+3)
+                    {
+                        sta = (ROM.DATA[addr + 2] << 8) +
+                        ROM.DATA[addr + 1];
+
+                        //draw tile at sta position
+                        //Console.WriteLine("Draw Tile" + a + " at " + sta.ToString("X4"));
+                        //64
+                        sta = sta & 0x1FFF;
+                        int yp = ((sta / 2) / 0x40);
+                        int xp = (sta / 2) - (yp * 0x40);
+                        alloverlays[index].tilesData.Add(new TilePos((byte)xp, (byte)yp, (ushort)a));
+                        addr += 3;
+                        continue;
+                    }
+                    else if (b == 0x9D) //STA $xxxx, x (Increase addr+3)
+                    {
+                        sta = (ROM.DATA[addr + 2] << 8) +
+                        ROM.DATA[addr + 1];
+                        //draw tile at sta,X position
+                        //Console.WriteLine("Draw Tile" + a + " at " + (sta + x).ToString("X4"));
+
+                        int stax = (sta & 0x1FFF) + x;
+                        int yp = ((stax / 2) / 0x40);
+                        int xp = (stax / 2) - (yp * 0x40);
+                        alloverlays[index].tilesData.Add(new TilePos((byte)xp, (byte)yp, (ushort)a));
+
+                        addr += 3;
+                        continue;
+                    }
+                    else if (b == 0x8F) //STA $xxxxxx (Increase addr+4)
+                    {
+                        sta = (ROM.DATA[addr + 2] << 8) +
+                        ROM.DATA[addr + 1];
+                        //draw tile at sta,X position
+                        //Console.WriteLine("Draw Tile" + a + " at " + (sta + x).ToString("X4"));
+
+                        int stax = (sta & 0x1FFF) + x;
+                        int yp = ((stax / 2) / 0x40);
+                        int xp = (stax / 2) - (yp * 0x40);
+                        alloverlays[index].tilesData.Add(new TilePos((byte)xp, (byte)yp, (ushort)a));
+
+                        addr += 4;
+                        continue;
+                    }
+                    else if (b == 0x1A) //INC A (Increase addr+1)
+                    {
+                        a += 1;
+                        addr += 1;
+                        continue;
+                    }
+                    else if (b == 0x4C) //JMP $xxxx (move addr to the new address)
+                    {
+                        addr = (Constants.overlayPointersBank << 16) +
+                        (ROM.DATA[addr + 2] << 8) +
+                        ROM.DATA[addr + 1];
+                        addr = Utils.SnesToPc(addr);
+                        continue;
+                    }
+                    else if (b == 0x60) //RTS
+                    {
+                        break; //just to be sure
+                    }
+                }
+            }
+        }
     }
 
 }

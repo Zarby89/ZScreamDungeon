@@ -132,8 +132,8 @@ namespace ZeldaFullEditor.Gui
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
             //e.Graphics.DrawImage(GFX.editortileBitmap, new Rectangle(0, 0, 64, 64));
-            e.Graphics.DrawImage(scene.ow.allmaps[scene.selectedMap].blocksetBitmap,new RectangleF(0f,0f,256.5f,7200f),new RectangleF(0,0,128,3600),GraphicsUnit.Pixel);
-            e.Graphics.DrawImage(scene.ow.allmaps[scene.selectedMap].blocksetBitmap, new RectangleF(256f, 0f, 256.5f, 7200f), new RectangleF(0, 3600, 128, 3600), GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(scene.ow.allmaps[scene.selectedMap].blocksetBitmap,new RectangleF(0f,0f,256.5f,8192f),new RectangleF(0,0,128, 4096),GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(scene.ow.allmaps[scene.selectedMap].blocksetBitmap, new RectangleF(256f, 0f, 256.5f, 8192f), new RectangleF(0, 3600, 128, 4096), GraphicsUnit.Pixel);
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 32, 0, 32, 64);
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 0, 32, 64, 32);
         }

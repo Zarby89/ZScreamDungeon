@@ -1,0 +1,395 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Drawing;
+using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
+using System.Threading;
+
+namespace ZeldaFullEditor.Gui
+{
+    public partial class GfxImportExport : UserControl
+    {
+        public GfxImportExport(DungeonMain mainForm)
+        {
+            this.mainForm = mainForm;
+            InitializeComponent();
+        }
+        DungeonMain mainForm;
+        int selectedSheet = 0;
+        private void pasteIndexed_Click(object sender, EventArgs e)
+        {
+            byte[] data = ImgClipboard.GetImageData();
+            int nbrColor = 16;
+            
+            if (data[32] != 0x00)
+            {
+                nbrColor = data[32];
+
+            }
+            int pos = data[0] + (nbrColor * 4); //palette data useless for now
+            unsafe
+            {
+                byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                int spos = 0;
+                //byte* allgfx16Data2 = (byte*)allgfx16EDITPtr.ToPointer();
+                for (int y = 31; y >= 0; y--)
+                {
+                    for(int x = 0; x<64;x++)
+                    {
+                        gdata[spos+(selectedSheet*0x800)] = data[pos + (x+(y*64))];
+                        spos++;
+                    }
+
+                    
+                }
+            }
+            allgfxPicturebox.Refresh();
+
+        }
+
+        private void allgfxPicturebox_MouseDown(object sender, MouseEventArgs e)
+        {
+            selectedSheet = (e.Y / 64);
+            allgfxPicturebox.Refresh();
+        }
+
+        private void allgfxPicturebox_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+            e.Graphics.DrawImage(GFX.allgfxBitmap, new Rectangle(0,0,256, 14272), new Rectangle(0, 0, 128, 7136),GraphicsUnit.Pixel);
+            e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(0, selectedSheet*64, 256, 64));
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            byte[] sdata = new byte[0x800];
+            unsafe
+            {
+                byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                for (int i = 0; i < 0x800; i++)
+                {
+                    sdata[i] = gdata[(selectedSheet * 0x800)+i];
+                }
+
+            }
+
+            FileStream fs = new FileStream("test3bpp.gfx", FileMode.OpenOrCreate, FileAccess.Write);
+            byte[] ndata = GFX.pc4bppto2bppsnes(sdata);
+            fs.Write(ndata, 0, ndata.Length);
+            fs.Close();
+           
+        }
+        byte[][] gfxSheets3bpp = new byte[223][];
+        private void button2_Click(object sender, EventArgs e)
+        {
+            
+            for(int i = 0;i<223;i++)
+            {
+                byte[] sdata = new byte[0x800];
+                unsafe
+                {
+                    byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                    for (int j = 0; j < 0x800; j++)
+                    {
+                        sdata[j] = gdata[(i * 0x800) + j];
+                    }
+                    if (GFX.isbpp3[i])
+                    {
+                        gfxSheets3bpp[i] = GFX.pc4bppto3bppsnes(sdata);
+                    }
+                    else
+                    {
+                        int compressedSize = 0;
+                        gfxSheets3bpp[i] = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(ROM.DATA, GFX.GetPCGfxAddress(ROM.DATA, (byte)i), 0x800, ref compressedSize);
+                    }
+                }
+                
+            }
+            Console.WriteLine("Reached");
+            recompressAllGfx();
+        }
+
+        public void recompressAllGfx()
+        {
+            int gfxPointer1 = Utils.SnesToPc((ROM.DATA[Constants.gfx_1_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_1_pointer]));
+            int gfxPointer2 = Utils.SnesToPc((ROM.DATA[Constants.gfx_2_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_2_pointer]));
+            int gfxPointer3 = Utils.SnesToPc((ROM.DATA[Constants.gfx_3_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_3_pointer]));
+            int pos = 0x8b800;
+            int uPos = 0x87000;
+            bool bpp2 = false;
+            for (int i = 0; i < 223; i++)
+            {
+
+                if (i < 115 || i > 126) //not compressed
+                {
+                    bpp2 = false;
+                    if (!GFX.isbpp3[i])
+                    {
+                        bpp2 = true;
+                    }
+
+                    if (ROM.DATA[gfxPointer1 + i] <= 0x20)
+                    {
+                        int saddr = Utils.PcToSnes(pos);
+                        ROM.DATA[gfxPointer3 + i] = (byte)(saddr & 0xFF);
+                        ROM.DATA[gfxPointer2 + i] = (byte)(saddr >> 8 & 0xFF);
+                        ROM.DATA[gfxPointer1 + i] = (byte)(saddr >> 16 & 0xFF);
+                        if (bpp2 == false)
+                        {
+                            byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, 0x600);
+                            int s = cbytes.Length;
+                            cbytes.CopyTo(ROM.DATA, pos);
+                            pos += s;
+                        }
+                        else
+                        {
+                            byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, 0x800);
+                            int s = cbytes.Length;
+                            cbytes.CopyTo(ROM.DATA, pos);
+                            pos += s;
+                        }
+                    }
+                    else //save it back in expanded data if it was already
+                    {
+                        if (bpp2 == false)
+                        {
+                            byte[] b = new byte[] { ROM.DATA[gfxPointer3 + i], ROM.DATA[gfxPointer2 + i], ROM.DATA[gfxPointer1 + i], 0 };
+                            int addr = BitConverter.ToInt32(b, 0);
+                            byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, 0x600);
+                            int s = cbytes.Length;
+                            cbytes.CopyTo(ROM.DATA, Utils.SnesToPc(addr));
+                            //pos += s;
+                        }
+                        else
+                        {
+                            byte[] b = new byte[] { ROM.DATA[gfxPointer3 + i], ROM.DATA[gfxPointer2 + i], ROM.DATA[gfxPointer1 + i], 0 };
+                            int addr = BitConverter.ToInt32(b, 0);
+                            byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, 0x800);
+                            int s = cbytes.Length;
+                            cbytes.CopyTo(ROM.DATA, Utils.SnesToPc(addr));
+                            //pos += s;
+
+                        }
+                    }
+
+                }
+                else
+                {
+                    if (ROM.DATA[gfxPointer1 + i] <= 0x20)
+                    {
+                        for (int j = 0; j < 0x600; j++)
+                        {
+                            ROM.DATA[uPos + j] = gfxSheets3bpp[i][j];
+                        }
+
+                        uPos += 0x600;
+                    }
+                }
+
+            }
+
+            /*if (pos >= Constants.maxGfx)
+            {
+                MessageBox.Show("It is possible the gfx are overwriting data :( new gfx size is " + (pos - 0x8b800).ToString("X6"));
+            }
+            else
+            {
+                MessageBox.Show("Saved successfully total of remaining space for gfx : " + (Constants.maxGfx - pos).ToString("X6"));
+            }*/
+            infoLabel.Text =
+            "Compressed Size = "+ (pos - 0x8b800).ToString("X6")+"\r\n" +
+            "Available Space = " + (Constants.maxGfx - pos).ToString("X6");
+
+
+        }
+
+        private void palettePicturebox_Paint(object sender, PaintEventArgs e)
+        {
+
+            for(int i = 0;i<256;i++)
+            {
+                if (radioButton1.Checked)
+                {
+                    e.Graphics.FillRectangle(new SolidBrush(GFX.roomBg1Bitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
+                }
+                else
+                {
+
+                        e.Graphics.FillRectangle(new SolidBrush(GFX.mapgfx16Bitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
+                }
+
+            }
+
+            e.Graphics.DrawRectangle(Pens.Lime, new Rectangle(0, selectedPal*16, 256, 16));
+        }
+
+        private void radioButton2_CheckedChanged(object sender, EventArgs e)
+        {
+            palettePicturebox.Refresh();
+        }
+        int selectedPal = 0;
+        private void palettePicturebox_MouseDown(object sender, MouseEventArgs e)
+        {
+            selectedPal = (e.Y / 16);
+
+            ColorPalette cp = GFX.allgfxBitmap.Palette;
+            for (int i = 0; i< 16;i++)
+            {
+                if (radioButton1.Checked)
+                {
+                    cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[i+selectedPal*16];
+                }
+                else
+                {
+
+                    cp.Entries[i] = GFX.mapgfx16Bitmap.Palette.Entries[i + selectedPal * 16];
+                }
+                
+            }
+            GFX.allgfxBitmap.Palette = cp;
+            allgfxPicturebox.Refresh();
+            palettePicturebox.Refresh();
+
+        }
+
+        private void copyIndexed_Click(object sender, EventArgs e)
+        {
+            Clipboard.Clear();
+            byte[] sdata = new byte[0x800];
+            unsafe
+            {
+                byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                for (int i = 0; i < 0x800; i++)
+                {
+                    sdata[i] = gdata[(selectedSheet * 0x800) + i];
+                }
+
+            }
+            byte[] pdata = new byte[64];
+            for (int i = 0; i < 16; i++)
+            {
+                pdata[(i * 4) + 0] = GFX.allgfxBitmap.Palette.Entries[i].B;
+                pdata[(i * 4) + 1] = GFX.allgfxBitmap.Palette.Entries[i].G;
+                pdata[(i * 4) + 2] = GFX.allgfxBitmap.Palette.Entries[i].R;
+                pdata[(i * 4) + 3] = GFX.allgfxBitmap.Palette.Entries[i].A;
+            }
+            ImgClipboard.SetImageData(sdata,pdata);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void copy24bpp_Click(object sender, EventArgs e)
+        {
+            byte[] sdata = new byte[0x800];
+            unsafe
+            {
+                byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                for (int i = 0; i < 0x800; i++)
+                {
+                    sdata[i] = gdata[(selectedSheet * 0x800) + i];
+                }
+
+            }
+            byte[] pdata = new byte[64];
+            for (int i = 0; i < 16; i++)
+            {
+                pdata[(i * 4) + 0] = GFX.allgfxBitmap.Palette.Entries[i].B;
+                pdata[(i * 4) + 1] = GFX.allgfxBitmap.Palette.Entries[i].G;
+                pdata[(i * 4) + 2] = GFX.allgfxBitmap.Palette.Entries[i].R;
+                pdata[(i * 4) + 3] = GFX.allgfxBitmap.Palette.Entries[i].A;
+            }
+            ImgClipboard.SetImageDataWithPal(sdata, pdata);
+        }
+
+        public void copy()
+        {
+            copy24bpp_Click(null, null);
+        }
+
+        public void paste()
+        {
+            paste24bpp_Click(null, null);
+        }
+
+        Color[] palettes = new Color[8];
+        private void paste24bpp_Click(object sender, EventArgs e)
+        {
+            
+            if (Clipboard.ContainsImage())
+            {
+                Bitmap b = (Bitmap)Clipboard.GetImage();
+
+                BitmapData bd = b.LockBits(new Rectangle(0,0,128,40),ImageLockMode.ReadOnly,PixelFormat.Format32bppRgb);
+
+                unsafe
+                {
+
+                    byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
+                    byte* data = (byte*)bd.Scan0.ToPointer();
+                    //one line is 512 - palette (32 bytes per palettes)
+                    for (int i = 0; i < 8; i++)
+                    {
+                        palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x4800], data[(i * 32) + 1 - 0x4800], data[(i * 32) - 0x4800]);
+                        Console.WriteLine("R: " + palettes[i].R + " G: " + palettes[i] .G+ " B: "+ palettes[i].B);
+                    }
+                    int pos = 0; //should be line where data start inverted
+                    for(int y = 0; y<32;y++) //for each lines
+                    {
+                        for(int x = 0; x< 64; x++)//advance by 64 pixel but merge them together
+                        {
+                            byte pix1 = matchPalette(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) - (y * 512)]));
+                            byte pix2 = matchPalette(Color.FromArgb(data[(x * 8) + 6 - (y * 512)], data[(x * 8) + 5 - (y * 512)], data[(x * 8) +4 - (y * 512)]));
+                            byte mpix = (byte)((pix1 << 4) + pix2);
+                            gdata[pos + (selectedSheet * 0x800)] = mpix;
+                            pos++;
+                        }
+                    }
+
+
+                }
+
+
+
+                b.UnlockBits(bd);
+                mainForm.activeScene.room.reloadGfx();
+                mainForm.activeScene.DrawRoom();
+                mainForm.activeScene.Refresh();
+                allgfxPicturebox.Refresh();
+
+                for (int i = 0; i < 159; i++)
+                {
+                    mainForm.overworldEditor.overworld.allmaps[i].needRefresh = true;
+                }
+
+
+            }
+        }
+
+        public byte matchPalette(Color c)
+        {
+            for(int i = 0;i<8;i++)
+            {
+                if (palettes[i].R == c.R && palettes[i].G == c.G && palettes[i].B == c.B)
+                {
+                    return (byte)i;
+                }
+            }
+
+
+            return 1;
+        }
+
+    }
+}

@@ -16,6 +16,7 @@ namespace ZeldaFullEditor
         public ObjectViewer()
         {
             InitializeComponent();
+
         }
         public List<Room_Object> items = new List<Room_Object>();
         private void ObjectViewer_Paint(object sender, PaintEventArgs e)
@@ -40,7 +41,7 @@ namespace ZeldaFullEditor
                 
 
                 e.Graphics.DrawImage(GFX.previewObjectsBitmap[o.previewId], new Point(xpos * 64, ypos * 64));
-                
+                e.Graphics.DrawImage(GFX.favStar1, new Rectangle((xpos * 64) + 40, (ypos * 64) + 40, 16,16));
                 if (selectedObject == o)
                 {
                     e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(50, 0, 0, 255)), new Rectangle(xpos * 64, (ypos * 64), 64, 64));

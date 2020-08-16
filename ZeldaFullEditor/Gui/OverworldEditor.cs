@@ -43,6 +43,7 @@ namespace ZeldaFullEditor.Gui
             itemModeButton.Tag = ObjectMode.Itemmode;
             spriteModeButton.Tag = ObjectMode.Spritemode;
             transportModeButton.Tag = ObjectMode.Flute;
+            overlayButton.Tag = ObjectMode.Overlay;
             stateCombobox.SelectedIndex = 1;
             //setTilesGfx();
             
@@ -182,18 +183,21 @@ namespace ZeldaFullEditor.Gui
 
         private void spButton_Click(object sender, EventArgs e)
         {
+            scene.selectedMap = 128;
             scene.ow.worldOffset = 128;
             scene.Refresh();
         }
 
         private void dwButton_Click(object sender, EventArgs e)
         {
+            scene.selectedMap = 64;
             scene.ow.worldOffset = 64;
             scene.Refresh();
         }
 
         private void lwButton_Click(object sender, EventArgs e)
         {
+            scene.selectedMap = 0;
             scene.ow.worldOffset = 0;
             scene.Refresh();
         }
@@ -257,6 +261,27 @@ namespace ZeldaFullEditor.Gui
         private void redoButton_Click(object sender, EventArgs e)
         {
             scene.mainForm.redoButton_Click(sender, e);
+        }
+
+        private void tilePictureBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void refreshToolStrip_Click(object sender, EventArgs e)
+        {
+            new Thread(() =>
+            {
+                Thread.CurrentThread.IsBackground = true;
+                for (int i = 0; i < 159; i++)
+                {
+                    if (mainForm.overworldEditor.scene.ow.allmaps[i].needRefresh == true)
+                    {
+                        mainForm.overworldEditor.scene.ow.allmaps[i].BuildMap();
+                        mainForm.overworldEditor.scene.ow.allmaps[i].needRefresh = false;
+                    }
+                }
+            }).Start();
         }
     }
 }

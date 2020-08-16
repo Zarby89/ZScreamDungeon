@@ -55,6 +55,7 @@ namespace ZeldaFullEditor
         public ItemMode itemMode;
         public Sprite selectedFormSprite;
         public TransportMode transportMode;
+        public OverlayMode overlayMode;
         public bool showEntrances = true;
         public bool showExits = true;
         public bool showFlute = true;
@@ -84,6 +85,7 @@ namespace ZeldaFullEditor
             itemMode = new ItemMode(this);
             spriteMode = new SpriteMode(this);
             transportMode = new TransportMode(this);
+            overlayMode = new OverlayMode(this);
             //this.Refresh();
         }
 
@@ -148,6 +150,10 @@ namespace ZeldaFullEditor
             {
                 tilemode.OnMouseDown(e);
             }
+            else if (selectedMode == ObjectMode.Overlay)
+            {
+                overlayMode.OnMouseDown(e);
+            }
             else if (selectedMode == ObjectMode.Exits)
             {
                 exitmode.onMouseDown(e);
@@ -185,6 +191,10 @@ namespace ZeldaFullEditor
             if (selectedMode == ObjectMode.Tile)
             {
                 tilemode.OnMouseUp(e);
+            }
+            else if (selectedMode == ObjectMode.Overlay)
+            {
+                overlayMode.OnMouseUp(e);
             }
             else if (selectedMode == ObjectMode.Exits)
             {
@@ -227,7 +237,7 @@ namespace ZeldaFullEditor
                     owForm.objCombobox.Items.AddRange(ItemsNames.name);
                     if ((itemMode.lastselectedItem.id & 0x80) == 0x80)
                     {
-                        owForm.objCombobox.SelectedIndex = (23 + (itemMode.lastselectedItem.id / 2));
+                        owForm.objCombobox.SelectedIndex = (23 + ((itemMode.lastselectedItem.id -0x80) / 2));
                     }
                     else
                     {
@@ -299,6 +309,10 @@ namespace ZeldaFullEditor
             if (selectedMode == ObjectMode.Tile)
             {
                 tilemode.OnMouseMove(e);
+            }
+            else if (selectedMode == ObjectMode.Overlay)
+            {
+                overlayMode.OnMouseMove(e);
             }
             else if (selectedMode == ObjectMode.Exits)
             {
@@ -553,14 +567,113 @@ namespace ZeldaFullEditor
                     }
                 }
 
+                if (selectedMode == ObjectMode.Overlay)
+                {
+                    int mid = ow.allmaps[selectedMap].parent;
+                    int msy = ((ow.allmaps[selectedMap].parent - ow.worldOffset) / 8);
+                    int msx = (ow.allmaps[selectedMap].parent - ow.worldOffset) - (my * 8);
+                    drawText(g, 0 + 4, 0 + 64, "Selected Map : " + selectedMap.ToString());
+                    drawText(g, 0 + 4, 0 + 80, "Selected Map PARENT : " + ow.allmaps[selectedMap].parent.ToString());
+                    drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
+
+                        for (int i = 0; i < ow.alloverlays[mid].tilesData.Count; i++)
+                        {
+
+                            int xo = ow.alloverlays[mid].tilesData[i].x * 16;
+                            int yo = ow.alloverlays[mid].tilesData[i].y * 16;
+                            int to = ow.alloverlays[mid].tilesData[i].tileId;
+                            int toy = (to / 8) * 16;
+                            int tox = (to % 8) * 16;
+                            g.DrawImage(ow.allmaps[ow.allmaps[selectedMap].parent].blocksetBitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
+                            //g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
+                            byte detect = compareTilePos(ow.alloverlays[mid].tilesData[i], ow.alloverlays[mid].tilesData.ToArray());
+                            if (detect == 0)
+                            {
+                                g.DrawRectangle(Pens.White, new Rectangle((msx * 512) + xo, (msy * 512) + yo, (msx * 512) + 16, (msy * 512) + 16));
+                            }
+                            if ((detect & 0x01) != 0x01)
+                            {
+                                g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo, (msy * 512) + yo + 16);
+                            }
+                            if ((detect & 0x02) != 0x02)
+                            {
+                                g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo);
+                            }
+                            if ((detect & 0x04) != 0x04)
+                            {
+                                g.DrawLine(Pens.White, (msx * 512) + xo + 16, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                            }
+                            if ((detect & 0x08) != 0x08)
+                            {
+                                g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                            }
+                        }
+
+                        g.DrawImage(tilesgfxBitmap, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16), 0, 0, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
+                        g.DrawRectangle(Pens.LightGreen, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16));
+
+                        drawText(g, 4, 24, globalmouseTileDownX.ToString());
+                        drawText(g, 4, 48, globalmouseTileDownY.ToString());
+                    
+                }
+                
+
 
                 g.CompositingMode = CompositingMode.SourceCopy;
                 //hideText = false;
+
             }
+        }
+
+        //0 = none
+        //1 = left
+        //2 = up
+        //4 = right
+        //8 = bottom
+
+        public byte compareTilePos(TilePos tpc, TilePos[] tpa)
+        {
+            byte detected = 0;
+            foreach(TilePos t in tpa)
+            {
+                if (t.x == tpc.x-1 && t.y == tpc.y)
+                {
+                    detected += 1; 
+                }
+                else if (t.x == tpc.x+1 && t.y == tpc.y)
+                {
+                    detected += 4;
+                }
+                else if (t.x == tpc.x && t.y == tpc.y-1)
+                {
+                    detected += 2;
+                }
+                else if (t.x == tpc.x && t.y == tpc.y+1)
+                {
+                    detected += 8;
+                }
+                else if (t.x == tpc.x && t.y == tpc.y)
+                {
+                    detected += 0x80;
+                }
+            }
+
+            return detected;
         }
 
 
 
+        public TilePos compareTilePosT(TilePos tpc, TilePos[] tpa)
+        {
+            foreach (TilePos t in tpa)
+            {
+                if (t.x == tpc.x && t.y == tpc.y)
+                {
+                    return t;
+                }
+            }
+            return null;
+        }
 
 
 
