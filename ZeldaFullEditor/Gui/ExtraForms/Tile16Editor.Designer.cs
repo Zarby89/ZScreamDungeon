@@ -33,7 +33,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureboxTile8 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.tileTypeBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.tileUpDown = new System.Windows.Forms.NumericUpDown();
             this.paletteUpDown = new System.Windows.Forms.NumericUpDown();
@@ -95,7 +95,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.comboBox1);
+            this.groupBox1.Controls.Add(this.tileTypeBox);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.tileUpDown);
             this.groupBox1.Controls.Add(this.paletteUpDown);
@@ -111,13 +111,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Selected Tile8";
             // 
-            // comboBox1
+            // tileTypeBox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(9, 237);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(185, 21);
-            this.comboBox1.TabIndex = 8;
+            this.tileTypeBox.FormattingEnabled = true;
+            this.tileTypeBox.Location = new System.Drawing.Point(9, 237);
+            this.tileTypeBox.Name = "tileTypeBox";
+            this.tileTypeBox.Size = new System.Drawing.Size(185, 21);
+            this.tileTypeBox.TabIndex = 8;
+            this.tileTypeBox.SelectedIndexChanged += new System.EventHandler(this.tileTypeBox_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -265,7 +266,7 @@
         private System.Windows.Forms.CheckBox mirrorXCheckbox;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox tileTypeBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;

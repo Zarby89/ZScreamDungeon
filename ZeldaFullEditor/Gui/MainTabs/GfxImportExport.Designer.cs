@@ -32,8 +32,8 @@
             this.allgfxPicturebox = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.paste24bpp = new System.Windows.Forms.Button();
-            this.pasteIndexed = new System.Windows.Forms.Button();
             this.copy24bpp = new System.Windows.Forms.Button();
+            this.pasteIndexed = new System.Windows.Forms.Button();
             this.copyIndexed = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.infoLabel = new System.Windows.Forms.Label();
@@ -42,6 +42,7 @@
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.palettePicturebox = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.allgfxPicturebox)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -90,16 +91,6 @@
             this.paste24bpp.UseVisualStyleBackColor = true;
             this.paste24bpp.Click += new System.EventHandler(this.paste24bpp_Click);
             // 
-            // pasteIndexed
-            // 
-            this.pasteIndexed.Location = new System.Drawing.Point(399, 418);
-            this.pasteIndexed.Name = "pasteIndexed";
-            this.pasteIndexed.Size = new System.Drawing.Size(100, 23);
-            this.pasteIndexed.TabIndex = 2;
-            this.pasteIndexed.Text = "Paste Indexed";
-            this.pasteIndexed.UseVisualStyleBackColor = true;
-            this.pasteIndexed.Click += new System.EventHandler(this.pasteIndexed_Click);
-            // 
             // copy24bpp
             // 
             this.copy24bpp.Location = new System.Drawing.Point(6, 19);
@@ -109,6 +100,16 @@
             this.copy24bpp.Text = "Copy 32bpp +Pal";
             this.copy24bpp.UseVisualStyleBackColor = true;
             this.copy24bpp.Click += new System.EventHandler(this.copy24bpp_Click);
+            // 
+            // pasteIndexed
+            // 
+            this.pasteIndexed.Location = new System.Drawing.Point(399, 418);
+            this.pasteIndexed.Name = "pasteIndexed";
+            this.pasteIndexed.Size = new System.Drawing.Size(100, 23);
+            this.pasteIndexed.TabIndex = 2;
+            this.pasteIndexed.Text = "Paste Indexed";
+            this.pasteIndexed.UseVisualStyleBackColor = true;
+            this.pasteIndexed.Click += new System.EventHandler(this.pasteIndexed_Click);
             // 
             // copyIndexed
             // 
@@ -141,7 +142,8 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(677, 624);
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.button2.Location = new System.Drawing.Point(735, 624);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(100, 23);
             this.button2.TabIndex = 5;
@@ -185,17 +187,29 @@
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(284, 629);
+            this.label1.Location = new System.Drawing.Point(284, 634);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(194, 13);
             this.label1.TabIndex = 9;
             this.label1.Text = "*2bpp are not supported for the moment";
             // 
+            // panel2
+            // 
+            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel2.Location = new System.Drawing.Point(564, 6);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(271, 612);
+            this.panel2.TabIndex = 10;
+            // 
             // GfxImportExport
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.panel2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pasteIndexed);
             this.Controls.Add(this.copyIndexed);
@@ -207,7 +221,8 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.panel1);
             this.Name = "GfxImportExport";
-            this.Size = new System.Drawing.Size(780, 650);
+            this.Size = new System.Drawing.Size(838, 650);
+            this.Load += new System.EventHandler(this.GfxImportExport_Load);
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.allgfxPicturebox)).EndInit();
             this.groupBox1.ResumeLayout(false);
@@ -235,5 +250,6 @@
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.PictureBox palettePicturebox;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Panel panel2;
     }
 }

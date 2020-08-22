@@ -250,7 +250,7 @@ namespace ZeldaFullEditor
             }
         }
 
-
+        
         public Entrance(byte entranceId, bool startingEntrance = false)
         {
             room = (short)((ROM.DATA[(Constants.entrance_room + (entranceId * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_room + (entranceId * 2)]);
@@ -318,7 +318,7 @@ namespace ZeldaFullEditor
 
         public void save(int entranceId, bool startingentrance = false, bool jp = false)
         {
-
+            //TODO: Change these save
             if (startingentrance == false)
             {
                 ROM.DATA[(Constants.entrance_room + (entranceId * 2) + 1)] = (byte)((room >> 8) & 0xFF);

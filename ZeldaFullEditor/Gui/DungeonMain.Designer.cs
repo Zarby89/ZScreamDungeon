@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Starting Entrances");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Starting Entrances");
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,6 +66,10 @@
             this.clearSelectedRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearAllRoomsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportAsASMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportAllRoomsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.debugRunToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.naviguateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToRightToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.moveToLeftToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,6 +80,9 @@
             this.openLeftRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openUpRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openDownRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openDungeonTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openOverwolrdTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openGfxTabToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textSpriteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.textChestItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -258,11 +265,8 @@
             this.editorsTabControl = new System.Windows.Forms.TabControl();
             this.dungeonPage = new System.Windows.Forms.TabPage();
             this.overworldPage = new System.Windows.Forms.TabPage();
-            this.DungeonViewerPage = new System.Windows.Forms.TabPage();
             this.GfxEditorPage = new System.Windows.Forms.TabPage();
-            this.tabPage5 = new System.Windows.Forms.TabPage();
             this.textPage = new System.Windows.Forms.TabPage();
-            this.objDesignerPage = new System.Windows.Forms.TabPage();
             this.thumbnailBox = new System.Windows.Forms.PictureBox();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
             this.menuStrip1.SuspendLayout();
@@ -300,6 +304,7 @@
             this.editToolStripMenuItem,
             this.projectToolStripMenuItem,
             this.roomToolStripMenuItem,
+            this.testToolStripMenuItem,
             this.naviguateToolStripMenuItem,
             this.viewToolStripMenuItem,
             this.windowToolStripMenuItem,
@@ -532,7 +537,8 @@
             this.printRoomObjectsToolStripMenuItem1,
             this.clearSelectedRoomToolStripMenuItem,
             this.clearAllRoomsToolStripMenuItem,
-            this.exportAsASMToolStripMenuItem});
+            this.exportAsASMToolStripMenuItem,
+            this.exportAllRoomsToolStripMenuItem});
             this.roomToolStripMenuItem.Name = "roomToolStripMenuItem";
             this.roomToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
             this.roomToolStripMenuItem.Text = "Room";
@@ -579,6 +585,36 @@
             this.exportAsASMToolStripMenuItem.Text = "Export as Binary";
             this.exportAsASMToolStripMenuItem.Click += new System.EventHandler(this.exportAsASMToolStripMenuItem_Click);
             // 
+            // exportAllRoomsToolStripMenuItem
+            // 
+            this.exportAllRoomsToolStripMenuItem.Name = "exportAllRoomsToolStripMenuItem";
+            this.exportAllRoomsToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
+            this.exportAllRoomsToolStripMenuItem.Text = "Export All Rooms";
+            this.exportAllRoomsToolStripMenuItem.Click += new System.EventHandler(this.exportAllRoomsToolStripMenuItem_Click);
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.runToolStripMenuItem,
+            this.debugRunToolStripMenuItem});
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.testToolStripMenuItem.Text = "Test";
+            // 
+            // runToolStripMenuItem
+            // 
+            this.runToolStripMenuItem.Name = "runToolStripMenuItem";
+            this.runToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
+            this.runToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.runToolStripMenuItem.Text = "Run";
+            // 
+            // debugRunToolStripMenuItem
+            // 
+            this.debugRunToolStripMenuItem.Name = "debugRunToolStripMenuItem";
+            this.debugRunToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
+            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.debugRunToolStripMenuItem.Text = "Debug Run";
+            // 
             // naviguateToolStripMenuItem
             // 
             this.naviguateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -590,7 +626,10 @@
             this.openRightRoomToolStripMenuItem,
             this.openLeftRoomToolStripMenuItem,
             this.openUpRoomToolStripMenuItem,
-            this.openDownRoomToolStripMenuItem});
+            this.openDownRoomToolStripMenuItem,
+            this.openDungeonTabToolStripMenuItem,
+            this.openOverwolrdTabToolStripMenuItem,
+            this.openGfxTabToolStripMenuItem});
             this.naviguateToolStripMenuItem.Name = "naviguateToolStripMenuItem";
             this.naviguateToolStripMenuItem.Size = new System.Drawing.Size(66, 20);
             this.naviguateToolStripMenuItem.Text = "Navigate";
@@ -663,6 +702,30 @@
             this.openDownRoomToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
             this.openDownRoomToolStripMenuItem.Text = "Open Down Room";
             this.openDownRoomToolStripMenuItem.Click += new System.EventHandler(this.openDownRoomToolStripMenuItem_Click);
+            // 
+            // openDungeonTabToolStripMenuItem
+            // 
+            this.openDungeonTabToolStripMenuItem.Name = "openDungeonTabToolStripMenuItem";
+            this.openDungeonTabToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D1)));
+            this.openDungeonTabToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.openDungeonTabToolStripMenuItem.Text = "Open Dungeon Tab";
+            this.openDungeonTabToolStripMenuItem.Click += new System.EventHandler(this.openDungeonTabToolStripMenuItem_Click);
+            // 
+            // openOverwolrdTabToolStripMenuItem
+            // 
+            this.openOverwolrdTabToolStripMenuItem.Name = "openOverwolrdTabToolStripMenuItem";
+            this.openOverwolrdTabToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
+            this.openOverwolrdTabToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.openOverwolrdTabToolStripMenuItem.Text = "Open Overwolrd Tab";
+            this.openOverwolrdTabToolStripMenuItem.Click += new System.EventHandler(this.openOverwolrdTabToolStripMenuItem_Click);
+            // 
+            // openGfxTabToolStripMenuItem
+            // 
+            this.openGfxTabToolStripMenuItem.Name = "openGfxTabToolStripMenuItem";
+            this.openGfxTabToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D3)));
+            this.openGfxTabToolStripMenuItem.Size = new System.Drawing.Size(248, 22);
+            this.openGfxTabToolStripMenuItem.Text = "Open Gfx Tab";
+            this.openGfxTabToolStripMenuItem.Click += new System.EventHandler(this.openGfxTabToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
@@ -962,21 +1025,21 @@
             // howToUseToolStripMenuItem
             // 
             this.howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
-            this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.howToUseToolStripMenuItem.Text = "How to Use";
             this.howToUseToolStripMenuItem.Click += new System.EventHandler(this.howToUseToolStripMenuItem_Click);
             // 
             // patchNotesToolStripMenuItem
             // 
             this.patchNotesToolStripMenuItem.Name = "patchNotesToolStripMenuItem";
-            this.patchNotesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.patchNotesToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.patchNotesToolStripMenuItem.Text = "Patch Notes";
             this.patchNotesToolStripMenuItem.Click += new System.EventHandler(this.patchNotesToolStripMenuItem_Click);
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -1604,13 +1667,13 @@
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode3.Name = "EntranceNode";
-            treeNode3.Text = "Entrances";
-            treeNode4.Name = "StartingEntranceNode";
-            treeNode4.Text = "Starting Entrances";
+            treeNode1.Name = "EntranceNode";
+            treeNode1.Text = "Entrances";
+            treeNode2.Name = "StartingEntranceNode";
+            treeNode2.Text = "Starting Entrances";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode1,
+            treeNode2});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 186);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -1847,6 +1910,7 @@
             this.favoriteCheckbox.TabIndex = 2;
             this.favoriteCheckbox.Text = "Show Favorite";
             this.favoriteCheckbox.UseVisualStyleBackColor = true;
+            this.favoriteCheckbox.CheckedChanged += new System.EventHandler(this.favoriteCheckbox_CheckedChanged);
             // 
             // showNameObjectCheckbox
             // 
@@ -2517,10 +2581,7 @@
             this.editorsTabControl.Controls.Add(this.dungeonPage);
             this.editorsTabControl.Controls.Add(this.overworldPage);
             this.editorsTabControl.Controls.Add(this.GfxEditorPage);
-            this.editorsTabControl.Controls.Add(this.DungeonViewerPage);
-            this.editorsTabControl.Controls.Add(this.tabPage5);
             this.editorsTabControl.Controls.Add(this.textPage);
-            this.editorsTabControl.Controls.Add(this.objDesignerPage);
             this.editorsTabControl.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.editorsTabControl.Location = new System.Drawing.Point(0, 739);
             this.editorsTabControl.Name = "editorsTabControl";
@@ -2549,15 +2610,6 @@
             this.overworldPage.Text = "Overworld Editor";
             this.overworldPage.UseVisualStyleBackColor = true;
             // 
-            // DungeonViewerPage
-            // 
-            this.DungeonViewerPage.Location = new System.Drawing.Point(4, 25);
-            this.DungeonViewerPage.Name = "DungeonViewerPage";
-            this.DungeonViewerPage.Size = new System.Drawing.Size(1096, 0);
-            this.DungeonViewerPage.TabIndex = 6;
-            this.DungeonViewerPage.Text = "Dungeon Viewer";
-            this.DungeonViewerPage.UseVisualStyleBackColor = true;
-            // 
             // GfxEditorPage
             // 
             this.GfxEditorPage.Location = new System.Drawing.Point(4, 25);
@@ -2567,15 +2619,6 @@
             this.GfxEditorPage.Text = "Gfx Import/Export";
             this.GfxEditorPage.UseVisualStyleBackColor = true;
             // 
-            // tabPage5
-            // 
-            this.tabPage5.Location = new System.Drawing.Point(4, 25);
-            this.tabPage5.Name = "tabPage5";
-            this.tabPage5.Size = new System.Drawing.Size(1096, 0);
-            this.tabPage5.TabIndex = 3;
-            this.tabPage5.Text = "Misc Editor";
-            this.tabPage5.UseVisualStyleBackColor = true;
-            // 
             // textPage
             // 
             this.textPage.Location = new System.Drawing.Point(4, 25);
@@ -2584,15 +2627,6 @@
             this.textPage.TabIndex = 4;
             this.textPage.Text = "Text Editor";
             this.textPage.UseVisualStyleBackColor = true;
-            // 
-            // objDesignerPage
-            // 
-            this.objDesignerPage.Location = new System.Drawing.Point(4, 25);
-            this.objDesignerPage.Name = "objDesignerPage";
-            this.objDesignerPage.Size = new System.Drawing.Size(1096, 0);
-            this.objDesignerPage.TabIndex = 5;
-            this.objDesignerPage.Text = "Object Designer (ext)";
-            this.objDesignerPage.UseVisualStyleBackColor = true;
             // 
             // thumbnailBox
             // 
@@ -2905,15 +2939,19 @@
         private System.Windows.Forms.TabPage dungeonPage;
         private System.Windows.Forms.TabPage overworldPage;
         private System.Windows.Forms.TabPage GfxEditorPage;
-        private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.TabPage textPage;
         private System.Windows.Forms.ToolStripMenuItem saveSettingsToolStripMenuItem;
-        private System.Windows.Forms.TabPage objDesignerPage;
         public System.Windows.Forms.TabControl editorsTabControl;
         public System.Windows.Forms.TreeView entrancetreeView;
-        private System.Windows.Forms.TabPage DungeonViewerPage;
         private System.Windows.Forms.ToolStripButton searchButton;
         private System.Windows.Forms.CheckBox favoriteCheckbox;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem debugRunToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openDungeonTabToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openOverwolrdTabToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openGfxTabToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportAllRoomsToolStripMenuItem;
     }
 }
 

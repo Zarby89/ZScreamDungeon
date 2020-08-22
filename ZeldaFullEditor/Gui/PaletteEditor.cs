@@ -90,6 +90,7 @@ namespace ZeldaFullEditor.Gui
         private void applyButton_Click(object sender, EventArgs e)
         {
             CreateTempPalettes();
+            
             //Recreate temp of all palettes
         }
 
@@ -543,7 +544,14 @@ namespace ZeldaFullEditor.Gui
                     tempIndex = cindex;
                     tempColor = selectedPalette[cindex];
                     selectedPalette[cindex] = Color.Fuchsia;
+                    for (int i = 0; i < 159; i++)
+                    {
+                        mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
+
+                    }
+                    mainForm.overworldEditor.scene.Refresh();
                     refreshallGfx();
+
                 }
             }
         }
@@ -553,6 +561,12 @@ namespace ZeldaFullEditor.Gui
             if (tempIndex != -1)
             {
                 selectedPalette[tempIndex] = tempColor;
+                for (int i = 0; i < 159; i++)
+                {
+                    mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
+
+                }
+                mainForm.overworldEditor.scene.Refresh();
                 refreshallGfx();
                 tempIndex = -1;
             }
@@ -572,9 +586,17 @@ namespace ZeldaFullEditor.Gui
                 {
                     selectedPalette[cindex] = cd.Color;
                 }
-
+                for (int i = 0; i < 159; i++)
+                {
+                    mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
+                }
                 refreshallGfx();
             }
+        }
+
+        private void palettePicturebox_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

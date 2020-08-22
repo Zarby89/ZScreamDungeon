@@ -1197,12 +1197,11 @@ namespace ZeldaFullEditor
 
         public void loadLayoutObjects(bool floor = true)
         {
-            //different bank?? it a long address :scream:
-            int pointer = ((ROM.DATA[Constants.room_object_layout_pointer + 2] << 16) + (ROM.DATA[Constants.room_object_layout_pointer + 1] << 8) + ROM.DATA[Constants.room_object_layout_pointer]);
+
+            int pointer = ROM.ReadLong(Constants.room_object_layout_pointer);
             pointer = Utils.SnesToPc(pointer);
-            int layout_address = (ROM.DATA[pointer + 2 + (layout * 3)] << 16) +
-                                (ROM.DATA[pointer + 1 + (layout * 3)] << 8) +
-                                ROM.DATA[pointer + 0 + (layout * 3)];
+            int layout_address = ROM.ReadLong(pointer  + (layout * 3));
+
             int layout_location = Utils.SnesToPc(layout_address);
 
             int pos = layout_location;

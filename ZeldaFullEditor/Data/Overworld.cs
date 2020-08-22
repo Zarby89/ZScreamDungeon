@@ -29,6 +29,8 @@ namespace ZeldaFullEditor
 
         public ExitOW[] allexits = new ExitOW[0x4F];
 
+        public byte[] allTilesTypes = new byte[0x200];
+
         public bool showSprites = true;
 
         //That must stay global - that's a problem
@@ -54,6 +56,9 @@ namespace ZeldaFullEditor
 
         public bool isLoaded = false;
 
+        public ushort[] tileLeftEntrance = new ushort[0x2B];
+        public ushort[] tileRightEntrance = new ushort[0x2B];
+
         public Overworld()
         {
             tiles16 = new List<Tile16>();
@@ -64,7 +69,14 @@ namespace ZeldaFullEditor
 
             t32 = new List<ushort>();
 
-            
+            for(int i = 0;i < 0x2B;i++)
+            {
+                tileLeftEntrance[i] =  (ushort)ROM.ReadShort(Constants.overworldEntranceAllowedTilesLeft + (i * 2));
+                tileRightEntrance[i] = (ushort)ROM.ReadShort(Constants.overworldEntranceAllowedTilesRight + (i * 2));
+
+                //Console.WriteLine(tileLeftEntrance[i].ToString("D4") + " , " + tileRightEntrance[i].ToString("D4"));
+            }
+
 
 
 
@@ -73,7 +85,7 @@ namespace ZeldaFullEditor
             AssembleMap16Tiles();
             DecompressAllMapTiles();
             loadOverlays();
- 
+            loadTilesTypes();
             //Map Initialization :
             for (int i = 0; i < 160; i++)
             {
@@ -100,6 +112,14 @@ namespace ZeldaFullEditor
 
             isLoaded = true;
 
+        }
+
+        public void loadTilesTypes()
+        {
+            for(int i = 0;i<0x200;i++)
+            {
+                allTilesTypes[i] = ROM.DATA[Constants.overworldTilesType + i];
+            }
         }
 
 

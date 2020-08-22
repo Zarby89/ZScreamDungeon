@@ -112,6 +112,7 @@ namespace ZeldaFullEditor
                 owForm.mapGroupbox.Text = "Selected Map - " + ow.allmaps[selectedMap + ow.worldOffset].parent.ToString() + " Properties : ";
 
                 owForm.propertiesChangedFromForm = true;
+                owForm.textidTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].messageID.ToString();
                 if (ow.worldOffset >= 64)
                 {
 
@@ -144,6 +145,7 @@ namespace ZeldaFullEditor
             globalmouseTileDownX = tileX;
             globalmouseTileDownY = tileY;
             selectedMap = mapId;
+            owForm.previewTextPicturebox.Visible = false;
             updateMapGfx();
 
             if (selectedMode == ObjectMode.Tile)

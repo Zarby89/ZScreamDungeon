@@ -11,6 +11,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Threading;
 using System.Drawing.Drawing2D;
+using ZeldaFullEditor.Gui.ExtraForms;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -82,10 +83,10 @@ namespace ZeldaFullEditor.Gui
 
             if (propertiesChangedFromForm == false)
             {
-
+                
                 byte result = 0;
                 OverworldMap mapParent = scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent];
-                Console.WriteLine(mapParent.largeMap);
+                
                 if (scene.ow.allmaps[scene.selectedMap].parent == 255)
                 {
                     mapParent = scene.ow.allmaps[scene.selectedMap];
@@ -122,7 +123,23 @@ namespace ZeldaFullEditor.Gui
                 {
                     mapParent.palette = result;
                 }
+                short msgid = 0;
+                if (short.TryParse(textidTextbox.Text, out msgid))
+                {
+                    mapParent.messageID = msgid;
 
+                    if (msgid < mainForm.textEditor.textListbox.Items.Count)
+                    {
+                        mainForm.textEditor.textListbox.SelectedIndex = msgid;
+                    }
+
+                    mainForm.textEditor.Refresh();
+                    previewTextPicturebox.Size = new Size(340, 102);
+                    previewTextPicturebox.Visible = true;
+                    previewTextPicturebox.Refresh();
+
+
+                }
 
                 if (mapParent.largeMap)
                 {
@@ -282,6 +299,88 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
             }).Start();
+        }
+
+        private void musicButton_Click(object sender, EventArgs e)
+        {
+            OWMusicForm owmf = new OWMusicForm();
+            owmf.mapIndex = (byte)scene.selectedMap;
+            owmf.musics[0] = scene.ow.allmaps[scene.selectedMap].musics[0];
+            owmf.musics[1] = scene.ow.allmaps[scene.selectedMap].musics[1];
+            owmf.musics[2] = scene.ow.allmaps[scene.selectedMap].musics[2];
+            owmf.musics[3] = scene.ow.allmaps[scene.selectedMap].musics[3];
+            if (owmf.ShowDialog() == DialogResult.OK)
+            {
+                scene.ow.allmaps[scene.selectedMap].musics[0] = owmf.musics[0];
+                scene.ow.allmaps[scene.selectedMap].musics[1] = owmf.musics[1];
+                scene.ow.allmaps[scene.selectedMap].musics[2] = owmf.musics[2];
+                scene.ow.allmaps[scene.selectedMap].musics[3] = owmf.musics[3];
+            }
+
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+            int v = 0;
+            if (int.TryParse(textidTextbox.Text, out v))
+            {
+                if (v < mainForm.textEditor.textListbox.Items.Count)
+                {
+                    mainForm.textEditor.textListbox.SelectedIndex = v;
+                }
+            }
+            mainForm.editorsTabControl.SelectTab(3);
+            mainForm.textEditor.Refresh();
+
+        }
+
+        private void previewTextPicturebox_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+            ColorPalette cp = GFX.currentfontgfx16Bitmap.Palette;
+            int defaultColor = 6;
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (i == 0)
+                {
+                    cp.Entries[i] = Color.Transparent;
+                }
+                else
+                {
+                    cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[(defaultColor * 4) + i];
+
+                }
+            }
+            GFX.currentfontgfx16Bitmap.Palette = cp;
+
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            e.Graphics.DrawImage(GFX.currentfontgfx16Bitmap, new Rectangle(0, 0, 340, 102), new Rectangle(0, 0, 170, 51), GraphicsUnit.Pixel);
+            e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(128, 255, 0, 0)), new Rectangle(344 - 8, 0, 4, 102));
+        }
+
+        private void textidTextbox_Click(object sender, EventArgs e)
+        {
+            int v = 0;
+            if (int.TryParse(textidTextbox.Text, out v))
+            {
+                if (v < mainForm.textEditor.textListbox.Items.Count)
+                {
+                    mainForm.textEditor.textListbox.SelectedIndex = v;
+                }
+            }
+
+            mainForm.textEditor.Refresh();
+            previewTextPicturebox.Size = new Size(340, 102);
+            previewTextPicturebox.Visible = true;
+            previewTextPicturebox.Refresh();
+        }
+
+        private void textidTextbox_Leave(object sender, EventArgs e)
+        {
+            previewTextPicturebox.Visible = false;
         }
     }
 }

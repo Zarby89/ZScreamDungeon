@@ -28,12 +28,19 @@ namespace ZeldaFullEditor
             InitializeComponent();
 
         }
+        // Registers a hot key with Windows.
+        [DllImport("user32.dll")]
+        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+        // Unregisters the hot key with Windows.
+        [DllImport("user32.dll")]
+        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+
         //TODO : Move that to a data class
 
         //TODO : Move that?
         public byte[] door_index = new byte[] { 0x00, 0x06, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32, 0x20, 0x14, 0x2A, 0x22 };
 
-        TextEditor textEditor = new TextEditor();
+        public TextEditor textEditor = new TextEditor();
         public OverworldEditor overworldEditor = new OverworldEditor();
         Object_Designer objDesigner = new Object_Designer();
         GfxImportExport gfxEditor;
@@ -56,6 +63,15 @@ namespace ZeldaFullEditor
         public Room previewRoom = null;
         private void Form1_Load(object sender, EventArgs e)
         {
+            if (Settings.Default.favoriteObjects.Count < 0xFFF)
+            {
+                while(Settings.Default.favoriteObjects.Count < 0xFFF)
+                {
+                    Settings.Default.favoriteObjects.Add("false");
+                }
+            }
+
+
             xTabButton = new Bitmap(Resources.xbutton);
             layoutForm = new RoomLayout(this);
             gfxEditor = new GfxImportExport(this);
@@ -266,6 +282,31 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
+
+            if (save.saveOverworldTilesType(overworldEditor.scene))
+            {
+                MessageBox.Show("Failed to save overworld map tiles Types ??? ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+            if (save.saveOverworldMessagesIds(overworldEditor.scene))
+            {
+                MessageBox.Show("Failed to save overworld map tiles Types ??? ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+            if (save.saveOverworldMusics(overworldEditor.scene))
+            {
+                MessageBox.Show("Failed to save overworld map tiles Types ??? ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+
+
+
             overworldEditor.scene.SaveTiles();
 
             /* Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
@@ -282,6 +323,8 @@ namespace ZeldaFullEditor
             saved_changed = false;
 
             //ROMStructure.saveProjectFile(version, projectFilename);
+            ROM.SaveLogs();
+
 
             FileStream fs = new FileStream(projectFilename, FileMode.OpenOrCreate, FileAccess.Write);
             fs.Write(ROM.DATA, 0, ROM.DATA.Length);
@@ -1236,19 +1279,42 @@ namespace ZeldaFullEditor
         {
             //objectViewer1.BeginUpdate();
             objectViewer1.items.Clear();
-            //Sorting sort;
-            Sorting sortsizing = Sorting.All;
-            string searchText = searchTextbox.Text.ToLower();
-            //listView1
-            objectViewer1.items.AddRange(listoftilesobjects
-                .Where(x => x != null)
-                .Where(x => (x.name.ToLower().Contains(searchText)))
-                .OrderBy(x => x.id)
-                .Select(x => x) //?
-                .ToArray());
 
-            panel1.VerticalScroll.Value = 0;
-            objectViewer1.Refresh();
+            if (favoriteCheckbox.Checked)
+            {
+                //Sorting sort;
+                Sorting sortsizing = Sorting.All;
+                string searchText = searchTextbox.Text.ToLower();
+                //listView1
+                objectViewer1.items.AddRange(listoftilesobjects
+                    .Where(x => x != null)
+                    .Where(x => (x.name.ToLower().Contains(searchText)))
+                    .Where(x => (Settings.Default.favoriteObjects[x.id] == "true"))
+                    .OrderBy(x => x.id)
+                    .Select(x => x) //?
+                    .ToArray());
+
+                panel1.VerticalScroll.Value = 0;
+                objectViewer1.Refresh();
+            }
+            else
+            {
+                //Sorting sort;
+                Sorting sortsizing = Sorting.All;
+                string searchText = searchTextbox.Text.ToLower();
+                //listView1
+                objectViewer1.items.AddRange(listoftilesobjects
+                    .Where(x => x != null)
+                    .Where(x => (x.name.ToLower().Contains(searchText)))
+                    .OrderBy(x => x.id)
+                    .Select(x => x) //?
+                    .ToArray());
+
+                panel1.VerticalScroll.Value = 0;
+                objectViewer1.Refresh();
+            }
+
+
 
         }
 
@@ -2070,6 +2136,7 @@ namespace ZeldaFullEditor
         {
             objectViewer1.showName = showNameObjectCheckbox.Checked;
             objectViewer1.updateSize();
+            objectViewer1.Refresh();
         }
 
         private void entranceProperty_room_TextChanged(object sender, EventArgs e)
@@ -2115,25 +2182,28 @@ namespace ZeldaFullEditor
 
                     foreach (short s in selectedMapPng)
                     {
-                        int cx = 0;
-                        int cy = 0;
-                        cy = (s / 16);
-                        cx = s - (cy * 16);
-                        if (cx < lowerX) { lowerX = cx; }
-                        if (cy < lowerY) { lowerY = cy; }
-                        if (cx > higherX) { higherX = cx; }
-                        if (cy > higherY) { higherY = cy; }
+                        if (s < DungeonsData.all_rooms.Length && DungeonsData.all_rooms[s] != null)
+                        {
+                            int cx = 0;
+                            int cy = 0;
+                            cy = (s / 16);
+                            cx = s - (cy * 16);
+                            if (cx < lowerX) { lowerX = cx; }
+                            if (cy < lowerY) { lowerY = cy; }
+                            if (cx > higherX) { higherX = cx; }
+                            if (cy > higherY) { higherY = cy; }
 
-                        activeScene.room = DungeonsData.all_rooms[s];
-                        activeScene.room.reloadGfx();
-                        GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
-                        GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
-                        activeScene.DrawRoom();
-                        
-                        activeScene.Refresh();
-                        
-                        gb.DrawImage(activeScene.tempBitmap, new Point(cx * 512, cy * 512));
-                        //activeScene.DrawToBitmap(b, new Rectangle(cx * 512, cy * 512, 512, 512));
+                            activeScene.room = DungeonsData.all_rooms[s];
+                            activeScene.room.reloadGfx();
+                            GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
+                            GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
+                            activeScene.DrawRoom();
+
+                            activeScene.Refresh();
+
+                            gb.DrawImage(activeScene.tempBitmap, new Point(cx * 512, cy * 512));
+                            //activeScene.DrawToBitmap(b, new Rectangle(cx * 512, cy * 512, 512, 512));
+                        }
                     }
                 }
                 int image_size_x = ((higherX - lowerX) * 512) + 512;
@@ -2850,13 +2920,26 @@ namespace ZeldaFullEditor
         public GfxGroupsForm gfxGroupsForm;
         private void gfxGroupsetsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            WindowPanel wp = new WindowPanel();
-            wp.Tag = "Gfx Groupset Editor";
-            wp.Location = new Point(512, 0);
-            wp.containerPanel.Controls.Add(gfxGroupsForm);
-            wp.Size = new Size(gfxGroupsForm.Size.Width + 2, gfxGroupsForm.Size.Height + 26);
-            customPanel3.Controls.Add(wp);
-            wp.BringToFront();
+            if (editorsTabControl.SelectedTab.Name == "dungeonPage")
+            {
+                WindowPanel wp = new WindowPanel();
+                wp.Tag = "Gfx Groupset Editor";
+                wp.Location = new Point(512, 0);
+                wp.containerPanel.Controls.Add(gfxGroupsForm);
+                wp.Size = new Size(gfxGroupsForm.Size.Width + 2, gfxGroupsForm.Size.Height + 26);
+                customPanel3.Controls.Add(wp);
+                wp.BringToFront();
+            }
+            else if (editorsTabControl.SelectedTab.Name == "overworldPage")
+            {
+                WindowPanel wp = new WindowPanel();
+                wp.Tag = "Gfx Groupset Editor";
+                wp.Location = new Point(512, 0);
+                wp.containerPanel.Controls.Add(new GfxGroupsForm(this));
+                wp.Size = new Size(gfxGroupsForm.Size.Width + 2, gfxGroupsForm.Size.Height + 26);
+                overworldEditor.splitContainer1.Panel2.Controls.Add(wp);
+                wp.BringToFront();
+            }
         }
 
         private void insertToolStripMenuItem_Click_1(object sender, EventArgs e)
@@ -2879,14 +2962,29 @@ namespace ZeldaFullEditor
 
         private void palettesEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            WindowPanel wp = new WindowPanel();
-            wp.Tag = "Palettes Editor";
-            wp.Location = new Point(512, 0);
-            wp.containerPanel.Controls.Add(paletteForm);
-            wp.Size = new Size(paletteForm.Size.Width + 2, paletteForm.Size.Height + 26);
-            customPanel3.Controls.Add(wp);
-            paletteForm.BringToFront();
-            wp.BringToFront();
+            if (editorsTabControl.SelectedTab.Name == "dungeonPage")
+            {
+                WindowPanel wp = new WindowPanel();
+                wp.Tag = "Palettes Editor";
+                wp.Location = new Point(512, 0);
+                wp.containerPanel.Controls.Add(paletteForm);
+                wp.Size = new Size(paletteForm.Size.Width + 2, paletteForm.Size.Height + 26);
+                customPanel3.Controls.Add(wp);
+                paletteForm.BringToFront();
+                wp.BringToFront();
+            }
+            else if (editorsTabControl.SelectedTab.Name == "overworldPage")
+            {
+                WindowPanel wp = new WindowPanel();
+                wp.Tag = "Palettes Editor";
+                wp.Location = new Point(512, 0);
+                wp.containerPanel.Controls.Add(new PaletteEditor(this));
+                wp.Size = new Size(paletteForm.Size.Width + 2, paletteForm.Size.Height + 26);
+                overworldEditor.splitContainer1.Panel2.Controls.Add(wp);
+                paletteForm.BringToFront();
+                wp.BringToFront();
+            }
+
         }
 
         //Export Palette to YY-CHR Palette Format
@@ -3507,6 +3605,87 @@ namespace ZeldaFullEditor
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void openDungeonTabToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            editorsTabControl.SelectTab(0);
+        }
+
+        private void openOverwolrdTabToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            editorsTabControl.SelectTab(1);
+        }
+
+        private void openGfxTabToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            editorsTabControl.SelectTab(2);
+        }
+
+        private void exportAllRoomsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            /*int[] doorsoffset = new int[296];
+            StringBuilder sb = new StringBuilder();
+            sb.Append("lorom\r\n");
+
+            for (int i = 0; i < 296; i++)
+            {
+
+                byte[] roomBytes = DungeonsData.all_rooms[i].getTilesBytes();
+                int doorPos = roomBytes.Length - 2;
+                if (roomBytes.Length < 10)
+                {
+                    continue;
+                }
+                sb.Append("org $1F8000+$" + (i * 3).ToString("X2") + "\r\n");
+                sb.Append("dl room" + (i.ToString("D3")) + "\r\n\r\n");
+                while (true)
+                {
+
+                    if (doorPos >= 04)
+                    {
+                        if (roomBytes[doorPos] == 0xF0 && roomBytes[doorPos + 1] == 0xFF)
+                        {
+                            doorPos += 2;
+                            break;
+                        }
+                        doorPos -= 2;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                doorsoffset[i] = doorPos;
+                sb.Append("org $1F83C0+$" + (i * 3).ToString("X2") + "\r\n");
+                sb.Append("dl !door" + (i.ToString("D3")) + "\r\n\r\n");
+
+                FileStream fs = File.Open("Rooms/room" + i.ToString("D3"), FileMode.OpenOrCreate, FileAccess.Write);
+                fs.Write(roomBytes, 0, roomBytes.Length);
+                fs.Close();
+            }
+
+            sb.Append("org $218000 \r\n");
+            for (int i = 0; i < 296; i++)
+            {
+                byte[] roomBytes = DungeonsData.all_rooms[i].getTilesBytes();
+                if (roomBytes.Length < 10)
+                {
+                    continue;
+                }
+                sb.Append("room" + (i.ToString("D3")) + ":\r\n");
+                sb.Append("incbin \"Rooms/room" + (i.ToString("D3")) + "\"\r\n");
+
+                sb.Append("!door" + (i.ToString("D3")) + " = room" + (i.ToString("D3"))+"+$"+doorsoffset[i].ToString("X4")+"\r\n\r\n");
+
+
+            }
+            File.WriteAllText("rooms.asm", sb.ToString());*/
+        }
+
+        private void favoriteCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            sortObject();
         }
     }
 

@@ -18,7 +18,7 @@ namespace ZeldaFullEditor
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void button1_Click(object sender, EventArgs e) //OK Button
         {
             editingExit.isAutomatic = automaticcheckBox.Checked;
             if (!automaticcheckBox.Checked)
@@ -150,12 +150,12 @@ namespace ZeldaFullEditor
             {
                 editingExit.roomId = (short)roomUpDown.Value;
                 editingExit.mapId = (byte)mapUpDown.Value;
-                editingExit.playerX = (ushort)xPosUpDown.Value;
-                editingExit.playerY = (ushort)yPosUpDown.Value;
-                editingExit.cameraX = (short)xCameraUpDown.Value;
-                editingExit.cameraY = (short)yCameraUpDown.Value;
-                editingExit.xScroll = (short)xScrollUpDown.Value;
-                editingExit.yScroll = (short)yScrollUpDown.Value;
+                editingExit.playerX = (ushort)(xPosUpDown.Value + pixelMapx);
+                editingExit.playerY = (ushort)(yPosUpDown.Value + pixelMapy);
+                editingExit.cameraX = (short)(xCameraUpDown.Value + pixelMapx);
+                editingExit.cameraY = (short)(yCameraUpDown.Value + pixelMapy);
+                editingExit.xScroll = (short)(xScrollUpDown.Value + pixelMapx);
+                editingExit.yScroll = (short)(yScrollUpDown.Value + pixelMapy);
 
                 if (wooddoorradioButton.Checked)
                 {

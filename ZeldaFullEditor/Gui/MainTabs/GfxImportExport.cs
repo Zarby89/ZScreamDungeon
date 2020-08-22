@@ -391,5 +391,17 @@ namespace ZeldaFullEditor.Gui
             return 1;
         }
 
+        private void GfxImportExport_Load(object sender, EventArgs e)
+        {
+            GfxGroupsForm gfxgf = new GfxGroupsForm(this.mainForm);
+            gfxgf.Location = new Point(0, 0);
+            this.panel2.Controls.Add(mainForm.gfxGroupsForm);
+
+            PaletteEditor palf = new PaletteEditor(mainForm);
+            palf.Location = new Point(0, 354);
+            this.panel2.Controls.Add(palf);
+            Refresh();
+
+        }
     }
 }

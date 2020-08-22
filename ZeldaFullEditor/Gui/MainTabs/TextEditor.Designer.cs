@@ -385,6 +385,7 @@
             this.toolStrip1.Size = new System.Drawing.Size(981, 25);
             this.toolStrip1.TabIndex = 24;
             this.toolStrip1.Text = "toolStrip1";
+            this.toolStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStrip1_ItemClicked);
             // 
             // toolStripButton1
             // 
@@ -438,7 +439,6 @@
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ListBox textListbox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox searchTextbox;
         private System.Windows.Forms.Label label4;
@@ -463,10 +463,11 @@
         private System.Windows.Forms.Button upButton;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
+        public System.Windows.Forms.ListBox textListbox;
+        public System.Windows.Forms.PictureBox pictureBox1;
     }
 }

@@ -17,6 +17,9 @@ namespace ZeldaFullEditor
         public byte[] sprgfx = new byte[3];
         public byte palette = 0;
         public byte[] sprpalette = new byte[3];
+        public byte[] musics = new byte[4];
+
+        public short messageID = 0;
         public bool largeMap = false;
         public IntPtr gfxPtr = Marshal.AllocHGlobal(512 * 512);
         public IntPtr blockset16 = Marshal.AllocHGlobal(1048576); //4096 tiles 2048
@@ -35,6 +38,8 @@ namespace ZeldaFullEditor
             this.parent = index;
             gfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, gfxPtr);
             blocksetBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, blockset16);
+
+           
 
             if (index != 0x80)
             {
@@ -56,6 +61,12 @@ namespace ZeldaFullEditor
                 sprpalette[0] = ROM.DATA[Constants.overworldSpritePalette + parent];
                 sprpalette[1] = ROM.DATA[Constants.overworldSpritePalette + parent + 64];
                 sprpalette[2] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
+                musics[0] = ROM.DATA[Constants.overworldMusicBegining + parent];
+                musics[1] = ROM.DATA[Constants.overworldMusicZelda + parent];
+                musics[2] = ROM.DATA[Constants.overworldMusicMasterSword + parent];
+                musics[3] = ROM.DATA[Constants.overworldMusicAgahim + parent];
+
+
             }
             else if (index < 128)
             {
@@ -67,6 +78,9 @@ namespace ZeldaFullEditor
                 sprpalette[0] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
                 sprpalette[1] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
                 sprpalette[2] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
+
+                musics[0] = ROM.DATA[Constants.overworldMusicDW + (parent-64)];
+
             }
             else
             {
@@ -108,6 +122,7 @@ namespace ZeldaFullEditor
                     parent = 136;
                 }
 
+                messageID = ROM.DATA[Constants.overworldMessages + parent];
 
                 sprgfx[0] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
                 sprgfx[1] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
@@ -135,6 +150,8 @@ namespace ZeldaFullEditor
                 }
 
             }
+
+
         }
 
         public void BuildMap()
@@ -182,9 +199,10 @@ namespace ZeldaFullEditor
                 }
             }
 
-
+            messageID = ROM.ReadShort(Constants.overworldMessages+(parent*2));
 
         }
+
 
         public void DrawSprites(byte gameState)
         {
@@ -260,6 +278,7 @@ namespace ZeldaFullEditor
 
         public void ReloadPalettes()
         {
+            LoadPalette();
 
         }
 
@@ -580,15 +599,21 @@ namespace ZeldaFullEditor
             }
 
 
-
-            ColorPalette pal = GFX.editort16Bitmap.Palette;
-            for (int i = 0; i < 256; i++)
+            try
             {
-                pal.Entries[i] = currentPalette[i];
+                ColorPalette pal = GFX.editort16Bitmap.Palette;
+                for (int i = 0; i < 256; i++)
+                {
+                    pal.Entries[i] = currentPalette[i];
+                }
+                gfxBitmap.Palette = pal;
+                GFX.mapgfx16Bitmap.Palette = pal;
+                blocksetBitmap.Palette = pal;
             }
-            gfxBitmap.Palette = pal;
-            GFX.mapgfx16Bitmap.Palette = pal;
-            blocksetBitmap.Palette = pal;
+            catch(Exception e)
+            {
+
+            }
         }
 
 
@@ -705,10 +730,6 @@ namespace ZeldaFullEditor
             if (index <=159)
             {
                 byte[] data = ROM.DATA;
-                if (fromImport)
-                {
-                    data = ROM.IMPORTDATA;
-                }
                 bool newadress = false;
                 if (data.Length > 0x100000)
                 {

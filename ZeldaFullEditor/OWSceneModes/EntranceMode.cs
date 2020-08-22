@@ -46,6 +46,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 lastselectedEntrance = selectedEntrance;
                 scene.mouse_down = true;
+                isLeftPress = true;
                 //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
             }
         }
@@ -88,6 +89,9 @@ namespace ZeldaFullEditor.OWSceneModes
 
 
                         found = i;
+                        selectedEntrance = scene.ow.allholes[i];
+                        scene.mouse_down = true;
+                        isLeftPress = true;
                         //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                         break;
                     }
@@ -115,6 +119,9 @@ namespace ZeldaFullEditor.OWSceneModes
 
 
                         found = i;
+                        selectedEntrance = scene.ow.allentrances[i];
+                        scene.mouse_down = true;
+                        isLeftPress = true;
                         //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                         break;
                     }
@@ -166,6 +173,9 @@ namespace ZeldaFullEditor.OWSceneModes
                             else if (e.Button == MouseButtons.Right)
                             {
                                 lastselectedEntrance = en;
+                                scene.mouse_down = true;
+                                mxRightclick = (e.X);
+                                myRightclick = (e.Y);
                             }
                         }
                     }
@@ -190,6 +200,10 @@ namespace ZeldaFullEditor.OWSceneModes
                             else if (e.Button == MouseButtons.Right)
                             {
                                 lastselectedEntrance = en;
+                                scene.mouse_down = true;
+                                mxRightclick = (e.X);
+                                myRightclick = (e.Y);
+
                             }
                         }
                     }
@@ -404,9 +418,20 @@ namespace ZeldaFullEditor.OWSceneModes
                             menu.Items[1].Click += entranceProperty_Click;
                             menu.Items[2].Click += Delete_Click;
                             menu.Show(Cursor.Position);
+                            return;
                         }
                     }
                 }
+
+                menu.Items.Add("Add Entrance");
+                selectedEntrance = null;
+                scene.mouse_down = false;
+                menu.Items[0].Click += entranceAdd_Click;
+
+                menu.Show(Cursor.Position);
+                return;
+
+
             }
         }
 

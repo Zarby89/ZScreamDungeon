@@ -49,6 +49,7 @@
             this.spButton = new System.Windows.Forms.ToolStripButton();
             this.dwButton = new System.Windows.Forms.ToolStripButton();
             this.lwButton = new System.Windows.Forms.ToolStripButton();
+            this.overlayButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.refreshToolStrip = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -59,6 +60,9 @@
             this.objCombobox = new System.Windows.Forms.ComboBox();
             this.objinfoLabel = new System.Windows.Forms.Label();
             this.mapGroupbox = new System.Windows.Forms.GroupBox();
+            this.musicButton = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.textidTextbox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.sprpaletteTextbox = new System.Windows.Forms.TextBox();
             this.paletteTextbox = new System.Windows.Forms.TextBox();
@@ -71,7 +75,8 @@
             this.selectedTileLabel = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
-            this.overlayButton = new System.Windows.Forms.ToolStripButton();
+            this.button1 = new System.Windows.Forms.Button();
+            this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -83,6 +88,7 @@
             this.objectGroupbox.SuspendLayout();
             this.mapGroupbox.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).BeginInit();
             this.SuspendLayout();
             // 
             // owToolStrip
@@ -302,6 +308,17 @@
             this.lwButton.Text = "LW";
             this.lwButton.Click += new System.EventHandler(this.lwButton_Click);
             // 
+            // overlayButton
+            // 
+            this.overlayButton.CheckOnClick = true;
+            this.overlayButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.overlayButton.Image = ((System.Drawing.Image)(resources.GetObject("overlayButton.Image")));
+            this.overlayButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.overlayButton.Name = "overlayButton";
+            this.overlayButton.Size = new System.Drawing.Size(23, 22);
+            this.overlayButton.Text = "Overlay";
+            this.overlayButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
             // toolStripButton1
             // 
             this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -380,7 +397,7 @@
             // 
             this.objectGroupbox.Controls.Add(this.objCombobox);
             this.objectGroupbox.Controls.Add(this.objinfoLabel);
-            this.objectGroupbox.Location = new System.Drawing.Point(456, 3);
+            this.objectGroupbox.Location = new System.Drawing.Point(583, 9);
             this.objectGroupbox.Name = "objectGroupbox";
             this.objectGroupbox.Size = new System.Drawing.Size(290, 60);
             this.objectGroupbox.TabIndex = 10;
@@ -406,6 +423,10 @@
             // 
             // mapGroupbox
             // 
+            this.mapGroupbox.Controls.Add(this.button1);
+            this.mapGroupbox.Controls.Add(this.musicButton);
+            this.mapGroupbox.Controls.Add(this.label6);
+            this.mapGroupbox.Controls.Add(this.textidTextbox);
             this.mapGroupbox.Controls.Add(this.label5);
             this.mapGroupbox.Controls.Add(this.sprpaletteTextbox);
             this.mapGroupbox.Controls.Add(this.paletteTextbox);
@@ -416,10 +437,39 @@
             this.mapGroupbox.Controls.Add(this.label2);
             this.mapGroupbox.Location = new System.Drawing.Point(160, 3);
             this.mapGroupbox.Name = "mapGroupbox";
-            this.mapGroupbox.Size = new System.Drawing.Size(290, 60);
+            this.mapGroupbox.Size = new System.Drawing.Size(417, 60);
             this.mapGroupbox.TabIndex = 1;
             this.mapGroupbox.TabStop = false;
             this.mapGroupbox.Text = "Selected Map - ";
+            // 
+            // musicButton
+            // 
+            this.musicButton.Location = new System.Drawing.Point(350, 31);
+            this.musicButton.Name = "musicButton";
+            this.musicButton.Size = new System.Drawing.Size(61, 23);
+            this.musicButton.TabIndex = 12;
+            this.musicButton.Text = "Musics";
+            this.musicButton.UseVisualStyleBackColor = true;
+            this.musicButton.Click += new System.EventHandler(this.musicButton_Click);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(270, 16);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(51, 13);
+            this.label6.TabIndex = 11;
+            this.label6.Text = "Text ID : ";
+            // 
+            // textidTextbox
+            // 
+            this.textidTextbox.Location = new System.Drawing.Point(273, 32);
+            this.textidTextbox.Name = "textidTextbox";
+            this.textidTextbox.Size = new System.Drawing.Size(48, 20);
+            this.textidTextbox.TabIndex = 10;
+            this.textidTextbox.Click += new System.EventHandler(this.textidTextbox_Click);
+            this.textidTextbox.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
+            this.textidTextbox.Leave += new System.EventHandler(this.textidTextbox_Leave);
             // 
             // label5
             // 
@@ -533,21 +583,33 @@
             this.stateCombobox.Text = "0,1 (Rescue Zelda)";
             this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
             // 
-            // overlayButton
+            // button1
             // 
-            this.overlayButton.CheckOnClick = true;
-            this.overlayButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.overlayButton.Image = ((System.Drawing.Image)(resources.GetObject("overlayButton.Image")));
-            this.overlayButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.overlayButton.Name = "overlayButton";
-            this.overlayButton.Size = new System.Drawing.Size(23, 22);
-            this.overlayButton.Text = "Overlay";
-            this.overlayButton.Click += new System.EventHandler(this.ModeButton_Click);
+            this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
+            this.button1.Location = new System.Drawing.Point(321, 31);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(23, 23);
+            this.button1.TabIndex = 13;
+            this.button1.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // previewTextPicturebox
+            // 
+            this.previewTextPicturebox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.previewTextPicturebox.Location = new System.Drawing.Point(510, 3);
+            this.previewTextPicturebox.Name = "previewTextPicturebox";
+            this.previewTextPicturebox.Size = new System.Drawing.Size(16, 16);
+            this.previewTextPicturebox.TabIndex = 2;
+            this.previewTextPicturebox.TabStop = false;
+            this.previewTextPicturebox.Visible = false;
+            this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
             // 
             // OverworldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.previewTextPicturebox);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.owPropertyPanel);
             this.Controls.Add(this.owToolStrip);
@@ -568,6 +630,7 @@
             this.mapGroupbox.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -618,5 +681,10 @@
         public System.Windows.Forms.PictureBox thumbnailBox;
         private System.Windows.Forms.ToolStripButton refreshToolStrip;
         private System.Windows.Forms.ToolStripButton overlayButton;
+        private System.Windows.Forms.Button musicButton;
+        private System.Windows.Forms.Label label6;
+        public System.Windows.Forms.TextBox textidTextbox;
+        private System.Windows.Forms.Button button1;
+        public System.Windows.Forms.PictureBox previewTextPicturebox;
     }
 }

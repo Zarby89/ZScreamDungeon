@@ -76,58 +76,58 @@
   <ItemGroup>
     <Compile Include="asar.cs" />
     <Compile Include="ChestDraw.cs" />
-    <Compile Include="ChestPicker.cs">
+    <Compile Include="Gui\ExtraForms\ChestPicker.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ChestPicker.Designer.cs">
+    <Compile Include="Gui\ExtraForms\ChestPicker.Designer.cs">
       <DependentUpon>ChestPicker.cs</DependentUpon>
     </Compile>
-    <Compile Include="Chestviewer.cs">
+    <Compile Include="Gui\ExtraForms\Chestviewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Chestviewer.Designer.cs">
+    <Compile Include="Gui\ExtraForms\Chestviewer.Designer.cs">
       <DependentUpon>Chestviewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="CustomPanel.cs">
+    <Compile Include="Gui\CustomPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="CustomTabControl.cs">
+    <Compile Include="Gui\CustomTabControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CustomTabControl.Designer.cs">
+    <Compile Include="Gui\CustomTabControl.Designer.cs">
       <DependentUpon>CustomTabControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="dataObject.cs" />
-    <Compile Include="DataRoom.cs" />
+    <Compile Include="Data\dataObject.cs" />
+    <Compile Include="Data\DataRoom.cs" />
     <Compile Include="DoAction.cs" />
-    <Compile Include="DragMode.cs" />
-    <Compile Include="DungeonsData.cs" />
-    <Compile Include="Entrance.cs" />
-    <Compile Include="EntranceOW.cs" />
-    <Compile Include="ExitOW.cs" />
+    <Compile Include="Data\DragMode.cs" />
+    <Compile Include="Data\DungeonsData.cs" />
+    <Compile Include="Data\Entrance.cs" />
+    <Compile Include="Data\EntranceOW.cs" />
+    <Compile Include="Data\ExitOW.cs" />
     <Compile Include="GfxGroups.cs" />
-    <Compile Include="GlobalOptionForm.cs">
+    <Compile Include="Gui\ExtraForms\GlobalOptionForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GlobalOptionForm.Designer.cs">
+    <Compile Include="Gui\ExtraForms\GlobalOptionForm.Designer.cs">
       <DependentUpon>GlobalOptionForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\AboutBox1.cs">
+    <Compile Include="Gui\ExtraForms\AboutBox1.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\AboutBox1.Designer.cs">
+    <Compile Include="Gui\ExtraForms\AboutBox1.Designer.cs">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\AddSprite.cs">
+    <Compile Include="Gui\ExtraForms\AddSprite.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\AddSprite.Designer.cs">
+    <Compile Include="Gui\ExtraForms\AddSprite.Designer.cs">
       <DependentUpon>AddSprite.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\AdvancedChestEditorForm.cs">
+    <Compile Include="Gui\ExtraForms\AdvancedChestEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\AdvancedChestEditorForm.Designer.cs">
+    <Compile Include="Gui\ExtraForms\AdvancedChestEditorForm.Designer.cs">
       <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\CGRamViewer.cs">
@@ -136,36 +136,42 @@
     <Compile Include="Gui\CGRamViewer.Designer.cs">
       <DependentUpon>CGRamViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\DungeonPropertiesForm.cs">
+    <Compile Include="Gui\ExtraForms\DungeonPropertiesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\DungeonPropertiesForm.Designer.cs">
+    <Compile Include="Gui\ExtraForms\DungeonPropertiesForm.Designer.cs">
       <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\DungeonViewer.cs">
+    <Compile Include="Gui\ExtraForms\OWMusicForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\OWMusicForm.Designer.cs">
+      <DependentUpon>OWMusicForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\MainTabs\DungeonViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\DungeonViewer.Designer.cs">
+    <Compile Include="Gui\MainTabs\DungeonViewer.Designer.cs">
       <DependentUpon>DungeonViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\EntranceForm.cs">
+    <Compile Include="Gui\ExtraForms\EntranceForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\EntranceForm.Designer.cs" />
-    <Compile Include="Gui\EntrancePropertyForm.cs">
+    <Compile Include="Gui\ExtraForms\EntranceForm.Designer.cs" />
+    <Compile Include="Gui\ExtraForms\EntrancePropertyForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\EntrancePropertyForm.Designer.cs">
+    <Compile Include="Gui\ExtraForms\EntrancePropertyForm.Designer.cs">
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\ExitEditorForm.cs">
+    <Compile Include="Gui\ExtraForms\ExitEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\ExitEditorForm.designer.cs" />
-    <Compile Include="Gui\GfxEditor.cs">
+    <Compile Include="Gui\ExtraForms\ExitEditorForm.designer.cs" />
+    <Compile Include="Gui\MainTabs\GfxEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\GfxEditor.Designer.cs">
+    <Compile Include="Gui\MainTabs\GfxEditor.Designer.cs">
       <DependentUpon>GfxEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\GfxGroupsForm.cs">
@@ -174,28 +180,22 @@
     <Compile Include="Gui\GfxGroupsForm.Designer.cs">
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\GfxImportExport.cs">
+    <Compile Include="Gui\MainTabs\GfxImportExport.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\GfxImportExport.Designer.cs">
+    <Compile Include="Gui\MainTabs\GfxImportExport.Designer.cs">
       <DependentUpon>GfxImportExport.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\MainWindow.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\MainWindow.Designer.cs">
-      <DependentUpon>MainWindow.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\ObjectDesigner.cs">
+    <Compile Include="Gui\MainTabs\ObjectDesigner.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\ObjectDesigner.Designer.cs">
+    <Compile Include="Gui\MainTabs\ObjectDesigner.Designer.cs">
       <DependentUpon>ObjectDesigner.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\OverworldEditor.cs">
+    <Compile Include="Gui\MainTabs\OverworldEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Gui\OverworldEditor.Designer.cs">
+    <Compile Include="Gui\MainTabs\OverworldEditor.Designer.cs">
       <DependentUpon>OverworldEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\PaletteEditor.cs">
@@ -204,16 +204,16 @@
     <Compile Include="Gui\PaletteEditor.Designer.cs">
       <DependentUpon>PaletteEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\SaveSettings.cs">
+    <Compile Include="Gui\ExtraForms\SaveSettings.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\SaveSettings.Designer.cs">
+    <Compile Include="Gui\ExtraForms\SaveSettings.Designer.cs">
       <DependentUpon>SaveSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\SearchForm.cs">
+    <Compile Include="Gui\ExtraForms\SearchForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\SearchForm.Designer.cs">
+    <Compile Include="Gui\ExtraForms\SearchForm.Designer.cs">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\TextEditorExtra\DictionariesForm.cs">
@@ -228,10 +228,10 @@
     <Compile Include="Gui\TextEditorExtra\TextCommands.Designer.cs">
       <DependentUpon>TextCommands.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\Tile16Editor.cs">
+    <Compile Include="Gui\ExtraForms\Tile16Editor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\Tile16Editor.Designer.cs">
+    <Compile Include="Gui\ExtraForms\Tile16Editor.Designer.cs">
       <DependentUpon>Tile16Editor.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\VramViewer.cs">
@@ -240,10 +240,10 @@
     <Compile Include="Gui\VramViewer.Designer.cs">
       <DependentUpon>VramViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\WarpsForm.cs">
+    <Compile Include="Gui\ExtraForms\WarpsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\WarpsForm.Designer.cs">
+    <Compile Include="Gui\ExtraForms\WarpsForm.Designer.cs">
       <DependentUpon>WarpsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\WindowPanel.cs">
@@ -254,9 +254,9 @@
     </Compile>
     <Compile Include="ImgClipboard.cs" />
     <Compile Include="IniFile.cs" />
-    <Compile Include="OverlayData.cs" />
-    <Compile Include="Overworld.cs" />
-    <Compile Include="OverworldMap.cs" />
+    <Compile Include="Data\OverlayData.cs" />
+    <Compile Include="Data\Overworld.cs" />
+    <Compile Include="Data\OverworldMap.cs" />
     <Compile Include="OWSceneModes\ClipboardData\TileData.cs" />
     <Compile Include="OWSceneModes\DoorMode.cs" />
     <Compile Include="OWSceneModes\EntranceMode.cs" />
@@ -268,21 +268,21 @@
     <Compile Include="OWSceneModes\TransportMode.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Rooms\Items\ItemsNames.cs" />
-    <Compile Include="MovePointer.cs">
+    <Compile Include="Gui\ExtraForms\MovePointer.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MovePointer.Designer.cs">
+    <Compile Include="Gui\ExtraForms\MovePointer.Designer.cs">
       <DependentUpon>MovePointer.cs</DependentUpon>
     </Compile>
     <Compile Include="ObjectMode.cs" />
-    <Compile Include="ObjectViewer.cs">
+    <Compile Include="Gui\ObjectViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="ObjectViewer.Designer.cs">
+    <Compile Include="Gui\ObjectViewer.Designer.cs">
       <DependentUpon>ObjectViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Palettes.cs" />
-    <Compile Include="PaletteViewer.cs" />
+    <Compile Include="Data\Palettes.cs" />
+    <Compile Include="Gui\PaletteViewer.cs" />
     <Compile Include="ROMStructure.cs" />
     <Compile Include="RoomLayout.cs">
       <SubType>Form</SubType>
@@ -290,7 +290,7 @@
     <Compile Include="RoomLayout.Designer.cs">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </Compile>
-    <Compile Include="RoomPotSaveEditor.cs" />
+    <Compile Include="Data\RoomPotSaveEditor.cs" />
     <Compile Include="Rooms\Background2.cs" />
     <Compile Include="Rooms\Chests\Chest.cs" />
     <Compile Include="Rooms\Chests\ChestItems_Name.cs" />
@@ -304,10 +304,10 @@
       <DependentUpon>DungeonMain.cs</DependentUpon>
     </Compile>
     <Compile Include="GFX.cs" />
-    <Compile Include="Gui\GotoRoom.cs">
+    <Compile Include="Gui\ExtraForms\GotoRoom.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\GotoRoom.Designer.cs">
+    <Compile Include="Gui\ExtraForms\GotoRoom.Designer.cs">
       <DependentUpon>GotoRoom.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
@@ -322,15 +322,15 @@
     <Compile Include="Rooms\Object_Draw\Subtype3_Draw.cs" />
     <Compile Include="Rooms\Sprites\Sprite.cs" />
     <Compile Include="Save.cs" />
-    <Compile Include="SaveObject.cs" />
-    <Compile Include="SceneOW.cs">
+    <Compile Include="Data\SaveObject.cs" />
+    <Compile Include="Gui\Scene\SceneOW.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Scene\SceneResizing.cs" />
-    <Compile Include="Scene\SceneUW.cs">
+    <Compile Include="Gui\Scene\SceneResizing.cs" />
+    <Compile Include="Gui\Scene\SceneUW.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Scene\SceneBase.cs">
+    <Compile Include="Gui\Scene\SceneBase.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="SpriteOWEditor.cs" />
@@ -341,22 +341,22 @@
       <DependentUpon>SpritesView.cs</DependentUpon>
     </Compile>
     <Compile Include="Sprite_SubsetNames.cs" />
-    <Compile Include="StringByte.cs" />
-    <Compile Include="StringKey.cs" />
-    <Compile Include="TagKey.cs" />
-    <Compile Include="TextEditor.cs">
+    <Compile Include="Data\StringByte.cs" />
+    <Compile Include="Data\StringKey.cs" />
+    <Compile Include="Data\TagKey.cs" />
+    <Compile Include="Gui\MainTabs\TextEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="TextEditor.Designer.cs">
+    <Compile Include="Gui\MainTabs\TextEditor.Designer.cs">
       <DependentUpon>TextEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tile.cs" />
-    <Compile Include="Tile16.cs" />
-    <Compile Include="Tile32.cs" />
-    <Compile Include="TileInfo.cs" />
-    <Compile Include="TilePos.cs" />
-    <Compile Include="TileUndo.cs" />
-    <Compile Include="TransportOW.cs" />
+    <Compile Include="Data\Tile.cs" />
+    <Compile Include="Data\Tile16.cs" />
+    <Compile Include="Data\Tile32.cs" />
+    <Compile Include="Data\TileInfo.cs" />
+    <Compile Include="Data\TilePos.cs" />
+    <Compile Include="Data\TileUndo.cs" />
+    <Compile Include="Data\TransportOW.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="WhirlpoolForm.cs">
       <SubType>Form</SubType>
@@ -367,72 +367,72 @@
     <Compile Include="ZCompressLibrary\compression_piece.cs" />
     <Compile Include="ZCompressLibrary\Decompress.cs" />
     <Compile Include="ZCompressLibrary\fake_mem.cs" />
-    <EmbeddedResource Include="ChestPicker.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\ChestPicker.resx">
       <DependentUpon>ChestPicker.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Chestviewer.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\Chestviewer.resx">
       <DependentUpon>Chestviewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="CustomTabControl.resx">
+    <EmbeddedResource Include="Gui\CustomTabControl.resx">
       <DependentUpon>CustomTabControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GlobalOptionForm.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\GlobalOptionForm.resx">
       <DependentUpon>GlobalOptionForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\AboutBox1.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\AboutBox1.resx">
       <DependentUpon>AboutBox1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\AddSprite.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\AddSprite.resx">
       <DependentUpon>AddSprite.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\AdvancedChestEditorForm.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\AdvancedChestEditorForm.resx">
       <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\CGRamViewer.resx">
       <DependentUpon>CGRamViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\DungeonPropertiesForm.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\DungeonPropertiesForm.resx">
       <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\DungeonMain.resx">
       <DependentUpon>DungeonMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\DungeonViewer.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\OWMusicForm.resx">
+      <DependentUpon>OWMusicForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\MainTabs\DungeonViewer.resx">
       <DependentUpon>DungeonViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\EntranceForm.resx" />
-    <EmbeddedResource Include="Gui\EntrancePropertyForm.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\EntranceForm.resx" />
+    <EmbeddedResource Include="Gui\ExtraForms\EntrancePropertyForm.resx">
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExitEditorForm.resx" />
-    <EmbeddedResource Include="Gui\GfxEditor.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\ExitEditorForm.resx" />
+    <EmbeddedResource Include="Gui\MainTabs\GfxEditor.resx">
       <DependentUpon>GfxEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\GfxGroupsForm.resx">
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\GfxImportExport.resx">
+    <EmbeddedResource Include="Gui\MainTabs\GfxImportExport.resx">
       <DependentUpon>GfxImportExport.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\GotoRoom.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\GotoRoom.resx">
       <DependentUpon>GotoRoom.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\MainWindow.resx">
-      <DependentUpon>MainWindow.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ObjectDesigner.resx">
+    <EmbeddedResource Include="Gui\MainTabs\ObjectDesigner.resx">
       <DependentUpon>ObjectDesigner.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\OverworldEditor.resx">
+    <EmbeddedResource Include="Gui\MainTabs\OverworldEditor.resx">
       <DependentUpon>OverworldEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\PaletteEditor.resx">
       <DependentUpon>PaletteEditor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\SaveSettings.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\SaveSettings.resx">
       <DependentUpon>SaveSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\SearchForm.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\TextEditorExtra\DictionariesForm.resx">
@@ -441,23 +441,23 @@
     <EmbeddedResource Include="Gui\TextEditorExtra\TextCommands.resx">
       <DependentUpon>TextCommands.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\Tile16Editor.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\Tile16Editor.resx">
       <DependentUpon>Tile16Editor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\VramViewer.resx">
       <DependentUpon>VramViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\WarpsForm.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\WarpsForm.resx">
       <DependentUpon>WarpsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\WindowPanel.resx">
       <DependentUpon>WindowPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MovePointer.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\MovePointer.resx">
       <DependentUpon>MovePointer.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="ObjectViewer.resx">
+    <EmbeddedResource Include="Gui\ObjectViewer.resx">
       <DependentUpon>ObjectViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -473,19 +473,19 @@
     <EmbeddedResource Include="RoomLayout.resx">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SceneOW.resx">
+    <EmbeddedResource Include="Gui\Scene\SceneOW.resx">
       <DependentUpon>SceneOW.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Scene\SceneBase.resx">
+    <EmbeddedResource Include="Gui\Scene\SceneBase.resx">
       <DependentUpon>SceneBase.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Scene\SceneUW.resx">
+    <EmbeddedResource Include="Gui\Scene\SceneUW.resx">
       <DependentUpon>SceneUW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SpritesView.resx">
       <DependentUpon>SpritesView.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="TextEditor.resx">
+    <EmbeddedResource Include="Gui\MainTabs\TextEditor.resx">
       <DependentUpon>TextEditor.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />

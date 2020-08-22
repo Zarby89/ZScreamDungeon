@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor
 {
@@ -41,7 +42,15 @@ namespace ZeldaFullEditor
                 
 
                 e.Graphics.DrawImage(GFX.previewObjectsBitmap[o.previewId], new Point(xpos * 64, ypos * 64));
-                e.Graphics.DrawImage(GFX.favStar1, new Rectangle((xpos * 64) + 40, (ypos * 64) + 40, 16,16));
+
+                if (Settings.Default.favoriteObjects[o.id] == "true")
+                {
+                    e.Graphics.DrawImage(GFX.favStar2, new Rectangle((xpos * 64) + 40, (ypos * 64) + 40, 16, 16));
+                }
+                else
+                {
+                    e.Graphics.DrawImage(GFX.favStar1, new Rectangle((xpos * 64) + 40, (ypos * 64) + 40, 16, 16));
+                }
                 if (selectedObject == o)
                 {
                     e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(50, 0, 0, 255)), new Rectangle(xpos * 64, (ypos * 64), 64, 64));
@@ -165,10 +174,28 @@ namespace ZeldaFullEditor
                 if (index < items.Count)
                 {
                     Rectangle itemRect = new Rectangle(xpos * 64, ypos * 64, 64, 64);
+                    Rectangle itemstarRect = new Rectangle((xpos * 64)+44, (ypos * 64)+44, 16, 16);
                     if (itemRect.Contains(new Point(e.X, e.Y)))
                     {
                         selectedIndex = index;
                         selectedObject = o;
+                        if (itemstarRect.Contains((new Point(e.X, e.Y))))
+                        {
+                            //Make Favourite or not
+                            if (Settings.Default.favoriteObjects[o.id] == "true")
+                            {
+                                Settings.Default.favoriteObjects[o.id] = "false";
+                            }
+                            else
+                            {
+                                Settings.Default.favoriteObjects[o.id] = "true";
+                            }
+                        }
+
+                        OnValueChanged(new EventArgs());
+                        Refresh();
+                        return;
+
                     }
                     xpos++;
                     if (xpos >= w)
@@ -180,8 +207,7 @@ namespace ZeldaFullEditor
                     index++;
                 }
             }
-            OnValueChanged(new EventArgs());
-            Refresh();
+
         }
     }
 }
