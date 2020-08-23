@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{A634564E-5323-48FE-A54C-B42AF25C5315}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ZeldaFullEditor</RootNamespace>
     <AssemblyName>ZeldaFullEditor</AssemblyName>
@@ -197,6 +197,12 @@
     </Compile>
     <Compile Include="Gui\MainTabs\OverworldEditor.Designer.cs">
       <DependentUpon>OverworldEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\MainTabs\ScreenEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\MainTabs\ScreenEditor.Designer.cs">
+      <DependentUpon>ScreenEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\PaletteEditor.cs">
       <SubType>UserControl</SubType>
@@ -425,6 +431,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\OverworldEditor.resx">
       <DependentUpon>OverworldEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\MainTabs\ScreenEditor.resx">
+      <DependentUpon>ScreenEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\PaletteEditor.resx">
       <DependentUpon>PaletteEditor.cs</DependentUpon>

@@ -28,6 +28,9 @@ namespace ZeldaFullEditor
         public static IntPtr currentEditinggfx16Ptr = Marshal.AllocHGlobal((128 * 512) / 2);
         public static Bitmap currentEditingfx16Bitmap;
 
+        public static IntPtr currentTileScreengfx16Ptr = Marshal.AllocHGlobal((128 * 512) / 2);
+        public static Bitmap currentTileScreengfx16Bitmap;
+
         public static IntPtr currentOWgfx16Ptr = Marshal.AllocHGlobal((128 * 512) / 2);
         public static Bitmap currentOWgfx16Bitmap;
 
@@ -48,6 +51,8 @@ namespace ZeldaFullEditor
 
         public static IntPtr currentfontgfx16Ptr = Marshal.AllocHGlobal(172 * 20000);
         public static Bitmap currentfontgfx16Bitmap;
+
+
 
         public static bool[] isbpp3 = new bool[223];
 
@@ -92,8 +97,6 @@ namespace ZeldaFullEditor
 
         public unsafe static void DrawBG1()
         {
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
             var alltilesData = (byte*)currentgfx16Ptr.ToPointer();
             byte* ptr = (byte*)roomBg1Ptr.ToPointer();
             for (int yy = 0; yy < 64; yy++) //for each tile on the tile buffer
@@ -131,8 +134,6 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-            sw.Stop();
-            Console.WriteLine("Unsafe BG1 Buffer Copy - " + sw.ElapsedMilliseconds + "ms");
         }
 
 
@@ -180,6 +181,7 @@ namespace ZeldaFullEditor
             //allgfxEDITBitmap = new Bitmap(128, 7104, 128, PixelFormat.Format8bppIndexed, allgfx16EDITPtr);
             currentgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentgfx16Ptr);
             currentEditingfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentEditinggfx16Ptr);
+            currentTileScreengfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentEditinggfx16Ptr);
             roomObjectsBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomObjectsPtr);
             currentOWgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentOWgfx16Ptr);
             previewgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, previewgfx16Ptr);

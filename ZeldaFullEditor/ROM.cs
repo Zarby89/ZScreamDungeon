@@ -148,6 +148,11 @@ namespace ZeldaFullEditor
             return (short)((DATA[addr + 1] << 8) + DATA[addr]);
         }
 
+        public static short ReadReverseShort(int addr)
+        {
+            return (short)((DATA[addr] << 8) + DATA[addr+1]);
+        }
+
         public static void SaveLogs()
         {
             string fname = "Logs.txt";

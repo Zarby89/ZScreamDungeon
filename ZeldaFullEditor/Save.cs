@@ -1195,6 +1195,29 @@ namespace ZeldaFullEditor
         //120000 to 1343C0 (S:248000 to 26C3C0) are new overworld maps location always same size (fake compressed)
         //0x058000 (OLD MAP DATA) Now Used for Overlays data
 
+
+        //0x6452A  // HOOK Replaced Code : INC $15 : LDA.b #$03
+        //1351C0 / 26D1C0 end of tilemap data where the jump code should be for DMA
+
+
+        public bool saveTitleScreen(DungeonMain mainForm)
+        {
+            /*int pos = 0x1343C0;
+            //134AC0 = BG2
+            for (int i = 0; i < 0x380; i++)
+            {
+                ROM.WriteShort(pos, mainForm.screenEditor.tilesBG1Buffer[i], true, "Screen");
+                ROM.WriteShort(pos+0x700, mainForm.screenEditor.tilesBG2Buffer[i], true, "Screen");
+                pos += 2;
+                
+            }
+            */
+            return false;
+        }
+
+
+
+
         public bool saveOverworldMessagesIds(SceneOW scene)
         {
             ROM.StartBlockLogWriting("Overworld Messages IDs", Constants.overworldMessages);

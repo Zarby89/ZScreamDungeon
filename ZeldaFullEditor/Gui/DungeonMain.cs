@@ -17,6 +17,7 @@ using System.IO.Compression;
 using System.Runtime.InteropServices;
 using System.Threading;
 using ZeldaFullEditor.Gui;
+using ZeldaFullEditor.Gui.MainTabs;
 
 namespace ZeldaFullEditor
 {
@@ -61,6 +62,7 @@ namespace ZeldaFullEditor
         PaletteEditor paletteForm;
         Bitmap xTabButton;
         public Room previewRoom = null;
+        public ScreenEditor screenEditor = new ScreenEditor();
         private void Form1_Load(object sender, EventArgs e)
         {
             if (Settings.Default.favoriteObjects.Count < 0xFFF)
@@ -91,16 +93,19 @@ namespace ZeldaFullEditor
             objDesigner.Visible = false;
             gfxEditor.Visible = false;
             dungeonViewer.Visible = false;
+            screenEditor.Visible = false;
             objDesigner.Dock = DockStyle.Fill;
             overworldEditor.Dock = DockStyle.Fill;
             textEditor.Dock = DockStyle.Fill;
             gfxEditor.Dock = DockStyle.Fill;
             dungeonViewer.Dock = DockStyle.Fill;
+            screenEditor.Dock = DockStyle.Fill;
             Controls.Add(overworldEditor);
             Controls.Add(textEditor);
             Controls.Add(objDesigner);
             Controls.Add(gfxEditor);
             Controls.Add(dungeonViewer);
+            Controls.Add(screenEditor);
         }
         //Need to stay here
         public void initialize_properties()
@@ -305,13 +310,19 @@ namespace ZeldaFullEditor
             }
 
 
+            if (save.saveTitleScreen(this))
+            {
+                MessageBox.Show("Failed to save overworld title screen? ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
 
 
             overworldEditor.scene.SaveTiles();
 
-            /* Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
-             AsarCLR.Asar.init();
-             AsarCLR.Asar.patch("spritesmove.asm", ref ROM.DATA);*/
+             //Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
+             //AsarCLR.Asar.init();
+             //AsarCLR.Asar.patch("titlescreen.asm", ref ROM.DATA);
             //overworldEditor.overworld.SaveMap16Tiles();
 
 
@@ -526,6 +537,7 @@ namespace ZeldaFullEditor
             refreshRecentsFiles();
             overworldEditor.InitOpen(this);
             textEditor.initOpen();
+            screenEditor.Init();
             //InitDungeonViewer();
 
 
@@ -3579,6 +3591,16 @@ namespace ZeldaFullEditor
             {
                 dungeonViewer.Visible = false;
             }
+            if (editorsTabControl.SelectedTab.Name == "ScreenEditor")
+            {
+                screenEditor.BringToFront();
+                screenEditor.Buildtileset();
+                screenEditor.Visible = true;
+            }
+            else
+            {
+                screenEditor.Visible = false;
+            }
         }
 
         private void saveSettingsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3686,6 +3708,11 @@ namespace ZeldaFullEditor
         private void favoriteCheckbox_CheckedChanged(object sender, EventArgs e)
         {
             sortObject();
+        }
+
+        private void runToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            runtestButton_Click(sender, e);
         }
     }
 
