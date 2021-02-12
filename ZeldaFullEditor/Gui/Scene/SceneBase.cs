@@ -167,7 +167,7 @@ namespace ZeldaFullEditor
 
             if (showBG2Outline)
             {
-                if (room.Bg2 != Background2.Off)
+                if (room.bg2 != Background2.Off)
                 {
                     foreach (Room_Object obj in room.tilesObjects)
                     {

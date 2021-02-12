@@ -11,6 +11,7 @@ namespace ZeldaFullEditor
         public ushort o, v, h; //o = over, v = vertical mirror, h = horizontal mirror
         public byte palette;
         public ushort id;
+        //vhopppcc cccccccc
         public TileInfo(ushort id, byte palette, ushort v, ushort h, ushort o)
         {
             this.id = id;

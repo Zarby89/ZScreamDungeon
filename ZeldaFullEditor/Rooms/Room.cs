@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Properties;
 
+
 namespace ZeldaFullEditor
 {
     [Serializable]
@@ -25,144 +26,76 @@ namespace ZeldaFullEditor
         int header_location;
         public bool has_changed = false;
         public string name;
-        public byte layout;
-        public byte floor1;
-        public byte floor2;
-        public byte blockset;
-        public byte spriteset;
-        public byte palette;
-        public byte collision; //Need a better name for that
-        public Background2 bg2;
-        public byte effect;
-        public TagKey tag1;
-        public TagKey tag2;
-        public byte holewarp;
-        public byte holewarp_plane;
-        public byte[] staircase_rooms = new byte[4];
-        public byte[] staircase_plane = new byte[4];
+        
+
+
+        
+
+
         public bool light;
-        public short messageid;
-        public bool damagepit;
         public byte[] blocks = new byte[16];
         public List<Chest> chest_list = new List<Chest>();
         public List<Room_Object> tilesObjects = new List<Room_Object>();
-        public List<Room_Object> tilesLayoutObjects = new List<Room_Object>();
+        
         public List<Sprite> sprites = new List<Sprite>();
         public List<PotItem> pot_items = new List<PotItem>();
         public List<Object> selectedObject = new List<object>();
-
+        public List<Room_Object> tilesLayoutObjects = new List<Room_Object>();
         public bool objectInitialized = false;
         public bool onlyLayout = false;
-        public bool sortSprites = false;
-        [DisplayName("Layout"), Description("Room layout used as a default model for the room"), Category("Header")]
-        public byte Layout
+
+
+        private byte _layout;
+        public byte layout
         {
-            get
-            {
-                return layout;
-            }
-            set
-            {
-                layout = value;
-                if (layout >= 8)
-                {
-                    layout = 7;
-                }
-            }
-        }
-        [DisplayName("Room Floor 1"), Description("Main floor gfx for the room"), Category("Header")]
-        public byte Floor1
-        {
-            get
-            {
-                return floor1;
-            }
-            set
-            {
-                floor1 = value;
-                if (floor1 >= 16)
-                {
-                    floor1 = 15;
-                }
-            }
-        }
-        [DisplayName("Room Floor 2"), Description("Secondary floor gfx for the room"), Category("Header")]
-        public byte Floor2
-        {
-            get
-            {
-                return floor2;
-            }
-            set
-            {
-                floor2 = value;
-                if (floor2 >= 16)
-                {
-                    floor2 = 15;
-                }
-            }
+            get => _layout;
+            set => _layout = Utils.Clamp(value, 0, 7);
+
         }
 
-        [DisplayName("Blockset"), Description("The gfx id used for that room"), Category("Header")]
-        public byte Blockset
+        private byte _floor1;
+        public byte floor1
         {
-            get
-            {
-                return blockset;
-            }
-            set
-            {
-                blockset = value;
-                if (blockset >= 24)
-                {
-                    blockset = 23;
-                }
-            }
-        }
-        [DisplayName("Spriteset"), Description("The sprite gfx id used for that room"), Category("Header")]
-        public byte Spriteset
-        {
-            get
-            {
-                return spriteset;
-            }
-            set
-            {
-                spriteset = value;
-                if (spriteset >= 65)
-                {
-                    spriteset = 64;
-                }
-            }
-        }
-        [DisplayName("Palette Set"), Description("The palette set used for that room"), Category("Header")]
-        public byte Palette
-        {
-            get
-            {
-                return palette;
-            }
-            set
-            {
-                palette = value;
-                if (palette >= 72)
-                {
-                    palette = 71;
-                }
-            }
+            get => _floor1;
+            set => _floor1 = Utils.Clamp(value, 0, 15);
         }
 
-        [DisplayName("Background Type"), Description("Type of background used for that room, to handle transparancy, multiple layers etc..."), Category("Header")]
-        public Background2 Bg2
+        private byte _floor2;
+        public byte floor2
         {
-            get
-            {
-                return bg2;
-            }
+            get => _floor2;
+            set => _floor2 = Utils.Clamp(value, 0, 15);
+        }
+
+        private byte _blockset;
+        public byte blockset
+        {
+            get => _blockset;
+            set => _blockset = Utils.Clamp(value, 0, 23);
+        }
+
+        private byte _spriteset;
+        public byte spriteset
+        {
+            get => _spriteset;
+            set => _spriteset = Utils.Clamp(value, 0, 64);
+        }
+
+        private byte _palette;
+        public byte palette
+        {
+            get => _palette;
+            set =>  _palette = Utils.Clamp(value, 0, 71);
+        }
+
+        private Background2 _bg2;
+        public Background2 bg2
+        {
+            get => _bg2;
             set
             {
-                bg2 = value;
-                if (bg2 == Background2.DarkRoom)
+                _bg2 = value;
+                if (_bg2 == Background2.DarkRoom)
                 {
                     light = true;
                 }
@@ -173,227 +106,75 @@ namespace ZeldaFullEditor
 
             }
         }
+        public TagKey tag1 { get; set; }
+        public TagKey tag2 { get; set; }
 
-        [DisplayName("Tag 1"), Description("Tag of the room used to spawn chest, open doors when enemies killed, etc..."), Category("Header")]
-        public TagKey Tag1
-        {
-            get
-            {
-                return tag1;
-            }
-            set
-            {
-                tag1 = value;
-            }
-        }
+        public CollisionKey collision { get; set; }
+        public EffectKey effect { get; set; }
 
-        [DisplayName("Tag 2"), Description("Tag of the room used to spawn chest, open doors when enemies killed, etc..."), Category("Header")]
-        public TagKey Tag2
+        public byte holewarp { get; set; }
+        public byte holewarp_plane { get; set; }
+
+        private short _messageid;
+        public short messageid
         {
-            get
-            {
-                return tag2;
-            }
-            set
-            {
-                tag2 = value;
-            }
+            get => _messageid;
+            set => _messageid = Utils.Clamp(value, 0, 397);
         }
 
-        [DisplayName("Collision"), Description("Used for special collision rooms like water / moving floor"), Category("Header")]
-        public CollisionKey Collision
+        public bool damagepit { get; set; }
+
+        public bool sortsprites { get; set; }
+
+        public byte[] staircase_rooms = new byte[4];
+        public byte staircase1
         {
-            get
-            {
-                return (CollisionKey)collision;
-            }
-            set
-            {
-                collision = (byte)value;
-            }
+            get => staircase_rooms[0];
+            set => staircase_rooms[0] = value;
+        }
+        
+        public byte staircase2
+        {
+            get => staircase_rooms[1];
+            set => staircase_rooms[1] = value;
+        }
+        
+        public byte staircase3
+        {
+            get => staircase_rooms[2];
+            set => staircase_rooms[2] = value;
+        }
+       
+        public byte staircase4
+        {
+            get => staircase_rooms[3];
+            set => staircase_rooms[3] = value;
         }
 
-        [DisplayName("Effect"), Description("Used for special collision rooms like water / moving floor"), Category("Header")]
-        public EffectKey Effect
+        
+        private byte[] staircase_plane = new byte[4];
+        public byte staircase1Plane
         {
-            get
-            {
-                return (EffectKey)effect;
-            }
-            set
-            {
-                effect = (byte)value;
-            }
+            get => staircase_plane[0];
+            set => staircase_plane[0] = value;
         }
 
-        [DisplayName("Hole / Warp"), Description("The destination room of holes and warps for that room"), Category("Transitions")]
-        public byte HoleWarp
+        public byte staircase2Plane
         {
-            get
-            {
-                return holewarp;
-            }
-            set
-            {
-                holewarp = value;
-            }
+            get => staircase_plane[1];
+            set => staircase_plane[1] = value;
         }
-        [DisplayName("Hole / Warp - Plane"), Description("The destination Plane for the hole and warps, for example in a multiple floor room 1 would put you on top floor, 0 on the floor below"), Category("Transitions")]
-        public byte HoleWarpPlane
+        
+        public byte staircase3Plane
         {
-            get
-            {
-                return holewarp_plane;
-            }
-            set
-            {
-                holewarp_plane = value;
-            }
+            get => staircase_plane[2];
+            set => staircase_plane[2] = value;
         }
-
-        [DisplayName("Message Id"), Description("Define the message id used by the room"), Category("Misc")]
-        public short Messageid
+        
+        public byte staircase4Plane
         {
-            get
-            {
-                return messageid;
-            }
-            set
-            {
-                messageid = value;
-                if (messageid >= 398)
-                {
-                    messageid = 397;
-                }
-            }
-        }
-
-        [DisplayName("Damage Pit"), Description("Do the hole does damage when you fall in?"), Category("Misc")]
-        public bool Damagepit
-        {
-            get
-            {
-                return damagepit;
-            }
-            set
-            {
-                damagepit = value;
-
-            }
-        }
-
-        [DisplayName("Sort Sprites"), Description("Allow sprites to move on layer2 without affecting layer1"), Category("Misc")]
-        public bool SortSprites
-        {
-            get
-            {
-                return sortSprites;
-            }
-            set
-            {
-                sortSprites = value;
-
-            }
-        }
-
-
-        [DisplayName("Staircase 1"), Description("The destination Room for the first stair/staircase in the room in object order"), Category("Transitions")]
-        public byte Staircase1
-        {
-            get
-            {
-                return staircase_rooms[0];
-            }
-            set
-            {
-                staircase_rooms[0] = value;
-            }
-        }
-        [DisplayName("Staircase 2"), Description("The destination Room for the second stair/staircase in the room in object order"), Category("Transitions")]
-        public byte Staircase2
-        {
-            get
-            {
-                return staircase_rooms[1];
-            }
-            set
-            {
-                staircase_rooms[1] = value;
-            }
-        }
-        [DisplayName("Staircase 3"), Description("The destination Room for the third stair/staircase in the room in object order"), Category("Transitions")]
-        public byte Staircase3
-        {
-            get
-            {
-                return staircase_rooms[2];
-            }
-            set
-            {
-                staircase_rooms[2] = value;
-            }
-        }
-        [DisplayName("Staircase 4"), Description("The destination Room for the fourth stair/staircase in the room in object order"), Category("Transitions")]
-        public byte Staircase4
-        {
-            get
-            {
-                return staircase_rooms[3];
-            }
-            set
-            {
-                staircase_rooms[3] = value;
-            }
-        }
-
-
-        [DisplayName("Staircase 1 - Plane"), Description("The destination Plane for the first stair/staircase in the room in object order for example in a multiple floor room 1 would put you on top floor, 0 on the floor below"), Category("Transitions")]
-        public byte Staircase1Plane
-        {
-            get
-            {
-                return staircase_plane[0];
-            }
-            set
-            {
-                staircase_plane[0] = value;
-            }
-        }
-        [DisplayName("Staircase 2 - Plane"), Description("The destination Plane for the second stair/staircase in the room in object order for example in a multiple floor room 1 would put you on top floor, 0 on the floor below"), Category("Transitions")]
-        public byte Staircase2Plane
-        {
-            get
-            {
-                return staircase_plane[1];
-            }
-            set
-            {
-                staircase_plane[1] = value;
-            }
-        }
-        [DisplayName("Staircase 3 - Plane"), Description("The destination Plane for the third stair/staircase in the room in object order for example in a multiple floor room 1 would put you on top floor, 0 on the floor below"), Category("Transitions")]
-        public byte Staircase3Plane
-        {
-            get
-            {
-                return staircase_plane[2];
-            }
-            set
-            {
-                staircase_plane[2] = value;
-            }
-        }
-        [DisplayName("Staircase 4 - Plane"), Description("The destination Plane for the fourth stair/staircase in the room in object order for example in a multiple floor room 1 would put you on top floor, 0 on the floor below"), Category("Transitions")]
-        public byte Staircase4Plane
-        {
-            get
-            {
-                return staircase_plane[3];
-            }
-            set
-            {
-                staircase_plane[3] = value;
-            }
+            get => staircase_plane[3];
+            set => staircase_plane[3] = value;
         }
 
         public Room(int index)
@@ -529,7 +310,7 @@ namespace ZeldaFullEditor
             (ROM.DATA[spritePointer + (index * 2) + 1] << 8) +
             ROM.DATA[spritePointer + (index * 2)];
             int sprite_address = Utils.SnesToPc(sprite_address_snes);
-            sortSprites = ROM.DATA[sprite_address] == 1 ? true : false;
+            sortsprites = ROM.DATA[sprite_address] == 1 ? true : false;
             sprite_address += 1;
             while (true)
             {
@@ -1195,12 +976,11 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void loadLayoutObjects(bool floor = true)
+        public void loadLayoutObjects(bool floor = true) // that is dumb!
         {
-
             int pointer = ROM.ReadLong(Constants.room_object_layout_pointer);
             pointer = Utils.SnesToPc(pointer);
-            int layout_address = ROM.ReadLong(pointer  + (layout * 3));
+            int layout_address = ROM.ReadLong(pointer + (layout * 3));
 
             int layout_location = Utils.SnesToPc(layout_address);
 
@@ -1215,6 +995,7 @@ namespace ZeldaFullEditor
             byte sizeXY = 0;
             short oid = 0;
             int layer = 0;
+
 
             while (true)
             {
@@ -2476,7 +2257,7 @@ namespace ZeldaFullEditor
             header_location = Utils.SnesToPc(address);
 
             bg2 = (Background2)((ROM.DATA[header_location] >> 5) & 0x07);
-            collision = (byte)((ROM.DATA[header_location] >> 2) & 0x07);
+            collision = (CollisionKey)((ROM.DATA[header_location] >> 2) & 0x07);
             light = (((ROM.DATA[header_location]) & 0x01) == 1 ? true : false);
             if (light)
             {
@@ -2486,7 +2267,7 @@ namespace ZeldaFullEditor
             palette = (byte)((ROM.DATA[header_location + 1] & 0x3F));
             blockset = (byte)((ROM.DATA[header_location + 2]));
             spriteset = (byte)((ROM.DATA[header_location + 3]));
-            effect = (byte)((ROM.DATA[header_location + 4]));
+            effect = (EffectKey)((ROM.DATA[header_location + 4]));
             tag1 = (TagKey)((ROM.DATA[header_location + 5]));
             tag2 = (TagKey)((ROM.DATA[header_location + 6]));
 

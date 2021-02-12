@@ -45,18 +45,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
             //byte 2 and 3 = Tile Count in Big Endian if 8XXX this is the last index
             //11 0B    00 19
 
-
+            /*
             int pos = (ROM.DATA[0x138C + 3] << 16) + (ROM.DATA[0x1383 + 3] << 8) + ROM.DATA[0x137A + 3];
             pos = Utils.SnesToPc(pos);
-            int c = 0;
-            
             while (true)
             {
-                /*c++;
-                if (c > 16)
-                {
-                    break;
-                }*/
+
                 if ((ROM.DATA[pos] & 0x80) == 0x80)
                 {
                     break;
@@ -91,18 +85,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
                         tilesBG2Buffer[destAddr] = tiledata;
                     }
 
-                    //Read Tile
-                    /*if (destAddr >= 0x1000)
-                    {
-                        if (((destAddr - 0x1000) / 2) < 1024)
-                            tilesBG1Buffer[(destAddr - 0x1000)/2] = tiledata;
-                    }
-                    else
-                    {
-                        if ((destAddr/2) < 1024)
-                        tilesBG2Buffer[destAddr/2] = tiledata;
-
-                    }*/
                     if (increment64)
                     {
                         destAddr += 32;
@@ -135,7 +117,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
             palSelected = (byte)(2);
             updateTiles();
-
+            */
         }
 
         public IntPtr tiles8Ptr = Marshal.AllocHGlobal(128 * 512);

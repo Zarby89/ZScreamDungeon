@@ -18,6 +18,10 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using ZeldaFullEditor.Gui;
 using ZeldaFullEditor.Gui.MainTabs;
+using CSScriptLibrary;
+using System.Security.Permissions;
+using System.Security;
+using System.Security.Policy;
 
 namespace ZeldaFullEditor
 {
@@ -63,6 +67,7 @@ namespace ZeldaFullEditor
         Bitmap xTabButton;
         public Room previewRoom = null;
         public ScreenEditor screenEditor = new ScreenEditor();
+
         private void Form1_Load(object sender, EventArgs e)
         {
             if (Settings.Default.favoriteObjects.Count < 0xFFF)
@@ -72,6 +77,8 @@ namespace ZeldaFullEditor
                     Settings.Default.favoriteObjects.Add("false");
                 }
             }
+
+
 
 
             xTabButton = new Bitmap(Resources.xbutton);
@@ -94,12 +101,14 @@ namespace ZeldaFullEditor
             gfxEditor.Visible = false;
             dungeonViewer.Visible = false;
             screenEditor.Visible = false;
+            
             objDesigner.Dock = DockStyle.Fill;
             overworldEditor.Dock = DockStyle.Fill;
             textEditor.Dock = DockStyle.Fill;
             gfxEditor.Dock = DockStyle.Fill;
             dungeonViewer.Dock = DockStyle.Fill;
             screenEditor.Dock = DockStyle.Fill;
+
             Controls.Add(overworldEditor);
             Controls.Add(textEditor);
             Controls.Add(objDesigner);
@@ -190,7 +199,7 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            if (save.saveallSprites())//sprites, there's a protection -NOT TESTED-
+            if (save.saveallSprites())//sprites, there's a protection
             {
                 MessageBox.Show("Failed to save, there is too many sprites", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
@@ -281,12 +290,12 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            if (save.saveMapOverlays(overworldEditor.scene))
+            /*if (save.saveMapOverlays(overworldEditor.scene))
             {
                 MessageBox.Show("Failed to save overworld map Overlays ??? ", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
-            }
+            }*/
 
             if (save.saveOverworldTilesType(overworldEditor.scene))
             {
@@ -319,12 +328,19 @@ namespace ZeldaFullEditor
 
 
             overworldEditor.scene.SaveTiles();
+            if (save.saveOverworldMaps(overworldEditor.scene))
+            {
+                MessageBox.Show("Failed to save overworld maps ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
 
-             //Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
-             //AsarCLR.Asar.init();
-             //AsarCLR.Asar.patch("titlescreen.asm", ref ROM.DATA);
+            }
+            //Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
+            //AsarCLR.Asar.init();
+            //AsarCLR.Asar.patch("titlescreen.asm", ref ROM.DATA);
             //overworldEditor.overworld.SaveMap16Tiles();
 
+            overworldEditor.saveScratchPad();
 
             Palettes.SavePalettesToROM(ROM.DATA);
             GfxGroups.SaveGroupsToROM();
@@ -490,12 +506,12 @@ namespace ZeldaFullEditor
                 selecteditemobjectCombobox.Items.Add(ItemsNames.name[i]);
             }
 
-            GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
-            GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
+            GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
+            GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
             objectViewer1.updateSize();
             spritesView1.updateSize();
 
-            textSpriteToolStripMenuItem.Checked = Settings.Default.spriteText;
+            /*textSpriteToolStripMenuItem.Checked = Settings.Default.spriteText;
             textChestItemToolStripMenuItem.Checked = Settings.Default.chestText;
             textPotItemToolStripMenuItem.Checked = Settings.Default.itemText;
             unselectedBGTransparentToolStripMenuItem.Checked = Settings.Default.transparentBG;
@@ -508,7 +524,7 @@ namespace ZeldaFullEditor
             disableEntranceGFXToolStripMenuItem.Checked = Settings.Default.disableentranceGfx;
             showBG2MaskOutlineToolStripMenuItem.Checked = Settings.Default.bg2maskShow;
             entranceCameraToolStripMenuItem.Checked = Settings.Default.entranceCamera;
-            entrancePositionToolStripMenuItem.Checked = Settings.Default.entrancePos;
+            entrancePositionToolStripMenuItem.Checked = Settings.Default.entrancePos;*/
 
             activeScene.DrawRoom();
             activeScene.Refresh();
@@ -1486,8 +1502,8 @@ namespace ZeldaFullEditor
                     activeScene.room.reloadGfx();
                 }
                 
-                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
-                GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
+                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
+                GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
                 activeScene.SetPalettesBlack();
                 //paletteViewer.update();
                 activeScene.DrawRoom();
@@ -1737,96 +1753,96 @@ namespace ZeldaFullEditor
         {
             if (propertiesChangedFromForm == false)
             {
-                activeScene.room.Bg2 = (Background2)roomProperty_bg2.SelectedIndex;
+                activeScene.room.bg2 = (Background2)roomProperty_bg2.SelectedIndex;
                 byte r = 0;
                 if (Byte.TryParse(roomProperty_blockset.Text, out r))
                 {
-                    activeScene.room.Blockset = r;
+                    activeScene.room.blockset = r;
                 }
                 else
                 {
                     //MessageBox.Show("That value is invalid");
-                    activeScene.room.Blockset = 0;
+                    activeScene.room.blockset = 0;
                 }
 
 
 
-                activeScene.room.Tag1 = (TagKey)roomProperty_tag1.SelectedIndex;
-                activeScene.room.Tag2 = (TagKey)roomProperty_tag2.SelectedIndex;
-                activeScene.room.Effect = (EffectKey)roomProperty_effect.SelectedIndex;
-                activeScene.room.Collision = (CollisionKey)roomProperty_collision.SelectedIndex;
+                activeScene.room.tag1 = (TagKey)roomProperty_tag1.SelectedIndex;
+                activeScene.room.tag2 = (TagKey)roomProperty_tag2.SelectedIndex;
+                activeScene.room.effect = (EffectKey)roomProperty_effect.SelectedIndex;
+                activeScene.room.collision = (CollisionKey)roomProperty_collision.SelectedIndex;
 
                 if (Byte.TryParse(roomProperty_floor1.Text, out r))
                 {
-                    activeScene.room.Floor1 = r;
+                    activeScene.room.floor1 = r;
                 }
                 else
                 {
                     //MessageBox.Show("That value is invalid");
-                    activeScene.room.Floor1 = 0;
+                    activeScene.room.floor1 = 0;
                 }
 
                 if (Byte.TryParse(roomProperty_floor2.Text, out r))
                 {
-                    activeScene.room.Floor2 = r;
+                    activeScene.room.floor2 = r;
                 }
                 else
                 {
                     //MessageBox.Show("That value is invalid");
-                    activeScene.room.Floor2 = 0;
+                    activeScene.room.floor2 = 0;
                 }
 
                 if (Byte.TryParse(roomProperty_layout.Text, out r))
                 {
-                    activeScene.room.Layout = r;
+                    activeScene.room.layout = r;
                 }
                 else
                 {
                     //MessageBox.Show("That value is invalid");
-                    activeScene.room.Layout = 0;
+                    activeScene.room.layout = 0;
                 }
 
                 if (Byte.TryParse(roomProperty_msgid.Text, out r))
                 {
-                    activeScene.room.Messageid = r;
+                    activeScene.room.messageid = r;
                 }
                 else
                 {
                     //MessageBox.Show("That value is invalid");
-                    activeScene.room.Messageid = 0;
+                    activeScene.room.messageid = 0;
                 }
 
                 if (Byte.TryParse(roomProperty_palette.Text, out r))
                 {
                     if (r <= 40)
                     {
-                        activeScene.room.Palette = r;
+                        activeScene.room.palette = r;
                     }
                     else
                     {
                         roomProperty_palette.Text = "40";
-                        activeScene.room.Palette = 40;
+                        activeScene.room.palette = 40;
                     }
                 }
                 else
                 {
                     // MessageBox.Show("That value is invalid");
-                    activeScene.room.Palette = 0;
+                    activeScene.room.palette = 0;
                 }
 
 
 
-                activeScene.room.Damagepit = roomProperty_pit.Checked;
-                activeScene.room.SortSprites = roomProperty_sortsprite.Checked;
+                activeScene.room.damagepit = roomProperty_pit.Checked;
+                activeScene.room.sortsprites = roomProperty_sortsprite.Checked;
 
                 if (Byte.TryParse(roomProperty_spriteset.Text, out r))
                 {
-                    activeScene.room.Spriteset = r;
+                    activeScene.room.spriteset = r;
                 }
                 else
                 {
                     //MessageBox.Show("That value is invalid");
-                    activeScene.room.Spriteset = 0;
+                    activeScene.room.spriteset = 0;
                 }
 
 
@@ -1842,8 +1858,8 @@ namespace ZeldaFullEditor
                 /*undoRoom[activeScene.room.index].Add((Room)activeScene.room.Clone());
                 redoRoom[activeScene.room.index].Clear();
                 */
-                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
-                GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
+                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
+                GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
                 activeScene.SetPalettesBlack();
                 activeScene.DrawRoom();
                 activeScene.Refresh();
@@ -1923,8 +1939,8 @@ namespace ZeldaFullEditor
                 }
 
 
-                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
-                GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
+                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
+                GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
                 activeScene.SetPalettesBlack();
                 if (!visibleEntranceGFX)
                 {
@@ -2049,8 +2065,8 @@ namespace ZeldaFullEditor
                     activeScene.room.reloadGfx();
                 }
 
-                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
-                GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
+                GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
+                GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
                 activeScene.SetPalettesBlack();
 
                 activeScene.DrawRoom();
@@ -2304,70 +2320,70 @@ namespace ZeldaFullEditor
             {
                 if (sender == roomProperty_spriteset)
                 {
-                    activeScene.room.Spriteset++;
+                    activeScene.room.spriteset++;
                 }
                 if (sender == roomProperty_blockset)
                 {
-                    activeScene.room.Blockset++;
+                    activeScene.room.blockset++;
                 }
                 if (sender == roomProperty_palette)
                 {
-                    if (activeScene.room.Palette < 40)
+                    if (activeScene.room.palette < 40)
                     {
-                        activeScene.room.Palette++;
+                        activeScene.room.palette++;
                     }
                 }
                 if (sender == roomProperty_floor1)
                 {
-                    activeScene.room.Floor1++;
+                    activeScene.room.floor1++;
                 }
                 if (sender == roomProperty_floor2)
                 {
-                    activeScene.room.Floor2++;
+                    activeScene.room.floor2++;
                 }
             }
             else if (e.Delta < 0)
             {
                 if (sender == roomProperty_spriteset)
                 {
-                    if (activeScene.room.Spriteset > 0)
+                    if (activeScene.room.spriteset > 0)
                     {
-                        activeScene.room.Spriteset--;
+                        activeScene.room.spriteset--;
                     }
                 }
                 if (sender == roomProperty_blockset)
                 {
-                    if (activeScene.room.Blockset > 0)
+                    if (activeScene.room.blockset > 0)
                     {
-                        activeScene.room.Blockset--;
+                        activeScene.room.blockset--;
                     }
                 }
                 if (sender == roomProperty_palette)
                 {
-                    if (activeScene.room.Palette > 0)
+                    if (activeScene.room.palette > 0)
                     {
-                        activeScene.room.Palette--;
+                        activeScene.room.palette--;
                     }
                 }
                 if (sender == roomProperty_floor1)
                 {
-                    if (activeScene.room.Floor1 > 0)
+                    if (activeScene.room.floor1 > 0)
                     {
-                        activeScene.room.Floor1--;
+                        activeScene.room.floor1--;
                     }
                 }
                 if (sender == roomProperty_floor2)
                 {
-                    if (activeScene.room.Floor2 > 0)
+                    if (activeScene.room.floor2 > 0)
                     {
-                        activeScene.room.Floor2--;
+                        activeScene.room.floor2--;
                     }
                 }
 
             }
             activeScene.updateRoomInfos(this);
-            GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
-            GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.Palette);
+            GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
+            GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
             activeScene.SetPalettesTransparent();
             if (!visibleEntranceGFX)
             {
@@ -2645,36 +2661,36 @@ namespace ZeldaFullEditor
         private void warpButton_Click(object sender, EventArgs e)
         {
             WarpsForm warpForm = new WarpsForm();
-            warpForm.roomProperty_hole.Text = activeScene.room.HoleWarp.ToString();
-            warpForm.roomProperty_holeplane.Text = activeScene.room.HoleWarpPlane.ToString();
-            warpForm.roomProperty_stair1.Text = activeScene.room.Staircase1.ToString();
-            warpForm.roomProperty_stair1plane.Text = activeScene.room.Staircase1Plane.ToString();
-            warpForm.roomProperty_stair2.Text = activeScene.room.Staircase2.ToString();
-            warpForm.roomProperty_stair2plane.Text = activeScene.room.Staircase2Plane.ToString();
-            warpForm.roomProperty_stair3.Text = activeScene.room.Staircase3.ToString();
-            warpForm.roomProperty_stair3plane.Text = activeScene.room.Staircase3Plane.ToString();
-            warpForm.roomProperty_stair4.Text = activeScene.room.Staircase4.ToString();
-            warpForm.roomProperty_stair4plane.Text = activeScene.room.Staircase4Plane.ToString();
+            warpForm.roomProperty_hole.Text = activeScene.room.holewarp.ToString();
+            warpForm.roomProperty_holeplane.Text = activeScene.room.holewarp_plane.ToString();
+            warpForm.roomProperty_stair1.Text = activeScene.room.staircase1.ToString();
+            warpForm.roomProperty_stair1plane.Text = activeScene.room.staircase1Plane.ToString();
+            warpForm.roomProperty_stair2.Text = activeScene.room.staircase2.ToString();
+            warpForm.roomProperty_stair2plane.Text = activeScene.room.staircase2Plane.ToString();
+            warpForm.roomProperty_stair3.Text = activeScene.room.staircase3.ToString();
+            warpForm.roomProperty_stair3plane.Text = activeScene.room.staircase3Plane.ToString();
+            warpForm.roomProperty_stair4.Text = activeScene.room.staircase4.ToString();
+            warpForm.roomProperty_stair4plane.Text = activeScene.room.staircase4Plane.ToString();
             if (warpForm.ShowDialog() == DialogResult.OK)
             {
-                activeScene.room.HoleWarp = warpForm.properties[0];
-                activeScene.room.HoleWarpPlane = warpForm.properties[1];
+                activeScene.room.holewarp = warpForm.properties[0];
+                activeScene.room.holewarp_plane = warpForm.properties[1];
 
-                activeScene.room.Staircase1 = warpForm.properties[2];
+                activeScene.room.staircase1 = warpForm.properties[2];
 
-                activeScene.room.Staircase1Plane = warpForm.properties[3];
+                activeScene.room.staircase1Plane = warpForm.properties[3];
 
-                activeScene.room.Staircase2 = warpForm.properties[4];
+                activeScene.room.staircase2 = warpForm.properties[4];
 
-                activeScene.room.Staircase2Plane = warpForm.properties[5];
+                activeScene.room.staircase2Plane = warpForm.properties[5];
 
-                activeScene.room.Staircase3 = warpForm.properties[6];
+                activeScene.room.staircase3 = warpForm.properties[6];
 
-                activeScene.room.Staircase3Plane = warpForm.properties[7];
+                activeScene.room.staircase3Plane = warpForm.properties[7];
 
-                activeScene.room.Staircase4 = warpForm.properties[8];
+                activeScene.room.staircase4 = warpForm.properties[8];
 
-                activeScene.room.Staircase4Plane = warpForm.properties[9];
+                activeScene.room.staircase4Plane = warpForm.properties[9];
 
                 activeScene.updateRoomInfos(this);
             }
@@ -3157,12 +3173,12 @@ namespace ZeldaFullEditor
                 }
                 previewRoom = DungeonsData.all_rooms[roomId];
                 previewRoom.reloadGfx();
-                GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.Palette);
+                GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.palette);
                 DrawRoom();
                 thumbnailBox.Refresh();
                 if (activeScene.room != null)
                 {
-                    GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
+                    GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
                     activeScene.room.reloadGfx();
                     activeScene.DrawRoom();
                 }
@@ -3362,12 +3378,12 @@ namespace ZeldaFullEditor
                 {
                     previewRoom = DungeonsData.all_rooms[roomId];
                     previewRoom.reloadGfx();
-                    GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.Palette);
+                    GFX.loadedPalettes = GFX.LoadDungeonPalette(previewRoom.palette);
                     DrawRoom();
                     thumbnailBox.Refresh();
                     if (activeScene.room != null)
                     {
-                        GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.Palette);
+                        GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
                         activeScene.room.reloadGfx();
                         activeScene.DrawRoom();
                     }
@@ -3559,20 +3575,36 @@ namespace ZeldaFullEditor
             }
             if (editorsTabControl.SelectedTab.Name == "overworldPage")
             {
-                if (overworldEditor.overworld.isLoaded)
-                {
-                    overworldEditor.BringToFront();
-                    overworldEditor.Visible = true;
-                }
-                else
-                {
-                    editorsTabControl.SelectedIndex = 0;
-                }
+                 if (oweditor2 != null)
+                 {
+                     if (oweditor2.overworld.isLoaded)
+                     {
+                         oweditor2.BringToFront();
+                         oweditor2.Visible = true;
+                     }
+                     else
+                     {
+                         editorsTabControl.SelectedIndex = 0;
+                     }
+                 }
+                 else
+                 {
+                     if (overworldEditor.overworld.isLoaded)
+                     {
+                         overworldEditor.BringToFront();
+                         overworldEditor.Visible = true;
+                     }
+                     else
+                     {
+                         editorsTabControl.SelectedIndex = 0;
+                     }
+                 }
+             }
+             else
+             {
+                 overworldEditor.Visible = false;
             }
-            else
-            {
-                overworldEditor.Visible = false;
-            }
+
             if (editorsTabControl.SelectedTab.Name == "GfxEditorPage")
             {
                 gfxEditor.BringToFront();
@@ -3646,7 +3678,7 @@ namespace ZeldaFullEditor
 
         private void exportAllRoomsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            /*int[] doorsoffset = new int[296];
+            int[] doorsoffset = new int[296];
             StringBuilder sb = new StringBuilder();
             sb.Append("lorom\r\n");
 
@@ -3654,7 +3686,7 @@ namespace ZeldaFullEditor
             {
 
                 byte[] roomBytes = DungeonsData.all_rooms[i].getTilesBytes();
-                int doorPos = roomBytes.Length - 2;
+                /*int doorPos = roomBytes.Length - 2;
                 if (roomBytes.Length < 10)
                 {
                     continue;
@@ -3681,13 +3713,16 @@ namespace ZeldaFullEditor
                 doorsoffset[i] = doorPos;
                 sb.Append("org $1F83C0+$" + (i * 3).ToString("X2") + "\r\n");
                 sb.Append("dl !door" + (i.ToString("D3")) + "\r\n\r\n");
+                */
 
-                FileStream fs = File.Open("Rooms/room" + i.ToString("D3"), FileMode.OpenOrCreate, FileAccess.Write);
-                fs.Write(roomBytes, 0, roomBytes.Length);
-                fs.Close();
+                if (File.Exists("Rooms/room" + i.ToString("D3")))
+                {
+                    FileStream fs = File.Open("Rooms/room" + i.ToString("D3"), FileMode.Open, FileAccess.Read);
+                    Console.WriteLine("" + i.ToString("D3") + " O:" + roomBytes.Length.ToString("X4") + " D:" + fs.Length.ToString("X4"));
+                }
             }
 
-            sb.Append("org $218000 \r\n");
+            /*sb.Append("org $218000 \r\n");
             for (int i = 0; i < 296; i++)
             {
                 byte[] roomBytes = DungeonsData.all_rooms[i].getTilesBytes();
@@ -3713,6 +3748,233 @@ namespace ZeldaFullEditor
         private void runToolStripMenuItem_Click(object sender, EventArgs e)
         {
             runtestButton_Click(sender, e);
+        }
+
+        private void debugToolStripButton_Click(object sender, EventArgs e)
+        {
+
+            
+        }
+        OverworldEditor oweditor2;
+        private void mapDataFromJPdoNotUseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Constants.Init_Jp();
+            OpenFileDialog projectFile = new OpenFileDialog();
+            projectFile.Filter = "Alttp JP ROM .sfc|*.sfc;*.smc";
+            projectFile.DefaultExt = ".sfc";
+            if (projectFile.ShowDialog() == DialogResult.OK)
+            {
+                FileStream fs = new FileStream(projectFile.FileName, FileMode.Open, FileAccess.Read);
+                ROM.TEMPDATA = new byte[ROM.DATA.Length];
+                ROM.DATA.CopyTo(ROM.TEMPDATA, 0);
+                byte[] data = new byte[ROM.DATA.Length];
+                ROM.DATA = new byte[ROM.DATA.Length];
+                fs.Read(data, 0, (int)fs.Length);
+                data.CopyTo(ROM.DATA, 0x00);
+                oweditor2 = new OverworldEditor();
+                oweditor2.InitOpen(this);
+                overworldEditor.Visible = false;
+                oweditor2.Dock = DockStyle.Fill;
+                Controls.Remove(overworldEditor);
+                Controls.Add(oweditor2);
+                oweditor2.BringToFront();
+                oweditor2.Visible = true;
+                overworldEditor.splitContainer1.Panel2.AutoScroll = true;
+                //ROM.TEMPDATA.CopyTo(ROM.DATA, 0x00);
+
+                fs.Close();
+            }
+        }
+        ushort[,] lwmdata = new ushort[512,512];
+        ushort[,] dwmdata = new ushort[512,512];
+        private void exportMapJPdoNotUseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int selectedMap = oweditor2.scene.selectedMap;
+            if (selectedMap >= 64)
+            {
+                selectedMap = selectedMap - 64;
+            }
+            Console.WriteLine("Exporting map : " + overworldEditor.scene.selectedMap);
+            int sx = (selectedMap % 8);
+            int sy = (selectedMap / 8);
+            string s = "Map" + selectedMap.ToString("D2") + ":\r\n";
+            int length = 32;
+
+
+            for (int i = 0; i < (length*length); i++)
+            {
+                if (oweditor2.scene.selectedMap >= 64)
+                {
+                    int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2);
+                    if (oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                        dwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
+                    {
+                        s += "LDA #$" + oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                        s += "STA $" + addr.ToString("X4") + "\r\n";
+                    }
+                }
+                else
+                {
+                    int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2);
+                    if (oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                        lwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
+                    {
+                        s += "LDA #$" + oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                        s += "STA $" + addr.ToString("X4") + "\r\n";
+                    }
+                }
+
+            }
+
+
+            if (oweditor2.scene.ow.allmaps[oweditor2.scene.selectedMap].largeMap)
+            {
+                Console.Write("Is large map");
+                selectedMap = oweditor2.scene.selectedMap + 1;
+                sx = (selectedMap % 8);
+                sy = (selectedMap / 8);
+                for (int i = 0; i < (length * length); i++)
+                {
+                    if (oweditor2.scene.selectedMap >= 64)
+                    {
+                        int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2) + 0x40;
+                        if (oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                            dwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
+                        {
+                            s += "LDA #$" + oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                            s += "STA $" + addr.ToString("X4") + "\r\n";
+                        }
+                    }
+                    else
+                    {
+                        int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2);
+                        if (oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                            lwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
+                        {
+                            s += "LDA #$" + oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                            s += "STA $" + addr.ToString("X4") + "\r\n";
+                        }
+                    }
+
+                }
+
+                selectedMap = oweditor2.scene.selectedMap + 16;
+                sx = (selectedMap % 8);
+                sy = (selectedMap / 8);
+                for (int i = 0; i < (length * length); i++)
+                {
+                    if (oweditor2.scene.selectedMap >= 64)
+                    {
+                        int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2)+0x1000;
+                        if (oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                            dwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
+                        {
+                            s += "LDA #$" + oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                            s += "STA $" + addr.ToString("X4") + "\r\n";
+                        }
+                    }
+                    else
+                    {
+                        int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2);
+                        if (oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                            lwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
+                        {
+                            s += "LDA #$" + oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                            s += "STA $" + addr.ToString("X4") + "\r\n";
+                        }
+                    }
+
+                }
+
+                selectedMap = oweditor2.scene.selectedMap + 17;
+                sx = (selectedMap % 8);
+                sy = (selectedMap / 8);
+                for (int i = 0; i < (length * length); i++)
+                {
+                    if (oweditor2.scene.selectedMap >= 64)
+                    {
+                        int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2)+0x1040;
+                        if (oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                            dwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
+                        {
+                            s += "LDA #$" + oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                            s += "STA $" + addr.ToString("X4") + "\r\n";
+                        }
+                    }
+                    else
+                    {
+                        int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2);
+                        if (oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
+                            lwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
+                        {
+                            s += "LDA #$" + oweditor2.scene.ow.allmapsTilesLW[(i % length) + (sx * length), (i / length) + (sy * length)].ToString("X4") + " : ";
+                            s += "STA $" + addr.ToString("X4") + "\r\n";
+                        }
+                    }
+
+                }
+            }
+
+
+
+            s += "RTS";
+
+            using (SaveFileDialog sf = new SaveFileDialog())
+            {
+                sf.DefaultExt = ".asm";
+                if (sf.ShowDialog() == DialogResult.OK)
+                {
+                    File.WriteAllText(sf.FileName, s);
+                }
+            }
+        }
+
+        private void captureMapJPdoNotUseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            lwmdata = new ushort[512, 512];
+            dwmdata = new ushort[512, 512];
+            for (int x = 0; x < 512; x++)
+            {
+                for (int y = 0; y < 512; y++)
+                {
+                    lwmdata[x, y] = oweditor2.scene.ow.allmapsTilesLW[x, y];
+                    dwmdata[x, y] = oweditor2.scene.ow.allmapsTilesDW[x, y];
+                }
+            }
+        }
+
+        private void exportSpritesAsBinaryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            byte[] sprites_buffer = new byte[0x40];
+            int pos = 1;
+            sprites_buffer[0] = 0x00;
+            foreach (Sprite spr in DungeonsData.all_rooms[activeScene.room.index].sprites) //3bytes
+            {
+
+                byte b1 = (byte)((spr.layer << 7) + ((spr.subtype & 0x18) << 2) + spr.y);
+                byte b2 = (byte)(((spr.subtype & 0x07) << 5) + spr.x);
+                byte b3 = (byte)((spr.id));
+
+                sprites_buffer[pos] = b1;
+                pos++;
+                sprites_buffer[pos] = b2;
+                pos++;
+                sprites_buffer[pos] = b3;
+                pos++;
+            }
+            sprites_buffer[pos] = 0xFF;
+            using (SaveFileDialog ofd = new SaveFileDialog())
+            {
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    FileStream fs = new FileStream(ofd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+                    fs.Write(sprites_buffer, 0, pos);
+                    fs.Close();
+
+                }
+            
+            
+            }
         }
     }
 

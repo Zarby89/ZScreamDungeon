@@ -29,10 +29,10 @@ namespace ZeldaFullEditor
         public int map_x = 0;
         public int map_y = 0;
         Room room;
+        public short roomid = 0;
         public Rectangle boundingbox;
         bool picker = false;
         public bool selected = false;
-        public OverworldMap[] maps;
         public Sprite(Room room, byte id, byte x, byte y, byte subtype, byte layer)
         {
             this.id = id;
@@ -49,9 +49,10 @@ namespace ZeldaFullEditor
                 if (id > 0 && id <= 0x19)
                     this.name = Sprites_Names.overlordnames[id - 1];
             }
+            this.roomid = (short)room.index;
         }
 
-        public Sprite(byte mapid, byte id, byte x, byte y, OverworldMap[] maps, int map_x, int map_y)
+        public Sprite(byte mapid, byte id, byte x, byte y, int map_x, int map_y)
         {
             overworld = true;
             this.mapid = mapid;
@@ -61,7 +62,6 @@ namespace ZeldaFullEditor
             this.nx = x;
             this.ny = y;
             this.name = Sprites_Names.name[id];
-            this.maps = maps;
             this.map_x = map_x;
             this.map_y = map_y;
         }
@@ -1269,26 +1269,6 @@ namespace ZeldaFullEditor
                 int subx = 0;
                 int suby = 0;
                 byte* ptr = (byte*)GFX.roomBg1Ptr.ToPointer();
-                if (overworld)
-                {
-                    ptr = (byte*)maps[mapid].gfxPtr;
-                    if (x >= 512)
-                    {
-                        ptr = (byte*)maps[mapid + 1].gfxPtr;
-                        subx = -512;
-                    }
-                    if (y >= 512)
-                    {
-                        ptr = (byte*)maps[mapid + 8].gfxPtr;
-                        suby = -512;
-                    }
-                    if (x >= 512 && y >= 512)
-                    {
-                        ptr = (byte*)maps[mapid + 9].gfxPtr;
-                        subx = -512;
-                        suby = -512;
-                    }
-                }
 
                 if (iskey == false)
                 {

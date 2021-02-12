@@ -62,7 +62,7 @@ namespace ZeldaFullEditor
             //ROM.SaveLogs();
             for (int i = 0; i < 296; i++)
             {
-                ROM.WriteShort(Constants.messages_id_dungeon + (i * 2), all_rooms[i].Messageid, true, "Message Room ID : " + i.ToString("D3"));
+                ROM.WriteShort(Constants.messages_id_dungeon + (i * 2), all_rooms[i].messageid, true, "Message Room ID : " + i.ToString("D3"));
             }
             ROM.EndBlockLogWriting();
             return false; // False = no error
@@ -194,20 +194,20 @@ namespace ZeldaFullEditor
 
             byte[] headerData = new byte[14]
             {
-                (byte)((((byte)all_rooms[i].bg2 & 0x07) << 5) + (all_rooms[i].collision << 2) + (all_rooms[i].light == true ? 1 : 0)),
+                (byte)((((byte)all_rooms[i].bg2 & 0x07) << 5) + ((int)all_rooms[i].collision << 2) + (all_rooms[i].light == true ? 1 : 0)),
                 ((byte)all_rooms[i].palette),
                 ((byte)all_rooms[i].blockset),
                 ((byte)all_rooms[i].spriteset),
                 ((byte)all_rooms[i].effect),
                 ((byte)all_rooms[i].tag1),
                 ((byte)all_rooms[i].tag2),
-                (byte)((all_rooms[i].holewarp_plane) + (all_rooms[i].staircase_plane[0] << 2) + (all_rooms[i].staircase_plane[1] << 4) + (all_rooms[i].staircase_plane[2] << 6)),
-                (byte)(all_rooms[i].staircase_plane[3]),
+                (byte)((all_rooms[i].holewarp_plane) + (all_rooms[i].staircase1Plane << 2) + (all_rooms[i].staircase2Plane << 4) + (all_rooms[i].staircase3Plane << 6)),
+                (byte)(all_rooms[i].staircase4Plane),
                 (byte)(all_rooms[i].holewarp),
-                (byte)(all_rooms[i].staircase_rooms[0]),
-                (byte)(all_rooms[i].staircase_rooms[1]),
-                (byte)(all_rooms[i].staircase_rooms[2]),
-                (byte)(all_rooms[i].staircase_rooms[3])
+                (byte)(all_rooms[i].staircase1),
+                (byte)(all_rooms[i].staircase2),
+                (byte)(all_rooms[i].staircase3),
+                (byte)(all_rooms[i].staircase4)
             };
             ROM.Write(pos + (i * 14), headerData, true, "Room Header " + i.ToString("D3"));
         }
@@ -430,7 +430,7 @@ namespace ZeldaFullEditor
             {
                 if (all_rooms[i].pot_items.Count == 0)
                 {
-                    ROM.WriteShort(Constants.room_items_pointers, Utils.PcToSnes(Constants.items_data_start), true, "Items Pointer for Room " + i.ToString("D3"));
+                    ROM.WriteShort(Constants.room_items_pointers + (i * 2), Utils.PcToSnes(Constants.items_data_start), true, "Items Pointer for Room " + i.ToString("D3"));
                     continue;
                 }
                 //pointer
@@ -461,6 +461,7 @@ namespace ZeldaFullEditor
                 pos+=2;
                 if (pos > Constants.items_data_end)
                 {
+                    ROM.SaveLogs();
                     return true;
                 }
             }
@@ -471,9 +472,12 @@ namespace ZeldaFullEditor
 
         public bool saveAllText(TextEditor te)
         {
-            if (te.save())
+            if (te.checkBox1.Checked)
             {
-                return true;
+                if (te.save())
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -510,7 +514,7 @@ namespace ZeldaFullEditor
                             sprites_buffer[(i * 2)] = (byte)((Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos)) & 0xFF));
                             sprites_buffer[(i * 2) + 1] = (byte)((Utils.PcToSnes(Utils.SnesToPc(spritePointer + pos)) >> 8) & 0xFF);
                         
-                        sprites_buffer[pos] = (byte)(all_rooms[i].sortSprites == true ? 0x01 : 0x00);//Unknown byte??
+                        sprites_buffer[pos] = (byte)(all_rooms[i].sortsprites == true ? 0x01 : 0x00);//Unknown byte??
                         pos++;
                         foreach (Sprite spr in all_rooms[i].sprites) //3bytes
                         {
@@ -653,36 +657,26 @@ namespace ZeldaFullEditor
 
             int[] itemPtrs = new int[128];
             int[] itemPtrsReuse = new int[128];
+            int emptyPtr = 0;
 
             for (int i = 0; i < 128; i++)
             {
                 itemPtrsReuse[i] = -1;
-                if (roomItems[i].Count == 0)
+                for (int ci = 0; ci < i; ci++)
                 {
-                    itemPtrsReuse[i] = 500;
-                }
-                else
-                {
-                    for (int ci = 0; ci < 128; ci++)
+                    if (roomItems[i].Count == 0)
                     {
-                        if (ci >= i)
-                        {
-                            break;
-                        }
-                        if (i != ci)
-                        {
-                            if (compareItemsArrays(roomItems[i].ToArray(), roomItems[ci].ToArray()))
-                            {
-
-                                itemPtrsReuse[i] = ci;
-
-                            }
-                        }
+                        itemPtrsReuse[i] = -2;
+                        break;
+                    }
+                    if (compareItemsArrays(roomItems[i].ToArray(), roomItems[ci].ToArray()))
+                    {
+                        itemPtrsReuse[i] = ci;
+                        break;
                     }
                 }
             }
 
-            int emptyPtr = 0;
             for (int i = 0; i < 128; i++)
             {
                 if (itemPtrsReuse[i] == -1)
@@ -705,7 +699,7 @@ namespace ZeldaFullEditor
                     ROM.WriteShort(dataPos, 0xFFFF, true, "End Item Data");
                     dataPos += 2;
                 }
-                else if (itemPtrsReuse[i] == 500)
+                else if (itemPtrsReuse[i] == -2)
                 {
                     itemPtrs[i] = emptyPtr;
                 }
@@ -720,11 +714,11 @@ namespace ZeldaFullEditor
 
             if (dataPos> Constants.overworldItemsEndData)
             {
-                Console.WriteLine("Items : " + dataPos.ToString("X6"));
+               
                 return true;
             }
             ROM.EndBlockLogWriting();
-
+            Console.WriteLine("End of Items : " + dataPos.ToString("X6"));
 
             return false;
 
@@ -736,250 +730,118 @@ namespace ZeldaFullEditor
             ROM.StartBlockLogWriting("Sprites OW DATA & Pointers", Constants.overworldSpritesBegining);
             int[] sprPointers = new int[352]; // 352 all of them
             int[] sprPointersReused = new int[352]; // 352 all of them
-            for(int j = 0; j<352;j++)
+            List<Sprite>[] allspr = new List<Sprite>[352];
+            for (int j = 0; j<352;j++)
             {
                 sprPointersReused[j] = -1;
-            }
-            //TODO : for the release compare every maps and reuses sprites
-            List<Sprite>[] sprBegining = new List<Sprite>[64];
-            List<Sprite>[] sprZelda = new List<Sprite>[144];
-            List<Sprite>[] sprAgahnim = new List<Sprite>[144];
-            for (int i = 0; i < 144; i++) //for each maps
-            {
-                sprZelda[i] = new List<Sprite>();
-                sprAgahnim[i] = new List<Sprite>();
-                if (i < 64)
-                {
-                    sprBegining[i] = new List<Sprite>();
-                }
+                allspr[j] = new List<Sprite>();
             }
 
+            
 
-            for (int i = 0; i < 144; i++) //for each maps
+            for (int i = 0; i < 352; i++) //for each pointers
             {
-                if (i < 64)
+                if (i < 64) //LW[0]
                 {
-                    foreach (Sprite spr in scene.ow.allmaps[i].sprites[0])
+                    Sprite[] sprArray = scene.ow.allsprites[0].Where(s => s.mapid == i).ToArray();
+                    foreach (Sprite spr in sprArray)
                     {
-                        sprBegining[spr.mapid].Add(spr);
+                        allspr[i].Add(spr);
                     }
 
                 }
-                if (i >= 64)
+                else if (i >= 64 && i < 208) //LW & DW[1]
                 {
-                    foreach (Sprite spr in scene.ow.allmaps[i].sprites[0])
+                    Sprite[] sprArray = scene.ow.allsprites[1].Where(s => s.mapid == (i - 64)).ToArray();
+                    foreach (Sprite spr in sprArray) 
                     {
-                        sprZelda[spr.mapid].Add(spr);
+                        allspr[i].Add(spr);
                     }
                 }
-                else
+                else if (i >= 208 && i < 352) //LW[2]
                 {
-                    foreach (Sprite spr in scene.ow.allmaps[i].sprites[1])
+                    Sprite[] sprArray = scene.ow.allsprites[2].Where(s => s.mapid == (i - 208)).ToArray();
+                    foreach (Sprite spr in sprArray)
                     {
-                        sprZelda[spr.mapid].Add(spr);
+                        allspr[i].Add(spr);
                     }
-                }
-
-                foreach (Sprite spr in scene.ow.allmaps[i].sprites[2])
-                {
-                    sprAgahnim[spr.mapid].Add(spr);
                 }
             }
 
-            //CB41 = empty pointer
-            int ii = 0; //pointer index
-            int ci = 0; //compare index;
-            for (int j = 0; j < 64; j++)
+
+            for (int i = 0; i < 352; i++)
             {
-                if (sprBegining[j].Count == 0)
+                sprPointersReused[i] = -1;
+                for (int ci = 0; ci < 352; ci++)
                 {
-                    sprPointersReused[ii] = 0;
-                }
-                else
-                {
-                    //compare with every other
-                    for (int k = 0; k < 64; k++)
+                    if (ci >= i)
                     {
-                        if (ci != ii) //are we looking at the same map?
+                        break;
+                    }
+                    if (i != ci)
+                    {
+                        if (compareSpriteArrays(allspr[i].ToArray(), allspr[ci].ToArray()))
                         {
-                            if (sprBegining[j].Count == sprBegining[k].Count) //do that map have same amount of sprites?
-                            {
-                                if (compareSpriteArrays(sprBegining[j].ToArray(), sprBegining[k].ToArray()))
-                                {
-                                    //Found a matching pointer we can use
-                                    //pointer might not be assigned at that point...
-                                    if (ci < ii)//if room id we're comparing is smaller than current room, otherwise not assigned will be later!
-                                    {
-                                        sprPointersReused[ii] = ci;
-                                    }
-                                }
-                            }
-                        }
-                        ci++;
-                    }
 
-                }
-                ii++;
-            }
-            for (int j = 0; j < 144; j++)
-            {
-                if (sprZelda[j].Count == 0)
-                {
-                    sprPointersReused[ii] = 0;
-                }
-                else
-                {
-                                        for (int k = 0; k < 144; k++)
-                    {
-                        if (ci != ii) //are we looking at the same map?
-                        {
-                            if (sprZelda[j].Count == sprZelda[k].Count) //do that map have same amount of sprites?
-                            {
-                                if (compareSpriteArrays(sprZelda[j].ToArray(), sprZelda[k].ToArray()))
-                                {
-                                    //Found a matching pointer we can use
-                                    //pointer might not be assigned at that point...
-                                    if (ci < ii)//if room id we're comparing is smaller than current room, otherwise not assigned will be later!
-                                    {
-                                        sprPointersReused[ii] = ci;
-                                    }
-                                }
-                            }
+                            sprPointersReused[i] = ci;
+
                         }
-                        ci++;
-                    }
-     
-                }
-                ii++;
-            }
-            for (int j = 0; j < 144; j++)
-            {
-                if (sprAgahnim[j].Count == 0)
-                {
-                    sprPointersReused[ii] = 0;
-                }
-                else
-                {
-                    for (int k = 0; k < 144; k++)
-                    {
-                        if (ci != ii) //are we looking at the same map?
-                        {
-                            if (sprAgahnim[j].Count == sprAgahnim[k].Count) //do that map have same amount of sprites?
-                            {
-                                if (compareSpriteArrays(sprAgahnim[j].ToArray(), sprAgahnim[k].ToArray()))
-                                {
-                                    //Found a matching pointer we can use
-                                    //pointer might not be assigned at that point...
-                                    if (ci < ii)//if room id we're comparing is smaller than current room, otherwise not assigned will be later!
-                                    {
-                                        sprPointersReused[ii] = ci;
-                                    }
-                                }
-                            }
-                        }
-                        ci++;
                     }
                 }
-                ii++;
             }
 
-            int dataPos = 0x4CB42;
+
+            int dataPos = 0x4CB41;
             //END OF OW SPRITES DATA = 0x4D62E
-            ROM.Write(0x4CB41,0xFF);//empty sprite data
-                                     //0x4CB42 // start of rooms data saves
-        
+            //ROM.Write(0x4CB41,0xFF);//empty sprite data
+            //0x4CB42 // start of rooms data saves
+
             //write sprite data if sprPointersReused[i] == -1
 
 
-            ii = 0; //pointer index
+            for (int i = 0; i < 352; i++)
+            {
+                if (sprPointersReused[i] == -1)
+                {
+                    sprPointers[i] = dataPos;
+                    foreach (Sprite spr in allspr[i])
+                    {
+                        byte b1 = spr.y;
+                        byte b2 = spr.x;
+                        byte b3 = spr.id;
+                        byte[] data = new byte[3] { b1, b2, b3 };
+                        ROM.Write(dataPos, data, true, "Spr Data");
+                        dataPos += 3;
+
+                    }
+                    ROM.Write(dataPos, 0xFF, true, "Termination Byte");
+                    dataPos++;
+                }
+                else
+                {
+                    sprPointers[i] = sprPointers[sprPointersReused[i]];
+                }
+
+                int snesaddr = Utils.PcToSnes(sprPointers[i]);
+                ROM.WriteShort(Constants.overworldSpritesBegining + (i * 2), (snesaddr), true, "Sprite Pointer for map" + i.ToString("D3"));
+            }
             
-            for (int j = 0; j < 64; j++)
-            {
-                if (sprPointersReused[ii] == -1)
-                {
-                    sprPointers[ii] = dataPos;
-                    foreach (Sprite spr in sprBegining[j])
-                    {
-
-                        byte b1 = spr.y;
-                        byte b2 = spr.x;
-                        byte b3 = spr.id;
-                        byte[] data = new byte[3] {b1,b2,b3 };
-                        ROM.Write(dataPos, data, true, "Spr Data");
-                        dataPos += 3;
-                    }
-                    //add FF to end the room
-                    ROM.Write(dataPos, 0xFF, true, "Termination Byte");
-                    dataPos++;
-                }
-                ii++;
-            }
-            for (int j = 0; j < 144; j++)
-            {
-                if (sprPointersReused[ii] == -1)
-                {
-                    sprPointers[ii] = dataPos;
-                    foreach (Sprite spr in sprZelda[j])
-                    {
-                        byte b1 = spr.y;
-                        byte b2 = spr.x;
-                        byte b3 = spr.id;
-                        byte[] data = new byte[3] { b1, b2, b3 };
-                        ROM.Write(dataPos, data, true, "Spr Data");
-                        dataPos += 3;
-                    }
-                    //add FF to end the room
-                    ROM.Write(dataPos, 0xFF, true, "Termination Byte");
-                    dataPos++;
-                }
-                ii++;
-            }
-            for (int j = 0; j < 144; j++)
-            {
-                if (sprPointersReused[ii] == -1)
-                {
-                    
-                    sprPointers[ii] = dataPos;
-                    foreach (Sprite spr in sprAgahnim[j])
-                    {
-
-                        byte b1 = spr.y;
-                        byte b2 = spr.x;
-                        byte b3 = spr.id;
-                        byte[] data = new byte[3] { b1, b2, b3 };
-                        ROM.Write(dataPos, data, true, "Spr Data");
-                        dataPos += 3;
-                    }
-                    //add FF to end the room
-                    ROM.Write(dataPos, 0xFF, true, "Termination Byte");
-                    dataPos++;
-                }
-                ii++;
-            }
-
             if (dataPos > 0x4D62E)
             {
-                //Console.WriteLine("Position " + dataPos.ToString("X6"));
+                Console.WriteLine("Position " + dataPos.ToString("X6"));
                 return true; //error
             }
 
-            sprPointers[0] = 0x4CB41;
-            for (int j=0;j<352;j++)
-            {
-                if (sprPointersReused[j] != -1)
-                {
-                    sprPointers[j] = sprPointers[sprPointersReused[j]];
-                }
-                
-                int snesaddr = Utils.PcToSnes(sprPointers[j]);
-                ROM.WriteShort(Constants.overworldSpritesBegining + (j * 2), snesaddr, true, "Sprite Header");
-            }
             ROM.EndBlockLogWriting();
             return false; //no errors
         }
 
         public bool compareSpriteArrays(Sprite[] spr1, Sprite[] spr2)
         {
+            if (spr1.Length != spr2.Length)
+            {
+                return false;
+            }
 
             bool match = false;
             for (int i = 0; i < spr1.Length; i++)
@@ -991,8 +853,7 @@ namespace ZeldaFullEditor
                     //check all sprite in 2nd array if one match
                     if (spr1[i].x == spr2[j].x &&
                         spr1[i].y == spr2[j].y &&
-                        spr1[i].id == spr2[j].id &&
-                        spr1[i].mapid == spr2[j].mapid)
+                        spr1[i].id == spr2[j].id)
                     {
                         match = true;
                         break;
@@ -1009,6 +870,10 @@ namespace ZeldaFullEditor
 
         public bool compareItemsArrays(RoomPotSaveEditor[] itm1, RoomPotSaveEditor[] itm2)
         {
+            if (itm1.Length != itm2.Length)
+            {
+                return false;
+            }
 
             bool match = false;
             for (int i = 0; i < itm1.Length; i++)
@@ -1020,8 +885,7 @@ namespace ZeldaFullEditor
                     //check all sprite in 2nd array if one match
                     if (itm1[i].x == itm2[j].x &&
                         itm1[i].y == itm2[j].y &&
-                        itm1[i].id == itm2[j].id &&
-                        itm1[i].roomMapId == itm2[j].roomMapId)
+                        itm1[i].id == itm2[j].id)
                     {
                         match = true;
                         break;
@@ -1142,7 +1006,7 @@ namespace ZeldaFullEditor
             //TODO : Optimize that routine to be smaller
 
             //0x058000
-            int pos = 0x58000;
+            int pos = 0x120000;
             int ptrPos = 0x77657+32;
             for(int i = 0;i<128;i++)
             {
@@ -1257,6 +1121,167 @@ namespace ZeldaFullEditor
 
             return false;
 
+        }
+
+
+
+        public bool compareArray(byte[] array1, byte[] array2)
+        {
+            if (array1.Length != array2.Length)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < array1.Length; i++)
+            {
+                if (array1[i] != array2[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+
+        }
+
+        byte[][] mapDatap1 = new byte[160][];
+        byte[][] mapDatap2 = new byte[160][];
+        int[] mapPointers1id = new int[160];
+        int[] mapPointers2id = new int[160];
+
+        int[] mapPointers1 = new int[160];
+        int[] mapPointers2 = new int[160];
+
+        public bool saveOverworldMaps(SceneOW scene)
+        {
+            
+            for (int i = 0; i < 160; i++)
+            {
+                mapPointers1id[i] = -1;
+                mapPointers2id[i] = -1;
+
+            }
+
+
+            int pos = 0x058000;
+            for (int i = 0; i < 160; i++)
+            {
+                int npos = 0;
+                byte[]
+                    singlemap1 = new byte[512],
+                    singlemap2 = new byte[512];
+                for (int y = 0; y < 16; y++)
+                {
+                    for (int x = 0; x < 16; x++)
+                    {
+                        singlemap1[npos] = (byte)(scene.ow.t32[npos + (i * 256)] & 0xFF);
+                        singlemap2[npos] = (byte)((scene.ow.t32[npos + (i * 256)] >> 8) & 0xFF);
+                        npos++;
+                    }
+                }
+                byte[] a = ZCompressLibrary.Compress.ALTTPCompressOverworld(singlemap1, 0, 256);
+                byte[] b = ZCompressLibrary.Compress.ALTTPCompressOverworld(singlemap2, 0, 256);
+
+                mapDatap1[i] = new byte[a.Length];
+                mapDatap2[i] = new byte[b.Length];
+                if (i == 0x54)
+                {
+                    Console.WriteLine((pos + a.Length).ToString("X6"));
+                    Console.WriteLine((pos + b.Length).ToString("X6"));
+                }
+                //05FE1C
+                //05FE05
+
+                //05FFA7
+                //05FF78
+                if ((pos + a.Length) >= 0x5FE70 && (pos + a.Length) <= 0x60000)
+                {
+                    pos = 0x60000;
+                }
+
+
+
+                for (int j = 0; j < i; j++)
+                {
+                    if (compareArray(a, mapDatap1[j]))
+                    {
+                        // Reuse pointer id j for P1 (a)
+                        mapPointers1id[i] = j;
+                    }
+                    if (compareArray(b, mapDatap2[j]))
+                    {
+                        mapPointers2id[i] = j;
+                        // Reuse pointer id j for P2 (b)
+                    }
+
+                }
+
+                //Before Saving it to the ROM check if it match an existing map already
+                if (mapPointers1id[i] == -1)
+                {
+                    a.CopyTo(mapDatap1[i], 0);
+                    int snesPos = Utils.PcToSnes(pos);
+                    mapPointers1[i] = snesPos;
+                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
+                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
+                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+                    for (int j = 0; j < a.Length; j++)
+                    {
+                        ROM.DATA[pos] = a[j];
+                        pos += 1;
+                    }
+                }
+                else
+                {
+                    int snesPos = mapPointers1[mapPointers1id[i]];
+                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
+                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
+                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+                }
+
+
+                if ((pos + b.Length) >= 0x5FE70 && (pos + b.Length) <= 0x60000)
+                {
+                    pos = 0x60000;
+                }
+                //map2
+                if (mapPointers2id[i] == -1)
+                {
+                    b.CopyTo(mapDatap2[i], 0);
+                    int snesPos = Utils.PcToSnes(pos);
+                    mapPointers2[i] = snesPos;
+                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
+                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
+                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+
+
+
+                    for (int j = 0; j < b.Length; j++)
+                    {
+                        ROM.DATA[pos] = b[j];
+                        pos += 1;
+                    }
+
+                }
+                else
+                {
+                    int snesPos = mapPointers2[mapPointers2id[i]];
+                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
+                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
+                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+                }
+
+
+            }
+
+            if (pos > 0x6411F)
+            {
+                return true;
+            }
+
+            return false;
+            //Console.WriteLine("Map Pos Length: " + pos.ToString("X6"));
+            //Save32Tiles();
         }
 
 

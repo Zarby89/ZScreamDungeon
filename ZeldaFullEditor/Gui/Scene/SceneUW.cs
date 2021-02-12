@@ -2753,27 +2753,27 @@ namespace ZeldaFullEditor
         public void updateRoomInfos(DungeonMain mainForm)
         {
             mainForm.propertiesChangedFromForm = true;
-            mainForm.roomProperty_bg2.SelectedIndex = (int)room.Bg2;
-            mainForm.roomProperty_blockset.Text = room.Blockset.ToString();
-            mainForm.roomProperty_tag1.SelectedIndex = (int)room.Tag1;
-            mainForm.roomProperty_tag2.SelectedIndex = (int)room.Tag2;
-            mainForm.roomProperty_effect.SelectedIndex = (int)room.Effect;
-            mainForm.roomProperty_collision.SelectedIndex = (int)room.Collision;
-            mainForm.roomProperty_floor1.Text = room.Floor1.ToString();
-            mainForm.roomProperty_floor2.Text = room.Floor2.ToString();
+            mainForm.roomProperty_bg2.SelectedIndex = (int)room.bg2;
+            mainForm.roomProperty_blockset.Text = room.blockset.ToString();
+            mainForm.roomProperty_tag1.SelectedIndex = (int)room.tag1;
+            mainForm.roomProperty_tag2.SelectedIndex = (int)room.tag2;
+            mainForm.roomProperty_effect.SelectedIndex = (int)room.effect;
+            mainForm.roomProperty_collision.SelectedIndex = (int)room.collision;
+            mainForm.roomProperty_floor1.Text = room.floor1.ToString();
+            mainForm.roomProperty_floor2.Text = room.floor2.ToString();
 
-            mainForm.roomProperty_layout.Text = room.Layout.ToString();
-            mainForm.roomProperty_msgid.Text = room.Messageid.ToString();
-            mainForm.roomProperty_palette.Text = room.Palette.ToString();
-            mainForm.roomProperty_pit.Checked = room.Damagepit;
-            mainForm.roomProperty_sortsprite.Checked = room.SortSprites;
-            mainForm.roomProperty_spriteset.Text = room.Spriteset.ToString();
+            mainForm.roomProperty_layout.Text = room.layout.ToString();
+            mainForm.roomProperty_msgid.Text = room.messageid.ToString();
+            mainForm.roomProperty_palette.Text = room.palette.ToString();
+            mainForm.roomProperty_pit.Checked = room.damagepit;
+            mainForm.roomProperty_sortsprite.Checked = room.sortsprites;
+            mainForm.roomProperty_spriteset.Text = room.spriteset.ToString();
 
-            mainForm.warpPreviewLabel.Text = "Hole:" + room.HoleWarp + "\r\n" +
-            "Stair1:" + room.Staircase1 + "\r\n" +
-            "Stair2:" + room.Staircase2 + "\r\n" +
-            "Stair3:" + room.Staircase3 + "\r\n" +
-            "Stair4:" + room.Staircase4;
+            mainForm.warpPreviewLabel.Text = "Hole:" + room.holewarp + "\r\n" +
+            "Stair1:" + room.staircase1 + "\r\n" +
+            "Stair2:" + room.staircase2 + "\r\n" +
+            "Stair3:" + room.staircase3 + "\r\n" +
+            "Stair4:" + room.staircase4;
             mainForm.propertiesChangedFromForm = false;
         }
 

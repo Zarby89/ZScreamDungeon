@@ -40,6 +40,7 @@ namespace ZeldaFullEditor
         public int lastTileHoverX = 0;
         public int lastTileHoverY = 0;
         public int mapHover = 0;
+        public int lastHover = -1;
         public bool selecting = false;
         public IntPtr overlaygfxPtr = Marshal.AllocHGlobal(1024 * 1024);
         public IntPtr temptilesgfxPtr = Marshal.AllocHGlobal(1024 * 1024);
@@ -97,7 +98,36 @@ namespace ZeldaFullEditor
 
         private void SceneOW_MouseWheel(object sender, MouseEventArgs e)
         {
+            ((HandledMouseEventArgs)e).Handled = true;
+            int xPos = owForm.splitContainer1.Panel2.HorizontalScroll.Value;
+            int yPos = owForm.splitContainer1.Panel2.VerticalScroll.Value;
+            if (Control.ModifierKeys == Keys.Shift)
+            {
+                if (e.Delta < 0)
+                {
+                    xPos += 48;
+                }
+                else
+                {
+                    xPos -= 48;
+                }
 
+            }
+            else
+            {
+                if (e.Delta < 0)
+                {
+                    yPos += 48;
+                }
+                else
+                {
+                    yPos -= 48;
+                }
+            }
+
+                owForm.splitContainer1.Panel2.AutoScrollPosition = new Point(xPos, yPos);
+                 //e.Delta
+            
         }
 
         public void updateMapGfx()
@@ -132,6 +162,8 @@ namespace ZeldaFullEditor
 
                 owForm.tilePictureBox.Refresh();
             }
+            owForm.BuildScratchTilesGfx();
+            owForm.scratchPicturebox.Refresh();
         }
 
 
@@ -433,7 +465,7 @@ namespace ZeldaFullEditor
             if (!ow.createMap32Tilesmap())
             {
                 ow.Save32Tiles();
-                ow.savemapstorom();
+                //ow.savemapstorom();
                 ow.SaveMap16Tiles();
             }
         }
@@ -586,7 +618,7 @@ namespace ZeldaFullEditor
                             int to = ow.alloverlays[mid].tilesData[i].tileId;
                             int toy = (to / 8) * 16;
                             int tox = (to % 8) * 16;
-                            g.DrawImage(ow.allmaps[ow.allmaps[selectedMap].parent].blocksetBitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
+                            g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
                             //g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
                             byte detect = compareTilePos(ow.alloverlays[mid].tilesData[i], ow.alloverlays[mid].tilesData.ToArray());
                             if (detect == 0)

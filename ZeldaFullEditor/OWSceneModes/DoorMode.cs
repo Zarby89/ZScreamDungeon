@@ -86,7 +86,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                     break;
                                 }
 
-                                scene.ow.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, scene.ow.allmaps[mapId].blockset16);
+                                scene.ow.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, GFX.mapblockset16);
                             }
                             x++;
                             if (x >= scene.selectedTileSizeX)

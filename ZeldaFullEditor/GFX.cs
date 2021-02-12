@@ -52,6 +52,11 @@ namespace ZeldaFullEditor
         public static IntPtr currentfontgfx16Ptr = Marshal.AllocHGlobal(172 * 20000);
         public static Bitmap currentfontgfx16Bitmap;
 
+        public static IntPtr mapblockset16 = Marshal.AllocHGlobal(1048576);
+        public static Bitmap mapblockset16Bitmap;
+
+        public static IntPtr scratchblockset16 = Marshal.AllocHGlobal(1048576);
+        public static Bitmap scratchblockset16Bitmap;
 
 
         public static bool[] isbpp3 = new bool[223];
@@ -188,6 +193,8 @@ namespace ZeldaFullEditor
             mapgfx16Bitmap = new Bitmap(128, 7520, 128, PixelFormat.Format8bppIndexed, mapgfx16Ptr);
             editort16Bitmap = new Bitmap(128, 512, 128, PixelFormat.Format8bppIndexed, editort16Ptr);
             editortileBitmap = new Bitmap(16, 16, 16, PixelFormat.Format8bppIndexed, editortilePtr);
+            mapblockset16Bitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, mapblockset16);
+            scratchblockset16Bitmap = new Bitmap(256, 4096, 256, PixelFormat.Format8bppIndexed, scratchblockset16);
             moveableBlock = new Bitmap(Resources.Mblock);
             spriteFont = new Bitmap(Resources.spriteFont);
             favStar1 = new Bitmap(Resources.starn);

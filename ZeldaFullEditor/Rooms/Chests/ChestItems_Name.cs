@@ -76,7 +76,7 @@ namespace ZeldaFullEditor
  "Magic Mirror",
  "Power Gloves",
  "Titans Mitt",
- "Book of Mudora",
+ "Book of Mudora",//29
  "Flippers",
 "Moon Pearl",
 "Crystal - Crash Game",
@@ -87,10 +87,10 @@ namespace ZeldaFullEditor
  "Compass",
  "Heart Container no dialog",
 "Bomb",
- "3 Bombs",
+ "3 Bombs", // 40
   "Mushroom",
  "Red Boomerang",
- "Bottle with Red Potion",
+ "Bottle with Red Potion", //43
  "Bottle with Green Potion",
  "Bottle with Blue Potion",
 "Red Potion - fill bottle",

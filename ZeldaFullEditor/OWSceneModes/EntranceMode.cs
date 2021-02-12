@@ -226,7 +226,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     scene.mainForm.previewRoom = DungeonsData.all_rooms[roomId];
                     scene.mainForm.previewRoom.reloadGfx();
-                    GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.previewRoom.Palette);
+                    GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.previewRoom.palette);
                     scene.mainForm.DrawRoom();
                     DrawTempEntrance();
                     scene.entrancePreview = true;
@@ -236,7 +236,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
                     if (scene.mainForm.activeScene.room != null)
                     {
-                        GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.activeScene.room.Palette);
+                        GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.activeScene.room.palette);
                         scene.mainForm.activeScene.room.reloadGfx();
                         scene.mainForm.activeScene.DrawRoom();
                     }

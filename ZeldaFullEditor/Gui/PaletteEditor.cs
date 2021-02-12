@@ -120,8 +120,8 @@ namespace ZeldaFullEditor.Gui
 
         private void refreshallGfx()
         {
-            GFX.loadedPalettes = GFX.LoadDungeonPalette(mainForm.activeScene.room.Palette);
-            GFX.loadedSprPalettes = GFX.LoadSpritesPalette(mainForm.activeScene.room.Palette);
+            GFX.loadedPalettes = GFX.LoadDungeonPalette(mainForm.activeScene.room.palette);
+            GFX.loadedSprPalettes = GFX.LoadSpritesPalette(mainForm.activeScene.room.palette);
             mainForm.activeScene.room.reloadGfx();
             mainForm.activeScene.DrawRoom();
             mainForm.activeScene.Refresh();

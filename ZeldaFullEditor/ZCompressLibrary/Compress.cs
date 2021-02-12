@@ -22,8 +22,8 @@ namespace ZCompressLibrary
         {
             //throw new NotImplementedException();
             // we will realloc later
-            int compressed_size = length + 3;
-            byte[] compressed_data = new byte[length + 4]; //(char*)malloc(length + 3); // Worse cas is a copy of the string with extended header (probably should abord if more)
+            int compressed_size = length *2;
+            byte[] compressed_data = new byte[length *2]; //(char*)malloc(length + 3); // Worse cas is a copy of the string with extended header (probably should abord if more)
             compression_piece compressed_chain = new compression_piece(1, 1, new byte[] { (byte)'a', (byte)'a' }, 2); //compression_piece* compressed_chain = new_compression_piece(1, 1, "aaa", 2);
             compression_piece compressed_chain_start = compressed_chain; //compression_piece* compressed_chain_start = compressed_chain;
 
@@ -115,14 +115,14 @@ namespace ZCompressLibrary
                             printf("%02X ", (unsigned char) u_data[u_data_pos + i]);
                         }
                         printf("\n");*/
-                        while (searching_pos<u_data_pos && current_pos_u <= last_pos)
+                        while (searching_pos < u_data_pos && current_pos_u <= last_pos)
                         {
                             while (u_data[current_pos_u] != u_data[searching_pos] && searching_pos < u_data_pos)
                             {
                                 searching_pos++;
                             }
                             search_start = searching_pos;
-                            while (current_pos_u <= last_pos && u_data[current_pos_u] == u_data[searching_pos] && searching_pos<u_data_pos)
+                            while (current_pos_u <= last_pos && u_data[current_pos_u] == u_data[searching_pos] && searching_pos < u_data_pos)
                             {
                                 copied_size++;
                                 current_pos_u++;
@@ -147,7 +147,7 @@ namespace ZCompressLibrary
                 // We don't want to be even with copy, since it's possible to merge copy
                 int max_win = 2;
                 byte cmd_with_max = Common.D_CMD_COPY;
-                for (byte cmd_i = 1; cmd_i< 5; cmd_i++)
+                for (byte cmd_i = 1; cmd_i < 5; cmd_i++)
                 {
                     int cmd_size_taken = data_size_taken[cmd_i];
                     if (cmd_size_taken > max_win && cmd_size_taken > cmd_size[cmd_i]
@@ -162,7 +162,7 @@ namespace ZCompressLibrary
                         max_win = cmd_size_taken;
                     }
                 }
-            
+
                 if (cmd_with_max == Common.D_CMD_COPY) // This is the worse case
                 {
                     // s_debug("- Best command is copy\n");
@@ -213,16 +213,17 @@ namespace ZCompressLibrary
                     byte[] tmp = new byte[length * 2]; //char* tmp = (char*)malloc(length * 2);
                     compressed_size = create_compression_string(compressed_chain_start.next, tmp, mode); //* compressed_size = create_compression_string(compressed_chain_start->next, tmp, mode);
 
+                    int p;
                     int k = 0;
                     byte[] uncomp = Decompress.std_nintendo_decompress(tmp, 0, 0, mode, ref k); //char* uncomp = std_nintendo_decompress(tmp, 0, 0, &p, &k, mode);
-                //# ifdef MY_DEBUG
-                    //debug_str = speHexString(uncomp, p);
-                    //printf("Compressed data so far : %s\n", debug_str);
-                    //free(debug_str);
-                //#endif
-                    //free(tmp);
-                    //if (memcmp(uncomp, u_data + start, p) != 0)
-                    if(false == fake_mem.memcmp(uncomp, 0, u_data, start, uncomp.Length))
+                                                                                                //# ifdef MY_DEBUG
+                                                                                                //debug_str = speHexString(uncomp, p);
+                                                                                                //printf("Compressed data so far : %s\n", debug_str);
+                                                                                                //free(debug_str);
+                                                                                                //#endif
+                                                                                                //free(tmp);
+                                                                                                //if (memcmp(uncomp, u_data + start, p) != 0)
+                    if (false == fake_mem.memcmp(uncomp, 0, u_data, start, uncomp.Length))
                     {
                         //printf("Compressed data does not match uncompressed data at %d\n", (unsigned int) (u_data_pos - start));
                         //free(uncomp);

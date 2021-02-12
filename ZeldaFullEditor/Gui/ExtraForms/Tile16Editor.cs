@@ -151,8 +151,8 @@ namespace ZeldaFullEditor.Gui
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
             //e.Graphics.DrawImage(GFX.editortileBitmap, new Rectangle(0, 0, 64, 64));
-            e.Graphics.DrawImage(scene.ow.allmaps[scene.selectedMap].blocksetBitmap,new RectangleF(0f,0f,256.5f,8192f),new RectangleF(0,0,128, 4096),GraphicsUnit.Pixel);
-            e.Graphics.DrawImage(scene.ow.allmaps[scene.selectedMap].blocksetBitmap, new RectangleF(256f, 0f, 256.5f, 8192f), new RectangleF(0, 3600, 128, 4096), GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f,0f,256.5f,8192f),new RectangleF(0,0,128, 4096),GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8192f), new RectangleF(0, 3600, 128, 4096), GraphicsUnit.Pixel);
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 32, 0, 32, 64);
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 0, 32, 64, 32);
         }
@@ -244,7 +244,7 @@ namespace ZeldaFullEditor.Gui
         private unsafe void BuildTiles16Gfx()
         {
 
-            var gfx16Data = (byte*)scene.ow.allmaps[scene.selectedMap].blockset16.ToPointer();//(byte*)allgfx8Ptr.ToPointer();
+            var gfx16Data = (byte*)GFX.mapblockset16.ToPointer();//(byte*)allgfx8Ptr.ToPointer();
             var gfx8Data = (byte*)GFX.currentOWgfx16Ptr.ToPointer();//(byte*)allgfx16Ptr.ToPointer();
             int[] offsets = { 0, 8, 1024, 1032 };
             var yy = 0;

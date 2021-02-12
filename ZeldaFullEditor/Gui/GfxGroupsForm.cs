@@ -598,8 +598,8 @@ namespace ZeldaFullEditor.Gui
             {
                 if (GfxGroups.paletteGfx[(byte)paletteUpDown.Value][0] % 2 == 0)
                 {
-                    GFX.loadedPalettes = GFX.LoadDungeonPalette(mainForm.activeScene.room.Palette);
-                    GFX.loadedSprPalettes = GFX.LoadSpritesPalette(mainForm.activeScene.room.Palette);
+                    GFX.loadedPalettes = GFX.LoadDungeonPalette(mainForm.activeScene.room.palette);
+                    GFX.loadedSprPalettes = GFX.LoadSpritesPalette(mainForm.activeScene.room.palette);
                 }
             }
         }

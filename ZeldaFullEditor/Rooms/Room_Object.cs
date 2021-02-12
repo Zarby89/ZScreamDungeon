@@ -213,11 +213,11 @@ namespace ZeldaFullEditor
                     if (layer == 0 || layer == 2 || allBgs)
                     {
 
-                        if (tileUnder == GFX.tilesBg1Buffer[((xx / 8) + nx) + ((ny + (yy / 8)) * 64)])
+                        if (tileUnder == GFX.tilesBg1Buffer[((xx / 8) + offsetX + nx) + ((ny + offsetY + (yy / 8)) * 64)])
                         {
                             return;
                         }
-                        GFX.tilesBg1Buffer[((xx / 8) + nx) + ((ny + (yy / 8)) * 64)] = td;
+                        GFX.tilesBg1Buffer[((xx / 8) + offsetX+ nx) + ((ny +offsetY + (yy / 8)) * 64)] = td;
                     }
                     if (layer == 1 || allBgs)
                     {

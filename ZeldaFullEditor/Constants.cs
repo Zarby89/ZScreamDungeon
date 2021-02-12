@@ -83,7 +83,9 @@ namespace ZeldaFullEditor
         //===========================================================================================
         //Overworld Exits/Entrances Variables
         //===========================================================================================
-        public static int OWExitRoomId = 0x15D8A;
+        public static int OWExitRoomId = 0x15D8A; // 0x15E07 Credits sequences
+        //105C2 Ending maps
+        //105E2 Sprite Group Table for Ending
         public static int OWExitMapId = 0x15E28;
         public static int OWExitVram = 0x15E77;
         public static int OWExitYScroll = 0x15F15;
@@ -103,6 +105,8 @@ namespace ZeldaFullEditor
         public static int OWHolePos = 0xDB800;//(0x13 entries, 2 bytes each) modified(less 0x400) map16 coordinates for each hole
         public static int OWHoleArea = 0xDB826;//(0x13 entries, 2 bytes each) corresponding area numbers for each hole
         public static int OWHoleEntrance = 0xDB84C;//(0x13 entries, 1 byte each)  corresponding entrance numbers
+
+        
 
         public static int OWExitMapIdWhirlpool = 0x16AE5;
         public static int OWExitVramWhirlpool = 0x16B07;

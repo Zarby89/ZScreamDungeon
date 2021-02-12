@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-    public class OverworldMap
+    public class OverworldMap //This class should only be used to keep values in, not for loading anything !!
     {
         public byte parent = 0;
         public byte index = 0;
@@ -21,15 +22,15 @@ namespace ZeldaFullEditor
 
         public short messageID = 0;
         public bool largeMap = false;
-        public IntPtr gfxPtr = Marshal.AllocHGlobal(512 * 512);
-        public IntPtr blockset16 = Marshal.AllocHGlobal(1048576); //4096 tiles 2048
-        public Bitmap blocksetBitmap;
-        public Bitmap gfxBitmap;
-        public byte[] staticgfx = new byte[16];
+        public IntPtr gfxPtr = Marshal.AllocHGlobal(512 * 512); //Needs to be removed
+        //public IntPtr blockset16 = Marshal.AllocHGlobal(1048576); //Needs to be removed
+        //public Bitmap blocksetBitmap; //Needs to be removed
+        public Bitmap gfxBitmap; //Needs to be removed
+
+        public byte[] staticgfx = new byte[16]; //Need to be used to display map and not pre render it!
         Overworld ow;
         public ushort[,] tilesUsed;
-        public List<Sprite>[] sprites = new List<Sprite>[3];
-        bool initializedSprites = false;
+
         public bool needRefresh = false;
         public OverworldMap(byte index, Overworld ow)
         {
@@ -37,9 +38,9 @@ namespace ZeldaFullEditor
             this.ow = ow;
             this.parent = index;
             gfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, gfxPtr);
-            blocksetBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, blockset16);
+            //
 
-           
+
 
             if (index != 0x80)
             {
@@ -51,6 +52,8 @@ namespace ZeldaFullEditor
                     }
                 }
             }
+
+
             if (index < 64)
             {
                 sprgfx[0] = ROM.DATA[Constants.overworldSpriteset + parent];
@@ -152,6 +155,7 @@ namespace ZeldaFullEditor
             }
 
 
+
         }
 
         public void BuildMap()
@@ -160,17 +164,23 @@ namespace ZeldaFullEditor
             if (largeMap)
             {
                 this.parent = ow.mapParent[index];
-            }
 
+                if (parent != index)
+                {
+                    sprgfx[0] = ROM.DATA[Constants.overworldSpriteset + parent];
+                    sprgfx[1] = ROM.DATA[Constants.overworldSpriteset + parent + 64];
+                    sprgfx[2] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
+
+                    gfx = ROM.DATA[Constants.mapGfx + parent];
+                    palette = ROM.DATA[Constants.overworldMapPalette + parent];
+                }
+
+            }
 
             Buildtileset();
             BuildTiles16Gfx(); //build on GFX.mapgfx16Ptr
             LoadPalette();
-            if (!initializedSprites)
-            {
-                loadSprites();
-                initializedSprites = true;
-            }
+
             int world = 0;
 
             if (index < 64)
@@ -195,22 +205,12 @@ namespace ZeldaFullEditor
             {
                 for (int x = 0; x < 32; x++)
                 {
-                    CopyTile8bpp16((x * 16), (y * 16), tilesUsed[x + (superX * 32), y + (superY * 32)], gfxPtr, blockset16);
+                    CopyTile8bpp16((x * 16), (y * 16), tilesUsed[x + (superX * 32), y + (superY * 32)], gfxPtr, GFX.mapblockset16);
                 }
             }
 
-            messageID = ROM.ReadShort(Constants.overworldMessages+(parent*2));
+            messageID = (short)ROM.ReadShort(Constants.overworldMessages+(parent*2));
 
-        }
-
-
-        public void DrawSprites(byte gameState)
-        {
-
-            foreach (Sprite spr in sprites[gameState])
-            {
-                spr.Draw();
-            }
         }
 
         public unsafe void CopyTile8bpp16(int x, int y, int tile, IntPtr destbmpPtr, IntPtr sourcebmpPtr)
@@ -233,12 +233,11 @@ namespace ZeldaFullEditor
 
         }
 
-
-
-
         private unsafe void BuildTiles16Gfx()
         {
-            var gfx16Data = (byte*)blockset16.ToPointer();//(byte*)allgfx8Ptr.ToPointer();
+            //Stopwatch sw = new Stopwatch();
+            //sw.Start();
+            var gfx16Data = (byte*)GFX.mapblockset16.ToPointer();//(byte*)allgfx8Ptr.ToPointer();
             var gfx8Data = (byte*)GFX.currentOWgfx16Ptr.ToPointer();//(byte*)allgfx16Ptr.ToPointer();
             int[] offsets = { 0, 8, 1024, 1032 };
             var yy = 0;
@@ -272,7 +271,8 @@ namespace ZeldaFullEditor
                 }
             }
 
-
+            //sw.Stop();
+            //Console.WriteLine("Map Tileset16 Generated in : " + sw.ElapsedMilliseconds);
 
         }
 
@@ -608,7 +608,7 @@ namespace ZeldaFullEditor
                 }
                 gfxBitmap.Palette = pal;
                 GFX.mapgfx16Bitmap.Palette = pal;
-                blocksetBitmap.Palette = pal;
+                GFX.mapblockset16Bitmap.Palette = pal;
             }
             catch(Exception e)
             {
@@ -691,12 +691,13 @@ namespace ZeldaFullEditor
             }
 
 
-           /* if (parent >= 128 & parent < 148)
-            {
-                staticgfx[4] = 71;
-                staticgfx[5] = 72;
-            }*/
-
+            /* if (parent >= 128 & parent < 148)
+             {
+                 staticgfx[4] = 71;
+                 staticgfx[5] = 72;
+             }*/
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             unsafe
             {
                 //NEED TO BE EXECUTED AFTER THE TILESET ARE LOADED NOT BEFORE -_-
@@ -721,187 +722,10 @@ namespace ZeldaFullEditor
                     }
                 }
             }
+            sw.Stop();
+            Console.WriteLine("maps gfx loop : " + sw.ElapsedMilliseconds.ToString());
         }
 
-
-        public void loadSprites(bool fromImport = false)
-        {
-
-            if (index <=159)
-            {
-                byte[] data = ROM.DATA;
-                bool newadress = false;
-                if (data.Length > 0x100000)
-                {
-                    if (data[0x1083C0] == 0xFF)
-                    {
-                        newadress = true;
-                    }
-                }
-                sprites[0] = new List<Sprite>();
-                sprites[1] = new List<Sprite>();
-                sprites[2] = new List<Sprite>();
-                if (parent == index)
-                {
-
-
-                    int spritesAddress = Constants.overworldSpritesZelda;
-
-                    int sprite_address_snes = (09 << 16) +
-                        (data[spritesAddress + (parent * 2) + 1] << 8) +
-                        data[spritesAddress + (parent * 2)];
-
-                    /*if (newadress)
-                    {
-                        spritesAddress = Constants.overworldSpritesZeldaEditor;
-                        sprite_address_snes = (0x21 << 16) +
-                        (data[spritesAddress + (parent * 2) + 1] << 8) +
-                        data[spritesAddress + (parent * 2)];
-                    }*/
-
-
-                    int sprite_address = Utils.SnesToPc(sprite_address_snes);
-                    while (true)
-                    {
-
-                        byte b1 = data[sprite_address];
-                        byte b2 = data[sprite_address + 1];
-                        byte b3 = data[sprite_address + 2];
-
-                        if (b1 == 0xFF) { break; }
-
-                        int fakeid = parent;
-                        if (fakeid >= 64)
-                        {
-                            fakeid -= 64;
-                        }
-                        if (fakeid >= 64)
-                        {
-                            fakeid -= 64;
-                        }
-
-                        int my = (fakeid / 8);
-                        int mx = fakeid - (my * 8);
-
-                        int realX = ((b2 & 0x3F) * 16) + mx * 512;
-                        int realY = ((b1 & 0x3F) * 16) + my * 512;
-
-
-
-                        if (index >= 64)
-                        {
-                            sprites[0].Add(new Sprite((byte)parent, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), ow.allmaps, realX, realY));
-                        }
-                        else
-                        {
-                            sprites[1].Add(new Sprite((byte)parent, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), ow.allmaps, realX, realY));
-                        }
-                        sprite_address += 3;
-                    }
-
-                    spritesAddress = Constants.overworldSpritesBegining;
-                    sprite_address_snes = (09 << 16) +
-                        (data[spritesAddress + (parent * 2) + 1] << 8) +
-                        data[spritesAddress + (parent * 2)];
-
-
-                    /*if (newadress)
-                    {
-                        spritesAddress = Constants.overworldSpritesBeginingEditor;
-                        sprite_address_snes = (0x21 << 16) +
-                        (data[spritesAddress + (parent * 2) + 1] << 8) +
-                        data[spritesAddress + (parent * 2)];
-                    }*/
-
-                    sprite_address = Utils.SnesToPc(sprite_address_snes);
-                    while (true)
-                    {
-
-                        byte b1 = data[sprite_address];
-                        byte b2 = data[sprite_address + 1];
-                        byte b3 = data[sprite_address + 2];
-
-                        if (b1 == 0xFF) { break; }
-
-                        int fakeid = parent;
-                        if (fakeid >= 64)
-                        {
-                            fakeid -= 64;
-                        }
-                        if (fakeid >= 64)
-                        {
-                            fakeid -= 64;
-                        }
-                        int my = (fakeid / 8);
-                        int mx = fakeid - (my * 8);
-
-                        int realX = ((b2 & 0x3F) * 16) + mx * 512;
-                        int realY = ((b1 & 0x3F) * 16) + my * 512;
-
-
-                        if (index >= 64)
-                        {
-
-                        }
-                        else
-                        {
-                            sprites[0].Add(new Sprite((byte)parent, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), ow.allmaps, realX, realY));
-                        }
-                        sprite_address += 3;
-                    }
-
-                    spritesAddress = Constants.overworldSpritesAgahnim;
-                    sprite_address_snes = (09 << 16) +
-                        (data[spritesAddress + (parent * 2) + 1] << 8) +
-                        data[spritesAddress + (parent * 2)];
-
-                    /*if (newadress)
-                    {
-                        spritesAddress = Constants.overworldSpritesAgahnimEditor;
-                        sprite_address_snes = (0x21 << 16) +
-                        (data[spritesAddress + (parent * 2) + 1] << 8) +
-                        data[spritesAddress + (parent * 2)];
-                    }*/
-
-                    sprite_address = Utils.SnesToPc(sprite_address_snes);
-                    while (true)
-                    {
-
-                        byte b1 = data[sprite_address];
-                        byte b2 = data[sprite_address + 1];
-                        byte b3 = data[sprite_address + 2];
-
-                        if (b1 == 0xFF) { break; }
-
-                        int fakeid = parent;
-                        if (fakeid >= 64)
-                        {
-                            fakeid -= 64;
-                        }
-                        if (fakeid >= 64)
-                        {
-                            fakeid -= 64;
-                        }
-                        int my = (fakeid / 8);
-                        int mx = fakeid - (my * 8);
-
-                        int realX = ((b2 & 0x3F) * 16) + mx * 512;
-                        int realY = ((b1 & 0x3F) * 16) + my * 512;
-
-
-                        if (index >= 64)
-                        {
-
-                        }
-                        else
-                        {
-                            sprites[2].Add(new Sprite((byte)parent, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), ow.allmaps, realX, realY));
-                        }
-                        sprite_address += 3;
-                    }
-                }
-            }
-        }
 
     }
 }

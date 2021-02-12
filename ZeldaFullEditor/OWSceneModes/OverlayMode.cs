@@ -35,7 +35,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 int superMX = (mid % 8) * 32;
                 int superMY = (mid / 8) * 32;
 
-                scene.tileBitmapPtr = scene.ow.allmaps[scene.ow.allmaps[mapId].parent].blockset16;
+                scene.tileBitmapPtr = GFX.mapblockset16;
                 scene.tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, scene.tileBitmapPtr);
                 scene.tileBitmap.Palette = scene.ow.allmaps[scene.ow.allmaps[mapId].parent].gfxBitmap.Palette;
 
@@ -325,7 +325,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                 }
                                 if (mapId <= 159)
                                 {
-                                    scene.ow.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, scene.ow.allmaps[mapId].blockset16);
+                                    scene.ow.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, GFX.mapblockset16);
                                 }
                             }
                             x++;

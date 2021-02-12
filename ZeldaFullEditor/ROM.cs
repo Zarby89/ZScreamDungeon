@@ -10,11 +10,12 @@ namespace ZeldaFullEditor
     public static class ROM
     {
         public static byte[] DATA;
+        public static byte[] TEMPDATA;
         public static StringBuilder romLog = new StringBuilder();
         public static bool logBlock = false;
         static int biggerAddress = 0;
         static string blockName = "";
-        public static bool AdvancedLogs = false;
+        public static bool AdvancedLogs = true;
         public static void StartBlockLogWriting(string name,int addr)
         {
             romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") +" [Block of Data](" + name + ")\r\n");
@@ -143,9 +144,9 @@ namespace ZeldaFullEditor
             return ((DATA[addr + 2] << 16) + (DATA[addr + 1] << 8) + DATA[addr]);
         }
 
-        public static short ReadShort(int addr)
+        public static ushort ReadShort(int addr)
         {
-            return (short)((DATA[addr + 1] << 8) + DATA[addr]);
+            return (ushort)((DATA[addr + 1] << 8) + DATA[addr]);
         }
 
         public static short ReadReverseShort(int addr)

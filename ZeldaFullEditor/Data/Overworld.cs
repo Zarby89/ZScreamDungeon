@@ -41,8 +41,9 @@ namespace ZeldaFullEditor
         public EntranceOWEditor[] allentrances = new EntranceOWEditor[129];
         public EntranceOWEditor[] allholes = new EntranceOWEditor[0x13];
         public List<RoomPotSaveEditor> allitems = new List<RoomPotSaveEditor>();
-        public OverlayData[] alloverlays = new OverlayData[128]; 
+        public OverlayData[] alloverlays = new OverlayData[128];
 
+        public List<Sprite>[] allsprites = new List<Sprite>[3];
 
         public int worldOffset = 0;
 
@@ -67,6 +68,8 @@ namespace ZeldaFullEditor
             map16tiles = new Tile32[40960];
             posSize = new List<Size>();
 
+
+
             t32 = new List<ushort>();
 
             for(int i = 0;i < 0x2B;i++)
@@ -76,8 +79,9 @@ namespace ZeldaFullEditor
 
                 //Console.WriteLine(tileLeftEntrance[i].ToString("D4") + " , " + tileRightEntrance[i].ToString("D4"));
             }
-
-
+            allsprites[0] = new List<Sprite>();
+            allsprites[1] = new List<Sprite>();
+            allsprites[2] = new List<Sprite>();
 
 
 
@@ -97,13 +101,11 @@ namespace ZeldaFullEditor
             loadEntrances();
             loadItems();
             loadTransports();
+            loadSprites();
 
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;
-
-
-            
             for (int i = 0; i < 160; i++)
             {
                 allmaps[i].BuildMap();
@@ -171,6 +173,8 @@ namespace ZeldaFullEditor
                     else
                     {
                         mapParent[i] = (byte)i;
+                        mapParent[i+64] = (byte)(i+64);
+                        mapChecked[i] = true;
                     }
                 }
 
@@ -271,9 +275,9 @@ namespace ZeldaFullEditor
             int sx = 0;
             int sy = 0;
             int c = 0;
+            //int furthestPtr = 0;
             for (int i = 0; i < 160; i++)
             {
-
                 int p1 =
                 (ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i)] << 16) +
                 (ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i)] << 8) +
@@ -293,6 +297,20 @@ namespace ZeldaFullEditor
 
                 byte[] bytes = ZCompressLibrary.Decompress.ALTTPDecompressOverworld(ROM.DATA, p2, 1000, ref compressedSize1);
                 byte[] bytes2 = ZCompressLibrary.Decompress.ALTTPDecompressOverworld(ROM.DATA, p1, 1000, ref compressedSize2);
+               /* if (p1 > furthestPtr)
+                {
+                    furthestPtr = p1;
+                }
+                if (p2 > furthestPtr)
+                {
+                    furthestPtr = p2;
+                }
+
+                if (i == 159)
+                {
+                    Console.WriteLine(furthestPtr.ToString("X6") + " Length " + bytes.Length.ToString("X4"));
+                }*/
+
 
                 for (int y = 0; y < 16; y++)
                 {
@@ -790,130 +808,77 @@ namespace ZeldaFullEditor
         }
 
 
-        public void savemapstorom()
-        {
-            int pos = 0x120000;
-            for (int i = 0; i < 160; i++)
-            {
-                int npos = 0;
-                byte[]
-                    singlemap1 = new byte[256],
-                    singlemap2 = new byte[256];
-                for (int y = 0; y < 16; y++)
-                {
-                    for (int x = 0; x < 16; x++)
-                    {
-                        singlemap1[npos] = (byte)(t32[npos + (i * 256)] & 0xFF);
-                        singlemap2[npos] = (byte)((t32[npos + (i * 256)] >> 8) & 0xFF);
-                        npos++;
-                    }
-                }
+        /* public void savemapstorom()
+         {
+             int pos = 0x120000;
+             for (int i = 0; i < 160; i++)
+             {
+                 int npos = 0;
+                 byte[]
+                     singlemap1 = new byte[256],
+                     singlemap2 = new byte[256];
+                 for (int y = 0; y < 16; y++)
+                 {
+                     for (int x = 0; x < 16; x++)
+                     {
+                         singlemap1[npos] = (byte)(t32[npos + (i * 256)] & 0xFF);
+                         singlemap2[npos] = (byte)((t32[npos + (i * 256)] >> 8) & 0xFF);
+                         npos++;
+                     }
+                 }
 
-                int snesPos = Utils.PcToSnes(pos);
-                ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
-                ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
-                ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+                 int snesPos = Utils.PcToSnes(pos);
+                 ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
+                 ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
+                 ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
 
-                ROM.DATA[pos] = 0xE0;
-                ROM.DATA[pos + 1] = 0xFF;
-                pos += 2;
-                for (int j = 0; j < 256; j++)
-                {
-                    ROM.DATA[pos] = singlemap2[j];
-                    pos += 1;
-                }
-                ROM.DATA[pos] = 0xFF;
-                pos += 1;
-                snesPos = Utils.PcToSnes(pos);
-                ROM.DATA[(Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i)] = (byte)((snesPos >> 00) & 0xFF);
-                ROM.DATA[(Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i)] = (byte)((snesPos >> 08) & 0xFF);
-                ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+                 ROM.DATA[pos] = 0xE0;
+                 ROM.DATA[pos + 1] = 0xFF;
+                 pos += 2;
+                 for (int j = 0; j < 256; j++)
+                 {
+                     ROM.DATA[pos] = singlemap2[j];
+                     pos += 1;
+                 }
+                 ROM.DATA[pos] = 0xFF;
+                 pos += 1;
+                 snesPos = Utils.PcToSnes(pos);
+                 ROM.DATA[(Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i)] = (byte)((snesPos >> 00) & 0xFF);
+                 ROM.DATA[(Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i)] = (byte)((snesPos >> 08) & 0xFF);
+                 ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
 
-                ROM.DATA[pos] = 0xE0;
-                ROM.DATA[pos + 1] = 0xFF;
-                pos += 2;
-                for (int j = 0; j < 256; j++)
-                {
-                    ROM.DATA[pos] = singlemap1[j];
-                    pos += 1;
-                }
-                ROM.DATA[pos] = 0xFF;
-                pos += 1;
+                 ROM.DATA[pos] = 0xE0;
+                 ROM.DATA[pos + 1] = 0xFF;
+                 pos += 2;
+                 for (int j = 0; j < 256; j++)
+                 {
+                     ROM.DATA[pos] = singlemap1[j];
+                     pos += 1;
+                 }
+                 ROM.DATA[pos] = 0xFF;
+                 pos += 1;
 
-            }
-            //Console.WriteLine();
-            //Save32Tiles();
-        }
+             }
+             //Console.WriteLine();
+             //Save32Tiles();
+         }*/
 
-       /* public void savemapstorom()
-        {
-            int pos = 0x058000;
-            for (int i = 0; i < 160; i++)
-            {
-                int npos = 0;
-                byte[]
-                    singlemap1 = new byte[512],
-                    singlemap2 = new byte[512];
-                for (int y = 0; y < 16; y++)
-                {
-                    for (int x = 0; x < 16; x++)
-                    {
-                        singlemap1[npos] = (byte)(t32[npos + (i * 256)] & 0xFF);
-                        singlemap2[npos] = (byte)((t32[npos + (i * 256)] >> 8) & 0xFF);
-                        npos++;
-                    }
-                }
-                byte[] a = ZCompressLibrary.Compress.ALTTPCompressOverworld(singlemap1, 0, 262);
-                byte[] b = ZCompressLibrary.Compress.ALTTPCompressOverworld(singlemap2, 0, 262);
 
-                int snesPos = Utils.PcToSnes(pos);
-                ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
-                ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
-                ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
 
-                //ROM.DATA[pos] = 0xE0;
-                //ROM.DATA[pos + 1] = 0xFF;
-                //pos += 2;
-                for (int j = 0; j < b.Length; j++)
-                {
-                    ROM.DATA[pos] = b[j];
-                    pos += 1;
-                }
-                //ROM.DATA[pos] = 0xFF;
-                //pos += 1;
-                snesPos = Utils.PcToSnes(pos);
-                ROM.DATA[(Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i)] = (byte)((snesPos >> 00) & 0xFF);
-                ROM.DATA[(Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i)] = (byte)((snesPos >> 08) & 0xFF);
-                ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
 
-                //ROM.DATA[pos] = 0xE0;
-                //ROM.DATA[pos + 1] = 0xFF;
-                //pos += 2;
-                for (int j = 0; j < a.Length; j++)
-                {
-                    ROM.DATA[pos] = a[j];
-                    pos += 1;
-                }
-                //ROM.DATA[pos] = 0xFF;
-                //pos += 1;
 
-            }
-            Console.WriteLine("Map Pos Length: " + pos.ToString("X6"));
-            //Save32Tiles();
-        }*/
 
         public void loadItems()
         {
-            int ptr = (ROM.DATA[Constants.overworldItemsAddress + 2] << 16) +
-            (ROM.DATA[Constants.overworldItemsAddress + 1] << 8) +
-                (ROM.DATA[Constants.overworldItemsAddress]); //1BC2F9
+            int ptr = ROM.ReadLong(Constants.overworldItemsAddress);
+            int ptrpc = Utils.SnesToPc(ptr);//1BC2F9 -> 0DC2F9
             for (int i = 0; i < 128; i++)
             {
 
-                int ptrpc = Utils.SnesToPc(ptr);//1BC2F9 -> 0DC2F9
-                int addr = ((ptr & 0xFF0000)) + //1B
+                
+                int addr =  ((ptr & 0xFF0000) + //1B
                             (ROM.DATA[ptrpc + (i * 2) + 1] << 8) + //F9
-                            (ROM.DATA[ptrpc + (i * 2)]); //3C
+                            (ROM.DATA[ptrpc + (i * 2)])); //3C
 
                 addr = Utils.SnesToPc(addr);
 
@@ -948,43 +913,16 @@ namespace ZeldaFullEditor
                     int sx = fakeid - (sy * 8);
 
                     allitems.Add(new RoomPotSaveEditor(b3, (ushort)i, (x * 16) + (sx * 512), (y * 16) + (sy * 512), false));
-                    if (i == 64)
-                    {
-                        Console.WriteLine("X : " + x * 16 + ", Y:" + y * 16);
-                    }
                     allitems[allitems.Count - 1].gameX = (byte)x;
                     allitems[allitems.Count - 1].gameY = (byte)y;
                     addr += 3;
                 }
+
+
             }
 
 
         }
-
-        /*public void savemapstoromNEW(MapSave[] allmaps)
-        {
-            int pos = 0x19FE20;
-            int pointerPos = 0x19FE20;
-            for (int i = 0; i < 159; i++)
-            {
-                pointerPos = 0x19FE20 + (i * 3);
-                pos = 0x1A0000 + (i * 2048);
-                int snesPos = Utils.PcToSnes(pos);
-                ROM.DATA[pointerPos + 0] = (byte)(snesPos & 0xFF);
-                ROM.DATA[pointerPos + 1] = (byte)((snesPos >> 8) & 0xFF);
-                ROM.DATA[pointerPos + 2] = (byte)((snesPos >> 16) & 0xFF);
-                for (int y = 0; y < 32; y++)
-                {
-                    for (int x = 0; x < 32; x++)
-                    {
-                        ROM.DATA[pos + 1] = (byte)((allmaps[i].tiles[x, y] >> 8) & 0xFF);
-                        ROM.DATA[pos] = (byte)((allmaps[i].tiles[x, y]) & 0xFF);
-                        pos += 2;
-                    }
-                }
-            }
-        }*/
-
 
 
         public void loadOverlays()
@@ -999,6 +937,7 @@ namespace ZeldaFullEditor
             {
                 alloverlays[index] = new OverlayData();
                 //overlayPointers
+                Console.WriteLine("MapIndex Overlay : " + index.ToString());
 
                 int addr = (Constants.overlayPointersBank << 16) +
                 (ROM.DATA[Constants.overlayPointers + (index * 2) + 1] << 8) +
@@ -1030,6 +969,7 @@ namespace ZeldaFullEditor
                 byte b = 0;
                 while (b != 0x60)
                 {
+
                     b = ROM.DATA[addr];
                     if (b == 0xFF)
                     {
@@ -1115,6 +1055,113 @@ namespace ZeldaFullEditor
                 }
             }
         }
+
+        public void loadSprites()
+        {
+            //LW[0] = RainState 0 to 63 there's no data for DW
+            //LW[1] = ZeldaState 0 to 128 ; Contains LW and DW
+            //LW[2] = AgahState 0 to ?? ;Contains data for LW and DW
+
+            //Console.WriteLine(((Constants.overworldSpritesBegining & 0xFFFF) + (09 << 16)).ToString("X6"));
+            for (int i = 0; i < 64; i++) 
+            {
+                if (mapParent[i] == i)
+                {
+                    //Beginning Sprites
+                    int ptrPos = Constants.overworldSpritesBegining + (i * 2);
+                    int spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
+                    while (true)
+                    {
+
+                        byte b1 = ROM.DATA[spriteAddress];
+                        byte b2 = ROM.DATA[spriteAddress + 1];
+                        byte b3 = ROM.DATA[spriteAddress + 2];
+                        if (b1 == 0xFF) { break; }
+
+                        int mapY = (i / 8);
+                        int mapX = (i % 8);
+
+                        int realX = ((b2 & 0x3F) * 16) + mapX * 512;
+                        int realY = ((b1 & 0x3F) * 16) + mapY * 512;
+
+                        allsprites[0].Add(new Sprite((byte)i, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), realX, realY));
+
+                        spriteAddress += 3;
+                    }
+                }
+
+            }
+
+            
+            for (int i = 0; i < 144; i++) 
+            {
+                if (mapParent[i] == i)
+                {
+                    //Zelda Saved Sprites
+                    int ptrPos = Constants.overworldSpritesZelda + (i * 2);
+                    int spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
+                    while (true)
+                    {
+
+                        byte b1 = ROM.DATA[spriteAddress];
+                        byte b2 = ROM.DATA[spriteAddress + 1];
+                        byte b3 = ROM.DATA[spriteAddress + 2];
+                        if (b1 == 0xFF) { break; }
+
+                        int editorMapIndex = i;
+                        if (editorMapIndex >= 64)
+                        {
+                            editorMapIndex = i - 64;
+                        }
+                        int mapY = (editorMapIndex / 8);
+                        int mapX = (editorMapIndex % 8);
+
+                        int realX = ((b2 & 0x3F) * 16) + mapX * 512;
+                        int realY = ((b1 & 0x3F) * 16) + mapY * 512;
+
+                        allsprites[1].Add(new Sprite((byte)i, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), realX, realY));
+
+                        spriteAddress += 3;
+                    }
+                }
+
+                //Agahnim Dead Sprites
+                if (mapParent[i] == i)
+                {
+                    int ptrPos = Constants.overworldSpritesAgahnim + (i * 2);
+                    int spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
+                    while (true)
+                    {
+
+                        byte b1 = ROM.DATA[spriteAddress];
+                        byte b2 = ROM.DATA[spriteAddress + 1];
+                        byte b3 = ROM.DATA[spriteAddress + 2];
+                        if (b1 == 0xFF) { break; }
+
+                        int editorMapIndex = i;
+                        if (editorMapIndex >= 64)
+                        {
+                            editorMapIndex = i - 64;
+                        }
+                        int mapY = (editorMapIndex / 8);
+                        int mapX = (editorMapIndex % 8);
+
+                        int realX = ((b2 & 0x3F) * 16) + mapX * 512;
+                        int realY = ((b1 & 0x3F) * 16) + mapY * 512;
+
+                        allsprites[2].Add(new Sprite((byte)i, b3, (byte)(b2 & 0x3F), (byte)(b1 & 0x3F), realX, realY));
+
+                        spriteAddress += 3;
+                    }
+                }
+            }
+            
+            //Console.WriteLine("Finished loading sprites");
+
+        }
+
+
+
     }
 
 }

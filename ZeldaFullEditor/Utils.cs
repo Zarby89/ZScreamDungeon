@@ -41,6 +41,25 @@ namespace ZeldaFullEditor
             return (short)((addr1 << 8) | (addr2));
         }
 
+        public static int Clamp(int v, int min, int max)
+        {
+            if (v >= max) { v = max; }
+            if (v <= min) { v = min; }
+            return (v );
+        }
+        public static short Clamp(short v, int min, int max)
+        {
+            if (v >= max) { v = (short)max; }
+            if (v <= min) { v = (short)min; }
+            return (v);
+        }
+        public static byte Clamp(byte v, int min, int max)
+        {
+            if (v >= max) { v = (byte)max; }
+            if (v <= min) { v = (byte)min; }
+            return (v);
+        }
+
     }
 
 

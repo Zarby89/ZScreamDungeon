@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ZCompressLibrary
 {
@@ -26,7 +27,7 @@ namespace ZCompressLibrary
             int max_offset;
 
             max_offset = 0;
-            if(max_length != 0)
+            if (max_length != 0)
             {
                 max_offset = start + max_length;
             }
@@ -35,7 +36,7 @@ namespace ZCompressLibrary
             u_data_pos = 0;
             c_data_pos = start;
 
-            while(header != 0xFF)
+            while (header != 0xFF)
             {
                 int length;
                 byte command;
@@ -86,14 +87,14 @@ namespace ZCompressLibrary
                         fake_mem.memcpy(u_data, u_data_pos, c_data, c_data_pos + 1, length);
                         c_data_pos += length + 1;
                         break;
-                        
+
                     case Common.D_CMD_BYTE_REPEAT:
                         // Copy the same byte length time
                         //memset(u_data + u_data_pos, c_data[c_data_pos + 1], length);
                         fake_mem.memset(u_data, u_data_pos, c_data[c_data_pos + 1], length);
                         c_data_pos += 2;
                         break;
-                        
+
                     case Common.D_CMD_WORD_REPEAT:
                         // Next byte is A, the one after is B, copy the sequence AB length times
                         byte a = c_data[c_data_pos + 1];
@@ -108,7 +109,7 @@ namespace ZCompressLibrary
                         }
                         c_data_pos += 3;
                         break;
-                        
+
                     case Common.D_CMD_BYTE_INC:
                         // Next byte is copied and incremented length time
                         for (int i = 0; i < length; i++)
@@ -117,7 +118,7 @@ namespace ZCompressLibrary
                         }
                         c_data_pos += 2;
                         break;
-                        
+
                     case Common.D_CMD_COPY_EXISTING:
                         // Next 2 bytes form an offset to pick data from the output
                         //printf("%02X,%02X\n", (unsigned char) c_data[c_data_pos + 1], (unsigned char) c_data[c_data_pos + 2]);
@@ -147,7 +148,7 @@ namespace ZCompressLibrary
                         fake_mem.memcpy(u_data, u_data_pos, u_data, offset, length);
                         c_data_pos += 3;
                         break;
-                        
+
                     default:
                         //{
                         //    std_nintendo_decompression_error = "Invalid command in the header for decompression";
