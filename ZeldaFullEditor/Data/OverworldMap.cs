@@ -201,11 +201,22 @@ namespace ZeldaFullEditor
             int superY = ((index - (world * 64)) / 8);
             int superX = index - (world * 64) - (superY * 8);
 
-            for (int y = 0; y < 32; y++)
+            //16x16 CODE OLD
+            /*for (int y = 0; y < 32; y++)
             {
                 for (int x = 0; x < 32; x++)
                 {
                     CopyTile8bpp16((x * 16), (y * 16), tilesUsed[x + (superX * 32), y + (superY * 32)], gfxPtr, GFX.mapblockset16);
+                }
+            }*/
+
+            //8x8 CODE NEW
+            for (int y = 0; y < 32; y++)
+            {
+                for (int x = 0; x < 32; x++)
+                {
+                    
+                    CopyTile8bpp16From8((x*16), (y*16), tilesUsed[x + (superX * 32), y + (superY * 32)], gfxPtr, GFX.currentOWgfx16Ptr);
                 }
             }
 
@@ -233,6 +244,30 @@ namespace ZeldaFullEditor
 
         }
 
+        public unsafe void CopyTile8bpp16From8(int xP, int yP, int tileID, IntPtr destbmpPtr, IntPtr sourcebmpPtr)
+        {
+            var gfx16Data = (byte*)destbmpPtr.ToPointer();//(byte*)allgfx8Ptr.ToPointer();
+            var gfx8Data = (byte*)GFX.currentOWgfx16Ptr.ToPointer();//(byte*)allgfx16Ptr.ToPointer();
+            int[] offsets = { 0, 8, 4096, 4104 };
+
+                var tiles = ow.tiles16[tileID];
+
+                for (var tile = 0; tile < 4; tile++)
+                {
+                    TileInfo info = tiles.tilesinfos[tile];
+                    int offset = offsets[tile];
+
+                    for (var y = 0; y < 8; y++)
+                    {
+                        for (var x = 0; x < 4; x++)
+                        {
+                            CopyTileToMap(x, y, xP, yP, offset, info, gfx16Data, gfx8Data);
+                        }
+                    }
+                }
+
+        }
+
         private unsafe void BuildTiles16Gfx()
         {
             //Stopwatch sw = new Stopwatch();
@@ -243,15 +278,15 @@ namespace ZeldaFullEditor
             var yy = 0;
             var xx = 0;
 
-            for (var i = 0; i < 4096; i++) //number of tiles16 3748?
+            for (var i = 0; i < ow.tiles16.Count; i++) //number of tiles16 3748?
             {
                 //8x8 tile draw
                 //gfx8 = 4bpp so everyting is /2
-                var tiles = ow.tiles16[i];
+                //var tiles = ow.tiles16[i];
 
                 for (var tile = 0; tile < 4; tile++)
                 {
-                    TileInfo info = tiles.tilesinfos[tile];
+                    TileInfo info = ow.tiles16[i].tilesinfos[tile];
                     int offset = offsets[tile];
 
                     for (var y = 0; y < 8; y++)
@@ -302,6 +337,30 @@ namespace ZeldaFullEditor
 
             int tx = ((tile.id / 16) * 512) + ((tile.id - ((tile.id / 16) * 16)) * 4);
             var index = xx + yy + offset + (mx * 2) + (my * 128);
+            var pixel = gfx8Pointer[tx + (y * 64) + x];
+
+            gfx16Pointer[index + r ^ 1] = (byte)((pixel & 0x0F) + tile.palette * 16);
+            gfx16Pointer[index + r] = (byte)(((pixel >> 4) & 0x0F) + tile.palette * 16);
+        }
+
+        private unsafe void CopyTileToMap(int x, int y, int xx, int yy, int offset, TileInfo tile, byte* gfx16Pointer, byte* gfx8Pointer)//map,current
+        {
+            int mx = x;
+            int my = y;
+            byte r = 0;
+
+            if (tile.h != 0)
+            {
+                mx = 3 - x;
+                r = 1;
+            }
+            if (tile.v != 0)
+            {
+                my = 7 - y;
+            }
+
+            int tx = ((tile.id / 16) * 512) + ((tile.id - ((tile.id / 16) * 16)) * 4);
+            var index = xx + (yy*512) + offset + (mx * 2) + (my * 512);
             var pixel = gfx8Pointer[tx + (y * 64) + x];
 
             gfx16Pointer[index + r ^ 1] = (byte)((pixel & 0x0F) + tile.palette * 16);
@@ -696,8 +755,8 @@ namespace ZeldaFullEditor
                  staticgfx[4] = 71;
                  staticgfx[5] = 72;
              }*/
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
+            //Stopwatch sw = new Stopwatch();
+            //sw.Start();
             unsafe
             {
                 //NEED TO BE EXECUTED AFTER THE TILESET ARE LOADED NOT BEFORE -_-
@@ -722,8 +781,8 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-            sw.Stop();
-            Console.WriteLine("maps gfx loop : " + sw.ElapsedMilliseconds.ToString());
+            //sw.Stop();
+            //Console.WriteLine("maps gfx loop : " + sw.ElapsedMilliseconds.ToString());
         }
 
 

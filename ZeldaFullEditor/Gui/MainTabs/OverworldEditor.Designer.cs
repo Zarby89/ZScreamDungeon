@@ -50,10 +50,20 @@
             this.dwButton = new System.Windows.Forms.ToolStripButton();
             this.lwButton = new System.Windows.Forms.ToolStripButton();
             this.overlayButton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.searchtilesButton = new System.Windows.Forms.ToolStripButton();
             this.refreshToolStrip = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tilePictureBox = new System.Windows.Forms.PictureBox();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.scratchPicturebox = new System.Windows.Forms.PictureBox();
+            this.Tiles8 = new System.Windows.Forms.TabPage();
+            this.priorityCheckbox = new System.Windows.Forms.CheckBox();
+            this.mirrorYCheckbox = new System.Windows.Forms.CheckBox();
+            this.mirrorXCheckbox = new System.Windows.Forms.CheckBox();
+            this.palette8Box = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.thumbnailBox = new System.Windows.Forms.PictureBox();
             this.owPropertyPanel = new System.Windows.Forms.Panel();
             this.objectGroupbox = new System.Windows.Forms.GroupBox();
@@ -77,26 +87,25 @@
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.scratchPicturebox = new System.Windows.Forms.PictureBox();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).BeginInit();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).BeginInit();
+            this.Tiles8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
             this.owPropertyPanel.SuspendLayout();
             this.objectGroupbox.SuspendLayout();
             this.mapGroupbox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).BeginInit();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).BeginInit();
             this.SuspendLayout();
             // 
             // owToolStrip
@@ -122,7 +131,7 @@
             this.dwButton,
             this.lwButton,
             this.overlayButton,
-            this.toolStripButton1,
+            this.searchtilesButton,
             this.refreshToolStrip});
             this.owToolStrip.Location = new System.Drawing.Point(0, 0);
             this.owToolStrip.Name = "owToolStrip";
@@ -327,15 +336,15 @@
             this.overlayButton.Text = "Overlay";
             this.overlayButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
-            // toolStripButton1
+            // searchtilesButton
             // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            this.searchtilesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.searchtilesButton.Image = ((System.Drawing.Image)(resources.GetObject("searchtilesButton.Image")));
+            this.searchtilesButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.searchtilesButton.Name = "searchtilesButton";
+            this.searchtilesButton.Size = new System.Drawing.Size(23, 22);
+            this.searchtilesButton.Text = "search tiles";
+            this.searchtilesButton.Click += new System.EventHandler(this.searchtilesButton_Click);
             // 
             // refreshToolStrip
             // 
@@ -368,6 +377,31 @@
             this.splitContainer1.SplitterDistance = 288;
             this.splitContainer1.TabIndex = 1;
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.Tiles8);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(288, 619);
+            this.tabControl1.TabIndex = 1;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.AutoScroll = true;
+            this.tabPage1.Controls.Add(this.tilePictureBox);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(280, 593);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "Tiles16";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
             // tilePictureBox
             // 
             this.tilePictureBox.Location = new System.Drawing.Point(3, 3);
@@ -379,6 +413,97 @@
             this.tilePictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.tilePictureBox_Paint);
             this.tilePictureBox.DoubleClick += new System.EventHandler(this.tilePictureBox_DoubleClick);
             this.tilePictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tilePictureBox_MouseClick);
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.AutoScroll = true;
+            this.tabPage2.Controls.Add(this.scratchPicturebox);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(280, 593);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "ScratchPad16";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // scratchPicturebox
+            // 
+            this.scratchPicturebox.Location = new System.Drawing.Point(3, 3);
+            this.scratchPicturebox.Name = "scratchPicturebox";
+            this.scratchPicturebox.Size = new System.Drawing.Size(256, 3600);
+            this.scratchPicturebox.TabIndex = 1;
+            this.scratchPicturebox.TabStop = false;
+            this.scratchPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.scratchPicturebox_Paint);
+            this.scratchPicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseDown);
+            this.scratchPicturebox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseMove);
+            this.scratchPicturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseUp);
+            // 
+            // Tiles8
+            // 
+            this.Tiles8.AutoScroll = true;
+            this.Tiles8.Controls.Add(this.priorityCheckbox);
+            this.Tiles8.Controls.Add(this.mirrorYCheckbox);
+            this.Tiles8.Controls.Add(this.mirrorXCheckbox);
+            this.Tiles8.Controls.Add(this.palette8Box);
+            this.Tiles8.Controls.Add(this.pictureBox1);
+            this.Tiles8.Location = new System.Drawing.Point(4, 22);
+            this.Tiles8.Name = "Tiles8";
+            this.Tiles8.Size = new System.Drawing.Size(280, 593);
+            this.Tiles8.TabIndex = 2;
+            this.Tiles8.Text = "Tiles8 [X2] (WIP)";
+            this.Tiles8.UseVisualStyleBackColor = true;
+            // 
+            // priorityCheckbox
+            // 
+            this.priorityCheckbox.AutoSize = true;
+            this.priorityCheckbox.Location = new System.Drawing.Point(131, 265);
+            this.priorityCheckbox.Name = "priorityCheckbox";
+            this.priorityCheckbox.Size = new System.Drawing.Size(57, 17);
+            this.priorityCheckbox.TabIndex = 5;
+            this.priorityCheckbox.Text = "Priority";
+            this.priorityCheckbox.UseVisualStyleBackColor = true;
+            this.priorityCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
+            // 
+            // mirrorYCheckbox
+            // 
+            this.mirrorYCheckbox.AutoSize = true;
+            this.mirrorYCheckbox.Location = new System.Drawing.Point(67, 265);
+            this.mirrorYCheckbox.Name = "mirrorYCheckbox";
+            this.mirrorYCheckbox.Size = new System.Drawing.Size(58, 17);
+            this.mirrorYCheckbox.TabIndex = 4;
+            this.mirrorYCheckbox.Text = "mirrorY";
+            this.mirrorYCheckbox.UseVisualStyleBackColor = true;
+            this.mirrorYCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
+            // 
+            // mirrorXCheckbox
+            // 
+            this.mirrorXCheckbox.AutoSize = true;
+            this.mirrorXCheckbox.Location = new System.Drawing.Point(3, 265);
+            this.mirrorXCheckbox.Name = "mirrorXCheckbox";
+            this.mirrorXCheckbox.Size = new System.Drawing.Size(58, 17);
+            this.mirrorXCheckbox.TabIndex = 3;
+            this.mirrorXCheckbox.Text = "mirrorX";
+            this.mirrorXCheckbox.UseVisualStyleBackColor = true;
+            this.mirrorXCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
+            // 
+            // palette8Box
+            // 
+            this.palette8Box.Location = new System.Drawing.Point(3, 3);
+            this.palette8Box.Name = "palette8Box";
+            this.palette8Box.Size = new System.Drawing.Size(256, 256);
+            this.palette8Box.TabIndex = 2;
+            this.palette8Box.TabStop = false;
+            this.palette8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.palette8Box_Paint);
+            this.palette8Box.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palette8Box_MouseDown);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(3, 285);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(256, 1024);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
             // 
             // thumbnailBox
             // 
@@ -613,53 +738,6 @@
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(288, 619);
-            this.tabControl1.TabIndex = 1;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.AutoScroll = true;
-            this.tabPage1.Controls.Add(this.tilePictureBox);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(280, 593);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Tiles";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // tabPage2
-            // 
-            this.tabPage2.AutoScroll = true;
-            this.tabPage2.Controls.Add(this.scratchPicturebox);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(280, 593);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "ScratchPad";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // scratchPicturebox
-            // 
-            this.scratchPicturebox.Location = new System.Drawing.Point(3, 3);
-            this.scratchPicturebox.Name = "scratchPicturebox";
-            this.scratchPicturebox.Size = new System.Drawing.Size(256, 3600);
-            this.scratchPicturebox.TabIndex = 1;
-            this.scratchPicturebox.TabStop = false;
-            this.scratchPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.scratchPicturebox_Paint);
-            this.scratchPicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseDown);
-            this.scratchPicturebox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseMove);
-            this.scratchPicturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseUp);
-            // 
             // OverworldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -676,7 +754,15 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).EndInit();
+            this.Tiles8.ResumeLayout(false);
+            this.Tiles8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
             this.owPropertyPanel.ResumeLayout(false);
             this.objectGroupbox.ResumeLayout(false);
@@ -686,10 +772,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).EndInit();
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -736,7 +818,7 @@
         private System.Windows.Forms.ToolStripButton dwButton;
         private System.Windows.Forms.ToolStripButton spButton;
         private System.Windows.Forms.ToolStripButton lwButton;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton searchtilesButton;
         public System.Windows.Forms.PictureBox thumbnailBox;
         private System.Windows.Forms.ToolStripButton refreshToolStrip;
         private System.Windows.Forms.ToolStripButton overlayButton;
@@ -749,5 +831,11 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         public System.Windows.Forms.PictureBox scratchPicturebox;
+        private System.Windows.Forms.TabPage Tiles8;
+        public System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.CheckBox priorityCheckbox;
+        private System.Windows.Forms.CheckBox mirrorYCheckbox;
+        private System.Windows.Forms.CheckBox mirrorXCheckbox;
+        private System.Windows.Forms.PictureBox palette8Box;
     }
 }

@@ -24,6 +24,10 @@ namespace ZeldaFullEditor
         public Tile32[] map16tiles;
         public List<Size> posSize;
 
+        public TileInfo[,] tempTiles8_LW = new TileInfo[512,512]; //all maps tiles8
+        public TileInfo[,] tempTiles8_DW = new TileInfo[512, 512]; //all maps tiles8
+        public TileInfo[,] tempTiles8_SP = new TileInfo[512, 512]; //all maps tiles8
+
         public List<Tile32> t32Unique = new List<Tile32>();
         public List<ushort> t32;
 
@@ -1158,6 +1162,124 @@ namespace ZeldaFullEditor
             
             //Console.WriteLine("Finished loading sprites");
 
+        }
+
+
+
+
+
+
+
+
+        List<Tile16> t16Unique = new List<Tile16>();
+        List<ushort> t16 = new List<ushort>();
+        public bool createMap16Tilesmap()
+        {
+            t16Unique.Clear();
+            t16.Clear();
+            //Create tile32 from tiles16
+            List<ulong> alltiles8 = new List<ulong>();
+
+            int sx = 0;
+            int sy = 0;
+            int c = 0;
+            for (int i = 0; i < 160; i++)
+            {
+                TileInfo[,] tilesused = tempTiles8_LW;
+                if (i < 64)
+                {
+                    tilesused = tempTiles8_LW;
+                }
+                else if (i < 128 && i >= 64)
+                {
+                    tilesused = tempTiles8_DW;
+                }
+                else
+                {
+                    tilesused = tempTiles8_SP;
+                }
+
+                for (int y = 0; y < 64; y += 2)
+                {
+                    for (int x = 0; x < 64; x += 2)
+                    {
+                        ushort tf00 = tilesused[x + (sx * 64), y + (sy * 64)].toShort();
+                        ushort tf01 = tilesused[x + 1 + (sx * 64), y + (sy * 64)].toShort();
+                        ushort tf02 = tilesused[x + (sx * 64), y + 1 + (sy * 64)].toShort();
+                        ushort tf03 = tilesused[x + 1 + (sx * 64), y + 1 + (sy * 64)].toShort();
+
+                        
+
+                        alltiles8.Add(new Tile16(GFX.gettilesinfo(tf00), GFX.gettilesinfo(tf01), GFX.gettilesinfo(tf02), GFX.gettilesinfo(tf03)).getLongValue());
+                    }
+
+
+
+                }
+                sx++;
+                if (sx >= 8)
+                {
+                    sy++;
+                    sx = 0;
+
+                }
+                c++;
+                if (c >= 64)
+                {
+                    sx = 0;
+                    sy = 0;
+                    c = 0;
+                }
+
+            }
+
+
+
+            List<ulong> tiles = alltiles8.Distinct().ToList();//that get rid of duplicated tiles using linq
+            //alltiles16 = all tiles32...
+            //tiles = all tiles32 that are uniques double are removed
+            Dictionary<ulong, ushort> alltilesIndexed = new Dictionary<ulong, ushort>();
+
+            for (int i = 0; i < tiles.Count; i++)
+            {
+                alltilesIndexed.Add(tiles[i], (ushort)i); //index the uniques tiles with a dictionary
+            }
+
+            for (int i = 0; i < 163840; i++) //163840 = numbers of 16x16 tiles (160 * (32*32))
+            {
+                t16.Add(alltilesIndexed[alltiles8[i]]); //add all tiles32 from all maps
+                //convert all tiles32 non-unique ids into unique array of ids
+            }
+
+            for (int i = 0; i < tiles.Count; i++) //for each uniques tile32
+            {
+                t16Unique.Add(new Tile16(tiles[i])); //create new tileunique
+            }
+
+            while (t16Unique.Count % 4 != 0) //prevent a bug if tilecount is not a multiple of 4
+            {
+                t16Unique.Add(new Tile16(0));
+            }
+            
+            if (t16Unique.Count > 8864)
+            {
+
+                if (MessageBox.Show("Unique Tiles16 count exceed the limit in the rom\nTiles data won't be saved would you like to export map data?", "Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+
+                }
+                return true;
+            }
+            tiles16.Clear();
+            for(int i = 0;i<t16Unique.Count;i++)
+            {
+                ulong t = t16Unique[i].getLongValue();
+                tiles16.Add(new Tile16(t));
+            }
+            alltiles8.Clear();
+            
+            Console.WriteLine("Nbr of uniquetiles16 = " + tiles.Count + " " + t16Unique.Count);
+            return false;
         }
 
 

@@ -79,6 +79,10 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
+            GFX.editort16Bitmap.Palette = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette;
+            updateTiles();
+            pictureBox1.Refresh();
+
         }
 
         public void saveScratchPad()
@@ -298,7 +302,23 @@ namespace ZeldaFullEditor.Gui
 
         private void tilePictureBox_DoubleClick(object sender, EventArgs e)
         {
+            Tile16Editor ted = new Tile16Editor(scene);
+            if (ted.ShowDialog() == DialogResult.OK)
+            {
+                new Thread(() =>
+                {
+                    Thread.CurrentThread.IsBackground = true;
+                    for (int i = 0; i < 159; i++)
+                    {
+                        if (scene.ow.allmaps[i].needRefresh == true)
+                        {
+                            scene.ow.allmaps[i].BuildMap();
+                            scene.ow.allmaps[i].needRefresh = false;
+                        }
+                    }
+                }).Start();
 
+            }
         }
 
         private void thumbnailBox_Paint(object sender, PaintEventArgs e)
@@ -691,6 +711,264 @@ namespace ZeldaFullEditor.Gui
             }
 
 
+        }
+        byte palSelected = 0;
+        int tile8selected = 0;
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.SmoothingMode = SmoothingMode.None;
+            e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+            e.Graphics.DrawImage(GFX.currentOWgfx16Bitmap,new Rectangle(0,0,512,1024), new Rectangle(0,0,256,512),GraphicsUnit.Pixel);
+
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+            e.Graphics.DrawImage(GFX.editort16Bitmap, new Rectangle(0, 0, 256, 1024));
+
+            int y = (tile8selected / 16);
+            int x = tile8selected - (y * 16);
+
+            e.Graphics.DrawRectangle(Pens.GreenYellow, new Rectangle(x * 16, y * 16, 16, 16));
+        }
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl1.SelectedTab.Name == "Tiles8")
+            {
+                /*int sx = 0;
+                int sy = 0;
+                int c = 0;
+
+                int nx = 0;
+                int ny = 0;
+                for (int i = 0; i < 64; i++)
+                {
+                    for (int y = 0; y < 64; y += 2)
+                    {
+                        for (int x = 0; x < 64; x += 2)
+                        {
+
+                                //Console.WriteLine(overworld.tiles16[overworld.allmapsTilesLW[nx + (sx * 32), ny + (sy * 32)]].tile0.id);
+
+                            overworld.tempTiles8_LW[x + (sx * 64), y + (sy * 64)] = overworld.tiles16[overworld.allmapsTilesLW[nx + (sx * 32), ny + (sy * 32)]].tile0;
+                            overworld.tempTiles8_LW[x + (sx * 64) + 1, y + (sy * 64)] = overworld.tiles16[overworld.allmapsTilesLW[nx + (sx * 32), ny + (sy * 32)]].tile1;
+                            overworld.tempTiles8_LW[x + (sx * 64), y + (sy * 64) + 1] = overworld.tiles16[overworld.allmapsTilesLW[nx + (sx * 32), ny + (sy * 32)]].tile2;
+                            overworld.tempTiles8_LW[x + (sx * 64) + 1, y + (sy * 64) + 1] = overworld.tiles16[overworld.allmapsTilesLW[nx + (sx * 32), ny + (sy * 32)]].tile3;
+
+                            overworld.tempTiles8_DW[x + (sx * 64), y + (sy * 64)] = overworld.tiles16[overworld.allmapsTilesDW[nx + (sx * 32), ny + (sy * 32)]].tile0;
+                            overworld.tempTiles8_DW[x + (sx * 64) + 1, y + (sy * 64)] = overworld.tiles16[overworld.allmapsTilesDW[nx + (sx * 32), ny + (sy * 32)]].tile1;
+                            overworld.tempTiles8_DW[x + (sx * 64), y + (sy * 64) + 1] = overworld.tiles16[overworld.allmapsTilesDW[nx + (sx * 32), ny + (sy * 32)]].tile2;
+                            overworld.tempTiles8_DW[x + (sx * 64) + 1, y + (sy * 64) + 1] = overworld.tiles16[overworld.allmapsTilesDW[nx + (sx * 32), ny + (sy * 32)]].tile3;
+                            if (i < 32)
+                            {
+                                overworld.tempTiles8_SP[x + (sx * 64), y + (sy * 64)] = overworld.tiles16[overworld.allmapsTilesSP[nx + (sx * 32), ny + (sy * 32)]].tile0;
+                                overworld.tempTiles8_SP[x + (sx * 64) + 1, y + (sy * 64)] = overworld.tiles16[overworld.allmapsTilesSP[nx + (sx * 32), ny + (sy * 32)]].tile1;
+                                overworld.tempTiles8_SP[x + (sx * 64), y + (sy * 64) + 1] = overworld.tiles16[overworld.allmapsTilesSP[nx + (sx * 32), ny + (sy * 32)]].tile2;
+                                overworld.tempTiles8_SP[x + (sx * 64) + 1, y + (sy * 64) + 1] = overworld.tiles16[overworld.allmapsTilesSP[nx + (sx * 32), ny + (sy * 32)]].tile3;
+                            }
+                            nx++;
+                        }
+
+                        nx = 0;
+                        ny++;
+                    }
+
+                    sx++;
+                    if (sx >= 8)
+                    {
+                        sy++;
+                        sx = 0;
+
+                    }
+                    c++;
+                    if (c >= 64)
+                    {
+                        sx = 0;
+                        sy = 0;
+                        c = 0;
+                    }
+                    nx = 0;
+                    ny = 0;
+                }
+
+
+                */
+            }
+            else
+            {
+                //overworld.createMap16Tilesmap();
+                //Convert them back in tiles16
+            }
+        }
+
+
+
+        public unsafe void updateTiles()
+        {
+
+            byte p;
+            ushort tempTile = (ushort)0;
+
+
+            tile8selected = tempTile;
+
+            p = (byte)palSelected;
+            byte* destPtr = (byte*)GFX.editort16Ptr.ToPointer();
+            byte* srcPtr = (byte*)GFX.currentOWgfx16Ptr.ToPointer();
+            int xx = 0;
+            int yy = 0;
+            for (int i = 0; i < 1024; i++)
+            {
+                for (var y = 0; y < 8; y++)
+                {
+                    for (var x = 0; x < 4; x++)
+                    {
+                        CopyTile(x, y, xx, yy, i, p, destPtr, srcPtr);
+                    }
+                }
+                xx += 8;
+                if (xx >= 128)
+                {
+                    yy += 1024;
+                    xx = 0;
+                }
+
+            }
+
+
+
+            //Bitmap b = new Bitmap(128, 512, 64, System.Drawing.Imaging.PixelFormat.Format4bppIndexed, GFX.currentOWgfx16Ptr);
+            GFX.editort16Bitmap.Palette = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette;
+            pictureBox1.Refresh();
+            palette8Box.Refresh();
+
+
+
+        }
+
+        private unsafe void CopyTile(int x, int y, int xx, int yy, TileInfo tile, int offset, byte* gfx16Pointer, byte* gfx8Pointer)
+        {
+            int mx = x;
+            int my = y;
+            byte r = 0;
+
+            if (tile.h != 0)
+            {
+                mx = 3 - x;
+                r = 1;
+            }
+            if (tile.v != 0)
+            {
+                my = 7 - y;
+            }
+
+            int tx = ((tile.id / 16) * 512) + ((tile.id - ((tile.id / 16) * 16)) * 4);
+            var index = xx + yy + offset + (mx * 2) + (my * 16);
+            var pixel = gfx8Pointer[tx + (y * 64) + x];
+
+            gfx16Pointer[index + r ^ 1] = (byte)((pixel & 0x0F) + tile.palette * 16);
+            gfx16Pointer[index + r] = (byte)(((pixel >> 4) & 0x0F) + tile.palette * 16);
+        }
+
+        private unsafe void CopyTile(int x, int y, int xx, int yy, int id, byte p, byte* gfx16Pointer, byte* gfx8Pointer)
+        {
+            int mx = x;
+            int my = y;
+            byte r = 0;
+
+            if (mirrorXCheckbox.Checked)
+            {
+                mx = 3 - x;
+                r = 1;
+            }
+            if (mirrorYCheckbox.Checked)
+            {
+                my = 7 - y;
+            }
+
+            int tx = ((id / 16) * 512) + ((id - ((id / 16) * 16)) * 4);
+            var index = xx + yy + (mx * 2) + (my * 128);
+            var pixel = gfx8Pointer[tx + (y * 64) + x];
+
+            gfx16Pointer[index + r ^ 1] = (byte)((pixel & 0x0F) + p * 16);
+            gfx16Pointer[index + r] = (byte)(((pixel >> 4) & 0x0F) + p * 16);
+        }
+
+        private void mirrorXCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            updateTiles();
+        }
+
+        private void palette8Box_Paint(object sender, PaintEventArgs e)
+        {
+            for(int i =0;i<256;i++)
+            {
+
+                Color c = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette.Entries[i];
+                e.Graphics.FillRectangle(new SolidBrush(c), new Rectangle((i%16)*16, (i/16)*16, 16, 16));
+
+            }
+
+            
+        }
+
+        private void palette8Box_MouseDown(object sender, MouseEventArgs e)
+        {
+            palSelected = (byte)(e.Y / 16);
+            updateTiles();
+        }
+
+        private void searchtilesButton_Click(object sender, EventArgs e)
+        {
+            Dictionary<ushort, ushort> alltilesIndexed = new Dictionary<ushort, ushort>();
+            int sx = 0;
+            int sy = 0;
+
+            for(ushort i = 0;i<3750;i++)
+            {
+                alltilesIndexed.Add(i, 0);
+            }
+            
+
+            for (int i = 0; i < 64; i++)
+            {
+                for (int y = 0; y < 32; y += 1)
+                {
+                    for (int x = 0; x < 32; x += 1)
+                    {
+                            alltilesIndexed[overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)]]++;
+                            alltilesIndexed[overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)]]++;
+                        if (i < 32)
+                        {
+                                alltilesIndexed[overworld.allmapsTilesSP[x + (sx * 32), y + (sy * 32)]]++;
+                        }
+                    }
+                }
+                foreach (TilePos t in overworld.alloverlays[i].tilesData)
+                {
+                    alltilesIndexed[t.tileId]++;
+                }
+                foreach (TilePos t in overworld.alloverlays[i+64].tilesData)
+                {
+                    alltilesIndexed[t.tileId]++;
+                }
+
+
+                sx++;
+                if (sx >= 8)
+                {
+                    sy++;
+                    sx = 0;
+                }
+            }
+            StringBuilder sb = new StringBuilder();
+            foreach (KeyValuePair <ushort,ushort> tiles in alltilesIndexed.OrderBy(key => key.Value))
+            {
+                sb.AppendLine("Tile - " + tiles.Key.ToString("D4") + " : " + tiles.Value.ToString("D4"));
+            }
+            SearchTilesForm stf = new SearchTilesForm();
+            stf.textBox1.Text = sb.ToString();
+            stf.ShowDialog();
+            
         }
     }
 }

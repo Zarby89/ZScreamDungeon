@@ -48,6 +48,7 @@ namespace ZeldaFullEditor
         public int previewId = 0;
         byte previousSize = 0;
         public bool showRectangle = false;
+        public List<Point> collisionPoint = new List<Point>();
         public Room_Object(short id, byte x, byte y, byte size, byte layer = 0)
         {
             this.x = x;
@@ -99,7 +100,12 @@ namespace ZeldaFullEditor
 
         public virtual void Draw()
         {
-            
+            collisionPoint.Clear();
+        }
+
+        public void GetTileCollision()
+        {
+
         }
 
         public void UpdateSize()
@@ -208,7 +214,7 @@ namespace ZeldaFullEditor
                 {
                     ushort td = GFX.getshortilesinfo(t.GetTileInfo());
 
-
+                    collisionPoint.Add(new Point(xx+((nx + offsetX) * 8), yy+((ny+ +offsetY) * 8)));
 
                     if (layer == 0 || layer == 2 || allBgs)
                     {
@@ -227,6 +233,7 @@ namespace ZeldaFullEditor
                         }
                         GFX.tilesBg2Buffer[((xx / 8) + nx) + offsetX + ((ny + offsetY + (yy / 8)) * 64)] = td;
                     }
+
 
                 }
             }

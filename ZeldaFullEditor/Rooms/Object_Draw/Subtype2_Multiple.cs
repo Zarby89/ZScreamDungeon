@@ -272,6 +272,7 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
+	base.Draw();
             byte oid = (byte)(id & 0xFF);
             if (oid == 0x3C)
             {

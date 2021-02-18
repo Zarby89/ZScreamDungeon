@@ -899,6 +899,9 @@ namespace ZeldaFullEditor
             //this.Focus();
             mainForm.activeScene = this;
 
+            room.has_changed = true;
+            mainForm.checkAnyChanges();
+
             if (selectedMode == ObjectMode.EntrancePlacing)
             {
                 mainForm.entrancetreeView_AfterSelect(null, null);
@@ -1069,92 +1072,40 @@ namespace ZeldaFullEditor
                                 continue;
                             }
                         }
-                            
+
                         if (isMouseCollidingWith(obj, e))
                         {
+                            if (room.selectedObject.Count != 0)
+                            {
+                                if (room.selectedObject.Contains(obj))
+                                {
+                                    found = true;
+                                    break;
+                                }
+                                if (ModifierKeys != Keys.Shift && ModifierKeys != Keys.Control)
+                                {
+                                    room.selectedObject.Clear();
+                                }
+                            }
+                            int msx = e.X;
+                            int msy = e.Y;
                             if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr && (obj.options & ObjectOption.Door) != ObjectOption.Door && (obj.options & ObjectOption.Torch) != ObjectOption.Torch && (obj.options & ObjectOption.Block) != ObjectOption.Block)
                             {
-                                if (room.selectedObject.Count == 0)
+                                for (int p = 0; p < obj.collisionPoint.Count; p++)
                                 {
-                                    //(byte)selectedMode >= 0 && (byte)selectedMode <= 3
-                                    if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
+                                    //Console.WriteLine(obj.collisionPoint[p].X);
+                                    if (e.X >= obj.collisionPoint[p].X && e.X <= obj.collisionPoint[p].X + 8
+                                        && e.Y >= obj.collisionPoint[p].Y && e.Y <= obj.collisionPoint[p].Y + 8)
                                     {
                                         room.selectedObject.Add(obj);
                                         found = true;
                                         break;
                                     }
-                                    else
-                                    {
-                                        continue;
-                                    }
                                 }
-                                else //there's already objects selected
+                                if (found)
                                 {
-                                    //check if the object we found is already in selected object if so do nothing
-                                    //otherwise clear objects and select the new one
-                                    foreach (Room_Object o in room.selectedObject)
-                                    {
-                                        if (o == obj)
-                                        {
-                                            if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
-                                            {
-                                                found = true;
-                                                objectFound = o;
-                                                already_in = true;
-                                                break;
-                                            }
-                                            else
-                                            {
-                                                continue;
-                                            }
-                                        }
-                                    }
-                                    if (already_in == false)
-                                    {
-
-                                        //objectToRemove
-                                        if (ModifierKeys == Keys.Shift)
-                                        {
-                                            if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
-                                            {
-                                                room.selectedObject.Add(obj);
-                                            }
-                                            else
-                                            {
-                                                continue;
-                                            }
-                                        }
-                                        else
-                                        {
-                                            room.selectedObject.Clear();
-                                            if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
-                                            {
-                                                room.selectedObject.Add(obj);
-                                            }
-                                            else
-                                            {
-                                                continue;
-                                            }
-                                        }
-
-                                    }
-                                    else //if item is already in but we hold control then remove it instead
-                                    {
-                                        if (selectedMode == ObjectMode.Bgallmode || (byte)selectedMode == obj.layer)
-                                        {
-                                            if (ModifierKeys == Keys.Control)
-                                            {
-                                                room.selectedObject.Remove(objectFound);
-                                            }
-                                            else
-                                            {
-                                                continue;
-                                            }
-                                        }
-                                    }
+                                    break;
                                 }
-                                found = true;
-                                break;
                             }
                         }
                     }

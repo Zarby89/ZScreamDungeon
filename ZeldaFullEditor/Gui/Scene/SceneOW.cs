@@ -179,7 +179,7 @@ namespace ZeldaFullEditor
             selectedMap = mapId;
             owForm.previewTextPicturebox.Visible = false;
             updateMapGfx();
-
+            owForm.updateTiles();
             if (selectedMode == ObjectMode.Tile)
             {
                 tilemode.OnMouseDown(e);
@@ -482,181 +482,151 @@ namespace ZeldaFullEditor
             g.CompositingMode = CompositingMode.SourceCopy;
             g.CompositingQuality = CompositingQuality.HighSpeed;
             g.InterpolationMode = InterpolationMode.NearestNeighbor;
-            //g.FillRectangle(Brushes.Green, new Rectangle(0, 0, 4096, 4096));
-
-            /*
-            for (int x = 0; x < 128; x++)
-            {
-                drawText(g, x * 32, 0, ow.map16tiles[x].tile0.ToString());
-            }*/
-
-            if (initialized)
-            {
-
-                int x = 0;
-                int y = 0;
-                for (int i = (0 + ow.worldOffset); i < 64 + (ow.worldOffset); i++)
-                {
-                    if (i <= 159)
-                    {
-
-                        g.DrawImage(ow.allmaps[i].gfxBitmap, new PointF(x * 512, y * 512));
-                        x++;
-                        if (x >= 8)
-                        {
-                            x = 0;
-                            y++;
-                        }
-                    }
-                }
-
-                g.CompositingMode = CompositingMode.SourceOver;
-
-                /*for (int yP = 0; yP < 32; yP+=2)
-                {
-                    for (int xP = 0; xP < 32; xP+=2)
-                    {
-                        drawText(g, xP * 16, yP * 16, ow.tiles16[ow.allmapsTilesLW[xP, yP]].tile0.id.ToString(), ia);
-                        drawText(g, (xP * 16)+8, (yP * 16), ow.tiles16[ow.allmapsTilesLW[xP+1, yP]].tile1.id.ToString(), ia);
-                        drawText(g, (xP * 16), (yP * 16)+8, ow.tiles16[ow.allmapsTilesLW[xP, yP+1]].tile2.id.ToString(), ia);
-                        drawText(g, (xP * 16)+8, (yP * 16)+8, ow.tiles16[ow.allmapsTilesLW[xP+1, yP+1]].tile3.id.ToString(), ia);
-                    }
-                }*/
-
-
-                //g.DrawImage(ow.allmaps[136].gfxBitmap, new PointF(0, 0));
-
-                /*for (int i = 0; i < 64; i++)
-                {
-                    foreach (Sprite spr in ow.allmaps[i].sprites)
-                    {
-                        int yy = spr.mapid / 8;
-                        int xx = spr.mapid - (yy * 8);
-                        drawText(g, (spr.x * 16) + (xx * 512), ((spr.y * 16) - 16) + (yy * 512), spr.name);
-                    }
-                }
-                */
-
-
-                if (selecting)
-                {
-                    g.DrawRectangle(Pens.White, new Rectangle((globalmouseTileDownX * 16), (globalmouseTileDownY * 16), (((mouseX_Real / 16) - globalmouseTileDownX) * 16) + 16, (((mouseY_Real / 16) - globalmouseTileDownY) * 16) + 16));
-                }
-
-
-                if (selectedMode == ObjectMode.OWDoor || selectedMode == ObjectMode.Tile)
-                {
-                    g.DrawImage(tilesgfxBitmap, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16), 0, 0, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
-                    g.DrawRectangle(Pens.LightGreen, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16));
-                }
-                int my = (ow.allmaps[mapHover].parent / 8);
-                int mx = ow.allmaps[mapHover].parent - (my * 8);
-                if (ow.allmaps[mapHover].largeMap)
-                {
-                    g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 1024, 1024));
-                }
-                else
-                {
-                    g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 512, 512));
-                }
-
-                if (showExits)
-                {
-                    exitmode.Draw(g);
-                }
-                if (showEntrances)
-                {
-                    entranceMode.Draw(g);
-                }
-                if (showItems)
-                {
-                    itemMode.Draw(g);
-                }
-                
-                if (showSprites)
-                {
-                    //if (!hideText)
-                    //{
-                        spriteMode.Draw(g);
-                    //}
-                }
-
-                if (showFlute)
-                {
-                    transportMode.Draw(g);
-                }
-
-                if (entrancePreview)
-                {
-                    if (entranceMode.selectedEntrance != null)
-                    {
-                        g.DrawImage(owForm.tmpPreviewBitmap, entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16);
-                    }
-                }
-                if (entrancePreview)
-                {
-                    if (exitmode.selectedExit != null)
-                    {
-                        g.DrawImage(owForm.tmpPreviewBitmap, exitmode.selectedExit.playerX + 16, exitmode.selectedExit.playerY + 16);
-                    }
-                }
-
-                if (selectedMode == ObjectMode.Overlay)
-                {
-                    int mid = ow.allmaps[selectedMap].parent;
-                    int msy = ((ow.allmaps[selectedMap].parent - ow.worldOffset) / 8);
-                    int msx = (ow.allmaps[selectedMap].parent - ow.worldOffset) - (my * 8);
-                    drawText(g, 0 + 4, 0 + 64, "Selected Map : " + selectedMap.ToString());
-                    drawText(g, 0 + 4, 0 + 80, "Selected Map PARENT : " + ow.allmaps[selectedMap].parent.ToString());
-                    drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
-
-                        for (int i = 0; i < ow.alloverlays[mid].tilesData.Count; i++)
+            
+                        if (initialized)
                         {
 
-                            int xo = ow.alloverlays[mid].tilesData[i].x * 16;
-                            int yo = ow.alloverlays[mid].tilesData[i].y * 16;
-                            int to = ow.alloverlays[mid].tilesData[i].tileId;
-                            int toy = (to / 8) * 16;
-                            int tox = (to % 8) * 16;
-                            g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
-                            //g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
-                            byte detect = compareTilePos(ow.alloverlays[mid].tilesData[i], ow.alloverlays[mid].tilesData.ToArray());
-                            if (detect == 0)
+                            int x = 0;
+                            int y = 0;
+                            for (int i = (0 + ow.worldOffset); i < 64 + (ow.worldOffset); i++)
                             {
-                                g.DrawRectangle(Pens.White, new Rectangle((msx * 512) + xo, (msy * 512) + yo, (msx * 512) + 16, (msy * 512) + 16));
-                            }
-                            if ((detect & 0x01) != 0x01)
-                            {
-                                g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo, (msy * 512) + yo + 16);
-                            }
-                            if ((detect & 0x02) != 0x02)
-                            {
-                                g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo);
-                            }
-                            if ((detect & 0x04) != 0x04)
-                            {
-                                g.DrawLine(Pens.White, (msx * 512) + xo + 16, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
-                            }
-                            if ((detect & 0x08) != 0x08)
-                            {
-                                g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
-                            }
-                        }
+                                if (i <= 159)
+                                {
 
-                        g.DrawImage(tilesgfxBitmap, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16), 0, 0, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
-                        g.DrawRectangle(Pens.LightGreen, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16));
+                                    g.DrawImage(ow.allmaps[i].gfxBitmap, new PointF(x * 512, y * 512));
+                                    x++;
+                                    if (x >= 8)
+                                    {
+                                        x = 0;
+                                        y++;
+                                    }
 
-                        drawText(g, 4, 24, globalmouseTileDownX.ToString());
-                        drawText(g, 4, 48, globalmouseTileDownY.ToString());
-                    
-                }
-                
+                                }
+                            }
+
+                            g.CompositingMode = CompositingMode.SourceOver;
 
 
-                g.CompositingMode = CompositingMode.SourceCopy;
-                //hideText = false;
 
-            }
+                            if (selecting)
+                            {
+                                g.DrawRectangle(Pens.White, new Rectangle((globalmouseTileDownX * 16), (globalmouseTileDownY * 16), (((mouseX_Real / 16) - globalmouseTileDownX) * 16) + 16, (((mouseY_Real / 16) - globalmouseTileDownY) * 16) + 16));
+                            }
+
+
+                            if (selectedMode == ObjectMode.OWDoor || selectedMode == ObjectMode.Tile)
+                            {
+                                g.DrawImage(tilesgfxBitmap, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16), 0, 0, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
+                                g.DrawRectangle(Pens.LightGreen, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16));
+                            }
+                            int my = (ow.allmaps[mapHover].parent / 8);
+                            int mx = ow.allmaps[mapHover].parent - (my * 8);
+                            if (ow.allmaps[mapHover].largeMap)
+                            {
+                                g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 1024, 1024));
+                            }
+                            else
+                            {
+                                g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 512, 512));
+                            }
+
+                            if (showExits)
+                            {
+                                exitmode.Draw(g);
+                            }
+                            if (showEntrances)
+                            {
+                                entranceMode.Draw(g);
+                            }
+                            if (showItems)
+                            {
+                                itemMode.Draw(g);
+                            }
+
+                            if (showSprites)
+                            {
+                                //if (!hideText)
+                                //{
+                                    spriteMode.Draw(g);
+                                //}
+                            }
+
+                            if (showFlute)
+                            {
+                                transportMode.Draw(g);
+                            }
+
+                            if (entrancePreview)
+                            {
+                                if (entranceMode.selectedEntrance != null)
+                                {
+                                    g.DrawImage(owForm.tmpPreviewBitmap, entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16);
+                                }
+                            }
+                            if (entrancePreview)
+                            {
+                                if (exitmode.selectedExit != null)
+                                {
+                                    g.DrawImage(owForm.tmpPreviewBitmap, exitmode.selectedExit.playerX + 16, exitmode.selectedExit.playerY + 16);
+                                }
+                            }
+
+                            if (selectedMode == ObjectMode.Overlay)
+                            {
+                                int mid = ow.allmaps[selectedMap].parent;
+                                int msy = ((ow.allmaps[selectedMap].parent - ow.worldOffset) / 8);
+                                int msx = (ow.allmaps[selectedMap].parent - ow.worldOffset) - (my * 8);
+                                drawText(g, 0 + 4, 0 + 64, "Selected Map : " + selectedMap.ToString());
+                                drawText(g, 0 + 4, 0 + 80, "Selected Map PARENT : " + ow.allmaps[selectedMap].parent.ToString());
+                                drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
+
+                                    for (int i = 0; i < ow.alloverlays[mid].tilesData.Count; i++)
+                                    {
+
+                                        int xo = ow.alloverlays[mid].tilesData[i].x * 16;
+                                        int yo = ow.alloverlays[mid].tilesData[i].y * 16;
+                                        int to = ow.alloverlays[mid].tilesData[i].tileId;
+                                        int toy = (to / 8) * 16;
+                                        int tox = (to % 8) * 16;
+                                        g.DrawImage(GFX.mapblockset16Bitmap, new Rectangle((msx * 512) + xo, (msy * 512) + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
+                                        //g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
+                                        byte detect = compareTilePos(ow.alloverlays[mid].tilesData[i], ow.alloverlays[mid].tilesData.ToArray());
+                                        if (detect == 0)
+                                        {
+                                            g.DrawRectangle(Pens.White, new Rectangle((msx * 512) + xo, (msy * 512) + yo, (msx * 512) + 16, (msy * 512) + 16));
+                                        }
+                                        if ((detect & 0x01) != 0x01)
+                                        {
+                                            g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo, (msy * 512) + yo + 16);
+                                        }
+                                        if ((detect & 0x02) != 0x02)
+                                        {
+                                            g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo);
+                                        }
+                                        if ((detect & 0x04) != 0x04)
+                                        {
+                                            g.DrawLine(Pens.White, (msx * 512) + xo + 16, (msy * 512) + yo, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                                        }
+                                        if ((detect & 0x08) != 0x08)
+                                        {
+                                            g.DrawLine(Pens.White, (msx * 512) + xo, (msy * 512) + yo + 16, (msx * 512) + xo + 16, (msy * 512) + yo + 16);
+                                        }
+                                    }
+
+                                    g.DrawImage(tilesgfxBitmap, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16), 0, 0, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
+                                    g.DrawRectangle(Pens.LightGreen, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16));
+
+                                    drawText(g, 4, 24, globalmouseTileDownX.ToString());
+                                    drawText(g, 4, 48, globalmouseTileDownY.ToString());
+
+                            }
+
+
+
+                            g.CompositingMode = CompositingMode.SourceCopy;
+                            //hideText = false;
+            
+        }
         }
 
         //0 = none

@@ -72,7 +72,7 @@ namespace ZeldaFullEditor
         {
             if (Settings.Default.favoriteObjects.Count < 0xFFF)
             {
-                while(Settings.Default.favoriteObjects.Count < 0xFFF)
+                while (Settings.Default.favoriteObjects.Count < 0xFFF)
                 {
                     Settings.Default.favoriteObjects.Add("false");
                 }
@@ -101,7 +101,7 @@ namespace ZeldaFullEditor
             gfxEditor.Visible = false;
             dungeonViewer.Visible = false;
             screenEditor.Visible = false;
-            
+
             objDesigner.Dock = DockStyle.Fill;
             overworldEditor.Dock = DockStyle.Fill;
             textEditor.Dock = DockStyle.Fill;
@@ -155,22 +155,19 @@ namespace ZeldaFullEditor
             //Save Functions
             //Expand ROM to 2MB
             bool anychange = false;
-
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             foreach (Room room in opened_rooms)
             {
                 if (room.has_changed)
                 {
                     anychange = true;
+                    break;
                 }
             }
 
             if (anychange == true)
             {
-                /*DialogResult dialogResult = MessageBox.Show("Rooms has changed. Do you want to save changes?", "Save", MessageBoxButtons.YesNoCancel);
-                if (dialogResult == DialogResult.Yes)
-                {
-
-                }*/
                 foreach (TabPage p in tabControl2.TabPages)
                 {
                     if (p.Text.Contains("*"))
@@ -180,19 +177,29 @@ namespace ZeldaFullEditor
 
                     DungeonsData.all_rooms[(p.Tag as Room).index] = (Room)(p.Tag as Room).Clone();
                     (p.Tag as Room).has_changed = false;
+                    DungeonsData.all_rooms[(p.Tag as Room).index].has_changed = false;
                     anychange = false;
+                    
                 }
                 tabControl2.Refresh();
             }
+            sw.Stop();
+            Console.WriteLine("Saved all unsaved rooms - " + sw.ElapsedMilliseconds.ToString() + "ms");
 
+            sw.Reset();
+            sw.Start();
             byte[] romBackup = (byte[])ROM.DATA.Clone();
             Save save = new Save(DungeonsData.all_rooms);
-            
+            sw.Stop();
+            Console.WriteLine("Saved all rooms - " + sw.ElapsedMilliseconds.ToString() + "ms");
+
+            sw.Reset();
+            sw.Start();
             if (save.saveRoomsHeaders()) //no protection always the same size so we don't care :)
             {
                 //MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
             }
-            
+
             if (save.saveallChests()) //chest there's a protection when there's too many chest - tested it works fine
             {
                 MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
@@ -205,6 +212,11 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
+            sw.Stop();
+            Console.WriteLine("Saved Rooms Header, Chests, Sprites - " + sw.ElapsedMilliseconds.ToString() + "ms");
+
+            sw.Reset();
+            sw.Start();
             if (save.saveAllObjects())//There is a protection - Tested
             {
                 MessageBox.Show("Failed to save, there is too many tiles objects", "Bad Error", MessageBoxButtons.OK);
@@ -223,6 +235,12 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
+
+            sw.Stop();
+            Console.WriteLine("Saved Rooms Objects, Pots, Blocks- " + sw.ElapsedMilliseconds.ToString() + "ms");
+
+            sw.Reset();
+            sw.Start();
             if (save.saveTorches())//There is a protection Tested
             {
                 MessageBox.Show("Failed to save, there is too many torches", "Bad Error", MessageBoxButtons.OK);
@@ -241,13 +259,22 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
+            sw.Stop();
+            Console.WriteLine("Saved Torches, Pits, Entrances- " + sw.ElapsedMilliseconds.ToString() + "ms");
+
+
             if (save.saveAllText(textEditor))
             {
                 MessageBox.Show("Impossible to save Texts", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
+            sw.Stop();
+            Console.WriteLine("Saved Texts - " + sw.ElapsedMilliseconds.ToString() + "ms");
 
+
+            sw.Reset();
+            sw.Start();
             if (save.saveOWEntrances(overworldEditor.scene))
             {
                 MessageBox.Show("Failed to save ??, no idea why ", "Bad Error", MessageBoxButtons.OK);
@@ -290,12 +317,12 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            /*if (save.saveMapOverlays(overworldEditor.scene))
+            if (save.saveMapOverlays(overworldEditor.scene))
             {
                 MessageBox.Show("Failed to save overworld map Overlays ??? ", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
-            }*/
+            }
 
             if (save.saveOverworldTilesType(overworldEditor.scene))
             {
@@ -335,6 +362,9 @@ namespace ZeldaFullEditor
                 return;
 
             }
+
+            sw.Stop();
+            Console.WriteLine("Saved Overworld- " + sw.ElapsedMilliseconds.ToString() + "ms");
             //Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
             //AsarCLR.Asar.init();
             //AsarCLR.Asar.patch("titlescreen.asm", ref ROM.DATA);
@@ -411,8 +441,8 @@ namespace ZeldaFullEditor
             {
                 fs.Read(ROM.DATA, 0, (int)fs.Length);
             }
-            
-            
+
+
             fs.Close();
 
             LoadPalettes();
@@ -422,7 +452,7 @@ namespace ZeldaFullEditor
             activeScene.Size = new Size(512, 512);
 
             initProject();
-            
+
             this.Text = "ZScream Magic - " + filename;
 
         }
@@ -433,7 +463,7 @@ namespace ZeldaFullEditor
             Palettes.CreateAllPalettes(ROM.DATA);
         }
 
-        public unsafe void initProject() 
+        public unsafe void initProject()
         {
             tabControl1.Enabled = true;
             GfxGroups.LoadGfxGroups();
@@ -450,7 +480,7 @@ namespace ZeldaFullEditor
 
 
 
-                initEntrancesList();
+            initEntrancesList();
             this.customPanel3.Controls.Add(activeScene);
             addRoomTab(260);
 
@@ -487,7 +517,7 @@ namespace ZeldaFullEditor
             Room_Name.loadFromFile();
             ChestItems_Name.loadFromFile();
             ItemsNames.loadFromFile();
-            
+
             initObjectsList();
             spritesView1.items.Clear();
             foreach (Sprite o in listofspritesobjects)
@@ -548,7 +578,7 @@ namespace ZeldaFullEditor
             gfxGroupsForm.Location = new Point(0, 0);
 
             paletteForm = new PaletteEditor(this);
-           
+            
             paletteForm.Location = new Point(0, 0);
             refreshRecentsFiles();
             overworldEditor.InitOpen(this);
@@ -579,7 +609,7 @@ namespace ZeldaFullEditor
 
                     activeScene.Refresh();
 
-                    gb.DrawImage(activeScene.tempBitmap, new Point((i%16) * 512, (i/16) * 512));
+                    gb.DrawImage(activeScene.tempBitmap, new Point((i % 16) * 512, (i / 16) * 512));
                     //activeScene.DrawToBitmap(b, new Rectangle(cx * 512, cy * 512, 512, 512));
                 }
             }
@@ -642,9 +672,9 @@ namespace ZeldaFullEditor
                 }
                 TreeNode tn = new TreeNode(tname);
                 tn.Tag = i;
-                
+
                 entrancetreeView.Nodes[0].Nodes.Add(tn);
-                
+
             }
 
             entrancetreeView.SelectedNode = entrancetreeView.Nodes[0].Nodes[0];
@@ -663,7 +693,7 @@ namespace ZeldaFullEditor
             blockmodeButton.Enabled = true;
             torchmodeButton.Enabled = true;
             spritemodeButton.Enabled = true;
-            debugtestButton.Enabled = false;
+            debugtestButton.Enabled = true;
             runtestButton.Enabled = true;
             potmodeButton.Enabled = true; //cant change to sprite since sprites are using 16x16
             saveToolStripMenuItem.Enabled = true;
@@ -735,7 +765,7 @@ namespace ZeldaFullEditor
             {
                 setmodeAllScene(ObjectMode.Bg3mode);
                 selectedLayer = 2;
-               // objectsListbox.Enabled = true;
+                // objectsListbox.Enabled = true;
             }
             else if (spritemodeButton.Checked)
             {
@@ -1002,11 +1032,11 @@ namespace ZeldaFullEditor
                 {
                     activeScene.room.reloadGfx();
                 }
-                
+
             }
         }
 
-        
+
         private void moveDownToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Bring to front -_-
@@ -1050,7 +1080,7 @@ namespace ZeldaFullEditor
         {
             activeScene.mouse_down = false;
             activeScene.insertNew();
-            
+
         }
 
         private void bringToBackToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1253,7 +1283,7 @@ namespace ZeldaFullEditor
             entranceProperty_blockset.Text = en.Blockset.ToString();
             entranceProperty_music.Text = en.Music.ToString();
 
-            
+
 
             bool b = false;
             bool r = false;
@@ -1357,7 +1387,7 @@ namespace ZeldaFullEditor
                 .Select(x => x) //?
                 .ToArray());
             customPanel1.VerticalScroll.Value = 0;
-            
+
 
             if (searchText == "")
             {
@@ -1448,7 +1478,7 @@ namespace ZeldaFullEditor
 
                 //display message error room already opened
                 //MessageBox.Show("That room is already opened !");
-                foreach(TabPage tp in tabControl2.TabPages)
+                foreach (TabPage tp in tabControl2.TabPages)
                 {
                     if ((tp.Tag as Room).index == roomId)
                     {
@@ -1501,14 +1531,14 @@ namespace ZeldaFullEditor
                 {
                     activeScene.room.reloadGfx();
                 }
-                
+
                 GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
                 GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
                 activeScene.SetPalettesBlack();
                 //paletteViewer.update();
                 activeScene.DrawRoom();
                 activeScene.Refresh();
-                
+
                 objectViewer1.updateSize();
                 spritesView1.updateSize();
 
@@ -1622,7 +1652,7 @@ namespace ZeldaFullEditor
         {
             activeScene.canSelectUnselectedBG = unselectedBGTransparentToolStripMenuItem.Checked;
         }
-        
+
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
             //Doors
@@ -1632,15 +1662,15 @@ namespace ZeldaFullEditor
                 {
                     if (activeScene.room.selectedObject[0] is Room_Object)
                     {
-                            Room_Object o = (activeScene.room.selectedObject[0] as Room_Object);
-                            if (o.options == ObjectOption.Door)
-                            {
-                                (o as object_door).door_type = ((byte)(door_index[comboBox2.SelectedIndex]));
-                                (o as object_door).updateId();
-                                activeScene.room.has_changed = true;
-                                activeScene.DrawRoom();
-                                activeScene.Refresh();
-                            }
+                        Room_Object o = (activeScene.room.selectedObject[0] as Room_Object);
+                        if (o.options == ObjectOption.Door)
+                        {
+                            (o as object_door).door_type = ((byte)(door_index[comboBox2.SelectedIndex]));
+                            (o as object_door).updateId();
+                            activeScene.room.has_changed = true;
+                            activeScene.DrawRoom();
+                            activeScene.Refresh();
+                        }
                     }
                 }
             }
@@ -1649,15 +1679,18 @@ namespace ZeldaFullEditor
 
         private void debugtestButton_Click(object sender, EventArgs e)
         {
-             if (File.Exists("temp.sfc"))
-             {
-                 File.Delete("temp.sfc");
-             }
+            if (File.Exists("temp.sfc"))
+            {
+                File.Delete("temp.sfc");
+            }
+            //Console.WriteLine(Path.GetDirectoryName(projectFilename));
+            //return;
             byte[] data = new byte[ROM.DATA.Length];
-            ROM.DATA.CopyTo(data,0);
-             saveToolStripMenuItem_Click(sender, e);
+            ROM.DATA.CopyTo(data, 0);
+            saveToolStripMenuItem_Click(sender, e);
             AsarCLR.Asar.init();
-            AsarCLR.Asar.patch("debug.asm", ref data);
+            if (File.Exists(Path.GetDirectoryName(projectFilename) + "\\Main.asm"))
+            AsarCLR.Asar.patch(Path.GetDirectoryName(projectFilename) + "\\Main.asm", ref data);
 
 
             foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
@@ -1666,9 +1699,9 @@ namespace ZeldaFullEditor
             }
 
             FileStream fs = new FileStream("temp.sfc", FileMode.CreateNew, FileAccess.Write);
-             fs.Write(data, 0, data.Length);
-             fs.Close();
-             Process p = Process.Start("temp.sfc");
+            fs.Write(data, 0, data.Length);
+            fs.Close();
+            Process p = Process.Start("temp.sfc");
         }
 
         private void saveasToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1881,7 +1914,7 @@ namespace ZeldaFullEditor
                 {
                     selectedEntrance.Blockset = 0;
                 }
- 
+
 
                 if (int.TryParse(entranceProperty_room.Text, out r))
                 {
@@ -2037,7 +2070,7 @@ namespace ZeldaFullEditor
                 activeScene.room = (tabControl2.TabPages[tabControl2.SelectedIndex].Tag as Room);
                 activeScene.updateRoomInfos(this);
                 if (DungeonsData.undoRoom[activeScene.room.index].Count > 0)
-                { 
+                {
                     undoButton.Enabled = true;
                     undoToolStripMenuItem.Enabled = true;
                 }
@@ -2144,8 +2177,8 @@ namespace ZeldaFullEditor
             }
 
 
-                //sortObject();
-            }
+            //sortObject();
+        }
         List<Chest> listofchests = new List<Chest>();
 
 
@@ -2291,11 +2324,11 @@ namespace ZeldaFullEditor
                 if (activeScene.room.selectedObject[0] is Sprite)
                 {
                     (activeScene.room.selectedObject[0] as Sprite).subtype = (byte)spritesubtypeUpDown.Value;
-                    
+
                 }
                 Console.WriteLine("WTF!");
             }
-            
+
         }
 
         private void gotoRoomToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2441,7 +2474,7 @@ namespace ZeldaFullEditor
             int selectedyd = 0;
             for (int i = 0; i < 296; i++)
             {
-                
+
                 foreach (TabPage tp in tabControl2.TabPages)
                 {
                     if ((tp.Tag as Room).index == (short)i)
@@ -2514,7 +2547,7 @@ namespace ZeldaFullEditor
         {
             Gui.DungeonPropertiesForm propertiesEditorForm = new Gui.DungeonPropertiesForm();
             propertiesEditorForm.ShowDialog();
-            
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -2542,7 +2575,7 @@ namespace ZeldaFullEditor
 
         private void printRoomObjectsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            foreach(Room_Object o in activeScene.room.tilesObjects)
+            foreach (Room_Object o in activeScene.room.tilesObjects)
             {
                 if (o.options == ObjectOption.Door)
                 {
@@ -2557,7 +2590,7 @@ namespace ZeldaFullEditor
                     Console.WriteLine("n:" + o.name + ", w:" + o.width + ", h:" + o.height + ", L:" + o.layer);
                 }
             }
-            
+
         }
 
         private void removeMasksObjectsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2608,7 +2641,7 @@ namespace ZeldaFullEditor
         {
             if (MessageBox.Show("Are you sure you want to clear every rooms?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                foreach(Room r in DungeonsData.all_rooms)
+                foreach (Room r in DungeonsData.all_rooms)
                 {
                     r.tilesObjects.Clear();
                     r.pot_items.Clear();
@@ -2923,14 +2956,14 @@ namespace ZeldaFullEditor
                     ChestItems_Name.loadFromFile(ofd.FileName);
                     ItemsNames.loadFromFile(ofd.FileName);
                     selecteditemobjectCombobox.Items.Clear();
-                    for(int i = 0;i<ItemsNames.name.Length;i++)
+                    for (int i = 0; i < ItemsNames.name.Length; i++)
                     {
                         selecteditemobjectCombobox.Items.Add(ItemsNames.name[i]);
                     }
                 }
             }
 
-                
+
         }
         public CGRamViewer cgramViewer = new CGRamViewer();
         private void cGramViewerToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3036,13 +3069,13 @@ namespace ZeldaFullEditor
                 g.DrawString(tabControl2.TabPages[e.Index].Text, font, Brushes.Blue, new Rectangle(e.Bounds.X, e.Bounds.Y + 2, 64, 24));
                 if (tpHotTrackedToClose == e.Index)
                 {
-                    g.DrawImage(xTabButton, new Rectangle(e.Bounds.X+30, e.Bounds.Y, 16, 16), 16, 0, 16, 16, GraphicsUnit.Pixel);
+                    g.DrawImage(xTabButton, new Rectangle(e.Bounds.X + 30, e.Bounds.Y, 16, 16), 16, 0, 16, 16, GraphicsUnit.Pixel);
                 }
                 else
                 {
-                    g.DrawImage(xTabButton, new Rectangle(e.Bounds.X+30, e.Bounds.Y, 16, 16), 0, 0, 16, 16, GraphicsUnit.Pixel);
+                    g.DrawImage(xTabButton, new Rectangle(e.Bounds.X + 30, e.Bounds.Y, 16, 16), 0, 0, 16, 16, GraphicsUnit.Pixel);
                 }
-                
+
                 //g.DrawString("000", font, Brushes.Blue, new Rectangle(e.Bounds.X, e.Bounds.Y + 4, 64, 24));
             }
             else
@@ -3052,7 +3085,7 @@ namespace ZeldaFullEditor
             }
             b.Dispose();
             bs.Dispose();
-           
+
 
         }
 
@@ -3074,7 +3107,7 @@ namespace ZeldaFullEditor
                     {
                         tpHotTrackedToClose = i;
                     }
-                    
+
 
                     //tabControl2.TabPages[i].Refresh();
 
@@ -3163,7 +3196,7 @@ namespace ZeldaFullEditor
             if (e.Button == MouseButtons.Right)
             {
                 thumbnailBox.Visible = true;
-                
+
                 int x = (e.X / 16);
                 int y = (e.Y / 16);
                 int roomId = x + (y * 16);
@@ -3213,7 +3246,7 @@ namespace ZeldaFullEditor
             if (previewRoom.bg2 != Background2.Off)
             {
                 SetPalettesTransparent();
-                    previewRoom.DrawFloor2();
+                previewRoom.DrawFloor2();
             }
             else
             {
@@ -3249,8 +3282,8 @@ namespace ZeldaFullEditor
                     o.Draw();
                 }
             }
-                GFX.DrawBG1();
-                GFX.DrawBG2();
+            GFX.DrawBG1();
+            GFX.DrawBG2();
 
         }
 
@@ -3319,7 +3352,7 @@ namespace ZeldaFullEditor
             if (previewRoom.bg2 != Background2.Translucent || previewRoom.bg2 != Background2.Transparent ||
                 previewRoom.bg2 != Background2.OnTop || previewRoom.bg2 != Background2.Off)
             {
-                e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0,0,256,256),0,0,512,512,GraphicsUnit.Pixel);
+                e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
             }
 
 
@@ -3350,7 +3383,7 @@ namespace ZeldaFullEditor
                 e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
             }
 
-            activeScene.drawText(e.Graphics, 0, 0,"ROOM : " + previewRoom.index.ToString());
+            activeScene.drawText(e.Graphics, 0, 0, "ROOM : " + previewRoom.index.ToString());
 
         }
 
@@ -3358,7 +3391,7 @@ namespace ZeldaFullEditor
         {
             thumbnailBox.Visible = false;
         }
-        public int lastRoomID = -1; 
+        public int lastRoomID = -1;
         private void mapPicturebox_MouseMove(object sender, MouseEventArgs e)
         {
             if (maphoverCheckbox.Checked)
@@ -3485,7 +3518,7 @@ namespace ZeldaFullEditor
             {
                 //activeScene.Undo();
             }
-            else if(editorsTabControl.SelectedIndex == 1) //overworld editor
+            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
             {
                 overworldEditor.scene.Undo();
             }
@@ -3497,7 +3530,7 @@ namespace ZeldaFullEditor
             {
                 //activeScene.Redo();
             }
-            else if(editorsTabControl.SelectedIndex == 1) //overworld editor
+            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
             {
                 overworldEditor.scene.Redo();
             }
@@ -3538,7 +3571,7 @@ namespace ZeldaFullEditor
             {
                 textEditor.BringToFront();
                 textEditor.Visible = true;
-                
+
             }
             else
             {
@@ -3575,34 +3608,34 @@ namespace ZeldaFullEditor
             }
             if (editorsTabControl.SelectedTab.Name == "overworldPage")
             {
-                 if (oweditor2 != null)
-                 {
-                     if (oweditor2.overworld.isLoaded)
-                     {
-                         oweditor2.BringToFront();
-                         oweditor2.Visible = true;
-                     }
-                     else
-                     {
-                         editorsTabControl.SelectedIndex = 0;
-                     }
-                 }
-                 else
-                 {
-                     if (overworldEditor.overworld.isLoaded)
-                     {
-                         overworldEditor.BringToFront();
-                         overworldEditor.Visible = true;
-                     }
-                     else
-                     {
-                         editorsTabControl.SelectedIndex = 0;
-                     }
-                 }
-             }
-             else
-             {
-                 overworldEditor.Visible = false;
+                if (oweditor2 != null)
+                {
+                    if (oweditor2.overworld.isLoaded)
+                    {
+                        oweditor2.BringToFront();
+                        oweditor2.Visible = true;
+                    }
+                    else
+                    {
+                        editorsTabControl.SelectedIndex = 0;
+                    }
+                }
+                else
+                {
+                    if (overworldEditor.overworld.isLoaded)
+                    {
+                        overworldEditor.BringToFront();
+                        overworldEditor.Visible = true;
+                    }
+                    else
+                    {
+                        editorsTabControl.SelectedIndex = 0;
+                    }
+                }
+            }
+            else
+            {
+                overworldEditor.Visible = false;
             }
 
             if (editorsTabControl.SelectedTab.Name == "GfxEditorPage")
@@ -3639,7 +3672,7 @@ namespace ZeldaFullEditor
         {
             SaveSettings st = new SaveSettings();
             st.ShowDialog();
-            
+
         }
 
 
@@ -3753,7 +3786,7 @@ namespace ZeldaFullEditor
         private void debugToolStripButton_Click(object sender, EventArgs e)
         {
 
-            
+
         }
         OverworldEditor oweditor2;
         private void mapDataFromJPdoNotUseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3785,8 +3818,8 @@ namespace ZeldaFullEditor
                 fs.Close();
             }
         }
-        ushort[,] lwmdata = new ushort[512,512];
-        ushort[,] dwmdata = new ushort[512,512];
+        ushort[,] lwmdata = new ushort[512, 512];
+        ushort[,] dwmdata = new ushort[512, 512];
         private void exportMapJPdoNotUseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int selectedMap = oweditor2.scene.selectedMap;
@@ -3801,7 +3834,7 @@ namespace ZeldaFullEditor
             int length = 32;
 
 
-            for (int i = 0; i < (length*length); i++)
+            for (int i = 0; i < (length * length); i++)
             {
                 if (oweditor2.scene.selectedMap >= 64)
                 {
@@ -3865,7 +3898,7 @@ namespace ZeldaFullEditor
                 {
                     if (oweditor2.scene.selectedMap >= 64)
                     {
-                        int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2)+0x1000;
+                        int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2) + 0x1000;
                         if (oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
                             dwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
                         {
@@ -3893,7 +3926,7 @@ namespace ZeldaFullEditor
                 {
                     if (oweditor2.scene.selectedMap >= 64)
                     {
-                        int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2)+0x1040;
+                        int addr = 0x2000 + ((i / length) * 0x80) + ((i % length) * 2) + 0x1040;
                         if (oweditor2.scene.ow.allmapsTilesDW[(i % length) + (sx * length), (i / length) + (sy * length)] !=
                             dwmdata[(i % length) + (sx * length), (i / length) + (sy * length)])
                         {
@@ -3972,8 +4005,151 @@ namespace ZeldaFullEditor
                     fs.Close();
 
                 }
-            
-            
+
+
+            }
+        }
+
+        private void exportAllMapsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int sx = 0;
+            int sy = 0;
+            int p = 0;
+            byte[] mapArrayData = new byte[0x50000+ 0x7080];
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+                    for (int i = 0; i < 64; i++)
+                    {
+                        for (int y = 0; y < 32; y += 1)
+                        {
+                            for (int x = 0; x < 32; x += 1)
+                            {
+                                mapArrayData[p] = (byte)(overworldEditor.overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] & 0xFF);
+                                p++;
+                                mapArrayData[p] = (byte)((overworldEditor.overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)]>>8) & 0xFF);
+                                p++;
+                                mapArrayData[p] = (byte)(overworldEditor.overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] & 0xFF);
+                                p++;
+                                mapArrayData[p] = (byte)((overworldEditor.overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
+                                p++;
+
+                                if (i < 32)
+                                {
+                                    mapArrayData[p] = (byte)(overworldEditor.overworld.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] & 0xFF);
+                                    p++;
+                                    mapArrayData[p] = (byte)((overworldEditor.overworld.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
+                                    p++;
+                                }
+                            }
+                        }
+
+                        sx++;
+                        if (sx >= 8)
+                        {
+                            sy++;
+                            sx = 0;
+
+                        }
+                    }
+
+                    for (int i = 0;i<3600;i++)
+                    {
+                        ulong v = overworldEditor.overworld.tiles16[i].getLongValue();
+
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                    }
+                    fileStreamMap.Write(mapArrayData, 0, mapArrayData.Length);
+                    fileStreamMap.Close();
+                }
+                
+            }
+
+        }
+
+        private void importAllMapsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int sx = 0;
+            int sy = 0;
+            int p = 0;
+            byte[] mapArrayData = new byte[0x50000 + 0x7080];
+            using (OpenFileDialog sfd = new OpenFileDialog())
+            {
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
+                    fileStreamMap.Read(mapArrayData, 0, mapArrayData.Length);
+                    for (int i = 0; i < 64; i++)
+                    {
+                        for (int y = 0; y < 32; y += 1)
+                        {
+                            for (int x = 0; x < 32; x += 1)
+                            {
+                                overworldEditor.overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData[p+1]<<8) + mapArrayData[p]);
+                                p+=2;
+
+                                overworldEditor.overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData[p+1] << 8) + mapArrayData[p]);
+                                p += 2;
+
+
+                                if (i < 32)
+                                {
+                                    overworldEditor.overworld.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] = (ushort)((mapArrayData[p+1] << 8) + mapArrayData[p]);
+                                    p += 2;
+                                }
+                            }
+                        }
+
+                        sx++;
+                        if (sx >= 8)
+                        {
+                            sy++;
+                            sx = 0;
+
+                        }
+                    }
+                    overworldEditor.overworld.tiles16.Clear();
+                    for (int i = 0; i < 3600; i++)
+                    {
+                        ulong v = 0;
+                        v = (ulong)(mapArrayData[p] |
+                            (mapArrayData[p + 1] << 8) |
+                            (mapArrayData[p + 2] << 16) |
+                            (mapArrayData[p + 3] << 24) |
+                            (mapArrayData[p + 4] << 32) |
+                            (mapArrayData[p + 5] << 40) |
+                            (mapArrayData[p + 6] << 48) |
+                            (mapArrayData[p + 7] << 56));
+                        p += 8;
+                        //overworldEditor.overworld.tiles16.Add(new Tile16(v));
+                    }
+                    fileStreamMap.Close();
+                }
             }
         }
     }

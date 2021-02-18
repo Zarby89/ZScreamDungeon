@@ -119,8 +119,22 @@ namespace ZeldaFullEditor.Gui
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
             e.Graphics.DrawImage(GFX.editort16Bitmap, new Rectangle(0, 0, 256, 1024));
 
+            if (gridcheckBox.Checked)
+            {
+                for (int xs = 0; xs < 16; xs++)
+                {
+                    e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), xs * 16, 0, xs * 16, 1024);
+
+                }
+                for (int ys = 0; ys < 256; ys++)
+                {
+                    e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 0, ys * 16, 256, ys * 16);
+                }
+            }
+
             int y = (tile8selected / 16);
             int x = tile8selected - (y * 16);
+
 
             e.Graphics.DrawRectangle(Pens.GreenYellow, new Rectangle(x * 16, y * 16, 16, 16));
         }
@@ -148,11 +162,33 @@ namespace ZeldaFullEditor.Gui
 
         private void pictureboxTile16_Paint(object sender, PaintEventArgs e)
         {
+            
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
             //e.Graphics.DrawImage(GFX.editortileBitmap, new Rectangle(0, 0, 64, 64));
             e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f,0f,256.5f,8192f),new RectangleF(0,0,128, 4096),GraphicsUnit.Pixel);
             e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8192f), new RectangleF(0, 3600, 128, 4096), GraphicsUnit.Pixel);
+            if (gridcheckBox.Checked)
+            {
+                for (int x = 0; x < 16; x++)
+                {
+                    e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), x * 32, 0, x * 32, 8192);
+
+                }
+                for (int y = 0; y < 256; y++)
+                {
+                    e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 0, y * 32, 256, y * 32);
+                }
+            }
+            int xP = (scene.selectedTile[0] % 8) * 32;
+            int yP = ((scene.selectedTile[0] / 8)) * 32;
+            if (scene.selectedTile[0] >= 1800)
+            {
+                yP -= 3600;
+                xP += 256;
+            }
+            e.Graphics.DrawRectangle(new Pen(Color.FromArgb(180, Color.Red), 1), new Rectangle(xP, yP, 32, 32));
+            
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 32, 0, 32, 64);
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 0, 32, 64, 32);
         }
@@ -471,7 +507,10 @@ namespace ZeldaFullEditor.Gui
 
         string[] tilesTypesNames = new string[0xFF];
 
-
-
+        private void gridcheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            pictureboxTile16.Refresh();
+            pictureboxTile8.Refresh();
+        }
     }
 }

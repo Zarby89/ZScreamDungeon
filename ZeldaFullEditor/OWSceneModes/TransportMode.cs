@@ -158,14 +158,15 @@ namespace ZeldaFullEditor.OWSceneModes
 
                     g.FillRectangle(bgrBrush, new Rectangle(e.playerX, e.playerY, 16, 16));
                     g.DrawRectangle(contourPen, new Rectangle(e.playerX, e.playerY, 16, 16));
-                    if (i > 8)
+                    scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
+                    /*if (i > 8)
                     {
-                        scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Whirlpool");
+                        scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
                     }
                     else
                     {
-                        scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Flute");
-                    }
+                        scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
+                    }*/
                 }
 
             }

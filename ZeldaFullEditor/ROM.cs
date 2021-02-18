@@ -161,5 +161,7 @@ namespace ZeldaFullEditor
             romLog.Clear();
 
         }
+
+
     }
 }
