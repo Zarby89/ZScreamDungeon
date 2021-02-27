@@ -62,6 +62,7 @@ namespace ZeldaFullEditor
             this.oy = y;
             width = 16;
             height = 16;
+            
         }
 
         public void getObjectSize()
@@ -76,6 +77,7 @@ namespace ZeldaFullEditor
             getSizeSized(); //64 - 48
             UpdateSize();
             size = previousSize;
+            collisionPoint.Clear();
         }
 
 

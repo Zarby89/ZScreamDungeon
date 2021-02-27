@@ -148,53 +148,43 @@ namespace ZeldaFullEditor
 
         }
 
-
+        //Stopwatch sw = new Stopwatch();
         //TODO : Move that to the save class
         public void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //Save Functions
             //Expand ROM to 2MB
-            bool anychange = false;
-            Stopwatch sw = new Stopwatch();
-            sw.Start();
-            foreach (Room room in opened_rooms)
+            
+            //sw.Reset();
+            //sw.Start();
+            foreach (Room r in opened_rooms)
             {
-                if (room.has_changed)
+                if (r.has_changed)
                 {
-                    anychange = true;
-                    break;
-                }
-            }
-
-            if (anychange == true)
-            {
-                foreach (TabPage p in tabControl2.TabPages)
-                {
-                    if (p.Text.Contains("*"))
+                    foreach(TabPage tp in tabControl2.TabPages)
                     {
-                        p.Text = p.Text.Trim('*');
+                        tp.Text = tp.Text.Trim('*');
                     }
 
-                    DungeonsData.all_rooms[(p.Tag as Room).index] = (Room)(p.Tag as Room).Clone();
-                    (p.Tag as Room).has_changed = false;
-                    DungeonsData.all_rooms[(p.Tag as Room).index].has_changed = false;
-                    anychange = false;
-                    
+                    DungeonsData.all_rooms[r.index] = (Room)r.Clone();
+                    r.has_changed = false;
+                    DungeonsData.all_rooms[r.index].has_changed = false;
                 }
-                tabControl2.Refresh();
             }
-            sw.Stop();
-            Console.WriteLine("Saved all unsaved rooms - " + sw.ElapsedMilliseconds.ToString() + "ms");
+            anychange = false;
+            //tabControl2.Refresh();
+            //sw.Stop();
+            //Console.WriteLine("Saved all unsaved rooms - " + sw.ElapsedMilliseconds.ToString() + "ms");
 
-            sw.Reset();
-            sw.Start();
+            //sw.Reset();
+            //sw.Start();
             byte[] romBackup = (byte[])ROM.DATA.Clone();
             Save save = new Save(DungeonsData.all_rooms);
-            sw.Stop();
-            Console.WriteLine("Saved all rooms - " + sw.ElapsedMilliseconds.ToString() + "ms");
+            //sw.Stop();
+            //Console.WriteLine("Saved all rooms - " + sw.ElapsedMilliseconds.ToString() + "ms");
 
-            sw.Reset();
-            sw.Start();
+            //sw.Reset();
+            //sw.Start();
             if (save.saveRoomsHeaders()) //no protection always the same size so we don't care :)
             {
                 //MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
@@ -212,11 +202,11 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            sw.Stop();
-            Console.WriteLine("Saved Rooms Header, Chests, Sprites - " + sw.ElapsedMilliseconds.ToString() + "ms");
+            //sw.Stop();
+            //Console.WriteLine("Saved Rooms Header, Chests, Sprites - " + sw.ElapsedMilliseconds.ToString() + "ms");
 
-            sw.Reset();
-            sw.Start();
+            //sw.Reset();
+            //sw.Start();
             if (save.saveAllObjects())//There is a protection - Tested
             {
                 MessageBox.Show("Failed to save, there is too many tiles objects", "Bad Error", MessageBoxButtons.OK);
@@ -236,11 +226,11 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            sw.Stop();
-            Console.WriteLine("Saved Rooms Objects, Pots, Blocks- " + sw.ElapsedMilliseconds.ToString() + "ms");
+            //sw.Stop();
+            //Console.WriteLine("Saved Rooms Objects, Pots, Blocks- " + sw.ElapsedMilliseconds.ToString() + "ms");
 
-            sw.Reset();
-            sw.Start();
+            //sw.Reset();
+            //sw.Start();
             if (save.saveTorches())//There is a protection Tested
             {
                 MessageBox.Show("Failed to save, there is too many torches", "Bad Error", MessageBoxButtons.OK);
@@ -259,8 +249,8 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            sw.Stop();
-            Console.WriteLine("Saved Torches, Pits, Entrances- " + sw.ElapsedMilliseconds.ToString() + "ms");
+            //sw.Stop();
+            //Console.WriteLine("Saved Torches, Pits, Entrances- " + sw.ElapsedMilliseconds.ToString() + "ms");
 
 
             if (save.saveAllText(textEditor))
@@ -269,12 +259,12 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            sw.Stop();
-            Console.WriteLine("Saved Texts - " + sw.ElapsedMilliseconds.ToString() + "ms");
+            //sw.Stop();
+            //Console.WriteLine("Saved Texts - " + sw.ElapsedMilliseconds.ToString() + "ms");
 
 
-            sw.Reset();
-            sw.Start();
+            //sw.Reset();
+            //sw.Start();
             if (save.saveOWEntrances(overworldEditor.scene))
             {
                 MessageBox.Show("Failed to save ??, no idea why ", "Bad Error", MessageBoxButtons.OK);
@@ -363,8 +353,8 @@ namespace ZeldaFullEditor
 
             }
 
-            sw.Stop();
-            Console.WriteLine("Saved Overworld- " + sw.ElapsedMilliseconds.ToString() + "ms");
+            //sw.Stop();
+            //Console.WriteLine("Saved Overworld- " + sw.ElapsedMilliseconds.ToString() + "ms");
             //Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
             //AsarCLR.Asar.init();
             //AsarCLR.Asar.patch("titlescreen.asm", ref ROM.DATA);
@@ -712,18 +702,18 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void clear_room()
+        /*public void clear_room()
         {
             if (activeScene.room != null)
             {
                 activeScene.room.selectedObject.Clear();
             }
-        }
+        }*/
 
-        public void save_room(int roomId)
+        /*public void save_room(int roomId)
         {
             DungeonsData.all_rooms[roomId] = (Room)activeScene.room.Clone();
-        }
+        }*/
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -1492,7 +1482,7 @@ namespace ZeldaFullEditor
             else
             {
                 Room r = (Room)DungeonsData.all_rooms[roomId].Clone();
-                if (DungeonsData.undoRoom[r.index].Count == 0)
+                /*if (DungeonsData.undoRoom[r.index].Count == 0)
                 {
                     DungeonsData.undoRoom[r.index].Add((Room)r.Clone());
                     DungeonsData.redoRoom[r.index].Clear();
@@ -1503,8 +1493,8 @@ namespace ZeldaFullEditor
                 {
                     undoButton.Enabled = true;
                     undoToolStripMenuItem.Enabled = true;
-                }
-                if (DungeonsData.redoRoom[r.index].Count > 0)
+                }*/
+                /*if (DungeonsData.redoRoom[r.index].Count > 0)
                 {
                     redoButton.Enabled = true;
                     redoToolStripMenuItem.Enabled = true;
@@ -1513,7 +1503,7 @@ namespace ZeldaFullEditor
                 {
                     redoButton.Enabled = false;
                     redoToolStripMenuItem.Enabled = false;
-                }
+                }*/
                 //mapPropertyGrid.SelectedObject = r;
                 opened_rooms.Add(r); //add the double clicked room into rooms list     
                 activeScene.room = r;

@@ -274,7 +274,7 @@ namespace ZeldaFullEditor
             //}
 
         }
-
+        //TODO FIND PROBLEM THAT IS INCREASING SAVE TIME!!
         private void onMouseMove(object sender, MouseEventArgs e)
         {
             int MX = e.X;
@@ -301,7 +301,7 @@ namespace ZeldaFullEditor
                         if (resizing) //just to be sure
                         {
                             ResizeObject(lastElement, MX, MY);
-                            updateSelectionObject(lastElement);
+                            updateSelectionObject(lastElement); //that is just updating the texts/options on form
                             DrawRoom();
                             Refresh();
                             return;
@@ -554,7 +554,7 @@ namespace ZeldaFullEditor
                 mainForm.toolTip1.Hide(this);
             }
 
-            if (mouse_down)
+            if (mouse_down) //Slowdown problem in save caused by something here
             {
                 //updating_info = true;
 
@@ -1371,6 +1371,7 @@ namespace ZeldaFullEditor
 
         public unsafe void DrawRoom()
         {
+            
             if (room == null)
             {
                 return;
@@ -1399,8 +1400,10 @@ namespace ZeldaFullEditor
 
 
             room.reloadLayout();
+            
             foreach (Room_Object o in room.tilesLayoutObjects)
             {
+                o.collisionPoint.Clear();
                 o.Draw();
                 
             }
@@ -1410,10 +1413,12 @@ namespace ZeldaFullEditor
             {
                 if (o.layer != 2)
                 {
+                    o.collisionPoint.Clear();
                     o.Draw();
                 }
                 if (o.options == ObjectOption.Door)
                 {
+                    o.collisionPoint.Clear();
                     o.Draw();
                 }
             }
@@ -1422,10 +1427,11 @@ namespace ZeldaFullEditor
                 //Draw doors here since they'll all be put on bg3 anyways
                 if (o.layer == 2)
                 {
+                    o.collisionPoint.Clear();
                     o.Draw();
                 }
             }
-
+            
             
 
 

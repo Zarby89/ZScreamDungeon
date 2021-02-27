@@ -884,6 +884,8 @@ namespace ZeldaFullEditor
             }
             int pos = Constants.text_data;
             bool expandedRegion = false;
+            bool first = false;
+            bool second = false;
             for (int i = 0; i < savedTexts.Count; i++)
             {
 
@@ -896,23 +898,29 @@ namespace ZeldaFullEditor
                     {
                         if (pos > Constants.text_data + 0x8000)
                         {
-                            MessageBox.Show("Too many text data in 1st group impossible to save");
-                            ROM.DATA = (byte[])backup.Clone();
-                            return true;
+                            
+                            first = true;
                         }
                     }
                     else
                     {
                         if (pos > Constants.text_data2 + 0x14BF)
                         {
-                            MessageBox.Show("Too many text data in 2nd group impossible to save");
-                            ROM.DATA = (byte[])backup.Clone();
-                            return true;
+                            second = false;
                         }
                     }
+
+
+
                     ROM.DATA[pos] = b;
                     if (b == 0x80)
                     {
+                        if (first)
+                        {
+                            MessageBox.Show("Too many text data in 1st group impossible to save Available Space = 0x8000, Used Space = " + (pos - 0xE0000).ToString("X4"));
+                            ROM.DATA = (byte[])backup.Clone();
+                            return true;
+                        }
                         pos += 1;
                         while (pos < Constants.text_data + 0x8000)
                         {
@@ -937,6 +945,13 @@ namespace ZeldaFullEditor
                 pos++;
             }
 
+
+            if (second)
+            {
+                MessageBox.Show("Too many text data in 1st group impossible to save Available Space = 0x8000, Used Space = " + (pos - 0xE0000).ToString("X4"));
+                ROM.DATA = (byte[])backup.Clone();
+                return true;
+            }
             return false;
 
 

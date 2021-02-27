@@ -26,11 +26,6 @@ namespace ZeldaFullEditor
         int header_location;
         public bool has_changed = false;
         public string name;
-        
-
-
-        
-
 
         public bool light;
         public byte[] blocks = new byte[16];
@@ -39,7 +34,7 @@ namespace ZeldaFullEditor
         
         public List<Sprite> sprites = new List<Sprite>();
         public List<PotItem> pot_items = new List<PotItem>();
-        public List<Object> selectedObject = new List<object>();
+        public List<object> selectedObject = new List<object>();
         public List<Room_Object> tilesLayoutObjects = new List<Room_Object>();
         public bool objectInitialized = false;
         public bool onlyLayout = false;
@@ -2178,7 +2173,8 @@ namespace ZeldaFullEditor
         public void DrawFloor2()
         {
             byte layer = 1;
-            byte f = (byte)(floor2 << 4);
+            byte f =  (byte)(floor2 << 4);
+            //int f = 1024+ (floor2 << 4);
             //x x 4
             Tile floorTile1 = new Tile(ROM.DATA[Constants.tile_address + f], ROM.DATA[Constants.tile_address + f + 1]);
             Tile floorTile2 = new Tile(ROM.DATA[Constants.tile_address + f + 2], ROM.DATA[Constants.tile_address + f + 3]);
@@ -2208,6 +2204,7 @@ namespace ZeldaFullEditor
             {
             byte layer = 0;
             byte f = (byte)(floor1 << 4);
+            //int f = 1024 + (floor1<<4);
             //x x 4
             Tile floorTile1 = new Tile(ROM.DATA[Constants.tile_address + f], ROM.DATA[Constants.tile_address + f + 1]);
             Tile floorTile2 = new Tile(ROM.DATA[Constants.tile_address + f + 2], ROM.DATA[Constants.tile_address + f + 3]);
@@ -2286,14 +2283,23 @@ namespace ZeldaFullEditor
 
         public object Clone()
         {
-            using (var ms = new MemoryStream())
-            {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(ms, this);
-                ms.Position = 0;
-
+              using (var ms = new MemoryStream())
+              {
+                  var formatter = new BinaryFormatter();
+                  formatter.Serialize(ms, this);
+                  ms.Position = 0;
+                Console.WriteLine("Size of serializing for room " + index.ToString() +" : "+ ms.Length.ToString() + "Bytes");
                 return (Room)formatter.Deserialize(ms);
-            }
+              }
+        }
+
+        public void Delete()
+        {
+            tilesObjects.Clear();
+            tilesLayoutObjects.Clear();
+            pot_items.Clear();
+            sprites.Clear();
+            
         }
 
         ~Room()
@@ -2304,7 +2310,6 @@ namespace ZeldaFullEditor
             }
             for (int i = 0; i < tilesObjects.Count; i++)
             {
-                tilesObjects[i].tiles.Clear();
                 tilesObjects[i] = null;
             }
             for (int i = 0; i < tilesLayoutObjects.Count; i++)
