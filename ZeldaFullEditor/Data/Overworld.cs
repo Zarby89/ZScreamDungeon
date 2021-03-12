@@ -106,7 +106,7 @@ namespace ZeldaFullEditor
             loadItems();
             loadTransports();
             loadSprites();
-
+            GFX.loadOverworldMap();
             new Thread(() =>
             {
                 Thread.CurrentThread.IsBackground = true;

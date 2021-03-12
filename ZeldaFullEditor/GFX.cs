@@ -58,6 +58,9 @@ namespace ZeldaFullEditor
         public static IntPtr scratchblockset16 = Marshal.AllocHGlobal(1048576);
         public static Bitmap scratchblockset16Bitmap;
 
+        public static IntPtr overworldMapPointer = Marshal.AllocHGlobal(0x8000);
+        public static Bitmap overworldMapBitmap ;
+
 
         public static bool[] isbpp3 = new bool[223];
 
@@ -195,6 +198,7 @@ namespace ZeldaFullEditor
             editortileBitmap = new Bitmap(16, 16, 16, PixelFormat.Format8bppIndexed, editortilePtr);
             mapblockset16Bitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, mapblockset16);
             scratchblockset16Bitmap = new Bitmap(256, 4096, 256, PixelFormat.Format8bppIndexed, scratchblockset16);
+            overworldMapBitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, overworldMapPointer);
             moveableBlock = new Bitmap(Resources.Mblock);
             spriteFont = new Bitmap(Resources.spriteFont);
             favStar1 = new Bitmap(Resources.starn);
@@ -231,7 +235,7 @@ namespace ZeldaFullEditor
                 tilesBg2Buffer[i] = 0xFFFF;
             }
 
-           
+            
         }
 
 
@@ -455,7 +459,7 @@ namespace ZeldaFullEditor
                 {
                     allgfx16Data[i] = newData[i];
 
-                   // allgfx16Data2[(i*2)+1] = (byte)(newData[i] & 0x0F);
+                    // allgfx16Data2[(i*2)+1] = (byte)(newData[i] & 0x0F);
                     //allgfx16Data2[(i*2)] = (byte)((newData[i] & 0xF0) >> 4);
                 }
             }
@@ -664,7 +668,7 @@ namespace ZeldaFullEditor
             //4 bytes = 1 line of a 8x8 tile
             int dpos = 0; //destination pos
 
-            byte[] blockdata = new byte[24*64];
+            byte[] blockdata = new byte[24 * 64];
             byte l1d = 0;
             byte l2d = 0;
             byte l3d = 0;
@@ -698,7 +702,7 @@ namespace ZeldaFullEditor
                         l3d += (byte)((sheetData[i + (l * 64) + (y * 512) + (x * 4)] >> 6) & 0x01);//load bpp3 of line1 pixel2 + i (pixel 4, 6, 7)
                         l3d = (byte)(l3d << 1); //put it in linebpp3data and shift it by 1
                         l3d += (byte)((sheetData[i + (l * 64) + (y * 512) + (x * 4)] >> 2) & 0x01);//load bpp3 of line1 pixel1 + i (pixel 3, 5, 7)
-                        
+
 
                         if (i != 3) //shift all the linebpp data for the next bit except for the last one
                         {
@@ -707,7 +711,7 @@ namespace ZeldaFullEditor
                             l3d = (byte)(l3d << 1);
                         }
                     }
-                    blockdata[(bpos*24) + 0 + (dpos * 2)] = l1d;
+                    blockdata[(bpos * 24) + 0 + (dpos * 2)] = l1d;
                     blockdata[(bpos * 24) + 1 + (dpos * 2)] = l2d;
                     blockdata[(bpos * 24) + 16 + dpos] = l3d;
                     dpos++;
@@ -785,6 +789,45 @@ namespace ZeldaFullEditor
             return null;
         }
 
+        public static void loadOverworldMap()
+        {
 
+
+
+            //Mode 7
+           /* unsafe
+            {
+                byte* ptr = (byte*)overworldMapPointer.ToPointer();
+
+                int pos = 0;
+                for (int sy = 0; sy < 48; sy++)
+                {
+                    for (int sx = 0; sx < 16; sx++)
+                    {
+                        for (int y = 0; y < 8; y++)
+                        {
+                            for (int x = 0; x < 8; x++)
+                            {
+                                ptr[x + (sx * 8) + (y * 128) + (sy * 1024)] = ROM.DATA[0x0C4000 + pos];
+                                pos++;
+                            }
+                        }
+                    }
+                }
+
+            }*/
+
+            ColorPalette cp = overworldMapBitmap.Palette;
+            for (int i = 0; i < 512; i += 2)
+            {
+                //55B27 = US LW
+                //55C27 = US DW
+                cp.Entries[i / 2] = getColor((short)((ROM.DATA[0x55B27 + i + 1] << 8) + ROM.DATA[0x55B27 + i]));
+
+            }
+            overworldMapBitmap.Palette = cp;
+
+
+        }
     }
 }

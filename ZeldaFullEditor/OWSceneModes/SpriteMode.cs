@@ -39,14 +39,6 @@ namespace ZeldaFullEditor.OWSceneModes
                     continue;
                 }
                 int gs = scene.ow.gameState;
-                if (i >= 64)
-                {
-                    gs = 0;
-                }
-                if (i >= 128)
-                {
-                    gs = 0;
-                }
                 foreach (Sprite spr in scene.ow.allsprites[gs]) //TODO : Check if that need to be changed to LINQ mapid == maphover
                 {
                     if (e.X >= spr.map_x && e.X <= spr.map_x + 16 && e.Y >= spr.map_y && e.Y <= spr.map_y + 16)
@@ -92,7 +84,11 @@ namespace ZeldaFullEditor.OWSceneModes
                 int gs = scene.ow.gameState;
                 if (mid >= 64)
                 {
-                    gs = 0;
+                    if (gs == 0)
+                    {
+                        MessageBox.Show("Can't add sprite in rain state in the Dark World!");
+                        return;
+                    }
                 }
                 scene.ow.allsprites[gs].Add(scene.selectedFormSprite);
                 selectedSprite = scene.ow.allsprites[gs].Last();
@@ -120,7 +116,11 @@ namespace ZeldaFullEditor.OWSceneModes
                     int gs = scene.ow.gameState;
                     if (mid >= 64)
                     {
-                        gs = 0;
+                        if (gs == 0)
+                        {
+                            MessageBox.Show("Can't add sprite in rain state in the Dark World!");
+                            return;
+                        }
                     }
                     scene.ow.allsprites[gs].Add(scene.selectedFormSprite);
                     scene.selectedFormSprite = null;
@@ -183,7 +183,11 @@ namespace ZeldaFullEditor.OWSceneModes
                 int gs = scene.ow.gameState;
                 if (mid >= 64)
                 {
-                    gs = 0;
+                    if (gs == 0)
+                    {
+                        MessageBox.Show("Can't add sprite in rain state in the Dark World!");
+                        return;
+                    }
                 }
                 scene.ow.allsprites[gs].Add(scene.selectedFormSprite);
                 selectedSprite = scene.ow.allsprites[gs].Last();

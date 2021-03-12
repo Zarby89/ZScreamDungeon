@@ -511,9 +511,9 @@ namespace ZeldaFullEditor.OWSceneModes
                         if (e == selectedEntrance)
                         {
                             bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
-                            scene.drawText(g, e.x - 1, e.y + 16, "map : " + e.mapId.ToString());
-                            scene.drawText(g, e.x - 1, e.y + 26, "entrance : " + e.entranceId.ToString());
-                            scene.drawText(g, e.x - 1, e.y + 36, "mpos : " + e.mapPos.ToString());
+                            scene.drawText(g, e.x - 1, e.y + 26, "map : " + e.mapId.ToString());
+                            scene.drawText(g, e.x - 1, e.y + 36, "entrance : " + e.entranceId.ToString());
+                            scene.drawText(g, e.x - 1, e.y + 46, "mpos : " + e.mapPos.ToString());
                         }
                         else
                         {
@@ -523,7 +523,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     
                     g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
                     g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
-                    scene.drawText(g, e.x - 1, e.y + 1, e.entranceId.ToString("X2") + "- " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
+                    scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
                 }
 
             }
@@ -544,7 +544,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
                     g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
                     g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
-                    scene.drawText(g, e.x - 1, e.y + 1, e.entranceId.ToString("X2") + "- " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
+                    scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
                 }
 
             }

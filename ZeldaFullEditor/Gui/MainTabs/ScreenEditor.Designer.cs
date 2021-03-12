@@ -30,6 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label4 = new System.Windows.Forms.Label();
             this.bg3Radio = new System.Windows.Forms.RadioButton();
             this.bg2Radio = new System.Windows.Forms.RadioButton();
             this.bg1Radio = new System.Windows.Forms.RadioButton();
@@ -46,18 +47,28 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.screenBox = new System.Windows.Forms.PictureBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.mapPicturebox = new System.Windows.Forms.PictureBox();
+            this.overworldPanel = new System.Windows.Forms.Panel();
+            this.mapPalettePicturebox = new System.Windows.Forms.PictureBox();
+            this.owMapTilesBox = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.paletteBox)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tilesBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.screenBox)).BeginInit();
+            this.tabPage2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).BeginInit();
+            this.overworldPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.mapPalettePicturebox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.owMapTilesBox)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -90,6 +101,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Titlescreen";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.Location = new System.Drawing.Point(313, 496);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(465, 24);
+            this.label4.TabIndex = 15;
+            this.label4.Text = "ONLY A VIEWER FOR THE MOMENT CAN\'T SAVE!!";
             // 
             // bg3Radio
             // 
@@ -265,15 +286,60 @@
             this.screenBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.screenBox_MouseMove);
             this.screenBox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.screenBox_MouseUp);
             // 
-            // label4
+            // tabPage2
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(313, 496);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(465, 24);
-            this.label4.TabIndex = 15;
-            this.label4.Text = "ONLY A VIEWER FOR THE MOMENT CAN\'T SAVE!!";
+            this.tabPage2.Controls.Add(this.owMapTilesBox);
+            this.tabPage2.Controls.Add(this.mapPalettePicturebox);
+            this.tabPage2.Controls.Add(this.overworldPanel);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Size = new System.Drawing.Size(1020, 682);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "Overworld Map";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // mapPicturebox
+            // 
+            this.mapPicturebox.Location = new System.Drawing.Point(3, 3);
+            this.mapPicturebox.Name = "mapPicturebox";
+            this.mapPicturebox.Size = new System.Drawing.Size(1024, 1024);
+            this.mapPicturebox.TabIndex = 0;
+            this.mapPicturebox.TabStop = false;
+            this.mapPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.mapPicturebox_Paint);
+            // 
+            // overworldPanel
+            // 
+            this.overworldPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.overworldPanel.AutoScroll = true;
+            this.overworldPanel.Controls.Add(this.mapPicturebox);
+            this.overworldPanel.Location = new System.Drawing.Point(3, 3);
+            this.overworldPanel.Name = "overworldPanel";
+            this.overworldPanel.Size = new System.Drawing.Size(752, 676);
+            this.overworldPanel.TabIndex = 1;
+            // 
+            // mapPalettePicturebox
+            // 
+            this.mapPalettePicturebox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.mapPalettePicturebox.Location = new System.Drawing.Point(761, 265);
+            this.mapPalettePicturebox.Name = "mapPalettePicturebox";
+            this.mapPalettePicturebox.Size = new System.Drawing.Size(256, 256);
+            this.mapPalettePicturebox.TabIndex = 2;
+            this.mapPalettePicturebox.TabStop = false;
+            this.mapPalettePicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.mapPalettePicturebox_Paint);
+            // 
+            // owMapTilesBox
+            // 
+            this.owMapTilesBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.owMapTilesBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.owMapTilesBox.Location = new System.Drawing.Point(761, 3);
+            this.owMapTilesBox.Name = "owMapTilesBox";
+            this.owMapTilesBox.Size = new System.Drawing.Size(256, 256);
+            this.owMapTilesBox.TabIndex = 3;
+            this.owMapTilesBox.TabStop = false;
+            this.owMapTilesBox.Paint += new System.Windows.Forms.PaintEventHandler(this.owMapTilesBox_Paint);
+            this.owMapTilesBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.owMapTilesBox_MouseDown);
             // 
             // ScreenEditor
             // 
@@ -289,6 +355,11 @@
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tilesBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.screenBox)).EndInit();
+            this.tabPage2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).EndInit();
+            this.overworldPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.mapPalettePicturebox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.owMapTilesBox)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -314,5 +385,10 @@
         private System.Windows.Forms.RadioButton bg1Radio;
         private System.Windows.Forms.CheckBox bg3Checkbox;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Panel overworldPanel;
+        private System.Windows.Forms.PictureBox mapPicturebox;
+        private System.Windows.Forms.PictureBox owMapTilesBox;
+        private System.Windows.Forms.PictureBox mapPalettePicturebox;
     }
 }

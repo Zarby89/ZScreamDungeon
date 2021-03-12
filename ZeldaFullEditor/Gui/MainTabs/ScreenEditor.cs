@@ -601,5 +601,84 @@ namespace ZeldaFullEditor.Gui.MainTabs
             paletteBox.Refresh();
             updateTiles();
         }
+
+        private void owMapTilesBox_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+           
+            e.Graphics.DrawImage(GFX.overworldMapBitmap, new Rectangle(0,0,256,256));
+            e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle((selectedMapTile%16)*16, (selectedMapTile/16)*16, 16, 16));
+        }
+        bool v = false;
+        private void mapPicturebox_Paint(object sender, PaintEventArgs e)
+        {
+
+                e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+                e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+            e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+            int p = 0x54727;
+            int p2 = 0x54727+0x400;
+            int p3 = 0x54727+0x800;
+            int p4 = 0x54727+0xC00;
+            for (int i = 0; i < 64 * 64; i++)
+            {
+
+            }
+
+            /*for (int i = 0; i < 32 * 32; i++)
+            {
+                int x = ROM.DATA[p] % 16;
+                int y = (ROM.DATA[p] / 16);
+                int xp = (i % 32)+32;
+                int yp = (i / 32);
+                e.Graphics.DrawImage(GFX.overworldMapBitmap, new Rectangle(xp * 16, yp * 16, 16, 16), new Rectangle(x * 8, y * 8, 8, 8), GraphicsUnit.Pixel);
+                p++;
+            }
+
+            for (int i = 0; i < 32 * 32; i++)
+            {
+                int x = ROM.DATA[p] % 16;
+                int y = (ROM.DATA[p] / 16);
+                int xp = i % 32;
+                int yp = (i / 32)+32;
+                e.Graphics.DrawImage(GFX.overworldMapBitmap, new Rectangle(xp * 16, yp * 16, 16, 16), new Rectangle(x * 8, y * 8, 8, 8), GraphicsUnit.Pixel);
+                p++;
+            }
+
+            for (int i = 0; i < 32 * 32; i++)
+            {
+                int x = ROM.DATA[p] % 16;
+                int y = (ROM.DATA[p] / 16);
+                int xp = (i % 32) + 32;
+                int yp = (i / 32)+32;
+                e.Graphics.DrawImage(GFX.overworldMapBitmap, new Rectangle(xp * 16, yp * 16, 16, 16), new Rectangle(x * 8, y * 8, 8, 8), GraphicsUnit.Pixel);
+                p++;
+            }
+            */
+           /* for (int i = 0; i < 32 * 32; i++)
+            {
+                int x = ROM.DATA[p] % 16;
+                int y = (ROM.DATA[p] / 16);
+                int xp = (i % 32) + 16;
+                int yp = (i / 32) + 16;
+                e.Graphics.DrawImage(GFX.overworldMapBitmap, new Rectangle(xp * 16, yp * 16, 16, 16), new Rectangle(x * 8, y * 8, 8, 8), GraphicsUnit.Pixel);
+                p++;
+            }*/
+        }
+        byte selectedMapTile = 0;
+        private void mapPalettePicturebox_Paint(object sender, PaintEventArgs e)
+        {
+          /*  for(int i = 0;i<256;i++)
+            {
+                e.Graphics.FillRectangle(new SolidBrush(GFX.overworldMapBitmap.Palette.Entries[i]), new Rectangle((i%16)*16, (i/16)*16, 16, 16));
+                
+            }*/
+        }
+
+        private void owMapTilesBox_MouseDown(object sender, MouseEventArgs e)
+        {
+            selectedMapTile = (byte)((e.X / 16) + ((e.Y / 16) * 16));
+            owMapTilesBox.Refresh();
+        }
     }
 }

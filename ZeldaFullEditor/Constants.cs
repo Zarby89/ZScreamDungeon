@@ -108,18 +108,18 @@ namespace ZeldaFullEditor
 
         
 
-        public static int OWExitMapIdWhirlpool = 0x16AE5;
-        public static int OWExitVramWhirlpool = 0x16B07;
-        public static int OWExitYScrollWhirlpool = 0x16B29;
-        public static int OWExitXScrollWhirlpool = 0x16B4B;
-        public static int OWExitYPlayerWhirlpool = 0x16B6D;
-        public static int OWExitXPlayerWhirlpool = 0x16B8F;
-        public static int OWExitYCameraWhirlpool = 0x16BB1;
-        public static int OWExitXCameraWhirlpool = 0x16BD3;
-        public static int OWExitUnk1Whirlpool = 0x16BF5;
-        public static int OWExitUnk2Whirlpool = 0x16C17;
-        public static int OWWhirlpoolPosition = 0x16CF8;
-
+        public static int OWExitMapIdWhirlpool = 0x16AE5; //  JP = ;016849
+        public static int OWExitVramWhirlpool = 0x16B07;  //  JP = ;01686B
+        public static int OWExitYScrollWhirlpool = 0x16B29;// JP = ;01688D
+        public static int OWExitXScrollWhirlpool = 0x16B4B;// JP = ;016DE7
+        public static int OWExitYPlayerWhirlpool = 0x16B6D;// JP = ;016E09
+        public static int OWExitXPlayerWhirlpool = 0x16B8F;// JP = ;016E2B
+        public static int OWExitYCameraWhirlpool = 0x16BB1;// JP = ;016E4D
+        public static int OWExitXCameraWhirlpool = 0x16BD3;// JP = ;016E6F
+        public static int OWExitUnk1Whirlpool = 0x16BF5;//    JP = ;016E91
+        public static int OWExitUnk2Whirlpool = 0x16C17;//    JP = ;016EB3
+        public static int OWWhirlpoolPosition = 0x16CF8;//    JP = ;016F94
+        
         //===========================================================================================
         //Dungeon Related Variables
         //===========================================================================================
@@ -131,7 +131,7 @@ namespace ZeldaFullEditor
         //That could be turned into a pointer : 
         public static int room_items_pointers = 0xDB69;//JP 0xDB67
 
-        public static int rooms_sprite_pointer = 0x4C298; //JP Same //2byte bank 04
+        public static int rooms_sprite_pointer = 0x4C298; //JP Same //2byte bank 09D62E
         public static int room_header_pointer = 0xB5DD; //LONG
         public static int room_header_pointers_bank = 0xB5E7; //JP Same
 

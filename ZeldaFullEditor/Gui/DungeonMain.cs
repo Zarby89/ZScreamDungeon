@@ -43,7 +43,7 @@ namespace ZeldaFullEditor
         //TODO : Move that to a data class
 
         //TODO : Move that?
-        public byte[] door_index = new byte[] { 0x00, 0x06, 0x02, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32, 0x20, 0x14, 0x2A, 0x22 };
+        public byte[] door_index = new byte[] { 0x00, 0x02, 0x04, 0x06, 0x08, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32, 0x20, 0x14, 0x2A, 0x22 };
 
         public TextEditor textEditor = new TextEditor();
         public OverworldEditor overworldEditor = new OverworldEditor();
@@ -388,6 +388,10 @@ namespace ZeldaFullEditor
             {
                 projectFilename = projectFile.FileName;
                 LoadProject(projectFile.FileName);
+                openToolStripMenuItem.Enabled = false;
+                openfileButton.Enabled = false;
+                recentROMToolStripMenuItem.Enabled = false;
+
             }
         }
 
@@ -4141,6 +4145,78 @@ namespace ZeldaFullEditor
                     fileStreamMap.Close();
                 }
             }
+        }
+
+        private void flipMapHorizontallyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            List<ushort> tile8ids = new List<ushort>();
+            ushort[,] map16 = new ushort[32, 32];
+            //flip all tile8 tiles
+            for (int x = 0; x < 32; x++)
+            {
+                for (int y = 0; y < 32; y++)
+                {
+                    if (!tile8ids.Contains(overworldEditor.overworld.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]))
+                    {
+                        tile8ids.Add(overworldEditor.overworld.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]);
+                    }
+                    map16[x, y] = overworldEditor.overworld.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)];
+                }
+            }
+
+            for (int i = 0; i < tile8ids.Count; i++)
+            {
+                ushort h0 = 0;
+                ushort h1 = 0;
+                ushort h2 = 0;
+                ushort h3 = 0;
+                if (overworldEditor.overworld.tiles16[tile8ids[i]].tile0.h == 0)
+                {
+                    h0 = 1;
+                }
+                if (overworldEditor.overworld.tiles16[tile8ids[i]].tile1.h == 0)
+                {
+                    h1 = 1;
+                }
+                if (overworldEditor.overworld.tiles16[tile8ids[i]].tile2.h == 0)
+                {
+                    h2 = 1;
+                }
+                if (overworldEditor.overworld.tiles16[tile8ids[i]].tile3.h == 0)
+                {
+                    h3 = 1;
+                }
+                overworldEditor.overworld.tiles16[tile8ids[i]].tile0.h = h0;
+                overworldEditor.overworld.tiles16[tile8ids[i]].tile1.h = h1;
+                overworldEditor.overworld.tiles16[tile8ids[i]].tile2.h = h2;
+                overworldEditor.overworld.tiles16[tile8ids[i]].tile3.h = h3;
+
+                ushort t0 = overworldEditor.overworld.tiles16[i].tile0.id;
+                ushort t1 = overworldEditor.overworld.tiles16[i].tile1.id;
+                ushort t2 = overworldEditor.overworld.tiles16[i].tile2.id;
+                ushort t3 = overworldEditor.overworld.tiles16[i].tile3.id;
+
+                overworldEditor.overworld.tiles16[i].tile0.id = t1;
+                overworldEditor.overworld.tiles16[i].tile1.id = t0;
+                overworldEditor.overworld.tiles16[i].tile2.id = t3;
+                overworldEditor.overworld.tiles16[i].tile3.id = t2;
+
+                int mx = 31;
+                for (int x = 0; x < 32; x++)
+                {
+                    for (int y = 0; y < 32; y++)
+                    {
+                        overworldEditor.overworld.allmaps[44].tilesUsed[x+(4*32), y + (5 * 32)] = map16[mx, y];
+
+
+                    }
+                    mx--;
+                }
+
+
+            }
+
+            // overworldEditor.overworld.allmaps[44].BuildMap();
         }
     }
 

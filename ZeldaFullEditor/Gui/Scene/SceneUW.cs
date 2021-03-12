@@ -2031,7 +2031,7 @@ namespace ZeldaFullEditor
                     mainForm.object_x_label.Text = "X: " + (o as Room_Object).nx.ToString();
                     mainForm.object_y_label.Text = "Y: " + (o as Room_Object).ny;
                     mainForm.object_size_label.Text = "Size: " + (o as Room_Object).size;
-                    mainForm.object_layer_label.Text = "Layer (BG): " + (o as Room_Object).layer+1;
+                    mainForm.object_layer_label.Text = "Layer (BG): " + ((o as Room_Object).layer+1).ToString();
                     int z = 0;
                     foreach (Room_Object door in room.tilesObjects)
                     {

@@ -361,7 +361,6 @@
       <DependentUpon>WindowPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="ImgClipboard.cs" />
-    <Compile Include="IniFile.cs" />
     <Compile Include="Data\OverlayData.cs" />
     <Compile Include="Data\Overworld.cs" />
     <Compile Include="Data\OverworldMap.cs" />

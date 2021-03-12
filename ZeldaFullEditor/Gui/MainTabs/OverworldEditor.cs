@@ -153,6 +153,7 @@ namespace ZeldaFullEditor.Gui
                 {
                     mapParent.gfx = result;
                 }
+                
                 if (byte.TryParse(sprgfxTextbox.Text, out result))
                 {
                     if (mapParent.index >= 64)
@@ -161,9 +162,10 @@ namespace ZeldaFullEditor.Gui
                     }
                     else
                     {
-                        mapParent.sprgfx[scene.ow.gameState] = result;
+                        scene.ow.allmaps[mapParent.index].sprgfx[scene.ow.gameState] = result;
                     }
                 }
+
                 if (byte.TryParse(sprpaletteTextbox.Text, out result))
                 {
                     if (mapParent.index >= 64)

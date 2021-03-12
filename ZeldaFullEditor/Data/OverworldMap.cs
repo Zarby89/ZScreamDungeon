@@ -167,9 +167,9 @@ namespace ZeldaFullEditor
 
                 if (parent != index)
                 {
-                    sprgfx[0] = ROM.DATA[Constants.overworldSpriteset + parent];
-                    sprgfx[1] = ROM.DATA[Constants.overworldSpriteset + parent + 64];
-                    sprgfx[2] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
+                    //sprgfx[0] = ROM.DATA[Constants.overworldSpriteset + parent];
+                    //sprgfx[1] = ROM.DATA[Constants.overworldSpriteset + parent + 64];
+                    //sprgfx[2] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
 
                     gfx = ROM.DATA[Constants.mapGfx + parent];
                     palette = ROM.DATA[Constants.overworldMapPalette + parent];
