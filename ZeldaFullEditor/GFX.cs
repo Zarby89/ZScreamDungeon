@@ -793,9 +793,9 @@ namespace ZeldaFullEditor
         {
 
 
-
+/*
             //Mode 7
-           /* unsafe
+            unsafe
             {
                 byte* ptr = (byte*)overworldMapPointer.ToPointer();
 
@@ -815,7 +815,7 @@ namespace ZeldaFullEditor
                     }
                 }
 
-            }*/
+            }
 
             ColorPalette cp = overworldMapBitmap.Palette;
             for (int i = 0; i < 512; i += 2)
@@ -826,7 +826,7 @@ namespace ZeldaFullEditor
 
             }
             overworldMapBitmap.Palette = cp;
-
+*/
 
         }
     }

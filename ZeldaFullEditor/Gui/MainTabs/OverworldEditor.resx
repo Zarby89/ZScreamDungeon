@@ -303,17 +303,27 @@
         QmCC
 </value>
   </data>
+  <data name="gravestoneButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAADiSURBVEhLzY2xDUIxDEQzSWZjGWoqNqFgAWpaZqCloARF
+        8kmXkx3nB32JLz0R7PO78jdfrfXD2Hj9U+HjfunQvZ3lHw5UmDFVtCJWwqJM/n49O7wM05V4chVm6H1Y
+        4B03btdTh5dpDAs4qMIMvnULIvH5eBiieXjcAg56shF8mxZ4ghmGBb/KATybC1qG8TKNzQUs5AzPGWTa
+        zvRxAeYQcUZ3AJk2N71fwDMceG/8XyrwRNFsqQC/2CmcwR3vTD8uwBt7oHu8eW/6vAD/+Vh3eHPG9HMF
+        mEVzvMOCPTD9nl8pX//BesBegvnpAAAAAElFTkSuQmCC
+</value>
+  </data>
   <data name="searchtilesButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAF+SURBVDhPnZK/asJQGMVDu3Xt0Mfo4CO4iO4uDnF0FVyV
-        FAQfoINLFgN1SDsJdrCDk7QdfIJmSQt2qwb/4FA5nhNvCSWxUA8cLrl8vy/fn2sdE4CzzWZjr9frCb2l
-        d3RAd6IoujRh2SJ8QfhxOp2i0WigUCggn8+jWq3C930sl8vZarW6NuFp8S/ecDhEqVSC53kI3gK8hx8Y
-        jZ5g2zaazWacJLMSwrkwDFEsFvHy/IrFPPrl2ewzTqJK1I7BEunSdV04jpOCf6xK1A5jA4MlYu9+q9XC
-        vf+QCctqRzNhgp3BEvGy32630et5mbCsmWiwjN0aLBEv64PBALVaDfOvRWYCDVbbYezEYIk43StOd1ep
-        VNDtdlNJNFhtRyvWOzHYQdz/ObPejcfjeAtKokr0R83EcW7ie61Y70SPzaBpWKcqUTuaiQar7WjFjPP0
-        2AyaDetb7fCs031th2eHzhnsoGOw7k3I32KwezIsEfgul8unwRJ7u1USVfJv2LKsPXKCAKBLOyupAAAA
-        AElFTkSuQmCC
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGCSURBVDhPnZK/SsNgFMWDbq4OPoZDHyFLSPcuHdKxayFr
+        Q4RCH8ChS5YGdIhOgTrUoVNRhzyBXaIQN5v0Hx0sx3vST4IkFeyBS5KP+7u599xPOyQAJ5vNxlqtVlOJ
+        rcROYrZer/tZlp2rtGoJfCbwQxRFsG0bhmFA13W0Wi0EQYDFYpFIsUuVXpb8xR+NRqjX6/B9H7PXGd7i
+        d4zHj7AsC91uNy9S2YnAtTiOYZomnp9ekM6zX5EkH3kRdsJxFFaIh57nwXXdEvwT7ITj0BOFFZLZA8dx
+        cBfcV8IMjkNPaKzCCsnhba/Xw3DoV8IMekJjJXersEIyQicMQ7Tbbcw/08oCNJbbkQJThRVaLpcXaZru
+        ms0mBoNBqQiN5Xa4Yt4The0l+z+VDm4mk0m+BRZhJ/wjPXHdq/ycK+Y94WVTaBnmk51wHHpCY7kdrljy
+        fF42hVbD/OY48uzQWG5H3vsSNYXtdQjmuUr5W5LsHQ1T0t5Xo9E4DqZktmsWYSf/hjVN+wb6sgBw2grR
+        hQAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="refreshToolStrip.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

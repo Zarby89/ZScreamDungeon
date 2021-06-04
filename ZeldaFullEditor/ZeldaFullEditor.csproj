@@ -171,7 +171,7 @@
   <ItemGroup>
     <Compile Include="asar.cs" />
     <Compile Include="ChestDraw.cs" />
-    <Compile Include="DungeonData.cs" />
+    <Compile Include="Data\Gravestone.cs" />
     <Compile Include="Gui\ExtraForms\ChestPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -372,6 +372,7 @@
     <Compile Include="OWSceneModes\SpriteMode.cs" />
     <Compile Include="OWSceneModes\OverlayMode.cs" />
     <Compile Include="OWSceneModes\TileMode.cs" />
+    <Compile Include="OWSceneModes\GravestoneMode.cs" />
     <Compile Include="OWSceneModes\TransportMode.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Rooms\Items\ItemsNames.cs" />

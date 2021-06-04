@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
 {
@@ -64,6 +65,9 @@ namespace ZeldaFullEditor
         public ushort[] tileLeftEntrance = new ushort[0x2B];
         public ushort[] tileRightEntrance = new ushort[0x2B];
 
+        public Gravestone[] graves = new Gravestone[0x0F];
+
+
         public Overworld()
         {
             tiles16 = new List<Tile16>();
@@ -94,6 +98,7 @@ namespace ZeldaFullEditor
             DecompressAllMapTiles();
             loadOverlays();
             loadTilesTypes();
+            loadGravesStone();
             //Map Initialization :
             for (int i = 0; i < 160; i++)
             {
@@ -125,6 +130,18 @@ namespace ZeldaFullEditor
             for(int i = 0;i<0x200;i++)
             {
                 allTilesTypes[i] = ROM.DATA[Constants.overworldTilesType + i];
+            }
+        }
+
+        public void loadGravesStone()
+        {
+            for(int i = 0;i<0x0F;i++)
+            {
+                ushort x = ROM.ReadShort(Constants.GravesXTilePos + (i * 2));
+                ushort y = ROM.ReadShort(Constants.GravesYTilePos + (i * 2));
+                ushort gfx = ROM.ReadShort(Constants.GravesGFX + (i * 2));
+                ushort tilemap = ROM.ReadShort(Constants.GravesTilemapPos + (i * 2));
+                graves[i] = new Gravestone(x, y, tilemap, gfx);
             }
         }
 

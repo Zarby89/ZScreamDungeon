@@ -48,6 +48,7 @@ namespace ZeldaFullEditor.Gui
             spriteModeButton.Tag = ObjectMode.Spritemode;
             transportModeButton.Tag = ObjectMode.Flute;
             overlayButton.Tag = ObjectMode.Overlay;
+            gravestoneButton.Tag = ObjectMode.Gravestone;
             stateCombobox.SelectedIndex = 1;
             scratchPicturebox.Image = scratchPadBitmap;
             //setTilesGfx();

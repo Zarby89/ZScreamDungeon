@@ -253,6 +253,37 @@ namespace ZeldaFullEditor
         public static int dungeons_endrooms = 0x792D;
         public static int dungeons_bossrooms = 0x10954;//short value
 
+        //Bed Related Values (Starting location)
+
+        public static int bedPositionX = 0x039A37; //short value
+        public static int bedPositionY = 0x039A32; //short value
+
+        public static int bedPositionResetXLow = 0x02DE53;  //short value(on 2 different bytes)
+        public static int bedPositionResetXHigh = 0x02DE58; //^^^^^^
+
+        public static int bedPositionResetYLow = 0x02DE5D; //short value(on 2 different bytes)
+        public static int bedPositionResetYHigh = 0x02DE62;//^^^^^^
+
+        public static int bedSheetPositionX = 0x0480BD; //short value
+        public static int bedSheetPositionY = 0x0480B8; //short value
+
+        //===========================================================================================
+        //Gravestones related variables
+        //===========================================================================================
+
+       
+        public static int GravesYTilePos = 0x49968; //short (0x0F entries)
+        public static int GravesXTilePos = 0x49986; //short (0x0F entries)
+        public static int GravesTilemapPos = 0x499A4; //short (0x0F entries)
+        public static int GravesGFX = 0x499C2; //short (0x0F entries)
+
+
+        public static int GravesXPos = 0x4994A;  //short (0x0F entries)
+        public static int GravesYLine = 0x4993A; //short (0x08 entries)
+        public static int GravesCountOnY = 0x499E0; //Byte 0x09 entries
+
+        public static int GraveLinkSpecialHole = 0x46DD9; //short
+        public static int GraveLinkSpecialStairs = 0x46DE0; //short
 
         //===========================================================================================
         //Palettes Related Variables - This contain all the palettes of the game

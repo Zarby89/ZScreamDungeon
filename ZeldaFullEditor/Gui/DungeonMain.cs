@@ -22,6 +22,7 @@ using CSScriptLibrary;
 using System.Security.Permissions;
 using System.Security;
 using System.Security.Policy;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace ZeldaFullEditor
 {
@@ -43,7 +44,7 @@ namespace ZeldaFullEditor
         //TODO : Move that to a data class
 
         //TODO : Move that?
-        public byte[] door_index = new byte[] { 0x00, 0x02, 0x04, 0x06, 0x08, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32, 0x20, 0x14, 0x2A, 0x22 };
+        public byte[] door_index = new byte[] { 0x00, 0x02, 0x04, 0x06, 0x08, 0x40, 0x1C, 0x26, 0x0C, 0x44, 0x18, 0x36, 0x38, 0x1E, 0x2E, 0x28, 0x46, 0x0E, 0x0A, 0x30, 0x12, 0x16, 0x32, 0x20, 0x14, 0x2A, 0x22, 0x10 };
 
         public TextEditor textEditor = new TextEditor();
         public OverworldEditor overworldEditor = new OverworldEditor();
@@ -67,7 +68,7 @@ namespace ZeldaFullEditor
         Bitmap xTabButton;
         public Room previewRoom = null;
         public ScreenEditor screenEditor = new ScreenEditor();
-
+        public string loadFromExported = "";
         private void Form1_Load(object sender, EventArgs e)
         {
             if (Settings.Default.favoriteObjects.Count < 0xFFF)
@@ -353,6 +354,13 @@ namespace ZeldaFullEditor
 
             }
 
+            if (save.SaveGravestones(overworldEditor.scene))
+            {
+                MessageBox.Show("Failed to save Gravestones", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
             //sw.Stop();
             //Console.WriteLine("Saved Overworld- " + sw.ElapsedMilliseconds.ToString() + "ms");
             //Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
@@ -445,6 +453,12 @@ namespace ZeldaFullEditor
             activeScene.Location = new Point(0, 0);
             activeScene.Size = new Size(512, 512);
 
+            if (loadFromExported != "")
+            {
+                loadFromExported = (Path.GetDirectoryName(projectFilename));
+                Console.WriteLine(Path.GetDirectoryName(projectFilename));
+            }
+
             initProject();
 
             this.Text = "ZScream Magic - " + filename;
@@ -465,7 +479,7 @@ namespace ZeldaFullEditor
 
             for (int i = 0; i < 296; i++)
             {
-                DungeonsData.all_rooms[i] = (new Room(i)); // create all rooms
+                DungeonsData.all_rooms[i] = (new Room(i, loadFromExported)); // create all rooms
                 DungeonsData.undoRoom[i] = new List<Room>();
                 DungeonsData.redoRoom[i] = new List<Room>();
             }
@@ -3706,13 +3720,24 @@ namespace ZeldaFullEditor
         private void exportAllRoomsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int[] doorsoffset = new int[296];
-            StringBuilder sb = new StringBuilder();
-            sb.Append("lorom\r\n");
-
-            for (int i = 0; i < 296; i++)
+            //StringBuilder sb = new StringBuilder();
+            //sb.Append("lorom\r\n");
+            SaveFileDialog sf = new SaveFileDialog();
+            if (sf.ShowDialog() == DialogResult.OK)
             {
+                string path = Path.GetDirectoryName(sf.FileName);
+                for (int i = 0; i < 296; i++)
+                {
 
-                byte[] roomBytes = DungeonsData.all_rooms[i].getTilesBytes();
+                    byte[] roomBytes = DungeonsData.all_rooms[i].getTilesBytes();
+                    Directory.CreateDirectory(path + "//ExportedRooms");
+                    using (FileStream fs = new FileStream(path+"//ExportedRooms//room" + i.ToString("D3") + ".bin", FileMode.OpenOrCreate, FileAccess.Write))
+                    {
+                        fs.Write(roomBytes, 0, roomBytes.Length);
+                        fs.Close();
+                    }
+
+                }
                 /*int doorPos = roomBytes.Length - 2;
                 if (roomBytes.Length < 10)
                 {
@@ -3742,11 +3767,11 @@ namespace ZeldaFullEditor
                 sb.Append("dl !door" + (i.ToString("D3")) + "\r\n\r\n");
                 */
 
-                if (File.Exists("Rooms/room" + i.ToString("D3")))
+                /*if (File.Exists("Rooms/room" + i.ToString("D3")))
                 {
                     FileStream fs = File.Open("Rooms/room" + i.ToString("D3"), FileMode.Open, FileAccess.Read);
                     Console.WriteLine("" + i.ToString("D3") + " O:" + roomBytes.Length.ToString("X4") + " D:" + fs.Length.ToString("X4"));
-                }
+                }*/
             }
 
             /*sb.Append("org $218000 \r\n");
@@ -4217,6 +4242,73 @@ namespace ZeldaFullEditor
             }
 
             // overworldEditor.overworld.allmaps[44].BuildMap();
+        }
+
+        private void exportRoomDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            activeScene.room.CloneToFile("TestRoomData.dat");
+        }
+
+        private void importRoomDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var ms = new FileStream("TestRoomData.dat", FileMode.Open, FileAccess.Read))
+            {
+                var formatter = new BinaryFormatter();
+                Room r = (Room)formatter.Deserialize(ms);
+                activeScene.room = r;
+                Room rtc = null;
+                foreach(Room ro in opened_rooms)
+                {
+                    if (ro.index == activeScene.room.index )
+                    {
+                        rtc = ro;
+                    }
+                }
+                if (rtc != null)
+                {
+                    rtc = r;
+                }
+                DungeonsData.all_rooms[activeScene.room.index] = r;
+                activeScene.DrawRoom();
+                activeScene.Refresh();
+
+            }
+        }
+
+        private void importRoomsFromFolderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Warning this will close all opened unsaved rooms do you wish to proceed?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                OpenFileDialog ofd = new OpenFileDialog();
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    string path = Path.GetDirectoryName(ofd.FileName);
+                    for (int i = 0; i < 296; i++)
+                    {
+
+                        if (File.Exists(path + "//room" + i.ToString("D3") + ".bin"))
+                        {
+                            using (FileStream fs = new FileStream(path + "//room" + i.ToString("D3") + ".bin", FileMode.Open, FileAccess.Read))
+                            {
+                                DungeonsData.all_rooms[i].tilesObjects.Clear(); //Empty the room first
+                                byte[] data = new byte[fs.Length];
+                                fs.Read(data, 0, data.Length);
+                                DungeonsData.all_rooms[i].loadTilesObjectsFromArray(data,true);
+                                fs.Close();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private void openROMWithExportedRoomsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+
+            loadFromExported = "GetPath";
+            openToolStripMenuItem_Click(sender, e);
+            
         }
     }
 

@@ -2083,7 +2083,7 @@ namespace ZeldaFullEditor
                     mainForm.object_x_label.Text = "X: " + (o as object_door).nx.ToString();
                     mainForm.object_y_label.Text = "Y: " + (o as object_door).ny;
                     mainForm.object_size_label.Text = "Size: " + (o as object_door).size;
-                    mainForm.object_layer_label.Text = "Layer: " + (o as object_door).layer;
+                    mainForm.object_layer_label.Text = "Layer: " + ((o as object_door).layer + 1).ToString();
 
 
                 }
@@ -2105,7 +2105,7 @@ namespace ZeldaFullEditor
                     mainForm.object_x_label.Text = "X: " + (o as Sprite).nx;
                     mainForm.object_y_label.Text = "Y: " + (o as Sprite).ny;
  
-                    mainForm.object_layer_label.Text = "Layer: " + (o as Sprite).layer;
+                    mainForm.object_layer_label.Text = "Layer: " + ((o as Sprite).layer+1).ToString();
 
                     
                     mainForm.spritesubtypeUpDown.Value = (o as Sprite).subtype;
@@ -2142,7 +2142,7 @@ namespace ZeldaFullEditor
 
                     mainForm.object_x_label.Text = "X: " + (o as PotItem).nx;
                     mainForm.object_y_label.Text = "Y: " + (o as PotItem).ny;
-                    mainForm.object_layer_label.Text = "Layer: " + (o as PotItem).layer;
+                    mainForm.object_layer_label.Text = "Layer: " + ((o as PotItem).layer + 1).ToString();
 
                 }
             }

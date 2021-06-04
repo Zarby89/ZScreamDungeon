@@ -446,10 +446,10 @@ namespace ZeldaFullEditor
             {
                 drawSpriteTile((x * 16), (y * 16), 14, 22, 10);
             }
-            else if (id == 0x37) //waterfall
-            {
+            //else if (id == 0x37) //waterfall
+            //{
                 //drawSpriteTile((x*16), (y*16), 14, 6, 10);
-            }
+           // }
             else if (id == 0x38) //arrowtarget
             {
                 drawSpriteTile((x * 16), (y * 16), 14, 22, 10);

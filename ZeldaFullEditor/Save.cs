@@ -1284,6 +1284,27 @@ namespace ZeldaFullEditor
             //Save32Tiles();
         }
 
+        public bool SaveGravestones(SceneOW scene)
+        {
+            for(int i =0;i<0x0F;i++)
+            {
+                ROM.WriteShort(Constants.GravesXTilePos + (i * 2), scene.ow.graves[i].xTilePos, false);
+                ROM.WriteShort(Constants.GravesYTilePos + (i * 2), scene.ow.graves[i].yTilePos, false);
+                ROM.WriteShort(Constants.GravesTilemapPos + (i * 2), scene.ow.graves[i].tilemapPos, false);
+                if (i == 0x0E)
+                {
+                    ROM.WriteShort(Constants.GraveLinkSpecialStairs, scene.ow.graves[i].tilemapPos - 0x80, false);
+                }
+                if (i == 0x0D)
+                {
+                    ROM.WriteShort(Constants.GraveLinkSpecialHole, scene.ow.graves[i].tilemapPos - 0x80, false);
+                }
+
+            }
+
+            return false;
+        }
+
 
         //TODO : OW Message Load/Save
         //OW Musics Saves

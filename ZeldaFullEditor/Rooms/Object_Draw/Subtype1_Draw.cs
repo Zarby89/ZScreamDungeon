@@ -4956,7 +4956,7 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
             int sizex = ((size >> 2) & 0x03);
             int sizey = ((size) & 0x03);
 
@@ -5643,7 +5643,7 @@ namespace ZeldaFullEditor
         public override void Draw()
         {
 	base.Draw();
-            /*int sizex = ((size >> 2) & 0x03);
+            int sizex = ((size >> 2) & 0x03);
             int sizey = ((size) & 0x03);
 
             for (int xx = 0; xx < sizex + 1; xx++)
@@ -5662,7 +5662,7 @@ namespace ZeldaFullEditor
                     draw_tile(tiles[4], (xx * 4) * 8, ((yy * 4) + 3) * 8); draw_tile(tiles[5], ((xx * 4) + 1) * 8, ((yy * 4) + 3) * 8);
                     draw_tile(tiles[6], ((xx * 4) + 2) * 8, ((yy * 4) + 3) * 8); draw_tile(tiles[7], ((xx * 4) + 3) * 8, ((yy * 4) + 3) * 8);
                 }
-            }*/
+            }
         }
     }
 

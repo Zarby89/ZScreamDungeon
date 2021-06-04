@@ -52,7 +52,7 @@ namespace ZeldaFullEditor
         public bool updating_info = false;
 
         byte[] spriteFontSpacing = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6};
-        public void drawText(Graphics g, int x, int y, string text,ImageAttributes ai = null)
+        public void drawText(Graphics g, int x, int y, string text,ImageAttributes ai = null, bool x2 = false)
         {
             if (showTexts)
             {
@@ -69,7 +69,15 @@ namespace ZeldaFullEditor
                     }
                     if (ai == null)
                     {
-                        g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
+                        
+                        if (x2 == true)
+                        {
+                            g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 16, 16), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
+                        }
+                        else
+                        {
+                            g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
+                        }
                     }
                     else
                     {
@@ -80,7 +88,15 @@ namespace ZeldaFullEditor
                         cpos += 8;
                         continue;
                     }
-                    cpos += spriteFontSpacing[arrayPos];
+                    if (x2 == true)
+                    {
+                        cpos += (spriteFontSpacing[arrayPos]*2);
+                    }
+                    else
+                    {
+                        cpos += spriteFontSpacing[arrayPos];
+                    }
+                        
                 }
             }
         }

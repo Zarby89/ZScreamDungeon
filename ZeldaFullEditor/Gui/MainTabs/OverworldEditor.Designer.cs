@@ -87,6 +87,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
+            this.gravestoneButton = new System.Windows.Forms.ToolStripButton();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -131,6 +132,7 @@
             this.dwButton,
             this.lwButton,
             this.overlayButton,
+            this.gravestoneButton,
             this.searchtilesButton,
             this.refreshToolStrip});
             this.owToolStrip.Location = new System.Drawing.Point(0, 0);
@@ -738,6 +740,17 @@
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
             // 
+            // gravestoneButton
+            // 
+            this.gravestoneButton.CheckOnClick = true;
+            this.gravestoneButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.gravestoneButton.Image = ((System.Drawing.Image)(resources.GetObject("gravestoneButton.Image")));
+            this.gravestoneButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.gravestoneButton.Name = "gravestoneButton";
+            this.gravestoneButton.Size = new System.Drawing.Size(23, 22);
+            this.gravestoneButton.Text = "Overlay";
+            this.gravestoneButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
             // OverworldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -837,5 +850,6 @@
         private System.Windows.Forms.CheckBox mirrorYCheckbox;
         private System.Windows.Forms.CheckBox mirrorXCheckbox;
         private System.Windows.Forms.PictureBox palette8Box;
+        private System.Windows.Forms.ToolStripButton gravestoneButton;
     }
 }

@@ -39,6 +39,8 @@ namespace ZeldaFullEditor
         public bool objectInitialized = false;
         public bool onlyLayout = false;
 
+        public string fromExported = "";
+
 
         private byte _layout;
         public byte layout
@@ -172,12 +174,39 @@ namespace ZeldaFullEditor
             set => staircase_plane[3] = value;
         }
 
-        public Room(int index)
+        public Room(int index, string fromExported = "")
         {
+            this.fromExported = fromExported;
             this.index = index;
             loadHeader();
             loadLayoutObjects();
-            loadTilesObjects();
+            if (fromExported != "")
+            {
+
+                Console.WriteLine(fromExported + "\\ExportedRooms\\" + "room" + index.ToString("D3") + ".bin");
+                if (File.Exists(fromExported+ "\\ExportedRooms\\" + "room" + index.ToString("D3") + ".bin"))
+                {
+                    using (FileStream fs = new FileStream(fromExported+"\\ExportedRooms\\" + "room" + index.ToString("D3") + ".bin", FileMode.Open, FileAccess.Read))
+                    {
+                        byte[] data = new byte[fs.Length];
+                        fs.Read(data, 0, data.Length);
+                        fs.Close();
+                        loadTilesObjectsFromArray(data);
+                        Console.WriteLine("Room " + index.ToString("D3" + " Loaded from exported files"));
+                    }
+                }
+                else
+                {
+                    loadTilesObjects();
+                }
+
+            }
+            else
+            {
+                loadTilesObjects();
+            }
+
+            
             addSprites();
             addBlocks(); 
             addTorches(); 
@@ -874,6 +903,160 @@ namespace ZeldaFullEditor
                     continue;
                 }
                 b3 = ROM.DATA[pos + 2];
+                if (door)
+                {
+                    pos += 2;
+
+                }
+                else
+                {
+                    pos += 3;
+                }
+
+                if (door == false)
+                {
+                    if (b3 >= 0xF8)
+                    {
+                        oid = (short)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
+                        posX = (byte)((b1 & 0xFC) >> 2);
+                        posY = (byte)((b2 & 0xFC) >> 2);
+                        sizeXY = (byte)((((b1 & 0x03) << 2) + (b2 & 0x03)));
+                    }
+                    else //subtype1
+                    {
+                        oid = b3;
+                        posX = (byte)((b1 & 0xFC) >> 2);
+                        posY = (byte)((b2 & 0xFC) >> 2);
+                        sizeX = (byte)((b1 & 0x03));
+                        sizeY = (byte)((b2 & 0x03));
+                        sizeXY = (byte)(((sizeX << 2) + sizeY));
+                    }
+                    if (b1 >= 0xFC) //subtype2 (not scalable? )
+                    {
+                        oid = (short)((b3 & 0x3F) + 0x100);
+                        posX = (byte)(((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));
+                        posY = (byte)(((b2 & 0x0F) << 2) + ((b3 & 0xC0) >> 6));
+                        sizeXY = 0;
+                    }
+                    Room_Object r = addObject(oid, posX, posY, sizeXY, (byte)layer);
+                    if (r != null)
+                    {
+                        tilesObjects.Add(r);
+                    }
+                    foreach (short stair in stairsObjects)
+                    {
+                        if (stair == oid) //we found stairs that lead to another room
+                        {
+
+                            if (nbr_of_staircase < 4)
+                            {
+                                tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Stairs;
+                                staircaseRooms.Add(new StaircaseRoom(posX, posY, "To " + staircase_rooms[nbr_of_staircase]));
+                                nbr_of_staircase++;
+                            }
+                            else
+                            {
+                                tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Stairs;
+                                staircaseRooms.Add(new StaircaseRoom(posX, posY, "To ???"));
+                            }
+
+                        }
+                    }
+
+                    //IF Object is a chest loaded and there's object in the list chest
+                    if (oid == 0xF99)
+                    {
+                        if (chests_in_room.Count > 0)
+                        {
+                            tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Chest;
+                            chest_list.Add(new Chest(posX, posY, chests_in_room[0].itemIn, false));
+                            chests_in_room.RemoveAt(0);
+                        }
+                    }
+                    else if (oid == 0xFB1)
+                    {
+                        if (chests_in_room.Count > 0)
+                        {
+                            tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Chest;
+                            chest_list.Add(new Chest((byte)(posX + 1), posY, chests_in_room[0].itemIn, true));
+                            chests_in_room.RemoveAt(0);
+
+                        }
+                    }
+
+
+                }
+                else
+                {
+
+                    //byte door_pos = b1;//(byte)((b1 & 0xF0) >> 3);
+                    //byte door_type = b2;
+                    tilesObjects.Add(new object_door((short)((b2 << 8) + b1), 0, 0, 0, (byte)layer));
+                    continue;
+                }
+
+
+
+            }
+        }
+
+
+        public void loadTilesObjectsFromArray(byte[] DATA, bool floor = true)
+        {
+            //adddress of the room objects
+
+
+            int objects_location = 0x00;
+
+            floor1 = (byte)(DATA[0] & 0x0F);
+            floor2 = (byte)((DATA[0] >> 4) & 0x0F);
+
+            layout = (byte)((DATA[1] >> 2) & 0x07);
+
+            List<ChestData> chests_in_room = new List<ChestData>();
+            loadChests(ref chests_in_room);
+
+            staircaseRooms.Clear();
+            int nbr_of_staircase = 0;
+
+            int pos = objects_location + 2;
+            byte b1 = 0;
+            byte b2 = 0;
+            byte b3 = 0;
+            byte posX = 0;
+            byte posY = 0;
+            byte sizeX = 0;
+            byte sizeY = 0;
+            byte sizeXY = 0;
+            short oid = 0;
+            int layer = 0;
+            bool door = false;
+            bool endRead = false;
+            while (endRead == false)
+            {
+
+                b1 = DATA[pos];
+                b2 = DATA[pos + 1];
+                if (b1 == 0xFF && b2 == 0xFF)
+                {
+                    pos += 2; //we jump to layer2
+                    layer++;
+                    door = false;
+                    if (layer == 3)
+                    {
+                        endRead = true;
+                        break;
+                    }
+                    continue;
+                }
+
+                if (b1 == 0xF0 && b2 == 0xFF)
+                {
+                    pos += 2; //we jump to layer2
+                    door = true;
+                    continue;
+                }
+                b3 = DATA[pos + 2];
                 if (door)
                 {
                     pos += 2;
@@ -2291,6 +2474,15 @@ namespace ZeldaFullEditor
                 Console.WriteLine("Size of serializing for room " + index.ToString() +" : "+ ms.Length.ToString() + "Bytes");
                 return (Room)formatter.Deserialize(ms);
               }
+        }
+
+        public void CloneToFile(string file)
+        {
+            using (var ms = new FileStream(file, FileMode.OpenOrCreate, FileAccess.Write))
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, this);
+            }
         }
 
         public void Delete()
