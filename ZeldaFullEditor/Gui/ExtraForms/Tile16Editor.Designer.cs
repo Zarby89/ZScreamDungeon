@@ -92,6 +92,7 @@
             this.pictureboxTile8.TabIndex = 0;
             this.pictureboxTile8.TabStop = false;
             this.pictureboxTile8.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureboxTile8_Paint);
+            this.pictureboxTile8.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.pictureboxTile8_MouseDoubleClick);
             this.pictureboxTile8.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureboxTile8_MouseDown);
             // 
             // groupBox1

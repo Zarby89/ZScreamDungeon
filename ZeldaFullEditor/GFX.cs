@@ -61,6 +61,9 @@ namespace ZeldaFullEditor
         public static IntPtr overworldMapPointer = Marshal.AllocHGlobal(0x8000);
         public static Bitmap overworldMapBitmap ;
 
+        public static IntPtr owactualMapPointer = Marshal.AllocHGlobal(0x40000);
+        public static Bitmap owactualMapBitmap;
+
 
         public static bool[] isbpp3 = new bool[223];
 
@@ -199,6 +202,7 @@ namespace ZeldaFullEditor
             mapblockset16Bitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, mapblockset16);
             scratchblockset16Bitmap = new Bitmap(256, 4096, 256, PixelFormat.Format8bppIndexed, scratchblockset16);
             overworldMapBitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, overworldMapPointer);
+            owactualMapBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, owactualMapPointer);
             moveableBlock = new Bitmap(Resources.Mblock);
             spriteFont = new Bitmap(Resources.spriteFont);
             favStar1 = new Bitmap(Resources.starn);
@@ -793,7 +797,7 @@ namespace ZeldaFullEditor
         {
 
 
-/*
+
             //Mode 7
             unsafe
             {
@@ -818,16 +822,79 @@ namespace ZeldaFullEditor
             }
 
             ColorPalette cp = overworldMapBitmap.Palette;
-            for (int i = 0; i < 512; i += 2)
+            for (int i = 0; i < 256; i += 2)
             {
                 //55B27 = US LW
                 //55C27 = US DW
                 cp.Entries[i / 2] = getColor((short)((ROM.DATA[0x55B27 + i + 1] << 8) + ROM.DATA[0x55B27 + i]));
 
+                int k = 0;
+                int j = 0;
+                for (int y = 10; y < 14; y++)
+                {
+                    for (int x = 0; x < 15; x++)
+                    {
+                        cp.Entries[145 + k] = Palettes.globalSprite_Palettes[0][j];
+                        k++;
+                        j++;
+                    }
+                    k++;
+                }
+
             }
             overworldMapBitmap.Palette = cp;
-*/
+            owactualMapBitmap.Palette = cp;
 
+
+        }
+
+
+
+        public static byte[] spriteFontSpacing = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6 };
+        public static  void drawText(Graphics g, int x, int y, string text, ImageAttributes ai = null, bool x2 = false)
+        {
+                text = text.ToUpper();
+                int cpos = 0;
+                for (int i = 0; i < text.Length; i++)
+                {
+                    byte arrayPos = (byte)(text[i] - 32);
+                    if ((byte)text[i] == 10)
+                    {
+                        y += 10;
+                        cpos = 0;
+                        continue;
+                    }
+                    if (ai == null)
+                    {
+
+                        if (x2 == true)
+                        {
+                            g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 16, 16), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
+                        }
+                        else
+                        {
+                            g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
+                        }
+                    }
+                    else
+                    {
+                        g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
+                    }
+                    if (arrayPos > spriteFontSpacing.Length - 1)
+                    {
+                        cpos += 8;
+                        continue;
+                    }
+                    if (x2 == true)
+                    {
+                        cpos += (spriteFontSpacing[arrayPos] * 2);
+                    }
+                    else
+                    {
+                        cpos += spriteFontSpacing[arrayPos];
+                    }
+
+                }
         }
     }
 }

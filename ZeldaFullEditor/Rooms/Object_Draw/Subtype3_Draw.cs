@@ -3079,13 +3079,15 @@ namespace ZeldaFullEditor
         public override void Draw()
         {
 	base.Draw();
-           /* for (int yy = 0; yy < 64; yy++)
+            for (int yy = 0; yy < 4; yy++)
             {
-                for (int xx = 0; xx < 64; xx++)
+                for (int xx = 0; xx < 4; xx++)
                 {
                     draw_tile(tiles[0], (xx) * 8, (yy) * 8);
+                    
+                    
                 }
-            }*/
+            }
         }
     }
 

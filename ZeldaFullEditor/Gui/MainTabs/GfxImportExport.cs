@@ -22,7 +22,7 @@ namespace ZeldaFullEditor.Gui
             InitializeComponent();
         }
         DungeonMain mainForm;
-        int selectedSheet = 0;
+        public int selectedSheet = 0;
         private void pasteIndexed_Click(object sender, EventArgs e)
         {
             byte[] data = ImgClipboard.GetImageData();
@@ -65,7 +65,7 @@ namespace ZeldaFullEditor.Gui
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
             e.Graphics.DrawImage(GFX.allgfxBitmap, new Rectangle(0,0,256, 14272), new Rectangle(0, 0, 128, 7136),GraphicsUnit.Pixel);
-            e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(0, selectedSheet*64, 256, 64));
+            e.Graphics.DrawRectangle(new Pen(Brushes.Aqua,2), new Rectangle(0, selectedSheet*64, 256, 64));
 
         }
 

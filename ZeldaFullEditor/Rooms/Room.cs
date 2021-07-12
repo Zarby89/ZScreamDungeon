@@ -485,7 +485,7 @@ namespace ZeldaFullEditor
             }
             return doorfound;
         }
-        byte[] keysDoors = new byte[] { 0x1C, 0x26, 0x1E, 0x2E, 0x28, 0x32, 0x30 };
+        byte[] keysDoors = new byte[] { 0x1C, 0x26, 0x1E, 0x2E, 0x28, 0x32, 0x30, 0x22 };
         byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38 };
         public byte[] getTilesBytes()
         {
@@ -1004,10 +1004,7 @@ namespace ZeldaFullEditor
         public void loadTilesObjectsFromArray(byte[] DATA, bool floor = true)
         {
             //adddress of the room objects
-
-
-            int objects_location = 0x00;
-
+            tilesObjects.Clear();
             floor1 = (byte)(DATA[0] & 0x0F);
             floor2 = (byte)((DATA[0] >> 4) & 0x0F);
 
@@ -1019,7 +1016,7 @@ namespace ZeldaFullEditor
             staircaseRooms.Clear();
             int nbr_of_staircase = 0;
 
-            int pos = objects_location + 2;
+            int pos = 2;
             byte b1 = 0;
             byte b2 = 0;
             byte b3 = 0;

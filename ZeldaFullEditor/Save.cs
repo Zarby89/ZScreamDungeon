@@ -8,6 +8,16 @@ using System.Windows.Forms;
 using System.IO.Compression;
 namespace ZeldaFullEditor
 {
+
+    //TODO LIST
+    // 
+    // 
+    //
+    //
+    //
+    //
+    //
+
     class Save
     {
 
@@ -1064,7 +1074,7 @@ namespace ZeldaFullEditor
         //1351C0 / 26D1C0 end of tilemap data where the jump code should be for DMA
 
 
-        public bool saveTitleScreen(DungeonMain mainForm)
+        /*public bool saveTitleScreen(DungeonMain mainForm)
         {
             /*int pos = 0x1343C0;
             //134AC0 = BG2
@@ -1075,9 +1085,9 @@ namespace ZeldaFullEditor
                 pos += 2;
                 
             }
-            */
+            
             return false;
-        }
+        }*/
 
 
 
@@ -1186,8 +1196,8 @@ namespace ZeldaFullEditor
                 mapDatap2[i] = new byte[b.Length];
                 if (i == 0x54)
                 {
-                    Console.WriteLine((pos + a.Length).ToString("X6"));
-                    Console.WriteLine((pos + b.Length).ToString("X6"));
+                    //Console.WriteLine((pos + a.Length).ToString("X6"));
+                    //Console.WriteLine((pos + b.Length).ToString("X6"));
                 }
                 //05FE1C
                 //05FE05
@@ -1197,6 +1207,10 @@ namespace ZeldaFullEditor
                 if ((pos + a.Length) >= 0x5FE70 && (pos + a.Length) <= 0x60000)
                 {
                     pos = 0x60000;
+                }
+                if ((pos + a.Length) >= 0x6411F && (pos + a.Length) <= 0x70000)
+                {
+                    pos = 0x0F8780;
                 }
 
 
@@ -1244,6 +1258,10 @@ namespace ZeldaFullEditor
                 {
                     pos = 0x60000;
                 }
+                if ((pos + b.Length) >= 0x6411F && (pos + b.Length) <= 0x70000)
+                {
+                    pos = 0x0F8780;
+                }
                 //map2
                 if (mapPointers2id[i] == -1)
                 {
@@ -1274,10 +1292,14 @@ namespace ZeldaFullEditor
 
             }
 
-            if (pos > 0x6411F)
+            if (pos > 0x0FA298)
             {
+
+                Console.WriteLine("Too many maps data " + pos.ToString("X6"));
                 return true;
             }
+
+
 
             return false;
             //Console.WriteLine("Map Pos Length: " + pos.ToString("X6"));
@@ -1302,6 +1324,13 @@ namespace ZeldaFullEditor
 
             }
 
+            return false;
+        }
+
+        public bool SaveTitleScreen(DungeonMain mainForm)
+        {
+
+            mainForm.screenEditor.Save();
             return false;
         }
 

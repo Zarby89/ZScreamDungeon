@@ -239,20 +239,22 @@ namespace ZeldaFullEditor.Gui
 
                 e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
                 e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-                e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new Rectangle(0, 0, 128, 3600), new Rectangle(0, 0, 128, 3600), GraphicsUnit.Pixel);
-                e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new Rectangle(128, 0, 128, 3600), new Rectangle(0, 3600, 128, 3600), GraphicsUnit.Pixel);
+                e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new Rectangle(0, 0, 128, 4000), new Rectangle(0, 0, 128, 4000), GraphicsUnit.Pixel);
+                e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new Rectangle(128, 0, 128, 4000), new Rectangle(0, 4000, 128, 4000), GraphicsUnit.Pixel);
+                
                 if (scene.selectedTile.Length > 0)
                 {
                     int x = (scene.selectedTile[0] % 8) * 16;
                     int y = ((scene.selectedTile[0] / 8)) * 16;
-                    if (scene.selectedTile[0] >= 1800)
+                    if (scene.selectedTile[0] >= 2000)
                     {
-                        y -= 3600;
+                        y -= 4000;
                         x += 128;
                     }
                     e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(x, y, 16, 16));
                     selectedTileLabel.Text = "Selected Tile : " + scene.selectedTile[0].ToString();
                 }
+                e.Graphics.FillRectangle(Brushes.Black, new RectangleF(128, 3600-96, 128, 96));
 
             }
         }
@@ -262,12 +264,17 @@ namespace ZeldaFullEditor.Gui
             scene.selectedTileSizeX = 1;
             if (e.X > 128)
             {
-                scene.selectedTile = new ushort[1] { (ushort)(((e.X - 128) / 16) + ((e.Y / 16) * 8) + 1800) };
+                scene.selectedTile = new ushort[1] { (ushort)(((e.X - 128) / 16) + ((e.Y / 16) * 8) + 2000) };
+                if (scene.selectedTile[0] > 3751)
+                {
+                    scene.selectedTile[0] = 3751;
+                }
             }
             else
             {
                 scene.selectedTile = new ushort[1] { (ushort)((e.X / 16) + ((e.Y / 16) * 8)) };
             }
+
             tilePictureBox.Refresh();
 
         }

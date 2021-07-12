@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -24,6 +26,8 @@ using System.Security;
 using System.Security.Policy;
 using System.Runtime.Serialization.Formatters.Binary;
 
+
+
 namespace ZeldaFullEditor
 {
 
@@ -34,6 +38,8 @@ namespace ZeldaFullEditor
             InitializeComponent();
 
         }
+
+
         // Registers a hot key with Windows.
         [DllImport("user32.dll")]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
@@ -49,7 +55,7 @@ namespace ZeldaFullEditor
         public TextEditor textEditor = new TextEditor();
         public OverworldEditor overworldEditor = new OverworldEditor();
         Object_Designer objDesigner = new Object_Designer();
-        GfxImportExport gfxEditor;
+        public GfxImportExport gfxEditor;
         DungeonViewer dungeonViewer = new DungeonViewer();
         string projectFilename = "";
         public bool projectLoaded = false;
@@ -81,6 +87,14 @@ namespace ZeldaFullEditor
 
 
 
+            /*if (System.Diagnostics.Debugger.IsAttached)
+            {
+                menuStrip1.Items["toolStripMenuItem1"].Visible = true;
+            }
+            else
+            {
+                menuStrip1.Items["toolStripMenuItem1"].Visible = false;
+            }*/
 
             xTabButton = new Bitmap(Resources.xbutton);
             layoutForm = new RoomLayout(this);
@@ -337,7 +351,7 @@ namespace ZeldaFullEditor
             }
 
 
-            if (save.saveTitleScreen(this))
+            if (save.SaveTitleScreen(this))
             {
                 MessageBox.Show("Failed to save overworld title screen? ", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
@@ -4302,13 +4316,40 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void openROMWithExportedRoomsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void importFromROMToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
 
-            loadFromExported = "GetPath";
-            openToolStripMenuItem_Click(sender, e);
-            
+        private void saveMapsOnlyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Save s = new Save(DungeonsData.all_rooms);
+            overworldEditor.scene.SaveTiles();
+            if (s.saveOverworldMaps(overworldEditor.scene) == true)
+            {
+                Console.WriteLine("too many maps Out of bound error");
+            }
+
+            FileStream fs = new FileStream(projectFilename, FileMode.OpenOrCreate, FileAccess.Write);
+            fs.Write(ROM.DATA, 0, ROM.DATA.Length);
+            fs.Close();
+
+        }
+
+        private void importRoomToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read);
+                byte[] data = new byte[(int)fs.Length];
+                fs.Read(data, 0, data.Length);
+                fs.Close();
+                
+                activeScene.room.loadTilesObjectsFromArray(data);
+                activeScene.Refresh();
+            }
         }
     }
 

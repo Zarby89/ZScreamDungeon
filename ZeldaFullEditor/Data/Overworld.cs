@@ -292,6 +292,8 @@ namespace ZeldaFullEditor
 
         public void DecompressAllMapTiles()
         {
+            int lowest = 0x0FFFFF;
+            int highest = 0x0F8000;
             //int npos = 0;
             int sx = 0;
             int sy = 0;
@@ -315,9 +317,35 @@ namespace ZeldaFullEditor
                 int compressedSize1 = 0;
                 int compressedSize2 = 0;
 
+                if (p1 >= highest)
+                {
+                    highest = p1;
+                }
+                if (p2 >= highest)
+                {
+                    highest = p2;
+                }
 
-                byte[] bytes = ZCompressLibrary.Decompress.ALTTPDecompressOverworld(ROM.DATA, p2, 1000, ref compressedSize1);
+                if (p1 <= lowest)
+                {
+                    if (p1 > 0x0F8000)
+                    {
+                        lowest = p1;
+                    }
+                }
+                if (p2 <= lowest)
+                {
+                    if (p2 > 0x0F8000)
+                    {
+                        lowest = p2;
+                    }
+                }
+
+
+
+            byte[] bytes = ZCompressLibrary.Decompress.ALTTPDecompressOverworld(ROM.DATA, p2, 1000, ref compressedSize1);
                 byte[] bytes2 = ZCompressLibrary.Decompress.ALTTPDecompressOverworld(ROM.DATA, p1, 1000, ref compressedSize2);
+
                /* if (p1 > furthestPtr)
                 {
                     furthestPtr = p1;
@@ -384,6 +412,9 @@ namespace ZeldaFullEditor
                     c = 0;
                 }
             }
+
+            Console.WriteLine("MapPointers(lowest) : " + lowest.ToString("X6"));
+            Console.WriteLine("MapPointers(highest) : " + highest.ToString("X6"));
         }
 
         public int tiles32count = 0;
@@ -613,8 +644,16 @@ namespace ZeldaFullEditor
             }
 
             alltiles16.Clear();
-
+            
             Console.WriteLine("Nbr of uniquetiles32 = " + tiles.Count + " " + t32Unique.Count);
+            int v = t32Unique.Count;
+            for(int i = v;i<8864;i++)
+            {
+                t32Unique.Add(new Tile32(666, 666, 666, 666)); //create new tileunique
+            }
+
+
+
             return false;
         }
 
@@ -779,7 +818,7 @@ namespace ZeldaFullEditor
             int c = t32Unique.Count;
             for (int i = 0; i < c; i += 6)
             {
-                if (i >= 0x3C87)
+                if (index >= 0x4540) //3C87??
                 {
                     Console.WriteLine("Too Many Unique Tiles !");
                     break;
@@ -1080,7 +1119,7 @@ namespace ZeldaFullEditor
         public void loadSprites()
         {
             //LW[0] = RainState 0 to 63 there's no data for DW
-            //LW[1] = ZeldaState 0 to 128 ; Contains LW and DW
+            //LW[1] = ZeldaState 0 to 128 ; Contains LW and DW <128 or 144 wtf
             //LW[2] = AgahState 0 to ?? ;Contains data for LW and DW
 
             //Console.WriteLine(((Constants.overworldSpritesBegining & 0xFFFF) + (09 << 16)).ToString("X6"));
@@ -1130,7 +1169,11 @@ namespace ZeldaFullEditor
                         if (b1 == 0xFF) { break; }
 
                         int editorMapIndex = i;
-                        if (editorMapIndex >= 64)
+                        if (editorMapIndex >= 128)
+                        {
+                            editorMapIndex = i - 128;
+                        }
+                        else if (editorMapIndex >= 64)
                         {
                             editorMapIndex = i - 64;
                         }
@@ -1160,7 +1203,11 @@ namespace ZeldaFullEditor
                         if (b1 == 0xFF) { break; }
 
                         int editorMapIndex = i;
-                        if (editorMapIndex >= 64)
+                        if (editorMapIndex >= 128)
+                        {
+                            editorMapIndex = i - 128;
+                        }
+                        else if (editorMapIndex >= 64)
                         {
                             editorMapIndex = i - 64;
                         }

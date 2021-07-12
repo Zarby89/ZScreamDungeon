@@ -235,8 +235,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.PictureBox allgfxPicturebox;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button paste24bpp;
@@ -251,5 +249,6 @@
         private System.Windows.Forms.PictureBox palettePicturebox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Panel panel2;
+        public System.Windows.Forms.PictureBox allgfxPicturebox;
     }
 }

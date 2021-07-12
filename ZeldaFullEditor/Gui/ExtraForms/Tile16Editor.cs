@@ -166,13 +166,13 @@ namespace ZeldaFullEditor.Gui
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
             //e.Graphics.DrawImage(GFX.editortileBitmap, new Rectangle(0, 0, 64, 64));
-            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f,0f,256.5f,8192f),new RectangleF(0,0,128, 4096),GraphicsUnit.Pixel);
-            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8192f), new RectangleF(0, 3600, 128, 4096), GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f,0f,256.5f,8000f),new RectangleF(0,0,128, 4000),GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8000f), new RectangleF(0, 4000, 128, 4000-192), GraphicsUnit.Pixel);
             if (gridcheckBox.Checked)
             {
                 for (int x = 0; x < 16; x++)
                 {
-                    e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), x * 32, 0, x * 32, 8192);
+                    e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), x * 32, 0, x * 32, 8000);
 
                 }
                 for (int y = 0; y < 256; y++)
@@ -182,9 +182,9 @@ namespace ZeldaFullEditor.Gui
             }
             int xP = (scene.selectedTile[0] % 8) * 32;
             int yP = ((scene.selectedTile[0] / 8)) * 32;
-            if (scene.selectedTile[0] >= 1800)
+            if (scene.selectedTile[0] >= 2000)
             {
-                yP -= 3600;
+                yP -= 8000;
                 xP += 256;
             }
             e.Graphics.DrawRectangle(new Pen(Color.FromArgb(180, Color.Red), 1), new Rectangle(xP, yP, 32, 32));
@@ -203,15 +203,17 @@ namespace ZeldaFullEditor.Gui
         private void pictureboxTile16_MouseDown(object sender, MouseEventArgs e)
         {
             int offset = 0;
+            int yp = e.Y;
             if (e.X < 256)
             {
                 offset = 0;
             }
             else
             {
-                offset = 1792;
+                offset = 1992;
             }
-            int t16 = offset + (e.X / 32) + ((e.Y / 32) * 8);
+
+            int t16 = offset + (e.X / 32) + ((yp / 32) * 8);
             int t8x = (e.X / 16) & 0x01;
             int t8y = (e.Y / 16) & 0x01;
             int t8i = 0;
@@ -511,6 +513,14 @@ namespace ZeldaFullEditor.Gui
         {
             pictureboxTile16.Refresh();
             pictureboxTile8.Refresh();
+        }
+
+        private void pictureboxTile8_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            scene.mainForm.editorsTabControl.SelectedIndex = 2;
+            scene.mainForm.gfxEditor.selectedSheet = scene.ow.allmaps[scene.selectedMap].staticgfx[(e.Y/64)];
+            scene.mainForm.gfxEditor.allgfxPicturebox.Refresh();
+            this.Close();
         }
     }
 }

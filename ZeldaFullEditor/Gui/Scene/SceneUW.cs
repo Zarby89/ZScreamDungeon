@@ -777,6 +777,30 @@ namespace ZeldaFullEditor
                         chestCount++;
                     }
                 }
+                if (mainForm.invisibleObjectsTextToolStripMenuItem.Checked)
+                {
+                    if (o.id == 0xFF3)
+                    {
+                        drawText(e.Graphics, o.x * 8, o.y * 8, "BG2\nFull\nMask");
+                    }
+                    else if (o.id == 0xFAA)
+                    {
+                        drawText(e.Graphics, o.x * 8, o.y * 8, "Lamp");
+                    }
+                    else if (o.id == 0xAD)
+                    {
+                        drawText(e.Graphics, o.x * 8, o.y * 8, "AD ?");
+                    }
+                    else if (o.id == 0xAE)
+                    {
+                        drawText(e.Graphics, o.x * 8, o.y * 8, "AE ?");
+                    }
+                    else if (o.id == 0xAF)
+                    {
+                        drawText(e.Graphics, o.x * 8, o.y * 8, "AF ?");
+                    }
+
+                }
 
                 if (o.options == ObjectOption.Door)
                 {
@@ -1430,6 +1454,7 @@ namespace ZeldaFullEditor
                     o.collisionPoint.Clear();
                     o.Draw();
                 }
+
             }
             
             

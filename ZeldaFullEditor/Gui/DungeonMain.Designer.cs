@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Starting Entrances");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Starting Entrances");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -119,14 +119,10 @@
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.objectstabPage = new System.Windows.Forms.TabPage();
-            this.panel1 = new ZeldaFullEditor.CustomPanel();
-            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
             this.favoriteCheckbox = new System.Windows.Forms.CheckBox();
             this.showNameObjectCheckbox = new System.Windows.Forms.CheckBox();
             this.searchTextbox = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
-            this.spritesView1 = new ZeldaFullEditor.SpritesView();
             this.searchspriteTextbox = new System.Windows.Forms.TextBox();
             this.roomProperty_sortsprite = new System.Windows.Forms.CheckBox();
             this.roomProperty_msgid = new System.Windows.Forms.TextBox();
@@ -191,9 +187,6 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveasToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recentROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.mapDataFromJPdoNotUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.captureMapJPdoNotUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportMapJPdoNotUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -217,6 +210,7 @@
             this.saveSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportAllMapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importAllMapsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importFromROMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.roomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.gotoRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeMaskObjectsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -226,8 +220,7 @@
             this.exportAsASMToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportAllRoomsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportSpritesAsBinaryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exportRoomDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.importRoomDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugRunToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -278,11 +271,19 @@
             this.howToUseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.patchNotesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.jPDebugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mapDataFromJPdoNotUseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.captureMapJPdoNotUseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportMapJPdoNotUseToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.flipMapHorizontallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveMapsOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
-            this.importRoomsFromFolderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openROMWithExportedRoomsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.panel1 = new ZeldaFullEditor.CustomPanel();
+            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
+            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
+            this.spritesView1 = new ZeldaFullEditor.SpritesView();
+            this.invisibleObjectsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -296,9 +297,7 @@
             this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).BeginInit();
             this.objectstabPage.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.customPanel1.SuspendLayout();
             this.headerGroupbox.SuspendLayout();
             this.selectedGroupbox.SuspendLayout();
             this.roomHeaderPanel.SuspendLayout();
@@ -309,6 +308,8 @@
             this.editorsTabControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
             this.menuStrip1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.customPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -947,13 +948,13 @@
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode7.Name = "EntranceNode";
-            treeNode7.Text = "Entrances";
-            treeNode8.Name = "StartingEntranceNode";
-            treeNode8.Text = "Starting Entrances";
+            treeNode3.Name = "EntranceNode";
+            treeNode3.Text = "Entrances";
+            treeNode4.Name = "StartingEntranceNode";
+            treeNode4.Text = "Starting Entrances";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode7,
-            treeNode8});
+            treeNode3,
+            treeNode4});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 186);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -1160,26 +1161,6 @@
             this.objectstabPage.Text = "Objects";
             this.objectstabPage.UseVisualStyleBackColor = true;
             // 
-            // panel1
-            // 
-            this.panel1.AutoScroll = true;
-            this.panel1.Controls.Add(this.objectViewer1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 54);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(292, 610);
-            this.panel1.TabIndex = 1;
-            // 
-            // objectViewer1
-            // 
-            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
-            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
-            this.objectViewer1.Name = "objectViewer1";
-            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
-            this.objectViewer1.TabIndex = 0;
-            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
-            // 
             // favoriteCheckbox
             // 
             this.favoriteCheckbox.AutoSize = true;
@@ -1223,25 +1204,6 @@
             this.tabPage4.TabIndex = 10;
             this.tabPage4.Text = "Sprites";
             this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // customPanel1
-            // 
-            this.customPanel1.AutoScroll = true;
-            this.customPanel1.Controls.Add(this.spritesView1);
-            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel1.Location = new System.Drawing.Point(0, 20);
-            this.customPanel1.Name = "customPanel1";
-            this.customPanel1.Size = new System.Drawing.Size(292, 644);
-            this.customPanel1.TabIndex = 2;
-            // 
-            // spritesView1
-            // 
-            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.spritesView1.Location = new System.Drawing.Point(0, 0);
-            this.spritesView1.Name = "spritesView1";
-            this.spritesView1.Size = new System.Drawing.Size(292, 374);
-            this.spritesView1.TabIndex = 0;
-            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
             // 
             // searchspriteTextbox
             // 
@@ -2004,6 +1966,7 @@
             this.viewToolStripMenuItem,
             this.windowToolStripMenuItem,
             this.helpToolStripMenuItem,
+            this.jPDebugToolStripMenuItem,
             this.toolStripMenuItem1});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
@@ -2017,11 +1980,7 @@
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
             this.saveasToolStripMenuItem,
-            this.recentROMToolStripMenuItem,
-            this.mapDataFromJPdoNotUseToolStripMenuItem,
-            this.captureMapJPdoNotUseToolStripMenuItem,
-            this.exportMapJPdoNotUseToolStripMenuItem,
-            this.openROMWithExportedRoomsToolStripMenuItem});
+            this.recentROMToolStripMenuItem});
             this.fileToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -2031,7 +1990,7 @@
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.openToolStripMenuItem.Text = "Open ROM";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -2040,7 +1999,7 @@
             this.saveToolStripMenuItem.Enabled = false;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.saveToolStripMenuItem.Text = "Save ROM";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
@@ -2048,36 +2007,15 @@
             // 
             this.saveasToolStripMenuItem.Enabled = false;
             this.saveasToolStripMenuItem.Name = "saveasToolStripMenuItem";
-            this.saveasToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.saveasToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.saveasToolStripMenuItem.Text = "Save ROM As...";
             this.saveasToolStripMenuItem.Click += new System.EventHandler(this.saveasToolStripMenuItem_Click);
             // 
             // recentROMToolStripMenuItem
             // 
             this.recentROMToolStripMenuItem.Name = "recentROMToolStripMenuItem";
-            this.recentROMToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
+            this.recentROMToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.recentROMToolStripMenuItem.Text = "Recent ROM";
-            // 
-            // mapDataFromJPdoNotUseToolStripMenuItem
-            // 
-            this.mapDataFromJPdoNotUseToolStripMenuItem.Name = "mapDataFromJPdoNotUseToolStripMenuItem";
-            this.mapDataFromJPdoNotUseToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.mapDataFromJPdoNotUseToolStripMenuItem.Text = "MapData from JP (do not use)";
-            this.mapDataFromJPdoNotUseToolStripMenuItem.Click += new System.EventHandler(this.mapDataFromJPdoNotUseToolStripMenuItem_Click);
-            // 
-            // captureMapJPdoNotUseToolStripMenuItem
-            // 
-            this.captureMapJPdoNotUseToolStripMenuItem.Name = "captureMapJPdoNotUseToolStripMenuItem";
-            this.captureMapJPdoNotUseToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.captureMapJPdoNotUseToolStripMenuItem.Text = "Capture Map JP (do not use)";
-            this.captureMapJPdoNotUseToolStripMenuItem.Click += new System.EventHandler(this.captureMapJPdoNotUseToolStripMenuItem_Click);
-            // 
-            // exportMapJPdoNotUseToolStripMenuItem
-            // 
-            this.exportMapJPdoNotUseToolStripMenuItem.Name = "exportMapJPdoNotUseToolStripMenuItem";
-            this.exportMapJPdoNotUseToolStripMenuItem.Size = new System.Drawing.Size(232, 22);
-            this.exportMapJPdoNotUseToolStripMenuItem.Text = "Export Map JP (do not use)";
-            this.exportMapJPdoNotUseToolStripMenuItem.Click += new System.EventHandler(this.exportMapJPdoNotUseToolStripMenuItem_Click);
             // 
             // editToolStripMenuItem
             // 
@@ -2221,7 +2159,8 @@
             this.loadNamesFileToolStripMenuItem,
             this.saveSettingsToolStripMenuItem,
             this.exportAllMapsToolStripMenuItem,
-            this.importAllMapsToolStripMenuItem});
+            this.importAllMapsToolStripMenuItem,
+            this.importFromROMToolStripMenuItem});
             this.projectToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
             this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
@@ -2269,6 +2208,13 @@
             this.importAllMapsToolStripMenuItem.Text = "Import All Maps";
             this.importAllMapsToolStripMenuItem.Click += new System.EventHandler(this.importAllMapsToolStripMenuItem_Click);
             // 
+            // importFromROMToolStripMenuItem
+            // 
+            this.importFromROMToolStripMenuItem.Name = "importFromROMToolStripMenuItem";
+            this.importFromROMToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.importFromROMToolStripMenuItem.Text = "Import from ROM";
+            this.importFromROMToolStripMenuItem.Click += new System.EventHandler(this.importFromROMToolStripMenuItem_Click);
+            // 
             // roomToolStripMenuItem
             // 
             this.roomToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -2280,9 +2226,7 @@
             this.exportAsASMToolStripMenuItem,
             this.exportAllRoomsToolStripMenuItem,
             this.exportSpritesAsBinaryToolStripMenuItem,
-            this.exportRoomDataToolStripMenuItem,
-            this.importRoomDataToolStripMenuItem,
-            this.importRoomsFromFolderToolStripMenuItem});
+            this.importRoomToolStripMenuItem});
             this.roomToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.roomToolStripMenuItem.Name = "roomToolStripMenuItem";
             this.roomToolStripMenuItem.Size = new System.Drawing.Size(51, 20);
@@ -2291,72 +2235,65 @@
             // gotoRoomToolStripMenuItem
             // 
             this.gotoRoomToolStripMenuItem.Name = "gotoRoomToolStripMenuItem";
-            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.gotoRoomToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.gotoRoomToolStripMenuItem.Text = "Goto Room";
             this.gotoRoomToolStripMenuItem.Click += new System.EventHandler(this.gotoRoomToolStripMenuItem_Click_1);
             // 
             // removeMaskObjectsToolStripMenuItem
             // 
             this.removeMaskObjectsToolStripMenuItem.Name = "removeMaskObjectsToolStripMenuItem";
-            this.removeMaskObjectsToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.removeMaskObjectsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.removeMaskObjectsToolStripMenuItem.Text = "Remove Mask Objects";
             this.removeMaskObjectsToolStripMenuItem.Click += new System.EventHandler(this.removeMasksObjectsToolStripMenuItem_Click);
             // 
             // printRoomObjectsToolStripMenuItem1
             // 
             this.printRoomObjectsToolStripMenuItem1.Name = "printRoomObjectsToolStripMenuItem1";
-            this.printRoomObjectsToolStripMenuItem1.Size = new System.Drawing.Size(215, 22);
+            this.printRoomObjectsToolStripMenuItem1.Size = new System.Drawing.Size(196, 22);
             this.printRoomObjectsToolStripMenuItem1.Text = "Print Room Objects";
             this.printRoomObjectsToolStripMenuItem1.Click += new System.EventHandler(this.printRoomObjectsToolStripMenuItem_Click);
             // 
             // clearSelectedRoomToolStripMenuItem
             // 
             this.clearSelectedRoomToolStripMenuItem.Name = "clearSelectedRoomToolStripMenuItem";
-            this.clearSelectedRoomToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.clearSelectedRoomToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.clearSelectedRoomToolStripMenuItem.Text = "Clear Selected Room";
             this.clearSelectedRoomToolStripMenuItem.Click += new System.EventHandler(this.clearSelectedRoomToolStripMenuItem_Click);
             // 
             // clearAllRoomsToolStripMenuItem
             // 
             this.clearAllRoomsToolStripMenuItem.Name = "clearAllRoomsToolStripMenuItem";
-            this.clearAllRoomsToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.clearAllRoomsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.clearAllRoomsToolStripMenuItem.Text = "Clear All Rooms";
             this.clearAllRoomsToolStripMenuItem.Click += new System.EventHandler(this.clearAllRoomsToolStripMenuItem_Click);
             // 
             // exportAsASMToolStripMenuItem
             // 
             this.exportAsASMToolStripMenuItem.Name = "exportAsASMToolStripMenuItem";
-            this.exportAsASMToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.exportAsASMToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.exportAsASMToolStripMenuItem.Text = "Export as Binary";
             this.exportAsASMToolStripMenuItem.Click += new System.EventHandler(this.exportAsASMToolStripMenuItem_Click);
             // 
             // exportAllRoomsToolStripMenuItem
             // 
             this.exportAllRoomsToolStripMenuItem.Name = "exportAllRoomsToolStripMenuItem";
-            this.exportAllRoomsToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.exportAllRoomsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.exportAllRoomsToolStripMenuItem.Text = "Export All Rooms";
             this.exportAllRoomsToolStripMenuItem.Click += new System.EventHandler(this.exportAllRoomsToolStripMenuItem_Click);
             // 
             // exportSpritesAsBinaryToolStripMenuItem
             // 
             this.exportSpritesAsBinaryToolStripMenuItem.Name = "exportSpritesAsBinaryToolStripMenuItem";
-            this.exportSpritesAsBinaryToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.exportSpritesAsBinaryToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.exportSpritesAsBinaryToolStripMenuItem.Text = "Export Sprites as Binary";
             this.exportSpritesAsBinaryToolStripMenuItem.Click += new System.EventHandler(this.exportSpritesAsBinaryToolStripMenuItem_Click);
             // 
-            // exportRoomDataToolStripMenuItem
+            // importRoomToolStripMenuItem
             // 
-            this.exportRoomDataToolStripMenuItem.Name = "exportRoomDataToolStripMenuItem";
-            this.exportRoomDataToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.exportRoomDataToolStripMenuItem.Text = "Export Room Data";
-            this.exportRoomDataToolStripMenuItem.Click += new System.EventHandler(this.exportRoomDataToolStripMenuItem_Click);
-            // 
-            // importRoomDataToolStripMenuItem
-            // 
-            this.importRoomDataToolStripMenuItem.Name = "importRoomDataToolStripMenuItem";
-            this.importRoomDataToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.importRoomDataToolStripMenuItem.Text = "Import Room Data";
-            this.importRoomDataToolStripMenuItem.Click += new System.EventHandler(this.importRoomDataToolStripMenuItem_Click);
+            this.importRoomToolStripMenuItem.Name = "importRoomToolStripMenuItem";
+            this.importRoomToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.importRoomToolStripMenuItem.Text = "Import Room";
+            this.importRoomToolStripMenuItem.Click += new System.EventHandler(this.importRoomToolStripMenuItem_Click);
             // 
             // testToolStripMenuItem
             // 
@@ -2517,7 +2454,8 @@
             this.xScreenToolStripMenuItem,
             this.showBG2MaskOutlineToolStripMenuItem,
             this.entranceCameraToolStripMenuItem,
-            this.entrancePositionToolStripMenuItem});
+            this.entrancePositionToolStripMenuItem,
+            this.invisibleObjectsTextToolStripMenuItem});
             this.viewToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -2815,10 +2753,42 @@
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
+            // jPDebugToolStripMenuItem
+            // 
+            this.jPDebugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mapDataFromJPdoNotUseToolStripMenuItem1,
+            this.captureMapJPdoNotUseToolStripMenuItem1,
+            this.exportMapJPdoNotUseToolStripMenuItem1});
+            this.jPDebugToolStripMenuItem.Name = "jPDebugToolStripMenuItem";
+            this.jPDebugToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+            this.jPDebugToolStripMenuItem.Text = "JP Debug";
+            // 
+            // mapDataFromJPdoNotUseToolStripMenuItem1
+            // 
+            this.mapDataFromJPdoNotUseToolStripMenuItem1.Name = "mapDataFromJPdoNotUseToolStripMenuItem1";
+            this.mapDataFromJPdoNotUseToolStripMenuItem1.Size = new System.Drawing.Size(232, 22);
+            this.mapDataFromJPdoNotUseToolStripMenuItem1.Text = "MapData from JP (do not use)";
+            this.mapDataFromJPdoNotUseToolStripMenuItem1.Click += new System.EventHandler(this.mapDataFromJPdoNotUseToolStripMenuItem_Click);
+            // 
+            // captureMapJPdoNotUseToolStripMenuItem1
+            // 
+            this.captureMapJPdoNotUseToolStripMenuItem1.Name = "captureMapJPdoNotUseToolStripMenuItem1";
+            this.captureMapJPdoNotUseToolStripMenuItem1.Size = new System.Drawing.Size(232, 22);
+            this.captureMapJPdoNotUseToolStripMenuItem1.Text = "Capture Map JP (do not use)";
+            this.captureMapJPdoNotUseToolStripMenuItem1.Click += new System.EventHandler(this.captureMapJPdoNotUseToolStripMenuItem_Click);
+            // 
+            // exportMapJPdoNotUseToolStripMenuItem1
+            // 
+            this.exportMapJPdoNotUseToolStripMenuItem1.Name = "exportMapJPdoNotUseToolStripMenuItem1";
+            this.exportMapJPdoNotUseToolStripMenuItem1.Size = new System.Drawing.Size(232, 22);
+            this.exportMapJPdoNotUseToolStripMenuItem1.Text = "Export Map JP (do not use)";
+            this.exportMapJPdoNotUseToolStripMenuItem1.Click += new System.EventHandler(this.exportMapJPdoNotUseToolStripMenuItem_Click);
+            // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.flipMapHorizontallyToolStripMenuItem});
+            this.flipMapHorizontallyToolStripMenuItem,
+            this.saveMapsOnlyToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(44, 20);
             this.toolStripMenuItem1.Text = "Tests";
@@ -2829,6 +2799,13 @@
             this.flipMapHorizontallyToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
             this.flipMapHorizontallyToolStripMenuItem.Text = "Flip Map Horizontally";
             this.flipMapHorizontallyToolStripMenuItem.Click += new System.EventHandler(this.flipMapHorizontallyToolStripMenuItem_Click);
+            // 
+            // saveMapsOnlyToolStripMenuItem
+            // 
+            this.saveMapsOnlyToolStripMenuItem.Name = "saveMapsOnlyToolStripMenuItem";
+            this.saveMapsOnlyToolStripMenuItem.Size = new System.Drawing.Size(187, 22);
+            this.saveMapsOnlyToolStripMenuItem.Text = "Save Maps Only";
+            this.saveMapsOnlyToolStripMenuItem.Click += new System.EventHandler(this.saveMapsOnlyToolStripMenuItem_Click);
             // 
             // customPanel3
             // 
@@ -2842,20 +2819,53 @@
             this.customPanel3.TabIndex = 19;
             this.customPanel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.customPanel3_MouseMove);
             // 
-            // importRoomsFromFolderToolStripMenuItem
+            // panel1
             // 
-            this.importRoomsFromFolderToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.importRoomsFromFolderToolStripMenuItem.Name = "importRoomsFromFolderToolStripMenuItem";
-            this.importRoomsFromFolderToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
-            this.importRoomsFromFolderToolStripMenuItem.Text = "Import Rooms from Folder";
-            this.importRoomsFromFolderToolStripMenuItem.Click += new System.EventHandler(this.importRoomsFromFolderToolStripMenuItem_Click);
+            this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.objectViewer1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 54);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(292, 610);
+            this.panel1.TabIndex = 1;
             // 
-            // openROMWithExportedRoomsToolStripMenuItem
+            // objectViewer1
             // 
-            this.openROMWithExportedRoomsToolStripMenuItem.Name = "openROMWithExportedRoomsToolStripMenuItem";
-            this.openROMWithExportedRoomsToolStripMenuItem.Size = new System.Drawing.Size(249, 22);
-            this.openROMWithExportedRoomsToolStripMenuItem.Text = "Open ROM with Exported Rooms";
-            this.openROMWithExportedRoomsToolStripMenuItem.Click += new System.EventHandler(this.openROMWithExportedRoomsToolStripMenuItem_Click);
+            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
+            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
+            this.objectViewer1.Name = "objectViewer1";
+            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
+            this.objectViewer1.TabIndex = 0;
+            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
+            // 
+            // customPanel1
+            // 
+            this.customPanel1.AutoScroll = true;
+            this.customPanel1.Controls.Add(this.spritesView1);
+            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.customPanel1.Location = new System.Drawing.Point(0, 20);
+            this.customPanel1.Name = "customPanel1";
+            this.customPanel1.Size = new System.Drawing.Size(292, 644);
+            this.customPanel1.TabIndex = 2;
+            // 
+            // spritesView1
+            // 
+            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.spritesView1.Location = new System.Drawing.Point(0, 0);
+            this.spritesView1.Name = "spritesView1";
+            this.spritesView1.Size = new System.Drawing.Size(292, 374);
+            this.spritesView1.TabIndex = 0;
+            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
+            // 
+            // invisibleObjectsTextToolStripMenuItem
+            // 
+            this.invisibleObjectsTextToolStripMenuItem.Checked = true;
+            this.invisibleObjectsTextToolStripMenuItem.CheckOnClick = true;
+            this.invisibleObjectsTextToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.invisibleObjectsTextToolStripMenuItem.Name = "invisibleObjectsTextToolStripMenuItem";
+            this.invisibleObjectsTextToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.invisibleObjectsTextToolStripMenuItem.Text = "Invisible Objects Text";
             // 
             // DungeonMain
             // 
@@ -2895,10 +2905,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).EndInit();
             this.objectstabPage.ResumeLayout(false);
             this.objectstabPage.PerformLayout();
-            this.panel1.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
-            this.customPanel1.ResumeLayout(false);
             this.headerGroupbox.ResumeLayout(false);
             this.headerGroupbox.PerformLayout();
             this.selectedGroupbox.ResumeLayout(false);
@@ -2916,6 +2924,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.customPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3162,18 +3172,19 @@
         private System.Windows.Forms.ToolStripMenuItem exportAllRoomsToolStripMenuItem;
         private System.Windows.Forms.TabPage ScreenEditor;
         private System.Windows.Forms.ToolStripButton debugToolStripButton;
-        private System.Windows.Forms.ToolStripMenuItem mapDataFromJPdoNotUseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportMapJPdoNotUseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem captureMapJPdoNotUseToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportSpritesAsBinaryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportAllMapsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importAllMapsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem flipMapHorizontallyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportRoomDataToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem importRoomDataToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem importRoomsFromFolderToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openROMWithExportedRoomsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem jPDebugToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mapDataFromJPdoNotUseToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem captureMapJPdoNotUseToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem exportMapJPdoNotUseToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem importFromROMToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem saveMapsOnlyToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importRoomToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem invisibleObjectsTextToolStripMenuItem;
     }
 }
 
