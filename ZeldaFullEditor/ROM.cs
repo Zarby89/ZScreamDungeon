@@ -144,6 +144,15 @@ namespace ZeldaFullEditor
             return ((DATA[addr + 2] << 16) + (DATA[addr + 1] << 8) + DATA[addr]);
         }
 
+        public static Tile16 ReadTile16(int addr)
+        {
+            ushort t1 = (ushort)((DATA[addr + 1] << 8) + DATA[addr]);
+            ushort t2 = (ushort)((DATA[addr + 3] << 8) + DATA[addr+2]);
+            ushort t3 = (ushort)((DATA[addr + 5] << 8) + DATA[addr+4]);
+            ushort t4 = (ushort)((DATA[addr + 7] << 8) + DATA[addr+6]);
+            return new Tile16((ulong)((t1 << 48) + (t2 << 32) + (t3 << 16) + t4));
+        }
+
         public static ushort ReadShort(int addr)
         {
             return (ushort)((DATA[addr + 1] << 8) + DATA[addr]);

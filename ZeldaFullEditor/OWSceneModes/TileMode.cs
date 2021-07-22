@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
@@ -68,7 +69,6 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             //Buildtileset();
             //BuildTiles16Gfx();
-
 
             if (!scene.mouse_down)
             {
@@ -224,8 +224,11 @@ namespace ZeldaFullEditor.OWSceneModes
 
         }
         byte lockedDirection = 0x00;
+        Stopwatch sw = new Stopwatch();
         public void OnMouseMove(MouseEventArgs e)
         {
+            
+            
             if (scene.initialized)
             {
                 scene.mouseX_Real = e.X;

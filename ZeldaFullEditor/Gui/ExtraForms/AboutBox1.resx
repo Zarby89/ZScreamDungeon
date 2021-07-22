@@ -126,7 +126,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>318, 228</value>
+    <value>318, 245</value>
   </data>
   <data name="btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -157,7 +157,7 @@
     <value>12, 12</value>
   </data>
   <data name="richTextBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>381, 201</value>
+    <value>381, 218</value>
   </data>
   <data name="richTextBox1.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
@@ -165,7 +165,7 @@
   <data name="richTextBox1.Text" xml:space="preserve">
     <value>Scream Magic (ZScream): an editor for The Legend of Zelda, A Link to the Past
 
-Version: 2.7 Beta
+Version: 2.8 Beta
 
 Author: Zarby89
 
@@ -175,6 +175,7 @@ Special Thanks:
 * Puzzledude - Info on dungeon hex data and entrances.
 * fmp, kan (Spanda) - Logo and ideas.
 * Discord ALTTP Hacking Community
+* Zeldix Community
 
 Home:
 https://github.com/Zarby89/ZScreamDungeon</value>
@@ -304,7 +305,7 @@ https://github.com/Zarby89/ZScreamDungeon</value>
     <value>NoControl</value>
   </data>
   <data name="pbxDonate.Location" type="System.Drawing.Point, System.Drawing">
-    <value>171, 219</value>
+    <value>171, 236</value>
   </data>
   <data name="pbxDonate.Size" type="System.Drawing.Size, System.Drawing">
     <value>141, 41</value>
@@ -331,7 +332,7 @@ https://github.com/Zarby89/ZScreamDungeon</value>
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>405, 272</value>
+    <value>405, 289</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>

@@ -1334,6 +1334,17 @@ namespace ZeldaFullEditor
             return false;
         }
 
+        public bool SaveDungeonMaps(DungeonMain mainForm)
+        {
+
+            return mainForm.screenEditor.dungmapSaveAllCurrentDungeon();
+        }
+
+        public bool SaveOverworldMiniMap(DungeonMain mainForm)
+        {
+            mainForm.screenEditor.saveOverworldMap();
+            return false;
+        }
 
         //TODO : OW Message Load/Save
         //OW Musics Saves

@@ -342,6 +342,9 @@ namespace ZeldaFullEditor
                 ROM.DATA[(Constants.entrance_camerayposition + (entranceId * 2)) + 1] = (byte)((ycamera >> 8) & 0xFF);
                 ROM.DATA[Constants.entrance_camerayposition + (entranceId * 2)] = (byte)(ycamera & 0xFF);
 
+                ROM.DATA[(Constants.entrance_exit + (entranceId * 2) + 1)] = (byte)((exit >> 8) & 0xFF);
+                ROM.DATA[Constants.entrance_exit + (entranceId * 2)] = (byte)(exit & 0xFF);
+
                 ROM.DATA[Constants.entrance_blockset + entranceId] = (byte)(blockset & 0xFF);
                 ROM.DATA[Constants.entrance_music + entranceId] = (byte)(music & 0xFF);
                 ROM.DATA[Constants.entrance_dungeon + entranceId] = (byte)(dungeon & 0xFF);
@@ -383,6 +386,9 @@ namespace ZeldaFullEditor
 
                 ROM.DATA[(Constants.startingentrance_camerayposition + (entranceId * 2)) + 1] = (byte)((ycamera >> 8) & 0xFF);
                 ROM.DATA[Constants.startingentrance_camerayposition + (entranceId * 2)] = (byte)(ycamera & 0xFF);
+
+                ROM.DATA[(Constants.startingentrance_exit + (entranceId * 2) + 1)] = (byte)((exit >> 8) & 0xFF);
+                ROM.DATA[Constants.startingentrance_exit + (entranceId * 2)] = (byte)(exit & 0xFF);
 
                 ROM.DATA[Constants.startingentrance_blockset + entranceId] = (byte)(blockset & 0xFF);
                 ROM.DATA[Constants.startingentrance_music + entranceId] = (byte)(music & 0xFF);

@@ -1615,22 +1615,19 @@ namespace ZeldaFullEditor
             resizing = false;
             if (mouse_down == true)
             {
-                if (e.Button == MouseButtons.Left)
-                {
-                    setMouseSizeMode(e);
-                    
-                    mouse_down = false;
-                    if (room.selectedObject.Count == 0) //if we don't have any objects select we select what is in the rectangle
-                    {
-                        getObjectsRectangle();
-                    }
-                    else
-                    {
-                        setObjectsPosition();
-                    }
+                setMouseSizeMode(e);
 
+                mouse_down = false;
+                if (room.selectedObject.Count == 0) //if we don't have any objects select we select what is in the rectangle
+                {
+                    getObjectsRectangle();
                 }
-                else if (e.Button == MouseButtons.Right) //that's a problem
+                else
+                {
+                    setObjectsPosition();
+                }
+
+                if (e.Button == MouseButtons.Right) //that's a problem
                 {
                     rmx = e.X;
                     rmy = e.Y;

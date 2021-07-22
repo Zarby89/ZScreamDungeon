@@ -50,6 +50,7 @@
             this.dwButton = new System.Windows.Forms.ToolStripButton();
             this.lwButton = new System.Windows.Forms.ToolStripButton();
             this.overlayButton = new System.Windows.Forms.ToolStripButton();
+            this.gravestoneButton = new System.Windows.Forms.ToolStripButton();
             this.searchtilesButton = new System.Windows.Forms.ToolStripButton();
             this.refreshToolStrip = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -87,7 +88,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-            this.gravestoneButton = new System.Windows.Forms.ToolStripButton();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -337,6 +337,17 @@
             this.overlayButton.Size = new System.Drawing.Size(23, 22);
             this.overlayButton.Text = "Overlay";
             this.overlayButton.Click += new System.EventHandler(this.ModeButton_Click);
+            // 
+            // gravestoneButton
+            // 
+            this.gravestoneButton.CheckOnClick = true;
+            this.gravestoneButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.gravestoneButton.Image = ((System.Drawing.Image)(resources.GetObject("gravestoneButton.Image")));
+            this.gravestoneButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.gravestoneButton.Name = "gravestoneButton";
+            this.gravestoneButton.Size = new System.Drawing.Size(23, 22);
+            this.gravestoneButton.Text = "Overlay";
+            this.gravestoneButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // searchtilesButton
             // 
@@ -614,7 +625,7 @@
             this.textidTextbox.Size = new System.Drawing.Size(48, 20);
             this.textidTextbox.TabIndex = 10;
             this.textidTextbox.Click += new System.EventHandler(this.textidTextbox_Click);
-            this.textidTextbox.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
+            this.textidTextbox.TextChanged += new System.EventHandler(this.textidTextbox_TextChanged);
             this.textidTextbox.Leave += new System.EventHandler(this.textidTextbox_Leave);
             // 
             // label5
@@ -739,17 +750,6 @@
             this.previewTextPicturebox.TabStop = false;
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
-            // 
-            // gravestoneButton
-            // 
-            this.gravestoneButton.CheckOnClick = true;
-            this.gravestoneButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.gravestoneButton.Image = ((System.Drawing.Image)(resources.GetObject("gravestoneButton.Image")));
-            this.gravestoneButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.gravestoneButton.Name = "gravestoneButton";
-            this.gravestoneButton.Size = new System.Drawing.Size(23, 22);
-            this.gravestoneButton.Text = "Overlay";
-            this.gravestoneButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // OverworldEditor
             // 

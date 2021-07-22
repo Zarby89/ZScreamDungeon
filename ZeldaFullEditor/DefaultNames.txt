@@ -243,19 +243,34 @@ EF Cane of Somaria Platform (Unused)
 F0 Cane of Somaria Platform (Unused)
 F1 Cane of Somaria Platform (Unused)
 F2 Medallion Tablet
-F3
-F4
-F5
-F6
-F7
-F8
-F9
-FA
-FB
-FC
-FD
-FE
-FF
+F3 Npc Door
+F4 Falling Rocks (HardCoded)
+F5 Cascade Metalball Factory
+F6 Stalfos Factory
+F7 Stalfos Trap
+F8 Snake Trap
+F9 Moving Floor
+FA Zol Factory
+FB Wall Master Factory
+FC Falling Tiles 1
+FD Falling Tiles 2
+FE Falling Tiles 3
+FF Falling Tiles 4
+//FROM HERE IT CAN'T BE REACHED ON OVERWORLD
+//100 Falling Tiles 4
+//101 Falling Tiles 5
+//102 Falling Tiles 6
+//103 PirogusuFactory 1
+//104 PirogusuFactory 2 
+//105 PirogusuFactory 3 
+//106 PirogusuFactory 4
+//107 Flying Tiles room
+//108 Wizzrobe Factory
+//109 Zozo Factory
+//10A Stalfos Trap Trigger window
+//10B Red Stalfos Trap
+//10C Armos Coordinator
+//10D Bomb Trap
 
 //NOT IMPLEMENTED YET!
 //that will changes entrances names as well

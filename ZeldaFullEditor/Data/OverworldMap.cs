@@ -40,7 +40,7 @@ namespace ZeldaFullEditor
             gfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, gfxPtr);
             //
 
-
+            
 
             if (index != 0x80)
             {
@@ -664,10 +664,25 @@ namespace ZeldaFullEditor
                 for (int i = 0; i < 256; i++)
                 {
                     pal.Entries[i] = currentPalette[i];
+                    pal.Entries[(i / 16) * 16] = Color.Transparent;
                 }
-                gfxBitmap.Palette = pal;
+
+
                 GFX.mapgfx16Bitmap.Palette = pal;
                 GFX.mapblockset16Bitmap.Palette = pal;
+
+                /*for (int i = 0; i < 256; i++)
+                {
+                    if (index == 3)
+                    {
+                        
+                    }
+                    else if (index == 4)
+                    {
+                        pal.Entries[(i / 16) * 16] = Color.Transparent;
+                    }
+                }*/
+                gfxBitmap.Palette = pal;
             }
             catch(Exception e)
             {

@@ -13,6 +13,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -27,7 +28,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -55,6 +55,28 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>screamlink.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CSScriptLibrary, Version=3.30.3.0, Culture=neutral, PublicKeyToken=70fcc3d18c749033, processorArchitecture=MSIL">
@@ -171,7 +193,9 @@
   <ItemGroup>
     <Compile Include="asar.cs" />
     <Compile Include="ChestDraw.cs" />
+    <Compile Include="Data\DungeonMap.cs" />
     <Compile Include="Data\Gravestone.cs" />
+    <Compile Include="Data\MapIcon.cs" />
     <Compile Include="Data\OAMTile.cs" />
     <Compile Include="Data\ScreenStrip.cs" />
     <Compile Include="Gui\ExtraForms\ChestPicker.cs">
@@ -540,12 +564,14 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\GfxGroupsForm.resx">
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\GfxImportExport.resx">
       <DependentUpon>GfxImportExport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\GotoRoom.resx">
       <DependentUpon>GotoRoom.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\ObjectDesigner.resx">
       <DependentUpon>ObjectDesigner.cs</DependentUpon>
@@ -647,6 +673,8 @@
     <None Include="Resources\starn.bmp" />
     <None Include="Resources\starl.bmp" />
     <None Include="Resources\darkbg.png" />
+    <None Include="Resources\floorSelector.bmp" />
+    <None Include="Resources\floorselector.png" />
     <Content Include="spritesmove.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

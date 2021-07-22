@@ -142,6 +142,7 @@ namespace ZeldaFullEditor.Gui
             if (propertiesChangedFromForm == false)
             {
 
+
                 byte result = 0;
                 OverworldMap mapParent = scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent];
 
@@ -149,6 +150,7 @@ namespace ZeldaFullEditor.Gui
                 {
                     mapParent = scene.ow.allmaps[scene.selectedMap];
                 }
+
 
                 if (byte.TryParse(gfxTextbox.Text, out result))
                 {
@@ -179,27 +181,7 @@ namespace ZeldaFullEditor.Gui
                     }
 
                 }
-                if (byte.TryParse(paletteTextbox.Text, out result))
-                {
-                    mapParent.palette = result;
-                }
-                short msgid = 0;
-                if (short.TryParse(textidTextbox.Text, out msgid))
-                {
-                    mapParent.messageID = msgid;
 
-                    if (msgid < mainForm.textEditor.textListbox.Items.Count)
-                    {
-                        mainForm.textEditor.textListbox.SelectedIndex = msgid;
-                    }
-
-                    mainForm.textEditor.Refresh();
-                    previewTextPicturebox.Size = new Size(340, 102);
-                    previewTextPicturebox.Visible = true;
-                    previewTextPicturebox.Refresh();
-
-
-                }
 
                 if (mapParent.largeMap)
                 {
@@ -980,5 +962,39 @@ namespace ZeldaFullEditor.Gui
             stf.ShowDialog();
             
         }
+
+        private void textidTextbox_TextChanged(object sender, EventArgs e)
+        {
+            if (propertiesChangedFromForm == false)
+            {
+
+
+                byte result = 0;
+                OverworldMap mapParent = scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent];
+
+                if (scene.ow.allmaps[scene.selectedMap].parent == 255)
+                {
+                    mapParent = scene.ow.allmaps[scene.selectedMap];
+                }
+
+                short msgid = 0;
+                if (short.TryParse(textidTextbox.Text, out msgid))
+                {
+                    mapParent.messageID = msgid;
+
+                    if (msgid < mainForm.textEditor.textListbox.Items.Count)
+                    {
+                        mainForm.textEditor.textListbox.SelectedIndex = msgid;
+                    }
+
+                    mainForm.textEditor.Refresh();
+                    previewTextPicturebox.Size = new Size(340, 102);
+                    previewTextPicturebox.Visible = true;
+                    previewTextPicturebox.Refresh();
+
+
+                }
+            }
+            }
     }
 }

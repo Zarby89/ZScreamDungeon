@@ -4569,7 +4569,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Blue Switch Block ↔";
+            name = "Blue Peg Block ↔";
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
         
@@ -4604,7 +4604,7 @@ namespace ZeldaFullEditor
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
             addTiles(4, pos);
-            name = "Red Switch Block ↔";
+            name = "Orange Peg Block ↔";
             sort = Sorting.Horizontal | Sorting.Dungeons;
         }
 
@@ -6220,7 +6220,7 @@ namespace ZeldaFullEditor
         {
 
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
-            name = "Moveing Floor Right ↔ ↕";
+            name = "Moving Floor Right ↔ ↕";
             addTiles(8, pos);//??
             sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
         }

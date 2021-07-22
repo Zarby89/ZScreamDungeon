@@ -77,6 +77,20 @@ namespace ZeldaFullEditor
         public string loadFromExported = "";
         private void Form1_Load(object sender, EventArgs e)
         {
+
+            GFX.fontgfx16Ptr = Marshal.AllocHGlobal((256 * 256));
+
+            GFX.currentfontgfx16Ptr = Marshal.AllocHGlobal(172 * 20000);
+
+            GFX.mapblockset16 = Marshal.AllocHGlobal(1048576);
+
+            GFX.scratchblockset16 = Marshal.AllocHGlobal(1048576);
+
+            GFX.overworldMapPointer = Marshal.AllocHGlobal(0x40000);
+
+            GFX.owactualMapPointer = Marshal.AllocHGlobal(0x40000);
+
+
             if (Settings.Default.favoriteObjects.Count < 0xFFF)
             {
                 while (Settings.Default.favoriteObjects.Count < 0xFFF)
@@ -358,6 +372,12 @@ namespace ZeldaFullEditor
                 return;
             }
 
+            if (save.SaveOverworldMiniMap(this))
+            {
+                MessageBox.Show("Failed to save overworld Minimap? ", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
 
             overworldEditor.scene.SaveTiles();
             if (save.saveOverworldMaps(overworldEditor.scene))
@@ -369,6 +389,13 @@ namespace ZeldaFullEditor
             }
 
             if (save.SaveGravestones(overworldEditor.scene))
+            {
+                MessageBox.Show("Failed to save Gravestones", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+
+            if (save.SaveDungeonMaps(this))
             {
                 MessageBox.Show("Failed to save Gravestones", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
@@ -2796,6 +2823,9 @@ namespace ZeldaFullEditor
             epForm.entranceProperty_FR.Text = en.scrolledge_FR.ToString();
             epForm.entranceProperty_HL.Text = en.scrolledge_HL.ToString();
             epForm.entranceProperty_HR.Text = en.scrolledge_HR.ToString();
+            int p = (en.Exit & 0x7FFF) >> 1;
+            epForm.doorxTextbox.Text = (p % 64).ToString();
+            epForm.dooryTextbox.Text = (p >> 6).ToString();
 
             if ((en.Scrolling & 0x20) == 0x20)
             {
@@ -2922,6 +2952,24 @@ namespace ZeldaFullEditor
                 {
                     selectedEntrance.YScroll = 0;
                 }
+                int rr = 0;
+                if (int.TryParse(epForm.doorxTextbox.Text, out r))
+                {
+                    if (int.TryParse(epForm.dooryTextbox.Text, out rr))
+                    {
+                        p = ((rr << 6) + (r & 0x3F)) << 1;
+                        selectedEntrance.Exit = (short)p;
+                    }
+                    else 
+                    {
+                        selectedEntrance.Exit = 0;
+                    }
+                }
+                else
+                {
+                    selectedEntrance.Exit = 0;
+                }
+
 
                 byte b = 0;
                 if (epForm.entranceProperty_hscroll.Checked)
@@ -2950,6 +2998,8 @@ namespace ZeldaFullEditor
                     selectedEntrance.Scrollquadrant = 0x10;
                 }
                 //if (entranceProperty_quadbl)
+
+
 
                 selectedEntrance.Scrolling = b;
 

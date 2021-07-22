@@ -290,7 +290,7 @@ namespace ZeldaFullEditor
         public object_F8F(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "Somaria Intersection All Direction (square)";
+            name = "Somaria horizontal underneath rail";
             addTiles(1, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -405,7 +405,7 @@ namespace ZeldaFullEditor
         public object_F94(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "Down Warp Door";
+            name = "Down Warp Door (not working?)";
             sort = Sorting.NonScalable;
             addTiles(12, pos);//??
         }
@@ -767,7 +767,7 @@ namespace ZeldaFullEditor
         public object_FA2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "Pit Wall Corner";
+            name = "Pit Wall Corner ▟";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -791,7 +791,7 @@ namespace ZeldaFullEditor
         public object_FA3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "Pit Wall Corner";
+            name = "Pit Wall Corner ▜";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -815,7 +815,7 @@ namespace ZeldaFullEditor
         public object_FA4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "Pit Wall Corner";
+            name = "Pit Wall Corner ▙";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }
@@ -839,7 +839,7 @@ namespace ZeldaFullEditor
         public object_FA5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-            name = "Pit Wall Corner";
+            name = "Pit Wall Corner ▛";
             addTiles(4, pos);//??
             sort = Sorting.NonScalable;
         }

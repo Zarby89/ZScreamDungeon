@@ -19,7 +19,7 @@ namespace ZeldaFullEditor
         public static int subtype2_tiles = 0x83F0; // JP = Same //i don't think that need a pointer
         public static int subtype3_tiles = 0x84F0; // JP = Same //i don't think that need a pointer
         public static int gfx_animated_pointer = 0x10275; //JP 0x10624 //long pointer
-        public static int overworldgfxGroups2 = 0x6073;
+        public static int overworldgfxGroups2 = 0x6073; //0x60B3
         public static int gfx_1_pointer = 0x6790; //2byte pointer bank 00 pc -> 0x4320  CF80
         public static int gfx_2_pointer = 0x6795; //D05F
         public static int gfx_3_pointer = 0x679A; //D13E
@@ -307,6 +307,27 @@ namespace ZeldaFullEditor
         public static int hardcodedGrassDW = 0x05FEB3;//0x7564F;
         public static int hardcodedGrassSpecial = 0x75640;
 
+        //===========================================================================================
+        //Dungeon Map Related Variables
+        //===========================================================================================
+        public static int dungeonMap_rooms_ptr = 0x57605; //14 pointers of map data
+        public static int dungeonMap_floors = 0x575D9; //14 words values
+
+        public static int dungeonMap_gfx_ptr = 0x57BE4; //14 pointers of gfx data
+        public static int dungeonMap_datastart = 0x57039; //data start for floors/gfx MUST skip 575D9 to 57621 (pointers)
+
+
+        public static int dungeonMap_expCheck = 0x56652; //IF Byte = 0xB9 dungeon maps are not expanded
+        public static int dungeonMap_tile16 = 0x57009;
+        public static int dungeonMap_tile16Exp = 0x109010;
+        public static int dungeonMap_bossrooms = 0x56807; //14 words values 0x000F = no boss
+
+
+
+
+
+
+
         public static string[] RoomEffect = new string[]
         {
             "Nothing", "01", "Moving Floor", "Moving Water", "04", "Red Flashes", "Light Torchto See Floor", "Ganon Room"
@@ -414,15 +435,15 @@ namespace ZeldaFullEditor
             OWExitUnk2 = 0x16318 - 0x29C;
             OWExitDoorType1 = 0x16367 - 0x29C;
             OWExitDoorType2 = 0x16405 - 0x29C;
-            
+
+            overworldgfxGroups2 = 0x60B3; //
 
 
 
-
-       /* public static int map32TilesTL = 0x18000;
-        public static int map32TilesTR = 0x1B400;
-        public static int map32TilesBL = 0x20000;
-        public static int map32TilesBR = 0x23400;*/
+            /* public static int map32TilesTL = 0x18000;
+             public static int map32TilesTR = 0x1B400;
+             public static int map32TilesBL = 0x20000;
+             public static int map32TilesBR = 0x23400;*/
 
             map32TilesTL = 0x18000;
             map32TilesTR = 0x1B3C0;

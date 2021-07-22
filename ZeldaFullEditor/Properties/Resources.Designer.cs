@@ -73,6 +73,16 @@ namespace ZeldaFullEditor.Properties {
         /// <summary>
         ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap floorselector {
+            get {
+                object obj = ResourceManager.GetObject("floorselector", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une ressource localisée de type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Mblock {
             get {
                 object obj = ResourceManager.GetObject("Mblock", resourceCulture);

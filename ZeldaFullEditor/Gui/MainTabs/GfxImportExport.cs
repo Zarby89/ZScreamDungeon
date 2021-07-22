@@ -71,6 +71,20 @@ namespace ZeldaFullEditor.Gui
 
         private void button1_Click(object sender, EventArgs e)
         {
+            int csize = 0;
+            SaveFileDialog sfd = new SaveFileDialog();
+
+
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                byte[] ndata = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(ROM.DATA, GFX.GetPCGfxAddress(ROM.DATA, (byte)selectedSheet), 0x1000, ref csize);
+                FileStream fs = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+                fs.Write(ndata, 0, ndata.Length);
+                fs.Close();
+            }
+
+
             byte[] sdata = new byte[0x800];
             unsafe
             {
@@ -82,12 +96,11 @@ namespace ZeldaFullEditor.Gui
 
             }
 
-            FileStream fs = new FileStream("test3bpp.gfx", FileMode.OpenOrCreate, FileAccess.Write);
-            byte[] ndata = GFX.pc4bppto2bppsnes(sdata);
-            fs.Write(ndata, 0, ndata.Length);
-            fs.Close();
+
            
         }
+
+        byte[][] modifiedSheets = new byte[223][];
         byte[][] gfxSheets3bpp = new byte[223][];
         private void button2_Click(object sender, EventArgs e)
         {
@@ -108,8 +121,16 @@ namespace ZeldaFullEditor.Gui
                     }
                     else
                     {
-                        int compressedSize = 0;
-                        gfxSheets3bpp[i] = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(ROM.DATA, GFX.GetPCGfxAddress(ROM.DATA, (byte)i), 0x800, ref compressedSize);
+                        if (modifiedSheets[i] != null)
+                        {
+                            Console.WriteLine(i.ToString() + " Sheet has been modified");
+                            gfxSheets3bpp[i] = modifiedSheets[i];
+                        }
+                        else
+                        {
+                            int compressedSize = 0;
+                            gfxSheets3bpp[i] = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(ROM.DATA, GFX.GetPCGfxAddress(ROM.DATA, (byte)i), 0x800, ref compressedSize);
+                        }
                     }
                 }
                 
@@ -402,6 +423,29 @@ namespace ZeldaFullEditor.Gui
             this.panel2.Controls.Add(palf);
             Refresh();
 
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+
+            OpenFileDialog ofd = new OpenFileDialog();
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                FileStream fs = new FileStream(ofd.FileName,FileMode.Open,FileAccess.Read);
+                if (fs.Length > 0x800)
+                {
+                    if (MessageBox.Show("This graphic file seems to be bigger than expected do you still want to proceed?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
+                    {
+                        fs.Close();
+                        return;
+                    }
+                }
+                modifiedSheets[selectedSheet] = new byte[(int)fs.Length];
+                fs.Read(modifiedSheets[selectedSheet], 0, (int)fs.Length);
+                fs.Close();
+
+            }
+            
         }
     }
 }

@@ -66,6 +66,13 @@
             this.label38 = new System.Windows.Forms.Label();
             this.buttonOk = new System.Windows.Forms.Button();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.doorCheckbox = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.doorxTextbox = new System.Windows.Forms.TextBox();
+            this.dooryTextbox = new System.Windows.Forms.TextBox();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // label52
@@ -378,7 +385,7 @@
             // buttonOk
             // 
             this.buttonOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.buttonOk.Location = new System.Drawing.Point(231, 250);
+            this.buttonOk.Location = new System.Drawing.Point(231, 332);
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 94;
@@ -389,18 +396,75 @@
             // buttonCancel
             // 
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.buttonCancel.Location = new System.Drawing.Point(150, 250);
+            this.buttonCancel.Location = new System.Drawing.Point(150, 332);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 95;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.dooryTextbox);
+            this.groupBox1.Controls.Add(this.doorxTextbox);
+            this.groupBox1.Controls.Add(this.label2);
+            this.groupBox1.Controls.Add(this.label1);
+            this.groupBox1.Controls.Add(this.doorCheckbox);
+            this.groupBox1.Location = new System.Drawing.Point(17, 237);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(258, 89);
+            this.groupBox1.TabIndex = 96;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Door Setting (when no exit is used)";
+            // 
+            // doorCheckbox
+            // 
+            this.doorCheckbox.AutoSize = true;
+            this.doorCheckbox.Location = new System.Drawing.Point(6, 19);
+            this.doorCheckbox.Name = "doorCheckbox";
+            this.doorCheckbox.Size = new System.Drawing.Size(77, 17);
+            this.doorCheckbox.TabIndex = 0;
+            this.doorCheckbox.Text = "Use Door?";
+            this.doorCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(6, 39);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(46, 13);
+            this.label1.TabIndex = 97;
+            this.label1.Text = "Door X :";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(72, 39);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(46, 13);
+            this.label2.TabIndex = 98;
+            this.label2.Text = "Door Y :";
+            // 
+            // doorxTextbox
+            // 
+            this.doorxTextbox.Location = new System.Drawing.Point(9, 55);
+            this.doorxTextbox.Name = "doorxTextbox";
+            this.doorxTextbox.Size = new System.Drawing.Size(60, 20);
+            this.doorxTextbox.TabIndex = 99;
+            // 
+            // dooryTextbox
+            // 
+            this.dooryTextbox.Location = new System.Drawing.Point(75, 55);
+            this.dooryTextbox.Name = "dooryTextbox";
+            this.dooryTextbox.Size = new System.Drawing.Size(60, 20);
+            this.dooryTextbox.TabIndex = 100;
+            // 
             // EntrancePropertyForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(318, 285);
+            this.ClientSize = new System.Drawing.Size(318, 367);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.label52);
@@ -441,6 +505,8 @@
             this.Controls.Add(this.label38);
             this.Name = "EntrancePropertyForm";
             this.Text = "EntrancePropertyForm";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -486,5 +552,11 @@
         public System.Windows.Forms.RadioButton entranceProperty_quadtl;
         public System.Windows.Forms.CheckBox entranceProperty_vscroll;
         public System.Windows.Forms.CheckBox entranceProperty_hscroll;
+        private System.Windows.Forms.GroupBox groupBox1;
+        public System.Windows.Forms.TextBox dooryTextbox;
+        public System.Windows.Forms.TextBox doorxTextbox;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox doorCheckbox;
     }
 }

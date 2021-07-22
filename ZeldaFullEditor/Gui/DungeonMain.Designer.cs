@@ -119,10 +119,14 @@
             this.label19 = new System.Windows.Forms.Label();
             this.label18 = new System.Windows.Forms.Label();
             this.objectstabPage = new System.Windows.Forms.TabPage();
+            this.panel1 = new ZeldaFullEditor.CustomPanel();
+            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
             this.favoriteCheckbox = new System.Windows.Forms.CheckBox();
             this.showNameObjectCheckbox = new System.Windows.Forms.CheckBox();
             this.searchTextbox = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
+            this.spritesView1 = new ZeldaFullEditor.SpritesView();
             this.searchspriteTextbox = new System.Windows.Forms.TextBox();
             this.roomProperty_sortsprite = new System.Windows.Forms.CheckBox();
             this.roomProperty_msgid = new System.Windows.Forms.TextBox();
@@ -262,6 +266,7 @@
             this.showBG2MaskOutlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.entranceCameraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.entrancePositionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.invisibleObjectsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.windowToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.vramViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cGramViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -279,11 +284,7 @@
             this.flipMapHorizontallyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveMapsOnlyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
-            this.panel1 = new ZeldaFullEditor.CustomPanel();
-            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
-            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
-            this.spritesView1 = new ZeldaFullEditor.SpritesView();
-            this.invisibleObjectsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.overworldOverlayVisibleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -297,7 +298,9 @@
             this.splitContainer3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).BeginInit();
             this.objectstabPage.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.tabPage4.SuspendLayout();
+            this.customPanel1.SuspendLayout();
             this.headerGroupbox.SuspendLayout();
             this.selectedGroupbox.SuspendLayout();
             this.roomHeaderPanel.SuspendLayout();
@@ -308,8 +311,6 @@
             this.editorsTabControl.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
             this.menuStrip1.SuspendLayout();
-            this.panel1.SuspendLayout();
-            this.customPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -1161,6 +1162,26 @@
             this.objectstabPage.Text = "Objects";
             this.objectstabPage.UseVisualStyleBackColor = true;
             // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.objectViewer1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 54);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(292, 610);
+            this.panel1.TabIndex = 1;
+            // 
+            // objectViewer1
+            // 
+            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
+            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
+            this.objectViewer1.Name = "objectViewer1";
+            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
+            this.objectViewer1.TabIndex = 0;
+            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
+            // 
             // favoriteCheckbox
             // 
             this.favoriteCheckbox.AutoSize = true;
@@ -1204,6 +1225,25 @@
             this.tabPage4.TabIndex = 10;
             this.tabPage4.Text = "Sprites";
             this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // customPanel1
+            // 
+            this.customPanel1.AutoScroll = true;
+            this.customPanel1.Controls.Add(this.spritesView1);
+            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.customPanel1.Location = new System.Drawing.Point(0, 20);
+            this.customPanel1.Name = "customPanel1";
+            this.customPanel1.Size = new System.Drawing.Size(292, 644);
+            this.customPanel1.TabIndex = 2;
+            // 
+            // spritesView1
+            // 
+            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.spritesView1.Location = new System.Drawing.Point(0, 0);
+            this.spritesView1.Name = "spritesView1";
+            this.spritesView1.Size = new System.Drawing.Size(292, 374);
+            this.spritesView1.TabIndex = 0;
+            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
             // 
             // searchspriteTextbox
             // 
@@ -2455,7 +2495,8 @@
             this.showBG2MaskOutlineToolStripMenuItem,
             this.entranceCameraToolStripMenuItem,
             this.entrancePositionToolStripMenuItem,
-            this.invisibleObjectsTextToolStripMenuItem});
+            this.invisibleObjectsTextToolStripMenuItem,
+            this.overworldOverlayVisibleToolStripMenuItem});
             this.viewToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -2681,6 +2722,15 @@
             this.entrancePositionToolStripMenuItem.Text = "Entrance Position";
             this.entrancePositionToolStripMenuItem.Click += new System.EventHandler(this.entrancePositionToolStripMenuItem_Click);
             // 
+            // invisibleObjectsTextToolStripMenuItem
+            // 
+            this.invisibleObjectsTextToolStripMenuItem.Checked = true;
+            this.invisibleObjectsTextToolStripMenuItem.CheckOnClick = true;
+            this.invisibleObjectsTextToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.invisibleObjectsTextToolStripMenuItem.Name = "invisibleObjectsTextToolStripMenuItem";
+            this.invisibleObjectsTextToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.invisibleObjectsTextToolStripMenuItem.Text = "Invisible Objects Text";
+            // 
             // windowToolStripMenuItem
             // 
             this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -2696,28 +2746,28 @@
             // vramViewerToolStripMenuItem
             // 
             this.vramViewerToolStripMenuItem.Name = "vramViewerToolStripMenuItem";
-            this.vramViewerToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.vramViewerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.vramViewerToolStripMenuItem.Text = "Vram Viewer";
             this.vramViewerToolStripMenuItem.Click += new System.EventHandler(this.vramViewerToolStripMenuItem_Click);
             // 
             // cGramViewerToolStripMenuItem
             // 
             this.cGramViewerToolStripMenuItem.Name = "cGramViewerToolStripMenuItem";
-            this.cGramViewerToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.cGramViewerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.cGramViewerToolStripMenuItem.Text = "CGram Viewer";
             this.cGramViewerToolStripMenuItem.Click += new System.EventHandler(this.cGramViewerToolStripMenuItem_Click);
             // 
             // gfxGroupsetsToolStripMenuItem
             // 
             this.gfxGroupsetsToolStripMenuItem.Name = "gfxGroupsetsToolStripMenuItem";
-            this.gfxGroupsetsToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.gfxGroupsetsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.gfxGroupsetsToolStripMenuItem.Text = "Gfx Groupsets";
             this.gfxGroupsetsToolStripMenuItem.Click += new System.EventHandler(this.gfxGroupsetsToolStripMenuItem_Click);
             // 
             // palettesEditorToolStripMenuItem
             // 
             this.palettesEditorToolStripMenuItem.Name = "palettesEditorToolStripMenuItem";
-            this.palettesEditorToolStripMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.palettesEditorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.palettesEditorToolStripMenuItem.Text = "Palettes Editor";
             this.palettesEditorToolStripMenuItem.Click += new System.EventHandler(this.palettesEditorToolStripMenuItem_Click);
             // 
@@ -2819,53 +2869,12 @@
             this.customPanel3.TabIndex = 19;
             this.customPanel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.customPanel3_MouseMove);
             // 
-            // panel1
+            // overworldOverlayVisibleToolStripMenuItem
             // 
-            this.panel1.AutoScroll = true;
-            this.panel1.Controls.Add(this.objectViewer1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 54);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(292, 610);
-            this.panel1.TabIndex = 1;
-            // 
-            // objectViewer1
-            // 
-            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
-            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
-            this.objectViewer1.Name = "objectViewer1";
-            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
-            this.objectViewer1.TabIndex = 0;
-            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
-            // 
-            // customPanel1
-            // 
-            this.customPanel1.AutoScroll = true;
-            this.customPanel1.Controls.Add(this.spritesView1);
-            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel1.Location = new System.Drawing.Point(0, 20);
-            this.customPanel1.Name = "customPanel1";
-            this.customPanel1.Size = new System.Drawing.Size(292, 644);
-            this.customPanel1.TabIndex = 2;
-            // 
-            // spritesView1
-            // 
-            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.spritesView1.Location = new System.Drawing.Point(0, 0);
-            this.spritesView1.Name = "spritesView1";
-            this.spritesView1.Size = new System.Drawing.Size(292, 374);
-            this.spritesView1.TabIndex = 0;
-            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
-            // 
-            // invisibleObjectsTextToolStripMenuItem
-            // 
-            this.invisibleObjectsTextToolStripMenuItem.Checked = true;
-            this.invisibleObjectsTextToolStripMenuItem.CheckOnClick = true;
-            this.invisibleObjectsTextToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.invisibleObjectsTextToolStripMenuItem.Name = "invisibleObjectsTextToolStripMenuItem";
-            this.invisibleObjectsTextToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
-            this.invisibleObjectsTextToolStripMenuItem.Text = "Invisible Objects Text";
+            this.overworldOverlayVisibleToolStripMenuItem.CheckOnClick = true;
+            this.overworldOverlayVisibleToolStripMenuItem.Name = "overworldOverlayVisibleToolStripMenuItem";
+            this.overworldOverlayVisibleToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.overworldOverlayVisibleToolStripMenuItem.Text = "Overworld Overlay Visible";
             // 
             // DungeonMain
             // 
@@ -2885,7 +2894,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DungeonMain";
-            this.Text = "ZScream Magic - 2.7.9999 Beta";
+            this.Text = "ZScream Magic - 2.8 Beta";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.zscreamForm_FormClosing_1);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.LocationChanged += new System.EventHandler(this.DungeonMain_LocationChanged);
@@ -2905,8 +2914,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).EndInit();
             this.objectstabPage.ResumeLayout(false);
             this.objectstabPage.PerformLayout();
+            this.panel1.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
+            this.customPanel1.ResumeLayout(false);
             this.headerGroupbox.ResumeLayout(false);
             this.headerGroupbox.PerformLayout();
             this.selectedGroupbox.ResumeLayout(false);
@@ -2924,8 +2935,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.customPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -3185,6 +3194,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveMapsOnlyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importRoomToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem invisibleObjectsTextToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem overworldOverlayVisibleToolStripMenuItem;
     }
 }
 

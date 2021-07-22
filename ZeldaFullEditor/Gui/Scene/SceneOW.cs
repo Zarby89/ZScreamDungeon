@@ -487,7 +487,16 @@ namespace ZeldaFullEditor
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
+            
             Graphics g = e.Graphics;
+            if (ow.worldOffset == 64)
+            {
+                g.Clear(Palettes.overworld_GrassPalettes[1]);
+            }
+            else
+            {
+                g.Clear(Palettes.overworld_GrassPalettes[0]);
+            }
             ColorMatrix cm = new ColorMatrix();
             ImageAttributes ia = new ImageAttributes();
             cm.Matrix33 = 0.50f;
@@ -506,14 +515,89 @@ namespace ZeldaFullEditor
                 {
                     if (i <= 159)
                     {
+                        if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
+                        {
+                            if (i == 0x03)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
+
+                            }
+                            else if (i == 0x04)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
+
+                            }
+                            else if (i == 0x05)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
+
+                            }
+                            else if (i == 0x06)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
+
+                            }
+                            else if (i == 0x07)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
+
+                            }
+                            else if (i == 91)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                g.DrawImage(ow.allmaps[150].gfxBitmap, new PointF(x * 512, y * 512));
+
+                            }
+                            else if (i == 92)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                g.DrawImage(ow.allmaps[150].gfxBitmap, new PointF(x * 512, y * 512));
+
+                            }
+                        }
 
                         g.DrawImage(ow.allmaps[i].gfxBitmap, new PointF(x * 512, y * 512));
+
+                        if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
+                        {
+                            if (i == 0)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                g.DrawImage(ow.allmaps[157].gfxBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
+
+                            }
+                            else if (i == 1)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                g.DrawImage(ow.allmaps[157].gfxBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
+
+                            }
+                            else if (i == 8)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                g.DrawImage(ow.allmaps[157].gfxBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
+
+                            }
+                            else if (i == 9)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                g.DrawImage(ow.allmaps[157].gfxBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
+
+                            }
+                        }
+
                         x++;
                         if (x >= 8)
                         {
                             x = 0;
                             y++;
                         }
+
 
                     }
                 }

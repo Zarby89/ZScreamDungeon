@@ -46,24 +46,23 @@ namespace ZeldaFullEditor
         public static IntPtr mapgfx16Ptr = Marshal.AllocHGlobal(1048576);
         public static Bitmap mapgfx16Bitmap;
 
-        public static IntPtr fontgfx16Ptr = Marshal.AllocHGlobal((256 * 256));
+        public static IntPtr fontgfx16Ptr;//  = Marshal.AllocHGlobal((256 * 256));
         public static Bitmap fontgfxBitmap;
 
-        public static IntPtr currentfontgfx16Ptr = Marshal.AllocHGlobal(172 * 20000);
+        public static IntPtr currentfontgfx16Ptr;//  = Marshal.AllocHGlobal(172 * 20000);
         public static Bitmap currentfontgfx16Bitmap;
 
-        public static IntPtr mapblockset16 = Marshal.AllocHGlobal(1048576);
+        public static IntPtr mapblockset16;//  = Marshal.AllocHGlobal(1048576);
         public static Bitmap mapblockset16Bitmap;
 
-        public static IntPtr scratchblockset16 = Marshal.AllocHGlobal(1048576);
+        public static IntPtr scratchblockset16;//  = Marshal.AllocHGlobal(1048576);
         public static Bitmap scratchblockset16Bitmap;
 
-        public static IntPtr overworldMapPointer = Marshal.AllocHGlobal(0x8000);
-        public static Bitmap overworldMapBitmap ;
+        public static IntPtr overworldMapPointer;// = Marshal.AllocHGlobal(0x4000);
+        public static Bitmap overworldMapBitmap;
 
-        public static IntPtr owactualMapPointer = Marshal.AllocHGlobal(0x40000);
+        public static IntPtr owactualMapPointer;//  = Marshal.AllocHGlobal(0x40000);
         public static Bitmap owactualMapBitmap;
-
 
         public static bool[] isbpp3 = new bool[223];
 
@@ -201,8 +200,7 @@ namespace ZeldaFullEditor
             editortileBitmap = new Bitmap(16, 16, 16, PixelFormat.Format8bppIndexed, editortilePtr);
             mapblockset16Bitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, mapblockset16);
             scratchblockset16Bitmap = new Bitmap(256, 4096, 256, PixelFormat.Format8bppIndexed, scratchblockset16);
-            overworldMapBitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, overworldMapPointer);
-            owactualMapBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, owactualMapPointer);
+
             moveableBlock = new Bitmap(Resources.Mblock);
             spriteFont = new Bitmap(Resources.spriteFont);
             favStar1 = new Bitmap(Resources.starn);
@@ -796,7 +794,8 @@ namespace ZeldaFullEditor
         public static void loadOverworldMap()
         {
 
-
+            GFX.overworldMapBitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, GFX.overworldMapPointer);
+            GFX.owactualMapBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, GFX.owactualMapPointer);
 
             //Mode 7
             unsafe
@@ -804,7 +803,7 @@ namespace ZeldaFullEditor
                 byte* ptr = (byte*)overworldMapPointer.ToPointer();
 
                 int pos = 0;
-                for (int sy = 0; sy < 48; sy++)
+                for (int sy = 0; sy < 16; sy++)
                 {
                     for (int sx = 0; sx < 16; sx++)
                     {
@@ -844,7 +843,7 @@ namespace ZeldaFullEditor
             }
             overworldMapBitmap.Palette = cp;
             owactualMapBitmap.Palette = cp;
-
+            
 
         }
 

@@ -70,12 +70,27 @@ namespace ZeldaFullEditor
                 setdata("Wall S (Lower)", 4, 3, true); // Corners
                 sort = Sorting.Wall | Sorting.NonScalable; ;
             }
-            if (oid >= 24 && oid <= 27)
+            if (oid == 24)
             {
-                setdata("Pit Edge Corner", 2, 2); // Pit Edge
+                setdata("Pit Edge Corner ▛", 2, 2); // Pit Edge
                 sort = Sorting.Wall | Sorting.NonScalable; ;
             }
-            if (oid == 0x1C)
+            else if (oid == 25)
+            {
+                setdata("Pit Edge Corner ▙", 2, 2); // Pit Edge
+                sort = Sorting.Wall | Sorting.NonScalable; ;
+            }
+            else if(oid == 26)
+            {
+                setdata("Pit Edge Corner ▜", 2, 2); // Pit Edge
+                sort = Sorting.Wall | Sorting.NonScalable; ;
+            }
+            else if (oid == 27)
+            {
+                setdata("Pit Edge Corner ▟", 2, 2); // Pit Edge
+                sort = Sorting.Wall | Sorting.NonScalable; ;
+            }
+            else if (oid == 0x1C)
             {
                 setdata("Fairy Pot", 4, 4);
                 sort = Sorting.Dungeons | Sorting.NonScalable; ;
