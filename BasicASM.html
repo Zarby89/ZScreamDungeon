@@ -40,6 +40,7 @@ Table of Contents
 <a href="https://mh-nexus.de/en/hxd/">HXD</a> - Hex Editor
 <br>
 <a href="https://drive.google.com/file/d/0B51aWTNENbmSc1Y0eTlhM1Nncjg/view?resourcekey=0-XKqeWAmQabtHojs11jV5KQ">Disassembly + Infos</a>
+<a href="https://github.com/spannerisms/jpdasm">Japanese Disassembly</a> - can also be helpful for US version (some codes are at different locations)
 <br>
 <br>
 <br>
@@ -178,19 +179,19 @@ Local:
     
     JSL UseImplicitRegIndexedLocalJumpTable
     
-    dw ClearTilemap       ; $DD5A = $6DD5A*
-    dw Init               ; $DDAB = $6DDAB*
-    dw BringMenuDown      ; $DE59 = $6DE59*
-    dw ChooseNextMode     ; $DE6E = $6DE6E*
-    dw NormalMenu         ; $DF15 = $6DF15*
-    dw UpdateHUD          ; $DFA9 = $6DFA9*
-    dw CloseMenu          ; $DFBA = $6DFBA*
-    dw GotoBottleMenu     ; $DFFB = $6DFFB*
-    dw InitBottleMenu     ; $E002 = $6E002*
-    dw ExpandBottleMenu   ; $E08C = $6E08C*
-    dw BottleMenu         ; $E0DF = $6E0DF*
-    dw EraseBottleMenu    ; $E2FD = $6E2FD*
-    dw RestoreNormalMenu  ; $E346 = $6E346*
+    dw ClearTilemap       ; $DD5A = $6DD5A* ;00
+    dw Init               ; $DDAB = $6DDAB* ;01
+    dw BringMenuDown      ; $DE59 = $6DE59* ;02
+    dw ChooseNextMode     ; $DE6E = $6DE6E* ;03
+    dw NormalMenu         ; $DF15 = $6DF15* ;04
+    dw UpdateHUD          ; $DFA9 = $6DFA9* ;05
+    dw CloseMenu          ; $DFBA = $6DFBA* ;06
+    dw GotoBottleMenu     ; $DFFB = $6DFFB* ;07
+    dw InitBottleMenu     ; $E002 = $6E002* ;08
+    dw ExpandBottleMenu   ; $E08C = $6E08C* ;09
+    dw BottleMenu         ; $E0DF = $6E0DF* ;0A
+    dw EraseBottleMenu    ; $E2FD = $6E2FD* ;0B
+    dw RestoreNormalMenu  ; $E346 = $6E346* ;0C
 }
 </blockquote>
 </pre>
@@ -324,6 +325,351 @@ if you did it right you should have a file named <b>Patched.sfc</b> if you test 
 
 
 <img src="menuspeed2.gif" alt="menuspeed2">
+<br>
+
+Congratulations you just wrote your first ASM script ! it's pretty much just a copy of the original code but still ! Alright lets explains some things about that code<br>
+first of all you can't edit the disassembly directly in case you would be wondering, it is not in a build state, you need to do what we just did above locate code we want to change<br>
+put a <b>org $Address</b> where you want to insert new code at, write down new code or copy it from the disassembly (it won't always work) because sometime addresses are labels e.g.<br>
+
+<pre>
+    <blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+        ; *$6DE6E-$6DEAF JUMP LOCATION
+        ChooseNextMode:
+        {
+            ; Makes a determination whether to go to the normal menu handling mode
+            ; or the bottle submenu handling mode.
+            ; there's also mode 0x05... which appears to be hidden at this point.
+            
+            LDX.b #$12
+            
+            LDA $7EF340
+        
+        .haveAnyEquippable
+        
+            ORA $7EF341, X : DEX : BPL .haveAnyEquippable
+            
+            CMP.b #$00 : BEQ .haveNone
+            
+            ; Tell NMI to update BG3 tilemap next from by writing to address $6800 (word) in vram
+            LDA.b #$01 : STA $17
+            LDA.b #$22 : STA $0116
+            
+            JSR DoWeHaveThisItem : BCS .weHaveIt
+            
+            JSR TryEquipNextItem
+        
+        .weHaveIt
+        
+            JSR DrawSelectedYButtonItem
+            
+            ; Move to the next step of the submodule
+            LDA.b #$04 : STA $0200
+            
+            LDA $0202 : CMP.b #$10 : BNE .notOnBottleMenu
+            
+            ; switch to the step of this submodule that handles when the
+            ; bottle submenu is up
+            LDA.b #$0A : STA $0200
+        
+        .notOnBottleMenu
+        
+            RTS
+        
+        .haveNone
+        
+            ; BYSTudlr
+            LDA $F4 : BEQ .noButtonPress
+            
+            LDA.b #$05 : STA $0200
+            
+            RTS
+        
+        .noButtonPress
+        
+            RTS
+        }    
+    </blockquote>
+</pre>
+<br>
+If we try to copy that code into our main file convert the address <b>6DE6E</b> to SNES Address 0DDE6E put an org $0DDE6E above and run build.bat<br>
+
+<pre>
+ <blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+main.asm:25: error: (E5060): Label 'DoWeHaveThisItem' wasn't found. [JSR DoWeHaveThisItem]
+main.asm:27: error: (E5060): Label 'TryEquipNextItem' wasn't found. [JSR TryEquipNextItem]
+main.asm:31: error: (E5060): Label 'DrawSelectedYButtonItem' wasn't found. [JSR DrawSelectedYButtonItem]
+</blockquote>
+</pre>
+<br>
+
+we will get these errors, because these labels are not defined in our file we can fix that by finding these function in the equipment.asm file<br>
+search for <b>DoWeHaveThisItem:</b>you'll find it at the line 322<br>
+
+<pre>
+    <blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+; *$6DEB0-$6DEBC LOCAL
+DoWeHaveThisItem:
+{
+    LDX $0202
+    
+    ; Check to see if we have this item...
+    LDA $7EF33F, X
+    
+    BNE .haveThisItem
+    
+    CLC
+    
+    RTS
+
+.haveThisItem
+
+    SEC
+    
+    RTS
+}
+
+</blockquote>
+</pre>
+<br>
+
+We can reference that address in our code without having to copy the whole section by creating a label at that address so ASAR will know where to go<br>
+6DEB0 convert that to SNES Address 0DDEB0, above the other code after the lorom line you will add
+
+<pre>
+<blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+org $0DDEB0
+DoWeHaveThisItem:
+</blockquote>
+</pre>
+<br>
+
+and that's it that function is now defined ASAR will know it need to Jump SubRoutine to that address now if you run build.bat you should only see 2 errors<br>
+repeat for the 2 other functions build and it will work, from there you can change that code like you want BUT there is a but... since you are writing<br>
+in the original rom location you have limited space like for example you can't add something in the middle of that code otherwise you will overwrite the code next to it<br>
+so if you want to add new code you need to replace code ! i will start explaining that code then we'll see what we can do with it<br>
+
+
+<pre>
+    <blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+        ; *$6DE6E-$6DEAF JUMP LOCATION
+        ChooseNextMode:
+        {
+            LDX.b #$12 ;LDX Opcode is almost like LDA where it loads a value into A but instead it is loading a value into X in that case it will set X on value #$12
+            
+            LDA $7EF340 
+            ;Here we load the value of the address $7EF340 into A the values 7EF are bit specials they are not in the RAM.log file
+            ;because they are part of the SRAM (Save RAM) Save RAM is the RAM kept alive by the battery in the cartridge so it's not getting wipe on reset
+            ;it can be accessed normally by using address $70XXXX but Zelda3 is using a file system where it store the SRAM in $7EFXXX and when you press
+            ;Save & quit button it move that memory into $70XXXX, and when you start your console back and you load your save file content of $70XXXX is transfered into $7EFXXX
+            ;here's a website where you can have all the SRAM Address descriptions
+            <a href="http://alttp.run/hacking/index.php?title=SRAM_Map">SRAM Wiki</a>
+
+            ;so we're looking for address $7EF340 we need to ommit $7EF on the wiki so $340
+            ;that code is loading the BOW value
+        
+        .haveAnyEquippable
+        
+            ORA $7EF341, X : DEX
+            ;Here what is happening is a bit complicated it will add values of every items in the inventory into A so Bow+Boomerang+Hookshot+Powder, etc...
+            ;it's a loop of 12 (the value of X loaded above)
+            
+            BPL .haveAnyEquippable ;Loop until X == 0 (last opcode used is DEX) if X reach -1 it will set the Negative flag so until X > 0 it loop to .haveAnyEquippable label
+
+            CMP.b #$00 : BEQ .haveNone
+            ;Here if all items combined still == 0 then this is because we do not have any items in the menu so we go to .haveNone
+
+            
+            ;Otherwise here we have at least one item
+
+            LDA.b #$01 : STA $17 ;<- check what is that value in ram.log file, description is complicated but we know it's used to update something in gfx
+            LDA.b #$22 : STA $0116 ;<- check what is that value in ram.log file, same as above used to do gfx stuff
+            
+
+            ;that is a subroutine checking if we actually have the item we have selected in the menu
+            JSR DoWeHaveThisItem : BCS .weHaveIt ;if we have it then move on to .weHaveIt
+            
+            JSR TryEquipNextItem ;otherwise check all the next items and equip the first one next to it instead
+        
+        .weHaveIt
+        
+            JSR DrawSelectedYButtonItem ;that code is drawing the item we have selected on the Y button
+
+            LDA.b #$04 : STA $0200 ; that is increasing the menu state to ;NormalMenu
+            
+            LDA $0202 : CMP.b #$10 ;but wait if we are selected on a bottle
+
+            BNE .notOnBottleMenu
+
+            LDA.b #$0A : STA $0200 ;do that code here instead if we are selected on a bottle so it will go to menu state ;BottleMenu
+        
+        .notOnBottleMenu 
+        
+            RTS ;Then return so next frame we'll be either on normal menu or bottle menu
+        
+        .haveNone
+            ;That code is reached if we open the menu and do not have any item... code won't go any further it will loop infinitely here every frames
+
+            LDA $F4 : BEQ .noButtonPress
+            ;search for $F4 in ROM.log file
+            ;$F4[0x01] - Filtered Joypad 1 Register: [BYST | udlr].
+            ;so since there's no condition on that LDA it is checking if the value of $F4 != 0 so any button on that list will trigger next code
+    
+            LDA.b #$05 : STA $0200  ;this code is setting menu state to UpdateHUD and UpdateHUD will swap to CloseMenu right after
+
+            ;so basically what that code is doing if you press any of these buttons (Up, Left, Down, Right, B, Y, Start, Select) menu will update hud and close
+            
+            RTS
+        
+        .noButtonPress
+        
+            RTS
+        }    
+    </blockquote>
+</pre>
+<br>
+
+To keep it simple what we will try to do here is add another condition that says if we press (A, X, L, R) open the bottle menu even if we don't have any items<br>
+so you check in ram.log again, oh it's $F5 ! that will be easy to do you can just copy the code above and go to bottle menu instead of updating hud and closing menu<br>
+but that's wrong you can't just ADD code in it since if original code is 6DE6E-$6DEAF 65 bytes long, adding your new code in will make it goes to ~75 bytes or so<br>
+and you will delete code next to it in that case it will delete the portion of code next to it :<br>
+
+<pre>
+    <blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+    ; *$6DEB0-$6DEBC LOCAL
+    DoWeHaveThisItem:
+    {
+        LDX $0202 ;will get deleted
+        
+        ; Check to see if we have this item...
+        LDA $7EF33F, X  ;will get deleted
+        
+        BNE .haveThisItem  ;will get deleted
+        
+        CLC  ;will get deleted
+         
+        RTS  ;will get deleted 
+    
+    .haveThisItem
+    
+        SEC
+        
+        RTS
+    }
+</blockquote>
+</pre>
+<br>
+
+so the game will try to use that function it will not contains the code it should and the game will probably crash this is where the hooks come in play so we can add more code<br>
+somewhere else in the rom and run it from that location in the rom finding a good location for a good is not always easy and sometime you just don't have space to put a JSL<br>
+JSL is how you make a hook that will jump to a subroutine in the expanded rom or where you want, then it will run code and come back into original code once it's done with RTL<br>
+it take 4 bytes of space to do a JSL so you need to overwrite something you can easily restore in your subroutine that's a bit hard to identify as a beginner<br>
+but in that example we could remove the whole controller condition since we can easily restore it, so we'll do that we can just comment it out so we know what we replaced<br>
+
+<pre>
+    <blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+        ; *$6DE6E-$6DEAF JUMP LOCATION
+        org $0DDEB0
+        DoWeHaveThisItem:
+        
+        org $0DDEE2
+        TryEquipNextItem:
+        
+        org $0DEB3A
+        DrawSelectedYButtonItem:
+
+        org $0DDE6E
+        ChooseNextMode:
+        {
+            LDX.b #$12
+            
+            LDA $7EF340 
+
+        .haveAnyEquippable
+        
+            ORA $7EF341, X : DEX
+            
+            BPL .haveAnyEquippable 
+
+            CMP.b #$00 : BEQ .haveNone
+
+            LDA.b #$01 : STA $17
+            LDA.b #$22 : STA $0116 
+
+            JSR DoWeHaveThisItem : BCS .weHaveIt 
+            
+            JSR TryEquipNextItem
+        
+        .weHaveIt
+        
+            JSR DrawSelectedYButtonItem 
+
+            LDA.b #$04 : STA $0200 
+            
+            LDA $0202 : CMP.b #$10 
+
+            BNE .notOnBottleMenu
+
+            LDA.b #$0A : STA $0200 ; go to bottle menu
+        
+        .notOnBottleMenu 
+        
+            RTS
+        
+        .haveNone
+            ;LDA $F4 : BEQ .noButtonPress
+            ;LDA.b #$05 : STA $0200
+
+            ;So we comment out these 2 line above, and we need to count the numbers of bytes they use again it's not easy as beginner but you can use hex editor
+            ;go at position 6DEAF with your hex editor (that's the end of this section) that is commented at the top of the routine, from there slowly move backward
+            ;search for byte $F4, F4 is the value loaded by the LDA so we go one byte further (A5) that's the LDA, then we count the numbers of bytes from there to the RTS (60)
+            ;A5 F4 F0 06 A9 05 8D 00 02
+            ;We have 9 bytes so what we will do is add our JSL
+
+            JSL NewControllerCode ;We add our Jump here ;it takes 4 bytes so there's still 5 bytes we can just NOP them out to prevent problem with them
+
+            ;Where the RTL will bring us back
+
+            NOP #05 ; next 5 bytes will turn into byte (EA) which is NOP (No OPeration) they will do nothing code will read it and skip it
+
+            
+
+            RTS
+        
+        .noButtonPress
+        
+            RTS
+        }    
+
+
+        ;Then below here we are adding our new code for the button press in the expanded region
+        
+        org $218000 ;Set writing position in expanded region location
+        NewControllerCode:
+        {
+            LDA $F4 : BEQ .noButtonPress ;Here we can restore the original code 
+            LDA.b #$05 : STA $0200 ;Here we can restore the original code 
+            .noButtonPress
+
+            ;so we have restored the code we have overwritten we can now add new code for others buttons (the order depends on what you need)
+            ;you could restore the code after your new code or before or not at all depending on your need
+
+            LDA $F6 : BEQ .noButtonPress2 ;Lets just copy the original code but put a F6 instead of F4
+            ;We could add whatever else we want here as an example we can write data into the address $012E which will play a sound effect
+            LDA #$30 ;Sound we will play
+            STA $012E ;Address we write it in to play the sound
+            .noButtonPress2
+
+
+            RTL ;We are returning to the previous code we came from with the RTL
+        }
+
+    </blockquote>
+</pre>
+<br>
+and voila this is how you make a hook you could add much more code in that section without overwriting existing code because your code is now in expanded region<br>
+you could do more experimenting if you want with that code by checking the ram.log file and searching for addresses that could be interesting to change<br>
+or the SRAM wiki which is a bit more interesting for single write changes like for example you could write value to the address $7EF340 that would give you the bow<br>
+
 
 </h3>
 
