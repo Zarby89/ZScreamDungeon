@@ -73,7 +73,7 @@ namespace ZeldaFullEditor.Gui
         {
             int csize = 0;
             SaveFileDialog sfd = new SaveFileDialog();
-
+            sfd.Filter = "all *.bin |*.bin";
 
 
             if (sfd.ShowDialog() == DialogResult.OK)
@@ -105,7 +105,12 @@ namespace ZeldaFullEditor.Gui
         private void button2_Click(object sender, EventArgs e)
         {
             
-            for(int i = 0;i<223;i++)
+        }
+
+        public void SaveAllGfx()
+        {
+
+            for (int i = 0; i < 223; i++)
             {
                 byte[] sdata = new byte[0x800];
                 unsafe
@@ -117,14 +122,24 @@ namespace ZeldaFullEditor.Gui
                     }
                     if (GFX.isbpp3[i])
                     {
-                        gfxSheets3bpp[i] = GFX.pc4bppto3bppsnes(sdata);
+                        if (modifiedSheets[i] != null)
+                        {
+                            gfxSheets3bpp[i] = modifiedSheets[i];
+                            modifiedSheets[i] = null;
+                        }
+                        else
+                        {
+                            gfxSheets3bpp[i] = GFX.pc4bppto3bppsnes(sdata);
+                        }
+
                     }
                     else
                     {
                         if (modifiedSheets[i] != null)
                         {
-                            Console.WriteLine(i.ToString() + " Sheet has been modified");
+                            //Console.WriteLine(i.ToString() + " Sheet has been modified");
                             gfxSheets3bpp[i] = modifiedSheets[i];
+                            modifiedSheets[i] = null;
                         }
                         else
                         {
@@ -133,7 +148,7 @@ namespace ZeldaFullEditor.Gui
                         }
                     }
                 }
-                
+
             }
             Console.WriteLine("Reached");
             recompressAllGfx();
@@ -144,7 +159,7 @@ namespace ZeldaFullEditor.Gui
             int gfxPointer1 = Utils.SnesToPc((ROM.DATA[Constants.gfx_1_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_1_pointer]));
             int gfxPointer2 = Utils.SnesToPc((ROM.DATA[Constants.gfx_2_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_2_pointer]));
             int gfxPointer3 = Utils.SnesToPc((ROM.DATA[Constants.gfx_3_pointer + 1] << 8) + (ROM.DATA[Constants.gfx_3_pointer]));
-            int pos = 0x8b800;
+            int pos = 0x8B800;
             int uPos = 0x87000;
             bool bpp2 = false;
             for (int i = 0; i < 223; i++)
@@ -429,6 +444,7 @@ namespace ZeldaFullEditor.Gui
         {
 
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "all *.bin |*.bin";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 FileStream fs = new FileStream(ofd.FileName,FileMode.Open,FileAccess.Read);

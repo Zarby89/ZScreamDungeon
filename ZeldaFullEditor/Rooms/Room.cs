@@ -422,6 +422,58 @@ namespace ZeldaFullEditor
             }
         }
 
+        public byte[] getSelectedObjectHex()
+        {
+            byte[] bytes = new byte[3];
+            bool doorfound = false;
+            for (int j = 0; j < tilesObjects.Count; j++) // save layer1 object 
+            {
+                Room_Object o = tilesObjects[j];
+                if (o == selectedObject[0])
+                {
+                    if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Block) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
+                    {
+                                if ((tilesObjects[j].id & 0xF00) == 0xF00) // type3
+                                {
+                                    //xxxxxxii yyyyyyii 11111iii
+                                    byte b3 = (byte)(o.id >> 4);
+                                    byte b1 = (byte)((o.x << 2) + (o.id & 0x03));
+                                    byte b2 = (byte)((o.y << 2) + ((o.id >> 2) & 0x03));
+                                bytes[0] = b1;
+                                bytes[1] = b2;
+                                bytes[2] = b3;
+                            }
+                                else if ((tilesObjects[j].id & 0x100) == 0x100) // type2
+                                {
+                                    //111111xx xxxxyyyy yyiiiiii
+                                    byte b1 = (byte)(0xFC + (((o.x & 0x30) >> 4)));
+                                    byte b2 = (byte)(((o.x & 0x0F) << 4) + ((o.y & 0x3C) >> 2));
+                                    byte b3 = (byte)(((o.y & 0x03) << 6) + ((o.id & 0x3F))); //wtf? 
+                                bytes[0] = b1;
+                                bytes[1] = b2;
+                                bytes[2] = b3;
+                            }
+                                else //type1
+                                {
+                                    //xxxxxxss yyyyyyss iiiiiiii
+                                    if (o.size > 16)
+                                    {
+                                        o.size = 0;
+                                    }
+                                    byte b1 = (byte)((o.x << 2) + ((o.size >> 2) & 0x03));
+                                    byte b2 = (byte)((o.y << 2) + (o.size & 0x03));
+                                    byte b3 = (byte)(o.id);
+                                bytes[0] = b1;
+                                bytes[1] = b2;
+                                bytes[2] = b3;
+                            }
+                    }
+                    return bytes;
+                }
+            }
+            return null;
+        }
+
         public bool getLayerTiles(byte layer, ref List<byte> objectsBytes, ref List<byte> doorsBytes)
         {
             bool doorfound = false;
@@ -486,7 +538,7 @@ namespace ZeldaFullEditor
             return doorfound;
         }
         byte[] keysDoors = new byte[] { 0x1C, 0x26, 0x1E, 0x2E, 0x28, 0x32, 0x30, 0x22 };
-        byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38 };
+        byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38, 0x48, 0x4A };
         public byte[] getTilesBytes()
         {
             List<Room_Object> shutterdoors = new List<Room_Object>();
@@ -961,6 +1013,11 @@ namespace ZeldaFullEditor
                             }
 
                         }
+                    }
+
+                    if (oid >= 0xFB0 && oid <= 0xFB8)
+                    {
+                        Console.WriteLine("Used in room " + index.ToString());
                     }
 
                     //IF Object is a chest loaded and there's object in the list chest

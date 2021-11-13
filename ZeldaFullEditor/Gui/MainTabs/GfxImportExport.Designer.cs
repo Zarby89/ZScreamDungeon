@@ -151,6 +151,7 @@
             this.button2.TabIndex = 5;
             this.button2.Text = "Save GFX";
             this.button2.UseVisualStyleBackColor = true;
+            this.button2.Visible = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // radioButton1
@@ -193,9 +194,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(284, 634);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(194, 13);
+            this.label1.Size = new System.Drawing.Size(289, 13);
             this.label1.TabIndex = 9;
-            this.label1.Text = "*2bpp are not supported for the moment";
+            this.label1.Text = "*Import .bin do not update the preview on the left or in editor";
             // 
             // panel2
             // 
@@ -213,7 +214,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(100, 23);
             this.button1.TabIndex = 11;
-            this.button1.Text = "Save as .bin";
+            this.button1.Text = "Save sheet .bin";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -223,7 +224,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(100, 23);
             this.button3.TabIndex = 12;
-            this.button3.Text = "Import .bin";
+            this.button3.Text = "Import sheet .bin";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 

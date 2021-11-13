@@ -1243,12 +1243,22 @@ namespace ZeldaFullEditor
 
         public object_35(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
+            int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2) + 1] << 8) + ROM.DATA[Constants.subtype1_tiles + ((id & 0xFF) * 2)]);
+            addTiles(1, pos);
             name = "Unused";
+
         }
 
         public override void Draw()
         {
-	base.Draw();
+
+            for (int s = 0; s < size + 1; s++)
+            {
+                draw_tile(tiles[0], ((s * 1)) * 8, (0) * 8);
+            }
+
+            base.Draw();
+
 
         }
     }

@@ -176,41 +176,96 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void Draw(Graphics g)
         {
-            int transparency = 200;
-            Brush bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 200, 0, 0));
-            Pen contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
-            g.CompositingMode = CompositingMode.SourceOver;
-            foreach (RoomPotSaveEditor item in scene.ow.allitems)
+            if (scene.lowEndMode)
             {
-                if (item.roomMapId >= (0 + scene.ow.worldOffset) && item.roomMapId <  (64 + scene.ow.worldOffset))
+                int transparency = 200;
+                Brush bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 200, 0, 0));
+                Pen contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
+                g.CompositingMode = CompositingMode.SourceOver;
+                foreach (RoomPotSaveEditor item in scene.ow.allitems)
                 {
-
-                    if (selectedItem == item)
+                    if (item.roomMapId != scene.ow.allmaps[scene.selectedMap].parent)
                     {
-                        bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 00, 200, 200));
-                        contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
+                        continue;
+                    }
+                    if (item.roomMapId >= (0 + scene.ow.worldOffset) && item.roomMapId < (64 + scene.ow.worldOffset))
+                    {
+
+                        if (selectedItem == item)
+                        {
+                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 00, 200, 200));
+                            contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
+
+                        }
+                        else
+                        {
+                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 200, 0, 0));
+                            contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
+                        }
+
+
+
+                        g.FillRectangle(bgrBrush, new Rectangle((item.x), (item.y), 16, 16));
+                        g.DrawRectangle(contourPen, new Rectangle((item.x), (item.y), 16, 16));
+                        byte nid = item.id;
+                        if ((item.id & 0x80) == 0x80)
+                        {
+                            nid = (byte)(((item.id - 0x80) / 2) + 0x17);
+                        }
+                        if (nid > ItemsNames.name.Length)
+                        {
+                            continue;
+                        }
+                        scene.drawText(g, (item.x) - 1, (item.y) + 1, item.id.ToString("X2") + " - " + ItemsNames.name[nid]);
+
 
                     }
-                    else
-                    {
-                        bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 200, 0, 0));
-                        contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
-                    }
-
-
-
-                    g.FillRectangle(bgrBrush, new Rectangle((item.x), (item.y), 16, 16));
-                    g.DrawRectangle(contourPen, new Rectangle((item.x), (item.y), 16, 16));
-                    byte nid = item.id;
-                    if ((item.id & 0x80) == 0x80)
-                    {
-                        nid = (byte)(((item.id - 0x80) / 2) + 0x17);
-                    }
-                    scene.drawText(g, (item.x) - 1, (item.y) + 1, item.id.ToString("X2") + " - " + ItemsNames.name[nid]);
-
                 }
+                g.CompositingMode = CompositingMode.SourceCopy;
             }
-            g.CompositingMode = CompositingMode.SourceCopy;
+            else
+            {
+                int transparency = 200;
+                Brush bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 200, 0, 0));
+                Pen contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
+                g.CompositingMode = CompositingMode.SourceOver;
+                foreach (RoomPotSaveEditor item in scene.ow.allitems)
+                {
+                    if (item.roomMapId >= (0 + scene.ow.worldOffset) && item.roomMapId < (64 + scene.ow.worldOffset))
+                    {
+
+                        if (selectedItem == item)
+                        {
+                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 00, 200, 200));
+                            contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
+
+                        }
+                        else
+                        {
+                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 200, 0, 0));
+                            contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
+                        }
+
+
+
+                        g.FillRectangle(bgrBrush, new Rectangle((item.x), (item.y), 16, 16));
+                        g.DrawRectangle(contourPen, new Rectangle((item.x), (item.y), 16, 16));
+                        byte nid = item.id;
+                        if ((item.id & 0x80) == 0x80)
+                        {
+                            nid = (byte)(((item.id - 0x80) / 2) + 0x17);
+                        }
+                        if (nid > ItemsNames.name.Length)
+                        {
+                            continue;
+                        }
+                        scene.drawText(g, (item.x) - 1, (item.y) + 1, item.id.ToString("X2") + " - " + ItemsNames.name[nid]);
+
+
+                    }
+                }
+                g.CompositingMode = CompositingMode.SourceCopy;
+            }
         }
     }
 }

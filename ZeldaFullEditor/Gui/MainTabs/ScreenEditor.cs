@@ -25,7 +25,10 @@ namespace ZeldaFullEditor.Gui.MainTabs
             InitializeComponent();
             overworldCombobox.SelectedIndex = 0;
         }
-        
+
+        Point3D[] triforceVertices = new Point3D[6];
+        Point3D[] crystalVertices = new Point3D[6];
+        Point3D selectedVertice = null;
         OAMTile[] oamData = new OAMTile[10];
         OAMTile selectedOamTile = null;
         OAMTile lastSelectedOamTile = null;
@@ -34,6 +37,24 @@ namespace ZeldaFullEditor.Gui.MainTabs
         int swordX = 0;
         public void Init()
         {
+
+            //triforce
+            for(int i = 0;i<6;i++)
+            {
+                triforceVertices[i] = new Point3D(
+                (sbyte)ROM.DATA[Constants.triforceVertices+0 +(i*3)],
+                (sbyte)ROM.DATA[Constants.triforceVertices + 1 + (i * 3)],
+                (sbyte)ROM.DATA[Constants.triforceVertices + 2 + (i * 3)]
+                );
+
+                crystalVertices[i] = new Point3D(
+                (sbyte)ROM.DATA[Constants.crystalVertices + 0 + (i * 3)],
+                (sbyte)ROM.DATA[Constants.crystalVertices + 1 + (i * 3)],
+                (sbyte)ROM.DATA[Constants.crystalVertices + 2 + (i * 3)]
+                );
+            }
+
+
             tiles8Bitmap = new Bitmap(128, 512, 128, PixelFormat.Format8bppIndexed, tiles8Ptr);
             dungmaptiles8Bitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, dungmaptiles8Ptr);
             dungmaptiles16Bitmap = new Bitmap(256, 192, 256, PixelFormat.Format8bppIndexed, dungmaptiles16Ptr);
@@ -1336,6 +1357,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 
             SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "all *.bin |*.bin";
             if (sfd.ShowDialog() == DialogResult.OK)
             {
                 FileStream fs = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
@@ -1398,6 +1420,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
         private void button3_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter =  "all *.bin |*.bin";
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read);
@@ -2535,6 +2558,341 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 }
                 
             }
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "indexed 8bpp image *.bmp |*.bmp";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                GFX.overworldMapBitmap.Save(sfd.FileName,ImageFormat.Bmp);
+            }
+        }
+
+        private unsafe void button12_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "indexed 8bpp image *.bmp |*.bmp";
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                Bitmap b = new Bitmap(ofd.FileName);
+                BitmapData bd = b.LockBits(new Rectangle(0, 0, 128, 128), ImageLockMode.ReadOnly, PixelFormat.Format8bppIndexed);
+                GFX.overworldMapBitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, GFX.overworldMapPointer);
+                int pos = 0;
+                //Mode 7
+                unsafe
+                {
+                    byte* ptr = (byte*)bd.Scan0.ToPointer();
+
+
+                    
+                    for (int sy = 0; sy < 16; sy++)
+                    {
+                        for (int sx = 0; sx < 16; sx++)
+                        {
+                            for (int y = 0; y < 8; y++)
+                            {
+                                for (int x = 0; x < 8; x++)
+                                {
+                                    ROM.DATA[0x0C4000 + pos] = ptr[x + (sx * 8) + (y * 128) + (sy * 1024)];
+                                    pos++;
+                                }
+                            }
+                        }
+                    }
+
+                }
+                b.UnlockBits(bd);
+
+
+
+
+
+
+                    pos = 0x55B27;
+                    if (darkWorld)
+                    {
+                        pos = 0x55C27;
+                    }
+
+
+                Palettes.WritePalette(ROM.DATA, pos, b.Palette.Entries, 128);
+
+
+
+                GFX.loadOverworldMap();
+                owMapTilesBox.Refresh();
+                mapPicturebox.Refresh();
+
+            }
+        }
+
+        private void triforcebox1_Paint(object sender, PaintEventArgs e)
+        {
+
+            for(int i = 0;i<6;i++)
+            {
+                if (triforceRadio.Checked)
+                {
+                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].y, 4, 4));
+                    if (selectedVertice != null)
+                    {
+                        if (selectedVertice == triforceVertices[i])
+                        {
+                            e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].y, 4, 4));
+                        }
+                    }
+                }
+                else
+                {
+                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].x, 126 + crystalVertices[i].y, 4, 4));
+                    if (selectedVertice != null)
+                    {
+                        if (selectedVertice == crystalVertices[i])
+                        {
+                            e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].x, 126 + crystalVertices[i].y, 4, 4));
+                        }
+                    }
+                }
+            }
+
+        }
+        
+
+        private void triforcebox2_Paint(object sender, PaintEventArgs e)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                if (triforceRadio.Checked)
+                {
+                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].z, 4, 4));
+                    if (selectedVertice != null)
+                    {
+                        if (selectedVertice == triforceVertices[i])
+                        {
+                            e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].z, 4, 4));
+                        }
+                    }
+                }
+                else
+                {
+                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].x, 126 + crystalVertices[i].z, 4, 4));
+                    if (selectedVertice != null)
+                    {
+                        if (selectedVertice == crystalVertices[i])
+                        {
+                            e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].x, 126 + crystalVertices[i].z, 4, 4));
+                        }
+                    }
+                }
+            }
+
+        }
+
+        private void triforcebox3_Paint(object sender, PaintEventArgs e)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                if (triforceRadio.Checked)
+                {
+                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
+                    if (selectedVertice != null)
+                    {
+                        if (selectedVertice == triforceVertices[i])
+                        {
+                            e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
+                        }
+                    }
+                }
+                else
+                {
+                    e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].z, 126 + crystalVertices[i].y, 4, 4));
+                    if (selectedVertice != null)
+                    {
+                        if (selectedVertice == crystalVertices[i])
+                        {
+                            e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].z, 126 + crystalVertices[i].y, 4, 4));
+                        }
+                    }
+                }
+            }
+
+        }
+        bool mdown = false;
+        private void triforcebox1_MouseDown(object sender, MouseEventArgs e)
+        {
+                    for (int i = 0; i < 6; i++)
+                    {
+                        if (triforceRadio.Checked)
+                        {
+                            //e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
+                            if (e.X >= triforceVertices[i].x + 124 && e.X <= triforceVertices[i].x + 130)
+                            {
+                                if (e.Y >= triforceVertices[i].y + 124 && e.Y <= triforceVertices[i].y + 130)
+                                {
+                                    selectedVertice = triforceVertices[i];
+                                }
+                            }
+                        }
+                        else
+                        {
+                            //e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
+                            if (e.X >= crystalVertices[i].x + 124 && e.X <= crystalVertices[i].x + 130)
+                            {
+                                if (e.Y >= crystalVertices[i].y + 124 && e.Y <= crystalVertices[i].y + 130)
+                                {
+                                    selectedVertice = crystalVertices[i];
+                                }
+                            }
+                        }
+                    }
+            triforcebox1.Refresh();
+            triforcebox2.Refresh();
+            triforcebox3.Refresh();
+            mdown = true;
+        }
+
+        private void triforcebox1_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mdown)
+            {
+                selectedVertice.x = (sbyte)((e.X - 128));
+                selectedVertice.y = (sbyte)((e.Y - 128));
+                triforcebox1.Refresh();
+                triforcebox2.Refresh();
+                triforcebox3.Refresh();
+            }
+        }
+
+        private void triforcebox1_MouseUp(object sender, MouseEventArgs e)
+        {
+            mdown = false;
+        }
+
+        private void triforcebox2_MouseDown(object sender, MouseEventArgs e)
+        {
+                        if (triforceRadio.Checked)
+                        {
+                            for (int i = 0; i < 6; i++)
+                            {
+                                //e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
+                                if (e.X >= triforceVertices[i].x + 124 && e.X <= triforceVertices[i].x + 130)
+                                {
+                                    if (e.Y >= triforceVertices[i].z + 124 && e.Y <= triforceVertices[i].z + 130)
+                                    {
+                                        selectedVertice = triforceVertices[i];
+                                    }
+                                }
+                            }
+                        }
+                        else
+            {
+                for (int i = 0; i < 6; i++)
+                {
+                    //e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
+                    if (e.X >= crystalVertices[i].x + 124 && e.X <= crystalVertices[i].x + 130)
+                    {
+                        if (e.Y >= crystalVertices[i].z + 124 && e.Y <= crystalVertices[i].z + 130)
+                        {
+                            selectedVertice = crystalVertices[i];
+                        }
+                    }
+                }
+            }
+            triforcebox1.Refresh();
+            triforcebox2.Refresh();
+            triforcebox3.Refresh();
+            mdown = true;
+        }
+
+        private void triforcebox3_MouseDown(object sender, MouseEventArgs e)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                if (triforceRadio.Checked)
+                {
+                    //e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
+                    if (e.X >= triforceVertices[i].z + 124 && e.X <= triforceVertices[i].z + 130)
+                    {
+                        if (e.Y >= triforceVertices[i].y + 124 && e.Y <= triforceVertices[i].y + 130)
+                        {
+                            selectedVertice = triforceVertices[i];
+                        }
+                    }
+                }
+                else
+                {
+                    //e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
+                    if (e.X >= crystalVertices[i].z + 124 && e.X <= crystalVertices[i].z + 130)
+                    {
+                        if (e.Y >= crystalVertices[i].y + 124 && e.Y <= crystalVertices[i].y + 130)
+                        {
+                            selectedVertice = crystalVertices[i];
+                        }
+                    }
+                }
+            }
+            triforcebox1.Refresh();
+            triforcebox2.Refresh();
+            triforcebox3.Refresh();
+            mdown = true;
+        }
+
+        private void triforcebox2_MouseUp(object sender, MouseEventArgs e)
+        {
+            mdown = false;
+        }
+
+        private void triforcebox3_MouseUp(object sender, MouseEventArgs e)
+        {
+            mdown = false;
+        }
+
+        private void triforcebox2_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mdown)
+            {
+                selectedVertice.x = (sbyte)((e.X - 128));
+                selectedVertice.z = (sbyte)((e.Y - 128));
+                triforcebox1.Refresh();
+                triforcebox2.Refresh();
+                triforcebox3.Refresh();
+            }
+
+        }
+
+        private void triforcebox3_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (mdown)
+            {
+                selectedVertice.z = (sbyte)((e.X - 128));
+                selectedVertice.y = (sbyte)((e.Y - 128));
+                triforcebox1.Refresh();
+                triforcebox2.Refresh();
+                triforcebox3.Refresh();
+            }
+        }
+
+        public void saveTriforce()
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                ROM.DATA[Constants.triforceVertices + 0 + (i * 3)] = (byte)triforceVertices[i].x;
+                ROM.DATA[Constants.triforceVertices + 1 + (i * 3)] = (byte)triforceVertices[i].y;
+                ROM.DATA[Constants.triforceVertices + 2 + (i * 3)] = (byte)triforceVertices[i].z;
+
+                ROM.DATA[Constants.crystalVertices + 0 + (i * 3)] = (byte)crystalVertices[i].x;
+                ROM.DATA[Constants.crystalVertices + 1 + (i * 3)] = (byte)crystalVertices[i].y;
+                ROM.DATA[Constants.crystalVertices + 2 + (i * 3)] = (byte)crystalVertices[i].z;
+            }
+        }
+
+        private void crystalRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            triforcebox1.Refresh();
+            triforcebox2.Refresh();
+            triforcebox3.Refresh();
         }
     }
 }

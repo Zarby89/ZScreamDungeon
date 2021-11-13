@@ -172,7 +172,8 @@ namespace ZeldaFullEditor
             }
             else if (oid == 0x2C)
             {
-                setdata("???",  2, 2);
+                
+                setdata("???",  6, 3);
                 sort = Sorting.NonScalable;
             }
             else if (oid == 0x2D)

@@ -141,14 +141,17 @@ namespace ZeldaFullEditor.Gui
 
             if (propertiesChangedFromForm == false)
             {
-
-
                 byte result = 0;
                 OverworldMap mapParent = scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent];
 
                 if (scene.ow.allmaps[scene.selectedMap].parent == 255)
                 {
                     mapParent = scene.ow.allmaps[scene.selectedMap];
+                }
+
+                if (byte.TryParse(paletteTextbox.Text, out result))
+                {
+                    mapParent.palette = result;
                 }
 
 
@@ -205,12 +208,15 @@ namespace ZeldaFullEditor.Gui
                     scene.ow.allmaps[mapParent.index + 1].BuildMap();
                     scene.ow.allmaps[mapParent.index + 8].BuildMap();
                     scene.ow.allmaps[mapParent.index + 9].BuildMap();
+
                 }
                 else
                 {
                     mapParent.BuildMap();
                 }
-                scene.Refresh();
+                //scene.updateMapGfx();
+                 scene.Invalidate();
+                //scene.Refresh();
             }
         }
 

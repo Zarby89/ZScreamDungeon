@@ -53,16 +53,8 @@ namespace ZeldaFullEditor.Gui
                 }
 
             }
-
-
-
-            //Bitmap b = new Bitmap(128, 512, 64, System.Drawing.Imaging.PixelFormat.Format4bppIndexed, GFX.currentOWgfx16Ptr);
             GFX.editort16Bitmap.Palette = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette;
             pictureboxTile8.Refresh();
-
-
-
-
         }
 
         private unsafe void CopyTile(int x, int y, int xx, int yy, TileInfo tile, int offset, byte* gfx16Pointer, byte* gfx8Pointer)
@@ -166,8 +158,8 @@ namespace ZeldaFullEditor.Gui
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
             //e.Graphics.DrawImage(GFX.editortileBitmap, new Rectangle(0, 0, 64, 64));
-            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f,0f,256.5f,8000f),new RectangleF(0,0,128, 4000),GraphicsUnit.Pixel);
-            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8000f), new RectangleF(0, 4000, 128, 4000-192), GraphicsUnit.Pixel);
+            e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f,0f,256.5f,16000f),new RectangleF(0,0,128, 8000),GraphicsUnit.Pixel);
+            //e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8000f), new RectangleF(0, 4000, 128, 4000-192), GraphicsUnit.Pixel);
             if (gridcheckBox.Checked)
             {
                 for (int x = 0; x < 16; x++)
@@ -182,11 +174,11 @@ namespace ZeldaFullEditor.Gui
             }
             int xP = (scene.selectedTile[0] % 8) * 32;
             int yP = ((scene.selectedTile[0] / 8)) * 32;
-            if (scene.selectedTile[0] >= 2000)
+            /*if (scene.selectedTile[0] >= 2000)
             {
                 yP -= 8000;
                 xP += 256;
-            }
+            }*/
             e.Graphics.DrawRectangle(new Pen(Color.FromArgb(180, Color.Red), 1), new Rectangle(xP, yP, 32, 32));
             
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 32, 0, 32, 64);
@@ -213,7 +205,7 @@ namespace ZeldaFullEditor.Gui
                 offset = 1992;
             }
 
-            int t16 = offset + (e.X / 32) + ((yp / 32) * 8);
+            int t16 = offset + (e.X / 32) + ((e.Y / 32) * 8);
             int t8x = (e.X / 16) & 0x01;
             int t8y = (e.Y / 16) & 0x01;
             int t8i = 0;

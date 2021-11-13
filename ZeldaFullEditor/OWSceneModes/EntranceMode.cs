@@ -230,7 +230,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.mainForm.DrawRoom();
                     DrawTempEntrance();
                     scene.entrancePreview = true;
-                    scene.Refresh();
+                    //scene.Refresh();
                     
 
 
@@ -329,9 +329,17 @@ namespace ZeldaFullEditor.OWSceneModes
                         {
                             if (e.Button == MouseButtons.Left)
                             {
-                                selectedEntrance = en;
-                                lastselectedEntrance = en;
-                                scene.mouse_down = true;
+                                TreeNode[] treeNodes = scene.mainForm.entrancetreeView.Nodes[0].Nodes
+                                        .Cast<TreeNode>()
+                                        .Where(r => (int)(r.Tag) == en.entranceId)
+                                        .ToArray();
+                                if (treeNodes.Length != 0)
+                                {
+                                    scene.mainForm.entrancetreeView.SelectedNode = treeNodes[0];
+                                }
+
+                                scene.mainForm.addRoomTab(DungeonsData.entrances[en.entranceId].Room);
+                                scene.mainForm.editorsTabControl.SelectedIndex = 0;
                             }
                         }
                     }
@@ -399,6 +407,34 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
 
                     EntranceOWEditor en = scene.ow.allentrances[i];
+                    if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
+                    {
+                        if (e.X >= en.x && e.X < en.x + 16 && e.Y >= en.y && e.Y < en.y + 16)
+                        {
+                            menu.Items.Add("Add Entrance");
+                            menu.Items.Add("Entrance Properties");
+                            menu.Items.Add("Delete Entrance");
+                            lastselectedEntrance = en;
+                            selectedEntrance = null;
+                            scene.mouse_down = false;
+                            if (lastselectedEntrance == null)
+                            {
+                                menu.Items[1].Enabled = false;
+                                menu.Items[2].Enabled = false;
+                            }
+                            menu.Items[0].Click += entranceAdd_Click;
+                            menu.Items[1].Click += entranceProperty_Click;
+                            menu.Items[2].Click += Delete_Click;
+                            menu.Show(Cursor.Position);
+                            return;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < scene.ow.allholes.Length; i++)
+                {
+
+                    EntranceOWEditor en = scene.ow.allholes[i];
                     if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
                     {
                         if (e.X >= en.x && e.X < en.x + 16 && e.Y >= en.y && e.Y < en.y + 16)
@@ -496,59 +532,128 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void Draw(Graphics g)
         {
-            int transparency = 200;
-            Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 255, 200, 16));
-            Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
-            g.CompositingMode = CompositingMode.SourceOver;
-            for (int i = 0; i < scene.ow.allentrances.Length; i++)
-            {
-                EntranceOWEditor e = scene.ow.allentrances[i];
 
-                if (e.mapId < 64+ scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
+            if (scene.lowEndMode)
+            {
+
+                int transparency = 200;
+                Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 255, 200, 16));
+                Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
+                g.CompositingMode = CompositingMode.SourceOver;
+                for (int i = 0; i < scene.ow.allentrances.Length; i++)
                 {
-                    if (selectedEntrance != null)
+                    EntranceOWEditor e = scene.ow.allentrances[i];
+                    if (e.mapId != scene.ow.allmaps[scene.selectedMap].parent)
                     {
-                        if (e == selectedEntrance)
-                        {
-                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
-                            scene.drawText(g, e.x - 1, e.y + 26, "map : " + e.mapId.ToString());
-                            scene.drawText(g, e.x - 1, e.y + 36, "entrance : " + e.entranceId.ToString());
-                            scene.drawText(g, e.x - 1, e.y + 46, "mpos : " + e.mapPos.ToString());
-                        }
-                        else
-                        {
-                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 200, 16));
-                        }
+                        continue;
                     }
-                    
-                    g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
-                    g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
-                    scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
-                }
-
-            }
-
-            for (int i = 0; i < scene.ow.allholes.Length; i++)
-            {
-                EntranceOWEditor e = scene.ow.allholes[i];
-                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 32, 32, 32));
-                if (e.mapId < 64+ scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
-                {
-                    if (selectedEntrance != null)
+                    if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
                     {
-                        if (e == selectedEntrance)
+                        if (selectedEntrance != null)
                         {
-                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
+                            if (e == selectedEntrance)
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
+                                scene.drawText(g, e.x - 1, e.y + 26, "map : " + e.mapId.ToString());
+                                scene.drawText(g, e.x - 1, e.y + 36, "entrance : " + e.entranceId.ToString());
+                                scene.drawText(g, e.x - 1, e.y + 46, "mpos : " + e.mapPos.ToString());
+                            }
+                            else
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 200, 16));
+                            }
                         }
+
+                        g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
+                        g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
+                        scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
                     }
 
-                    g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
-                    g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
-                    scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
                 }
 
+                for (int i = 0; i < scene.ow.allholes.Length; i++)
+                {
+                    EntranceOWEditor e = scene.ow.allholes[i];
+                    if (e.mapId != scene.ow.allmaps[scene.selectedMap].parent)
+                    {
+                        continue;
+                    }
+                    bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 32, 32, 32));
+                    if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
+                    {
+                        if (selectedEntrance != null)
+                        {
+                            if (e == selectedEntrance)
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
+                            }
+                        }
+
+                        g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
+                        g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
+                        scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
+                    }
+
+                }
+                g.CompositingMode = CompositingMode.SourceCopy;
             }
-            g.CompositingMode = CompositingMode.SourceCopy;
+
+            else
+            {
+                int transparency = 200;
+                Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 255, 200, 16));
+                Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
+                g.CompositingMode = CompositingMode.SourceOver;
+                for (int i = 0; i < scene.ow.allentrances.Length; i++)
+                {
+                    EntranceOWEditor e = scene.ow.allentrances[i];
+
+                    if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
+                    {
+                        if (selectedEntrance != null)
+                        {
+                            if (e == selectedEntrance)
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
+                                scene.drawText(g, e.x - 1, e.y + 26, "map : " + e.mapId.ToString());
+                                scene.drawText(g, e.x - 1, e.y + 36, "entrance : " + e.entranceId.ToString());
+                                scene.drawText(g, e.x - 1, e.y + 46, "mpos : " + e.mapPos.ToString());
+                            }
+                            else
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 200, 16));
+                            }
+                        }
+
+                        g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
+                        g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
+                        scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
+                    }
+
+                }
+
+                for (int i = 0; i < scene.ow.allholes.Length; i++)
+                {
+                    EntranceOWEditor e = scene.ow.allholes[i];
+                    bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 32, 32, 32));
+                    if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
+                    {
+                        if (selectedEntrance != null)
+                        {
+                            if (e == selectedEntrance)
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
+                            }
+                        }
+
+                        g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
+                        g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
+                        scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
+                    }
+
+                }
+                g.CompositingMode = CompositingMode.SourceCopy;
+            }
 
         }
     }

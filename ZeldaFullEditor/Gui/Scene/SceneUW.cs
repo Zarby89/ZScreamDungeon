@@ -45,6 +45,7 @@ namespace ZeldaFullEditor
             {
                 if (room.selectedObject[0] is Room_Object)
                 {
+                    
                     if (e.Delta > 0)
                     {
                         if ((room.selectedObject[0] as Room_Object).size < 15)
@@ -1284,7 +1285,7 @@ namespace ZeldaFullEditor
                         string name = oo.name;
                         string id = oo.id.ToString("X4");
                         mainForm.comboBox1.Enabled = false;
-                        mainForm.selectedGroupbox.Text = "Selected Object : " + id + " " + name;
+                        mainForm.selectedGroupbox.Text = "Selected Object : " + id + " " + name + "";
                         mainForm.doorselectPanel.Visible = true;
                         int[] aposes = mainForm.door_index.Select((s, i) => new { s, i }).Where(x => x.s == (oo as object_door).door_type).Select(x => x.i).ToArray();
                         int apos = 0;
@@ -1319,6 +1320,7 @@ namespace ZeldaFullEditor
                         string name = oo.name;
                         string id = oo.id.ToString("X4");
                         mainForm.comboBox1.Enabled = false;
+
                         mainForm.selectedGroupbox.Text = "Selected Object : " + id + " " + name;
 
                         for (int i = 0; i < room.tilesObjects.Count; i++)
@@ -1395,7 +1397,7 @@ namespace ZeldaFullEditor
 
         public unsafe void DrawRoom()
         {
-            
+
             if (room == null)
             {
                 return;
@@ -2049,10 +2051,15 @@ namespace ZeldaFullEditor
                         (o as Room_Object).size = 2;
                     }
 
-
+                    byte[] databytes = room.getSelectedObjectHex();
+                    string sdatabytes = "";
+                    if (databytes != null)
+                    {
+                        sdatabytes = databytes[0].ToString("X2") + " " + databytes[1].ToString("X2") + " " + databytes[2].ToString("X2");
+                    }
                     mainForm.object_x_label.Text = "X: " + (o as Room_Object).nx.ToString();
                     mainForm.object_y_label.Text = "Y: " + (o as Room_Object).ny;
-                    mainForm.object_size_label.Text = "Size: " + (o as Room_Object).size;
+                    mainForm.object_size_label.Text = "Size: " + (o as Room_Object).size + "   HEX DATA : " + sdatabytes;
                     mainForm.object_layer_label.Text = "Layer (BG): " + ((o as Room_Object).layer+1).ToString();
                     int z = 0;
                     foreach (Room_Object door in room.tilesObjects)
@@ -2747,6 +2754,9 @@ namespace ZeldaFullEditor
             mainForm.roomProperty_pit.Checked = room.damagepit;
             mainForm.roomProperty_sortsprite.Checked = room.sortsprites;
             mainForm.roomProperty_spriteset.Text = room.spriteset.ToString();
+
+
+
 
             mainForm.warpPreviewLabel.Text = "Hole:" + room.holewarp + "\r\n" +
             "Stair1:" + room.staircase1 + "\r\n" +

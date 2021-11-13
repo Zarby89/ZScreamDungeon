@@ -244,46 +244,108 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.ow.allsprites[gs].Remove(lastselectedSprite);
                 }
                 lastselectedSprite = null;
-                scene.Invalidate();
+                if (scene.lowEndMode)
+                {
+                    int x = scene.ow.allmaps[scene.selectedMap].parent % 8;
+                    int y = scene.ow.allmaps[scene.selectedMap].parent / 8;
+                    if (!scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent].largeMap)
+                    {
+                        scene.Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                    }
+                    else
+                    {
+                        scene.Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                    }
+                }
+                else
+                {
+                    scene.Invalidate(new Rectangle(scene.owForm.splitContainer1.Panel2.HorizontalScroll.Value, scene.owForm.splitContainer1.Panel2.VerticalScroll.Value, scene.owForm.splitContainer1.Panel2.Width, scene.owForm.splitContainer1.Panel2.Height));
+                }
+                //scene.Invalidate();
             }
         }
 
         public void Draw(Graphics g)
         {
-            int transparency = 200;
-            Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 255, 0, 255));
-            Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
-            g.CompositingMode = CompositingMode.SourceOver;
-            for (int i = 0; i < scene.ow.allsprites[scene.ow.gameState].Count; i++)
+
+            if (scene.lowEndMode)
             {
-                Sprite spr = scene.ow.allsprites[scene.ow.gameState][i];
 
-                if (spr.mapid< 64 + scene.ow.worldOffset && spr.mapid >= scene.ow.worldOffset)
+
+
+                int transparency = 200;
+                Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 255, 0, 255));
+                Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
+                g.CompositingMode = CompositingMode.SourceOver;
+                for (int i = 0; i < scene.ow.allsprites[scene.ow.gameState].Count; i++)
                 {
-                    /*if (selectedEntrance != null)
+                    Sprite spr = scene.ow.allsprites[scene.ow.gameState][i];
+                    if (spr.mapid != scene.ow.allmaps[scene.selectedMap].parent)
                     {
-                        if (e == selectedEntrance)
+                        continue;
+                    }
+                    if (spr.mapid < 64 + scene.ow.worldOffset && spr.mapid >= scene.ow.worldOffset)
+                    {
+                        /*if (selectedEntrance != null)
                         {
-                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
-                            scene.drawText(g, e.x - 1, e.y + 16, "map : " + e.mapId.ToString());
-                            scene.drawText(g, e.x - 1, e.y + 26, "entrance : " + e.entranceId.ToString());
-                            scene.drawText(g, e.x - 1, e.y + 36, "mpos : " + e.mapPos.ToString());
-                        }
-                        else
-                        {
-                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 200, 16));
-                        }
-                    }*/
+                            if (e == selectedEntrance)
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
+                                scene.drawText(g, e.x - 1, e.y + 16, "map : " + e.mapId.ToString());
+                                scene.drawText(g, e.x - 1, e.y + 26, "entrance : " + e.entranceId.ToString());
+                                scene.drawText(g, e.x - 1, e.y + 36, "mpos : " + e.mapPos.ToString());
+                            }
+                            else
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 200, 16));
+                            }
+                        }*/
 
-                    g.FillRectangle(bgrBrush, new Rectangle(spr.map_x, spr.map_y, 16, 16));
-                    g.DrawRectangle(contourPen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
-                    scene.drawText(g, spr.map_x +4, spr.map_y + 4, spr.name);
+                        g.FillRectangle(bgrBrush, new Rectangle(spr.map_x, spr.map_y, 16, 16));
+                        g.DrawRectangle(contourPen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
+                        scene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.name);
+                    }
+
                 }
 
+                g.CompositingMode = CompositingMode.SourceCopy;
             }
-            
-            g.CompositingMode = CompositingMode.SourceCopy;
+            else
+            {
+                int transparency = 200;
+                Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 255, 0, 255));
+                Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
+                g.CompositingMode = CompositingMode.SourceOver;
+                for (int i = 0; i < scene.ow.allsprites[scene.ow.gameState].Count; i++)
+                {
+                    Sprite spr = scene.ow.allsprites[scene.ow.gameState][i];
 
+                    if (spr.mapid < 64 + scene.ow.worldOffset && spr.mapid >= scene.ow.worldOffset)
+                    {
+                        /*if (selectedEntrance != null)
+                        {
+                            if (e == selectedEntrance)
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
+                                scene.drawText(g, e.x - 1, e.y + 16, "map : " + e.mapId.ToString());
+                                scene.drawText(g, e.x - 1, e.y + 26, "entrance : " + e.entranceId.ToString());
+                                scene.drawText(g, e.x - 1, e.y + 36, "mpos : " + e.mapPos.ToString());
+                            }
+                            else
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 200, 16));
+                            }
+                        }*/
+
+                        g.FillRectangle(bgrBrush, new Rectangle(spr.map_x, spr.map_y, 16, 16));
+                        g.DrawRectangle(contourPen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
+                        scene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.name);
+                    }
+
+                }
+
+                g.CompositingMode = CompositingMode.SourceCopy;
+            }
         }
 
         /*

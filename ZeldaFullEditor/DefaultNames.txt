@@ -275,7 +275,7 @@ FF Falling Tiles 4
 //NOT IMPLEMENTED YET!
 //that will changes entrances names as well
 [Rooms Names]
-(000) Ganon
+(000) AAAA
 (001) Hyrule Castle (North Corridor)
 (002) Behind Sanctuary (Switch)
 (003) Houlihan

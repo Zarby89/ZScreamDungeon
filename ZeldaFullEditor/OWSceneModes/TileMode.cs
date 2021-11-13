@@ -134,7 +134,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         redoList.Clear();
                         scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] = scene.selectedTile[0];
                         scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX) * 16) - (superX * 512), ((tileY) * 16) - (superY * 512), scene.selectedTile[0], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
-                        //this.Invalidate(new Rectangle(e.X - 16, e.Y - 16, 32,  32));
+                        //scene.Invalidate(new Rectangle(e.X - 16, e.Y - 16, 32,  32));
                         
                     }
 
@@ -218,7 +218,7 @@ namespace ZeldaFullEditor.OWSceneModes
             }
             scene.selecting = false;
             scene.mouse_down = false;
-            scene.Refresh();
+            //scene.Refresh();
             //scene.mainForm.pictureboxOWTiles.Refresh();
             //scene.mainForm.pictureGroupTiles.Refresh();
 

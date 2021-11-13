@@ -111,7 +111,7 @@ namespace ZeldaFullEditor
         Moving_Water,
         Four,
         Red_Flashes,
-        Light_Torch_to_See_Floor,
+        Torch_Show_Floor,
         Ganon_Room,
     }
 

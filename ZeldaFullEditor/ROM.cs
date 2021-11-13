@@ -10,6 +10,7 @@ namespace ZeldaFullEditor
     public static class ROM
     {
         public static byte[] DATA;
+        public static byte[] DATA2;
         public static byte[] TEMPDATA;
         public static StringBuilder romLog = new StringBuilder();
         public static bool logBlock = false;
@@ -177,6 +178,118 @@ namespace ZeldaFullEditor
 
         }
 
+
+
+
+
+        public static void WriteShort2(int addr, int value, bool log = false, string info = "")
+        {
+            DATA2[addr] = (byte)(value & 0xFF);
+            DATA2[addr + 1] = (byte)((value >> 8) & 0xFF);
+            if (logBlock)
+            {
+                if (addr + 2 > biggerAddress)
+                {
+                    biggerAddress = addr + 2;
+                }
+            }
+            if (!AdvancedLogs)
+            {
+                return;
+            }
+            if (log)
+            {
+                romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : Word(" + value.ToString("X4") + ") // " + info + "\r\n");
+            }
+
+        }
+
+
+        public static void Write2(int addr, byte[] value, bool log = false, string info = "")
+        {
+            if (logBlock)
+            {
+                if ((addr + value.Length) > biggerAddress)
+                {
+                    biggerAddress = (addr + value.Length);
+                }
+            }
+            if (AdvancedLogs)
+            {
+                if (log)
+                {
+                    romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : ");
+                }
+                for (int i = 0; i < value.Length; i++)
+                {
+                    DATA2[addr + i] = value[i];
+                    if (log)
+                    {
+                        romLog.Append(value[i].ToString("X2") + ", ");
+                    }
+
+                }
+                if (log)
+                {
+                    romLog.Append("//" + info + "\r\n");
+                }
+            }
+            else
+            {
+                for (int i = 0; i < value.Length; i++)
+                {
+                    DATA2[addr + i] = value[i];
+                }
+            }
+
+
+        }
+
+        public static void Write2(int addr, byte value, bool log = false, string info = "")
+        {
+            DATA2[addr] = value;
+            if (logBlock)
+            {
+                if (addr + 1 > biggerAddress)
+                {
+                    biggerAddress = addr + 1;
+                }
+            }
+            if (!AdvancedLogs)
+            {
+                return;
+            }
+
+            if (log)
+            {
+                romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : " + value.ToString("X2") + " // " + info + "\r\n");
+            }
+
+        }
+
+        public static void WriteLong2(int addr, int value, bool log = false, string info = "")
+        {
+            DATA2[addr] = (byte)(value & 0xFF);
+            DATA2[addr + 1] = (byte)((value >> 8) & 0xFF);
+            DATA2[addr + 2] = (byte)((value >> 16) & 0xFF);
+            if (logBlock)
+            {
+                if (addr + 3 > biggerAddress)
+                {
+                    biggerAddress = addr + 3;
+                }
+            }
+
+            if (!AdvancedLogs)
+            {
+                return;
+            }
+            if (log)
+            {
+                romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : Long(" + value.ToString("X6") + ") // " + info + "\r\n");
+            }
+
+        }
 
     }
 }

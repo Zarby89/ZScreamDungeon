@@ -118,6 +118,7 @@ namespace ZeldaFullEditor
             {
                 dungeonsMain_Palettes[i] = ReadPalette(romData, Constants.dungeonMainPalettes + (i * 180), 90);
             }
+
         }
 
 
@@ -142,10 +143,14 @@ namespace ZeldaFullEditor
 
         }
 
-        public static void WritePalette(byte[] romData, int romPosition, Color[] colors)
+        public static void WritePalette(byte[] romData, int romPosition, Color[] colors, int max = -1)
         {
+            if (max == -1)
+            {
+                max = colors.Length;
+            }
             int colorPos = 0;
-            while (colorPos < colors.Length)
+            while (colorPos < max)
             {
                 short color = (short)(((colors[colorPos].B / 8) << 10) | ((colors[colorPos].G / 8) << 5) | ((colors[colorPos].R / 8)));
                 romData[romPosition] = (byte)(color);

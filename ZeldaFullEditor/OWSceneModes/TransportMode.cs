@@ -131,44 +131,91 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void Draw(Graphics g)
         {
+            if (scene.lowEndMode)
+            {
+                int transparency = 200;
+                Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 48, 188, 142));
+                Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
+                g.CompositingMode = CompositingMode.SourceOver;
+                for (int i = 0; i < scene.ow.allWhirlpools.Count; i++)
+                {
+                    TransportOW e = scene.ow.allWhirlpools[i];
+                    if (e.mapId != scene.ow.allmaps[scene.selectedMap].parent)
+                    {
+                        continue;
+                    }
+                    if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
+                    {
+                        if (selectedTransport != null)
+                        {
+                            if (e == selectedTransport)
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
+                                scene.drawText(g, e.playerX - 1, e.playerY + 16, "map : " + e.mapId.ToString());
+                                //scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
+                                scene.drawText(g, e.playerX - 4, e.playerY + 36, "mpos : " + e.vramLocation.ToString());
+                            }
+                            else
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 200, 16));
+                            }
+                        }
+
+                        g.FillRectangle(bgrBrush, new Rectangle(e.playerX, e.playerY, 16, 16));
+                        g.DrawRectangle(contourPen, new Rectangle(e.playerX, e.playerY, 16, 16));
+                        scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
+                        /*if (i > 8)
+                        {
+                            scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
+                        }
+                        else
+                        {
+                            scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
+                        }*/
+                    }
+
+                }
+            }
+            else
+            { 
             int transparency = 200;
             Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 48, 188, 142));
             Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
             g.CompositingMode = CompositingMode.SourceOver;
-            for (int i = 0; i < scene.ow.allWhirlpools.Count; i++)
-            {
-                TransportOW e = scene.ow.allWhirlpools[i];
-
-                if (e.mapId < 64+ scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
+                for (int i = 0; i < scene.ow.allWhirlpools.Count; i++)
                 {
-                    if (selectedTransport != null)
+                    TransportOW e = scene.ow.allWhirlpools[i];
+
+                    if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
                     {
-                        if (e == selectedTransport)
+                        if (selectedTransport != null)
                         {
-                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
-                            scene.drawText(g, e.playerX - 1, e.playerY + 16, "map : " + e.mapId.ToString());
-                            //scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
-                            scene.drawText(g, e.playerX - 4, e.playerY + 36, "mpos : " + e.vramLocation.ToString());
+                            if (e == selectedTransport)
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
+                                scene.drawText(g, e.playerX - 1, e.playerY + 16, "map : " + e.mapId.ToString());
+                                //scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
+                                scene.drawText(g, e.playerX - 4, e.playerY + 36, "mpos : " + e.vramLocation.ToString());
+                            }
+                            else
+                            {
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 200, 16));
+                            }
+                        }
+
+                        g.FillRectangle(bgrBrush, new Rectangle(e.playerX, e.playerY, 16, 16));
+                        g.DrawRectangle(contourPen, new Rectangle(e.playerX, e.playerY, 16, 16));
+                        scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
+                        /*if (i > 8)
+                        {
+                            scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
                         }
                         else
                         {
-                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 200, 16));
-                        }
+                            scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
+                        }*/
                     }
-
-                    g.FillRectangle(bgrBrush, new Rectangle(e.playerX, e.playerY, 16, 16));
-                    g.DrawRectangle(contourPen, new Rectangle(e.playerX, e.playerY, 16, 16));
-                    scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
-                    /*if (i > 8)
-                    {
-                        scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
-                    }
-                    else
-                    {
-                        scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
-                    }*/
                 }
-
             }
         }
     }

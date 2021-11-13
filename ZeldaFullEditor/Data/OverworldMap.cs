@@ -19,7 +19,7 @@ namespace ZeldaFullEditor
         public byte palette = 0;
         public byte[] sprpalette = new byte[3];
         public byte[] musics = new byte[4];
-
+        public bool firstLoad = false;
         public short messageID = 0;
         public bool largeMap = false;
         public IntPtr gfxPtr = Marshal.AllocHGlobal(512 * 512); //Needs to be removed
@@ -170,9 +170,12 @@ namespace ZeldaFullEditor
                     //sprgfx[0] = ROM.DATA[Constants.overworldSpriteset + parent];
                     //sprgfx[1] = ROM.DATA[Constants.overworldSpriteset + parent + 64];
                     //sprgfx[2] = ROM.DATA[Constants.overworldSpriteset + parent + 128];
-
-                    gfx = ROM.DATA[Constants.mapGfx + parent];
-                    palette = ROM.DATA[Constants.overworldMapPalette + parent];
+                    if (!firstLoad)
+                    {
+                        gfx = ROM.DATA[Constants.mapGfx + parent];
+                        palette = ROM.DATA[Constants.overworldMapPalette + parent];
+                        firstLoad = true;
+                    }
                 }
 
             }
@@ -201,24 +204,23 @@ namespace ZeldaFullEditor
             int superY = ((index - (world * 64)) / 8);
             int superX = index - (world * 64) - (superY * 8);
 
-            //16x16 CODE OLD
-            /*for (int y = 0; y < 32; y++)
-            {
-                for (int x = 0; x < 32; x++)
+                for (int y = 0; y < 32; y++)
                 {
-                    CopyTile8bpp16((x * 16), (y * 16), tilesUsed[x + (superX * 32), y + (superY * 32)], gfxPtr, GFX.mapblockset16);
+                    for (int x = 0; x < 32; x++)
+                    {
+                        CopyTile8bpp16((x * 16), (y * 16), tilesUsed[x + (superX * 32), y + (superY * 32)], gfxPtr, GFX.mapblockset16);
+                    }
                 }
-            }*/
-
+            
             //8x8 CODE NEW
-            for (int y = 0; y < 32; y++)
+            /*for (int y = 0; y < 32; y++)
             {
                 for (int x = 0; x < 32; x++)
                 {
                     
                     CopyTile8bpp16From8((x*16), (y*16), tilesUsed[x + (superX * 32), y + (superY * 32)], gfxPtr, GFX.currentOWgfx16Ptr);
                 }
-            }
+            }*/
 
             messageID = (short)ROM.ReadShort(Constants.overworldMessages+(parent*2));
 

@@ -14,7 +14,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <TargetFrameworkProfile />
-    <PublishUrl>publish\</PublishUrl>
+    <PublishUrl>C:\Users\adamo\Desktop\ZScream 2.8.2\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
     <UpdateEnabled>false</UpdateEnabled>
@@ -24,9 +24,11 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>0</ApplicationRevision>
+    <AutorunEnabled>true</AutorunEnabled>
+    <ApplicationRevision>2</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -49,9 +51,11 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>screamlink.ico</ApplicationIcon>
@@ -78,6 +82,19 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ManifestCertificateThumbprint>04C489A2A4F503757F45568FA161B416C2E6D403</ManifestCertificateThumbprint>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ManifestKeyFile>ZeldaFullEditor_TemporaryKey.pfx</ManifestKeyFile>
+  </PropertyGroup>
+  <PropertyGroup>
+    <GenerateManifests>true</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="CSScriptLibrary, Version=3.30.3.0, Culture=neutral, PublicKeyToken=70fcc3d18c749033, processorArchitecture=MSIL">
       <HintPath>..\packages\CS-Script.bin.3.30.3\lib\net46\CSScriptLibrary.dll</HintPath>
@@ -193,11 +210,18 @@
   <ItemGroup>
     <Compile Include="asar.cs" />
     <Compile Include="ChestDraw.cs" />
+    <Compile Include="Data\DoorData.cs" />
     <Compile Include="Data\DungeonMap.cs" />
     <Compile Include="Data\Gravestone.cs" />
     <Compile Include="Data\MapIcon.cs" />
     <Compile Include="Data\OAMTile.cs" />
     <Compile Include="Data\ScreenStrip.cs" />
+    <Compile Include="Gui\DataExtractor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\DataExtractor.Designer.cs">
+      <DependentUpon>DataExtractor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\ChestPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -338,6 +362,12 @@
     <Compile Include="Gui\MainTabs\ScreenEditor.Designer.cs">
       <DependentUpon>ScreenEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\MainTabs\SpriteEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Gui\MainTabs\SpriteEditor.Designer.cs">
+      <DependentUpon>SpriteEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\PaletteEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -406,7 +436,14 @@
     <Compile Include="OWSceneModes\TileMode.cs" />
     <Compile Include="OWSceneModes\GravestoneMode.cs" />
     <Compile Include="OWSceneModes\TransportMode.cs" />
+    <Compile Include="Point3D.cs" />
     <Compile Include="Project.cs" />
+    <Compile Include="RoomMover.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RoomMover.Designer.cs">
+      <DependentUpon>RoomMover.cs</DependentUpon>
+    </Compile>
     <Compile Include="Rooms\Items\ItemsNames.cs" />
     <Compile Include="Gui\ExtraForms\MovePointer.cs">
       <SubType>Form</SubType>
@@ -511,6 +548,10 @@
     <Compile Include="ZCompressLibrary\compression_piece.cs" />
     <Compile Include="ZCompressLibrary\Decompress.cs" />
     <Compile Include="ZCompressLibrary\fake_mem.cs" />
+    <Compile Include="ZSSerializer.cs" />
+    <EmbeddedResource Include="Gui\DataExtractor.resx">
+      <DependentUpon>DataExtractor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\ChestPicker.resx">
       <DependentUpon>ChestPicker.cs</DependentUpon>
     </EmbeddedResource>
@@ -582,6 +623,9 @@
     <EmbeddedResource Include="Gui\MainTabs\ScreenEditor.resx">
       <DependentUpon>ScreenEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\MainTabs\SpriteEditor.resx">
+      <DependentUpon>SpriteEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\PaletteEditor.resx">
       <DependentUpon>PaletteEditor.cs</DependentUpon>
     </EmbeddedResource>
@@ -638,6 +682,9 @@
     <EmbeddedResource Include="Gui\Scene\SceneUW.resx">
       <DependentUpon>SceneUW.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="RoomMover.resx">
+      <DependentUpon>RoomMover.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SpritesView.resx">
       <DependentUpon>SpritesView.cs</DependentUpon>
     </EmbeddedResource>
@@ -654,6 +701,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="ZeldaFullEditor_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

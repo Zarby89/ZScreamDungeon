@@ -205,7 +205,7 @@ namespace ZeldaFullEditor.OWSceneModes
             }
             scene.selecting = false;
             scene.mouse_down = false;
-            scene.Refresh();
+            //scene.Refresh();
             //scene.mainForm.pictureboxOWTiles.Refresh();
             //scene.mainForm.pictureGroupTiles.Refresh();
 

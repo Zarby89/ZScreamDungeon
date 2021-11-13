@@ -53,6 +53,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.screenBox = new System.Windows.Forms.PictureBox();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.button12 = new System.Windows.Forms.Button();
+            this.button11 = new System.Windows.Forms.Button();
+            this.mapiconGroupbox = new System.Windows.Forms.GroupBox();
+            this.gfxiconTextbox = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.yiconposLabel = new System.Windows.Forms.Label();
+            this.xiconposLabel = new System.Windows.Forms.Label();
             this.button4 = new System.Windows.Forms.Button();
             this.overworldCombobox = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -89,11 +96,15 @@
             this.dungmapListbox = new System.Windows.Forms.ListBox();
             this.label5 = new System.Windows.Forms.Label();
             this.dungmapPicturebox = new System.Windows.Forms.PictureBox();
-            this.mapiconGroupbox = new System.Windows.Forms.GroupBox();
-            this.xiconposLabel = new System.Windows.Forms.Label();
-            this.yiconposLabel = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.gfxiconTextbox = new System.Windows.Forms.TextBox();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.triforcebox3 = new System.Windows.Forms.PictureBox();
+            this.triforcebox2 = new System.Windows.Forms.PictureBox();
+            this.triforceLabel1 = new System.Windows.Forms.Label();
+            this.triforcebox1 = new System.Windows.Forms.PictureBox();
+            this.triforceRadio = new System.Windows.Forms.RadioButton();
+            this.crystalRadio = new System.Windows.Forms.RadioButton();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.paletteBox)).BeginInit();
@@ -101,6 +112,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.tilesBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.screenBox)).BeginInit();
             this.tabPage2.SuspendLayout();
+            this.mapiconGroupbox.SuspendLayout();
             this.overworldPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.owMapTilesBox)).BeginInit();
@@ -110,7 +122,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.floorselectorPicturebox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dungmaproomgfxPicturebox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dungmapPicturebox)).BeginInit();
-            this.mapiconGroupbox.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.triforcebox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.triforcebox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.triforcebox1)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -118,6 +133,7 @@
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage4);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -399,6 +415,8 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.button12);
+            this.tabPage2.Controls.Add(this.button11);
             this.tabPage2.Controls.Add(this.mapiconGroupbox);
             this.tabPage2.Controls.Add(this.button4);
             this.tabPage2.Controls.Add(this.overworldCombobox);
@@ -414,6 +432,77 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Overworld Map";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // button12
+            // 
+            this.button12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button12.Location = new System.Drawing.Point(942, 556);
+            this.button12.Name = "button12";
+            this.button12.Size = new System.Drawing.Size(75, 23);
+            this.button12.TabIndex = 11;
+            this.button12.Text = "Import Gfx";
+            this.button12.UseVisualStyleBackColor = true;
+            this.button12.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // button11
+            // 
+            this.button11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button11.Location = new System.Drawing.Point(861, 556);
+            this.button11.Name = "button11";
+            this.button11.Size = new System.Drawing.Size(75, 23);
+            this.button11.TabIndex = 10;
+            this.button11.Text = "Export Gfx";
+            this.button11.UseVisualStyleBackColor = true;
+            this.button11.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // mapiconGroupbox
+            // 
+            this.mapiconGroupbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.mapiconGroupbox.Controls.Add(this.gfxiconTextbox);
+            this.mapiconGroupbox.Controls.Add(this.label14);
+            this.mapiconGroupbox.Controls.Add(this.yiconposLabel);
+            this.mapiconGroupbox.Controls.Add(this.xiconposLabel);
+            this.mapiconGroupbox.Location = new System.Drawing.Point(761, 626);
+            this.mapiconGroupbox.Name = "mapiconGroupbox";
+            this.mapiconGroupbox.Size = new System.Drawing.Size(256, 156);
+            this.mapiconGroupbox.TabIndex = 9;
+            this.mapiconGroupbox.TabStop = false;
+            this.mapiconGroupbox.Text = "Selected Icon Properties - No icon selected";
+            // 
+            // gfxiconTextbox
+            // 
+            this.gfxiconTextbox.Location = new System.Drawing.Point(9, 71);
+            this.gfxiconTextbox.Name = "gfxiconTextbox";
+            this.gfxiconTextbox.Size = new System.Drawing.Size(100, 20);
+            this.gfxiconTextbox.TabIndex = 3;
+            this.gfxiconTextbox.TextChanged += new System.EventHandler(this.gfxiconTextbox_TextChanged);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(6, 55);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(32, 13);
+            this.label14.TabIndex = 2;
+            this.label14.Text = "Gfx : ";
+            // 
+            // yiconposLabel
+            // 
+            this.yiconposLabel.AutoSize = true;
+            this.yiconposLabel.Location = new System.Drawing.Point(6, 29);
+            this.yiconposLabel.Name = "yiconposLabel";
+            this.yiconposLabel.Size = new System.Drawing.Size(63, 13);
+            this.yiconposLabel.TabIndex = 1;
+            this.yiconposLabel.Text = "Y Position : ";
+            // 
+            // xiconposLabel
+            // 
+            this.xiconposLabel.AutoSize = true;
+            this.xiconposLabel.Location = new System.Drawing.Point(6, 16);
+            this.xiconposLabel.Name = "xiconposLabel";
+            this.xiconposLabel.Size = new System.Drawing.Size(63, 13);
+            this.xiconposLabel.TabIndex = 0;
+            this.xiconposLabel.Text = "X Position : ";
             // 
             // button4
             // 
@@ -441,7 +530,7 @@
             "0x07 - Crystals - Get all 7 crystals",
             "0x08 - Skull on GT - Climb Ganon\'s Tower",
             "0x09 - Flute Locations"});
-            this.overworldCombobox.Location = new System.Drawing.Point(761, 576);
+            this.overworldCombobox.Location = new System.Drawing.Point(761, 599);
             this.overworldCombobox.Name = "overworldCombobox";
             this.overworldCombobox.Size = new System.Drawing.Size(256, 21);
             this.overworldCombobox.TabIndex = 7;
@@ -451,7 +540,7 @@
             // 
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(761, 560);
+            this.label4.Location = new System.Drawing.Point(761, 583);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(96, 13);
             this.label4.TabIndex = 6;
@@ -464,7 +553,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 5;
-            this.button3.Text = "Import";
+            this.button3.Text = "Import Tiles";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -475,7 +564,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 4;
-            this.button2.Text = "Export";
+            this.button2.Text = "Export Tiles";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -832,54 +921,111 @@
             this.dungmapPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.dungmapPicturebox_Paint);
             this.dungmapPicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.dungmapPicturebox_MouseDown);
             // 
-            // mapiconGroupbox
+            // tabPage4
             // 
-            this.mapiconGroupbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.mapiconGroupbox.Controls.Add(this.gfxiconTextbox);
-            this.mapiconGroupbox.Controls.Add(this.label14);
-            this.mapiconGroupbox.Controls.Add(this.yiconposLabel);
-            this.mapiconGroupbox.Controls.Add(this.xiconposLabel);
-            this.mapiconGroupbox.Location = new System.Drawing.Point(761, 603);
-            this.mapiconGroupbox.Name = "mapiconGroupbox";
-            this.mapiconGroupbox.Size = new System.Drawing.Size(256, 156);
-            this.mapiconGroupbox.TabIndex = 9;
-            this.mapiconGroupbox.TabStop = false;
-            this.mapiconGroupbox.Text = "Selected Icon Properties - No icon selected";
+            this.tabPage4.Controls.Add(this.crystalRadio);
+            this.tabPage4.Controls.Add(this.triforceRadio);
+            this.tabPage4.Controls.Add(this.label13);
+            this.tabPage4.Controls.Add(this.label12);
+            this.tabPage4.Controls.Add(this.triforcebox3);
+            this.tabPage4.Controls.Add(this.triforcebox2);
+            this.tabPage4.Controls.Add(this.triforceLabel1);
+            this.tabPage4.Controls.Add(this.triforcebox1);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(1072, 774);
+            this.tabPage4.TabIndex = 3;
+            this.tabPage4.Text = "Triforce/Crystal Editor";
+            this.tabPage4.UseVisualStyleBackColor = true;
             // 
-            // xiconposLabel
+            // label13
             // 
-            this.xiconposLabel.AutoSize = true;
-            this.xiconposLabel.Location = new System.Drawing.Point(6, 16);
-            this.xiconposLabel.Name = "xiconposLabel";
-            this.xiconposLabel.Size = new System.Drawing.Size(63, 13);
-            this.xiconposLabel.TabIndex = 0;
-            this.xiconposLabel.Text = "X Position : ";
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(546, 51);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(60, 13);
+            this.label13.TabIndex = 5;
+            this.label13.Text = "Side View :";
             // 
-            // yiconposLabel
+            // label12
             // 
-            this.yiconposLabel.AutoSize = true;
-            this.yiconposLabel.Location = new System.Drawing.Point(6, 29);
-            this.yiconposLabel.Name = "yiconposLabel";
-            this.yiconposLabel.Size = new System.Drawing.Size(63, 13);
-            this.yiconposLabel.TabIndex = 1;
-            this.yiconposLabel.Text = "Y Position : ";
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(287, 51);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(58, 13);
+            this.label12.TabIndex = 4;
+            this.label12.Text = "Top View :";
             // 
-            // label14
+            // triforcebox3
             // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(6, 55);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(32, 13);
-            this.label14.TabIndex = 2;
-            this.label14.Text = "Gfx : ";
+            this.triforcebox3.BackColor = System.Drawing.Color.DimGray;
+            this.triforcebox3.Location = new System.Drawing.Point(549, 67);
+            this.triforcebox3.Name = "triforcebox3";
+            this.triforcebox3.Size = new System.Drawing.Size(256, 256);
+            this.triforcebox3.TabIndex = 3;
+            this.triforcebox3.TabStop = false;
+            this.triforcebox3.Paint += new System.Windows.Forms.PaintEventHandler(this.triforcebox3_Paint);
+            this.triforcebox3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.triforcebox3_MouseDown);
+            this.triforcebox3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.triforcebox3_MouseMove);
+            this.triforcebox3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.triforcebox3_MouseUp);
             // 
-            // gfxiconTextbox
+            // triforcebox2
             // 
-            this.gfxiconTextbox.Location = new System.Drawing.Point(9, 71);
-            this.gfxiconTextbox.Name = "gfxiconTextbox";
-            this.gfxiconTextbox.Size = new System.Drawing.Size(100, 20);
-            this.gfxiconTextbox.TabIndex = 3;
-            this.gfxiconTextbox.TextChanged += new System.EventHandler(this.gfxiconTextbox_TextChanged);
+            this.triforcebox2.BackColor = System.Drawing.Color.DimGray;
+            this.triforcebox2.Location = new System.Drawing.Point(287, 67);
+            this.triforcebox2.Name = "triforcebox2";
+            this.triforcebox2.Size = new System.Drawing.Size(256, 256);
+            this.triforcebox2.TabIndex = 2;
+            this.triforcebox2.TabStop = false;
+            this.triforcebox2.Paint += new System.Windows.Forms.PaintEventHandler(this.triforcebox2_Paint);
+            this.triforcebox2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.triforcebox2_MouseDown);
+            this.triforcebox2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.triforcebox2_MouseMove);
+            this.triforcebox2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.triforcebox2_MouseUp);
+            // 
+            // triforceLabel1
+            // 
+            this.triforceLabel1.AutoSize = true;
+            this.triforceLabel1.Location = new System.Drawing.Point(25, 51);
+            this.triforceLabel1.Name = "triforceLabel1";
+            this.triforceLabel1.Size = new System.Drawing.Size(63, 13);
+            this.triforceLabel1.TabIndex = 1;
+            this.triforceLabel1.Text = "Front View :";
+            // 
+            // triforcebox1
+            // 
+            this.triforcebox1.BackColor = System.Drawing.Color.DimGray;
+            this.triforcebox1.Location = new System.Drawing.Point(25, 67);
+            this.triforcebox1.Name = "triforcebox1";
+            this.triforcebox1.Size = new System.Drawing.Size(256, 256);
+            this.triforcebox1.TabIndex = 0;
+            this.triforcebox1.TabStop = false;
+            this.triforcebox1.Paint += new System.Windows.Forms.PaintEventHandler(this.triforcebox1_Paint);
+            this.triforcebox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseDown);
+            this.triforcebox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseMove);
+            this.triforcebox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseUp);
+            // 
+            // triforceRadio
+            // 
+            this.triforceRadio.AutoSize = true;
+            this.triforceRadio.Checked = true;
+            this.triforceRadio.Location = new System.Drawing.Point(25, 17);
+            this.triforceRadio.Name = "triforceRadio";
+            this.triforceRadio.Size = new System.Drawing.Size(61, 17);
+            this.triforceRadio.TabIndex = 6;
+            this.triforceRadio.Text = "Triforce";
+            this.triforceRadio.UseVisualStyleBackColor = true;
+            this.triforceRadio.CheckedChanged += new System.EventHandler(this.crystalRadio_CheckedChanged);
+            // 
+            // crystalRadio
+            // 
+            this.crystalRadio.AutoSize = true;
+            this.crystalRadio.Location = new System.Drawing.Point(109, 17);
+            this.crystalRadio.Name = "crystalRadio";
+            this.crystalRadio.Size = new System.Drawing.Size(56, 17);
+            this.crystalRadio.TabIndex = 7;
+            this.crystalRadio.Text = "Crystal";
+            this.crystalRadio.UseVisualStyleBackColor = true;
+            this.crystalRadio.CheckedChanged += new System.EventHandler(this.crystalRadio_CheckedChanged);
             // 
             // ScreenEditor
             // 
@@ -897,6 +1043,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.screenBox)).EndInit();
             this.tabPage2.ResumeLayout(false);
             this.tabPage2.PerformLayout();
+            this.mapiconGroupbox.ResumeLayout(false);
+            this.mapiconGroupbox.PerformLayout();
             this.overworldPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.owMapTilesBox)).EndInit();
@@ -907,8 +1055,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.floorselectorPicturebox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dungmaproomgfxPicturebox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dungmapPicturebox)).EndInit();
-            this.mapiconGroupbox.ResumeLayout(false);
-            this.mapiconGroupbox.PerformLayout();
+            this.tabPage4.ResumeLayout(false);
+            this.tabPage4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.triforcebox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.triforcebox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.triforcebox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -981,5 +1132,16 @@
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label yiconposLabel;
         private System.Windows.Forms.Label xiconposLabel;
+        private System.Windows.Forms.Button button12;
+        private System.Windows.Forms.Button button11;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.PictureBox triforcebox3;
+        private System.Windows.Forms.PictureBox triforcebox2;
+        private System.Windows.Forms.Label triforceLabel1;
+        private System.Windows.Forms.PictureBox triforcebox1;
+        private System.Windows.Forms.RadioButton crystalRadio;
+        private System.Windows.Forms.RadioButton triforceRadio;
     }
 }

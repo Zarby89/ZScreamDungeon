@@ -8,8 +8,6 @@ namespace ZeldaFullEditor
 {
     public static class Constants
     {
-
-        
         //===========================================================================================
         //GFX Related Variables
         //===========================================================================================
@@ -20,9 +18,9 @@ namespace ZeldaFullEditor
         public static int subtype3_tiles = 0x84F0; // JP = Same //i don't think that need a pointer
         public static int gfx_animated_pointer = 0x10275; //JP 0x10624 //long pointer
         public static int overworldgfxGroups2 = 0x6073; //0x60B3
-        public static int gfx_1_pointer = 0x6790; //2byte pointer bank 00 pc -> 0x4320  CF80
-        public static int gfx_2_pointer = 0x6795; //D05F
-        public static int gfx_3_pointer = 0x679A; //D13E
+        public static int gfx_1_pointer = 0x6790; //2byte pointer bank 00 pc -> 0x4320  CF80  ; 004F80
+        public static int gfx_2_pointer = 0x6795; //D05F ; 00505F
+        public static int gfx_3_pointer = 0x679A; //D13E ; 00513E
         public static int hud_palettes = 0xDD660;
         public static int maxGfx = 0xC3FB5;
         //===========================================================================================
@@ -322,9 +320,10 @@ namespace ZeldaFullEditor
         public static int dungeonMap_tile16Exp = 0x109010;
         public static int dungeonMap_bossrooms = 0x56807; //14 words values 0x000F = no boss
 
+        public static int triforceVertices = 0x04FFD2; //group of 3, X, Y ,Z
+        public static int TriforceFaces = 0x04FFE4; //group of 5
 
-
-
+        public static int crystalVertices = 0x04FF98;
 
 
 

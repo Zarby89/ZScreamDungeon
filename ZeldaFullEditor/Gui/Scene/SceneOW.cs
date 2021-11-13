@@ -136,14 +136,25 @@ namespace ZeldaFullEditor
         {
             if (selectedMap + ow.worldOffset <= 159)
             {
+                owForm.propertiesChangedFromForm = true;
                 if (ow.allmaps[selectedMap + ow.worldOffset].needRefresh)
                 {
                     ow.allmaps[selectedMap + ow.worldOffset].BuildMap();
                     ow.allmaps[selectedMap + ow.worldOffset].needRefresh = false;
                 }
                 owForm.mapGroupbox.Text = "Selected Map - " + ow.allmaps[selectedMap + ow.worldOffset].parent.ToString() + " Properties : ";
+                
+                if (mainForm.showMapIndexInHexToolStripMenuItem.Checked)
+                {
+                    owForm.mapGroupbox.Text = "Selected Map - " + ow.allmaps[selectedMap + ow.worldOffset].parent.ToString("X2") + " Properties : ";
+                }
+                else
+                {
+                    owForm.mapGroupbox.Text = "Selected Map - " + ow.allmaps[selectedMap + ow.worldOffset].parent.ToString("") + " Properties : ";
+                }
 
-                owForm.propertiesChangedFromForm = true;
+
+                
                 owForm.textidTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].messageID.ToString();
                 if (ow.worldOffset >= 64)
                 {
@@ -218,7 +229,28 @@ namespace ZeldaFullEditor
             {
                 gravestoneMode.onMouseDown(e);
             }
-            Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
+
+            if (lowEndMode)
+            {
+                int x = ow.allmaps[selectedMap].parent % 8;
+                int y = ow.allmaps[selectedMap].parent / 8;
+                if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                {
+                    Invalidate(new Rectangle(x*512, y*512, 512, 512));
+                }
+                else
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                }
+            }
+            else
+            {
+
+
+                Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
+
+            }
+            
             base.OnMouseDown(e);
         }
 
@@ -323,14 +355,46 @@ namespace ZeldaFullEditor
                 gravestoneMode.onMouseUp(e);
             }
             owForm.objectGroupbox.Text = text;
-            Invalidate(new Rectangle((owForm.splitContainer1.Panel2.HorizontalScroll.Value), (owForm.splitContainer1.Panel2.VerticalScroll.Value), (owForm.splitContainer1.Panel2.Width), (owForm.splitContainer1.Panel2.Height)));
+            if (lowEndMode)
+            {
+                int x = ow.allmaps[selectedMap].parent % 8;
+                int y = ow.allmaps[selectedMap].parent / 8;
+                if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                }
+                else
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                }
+            }
+            else
+            {
+                Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
+            }
         }
 
         private void ObjCombobox_SelectedIndexChangedSprite(object sender, EventArgs e)
         {
             spriteMode.lastselectedSprite.id = (byte)owForm.objCombobox.SelectedIndex;
             spriteMode.lastselectedSprite.name = owForm.objCombobox.Text;
-            Invalidate(new Rectangle((owForm.splitContainer1.Panel2.HorizontalScroll.Value), (owForm.splitContainer1.Panel2.VerticalScroll.Value), (owForm.splitContainer1.Panel2.Width), (owForm.splitContainer1.Panel2.Height)));
+            if (lowEndMode)
+            {
+                int x = ow.allmaps[selectedMap].parent % 8;
+                int y = ow.allmaps[selectedMap].parent / 8;
+                if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                }
+                else
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                }
+            }
+            else
+            {
+                Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
+            }
 
 
         }
@@ -344,12 +408,30 @@ namespace ZeldaFullEditor
                 
             }
             itemMode.lastselectedItem.id = id;
-            Invalidate(new Rectangle((owForm.splitContainer1.Panel2.HorizontalScroll.Value), (owForm.splitContainer1.Panel2.VerticalScroll.Value), (owForm.splitContainer1.Panel2.Width), (owForm.splitContainer1.Panel2.Height)));
+            if (lowEndMode)
+            {
+                int x = ow.allmaps[selectedMap].parent % 8;
+                int y = ow.allmaps[selectedMap].parent / 8;
+                if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                }
+                else
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                }
+            }
+            else
+            {
+                Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
+            }
 
         }
 
         private void onMouseMove(object sender, MouseEventArgs e)
         {
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
             if (selectedMode == ObjectMode.Tile)
             {
                 tilemode.OnMouseMove(e);
@@ -386,19 +468,72 @@ namespace ZeldaFullEditor
             {
                 gravestoneMode.onMouseMove(e);
             }
-            Invalidate(new Rectangle((owForm.splitContainer1.Panel2.HorizontalScroll.Value), (owForm.splitContainer1.Panel2.VerticalScroll.Value), (owForm.splitContainer1.Panel2.Width), (owForm.splitContainer1.Panel2.Height)));
+            if (lowEndMode)
+            {
+                int x = ow.allmaps[selectedMap].parent % 8;
+                int y = ow.allmaps[selectedMap].parent / 8;
+                if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                }
+                else
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                }
+            }
+            else
+            {
+
+
+                Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
+
+            }
+            sw.Stop();
+            Console.WriteLine("Entire OW Draw ms : " + sw.ElapsedMilliseconds);
         }
 
         public void Undo()
         {
             tilemode.Undo();
-            Invalidate(new Rectangle((owForm.splitContainer1.Panel2.HorizontalScroll.Value), (owForm.splitContainer1.Panel2.VerticalScroll.Value), (owForm.splitContainer1.Panel2.Width), (owForm.splitContainer1.Panel2.Height)));
+            if (lowEndMode)
+            {
+                int x = ow.allmaps[selectedMap].parent % 8;
+                int y = ow.allmaps[selectedMap].parent / 8;
+                if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                }
+                else
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                }
+            }
+            else
+            {
+                Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
+            }
         }
 
         public void Redo()
         {
             tilemode.Redo();
-            Invalidate(new Rectangle((owForm.splitContainer1.Panel2.HorizontalScroll.Value), (owForm.splitContainer1.Panel2.VerticalScroll.Value), (owForm.splitContainer1.Panel2.Width), (owForm.splitContainer1.Panel2.Height)));
+            if (lowEndMode)
+            {
+                int x = ow.allmaps[selectedMap].parent % 8;
+                int y = ow.allmaps[selectedMap].parent / 8;
+                if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                }
+                else
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                }
+            }
+            else
+            {
+                Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
+            }
         }
 
         public override void paste()
@@ -423,7 +558,23 @@ namespace ZeldaFullEditor
             {
                 entranceMode.Paste();
             }
-            Invalidate(new Rectangle((owForm.splitContainer1.Panel2.HorizontalScroll.Value), (owForm.splitContainer1.Panel2.VerticalScroll.Value), (owForm.splitContainer1.Panel2.Width), (owForm.splitContainer1.Panel2.Height)));
+            if (lowEndMode)
+            {
+                int x = ow.allmaps[selectedMap].parent % 8;
+                int y = ow.allmaps[selectedMap].parent / 8;
+                if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                }
+                else
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                }
+            }
+            else
+            {
+                Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
+            }
         }
 
         public override void copy()
@@ -448,7 +599,23 @@ namespace ZeldaFullEditor
             {
                 entranceMode.Copy();
             }
-            Invalidate(new Rectangle((owForm.splitContainer1.Panel2.HorizontalScroll.Value), (owForm.splitContainer1.Panel2.VerticalScroll.Value), (owForm.splitContainer1.Panel2.Width), (owForm.splitContainer1.Panel2.Height)));
+            if (lowEndMode)
+            {
+                int x = ow.allmaps[selectedMap].parent % 8;
+                int y = ow.allmaps[selectedMap].parent / 8;
+                if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                }
+                else
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                }
+            }
+            else
+            {
+                Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
+            }
         }
 
         public override void cut()
@@ -469,7 +636,23 @@ namespace ZeldaFullEditor
             {
                 entranceMode.Cut();
             }
-            Invalidate(new Rectangle((owForm.splitContainer1.Panel2.HorizontalScroll.Value), (owForm.splitContainer1.Panel2.VerticalScroll.Value), (owForm.splitContainer1.Panel2.Width), (owForm.splitContainer1.Panel2.Height)));
+            if (lowEndMode)
+            {
+                int x = ow.allmaps[selectedMap].parent % 8;
+                int y = ow.allmaps[selectedMap].parent / 8;
+                if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                }
+                else
+                {
+                    Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                }
+            }
+            else
+            {
+                Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
+            }
         }
 
         public void SaveTiles()
@@ -483,20 +666,13 @@ namespace ZeldaFullEditor
                 ow.SaveMap16Tiles();
             }
         }
-
+        public bool lowEndMode = false;
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
             
             Graphics g = e.Graphics;
-            if (ow.worldOffset == 64)
-            {
-                g.Clear(Palettes.overworld_GrassPalettes[1]);
-            }
-            else
-            {
-                g.Clear(Palettes.overworld_GrassPalettes[0]);
-            }
+
             ColorMatrix cm = new ColorMatrix();
             ImageAttributes ia = new ImageAttributes();
             cm.Matrix33 = 0.50f;
@@ -509,101 +685,138 @@ namespace ZeldaFullEditor
             if (initialized)
             {
 
-                int x = 0;
-                int y = 0;
-                for (int i = (0 + ow.worldOffset); i < 64 + (ow.worldOffset); i++)
+
+                if (lowEndMode)
                 {
-                    if (i <= 159)
+                    
+                    int x = ow.allmaps[selectedMap].parent % 8;
+                    int y = ow.allmaps[selectedMap].parent / 8;
+                   
+                    
+                    if (ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
                     {
-                        if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
-                        {
-                            if (i == 0x03)
-                            {
-                                g.CompositingMode = CompositingMode.SourceOver;
-                                g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
-
-                            }
-                            else if (i == 0x04)
-                            {
-                                g.CompositingMode = CompositingMode.SourceOver;
-                                g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
-
-                            }
-                            else if (i == 0x05)
-                            {
-                                g.CompositingMode = CompositingMode.SourceOver;
-                                g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
-
-                            }
-                            else if (i == 0x06)
-                            {
-                                g.CompositingMode = CompositingMode.SourceOver;
-                                g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
-
-                            }
-                            else if (i == 0x07)
-                            {
-                                g.CompositingMode = CompositingMode.SourceOver;
-                                g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
-
-                            }
-                            else if (i == 91)
-                            {
-                                g.CompositingMode = CompositingMode.SourceOver;
-                                g.DrawImage(ow.allmaps[150].gfxBitmap, new PointF(x * 512, y * 512));
-
-                            }
-                            else if (i == 92)
-                            {
-                                g.CompositingMode = CompositingMode.SourceOver;
-                                g.DrawImage(ow.allmaps[150].gfxBitmap, new PointF(x * 512, y * 512));
-
-                            }
-                        }
-
-                        g.DrawImage(ow.allmaps[i].gfxBitmap, new PointF(x * 512, y * 512));
-
-                        if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
-                        {
-                            if (i == 0)
-                            {
-                                g.CompositingMode = CompositingMode.SourceOver;
-                                g.DrawImage(ow.allmaps[157].gfxBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
-
-                            }
-                            else if (i == 1)
-                            {
-                                g.CompositingMode = CompositingMode.SourceOver;
-                                g.DrawImage(ow.allmaps[157].gfxBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
-
-                            }
-                            else if (i == 8)
-                            {
-                                g.CompositingMode = CompositingMode.SourceOver;
-                                g.DrawImage(ow.allmaps[157].gfxBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
-
-                            }
-                            else if (i == 9)
-                            {
-                                g.CompositingMode = CompositingMode.SourceOver;
-                                g.DrawImage(ow.allmaps[157].gfxBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
-
-                            }
-                        }
-
-                        x++;
-                        if (x >= 8)
-                        {
-                            x = 0;
-                            y++;
-                        }
-
+                        g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new RectangleF(x * 512, y * 512, 1024, 1024));
+                        g.DrawImage(ow.allmaps[ow.allmaps[selectedMap].parent].gfxBitmap, new PointF(x * 512, y * 512));
+                        g.DrawImage(ow.allmaps[ow.allmaps[selectedMap].parent + 1].gfxBitmap, new PointF((x + 1) * 512, y * 512));
+                        g.DrawImage(ow.allmaps[ow.allmaps[selectedMap].parent + 8].gfxBitmap, new PointF((x) * 512, (y+1) * 512));
+                        g.DrawImage(ow.allmaps[ow.allmaps[selectedMap].parent + 9].gfxBitmap, new PointF((x + 1) * 512, (y+1) * 512));
 
                     }
+                    else
+                    {
+                        g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new RectangleF(x * 512, y * 512, 512, 512));
+                        g.DrawImage(ow.allmaps[ow.allmaps[selectedMap].parent].gfxBitmap, new PointF(x * 512, y * 512));
+
+                    }
+
                 }
+                else
+                {
+                    if (ow.worldOffset == 64)
+                    {
+                        g.Clear(Palettes.overworld_GrassPalettes[1]);
+                    }
+                    else
+                    {
+                        g.Clear(Palettes.overworld_GrassPalettes[0]);
+                    }
+                    int x = 0;
+                    int y = 0;
+                    for (int i = (0 + ow.worldOffset); i < 64 + (ow.worldOffset); i++)
+                    {
+                        if (i <= 159)
+                        {
+                            if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
+                            {
+                                if (i == 0x03)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
+
+                                }
+                                else if (i == 0x04)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
+
+                                }
+                                else if (i == 0x05)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
+
+                                }
+                                else if (i == 0x06)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
+
+                                }
+                                else if (i == 0x07)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawImage(ow.allmaps[149].gfxBitmap, new PointF(x * 512, y * 512));
+
+                                }
+                                else if (i == 91)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawImage(ow.allmaps[150].gfxBitmap, new PointF(x * 512, y * 512));
+
+                                }
+                                else if (i == 92)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawImage(ow.allmaps[150].gfxBitmap, new PointF(x * 512, y * 512));
+
+                                }
+                            }
+
+                            g.DrawImage(ow.allmaps[i].gfxBitmap, new PointF(x * 512, y * 512));
+
+                            if (mainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
+                            {
+                                if (i == 0)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawImage(ow.allmaps[157].gfxBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
+
+                                }
+                                else if (i == 1)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawImage(ow.allmaps[157].gfxBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
+
+                                }
+                                else if (i == 8)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawImage(ow.allmaps[157].gfxBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
+
+                                }
+                                else if (i == 9)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawImage(ow.allmaps[157].gfxBitmap, new Rectangle(x * 512, y * 512, 512, 512), 0, 0, 512, 512, GraphicsUnit.Pixel, ia);
+
+                                }
+                            }
+
+                            x++;
+                            if (x >= 8)
+                            {
+                                x = 0;
+                                y++;
+                            }
+
+
+                        }
+                    }
+
+                }
+
+
                 g.CompositingMode = CompositingMode.SourceOver;
-
-
                 //if (mapHover == 0)
                 //{
 
@@ -659,7 +872,7 @@ namespace ZeldaFullEditor
                 {
                     g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 512, 512));
                 }
-
+                
                 if (showExits)
                 {
                     exitmode.Draw(g);
@@ -676,10 +889,7 @@ namespace ZeldaFullEditor
 
                 if (showSprites)
                 {
-                    //if (!hideText)
-                    //{
                     spriteMode.Draw(g);
-                    //}
                 }
 
                 if (showFlute)
@@ -749,7 +959,7 @@ namespace ZeldaFullEditor
 
                     drawText(g, 4, 24, globalmouseTileDownX.ToString());
                     drawText(g, 4, 48, globalmouseTileDownY.ToString());
-
+                
                 }
 
 

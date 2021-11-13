@@ -144,7 +144,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.mainForm.DrawRoom();
                     DrawTempExit();
                     scene.entrancePreview = true;
-                    scene.Refresh();
+                    //scene.Refresh();
 
 
 
@@ -320,74 +320,150 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void Draw(Graphics g)
         {
-
             int transparency = 200;
-            for (int i = 0; i < 78; i++)
+            if (scene.lowEndMode)
             {
-                g.CompositingMode = CompositingMode.SourceOver;
-                ExitOW ex = scene.ow.allexits[i];
-
-                if (ex.mapId < 64+ scene.ow.worldOffset && ex.mapId >= scene.ow.worldOffset)
+                for (int i = 0; i < 78; i++)
                 {
-
-                    Brush bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 222, 222, 222));
-                    Pen contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
-                    Brush fontBrush = Brushes.Black;
-
-                    if (selectedExit == null)
+                    g.CompositingMode = CompositingMode.SourceOver;
+                    ExitOW ex = scene.ow.allexits[i];
+                    if (ex.mapId != scene.ow.allmaps[scene.selectedMap].parent)
                     {
-                        if (lastselectedExit == ex)
+                        continue;
+                    }
+                    if (ex.mapId < 64 + scene.ow.worldOffset && ex.mapId >= scene.ow.worldOffset)
+                    {
+
+                        Brush bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 222, 222, 222));
+                        Pen contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
+                        Brush fontBrush = Brushes.Black;
+
+                        if (selectedExit == null)
                         {
-                            g.CompositingMode = CompositingMode.SourceOver;
-                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 160, 160, 160));
+                            if (lastselectedExit == ex)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 160, 160, 160));
+                                g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                                g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                                scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+
+                                int sy = ex.mapId / 8;
+                                int sx = ex.mapId - (sy * 8);
+
+                                g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
+                                g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
+                                g.DrawLine(Pens.Blue, ex.cameraX, ex.cameraY - 8, ex.cameraX, ex.cameraY + 8);
+                                g.CompositingMode = CompositingMode.SourceCopy;
+                                continue;
+                            }
                             g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
                             g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
                             scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
-
-                            int sy = ex.mapId / 8;
-                            int sx = ex.mapId - (sy * 8);
-
-                            g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
-                            g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
-                            g.DrawLine(Pens.Blue, ex.cameraX, ex.cameraY - 8, ex.cameraX, ex.cameraY + 8);
-                            g.CompositingMode = CompositingMode.SourceCopy;
-                            continue;
-                        }
-                        g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                        g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                        scene.drawText(g, ex.playerX + 4, ex.playerY +4, i.ToString("X2"));
-                    }
-                    else
-                    {
-                        if (selectedExit == ex)
-                        {
-                            g.CompositingMode = CompositingMode.SourceOver;
-
-                            //g.DrawImage(jsonData.linkGfx, ex.playerX, ex.playerY, new Rectangle(16, 0, 16, 16), GraphicsUnit.Pixel);
-                            //g.DrawImage(jsonData.linkGfx, ex.playerX, ex.playerY + 8, new Rectangle(48, 16, 16, 16), GraphicsUnit.Pixel);
-                            g.CompositingMode = CompositingMode.SourceOver;
-                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 160, 160, 160));
-                            g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                            g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                            scene.drawText(g, ex.playerX +4, ex.playerY + 4, i.ToString("X2"));
-                            g.CompositingMode = CompositingMode.SourceCopy;
-                            int sy = ex.mapId / 8;
-                            int sx = ex.mapId - (sy * 8);
-                            g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
-                            g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
-                            g.DrawLine(Pens.Blue, ex.cameraX, ex.cameraY - 8, ex.cameraX, ex.cameraY + 8);
                         }
                         else
                         {
-                            g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-                            g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                            if (selectedExit == ex)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
 
-                            scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                                //g.DrawImage(jsonData.linkGfx, ex.playerX, ex.playerY, new Rectangle(16, 0, 16, 16), GraphicsUnit.Pixel);
+                                //g.DrawImage(jsonData.linkGfx, ex.playerX, ex.playerY + 8, new Rectangle(48, 16, 16, 16), GraphicsUnit.Pixel);
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 160, 160, 160));
+                                g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                                g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                                scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                                g.CompositingMode = CompositingMode.SourceCopy;
+                                int sy = ex.mapId / 8;
+                                int sx = ex.mapId - (sy * 8);
+                                g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
+                                g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
+                                g.DrawLine(Pens.Blue, ex.cameraX, ex.cameraY - 8, ex.cameraX, ex.cameraY + 8);
+                            }
+                            else
+                            {
+                                g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                                g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+
+                                scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                            }
                         }
                     }
                 }
+                g.CompositingMode = CompositingMode.SourceCopy;
             }
-            g.CompositingMode = CompositingMode.SourceCopy;
+            else
+            {
+                
+                for (int i = 0; i < 78; i++)
+                {
+                    g.CompositingMode = CompositingMode.SourceOver;
+                    ExitOW ex = scene.ow.allexits[i];
+
+                    if (ex.mapId < 64 + scene.ow.worldOffset && ex.mapId >= scene.ow.worldOffset)
+                    {
+
+                        Brush bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 222, 222, 222));
+                        Pen contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
+                        Brush fontBrush = Brushes.Black;
+
+                        if (selectedExit == null)
+                        {
+                            if (lastselectedExit == ex)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 160, 160, 160));
+                                g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                                g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                                scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+
+                                int sy = ex.mapId / 8;
+                                int sx = ex.mapId - (sy * 8);
+
+                                g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
+                                g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
+                                g.DrawLine(Pens.Blue, ex.cameraX, ex.cameraY - 8, ex.cameraX, ex.cameraY + 8);
+                                g.CompositingMode = CompositingMode.SourceCopy;
+                                continue;
+                            }
+                            g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                            g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                            scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                        }
+                        else
+                        {
+                            if (selectedExit == ex)
+                            {
+                                g.CompositingMode = CompositingMode.SourceOver;
+
+                                //g.DrawImage(jsonData.linkGfx, ex.playerX, ex.playerY, new Rectangle(16, 0, 16, 16), GraphicsUnit.Pixel);
+                                //g.DrawImage(jsonData.linkGfx, ex.playerX, ex.playerY + 8, new Rectangle(48, 16, 16, 16), GraphicsUnit.Pixel);
+                                g.CompositingMode = CompositingMode.SourceOver;
+                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 160, 160, 160));
+                                g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                                g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                                scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                                g.CompositingMode = CompositingMode.SourceCopy;
+                                int sy = ex.mapId / 8;
+                                int sx = ex.mapId - (sy * 8);
+                                g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
+                                g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
+                                g.DrawLine(Pens.Blue, ex.cameraX, ex.cameraY - 8, ex.cameraX, ex.cameraY + 8);
+                            }
+                            else
+                            {
+                                g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+                                g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+
+                                scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+                            }
+                        }
+                    }
+                }
+                g.CompositingMode = CompositingMode.SourceCopy;
+            }
+            
 
 
 
