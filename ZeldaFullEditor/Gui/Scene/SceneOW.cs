@@ -666,7 +666,7 @@ namespace ZeldaFullEditor
                 ow.SaveMap16Tiles();
             }
         }
-        public bool lowEndMode = false;
+        public bool lowEndMode = true;
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);

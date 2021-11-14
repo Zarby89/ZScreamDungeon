@@ -921,6 +921,7 @@ namespace ZeldaFullEditor
                 MX = e.X / 2;
                 MY = e.Y / 2;
             }
+
             //this.Focus();
             mainForm.activeScene = this;
 
@@ -1030,6 +1031,7 @@ namespace ZeldaFullEditor
                 {
                     dragx = ((MX) / 16);
                     dragy = ((MY) / 16);
+
                     if (room.selectedObject.Count == 1)
                     {
                         room.selectedObject.Clear();
@@ -1112,15 +1114,15 @@ namespace ZeldaFullEditor
                                     room.selectedObject.Clear();
                                 }
                             }
-                            int msx = e.X;
-                            int msy = e.Y;
+                            int msx = MX;
+                            int msy = MY;
                             if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr && (obj.options & ObjectOption.Door) != ObjectOption.Door && (obj.options & ObjectOption.Torch) != ObjectOption.Torch && (obj.options & ObjectOption.Block) != ObjectOption.Block)
                             {
                                 for (int p = 0; p < obj.collisionPoint.Count; p++)
                                 {
                                     //Console.WriteLine(obj.collisionPoint[p].X);
-                                    if (e.X >= obj.collisionPoint[p].X && e.X <= obj.collisionPoint[p].X + 8
-                                        && e.Y >= obj.collisionPoint[p].Y && e.Y <= obj.collisionPoint[p].Y + 8)
+                                    if (MX >= obj.collisionPoint[p].X && MX <= obj.collisionPoint[p].X + 8
+                                        && MY >= obj.collisionPoint[p].Y && MY <= obj.collisionPoint[p].Y + 8)
                                     {
                                         room.selectedObject.Add(obj);
                                         found = true;

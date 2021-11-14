@@ -20,10 +20,6 @@ using System.Runtime.InteropServices;
 using System.Threading;
 using ZeldaFullEditor.Gui;
 using ZeldaFullEditor.Gui.MainTabs;
-using CSScriptLibrary;
-using System.Security.Permissions;
-using System.Security;
-using System.Security.Policy;
 using System.Runtime.Serialization.Formatters.Binary;
 
 
@@ -4792,6 +4788,101 @@ namespace ZeldaFullEditor
             }
             activeScene.DrawRoom();
             activeScene.Refresh();
+        }
+
+        byte[] keysDoors = new byte[] { 0x1C, 0x26, 0x1E, 0x2E, 0x28, 0x32, 0x30, 0x22 };
+        byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38, 0x48, 0x4A };
+        private void autodoorButton_Click(object sender, EventArgs e)
+        {
+            List<Room_Object> shutterdoors = new List<Room_Object>();
+            List<Room_Object> keydoors = new List<Room_Object>();
+            List<Room_Object> normaldoors = new List<Room_Object>();
+
+            keydoors.Clear();
+            shutterdoors.Clear();
+            normaldoors.Clear();
+            foreach (Room_Object o in activeScene.room.tilesObjects)
+            {
+                if (o.options == ObjectOption.Door)
+                {
+                    if (keysDoors.Contains((byte)(o.id >> 8)))
+                    {
+                        if (!keydoors.Contains(o))
+                        {
+                            keydoors.Add(o);
+                        }
+
+                    }
+                    else if (shutterDoors.Contains((byte)(o.id >> 8)))
+                    {
+                        if (!shutterdoors.Contains(o))
+                        {
+                            shutterdoors.Add(o);
+                        }
+                    }
+                    else
+                    {
+                        if (!normaldoors.Contains(o))
+                        {
+                            normaldoors.Add(o);
+                        }
+                    }
+                }
+            }
+            foreach (Room_Object o in keydoors)
+            {
+                activeScene.room.tilesObjects.Remove(o);
+                activeScene.room.tilesObjects.Add(o);
+            }
+            foreach (Room_Object o in shutterdoors)
+            {
+                activeScene.room.tilesObjects.Remove(o);
+                activeScene.room.tilesObjects.Add(o);
+            }
+            foreach (Room_Object o in normaldoors)
+            {
+                activeScene.room.tilesObjects.Remove(o);
+                activeScene.room.tilesObjects.Add(o);
+            }
+            activeScene.DrawRoom();
+            activeScene.Refresh();
+        }
+
+        private void darkThemeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ChangeTheme(Controls);
+        }
+
+
+        public void ChangeTheme(Control.ControlCollection container)
+        {
+            foreach (Control component in container)
+            {
+
+                    if (component.Controls.Count != 0)
+                    {
+                        ChangeTheme(component.Controls);
+                        component.BackColor = Color.FromArgb(37, 37, 38);
+                        component.ForeColor = Color.FromArgb(220, 220, 220);
+                    }
+                
+                else if (component is Button)
+                {
+                    component.BackColor = Color.FromArgb(30, 30, 30);
+                    component.ForeColor = Color.FromArgb(220, 220, 220);
+                }
+                else if (component is TextBox)
+                {
+                    component.BackColor = Color.FromArgb(51, 51, 51);
+                    component.ForeColor = Color.FromArgb(220, 220, 220);
+                }
+                else
+                {
+                    component.BackColor = Color.FromArgb(51, 51, 51);
+                    component.ForeColor = Color.FromArgb(220, 220, 220);
+                }
+
+            }
         }
     }
 

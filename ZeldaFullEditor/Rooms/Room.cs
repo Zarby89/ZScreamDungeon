@@ -541,56 +541,7 @@ namespace ZeldaFullEditor
         byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38, 0x48, 0x4A };
         public byte[] getTilesBytes()
         {
-            List<Room_Object> shutterdoors = new List<Room_Object>();
-            List<Room_Object> keydoors = new List<Room_Object>();
-            List<Room_Object> normaldoors = new List<Room_Object>();
-
-            keydoors.Clear();
-            shutterdoors.Clear();
-            normaldoors.Clear();
-            foreach (Room_Object o in tilesObjects)
-            {
-                if (o.options == ObjectOption.Door)
-                {
-                    if (keysDoors.Contains((byte)(o.id >> 8)))
-                    {
-                        if (!keydoors.Contains(o))
-                        {
-                            keydoors.Add(o);
-                        }
-                        
-                    }
-                    else if (shutterDoors.Contains((byte)(o.id >> 8)))
-                    {
-                        if (!shutterdoors.Contains(o))
-                        {
-                            shutterdoors.Add(o);
-                        }
-                    }
-                    else
-                    {
-                        if (!normaldoors.Contains(o))
-                        {
-                            normaldoors.Add(o);
-                        }
-                    }
-                }
-            }
-            foreach(Room_Object o in keydoors)
-            {
-                tilesObjects.Remove(o);
-                tilesObjects.Add(o);
-            }
-            foreach (Room_Object o in shutterdoors)
-            {
-                tilesObjects.Remove(o);
-                tilesObjects.Add(o);
-            }
-            foreach (Room_Object o in normaldoors)
-            {
-                tilesObjects.Remove(o);
-                tilesObjects.Add(o);
-            }
+ 
 
             List<byte> objectsBytes = new List<byte>();
             List<byte> doorsBytes = new List<byte>();
@@ -615,7 +566,7 @@ namespace ZeldaFullEditor
 
             found_door3 = getLayerTiles(2, ref objectsBytes, ref doorsBytes);
 
-            if (found_door || found_door2 || found_door3)//if we found door during layer3
+            if (found_door || found_door2 || found_door3)//if we found door during any layer
             {
                 objectsBytes.Add(0xF0);
                 objectsBytes.Add(0xFF);

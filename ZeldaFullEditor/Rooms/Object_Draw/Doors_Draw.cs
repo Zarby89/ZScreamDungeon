@@ -300,10 +300,10 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
+            layer = 2;
 
             // 26F6
-            
+
 
 
 

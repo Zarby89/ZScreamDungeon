@@ -303,7 +303,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                     superX = ((tileX + x) / 32);
                                     superY = ((tileY + y) / 32);
                                     mapId = (superY * 8) + superX + scene.ow.worldOffset;
-                                    if (scene.globalmouseTileDownX + x < 255 && scene.globalmouseTileDownY + y < 255)
+                                    if (scene.globalmouseTileDownX + x < 256 && scene.globalmouseTileDownY + y < 256)
                                     {
                                         undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
                                         scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];

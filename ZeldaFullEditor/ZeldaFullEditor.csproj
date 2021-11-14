@@ -89,12 +89,18 @@
     <ManifestKeyFile>ZeldaFullEditor_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup />
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CSScriptLibrary, Version=3.30.3.0, Culture=neutral, PublicKeyToken=70fcc3d18c749033, processorArchitecture=MSIL">
       <HintPath>..\packages\CS-Script.bin.3.30.3\lib\net46\CSScriptLibrary.dll</HintPath>
@@ -438,10 +444,10 @@
     <Compile Include="OWSceneModes\TransportMode.cs" />
     <Compile Include="Point3D.cs" />
     <Compile Include="Project.cs" />
-    <Compile Include="RoomMover.cs">
+    <Compile Include="Gui\RoomMover.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RoomMover.Designer.cs">
+    <Compile Include="Gui\RoomMover.Designer.cs">
       <DependentUpon>RoomMover.cs</DependentUpon>
     </Compile>
     <Compile Include="Rooms\Items\ItemsNames.cs" />
@@ -461,10 +467,10 @@
     <Compile Include="Data\Palettes.cs" />
     <Compile Include="Gui\PaletteViewer.cs" />
     <Compile Include="ROMStructure.cs" />
-    <Compile Include="RoomLayout.cs">
+    <Compile Include="Gui\RoomLayout.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RoomLayout.Designer.cs">
+    <Compile Include="Gui\RoomLayout.Designer.cs">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\RoomPotSaveEditor.cs" />
@@ -539,7 +545,7 @@
     <Compile Include="Data\TileUndo.cs" />
     <Compile Include="Data\TransportOW.cs" />
     <Compile Include="Utils.cs" />
-    <Compile Include="WhirlpoolForm.cs">
+    <Compile Include="Gui\WhirlpoolForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WhirlpoolForm.Designer.cs" />
@@ -670,7 +676,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="RoomLayout.resx">
+    <EmbeddedResource Include="Gui\RoomLayout.resx">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\Scene\SceneOW.resx">
@@ -682,7 +688,7 @@
     <EmbeddedResource Include="Gui\Scene\SceneUW.resx">
       <DependentUpon>SceneUW.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RoomMover.resx">
+    <EmbeddedResource Include="Gui\RoomMover.resx">
       <DependentUpon>RoomMover.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SpritesView.resx">
@@ -692,6 +698,7 @@
       <DependentUpon>TextEditor.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -701,7 +708,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="ZeldaFullEditor_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
