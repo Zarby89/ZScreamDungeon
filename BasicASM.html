@@ -1,0 +1,680 @@
+<h1 style="font-size:32px; text-align: center">Basic ASM/Hacking Zelda3 Tutorial</h1>
+
+<h2 style="font-size: 30px;padding-left:80px;">
+Table of Contents
+
+</h2>
+<h3 style="font-size:16px;padding-left:80px;font-weight:normal ">
+<a href="#tools">1) Tools/Files Needed</a>
+<br>
+<a href="#asm">2) Basic ASM Explanation</a>
+<br>
+<a href="#menucode">3) Understanding Original Menu Code</a>
+
+<br>
+4) Snes Tiles/Tilemap Format
+<br>
+5) Making Custom Menu from B to Z
+<br>
+<br>
+<br>
+
+
+
+
+<div id="tools" style="font-size:20px;">
+<b>Tools needed for Zelda3 hacking</b>
+</div>
+<a href="https://fusoya.eludevisibility.org/la/index.html">Lunar Address</a>  - to convert PC Address/Snes address
+<br>
+<a href="https://github.com/RPGHacker/asar/releases/tag/v1.81">Asar</a> - 65816 ASM Assembler
+<br>
+<a href="https://www.romhacking.net/utilities/119/">YY-CHR</a> - GFX Editor
+<br>
+<a href="https://fusoya.eludevisibility.org/zelda/index.html">ZCompress</a> or Lunar Compress - To Decompress/Compress GFX
+<br>
+<a href="https://www.smwcentral.net/?a=details&id=6523&p=section">SnesGFX</a> - to create tilemap/gfx easily
+<br>
+<a href="https://github.com/devinacker/bsnes-plus/releases/tag/v05">Bsnes+</a>
+<br>
+<a href="https://mh-nexus.de/en/hxd/">HXD</a> - Hex Editor
+<br>
+<a href="https://drive.google.com/file/d/0B51aWTNENbmSc1Y0eTlhM1Nncjg/view?resourcekey=0-XKqeWAmQabtHojs11jV5KQ">Disassembly + Infos</a>
+<a href="https://github.com/spannerisms/jpdasm">Japanese Disassembly</a> - can also be helpful for US version (some codes are at different locations)
+<br>
+<br>
+<br>
+<br>
+<div id="asm" style="font-size:20px;">
+    <b>Basic ASM Explanation</b>
+</div>
+<a href="https://wiki.superfamicom.org/65816-reference">65816 References / Wiki</a>
+<br>
+Here we will go throught the "basics" opcodes for the 65816, Load Values, Change RAM, Conditions, Jump/Goto nothing too fancy or complicated
+<br>
+I will use references to modern programming languages, but knowing a programming language is not really mandatory
+<br>
+On the snes there is a thing called <b>(A) Accumulator</b> and <b>(X,Y) Index Registers</b> to "load" and "store" values in ROM/RAM also the ZERO flag
+<br>
+They are also use to do comparisons for conditions, it might looks complicated at first but this is actually pretty easy here's some basic opcodes :
+<br>
+<br>
+LDA - Is used to (LD) LOAD a value into (A), it can be used on a ROM Address, Ram Address, Constant value, this is probably the most used opcode
+<br>
+<blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+<b>ASM :</b>
+<br>
+LDA #$08 ;Load a Constant value of #$08 in the (A)ccumulator
+<br>
+<b>Pseudo Modern Language :</b>
+<br>
+var A = 08; //Load value 08 into variable A
+</blockquote>
+
+<br><br>
+
+STA - Is used to (ST) STORE (A) value into a RAM address
+<br>
+<blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+<b>ASM :</b>
+<br>
+STA $1000 ; Store A value into Address $1000
+<br>
+<b>Pseudo Modern Language :</b>
+<br>
+var Address1000 = A; //set Address1000 variable on A value;
+</blockquote>
+
+<br><br>
+CMP - (CoMPare) allow you to make a comparison between (A)ccumulator and an address or Constant
+<br>
+<blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+<b>ASM :</b>
+<br>
+LDA #$08 ; Load Value #$08 into (A)ccumulator
+<br>
+CMP #$04 ; Compare #$04 with (A)ccumulator value IF Values are matching ZERO Flag is setted, otherwise it is unsetted like this example
+<br>
+<b>Pseudo Modern Language :</b>
+<br>
+var A = 08; //Set A on value 08
+<br>
+if (A == 04)
+</blockquote>
+
+<br><br>
+BEQ - Branch if Equal, IF the ZERO flag is setted it will branch to the location next to it
+
+<blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+<b>ASM :</b>
+<br>
+LDA #$08 ; Load Value #$08 into (A)ccumulator<br>
+CMP #$04 ; Compare #$04 with (A)ccumulator value IF Values are matching ZERO Flag is setted, otherwise it is unsetted like this example<br>
+BEQ .matching<br>
+... ; Not Matching<br>
+.matching<br>
+... ; Matching<br>
+
+<br>
+<b>Pseudo Modern Language :</b>
+<br>
+var A = 08; //Set A on value 08<br>
+if (A == 04)<br>
+{<br>
+//matching<br>
+}<br>
+//not matching<br>
+</blockquote>
+
+
+<br><br>
+BNE - Branch if Not Equal, IF the ZERO flag is UNset it will branch to the location next to it
+<blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+<b>ASM :</b>
+<br>
+LDA #$08 ; Load Value #$08 into (A)ccumulator<br>
+CMP #$04 ; Compare #$04 with (A)ccumulator value IF Values are matching ZERO Flag is setted, otherwise it is unsetted like this example<br>
+BNE .notmatching<br>
+... ; Matching<br>
+.notmatching<br>
+... ; Not Matching<br>
+
+<br>
+<b>Pseudo Modern Language :</b>
+<br>
+var A = 08; //Set A on value 08<br>
+if (A != 04)<br>
+{<br>
+//not matching<br>
+}<br>
+//matching<br>
+</blockquote>
+
+<br><br>
+JSL - Jump Subroutine Long allow you to go to a different portion of code in a different bank with the possibility of returning with RTL
+<br><br>
+JML - JuMp Long allow you to go to a different portion of code without possiblity of returning
+<br><br>
+
+
+<div id="menucode" style="font-size:20px;">
+<b>Explaining the menu code from disassembly</b>
+</div>
+<br>
+the menu code is located in the file <b>equipment.asm</b> open that file preferably with a code editor like VisualStudio Code, Notepad++ etc...<br>
+get a pluggin for 65816 syntax i am using Visual Studio Code personally with the syntax highlight "65816 Assembly" by Josh Neta<br>
+<br>
+So lets start trying to understand the menu code this is really well commented so it should not be that hard to find codes<br>
+we can scroll down a bit to the Local: section at line 34<br>
+<pre>
+<blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd">
+; *$6DD36-$6DD59 LOCAL
+Local:
+{
+    ; Appears to be a simple debug frame counter (8-bit) for this submodule
+    ; Of course, it loops back every 256 frames
+    INC $0206
+    
+    LDA $0200
+    
+    JSL UseImplicitRegIndexedLocalJumpTable
+    
+    dw ClearTilemap       ; $DD5A = $6DD5A* ;00
+    dw Init               ; $DDAB = $6DDAB* ;01
+    dw BringMenuDown      ; $DE59 = $6DE59* ;02
+    dw ChooseNextMode     ; $DE6E = $6DE6E* ;03
+    dw NormalMenu         ; $DF15 = $6DF15* ;04
+    dw UpdateHUD          ; $DFA9 = $6DFA9* ;05
+    dw CloseMenu          ; $DFBA = $6DFBA* ;06
+    dw GotoBottleMenu     ; $DFFB = $6DFFB* ;07
+    dw InitBottleMenu     ; $E002 = $6E002* ;08
+    dw ExpandBottleMenu   ; $E08C = $6E08C* ;09
+    dw BottleMenu         ; $E0DF = $6E0DF* ;0A
+    dw EraseBottleMenu    ; $E2FD = $6E2FD* ;0B
+    dw RestoreNormalMenu  ; $E346 = $6E346* ;0C
+}
+</blockquote>
+</pre>
+<br>
+This section is the Main function of the menu what is gonna happen at every step basically, so at first when you press start it will start on <b>ClearTilemap</b><br>
+then <b>Init</b> and then <b>BringMenuDown</b>, once it's done scrolling <b>ChooseNextMode</b> then <b>NormalMenu</b> that is the Main loop for the menu code<br>
+where you can move cursor around and pick items lets check the routine BringMenuDown first so Ctrl+F in your code editor search for "BringMenuDown:"
+<br><br>
+
+<blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;white-space: pre-wrap">
+; *$6DE59-$6DE6D JUMP LOCATION
+BringMenuDown:
+{
+    REP #$20
+    
+    LDA $EA : SUB.w #$0008 : STA $EA : CMP.w #$FF18
+    
+    SEP #$20
+    
+    BNE .notDoneScrolling
+    
+    INC $0200
+
+.notDoneScrolling
+
+    RTS
+}
+</blockquote>
+<br>
+that is a very small routine, you should have a file called Zelda_3_RAM.log in the disassembly folder you can open that, that will help us understanding what is going on here<br>
+so first of all we have a <b>REP #$20</b> that is basically telling the snes change the processor to read/write 16-bits (word) values from A instead of 8-bits (byte)<br>
+then we have a <b>LDA $EA</b> so we are loading the value of the address $EA in A to know what is in $EA we will check in the Zelda_3_RAM.log file and search for $EA<br>
+
+<b>$EA[0x02] - (NMI)</b><br>
+BG3 vertical Scroll Register (BG3VOFS / $2112)<br>
+<br>
+so this is loading the scrolling value of BG3 (menu), in (A)ccumulator nothing more next we have<br>
+<b>SUB</b> that is not an existing opcode it is a shortened opcode to combine 2 opcodes and should not be used real code here would be <b>SEC : SBC.w #$0008</b><br>
+SEC will set the Carry you can ignore that for the moment, and SBC will Subtract a value from (A)ccumulator, so basically so far what that code is doing is <br>
+Load BG3 Vertical Scrolling Value in A, Subtract #$0008 from it, next we have <b>STA $EA</b> that is storing back the scrolling value -8 in $EA because A got 08 removed from it<br>
+<b>CMP.w #$FF18</b> here we are doing a CoMPare to see if scrolling value == #$FF18 which is -232 in decimal,<b>SEP #$20</b> we set back the processor mode to 8bits<br>
+<b>BNE .notDoneScrolling</b> then we Branch if Not Equal -232 to a <b>RTS</b> which is a Return function that will end the menu code for this frame<br>
+however when A is reaching -232 the <b>INC $0200</b> code will be ran before the RTS, which is INCrementing by one the value of an address<br>
+$0200 is the position of the jumptable above so next frame we will be in the next subroutine which is <b>ChooseNextMode</b> 
+<br>
+<br>
+<br>
+so here a small exercice lets say we wanna change the scrolling speed of the menu i will show how to do it with a Hex Editor and with ASM<br>
+if you check in the disassembly before the routine you usually have JUMP LOCATION that is the position where that code is located in the ROM<br>
+<blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;white-space: pre-wrap">
+; *$6DE59-$6DE6D JUMP LOCATION
+BringMenuDown:
+</blockquote>
+
+6DE59
+so open up your zelda3 rom in a hex editor and make sure your rom is not headered you can use a header removal tool if you are not sure<br>
+<a href="https://www.romhacking.net/utilities/593/">SNES ROM Utility</a> , All addresses in the Dissembly are PC Address and for Non-Headered ROM<br>
+You can use the tool called Lunar Address to convert PC Address to Snes Address and vice-versa, make sure it has the box Include copier header UNCHECKED<br>
+and set it on lorom 00:8000 (the first one) we'll come back to this in a moment so in the hex editor <br>
+
+go to the Address <b>6DE59</b> by using CTRL+G in the hex editor, you should see something like this : <br>
+<img src="hexeditor1.png" alt="hexeditor1">
+what you are seeing is pretty much just the actual game code in HEX<br>
+<pre>
+<blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+C2 20      REP #$20
+A5 EA      LDA $EA
+38         SEC
+E9 08 00   SBC #$0008
+85 EA      STA $EA
+C9 18 FF   CMP #$FF18
+E2 20      SEP #$20
+D0 03      BNE .notDoneScrolling (03 means the branch is going 3 byte further)
+EE 00 02   INC $0200
+.notDoneScrolling
+60         RTS
+</blockquote>
+</pre>
+
+so lets try changing the SBC #$0008 into something else from a hex editor that is very simple all you need to do is edit the byte 08 to something else like 01<br>
+becareful tho the code is comparing with a specific value what that means is if you are not decrementing the value by where -232 is not divisible it will infinitely scroll<br>
+change that 08 in 01, save file with the hex editor, load your rom into your favorite emulator then press start to open your menu!<br>
+if you did it right the menu should scroll down very slowly like that gif<br>
+<img src="menuspeed.gif" alt="menuspeed">
+<br>
+see that's super simple !! now lets do it in ASM<br>
+create a new file with your code editor call it <b>main.asm</b><br>
+<pre>
+<blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+lorom ; This line is important to tell ASAR our ROM is in lorom mapping so it will write data to the right location in the ROM
+org $0DDE59 ; This is where ASAR will know where to write new data in the ROM, The SNES Address is Different than PC Address explanation below
+BringMenuDown:
+{
+REP #$20
+LDA $EA
+SEC
+SBC #$00E8 ;Remove directly the 232 value
+STA $EA
+CMP #$FF18
+SEP #$20
+BNE .notDoneScrolling
+INC $0200
+.notDoneScrolling
+RTS
+}
+</blockquote>
+</pre>
+<br>
+First let explain the <b>org</b> function that's used by ASAR to know where to write code/data in the ROM it's followed by an address<br>
+normally we would want that code written at the position 6DE59 since that's where we go in a hex editor to see that code but on the snes<br>
+the addresses are not mapped the same basically to keep it simple in a PC BANK you have 65536 (0x10000) bytes, on snes only 32768 (0x8000) bytes<br>
+so you need to convert that PC Address into Snes Address and we can use the tool Lunar Address for that with copier header checkbox unchecked and LOROM checked<br>
+you enter the PC Address on left side and it give you the SNES Address on right side screen here :<br>
+<img src="lunaraddress.png" alt="lunaraddress"><br>
+
+IMPORTANT make sure your ROMs extension are .sfc, ASAR will not recognize properly .smc<br>
+ok so now that we have our ASM file we need to build it into the rom so we need to run ASAR on it there are multiple easy way of doing it<br>
+i personally put <b>Asar.exe</b>, <b>VanillaROM.sfc</b>, <b>main.asm</b> files in a same folder and use a .bat file with instructions like this<br>
+<pre>
+<blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+copy "VanillaROM.sfc" "Patched.sfc"
+asar.exe main.asm "Patched.sfc"
+pause
+</blockquote>
+</pre>
+
+save that file as <b>build.bat</b> then all you have to do to build new code into your ROM is run the build.bat file!<br>
+if you are getting any error make sure all your files are in the same folder before running the .bat file the build.bat file also need to be in the same folder<br>
+what that code will do is copy the VanillaROM.sfc file into a file named Patched.sfc then ASAR will patch the file Patched.sfc with main.asm code<br>
+if you did it right you should have a file named <b>Patched.sfc</b> if you test that rom the menu should open instantly because we are removing whole value #$00E8<br>
+
+
+<img src="menuspeed2.gif" alt="menuspeed2">
+<br>
+
+Congratulations you just wrote your first ASM script ! it's pretty much just a copy of the original code but still ! Alright lets explains some things about that code<br>
+first of all you can't edit the disassembly directly in case you would be wondering, it is not in a build state, you need to do what we just did above locate code we want to change<br>
+put a <b>org $Address</b> where you want to insert new code at, write down new code or copy it from the disassembly (it won't always work) because sometime addresses are labels e.g.<br>
+
+<pre>
+    <blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+        ; *$6DE6E-$6DEAF JUMP LOCATION
+        ChooseNextMode:
+        {
+            ; Makes a determination whether to go to the normal menu handling mode
+            ; or the bottle submenu handling mode.
+            ; there's also mode 0x05... which appears to be hidden at this point.
+            
+            LDX.b #$12
+            
+            LDA $7EF340
+        
+        .haveAnyEquippable
+        
+            ORA $7EF341, X : DEX : BPL .haveAnyEquippable
+            
+            CMP.b #$00 : BEQ .haveNone
+            
+            ; Tell NMI to update BG3 tilemap next from by writing to address $6800 (word) in vram
+            LDA.b #$01 : STA $17
+            LDA.b #$22 : STA $0116
+            
+            JSR DoWeHaveThisItem : BCS .weHaveIt
+            
+            JSR TryEquipNextItem
+        
+        .weHaveIt
+        
+            JSR DrawSelectedYButtonItem
+            
+            ; Move to the next step of the submodule
+            LDA.b #$04 : STA $0200
+            
+            LDA $0202 : CMP.b #$10 : BNE .notOnBottleMenu
+            
+            ; switch to the step of this submodule that handles when the
+            ; bottle submenu is up
+            LDA.b #$0A : STA $0200
+        
+        .notOnBottleMenu
+        
+            RTS
+        
+        .haveNone
+        
+            ; BYSTudlr
+            LDA $F4 : BEQ .noButtonPress
+            
+            LDA.b #$05 : STA $0200
+            
+            RTS
+        
+        .noButtonPress
+        
+            RTS
+        }    
+    </blockquote>
+</pre>
+<br>
+If we try to copy that code into our main file convert the address <b>6DE6E</b> to SNES Address 0DDE6E put an org $0DDE6E above and run build.bat<br>
+
+<pre>
+ <blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+main.asm:25: error: (E5060): Label 'DoWeHaveThisItem' wasn't found. [JSR DoWeHaveThisItem]
+main.asm:27: error: (E5060): Label 'TryEquipNextItem' wasn't found. [JSR TryEquipNextItem]
+main.asm:31: error: (E5060): Label 'DrawSelectedYButtonItem' wasn't found. [JSR DrawSelectedYButtonItem]
+</blockquote>
+</pre>
+<br>
+
+we will get these errors, because these labels are not defined in our file we can fix that by finding these function in the equipment.asm file<br>
+search for <b>DoWeHaveThisItem:</b>you'll find it at the line 322<br>
+
+<pre>
+    <blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+; *$6DEB0-$6DEBC LOCAL
+DoWeHaveThisItem:
+{
+    LDX $0202
+    
+    ; Check to see if we have this item...
+    LDA $7EF33F, X
+    
+    BNE .haveThisItem
+    
+    CLC
+    
+    RTS
+
+.haveThisItem
+
+    SEC
+    
+    RTS
+}
+
+</blockquote>
+</pre>
+<br>
+
+We can reference that address in our code without having to copy the whole section by creating a label at that address so ASAR will know where to go<br>
+6DEB0 convert that to SNES Address 0DDEB0, above the other code after the lorom line you will add
+
+<pre>
+<blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+org $0DDEB0
+DoWeHaveThisItem:
+</blockquote>
+</pre>
+<br>
+
+and that's it that function is now defined ASAR will know it need to Jump SubRoutine to that address now if you run build.bat you should only see 2 errors<br>
+repeat for the 2 other functions build and it will work, from there you can change that code like you want BUT there is a but... since you are writing<br>
+in the original rom location you have limited space like for example you can't add something in the middle of that code otherwise you will overwrite the code next to it<br>
+so if you want to add new code you need to replace code ! i will start explaining that code then we'll see what we can do with it<br>
+
+
+<pre>
+    <blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+        ; *$6DE6E-$6DEAF JUMP LOCATION
+        ChooseNextMode:
+        {
+            LDX.b #$12 ;LDX Opcode is almost like LDA where it loads a value into A but instead it is loading a value into X in that case it will set X on value #$12
+            
+            LDA $7EF340 
+            ;Here we load the value of the address $7EF340 into A the values 7EF are bit specials they are not in the RAM.log file
+            ;because they are part of the SRAM (Save RAM) Save RAM is the RAM kept alive by the battery in the cartridge so it's not getting wipe on reset
+            ;it can be accessed normally by using address $70XXXX but Zelda3 is using a file system where it store the SRAM in $7EFXXX and when you press
+            ;Save & quit button it move that memory into $70XXXX, and when you start your console back and you load your save file content of $70XXXX is transfered into $7EFXXX
+            ;here's a website where you can have all the SRAM Address descriptions
+            <a href="http://alttp.run/hacking/index.php?title=SRAM_Map">SRAM Wiki</a>
+
+            ;so we're looking for address $7EF340 we need to ommit $7EF on the wiki so $340
+            ;that code is loading the BOW value
+        
+        .haveAnyEquippable
+        
+            ORA $7EF341, X : DEX
+            ;Here what is happening is a bit complicated it will add values of every items in the inventory into A so Bow+Boomerang+Hookshot+Powder, etc...
+            ;it's a loop of 12 (the value of X loaded above)
+            
+            BPL .haveAnyEquippable ;Loop until X == 0 (last opcode used is DEX) if X reach -1 it will set the Negative flag so until X > 0 it loop to .haveAnyEquippable label
+
+            CMP.b #$00 : BEQ .haveNone
+            ;Here if all items combined still == 0 then this is because we do not have any items in the menu so we go to .haveNone
+
+            
+            ;Otherwise here we have at least one item
+
+            LDA.b #$01 : STA $17 ;<- check what is that value in ram.log file, description is complicated but we know it's used to update something in gfx
+            LDA.b #$22 : STA $0116 ;<- check what is that value in ram.log file, same as above used to do gfx stuff
+            
+
+            ;that is a subroutine checking if we actually have the item we have selected in the menu
+            JSR DoWeHaveThisItem : BCS .weHaveIt ;if we have it then move on to .weHaveIt
+            
+            JSR TryEquipNextItem ;otherwise check all the next items and equip the first one next to it instead
+        
+        .weHaveIt
+        
+            JSR DrawSelectedYButtonItem ;that code is drawing the item we have selected on the Y button
+
+            LDA.b #$04 : STA $0200 ; that is increasing the menu state to ;NormalMenu
+            
+            LDA $0202 : CMP.b #$10 ;but wait if we are selected on a bottle
+
+            BNE .notOnBottleMenu
+
+            LDA.b #$0A : STA $0200 ;do that code here instead if we are selected on a bottle so it will go to menu state ;BottleMenu
+        
+        .notOnBottleMenu 
+        
+            RTS ;Then return so next frame we'll be either on normal menu or bottle menu
+        
+        .haveNone
+            ;That code is reached if we open the menu and do not have any item... code won't go any further it will loop infinitely here every frames
+
+            LDA $F4 : BEQ .noButtonPress
+            ;search for $F4 in ROM.log file
+            ;$F4[0x01] - Filtered Joypad 1 Register: [BYST | udlr].
+            ;so since there's no condition on that LDA it is checking if the value of $F4 != 0 so any button on that list will trigger next code
+    
+            LDA.b #$05 : STA $0200  ;this code is setting menu state to UpdateHUD and UpdateHUD will swap to CloseMenu right after
+
+            ;so basically what that code is doing if you press any of these buttons (Up, Left, Down, Right, B, Y, Start, Select) menu will update hud and close
+            
+            RTS
+        
+        .noButtonPress
+        
+            RTS
+        }    
+    </blockquote>
+</pre>
+<br>
+
+To keep it simple what we will try to do here is add another condition that says if we press (A, X, L, R) open the bottle menu even if we don't have any items<br>
+so you check in ram.log again, oh it's $F5 ! that will be easy to do you can just copy the code above and go to bottle menu instead of updating hud and closing menu<br>
+but that's wrong you can't just ADD code in it since if original code is 6DE6E-$6DEAF 65 bytes long, adding your new code in will make it goes to ~75 bytes or so<br>
+and you will delete code next to it in that case it will delete the portion of code next to it :<br>
+
+<pre>
+    <blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+    ; *$6DEB0-$6DEBC LOCAL
+    DoWeHaveThisItem:
+    {
+        LDX $0202 ;will get deleted
+        
+        ; Check to see if we have this item...
+        LDA $7EF33F, X  ;will get deleted
+        
+        BNE .haveThisItem  ;will get deleted
+        
+        CLC  ;will get deleted
+         
+        RTS  ;will get deleted 
+    
+    .haveThisItem
+    
+        SEC
+        
+        RTS
+    }
+</blockquote>
+</pre>
+<br>
+
+so the game will try to use that function it will not contains the code it should and the game will probably crash this is where the hooks come in play so we can add more code<br>
+somewhere else in the rom and run it from that location in the rom finding a good location for a good is not always easy and sometime you just don't have space to put a JSL<br>
+JSL is how you make a hook that will jump to a subroutine in the expanded rom or where you want, then it will run code and come back into original code once it's done with RTL<br>
+it take 4 bytes of space to do a JSL so you need to overwrite something you can easily restore in your subroutine that's a bit hard to identify as a beginner<br>
+but in that example we could remove the whole controller condition since we can easily restore it, so we'll do that we can just comment it out so we know what we replaced<br>
+
+<pre>
+    <blockquote style="border: 1px solid #888; padding: 4px; background-color: #ddd;">
+        ; *$6DE6E-$6DEAF JUMP LOCATION
+        org $0DDEB0
+        DoWeHaveThisItem:
+        
+        org $0DDEE2
+        TryEquipNextItem:
+        
+        org $0DEB3A
+        DrawSelectedYButtonItem:
+
+        org $0DDE6E
+        ChooseNextMode:
+        {
+            LDX.b #$12
+            
+            LDA $7EF340 
+
+        .haveAnyEquippable
+        
+            ORA $7EF341, X : DEX
+            
+            BPL .haveAnyEquippable 
+
+            CMP.b #$00 : BEQ .haveNone
+
+            LDA.b #$01 : STA $17
+            LDA.b #$22 : STA $0116 
+
+            JSR DoWeHaveThisItem : BCS .weHaveIt 
+            
+            JSR TryEquipNextItem
+        
+        .weHaveIt
+        
+            JSR DrawSelectedYButtonItem 
+
+            LDA.b #$04 : STA $0200 
+            
+            LDA $0202 : CMP.b #$10 
+
+            BNE .notOnBottleMenu
+
+            LDA.b #$0A : STA $0200 ; go to bottle menu
+        
+        .notOnBottleMenu 
+        
+            RTS
+        
+        .haveNone
+            ;LDA $F4 : BEQ .noButtonPress
+            ;LDA.b #$05 : STA $0200
+
+            ;So we comment out these 2 line above, and we need to count the numbers of bytes they use again it's not easy as beginner but you can use hex editor
+            ;go at position 6DEAF with your hex editor (that's the end of this section) that is commented at the top of the routine, from there slowly move backward
+            ;search for byte $F4, F4 is the value loaded by the LDA so we go one byte further (A5) that's the LDA, then we count the numbers of bytes from there to the RTS (60)
+            ;A5 F4 F0 06 A9 05 8D 00 02
+            ;We have 9 bytes so what we will do is add our JSL
+
+            JSL NewControllerCode ;We add our Jump here ;it takes 4 bytes so there's still 5 bytes we can just NOP them out to prevent problem with them
+
+            ;Where the RTL will bring us back
+
+            NOP #05 ; next 5 bytes will turn into byte (EA) which is NOP (No OPeration) they will do nothing code will read it and skip it
+
+            
+
+            RTS
+        
+        .noButtonPress
+        
+            RTS
+        }    
+
+
+        ;Then below here we are adding our new code for the button press in the expanded region
+        
+        org $218000 ;Set writing position in expanded region location
+        NewControllerCode:
+        {
+            LDA $F4 : BEQ .noButtonPress ;Here we can restore the original code 
+            LDA.b #$05 : STA $0200 ;Here we can restore the original code 
+            .noButtonPress
+
+            ;so we have restored the code we have overwritten we can now add new code for others buttons (the order depends on what you need)
+            ;you could restore the code after your new code or before or not at all depending on your need
+
+            LDA $F6 : BEQ .noButtonPress2 ;Lets just copy the original code but put a F6 instead of F4
+            ;We could add whatever else we want here as an example we can write data into the address $012E which will play a sound effect
+            LDA #$30 ;Sound we will play
+            STA $012E ;Address we write it in to play the sound
+            .noButtonPress2
+
+
+            RTL ;We are returning to the previous code we came from with the RTL
+        }
+
+    </blockquote>
+</pre>
+<br>
+and voila this is how you make a hook you could add much more code in that section without overwriting existing code because your code is now in expanded region<br>
+you could do more experimenting if you want with that code by checking the ram.log file and searching for addresses that could be interesting to change<br>
+or the SRAM wiki which is a bit more interesting for single write changes like for example you could write value to the address $7EF340 that would give you the bow<br>
+
+
+</h3>
+
+
+<br>
+<br>
+<br>
+<br>
