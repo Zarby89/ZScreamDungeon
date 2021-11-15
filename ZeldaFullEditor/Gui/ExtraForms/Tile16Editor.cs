@@ -164,12 +164,12 @@ namespace ZeldaFullEditor.Gui
             {
                 for (int x = 0; x < 16; x++)
                 {
-                    e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), x * 32, 0, x * 32, 8000);
+                    e.Graphics.DrawLine(new Pen(Color.FromArgb(100, Color.White), 1), x * 32, 0, x * 32, 16000);
 
                 }
-                for (int y = 0; y < 256; y++)
+                for (int y = 0; y < 512; y++)
                 {
-                    e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 0, y * 32, 256, y * 32);
+                    e.Graphics.DrawLine(new Pen(Color.FromArgb(100, Color.White), 1), 0, y * 32, 256, y * 32);
                 }
             }
             int xP = (scene.selectedTile[0] % 8) * 32;
@@ -421,6 +421,7 @@ namespace ZeldaFullEditor.Gui
             tilesTypesNames[0x01] = "0x01 - Blocked";
             tilesTypesNames[0x02] = "0x02 - Blocked)";
             tilesTypesNames[0x03] = "0x03 - Blocked";
+            tilesTypesNames[0x04] = "0x04 - Normal? Unknown";
             tilesTypesNames[0x05] = "0x05 - Normal tile(no interaction)";
             tilesTypesNames[0x06] = "0x06 - Normal tile(no interaction)";
             tilesTypesNames[0x07] = "0x07 - Normal tile(no interaction)";

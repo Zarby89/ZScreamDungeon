@@ -27,6 +27,7 @@ namespace ZeldaFullEditor
 
         //  int selectedIndex = 0;
         public int selectedMap = 0;
+        //public int lockedMap = -1;
         //must load all current map gfx
         public Overworld ow;
         public bool initialized = false;
@@ -193,7 +194,9 @@ namespace ZeldaFullEditor
             int mapId = (superY * 8) + superX;
             globalmouseTileDownX = tileX;
             globalmouseTileDownY = tileY;
-            selectedMap = mapId;
+
+                selectedMap = mapId;
+
             owForm.previewTextPicturebox.Visible = false;
             updateMapGfx();
             owForm.updateTiles();
@@ -821,38 +824,6 @@ namespace ZeldaFullEditor
 
 
                 g.CompositingMode = CompositingMode.SourceOver;
-                //if (mapHover == 0)
-                //{
-
-
-
-                //}
-
-                /*byte tt01 = ow.allTilesTypes[ow.tiles16[ow.allmapsTilesLW[mouseX_Real / 16, mouseY_Real / 16]].tile0.id];
-                byte tt02 = ow.allTilesTypes[ow.tiles16[ow.allmapsTilesLW[mouseX_Real / 16, mouseY_Real / 16]].tile1.id];
-                byte tt03 = ow.allTilesTypes[ow.tiles16[ow.allmapsTilesLW[mouseX_Real / 16, mouseY_Real / 16]].tile2.id];
-                byte tt04 = ow.allTilesTypes[ow.tiles16[ow.allmapsTilesLW[mouseX_Real / 16, mouseY_Real / 16]].tile3.id];
-                g.CompositingMode = CompositingMode.SourceOver;
-                
-                if (ow.worldOffset >= 64)
-                {
-                    tt01 = ow.allTilesTypes[ow.tiles16[ow.allmapsTilesDW[mouseX_Real / 16, mouseY_Real / 16]].tile0.id];
-                    tt02 = ow.allTilesTypes[ow.tiles16[ow.allmapsTilesDW[mouseX_Real / 16, mouseY_Real / 16]].tile1.id];
-                    tt03 = ow.allTilesTypes[ow.tiles16[ow.allmapsTilesDW[mouseX_Real / 16, mouseY_Real / 16]].tile2.id];
-                    tt04 = ow.allTilesTypes[ow.tiles16[ow.allmapsTilesDW[mouseX_Real / 16, mouseY_Real / 16]].tile3.id];
-                }
-                else if (ow.worldOffset >= 128)
-                {
-                    tt01 = ow.allTilesTypes[ow.tiles16[ow.allmapsTilesSP[mouseX_Real / 16, mouseY_Real / 16]].tile0.id];
-                    tt02 = ow.allTilesTypes[ow.tiles16[ow.allmapsTilesSP[mouseX_Real / 16, mouseY_Real / 16]].tile1.id];
-                    tt03 = ow.allTilesTypes[ow.tiles16[ow.allmapsTilesSP[mouseX_Real / 16, mouseY_Real / 16]].tile2.id];
-                    tt04 = ow.allTilesTypes[ow.tiles16[ow.allmapsTilesSP[mouseX_Real / 16, mouseY_Real / 16]].tile3.id];
-                }
-
-                drawText(g, mouseX_Real - 64, mouseY_Real - 64, tt01.ToString("X2"), null, true);
-                drawText(g, mouseX_Real - 40, mouseY_Real - 64, tt02.ToString("X2"), null, true);
-                drawText(g, mouseX_Real - 64, mouseY_Real - 40, tt03.ToString("X2"), null, true);
-                drawText(g, mouseX_Real - 40, mouseY_Real - 40, tt04.ToString("X2"), null, true);*/
 
 
                 if (selecting)
@@ -876,7 +847,9 @@ namespace ZeldaFullEditor
                 {
                     g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 512, 512));
                 }
-                
+
+
+
                 if (showExits)
                 {
                     exitmode.Draw(g);

@@ -81,7 +81,11 @@ namespace ZeldaFullEditor.OWSceneModes
                 scene.globalmouseTileDownY = tileY;
                 globalmouseTileDownXLOCK = tileX;
                 globalmouseTileDownYLOCK = tileY;
-                scene.selectedMap = mapId + scene.ow.worldOffset;
+
+                    scene.selectedMap = mapId + scene.ow.worldOffset;
+                //scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].BuildMap();
+
+
 
                 scene.tileBitmapPtr = GFX.mapblockset16;
                 scene.tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, scene.tileBitmapPtr);
@@ -103,39 +107,78 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 if (e.Button == MouseButtons.Left)
                 {
-                    if (scene.selectedTile.Length >= 1)
+                    if (Control.ModifierKeys == Keys.Control)
                     {
-                        int y = 0;
-                        int x = 0;
-                        ushort[] undotiles = new ushort[scene.selectedTile.Length];
-                        for (int i = 0; i < scene.selectedTile.Length; i++)
+                        if (scene.selectedTile.Length >= 1)
                         {
-                            superX = ((tileX + x) / 32);
-                            superY = ((tileY + y) / 32);
-                            mapId = (superY * 8) + superX + scene.ow.worldOffset;
-                            undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
-                            scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
-                            scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
-
-                            x++;
-                            if (x >= scene.selectedTileSizeX)
+                            int y = 0;
+                            int x = 0;
+                            ushort[] undotiles = new ushort[scene.selectedTile.Length];
+                            for (int i = 0; i < scene.selectedTile.Length; i++)
                             {
+                                superX = ((tileX + x) / 32);
+                                superY = ((tileY + y) / 32);
+                                mapId = (superY * 8) + superX + scene.ow.worldOffset;
+                                if (scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] == 52)
+                                {
+                                    scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
+                                    scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
+                                }
+                                x++;
+                                if (x >= scene.selectedTileSizeX)
+                                {
 
-                                y++;
-                                x = 0;
+                                    y++;
+                                    x = 0;
+                                }
                             }
                         }
-                        undoList.Add(new TileUndo(scene.globalmouseTileDownX, scene.globalmouseTileDownY, scene.selectedTileSizeX, undotiles, (ushort[])scene.selectedTile.Clone(), ref scene.ow.allmaps[mapId].tilesUsed));
-                        redoList.Clear();
+                        else
+                        {
+                            if (scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] == 52)
+                            {
+                                scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] = scene.selectedTile[0];
+                                scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX) * 16) - (superX * 512), ((tileY) * 16) - (superY * 512), scene.selectedTile[0], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
+                                //scene.Invalidate(new Rectangle(e.X - 16, e.Y - 16, 32,  32));
+                            }
+                        }
                     }
                     else
                     {
-                        undoList.Add(new TileUndo(scene.globalmouseTileDownX, scene.globalmouseTileDownY, 1, new ushort[] { scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] }, (ushort[])scene.selectedTile.Clone(), ref scene.ow.allmaps[mapId].tilesUsed));
-                        redoList.Clear();
-                        scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] = scene.selectedTile[0];
-                        scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX) * 16) - (superX * 512), ((tileY) * 16) - (superY * 512), scene.selectedTile[0], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
-                        //scene.Invalidate(new Rectangle(e.X - 16, e.Y - 16, 32,  32));
-                        
+                        if (scene.selectedTile.Length >= 1)
+                        {
+                            int y = 0;
+                            int x = 0;
+                            ushort[] undotiles = new ushort[scene.selectedTile.Length];
+                            for (int i = 0; i < scene.selectedTile.Length; i++)
+                            {
+                                superX = ((tileX + x) / 32);
+                                superY = ((tileY + y) / 32);
+                                mapId = (superY * 8) + superX + scene.ow.worldOffset;
+                                undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
+                                scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
+                                scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
+
+                                x++;
+                                if (x >= scene.selectedTileSizeX)
+                                {
+
+                                    y++;
+                                    x = 0;
+                                }
+                            }
+                            undoList.Add(new TileUndo(scene.globalmouseTileDownX, scene.globalmouseTileDownY, scene.selectedTileSizeX, undotiles, (ushort[])scene.selectedTile.Clone(), ref scene.ow.allmaps[mapId].tilesUsed));
+                            redoList.Clear();
+                        }
+                        else
+                        {
+                            undoList.Add(new TileUndo(scene.globalmouseTileDownX, scene.globalmouseTileDownY, 1, new ushort[] { scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] }, (ushort[])scene.selectedTile.Clone(), ref scene.ow.allmaps[mapId].tilesUsed));
+                            redoList.Clear();
+                            scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] = scene.selectedTile[0];
+                            scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX) * 16) - (superX * 512), ((tileY) * 16) - (superY * 512), scene.selectedTile[0], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
+                            //scene.Invalidate(new Rectangle(e.X - 16, e.Y - 16, 32,  32));
+
+                        }
                     }
 
                 }
@@ -237,14 +280,19 @@ namespace ZeldaFullEditor.OWSceneModes
                 int mouseTileY = e.Y / 16;
                 int mapX = (mouseTileX / 32);
                 int mapY = (mouseTileY / 32);
-                scene.mapHover = mapX + (mapY * 8);
+
+                    scene.mapHover = mapX + (mapY * 8);
+                
                 if (scene.mapHover + scene.ow.worldOffset >= 160)
                 {
                     return;
                 }
+
+
                 if (scene.lastHover != scene.mapHover)
                 {
-                    scene.ow.allmaps[scene.mapHover+scene.ow.worldOffset].BuildMap();
+
+                    scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].BuildMap();
                     scene.lastHover = scene.mapHover;
                 }
 
@@ -254,6 +302,8 @@ namespace ZeldaFullEditor.OWSceneModes
                     
                     if (scene.mouse_down)
                     {
+
+
                         if (e.Button == MouseButtons.Left)
                         {
                             int tileX = (e.X / 16);
@@ -291,42 +341,79 @@ namespace ZeldaFullEditor.OWSceneModes
                             {
                                 scene.globalmouseTileDownX = tileX = globalmouseTileDownXLOCK;
                             }
-                        
 
-                            if (scene.selectedTile.Length >= 1)
+                            if (Control.ModifierKeys == Keys.Control)
                             {
-                                ushort[] undotiles = new ushort[scene.selectedTile.Length];
-                                int y = 0;
-                                int x = 0;
-                                for (int i = 0; i < scene.selectedTile.Length; i++)
+                                if (scene.selectedTile.Length >= 1)
                                 {
-                                    superX = ((tileX + x) / 32);
-                                    superY = ((tileY + y) / 32);
-                                    mapId = (superY * 8) + superX + scene.ow.worldOffset;
-                                    if (scene.globalmouseTileDownX + x < 256 && scene.globalmouseTileDownY + y < 256)
+                                    ushort[] undotiles = new ushort[scene.selectedTile.Length];
+                                    int y = 0;
+                                    int x = 0;
+                                    for (int i = 0; i < scene.selectedTile.Length; i++)
                                     {
-                                        undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
-                                        scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
-                                        scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
-                                    }
-                                    x++;
-                                    if (x >= scene.selectedTileSizeX)
-                                    {
+                                        superX = ((tileX + x) / 32);
+                                        superY = ((tileY + y) / 32);
+                                        mapId = (superY * 8) + superX + scene.ow.worldOffset;
+                                         
+                                        if (scene.globalmouseTileDownX + x < 256 && scene.globalmouseTileDownY + y < 256)
+                                        {
+                                            if (scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] == 52)
+                                            {
+                                                scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
+                                                scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
+                                            }
+                                        }
+                                        x++;
+                                        if (x >= scene.selectedTileSizeX)
+                                        {
 
-                                        y++;
-                                        x = 0;
+                                            y++;
+                                            x = 0;
+                                        }
                                     }
                                 }
-                                undoList.Add(new TileUndo(scene.globalmouseTileDownX, scene.globalmouseTileDownY, scene.selectedTileSizeX, undotiles, (ushort[])scene.selectedTile.Clone(), ref scene.ow.allmaps[mapId].tilesUsed));
-                                redoList.Clear();
-                               //scene.Invalidate(new Rectangle((scene.globalmouseTileDownX * 16), scene.globalmouseTileDownY * 16, scene.selectedTileSizeX * 16, y * 16));
-                                // }
-                             /*else
-                             {
-                                 ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] = selectedTile[0];
-                                 ow.allmaps[mapId].CopyTile8bpp16(((tileX) * 16) - (superX * 512), ((tileY) * 16) - (superY * 512), selectedTile[0], ow.allmaps[mapId].gfxPtr, ow.allmaps[mapId].blockset16);
-                                 this.Invalidate(new Rectangle(e.X - 16, e.Y - 16, 32, 32));
-                             }*/
+                            }
+                            else
+                            {
+
+
+
+
+                                if (scene.selectedTile.Length >= 1)
+                                {
+                                    ushort[] undotiles = new ushort[scene.selectedTile.Length];
+                                    int y = 0;
+                                    int x = 0;
+                                    for (int i = 0; i < scene.selectedTile.Length; i++)
+                                    {
+                                        superX = ((tileX + x) / 32);
+                                        superY = ((tileY + y) / 32);
+                                        mapId = (superY * 8) + superX + scene.ow.worldOffset;
+                                        if (scene.globalmouseTileDownX + x < 256 && scene.globalmouseTileDownY + y < 256)
+                                        {
+                                            undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
+                                            scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
+                                            scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
+                                        }
+                                        x++;
+                                        if (x >= scene.selectedTileSizeX)
+                                        {
+
+                                            y++;
+                                            x = 0;
+                                        }
+                                    }
+                                    undoList.Add(new TileUndo(scene.globalmouseTileDownX, scene.globalmouseTileDownY, scene.selectedTileSizeX, undotiles, (ushort[])scene.selectedTile.Clone(), ref scene.ow.allmaps[mapId].tilesUsed));
+                                    redoList.Clear();
+                                    //scene.Invalidate(new Rectangle((scene.globalmouseTileDownX * 16), scene.globalmouseTileDownY * 16, scene.selectedTileSizeX * 16, y * 16));
+                                    // }
+                                    /*else
+                                    {
+                                        ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] = selectedTile[0];
+                                        ow.allmaps[mapId].CopyTile8bpp16(((tileX) * 16) - (superX * 512), ((tileY) * 16) - (superY * 512), selectedTile[0], ow.allmaps[mapId].gfxPtr, ow.allmaps[mapId].blockset16);
+                                        this.Invalidate(new Rectangle(e.X - 16, e.Y - 16, 32, 32));
+                                    }*/
+                                }
                             }
                         }
 

@@ -58,7 +58,7 @@
             // 
             this.pictureboxTile16.Location = new System.Drawing.Point(1, 1);
             this.pictureboxTile16.Name = "pictureboxTile16";
-            this.pictureboxTile16.Size = new System.Drawing.Size(256, 16384);
+            this.pictureboxTile16.Size = new System.Drawing.Size(256, 16000);
             this.pictureboxTile16.TabIndex = 0;
             this.pictureboxTile16.TabStop = false;
             this.pictureboxTile16.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureboxTile16_Paint);
@@ -71,7 +71,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(530, 571);
+            this.panel1.Size = new System.Drawing.Size(275, 578);
             this.panel1.TabIndex = 1;
             // 
             // panel2
@@ -79,9 +79,9 @@
             this.panel2.AutoScroll = true;
             this.panel2.Controls.Add(this.pictureboxTile8);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel2.Location = new System.Drawing.Point(530, 0);
+            this.panel2.Location = new System.Drawing.Point(275, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(274, 571);
+            this.panel2.Size = new System.Drawing.Size(274, 578);
             this.panel2.TabIndex = 2;
             // 
             // pictureboxTile8
@@ -106,7 +106,7 @@
             this.groupBox1.Controls.Add(this.mirrorXCheckbox);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(810, 12);
+            this.groupBox1.Location = new System.Drawing.Point(555, 12);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(200, 274);
             this.groupBox1.TabIndex = 3;
@@ -148,7 +148,7 @@
             // 
             this.paletteUpDown.Location = new System.Drawing.Point(9, 69);
             this.paletteUpDown.Maximum = new decimal(new int[] {
-            15,
+            7,
             0,
             0,
             0});
@@ -209,8 +209,9 @@
             // 
             // button1
             // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button1.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.button1.Location = new System.Drawing.Point(929, 536);
+            this.button1.Location = new System.Drawing.Point(680, 548);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 4;
@@ -220,8 +221,9 @@
             // 
             // button2
             // 
+            this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button2.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.button2.Location = new System.Drawing.Point(848, 536);
+            this.button2.Location = new System.Drawing.Point(599, 548);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 5;
@@ -234,7 +236,7 @@
             this.gridcheckBox.AutoSize = true;
             this.gridcheckBox.Checked = true;
             this.gridcheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.gridcheckBox.Location = new System.Drawing.Point(810, 292);
+            this.gridcheckBox.Location = new System.Drawing.Point(555, 292);
             this.gridcheckBox.Name = "gridcheckBox";
             this.gridcheckBox.Size = new System.Drawing.Size(75, 17);
             this.gridcheckBox.TabIndex = 9;
@@ -246,7 +248,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1016, 571);
+            this.ClientSize = new System.Drawing.Size(765, 578);
             this.Controls.Add(this.gridcheckBox);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);

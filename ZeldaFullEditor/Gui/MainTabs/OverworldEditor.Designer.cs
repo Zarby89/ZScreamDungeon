@@ -53,6 +53,8 @@
             this.gravestoneButton = new System.Windows.Forms.ToolStripButton();
             this.searchtilesButton = new System.Windows.Forms.ToolStripButton();
             this.refreshToolStrip = new System.Windows.Forms.ToolStripButton();
+            this.deleteOverlayToolstripbutton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
@@ -88,8 +90,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-            this.deleteOverlayToolstripbutton = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -373,6 +373,27 @@
             this.refreshToolStrip.Text = "Refresh Maps";
             this.refreshToolStrip.Click += new System.EventHandler(this.refreshToolStrip_Click);
             // 
+            // deleteOverlayToolstripbutton
+            // 
+            this.deleteOverlayToolstripbutton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.deleteOverlayToolstripbutton.Image = ((System.Drawing.Image)(resources.GetObject("deleteOverlayToolstripbutton.Image")));
+            this.deleteOverlayToolstripbutton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.deleteOverlayToolstripbutton.Name = "deleteOverlayToolstripbutton";
+            this.deleteOverlayToolstripbutton.Size = new System.Drawing.Size(87, 22);
+            this.deleteOverlayToolstripbutton.Text = "Delete Overlay";
+            this.deleteOverlayToolstripbutton.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.deleteOverlayToolstripbutton.Click += new System.EventHandler(this.deleteOverlayToolstripbutton_Click);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(65, 22);
+            this.toolStripButton1.Text = "Clear Map";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click_1);
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -430,6 +451,7 @@
             this.tilePictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.tilePictureBox_Paint);
             this.tilePictureBox.DoubleClick += new System.EventHandler(this.tilePictureBox_DoubleClick);
             this.tilePictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tilePictureBox_MouseClick);
+            this.tilePictureBox.MouseEnter += new System.EventHandler(this.tilePictureBox_MouseEnter);
             // 
             // tabPage2
             // 
@@ -754,27 +776,6 @@
             this.previewTextPicturebox.TabStop = false;
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
-            // 
-            // deleteOverlayToolstripbutton
-            // 
-            this.deleteOverlayToolstripbutton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.deleteOverlayToolstripbutton.Image = ((System.Drawing.Image)(resources.GetObject("deleteOverlayToolstripbutton.Image")));
-            this.deleteOverlayToolstripbutton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.deleteOverlayToolstripbutton.Name = "deleteOverlayToolstripbutton";
-            this.deleteOverlayToolstripbutton.Size = new System.Drawing.Size(87, 22);
-            this.deleteOverlayToolstripbutton.Text = "Delete Overlay";
-            this.deleteOverlayToolstripbutton.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.deleteOverlayToolstripbutton.Click += new System.EventHandler(this.deleteOverlayToolstripbutton_Click);
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(65, 22);
-            this.toolStripButton1.Text = "Clear Map";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click_1);
             // 
             // OverworldEditor
             // 

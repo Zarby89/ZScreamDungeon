@@ -99,7 +99,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-
+            
 
             /*if (System.Diagnostics.Debugger.IsAttached)
             {
@@ -152,6 +152,12 @@ namespace ZeldaFullEditor
             Controls.Add(gfxEditor);
             Controls.Add(dungeonViewer);
             Controls.Add(screenEditor);
+        }
+
+        private void SceneUW_MouseWheel(object sender, MouseEventArgs e)
+        {
+            HandledMouseEventArgs ee = (HandledMouseEventArgs)e;
+            ee.Handled = true;
         }
 
         private void GfxTextbox_MouseWheel(object sender, MouseEventArgs e)
@@ -623,6 +629,7 @@ namespace ZeldaFullEditor
             activeScene = new SceneUW(this);
             activeScene.Location = new Point(0, 0);
             activeScene.Size = new Size(512, 512);
+            activeScene.MouseWheel += SceneUW_MouseWheel;
 
             if (loadFromExported != "")
             {
@@ -656,7 +663,7 @@ namespace ZeldaFullEditor
             }
 
 
-
+            editorsTabControl.Enabled = true;
 
 
             initEntrancesList();
@@ -667,7 +674,11 @@ namespace ZeldaFullEditor
 
             tabControl2_SelectedIndexChanged(tabControl2.TabPages[0], new EventArgs());
             enableProjectButtons();
-
+            foreach(ToolStripMenuItem mi in menuStrip1.Items)
+            {
+                mi.Enabled = true;
+            }
+            roomHeaderPanel.Enabled = true;
 
 
             //Initialize the map draw
@@ -720,20 +731,6 @@ namespace ZeldaFullEditor
             objectViewer1.updateSize();
             spritesView1.updateSize();
 
-            /*textSpriteToolStripMenuItem.Checked = Settings.Default.spriteText;
-            textChestItemToolStripMenuItem.Checked = Settings.Default.chestText;
-            textPotItemToolStripMenuItem.Checked = Settings.Default.itemText;
-            unselectedBGTransparentToolStripMenuItem.Checked = Settings.Default.transparentBG;
-            rightSideToolboxToolStripMenuItem.Checked = Settings.Default.rightToolbox;
-            hideSpritesToolStripMenuItem.Checked = Settings.Default.spriteShow;
-            hideItemsToolStripMenuItem.Checked = Settings.Default.itemsShow;
-            hideChestItemsToolStripMenuItem.Checked = Settings.Default.chestitemShow;
-            showDoorIDsToolStripMenuItem.Checked = Settings.Default.dooridShow;
-            showChestsIDsToolStripMenuItem.Checked = Settings.Default.chestidShow;
-            disableEntranceGFXToolStripMenuItem.Checked = Settings.Default.disableentranceGfx;
-            showBG2MaskOutlineToolStripMenuItem.Checked = Settings.Default.bg2maskShow;
-            entranceCameraToolStripMenuItem.Checked = Settings.Default.entranceCamera;
-            entrancePositionToolStripMenuItem.Checked = Settings.Default.entrancePos;*/
 
             activeScene.DrawRoom();
             activeScene.Refresh();
@@ -882,6 +879,7 @@ namespace ZeldaFullEditor
             loadlayoutButton.Enabled = true;
             toolStripButton1.Enabled = true;
             searchButton.Enabled = true;
+            collisionModeButton.Enabled = true;
             foreach (object ti in editToolStripMenuItem.DropDownItems)
             {
                 if (ti is ToolStripDropDownItem)
@@ -917,6 +915,7 @@ namespace ZeldaFullEditor
 
         public void updateScenesMode()
         {
+            collisionMapPanel.Visible = false;
             foreach (Room room in opened_rooms)
             {
                 room.selectedObject.Clear();
@@ -974,6 +973,14 @@ namespace ZeldaFullEditor
             {
                 setmodeAllScene(ObjectMode.Chestmode);
             }
+            else if (collisionModeButton.Checked)
+            {
+                setmodeAllScene(ObjectMode.CollisionMap);
+                xScreenToolStripMenuItem.Checked = true;
+                hideSpritesToolStripMenuItem_CheckStateChanged(null,null);
+                tileTypeCombobox.SelectedIndex = 0;
+                collisionMapPanel.Visible = true;
+            }
         }
 
         public void update_modes_buttons(object sender, EventArgs e)
@@ -982,13 +989,14 @@ namespace ZeldaFullEditor
             activeScene.selectedDragObject = null;
             activeScene.selectedDragSprite = null;
 
-            for (int i = 8; i < 19; i++)
+            for (int i = 8; i < 20; i++)
             {
                 (toolStrip1.Items[i] as ToolStripButton).Checked = false;
             }
             selectedLayer = -1;
             (sender as ToolStripButton).Checked = true;
             updateScenesMode();
+
             activeScene.room.update();
             activeScene.need_refresh = true;
 

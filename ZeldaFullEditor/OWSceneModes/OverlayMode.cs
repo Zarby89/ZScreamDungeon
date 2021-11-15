@@ -30,7 +30,9 @@ namespace ZeldaFullEditor.OWSceneModes
                 int mapId = (superY * 8) + superX;
                 scene.globalmouseTileDownX = tileX;
                 scene.globalmouseTileDownY = tileY;
-                scene.selectedMap = mapId + scene.ow.worldOffset;
+
+                    scene.selectedMap = mapId + scene.ow.worldOffset;
+                
                 int mid = scene.ow.allmaps[scene.selectedMap].parent;
                 int superMX = (mid % 8) * 32;
                 int superMY = (mid / 8) * 32;
@@ -221,7 +223,9 @@ namespace ZeldaFullEditor.OWSceneModes
                 int mouseTileY = e.Y / 16;
                 int mapX = (mouseTileX / 32);
                 int mapY = (mouseTileY / 32);
-                scene.mapHover = mapX + (mapY * 8);
+
+                    scene.mapHover = mapX + (mapY * 8);
+                
                 if (scene.lastTileHoverX != mouseTileX || scene.lastTileHoverY != mouseTileY)
                 {
 

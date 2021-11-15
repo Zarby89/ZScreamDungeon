@@ -39,6 +39,7 @@ namespace ZeldaFullEditor
         Rectangle lastSelectedRectangle;
         DragMode dragMode = DragMode.none;
         SceneResizing resizeType = SceneResizing.none;
+        bool digit2 = false;
         private void SceneUW_MouseWheel(object sender, MouseEventArgs e)
         {
             if (room.selectedObject.Count > 0)
@@ -876,8 +877,20 @@ namespace ZeldaFullEditor
                 e.Graphics.DrawImage(tempBitmap, new Rectangle(0, 0, 1024, 1024));
 
             }
+            if (selectedMode == ObjectMode.CollisionMap)
+            {
 
-            
+                for (int i = 0; i < 4096; i++)
+                {
+                    if (room.collisionMap[i] != 0xFF)
+                    {
+
+                        drawText(e.Graphics, ((i % 64) * 16)+4, (((i / 64) * 16))+4, room.collisionMap[i].ToString("X2"));
+                    }
+                }
+            }
+
+
         }
 
 
@@ -1263,6 +1276,14 @@ namespace ZeldaFullEditor
                         }
                     }
                 }
+                else if (selectedMode == ObjectMode.CollisionMap)
+                {
+                    int px = e.X / 16;
+                    int py = e.Y / 16;
+
+                    room.collisionMap[px + (py * 64)] = (byte)mainForm.tileTypeCombobox.SelectedIndex;
+
+                }
                 mouse_down = true;
                 move_x = 0;
                 move_y = 0;
@@ -1485,6 +1506,8 @@ namespace ZeldaFullEditor
             {
                 room.drawPotsItems();
             }
+
+
 
             mainForm.cgramViewer.Refresh();
 

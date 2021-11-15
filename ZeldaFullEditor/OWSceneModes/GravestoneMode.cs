@@ -52,7 +52,9 @@ namespace ZeldaFullEditor.OWSceneModes
                 int mouseTileY = e.Y / 16;
                 int mapX = (mouseTileX / 32);
                 int mapY = (mouseTileY / 32);
-                scene.mapHover = mapX + (mapY * 8);
+
+                    scene.mapHover = mapX + (mapY * 8);
+                
                 if (selectedGrave != null)
                 {
                     selectedGrave.xTilePos = (ushort)e.X;

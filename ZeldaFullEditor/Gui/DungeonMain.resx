@@ -355,6 +355,15 @@
   <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
   </metadata>
+  <data name="collisionModeButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACqSURBVEhL7ZFRCoNADET3IP0qHqeX9WA9w2ogWWIyyTal
+        H1V8IOzOxBfEdh3ej6Xz0ZF1xHN9dXk48pAEiaJcS0Vs7w4ri+REKNnJuiGdyb9eQGRyYib4yRfw0UFd
+        2FtptEQkWoQyB5KhTNDSVHzzf1R/3EfzekgG7V2jO+nt/QAMGdSV5imovFCd94EBLeAjpLSAusoCND9C
+        XaBMQB3KHHooHWSq82ektQ2oUfcFhjqfcgAAAABJRU5ErkJggg==
+</value>
+  </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>75</value>
   </metadata>

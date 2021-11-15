@@ -1027,5 +1027,11 @@ namespace ZeldaFullEditor.Gui
             scene.Refresh();
 
         }
+
+        private void tilePictureBox_MouseEnter(object sender, EventArgs e)
+        {
+            scene.ow.allmaps[scene.selectedMap].BuildMap();
+            tilePictureBox.Refresh();
+        }
     }
 }

@@ -31,7 +31,7 @@ namespace ZeldaFullEditor
         public byte[] blocks = new byte[16];
         public List<Chest> chest_list = new List<Chest>();
         public List<Room_Object> tilesObjects = new List<Room_Object>();
-        
+        public byte[] collisionMap = new byte[4096];
         public List<Sprite> sprites = new List<Sprite>();
         public List<PotItem> pot_items = new List<PotItem>();
         public List<object> selectedObject = new List<object>();
@@ -206,6 +206,10 @@ namespace ZeldaFullEditor
                 loadTilesObjects();
             }
 
+            for(int i = 0;i<4096;i++)
+            {
+                collisionMap[i] = 0xFF; //null byte
+            }
             
             addSprites();
             addBlocks(); 
