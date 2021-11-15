@@ -313,6 +313,11 @@ namespace ZeldaFullEditor
             this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
             this.customPanel1 = new ZeldaFullEditor.CustomPanel();
             this.spritesView1 = new ZeldaFullEditor.SpritesView();
+            this.showGridToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.x8ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.x16ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.x32ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -2863,7 +2868,8 @@ namespace ZeldaFullEditor
             this.showExitsToolStripMenuItem,
             this.showTransportsToolStripMenuItem,
             this.showItemsToolStripMenuItem,
-            this.showEntranceExitPreviewToolStripMenuItem});
+            this.showEntranceExitPreviewToolStripMenuItem,
+            this.showGridToolStripMenuItem1});
             this.overworldViewToolStripMenuItem.Name = "overworldViewToolStripMenuItem";
             this.overworldViewToolStripMenuItem.Size = new System.Drawing.Size(102, 20);
             this.overworldViewToolStripMenuItem.Text = "Overworld View";
@@ -3130,6 +3136,47 @@ namespace ZeldaFullEditor
             this.spritesView1.Size = new System.Drawing.Size(292, 374);
             this.spritesView1.TabIndex = 0;
             this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
+            // 
+            // showGridToolStripMenuItem1
+            // 
+            this.showGridToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.x8ToolStripMenuItem1,
+            this.x16ToolStripMenuItem1,
+            this.x32ToolStripMenuItem1,
+            this.noneToolStripMenuItem});
+            this.showGridToolStripMenuItem1.Name = "showGridToolStripMenuItem1";
+            this.showGridToolStripMenuItem1.Size = new System.Drawing.Size(220, 22);
+            this.showGridToolStripMenuItem1.Text = "Show Grid";
+            // 
+            // x8ToolStripMenuItem1
+            // 
+            this.x8ToolStripMenuItem1.Name = "x8ToolStripMenuItem1";
+            this.x8ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.x8ToolStripMenuItem1.Text = "8x8";
+            this.x8ToolStripMenuItem1.Click += new System.EventHandler(this.x8ToolStripMenuItem1_Click);
+            // 
+            // x16ToolStripMenuItem1
+            // 
+            this.x16ToolStripMenuItem1.Name = "x16ToolStripMenuItem1";
+            this.x16ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.x16ToolStripMenuItem1.Text = "16x16";
+            this.x16ToolStripMenuItem1.Click += new System.EventHandler(this.x8ToolStripMenuItem1_Click);
+            // 
+            // x32ToolStripMenuItem1
+            // 
+            this.x32ToolStripMenuItem1.Name = "x32ToolStripMenuItem1";
+            this.x32ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.x32ToolStripMenuItem1.Text = "32x32";
+            this.x32ToolStripMenuItem1.Click += new System.EventHandler(this.x8ToolStripMenuItem1_Click);
+            // 
+            // noneToolStripMenuItem
+            // 
+            this.noneToolStripMenuItem.Checked = true;
+            this.noneToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
+            this.noneToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.noneToolStripMenuItem.Text = "None";
+            this.noneToolStripMenuItem.Click += new System.EventHandler(this.x8ToolStripMenuItem1_Click);
             // 
             // DungeonMain
             // 
@@ -3481,6 +3528,11 @@ namespace ZeldaFullEditor
         private System.Windows.Forms.ToolStripMenuItem increaseObjectSizeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem decreaseObjectSizeToolStripMenuItem;
         private System.Windows.Forms.Button autodoorButton;
+        private System.Windows.Forms.ToolStripMenuItem showGridToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem x8ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem x16ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem x32ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem;
     }
 }
 

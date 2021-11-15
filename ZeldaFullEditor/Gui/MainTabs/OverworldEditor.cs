@@ -28,6 +28,7 @@ namespace ZeldaFullEditor.Gui
         public Bitmap tmpPreviewBitmap = new Bitmap(256, 256);
         public Bitmap scratchPadBitmap = new Bitmap(256, 3600);
         public ushort[,] scratchPadTiles = new ushort[16, 225];
+        public byte gridDisplay = 0;
         public void InitOpen(DungeonMain mainForm)
         {
             overworld = new Overworld();
@@ -1002,5 +1003,29 @@ namespace ZeldaFullEditor.Gui
                 }
             }
             }
+
+        private void deleteOverlayToolstripbutton_Click(object sender, EventArgs e)
+        {
+            overworld.alloverlays[scene.selectedMap].tilesData.Clear();
+            scene.Refresh();
+        }
+
+        private void toolStripButton1_Click_1(object sender, EventArgs e)
+        {
+            for (int y = 0; y < 32; y++)
+            {
+                for (int x = 0; x < 32; x++)
+                {
+                    overworld.allmaps[scene.selectedMap].tilesUsed[x, y] = 0052;
+
+                    //overworld.allmapsTilesLW[x, y] = 0052;
+
+                    
+                }
+            }
+
+            scene.Refresh();
+
+        }
     }
 }

@@ -126,6 +126,10 @@ namespace ZeldaFullEditor
             roomProperty_layout.MouseWheel += RoomProperty_MouseWheel;
 
             overworldEditor.gfxTextbox.MouseWheel += GfxTextbox_MouseWheel;
+            overworldEditor.paletteTextbox.MouseWheel += GfxTextbox_MouseWheel;
+            overworldEditor.sprpaletteTextbox.MouseWheel += GfxTextbox_MouseWheel;
+            overworldEditor.sprgfxTextbox.MouseWheel += GfxTextbox_MouseWheel;
+            overworldEditor.textidTextbox.MouseWheel += GfxTextbox_MouseWheel;
 
             refreshRecentsFiles();
             textEditor.Visible = false;
@@ -152,69 +156,118 @@ namespace ZeldaFullEditor
 
         private void GfxTextbox_MouseWheel(object sender, MouseEventArgs e)
         {
+            byte mapId = overworldEditor.overworld.allmaps[overworldEditor.scene.selectedMap].parent;
+            byte gs = overworldEditor.scene.ow.gameState;
             if (e.Delta > 0)
             {
-                
                 if (sender == overworldEditor.gfxTextbox)
                 {
-                    byte mapId = overworldEditor.overworld.allmaps[overworldEditor.scene.selectedMap].parent;
                     overworldEditor.overworld.allmaps[mapId].gfx++;
-
-                    if (overworldEditor.overworld.allmaps[mapId].largeMap)
-                    {
-                        overworldEditor.overworld.allmaps[mapId + 1].gfx = overworldEditor.overworld.allmaps[mapId].gfx;
-                        overworldEditor.overworld.allmaps[mapId + 8].gfx = overworldEditor.overworld.allmaps[mapId].gfx;
-                        overworldEditor.overworld.allmaps[mapId + 9].gfx = overworldEditor.overworld.allmaps[mapId].gfx;
-                        overworldEditor.overworld.allmaps[mapId+1].BuildMap();
-                        overworldEditor.overworld.allmaps[mapId+8].BuildMap();
-                        overworldEditor.overworld.allmaps[mapId+9].BuildMap();
-                        overworldEditor.overworld.allmaps[mapId + 1].needRefresh = true;
-                        overworldEditor.overworld.allmaps[mapId + 8].needRefresh = true;
-                        overworldEditor.overworld.allmaps[mapId + 9].needRefresh = true;
-                    }
-                    overworldEditor.overworld.allmaps[mapId].BuildMap();
-                    overworldEditor.overworld.allmaps[mapId].needRefresh = true;
-                    overworldEditor.scene.updateMapGfx();
-                    overworldEditor.scene.Invalidate();
-
-
-                    Console.WriteLine("Map0x24+0 GFX = " + overworldEditor.overworld.allmaps[mapId].gfx);
-                    Console.WriteLine("Map0x24+1 GFX = " + overworldEditor.overworld.allmaps[mapId+1].gfx);
-                    Console.WriteLine("Map0x24+8 GFX = " + overworldEditor.overworld.allmaps[mapId+8].gfx);
-                    Console.WriteLine("Map0x24+9 GFX = " + overworldEditor.overworld.allmaps[mapId+9].gfx);
                 }
+                else if (sender == overworldEditor.paletteTextbox)
+                {
+                    overworldEditor.overworld.allmaps[mapId].palette++;
+                }
+                else if (sender == overworldEditor.sprgfxTextbox)
+                {
+                    overworldEditor.overworld.allmaps[mapId].sprgfx[overworldEditor.scene.ow.gameState]++;
+                }
+                else if (sender == overworldEditor.sprpaletteTextbox)
+                {
+                    overworldEditor.overworld.allmaps[mapId].sprpalette[overworldEditor.scene.ow.gameState]++;
+                }
+                else if (sender == overworldEditor.textidTextbox)
+                {
+                    overworldEditor.overworld.allmaps[mapId].messageID++;
+                    if (overworldEditor.overworld.allmaps[mapId].messageID < textEditor.textListbox.Items.Count)
+                    {
+                        textEditor.textListbox.SelectedIndex = overworldEditor.overworld.allmaps[mapId].messageID;
+                    }
+
+                    textEditor.Refresh();
+                    overworldEditor.previewTextPicturebox.Size = new Size(340, 102);
+                    overworldEditor.previewTextPicturebox.Visible = true;
+                    overworldEditor.previewTextPicturebox.Refresh();
+                }
+
 
             }
             else if (e.Delta < 0)
             {
+                
                 if (sender == overworldEditor.gfxTextbox)
                 {
-                    byte mapId = overworldEditor.overworld.allmaps[overworldEditor.scene.selectedMap].parent;
                     if (overworldEditor.overworld.allmaps[mapId].gfx > 0)
                     {
-
                         overworldEditor.overworld.allmaps[mapId].gfx--;
-                        overworldEditor.overworld.allmaps[mapId].BuildMap();
-                        overworldEditor.overworld.allmaps[mapId].needRefresh = true;
-                        if (overworldEditor.overworld.allmaps[mapId].largeMap)
-                        {
-                            overworldEditor.overworld.allmaps[mapId + 1].gfx = overworldEditor.overworld.allmaps[mapId].gfx;
-                            overworldEditor.overworld.allmaps[mapId + 8].gfx = overworldEditor.overworld.allmaps[mapId].gfx;
-                            overworldEditor.overworld.allmaps[mapId + 9].gfx = overworldEditor.overworld.allmaps[mapId].gfx;
-                            overworldEditor.overworld.allmaps[mapId + 1].BuildMap();
-                            overworldEditor.overworld.allmaps[mapId + 8].BuildMap();
-                            overworldEditor.overworld.allmaps[mapId + 9].BuildMap();
-                            overworldEditor.overworld.allmaps[mapId + 1].needRefresh = true;
-                            overworldEditor.overworld.allmaps[mapId + 8].needRefresh = true;
-                            overworldEditor.overworld.allmaps[mapId + 9].needRefresh = true;
-                        }
-
-                        overworldEditor.scene.updateMapGfx();
-                        overworldEditor.scene.Invalidate();
                     }
                 }
+                else if (sender == overworldEditor.paletteTextbox)
+                {
+                    if (overworldEditor.overworld.allmaps[mapId].gfx > 0)
+                    {
+                        overworldEditor.overworld.allmaps[mapId].palette--;
+                    }
+                }
+                else if (sender == overworldEditor.sprgfxTextbox)
+                {
+                    if (overworldEditor.overworld.allmaps[mapId].sprgfx[overworldEditor.scene.ow.gameState] > 0)
+                    {
+                        overworldEditor.overworld.allmaps[mapId].sprgfx[overworldEditor.scene.ow.gameState]--;
+                    }
+                }
+                else if (sender == overworldEditor.sprpaletteTextbox)
+                {
+                    if (overworldEditor.overworld.allmaps[mapId].sprpalette[overworldEditor.scene.ow.gameState] > 0)
+                    {
+                        overworldEditor.overworld.allmaps[mapId].sprpalette[overworldEditor.scene.ow.gameState]--;
+                    }
+                }
+                else if (sender == overworldEditor.textidTextbox)
+                {
+                    if (overworldEditor.overworld.allmaps[mapId].messageID > 0)
+                    {
+                        overworldEditor.overworld.allmaps[mapId].messageID--;
+                        if (overworldEditor.overworld.allmaps[mapId].messageID < textEditor.textListbox.Items.Count)
+                        {
+                            textEditor.textListbox.SelectedIndex = overworldEditor.overworld.allmaps[mapId].messageID;
+                        }
 
+                        textEditor.Refresh();
+                        overworldEditor.previewTextPicturebox.Size = new Size(340, 102);
+                        overworldEditor.previewTextPicturebox.Visible = true;
+                        overworldEditor.previewTextPicturebox.Refresh();
+
+                    }
+                }
             }
+
+            if (overworldEditor.overworld.allmaps[mapId].largeMap)
+            {
+                overworldEditor.overworld.allmaps[mapId + 1].gfx = overworldEditor.overworld.allmaps[mapId].gfx;
+                overworldEditor.overworld.allmaps[mapId + 8].gfx = overworldEditor.overworld.allmaps[mapId].gfx;
+                overworldEditor.overworld.allmaps[mapId + 9].gfx = overworldEditor.overworld.allmaps[mapId].gfx;
+                overworldEditor.overworld.allmaps[mapId + 1].palette = overworldEditor.overworld.allmaps[mapId].palette;
+                overworldEditor.overworld.allmaps[mapId + 8].palette = overworldEditor.overworld.allmaps[mapId].palette;
+                overworldEditor.overworld.allmaps[mapId + 9].palette = overworldEditor.overworld.allmaps[mapId].palette;
+                overworldEditor.overworld.allmaps[mapId + 1].sprgfx[gs] = overworldEditor.overworld.allmaps[mapId].sprgfx[gs];
+                overworldEditor.overworld.allmaps[mapId + 8].sprgfx[gs] = overworldEditor.overworld.allmaps[mapId].sprgfx[gs];
+                overworldEditor.overworld.allmaps[mapId + 9].sprgfx[gs] = overworldEditor.overworld.allmaps[mapId].sprgfx[gs];
+                overworldEditor.overworld.allmaps[mapId + 1].sprpalette[gs] = overworldEditor.overworld.allmaps[mapId].sprpalette[gs];
+                overworldEditor.overworld.allmaps[mapId + 8].sprpalette[gs] = overworldEditor.overworld.allmaps[mapId].sprpalette[gs];
+                overworldEditor.overworld.allmaps[mapId + 9].sprpalette[gs] = overworldEditor.overworld.allmaps[mapId].sprpalette[gs];
+
+                overworldEditor.overworld.allmaps[mapId + 1].BuildMap();
+                overworldEditor.overworld.allmaps[mapId + 8].BuildMap();
+                overworldEditor.overworld.allmaps[mapId + 9].BuildMap();
+                overworldEditor.overworld.allmaps[mapId + 1].needRefresh = true;
+                overworldEditor.overworld.allmaps[mapId + 8].needRefresh = true;
+                overworldEditor.overworld.allmaps[mapId + 9].needRefresh = true;
+            }
+            overworldEditor.overworld.allmaps[mapId].BuildMap();
+            overworldEditor.overworld.allmaps[mapId].needRefresh = true;
+            overworldEditor.scene.updateMapGfx();
+            overworldEditor.scene.Invalidate();
         }
 
         //Need to stay here
@@ -4883,6 +4936,35 @@ namespace ZeldaFullEditor
                 }
 
             }
+        }
+
+        private void x8ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            x8ToolStripMenuItem1.Checked = false;
+            x16ToolStripMenuItem1.Checked = false;
+            x32ToolStripMenuItem1.Checked = false;
+            noneToolStripMenuItem.Checked = false;
+            if (sender == x8ToolStripMenuItem1)
+            {
+                x8ToolStripMenuItem1.Checked = true;
+                overworldEditor.gridDisplay = 8;
+            }
+            else if (sender == x16ToolStripMenuItem1)
+            {
+                x16ToolStripMenuItem1.Checked = true;
+                overworldEditor.gridDisplay = 16;
+            }
+            else if (sender == x32ToolStripMenuItem1)
+            {
+                x32ToolStripMenuItem1.Checked = true;
+                overworldEditor.gridDisplay = 32;
+            }
+            else
+            {
+                noneToolStripMenuItem.Checked = true;
+                overworldEditor.gridDisplay = 0;
+            }
+            overworldEditor.scene.Refresh();
         }
     }
 

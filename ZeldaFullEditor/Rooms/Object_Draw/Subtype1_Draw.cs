@@ -1158,13 +1158,17 @@ namespace ZeldaFullEditor
         public object_31(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
 
-            name = "Unused";
+            name = "Custom Object 1";
         }
 
         public override void Draw()
         {
-	base.Draw();
 
+            base.Draw();
+            draw_tile(new Tile(0,0,0,0,0), 0, 0);
+            draw_tile(new Tile(0, 0, 0, 0, 0), 8, 0);
+            draw_tile(new Tile(0, 0, 0, 0, 0), 8, 8);
+            draw_tile(new Tile(0, 0, 0, 0, 0), 0, 8);
         }
     }
 
@@ -1173,12 +1177,17 @@ namespace ZeldaFullEditor
 
         public object_32(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
-            name = "Unused";
+            name = "Custom Object 2";
         }
 
         public override void Draw()
         {
-	base.Draw();
+
+            base.Draw();
+            draw_tile(new Tile(0, 0, 0, 0, 0), 0, 0);
+            draw_tile(new Tile(0, 0, 0, 0, 0), 8, 0);
+            draw_tile(new Tile(0, 0, 0, 0, 0), 8, 8);
+            draw_tile(new Tile(0, 0, 0, 0, 0), 0, 8);
 
         }
     }

@@ -39,8 +39,8 @@ namespace ZeldaFullEditor
             this.parent = index;
             gfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, gfxPtr);
             //
+            messageID = (short)ROM.ReadShort(Constants.overworldMessages + (parent * 2));
 
-            
 
             if (index != 0x80)
             {
@@ -222,7 +222,7 @@ namespace ZeldaFullEditor
                 }
             }*/
 
-            messageID = (short)ROM.ReadShort(Constants.overworldMessages+(parent*2));
+           
 
         }
 

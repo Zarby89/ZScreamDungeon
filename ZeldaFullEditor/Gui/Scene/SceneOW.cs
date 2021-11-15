@@ -89,6 +89,10 @@ namespace ZeldaFullEditor
             transportMode = new TransportMode(this);
             overlayMode = new OverlayMode(this);
             gravestoneMode = new GravestoneMode(this);
+            
+            //this.Width = 8192;
+            //this.Height = 8192;
+            //this.Size = new Size(8192, 8192);
             //this.Refresh();
         }
 
@@ -666,7 +670,7 @@ namespace ZeldaFullEditor
                 ow.SaveMap16Tiles();
             }
         }
-        public bool lowEndMode = true;
+        public bool lowEndMode = false;
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -960,6 +964,27 @@ namespace ZeldaFullEditor
                     drawText(g, 4, 24, globalmouseTileDownX.ToString());
                     drawText(g, 4, 48, globalmouseTileDownY.ToString());
                 
+                }
+
+                if (owForm.gridDisplay != 0)
+                {
+                    int gridsize = 512;
+                    if (ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                    {
+                        gridsize = 1024;
+                    }
+                    int x = ow.allmaps[selectedMap].parent % 8;
+                    int y = ow.allmaps[selectedMap].parent / 8;
+
+                    for (int gx = 0; gx < (gridsize / owForm.gridDisplay); gx++)
+                    {
+                        g.DrawLine(new Pen(Color.FromArgb(100, 255, 255, 255), 1), new Point((x*512) + gx * owForm.gridDisplay, y * 512), new Point((x*512) + gx * owForm.gridDisplay, (y * 512) + gridsize));
+                    }
+
+                    for (int gy = 0; gy < (gridsize / owForm.gridDisplay); gy++)
+                    {
+                        g.DrawLine(new Pen(Color.FromArgb(100,255,255,255),1), new Point((x * 512), (y*512)+(gy*owForm.gridDisplay)), new Point((x * 512) +gridsize, (y * 512) + (gy * owForm.gridDisplay)));
+                    }
                 }
 
 
