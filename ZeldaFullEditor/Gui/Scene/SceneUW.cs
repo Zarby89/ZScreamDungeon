@@ -2082,9 +2082,9 @@ namespace ZeldaFullEditor
                     {
                         sdatabytes = databytes[0].ToString("X2") + " " + databytes[1].ToString("X2") + " " + databytes[2].ToString("X2");
                     }
-                    mainForm.object_x_label.Text = "X: " + (o as Room_Object).nx.ToString();
-                    mainForm.object_y_label.Text = "Y: " + (o as Room_Object).ny;
-                    mainForm.object_size_label.Text = "Size: " + (o as Room_Object).size + "   HEX DATA : " + sdatabytes;
+                    mainForm.object_x_label.Text = "X: " + (o as Room_Object).nx.ToString("X2");
+                    mainForm.object_y_label.Text = "Y: " + (o as Room_Object).ny.ToString("X2"); ;
+                    mainForm.object_size_label.Text = "Size: " + (o as Room_Object).size + "   HEX : " + sdatabytes;
                     mainForm.object_layer_label.Text = "Layer (BG): " + ((o as Room_Object).layer+1).ToString();
                     int z = 0;
                     foreach (Room_Object door in room.tilesObjects)
@@ -2765,29 +2765,34 @@ namespace ZeldaFullEditor
         {
             mainForm.propertiesChangedFromForm = true;
             mainForm.roomProperty_bg2.SelectedIndex = (int)room.bg2;
-            mainForm.roomProperty_blockset.Text = room.blockset.ToString();
+            mainForm.roomProperty_blockset.Text = room.blockset.ToString("X2");
             mainForm.roomProperty_tag1.SelectedIndex = (int)room.tag1;
             mainForm.roomProperty_tag2.SelectedIndex = (int)room.tag2;
             mainForm.roomProperty_effect.SelectedIndex = (int)room.effect;
             mainForm.roomProperty_collision.SelectedIndex = (int)room.collision;
-            mainForm.roomProperty_floor1.Text = room.floor1.ToString();
-            mainForm.roomProperty_floor2.Text = room.floor2.ToString();
+            mainForm.roomProperty_floor1.Text = room.floor1.ToString("X2");
+            mainForm.roomProperty_floor2.Text = room.floor2.ToString("X2");
 
-            mainForm.roomProperty_layout.Text = room.layout.ToString();
-            mainForm.roomProperty_msgid.Text = room.messageid.ToString();
-            mainForm.roomProperty_palette.Text = room.palette.ToString();
+            mainForm.roomProperty_layout.Text = room.layout.ToString("X2");
+            mainForm.roomProperty_msgid.Text = room.messageid.ToString("X2");
+            mainForm.roomProperty_palette.Text = room.palette.ToString("X2");
             mainForm.roomProperty_pit.Checked = room.damagepit;
             mainForm.roomProperty_sortsprite.Checked = room.sortsprites;
-            mainForm.roomProperty_spriteset.Text = room.spriteset.ToString();
+            mainForm.roomProperty_spriteset.Text = room.spriteset.ToString("X2");
 
 
+            mainForm.roomProperty_hole.Text = room.holewarp.ToString("X2");
+            mainForm.bg2checkbox1.Checked = room.holewarp_plane == 1 ? true : false;
+            mainForm.roomProperty_stair1.Text = room.staircase1.ToString("X2");
+            mainForm.bg2checkbox2.Checked = room.staircase1Plane == 1 ? true : false;
+            mainForm.roomProperty_stair2.Text = room.staircase2.ToString("X2");
+            mainForm.bg2checkbox3.Checked = room.staircase2Plane == 1 ? true : false;
+            mainForm.roomProperty_stair3.Text = room.staircase3.ToString("X2");
+            mainForm.bg2checkbox4.Checked = room.staircase3Plane == 1 ? true : false;
+            mainForm.roomProperty_stair4.Text = room.staircase4.ToString("X2");
+            mainForm.bg2checkbox5.Checked = room.staircase4Plane == 1 ? true : false;
 
 
-            mainForm.warpPreviewLabel.Text = "Hole:" + room.holewarp + "\r\n" +
-            "Stair1:" + room.staircase1 + "\r\n" +
-            "Stair2:" + room.staircase2 + "\r\n" +
-            "Stair3:" + room.staircase3 + "\r\n" +
-            "Stair4:" + room.staircase4;
             mainForm.propertiesChangedFromForm = false;
         }
 

@@ -21,7 +21,7 @@ using System.Threading;
 using ZeldaFullEditor.Gui;
 using ZeldaFullEditor.Gui.MainTabs;
 using System.Runtime.Serialization.Formatters.Binary;
-
+using System.Globalization;
 
 
 namespace ZeldaFullEditor
@@ -825,7 +825,7 @@ namespace ZeldaFullEditor
                 {
                     if (d.id == DungeonsData.starting_entrances[i].Room)
                     {
-                        tname += "[" + d.id.ToString() + "]" + d.name;
+                        tname += "[" + d.id.ToString("X2") + "]" + d.name;
                         break;
                     }
                 }
@@ -842,7 +842,7 @@ namespace ZeldaFullEditor
                 {
                     if (d.id == DungeonsData.entrances[i].Room)
                     {
-                        tname += "[" + d.id.ToString() + "]" + d.name;
+                        tname += "[" + d.id.ToString("X2") + "]" + d.name;
                         break;
                     }
                 }
@@ -1463,12 +1463,12 @@ namespace ZeldaFullEditor
             //propertyGrid2.SelectedObject = entrances[(int)e.Node.Tag];
             entranceProperty_bg.Checked = false;
 
-            entranceProperty_room.Text = en.Room.ToString();
-            entranceProperty_floor.Text = en.Floor.ToString();
-            entranceProperty_exit.Text = en.Exit.ToString();
-            entranceProperty_dungeon.Text = en.Dungeon.ToString();
-            entranceProperty_blockset.Text = en.Blockset.ToString();
-            entranceProperty_music.Text = en.Music.ToString();
+            entranceProperty_room.Text = en.Room.ToString("X2");
+            entranceProperty_floor.Text = en.Floor.ToString("X2");
+            entranceProperty_exit.Text = en.Exit.ToString("X2");
+            entranceProperty_dungeon.Text = en.Dungeon.ToString("X2");
+            entranceProperty_blockset.Text = en.Blockset.ToString("X2");
+            entranceProperty_music.Text = en.Music.ToString("X2");
 
 
 
@@ -1511,6 +1511,59 @@ namespace ZeldaFullEditor
                 activeScene.DrawRoom();
                 activeScene.Refresh();
             }
+
+
+            entranceProperty_vscroll.Checked = false;
+            entranceProperty_hscroll.Checked = false;
+            entranceProperty_quadbr.Checked = false;
+            entranceProperty_quadbl.Checked = false;
+            entranceProperty_quadtl.Checked = false;
+            entranceProperty_quadtr.Checked = false;
+            entranceProperty_scrollx.Text = en.XScroll.ToString("X4");
+            entranceProperty_scrolly.Text = en.YScroll.ToString("X4");
+            entranceProperty_xpos.Text = en.XPosition.ToString("X4");
+            entranceProperty_ypos.Text = en.YPosition.ToString("X4");
+            entranceProperty_camx.Text = en.XCamera.ToString("X4");
+            entranceProperty_camy.Text = en.YCamera.ToString("X4");
+            entranceProperty_FU.Text = en.scrolledge_FU.ToString("X2");
+            entranceProperty_HU.Text = en.scrolledge_HU.ToString("X2");
+            entranceProperty_HD.Text = en.scrolledge_HD.ToString("X2");
+            entranceProperty_FD.Text = en.scrolledge_FD.ToString("X2");
+            entranceProperty_FL.Text = en.scrolledge_FL.ToString("X2");
+            entranceProperty_FR.Text = en.scrolledge_FR.ToString("X2");
+            entranceProperty_HL.Text = en.scrolledge_HL.ToString("X2");
+            entranceProperty_HR.Text = en.scrolledge_HR.ToString("X2");
+            int p = (en.Exit & 0x7FFF) >> 1;
+            doorxTextbox.Text = (p % 64).ToString("X2");
+            dooryTextbox.Text = (p >> 6).ToString("X2");
+
+            if ((en.Scrolling & 0x20) == 0x20)
+            {
+                entranceProperty_hscroll.Checked = true;
+            }
+
+            if ((en.Scrolling & 0x02) == 0x02)
+            {
+                entranceProperty_vscroll.Checked = true;
+            }
+
+            if (en.Scrollquadrant == 0x12) //bottom right
+            {
+                entranceProperty_quadbr.Checked = true;
+            }
+            else if (en.Scrollquadrant == 0x02) //bottom left
+            {
+                entranceProperty_quadbl.Checked = true;
+            }
+            else if (en.Scrollquadrant == 0x00) //top left
+            {
+                entranceProperty_quadtl.Checked = true;
+            }
+            else if (en.Scrollquadrant == 0x10) //top right
+            {
+                entranceProperty_quadtr.Checked = true;
+            }
+
 
             propertiesChangedFromForm = false;
 
@@ -1704,11 +1757,11 @@ namespace ZeldaFullEditor
                 //mapPropertyGrid.SelectedObject = r;
                 opened_rooms.Add(r); //add the double clicked room into rooms list     
                 activeScene.room = r;
-                string tn = r.index.ToString("D3");
-                if (showRoomsInHexToolStripMenuItem.Checked)
-                {
-                    tn = r.index.ToString("X3");
-                }
+                //string tn = r.index.ToString("D3");
+                //if (showRoomsInHexToolStripMenuItem.Checked)
+                //{
+                string tn = r.index.ToString("X3");
+                //}
                 TabPage tp = new TabPage(tn);
                 tp.Tag = r;
                 tabControl2.TabPages.Add(tp);
@@ -1749,15 +1802,22 @@ namespace ZeldaFullEditor
 
         private void rightSideToolboxToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            
+            splitContainer3.Panel1.Controls.Clear();
+            splitContainer3.Panel2.Controls.Clear();
             if (rightSideToolboxToolStripMenuItem.Checked)
             {
-                toolboxPanel.Dock = DockStyle.Right;
-                splitter1.Dock = DockStyle.Right;
+                //toolboxPanel.Dock = DockStyle.Right;
+                //splitter1.Dock = DockStyle.Right;
+                splitContainer3.Panel2.Controls.Add(panel2);
+                splitContainer3.Panel1.Controls.Add(entrancetreeView);
             }
             else
             {
-                toolboxPanel.Dock = DockStyle.Left;
-                splitter1.Dock = DockStyle.Left;
+                splitContainer3.Panel1.Controls.Add(panel2);
+                splitContainer3.Panel2.Controls.Add(entrancetreeView);
+                //toolboxPanel.Dock = DockStyle.Left;
+                //splitter1.Dock = DockStyle.Left;
             }
         }
 
@@ -2025,7 +2085,7 @@ namespace ZeldaFullEditor
             {
                 activeScene.room.bg2 = (Background2)roomProperty_bg2.SelectedIndex;
                 byte r = 0;
-                if (Byte.TryParse(roomProperty_blockset.Text, out r))
+                if (Byte.TryParse(roomProperty_blockset.Text, NumberStyles.HexNumber, null, out r))
                 {
                     activeScene.room.blockset = r;
                 }
@@ -2042,7 +2102,7 @@ namespace ZeldaFullEditor
                 activeScene.room.effect = (EffectKey)roomProperty_effect.SelectedIndex;
                 activeScene.room.collision = (CollisionKey)roomProperty_collision.SelectedIndex;
 
-                if (Byte.TryParse(roomProperty_floor1.Text, out r))
+                if (Byte.TryParse(roomProperty_floor1.Text, NumberStyles.HexNumber, null, out r))
                 {
                     activeScene.room.floor1 = r;
                 }
@@ -2052,7 +2112,7 @@ namespace ZeldaFullEditor
                     activeScene.room.floor1 = 0;
                 }
 
-                if (Byte.TryParse(roomProperty_floor2.Text, out r))
+                if (Byte.TryParse(roomProperty_floor2.Text, NumberStyles.HexNumber, null, out r))
                 {
                     activeScene.room.floor2 = r;
                 }
@@ -2062,7 +2122,7 @@ namespace ZeldaFullEditor
                     activeScene.room.floor2 = 0;
                 }
 
-                if (Byte.TryParse(roomProperty_layout.Text, out r))
+                if (Byte.TryParse(roomProperty_layout.Text, NumberStyles.HexNumber, null, out r))
                 {
                     activeScene.room.layout = r;
                 }
@@ -2072,7 +2132,7 @@ namespace ZeldaFullEditor
                     activeScene.room.layout = 0;
                 }
 
-                if (Byte.TryParse(roomProperty_msgid.Text, out r))
+                if (Byte.TryParse(roomProperty_msgid.Text, NumberStyles.HexNumber, null, out r))
                 {
                     activeScene.room.messageid = r;
                 }
@@ -2082,7 +2142,7 @@ namespace ZeldaFullEditor
                     activeScene.room.messageid = 0;
                 }
 
-                if (Byte.TryParse(roomProperty_palette.Text, out r))
+                if (Byte.TryParse(roomProperty_palette.Text, NumberStyles.HexNumber, null, out r))
                 {
                     if (r <= 40)
                     {
@@ -2101,6 +2161,38 @@ namespace ZeldaFullEditor
                 }
 
 
+
+                byte p = 0;
+                byte.TryParse(roomProperty_hole.Text, NumberStyles.HexNumber, null, out p);
+                activeScene.room.holewarp = p;
+                byte.TryParse(roomProperty_stair1.Text, NumberStyles.HexNumber, null, out p);
+                activeScene.room.staircase1 = p;
+                byte.TryParse(roomProperty_stair2.Text, NumberStyles.HexNumber, null, out p);
+                activeScene.room.staircase2 = p;
+                byte.TryParse(roomProperty_stair3.Text, NumberStyles.HexNumber, null, out p);
+                activeScene.room.staircase3 = p;
+                byte.TryParse(roomProperty_stair4.Text, NumberStyles.HexNumber, null, out p);
+                activeScene.room.staircase4 = p;
+                if (bg2checkbox1.Checked)
+                {
+                    activeScene.room.holewarp_plane = (byte)(bg2checkbox1.Checked ? 1 : 0);
+                }
+                if (bg2checkbox2.Checked)
+                {
+                    activeScene.room.staircase1Plane = (byte)(bg2checkbox2.Checked ? 1 : 0);
+                }
+                if (bg2checkbox3.Checked)
+                {
+                    activeScene.room.staircase2Plane = (byte)(bg2checkbox3.Checked ? 1 : 0);
+                }
+                if (bg2checkbox4.Checked)
+                {
+                    activeScene.room.staircase3Plane = (byte)(bg2checkbox4.Checked ? 1 : 0);
+                }
+                if (bg2checkbox5.Checked)
+                {
+                    activeScene.room.staircase4Plane = (byte)(bg2checkbox5.Checked ? 1 : 0);
+                }
 
                 activeScene.room.damagepit = roomProperty_pit.Checked;
                 activeScene.room.sortsprites = roomProperty_sortsprite.Checked;
@@ -2144,7 +2236,7 @@ namespace ZeldaFullEditor
             {
 
                 int r = 0;
-                if (int.TryParse(entranceProperty_blockset.Text, out r))
+                if (int.TryParse(entranceProperty_blockset.Text,NumberStyles.HexNumber,null, out r))
                 {
                     selectedEntrance.Blockset = (byte)r;
                 }
@@ -2154,7 +2246,7 @@ namespace ZeldaFullEditor
                 }
 
 
-                if (int.TryParse(entranceProperty_room.Text, out r))
+                if (int.TryParse(entranceProperty_room.Text, NumberStyles.HexNumber, null, out r))
                 {
                     selectedEntrance.Room = (short)r;
                 }
@@ -2164,7 +2256,7 @@ namespace ZeldaFullEditor
                 }
 
 
-                if (int.TryParse(entranceProperty_floor.Text, out r))
+                if (int.TryParse(entranceProperty_floor.Text, NumberStyles.HexNumber, null, out r))
                 {
                     selectedEntrance.Floor = (byte)r;
                 }
@@ -2173,7 +2265,7 @@ namespace ZeldaFullEditor
                     selectedEntrance.Floor = 0;
                 }
 
-                if (int.TryParse(entranceProperty_dungeon.Text, out r))
+                if (int.TryParse(entranceProperty_dungeon.Text, NumberStyles.HexNumber, null, out r))
                 {
                     selectedEntrance.Dungeon = (byte)r;
                 }
@@ -2182,7 +2274,7 @@ namespace ZeldaFullEditor
                     selectedEntrance.Dungeon = 0;
                 }
 
-                if (int.TryParse(entranceProperty_music.Text, out r))
+                if (int.TryParse(entranceProperty_music.Text, NumberStyles.HexNumber, null, out r))
                 {
                     selectedEntrance.Music = (byte)r;
                 }
@@ -2191,7 +2283,7 @@ namespace ZeldaFullEditor
                     selectedEntrance.Music = 0;
                 }
 
-                if (int.TryParse(entranceProperty_exit.Text, out r))
+                if (int.TryParse(entranceProperty_exit.Text, NumberStyles.HexNumber, null, out r))
                 {
                     selectedEntrance.Exit = (short)r;
                 }
@@ -2208,6 +2300,152 @@ namespace ZeldaFullEditor
                 {
                     selectedEntrance.Ladderbg = 0x00;
                 }
+
+
+                if (int.TryParse(entranceProperty_HU.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.scrolledge_HU = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_FU.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.scrolledge_FU = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_HD.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.scrolledge_HD = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_FD.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.scrolledge_FD = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_HL.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.scrolledge_HL = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_HR.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.scrolledge_HR = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_FL.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.scrolledge_FL = (byte)r;
+                }
+
+                if (int.TryParse(entranceProperty_FR.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.scrolledge_FR = (byte)r;
+                }
+
+
+                if (int.TryParse(entranceProperty_camx.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.XCamera = (short)r;
+                }
+                else
+                {
+                    selectedEntrance.XCamera = 0;
+                }
+
+                if (int.TryParse(entranceProperty_camy.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.YCamera = (short)r;
+                }
+                else
+                {
+                    selectedEntrance.YCamera = 0;
+                }
+
+                if (int.TryParse(entranceProperty_xpos.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.XPosition = (short)r;
+                }
+                else
+                {
+                    selectedEntrance.XPosition = 0;
+                }
+
+                if (int.TryParse(entranceProperty_ypos.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.YPosition = (short)r;
+                }
+                else
+                {
+                    selectedEntrance.YPosition = 0;
+                }
+
+                if (int.TryParse(entranceProperty_scrollx.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.XScroll = (short)r;
+                }
+                else
+                {
+                    selectedEntrance.XScroll = 0;
+                }
+
+                if (int.TryParse(entranceProperty_scrolly.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    selectedEntrance.YScroll = (short)r;
+                }
+                else
+                {
+                    selectedEntrance.YScroll = 0;
+                }
+                int rr = 0;
+                if (int.TryParse(doorxTextbox.Text, NumberStyles.HexNumber, null, out r))
+                {
+                    if (int.TryParse(dooryTextbox.Text, NumberStyles.HexNumber, null, out rr))
+                    {
+                        int p = ((rr << 6) + (r & 0x3F)) << 1;
+                        selectedEntrance.Exit = (short)p;
+                    }
+                    else
+                    {
+                        selectedEntrance.Exit = 0;
+                    }
+                }
+                else
+                {
+                    selectedEntrance.Exit = 0;
+                }
+
+
+                byte b = 0;
+                if (entranceProperty_hscroll.Checked)
+                {
+                    b += 0x20;
+                }
+                if (entranceProperty_vscroll.Checked)
+                {
+                    b += 0x02;
+                }
+
+                if (entranceProperty_quadbr.Checked) //bottom right
+                {
+                    selectedEntrance.Scrollquadrant = 0x12;
+                }
+                else if (entranceProperty_quadbl.Checked) //bottom left
+                {
+                    selectedEntrance.Scrollquadrant = 0x02;
+                }
+                else if (entranceProperty_quadtl.Checked) //top left
+                {
+                    selectedEntrance.Scrollquadrant = 0x00;
+                }
+                else if (entranceProperty_quadtr.Checked) //top right
+                {
+                    selectedEntrance.Scrollquadrant = 0x10;
+                }
+                //if (entranceProperty_quadbl)
+
+
+
+                selectedEntrance.Scrolling = b;
 
 
                 GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
@@ -2783,10 +3021,12 @@ namespace ZeldaFullEditor
             if (x2zoom)
             {
                 activeScene.Size = new Size(1024, 1024);
+                panel3.Location = new Point(1032, -1);
             }
             else
             {
                 activeScene.Size = new Size(512, 512);
+                panel3.Location = new Point(520, -1);
             }
             activeScene.Refresh();
 
@@ -2942,42 +3182,7 @@ namespace ZeldaFullEditor
 
         private void warpButton_Click(object sender, EventArgs e)
         {
-            WarpsForm warpForm = new WarpsForm();
-            warpForm.roomProperty_hole.Text = activeScene.room.holewarp.ToString();
-            warpForm.roomProperty_holeplane.Text = activeScene.room.holewarp_plane.ToString();
-            warpForm.roomProperty_stair1.Text = activeScene.room.staircase1.ToString();
-            warpForm.roomProperty_stair1plane.Text = activeScene.room.staircase1Plane.ToString();
-            warpForm.roomProperty_stair2.Text = activeScene.room.staircase2.ToString();
-            warpForm.roomProperty_stair2plane.Text = activeScene.room.staircase2Plane.ToString();
-            warpForm.roomProperty_stair3.Text = activeScene.room.staircase3.ToString();
-            warpForm.roomProperty_stair3plane.Text = activeScene.room.staircase3Plane.ToString();
-            warpForm.roomProperty_stair4.Text = activeScene.room.staircase4.ToString();
-            warpForm.roomProperty_stair4plane.Text = activeScene.room.staircase4Plane.ToString();
-            if (warpForm.ShowDialog() == DialogResult.OK)
-            {
-                activeScene.room.holewarp = warpForm.properties[0];
-                activeScene.room.holewarp_plane = warpForm.properties[1];
 
-                activeScene.room.staircase1 = warpForm.properties[2];
-
-                activeScene.room.staircase1Plane = warpForm.properties[3];
-
-                activeScene.room.staircase2 = warpForm.properties[4];
-
-                activeScene.room.staircase2Plane = warpForm.properties[5];
-
-                activeScene.room.staircase3 = warpForm.properties[6];
-
-                activeScene.room.staircase3Plane = warpForm.properties[7];
-
-                activeScene.room.staircase4 = warpForm.properties[8];
-
-                activeScene.room.staircase4Plane = warpForm.properties[9];
-
-                activeScene.updateRoomInfos(this);
-                activeScene.room.has_changed = true;
-                checkAnyChanges();
-            }
         }
 
         private void showBG2MaskOutlineToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2988,224 +3193,8 @@ namespace ZeldaFullEditor
 
         private void entrancePropertyButton_Click(object sender, EventArgs e)
         {
-            EntrancePropertyForm epForm = new EntrancePropertyForm();
-
-            Entrance en = selectedEntrance;
-
-            if (entrancetreeView.SelectedNode.Tag != null)
-            {
-                en = DungeonsData.entrances[(int)entrancetreeView.SelectedNode.Tag];
-                if (entrancetreeView.SelectedNode.Parent != null)
-                {
-                    if (entrancetreeView.SelectedNode.Parent.Name == "StartingEntranceNode")
-                    {
-                        en = DungeonsData.starting_entrances[(int)entrancetreeView.SelectedNode.Tag];
-                    }
-                }
-            }
 
 
-            epForm.entranceProperty_vscroll.Checked = false;
-            epForm.entranceProperty_hscroll.Checked = false;
-            epForm.entranceProperty_quadbr.Checked = false;
-            epForm.entranceProperty_quadbl.Checked = false;
-            epForm.entranceProperty_quadtl.Checked = false;
-            epForm.entranceProperty_quadtr.Checked = false;
-            epForm.entranceProperty_scrollx.Text = en.XScroll.ToString();
-            epForm.entranceProperty_scrolly.Text = en.YScroll.ToString();
-            epForm.entranceProperty_xpos.Text = en.XPosition.ToString();
-            epForm.entranceProperty_ypos.Text = en.YPosition.ToString();
-            epForm.entranceProperty_camx.Text = en.XCamera.ToString();
-            epForm.entranceProperty_camy.Text = en.YCamera.ToString();
-            epForm.entranceProperty_FU.Text = en.scrolledge_FU.ToString();
-            epForm.entranceProperty_HU.Text = en.scrolledge_HU.ToString();
-            epForm.entranceProperty_HD.Text = en.scrolledge_HD.ToString();
-            epForm.entranceProperty_FD.Text = en.scrolledge_FD.ToString();
-            epForm.entranceProperty_FL.Text = en.scrolledge_FL.ToString();
-            epForm.entranceProperty_FR.Text = en.scrolledge_FR.ToString();
-            epForm.entranceProperty_HL.Text = en.scrolledge_HL.ToString();
-            epForm.entranceProperty_HR.Text = en.scrolledge_HR.ToString();
-            int p = (en.Exit & 0x7FFF) >> 1;
-            epForm.doorxTextbox.Text = (p % 64).ToString();
-            epForm.dooryTextbox.Text = (p >> 6).ToString();
-
-            if ((en.Scrolling & 0x20) == 0x20)
-            {
-                epForm.entranceProperty_hscroll.Checked = true;
-            }
-
-            if ((en.Scrolling & 0x02) == 0x02)
-            {
-                epForm.entranceProperty_vscroll.Checked = true;
-            }
-
-            if (en.Scrollquadrant == 0x12) //bottom right
-            {
-                epForm.entranceProperty_quadbr.Checked = true;
-            }
-            else if (en.Scrollquadrant == 0x02) //bottom left
-            {
-                epForm.entranceProperty_quadbl.Checked = true;
-            }
-            else if (en.Scrollquadrant == 0x00) //top left
-            {
-                epForm.entranceProperty_quadtl.Checked = true;
-            }
-            else if (en.Scrollquadrant == 0x10) //top right
-            {
-                epForm.entranceProperty_quadtr.Checked = true;
-            }
-
-
-            if (epForm.ShowDialog() == DialogResult.OK)
-            {
-                int r = 0;
-                if (int.TryParse(epForm.entranceProperty_HU.Text, out r))
-                {
-                    selectedEntrance.scrolledge_HU = (byte)r;
-                }
-
-                if (int.TryParse(epForm.entranceProperty_FU.Text, out r))
-                {
-                    selectedEntrance.scrolledge_FU = (byte)r;
-                }
-
-                if (int.TryParse(epForm.entranceProperty_HD.Text, out r))
-                {
-                    selectedEntrance.scrolledge_HD = (byte)r;
-                }
-
-                if (int.TryParse(epForm.entranceProperty_FD.Text, out r))
-                {
-                    selectedEntrance.scrolledge_FD = (byte)r;
-                }
-
-                if (int.TryParse(epForm.entranceProperty_HL.Text, out r))
-                {
-                    selectedEntrance.scrolledge_HL = (byte)r;
-                }
-
-                if (int.TryParse(epForm.entranceProperty_HR.Text, out r))
-                {
-                    selectedEntrance.scrolledge_HR = (byte)r;
-                }
-
-                if (int.TryParse(epForm.entranceProperty_FL.Text, out r))
-                {
-                    selectedEntrance.scrolledge_FL = (byte)r;
-                }
-
-                if (int.TryParse(epForm.entranceProperty_FR.Text, out r))
-                {
-                    selectedEntrance.scrolledge_FR = (byte)r;
-                }
-
-
-                if (int.TryParse(epForm.entranceProperty_camx.Text, out r))
-                {
-                    selectedEntrance.XCamera = (short)r;
-                }
-                else
-                {
-                    selectedEntrance.XCamera = 0;
-                }
-
-                if (int.TryParse(epForm.entranceProperty_camy.Text, out r))
-                {
-                    selectedEntrance.YCamera = (short)r;
-                }
-                else
-                {
-                    selectedEntrance.YCamera = 0;
-                }
-
-                if (int.TryParse(epForm.entranceProperty_xpos.Text, out r))
-                {
-                    selectedEntrance.XPosition = (short)r;
-                }
-                else
-                {
-                    selectedEntrance.XPosition = 0;
-                }
-
-                if (int.TryParse(epForm.entranceProperty_ypos.Text, out r))
-                {
-                    selectedEntrance.YPosition = (short)r;
-                }
-                else
-                {
-                    selectedEntrance.YPosition = 0;
-                }
-
-                if (int.TryParse(epForm.entranceProperty_scrollx.Text, out r))
-                {
-                    selectedEntrance.XScroll = (short)r;
-                }
-                else
-                {
-                    selectedEntrance.XScroll = 0;
-                }
-
-                if (int.TryParse(epForm.entranceProperty_scrolly.Text, out r))
-                {
-                    selectedEntrance.YScroll = (short)r;
-                }
-                else
-                {
-                    selectedEntrance.YScroll = 0;
-                }
-                int rr = 0;
-                if (int.TryParse(epForm.doorxTextbox.Text, out r))
-                {
-                    if (int.TryParse(epForm.dooryTextbox.Text, out rr))
-                    {
-                        p = ((rr << 6) + (r & 0x3F)) << 1;
-                        selectedEntrance.Exit = (short)p;
-                    }
-                    else 
-                    {
-                        selectedEntrance.Exit = 0;
-                    }
-                }
-                else
-                {
-                    selectedEntrance.Exit = 0;
-                }
-
-
-                byte b = 0;
-                if (epForm.entranceProperty_hscroll.Checked)
-                {
-                    b += 0x20;
-                }
-                if (epForm.entranceProperty_vscroll.Checked)
-                {
-                    b += 0x02;
-                }
-
-                if (epForm.entranceProperty_quadbr.Checked) //bottom right
-                {
-                    selectedEntrance.Scrollquadrant = 0x12;
-                }
-                else if (epForm.entranceProperty_quadbl.Checked) //bottom left
-                {
-                    selectedEntrance.Scrollquadrant = 0x02;
-                }
-                else if (epForm.entranceProperty_quadtl.Checked) //top left
-                {
-                    selectedEntrance.Scrollquadrant = 0x00;
-                }
-                else if (epForm.entranceProperty_quadtr.Checked) //top right
-                {
-                    selectedEntrance.Scrollquadrant = 0x10;
-                }
-                //if (entranceProperty_quadbl)
-
-
-
-                selectedEntrance.Scrolling = b;
-
-            }
 
         }
 
@@ -4855,58 +4844,7 @@ namespace ZeldaFullEditor
         byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38, 0x48, 0x4A };
         private void autodoorButton_Click(object sender, EventArgs e)
         {
-            List<Room_Object> shutterdoors = new List<Room_Object>();
-            List<Room_Object> keydoors = new List<Room_Object>();
-            List<Room_Object> normaldoors = new List<Room_Object>();
 
-            keydoors.Clear();
-            shutterdoors.Clear();
-            normaldoors.Clear();
-            foreach (Room_Object o in activeScene.room.tilesObjects)
-            {
-                if (o.options == ObjectOption.Door)
-                {
-                    if (keysDoors.Contains((byte)(o.id >> 8)))
-                    {
-                        if (!keydoors.Contains(o))
-                        {
-                            keydoors.Add(o);
-                        }
-
-                    }
-                    else if (shutterDoors.Contains((byte)(o.id >> 8)))
-                    {
-                        if (!shutterdoors.Contains(o))
-                        {
-                            shutterdoors.Add(o);
-                        }
-                    }
-                    else
-                    {
-                        if (!normaldoors.Contains(o))
-                        {
-                            normaldoors.Add(o);
-                        }
-                    }
-                }
-            }
-            foreach (Room_Object o in keydoors)
-            {
-                activeScene.room.tilesObjects.Remove(o);
-                activeScene.room.tilesObjects.Add(o);
-            }
-            foreach (Room_Object o in shutterdoors)
-            {
-                activeScene.room.tilesObjects.Remove(o);
-                activeScene.room.tilesObjects.Add(o);
-            }
-            foreach (Room_Object o in normaldoors)
-            {
-                activeScene.room.tilesObjects.Remove(o);
-                activeScene.room.tilesObjects.Add(o);
-            }
-            activeScene.DrawRoom();
-            activeScene.Refresh();
         }
 
         private void darkThemeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4973,6 +4911,92 @@ namespace ZeldaFullEditor
                 overworldEditor.gridDisplay = 0;
             }
             overworldEditor.scene.Refresh();
+        }
+
+        private void autodoorButton_Click_1(object sender, EventArgs e)
+        {
+            List<Room_Object> shutterdoors = new List<Room_Object>();
+            List<Room_Object> keydoors = new List<Room_Object>();
+            List<Room_Object> normaldoors = new List<Room_Object>();
+
+            keydoors.Clear();
+            shutterdoors.Clear();
+            normaldoors.Clear();
+            foreach (Room_Object o in activeScene.room.tilesObjects)
+            {
+                if (o.options == ObjectOption.Door)
+                {
+                    if (keysDoors.Contains((byte)(o.id >> 8)))
+                    {
+                        if (!keydoors.Contains(o))
+                        {
+                            keydoors.Add(o);
+                        }
+
+                    }
+                    else if (shutterDoors.Contains((byte)(o.id >> 8)))
+                    {
+                        if (!shutterdoors.Contains(o))
+                        {
+                            shutterdoors.Add(o);
+                        }
+                    }
+                    else
+                    {
+                        if (!normaldoors.Contains(o))
+                        {
+                            normaldoors.Add(o);
+                        }
+                    }
+                }
+            }
+            foreach (Room_Object o in keydoors)
+            {
+                activeScene.room.tilesObjects.Remove(o);
+                activeScene.room.tilesObjects.Add(o);
+            }
+            foreach (Room_Object o in shutterdoors)
+            {
+                activeScene.room.tilesObjects.Remove(o);
+                activeScene.room.tilesObjects.Add(o);
+            }
+            foreach (Room_Object o in normaldoors)
+            {
+                activeScene.room.tilesObjects.Remove(o);
+                activeScene.room.tilesObjects.Add(o);
+            }
+            activeScene.DrawRoom();
+            activeScene.Refresh();
+        }
+
+        private void roomProperty_hole_TextChanged(object sender, EventArgs e)
+        {
+            updateRoomInfos();
+
+        }
+
+        private void DungeonMain_SizeChanged(object sender, EventArgs e)
+        {
+            if (x2zoom)
+            {
+                panel3.Location = new Point(1032, -1);
+            }
+            else
+            {
+                panel3.Location = new Point(520, -1);
+            }
+        }
+
+        private void xScreenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (x2zoom)
+            {
+                panel3.Location = new Point(1032, -1);
+            }
+            else
+            {
+                panel3.Location = new Point(520, -1);
+            }
         }
     }
 

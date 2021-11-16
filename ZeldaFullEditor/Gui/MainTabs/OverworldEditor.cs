@@ -12,6 +12,7 @@ using System.IO;
 using System.Threading;
 using System.Drawing.Drawing2D;
 using ZeldaFullEditor.Gui.ExtraForms;
+using System.Globalization;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -150,18 +151,18 @@ namespace ZeldaFullEditor.Gui
                     mapParent = scene.ow.allmaps[scene.selectedMap];
                 }
 
-                if (byte.TryParse(paletteTextbox.Text, out result))
+                if (byte.TryParse(paletteTextbox.Text,NumberStyles.HexNumber,null, out result))
                 {
                     mapParent.palette = result;
                 }
 
 
-                if (byte.TryParse(gfxTextbox.Text, out result))
+                if (byte.TryParse(gfxTextbox.Text, NumberStyles.HexNumber, null, out result))
                 {
                     mapParent.gfx = result;
                 }
                 
-                if (byte.TryParse(sprgfxTextbox.Text, out result))
+                if (byte.TryParse(sprgfxTextbox.Text, NumberStyles.HexNumber, null, out result))
                 {
                     if (mapParent.index >= 64)
                     {
@@ -173,7 +174,7 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
 
-                if (byte.TryParse(sprpaletteTextbox.Text, out result))
+                if (byte.TryParse(sprpaletteTextbox.Text, NumberStyles.HexNumber, null, out result))
                 {
                     if (mapParent.index >= 64)
                     {
@@ -241,10 +242,10 @@ namespace ZeldaFullEditor.Gui
                         x += 128;
                     }
                     e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(x, y, 16, 16));
-                    selectedTileLabel.Text = "Selected Tile : " + scene.selectedTile[0].ToString();
+                    selectedTileLabel.Text = "Selected Tile : " + scene.selectedTile[0].ToString("X4");
                 }
                 e.Graphics.FillRectangle(Brushes.Black, new RectangleF(128, 3600-96, 128, 96));
-
+               
             }
         }
 
@@ -985,7 +986,7 @@ namespace ZeldaFullEditor.Gui
                 }
 
                 short msgid = 0;
-                if (short.TryParse(textidTextbox.Text, out msgid))
+                if (short.TryParse(textidTextbox.Text,NumberStyles.HexNumber, null, out msgid))
                 {
                     mapParent.messageID = msgid;
 

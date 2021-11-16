@@ -2,275 +2,275 @@
 [Sprites Names]
 00 Raven
 01 Vulture
-02 Flying Stalfos Head
-03 No Pointer (Empty)
-04 Pull Switch (good)
-05 Pull Switch (unused
-06 Pull Switch (bad)
-07 Pull Switch (unused
-08 Octorock (one way)
-09 Moldorm (Boss)
-0A Octorock (four way
-0B Chicken
-0C Octorock (?)
-0D Buzzblock
+02 Stalfos head
+03 Null
+04 Correct pull switch
+05 Correct pull switch (unused)
+06 Wrong pull switch
+07 Wrong pull switch (unused)
+08 Octorok
+09 Moldorm
+0A Octorok 4way
+0B Cucco
+0C Octorok stone
+0D Buzzblob
 0E Snapdragon
 0F Octoballoon
-10 Octoballon Hatchlings
+10 Octoballoon baby
 11 Hinox
 12 Moblin
-13 Mini Helmasaure
-14 Gargoyle's Domain Gate
+13 Mini helmasaur
+14 Thieves town grate
 15 Antifairy
-16 Sahasrahla / Aginah
-17 Bush Hoarder
-18 Mini Moldorm
+16 Sahasrahla / aginah
+17 Hoarder
+18 Mini moldorm
 19 Poe
-1A Dwarves
-1B Arrow in wall
+1A Smithy
+1B Arrow
 1C Statue
-1D Weathervane
-1E Crystal Switch
-1F Bug-Catching Kid
+1D Flutequest
+1E Crystal switch
+1F Sick kid
 20 Sluggula
-21 Push Switch
+21 Water switch
 22 Ropa
-23 Red Bari
-24 Blue Bari
-25 Talking Tree
-26 Hardhat Beetle
+23 Red bari
+24 Blue bari
+25 Talking tree
+26 Hardhat beetle
 27 Deadrock
-28 Storytellers
-29 Blind Hideout attendant
-2A Sweeping Lady
-2B Storytellers
+28 Dark world hint npc
+29 Adult
+2A Sweeping lady
+2B Hobo
 2C Lumberjacks
-2D Telepathic Stones
-2E Multipurpose Sprite
-2F Race Npc
-30 Person?
-31 Fortune Teller
-32 Angry Brothers
-33 Pull for items
-34 Scared Girl
+2D Telepathic tile
+2E Flute kid
+2F Race game lady
+30 Race game guy
+31 Fortune teller
+32 Argue bros
+33 Rupee pull
+34 Young snitch
 35 Innkeeper
 36 Witch
 37 Waterfall
-38 Arrow Target
-39 Average Middle
-3A Half Magic Bat
-3B Dash Item
-3C Village Kid
-3D Signs? Chicken lady also showed up / Scared ladies outside houses.
-3E Rock Hoarder
-3F Tutorial Soldier
-40 Lightning Lock
-41 Blue Sword Soldier / Used by guards to detect player
-42 Green Sword Soldier
-43 Red Spear Soldier
-44 Assault Sword Soldier
-45 Green Spear Soldier
-46 Blue Archer
-47 Green Archer
-48 Red Javelin Soldier
-49 Red Javelin Soldier 2
-4A Red Bomb Soldiers
-4B Green Soldier Recruits
+38 Eye statue
+39 Locksmith
+3A Magic bat
+3B Bonk item
+3C Kid in kak
+3D Old snitch
+3E Hoarder
+3F Tutorial guard
+40 Lightning gate
+41 Blue guard
+42 Green guard
+43 Red spear guard
+44 Bluesain bolt
+45 Usain bolt
+46 Blue archer
+47 Green bush guard
+48 Red javelin guard
+49 Red bush guard
+4A Bomb guard
+4B Green knife guard
 4C Geldman
-4D Rabbit
+4D Toppo
 4E Popo
-4F Popo 2
-50 Cannon Balls
-51 Armos
-52 Giant Zora
-53 Armos Knights (Boss)
-54 Lanmolas (Boss)
-55 Fireball Zora
-56 Walking Zora
-57 Desert Palace Barriers
+4F Popo
+50 Cannonball
+51 Armos statue
+52 King zora
+53 Armos knight
+54 Lanmolas
+55 Zora / fireball
+56 Zora
+57 Desert statue
 58 Crab
-59 Bird
-5A Squirrel
-5B Spark (Left to Right)
-5C Spark (Right to Left)
-5D Roller (vertical moving
-5E Roller (vertical moving
-5F Roller
-60 Roller (horizontal moving
+59 Lost woods bird
+5A Lost woods squirrel
+5B Spark clockwise
+5C Spark counterclockwise
+5D Roller vertical up
+5E Roller vertical down
+5F Roller horizontal left
+60 Roller horizontal right
 61 Beamos
-62 Master Sword
-63 Devalant (Non
-64 Devalant (Shooter
-65 Shooting Gallery Proprietor
-66 Moving Cannon Ball Shooters (Right)
-67 Moving Cannon Ball Shooters (Left)
-68 Moving Cannon Ball Shooters (Down)
-69 Moving Cannon Ball Shooters (Up)
-6A Ball N' Chain Trooper
-6B Cannon Soldier
-6C Mirror Portal
-6D Rat
-6E Rope
+62 Mastersword
+63 Blue debirando
+64 Red debirando
+65 Archery guy
+66 Wall cannon vertical left
+67 Wall cannon vertical right
+68 Wall cannon horizontal top
+69 Wall cannon horizontal bottom
+6A Ball n chain
+6B Cannonball / cannon trooper
+6C Mirror portal
+6D Rat / cricket
+6E Snake
 6F Keese
-70 Helmasaur King Fireball
+70 King helmasaur fireball
 71 Leever
-72 Activator for the ponds (where you throw in items)
-73 Uncle / Priest
-74 Running Man
-75 Bottle Salesman
-76 Princess Zelda
-77 Antifairy (Alternate
-78 Village Elder
+72 Faerie pond trigger
+73 Uncle / priest / mantle
+74 Running man
+75 Bottle merchant
+76 Zelda
+77 Antifairy
+78 Sahasrahlas wife
 79 Bee
 7A Agahnim
-7B Agahnim Energy Ball
-7C Hyu
-7D Big Spike Trap
-7E Guruguru Bar (Clockwise)
-7F Guruguru Bar (Counter Clockwise)
-80 Winder
-81 Water Tektite
-82 Antifairy Circle
-83 Green Eyegore
-84 Red Eyegore
-85 Yellow Stalfos
-86 Kodongos
-87 Flames
-88 Mothula (Boss
-89 Mothula's Beam
-8A Spike Trap
+7B Agahnims balls
+7C Green stalfos
+7D Big spike
+7E Firebar clockwise
+7F Firebar counterclockwise
+80 Firesnake
+81 Hover
+82 Antifairy circle
+83 Green eyegore / green mimic
+84 Red eyegore / red mimic
+85 Yellow stalfos
+86 Kodongo
+87 Kondongo fire
+88 Mothula
+89 Mothula beam
+8A Spike block
 8B Gibdo
-8C Arrghus (Boss
-8D Arrghus spawn
+8C Arrghus
+8D Arrghi
 8E Terrorpin
-8F Slime
+8F Blob
 90 Wallmaster
-91 Stalfos Knight
-92 Helmasaur King
+91 Stalfos knight
+92 King helmasaur
 93 Bumper
-94 Swimmers
-95 Eye Laser (Right
-96 Eye Laser (Left
-97 Eye Laser (Down
-98 Eye Laser (Up
+94 Pirogusu
+95 Laser eye left
+96 Laser eye right
+97 Laser eye top
+98 Laser eye bottom
 99 Pengator
 9A Kyameron
 9B Wizzrobe
-9C Tadpoles
-9D Tadpoles
-9E Ostrich (Haunted Grove
-9F Flute
-A0 Birds (Haunted Grove
+9C Zoro
+9D Babasu
+9E Haunted grove ostritch
+9F Haunted grove rabbit
+A0 Haunted grove bird
 A1 Freezor
-A2 Kholdstare (Boss
-A3 Kholdstare's Shell
-A4 Falling Ice
-A5 Zazak Fireball
-A6 Red Zazak
+A2 Kholdstare
+A3 Kholdstare shell
+A4 Falling ice
+A5 Blue zazak
+A6 Red zazak
 A7 Stalfos
-A8 Bomber Flying Creatures from Darkworld
-A9 Bomber Flying Creatures from Darkworld
+A8 Green zirro
+A9 Blue zirro
 AA Pikit
-AB Maiden
+AB Crystal maiden
 AC Apple
-AD Lost Old Man
-AE Down Pipe
-AF Up Pipe
-B0 Right Pip
-B1 Left Pipe
-B2 Good bee again?
-B3 Hylian Inscription
-B4 Thief?s chest (not the one that follows you
-B5 Bomb Salesman
+AD Old man
+AE Pipe down
+AF Pipe up
+B0 Pipe right
+B1 Pipe left
+B2 Good bee
+B3 Pedestal plaque
+B4 Purple chest
+B5 Bomb shop guy
 B6 Kiki
-B7 Maiden following you in Blind Dungeon
-B8 Monologue Testing Sprite
-B9 Feuding Friends on Death Mountain
+B7 Blind maiden
+B8 Dialogue tester
+B9 Bully / pink ball
 BA Whirlpool
-BB Salesman / chestgame guy / 300 rupee giver guy / Chest game thief
-BC Drunk in the inn
-BD Vitreous (Large Eyeball)
-BE Vitreous (Small Eyeball)
-BF Vitreous Lightning
-C0 Monster in Lake of Ill Omen / Quake Medallion
-C1 Agahnim teleporting Zelda to dark world
-C2 Boulders
+BB Shopkeeper / chest game guy
+BC Drunkard
+BD Vitreous
+BE Vitreous small eye
+BF Lightning
+C0 Catfish
+C1 Cutscene agahnim
+C2 Boulder
 C3 Gibo
 C4 Thief
 C5 Medusa
-C6 Four Way Fireball Spitters (spit when you use your sword)
-C7 Hokku
-C8 Big Fairy who heals you
-C9 Tektite
-CA Chain Chomp
-CB Trinexx
-CC Another part of trinexx
-CD Yet another part of trinexx
-CE Blind The Thief (Boss)
+C6 4way shooter
+C7 Pokey
+C8 Big faerie
+C9 Tektite / firebat
+CA Chain chomp
+CB Trinexx rock head
+CC Trinexx fire head
+CD Trinexx ice head
+CE Blind
 CF Swamola
 D0 Lynel
-D1 Bunny Beam
+D1 Bunnybeam / smoke
 D2 Flopping fish
 D3 Stal
 D4 Landmine
-D5 Digging Game Proprietor
+D5 Dig game guy
 D6 Ganon
-D7 Copy of Ganon
+D7 Ganon
 D8 Heart
-D9 Green Rupee
-DA Blue Rupee
-DB Red Rupee
-DC Bomb Refill (1)
-DD Bomb Refill (4)
-DE Bomb Refill (8)
-DF Small Magic Refill
-E0 Full Magic Refill
-E1 Arrow Refill (5)
-E2 Arrow Refill (10)
-E3 Fairy
-E4 Key
-E5 Big Key
-E6 Shield
+D9 Green rupee
+DA Blue rupee
+DB Red rupee
+DC Bomb refill 1
+DD Bomb refill 4
+DE Bomb refill 8
+DF Small magic decanter
+E0 Large magic decanter
+E1 Arrow refill 5
+E2 Arrow refill 10
+E3 Faerie
+E4 Small key
+E5 Big key
+E6 Stolen shield
 E7 Mushroom
-E8 Fake Master Sword
-E9 Magic Shop dude / His items
-EA Heart Container
-EB Heart Piece
-EC Bushes
-ED Cane Of Somaria Platform
-EE Mantle
-EF Cane of Somaria Platform (Unused)
-F0 Cane of Somaria Platform (Unused)
-F1 Cane of Somaria Platform (Unused)
-F2 Medallion Tablet
-F3 Npc Door
+E8 Fake master sword
+E9 Magic shop assistant
+EA Heart container
+EB Heart piece
+EC Thrown item
+ED Somaria platform
+EE Castle mantle
+EF Unused somaria platform
+F0 Unused somaria platform
+F1 Unused somaria platform
+F2 Medallion tablet
+F3 Position target
 F4 Falling Rocks (HardCoded)
-F5 Cascade Metalball Factory
-F6 Stalfos Factory
-F7 Stalfos Trap
-F8 Snake Trap
-F9 Moving Floor
-FA Zol Factory
-FB Wall Master Factory
-FC Falling Tiles 1
-FD Falling Tiles 2
-FE Falling Tiles 3
-FF Falling Tiles 4
+F5 Full room cannons
+F6 Vertical cannon
+F7 Unused
+F8 Falling stalfos
+F9 Bad switch snake
+FA Moving floor
+FB Blob spawner
+FC Wallmaster
+FD Falling square
+FE Falling bridge
+FF Falling tiles west to east
 //FROM HERE IT CAN'T BE REACHED ON OVERWORLD
-//100 Falling Tiles 4
-//101 Falling Tiles 5
-//102 Falling Tiles 6
-//103 PirogusuFactory 1
-//104 PirogusuFactory 2 
-//105 PirogusuFactory 3 
-//106 PirogusuFactory 4
-//107 Flying Tiles room
-//108 Wizzrobe Factory
-//109 Zozo Factory
-//10A Stalfos Trap Trigger window
-//10B Red Stalfos Trap
-//10C Armos Coordinator
-//10D Bomb Trap
+//100 Falling tiles north to south
+//101 Falling tiles east to west
+//102 Falling tiles south to north
+//103 Pirogusu spawner left
+//104 Pirogusu spawner right
+//105 Pirogusu spawner top
+//106 Pirogusu spawner bottom
+//107 Tile room
+//108 Wizzrobe spawner
+//109 Zoro spawner
+//10A Pot trap
+//10B Invisible stalfos
+//10C Armos coordinator
+//10D Bad switch bomb
 
 //NOT IMPLEMENTED YET!
 //that will changes entrances names as well
@@ -576,23 +576,23 @@ FF Falling Tiles 4
 [Items Names]
 00 Nothing
 01 Rupee
-02 RockCrab
+02 Hoarder
 03 Bee
 04 Random
 05 Bomb
 06 Heart 
-07 Blue Rupee
+07 Blue rupee
 08 Key
 09 Arrow
 0A Bomb 
 0B Heart  
 0C Magic
-0D Big Magic
+0D Full magic
 0E Chicken
-0F Green Soldier
-10 AliveRock?
-11 Blue Soldier
-12 Ground Bomb
+0F Green soldier
+10 Stal
+11 Blue soldier
+12 Landmine
 13 Heart
 14 Fairy
 15 Heart
@@ -604,109 +604,109 @@ FF Falling Tiles 4
 88 Switch
 
 [Chests Items]
-00 L1 SwordAndShield
-01 L2 master Sword
-02 L3 tempered Sword
-03 L4 butter Sword
-04 Blue Shield
-05 Red Shield
-06 Mirror Shield
-07 Fire Rod
-08 Ice Rod
+00 Fighter sword and shield
+01 Master sword
+02 Tempered sword
+03 Gold sword
+04 Fighter shield
+05 Fire shield
+06 Mirror shield
+07 Fire rod
+08 Ice rod
 09 Hammer
 0A Hookshot
 0B Bow
-0C Blue Boomerang
+0C Boomerang
 0D Powder
-0E Bee for bottle (no bottle)
+0E Bottle refill (bee)
 0F Bombos
 10 Ether
 11 Quake
 12 Lamp
 13 Shovel
-14 Ocarina Inactive
-15 Cane of Somaria
+14 Flute
+15 Somaria
 16 Bottle
-17 Piece of Heart
-18 Cane of Byrna
-19 Magic Cape
-1A Magic Mirror
-1B Power Gloves
-1C Titans Mitt
-1D Book of Mudora
+17 Heart piece
+18 Byrna
+19 Cape
+1A Mirror
+1B Glove
+1C Mitts
+1D Book
 1E Flippers
-1F Moon Pearl
-20 Crystal - Crash Game
-21 Bug Net
-22 Blue Mail
-23 Red Mail
-24 Key
+1F Pearl
+20 Crystal
+21 Net
+22 Blue mail
+23 Red mail
+24 Small key
 25 Compass
-26 Heart Container no dialog
+26 Heart container from 4/4
 27 Bomb
-28 3 Bombs
+28 3 bombs
 29 Mushroom
-2A Red Boomerang
-2B Bottle with Red Potion
-2C Bottle with Green Potion
-2D Bottle with Blue Potion
-2E Red Potion - fill bottle
-2F Green Potion - fill bottle
-30 Blue Potion - fill bottle
-31 10 Bombs
-32 Big Key
+2A Red boomerang
+2B Full bottle (red)
+2C Full bottle (green)
+2D Full bottle (blue)
+2E Potion refill (red)
+2F Potion refill (green)
+30 Potion refill (blue)
+31 10 bombs
+32 Big key
 33 Map
-34 1 Rupee
-35 5 Rupees
-36 20 Rupees
-37 Pendant of Courage
-38 Pendant of Wisdom
-39 Pendant of Power
-3A Bow And Arrows
-3B Bow And Silver Arrows
-3C Bottle With Bee
-3D Bottle With Fairy
-3E Boss Heart
-3F Sanc Heart
-40 100 Rupees
-41 50 Rupees
+34 1 rupee
+35 5 rupees
+36 20 rupees
+37 Green pendant
+38 Blue pendant
+39 Red pendant
+3A Tossed bow
+3B Silvers
+3C Full bottle (bee)
+3D Full bottle (fairy)
+3E Boss heart
+3F Refill heart
+40 100 rupees
+41 50 rupees
 42 Heart
-43 1 Arrow
-44 10 Arrows
-45 Small Magic
-46 300 Rupees
-47 20 Rupee2
-48 Bottle with Gold Bee
-49 L1 fighter Sword
-4A Ocarina Active
-4B Pegasus Boots
+43 Arrow
+44 10 arrows
+45 Small magic
+46 300 rupees
+47 20 rupees green
+48 Full bottle (good bee)
+49 Tossed fighter sword
+4A Bottle refill (good bee)
+4B Boots
 
 //NOT IMPLEMENTED YET!!
 [Tags Names]
 Nothing
-NW_Kill_Enemy_to_Open
-NE_Kill_Enemy_to_Open
-SW_Kill_Enemy_to_Open
-SE_Kill_Enemy_to_Open
-W_Kill_Enemy_to_Open
-E_Kill_Enemy_to_Open
-N_Kill_Enemy_to_Open
-S_Kill_Enemy_to_Open
-Clear_Quadrant_to_Open
-Clear_Room_to_Open
-NW_Push_Block_to_Open
-NE_Push_Block_to_Open
-SW_Push_Block_to_Open
-SE_Push_Block_to_Open
-W_Push_Block_to_Open
-E_Push_Block_to_Open
-N_Push_Block_to_Open
-S_Push_Block_to_Open
-Push_Block_to_Open
+NW_Kill_Door
+NE_Kill_Door
+SW_Kill_Door
+SE_Kill_Door
+W_Kill_Door
+E_Kill_Door
+N_Kill_Door
+S_Kill_Door
+Quadrantwide_Kill_Door
+Roomwidewide_Kill_Door
+NW_Block_Door
+NE_Block_Door
+SW_Block_Door
+SE_Block_Door
+W_Block_Door
+E_Block_Door
+N_Block_Door
+S_Block_Door
+Block_Door
 Pull_Lever_to_Open
 Clear_Level_to_Open
-Switch_Open_Door_Hold
-Switch_Open_Door_Toggle
+Switch_Door_Hold
+Switch_Door_Toggle
 Turn_off_Water
 Turn_on_Water
 Water_Gate
@@ -715,26 +715,26 @@ Secret_Wall_Right
 Secret_Wall_Left
 Crash1
 Crash2
-Pull_Switch_to_bomb_Wall
+Exploding_Wall_Switch
 Holes_0
-Open_Chest_Activate_Holes_0
+Chest_Holes_0
 Holes_1
 Holes_2
 Kill_Enemy_to_clear_level
-SE_Kill_Enemy_to_Move_Block
-Trigger_activated_Chest
+SE_Kill_Block
+Trigger_Chest
 Pull_lever_to_Bomb_Wall
-NW_Kill_Enemy_for_Chest
-NE_Kill_Enemy_for_Chest
-SW_Kill_Enemy_for_Chest
-SE_Kill_Enemy_for_Chest
-W_Kill_Enemy_for_Chest
-E_Kill_Enemy_for_Chest
-N_Kill_Enemy_for_Chest
-S_Kill_Enemy_for_Chest
-Clear_Quadrant_for_Chest
-Clear_Room_for_Chest
-Light_Torches_to_Open
+NW_Kill_Chest
+NE_Kill_Chest
+SW_Kill_Chest
+SE_Kill_Chest
+W_Kill_Chest
+E_Kill_Chest
+N_Kill_Chest
+S_Kill_Chest
+Quadrantwide_Kill_Chest
+Roomwide_Kill_Chest
+Torch_Door
 Holes_3
 Holes_4
 Holes_5
@@ -742,8 +742,8 @@ Holes_6
 Agahnim_Room
 Holes_7
 Holes_8
-Open_Chest_for_Holes_8
+Chest_Holes_8
 Push_Block_for_Chest
 Kill_to_open_Ganon_Door
-Light_Torches_to_get_Chest
+Torch_Chest
 Kill_boss_Again

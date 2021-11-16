@@ -16,6 +16,11 @@ namespace ZeldaFullEditor.Gui
         {
             this.scene = scene;
             InitializeComponent();
+
+            panel1.VerticalScroll.SmallChange = 32;
+            panel1.VerticalScroll.LargeChange = 32;
+
+            
         }
         SceneOW scene;
         ushort tile8selected = 0;
@@ -26,10 +31,12 @@ namespace ZeldaFullEditor.Gui
         {
 
             byte p;
-            ushort tempTile = (ushort)tileUpDown.Value;
+            ushort tValue = 0;
+            ushort.TryParse(tileUpDown.Text, System.Globalization.NumberStyles.HexNumber, null, out tValue);
+            ushort tempTile = tValue;
 
 
-            tile8selected = tempTile;
+            tile8selected = tValue;
 
             p = (byte)paletteUpDown.Value;
             byte* destPtr = (byte*)GFX.editort16Ptr.ToPointer();
@@ -174,12 +181,19 @@ namespace ZeldaFullEditor.Gui
             }
             int xP = (scene.selectedTile[0] % 8) * 32;
             int yP = ((scene.selectedTile[0] / 8)) * 32;
+
+            if (searchedTile != 0xFFFF)
+            {
+                int xP2 = (searchedTile % 8) * 32;
+                int yP2 = ((searchedTile / 8)) * 32;
+                e.Graphics.DrawRectangle(new Pen(Color.FromArgb(220, Color.Orange), 1), new Rectangle(xP2, yP2, 32, 32));
+            }
             /*if (scene.selectedTile[0] >= 2000)
             {
                 yP -= 8000;
                 xP += 256;
             }*/
-            e.Graphics.DrawRectangle(new Pen(Color.FromArgb(180, Color.Red), 1), new Rectangle(xP, yP, 32, 32));
+            e.Graphics.DrawRectangle(new Pen(Color.FromArgb(220, Color.Red), 1), new Rectangle(xP, yP, 32, 32));
             
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 32, 0, 32, 64);
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 0, 32, 64, 32);
@@ -188,7 +202,8 @@ namespace ZeldaFullEditor.Gui
         private void pictureboxTile8_MouseDown(object sender, MouseEventArgs e)
         {
             int tid = (e.X / 16) + ((e.Y / 16) * 16);
-            tileUpDown.Value = tid;
+            tileUpDown.Text = tid.ToString("X2");
+            pictureboxTile8.Refresh();
         }
 
 
@@ -260,7 +275,7 @@ namespace ZeldaFullEditor.Gui
         private void updateTileInfoFrom16(TileInfo t)
         {
             fromForm = true;
-            tileUpDown.Value = t.id;
+            tileUpDown.Text = t.id.ToString("X2");
             paletteUpDown.Value = t.palette;
             mirrorXCheckbox.Checked = (t.h == 1 ? true : false);
             mirrorYCheckbox.Checked = (t.v == 1 ? true : false);
@@ -377,6 +392,9 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
             }
+
+            
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -514,6 +532,23 @@ namespace ZeldaFullEditor.Gui
             scene.mainForm.gfxEditor.selectedSheet = scene.ow.allmaps[scene.selectedMap].staticgfx[(e.Y/64)];
             scene.mainForm.gfxEditor.allgfxPicturebox.Refresh();
             this.Close();
+        }
+
+        private void Tile16Editor_Shown(object sender, EventArgs e)
+        {
+            panel1.VerticalScroll.Value = ((scene.selectedTile[0] / 8) * 32);
+            panel1.PerformLayout();
+        }
+
+        ushort searchedTile = 0xFFFF;
+        private void button3_Click(object sender, EventArgs e)
+        {
+            ushort tsearch = 0;
+            ushort.TryParse(tile16searchTextbox.Text, System.Globalization.NumberStyles.HexNumber, null, out tsearch);
+            searchedTile = tsearch;
+            panel1.VerticalScroll.Value = ((searchedTile / 8) * 32);
+            panel1.PerformLayout();
+
         }
     }
 }

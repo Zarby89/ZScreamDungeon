@@ -22,6 +22,7 @@ namespace ZeldaFullEditor
         public static Color[][] spritesAux3_Palettes = new Color[24][]; // 7
         public static Color[][] shields_Palettes = new Color[3][]; //4
         public static Color[][] dungeonsMain_Palettes = new Color[20][]; //15*6
+        public static Color[][] object3D_Palettes = new Color[2][]; //15*6
 
         public static Color[] ReadPalette(byte[] romData, int romPosition, int colorCount)
         {
@@ -118,6 +119,10 @@ namespace ZeldaFullEditor
             {
                 dungeonsMain_Palettes[i] = ReadPalette(romData, Constants.dungeonMainPalettes + (i * 180), 90);
             }
+            /*for (int i = 0; i < 20; i++)
+            {
+                object3D_Palettes[i] = ReadPalette(romData, Constants.dungeonMainPalettes + (i * 180), 90);
+            }*/
 
         }
 

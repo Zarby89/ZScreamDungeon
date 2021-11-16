@@ -30,24 +30,19 @@
         {
             this.label36 = new System.Windows.Forms.Label();
             this.roomProperty_stair4plane = new System.Windows.Forms.TextBox();
-            this.roomProperty_stair4 = new System.Windows.Forms.TextBox();
             this.label37 = new System.Windows.Forms.Label();
             this.label34 = new System.Windows.Forms.Label();
             this.roomProperty_stair3plane = new System.Windows.Forms.TextBox();
-            this.roomProperty_stair3 = new System.Windows.Forms.TextBox();
             this.label35 = new System.Windows.Forms.Label();
             this.label30 = new System.Windows.Forms.Label();
             this.roomProperty_stair2plane = new System.Windows.Forms.TextBox();
-            this.roomProperty_stair2 = new System.Windows.Forms.TextBox();
             this.label33 = new System.Windows.Forms.Label();
             this.label27 = new System.Windows.Forms.Label();
             this.roomProperty_stair1plane = new System.Windows.Forms.TextBox();
-            this.roomProperty_stair1 = new System.Windows.Forms.TextBox();
             this.label28 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.roomProperty_holeplane = new System.Windows.Forms.TextBox();
-            this.roomProperty_hole = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -69,14 +64,6 @@
             this.roomProperty_stair4plane.Size = new System.Drawing.Size(60, 20);
             this.roomProperty_stair4plane.TabIndex = 70;
             this.roomProperty_stair4plane.TextChanged += new System.EventHandler(this.roomProperty_hole_TextChanged);
-            // 
-            // roomProperty_stair4
-            // 
-            this.roomProperty_stair4.Location = new System.Drawing.Point(15, 194);
-            this.roomProperty_stair4.Name = "roomProperty_stair4";
-            this.roomProperty_stair4.Size = new System.Drawing.Size(60, 20);
-            this.roomProperty_stair4.TabIndex = 69;
-            this.roomProperty_stair4.TextChanged += new System.EventHandler(this.roomProperty_hole_TextChanged);
             // 
             // label37
             // 
@@ -104,14 +91,6 @@
             this.roomProperty_stair3plane.TabIndex = 66;
             this.roomProperty_stair3plane.TextChanged += new System.EventHandler(this.roomProperty_hole_TextChanged);
             // 
-            // roomProperty_stair3
-            // 
-            this.roomProperty_stair3.Location = new System.Drawing.Point(15, 155);
-            this.roomProperty_stair3.Name = "roomProperty_stair3";
-            this.roomProperty_stair3.Size = new System.Drawing.Size(60, 20);
-            this.roomProperty_stair3.TabIndex = 65;
-            this.roomProperty_stair3.TextChanged += new System.EventHandler(this.roomProperty_hole_TextChanged);
-            // 
             // label35
             // 
             this.label35.AutoSize = true;
@@ -138,14 +117,6 @@
             this.roomProperty_stair2plane.TabIndex = 62;
             this.roomProperty_stair2plane.TextChanged += new System.EventHandler(this.roomProperty_hole_TextChanged);
             // 
-            // roomProperty_stair2
-            // 
-            this.roomProperty_stair2.Location = new System.Drawing.Point(15, 116);
-            this.roomProperty_stair2.Name = "roomProperty_stair2";
-            this.roomProperty_stair2.Size = new System.Drawing.Size(60, 20);
-            this.roomProperty_stair2.TabIndex = 61;
-            this.roomProperty_stair2.TextChanged += new System.EventHandler(this.roomProperty_hole_TextChanged);
-            // 
             // label33
             // 
             this.label33.AutoSize = true;
@@ -171,14 +142,6 @@
             this.roomProperty_stair1plane.Size = new System.Drawing.Size(60, 20);
             this.roomProperty_stair1plane.TabIndex = 58;
             this.roomProperty_stair1plane.TextChanged += new System.EventHandler(this.roomProperty_hole_TextChanged);
-            // 
-            // roomProperty_stair1
-            // 
-            this.roomProperty_stair1.Location = new System.Drawing.Point(15, 77);
-            this.roomProperty_stair1.Name = "roomProperty_stair1";
-            this.roomProperty_stair1.Size = new System.Drawing.Size(60, 20);
-            this.roomProperty_stair1.TabIndex = 57;
-            this.roomProperty_stair1.TextChanged += new System.EventHandler(this.roomProperty_hole_TextChanged);
             // 
             // label28
             // 
@@ -216,22 +179,14 @@
             this.roomProperty_holeplane.TabIndex = 53;
             this.roomProperty_holeplane.TextChanged += new System.EventHandler(this.roomProperty_hole_TextChanged);
             // 
-            // roomProperty_hole
-            // 
-            this.roomProperty_hole.Location = new System.Drawing.Point(15, 38);
-            this.roomProperty_hole.Name = "roomProperty_hole";
-            this.roomProperty_hole.Size = new System.Drawing.Size(60, 20);
-            this.roomProperty_hole.TabIndex = 52;
-            this.roomProperty_hole.TextChanged += new System.EventHandler(this.roomProperty_hole_TextChanged);
-            // 
             // label14
             // 
             this.label14.AutoSize = true;
             this.label14.Location = new System.Drawing.Point(12, 22);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(66, 13);
+            this.label14.Size = new System.Drawing.Size(35, 13);
             this.label14.TabIndex = 51;
-            this.label14.Text = "Hole/Warp :";
+            this.label14.Text = "Hole :";
             // 
             // button1
             // 
@@ -264,24 +219,19 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label36);
             this.Controls.Add(this.roomProperty_stair4plane);
-            this.Controls.Add(this.roomProperty_stair4);
             this.Controls.Add(this.label37);
             this.Controls.Add(this.label34);
             this.Controls.Add(this.roomProperty_stair3plane);
-            this.Controls.Add(this.roomProperty_stair3);
             this.Controls.Add(this.label35);
             this.Controls.Add(this.label30);
             this.Controls.Add(this.roomProperty_stair2plane);
-            this.Controls.Add(this.roomProperty_stair2);
             this.Controls.Add(this.label33);
             this.Controls.Add(this.label27);
             this.Controls.Add(this.roomProperty_stair1plane);
-            this.Controls.Add(this.roomProperty_stair1);
             this.Controls.Add(this.label28);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.roomProperty_holeplane);
-            this.Controls.Add(this.roomProperty_hole);
             this.Controls.Add(this.label14);
             this.Name = "WarpsForm";
             this.Text = "WarpsForm";
@@ -294,24 +244,19 @@
 
         private System.Windows.Forms.Label label36;
         public System.Windows.Forms.TextBox roomProperty_stair4plane;
-        public System.Windows.Forms.TextBox roomProperty_stair4;
         private System.Windows.Forms.Label label37;
         private System.Windows.Forms.Label label34;
         public System.Windows.Forms.TextBox roomProperty_stair3plane;
-        public System.Windows.Forms.TextBox roomProperty_stair3;
         private System.Windows.Forms.Label label35;
         private System.Windows.Forms.Label label30;
         public System.Windows.Forms.TextBox roomProperty_stair2plane;
-        public System.Windows.Forms.TextBox roomProperty_stair2;
         private System.Windows.Forms.Label label33;
         private System.Windows.Forms.Label label27;
         public System.Windows.Forms.TextBox roomProperty_stair1plane;
-        public System.Windows.Forms.TextBox roomProperty_stair1;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
         public System.Windows.Forms.TextBox roomProperty_holeplane;
-        public System.Windows.Forms.TextBox roomProperty_hole;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;

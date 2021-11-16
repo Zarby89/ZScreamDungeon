@@ -35,7 +35,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tileTypeBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.tileUpDown = new System.Windows.Forms.NumericUpDown();
             this.paletteUpDown = new System.Windows.Forms.NumericUpDown();
             this.inFrontCheckbox = new System.Windows.Forms.CheckBox();
             this.mirrorYCheckbox = new System.Windows.Forms.CheckBox();
@@ -45,12 +44,14 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.gridcheckBox = new System.Windows.Forms.CheckBox();
+            this.tileUpDown = new System.Windows.Forms.TextBox();
+            this.tile16searchTextbox = new System.Windows.Forms.TextBox();
+            this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxTile16)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxTile8)).BeginInit();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tileUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).BeginInit();
             this.SuspendLayout();
             // 
@@ -97,9 +98,9 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.tileUpDown);
             this.groupBox1.Controls.Add(this.tileTypeBox);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.tileUpDown);
             this.groupBox1.Controls.Add(this.paletteUpDown);
             this.groupBox1.Controls.Add(this.inFrontCheckbox);
             this.groupBox1.Controls.Add(this.mirrorYCheckbox);
@@ -130,19 +131,6 @@
             this.label3.Size = new System.Drawing.Size(64, 13);
             this.label3.TabIndex = 7;
             this.label3.Text = "Tile Type* : ";
-            // 
-            // tileUpDown
-            // 
-            this.tileUpDown.Location = new System.Drawing.Point(9, 32);
-            this.tileUpDown.Maximum = new decimal(new int[] {
-            1023,
-            0,
-            0,
-            0});
-            this.tileUpDown.Name = "tileUpDown";
-            this.tileUpDown.Size = new System.Drawing.Size(120, 20);
-            this.tileUpDown.TabIndex = 6;
-            this.tileUpDown.ValueChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
             // 
             // paletteUpDown
             // 
@@ -244,11 +232,39 @@
             this.gridcheckBox.UseVisualStyleBackColor = true;
             this.gridcheckBox.CheckedChanged += new System.EventHandler(this.gridcheckBox_CheckedChanged);
             // 
+            // tileUpDown
+            // 
+            this.tileUpDown.Location = new System.Drawing.Point(9, 32);
+            this.tileUpDown.Name = "tileUpDown";
+            this.tileUpDown.Size = new System.Drawing.Size(120, 20);
+            this.tileUpDown.TabIndex = 9;
+            this.tileUpDown.Text = "00";
+            // 
+            // tile16searchTextbox
+            // 
+            this.tile16searchTextbox.Location = new System.Drawing.Point(555, 388);
+            this.tile16searchTextbox.Name = "tile16searchTextbox";
+            this.tile16searchTextbox.Size = new System.Drawing.Size(120, 20);
+            this.tile16searchTextbox.TabIndex = 10;
+            this.tile16searchTextbox.Text = "00";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(555, 355);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(119, 27);
+            this.button3.TabIndex = 11;
+            this.button3.Text = "Goto Tile 16 :";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // Tile16Editor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(765, 578);
+            this.Controls.Add(this.button3);
+            this.Controls.Add(this.tile16searchTextbox);
             this.Controls.Add(this.gridcheckBox);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -258,13 +274,13 @@
             this.Name = "Tile16Editor";
             this.Text = "Tiles 16 Editor (X2 View)";
             this.Load += new System.EventHandler(this.Tile16Editor_Load);
+            this.Shown += new System.EventHandler(this.Tile16Editor_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxTile16)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxTile8)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.tileUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.paletteUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -278,7 +294,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox pictureboxTile8;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.NumericUpDown tileUpDown;
         private System.Windows.Forms.NumericUpDown paletteUpDown;
         private System.Windows.Forms.CheckBox inFrontCheckbox;
         private System.Windows.Forms.CheckBox mirrorYCheckbox;
@@ -290,5 +305,8 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.CheckBox gridcheckBox;
+        private System.Windows.Forms.TextBox tileUpDown;
+        private System.Windows.Forms.TextBox tile16searchTextbox;
+        private System.Windows.Forms.Button button3;
     }
 }

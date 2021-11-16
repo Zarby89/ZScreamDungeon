@@ -550,7 +550,7 @@ namespace ZeldaFullEditor
             for (int i = 0; i < listOfTexts.Count; i++)
             {
                 ListViewItem lvi = new ListViewItem();
-                lvi.Text = i.ToString("D3") + " : " + listOfTexts[i].text;
+                lvi.Text = i.ToString("X3") + " : " + listOfTexts[i].text;
                 lvi.Tag = i;
                 textListbox.Items.Add(lvi);
             }
