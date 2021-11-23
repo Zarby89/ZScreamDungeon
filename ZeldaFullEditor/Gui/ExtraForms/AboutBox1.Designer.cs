@@ -30,8 +30,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutBox1));
             this.btnOK = new System.Windows.Forms.Button();
             this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.pbxDonate = new System.Windows.Forms.PictureBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pbxDonate)).BeginInit();
             this.SuspendLayout();
             // 
             // btnOK
@@ -49,14 +47,6 @@
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
             // 
-            // pbxDonate
-            // 
-            resources.ApplyResources(this.pbxDonate, "pbxDonate");
-            this.pbxDonate.Name = "pbxDonate";
-            this.pbxDonate.TabStop = false;
-            this.pbxDonate.Tag = "https://streamlabs.com/zarby89";
-            this.pbxDonate.Click += new System.EventHandler(this.Donate_Click);
-            // 
             // AboutBox1
             // 
             this.AcceptButton = this.btnOK;
@@ -64,20 +54,17 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.pbxDonate);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutBox1";
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            ((System.ComponentModel.ISupportInitialize)(this.pbxDonate)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.PictureBox pbxDonate;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.RichTextBox richTextBox1;
     }

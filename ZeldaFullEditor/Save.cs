@@ -183,7 +183,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            if ((pos - Constants.torch_data) > bytes_count)
+            if ((pos - Constants.torch_data) > 0x120)
             {
                 return true;
             }
@@ -1967,6 +1967,7 @@ namespace ZeldaFullEditor
             }
             if (blockCount > 99)
             {
+                //Too many blocks
                 return true; // False = no error
             }
             ROM.EndBlockLogWriting();

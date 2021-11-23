@@ -13,8 +13,7 @@ namespace ZeldaFullEditor
 
         private void Donate_Click(object sender, EventArgs e)
         {
-            var url = pbxDonate.Tag as string;
-            Process.Start(url);
+
         }
 
         private void btnOK_Click(object sender, EventArgs e)

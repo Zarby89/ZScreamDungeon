@@ -105,6 +105,9 @@ namespace ZeldaFullEditor
 
         public static Color[] palettes = new Color[256];
 
+        //Test code
+        public static string[] objectsName = new string[0xFFF];
+        public static bool[] objects = new bool[0xFFF];
         public unsafe static void DrawBG1()
         {
             var alltilesData = (byte*)currentgfx16Ptr.ToPointer();

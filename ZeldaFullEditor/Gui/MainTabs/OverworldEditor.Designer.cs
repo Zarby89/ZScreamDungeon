@@ -90,6 +90,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
+            this.largemapCheckbox = new System.Windows.Forms.CheckBox();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -596,6 +597,7 @@
             // 
             // mapGroupbox
             // 
+            this.mapGroupbox.Controls.Add(this.largemapCheckbox);
             this.mapGroupbox.Controls.Add(this.button1);
             this.mapGroupbox.Controls.Add(this.musicButton);
             this.mapGroupbox.Controls.Add(this.label6);
@@ -778,6 +780,16 @@
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
             // 
+            // largemapCheckbox
+            // 
+            this.largemapCheckbox.AutoSize = true;
+            this.largemapCheckbox.Location = new System.Drawing.Point(331, 8);
+            this.largemapCheckbox.Name = "largemapCheckbox";
+            this.largemapCheckbox.Size = new System.Drawing.Size(77, 17);
+            this.largemapCheckbox.TabIndex = 14;
+            this.largemapCheckbox.Text = "Large Map";
+            this.largemapCheckbox.UseVisualStyleBackColor = true;
+            // 
             // OverworldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -880,5 +892,6 @@
         private System.Windows.Forms.ToolStripButton gravestoneButton;
         private System.Windows.Forms.ToolStripButton deleteOverlayToolstripbutton;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.CheckBox largemapCheckbox;
     }
 }

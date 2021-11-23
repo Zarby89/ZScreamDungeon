@@ -945,10 +945,21 @@ namespace ZeldaFullEditor
                         posY = (byte)(((b2 & 0x0F) << 2) + ((b3 & 0xC0) >> 6));
                         sizeXY = 0;
                     }
+
+                    if (oid == 0x31 || oid == 0x32)
+                    {
+                        Console.WriteLine("0x31 or 0x32 found in room  " +index.ToString("X3"));
+                    }
+                    
                     Room_Object r = addObject(oid, posX, posY, sizeXY, (byte)layer);
+                    //GFX.objects[oid] = true;
+
+
+
                     if (r != null)
                     {
                         tilesObjects.Add(r);
+                        
                     }
                     foreach (short stair in stairsObjects)
                     {
@@ -970,10 +981,6 @@ namespace ZeldaFullEditor
                         }
                     }
 
-                    if (oid >= 0xFB0 && oid <= 0xFB8)
-                    {
-                        Console.WriteLine("Used in room " + index.ToString());
-                    }
 
                     //IF Object is a chest loaded and there's object in the list chest
                     if (oid == 0xF99)
@@ -1078,7 +1085,7 @@ namespace ZeldaFullEditor
 
                 if (door == false)
                 {
-                    if (b3 >= 0xF8)
+                    if (b3 >= 0xF8) //subtype3
                     {
                         oid = (short)((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + ((b1 & 0x03))));
                         posX = (byte)((b1 & 0xFC) >> 2);
@@ -1963,7 +1970,24 @@ namespace ZeldaFullEditor
                         
                     case 0xEF:
                        return new object_EF(oid, x, y, size, layer);
-                        
+
+                    case 0xF0:
+                        return new object_F0(oid, x, y, size, layer);
+                    case 0xF1:
+                        return new object_F0(oid, x, y, size, layer);
+                    case 0xF2:
+                        return new object_F0(oid, x, y, size, layer);
+                    case 0xF3:
+                        return new object_F0(oid, x, y, size, layer);
+                    case 0xF4:
+                        return new object_F0(oid, x, y, size, layer);
+                    case 0xF5:
+                        return new object_F0(oid, x, y, size, layer);
+                    case 0xF6:
+                        return new object_F0(oid, x, y, size, layer);
+                    case 0xF7:
+                        return new object_F0(oid, x, y, size, layer);
+
                 }
             }
             else
@@ -2465,6 +2489,30 @@ namespace ZeldaFullEditor
             staircase_plane[1] = (byte)((ROM.DATA[header_location + 7]>>4) & 0x03);
             staircase_plane[2] = (byte)((ROM.DATA[header_location + 7]>>6) & 0x03);
             staircase_plane[3] = (byte)((ROM.DATA[header_location + 8]) & 0x03 );
+
+            if (holewarp_plane == 2)
+            {
+                Console.WriteLine("Room Index Plane 1 : Used in room id = " + index.ToString("X2"));
+            }
+            else if (staircase_plane[0] == 2)
+            {
+                Console.WriteLine("Room Index Plane 1 : Used in room id = " + index.ToString("X2"));
+            }
+            else if (staircase_plane[1] == 2)
+            {
+                Console.WriteLine("Room Index Plane 1 : Used in room id = " + index.ToString("X2"));
+            }
+            else if (staircase_plane[2] == 2)
+            {
+                Console.WriteLine("Room Index Plane 1 : Used in room id = " + index.ToString("X2"));
+            }
+            else if (staircase_plane[3] == 2)
+            {
+                Console.WriteLine("Room Index Plane 1 : Used in room id = " + index.ToString("X2"));
+            }
+
+
+
 
             holewarp = (byte)((ROM.DATA[header_location + 9]));
             staircase_rooms[0] = (byte)((ROM.DATA[header_location + 10]));

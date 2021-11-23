@@ -2782,15 +2782,15 @@ namespace ZeldaFullEditor
 
 
             mainForm.roomProperty_hole.Text = room.holewarp.ToString("X2");
-            mainForm.bg2checkbox1.Checked = room.holewarp_plane == 1 ? true : false;
+            mainForm.bg2checkbox1.Checked = room.holewarp_plane == 2 ? true : false;
             mainForm.roomProperty_stair1.Text = room.staircase1.ToString("X2");
-            mainForm.bg2checkbox2.Checked = room.staircase1Plane == 1 ? true : false;
+            mainForm.bg2checkbox2.Checked = room.staircase1Plane == 2 ? true : false;
             mainForm.roomProperty_stair2.Text = room.staircase2.ToString("X2");
-            mainForm.bg2checkbox3.Checked = room.staircase2Plane == 1 ? true : false;
+            mainForm.bg2checkbox3.Checked = room.staircase2Plane == 2 ? true : false;
             mainForm.roomProperty_stair3.Text = room.staircase3.ToString("X2");
-            mainForm.bg2checkbox4.Checked = room.staircase3Plane == 1 ? true : false;
+            mainForm.bg2checkbox4.Checked = room.staircase3Plane == 2 ? true : false;
             mainForm.roomProperty_stair4.Text = room.staircase4.ToString("X2");
-            mainForm.bg2checkbox5.Checked = room.staircase4Plane == 1 ? true : false;
+            mainForm.bg2checkbox5.Checked = room.staircase4Plane == 2 ? true : false;
 
 
             mainForm.propertiesChangedFromForm = false;

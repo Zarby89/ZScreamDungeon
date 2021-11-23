@@ -655,6 +655,7 @@ namespace ZeldaFullEditor
             GfxGroups.LoadGfxGroups();
             GFX.CreateAllGfxData(ROM.DATA);
 
+
             for (int i = 0; i < 296; i++)
             {
                 DungeonsData.all_rooms[i] = (new Room(i, loadFromExported)); // create all rooms
@@ -662,6 +663,8 @@ namespace ZeldaFullEditor
                 DungeonsData.redoRoom[i] = new List<Room>();
             }
 
+
+            
 
             editorsTabControl.Enabled = true;
 
@@ -725,6 +728,26 @@ namespace ZeldaFullEditor
             {
                 selecteditemobjectCombobox.Items.Add(ItemsNames.name[i]);
             }
+            /*string s = "";
+
+            for (int i = 0; i < 0xF0; i++)
+            {
+                if (GFX.objects[i] != true)
+                {
+                    s +=  i.ToString("X3") + " - " + listoftilesobjects[i].name + "\r\n";// Console.WriteLine();
+                }
+            }
+            for (int i = 0xF80; i < 0xFFF; i++)
+            {
+                if (GFX.objects[i] != true)
+                {
+                    s += i.ToString("X3") + " - " + listoftilesobjects[(listoftilesobjects.Count - 0x7F) + (i-0xF80)].name + "\r\n";
+                    //Console.WriteLine(i.ToString("X3"));
+                }
+            }
+
+            File.WriteAllText("Unused.txt", s);*/
+
 
             GFX.loadedPalettes = GFX.LoadDungeonPalette(activeScene.room.palette);
             GFX.loadedSprPalettes = GFX.LoadSpritesPalette(activeScene.room.palette);
@@ -1838,8 +1861,19 @@ namespace ZeldaFullEditor
 
         private void mapPicturebox_MouseDoubleClick_1(object sender, MouseEventArgs e)
         {
+            int yc = e.Y;
+
+            if (e.Y >= 256 && e.Y <= 264)
+            {
+                return;
+            }
+
+            if (e.Y > 256)
+            {
+                yc -= 8;
+            }
             int x = (e.X / 16);
-            int y = (e.Y / 16);
+            int y = (yc / 16);
             int roomId = x + (y * 16);
             if (ModifierKeys == Keys.Control)
             {
@@ -1873,6 +1907,8 @@ namespace ZeldaFullEditor
                     //loadRoomList(roomId);
                 }
             }
+
+            mapPicturebox.Refresh();
         }
 
         public void runtestButton_Click(object sender, EventArgs e)
@@ -2175,29 +2211,29 @@ namespace ZeldaFullEditor
                 activeScene.room.staircase4 = p;
                 if (bg2checkbox1.Checked)
                 {
-                    activeScene.room.holewarp_plane = (byte)(bg2checkbox1.Checked ? 1 : 0);
+                    activeScene.room.holewarp_plane = (byte)(bg2checkbox1.Checked ? 2 : 0);
                 }
                 if (bg2checkbox2.Checked)
                 {
-                    activeScene.room.staircase1Plane = (byte)(bg2checkbox2.Checked ? 1 : 0);
+                    activeScene.room.staircase1Plane = (byte)(bg2checkbox2.Checked ? 2 : 0);
                 }
                 if (bg2checkbox3.Checked)
                 {
-                    activeScene.room.staircase2Plane = (byte)(bg2checkbox3.Checked ? 1 : 0);
+                    activeScene.room.staircase2Plane = (byte)(bg2checkbox3.Checked ? 2 : 0);
                 }
                 if (bg2checkbox4.Checked)
                 {
-                    activeScene.room.staircase3Plane = (byte)(bg2checkbox4.Checked ? 1 : 0);
+                    activeScene.room.staircase3Plane = (byte)(bg2checkbox4.Checked ? 2 : 0);
                 }
                 if (bg2checkbox5.Checked)
                 {
-                    activeScene.room.staircase4Plane = (byte)(bg2checkbox5.Checked ? 1 : 0);
+                    activeScene.room.staircase4Plane = (byte)(bg2checkbox5.Checked ? 2 : 0);
                 }
 
                 activeScene.room.damagepit = roomProperty_pit.Checked;
                 activeScene.room.sortsprites = roomProperty_sortsprite.Checked;
 
-                if (Byte.TryParse(roomProperty_spriteset.Text, out r))
+                if (Byte.TryParse(roomProperty_spriteset.Text, NumberStyles.HexNumber, null, out r))
                 {
                     activeScene.room.spriteset = r;
                 }
@@ -2598,7 +2634,7 @@ namespace ZeldaFullEditor
         public void initObjectsList()
         {
             int index = 0;
-            for (int i = 0; i < 0xE8; i++) //Type 1 objects 
+            for (int i = 0; i < 0xF8; i++) //Type 1 objects 
             {
                 Room_Object o = activeScene.room.addObject((short)i, 0, 0, 0, 0);
                 o.preview = true;
@@ -2926,19 +2962,28 @@ namespace ZeldaFullEditor
             }
             int xd = 0;
             int yd = 0;
+            int yoff = 0;
             e.Graphics.Clear(Color.Black);
             for (int i = 0; i < 296; i++)
             {
+                if (i >= 256)
+                {
+                    yoff = 8;
+                }
+                else
+                {
+                    yoff = 0;
+                }
                 if (DungeonsData.all_rooms[i].tilesObjects.Count > 0)
                 {
 
-                    e.Graphics.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(DungeonsData.all_rooms[i].palette)[4, 2]), new Rectangle(xd * 16, yd * 16, 16, 16));
+                    e.Graphics.FillRectangle(new SolidBrush(GFX.LoadDungeonPalette(DungeonsData.all_rooms[i].palette)[4, 2]), new Rectangle(xd * 16, (yd * 16) + yoff, 16, 16));
 
                     foreach (short s in selectedMapPng)
                     {
                         if (s == i)
                         {
-                            e.Graphics.DrawRectangle(new Pen(Color.Aqua, 2), new Rectangle((xd * 16), (yd * 16), 16, 16));
+                            e.Graphics.DrawRectangle(new Pen(Color.Aqua, 2), new Rectangle((xd * 16), (yd * 16)+yoff, 16, 16));
                         }
                     }
 
@@ -2950,44 +2995,51 @@ namespace ZeldaFullEditor
                     xd = 0;
                 }
             }
-            for (int i = 0; i < 19; i++)
+            for (int i = 0; i < 16; i++)
             {
                 e.Graphics.DrawLine(Pens.White, 0, i * 16, 256, i * 16);
-                e.Graphics.DrawLine(Pens.White, i * 16, 0, i * 16, 304);
+                e.Graphics.DrawLine(Pens.White, i * 16, 0, i * 16, 256);
+
+                e.Graphics.DrawLine(Pens.White, i * 16, 264, i * 16, 312);
             }
-            xd = 0;
-            yd = 0;
-            int selectedxd = 0;
-            int selectedyd = 0;
+
+            for (int i = 0; i < 3; i++)
+            {
+                e.Graphics.DrawLine(Pens.White, 0, 264 + (i * 16), 256, 264+(i * 16));
+            }
+
+
+
             for (int i = 0; i < 296; i++)
             {
+
+                if (i >= 256)
+                {
+                    yoff = 8;
+                }
+                else
+                {
+                    yoff = 0;
+                }
 
                 foreach (TabPage tp in tabControl2.TabPages)
                 {
                     if ((tp.Tag as Room).index == (short)i)
                     {
+
                         if (tabControl2.SelectedTab == tp)
                         {
-                            selectedxd = xd;
-                            selectedyd = yd;
+                            e.Graphics.DrawRectangle(new Pen(Color.YellowGreen, 2), new Rectangle((i%16) * 16, ((i/16) * 16) + yoff, 16, 16));
                         }
                         else
                         {
-                            e.Graphics.DrawRectangle(new Pen(Color.DarkGreen, 2), new Rectangle((xd * 16), (yd * 16), 16, 16));
+                            e.Graphics.DrawRectangle(new Pen(Color.DarkGreen, 2), new Rectangle((i % 16) * 16, ((i / 16) * 16)+yoff, 16, 16));
                         }
 
                     }
                 }
-
-
-                xd++;
-                if (xd == 16)
-                {
-                    yd++;
-                    xd = 0;
-                }
             }
-            e.Graphics.DrawRectangle(new Pen(Color.YellowGreen, 2), new Rectangle((selectedxd * 16), (selectedyd * 16), 16, 16));
+            
 
 
         }
@@ -3459,10 +3511,18 @@ namespace ZeldaFullEditor
         {
             if (e.Button == MouseButtons.Right)
             {
+                if ( e.Y >= 256 && e.Y <= 264)
+                {
+                    return;
+                }
                 thumbnailBox.Visible = true;
-
+                int yc = e.Y;
+                if (e.Y > 256)
+                {
+                    yc -= 8;
+                }
                 int x = (e.X / 16);
-                int y = (e.Y / 16);
+                int y = (yc / 16);
                 int roomId = x + (y * 16);
                 if (roomId > 295)
                 {
@@ -3660,10 +3720,23 @@ namespace ZeldaFullEditor
         {
             if (maphoverCheckbox.Checked)
             {
+                
+                if (e.Y >= 256 && e.Y <= 264)
+                {
+                    thumbnailBox.Visible = false;
+                    return;
+                }
+
                 thumbnailBox.Visible = true;
+                int yc = 0;
+                if (e.Y >= 256)
+                {
+                    yc = 8;
+                }
+
 
                 int x = (e.X / 16);
-                int y = (e.Y / 16);
+                int y = ((e.Y-yc) / 16);
                 int roomId = x + (y * 16);
                 if (roomId >= 296)
                 {
