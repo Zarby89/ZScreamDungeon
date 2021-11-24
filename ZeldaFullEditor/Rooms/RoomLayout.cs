@@ -8,13 +8,10 @@ namespace ZeldaFullEditor.Rooms
 {
     class RoomLayout : Room
     {
-
         public RoomLayout() : base(-1)
         {
 
         }
-
-        
 
         public void loadLayout(int layout)
         {
