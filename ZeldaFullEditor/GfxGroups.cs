@@ -8,11 +8,11 @@ namespace ZeldaFullEditor
 {
     public static class GfxGroups
     {
-       
         public static byte[][] mainGfx = new byte[37][];
         public static byte[][] roomGfx = new byte[82][];
         public static byte[][] spriteGfx = new byte[144][];
         public static byte[][] paletteGfx = new byte[72][];
+
         public static void LoadGfxGroups()
         {
             int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer + 1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
@@ -92,9 +92,5 @@ namespace ZeldaFullEditor
                 }
             }
         }
-
-
-
-
     }
 }

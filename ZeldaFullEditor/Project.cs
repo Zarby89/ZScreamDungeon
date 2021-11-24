@@ -10,7 +10,6 @@ namespace ZeldaFullEditor
 
     public static class Project
     {
-
-
+        //TODO: Add something here?
     }
 }

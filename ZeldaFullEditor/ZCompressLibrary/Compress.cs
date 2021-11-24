@@ -67,6 +67,7 @@ namespace ZCompressLibrary
                         byte byte2 = u_data[pos + 1];
                         pos += 2;
                         data_size_taken[Common.D_CMD_WORD_REPEAT] = 2;
+
                         while (pos + 1 <= last_pos)
                         {
                             if (u_data[pos] == byte1 && u_data[pos + 1] == byte2)
@@ -79,6 +80,7 @@ namespace ZCompressLibrary
                             }
                             pos += 2;
                         }
+
                         cmd_args[Common.D_CMD_WORD_REPEAT][0] = byte1;
                         cmd_args[Common.D_CMD_WORD_REPEAT][1] = byte2;
                     }
@@ -96,6 +98,7 @@ namespace ZCompressLibrary
                         data_size_taken[Common.D_CMD_BYTE_INC]++;
                         pos++;
                     }
+
                     cmd_args[Common.D_CMD_BYTE_INC][0] = u_data[u_data_pos];
                 }
 
@@ -109,18 +112,21 @@ namespace ZCompressLibrary
                         int current_pos_u = u_data_pos;
                         int copied_size = 0;
                         int search_start = start;
+
                         /* printf("Searching for : ");
                         for (unsigned int i = 0; i < 8; i++)
                         {
                             printf("%02X ", (unsigned char) u_data[u_data_pos + i]);
                         }
                         printf("\n");*/
+
                         while (searching_pos < u_data_pos && current_pos_u <= last_pos)
                         {
                             while (u_data[current_pos_u] != u_data[searching_pos] && searching_pos < u_data_pos)
                             {
                                 searching_pos++;
                             }
+
                             search_start = searching_pos;
                             while (current_pos_u <= last_pos && u_data[current_pos_u] == u_data[searching_pos] && searching_pos < u_data_pos)
                             {
@@ -128,6 +134,7 @@ namespace ZCompressLibrary
                                 current_pos_u++;
                                 searching_pos++;
                             }
+
                             if (copied_size > data_size_taken[Common.D_CMD_COPY_EXISTING])
                             {
                                 search_start -= start;
@@ -136,6 +143,7 @@ namespace ZCompressLibrary
                                 cmd_args[Common.D_CMD_COPY_EXISTING][0] = (byte)(search_start & 0xFF);
                                 cmd_args[Common.D_CMD_COPY_EXISTING][1] = (byte)(search_start >> 8);
                             }
+
                             current_pos_u = u_data_pos;
                             copied_size = 0;
                         }
@@ -189,6 +197,7 @@ namespace ZCompressLibrary
                     {
                         buffer[1] = cmd_args[cmd_with_max][1];
                     }
+
                     compression_piece new_comp_piece = new compression_piece(cmd_with_max, max_win, buffer, cmd_size[cmd_with_max]); //compression_piece* new_comp_piece = new_compression_piece(cmd_with_max, max_win, buffer, cmd_size[cmd_with_max]);
                     if (bytes_since_last_compression != 0) // If we let non compressed stuff, we need to add a copy chuck before
                     {
@@ -198,15 +207,18 @@ namespace ZCompressLibrary
                         compressed_chain.next = copy_chuck; //compressed_chain->next = copy_chuck;
                         compressed_chain = copy_chuck;
                     }
+
                     compressed_chain.next = new_comp_piece; //compressed_chain->next = new_comp_piece;
                     compressed_chain = new_comp_piece;
                     u_data_pos += max_win;
                     bytes_since_last_compression = 0;
                 }
+
                 if (u_data_pos > last_pos)
                 {
                     break;
                 }
+
                 if (std_nintendo_compression_sanity_check && compressed_chain_start.next != null)
                 {
                     // We don't call merge copy so we need more space
@@ -231,9 +243,11 @@ namespace ZCompressLibrary
                         //return NULL;
                         return null;
                     }
+
                     //free(uncomp);
                 }
             }
+
             // First is a dumb place holder
             compression_piece.merge_copy(compressed_chain_start.next);
             //# ifdef MY_DEBUG
@@ -311,6 +325,7 @@ namespace ZCompressLibrary
                                 new_piece.argument[0] = (byte)((offset + Common.D_MAX_LENGTH) >> 8);
                             }
                         }
+
                         //s_debug("New added piece\n");
                         //print_compression_piece(new_piece);
                         new_piece.next = piece.next;
@@ -318,6 +333,7 @@ namespace ZCompressLibrary
                         continue;
                     }
                 }
+
                 //fake_mem.memcpy(output, pos, piece.argument, piece.argument_length); // memcpy(output + pos, piece.argument, piece.argument_length);
                 if (piece.command == Common.D_CMD_COPY_EXISTING)
                 {
@@ -332,6 +348,7 @@ namespace ZCompressLibrary
                         tmp[0] = piece.argument[1];
                         tmp[1] = piece.argument[0];
                     }
+
                     fake_mem.memcpy(output, pos, tmp, 0, 2);
                 }
                 else
@@ -342,6 +359,7 @@ namespace ZCompressLibrary
                 pos += piece.argument_length;
                 piece = piece.next;
             }
+
             output[pos] = 0xFF;
             return pos + 1;
         }

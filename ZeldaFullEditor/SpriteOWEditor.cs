@@ -34,7 +34,6 @@ namespace ZeldaFullEditor
             gameX = (byte)((x - (mx * 512)) / 16);
             gameY = (byte)((y - (my * 512)) / 16);
             //Console.WriteLine("X:{0} Y:{1}", gameX, gameY);
-
         }
     }
 }

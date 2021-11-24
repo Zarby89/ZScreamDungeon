@@ -69,7 +69,6 @@ namespace CSScriptEvaluatorExtensions
                                                     {
                                                         return a * b;
                                                     }");
-
                 Console.WriteLine("   End of {0}: {1}", nameof(LoadDelegateAsync), product(4, 2));
             }
 
@@ -84,7 +83,6 @@ namespace CSScriptEvaluatorExtensions
                                                                   {
                                                                       return a/b;
                                                                   }");
-
                 Console.WriteLine("   End of {0}: {1}", nameof(LoadMethodAsync), script.Div(15, 3));
             }
 
@@ -104,7 +102,6 @@ namespace CSScriptEvaluatorExtensions
                                                             return a+b;
                                                         }
                                                     }");
-
                 Console.WriteLine("   End of {0}: {1}", nameof(LoadCodeAsync), calc.Sum(1, 2));
             }
 
@@ -116,7 +113,6 @@ namespace CSScriptEvaluatorExtensions
                                                     {
                                                         return a * b;
                                                     }");
-
                 Console.WriteLine("   End of {0}: {1}", nameof(CreateDelegateAsync), product(15, 3));
             }
 
@@ -145,7 +141,7 @@ namespace CSScriptEvaluatorExtensions
                                                                      {
                                                                          return a+b;
                                                                      }")
-                                                                          );
+                                                                    );
                 Console.WriteLine("   End of {0}: {1}", nameof(RemoteAsynch), sum(1, 2));
 
                 sum.UnloadOwnerDomain();
@@ -169,7 +165,6 @@ namespace CSScriptEvaluatorExtensions
                                                     {
                                                         return a+b;
                                                     }");
-
                 Console.WriteLine("{0}: {1}", nameof(CreateDelegateRemotely), sum(15, 3));
 
                 sum.UnloadOwnerDomain();
@@ -209,7 +204,6 @@ namespace CSScriptEvaluatorExtensions
                                                             }
                                                         }
                                                         ");
-
                 Console.WriteLine("{0}: {1}", nameof(LoadCodeRemotely), script.Sum(15, 3));
 
                 script.UnloadOwnerDomain();
@@ -230,7 +224,6 @@ namespace CSScriptEvaluatorExtensions
                                                             }
                                                         }
                                                         ");
-
                 Console.WriteLine("{0}: {1}", nameof(LoadCodeRemotelyWithInterface), script.Sum(15, 3));
 
                 script.UnloadOwnerDomain();
@@ -258,7 +251,6 @@ namespace CSScriptEvaluatorExtensions
                                                             {
                                                                 return a-b;
                                                             }");
-
                 Console.WriteLine("{0}: {1}", nameof(LoadMethodRemotely), script.Sum(15, 3));
 
                 script.UnloadOwnerDomain();
@@ -291,7 +283,6 @@ namespace CSScriptEvaluatorExtensions
     public interface IFullCalc
     {
         int Sum(int a, int b);
-
         int Sub(int a, int b);
     }
 }

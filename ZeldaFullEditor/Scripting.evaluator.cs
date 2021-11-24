@@ -126,7 +126,6 @@ namespace CSScriptEvaluatorApi
                                                     {
                                                         return a * a;
                                                     }");
-
                 var r = sqr(3);
             }
 
@@ -142,7 +141,6 @@ namespace CSScriptEvaluatorApi
                                                     {
                                                         return a * b;
                                                     }");
-
                 int result = product(3, 2);
             }
 
@@ -160,7 +158,6 @@ namespace CSScriptEvaluatorApi
                                                              return a+b;
                                                          }
                                                      }");
-
                 int result = script.Sum(1, 2);
             }
 
@@ -178,7 +175,6 @@ namespace CSScriptEvaluatorApi
                                                        {
                                                            return a+b;
                                                        }");
-
                 int result = script.Sum(1, 2);
             }
 
@@ -202,7 +198,6 @@ namespace CSScriptEvaluatorApi
                                                        {
                                                            return a+b;
                                                        }");
-
                 int result = script.Sum(1, 2);
             }
 
@@ -220,7 +215,6 @@ namespace CSScriptEvaluatorApi
                                                                 return a+b;
                                                             }
                                                         }");
-
                 int result = script.Sum(1, 2);
             }
 
@@ -243,7 +237,6 @@ namespace CSScriptEvaluatorApi
                                                                   return a+b;
                                                               }
                                                           }");
-
                 int result = script.Sum(1, 2);
             }
 
@@ -282,7 +275,6 @@ namespace CSScriptEvaluatorApi
                                                              return a+b;
                                                          }
                                                      }");
-
                 var r = script.Sum(3, 4);
             }
         }
