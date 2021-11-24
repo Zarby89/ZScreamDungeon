@@ -58,13 +58,10 @@ namespace ZeldaFullEditor
         public static int overworldItemsBank = 0xDC8BF;
         public static int overworldItemsEndData = 0xDC89C; //0DC89E
 
-        
         public static int mapGfx = 0x7C9C;
         public static int overlayPointers = 0x77664;
         public static int overlayPointersBank = 0x0E;
         
-
-
         public static int overworldTilesType = 0x71459;
         public static int overworldMessages = 0x3F51D;
 
@@ -93,8 +90,6 @@ namespace ZeldaFullEditor
 
         public static int overworldScreenSize = 0x1788D;
 
-
-
         //===========================================================================================
         //Overworld Exits/Entrances Variables
         //===========================================================================================
@@ -120,8 +115,6 @@ namespace ZeldaFullEditor
         public static int OWHolePos = 0xDB800;//(0x13 entries, 2 bytes each) modified(less 0x400) map16 coordinates for each hole
         public static int OWHoleArea = 0xDB826;//(0x13 entries, 2 bytes each) corresponding area numbers for each hole
         public static int OWHoleEntrance = 0xDB84C;//(0x13 entries, 1 byte each)  corresponding entrance numbers
-
-        
 
         public static int OWExitMapIdWhirlpool = 0x16AE5; //  JP = ;016849
         public static int OWExitVramWhirlpool = 0x16B07;  //  JP = ;01686B
@@ -150,7 +143,6 @@ namespace ZeldaFullEditor
         public static int room_header_pointer = 0xB5DD; //LONG
         public static int room_header_pointers_bank = 0xB5E7; //JP Same
 
-
         public static int gfx_groups_pointer = 0x6237;
         public static int room_object_layout_pointer = 0x882D;
 
@@ -170,12 +162,10 @@ namespace ZeldaFullEditor
         public static int torch_data = 0x2736A; //JP 0x2704A
         public static int torches_length_pointer = 0x88C1;
 
-
         public static int sprite_blockset_pointer = 0x5B57;
         public static int sprites_data = 0x4D8B0;//It use the unused pointers to have more space //Save purpose
         public static int sprites_data_empty_room = 0x4D8AE;
         public static int sprites_end_data = 0x4EC9E;
-
 
         public static int pit_pointer = 0x394AB;
         public static int pit_count = 0x394A6;
@@ -201,8 +191,6 @@ namespace ZeldaFullEditor
         public static int text_data2 = 0x75F40;
         public static int pointers_dictionaries = 0x74703;
         public static int characters_width = 0x74ADF;
-
-
 
         //===========================================================================================
         //Dungeon Entrances Related Variables
@@ -286,12 +274,10 @@ namespace ZeldaFullEditor
         //Gravestones related variables
         //===========================================================================================
 
-       
         public static int GravesYTilePos = 0x49968; //short (0x0F entries)
         public static int GravesXTilePos = 0x49986; //short (0x0F entries)
         public static int GravesTilemapPos = 0x499A4; //short (0x0F entries)
         public static int GravesGFX = 0x499C2; //short (0x0F entries)
-
 
         public static int GravesXPos = 0x4994A;  //short (0x0F entries)
         public static int GravesYLine = 0x4993A; //short (0x08 entries)
@@ -342,8 +328,6 @@ namespace ZeldaFullEditor
 
         public static int crystalVertices = 0x04FF98;
 
-
-
         public static string[] RoomEffect = new string[]
         {
             "Nothing", "01", "Moving Floor", "Moving Water", "04", "Red Flashes", "Light Torchto See Floor", "Ganon Room"
@@ -358,8 +342,8 @@ namespace ZeldaFullEditor
             "Light Torches to open","Holes 3","Holes 4","Holes 5","Holes 6","Agahnim Room","Holes 7","Holes 8","Open Chest for Holes 8","Push block for Chest","Kill to open Ganon Door","Light Torches to get Chest","Kill boss Again"
         };
 
-
         public static bool Rando = false; //is it a rando rom?
+
         public static void Init_Jp(bool rando = false)
         {
             pit_pointer = 0x394A2;
@@ -387,7 +371,6 @@ namespace ZeldaFullEditor
             gfx_animated_pointer = 0x10624;
             initial_equipement = 0x183000;
 
-
             //Entrances
             entrance_room = 0x14577; //word value for each room
             entrance_scrolledge = 0x1491D; //0x14681 //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
@@ -407,7 +390,6 @@ namespace ZeldaFullEditor
             entrance_exit = 0x15488; //2byte word
             entrance_music = 0x15592;
 
-
             startingentrance_room -= 0x29C; //0x158D2 //word value for each room
             startingentrance_scrolledge -= 0x29C; //0x158E0 //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
             startingentrance_yscroll -= 0x29C; // 0x14AA9 //2bytes each room
@@ -416,7 +398,6 @@ namespace ZeldaFullEditor
             startingentrance_xposition -= 0x29C;// 0x14DC7 2bytes
             startingentrance_camerayposition -= 0x29C;// 0x14ED1 2bytes
             startingentrance_cameraxposition -= 0x29C;// 0x14FDB 2bytes
-
 
             startingentrance_blockset -= 0x29C; //0x150E5 1byte
             startingentrance_floor -= 0x29C; // 0x1516A 1byte
@@ -431,8 +412,7 @@ namespace ZeldaFullEditor
             startingentrance_music -= 0x29C; //0x15592
             startingentrance_entrance -= 0x29C;
 
-
-                    //us = 0x05D97 / jp = 0x05DD7
+            //us = 0x05D97 / jp = 0x05DD7
             overworldgfxGroups = 0x05DD7;
             hardcodedGrassLW = 0x67FE6;
             hardcodedGrassDW = 0x67FF0;//map>40
@@ -454,8 +434,6 @@ namespace ZeldaFullEditor
 
             overworldgfxGroups2 = 0x60B3; //
 
-
-
             /* public static int map32TilesTL = 0x18000;
              public static int map32TilesTR = 0x1B400;
              public static int map32TilesBL = 0x20000;
@@ -474,13 +452,11 @@ namespace ZeldaFullEditor
             overlayPointersBank = 0x07;
             overworldTilesType = 0x7FD94;
             Rando = rando;
+
             if (rando == true)
             {
-
+                //TODO: Add condition here?
             }
         }
-
-
-
     }
 }

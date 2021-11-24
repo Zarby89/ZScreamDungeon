@@ -165,8 +165,10 @@ namespace AsarCLR
         {
             if (includePaths==null) includePaths=new string[0];
             if (additionalDefines==null) additionalDefines= new Dictionary<string,string>();
+
             var includes = new byte*[includePaths.Length];
             var defines = new Rawasardefine[additionalDefines.Count];
+
             try{
                 for(int i=0; i<includePaths.Length; i++)
                 {
@@ -209,7 +211,9 @@ namespace AsarCLR
                     
                     success=asar_patch_ex(ref param);
                 }
+
                 if (length<newsize) Array.Resize(ref romData, length);
+
                 return success;
             }
             finally

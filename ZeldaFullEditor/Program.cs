@@ -40,6 +40,7 @@ namespace ZeldaFullEditor
                     {
                         showConsole = 0;
                     }
+
                     //look for show console arg
                     if (arg.Equals("-showConsole"))
                     {
