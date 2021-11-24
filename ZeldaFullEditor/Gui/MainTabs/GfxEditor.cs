@@ -13,15 +13,23 @@ namespace ZeldaFullEditor.Gui
 {
     public partial class GfxEditor : UserControl
     {
-        public GfxEditor()
-        {
-            InitializeComponent();
-        }
         int zoomLevel = 1;
         Color[] bigPalettes = new Color[1280];
         Color[] selectedPalette = new Color[16];
         int selectedPal = 0;
         int selectedColor = 0;
+
+        int[] zoomValues = new int[] { 1, 2, 4, 8, 16 };
+
+        bool mDown = false;
+
+        string[] palettesGroups = new string[3] { "Dungeons BG", "Overworld BG", "Sprites" };
+
+        public GfxEditor()
+        {
+            InitializeComponent();
+        }
+
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             mainscreenPicturebox.Width = 128 * zoomLevel;
@@ -34,23 +42,18 @@ namespace ZeldaFullEditor.Gui
             //e.Graphics.DrawImage(GFX.allgfxEDITBitmap, new Rectangle(4, 4, 128 * zoomLevel, 7136*zoomLevel),new Rectangle(0,0,128, 7136),GraphicsUnit.Pixel);
 
         }
-        int[] zoomValues = new int[] { 1, 2, 4, 8, 16 };
+
         private void toolStripComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             zoomLevel = zoomValues[toolStripComboBox1.SelectedIndex];
             mainscreenPicturebox.Refresh();
         }
-        bool mDown = false;
+
         private void mainscreenPicturebox_MouseDown(object sender, MouseEventArgs e)
         {
             mDown = true;
-
-
-
             mainscreenPicturebox.Invalidate();
         }
-
-        string[] palettesGroups = new string[3] { "Dungeons BG", "Overworld BG", "Sprites" };
         
         private void pictureBox2_Paint(object sender, PaintEventArgs e)
         {
@@ -62,10 +65,8 @@ namespace ZeldaFullEditor.Gui
                     e.Graphics.FillRectangle(new SolidBrush(bigPalettes[i]), new Rectangle((i%16)*8,(i/16)*8,8,8));
                 }
             }
+
             e.Graphics.DrawRectangle(Pens.Red, new Rectangle(0, selectedPal * 8, 128, 8));
-
-
-
         }
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -155,6 +156,7 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
             }
+
             palettesPicturebox.Refresh();
         }
 
@@ -184,6 +186,7 @@ namespace ZeldaFullEditor.Gui
                     e.Graphics.FillRectangle(new SolidBrush(selectedPalette[i]), new Rectangle(i*32, 0, 32, 32));
                 }
             }
+
             e.Graphics.DrawRectangle(new Pen(Brushes.LimeGreen,2), new Rectangle((32*selectedColor)+1, 1, 31, 31));
         }
 
@@ -202,8 +205,8 @@ namespace ZeldaFullEditor.Gui
                     //byte* allgfx16Data = (byte*)GFX.allgfx16EDITPtr.ToPointer();
                     int index = ((e.X) / zoomLevel) + ((e.Y / zoomLevel) * 128);
                     //allgfx16Data[index] = (byte)(0x04);
-
                 }
+
                 mainscreenPicturebox.Invalidate();// (new Rectangle(panel2.VerticalScroll.Value, panel2.HorizontalScroll.Value, panel2.Width, panel2.Height));
             }
         }

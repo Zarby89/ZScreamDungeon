@@ -13,6 +13,8 @@ namespace ZeldaFullEditor
 {
     public partial class RoomLayout : Form
     {
+        public SceneUW scene;
+
         public RoomLayout(DungeonMain f)
         {
             InitializeComponent();
@@ -26,9 +28,8 @@ namespace ZeldaFullEditor
             scene.Size = new Size(512, 512);
             scene.Location = new Point(176, 23);
             scene.Enabled = false;
-
         }
-        public SceneUW scene;
+        
         private void RoomLayout_Load(object sender, EventArgs e)
         {
             clearRoom();
@@ -52,22 +53,21 @@ namespace ZeldaFullEditor
             scene.room.sprites.Clear();
             scene.room.pot_items.Clear();
             scene.room.selectedObject.Clear();
-           
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             clearRoom();
             //add layout objects !
-                string f = (string)listBox1.Items[listBox1.SelectedIndex];
-                BinaryReader br = new BinaryReader(new FileStream("Layout\\" + f, FileMode.Open, FileAccess.Read));
+            string f = (string)listBox1.Items[listBox1.SelectedIndex];
+            BinaryReader br = new BinaryReader(new FileStream("Layout\\" + f, FileMode.Open, FileAccess.Read));
 
-                string type = br.ReadString();
-                List<SaveObject> data = new List<SaveObject>();
-                while (br.BaseStream.Position != br.BaseStream.Length)
-                {
-                    data.Add(new SaveObject(br, typeof(Room_Object)));
-                }
+            string type = br.ReadString();
+            List<SaveObject> data = new List<SaveObject>();
+            while (br.BaseStream.Position != br.BaseStream.Length)
+            {
+                data.Add(new SaveObject(br, typeof(Room_Object)));
+            }
 
             foreach (SaveObject o in data)
             {
@@ -81,8 +81,8 @@ namespace ZeldaFullEditor
                         scene.room.tilesObjects.Add(ro);
                     }
                 }
-
             }
+
             scene.room.reloadGfx();
 
             scene.DrawRoom();
@@ -91,7 +91,7 @@ namespace ZeldaFullEditor
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            //TODO: Add something here?
         }
     }
 }

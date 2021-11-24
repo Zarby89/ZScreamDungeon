@@ -15,18 +15,18 @@ namespace ZeldaFullEditor
             addTiles(12, pos);//??
             sort = Sorting.NonScalable;
         }
+
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int yy = 0; yy < 3; yy++)
             {
                 for (int xx = 0; xx < 4; xx++)
                 {
-
                     draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
                     tid++;
-
                 }
             }
         }
@@ -43,7 +43,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int yy = 0; yy < 5; yy++)
             {
@@ -68,7 +69,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int yy = 0; yy < 7; yy++)
             {
@@ -93,7 +95,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	         base.Draw();
+
             draw_tile(tiles[0], (0) * 8, (0) * 8);
         }
     }
@@ -109,7 +112,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             draw_tile(tiles[0], (0) * 8, (0) * 8);
         }
     }
@@ -125,7 +129,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             draw_tile(tiles[0], (0) * 8, (0) * 8);
         }
     }
@@ -141,10 +146,12 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             draw_tile(tiles[0], (0) * 8, (0) * 8);
         }
     }
+
     [Serializable] public class object_F87 : Room_Object
     {
         public object_F87(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -156,10 +163,12 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             draw_tile(tiles[0], (0) * 8, (0) * 8);
         }
     }
+
     [Serializable] public class object_F88 : Room_Object
     {
         public object_F88(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -171,7 +180,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             draw_tile(tiles[0], (0) * 8, (0) * 8);
         }
     }
@@ -187,10 +197,12 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             draw_tile(tiles[0], (0) * 8, (0) * 8);
         }
     }
+
     [Serializable] public class object_F8A : Room_Object
     {
         public object_F8A(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -202,10 +214,12 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             draw_tile(tiles[0], (0) * 8, (0) * 8);
         }
     }
+
     [Serializable] public class object_F8B : Room_Object
     {
         public object_F8B(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -217,10 +231,12 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             draw_tile(tiles[0], (0) * 8, (0) * 8);
         }
     }
+
     [Serializable] public class object_F8C : Room_Object
     {
         public object_F8C(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -232,10 +248,12 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             draw_tile(tiles[0], (0) * 8, (0) * 8);
         }
     }
+
     [Serializable] public class object_F8D : Room_Object
     {
         public object_F8D(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -245,6 +263,7 @@ namespace ZeldaFullEditor
             addTiles(6, pos);
             addTiles(6, pos);
             sort = Sorting.NonScalable;
+
             for (int i = 6;i<12;i++)
             {
                 tiles[i].mirror_x = 1;
@@ -252,7 +271,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             draw_tile(tiles[0], 0, 0);
             draw_tile(tiles[1], (1) * 8, 0);
 
@@ -261,6 +281,7 @@ namespace ZeldaFullEditor
 
             draw_tile(tiles[3], (1) * 8, 2 * 8);
             draw_tile(tiles[9], (14) * 8, 2 * 8);
+
             for (int xx = 0; xx < 5; xx++)
             {
                 draw_tile(tiles[1], (xx + 2) * 8, (0) * 8); draw_tile(tiles[7], (xx + 9) * 8, (0) * 8);
@@ -281,7 +302,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             draw_tile(tiles[0], (0) * 8, (0) * 8);
         }
     }
@@ -296,7 +318,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             draw_tile(tiles[0], (0) * 8, (0) * 8);
         }
     }
@@ -311,7 +334,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -337,7 +361,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -363,7 +388,7 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
             for (int yy = 0; yy < 3; yy++)
             {
                 for (int xx = 0; xx < 3; xx++)
@@ -386,11 +411,12 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
 
-                for (int xx = 0; xx < 2; xx++)
-                {
+            for (int xx = 0; xx < 2; xx++)
+            {
                 for (int yy = 0; yy < 2; yy++)
                 {
                     draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
@@ -411,7 +437,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int yy = 0; yy < 3; yy++)
             {
@@ -437,7 +464,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int yy = 0; yy < 8; yy++)
             {
@@ -462,14 +490,13 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
                 for (int yy = 0; yy < 2; yy++)
-            {
-
-
+                {
                     draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
                     tid++;
                 }
@@ -487,6 +514,7 @@ namespace ZeldaFullEditor
             sort = Sorting.NonScalable;
             addTiles(6, pos);
             addTiles(6, pos);
+
             for (int i = 6; i < 12; i++)
             {
                 tiles[i].mirror_x = 1;
@@ -494,7 +522,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             draw_tile(tiles[0], 0, 0);
             draw_tile(tiles[1], (1) * 8, 0);
 
@@ -503,6 +532,7 @@ namespace ZeldaFullEditor
 
             draw_tile(tiles[3], (1) * 8, 2 * 8);
             draw_tile(tiles[9], (14) * 8, 2 * 8);
+
             for (int xx = 0; xx < 5; xx++)
             {
                 draw_tile(tiles[1], (xx + 2) * 8, (0) * 8); draw_tile(tiles[7], (xx + 9) * 8, (0) * 8);
@@ -510,7 +540,6 @@ namespace ZeldaFullEditor
                 draw_tile(tiles[4], (xx + 2) * 8, (2) * 8); draw_tile(tiles[10], (xx + 9) * 8, (2) * 8);
                 draw_tile(tiles[5], (xx + 2) * 8, (3) * 8); draw_tile(tiles[11], (xx + 9) * 8, (3) * 8);
             }
-            
         }
     }
 
@@ -526,11 +555,12 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
 
-                for (int xx = 0; xx < 2; xx++)
-                {
+            for (int xx = 0; xx < 2; xx++)
+            {
                 for (int yy = 0; yy < 2; yy++)
                 {
                     draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
@@ -553,12 +583,13 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
                 for (int yy = 0; yy < 2; yy++)
-            {
+                {
                     draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
                     tid++;
                 }
@@ -578,7 +609,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -603,7 +635,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -628,7 +661,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -653,7 +687,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -677,7 +712,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -701,7 +737,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -725,7 +762,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -749,7 +787,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -773,7 +812,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -797,7 +837,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -821,7 +862,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -845,7 +887,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -869,7 +912,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -893,7 +937,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -917,7 +962,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -941,7 +987,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -966,7 +1013,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -990,7 +1038,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1014,7 +1063,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1043,7 +1093,7 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
 
             int tid = 0;
             for (int yy = 0; yy < 14; yy++)
@@ -1100,7 +1150,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             //Top Wall
             int tid = 0;
             for (int i = 0; i < 3; i++)
@@ -1145,7 +1196,6 @@ namespace ZeldaFullEditor
                 draw_tile(tiles[28], (23 + xx) * 8, (8 + xx) * 8);
             }
 
-
             //sides walls
             for (int i = 0; i < 3; i++)
             {
@@ -1161,10 +1211,8 @@ namespace ZeldaFullEditor
                         draw_tile(tiles[tid], (29 - xx) * 8, (11 + yy + (i * 6)) * 8);
                         tid++;
                     }
-
                 }
             }
-
 
             //53
             for (int i = 0; i < 2; i++)
@@ -1173,13 +1221,12 @@ namespace ZeldaFullEditor
                 for (int yy = 0; yy < 2; yy++)
                 {
                     for (int xx = 0; xx < 6; xx++)
-                {
+                    {
                         draw_tile(tiles[tid], (12 + xx + (i * 6)) * 8, (9 + yy ) * 8);
                         //tiles[tid].mirror_x = 1;
                         //draw_tile(tiles[tid], (29 - xx + (i * 6)) * 8, (8 + yy ) * 8);
                         tid++;
                     }
-
                 }
             }
 
@@ -1199,18 +1246,17 @@ namespace ZeldaFullEditor
                 }
             }
 
+            tid = 77;
 
-                tid = 77;
-
-                    for (int xx = 0; xx < 5; xx++)
-                    {
+            for (int xx = 0; xx < 5; xx++)
+            {
                 for (int yy = 0; yy < 5; yy++)
                 {
                     draw_tile(tiles[tid], (7 + xx) * 8, (9 + yy) * 8);
-                        tid++;
-                    }
-
+                    tid++;
                 }
+
+            }
         }
     }
 
@@ -1226,7 +1272,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1250,7 +1297,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1275,7 +1323,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -1300,7 +1349,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -1326,7 +1376,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -1350,7 +1401,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 3; xx++)
             {
@@ -1374,7 +1426,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 3; xx++)
             {
@@ -1398,7 +1451,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 6; xx++)
             {
@@ -1422,7 +1476,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 6; xx++)
             {
@@ -1446,7 +1501,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 6; xx++)
             {
@@ -1470,7 +1526,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 6; xx++)
             {
@@ -1494,7 +1551,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1506,14 +1564,14 @@ namespace ZeldaFullEditor
                 }
             }
 
-                for (int yy = 0; yy < 3; yy++)
-                {
-                    draw_tile(tiles[tid + 6], 0 * 8, (yy+3) * 8);
-                    draw_tile(tiles[tid + 9], (1) * 8, (yy+3) * 8);
-                    draw_tile(tiles[tid + 12], (2) * 8, (yy+3) * 8);
-                    draw_tile(tiles[tid + 15], (3) * 8, (yy+3) * 8);
-                    tid++;
-                }
+            for (int yy = 0; yy < 3; yy++)
+            {
+                draw_tile(tiles[tid + 6], 0 * 8, (yy+3) * 8);
+                draw_tile(tiles[tid + 9], (1) * 8, (yy+3) * 8);
+                draw_tile(tiles[tid + 12], (2) * 8, (yy+3) * 8);
+                draw_tile(tiles[tid + 15], (3) * 8, (yy+3) * 8);
+                tid++;
+            }
         }
     }
 
@@ -1528,7 +1586,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1562,7 +1621,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 6; xx++)
             {
@@ -1587,7 +1647,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 6; xx++)
             {
@@ -1597,7 +1658,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -1612,7 +1672,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1622,9 +1683,9 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
+
     [Serializable] public class object_FBF : Room_Object
     {
         public object_FBF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1636,7 +1697,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1646,7 +1708,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -1661,7 +1722,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1671,9 +1733,9 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
+
     [Serializable] public class object_FC0 : Room_Object
     {
         public object_FC0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1685,7 +1747,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1695,9 +1758,9 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
+
     [Serializable] public class object_FC1 : Room_Object
     {
         public object_FC1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1709,7 +1772,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1719,9 +1783,9 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
+
     [Serializable] public class object_FC2 : Room_Object
     {
         public object_FC2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1733,7 +1797,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1743,9 +1808,9 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
+
     [Serializable] public class object_FC3 : Room_Object
     {
         public object_FC3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1757,7 +1822,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1767,9 +1833,9 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
+
     [Serializable] public class object_FC4 : Room_Object
     {
         public object_FC4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1781,7 +1847,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1791,9 +1858,9 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
+
     [Serializable] public class object_FC5 : Room_Object
     {
         public object_FC5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1805,7 +1872,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1815,9 +1883,9 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
+
     [Serializable] public class object_FC6 : Room_Object
     {
         public object_FC6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -1829,7 +1897,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1839,7 +1908,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -1854,7 +1922,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             //00 04 02 06
             //08 12 10 14
             //01 05 03 07
@@ -1879,7 +1948,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -1889,7 +1959,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -1904,7 +1973,7 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
 
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
@@ -1915,7 +1984,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -1930,7 +1998,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -1940,7 +2009,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -1955,7 +2023,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 8; xx++)
             {
@@ -1965,7 +2034,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -1980,7 +2048,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int yy = 0; yy < 8; yy++)
             {
@@ -1991,7 +2060,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2006,7 +2074,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 6; xx++)
             {
@@ -2021,7 +2090,6 @@ namespace ZeldaFullEditor
 
                 }
             }
-
         }
     }
 
@@ -2036,7 +2104,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -2046,7 +2115,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2062,7 +2130,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2072,10 +2141,8 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
-
 
     [Serializable] public class object_FD0 : Room_Object
     {
@@ -2088,7 +2155,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2098,7 +2166,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2114,7 +2181,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2124,10 +2192,8 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
-
 
     [Serializable] public class object_FD2 : Room_Object
     {
@@ -2140,7 +2206,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2150,7 +2217,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2166,7 +2232,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2176,7 +2243,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2192,7 +2258,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             for (int xx = 0; xx < 12; xx++)
             {
                 tiles[1].mirror_x = (ushort)(xx&0x01);
@@ -2230,6 +2297,7 @@ namespace ZeldaFullEditor
                     draw_tile(tiles[7], (((xx + 4)) * 8), (yy + 5) * 8);
                 }
             }
+
             tiles[8].mirror_x = 0;
             tiles[9].mirror_x = 0;
             draw_tile(tiles[8], ((0) * 8), (0) * 8);
@@ -2251,6 +2319,7 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
+
             tid = 10;
             for (int xx = 4; xx > 0; xx--)
             {
@@ -2261,8 +2330,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
-
         }
     }
 
@@ -2277,7 +2344,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -2287,7 +2355,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2302,7 +2369,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2312,7 +2380,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2327,7 +2394,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2337,7 +2405,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2352,7 +2419,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2362,7 +2430,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2377,7 +2444,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2387,7 +2455,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2402,7 +2469,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int yy = 0; yy < 2; yy++)
             {
@@ -2413,7 +2481,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2428,9 +2495,9 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
-            int tid = 0;
+	        base.Draw();
 
+            int tid = 0;
 
             for (int xx = 0; xx < 3; xx++)
             {
@@ -2439,6 +2506,7 @@ namespace ZeldaFullEditor
                 {
                     draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
                 }
+
                 tid = 1+xx;
                 for (int yy = 0; yy < 3; yy++)
                 {
@@ -2446,6 +2514,7 @@ namespace ZeldaFullEditor
                     draw_tile(tiles[tid + 1], (xx) * 8, (yy + 1) * 8);
                     draw_tile(tiles[tid + 2], (xx) * 8, (yy + 1) * 8);
                 }
+
                 tid = 6 + xx;
                 for (int yy = 0; yy < 1; yy++)
                 {
@@ -2460,7 +2529,6 @@ namespace ZeldaFullEditor
     {
         public object_FDC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
         {
-            
             int pos = Constants.tile_address + (short)((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
             name = "Bookshelf";
             addTiles(24, pos);//??
@@ -2468,7 +2536,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 6; xx++)
             {
@@ -2478,7 +2547,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2493,7 +2561,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 6; xx++)
             {
@@ -2503,7 +2572,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2518,7 +2586,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2528,10 +2597,8 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
-
 
     [Serializable] public class object_FDF : Room_Object
     {
@@ -2544,7 +2611,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2554,7 +2622,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2570,7 +2637,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 3; xx++)
             {
@@ -2585,7 +2653,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2599,7 +2666,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 3; xx++)
             {
@@ -2614,10 +2682,8 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
-
 
     [Serializable] public class object_FE2 : Room_Object
     {
@@ -2630,7 +2696,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 22; xx++)
             {
@@ -2640,7 +2707,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2655,7 +2721,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2665,10 +2732,8 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
-
 
     [Serializable] public class object_FE4 : Room_Object
     {
@@ -2681,7 +2746,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2691,9 +2757,9 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
+
     [Serializable] public class object_FE5 : Room_Object
     {
         public object_FE5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -2704,7 +2770,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
             {
@@ -2714,7 +2781,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2729,7 +2795,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -2739,7 +2806,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2754,10 +2820,11 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
 
-                for (int xx = 0; xx < 4; xx++)
+            for (int xx = 0; xx < 4; xx++)
             {
                 for (int yy = 0; yy < 3; yy++)
                 {
@@ -2765,7 +2832,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2780,7 +2846,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -2790,7 +2857,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2805,7 +2871,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 3; xx++)
             {
@@ -2815,7 +2882,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2830,7 +2896,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 3; xx++)
             {
@@ -2840,7 +2907,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2855,7 +2921,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -2880,7 +2947,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -2890,7 +2958,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2905,7 +2972,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -2915,7 +2983,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2930,7 +2997,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 3; xx++)
             {
@@ -2940,7 +3008,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2956,7 +3023,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 3; xx++)
             {
@@ -2966,7 +3034,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -2981,7 +3048,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -2992,6 +3060,7 @@ namespace ZeldaFullEditor
                 }
 
             }
+
             draw_tile(tiles[0], (0) * 8, (4) * 8);
             draw_tile(tiles[1], (1) * 8, (4) * 8);
             draw_tile(tiles[2], (2) * 8, (4) * 8);
@@ -3001,6 +3070,7 @@ namespace ZeldaFullEditor
             draw_tile(tiles[1], (1) * 8, (5) * 8);
             draw_tile(tiles[2], (2) * 8, (5) * 8);
             draw_tile(tiles[3], (3) * 8, (5) * 8);
+
             tid = 16;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -3011,7 +3081,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -3026,7 +3095,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 8; xx++)
             {
@@ -3037,7 +3107,6 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
-
         }
     }
 
@@ -3052,7 +3121,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int yy = 0; yy < 8; yy++)
             {
@@ -3066,7 +3136,6 @@ namespace ZeldaFullEditor
         }
     }
 
-
     [Serializable] public class object_FF3 : Room_Object
     {
         public object_FF3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3079,7 +3148,8 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             for (int yy = 0; yy < 4; yy++)
             {
                 for (int xx = 0; xx < 4; xx++)
@@ -3104,7 +3174,8 @@ namespace ZeldaFullEditor
 
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             for (int xx = 0; xx < 8; xx++)
             {
@@ -3130,7 +3201,7 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
 
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
@@ -3155,7 +3226,7 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
 
             int tid = 0;
             for (int xx = 0; xx < 8; xx++)
@@ -3180,7 +3251,7 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
 
             int tid = 0;
             for (int xx = 0; xx < 8; xx++)
@@ -3205,7 +3276,8 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             int tid = 0;
             //top triforce
             for (int xx = 0; xx < 4; xx++)
@@ -3226,6 +3298,7 @@ namespace ZeldaFullEditor
                     tid++;
                 }
             }
+
             tid = 16;
             for (int xx = 0; xx < 4; xx++)
             {
@@ -3238,7 +3311,6 @@ namespace ZeldaFullEditor
         }
     }
 
-
     [Serializable] public class object_FF9 : Room_Object
     {
         public object_FF9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
@@ -3250,7 +3322,7 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
 
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
@@ -3275,7 +3347,7 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
 
             int tid = 0;
             for (int xx = 0; xx < 4; xx++)
@@ -3300,7 +3372,7 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
 
             for (int xx = 0; xx < 5; xx++)
             {
@@ -3333,7 +3405,7 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
 
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
@@ -3359,7 +3431,7 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
 
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)
@@ -3384,7 +3456,7 @@ namespace ZeldaFullEditor
         }
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
 
             int tid = 0;
             for (int xx = 0; xx < 2; xx++)

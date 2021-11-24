@@ -25,13 +25,10 @@ namespace ZeldaFullEditor.Gui
         {
             if (e.Button == MouseButtons.Right)
             {
-
                 ContextMenuStrip cm = new ContextMenuStrip();
                 cm.Items.Add("Export Palettes as .pal");
                 cm.Items[0].Click += CGRamViewer_Click;
                 cm.Show(MousePosition);
-
-
             }
         }
 
@@ -39,16 +36,19 @@ namespace ZeldaFullEditor.Gui
         {
             SaveFileDialog sf = new SaveFileDialog();
             sf.DefaultExt = ".pal";
+
             if (sf.ShowDialog() == DialogResult.OK)
             {
                 FileStream fs = new FileStream(sf.FileName, FileMode.Create, FileAccess.Write);
                 ColorPalette cp = GFX.roomBg1Bitmap.Palette;
+
                 foreach (Color c in cp.Entries)
                 {
                     fs.WriteByte(c.R);
                     fs.WriteByte(c.G);
                     fs.WriteByte(c.B);
                 }
+
                 fs.Close();
             }
         }

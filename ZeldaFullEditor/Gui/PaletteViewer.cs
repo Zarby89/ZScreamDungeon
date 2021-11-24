@@ -26,6 +26,10 @@ namespace ZeldaFullEditor
         public Color[] colorpalettes = new Color[0];
         public Color[] tempColor = new Color[0];
         public bool changed = false;
+
+        int mousePal = 0;
+        bool middle = false;
+
         public PaletteViewer(PictureBox pb)
         {
             this.pb = pb;
@@ -62,8 +66,6 @@ namespace ZeldaFullEditor
                         int y = i / 16;
                         g.FillRectangle(new SolidBrush(palettes.Entries[i]), new Rectangle(x * 16, y * 16, 16, 16));
                     }
-  
-
                 }
                 else
                 {
@@ -77,14 +79,11 @@ namespace ZeldaFullEditor
                         }
                     }
                 }
-
-
             }
 
             pb.Refresh();
         }
-        int mousePal = 0;
-        bool middle = false;
+
         public bool mouseDown(MouseEventArgs e)
         {
             middle = false;
@@ -101,6 +100,7 @@ namespace ZeldaFullEditor
                 
                 return true;
             }
+
             if (e.Button == MouseButtons.Middle)
             {
                 changed = true;
@@ -111,6 +111,7 @@ namespace ZeldaFullEditor
                 middle = true;
                 return true;
             }
+
             return false;
         }
 
@@ -127,6 +128,7 @@ namespace ZeldaFullEditor
                 palette_mouse_down = false;
                 return true;
             }
+
             return false;
         }
 
@@ -137,22 +139,23 @@ namespace ZeldaFullEditor
                 int px = (e.X / 16);
                 int py = (e.Y / 16);
                 cd.Color = colorpalettes[px + (py * xSize)];
+
                 if (cd.ShowDialog() == DialogResult.OK)
                 {
                     colorpalettes[px + (py * xSize)] = cd.Color;
                     update();
                     changed = true;
                 }
+
                 palette_mouse_down = false;
                 return true;
             }
+
             return false;
         }
 
         public void randomizePalette(byte palette)
         {
-           
-            
             dungeon_palette_id = ROM.DATA[Constants.dungeons_palettes_groups + (palette * 4)]; //id of the 1st group of 4
             //randomize_wall(dungeon_palette_id);
             randomize_castle_palette();
@@ -178,6 +181,7 @@ namespace ZeldaFullEditor
             Color P = Color.FromArgb(50 + rand.Next(180), 50 + rand.Next(180), 50 + rand.Next(180));
             Color T = Color.FromArgb(50 + rand.Next(180), 50 + rand.Next(180), 50 + rand.Next(180));
             bool N = false;
+
             Object[] colors = new Object[] 
             {
                  W,08, W,06, W,04, W,02, W,00, E,02, E,06, N,00, W,08, W,06, W,04, W,02, W,00, W,02, W,06,
@@ -196,15 +200,14 @@ namespace ZeldaFullEditor
                 {
                     setColor((x), y, (Color)colors[(i)], (int)(colors[(i)+1]));
                 }
+
                 x++;
                 if (x >= 16)
                 {
                     y++;
                     x = 0;
                 }
-
             }
-
         }
 
         public void resetColor()
@@ -213,10 +216,10 @@ namespace ZeldaFullEditor
             {
                 colorpalettes[i] = tempColor[i];
             }
+
             changed = false;
             update();
         }
-
 
         /*public void randomize_wall(int dungeon)
         {
@@ -274,7 +277,6 @@ namespace ZeldaFullEditor
 
         public void setColor(int x, int y, Color col, int shade)
         {
-
             int r = col.R;
             int g = col.G;
             int b = col.B;
@@ -291,9 +293,6 @@ namespace ZeldaFullEditor
             b = (int)((float)b / 255f * 0x1F);
 
             colorpalettes[x + (y * 16)] = Color.FromArgb(r * 8, g * 8, b * 8);
-            
         }
-
-
     }
 }

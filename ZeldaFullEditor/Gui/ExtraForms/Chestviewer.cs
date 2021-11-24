@@ -13,6 +13,14 @@ namespace ZeldaFullEditor
 {
     public partial class Chestviewer : UserControl
     {
+        ColorPalette palettes = null;
+        public bool showName = false;
+
+        public int selectedIndex = 0; //setted on 0 by default
+        public event EventHandler SelectedIndexChanged;
+
+        public Chest selectedObject = null;
+
         public Chestviewer()
         {
             InitializeComponent();
@@ -20,16 +28,15 @@ namespace ZeldaFullEditor
 
         private void Chestviewer_Load(object sender, EventArgs e)
         {
-
+            //TODO: add something here?
         }
 
         public List<Chest> items = new List<Chest>();
         private void ObjectViewer_Paint(object sender, PaintEventArgs e)
         {
-
+            //TODO: add something here?
         }
-        ColorPalette palettes = null;
-        public bool showName = false;
+
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.Clear(Color.Black);
@@ -40,13 +47,12 @@ namespace ZeldaFullEditor
 
             foreach (Chest o in items)
             {
-                
                 e.Graphics.DrawImage(GFX.previewChestsBitmap[o.item], new Point((xpos * 64)+24, (ypos * 64)+8));
-
                 if (selectedObject == o)
                 {
                     e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(50, 0, 0, 255)), new Rectangle(xpos * 64, (ypos * 64),64, 64));
                 }
+
                 e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos * 64, ypos * 64,64, 64));
                 if (showName == false)
                 {
@@ -60,13 +66,10 @@ namespace ZeldaFullEditor
                     ypos++;
 
                 }
-
             }
 
             base.OnPaint(e);
         }
-        public int selectedIndex = 0; //setted on 0 by default
-        public event EventHandler SelectedIndexChanged;
 
         protected virtual void OnValueChanged(EventArgs e)
         {
@@ -75,14 +78,11 @@ namespace ZeldaFullEditor
 
         public override void Refresh()
         {
-
             base.Refresh();
         }
 
         private void ObjectViewer_SizeChanged(object sender, EventArgs e)
         {
-
-
             Refresh();
         }
 
@@ -145,10 +145,9 @@ namespace ZeldaFullEditor
 
         private void ObjectViewer_Load(object sender, EventArgs e)
         {
-
+            //TODO: Add something here?
         }
 
-        public Chest selectedObject = null;
         private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
         {
             int w = (this.Size.Width / 64);
@@ -165,6 +164,7 @@ namespace ZeldaFullEditor
                     selectedIndex = index;
                     selectedObject = o;
                 }
+
                 xpos++;
                 if (xpos >= w)
                 {
@@ -172,8 +172,10 @@ namespace ZeldaFullEditor
                     ypos++;
 
                 }
+
                 index++;
             }
+
             OnValueChanged(new EventArgs());
             Refresh();
         }

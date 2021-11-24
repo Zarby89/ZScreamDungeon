@@ -22,6 +22,5 @@ namespace ZeldaFullEditor
             this.FloorRooms = new List<byte[]>(FloorRooms);
             this.FloorGfx = new List<byte[]>(FloorGfx);
         }
-
     }
 }

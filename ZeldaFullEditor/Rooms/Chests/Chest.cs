@@ -12,6 +12,7 @@ namespace ZeldaFullEditor
         public byte x, y, item;
         public bool picker = false;
         public bool bigChest = false;
+
         public Chest(byte x, byte y, byte item, bool bigChest, bool picker = false)
         {
             this.x = x;
@@ -21,10 +22,10 @@ namespace ZeldaFullEditor
             this.bigChest = bigChest;
         }
 
-
         //Chests Items
         public void ItemsDraw(byte id, int x, int y)
         {
+            //TODO: switch to switch case
             if (id == 0)
             {
                 //TODO : NEED TO CHANGE PALETTE TO SWORD & SHIELD PALETTE
@@ -49,7 +50,6 @@ namespace ZeldaFullEditor
             }
             else if (id == 4)
             {
-
                 //shields - need to do something else?
                 draw_item_tile(x, y + 0, 14, 820, 7);
             }
@@ -65,7 +65,6 @@ namespace ZeldaFullEditor
             }
             else if (id == 7)//fire rod
             {
-
                 draw_item_tile(x + 4, y + 0, 4, 822, 5, false, false, 1);
             }
             else if (id == 8)//ice rod
@@ -340,19 +339,15 @@ namespace ZeldaFullEditor
             {
                 draw_item_tile(x + 0, y + 0, 2, 832, 5);
             }
-
         }
-
 
         public unsafe void draw_item_tile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2)
         {
-
             var alltilesData = (byte*)GFX.allgfx16Ptr.ToPointer();
             byte* ptr = (byte*)GFX.roomBg1Ptr.ToPointer();
 
             if (picker == false)
             {
-
                 int drawid = (srcx + (srcy * 16));
                 for (var yl = 0; yl < sizey * 8; yl++)
                 {
@@ -371,12 +366,14 @@ namespace ZeldaFullEditor
                         {
                             my = (((sizey * 8)) - 1) - yl;
                         }
+
                         //Formula information to get tile index position in the array
                         //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
                         int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
                         var pixel = alltilesData[tx + (yl * 64) + xl];
                         //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
                         int index = (x) + (y * 512) + ((mx * 2) + (my * (512)));
+
                         if ((pixel & 0x0F) != 0)
                         {
                             ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + 112 + (pal * 8));
@@ -392,6 +389,7 @@ namespace ZeldaFullEditor
             {
                 ptr = (byte*)GFX.previewChestsPtr[item].ToPointer();
                 int drawid = (srcx + (srcy * 16));
+
                 for (var yl = 0; yl < sizey * 8; yl++)
                 {
                     for (var xl = 0; xl < (sizex * 8) / 2; xl++)
@@ -409,12 +407,14 @@ namespace ZeldaFullEditor
                         {
                             my = (((sizey * 8)) - 1) - yl;
                         }
+
                         //Formula information to get tile index position in the array
                         //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
                         int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
                         var pixel = alltilesData[tx + (yl * 64) + xl];
                         //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
                         int index = (x) + (y * 64) + ((mx * 2) + (my * (64)));
+
                         if ((pixel & 0x0F) != 0)
                         {
                             ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + 112 + (pal * 8));

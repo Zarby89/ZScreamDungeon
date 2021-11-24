@@ -14,18 +14,26 @@ namespace ZeldaFullEditor
 {
     public partial class ObjectViewer : UserControl
     {
+        public List<Room_Object> items = new List<Room_Object>();
+
+        ColorPalette palettes = null;
+        public bool showName = false;
+
+        public int selectedIndex = -1;
+        public event EventHandler SelectedIndexChanged;
+
+        public Room_Object selectedObject = null;
+
         public ObjectViewer()
         {
             InitializeComponent();
-
         }
-        public List<Room_Object> items = new List<Room_Object>();
+
         private void ObjectViewer_Paint(object sender, PaintEventArgs e)
         {
-
+            //TODO: Add something here?
         }
-        ColorPalette palettes = null;
-        public bool showName = false;
+
         protected override void OnPaint(PaintEventArgs e)
         {
             e.Graphics.Clear(Color.Black);
@@ -34,13 +42,8 @@ namespace ZeldaFullEditor
             int xpos = 0;
             int ypos = 0;
 
-
-
             foreach (Room_Object o in items)
             {
-
-                
-
                 e.Graphics.DrawImage(GFX.previewObjectsBitmap[o.previewId], new Point(xpos * 64, ypos * 64));
 
                 if (Settings.Default.favoriteObjects[o.id] == "true")
@@ -51,10 +54,12 @@ namespace ZeldaFullEditor
                 {
                     e.Graphics.DrawImage(GFX.favStar1, new Rectangle((xpos * 64) + 40, (ypos * 64) + 40, 16, 16));
                 }
+
                 if (selectedObject == o)
                 {
                     e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(50, 0, 0, 255)), new Rectangle(xpos * 64, (ypos * 64), 64, 64));
                 }
+
                 e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos * 64, ypos * 64, 64, 64));
                 if (showName == false)
                 {
@@ -64,20 +69,17 @@ namespace ZeldaFullEditor
                 {
                     e.Graphics.DrawString(o.id.ToString("X3") + o.name.ToString(), this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 24, 64, 40));
                 }
+
                 xpos++;
                 if (xpos >= w)
                 {
                     xpos = 0;
                     ypos++;
-                    
                 }
-                
             }
             
             base.OnPaint(e);
         }
-        public int selectedIndex = -1;
-        public event EventHandler SelectedIndexChanged;
 
         protected virtual void OnValueChanged(EventArgs e)
         {
@@ -86,14 +88,11 @@ namespace ZeldaFullEditor
 
         public override void Refresh()
         {
-
             base.Refresh();
         }
 
         private void ObjectViewer_SizeChanged(object sender, EventArgs e)
         {
-
-
             Refresh();
         }
 
@@ -147,6 +146,7 @@ namespace ZeldaFullEditor
                         ptr[i] = 0;
                     }
                 }
+
                 o.Draw();
                 if (palettes != null)
                 {
@@ -157,10 +157,9 @@ namespace ZeldaFullEditor
 
         private void ObjectViewer_Load(object sender, EventArgs e)
         {
-
+            //TODO: Add something here?
         }
 
-        public Room_Object selectedObject = null;
         private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
         {
             int w = (this.Size.Width / 64);
@@ -195,8 +194,8 @@ namespace ZeldaFullEditor
                         OnValueChanged(new EventArgs());
                         Refresh();
                         return;
-
                     }
+
                     xpos++;
                     if (xpos >= w)
                     {
@@ -204,10 +203,10 @@ namespace ZeldaFullEditor
                         ypos++;
 
                     }
+
                     index++;
                 }
             }
-
         }
     }
 }

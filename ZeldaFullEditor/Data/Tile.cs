@@ -28,6 +28,7 @@ namespace ZeldaFullEditor
         public ushort mirror_y = 0;
         public ushort ontop = 0;
         public byte palette = 4;
+
         public Tile(ushort id, ushort mirror_x = 0, ushort mirror_y = 0, ushort ontop = 0, byte palette = 4) //custom tile
         {
             this.id = id;
@@ -36,7 +37,6 @@ namespace ZeldaFullEditor
             this.ontop = ontop;
             this.palette = palette;
         }
-
 
         public TileInfo GetTileInfo()
         {
@@ -67,7 +67,6 @@ namespace ZeldaFullEditor
                     GFX.tilesBg2Buffer[xx + (yy * 64)] = t;
                 }
             }
-
         }
 
         public ushort getshortileinfo()
@@ -80,18 +79,16 @@ namespace ZeldaFullEditor
             value |= (ushort)((this.palette << 10) & 0x1C00);
             value |= (ushort)(this.id & 0x3FF);
             return value;
-
         }
 
         public unsafe void Draw(IntPtr bitmapPointer)
         {
-
+            //TODO: Add something here?
         }
 
         public unsafe void CopyTile(int x, int y, int xx, int yy)
         {
-
+            //TODO: Add something here?
         }
     }
-
 }

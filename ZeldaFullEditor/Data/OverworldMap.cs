@@ -32,6 +32,7 @@ namespace ZeldaFullEditor
         public ushort[,] tilesUsed;
 
         public bool needRefresh = false;
+
         public OverworldMap(byte index, Overworld ow)
         {
             this.index = index;
@@ -40,7 +41,6 @@ namespace ZeldaFullEditor
             gfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, gfxPtr);
             //
             messageID = (short)ROM.ReadShort(Constants.overworldMessages + (parent * 2));
-
 
             if (index != 0x80)
             {
@@ -52,7 +52,6 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-
 
             if (index < 64)
             {
@@ -68,8 +67,6 @@ namespace ZeldaFullEditor
                 musics[1] = ROM.DATA[Constants.overworldMusicZelda + parent];
                 musics[2] = ROM.DATA[Constants.overworldMusicMasterSword + parent];
                 musics[3] = ROM.DATA[Constants.overworldMusicAgahim + parent];
-
-
             }
             else if (index < 128)
             {
@@ -83,11 +80,9 @@ namespace ZeldaFullEditor
                 sprpalette[2] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
 
                 musics[0] = ROM.DATA[Constants.overworldMusicDW + (parent-64)];
-
             }
             else
             {
-
                 if (index == 0x94)
                 {
                     parent = 128;
@@ -134,7 +129,6 @@ namespace ZeldaFullEditor
                 sprpalette[1] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
                 sprpalette[2] = ROM.DATA[Constants.overworldSpritePalette + parent + 128];
 
-
                 palette = ROM.DATA[Constants.overworldSpecialPALGroup + parent - 128];
                 if (index >= 0x80 && index <= 0x8A && index != 0x88)
                 {
@@ -151,16 +145,11 @@ namespace ZeldaFullEditor
                     gfx = ROM.DATA[Constants.mapGfx + parent];
                     palette = ROM.DATA[Constants.overworldMapPalette + parent];
                 }
-
             }
-
-
-
         }
 
         public void BuildMap()
         {
-
             if (largeMap)
             {
                 this.parent = ow.mapParent[index];
@@ -177,7 +166,6 @@ namespace ZeldaFullEditor
                         firstLoad = true;
                     }
                 }
-
             }
 
             Buildtileset();
@@ -204,13 +192,13 @@ namespace ZeldaFullEditor
             int superY = ((index - (world * 64)) / 8);
             int superX = index - (world * 64) - (superY * 8);
 
-                for (int y = 0; y < 32; y++)
+            for (int y = 0; y < 32; y++)
+            {
+                for (int x = 0; x < 32; x++)
                 {
-                    for (int x = 0; x < 32; x++)
-                    {
-                        CopyTile8bpp16((x * 16), (y * 16), tilesUsed[x + (superX * 32), y + (superY * 32)], gfxPtr, GFX.mapblockset16);
-                    }
+                    CopyTile8bpp16((x * 16), (y * 16), tilesUsed[x + (superX * 32), y + (superY * 32)], gfxPtr, GFX.mapblockset16);
                 }
+            }
             
             //8x8 CODE NEW
             /*for (int y = 0; y < 32; y++)
@@ -221,9 +209,6 @@ namespace ZeldaFullEditor
                     CopyTile8bpp16From8((x*16), (y*16), tilesUsed[x + (superX * 32), y + (superY * 32)], gfxPtr, GFX.currentOWgfx16Ptr);
                 }
             }*/
-
-           
-
         }
 
         public unsafe void CopyTile8bpp16(int x, int y, int tile, IntPtr destbmpPtr, IntPtr sourcebmpPtr)
@@ -243,7 +228,6 @@ namespace ZeldaFullEditor
                     destPtr[destPtrPos + xstrip + (ystrip * 512)] = sourcePtr[sourcePtrPos + xstrip + (ystrip * 128)];
                 }
             }
-
         }
 
         public unsafe void CopyTile8bpp16From8(int xP, int yP, int tileID, IntPtr destbmpPtr, IntPtr sourcebmpPtr)
@@ -252,21 +236,21 @@ namespace ZeldaFullEditor
             var gfx8Data = (byte*)GFX.currentOWgfx16Ptr.ToPointer();//(byte*)allgfx16Ptr.ToPointer();
             int[] offsets = { 0, 8, 4096, 4104 };
 
-                var tiles = ow.tiles16[tileID];
+            var tiles = ow.tiles16[tileID];
 
-                for (var tile = 0; tile < 4; tile++)
+            for (var tile = 0; tile < 4; tile++)
+            {
+                TileInfo info = tiles.tilesinfos[tile];
+                int offset = offsets[tile];
+
+                for (var y = 0; y < 8; y++)
                 {
-                    TileInfo info = tiles.tilesinfos[tile];
-                    int offset = offsets[tile];
-
-                    for (var y = 0; y < 8; y++)
+                    for (var x = 0; x < 4; x++)
                     {
-                        for (var x = 0; x < 4; x++)
-                        {
-                            CopyTileToMap(x, y, xP, yP, offset, info, gfx16Data, gfx8Data);
-                        }
+                        CopyTileToMap(x, y, xP, yP, offset, info, gfx16Data, gfx8Data);
                     }
                 }
+            }
 
         }
 
@@ -310,16 +294,12 @@ namespace ZeldaFullEditor
 
             //sw.Stop();
             //Console.WriteLine("Map Tileset16 Generated in : " + sw.ElapsedMilliseconds);
-
         }
 
         public void ReloadPalettes()
         {
             LoadPalette();
-
         }
-
-
 
         private unsafe void CopyTile(int x, int y, int xx, int yy, int offset, TileInfo tile, byte* gfx16Pointer, byte* gfx8Pointer)//map,current
         {
@@ -332,6 +312,7 @@ namespace ZeldaFullEditor
                 mx = 3 - x;
                 r = 1;
             }
+
             if (tile.v != 0)
             {
                 my = 7 - y;
@@ -356,6 +337,7 @@ namespace ZeldaFullEditor
                 mx = 3 - x;
                 r = 1;
             }
+
             if (tile.v != 0)
             {
                 my = 7 - y;
@@ -390,32 +372,30 @@ namespace ZeldaFullEditor
             byte pal2 = ROM.DATA[Constants.overworldMapPaletteGroup + (palette * 4) + 1]; //aux2
             byte pal3 = ROM.DATA[Constants.overworldMapPaletteGroup + (palette * 4) + 2]; //animated
 
-
             byte pal4 = ROM.DATA[Constants.overworldSpritePaletteGroup + (sprpalette[ow.gameState] * 2)]; //spr3
             byte pal5 = ROM.DATA[Constants.overworldSpritePaletteGroup + (sprpalette[ow.gameState] * 2) + 1]; //spr4
 
-
-
             Color[] aux1, aux2, main, animated, hud, spr, spr2;
             Color bgr = Palettes.overworld_GrassPalettes[0];
+
             if (pal1 == 255)
             {
                 pal1 = ROM.DATA[Constants.overworldMapPaletteGroup + (previousPalId * 4)];
             }
             if (pal1 != 255)
             {
-
                 if (pal1 >= 20)
                 {
                     pal1 = 19;
                 }
-                aux1 = Palettes.overworld_AuxPalettes[pal1];
 
+                aux1 = Palettes.overworld_AuxPalettes[pal1];
             }
             else
             {
                 aux1 = Palettes.overworld_AuxPalettes[0];
             }
+
             if (pal2 == 255)
             {
                 pal2 = ROM.DATA[Constants.overworldMapPaletteGroup + (previousPalId * 4) + 1];
@@ -426,17 +406,18 @@ namespace ZeldaFullEditor
                 {
                     pal2 = 19;
                 }
+
                 aux2 = Palettes.overworld_AuxPalettes[pal2];
             }
             else
             {
                 aux2 = Palettes.overworld_AuxPalettes[0];
             }
+
             if (pal3 == 255)
             {
                 pal3 = ROM.DATA[Constants.overworldMapPaletteGroup + (previousPalId * 4) + 2];
             }
-
 
             if (parent < 0x40)
             {
@@ -468,6 +449,7 @@ namespace ZeldaFullEditor
                     pal0 = 3;
                 }
             }
+
             if (parent == 0x88)
             {
                 pal0 = 4;
@@ -478,7 +460,6 @@ namespace ZeldaFullEditor
                 pal0 = 4;
             }*/
 
-
             if (pal0 != 255)
             {
                 main = Palettes.overworld_MainPalettes[pal0];
@@ -487,6 +468,7 @@ namespace ZeldaFullEditor
             {
                 main = Palettes.overworld_MainPalettes[0];
             }
+
             if (pal3 >= 14)
             {
                 pal3 = 13;
@@ -550,7 +532,6 @@ namespace ZeldaFullEditor
                 currentPalette[(16 * 7) + (x)] = animated[(x - 1)];
             }
 
-
             //Right side of the palette - Aux1, Aux2 
 
             //Aux1 Palette, Location 8,2 : 21 colors [7x3]
@@ -589,7 +570,6 @@ namespace ZeldaFullEditor
                 currentPalette[(i * 16) + 8] = bgrcolor;
             }
 
-
             //Sprite Palettes
             k = 0;
             for (int y = 8; y < 9; y++)
@@ -612,7 +592,6 @@ namespace ZeldaFullEditor
                 }
             }
 
-
             //Sprite Palettes
             k = 0;
             for (int y = 9; y < 13; y++)
@@ -623,8 +602,6 @@ namespace ZeldaFullEditor
                     k++;
                 }
             }
-
-
 
             //Sprite Palettes
             k = 0;
@@ -659,7 +636,6 @@ namespace ZeldaFullEditor
                 }
             }
 
-
             try
             {
                 ColorPalette pal = GFX.editort16Bitmap.Palette;
@@ -668,7 +644,6 @@ namespace ZeldaFullEditor
                     pal.Entries[i] = currentPalette[i];
                     pal.Entries[(i / 16) * 16] = Color.Transparent;
                 }
-
 
                 GFX.mapgfx16Bitmap.Palette = pal;
                 GFX.mapblockset16Bitmap.Palette = pal;
@@ -688,17 +663,12 @@ namespace ZeldaFullEditor
             }
             catch(Exception e)
             {
-
+                //TODO: Add exception message.
             }
         }
 
-
         public void Buildtileset()
         {
-
-
-
-
             int indexWorld = 0x20;
             if (parent < 0x40)
             {
@@ -713,8 +683,6 @@ namespace ZeldaFullEditor
                 indexWorld = 36;
             }
             
-
-
             //Sprites Blocksets
             staticgfx[8] = 115 + 0;
             staticgfx[9] = 115 + 1;
@@ -725,33 +693,29 @@ namespace ZeldaFullEditor
                 staticgfx[12 + i] = (byte)(ROM.DATA[Constants.sprite_blockset_pointer + (sprgfx[ow.gameState] * 4) + i] + 115);
             }
 
-
             //Main Blocksets
+            for (int i = 0; i < 8; i++)
+            {
+                staticgfx[i] = ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + i];
+            }
 
-                for (int i = 0; i < 8; i++)
-                {
-                    staticgfx[i] = ROM.DATA[Constants.overworldgfxGroups2 + (indexWorld * 8) + i];
-                }
-
-                if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4)] != 0)
-                {
-                    staticgfx[3] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4)];
-                }
-                if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 1] != 0)
-                {
-                    staticgfx[4] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 1];
-                }
-                if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 2] != 0)
-                {
-                    staticgfx[5] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 2];
-                }
-                if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 3] != 0)
-                {
-                    staticgfx[6] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 3];
-                }
+            if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4)] != 0)
+            {
+                staticgfx[3] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4)];
+            }
+            if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 1] != 0)
+            {
+                staticgfx[4] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 1];
+            }
+            if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 2] != 0)
+            {
+                staticgfx[5] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 2];
+            }
+            if (ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 3] != 0)
+            {
+                staticgfx[6] = ROM.DATA[Constants.overworldgfxGroups + (gfx * 4) + 3];
+            }
             
-
-
             //Hardcoded overworld GFX Values, for death mountain
             if ((parent >= 0x03 && parent <= 0x07) || (parent >= 0x0B && parent <= 0x0E))
             {
@@ -766,7 +730,6 @@ namespace ZeldaFullEditor
                 staticgfx[7] = 91;
             }
 
-
             /* if (parent >= 128 & parent < 148)
              {
                  staticgfx[4] = 71;
@@ -774,6 +737,7 @@ namespace ZeldaFullEditor
              }*/
             //Stopwatch sw = new Stopwatch();
             //sw.Start();
+
             unsafe
             {
                 //NEED TO BE EXECUTED AFTER THE TILESET ARE LOADED NOT BEFORE -_-
@@ -786,6 +750,7 @@ namespace ZeldaFullEditor
                         byte mapByte = allgfxData[j + (staticgfx[i] * 2048)];
                         switch (i)
                         {
+                            //TODO: add other cases?
                             case 0:
                             case 3:
                             case 4:
@@ -801,7 +766,5 @@ namespace ZeldaFullEditor
             //sw.Stop();
             //Console.WriteLine("maps gfx loop : " + sw.ElapsedMilliseconds.ToString());
         }
-
-
     }
 }

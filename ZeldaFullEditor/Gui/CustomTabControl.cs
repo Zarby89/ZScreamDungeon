@@ -19,14 +19,13 @@ namespace ZeldaFullEditor
 
         private void CustomTabControl_Load(object sender, EventArgs e)
         {
-
+            //TODO: Add something here?
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
+            //TODO: Add something here?
             //e.Graphics.DrawLine(,0,0,0,0)
-
         }
-
     }
 }

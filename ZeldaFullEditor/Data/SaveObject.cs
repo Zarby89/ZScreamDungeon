@@ -66,7 +66,6 @@ namespace ZeldaFullEditor
 
         public SaveObject(BinaryReader br, Type type) // from file
         {
-
             tid = br.ReadInt16();
             x = br.ReadByte();
             y = br.ReadByte();
@@ -75,6 +74,5 @@ namespace ZeldaFullEditor
             options = (ObjectOption)br.ReadByte();
             this.type = type;
         }
-
     }
 }

@@ -15,6 +15,5 @@ namespace ZeldaFullEditor
             this.s = s;
             this.bytes = bytes;
         }
-
     }
 }
