@@ -13,6 +13,7 @@ namespace ZeldaFullEditor
         public int x, y;
         public bool bg2 = false;
         public ushort roomMapId;
+
         public RoomPotSaveEditor(byte id, ushort roomMapId, int x, int y, bool bg2)
         {
             this.id = id;
@@ -42,6 +43,4 @@ namespace ZeldaFullEditor
             return new RoomPotSaveEditor(this.id, this.roomMapId, this.x, this.y, this.bg2);
         }
     }
-
-
 }

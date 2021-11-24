@@ -16,6 +16,13 @@ namespace ZeldaFullEditor.OWSceneModes
         SceneOW scene;
         List<TileUndo> undoList = new List<TileUndo>();
         List<TileUndo> redoList = new List<TileUndo>();
+
+        int globalmouseTileDownXLOCK = 0;
+        int globalmouseTileDownYLOCK = 0;
+
+        byte lockedDirection = 0x00;
+        Stopwatch sw = new Stopwatch();
+
         public TileMode(SceneOW scene)
         {
             this.scene = scene;
@@ -63,8 +70,6 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-        int globalmouseTileDownXLOCK = 0;
-        int globalmouseTileDownYLOCK = 0;
         public void OnMouseDown(MouseEventArgs e)
         {
             //Buildtileset();
@@ -85,8 +90,6 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.selectedMap = mapId + scene.ow.worldOffset;
                 //scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].BuildMap();
 
-
-
                 scene.tileBitmapPtr = GFX.mapblockset16;
                 scene.tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, scene.tileBitmapPtr);
                 scene.tileBitmap.Palette = scene.ow.allmaps[scene.ow.allmaps[mapId].parent].gfxBitmap.Palette;
@@ -97,12 +100,10 @@ namespace ZeldaFullEditor.OWSceneModes
                 }
                 if (scene.needRedraw)
                 {
-
                     scene.needRedraw = false;
-
-
                     return;
                 }
+
                 scene.mouse_down = true;
 
                 if (e.Button == MouseButtons.Left)
@@ -114,6 +115,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             int y = 0;
                             int x = 0;
                             ushort[] undotiles = new ushort[scene.selectedTile.Length];
+
                             for (int i = 0; i < scene.selectedTile.Length; i++)
                             {
                                 superX = ((tileX + x) / 32);
@@ -124,10 +126,10 @@ namespace ZeldaFullEditor.OWSceneModes
                                     scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
                                     scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
                                 }
+
                                 x++;
                                 if (x >= scene.selectedTileSizeX)
                                 {
-
                                     y++;
                                     x = 0;
                                 }
@@ -150,6 +152,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             int y = 0;
                             int x = 0;
                             ushort[] undotiles = new ushort[scene.selectedTile.Length];
+
                             for (int i = 0; i < scene.selectedTile.Length; i++)
                             {
                                 superX = ((tileX + x) / 32);
@@ -162,11 +165,11 @@ namespace ZeldaFullEditor.OWSceneModes
                                 x++;
                                 if (x >= scene.selectedTileSizeX)
                                 {
-
                                     y++;
                                     x = 0;
                                 }
                             }
+
                             undoList.Add(new TileUndo(scene.globalmouseTileDownX, scene.globalmouseTileDownY, scene.selectedTileSizeX, undotiles, (ushort[])scene.selectedTile.Clone(), ref scene.ow.allmaps[mapId].tilesUsed));
                             redoList.Clear();
                         }
@@ -177,19 +180,14 @@ namespace ZeldaFullEditor.OWSceneModes
                             scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] = scene.selectedTile[0];
                             scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX) * 16) - (superX * 512), ((tileY) * 16) - (superY * 512), scene.selectedTile[0], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
                             //scene.Invalidate(new Rectangle(e.X - 16, e.Y - 16, 32,  32));
-
                         }
                     }
-
                 }
                 else if (e.Button == MouseButtons.Right)
                 {
                     scene.selecting = true;
                 }
-
-
             }
-
         }
 
         public void OnMouseUp(MouseEventArgs e)
@@ -202,6 +200,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 int superY = (tileY / 32);
                 int mapId = (superY * 8) + superX + scene.ow.worldOffset;
                 lockedDirection = 0x00;
+
                 if (e.Button == MouseButtons.Right)
                 {
                     if (tileX == scene.globalmouseTileDownX && tileY == scene.globalmouseTileDownY)
@@ -215,11 +214,13 @@ namespace ZeldaFullEditor.OWSceneModes
                         bool reverseY = false;
                         int sizeX = (tileX - scene.globalmouseTileDownX) + 1;
                         int sizeY = (tileY - scene.globalmouseTileDownY) + 1;
+
                         if (tileX < scene.globalmouseTileDownX)
                         {
                             sizeX = (scene.globalmouseTileDownX - tileX) + 1;
                             reverseX = true;
                         }
+
                         if (tileY < scene.globalmouseTileDownY)
                         {
                             sizeY = (scene.globalmouseTileDownY - tileY) + 1;
@@ -242,6 +243,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             }
                         }
                     }
+
                     if (scene.selectedTile.Length > 0)
                     {
                         int scrollpos = ((scene.selectedTile[0] / 8) * 16);
@@ -257,21 +259,17 @@ namespace ZeldaFullEditor.OWSceneModes
                         scene.owForm.tilePictureBox.Refresh();
                     }
                 }
-
             }
+
             scene.selecting = false;
             scene.mouse_down = false;
             //scene.Refresh();
             //scene.mainForm.pictureboxOWTiles.Refresh();
             //scene.mainForm.pictureGroupTiles.Refresh();
-
         }
-        byte lockedDirection = 0x00;
-        Stopwatch sw = new Stopwatch();
+
         public void OnMouseMove(MouseEventArgs e)
         {
-            
-            
             if (scene.initialized)
             {
                 scene.mouseX_Real = e.X;
@@ -281,29 +279,23 @@ namespace ZeldaFullEditor.OWSceneModes
                 int mapX = (mouseTileX / 32);
                 int mapY = (mouseTileY / 32);
 
-                    scene.mapHover = mapX + (mapY * 8);
+                scene.mapHover = mapX + (mapY * 8);
                 
                 if (scene.mapHover + scene.ow.worldOffset >= 160)
                 {
                     return;
                 }
 
-
                 if (scene.lastHover != scene.mapHover)
                 {
-
                     scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].BuildMap();
                     scene.lastHover = scene.mapHover;
                 }
 
                 if (scene.lastTileHoverX != mouseTileX || scene.lastTileHoverY != mouseTileY)
                 {
-
-                    
                     if (scene.mouse_down)
                     {
-
-
                         if (e.Button == MouseButtons.Left)
                         {
                             int tileX = (e.X / 16);
@@ -331,8 +323,8 @@ namespace ZeldaFullEditor.OWSceneModes
                                         lockedDirection = 0x02;
                                     }
                                 }
-
                             }
+
                             if (lockedDirection == 0x01)
                             {
                                 scene.globalmouseTileDownY = tileY = globalmouseTileDownYLOCK;
@@ -363,10 +355,10 @@ namespace ZeldaFullEditor.OWSceneModes
                                                 scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
                                             }
                                         }
+
                                         x++;
                                         if (x >= scene.selectedTileSizeX)
                                         {
-
                                             y++;
                                             x = 0;
                                         }
@@ -375,34 +367,33 @@ namespace ZeldaFullEditor.OWSceneModes
                             }
                             else
                             {
-
-
-
-
                                 if (scene.selectedTile.Length >= 1)
                                 {
                                     ushort[] undotiles = new ushort[scene.selectedTile.Length];
                                     int y = 0;
                                     int x = 0;
+
                                     for (int i = 0; i < scene.selectedTile.Length; i++)
                                     {
                                         superX = ((tileX + x) / 32);
                                         superY = ((tileY + y) / 32);
                                         mapId = (superY * 8) + superX + scene.ow.worldOffset;
+
                                         if (scene.globalmouseTileDownX + x < 256 && scene.globalmouseTileDownY + y < 256)
                                         {
                                             undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
                                             scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
                                             scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
                                         }
+
                                         x++;
                                         if (x >= scene.selectedTileSizeX)
                                         {
-
                                             y++;
                                             x = 0;
                                         }
                                     }
+
                                     undoList.Add(new TileUndo(scene.globalmouseTileDownX, scene.globalmouseTileDownY, scene.selectedTileSizeX, undotiles, (ushort[])scene.selectedTile.Clone(), ref scene.ow.allmaps[mapId].tilesUsed));
                                     redoList.Clear();
                                     //scene.Invalidate(new Rectangle((scene.globalmouseTileDownX * 16), scene.globalmouseTileDownY * 16, scene.selectedTileSizeX * 16, y * 16));
@@ -416,19 +407,17 @@ namespace ZeldaFullEditor.OWSceneModes
                                 }
                             }
                         }
-
-
-
                     }
+
                     //Refresh the tile preview
                     if (scene.selectedTile.Length >= 1)
                     {
-
                         int sX = (mouseTileX / 32);
                         int sY = (mouseTileY / 32);
                         int y = 0;
                         int x = 0;
                         int mapId = 0 + scene.ow.worldOffset;
+
                         for (int i = 0; i < scene.selectedTile.Length; i++)
                         {
                             if (scene.globalmouseTileDownX + x < 255 && scene.globalmouseTileDownY + y < 255)
@@ -436,6 +425,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                 sX = ((mouseTileX + x) / 32);
                                 sY = ((mouseTileY + y) / 32);
                                 mapId = (sY * 8) + sX + scene.ow.worldOffset;
+
                                 if (mapId > 63 + scene.ow.worldOffset)
                                 {
                                     break;
@@ -445,6 +435,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                     scene.ow.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, scene.selectedTile[i], scene.temptilesgfxPtr, GFX.mapblockset16);
                                 }
                             }
+
                             x++;
                             if (x >= scene.selectedTileSizeX)
                             {
@@ -453,6 +444,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                 x = 0;
                             }
                         }
+
                         if (mapId > 63 + scene.ow.worldOffset)
                         {
                             return;
@@ -466,7 +458,6 @@ namespace ZeldaFullEditor.OWSceneModes
                         //this.Refresh();
                         //this.Invalidate(new Rectangle((mouseTileX * 16)-16, (mouseTileY * 16)-16, (selectedTileSizeX * 16)+32, (y * 16)+32));
                     }
-
 
                     /*if (selecting)
                     {
@@ -484,11 +475,8 @@ namespace ZeldaFullEditor.OWSceneModes
                      ow.allmaps[mapId].CopyTile8bpp16(((e.X / 16)*16)-(superX*512), ((e.Y / 16)*16) - (superY * 512), selectedTile[0], ow.allmaps[mapId].gfxPtr, ow.allmaps[mapId].blockset16);
                      this.Invalidate(new Rectangle(e.X-16, e.Y-16, 48, 48));
                      //this.Refresh();*/
-
                 }
             }
-
         }
-
     }
 }

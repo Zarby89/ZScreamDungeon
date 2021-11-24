@@ -46,7 +46,6 @@ namespace ZeldaFullEditor
             set
             {
                 room = value;
-
             }
         }
 
@@ -60,9 +59,9 @@ namespace ZeldaFullEditor
             set
             {
                 xscroll = value;
-
             }
         }
+
         [DisplayName("Y Scroll"), Description("FILL ME"), Category("Entrance")]
         public short YScroll
         {
@@ -73,9 +72,9 @@ namespace ZeldaFullEditor
             set
             {
                 yscroll = value;
-
             }
         }
+
         [DisplayName("X Position"), Description("The X position the player will enter the room (0,0) origin"), Category("Entrance")]
         public short XPosition
         {
@@ -86,9 +85,9 @@ namespace ZeldaFullEditor
             set
             {
                 xposition = value;
-
             }
         }
+
         [DisplayName("Y Position"), Description("The Y position the player will enter the room (0,0) origin"), Category("Entrance")]
         public short YPosition
         {
@@ -99,9 +98,9 @@ namespace ZeldaFullEditor
             set
             {
                 yposition = value;
-
             }
         }
+
         [DisplayName("X Camera"), Description("The X position of the camera when entering that room"), Category("Entrance")]
         public short XCamera
         {
@@ -112,9 +111,9 @@ namespace ZeldaFullEditor
             set
             {
                 xcamera = value;
-
             }
         }
+
         [DisplayName("Y Camera"), Description("The Y position of the camera when entering that room"), Category("Entrance")]
         public short YCamera
         {
@@ -125,9 +124,9 @@ namespace ZeldaFullEditor
             set
             {
                 ycamera = value;
-
             }
         }
+
         [DisplayName("Blockset"), Description("Used to determine the walls gfx of the dungeon"), Category("Entrance")]
         public byte Blockset
         {
@@ -138,7 +137,6 @@ namespace ZeldaFullEditor
             set
             {
                 blockset = value;
-
             }
         }
 
@@ -169,7 +167,6 @@ namespace ZeldaFullEditor
             set
             {
                 dungeon = value;
-
             }
         }
 
@@ -223,6 +220,7 @@ namespace ZeldaFullEditor
                 }*/
             }
         }
+
         //why is that even a thing?
         [DisplayName("Exit"), Description("Used to determine where you will exit ?"), Category("Entrance")]
         public short Exit
@@ -250,7 +248,6 @@ namespace ZeldaFullEditor
             }
         }
 
-        
         public Entrance(byte entranceId, bool startingEntrance = false)
         {
             room = (short)((ROM.DATA[(Constants.entrance_room + (entranceId * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_room + (entranceId * 2)]);
@@ -315,7 +312,6 @@ namespace ZeldaFullEditor
             }
         }
 
-
         public void save(int entranceId, bool startingentrance = false, bool jp = false)
         {
             //TODO: Change these save
@@ -361,8 +357,6 @@ namespace ZeldaFullEditor
                 (ROM.DATA[(Constants.entrance_scrolledge + 5 + (entranceId * 8))]) = scrolledge_FL;
                 (ROM.DATA[(Constants.entrance_scrolledge + 6 + (entranceId * 8))]) = scrolledge_HR;
                 (ROM.DATA[(Constants.entrance_scrolledge + 7 + (entranceId * 8))]) = scrolledge_FR;
-
-
             }
             else
             {
@@ -408,7 +402,5 @@ namespace ZeldaFullEditor
                 ROM.DATA[(Constants.startingentrance_scrolledge + 7 + (entranceId * 8))] = scrolledge_FR;
             }
         }
-
-
     }
 }

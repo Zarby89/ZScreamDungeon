@@ -24,6 +24,8 @@ namespace ZeldaFullEditor
         public static Color[][] dungeonsMain_Palettes = new Color[20][]; //15*6
         public static Color[][] object3D_Palettes = new Color[2][]; //15*6
 
+        static string asmString = "";
+
         public static Color[] ReadPalette(byte[] romData, int romPosition, int colorCount)
         {
             //Lets write new palette code since i can't find the old one :scream:
@@ -53,13 +55,13 @@ namespace ZeldaFullEditor
 
         public static void CreateAllPalettes(byte[] romData)
         {
-
             //public static Color[][] overworld_MainPalettes = new Color[6][]; 
             //public static Color[][] overworld_AuxPalettes = new Color[20][]; 
             //public static Color[][] overworld_AnimatedPalettes = new Color[14][]; 
             overworld_GrassPalettes[0] = ReadPaletteSingle(romData, Constants.hardcodedGrassLW);
             overworld_GrassPalettes[1] = ReadPaletteSingle(romData, Constants.hardcodedGrassDW);
             overworld_GrassPalettes[2] = ReadPaletteSingle(romData, Constants.hardcodedGrassSpecial);
+
             //35 colors each, 7x5 (0,2 on grid)
             for (int i = 0; i < 6; i++)
             {
@@ -80,7 +82,6 @@ namespace ZeldaFullEditor
             {
                 HudPalettes[i] = ReadPalette(romData, Constants.hudPalettes + (i * 64), 32);
             }
-
 
             /*public static Color[][] globalSprite_Palettes = new Color[2][]; // 32 (1,9)
             public static Color[][] armors_Palettes = new Color[5][]; // 15
@@ -123,9 +124,7 @@ namespace ZeldaFullEditor
             {
                 object3D_Palettes[i] = ReadPalette(romData, Constants.dungeonMainPalettes + (i * 180), 90);
             }*/
-
         }
-
 
         public static Color getColorShade(Color col, byte shade)
         {
@@ -145,7 +144,6 @@ namespace ZeldaFullEditor
             b = (int)((float)b / 255f * 0x1F);
 
             return Color.FromArgb(r * 8, g * 8, b * 8);
-
         }
 
         public static void WritePalette(byte[] romData, int romPosition, Color[] colors, int max = -1)
@@ -167,11 +165,11 @@ namespace ZeldaFullEditor
 
         public static void WriteSinglePalette(byte[] romData, int romPosition, Color colorC)
         {
-                short color = (short)(((colorC.B / 8) << 10) | ((colorC.G / 8) << 5) | ((colorC.R / 8)));
-                romData[romPosition] = (byte)(color);
-                romData[romPosition + 1] = (byte)(color >> 8);
+            short color = (short)(((colorC.B / 8) << 10) | ((colorC.G / 8) << 5) | ((colorC.R / 8)));
+            romData[romPosition] = (byte)(color);
+            romData[romPosition + 1] = (byte)(color >> 8);
         }
-        static string asmString = "";
+
         public static void WritePaletteAsm(Color[] colors, int width, string comment, int romPosition)
         {
             string s = "\r\n\r\n\r\n;" + comment + "\r\norg $" + Utils.PcToSnes(romPosition).ToString("X6") + "\r\ndw ";
@@ -200,14 +198,12 @@ namespace ZeldaFullEditor
 
                 colorPos++;
             }
+
             asmString += s;
         }
 
-
-
         public static void SavePalettesToROM(byte[] romData)
         {
-
             WriteSinglePalette(romData, Constants.hardcodedGrassLW, overworld_GrassPalettes[0]);
             WriteSinglePalette(romData, Constants.hardcodedGrassDW, overworld_GrassPalettes[1]);
             WriteSinglePalette(romData, Constants.hardcodedGrassSpecial, overworld_GrassPalettes[2]);
@@ -258,13 +254,11 @@ namespace ZeldaFullEditor
             {
                 WritePalette(romData, Constants.spritePalettesAux3 + (i * 14), spritesAux3_Palettes[i]);
             }
-
             for (int i = 0; i < 20; i++)
             {
                 WritePalette(romData, Constants.dungeonMainPalettes + (i * 180), dungeonsMain_Palettes[i]);
             }
         }
-
 
         public static string SavePalettesToAsm(byte[] romData)
         {
@@ -317,7 +311,6 @@ namespace ZeldaFullEditor
             {
                 WritePaletteAsm(spritesAux3_Palettes[i], 7, "Sprite Aux3 Palettes " + i.ToString("X2"), Constants.spritePalettesAux3 + (i * 14));
             }
-
             for (int i = 0; i < 20; i++)
             {
                 WritePaletteAsm(dungeonsMain_Palettes[i], 15, "Dungeon Palettes " + i.ToString("X2"), Constants.dungeonMainPalettes + (i * 180));
@@ -325,6 +318,5 @@ namespace ZeldaFullEditor
 
             return asmString;
         }
-
     }
 }

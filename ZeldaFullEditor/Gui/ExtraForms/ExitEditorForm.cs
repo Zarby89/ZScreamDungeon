@@ -13,6 +13,12 @@ namespace ZeldaFullEditor
 {
     public partial class ExitEditorForm : Form
     {
+        public ExitOW editingExit;
+        bool settingValues = false;
+        int pixelMapx;
+        int pixelMapy;
+        public ExitOW selectedExit;
+
         public ExitEditorForm()
         {
             InitializeComponent();
@@ -23,7 +29,6 @@ namespace ZeldaFullEditor
             editingExit.isAutomatic = automaticcheckBox.Checked;
             if (!automaticcheckBox.Checked)
             {
-
                 editingExit.playerX = (ushort)(xPosUpDown.Value + pixelMapx);
                 editingExit.playerY = (ushort)(yPosUpDown.Value + pixelMapy);
 
@@ -36,48 +41,46 @@ namespace ZeldaFullEditor
                 editingExit.doorXEditor = (byte)doorxUpDown.Value;
                 editingExit.doorYEditor = (byte)dooryUpDown.Value;
             }
-                if (wooddoorradioButton.Checked)
-                {
-                    editingExit.doorXEditor = (byte)doorxUpDown.Value;
-                    editingExit.doorYEditor = (byte)dooryUpDown.Value;
-                    editingExit.doorType1 = (short)((((((byte)dooryUpDown.Value)) << 6) | (((byte)doorxUpDown.Value) & 0x3F)) << 1);
-                    editingExit.doorType2 = 0;
-                }
-                else if (sancdoorButton.Checked)
-                {
-                    editingExit.doorXEditor = (byte)doorxUpDown.Value;
-                    editingExit.doorYEditor = (byte)dooryUpDown.Value;
-                    editingExit.doorType2 = (short)((((((byte)dooryUpDown.Value)) << 6) | (((byte)doorxUpDown.Value) & 0x3F)) << 1);
-                    editingExit.doorType1 = 0;
-                }
-                else if (bombdoorradioButton.Checked)
-                {
-                    editingExit.doorXEditor = (byte)doorxUpDown.Value;
-                    editingExit.doorYEditor = (byte)dooryUpDown.Value;
-                    editingExit.doorType1 = (short)(((((((byte)dooryUpDown.Value)) << 6) | (((byte)doorxUpDown.Value) & 0x3F)) << 1) + 0x8000);
-                    editingExit.doorType2 = 0;
-                }
-                else if (castledoorradioButton.Checked)
-                {
-                    editingExit.doorXEditor = (byte)doorxUpDown.Value;
-                    editingExit.doorYEditor = (byte)dooryUpDown.Value;
-                    editingExit.doorType2 = (short)(((((((byte)dooryUpDown.Value)) << 6) | (((byte)doorxUpDown.Value) & 0x3F)) << 1) + 0x8000);
-                    editingExit.doorType1 = 0;
-                }
-                else
-                {
-                    editingExit.doorXEditor = 0;
-                    editingExit.doorYEditor = 0;
-                    editingExit.doorType2 = 0;
-                    editingExit.doorType1 = 0;
-                }
-            
 
+            if (wooddoorradioButton.Checked)
+            {
+                editingExit.doorXEditor = (byte)doorxUpDown.Value;
+                editingExit.doorYEditor = (byte)dooryUpDown.Value;
+                editingExit.doorType1 = (short)((((((byte)dooryUpDown.Value)) << 6) | (((byte)doorxUpDown.Value) & 0x3F)) << 1);
+                editingExit.doorType2 = 0;
+            }
+            else if (sancdoorButton.Checked)
+            {
+                editingExit.doorXEditor = (byte)doorxUpDown.Value;
+                editingExit.doorYEditor = (byte)dooryUpDown.Value;
+                editingExit.doorType2 = (short)((((((byte)dooryUpDown.Value)) << 6) | (((byte)doorxUpDown.Value) & 0x3F)) << 1);
+                editingExit.doorType1 = 0;
+            }
+            else if (bombdoorradioButton.Checked)
+            {
+                editingExit.doorXEditor = (byte)doorxUpDown.Value;
+                editingExit.doorYEditor = (byte)dooryUpDown.Value;
+                editingExit.doorType1 = (short)(((((((byte)dooryUpDown.Value)) << 6) | (((byte)doorxUpDown.Value) & 0x3F)) << 1) + 0x8000);
+                editingExit.doorType2 = 0;
+            }
+            else if (castledoorradioButton.Checked)
+            {
+                editingExit.doorXEditor = (byte)doorxUpDown.Value;
+                editingExit.doorYEditor = (byte)dooryUpDown.Value;
+                editingExit.doorType2 = (short)(((((((byte)dooryUpDown.Value)) << 6) | (((byte)doorxUpDown.Value) & 0x3F)) << 1) + 0x8000);
+                editingExit.doorType1 = 0;
+            }
+            else
+            {
+               editingExit.doorXEditor = 0;
+               editingExit.doorYEditor = 0;
+               editingExit.doorType2 = 0;
+               editingExit.doorType1 = 0;
+            }
         }
 
         private void nodoorradioButton_CheckedChanged(object sender, EventArgs e)
         {
-
             doorxUpDown.Enabled = !nodoorradioButton.Checked;
             dooryUpDown.Enabled = !nodoorradioButton.Checked;
             setPositionButton.Enabled = !nodoorradioButton.Checked;
@@ -85,13 +88,9 @@ namespace ZeldaFullEditor
 
         private void ExitEditorForm_Load(object sender, EventArgs e)
         {
-
+            //TODO: Add something here?
         }
-        public ExitOW editingExit;
-        bool settingValues = false;
-        int pixelMapx;
-        int pixelMapy;
-        public ExitOW selectedExit;
+
         public void SetExit(ExitOW exit)
         {
             settingValues = true;
@@ -99,7 +98,6 @@ namespace ZeldaFullEditor
             editingExit = new ExitOW(exit.roomId,exit.mapId,exit.vramLocation,exit.yScroll,exit.xScroll,exit.playerY,exit.playerX,exit.cameraY,exit.cameraX,exit.unk1,exit.unk2,exit.doorType1,exit.doorType2);
             roomUpDown.Value = editingExit.roomId;
             mapUpDown.Value = editingExit.mapId;
-
 
             int mapy = (editingExit.mapId / 8);
             int mapx = editingExit.mapId - (mapy * 8);
@@ -126,10 +124,7 @@ namespace ZeldaFullEditor
             else if ((editingExit.doorType2 & 0x8000) != 0) { castledoorradioButton.Checked = true; }
             else if (editingExit.doorType2 != 0) { sancdoorButton.Checked = true; }
 
-            
-
             settingValues = false;
-
         }
 
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
@@ -194,8 +189,8 @@ namespace ZeldaFullEditor
                     editingExit.doorType2 = 0;
                     editingExit.doorType1 = 0;
                 }
-                editingExit.isAutomatic = automaticcheckBox.Checked;
 
+                editingExit.isAutomatic = automaticcheckBox.Checked;
             }
 
             //editingExit.doorType1 = (byte)doorxUpDown.Value;

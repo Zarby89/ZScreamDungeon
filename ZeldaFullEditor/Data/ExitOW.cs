@@ -9,7 +9,6 @@ namespace ZeldaFullEditor
     [Serializable]
     public class ExitOW
     {
-
         public byte
             mapId,
             unk1,
@@ -30,7 +29,6 @@ namespace ZeldaFullEditor
         public ushort
             playerX,
             playerY;
-
 
         public bool isAutomatic = true;
         public bool deleted = false;
@@ -57,13 +55,13 @@ namespace ZeldaFullEditor
                 doorXEditor = (byte)(p % 64);
                 doorYEditor = (byte)(p >> 6);
             }
+
             if (doorType2 != 0)
             {
                 int p = (doorType2 & 0x7FFF) >> 1;
                 doorXEditor = (byte)(p % 64);
                 doorYEditor = (byte)(p >> 6);
             }
-
         }
 
         public ExitOW Copy()
@@ -87,7 +85,6 @@ namespace ZeldaFullEditor
         public void updateMapStuff(byte mapId,Overworld ow)
         {
             this.mapId = mapId;
-
 
             int large = 256;
             int mapid = mapId;
@@ -130,15 +127,12 @@ namespace ZeldaFullEditor
 
                 if (cameraX > mapx + 127 + large) { cameraX = (short)(mapx + 127 + large); }
                 if (cameraY > mapy + 143 + large) { cameraY = (short)(mapy + 143 + large); }
-
             }
+
             short vramXScroll = (short)(xScroll - mapx);
             short vramYScroll = (short)(yScroll - mapy);
 
-
-
             vramLocation = (short)(((vramYScroll & 0xFFF0) << 3) | ((vramXScroll & 0xFFF0) >> 3));
-
         }
     }
 }

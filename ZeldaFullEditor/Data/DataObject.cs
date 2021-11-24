@@ -11,6 +11,7 @@ namespace ZeldaFullEditor
         public short id;
         public string Name { get; set; }
         public byte option = 0;
+
         public dataObject(short id, string name, byte option = 0)
         {
             this.Name = name;

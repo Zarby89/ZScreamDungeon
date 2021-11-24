@@ -12,11 +12,12 @@ namespace ZeldaFullEditor
 {
     public partial class RoomMover : Form
     {
+        string filePath = "";
+
         public RoomMover()
         {
             InitializeComponent();
         }
-        string filePath = "";
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -28,8 +29,6 @@ namespace ZeldaFullEditor
                 filePath = of.FileName;
                 textBox1.Text = filePath;
             }
-
-
         }
 
         private void RoomMover_Load(object sender, EventArgs e)

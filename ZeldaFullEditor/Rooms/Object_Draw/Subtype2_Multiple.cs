@@ -285,10 +285,10 @@ namespace ZeldaFullEditor
             }
         }
 
-
         public override void Draw()
         {
-	base.Draw();
+	        base.Draw();
+
             byte oid = (byte)(id & 0xFF);
             if (oid == 0x3C)
             {
@@ -311,6 +311,7 @@ namespace ZeldaFullEditor
                         }
                     }
                 }
+
                 int tid = 12;
                 for (int xx = 0; xx < 4; xx++)
                 {
@@ -321,7 +322,6 @@ namespace ZeldaFullEditor
                     }
                 }
 
-                
                 return;
             }
 
@@ -351,8 +351,6 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-
-
         }
 
         public void setdata(string name, int tx, int ty, bool allbg = false)

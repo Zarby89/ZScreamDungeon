@@ -22,13 +22,10 @@ namespace ZeldaFullEditor
             {
                 this.tile = (ushort)(tile + 256 + 512);
             }
+
             this.pal = pal;
             this.mx = mx;
             this.my = my;
-
-
         }
-
-
     }
 }
