@@ -375,7 +375,7 @@ namespace ZeldaFullEditor.Gui
                             case 4:
                             case 5:
                                 mapByte += 0x88;
-                                break;
+                            break;
                         }
 
                         currentmapgfx8Data[(i * 2048) + j] = mapByte; //Upload used gfx data

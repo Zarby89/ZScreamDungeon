@@ -2863,6 +2863,7 @@ namespace ZeldaFullEditor
             "Staircase",
             "Bombable",
             "Switch "});
+
             this.selecteditemobjectCombobox.Location = new System.Drawing.Point(6, 26);
             this.selecteditemobjectCombobox.Name = "selecteditemobjectCombobox";
             this.selecteditemobjectCombobox.Size = new System.Drawing.Size(348, 21);

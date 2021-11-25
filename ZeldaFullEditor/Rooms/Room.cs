@@ -312,18 +312,9 @@ namespace ZeldaFullEditor
                     {
                         //NOTE LOAD BLOCKSETS SOMEWHERE FIRST
                         byte mapByte = newPdata[d + (blocks[i] * 2048)];
-                        switch (i)
-                        {
-                            //TODO: Add other cases?
-                            case 0:
-                            case 1:
-                            case 2:
-                            case 3:
-                            
-                            //case 5:
-                                mapByte += 0x88;
-                                break;
-
+                        if(i < 4) //removed switch
+                        { 
+                            mapByte += 0x88;
                         } //last line of 6, first line of 7 ?
 
                         sheetsData[d + (sheetPos * 2048)] = mapByte;

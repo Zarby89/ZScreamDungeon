@@ -750,13 +750,12 @@ namespace ZeldaFullEditor
                         byte mapByte = allgfxData[j + (staticgfx[i] * 2048)];
                         switch (i)
                         {
-                            //TODO: add other cases?
                             case 0:
                             case 3:
                             case 4:
                             case 5:
                                 mapByte += 0x88;
-                                break;
+                            break;
                         }
 
                         currentmapgfx8Data[(i * 2048) + j] = mapByte; //Upload used gfx data

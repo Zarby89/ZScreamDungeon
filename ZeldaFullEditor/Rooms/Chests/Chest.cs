@@ -25,7 +25,6 @@ namespace ZeldaFullEditor
         //Chests Items
         public void ItemsDraw(byte id, int x, int y)
         {
-            //TODO: switch to switch case
             if (id == 0)
             {
                 //TODO : NEED TO CHANGE PALETTE TO SWORD & SHIELD PALETTE
