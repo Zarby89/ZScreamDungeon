@@ -607,6 +607,7 @@ namespace ZeldaFullEditor
             {
                 size = 0x200000;
             }
+
             ROM.DATA = new byte[size];
             if ((fs.Length & 0x200) == 0x200)
             {
@@ -673,6 +674,7 @@ namespace ZeldaFullEditor
             {
                 mi.Enabled = true;
             }
+
             roomHeaderPanel.Enabled = true;
 
             //Initialize the map draw
@@ -682,6 +684,7 @@ namespace ZeldaFullEditor
             GFX.previewSpritesBitmap = new Bitmap[256];
             GFX.previewChestsPtr = new IntPtr[76];
             GFX.previewChestsBitmap = new Bitmap[76];
+
             for (int i = 0; i < 600; i++)
             {
                 GFX.previewObjectsPtr[i] = Marshal.AllocHGlobal(64 * 64);
@@ -697,6 +700,7 @@ namespace ZeldaFullEditor
                 GFX.previewChestsPtr[i] = Marshal.AllocHGlobal(64 * 64);
                 GFX.previewChestsBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, GFX.previewChestsPtr[i]);
             }
+
             Sprites_Names.loadFromFile();
             Room_Name.loadFromFile();
             ChestItems_Name.loadFromFile();
@@ -714,6 +718,7 @@ namespace ZeldaFullEditor
             {
                 objectViewer1.items.Add((o));
             }
+
             selecteditemobjectCombobox.Items.Clear();
             for (int i = 0; i < ItemsNames.name.Length; i++)
             {
@@ -836,6 +841,7 @@ namespace ZeldaFullEditor
                         break;
                     }
                 }
+
                 TreeNode tn = new TreeNode(tname);
                 tn.Tag = i;
                 entrancetreeView.Nodes[1].Nodes.Add(tn);
@@ -853,6 +859,7 @@ namespace ZeldaFullEditor
                         break;
                     }
                 }
+
                 TreeNode tn = new TreeNode(tname);
                 tn.Tag = i;
 
@@ -886,6 +893,7 @@ namespace ZeldaFullEditor
             toolStripButton1.Enabled = true;
             searchButton.Enabled = true;
             collisionModeButton.Enabled = true;
+
             foreach (object ti in editToolStripMenuItem.DropDownItems)
             {
                 if (ti is ToolStripDropDownItem)
@@ -926,6 +934,7 @@ namespace ZeldaFullEditor
             {
                 room.selectedObject.Clear();
             }
+
             //objectsListbox.Enabled = false;
             setmodeAllScene(ObjectMode.Bgallmode);
             if (allbgsButton.Checked)
@@ -998,6 +1007,7 @@ namespace ZeldaFullEditor
             {
                 (toolStrip1.Items[i] as ToolStripButton).Checked = false;
             }
+
             selectedLayer = -1;
             (sender as ToolStripButton).Checked = true;
             updateScenesMode();
@@ -1146,6 +1156,7 @@ namespace ZeldaFullEditor
                     {
                         name = "Room_Object";
                     }
+
                     string f = Interaction.InputBox("Name of the new layout", "Name?", "Layout00");
                     if (f != "")
                     {
@@ -1155,6 +1166,7 @@ namespace ZeldaFullEditor
                         {
                             o.saveToFile(bw);
                         }
+
                         bw.Close();
                     }
                 }
@@ -1290,6 +1302,7 @@ namespace ZeldaFullEditor
                     {
                         o.layer = 0;
                     }
+
                     activeScene.updating_info = false;
                 }
                 else if (activeScene.room.selectedObject[0] is Sprite)
@@ -1299,6 +1312,7 @@ namespace ZeldaFullEditor
                     {
                         o.layer = 0;
                     }
+
                     activeScene.updating_info = false;
                 }
                 else if (activeScene.room.selectedObject[0] is PotItem)
@@ -1308,8 +1322,10 @@ namespace ZeldaFullEditor
                     {
                         o.layer = 0;
                     }
+
                     activeScene.updating_info = false;
                 }
+
                 activeScene.DrawRoom();
                 activeScene.Refresh();
             }
@@ -1327,6 +1343,7 @@ namespace ZeldaFullEditor
                     {
                         o.layer = 1;
                     }
+
                     activeScene.updating_info = false;
                 }
                 else if (activeScene.room.selectedObject[0] is Sprite)
@@ -1336,6 +1353,7 @@ namespace ZeldaFullEditor
                     {
                         o.layer = 1;
                     }
+
                     activeScene.updating_info = false;
                 }
                 else if (activeScene.room.selectedObject[0] is PotItem)
@@ -1345,6 +1363,7 @@ namespace ZeldaFullEditor
                     {
                         o.layer = 1;
                     }
+
                     activeScene.updating_info = false;
                 }
 
@@ -1365,8 +1384,10 @@ namespace ZeldaFullEditor
                     {
                         o.layer = 2;
                     }
+
                     activeScene.updating_info = false;
                 }
+
                 activeScene.DrawRoom();
                 activeScene.Refresh();
             }
@@ -1426,6 +1447,7 @@ namespace ZeldaFullEditor
             saveToolStripMenuItem_Click(sender, e);
             SaveFileDialog saveFile = new SaveFileDialog();
             saveFile.Filter = "Snes ROM File|.sfc";
+
             if (saveFile.ShowDialog() == DialogResult.OK)
             {
                 FileStream fs = new FileStream(saveFile.FileName, FileMode.OpenOrCreate, FileAccess.Write);
@@ -1487,6 +1509,7 @@ namespace ZeldaFullEditor
             {
                 b = true; //0xX2
             }
+
             if ((en.Ladderbg & 0x10) == 0x10)
             {
                 entranceProperty_bg.Checked = true;
@@ -1649,6 +1672,7 @@ namespace ZeldaFullEditor
                         spr.keyDrop = 0;
                     }
                 }
+
                 (activeScene.room.selectedObject[0] as Sprite).keyDrop = (byte)comboBox1.SelectedIndex;
                 activeScene.DrawRoom();
                 activeScene.Refresh();
@@ -2460,6 +2484,7 @@ namespace ZeldaFullEditor
                     break;
                 }
             }
+
             if (closedRoom != -1)
             {
                 opened_rooms.RemoveAt(closedRoom);
@@ -2586,6 +2611,7 @@ namespace ZeldaFullEditor
                 o.previewId = index;
                 index++;
                 o.setRoom(activeScene.room);
+
                 if (o != null)
                 {
                     //objectsListbox.Items.Add(new dataObject((short)i,i.ToString("X3") +" "+ o.name));
@@ -2600,6 +2626,7 @@ namespace ZeldaFullEditor
                 o.previewId = index;
                 index++;
                 o.setRoom(activeScene.room);
+
                 if (o != null)
                 {
                     //objectsListbox.Items.Add(new dataObject((short)i, i.ToString("X3") + " " + o.name));
@@ -4556,7 +4583,6 @@ namespace ZeldaFullEditor
 
             if (ofd.ShowDialog() == DialogResult.OK)
             {
-                
                 FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read);
                 byte[] data = new byte[(int)fs.Length];
                 fs.Read(data, 0, data.Length);
@@ -4882,6 +4908,7 @@ namespace ZeldaFullEditor
             keydoors.Clear();
             shutterdoors.Clear();
             normaldoors.Clear();
+
             foreach (Room_Object o in activeScene.room.tilesObjects)
             {
                 if (o.options == ObjectOption.Door)
@@ -4958,8 +4985,5 @@ namespace ZeldaFullEditor
                 panel3.Location = new Point(520, -1);
             }
         }
-
-
-
     }
 }
