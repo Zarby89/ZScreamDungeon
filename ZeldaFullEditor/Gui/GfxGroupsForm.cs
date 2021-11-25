@@ -295,18 +295,9 @@ namespace ZeldaFullEditor.Gui
                         byte mapByte = newPdata[d + (blocks[i] * 2048)];
                         if (main)
                         {
-                            switch (i)
-                            {
-                                //TODO: Add other cases here?
-                                case 0:
-                                case 1:
-                                case 2:
-                                case 3:
-
-                                    //case 5:
-                                    mapByte += 0x88;
-                                    break;
-
+                            if(i < 4)
+                            {   
+                                mapByte += 0x88;
                             } //last line of 6, first line of 7 ?
                         }
 

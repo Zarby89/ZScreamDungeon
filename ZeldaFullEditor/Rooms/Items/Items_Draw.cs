@@ -37,7 +37,6 @@ namespace ZeldaFullEditor
                 id += 23;
             }
 
-            //TODO: Switch to switch case.
             if (id == 0)//Nothing
             {
                 //draw_item_tile(x * 8, y * 8, 16, 16, 0x6C, 10, true);
