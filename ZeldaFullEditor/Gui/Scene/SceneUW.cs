@@ -1689,6 +1689,7 @@ namespace ZeldaFullEditor
                     else
                     {
                         mainForm.nothingselectedcontextMenu.Items[0].Visible = false;
+                        mainForm.nothingselectedcontextMenu.Items[2].Visible = false;
                         mainForm.singleselectedcontextMenu.Items[0].Visible = false;
                         mainForm.groupselectedcontextMenu.Items[0].Visible = false;
                     }
@@ -1696,8 +1697,14 @@ namespace ZeldaFullEditor
                     if (selectedMode == ObjectMode.Spritemode)
                     {
                         mainForm.nothingselectedcontextMenu.Items[0].Visible = false;
+                        mainForm.nothingselectedcontextMenu.Items[2].Visible = false;
                         mainForm.singleselectedcontextMenu.Items[0].Visible = false;
                         mainForm.groupselectedcontextMenu.Items[0].Visible = false;
+                    }
+
+                    if (selectedMode == ObjectMode.Chestmode)
+                    {
+                        mainForm.nothingselectedcontextMenu.Items[2].Visible = true;
                     }
 
                     if (room.selectedObject.Count == 0)
@@ -1712,6 +1719,7 @@ namespace ZeldaFullEditor
                     {
                         mainForm.groupselectedcontextMenu.Show(Cursor.Position);
                     }
+
                     mouse_down = false;
                 }
             }
@@ -1792,6 +1800,50 @@ namespace ZeldaFullEditor
                 }
 
                 need_refresh = true;
+            }
+        }
+
+        public void deleteChestItem()
+        {
+            int MX = rmx;
+            int MY = rmy;
+
+            if (mainForm.x2zoom)
+            {
+                MX = rmx / 2;
+                MY = rmy / 2;
+            }
+
+            if (selectedMode == ObjectMode.Chestmode)
+            {
+                Chest chestToRemove = null;
+                bool foundChest = false;
+
+                foreach (Chest c in room.chest_list)
+                {
+                    if (MX >= (c.x * 8) && MX <= (c.x * 8) + 16 &&
+                        MY >= ((c.y - 2) * 8) && MY <= ((c.y) * 8) + 16)
+                    {
+                        //mainForm.chestPicker.button1.Enabled = true;//enable delete button
+                        //DialogResult result = mainForm.chestPicker.ShowDialog();
+
+                        chestToRemove = c;
+
+                        foundChest = true;
+                        break;
+                    }
+                }
+
+                if (chestToRemove != null)
+                {
+                    Console.WriteLine("delete chest item." + chestToRemove.item);
+
+                    room.chest_list.Remove(chestToRemove);
+                }
+
+                need_refresh = true;
+                DrawRoom();
+                Refresh();
             }
         }
 
