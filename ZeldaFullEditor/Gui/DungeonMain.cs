@@ -1036,6 +1036,10 @@ namespace ZeldaFullEditor
                 overworldEditor.scene.mouse_down = false;
                 overworldEditor.scene.deleteSelected();
             }
+            else if (editorsTabControl.SelectedIndex == 3)//text editor
+            {
+                textEditor.delete();
+            }
         }
 
         private void selectAllToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1050,6 +1054,10 @@ namespace ZeldaFullEditor
                 overworldEditor.scene.mouse_down = false;
                 overworldEditor.scene.selectAll();
             }
+            else if (editorsTabControl.SelectedIndex == 3)//text editor
+            {
+                textEditor.selectAll();
+            }
         }
 
         private void cutToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1063,6 +1071,10 @@ namespace ZeldaFullEditor
             {
                 overworldEditor.scene.mouse_down = false;
                 overworldEditor.scene.cut();
+            }
+            else if (editorsTabControl.SelectedIndex == 3)//text editor
+            {
+                textEditor.cut();
             }
         }
 
@@ -1079,6 +1091,10 @@ namespace ZeldaFullEditor
             else if (editorsTabControl.SelectedIndex == 2)//gfx editor
             {
                 gfxEditor.paste();
+            }
+            else if (editorsTabControl.SelectedIndex == 3)//text editor
+            {
+                textEditor.paste();
             }
         }
 
@@ -1097,6 +1113,62 @@ namespace ZeldaFullEditor
             else if (editorsTabControl.SelectedIndex == 2)//gfx editor
             {
                 gfxEditor.copy();
+            }
+            else if (editorsTabControl.SelectedIndex == 3)//text editor
+            {
+                textEditor.copy();
+            }
+        }
+
+        public void undoButton_Click(object sender, EventArgs e)
+        {
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                //activeScene.Undo();
+            }
+            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
+            {
+                overworldEditor.scene.Undo();
+            }
+        }
+
+        public void redoButton_Click(object sender, EventArgs e)
+        {
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                //activeScene.Redo();
+            }
+            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
+            {
+                overworldEditor.scene.Redo();
+            }
+        }
+
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                //activeScene.Undo();
+            }
+            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
+            {
+                overworldEditor.scene.Undo();
+            }
+            else if (editorsTabControl.SelectedIndex == 3)//text editor
+            {
+                textEditor.undo();
+            }
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
+            {
+                //activeScene.Redo();
+            }
+            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
+            {
+                overworldEditor.scene.Redo();
             }
         }
 
@@ -3789,54 +3861,6 @@ namespace ZeldaFullEditor
                         addRoomTab((short)(id - 288));
                     }
                 }
-            }
-        }
-
-        public void undoButton_Click(object sender, EventArgs e)
-        {
-            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
-            {
-                //activeScene.Undo();
-            }
-            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
-            {
-                overworldEditor.scene.Undo();
-            }
-        }
-
-        public void redoButton_Click(object sender, EventArgs e)
-        {
-            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
-            {
-                //activeScene.Redo();
-            }
-            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
-            {
-                overworldEditor.scene.Redo();
-            }
-        }
-
-        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
-            {
-                //activeScene.Undo();
-            }
-            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
-            {
-                overworldEditor.scene.Undo();
-            }
-        }
-
-        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (editorsTabControl.SelectedIndex == 0) //dungeon editor
-            {
-                //activeScene.Redo();
-            }
-            else if (editorsTabControl.SelectedIndex == 1) //overworld editor
-            {
-                overworldEditor.scene.Redo();
             }
         }
 
