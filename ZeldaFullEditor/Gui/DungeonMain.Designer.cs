@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Starting Entrances");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Starting Entrances");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -162,14 +162,10 @@ namespace ZeldaFullEditor
             this.label24 = new System.Windows.Forms.Label();
             this.entrancetreeView = new System.Windows.Forms.TreeView();
             this.objectstabPage = new System.Windows.Forms.TabPage();
-            this.panel1 = new ZeldaFullEditor.CustomPanel();
-            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
             this.favoriteCheckbox = new System.Windows.Forms.CheckBox();
             this.showNameObjectCheckbox = new System.Windows.Forms.CheckBox();
             this.searchTextbox = new System.Windows.Forms.TextBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
-            this.spritesView1 = new ZeldaFullEditor.SpritesView();
             this.searchspriteTextbox = new System.Windows.Forms.TextBox();
             this.edit8x8 = new System.Windows.Forms.TabPage();
             this.edit8x8Panel = new System.Windows.Forms.Panel();
@@ -381,6 +377,11 @@ namespace ZeldaFullEditor
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
+            this.panel1 = new ZeldaFullEditor.CustomPanel();
+            this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
+            this.customPanel1 = new ZeldaFullEditor.CustomPanel();
+            this.spritesView1 = new ZeldaFullEditor.SpritesView();
+            this.deleteToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -394,9 +395,7 @@ namespace ZeldaFullEditor
             this.splitContainer3.SuspendLayout();
             this.panel2.SuspendLayout();
             this.objectstabPage.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.tabPage4.SuspendLayout();
-            this.customPanel1.SuspendLayout();
             this.edit8x8.SuspendLayout();
             this.edit8x8Panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.editBox8x8)).BeginInit();
@@ -419,6 +418,8 @@ namespace ZeldaFullEditor
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.customPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip1
@@ -760,9 +761,11 @@ namespace ZeldaFullEditor
             // 
             this.nothingselectedcontextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.insertToolStripMenuItem1,
-            this.pasteToolStripMenuItem3});
+            this.pasteToolStripMenuItem3,
+            this.deleteToolStripMenuItem2});
             this.nothingselectedcontextMenu.Name = "nothingselectedcontextMenu";
-            this.nothingselectedcontextMenu.Size = new System.Drawing.Size(104, 48);
+            this.nothingselectedcontextMenu.Size = new System.Drawing.Size(181, 92);
+            this.nothingselectedcontextMenu.Size = new System.Drawing.Size(181, 92);
             // 
             // insertToolStripMenuItem1
             // 
@@ -1633,13 +1636,13 @@ namespace ZeldaFullEditor
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode1.Name = "EntranceNode";
-            treeNode1.Text = "Entrances";
-            treeNode2.Name = "StartingEntranceNode";
-            treeNode2.Text = "Starting Entrances";
+            treeNode9.Name = "EntranceNode";
+            treeNode9.Text = "Entrances";
+            treeNode10.Name = "StartingEntranceNode";
+            treeNode10.Text = "Starting Entrances";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode9,
+            treeNode10});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 301);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -1657,26 +1660,6 @@ namespace ZeldaFullEditor
             this.objectstabPage.TabIndex = 4;
             this.objectstabPage.Text = "Objects";
             this.objectstabPage.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            this.panel1.AutoScroll = true;
-            this.panel1.Controls.Add(this.objectViewer1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 54);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(292, 610);
-            this.panel1.TabIndex = 1;
-            // 
-            // objectViewer1
-            // 
-            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
-            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
-            this.objectViewer1.Name = "objectViewer1";
-            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
-            this.objectViewer1.TabIndex = 0;
-            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
             // 
             // favoriteCheckbox
             // 
@@ -1721,25 +1704,6 @@ namespace ZeldaFullEditor
             this.tabPage4.TabIndex = 10;
             this.tabPage4.Text = "Sprites";
             this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // customPanel1
-            // 
-            this.customPanel1.AutoScroll = true;
-            this.customPanel1.Controls.Add(this.spritesView1);
-            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.customPanel1.Location = new System.Drawing.Point(0, 20);
-            this.customPanel1.Name = "customPanel1";
-            this.customPanel1.Size = new System.Drawing.Size(292, 644);
-            this.customPanel1.TabIndex = 2;
-            // 
-            // spritesView1
-            // 
-            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.spritesView1.Location = new System.Drawing.Point(0, 0);
-            this.spritesView1.Name = "spritesView1";
-            this.spritesView1.Size = new System.Drawing.Size(292, 374);
-            this.spritesView1.TabIndex = 0;
-            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
             // 
             // searchspriteTextbox
             // 
@@ -2863,7 +2827,6 @@ namespace ZeldaFullEditor
             "Staircase",
             "Bombable",
             "Switch "});
-
             this.selecteditemobjectCombobox.Location = new System.Drawing.Point(6, 26);
             this.selecteditemobjectCombobox.Name = "selecteditemobjectCombobox";
             this.selecteditemobjectCombobox.Size = new System.Drawing.Size(348, 21);
@@ -3372,7 +3335,7 @@ namespace ZeldaFullEditor
             // 
             this.runToolStripMenuItem.Name = "runToolStripMenuItem";
             this.runToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.runToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.runToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.runToolStripMenuItem.Text = "Run";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
             // 
@@ -3380,7 +3343,7 @@ namespace ZeldaFullEditor
             // 
             this.debugRunToolStripMenuItem.Name = "debugRunToolStripMenuItem";
             this.debugRunToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
-            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.debugRunToolStripMenuItem.Text = "Debug Run";
             // 
             // naviguateToolStripMenuItem
@@ -4150,6 +4113,52 @@ namespace ZeldaFullEditor
             this.customPanel3.TabIndex = 19;
             this.customPanel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.customPanel3_MouseMove);
             // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.Controls.Add(this.objectViewer1);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(0, 54);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(292, 610);
+            this.panel1.TabIndex = 1;
+            // 
+            // objectViewer1
+            // 
+            this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.objectViewer1.Location = new System.Drawing.Point(0, 0);
+            this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
+            this.objectViewer1.Name = "objectViewer1";
+            this.objectViewer1.Size = new System.Drawing.Size(292, 380);
+            this.objectViewer1.TabIndex = 0;
+            this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
+            // 
+            // customPanel1
+            // 
+            this.customPanel1.AutoScroll = true;
+            this.customPanel1.Controls.Add(this.spritesView1);
+            this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.customPanel1.Location = new System.Drawing.Point(0, 20);
+            this.customPanel1.Name = "customPanel1";
+            this.customPanel1.Size = new System.Drawing.Size(292, 644);
+            this.customPanel1.TabIndex = 2;
+            // 
+            // spritesView1
+            // 
+            this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.spritesView1.Location = new System.Drawing.Point(0, 0);
+            this.spritesView1.Name = "spritesView1";
+            this.spritesView1.Size = new System.Drawing.Size(292, 374);
+            this.spritesView1.TabIndex = 0;
+            this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
+            // 
+            // deleteToolStripMenuItem2
+            // 
+            this.deleteToolStripMenuItem2.Name = "deleteToolStripMenuItem2";
+            this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.deleteToolStripMenuItem2.Text = "Delete";
+            this.deleteToolStripMenuItem2.Click += new System.EventHandler(this.deleteToolStripMenuItem2_Click);
+            // 
             // DungeonMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4187,10 +4196,8 @@ namespace ZeldaFullEditor
             this.panel2.PerformLayout();
             this.objectstabPage.ResumeLayout(false);
             this.objectstabPage.PerformLayout();
-            this.panel1.ResumeLayout(false);
             this.tabPage4.ResumeLayout(false);
             this.tabPage4.PerformLayout();
-            this.customPanel1.ResumeLayout(false);
             this.edit8x8.ResumeLayout(false);
             this.edit8x8Panel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.editBox8x8)).EndInit();
@@ -4223,6 +4230,8 @@ namespace ZeldaFullEditor
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.customPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -4576,6 +4585,7 @@ namespace ZeldaFullEditor
         private System.Windows.Forms.TabControl tabControl2;
         private CustomPanel customPanel3;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem2;
     }
 }
 
