@@ -1158,11 +1158,8 @@ namespace ZeldaFullEditor
             // Determine if any text is selected in the TextBox control.
             if (textBox1.SelectionLength == 0)
             {
-                // Select all text in the text box.
-                textBox1.SelectAll();
+                //clear all of the text in the textbox
                 textBox1.Clear();
-                // Move the cursor to the text box.
-                textBox1.Focus();
             }
         }
 
