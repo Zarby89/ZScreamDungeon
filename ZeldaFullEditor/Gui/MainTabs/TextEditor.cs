@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.IO;
 using ZeldaFullEditor.Gui.TextEditorExtra;
+
 namespace ZeldaFullEditor
 {
     public partial class TextEditor : UserControl
@@ -1150,6 +1151,72 @@ namespace ZeldaFullEditor
         private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             //TODO: Add something here?
+        }
+
+        public void delete()
+        {
+            // Determine if any text is selected in the TextBox control.
+            if (textBox1.SelectionLength == 0)
+            {
+                // Select all text in the text box.
+                textBox1.SelectAll();
+                textBox1.Clear();
+                // Move the cursor to the text box.
+                textBox1.Focus();
+            }
+        }
+
+        public void selectAll()
+        {
+            // Determine if any text is selected in the TextBox control.
+            if (textBox1.SelectionLength == 0)
+            {
+                // Select all text in the text box.
+                textBox1.SelectAll();
+                // Move the cursor to the text box.
+                textBox1.Focus();
+            }
+        }
+
+        public void cut()
+        {
+            // Ensure that text is currently selected in the text box.   
+            if (textBox1.SelectedText != "")
+            {
+                // Cut the selected text in the control and paste it into the Clipboard.
+                textBox1.Cut();
+            }  
+        }
+
+        public void paste()
+        {
+            // Determine if there is any text in the Clipboard to paste into the textbox        
+            if (Clipboard.GetDataObject().GetDataPresent(DataFormats.Text) == true)
+            {
+                textBox1.Paste();
+            }
+        }
+
+        public void copy()
+        {
+            // Ensure that text is selected in the text box.   
+            if (textBox1.SelectionLength > 0)
+            {
+                // Copy the selected text to the Clipboard.
+                textBox1.Copy();
+            }
+        }
+
+        public void undo()
+        {
+            // Determine if last operation can be undone in text box.   
+            if (textBox1.CanUndo == true)
+            {
+                // Undo the last operation.
+                textBox1.Undo();
+                // Clear the undo buffer to prevent last action from being redone.
+                textBox1.ClearUndo();
+            }
         }
     }
 }
