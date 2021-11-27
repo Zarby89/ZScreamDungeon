@@ -16,6 +16,7 @@ namespace ZeldaFullEditor.Gui
         {
             InitializeComponent();
         }
+
         // public Bitmap allmap;
         private void pictureBox1_Click(object sender, EventArgs e)
         {

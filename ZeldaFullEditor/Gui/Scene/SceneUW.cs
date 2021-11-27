@@ -53,7 +53,6 @@ namespace ZeldaFullEditor
             {
                 if (room.selectedObject[0] is Room_Object)
                 {
-                    
                     if (e.Delta > 0)
                     {
                         if ((room.selectedObject[0] as Room_Object).size < 15)
@@ -69,10 +68,12 @@ namespace ZeldaFullEditor
                         {
                             (room.selectedObject[0] as Room_Object).UpdateSize();
                             (room.selectedObject[0] as Room_Object).size--;
+
                             if ((room.selectedObject[0] as Room_Object).size >= 16)
                             {
                                 (room.selectedObject[0] as Room_Object).size = 15;
                             }
+
                             updateSelectionObject(room.selectedObject[0]);
                         }
                     }
@@ -210,6 +211,7 @@ namespace ZeldaFullEditor
                             //Console.WriteLine(lastElement.sizeheight + "  Base Heigth : " + lastElement.baseheight);
                             lastElement.size += 1;
                         }
+
                         //lastElement.x = 16; //object length size
                         dragy += lastElement.sizeheight;
                     }
@@ -230,6 +232,7 @@ namespace ZeldaFullEditor
                         {
                             lastElement.size -= 1;
                         }
+
                         //lastElement.x += 16; //object length size
                         dragy -= lastElement.sizeheight;
                     }
@@ -475,7 +478,6 @@ namespace ZeldaFullEditor
                         mainForm.selectedEntrance.scrolledge_FL = (byte)((ex * 2) + 1);
                         mainForm.selectedEntrance.scrolledge_HR = (byte)((ex * 2) + 1);
                         mainForm.selectedEntrance.scrolledge_FR = (byte)((ex * 2) + 2);
-
                     }
 
                     if (MX < 256 && MY > 256) //bottom left quadrant
@@ -692,7 +694,6 @@ namespace ZeldaFullEditor
             if (room.bg2 != Background2.Translucent || room.bg2 != Background2.Transparent || room.bg2 != Background2.OnTop || room.bg2 != Background2.Off)
             {
                 g.DrawImage(GFX.roomBg2Bitmap, 0, 0);
-                
             }
 
             //e.Graphics.DrawImage(GFX.roomBgLayoutBitmap,0,0);
@@ -707,6 +708,7 @@ namespace ZeldaFullEditor
                     new float[] {0, 0, 0, 0.5f, 0},
                     new float[] {0, 0, 0, 0, 1} 
                 };
+
                 ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
 
                 // Create an ImageAttributes object and set its color matrix.
@@ -804,6 +806,7 @@ namespace ZeldaFullEditor
                     {
                         drawText(g, (o.x * 8) + 12, (o.y * 8), doorCount.ToString());
                     }
+
                     doorCount++;
                     if ((o.id >> 8) == 18) //exit door
                     {
@@ -853,11 +856,13 @@ namespace ZeldaFullEditor
                     {
                         dropboxid = ((c.id - 0x80) / 2) + 0x17; //no idea if it will work
                     }
+
                     //if for some reason the dropboxid >= 28
                     if (dropboxid >= 28)
                     {
                         dropboxid = 27; //prevent crash :yay:
                     }
+
                     string name = ItemsNames.name[dropboxid];
                     drawText(g, c.nx * 8, c.ny * 8, name);
                 }
@@ -868,17 +873,14 @@ namespace ZeldaFullEditor
             {
                 e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
                 e.Graphics.DrawImage(tempBitmap, new Rectangle(0, 0, 1024, 1024));
-
             }
 
             if (selectedMode == ObjectMode.CollisionMap)
             {
-
                 for (int i = 0; i < 4096; i++)
                 {
                     if (room.collisionMap[i] != 0xFF)
                     {
-
                         drawText(e.Graphics, ((i % 64) * 16)+4, (((i / 64) * 16))+4, room.collisionMap[i].ToString("X2"));
                     }
                 }
@@ -918,6 +920,7 @@ namespace ZeldaFullEditor
             {
                 return;
             }
+
             int MX = e.X;
             int MY = e.Y;
             if (mainForm.x2zoom)
@@ -1067,6 +1070,7 @@ namespace ZeldaFullEditor
                         {
                             //(o as PotItem).selected = false;
                         }
+
                         room.selectedObject.Clear();
                     }
 
@@ -1138,6 +1142,7 @@ namespace ZeldaFullEditor
                                         break;
                                     }
                                 }
+
                                 if (found)
                                 {
                                     break;
@@ -1145,6 +1150,7 @@ namespace ZeldaFullEditor
                             }
                         }
                     }
+
                     if (found == false) //we didnt find any Tiles to click on so just clear the selection
                     {
                         if (ModifierKeys != Keys.Shift && ModifierKeys != Keys.Control)
@@ -1269,11 +1275,14 @@ namespace ZeldaFullEditor
                 }
                 else if (selectedMode == ObjectMode.CollisionMap)
                 {
-                    int px = e.X / 16;
-                    int py = e.Y / 16;
+                    //what happens when the mouse is clicked in the Collision map mode
+                    if(e.Button == MouseButtons.Left)
+                    {
+                        int px = e.X / 16;
+                        int py = e.Y / 16;
 
-                    room.collisionMap[px + (py * 64)] = (byte)mainForm.tileTypeCombobox.SelectedIndex;
-
+                        room.collisionMap[px + (py * 64)] = (byte)mainForm.tileTypeCombobox.SelectedIndex;
+                    }
                 }
 
                 mouse_down = true;
@@ -1445,7 +1454,6 @@ namespace ZeldaFullEditor
             else
             {
                 SetPalettesBlack();
-                
             }
 
             room.reloadLayout();
@@ -1679,6 +1687,10 @@ namespace ZeldaFullEditor
                     {
                         nname = "Door";
                     }
+                    else if (selectedMode == ObjectMode.CollisionMap)
+                    {
+                        nname = "Collision Map";
+                    }
 
                     if (selectedMode != ObjectMode.Bg1mode && selectedMode != ObjectMode.Bg2mode && selectedMode != ObjectMode.Bg3mode && selectedMode != ObjectMode.Bgallmode)
                     {
@@ -1704,6 +1716,13 @@ namespace ZeldaFullEditor
 
                     if (selectedMode == ObjectMode.Chestmode)
                     {
+                        mainForm.nothingselectedcontextMenu.Items[2].Visible = true;
+                    }
+
+                    if (selectedMode == ObjectMode.CollisionMap)
+                    {
+                        mainForm.nothingselectedcontextMenu.Items[0].Visible = false;
+                        mainForm.nothingselectedcontextMenu.Items[1].Visible = false;
                         mainForm.nothingselectedcontextMenu.Items[2].Visible = true;
                     }
 
