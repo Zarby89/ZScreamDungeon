@@ -228,6 +228,12 @@
     <Compile Include="Gui\DataExtractor.Designer.cs">
       <DependentUpon>DataExtractor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\ExpandedManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExpandedManagement.Designer.cs">
+      <DependentUpon>ExpandedManagement.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\ChestPicker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -432,6 +438,7 @@
     <Compile Include="Data\OverlayData.cs" />
     <Compile Include="Data\Overworld.cs" />
     <Compile Include="Data\OverworldMap.cs" />
+    <Compile Include="LogInfos.cs" />
     <Compile Include="OWSceneModes\ClipboardData\TileData.cs" />
     <Compile Include="OWSceneModes\DoorMode.cs" />
     <Compile Include="OWSceneModes\EntranceMode.cs" />
@@ -557,6 +564,9 @@
     <Compile Include="ZSSerializer.cs" />
     <EmbeddedResource Include="Gui\DataExtractor.resx">
       <DependentUpon>DataExtractor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExpandedManagement.resx">
+      <DependentUpon>ExpandedManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\ChestPicker.resx">
       <DependentUpon>ChestPicker.cs</DependentUpon>

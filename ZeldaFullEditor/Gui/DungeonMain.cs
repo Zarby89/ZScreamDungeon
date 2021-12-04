@@ -35,7 +35,6 @@ namespace ZeldaFullEditor
 
         }
 
-
         // Registers a hot key with Windows.
         [DllImport("user32.dll")]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
@@ -55,7 +54,7 @@ namespace ZeldaFullEditor
         DungeonViewer dungeonViewer = new DungeonViewer();
         string projectFilename = "";
         public bool projectLoaded = false;
-        bool anychange = false;
+        public bool anychange = false;
         public SceneUW activeScene;
         public List<Room> opened_rooms = new List<Room>();
         bool saved_changed = false;
@@ -73,7 +72,6 @@ namespace ZeldaFullEditor
         public string loadFromExported = "";
         private void Form1_Load(object sender, EventArgs e)
         {
-            
             door_index = DoorData.doors.Keys.ToArray();
             this.comboBox2.Items.AddRange(
             DoorData.doors.Values.ToArray());
@@ -99,16 +97,7 @@ namespace ZeldaFullEditor
                 }
             }
 
-            
 
-            /*if (System.Diagnostics.Debugger.IsAttached)
-            {
-                menuStrip1.Items["toolStripMenuItem1"].Visible = true;
-            }
-            else
-            {
-                menuStrip1.Items["toolStripMenuItem1"].Visible = false;
-            }*/
 
             xTabButton = new Bitmap(Resources.xbutton);
             layoutForm = new RoomLayout(this);
@@ -532,8 +521,8 @@ namespace ZeldaFullEditor
                 return;
             }
 
-
-            ROM.DATA[0x5D4E] = 0x00; //Fix for the sprite sheet 123
+            ROM.Write(0x5D4E, 0x00, true, "Fix sprite sheet 123 (should not be read compressed)"); //Fix for the sprite sheet 123
+            //ROM.DATA[0x5D4E] = 0x00; 
 
 
             gfxEditor.SaveAllGfx();
@@ -597,7 +586,6 @@ namespace ZeldaFullEditor
 
         public void LoadProject(string filename)
         {
-
 
             ROMStructure.loadDefaultProject();
             //TODO : Add Headered ROM
@@ -1421,12 +1409,12 @@ namespace ZeldaFullEditor
             if (anychange)
             {
                 DungeonsData.all_rooms[activeScene.room.index] = activeScene.room;
-                anychange = false;
+                
                 this.saved_changed = true;
             }
             if (saved_changed)
             {
-
+                anychange = false;
                 DialogResult dr = MessageBox.Show("There is unsaved change do you want to save first?", "Unsaved Changes", MessageBoxButtons.YesNoCancel);
                 if (dr == DialogResult.Yes)
                 {
@@ -3904,6 +3892,7 @@ namespace ZeldaFullEditor
 
         private void editorsTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
+            //copyToolStripMenuItem
             if (editorsTabControl.SelectedTab.Name == "textPage")
             {
                 textEditor.BringToFront();
@@ -5070,6 +5059,21 @@ namespace ZeldaFullEditor
             {
                 panel3.Location = new Point(520, -1);
             }
+        }
+
+        private void memoryManagementToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //need to find one empty byte in the ROM to write the bank pointer!
+            //Bank XX is used for all the expanded pointers!
+            //XX8000-XX8500 : RESERVED FOR EDITOR USE DATA/POINTERS
+            //XX8501-XX88C1 : Rooms Header Pointers (0x3C0 length)
+            //XX88C1-XX8A41 :  Overworld Overlay Pointers
+            //XX8A41-XX8E01 :  Collision Map Dungeon Pointers
+
+
+
+            ExpandedManagement em = new ExpandedManagement();
+            em.ShowDialog();
         }
     }
 

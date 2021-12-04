@@ -194,7 +194,7 @@ namespace ZeldaFullEditor
             int mapId = (superY * 8) + superX;
             globalmouseTileDownX = tileX;
             globalmouseTileDownY = tileY;
-
+            mainForm.anychange = true;
                 selectedMap = mapId;
 
             owForm.previewTextPicturebox.Visible = false;
@@ -257,7 +257,9 @@ namespace ZeldaFullEditor
                 Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
 
             }
-            
+
+
+
             base.OnMouseDown(e);
         }
 

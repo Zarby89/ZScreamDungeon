@@ -854,11 +854,13 @@ namespace ZeldaFullEditor
                     }
                     for (int i = 0; i < 0x1000; i++)
                     {
-                        ROM.DATA[Constants.gfx_font + i] = data[i];
+                        //ROM.DATA[Constants.gfx_font + i] = data[i];
+                        ROM.Write(Constants.gfx_font + i, data[i], true, "Gfx Font");
                     }
                     for (int i = 0; i < 100; i++)
                     {
-                        ROM.DATA[Constants.characters_width + i] = data[i + 0x1000];
+                        //ROM.DATA[Constants.characters_width + i] = data[i + 0x1000];
+                        ROM.Write(Constants.characters_width + i, data[i+0x1000], true, "Gfx Width");
                     }
 
                     GFX.CreateFontGfxData(ROM.DATA);
@@ -873,7 +875,8 @@ namespace ZeldaFullEditor
             byte[] backup = (byte[])ROM.DATA.Clone();
             for (int i = 0; i < 100; i++)
             {
-                ROM.DATA[Constants.characters_width + i] = widthArray[i];
+               // ROM.DATA[Constants.characters_width + i] = widthArray[i];
+                ROM.Write(Constants.characters_width + i, widthArray[i], true, "Gfx Width");
             }
 
             savedBytes.Clear();
@@ -912,7 +915,8 @@ namespace ZeldaFullEditor
 
 
 
-                    ROM.DATA[pos] = b;
+                    //ROM.DATA[pos] = b;
+                    ROM.Write(pos, b, true, "Text Data");
                     if (b == 0x80)
                     {
                         if (first)
@@ -933,12 +937,14 @@ namespace ZeldaFullEditor
                     }
                     pos++;
                 }
-                ROM.DATA[pos] = 0x7F;
+                // ROM.DATA[pos] = 0x7F;
+                ROM.Write(pos, 0x7F, true, "Terminator Text");
                 pos++;
 
 
             }
-            ROM.DATA[pos] = 0xFF;
+            ROM.Write(pos, 0xFF, true, "End of Text");
+            //ROM.DATA[pos] = 0xFF;
             while (pos < Constants.text_data2 + 0x14BF)
             {
                 
@@ -1070,7 +1076,8 @@ namespace ZeldaFullEditor
         {
             for (int i = 0; i < 100; i++)
             {
-                ROM.DATA[Constants.characters_width + i] = widthArray[i];
+                //ROM.DATA[Constants.characters_width + i] = widthArray[i];
+                ROM.Write(Constants.characters_width + i, widthArray[i], true, "Width Font");
             }
 
             using (var fs = new FileStream(romname, FileMode.OpenOrCreate, FileAccess.Write))

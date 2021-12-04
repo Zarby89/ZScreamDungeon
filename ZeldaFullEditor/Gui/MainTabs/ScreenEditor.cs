@@ -1274,23 +1274,35 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             for (int i = 0; i < 10; i++)
             {
-                ROM.DATA[0x67E26 + i] = oamData[i].x;
-                ROM.DATA[0x67E30 + (i * 2)] = (byte)(oamData[i].y - 22);
+                ROM.Write(0x67E26 + i, oamData[i].x);
+                ROM.Write(0x67E30 + (i * 2), (byte)(oamData[i].y - 22), true, "Title Screen OAM Related");
+
+                /*ROM.DATA[0x67E26 + i] = oamData[i].x;
+                ROM.DATA[0x67E30 + (i * 2)] = (byte)(oamData[i].y - 22);*/
                 if (uppersprCheckbox.Checked)
                 {
-                    ROM.DATA[0x67E1C + i] = (byte)(oamData[i].tile - 512);
+                    //ROM.DATA[0x67E1C + i] = (byte)(oamData[i].tile - 512);
+                    ROM.Write(0x67E1C + i, (byte)(oamData[i].tile - 512), true, "Title Screen OAM Related");
+                    
                 }
                 else
                 {
-                    ROM.DATA[0x67E1C + i] = (byte)(oamData[i].tile - 768);
+                    //ROM.DATA[0x67E1C + i] = (byte)(oamData[i].tile - 768);
+                    ROM.Write(0x67E1C + i, (byte)(oamData[i].tile - 768), true, "Title Screen OAM Related");
                 }
             }
 
 
             //new position //PC:108000 / S:218000
-            ROM.DATA[0x138C + 3] = 0x21;
+            int titleScreenPosition = 0x108000; // in PC
+            int snestitleScreenPosition = Utils.PcToSnes(titleScreenPosition);
+            ROM.Write(0x138C + 3, (byte)(snestitleScreenPosition >> 16), true, "Title Screen Pointer");
+            ROM.Write(0x1383 + 3, (byte)(snestitleScreenPosition >> 8), true, "Title Screen Pointer");
+            ROM.Write(0x137A + 3, (byte)(snestitleScreenPosition), true, "Title Screen Pointer");
+
+            /*ROM.DATA[0x138C + 3] = 0x21;
             ROM.DATA[0x1383 + 3] = 0x80;
-            ROM.DATA[0x137A + 3] = 0x00;
+            ROM.DATA[0x137A + 3] = 0x00;*/
 
             //just do a full DMA of all tiles why not...
             //header bytes
@@ -1327,18 +1339,25 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
             if (uppersprCheckbox.Checked)
             {
-                ROM.DATA[0x67E92] = (byte)(0x20 + ((oamData[0].pal << 1)));
+                ROM.Write(0x67E92, (byte)(0x20 + ((oamData[0].pal << 1))),true, "Title Screen OAM Related");
+                //ROM.DATA[0x67E92] = (byte)(0x20 + ((oamData[0].pal << 1)));
             }
             else
             {
-                ROM.DATA[0x67E92] = (byte)(0x21 + ((oamData[0].pal << 1)));
+                //ROM.DATA[0x67E92] = (byte)(0x21 + ((oamData[0].pal << 1)));
+                ROM.Write(0x67E92, (byte)(0x21 + ((oamData[0].pal << 1))),true, "Title Screen OAM Related");
+
             }
 
 
-            for (int i = 0; i < allData.Count; i++)
+            /*for (int i = 0; i < allData.Count; i++)
             {
-                ROM.DATA[i + 0x108000] = allData[i];
-            }
+                //ROM.DATA[i + titleScreenPosition] = allData[i];
+                
+            }*/
+            ROM.Write(titleScreenPosition, allData.ToArray(), true, "Title Screen Data");
+
+
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -1454,7 +1473,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 {
                     if (rSide == false)
                     {
-                        ROM.DATA[p] = mapdata[count];
+                        ROM.Write(p, mapdata[count],true, "Overworld Map Data");
+                        //ROM.DATA[p] = mapdata[count];
                         p++;
                         if (cSide >= 31)
                         {
@@ -1467,7 +1487,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
                     }
                     else
                     {
-                        ROM.DATA[p2] = mapdata[count] ;
+                        ROM.Write(p2, mapdata[count],true, "Overworld Map Data");
+                        //ROM.DATA[p2] = mapdata[count] ;
                         p2++;
                         if (cSide >= 31)
                         {
@@ -1482,7 +1503,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 {
                     if (rSide == false)
                     {
-                        ROM.DATA[p3] = mapdata[count];
+                        ROM.Write(p3, mapdata[count], true, "Overworld Map Data");
+                        //ROM.DATA[p3] = mapdata[count];
                         p3++;
                         if (cSide >= 31)
                         {
@@ -1495,7 +1517,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
                     }
                     else
                     {
-                        ROM.DATA[p4] = mapdata[count];
+                        ROM.Write(p4, mapdata[count], true, "Overworld Map Data");
+                        //ROM.DATA[p4] = mapdata[count];
                         p4++;
                         if (cSide >= 31)
                         {
@@ -1514,7 +1537,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
             int line = 0;
             while (true)
             {
-                ROM.DATA[p5] = dwmapdata[1040 + count + (line * 64)];
+                ROM.Write(p5, dwmapdata[1040 + count + (line * 64)], true, "Overworld Map Data");
+                //ROM.DATA[p5] = dwmapdata[1040 + count + (line * 64)];
                 p5++;
                 count++;
                 if (count >= 32)
@@ -1540,19 +1564,25 @@ namespace ZeldaFullEditor.Gui.MainTabs
                     }
                     if (e < 9)
                     {
-                        ROM.WriteShort(addresses[i] + (e * 2), (allMapIcons[e][i].x << 4));
-                        ROM.WriteShort((addresses[i] + 18) + (e * 2), (allMapIcons[e][i].y << 4));
-                        ROM.WriteShort((addressesgfx[i] + e * 2), allMapIcons[e][i].gfx);
+                        ROM.WriteShort(addresses[i] + (e * 2), (allMapIcons[e][i].x << 4), true, "Overworld Map Icons");
+                        ROM.WriteShort((addresses[i] + 18) + (e * 2), (allMapIcons[e][i].y << 4), true, "Overworld Map Icons");
+                        ROM.WriteShort((addressesgfx[i] + e * 2), allMapIcons[e][i].gfx, true, "Overworld Map Icons");
                     }
                     else
                     {
                         short px = (short)(allMapIcons[e][i].x << 4);
                         short py = (short)(allMapIcons[e][i].y << 4);
-                        ROM.DATA[0x53763 + i] = (byte)(px & 0xFF);
-                        ROM.DATA[0x5376b + i] = (byte)((px>>8) & 0xFF);
+                        //ROM.DATA[0x53763 + i] = (byte)(px & 0xFF);
+                        //ROM.DATA[0x5376b + i] = (byte)((px>>8) & 0xFF);
+                        ROM.Write(0x53763 + i, (byte)(px & 0xFF), true, "Overworld Map Data");
+                        ROM.Write(0x5376b + i, (byte)((px >> 8) & 0xFF), true, "Overworld Map Data");
 
-                        ROM.DATA[0x53773 + i] = (byte)(py & 0xFF);
-                        ROM.DATA[0x5377b + i] = (byte)((py >> 8) & 0xFF);
+
+                        //ROM.DATA[0x53773 + i] = (byte)(py & 0xFF);
+                        //ROM.DATA[0x5377b + i] = (byte)((py >> 8) & 0xFF);
+                        ROM.Write(0x53773 + i, (byte)(py & 0xFF), true, "Overworld Map Data");
+                        ROM.Write(0x5377b + i, (byte)((py >> 8) & 0xFF), true, "Overworld Map Data");
+
                     }
                 }
             }
@@ -1669,6 +1699,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
                         rdata[j] = 0x0F;
                         gdata[j] = 0xFF;
                         rdata[j] = ROM.DATA[pcPtr + j + (i * 25)]; //set the rooms
+                        
                         if (rdata[j] == 0x0F)
                         {
                             gdata[j] = 0xFF;
@@ -2089,7 +2120,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
             {
                 for (int i = 0; i < (372 * 4); i++)
                 {
-                    ROM.DATA[Constants.dungeonMap_tile16Exp + i] = ROM.DATA[Constants.dungeonMap_tile16 + i];
+                    //ROM.DATA[Constants.dungeonMap_tile16Exp + i] = ROM.DATA[Constants.dungeonMap_tile16 + i];
+                    ROM.Write(Constants.dungeonMap_tile16Exp + i, ROM.DATA[Constants.dungeonMap_tile16 + i], true, "Dungeon Map Related");
+
                 }
                 //Replace all these address by JSRs
                 //0x56652
@@ -2166,12 +2199,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
                 floors = ((dungmaps[d].nbrOfFloor << 4) | dungmaps[d].nbrOfBasement);
                 
 
-                ROM.WriteShort((Constants.dungeonMap_floors) + (d * 2), floors);
-                ROM.WriteShort((Constants.dungeonMap_bossrooms) + (d * 2), dungmaps[d].bossRoom);
+                ROM.WriteShort((Constants.dungeonMap_floors) + (d * 2), floors, true, "Dungeon Map Data");
+                ROM.WriteShort((Constants.dungeonMap_bossrooms) + (d * 2), dungmaps[d].bossRoom,true, "Dungeon Map Data");
                 bool searchBoss = true;
                 if (dungmaps[d].bossRoom == 0x000F)
                 {
-                    ROM.WriteShort((0x56E79) + (d * 2), 0xFFFF);
+                    ROM.WriteShort((0x56E79) + (d * 2), 0xFFFF, true, "Dungeon Map Data");
                     searchBoss = false;
                 }
 
@@ -2186,11 +2219,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
                         {
                             if (dungmaps[d].bossRoom == (ushort)dungmaps[d].FloorRooms[f][r])
                             {
-                                ROM.WriteShort((0x56E79) + (d * 2), f);
+                                ROM.WriteShort((0x56E79) + (d * 2), f, true, "Dungeon Map Data");
                                 searchBoss = false;
                             }
                         }
-                        ROM.DATA[pos] = dungmaps[d].FloorRooms[f][r];
+                        //ROM.DATA[pos] = dungmaps[d].FloorRooms[f][r];
+                        ROM.Write(pos, dungmaps[d].FloorRooms[f][r],true, "Dungeon Map Related");
                         pos++; //increment position at each write
 
                         if (pos >= 0x575D9 && pos <= 0x57620)
@@ -2216,12 +2250,13 @@ namespace ZeldaFullEditor.Gui.MainTabs
                     {
                         if (dungmaps[d].FloorGfx[f][r] != 0xFF)
                         {
-                            ROM.DATA[pos] = dungmaps[d].FloorGfx[f][r];
+                            //ROM.DATA[pos] = dungmaps[d].FloorGfx[f][r];
+                            ROM.Write(pos, dungmaps[d].FloorGfx[f][r], true, "Dungeon Map Related");
                             pos++; //increment position at each write
                             if (pos >= 0x575D9 && pos <= 0x57620)
                             {
                                 pos = 0x57621;
-                                ROM.WriteShort(Constants.dungeonMap_gfx_ptr + (d * 2), Utils.PcToSnes(pos));
+                                ROM.WriteShort(Constants.dungeonMap_gfx_ptr + (d * 2), Utils.PcToSnes(pos), true, "Dungeon Map Related");
                                 f = 50; //restart the room since it was in reserved space
                                 d -= 1;
                                 searchBoss = false;
@@ -2595,7 +2630,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
                             {
                                 for (int x = 0; x < 8; x++)
                                 {
-                                    ROM.DATA[0x0C4000 + pos] = ptr[x + (sx * 8) + (y * 128) + (sy * 1024)];
+                                    //ROM.DATA[0x0C4000 + pos] = ptr[x + (sx * 8) + (y * 128) + (sy * 1024)];
+                                    ROM.Write(0x0C4000 + pos, ptr[x + (sx * 8) + (y * 128) + (sy * 1024)], true, "Overworld 8bpp Map");
                                     pos++;
                                 }
                             }
@@ -2878,13 +2914,23 @@ namespace ZeldaFullEditor.Gui.MainTabs
         {
             for (int i = 0; i < 6; i++)
             {
-                ROM.DATA[Constants.triforceVertices + 0 + (i * 3)] = (byte)triforceVertices[i].x;
+                ROM.Write(Constants.triforceVertices + 0 + (i * 3), (byte)triforceVertices[i].x,true, "Triforce Vertice");
+                ROM.Write(Constants.triforceVertices + 1 + (i * 3), (byte)triforceVertices[i].y, true, "Triforce Vertice");
+                ROM.Write(Constants.triforceVertices + 2 + (i * 3), (byte)triforceVertices[i].z, true, "Triforce Vertice");
+
+                ROM.Write(Constants.crystalVertices + 0 + (i * 3), (byte)crystalVertices[i].x, true, "Crystal Vertice");
+                ROM.Write(Constants.crystalVertices + 1 + (i * 3), (byte)crystalVertices[i].y, true, "Crystal Vertice");
+                ROM.Write(Constants.crystalVertices + 2 + (i * 3), (byte)crystalVertices[i].z, true, "Crystal Vertice");
+
+                /*ROM.DATA[Constants.triforceVertices + 0 + (i * 3)] = (byte)triforceVertices[i].x;
                 ROM.DATA[Constants.triforceVertices + 1 + (i * 3)] = (byte)triforceVertices[i].y;
                 ROM.DATA[Constants.triforceVertices + 2 + (i * 3)] = (byte)triforceVertices[i].z;
 
                 ROM.DATA[Constants.crystalVertices + 0 + (i * 3)] = (byte)crystalVertices[i].x;
                 ROM.DATA[Constants.crystalVertices + 1 + (i * 3)] = (byte)crystalVertices[i].y;
-                ROM.DATA[Constants.crystalVertices + 2 + (i * 3)] = (byte)crystalVertices[i].z;
+                ROM.DATA[Constants.crystalVertices + 2 + (i * 3)] = (byte)crystalVertices[i].z;*/
+
+
             }
         }
 

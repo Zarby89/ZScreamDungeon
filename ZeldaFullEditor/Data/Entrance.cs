@@ -321,55 +321,92 @@ namespace ZeldaFullEditor
             //TODO: Change these save
             if (startingentrance == false)
             {
-                ROM.DATA[(Constants.entrance_room + (entranceId * 2) + 1)] = (byte)((room >> 8) & 0xFF);
-                ROM.DATA[Constants.entrance_room + (entranceId * 2)] = (byte)(room & 0xFF);
+                ROM.WriteShort(Constants.entrance_room + (entranceId * 2), room, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_room + (entranceId * 2) + 1)] = (byte)((room >> 8) & 0xFF);
+                //ROM.DATA[Constants.entrance_room + (entranceId * 2)] = (byte)(room & 0xFF);
 
-                ROM.DATA[(Constants.entrance_yposition + (entranceId * 2)) + 1] = (byte)((yposition >> 8) & 0xFF);
-                ROM.DATA[Constants.entrance_yposition + (entranceId * 2)] = (byte)(yposition & 0xFF);
+                ROM.WriteShort(Constants.entrance_yposition + (entranceId * 2), yposition, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_yposition + (entranceId * 2)) + 1] = (byte)((yposition >> 8) & 0xFF);
+                //ROM.DATA[Constants.entrance_yposition + (entranceId * 2)] = (byte)(yposition & 0xFF);
 
-                ROM.DATA[(Constants.entrance_xposition + (entranceId * 2)) + 1] = (byte)((xposition >> 8) & 0xFF);
-                ROM.DATA[Constants.entrance_xposition + (entranceId * 2)] = (byte)(xposition & 0xFF);
+                ROM.WriteShort(Constants.entrance_xposition + (entranceId * 2), xposition, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_xposition + (entranceId * 2)) + 1] = (byte)((xposition >> 8) & 0xFF);
+                //ROM.DATA[Constants.entrance_xposition + (entranceId * 2)] = (byte)(xposition & 0xFF);
 
-                ROM.DATA[(Constants.entrance_xscroll + (entranceId * 2)) + 1] = (byte)((xscroll >> 8) & 0xFF);
-                ROM.DATA[Constants.entrance_xscroll + (entranceId * 2)] = (byte)(xscroll & 0xFF);
+                ROM.WriteShort(Constants.entrance_yscroll + (entranceId * 2), yscroll, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_xscroll + (entranceId * 2)) + 1] = (byte)((xscroll >> 8) & 0xFF);
+                //ROM.DATA[Constants.entrance_xscroll + (entranceId * 2)] = (byte)(xscroll & 0xFF);
 
-                ROM.DATA[(Constants.entrance_yscroll + (entranceId * 2)) + 1] = (byte)((yscroll >> 8) & 0xFF);
-                ROM.DATA[Constants.entrance_yscroll + (entranceId * 2)] = (byte)(yscroll & 0xFF);
+                ROM.WriteShort(Constants.entrance_xscroll + (entranceId * 2), xscroll, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_yscroll + (entranceId * 2)) + 1] = (byte)((yscroll >> 8) & 0xFF);
+                //ROM.DATA[Constants.entrance_yscroll + (entranceId * 2)] = (byte)(yscroll & 0xFF);
 
-                ROM.DATA[(Constants.entrance_cameraxposition + (entranceId * 2)) + 1] = (byte)((xcamera >> 8) & 0xFF);
-                ROM.DATA[Constants.entrance_cameraxposition + (entranceId * 2)] = (byte)(xcamera & 0xFF);
+                ROM.WriteShort(Constants.entrance_cameraxposition + (entranceId * 2), xcamera, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_cameraxposition + (entranceId * 2)) + 1] = (byte)((xcamera >> 8) & 0xFF);
+                //ROM.DATA[Constants.entrance_cameraxposition + (entranceId * 2)] = (byte)(xcamera & 0xFF);
 
-                ROM.DATA[(Constants.entrance_camerayposition + (entranceId * 2)) + 1] = (byte)((ycamera >> 8) & 0xFF);
-                ROM.DATA[Constants.entrance_camerayposition + (entranceId * 2)] = (byte)(ycamera & 0xFF);
+                ROM.WriteShort(Constants.entrance_camerayposition + (entranceId * 2), ycamera, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_camerayposition + (entranceId * 2)) + 1] = (byte)((ycamera >> 8) & 0xFF);
+                //ROM.DATA[Constants.entrance_camerayposition + (entranceId * 2)] = (byte)(ycamera & 0xFF);
 
-                ROM.DATA[(Constants.entrance_exit + (entranceId * 2) + 1)] = (byte)((exit >> 8) & 0xFF);
-                ROM.DATA[Constants.entrance_exit + (entranceId * 2)] = (byte)(exit & 0xFF);
-
-                ROM.DATA[Constants.entrance_blockset + entranceId] = (byte)(blockset & 0xFF);
-                ROM.DATA[Constants.entrance_music + entranceId] = (byte)(music & 0xFF);
-                ROM.DATA[Constants.entrance_dungeon + entranceId] = (byte)(dungeon & 0xFF);
-                ROM.DATA[Constants.entrance_door + entranceId] = (byte)(door & 0xFF);
-                ROM.DATA[Constants.entrance_floor + entranceId] = (byte)(floor & 0xFF);
-                ROM.DATA[Constants.entrance_ladderbg + entranceId] = (byte)(ladderbg & 0xFF);
-                ROM.DATA[Constants.entrance_scrolling + entranceId] = (byte)(scrolling & 0xFF);
-                ROM.DATA[Constants.entrance_scrollquadrant + entranceId] = (byte)(scrollquadrant & 0xFF);
-                (ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))]) = scrolledge_HU; //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                (ROM.DATA[(Constants.entrance_scrolledge + 1 + (entranceId * 8))]) = scrolledge_FU;
-                (ROM.DATA[(Constants.entrance_scrolledge + 2 + (entranceId * 8))]) = scrolledge_HD;
-                (ROM.DATA[(Constants.entrance_scrolledge + 3 + (entranceId * 8))]) = scrolledge_FD;
-                (ROM.DATA[(Constants.entrance_scrolledge + 4 + (entranceId * 8))]) = scrolledge_HL;
-                (ROM.DATA[(Constants.entrance_scrolledge + 5 + (entranceId * 8))]) = scrolledge_FL;
-                (ROM.DATA[(Constants.entrance_scrolledge + 6 + (entranceId * 8))]) = scrolledge_HR;
-                (ROM.DATA[(Constants.entrance_scrolledge + 7 + (entranceId * 8))]) = scrolledge_FR;
+                ROM.WriteShort(Constants.entrance_exit + (entranceId * 2), exit, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_exit + (entranceId * 2) + 1)] = (byte)((exit >> 8) & 0xFF);
+                //ROM.DATA[Constants.entrance_exit + (entranceId * 2)] = (byte)(exit & 0xFF);
+                ROM.Write(Constants.entrance_blockset + entranceId, (byte)(blockset & 0xFF), true, "Entrance Related");
+                //ROM.DATA[Constants.entrance_blockset + entranceId] = (byte)(blockset & 0xFF);
+                ROM.Write(Constants.entrance_music + entranceId, (byte)(music & 0xFF), true, "Entrance Related");
+                //ROM.DATA[Constants.entrance_music + entranceId] = (byte)(music & 0xFF);
+                ROM.Write(Constants.entrance_dungeon + entranceId, (byte)(dungeon & 0xFF), true, "Entrance Related");
+                //ROM.DATA[Constants.entrance_dungeon + entranceId] = (byte)(dungeon & 0xFF);
+                ROM.Write(Constants.entrance_door + entranceId, (byte)(door & 0xFF), true, "Entrance Related");
+                //ROM.DATA[Constants.entrance_door + entranceId] = (byte)(door & 0xFF);
+                ROM.Write(Constants.entrance_floor + entranceId, (byte)(floor & 0xFF), true, "Entrance Related");
+                //ROM.DATA[Constants.entrance_floor + entranceId] = (byte)(floor & 0xFF);
+                ROM.Write(Constants.entrance_ladderbg + entranceId, (byte)(ladderbg & 0xFF), true, "Entrance Related");
+                //ROM.DATA[Constants.entrance_ladderbg + entranceId] = (byte)(ladderbg & 0xFF);
+                ROM.Write(Constants.entrance_scrolling + entranceId, (byte)(scrolling & 0xFF), true, "Entrance Related");
+                //ROM.DATA[Constants.entrance_scrolling + entranceId] = (byte)(scrolling & 0xFF);
+                ROM.Write(Constants.entrance_scrollquadrant + entranceId, (byte)(scrollquadrant & 0xFF), true, "Entrance Related");
+                //ROM.DATA[Constants.entrance_scrollquadrant + entranceId] = (byte)(scrollquadrant & 0xFF);
+                ROM.Write((Constants.entrance_scrolledge + 0 + (entranceId * 8)), scrolledge_HU, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))] = scrolledge_HU; //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+                ROM.Write((Constants.entrance_scrolledge + 1 + (entranceId * 8)), scrolledge_FU, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_scrolledge + 1 + (entranceId * 8))] = scrolledge_FU;
+                ROM.Write((Constants.entrance_scrolledge + 2 + (entranceId * 8)), scrolledge_HD, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_scrolledge + 2 + (entranceId * 8))] = scrolledge_HD;
+                ROM.Write((Constants.entrance_scrolledge + 3 + (entranceId * 8)), scrolledge_FD, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_scrolledge + 3 + (entranceId * 8))] = scrolledge_FD;
+                ROM.Write((Constants.entrance_scrolledge + 4 + (entranceId * 8)), scrolledge_HL, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_scrolledge + 4 + (entranceId * 8))] = scrolledge_HL;
+                ROM.Write((Constants.entrance_scrolledge + 5 + (entranceId * 8)), scrolledge_FL, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_scrolledge + 5 + (entranceId * 8))] = scrolledge_FL;
+                ROM.Write((Constants.entrance_scrolledge + 6 + (entranceId * 8)), scrolledge_HR, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_scrolledge + 6 + (entranceId * 8))] = scrolledge_HR;
+                ROM.Write((Constants.entrance_scrolledge + 7 + (entranceId * 8)), scrolledge_FR, true, "Entrance Related");
+                //ROM.DATA[(Constants.entrance_scrolledge + 7 + (entranceId * 8))] = scrolledge_FR;
 
 
             }
             else
             {
-                ROM.DATA[(Constants.startingentrance_room + (entranceId * 2) + 1)] = (byte)((room >> 8) & 0xFF);
-                ROM.DATA[Constants.startingentrance_room + (entranceId * 2)] = (byte)(room & 0xFF);
 
-                ROM.DATA[(Constants.startingentrance_yposition + (entranceId * 2)) + 1] = (byte)((yposition >> 8) & 0xFF);
+                ROM.WriteShort(Constants.startingentrance_room + (entranceId * 2), room, true, "Starting Entrance Related");
+
+                ROM.WriteShort(Constants.startingentrance_yposition + (entranceId * 2), yposition, true, "Starting Entrance Related");
+
+                ROM.WriteShort(Constants.startingentrance_xposition + (entranceId * 2), xposition, true, "Starting Entrance Related");
+
+                ROM.WriteShort(Constants.startingentrance_yscroll + (entranceId * 2), yscroll, true, "Starting Entrance Related");
+
+                ROM.WriteShort(Constants.startingentrance_xscroll + (entranceId * 2), xscroll, true, "Starting Entrance Related");
+
+                ROM.WriteShort(Constants.startingentrance_cameraxposition + (entranceId * 2), xcamera, true, "Starting Entrance Related");
+
+                ROM.WriteShort(Constants.startingentrance_camerayposition + (entranceId * 2), ycamera, true, "Starting Entrance Related");
+
+                ROM.WriteShort(Constants.startingentrance_exit + (entranceId * 2), exit, true, "Starting Entrance Related");
+
+                /*ROM.DATA[(Constants.startingentrance_yposition + (entranceId * 2)) + 1] = (byte)((yposition >> 8) & 0xFF);
                 ROM.DATA[Constants.startingentrance_yposition + (entranceId * 2)] = (byte)(yposition & 0xFF);
 
                 ROM.DATA[(Constants.startingentrance_xposition + (entranceId * 2)) + 1] = (byte)((xposition >> 8) & 0xFF);
@@ -388,8 +425,26 @@ namespace ZeldaFullEditor
                 ROM.DATA[Constants.startingentrance_camerayposition + (entranceId * 2)] = (byte)(ycamera & 0xFF);
 
                 ROM.DATA[(Constants.startingentrance_exit + (entranceId * 2) + 1)] = (byte)((exit >> 8) & 0xFF);
-                ROM.DATA[Constants.startingentrance_exit + (entranceId * 2)] = (byte)(exit & 0xFF);
+                ROM.DATA[Constants.startingentrance_exit + (entranceId * 2)] = (byte)(exit & 0xFF);*/
 
+                ROM.Write(Constants.startingentrance_blockset + entranceId,(byte)(blockset & 0xFF), true, "Starting Entrance Related");
+                ROM.Write(Constants.startingentrance_music + entranceId,(byte)(music & 0xFF), true, "Starting Entrance Related");
+                ROM.Write(Constants.startingentrance_dungeon + entranceId,(byte)(dungeon & 0xFF), true, "Starting Entrance Related");
+                ROM.Write(Constants.startingentrance_door + entranceId,(byte)(door & 0xFF), true, "Starting Entrance Related");
+                ROM.Write(Constants.startingentrance_floor + entranceId,(byte)(floor & 0xFF), true, "Starting Entrance Related");
+                ROM.Write(Constants.startingentrance_ladderbg + entranceId,(byte)(ladderbg & 0xFF), true, "Starting Entrance Related");
+                ROM.Write(Constants.startingentrance_scrolling + entranceId,(byte)(scrolling & 0xFF), true, "Starting Entrance Related");
+                ROM.Write(Constants.startingentrance_scrollquadrant + entranceId,(byte)(scrollquadrant & 0xFF), true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 0 + (entranceId * 8)),scrolledge_HU, true, "Starting Entrance Related"); //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+                ROM.Write((Constants.startingentrance_scrolledge + 1 + (entranceId * 8)),scrolledge_FU, true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 2 + (entranceId * 8)),scrolledge_HD, true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 3 + (entranceId * 8)),scrolledge_FD, true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 4 + (entranceId * 8)),scrolledge_HL, true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 5 + (entranceId * 8)),scrolledge_FL, true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 6 + (entranceId * 8)),scrolledge_HR, true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 7 + (entranceId * 8)),scrolledge_FR, true, "Starting Entrance Related");
+
+                /*
                 ROM.DATA[Constants.startingentrance_blockset + entranceId] = (byte)(blockset & 0xFF);
                 ROM.DATA[Constants.startingentrance_music + entranceId] = (byte)(music & 0xFF);
                 ROM.DATA[Constants.startingentrance_dungeon + entranceId] = (byte)(dungeon & 0xFF);
@@ -406,6 +461,7 @@ namespace ZeldaFullEditor
                 ROM.DATA[(Constants.startingentrance_scrolledge + 5 + (entranceId * 8))] = scrolledge_FL;
                 ROM.DATA[(Constants.startingentrance_scrolledge + 6 + (entranceId * 8))] = scrolledge_HR;
                 ROM.DATA[(Constants.startingentrance_scrolledge + 7 + (entranceId * 8))] = scrolledge_FR;
+                */
             }
         }
 

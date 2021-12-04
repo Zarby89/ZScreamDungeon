@@ -239,10 +239,10 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = scene.ow.worldOffset; i < 64+ scene.ow.worldOffset; i++)
                 {
                     int gs = scene.ow.gameState;
-                    if (i >= 64)
+                    /*if (i >= 64)
                     {
                         gs = 0;
-                    }
+                    }*/
                     scene.ow.allsprites[gs].Remove(lastselectedSprite);
                 }
                 lastselectedSprite = null;

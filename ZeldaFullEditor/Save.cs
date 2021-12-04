@@ -166,12 +166,12 @@ namespace ZeldaFullEditor
 
                         int xy = (((o.y * 64) + o.x) << 1);
                         byte b1 = (byte)(xy & 0xFF);
-                        ROM.Write(pos, b1);
+                        ROM.Write(pos, b1, true, "Torches");
                         pos++;
                         byte b2 = (byte)((xy >> 8) & 0xFF);
                         if (o.layer == 1){b2 |= 0x20;}
                         b2 |= (byte)((o.lit ? 1:0) << 7);
-                        ROM.Write(pos, b2);
+                        ROM.Write(pos, b2, true, "Torches");
                         pos++;
 
                     }
@@ -1234,21 +1234,30 @@ namespace ZeldaFullEditor
                     a.CopyTo(mapDatap1[i], 0);
                     int snesPos = Utils.PcToSnes(pos);
                     mapPointers1[i] = snesPos;
-                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
+                    ROM.Write((Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i), (byte)(snesPos & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i), (byte)((snesPos >> 8) & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i), (byte)((snesPos >> 16) & 0xFF), true, "Overworld Map Pointer");
+                    /*ROM.DATA[(Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
                     ROM.DATA[(Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
-                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);*/
+
+                    ROM.Write(pos, a);
                     for (int j = 0; j < a.Length; j++)
                     {
-                        ROM.DATA[pos] = a[j];
+                        //ROM.DATA[pos] = a[j];
                         pos += 1;
                     }
                 }
                 else
                 {
                     int snesPos = mapPointers1[mapPointers1id[i]];
+                    ROM.Write((Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i), (byte)(snesPos & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i), (byte)((snesPos >> 8) & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i), (byte)((snesPos >> 16) & 0xFF), true, "Overworld Map Pointer");
+                    /*
                     ROM.DATA[(Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
                     ROM.DATA[(Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
-                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);*/
                 }
 
 
@@ -1266,15 +1275,18 @@ namespace ZeldaFullEditor
                     b.CopyTo(mapDatap2[i], 0);
                     int snesPos = Utils.PcToSnes(pos);
                     mapPointers2[i] = snesPos;
-                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
+                    /*ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
                     ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
-                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);*/
 
+                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i), (byte)(snesPos & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i), (byte)((snesPos >> 8) & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i), (byte)((snesPos >> 16) & 0xFF), true, "Overworld Map Pointer");
 
-
+                    ROM.Write(pos, b);
                     for (int j = 0; j < b.Length; j++)
                     {
-                        ROM.DATA[pos] = b[j];
+                        //ROM.DATA[pos] = b[j];
                         pos += 1;
                     }
 
@@ -1282,9 +1294,14 @@ namespace ZeldaFullEditor
                 else
                 {
                     int snesPos = mapPointers2[mapPointers2id[i]];
-                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
+                    /*ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
                     ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
                     ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+                    */
+                    
+                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i), (byte)(snesPos & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i), (byte)((snesPos >> 8) & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i), (byte)((snesPos >> 16) & 0xFF), true, "Overworld Map Pointer");
                 }
 
 
@@ -1308,16 +1325,16 @@ namespace ZeldaFullEditor
         {
             for(int i =0;i<0x0F;i++)
             {
-                ROM.WriteShort(Constants.GravesXTilePos + (i * 2), scene.ow.graves[i].xTilePos, false);
-                ROM.WriteShort(Constants.GravesYTilePos + (i * 2), scene.ow.graves[i].yTilePos, false);
-                ROM.WriteShort(Constants.GravesTilemapPos + (i * 2), scene.ow.graves[i].tilemapPos, false);
+                ROM.WriteShort(Constants.GravesXTilePos + (i * 2), scene.ow.graves[i].xTilePos, true, "Gravestones");
+                ROM.WriteShort(Constants.GravesYTilePos + (i * 2), scene.ow.graves[i].yTilePos, true, "Gravestones");
+                ROM.WriteShort(Constants.GravesTilemapPos + (i * 2), scene.ow.graves[i].tilemapPos, true, "Gravestones");
                 if (i == 0x0E)
                 {
-                    ROM.WriteShort(Constants.GraveLinkSpecialStairs, scene.ow.graves[i].tilemapPos - 0x80, false);
+                    ROM.WriteShort(Constants.GraveLinkSpecialStairs, scene.ow.graves[i].tilemapPos - 0x80, true, "Gravestones");
                 }
                 if (i == 0x0D)
                 {
-                    ROM.WriteShort(Constants.GraveLinkSpecialHole, scene.ow.graves[i].tilemapPos - 0x80, false);
+                    ROM.WriteShort(Constants.GraveLinkSpecialHole, scene.ow.graves[i].tilemapPos - 0x80, true, "Gravestones");
                 }
 
             }

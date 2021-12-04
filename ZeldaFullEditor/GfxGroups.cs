@@ -64,7 +64,7 @@ namespace ZeldaFullEditor
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    ROM.DATA[gfxPointer + (i * 8) + j] = mainGfx[i][j];
+                    ROM.Write(gfxPointer + (i * 8) + j,mainGfx[i][j], true, "Gfx Groups");
                 }
             }
 
@@ -72,7 +72,7 @@ namespace ZeldaFullEditor
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    ROM.DATA[Constants.entrance_gfx_group + (i * 4) + j] = roomGfx[i][j];
+                    ROM.Write(Constants.entrance_gfx_group + (i * 4) + j,roomGfx[i][j], true, "Gfx Groups");
                 }
             }
 
@@ -80,7 +80,7 @@ namespace ZeldaFullEditor
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    ROM.DATA[Constants.sprite_blockset_pointer + (i * 4) + j] = spriteGfx[i][j];
+                    ROM.Write(Constants.sprite_blockset_pointer + (i * 4) + j,spriteGfx[i][j], true, "sprGfx Groups");
                 }
             }
 
@@ -88,7 +88,7 @@ namespace ZeldaFullEditor
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    ROM.DATA[Constants.dungeons_palettes_groups + (i * 4) + j] = paletteGfx[i][j];
+                    ROM.Write(Constants.dungeons_palettes_groups + (i * 4) + j,paletteGfx[i][j], true, "palGfx Groups");
                 }
             }
         }

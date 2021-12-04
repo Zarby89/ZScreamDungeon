@@ -381,6 +381,7 @@ namespace ZeldaFullEditor
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
+            this.memoryManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -3201,7 +3202,8 @@ namespace ZeldaFullEditor
             this.saveSettingsToolStripMenuItem,
             this.exportAllMapsToolStripMenuItem,
             this.importAllMapsToolStripMenuItem,
-            this.importFromROMToolStripMenuItem});
+            this.importFromROMToolStripMenuItem,
+            this.memoryManagementToolStripMenuItem});
             this.projectToolStripMenuItem.Enabled = false;
             this.projectToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
@@ -4149,6 +4151,13 @@ namespace ZeldaFullEditor
             this.customPanel3.TabIndex = 19;
             this.customPanel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.customPanel3_MouseMove);
             // 
+            // memoryManagementToolStripMenuItem
+            // 
+            this.memoryManagementToolStripMenuItem.Name = "memoryManagementToolStripMenuItem";
+            this.memoryManagementToolStripMenuItem.Size = new System.Drawing.Size(224, 22);
+            this.memoryManagementToolStripMenuItem.Text = "Memory Management";
+            this.memoryManagementToolStripMenuItem.Click += new System.EventHandler(this.memoryManagementToolStripMenuItem_Click);
+            // 
             // DungeonMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -4575,6 +4584,7 @@ namespace ZeldaFullEditor
         private System.Windows.Forms.TabControl tabControl2;
         private CustomPanel customPanel3;
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.ToolStripMenuItem memoryManagementToolStripMenuItem;
     }
 }
 
