@@ -228,7 +228,7 @@ namespace ZeldaFullEditor
             this.name = ROMStructure.roomsNames[index];
             messageid = (short)((ROM.DATA[Constants.messages_id_dungeon + (index * 2) + 1] << 8 ) + ROM.DATA[Constants.messages_id_dungeon + (index * 2)]);
         }
-
+        
         public void reloadLayout()
         {
             tilesLayoutObjects.Clear();

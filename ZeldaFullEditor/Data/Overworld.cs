@@ -235,17 +235,21 @@ namespace ZeldaFullEditor
             int tpos = Constants.map16Tiles;
             for (int i = 0; i < 3760; i += 1)//3760
             {
-                ROM.DATA[tpos] = (byte)(tiles16[i].tile0.toShort() & 0xFF);
-                ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile0.toShort() >> 8) & 0xFF);
+                ROM.WriteShort(tpos, tiles16[i].tile0.toShort(), true, "Tile16Data");
+                //ROM.DATA[tpos] = (byte)(tiles16[i].tile0.toShort() & 0xFF);
+                //ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile0.toShort() >> 8) & 0xFF);
                 tpos += 2;
-                ROM.DATA[tpos] = (byte)(tiles16[i].tile1.toShort() & 0xFF);
-                ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile1.toShort() >> 8) & 0xFF);
+                ROM.WriteShort(tpos, tiles16[i].tile1.toShort(), true, "Tile16Data");
+                //ROM.DATA[tpos] = (byte)(tiles16[i].tile1.toShort() & 0xFF);
+                //ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile1.toShort() >> 8) & 0xFF);
                 tpos += 2;
-                ROM.DATA[tpos] = (byte)(tiles16[i].tile2.toShort() & 0xFF);
-                ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile2.toShort() >> 8) & 0xFF);
+                ROM.WriteShort(tpos, tiles16[i].tile2.toShort(), true, "Tile16Data");
+                //ROM.DATA[tpos] = (byte)(tiles16[i].tile2.toShort() & 0xFF);
+                //ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile2.toShort() >> 8) & 0xFF);
                 tpos += 2;
-                ROM.DATA[tpos] = (byte)(tiles16[i].tile3.toShort() & 0xFF);
-                ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile3.toShort() >> 8) & 0xFF);
+                ROM.WriteShort(tpos, tiles16[i].tile3.toShort(), true, "Tile16Data");
+                //ROM.DATA[tpos] = (byte)(tiles16[i].tile3.toShort() & 0xFF);
+                //ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile3.toShort() >> 8) & 0xFF);
                 tpos += 2;
             }
         }
@@ -833,7 +837,45 @@ namespace ZeldaFullEditor
                 }
 
                 //Top Left
-                ROM.DATA[Constants.map32TilesTL + (i)] = (byte)(t32Unique[index].tile0 & 0xFF);
+                ROM.Write(Constants.map32TilesTL + (i),(byte)(t32Unique[index].tile0 & 0xFF), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesTL + (i + 1),(byte)(t32Unique[index + 1].tile0 & 0xFF), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesTL + (i + 2),(byte)(t32Unique[index + 2].tile0 & 0xFF), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesTL + (i + 3),(byte)(t32Unique[index + 3].tile0 & 0xFF), true, "Tile32Data");
+
+                ROM.Write(Constants.map32TilesTL + (i + 4),(byte)(((t32Unique[index].tile0 >> 4) & 0xF0) + ((t32Unique[index + 1].tile0 >> 8) & 0x0F)), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesTL + (i + 5),(byte)(((t32Unique[index + 2].tile0 >> 4) & 0xF0) + ((t32Unique[index + 3].tile0 >> 8) & 0x0F)), true, "Tile32Data");
+
+                //Top Right
+                ROM.Write(Constants.map32TilesTR + (i),(byte)(t32Unique[index].tile1 & 0xFF), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesTR + (i + 1),(byte)(t32Unique[index + 1].tile1 & 0xFF), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesTR + (i + 2),(byte)(t32Unique[index + 2].tile1 & 0xFF), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesTR + (i + 3),(byte)(t32Unique[index + 3].tile1 & 0xFF), true, "Tile32Data");
+
+                ROM.Write(Constants.map32TilesTR + (i + 4),(byte)(((t32Unique[index].tile1 >> 4) & 0xF0) | ((t32Unique[index + 1].tile1 >> 8) & 0x0F)), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesTR + (i + 5),(byte)(((t32Unique[index + 2].tile1 >> 4) & 0xF0) | ((t32Unique[index + 3].tile1 >> 8) & 0x0F)), true, "Tile32Data");
+
+                //Bottom Left
+                ROM.Write(Constants.map32TilesBL + (i),(byte)(t32Unique[index].tile2 & 0xFF), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesBL + (i + 1),(byte)(t32Unique[index + 1].tile2 & 0xFF), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesBL + (i + 2),(byte)(t32Unique[index + 2].tile2 & 0xFF), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesBL + (i + 3),(byte)(t32Unique[index + 3].tile2 & 0xFF), true, "Tile32Data");
+
+                ROM.Write(Constants.map32TilesBL + (i + 4),(byte)(((t32Unique[index].tile2 >> 4) & 0xF0) | ((t32Unique[index + 1].tile2 >> 8) & 0x0F)), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesBL + (i + 5),(byte)(((t32Unique[index + 2].tile2 >> 4) & 0xF0) | ((t32Unique[index + 3].tile2 >> 8) & 0x0F)), true, "Tile32Data");
+
+                //Bottom Right
+                ROM.Write(Constants.map32TilesBR + (i),(byte)(t32Unique[index].tile3 & 0xFF), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesBR + (i + 1),(byte)(t32Unique[index + 1].tile3 & 0xFF), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesBR + (i + 2),(byte)(t32Unique[index + 2].tile3 & 0xFF), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesBR + (i + 3),(byte)(t32Unique[index + 3].tile3 & 0xFF), true, "Tile32Data");
+
+                ROM.Write(Constants.map32TilesBR + (i + 4),(byte)(((t32Unique[index].tile3 >> 4) & 0xF0) | ((t32Unique[index + 1].tile3 >> 8) & 0x0F)), true, "Tile32Data");
+                ROM.Write(Constants.map32TilesBR + (i + 5),(byte)(((t32Unique[index + 2].tile3 >> 4) & 0xF0) | ((t32Unique[index + 3].tile3 >> 8) & 0x0F)), true, "Tile32Data");
+
+
+
+                /*
+                                 ROM.DATA[Constants.map32TilesTL + (i)] = (byte)(t32Unique[index].tile0 & 0xFF);
                 ROM.DATA[Constants.map32TilesTL + (i + 1)] = (byte)(t32Unique[index + 1].tile0 & 0xFF);
                 ROM.DATA[Constants.map32TilesTL + (i + 2)] = (byte)(t32Unique[index + 2].tile0 & 0xFF);
                 ROM.DATA[Constants.map32TilesTL + (i + 3)] = (byte)(t32Unique[index + 3].tile0 & 0xFF);
@@ -866,7 +908,11 @@ namespace ZeldaFullEditor
                 ROM.DATA[Constants.map32TilesBR + (i + 3)] = (byte)(t32Unique[index + 3].tile3 & 0xFF);
 
                 ROM.DATA[Constants.map32TilesBR + (i + 4)] = (byte)(((t32Unique[index].tile3 >> 4) & 0xF0) | ((t32Unique[index + 1].tile3 >> 8) & 0x0F));
-                ROM.DATA[Constants.map32TilesBR + (i + 5)] = (byte)(((t32Unique[index + 2].tile3 >> 4) & 0xF0) | ((t32Unique[index + 3].tile3 >> 8) & 0x0F));
+                ROM.DATA[Constants.map32TilesBR + (i + 5)] = (byte)(((t32Unique[index + 2].tile3 >> 4) & 0xF0) | ((t32Unique[index + 3].tile3 >> 8) & 0x0F)); 
+               
+                */
+
+
 
                 index += 4;
                 c += 2;
@@ -927,6 +973,7 @@ namespace ZeldaFullEditor
              //Console.WriteLine();
              //Save32Tiles();
          }*/
+
 
         public void loadItems()
         {

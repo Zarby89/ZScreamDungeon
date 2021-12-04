@@ -17,22 +17,25 @@ namespace ZeldaFullEditor
         static int biggerAddress = 0;
         static string blockName = "";
         public static bool AdvancedLogs = true;
+        public static List<LogInfos> advancedLogData = new List<LogInfos>();
 
         public static void StartBlockLogWriting(string name,int addr)
         {
-            romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") +" [Block of Data](" + name + ")\r\n");
+
+            //romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") +" [Block of Data](" + name + ")\r\n");
+            advancedLogData.Add(new LogInfos(addr, name + "\r\n" + addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " [Block of Data](" + name + ")\r\n"));
             biggerAddress = addr;
             blockName = name;
-            logBlock = true;
+            logBlock = false;
         }
 
         public static void EndBlockLogWriting()
         {
-            romLog.Append(biggerAddress.ToString("X6") + "/" + Utils.PcToSnes(biggerAddress).ToString("X6") + " [END Block of Data](" + blockName + ")\r\n");
+            //romLog.Append(biggerAddress.ToString("X6") + "/" + Utils.PcToSnes(biggerAddress).ToString("X6") + " [END Block of Data](" + blockName + ")\r\n");
             logBlock = false;
         }
 
-        public static void Write(int addr, byte value, bool log = false, string info = "")
+        public static void Write(int addr, byte value, bool log = true, string info = "NO INFOS")
         {
             DATA[addr] = value;
             if (logBlock)
@@ -50,12 +53,17 @@ namespace ZeldaFullEditor
 
             if (log)
             {
-                romLog.Append(addr.ToString("X6") +"/" + Utils.PcToSnes(addr).ToString("X6") +" : " +value.ToString("X2") + " // " + info + "\r\n");
+
+                    advancedLogData.Add(new LogInfos(addr, addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : " + value.ToString("X2") + " // " + info + "\r\n"));
+                
+                //romLog.Append(addr.ToString("X6") +"/" + Utils.PcToSnes(addr).ToString("X6") +" : " +value.ToString("X2") + " // " + info + "\r\n");
+               
             }
         }
 
-        public static void Write(int addr, byte[] value, bool log = false, string info = "")
+        public static void Write(int addr, byte[] value, bool log = true, string info = "")
         {
+            StringBuilder sb = new StringBuilder();
             if (logBlock)
             {
                 if ((addr + value.Length) > biggerAddress)
@@ -68,7 +76,8 @@ namespace ZeldaFullEditor
             {
                 if (log)
                 {
-                    romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : ");
+                    
+                    sb.Append(info +" "+ addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : ");
                 }
 
                 for (int i = 0; i < value.Length; i++)
@@ -76,13 +85,8 @@ namespace ZeldaFullEditor
                     DATA[addr + i] = value[i];
                     if (log)
                     {
-                        romLog.Append(value[i].ToString("X2") + ", ");
+                        sb.Append(value[i].ToString("X2") + ", ");
                     }
-                }
-
-                if (log)
-                {
-                    romLog.Append("//" + info + "\r\n");
                 }
             }
             else
@@ -92,9 +96,11 @@ namespace ZeldaFullEditor
                     DATA[addr + i] = value[i];
                 }
             }
+            advancedLogData.Add(new LogInfos(addr, sb.ToString() + info + "\r\n"));
+            sb.Clear();
         }
 
-        public static void WriteLong(int addr, int value, bool log = false, string info = "")
+        public static void WriteLong(int addr, int value, bool log = true, string info = "")
         {
             DATA[addr] = (byte)(value & 0xFF);
             DATA[addr + 1] = (byte)((value >> 8) & 0xFF);
@@ -115,11 +121,12 @@ namespace ZeldaFullEditor
 
             if (log)
             {
-                romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : Long(" + value.ToString("X6") + ") // " + info +"\r\n");
+                //romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : Long(" + value.ToString("X6") + ") // " + info +"\r\n");
+                advancedLogData.Add(new LogInfos(addr, addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : Long(" + value.ToString("X6") + ") // " + info + "\r\n"));
             }
         }
 
-        public static void WriteShort(int addr, int value, bool log = false, string info = "")
+        public static void WriteShort(int addr, int value, bool log = true, string info = "")
         {
             DATA[addr] = (byte)(value & 0xFF);
             DATA[addr + 1] = (byte)((value >> 8) & 0xFF);
@@ -139,7 +146,8 @@ namespace ZeldaFullEditor
 
             if (log)
             {
-                romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : Word(" + value.ToString("X4") + ") // "+info+"\r\n");
+                //romLog.Append(addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : Word(" + value.ToString("X4") + ") // "+info+"\r\n");
+                advancedLogData.Add(new LogInfos(addr, addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : Word(" + value.ToString("X4") + ") // " + info + "\r\n"));
             }
         }
 
@@ -175,7 +183,13 @@ namespace ZeldaFullEditor
         public static void SaveLogs()
         {
             string fname = "Logs.txt";
+            advancedLogData = advancedLogData.OrderByDescending(o => o.address).ToList();
+            for(int i = advancedLogData.Count-1; i > -1 ; i--)
+            {
+                romLog.Append(advancedLogData[i].text);
+            }
             File.WriteAllText(fname, romLog.ToString());
+            advancedLogData.Clear();
             romLog.Clear();
         }
 

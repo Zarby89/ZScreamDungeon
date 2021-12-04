@@ -174,9 +174,9 @@ namespace ZeldaFullEditor.Gui
                     if (ROM.DATA[gfxPointer1 + i] <= 0x20)
                     {
                         int saddr = Utils.PcToSnes(pos);
-                        ROM.DATA[gfxPointer3 + i] = (byte)(saddr & 0xFF);
-                        ROM.DATA[gfxPointer2 + i] = (byte)(saddr >> 8 & 0xFF);
-                        ROM.DATA[gfxPointer1 + i] = (byte)(saddr >> 16 & 0xFF);
+                        ROM.Write(gfxPointer3 + i,(byte)(saddr & 0xFF), true, "Gfx Ptrs");
+                        ROM.Write(gfxPointer2 + i,(byte)(saddr >> 8 & 0xFF), true, "Gfx Ptrs");
+                        ROM.Write(gfxPointer1 + i,(byte)(saddr >> 16 & 0xFF), true, "Gfx Ptrs");
                         if (bpp2 == false)
                         {
                             byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, 0x600);
@@ -221,7 +221,7 @@ namespace ZeldaFullEditor.Gui
                     {
                         for (int j = 0; j < 0x600; j++)
                         {
-                            ROM.DATA[uPos + j] = gfxSheets3bpp[i][j];
+                            ROM.Write(uPos + j,gfxSheets3bpp[i][j], true, "Gfx data");
                         }
 
                         uPos += 0x600;
