@@ -11,8 +11,7 @@ namespace ZeldaFullEditor
         public List<TilePos> tilesData = new List<TilePos>();
         public OverlayData()
         {
-
+            //TODO: Add something here?
         }
-
     }
 }

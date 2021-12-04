@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-
     class ScreenStrip
     {
         public List<ushort> data = new List<ushort>();
@@ -33,6 +32,7 @@ namespace ZeldaFullEditor
                     d[(i * 2) + 4] = (byte)(data[i] & 0xFF);
                     d[(i * 2) + 5] = (byte)((data[i] & 0xFF00) >> 8);
                 }
+
                 return d;
             }
             else
@@ -45,8 +45,10 @@ namespace ZeldaFullEditor
                 d[3] = (byte)((((data.Count * 2) - 1) & 0xFF));
                 d[4] = (byte)(data[0] & 0xFF);
                 d[5] = (byte)((data[0] & 0xFF00) >> 8);
+
                 return d;
             }
+
             return null;
         }
     }

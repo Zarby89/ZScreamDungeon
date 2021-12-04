@@ -15,7 +15,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Properties;
 
-
 namespace ZeldaFullEditor
 {
     [Serializable]
@@ -41,51 +40,77 @@ namespace ZeldaFullEditor
 
         public string fromExported = "";
 
-
         private byte _layout;
+        private byte _floor1;
+        private byte _floor2;
+        private byte _blockset;
+        private byte _spriteset;
+        private byte _palette;
+        private Background2 _bg2;
+
+        public TagKey tag1 { get; set; }
+        public TagKey tag2 { get; set; }
+
+        public CollisionKey collision { get; set; }
+        public EffectKey effect { get; set; }
+
+        public byte holewarp { get; set; }
+        public byte holewarp_plane { get; set; }
+
+        private short _messageid;
+
+        public bool damagepit { get; set; }
+        
+        public bool sortsprites { get; set; }
+
+        public byte[] staircase_rooms = new byte[4];
+
+        private byte[] staircase_plane = new byte[4];
+
+        byte[] keysDoors = new byte[] { 0x1C, 0x26, 0x1E, 0x2E, 0x28, 0x32, 0x30, 0x22 };
+        byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38, 0x48, 0x4A };
+
+        short[] stairsObjects = new short[] { 0x139, 0x138, 0x13B, 0x12E, 0x12D };
+        public List<StaircaseRoom> staircaseRooms = new List<StaircaseRoom>();
+
+        public int roomSize = 0;
+
         public byte layout
         {
             get => _layout;
             set => _layout = Utils.Clamp(value, 0, 7);
-
         }
 
-        private byte _floor1;
         public byte floor1
         {
             get => _floor1;
             set => _floor1 = Utils.Clamp(value, 0, 15);
         }
 
-        private byte _floor2;
         public byte floor2
         {
             get => _floor2;
             set => _floor2 = Utils.Clamp(value, 0, 15);
         }
-
-        private byte _blockset;
+       
         public byte blockset
         {
             get => _blockset;
             set => _blockset = Utils.Clamp(value, 0, 23);
         }
 
-        private byte _spriteset;
         public byte spriteset
         {
             get => _spriteset;
             set => _spriteset = Utils.Clamp(value, 0, 64);
         }
 
-        private byte _palette;
         public byte palette
         {
             get => _palette;
             set =>  _palette = Utils.Clamp(value, 0, 71);
         }
-
-        private Background2 _bg2;
+        
         public Background2 bg2
         {
             get => _bg2;
@@ -100,30 +125,15 @@ namespace ZeldaFullEditor
                 {
                     light = false;
                 }
-
             }
         }
-        public TagKey tag1 { get; set; }
-        public TagKey tag2 { get; set; }
 
-        public CollisionKey collision { get; set; }
-        public EffectKey effect { get; set; }
-
-        public byte holewarp { get; set; }
-        public byte holewarp_plane { get; set; }
-
-        private short _messageid;
         public short messageid
         {
             get => _messageid;
             set => _messageid = Utils.Clamp(value, 0, 397);
         }
 
-        public bool damagepit { get; set; }
-
-        public bool sortsprites { get; set; }
-
-        public byte[] staircase_rooms = new byte[4];
         public byte staircase1
         {
             get => staircase_rooms[0];
@@ -148,8 +158,6 @@ namespace ZeldaFullEditor
             set => staircase_rooms[3] = value;
         }
 
-        
-        private byte[] staircase_plane = new byte[4];
         public byte staircase1Plane
         {
             get => staircase_plane[0];
@@ -180,10 +188,11 @@ namespace ZeldaFullEditor
             this.index = index;
             loadHeader();
             loadLayoutObjects();
+
             if (fromExported != "")
             {
-
                 Console.WriteLine(fromExported + "\\ExportedRooms\\" + "room" + index.ToString("D3") + ".bin");
+
                 if (File.Exists(fromExported+ "\\ExportedRooms\\" + "room" + index.ToString("D3") + ".bin"))
                 {
                     using (FileStream fs = new FileStream(fromExported+"\\ExportedRooms\\" + "room" + index.ToString("D3") + ".bin", FileMode.Open, FileAccess.Read))
@@ -199,7 +208,6 @@ namespace ZeldaFullEditor
                 {
                     loadTilesObjects();
                 }
-
             }
             else
             {
@@ -230,15 +238,14 @@ namespace ZeldaFullEditor
             {
                 o.setRoom(this);
             }
-
         }
-
 
         public void isdamagePit()
         {
             int pitCount = (ROM.DATA[Constants.pit_count] / 2);
             int pitPointer = (ROM.DATA[Constants.pit_pointer+2] << 16)+ (ROM.DATA[Constants.pit_pointer + 1] << 8)+ (ROM.DATA[Constants.pit_pointer]);
             pitPointer = Utils.SnesToPc(pitPointer);
+
             for(int i = 0;i<pitCount;i++)
             {
                 if (((ROM.DATA[pitPointer+1 + (i*2)] << 8) + (ROM.DATA[pitPointer+(i*2)])) == index)
@@ -255,6 +262,7 @@ namespace ZeldaFullEditor
             gfxanimatedPointer = Utils.SnesToPc(gfxanimatedPointer);
             byte* newPdata = (byte*)GFX.allgfx16Ptr.ToPointer(); //turn gfx16 (all 222 of them)
             byte* sheetsData = (byte*)GFX.currentgfx16Ptr.ToPointer(); //into "room gfx16" 16 of them
+
             int data = 0;
             while (data < 512)
             {
@@ -267,9 +275,8 @@ namespace ZeldaFullEditor
             }
         }
 
-            public void reloadGfx(byte entrance_blockset = 0xFF)
+        public void reloadGfx(byte entrance_blockset = 0xFF)
         {
-
             for (int i = 0; i < 8; i++)
             {
                 blocks[i] = GfxGroups.mainGfx[blockset][i];
@@ -293,7 +300,6 @@ namespace ZeldaFullEditor
                 blocks[12 + i] = (byte)(GfxGroups.spriteGfx[spriteset + 64][i]+115);
             } //12-16 sprites
 
-
             unsafe
             {
                 byte* newPdata = (byte*)GFX.allgfx16Ptr.ToPointer(); //turn gfx16 (all 222 of them)
@@ -306,28 +312,20 @@ namespace ZeldaFullEditor
                     {
                         //NOTE LOAD BLOCKSETS SOMEWHERE FIRST
                         byte mapByte = newPdata[d + (blocks[i] * 2048)];
-                        switch (i)
-                        {
-                            case 0:
-                            case 1:
-                            case 2:
-                            case 3:
-                            
-                            //case 5:
-                                mapByte += 0x88;
-                                break;
-
+                        if(i < 4) //removed switch
+                        { 
+                            mapByte += 0x88;
                         } //last line of 6, first line of 7 ?
 
                         sheetsData[d + (sheetPos * 2048)] = mapByte;
                         d++;
                     }
+
                     sheetPos++;
                 }
+
                 reloadAnimatedGfx();
-
             }
-
         }
 
         public void addSprites()
@@ -337,15 +335,16 @@ namespace ZeldaFullEditor
             int sprite_address_snes = (09 << 16) + 
             (ROM.DATA[spritePointer + (index * 2) + 1] << 8) +
             ROM.DATA[spritePointer + (index * 2)];
+
             int sprite_address = Utils.SnesToPc(sprite_address_snes);
             sortsprites = ROM.DATA[sprite_address] == 1 ? true : false;
             sprite_address += 1;
+
             while (true)
             {
                 byte b1 = ROM.DATA[sprite_address];
                 byte b2 = ROM.DATA[sprite_address + 1];
                 byte b3 = ROM.DATA[sprite_address + 2];
-
 
                 if (b1 == 0xFF) { break; }
 
@@ -355,44 +354,42 @@ namespace ZeldaFullEditor
                 {
                     Sprite spr = sprites[sprites.Count - 1];
                     Sprite prevSprite = sprites[sprites.Count - 2];
+
                     if (spr.id == 0xE4 && spr.x == 0x00 && spr.y == 0x1E && spr.layer == 1 && ((spr.subtype)) == 0x18)
                     {
                         if (prevSprite != null)
                         {
-
                             prevSprite.keyDrop = 1;
                             sprites.RemoveAt(sprites.Count - 1);
                         }
                     }
+
                     if (spr.id == 0xE4 && spr.x == 0x00 && spr.y == 0x1D && spr.layer == 1 && ((spr.subtype)) == 0x18)
                     {
                         if (prevSprite != null)
                         {
-
                             prevSprite.keyDrop = 2;
                             sprites.RemoveAt(sprites.Count - 1);
                         }
                     }
                 }
+
                 sprite_address += 3;
             }
         }
 
         public void update()
         {
-
             if (objectInitialized == false)
             {
-
+                //TODO: Add condition?
             }
 
             objectInitialized = true;
         }
 
-
         public void drawSprites(bool layer1 = true,bool layer2 = true)
         {
-
             foreach (Sprite spr in sprites)
             {
                 if (layer1 == false)
@@ -420,9 +417,7 @@ namespace ZeldaFullEditor
                 if (spr.keyDrop == 2)
                 {
                     spr.DrawKey(true);
-                }
-
-                
+                } 
             }
         }
 
@@ -430,6 +425,7 @@ namespace ZeldaFullEditor
         {
             byte[] bytes = new byte[3];
             bool doorfound = false;
+
             for (int j = 0; j < tilesObjects.Count; j++) // save layer1 object 
             {
                 Room_Object o = tilesObjects[j];
@@ -437,44 +433,50 @@ namespace ZeldaFullEditor
                 {
                     if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Block) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
                     {
-                                if ((tilesObjects[j].id & 0xF00) == 0xF00) // type3
-                                {
-                                    //xxxxxxii yyyyyyii 11111iii
-                                    byte b3 = (byte)(o.id >> 4);
-                                    byte b1 = (byte)((o.x << 2) + (o.id & 0x03));
-                                    byte b2 = (byte)((o.y << 2) + ((o.id >> 2) & 0x03));
-                                bytes[0] = b1;
-                                bytes[1] = b2;
-                                bytes[2] = b3;
+                        if ((tilesObjects[j].id & 0xF00) == 0xF00) // type3
+                        {
+                            //xxxxxxii yyyyyyii 11111iii
+                            byte b3 = (byte)(o.id >> 4);
+                            byte b1 = (byte)((o.x << 2) + (o.id & 0x03));
+                            byte b2 = (byte)((o.y << 2) + ((o.id >> 2) & 0x03));
+
+                            bytes[0] = b1;
+                            bytes[1] = b2;
+                            bytes[2] = b3;
+                        }
+                        else if ((tilesObjects[j].id & 0x100) == 0x100) // type2
+                        {
+                            //111111xx xxxxyyyy yyiiiiii
+                            byte b1 = (byte)(0xFC + (((o.x & 0x30) >> 4)));
+                            byte b2 = (byte)(((o.x & 0x0F) << 4) + ((o.y & 0x3C) >> 2));
+                            byte b3 = (byte)(((o.y & 0x03) << 6) + ((o.id & 0x3F))); //wtf? 
+
+                            bytes[0] = b1;
+                            bytes[1] = b2;
+                            bytes[2] = b3;
+                        }
+                        else //type1
+                        {
+                            //xxxxxxss yyyyyyss iiiiiiii
+                            if (o.size > 16)
+                            {
+                                o.size = 0;
                             }
-                                else if ((tilesObjects[j].id & 0x100) == 0x100) // type2
-                                {
-                                    //111111xx xxxxyyyy yyiiiiii
-                                    byte b1 = (byte)(0xFC + (((o.x & 0x30) >> 4)));
-                                    byte b2 = (byte)(((o.x & 0x0F) << 4) + ((o.y & 0x3C) >> 2));
-                                    byte b3 = (byte)(((o.y & 0x03) << 6) + ((o.id & 0x3F))); //wtf? 
-                                bytes[0] = b1;
-                                bytes[1] = b2;
-                                bytes[2] = b3;
-                            }
-                                else //type1
-                                {
-                                    //xxxxxxss yyyyyyss iiiiiiii
-                                    if (o.size > 16)
-                                    {
-                                        o.size = 0;
-                                    }
-                                    byte b1 = (byte)((o.x << 2) + ((o.size >> 2) & 0x03));
-                                    byte b2 = (byte)((o.y << 2) + (o.size & 0x03));
-                                    byte b3 = (byte)(o.id);
-                                bytes[0] = b1;
-                                bytes[1] = b2;
-                                bytes[2] = b3;
-                            }
+
+                            byte b1 = (byte)((o.x << 2) + ((o.size >> 2) & 0x03));
+                            byte b2 = (byte)((o.y << 2) + (o.size & 0x03));
+                            byte b3 = (byte)(o.id);
+
+                            bytes[0] = b1;
+                            bytes[1] = b2;
+                            bytes[2] = b3;
+                        }
                     }
+
                     return bytes;
                 }
             }
+
             return null;
         }
 
@@ -484,6 +486,7 @@ namespace ZeldaFullEditor
             for (int j = 0; j < tilesObjects.Count; j++) // save layer1 object 
             {
                 Room_Object o = tilesObjects[j];
+
                 if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Block) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
                 {
                     if (o.layer == layer)
@@ -506,6 +509,7 @@ namespace ZeldaFullEditor
                                 byte b3 = (byte)(o.id >> 4);
                                 byte b1 = (byte)((o.x << 2) + (o.id & 0x03));
                                 byte b2 = (byte)((o.y << 2) + ((o.id >> 2) & 0x03));
+
                                 objectsBytes.Add(b1);
                                 objectsBytes.Add(b2);
                                 objectsBytes.Add(b3);
@@ -516,6 +520,7 @@ namespace ZeldaFullEditor
                                 byte b1 = (byte)(0xFC + (((o.x & 0x30) >> 4)));
                                 byte b2 = (byte)(((o.x & 0x0F) << 4) + ((o.y & 0x3C) >> 2));
                                 byte b3 = (byte)(((o.y & 0x03) << 6) + ((o.id & 0x3F))); //wtf? 
+
                                 objectsBytes.Add(b1);
                                 objectsBytes.Add(b2);
                                 objectsBytes.Add(b3);
@@ -530,23 +535,21 @@ namespace ZeldaFullEditor
                                 byte b1 = (byte)((o.x << 2) + ((o.size >> 2) & 0x03));
                                 byte b2 = (byte)((o.y << 2) + (o.size & 0x03));
                                 byte b3 = (byte)(o.id);
+
                                 objectsBytes.Add(b1);
                                 objectsBytes.Add(b2);
                                 objectsBytes.Add(b3);
-
                             }
                         }
                     }
                 }
             }
+
             return doorfound;
         }
-        byte[] keysDoors = new byte[] { 0x1C, 0x26, 0x1E, 0x2E, 0x28, 0x32, 0x30, 0x22 };
-        byte[] shutterDoors = new byte[] { 0x44, 0x18, 0x36, 0x38, 0x48, 0x4A };
+
         public byte[] getTilesBytes()
         {
- 
-
             List<byte> objectsBytes = new List<byte>();
             List<byte> doorsBytes = new List<byte>();
             bool found_door = false;
@@ -579,15 +582,14 @@ namespace ZeldaFullEditor
                 {
                     objectsBytes.Add(b);
                 }
-
             }
+
             objectsBytes.Add(0xFF);//end layer3
             objectsBytes.Add(0xFF);//end layer3
             doorsBytes.Clear();
 
             return objectsBytes.ToArray();
         }
-
 
         public void drawPotsItems()
         {
@@ -601,6 +603,7 @@ namespace ZeldaFullEditor
         {
             Rectangle[] rects = new Rectangle[48];
             short pos = 0;
+
             int xf = 0;
             int yf = 0;
             int wf = 0;
@@ -613,6 +616,7 @@ namespace ZeldaFullEditor
                 float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
                 rects[(i / 2)] = new Rectangle(((byte)n + xf) * 8, (byte)((pos / 64) + yf) * 8, wf, hf);
             }
+
             xf = 0;
             yf = 0;
             wf = 0;
@@ -626,6 +630,7 @@ namespace ZeldaFullEditor
                 float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
                 rects[(i / 2)+12] = new Rectangle(((byte)n + xf) * 8, (byte)((pos / 64) + yf) * 8, wf, hf);
             }
+
             xf = 0;
             yf = 0;
             wf = 0;
@@ -638,6 +643,7 @@ namespace ZeldaFullEditor
                 float n = (((float)pos / 64) - (byte)(pos / 64)) * 64;
                 rects[(i / 2) + 24] = new Rectangle(((byte)n + xf) * 8, (byte)((pos / 64) + yf) * 8, wf, hf);
             }
+
             xf = 0;
             yf = 0;
             wf = 0;
@@ -662,12 +668,7 @@ namespace ZeldaFullEditor
                 o.setRoom(this);
                 o.getObjectSize();
             }
-
         }
-
-        short[] stairsObjects = new short[] { 0x139, 0x138,0x13B, 0x12E, 0x12D };
-        public List<StaircaseRoom> staircaseRooms = new List<StaircaseRoom>();
-
 
         public void addlistBlock(ref byte[] blocksdata, int maxCount)
         {
@@ -683,6 +684,7 @@ namespace ZeldaFullEditor
             {
                 blocksdata[i] = (ROM.DATA[i + pos1]);
                 blocksdata[i + 0x80] = (ROM.DATA[i + pos2]);
+
                 if (i + 0x100 < maxCount)
                 {
                     blocksdata[i + 0x100] = (ROM.DATA[i + pos3]);
@@ -708,6 +710,7 @@ namespace ZeldaFullEditor
                 byte b2 = blocksdata[i+1];
                 byte b3 = blocksdata[i+2];
                 byte b4 = blocksdata[i+3];
+
                 if (((b2 << 8) + b1) == index)
                 {
                     if (b3 == 0xFF && b4 == 0xFF) { break; }
@@ -724,6 +727,7 @@ namespace ZeldaFullEditor
                 }
             }
         }
+
         public void addTorches()
         {
             int bytes_count = (ROM.DATA[Constants.torches_length_pointer + 1] << 8) + ROM.DATA[Constants.torches_length_pointer];
@@ -732,13 +736,14 @@ namespace ZeldaFullEditor
             {
                 byte b1 = ROM.DATA[Constants.torch_data + i];
                 byte b2 = ROM.DATA[Constants.torch_data + i + 1];
+
                 if (b1 == 0xFF && b2 == 0xFF) { continue; }
+
                 if (((b2 << 8) + b1) == index) // if roomindex = indexread
                 {
                     i += 2;
                     while (true)
                     {
-                       
                         b1 = ROM.DATA[Constants.torch_data + i];
                         b2 = ROM.DATA[Constants.torch_data + i + 1];
 
@@ -781,6 +786,7 @@ namespace ZeldaFullEditor
             int item_address_snes = (01 << 16) +
             (ROM.DATA[Constants.room_items_pointers + (index * 2) + 1] << 8) +
             ROM.DATA[Constants.room_items_pointers + (index * 2)];
+
             int item_address = Utils.SnesToPc(item_address_snes);
 
             while (true)
@@ -803,20 +809,15 @@ namespace ZeldaFullEditor
                 {
                     p.layer = 0;
                 }
+
                 pot_items.Add(p);
                 
-
                 //bit 7 is set if the object is a special object holes, switches
                 //after 0x16 it goes to 0x80
 
                 item_address += 3; 
-                }
+            }
         }
-        
-
-
-        public int roomSize = 0;
-
 
         public void loadChests(ref List<ChestData> chests_in_room)
         {
@@ -834,13 +835,11 @@ namespace ZeldaFullEditor
                     {
                         big = true;
                     }
+
                     chests_in_room.Add(new ChestData(ROM.DATA[cpos + (i * 3) + 2], big));
-                    //
                 }
             }
         }
-
-
 
         public void loadTilesObjects(bool floor = true)
         {
@@ -848,6 +847,7 @@ namespace ZeldaFullEditor
             int objectPointer = (ROM.DATA[Constants.room_object_pointer + 2] << 16) + (ROM.DATA[Constants.room_object_pointer + 1] << 8) + (ROM.DATA[Constants.room_object_pointer]);
             objectPointer = Utils.SnesToPc(objectPointer);
             int room_address = objectPointer + (index * 3);
+
             int tile_address = (ROM.DATA[room_address + 2] << 16) +
                 (ROM.DATA[room_address + 1] << 8) +
                 ROM.DATA[room_address];
@@ -864,6 +864,7 @@ namespace ZeldaFullEditor
                 floor1 = (byte)(ROM.DATA[objects_location] & 0x0F);
                 floor2 = (byte)((ROM.DATA[objects_location] >> 4) & 0x0F);
             }
+
             layout = (byte)((ROM.DATA[objects_location + 1] >> 2) & 0x07);
 
             List<ChestData> chests_in_room = new List<ChestData>();
@@ -885,11 +886,12 @@ namespace ZeldaFullEditor
             int layer = 0;
             bool door = false;
             bool endRead = false;
+
             while (endRead == false)
             {
-
                 b1 = ROM.DATA[pos];
                 b2 = ROM.DATA[pos + 1];
+
                 if (b1 == 0xFF && b2 == 0xFF)
                 {
                     pos += 2; //we jump to layer2
@@ -900,6 +902,7 @@ namespace ZeldaFullEditor
                         endRead = true;
                         break;
                     }
+
                     continue;
                 }
 
@@ -909,6 +912,7 @@ namespace ZeldaFullEditor
                     door = true;
                     continue;
                 }
+
                 b3 = ROM.DATA[pos + 2];
                 if (door)
                 {
@@ -938,6 +942,7 @@ namespace ZeldaFullEditor
                         sizeY = (byte)((b2 & 0x03));
                         sizeXY = (byte)(((sizeX << 2) + sizeY));
                     }
+
                     if (b1 >= 0xFC) //subtype2 (not scalable? )
                     {
                         oid = (short)((b3 & 0x3F) + 0x100);
@@ -954,18 +959,16 @@ namespace ZeldaFullEditor
                     Room_Object r = addObject(oid, posX, posY, sizeXY, (byte)layer);
                     //GFX.objects[oid] = true;
 
-
-
                     if (r != null)
                     {
                         tilesObjects.Add(r);
                         
                     }
+
                     foreach (short stair in stairsObjects)
                     {
                         if (stair == oid) //we found stairs that lead to another room
                         {
-
                             if (nbr_of_staircase < 4)
                             {
                                 tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Stairs;
@@ -977,10 +980,8 @@ namespace ZeldaFullEditor
                                 tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Stairs;
                                 staircaseRooms.Add(new StaircaseRoom(posX, posY, "To ???"));
                             }
-
                         }
                     }
-
 
                     //IF Object is a chest loaded and there's object in the list chest
                     if (oid == 0xF99)
@@ -999,26 +1000,18 @@ namespace ZeldaFullEditor
                             tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Chest;
                             chest_list.Add(new Chest((byte)(posX + 1), posY, chests_in_room[0].itemIn, true));
                             chests_in_room.RemoveAt(0);
-
                         }
                     }
-
-
                 }
                 else
                 {
-
                     //byte door_pos = b1;//(byte)((b1 & 0xF0) >> 3);
                     //byte door_type = b2;
                     tilesObjects.Add(new object_door((short)((b2 << 8) + b1), 0, 0, 0, (byte)layer));
                     continue;
                 }
-
-
-
             }
         }
-
 
         public void loadTilesObjectsFromArray(byte[] DATA, bool floor = true)
         {
@@ -1048,9 +1041,9 @@ namespace ZeldaFullEditor
             int layer = 0;
             bool door = false;
             bool endRead = false;
+
             while (endRead == false)
             {
-
                 b1 = DATA[pos];
                 b2 = DATA[pos + 1];
                 if (b1 == 0xFF && b2 == 0xFF)
@@ -1058,11 +1051,13 @@ namespace ZeldaFullEditor
                     pos += 2; //we jump to layer2
                     layer++;
                     door = false;
+
                     if (layer == 3)
                     {
                         endRead = true;
                         break;
                     }
+
                     continue;
                 }
 
@@ -1072,6 +1067,7 @@ namespace ZeldaFullEditor
                     door = true;
                     continue;
                 }
+
                 b3 = DATA[pos + 2];
                 if (door)
                 {
@@ -1117,7 +1113,6 @@ namespace ZeldaFullEditor
                     {
                         if (stair == oid) //we found stairs that lead to another room
                         {
-
                             if (nbr_of_staircase < 4)
                             {
                                 tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Stairs;
@@ -1129,7 +1124,6 @@ namespace ZeldaFullEditor
                                 tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Stairs;
                                 staircaseRooms.Add(new StaircaseRoom(posX, posY, "To ???"));
                             }
-
                         }
                     }
 
@@ -1150,23 +1144,16 @@ namespace ZeldaFullEditor
                             tilesObjects[tilesObjects.Count - 1].options |= ObjectOption.Chest;
                             chest_list.Add(new Chest((byte)(posX + 1), posY, chests_in_room[0].itemIn, true));
                             chests_in_room.RemoveAt(0);
-
                         }
                     }
-
-
                 }
                 else
                 {
-
                     //byte door_pos = b1;//(byte)((b1 & 0xF0) >> 3);
                     //byte door_type = b2;
                     tilesObjects.Add(new object_door((short)((b2 << 8) + b1), 0, 0, 0, (byte)layer));
                     continue;
                 }
-
-
-
             }
         }
 
@@ -1190,15 +1177,16 @@ namespace ZeldaFullEditor
             short oid = 0;
             int layer = 0;
 
-
             while (true)
             {
                 b1 = ROM.DATA[pos];
                 b2 = ROM.DATA[pos + 1];
+
                 if (b1 == 0xFF && b2 == 0xFF)
                 {
                     break;
                 }
+
                 b3 = ROM.DATA[pos + 2];
                 pos += 3; //we jump to layer2
 
@@ -1232,7 +1220,6 @@ namespace ZeldaFullEditor
                     r.options |= ObjectOption.Bgr;
                     tilesLayoutObjects.Add(r);
                 }
-
             }
         }
 
@@ -1245,11 +1232,10 @@ namespace ZeldaFullEditor
 
             if (oid <= 0xFF)
             {
-
                 switch (oid)
                 {
                     case 0x00:
-                       return new object_00(oid, x, y, size,layer);
+                       return new object_00(oid, x, y, size, layer);
                         
                     case 0x01:
                        return new object_01(oid, x, y, size, layer);
@@ -1276,556 +1262,554 @@ namespace ZeldaFullEditor
                        return new object_08(oid, x, y, size, layer);
                         
                     case 0x09:
-                       return new object_09(oid, x, y, size,layer);
+                       return new object_09(oid, x, y, size, layer);
                         
                     case 0x0A:
-                       return new object_0A(oid, x, y, size,layer);
+                       return new object_0A(oid, x, y, size, layer);
                         
                     case 0x0B:
-                       return new object_0B(oid, x, y, size,layer);
+                       return new object_0B(oid, x, y, size, layer);
                         
                     case 0x0C:
-                       return new object_0C(oid, x, y, size,layer);
+                       return new object_0C(oid, x, y, size, layer);
                         
                     case 0x0D:
-                       return new object_0D(oid, x, y, size,layer);
+                       return new object_0D(oid, x, y, size, layer);
                         
                     case 0x0E:
-                       return new object_0E(oid, x, y, size,layer);
+                       return new object_0E(oid, x, y, size, layer);
                         
                     case 0x0F:
-                       return new object_0F(oid, x, y, size,layer);
+                       return new object_0F(oid, x, y, size, layer);
                         
                     case 0x10:
-                       return new object_10(oid, x, y, size,layer);
+                       return new object_10(oid, x, y, size, layer);
                         
                     case 0x11:
-                       return new object_11(oid, x, y, size,layer);
+                       return new object_11(oid, x, y, size, layer);
                         
                     case 0x12:
-                       return new object_12(oid, x, y, size,layer);
+                       return new object_12(oid, x, y, size, layer);
                         
                     case 0x13:
-                       return new object_13(oid, x, y, size,layer);
+                       return new object_13(oid, x, y, size, layer);
                         
                     case 0x14:
-                       return new object_14(oid, x, y, size,layer);
+                       return new object_14(oid, x, y, size, layer);
                         
                     case 0x15:
-                       return new object_15(oid, x, y, size,layer);
+                       return new object_15(oid, x, y, size, layer);
                         
                     case 0x16:
-                       return new object_16(oid, x, y, size,layer);
+                       return new object_16(oid, x, y, size, layer);
                         
                     case 0x17:
-                       return new object_17(oid, x, y, size,layer);
+                       return new object_17(oid, x, y, size, layer);
                         
                     case 0x18:
-                       return new object_18(oid, x, y, size,layer);
+                       return new object_18(oid, x, y, size, layer);
                         
                     case 0x19:
-                       return new object_19(oid, x, y, size,layer);
+                       return new object_19(oid, x, y, size, layer);
                         
                     case 0x1A:
-                       return new object_1A(oid, x, y, size,layer);
+                       return new object_1A(oid, x, y, size, layer);
                         
                     case 0x1B:
-                       return new object_1B(oid, x, y, size,layer);
+                       return new object_1B(oid, x, y, size, layer);
                         
                     case 0x1C:
-                       return new object_1C(oid, x, y, size,layer);
+                       return new object_1C(oid, x, y, size, layer);
                         
                     case 0x1D:
-                       return new object_1D(oid, x, y, size,layer);
+                       return new object_1D(oid, x, y, size, layer);
                         
                     case 0x1E:
-                       return new object_1E(oid, x, y, size,layer);
+                       return new object_1E(oid, x, y, size, layer);
                         
                     case 0x1F:
-                       return new object_1F(oid, x, y, size,layer);
+                       return new object_1F(oid, x, y, size, layer);
                         
                     case 0x20:
-                       return new object_20(oid, x, y, size,layer);
+                       return new object_20(oid, x, y, size, layer);
                         
                     case 0x21:
-                       return new object_21(oid, x, y, size,layer);
+                       return new object_21(oid, x, y, size, layer);
                         
                     case 0x22:
-                       return new object_22(oid, x, y, size,layer);
+                       return new object_22(oid, x, y, size, layer);
                         
                     case 0x23:
-                       return new object_23(oid, x, y, size,layer);
+                       return new object_23(oid, x, y, size, layer);
                         
                     case 0x24:
-                       return new object_24(oid, x, y, size,layer);
+                       return new object_24(oid, x, y, size, layer);
                         
                     case 0x25:
-                       return new object_25(oid, x, y, size,layer);
+                       return new object_25(oid, x, y, size, layer);
                         
                     case 0x26:
-                       return new object_26(oid, x, y, size,layer);
+                       return new object_26(oid, x, y, size, layer);
                         
                     case 0x27:
-                       return new object_27(oid, x, y, size,layer);
+                       return new object_27(oid, x, y, size, layer);
                         
                     case 0x28:
-                       return new object_28(oid, x, y, size,layer);
+                       return new object_28(oid, x, y, size, layer);
                         
                     case 0x29:
-                       return new object_29(oid, x, y, size,layer);
+                       return new object_29(oid, x, y, size, layer);
                         
                     case 0x2A:
-                       return new object_2A(oid, x, y, size,layer);
+                       return new object_2A(oid, x, y, size, layer);
                         
                     case 0x2B:
-                       return new object_2B(oid, x, y, size,layer);
+                       return new object_2B(oid, x, y, size, layer);
                         
                     case 0x2C:
-                       return new object_2C(oid, x, y, size,layer);
+                       return new object_2C(oid, x, y, size, layer);
                         
                     case 0x2D:
-                       return new object_2D(oid, x, y, size,layer);
+                       return new object_2D(oid, x, y, size, layer);
                         
                     case 0x2E:
-                       return new object_2E(oid, x, y, size,layer);
+                       return new object_2E(oid, x, y, size, layer);
                         
                     case 0x2F:
-                       return new object_2F(oid, x, y, size,layer);
+                       return new object_2F(oid, x, y, size, layer);
                         
                     case 0x30:
-                       return new object_30(oid, x, y, size,layer);
+                       return new object_30(oid, x, y, size, layer);
                         
                     case 0x31:
-                       return new object_31(oid, x, y, size,layer);
+                       return new object_31(oid, x, y, size, layer);
                         
                     case 0x32:
-                       return new object_32(oid, x, y, size,layer);
+                       return new object_32(oid, x, y, size, layer);
                         
                     case 0x33:
-                       return new object_33(oid, x, y, size,layer);
+                       return new object_33(oid, x, y, size, layer);
                         
                     case 0x34:
-                       return new object_34(oid, x, y, size,layer);
+                       return new object_34(oid, x, y, size, layer);
                         
                     case 0x35:
-                       return new object_35(oid, x, y, size,layer);
+                       return new object_35(oid, x, y, size, layer);
                         
                     case 0x36:
-                       return new object_36(oid, x, y, size,layer);
+                       return new object_36(oid, x, y, size, layer);
                         
                     case 0x37:
-                       return new object_37(oid, x, y, size,layer);
+                       return new object_37(oid, x, y, size, layer);
                         
                     case 0x38:
                        return new object_38(oid, x, y, size,layer);
                         
                     case 0x39:
-                       return new object_39(oid, x, y, size,layer);
+                       return new object_39(oid, x, y, size, layer);
                         
                     case 0x3A:
-                       return new object_3A(oid, x, y, size,layer);
+                       return new object_3A(oid, x, y, size, layer);
                         
                     case 0x3B:
-                       return new object_3B(oid, x, y, size,layer);
+                       return new object_3B(oid, x, y, size, layer);
                         
                     case 0x3C:
-                       return new object_3C(oid, x, y, size,layer);
+                       return new object_3C(oid, x, y, size, layer);
                         
                     case 0x3D:
-                       return new object_3D(oid, x, y, size,layer);
+                       return new object_3D(oid, x, y, size, layer);
                         
                     case 0x3E:
-                       return new object_3E(oid, x, y, size,layer);
+                       return new object_3E(oid, x, y, size, layer);
                         
                     case 0x3F:
-                       return new object_3F(oid, x, y, size,layer);
+                       return new object_3F(oid, x, y, size, layer);
                         
                     case 0x40:
-                       return new object_40(oid, x, y, size,layer);
+                       return new object_40(oid, x, y, size, layer);
                         
                     case 0x41:
-                       return new object_41(oid, x, y, size,layer);
+                       return new object_41(oid, x, y, size, layer);
                         
                     case 0x42:
-                       return new object_42(oid, x, y, size,layer);
+                       return new object_42(oid, x, y, size, layer);
                         
                     case 0x43:
-                       return new object_43(oid, x, y, size,layer);
+                       return new object_43(oid, x, y, size, layer);
                         
                     case 0x44:
-                       return new object_44(oid, x, y, size,layer);
+                       return new object_44(oid, x, y, size, layer);
                         
                     case 0x45:
-                       return new object_45(oid, x, y, size,layer);
+                       return new object_45(oid, x, y, size, layer);
                         
                     case 0x46:
-                       return new object_46(oid, x, y, size,layer);
+                       return new object_46(oid, x, y, size, layer);
                         
                     case 0x47:
-                       return new object_47(oid, x, y, size,layer);
+                       return new object_47(oid, x, y, size, layer);
                         
                     case 0x48:
-                       return new object_48(oid, x, y, size,layer);
+                       return new object_48(oid, x, y, size, layer);
                         
                     case 0x49:
-                        
-                        return new object_49(oid, x, y, size,layer);
+                        return new object_49(oid, x, y, size, layer);
                         
                     case 0x4A:
-                       return new object_4A(oid, x, y, size,layer);
+                       return new object_4A(oid, x, y, size, layer);
                         
                     case 0x4B:
-                       return new object_4B(oid, x, y, size,layer);
+                       return new object_4B(oid, x, y, size, layer);
                         
                     case 0x4C:
-                       return new object_4C(oid, x, y, size,layer);
+                       return new object_4C(oid, x, y, size, layer);
                         
                     case 0x4D:
-                       return new object_4D(oid, x, y, size,layer);
+                       return new object_4D(oid, x, y, size, layer);
                         
                     case 0x4E:
-                       return new object_4E(oid, x, y, size,layer);
+                       return new object_4E(oid, x, y, size, layer);
                         
                     case 0x4F:
-                       return new object_4F(oid, x, y, size,layer);
+                       return new object_4F(oid, x, y, size, layer);
                         
                     case 0x50:
                        // Console.WriteLine("50 " + index);
-                        return new object_50(oid, x, y, size,layer);
+                       return new object_50(oid, x, y, size, layer);
                         
                     case 0x51:
-                       return new object_51(oid, x, y, size,layer);
+                       return new object_51(oid, x, y, size, layer);
                         
                     case 0x52:
-                       return new object_52(oid, x, y, size,layer);
+                       return new object_52(oid, x, y, size, layer);
                         
                     case 0x53:
-                       return new object_53(oid, x, y, size,layer);
+                       return new object_53(oid, x, y, size, layer);
                         
                     case 0x54:
-                       return new object_54(oid, x, y, size,layer);
+                       return new object_54(oid, x, y, size, layer);
                         
                     case 0x55:
-                       return new object_55(oid, x, y, size,layer);
+                       return new object_55(oid, x, y, size, layer);
                         
                     case 0x56:
-                       return new object_56(oid, x, y, size,layer);
+                       return new object_56(oid, x, y, size, layer);
                         
                     case 0x57:
-                       return new object_57(oid, x, y, size,layer);
+                       return new object_57(oid, x, y, size, layer);
                         
                     case 0x58:
-                       return new object_58(oid, x, y, size,layer);
+                       return new object_58(oid, x, y, size, layer);
                         
                     case 0x59:
-                       return new object_59(oid, x, y, size,layer);
+                       return new object_59(oid, x, y, size, layer);
                         
                     case 0x5A:
-                       return new object_5A(oid, x, y, size,layer);
+                       return new object_5A(oid, x, y, size, layer);
                         
                     case 0x5B:
-                       return new object_5B(oid, x, y, size,layer);
+                       return new object_5B(oid, x, y, size, layer);
                         
                     case 0x5C:
-                       return new object_5C(oid, x, y, size,layer);
+                       return new object_5C(oid, x, y, size, layer);
                         
                     case 0x5D:
-                       return new object_5D(oid, x, y, size,layer);
+                       return new object_5D(oid, x, y, size, layer);
                         
                     case 0x5E:
-                       return new object_5E(oid, x, y, size,layer);
+                       return new object_5E(oid, x, y, size, layer);
                         
                     case 0x5F:
-                       return new object_5F(oid, x, y, size,layer);
+                       return new object_5F(oid, x, y, size, layer);
                         
                     case 0x60:
-                       return new object_60(oid, x, y, size,layer);
+                       return new object_60(oid, x, y, size, layer);
                         
                     case 0x61:
-                       return new object_61(oid, x, y, size,layer);
+                       return new object_61(oid, x, y, size, layer);
                         
                     case 0x62:
-                       return new object_62(oid, x, y, size,layer);
+                       return new object_62(oid, x, y, size, layer);
                         
                     case 0x63:
-                       return new object_63(oid, x, y, size,layer);
+                       return new object_63(oid, x, y, size, layer);
                         
                     case 0x64:
-                       return new object_64(oid, x, y, size,layer);
+                       return new object_64(oid, x, y, size, layer);
                         
                     case 0x65:
-                       return new object_65(oid, x, y, size,layer);
+                       return new object_65(oid, x, y, size, layer);
                         
                     case 0x66:
-                       return new object_66(oid, x, y, size,layer);
+                       return new object_66(oid, x, y, size, layer);
                         
                     case 0x67:
-                       return new object_67(oid, x, y, size,layer);
+                       return new object_67(oid, x, y, size, layer);
                         
                     case 0x68:
-                       return new object_68(oid, x, y, size,layer);
+                       return new object_68(oid, x, y, size, layer);
                         
                     case 0x69:
-                       return new object_69(oid, x, y, size,layer);
+                       return new object_69(oid, x, y, size, layer);
                         
                     case 0x6A:
-                       return new object_6A(oid, x, y, size,layer);
+                       return new object_6A(oid, x, y, size, layer);
                         
                     case 0x6B:
-                       return new object_6B(oid, x, y, size,layer);
+                       return new object_6B(oid, x, y, size, layer);
                         
                     case 0x6C:
-                       return new object_6C(oid, x, y, size,layer);
+                       return new object_6C(oid, x, y, size, layer);
                         
                     case 0x6D:
-                       return new object_6D(oid, x, y, size,layer);
+                       return new object_6D(oid, x, y, size, layer);
                         
                     case 0x6E:
-                       return new object_6E(oid, x, y, size,layer);
+                       return new object_6E(oid, x, y, size, layer);
                         
                     case 0x6F:
-                       return new object_6F(oid, x, y, size,layer);
+                       return new object_6F(oid, x, y, size, layer);
                         
                     case 0x70:
-                       return new object_70(oid, x, y, size,layer);
+                       return new object_70(oid, x, y, size, layer);
                         
                     case 0x71:
-                       return new object_71(oid, x, y, size,layer);
+                       return new object_71(oid, x, y, size, layer);
                         
                     case 0x72:
-                       return new object_72(oid, x, y, size,layer);
+                       return new object_72(oid, x, y, size, layer);
                         
                     case 0x73:
-                       return new object_73(oid, x, y, size,layer);
+                       return new object_73(oid, x, y, size, layer);
                         
                     case 0x74:
-                       return new object_74(oid, x, y, size,layer);
+                       return new object_74(oid, x, y, size, layer);
                         
                     case 0x75:
-                       return new object_75(oid, x, y, size,layer);
+                       return new object_75(oid, x, y, size, layer);
                         
                     case 0x76:
-                       return new object_76(oid, x, y, size,layer);
+                       return new object_76(oid, x, y, size, layer);
                         
                     case 0x77:
-                       return new object_77(oid, x, y, size,layer);
+                       return new object_77(oid, x, y, size, layer);
                         
                     case 0x78:
-                       return new object_78(oid, x, y, size,layer);
+                       return new object_78(oid, x, y, size, layer);
                         
                     case 0x79:
-                       return new object_79(oid, x, y, size,layer);
+                       return new object_79(oid, x, y, size, layer);
                         
                     case 0x7A:
-                       return new object_7A(oid, x, y, size,layer);
+                       return new object_7A(oid, x, y, size, layer);
                         
                     case 0x7B:
-                       return new object_7B(oid, x, y, size,layer);
+                       return new object_7B(oid, x, y, size, layer);
                         
                     case 0x7C:
-                       return new object_7C(oid, x, y, size,layer);
+                       return new object_7C(oid, x, y, size, layer);
                         
                     case 0x7D:
-                       return new object_7D(oid, x, y, size,layer);
+                       return new object_7D(oid, x, y, size, layer);
                         
                     case 0x7E:
-                       return new object_7E(oid, x, y, size,layer);
+                       return new object_7E(oid, x, y, size, layer);
                         
                     case 0x7F:
-                       return new object_7F(oid, x, y, size,layer);
+                       return new object_7F(oid, x, y, size, layer);
                         
                     case 0x80:
-                       return new object_80(oid, x, y, size,layer);
+                       return new object_80(oid, x, y, size, layer);
                         
                     case 0x81:
-                       return new object_81(oid, x, y, size,layer);
+                       return new object_81(oid, x, y, size, layer);
                         
                     case 0x82:
-                       return new object_82(oid, x, y, size,layer);
+                       return new object_82(oid, x, y, size, layer);
                         
                     case 0x83:
-                       return new object_83(oid, x, y, size,layer);
+                       return new object_83(oid, x, y, size, layer);
                         
                     case 0x84:
-                       return new object_84(oid, x, y, size,layer);
+                       return new object_84(oid, x, y, size, layer);
                         
                     case 0x85:
-                       return new object_85(oid, x, y, size,layer);
+                       return new object_85(oid, x, y, size, layer);
                         
                     case 0x86:
-                       return new object_86(oid, x, y, size,layer);
+                       return new object_86(oid, x, y, size, layer);
                         
                     case 0x87:
-                       return new object_87(oid, x, y, size,layer);
+                       return new object_87(oid, x, y, size, layer);
                         
                     case 0x88:
-                       return new object_88(oid, x, y, size,layer);
+                       return new object_88(oid, x, y, size, layer);
                         
                     case 0x89:
-                       return new object_89(oid, x, y, size,layer);
+                       return new object_89(oid, x, y, size, layer);
                         
                     case 0x8A:
-                       return new object_8A(oid, x, y, size,layer);
+                       return new object_8A(oid, x, y, size, layer);
                         
                     case 0x8B:
-                       return new object_8B(oid, x, y, size,layer);
+                       return new object_8B(oid, x, y, size, layer);
                         
                     case 0x8C:
-                       return new object_8C(oid, x, y, size,layer);
+                       return new object_8C(oid, x, y, size, layer);
                         
                     case 0x8D:
-                       return new object_8D(oid, x, y, size,layer);
+                       return new object_8D(oid, x, y, size, layer);
                         
                     case 0x8E:
-                       return new object_8E(oid, x, y, size,layer);
+                       return new object_8E(oid, x, y, size, layer);
                         
                     case 0x8F:
-                        
-                        return new object_8F(oid, x, y, size,layer);
+                       return new object_8F(oid, x, y, size, layer);
                         
                     case 0x90:
-                       return new object_90(oid, x, y, size,layer);
+                       return new object_90(oid, x, y, size, layer);
                         
                     case 0x91:
-                       return new object_91(oid, x, y, size,layer);
+                       return new object_91(oid, x, y, size, layer);
                         
                     case 0x92:
-                       return new object_92(oid, x, y, size,layer);
+                       return new object_92(oid, x, y, size, layer);
                         
                     case 0x93:
-                       return new object_93(oid, x, y, size,layer);
+                       return new object_93(oid, x, y, size, layer);
                         
                     case 0x94:
-                       return new object_94(oid, x, y, size,layer);
+                       return new object_94(oid, x, y, size, layer);
                         
                     case 0x95:
-                       return new object_95(oid, x, y, size,layer);
+                       return new object_95(oid, x, y, size, layer);
                         
                     case 0x96:
-                       return new object_96(oid, x, y, size,layer);
+                       return new object_96(oid, x, y, size, layer);
                         
                     case 0x97:
-                       return new object_97(oid, x, y, size,layer);
+                       return new object_97(oid, x, y, size, layer);
                         
                     case 0x98:
-                       return new object_98(oid, x, y, size,layer);
+                       return new object_98(oid, x, y, size, layer);
                         
                     case 0x99:
-                       return new object_99(oid, x, y, size,layer);
+                       return new object_99(oid, x, y, size, layer);
                         
                     case 0x9A:
-                       return new object_9A(oid, x, y, size,layer);
+                       return new object_9A(oid, x, y, size, layer);
                         
                     case 0x9B:
-                       return new object_9B(oid, x, y, size,layer);
+                       return new object_9B(oid, x, y, size, layer);
                         
                     case 0x9C:
-                       return new object_9C(oid, x, y, size,layer);
+                       return new object_9C(oid, x, y, size, layer);
                         
                     case 0x9D:
-                       return new object_9D(oid, x, y, size,layer);
+                       return new object_9D(oid, x, y, size, layer);
                         
                     case 0x9E:
-                       return new object_9E(oid, x, y, size,layer);
+                       return new object_9E(oid, x, y, size, layer);
                         
                     case 0x9F:
-                       return new object_9F(oid, x, y, size,layer);
+                       return new object_9F(oid, x, y, size, layer);
                         
                     case 0xA0:
-                       return new object_A0(oid, x, y, size,layer);
+                       return new object_A0(oid, x, y, size, layer);
                         
                     case 0xA1:
-                       return new object_A1(oid, x, y, size,layer);
+                       return new object_A1(oid, x, y, size, layer);
                         
                     case 0xA2:
-                       return new object_A2(oid, x, y, size,layer);
+                       return new object_A2(oid, x, y, size, layer);
                         
                     case 0xA3:
-                       return new object_A3(oid, x, y, size,layer);
+                       return new object_A3(oid, x, y, size, layer);
                         
                     case 0xA4:
-                       return new object_A4(oid, x, y, size,layer);
+                       return new object_A4(oid, x, y, size, layer);
                         
                     case 0xA5:
-                       return new object_A5(oid, x, y, size,layer);
+                       return new object_A5(oid, x, y, size, layer);
                         
                     case 0xA6:
-                       return new object_A6(oid, x, y, size,layer);
+                       return new object_A6(oid, x, y, size, layer);
                         
                     case 0xA7:
-                       return new object_A7(oid, x, y, size,layer);
+                       return new object_A7(oid, x, y, size, layer);
                         
                     case 0xA8:
-                       return new object_A8(oid, x, y, size,layer);
+                       return new object_A8(oid, x, y, size, layer);
                         
                     case 0xA9:
-                       return new object_A9(oid, x, y, size,layer);
+                       return new object_A9(oid, x, y, size, layer);
                         
                     case 0xAA:
-                       return new object_AA(oid, x, y, size,layer);
+                       return new object_AA(oid, x, y, size, layer);
                         
                     case 0xAB:
-                       return new object_AB(oid, x, y, size,layer);
+                       return new object_AB(oid, x, y, size, layer);
                         
                     case 0xAC:
-                       return new object_AC(oid, x, y, size,layer);
+                       return new object_AC(oid, x, y, size, layer);
                         
                     case 0xAD:
-                       return new object_AD(oid, x, y, size,layer);
+                       return new object_AD(oid, x, y, size, layer);
                         
                     case 0xAE:
-                       return new object_AE(oid, x, y, size,layer);
+                       return new object_AE(oid, x, y, size, layer);
                         
                     case 0xAF:
-                       return new object_AF(oid, x, y, size,layer);
+                       return new object_AF(oid, x, y, size, layer);
                         
                     case 0xB0:
-                       return new object_B0(oid, x, y, size,layer);
+                       return new object_B0(oid, x, y, size, layer);
                         
                     case 0xB1:
-                       return new object_B1(oid, x, y, size,layer);
+                       return new object_B1(oid, x, y, size, layer);
                         
                     case 0xB2:
-                       return new object_B2(oid, x, y, size,layer);
+                       return new object_B2(oid, x, y, size, layer);
                         
                     case 0xB3:
-                       return new object_B3(oid, x, y, size,layer);
+                       return new object_B3(oid, x, y, size, layer);
                         
                     case 0xB4:
-                       return new object_B4(oid, x, y, size,layer);
+                       return new object_B4(oid, x, y, size, layer);
                         
                     case 0xB5:
-                       return new object_B5(oid, x, y, size,layer);
+                       return new object_B5(oid, x, y, size, layer);
                         
                     case 0xB6:
-                       return new object_B6(oid, x, y, size,layer);
+                       return new object_B6(oid, x, y, size, layer);
                         
                     case 0xB7:
-                       return new object_B7(oid, x, y, size,layer);
+                       return new object_B7(oid, x, y, size, layer);
                         
                     case 0xB8:
-                       return new object_B8(oid, x, y, size,layer);
+                       return new object_B8(oid, x, y, size, layer);
                         
                     case 0xB9:
-                       return new object_B9(oid, x, y, size,layer);
+                       return new object_B9(oid, x, y, size, layer);
                         
                     case 0xBA:
-                       return new object_BA(oid, x, y, size,layer);
+                       return new object_BA(oid, x, y, size, layer);
                         
                     case 0xBB:
-                       return new object_BB(oid, x, y, size,layer);
+                       return new object_BB(oid, x, y, size, layer);
                         
                     case 0xBC:
-                       return new object_BC(oid, x, y, size,layer);
+                       return new object_BC(oid, x, y, size, layer);
                         
                     case 0xBD:
-                       return new object_BD(oid, x, y, size,layer);
+                       return new object_BD(oid, x, y, size, layer);
                         
                     case 0xBE:
-                       return new object_BE(oid, x, y, size,layer);
+                       return new object_BE(oid, x, y, size, layer);
                         
                     case 0xBF:
-                       return new object_BF(oid, x, y, size,layer);
+                       return new object_BF(oid, x, y, size, layer);
                         
                     case 0xC0:
                        return new object_C0(oid, x, y, size, layer);
@@ -1972,22 +1956,28 @@ namespace ZeldaFullEditor
                        return new object_EF(oid, x, y, size, layer);
 
                     case 0xF0:
-                        return new object_F0(oid, x, y, size, layer);
-                    case 0xF1:
-                        return new object_F0(oid, x, y, size, layer);
-                    case 0xF2:
-                        return new object_F0(oid, x, y, size, layer);
-                    case 0xF3:
-                        return new object_F0(oid, x, y, size, layer);
-                    case 0xF4:
-                        return new object_F0(oid, x, y, size, layer);
-                    case 0xF5:
-                        return new object_F0(oid, x, y, size, layer);
-                    case 0xF6:
-                        return new object_F0(oid, x, y, size, layer);
-                    case 0xF7:
-                        return new object_F0(oid, x, y, size, layer);
+                       return new object_F0(oid, x, y, size, layer);
 
+                    case 0xF1:
+                       return new object_F0(oid, x, y, size, layer);
+
+                    case 0xF2:
+                       return new object_F0(oid, x, y, size, layer);
+
+                    case 0xF3:
+                       return new object_F0(oid, x, y, size, layer);
+
+                    case 0xF4:
+                       return new object_F0(oid, x, y, size, layer);
+
+                    case 0xF5:
+                       return new object_F0(oid, x, y, size, layer);
+
+                    case 0xF6:
+                       return new object_F0(oid, x, y, size, layer);
+
+                    case 0xF7:
+                       return new object_F0(oid, x, y, size, layer);
                 }
             }
             else
@@ -2216,8 +2206,7 @@ namespace ZeldaFullEditor
                            return new object_FC8(oid, x, y, size, layer);
                             
                         case 0xFC9:
-                            
-                            return new object_FC9(oid, x, y, size, layer);
+                           return new object_FC9(oid, x, y, size, layer);
                             
                         case 0xFCA:
                            return new object_FCA(oid, x, y, size, layer);
@@ -2229,11 +2218,9 @@ namespace ZeldaFullEditor
                            return new object_FCC(oid, x, y, size, layer);
                             
                         case 0xFCD:
-                            
-                            return new object_FCD(oid, x, y, size, layer);
+                           return new object_FCD(oid, x, y, size, layer);
                             
                         case 0xFCE:
-                           
                            return new object_FCE(oid, x, y, size, layer);
                             
                         case 0xFCF:
@@ -2252,28 +2239,28 @@ namespace ZeldaFullEditor
                            return new object_FD3(oid, x, y, size, layer);
                             
                         case 0xFD4:
-                            return new object_FD4(oid, x, y, size, layer);
+                           return new object_FD4(oid, x, y, size, layer);
                             
                         case 0xFD5:
-                            return new object_FD5(oid, x, y, size, layer);
+                           return new object_FD5(oid, x, y, size, layer);
                             
                         case 0xFD6:
-                            return new object_FD6(oid, x, y, size, layer);
+                           return new object_FD6(oid, x, y, size, layer);
                             
                         case 0xFD7:
-                            return new object_FD7(oid, x, y, size, layer);
+                           return new object_FD7(oid, x, y, size, layer);
                             
                         case 0xFD8:
-                            return new object_FD8(oid, x, y, size, layer);
+                           return new object_FD8(oid, x, y, size, layer);
                             
                         case 0xFD9:
-                            return new object_FD9(oid, x, y, size, layer);
+                           return new object_FD9(oid, x, y, size, layer);
                             
                         case 0xFDA:
-                            return new object_FDA(oid, x, y, size, layer);
+                           return new object_FDA(oid, x, y, size, layer);
                             
                         case 0xFDB:
-                            return new object_FDB(oid, x, y, size, layer);
+                           return new object_FDB(oid, x, y, size, layer);
                             
                         case 0xFDC:
                            return new object_FDC(oid, x, y, size, layer);
@@ -2285,8 +2272,7 @@ namespace ZeldaFullEditor
                            return new object_FDE(oid, x, y, size, layer);
                             
                         case 0xFDF:
-                            
-                            return new object_FDF(oid, x, y, size, layer);
+                           return new object_FDF(oid, x, y, size, layer);
                             
                         case 0xFE0:
                            return new object_FE0(oid, x, y, size, layer);
@@ -2298,7 +2284,6 @@ namespace ZeldaFullEditor
                            return new object_FE2(oid, x, y, size, layer);
                             
                         case 0xFE3:
-                            
                            return new object_FE3(oid, x, y, size, layer);
                             
                         case 0xFE4:
@@ -2329,13 +2314,13 @@ namespace ZeldaFullEditor
                            return new object_FEC(oid, x, y, size, layer);
                             
                         case 0xFED:
-                            return new object_FED(oid, x, y, size, layer);
+                           return new object_FED(oid, x, y, size, layer);
                             
                         case 0xFEE:
-                            return new object_FEE(oid, x, y, size, layer);
+                           return new object_FEE(oid, x, y, size, layer);
                             
                         case 0xFEF:
-                            return new object_FEF(oid, x, y, size, layer);
+                           return new object_FEF(oid, x, y, size, layer);
                             
                         case 0xFF0:
                            return new object_FF0(oid, x, y, size, layer);
@@ -2354,35 +2339,41 @@ namespace ZeldaFullEditor
                             
                         case 0xFF5:
                            return new object_FF5(oid, x, y, size, layer);
-                        case 0xFF6:
-                            return new object_FF6(oid, x, y, size, layer);
-                        case 0xFF7:
-                            return new object_FF7(oid, x, y, size, layer);
-                        case 0xFF8:
-                            return new object_FF8(oid, x, y, size, layer);
-                        case 0xFF9:
-                            return new object_FF9(oid, x, y, size, layer);
-                        case 0xFFA:
-                            return new object_FFA(oid, x, y, size, layer);
-                        case 0xFFB:
-                            return new object_FFB(oid, x, y, size, layer);
-                        case 0xFFC:
-                            
-                            return new object_FFC(oid, x, y, size, layer);
-                        case 0xFFD:
-                            
-                            return new object_FFD(oid, x, y, size, layer);
-                        case 0xFFE:
 
-                            return new object_FFE(oid, x, y, size, layer);
+                        case 0xFF6:
+                           return new object_FF6(oid, x, y, size, layer);
+
+                        case 0xFF7:
+                           return new object_FF7(oid, x, y, size, layer);
+
+                        case 0xFF8:
+                           return new object_FF8(oid, x, y, size, layer);
+
+                        case 0xFF9:
+                           return new object_FF9(oid, x, y, size, layer);
+
+                        case 0xFFA:
+                           return new object_FFA(oid, x, y, size, layer);
+
+                        case 0xFFB:
+                           return new object_FFB(oid, x, y, size, layer);
+
+                        case 0xFFC:
+                           return new object_FFC(oid, x, y, size, layer);
+
+                        case 0xFFD:
+                           return new object_FFD(oid, x, y, size, layer);
+
+                        case 0xFFE:
+                           return new object_FFE(oid, x, y, size, layer);
                     }
                 }
                 else if ((oid & 0x100) == 0x100) //subtype2? non scalable
                 {
                    return new Subtype2_Multiple(oid, x, y, 0, layer);
                 }
-
             }
+
             return null;
         }
 
@@ -2402,7 +2393,6 @@ namespace ZeldaFullEditor
             Tile floorTile7 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 4], ROM.DATA[Constants.tile_address_floor + f + 5]);
             Tile floorTile8 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 6], ROM.DATA[Constants.tile_address_floor + f + 7]);
 
-
             for (int xx = 0; xx < 16; xx++)
             {
                 for (int yy = 0; yy < 32; yy++)
@@ -2416,8 +2406,8 @@ namespace ZeldaFullEditor
             }
         }
 
-            public void DrawFloor1()
-            {
+        public void DrawFloor1()
+        {
             byte layer = 0;
             byte f = (byte)(floor1 << 4);
             //int f = 1024 + (floor1<<4);
@@ -2432,7 +2422,6 @@ namespace ZeldaFullEditor
             Tile floorTile7 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 4], ROM.DATA[Constants.tile_address_floor + f + 5]);
             Tile floorTile8 = new Tile(ROM.DATA[Constants.tile_address_floor + f + 6], ROM.DATA[Constants.tile_address_floor + f + 7]);
 
-
             for (int xx = 0; xx < 16; xx++)
             {
                 for (int yy = 0; yy < 32; yy++)
@@ -2444,25 +2433,19 @@ namespace ZeldaFullEditor
                     floorTile7.SetTile((xx * 4) + 2, (yy * 2) + 1, layer); floorTile8.SetTile((xx * 4) + 3, (yy * 2) + 1, layer);
                 }
             }
-
         }
-
-
 
         public void Draw()
         {
-
-            
+            //TODO: Add somehting here?
         }
-
-
-
 
         public void loadHeader()
         {
             //address of the room header
             int headerPointer = (ROM.DATA[Constants.room_header_pointer + 2] << 16) + (ROM.DATA[Constants.room_header_pointer + 1] << 8) + (ROM.DATA[Constants.room_header_pointer]);
             headerPointer = Utils.SnesToPc(headerPointer);
+
             int address = (ROM.DATA[Constants.room_header_pointers_bank] << 16) +
                             (ROM.DATA[(headerPointer + 1)+ (index * 2)] << 8) +
                             ROM.DATA[(headerPointer) + (index*2)];
@@ -2472,6 +2455,7 @@ namespace ZeldaFullEditor
             bg2 = (Background2)((ROM.DATA[header_location] >> 5) & 0x07);
             collision = (CollisionKey)((ROM.DATA[header_location] >> 2) & 0x07);
             light = (((ROM.DATA[header_location]) & 0x01) == 1 ? true : false);
+
             if (light)
             {
                 bg2 = Background2.DarkRoom;
@@ -2511,9 +2495,6 @@ namespace ZeldaFullEditor
                 Console.WriteLine("Room Index Plane 1 : Used in room id = " + index.ToString("X2"));
             }
 
-
-
-
             holewarp = (byte)((ROM.DATA[header_location + 9]));
             staircase_rooms[0] = (byte)((ROM.DATA[header_location + 10]));
             staircase_rooms[1] = (byte)((ROM.DATA[header_location + 11]));
@@ -2523,14 +2504,14 @@ namespace ZeldaFullEditor
 
         public object Clone()
         {
-              using (var ms = new MemoryStream())
-              {
-                  var formatter = new BinaryFormatter();
-                  formatter.Serialize(ms, this);
-                  ms.Position = 0;
+            using (var ms = new MemoryStream())
+            {
+                var formatter = new BinaryFormatter();
+                formatter.Serialize(ms, this);
+                ms.Position = 0;
                 Console.WriteLine("Size of serializing for room " + index.ToString() +" : "+ ms.Length.ToString() + "Bytes");
                 return (Room)formatter.Deserialize(ms);
-              }
+            }
         }
 
         public void CloneToFile(string file)
@@ -2548,7 +2529,6 @@ namespace ZeldaFullEditor
             tilesLayoutObjects.Clear();
             pot_items.Clear();
             sprites.Clear();
-            
         }
 
         ~Room()
@@ -2570,16 +2550,15 @@ namespace ZeldaFullEditor
             {
                 sprites[i] = null;
             }
-
             for (int i = 0; i < pot_items.Count; i++)
             {
                 pot_items[i] = null;
             }
-
             for (int i = 0; i < selectedObject.Count; i++)
             {
                 selectedObject[i] = null;
             }
+
             chest_list = null;
             tilesObjects = null;
             tilesLayoutObjects = null;
@@ -2589,9 +2568,6 @@ namespace ZeldaFullEditor
 
             Console.WriteLine("Room Got Deleted");
         }
-
-
-       
     }
 
     [Serializable]
@@ -2600,6 +2576,7 @@ namespace ZeldaFullEditor
         public int x;
         public int y;
         public string name;
+
         public SpriteName(int x,int y,string name)
         {
             this.x = x;
@@ -2614,6 +2591,7 @@ namespace ZeldaFullEditor
         public int x;
         public int y;
         public string name;
+
         public StaircaseRoom(int x, int y,string name)
         {
             this.x = x;
@@ -2621,17 +2599,17 @@ namespace ZeldaFullEditor
             this.name = name;
         }
     }
+
     [Serializable]
     public class ChestData
     {
         public bool bigChest = false;
         public byte itemIn = 0;
+
         public ChestData(byte itemIn, bool bigChest)
         {
             this.itemIn = itemIn;
             this.bigChest = bigChest;
         }
     }
-
-
 }

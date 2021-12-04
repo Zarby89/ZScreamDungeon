@@ -18,10 +18,6 @@ namespace ZeldaFullEditor.Gui
 {
     public partial class OverworldEditor : UserControl
     {
-        public OverworldEditor()
-        {
-            InitializeComponent();
-        }
         public Overworld overworld;
         public SceneOW scene;
         public bool propertiesChangedFromForm = false;
@@ -30,6 +26,26 @@ namespace ZeldaFullEditor.Gui
         public Bitmap scratchPadBitmap = new Bitmap(256, 3600);
         public ushort[,] scratchPadTiles = new ushort[16, 225];
         public byte gridDisplay = 0;
+
+        bool mouse_down = false;
+
+        bool initialized = false;
+        bool selecting = false;
+        int globalmouseTileDownX = 0;
+        int globalmouseTileDownY = 0;
+        int mouseX_Real = 0;
+        int mouseY_Real = 0;
+        int lastTileHoverX = 0;
+        int lastTileHoverY = 0;
+
+        byte palSelected = 0;
+        int tile8selected = 0;
+
+        public OverworldEditor()
+        {
+            InitializeComponent();
+        }
+
         public void InitOpen(DungeonMain mainForm)
         {
             overworld = new Overworld();
@@ -56,6 +72,7 @@ namespace ZeldaFullEditor.Gui
             //setTilesGfx();
             bool fromFile = false;
             byte[] file = new byte[(225*16)*2];
+
             if (File.Exists("ScratchPad.dat"))
             {
                 using (FileStream fs = new FileStream("ScratchPad.dat", FileMode.Open, FileAccess.Read))
@@ -65,6 +82,7 @@ namespace ZeldaFullEditor.Gui
                     fromFile = true;
                 }
             }
+
             int t = 0;
             for (ushort x = 0; x < 225; x++)
             {
@@ -78,6 +96,7 @@ namespace ZeldaFullEditor.Gui
                     {
                         scratchPadTiles[y, x] = (ushort)0;
                     }
+
                     t+=2;
                 }
             }
@@ -85,7 +104,6 @@ namespace ZeldaFullEditor.Gui
             GFX.editort16Bitmap.Palette = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette;
             updateTiles();
             pictureBox1.Refresh();
-
         }
 
         public void saveScratchPad()
@@ -102,13 +120,13 @@ namespace ZeldaFullEditor.Gui
                     t +=2;
                 }
             }
+
             using (FileStream fs = new FileStream("ScratchPad.dat", FileMode.OpenOrCreate, FileAccess.Write))
             {
                 fs.Write(file, 0, (int)fs.Length);
                 fs.Close();
             }
         }
-
 
         public void setTilesGfx()
         {
@@ -124,6 +142,7 @@ namespace ZeldaFullEditor.Gui
                     (owToolStrip.Items[i] as ToolStripButton).Checked = false;
                 }
             }
+
             (sender as ToolStripButton).Checked = true;
             scene.selectedMode = (ObjectMode)((sender as ToolStripButton).Tag);
         }
@@ -140,7 +159,6 @@ namespace ZeldaFullEditor.Gui
 
         private void gfxTextbox_TextChanged(object sender, EventArgs e)
         {
-
             if (propertiesChangedFromForm == false)
             {
                 byte result = 0;
@@ -184,13 +202,10 @@ namespace ZeldaFullEditor.Gui
                     {
                         mapParent.sprpalette[scene.ow.gameState] = result;
                     }
-
                 }
-
 
                 if (mapParent.largeMap)
                 {
-
                     scene.ow.allmaps[mapParent.index + 1].gfx = mapParent.gfx;
                     scene.ow.allmaps[mapParent.index + 1].sprgfx = mapParent.sprgfx;
                     scene.ow.allmaps[mapParent.index + 1].palette = mapParent.palette;
@@ -210,12 +225,12 @@ namespace ZeldaFullEditor.Gui
                     scene.ow.allmaps[mapParent.index + 1].BuildMap();
                     scene.ow.allmaps[mapParent.index + 8].BuildMap();
                     scene.ow.allmaps[mapParent.index + 9].BuildMap();
-
                 }
                 else
                 {
                     mapParent.BuildMap();
                 }
+
                 //scene.updateMapGfx();
                  scene.Invalidate();
                 //scene.Refresh();
@@ -226,7 +241,6 @@ namespace ZeldaFullEditor.Gui
         {
             if (GFX.mapblockset16Bitmap != null)
             {
-
                 e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
                 e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
                 e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new Rectangle(0, 0, 128, 4000), new Rectangle(0, 0, 128, 4000), GraphicsUnit.Pixel);
@@ -241,11 +255,12 @@ namespace ZeldaFullEditor.Gui
                         y -= 4000;
                         x += 128;
                     }
+
                     e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(x, y, 16, 16));
                     selectedTileLabel.Text = "Selected Tile : " + scene.selectedTile[0].ToString("X4");
                 }
+
                 e.Graphics.FillRectangle(Brushes.Black, new RectangleF(128, 3600-96, 128, 96));
-               
             }
         }
 
@@ -266,7 +281,6 @@ namespace ZeldaFullEditor.Gui
             }
 
             tilePictureBox.Refresh();
-
         }
 
         private void spButton_Click(object sender, EventArgs e)
@@ -297,7 +311,7 @@ namespace ZeldaFullEditor.Gui
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
-
+            //TODO: Add something here?
         }
 
         private void tilePictureBox_DoubleClick(object sender, EventArgs e)
@@ -317,13 +331,12 @@ namespace ZeldaFullEditor.Gui
                         }
                     }
                 }).Start();
-
             }
         }
 
         private void thumbnailBox_Paint(object sender, PaintEventArgs e)
         {
-
+            //TODO: Add something here?
         }
 
         private void undoButton_Click(object sender, EventArgs e)
@@ -338,7 +351,7 @@ namespace ZeldaFullEditor.Gui
 
         private void tilePictureBox_Click(object sender, EventArgs e)
         {
-
+            //TODO: Add something here?
         }
 
         private void refreshToolStrip_Click(object sender, EventArgs e)
@@ -372,13 +385,10 @@ namespace ZeldaFullEditor.Gui
                 scene.ow.allmaps[scene.selectedMap].musics[2] = owmf.musics[2];
                 scene.ow.allmaps[scene.selectedMap].musics[3] = owmf.musics[3];
             }
-
-
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-
             int v = 0;
             if (int.TryParse(textidTextbox.Text, out v))
             {
@@ -387,9 +397,9 @@ namespace ZeldaFullEditor.Gui
                     mainForm.textEditor.textListbox.SelectedIndex = v;
                 }
             }
+
             mainForm.editorsTabControl.SelectTab(3);
             mainForm.textEditor.Refresh();
-
         }
 
         private void previewTextPicturebox_Paint(object sender, PaintEventArgs e)
@@ -410,6 +420,7 @@ namespace ZeldaFullEditor.Gui
 
                 }
             }
+
             GFX.currentfontgfx16Bitmap.Palette = cp;
 
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
@@ -446,13 +457,12 @@ namespace ZeldaFullEditor.Gui
             globalmouseTileDownX = tileX;
             globalmouseTileDownY = tileY;
             
-
-
             if (scene.needRedraw)
             {
                 scene.needRedraw = false;
                 return;
             }
+
             mouse_down = true;
 
             if (e.Button == MouseButtons.Left)
@@ -473,7 +483,6 @@ namespace ZeldaFullEditor.Gui
 
                         if (x >= scene.selectedTileSizeX)
                         {
-
                             y++;
                             x = 0;
                         }
@@ -483,12 +492,12 @@ namespace ZeldaFullEditor.Gui
                 {
                     scratchPadTiles[globalmouseTileDownX, globalmouseTileDownY] = scene.selectedTile[0];
                 }
-
             }
             else if (e.Button == MouseButtons.Right)
             {
                 selecting = true;
             }
+
             BuildScratchTilesGfx();
             scratchPicturebox.Refresh();
         }
@@ -540,13 +549,12 @@ namespace ZeldaFullEditor.Gui
                         }
                     }
                 }
-
             }
             selecting = false;
             mouse_down = false;
             scratchPicturebox.Refresh();
         }
-        bool mouse_down = false;
+
         private void scratchPicturebox_MouseMove(object sender, MouseEventArgs e)
         {
             if (scene.initialized)
@@ -555,6 +563,7 @@ namespace ZeldaFullEditor.Gui
                 mouseY_Real = e.Y;
                 int mouseTileX = e.X / 16;
                 int mouseTileY = e.Y / 16;
+
                 if (lastTileHoverX != mouseTileX || lastTileHoverY != mouseTileY)
                 {
                     if (mouse_down)
@@ -569,8 +578,6 @@ namespace ZeldaFullEditor.Gui
                             if (tileY > 225) { tileY = 225; }
                             globalmouseTileDownX = tileX;
                             globalmouseTileDownY = tileY;
-
-
 
                             if (scene.selectedTile.Length >= 1)
                             {
@@ -592,31 +599,19 @@ namespace ZeldaFullEditor.Gui
                             }
                         }
 
-
                         BuildScratchTilesGfx();
                     }
 
                     scratchPicturebox.Refresh();
                     lastTileHoverX = mouseTileX;
                     lastTileHoverY = mouseTileY;
-                    
-
                 }
             }
-
-
         }
-        bool initialized = false;
-        bool selecting = false;
-        int globalmouseTileDownX = 0;
-        int globalmouseTileDownY = 0;
-        int mouseX_Real = 0;
-        int mouseY_Real = 0;
-        int lastTileHoverX = 0;
-        int lastTileHoverY = 0;
+
         protected override void OnPaint(PaintEventArgs e)
         {
-
+            //TODO: Add something here?
         }
 
         private void scratchPicturebox_Paint(object sender, PaintEventArgs e)
@@ -648,8 +643,6 @@ namespace ZeldaFullEditor.Gui
 
                 g.CompositingMode = CompositingMode.SourceOver;
 
-
-
                 if (selecting)
                 {
                     g.DrawRectangle(Pens.White, new Rectangle((globalmouseTileDownX * 16), (globalmouseTileDownY * 16), (((mouseX_Real / 16) - globalmouseTileDownX) * 16) + 16, (((mouseY_Real / 16) - globalmouseTileDownY) * 16) + 16));
@@ -658,20 +651,15 @@ namespace ZeldaFullEditor.Gui
                 g.DrawImage(scene.tilesgfxBitmap, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, scene.selectedTileSizeX * 16, (scene.selectedTile.Length / scene.selectedTileSizeX) * 16), 0, 0, scene.selectedTileSizeX * 16, (scene.selectedTile.Length / scene.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
                 g.DrawRectangle(Pens.LightGreen, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, scene.selectedTileSizeX * 16, (scene.selectedTile.Length / scene.selectedTileSizeX) * 16));
 
-
                 g.DrawImage(scene.tilesgfxBitmap, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, scene.selectedTileSizeX * 16, (scene.selectedTile.Length / scene.selectedTileSizeX) * 16), 0, 0, scene.selectedTileSizeX * 16, (scene.selectedTile.Length / scene.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
                 g.DrawRectangle(Pens.LightGreen, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, scene.selectedTileSizeX * 16, (scene.selectedTile.Length / scene.selectedTileSizeX) * 16));
 
 
-
-
                 g.CompositingMode = CompositingMode.SourceCopy;
                 //hideText = false;
+                //}
             }
-            //}
         }
-
-
 
         public unsafe void BuildScratchTilesGfx()
         {
@@ -680,6 +668,7 @@ namespace ZeldaFullEditor.Gui
             var gfx16DataScratch = (byte*)GFX.scratchblockset16.ToPointer();//(byte*)allgfx16Ptr.ToPointer();
             int ytile = 0;
             int xtile = 0;
+
             for (var i = 0; i < 3600; i++) //number of tiles16 3748?
             {
                 ushort srcTile = scratchPadTiles[xtile, ytile];
@@ -701,7 +690,6 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
                 
-
                 xtile++;
                 if (xtile>=16)
                 {
@@ -709,11 +697,8 @@ namespace ZeldaFullEditor.Gui
                     ytile++;
                 }
             }
-
-
         }
-        byte palSelected = 0;
-        int tile8selected = 0;
+
         private void pictureBox1_Paint(object sender, PaintEventArgs e)
         {
             e.Graphics.SmoothingMode = SmoothingMode.None;
@@ -734,6 +719,8 @@ namespace ZeldaFullEditor.Gui
         {
             if (tabControl1.SelectedTab.Name == "Tiles8")
             {
+                //TODO: Add something here?
+
                 /*int sx = 0;
                 int sy = 0;
                 int c = 0;
@@ -747,7 +734,7 @@ namespace ZeldaFullEditor.Gui
                         for (int x = 0; x < 64; x += 2)
                         {
 
-                                //Console.WriteLine(overworld.tiles16[overworld.allmapsTilesLW[nx + (sx * 32), ny + (sy * 32)]].tile0.id);
+                            //Console.WriteLine(overworld.tiles16[overworld.allmapsTilesLW[nx + (sx * 32), ny + (sy * 32)]].tile0.id);
 
                             overworld.tempTiles8_LW[x + (sx * 64), y + (sy * 64)] = overworld.tiles16[overworld.allmapsTilesLW[nx + (sx * 32), ny + (sy * 32)]].tile0;
                             overworld.tempTiles8_LW[x + (sx * 64) + 1, y + (sy * 64)] = overworld.tiles16[overworld.allmapsTilesLW[nx + (sx * 32), ny + (sy * 32)]].tile1;
@@ -765,6 +752,7 @@ namespace ZeldaFullEditor.Gui
                                 overworld.tempTiles8_SP[x + (sx * 64), y + (sy * 64) + 1] = overworld.tiles16[overworld.allmapsTilesSP[nx + (sx * 32), ny + (sy * 32)]].tile2;
                                 overworld.tempTiles8_SP[x + (sx * 64) + 1, y + (sy * 64) + 1] = overworld.tiles16[overworld.allmapsTilesSP[nx + (sx * 32), ny + (sy * 32)]].tile3;
                             }
+
                             nx++;
                         }
 
@@ -777,8 +765,8 @@ namespace ZeldaFullEditor.Gui
                     {
                         sy++;
                         sx = 0;
-
                     }
+
                     c++;
                     if (c >= 64)
                     {
@@ -786,11 +774,10 @@ namespace ZeldaFullEditor.Gui
                         sy = 0;
                         c = 0;
                     }
+
                     nx = 0;
                     ny = 0;
                 }
-
-
                 */
             }
             else
@@ -800,14 +787,10 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-
-
         public unsafe void updateTiles()
         {
-
             byte p;
             ushort tempTile = (ushort)0;
-
 
             tile8selected = tempTile;
 
@@ -825,24 +808,19 @@ namespace ZeldaFullEditor.Gui
                         CopyTile(x, y, xx, yy, i, p, destPtr, srcPtr);
                     }
                 }
+
                 xx += 8;
                 if (xx >= 128)
                 {
                     yy += 1024;
                     xx = 0;
                 }
-
             }
-
-
 
             //Bitmap b = new Bitmap(128, 512, 64, System.Drawing.Imaging.PixelFormat.Format4bppIndexed, GFX.currentOWgfx16Ptr);
             GFX.editort16Bitmap.Palette = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette;
             pictureBox1.Refresh();
             palette8Box.Refresh();
-
-
-
         }
 
         private unsafe void CopyTile(int x, int y, int xx, int yy, TileInfo tile, int offset, byte* gfx16Pointer, byte* gfx8Pointer)
@@ -902,13 +880,9 @@ namespace ZeldaFullEditor.Gui
         {
             for(int i =0;i<256;i++)
             {
-
                 Color c = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette.Entries[i];
                 e.Graphics.FillRectangle(new SolidBrush(c), new Rectangle((i%16)*16, (i/16)*16, 16, 16));
-
             }
-
-            
         }
 
         private void palette8Box_MouseDown(object sender, MouseEventArgs e)
@@ -928,7 +902,6 @@ namespace ZeldaFullEditor.Gui
                 alltilesIndexed.Add(i, 0);
             }
             
-
             for (int i = 0; i < 64; i++)
             {
                 for (int y = 0; y < 32; y += 1)
@@ -952,7 +925,6 @@ namespace ZeldaFullEditor.Gui
                     alltilesIndexed[t.tileId]++;
                 }
 
-
                 sx++;
                 if (sx >= 8)
                 {
@@ -960,23 +932,22 @@ namespace ZeldaFullEditor.Gui
                     sx = 0;
                 }
             }
+
             StringBuilder sb = new StringBuilder();
             foreach (KeyValuePair <ushort,ushort> tiles in alltilesIndexed.OrderBy(key => key.Value))
             {
                 sb.AppendLine("Tile - " + tiles.Key.ToString("D4") + " : " + tiles.Value.ToString("D4"));
             }
+
             SearchTilesForm stf = new SearchTilesForm();
             stf.textBox1.Text = sb.ToString();
             stf.ShowDialog();
-            
         }
 
         private void textidTextbox_TextChanged(object sender, EventArgs e)
         {
             if (propertiesChangedFromForm == false)
             {
-
-
                 byte result = 0;
                 OverworldMap mapParent = scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent];
 
@@ -999,11 +970,9 @@ namespace ZeldaFullEditor.Gui
                     previewTextPicturebox.Size = new Size(340, 102);
                     previewTextPicturebox.Visible = true;
                     previewTextPicturebox.Refresh();
-
-
                 }
             }
-            }
+        }
 
         private void deleteOverlayToolstripbutton_Click(object sender, EventArgs e)
         {
@@ -1020,13 +989,10 @@ namespace ZeldaFullEditor.Gui
                     overworld.allmaps[scene.selectedMap].tilesUsed[x, y] = 0052;
 
                     //overworld.allmapsTilesLW[x, y] = 0052;
-
-                    
                 }
             }
 
             scene.Refresh();
-
         }
 
         private void tilePictureBox_MouseEnter(object sender, EventArgs e)

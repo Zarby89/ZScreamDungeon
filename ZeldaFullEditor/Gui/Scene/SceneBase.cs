@@ -52,6 +52,7 @@ namespace ZeldaFullEditor
         public bool updating_info = false;
 
         byte[] spriteFontSpacing = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6};
+        
         public void drawText(Graphics g, int x, int y, string text,ImageAttributes ai = null, bool x2 = false)
         {
             if (showTexts)
@@ -67,9 +68,9 @@ namespace ZeldaFullEditor
                         cpos = 0;
                         continue;
                     }
+
                     if (ai == null)
                     {
-                        
                         if (x2 == true)
                         {
                             g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 16, 16), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
@@ -83,11 +84,13 @@ namespace ZeldaFullEditor
                     {
                         g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
                     }
+
                     if (arrayPos > spriteFontSpacing.Length - 1)
                     {
                         cpos += 8;
                         continue;
                     }
+
                     if (x2 == true)
                     {
                         cpos += (spriteFontSpacing[arrayPos]*2);
@@ -95,70 +98,66 @@ namespace ZeldaFullEditor
                     else
                     {
                         cpos += spriteFontSpacing[arrayPos];
-                    }
-                        
+                    }   
                 }
             }
         }
 
-
         public virtual void Clear()
         {
-
+            //TODO: Add something here?
         }
 
         public virtual void deleteSelected()
         {
-
+            //TODO: Add something here?
         }
 
         public virtual void selectAll()
         {
-
+            //TODO: Add something here?
         }
 
         public virtual void copy()
         {
-
+            //TODO: Add something here?
         }
         public virtual void cut()
         {
-
+            //TODO: Add something here?
         }
         public virtual void paste()
         {
-
+            //TODO: Add something here?
         }
         public virtual void insertNew()
         {
-
+            //TODO: Add something here?
         }
         public virtual void SendSelectedToBack()
         {
-
+            //TODO: Add something here?
         }
-
 
         public virtual void UpdateSelectedZ(int i)
         {
-
+            //TODO: Add something here?
         }
         public virtual void changeObject()
         {
-
+            //TODO: Add something here?
         }
         public virtual void loadLayout()
         {
-
+            //TODO: Add something here?
         }
         public virtual void DecreaseSelectedZ()
         {
-
+            //TODO: Add something here?
         }
 
         public void drawSelection(Graphics graphics)
         {
-            
             foreach (Object o in room.selectedObject)
             {
                 if (o is Sprite)
@@ -220,7 +219,6 @@ namespace ZeldaFullEditor
                     }
                 }
 
-
                 foreach (Object o in room.selectedObject)
                 {
                     if (o is Sprite)
@@ -243,18 +241,18 @@ namespace ZeldaFullEditor
                         graphics.DrawRectangle(Pens.LimeGreen, new Rectangle((obj.nx+obj.offsetX) * 8, (obj.ny + obj.offsetY+yfix) * 8, obj.width, obj.height));
                     }
                 }
-
-
             }
         }
 
         public void drawEntrancePosition()
         {
-
+            //TODO: Add something here?
         }
 
         public void drawDoorsPosition()
         {
+            //TODO: Add something here?
+
             /*if (mouse_down)
             {
                 if (room.selectedObject.Count > 0)
@@ -279,10 +277,8 @@ namespace ZeldaFullEditor
             this.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
             this.ResumeLayout(false);
-
         }
 
         //END OF DRAW CODE
-
     }
 }

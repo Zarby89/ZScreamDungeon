@@ -16,6 +16,7 @@ namespace ZeldaFullEditor
         public short mapId;
         public bool isHole = false;
         public bool deleted = false;
+
         //mapId might be useless but we will need it to check if the entrance is in the darkworld or lightworld
         public EntranceOWEditor(int x, int y, byte entranceId, short mapId, ushort mapPos)
         {
@@ -24,8 +25,6 @@ namespace ZeldaFullEditor
             this.entranceId = entranceId;
             this.mapId = mapId;
             this.mapPos = mapPos;
-            //
-
         }
 
         public EntranceOWEditor Copy()
@@ -49,8 +48,6 @@ namespace ZeldaFullEditor
 
             mapPos = (ushort)((((yy) << 6) | (xx & 0x3F)) << 1);
             //Console.WriteLine(xx + ", " +yy+ ", " +mapPos);
-
         }
-
     }
 }

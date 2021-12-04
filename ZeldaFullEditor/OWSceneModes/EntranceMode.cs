@@ -17,11 +17,11 @@ namespace ZeldaFullEditor.OWSceneModes
         public EntranceOWEditor selectedEntrance = null;
         public EntranceOWEditor lastselectedEntrance = null;
         bool isLeftPress = false;
+
         public EntranceMode(SceneOW scene)
         {
             this.scene = scene;
         }
-
 
         public void Copy()
         {
@@ -65,7 +65,6 @@ namespace ZeldaFullEditor.OWSceneModes
                 }
             }
 
-            
             int found = -1;
             if (ishole)
             {
@@ -84,9 +83,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         scene.ow.allholes[i].y = (ushort)((myRightclick / 16) * 16);
                         scene.ow.allholes[i].entranceId = entranceID;
 
-
                         scene.ow.allholes[i].updateMapStuff(mid);
-
 
                         found = i;
                         selectedEntrance = scene.ow.allholes[i];
@@ -114,9 +111,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         scene.ow.allentrances[i].y = (ushort)((myRightclick / 16) * 16);
                         scene.ow.allentrances[i].entranceId = entranceID;
                         
-
                         scene.ow.allentrances[i].updateMapStuff(mid);
-
 
                         found = i;
                         selectedEntrance = scene.ow.allentrances[i];
@@ -128,7 +123,6 @@ namespace ZeldaFullEditor.OWSceneModes
                 }
             }
 
-
             if (found == -1)
             {
                 if (ishole)
@@ -139,6 +133,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     MessageBox.Show("No space available for new entrance, delete one first");
                 }
+
                 return null;
             }
 
@@ -155,6 +150,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 isLeftPress = false;
             }
+
             for (int i = 0; i < scene.ow.allentrances.Length; i++)
             {
                 EntranceOWEditor en = scene.ow.allentrances[i];
@@ -203,13 +199,11 @@ namespace ZeldaFullEditor.OWSceneModes
                                 scene.mouse_down = true;
                                 mxRightclick = (e.X);
                                 myRightclick = (e.Y);
-
                             }
                         }
                     }
                 }
             }
-
 
             if (selectedEntrance != null)
             {
@@ -232,8 +226,6 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.entrancePreview = true;
                     //scene.Refresh();
                     
-
-
                     if (scene.mainForm.activeScene.room != null)
                     {
                         GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.activeScene.room.palette);
@@ -244,7 +236,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 scene.mainForm.lastRoomID = roomId;
             }
- 
         }
 
         public void DrawTempEntrance()
@@ -271,10 +262,13 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 // Create an ImageAttributes object and set its color matrix.
                 ImageAttributes imageAtt = new ImageAttributes();
+
                 imageAtt.SetColorMatrix(
                    colorMatrix,
                    ColorMatrixFlag.Default,
-                   ColorAdjustType.Bitmap);
+                   ColorAdjustType.Bitmap
+                );
+
                 //GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
                 g.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
             }
@@ -293,7 +287,6 @@ namespace ZeldaFullEditor.OWSceneModes
             string tname = "";
             for (int i = 0; i < scene.ow.allentrances.Length; i++)
             {
-               
                 EntranceOWEditor en = scene.ow.allentrances[i];
                 if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
                 {
@@ -305,6 +298,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                     .Cast<TreeNode>()
                                     .Where(r => (int)(r.Tag) == en.entranceId)
                                     .ToArray();
+
                             if (treeNodes.Length != 0)
                             {
                                 scene.mainForm.entrancetreeView.SelectedNode = treeNodes[0];
@@ -333,6 +327,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                         .Cast<TreeNode>()
                                         .Where(r => (int)(r.Tag) == en.entranceId)
                                         .ToArray();
+
                                 if (treeNodes.Length != 0)
                                 {
                                     scene.mainForm.entrancetreeView.SelectedNode = treeNodes[0];
@@ -358,7 +353,6 @@ namespace ZeldaFullEditor.OWSceneModes
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
-
         public void onMouseMove(MouseEventArgs e)
         {
             int mouseTileX = e.X / 16;
@@ -366,11 +360,10 @@ namespace ZeldaFullEditor.OWSceneModes
             int mapX = (mouseTileX / 32);
             int mapY = (mouseTileY / 32);
 
-                scene.mapHover = mapX + (mapY * 8);
+            scene.mapHover = mapX + (mapY * 8);
             
             if (selectedEntrance != null)
             {
-
                 if (isLeftPress)
                 {
                     if (scene.mouse_down)
@@ -397,6 +390,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     {
                         mid = (byte)(scene.mapHover + scene.ow.worldOffset);
                     }
+
                     selectedEntrance.updateMapStuff((short)mid);
                     selectedEntrance = null;
                     scene.mouse_down = false;
@@ -407,7 +401,6 @@ namespace ZeldaFullEditor.OWSceneModes
                 ContextMenuStrip menu = new ContextMenuStrip();
                 for (int i = 0; i < scene.ow.allentrances.Length; i++)
                 {
-
                     EntranceOWEditor en = scene.ow.allentrances[i];
                     if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
                     {
@@ -419,11 +412,13 @@ namespace ZeldaFullEditor.OWSceneModes
                             lastselectedEntrance = en;
                             selectedEntrance = null;
                             scene.mouse_down = false;
+
                             if (lastselectedEntrance == null)
                             {
                                 menu.Items[1].Enabled = false;
                                 menu.Items[2].Enabled = false;
                             }
+
                             menu.Items[0].Click += entranceAdd_Click;
                             menu.Items[1].Click += entranceProperty_Click;
                             menu.Items[2].Click += Delete_Click;
@@ -447,11 +442,13 @@ namespace ZeldaFullEditor.OWSceneModes
                             lastselectedEntrance = en;
                             selectedEntrance = null;
                             scene.mouse_down = false;
+
                             if (lastselectedEntrance == null)
                             {
                                 menu.Items[1].Enabled = false;
                                 menu.Items[2].Enabled = false;
                             }
+
                             menu.Items[0].Click += entranceAdd_Click;
                             menu.Items[1].Click += entranceProperty_Click;
                             menu.Items[2].Click += Delete_Click;
@@ -468,8 +465,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 menu.Show(Cursor.Position);
                 return;
-
-
             }
         }
 
@@ -500,6 +495,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     break;
                 }
             }
+
             if (!found)
             {
                 MessageBox.Show("No space available for new entrances, delete one first");
@@ -531,17 +527,15 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-
         public void Draw(Graphics g)
         {
-
             if (scene.lowEndMode)
             {
-
                 int transparency = 200;
                 Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 255, 200, 16));
                 Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
                 g.CompositingMode = CompositingMode.SourceOver;
+
                 for (int i = 0; i < scene.ow.allentrances.Length; i++)
                 {
                     EntranceOWEditor e = scene.ow.allentrances[i];
@@ -549,6 +543,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     {
                         continue;
                     }
+
                     if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
                     {
                         if (selectedEntrance != null)
@@ -570,7 +565,6 @@ namespace ZeldaFullEditor.OWSceneModes
                         g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
                         scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
                     }
-
                 }
 
                 for (int i = 0; i < scene.ow.allholes.Length; i++)
@@ -580,6 +574,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     {
                         continue;
                     }
+
                     bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 32, 32, 32));
                     if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
                     {
@@ -595,8 +590,8 @@ namespace ZeldaFullEditor.OWSceneModes
                         g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
                         scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
                     }
-
                 }
+
                 g.CompositingMode = CompositingMode.SourceCopy;
             }
 
@@ -606,6 +601,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 255, 200, 16));
                 Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
                 g.CompositingMode = CompositingMode.SourceOver;
+
                 for (int i = 0; i < scene.ow.allentrances.Length; i++)
                 {
                     EntranceOWEditor e = scene.ow.allentrances[i];
@@ -631,13 +627,13 @@ namespace ZeldaFullEditor.OWSceneModes
                         g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
                         scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
                     }
-
                 }
 
                 for (int i = 0; i < scene.ow.allholes.Length; i++)
                 {
                     EntranceOWEditor e = scene.ow.allholes[i];
                     bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 32, 32, 32));
+
                     if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
                     {
                         if (selectedEntrance != null)
@@ -652,11 +648,10 @@ namespace ZeldaFullEditor.OWSceneModes
                         g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
                         scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
                     }
-
                 }
+
                 g.CompositingMode = CompositingMode.SourceCopy;
             }
-
         }
     }
 }

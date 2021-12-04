@@ -23,7 +23,6 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             if (e.Button == MouseButtons.Left)
             {
-
                 for (int i = 0; i < 0x11; i++)
                 {
                     TransportOW en = scene.ow.allWhirlpools[i];
@@ -39,13 +38,10 @@ namespace ZeldaFullEditor.OWSceneModes
                                 scene.mouse_down = true;
                             }
                         }
-
                     }
                 }
             }
         }
-
-
 
         public void onMouseMove(MouseEventArgs e)
         {
@@ -56,7 +52,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 int mapX = (mouseTileX / 32);
                 int mapY = (mouseTileY / 32);
 
-                    scene.mapHover = mapX + (mapY * 8);
+                scene.mapHover = mapX + (mapY * 8);
 
                 if (selectedTransport != null)
                 {
@@ -67,11 +63,13 @@ namespace ZeldaFullEditor.OWSceneModes
                         selectedTransport.playerX = (short)((e.X / 8) * 8);
                         selectedTransport.playerY = (short)((e.Y / 8) * 8);
                     }
+
                     byte mid = scene.ow.allmaps[scene.mapHover+ scene.ow.worldOffset].parent;
                     if (mid == 255)
                     {
                         mid = (byte)(scene.mapHover + scene.ow.worldOffset);
                     }
+
                     selectedTransport.updateMapStuff(mid, scene.ow);
 
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
@@ -94,7 +92,6 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 for (int i = 0; i < 0x11; i++)
                 {
-
                     TransportOW en = scene.ow.allWhirlpools[i];
                     if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
                     {
@@ -105,6 +102,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             lastselectedTransport = en;
                             selectedTransport = null;
                             scene.mouse_down = false;
+
                             if (lastselectedTransport == null)
                             {
                                 menu.Items[0].Enabled = false;
@@ -123,6 +121,7 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             WhirlpoolForm wf = new WhirlpoolForm();
             wf.textBox1.Text = lastselectedTransport.whirlpoolPos.ToString();
+
             if (wf.ShowDialog() == DialogResult.OK)
             {
                 short v = 0;
@@ -139,6 +138,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 48, 188, 142));
                 Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
                 g.CompositingMode = CompositingMode.SourceOver;
+
                 for (int i = 0; i < scene.ow.allWhirlpools.Count; i++)
                 {
                     TransportOW e = scene.ow.allWhirlpools[i];
@@ -146,6 +146,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     {
                         continue;
                     }
+
                     if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
                     {
                         if (selectedTransport != null)
@@ -175,15 +176,15 @@ namespace ZeldaFullEditor.OWSceneModes
                             scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
                         }*/
                     }
-
                 }
             }
             else
             { 
-            int transparency = 200;
-            Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 48, 188, 142));
-            Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
-            g.CompositingMode = CompositingMode.SourceOver;
+                int transparency = 200;
+                Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 48, 188, 142));
+                Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
+                g.CompositingMode = CompositingMode.SourceOver;
+
                 for (int i = 0; i < scene.ow.allWhirlpools.Count; i++)
                 {
                     TransportOW e = scene.ow.allWhirlpools[i];

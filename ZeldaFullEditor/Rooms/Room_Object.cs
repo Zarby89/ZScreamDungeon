@@ -62,7 +62,6 @@ namespace ZeldaFullEditor
             this.oy = y;
             width = 16;
             height = 16;
-            
         }
 
         public void getObjectSize()
@@ -80,7 +79,6 @@ namespace ZeldaFullEditor
             collisionPoint.Clear();
         }
 
-
         public void getBaseSize()
         {
             //set size on 1
@@ -92,7 +90,6 @@ namespace ZeldaFullEditor
         {
             sizeheight = (height - baseheight);
             sizewidth = (width - basewidth);
-            
         }
 
         public void setRoom(Room r)
@@ -107,7 +104,7 @@ namespace ZeldaFullEditor
 
         public void GetTileCollision()
         {
-
+            //TODO: Add something here?
         }
 
         public void UpdateSize()
@@ -129,6 +126,7 @@ namespace ZeldaFullEditor
             height = (size + 10) * 8;
             width = (size + 6) * 8;
             diagonalFix = true;
+
             for (int s = 0; s < size + 6; s++)
             {
                 draw_tile(tiles[0], ((s)) * 8, (0 - s) * 8);
@@ -141,7 +139,6 @@ namespace ZeldaFullEditor
 
         public void draw_diagonal_down()
         {
-
             for (int s = 0; s < size + 6; s++)
             {
                 draw_tile(tiles[0], ((s)) * 8, (0 + s) * 8);
@@ -151,10 +148,11 @@ namespace ZeldaFullEditor
                 draw_tile(tiles[4], ((s)) * 8, (4 + s) * 8);
             }
         }
+
         //Object Initialization (Tiles and special stuff)
         public void init_objects()
         {
-
+            //TODO: Add something here?
         }
 
         public void updatePos()
@@ -197,6 +195,7 @@ namespace ZeldaFullEditor
                             {
                                 my = 7 - yl;
                             }
+
                             //Formula information to get tile index position in the array
                             //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
                             int tx = ((ti.id / 16) * 512) + ((ti.id - ((ti.id / 16) * 16)) * 4);
@@ -220,30 +219,26 @@ namespace ZeldaFullEditor
 
                     if (layer == 0 || layer == 2 || allBgs)
                     {
-
                         if (tileUnder == GFX.tilesBg1Buffer[((xx / 8) + offsetX + nx) + ((ny + offsetY + (yy / 8)) * 64)])
                         {
                             return;
                         }
+
                         GFX.tilesBg1Buffer[((xx / 8) + offsetX+ nx) + ((ny +offsetY + (yy / 8)) * 64)] = td;
                     }
+
                     if (layer == 1 || allBgs)
                     {
                         if (tileUnder == GFX.tilesBg2Buffer[((xx / 8) + nx + offsetX) + ((ny + offsetY + (yy / 8)) * 64)])
                         {
                             return;
                         }
+
                         GFX.tilesBg2Buffer[((xx / 8) + nx) + offsetX + ((ny + offsetY + (yy / 8)) * 64)] = td;
                     }
-
-
                 }
             }
-
         }
-
-
-
     }
 
     [Flags]
@@ -251,6 +246,7 @@ namespace ZeldaFullEditor
     {
         All = 0, Wall = 1, Horizontal = 2, Vertical = 4, NonScalable = 8, Dungeons = 16,Floors = 32, Stairs = 64
     }
+
     [Flags]
     public enum ObjectOption
     {
@@ -263,10 +259,11 @@ namespace ZeldaFullEditor
         {
             var type = typeof(T);
             if (!type.IsEnum) throw new InvalidOperationException();
+
             foreach (var field in type.GetFields())
             {
-                var attribute = Attribute.GetCustomAttribute(field,
-                    typeof(DescriptionAttribute)) as DescriptionAttribute;
+                var attribute = Attribute.GetCustomAttribute(field, typeof(DescriptionAttribute)) as DescriptionAttribute;
+
                 if (attribute != null)
                 {
                     if (attribute.Description == description)
@@ -281,7 +278,6 @@ namespace ZeldaFullEditor
             throw new ArgumentException("Not found.", nameof(description));
             // or return default(T);
         }
-
 
         public static string GetDescription<T>(this T enumerationValue)
         where T : struct
@@ -305,6 +301,7 @@ namespace ZeldaFullEditor
                     return ((DescriptionAttribute)attrs[0]).Description;
                 }
             }
+
             //If we have no description attribute, just return the ToString of the enum
             return enumerationValue.ToString();
         }

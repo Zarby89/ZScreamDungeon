@@ -14,13 +14,16 @@ namespace ZeldaFullEditor.OWSceneModes
         Sprite selectedSprite;
         public Sprite lastselectedSprite;
         SceneOW scene;
-        public SpriteMode(SceneOW scene)
-        {
-
-            this.scene = scene;
-        }
 
         bool isLeftPress = false;
+
+        Gui.AddSprite addspr = new Gui.AddSprite();
+
+        public SpriteMode(SceneOW scene)
+        {
+            this.scene = scene;
+        }
+        
         public void onMouseDown(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -38,17 +41,18 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     continue;
                 }
+
                 int gs = scene.ow.gameState;
                 foreach (Sprite spr in scene.ow.allsprites[gs]) //TODO : Check if that need to be changed to LINQ mapid == maphover
                 {
                     if (e.X >= spr.map_x && e.X <= spr.map_x + 16 && e.Y >= spr.map_y && e.Y <= spr.map_y + 16)
                     {
                         selectedSprite = spr;
-                        
                     }
                     //Console.WriteLine("X:" + spr.map_x + ", Y:" + spr.map_y);
                 }
             }
+
             scene.mouse_down = true;
         }
 
@@ -73,13 +77,13 @@ namespace ZeldaFullEditor.OWSceneModes
             int data = (int)Clipboard.GetData("owsprite");
             if (data != -1)
             {
-                
                 scene.selectedFormSprite = new Sprite(0, (byte)data, 0, 0, 0, 0);
                 byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
                 if (mid == 255)
                 {
                     mid = (byte)(scene.mapHover + scene.ow.worldOffset);
                 }
+
                 scene.selectedFormSprite.updateMapStuff((short)(mid));
                 int gs = scene.ow.gameState;
                 if (mid >= 64)
@@ -90,6 +94,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         return;
                     }
                 }
+
                 scene.ow.allsprites[gs].Add(scene.selectedFormSprite);
                 selectedSprite = scene.ow.allsprites[gs].Last();
                 scene.selectedFormSprite = null;
@@ -109,9 +114,9 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     mid = (byte)(scene.mapHover + scene.ow.worldOffset);
                 }
+
                 if (scene.selectedFormSprite != null)
                 {
-
                     scene.selectedFormSprite.updateMapStuff((short)(mid));
                     int gs = scene.ow.gameState;
                     if (mid >= 64)
@@ -122,6 +127,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             return;
                         }
                     }
+
                     scene.ow.allsprites[gs].Add(scene.selectedFormSprite);
                     scene.selectedFormSprite = null;
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
@@ -144,16 +150,17 @@ namespace ZeldaFullEditor.OWSceneModes
                 menu.Items.Add("Add Sprite");
                 menu.Items.Add("Sprite Properties");
                 menu.Items.Add("Delete Sprite");
+
                 if (lastselectedSprite == null)
                 {
                     menu.Items[1].Enabled = false;
                     menu.Items[2].Enabled = false;
                 }
+
                 menu.Items[0].Click += addSprite_Click;
                 menu.Items[1].Click += spriteProperties_Click;
                 menu.Items[2].Click += deleteSprite_Click;
                 menu.Show(Cursor.Position);
-
             }
             scene.mouse_down = false;
         }
@@ -167,7 +174,7 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             //nothing for now
         }
-        Gui.AddSprite addspr = new Gui.AddSprite();
+
         private void addSprite_Click(object sender, EventArgs e)
         {
             if (addspr.ShowDialog() == DialogResult.OK)
@@ -175,12 +182,15 @@ namespace ZeldaFullEditor.OWSceneModes
                 byte data = (byte)addspr.spriteListBox.SelectedIndex;
                 scene.selectedFormSprite = new Sprite(0, (byte)data, 0, 0, (scene.mouseX_Real/16), (scene.mouseY_Real / 16));
                 byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
+
                 if (mid == 255)
                 {
                     mid = (byte)(scene.mapHover + scene.ow.worldOffset);
                 }
+
                 scene.selectedFormSprite.updateMapStuff((short)(mid));
                 int gs = scene.ow.gameState;
+
                 if (mid >= 64)
                 {
                     if (gs == 0)
@@ -189,13 +199,13 @@ namespace ZeldaFullEditor.OWSceneModes
                         return;
                     }
                 }
+
                 scene.ow.allsprites[gs].Add(scene.selectedFormSprite);
                 selectedSprite = scene.ow.allsprites[gs].Last();
                 scene.selectedFormSprite = null;
                 scene.mouse_down = true;
                 isLeftPress = true;
             }
-
         }
 
         public void onMouseMove(MouseEventArgs e)
@@ -212,18 +222,15 @@ namespace ZeldaFullEditor.OWSceneModes
 
                 if (isLeftPress)
                 {
-
                     int mouseTileX = e.X / 16;
                     int mouseTileY = e.Y / 16;
                     int mapX = (mouseTileX / 32);
                     int mapY = (mouseTileY / 32);
 
-                        scene.mapHover = mapX + (mapY * 8);
+                    scene.mapHover = mapX + (mapY * 8);
                     
-
                     if (selectedSprite != null)
                     {
-
                         selectedSprite.map_x = (e.X / 16) * 16;
                         selectedSprite.map_y = (e.Y / 16) * 16;
                         //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
@@ -239,17 +246,15 @@ namespace ZeldaFullEditor.OWSceneModes
                 for (int i = scene.ow.worldOffset; i < 64+ scene.ow.worldOffset; i++)
                 {
                     int gs = scene.ow.gameState;
-                    /*if (i >= 64)
-                    {
-                        gs = 0;
-                    }*/
                     scene.ow.allsprites[gs].Remove(lastselectedSprite);
                 }
+
                 lastselectedSprite = null;
                 if (scene.lowEndMode)
                 {
                     int x = scene.ow.allmaps[scene.selectedMap].parent % 8;
                     int y = scene.ow.allmaps[scene.selectedMap].parent / 8;
+
                     if (!scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent].largeMap)
                     {
                         scene.Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
@@ -269,23 +274,22 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void Draw(Graphics g)
         {
-
             if (scene.lowEndMode)
             {
-
-
-
                 int transparency = 200;
                 Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 255, 0, 255));
                 Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
                 g.CompositingMode = CompositingMode.SourceOver;
+
                 for (int i = 0; i < scene.ow.allsprites[scene.ow.gameState].Count; i++)
                 {
                     Sprite spr = scene.ow.allsprites[scene.ow.gameState][i];
+
                     if (spr.mapid != scene.ow.allmaps[scene.selectedMap].parent)
                     {
                         continue;
                     }
+
                     if (spr.mapid < 64 + scene.ow.worldOffset && spr.mapid >= scene.ow.worldOffset)
                     {
                         /*if (selectedEntrance != null)
@@ -307,7 +311,6 @@ namespace ZeldaFullEditor.OWSceneModes
                         g.DrawRectangle(contourPen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
                         scene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.name);
                     }
-
                 }
 
                 g.CompositingMode = CompositingMode.SourceCopy;
@@ -343,7 +346,6 @@ namespace ZeldaFullEditor.OWSceneModes
                         g.DrawRectangle(contourPen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
                         scene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.name);
                     }
-
                 }
 
                 g.CompositingMode = CompositingMode.SourceCopy;
@@ -357,6 +359,7 @@ namespace ZeldaFullEditor.OWSceneModes
             Brush bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 0, 255));
             Pen contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
             g.CompositingMode = CompositingMode.SourceOver;
+
             for (int i = scene.ow.worldOffset; i < 64 + scene.ow.worldOffset; i++)
             {
                 int gs = scene.ow.gameState;
@@ -370,7 +373,6 @@ namespace ZeldaFullEditor.OWSceneModes
                     {
                         if (spr.mapid == 0)
                         {
-
                             if (selectedSprite == spr)
                             {
                                 bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 00, 255, 0));
@@ -402,6 +404,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 }
                 
             }
+
             g.CompositingMode = CompositingMode.SourceCopy;
         }*/
     }

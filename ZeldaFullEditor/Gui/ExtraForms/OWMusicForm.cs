@@ -12,6 +12,67 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 {
     public partial class OWMusicForm : Form
     {
+        public byte mapIndex = 0;
+        public byte[] musics = new byte[4];
+        bool fromForm = false;
+
+        string[] musicNames = new string[]
+        {
+            "0x00 None",
+            "0x01 Title",
+            "0x02 World Map",
+            "0x03 Beginning",
+            "0x04 Rabbit",
+            "0x05 Forest",
+            "0x06 Intro",
+            "0x07 Town",
+            "0x08 Warp",
+            "0x09 Dark World",
+            "0x0A Mastersword",
+            "0x0B File Select",
+            "0x0C Soldier",
+            "0x0D Mountain",
+            "0x0E Shop",
+            "0x0F Fanfare"
+        };
+
+        string[] ambientNames = new string[]
+        {
+            "0x00 Nothing",
+            "0x01 Rain/Zora area",
+            "0x02 Quiet rain",
+            "0x03 More rain",
+            "0x04 Even more rain",
+            "0x05 Silence",
+            "0x06 Quiets ambient sound",
+            "0x07 Rumbling",
+            "0x08 Endless rumbling",
+            "0x09 DM wind/Telepathy",
+            "0x0A Quiet wind",
+            "0x0B Flute song",
+            "0x0C Flute again",
+            "0x0D Magic bat/Witch shroom",
+            "0x0E Short jingle",
+            "0x0F Crystal get/Save and quit",
+            "0x10 SQ sound",
+            "0x11 Choir melody",
+            "0x12 Choir countermelody",
+            "0x13 Lanmo/Blind swoosh",
+            "0x14 Another swoosh",
+            "0x15 Triforce door/Pyramid hole opening",
+            "0x16 VOMP",
+            "0x17 Flute again again",
+            "0x18 Why is there so much flute",
+            "0x19 Nothing",
+            "0x1A Nothing",
+            "0x1B All flute and no play",
+            "0x1C Makes flute a flutey flute",
+            "0x1D Some jingle",
+            "0x1E That broken jingle again",
+            "0x1F Crystal get again",
+            "0x20 Some other jingle"
+        };
+
         public OWMusicForm()
         {
             InitializeComponent();
@@ -19,11 +80,9 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
         private void label4_Click(object sender, EventArgs e)
         {
-
+            //TODO: Add something here.
         }
-        public byte mapIndex = 0;
-        public byte[] musics = new byte[4];
-        bool fromForm = false;
+        
         private void OWMusicForm_Load(object sender, EventArgs e)
         {
             music1Box.Items.AddRange(musicNames);
@@ -48,6 +107,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
             ambient4Box.SelectedIndex = ((musics[3] & 0xF0) >> 4);
             fromForm = false;
             groupBox1.Text = "Map ID : " + mapIndex.ToString("D3");
+
             if (mapIndex >= 0x40)
             {
                 music2Box.Enabled = false;
@@ -61,64 +121,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
                 label3.Text = "";
                 label4.Text = "";
             }
-
         }
-        string[] musicNames = new string[]
-            {
-            "0x00 None",
-            "0x01 Title",
-            "0x02 World Map",
-            "0x03 Beginning",
-            "0x04 Rabbit",
-            "0x05 Forest",
-            "0x06 Intro",
-            "0x07 Town",
-            "0x08 Warp",
-            "0x09 Dark World",
-            "0x0A Mastersword",
-            "0x0B File Select",
-            "0x0C Soldier",
-            "0x0D Mountain",
-            "0x0E Shop",
-            "0x0F Fanfare"
-            };
-
-        string[] ambientNames = new string[]
-    {
-        "0x00 Nothing", 
-        "0x01 Rain/Zora area",
-        "0x02 Quiet rain",
-        "0x03 More rain",
-        "0x04 Even more rain",
-        "0x05 Silence",
-        "0x06 Quiets ambient sound",
-        "0x07 Rumbling",
-        "0x08 Endless rumbling",
-        "0x09 DM wind/Telepathy",
-        "0x0A Quiet wind",
-        "0x0B Flute song",
-        "0x0C Flute again",
-        "0x0D Magic bat/Witch shroom",
-        "0x0E Short jingle",
-        "0x0F Crystal get/Save and quit",
-        "0x10 SQ sound",
-        "0x11 Choir melody",
-        "0x12 Choir countermelody",
-        "0x13 Lanmo/Blind swoosh",
-        "0x14 Another swoosh",
-        "0x15 Triforce door/Pyramid hole opening",
-        "0x16 VOMP",
-        "0x17 Flute again again",
-        "0x18 Why is there so much flute",
-        "0x19 Nothing",
-        "0x1A Nothing",
-        "0x1B All flute and no play",
-        "0x1C Makes flute a flutey flute",
-        "0x1D Some jingle",
-        "0x1E That broken jingle again",
-        "0x1F Crystal get again",
-        "0x20 Some other jingle"
-    };
 
         private void button1_Click(object sender, EventArgs e)
         {

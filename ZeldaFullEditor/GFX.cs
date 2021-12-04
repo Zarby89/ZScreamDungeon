@@ -80,7 +80,6 @@ namespace ZeldaFullEditor
         public static IntPtr[] previewChestsPtr;
         public static Bitmap[] previewChestsBitmap;
 
-
         public static ushort[] tilesBg1Buffer = new ushort[4096];
         public static IntPtr roomBg1Ptr = Marshal.AllocHGlobal(512 * 512);
         public static Bitmap roomBg1Bitmap;
@@ -108,10 +107,20 @@ namespace ZeldaFullEditor
         //Test code
         public static string[] objectsName = new string[0xFFF];
         public static bool[] objects = new bool[0xFFF];
+
+        public static Color[,] editingPalettes; //dynamic
+        public static Color[,] loadedPalettes = new Color[1, 1];
+        public static short paletteid;
+
+        public static Color[,] loadedSprPalettes = new Color[1, 1];
+
+        public static byte[] spriteFontSpacing = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6 };
+
         public unsafe static void DrawBG1()
         {
             var alltilesData = (byte*)currentgfx16Ptr.ToPointer();
             byte* ptr = (byte*)roomBg1Ptr.ToPointer();
+
             for (int yy = 0; yy < 64; yy++) //for each tile on the tile buffer
             {
                 for (int xx = 0; xx < 64; xx++)
@@ -126,7 +135,6 @@ namespace ZeldaFullEditor
                                 int mx = xl * (1 - t.h) + (3 - xl) * (t.h);
                                 int my = yl * (1 - t.v) + (7 - yl) * (t.v);
 
-
                                 //Formula information to get tile index position in the array
                                 //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
                                 /*int tx = ((t.id / 16) * 512) + ((t.id - ((t.id / 16) * 16)) * 4);
@@ -135,7 +143,6 @@ namespace ZeldaFullEditor
                                 int ty = (t.id / 16) * 512;
                                 int tx = (t.id % 16) * 4;
                                 var pixel = alltilesData[(tx + ty) + (yl * 64) + xl];
-
 
                                 //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
 
@@ -149,20 +156,19 @@ namespace ZeldaFullEditor
             }
         }
 
-
-
         public unsafe static void DrawBG2()
         {
             var alltilesData = (byte*)currentgfx16Ptr.ToPointer();
             byte* ptr = (byte*)roomBg2Ptr.ToPointer();
+
             for (int yy = 0; yy < 64; yy++) //for each tile on the tile buffer
             {
                 for (int xx = 0; xx < 64; xx++)
                 {
-
                     if (tilesBg2Buffer[xx + (yy * 64)] != 0xFFFF) //prevent draw if tile == 0xFFFF since it 0 indexed
                     {
                         TileInfo t = gettilesinfo(tilesBg2Buffer[xx + (yy * 64)]);
+
                         for (var yl = 0; yl < 8; yl++)
                         {
                             for (var xl = 0; xl < 4; xl++)
@@ -185,6 +191,7 @@ namespace ZeldaFullEditor
                 }
             }
         }
+
         public static void initGfx()
         {
             roomBgLayoutBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBgLayoutPtr);
@@ -218,6 +225,7 @@ namespace ZeldaFullEditor
             previewSpritesBitmap = new Bitmap[256];
             previewChestsPtr = new IntPtr[76];
             previewChestsBitmap = new Bitmap[76];
+
             for (int i = 0; i < 600; i++)
             {
                 previewObjectsPtr[i] = Marshal.AllocHGlobal(64 * 64);
@@ -233,30 +241,25 @@ namespace ZeldaFullEditor
                 previewChestsPtr[i] = Marshal.AllocHGlobal(64 * 64);
                 previewChestsBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, GFX.previewChestsPtr[i]);
             }
-
             for (int i = 0; i < 4096; i++)
             {
                 tilesBg1Buffer[i] = 0xFFFF;
                 tilesBg2Buffer[i] = 0xFFFF;
             }
-
-            
         }
-
-
-
 
         public static void CreateFontGfxData(byte[] romData)
         {
-
             byte[] data = new byte[0x2000];
             for (int i = 0; i < 0x2000; i++)
             {
                 data[i] = romData[Constants.gfx_font + i];
             }
+
             byte[] newData = new byte[0x4000]; //NEED TO GET THE APPROPRIATE SIZE FOR THAT
             byte[] mask = new byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
             int sheetPosition = 0;
+
             //8x8 tile
             for (int s = 0; s < 4; s++) //Per Sheet
             {
@@ -266,7 +269,6 @@ namespace ZeldaFullEditor
                     {
                         for (int y = 0; y < 8; y++) //Per Pixel Line
                         {
-
                             byte lineBits0 = data[(y * 2) + (i * 16) + (j * 256) + sheetPosition];
                             byte lineBits1 = data[(y * 2) + (i * 16) + (j * 256) + 1 + sheetPosition];
 
@@ -283,29 +285,25 @@ namespace ZeldaFullEditor
 
                                 newData[(y * 64) + (x) + (i * 4) + (j * 512) + (s * 2048)] = (byte)((pixdata << 4) | pixdata2);
                             }
-
                         }
                     }
                 }
+
                 sheetPosition += 0x400;
             }
 
             unsafe
             {
-
                 byte* fontgfx16Data = (byte*)fontgfx16Ptr.ToPointer();
                 for (int i = 0; i < 0x4000; i++)
                 {
                     fontgfx16Data[i] = newData[i];
                 }
             }
-
-
         }
 
         public static byte[] CreateAllGfxDataRaw(byte[] romData)
         {
-
             //0-112 -> compressed 3bpp bgr -> (decompressed each) 0x600 bytes
             //113-114 -> compressed 2bpp -> (decompressed each) 0x800 bytes
             //115-126 -> uncompressed 3bpp sprites -> (each) 0x600 bytes
@@ -315,6 +313,7 @@ namespace ZeldaFullEditor
             int bufferPos = 0;
             byte[] data = new byte[0x600];
             int compressedSize = 0;
+
             for (int i = 0; i < 223; i++)
             {
                 bool c = true;
@@ -359,8 +358,10 @@ namespace ZeldaFullEditor
                 {
                     buffer[j + bufferPos] = data[j];
                 }
+
                 bufferPos += data.Length;
             }
+
             return buffer;
         }
 
@@ -389,17 +390,16 @@ namespace ZeldaFullEditor
             byte[] newData = new byte[0x6F800]; //NEED TO GET THE APPROPRIATE SIZE FOR THAT
             byte[] mask = new byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
             int sheetPosition = 0;
+
             //8x8 tile
             for (int s = 0; s < 223; s++) //Per Sheet
             {
-
                 for (int j = 0; j < 4; j++) //Per Tile Line Y
                 {
                     for (int i = 0; i < 16; i++) //Per Tile Line X
                     {
                         for (int y = 0; y < 8; y++) //Per Pixel Line
                         {
-
                             if (isbpp3[s])
                             {
                                 byte lineBits0 = data[(y * 2) + (i * 24) + (j * 384) + sheetPosition];
@@ -441,10 +441,10 @@ namespace ZeldaFullEditor
                                     newData[(y * 64) + (x) + (i * 4) + (j * 512) + (s * 2048)] = (byte)((pixdata << 4) | pixdata2);
                                 }
                             }
-
                         }
                     }
                 }
+
                 if (isbpp3[s])
                 {
                     sheetPosition += 0x600;
@@ -457,9 +457,9 @@ namespace ZeldaFullEditor
 
             unsafe
             {
-
                 byte* allgfx16Data = (byte*)allgfx16Ptr.ToPointer();
                 //byte* allgfx16Data2 = (byte*)allgfx16EDITPtr.ToPointer();
+
                 for (int i = 0; i < 0x6F800; i++)
                 {
                     allgfx16Data[i] = newData[i];
@@ -483,7 +483,6 @@ namespace ZeldaFullEditor
             return Utils.SnesToPc(Utils.AddressFromBytes(gfxGamePointer1, gfxGamePointer2, gfxGamePointer3));
         }
 
-
         public static TileInfo gettilesinfo(ushort tile)
         {
             //vhopppcc cccccccc
@@ -496,11 +495,9 @@ namespace ZeldaFullEditor
             o = (ushort)((tile & 0x2000) >> 13);
             h = (ushort)((tile & 0x4000) >> 14);
             v = (ushort)((tile & 0x8000) >> 15);
+
             return new TileInfo(tid, p, v, h, o);
-
         }
-
-
 
         public static ushort getshortilesinfo(TileInfo t)
         {
@@ -508,6 +505,7 @@ namespace ZeldaFullEditor
             //vhopppcc cccccccc
             tinfo |= (ushort)(t.id);
             tinfo |= (ushort)(t.palette << 10);
+
             if (t.o == 1)
             {
                 tinfo |= 0x2000;
@@ -520,39 +518,28 @@ namespace ZeldaFullEditor
             {
                 tinfo |= 0x8000;
             }
-            return tinfo;
 
+            return tinfo;
         }
+
         public static Color getColor(short c)
         {
             return Color.FromArgb(((c & 0x1F) * 8), ((c & 0x3E0) >> 5) * 8, ((c & 0x7C00) >> 10) * 8);
         }
 
-
-
         //Todo: Change palette system entirely
         //Palettes must be loaded on rom load then being able to be modified - Done
         //without affecting the rom directly - Done
         //Change the way the room load the palettes, here change the code to load from the Palettes class
-
-
-
-        public static Color[,] editingPalettes; //dynamic
-        public static Color[,] loadedPalettes = new Color[1, 1];
-        public static short paletteid;
         public static Color[,] LoadDungeonPalette(byte id)
         {
-
             Color[,] palettes = new Color[16, 8];
-
 
             //id = dungeon palette id
             byte dungeon_palette_ptr = (byte)(GfxGroups.paletteGfx[id][0]); //id of the 1st group of 4
             short palette_pos = (short)((ROM.DATA[0xDEC4B + dungeon_palette_ptr + 1] << 8) + ROM.DATA[0xDEC4B + dungeon_palette_ptr]);
             int pId = (palette_pos / 180);
             paletteid = palette_pos;
-
-
 
             int i = 0;
             /*for (int y = 0; y < 2; y++)
@@ -562,6 +549,7 @@ namespace ZeldaFullEditor
                     palettes[x, y] = Color.Black;
                 }
             }*/
+
             int j = 0;
             for (int y = 0; y < 2; y++)
             {
@@ -583,6 +571,7 @@ namespace ZeldaFullEditor
                         palettes[x, y] = Color.Black;
                         continue;
                     }
+
                     //Dungeon Palette
                     //palettes[x, y] = getColor((short)((ROM.DATA[Constants.dungeons_palettes + palette_pos + 1 + i] << 8) + ROM.DATA[Constants.dungeons_palettes + palette_pos + i]));
                     palettes[x, y] = Palettes.dungeonsMain_Palettes[pId][i];
@@ -590,12 +579,14 @@ namespace ZeldaFullEditor
                     {
                         palettes[x, y] = Color.Black;
                     }
+
                     i += 1;
                 }
             }
+
             return palettes;
         }
-        public static Color[,] loadedSprPalettes = new Color[1, 1];
+
         public static Color[,] LoadSpritesPalette(byte id)
         {
             Color[,] palettes = new Color[16, 8];
@@ -607,6 +598,7 @@ namespace ZeldaFullEditor
             short palette_pos2 = (short)((ROM.DATA[0xDEBD6 + sprite2_palette_ptr + 1] << 8) + ROM.DATA[0xDEBD6 + sprite2_palette_ptr]);// /14
             short palette_pos3 = (short)((ROM.DATA[0xDEBD6 + sprite3_palette_ptr + 1] << 8) + ROM.DATA[0xDEBD6 + sprite3_palette_ptr]);// /14
             short palette_pos4 = (short)(ROM.DATA[0xDEBC6 + 10]); //140?
+
             //id = dungeon palette id
             int i = 0;
             palettes[9, 5] = Palettes.swords_Palettes[0][0];
@@ -624,7 +616,6 @@ namespace ZeldaFullEditor
                     palettes[x + 1, 0] = Palettes.spritesAux1_Palettes[(palette_pos1 / 14)][x];
                     palettes[x + 1, 5] = Palettes.spritesAux3_Palettes[(palette_pos2 / 14)][x];
                     palettes[x + 1, 6] = Palettes.spritesAux3_Palettes[(palette_pos3 / 14)][x];
-
                 }
                 else
                 {
@@ -645,21 +636,17 @@ namespace ZeldaFullEditor
                 //SP-4
                 palettes[x + 1, 4] = Palettes.globalSprite_Palettes[0][x + (45)];
 
-
                 //SP-6
                 /*palettes[x + 1, 12] = getColor((short)((ROM.DATA[0xDD4E0 AUX3 + palette_pos3 + i + 1] << 8) + ROM.DATA[0xDD4E0 + palette_pos3 + i]));
                 palettes[x + 1, 13] = getColor((short)((ROM.DATA[0xDD446 AUX2 + palette_pos4 + i + 1] << 8) + ROM.DATA[0xDD446 + palette_pos4 + i])); //liftable objects
                 */
 
-
-
-
                 //IF GHOST PALETTE?
                 //SP-7 ???? WTF IT LINK PALETTE
                 //palettes[x + 1, 14] = getColor((short)((ROM.DATA[0xDD39E + palette_pos1 + i + 1] << 8) + ROM.DATA[0xDD39E + palette_pos1 + i]));
             }
-            return palettes;
 
+            return palettes;
         }
 
         public static byte[] pc4bppto3bppsnes(byte[] sheetData)
@@ -667,8 +654,6 @@ namespace ZeldaFullEditor
             //[r0, bp1], [r0, bp2], [r1, bp1], [r1, bp2], [r2, bp1], [r2, bp2], [r3, bp1], [r3, bp2]
             //[r4, bp1], [r4, bp2], [r5, bp1], [r5, bp2], [r6, bp1], [r6, bp2], [r7, bp1], [r7, bp2]
             //[r0, bp3], [r1, bp3], [r2, bp3], [r3, bp3], [r4, bp3], [r5, bp3], [r6, bp3], [r7, bp3]
-
-
 
             //4 bytes = 1 line of a 8x8 tile
             int dpos = 0; //destination pos
@@ -678,20 +663,20 @@ namespace ZeldaFullEditor
             byte l2d = 0;
             byte l3d = 0;
             int bpos = 0;
+
             for (int b = 0; b < 64; b++)
             {
                 int y = (b / 16);
                 int x = (b % 16);
                 //do that x8 for each blocks
 
-
                 dpos = 0;
                 for (int l = 0; l < 8; l++)
                 {
-
                     l1d = 0;
                     l2d = 0;
                     l3d = 0;
+
                     for (int i = 0; i < 4; i++) //1 line
                     {
                         //1111 0000 | 3333 2222 | 5555 4444 | 7777 6666  (4 bytes (i))
@@ -702,7 +687,6 @@ namespace ZeldaFullEditor
                         l2d += (byte)((sheetData[i + (l * 64) + (y * 512) + (x * 4)] >> 5) & 0x01);//load bpp2 of line1 pixel2 + i (pixel 4, 6, 7)
                         l2d = (byte)(l2d << 1); //put it in linebpp2data and shift it by 1
                         l2d += (byte)((sheetData[i + (l * 64) + (y * 512) + (x * 4)] >> 1) & 0x01);//load bpp2 of line1 pixel1 + i (pixel 3, 5, 7)
-
 
                         l3d += (byte)((sheetData[i + (l * 64) + (y * 512) + (x * 4)] >> 6) & 0x01);//load bpp3 of line1 pixel2 + i (pixel 4, 6, 7)
                         l3d = (byte)(l3d << 1); //put it in linebpp3data and shift it by 1
@@ -716,17 +700,19 @@ namespace ZeldaFullEditor
                             l3d = (byte)(l3d << 1);
                         }
                     }
+
                     blockdata[(bpos * 24) + 0 + (dpos * 2)] = l1d;
                     blockdata[(bpos * 24) + 1 + (dpos * 2)] = l2d;
                     blockdata[(bpos * 24) + 16 + dpos] = l3d;
                     dpos++;
                 }
+
                 bpos++;
             }
+
             //l1d = byte0
             //l2d = byte1
             //l3d = byte16
-
 
             return blockdata;
         }
@@ -744,20 +730,20 @@ namespace ZeldaFullEditor
             byte l2d = 0;
             byte l3d = 0;
             int bpos = 0;
+
             for (int b = 0; b < 128; b++)
             {
                 int y = (b / 16);
                 int x = (b % 16);
                 //do that x8 for each blocks
 
-
                 dpos = 0;
                 for (int l = 0; l < 8; l++)
                 {
-
                     l1d = 0;
                     l2d = 0;
                     l3d = 0;
+
                     for (int i = 0; i < 4; i++) //1 line
                     {
                         //1111 0000 | 3333 2222 | 5555 4444 | 7777 6666  (4 bytes (i))
@@ -775,16 +761,18 @@ namespace ZeldaFullEditor
                             l2d = (byte)(l2d << 1);
                         }
                     }
+
                     blockdata[(bpos * 16) + 0 + (dpos * 2)] = l1d;
                     blockdata[(bpos * 16) + 1 + (dpos * 2)] = l2d;
                     dpos++;
                 }
+
                 bpos++;
             }
+
             //l1d = byte0
             //l2d = byte1
             //l3d = byte16
-
 
             return blockdata;
         }
@@ -796,7 +784,6 @@ namespace ZeldaFullEditor
 
         public static void loadOverworldMap()
         {
-
             GFX.overworldMapBitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, GFX.overworldMapPointer);
             GFX.owactualMapBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, GFX.owactualMapPointer);
 
@@ -820,7 +807,6 @@ namespace ZeldaFullEditor
                         }
                     }
                 }
-
             }
 
             ColorPalette cp = overworldMapBitmap.Palette;
@@ -842,61 +828,57 @@ namespace ZeldaFullEditor
                     }
                     k++;
                 }
-
             }
+
             overworldMapBitmap.Palette = cp;
             owactualMapBitmap.Palette = cp;
-            
-
         }
-
-
-
-        public static byte[] spriteFontSpacing = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6 };
+        
         public static  void drawText(Graphics g, int x, int y, string text, ImageAttributes ai = null, bool x2 = false)
         {
-                text = text.ToUpper();
-                int cpos = 0;
-                for (int i = 0; i < text.Length; i++)
+            text = text.ToUpper();
+            int cpos = 0;
+            for (int i = 0; i < text.Length; i++)
+            {
+                byte arrayPos = (byte)(text[i] - 32);
+                if ((byte)text[i] == 10)
                 {
-                    byte arrayPos = (byte)(text[i] - 32);
-                    if ((byte)text[i] == 10)
-                    {
-                        y += 10;
-                        cpos = 0;
-                        continue;
-                    }
-                    if (ai == null)
-                    {
+                    y += 10;
+                    cpos = 0;
+                    continue;
+                }
 
-                        if (x2 == true)
-                        {
-                            g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 16, 16), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
-                        }
-                        else
-                        {
-                            g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
-                        }
-                    }
-                    else
-                    {
-                        g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
-                    }
-                    if (arrayPos > spriteFontSpacing.Length - 1)
-                    {
-                        cpos += 8;
-                        continue;
-                    }
+                if (ai == null)
+                {
                     if (x2 == true)
                     {
-                        cpos += (spriteFontSpacing[arrayPos] * 2);
+                        g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 16, 16), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
                     }
                     else
                     {
-                        cpos += spriteFontSpacing[arrayPos];
+                        g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
                     }
-
                 }
+                else
+                {
+                    g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
+                }
+
+                if (arrayPos > spriteFontSpacing.Length - 1)
+                {
+                    cpos += 8;
+                    continue;
+                }
+
+                if (x2 == true)
+                {
+                    cpos += (spriteFontSpacing[arrayPos] * 2);
+                }
+                else
+                {
+                    cpos += spriteFontSpacing[arrayPos];
+                }
+            }
         }
     }
 }

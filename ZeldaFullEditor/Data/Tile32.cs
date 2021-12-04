@@ -11,6 +11,7 @@ namespace ZeldaFullEditor
         public ushort tile0, tile1, tile2, tile3;
         //[0,1]
         //[2,3]
+
         public Tile32(ushort tile0, ushort tile1, ushort tile2, ushort tile3)
         {
             this.tile0 = tile0;
@@ -31,6 +32,5 @@ namespace ZeldaFullEditor
         {
             return (ulong)((ulong)tile3 << 48) | ((ulong)tile2 << 32) | ((ulong)tile1 << 16) | (ulong)(tile0); ;
         }
-
     }
 }

@@ -69,6 +69,7 @@ namespace ZeldaFullEditor
             this.nothingselectedcontextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.insertToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.pasteToolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.singleselectedcontextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.insertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -761,23 +762,31 @@ namespace ZeldaFullEditor
             // 
             this.nothingselectedcontextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.insertToolStripMenuItem1,
-            this.pasteToolStripMenuItem3});
+            this.pasteToolStripMenuItem3,
+            this.deleteToolStripMenuItem2});
             this.nothingselectedcontextMenu.Name = "nothingselectedcontextMenu";
-            this.nothingselectedcontextMenu.Size = new System.Drawing.Size(104, 48);
+            this.nothingselectedcontextMenu.Size = new System.Drawing.Size(108, 70);
             // 
             // insertToolStripMenuItem1
             // 
             this.insertToolStripMenuItem1.Name = "insertToolStripMenuItem1";
-            this.insertToolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
+            this.insertToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
             this.insertToolStripMenuItem1.Text = "Insert";
             this.insertToolStripMenuItem1.Click += new System.EventHandler(this.insertToolStripMenuItem1_Click);
             // 
             // pasteToolStripMenuItem3
             // 
             this.pasteToolStripMenuItem3.Name = "pasteToolStripMenuItem3";
-            this.pasteToolStripMenuItem3.Size = new System.Drawing.Size(103, 22);
+            this.pasteToolStripMenuItem3.Size = new System.Drawing.Size(107, 22);
             this.pasteToolStripMenuItem3.Text = "Paste";
             this.pasteToolStripMenuItem3.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
+            // 
+            // deleteToolStripMenuItem2
+            // 
+            this.deleteToolStripMenuItem2.Name = "deleteToolStripMenuItem2";
+            this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(107, 22);
+            this.deleteToolStripMenuItem2.Text = "Delete";
+            this.deleteToolStripMenuItem2.Click += new System.EventHandler(this.deleteToolStripMenuItem2_Click);
             // 
             // singleselectedcontextMenu
             // 
@@ -3373,7 +3382,7 @@ namespace ZeldaFullEditor
             // 
             this.runToolStripMenuItem.Name = "runToolStripMenuItem";
             this.runToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.runToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.runToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.runToolStripMenuItem.Text = "Run";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
             // 
@@ -3381,7 +3390,7 @@ namespace ZeldaFullEditor
             // 
             this.debugRunToolStripMenuItem.Name = "debugRunToolStripMenuItem";
             this.debugRunToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
-            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
             this.debugRunToolStripMenuItem.Text = "Debug Run";
             // 
             // naviguateToolStripMenuItem
@@ -4585,6 +4594,7 @@ namespace ZeldaFullEditor
         private CustomPanel customPanel3;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ToolStripMenuItem memoryManagementToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem2;
     }
 }
 

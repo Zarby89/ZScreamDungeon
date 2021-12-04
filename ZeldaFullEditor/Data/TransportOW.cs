@@ -62,6 +62,7 @@ namespace ZeldaFullEditor
             {
                 mapId -= 64;
             }
+
             int mapx = (mapId & 7) << 9;
             int mapy = ((mapId & 56) << 6);
             if (isAutomatic)
@@ -85,6 +86,7 @@ namespace ZeldaFullEditor
                 if (cameraY > mapy + 143 + large) { cameraY = (short)(mapy + 143 + large); }
 
             }
+
             short vramXScroll = (short)(xScroll - mapx);
             short vramYScroll = (short)(yScroll - mapy);
 

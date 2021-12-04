@@ -66,7 +66,5 @@ namespace ZeldaFullEditor
             {0x66, "0x66 (UNUSABLE)"},
 
         };
-
-
     }
 }

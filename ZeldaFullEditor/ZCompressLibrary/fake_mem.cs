@@ -2,7 +2,6 @@
 {
     internal static class fake_mem
     {
-
         internal static void memcpy(byte[] dest, int dest_offset, byte[] source, int source_offset, int length)
         {
             for (int i = 0; i < length; ++i)
@@ -10,7 +9,6 @@
                 dest[dest_offset + i] = source[source_offset + i];
             }
         }
-
 
         internal static void memcpy(byte[] dest, int dest_offset, byte[] source, int length)
         {

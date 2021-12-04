@@ -15,12 +15,12 @@ namespace ZeldaFullEditor.OWSceneModes
         public RoomPotSaveEditor lastselectedItem;
         SceneOW scene;
         public bool isLeftPress = false;
+
         public ItemMode(SceneOW scene)
         {
 
             this.scene = scene;
         }
-
 
         public void onMouseDown(MouseEventArgs e)
         {
@@ -32,6 +32,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 isLeftPress = false;
             }
+
             foreach (RoomPotSaveEditor item in scene.ow.allitems)
             {
                 if (item.roomMapId >= 0 + (scene.ow.worldOffset) && item.roomMapId < (64 + scene.ow.worldOffset))
@@ -50,6 +51,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     }
                 }
             }
+
             scene.mouse_down = true;
         }
 
@@ -86,7 +88,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void onMouseUp(MouseEventArgs e)
         {
-
             if (e.Button == MouseButtons.Left)
             {
                 if (selectedItem != null)
@@ -111,6 +112,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 ContextMenuStrip menu = new ContextMenuStrip();
                 menu.Items.Add("Add Item");
                 menu.Items.Add("Delete Item");
+
                 if (lastselectedItem == null)
                 {
                     menu.Items[1].Enabled = false;
@@ -120,6 +122,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 menu.Items[1].Click += deleteItem_Click;
                 menu.Show(Cursor.Position);
             }
+
             scene.mouse_down = false;
         }
 
@@ -148,7 +151,7 @@ namespace ZeldaFullEditor.OWSceneModes
             int mapX = (mouseTileX / 32);
             int mapY = (mouseTileY / 32);
 
-                scene.mapHover = mapX + (mapY * 8);
+            scene.mapHover = mapX + (mapY * 8);
             
             if (selectedItem != null)
             {
@@ -190,6 +193,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     {
                         continue;
                     }
+
                     if (item.roomMapId >= (0 + scene.ow.worldOffset) && item.roomMapId < (64 + scene.ow.worldOffset))
                     {
 
@@ -205,24 +209,24 @@ namespace ZeldaFullEditor.OWSceneModes
                             contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
                         }
 
-
-
                         g.FillRectangle(bgrBrush, new Rectangle((item.x), (item.y), 16, 16));
                         g.DrawRectangle(contourPen, new Rectangle((item.x), (item.y), 16, 16));
                         byte nid = item.id;
+
                         if ((item.id & 0x80) == 0x80)
                         {
                             nid = (byte)(((item.id - 0x80) / 2) + 0x17);
                         }
+
                         if (nid > ItemsNames.name.Length)
                         {
                             continue;
                         }
+
                         scene.drawText(g, (item.x) - 1, (item.y) + 1, item.id.ToString("X2") + " - " + ItemsNames.name[nid]);
-
-
                     }
                 }
+
                 g.CompositingMode = CompositingMode.SourceCopy;
             }
             else
@@ -231,11 +235,11 @@ namespace ZeldaFullEditor.OWSceneModes
                 Brush bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 200, 0, 0));
                 Pen contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
                 g.CompositingMode = CompositingMode.SourceOver;
+
                 foreach (RoomPotSaveEditor item in scene.ow.allitems)
                 {
                     if (item.roomMapId >= (0 + scene.ow.worldOffset) && item.roomMapId < (64 + scene.ow.worldOffset))
                     {
-
                         if (selectedItem == item)
                         {
                             bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 00, 200, 200));
@@ -248,24 +252,24 @@ namespace ZeldaFullEditor.OWSceneModes
                             contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
                         }
 
-
-
                         g.FillRectangle(bgrBrush, new Rectangle((item.x), (item.y), 16, 16));
                         g.DrawRectangle(contourPen, new Rectangle((item.x), (item.y), 16, 16));
                         byte nid = item.id;
+
                         if ((item.id & 0x80) == 0x80)
                         {
                             nid = (byte)(((item.id - 0x80) / 2) + 0x17);
                         }
+
                         if (nid > ItemsNames.name.Length)
                         {
                             continue;
                         }
+
                         scene.drawText(g, (item.x) - 1, (item.y) + 1, item.id.ToString("X2") + " - " + ItemsNames.name[nid]);
-
-
                     }
                 }
+
                 g.CompositingMode = CompositingMode.SourceCopy;
             }
         }

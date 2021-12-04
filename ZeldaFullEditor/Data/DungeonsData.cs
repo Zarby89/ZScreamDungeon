@@ -14,7 +14,5 @@ namespace ZeldaFullEditor
         public static Entrance[] starting_entrances = new Entrance[0x07];
         public static List<Room>[] undoRoom = new List<Room>[296];
         public static List<Room>[] redoRoom = new List<Room>[296];
-
-
     }
 }

@@ -12,6 +12,7 @@ namespace ZeldaFullEditor
         public ActionType type;
         public object[] parameters;
         public string Name { get; set; } //Used to display name in action list
+
         public DoAction(ActionType type, object[] parameters)
         {
             this.type = type;
@@ -183,8 +184,8 @@ namespace ZeldaFullEditor
                     }
                 }
             }
-            tempAction.Insert(0, new DoAction(type, parameters));
 
+            tempAction.Insert(0, new DoAction(type, parameters));
         }
 
         public void redo(Room room, ListBox actionlist)
@@ -197,7 +198,8 @@ namespace ZeldaFullEditor
                     {
                         room.sprites.Remove((parameters[0] as Sprite[])[i]);
                     }
-                }else if (parameters[0] is PotItem[])
+                }
+                else if (parameters[0] is PotItem[])
                 {
                     for (int i = 0; i < (parameters[0] as PotItem[]).Length; i++)
                     {
@@ -314,9 +316,9 @@ namespace ZeldaFullEditor
                     }
                 }
             }
+
             actionlist.Items.Add(new DoAction(type, parameters));
         }
-
     }
 
     public enum ActionType

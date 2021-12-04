@@ -8,11 +8,11 @@ namespace ZeldaFullEditor
 {
     public class Tile16
     {
-
         public TileInfo tile0, tile1, tile2, tile3;
         public TileInfo[] tilesinfos = new TileInfo[4];
         //[0,1]
         //[2,3]
+
         public Tile16(TileInfo tile0, TileInfo tile1, TileInfo tile2, TileInfo tile3)
         {
             this.tile0 = tile0;
@@ -35,5 +35,4 @@ namespace ZeldaFullEditor
             return (ulong)((ulong)(tile3.toShort()) << 48) | ((ulong)(tile2.toShort()) << 32) | ((ulong)(tile1.toShort()) << 16) | (ulong)((tile0.toShort())); ;
         }
     }
-
 }
