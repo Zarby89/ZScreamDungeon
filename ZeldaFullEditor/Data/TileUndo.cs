@@ -41,6 +41,7 @@ namespace ZeldaFullEditor
                     i++;
                 }
             }
+
            //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
@@ -59,6 +60,7 @@ namespace ZeldaFullEditor
                     i++;
                 }
             }
+
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
@@ -66,6 +68,5 @@ namespace ZeldaFullEditor
         {
             return this.MemberwiseClone();
         }
-
     }
 }

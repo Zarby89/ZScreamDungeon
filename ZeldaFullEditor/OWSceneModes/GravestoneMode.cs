@@ -23,7 +23,6 @@ namespace ZeldaFullEditor.OWSceneModes
         {
             if (e.Button == MouseButtons.Left)
             {
-
                 for (int i = 0; i < 0x0F; i++)
                 {
                     Gravestone en = scene.ow.graves[i];
@@ -37,12 +36,9 @@ namespace ZeldaFullEditor.OWSceneModes
                             scene.mouse_down = true;
                         }
                     }
-
                 }
             }
         }
-
-
 
         public void onMouseMove(MouseEventArgs e)
         {
@@ -53,7 +49,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 int mapX = (mouseTileX / 32);
                 int mapY = (mouseTileY / 32);
 
-                    scene.mapHover = mapX + (mapY * 8);
+                scene.mapHover = mapX + (mapY * 8);
                 
                 if (selectedGrave != null)
                 {
@@ -74,7 +70,6 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 if (selectedGrave != null)
                 {
-
                     if (scene.mapHover >= 64)
                     {
                         scene.mapHover -= 64;
@@ -87,15 +82,9 @@ namespace ZeldaFullEditor.OWSceneModes
 
                     selectedGrave.tilemapPos = (ushort)((((yy) << 6) | (xx & 0x3F)) << 1);
 
-
                     lastselectedGrave = selectedGrave;
                     selectedGrave = null;
                     scene.mouse_down = false;
-
-
-
-
-
                 }
             }
         }
@@ -106,39 +95,38 @@ namespace ZeldaFullEditor.OWSceneModes
             int transparency = 200;
             Pen bgrBrush = new Pen(Color.FromArgb(transparency, 222, 16, 145));
             g.CompositingMode = CompositingMode.SourceOver;
+
             for (int i = 0; i < scene.ow.graves.Length; i++)
             {
                 Gravestone e = scene.ow.graves[i];
 
-                    if (selectedGrave != null)
+                if (selectedGrave != null)
+                {
+                    if (e == selectedGrave)
                     {
-                        if (e == selectedGrave)
-                        {
-                            bgrBrush = new Pen(Color.FromArgb((int)transparency, 14, 224, 146));
-                            //scene.drawText(g, e.xTilePos + 8, e.yTilePos + 8, "ID : " + i.ToString("X2"));
-                        }
-                        else
-                        {
-                            bgrBrush = new Pen(Color.FromArgb((int)transparency, 222, 16, 145));
-                        }
+                        bgrBrush = new Pen(Color.FromArgb((int)transparency, 14, 224, 146));
+                        //scene.drawText(g, e.xTilePos + 8, e.yTilePos + 8, "ID : " + i.ToString("X2"));
                     }
+                    else
+                    {
+                        bgrBrush = new Pen(Color.FromArgb((int)transparency, 222, 16, 145));
+                    }
+                }
 
-                    g.DrawRectangle(bgrBrush, new Rectangle(e.xTilePos, e.yTilePos, 32, 32));
-                    scene.drawText(g, e.xTilePos+8, e.yTilePos+8, i.ToString("X2"));
+                g.DrawRectangle(bgrBrush, new Rectangle(e.xTilePos, e.yTilePos, 32, 32));
+                scene.drawText(g, e.xTilePos+8, e.yTilePos+8, i.ToString("X2"));
+
                 //scene.drawText(g, e.xTilePos + 8, e.yTilePos + 40, e.tilemapPos.ToString("X4"));
                 if (i == 0x0D) //stairs
                 {
                     scene.drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL STAIRS");
                 }
+
                 if (i == 0x0E) //hole
                 {
                     scene.drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL HOLE");
                 }
-
-
             }
         }
-
-
     }
 }

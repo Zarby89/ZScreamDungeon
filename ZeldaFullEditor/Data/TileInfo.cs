@@ -20,9 +20,6 @@ namespace ZeldaFullEditor
             this.h = h;
             this.o = o;
         }
-
-
-
         public ushort toShort()
         {
             ushort value = 0;

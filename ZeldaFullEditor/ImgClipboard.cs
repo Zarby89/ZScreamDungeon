@@ -9,8 +9,6 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
-
-
     public static class ImgClipboard
     {
         [DllImport("User32.dll", SetLastError = true)]
@@ -44,7 +42,6 @@ namespace ZeldaFullEditor
         [DllImport("Kernel32.dll", SetLastError = true)]
         private static extern int GlobalSize(IntPtr hMem);
 
-
         public static byte[] GetImageData()
         {
             byte[] buff = new byte[0];
@@ -72,6 +69,7 @@ namespace ZeldaFullEditor
                     Console.Write(buff[i].ToString("X2") + " ");
                 }
             }
+
             CloseClipboard();
             return buff;
         }
@@ -84,20 +82,19 @@ namespace ZeldaFullEditor
             Clipboard.Clear();
             //Header is always the same so no need to write a dynamic one (except for 2bpp but that'll be later)
             byte[] headerData = new byte[40] {
-            0x28, 0x00, 0x00, 0x00,// ? dib header
-            0x80, 0x00, 0x00, 0x00,//Width
-            0x20, 0x00, 0x00, 0x00,//Height
-            0x01, 0x00,//Planes
-            0x04, 0x00,//Bpp
-            0x00, 0x00, 0x00, 0x00,//??
-            0x00, 0x08, 0x00, 0x00,//Numbers of byte for the image (0x800
-            0x00, 0x00, 0x00, 0x00,//??
-            0x00, 0x00, 0x00, 0x00,//??
-            0x00, 0x00, 0x00, 0x00,//??
-            0x00, 0x00, 0x00, 0x00//??
+                0x28, 0x00, 0x00, 0x00,// ? dib header
+                0x80, 0x00, 0x00, 0x00,//Width
+                0x20, 0x00, 0x00, 0x00,//Height
+                0x01, 0x00,//Planes
+                0x04, 0x00,//Bpp
+                0x00, 0x00, 0x00, 0x00,//??
+                0x00, 0x08, 0x00, 0x00,//Numbers of byte for the image (0x800
+                0x00, 0x00, 0x00, 0x00,//??
+                0x00, 0x00, 0x00, 0x00,//??
+                0x00, 0x00, 0x00, 0x00,//??
+                0x00, 0x00, 0x00, 0x00//??
             };
 
-            
             unsafe
             {
                 byte* imgdata = (byte*)imgData.ToPointer();
@@ -119,8 +116,8 @@ namespace ZeldaFullEditor
                         spos++;
                     }
                 }
-
             }
+
             GlobalLock(imgData);
             OpenClipboard(IntPtr.Zero);
 
@@ -132,27 +129,24 @@ namespace ZeldaFullEditor
            // Marshal.FreeHGlobal(imgData);
         }
 
-
         public static void SetImageDataWithPal(byte[] idata, byte[] palData)
         {
             IntPtr imgData = Marshal.AllocHGlobal(0x5028);
             Clipboard.Clear();
             //Header is always the same so no need to write a dynamic one (except for 2bpp but that'll be later)
             byte[] headerData = new byte[40] {
-            0x28, 0x00, 0x00, 0x00,// ? dib header
-            0x80, 0x00, 0x00, 0x00,//Width
-            0x28, 0x00, 0x00, 0x00,//Height
-            0x01, 0x00,//Planes
-            0x20, 0x00,//Bpp 
-            0x00, 0x00, 0x00, 0x00,//??
-            0x00, 0x50, 0x00, 0x00,//Numbers of byte for the image (0x5000)
-            0x00, 0x00, 0x00, 0x00,//??
-            0x00, 0x00, 0x00, 0x00,//??
-            0x00, 0x00, 0x00, 0x00,//??
-            0x00, 0x00, 0x00, 0x00//??
+                0x28, 0x00, 0x00, 0x00,// ? dib header
+                0x80, 0x00, 0x00, 0x00,//Width
+                0x28, 0x00, 0x00, 0x00,//Height
+                0x01, 0x00,//Planes
+                0x20, 0x00,//Bpp 
+                0x00, 0x00, 0x00, 0x00,//??
+                0x00, 0x50, 0x00, 0x00,//Numbers of byte for the image (0x5000)
+                0x00, 0x00, 0x00, 0x00,//??
+                0x00, 0x00, 0x00, 0x00,//??
+                0x00, 0x00, 0x00, 0x00,//??
+                0x00, 0x00, 0x00, 0x00//??
             };
-
-
 
             Color[] pals = new Color[8];
             unsafe
@@ -167,8 +161,6 @@ namespace ZeldaFullEditor
                     pals[i] = Color.FromArgb(palData[(i*4)+2], palData[(i * 4) + 1], palData[(i * 4)]);
                 }
 
-
-                //
                 int spos = 0x1000;
                 for (int y = 31; y >= 0; y--)
                 {
@@ -188,28 +180,31 @@ namespace ZeldaFullEditor
                         spos +=8;
                     }
                 }
-               int v = 0;
+
+                int v = 0;
                 for (int p = 0; p < 16; p++) //each color
                 {
-                        for (int i = 0; i < 8; i++) //each lines
+                    for (int i = 0; i < 8; i++) //each lines
                     {
-                            for (int j = 0; j < 8; j++) //each pixels
+                        for (int j = 0; j < 8; j++) //each pixels
+                        {
+                            v = p;
+                            if (p >= 8)
                             {
-                                v = p;
-                                if (p >= 8)
-                                {
-                                    v = p - 8;
-                                }
-                                //1 pixel
-                                imgdata[40 + (j * 4)+ (p * 32) + 0 + (i * 512)] = pals[v].B;
-                                imgdata[40 + (j * 4)+ (p * 32) + 1 + (i * 512)] = pals[v].G;
-                                imgdata[40 + (j * 4)+ (p * 32) + 2 + (i * 512)] = pals[v].R;
-                                imgdata[40 + (j * 4)+ (p * 32) + 3 + (i * 512)] = 255;
+                                v = p - 8;
                             }
+
+                            //1 pixel
+                            imgdata[40 + (j * 4)+ (p * 32) + 0 + (i * 512)] = pals[v].B;
+                            imgdata[40 + (j * 4)+ (p * 32) + 1 + (i * 512)] = pals[v].G;
+                            imgdata[40 + (j * 4)+ (p * 32) + 2 + (i * 512)] = pals[v].R;
+                            imgdata[40 + (j * 4)+ (p * 32) + 3 + (i * 512)] = 255;
+                        }
                     }
                 }
 
             }
+
             OpenClipboard(IntPtr.Zero);
 
             SetClipboardData(8, imgData);

@@ -10,8 +10,6 @@ namespace ZeldaFullEditor
 {
     public enum TagKey
     {
-
-
         Nothing,
         NW_Kill_Enemy_to_Open,
         NE_Kill_Enemy_to_Open,
@@ -99,9 +97,7 @@ namespace ZeldaFullEditor
         Light_Torches_to_get_Chest,
 
         Kill_boss_Again
-
     }
-
 
     public enum EffectKey
     {

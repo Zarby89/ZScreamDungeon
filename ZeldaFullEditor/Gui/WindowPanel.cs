@@ -12,6 +12,11 @@ namespace ZeldaFullEditor.Gui
 {
     public partial class WindowPanel : UserControl
     {
+        public bool isClosing = false;
+        public bool isMoving = false;
+        public int xDragOffset = 0;
+        public int yDragOffset = 0;
+
         public WindowPanel()
         {
             InitializeComponent();
@@ -33,26 +38,21 @@ namespace ZeldaFullEditor.Gui
                 isMoving = true;
             }
         }
-        public bool isClosing = false;
-        public bool isMoving = false;
-        public int xDragOffset = 0;
-        public int yDragOffset = 0;
+
         private void titleBarPanel_Paint(object sender, PaintEventArgs e)
         {//
             e.Graphics.DrawString((Tag as string), Font, Brushes.Black, new Point(4, 4));
             e.Graphics.DrawString("X", Font, Brushes.Black, new Point(titleBarPanel.Width - 16, 4));
-            
         }
 
         private void titleBarPanel_MouseUp(object sender, MouseEventArgs e)
         {
             isMoving = false;
-            
         }
 
         private void titleBarPanel_MouseLeave(object sender, EventArgs e)
         {
-
+            //TODO: Add something here?
         }
 
         private void titleBarPanel_MouseMove(object sender, MouseEventArgs e)
@@ -73,7 +73,6 @@ namespace ZeldaFullEditor.Gui
                     mx--;
                     x += 1;
                 }
-
                 while (my < yDragOffset-2)
                 {
                     my++;
@@ -92,6 +91,7 @@ namespace ZeldaFullEditor.Gui
                 {
                     x = 0;
                 }
+
                 this.Location = new Point(x, y);
             }
         }

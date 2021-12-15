@@ -29,7 +29,6 @@ namespace ZeldaFullEditor.Gui
 
         private void AddSprite_Load(object sender, EventArgs e)
         {
-
             spriteListBox.Items.Clear();
             spriteListBox.Items.AddRange(Sprites_Names.name);
             spriteListBox.SelectedIndex = 0;

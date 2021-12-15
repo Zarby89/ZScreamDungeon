@@ -8,7 +8,6 @@ namespace ZeldaFullEditor
 {
     public static class Utils
     {
-
         public static int SnesToPc(int addr)
         {
             if (addr >= 0x808000) { addr -= 0x808000; }
@@ -20,10 +19,15 @@ namespace ZeldaFullEditor
         {
             byte[] b = BitConverter.GetBytes(addr);
             b[2] = (byte)(b[2] * 2);
-            if (b[1] >= 0x80)
 
+            if (b[1] >= 0x80)
+            {
                 b[2] += 1;
-            else b[1] += 0x80;
+            }
+            else
+            {
+                b[1] += 0x80;
+            }
 
             return BitConverter.ToInt32(b, 0);
             //snes always have + 0x8000 no matter what, the bank on pc is always / 2
@@ -47,22 +51,19 @@ namespace ZeldaFullEditor
             if (v <= min) { v = min; }
             return (v );
         }
+
         public static short Clamp(short v, int min, int max)
         {
             if (v >= max) { v = (short)max; }
             if (v <= min) { v = (short)min; }
             return (v);
         }
+
         public static byte Clamp(byte v, int min, int max)
         {
             if (v >= max) { v = (byte)max; }
             if (v <= min) { v = (byte)min; }
             return (v);
         }
-
-    }
-
-
-
-    
+    }  
 }

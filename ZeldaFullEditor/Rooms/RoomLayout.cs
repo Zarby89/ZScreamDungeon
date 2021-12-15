@@ -8,13 +8,10 @@ namespace ZeldaFullEditor.Rooms
 {
     class RoomLayout : Room
     {
-
         public RoomLayout() : base(-1)
         {
-
+            //TODO: Add something here?
         }
-
-        
 
         public void loadLayout(int layout)
         {
@@ -44,6 +41,7 @@ namespace ZeldaFullEditor.Rooms
                 {
                     break;
                 }
+
                 b3 = ROM.DATA[pos + 2];
                 pos += 3; //we jump to layer2
 
@@ -63,6 +61,7 @@ namespace ZeldaFullEditor.Rooms
                     sizeY = (byte)((b2 & 0x03));
                     sizeXY = (byte)(((sizeX << 2) + sizeY));
                 }
+
                 if (b1 >= 0xFC) //subtype2 (not scalable? )
                 {
                     oid = (short)((b3 & 0x3F) + 0x100);
@@ -77,9 +76,7 @@ namespace ZeldaFullEditor.Rooms
                     r.options |= ObjectOption.Bgr;
                     tilesLayoutObjects.Add(r);
                 }
-
             }
         }
-        
     }
 }

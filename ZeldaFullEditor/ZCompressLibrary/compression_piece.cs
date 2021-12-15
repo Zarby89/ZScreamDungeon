@@ -38,8 +38,10 @@ namespace ZCompressLibrary
                         continue;
                     }
                 }
+
                 piece = piece.next;
             }
+
             return start;
         }
     }

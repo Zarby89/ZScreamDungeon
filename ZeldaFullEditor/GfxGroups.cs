@@ -8,11 +8,11 @@ namespace ZeldaFullEditor
 {
     public static class GfxGroups
     {
-       
         public static byte[][] mainGfx = new byte[37][];
         public static byte[][] roomGfx = new byte[82][];
         public static byte[][] spriteGfx = new byte[144][];
         public static byte[][] paletteGfx = new byte[72][];
+
         public static void LoadGfxGroups()
         {
             int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer + 1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
@@ -64,7 +64,7 @@ namespace ZeldaFullEditor
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    ROM.DATA[gfxPointer + (i * 8) + j] = mainGfx[i][j];
+                    ROM.Write(gfxPointer + (i * 8) + j,mainGfx[i][j], true, "Gfx Groups");
                 }
             }
 
@@ -72,7 +72,7 @@ namespace ZeldaFullEditor
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    ROM.DATA[Constants.entrance_gfx_group + (i * 4) + j] = roomGfx[i][j];
+                    ROM.Write(Constants.entrance_gfx_group + (i * 4) + j,roomGfx[i][j], true, "Gfx Groups");
                 }
             }
 
@@ -80,7 +80,7 @@ namespace ZeldaFullEditor
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    ROM.DATA[Constants.sprite_blockset_pointer + (i * 4) + j] = spriteGfx[i][j];
+                    ROM.Write(Constants.sprite_blockset_pointer + (i * 4) + j,spriteGfx[i][j], true, "sprGfx Groups");
                 }
             }
 
@@ -88,13 +88,9 @@ namespace ZeldaFullEditor
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    ROM.DATA[Constants.dungeons_palettes_groups + (i * 4) + j] = paletteGfx[i][j];
+                    ROM.Write(Constants.dungeons_palettes_groups + (i * 4) + j,paletteGfx[i][j], true, "palGfx Groups");
                 }
             }
         }
-
-
-
-
     }
 }

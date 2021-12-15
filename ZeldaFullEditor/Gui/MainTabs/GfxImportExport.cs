@@ -16,13 +16,22 @@ namespace ZeldaFullEditor.Gui
 {
     public partial class GfxImportExport : UserControl
     {
+        DungeonMain mainForm;
+        public int selectedSheet = 0;
+
+        byte[][] modifiedSheets = new byte[223][];
+        byte[][] gfxSheets3bpp = new byte[223][];
+
+        int selectedPal = 0;
+
+        Color[] palettes = new Color[8];
+
         public GfxImportExport(DungeonMain mainForm)
         {
             this.mainForm = mainForm;
             InitializeComponent();
         }
-        DungeonMain mainForm;
-        public int selectedSheet = 0;
+        
         private void pasteIndexed_Click(object sender, EventArgs e)
         {
             byte[] data = ImgClipboard.GetImageData();
@@ -33,6 +42,7 @@ namespace ZeldaFullEditor.Gui
                 nbrColor = data[32];
 
             }
+
             int pos = data[0] + (nbrColor * 4); //palette data useless for now
             unsafe
             {
@@ -46,12 +56,10 @@ namespace ZeldaFullEditor.Gui
                         gdata[spos+(selectedSheet*0x800)] = data[pos + (x+(y*64))];
                         spos++;
                     }
-
-                    
                 }
             }
-            allgfxPicturebox.Refresh();
 
+            allgfxPicturebox.Refresh();
         }
 
         private void allgfxPicturebox_MouseDown(object sender, MouseEventArgs e)
@@ -66,7 +74,6 @@ namespace ZeldaFullEditor.Gui
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
             e.Graphics.DrawImage(GFX.allgfxBitmap, new Rectangle(0,0,256, 14272), new Rectangle(0, 0, 128, 7136),GraphicsUnit.Pixel);
             e.Graphics.DrawRectangle(new Pen(Brushes.Aqua,2), new Rectangle(0, selectedSheet*64, 256, 64));
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -74,7 +81,6 @@ namespace ZeldaFullEditor.Gui
             int csize = 0;
             SaveFileDialog sfd = new SaveFileDialog();
             sfd.Filter = "all *.bin |*.bin";
-
 
             if (sfd.ShowDialog() == DialogResult.OK)
             {
@@ -84,7 +90,6 @@ namespace ZeldaFullEditor.Gui
                 fs.Close();
             }
 
-
             byte[] sdata = new byte[0x800];
             unsafe
             {
@@ -93,23 +98,16 @@ namespace ZeldaFullEditor.Gui
                 {
                     sdata[i] = gdata[(selectedSheet * 0x800)+i];
                 }
-
             }
-
-
-           
         }
 
-        byte[][] modifiedSheets = new byte[223][];
-        byte[][] gfxSheets3bpp = new byte[223][];
         private void button2_Click(object sender, EventArgs e)
         {
-            
+            //TODO: Add something here?
         }
 
         public void SaveAllGfx()
         {
-
             for (int i = 0; i < 223; i++)
             {
                 byte[] sdata = new byte[0x800];
@@ -120,6 +118,7 @@ namespace ZeldaFullEditor.Gui
                     {
                         sdata[j] = gdata[(i * 0x800) + j];
                     }
+
                     if (GFX.isbpp3[i])
                     {
                         if (modifiedSheets[i] != null)
@@ -131,7 +130,6 @@ namespace ZeldaFullEditor.Gui
                         {
                             gfxSheets3bpp[i] = GFX.pc4bppto3bppsnes(sdata);
                         }
-
                     }
                     else
                     {
@@ -148,8 +146,8 @@ namespace ZeldaFullEditor.Gui
                         }
                     }
                 }
-
             }
+
             Console.WriteLine("Reached");
             recompressAllGfx();
         }
@@ -162,9 +160,9 @@ namespace ZeldaFullEditor.Gui
             int pos = 0x8B800;
             int uPos = 0x87000;
             bool bpp2 = false;
+
             for (int i = 0; i < 223; i++)
             {
-
                 if (i < 115 || i > 126) //not compressed
                 {
                     bpp2 = false;
@@ -176,9 +174,9 @@ namespace ZeldaFullEditor.Gui
                     if (ROM.DATA[gfxPointer1 + i] <= 0x20)
                     {
                         int saddr = Utils.PcToSnes(pos);
-                        ROM.DATA[gfxPointer3 + i] = (byte)(saddr & 0xFF);
-                        ROM.DATA[gfxPointer2 + i] = (byte)(saddr >> 8 & 0xFF);
-                        ROM.DATA[gfxPointer1 + i] = (byte)(saddr >> 16 & 0xFF);
+                        ROM.Write(gfxPointer3 + i,(byte)(saddr & 0xFF), true, "Gfx Ptrs");
+                        ROM.Write(gfxPointer2 + i,(byte)(saddr >> 8 & 0xFF), true, "Gfx Ptrs");
+                        ROM.Write(gfxPointer1 + i,(byte)(saddr >> 16 & 0xFF), true, "Gfx Ptrs");
                         if (bpp2 == false)
                         {
                             byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, 0x600);
@@ -216,7 +214,6 @@ namespace ZeldaFullEditor.Gui
 
                         }
                     }
-
                 }
                 else
                 {
@@ -224,13 +221,12 @@ namespace ZeldaFullEditor.Gui
                     {
                         for (int j = 0; j < 0x600; j++)
                         {
-                            ROM.DATA[uPos + j] = gfxSheets3bpp[i][j];
+                            ROM.Write(uPos + j,gfxSheets3bpp[i][j], true, "Gfx data");
                         }
 
                         uPos += 0x600;
                     }
                 }
-
             }
 
             /*if (pos >= Constants.maxGfx)
@@ -241,16 +237,14 @@ namespace ZeldaFullEditor.Gui
             {
                 MessageBox.Show("Saved successfully total of remaining space for gfx : " + (Constants.maxGfx - pos).ToString("X6"));
             }*/
+
             infoLabel.Text =
             "Compressed Size = "+ (pos - 0x8b800).ToString("X6")+"\r\n" +
             "Available Space = " + (Constants.maxGfx - pos).ToString("X6");
-
-
         }
 
         private void palettePicturebox_Paint(object sender, PaintEventArgs e)
         {
-
             for(int i = 0;i<256;i++)
             {
                 if (radioButton1.Checked)
@@ -259,8 +253,7 @@ namespace ZeldaFullEditor.Gui
                 }
                 else
                 {
-
-                        e.Graphics.FillRectangle(new SolidBrush(GFX.mapgfx16Bitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
+                    e.Graphics.FillRectangle(new SolidBrush(GFX.mapgfx16Bitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
                 }
 
             }
@@ -272,7 +265,7 @@ namespace ZeldaFullEditor.Gui
         {
             palettePicturebox.Refresh();
         }
-        int selectedPal = 0;
+
         private void palettePicturebox_MouseDown(object sender, MouseEventArgs e)
         {
             selectedPal = (e.Y / 16);
@@ -291,10 +284,10 @@ namespace ZeldaFullEditor.Gui
                 }
                 
             }
+
             GFX.allgfxBitmap.Palette = cp;
             allgfxPicturebox.Refresh();
             palettePicturebox.Refresh();
-
         }
 
         private void copyIndexed_Click(object sender, EventArgs e)
@@ -310,6 +303,7 @@ namespace ZeldaFullEditor.Gui
                 }
 
             }
+
             byte[] pdata = new byte[64];
             for (int i = 0; i < 16; i++)
             {
@@ -318,12 +312,13 @@ namespace ZeldaFullEditor.Gui
                 pdata[(i * 4) + 2] = GFX.allgfxBitmap.Palette.Entries[i].R;
                 pdata[(i * 4) + 3] = GFX.allgfxBitmap.Palette.Entries[i].A;
             }
+
             ImgClipboard.SetImageData(sdata,pdata);
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-
+            //TODO: Add something here?
         }
 
         private void copy24bpp_Click(object sender, EventArgs e)
@@ -338,6 +333,7 @@ namespace ZeldaFullEditor.Gui
                 }
 
             }
+
             byte[] pdata = new byte[64];
             for (int i = 0; i < 16; i++)
             {
@@ -346,6 +342,7 @@ namespace ZeldaFullEditor.Gui
                 pdata[(i * 4) + 2] = GFX.allgfxBitmap.Palette.Entries[i].R;
                 pdata[(i * 4) + 3] = GFX.allgfxBitmap.Palette.Entries[i].A;
             }
+
             ImgClipboard.SetImageDataWithPal(sdata, pdata);
         }
 
@@ -359,14 +356,11 @@ namespace ZeldaFullEditor.Gui
             paste24bpp_Click(null, null);
         }
 
-        Color[] palettes = new Color[8];
         private void paste24bpp_Click(object sender, EventArgs e)
         {
-            
             if (Clipboard.ContainsImage())
             {
                 Bitmap b = (Bitmap)Clipboard.GetImage();
-
                 BitmapData bd = b.LockBits(new Rectangle(0,0,128,40),ImageLockMode.ReadOnly,PixelFormat.Format32bppRgb);
 
                 unsafe
@@ -380,6 +374,7 @@ namespace ZeldaFullEditor.Gui
                         palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x4800], data[(i * 32) + 1 - 0x4800], data[(i * 32) - 0x4800]);
                         Console.WriteLine("R: " + palettes[i].R + " G: " + palettes[i] .G+ " B: "+ palettes[i].B);
                     }
+
                     int pos = 0; //should be line where data start inverted
                     for(int y = 0; y<32;y++) //for each lines
                     {
@@ -392,11 +387,7 @@ namespace ZeldaFullEditor.Gui
                             pos++;
                         }
                     }
-
-
                 }
-
-
 
                 b.UnlockBits(bd);
                 mainForm.activeScene.room.reloadGfx();
@@ -408,8 +399,6 @@ namespace ZeldaFullEditor.Gui
                 {
                     mainForm.overworldEditor.overworld.allmaps[i].needRefresh = true;
                 }
-
-
             }
         }
 
@@ -422,7 +411,6 @@ namespace ZeldaFullEditor.Gui
                     return (byte)i;
                 }
             }
-
 
             return 1;
         }
@@ -437,12 +425,10 @@ namespace ZeldaFullEditor.Gui
             palf.Location = new Point(0, 354);
             this.panel2.Controls.Add(palf);
             Refresh();
-
         }
 
         private void button3_Click_1(object sender, EventArgs e)
         {
-
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "all *.bin |*.bin";
             if (ofd.ShowDialog() == DialogResult.OK)
@@ -456,12 +442,11 @@ namespace ZeldaFullEditor.Gui
                         return;
                     }
                 }
+
                 modifiedSheets[selectedSheet] = new byte[(int)fs.Length];
                 fs.Read(modifiedSheets[selectedSheet], 0, (int)fs.Length);
                 fs.Close();
-
             }
-            
         }
     }
 }

@@ -15,6 +15,10 @@ namespace ZeldaFullEditor.OWSceneModes
         SceneOW scene;
         public ExitOW selectedExit = null;
         public ExitOW lastselectedExit = null;
+
+        int mxRightclick = 0;
+        int myRightclick = 0;
+
         public ExitMode(SceneOW scene)
         {
             this.scene = scene;
@@ -58,6 +62,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     {
                         mid = (byte)(scene.mapHover + scene.ow.worldOffset);
                     }
+
                     scene.ow.allexits[i].deleted = false;
                     scene.ow.allexits[i].mapId = mid;
                     scene.ow.allexits[i].playerX = (ushort)((mxRightclick / 16) * 16);
@@ -84,27 +89,25 @@ namespace ZeldaFullEditor.OWSceneModes
 
                     scene.ow.allexits[i].updateMapStuff(mid, scene.ow);
 
-
                     found = i;
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                     break;
                 }
             }
+
             if (found == -1)
             {
                 MessageBox.Show("No space available for new exits, delete one first");
                 return null;
             }
 
-                return scene.ow.allexits[found];
+            return scene.ow.allexits[found];
         }
-
 
         public void onMouseDown(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                
                 for (int i = 0; i < 78; i++)
                 {
                     ExitOW en = scene.ow.allexits[i];
@@ -120,7 +123,6 @@ namespace ZeldaFullEditor.OWSceneModes
                                 scene.mouse_down = true;
                             }
                         }
-
                     }
                 }
             }
@@ -145,8 +147,6 @@ namespace ZeldaFullEditor.OWSceneModes
                     DrawTempExit();
                     scene.entrancePreview = true;
                     //scene.Refresh();
-
-
 
                     if (scene.mainForm.activeScene.room != null)
                     {
@@ -180,7 +180,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 int mapX = (mouseTileX / 32);
                 int mapY = (mouseTileY / 32);
 
-                    scene.mapHover = mapX + (mapY * 8);
+                scene.mapHover = mapX + (mapY * 8);
                 
                 if (selectedExit != null)
                 {
@@ -191,11 +191,13 @@ namespace ZeldaFullEditor.OWSceneModes
                         selectedExit.playerX = (ushort)((e.X / 8) * 8);
                         selectedExit.playerY = (ushort)((e.Y / 8) * 8);
                     }
+
                     byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
                     if (mid == 255)
                     {
                         mid = (byte)(scene.mapHover + scene.ow.worldOffset);
                     }
+
                     selectedExit.updateMapStuff(mid, scene.ow);
 
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
@@ -203,8 +205,6 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-        int mxRightclick = 0;
-        int myRightclick = 0;
         public void onMouseUp(MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
@@ -222,27 +222,26 @@ namespace ZeldaFullEditor.OWSceneModes
                 ContextMenuStrip menu = new ContextMenuStrip();
                 for (int i = 0; i < 78; i++)
                 {
-
                     ExitOW en = scene.ow.allexits[i];
                     if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
                     {
                         if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
                         {
-                            
                             menu.Items.Add("Exit Properties");
                             lastselectedExit = en;
                             selectedExit = null;
                             scene.mouse_down = false;
+
                             if (lastselectedExit == null)
                             {
                                 menu.Items[0].Enabled = false;
                             }
+
                             clickedon = true;
                             menu.Items[0].Click += exitProperty_Click;
                             menu.Items.Add("Delete Exit");
                             menu.Items[1].Click += exitDelete_Click;
                             menu.Show(Cursor.Position);
-
                         }
                     }
                 }
@@ -255,7 +254,6 @@ namespace ZeldaFullEditor.OWSceneModes
                     menu.Items[0].Click += insertExit_Click;
                     menu.Show(Cursor.Position);
                 }
-                
             }
         }
 
@@ -272,9 +270,9 @@ namespace ZeldaFullEditor.OWSceneModes
             ExitEditorForm exitPropForm = new ExitEditorForm();
         public void exitProperty_Click(object sender, EventArgs e)
         {
-
             exitPropForm.SetExit(lastselectedExit);
             DialogResult dr = exitPropForm.ShowDialog();
+
             if (dr == DialogResult.OK)
             {
                 int index = Array.IndexOf(scene.ow.allexits, lastselectedExit);
@@ -310,12 +308,12 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.selectedTile[0] = 3502;
                     scene.selectedTile[1] = 3503;
                 }
-                
             }
             else
             {
                 scene.selectedMode = ObjectMode.Exits;
             }
+
             selectedExit = null;
             scene.mouse_down = false;
         }
@@ -333,9 +331,9 @@ namespace ZeldaFullEditor.OWSceneModes
                     {
                         continue;
                     }
+
                     if (ex.mapId < 64 + scene.ow.worldOffset && ex.mapId >= scene.ow.worldOffset)
                     {
-
                         Brush bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 222, 222, 222));
                         Pen contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
                         Brush fontBrush = Brushes.Black;
@@ -359,6 +357,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                 g.CompositingMode = CompositingMode.SourceCopy;
                                 continue;
                             }
+
                             g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
                             g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
                             scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
@@ -393,11 +392,11 @@ namespace ZeldaFullEditor.OWSceneModes
                         }
                     }
                 }
+
                 g.CompositingMode = CompositingMode.SourceCopy;
             }
             else
             {
-                
                 for (int i = 0; i < 78; i++)
                 {
                     g.CompositingMode = CompositingMode.SourceOver;
@@ -405,7 +404,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
                     if (ex.mapId < 64 + scene.ow.worldOffset && ex.mapId >= scene.ow.worldOffset)
                     {
-
                         Brush bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 222, 222, 222));
                         Pen contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
                         Brush fontBrush = Brushes.Black;
@@ -429,6 +427,7 @@ namespace ZeldaFullEditor.OWSceneModes
                                 g.CompositingMode = CompositingMode.SourceCopy;
                                 continue;
                             }
+
                             g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
                             g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
                             scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
@@ -463,13 +462,9 @@ namespace ZeldaFullEditor.OWSceneModes
                         }
                     }
                 }
+
                 g.CompositingMode = CompositingMode.SourceCopy;
             }
-            
-
-
-
-
         }
 
         public void DrawTempExit()
@@ -499,7 +494,9 @@ namespace ZeldaFullEditor.OWSceneModes
                 imageAtt.SetColorMatrix(
                    colorMatrix,
                    ColorMatrixFlag.Default,
-                   ColorAdjustType.Bitmap);
+                   ColorAdjustType.Bitmap
+                );
+
                 //GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
                 g.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
             }

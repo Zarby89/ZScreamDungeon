@@ -12,11 +12,15 @@ namespace ZeldaFullEditor.Gui
 {
     public partial class DungeonPropertiesForm : Form
     {
+        DungeonProperty[] properties = new DungeonProperty[12];
+
+        bool changedFromForm = false;
+
         public DungeonPropertiesForm()
         {
             InitializeComponent();
         }
-        DungeonProperty[] properties = new DungeonProperty[12];
+        
         private void DungeonPropertiesForm_Load(object sender, EventArgs e)
         {
             listBox1.Items.Add("Pendant 1 - Green (Eastern)");
@@ -39,10 +43,10 @@ namespace ZeldaFullEditor.Gui
                  ROM.DATA[Constants.dungeons_endrooms + i],
                   (short)((ROM.DATA[Constants.dungeons_bossrooms + (i*2) +1] << 8) + ROM.DATA[Constants.dungeons_bossrooms + (i * 2)]));
             }
-            listBox1.SelectedIndex = 0;
 
+            listBox1.SelectedIndex = 0;
         }
-        bool changedFromForm = false;
+        
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             changedFromForm = true;
@@ -74,14 +78,13 @@ namespace ZeldaFullEditor.Gui
 
         private void button1_Click(object sender, EventArgs e)
         {
-
             for (int i = 0; i < 12; i++)
             {
 
-                ROM.DATA[Constants.dungeons_startrooms + i] = properties[i].startroom;
-                 ROM.DATA[Constants.dungeons_endrooms + i] = properties[i].endroom;
-                ROM.DATA[Constants.dungeons_bossrooms + (i * 2) + 1] = (byte)(properties[i].bossroom>>8);
-                ROM.DATA[Constants.dungeons_bossrooms + (i * 2)] = (byte)(properties[i].bossroom & 0xFF);
+                ROM.Write(Constants.dungeons_startrooms + i,properties[i].startroom, true, "Dungeon Data Boss/pendantcrystall Rooms");
+                ROM.Write(Constants.dungeons_endrooms + i,properties[i].endroom, true, "Dungeon Data Boss/pendantcrystall Rooms");
+                ROM.WriteShort(Constants.dungeons_bossrooms + (i * 2), properties[i].bossroom, true, "Dungeon Data Boss/pendantcrystall Rooms");
+
             }
 
             this.Close();
@@ -98,12 +101,12 @@ namespace ZeldaFullEditor.Gui
         public byte startroom = 0;
         public byte endroom = 0;
         public short bossroom = 0;
+
         public DungeonProperty(byte startroom,byte endroom,short bossroom)
         {
             this.startroom = startroom;
             this.endroom = endroom;
             this.bossroom = bossroom;
         }
-
     }
 }

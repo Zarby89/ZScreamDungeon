@@ -25,6 +25,7 @@ namespace ZeldaFullEditor
                 Chest c = new Chest(0, 0, (byte)i, false, true);
                 chestviewer1.items.Add(c);
             }
+
             chestviewer1.updateSize();
         }
 

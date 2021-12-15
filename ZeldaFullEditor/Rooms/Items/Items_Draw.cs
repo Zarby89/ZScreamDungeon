@@ -14,6 +14,7 @@ namespace ZeldaFullEditor
         public bool selected = false;
         public byte layer = 0;
         public bool bg2 = false;
+
         public PotItem(byte id, byte x, byte y,bool bg2)
         {
             this.id = id;
@@ -22,8 +23,6 @@ namespace ZeldaFullEditor
             this.nx = x;
             this.ny = y;
             this.bg2 = bg2;
-
-
         }
 
         //pots items
@@ -141,21 +140,17 @@ namespace ZeldaFullEditor
             }
             else if (id == 25)//staircase
             {
-
+                //TODO: Add draw here?
             }
             else if (id == 26)//bombale
             {
-
+                //TODO: Add draw here?
             }
             else if (id == 27)//switch
             {
                 draw_item_tile(x * 8, y * 8, 11, 56, 5,false,false,1);
             }
         }
-
-
-
-
 
         public unsafe void draw_item_tile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2)
         {
@@ -180,11 +175,13 @@ namespace ZeldaFullEditor
                     {
                         my = (((sizey * 8)) - 1) - yl;
                     }
+
                     //Formula information to get tile index position in the array
                     //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
                     int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
                     var pixel = alltilesData[tx + (yl * 64) + xl];
                     //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
+
                     int index = (x) + (y * 512) + ((mx * 2) + (my * (512)));
                     if ((pixel & 0x0F) != 0)
                     {
@@ -220,12 +217,14 @@ namespace ZeldaFullEditor
                     {
                         my = (((sizey * 8)) - 1) - yl;
                     }
+
                     //Formula information to get tile index position in the array
                     //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
                     int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
                     var pixel = alltilesData[tx + (yl * 64) + xl];
                     //nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
                     int index = (x) + (y * 512) + ((mx * 2) + (my * (512)));
+
                     if ((pixel & 0x0F) != 0)
                     {
                         ptr[index + r ^ 1] = (byte)((pixel & 0x0F) + 112 + (pal * 8));
@@ -237,9 +236,5 @@ namespace ZeldaFullEditor
                 }
             }
         }
-
-
     }
-
-
 }

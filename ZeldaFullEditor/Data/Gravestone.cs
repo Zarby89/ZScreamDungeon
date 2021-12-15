@@ -20,8 +20,5 @@ namespace ZeldaFullEditor.Data
             this.tilemapPos = tilemappos;
             this.gfx = gfx;
         }
-
-
-
     }
 }

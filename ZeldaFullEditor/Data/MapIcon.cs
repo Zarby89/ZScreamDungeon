@@ -17,7 +17,5 @@ namespace ZeldaFullEditor.Data
             this.y = y;
             this.gfx = gfx;
         }
-
-
     }
 }

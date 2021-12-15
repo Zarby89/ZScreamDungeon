@@ -12,6 +12,24 @@ namespace ZeldaFullEditor.Gui
 {
     public partial class PaletteEditor : UserControl
     {
+        Color[][] HudPal = new Color[2][];
+        Color[][] OverworldMainPal = new Color[6][];
+        Color[][] OverworldAuxPal = new Color[20][];
+        Color[][] OverworldAnimatedPal = new Color[14][];
+        Color[][] DungeonMainPal = new Color[20][];
+        Color[][] GlobalSpritesPal = new Color[2][];
+        Color[][] SpritesAux1Pal = new Color[12][];
+        Color[][] SpritesAux2Pal = new Color[11][];
+        Color[][] SpritesAux3Pal = new Color[24][];
+        Color[][] ShieldsPal = new Color[3][];
+        Color[][] SwordsPal = new Color[4][];
+        Color[][] ArmorsPal = new Color[5][];
+
+        Color tempColor;
+        int tempIndex = -1;
+
+        ColorDialog cd = new ColorDialog();
+
         public PaletteEditor(DungeonMain mainForm)
         {
             InitializeComponent();
@@ -79,6 +97,7 @@ namespace ZeldaFullEditor.Gui
                 palettesTreeView.Nodes["ArmorsPal"].Nodes.Add("Armors " + i.ToString("D2"));
             }
         }
+
         DungeonMain mainForm;
         Color[] selectedPalette = null;
         int selectedX = 16;
@@ -94,10 +113,9 @@ namespace ZeldaFullEditor.Gui
             //Recreate temp of all palettes
         }
 
-
         private void PaletteEditor_Load(object sender, EventArgs e)
         {
-
+            //TODO: Add something here?
         }
 
         private void restoreallButton_Click(object sender, EventArgs e)
@@ -194,6 +212,7 @@ namespace ZeldaFullEditor.Gui
             {
                 selectedPalette = null;
             }
+
             palettePicturebox.Refresh();
         }
 
@@ -283,6 +302,7 @@ namespace ZeldaFullEditor.Gui
                     Palettes.armors_Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(ArmorsPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
                 }
             }
+
             palettePicturebox.Refresh();
         }
 
@@ -301,18 +321,6 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-        Color[][] HudPal = new Color[2][];
-        Color[][] OverworldMainPal = new Color[6][];
-        Color[][] OverworldAuxPal = new Color[20][];
-        Color[][] OverworldAnimatedPal = new Color[14][];
-        Color[][] DungeonMainPal = new Color[20][];
-        Color[][] GlobalSpritesPal = new Color[2][];
-        Color[][] SpritesAux1Pal = new Color[12][];
-        Color[][] SpritesAux2Pal = new Color[11][];
-        Color[][] SpritesAux3Pal = new Color[24][];
-        Color[][] ShieldsPal = new Color[3][];
-        Color[][] SwordsPal = new Color[4][];
-        Color[][] ArmorsPal = new Color[5][];
         private void CreateTempPalettes()
         {
             for (int i = 0; i < 2; i++)
@@ -324,7 +332,6 @@ namespace ZeldaFullEditor.Gui
                 }
             }
             
-
             for (int i = 0; i < 6; i++)
             {
                 OverworldMainPal[i] = new Color[Palettes.overworld_MainPalettes[i].Length];
@@ -427,8 +434,6 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-
-
         private void RestoreallPalettes()
         {
             for (int i = 0; i < 2; i++)
@@ -438,7 +443,6 @@ namespace ZeldaFullEditor.Gui
                     Palettes.HudPalettes[i][j] = Color.FromArgb(HudPal[i][j].ToArgb());
                 }
             }
-
 
             for (int i = 0; i < 6; i++)
             {
@@ -527,13 +531,10 @@ namespace ZeldaFullEditor.Gui
                     Palettes.armors_Palettes[i][j] = Color.FromArgb(ArmorsPal[i][j].ToArgb());
                 }
             }
+
             refreshallGfx();
         }
-
-
-        Color tempColor;
-        int tempIndex = -1;
-
+        
         private void palettePicturebox_MouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
@@ -544,14 +545,15 @@ namespace ZeldaFullEditor.Gui
                     tempIndex = cindex;
                     tempColor = selectedPalette[cindex];
                     selectedPalette[cindex] = Color.Fuchsia;
+
                     for (int i = 0; i < 159; i++)
                     {
                         mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
 
                     }
+
                     mainForm.overworldEditor.scene.Refresh();
                     refreshallGfx();
-
                 }
             }
         }
@@ -566,12 +568,13 @@ namespace ZeldaFullEditor.Gui
                     mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
 
                 }
+
                 mainForm.overworldEditor.scene.Refresh();
                 refreshallGfx();
                 tempIndex = -1;
             }
         }
-        ColorDialog cd = new ColorDialog();
+        
         private void palettePicturebox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             int cindex = -1;
@@ -579,6 +582,7 @@ namespace ZeldaFullEditor.Gui
             {
                 cindex = (e.X / 16) + ((e.Y / 16) * selectedX);
             }
+
             if (cindex != -1)
             {
                 cd.Color = selectedPalette[cindex];
@@ -586,17 +590,19 @@ namespace ZeldaFullEditor.Gui
                 {
                     selectedPalette[cindex] = cd.Color;
                 }
+
                 for (int i = 0; i < 159; i++)
                 {
                     mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
                 }
+
                 refreshallGfx();
             }
         }
 
         private void palettePicturebox_Click(object sender, EventArgs e)
         {
-
+            //TODO: Add something here?
         }
     }
 }

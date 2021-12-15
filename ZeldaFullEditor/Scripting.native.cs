@@ -62,7 +62,6 @@ namespace CSScriptNativeApi
                                                            return data * data;
                                                        }")
                                          .CreateObject("*");
-
                 var result = script.Sqr(7);
             }
 
@@ -78,7 +77,6 @@ namespace CSScriptNativeApi
                                                          Console.WriteLine(greeting);
                                                      }")
                                        .GetStaticMethod();
-
                 sayHello("Hello World!");
             }
 
@@ -95,7 +93,6 @@ namespace CSScriptNativeApi
                                                      {
                                                          Console.WriteLine(greeting);
                                                      }");
-
                 sayHello("Hello World!");
             }
 
@@ -109,7 +106,6 @@ namespace CSScriptNativeApi
                                                        {
                                                            Console.WriteLine(greeting);
                                                        }");
-
                 sayHello("Hello World!");
             }
 
@@ -173,7 +169,9 @@ namespace CSScriptNativeApi
                 finally
                 {
                     if (File.Exists(file))
+                    {
                         File.Delete(file);
+                    }    
                 }
             }
 
@@ -263,6 +261,7 @@ namespace CSScriptNativeApi
                     IScript script = helper.CreateAndAlignToInterface<IScript>("*");
                     script.Hello("Hi there...");
                 }
+
                 //from this point AsmHelper is disposed and the temp AppDomain is unloaded
             }
 
@@ -279,7 +278,6 @@ namespace CSScriptNativeApi
                                                              return a+b;
                                                          }
                                                      }", null, debugBuild: true).CreateObject("*");
-
                 int result = script.Sum(1, 2);
             }
         }
@@ -298,7 +296,6 @@ namespace CSScriptNativeApi
     public interface ICalc
     {
         HostApp Host { get; set; }
-
         int Sum(int a, int b);
     }
 

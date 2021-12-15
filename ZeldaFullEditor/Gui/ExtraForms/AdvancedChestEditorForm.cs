@@ -12,12 +12,14 @@ namespace ZeldaFullEditor.Gui
 {
     public partial class AdvancedChestEditorForm : Form
     {
+        bool changedFromForm = false;
+        ChestAdvancedData[] chestsdata = new ChestAdvancedData[76];
+
         public AdvancedChestEditorForm()
         {
             InitializeComponent();
         }
-        bool changedFromForm = false;
-        ChestAdvancedData[] chestsdata = new ChestAdvancedData[76];
+
         private void AdvancedChestEditorForm_Load(object sender, EventArgs e)
         {
             for(int i = 0;i<76;i++)
@@ -25,21 +27,19 @@ namespace ZeldaFullEditor.Gui
                 listBox1.Items.Add(ChestItems_Name.name[i]);
 
                 chestsdata[i] = new ChestAdvancedData(
-                    ROM.DATA[Constants.chests_backupitems + i],
-                    ROM.DATA[Constants.chests_yoffset + i],
+                     ROM.DATA[Constants.chests_backupitems + i],
+                     ROM.DATA[Constants.chests_yoffset + i],
                      ROM.DATA[Constants.chests_xoffset + i],
                      ROM.DATA[Constants.chests_itemsgfx + i],
                      ROM.DATA[Constants.chests_itemswide + i],
                      ROM.DATA[Constants.chests_itemsproperties + i],
                      (short)((ROM.DATA[Constants.chests_sramaddress + (i * 2) + 1] << 8) + ROM.DATA[Constants.chests_sramaddress + (i * 2)]),
                      ROM.DATA[Constants.chests_sramvalue + i],
-                     (short)((ROM.DATA[Constants.chests_msgid + (i * 2) + 1] << 8) + ROM.DATA[Constants.chests_msgid + (i * 2)]));
-
+                     (short)((ROM.DATA[Constants.chests_msgid + (i * 2) + 1] << 8) + ROM.DATA[Constants.chests_msgid + (i * 2)])
+                     );
             }
 
             listBox1.SelectedIndex = 0;
-
-
         }
 
         private void alternateTextbox_TextChanged(object sender, EventArgs e)
@@ -51,7 +51,6 @@ namespace ZeldaFullEditor.Gui
                 if (int.TryParse(alternateTextbox.Text, out r))
                 {
                     chestsdata[listBox1.SelectedIndex].backupitems = (byte)r;
-                    
                 }
                 if (int.TryParse(xoffsetTextbox.Text, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out r))
                 {
@@ -61,33 +60,31 @@ namespace ZeldaFullEditor.Gui
                 {
                     chestsdata[listBox1.SelectedIndex].yoffset = (byte)r;
                 }
-
                 if (int.TryParse(sramaddrTextbox.Text, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out r))
                 {
                     chestsdata[listBox1.SelectedIndex].sramaddress = (short)r;
                 }
-
                 if (int.TryParse(sramvalueTextbox.Text, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out r))
                 {
                     chestsdata[listBox1.SelectedIndex].sramvalue = (byte)r;
                 }
-
                 if (int.TryParse(wideflagTextbox.Text, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out r))
                 {
                     chestsdata[listBox1.SelectedIndex].itemswide = (byte)r;
                 }
-
                 if (int.TryParse(msgidTextbox.Text, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out r))
                 {
                     chestsdata[listBox1.SelectedIndex].msgid = (short)r;
                 }
             }
+
             if (chestsdata[listBox1.SelectedIndex].backupitems >= 76)
             {
                 if (chestsdata[listBox1.SelectedIndex].backupitems != 255)
                 {
                     chestsdata[listBox1.SelectedIndex].backupitems = 75;
                 }
+
                 label8.Text = "Same as the current item";
             }
             else
@@ -113,17 +110,16 @@ namespace ZeldaFullEditor.Gui
         {
             for (int i = 0; i < 76; i++)
             {
-                ROM.DATA[Constants.chests_backupitems + i] = chestsdata[i].backupitems;
-                ROM.DATA[Constants.chests_yoffset + i] = (chestsdata[i].yoffset);
-                ROM.DATA[Constants.chests_xoffset + i] = (chestsdata[i].xoffset);
-                ROM.DATA[Constants.chests_itemsgfx + i] = chestsdata[i].itemsgfx;
-                ROM.DATA[Constants.chests_itemswide + i] = chestsdata[i].itemswide;
-                ROM.DATA[Constants.chests_itemsproperties + i] = chestsdata[i].itemsproperties;
-                ROM.DATA[Constants.chests_sramaddress + (i * 2)+1] = (byte)(chestsdata[i].sramaddress >> 8);
-                ROM.DATA[Constants.chests_sramaddress + (i * 2)] = (byte)(chestsdata[i].sramaddress & 0xFF);
-                ROM.DATA[Constants.chests_sramvalue + i] = chestsdata[i].sramvalue;
-                ROM.DATA[Constants.chests_msgid + (i * 2)+1] = (byte)(chestsdata[i].msgid>>8);
-                ROM.DATA[Constants.chests_msgid + (i * 2)] = (byte)(chestsdata[i].msgid & 0xFF);
+                ROM.Write(Constants.chests_backupitems + i,chestsdata[i].backupitems, true, "Chests Items Data");
+                ROM.Write(Constants.chests_yoffset + i,(chestsdata[i].yoffset), true, "Chests Items Data");
+                ROM.Write(Constants.chests_xoffset + i,(chestsdata[i].xoffset), true, "Chests Items Data");
+                ROM.Write(Constants.chests_itemsgfx + i,chestsdata[i].itemsgfx, true, "Chests Items Data");
+                ROM.Write(Constants.chests_itemswide + i,chestsdata[i].itemswide, true, "Chests Items Data");
+                ROM.Write(Constants.chests_itemsproperties + i,chestsdata[i].itemsproperties, true, "Chests Items Data");
+                ROM.WriteShort(Constants.chests_sramaddress + (i * 2), chestsdata[i].sramaddress, true, "Chests Items Data");
+                ROM.Write(Constants.chests_sramvalue + i,chestsdata[i].sramvalue, true, "Chests Items Data");
+                ROM.Write(Constants.chests_msgid + (i * 2)+1,(byte)(chestsdata[i].msgid>>8), true, "Chests Items Data");
+                ROM.Write(Constants.chests_msgid + (i * 2),(byte)(chestsdata[i].msgid & 0xFF), true, "Chests Items Data");
             }
 
             this.Close();
@@ -134,7 +130,6 @@ namespace ZeldaFullEditor.Gui
             this.Close();
         }
     }
-
 
     public class ChestAdvancedData
     {
@@ -147,6 +142,7 @@ namespace ZeldaFullEditor.Gui
         public short sramaddress = 0;
         public byte sramvalue = 0;
         public short msgid = 0;
+
         public ChestAdvancedData(byte b,byte y, byte x, byte gfx,byte wide, byte p, short addr, byte v,short msgid)
         {
             this.backupitems = b;
@@ -159,6 +155,5 @@ namespace ZeldaFullEditor.Gui
             this.sramvalue = v;
             this.msgid = msgid;
         }
-
     }
 }
