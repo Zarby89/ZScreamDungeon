@@ -221,6 +221,7 @@ namespace ZeldaFullEditor
             messageid = (short)((ROM.DATA[Constants.messages_id_dungeon + (index * 2) + 1] << 8 ) + ROM.DATA[Constants.messages_id_dungeon + (index * 2)]);
         }
 
+
         public void reloadLayout()
         {
             tilesLayoutObjects.Clear();
@@ -248,6 +249,134 @@ namespace ZeldaFullEditor
                 }
             }
         }
+
+        
+        // @author: scawful
+        // @brief: data structure for storing rectangles of tile data 
+        public struct CollisionRectangle
+        {
+            public byte width, height;
+            public ushort index_data;
+            public ushort[] tile_data;
+            public CollisionRectangle( byte w, byte h, ushort id, ushort[] td )
+            {
+                this.width = w;
+                this.height = h;
+                this.index_data = id;
+                this.tile_data = td;
+            }
+        }
+
+        public List<CollisionRectangle> collision_rectangles = new List<CollisionRectangle>();
+
+        // @author: scawful
+        // @brief: creates a list of valid rectangles from user inputted collision 
+        public void loadCollisionLayout()
+        {
+            Dictionary<int, bool> collision_validity = new Dictionary<int, bool>();
+            
+            for ( int i = 0; i < collisionMap.Length; ++i )
+            {
+                collision_validity[i] = false;
+            }
+
+            int rectangle_index = 0;
+            for ( int i = 0; i < collisionMap.Length; ++i )
+            {
+                if (collisionMap[i] != (byte)0xFF && !collision_validity[i])
+                {
+                    int rectangle_width = 1;
+                    int rectangle_height = 1;
+                    bool found_blank = false;
+
+                    if ( collisionMap[i + 1] == (byte)0xFF && collisionMap[i + 64] == (byte)0xFF )
+                    {
+                        ushort[] new_tile_data = { collisionMap[i] };
+                        collision_validity[i] = true;
+                        collision_rectangles.Add(new CollisionRectangle(1, 1, (ushort)rectangle_index, new_tile_data));
+                    } 
+                    else
+                    {
+                        while (!found_blank)
+                        {
+                            if (collisionMap[i + rectangle_width] != (byte)0xFF)
+                            {
+                                rectangle_width++;
+                            }
+                            else
+                            {
+                                found_blank = true;
+                            }
+                        }
+
+                        found_blank = false;
+                        while (!found_blank)
+                        {
+                            if (collisionMap[i + (rectangle_height * 64)] != (byte)0xFF)
+                            {
+                                rectangle_height++;
+                            }
+                            else
+                            {
+                                found_blank = true;
+                            }
+                        }
+
+                        bool discrepancy = false;
+                        byte rectangle_type = collisionMap[i];
+                        for (int y = 0; y < rectangle_height; ++y)
+                        {
+                            for (int x = 0; x < rectangle_width; ++x)
+                            {
+                                if (collisionMap[i + (x + (y * 64))] != rectangle_type && !discrepancy)
+                                {
+                                    if (rectangle_width > x)
+                                    {
+                                        rectangle_height = y;
+                                        discrepancy = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        ushort[] new_tile_data = { };
+                        for (int y = 0; y < rectangle_height; ++y)
+                        {
+                            for (int x = 0; x < rectangle_width; ++x)
+                            {
+                                new_tile_data.Append((ushort)collisionMap[i + (x + (y * 64))]);
+                                collision_validity[i + (x + (y * 64))] = true;
+                            }
+                        }
+                        collision_rectangles.Add(new CollisionRectangle((byte)rectangle_width, (byte)rectangle_height, (ushort)i, new_tile_data));
+                    }
+                }
+            }
+
+            Console.WriteLine("\nGenerate Rectangles:");
+            foreach ( CollisionRectangle each_rect in collision_rectangles )
+            {
+                Console.WriteLine((int)each_rect.index_data + " : " + (int)each_rect.width  + " x " + (int)each_rect.height);
+            }
+
+            /* upper bound 
+             *  512 pixels/8px per tile, so 64
+                a full room would be dw $0000 : db 64, 64
+                followed by 64x64 bytes
+                then FFFF
+            */
+
+            /*
+            put $F0F0 then put 2 byte index and the 1 byte of data
+            index is just Y*64+X
+            +$1000 if lower layer
+
+            only the index and tokens are 16 bit
+            everything else, width, height, data, are 8 bit 
+            */
+        }
+
 
         public unsafe void reloadAnimatedGfx()
         {
