@@ -136,6 +136,44 @@ namespace ZeldaFullEditor
             return false; // False = no error
         }
 
+        public bool saveCustomCollision()
+        {
+            /* Format:
+                dw<offset> : db width, height
+                dw < tile data >, ...
+                if < offset > == $F0F0, start doing single tiles
+                format:
+                dw<offset> : db<tiledata>
+                if < offset > == $FFFF, stop
+            */
+            int room_pointer = 0x128000; // @zarby: save all 320 rooms pointers to 0x128000
+            int data_pointer = 0x1283C0; // @zarby: the actual data at 0x1283C0
+
+            for ( int i = 0; i < 296; i++ )
+            {
+                // @zarby: for each room -> ROM.WriteLong(0x100000), Utils.PcToSnes(ptrsCounter))
+                //         write pointers where data start + previous room data length
+                ROM.WriteLong(room_pointer, Utils.PcToSnes(data_pointer));
+                foreach ( var rectangle in all_rooms[i].collision_rectangles )
+                {
+                    ROM.WriteShort(data_pointer, rectangle.index_data);
+                    data_pointer += 2;
+                    ROM.WriteShort(data_pointer, rectangle.width);
+                    data_pointer += 1;
+                    ROM.WriteShort(data_pointer, rectangle.height);
+                    data_pointer += 1;
+                    for ( int j = 0; j < rectangle.width * rectangle.height; j++ )
+                    {
+                        ROM.WriteShort(data_pointer, rectangle.tile_data[j]);
+                        data_pointer += 1;
+                    }
+                    data_pointer += 3;
+                }
+
+            }
+
+            return true;
+        }
 
         public bool saveTorches()
         {
