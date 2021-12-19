@@ -1880,8 +1880,7 @@ namespace ZeldaFullEditor
                 room.collisionMap[px + (py * 64)] = (byte)0xFF;
 
                 need_refresh = true;
-                //DrawRoom();
-                //Refresh();
+                Refresh();
             }
         }
 
