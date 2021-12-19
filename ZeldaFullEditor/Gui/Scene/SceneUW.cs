@@ -14,6 +14,7 @@ using System.IO.Compression;
 using static ZeldaFullEditor.DungeonMain;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
@@ -885,6 +886,15 @@ namespace ZeldaFullEditor
                     }
                 }
             }
+
+            // @scawful: test for collision layout code 
+            Task.Factory.StartNew(() =>
+            {
+                if (Console.ReadKey().Key == ConsoleKey.UpArrow)
+                {
+                    room.loadCollisionLayout(true);
+                }
+            });
         }
 
         public void drawDoorsPosition(Graphics g)

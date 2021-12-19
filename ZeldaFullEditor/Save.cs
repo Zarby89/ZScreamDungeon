@@ -36,9 +36,12 @@ namespace ZeldaFullEditor
         int[] mapPointers1 = new int[160];
         int[] mapPointers2 = new int[160];
 
-        public Save(Room[] all_rooms)
+        DungeonMain mainForm;
+
+        public Save(Room[] all_rooms, DungeonMain _mainForm)
         {
             this.all_rooms = all_rooms;
+            mainForm = _mainForm;
         }
 
         public bool saveEntrances(Entrance[] entrances, Entrance[] startingentrances)
@@ -149,6 +152,90 @@ namespace ZeldaFullEditor
             int py = address >> 6;
             Room_Object r = addObject(0x0E00, (byte)(px), (byte)(py), 0, (byte)((b4 & 0x20) >> 5));*/
             return false; // False = no error
+        }
+
+        public bool saveCustomCollision()
+        {
+            Console.WriteLine("Saving Custom Collision");
+            /* Format:
+                dw<offset> : db width, height
+                dw < tile data >, ...
+                if < offset > == $F0F0, start doing single tiles
+                format:
+                dw<offset> : db<tiledata>
+                if < offset > == $FFFF, stop
+            */
+            int room_pointer = 0x128090; // @zarby: save all 320 rooms pointers to 0x128000
+            int data_pointer = 0x128450; // @zarby: the actual data at 0x1283C0
+
+            Console.WriteLine(room_pointer + " " + data_pointer);
+
+            //for ( int i = 0; i < 296; i++ )
+            foreach (Room room in all_rooms)
+            {
+                // @zarby: for each room -> ROM.WriteLong(0x100000), Utils.PcToSnes(ptrsCounter))
+                //         write pointers where data start + previous room data length
+
+                //Clear the room's rectangle list and then re-populate it
+                room.ClearCollisionLayout();
+                room.loadCollisionLayout(false);
+                
+                //if there is triangle in the room, write the room pointer, otherwise wrtie 000000
+                if(room.collision_rectangles.Count() > 0)
+                {
+                    ROM.WriteLong(room_pointer, Utils.PcToSnes(data_pointer));
+                }
+                else
+                {
+                    ROM.WriteLong(room_pointer, 0x000000);
+                }
+                room_pointer += 3;
+
+                foreach ( var rectangle in room.collision_rectangles )
+                {
+                    Console.WriteLine(rectangle.ToString());
+
+                    ROM.WriteShort(data_pointer, rectangle.index_data);
+                    data_pointer += 2;
+                    ROM.WriteShort(data_pointer, rectangle.width);
+                    data_pointer += 1;
+                    ROM.WriteShort(data_pointer, rectangle.height);
+                    data_pointer += 1;
+                    for ( int j = 0; j < rectangle.width * rectangle.height; j++ )
+                    {
+                        ROM.WriteShort(data_pointer, rectangle.tile_data[j]);
+                        data_pointer += 1;
+                    }
+
+                    //ROM.WriteLong(data_pointer, 0x000000);
+                    //data_pointer += 3;
+                }
+
+                //add 0xFFFF to the end of this rooms list to tell the asm to stop here
+                if(room.collision_rectangles.Count() > 0)
+                {
+                    ROM.WriteLong(data_pointer, 0x00FFFF);
+                    data_pointer += 2;
+                }
+            }
+
+            string projectFilename = mainForm.projectFilename;
+
+            byte[] data = new byte[ROM.DATA.Length];
+            ROM.DATA.CopyTo(data, 0);
+            AsarCLR.Asar.init();
+
+            if (File.Exists(Path.GetDirectoryName(projectFilename) + "\\CustomCollision.asm"))
+            {
+                AsarCLR.Asar.patch(Path.GetDirectoryName(projectFilename) + "\\CustomCollision.asm", ref data);
+            }
+
+            foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
+            {
+                Console.WriteLine(error.Fullerrdata.ToString());
+            }
+
+            return false;
         }
 
         public bool saveTorches()
@@ -1066,7 +1153,7 @@ namespace ZeldaFullEditor
         //0x6452A  // HOOK Replaced Code : INC $15 : LDA.b #$03
         //1351C0 / 26D1C0 end of tilemap data where the jump code should be for DMA
 
-        /*public bool saveTitleScreen(DungeonMain mainForm)
+        /*public bool saveTitleScreen()
         {
             /*int pos = 0x1343C0;
             //134AC0 = BG2
@@ -1306,24 +1393,24 @@ namespace ZeldaFullEditor
             return false;
         }
 
-        public bool SaveTitleScreen(DungeonMain mainForm)
+        public bool SaveTitleScreen()
         {
             mainForm.screenEditor.Save();
             return false;
         }
 
-        public bool SaveDungeonMaps(DungeonMain mainForm)
+        public bool SaveDungeonMaps()
         {
             return mainForm.screenEditor.dungmapSaveAllCurrentDungeon();
         }
 
-        public bool SaveOverworldMiniMap(DungeonMain mainForm)
+        public bool SaveOverworldMiniMap()
         {
             mainForm.screenEditor.saveOverworldMap();
             return false;
         }
 
-        public bool SaveTriforce(DungeonMain mainForm)
+        public bool SaveTriforce()
         {
             mainForm.screenEditor.saveTriforce();
             return false;
