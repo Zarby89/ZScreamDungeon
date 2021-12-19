@@ -3355,7 +3355,15 @@ namespace ZeldaFullEditor
         private void deleteToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             activeScene.mouse_down = false;
-            activeScene.deleteChestItem();
+
+            if (activeScene.selectedMode == ObjectMode.Chestmode)
+            {
+                activeScene.deleteChestItem();
+            }
+            else if (activeScene.selectedMode == ObjectMode.CollisionMap)
+            {
+                activeScene.deleteCollisionMapTile();
+            }
         }
 
         private void palettesEditorToolStripMenuItem_Click(object sender, EventArgs e)

@@ -1068,6 +1068,7 @@ namespace ZeldaFullEditor
                     {
                         foreach (Object o in room.pot_items)
                         {
+                            //TODO: Add something here?
                             //(o as PotItem).selected = false;
                         }
 
@@ -1284,7 +1285,7 @@ namespace ZeldaFullEditor
                         room.collisionMap[px + (py * 64)] = (byte)mainForm.tileTypeCombobox.SelectedIndex;
                     }
                 }
-
+        
                 mouse_down = true;
                 move_x = 0;
                 move_y = 0;
@@ -1863,6 +1864,24 @@ namespace ZeldaFullEditor
                 need_refresh = true;
                 DrawRoom();
                 Refresh();
+            }
+        }
+
+        public void deleteCollisionMapTile()
+        {
+            int MX = rmx;
+            int MY = rmy;
+
+            if (selectedMode == ObjectMode.CollisionMap)
+            {
+                int px = MX / 16;
+                int py = MY / 16;
+
+                room.collisionMap[px + (py * 64)] = (byte)0xFF;
+
+                need_refresh = true;
+                //DrawRoom();
+                //Refresh();
             }
         }
 
