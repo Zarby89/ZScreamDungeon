@@ -51,7 +51,7 @@ namespace ZeldaFullEditor
         Object_Designer objDesigner = new Object_Designer();
         public GfxImportExport gfxEditor;
         DungeonViewer dungeonViewer = new DungeonViewer();
-        string projectFilename = "";
+        public string projectFilename = "";
         public bool projectLoaded = false;
         public bool anychange = false;
         public SceneUW activeScene;
@@ -358,7 +358,7 @@ namespace ZeldaFullEditor
             //sw.Reset();
             //sw.Start();
             byte[] romBackup = (byte[])ROM.DATA.Clone();
-            Save save = new Save(DungeonsData.all_rooms);
+            Save save = new Save(DungeonsData.all_rooms, this);
             //sw.Stop();
             //Console.WriteLine("Saved all rooms - " + sw.ElapsedMilliseconds.ToString() + "ms");
 
@@ -395,6 +395,12 @@ namespace ZeldaFullEditor
             if (save.saveBlocks())//There is a protection - Tested
             {
                 MessageBox.Show("Failed to save, there is too many pushable blocks", "Bad Error", MessageBoxButtons.OK);
+                ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
+            }
+            if(save.saveCustomCollision())
+            {
+                MessageBox.Show("Failed to save, there was an error saving the custom collision rectangles", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
@@ -491,13 +497,13 @@ namespace ZeldaFullEditor
                 return;
             }
 
-            if (save.SaveTitleScreen(this))
+            if (save.SaveTitleScreen())
             {
                 MessageBox.Show("Failed to save overworld title screen? ", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            if (save.SaveOverworldMiniMap(this))
+            if (save.SaveOverworldMiniMap())
             {
                 MessageBox.Show("Failed to save overworld Minimap? ", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
@@ -516,13 +522,13 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            if (save.SaveDungeonMaps(this))
+            if (save.SaveDungeonMaps())
             {
                 MessageBox.Show("Failed to save Gravestones", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-            if (save.SaveTriforce(this))
+            if (save.SaveTriforce())
             {
                 MessageBox.Show("Failed to Triforce", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
@@ -4588,7 +4594,7 @@ namespace ZeldaFullEditor
 
         private void saveMapsOnlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Save s = new Save(DungeonsData.all_rooms);
+            Save s = new Save(DungeonsData.all_rooms, this);
             overworldEditor.scene.SaveTiles();
 
             if (s.saveOverworldMaps(overworldEditor.scene) == true)
@@ -4722,7 +4728,7 @@ namespace ZeldaFullEditor
                     ROM.DATA[i] = ROM.TEMPDATA[i]; //restore to original rom
                 }
 
-                Save save = new Save(DungeonsData.all_rooms);
+                Save save = new Save(DungeonsData.all_rooms, this);
 
                 //if (rm.checkBox7.Checked)
                 //{

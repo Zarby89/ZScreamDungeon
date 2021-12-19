@@ -892,11 +892,9 @@ namespace ZeldaFullEditor
             {
                 if (Console.ReadKey().Key == ConsoleKey.UpArrow)
                 {
-                    room.loadCollisionLayout();
+                    room.loadCollisionLayout(true);
                 }
             });
-            
-
         }
 
         public void drawDoorsPosition(Graphics g)

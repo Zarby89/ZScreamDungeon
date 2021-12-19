@@ -75,6 +75,8 @@ namespace ZeldaFullEditor
 
         public int roomSize = 0;
 
+        public List<CollisionRectangle> collision_rectangles = new List<CollisionRectangle>();
+
         public byte layout
         {
             get => _layout;
@@ -257,14 +259,17 @@ namespace ZeldaFullEditor
             }
         }
 
-        
+
         // @author: scawful
         // @brief: data structure for storing rectangles of tile data 
+        [Serializable]
         public struct CollisionRectangle
         {
-            public byte width, height;
+            public byte width;
+            public byte height;
             public ushort index_data;
             public ushort[] tile_data;
+
             public CollisionRectangle( byte w, byte h, ushort id, ushort[] td )
             {
                 this.width = w;
@@ -272,13 +277,25 @@ namespace ZeldaFullEditor
                 this.index_data = id;
                 this.tile_data = td;
             }
-        }
 
-        public List<CollisionRectangle> collision_rectangles = new List<CollisionRectangle>();
+            public string ToString()
+            {
+                string temp = "[width: " + this.width + " height: " + this.height + " index_data: " + this.index_data + " TileData: ";
+                foreach(ushort u in tile_data)
+                {
+                    temp += u + ", ";
+                }
+
+                temp = temp.Remove(temp.Length - 2, 2);
+
+                temp += "]";
+                return temp;
+            }
+        }
 
         // @author: scawful
         // @brief: creates a list of valid rectangles from user inputted collision 
-        public void loadCollisionLayout()
+        public void loadCollisionLayout(bool output = false)
         {
             Dictionary<int, bool> collision_validity = new Dictionary<int, bool>();
             
@@ -300,7 +317,7 @@ namespace ZeldaFullEditor
                     {
                         ushort[] new_tile_data = { collisionMap[i] };
                         collision_validity[i] = true;
-                        collision_rectangles.Add(new CollisionRectangle(1, 1, (ushort)rectangle_index, new_tile_data));
+                        collision_rectangles.Add(new CollisionRectangle(1, 1, (ushort)i, new_tile_data));
                     } 
                     else
                     {
@@ -329,6 +346,7 @@ namespace ZeldaFullEditor
                             }
                         }
 
+                        /* Jared_Brian_: removed as it is unnecessary and causes errors when you have a rectangle with different tile data in it
                         bool discrepancy = false;
                         byte rectangle_type = collisionMap[i];
                         for (int y = 0; y < rectangle_height; ++y)
@@ -345,28 +363,33 @@ namespace ZeldaFullEditor
                                     }
                                 }
                             }
-                        }
+                        }*/
 
-                        ushort[] new_tile_data = { };
+                        List<ushort> new_tile_data = new List<ushort>();
                         for (int y = 0; y < rectangle_height; ++y)
                         {
                             for (int x = 0; x < rectangle_width; ++x)
                             {
-                                new_tile_data.Append((ushort)collisionMap[i + (x + (y * 64))]);
+                                new_tile_data.Add((ushort)collisionMap[i + (x + (y * 64))]);
                                 collision_validity[i + (x + (y * 64))] = true;
                             }
                         }
-                        collision_rectangles.Add(new CollisionRectangle((byte)rectangle_width, (byte)rectangle_height, (ushort)i, new_tile_data));
+
+                        ushort[] _new_tile_data = new_tile_data.ToArray();
+                        collision_rectangles.Add(new CollisionRectangle((byte)rectangle_width, (byte)rectangle_height, (ushort)i, _new_tile_data));
                     }
                 }
             }
 
-            Console.WriteLine("\nGenerate Rectangles:");
-            foreach ( CollisionRectangle each_rect in collision_rectangles )
+            if(output)
             {
-                Console.WriteLine((int)each_rect.index_data + " : " + (int)each_rect.width  + " x " + (int)each_rect.height);
+                Console.WriteLine("\nGenerate Rectangles:");
+                foreach (CollisionRectangle each_rect in collision_rectangles)
+                {
+                    Console.WriteLine((int)each_rect.index_data + " : " + (int)each_rect.width + " x " + (int)each_rect.height);
+                }
             }
-
+            
             /* upper bound 
              *  512 pixels/8px per tile, so 64
                 a full room would be dw $0000 : db 64, 64
@@ -384,6 +407,12 @@ namespace ZeldaFullEditor
             */
         }
 
+        // @author: Jared_Brian_
+        // @brief: clears the list of valid rectangles from user inputted collision 
+        public void ClearCollisionLayout()
+        {
+            collision_rectangles.Clear();
+        }
 
         public unsafe void reloadAnimatedGfx()
         {
