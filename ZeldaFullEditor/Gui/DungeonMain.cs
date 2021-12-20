@@ -496,8 +496,8 @@ namespace ZeldaFullEditor
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                 return;
             }
-
             if (save.SaveTitleScreen())
+
             {
                 MessageBox.Show("Failed to save overworld title screen? ", "Bad Error", MessageBoxButtons.OK);
                 ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
@@ -3354,7 +3354,15 @@ namespace ZeldaFullEditor
         private void deleteToolStripMenuItem2_Click(object sender, EventArgs e)
         {
             activeScene.mouse_down = false;
-            activeScene.deleteChestItem();
+
+            if (activeScene.selectedMode == ObjectMode.Chestmode)
+            {
+                activeScene.deleteChestItem();
+            }
+            else if (activeScene.selectedMode == ObjectMode.CollisionMap)
+            {
+                activeScene.deleteCollisionMapTile();
+            }
         }
 
         private void palettesEditorToolStripMenuItem_Click(object sender, EventArgs e)
@@ -5026,11 +5034,8 @@ namespace ZeldaFullEditor
             //XX88C1-XX8A41 :  Overworld Overlay Pointers
             //XX8A41-XX8E01 :  Collision Map Dungeon Pointers
 
-
-
             ExpandedManagement em = new ExpandedManagement();
             em.ShowDialog();
         }
     }
-
 }

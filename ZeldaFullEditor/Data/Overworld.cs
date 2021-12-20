@@ -913,7 +913,6 @@ namespace ZeldaFullEditor
                 */
 
 
-
                 index += 4;
                 c += 2;
             }
@@ -973,7 +972,6 @@ namespace ZeldaFullEditor
              //Console.WriteLine();
              //Save32Tiles();
          }*/
-
 
         public void loadItems()
         {

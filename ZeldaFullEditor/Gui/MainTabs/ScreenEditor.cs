@@ -1330,10 +1330,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
             }
 
-
             ROM.Write(titleScreenPosition, allData.ToArray(), true, "Title Screen Data");
-
-
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -2119,7 +2116,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
                 floors = ((dungmaps[d].nbrOfFloor << 4) | dungmaps[d].nbrOfBasement);
                 
-
                 ROM.WriteShort((Constants.dungeonMap_floors) + (d * 2), floors, true, "Dungeon Map Data");
                 ROM.WriteShort((Constants.dungeonMap_bossrooms) + (d * 2), dungmaps[d].bossRoom,true, "Dungeon Map Data");
 
