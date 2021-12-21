@@ -175,6 +175,11 @@ namespace ZeldaFullEditor
             return (short)((DATA[addr + 1] << 8) + DATA[addr]);
         }
 
+        public static ushort ReadByte(int addr)
+        {
+            return (ushort)(DATA[addr]);
+        }
+
         public static short ReadReverseShort(int addr)
         {
             return (short)((DATA[addr] << 8) + DATA[addr+1]);
