@@ -229,6 +229,8 @@ namespace ZeldaFullEditor
             isdamagePit();
             this.name = ROMStructure.roomsNames[index];
             messageid = (short)((ROM.DATA[Constants.messages_id_dungeon + (index * 2) + 1] << 8 ) + ROM.DATA[Constants.messages_id_dungeon + (index * 2)]);
+
+            LoadCustomCollisionFromRom();
         }
 
 
@@ -408,10 +410,55 @@ namespace ZeldaFullEditor
         }
 
         // @author: Jared_Brian_
-        // @brief: clears the list of valid rectangles from user inputted collision 
+        /// <summary>
+        /// clears the list of valid rectangles from user inputted collision 
+        /// </summary>
         public void ClearCollisionLayout()
         {
             collision_rectangles.Clear();
+        }
+
+        // @author: Jared_Brian_
+        /// <summary>
+        /// Reads the custom collsion data from the ROM and adds it to the collisionMap for the room
+        /// </summary>
+        public void LoadCustomCollisionFromRom()
+        {
+            int room_pointer = 0x128090;
+            room_pointer = room_pointer + (3 * index);
+
+            int data_pointer = ROM.ReadLong(room_pointer);
+
+            if (data_pointer >= 0x128450)
+            {
+                Console.WriteLine("valid Custom collision data pointer found for room " + index + " " + data_pointer.ToString("X"));
+
+                while(ROM.ReadShort(Utils.SnesToPc(data_pointer)) != 0x00FFFF)
+                {
+                    int offset = ROM.ReadShort(Utils.SnesToPc(data_pointer));
+                    data_pointer += 2;
+
+                    int width = ROM.ReadByte(Utils.SnesToPc(data_pointer));
+                    data_pointer += 1;
+                    int height = ROM.ReadByte(Utils.SnesToPc(data_pointer));
+                    data_pointer += 1;
+
+                    int i = 0;
+                    while(i < height)
+                    {
+                        int j = 0;
+                        while (j < width)
+                        {
+                            collisionMap[(offset + j + (i * 64))] = (byte)(ROM.ReadByte(Utils.SnesToPc(data_pointer)));
+                            data_pointer += 1;
+
+                            j++;
+                        }
+
+                        i++;
+                    }
+                }
+            }
         }
 
         public unsafe void reloadAnimatedGfx()
