@@ -36,9 +36,12 @@ namespace ZeldaFullEditor
         int[] mapPointers1 = new int[160];
         int[] mapPointers2 = new int[160];
 
-        public Save(Room[] all_rooms)
+        DungeonMain mainForm;
+
+        public Save(Room[] all_rooms, DungeonMain _mainForm)
         {
             this.all_rooms = all_rooms;
+            mainForm = _mainForm;
         }
 
         public bool saveEntrances(Entrance[] entrances, Entrance[] startingentrances)
@@ -151,6 +154,90 @@ namespace ZeldaFullEditor
             return false; // False = no error
         }
 
+        public bool saveCustomCollision()
+        {
+            Console.WriteLine("Saving Custom Collision");
+            /* Format:
+                dw<offset> : db width, height
+                dw < tile data >, ...
+                if < offset > == $F0F0, start doing single tiles
+                format:
+                dw<offset> : db<tiledata>
+                if < offset > == $FFFF, stop
+            */
+            int room_pointer = 0x128090; // @zarby: save all 320 rooms pointers to 0x128000
+            int data_pointer = 0x128450; // @zarby: the actual data at 0x1283C0
+
+            Console.WriteLine(room_pointer + " " + data_pointer);
+
+            //for ( int i = 0; i < 296; i++ )
+            foreach (Room room in all_rooms)
+            {
+                // @zarby: for each room -> ROM.WriteLong(0x100000), Utils.PcToSnes(ptrsCounter))
+                //         write pointers where data start + previous room data length
+
+                //Clear the room's rectangle list and then re-populate it
+                room.ClearCollisionLayout();
+                room.loadCollisionLayout(false);
+                
+                //if there is triangle in the room, write the room pointer, otherwise wrtie 000000
+                if(room.collision_rectangles.Count() > 0)
+                {
+                    ROM.WriteLong(room_pointer, Utils.PcToSnes(data_pointer));
+                }
+                else
+                {
+                    ROM.WriteLong(room_pointer, 0x000000);
+                }
+                room_pointer += 3;
+
+                foreach ( var rectangle in room.collision_rectangles )
+                {
+                    Console.WriteLine(rectangle.ToString());
+
+                    ROM.WriteShort(data_pointer, rectangle.index_data);
+                    data_pointer += 2;
+                    ROM.WriteShort(data_pointer, rectangle.width);
+                    data_pointer += 1;
+                    ROM.WriteShort(data_pointer, rectangle.height);
+                    data_pointer += 1;
+                    for ( int j = 0; j < rectangle.width * rectangle.height; j++ )
+                    {
+                        ROM.WriteShort(data_pointer, rectangle.tile_data[j]);
+                        data_pointer += 1;
+                    }
+
+                    //ROM.WriteLong(data_pointer, 0x000000);
+                    //data_pointer += 3;
+                }
+
+                //add 0xFFFF to the end of this rooms list to tell the asm to stop here
+                if(room.collision_rectangles.Count() > 0)
+                {
+                    ROM.WriteLong(data_pointer, 0x00FFFF);
+                    data_pointer += 2;
+                }
+            }
+
+            string projectFilename = mainForm.projectFilename;
+
+            byte[] data = new byte[ROM.DATA.Length];
+            ROM.DATA.CopyTo(data, 0);
+            AsarCLR.Asar.init();
+
+            if (File.Exists(Path.GetDirectoryName(projectFilename) + "\\CustomCollision.asm"))
+            {
+                AsarCLR.Asar.patch(Path.GetDirectoryName(projectFilename) + "\\CustomCollision.asm", ref data);
+            }
+
+            foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
+            {
+                Console.WriteLine(error.Fullerrdata.ToString());
+            }
+
+            return false;
+        }
+
         public bool saveTorches()
         {
             int bytes_count = ROM.ReadShort(Constants.torches_length_pointer);
@@ -178,12 +265,12 @@ namespace ZeldaFullEditor
 
                         int xy = (((o.y * 64) + o.x) << 1);
                         byte b1 = (byte)(xy & 0xFF);
-                        ROM.Write(pos, b1);
+                        ROM.Write(pos, b1, true, "Torches");
                         pos++;
                         byte b2 = (byte)((xy >> 8) & 0xFF);
                         if (o.layer == 1){b2 |= 0x20;}
                         b2 |= (byte)((o.lit ? 1:0) << 7);
-                        ROM.Write(pos, b2);
+                        ROM.Write(pos, b2, true, "Torches");
                         pos++;
                     }
                 }
@@ -1066,7 +1153,7 @@ namespace ZeldaFullEditor
         //0x6452A  // HOOK Replaced Code : INC $15 : LDA.b #$03
         //1351C0 / 26D1C0 end of tilemap data where the jump code should be for DMA
 
-        /*public bool saveTitleScreen(DungeonMain mainForm)
+        /*public bool saveTitleScreen()
         {
             /*int pos = 0x1343C0;
             //134AC0 = BG2
@@ -1208,21 +1295,30 @@ namespace ZeldaFullEditor
                     a.CopyTo(mapDatap1[i], 0);
                     int snesPos = Utils.PcToSnes(pos);
                     mapPointers1[i] = snesPos;
-                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
+                    ROM.Write((Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i), (byte)(snesPos & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i), (byte)((snesPos >> 8) & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i), (byte)((snesPos >> 16) & 0xFF), true, "Overworld Map Pointer");
+                    /*ROM.DATA[(Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
                     ROM.DATA[(Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
-                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);*/
+
+                    ROM.Write(pos, a);
                     for (int j = 0; j < a.Length; j++)
                     {
-                        ROM.DATA[pos] = a[j];
+                        //ROM.DATA[pos] = a[j];
                         pos += 1;
                     }
                 }
                 else
                 {
                     int snesPos = mapPointers1[mapPointers1id[i]];
+                    ROM.Write((Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i), (byte)(snesPos & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i), (byte)((snesPos >> 8) & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i), (byte)((snesPos >> 16) & 0xFF), true, "Overworld Map Pointer");
+                    /*
                     ROM.DATA[(Constants.compressedAllMap32PointersLow) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
                     ROM.DATA[(Constants.compressedAllMap32PointersLow) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
-                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+                    ROM.DATA[(Constants.compressedAllMap32PointersLow) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);*/
                 }
 
                 if ((pos + b.Length) >= 0x5FE70 && (pos + b.Length) <= 0x60000)
@@ -1239,22 +1335,30 @@ namespace ZeldaFullEditor
                     b.CopyTo(mapDatap2[i], 0);
                     int snesPos = Utils.PcToSnes(pos);
                     mapPointers2[i] = snesPos;
-                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
-                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
-                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+
+                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i), (byte)(snesPos & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i), (byte)((snesPos >> 8) & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i), (byte)((snesPos >> 16) & 0xFF), true, "Overworld Map Pointer");
+
+                    ROM.Write(pos, b);
 
                     for (int j = 0; j < b.Length; j++)
                     {
-                        ROM.DATA[pos] = b[j];
+                        //ROM.DATA[pos] = b[j];
                         pos += 1;
                     }
                 }
                 else
                 {
                     int snesPos = mapPointers2[mapPointers2id[i]];
-                    ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
+                    /*ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i)] = (byte)(snesPos & 0xFF);
                     ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i)] = (byte)((snesPos >> 8) & 0xFF);
                     ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i)] = (byte)((snesPos >> 16) & 0xFF);
+                    */
+                    
+                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 0 + (int)(3 * i), (byte)(snesPos & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 1 + (int)(3 * i), (byte)((snesPos >> 8) & 0xFF), true, "Overworld Map Pointer");
+                    ROM.Write((Constants.compressedAllMap32PointersHigh) + 2 + (int)(3 * i), (byte)((snesPos >> 16) & 0xFF), true, "Overworld Map Pointer");
                 }
             }
 
@@ -1273,40 +1377,40 @@ namespace ZeldaFullEditor
         {
             for(int i =0;i<0x0F;i++)
             {
-                ROM.WriteShort(Constants.GravesXTilePos + (i * 2), scene.ow.graves[i].xTilePos, false);
-                ROM.WriteShort(Constants.GravesYTilePos + (i * 2), scene.ow.graves[i].yTilePos, false);
-                ROM.WriteShort(Constants.GravesTilemapPos + (i * 2), scene.ow.graves[i].tilemapPos, false);
+                ROM.WriteShort(Constants.GravesXTilePos + (i * 2), scene.ow.graves[i].xTilePos, true, "Gravestones");
+                ROM.WriteShort(Constants.GravesYTilePos + (i * 2), scene.ow.graves[i].yTilePos, true, "Gravestones");
+                ROM.WriteShort(Constants.GravesTilemapPos + (i * 2), scene.ow.graves[i].tilemapPos, true, "Gravestones");
                 if (i == 0x0E)
                 {
-                    ROM.WriteShort(Constants.GraveLinkSpecialStairs, scene.ow.graves[i].tilemapPos - 0x80, false);
+                    ROM.WriteShort(Constants.GraveLinkSpecialStairs, scene.ow.graves[i].tilemapPos - 0x80, true, "Gravestones");
                 }
                 if (i == 0x0D)
                 {
-                    ROM.WriteShort(Constants.GraveLinkSpecialHole, scene.ow.graves[i].tilemapPos - 0x80, false);
+                    ROM.WriteShort(Constants.GraveLinkSpecialHole, scene.ow.graves[i].tilemapPos - 0x80, true, "Gravestones");
                 }
             }
 
             return false;
         }
 
-        public bool SaveTitleScreen(DungeonMain mainForm)
+        public bool SaveTitleScreen()
         {
             mainForm.screenEditor.Save();
             return false;
         }
 
-        public bool SaveDungeonMaps(DungeonMain mainForm)
+        public bool SaveDungeonMaps()
         {
             return mainForm.screenEditor.dungmapSaveAllCurrentDungeon();
         }
 
-        public bool SaveOverworldMiniMap(DungeonMain mainForm)
+        public bool SaveOverworldMiniMap()
         {
             mainForm.screenEditor.saveOverworldMap();
             return false;
         }
 
-        public bool SaveTriforce(DungeonMain mainForm)
+        public bool SaveTriforce()
         {
             mainForm.screenEditor.saveTriforce();
             return false;

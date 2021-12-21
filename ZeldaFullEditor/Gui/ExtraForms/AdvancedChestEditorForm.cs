@@ -110,17 +110,16 @@ namespace ZeldaFullEditor.Gui
         {
             for (int i = 0; i < 76; i++)
             {
-                ROM.DATA[Constants.chests_backupitems + i] = chestsdata[i].backupitems;
-                ROM.DATA[Constants.chests_yoffset + i] = (chestsdata[i].yoffset);
-                ROM.DATA[Constants.chests_xoffset + i] = (chestsdata[i].xoffset);
-                ROM.DATA[Constants.chests_itemsgfx + i] = chestsdata[i].itemsgfx;
-                ROM.DATA[Constants.chests_itemswide + i] = chestsdata[i].itemswide;
-                ROM.DATA[Constants.chests_itemsproperties + i] = chestsdata[i].itemsproperties;
-                ROM.DATA[Constants.chests_sramaddress + (i * 2)+1] = (byte)(chestsdata[i].sramaddress >> 8);
-                ROM.DATA[Constants.chests_sramaddress + (i * 2)] = (byte)(chestsdata[i].sramaddress & 0xFF);
-                ROM.DATA[Constants.chests_sramvalue + i] = chestsdata[i].sramvalue;
-                ROM.DATA[Constants.chests_msgid + (i * 2)+1] = (byte)(chestsdata[i].msgid>>8);
-                ROM.DATA[Constants.chests_msgid + (i * 2)] = (byte)(chestsdata[i].msgid & 0xFF);
+                ROM.Write(Constants.chests_backupitems + i,chestsdata[i].backupitems, true, "Chests Items Data");
+                ROM.Write(Constants.chests_yoffset + i,(chestsdata[i].yoffset), true, "Chests Items Data");
+                ROM.Write(Constants.chests_xoffset + i,(chestsdata[i].xoffset), true, "Chests Items Data");
+                ROM.Write(Constants.chests_itemsgfx + i,chestsdata[i].itemsgfx, true, "Chests Items Data");
+                ROM.Write(Constants.chests_itemswide + i,chestsdata[i].itemswide, true, "Chests Items Data");
+                ROM.Write(Constants.chests_itemsproperties + i,chestsdata[i].itemsproperties, true, "Chests Items Data");
+                ROM.WriteShort(Constants.chests_sramaddress + (i * 2), chestsdata[i].sramaddress, true, "Chests Items Data");
+                ROM.Write(Constants.chests_sramvalue + i,chestsdata[i].sramvalue, true, "Chests Items Data");
+                ROM.Write(Constants.chests_msgid + (i * 2)+1,(byte)(chestsdata[i].msgid>>8), true, "Chests Items Data");
+                ROM.Write(Constants.chests_msgid + (i * 2),(byte)(chestsdata[i].msgid & 0xFF), true, "Chests Items Data");
             }
 
             this.Close();
