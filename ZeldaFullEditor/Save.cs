@@ -1229,7 +1229,6 @@ namespace ZeldaFullEditor
             {
                 mapPointers1id[i] = -1;
                 mapPointers2id[i] = -1;
-
             }
 
             int pos = 0x058000;
