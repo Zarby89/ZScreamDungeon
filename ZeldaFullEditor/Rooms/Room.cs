@@ -338,9 +338,16 @@ namespace ZeldaFullEditor
                         found_blank = false;
                         while (!found_blank)
                         {
-                            if (collisionMap[i + (rectangle_height * 64)] != (byte)0xFF)
+                            if((i + (rectangle_height * 64)) < 4096)
                             {
-                                rectangle_height++;
+                                if (collisionMap[i + (rectangle_height * 64)] != (byte)0xFF)
+                                {
+                                    rectangle_height++;
+                                }
+                                else
+                                {
+                                    found_blank = true;
+                                }
                             }
                             else
                             {

@@ -225,9 +225,10 @@ namespace ZeldaFullEditor
             ROM.DATA.CopyTo(data, 0);
             AsarCLR.Asar.init();
 
-            if (File.Exists(Path.GetDirectoryName(projectFilename) + "\\CustomCollision.asm"))
+            if (File.Exists("CustomCollision.asm"))
             {
-                AsarCLR.Asar.patch(Path.GetDirectoryName(projectFilename) + "\\CustomCollision.asm", ref data);
+                Console.WriteLine("Applying Custom Collision asm");
+                AsarCLR.Asar.patch("CustomCollision.asm", ref ROM.DATA);
             }
 
             foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())

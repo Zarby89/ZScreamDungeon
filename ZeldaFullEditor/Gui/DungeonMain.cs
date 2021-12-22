@@ -447,6 +447,7 @@ namespace ZeldaFullEditor
                 {
                     MessageBox.Show("Failed to save, there was an error saving the custom collision rectangles", "Bad Error", MessageBoxButtons.OK);
                     ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+
                     return;
                 }
             }
