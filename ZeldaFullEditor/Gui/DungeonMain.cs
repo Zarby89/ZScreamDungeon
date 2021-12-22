@@ -5144,5 +5144,10 @@ namespace ZeldaFullEditor
             ExpandedManagement em = new ExpandedManagement();
             em.ShowDialog();
         }
+
+        private void clearAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            activeScene.clearCustomCollisionMap();
+        }
     }
 }
