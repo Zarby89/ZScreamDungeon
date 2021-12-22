@@ -1713,6 +1713,7 @@ namespace ZeldaFullEditor
                     {
                         mainForm.nothingselectedcontextMenu.Items[0].Visible = false;
                         mainForm.nothingselectedcontextMenu.Items[2].Visible = false;
+                        mainForm.nothingselectedcontextMenu.Items[3].Visible = false;
                         mainForm.singleselectedcontextMenu.Items[0].Visible = false;
                         mainForm.groupselectedcontextMenu.Items[0].Visible = false;
                     }
@@ -1721,6 +1722,7 @@ namespace ZeldaFullEditor
                     {
                         mainForm.nothingselectedcontextMenu.Items[0].Visible = false;
                         mainForm.nothingselectedcontextMenu.Items[2].Visible = false;
+                        mainForm.nothingselectedcontextMenu.Items[3].Visible = false;
                         mainForm.singleselectedcontextMenu.Items[0].Visible = false;
                         mainForm.groupselectedcontextMenu.Items[0].Visible = false;
                     }
@@ -1728,6 +1730,7 @@ namespace ZeldaFullEditor
                     if (selectedMode == ObjectMode.Chestmode)
                     {
                         mainForm.nothingselectedcontextMenu.Items[2].Visible = true;
+                        mainForm.nothingselectedcontextMenu.Items[3].Visible = false;
                     }
 
                     if (selectedMode == ObjectMode.CollisionMap)
@@ -1735,6 +1738,7 @@ namespace ZeldaFullEditor
                         mainForm.nothingselectedcontextMenu.Items[0].Visible = false;
                         mainForm.nothingselectedcontextMenu.Items[1].Visible = false;
                         mainForm.nothingselectedcontextMenu.Items[2].Visible = true;
+                        mainForm.nothingselectedcontextMenu.Items[3].Visible = true;
                     }
 
                     if (room.selectedObject.Count == 0)
@@ -1894,6 +1898,24 @@ namespace ZeldaFullEditor
             }
         }
 
+        public void clearCustomCollisionMap()
+        {
+            if (room == null)
+            {
+                return;
+            }
+
+            int i = 0;
+            while (i < 4096)
+            {
+                room.collisionMap[i] = 0xFF;
+                i++;
+            }
+
+            need_refresh = true;
+            Refresh();
+        }
+        
         public void clearUselessRoomStuff(Room r)
         {
             //TODO: Add something here?
