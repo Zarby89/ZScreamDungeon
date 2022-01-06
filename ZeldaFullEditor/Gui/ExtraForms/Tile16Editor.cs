@@ -30,6 +30,9 @@ namespace ZeldaFullEditor.Gui
             panel1.VerticalScroll.LargeChange = 32;
         }
 
+        /// <summary>
+        /// Called every frame? updates the appearance of the tile 8 window
+        /// </summary>
         public unsafe void updateTiles()
         {
             byte p;
@@ -152,7 +155,6 @@ namespace ZeldaFullEditor.Gui
             }
             else
             {
-
                 tileTypeBox.Enabled = true;
                 tileTypeBox.SelectedIndex = tempTiletype[tile8selected];
             }
@@ -199,13 +201,25 @@ namespace ZeldaFullEditor.Gui
             //e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 0, 32, 64, 32);
         }
 
+        /// <summary>
+        /// Called when the tile 8 window is single left clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pictureboxTile8_MouseDown(object sender, MouseEventArgs e)
         {
             int tid = (e.X / 16) + ((e.Y / 16) * 16);
             tileUpDown.Text = tid.ToString("X2");
             pictureboxTile8.Refresh();
+
+            updateTiles();
         }
 
+        /// <summary>
+        /// Called when the tile 16 window is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pictureboxTile16_MouseDown(object sender, MouseEventArgs e)
         {
             int offset = 0;
@@ -224,6 +238,7 @@ namespace ZeldaFullEditor.Gui
             int t8y = (e.Y / 16) & 0x01;
             int t8i = 0;
 
+            //when left clicked, draw the tile 8 selected in the corrisponding quadrant of the tile 16
             if (e.Button == MouseButtons.Left)
             {
                 TileInfo t = new TileInfo(tile8selected, (byte)paletteUpDown.Value, (ushort)(mirrorYCheckbox.Checked ? 1 : 0), (ushort)(mirrorXCheckbox.Checked ? 1 : 0), (ushort)(inFrontCheckbox.Checked ? 1 : 0));
@@ -247,6 +262,7 @@ namespace ZeldaFullEditor.Gui
                 BuildTiles16Gfx();
                 pictureboxTile16.Refresh();
             }
+            //when right clicked, get the select the tile 8 from the corrisponding quadrant of the tile 16
             else
             {
                 if (t8x == 0 && t8y == 0)
