@@ -4553,6 +4553,7 @@ namespace ZeldaFullEditor
                         }
                     }
 
+                    /* removed by Jared_Brian_. incomplete code for transfering tile8 from .zmd file, causes save to fail later on.
                     overworldEditor.overworld.tiles16.Clear();
                     for (int i = 0; i < 3600; i++)
                     {
@@ -4566,8 +4567,9 @@ namespace ZeldaFullEditor
                             (mapArrayData[p + 6] << 48) |
                             (mapArrayData[p + 7] << 56));
                         p += 8;
-                        //overworldEditor.overworld.tiles16.Add(new Tile16(v));
-                    }
+
+                        overworldEditor.overworld.tiles16.Add(new Tile16(v));
+                    }*/
 
                     fileStreamMap.Close();
                 }
