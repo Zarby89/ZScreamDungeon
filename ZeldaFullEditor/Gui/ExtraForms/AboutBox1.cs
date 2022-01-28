@@ -20,5 +20,10 @@ namespace ZeldaFullEditor
         {
             //TODO: Add something here?
         }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
