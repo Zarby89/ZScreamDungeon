@@ -138,7 +138,6 @@ namespace ZeldaFullEditor
         {
             //TODO: Add something here?
         }
-
         public virtual void UpdateSelectedZ(int i)
         {
             //TODO: Add something here?

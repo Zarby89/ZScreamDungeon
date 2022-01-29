@@ -856,7 +856,7 @@ namespace ZeldaFullEditor
             this.bringToFrontToolStripMenuItem2.Name = "bringToFrontToolStripMenuItem2";
             this.bringToFrontToolStripMenuItem2.Size = new System.Drawing.Size(152, 22);
             this.bringToFrontToolStripMenuItem2.Text = "Bring to Front";
-            this.bringToFrontToolStripMenuItem2.Click += new System.EventHandler(this.moveDownToolStripMenuItem_Click);
+            this.bringToFrontToolStripMenuItem2.Click += new System.EventHandler(this.SendSelectedToFront);
             // 
             // increaseZBy1ToolStripMenuItem
             // 
@@ -879,7 +879,7 @@ namespace ZeldaFullEditor
             this.sendToBackToolStripMenuItem2.Name = "sendToBackToolStripMenuItem2";
             this.sendToBackToolStripMenuItem2.Size = new System.Drawing.Size(156, 22);
             this.sendToBackToolStripMenuItem2.Text = "Send to Back";
-            this.sendToBackToolStripMenuItem2.Click += new System.EventHandler(this.bringToBackToolStripMenuItem_Click);
+            this.sendToBackToolStripMenuItem2.Click += new System.EventHandler(this.SendSelectedToBack);
             // 
             // decreaseZBy1ToolStripMenuItem
             // 
@@ -973,14 +973,14 @@ namespace ZeldaFullEditor
             this.bringToFrontToolStripMenuItem1.Name = "bringToFrontToolStripMenuItem1";
             this.bringToFrontToolStripMenuItem1.Size = new System.Drawing.Size(173, 22);
             this.bringToFrontToolStripMenuItem1.Text = "Bring to Front";
-            this.bringToFrontToolStripMenuItem1.Click += new System.EventHandler(this.moveDownToolStripMenuItem_Click);
+            this.bringToFrontToolStripMenuItem1.Click += new System.EventHandler(this.SendSelectedToFront);
             // 
             // sendToBackToolStripMenuItem1
             // 
             this.sendToBackToolStripMenuItem1.Name = "sendToBackToolStripMenuItem1";
             this.sendToBackToolStripMenuItem1.Size = new System.Drawing.Size(173, 22);
             this.sendToBackToolStripMenuItem1.Text = "Send to Back";
-            this.sendToBackToolStripMenuItem1.Click += new System.EventHandler(this.bringToBackToolStripMenuItem_Click);
+            this.sendToBackToolStripMenuItem1.Click += new System.EventHandler(this.SendSelectedToBack);
             // 
             // toolStripMenuItem4
             // 
@@ -3142,7 +3142,7 @@ namespace ZeldaFullEditor
             this.moveFrontToolStripMenuItem.Name = "moveFrontToolStripMenuItem";
             this.moveFrontToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.moveFrontToolStripMenuItem.Text = "Bring to Front";
-            this.moveFrontToolStripMenuItem.Click += new System.EventHandler(this.moveDownToolStripMenuItem_Click);
+            this.moveFrontToolStripMenuItem.Click += new System.EventHandler(this.SendSelectedToFront);
             // 
             // bringToBackToolStripMenuItem
             // 
@@ -3150,7 +3150,7 @@ namespace ZeldaFullEditor
             this.bringToBackToolStripMenuItem.Name = "bringToBackToolStripMenuItem";
             this.bringToBackToolStripMenuItem.Size = new System.Drawing.Size(240, 22);
             this.bringToBackToolStripMenuItem.Text = "Send to Back";
-            this.bringToBackToolStripMenuItem.Click += new System.EventHandler(this.bringToBackToolStripMenuItem_Click);
+            this.bringToBackToolStripMenuItem.Click += new System.EventHandler(this.SendSelectedToBack);
             // 
             // toolStripSeparator7
             // 

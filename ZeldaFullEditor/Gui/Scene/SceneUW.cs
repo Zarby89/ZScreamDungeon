@@ -2766,33 +2766,6 @@ namespace ZeldaFullEditor
             Refresh();
         }
 
-        public override void SendSelectedToBack()
-        {
-            if (room.selectedObject.Count > 0)
-            {
-                if (room.selectedObject[0] is Room_Object)
-                {
-                    foreach (Room_Object o in room.selectedObject)
-                    {
-                        for (int i = 0; i < room.tilesObjects.Count; i++)
-                        {
-
-                            if (o == room.tilesObjects[i])
-                            {
-                                room.tilesObjects.RemoveAt(i);
-                                room.tilesObjects.Insert(0, o);
-                                break;
-                            }
-                        }
-                    }
-                }
-
-                DrawRoom();
-                Refresh();
-                mouse_down = false;
-            }
-        }
-
         public override void DecreaseSelectedZ()
         {
             if (room.selectedObject.Count > 0)

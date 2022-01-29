@@ -1416,9 +1416,11 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void moveDownToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Sends an object to the front in the list when using one of the 3 "send to front" options
+        /// </summary>
+        private void SendSelectedToFront(object sender, EventArgs e)
         {
-            //Bring to front -_-
             activeScene.mouse_down = false;
             if (activeScene.room.selectedObject.Count > 0)
             {
@@ -1432,6 +1434,66 @@ namespace ZeldaFullEditor
                             {
                                 activeScene.room.tilesObjects.RemoveAt(i);
                                 activeScene.room.tilesObjects.Add(o);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (activeScene.room.selectedObject[0] is Sprite)
+                {
+                    foreach (Sprite s in activeScene.room.selectedObject)
+                    {
+                        for (int i = 0; i < activeScene.room.sprites.Count; i++)
+                        {
+                            if (s == activeScene.room.sprites[i])
+                            {
+                                activeScene.room.sprites.RemoveAt(i);
+                                activeScene.room.sprites.Add(s);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                activeScene.DrawRoom();
+                activeScene.Refresh();
+                activeScene.mouse_down = false;
+            }
+        }
+
+        /// <summary>
+        /// Sends an object to the back in the list when using one of the 3 "send to back" options
+        /// </summary>
+        public void SendSelectedToBack(object sender, EventArgs e)
+        {
+            activeScene.mouse_down = false;
+            if (activeScene.room.selectedObject.Count > 0)
+            {
+                if (activeScene.room.selectedObject[0] is Room_Object)
+                {
+                    foreach (Room_Object o in activeScene.room.selectedObject)
+                    {
+                        for (int i = 0; i < activeScene.room.tilesObjects.Count; i++)
+                        {
+                            if (o == activeScene.room.tilesObjects[i])
+                            {
+                                activeScene.room.tilesObjects.RemoveAt(i);
+                                activeScene.room.tilesObjects.Insert(0, o);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (activeScene.room.selectedObject[0] is Sprite)
+                {
+                    foreach (Sprite s in activeScene.room.selectedObject)
+                    {
+                        for (int i = 0; i < activeScene.room.sprites.Count; i++)
+                        {
+                            if (s == activeScene.room.sprites[i])
+                            {
+                                activeScene.room.sprites.RemoveAt(i);
+                                activeScene.room.sprites.Insert(0, s);
                                 break;
                             }
                         }
@@ -1459,12 +1521,6 @@ namespace ZeldaFullEditor
         {
             activeScene.mouse_down = false;
             activeScene.insertNew();
-        }
-
-        private void bringToBackToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            activeScene.mouse_down = false;
-            activeScene.SendSelectedToBack();
         }
 
         private void sendToBg1ToolStripMenuItem_Click(object sender, EventArgs e)
