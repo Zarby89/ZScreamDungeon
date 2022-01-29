@@ -243,16 +243,16 @@ namespace ZeldaFullEditor.Gui
             {
                 e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
                 e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-                e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new Rectangle(0, 0, 128, 4000), new Rectangle(0, 0, 128, 4000), GraphicsUnit.Pixel);
-                e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new Rectangle(128, 0, 128, 4000), new Rectangle(0, 4000, 128, 4000), GraphicsUnit.Pixel);
+                e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new Rectangle(0, 0, 128, 4096), new Rectangle(0, 0, 128, 4096), GraphicsUnit.Pixel);
+                e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new Rectangle(128, 0, 128, 4096), new Rectangle(0, 4096, 128, 4096), GraphicsUnit.Pixel);
                 
                 if (scene.selectedTile.Length > 0)
                 {
                     int x = (scene.selectedTile[0] % 8) * 16;
                     int y = ((scene.selectedTile[0] / 8)) * 16;
-                    if (scene.selectedTile[0] >= 2000)
+                    if (scene.selectedTile[0] >= 2048)
                     {
-                        y -= 4000;
+                        y -= 4096;
                         x += 128;
                     }
 
@@ -260,7 +260,7 @@ namespace ZeldaFullEditor.Gui
                     selectedTileLabel.Text = "Selected Tile : " + scene.selectedTile[0].ToString("X4");
                 }
 
-                e.Graphics.FillRectangle(Brushes.Black, new RectangleF(128, 3600-96, 128, 96));
+                e.Graphics.FillRectangle(Brushes.Black, new RectangleF(128, 3408, 128, 688));
             }
         }
 
@@ -269,7 +269,7 @@ namespace ZeldaFullEditor.Gui
             scene.selectedTileSizeX = 1;
             if (e.X > 128)
             {
-                scene.selectedTile = new ushort[1] { (ushort)(((e.X - 128) / 16) + ((e.Y / 16) * 8) + 2000) };
+                scene.selectedTile = new ushort[1] { (ushort)(((e.X - 128) / 16) + ((e.Y / 16) * 8) + 2048) };
                 if (scene.selectedTile[0] > 3751)
                 {
                     scene.selectedTile[0] = 3751;
@@ -347,11 +347,6 @@ namespace ZeldaFullEditor.Gui
         private void redoButton_Click(object sender, EventArgs e)
         {
             scene.mainForm.redoButton_Click(sender, e);
-        }
-
-        private void tilePictureBox_Click(object sender, EventArgs e)
-        {
-            //TODO: Add something here?
         }
 
         private void refreshToolStrip_Click(object sender, EventArgs e)
