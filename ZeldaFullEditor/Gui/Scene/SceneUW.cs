@@ -2875,5 +2875,79 @@ namespace ZeldaFullEditor
 
             mainForm.propertiesChangedFromForm = false;
         }
+
+        public void updateEntranceInfo(DungeonMain mainForm)
+        {
+            mainForm.entranceProperty_room.Text = mainForm.selectedEntrance.Room.ToString("X2");
+            mainForm.entranceProperty_floor.Text = mainForm.selectedEntrance.Floor.ToString("X2");
+            mainForm.entranceProperty_dungeon.Text = mainForm.selectedEntrance.Dungeon.ToString("X2");
+            mainForm.entranceProperty_music.Text = mainForm.selectedEntrance.Music.ToString("X2");
+            mainForm.entranceProperty_blockset.Text = mainForm.selectedEntrance.Blockset.ToString("X2");
+            mainForm.entranceProperty_exit.Text = mainForm.selectedEntrance.Exit.ToString("X2");
+
+            //Jared_Brian_ removed because its not needed right now but may be later
+            /*
+            mainForm.entranceProperty_bg.Checked = false;
+            if ((mainForm.selectedEntrance.Ladderbg & 0x10) == 0x10)
+            {
+                mainForm.entranceProperty_bg.Checked = true;
+            }*/
+
+            mainForm.entranceProperty_scrollx.Text = mainForm.selectedEntrance.XScroll.ToString("X4");
+            mainForm.entranceProperty_scrolly.Text = mainForm.selectedEntrance.YScroll.ToString("X4");
+            mainForm.entranceProperty_xpos.Text = mainForm.selectedEntrance.XPosition.ToString("X4");
+            mainForm.entranceProperty_ypos.Text = mainForm.selectedEntrance.YPosition.ToString("X4");
+            mainForm.entranceProperty_camx.Text = mainForm.selectedEntrance.XCamera.ToString("X4");
+            mainForm.entranceProperty_camy.Text = mainForm.selectedEntrance.YCamera.ToString("X4");
+
+            int p = (mainForm.selectedEntrance.Exit & 0x7FFF) >> 1;
+            mainForm.doorxTextbox.Text = (p % 64).ToString("X2");
+            mainForm.dooryTextbox.Text = (p >> 6).ToString("X2");
+
+            //Jared_Brian_ removed because its not needed right now but may be later
+            /*
+            mainForm.entranceProperty_vscroll.Checked = false;
+            mainForm.entranceProperty_hscroll.Checked = false;
+            mainForm.entranceProperty_quadbr.Checked = false;
+            mainForm.entranceProperty_quadbl.Checked = false;
+            mainForm.entranceProperty_quadtl.Checked = false;
+            mainForm.entranceProperty_quadtr.Checked = false;
+            
+            if ((mainForm.selectedEntrance.Scrolling & 0x20) == 0x20)
+            {
+                mainForm.entranceProperty_hscroll.Checked = true;
+            }
+
+            if ((mainForm.selectedEntrance.Scrolling & 0x02) == 0x02)
+            {
+                mainForm.entranceProperty_vscroll.Checked = true;
+            }
+
+            if (mainForm.selectedEntrance.Scrollquadrant == 0x12) //bottom right
+            {
+                mainForm.entranceProperty_quadbr.Checked = true;
+            }
+            else if (mainForm.selectedEntrance.Scrollquadrant == 0x02) //bottom left
+            {
+                mainForm.entranceProperty_quadbl.Checked = true;
+            }
+            else if (mainForm.selectedEntrance.Scrollquadrant == 0x00) //top left
+            {
+                mainForm.entranceProperty_quadtl.Checked = true;
+            }
+            else if (mainForm.selectedEntrance.Scrollquadrant == 0x10) //top right
+            {
+                mainForm.entranceProperty_quadtr.Checked = true;
+            }*/
+
+            mainForm.entranceProperty_FU.Text = mainForm.selectedEntrance.scrolledge_FU.ToString("X2");
+            mainForm.entranceProperty_HU.Text = mainForm.selectedEntrance.scrolledge_HU.ToString("X2");
+            mainForm.entranceProperty_HD.Text = mainForm.selectedEntrance.scrolledge_HD.ToString("X2");
+            mainForm.entranceProperty_FD.Text = mainForm.selectedEntrance.scrolledge_FD.ToString("X2");
+            mainForm.entranceProperty_FL.Text = mainForm.selectedEntrance.scrolledge_FL.ToString("X2");
+            mainForm.entranceProperty_FR.Text = mainForm.selectedEntrance.scrolledge_FR.ToString("X2");
+            mainForm.entranceProperty_HL.Text = mainForm.selectedEntrance.scrolledge_HL.ToString("X2");
+            mainForm.entranceProperty_HR.Text = mainForm.selectedEntrance.scrolledge_HR.ToString("X2");
+        }
     }
 }
