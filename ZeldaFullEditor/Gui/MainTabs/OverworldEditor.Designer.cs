@@ -73,6 +73,7 @@
             this.objCombobox = new System.Windows.Forms.ComboBox();
             this.objinfoLabel = new System.Windows.Forms.Label();
             this.mapGroupbox = new System.Windows.Forms.GroupBox();
+            this.largemapCheckbox = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.musicButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -90,7 +91,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-            this.largemapCheckbox = new System.Windows.Forms.CheckBox();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -446,10 +446,9 @@
             // 
             this.tilePictureBox.Location = new System.Drawing.Point(3, 3);
             this.tilePictureBox.Name = "tilePictureBox";
-            this.tilePictureBox.Size = new System.Drawing.Size(256, 3600);
+            this.tilePictureBox.Size = new System.Drawing.Size(256, 4096);
             this.tilePictureBox.TabIndex = 0;
             this.tilePictureBox.TabStop = false;
-            this.tilePictureBox.Click += new System.EventHandler(this.tilePictureBox_Click);
             this.tilePictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.tilePictureBox_Paint);
             this.tilePictureBox.DoubleClick += new System.EventHandler(this.tilePictureBox_DoubleClick);
             this.tilePictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tilePictureBox_MouseClick);
@@ -617,6 +616,16 @@
             this.mapGroupbox.TabStop = false;
             this.mapGroupbox.Text = "Selected Map - ";
             // 
+            // largemapCheckbox
+            // 
+            this.largemapCheckbox.AutoSize = true;
+            this.largemapCheckbox.Location = new System.Drawing.Point(331, 8);
+            this.largemapCheckbox.Name = "largemapCheckbox";
+            this.largemapCheckbox.Size = new System.Drawing.Size(77, 17);
+            this.largemapCheckbox.TabIndex = 14;
+            this.largemapCheckbox.Text = "Large Map";
+            this.largemapCheckbox.UseVisualStyleBackColor = true;
+            // 
             // button1
             // 
             this.button1.Image = ((System.Drawing.Image)(resources.GetObject("button1.Image")));
@@ -779,16 +788,6 @@
             this.previewTextPicturebox.TabStop = false;
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
-            // 
-            // largemapCheckbox
-            // 
-            this.largemapCheckbox.AutoSize = true;
-            this.largemapCheckbox.Location = new System.Drawing.Point(331, 8);
-            this.largemapCheckbox.Name = "largemapCheckbox";
-            this.largemapCheckbox.Size = new System.Drawing.Size(77, 17);
-            this.largemapCheckbox.TabIndex = 14;
-            this.largemapCheckbox.Text = "Large Map";
-            this.largemapCheckbox.UseVisualStyleBackColor = true;
             // 
             // OverworldEditor
             // 
