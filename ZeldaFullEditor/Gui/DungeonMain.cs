@@ -3077,9 +3077,12 @@ namespace ZeldaFullEditor
         {
             if (!activeScene.updating_info)
             {
-                if (activeScene.room.selectedObject[0] is Sprite)
+                if (activeScene.room.selectedObject.Count != 0)
                 {
-                    (activeScene.room.selectedObject[0] as Sprite).subtype = (byte)spritesubtypeUpDown.Value;
+                    if (activeScene.room.selectedObject[0] is Sprite)
+                    {
+                        (activeScene.room.selectedObject[0] as Sprite).subtype = (byte)spritesubtypeUpDown.Value;
+                    }
                 }
 
                 Console.WriteLine("WTF!");
