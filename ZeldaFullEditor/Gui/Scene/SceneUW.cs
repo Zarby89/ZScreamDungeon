@@ -15,6 +15,7 @@ using static ZeldaFullEditor.DungeonMain;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Threading.Tasks;
+using System.Globalization;
 
 namespace ZeldaFullEditor
 {
@@ -1250,16 +1251,16 @@ namespace ZeldaFullEditor
                         {
                             if (isMouseCollidingWith(o, e))
                             {
-                                string warpid = Interaction.InputBox("New Warp Room", "Room Id", room.staircase_rooms[doorCount].ToString());
+                                string warpid = Interaction.InputBox("New Warp Room", "Room Id", room.staircase_rooms[doorCount].ToString("X2"));
                                 byte b;
-                                if (byte.TryParse(warpid, out b))
+                                if (byte.TryParse(warpid, NumberStyles.HexNumber, null, out b))
                                 {
                                     room.staircase_rooms[doorCount] = b;
                                     updateRoomInfos(mainForm);
                                 }
                                 else
                                 {
-                                    MessageBox.Show("The value need to be a number between 0-256");
+                                    MessageBox.Show("The value need to be a number between 0-FF");
                                 }
                             }
 
@@ -1269,16 +1270,16 @@ namespace ZeldaFullEditor
                         {
                             if (isMouseCollidingWith(o, e))
                             {
-                                string warpid = Interaction.InputBox("New Warp Room", "Room Id", room.holewarp.ToString());
+                                string warpid = Interaction.InputBox("New Warp Room", "Room Id", room.holewarp.ToString("X2"));
                                 byte b;
-                                if (byte.TryParse(warpid, out b))
+                                if (byte.TryParse(warpid, NumberStyles.HexNumber, null, out b))
                                 {
                                     room.holewarp = b;
                                     updateRoomInfos(mainForm);
                                 }
                                 else
                                 {
-                                    MessageBox.Show("The value need to be a number between 0-256");
+                                    MessageBox.Show("The value need to be a number between 0-FF");
                                 }
                             }
                         }
