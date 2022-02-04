@@ -150,13 +150,49 @@ namespace ZeldaFullEditor
             ROMStructure.loadDefaultProject();
             mapPicturebox.Image = new Bitmap(256, 304);
             thumbnailBox.Size = new Size(256, 256);
-            roomProperty_floor1.MouseWheel += RoomProperty_MouseWheel;
-            roomProperty_floor2.MouseWheel += RoomProperty_MouseWheel;
-            roomProperty_spriteset.MouseWheel += RoomProperty_MouseWheel;
-            roomProperty_blockset.MouseWheel += RoomProperty_MouseWheel;
-            roomProperty_palette.MouseWheel += RoomProperty_MouseWheel;
-            roomProperty_layout.MouseWheel += RoomProperty_MouseWheel;
 
+            //add the ability to use the scroll wheel to the room properties
+            roomProperty_floor1.MouseWheel += roomProperties_MouseWheel;
+            roomProperty_floor2.MouseWheel += roomProperties_MouseWheel;
+            roomProperty_spriteset.MouseWheel += roomProperties_MouseWheel;
+            roomProperty_blockset.MouseWheel += roomProperties_MouseWheel;
+            roomProperty_palette.MouseWheel += roomProperties_MouseWheel;
+            roomProperty_layout.MouseWheel += roomProperties_MouseWheel;
+            roomProperty_msgid.MouseWheel += roomProperties_MouseWheel;
+            roomProperty_hole.MouseWheel += roomProperties_MouseWheel;
+            roomProperty_stair1.MouseWheel += roomProperties_MouseWheel;
+            roomProperty_stair2.MouseWheel += roomProperties_MouseWheel;
+            roomProperty_stair3.MouseWheel += roomProperties_MouseWheel;
+            roomProperty_stair4.MouseWheel += roomProperties_MouseWheel;
+
+            //add the ability to use the scroll wheel to the entrance properties
+            entranceProperty_room.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_floor.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_dungeon.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_music.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_blockset.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_exit.MouseWheel += entranceProperties_MouseWheel;
+
+            entranceProperty_scrollx.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_scrolly.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_xpos.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_ypos.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_camx.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_camy.MouseWheel += entranceProperties_MouseWheel;
+
+            doorxTextbox.MouseWheel += entranceProperties_MouseWheel;
+            dooryTextbox.MouseWheel += entranceProperties_MouseWheel;
+
+            entranceProperty_FU.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_HU.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_HD.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_FD.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_FL.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_FR.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_HL.MouseWheel += entranceProperties_MouseWheel;
+            entranceProperty_HR.MouseWheel += entranceProperties_MouseWheel;
+
+            //add the ability to use the scroll wheel to the overworld properties
             overworldEditor.gfxTextbox.MouseWheel += GfxTextbox_MouseWheel;
             overworldEditor.paletteTextbox.MouseWheel += GfxTextbox_MouseWheel;
             overworldEditor.sprpaletteTextbox.MouseWheel += GfxTextbox_MouseWheel;
@@ -1416,9 +1452,11 @@ namespace ZeldaFullEditor
             }
         }
 
-        private void moveDownToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Sends an object to the front in the list when using one of the 3 "send to front" options
+        /// </summary>
+        private void SendSelectedToFront(object sender, EventArgs e)
         {
-            //Bring to front -_-
             activeScene.mouse_down = false;
             if (activeScene.room.selectedObject.Count > 0)
             {
@@ -1432,6 +1470,66 @@ namespace ZeldaFullEditor
                             {
                                 activeScene.room.tilesObjects.RemoveAt(i);
                                 activeScene.room.tilesObjects.Add(o);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (activeScene.room.selectedObject[0] is Sprite)
+                {
+                    foreach (Sprite s in activeScene.room.selectedObject)
+                    {
+                        for (int i = 0; i < activeScene.room.sprites.Count; i++)
+                        {
+                            if (s == activeScene.room.sprites[i])
+                            {
+                                activeScene.room.sprites.RemoveAt(i);
+                                activeScene.room.sprites.Add(s);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                activeScene.DrawRoom();
+                activeScene.Refresh();
+                activeScene.mouse_down = false;
+            }
+        }
+
+        /// <summary>
+        /// Sends an object to the back in the list when using one of the 3 "send to back" options
+        /// </summary>
+        public void SendSelectedToBack(object sender, EventArgs e)
+        {
+            activeScene.mouse_down = false;
+            if (activeScene.room.selectedObject.Count > 0)
+            {
+                if (activeScene.room.selectedObject[0] is Room_Object)
+                {
+                    foreach (Room_Object o in activeScene.room.selectedObject)
+                    {
+                        for (int i = 0; i < activeScene.room.tilesObjects.Count; i++)
+                        {
+                            if (o == activeScene.room.tilesObjects[i])
+                            {
+                                activeScene.room.tilesObjects.RemoveAt(i);
+                                activeScene.room.tilesObjects.Insert(0, o);
+                                break;
+                            }
+                        }
+                    }
+                }
+                else if (activeScene.room.selectedObject[0] is Sprite)
+                {
+                    foreach (Sprite s in activeScene.room.selectedObject)
+                    {
+                        for (int i = 0; i < activeScene.room.sprites.Count; i++)
+                        {
+                            if (s == activeScene.room.sprites[i])
+                            {
+                                activeScene.room.sprites.RemoveAt(i);
+                                activeScene.room.sprites.Insert(0, s);
                                 break;
                             }
                         }
@@ -1459,12 +1557,6 @@ namespace ZeldaFullEditor
         {
             activeScene.mouse_down = false;
             activeScene.insertNew();
-        }
-
-        private void bringToBackToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            activeScene.mouse_down = false;
-            activeScene.SendSelectedToBack();
         }
 
         private void sendToBg1ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1669,6 +1761,9 @@ namespace ZeldaFullEditor
             entranceProperty_blockset.Text = en.Blockset.ToString("X2");
             entranceProperty_music.Text = en.Music.ToString("X2");
 
+            //By Jared_Brian_
+            //commented out because it is unused?
+            /*
             bool b = false;
             bool r = false;
             if ((en.Scrollquadrant & 0xF0) != 0x00)
@@ -1688,11 +1783,12 @@ namespace ZeldaFullEditor
             {
                 b = true; //0xX2
             }
+            */
 
             if ((en.Ladderbg & 0x10) == 0x10)
             {
                 entranceProperty_bg.Checked = true;
-            }
+            }     
 
             if (activeScene.room != null)
             {
@@ -3005,38 +3101,70 @@ namespace ZeldaFullEditor
             chestEditorForm.ShowDialog();
         }
 
-        private void RoomProperty_MouseWheel(object sender, MouseEventArgs e)
+        /// <summary>
+        /// This is called when you use the mouse scroll wheel over a room property text box and will increase or decrease the number value in the text box.
+        /// nees to be added as a propety to a text box, see references. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void roomProperties_MouseWheel(object sender, MouseEventArgs e)
         {
+            //if scrolling up
             if (e.Delta > 0)
             {
                 if (sender == roomProperty_spriteset)
                 {
                     activeScene.room.spriteset++;
                 }
-                if (sender == roomProperty_blockset)
+                else if (sender == roomProperty_blockset)
                 {
                     activeScene.room.blockset++;
                 }
-                if (sender == roomProperty_palette)
+                else if (sender == roomProperty_palette)
                 {
                     if (activeScene.room.palette < 40)
                     {
                         activeScene.room.palette++;
                     }
                 }
-                if (sender == roomProperty_floor1)
+                else if (sender == roomProperty_floor1)
                 {
                     activeScene.room.floor1++;
                 }
-                if (sender == roomProperty_floor2)
+                else if (sender == roomProperty_floor2)
                 {
                     activeScene.room.floor2++;
                 }
-                if (sender == roomProperty_layout)
+                else if (sender == roomProperty_layout)
                 {
                     activeScene.room.layout++;
                 }
+                else if (sender == roomProperty_msgid)
+                {
+                    activeScene.room.messageid++;
+                }
+                else if(sender == roomProperty_hole)
+                {
+                    activeScene.room.holewarp++;  
+                }
+                else if(sender == roomProperty_stair1)
+                {
+                    activeScene.room.staircase1++;
+                }
+                else if (sender == roomProperty_stair2)
+                {
+                    activeScene.room.staircase2++;
+                }
+                else if (sender == roomProperty_stair3)
+                {
+                    activeScene.room.staircase3++;
+                }
+                else if (sender == roomProperty_stair4)
+                {
+                    activeScene.room.staircase4++;
+                }
             }
+            //if scrolling down
             else if (e.Delta < 0)
             {
                 if (sender == roomProperty_spriteset)
@@ -3046,39 +3174,81 @@ namespace ZeldaFullEditor
                         activeScene.room.spriteset--;
                     }
                 }
-                if (sender == roomProperty_blockset)
+                else if (sender == roomProperty_blockset)
                 {
                     if (activeScene.room.blockset > 0)
                     {
                         activeScene.room.blockset--;
                     }
                 }
-                if (sender == roomProperty_palette)
+                else if (sender == roomProperty_palette)
                 {
                     if (activeScene.room.palette > 0)
                     {
                         activeScene.room.palette--;
                     }
                 }
-                if (sender == roomProperty_floor1)
+                else if (sender == roomProperty_floor1)
                 {
                     if (activeScene.room.floor1 > 0)
                     {
                         activeScene.room.floor1--;
                     }
                 }
-                if (sender == roomProperty_floor2)
+                else if (sender == roomProperty_floor2)
                 {
                     if (activeScene.room.floor2 > 0)
                     {
                         activeScene.room.floor2--;
                     }
                 }
-                if (sender == roomProperty_layout)
+                else if (sender == roomProperty_layout)
                 {
                     if (activeScene.room.layout > 0)
                     {
                         activeScene.room.layout--;
+                    }
+                }
+                else if (sender == roomProperty_msgid)
+                {
+                    if(activeScene.room.messageid > 0)
+                    {
+                        activeScene.room.messageid--;
+                    }
+                }
+                else if (sender == roomProperty_hole)
+                {
+                    if(activeScene.room.holewarp > 0)
+                    {
+                        activeScene.room.holewarp--;
+                    }
+                }
+                else if (sender == roomProperty_stair1)
+                {
+                    if (activeScene.room.staircase1 > 0)
+                    {
+                        activeScene.room.staircase1--;
+                    }
+                }
+                else if (sender == roomProperty_stair2)
+                {
+                    if (activeScene.room.staircase2 > 0)
+                    {
+                        activeScene.room.staircase2--;
+                    }
+                }
+                else if (sender == roomProperty_stair3)
+                {
+                    if (activeScene.room.staircase3 > 0)
+                    {
+                        activeScene.room.staircase3--;
+                    }
+                }
+                else if (sender == roomProperty_stair4)
+                {
+                    if (activeScene.room.staircase4 > 0)
+                    {
+                        activeScene.room.staircase4--;
                     }
                 }
             }
@@ -3097,6 +3267,301 @@ namespace ZeldaFullEditor
             {
                 activeScene.room.reloadGfx();
             }
+
+            activeScene.DrawRoom();
+            activeScene.Refresh();
+            ((HandledMouseEventArgs)e).Handled = true;
+        }
+
+
+        /// <summary>
+        /// This is called when you use the mouse scroll wheel over a entrance property text box and will increase or decrease the number value in the text box.
+        /// nees to be added as a propety to a text box, see references. 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void entranceProperties_MouseWheel(object sender, MouseEventArgs e)
+        {
+            //if scrolling up
+            if (e.Delta > 0)
+            {
+                if (sender == entranceProperty_room)
+                {
+                    selectedEntrance.Room++;
+                }
+                else if (sender == entranceProperty_floor)
+                {
+                    selectedEntrance.Floor++;
+                }
+                else if (sender == entranceProperty_dungeon)
+                {
+                    selectedEntrance.Dungeon++;
+                }
+                else if (sender == entranceProperty_music)
+                {
+                    selectedEntrance.Music++;
+                }
+                else if (sender == entranceProperty_blockset)
+                {
+                    selectedEntrance.Blockset++;
+                }
+                else if (sender == entranceProperty_exit)
+                {
+                    selectedEntrance.Exit++;
+                }
+                else if (sender == entranceProperty_scrollx)
+                {
+                    selectedEntrance.XScroll++;
+                }
+                else if (sender == entranceProperty_scrolly)
+                {
+                    selectedEntrance.YScroll++;
+                }
+                else if (sender == entranceProperty_xpos)
+                {
+                    selectedEntrance.XPosition++;
+                }
+                else if (sender == entranceProperty_ypos)
+                {
+                    selectedEntrance.YPosition++;
+                }
+                else if (sender == entranceProperty_camx)
+                {
+                    selectedEntrance.XCamera++;
+                }
+                else if (sender == entranceProperty_camy)
+                {
+                    selectedEntrance.YCamera++;
+                }
+                else if (sender == doorxTextbox)
+                {
+                    int p = (selectedEntrance.Exit & 0x7FFF) >> 1;
+                    int r = (p % 64);
+                    int rr = (p >> 6);
+
+                    r++;
+
+                    p = ((rr << 6) + (r & 0x3F)) << 1;
+                    selectedEntrance.Exit = (short)p;
+                }
+                else if (sender == dooryTextbox)
+                {
+                    int p = (selectedEntrance.Exit & 0x7FFF) >> 1;
+                    int r = (p % 64);
+                    int rr = (p >> 6);
+
+                    rr++;
+
+                    p = ((rr << 6) + (r & 0x3F)) << 1;
+                    selectedEntrance.Exit = (short)p;
+                }
+                else if (sender == entranceProperty_FU)
+                {
+                    selectedEntrance.scrolledge_FU++;
+                }
+                else if (sender == entranceProperty_HU)
+                {
+                    selectedEntrance.scrolledge_HU++;
+                }
+                else if (sender == entranceProperty_HD)
+                {
+                    selectedEntrance.scrolledge_HD++;
+                }
+                else if (sender == entranceProperty_FD)
+                {
+                    selectedEntrance.scrolledge_FD++;
+                }
+                else if (sender == entranceProperty_FL)
+                {
+                    selectedEntrance.scrolledge_FL++;
+                }
+                else if (sender == entranceProperty_FR)
+                {
+                    selectedEntrance.scrolledge_FR++;
+                }
+                else if (sender == entranceProperty_HL)
+                {
+                    selectedEntrance.scrolledge_HL++;
+                }
+                else if (sender == entranceProperty_HR)
+                {
+                    selectedEntrance.scrolledge_HR++;
+                }
+            }
+            //if scrolling down
+            else if (e.Delta < 0)
+            {
+                if (sender == entranceProperty_room)
+                {
+                    if (selectedEntrance.Room > 0)
+                    {
+                        selectedEntrance.Room--;
+                    }
+                }
+                else if (sender == entranceProperty_floor)
+                {
+                    if (selectedEntrance.Floor > 0)
+                    {
+                        selectedEntrance.Floor--;
+                    }
+                }
+                else if (sender == entranceProperty_dungeon)
+                {
+                    if (selectedEntrance.Dungeon > 0)
+                    {
+                        selectedEntrance.Dungeon--;
+                    }
+                }
+                else if (sender == entranceProperty_music)
+                {
+                    if (selectedEntrance.Music > 0)
+                    {
+                        selectedEntrance.Music--;
+                    }
+                }
+                else if (sender == entranceProperty_blockset)
+                {
+                    if (selectedEntrance.Blockset > 0)
+                    {
+                        selectedEntrance.Blockset--;
+                    }
+                }
+                else if (sender == entranceProperty_exit)
+                {
+                    if (selectedEntrance.Exit > 0)
+                    {
+                        selectedEntrance.Exit--;
+                    }
+                }
+                else if (sender == entranceProperty_scrollx)
+                {
+                    if (selectedEntrance.XScroll > 0)
+                    {
+                        selectedEntrance.XScroll--;
+                    }
+                }
+                else if (sender == entranceProperty_scrolly)
+                {
+                    if (selectedEntrance.YScroll > 0)
+                    {
+                        selectedEntrance.YScroll--;
+                    }
+                }
+                else if (sender == entranceProperty_xpos)
+                {
+                    if (selectedEntrance.XPosition > 0)
+                    {
+                        selectedEntrance.XPosition--;
+                    }
+                }
+                else if (sender == entranceProperty_ypos)
+                {
+                    if (selectedEntrance.YPosition > 0)
+                    {
+                        selectedEntrance.YPosition--;
+                    }
+                }
+                else if (sender == entranceProperty_camx)
+                {
+                    if (selectedEntrance.XCamera > 0)
+                    {
+                        selectedEntrance.XCamera--;
+                    }
+                }
+                else if (sender == entranceProperty_camy)
+                {
+                    if (selectedEntrance.YCamera > 0)
+                    {
+                        selectedEntrance.YCamera--;
+                    }
+                }
+                else if (sender == doorxTextbox)
+                {
+                    int p = (selectedEntrance.Exit & 0x7FFF) >> 1;
+                    int r = (p % 64);
+                    int rr = (p >> 6);
+
+                    if(r > 0)
+                    {
+                        r--;
+                    }
+
+                    p = ((rr << 6) + (r & 0x3F)) << 1;
+                    selectedEntrance.Exit = (short)p;
+                }
+                else if (sender == dooryTextbox)
+                {
+                    int p = (selectedEntrance.Exit & 0x7FFF) >> 1;
+                    int r = (p % 64);
+                    int rr = (p >> 6);
+
+                    if(rr > 0)
+                    {
+                        rr--;
+                    }
+
+                    p = ((rr << 6) + (r & 0x3F)) << 1;
+                    selectedEntrance.Exit = (short)p;
+                }
+                else if (sender == entranceProperty_FU)
+                {
+                    if (selectedEntrance.scrolledge_FU > 0)
+                    {
+                        selectedEntrance.scrolledge_FU--;
+                    }
+                }
+                else if (sender == entranceProperty_HU)
+                {
+                    if (selectedEntrance.scrolledge_HU > 0)
+                    {
+                        selectedEntrance.scrolledge_HU--;
+                    }
+                }
+                else if (sender == entranceProperty_HD)
+                {
+                    if (selectedEntrance.scrolledge_HD > 0)
+                    {
+                        selectedEntrance.scrolledge_HD--;
+                    }
+                }
+                else if (sender == entranceProperty_FD)
+                {
+                    if (selectedEntrance.scrolledge_FD > 0)
+                    {
+                        selectedEntrance.scrolledge_FD--;
+                    }
+                }
+                else if (sender == entranceProperty_FL)
+                {
+                    if (selectedEntrance.scrolledge_FL > 0)
+                    {
+                        selectedEntrance.scrolledge_FL--;
+                    }
+                }
+                else if (sender == entranceProperty_FR)
+                {
+                    if (selectedEntrance.scrolledge_FR > 0)
+                    {
+                        selectedEntrance.scrolledge_FR--;
+                    }
+                }
+                else if (sender == entranceProperty_HL)
+                {
+                    if (selectedEntrance.scrolledge_HL > 0)
+                    {
+                        selectedEntrance.scrolledge_HL--;
+                    }
+                }
+                else if (sender == entranceProperty_HR)
+                {
+                    if (selectedEntrance.scrolledge_HD > 0)
+                    {
+                        selectedEntrance.scrolledge_HR--;
+                    }
+                }
+            }
+
+            activeScene.updateEntranceInfo(this);
 
             activeScene.DrawRoom();
             activeScene.Refresh();

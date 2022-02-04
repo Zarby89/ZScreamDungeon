@@ -54,8 +54,8 @@ namespace ZeldaFullEditor
         public CollisionKey collision { get; set; }
         public EffectKey effect { get; set; }
 
-        public byte holewarp { get; set; }
-        public byte holewarp_plane { get; set; }
+        private byte _holewarp;
+        private byte _holewarp_plane;
 
         private short _messageid;
 
@@ -136,28 +136,40 @@ namespace ZeldaFullEditor
             set => _messageid = Utils.Clamp(value, 0, 397);
         }
 
+        public byte holewarp 
+        { 
+            get => _holewarp; 
+            set => _holewarp = Utils.Clamp(value, 0, 255); 
+        }
+
         public byte staircase1
         {
             get => staircase_rooms[0];
-            set => staircase_rooms[0] = value;
+            set => staircase_rooms[0] = Utils.Clamp(value, 0, 255);
         }
-        
+
         public byte staircase2
         {
             get => staircase_rooms[1];
-            set => staircase_rooms[1] = value;
+            set => staircase_rooms[1] = Utils.Clamp(value, 0, 255);
         }
-        
+
         public byte staircase3
         {
             get => staircase_rooms[2];
-            set => staircase_rooms[2] = value;
+            set => staircase_rooms[2] = Utils.Clamp(value, 0, 255);
         }
-       
+
         public byte staircase4
         {
             get => staircase_rooms[3];
-            set => staircase_rooms[3] = value;
+            set => staircase_rooms[3] = Utils.Clamp(value, 0, 255);
+        }
+
+        public byte holewarp_plane 
+        { 
+            get => _holewarp_plane; 
+            set => _holewarp_plane = value; 
         }
 
         public byte staircase1Plane
