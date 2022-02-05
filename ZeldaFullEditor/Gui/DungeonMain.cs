@@ -640,7 +640,12 @@ namespace ZeldaFullEditor
             }
             if (saveSettingsArr[14])
             {
-                overworldEditor.scene.SaveTiles();
+                if(overworldEditor.scene.SaveTiles())
+                {
+                    //no need for a message box here because its handeled within the SaveTiles() function itslef.
+                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                    return;
+                }
             }
             if (saveSettingsArr[36])
             {
@@ -5175,19 +5180,30 @@ namespace ZeldaFullEditor
             //TODO: Add something here?
         }
 
+        //Jared_Brian_: changed so that nothing will write to the rom if the SaveTiles() function fails.
+        /// <summary>
+        /// Runs when the save only maps button is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveMapsOnlyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Save s = new Save(DungeonsData.all_rooms, this);
-            overworldEditor.scene.SaveTiles();
-
-            if (s.saveOverworldMaps(overworldEditor.scene) == true)
+            if(overworldEditor.scene.SaveTiles())
             {
-                Console.WriteLine("too many maps Out of bound error");
+                Console.WriteLine("Save Tiles failed.");
             }
+            else
+            {
+                if (s.saveOverworldMaps(overworldEditor.scene) == true)
+                {
+                    Console.WriteLine("too many maps Out of bound error");
+                }
 
-            FileStream fs = new FileStream(projectFilename, FileMode.OpenOrCreate, FileAccess.Write);
-            fs.Write(ROM.DATA, 0, ROM.DATA.Length);
-            fs.Close();
+                FileStream fs = new FileStream(projectFilename, FileMode.OpenOrCreate, FileAccess.Write);
+                fs.Write(ROM.DATA, 0, ROM.DATA.Length);
+                fs.Close();
+            }
         }
 
         private void importRoomToolStripMenuItem_Click(object sender, EventArgs e)

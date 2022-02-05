@@ -675,13 +675,22 @@ namespace ZeldaFullEditor
             }
         }
 
-        public void SaveTiles()
+        /// <summary>
+        /// Creates a map32 tile map and saves the overworld tiles in the rom. 
+        /// </summary>
+        /// <returns>True if saving failed. For example if the unique tile32 limit was passed. </returns>
+        public bool SaveTiles()
         {
             if (!ow.createMap32Tilesmap())
             {
                 ow.Save32Tiles();
                 //ow.savemapstorom();
                 ow.SaveMap16Tiles();
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 
