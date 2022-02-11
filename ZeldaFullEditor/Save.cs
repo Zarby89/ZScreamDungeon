@@ -1368,10 +1368,52 @@ namespace ZeldaFullEditor
                 return true;
             }
 
+
+
+            //TESTING FUNCTION !!! EXPERIMENTAL
+            SaveLargeMaps(scene);
+
+
             return false;
             //Console.WriteLine("Map Pos Length: " + pos.ToString("X6"));
             //Save32Tiles();
         }
+
+        //EXPERIMENTAL FUNCTION !!
+        public bool SaveLargeMaps(SceneOW scene)
+        {
+            for (int i = 0; i < 64; i++)
+            {
+                int yPos = i / 8;
+                int xPos = i % 8;
+                int parentyPos = scene.ow.allmaps[i].parent / 8;
+                int parentxPos = scene.ow.allmaps[i].parent % 8;
+                if (scene.ow.allmaps[i].largeMap) //if it's large then save parent pos * 0x200 otherwise pos * 0x200
+                {
+                    ROM.Write(Constants.overworldMapSize + i, 0x20);
+                    ROM.Write(Constants.overworldMapSizeHighByte + i, 0x03);
+                    ROM.Write(Constants.overworldScreenSize + i, 0x00);
+                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i*2), (parentxPos * 0x200));
+                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i*2), (parentyPos * 0x200));
+
+                }
+                else
+                {
+                    ROM.Write(Constants.overworldMapSize + i, 0x00);
+                    ROM.Write(Constants.overworldMapSizeHighByte + i, 0x01);
+                    ROM.Write(Constants.overworldScreenSize + i, 0x01);
+                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2), (xPos * 0x200));
+                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2), (yPos * 0x200));
+                }
+
+                ROM.Write(Constants.overworldMapParentId, scene.ow.allmaps[i].parent);
+            }
+
+            return false;
+
+        }
+
+
 
         public bool SaveGravestones(SceneOW scene)
         {

@@ -698,7 +698,7 @@ namespace ZeldaFullEditor.Gui
         {
             e.Graphics.SmoothingMode = SmoothingMode.None;
             e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-            e.Graphics.DrawImage(GFX.currentOWgfx16Bitmap,new Rectangle(0,0,512,1024), new Rectangle(0,0,256,512),GraphicsUnit.Pixel);
+            //e.Graphics.DrawImage(GFX.currentOWgfx16Bitmap,new Rectangle(0,0,512,1024), new Rectangle(0,0,256,512),GraphicsUnit.Pixel);
 
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
@@ -782,6 +782,57 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
+        public unsafe void updateSelectedTile16()
+        {
+            byte p;
+            ushort tempTile = (ushort)0;
+
+            tile8selected = tempTile;
+
+            p = (byte)palSelected;
+            byte* destPtr = (byte*)GFX.editingtile16.ToPointer();
+            byte* srcPtr = (byte*)GFX.currentOWgfx16Ptr.ToPointer();
+            Tile16 t = overworld.tiles16[scene.selectedTile[0]];
+            
+            
+            for (var y = 0; y < 8; y++)
+            {
+                for (var x = 0; x < 4; x++)
+                {
+                    CopyTile(x, y, 0, 0, t.tile0.id, p, destPtr, srcPtr, 16);
+                }
+            }
+
+            for (var y = 0; y < 8; y++)
+            {
+                for (var x = 0; x < 4; x++)
+                {
+                    CopyTile(x, y, 8, 0, t.tile1.id, p, destPtr, srcPtr, 16);
+                }
+            }
+
+            for (var y = 0; y < 8; y++)
+            {
+                for (var x = 0; x < 4; x++)
+                {
+                    CopyTile(x, y, 0, 8, t.tile2.id, p, destPtr, srcPtr, 16);
+                }
+            }
+
+            for (var y = 0; y < 8; y++)
+            {
+                for (var x = 0; x < 4; x++)
+                {
+                    CopyTile(x, y, 8, 8, t.tile3.id, p, destPtr, srcPtr, 16);
+                }
+            }
+
+
+            //Bitmap b = new Bitmap(128, 512, 64, System.Drawing.Imaging.PixelFormat.Format4bppIndexed, GFX.currentOWgfx16Ptr);
+            GFX.editort16Bitmap.Palette = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette;
+
+        }
+
         public unsafe void updateTiles()
         {
             byte p;
@@ -842,7 +893,7 @@ namespace ZeldaFullEditor.Gui
             gfx16Pointer[index + r] = (byte)(((pixel >> 4) & 0x0F) + tile.palette * 16);
         }
 
-        private unsafe void CopyTile(int x, int y, int xx, int yy, int id, byte p, byte* gfx16Pointer, byte* gfx8Pointer)
+        private unsafe void CopyTile(int x, int y, int xx, int yy, int id, byte p, byte* gfx16Pointer, byte* gfx8Pointer ,int destwidth = 128)
         {
             int mx = x;
             int my = y;
@@ -859,7 +910,7 @@ namespace ZeldaFullEditor.Gui
             }
 
             int tx = ((id / 16) * 512) + ((id - ((id / 16) * 16)) * 4);
-            var index = xx + yy + (mx * 2) + (my * 128);
+            var index = xx + yy + (mx * 2) + (my * destwidth);
             var pixel = gfx8Pointer[tx + (y * 64) + x];
 
             gfx16Pointer[index + r ^ 1] = (byte)((pixel & 0x0F) + p * 16);
@@ -873,11 +924,12 @@ namespace ZeldaFullEditor.Gui
 
         private void palette8Box_Paint(object sender, PaintEventArgs e)
         {
-            for(int i =0;i<256;i++)
+            for(int i =0;i<128;i++)
             {
                 Color c = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette.Entries[i];
                 e.Graphics.FillRectangle(new SolidBrush(c), new Rectangle((i%16)*16, (i/16)*16, 16, 16));
             }
+            e.Graphics.DrawRectangle(Pens.GreenYellow, new Rectangle(0, palSelected * 16, 256, 16));
         }
 
         private void palette8Box_MouseDown(object sender, MouseEventArgs e)
@@ -994,6 +1046,51 @@ namespace ZeldaFullEditor.Gui
         {
             scene.ow.allmaps[scene.selectedMap].BuildMap();
             tilePictureBox.Refresh();
+        }
+
+        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        {
+            tile8selected = (e.X / 16) + ((e.Y / 16) * 16);
+            pictureBox1.Refresh();
+        }
+
+        private void currentTile8Box_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+            updateSelectedTile16();
+            e.Graphics.DrawImage(GFX.editingtile16Bitmap, new Rectangle(0,0,64,64));
+        }
+
+        private void largemapCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (propertiesChangedFromForm == false)
+            {
+                if (largemapCheckbox.Checked)
+                {
+                    scene.ow.allmaps[scene.selectedMap].largeMap = true;
+                    scene.ow.allmaps[scene.selectedMap+1].largeMap = false;
+                    scene.ow.allmaps[scene.selectedMap+8].largeMap = false;
+                    scene.ow.allmaps[scene.selectedMap+9].largeMap = false;
+                    scene.ow.allmaps[scene.selectedMap].parent = (byte)scene.selectedMap;
+                    scene.ow.allmaps[scene.selectedMap + 1].parent = (byte)scene.selectedMap;
+                    scene.ow.allmaps[scene.selectedMap + 8].parent = (byte)scene.selectedMap;
+                    scene.ow.allmaps[scene.selectedMap + 9].parent = (byte)scene.selectedMap;
+                }
+                else
+                {
+                    scene.ow.allmaps[scene.selectedMap].largeMap = false;
+                    scene.ow.allmaps[scene.selectedMap + 1].largeMap = false;
+                    scene.ow.allmaps[scene.selectedMap + 8].largeMap = false;
+                    scene.ow.allmaps[scene.selectedMap + 9].largeMap = false;
+
+                    scene.ow.allmaps[scene.selectedMap].parent = (byte)scene.selectedMap;
+                    scene.ow.allmaps[scene.selectedMap + 1].parent = (byte)(scene.selectedMap+1);
+                    scene.ow.allmaps[scene.selectedMap + 8].parent = (byte)(scene.selectedMap+8);
+                    scene.ow.allmaps[scene.selectedMap + 9].parent = (byte)(scene.selectedMap+9);
+                }
+                
+            }
         }
     }
 }

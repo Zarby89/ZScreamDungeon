@@ -48,7 +48,7 @@ namespace ZeldaFullEditor.Gui
             {
                 int r = 0;
 
-                if (int.TryParse(alternateTextbox.Text, out r))
+                if (int.TryParse(alternateTextbox.Text, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out r))
                 {
                     chestsdata[listBox1.SelectedIndex].backupitems = (byte)r;
                 }

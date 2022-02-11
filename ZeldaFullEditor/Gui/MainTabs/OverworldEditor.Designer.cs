@@ -62,11 +62,14 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.scratchPicturebox = new System.Windows.Forms.PictureBox();
             this.Tiles8 = new System.Windows.Forms.TabPage();
-            this.priorityCheckbox = new System.Windows.Forms.CheckBox();
-            this.mirrorYCheckbox = new System.Windows.Forms.CheckBox();
-            this.mirrorXCheckbox = new System.Windows.Forms.CheckBox();
-            this.palette8Box = new System.Windows.Forms.PictureBox();
+            this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.priorityCheckbox = new System.Windows.Forms.CheckBox();
+            this.currentTile8Box = new System.Windows.Forms.PictureBox();
+            this.mirrorYCheckbox = new System.Windows.Forms.CheckBox();
+            this.palette8Box = new System.Windows.Forms.PictureBox();
+            this.mirrorXCheckbox = new System.Windows.Forms.CheckBox();
             this.thumbnailBox = new System.Windows.Forms.PictureBox();
             this.owPropertyPanel = new System.Windows.Forms.Panel();
             this.objectGroupbox = new System.Windows.Forms.GroupBox();
@@ -102,8 +105,11 @@
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).BeginInit();
             this.Tiles8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).BeginInit();
+            this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
             this.owPropertyPanel.SuspendLayout();
             this.objectGroupbox.SuspendLayout();
@@ -480,23 +486,52 @@
             // 
             // Tiles8
             // 
-            this.Tiles8.AutoScroll = true;
-            this.Tiles8.Controls.Add(this.priorityCheckbox);
-            this.Tiles8.Controls.Add(this.mirrorYCheckbox);
-            this.Tiles8.Controls.Add(this.mirrorXCheckbox);
-            this.Tiles8.Controls.Add(this.palette8Box);
-            this.Tiles8.Controls.Add(this.pictureBox1);
+            this.Tiles8.Controls.Add(this.panel2);
+            this.Tiles8.Controls.Add(this.panel1);
             this.Tiles8.Location = new System.Drawing.Point(4, 22);
             this.Tiles8.Name = "Tiles8";
             this.Tiles8.Size = new System.Drawing.Size(280, 593);
             this.Tiles8.TabIndex = 2;
-            this.Tiles8.Text = "Tiles8 [X2] (WIP)";
+            this.Tiles8.Text = "Tiles8 [X2]";
             this.Tiles8.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            this.panel2.AutoScroll = true;
+            this.panel2.Controls.Add(this.pictureBox1);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(0, 217);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(280, 376);
+            this.panel2.TabIndex = 3;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(256, 1024);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
+            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.priorityCheckbox);
+            this.panel1.Controls.Add(this.currentTile8Box);
+            this.panel1.Controls.Add(this.mirrorYCheckbox);
+            this.panel1.Controls.Add(this.palette8Box);
+            this.panel1.Controls.Add(this.mirrorXCheckbox);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(280, 217);
+            this.panel1.TabIndex = 2;
             // 
             // priorityCheckbox
             // 
             this.priorityCheckbox.AutoSize = true;
-            this.priorityCheckbox.Location = new System.Drawing.Point(131, 265);
+            this.priorityCheckbox.Location = new System.Drawing.Point(75, 59);
             this.priorityCheckbox.Name = "priorityCheckbox";
             this.priorityCheckbox.Size = new System.Drawing.Size(57, 17);
             this.priorityCheckbox.TabIndex = 5;
@@ -504,10 +539,19 @@
             this.priorityCheckbox.UseVisualStyleBackColor = true;
             this.priorityCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
             // 
+            // currentTile8Box
+            // 
+            this.currentTile8Box.Location = new System.Drawing.Point(5, 13);
+            this.currentTile8Box.Name = "currentTile8Box";
+            this.currentTile8Box.Size = new System.Drawing.Size(64, 64);
+            this.currentTile8Box.TabIndex = 3;
+            this.currentTile8Box.TabStop = false;
+            this.currentTile8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.currentTile8Box_Paint);
+            // 
             // mirrorYCheckbox
             // 
             this.mirrorYCheckbox.AutoSize = true;
-            this.mirrorYCheckbox.Location = new System.Drawing.Point(67, 265);
+            this.mirrorYCheckbox.Location = new System.Drawing.Point(75, 36);
             this.mirrorYCheckbox.Name = "mirrorYCheckbox";
             this.mirrorYCheckbox.Size = new System.Drawing.Size(58, 17);
             this.mirrorYCheckbox.TabIndex = 4;
@@ -515,35 +559,26 @@
             this.mirrorYCheckbox.UseVisualStyleBackColor = true;
             this.mirrorYCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
             // 
+            // palette8Box
+            // 
+            this.palette8Box.Location = new System.Drawing.Point(3, 83);
+            this.palette8Box.Name = "palette8Box";
+            this.palette8Box.Size = new System.Drawing.Size(256, 128);
+            this.palette8Box.TabIndex = 2;
+            this.palette8Box.TabStop = false;
+            this.palette8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.palette8Box_Paint);
+            this.palette8Box.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palette8Box_MouseDown);
+            // 
             // mirrorXCheckbox
             // 
             this.mirrorXCheckbox.AutoSize = true;
-            this.mirrorXCheckbox.Location = new System.Drawing.Point(3, 265);
+            this.mirrorXCheckbox.Location = new System.Drawing.Point(75, 13);
             this.mirrorXCheckbox.Name = "mirrorXCheckbox";
             this.mirrorXCheckbox.Size = new System.Drawing.Size(58, 17);
             this.mirrorXCheckbox.TabIndex = 3;
             this.mirrorXCheckbox.Text = "mirrorX";
             this.mirrorXCheckbox.UseVisualStyleBackColor = true;
             this.mirrorXCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
-            // 
-            // palette8Box
-            // 
-            this.palette8Box.Location = new System.Drawing.Point(3, 3);
-            this.palette8Box.Name = "palette8Box";
-            this.palette8Box.Size = new System.Drawing.Size(256, 256);
-            this.palette8Box.TabIndex = 2;
-            this.palette8Box.TabStop = false;
-            this.palette8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.palette8Box_Paint);
-            this.palette8Box.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palette8Box_MouseDown);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(3, 285);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(256, 1024);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
             // 
             // thumbnailBox
             // 
@@ -625,6 +660,7 @@
             this.largemapCheckbox.TabIndex = 14;
             this.largemapCheckbox.Text = "Large Map";
             this.largemapCheckbox.UseVisualStyleBackColor = true;
+            this.largemapCheckbox.CheckedChanged += new System.EventHandler(this.largemapCheckbox_CheckedChanged);
             // 
             // button1
             // 
@@ -811,9 +847,12 @@
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).EndInit();
             this.Tiles8.ResumeLayout(false);
-            this.Tiles8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).EndInit();
+            this.panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
             this.owPropertyPanel.ResumeLayout(false);
             this.objectGroupbox.ResumeLayout(false);
@@ -862,7 +901,6 @@
         public System.Windows.Forms.TextBox paletteTextbox;
         public System.Windows.Forms.TextBox sprgfxTextbox;
         public System.Windows.Forms.PictureBox tilePictureBox;
-        private System.Windows.Forms.Label selectedTileLabel;
         public System.Windows.Forms.GroupBox objectGroupbox;
         public System.Windows.Forms.Label objinfoLabel;
         public System.Windows.Forms.ComboBox objCombobox;
@@ -891,6 +929,10 @@
         private System.Windows.Forms.ToolStripButton gravestoneButton;
         private System.Windows.Forms.ToolStripButton deleteOverlayToolstripbutton;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.CheckBox largemapCheckbox;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.PictureBox currentTile8Box;
+        public System.Windows.Forms.Label selectedTileLabel;
+        public System.Windows.Forms.CheckBox largemapCheckbox;
     }
 }
