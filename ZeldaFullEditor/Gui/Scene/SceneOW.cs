@@ -172,6 +172,7 @@ namespace ZeldaFullEditor
                     owForm.sprgfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].sprgfx[0].ToString("X2");
                     owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].palette.ToString("X2");
                     owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].sprpalette[0].ToString("X2");
+                    owForm.largemapCheckbox.Checked = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].largeMap;
                 }
                 else
                 {
@@ -179,6 +180,7 @@ namespace ZeldaFullEditor
                     owForm.sprgfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprgfx[ow.gameState].ToString("X2");
                     owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].palette.ToString("X2");
                     owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprpalette[ow.gameState].ToString("X2");
+                    owForm.largemapCheckbox.Checked = ow.allmaps[ow.allmaps[selectedMap].parent].largeMap;
                 }
 
                 owForm.propertiesChangedFromForm = false;

@@ -186,6 +186,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 else if (e.Button == MouseButtons.Right)
                 {
                     scene.selecting = true;
+                    scene.owForm.selectedTileLabel.Text = "Selected Tile : " + scene.selectedTile[0].ToString("X4");
                 }
             }
         }

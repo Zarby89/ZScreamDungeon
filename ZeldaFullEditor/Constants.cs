@@ -82,11 +82,15 @@ namespace ZeldaFullEditor
         //large map that are not == parent id = same position as their parent!
         //eg for X position small maps :
         //0000, 0200, 0400, 0600, 0800, 0A00, 0C00, 0E00
+
         //all Large map would be :
         //0000, 0000, 0400, 0400, 0800, 0800, 0C00, 0C00
 
+        public static int overworldMapParentId = 0x125EC;
+
         public static int overworldTransitionPositionY = 0x128C4; 
         public static int overworldTransitionPositionX = 0x12944;
+
 
         public static int overworldScreenSize = 0x1788D;
 

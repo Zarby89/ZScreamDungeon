@@ -90,9 +90,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(205, 13);
+            this.label2.Size = new System.Drawing.Size(149, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Item Alternate ID (Decimal) (255 for none):";
+            this.label2.Text = "Item Alternate ID FF for none :";
             // 
             // alternateTextbox
             // 
@@ -232,9 +232,9 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(3, 39);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(140, 13);
+            this.label9.Size = new System.Drawing.Size(93, 13);
             this.label9.TabIndex = 7;
-            this.label9.Text = "Item Message ID (Decimal) :";
+            this.label9.Text = "Item Message ID :";
             // 
             // label8
             // 
