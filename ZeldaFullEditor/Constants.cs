@@ -91,8 +91,13 @@ namespace ZeldaFullEditor
         public static int overworldTransitionPositionY = 0x128C4; 
         public static int overworldTransitionPositionX = 0x12944;
 
-
         public static int overworldScreenSize = 0x1788D;
+
+        public static int OverworldScreenSizeForLoading = 0x4C635;
+        public static int OverworldScreenTileMapChangeByScreen = 0x12634;
+
+        public static int transition_target_north = 0x13ee2;
+        public static int transition_target_west = 0x13f62;
 
         //===========================================================================================
         //Overworld Exits/Entrances Variables

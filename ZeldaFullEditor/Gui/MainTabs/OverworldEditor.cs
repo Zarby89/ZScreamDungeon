@@ -1069,9 +1069,9 @@ namespace ZeldaFullEditor.Gui
                 if (largemapCheckbox.Checked)
                 {
                     scene.ow.allmaps[scene.selectedMap].largeMap = true;
-                    scene.ow.allmaps[scene.selectedMap+1].largeMap = false;
-                    scene.ow.allmaps[scene.selectedMap+8].largeMap = false;
-                    scene.ow.allmaps[scene.selectedMap+9].largeMap = false;
+                    scene.ow.allmaps[scene.selectedMap+1].largeMap = true;
+                    scene.ow.allmaps[scene.selectedMap+8].largeMap = true;
+                    scene.ow.allmaps[scene.selectedMap+9].largeMap = true;
                     scene.ow.allmaps[scene.selectedMap].parent = (byte)scene.selectedMap;
                     scene.ow.allmaps[scene.selectedMap + 1].parent = (byte)scene.selectedMap;
                     scene.ow.allmaps[scene.selectedMap + 8].parent = (byte)scene.selectedMap;
@@ -1089,7 +1089,6 @@ namespace ZeldaFullEditor.Gui
                     scene.ow.allmaps[scene.selectedMap + 8].parent = (byte)(scene.selectedMap+8);
                     scene.ow.allmaps[scene.selectedMap + 9].parent = (byte)(scene.selectedMap+9);
                 }
-                
             }
         }
     }
