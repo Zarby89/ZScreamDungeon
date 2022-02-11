@@ -1368,11 +1368,8 @@ namespace ZeldaFullEditor
                 return true;
             }
 
-
-
             //TESTING FUNCTION !!! EXPERIMENTAL
             SaveLargeMaps(scene);
-
 
             return false;
             //Console.WriteLine("Map Pos Length: " + pos.ToString("X6"));
@@ -1380,6 +1377,11 @@ namespace ZeldaFullEditor
         }
 
         //EXPERIMENTAL FUNCTION !!
+        /// <summary>
+        /// Saves the overworld area layout (whether the area is big or small).
+        /// </summary>
+        /// <param name="scene"></param>
+        /// <returns></returns>
         public bool SaveLargeMaps(SceneOW scene)
         {
             for (int i = 0; i < 64; i++)
@@ -1388,32 +1390,54 @@ namespace ZeldaFullEditor
                 int xPos = i % 8;
                 int parentyPos = scene.ow.allmaps[i].parent / 8;
                 int parentxPos = scene.ow.allmaps[i].parent % 8;
+
+                ROM.Write(Constants.overworldMapParentId + i, scene.ow.allmaps[i].parent);
+
                 if (scene.ow.allmaps[i].largeMap) //if it's large then save parent pos * 0x200 otherwise pos * 0x200
                 {
                     ROM.Write(Constants.overworldMapSize + i, 0x20);
                     ROM.Write(Constants.overworldMapSizeHighByte + i, 0x03);
-                    ROM.Write(Constants.overworldScreenSize + i, 0x00);
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i*2), (parentxPos * 0x200));
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i*2), (parentyPos * 0x200));
 
+                    ROM.Write(Constants.overworldScreenSize + i, 0x00);
+                    ROM.Write(Constants.overworldScreenSize + i + 64, 0x00);
+
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i, 0x04);
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 64, 0x04);
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 128, 0x04);
+
+                    ROM.WriteShort(Constants.transition_target_north + i, ((i & 56) << 6) - 224);
+                    ROM.WriteShort(Constants.transition_target_west + i, ((i & 7) << 9) - 256);
+
+                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2), (parentxPos * 0x200));
+                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2), (parentyPos * 0x200));
                 }
                 else
                 {
                     ROM.Write(Constants.overworldMapSize + i, 0x00);
                     ROM.Write(Constants.overworldMapSizeHighByte + i, 0x01);
+
                     ROM.Write(Constants.overworldScreenSize + i, 0x01);
+                    ROM.Write(Constants.overworldScreenSize + i + 64, 0x00);
+
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i, 0x02);
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 64, 0x02);
+                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 128, 0x02);
+
+                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + i, 0x0060);
+                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + i + 128, 0x0040);
+                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + i + 256, 0x1800);
+                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + i + 384, 0x1000);
+
+                    ROM.WriteShort(Constants.transition_target_north + i, ((i & 56) << 6) - 224);
+                    ROM.WriteShort(Constants.transition_target_west + i, ((i & 7) << 9) - 256);
+
                     ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2), (xPos * 0x200));
                     ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2), (yPos * 0x200));
                 }
-
-                ROM.Write(Constants.overworldMapParentId, scene.ow.allmaps[i].parent);
             }
 
             return false;
-
         }
-
-
 
         public bool SaveGravestones(SceneOW scene)
         {
