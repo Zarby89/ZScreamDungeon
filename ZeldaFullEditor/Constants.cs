@@ -93,7 +93,7 @@ namespace ZeldaFullEditor
 
         public static int overworldScreenSize = 0x1788D;
 
-        public static int OverworldScreenSizeForLoading = 0x4C635;
+        public static int OverworldScreenSizeForLoading = 0x4C635; 
         public static int OverworldScreenTileMapChangeByScreen = 0x12634;
 
         public static int transition_target_north = 0x13ee2;
