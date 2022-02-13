@@ -984,7 +984,7 @@ namespace ZeldaFullEditor.Gui
             StringBuilder sb = new StringBuilder();
             foreach (KeyValuePair <ushort,ushort> tiles in alltilesIndexed.OrderBy(key => key.Value))
             {
-                sb.AppendLine("Tile - " + tiles.Key.ToString("D4") + " : " + tiles.Value.ToString("D4"));
+                sb.AppendLine("Tile - " + tiles.Key.ToString("X4") + " : " + tiles.Value.ToString("X4"));
             }
 
             SearchTilesForm stf = new SearchTilesForm();

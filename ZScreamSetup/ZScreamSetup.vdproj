@@ -6472,8 +6472,8 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ZScream"
-        "ProductCode" = "8:{68C39875-B016-4E85-8EBA-496B4EE8A7A5}"
-        "PackageCode" = "8:{7028AB4C-7E17-45C4-ABC6-B22F209187C2}"
+        "ProductCode" = "8:{04065B40-CEB8-4E3B-B368-59C30574C256}"
+        "PackageCode" = "8:{D37752CF-84B1-46C0-9CD8-277CB73221D1}"
         "UpgradeCode" = "8:{ED51CA06-91DF-453A-9EF2-4949388AE9BC}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
