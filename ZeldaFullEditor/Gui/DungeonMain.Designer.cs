@@ -3364,7 +3364,7 @@ namespace ZeldaFullEditor
             // 
             this.runToolStripMenuItem.Name = "runToolStripMenuItem";
             this.runToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F5;
-            this.runToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.runToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.runToolStripMenuItem.Text = "Run";
             this.runToolStripMenuItem.Click += new System.EventHandler(this.runToolStripMenuItem_Click);
             // 
@@ -3372,7 +3372,7 @@ namespace ZeldaFullEditor
             // 
             this.debugRunToolStripMenuItem.Name = "debugRunToolStripMenuItem";
             this.debugRunToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
-            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(184, 22);
+            this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.debugRunToolStripMenuItem.Text = "Debug Run";
             // 
             // naviguateToolStripMenuItem
@@ -4197,7 +4197,7 @@ namespace ZeldaFullEditor
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DungeonMain";
-            this.Text = "ZScream Magic - 1.0.1 Doodoo";
+            this.Text = "ZScream Magic - 1.0.2 Doodoo";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.zscreamForm_FormClosing_1);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.LocationChanged += new System.EventHandler(this.DungeonMain_LocationChanged);
