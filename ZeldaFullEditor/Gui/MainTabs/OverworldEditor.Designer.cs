@@ -660,7 +660,7 @@
             this.largemapCheckbox.TabIndex = 14;
             this.largemapCheckbox.Text = "Large Map";
             this.largemapCheckbox.UseVisualStyleBackColor = true;
-            this.largemapCheckbox.CheckedChanged += new System.EventHandler(this.largemapCheckbox_CheckedChanged);
+            this.largemapCheckbox.Click += new System.EventHandler(this.largemapCheckbox_Clicked);
             // 
             // button1
             // 
