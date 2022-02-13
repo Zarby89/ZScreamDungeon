@@ -125,17 +125,17 @@ namespace ZeldaFullEditor
         public static int OWHoleArea = 0xDB826;//(0x13 entries, 2 bytes each) corresponding area numbers for each hole
         public static int OWHoleEntrance = 0xDB84C;//(0x13 entries, 1 byte each)  corresponding entrance numbers
 
-        public static int OWExitMapIdWhirlpool = 0x16AE5; //  JP = ;016849
-        public static int OWExitVramWhirlpool = 0x16B07;  //  JP = ;01686B
+        public static int OWExitMapIdWhirlpool = 0x16AE5;  // JP = ;016849
+        public static int OWExitVramWhirlpool = 0x16B07;   // JP = ;01686B
         public static int OWExitYScrollWhirlpool = 0x16B29;// JP = ;01688D
         public static int OWExitXScrollWhirlpool = 0x16B4B;// JP = ;016DE7
         public static int OWExitYPlayerWhirlpool = 0x16B6D;// JP = ;016E09
         public static int OWExitXPlayerWhirlpool = 0x16B8F;// JP = ;016E2B
         public static int OWExitYCameraWhirlpool = 0x16BB1;// JP = ;016E4D
         public static int OWExitXCameraWhirlpool = 0x16BD3;// JP = ;016E6F
-        public static int OWExitUnk1Whirlpool = 0x16BF5;//    JP = ;016E91
-        public static int OWExitUnk2Whirlpool = 0x16C17;//    JP = ;016EB3
-        public static int OWWhirlpoolPosition = 0x16CF8;//    JP = ;016F94
+        public static int OWExitUnk1Whirlpool = 0x16BF5;   // JP = ;016E91
+        public static int OWExitUnk2Whirlpool = 0x16C17;   // JP = ;016EB3
+        public static int OWWhirlpoolPosition = 0x16CF8;   // JP = ;016F94
         
         //===========================================================================================
         //Dungeon Related Variables
