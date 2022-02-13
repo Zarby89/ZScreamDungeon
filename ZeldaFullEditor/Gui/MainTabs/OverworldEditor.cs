@@ -13,6 +13,7 @@ using System.Threading;
 using System.Drawing.Drawing2D;
 using ZeldaFullEditor.Gui.ExtraForms;
 using System.Globalization;
+using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -1068,28 +1069,200 @@ namespace ZeldaFullEditor.Gui
             {
                 if (largemapCheckbox.Checked)
                 {
-                    scene.ow.allmaps[scene.selectedMap].largeMap = true;
-                    /*scene.ow.allmaps[scene.selectedMap+1].largeMap = true;
-                    scene.ow.allmaps[scene.selectedMap+8].largeMap = true;
-                    scene.ow.allmaps[scene.selectedMap+9].largeMap = true;*/
+                    int m = scene.ow.allmaps[scene.selectedMap].parent;
+                    scene.ow.allmaps[m].largeMap = true;
+                    scene.ow.allmaps[m + 1].largeMap = true;
+                    scene.ow.allmaps[m + 8].largeMap = true;
+                    scene.ow.allmaps[m + 9].largeMap = true;
 
-                    scene.ow.allmaps[scene.selectedMap].parent = (byte)scene.selectedMap;
-                    scene.ow.allmaps[scene.selectedMap + 1].parent = (byte)scene.selectedMap;
-                    scene.ow.allmaps[scene.selectedMap + 8].parent = (byte)scene.selectedMap;
-                    scene.ow.allmaps[scene.selectedMap + 9].parent = (byte)scene.selectedMap;
+                    scene.ow.allmaps[m].parent = (byte)m;
+                    scene.ow.allmaps[m + 1].parent = (byte)m;
+                    scene.ow.allmaps[m + 8].parent = (byte)m;
+                    scene.ow.allmaps[m + 9].parent = (byte)m;
+
+                    scene.ow.allmaps[m + 64].largeMap = true;
+                    scene.ow.allmaps[m + 1 + 64].largeMap = true;
+                    scene.ow.allmaps[m + 8 + 64].largeMap = true;
+                    scene.ow.allmaps[m + 9 + 64].largeMap = true;
+
+                    scene.ow.allmaps[m].parent = (byte)m;
+                    scene.ow.allmaps[m + 1].parent = (byte)m;
+                    scene.ow.allmaps[m + 8].parent = (byte)m;
+                    scene.ow.allmaps[m + 9].parent = (byte)m;
+
+                    scene.ow.allmaps[m + 64].parent = (byte)(m + 64);
+                    scene.ow.allmaps[m + 1 + 64].parent = (byte)(m + 64);
+                    scene.ow.allmaps[m + 8 + 64].parent = (byte)(m + 64);
+                    scene.ow.allmaps[m + 9 + 64].parent = (byte)(m + 64);
+                    scene.ow.getLargeMaps();
+
+                    for (int i = 0; i < 8; i++)
+                    {
+                        byte[] mtable = new byte[8] { 0, 1, 8, 9, 64, 65,72,73 };
+                        m = scene.ow.allmaps[scene.selectedMap].parent + mtable[i];
+                        foreach (TransportOW o in scene.ow.allBirds)
+                        {
+                            if (o.mapId == m)
+                            {
+                                o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                            }
+                        }
+                        foreach (TransportOW o in scene.ow.allWhirlpools)
+                        {
+                            if (o.mapId == m)
+                            {
+                                o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                            }
+                        }
+                        foreach (ExitOW o in scene.ow.allexits)
+                        {
+                            if (o.mapId == m)
+                            {
+                                o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                            }
+                        }
+                        foreach (RoomPotSaveEditor o in scene.ow.allitems)
+                        {
+                            if (o.roomMapId == m)
+                            {
+                                o.updateMapStuff(scene.ow.allmaps[m].parent);
+                            }
+                        }
+
+                        foreach (Sprite o in scene.ow.allsprites[0])
+                        {
+                            if (o.mapid == m)
+                            {
+                                o.updateMapStuff(scene.ow.allmaps[m].parent);
+                            }
+                        }
+                        foreach (Sprite o in scene.ow.allsprites[1])
+                        {
+                            if (o.mapid == m)
+                            {
+                                o.updateMapStuff(scene.ow.allmaps[m].parent);
+                            }
+                        }
+                        foreach (Sprite o in scene.ow.allsprites[2])
+                        {
+                            if (o.mapid == m)
+                            {
+                                o.updateMapStuff(scene.ow.allmaps[m].parent);
+                            }
+                        }
+                    }
+
+
                 }
                 else
                 {
-                    scene.ow.allmaps[scene.selectedMap].largeMap = false;
-                    /*scene.ow.allmaps[scene.selectedMap + 1].largeMap = false;
-                    scene.ow.allmaps[scene.selectedMap + 8].largeMap = false;
-                    scene.ow.allmaps[scene.selectedMap + 9].largeMap = false;*/
+                    int m = scene.ow.allmaps[scene.selectedMap].parent;
+                    scene.ow.allmaps[m].largeMap = false;
+                    scene.ow.allmaps[m + 1].largeMap = false;
+                    scene.ow.allmaps[m + 8].largeMap = false;
+                    scene.ow.allmaps[m + 9].largeMap = false;
 
-                    scene.ow.allmaps[scene.selectedMap].parent = (byte)scene.selectedMap;
-                    scene.ow.allmaps[scene.selectedMap + 1].parent = (byte)(scene.selectedMap+1);
-                    scene.ow.allmaps[scene.selectedMap + 8].parent = (byte)(scene.selectedMap+8);
-                    scene.ow.allmaps[scene.selectedMap + 9].parent = (byte)(scene.selectedMap+9);
+                    scene.ow.allmaps[m + 64].largeMap = false;
+                    scene.ow.allmaps[m + 65].largeMap = false;
+                    scene.ow.allmaps[m + 72].largeMap = false;
+                    scene.ow.allmaps[m + 73].largeMap = false;
+
+                    scene.ow.allmaps[m].parent = (byte)m;
+                    scene.ow.allmaps[m + 1].parent = (byte)(m + 1);
+                    scene.ow.allmaps[m + 8].parent = (byte)(m + 8);
+                    scene.ow.allmaps[m + 9].parent = (byte)(m + 9);
+
+                    scene.ow.allmaps[m + 64].parent = (byte)(m + 64);
+                    scene.ow.allmaps[m + 1 + 64].parent = (byte)(m + 1 + 64);
+                    scene.ow.allmaps[m + 8 + 64].parent = (byte)(m + 8 + 64);
+                    scene.ow.allmaps[m + 9 + 64].parent = (byte)(m + 9 + 64);
+                    scene.ow.getLargeMaps();
+
+                    //we are unchecking the large map box so all sprites on map00 are returning to others maps
+                    foreach (TransportOW o in scene.ow.allBirds)
+                    {
+                        if (o.mapId == m)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                        }
+                        if (o.mapId == m+64)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m+64].parent, scene.ow);
+                        }
+                    }
+                    foreach (TransportOW o in scene.ow.allWhirlpools)
+                    {
+                        if (o.mapId == m)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                        }
+                        if (o.mapId == m+64)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m+64].parent, scene.ow);
+                        }
+                    }
+                    foreach (ExitOW o in scene.ow.allexits)
+                    {
+                        if (o.mapId == m)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m].parent, scene.ow);
+                        }
+                        if (o.mapId == m+64)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m+64].parent, scene.ow);
+                        }
+                    }
+                    foreach (RoomPotSaveEditor o in scene.ow.allitems)
+                    {
+                        if (o.roomMapId == m)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m].parent);
+                        }
+                        if (o.roomMapId == m+64)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m+64].parent);
+                        }
+                    }
+
+                    foreach (Sprite o in scene.ow.allsprites[0])
+                    {
+                        if (o.mapid == m)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m].parent);
+                        }
+
+                        if (o.mapid == m+64)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m+64].parent);
+                        }
+                    }
+                    foreach (Sprite o in scene.ow.allsprites[1])
+                    {
+                        if (o.mapid == m)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m].parent);
+                        }
+                        if (o.mapid == m +64)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m+64].parent);
+                        }
+                    }
+                    foreach (Sprite o in scene.ow.allsprites[2])
+                    {
+                        if (o.mapid == m)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m].parent);
+                        }
+                        if (o.mapid == m+64)
+                        {
+                            o.updateMapStuff(scene.ow.allmaps[m+64].parent);
+                        }
+                    }
+
+
+
                 }
+
             }
         }
     }
