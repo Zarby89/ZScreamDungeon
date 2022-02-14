@@ -107,7 +107,8 @@ namespace ZeldaFullEditor
         public bool[] saveSettingsArr = new bool[] {true, true, true, true, true, true, true, true, true, true, 
                                                     true, true, true, true, true, true, true, true, true, true, 
                                                     true, true, true, true, true, true, true, true, true, true,
-                                                    true, true, true, true, true, true, true, true, true, true
+                                                    true, true, true, true, true, true, true, true, true, true,
+                                                    true
                                                    };
 
         //constuctor 
@@ -410,7 +411,7 @@ namespace ZeldaFullEditor
             //sw.Start();
 
             //TODO:
-            //from save settings not found: 
+            //from save settings not found ?: 
             //15: Group tiles
             //17: dungeon auto doors
             //18: adv chests
@@ -418,43 +419,16 @@ namespace ZeldaFullEditor
             //20: load texts
             //21: load Dung. items
             //22: load Dung. sprites
-            //23: misc gtx groups
-            //24: misc palettes
             //26: load Dung. blocks
             //27: load Dung. torches
             //29: load Over. sprites
             //30: load Over. items
 
-            if (saveSettingsArr[7])
-            {
-                if (save.saveRoomsHeaders()) //no protection always the same size so we don't care :)
-                {
-                    //MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
-                }
-            }
-            if (saveSettingsArr[2])
-            {
-                if (save.saveallChests()) //chest there's a protection when there's too many chest - tested it works fine
-                {
-                    MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
-                }
-            }
             if (saveSettingsArr[0])
             {
                 if (save.saveallSprites())//sprites, there's a protection
                 {
                     MessageBox.Show("Failed to save, there is too many sprites", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
-                }
-            }
-            if (saveSettingsArr[3])
-            {
-                if (save.saveAllObjects())//There is a protection - Tested
-                {
-                    MessageBox.Show("Failed to save, there is too many tiles objects", "Bad Error", MessageBoxButtons.OK);
                     ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                     return;
                 }
@@ -468,22 +442,30 @@ namespace ZeldaFullEditor
                     return;
                 }
             }
+            if (saveSettingsArr[2])
+            {
+                if (save.saveallChests()) //chest there's a protection when there's too many chest - tested it works fine
+                {
+                    MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
+                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                    return;
+                }
+            } 
+            if (saveSettingsArr[3])
+            {
+                if (save.saveAllObjects())//There is a protection - Tested
+                {
+                    MessageBox.Show("Failed to save, there is too many tiles objects", "Bad Error", MessageBoxButtons.OK);
+                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                    return;
+                }
+            }
             if (saveSettingsArr[4])
             {
                 if (save.saveBlocks())//There is a protection - Tested
                 {
                     MessageBox.Show("Failed to save, there is too many pushable blocks", "Bad Error", MessageBoxButtons.OK);
                     ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
-                }
-            }
-            if (saveSettingsArr[28])
-            {
-                if (save.saveCustomCollision())
-                {
-                    MessageBox.Show("Failed to save, there was an error saving the custom collision rectangles", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-
                     return;
                 }
             }
@@ -505,6 +487,13 @@ namespace ZeldaFullEditor
                     return;
                 }
             }
+            if (saveSettingsArr[7])
+            {
+                if (save.saveRoomsHeaders()) //no protection always the same size so we don't care :)
+                {
+                    //MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
+                }
+            }
             if (saveSettingsArr[8])
             {
                 if (save.saveEntrances(DungeonsData.entrances, DungeonsData.starting_entrances))
@@ -514,27 +503,11 @@ namespace ZeldaFullEditor
                     return;
                 }
             }
-            //sw.Stop();
-            //Console.WriteLine("Saved Torches, Pits, Entrances- " + sw.ElapsedMilliseconds.ToString() + "ms");
-            if (saveSettingsArr[25])
+            if (saveSettingsArr[9])
             {
-                if (save.saveAllText(textEditor))
+                if (save.SaveOWSprites(overworldEditor.scene))
                 {
-                    MessageBox.Show("Impossible to save Texts", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
-                }
-            }
-            //sw.Stop();
-            //Console.WriteLine("Saved Texts - " + sw.ElapsedMilliseconds.ToString() + "ms");
-
-            //sw.Reset();
-            //sw.Start();
-            if (saveSettingsArr[11])
-            {
-                if (save.saveOWEntrances(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save ??, no idea why ", "Bad Error", MessageBoxButtons.OK);
+                    MessageBox.Show("Failed to save overworld sprites out of range ", "Bad Error", MessageBoxButtons.OK);
                     ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                     return;
                 }
@@ -548,11 +521,11 @@ namespace ZeldaFullEditor
                     return;
                 }
             }
-            if (saveSettingsArr[9])
+            if (saveSettingsArr[11])
             {
-                if (save.SaveOWSprites(overworldEditor.scene))
+                if (save.saveOWEntrances(overworldEditor.scene))
                 {
-                    MessageBox.Show("Failed to save overworld sprites out of range ", "Bad Error", MessageBoxButtons.OK);
+                    MessageBox.Show("Failed to save ??, no idea why ", "Bad Error", MessageBoxButtons.OK);
                     ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                     return;
                 }
@@ -575,6 +548,16 @@ namespace ZeldaFullEditor
                     return;
                 }
             }
+            if (saveSettingsArr[14])
+            {
+                if (overworldEditor.scene.SaveTiles())
+                {
+                    //no need for a message box here because its handeled within the SaveTiles() function itslef.
+                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                    return;
+                }
+            }
+            //15
             if (saveSettingsArr[16])
             {
                 if (save.saveMapProperties(overworldEditor.scene))
@@ -584,29 +567,56 @@ namespace ZeldaFullEditor
                     return;
                 }
             }
+            //17
+            //18
+            //19
+            //20
+            //21
+            //22
+            if(saveSettingsArr[23])
+            {
+                if(GfxGroups.SaveGroupsToROM())
+                {
+                    MessageBox.Show("Error saving GFX Groups", "Bad Error", MessageBoxButtons.OK);
+                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                    return;
+                }
+            }
+            if (saveSettingsArr[24])
+            {
+                if (Palettes.SavePalettesToROM(ROM.DATA))
+                {
+                    MessageBox.Show("Error saving palettes", "Bad Error", MessageBoxButtons.OK);
+                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                    return;
+                }
+            }
+            if (saveSettingsArr[25])
+            {
+                if (save.saveAllText(textEditor))
+                {
+                    MessageBox.Show("Impossible to save Texts", "Bad Error", MessageBoxButtons.OK);
+                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                    return;
+                }
+            }
+            //17
+            if (saveSettingsArr[28])
+            {
+                if (save.saveCustomCollision())
+                {
+                    MessageBox.Show("Failed to save, there was an error saving the custom collision rectangles", "Bad Error", MessageBoxButtons.OK);
+                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+
+                    return;
+                }
+            }
+            
             if (saveSettingsArr[31])
             {
                 if (save.saveMapOverlays(overworldEditor.scene))
                 {
                     MessageBox.Show("Failed to save overworld map Overlays ??? ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
-                }
-            }
-            if (saveSettingsArr[35])
-            {
-                if (save.saveOverworldTilesType(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save overworld map tiles Types ??? ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
-                }
-            }
-            if (saveSettingsArr[31])
-            {
-                if (save.saveOverworldMessagesIds(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save overworld map tiles Types ??? ", "Bad Error", MessageBoxButtons.OK);
                     ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                     return;
                 }
@@ -638,11 +648,11 @@ namespace ZeldaFullEditor
                     return;
                 }
             }
-            if (saveSettingsArr[14])
+            if (saveSettingsArr[35])
             {
-                if(overworldEditor.scene.SaveTiles())
+                if (save.saveOverworldTilesType(overworldEditor.scene))
                 {
-                    //no need for a message box here because its handeled within the SaveTiles() function itslef.
+                    MessageBox.Show("Failed to save overworld map tiles Types ??? ", "Bad Error", MessageBoxButtons.OK);
                     ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
                     return;
                 }
@@ -683,7 +693,16 @@ namespace ZeldaFullEditor
                     return;
                 }
             }
-
+            if (saveSettingsArr[40])
+            {
+                if (save.saveOverworldMessagesIds(overworldEditor.scene))
+                {
+                    MessageBox.Show("Failed to save overworld map tiles Types ??? ", "Bad Error", MessageBoxButtons.OK);
+                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                    return;
+                }
+            }
+            
             ROM.Write(0x5D4E, 0x00, true, "Fix sprite sheet 123 (should not be read compressed)"); //Fix for the sprite sheet 123
             //ROM.DATA[0x5D4E] = 0x00; 
 
@@ -697,9 +716,6 @@ namespace ZeldaFullEditor
             //overworldEditor.overworld.SaveMap16Tiles();
 
             overworldEditor.saveScratchPad();
-
-            Palettes.SavePalettesToROM(ROM.DATA);
-            GfxGroups.SaveGroupsToROM();
 
             anychange = false;
             saved_changed = false;

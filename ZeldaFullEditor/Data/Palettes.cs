@@ -202,11 +202,12 @@ namespace ZeldaFullEditor
             asmString += s;
         }
 
-        public static void SavePalettesToROM(byte[] romData)
+        public static bool SavePalettesToROM(byte[] romData)
         {
             WriteSinglePalette(romData, Constants.hardcodedGrassLW, overworld_GrassPalettes[0]);
             WriteSinglePalette(romData, Constants.hardcodedGrassDW, overworld_GrassPalettes[1]);
             WriteSinglePalette(romData, Constants.hardcodedGrassSpecial, overworld_GrassPalettes[2]);
+
             //35 colors each, 7x5 (0,2 on grid)
             for (int i = 0; i < 6; i++)
             {
@@ -230,6 +231,7 @@ namespace ZeldaFullEditor
 
             WritePalette(romData, Constants.globalSpritePalettesLW, globalSprite_Palettes[0]);
             WritePalette(romData, Constants.globalSpritePalettesDW, globalSprite_Palettes[1]);
+
             for (int i = 0; i < 5; i++)
             {
                 WritePalette(romData, Constants.armorPalettes + (i * 30), armors_Palettes[i]);
@@ -258,6 +260,8 @@ namespace ZeldaFullEditor
             {
                 WritePalette(romData, Constants.dungeonMainPalettes + (i * 180), dungeonsMain_Palettes[i]);
             }
+
+            return false;
         }
 
         public static string SavePalettesToAsm(byte[] romData)
