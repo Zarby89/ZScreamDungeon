@@ -594,7 +594,7 @@ namespace ZeldaFullEditor
                     for (int x = 0; x < 32; x += 2)
                     {
                         alltiles16.Add(new Tile32(tilesused[x + (sx * 32), y + (sy * 32)], tilesused[x + 1 + (sx * 32), y + (sy * 32)],
-                            tilesused[x + (sx * 32), y + 1 + (sy * 32)], tilesused[x + 1 + (sx * 32), y + 1 + (sy * 32)]).getLongValue());
+                        tilesused[x + (sx * 32), y + 1 + (sy * 32)], tilesused[x + 1 + (sx * 32), y + 1 + (sy * 32)]).getLongValue());
                     }
                 }
 
@@ -603,7 +603,6 @@ namespace ZeldaFullEditor
                 {
                     sy++;
                     sx = 0;
-
                 }
 
                 c++;
@@ -643,7 +642,7 @@ namespace ZeldaFullEditor
 
             if (t32Unique.Count > 8864)
             {
-                if (MessageBox.Show("Unique Tiles32 count exceed the limit in the rom\nTiles data won't be saved would you like to export map data?", "Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("Unique Tile32 count exceed the limit in the rom\n    ====== " + t32Unique.Count + " Used out of 8864 ======    \nThe ROM will NOT be saved, would you like to export map data?", "Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     ExportMaps();
                 }
@@ -674,7 +673,6 @@ namespace ZeldaFullEditor
                     {
                         path = fd.SelectedPath;
                     }
-
                 }
                 else
                 {

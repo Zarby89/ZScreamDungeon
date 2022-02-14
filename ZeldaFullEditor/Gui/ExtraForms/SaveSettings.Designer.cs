@@ -78,6 +78,7 @@
             this.checkBox23 = new System.Windows.Forms.CheckBox();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
+            this.checkBox41 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox5.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -245,6 +246,7 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Controls.Add(this.checkBox41);
             this.groupBox4.Controls.Add(this.checkBox37);
             this.groupBox4.Controls.Add(this.checkBox36);
             this.groupBox4.Controls.Add(this.checkBox33);
@@ -693,6 +695,18 @@
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 
+            // checkBox41
+            // 
+            this.checkBox41.AutoSize = true;
+            this.checkBox41.Checked = true;
+            this.checkBox41.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.checkBox41.Location = new System.Drawing.Point(389, 19);
+            this.checkBox41.Name = "checkBox41";
+            this.checkBox41.Size = new System.Drawing.Size(93, 17);
+            this.checkBox41.TabIndex = 19;
+            this.checkBox41.Text = "Messages IDs";
+            this.checkBox41.UseVisualStyleBackColor = true;
+            // 
             // SaveSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -770,5 +784,6 @@
         private System.Windows.Forms.CheckBox checkBox40;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.CheckBox checkBox41;
     }
 }

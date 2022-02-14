@@ -55,7 +55,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        public static void SaveGroupsToROM()
+        public static bool SaveGroupsToROM()
         {
             int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer + 1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
             gfxPointer = Utils.SnesToPc(gfxPointer);
@@ -91,6 +91,8 @@ namespace ZeldaFullEditor
                     ROM.Write(Constants.dungeons_palettes_groups + (i * 4) + j,paletteGfx[i][j], true, "palGfx Groups");
                 }
             }
+
+            return false;
         }
     }
 }

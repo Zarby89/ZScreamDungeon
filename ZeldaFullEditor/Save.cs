@@ -684,9 +684,9 @@ namespace ZeldaFullEditor
         public bool saveOWExits(SceneOW scene)
         {
             ROM.StartBlockLogWriting("OW Exits", Constants.OWExitMapId);
+
             for (int i = 0; i < 78; i++)
             {
-
                 ROM.Write(Constants.OWExitMapId + (i), (byte)((scene.ow.allexits[i].mapId) & 0xFF), true, "Exit[" +i.ToString("D2")+ "] Exit to map " + scene.ow.allexits[i].mapId.ToString("D3"));
 
                 ROM.WriteShort(Constants.OWExitXScroll + (i * 2), ((scene.ow.allexits[i].xScroll)), true, "Exit[" + i.ToString("D2") + "] ScrollX " + scene.ow.allexits[i].xScroll.ToString("D3"));
@@ -717,6 +717,7 @@ namespace ZeldaFullEditor
         public bool saveOWEntrances(SceneOW scene)
         {
             ROM.StartBlockLogWriting("OW Entrances/Holes", Constants.OWEntranceMap);
+
             for (int i = 0; i < scene.ow.allentrances.Length; i++)
             {
                 ROM.WriteShort(Constants.OWEntranceMap + (i * 2), ((scene.ow.allentrances[i].mapId)), true, "Entrance[" + i.ToString("D2")+"]" + " Map: " + scene.ow.allentrances[i].mapId.ToString("D3"));
@@ -797,8 +798,8 @@ namespace ZeldaFullEditor
                         byte[] data = new byte[3] { b2, b1, b3 };
                         ROM.Write(dataPos, data, true, "Item Data");
                         dataPos += 3;
-
                     }
+
                     emptyPtr = dataPos;
                     ROM.WriteShort(dataPos, 0xFFFF, true, "End Item Data");
                     dataPos += 2;
@@ -909,7 +910,6 @@ namespace ZeldaFullEditor
                         byte[] data = new byte[3] { b1, b2, b3 };
                         ROM.Write(dataPos, data, true, "Spr Data");
                         dataPos += 3;
-
                     }
 
                     ROM.Write(dataPos, 0xFF, true, "Termination Byte");
@@ -1045,6 +1045,7 @@ namespace ZeldaFullEditor
                 ROM.Write(Constants.overworldSpritePalette + 64 + i, scene.ow.allmaps[i].sprpalette[1], true, "SprPalette");
                 ROM.Write(Constants.overworldSpritePalette + 128 + i, scene.ow.allmaps[i].sprpalette[2], true, "SprPalette");
             }
+
             for (int i = 64; i < 128; i++)
             {
                 ROM.Write(Constants.mapGfx + i, scene.ow.allmaps[i].gfx, true, "Gfx");
@@ -1083,6 +1084,7 @@ namespace ZeldaFullEditor
                 0xAB, //PLB
                 0x6B //RTL
             };
+
             //Pointers
 
             ROM.Write(0x77657, newOverlayCode, true, "New Overlay Code");
@@ -1329,6 +1331,7 @@ namespace ZeldaFullEditor
                 {
                     pos = 0x130000;
                 }
+
                 //map2
                 if (mapPointers2id[i] == -1)
                 {
@@ -1380,6 +1383,7 @@ namespace ZeldaFullEditor
                 ROM.WriteShort(Constants.GravesXTilePos + (i * 2), scene.ow.graves[i].xTilePos, true, "Gravestones");
                 ROM.WriteShort(Constants.GravesYTilePos + (i * 2), scene.ow.graves[i].yTilePos, true, "Gravestones");
                 ROM.WriteShort(Constants.GravesTilemapPos + (i * 2), scene.ow.graves[i].tilemapPos, true, "Gravestones");
+
                 if (i == 0x0E)
                 {
                     ROM.WriteShort(Constants.GraveLinkSpecialStairs, scene.ow.graves[i].tilemapPos - 0x80, true, "Gravestones");

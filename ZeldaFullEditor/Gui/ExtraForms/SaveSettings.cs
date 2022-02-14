@@ -73,6 +73,7 @@ namespace ZeldaFullEditor.Gui
             saveArr[37] = checkBox38.Checked; //save misc grave stones
             saveArr[38] = checkBox39.Checked; //save dungeon maps
             saveArr[39] = checkBox40.Checked; //misc triforce
+            saveArr[40] = checkBox41.Checked; //overworld message IDs
 
             dungeonMain.saveSettingsArr = saveArr;
 
@@ -133,6 +134,7 @@ namespace ZeldaFullEditor.Gui
             checkBox38.Checked = saveArr[37]; //save misc grave stones
             checkBox39.Checked = saveArr[38]; //save dungeon maps
             checkBox40.Checked = saveArr[39]; //save misc triforce
+            checkBox41.Checked = saveArr[40]; //overworld message IDs
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -177,6 +179,7 @@ namespace ZeldaFullEditor.Gui
             checkBox38.Checked = true; //save misc grave stones
             checkBox39.Checked = true; //save dungeon maps
             checkBox40.Checked = true; //save misc triforce
+            checkBox41.Checked = true; //overworld message IDs
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -221,6 +224,7 @@ namespace ZeldaFullEditor.Gui
             checkBox38.Checked = false; //save misc grave stones
             checkBox39.Checked = false; //save dungeon maps
             checkBox40.Checked = false; //save misc triforce
+            checkBox41.Checked = false; //overworld message IDs
         }
     }
 }
