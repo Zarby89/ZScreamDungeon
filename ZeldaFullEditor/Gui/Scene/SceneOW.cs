@@ -26,6 +26,7 @@ namespace ZeldaFullEditor
 
         //  int selectedIndex = 0;
         public int selectedMap = 0;
+        public int selectedMapParent = 0;
         //public int lockedMap = -1;
         //must load all current map gfx
         public Overworld ow;
@@ -203,8 +204,8 @@ namespace ZeldaFullEditor
             globalmouseTileDownY = tileY;
 
             mainForm.anychange = true;
-                selectedMap = mapId;
-
+            selectedMap = mapId;
+            selectedMapParent = ow.allmaps[selectedMap + ow.worldOffset].parent;
 
             owForm.previewTextPicturebox.Visible = false;
             updateMapGfx();
@@ -264,8 +265,6 @@ namespace ZeldaFullEditor
             {
                 Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
             }
-
-
 
             base.OnMouseDown(e);
         }

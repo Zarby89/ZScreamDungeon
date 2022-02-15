@@ -1371,7 +1371,6 @@ namespace ZeldaFullEditor
                 return true;
             }
 
-            //TESTING FUNCTION !!! EXPERIMENTAL
             SaveLargeMaps(scene);
 
             return false;

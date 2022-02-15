@@ -287,6 +287,7 @@ namespace ZeldaFullEditor.Gui
         private void spButton_Click(object sender, EventArgs e)
         {
             scene.selectedMap = 128;
+            scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap + scene.ow.worldOffset].parent;
             scene.ow.worldOffset = 128;
             scene.Refresh();
         }
@@ -294,6 +295,7 @@ namespace ZeldaFullEditor.Gui
         private void dwButton_Click(object sender, EventArgs e)
         {
             scene.selectedMap = 64;
+            scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap + scene.ow.worldOffset].parent;
             scene.ow.worldOffset = 64;
             scene.Refresh();
         }
@@ -301,6 +303,7 @@ namespace ZeldaFullEditor.Gui
         private void lwButton_Click(object sender, EventArgs e)
         {
             scene.selectedMap = 0;
+            scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap + scene.ow.worldOffset].parent;
             scene.ow.worldOffset = 0;
             scene.Refresh();
         }
@@ -1022,12 +1025,6 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-        private void deleteOverlayToolstripbutton_Click(object sender, EventArgs e)
-        {
-            overworld.alloverlays[scene.selectedMap].tilesData.Clear();
-            scene.Refresh();
-        }
-
         private void toolStripButton1_Click_1(object sender, EventArgs e)
         {
             for (int y = 0; y < 32; y++)
@@ -1301,6 +1298,164 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Clears all overworld sprites of the selected stage (beginning, 1st, and 2nd phase)
+        /// </summary>
+        /// <param name="phase"></param>
+        public void clearOverworldSprites(int phase)
+        {
+            overworld.allsprites[phase].Clear();
+        }
+
+        /// <summary>
+        /// Clears all overworld items
+        /// </summary>
+        public void clearOverworldItems()
+        {
+            overworld.allitems.Clear();
+        }
+
+        /// <summary>
+        /// Clears all overworld entrances
+        /// </summary>
+        public void clearOverworldEntrances()
+        {
+            foreach (EntranceOWEditor entrance in overworld.allentrances)
+            {
+                entrance.x = 0xFFFF;
+                entrance.y = 0xFFFF;
+                entrance.mapId = 0;
+                entrance.mapPos = 0xFFFF;
+                entrance.entranceId = 0;
+                entrance.deleted = true;
+            }
+        }
+
+        /// <summary>
+        /// Clears all overworld entrances
+        /// </summary>
+        public void clearOverworldHoles()
+        {
+            foreach (var hole in overworld.allholes)
+            {
+                hole.x = 0xFFFF;
+                hole.y = 0xFFFF;
+                hole.mapId = 0;
+                hole.mapPos = 0xFFFF;
+                hole.entranceId = 0;
+                hole.deleted = true;
+            }
+        }
+
+        /// <summary>
+        /// Clears all overworld exits
+        /// </summary>
+        public void clearOverworldExits()
+        {
+            foreach (var exit in overworld.allexits)
+            {
+                exit.playerX = 0xFFFF;
+                exit.playerY = 0xFFFF;
+                exit.mapId = 0;
+                exit.roomId = 0;
+                exit.deleted = true;
+            }
+        }
+
+        /// <summary>
+        /// Clears all of the overworld overlays
+        /// </summary>
+        public void clearOverworldOverlays()
+        {
+            foreach (var overlay in overworld.alloverlays)
+            {
+                overlay.tilesData.Clear();
+            }
+        }
+
+
+        /// <summary>
+        /// Clears all overworld sprites of the selected stage (beginning, 1st, and 2nd phase)
+        /// </summary>
+        /// <param name="phase"></param>
+        public void clearAreaSprites(int phase)
+        {
+            overworld.allsprites[phase].RemoveAll(o => o.mapid == scene.selectedMapParent);
+        }
+
+        /// <summary>
+        /// Clears all of the selected area's items
+        /// </summary>
+        public void clearAreaItems()
+        {
+            overworld.allitems.RemoveAll(o => o.roomMapId == scene.selectedMapParent);
+        }
+
+        /// <summary>
+        /// Clears all the selected area's entrances
+        /// </summary>
+        public void clearAreaEntrances()
+        {
+            foreach (EntranceOWEditor entrance in overworld.allentrances)
+            {
+                if (entrance.mapId == scene.selectedMapParent)
+                {
+                    entrance.x = 0xFFFF;
+                    entrance.y = 0xFFFF;
+                    entrance.mapId = 0;
+                    entrance.mapPos = 0xFFFF;
+                    entrance.entranceId = 0;
+                    entrance.deleted = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clears all the slected area's entrances
+        /// </summary>
+        public void clearAreaHoles()
+        {
+            foreach (var hole in overworld.allholes)
+            {
+                if (hole.mapId == scene.selectedMapParent)
+                {
+                    hole.x = 0xFFFF;
+                    hole.y = 0xFFFF;
+                    hole.mapId = 0;
+                    hole.mapPos = 0xFFFF;
+                    hole.entranceId = 0;
+                    hole.deleted = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clears all of the selected area's exits
+        /// </summary>
+        public void clearAreaExits()
+        {
+            foreach (var exit in overworld.allexits)
+            {
+                if (exit.mapId == scene.selectedMapParent)
+                {
+                    exit.playerX = 0xFFFF;
+                    exit.playerY = 0xFFFF;
+                    exit.mapId = 0;
+                    exit.roomId = 0;
+                    exit.deleted = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clears all of the selected area's overlays
+        /// </summary>
+        public void clearAreaOverlays()
+        {
+            overworld.alloverlays[scene.selectedMapParent].tilesData.Clear();
+            scene.Refresh();
         }
     }
 }

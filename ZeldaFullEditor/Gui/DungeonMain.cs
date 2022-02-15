@@ -221,6 +221,12 @@ namespace ZeldaFullEditor
             Controls.Add(gfxEditor);
             Controls.Add(dungeonViewer);
             Controls.Add(screenEditor);
+
+            //if we are in a debug version, show the Experimental Features drop down menu.
+            #if DEBUG
+                ExperimentalToolStripMenuItem1.Visible = true;
+                jPDebugToolStripMenuItem.Visible = true;
+            #endif
         }
 
         private void SceneUW_MouseWheel(object sender, MouseEventArgs e)
@@ -1715,7 +1721,7 @@ namespace ZeldaFullEditor
             if (saved_changed)
             {
                 anychange = false;
-                DialogResult dr = MessageBox.Show("There is unsaved change do you want to save first?", "Unsaved Changes", MessageBoxButtons.YesNoCancel);
+                DialogResult dr = MessageBox.Show("There are unsaved changes, do you want to save first?", "Unsaved Changes", MessageBoxButtons.YesNoCancel);
                 if (dr == DialogResult.Yes)
                 {
                     saveToolStripMenuItem_Click(this, new EventArgs());
@@ -2327,21 +2333,6 @@ namespace ZeldaFullEditor
                 ROMStructure.ProjectName = sf.FileName;
                 saveToolStripMenuItem_Click(sender, e);
             }
-        }
-
-        private void selectAllMapForExportToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < 296; i++)
-            {
-                selectedMapPng.Add((short)i);
-            }
-            //loadRoomList(296);
-        }
-
-        private void deselectedAllMapForExportToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            selectedMapPng.Clear();
-            //loadRoomList(296);
         }
 
         public int gridSize = 8;
@@ -4494,6 +4485,22 @@ namespace ZeldaFullEditor
                 customPanel3.Visible = true;
                 headerGroupbox.Visible = true;
                 tabControl2.Visible = true;
+
+                roomToolStripMenuItem.Visible = true;
+                dungeonViewToolStripMenuItem.Visible = true;
+                naviguateToolStripMenuItem.Visible = true;
+
+                toolStripSeparator6.Visible = true;
+                moveFrontToolStripMenuItem.Visible = true;
+                bringToBackToolStripMenuItem.Visible = true;
+
+                toolStripSeparator9.Visible = true;
+                selectAllRoomsForExportToolStripMenuItem.Visible = true;
+                deselectedAllRoomsForExportToolStripMenuItem.Visible = true;
+
+                toolStripSeparator7.Visible = true;
+                increaseObjectSizeToolStripMenuItem.Visible = true;
+                decreaseObjectSizeToolStripMenuItem.Visible = true;
             }
             else
             {
@@ -4503,6 +4510,22 @@ namespace ZeldaFullEditor
                 customPanel3.Visible = false;
                 headerGroupbox.Visible = false;
                 tabControl2.Visible = false;
+
+                roomToolStripMenuItem.Visible = false;
+                dungeonViewToolStripMenuItem.Visible = false;
+                naviguateToolStripMenuItem.Visible = false;
+
+                toolStripSeparator6.Visible = false;
+                moveFrontToolStripMenuItem.Visible = false;
+                bringToBackToolStripMenuItem.Visible = false;
+
+                toolStripSeparator9.Visible = false;
+                selectAllRoomsForExportToolStripMenuItem.Visible = false;
+                deselectedAllRoomsForExportToolStripMenuItem.Visible = false;
+
+                toolStripSeparator7.Visible = false;
+                increaseObjectSizeToolStripMenuItem.Visible = false;
+                decreaseObjectSizeToolStripMenuItem.Visible = false;
             }
 
             if (editorsTabControl.SelectedTab.Name == "objDesignerPage")
@@ -4523,6 +4546,13 @@ namespace ZeldaFullEditor
                     {
                         oweditor2.BringToFront();
                         oweditor2.Visible = true;
+
+                        overworldViewToolStripMenuItem.Visible = true;
+                        overworldToolStripMenuItem.Visible = true;
+                        areaToolStripMenuItem.Visible = true;
+
+                        toolStripSeparator10.Visible = true;
+                        lockoverworldToolStripItem.Visible = true;
                     }
                     else
                     {
@@ -4535,6 +4565,13 @@ namespace ZeldaFullEditor
                     {
                         overworldEditor.BringToFront();
                         overworldEditor.Visible = true;
+
+                        overworldViewToolStripMenuItem.Visible = true;
+                        overworldToolStripMenuItem.Visible = true;
+                        areaToolStripMenuItem.Visible = true;
+
+                        toolStripSeparator10.Visible = true;
+                        lockoverworldToolStripItem.Visible = true; 
                     }
                     else
                     {
@@ -4545,6 +4582,13 @@ namespace ZeldaFullEditor
             else
             {
                 overworldEditor.Visible = false;
+
+                overworldViewToolStripMenuItem.Visible = false;
+                overworldToolStripMenuItem.Visible = false;
+                areaToolStripMenuItem.Visible = false;
+
+                toolStripSeparator10.Visible = false;
+                lockoverworldToolStripItem.Visible = false;
             }
 
             if (editorsTabControl.SelectedTab.Name == "GfxEditorPage")
@@ -5261,11 +5305,11 @@ namespace ZeldaFullEditor
         {
             if (showMapIndexInHexToolStripMenuItem.Checked)
             {
-                overworldEditor.mapGroupbox.Text = "Selected Map - " + overworldEditor.overworld.allmaps[overworldEditor.scene.selectedMap + overworldEditor.overworld.worldOffset].parent.ToString("X2") + " Properties : ";
+                overworldEditor.mapGroupbox.Text = "Selected Map - " + overworldEditor.scene.selectedMapParent.ToString("X2") + " Properties : ";
             }
             else
             {
-                overworldEditor.mapGroupbox.Text = "Selected Map - " + overworldEditor.overworld.allmaps[overworldEditor.scene.selectedMap + overworldEditor.overworld.worldOffset].parent.ToString() + " Properties : ";
+                overworldEditor.mapGroupbox.Text = "Selected Map - " + overworldEditor.scene.selectedMapParent.ToString() + " Properties : ";
             }
         }
 
@@ -5648,9 +5692,253 @@ namespace ZeldaFullEditor
             em.ShowDialog();
         }
 
+        /// <summary>
+        /// is triggered when the clear all custom collision button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void clearAllToolStripMenuItem_Click(object sender, EventArgs e)
         {
             activeScene.clearCustomCollisionMap();
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld sprites phase 1 button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void clearPhase1OWSpritesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all overworld sprites for phase 1 (Save Zelda), are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearOverworldSprites(0);
+            }        
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld sprites phase 2 button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void clearPhase2OWSpritesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all overworld sprites for phase 2 (Zelda Saved), are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearOverworldSprites(1);
+            }
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld sprites phase 3 button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void clearPhase3OWSpritesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all overworld sprites for phase 3 (Agah. Dead), are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearOverworldSprites(2);
+            }
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld items button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void clearAllOWItemsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all overworld items, are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearOverworldItems();
+            }
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld entrances button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void clearAllOWEntrancesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all overworld entrances, are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearOverworldEntrances();
+            }
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld holes button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void clearAllOWHolesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all overworld holes, are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearOverworldHoles();
+            }
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld exits button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void clearAllOWExitsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all overworld exits, are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearOverworldExits();
+            }
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld overlays button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void clearAllOverworldOverlaysToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all overworld overlays, are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearOverworldOverlays();
+            }
+        }
+
+        private void selectAllRoomsForExportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < 296; i++)
+            {
+                selectedMapPng.Add((short)i);
+            }
+            //loadRoomList(296);
+        }
+
+        private void deselectedAllRoomsForExportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            selectedMapPng.Clear();
+            //loadRoomList(296);
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld sprites phase 1 button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void clearPhase1AreaSpritesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all of the area " + overworldEditor.scene.selectedMapParent.ToString("X2") + "'s sprites for phase 1 (Save Zelda), are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearAreaSprites(0);
+            }
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld sprites phase 2 button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void clearPhase2AreaSpritesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all of the area " + overworldEditor.scene.selectedMapParent.ToString("X2") + "'s sprites for phase 2 (Zelda Saved), are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearAreaSprites(1);
+            }
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld sprites phase 3 button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void clearPhase3AreaSpritesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all of the area " + overworldEditor.scene.selectedMapParent.ToString("X2") + "'s sprites for phase 3 (Agah. Dead), are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearAreaSprites(2);
+            }
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld items button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void clearAllAreaItemsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all of the area " + overworldEditor.scene.selectedMapParent.ToString("X2") + "'s items, are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearAreaItems();
+            }
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld entrances button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void clearAllAreaEntrancesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all of the area " + overworldEditor.scene.selectedMapParent.ToString("X2") + "'s entrances, are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearAreaEntrances();
+            }
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld holes button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void clearAllAreaHolesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all of the area " + overworldEditor.scene.selectedMapParent.ToString("X2") + "'s holes, are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearAreaHoles();
+            }
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld exits button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void clearAllAreaExitsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all of the area " + overworldEditor.scene.selectedMapParent.ToString("X2") + "'s exits, are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearAreaExits();
+            }
+        }
+
+        /// <summary>
+        /// is triggered when the clear all overworld overlays button is pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void clearAllAreaOverlaysToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult dr = MessageBox.Show("This will remove all of the area " + overworldEditor.scene.selectedMapParent.ToString("X2") + "'s overlays, are you sure you want to do this?", "Warning", MessageBoxButtons.YesNo);
+            if (dr == DialogResult.Yes)
+            {
+                overworldEditor.clearAreaOverlays();
+            }
         }
     }
 }

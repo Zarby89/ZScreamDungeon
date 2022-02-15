@@ -53,7 +53,6 @@
             this.gravestoneButton = new System.Windows.Forms.ToolStripButton();
             this.searchtilesButton = new System.Windows.Forms.ToolStripButton();
             this.refreshToolStrip = new System.Windows.Forms.ToolStripButton();
-            this.deleteOverlayToolstripbutton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -144,7 +143,6 @@
             this.gravestoneButton,
             this.searchtilesButton,
             this.refreshToolStrip,
-            this.deleteOverlayToolstripbutton,
             this.toolStripButton1});
             this.owToolStrip.Location = new System.Drawing.Point(0, 0);
             this.owToolStrip.Name = "owToolStrip";
@@ -379,17 +377,6 @@
             this.refreshToolStrip.Size = new System.Drawing.Size(82, 22);
             this.refreshToolStrip.Text = "Refresh Maps";
             this.refreshToolStrip.Click += new System.EventHandler(this.refreshToolStrip_Click);
-            // 
-            // deleteOverlayToolstripbutton
-            // 
-            this.deleteOverlayToolstripbutton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.deleteOverlayToolstripbutton.Image = ((System.Drawing.Image)(resources.GetObject("deleteOverlayToolstripbutton.Image")));
-            this.deleteOverlayToolstripbutton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.deleteOverlayToolstripbutton.Name = "deleteOverlayToolstripbutton";
-            this.deleteOverlayToolstripbutton.Size = new System.Drawing.Size(87, 22);
-            this.deleteOverlayToolstripbutton.Text = "Delete Overlay";
-            this.deleteOverlayToolstripbutton.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
-            this.deleteOverlayToolstripbutton.Click += new System.EventHandler(this.deleteOverlayToolstripbutton_Click);
             // 
             // toolStripButton1
             // 
@@ -927,7 +914,6 @@
         private System.Windows.Forms.CheckBox mirrorXCheckbox;
         private System.Windows.Forms.PictureBox palette8Box;
         private System.Windows.Forms.ToolStripButton gravestoneButton;
-        private System.Windows.Forms.ToolStripButton deleteOverlayToolstripbutton;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Panel panel1;
