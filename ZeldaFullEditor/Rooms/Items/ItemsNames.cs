@@ -43,12 +43,6 @@ namespace ZeldaFullEditor
             }
         }
 
-        public static string[] name = new string[]
-        {
-            "Nothing","Rupee","RockCrab","Bee","Random","Bomb","Heart ","Blue Rupee",
-            "Key","Arrow","Bomb ","Heart  ","Magic","Big Magic","Chicken","Green Soldier","AliveRock?","Blue Soldier",
-            "Ground Bomb"," Heart","Fairy","Heart","Nothing " //22
-            ,"Hole","Warp","Staircase","Bombable","Switch" 
-        };
+        public static string[] name = Utils.DeepCopyStrings(Constants.SecretItemNames);
     }
 }

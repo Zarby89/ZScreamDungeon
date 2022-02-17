@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZeldaFullEditor
-{
-    public static class Constants
-    {
+namespace ZeldaFullEditor {
+    public static class Constants {
         //===========================================================================================
         //GFX Related Variables
         //===========================================================================================
@@ -48,7 +46,7 @@ namespace ZeldaFullEditor
         public static int overworldSpritesBegining = 0x4C881;
         public static int overworldSpritesAgahnim = 0x4CA21;
         public static int overworldSpritesZelda = 0x4C901;
-        
+
         /*public static int overworldSpritesBeginingEditor = 0x108100;
         public static int overworldSpritesAgahnimEditor = 0x108180;
         public static int overworldSpritesZeldaEditor = 0x1082A0;*/
@@ -61,14 +59,14 @@ namespace ZeldaFullEditor
         public static int mapGfx = 0x7C9C;
         public static int overlayPointers = 0x77664;
         public static int overlayPointersBank = 0x0E;
-        
+
         public static int overworldTilesType = 0x71459;
         public static int overworldMessages = 0x3F51D;
 
         //TODO:
         public static int overworldMusicBegining = 0x14303;
-        public static int overworldMusicZelda = 0x14303+0x40;
-        public static int overworldMusicMasterSword = 0x14303+0x80;
+        public static int overworldMusicZelda = 0x14303 + 0x40;
+        public static int overworldMusicMasterSword = 0x14303 + 0x80;
         public static int overworldMusicAgahim = 0x14303 + 0xC0;
         public static int overworldMusicDW = 0x14403;
 
@@ -89,6 +87,7 @@ namespace ZeldaFullEditor
         public static int overworldMapParentId = 0x125EC;
 
         public static int overworldTransitionPositionY = 0x128C4; 
+
         public static int overworldTransitionPositionX = 0x12944;
 
         public static int overworldScreenSize = 0x1788D;
@@ -133,10 +132,11 @@ namespace ZeldaFullEditor
         public static int OWExitXPlayerWhirlpool = 0x16B8F;// JP = ;016E2B
         public static int OWExitYCameraWhirlpool = 0x16BB1;// JP = ;016E4D
         public static int OWExitXCameraWhirlpool = 0x16BD3;// JP = ;016E6F
-        public static int OWExitUnk1Whirlpool = 0x16BF5;   // JP = ;016E91
-        public static int OWExitUnk2Whirlpool = 0x16C17;   // JP = ;016EB3
-        public static int OWWhirlpoolPosition = 0x16CF8;   // JP = ;016F94
-        
+
+        public static int OWExitUnk1Whirlpool = 0x16BF5;//    JP = ;016E91
+        public static int OWExitUnk2Whirlpool = 0x16C17;//    JP = ;016EB3
+        public static int OWWhirlpoolPosition = 0x16CF8;//    JP = ;016F94
+
         //===========================================================================================
         //Dungeon Related Variables
         //===========================================================================================
@@ -156,18 +156,18 @@ namespace ZeldaFullEditor
         public static int room_object_layout_pointer = 0x882D;
 
         public static int room_object_pointer = 0x874C; //Long pointer
-        
+
         public static int chests_length_pointer = 0xEBF6;
         public static int chests_data_pointer1 = 0xEBFB;
         //public static int chests_data_pointer2 = 0xEC0A; //Disabled for now could be used for expansion
         //public static int chests_data_pointer3 = 0xEC10; //Disabled for now could be used for expansion
 
         public static int blocks_length = 0x8896; //word value 
-        public static int blocks_pointer1 = 0x15AFA; 
-        public static int blocks_pointer2 = 0x15B01; 
-        public static int blocks_pointer3 = 0x15B08; 
+        public static int blocks_pointer1 = 0x15AFA;
+        public static int blocks_pointer2 = 0x15B01;
+        public static int blocks_pointer3 = 0x15B08;
         public static int blocks_pointer4 = 0x15B0F;
-        
+
         public static int torch_data = 0x2736A; //JP 0x2704A
         public static int torches_length_pointer = 0x88C1;
 
@@ -253,8 +253,8 @@ namespace ZeldaFullEditor
 
         public static int chests_backupitems = 0x3B528; //item id you get instead if you already have that item
         public static int chests_yoffset = 0x4836C;
-        public static int chests_xoffset = 0x4836C + (76*1);
-        public static int chests_itemsgfx = 0x4836C + (76*2);
+        public static int chests_xoffset = 0x4836C + (76 * 1);
+        public static int chests_itemsgfx = 0x4836C + (76 * 2);
         public static int chests_itemswide = 0x4836C + (76 * 3);
         public static int chests_itemsproperties = 0x4836C + (76 * 4);
         public static int chests_sramaddress = 0x4836C + (76 * 5);
@@ -337,24 +337,9 @@ namespace ZeldaFullEditor
 
         public static int crystalVertices = 0x04FF98;
 
-        public static string[] RoomEffect = new string[]
-        {
-            "Nothing", "01", "Moving Floor", "Moving Water", "04", "Red Flashes", "Light Torchto See Floor", "Ganon Room"
-        };
-
-        public static string[] RoomTag = new string[]
-        {
-            "Nothing", "NW Kill Enemy to Open", "NE Kill Enemy to Open", "SW Kill Enemy to Open", "SE Kill Enemy to Open", "W Kill Enemy to Open", "E Kill Enemy to Open", "N Kill Enemy to Open", "S Kill Enemy to Open", "Clear Quadrant to Open", "Clear Room to Open",
-            "NW Push Block to Open", "NE Push Block to Open", "SW Push Block to Open", "SE Push Block to Open", "W Push Block to Open", "E Push Block to Open", "N Push Block to Open", "S Push Block to Open", "Push Block to Open", "Pull Lever to Open", "Clear Level to Open",
-            "Switch Open Door(Hold)","Switch Open Door(Toggle)","Turn off Water","Turn on Water","Water Gate","Water Twin","Secret Wall Right", "Secret Wall Left", "Crash","Crash","Pull Switch to bomb Wall","Holes 0","Open Chest (Holes 0)","Holes 1", "Holes 2","Kill Enemy to clear level",
-            "SE Kill enemy to move block","Trigger activated Chest","Pull lever to bomb wall","NW Kill Enemy for chest", "NE Kill Enemy for chest", "SW Kill Enemy for chest", "SE Kill Enemy for chest", "W Kill Enemy for chest", "E Kill Enemy for chest", "N Kill Enemy for chest", "S Kill Enemy for chest", "Clear Quadrant for chest", "Clear Room for chest",
-            "Light Torches to open","Holes 3","Holes 4","Holes 5","Holes 6","Agahnim Room","Holes 7","Holes 8","Open Chest for Holes 8","Push block for Chest","Kill to open Ganon Door","Light Torches to get Chest","Kill boss Again"
-        };
-
         public static bool Rando = false; //is it a rando rom?
 
-        public static void Init_Jp(bool rando = false)
-        {
+        public static void Init_Jp(bool rando = false) {
             pit_pointer = 0x394A2;
             pit_count = 0x3949D;
             //04EF2F
@@ -427,9 +412,9 @@ namespace ZeldaFullEditor
             hardcodedGrassDW = 0x67FF0;//map>40
             hardcodedGrassSpecial = 0x67FE1;//map 183,182,180
 
-            OWExitRoomId = 0x15D8A - 0x29C; 
-            OWExitMapId = 0x15E28 - 0x29C; 
-            OWExitVram = 0x15E77 - 0x29C; 
+            OWExitRoomId = 0x15D8A - 0x29C;
+            OWExitMapId = 0x15E28 - 0x29C;
+            OWExitVram = 0x15E77 - 0x29C;
             OWExitYScroll = 0x15F15 - 0x29C;
             OWExitXScroll = 0x15FB3 - 0x29C;
             OWExitYPlayer = 0x16051 - 0x29C;
@@ -462,10 +447,845 @@ namespace ZeldaFullEditor
             overworldTilesType = 0x7FD94;
             Rando = rando;
 
-            if (rando == true)
-            {
+            if (rando == true) {
                 //TODO: Add condition here?
             }
         }
+
+        //===========================================================================================
+        // Names
+        //===========================================================================================
+        public static string[] RoomEffect = new string[]
+        {
+            "Nothing",
+            "Nothing",
+            "Moving Floor",
+            "Moving Water",
+            "Trinexx Shell",
+            "Red Flashes",
+            "Light Torch to See Floor",
+            "Ganon's Darkness"
+        };
+
+        public static string[] RoomTag = new string[]
+        {
+            "Nothing",
+
+            "NW Kill Enemy to Open",
+            "NE Kill Enemy to Open",
+            "SW Kill Enemy to Open",
+            "SE Kill Enemy to Open",
+            "W Kill Enemy to Open",
+            "E Kill Enemy to Open",
+            "N Kill Enemy to Open",
+            "S Kill Enemy to Open",
+            "Clear Quadrant to Open",
+            "Clear Full Tile to Open",
+
+            "NW Push Block to Open",
+            "NE Push Block to Open",
+            "SW Push Block to Open",
+            "SE Push Block to Open",
+            "W Push Block to Open",
+            "E Push Block to Open",
+            "N Push Block to Open",
+            "S Push Block to Open",
+            "Push Block to Open",
+            "Pull Lever to Open",
+            "Collect Prize to Open",
+
+            "Hold Switch Open Door",
+            "Toggle Switch to Open Door",
+            "Turn off Water",
+            "Turn on Water",
+            "Water Gate",
+            "Water Twin",
+            "Moving Wall Right",
+            "Moving Wall Left",
+            "Crash",
+            "Crash",
+            "Push Switch Exploding Wall",
+            "Holes 0",
+            "Open Chest (Holes 0)",
+            "Holes 1",
+            "Holes 2",
+            "Defeat Boss for Dungeon Prize",
+
+            "SE Kill Enemy to Push Block",
+            "Trigger Switch Chest",
+            "Pull Lever Exploding Wall",
+            "NW Kill Enemy for Chest",
+            "NE Kill Enemy for Chest",
+            "SW Kill Enemy for Chest",
+            "SE Kill Enemy for Chest",
+            "W Kill Enemy for Chest",
+            "E Kill Enemy for Chest",
+            "N Kill Enemy for Chest",
+            "S Kill Enemy for Chest",
+            "Clear Quadrant for Chest",
+            "Clear Full Tile for Chest",
+
+            "Light Torches to Open",
+            "Holes 3",
+            "Holes 4",
+            "Holes 5",
+            "Holes 6",
+            "Agahnim Room",
+            "Holes 7",
+            "Holes 8",
+            "Open Chest for Holes 8",
+            "Push Block for Chest",
+            "Clear Room for Triforce Door",
+            "Light Torches for Chest",
+            "Kill Boss Again"
+        };
+
+        public static string[] SecretItemNames = new string[]
+        {
+            "Nothing",
+            "Green Rupee",
+            "Rock hoarder",
+            "Bee",
+            "Health pack",
+            "Bomb",
+            "Heart ",
+            "Blue Rupee",
+
+            "Key",
+            "Arrow",
+            "Bomb",
+            "Heart",
+            "Magic",
+            "Full Magic",
+            "Cucco",
+            "Green Soldier",
+            "Bush Stal",
+            "Blue Soldier",
+
+            "Landmine",
+            "Heart",
+            "Fairy",
+            "Heart",
+            "Nothing ", //22
+
+            "Hole",
+            "Warp",
+            "Staircase",
+            "Bombable",
+            "Switch"
+           };
+
+
+        public static string[] Type1RoomObjectNames = new string[]
+        {
+             "Ceiling ↔",
+             "Wall (top, north) ↔",
+             "Wall (top, south) ↔",
+             "Wall (bottom, north) ↔",
+             "Wall (bottom, south) ↔",
+             "Wall columns (north) ↔",
+             "Wall columns (south) ↔",
+             "Deep wall (north) ↔",
+             "Deep wall (south) ↔",
+             "Diagonal wall A ◤ (top) ↔",
+             "Diagonal wall A ◣ (top) ↔",
+             "Diagonal wall A ◥ (top) ↔",
+             "Diagonal wall A ◢ (top) ↔",
+             "Diagonal wall B ◤ (top) ↔",
+             "Diagonal wall B ◣ (top) ↔",
+             "Diagonal wall B ◥ (top) ↔",
+             "Diagonal wall B ◢ (top) ↔",
+             "Diagonal wall C ◤ (top) ↔",
+             "Diagonal wall C ◣ (top) ↔",
+             "Diagonal wall C ◥ (top) ↔",
+             "Diagonal wall C ◢ (top) ↔",
+             "Diagonal wall A ◤ (bottom) ↔",
+             "Diagonal wall A ◣ (bottom) ↔",
+             "Diagonal wall A ◥ (bottom) ↔",
+             "Diagonal wall A ◢ (bottom) ↔",
+             "Diagonal wall B ◤ (bottom) ↔",
+             "Diagonal wall B ◣ (bottom) ↔",
+             "Diagonal wall B ◥ (bottom) ↔",
+             "Diagonal wall B ◢ (bottom) ↔",
+             "Diagonal wall C ◤ (bottom) ↔",
+             "Diagonal wall C ◣ (bottom) ↔",
+             "Diagonal wall C ◥ (bottom) ↔",
+             "Diagonal wall C ◢ (bottom) ↔",
+             "Platform stairs ↔",
+             "Rail ↔",
+             "Pit edge ┏━┓ A (north) ↔",
+             "Pit edge ┏━┓ B (north) ↔",
+             "Pit edge ┏━┓ C (north) ↔",
+             "Pit edge ┏━┓ D (north) ↔",
+             "Pit edge ┏━┓ E (north) ↔",
+             "Pit edge ┗━┛ (south) ↔",
+             "Pit edge ━━━ (south) ↔",
+             "Pit edge ━━━ (north) ↔",
+             "Pit edge ━━┛ (south) ↔",
+             "Pit edge ┗━━ (south) ↔",
+             "Pit edge ━━┓ (north) ↔",
+             "Pit edge ┏━━ (north) ↔",
+             "Rail wall (north) ↔",
+             "Rail wall (south) ↔",
+             "Nothing",
+             "Nothing",
+             "Carpet ↔",
+             "Carpet trim ↔",
+             "Weird door", // TODO: WEIRD DOOR OBJECT NEEDS INVESTIGATION
+             "Drapes (north) ↔",
+             "Drapes (west, odd) ↔",
+             "Statues ↔",
+             "Columns ↔",
+             "Wall decors (north) ↔",
+             "Wall decors (south) ↔",
+             "Chairs in pairs ↔",
+             "Tall torches ↔",
+             "Supports (north) ↔",
+             "Water edge ┏━┓ (concave) ↔",
+             "Water edge ┗━┛ (concave) ↔",
+             "Water edge ┏━┓ (convex) ↔",
+             "Water edge ┗━┛ (convex) ↔",
+             "Water edge ┏━┛ (concave) ↔",
+             "Water edge ┗━┓ (concave) ↔",
+             "Water edge ┗━┓ (convex) ↔",
+             "Water edge ┏━┛ (convex) ↔",
+             "Unknown", // TODO: NEEDS IN GAME CHECKING
+             "Unknown", // TODO: NEEDS IN GAME CHECKING
+             "Unknown", // TODO: NEEDS IN GAME CHECKING
+             "Unknown", // TODO: NEEDS IN GAME CHECKING
+             "Supports (south) ↔",
+             "Bar ↔",
+             "Shelf A ↔",
+             "Shelf B ↔",
+             "Shelf C ↔",
+             "Somaria path ↔",
+             "Cannon hole A (north) ↔",
+             "Cannon hole A (south) ↔",
+             "Pipe path ↔",
+             "Nothing",
+             "Wall torches (north) ↔",
+             "Wall torches (south) ↔",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Cannon hole B (north) ↔",
+             "Cannon hole B (south) ↔",
+             "Thick rail ↔",
+             "Blocks ↔",
+             "Long rail ↔",
+             "Ceiling ↕",
+             "Wall (top, west) ↕",
+             "Wall (top, east) ↕",
+             "Wall (bottom, west) ↕",
+             "Wall (bottom, east) ↕",
+             "Wall columns (west) ↕",
+             "Wall columns (east) ↕",
+             "Deep wall (west) ↕",
+             "Deep wall (east) ↕",
+             "Rail ↕",
+             "Pit edge (west) ↕",
+             "Pit edge (east) ↕",
+             "Rail wall (west) ↕",
+             "Rail wall (east) ↕",
+             "Nothing",
+             "Nothing",
+             "Carpet ↕",
+             "Carpet trim ↕",
+             "Nothing",
+             "Drapes (west) ↕",
+             "Drapes (east) ↕",
+             "Columns ↕",
+             "Wall decors (west) ↕",
+             "Wall decors (east) ↕",
+             "Supports (west) ↕",
+             "Water edge (west) ↕",
+             "Water edge (east) ↕",
+             "Supports (east) ↕",
+             "Somaria path ↕",
+             "Pipe path ↕",
+             "Nothing",
+             "Wall torches (west) ↕",
+             "Wall torches (east) ↕",
+             "Wall decors tight A (west) ↕",
+             "Wall decors tight A (east) ↕",
+             "Wall decors tight B (west) ↕",
+             "Wall decors tight B (east) ↕",
+             "Cannon hole (west) ↕",
+             "Cannon hole (east) ↕",
+             "Tall torches ↕",
+             "Thick rail ↕",
+             "Blocks ↕",
+             "Long rail ↕",
+             "Jump ledge (west) ↕",
+             "Jump ledge (east) ↕",
+             "Rug trim (west) ↕",
+             "Rug trim (east) ↕",
+             "Bar ↕",
+             "Wall flair (west) ↕",
+             "Wall flair (east) ↕",
+             "Blue pegs ↕",
+             "Orange pegs ↕",
+             "Invisible floor ↕",
+             "Fake pots ↕",
+             "Hammer pegs ↕",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Diagonal ceiling A ◤",
+             "Diagonal ceiling A ◣",
+             "Diagonal ceiling A ◥",
+             "Diagonal ceiling A ◢",
+             "Pit ⇲",
+             "Diagonal layer 2 mask A ◤",
+             "Diagonal layer 2 mask A ◣",
+             "Diagonal layer 2 mask A ◥",
+             "Diagonal layer 2 mask A ◢",
+             "Diagonal layer 2 mask B ◤", // TODO: VERIFY
+             "Diagonal layer 2 mask B ◣", // TODO: VERIFY
+             "Diagonal layer 2 mask B ◥", // TODO: VERIFY
+             "Diagonal layer 2 mask B ◢", // TODO: VERIFY
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Jump ledge (north) ↔",
+             "Jump ledge (south) ↔",
+             "Rug ↔",
+             "Rug trim (north) ↔",
+             "Rug trim (south) ↔",
+             "Archery game curtains ↔",
+             "Wall flair (north) ↔",
+             "Wall flair (south) ↔",
+             "Blue pegs ↔",
+             "Orange pegs ↔",
+             "Invisible floor ↔",
+             "Fake pressure plates ↔",
+             "Fake pots ↔",
+             "Hammer pegs ↔",
+             "Nothing",
+             "Nothing",
+             "Ceiling (large) ⇲",
+             "Chest platform (tall) ⇲",
+             "Layer 2 pit mask (large) ⇲",
+             "Layer 2 pit mask (medium) ⇲",
+             "Floor 1 ⇲",
+             "Floor 3 ⇲",
+             "Layer 2 mask (large) ⇲",
+             "Floor 4 ⇲",
+             "Water floor ⇲ ",
+             "Flood water (medium) ⇲ ",
+             "Conveyor floor ⇲ ",
+             "Nothing",
+             "Nothing",
+             "Moving wall (west) ⇲",
+             "Moving wall (east) ⇲",
+             "Nothing",
+             "Nothing",
+             "Icy floor A ⇲",
+             "Icy floor B ⇲",
+             "Moving wall flag", // TODO: WTF IS THIS?
+             "Moving wall flag", // TODO: WTF IS THIS?
+             "Moving wall flag", // TODO: WTF IS THIS?
+             "Moving wall flag", // TODO: WTF IS THIS?
+             "Layer 2 mask (medium) ⇲",
+             "Flood water (large) ⇲",
+             "Layer 2 swim mask ⇲",
+             "Flood water B (large) ⇲",
+             "Floor 2 ⇲",
+             "Chest platform (short) ⇲",
+             "Table / rock ⇲",
+             "Spike blocks ⇲",
+             "Spiked floor ⇲",
+             "Floor 7 ⇲",
+             "Tiled floor ⇲",
+             "Rupee floor ⇲",
+             "Conveyor upwards ⇲",
+             "Conveyor downwards ⇲",
+             "Conveyor leftwards ⇲",
+             "Conveyor rightwards ⇲",
+             "Heavy current water ⇲",
+             "Floor 10 ⇲",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+             "Nothing",
+        };
+
+        public static string[] Type2RoomObjectNames = new string[]
+        {
+            "Corner (top, concave) ▛",
+            "Corner (top, concave) ▙",
+            "Corner (top, concave) ▜",
+            "Corner (top, concave) ▟",
+            "Corner (top, convex) ▟",
+            "Corner (top, convex) ▜",
+            "Corner (top, convex) ▙",
+            "Corner (top, convex) ▛",
+            "Corner (bottom, concave) ▛",
+            "Corner (bottom, concave) ▙",
+            "Corner (bottom, concave) ▜",
+            "Corner (bottom, concave) ▟",
+            "Corner (bottom, convex) ▟",
+            "Corner (bottom, convex) ▜",
+            "Corner (bottom, convex) ▙",
+            "Corner (bottom, convex) ▛",
+            "Kinked corner north (bottom) ▜",
+            "Kinked corner south (bottom) ▟",
+            "Kinked corner north (bottom) ▛",
+            "Kinked corner south (bottom) ▙",
+            "Kinked corner west (bottom) ▙",
+            "Kinked corner west (bottom) ▛",
+            "Kinked corner east (bottom) ▟",
+            "Kinked corner east (bottom) ▜",
+            "Deep corner (concave) ▛",
+            "Deep corner (concave) ▙",
+            "Deep corner (concave) ▜",
+            "Deep corner (concave) ▟",
+            "Large brazier",
+            "Statue",
+            "Star tile (disabled)",
+            "Star tile (enabled)",
+            "Small torch (lit)",
+            "Barrel",
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Table",
+            "Fairy statue",
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Chair",
+            "Bed",
+            "Fireplace",
+            "Mario portrait",
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Interroom stairs (up)",
+            "Interroom stairs (down)",
+            "Interroom stairs B (down)",
+            "Intraroom stairs north B", // TODO: VERIFY LAYER HANDLING
+            "Intraroom stairs north (separate layers)",
+            "Intraroom stairs north (merged layers)",
+            "Intraroom stairs north (swim layer)",
+            "Block",
+            "Water ladder (north)",
+            "Water ladder (south)", // TODO: NEEDS IN GAME VERIFICATION
+            "Dam floodgate",
+            "Interroom spiral stairs up (top)",
+            "Interroom spiral stairs down (top)",
+            "Interroom spiral stairs up (bottom)",
+            "Interroom spiral stairs down (bottom)",
+            "Sanctuary wall (north)",
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Pew",
+            "Magic bat altar",
+        };
+
+        public static string[] Type3RoomObjectNames = new string[]
+        {
+            "Waterfall face (empty)",
+            "Waterfall face (short)",
+            "Waterfall face (long)",
+            "Somaria path endpoint",
+            "Somaria path intersection ╋",
+            "Somaria path corner ┏",
+            "Somaria path corner ┗",
+            "Somaria path corner ┓",
+            "Somaria path corner ┛",
+            "Somaria path intersection ┳",
+            "Somaria path intersection ┻",
+            "Somaria path intersection ┣",
+            "Somaria path intersection ┫",
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Somaria path 2-way endpoint",
+            "Somaria path crossover",
+            "Babasu hole (north)",
+            "Babasu hole (south)",
+            "9 blue rupees",
+            "Telepathy tile",
+            "Warp door", // TODO: NEEDS IN GAME VERIFICATION THAT THIS IS USELESS
+            "Kholdstare's shell",
+            "Hammer peg",
+            "Prison cell",
+            "Big key lock",
+            "Chest",
+            "Chest (open)",
+            "Intraroom stairs south", // TODO: VERIFY LAYER HANDLING
+            "Intraroom stairs south (separate layers)",
+            "Intraroom stairs south (merged layers)",
+            "Interroom straight stairs up (north, top)",
+            "Interroom straight stairs down (north, top)",
+            "Interroom straight stairs up (south, top)",
+            "Interroom straight stairs down (south, top)",
+            "Deep corner (convex) ▟",
+            "Deep corner (convex) ▜",
+            "Deep corner (convex) ▙",
+            "Deep corner (convex) ▛",
+            "Interroom straight stairs up (north, bottom)",
+            "Interroom straight stairs down (north, bottom)",
+            "Interroom straight stairs up (south, bottom)",
+            "Interroom straight stairs down (south, bottom)",
+            "Lamp cones",
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Liftable large block",
+            "Agahnim's altar",
+            "Agahnim's boss room",
+            "Pot",
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Big chest",
+            "Big chest (open)",
+            "Intraroom stairs south (swim layer)",
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Pipe end (south)",
+            "Pipe end (north)",
+            "Pipe end (east)",
+            "Pipe end (west)",
+            "Pipe corner ▛",
+            "Pipe corner ▙",
+            "Pipe corner ▜",
+            "Pipe corner ▟",
+            "Pipe-rock intersection ⯊",
+            "Pipe-rock intersection ⯋",
+            "Pipe-rock intersection ◖",
+            "Pipe-rock intersection ◗",
+            "Pipe crossover",
+            "Bombable floor",
+            "Fake bombable floor",
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Warp tile",
+            "Tool rack",
+            "Furnace",
+            "Tub (wide)",
+            "Anvil",
+            "Warp tile (disabled)",
+            "Pressure plate",
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Blue peg",
+            "Orange peg",
+            "Fortune teller room",
+            "Unknown", // TODO: NEEDS IN GAME CHECKING
+            "Bar corner ▛",
+            "Bar corner ▙",
+            "Bar corner ▜",
+            "Bar corner ▟",
+            "Decorative bowl",
+            "Tub (tall)",
+            "Bookcase",
+            "Range",
+            "Suitcase",
+            "Bar bottles",
+            "Arrow game hole (west)",
+            "Arrow game hole (east)",
+            "Vitreous goo graphics",
+            "Fake pressure plate",
+            "Medusa head",
+            "4-way shooter block",
+            "Pit",
+            "Wall crack (north)",
+            "Wall crack (south)",
+            "Wall crack (west)",
+            "Wall crack (east)",
+            "Large decor",
+            "Water grate (north)",
+            "Water grate (south)",
+            "Water grate (west)",
+            "Water grate (east)",
+            "Window sunlight",
+            "Floor sunlight",
+            "Trinexx's shell",
+            "Layer 2 mask (full)",
+            "Boss entrance",
+            "Minigame chest",
+            "Ganon door",
+            "Triforce wall ornament",
+            "Triforce floor tiles",
+            "Freezor hole",
+            "Pile of bones",
+            "Vitreous goo damage",
+            "Arrow tile ↑",
+            "Arrow tile ↓",
+            "Arrow tile →",
+            "Nothing",
+        };
+
+        public static string[] TileTypeNames = new string[]
+        {
+            "$00 Nothing (standard floor)",
+            "$01 Collision",
+            "$02 Collision",
+            "$03 Collision",
+            "$04 Collision",
+            "$05 Nothing (unused?)",
+            "$06 Nothing (unused?)",
+            "$07 Nothing (unused?)",
+            "$08 Deep water",
+            "$09 Shallow water",
+            "$0A Unknown? Possibly unused",
+            "$0B Collision (different in Overworld and unknown)",
+            "$0C Overlay mask",
+            "$0D Spike floor",
+            "$0E GT ice",
+            "$0F Ice palace ice",
+            "$10 Slope ◤",
+            "$11 Slope ◥",
+            "$12 Slope ◣",
+            "$13 Slope ◢",
+            "$14 Nothing (unused?)",
+            "$15 Nothing (unused?)",
+            "$16 Nothing (unused?)",
+            "$17 Nothing (unused?)",
+            "$18 Slope ◤",
+            "$19 Slope ◥",
+            "$1A Slope ◣",
+            "$1B Slope ◢",
+            "$1C Layer 2 overlay",
+            "$1D North single-layer auto stairs",
+            "$1E North layer-swap auto stairs",
+            "$1F North layer-swap auto stairs",
+            "$20 Pit",
+            "$21 Nothing (unused?)",
+            "$22 Manual stairs",
+            "$23 Pot switch",
+            "$24 Pressure switch",
+            "$25 Nothing (unused but referenced by somaria blocks)",
+            "$26 Collision (near stairs?)",
+            "$27 Brazier/Fence/Statue/Block/General hookable things",
+            "$28 North ledge",
+            "$29 South ledge",
+            "$2A East ledge",
+            "$2B West ledge",
+            "$2C ◤ ledge",
+            "$2D ◣ ledge",
+            "$2E ◥ ledge",
+            "$2F ◢ ledge",
+            "$30 Straight inter-room stairs south/up 0",
+            "$31 Straight inter-room stairs south/up 1",
+            "$32 Straight inter-room stairs south/up 2",
+            "$33 Straight inter-room stairs south/up 3",
+            "$34 Straight inter-room stairs north/down 0",
+            "$35 Straight inter-room stairs north/down 1",
+            "$36 Straight inter-room stairs north/down 2",
+            "$37 Straight inter-room stairs north/down 3",
+            "$38 Straight inter-room stairs north/down edge",
+            "$39 Straight inter-room stairs south/up edge",
+            "$3A Star tile (inactive on load)",
+            "$3B Star tile (active on load)",
+            "$3C Nothing (unused?)",
+            "$3D South single-layer auto stairs",
+            "$3E South layer-swap auto stairs",
+            "$3F South layer-swap auto stairs",
+            "$40 Thick grass",
+            "$41 Nothing (unused?)",
+            "$42 Gravestone / Tower of hera ledge shadows??",
+            "$43 Skull Woods entrance/Hera columns???",
+            "$44 Spike",
+            "$45 Nothing (unused?)",
+            "$46 Desert Tablet",
+            "$47 Nothing (unused?)",
+            "$48 Diggable ground",
+            "$49 Nothing (unused?)",
+            "$4A Diggable ground",
+            "$4B Warp tile",
+            "$4C Nothing (unused?) | Something unknown in overworld",
+            "$4D Nothing (unused?) | Something unknown in overworld",
+            "$4E Square corners in EP overworld",
+            "$4F Square corners in EP overworld",
+            "$50 Green bush",
+            "$51 Dark bush",
+            "$52 Gray rock",
+            "$53 Black rock",
+            "$54 Hint tile/Sign",
+            "$55 Big gray rock",
+            "$56 Big black rock",
+            "$57 Bonk rocks",
+            "$58 Chest 0",
+            "$59 Chest 1",
+            "$5A Chest 2",
+            "$5B Chest 3",
+            "$5C Chest 4",
+            "$5D Chest 5",
+            "$5E Spiral stairs",
+            "$5F Spiral stairs",
+            "$60 Rupee tile",
+            "$61 Nothing (unused?)",
+            "$62 Bombable floor",
+            "$63 Minigame chest",
+            "$64 Nothing (unused?)",
+            "$65 Nothing (unused?)",
+            "$66 Crystal peg down",
+            "$67 Crystal peg up",
+            "$68 Upwards conveyor",
+            "$69 Downwards conveyor",
+            "$6A Leftwards conveyor",
+            "$6B Rightwards conveyor",
+            "$6C North vines",
+            "$6D South vines",
+            "$6E West vines",
+            "$6F East vines",
+            "$70 Pot/Hammer peg/Push block 00",
+            "$71 Pot/Hammer peg/Push block 01",
+            "$72 Pot/Hammer peg/Push block 02",
+            "$73 Pot/Hammer peg/Push block 03",
+            "$74 Pot/Hammer peg/Push block 04",
+            "$75 Pot/Hammer peg/Push block 05",
+            "$76 Pot/Hammer peg/Push block 06",
+            "$77 Pot/Hammer peg/Push block 07",
+            "$78 Pot/Hammer peg/Push block 08",
+            "$79 Pot/Hammer peg/Push block 09",
+            "$7A Pot/Hammer peg/Push block 0A",
+            "$7B Pot/Hammer peg/Push block 0B",
+            "$7C Pot/Hammer peg/Push block 0C",
+            "$7D Pot/Hammer peg/Push block 0D",
+            "$7E Pot/Hammer peg/Push block 0E",
+            "$7F Pot/Hammer peg/Push block 0F",
+            "$80 North/South door",
+            "$81 East/West door",
+            "$82 North/South shutter door",
+            "$83 East/West shutter door",
+            "$84 North/South layer 2 door",
+            "$85 East/West layer 2 door",
+            "$86 North/South layer 2 shutter door",
+            "$87 East/West layer 2 shutter door",
+            "$88 Some type of door (?)",
+            "$89 East/West transport door",
+            "$8A Some type of door (?)",
+            "$8B Some type of door (?)",
+            "$8C Some type of door (?)",
+            "$8D Some type of door (?)",
+            "$8E Entrance door",
+            "$8F Entrance door",
+            "$90 Layer toggle shutter door (?)",
+            "$91 Layer toggle shutter door (?)",
+            "$92 Layer toggle shutter door (?)",
+            "$93 Layer toggle shutter door (?)",
+            "$94 Layer toggle shutter door (?)",
+            "$95 Layer toggle shutter door (?)",
+            "$96 Layer toggle shutter door (?)",
+            "$97 Layer toggle shutter door (?)",
+            "$98 Layer+Dungeon toggle shutter door (?)",
+            "$99 Layer+Dungeon toggle shutter door (?)",
+            "$9A Layer+Dungeon toggle shutter door (?)",
+            "$9B Layer+Dungeon toggle shutter door (?)",
+            "$9C Layer+Dungeon toggle shutter door (?)",
+            "$9D Layer+Dungeon toggle shutter door (?)",
+            "$9E Layer+Dungeon toggle shutter door (?)",
+            "$9F Layer+Dungeon toggle shutter door (?)",
+            "$A0 North/South Dungeon swap door",
+            "$A1 Dungeon toggle door (?)",
+            "$A2 Dungeon toggle door (?)",
+            "$A3 Dungeon toggle door (?)",
+            "$A4 Dungeon toggle door (?)",
+            "$A5 Dungeon toggle door (?)",
+            "$A6 Nothing (unused?)",
+            "$A7 Nothing (unused?)",
+            "$A8 Layer+Dungeon toggle shutter door (?)",
+            "$A9 Layer+Dungeon toggle shutter door (?)",
+            "$AA Layer+Dungeon toggle shutter door (?)",
+            "$AB Layer+Dungeon toggle shutter door (?)",
+            "$AC Layer+Dungeon toggle shutter door (?)",
+            "$AD Layer+Dungeon toggle shutter door (?)",
+            "$AE Layer+Dungeon toggle shutter door (?)",
+            "$AF Layer+Dungeon toggle shutter door (?)",
+            "$B0 Somaria ─",
+            "$B1 Somaria │",
+            "$B2 Somaria ┌",
+            "$B3 Somaria └",
+            "$B4 Somaria ┐",
+            "$B5 Somaria ┘",
+            "$B6 Somaria ⍰ 1 way",
+            "$B7 Somaria ┬",
+            "$B8 Somaria ┴",
+            "$B9 Somaria ├",
+            "$BA Somaria ┤",
+            "$BB Somaria ┼",
+            "$BC Somaria ⍰ 2 way",
+            "$BD Somaria ┼ crossover",
+            "$BE Pipe entrance",
+            "$BF Nothing (unused?)",
+            "$C0 Torch 00",
+            "$C1 Torch 01",
+            "$C2 Torch 02",
+            "$C3 Torch 03",
+            "$C4 Torch 04",
+            "$C5 Torch 05",
+            "$C6 Torch 06",
+            "$C7 Torch 07",
+            "$C8 Torch 08",
+            "$C9 Torch 09",
+            "$CA Torch 0A",
+            "$CB Torch 0B",
+            "$CC Torch 0C",
+            "$CD Torch 0D",
+            "$CE Torch 0E",
+            "$CF Torch 0F",
+            "$D0 Nothing (unused?)",
+            "$D1 Nothing (unused?)",
+            "$D2 Nothing (unused?)",
+            "$D3 Nothing (unused?)",
+            "$D4 Nothing (unused?)",
+            "$D5 Nothing (unused?)",
+            "$D6 Nothing (unused?)",
+            "$D7 Nothing (unused?)",
+            "$D8 Nothing (unused?)",
+            "$D9 Nothing (unused?)",
+            "$DA Nothing (unused?)",
+            "$DB Nothing (unused?)",
+            "$DC Nothing (unused?)",
+            "$DD Nothing (unused?)",
+            "$DE Nothing (unused?)",
+            "$DF Nothing (unused?)",
+            "$E0 Nothing (unused?)",
+            "$E1 Nothing (unused?)",
+            "$E2 Nothing (unused?)",
+            "$E3 Nothing (unused?)",
+            "$E4 Nothing (unused?)",
+            "$E5 Nothing (unused?)",
+            "$E6 Nothing (unused?)",
+            "$E7 Nothing (unused?)",
+            "$E8 Nothing (unused?)",
+            "$E9 Nothing (unused?)",
+            "$EA Nothing (unused?)",
+            "$EB Nothing (unused?)",
+            "$EC Nothing (unused?)",
+            "$ED Nothing (unused?)",
+            "$EE Nothing (unused?)",
+            "$EF Nothing (unused?)",
+            "$F0 Door 0 bottom",
+            "$F1 Door 1 bottom",
+            "$F2 Door 2 bottom",
+            "$F3 Door 3 bottom",
+            "$F4 Door X bottom? (unused?)",
+            "$F5 Door X bottom? (unused?)",
+            "$F6 Door X bottom? (unused?)",
+            "$F7 Door X bottom? (unused?)",
+            "$F8 Door 0 top",
+            "$F9 Door 1 top",
+            "$FA Door 2 top",
+            "$FB Door 3 top",
+            "$FC Door X top? (unused?)",
+            "$FD Door X top? (unused?)",
+            "$FE Door X top? (unused?)",
+            "$FF Door X top? (unused?)"
+        };
     }
 }
