@@ -88,7 +88,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 globalmouseTileDownYLOCK = tileY;
 
                 scene.selectedMap = mapId + scene.ow.worldOffset;
-                scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap].parent;
+                scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap + scene.ow.worldOffset].parent;
                 //scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].BuildMap();
 
                 scene.tileBitmapPtr = GFX.mapblockset16;
