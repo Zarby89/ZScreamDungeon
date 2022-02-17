@@ -2790,7 +2790,7 @@ namespace ZeldaFullEditor
             pot_items = null;
             selectedObject = null;
 
-            Console.WriteLine("Room Got Deleted");
+            Console.WriteLine("Room was deleted");
         }
     }
 
