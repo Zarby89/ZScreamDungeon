@@ -126,7 +126,6 @@
             this.Text = "GlobalOptionForm";
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
 
         #endregion
