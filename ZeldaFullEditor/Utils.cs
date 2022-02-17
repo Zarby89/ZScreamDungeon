@@ -65,5 +65,15 @@ namespace ZeldaFullEditor
             if (v <= min) { v = (byte)min; }
             return (v);
         }
-    }  
+
+        public static string[] DeepCopyStrings(string[] a) {
+            string[] ret = new string[a.Length];
+            int i = 0;
+            foreach (string s in a) {
+                ret[i++] = s.Substring(0);
+            }
+            return ret;
+        }
+
+    }
 }
