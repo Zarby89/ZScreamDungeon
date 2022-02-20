@@ -48,8 +48,8 @@
 			this.button2 = new System.Windows.Forms.Button();
 			this.button3 = new System.Windows.Forms.Button();
 			this.panel4 = new System.Windows.Forms.Panel();
-			this.textBox2 = new System.Windows.Forms.TextBox();
-			this.listBox1 = new System.Windows.Forms.ListBox();
+			this.ParamsBox = new System.Windows.Forms.TextBox();
+			this.TextCommandList = new System.Windows.Forms.ListBox();
 			this.label10 = new System.Windows.Forms.Label();
 			this.label9 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
@@ -63,6 +63,8 @@
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
 			this.checkBox1 = new System.Windows.Forms.CheckBox();
+			this.label11 = new System.Windows.Forms.Label();
+			this.InsertCommandButton = new System.Windows.Forms.Button();
 			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.panel3.SuspendLayout();
@@ -269,8 +271,10 @@
 			// 
 			this.panel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.panel4.Controls.Add(this.textBox2);
-			this.panel4.Controls.Add(this.listBox1);
+			this.panel4.Controls.Add(this.InsertCommandButton);
+			this.panel4.Controls.Add(this.label11);
+			this.panel4.Controls.Add(this.ParamsBox);
+			this.panel4.Controls.Add(this.TextCommandList);
 			this.panel4.Controls.Add(this.label10);
 			this.panel4.Controls.Add(this.label9);
 			this.panel4.Controls.Add(this.label2);
@@ -286,50 +290,53 @@
 			this.panel4.Size = new System.Drawing.Size(517, 242);
 			this.panel4.TabIndex = 11;
 			// 
-			// textBox2
+			// ParamsBox
 			// 
-			this.textBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-			this.textBox2.Location = new System.Drawing.Point(466, 24);
-			this.textBox2.Name = "textBox2";
-			this.textBox2.Size = new System.Drawing.Size(44, 20);
-			this.textBox2.TabIndex = 26;
-			this.textBox2.Text = "00";
+			this.ParamsBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.ParamsBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.ParamsBox.Location = new System.Drawing.Point(466, 24);
+			this.ParamsBox.MaxLength = 2;
+			this.ParamsBox.Name = "ParamsBox";
+			this.ParamsBox.Size = new System.Drawing.Size(44, 20);
+			this.ParamsBox.TabIndex = 26;
+			this.ParamsBox.Text = "00";
 			// 
-			// listBox1
+			// TextCommandList
 			// 
-			this.listBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.TextCommandList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.listBox1.FormattingEnabled = true;
-			this.listBox1.Items.AddRange(TextEditor.GetTextCommands());
-			//"[WINXX] Window Type",
-			//"[NBRXX] Number?",
-			//"[POSXX] Window Position",
-			//"[SSDXX] Scroll Speed",
-			//"[COLXX] Text Color",
-			//"[WAIXX] Wait",
-			//"[SNDXX] Play Sound",
-			//"[SPDXX] Speed?",
-			//"[DICXX] Use dictionary (automatic)",
-			//"[IMG] Change image sequence during intro",
-			//"[CHS] Choose Command?",
-			//"[ITM] Item Command (waterfall)",
-			//"[NAM] Show Player Name",
-			//"[SEL] Change Selection?",
-			//"[???] Commands 0x70 (crash?)",
-			//"[CH2] Choose2 Command?",
-			//"[CH3] Choose3 Command?",
-			//"[SCL] Scroll / Newline",
-			//"[LN1] Set cursor to write on line1",
-			//"[LN2] Set cursor to write on line2",
-			//"[LN3] Set cursor to write on line3",
-			//"[WFK] Wait For Key before continue",
-			//"[NNN] Go to next bank of data (automatic)"});
-			this.listBox1.Location = new System.Drawing.Point(302, 23);
-			this.listBox1.Name = "listBox1";
-			this.listBox1.Size = new System.Drawing.Size(158, 186);
-			this.listBox1.TabIndex = 25;
-			this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+			this.TextCommandList.FormattingEnabled = true;
+			this.TextCommandList.Items.AddRange(new object[] {
+            "[W:#] Window type",
+            "[N:#] BCD number",
+            "[P:#] Set position",
+            "[SSD:#] Scroll speed",
+            "[C:#] Set color",
+            "[K:#] Delay X",
+            "[Z:#] Sound effect",
+            "[S:#] Speed",
+            "[D:#] Dictionary",
+            "[I:#] Swap image",
+            "[CH4] Choose",
+            "[T] Item choice",
+            "[L] Player name",
+            "[SEL] Selection",
+            "[???] Crash",
+            "[CH2] Choose2",
+            "[CH3] Choose3",
+            "[SCL] Scroll",
+            "[1] Line 1",
+            "[2] Line 2",
+            "[3] Line 3",
+            "[K] Wait",
+            "[NNN] Bank marker"});
+			this.TextCommandList.Location = new System.Drawing.Point(302, 23);
+			this.TextCommandList.MaximumSize = new System.Drawing.Size(158, 108);
+			this.TextCommandList.Name = "TextCommandList";
+			this.TextCommandList.Size = new System.Drawing.Size(158, 108);
+			this.TextCommandList.TabIndex = 25;
+			this.TextCommandList.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
 			// 
 			// label10
 			// 
@@ -468,6 +475,25 @@
 			this.checkBox1.Text = "Save text";
 			this.checkBox1.UseVisualStyleBackColor = true;
 			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(453, 7);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(55, 13);
+			this.label11.TabIndex = 27;
+			this.label11.Text = "Parameter";
+			// 
+			// InsertCommandButton
+			// 
+			this.InsertCommandButton.Location = new System.Drawing.Point(466, 50);
+			this.InsertCommandButton.Name = "InsertCommandButton";
+			this.InsertCommandButton.Size = new System.Drawing.Size(44, 23);
+			this.InsertCommandButton.TabIndex = 28;
+			this.InsertCommandButton.Text = "Add";
+			this.InsertCommandButton.UseVisualStyleBackColor = true;
+			this.InsertCommandButton.Click += new System.EventHandler(this.InsertCommandButton_Click_1);
+			// 
 			// TextEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -532,7 +558,9 @@
         public System.Windows.Forms.PictureBox pictureBox1;
         public System.Windows.Forms.CheckBox checkBox1;
 		private System.Windows.Forms.Label label10;
-		private System.Windows.Forms.ListBox listBox1;
-		private System.Windows.Forms.TextBox textBox2;
+		private System.Windows.Forms.ListBox TextCommandList;
+		private System.Windows.Forms.TextBox ParamsBox;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.Button InsertCommandButton;
 	}
 }

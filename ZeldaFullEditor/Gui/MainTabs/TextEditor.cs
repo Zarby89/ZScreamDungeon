@@ -91,21 +91,24 @@ namespace ZeldaFullEditor {
             "Bank marker"
         };
 
+        public static int MaxParamCommand = 8;
+
         public static string[] GetTextCommands() {
             string[] ret = new string[tcommands.Length];
             for (int i = 0; i < tcommands.Length; i++) {
-                if (i <= 0x09) {
+                if (i <= MaxParamCommand) {
                     ret[i] = string.Format("{0}:#] {1}", tcommands[i], commandDesc[i]);
                 } else {
                     ret[i] = string.Format("{0}] {1}", tcommands[i], commandDesc[i]);
                 }
-			}
+            }
             return ret;
-		}
+        }
 
 
         public TextEditor() {
             InitializeComponent();
+            this.TextCommandList.Items.AddRange(TextEditor.GetTextCommands());
         }
 
         private void TextEditor_Load(object sender, EventArgs e) {
@@ -125,38 +128,45 @@ namespace ZeldaFullEditor {
                 tempBytes.Add(b);
                 string s = readNextTextByte(b);
 
-                if (s == tcommands[0x00]) { pos += 1; s += ROM.DATA[pos].ToString("D2") + "]"; } else if (s == tcommands[0x01]) { pos += 1; s += ROM.DATA[pos].ToString("D2") + "]"; } else if (s == tcommands[0x02]) { pos += 1; s += ROM.DATA[pos].ToString("D2") + "]"; } else if (s == tcommands[0x03]) { pos += 1; s += ROM.DATA[pos].ToString("D2") + "]"; } else if (s == tcommands[0x04]) { pos += 1; s += ROM.DATA[pos].ToString("D2") + "]"; } else if (s == tcommands[0x05]) { pos += 1; s += ROM.DATA[pos].ToString("D2") + "]"; } else if (s == tcommands[0x06]) { pos += 1; s += ROM.DATA[pos].ToString("D2") + "]"; } else if (s == tcommands[0x07]) { pos += 1; s += ROM.DATA[pos].ToString("D2") + "]"; } else if (s == tcommands[0x16] + "]") { tempString += s; pos = Constants.text_data2; continue; } else if (s.Length >= 5) {
-                    if (s[0] == '[' && s[1] == 'D' && s[2] == 'I' && s[3] == 'C') {
-                        string nbr = "";
-                        nbr += s[4];
-                        nbr += s[5];
-                        int nbrint = 0;
-                        int addr = 0;
+                if (s == tcommands[0x00] || s == tcommands[0x01] || s == tcommands[0x02] ||
+                    s == tcommands[0x03] || s == tcommands[0x04] || s == tcommands[0x05] ||
+                    s == tcommands[0x06] || s == tcommands[0x07]) {
 
-                        if (int.TryParse(nbr, out nbrint)) {
-                            s = "";
-                            //nbrint = 1;
-                            addr = Utils.SnesToPc((0x0E << 16) +
-                                (ROM.DATA[Constants.pointers_dictionaries + (nbrint * 2) + 1] << 8) +
-                                ROM.DATA[Constants.pointers_dictionaries + (nbrint * 2)]
-                            );
+                    s += ":";
+                    s += ROM.DATA[++pos].ToString("X2");
+                    s += "]";
+                } else if (s == tcommands[0x16] + "]") {
+                    tempString += s;
+                    pos = Constants.text_data2;
+                    continue;
+                } else if (s.Length > tcommands[0x08].Length && s.Substring(0, tcommands[0x08].Length) == tcommands[0x08]) {
+                    string nbr = s.Substring(tcommands[0x08].Length, 2);
+                    int nbrint = 0;
+                    int addr = 0;
 
-                            int tempaddr = Utils.SnesToPc((0x0E << 16) +
-                                (ROM.DATA[Constants.pointers_dictionaries + ((nbrint + 1) * 2) + 1] << 8) +
-                                ROM.DATA[Constants.pointers_dictionaries + ((nbrint + 1) * 2)]
-                            );
+                    if (int.TryParse(nbr, out nbrint)) {
+                        s = "";
+                        //nbrint = 1;
+                        addr = Utils.SnesToPc((0x0E << 16) +
+                            (ROM.DATA[Constants.pointers_dictionaries + (nbrint * 2) + 1] << 8) +
+                            ROM.DATA[Constants.pointers_dictionaries + (nbrint * 2)]
+                        );
 
-                            while (addr < tempaddr) {
-                                byte bdictionary = ROM.DATA[addr];
-                                tempBytes.Add(bdictionary);
-                                string ds = readNextTextByte(bdictionary);
-                                s += ds;
-                                addr++;
-                            }
+                        int tempaddr = Utils.SnesToPc((0x0E << 16) +
+                            (ROM.DATA[Constants.pointers_dictionaries + ((nbrint + 1) * 2) + 1] << 8) +
+                            ROM.DATA[Constants.pointers_dictionaries + ((nbrint + 1) * 2)]
+                        );
+
+                        while (addr < tempaddr) {
+                            byte bdictionary = ROM.DATA[addr];
+                            tempBytes.Add(bdictionary);
+                            string ds = readNextTextByte(bdictionary);
+                            s += ds;
+                            addr++;
                         }
-
-                        addr++;
                     }
+
+                    addr++;
                 }
 
                 //text_dictionaries
@@ -230,7 +240,7 @@ namespace ZeldaFullEditor {
                 string s = texts.text;
 
                 for (int i = 96; i >= 0; i--) {
-                    s = s.Replace(dictionaries[dictionariesOrder[i]], tcommands[0x08] + dictionariesOrder[i].ToString("D2") + "]");
+                    s = s.Replace(dictionaries[dictionariesOrder[i]], tcommands[0x08] + ":" + dictionariesOrder[i].ToString("D2") + "]");
                 }
 
                 savedTexts.Add(s);
@@ -274,7 +284,7 @@ namespace ZeldaFullEditor {
         }
 
         public StringByte parseCommand(string fullString) {
-            if (fullString.Length >= 5) {
+            if (fullString.Length >= 2) {
                 string cmdstring = fullString.Substring(0, 4); //[ + cmd
                 string argstring = "";
                 int arg = 0;
@@ -326,51 +336,310 @@ namespace ZeldaFullEditor {
             return new StringByte("ERROR", new byte[] { 0x7F });
         }
 
+        public static Dictionary<byte, string> CharEncoder = new Dictionary<byte, string> {
+                { 0x00, "A" },
+                { 0x01, "B" },
+                { 0x02, "C" },
+                { 0x03, "D" },
+                { 0x04, "E" },
+                { 0x05, "F" },
+                { 0x06, "G" },
+                { 0x07, "H" },
+                { 0x08, "I" },
+                { 0x09, "J" },
+                { 0x0A, "K" },
+                { 0x0B, "L" },
+                { 0x0C, "M" },
+                { 0x0D, "N" },
+                { 0x0E, "O" },
+                { 0x0F, "P" },
+                { 0x10, "Q" },
+                { 0x11, "R" },
+                { 0x12, "S" },
+                { 0x13, "T" },
+                { 0x14, "U" },
+                { 0x15, "V" },
+                { 0x16, "W" },
+                { 0x17, "X" },
+                { 0x18, "Y" },
+                { 0x19, "Z" },
+                { 0x1A, "a" },
+                { 0x1B, "b" },
+                { 0x1C, "c" },
+                { 0x1D, "d" },
+                { 0x1E, "e" },
+                { 0x1F, "f" },
+                { 0x20, "g" },
+                { 0x21, "h" },
+                { 0x22, "i" },
+                { 0x23, "j" },
+                { 0x24, "k" },
+                { 0x25, "l" },
+                { 0x26, "m" },
+                { 0x27, "n" },
+                { 0x28, "o" },
+                { 0x29, "p" },
+                { 0x2A, "q" },
+                { 0x2B, "r" },
+                { 0x2C, "s" },
+                { 0x2D, "t" },
+                { 0x2E, "u" },
+                { 0x2F, "v" },
+                { 0x30, "w" },
+                { 0x31, "x" },
+                { 0x32, "y" },
+                { 0x33, "z" },
+                { 0x34, "0" },
+                { 0x35, "1" },
+                { 0x36, "2" },
+                { 0x37, "3" },
+                { 0x38, "4" },
+                { 0x39, "5" },
+                { 0x3A, "6" },
+                { 0x3B, "7" },
+                { 0x3C, "8" },
+                { 0x3D, "9" },
+                { 0x3E, "!" },
+                { 0x3F, "?" },
+                { 0x40, "-" },
+                { 0x41, "." },
+                { 0x42, "," },
+                { 0x43, "…" },
+                { 0x44, ">" },
+                { 0x45, "(" },
+                { 0x46, ")" },
+                { 0x47, "[HY0]" },
+                { 0x48, "[HY1]" },
+                { 0x49, "[HY2]" },
+                { 0x4A, "[LHL]" },
+                { 0x4B, "[LHR]" },
+                { 0x4C, "\"" },
+                { 0x4D, "↑" },
+                { 0x4E, "↓" },
+                { 0x4F, "←" },
+                { 0x50, "→" },
+                { 0x51, "'" },
+                { 0x52, "[HP0]" },
+                { 0x53, "[HP1]" },
+                { 0x54, "[HP2]" },
+                { 0x55, "[HP3]" },
+                { 0x56, "[HP4]" },
+                { 0x57, "[HP5]" },
+                { 0x58, "[HP6]" },
+                { 0x59, " " },
+                { 0x5A, "<" },
+                { 0x5B, "[A]" },
+                { 0x5C, "[B]" },
+                { 0x5D, "[X]" },
+                { 0x5E, "[Y]" },
+                { 0x5F, "¡" },
+                { 0x60, "¡" },
+                { 0x61, "¡" },
+                { 0x62, " " },
+                { 0x63, " " },
+                { 0x64, " " },
+                { 0x65, " " },
+                { 0x66, "_" },
+                { 0x67, "" },
+                { 0x68, "" },
+                { 0x69, "" },
+                { 0x6A, "" },
+                { 0x6B, "" },
+                { 0x6C, "" },
+                { 0x6D, "" },
+                { 0x6E, "" },
+                { 0x6F, "" },
+                { 0x70, "" },
+                { 0x71, "" },
+                { 0x72, "" },
+                { 0x73, "" },
+                { 0x74, "" },
+                { 0x75, "" },
+                { 0x76, "" },
+                { 0x77, "" },
+                { 0x78, "" },
+                { 0x79, "" },
+                { 0x7A, "" },
+                { 0x7B, "" },
+                { 0x7C, "" },
+                { 0x7D, "" },
+                { 0x7E, "" },
+                { 0x7F, "" },
+                { 0x80, "" },
+                { 0x81, "" },
+                { 0x82, "" },
+                { 0x83, "" },
+                { 0x84, "" },
+                { 0x85, "" },
+                { 0x86, "" },
+                { 0x87, "" },
+                { 0x88, "[D00]" },
+                { 0x89, "[D01]" },
+                { 0x8A, "[D02]" },
+                { 0x8B, "[D03]" },
+                { 0x8C, "[D04]" },
+                { 0x8D, "[D05]" },
+                { 0x8E, "[D06]" },
+                { 0x8F, "[D07]" },
+                { 0x90, "[D08]" },
+                { 0x91, "[D09]" },
+                { 0x92, "[D0A]" },
+                { 0x93, "[D0B]" },
+                { 0x94, "[D0C]" },
+                { 0x95, "[D0D]" },
+                { 0x96, "[D0E]" },
+                { 0x97, "[D0F]" },
+                { 0x98, "[D10]" },
+                { 0x99, "[D11]" },
+                { 0x9A, "[D12]" },
+                { 0x9B, "[D13]" },
+                { 0x9C, "[D14]" },
+                { 0x9D, "[D15]" },
+                { 0x9E, "[D16]" },
+                { 0x9F, "[D17]" },
+                { 0xA0, "[D18]" },
+                { 0xA1, "[D19]" },
+                { 0xA2, "[D1A]" },
+                { 0xA3, "[D1B]" },
+                { 0xA4, "[D1C]" },
+                { 0xA5, "[D1D]" },
+                { 0xA6, "[D1E]" },
+                { 0xA7, "[D1F]" },
+                { 0xA8, "[D20]" },
+                { 0xA9, "[D21]" },
+                { 0xAA, "[D22]" },
+                { 0xAB, "[D23]" },
+                { 0xAC, "[D24]" },
+                { 0xAD, "[D25]" },
+                { 0xAE, "[D26]" },
+                { 0xAF, "[D27]" },
+                { 0xB0, "[D28]" },
+                { 0xB1, "[D29]" },
+                { 0xB2, "[D2A]" },
+                { 0xB3, "[D2B]" },
+                { 0xB4, "[D2C]" },
+                { 0xB5, "[D2D]" },
+                { 0xB6, "[D2E]" },
+                { 0xB7, "[D2F]" },
+                { 0xB8, "[D30]" },
+                { 0xB9, "[D31]" },
+                { 0xBA, "[D32]" },
+                { 0xBB, "[D33]" },
+                { 0xBC, "[D34]" },
+                { 0xBD, "[D35]" },
+                { 0xBE, "[D36]" },
+                { 0xBF, "[D37]" },
+                { 0xC0, "[D38]" },
+                { 0xC1, "[D39]" },
+                { 0xC2, "[D3A]" },
+                { 0xC3, "[D3B]" },
+                { 0xC4, "[D3C]" },
+                { 0xC5, "[D3D]" },
+                { 0xC6, "[D3E]" },
+                { 0xC7, "[D3F]" },
+                { 0xC8, "[D40]" },
+                { 0xC9, "[D41]" },
+                { 0xCA, "[D42]" },
+                { 0xCB, "[D43]" },
+                { 0xCC, "[D44]" },
+                { 0xCD, "[D45]" },
+                { 0xCE, "[D46]" },
+                { 0xCF, "[D47]" },
+                { 0xD0, "[D48]" },
+                { 0xD1, "[D49]" },
+                { 0xD2, "[D4A]" },
+                { 0xD3, "[D4B]" },
+                { 0xD4, "[D4C]" },
+                { 0xD5, "[D4D]" },
+                { 0xD6, "[D4E]" },
+                { 0xD7, "[D4F]" },
+                { 0xD8, "[D50]" },
+                { 0xD9, "[D51]" },
+                { 0xDA, "[D52]" },
+                { 0xDB, "[D53]" },
+                { 0xDC, "[D54]" },
+                { 0xDD, "[D55]" },
+                { 0xDE, "[D56]" },
+                { 0xDF, "[D57]" },
+                { 0xE0, "[D58]" },
+                { 0xE1, "[D59]" },
+                { 0xE2, "[D5A]" },
+                { 0xE3, "[D5B]" },
+                { 0xE4, "[D5C]" },
+                { 0xE5, "[D5D]" },
+                { 0xE6, "[D5E]" },
+                { 0xE7, "[D5F]" },
+                { 0xE8, "[D60]" },
+                { 0xE9, "[D61]" },
+                { 0xEA, "[D62]" },
+                { 0xEB, "[D63]" },
+                { 0xEC, "[D64]" },
+                { 0xED, "[D65]" },
+                { 0xEE, "[D66]" },
+                { 0xEF, "[D67]" },
+                { 0xF0, "[D68]" },
+                { 0xF1, "[D69]" },
+                { 0xF2, "[D6A]" },
+                { 0xF3, "[D6B]" },
+                { 0xF4, "[D6C]" },
+                { 0xF5, "[D6D]" },
+                { 0xF6, "[D6E]" },
+                { 0xF7, "[D6F]" },
+                { 0xF8, "[D70]" },
+                { 0xF9, "[D71]" },
+                { 0xFA, "[D72]" },
+                { 0xFB, "[D73]" },
+                { 0xFC, "[D74]" },
+                { 0xFD, "[D75]" },
+                { 0xFE, "[D76]" },
+        };
         public string readNextTextByte(byte b) {
-            string tempString = "";
             if (b == 0x80) //switch to 2nd sets of messages
             {
-                tempString = tcommands[0x16] + "]";
-            }
-
-            if (b <= 0x19) //Caps 
+                return tcommands[0x16] + "]";
+            } else if (b <= 0x66)  // literals
             {
-                //65-90
-                tempString += (char) (b + 65);
-            } else if (b > 0x19 && b <= 0x33) //Small Letters
-              {
-                //97-122
-                tempString += (char) ((b - 26) + 97);
-            } else if (b > 0x33 && b <= 0x3D) //Numbers
-              {
-                //48-57
-                tempString += (char) ((b - 52) + 48);
-            } else if (b == 0x3E) { tempString += "!"; } else if (b == 0x3F) { tempString += "?"; } else if (b == 0x40) { tempString += "-"; } else if (b == 0x41) { tempString += "."; } else if (b == 0x42) { tempString += ","; } else if (b == 0x43) { tempString += "…"; } else if (b == 0x44) { tempString += ">"; } else if (b == 0x45) { tempString += "("; } else if (b == 0x46) { tempString += ")"; } else if (b == 0x47) { tempString += "[HY0]"; } else if (b == 0x48) { tempString += "[HY1]"; } else if (b == 0x49) { tempString += "[HY2]"; } else if (b == 0x4A) { tempString += "[LHL]"; } else if (b == 0x4B) { tempString += "[LHR]"; } else if (b == 0x4C) { tempString += "\""; } else if (b == 0x4D) { tempString += "↑"; } else if (b == 0x4E) { tempString += "↓"; } else if (b == 0x4F) { tempString += "←"; } else if (b == 0x50) { tempString += "→"; } else if (b == 0x51) { tempString += "\'"; } else if (b == 0x52) { tempString += "[HP0]"; } else if (b == 0x53) { tempString += "[HP1]"; } else if (b == 0x54) { tempString += "[HP2]"; } else if (b == 0x55) { tempString += "[HP3]"; } else if (b == 0x56) { tempString += "[HP4]"; } else if (b == 0x57) { tempString += "[HP5]"; } else if (b == 0x58) { tempString += "[HP6]"; } else if (b == 0x59) { tempString += " "; } else if (b == 0x5A) { tempString += "<"; } else if (b == 0x5B) { tempString += "Ⓐ"; } else if (b == 0x5C) { tempString += "Ⓑ"; } else if (b == 0x5D) { tempString += "ⓧ"; } else if (b == 0x5E) { tempString += "ⓨ"; } else if (b == 0x5F) { tempString += "¡"; } else if (b == 0x60) { tempString += "¡"; } else if (b == 0x61) { tempString += "¡"; } else if (b == 0x62) { tempString += " "; } else if (b == 0x63) { tempString += " "; } else if (b == 0x64) { tempString += " "; } else if (b == 0x65) { tempString += " "; } else if (b == 0x66) { tempString += "_"; }
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        //Start of the commands list
-
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        else if (b == 0x67) { tempString += tcommands[0x09] + "]"; } else if (b == 0x68) { tempString += tcommands[0x0A] + "]"; } else if (b == 0x69) { tempString += tcommands[0x0B] + "]"; } else if (b == 0x6A) { tempString += tcommands[0x0C] + "]"; } else if (b == 0x6B) {
-                tempString += tcommands[0x00];
-            } else if (b == 0x6C) {
-                tempString += tcommands[0x01];
-            } else if (b == 0x6D) {
-                tempString += tcommands[0x02];
-            } else if (b == 0x6E) {
-                tempString += tcommands[0x03];
-            } else if (b == 0x6F) { tempString += tcommands[0x0D] + "]"; } else if (b == 0x70) { tempString += tcommands[0x0E] + "]"; } else if (b == 0x71) { tempString += tcommands[0x0F] + "]"; } else if (b == 0x72) { tempString += tcommands[0x10] + "]"; } else if (b == 0x73) { tempString += tcommands[0x11] + "]"; } else if (b == 0x74) { tempString += tcommands[0x12] + "]"; } else if (b == 0x75) { tempString += tcommands[0x13] + "]"; } else if (b == 0x76) { tempString += tcommands[0x14] + "]"; } else if (b == 0x77) {
-                tempString += tcommands[0x04];
-            } else if (b == 0x78) {
-                tempString += tcommands[0x05];
-            } else if (b == 0x79) {
-                tempString += tcommands[0x06];
-            } else if (b == 0x7A) {
-                tempString += tcommands[0x07];
-            } else if (b == 0x7E) { tempString += tcommands[0x15] + "]"; }
-
-              //Dictionary 
-              else if (b >= 0x88) {
-                tempString += tcommands[0x08] + (b - 0x88).ToString("D2") + "]";
+                return CharEncoder[b];
+            } else if (b >= 0x67 && b <= 0x7A) // commands
+            {
+                byte b2;
+                switch (b) { // TODO having to remap this is stupid
+                    case 0x67: b2 = 0x09; break;
+                    case 0x68: b2 = 0x0A; break;
+                    case 0x69: b2 = 0x0B; break;
+                    case 0x6A: b2 = 0x0C; break;
+                    case 0x6B: b2 = 0x00; break;
+                    case 0x6C: b2 = 0x01; break;
+                    case 0x6D: b2 = 0x02; break;
+                    case 0x6E: b2 = 0x03; break;
+                    case 0x6F: b2 = 0x0D; break;
+                    case 0x70: b2 = 0x0E; break;
+                    case 0x71: b2 = 0x0F; break;
+                    case 0x72: b2 = 0x10; break;
+                    case 0x73: b2 = 0x11; break;
+                    case 0x74: b2 = 0x12; break;
+                    case 0x75: b2 = 0x13; break;
+                    case 0x76: b2 = 0x14; break;
+                    case 0x77: b2 = 0x04; break;
+                    case 0x78: b2 = 0x05; break;
+                    case 0x79: b2 = 0x06; break;
+                    case 0x7A: b2 = 0x07; break;
+                    default: return "";
+				}
+                if (b2 <= MaxParamCommand) {
+                    return tcommands[b2];
+				} else {
+                    return tcommands[b2] + "]";
+				}
+            } else if (b == 0x7E)
+            {
+               return tcommands[0x15] + "]";
+            } else if (b >= 0x88) // glossary
+            {
+                return tcommands[0x08] + (b - 0x88).ToString("D2") + "]";
             }
-            return tempString;
+
+            return "";
 
         }
 
@@ -440,7 +709,7 @@ namespace ZeldaFullEditor {
             textBox1.Text = sk.text;
 
             drawTextPreview();
-            label9.Text = "Address : " + addrTexts[textListbox.SelectedIndex].ToString("X6");
+            label9.Text = "Address: " + addrTexts[textListbox.SelectedIndex].ToString("X6");
 
             pictureBox1.Refresh();
         }
@@ -583,8 +852,8 @@ namespace ZeldaFullEditor {
             int srcY = (selectedTile / 16);
             int srcX = selectedTile - (srcY * 16);
             e.Graphics.DrawRectangle(new Pen(Brushes.GreenYellow, 2), new Rectangle(srcX * 16, srcY * 32, 16, 32));
-            label6.Text = "ID : " + selectedTile.ToString("X2");
-            label7.Text = "ASCII : " + readNextTextByte((byte) selectedTile);
+            label6.Text = "ID: " + selectedTile.ToString("X2");
+            label7.Text = "ASCII: " + readNextTextByte((byte) selectedTile);
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e) {
@@ -709,7 +978,7 @@ namespace ZeldaFullEditor {
 
                     if (b == 0x80) {
                         if (first) {
-                            MessageBox.Show("Too many text data in 1st group impossible to save Available Space = 0x8000, Used Space = " + (pos - 0xE0000).ToString("X4"));
+                            MessageBox.Show("Too much text data in 1st group to save;\nAvailable Space = 0x8000, Used Space = " + (pos - 0xE0000).ToString("X4"));
                             ROM.DATA = (byte[]) backup.Clone();
                             return true;
                         }
@@ -728,11 +997,11 @@ namespace ZeldaFullEditor {
                 }
 
                 // ROM.DATA[pos] = 0x7F;
-                ROM.Write(pos, 0x7F, true, "Terminator Text");
+                ROM.Write(pos, 0x7F, true, "Terminator text");
                 pos++;
             }
 
-            ROM.Write(pos, 0xFF, true, "End of Text");
+            ROM.Write(pos, 0xFF, true, "End of text");
             //ROM.DATA[pos] = 0xFF;
 
             while (pos < Constants.text_data2 + 0x14BF) {
@@ -777,27 +1046,25 @@ namespace ZeldaFullEditor {
             }
         }
 
-        private void button1_Click(object sender, EventArgs e) {
+        private void InsertCommandButton_Click_1(object sender, EventArgs e) {
             int textboxPos = textBox1.SelectionStart;
-            TextCommands textCommands = new TextCommands();
+            string textAdd = tcommands[TextCommandList.SelectedIndex];
 
-            if (textCommands.ShowDialog() == DialogResult.OK) {
-                string textAdd = "";
-                textAdd = tcommands[textCommands.selectedCommand];
+            if (TextCommandList.SelectedIndex <= MaxParamCommand) {
+                Byte.TryParse(ParamsBox.Text, out byte par);
 
-                if (textCommands.selectedCommand <= 8) {
-                    textAdd += textCommands.cvalue.ToString("D2") + "]";
-                }
-
-                fromForm = true;
-                textBox1.Text = textBox1.Text.Insert(textboxPos, textAdd);
-                listOfTexts[textListbox.SelectedIndex].text = textBox1.Text;
-                setTextsDictionaries();
-                savedBytes[textListbox.SelectedIndex] = parseTextToBytes(textBox1.Text);
-                drawTextPreview();
-                pictureBox1.Refresh();
-                fromForm = false;
+                textAdd += ":";
+                textAdd += par.ToString("X2");
             }
+            textAdd += "]";
+            fromForm = true;
+            textBox1.Text = textBox1.Text.Insert(textboxPos, textAdd);
+            listOfTexts[textListbox.SelectedIndex].text = textBox1.Text;
+            setTextsDictionaries();
+            savedBytes[textListbox.SelectedIndex] = parseTextToBytes(textBox1.Text);
+            drawTextPreview();
+            pictureBox1.Refresh();
+            fromForm = false;
         }
 
         private void button4_Click(object sender, EventArgs e) {
@@ -927,7 +1194,7 @@ namespace ZeldaFullEditor {
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e) {
-            textBox2.Enabled = (listBox1.SelectedIndex <= 8);
+            ParamsBox.Enabled = (TextCommandList.SelectedIndex <= 8);
         }
-    }
+	}
 }

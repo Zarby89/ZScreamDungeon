@@ -20,15 +20,15 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra
         public int selectedCommand = 0;
         private void button1_Click(object sender, EventArgs e)
         {
-            if (int.TryParse(textBox1.Text, out cvalue))
-            {
-                selectedCommand = listBox1.SelectedIndex;
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("Value is invalid.");
-            }
+          // if (int.TryParse(textBox1.Text, out cvalue))
+          // {
+          //     selectedCommand = listBox1.SelectedIndex;
+          //     this.Close();
+          // }
+          // else
+          // {
+          //     MessageBox.Show("Value is invalid.");
+          // }
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
