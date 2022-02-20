@@ -609,7 +609,7 @@ namespace ZeldaFullEditor {
             "$F8 Door 0 top", "$F9 Door 1 top", "$FA Door 2 top", "$FB Door 3 top", "$FC Door X top? (unused?)", "$FD Door X top? (unused?)", "$FE Door X top? (unused?)", "$FF Door X top? (unused?)"
         };
 
-        public static string[] CollisionTileTypes = new string[]
+        public static string[] Type1RoomObjectNames = new string[]
         {
              "Ceiling ↔",
              "Wall (top, north) ↔",
