@@ -45,7 +45,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(61, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "ROM Size :";
+            this.label1.Text = "ROM size";
             // 
             // romsizeComboxbox
             // 
@@ -67,7 +67,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(198, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "(PC Hex) New Room Headers Location :";
+            this.label2.Text = "New room headers at (PC; HEX)";
             // 
             // roomheaderTextbox
             // 
@@ -84,7 +84,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(294, 13);
             this.label3.TabIndex = 4;
-            this.label3.Text = "(PC Hex) Expanded Region for room objects (can be empty) :";
+            this.label3.Text = "Expanded room objects at (PC; HEX)";
             // 
             // roomobjectlocationTextbox
             // 
@@ -107,7 +107,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(255, 13);
             this.label4.TabIndex = 6;
-            this.label4.Text = "(PC Hex) Expanded Region for GFX (can be empty) :";
+            this.label4.Text = "Expanded GFX at (PC; HEX)";
             // 
             // GlobalOptionForm
             // 
@@ -123,7 +123,7 @@
             this.Controls.Add(this.romsizeComboxbox);
             this.Controls.Add(this.label1);
             this.Name = "GlobalOptionForm";
-            this.Text = "GlobalOptionForm";
+            this.Text = "ROM management";
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -182,7 +182,7 @@
             this.debugtestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.debugtestButton.Name = "debugtestButton";
             this.debugtestButton.Size = new System.Drawing.Size(23, 22);
-            this.debugtestButton.Text = "Save and Debug in emulator";
+            this.debugtestButton.Text = "Save and debug in emulator";
             // 
             // runtestButton
             // 
@@ -191,7 +191,7 @@
             this.runtestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.runtestButton.Name = "runtestButton";
             this.runtestButton.Size = new System.Drawing.Size(23, 22);
-            this.runtestButton.Text = "Save and Run in emulator";
+            this.runtestButton.Text = "Save and run in emulator";
             this.runtestButton.Click += new System.EventHandler(this.runtestButton_Click);
             // 
             // undoButton
@@ -229,7 +229,7 @@
             this.penModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.penModeButton.Name = "penModeButton";
             this.penModeButton.Size = new System.Drawing.Size(23, 22);
-            this.penModeButton.Text = "Tile Mode";
+            this.penModeButton.Text = "Tile mode";
             this.penModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // fillModeButton
@@ -240,7 +240,7 @@
             this.fillModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.fillModeButton.Name = "fillModeButton";
             this.fillModeButton.Size = new System.Drawing.Size(23, 22);
-            this.fillModeButton.Text = "Fill Mode";
+            this.fillModeButton.Text = "Fill mode";
             this.fillModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // toolStripSeparator3
@@ -256,7 +256,7 @@
             this.entranceModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.entranceModeButton.Name = "entranceModeButton";
             this.entranceModeButton.Size = new System.Drawing.Size(23, 22);
-            this.entranceModeButton.Text = "Entrance Mode";
+            this.entranceModeButton.Text = "Entrance mode";
             this.entranceModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // exitModeButton
@@ -267,7 +267,7 @@
             this.exitModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.exitModeButton.Name = "exitModeButton";
             this.exitModeButton.Size = new System.Drawing.Size(23, 22);
-            this.exitModeButton.Text = "Exit Mode";
+            this.exitModeButton.Text = "Exit mode";
             this.exitModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // itemModeButton
@@ -278,7 +278,7 @@
             this.itemModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.itemModeButton.Name = "itemModeButton";
             this.itemModeButton.Size = new System.Drawing.Size(23, 22);
-            this.itemModeButton.Text = "Item Mode";
+            this.itemModeButton.Text = "Item mode";
             this.itemModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // spriteModeButton
@@ -289,7 +289,7 @@
             this.spriteModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.spriteModeButton.Name = "spriteModeButton";
             this.spriteModeButton.Size = new System.Drawing.Size(23, 22);
-            this.spriteModeButton.Text = "Sprite Mode";
+            this.spriteModeButton.Text = "Sprite mode";
             this.spriteModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // transportModeButton
@@ -300,7 +300,7 @@
             this.transportModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.transportModeButton.Name = "transportModeButton";
             this.transportModeButton.Size = new System.Drawing.Size(23, 22);
-            this.transportModeButton.Text = "Transport Mode";
+            this.transportModeButton.Text = "Transport mode";
             this.transportModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // spButton
@@ -375,7 +375,7 @@
             this.refreshToolStrip.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.refreshToolStrip.Name = "refreshToolStrip";
             this.refreshToolStrip.Size = new System.Drawing.Size(82, 22);
-            this.refreshToolStrip.Text = "Refresh Maps";
+            this.refreshToolStrip.Text = "Refresh maps";
             this.refreshToolStrip.Click += new System.EventHandler(this.refreshToolStrip_Click);
             // 
             // toolStripButton1
@@ -385,7 +385,7 @@
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(65, 22);
-            this.toolStripButton1.Text = "Clear Map";
+            this.toolStripButton1.Text = "Clear map";
             this.toolStripButton1.Visible = false;
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click_1);
             // 
@@ -432,7 +432,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(280, 593);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Tiles16";
+            this.tabPage1.Text = "Tile16";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tilePictureBox
@@ -456,7 +456,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(280, 593);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "ScratchPad16";
+            this.tabPage2.Text = "Tile 16 scratchpad";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // scratchPicturebox
@@ -479,7 +479,7 @@
             this.Tiles8.Name = "Tiles8";
             this.Tiles8.Size = new System.Drawing.Size(280, 593);
             this.Tiles8.TabIndex = 2;
-            this.Tiles8.Text = "Tiles8 [X2]";
+            this.Tiles8.Text = "Tile8";
             this.Tiles8.UseVisualStyleBackColor = true;
             // 
             // panel2
@@ -542,7 +542,7 @@
             this.mirrorYCheckbox.Name = "mirrorYCheckbox";
             this.mirrorYCheckbox.Size = new System.Drawing.Size(58, 17);
             this.mirrorYCheckbox.TabIndex = 4;
-            this.mirrorYCheckbox.Text = "mirrorY";
+            this.mirrorYCheckbox.Text = "Flip Y";
             this.mirrorYCheckbox.UseVisualStyleBackColor = true;
             this.mirrorYCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
             // 
@@ -563,7 +563,7 @@
             this.mirrorXCheckbox.Name = "mirrorXCheckbox";
             this.mirrorXCheckbox.Size = new System.Drawing.Size(58, 17);
             this.mirrorXCheckbox.TabIndex = 3;
-            this.mirrorXCheckbox.Text = "mirrorX";
+            this.mirrorXCheckbox.Text = "Flip X";
             this.mirrorXCheckbox.UseVisualStyleBackColor = true;
             this.mirrorXCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
             // 
@@ -597,7 +597,7 @@
             this.objectGroupbox.Size = new System.Drawing.Size(290, 60);
             this.objectGroupbox.TabIndex = 10;
             this.objectGroupbox.TabStop = false;
-            this.objectGroupbox.Text = "Selected Object - ";
+            this.objectGroupbox.Text = "Selected object";
             // 
             // objCombobox
             // 
@@ -614,7 +614,7 @@
             this.objinfoLabel.Name = "objinfoLabel";
             this.objinfoLabel.Size = new System.Drawing.Size(33, 39);
             this.objinfoLabel.TabIndex = 0;
-            this.objinfoLabel.Text = "ID : 0\r\nX : 0\r\nY : 0";
+            this.objinfoLabel.Text = "ID: 0\r\nX: 0\r\nY: 0";
             // 
             // mapGroupbox
             // 
@@ -636,7 +636,7 @@
             this.mapGroupbox.Size = new System.Drawing.Size(417, 60);
             this.mapGroupbox.TabIndex = 1;
             this.mapGroupbox.TabStop = false;
-            this.mapGroupbox.Text = "Selected Map - ";
+            this.mapGroupbox.Text = "Selected map";
             // 
             // largemapCheckbox
             // 
@@ -645,7 +645,7 @@
             this.largemapCheckbox.Name = "largemapCheckbox";
             this.largemapCheckbox.Size = new System.Drawing.Size(77, 17);
             this.largemapCheckbox.TabIndex = 14;
-            this.largemapCheckbox.Text = "Large Map";
+            this.largemapCheckbox.Text = "Large map";
             this.largemapCheckbox.UseVisualStyleBackColor = true;
             this.largemapCheckbox.Click += new System.EventHandler(this.largemapCheckbox_Clicked);
             // 
@@ -666,7 +666,7 @@
             this.musicButton.Name = "musicButton";
             this.musicButton.Size = new System.Drawing.Size(61, 23);
             this.musicButton.TabIndex = 12;
-            this.musicButton.Text = "Musics";
+            this.musicButton.Text = "Music";
             this.musicButton.UseVisualStyleBackColor = true;
             this.musicButton.Click += new System.EventHandler(this.musicButton_Click);
             // 
@@ -677,7 +677,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(51, 13);
             this.label6.TabIndex = 11;
-            this.label6.Text = "Text ID : ";
+            this.label6.Text = "Message ID";
             // 
             // textidTextbox
             // 
@@ -696,7 +696,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 13);
             this.label5.TabIndex = 9;
-            this.label5.Text = "Spr. Palette : ";
+            this.label5.Text = "Spr. palette";
             // 
             // sprpaletteTextbox
             // 
@@ -721,7 +721,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(49, 13);
             this.label4.TabIndex = 6;
-            this.label4.Text = "Palette : ";
+            this.label4.Text = "Palette";
             // 
             // sprgfxTextbox
             // 
@@ -738,7 +738,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 4;
-            this.label3.Text = "Spr. Gfx : ";
+            this.label3.Text = "Spr. GFX";
             // 
             // gfxTextbox
             // 
@@ -755,7 +755,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Gfx : ";
+            this.label2.Text = "GFX";
             // 
             // groupBox1
             // 
@@ -767,7 +767,7 @@
             this.groupBox1.Size = new System.Drawing.Size(151, 66);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Global Settings";
+            this.groupBox1.Text = "Global settings";
             // 
             // selectedTileLabel
             // 
@@ -776,7 +776,7 @@
             this.selectedTileLabel.Name = "selectedTileLabel";
             this.selectedTileLabel.Size = new System.Drawing.Size(78, 13);
             this.selectedTileLabel.TabIndex = 2;
-            this.selectedTileLabel.Text = "Selected Tile : ";
+            this.selectedTileLabel.Text = "Selected tile";
             // 
             // label1
             // 
@@ -785,20 +785,20 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(119, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Game State (7EF3C5) : ";
+            this.label1.Text = "Game state";
             // 
             // stateCombobox
             // 
             this.stateCombobox.FormattingEnabled = true;
             this.stateCombobox.Items.AddRange(new object[] {
-            "0,1 (Rescue Zelda)",
-            "2 (Zelda Saved)",
-            "3 (Agah. Dead)"});
+            "0,1 Rescue Zelda",
+            "2 Zelda saved",
+            "3 Agahnim defeated"});
             this.stateCombobox.Location = new System.Drawing.Point(6, 31);
             this.stateCombobox.Name = "stateCombobox";
             this.stateCombobox.Size = new System.Drawing.Size(138, 21);
             this.stateCombobox.TabIndex = 1;
-            this.stateCombobox.Text = "0,1 (Rescue Zelda)";
+            this.stateCombobox.Text = "0,1 Rescue Zelda";
             this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
             // 
             // previewTextPicturebox

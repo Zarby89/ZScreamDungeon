@@ -76,7 +76,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(95, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Room Exiting From";
+            this.label1.Text = "Associated room";
             // 
             // roomUpDown
             // 
@@ -98,7 +98,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(37, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "Map : ";
+            this.label2.Text = "Map";
             // 
             // mapUpDown
             // 
@@ -120,7 +120,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 4;
-            this.label3.Text = "X Position";
+            this.label3.Text = "X position";
             // 
             // label4
             // 
@@ -129,7 +129,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(87, 13);
             this.label4.TabIndex = 5;
-            this.label4.Text = "X Center Camera";
+            this.label4.Text = "X camera";
             // 
             // label5
             // 
@@ -138,7 +138,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(82, 13);
             this.label5.TabIndex = 6;
-            this.label5.Text = "X Scroll Camera";
+            this.label5.Text = "X camera scroll";
             // 
             // xPosUpDown
             // 
@@ -255,7 +255,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(82, 13);
             this.label6.TabIndex = 12;
-            this.label6.Text = "Y Scroll Camera";
+            this.label6.Text = "Y camera scroll";
             // 
             // label7
             // 
@@ -264,7 +264,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(87, 13);
             this.label7.TabIndex = 11;
-            this.label7.Text = "Y Center Camera";
+            this.label7.Text = "Y camera";
             // 
             // label8
             // 
@@ -273,7 +273,7 @@
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(54, 13);
             this.label8.TabIndex = 10;
-            this.label8.Text = "Y Position";
+            this.label8.Text = "Y position";
             // 
             // nodoorradioButton
             // 
@@ -283,7 +283,7 @@
             this.nodoorradioButton.Size = new System.Drawing.Size(65, 17);
             this.nodoorradioButton.TabIndex = 16;
             this.nodoorradioButton.TabStop = true;
-            this.nodoorradioButton.Text = "No Door";
+            this.nodoorradioButton.Text = "No door";
             this.nodoorradioButton.UseVisualStyleBackColor = true;
             this.nodoorradioButton.CheckedChanged += new System.EventHandler(this.nodoorradioButton_CheckedChanged);
             // 
@@ -307,7 +307,7 @@
             this.sancdoorButton.Size = new System.Drawing.Size(99, 17);
             this.sancdoorButton.TabIndex = 18;
             this.sancdoorButton.TabStop = true;
-            this.sancdoorButton.Text = "Sanctuary Door";
+            this.sancdoorButton.Text = "Big fancy door";
             this.sancdoorButton.UseVisualStyleBackColor = true;
             this.sancdoorButton.CheckedChanged += new System.EventHandler(this.wooddoorradioButton_CheckedChanged);
             // 
@@ -318,7 +318,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 19;
-            this.button1.Text = "Ok";
+            this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -339,7 +339,7 @@
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(80, 13);
             this.label9.TabIndex = 21;
-            this.label9.Text = "Door Position X";
+            this.label9.Text = "Door X position";
             // 
             // doorxUpDown
             // 
@@ -376,7 +376,7 @@
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(77, 13);
             this.label10.TabIndex = 24;
-            this.label10.Text = "Door PositionY";
+            this.label10.Text = "Door Y position";
             // 
             // setPositionButton
             // 
@@ -386,7 +386,7 @@
             this.setPositionButton.Name = "setPositionButton";
             this.setPositionButton.Size = new System.Drawing.Size(87, 22);
             this.setPositionButton.TabIndex = 25;
-            this.setPositionButton.Text = "Set Position";
+            this.setPositionButton.Text = "Set position";
             this.setPositionButton.UseVisualStyleBackColor = true;
             this.setPositionButton.Click += new System.EventHandler(this.setPositionButton_Click);
             // 
@@ -409,7 +409,7 @@
             this.bombdoorradioButton.Size = new System.Drawing.Size(98, 17);
             this.bombdoorradioButton.TabIndex = 27;
             this.bombdoorradioButton.TabStop = true;
-            this.bombdoorradioButton.Text = "Bombable Door";
+            this.bombdoorradioButton.Text = "Bombable door";
             this.bombdoorradioButton.UseVisualStyleBackColor = true;
             this.bombdoorradioButton.CheckedChanged += new System.EventHandler(this.wooddoorradioButton_CheckedChanged);
             // 
@@ -421,7 +421,7 @@
             this.castledoorradioButton.Size = new System.Drawing.Size(80, 17);
             this.castledoorradioButton.TabIndex = 28;
             this.castledoorradioButton.TabStop = true;
-            this.castledoorradioButton.Text = "Castle Door";
+            this.castledoorradioButton.Text = "Castle door";
             this.castledoorradioButton.UseVisualStyleBackColor = true;
             this.castledoorradioButton.CheckedChanged += new System.EventHandler(this.wooddoorradioButton_CheckedChanged);
             // 
@@ -461,7 +461,7 @@
             this.Controls.Add(this.label1);
             this.Name = "ExitEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Exit Editor";
+            this.Text = "Close";
             this.Load += new System.EventHandler(this.ExitEditorForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.roomUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapUpDown)).EndInit();
