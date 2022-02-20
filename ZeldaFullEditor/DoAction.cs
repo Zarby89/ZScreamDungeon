@@ -23,11 +23,11 @@ namespace ZeldaFullEditor
                 {
                     if ((parameters[0] as Sprite[]).Length == 1)
                     {
-                        Name = "Sprite[" + (parameters[0] as Sprite[])[0].id + "]" + "Deleted from pos : " + (parameters[1] as int[])[0].ToString();
+                        Name = "Sprite[" + (parameters[0] as Sprite[])[0].id + "]" + "Deleted from position : " + (parameters[1] as int[])[0].ToString();
                     }
                     else
                     {
-                        Name = "Group of sprites Deleted";
+                        Name = "Group of sprites deleted";
                     }
                 }
             }
@@ -37,11 +37,11 @@ namespace ZeldaFullEditor
                 {
                     if ((parameters[0] as Sprite[]).Length == 1)
                     {
-                        Name = "Sprite[" + (parameters[0] as Sprite[])[0].id + "]" + "Moved from pos : X:" + (parameters[1] as int[])[0].ToString() + ",Y:" + (parameters[2] as int[])[0].ToString();
+                        Name = "Sprite[" + (parameters[0] as Sprite[])[0].id + "]" + "Moved from position : X:" + (parameters[1] as int[])[0].ToString() + ",Y:" + (parameters[2] as int[])[0].ToString();
                     }
                     else
                     {
-                        Name = "Group of sprites Moved";
+                        Name = "Group of sprites moved";
                     }
                 }
             }
@@ -49,11 +49,11 @@ namespace ZeldaFullEditor
             {
                 if ((parameters[0] as Sprite[]).Length == 1)
                 {
-                    Name = "Sprite[" + (parameters[0] as Sprite[])[0].id + "]" + "Changed to id : :" + (parameters[1] as int[])[0].ToString();
+                    Name = "Sprite[" + (parameters[0] as Sprite[])[0].id + "]" + "Changed to ID : :" + (parameters[1] as int[])[0].ToString();
                 }
                 else
                 {
-                    Name = "Group of sprites Changed Id";
+                    Name = "Group of sprites changed ID";
                 }
             }
         }

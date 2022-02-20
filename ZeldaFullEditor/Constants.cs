@@ -4,10 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZeldaFullEditor
-{
-    public static class Constants
-    {
+namespace ZeldaFullEditor {
+    public static class Constants {
         //===========================================================================================
         //GFX Related Variables
         //===========================================================================================
@@ -48,7 +46,7 @@ namespace ZeldaFullEditor
         public static int overworldSpritesBegining = 0x4C881;
         public static int overworldSpritesAgahnim = 0x4CA21;
         public static int overworldSpritesZelda = 0x4C901;
-        
+
         /*public static int overworldSpritesBeginingEditor = 0x108100;
         public static int overworldSpritesAgahnimEditor = 0x108180;
         public static int overworldSpritesZeldaEditor = 0x1082A0;*/
@@ -61,14 +59,14 @@ namespace ZeldaFullEditor
         public static int mapGfx = 0x7C9C;
         public static int overlayPointers = 0x77664;
         public static int overlayPointersBank = 0x0E;
-        
+
         public static int overworldTilesType = 0x71459;
         public static int overworldMessages = 0x3F51D;
 
         //TODO:
         public static int overworldMusicBegining = 0x14303;
-        public static int overworldMusicZelda = 0x14303+0x40;
-        public static int overworldMusicMasterSword = 0x14303+0x80;
+        public static int overworldMusicZelda = 0x14303 + 0x40;
+        public static int overworldMusicMasterSword = 0x14303 + 0x80;
         public static int overworldMusicAgahim = 0x14303 + 0xC0;
         public static int overworldMusicDW = 0x14403;
 
@@ -156,18 +154,18 @@ namespace ZeldaFullEditor
         public static int room_object_layout_pointer = 0x882D;
 
         public static int room_object_pointer = 0x874C; //Long pointer
-        
+
         public static int chests_length_pointer = 0xEBF6;
         public static int chests_data_pointer1 = 0xEBFB;
         //public static int chests_data_pointer2 = 0xEC0A; //Disabled for now could be used for expansion
         //public static int chests_data_pointer3 = 0xEC10; //Disabled for now could be used for expansion
 
         public static int blocks_length = 0x8896; //word value 
-        public static int blocks_pointer1 = 0x15AFA; 
-        public static int blocks_pointer2 = 0x15B01; 
-        public static int blocks_pointer3 = 0x15B08; 
+        public static int blocks_pointer1 = 0x15AFA;
+        public static int blocks_pointer2 = 0x15B01;
+        public static int blocks_pointer3 = 0x15B08;
         public static int blocks_pointer4 = 0x15B0F;
-        
+
         public static int torch_data = 0x2736A; //JP 0x2704A
         public static int torches_length_pointer = 0x88C1;
 
@@ -253,8 +251,8 @@ namespace ZeldaFullEditor
 
         public static int chests_backupitems = 0x3B528; //item id you get instead if you already have that item
         public static int chests_yoffset = 0x4836C;
-        public static int chests_xoffset = 0x4836C + (76*1);
-        public static int chests_itemsgfx = 0x4836C + (76*2);
+        public static int chests_xoffset = 0x4836C + (76 * 1);
+        public static int chests_itemsgfx = 0x4836C + (76 * 2);
         public static int chests_itemswide = 0x4836C + (76 * 3);
         public static int chests_itemsproperties = 0x4836C + (76 * 4);
         public static int chests_sramaddress = 0x4836C + (76 * 5);
@@ -339,8 +337,7 @@ namespace ZeldaFullEditor
 
         public static bool Rando = false; //is it a rando rom?
 
-        public static void Init_Jp(bool rando = false)
-        {
+        public static void Init_Jp(bool rando = false) {
             pit_pointer = 0x394A2;
             pit_count = 0x3949D;
             //04EF2F
@@ -413,9 +410,9 @@ namespace ZeldaFullEditor
             hardcodedGrassDW = 0x67FF0;//map>40
             hardcodedGrassSpecial = 0x67FE1;//map 183,182,180
 
-            OWExitRoomId = 0x15D8A - 0x29C; 
-            OWExitMapId = 0x15E28 - 0x29C; 
-            OWExitVram = 0x15E77 - 0x29C; 
+            OWExitRoomId = 0x15D8A - 0x29C;
+            OWExitMapId = 0x15E28 - 0x29C;
+            OWExitVram = 0x15E77 - 0x29C;
             OWExitYScroll = 0x15F15 - 0x29C;
             OWExitXScroll = 0x15FB3 - 0x29C;
             OWExitYPlayer = 0x16051 - 0x29C;
@@ -448,8 +445,7 @@ namespace ZeldaFullEditor
             overworldTilesType = 0x7FD94;
             Rando = rando;
 
-            if (rando == true)
-            {
+            if (rando == true) {
                 //TODO: Add condition here?
             }
         }
