@@ -33,14 +33,7 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (listBox1.SelectedIndex <= 8)
-            {
-                textBox1.Enabled = true;
-            }
-            else
-            {
-                textBox1.Enabled = false;
-            }
+
         }
 
         private void button2_Click(object sender, EventArgs e)
