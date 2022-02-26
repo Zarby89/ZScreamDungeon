@@ -115,6 +115,7 @@ namespace ZeldaFullEditor
         public DungeonMain()
         {
             InitializeComponent();
+            this.tileTypeCombobox.Items.AddRange(Utils.CreateIndexedList(Constants.TileTypeNames));
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -430,285 +431,150 @@ namespace ZeldaFullEditor
             //29: load Over. sprites
             //30: load Over. items
 
-            if (saveSettingsArr[0])
-            {
-                if (save.saveallSprites())//sprites, there's a protection
-                {
-                    MessageBox.Show("Failed to save, there is too many sprites", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+            // probably a dumb hack, but this do-while makes everything execute exactly once
+            // and it also allows us to break out on failure cleanly to terminate the routine
+            bool badSave = true;
+            do {
+                if (saveSettingsArr[0] && save.saveallSprites()) {
+                    CryAboutSaving("there are too many sprites");
+                    break;
                 }
-            }
-            if (saveSettingsArr[1])
-            {
-                if (save.saveallPots())//There is a protection - Tested
-                {
-                    MessageBox.Show("Failed to save, there is too many pot items", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[1] && save.saveallPots()) {
+                        CryAboutSaving("there are too many pot items");
+                        break;
                 }
-            }
-            if (saveSettingsArr[2])
-            {
-                if (save.saveallChests()) //chest there's a protection when there's too many chest - tested it works fine
-                {
-                    MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[2] && save.saveallChests()) {
+                        CryAboutSaving("there are too many chest items");
+                        break;
                 }
-            } 
-            if (saveSettingsArr[3])
-            {
-                if (save.saveAllObjects())//There is a protection - Tested
-                {
-                    MessageBox.Show("Failed to save, there is too many tiles objects", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[3] && save.saveAllObjects()) {
+                        CryAboutSaving("there are too many tiles objects");
+                        break;
                 }
-            }
-            if (saveSettingsArr[4])
-            {
-                if (save.saveBlocks())//There is a protection - Tested
-                {
-                    MessageBox.Show("Failed to save, there is too many pushable blocks", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[4] && save.saveBlocks()) {
+                        CryAboutSaving("there are too many pushable blocks");
+                        break;
                 }
-            }
-            if (saveSettingsArr[5])
-            {
-                if (save.saveTorches())//There is a protection Tested
-                {
-                    MessageBox.Show("Failed to save, there is too many torches", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[5] && save.saveTorches()) {
+                        CryAboutSaving("there are too many torches");
+                        break;
                 }
-            }
-            if (saveSettingsArr[6])
-            {
-                if (save.saveAllPits())//There is a protection - Tested
-                {
-                    MessageBox.Show("Failed to save, there is too many damage pits", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[6] && save.saveAllPits()) {
+                        CryAboutSaving("there are too many pits with damage");
+                        break;
                 }
-            }
-            if (saveSettingsArr[7])
-            {
-                if (save.saveRoomsHeaders()) //no protection always the same size so we don't care :)
-                {
-                    //MessageBox.Show("Failed to save, there is too many chest items", "Bad Error", MessageBoxButtons.OK);
+                if (saveSettingsArr[7] && save.saveRoomsHeaders()) {
+                        //CryAboutSaving("there are too many chest items);
+                        //break;
                 }
-            }
-            if (saveSettingsArr[8])
-            {
-                if (save.saveEntrances(DungeonsData.entrances, DungeonsData.starting_entrances))
-                {
-                    MessageBox.Show("Failed to save entrances ?? no idea why LUL", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[8] && save.saveEntrances(DungeonsData.entrances, DungeonsData.starting_entrances)) {
+                        CryAboutSaving("something with entrances ?? no idea why LUL");
+                        break;
                 }
-            }
-            if (saveSettingsArr[9])
-            {
-                if (save.SaveOWSprites(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save overworld sprites out of range ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[9] && save.SaveOWSprites(overworldEditor.scene)) {
+                        CryAboutSaving("overworld sprites out of range");
+                        break;
                 }
-            }
-            if (saveSettingsArr[10])
-            {
-                if (save.saveOWItems(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save overworld items out of range ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[10] && save.saveOWItems(overworldEditor.scene)) {
+                        CryAboutSaving("overworld items out of range");
+                        break;
                 }
-            }
-            if (saveSettingsArr[11])
-            {
-                if (save.saveOWEntrances(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save ??, no idea why ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[11] && save.saveOWEntrances(overworldEditor.scene)) {
+                        CryAboutSaving("??, no idea why LUL");
+                        break;
                 }
-            }
-            if (saveSettingsArr[12])
-            {
-                if (save.saveOWTransports(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save overworld transports out of range ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[12] && save.saveOWTransports(overworldEditor.scene)) {
+                        CryAboutSaving("overworld transports out of range");
+                        break;
                 }
-            }
-            if (saveSettingsArr[13])
-            {
-                if (save.saveOWExits(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save overworld Exits? ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[13] && save.saveOWExits(overworldEditor.scene)) {
+                        CryAboutSaving("overworld Exits or something IDK");
+                        break;
                 }
-            }
-            if (saveSettingsArr[14])
-            {
-                if (overworldEditor.scene.SaveTiles())
-                {
-                    //no need for a message box here because its handeled within the SaveTiles() function itslef.
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[14] && overworldEditor.scene.SaveTiles()) {
+                        //no need for a message box here because its handeled within the SaveTiles() function itslef.
+                        break;
                 }
-            }
-            //15
-            if (saveSettingsArr[16])
-            {
-                if (save.saveMapProperties(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save overworld map properties ??? ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                //15
+                if (saveSettingsArr[16] && save.saveMapProperties(overworldEditor.scene)) {
+                        CryAboutSaving("overworld map properties ???");
+                        break;
                 }
-            }
-            //17
-            //18
-            //19
-            //20
-            //21
-            //22
-            if(saveSettingsArr[23])
-            {
-                if(GfxGroups.SaveGroupsToROM())
-                {
-                    MessageBox.Show("Error saving GFX Groups", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                //17
+                //18
+                //19
+                //20
+                //21
+                //22
+                if (saveSettingsArr[23] && GfxGroups.SaveGroupsToROM()) {
+                        CryAboutSaving("problem saving GFX Groups");
+                        break;
                 }
-            }
-            if (saveSettingsArr[24])
-            {
-                if (Palettes.SavePalettesToROM(ROM.DATA))
-                {
-                    MessageBox.Show("Error saving palettes", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[24] && Palettes.SavePalettesToROM(ROM.DATA)) {
+                        CryAboutSaving("problem saving palettes");
+                        break;
                 }
-            }
-            if (saveSettingsArr[25])
-            {
-                if (save.saveAllText(textEditor))
-                {
-                    MessageBox.Show("Impossible to save Texts", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[25] && save.saveAllText(textEditor)) {
+                        CryAboutSaving("impossible to save text");
+                        break;
                 }
-            }
-            //17
-            if (saveSettingsArr[28])
-            {
-                if (save.saveCustomCollision())
-                {
-                    MessageBox.Show("Failed to save, there was an error saving the custom collision rectangles", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                //17
+                if (saveSettingsArr[28] && save.saveCustomCollision()) {
+                        CryAboutSaving("there was an error saving the custom collision rectangles");
+                        break;
+                }
 
-                    return;
+                if (saveSettingsArr[31] && save.saveMapOverlays(overworldEditor.scene)) {
+                        CryAboutSaving("overworld map overlays ??? ");
+                        break;
                 }
-            }
-            
-            if (saveSettingsArr[31])
-            {
-                if (save.saveMapOverlays(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save overworld map Overlays ??? ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[32] && save.saveOverworldMusics(overworldEditor.scene)) {
+                        CryAboutSaving("overworld map tile types ??? ");
+                        break;
                 }
-            }
-            if (saveSettingsArr[32])
-            {
-                if (save.saveOverworldMusics(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save overworld map tiles Types ??? ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[33] && save.SaveTitleScreen()) {
+                        CryAboutSaving("overworld title screen? ");
+                        break;
                 }
-            }
-            if (saveSettingsArr[33])
-            {
-                if (save.SaveTitleScreen())
-                {
-                    MessageBox.Show("Failed to save overworld title screen? ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[34] && save.SaveOverworldMiniMap()) {
+                        CryAboutSaving("problem saving overworld Minimap? ");
+                        break;
                 }
-            }
-            if (saveSettingsArr[34])
-            {
-                if (save.SaveOverworldMiniMap())
-                {
-                    MessageBox.Show("Failed to save overworld Minimap? ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[35] && save.saveOverworldTilesType(overworldEditor.scene)) {
+                        CryAboutSaving("problem saving overworld map tiles Types ??? ");
+                        break;
                 }
-            }
-            if (saveSettingsArr[35])
-            {
-                if (save.saveOverworldTilesType(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save overworld map tiles Types ??? ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[36] && save.saveOverworldMaps(overworldEditor.scene)) {
+                        CryAboutSaving("problem saving overworld maps ");
+                        break;
                 }
-            }
-            if (saveSettingsArr[36])
-            {
-                if (save.saveOverworldMaps(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save overworld maps ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[37] && save.SaveGravestones(overworldEditor.scene)) {
+                        CryAboutSaving("problem saving gravestones");
+                        break;
                 }
-            }
-            if (saveSettingsArr[37])
-            {
-                if (save.SaveGravestones(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save Gravestones", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[38] && save.SaveDungeonMaps()) {
+                        CryAboutSaving("problem saving dungeon maps");
+                        break;
                 }
-            }
-            if (saveSettingsArr[38])
-            {
-                if (save.SaveDungeonMaps())
-                {
-                    MessageBox.Show("Failed to save Gravestones", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[39] && save.SaveTriforce()) {
+                        CryAboutSaving("problem saving triforce");
+                        break;
                 }
-            }
-            if (saveSettingsArr[39])
-            {
-                if (save.SaveTriforce())
-                {
-                    MessageBox.Show("Failed to Triforce", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
+                if (saveSettingsArr[40] && save.saveOverworldMessagesIds(overworldEditor.scene)) {
+                        CryAboutSaving("problem saving  overworld map tiles Types ???");
+                        break;
                 }
+
+
+                // if we made it here, everything was fine
+                badSave = false;
+            } while (false);
+
+            if (badSave) {
+                ROM.DATA = (byte[]) romBackup.Clone(); //restore previous rom data to prevent corrupting anything
+                return;
             }
-            if (saveSettingsArr[40])
-            {
-                if (save.saveOverworldMessagesIds(overworldEditor.scene))
-                {
-                    MessageBox.Show("Failed to save overworld map tiles Types ??? ", "Bad Error", MessageBoxButtons.OK);
-                    ROM.DATA = (byte[])romBackup.Clone(); //restore previous rom data to prevent corrupting anything
-                    return;
-                }
-            }
-            
+
             ROM.Write(0x5D4E, 0x00, true, "Fix sprite sheet 123 (should not be read compressed)"); //Fix for the sprite sheet 123
             //ROM.DATA[0x5D4E] = 0x00; 
 
@@ -734,6 +600,12 @@ namespace ZeldaFullEditor
             fs.Close();
         }
 
+        // TODO move more of the failure stuff here
+        private void CryAboutSaving(string message) {
+            MessageBox.Show("Failed to save;\n" + message,
+                "Bad Error",
+                MessageBoxButtons.OK);
+        }
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog projectFile = new OpenFileDialog();

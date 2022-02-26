@@ -157,7 +157,7 @@
             this.openfileButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openfileButton.Name = "openfileButton";
             this.openfileButton.Size = new System.Drawing.Size(23, 22);
-            this.openfileButton.Text = "Open ROM";
+            this.openfileButton.Text = "Open ROM…";
             // 
             // saveButton
             // 
@@ -166,7 +166,7 @@
             this.saveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(23, 22);
-            this.saveButton.Text = "Save ROM";
+            this.saveButton.Text = "Save ROM…";
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // toolStripSeparator1
@@ -182,7 +182,7 @@
             this.debugtestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.debugtestButton.Name = "debugtestButton";
             this.debugtestButton.Size = new System.Drawing.Size(23, 22);
-            this.debugtestButton.Text = "Save and debug in emulator";
+            this.debugtestButton.Text = "Save and Debug in Emulator…";
             // 
             // runtestButton
             // 
@@ -191,7 +191,7 @@
             this.runtestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.runtestButton.Name = "runtestButton";
             this.runtestButton.Size = new System.Drawing.Size(23, 22);
-            this.runtestButton.Text = "Save and run in emulator";
+            this.runtestButton.Text = "Save and Run in Emulator…";
             this.runtestButton.Click += new System.EventHandler(this.runtestButton_Click);
             // 
             // undoButton
@@ -365,7 +365,7 @@
             this.searchtilesButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.searchtilesButton.Name = "searchtilesButton";
             this.searchtilesButton.Size = new System.Drawing.Size(23, 22);
-            this.searchtilesButton.Text = "search tiles";
+            this.searchtilesButton.Text = "Search for tiles";
             this.searchtilesButton.Click += new System.EventHandler(this.searchtilesButton_Click);
             // 
             // refreshToolStrip
@@ -432,7 +432,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(280, 593);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Tile16";
+            this.tabPage1.Text = "Tile 16";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tilePictureBox
@@ -479,7 +479,7 @@
             this.Tiles8.Name = "Tiles8";
             this.Tiles8.Size = new System.Drawing.Size(280, 593);
             this.Tiles8.TabIndex = 2;
-            this.Tiles8.Text = "Tile8";
+            this.Tiles8.Text = "Tile 8";
             this.Tiles8.UseVisualStyleBackColor = true;
             // 
             // panel2
@@ -792,7 +792,7 @@
             this.stateCombobox.FormattingEnabled = true;
             this.stateCombobox.Items.AddRange(new object[] {
             "0,1 Rescue Zelda",
-            "2 Zelda saved",
+            "2 Zelda rescued",
             "3 Agahnim defeated"});
             this.stateCombobox.Location = new System.Drawing.Point(6, 31);
             this.stateCombobox.Name = "stateCombobox";
