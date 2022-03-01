@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
@@ -83,5 +84,10 @@ namespace ZeldaFullEditor
 			}
             return ret;
 		}
+        public static string ForceTextToHex(string s) {
+
+            return Regex.Replace(s, @"[^A-F\d]", "");
+
+        }
     }
 }

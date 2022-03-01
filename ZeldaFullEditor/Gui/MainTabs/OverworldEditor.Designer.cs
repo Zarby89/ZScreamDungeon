@@ -575,7 +575,7 @@
             this.thumbnailBox.TabIndex = 22;
             this.thumbnailBox.TabStop = false;
             this.thumbnailBox.Visible = false;
-            this.thumbnailBox.Paint += new System.Windows.Forms.PaintEventHandler(this.thumbnailBox_Paint);
+            //this.thumbnailBox.Paint += new System.Windows.Forms.PaintEventHandler(this.thumbnailBox_Paint);
             // 
             // owPropertyPanel
             // 

@@ -165,11 +165,7 @@ namespace ZeldaFullEditor {
 
         public int FindDictionaryEntry(byte b) 
         {
-            if (b < DICTOFF) 
-            {
-                return -1;
-			} 
-            else if (b == 0xFF) 
+            if (b < DICTOFF || b == 0xFF) 
             {
                 return -1;
 			}
@@ -227,18 +223,18 @@ namespace ZeldaFullEditor {
             new TextElement(0x5C, "B", false, "Button Ⓑ"),
             new TextElement(0x5D, "X", false, "Button ⓧ"),
             new TextElement(0x5E, "Y", false, "Button ⓨ"),
-            new TextElement(0x52, "HP0", false, "1 HP left" ),
-            new TextElement(0x53, "HP1", false, "1 HP right" ),
-            new TextElement(0x54, "HP2", false, "2 HP left" ),
-            new TextElement(0x55, "HP3", false, "3 HP left" ),
-            new TextElement(0x56, "HP4", false, "3 HP right" ),
-            new TextElement(0x57, "HP5", false, "4 HP left" ),
-            new TextElement(0x58, "HP6", false, "4 HP right" ),
+            new TextElement(0x52, "HP1L", false, "1 HP left" ),
+            new TextElement(0x53, "HP1R", false, "1 HP right" ),
+            new TextElement(0x54, "HP2L", false, "2 HP left" ),
+            new TextElement(0x55, "HP3L", false, "3 HP left" ),
+            new TextElement(0x56, "HP3R", false, "3 HP right" ),
+            new TextElement(0x57, "HP4L", false, "4 HP left" ),
+            new TextElement(0x58, "HP4R", false, "4 HP right" ),
             new TextElement(0x47, "HY0", false, "Hieroglyph ☥"),
             new TextElement(0x48, "HY1", false, "Hieroglyph 𓈗"),
             new TextElement(0x49, "HY2", false, "Hieroglyph Ƨ"),
-            new TextElement(0x4A, "LHL", false, "Link face left"),
-            new TextElement(0x4B, "LHR", false, "Link face right"),
+            new TextElement(0x4A, "LFL", false, "Link face left"),
+            new TextElement(0x4B, "LFR", false, "Link face right"),
 
         };
 
@@ -310,7 +306,6 @@ namespace ZeldaFullEditor {
                 { 0x40, '-' },
                 { 0x41, '.' },
                 { 0x42, ',' },
-                { 0x43, '…' },
                 { 0x44, '>' },
                 { 0x45, '(' },
                 { 0x46, ')' },
@@ -335,9 +330,7 @@ namespace ZeldaFullEditor {
             int i = 0;
             foreach (TextElement t in list) 
             {
-                ret[i++] = string.Format( "{0} {1}",
-                                          t.GenericToken,
-                                          t.Description);
+                ret[i++] = string.Format( "{0} {1}", t.GenericToken, t.Description);
             }
 
             return ret;
@@ -593,9 +586,7 @@ namespace ZeldaFullEditor {
 
             if (dict >= 0) 
             {
-                return string.Format("[{0}:{1:2X}",
-                    DICTIONARYTOKEN,
-                    dict);
+                return string.Format("[{0}:{1:2X}", DICTIONARYTOKEN, dict);
             }
 
             return "";
@@ -648,10 +639,7 @@ namespace ZeldaFullEditor {
 
             for (int i = 0; i < listOfTexts.Count; i++) 
             {
-                ListViewItem lvi = new ListViewItem();
-                lvi.Text = i.ToString("X3") + " : " + listOfTexts[i].text;
-                lvi.Tag = i;
-                textListbox.Items.Add(lvi);
+                AddMessageToList(i);
             }
 
             textListbox.EndUpdate();
@@ -674,7 +662,7 @@ namespace ZeldaFullEditor {
             textBox1.Text = sk.text;
 
             drawTextPreview();
-            label9.Text = "Address: " + addrTexts[textListbox.SelectedIndex].ToString("X6");
+            MessageAddress.Text = addrTexts[textListbox.SelectedIndex].ToString("X6");
 
             pictureBox1.Refresh();
         }
@@ -717,30 +705,16 @@ namespace ZeldaFullEditor {
             else if (b == 0x76) { textPos = 0; textLine = 2; }
             else if (b == 0x6A) 
             {
-                //NAME
-                srcy = ((13 / 16));
-                srcx = 13 - ((13 / 16) * 16);
-                draw_item_tile(textPos, textLine * 16, srcx, srcy, 0, false, false, 1, 2);
-                textPos += widthArray[13];
-
-                srcy = ((0 / 16));
-                srcx = 0 - ((0 / 16) * 16);
-                draw_item_tile(textPos, textLine * 16, srcx, srcy, 0, false, false, 1, 2);
-                textPos += widthArray[0];
-
-                srcy = ((12 / 16));
-                srcx = 12 - ((12 / 16) * 16);
-                draw_item_tile(textPos, textLine * 16, srcx, srcy, 0, false, false, 1, 2);
-                textPos += widthArray[12];
-
-                srcy = ((4 / 16));
-                srcx = 4 - ((13 / 16) * 16);
-                draw_item_tile(textPos, textLine * 16, srcx, srcy, 0, false, false, 1, 2);
-                textPos += widthArray[4];
+                drawLetter(FindMatchingCharacter('('));
+                drawLetter(FindMatchingCharacter('N'));
+                drawLetter(FindMatchingCharacter('A'));
+                drawLetter(FindMatchingCharacter('M'));
+                drawLetter(FindMatchingCharacter('E'));
+                drawLetter(FindMatchingCharacter(')'));
             } 
-            else if (b >= 0x88 && b <= (0x88 + 97)) 
+            else if (b >= DICTOFF && b <= (DICTOFF + 97)) 
             {
-                byte bdict = (byte) (b - 0x88);
+                byte bdict = (byte) (b - DICTOFF);
                 foreach (byte bd in dictionaries_bytes[bdict]) 
                 {
                     drawLetter(bd);
@@ -832,11 +806,7 @@ namespace ZeldaFullEditor {
                 {
                     if (s.text == listOfTexts[i].text) 
                     {
-                        ListViewItem lvi = new ListViewItem();
-                        lvi.Text = i.ToString("D3") + " : " + listOfTexts[i].text;
-                        lvi.Tag = i;
-                        textListbox.Items.Add(lvi);
-                        break;
+                        AddMessageToList(i);
                     }
                 }
             }
@@ -844,6 +814,17 @@ namespace ZeldaFullEditor {
             textListbox.EndUpdate();
         }
 
+        /// <summary>
+        /// Adds message <paramref name="i"/> to the message list in a standardized format.
+        /// </summary>
+        /// <param name="i"></param>
+        private void AddMessageToList(int i) {
+            textListbox.Items.Add(new ListViewItem()
+            {
+                Text = i.ToString("X3") + " : " + listOfTexts[i].text,
+                Tag = i
+            });
+        }
         private void pictureBox2_Paint(object sender, PaintEventArgs e) 
         {
             e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
@@ -851,9 +832,9 @@ namespace ZeldaFullEditor {
             e.Graphics.DrawImage(GFX.fontgfxBitmap, new Rectangle(0, 0, 256, 256));
             int srcY = (selectedTile / 16);
             int srcX = selectedTile - (srcY * 16);
-            e.Graphics.DrawRectangle(new Pen(Brushes.GreenYellow, 2), new Rectangle(srcX * 16, srcY * 32, 16, 32));
-            label6.Text = "ID: " + selectedTile.ToString("X2");
-            label7.Text = "ASCII: " + readNextTextByte((byte) selectedTile);
+            e.Graphics.DrawRectangle(new Pen(Brushes.CornflowerBlue, 2), new Rectangle(srcX * 16, srcY * 32, 16, 32));
+            SelectedTileID.Text = selectedTile.ToString("X2");
+            SelectedTileASCII.Text = readNextTextByte((byte) selectedTile);
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e) 
@@ -862,11 +843,13 @@ namespace ZeldaFullEditor {
             ColorPalette cp = GFX.currentfontgfx16Bitmap.Palette;
 
             for (int i = 0; i < 4; i++) {
-                if (i == 0) {
+                if (i == 0)
+                {
                     cp.Entries[i] = Color.Transparent;
-                } else {
+                }
+                else
+                {
                     cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[(defaultColor * 4) + i];
-
                 }
             }
 
@@ -1160,7 +1143,8 @@ namespace ZeldaFullEditor {
             int i = 0;
             foreach (string s in dictionaries) 
             {
-                df.listBox1.Items.Add(i.ToString("D2") + " : " + s.Replace(" ", "[Space]"));
+                df.listBox1.Items.Add(
+                    string.Format("{0:X2} [{1:X2}] - {2}", i, i + DICTOFF, s.Replace(" ", "[Space]")));
                 i++;
             }
 
@@ -1308,5 +1292,13 @@ namespace ZeldaFullEditor {
         {
             ParamsBox.Enabled = (TextCommandList.SelectedIndex <= 8);
         }
+
+		private void ParamsBox_TextChanged(object sender, EventArgs e) {
+            ParamsBox.Text = Utils.ForceTextToHex(ParamsBox.Text);
+		}
+
+		private void BytesDDD_Click(object sender, EventArgs e) {
+            new MessageAsBytes(parseTextToBytes(textBox1.Text)).Show();
+		}
 	}
 }

@@ -410,6 +410,12 @@
     <Compile Include="Gui\ExtraForms\Tile16Editor.Designer.cs">
       <DependentUpon>Tile16Editor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\TextEditorExtra\MessageAsBytes.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\TextEditorExtra\MessageAsBytes.Designer.cs">
+      <DependentUpon>MessageAsBytes.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\VramViewer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -652,6 +658,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\Tile16Editor.resx">
       <DependentUpon>Tile16Editor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\TextEditorExtra\MessageAsBytes.resx">
+      <DependentUpon>MessageAsBytes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\VramViewer.resx">
       <DependentUpon>VramViewer.cs</DependentUpon>
