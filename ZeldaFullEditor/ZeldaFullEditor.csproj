@@ -404,12 +404,6 @@
     <Compile Include="Gui\TextEditorExtra\DictionariesForm.Designer.cs">
       <DependentUpon>DictionariesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\TextEditorExtra\TextCommands.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\TextEditorExtra\TextCommands.Designer.cs">
-      <DependentUpon>TextCommands.cs</DependentUpon>
-    </Compile>
     <Compile Include="Gui\ExtraForms\Tile16Editor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -655,9 +649,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\TextEditorExtra\DictionariesForm.resx">
       <DependentUpon>DictionariesForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\TextEditorExtra\TextCommands.resx">
-      <DependentUpon>TextCommands.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\Tile16Editor.resx">
       <DependentUpon>Tile16Editor.cs</DependentUpon>
