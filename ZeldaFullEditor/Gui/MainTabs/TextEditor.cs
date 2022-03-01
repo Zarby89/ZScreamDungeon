@@ -659,7 +659,7 @@ namespace ZeldaFullEditor {
             }*/
             //Console.WriteLine();
 
-            textBox1.Text = sk.text;
+            textBox1.Text = Regex.Replace(sk.text, @"\[[123V]\]", "\r\n$0");
 
             drawTextPreview();
             MessageAddress.Text = addrTexts[textListbox.SelectedIndex].ToString("X6");
@@ -1125,7 +1125,13 @@ namespace ZeldaFullEditor {
             if (textListbox.SelectedItem != null)
             {
                 object selectedTextTag = (textListbox.SelectedItem as ListViewItem).Tag;
-                listOfTexts[(int)selectedTextTag].text = textBox1.Text;
+                listOfTexts[(int)selectedTextTag].text = Regex.Replace(textBox1.Text, @"[\r\n]", "");
+
+                // TODO JARED FIX THIS
+                (textListbox.Items[(int) selectedTextTag] as ListViewItem).Text = Regex.Replace(textBox1.Text, @"[\r\n]", "");
+                textListbox.Refresh();
+
+
 
                 setTextsDictionaries();
                 savedBytes[(int)selectedTextTag] = parseTextToBytes(textBox1.Text);
