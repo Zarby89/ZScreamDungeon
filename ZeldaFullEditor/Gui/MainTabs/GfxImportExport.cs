@@ -49,6 +49,7 @@ namespace ZeldaFullEditor.Gui
                 byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
                 int spos = 0;
                 //byte* allgfx16Data2 = (byte*)allgfx16EDITPtr.ToPointer();
+
                 for (int y = 31; y >= 0; y--)
                 {
                     for(int x = 0; x<64;x++)
@@ -91,6 +92,7 @@ namespace ZeldaFullEditor.Gui
             }
 
             byte[] sdata = new byte[0x800];
+
             unsafe
             {
                 byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
@@ -99,11 +101,6 @@ namespace ZeldaFullEditor.Gui
                     sdata[i] = gdata[(selectedSheet * 0x800)+i];
                 }
             }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            //TODO: Add something here?
         }
 
         public void SaveAllGfx()
@@ -211,7 +208,6 @@ namespace ZeldaFullEditor.Gui
                             int s = cbytes.Length;
                             cbytes.CopyTo(ROM.DATA, Utils.SnesToPc(addr));
                             //pos += s;
-
                         }
                     }
                 }
@@ -314,11 +310,6 @@ namespace ZeldaFullEditor.Gui
             }
 
             ImgClipboard.SetImageData(sdata,pdata);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            //TODO: Add something here?
         }
 
         private void copy24bpp_Click(object sender, EventArgs e)

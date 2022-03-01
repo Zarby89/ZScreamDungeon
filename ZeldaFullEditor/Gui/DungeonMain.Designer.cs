@@ -760,7 +760,6 @@ namespace ZeldaFullEditor
 			this.debugToolStripButton.Name = "debugToolStripButton";
 			this.debugToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.debugToolStripButton.Text = "Debug";
-			this.debugToolStripButton.Click += new System.EventHandler(this.debugToolStripButton_Click);
 			// 
 			// autodoorButton
 			// 
@@ -3164,7 +3163,6 @@ namespace ZeldaFullEditor
 			this.selectedObjectInHexToolStripMenuItem.Name = "selectedObjectInHexToolStripMenuItem";
 			this.selectedObjectInHexToolStripMenuItem.Size = new System.Drawing.Size(268, 22);
 			this.selectedObjectInHexToolStripMenuItem.Text = "Show selected object in hexadecimal";
-			this.selectedObjectInHexToolStripMenuItem.Click += new System.EventHandler(this.selectedObjectInHexToolStripMenuItem_Click);
 			// 
 			// overworldToolStripMenuItem
 			// 
@@ -4093,7 +4091,6 @@ namespace ZeldaFullEditor
 			this.customPanel3.Name = "customPanel3";
 			this.customPanel3.Size = new System.Drawing.Size(603, 523);
 			this.customPanel3.TabIndex = 19;
-			this.customPanel3.MouseMove += new System.Windows.Forms.MouseEventHandler(this.customPanel3_MouseMove);
 			// 
 			// DungeonMain
 			// 

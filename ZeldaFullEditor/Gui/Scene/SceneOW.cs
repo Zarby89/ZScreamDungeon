@@ -71,8 +71,6 @@ namespace ZeldaFullEditor
 
         public bool lowEndMode = false;
 
-        bool clickedObject = false;
-
         public SceneOW(OverworldEditor f,Overworld ow, DungeonMain mform)
         {
             owForm = f;
@@ -124,7 +122,6 @@ namespace ZeldaFullEditor
                 {
                     xPos -= 48;
                 }
-
             }
             else
             {
@@ -185,7 +182,6 @@ namespace ZeldaFullEditor
                 }
 
                 owForm.propertiesChangedFromForm = false;
-
                 owForm.tilePictureBox.Refresh();
             }
 
@@ -394,6 +390,7 @@ namespace ZeldaFullEditor
         {
             spriteMode.lastselectedSprite.id = (byte)owForm.objCombobox.SelectedIndex;
             spriteMode.lastselectedSprite.name = owForm.objCombobox.Text;
+
             if (lowEndMode)
             {
                 int x = ow.allmaps[selectedMap].parent % 8;
@@ -427,6 +424,7 @@ namespace ZeldaFullEditor
             {
                 int x = ow.allmaps[selectedMap].parent % 8;
                 int y = ow.allmaps[selectedMap].parent / 8;
+
                 if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
                 {
                     Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
@@ -488,6 +486,7 @@ namespace ZeldaFullEditor
             {
                 int x = ow.allmaps[selectedMap].parent % 8;
                 int y = ow.allmaps[selectedMap].parent / 8;
+
                 if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
                 {
                     Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
@@ -513,6 +512,7 @@ namespace ZeldaFullEditor
             {
                 int x = ow.allmaps[selectedMap].parent % 8;
                 int y = ow.allmaps[selectedMap].parent / 8;
+
                 if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
                 {
                     Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
@@ -687,6 +687,7 @@ namespace ZeldaFullEditor
                 ow.Save32Tiles();
                 //ow.savemapstorom();
                 ow.SaveMap16Tiles();
+
                 return false;
             }
             else
@@ -860,6 +861,7 @@ namespace ZeldaFullEditor
                 {
                     itemMode.Draw(g);
                 }
+                 
                 gravestoneMode.Draw(g);
 
                 if (showSprites)
@@ -941,6 +943,7 @@ namespace ZeldaFullEditor
                     {
                         gridsize = 1024;
                     }
+
                     int x = ow.allmaps[selectedMap].parent % 8;
                     int y = ow.allmaps[selectedMap].parent / 8;
 
@@ -1085,6 +1088,7 @@ namespace ZeldaFullEditor
                 palettes.Entries[i * 16] = Color.Transparent;
                 palettes.Entries[(i * 16) + 8] = Color.Transparent;
             }
+
             GFX.roomBg1Bitmap.Palette = palettes;
             GFX.roomBg2Bitmap.Palette = palettes;
             GFX.roomBgLayoutBitmap.Palette = palettes;
@@ -1121,16 +1125,6 @@ namespace ZeldaFullEditor
                 entranceMode.onMouseDoubleClick(e);
             }
         }
-        
-        public void objects_ResizeMouseMove(MouseEventArgs e)
-        {
-            //TODO: add something here?
-        }
-
-        public void setMouseSizeMode(MouseEventArgs e)
-        {
-            //TODO: add something here?
-        }
 
         private void InitializeComponent()
         {
@@ -1138,16 +1132,6 @@ namespace ZeldaFullEditor
             this.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this)).EndInit();
             this.ResumeLayout(false);
-        }
-
-        private void chestpicker_Load(object sender, EventArgs e)
-        {
-            //TODO: add something here?
-        }
-
-        private void pObj_Load(object sender, EventArgs e)
-        {
-            //TODO: add something here?
         }
     }
 }

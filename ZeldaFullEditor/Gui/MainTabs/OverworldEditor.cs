@@ -30,7 +30,6 @@ namespace ZeldaFullEditor.Gui
 
         bool mouse_down = false;
 
-        bool initialized = false;
         bool selecting = false;
         int globalmouseTileDownX = 0;
         int globalmouseTileDownY = 0;
@@ -127,11 +126,6 @@ namespace ZeldaFullEditor.Gui
                 fs.Write(file, 0, (int)fs.Length);
                 fs.Close();
             }
-        }
-
-        public void setTilesGfx()
-        {
-            //tilePictureBox.Image = overworld.allmaps[0].blocksetBitmap;
         }
 
         private void ModeButton_Click(object sender, EventArgs e)
@@ -313,10 +307,6 @@ namespace ZeldaFullEditor.Gui
             mainForm.runtestButton_Click(sender, e);
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-            //TODO: Add something here?
-        }
 
         private void tilePictureBox_DoubleClick(object sender, EventArgs e)
         {
@@ -336,11 +326,6 @@ namespace ZeldaFullEditor.Gui
                     }
                 }).Start();
             }
-        }
-
-        private void thumbnailBox_Paint(object sender, PaintEventArgs e)
-        {
-            //TODO: Add something here?
         }
 
         private void undoButton_Click(object sender, EventArgs e)
@@ -377,6 +362,7 @@ namespace ZeldaFullEditor.Gui
             owmf.musics[1] = scene.ow.allmaps[scene.selectedMap].musics[1];
             owmf.musics[2] = scene.ow.allmaps[scene.selectedMap].musics[2];
             owmf.musics[3] = scene.ow.allmaps[scene.selectedMap].musics[3];
+
             if (owmf.ShowDialog() == DialogResult.OK)
             {
                 scene.ow.allmaps[scene.selectedMap].musics[0] = owmf.musics[0];
@@ -416,7 +402,6 @@ namespace ZeldaFullEditor.Gui
                 else
                 {
                     cp.Entries[i] = GFX.roomBg1Bitmap.Palette.Entries[(defaultColor * 4) + i];
-
                 }
             }
 
@@ -471,6 +456,7 @@ namespace ZeldaFullEditor.Gui
                     int y = 0;
                     int x = 0;
                     ushort[] undotiles = new ushort[scene.selectedTile.Length];
+
                     for (int i = 0; i < scene.selectedTile.Length; i++)
                     {
                         if (globalmouseTileDownX + x <= 15)
@@ -521,6 +507,7 @@ namespace ZeldaFullEditor.Gui
                         bool reverseY = false;
                         int sizeX = (tileX - globalmouseTileDownX) + 1;
                         int sizeY = (tileY - globalmouseTileDownY) + 1;
+
                         if (tileX < globalmouseTileDownX)
                         {
                             sizeX = (globalmouseTileDownX - tileX) + 1;
@@ -534,6 +521,7 @@ namespace ZeldaFullEditor.Gui
 
                         scene.selectedTileSizeX = sizeX;
                         scene.selectedTile = new ushort[(sizeX) * (sizeY)];
+
                         for (int y = 0; y < sizeY; y++)
                         {
                             for (int x = 0; x < sizeX; x++)
@@ -549,6 +537,7 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
             }
+
             selecting = false;
             mouse_down = false;
             scratchPicturebox.Refresh();
@@ -588,7 +577,9 @@ namespace ZeldaFullEditor.Gui
                                     {
                                         scratchPadTiles[globalmouseTileDownX + x, globalmouseTileDownY + y] = scene.selectedTile[i];
                                     }
+
                                     x++;
+
                                     if (x >= scene.selectedTileSizeX)
                                     {
                                         y++;
@@ -606,11 +597,6 @@ namespace ZeldaFullEditor.Gui
                     lastTileHoverY = mouseTileY;
                 }
             }
-        }
-
-        protected override void OnPaint(PaintEventArgs e)
-        {
-            //TODO: Add something here?
         }
 
         private void scratchPicturebox_Paint(object sender, PaintEventArgs e)
@@ -633,8 +619,6 @@ namespace ZeldaFullEditor.Gui
 
                 g.DrawImage(GFX.scratchblockset16Bitmap,0,0);
                 
-                //if (initialized)
-                //{
 
                 int x = 0;
                 int y = 0;
@@ -656,7 +640,6 @@ namespace ZeldaFullEditor.Gui
 
                 g.CompositingMode = CompositingMode.SourceCopy;
                 //hideText = false;
-                //}
             }
         }
 
@@ -732,7 +715,6 @@ namespace ZeldaFullEditor.Gui
                     {
                         for (int x = 0; x < 64; x += 2)
                         {
-
                             //Console.WriteLine(overworld.tiles16[overworld.allmapsTilesLW[nx + (sx * 32), ny + (sy * 32)]].tile0.id);
 
                             overworld.tempTiles8_LW[x + (sx * 64), y + (sy * 64)] = overworld.tiles16[overworld.allmapsTilesLW[nx + (sx * 32), ny + (sy * 32)]].tile0;
@@ -744,6 +726,7 @@ namespace ZeldaFullEditor.Gui
                             overworld.tempTiles8_DW[x + (sx * 64) + 1, y + (sy * 64)] = overworld.tiles16[overworld.allmapsTilesDW[nx + (sx * 32), ny + (sy * 32)]].tile1;
                             overworld.tempTiles8_DW[x + (sx * 64), y + (sy * 64) + 1] = overworld.tiles16[overworld.allmapsTilesDW[nx + (sx * 32), ny + (sy * 32)]].tile2;
                             overworld.tempTiles8_DW[x + (sx * 64) + 1, y + (sy * 64) + 1] = overworld.tiles16[overworld.allmapsTilesDW[nx + (sx * 32), ny + (sy * 32)]].tile3;
+
                             if (i < 32)
                             {
                                 overworld.tempTiles8_SP[x + (sx * 64), y + (sy * 64)] = overworld.tiles16[overworld.allmapsTilesSP[nx + (sx * 32), ny + (sy * 32)]].tile0;
@@ -831,10 +814,8 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-
             //Bitmap b = new Bitmap(128, 512, 64, System.Drawing.Imaging.PixelFormat.Format4bppIndexed, GFX.currentOWgfx16Ptr);
             GFX.editort16Bitmap.Palette = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette;
-
         }
 
         public unsafe void updateTiles()
@@ -933,6 +914,7 @@ namespace ZeldaFullEditor.Gui
                 Color c = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette.Entries[i];
                 e.Graphics.FillRectangle(new SolidBrush(c), new Rectangle((i%16)*16, (i/16)*16, 16, 16));
             }
+
             e.Graphics.DrawRectangle(Pens.GreenYellow, new Rectangle(0, palSelected * 16, 256, 16));
         }
 
@@ -959,14 +941,16 @@ namespace ZeldaFullEditor.Gui
                 {
                     for (int x = 0; x < 32; x += 1)
                     {
-                            alltilesIndexed[overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)]]++;
-                            alltilesIndexed[overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)]]++;
+                        alltilesIndexed[overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)]]++;
+                        alltilesIndexed[overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)]]++;
+
                         if (i < 32)
                         {
                                 alltilesIndexed[overworld.allmapsTilesSP[x + (sx * 32), y + (sy * 32)]]++;
                         }
                     }
                 }
+
                 foreach (TilePos t in overworld.alloverlays[i].tilesData)
                 {
                     alltilesIndexed[t.tileId]++;
@@ -999,7 +983,6 @@ namespace ZeldaFullEditor.Gui
         {
             if (propertiesChangedFromForm == false)
             {
-                byte result = 0;
                 OverworldMap mapParent = scene.ow.allmaps[scene.ow.allmaps[scene.selectedMap].parent];
 
                 if (scene.ow.allmaps[scene.selectedMap].parent == 255)
@@ -1152,6 +1135,7 @@ namespace ZeldaFullEditor.Gui
                             {
                                 int[] mtable = new int[8] { 0, 1, 8, 9, 64, 64 + 1, 64 + 8, 64 + 9 };
                                 m = scene.ow.allmaps[scene.selectedMap].parent + mtable[i];
+
                                 foreach (TransportOW o in scene.ow.allBirds)
                                 {
                                     if (o.mapId == m)
