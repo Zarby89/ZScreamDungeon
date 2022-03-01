@@ -64,11 +64,15 @@ namespace ZeldaFullEditor {
             {
                 token = t;
                 hasParam = arg;
+
+                // need to escape the . because it's regex
+                // dumb thing for just 1 command
                 pattern = string.Format(
                     arg ? "\\[{0}:?([0-9A-F]{{1,2}})\\]" : "\\[{0}\\]",
-                    token);
+                    token.Replace(".", "\\."));
 
                 patternStrict = string.Format("^{0}$", pattern);
+
                 gt = string.Format(
                          arg ? "[{0}:##]" : "[{0}]",
                          token);
@@ -675,12 +679,10 @@ namespace ZeldaFullEditor {
                 return;
             }
 
-            int srcy = 0;
-            int srcx = 0;
             if (b < 100) 
             {
-                srcy = ((b / 16));
-                srcx = b - ((b / 16) * 16);
+                int srcy = ((b / 16));
+                int srcx = b - ((b / 16) * 16);
 
                 if (textPos >= 170) 
                 {
@@ -694,16 +696,21 @@ namespace ZeldaFullEditor {
             else if (b == 0x74) { textPos = 0; textLine = 0; }
             else if (b == 0x73) { textPos = 0; textLine += 1; }
             else if (b == 0x75) { textPos = 0; textLine = 1; }
+            else if (b == 0x76) { textPos = 0; textLine = 2; }
             else if (b == 0x6B) { skipNext = true; return; }
-            else if (b == 0x6C) { skipNext = true; return; }
             else if (b == 0x6D) { skipNext = true; return; }
             else if (b == 0x6E) { skipNext = true; return; }
             else if (b == 0x77) { skipNext = true; return; }
             else if (b == 0x78) { skipNext = true; return; }
             else if (b == 0x79) { skipNext = true; return; }
             else if (b == 0x7A) { skipNext = true; return; }
-            else if (b == 0x76) { textPos = 0; textLine = 2; }
-            else if (b == 0x6A) 
+            else if (b == 0x6C) // BCD numbers
+            {
+                drawLetter(FindMatchingCharacter('0'));
+                skipNext = true;
+                return;
+            
+            } else if (b == 0x6A) 
             {
                 drawLetter(FindMatchingCharacter('('));
                 drawLetter(FindMatchingCharacter('N'));
@@ -734,7 +741,6 @@ namespace ZeldaFullEditor {
             }
 
             textPos = 0;
-            int t = 0;
             foreach (byte b in savedBytes[(int) (textListbox.SelectedItem as ListViewItem).Tag]) {
                 drawLetter(b);
             }
@@ -764,7 +770,6 @@ namespace ZeldaFullEditor {
                 {
                     int mx = xl;
                     int my = yl;
-                    byte r = 0;
 
                     //Formula information to get tile index position in the array
                     //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
@@ -1092,8 +1097,7 @@ namespace ZeldaFullEditor {
         /// <param name="e"></param>
         private void InsertCommandButton_Click_1(object sender, EventArgs e) 
         {
-            byte par = 0;
-            Byte.TryParse(ParamsBox.Text, NumberStyles.HexNumber, null, out par);
+            Byte.TryParse(ParamsBox.Text, NumberStyles.HexNumber, null, out byte par);
 
             InsertSelectedText(TCommands[TextCommandList.SelectedIndex].GetParameterizedToken(par));
         }
@@ -1162,7 +1166,7 @@ namespace ZeldaFullEditor {
             string[] alltexts = new string[listOfTexts.Count];
             for (int i = 0; i < listOfTexts.Count; i++) 
             {
-                alltexts[i] = i.ToString("D3") + " :" + listOfTexts[i].text + "\r\n\r\n";
+                alltexts[i] = i.ToString("X3") + " : " + listOfTexts[i].text + "\r\n\r\n";
             }
 
             File.WriteAllLines("dump.txt", alltexts);
@@ -1219,7 +1223,7 @@ namespace ZeldaFullEditor {
                     string[] alltexts = new string[listOfTexts.Count];
                     for (int i = 0; i < listOfTexts.Count; i++) 
                     {
-                        alltexts[i] = i.ToString("D3") + " :" + listOfTexts[i].text + "\r\n\r\n";
+                        alltexts[i] = i.ToString("X3") + " : " + listOfTexts[i].text + "\r\n\r\n";
                     }
 
                     File.WriteAllLines(sf.FileName, alltexts);
@@ -1303,8 +1307,9 @@ namespace ZeldaFullEditor {
             ParamsBox.Text = Utils.ForceTextToHex(ParamsBox.Text);
 		}
 
+        MessageAsBytes byter = new MessageAsBytes();
 		private void BytesDDD_Click(object sender, EventArgs e) {
-            new MessageAsBytes(parseTextToBytes(textBox1.Text)).Show();
+            byter.ShowBytes(parseTextToBytes(textBox1.Text));
 		}
 	}
 }

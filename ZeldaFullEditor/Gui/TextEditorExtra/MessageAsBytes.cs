@@ -11,17 +11,26 @@ using System.Windows.Forms;
 namespace ZeldaFullEditor.Gui.TextEditorExtra {
 	public partial class MessageAsBytes : Form {
 		private byte[] data;
-		private int sep = 0;
+		private int sep = 1;
 		private int pre = 0;
-		public MessageAsBytes(byte[] d) {
+		public MessageAsBytes() {
 			InitializeComponent();
-			data = d;
-			UpdateTextBox();
+			SeparatorChoose.SelectedIndex = sep;
+			PrefixChoose.SelectedIndex = pre;
+		}
 
+		public void ShowBytes(byte[] d) {
+			data = d;
+			SizeOfMessage.Text = string.Format("{0:D} (0x{0:X}) bytes", d.Length + 1);
+			UpdateTextBox();
+			ShowDialog();
 		}
 
 		private void UpdateTextBox() {
 			StringBuilder s = new StringBuilder();
+			if (data == null) {
+				return;
+			}
 			foreach (byte b in data) {
 				switch (pre) {
 					case 0:

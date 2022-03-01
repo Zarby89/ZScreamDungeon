@@ -28,16 +28,19 @@
 			this.label2 = new System.Windows.Forms.Label();
 			this.PrefixChoose = new System.Windows.Forms.ComboBox();
 			this.SeparatorChoose = new System.Windows.Forms.ComboBox();
+			this.label3 = new System.Windows.Forms.Label();
+			this.SizeOfMessage = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// textBox1
 			// 
 			this.textBox1.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-			this.textBox1.Location = new System.Drawing.Point(2, 3);
+			this.textBox1.Location = new System.Drawing.Point(2, 26);
 			this.textBox1.Multiline = true;
 			this.textBox1.Name = "textBox1";
+			this.textBox1.ReadOnly = true;
 			this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.textBox1.Size = new System.Drawing.Size(471, 249);
+			this.textBox1.Size = new System.Drawing.Size(471, 226);
 			this.textBox1.TabIndex = 0;
 			// 
 			// label1
@@ -86,11 +89,30 @@
 			this.SeparatorChoose.TabIndex = 4;
 			this.SeparatorChoose.SelectedIndexChanged += new System.EventHandler(this.SeparatorChoose_SelectedIndexChanged);
 			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(12, 9);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(74, 13);
+			this.label3.TabIndex = 5;
+			this.label3.Text = "Message size:";
+			// 
+			// SizeOfMessage
+			// 
+			this.SizeOfMessage.AutoSize = true;
+			this.SizeOfMessage.Location = new System.Drawing.Point(92, 10);
+			this.SizeOfMessage.Name = "SizeOfMessage";
+			this.SizeOfMessage.Size = new System.Drawing.Size(0, 13);
+			this.SizeOfMessage.TabIndex = 6;
+			// 
 			// MessageAsBytes
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(475, 290);
+			this.Controls.Add(this.SizeOfMessage);
+			this.Controls.Add(this.label3);
 			this.Controls.Add(this.SeparatorChoose);
 			this.Controls.Add(this.PrefixChoose);
 			this.Controls.Add(this.label2);
@@ -111,5 +133,7 @@
 		private System.Windows.Forms.Label label2;
 		private System.Windows.Forms.ComboBox PrefixChoose;
 		private System.Windows.Forms.ComboBox SeparatorChoose;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.Label SizeOfMessage;
 	}
 }
