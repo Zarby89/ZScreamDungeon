@@ -21,7 +21,9 @@ namespace ZeldaFullEditor
 
         public byte
             unk1,
-            unk2;
+            unk2,
+            AreaX,
+            AreaY;
 
         public bool isAutomatic = true;
 
@@ -38,6 +40,12 @@ namespace ZeldaFullEditor
             this.unk1 = unk1;
             this.unk2 = unk2;
             this.whirlpoolPos = whirlpoolPos;
+
+            int mapY = (mapId % 8);
+            int mapX = Math.Abs(mapId - (mapY * 8));
+
+            AreaX = (byte)((Math.Abs(playerX - (mapX * 504)) / 16) - 1);
+            AreaY = (byte)((Math.Abs(playerY - (mapY * 504)) / 16) - 1);
         }
 
         public void updateMapStuff(byte mapId, Overworld ow)
@@ -46,14 +54,22 @@ namespace ZeldaFullEditor
 
             int large = 256;
             int mapid = mapId;
+
             if (mapId < 128)
             {
                 large = ow.allmaps[mapId].largeMap ? 768 : 256;
+
                 if (ow.allmaps[mapId].parent != mapId)
                 {
                     mapid = ow.allmaps[mapId].parent;
                 }
             }
+
+            int mapY = (mapId % 8);
+            int mapX = Math.Abs(mapId - (mapY * 8));
+
+            AreaX = (byte)((Math.Abs(playerX - (mapX * 504)) / 16) - 1);
+            AreaY = (byte)((Math.Abs(playerY - (mapY * 504)) / 16) - 1);
 
             //if map is large, large = 768, otherwise 256
 
@@ -65,6 +81,7 @@ namespace ZeldaFullEditor
 
             int mapx = (mapId & 7) << 9;
             int mapy = ((mapId & 56) << 6);
+
             if (isAutomatic)
             {
                 xScroll = (short)(playerX - 134);
@@ -84,13 +101,14 @@ namespace ZeldaFullEditor
 
                 if (cameraX > mapx + 127 + large) { cameraX = (short)(mapx + 127 + large); }
                 if (cameraY > mapy + 143 + large) { cameraY = (short)(mapy + 143 + large); }
-
             }
 
             short vramXScroll = (short)(xScroll - mapx);
             short vramYScroll = (short)(yScroll - mapy);
 
             vramLocation = (short)(((vramYScroll & 0xFFF0) << 3) | ((vramXScroll & 0xFFF0) >> 3));
+
+            Console.WriteLine("Transport: " + mapId + " MapId: " + mapid.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
         }
     }
 }

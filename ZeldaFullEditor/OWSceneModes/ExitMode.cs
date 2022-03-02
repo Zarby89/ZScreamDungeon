@@ -186,6 +186,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     selectedExit.playerX = (ushort)e.X;
                     selectedExit.playerY = (ushort)e.Y;
+
                     if (scene.snapToGrid)
                     {
                         selectedExit.playerX = (ushort)((e.X / 8) * 8);

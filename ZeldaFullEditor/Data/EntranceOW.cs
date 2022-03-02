@@ -12,7 +12,7 @@ namespace ZeldaFullEditor
         public int x;
         public int y;
         public ushort mapPos;
-        public byte entranceId;
+        public byte entranceId, AreaX, AreaY;
         public short mapId;
         public bool isHole = false;
         public bool deleted = false;
@@ -25,6 +25,12 @@ namespace ZeldaFullEditor
             this.entranceId = entranceId;
             this.mapId = mapId;
             this.mapPos = mapPos;
+
+            int mapY = (mapId % 8);
+            int mapX = Math.Abs(mapId - (mapY * 8));
+
+            AreaX = (byte)((Math.Abs(x - (mapX * 504)) / 16) - 1);
+            AreaY = (byte)((Math.Abs(y - (mapY * 504)) / 16) - 1);
         }
 
         public EntranceOWEditor Copy()
@@ -40,6 +46,13 @@ namespace ZeldaFullEditor
             {
                 mapId -= 64;
             }
+
+            int mapY = (mapId % 8);
+            int mapX = Math.Abs(mapId - (mapY * 8));
+
+            AreaX = (byte)((Math.Abs(x - (mapX * 504)) / 16) - 1);
+            AreaY = (byte)((Math.Abs(y - (mapY * 504)) / 16) - 1);
+
             int mx = (mapId - ((mapId / 8) * 8));
             int my = ((mapId / 8));
 
@@ -48,6 +61,16 @@ namespace ZeldaFullEditor
 
             mapPos = (ushort)((((yy) << 6) | (xx & 0x3F)) << 1);
             //Console.WriteLine(xx + ", " +yy+ ", " +mapPos);
+
+            if(isHole)
+            {
+                Console.WriteLine("Hole: " + entranceId + " MapId: " + mapId.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
+            }
+            else
+            {
+                Console.WriteLine("Entrance: " + entranceId + " MapId: " + mapId.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
+            }
+            
         }
     }
 }

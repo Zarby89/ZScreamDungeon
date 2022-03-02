@@ -14,7 +14,9 @@ namespace ZeldaFullEditor
             unk1,
             unk2,
             doorXEditor,
-            doorYEditor;
+            doorYEditor,
+            AreaX,
+            AreaY;
 
         public short
             vramLocation,
@@ -62,6 +64,12 @@ namespace ZeldaFullEditor
                 doorXEditor = (byte)(p % 64);
                 doorYEditor = (byte)(p >> 6);
             }
+
+            int mapY = (mapId % 8);
+            int mapX = Math.Abs(mapId - (mapY * 8));
+
+            AreaX = (byte)((Math.Abs(playerX - (mapX * 504)) / 16) - 1);
+            AreaY = (byte)((Math.Abs(playerY - (mapY * 504)) / 16) - 1);
         }
 
         public ExitOW Copy()
@@ -88,6 +96,7 @@ namespace ZeldaFullEditor
 
             int large = 256;
             int mapid = mapId;
+
             if (mapId < 128)
             {
                 large = ow.allmaps[mapId].largeMap ? 768 : 256;
@@ -96,6 +105,12 @@ namespace ZeldaFullEditor
                     mapid = ow.allmaps[mapId].parent;
                 }
             }
+
+            int mapY = (mapid % 8);
+            int mapX = Math.Abs(mapid - (mapY * 8));
+
+            AreaX = (byte)((Math.Abs(playerX - (mapX * 504)) / 16) - 1);
+            AreaY = (byte)((Math.Abs(playerY - (mapY * 504)) / 16) - 1);
 
             //if map is large, large = 768, otherwise 256
 
@@ -133,6 +148,8 @@ namespace ZeldaFullEditor
             short vramYScroll = (short)(yScroll - mapy);
 
             vramLocation = (short)(((vramYScroll & 0xFFF0) << 3) | ((vramXScroll & 0xFFF0) >> 3));
+
+            Console.WriteLine("Exit: " + roomId + " MapId: " + mapid.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
         }
     }
 }

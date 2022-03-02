@@ -31,11 +31,14 @@ namespace ZeldaFullEditor
             {
                 mapId -= 64;
             }
+
             int mx = (mapId - ((mapId / 8) * 8));
             int my = ((mapId / 8));
 
             gameX = (byte)((x - (mx * 512)) / 16);
             gameY = (byte)((y - (my * 512)) / 16);
+
+            Console.WriteLine("Item: " + id.ToString("X2") + " MapId: " + roomMapId.ToString("X2") + " X: " + gameX + " Y: " + gameY);
         }
 
         public RoomPotSaveEditor Copy()
