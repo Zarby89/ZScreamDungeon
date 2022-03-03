@@ -33,6 +33,7 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureboxTile8 = new System.Windows.Forms.PictureBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tileUpDown = new System.Windows.Forms.TextBox();
             this.tileTypeBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.paletteUpDown = new System.Windows.Forms.NumericUpDown();
@@ -44,7 +45,6 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.gridcheckBox = new System.Windows.Forms.CheckBox();
-            this.tileUpDown = new System.Windows.Forms.TextBox();
             this.tile16searchTextbox = new System.Windows.Forms.TextBox();
             this.button3 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxTile16)).BeginInit();
@@ -59,7 +59,7 @@
             // 
             this.pictureboxTile16.Location = new System.Drawing.Point(1, 1);
             this.pictureboxTile16.Name = "pictureboxTile16";
-            this.pictureboxTile16.Size = new System.Drawing.Size(256, 16000);
+            this.pictureboxTile16.Size = new System.Drawing.Size(256, 15008);
             this.pictureboxTile16.TabIndex = 0;
             this.pictureboxTile16.TabStop = false;
             this.pictureboxTile16.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureboxTile16_Paint);
@@ -114,6 +114,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Selected tile 8";
             // 
+            // tileUpDown
+            // 
+            this.tileUpDown.Location = new System.Drawing.Point(9, 32);
+            this.tileUpDown.Name = "tileUpDown";
+            this.tileUpDown.Size = new System.Drawing.Size(120, 20);
+            this.tileUpDown.TabIndex = 9;
+            this.tileUpDown.Text = "00";
+            // 
             // tileTypeBox
             // 
             this.tileTypeBox.FormattingEnabled = true;
@@ -128,7 +136,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(8, 221);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(64, 13);
+            this.label3.Size = new System.Drawing.Size(68, 13);
             this.label3.TabIndex = 7;
             this.label3.Text = "Collision type";
             // 
@@ -150,7 +158,7 @@
             this.inFrontCheckbox.AutoSize = true;
             this.inFrontCheckbox.Location = new System.Drawing.Point(9, 164);
             this.inFrontCheckbox.Name = "inFrontCheckbox";
-            this.inFrontCheckbox.Size = new System.Drawing.Size(62, 17);
+            this.inFrontCheckbox.Size = new System.Drawing.Size(57, 17);
             this.inFrontCheckbox.TabIndex = 4;
             this.inFrontCheckbox.Text = "Priority";
             this.inFrontCheckbox.UseVisualStyleBackColor = true;
@@ -160,7 +168,7 @@
             this.mirrorYCheckbox.AutoSize = true;
             this.mirrorYCheckbox.Location = new System.Drawing.Point(9, 132);
             this.mirrorYCheckbox.Name = "mirrorYCheckbox";
-            this.mirrorYCheckbox.Size = new System.Drawing.Size(62, 17);
+            this.mirrorYCheckbox.Size = new System.Drawing.Size(52, 17);
             this.mirrorYCheckbox.TabIndex = 3;
             this.mirrorYCheckbox.Text = "Flip Y";
             this.mirrorYCheckbox.UseVisualStyleBackColor = true;
@@ -171,7 +179,7 @@
             this.mirrorXCheckbox.AutoSize = true;
             this.mirrorXCheckbox.Location = new System.Drawing.Point(9, 100);
             this.mirrorXCheckbox.Name = "mirrorXCheckbox";
-            this.mirrorXCheckbox.Size = new System.Drawing.Size(62, 17);
+            this.mirrorXCheckbox.Size = new System.Drawing.Size(52, 17);
             this.mirrorXCheckbox.TabIndex = 2;
             this.mirrorXCheckbox.Text = "Flip X";
             this.mirrorXCheckbox.UseVisualStyleBackColor = true;
@@ -182,7 +190,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 53);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(49, 13);
+            this.label2.Size = new System.Drawing.Size(40, 13);
             this.label2.TabIndex = 1;
             this.label2.Text = "Palette";
             // 
@@ -191,7 +199,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(47, 13);
+            this.label1.Size = new System.Drawing.Size(38, 13);
             this.label1.TabIndex = 0;
             this.label1.Text = "Tile ID";
             // 
@@ -226,19 +234,11 @@
             this.gridcheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.gridcheckBox.Location = new System.Drawing.Point(555, 292);
             this.gridcheckBox.Name = "gridcheckBox";
-            this.gridcheckBox.Size = new System.Drawing.Size(75, 17);
+            this.gridcheckBox.Size = new System.Drawing.Size(73, 17);
             this.gridcheckBox.TabIndex = 9;
             this.gridcheckBox.Text = "Show grid";
             this.gridcheckBox.UseVisualStyleBackColor = true;
             this.gridcheckBox.CheckedChanged += new System.EventHandler(this.gridcheckBox_CheckedChanged);
-            // 
-            // tileUpDown
-            // 
-            this.tileUpDown.Location = new System.Drawing.Point(9, 32);
-            this.tileUpDown.Name = "tileUpDown";
-            this.tileUpDown.Size = new System.Drawing.Size(120, 20);
-            this.tileUpDown.TabIndex = 9;
-            this.tileUpDown.Text = "00";
             // 
             // tile16searchTextbox
             // 
