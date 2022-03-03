@@ -65,11 +65,11 @@ namespace ZeldaFullEditor
                 doorYEditor = (byte)(p >> 6);
             }
 
-            int mapY = (mapId % 8);
-            int mapX = Math.Abs(mapId - (mapY * 8));
+            int mapX = (mapId - ((mapId / 8) * 8));
+            int mapY = (mapId / 8);
 
-            AreaX = (byte)((Math.Abs(playerX - (mapX * 504)) / 16) - 1);
-            AreaY = (byte)((Math.Abs(playerY - (mapY * 504)) / 16) - 1);
+            AreaX = (byte)((Math.Abs(playerX - (mapX * 512)) / 16));
+            AreaY = (byte)((Math.Abs(playerY - (mapY * 512)) / 16));
         }
 
         public ExitOW Copy()
@@ -106,11 +106,11 @@ namespace ZeldaFullEditor
                 }
             }
 
-            int mapY = (mapid % 8);
-            int mapX = Math.Abs(mapid - (mapY * 8));
+            int mapX = (mapId - ((mapId / 8) * 8));
+            int mapY = (mapId / 8);
 
-            AreaX = (byte)((Math.Abs(playerX - (mapX * 504)) / 16) - 1);
-            AreaY = (byte)((Math.Abs(playerY - (mapY * 504)) / 16) - 1);
+            AreaX = (byte)((Math.Abs(playerX - (mapX * 512)) / 16));
+            AreaY = (byte)((Math.Abs(playerY - (mapY * 512)) / 16));
 
             //if map is large, large = 768, otherwise 256
 
@@ -149,7 +149,7 @@ namespace ZeldaFullEditor
 
             vramLocation = (short)(((vramYScroll & 0xFFF0) << 3) | ((vramXScroll & 0xFFF0) >> 3));
 
-            Console.WriteLine("Exit: " + roomId + " MapId: " + mapid.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
+            Console.WriteLine("Exit:      " + roomId + " MapId: " + mapid.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
         }
     }
 }

@@ -26,11 +26,11 @@ namespace ZeldaFullEditor
             this.mapId = mapId;
             this.mapPos = mapPos;
 
-            int mapY = (mapId % 8);
-            int mapX = Math.Abs(mapId - (mapY * 8));
+            int mapX = (mapId - ((mapId / 8) * 8));
+            int mapY = (mapId / 8);
 
-            AreaX = (byte)((Math.Abs(x - (mapX * 504)) / 16) - 1);
-            AreaY = (byte)((Math.Abs(y - (mapY * 504)) / 16) - 1);
+            AreaX = (byte)((Math.Abs(x - (mapX * 512)) / 16));
+            AreaY = (byte)((Math.Abs(y - (mapY * 512)) / 16));
         }
 
         public EntranceOWEditor Copy()
@@ -47,30 +47,29 @@ namespace ZeldaFullEditor
                 mapId -= 64;
             }
 
-            int mapY = (mapId % 8);
-            int mapX = Math.Abs(mapId - (mapY * 8));
+            int mapX = (mapId - ((mapId / 8) * 8));
+            int mapY = (mapId / 8);
 
-            AreaX = (byte)((Math.Abs(x - (mapX * 504)) / 16) - 1);
-            AreaY = (byte)((Math.Abs(y - (mapY * 504)) / 16) - 1);
+            AreaX = (byte)((Math.Abs(x - (mapX * 512)) / 16));
+            AreaY = (byte)((Math.Abs(y - (mapY * 512)) / 16));
 
             int mx = (mapId - ((mapId / 8) * 8));
-            int my = ((mapId / 8));
+            int my = (mapId / 8);
 
             byte xx = (byte)((x - (mx * 512)) / 16);
             byte yy = (byte)((y - (my * 512)) / 16);
 
-            mapPos = (ushort)((((yy) << 6) | (xx & 0x3F)) << 1);
+            mapPos = (ushort)((((AreaY) << 6) | (AreaX & 0x3F)) << 1);
             //Console.WriteLine(xx + ", " +yy+ ", " +mapPos);
 
             if(isHole)
             {
-                Console.WriteLine("Hole: " + entranceId + " MapId: " + mapId.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
+                Console.WriteLine("Hole:      " + entranceId + " MapId: " + mapId.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
             }
             else
             {
-                Console.WriteLine("Entrance: " + entranceId + " MapId: " + mapId.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
+                Console.WriteLine("Entrance:  " + entranceId + " MapId: " + mapId.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
             }
-            
         }
     }
 }

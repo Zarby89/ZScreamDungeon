@@ -21,6 +21,12 @@ namespace ZeldaFullEditor
             this.y = y;
             this.bg2 = bg2;
             this.roomMapId = roomMapId;
+
+            int mapX = (roomMapId - ((roomMapId / 8) * 8));
+            int mapY = ((roomMapId / 8));
+
+            gameX = (byte)((Math.Abs(x - (mapX * 512)) / 16));
+            gameY = (byte)((Math.Abs(y - (mapY * 512)) / 16));
         }
 
         public void updateMapStuff(short mapId)
@@ -32,13 +38,13 @@ namespace ZeldaFullEditor
                 mapId -= 64;
             }
 
-            int mx = (mapId - ((mapId / 8) * 8));
-            int my = ((mapId / 8));
+            int mapX = (mapId - ((mapId / 8) * 8));
+            int mapY = ((mapId / 8));
 
-            gameX = (byte)((x - (mx * 512)) / 16);
-            gameY = (byte)((y - (my * 512)) / 16);
+            gameX = (byte)((Math.Abs(x - (mapX * 512)) / 16));
+            gameY = (byte)((Math.Abs(y - (mapY * 512)) / 16));
 
-            Console.WriteLine("Item: " + id.ToString("X2") + " MapId: " + roomMapId.ToString("X2") + " X: " + gameX + " Y: " + gameY);
+            Console.WriteLine("Item:      " + id.ToString("X2") + " MapId: " + roomMapId.ToString("X2") + " X: " + gameX + " Y: " + gameY);
         }
 
         public RoomPotSaveEditor Copy()

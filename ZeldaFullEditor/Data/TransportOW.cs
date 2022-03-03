@@ -41,11 +41,11 @@ namespace ZeldaFullEditor
             this.unk2 = unk2;
             this.whirlpoolPos = whirlpoolPos;
 
-            int mapY = (mapId % 8);
-            int mapX = Math.Abs(mapId - (mapY * 8));
+            int mapX = (mapId - ((mapId / 8) * 8));
+            int mapY = (mapId / 8);
 
-            AreaX = (byte)((Math.Abs(playerX - (mapX * 504)) / 16) - 1);
-            AreaY = (byte)((Math.Abs(playerY - (mapY * 504)) / 16) - 1);
+            AreaX = (byte)((Math.Abs(playerX - (mapX * 512)) / 16));
+            AreaY = (byte)((Math.Abs(playerY - (mapY * 512)) / 16));
         }
 
         public void updateMapStuff(byte mapId, Overworld ow)
@@ -65,11 +65,11 @@ namespace ZeldaFullEditor
                 }
             }
 
-            int mapY = (mapId % 8);
-            int mapX = Math.Abs(mapId - (mapY * 8));
+            int mapX = (mapId - ((mapId / 8) * 8));
+            int mapY = (mapId / 8);
 
-            AreaX = (byte)((Math.Abs(playerX - (mapX * 504)) / 16) - 1);
-            AreaY = (byte)((Math.Abs(playerY - (mapY * 504)) / 16) - 1);
+            AreaX = (byte)((Math.Abs(playerX - (mapX * 512)) / 16));
+            AreaY = (byte)((Math.Abs(playerY - (mapY * 512)) / 16));
 
             //if map is large, large = 768, otherwise 256
 

@@ -1371,7 +1371,7 @@ namespace ZeldaFullEditor
             x = (byte)((map_x - (mx * 512)) / 16);
             y = (byte)((map_y - (my * 512)) / 16);
 
-            Console.WriteLine("Sprite: " + id.ToString("X2") + " MapId: " + mapid.ToString("X2") + " X: " + x + " Y: " + y);
+            Console.WriteLine("Sprite:    " + id.ToString("X2") + " MapId: " + mapid.ToString("X2") + " X: " + x + " Y: " + y);
         }
     }
 }
