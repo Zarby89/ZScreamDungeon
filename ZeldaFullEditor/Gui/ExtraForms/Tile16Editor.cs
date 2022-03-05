@@ -307,7 +307,7 @@ namespace ZeldaFullEditor.Gui
             var yy = 0;
             var xx = 0;
 
-            for (var i = 0; i < 4096; i++) //number of tiles16 3748?
+            for (var i = 0; i < 4096; i++) //number of tiles16 3748? // its 3752
             {
                 //8x8 tile draw
                 //gfx8 = 4bpp so everyting is /2

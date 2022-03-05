@@ -4895,8 +4895,8 @@ namespace ZeldaFullEditor
             int sx = 0;
             int sy = 0;
             int p = 0;
-            byte[] mapArrayData = new byte[0x50000 + 0x7080];
 
+            byte[] mapArrayData = new byte[0x50000];
             using (SaveFileDialog sfd = new SaveFileDialog())
             {
                 sfd.Filter = "Zelda Map Data .zmd|*.zmd";
@@ -4936,36 +4936,6 @@ namespace ZeldaFullEditor
                         }
                     }
 
-                    for (int i = 0; i < 3600; i++)
-                    {
-                        ulong v = overworldEditor.overworld.tiles16[i].getLongValue();
-
-                        mapArrayData[p] = (byte)(v & 0xFF);
-                        v = (v >> 8);
-                        p++;
-                        mapArrayData[p] = (byte)(v & 0xFF);
-                        v = (v >> 8);
-                        p++;
-                        mapArrayData[p] = (byte)(v & 0xFF);
-                        v = (v >> 8);
-                        p++;
-                        mapArrayData[p] = (byte)(v & 0xFF);
-                        v = (v >> 8);
-                        p++;
-                        mapArrayData[p] = (byte)(v & 0xFF);
-                        v = (v >> 8);
-                        p++;
-                        mapArrayData[p] = (byte)(v & 0xFF);
-                        v = (v >> 8);
-                        p++;
-                        mapArrayData[p] = (byte)(v & 0xFF);
-                        v = (v >> 8);
-                        p++;
-                        mapArrayData[p] = (byte)(v & 0xFF);
-                        v = (v >> 8);
-                        p++;
-                    }
-
                     fileStreamMap.Write(mapArrayData, 0, mapArrayData.Length);
                     fileStreamMap.Close();
                 }
@@ -4977,8 +4947,8 @@ namespace ZeldaFullEditor
             int sx = 0;
             int sy = 0;
             int p = 0;
-            byte[] mapArrayData = new byte[0x50000 + 0x7080];
-
+            
+            byte[] mapArrayData = new byte[0x50000];
             using (OpenFileDialog sfd = new OpenFileDialog())
             {
                 sfd.Filter = "Zelda Map Data .zmd|*.zmd";
@@ -5015,23 +4985,118 @@ namespace ZeldaFullEditor
                         }
                     }
 
-                    /* removed by Jared_Brian_. incomplete code for transfering tile8 from .zmd file, causes save to fail later on.
-                    overworldEditor.overworld.tiles16.Clear();
-                    for (int i = 0; i < 3600; i++)
-                    {
-                        ulong v = 0;
-                        v = (ulong)(mapArrayData[p] |
-                            (mapArrayData[p + 1] << 8) |
-                            (mapArrayData[p + 2] << 16) |
-                            (mapArrayData[p + 3] << 24) |
-                            (mapArrayData[p + 4] << 32) |
-                            (mapArrayData[p + 5] << 40) |
-                            (mapArrayData[p + 6] << 48) |
-                            (mapArrayData[p + 7] << 56));
-                        p += 8;
+                    fileStreamMap.Close();
+                }
+            }
+        }
 
+        private void exportAllTilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int sx = 0;
+            int sy = 0;
+            int p = 0;
+            byte[] mapArrayData = new byte[0x7540];
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "Zelda Tile Data .ztd|*.ztd";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+
+                    for (int i = 0; i < 3752; i++) // 3600
+                    {
+                        ulong v = overworldEditor.overworld.tiles16[i].getLongValue();
+
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                        mapArrayData[p] = (byte)(v & 0xFF);
+                        v = (v >> 8);
+                        p++;
+                    }
+
+                    fileStreamMap.Write(mapArrayData, 0, mapArrayData.Length);
+                    fileStreamMap.Close();
+                }
+            }
+        }
+
+        private void importAllTilesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int p = 0;
+            byte[] mapArrayData = new byte[0x8000]; // real amount: 0x7540
+            using (OpenFileDialog sfd = new OpenFileDialog())
+            {
+                sfd.Filter = "Zelda Map Data .ztd|*.ztd";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
+                    fileStreamMap.Read(mapArrayData, 0, mapArrayData.Length);
+
+                    overworldEditor.overworld.tiles16.Clear();
+                    for (int i = 0; i < 4096; i++)
+                    {
+                        ulong t0 = 0;
+                        ulong t1 = 0;
+                        ulong t2 = 0;
+                        ulong t3 = 0;
+
+                        ulong v = 0;
+                        ulong v1 = 0;
+                        ulong v2 = 0;
+
+                        // Tile 0
+                        t0 = (ulong)(
+                            (mapArrayData[p + 1] << 8)  |
+                            (mapArrayData[p + 0])  
+                        );
+
+                        // Tile 1
+                        t1 = (ulong)
+                        (
+                            (mapArrayData[p + 3] << 8) |
+                            (mapArrayData[p + 2]) 
+                        );
+
+                        // Tile 2
+                        t2 = (ulong)
+                        (
+                            (mapArrayData[p + 5] << 8) |
+                            (mapArrayData[p + 4]) 
+                        );
+
+                        // Tile 3
+                        t3 = (ulong)
+                        (
+                            (mapArrayData[p + 7] << 8) |
+                            (mapArrayData[p + 6])
+                        );
+
+                        v1 = t3 << 16 | t2;
+                        v2 = t1 << 16 | t0;
+                        v = v1 << 32 | v2;
                         overworldEditor.overworld.tiles16.Add(new Tile16(v));
-                    }*/
+
+                        p += 8;
+                    }
 
                     fileStreamMap.Close();
                 }

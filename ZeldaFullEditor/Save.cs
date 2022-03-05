@@ -820,7 +820,7 @@ namespace ZeldaFullEditor
                 ROM.WriteShort(Constants.overworldItemsPointers + (i * 2), (snesaddr), true, "Item Pointer for room"+i.ToString("D3"));
             }
 
-            if (dataPos> Constants.overworldItemsEndData)
+            if (dataPos > Constants.overworldItemsEndData)
             {
                
                 return true;

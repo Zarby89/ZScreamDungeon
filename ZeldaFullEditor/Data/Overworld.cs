@@ -216,7 +216,7 @@ namespace ZeldaFullEditor
         public void AssembleMap16Tiles()
         {
             int tpos = Constants.map16Tiles;
-            for (int i = 0; i < 4096; i += 1)//3760
+            for (int i = 0; i < 4096; i += 1) // 3760 // 4096
             {
                 TileInfo t0 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, (tpos)));
                 tpos += 2;
@@ -226,6 +226,7 @@ namespace ZeldaFullEditor
                 tpos += 2;
                 TileInfo t3 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, (tpos)));
                 tpos += 2;
+
                 tiles16.Add(new Tile16(t0, t1, t2, t3));
             }
         }
@@ -233,7 +234,7 @@ namespace ZeldaFullEditor
         public void SaveMap16Tiles()
         {
             int tpos = Constants.map16Tiles;
-            for (int i = 0; i < 3760; i += 1)//3760
+            for (int i = 0; i < 3760; i += 1) // 3760
             {
                 ROM.WriteShort(tpos, tiles16[i].tile0.toShort(), true, "Tile16Data");
                 //ROM.DATA[tpos] = (byte)(tiles16[i].tile0.toShort() & 0xFF);

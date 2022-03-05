@@ -350,6 +350,7 @@ namespace ZeldaFullEditor.OWSceneModes
             lastselectedEntrance.mapPos = 0xFFFF;
             lastselectedEntrance.entranceId = 0;
             lastselectedEntrance.deleted = true;
+
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
@@ -372,6 +373,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         selectedEntrance.y = (e.Y/16) * 16;
                     }
                 }
+
                 //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
             }
         }

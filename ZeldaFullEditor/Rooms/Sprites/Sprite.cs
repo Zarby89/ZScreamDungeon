@@ -1359,6 +1359,7 @@ namespace ZeldaFullEditor
         public void updateMapStuff(short mapId)
         {
             this.mapid = (byte)mapId;
+
             if (mapId >= 64)
             {
                 mapId -= 64;
@@ -1370,7 +1371,7 @@ namespace ZeldaFullEditor
             x = (byte)((map_x - (mx * 512)) / 16);
             y = (byte)((map_y - (my * 512)) / 16);
 
-            //Console.WriteLine("X:{0} Y:{1}", gameX, gameY);
+            Console.WriteLine("Sprite:    " + id.ToString("X2") + " MapId: " + mapid.ToString("X2") + " X: " + x + " Y: " + y);
         }
     }
 }
