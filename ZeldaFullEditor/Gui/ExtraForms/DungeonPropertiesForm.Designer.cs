@@ -68,7 +68,7 @@
             this.label1.Dock = System.Windows.Forms.DockStyle.Top;
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 13);
+            this.label1.Size = new System.Drawing.Size(93, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "List of Dungeons :";
             // 
@@ -101,27 +101,27 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(211, 13);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(55, 13);
+            this.label2.Size = new System.Drawing.Size(69, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Start room";
+            this.label2.Text = "Start Room : ";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(211, 52);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(52, 13);
+            this.label3.Size = new System.Drawing.Size(66, 13);
             this.label3.TabIndex = 4;
-            this.label3.Text = "End room";
+            this.label3.Text = "End Room : ";
             // 
             // label4
             // 
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(211, 91);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(56, 13);
+            this.label4.Size = new System.Drawing.Size(70, 13);
             this.label4.TabIndex = 5;
-            this.label4.Text = "Boss room";
+            this.label4.Text = "Boss Room : ";
             // 
             // startroomTextbox
             // 
@@ -162,7 +162,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.panel1);
             this.Name = "DungeonPropertiesForm";
-            this.Text = "Dungeons properties - Decimal Values";
+            this.Text = "Dungeons Properties - Decimal Values";
             this.Load += new System.EventHandler(this.DungeonPropertiesForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();

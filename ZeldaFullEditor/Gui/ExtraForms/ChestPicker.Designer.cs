@@ -57,7 +57,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
-            this.button2.Text = "OK";
+            this.button2.Text = "Ok";
             this.button2.UseVisualStyleBackColor = true;
             // 
             // customPanel1
@@ -96,7 +96,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(69, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Selected ID";
+            this.label1.Text = "Selected ID :";
             // 
             // ChestPicker
             // 
@@ -109,7 +109,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.customPanel1);
             this.Name = "ChestPicker";
-            this.Text = "Chest Picker";
+            this.Text = "ChestPicker";
             this.Load += new System.EventHandler(this.ChestPicker_Load);
             this.customPanel1.ResumeLayout(false);
             this.ResumeLayout(false);

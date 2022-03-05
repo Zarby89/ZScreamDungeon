@@ -77,6 +77,11 @@ namespace ZeldaFullEditor.Gui.ExtraForms
         {
             InitializeComponent();
         }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+            //TODO: Add something here.
+        }
         
         private void OWMusicForm_Load(object sender, EventArgs e)
         {

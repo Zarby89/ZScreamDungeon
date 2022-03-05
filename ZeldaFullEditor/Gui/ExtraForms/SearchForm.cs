@@ -12,14 +12,12 @@ namespace ZeldaFullEditor.Gui
 {
     public partial class SearchForm : Form
     {
-        DungeonMain mainForm;
-
         public SearchForm(DungeonMain mainForm)
         {
             this.mainForm = mainForm;
             InitializeComponent();
         }
-        
+        DungeonMain mainForm;
         private void button2_Click(object sender, EventArgs e)
         {
             richTextBox1.Clear();

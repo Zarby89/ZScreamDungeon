@@ -21,8 +21,6 @@ namespace ZeldaFullEditor
 
         public Chest selectedObject = null;
 
-        public List<Chest> items = new List<Chest>();
-
         public Chestviewer()
         {
             InitializeComponent();
@@ -33,6 +31,7 @@ namespace ZeldaFullEditor
             //TODO: add something here?
         }
 
+        public List<Chest> items = new List<Chest>();
         private void ObjectViewer_Paint(object sender, PaintEventArgs e)
         {
             //TODO: add something here?
@@ -65,6 +64,7 @@ namespace ZeldaFullEditor
                 {
                     xpos = 0;
                     ypos++;
+
                 }
             }
 
@@ -135,7 +135,6 @@ namespace ZeldaFullEditor
                         ptr[i] = 0;
                     }
                 }
-
                 o.ItemsDraw(o.item,0,0);
                 if (palettes != null)
                 {
@@ -157,7 +156,6 @@ namespace ZeldaFullEditor
             int ypos = 0;
             int index = 0;
             this.Size = new Size(this.Size.Width, h);
-
             foreach (Chest o in items)
             {
                 Rectangle itemRect = new Rectangle(xpos * 64, ypos * 64, 64, 64);
@@ -172,6 +170,7 @@ namespace ZeldaFullEditor
                 {
                     xpos = 0;
                     ypos++;
+
                 }
 
                 index++;

@@ -578,17 +578,14 @@ namespace ZeldaFullEditor
             return false; // False = no error
         }
 
-        /// <summary>
-        /// Tells the text editor to save all the texts.
-        /// </summary>
-        /// <param name="te"></param>
-        /// <returns></returns>
-        /// Jared_Brian_: The check box save for the text editor was removed per redundancy.
         public bool saveAllText(TextEditor te)
-        { 
-            if (te.save())
+        {
+            if (te.checkBox1.Checked)
             {
-                return true;
+                if (te.save())
+                {
+                    return true;
+                }
             }
 
             return false;
@@ -1374,196 +1371,9 @@ namespace ZeldaFullEditor
                 return true;
             }
 
-            SaveLargeMaps(scene);
-
             return false;
             //Console.WriteLine("Map Pos Length: " + pos.ToString("X6"));
             //Save32Tiles();
-        }
-
-        /// <summary>
-        /// Saves the overworld area layout (whether the area is big or small).
-        /// </summary>
-        /// <param name="scene"></param>
-        /// <returns></returns>
-        public bool SaveLargeMaps(SceneOW scene)
-        {
-            //TODO: these temp vars can be removed along with thier print once testing is done
-            string parentMapLine = "";
-
-            string[] parentMap = new string[8];
-
-            Console.WriteLine("\n");
-            List<byte> checkedMap = new List<byte>();
-
-            for (int i = 0; i < 64; i++)
-            {
-                int yPos = i / 8;
-                int xPos = i % 8;
-                int parentyPos = scene.ow.allmaps[i].parent / 8;
-                int parentxPos = scene.ow.allmaps[i].parent % 8;
-
-                //always write the map parent since it should not matter
-                ROM.Write(Constants.overworldMapParentId + i, scene.ow.allmaps[i].parent);
-                parentMapLine += scene.ow.allmaps[i].parent.ToString("X2").PadLeft(2, '0') + " ";
-
-                if ((i + 1) % 8 == 0)
-                {
-                    parentMap[((i + 1) / 8) - 1] = parentMapLine;
-
-                    parentMapLine = "";
-                }
-
-                if (checkedMap.Contains((byte)i))
-                {
-                    continue; //ignore that map we already checked it
-                }
-
-                if (scene.ow.allmaps[i].largeMap) //if it's large then save parent pos * 0x200 otherwise pos * 0x200
-                {
-                    //check 1
-                    ROM.Write(Constants.overworldMapSize + i, 0x20);
-                    ROM.Write(Constants.overworldMapSize + i + 1, 0x20);
-                    ROM.Write(Constants.overworldMapSize + i + 8, 0x20);
-                    ROM.Write(Constants.overworldMapSize + i + 9, 0x20);
-
-                    //check 2
-                    ROM.Write(Constants.overworldMapSizeHighByte + i, 0x03);
-                    ROM.Write(Constants.overworldMapSizeHighByte + i + 1, 0x03);
-                    ROM.Write(Constants.overworldMapSizeHighByte + i + 8, 0x03);
-                    ROM.Write(Constants.overworldMapSizeHighByte + i + 9, 0x03);
-
-                    //check 3
-                    ROM.Write(Constants.overworldScreenSize + i, 0x00);
-                    ROM.Write(Constants.overworldScreenSize + i + 64, 0x00);
-
-                    ROM.Write(Constants.overworldScreenSize + i+1, 0x00);
-                    ROM.Write(Constants.overworldScreenSize + i+1 + 64, 0x00);
-
-                    ROM.Write(Constants.overworldScreenSize + i+8, 0x00);
-                    ROM.Write(Constants.overworldScreenSize + i+8 + 64, 0x00);
-
-                    ROM.Write(Constants.overworldScreenSize + i+9, 0x00);
-                    ROM.Write(Constants.overworldScreenSize + i+9 + 64, 0x00);
-
-                    //check 4
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i, 0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 64, 0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 128, 0x04);
-
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 1, 0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 1 + 64, 0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 1 + 128, 0x04);
-
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 8, 0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 8 + 64, 0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 8 + 128, 0x04);
-
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 9, 0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 9 + 64, 0x04);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 9 + 128, 0x04);
-
-                    //check 5 and 6
-                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 2, (short)((parentyPos * 0x200) - 0xE0)); //(short) is placed to reduce the int to 2 bytes.
-                    ROM.WriteShort(Constants.transition_target_west + (i * 2) + 2, (short)((parentxPos * 0x200) - 0x100));
-
-                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 16, (short)((parentyPos * 0x200) - 0xE0)); //(short) is placed to reduce the int to 2 bytes.
-                    ROM.WriteShort(Constants.transition_target_west + (i * 2) + 16, (short)((parentxPos * 0x200) - 0x100));
-
-                    ROM.WriteShort(Constants.transition_target_north + (i * 2) + 18, (short)((parentyPos * 0x200) - 0xE0)); //(short) is placed to reduce the int to 2 bytes.
-                    ROM.WriteShort(Constants.transition_target_west + (i * 2) + 18, (short)((parentxPos * 0x200) - 0x100));
-                    
-                    //check 7 and 8 
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2), (parentxPos * 0x200));
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2), (parentyPos * 0x200));
-
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2)+2, (parentxPos * 0x200));
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2)+2, (parentyPos * 0x200));
-
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2)+16, (parentxPos * 0x200));
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2)+16, (parentyPos * 0x200));
-
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2)+18, (parentxPos * 0x200));
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2)+18, (parentyPos * 0x200));
-
-                    //check 9
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2), 0x0060); //always 0x0060
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 2, 0x0060); //always 0x0060
-
-                    //if parentX == 0 then lower submaps == 0x0060 too 
-                    if (parentxPos == 0)
-                    {
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 16, 0x0060);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 18, 0x0060);
-                    }
-                    else
-                    {
-                        //otherwise lower submaps == 0x1060
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 16, 0x1060);
-                        ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 18, 0x1060);
-                    }
-
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 128, 0x0080);//always 0x0080
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 2 + 128, 0x0080);//always 0x0080
-                    //lower are always 8010
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 16 + 128, 0x1080);//always 0x1080
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 18 + 128, 0x1080);//always 0x1080
-
-                    
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 256, 0x1800);//always 0x1800
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 16 + 256, 0x1800);//always 0x1800
-                    //right side is always 1840
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 2 + 256 , 0x1840);//always 0x1840
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 18 + 256, 0x1840);//always 0x1840
-
-
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 384, 0x2000); //always 0x2000
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 16 + 384, 0x2000); //always 0x2000
-                    //right side is always 0x2040
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 2 + 384, 0x2040); //always 0x2000
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 18 + 384, 0x2040); //always 0x2000
-
-
-                    checkedMap.Add((byte)i);
-                    checkedMap.Add((byte)(i+1));
-                    checkedMap.Add((byte)(i+8));
-                    checkedMap.Add((byte)(i+9));
-                }
-                else
-                {
-                    ROM.Write(Constants.overworldMapSize + i, 0x00);
-                    ROM.Write(Constants.overworldMapSizeHighByte + i, 0x01);
-
-                    ROM.Write(Constants.overworldScreenSize + i, 0x01);
-                    ROM.Write(Constants.overworldScreenSize + i + 64, 0x01);
-
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i, 0x02);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 64, 0x02);
-                    ROM.Write(Constants.OverworldScreenSizeForLoading + i + 128, 0x02);
-
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2), 0x0060);
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 128, 0x0040);
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 256, 0x1800);
-                    ROM.WriteShort(Constants.OverworldScreenTileMapChangeByScreen + (i * 2) + 384, 0x1000);
-
-                    ROM.WriteShort(Constants.transition_target_north + (i * 2), (short)((yPos * 0x200) - 0xE0));
-                    ROM.WriteShort(Constants.transition_target_west + (i * 2), (short)((xPos * 0x200) - 0x100));
-
-                    ROM.WriteShort(Constants.overworldTransitionPositionX + (i * 2), (xPos * 0x200));
-                    ROM.WriteShort(Constants.overworldTransitionPositionY + (i * 2), (yPos * 0x200));
-
-                    checkedMap.Add((byte)i);
-                }
-            }
-
-            Console.WriteLine("Overworld parent map: \n");
-            for(int i = 0; i < 8; i++)
-            {
-                Console.WriteLine(parentMap[i]);
-            }
-            Console.WriteLine("");
-
-            return false;
         }
 
         public bool SaveGravestones(SceneOW scene)

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
@@ -76,18 +75,5 @@ namespace ZeldaFullEditor
             return ret;
         }
 
-        public static string[] CreateIndexedList(string[] a) {
-            string[] ret = new string[a.Length];
-            int i = 0;
-            foreach (string s in a) {
-                ret[i++] = string.Format("{0:X2} - {1}", i, s);
-			}
-            return ret;
-		}
-        public static string ForceTextToHex(string s) {
-
-            return Regex.Replace(s, @"[^A-F\d]", "");
-
-        }
     }
 }

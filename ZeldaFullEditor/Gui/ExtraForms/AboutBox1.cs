@@ -10,5 +10,20 @@ namespace ZeldaFullEditor
         {
             InitializeComponent();
         }
+
+        private void Donate_Click(object sender, EventArgs e)
+        {
+            //TODO: Add something here?
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            //TODO: Add something here?
+        }
+
+        private void richTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

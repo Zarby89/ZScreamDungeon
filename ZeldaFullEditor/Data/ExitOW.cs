@@ -82,7 +82,7 @@ namespace ZeldaFullEditor
             doorType2);
         }
 
-        public void updateMapStuff(byte mapId, Overworld ow)
+        public void updateMapStuff(byte mapId,Overworld ow)
         {
             this.mapId = mapId;
 

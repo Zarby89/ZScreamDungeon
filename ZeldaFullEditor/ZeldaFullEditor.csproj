@@ -404,17 +404,17 @@
     <Compile Include="Gui\TextEditorExtra\DictionariesForm.Designer.cs">
       <DependentUpon>DictionariesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\TextEditorExtra\TextCommands.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\TextEditorExtra\TextCommands.Designer.cs">
+      <DependentUpon>TextCommands.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\Tile16Editor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Gui\ExtraForms\Tile16Editor.Designer.cs">
       <DependentUpon>Tile16Editor.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Gui\TextEditorExtra\MessageAsBytes.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\TextEditorExtra\MessageAsBytes.Designer.cs">
-      <DependentUpon>MessageAsBytes.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\VramViewer.cs">
       <SubType>Component</SubType>
@@ -656,11 +656,11 @@
     <EmbeddedResource Include="Gui\TextEditorExtra\DictionariesForm.resx">
       <DependentUpon>DictionariesForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\TextEditorExtra\TextCommands.resx">
+      <DependentUpon>TextCommands.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\Tile16Editor.resx">
       <DependentUpon>Tile16Editor.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Gui\TextEditorExtra\MessageAsBytes.resx">
-      <DependentUpon>MessageAsBytes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\VramViewer.resx">
       <DependentUpon>VramViewer.cs</DependentUpon>

@@ -78,7 +78,7 @@
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 3;
-            this.button2.Text = "Clear logs";
+            this.button2.Text = "Clear Logs";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -89,7 +89,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(39, 13);
             this.label1.TabIndex = 4;
-            this.label1.Text = "Logs";
+            this.label1.Text = "Logs : ";
             // 
             // label2
             // 
@@ -98,7 +98,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(127, 13);
             this.label2.TabIndex = 6;
-            this.label2.Text = "Search rooms for";
+            this.label2.Text = "Search in every rooms for";
             // 
             // button1
             // 
@@ -118,7 +118,7 @@
             this.tileRadio.Size = new System.Drawing.Size(76, 17);
             this.tileRadio.TabIndex = 9;
             this.tileRadio.TabStop = true;
-            this.tileRadio.Text = "Object";
+            this.tileRadio.Text = "Tile Object";
             this.tileRadio.UseVisualStyleBackColor = true;
             this.tileRadio.CheckedChanged += new System.EventHandler(this.tileRadio_CheckedChanged);
             // 
@@ -142,7 +142,7 @@
             this.itemRadio.Size = new System.Drawing.Size(45, 17);
             this.itemRadio.TabIndex = 11;
             this.itemRadio.TabStop = true;
-            this.itemRadio.Text = "Pot item";
+            this.itemRadio.Text = "Item";
             this.itemRadio.UseVisualStyleBackColor = true;
             this.itemRadio.CheckedChanged += new System.EventHandler(this.tileRadio_CheckedChanged);
             // 
@@ -173,7 +173,7 @@
             this.ClientSize = new System.Drawing.Size(514, 472);
             this.Controls.Add(this.panel1);
             this.Name = "SearchForm";
-            this.Text = "Dungeon Entity Search";
+            this.Text = "SearchForm";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
