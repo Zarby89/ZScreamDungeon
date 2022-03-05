@@ -5042,7 +5042,7 @@ namespace ZeldaFullEditor
         private void importAllTilesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             int p = 0;
-            byte[] mapArrayData = new byte[0x7540];
+            byte[] mapArrayData = new byte[0x8000]; // real amount: 0x7540
             using (OpenFileDialog sfd = new OpenFileDialog())
             {
                 sfd.Filter = "Zelda Map Data .ztd|*.ztd";
@@ -5052,7 +5052,7 @@ namespace ZeldaFullEditor
                     fileStreamMap.Read(mapArrayData, 0, mapArrayData.Length);
 
                     overworldEditor.overworld.tiles16.Clear();
-                    for (int i = 0; i < 3752; i++)
+                    for (int i = 0; i < 4096; i++)
                     {
                         ulong t0 = 0;
                         ulong t1 = 0;
