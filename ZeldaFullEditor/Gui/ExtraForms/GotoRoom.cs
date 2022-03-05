@@ -26,6 +26,7 @@ namespace ZeldaFullEditor
             {
                 return chkParseAsHex.Checked;
             }
+
             set
             {
                 chkParseAsHex.Checked = value;
@@ -67,11 +68,9 @@ namespace ZeldaFullEditor
 
         private void UpdateText()
         {
-            tbxRoomNumber.Text = SelectedRoom.ToString
-            (
+            tbxRoomNumber.Text = SelectedRoom.ToString(
                 ParseAsHex ? "X" : String.Empty,
-                CultureInfo.CurrentCulture
-            );
+                CultureInfo.CurrentCulture);
         }
 
         private void RoomNumber_TextChanged(object sender, EventArgs e)
@@ -88,13 +87,11 @@ namespace ZeldaFullEditor
 
             bool TryGetValue(out int result)
             {
-                return Int32.TryParse
-                (
+                return Int32.TryParse(
                     tbxRoomNumber.Text,
                     NumberStyle,
                     CultureInfo.CurrentCulture,
-                    out result
-                );
+                    out result);
             }
         }
 

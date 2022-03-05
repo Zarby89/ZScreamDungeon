@@ -167,7 +167,6 @@ namespace ZeldaFullEditor.Gui
             //e.Graphics.DrawImage(GFX.editortileBitmap, new Rectangle(0, 0, 64, 64));
             e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f,0f,256.5f,16000f),new RectangleF(0,0,128, 8000),GraphicsUnit.Pixel);
             //e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8000f), new RectangleF(0, 4000, 128, 4000-192), GraphicsUnit.Pixel);
-
             if (gridcheckBox.Checked)
             {
                 for (int x = 0; x < 16; x++)
@@ -366,7 +365,6 @@ namespace ZeldaFullEditor.Gui
             {
                 tilesTypesNames[i] = i.ToString("X2") + " - ????";
             }
-
             loadTilesNames();
 
             for (int i = 0;i<0x200;i++)
@@ -552,6 +550,7 @@ namespace ZeldaFullEditor.Gui
             searchedTile = tsearch;
             panel1.VerticalScroll.Value = ((searchedTile / 8) * 32);
             panel1.PerformLayout();
+
         }
     }
 }

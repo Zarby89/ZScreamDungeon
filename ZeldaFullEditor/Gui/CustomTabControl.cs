@@ -17,6 +17,11 @@ namespace ZeldaFullEditor
             InitializeComponent();
         }
 
+        private void CustomTabControl_Load(object sender, EventArgs e)
+        {
+            //TODO: Add something here?
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             //TODO: Add something here?

@@ -51,7 +51,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(90, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Entrance ID";
+            this.label1.Text = "Entrance ID used";
             // 
             // textBox1
             // 
@@ -91,7 +91,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(105, 13);
             this.label3.TabIndex = 4;
-            this.label3.Text = "Map position (auto)";
+            this.label3.Text = "Map Pos (Automatic)";
             // 
             // textBox4
             // 
@@ -132,7 +132,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 10;
-            this.button1.Text = "OK";
+            this.button1.Text = "Ok";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -155,7 +155,7 @@
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(64, 17);
             this.checkBox1.TabIndex = 12;
-            this.checkBox1.Text = "Pit entrance";
+            this.checkBox1.Text = "is Hole?";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // EntranceForm

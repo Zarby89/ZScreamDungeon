@@ -53,6 +53,7 @@
             this.gravestoneButton = new System.Windows.Forms.ToolStripButton();
             this.searchtilesButton = new System.Windows.Forms.ToolStripButton();
             this.refreshToolStrip = new System.Windows.Forms.ToolStripButton();
+            this.deleteOverlayToolstripbutton = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -61,14 +62,11 @@
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.scratchPicturebox = new System.Windows.Forms.PictureBox();
             this.Tiles8 = new System.Windows.Forms.TabPage();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.priorityCheckbox = new System.Windows.Forms.CheckBox();
-            this.currentTile8Box = new System.Windows.Forms.PictureBox();
             this.mirrorYCheckbox = new System.Windows.Forms.CheckBox();
-            this.palette8Box = new System.Windows.Forms.PictureBox();
             this.mirrorXCheckbox = new System.Windows.Forms.CheckBox();
+            this.palette8Box = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.thumbnailBox = new System.Windows.Forms.PictureBox();
             this.owPropertyPanel = new System.Windows.Forms.Panel();
             this.objectGroupbox = new System.Windows.Forms.GroupBox();
@@ -104,11 +102,8 @@
             this.tabPage2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).BeginInit();
             this.Tiles8.SuspendLayout();
-            this.panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
             this.owPropertyPanel.SuspendLayout();
             this.objectGroupbox.SuspendLayout();
@@ -143,6 +138,7 @@
             this.gravestoneButton,
             this.searchtilesButton,
             this.refreshToolStrip,
+            this.deleteOverlayToolstripbutton,
             this.toolStripButton1});
             this.owToolStrip.Location = new System.Drawing.Point(0, 0);
             this.owToolStrip.Name = "owToolStrip";
@@ -157,7 +153,7 @@
             this.openfileButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.openfileButton.Name = "openfileButton";
             this.openfileButton.Size = new System.Drawing.Size(23, 22);
-            this.openfileButton.Text = "Open ROM…";
+            this.openfileButton.Text = "Open ROM";
             // 
             // saveButton
             // 
@@ -166,7 +162,7 @@
             this.saveButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(23, 22);
-            this.saveButton.Text = "Save ROM…";
+            this.saveButton.Text = "Save ROM";
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // toolStripSeparator1
@@ -182,7 +178,7 @@
             this.debugtestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.debugtestButton.Name = "debugtestButton";
             this.debugtestButton.Size = new System.Drawing.Size(23, 22);
-            this.debugtestButton.Text = "Save and Debug in Emulator…";
+            this.debugtestButton.Text = "Save and Debug in emulator";
             // 
             // runtestButton
             // 
@@ -191,7 +187,7 @@
             this.runtestButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.runtestButton.Name = "runtestButton";
             this.runtestButton.Size = new System.Drawing.Size(23, 22);
-            this.runtestButton.Text = "Save and Run in Emulator…";
+            this.runtestButton.Text = "Save and Run in emulator";
             this.runtestButton.Click += new System.EventHandler(this.runtestButton_Click);
             // 
             // undoButton
@@ -229,7 +225,7 @@
             this.penModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.penModeButton.Name = "penModeButton";
             this.penModeButton.Size = new System.Drawing.Size(23, 22);
-            this.penModeButton.Text = "Tile mode";
+            this.penModeButton.Text = "Tile Mode";
             this.penModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // fillModeButton
@@ -240,7 +236,7 @@
             this.fillModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.fillModeButton.Name = "fillModeButton";
             this.fillModeButton.Size = new System.Drawing.Size(23, 22);
-            this.fillModeButton.Text = "Fill mode";
+            this.fillModeButton.Text = "Fill Mode";
             this.fillModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // toolStripSeparator3
@@ -256,7 +252,7 @@
             this.entranceModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.entranceModeButton.Name = "entranceModeButton";
             this.entranceModeButton.Size = new System.Drawing.Size(23, 22);
-            this.entranceModeButton.Text = "Entrance mode";
+            this.entranceModeButton.Text = "Entrance Mode";
             this.entranceModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // exitModeButton
@@ -267,7 +263,7 @@
             this.exitModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.exitModeButton.Name = "exitModeButton";
             this.exitModeButton.Size = new System.Drawing.Size(23, 22);
-            this.exitModeButton.Text = "Exit mode";
+            this.exitModeButton.Text = "Exit Mode";
             this.exitModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // itemModeButton
@@ -278,7 +274,7 @@
             this.itemModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.itemModeButton.Name = "itemModeButton";
             this.itemModeButton.Size = new System.Drawing.Size(23, 22);
-            this.itemModeButton.Text = "Item mode";
+            this.itemModeButton.Text = "Item Mode";
             this.itemModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // spriteModeButton
@@ -289,7 +285,7 @@
             this.spriteModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.spriteModeButton.Name = "spriteModeButton";
             this.spriteModeButton.Size = new System.Drawing.Size(23, 22);
-            this.spriteModeButton.Text = "Sprite mode";
+            this.spriteModeButton.Text = "Sprite Mode";
             this.spriteModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // transportModeButton
@@ -300,7 +296,7 @@
             this.transportModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.transportModeButton.Name = "transportModeButton";
             this.transportModeButton.Size = new System.Drawing.Size(23, 22);
-            this.transportModeButton.Text = "Transport mode";
+            this.transportModeButton.Text = "Transport Mode";
             this.transportModeButton.Click += new System.EventHandler(this.ModeButton_Click);
             // 
             // spButton
@@ -365,7 +361,7 @@
             this.searchtilesButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.searchtilesButton.Name = "searchtilesButton";
             this.searchtilesButton.Size = new System.Drawing.Size(23, 22);
-            this.searchtilesButton.Text = "Search for tiles";
+            this.searchtilesButton.Text = "search tiles";
             this.searchtilesButton.Click += new System.EventHandler(this.searchtilesButton_Click);
             // 
             // refreshToolStrip
@@ -375,8 +371,19 @@
             this.refreshToolStrip.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.refreshToolStrip.Name = "refreshToolStrip";
             this.refreshToolStrip.Size = new System.Drawing.Size(82, 22);
-            this.refreshToolStrip.Text = "Refresh maps";
+            this.refreshToolStrip.Text = "Refresh Maps";
             this.refreshToolStrip.Click += new System.EventHandler(this.refreshToolStrip_Click);
+            // 
+            // deleteOverlayToolstripbutton
+            // 
+            this.deleteOverlayToolstripbutton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.deleteOverlayToolstripbutton.Image = ((System.Drawing.Image)(resources.GetObject("deleteOverlayToolstripbutton.Image")));
+            this.deleteOverlayToolstripbutton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.deleteOverlayToolstripbutton.Name = "deleteOverlayToolstripbutton";
+            this.deleteOverlayToolstripbutton.Size = new System.Drawing.Size(87, 22);
+            this.deleteOverlayToolstripbutton.Text = "Delete Overlay";
+            this.deleteOverlayToolstripbutton.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+            this.deleteOverlayToolstripbutton.Click += new System.EventHandler(this.deleteOverlayToolstripbutton_Click);
             // 
             // toolStripButton1
             // 
@@ -385,7 +392,7 @@
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(65, 22);
-            this.toolStripButton1.Text = "Clear map";
+            this.toolStripButton1.Text = "Clear Map";
             this.toolStripButton1.Visible = false;
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click_1);
             // 
@@ -432,7 +439,7 @@
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(280, 593);
             this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "Tile 16";
+            this.tabPage1.Text = "Tiles16";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // tilePictureBox
@@ -456,7 +463,7 @@
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage2.Size = new System.Drawing.Size(280, 593);
             this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Tile 16 scratchpad";
+            this.tabPage2.Text = "ScratchPad16";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // scratchPicturebox
@@ -473,52 +480,23 @@
             // 
             // Tiles8
             // 
-            this.Tiles8.Controls.Add(this.panel2);
-            this.Tiles8.Controls.Add(this.panel1);
+            this.Tiles8.AutoScroll = true;
+            this.Tiles8.Controls.Add(this.priorityCheckbox);
+            this.Tiles8.Controls.Add(this.mirrorYCheckbox);
+            this.Tiles8.Controls.Add(this.mirrorXCheckbox);
+            this.Tiles8.Controls.Add(this.palette8Box);
+            this.Tiles8.Controls.Add(this.pictureBox1);
             this.Tiles8.Location = new System.Drawing.Point(4, 22);
             this.Tiles8.Name = "Tiles8";
             this.Tiles8.Size = new System.Drawing.Size(280, 593);
             this.Tiles8.TabIndex = 2;
-            this.Tiles8.Text = "Tile 8";
+            this.Tiles8.Text = "Tiles8 [X2] (WIP)";
             this.Tiles8.UseVisualStyleBackColor = true;
-            // 
-            // panel2
-            // 
-            this.panel2.AutoScroll = true;
-            this.panel2.Controls.Add(this.pictureBox1);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(0, 217);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(280, 376);
-            this.panel2.TabIndex = 3;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(256, 1024);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
-            this.pictureBox1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.priorityCheckbox);
-            this.panel1.Controls.Add(this.currentTile8Box);
-            this.panel1.Controls.Add(this.mirrorYCheckbox);
-            this.panel1.Controls.Add(this.palette8Box);
-            this.panel1.Controls.Add(this.mirrorXCheckbox);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(280, 217);
-            this.panel1.TabIndex = 2;
             // 
             // priorityCheckbox
             // 
             this.priorityCheckbox.AutoSize = true;
-            this.priorityCheckbox.Location = new System.Drawing.Point(75, 59);
+            this.priorityCheckbox.Location = new System.Drawing.Point(131, 265);
             this.priorityCheckbox.Name = "priorityCheckbox";
             this.priorityCheckbox.Size = new System.Drawing.Size(57, 17);
             this.priorityCheckbox.TabIndex = 5;
@@ -526,46 +504,46 @@
             this.priorityCheckbox.UseVisualStyleBackColor = true;
             this.priorityCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
             // 
-            // currentTile8Box
-            // 
-            this.currentTile8Box.Location = new System.Drawing.Point(5, 13);
-            this.currentTile8Box.Name = "currentTile8Box";
-            this.currentTile8Box.Size = new System.Drawing.Size(64, 64);
-            this.currentTile8Box.TabIndex = 3;
-            this.currentTile8Box.TabStop = false;
-            this.currentTile8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.currentTile8Box_Paint);
-            // 
             // mirrorYCheckbox
             // 
             this.mirrorYCheckbox.AutoSize = true;
-            this.mirrorYCheckbox.Location = new System.Drawing.Point(75, 36);
+            this.mirrorYCheckbox.Location = new System.Drawing.Point(67, 265);
             this.mirrorYCheckbox.Name = "mirrorYCheckbox";
             this.mirrorYCheckbox.Size = new System.Drawing.Size(58, 17);
             this.mirrorYCheckbox.TabIndex = 4;
-            this.mirrorYCheckbox.Text = "Flip Y";
+            this.mirrorYCheckbox.Text = "mirrorY";
             this.mirrorYCheckbox.UseVisualStyleBackColor = true;
             this.mirrorYCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
             // 
+            // mirrorXCheckbox
+            // 
+            this.mirrorXCheckbox.AutoSize = true;
+            this.mirrorXCheckbox.Location = new System.Drawing.Point(3, 265);
+            this.mirrorXCheckbox.Name = "mirrorXCheckbox";
+            this.mirrorXCheckbox.Size = new System.Drawing.Size(58, 17);
+            this.mirrorXCheckbox.TabIndex = 3;
+            this.mirrorXCheckbox.Text = "mirrorX";
+            this.mirrorXCheckbox.UseVisualStyleBackColor = true;
+            this.mirrorXCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
+            // 
             // palette8Box
             // 
-            this.palette8Box.Location = new System.Drawing.Point(3, 83);
+            this.palette8Box.Location = new System.Drawing.Point(3, 3);
             this.palette8Box.Name = "palette8Box";
-            this.palette8Box.Size = new System.Drawing.Size(256, 128);
+            this.palette8Box.Size = new System.Drawing.Size(256, 256);
             this.palette8Box.TabIndex = 2;
             this.palette8Box.TabStop = false;
             this.palette8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.palette8Box_Paint);
             this.palette8Box.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palette8Box_MouseDown);
             // 
-            // mirrorXCheckbox
+            // pictureBox1
             // 
-            this.mirrorXCheckbox.AutoSize = true;
-            this.mirrorXCheckbox.Location = new System.Drawing.Point(75, 13);
-            this.mirrorXCheckbox.Name = "mirrorXCheckbox";
-            this.mirrorXCheckbox.Size = new System.Drawing.Size(58, 17);
-            this.mirrorXCheckbox.TabIndex = 3;
-            this.mirrorXCheckbox.Text = "Flip X";
-            this.mirrorXCheckbox.UseVisualStyleBackColor = true;
-            this.mirrorXCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
+            this.pictureBox1.Location = new System.Drawing.Point(3, 285);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(256, 1024);
+            this.pictureBox1.TabIndex = 1;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox1_Paint);
             // 
             // thumbnailBox
             // 
@@ -575,7 +553,7 @@
             this.thumbnailBox.TabIndex = 22;
             this.thumbnailBox.TabStop = false;
             this.thumbnailBox.Visible = false;
-            //this.thumbnailBox.Paint += new System.Windows.Forms.PaintEventHandler(this.thumbnailBox_Paint);
+            this.thumbnailBox.Paint += new System.Windows.Forms.PaintEventHandler(this.thumbnailBox_Paint);
             // 
             // owPropertyPanel
             // 
@@ -597,7 +575,7 @@
             this.objectGroupbox.Size = new System.Drawing.Size(290, 60);
             this.objectGroupbox.TabIndex = 10;
             this.objectGroupbox.TabStop = false;
-            this.objectGroupbox.Text = "Selected object";
+            this.objectGroupbox.Text = "Selected Object - ";
             // 
             // objCombobox
             // 
@@ -614,7 +592,7 @@
             this.objinfoLabel.Name = "objinfoLabel";
             this.objinfoLabel.Size = new System.Drawing.Size(33, 39);
             this.objinfoLabel.TabIndex = 0;
-            this.objinfoLabel.Text = "ID: 0\r\nX: 0\r\nY: 0";
+            this.objinfoLabel.Text = "ID : 0\r\nX : 0\r\nY : 0";
             // 
             // mapGroupbox
             // 
@@ -636,7 +614,7 @@
             this.mapGroupbox.Size = new System.Drawing.Size(417, 60);
             this.mapGroupbox.TabIndex = 1;
             this.mapGroupbox.TabStop = false;
-            this.mapGroupbox.Text = "Selected map";
+            this.mapGroupbox.Text = "Selected Map - ";
             // 
             // largemapCheckbox
             // 
@@ -645,9 +623,8 @@
             this.largemapCheckbox.Name = "largemapCheckbox";
             this.largemapCheckbox.Size = new System.Drawing.Size(77, 17);
             this.largemapCheckbox.TabIndex = 14;
-            this.largemapCheckbox.Text = "Large map";
+            this.largemapCheckbox.Text = "Large Map";
             this.largemapCheckbox.UseVisualStyleBackColor = true;
-            this.largemapCheckbox.Click += new System.EventHandler(this.largemapCheckbox_Clicked);
             // 
             // button1
             // 
@@ -666,7 +643,7 @@
             this.musicButton.Name = "musicButton";
             this.musicButton.Size = new System.Drawing.Size(61, 23);
             this.musicButton.TabIndex = 12;
-            this.musicButton.Text = "Music";
+            this.musicButton.Text = "Musics";
             this.musicButton.UseVisualStyleBackColor = true;
             this.musicButton.Click += new System.EventHandler(this.musicButton_Click);
             // 
@@ -677,7 +654,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(51, 13);
             this.label6.TabIndex = 11;
-            this.label6.Text = "Message ID";
+            this.label6.Text = "Text ID : ";
             // 
             // textidTextbox
             // 
@@ -696,7 +673,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(71, 13);
             this.label5.TabIndex = 9;
-            this.label5.Text = "Spr. palette";
+            this.label5.Text = "Spr. Palette : ";
             // 
             // sprpaletteTextbox
             // 
@@ -721,7 +698,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(49, 13);
             this.label4.TabIndex = 6;
-            this.label4.Text = "Palette";
+            this.label4.Text = "Palette : ";
             // 
             // sprgfxTextbox
             // 
@@ -738,7 +715,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 4;
-            this.label3.Text = "Spr. GFX";
+            this.label3.Text = "Spr. Gfx : ";
             // 
             // gfxTextbox
             // 
@@ -755,7 +732,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(32, 13);
             this.label2.TabIndex = 2;
-            this.label2.Text = "GFX";
+            this.label2.Text = "Gfx : ";
             // 
             // groupBox1
             // 
@@ -767,7 +744,7 @@
             this.groupBox1.Size = new System.Drawing.Size(151, 66);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Global settings";
+            this.groupBox1.Text = "Global Settings";
             // 
             // selectedTileLabel
             // 
@@ -776,7 +753,7 @@
             this.selectedTileLabel.Name = "selectedTileLabel";
             this.selectedTileLabel.Size = new System.Drawing.Size(78, 13);
             this.selectedTileLabel.TabIndex = 2;
-            this.selectedTileLabel.Text = "Selected tile";
+            this.selectedTileLabel.Text = "Selected Tile : ";
             // 
             // label1
             // 
@@ -785,20 +762,20 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(119, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Game state";
+            this.label1.Text = "Game State (7EF3C5) : ";
             // 
             // stateCombobox
             // 
             this.stateCombobox.FormattingEnabled = true;
             this.stateCombobox.Items.AddRange(new object[] {
-            "0,1 Rescue Zelda",
-            "2 Zelda rescued",
-            "3 Agahnim defeated"});
+            "0,1 (Rescue Zelda)",
+            "2 (Zelda Saved)",
+            "3 (Agah. Dead)"});
             this.stateCombobox.Location = new System.Drawing.Point(6, 31);
             this.stateCombobox.Name = "stateCombobox";
             this.stateCombobox.Size = new System.Drawing.Size(138, 21);
             this.stateCombobox.TabIndex = 1;
-            this.stateCombobox.Text = "0,1 Rescue Zelda";
+            this.stateCombobox.Text = "0,1 (Rescue Zelda)";
             this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
             // 
             // previewTextPicturebox
@@ -834,12 +811,9 @@
             this.tabPage2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).EndInit();
             this.Tiles8.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).EndInit();
+            this.Tiles8.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.palette8Box)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
             this.owPropertyPanel.ResumeLayout(false);
             this.objectGroupbox.ResumeLayout(false);
@@ -888,6 +862,7 @@
         public System.Windows.Forms.TextBox paletteTextbox;
         public System.Windows.Forms.TextBox sprgfxTextbox;
         public System.Windows.Forms.PictureBox tilePictureBox;
+        private System.Windows.Forms.Label selectedTileLabel;
         public System.Windows.Forms.GroupBox objectGroupbox;
         public System.Windows.Forms.Label objinfoLabel;
         public System.Windows.Forms.ComboBox objCombobox;
@@ -914,11 +889,8 @@
         private System.Windows.Forms.CheckBox mirrorXCheckbox;
         private System.Windows.Forms.PictureBox palette8Box;
         private System.Windows.Forms.ToolStripButton gravestoneButton;
+        private System.Windows.Forms.ToolStripButton deleteOverlayToolstripbutton;
         private System.Windows.Forms.ToolStripButton toolStripButton1;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.PictureBox currentTile8Box;
-        public System.Windows.Forms.Label selectedTileLabel;
-        public System.Windows.Forms.CheckBox largemapCheckbox;
+        private System.Windows.Forms.CheckBox largemapCheckbox;
     }
 }

@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -92,58 +91,58 @@ namespace ZeldaFullEditor.Gui
         private void LoadTempGfx()
         {
             editedFromForm = true;
-            main1Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][0].ToString("X2");
-            main2Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][1].ToString("X2");
-            main3Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][2].ToString("X2");
-            main4Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][3].ToString("X2");
-            main5Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][4].ToString("X2");
-            main6Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][5].ToString("X2");
-            main7Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][6].ToString("X2");
-            main8Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][7].ToString("X2");
+            main1Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][0].ToString();
+            main2Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][1].ToString();
+            main3Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][2].ToString();
+            main4Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][3].ToString();
+            main5Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][4].ToString();
+            main6Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][5].ToString();
+            main7Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][6].ToString();
+            main8Box.Text = tempmainGfx[(int)mainBlocksetUpDown.Value][7].ToString();
 
-            room1Box.Text = temproomGfx[(int)roomUpDown.Value][0].ToString("X2");
-            room2Box.Text = temproomGfx[(int)roomUpDown.Value][1].ToString("X2");
-            room3Box.Text = temproomGfx[(int)roomUpDown.Value][2].ToString("X2");
-            room4Box.Text = temproomGfx[(int)roomUpDown.Value][3].ToString("X2");
+            room1Box.Text = temproomGfx[(int)roomUpDown.Value][0].ToString();
+            room2Box.Text = temproomGfx[(int)roomUpDown.Value][1].ToString();
+            room3Box.Text = temproomGfx[(int)roomUpDown.Value][2].ToString();
+            room4Box.Text = temproomGfx[(int)roomUpDown.Value][3].ToString();
 
-            sprite1Box.Text = tempspriteGfx[(int)spriteUpDown.Value][0].ToString("X2");
-            sprite2Box.Text = tempspriteGfx[(int)spriteUpDown.Value][1].ToString("X2");
-            sprite3Box.Text = tempspriteGfx[(int)spriteUpDown.Value][2].ToString("X2");
-            sprite4Box.Text = tempspriteGfx[(int)spriteUpDown.Value][3].ToString("X2");
+            sprite1Box.Text = tempspriteGfx[(int)spriteUpDown.Value][0].ToString();
+            sprite2Box.Text = tempspriteGfx[(int)spriteUpDown.Value][1].ToString();
+            sprite3Box.Text = tempspriteGfx[(int)spriteUpDown.Value][2].ToString();
+            sprite4Box.Text = tempspriteGfx[(int)spriteUpDown.Value][3].ToString();
 
-            palette1Box.Text = temppaletteGfx[(int)paletteUpDown.Value][0].ToString("X2");
-            palette2Box.Text = temppaletteGfx[(int)paletteUpDown.Value][1].ToString("X2");
-            palette3Box.Text = temppaletteGfx[(int)paletteUpDown.Value][2].ToString("X2");
-            palette4Box.Text = temppaletteGfx[(int)paletteUpDown.Value][3].ToString("X2");
+            palette1Box.Text = temppaletteGfx[(int)paletteUpDown.Value][0].ToString();
+            palette2Box.Text = temppaletteGfx[(int)paletteUpDown.Value][1].ToString();
+            palette3Box.Text = temppaletteGfx[(int)paletteUpDown.Value][2].ToString();
+            palette4Box.Text = temppaletteGfx[(int)paletteUpDown.Value][3].ToString();
             editedFromForm = false;
         }
 
         private void LoadGfx()
         {
             editedFromForm = true;
-            main1Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][0].ToString("X2");
-            main2Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][1].ToString("X2");
-            main3Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][2].ToString("X2");
-            main4Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][3].ToString("X2");
-            main5Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][4].ToString("X2");
-            main6Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][5].ToString("X2");
-            main7Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][6].ToString("X2");
-            main8Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][7].ToString("X2");
+            main1Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][0].ToString();
+            main2Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][1].ToString();
+            main3Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][2].ToString();
+            main4Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][3].ToString();
+            main5Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][4].ToString();
+            main6Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][5].ToString();
+            main7Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][6].ToString();
+            main8Box.Text = GfxGroups.mainGfx[(int)mainBlocksetUpDown.Value][7].ToString();
 
-            room1Box.Text = GfxGroups.roomGfx[(int)roomUpDown.Value][0].ToString("X2");
-            room2Box.Text = GfxGroups.roomGfx[(int)roomUpDown.Value][1].ToString("X2");
-            room3Box.Text = GfxGroups.roomGfx[(int)roomUpDown.Value][2].ToString("X2");
-            room4Box.Text = GfxGroups.roomGfx[(int)roomUpDown.Value][3].ToString("X2");
+            room1Box.Text = GfxGroups.roomGfx[(int)roomUpDown.Value][0].ToString();
+            room2Box.Text = GfxGroups.roomGfx[(int)roomUpDown.Value][1].ToString();
+            room3Box.Text = GfxGroups.roomGfx[(int)roomUpDown.Value][2].ToString();
+            room4Box.Text = GfxGroups.roomGfx[(int)roomUpDown.Value][3].ToString();
 
-            sprite1Box.Text = GfxGroups.spriteGfx[(int)spriteUpDown.Value][0].ToString("X2");
-            sprite2Box.Text = GfxGroups.spriteGfx[(int)spriteUpDown.Value][1].ToString("X2");
-            sprite3Box.Text = GfxGroups.spriteGfx[(int)spriteUpDown.Value][2].ToString("X2");
-            sprite4Box.Text = GfxGroups.spriteGfx[(int)spriteUpDown.Value][3].ToString("X2");
+            sprite1Box.Text = GfxGroups.spriteGfx[(int)spriteUpDown.Value][0].ToString();
+            sprite2Box.Text = GfxGroups.spriteGfx[(int)spriteUpDown.Value][1].ToString();
+            sprite3Box.Text = GfxGroups.spriteGfx[(int)spriteUpDown.Value][2].ToString();
+            sprite4Box.Text = GfxGroups.spriteGfx[(int)spriteUpDown.Value][3].ToString();
 
-            palette1Box.Text = GfxGroups.paletteGfx[(int)paletteUpDown.Value][0].ToString("X2");
-            palette2Box.Text = GfxGroups.paletteGfx[(int)paletteUpDown.Value][1].ToString("X2");
-            palette3Box.Text = GfxGroups.paletteGfx[(int)paletteUpDown.Value][2].ToString("X2");
-            palette4Box.Text = GfxGroups.paletteGfx[(int)paletteUpDown.Value][3].ToString("X2");
+            palette1Box.Text = GfxGroups.paletteGfx[(int)paletteUpDown.Value][0].ToString();
+            palette2Box.Text = GfxGroups.paletteGfx[(int)paletteUpDown.Value][1].ToString();
+            palette3Box.Text = GfxGroups.paletteGfx[(int)paletteUpDown.Value][2].ToString();
+            palette4Box.Text = GfxGroups.paletteGfx[(int)paletteUpDown.Value][3].ToString();
             editedFromForm = false;
         }
 
@@ -152,10 +151,10 @@ namespace ZeldaFullEditor.Gui
             //TODO: Add something here?
         }
 
-        private byte getTextBoxValue(TextBox tb) //changed to hex
+        private byte getTextBoxValue(TextBox tb)
         {
             byte r = 0;
-            byte.TryParse(tb.Text, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out r);
+            byte.TryParse(tb.Text, out r);
             return r;
         }
 

@@ -16,5 +16,10 @@ namespace ZeldaFullEditor.Gui
         {
             InitializeComponent();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //TODO: Add something here?
+        }
     }
 }

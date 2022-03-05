@@ -20,7 +20,6 @@ namespace ZeldaFullEditor
         private void ChestPicker_Load(object sender, EventArgs e)
         {
             chestviewer1.items.Clear();
-
             for (int i = 0; i < 76; i++)
             {
                 Chest c = new Chest(0, 0, (byte)i, false, true);

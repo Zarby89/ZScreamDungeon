@@ -689,6 +689,7 @@
             this.button7.Text = "Remove Selected Floor (WIP)";
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Visible = false;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
             // dungmaprembaseButton
             // 

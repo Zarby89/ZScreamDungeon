@@ -47,7 +47,7 @@
             this.ClientSize = new System.Drawing.Size(280, 450);
             this.Controls.Add(this.listBox1);
             this.Name = "DictionariesForm";
-            this.Text = "Dictionary Window";
+            this.Text = "DictionariesWindow";
             this.ResumeLayout(false);
 
         }
