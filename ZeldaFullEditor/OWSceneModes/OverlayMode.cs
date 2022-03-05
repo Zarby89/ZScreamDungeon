@@ -31,7 +31,8 @@ namespace ZeldaFullEditor.OWSceneModes
                 scene.globalmouseTileDownY = tileY;
 
                 scene.selectedMap = mapId + scene.ow.worldOffset;
-                
+                scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap + scene.ow.worldOffset].parent;
+
                 int mid = scene.ow.allmaps[scene.selectedMap].parent;
                 int superMX = (mid % 8) * 32;
                 int superMY = (mid / 8) * 32;

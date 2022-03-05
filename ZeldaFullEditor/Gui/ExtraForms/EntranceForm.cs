@@ -41,7 +41,7 @@ namespace ZeldaFullEditor.Gui
             if (v > 132 || v < 0)
             {
                 
-                MessageBox.Show("Entrance ID is out of range max value is 132");
+                MessageBox.Show("Entrance ID is out of range; max value is 132");
                 return;
             }
 
@@ -51,7 +51,7 @@ namespace ZeldaFullEditor.Gui
 
             if (v > 128 || v < 0)
             {
-                MessageBox.Show("Map ID is out of range max value is 128");
+                MessageBox.Show("Map ID is out of range; max value is 128");
                 return;
             }
 
@@ -61,7 +61,7 @@ namespace ZeldaFullEditor.Gui
             int.TryParse(textBox4.Text, out v); //X
             if (v > 4096 || v < 0)
             {
-                MessageBox.Show("X is out of range max value is 4096");
+                MessageBox.Show("X is out of range; max value is 4096");
                 return;
             }
 
@@ -70,7 +70,7 @@ namespace ZeldaFullEditor.Gui
             if (v > 4096 || v < 0)
             {
                 
-                MessageBox.Show("Y is out of range max value is 4096");
+                MessageBox.Show("Y is out of range; max value is 4096");
                 return;
             }
 

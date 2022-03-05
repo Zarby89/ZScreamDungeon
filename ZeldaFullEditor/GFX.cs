@@ -92,6 +92,9 @@ namespace ZeldaFullEditor
         public static IntPtr roomObjectsPtr = Marshal.AllocHGlobal(512 * 512);
         public static Bitmap roomObjectsBitmap;
 
+        public static IntPtr editingtile16 = Marshal.AllocHGlobal(16*16);
+        public static Bitmap editingtile16Bitmap;
+
         public static int animated_frame = 0;
         public static int animation_timer = 0;
 
@@ -203,6 +206,7 @@ namespace ZeldaFullEditor
             currentEditingfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentEditinggfx16Ptr);
             currentTileScreengfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentEditinggfx16Ptr);
             roomObjectsBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomObjectsPtr);
+            editingtile16Bitmap = new Bitmap(16, 16, 16, PixelFormat.Format8bppIndexed, roomObjectsPtr);
             currentOWgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentOWgfx16Ptr);
             previewgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, previewgfx16Ptr);
             mapgfx16Bitmap = new Bitmap(128, 7520, 128, PixelFormat.Format8bppIndexed, mapgfx16Ptr);

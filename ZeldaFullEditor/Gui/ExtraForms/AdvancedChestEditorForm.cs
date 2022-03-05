@@ -36,7 +36,7 @@ namespace ZeldaFullEditor.Gui
                      (short)((ROM.DATA[Constants.chests_sramaddress + (i * 2) + 1] << 8) + ROM.DATA[Constants.chests_sramaddress + (i * 2)]),
                      ROM.DATA[Constants.chests_sramvalue + i],
                      (short)((ROM.DATA[Constants.chests_msgid + (i * 2) + 1] << 8) + ROM.DATA[Constants.chests_msgid + (i * 2)])
-                     );
+                );
             }
 
             listBox1.SelectedIndex = 0;
@@ -48,7 +48,7 @@ namespace ZeldaFullEditor.Gui
             {
                 int r = 0;
 
-                if (int.TryParse(alternateTextbox.Text, out r))
+                if (int.TryParse(alternateTextbox.Text, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out r))
                 {
                     chestsdata[listBox1.SelectedIndex].backupitems = (byte)r;
                 }

@@ -116,7 +116,7 @@
             this.groupBox1.Size = new System.Drawing.Size(517, 308);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Saved Data Unchecking boxes will prevent editors from saving these data";
+            this.groupBox1.Text = "Saved data; Uncheck boxes to prevent saving the respective data.";
             // 
             // groupBox5
             // 
@@ -181,7 +181,7 @@
             this.checkBox34.Name = "checkBox34";
             this.checkBox34.Size = new System.Drawing.Size(83, 17);
             this.checkBox34.TabIndex = 12;
-            this.checkBox34.Text = "Title Screen";
+            this.checkBox34.Text = "Title screen";
             this.checkBox34.UseVisualStyleBackColor = true;
             // 
             // checkBox20
@@ -193,7 +193,7 @@
             this.checkBox20.Name = "checkBox20";
             this.checkBox20.Size = new System.Drawing.Size(105, 17);
             this.checkBox20.TabIndex = 11;
-            this.checkBox20.Text = "Dung. Properties";
+            this.checkBox20.Text = "UW properties";
             this.checkBox20.UseVisualStyleBackColor = true;
             // 
             // checkBox19
@@ -205,7 +205,7 @@
             this.checkBox19.Name = "checkBox19";
             this.checkBox19.Size = new System.Drawing.Size(83, 17);
             this.checkBox19.TabIndex = 10;
-            this.checkBox19.Text = "Adv. Chests";
+            this.checkBox19.Text = "Adv. chests";
             this.checkBox19.UseVisualStyleBackColor = true;
             // 
             // checkBox24
@@ -217,7 +217,7 @@
             this.checkBox24.Name = "checkBox24";
             this.checkBox24.Size = new System.Drawing.Size(79, 17);
             this.checkBox24.TabIndex = 9;
-            this.checkBox24.Text = "Gfx Groups";
+            this.checkBox24.Text = "Gfx groups";
             this.checkBox24.UseVisualStyleBackColor = true;
             // 
             // checkBox25
@@ -241,7 +241,7 @@
             this.checkBox26.Name = "checkBox26";
             this.checkBox26.Size = new System.Drawing.Size(52, 17);
             this.checkBox26.TabIndex = 9;
-            this.checkBox26.Text = "Texts";
+            this.checkBox26.Text = "Dialog";
             this.checkBox26.UseVisualStyleBackColor = true;
             // 
             // groupBox4
@@ -287,7 +287,7 @@
             this.checkBox36.Name = "checkBox36";
             this.checkBox36.Size = new System.Drawing.Size(75, 17);
             this.checkBox36.TabIndex = 17;
-            this.checkBox36.Text = "Tile Types";
+            this.checkBox36.Text = "Tile types";
             this.checkBox36.UseVisualStyleBackColor = true;
             // 
             // checkBox33
@@ -323,7 +323,7 @@
             this.checkBox17.Name = "checkBox17";
             this.checkBox17.Size = new System.Drawing.Size(85, 17);
             this.checkBox17.TabIndex = 14;
-            this.checkBox17.Text = "Map Header";
+            this.checkBox17.Text = "Map header";
             this.checkBox17.UseVisualStyleBackColor = true;
             // 
             // checkBox16
@@ -335,7 +335,7 @@
             this.checkBox16.Name = "checkBox16";
             this.checkBox16.Size = new System.Drawing.Size(80, 17);
             this.checkBox16.TabIndex = 13;
-            this.checkBox16.Text = "Group Tiles";
+            this.checkBox16.Text = "Group tiles";
             this.checkBox16.UseVisualStyleBackColor = true;
             // 
             // checkBox15
@@ -383,7 +383,7 @@
             this.checkBox12.Name = "checkBox12";
             this.checkBox12.Size = new System.Drawing.Size(95, 17);
             this.checkBox12.TabIndex = 9;
-            this.checkBox12.Text = "Entrance Data";
+            this.checkBox12.Text = "Entrance data";
             this.checkBox12.UseVisualStyleBackColor = true;
             // 
             // checkBox11
@@ -395,7 +395,7 @@
             this.checkBox11.Name = "checkBox11";
             this.checkBox11.Size = new System.Drawing.Size(78, 17);
             this.checkBox11.TabIndex = 9;
-            this.checkBox11.Text = "Bush Items";
+            this.checkBox11.Text = "Bush items";
             this.checkBox11.UseVisualStyleBackColor = true;
             // 
             // checkBox10
@@ -440,7 +440,7 @@
             this.checkBox39.Name = "checkBox39";
             this.checkBox39.Size = new System.Drawing.Size(99, 17);
             this.checkBox39.TabIndex = 11;
-            this.checkBox39.Text = "Dungeon Maps";
+            this.checkBox39.Text = "Dungeon maps";
             this.checkBox39.UseVisualStyleBackColor = true;
             // 
             // checkBox29
@@ -452,7 +452,7 @@
             this.checkBox29.Name = "checkBox29";
             this.checkBox29.Size = new System.Drawing.Size(102, 17);
             this.checkBox29.TabIndex = 10;
-            this.checkBox29.Text = "Custom Collision";
+            this.checkBox29.Text = "Custom collision";
             this.checkBox29.UseVisualStyleBackColor = true;
             // 
             // checkBox18
@@ -464,7 +464,7 @@
             this.checkBox18.Name = "checkBox18";
             this.checkBox18.Size = new System.Drawing.Size(79, 17);
             this.checkBox18.TabIndex = 9;
-            this.checkBox18.Text = "Auto.Doors";
+            this.checkBox18.Text = "Auto doors";
             this.checkBox18.UseVisualStyleBackColor = true;
             // 
             // checkBox9
@@ -476,7 +476,7 @@
             this.checkBox9.Name = "checkBox9";
             this.checkBox9.Size = new System.Drawing.Size(95, 17);
             this.checkBox9.TabIndex = 8;
-            this.checkBox9.Text = "Entrance Data";
+            this.checkBox9.Text = "Entrance data";
             this.checkBox9.UseVisualStyleBackColor = true;
             // 
             // checkBox8
@@ -488,7 +488,7 @@
             this.checkBox8.Name = "checkBox8";
             this.checkBox8.Size = new System.Drawing.Size(97, 17);
             this.checkBox8.TabIndex = 7;
-            this.checkBox8.Text = "Room Headers";
+            this.checkBox8.Text = "Room headers";
             this.checkBox8.UseVisualStyleBackColor = true;
             // 
             // checkBox7
@@ -500,7 +500,7 @@
             this.checkBox7.Name = "checkBox7";
             this.checkBox7.Size = new System.Drawing.Size(86, 17);
             this.checkBox7.TabIndex = 6;
-            this.checkBox7.Text = "Damage Pits";
+            this.checkBox7.Text = "Damage pits";
             this.checkBox7.UseVisualStyleBackColor = true;
             // 
             // checkBox6
@@ -536,7 +536,7 @@
             this.checkBox4.Name = "checkBox4";
             this.checkBox4.Size = new System.Drawing.Size(87, 17);
             this.checkBox4.TabIndex = 3;
-            this.checkBox4.Text = "Tiles Objects";
+            this.checkBox4.Text = "Objects";
             this.checkBox4.UseVisualStyleBackColor = true;
             // 
             // checkBox3
@@ -548,7 +548,7 @@
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(81, 17);
             this.checkBox3.TabIndex = 2;
-            this.checkBox3.Text = "Chest Items";
+            this.checkBox3.Text = "Chest items";
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // checkBox2
@@ -560,7 +560,7 @@
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(70, 17);
             this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "Pot Items";
+            this.checkBox2.Text = "Pot items";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // checkBox1
@@ -589,7 +589,7 @@
             this.groupBox2.Size = new System.Drawing.Size(517, 166);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Loaded Data - Unchecking boxes will prevent editors from loading these data";
+            this.groupBox2.Text = "Loaded data; Uncheck boxes to prevent loading the respective data.";
             // 
             // checkBox31
             // 
@@ -600,7 +600,7 @@
             this.checkBox31.Name = "checkBox31";
             this.checkBox31.Size = new System.Drawing.Size(80, 17);
             this.checkBox31.TabIndex = 16;
-            this.checkBox31.Text = "Over. Items";
+            this.checkBox31.Text = "OW items";
             this.checkBox31.UseVisualStyleBackColor = true;
             // 
             // checkBox30
@@ -612,7 +612,7 @@
             this.checkBox30.Name = "checkBox30";
             this.checkBox30.Size = new System.Drawing.Size(87, 17);
             this.checkBox30.TabIndex = 15;
-            this.checkBox30.Text = "Over. Sprites";
+            this.checkBox30.Text = "OW sprites";
             this.checkBox30.UseVisualStyleBackColor = true;
             // 
             // checkBox28
@@ -624,7 +624,7 @@
             this.checkBox28.Name = "checkBox28";
             this.checkBox28.Size = new System.Drawing.Size(97, 17);
             this.checkBox28.TabIndex = 10;
-            this.checkBox28.Text = "Dung. Torches";
+            this.checkBox28.Text = "Torches";
             this.checkBox28.UseVisualStyleBackColor = true;
             // 
             // checkBox27
@@ -636,7 +636,7 @@
             this.checkBox27.Name = "checkBox27";
             this.checkBox27.Size = new System.Drawing.Size(90, 17);
             this.checkBox27.TabIndex = 10;
-            this.checkBox27.Text = "Dung. Blocks";
+            this.checkBox27.Text = "Push blocks";
             this.checkBox27.UseVisualStyleBackColor = true;
             // 
             // checkBox22
@@ -648,7 +648,7 @@
             this.checkBox22.Name = "checkBox22";
             this.checkBox22.Size = new System.Drawing.Size(83, 17);
             this.checkBox22.TabIndex = 11;
-            this.checkBox22.Text = "Dung. Items";
+            this.checkBox22.Text = "Chest items";
             this.checkBox22.UseVisualStyleBackColor = true;
             // 
             // checkBox21
@@ -660,7 +660,7 @@
             this.checkBox21.Name = "checkBox21";
             this.checkBox21.Size = new System.Drawing.Size(52, 17);
             this.checkBox21.TabIndex = 12;
-            this.checkBox21.Text = "Texts";
+            this.checkBox21.Text = "Dialog";
             this.checkBox21.UseVisualStyleBackColor = true;
             // 
             // checkBox23
@@ -672,7 +672,7 @@
             this.checkBox23.Name = "checkBox23";
             this.checkBox23.Size = new System.Drawing.Size(90, 17);
             this.checkBox23.TabIndex = 10;
-            this.checkBox23.Text = "Dung. Sprites";
+            this.checkBox23.Text = "UW sprites";
             this.checkBox23.UseVisualStyleBackColor = true;
             // 
             // button3
@@ -681,7 +681,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 3;
-            this.button3.Text = "Select All";
+            this.button3.Text = "Select all";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -691,7 +691,7 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 4;
-            this.button4.Text = "Deselect All";
+            this.button4.Text = "Deselect all";
             this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.button4_Click);
             // 

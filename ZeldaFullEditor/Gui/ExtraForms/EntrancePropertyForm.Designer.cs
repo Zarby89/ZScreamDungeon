@@ -42,7 +42,7 @@
             this.label38.Name = "label38";
             this.label38.Size = new System.Drawing.Size(270, 13);
             this.label38.TabIndex = 58;
-            this.label38.Text = "Selected Entrance Position/Camera Properties";
+            this.label38.Text = "Selected entrance properties";
             // 
             // buttonOk
             // 
@@ -51,7 +51,7 @@
             this.buttonOk.Name = "buttonOk";
             this.buttonOk.Size = new System.Drawing.Size(75, 23);
             this.buttonOk.TabIndex = 94;
-            this.buttonOk.Text = "Ok";
+            this.buttonOk.Text = "OK";
             this.buttonOk.UseVisualStyleBackColor = true;
             this.buttonOk.Click += new System.EventHandler(this.buttonOk_Click);
             // 
@@ -72,7 +72,7 @@
             this.groupBox1.Size = new System.Drawing.Size(258, 89);
             this.groupBox1.TabIndex = 96;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Door Setting (when no exit is used)";
+            this.groupBox1.Text = "Door setting (when no exit is used)";
             // 
             // EntrancePropertyForm
             // 
@@ -84,7 +84,7 @@
             this.Controls.Add(this.buttonOk);
             this.Controls.Add(this.label38);
             this.Name = "EntrancePropertyForm";
-            this.Text = "EntrancePropertyForm";
+            this.Text = "Entrance properties";
             this.ResumeLayout(false);
             this.PerformLayout();
 

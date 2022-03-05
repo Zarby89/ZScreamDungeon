@@ -87,7 +87,8 @@ namespace ZeldaFullEditor.OWSceneModes
                 globalmouseTileDownXLOCK = tileX;
                 globalmouseTileDownYLOCK = tileY;
 
-                    scene.selectedMap = mapId + scene.ow.worldOffset;
+                scene.selectedMap = mapId + scene.ow.worldOffset;
+                scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap].parent;
                 //scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].BuildMap();
 
                 scene.tileBitmapPtr = GFX.mapblockset16;
@@ -186,6 +187,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 else if (e.Button == MouseButtons.Right)
                 {
                     scene.selecting = true;
+                    scene.owForm.selectedTileLabel.Text = "Selected Tile : " + scene.selectedTile[0].ToString("X4");
                 }
             }
         }

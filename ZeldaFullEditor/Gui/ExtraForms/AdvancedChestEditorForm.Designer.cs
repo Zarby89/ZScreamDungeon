@@ -71,7 +71,7 @@
             this.label1.Dock = System.Windows.Forms.DockStyle.Top;
             this.label1.Location = new System.Drawing.Point(0, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(99, 13);
+            this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "List of Chest Items :";
             // 
@@ -90,9 +90,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(3, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(205, 13);
+            this.label2.Size = new System.Drawing.Size(179, 13);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Item Alternate ID (Decimal) (255 for none):";
+            this.label2.Text = "Item receipt if duplicate (FF for none)";
             // 
             // alternateTextbox
             // 
@@ -119,7 +119,7 @@
             this.groupBox1.Size = new System.Drawing.Size(409, 324);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Advanced Settings";
+            this.groupBox1.Text = "Advanced settings";
             // 
             // wideflagTextbox
             // 
@@ -134,9 +134,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(3, 174);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(89, 13);
+            this.label7.Size = new System.Drawing.Size(35, 13);
             this.label7.TabIndex = 14;
-            this.label7.Text = "Wide Flag (Hex) :";
+            this.label7.Text = "Width";
             // 
             // xoffsetTextbox
             // 
@@ -153,7 +153,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(79, 13);
             this.label6.TabIndex = 12;
-            this.label6.Text = "Y Offset (Hex) :";
+            this.label6.Text = "Y offset (HEX) :";
             // 
             // yoffsetTextbox
             // 
@@ -170,7 +170,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(79, 13);
             this.label5.TabIndex = 10;
-            this.label5.Text = "X Offset (Hex) :";
+            this.label5.Text = "X offset (HEX) :";
             // 
             // sramvalueTextbox
             // 
@@ -187,7 +187,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(102, 13);
             this.label4.TabIndex = 8;
-            this.label4.Text = "SRAM Value (Hex) :";
+            this.label4.Text = "SRAM value (HEX)";
             // 
             // label3
             // 
@@ -196,7 +196,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(113, 13);
             this.label3.TabIndex = 7;
-            this.label3.Text = "SRAM Address (Hex) :";
+            this.label3.Text = "SRAM value (HEX)";
             // 
             // sramaddrTextbox
             // 
@@ -232,9 +232,9 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(3, 39);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(140, 13);
+            this.label9.Size = new System.Drawing.Size(93, 13);
             this.label9.TabIndex = 7;
-            this.label9.Text = "Item Message ID (Decimal) :";
+            this.label9.Text = "Item Message ID :";
             // 
             // label8
             // 

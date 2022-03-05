@@ -72,7 +72,7 @@
             this.groupBox1.Size = new System.Drawing.Size(434, 192);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Map ID : ";
+            this.groupBox1.Text = "Map ID";
             // 
             // label1
             // 
@@ -81,7 +81,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(128, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Beginning (7EF3C5=00) : ";
+            this.label1.Text = "Beginning";
             // 
             // label2
             // 
@@ -90,7 +90,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(142, 13);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Zelda Saved (7EF3C5=01) : ";
+            this.label2.Text = "Zelda rescued";
             // 
             // label3
             // 
@@ -99,7 +99,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(143, 13);
             this.label3.TabIndex = 2;
-            this.label3.Text = "MasterSword (7EF3C5=01) : ";
+            this.label3.Text = "Master sword obtained";
             // 
             // label4
             // 
@@ -108,8 +108,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(151, 13);
             this.label4.TabIndex = 3;
-            this.label4.Text = "Agahnim Dead (7EF3C5=02) : ";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
+            this.label4.Text = "Agahnim defeated";
             // 
             // music1Box
             // 
@@ -198,7 +197,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(44, 13);
             this.label5.TabIndex = 12;
-            this.label5.Text = "Music : ";
+            this.label5.Text = "Main song";
             // 
             // label6
             // 
@@ -207,7 +206,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(57, 13);
             this.label6.TabIndex = 13;
-            this.label6.Text = "Ambient :  ";
+            this.label6.Text = "Ambient";
             // 
             // button1
             // 
@@ -216,7 +215,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 14;
-            this.button1.Text = "Ok";
+            this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 

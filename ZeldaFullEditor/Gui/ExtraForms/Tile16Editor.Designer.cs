@@ -112,7 +112,7 @@
             this.groupBox1.Size = new System.Drawing.Size(200, 274);
             this.groupBox1.TabIndex = 3;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Selected Tile8";
+            this.groupBox1.Text = "Selected tile 8";
             // 
             // tileTypeBox
             // 
@@ -130,7 +130,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(64, 13);
             this.label3.TabIndex = 7;
-            this.label3.Text = "Tile Type* : ";
+            this.label3.Text = "Collision type";
             // 
             // paletteUpDown
             // 
@@ -152,7 +152,7 @@
             this.inFrontCheckbox.Name = "inFrontCheckbox";
             this.inFrontCheckbox.Size = new System.Drawing.Size(62, 17);
             this.inFrontCheckbox.TabIndex = 4;
-            this.inFrontCheckbox.Text = "In Front";
+            this.inFrontCheckbox.Text = "Priority";
             this.inFrontCheckbox.UseVisualStyleBackColor = true;
             // 
             // mirrorYCheckbox
@@ -162,7 +162,7 @@
             this.mirrorYCheckbox.Name = "mirrorYCheckbox";
             this.mirrorYCheckbox.Size = new System.Drawing.Size(62, 17);
             this.mirrorYCheckbox.TabIndex = 3;
-            this.mirrorYCheckbox.Text = "Mirror Y";
+            this.mirrorYCheckbox.Text = "Flip Y";
             this.mirrorYCheckbox.UseVisualStyleBackColor = true;
             this.mirrorYCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
             // 
@@ -173,7 +173,7 @@
             this.mirrorXCheckbox.Name = "mirrorXCheckbox";
             this.mirrorXCheckbox.Size = new System.Drawing.Size(62, 17);
             this.mirrorXCheckbox.TabIndex = 2;
-            this.mirrorXCheckbox.Text = "Mirror X";
+            this.mirrorXCheckbox.Text = "Flip X";
             this.mirrorXCheckbox.UseVisualStyleBackColor = true;
             this.mirrorXCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
             // 
@@ -184,7 +184,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(49, 13);
             this.label2.TabIndex = 1;
-            this.label2.Text = "Palette : ";
+            this.label2.Text = "Palette";
             // 
             // label1
             // 
@@ -193,7 +193,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(47, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Tile ID : ";
+            this.label1.Text = "Tile ID";
             // 
             // button1
             // 
@@ -203,7 +203,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 4;
-            this.button1.Text = "Ok";
+            this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -228,7 +228,7 @@
             this.gridcheckBox.Name = "gridcheckBox";
             this.gridcheckBox.Size = new System.Drawing.Size(75, 17);
             this.gridcheckBox.TabIndex = 9;
-            this.gridcheckBox.Text = "Show Grid";
+            this.gridcheckBox.Text = "Show grid";
             this.gridcheckBox.UseVisualStyleBackColor = true;
             this.gridcheckBox.CheckedChanged += new System.EventHandler(this.gridcheckBox_CheckedChanged);
             // 
@@ -254,7 +254,7 @@
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(119, 27);
             this.button3.TabIndex = 11;
-            this.button3.Text = "Goto Tile 16 :";
+            this.button3.Text = "Go to tile";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
@@ -272,7 +272,7 @@
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
             this.Name = "Tile16Editor";
-            this.Text = "Tiles 16 Editor (X2 View)";
+            this.Text = "Tile 16 Editor";
             this.Load += new System.EventHandler(this.Tile16Editor_Load);
             this.Shown += new System.EventHandler(this.Tile16Editor_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureboxTile16)).EndInit();
