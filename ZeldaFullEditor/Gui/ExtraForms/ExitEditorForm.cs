@@ -86,11 +86,6 @@ namespace ZeldaFullEditor
             setPositionButton.Enabled = !nodoorradioButton.Checked;
         }
 
-        private void ExitEditorForm_Load(object sender, EventArgs e)
-        {
-            //TODO: Add something here?
-        }
-
         public void SetExit(ExitOW exit)
         {
             settingValues = true;

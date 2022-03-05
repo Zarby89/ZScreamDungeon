@@ -36,7 +36,6 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "CustomTabControl";
             this.Size = new System.Drawing.Size(382, 31);
-            this.Load += new System.EventHandler(this.CustomTabControl_Load);
             this.ResumeLayout(false);
 
         }

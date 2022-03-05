@@ -578,14 +578,17 @@ namespace ZeldaFullEditor
             return false; // False = no error
         }
 
+        /// <summary>
+        /// Tells the text editor to save all the texts.
+        /// </summary>
+        /// <param name="te"></param>
+        /// <returns></returns>
+        /// Jared_Brian_: The check box save for the text editor was removed per redundancy.
         public bool saveAllText(TextEditor te)
-        {
-            if (te.checkBox1.Checked)
+        { 
+            if (te.save())
             {
-                if (te.save())
-                {
-                    return true;
-                }
+                return true;
             }
 
             return false;
