@@ -165,14 +165,10 @@ namespace ZeldaFullEditor
 			this.label24 = new System.Windows.Forms.Label();
 			this.entrancetreeView = new System.Windows.Forms.TreeView();
 			this.objectstabPage = new System.Windows.Forms.TabPage();
-			this.panel1 = new ZeldaFullEditor.CustomPanel();
-			this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
 			this.favoriteCheckbox = new System.Windows.Forms.CheckBox();
 			this.showNameObjectCheckbox = new System.Windows.Forms.CheckBox();
 			this.searchTextbox = new System.Windows.Forms.TextBox();
 			this.tabPage4 = new System.Windows.Forms.TabPage();
-			this.customPanel1 = new ZeldaFullEditor.CustomPanel();
-			this.spritesView1 = new ZeldaFullEditor.SpritesView();
 			this.searchspriteTextbox = new System.Windows.Forms.TextBox();
 			this.edit8x8 = new System.Windows.Forms.TabPage();
 			this.edit8x8Panel = new System.Windows.Forms.Panel();
@@ -401,7 +397,12 @@ namespace ZeldaFullEditor
 			this.mapInfosLabel = new System.Windows.Forms.Label();
 			this.tabControl2 = new System.Windows.Forms.TabControl();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.toolStripMenuItem8 = new System.Windows.Forms.ToolStripMenuItem();
 			this.customPanel3 = new ZeldaFullEditor.CustomPanel();
+			this.panel1 = new ZeldaFullEditor.CustomPanel();
+			this.objectViewer1 = new ZeldaFullEditor.ObjectViewer();
+			this.customPanel1 = new ZeldaFullEditor.CustomPanel();
+			this.spritesView1 = new ZeldaFullEditor.SpritesView();
 			this.toolStrip1.SuspendLayout();
 			this.nothingselectedcontextMenu.SuspendLayout();
 			this.singleselectedcontextMenu.SuspendLayout();
@@ -415,9 +416,7 @@ namespace ZeldaFullEditor
 			this.splitContainer3.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.objectstabPage.SuspendLayout();
-			this.panel1.SuspendLayout();
 			this.tabPage4.SuspendLayout();
-			this.customPanel1.SuspendLayout();
 			this.edit8x8.SuspendLayout();
 			this.edit8x8Panel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.editBox8x8)).BeginInit();
@@ -440,6 +439,8 @@ namespace ZeldaFullEditor
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
+			this.panel1.SuspendLayout();
+			this.customPanel1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// toolStrip1
@@ -1705,26 +1706,6 @@ namespace ZeldaFullEditor
 			this.objectstabPage.Text = "Objects";
 			this.objectstabPage.UseVisualStyleBackColor = true;
 			// 
-			// panel1
-			// 
-			this.panel1.AutoScroll = true;
-			this.panel1.Controls.Add(this.objectViewer1);
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point(0, 54);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(292, 610);
-			this.panel1.TabIndex = 1;
-			// 
-			// objectViewer1
-			// 
-			this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.objectViewer1.Location = new System.Drawing.Point(0, 0);
-			this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
-			this.objectViewer1.Name = "objectViewer1";
-			this.objectViewer1.Size = new System.Drawing.Size(292, 380);
-			this.objectViewer1.TabIndex = 0;
-			this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
-			// 
 			// favoriteCheckbox
 			// 
 			this.favoriteCheckbox.AutoSize = true;
@@ -1768,25 +1749,6 @@ namespace ZeldaFullEditor
 			this.tabPage4.TabIndex = 10;
 			this.tabPage4.Text = "Sprites";
 			this.tabPage4.UseVisualStyleBackColor = true;
-			// 
-			// customPanel1
-			// 
-			this.customPanel1.AutoScroll = true;
-			this.customPanel1.Controls.Add(this.spritesView1);
-			this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.customPanel1.Location = new System.Drawing.Point(0, 20);
-			this.customPanel1.Name = "customPanel1";
-			this.customPanel1.Size = new System.Drawing.Size(292, 644);
-			this.customPanel1.TabIndex = 2;
-			// 
-			// spritesView1
-			// 
-			this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
-			this.spritesView1.Location = new System.Drawing.Point(0, 0);
-			this.spritesView1.Name = "spritesView1";
-			this.spritesView1.Size = new System.Drawing.Size(292, 374);
-			this.spritesView1.TabIndex = 0;
-			this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
 			// 
 			// searchspriteTextbox
 			// 
@@ -2766,7 +2728,8 @@ namespace ZeldaFullEditor
             this.windowToolStripMenuItem,
             this.jPDebugToolStripMenuItem,
             this.ExperimentalToolStripMenuItem1,
-            this.helpToolStripMenuItem});
+            this.helpToolStripMenuItem,
+            this.toolStripMenuItem8});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(1177, 24);
@@ -3963,21 +3926,21 @@ namespace ZeldaFullEditor
 			// howToUseToolStripMenuItem
 			// 
 			this.howToUseToolStripMenuItem.Name = "howToUseToolStripMenuItem";
-			this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+			this.howToUseToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.howToUseToolStripMenuItem.Text = "How to Use";
 			this.howToUseToolStripMenuItem.Click += new System.EventHandler(this.howToUseToolStripMenuItem_Click);
 			// 
 			// patchNotesToolStripMenuItem
 			// 
 			this.patchNotesToolStripMenuItem.Name = "patchNotesToolStripMenuItem";
-			this.patchNotesToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+			this.patchNotesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.patchNotesToolStripMenuItem.Text = "Patch Notes";
 			this.patchNotesToolStripMenuItem.Click += new System.EventHandler(this.patchNotesToolStripMenuItem_Click);
 			// 
 			// aboutToolStripMenuItem
 			// 
 			this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+			this.aboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
 			this.aboutToolStripMenuItem.Text = "About";
 			this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
 			// 
@@ -4081,6 +4044,13 @@ namespace ZeldaFullEditor
 			this.splitContainer1.SplitterDistance = 603;
 			this.splitContainer1.TabIndex = 23;
 			// 
+			// toolStripMenuItem8
+			// 
+			this.toolStripMenuItem8.Name = "toolStripMenuItem8";
+			this.toolStripMenuItem8.Size = new System.Drawing.Size(59, 20);
+			this.toolStripMenuItem8.Text = "Discord";
+			this.toolStripMenuItem8.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
+			// 
 			// customPanel3
 			// 
 			this.customPanel3.AutoScroll = true;
@@ -4091,6 +4061,45 @@ namespace ZeldaFullEditor
 			this.customPanel3.Name = "customPanel3";
 			this.customPanel3.Size = new System.Drawing.Size(603, 523);
 			this.customPanel3.TabIndex = 19;
+			// 
+			// panel1
+			// 
+			this.panel1.AutoScroll = true;
+			this.panel1.Controls.Add(this.objectViewer1);
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel1.Location = new System.Drawing.Point(0, 54);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(292, 610);
+			this.panel1.TabIndex = 1;
+			// 
+			// objectViewer1
+			// 
+			this.objectViewer1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.objectViewer1.Location = new System.Drawing.Point(0, 0);
+			this.objectViewer1.MinimumSize = new System.Drawing.Size(0, 180);
+			this.objectViewer1.Name = "objectViewer1";
+			this.objectViewer1.Size = new System.Drawing.Size(292, 380);
+			this.objectViewer1.TabIndex = 0;
+			this.objectViewer1.SelectedIndexChanged += new System.EventHandler(this.objectViewer1_SelectedIndexChanged);
+			// 
+			// customPanel1
+			// 
+			this.customPanel1.AutoScroll = true;
+			this.customPanel1.Controls.Add(this.spritesView1);
+			this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.customPanel1.Location = new System.Drawing.Point(0, 20);
+			this.customPanel1.Name = "customPanel1";
+			this.customPanel1.Size = new System.Drawing.Size(292, 644);
+			this.customPanel1.TabIndex = 2;
+			// 
+			// spritesView1
+			// 
+			this.spritesView1.Dock = System.Windows.Forms.DockStyle.Top;
+			this.spritesView1.Location = new System.Drawing.Point(0, 0);
+			this.spritesView1.Name = "spritesView1";
+			this.spritesView1.Size = new System.Drawing.Size(292, 374);
+			this.spritesView1.TabIndex = 0;
+			this.spritesView1.SelectedIndexChanged += new System.EventHandler(this.spritesView1_SelectedIndexChanged);
 			// 
 			// DungeonMain
 			// 
@@ -4129,10 +4138,8 @@ namespace ZeldaFullEditor
 			this.panel2.PerformLayout();
 			this.objectstabPage.ResumeLayout(false);
 			this.objectstabPage.PerformLayout();
-			this.panel1.ResumeLayout(false);
 			this.tabPage4.ResumeLayout(false);
 			this.tabPage4.PerformLayout();
-			this.customPanel1.ResumeLayout(false);
 			this.edit8x8.ResumeLayout(false);
 			this.edit8x8Panel.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.editBox8x8)).EndInit();
@@ -4165,6 +4172,8 @@ namespace ZeldaFullEditor
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
+			this.panel1.ResumeLayout(false);
+			this.customPanel1.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -4539,6 +4548,7 @@ namespace ZeldaFullEditor
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
 		private System.Windows.Forms.Label label30;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem8;
 	}
 }
 

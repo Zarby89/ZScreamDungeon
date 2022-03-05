@@ -48,6 +48,7 @@ namespace ZeldaFullEditor {
             InitializeComponent();
             this.TextCommandList.Items.AddRange(TextEditor.GetElementListing(TCommands));
             this.SpecialsList.Items.AddRange(TextEditor.GetElementListing(SpecialChars));
+            pictureBox1.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseWheel);
         }
 
         public class TextElement 
@@ -616,7 +617,14 @@ namespace ZeldaFullEditor {
             }*/
         }
 
-        public void initOpen() 
+        private static Color[] previewColors = new Color[] {
+            Color.DimGray,
+            Color.DarkBlue,
+            Color.White,
+            Color.DarkOrange
+        };
+
+        public void initOpen()
         {
             panel1.Enabled = true;
             for (int i = 0; i < 100; i++) 
@@ -626,6 +634,14 @@ namespace ZeldaFullEditor {
 
             GFX.fontgfxBitmap = new Bitmap(128, 128, 64, PixelFormat.Format4bppIndexed, GFX.fontgfx16Ptr);
             GFX.currentfontgfx16Bitmap = new Bitmap(172, 4096, 172, PixelFormat.Format8bppIndexed, GFX.currentfontgfx16Ptr);
+
+
+            ColorPalette cp1 = GFX.fontgfxBitmap.Palette;
+            for (int i = 0; i < previewColors.Length; i++) {
+                cp1.Entries[i] = previewColors[i];
+            }
+            GFX.fontgfxBitmap.Palette = cp1;
+
             string[] alllines = new string[255];
 
             readAllText();
@@ -650,6 +666,9 @@ namespace ZeldaFullEditor {
             textListbox.DisplayMember = "Text";
             pictureBox2.Refresh();
 
+            SelectedTileID.Text = selectedTile.ToString("X2");
+            SelectedTileASCII.Text = readNextTextByte((byte) selectedTile);
+
             GFX.CreateFontGfxData(ROM.DATA);
         }
 
@@ -671,60 +690,45 @@ namespace ZeldaFullEditor {
             pictureBox1.Refresh();
         }
 
-        public unsafe void drawLetter(byte b) 
-        {
-            if (skipNext) 
-            {
-                skipNext = false;
-                return;
+        public unsafe void drawLetter(string s) {
+            foreach (char c in s) {
+                drawLetter(c);
             }
+		}
 
-            if (b < 100) 
-            {
-                int srcy = ((b / 16));
-                int srcx = b - ((b / 16) * 16);
+        public unsafe void drawLetter(char c) {
+            drawLetter(FindMatchingCharacter(c));
+        }
 
-                if (textPos >= 170) 
-                {
-                    textPos = 0;
-                    textLine++;
+        public unsafe void drawLetter(params byte[] text) 
+        {
+            foreach (byte b in text) {
+                if (skipNext) {
+                    skipNext = false;
+                    continue;
                 }
 
-                draw_item_tile(textPos, textLine * 16, srcx, srcy, 0, false, false, 1, 2);
-                textPos += widthArray[b];
-            } 
-            else if (b == 0x74) { textPos = 0; textLine = 0; }
-            else if (b == 0x73) { textPos = 0; textLine += 1; }
-            else if (b == 0x75) { textPos = 0; textLine = 1; }
-            else if (b == 0x76) { textPos = 0; textLine = 2; }
-            else if (b == 0x6B) { skipNext = true; return; }
-            else if (b == 0x6D) { skipNext = true; return; }
-            else if (b == 0x6E) { skipNext = true; return; }
-            else if (b == 0x77) { skipNext = true; return; }
-            else if (b == 0x78) { skipNext = true; return; }
-            else if (b == 0x79) { skipNext = true; return; }
-            else if (b == 0x7A) { skipNext = true; return; }
-            else if (b == 0x6C) // BCD numbers
-            {
-                drawLetter(FindMatchingCharacter('0'));
-                skipNext = true;
-                return;
-            
-            } else if (b == 0x6A) 
-            {
-                drawLetter(FindMatchingCharacter('('));
-                drawLetter(FindMatchingCharacter('N'));
-                drawLetter(FindMatchingCharacter('A'));
-                drawLetter(FindMatchingCharacter('M'));
-                drawLetter(FindMatchingCharacter('E'));
-                drawLetter(FindMatchingCharacter(')'));
-            } 
-            else if (b >= DICTOFF && b <= (DICTOFF + 97)) 
-            {
-                byte bdict = (byte) (b - DICTOFF);
-                foreach (byte bd in dictionaries_bytes[bdict]) 
-                {
-                    drawLetter(bd);
+                if (b < 100) {
+                    int srcy = ((b / 16));
+                    int srcx = b - ((b / 16) * 16);
+
+                    if (textPos >= 170) {
+                        textPos = 0;
+                        textLine++;
+                    }
+
+                    draw_item_tile(textPos, textLine * 16, srcx, srcy, 0, false, false, 1, 2);
+                    textPos += widthArray[b];
+                } else if (b == 0x74) { textPos = 0; textLine = 0; } else if (b == 0x73) { textPos = 0; textLine += 1; } else if (b == 0x75) { textPos = 0; textLine = 1; } else if (b == 0x76) { textPos = 0; textLine = 2; } else if (b == 0x6B) { skipNext = true; return; } else if (b == 0x6D) { skipNext = true; return; } else if (b == 0x6E) { skipNext = true; return; } else if (b == 0x77) { skipNext = true; return; } else if (b == 0x78) { skipNext = true; return; } else if (b == 0x79) { skipNext = true; return; } else if (b == 0x7A) { skipNext = true; return; } else if (b == 0x6C) // BCD numbers
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      {
+                    drawLetter('0');
+                    skipNext = true;
+                    continue;
+
+                } else if (b == 0x6A) {
+                    drawLetter("(NAME)");
+                } else if (b >= DICTOFF && b <= (DICTOFF + 97)) {
+                    drawLetter(dictionaries_bytes[(byte) (b - DICTOFF)]);
                 }
             }
         }
@@ -741,6 +745,8 @@ namespace ZeldaFullEditor {
             }
 
             textPos = 0;
+            // draw letter doesn't like passing this directly for some reason
+            // leave as a foreach
             foreach (byte b in savedBytes[(int) (textListbox.SelectedItem as ListViewItem).Tag]) {
                 drawLetter(b);
             }
@@ -830,16 +836,48 @@ namespace ZeldaFullEditor {
                 Tag = i
             });
         }
+
+        private static readonly Pen CharHilite = new Pen(Brushes.HotPink, 2);
+        private static readonly Pen GridHilite = new Pen(Color.FromArgb(0x77CCCCCC), 2);
         private void pictureBox2_Paint(object sender, PaintEventArgs e) 
         {
             e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
             e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
             e.Graphics.DrawImage(GFX.fontgfxBitmap, new Rectangle(0, 0, 256, 256));
-            int srcY = (selectedTile / 16);
+
+            if (fontGridBox.Checked) {
+                for (int i = 0; i < 16; i++) {
+                    e.Graphics.DrawLine(GridHilite, 16 * i, 0, 16 * i, 128 * 4);
+                }
+
+                for (int j = 0; j < 16; j++) {
+                    e.Graphics.DrawLine(GridHilite, 0, 32 * j, 64 * 4, 32 * j);
+                }
+            }
+
+            int srcY = selectedTile / 16;
             int srcX = selectedTile - (srcY * 16);
-            e.Graphics.DrawRectangle(new Pen(Brushes.CornflowerBlue, 2), new Rectangle(srcX * 16, srcY * 32, 16, 32));
-            SelectedTileID.Text = selectedTile.ToString("X2");
-            SelectedTileASCII.Text = readNextTextByte((byte) selectedTile);
+            e.Graphics.DrawRectangle(CharHilite, new Rectangle(srcX * 16, srcY * 32, 16, 32));
+        }
+
+
+        private void pictureBox3_Paint(object sender, PaintEventArgs e) {
+            e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+            e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+            e.Graphics.DrawImage(GFX.fontgfxBitmap,
+                new Rectangle(0, 0, 64, 128),
+                new Rectangle((selectedTile - (selectedTile & 0xF0)) * 8, selectedTile & 0xF0, 8, 16),
+                GraphicsUnit.Pixel);
+
+            if (fontGridBox.Checked) {
+                for (int i = 0; i < 8; i++) {
+                    e.Graphics.DrawLine(GridHilite, 8 * i, 0, 8 * i, 128);
+                }
+
+                for (int j = 0; j < 16; j++) {
+                    e.Graphics.DrawLine(GridHilite, 0, 8 * j, 64, 8 * j);
+                }
+            }
         }
 
         private void pictureBox1_Paint(object sender, PaintEventArgs e) 
@@ -870,38 +908,6 @@ namespace ZeldaFullEditor {
                 new SolidBrush(Color.FromArgb(128, 255, 0, 0)),
                 new Rectangle(344 - 8, 0, 4,
                 pictureBox2.Height));
-        }
-
-        private void downButton_Click(object sender, EventArgs e) 
-        {
-            if (shownLines < textLine - 2) 
-            {
-                shownLines++;
-                upButton.Enabled = true;
-            }
-
-            if (shownLines == textLine - 2) 
-            {
-                downButton.Enabled = false;
-            }
-
-            pictureBox1.Refresh();
-        }
-
-        private void upButton_Click(object sender, EventArgs e) 
-        {
-            if (shownLines > 0)
-            {
-                shownLines--;
-                downButton.Enabled = true;
-            }
-
-            if (shownLines == 0) 
-            {
-                upButton.Enabled = false;
-            }
-
-            pictureBox1.Refresh();
         }
 
         private void richTextBox1_TextChanged(object sender, EventArgs e) 
@@ -1010,8 +1016,8 @@ namespace ZeldaFullEditor {
                     {
                         if (first) 
                         {
-                            MessageBox.Show("Too much text data in 1st group to save;\n" +
-                                            "Available Space = 0x8000, Used Space = " + 
+                            MessageBox.Show("Too much text data in first block to save;\n" +
+                                            "Available: 0x8000 | Used: " + 
                                             (pos & 0xFFFF).ToString("X4"));
 
                             ROM.DATA = (byte[]) backup.Clone();
@@ -1048,8 +1054,8 @@ namespace ZeldaFullEditor {
 
             if (second) 
             {
-                MessageBox.Show("Too many text data in 1st group impossible to save;\n" +
-                                "available space = 0x8000, Used Space = " + 
+                MessageBox.Show("Too many text data in first block to save;\n" +
+                                "Available: 0x8000 | Used: " + 
                                 (pos & 0xFFFF).ToString("X4"));
 
                 ROM.DATA = (byte[]) backup.Clone();
@@ -1079,15 +1085,19 @@ namespace ZeldaFullEditor {
             fromForm = true;
             numericUpDown1.Value = widthArray[selectedTile];
             fromForm = false;
+            SelectedTileID.Text = selectedTile.ToString("X2");
+            SelectedTileASCII.Text = readNextTextByte((byte) selectedTile);
             pictureBox2.Refresh();
+            pictureBox3.Refresh();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e) 
         {
-            if (fromForm == false) 
-            {
+            // TODO is fromForm necessary?
+            //if (fromForm == false) 
+            //{
                 UpdateTextBox();
-            }
+            //}
         }
 
         /// <summary>
@@ -1119,6 +1129,7 @@ namespace ZeldaFullEditor {
             textBox1.Text = textBox1.Text.Insert(textboxPos, s);
             fromForm = false;
             textBox1.SelectionStart = textboxPos + s.Length;
+            textBox1.Focus();
         }
 
         /// <summary>
@@ -1134,7 +1145,6 @@ namespace ZeldaFullEditor {
                 // TODO JARED FIX THIS
                 (textListbox.Items[(int) selectedTextTag] as ListViewItem).Text = Regex.Replace(textBox1.Text, @"[\r\n]", "");
                 textListbox.Refresh();
-
 
 
                 setTextsDictionaries();
@@ -1311,5 +1321,54 @@ namespace ZeldaFullEditor {
 		private void BytesDDD_Click(object sender, EventArgs e) {
             byter.ShowBytes(parseTextToBytes(textBox1.Text));
 		}
-	}
+
+		private void fontGridBox_CheckedChanged(object sender, EventArgs e) {
+            pictureBox2.Refresh();
+            pictureBox3.Refresh();
+		}
+
+
+        private void pictureBox1_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e) {
+            if (e.Delta > 1) {
+                scrollTextUp();
+			}
+            else if (e.Delta < 1) {
+                scrollTextDown();
+			}
+		}
+
+
+        private void downButton_Click(object sender, EventArgs e) {
+            scrollTextDown();
+        }
+        private void scrollTextDown() {
+            if (shownLines < textLine - 2) {
+                shownLines++;
+                upButton.Enabled = true;
+            }
+
+            if (shownLines == textLine - 2) {
+                downButton.Enabled = false;
+            }
+
+            pictureBox1.Refresh();
+        }
+
+        private void upButton_Click(object sender, EventArgs e) {
+            scrollTextUp();
+        }
+
+        private void scrollTextUp() {
+                if (shownLines > 0) {
+                shownLines--;
+                downButton.Enabled = true;
+            }
+
+            if (shownLines == 0) {
+                upButton.Enabled = false;
+            }
+
+            pictureBox1.Refresh();
+        }
+    }
 }

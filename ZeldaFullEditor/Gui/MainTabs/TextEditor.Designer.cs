@@ -35,6 +35,9 @@
 			this.searchTextbox = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.BytesDDD = new System.Windows.Forms.Button();
+			this.label11 = new System.Windows.Forms.Label();
+			this.MessageAddress = new System.Windows.Forms.Label();
 			this.label9 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
@@ -47,6 +50,8 @@
 			this.button6 = new System.Windows.Forms.Button();
 			this.SpecialsList = new System.Windows.Forms.ListBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.SelectedTileASCII = new System.Windows.Forms.Label();
+			this.SelectedTileID = new System.Windows.Forms.Label();
 			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
 			this.label8 = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
@@ -62,11 +67,8 @@
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-			this.SelectedTileID = new System.Windows.Forms.Label();
-			this.SelectedTileASCII = new System.Windows.Forms.Label();
-			this.MessageAddress = new System.Windows.Forms.Label();
-			this.label11 = new System.Windows.Forms.Label();
-			this.BytesDDD = new System.Windows.Forms.Button();
+			this.pictureBox3 = new System.Windows.Forms.PictureBox();
+			this.fontGridBox = new System.Windows.Forms.CheckBox();
 			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.groupBox1.SuspendLayout();
@@ -74,6 +76,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.toolStrip1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// panel1
@@ -134,6 +137,7 @@
 			// 
 			this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.panel2.Controls.Add(this.fontGridBox);
 			this.panel2.Controls.Add(this.BytesDDD);
 			this.panel2.Controls.Add(this.label11);
 			this.panel2.Controls.Add(this.MessageAddress);
@@ -161,6 +165,33 @@
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(520, 715);
 			this.panel2.TabIndex = 23;
+			// 
+			// BytesDDD
+			// 
+			this.BytesDDD.Location = new System.Drawing.Point(408, 413);
+			this.BytesDDD.Name = "BytesDDD";
+			this.BytesDDD.Size = new System.Drawing.Size(105, 28);
+			this.BytesDDD.TabIndex = 33;
+			this.BytesDDD.Text = "Show text data";
+			this.BytesDDD.UseVisualStyleBackColor = true;
+			this.BytesDDD.Click += new System.EventHandler(this.BytesDDD_Click);
+			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(395, 156);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(86, 13);
+			this.label11.TabIndex = 32;
+			this.label11.Text = "Parameter (HEX)";
+			// 
+			// MessageAddress
+			// 
+			this.MessageAddress.AutoSize = true;
+			this.MessageAddress.Location = new System.Drawing.Point(305, 1);
+			this.MessageAddress.Name = "MessageAddress";
+			this.MessageAddress.Size = new System.Drawing.Size(0, 13);
+			this.MessageAddress.TabIndex = 31;
 			// 
 			// label9
 			// 
@@ -270,6 +301,7 @@
 			// 
 			// groupBox1
 			// 
+			this.groupBox1.Controls.Add(this.pictureBox3);
 			this.groupBox1.Controls.Add(this.SelectedTileASCII);
 			this.groupBox1.Controls.Add(this.SelectedTileID);
 			this.groupBox1.Controls.Add(this.numericUpDown1);
@@ -278,14 +310,30 @@
 			this.groupBox1.Controls.Add(this.label6);
 			this.groupBox1.Location = new System.Drawing.Point(265, 407);
 			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(137, 99);
+			this.groupBox1.Size = new System.Drawing.Size(137, 206);
 			this.groupBox1.TabIndex = 14;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Selected tile";
 			// 
+			// SelectedTileASCII
+			// 
+			this.SelectedTileASCII.AutoSize = true;
+			this.SelectedTileASCII.Location = new System.Drawing.Point(57, 29);
+			this.SelectedTileASCII.Name = "SelectedTileASCII";
+			this.SelectedTileASCII.Size = new System.Drawing.Size(0, 13);
+			this.SelectedTileASCII.TabIndex = 5;
+			// 
+			// SelectedTileID
+			// 
+			this.SelectedTileID.AutoSize = true;
+			this.SelectedTileID.Location = new System.Drawing.Point(57, 16);
+			this.SelectedTileID.Name = "SelectedTileID";
+			this.SelectedTileID.Size = new System.Drawing.Size(0, 13);
+			this.SelectedTileID.TabIndex = 4;
+			// 
 			// numericUpDown1
 			// 
-			this.numericUpDown1.Location = new System.Drawing.Point(78, 71);
+			this.numericUpDown1.Location = new System.Drawing.Point(78, 45);
 			this.numericUpDown1.Maximum = new decimal(new int[] {
             8,
             0,
@@ -299,7 +347,7 @@
 			// label8
 			// 
 			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(5, 73);
+			this.label8.Location = new System.Drawing.Point(6, 47);
 			this.label8.Name = "label8";
 			this.label8.Size = new System.Drawing.Size(35, 13);
 			this.label8.TabIndex = 2;
@@ -310,18 +358,18 @@
 			this.label7.AutoSize = true;
 			this.label7.Location = new System.Drawing.Point(6, 29);
 			this.label7.Name = "label7";
-			this.label7.Size = new System.Drawing.Size(37, 13);
+			this.label7.Size = new System.Drawing.Size(34, 13);
 			this.label7.TabIndex = 1;
-			this.label7.Text = "ASCII:";
+			this.label7.Text = "ASCII";
 			// 
 			// label6
 			// 
 			this.label6.AutoSize = true;
 			this.label6.Location = new System.Drawing.Point(6, 16);
 			this.label6.Name = "label6";
-			this.label6.Size = new System.Drawing.Size(21, 13);
+			this.label6.Size = new System.Drawing.Size(18, 13);
 			this.label6.TabIndex = 0;
-			this.label6.Text = "ID:";
+			this.label6.Text = "ID";
 			// 
 			// button4
 			// 
@@ -439,48 +487,30 @@
 			this.toolStripButton2.Text = "Import text";
 			this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
 			// 
-			// SelectedTileID
+			// pictureBox3
 			// 
-			this.SelectedTileID.AutoSize = true;
-			this.SelectedTileID.Location = new System.Drawing.Point(57, 16);
-			this.SelectedTileID.Name = "SelectedTileID";
-			this.SelectedTileID.Size = new System.Drawing.Size(0, 13);
-			this.SelectedTileID.TabIndex = 4;
+			this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.pictureBox3.Location = new System.Drawing.Point(35, 70);
+			this.pictureBox3.MaximumSize = new System.Drawing.Size(64, 128);
+			this.pictureBox3.MinimumSize = new System.Drawing.Size(64, 128);
+			this.pictureBox3.Name = "pictureBox3";
+			this.pictureBox3.Size = new System.Drawing.Size(64, 128);
+			this.pictureBox3.TabIndex = 6;
+			this.pictureBox3.TabStop = false;
+			this.pictureBox3.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox3_Paint);
 			// 
-			// SelectedTileASCII
+			// fontGridBox
 			// 
-			this.SelectedTileASCII.AutoSize = true;
-			this.SelectedTileASCII.Location = new System.Drawing.Point(57, 29);
-			this.SelectedTileASCII.Name = "SelectedTileASCII";
-			this.SelectedTileASCII.Size = new System.Drawing.Size(0, 13);
-			this.SelectedTileASCII.TabIndex = 5;
-			// 
-			// MessageAddress
-			// 
-			this.MessageAddress.AutoSize = true;
-			this.MessageAddress.Location = new System.Drawing.Point(305, 1);
-			this.MessageAddress.Name = "MessageAddress";
-			this.MessageAddress.Size = new System.Drawing.Size(0, 13);
-			this.MessageAddress.TabIndex = 31;
-			// 
-			// label11
-			// 
-			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(395, 156);
-			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(86, 13);
-			this.label11.TabIndex = 32;
-			this.label11.Text = "Parameter (HEX)";
-			// 
-			// BytesDDD
-			// 
-			this.BytesDDD.Location = new System.Drawing.Point(408, 413);
-			this.BytesDDD.Name = "BytesDDD";
-			this.BytesDDD.Size = new System.Drawing.Size(105, 28);
-			this.BytesDDD.TabIndex = 33;
-			this.BytesDDD.Text = "Show text data";
-			this.BytesDDD.UseVisualStyleBackColor = true;
-			this.BytesDDD.Click += new System.EventHandler(this.BytesDDD_Click);
+			this.fontGridBox.AutoSize = true;
+			this.fontGridBox.Location = new System.Drawing.Point(408, 596);
+			this.fontGridBox.Name = "fontGridBox";
+			this.fontGridBox.Size = new System.Drawing.Size(73, 17);
+			this.fontGridBox.TabIndex = 34;
+			this.fontGridBox.Text = "Show grid";
+			this.fontGridBox.UseVisualStyleBackColor = true;
+			this.fontGridBox.CheckedChanged += new System.EventHandler(this.fontGridBox_CheckedChanged);
 			// 
 			// TextEditor
 			// 
@@ -503,6 +533,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -548,5 +579,7 @@
 		private System.Windows.Forms.Label MessageAddress;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.Button BytesDDD;
+		private System.Windows.Forms.PictureBox pictureBox3;
+		private System.Windows.Forms.CheckBox fontGridBox;
 	}
 }

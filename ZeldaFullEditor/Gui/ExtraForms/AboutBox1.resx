@@ -126,7 +126,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>323, 254</value>
+    <value>318, 292</value>
   </data>
   <data name="btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -148,7 +148,7 @@
     <value>$this</value>
   </data>
   <data name="&gt;&gt;btnOK.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="richTextBox1.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -157,30 +157,31 @@
     <value>12, 12</value>
   </data>
   <data name="richTextBox1.Size" type="System.Drawing.Size, System.Drawing">
-    <value>386, 236</value>
+    <value>381, 253</value>
   </data>
   <data name="richTextBox1.TabIndex" type="System.Int32, mscorlib">
     <value>29</value>
   </data>
   <data name="richTextBox1.Text" xml:space="preserve">
-    <value>ZScream Magic (ZScream): an editor for The Legend of Zelda, A Link to the Past
+    <value>ZScream - an editor for The Legend of Zelda: A Link to the Past
 
-Version: 1.0.2 Doodoo
+Author:
+* Zarby89
 
-Author: Zarby89
-
-Special Thanks:
-* MathOnNapkins - Documentation and help.
-* SepH - Documentation on doors, blocks, and GFX.
-* kan - Logo, feedback, proofreading
+Other contributors:
+* kan - Logo, feedback, proofreading, code
 * Scawful - Code
 * Jared_Brian_ - Code
-* Puzzledude - Info on dungeon hex data and entrances.
-* Discord ALTTP Hacking Community
-* Zeldix Community
 
-Home:
-https://github.com/Zarby89/ZScreamDungeon</value>
+Special thanks:
+* MathOnNapkins - Documentation and help
+* SepH - Documentation on doors, blocks, and GFX
+* Discord ALTTP hacking community
+* Zeldix community
+
+Links:
+* Source code: https://github.com/Zarby89/ZScreamDungeon
+* Discord: https://discord.gg/XNyyFXbgHg</value>
   </data>
   <data name="&gt;&gt;richTextBox1.Name" xml:space="preserve">
     <value>richTextBox1</value>
@@ -192,6 +193,36 @@ https://github.com/Zarby89/ZScreamDungeon</value>
     <value>$this</value>
   </data>
   <data name="&gt;&gt;richTextBox1.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="AboutVersion.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Bottom, Right</value>
+  </data>
+  <data name="AboutVersion.AutoSize" type="System.Boolean, mscorlib">
+    <value>True</value>
+  </data>
+  <data name="AboutVersion.Location" type="System.Drawing.Point, System.Drawing">
+    <value>202, 297</value>
+  </data>
+  <data name="AboutVersion.Size" type="System.Drawing.Size, System.Drawing">
+    <value>110, 13</value>
+  </data>
+  <data name="AboutVersion.TabIndex" type="System.Int32, mscorlib">
+    <value>30</value>
+  </data>
+  <data name="AboutVersion.Text" xml:space="preserve">
+    <value>Version 1.0.2 Doodoo</value>
+  </data>
+  <data name="&gt;&gt;AboutVersion.Name" xml:space="preserve">
+    <value>AboutVersion</value>
+  </data>
+  <data name="&gt;&gt;AboutVersion.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AboutVersion.Parent" xml:space="preserve">
+    <value>$this</value>
+  </data>
+  <data name="&gt;&gt;AboutVersion.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -201,7 +232,7 @@ https://github.com/Zarby89/ZScreamDungeon</value>
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>410, 289</value>
+    <value>405, 317</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
@@ -220,6 +251,9 @@ https://github.com/Zarby89/ZScreamDungeon</value>
         AAAAAAAAzAAAA8wAAAP/AAA//wAAP//AAP//wAD///AP///wD////////////w==
 </value>
   </data>
+  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>421, 311</value>
   </data>
@@ -227,7 +261,7 @@ https://github.com/Zarby89/ZScreamDungeon</value>
     <value>CenterParent</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>About Scream Magic</value>
+    <value>About ZScream</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>AboutBox1</value>
