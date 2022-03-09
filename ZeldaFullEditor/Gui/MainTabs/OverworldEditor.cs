@@ -1047,6 +1047,11 @@ namespace ZeldaFullEditor.Gui
             e.Graphics.DrawImage(GFX.editingtile16Bitmap, new Rectangle(0,0,64,64));
         }
 
+        /// <summary>
+        /// Called when the largemap checkbox is clicke, upataes the world layout and then updates all of the sprites within that area.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void largemapCheckbox_Clicked(object sender, EventArgs e)
         {
             if (propertiesChangedFromForm == false)

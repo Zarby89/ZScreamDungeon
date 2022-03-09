@@ -39,16 +39,27 @@ namespace ZeldaFullEditor
             this.ow = ow;
             this.parent = index;
             gfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, gfxPtr);
-            //
+            
             messageID = (short)ROM.ReadShort(Constants.overworldMessages + (parent * 2));
 
             if (index != 0x80)
             {
-                if (index <= 150)
+                if (index <= 128)
                 {
                     if (ROM.DATA[Constants.overworldMapSize + (index & 0x3F)] != 0)
                     {
                         largeMap = true;
+                    }
+                }
+                else
+                {
+                    if (index == 129 || index == 130 || index == 137 || index == 138)
+                    {
+                        largeMap = true;
+                    }
+                    else
+                    {
+                        largeMap = false;
                     }
                 }
             }
@@ -91,11 +102,11 @@ namespace ZeldaFullEditor
                 {
                     parent = 03;
                 }
-                else if (index == 0x96)//pyramid bg use 0x5B map
+                else if (index == 0x96) //pyramid bg use 0x5B map
                 {
                     parent = 0x5B;
                 }
-                else if (index == 0x97)//pyramid bg use 0x5B map
+                else if (index == 0x97) //pyramid bg use 0x5B map
                 {
                     parent = 0x00;
                 }
@@ -118,6 +129,10 @@ namespace ZeldaFullEditor
                 else if (index == 136)
                 {
                     parent = 136;
+                }
+                else if (index == 129 || index == 130 || index == 137 || index == 138)
+                {
+                    parent = 129;
                 }
 
                 messageID = ROM.DATA[Constants.overworldMessages + parent];

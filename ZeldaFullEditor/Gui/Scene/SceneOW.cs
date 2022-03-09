@@ -850,9 +850,15 @@ namespace ZeldaFullEditor
                     g.DrawRectangle(Pens.LightGreen, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16));
                 }
 
-                int my = (ow.allmaps[mapHover].parent / 8);
-                int mx = ow.allmaps[mapHover].parent - (my * 8);
-                if (ow.allmaps[mapHover].largeMap)
+                int offset = 0;
+                if(selectedMap >= 128)
+                {
+                    offset = 128;
+                }
+
+                int my = (ow.allmaps[mapHover + offset].parent - offset) / 8;
+                int mx = (ow.allmaps[mapHover + offset].parent - offset) - (my * 8);
+                if (ow.allmaps[mapHover + offset].largeMap)
                 {
                     g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 1024, 1024));
                 }
