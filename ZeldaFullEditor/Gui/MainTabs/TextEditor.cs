@@ -48,6 +48,7 @@ namespace ZeldaFullEditor {
             private int id; public int ID { get => id; }
             private byte[] data; public byte[] Data { get => data; }
             private int addr; public int Address { get => addr; }
+            private byte[] dd;  public byte[] DataDict { get => dd; }
             public MessageData(int i, int a, string s) {
                 id = i;
                 addr = a;
@@ -62,7 +63,8 @@ namespace ZeldaFullEditor {
 
             private void RecalculateData() {
                 data = parseTextToBytes(str);
-			}
+                dd = parseTextToBytes(OptimizeMessageForDictionary(str));
+            }
 		}
         public class TextElement 
         {
@@ -133,7 +135,7 @@ namespace ZeldaFullEditor {
             private byte[] data; public byte[] Data { get => data; }
             private int len; public int Length { get => len; }
 
-            private string token;
+            private string token; public string Token { get => token; }
 
             public DictionaryEntry(byte i, string s) {
                 str = s;
@@ -186,10 +188,7 @@ namespace ZeldaFullEditor {
         private static string ReplaceAllDictionaryWords(string s) {
             string ret = s;
             foreach (DictionaryEntry w in AllDicts) {
-                if (w.ContainedInString(ret)) {
-                    ret = w.ReplaceInstancesOfIn(ret);
-                    ret = OptimizeMessageForDictionary(ret); // re-atomize and replace
-                }
+                ret = ret.Replace(w.Contents, w.Token);
             }
             return ret;
         }
@@ -696,8 +695,8 @@ namespace ZeldaFullEditor {
 
             string[] alllines = new string[255];
 
-            readAllText();
             buildDictionaries();
+            readAllText();
 
             textListbox.BeginUpdate();
             textListbox.Items.Clear();
@@ -1035,9 +1034,7 @@ namespace ZeldaFullEditor {
             bool second = false;
 
             foreach (MessageData m in listOfTexts) {
-                byte[] d = parseTextToBytes(OptimizeMessageForDictionary(m.Contents));
-
-                foreach (byte b in d) 
+                foreach (byte b in m.DataDict) 
                 {
                     if (expandedRegion == false) 
                     {
@@ -1365,6 +1362,7 @@ namespace ZeldaFullEditor {
 
         MessageAsBytes byter = new MessageAsBytes();
 		private void BytesDDD_Click(object sender, EventArgs e) {
+            
             byter.ShowBytes(parseTextToBytes(textBox1.Text));
 		}
 
