@@ -35,6 +35,7 @@
 			this.searchTextbox = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.fontGridBox = new System.Windows.Forms.CheckBox();
 			this.BytesDDD = new System.Windows.Forms.Button();
 			this.label11 = new System.Windows.Forms.Label();
 			this.MessageAddress = new System.Windows.Forms.Label();
@@ -50,6 +51,7 @@
 			this.button6 = new System.Windows.Forms.Button();
 			this.SpecialsList = new System.Windows.Forms.ListBox();
 			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.pictureBox3 = new System.Windows.Forms.PictureBox();
 			this.SelectedTileASCII = new System.Windows.Forms.Label();
 			this.SelectedTileID = new System.Windows.Forms.Label();
 			this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
@@ -67,16 +69,14 @@
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
-			this.pictureBox3 = new System.Windows.Forms.PictureBox();
-			this.fontGridBox = new System.Windows.Forms.CheckBox();
 			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.groupBox1.SuspendLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			this.toolStrip1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// panel1
@@ -165,6 +165,17 @@
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(520, 715);
 			this.panel2.TabIndex = 23;
+			// 
+			// fontGridBox
+			// 
+			this.fontGridBox.AutoSize = true;
+			this.fontGridBox.Location = new System.Drawing.Point(408, 596);
+			this.fontGridBox.Name = "fontGridBox";
+			this.fontGridBox.Size = new System.Drawing.Size(73, 17);
+			this.fontGridBox.TabIndex = 34;
+			this.fontGridBox.Text = "Show grid";
+			this.fontGridBox.UseVisualStyleBackColor = true;
+			this.fontGridBox.CheckedChanged += new System.EventHandler(this.fontGridBox_CheckedChanged);
 			// 
 			// BytesDDD
 			// 
@@ -314,6 +325,20 @@
 			this.groupBox1.TabIndex = 14;
 			this.groupBox1.TabStop = false;
 			this.groupBox1.Text = "Selected tile";
+			// 
+			// pictureBox3
+			// 
+			this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.pictureBox3.Location = new System.Drawing.Point(35, 70);
+			this.pictureBox3.MaximumSize = new System.Drawing.Size(64, 128);
+			this.pictureBox3.MinimumSize = new System.Drawing.Size(64, 128);
+			this.pictureBox3.Name = "pictureBox3";
+			this.pictureBox3.Size = new System.Drawing.Size(64, 128);
+			this.pictureBox3.TabIndex = 6;
+			this.pictureBox3.TabStop = false;
+			this.pictureBox3.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox3_Paint);
 			// 
 			// SelectedTileASCII
 			// 
@@ -487,31 +512,6 @@
 			this.toolStripButton2.Text = "Import text";
 			this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
 			// 
-			// pictureBox3
-			// 
-			this.pictureBox3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.pictureBox3.Location = new System.Drawing.Point(35, 70);
-			this.pictureBox3.MaximumSize = new System.Drawing.Size(64, 128);
-			this.pictureBox3.MinimumSize = new System.Drawing.Size(64, 128);
-			this.pictureBox3.Name = "pictureBox3";
-			this.pictureBox3.Size = new System.Drawing.Size(64, 128);
-			this.pictureBox3.TabIndex = 6;
-			this.pictureBox3.TabStop = false;
-			this.pictureBox3.Paint += new System.Windows.Forms.PaintEventHandler(this.pictureBox3_Paint);
-			// 
-			// fontGridBox
-			// 
-			this.fontGridBox.AutoSize = true;
-			this.fontGridBox.Location = new System.Drawing.Point(408, 596);
-			this.fontGridBox.Name = "fontGridBox";
-			this.fontGridBox.Size = new System.Drawing.Size(73, 17);
-			this.fontGridBox.TabIndex = 34;
-			this.fontGridBox.Text = "Show grid";
-			this.fontGridBox.UseVisualStyleBackColor = true;
-			this.fontGridBox.CheckedChanged += new System.EventHandler(this.fontGridBox_CheckedChanged);
-			// 
 			// TextEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -528,12 +528,12 @@
 			this.panel2.PerformLayout();
 			this.groupBox1.ResumeLayout(false);
 			this.groupBox1.PerformLayout();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

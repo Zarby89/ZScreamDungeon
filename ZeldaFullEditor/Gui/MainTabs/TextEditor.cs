@@ -16,22 +16,14 @@ using System.Globalization;
 namespace ZeldaFullEditor {
     public partial class TextEditor : UserControl
     {
-        int[] addrTexts = new int[500];
         byte[] widthArray = new byte[100];
-        List<StringKey> listOfTexts = new List<StringKey>();
-        int defaultColor = 6;
-
-        List<string> savedTexts = new List<string>();
-        List<byte[]> savedBytes = new List<byte[]>();
-        public List<string> dictionaries = new List<string>();
-        public List<byte[]> dictionaries_bytes = new List<byte[]>();
-
-        int[] dictionariesOrder = new int[97];
+        static int defaultColor = 6;
 
         string romname = "";
 
         int textLine = 0;
 
+        List<MessageData> listOfTexts = new List<MessageData>();
         int textPos = 0;
         bool skipNext = false;
 
@@ -51,6 +43,27 @@ namespace ZeldaFullEditor {
             pictureBox1.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseWheel);
         }
 
+        public class MessageData {
+            private string str; public string Contents { get => str; }
+            private int id; public int ID { get => id; }
+            private byte[] data; public byte[] Data { get => data; }
+            private int addr; public int Address { get => addr; }
+            public MessageData(int i, int a, string s) {
+                id = i;
+                addr = a;
+                str = s;
+                RecalculateData();
+			}
+
+            public void SetMessage(string s) {
+                str = s;
+                RecalculateData();
+			}
+
+            private void RecalculateData() {
+                data = parseTextToBytes(str);
+			}
+		}
         public class TextElement 
         {
             private string token; public string Token { get => token; }
@@ -112,7 +125,75 @@ namespace ZeldaFullEditor {
 			}
 		}
 
-        public ParsedElement FindMatchingElement(string s)
+        public static List<DictionaryEntry> AllDicts = new List<DictionaryEntry>();
+
+        public class DictionaryEntry {
+            private byte id;  public byte ID { get => id; }
+            private string str; public string Contents { get => str; }
+            private byte[] data; public byte[] Data { get => data; }
+            private int len; public int Length { get => len; }
+
+            private string token;
+
+            public DictionaryEntry(byte i, string s) {
+                str = s;
+                id = i;
+                len = s.Length;
+                token = string.Format("[{0}:{1:X2}]", DICTIONARYTOKEN, id);
+                data = parseTextToBytes(str);
+			}
+
+            public bool ContainedInString(string s) {
+                return s.IndexOf(str) >= 0;
+			}
+
+            public string ReplaceInstancesOfIn(string s) {
+                return s.Replace(str, token);
+			}
+		}
+
+        private static string OptimizeMessageForDictionary(string str) {
+            StringBuilder atoms = new StringBuilder();
+
+            // build an initial list of atoms
+            StringBuilder protons = new StringBuilder();
+            bool cmd = false;
+            foreach (char c in str) {
+                if (c == ']' && cmd) {
+                    cmd = false;
+                    protons.Append(c);
+                    atoms.Append(protons.ToString());
+                    protons.Clear();
+                } else if (c == '[' && !cmd) {
+                    // once a command has been encountered, replace all dictionary words in the newly finished atom
+                    atoms.Append(ReplaceAllDictionaryWords(protons.ToString()));
+                    protons.Clear();
+                    protons.Append(c);
+                    cmd = true;
+                } else {
+                    protons.Append(c);
+                }
+            }
+
+            // if the message is over, check for one final atom
+            if (!cmd && protons.Length > 0) {
+                atoms.Append(ReplaceAllDictionaryWords(protons.ToString()));
+            }
+
+            return atoms.ToString();
+        }
+
+        private static string ReplaceAllDictionaryWords(string s) {
+            string ret = s;
+            foreach (DictionaryEntry w in AllDicts) {
+                if (w.ContainedInString(ret)) {
+                    ret = w.ReplaceInstancesOfIn(ret);
+                    ret = OptimizeMessageForDictionary(ret); // re-atomize and replace
+                }
+            }
+            return ret;
+        }
+        public static ParsedElement FindMatchingElement(string s)
         {
             Match g;
             foreach (TextElement t in TCommands.Concat(SpecialChars)) 
@@ -178,7 +259,11 @@ namespace ZeldaFullEditor {
             return b - DICTOFF;
 		}
 
-        public byte FindMatchingCharacter(char c) 
+        public DictionaryEntry GetDictionaryFromID(byte b) {
+            return AllDicts.First(ddd => ddd.ID == b);
+        }
+
+        public static byte FindMatchingCharacter(char c) 
         {
             foreach (KeyValuePair<byte, char> kt in CharEncoder) 
             {
@@ -364,10 +449,9 @@ namespace ZeldaFullEditor {
                 // check for end of message
                 if (b == 0x7F) 
                 {
-                    listOfTexts.Add(new StringKey(currentMessage.ToString(), tempBytes.ToArray()));
+                    listOfTexts.Add(new MessageData(tt, pos, currentMessage.ToString()));
                     tempBytes.Clear();
                     currentMessage.Clear();
-                    addrTexts[tt++] = pos;
                     continue;
                 } 
                 else if (b == 0xFF) 
@@ -410,21 +494,14 @@ namespace ZeldaFullEditor {
 
                 if (dict >= 0) 
                 {
-                    // currentMessage.Append("[");
-                    // currentMessage.Append(DICTIONARYTOKEN);
-                    // currentMessage.Append(":");
-                    // currentMessage.Append(dict);
-                    // currentMessage.Append("]");
-                    int addr = Utils.SnesToPc(0x0E0000 |
-                       (ROM.DATA[Constants.pointers_dictionaries + (dict * 2) + 1] << 8) |
-                       (ROM.DATA[Constants.pointers_dictionaries + (dict * 2)])
-                       );
-
-                    int addrend = Utils.SnesToPc(0x0E0000 |
-                       (ROM.DATA[Constants.pointers_dictionaries + ((dict+1) * 2) + 1] << 8) |
-                       (ROM.DATA[Constants.pointers_dictionaries + ((dict+1) * 2)])
-                       );
-
+                    //currentMessage.Append("[");
+                    //currentMessage.Append(DICTIONARYTOKEN);
+                    //currentMessage.Append(":");
+                    //currentMessage.Append(dict.ToString("X2"));
+                    //currentMessage.Append("]");
+                    int addr = Utils.Get24LocalFromPC(Constants.pointers_dictionaries + (dict * 2));
+                    int addrend = Utils.Get24LocalFromPC(Constants.pointers_dictionaries + ((dict + 1) * 2));
+                    
                     byte dadd;
                     for (int i = addr; i < addrend; i++) 
                     {
@@ -456,12 +533,12 @@ namespace ZeldaFullEditor {
                 StringBuilder s = new StringBuilder();
                 //nbrint = 1;
 
-                addr = Utils.SnesToPc((0x0E << 16) +
+                addr = Utils.SnesToPc((0x0E0000) +
                     (ROM.DATA[Constants.pointers_dictionaries + (i * 2) + 1] << 8) +
                     ROM.DATA[Constants.pointers_dictionaries + (i * 2)]
                 );
 
-                int tempaddr = Utils.SnesToPc((0x0E << 16) +
+                int tempaddr = Utils.SnesToPc((0x0E0000) +
                     (ROM.DATA[Constants.pointers_dictionaries + ((i + 1) * 2) + 1] << 8) +
                     ROM.DATA[Constants.pointers_dictionaries + ((i + 1) * 2)]
                 );
@@ -473,39 +550,14 @@ namespace ZeldaFullEditor {
                     s.Append(readNextTextByte(bdictionary));
                 }
 
-                dictionaries_bytes.Add(bytes.ToArray());
-                dictionaries.Add(s.ToString());
+                AllDicts.Add(new DictionaryEntry((byte) i, s.ToString()));
             }
 
-            string[] orderedDictionary = dictionaries.OrderBy(x => x.Length).ToArray();
-
-            for (int i = 0; i < 97; i++) 
-            {
-                dictionariesOrder[i] = dictionaries.FindIndex(x => x == orderedDictionary[i]);
-            }
+            AllDicts.OrderByDescending(dic => dic.Length);
         }
 
-        public void setTextsDictionaries() 
+        public static byte[] parseTextToBytes(string fullString) 
         {
-            savedTexts.Clear();
-            //this function scan for keyword existing in dictionaries
-            //if we find one replace that text by [DICXX]
-            foreach (StringKey texts in listOfTexts)
-            {
-                string s = texts.text;
-
-                for (int i = 96; i >= 0; i--) 
-                {
-                    s = s.Replace(dictionaries[dictionariesOrder[i]], DICTIONARYTOKEN + ":" + dictionariesOrder[i].ToString("D2") + "]");
-                }
-
-                savedTexts.Add(s);
-            }
-        }
-
-        public byte[] parseTextToBytes(string fullString) 
-        {
-            defaultColor = 6;
             List<byte> bytes = new List<byte>();
             string s = fullString;
             int pos = 0;
@@ -645,14 +697,7 @@ namespace ZeldaFullEditor {
             string[] alllines = new string[255];
 
             readAllText();
-            savedBytes.Clear();
             buildDictionaries();
-            setTextsDictionaries();
-
-            for (int i = 0; i < savedTexts.Count; i++) 
-            {
-                savedBytes.Add(parseTextToBytes(savedTexts[i]));
-            }
 
             textListbox.BeginUpdate();
             textListbox.Items.Clear();
@@ -674,7 +719,7 @@ namespace ZeldaFullEditor {
 
         private void textListbox_SelectedIndexChanged(object sender, EventArgs e) 
         {
-            StringKey sk = listOfTexts[(int) (textListbox.Items[textListbox.SelectedIndex] as ListViewItem).Tag];
+            MessageData msg = listOfTexts[(int) (textListbox.Items[textListbox.SelectedIndex] as ListViewItem).Tag];
             //Console.WriteLine(savedTexts[textListbox.SelectedIndex]);
             /*for (int i = 0; i < savedBytes[textListbox.SelectedIndex].Length; i++)
             {
@@ -682,10 +727,10 @@ namespace ZeldaFullEditor {
             }*/
             //Console.WriteLine();
 
-            textBox1.Text = Regex.Replace(sk.text, @"\[[123V]\]", "\r\n$0");
+            textBox1.Text = Regex.Replace(msg.Contents, @"\[[123V]\]", "\r\n$0");
 
             drawTextPreview();
-            MessageAddress.Text = addrTexts[textListbox.SelectedIndex].ToString("X6");
+            MessageAddress.Text = msg.Address.ToString("X6");
 
             pictureBox1.Refresh();
         }
@@ -727,8 +772,12 @@ namespace ZeldaFullEditor {
 
                 } else if (b == 0x6A) {
                     drawLetter("(NAME)");
-                } else if (b >= DICTOFF && b <= (DICTOFF + 97)) {
-                    drawLetter(dictionaries_bytes[(byte) (b - DICTOFF)]);
+                } else if (b >= DICTOFF && b < (DICTOFF + 97)) {
+                    DictionaryEntry d = GetDictionaryFromID((byte) (b - DICTOFF));
+                    if (d != null) {
+                        drawLetter(d.Data);
+                    }
+
                 }
             }
         }
@@ -747,7 +796,7 @@ namespace ZeldaFullEditor {
             textPos = 0;
             // draw letter doesn't like passing this directly for some reason
             // leave as a foreach
-            foreach (byte b in savedBytes[(int) (textListbox.SelectedItem as ListViewItem).Tag]) {
+            foreach (byte b in listOfTexts[(int) (textListbox.SelectedItem as ListViewItem).Tag].Data) {
                 drawLetter(b);
             }
 
@@ -806,16 +855,16 @@ namespace ZeldaFullEditor {
             //Sorting sort;
             string searchText = searchTextbox.Text.ToLower();
             //listView1
-            StringKey[] texts = listOfTexts
+            MessageData[] texts = listOfTexts
                 .Where(x => x != null)
-                .Where(x => (x.text.ToLower().Contains(searchText)))
+                .Where(x => (x.Contents.ToLower().Contains(searchText)))
                 .ToArray();
 
-            foreach (StringKey s in texts) 
+            foreach (MessageData s in texts) 
             {
                 for (int i = 0; i < listOfTexts.Count; i++) 
                 {
-                    if (s.text == listOfTexts[i].text) 
+                    if (s.Contents == listOfTexts[i].Contents) 
                     {
                         AddMessageToList(i);
                     }
@@ -832,7 +881,7 @@ namespace ZeldaFullEditor {
         private void AddMessageToList(int i) {
             textListbox.Items.Add(new ListViewItem()
             {
-                Text = i.ToString("X3") + " : " + listOfTexts[i].text,
+                Text = i.ToString("X3") + " : " + listOfTexts[i].Contents,
                 Tag = i
             });
         }
@@ -974,25 +1023,21 @@ namespace ZeldaFullEditor {
             for (int i = 0; i < 100; i++) 
             {
                 // ROM.DATA[Constants.characters_width + i] = widthArray[i];
-                ROM.Write(Constants.characters_width + i, widthArray[i], true, "Gfx Width");
+                ROM.Write(Constants.characters_width + i, widthArray[i], true, "GFX width");
             }
 
-            savedBytes.Clear();
-            setTextsDictionaries();
-
-            for (int i = 0; i < savedTexts.Count; i++) 
-            {
-                savedBytes.Add(parseTextToBytes(savedTexts[i]));
-            }
+            // we only need the dictionary entries sorted once
+            AllDicts.OrderByDescending(dic => dic.Length);
 
             int pos = Constants.text_data;
             bool expandedRegion = false;
             bool first = false;
             bool second = false;
 
-            for (int i = 0; i < savedTexts.Count; i++) 
-            {
-                foreach (byte b in savedBytes[i]) 
+            foreach (MessageData m in listOfTexts) {
+                byte[] d = parseTextToBytes(OptimizeMessageForDictionary(m.Contents));
+
+                foreach (byte b in d) 
                 {
                     if (expandedRegion == false) 
                     {
@@ -1010,7 +1055,7 @@ namespace ZeldaFullEditor {
                     }
 
                     //ROM.DATA[pos] = b;
-                    ROM.Write(pos, b, true, "Text Data");
+                    ROM.Write(pos, b, true, "Text data");
 
                     if (b == 0x80) 
                     {
@@ -1140,15 +1185,13 @@ namespace ZeldaFullEditor {
             if (textListbox.SelectedItem != null)
             {
                 object selectedTextTag = (textListbox.SelectedItem as ListViewItem).Tag;
-                listOfTexts[(int)selectedTextTag].text = Regex.Replace(textBox1.Text, @"[\r\n]", "");
+                listOfTexts[(int)selectedTextTag].SetMessage(Regex.Replace(textBox1.Text, @"[\r\n]", ""));
 
                 // TODO JARED FIX THIS
                 (textListbox.Items[(int) selectedTextTag] as ListViewItem).Text = Regex.Replace(textBox1.Text, @"[\r\n]", "");
                 textListbox.Refresh();
 
-
-                setTextsDictionaries();
-                savedBytes[(int)selectedTextTag] = parseTextToBytes(textBox1.Text);
+                //savedBytes[(int)selectedTextTag] = parseTextToBytes(textBox1.Text);
 
                 drawTextPreview();
                 pictureBox1.Refresh();
@@ -1160,12 +1203,14 @@ namespace ZeldaFullEditor {
             DictionariesForm df = new DictionariesForm();
             df.listBox1.Items.Clear();
 
-            int i = 0;
-            foreach (string s in dictionaries) 
+            foreach (DictionaryEntry d in AllDicts) 
             {
-                df.listBox1.Items.Add(
-                    string.Format("{0:X2} [{1:X2}] - {2}", i, i + DICTOFF, s.Replace(" ", "[Space]")));
-                i++;
+                df.listBox1.Items.Insert(
+                    d.ID,
+                    string.Format("{0:X2} [{1:X2}] - {2}",
+                    d.ID,
+                    d.ID + DICTOFF,
+                    d.Contents.Replace(" ", "[Space]")));
             }
 
             df.ShowDialog();
@@ -1176,7 +1221,7 @@ namespace ZeldaFullEditor {
             string[] alltexts = new string[listOfTexts.Count];
             for (int i = 0; i < listOfTexts.Count; i++) 
             {
-                alltexts[i] = i.ToString("X3") + " : " + listOfTexts[i].text + "\r\n\r\n";
+                alltexts[i] = i.ToString("X3") + " : " + listOfTexts[i].Contents + "\r\n\r\n";
             }
 
             File.WriteAllLines("dump.txt", alltexts);
@@ -1201,26 +1246,27 @@ namespace ZeldaFullEditor {
             //TODO: Add something here?
         }
 
+        // TODO needs a rewrite
         private void toolStripButton2_Click(object sender, EventArgs e) 
         {
-            using (OpenFileDialog of = new OpenFileDialog()) 
-            {
-                of.DefaultExt = ".txt";
-                if (of.ShowDialog() == DialogResult.OK) 
-                {
-                    string[] alltexts = File.ReadAllLines(of.FileName);
-                    for (int i = 0; i < alltexts.Length; i++)
-                    {
-                        if (alltexts[i].Length > 3)
-                        {
-                            int id = int.Parse(alltexts[i].Substring(0, 3));
-                            listOfTexts[id] = new StringKey(alltexts[i].Substring(5, alltexts[i].Length - 5), new byte[] { });
-                        }
-                    }
-
-                    sortText();
-                }
-            }
+            //using (OpenFileDialog of = new OpenFileDialog()) 
+            //{
+            //    of.DefaultExt = ".txt";
+            //    if (of.ShowDialog() == DialogResult.OK) 
+            //    {
+            //        string[] alltexts = File.ReadAllLines(of.FileName);
+            //        for (int i = 0; i < alltexts.Length; i++)
+            //        {
+            //            if (alltexts[i].Length > 3)
+            //            {
+            //                int id = int.Parse(alltexts[i].Substring(0, 3));
+            //                listOfTexts[id] = new StringKey(alltexts[i].Substring(5, alltexts[i].Length - 5), new byte[] { });
+            //            }
+            //        }
+            //
+            //        sortText();
+            //    }
+            //}
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e) 
@@ -1233,7 +1279,7 @@ namespace ZeldaFullEditor {
                     string[] alltexts = new string[listOfTexts.Count];
                     for (int i = 0; i < listOfTexts.Count; i++) 
                     {
-                        alltexts[i] = i.ToString("X3") + " : " + listOfTexts[i].text + "\r\n\r\n";
+                        alltexts[i] = i.ToString("X3") + " : " + listOfTexts[i].Contents + "\r\n\r\n";
                     }
 
                     File.WriteAllLines(sf.FileName, alltexts);
