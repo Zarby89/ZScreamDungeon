@@ -165,12 +165,12 @@ namespace ZeldaFullEditor
 
                 if (ow.worldOffset >= 64)
                 {
-
                     owForm.gfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].gfx.ToString("X2");
                     owForm.sprgfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].sprgfx[0].ToString("X2");
                     owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].palette.ToString("X2");
                     owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].sprpalette[0].ToString("X2");
                     owForm.largemapCheckbox.Checked = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].largeMap;
+                    owForm.BGColorToUpdate = ow.allmaps[selectedMap + ow.worldOffset].parent;
                 }
                 else
                 {
@@ -179,10 +179,13 @@ namespace ZeldaFullEditor
                     owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].palette.ToString("X2");
                     owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprpalette[ow.gameState].ToString("X2");
                     owForm.largemapCheckbox.Checked = ow.allmaps[ow.allmaps[selectedMap].parent].largeMap;
+                    owForm.BGColorToUpdate = ow.allmaps[selectedMap].parent;
                 }
 
                 owForm.propertiesChangedFromForm = false;
                 owForm.tilePictureBox.Refresh();
+
+                owForm.areaBGColorPictureBox.Refresh();
             }
 
             owForm.BuildScratchTilesGfx();
@@ -196,73 +199,82 @@ namespace ZeldaFullEditor
             int superX = (tileX / 32);
             int superY = (tileY / 32);
             int mapId = (superY * 8) + superX;
-            globalmouseTileDownX = tileX;
-            globalmouseTileDownY = tileY;
+            
+            if(mapId + ow.worldOffset < ow.allmaps.Length)
+            {
+                globalmouseTileDownX = tileX;
+                globalmouseTileDownY = tileY;
 
-            mainForm.anychange = true;
-            selectedMap = mapId;
-            selectedMapParent = ow.allmaps[selectedMap + ow.worldOffset].parent;
+                mainForm.anychange = true;
+                selectedMap = mapId;
 
-            owForm.previewTextPicturebox.Visible = false;
-            updateMapGfx();
-            owForm.updateTiles();
+                selectedMapParent = ow.allmaps[selectedMap + ow.worldOffset].parent;
 
-            if (selectedMode == ObjectMode.Tile)
-            {
-                tilemode.OnMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Overlay)
-            {
-                overlayMode.OnMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Exits)
-            {
-                exitmode.onMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.OWDoor)
-            {
-                doorMode.OnMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Entrances)
-            {
-                entranceMode.onMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Itemmode)
-            {
-                itemMode.onMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Spritemode)
-            {
-                spriteMode.onMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Flute)
-            {
-                transportMode.onMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Gravestone)
-            {
-                gravestoneMode.onMouseDown(e);
-            }
+                owForm.previewTextPicturebox.Visible = false;
+                updateMapGfx();
+                owForm.updateTiles();
 
-            if (lowEndMode)
-            {
-                int x = ow.allmaps[selectedMap].parent % 8;
-                int y = ow.allmaps[selectedMap].parent / 8;
-                if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                if (selectedMode == ObjectMode.Tile)
                 {
-                    Invalidate(new Rectangle(x*512, y*512, 512, 512));
+                    tilemode.OnMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Overlay)
+                {
+                    overlayMode.OnMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Exits)
+                {
+                    exitmode.onMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.OWDoor)
+                {
+                    doorMode.OnMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Entrances)
+                {
+                    entranceMode.onMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Itemmode)
+                {
+                    itemMode.onMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Spritemode)
+                {
+                    spriteMode.onMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Flute)
+                {
+                    transportMode.onMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Gravestone)
+                {
+                    gravestoneMode.onMouseDown(e);
+                }
+
+                if (lowEndMode)
+                {
+                    int x = ow.allmaps[selectedMap].parent % 8;
+                    int y = ow.allmaps[selectedMap].parent / 8;
+                    if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                    {
+                        Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                    }
+                    else
+                    {
+                        Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                    }
                 }
                 else
                 {
-                    Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                    Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
                 }
+
+                base.OnMouseDown(e);
             }
             else
             {
-                Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
+                Console.WriteLine("Invalid area selected");
             }
-
-            base.OnMouseDown(e);
         }
 
         private unsafe void onMouseUp(object sender, MouseEventArgs e)

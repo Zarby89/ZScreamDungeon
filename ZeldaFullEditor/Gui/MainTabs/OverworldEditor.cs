@@ -41,6 +41,10 @@ namespace ZeldaFullEditor.Gui
         byte palSelected = 0;
         int tile8selected = 0;
 
+        public int BGColorToUpdate = 0;
+
+        ColorDialog cd = new ColorDialog();
+
         public OverworldEditor()
         {
             InitializeComponent();
@@ -2066,6 +2070,36 @@ namespace ZeldaFullEditor.Gui
         {
             overworld.alloverlays[scene.selectedMapParent].tilesData.Clear();
             scene.Refresh();
+        }
+
+        /// <summary>
+        /// Called when the area background color box is double cliked, brings up color editor.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AreaBGColorPicturebox_MouseDoubleClick(object sender, EventArgs e)
+        {
+            cd.Color = Palettes.overworld_BackgroundPalette[BGColorToUpdate];
+            if (cd.ShowDialog() == DialogResult.OK)
+            {
+                Palettes.overworld_BackgroundPalette[BGColorToUpdate] = cd.Color;
+                areaBGColorPictureBox.Refresh();
+            }
+
+            mainForm.overworldEditor.overworld.allmaps[scene.selectedMap].ReloadPalettes();
+        }
+
+        /// <summary>
+        /// Paints the Area Background color box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AreaBGColorPicturebox_Paint(object sender, PaintEventArgs e)
+        {
+            if (BGColorToUpdate < Palettes.overworld_BackgroundPalette.Length)
+            {
+                e.Graphics.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[BGColorToUpdate]), new Rectangle(0, 0, 24, 24));
+            } 
         }
     }
 }

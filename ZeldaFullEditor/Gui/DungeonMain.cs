@@ -661,9 +661,9 @@ namespace ZeldaFullEditor
             {
                 projectFilename = projectFile.FileName;
                 LoadProject(projectFile.FileName);
-                openToolStripMenuItem.Enabled = false;
-                openfileButton.Enabled = false;
-                recentROMToolStripMenuItem.Enabled = false;
+                //openToolStripMenuItem.Enabled = false;
+                //openfileButton.Enabled = false;
+                //recentROMToolStripMenuItem.Enabled = false;
             }
         }
 

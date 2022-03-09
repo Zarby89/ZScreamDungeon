@@ -30,6 +30,10 @@ namespace ZeldaFullEditor.Gui
 
         ColorDialog cd = new ColorDialog();
 
+        DungeonMain mainForm;
+        Color[] selectedPalette = null;
+        int selectedX = 16;
+
         public PaletteEditor(DungeonMain mainForm)
         {
             InitializeComponent();
@@ -98,9 +102,6 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-        DungeonMain mainForm;
-        Color[] selectedPalette = null;
-        int selectedX = 16;
         private void PaletteEditor_VisibleChanged(object sender, EventArgs e)
         {
             this.BackColor = Color.FromKnownColor(KnownColor.Control);
@@ -598,11 +599,6 @@ namespace ZeldaFullEditor.Gui
 
                 refreshallGfx();
             }
-        }
-
-        private void palettePicturebox_Click(object sender, EventArgs e)
-        {
-            //TODO: Add something here?
         }
     }
 }

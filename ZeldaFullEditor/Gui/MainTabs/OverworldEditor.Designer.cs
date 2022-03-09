@@ -93,6 +93,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.areaBGColorPictureBox = new System.Windows.Forms.PictureBox();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -115,6 +117,7 @@
             this.mapGroupbox.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // owToolStrip
@@ -540,7 +543,7 @@
             this.mirrorYCheckbox.AutoSize = true;
             this.mirrorYCheckbox.Location = new System.Drawing.Point(75, 36);
             this.mirrorYCheckbox.Name = "mirrorYCheckbox";
-            this.mirrorYCheckbox.Size = new System.Drawing.Size(58, 17);
+            this.mirrorYCheckbox.Size = new System.Drawing.Size(52, 17);
             this.mirrorYCheckbox.TabIndex = 4;
             this.mirrorYCheckbox.Text = "Flip Y";
             this.mirrorYCheckbox.UseVisualStyleBackColor = true;
@@ -561,7 +564,7 @@
             this.mirrorXCheckbox.AutoSize = true;
             this.mirrorXCheckbox.Location = new System.Drawing.Point(75, 13);
             this.mirrorXCheckbox.Name = "mirrorXCheckbox";
-            this.mirrorXCheckbox.Size = new System.Drawing.Size(58, 17);
+            this.mirrorXCheckbox.Size = new System.Drawing.Size(52, 17);
             this.mirrorXCheckbox.TabIndex = 3;
             this.mirrorXCheckbox.Text = "Flip X";
             this.mirrorXCheckbox.UseVisualStyleBackColor = true;
@@ -575,7 +578,6 @@
             this.thumbnailBox.TabIndex = 22;
             this.thumbnailBox.TabStop = false;
             this.thumbnailBox.Visible = false;
-            //this.thumbnailBox.Paint += new System.Windows.Forms.PaintEventHandler(this.thumbnailBox_Paint);
             // 
             // owPropertyPanel
             // 
@@ -592,9 +594,9 @@
             // 
             this.objectGroupbox.Controls.Add(this.objCombobox);
             this.objectGroupbox.Controls.Add(this.objinfoLabel);
-            this.objectGroupbox.Location = new System.Drawing.Point(583, 9);
+            this.objectGroupbox.Location = new System.Drawing.Point(631, 3);
             this.objectGroupbox.Name = "objectGroupbox";
-            this.objectGroupbox.Size = new System.Drawing.Size(290, 60);
+            this.objectGroupbox.Size = new System.Drawing.Size(273, 66);
             this.objectGroupbox.TabIndex = 10;
             this.objectGroupbox.TabStop = false;
             this.objectGroupbox.Text = "Selected object";
@@ -602,7 +604,7 @@
             // objCombobox
             // 
             this.objCombobox.FormattingEnabled = true;
-            this.objCombobox.Location = new System.Drawing.Point(128, 13);
+            this.objCombobox.Location = new System.Drawing.Point(111, 13);
             this.objCombobox.Name = "objCombobox";
             this.objCombobox.Size = new System.Drawing.Size(156, 21);
             this.objCombobox.TabIndex = 1;
@@ -612,12 +614,14 @@
             this.objinfoLabel.AutoSize = true;
             this.objinfoLabel.Location = new System.Drawing.Point(6, 16);
             this.objinfoLabel.Name = "objinfoLabel";
-            this.objinfoLabel.Size = new System.Drawing.Size(33, 39);
+            this.objinfoLabel.Size = new System.Drawing.Size(30, 39);
             this.objinfoLabel.TabIndex = 0;
             this.objinfoLabel.Text = "ID: 0\r\nX: 0\r\nY: 0";
             // 
             // mapGroupbox
             // 
+            this.mapGroupbox.Controls.Add(this.areaBGColorPictureBox);
+            this.mapGroupbox.Controls.Add(this.label7);
             this.mapGroupbox.Controls.Add(this.largemapCheckbox);
             this.mapGroupbox.Controls.Add(this.button1);
             this.mapGroupbox.Controls.Add(this.musicButton);
@@ -633,7 +637,7 @@
             this.mapGroupbox.Controls.Add(this.label2);
             this.mapGroupbox.Location = new System.Drawing.Point(160, 3);
             this.mapGroupbox.Name = "mapGroupbox";
-            this.mapGroupbox.Size = new System.Drawing.Size(417, 60);
+            this.mapGroupbox.Size = new System.Drawing.Size(465, 66);
             this.mapGroupbox.TabIndex = 1;
             this.mapGroupbox.TabStop = false;
             this.mapGroupbox.Text = "Selected map";
@@ -641,9 +645,9 @@
             // largemapCheckbox
             // 
             this.largemapCheckbox.AutoSize = true;
-            this.largemapCheckbox.Location = new System.Drawing.Point(331, 8);
+            this.largemapCheckbox.Location = new System.Drawing.Point(335, 8);
             this.largemapCheckbox.Name = "largemapCheckbox";
-            this.largemapCheckbox.Size = new System.Drawing.Size(77, 17);
+            this.largemapCheckbox.Size = new System.Drawing.Size(76, 17);
             this.largemapCheckbox.TabIndex = 14;
             this.largemapCheckbox.Text = "Large map";
             this.largemapCheckbox.UseVisualStyleBackColor = true;
@@ -675,7 +679,7 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(270, 16);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(51, 13);
+            this.label6.Size = new System.Drawing.Size(64, 13);
             this.label6.TabIndex = 11;
             this.label6.Text = "Message ID";
             // 
@@ -694,7 +698,7 @@
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(204, 16);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(71, 13);
+            this.label5.Size = new System.Drawing.Size(61, 13);
             this.label5.TabIndex = 9;
             this.label5.Text = "Spr. palette";
             // 
@@ -719,7 +723,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(72, 16);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(49, 13);
+            this.label4.Size = new System.Drawing.Size(40, 13);
             this.label4.TabIndex = 6;
             this.label4.Text = "Palette";
             // 
@@ -736,7 +740,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(138, 16);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 13);
+            this.label3.Size = new System.Drawing.Size(50, 13);
             this.label3.TabIndex = 4;
             this.label3.Text = "Spr. GFX";
             // 
@@ -753,7 +757,7 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(6, 16);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(32, 13);
+            this.label2.Size = new System.Drawing.Size(28, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "GFX";
             // 
@@ -774,7 +778,7 @@
             this.selectedTileLabel.AutoSize = true;
             this.selectedTileLabel.Location = new System.Drawing.Point(3, 55);
             this.selectedTileLabel.Name = "selectedTileLabel";
-            this.selectedTileLabel.Size = new System.Drawing.Size(78, 13);
+            this.selectedTileLabel.Size = new System.Drawing.Size(65, 13);
             this.selectedTileLabel.TabIndex = 2;
             this.selectedTileLabel.Text = "Selected tile";
             // 
@@ -783,7 +787,7 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(6, 16);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(119, 13);
+            this.label1.Size = new System.Drawing.Size(61, 13);
             this.label1.TabIndex = 1;
             this.label1.Text = "Game state";
             // 
@@ -811,6 +815,27 @@
             this.previewTextPicturebox.TabStop = false;
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(415, 9);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(48, 13);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "BG color";
+            this.label7.Visible = false;
+            // 
+            // areaBGColorPictureBox
+            // 
+            this.areaBGColorPictureBox.Location = new System.Drawing.Point(426, 28);
+            this.areaBGColorPictureBox.Name = "areaBGColorPictureBox";
+            this.areaBGColorPictureBox.Size = new System.Drawing.Size(24, 24);
+            this.areaBGColorPictureBox.TabIndex = 23;
+            this.areaBGColorPictureBox.TabStop = false;
+            this.areaBGColorPictureBox.Visible = false;
+            this.areaBGColorPictureBox.Click += new System.EventHandler(this.AreaBGColorPicturebox_MouseDoubleClick);
+            this.areaBGColorPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.AreaBGColorPicturebox_Paint);
             // 
             // OverworldEditor
             // 
@@ -849,6 +874,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -920,5 +946,7 @@
         private System.Windows.Forms.PictureBox currentTile8Box;
         public System.Windows.Forms.Label selectedTileLabel;
         public System.Windows.Forms.CheckBox largemapCheckbox;
+        private System.Windows.Forms.Label label7;
+        public System.Windows.Forms.PictureBox areaBGColorPictureBox;
     }
 }

@@ -23,12 +23,13 @@ namespace ZeldaFullEditor
         public static Color[][] shields_Palettes = new Color[3][]; //4
         public static Color[][] dungeonsMain_Palettes = new Color[20][]; //15*6
         public static Color[][] object3D_Palettes = new Color[2][]; //15*6
+        public static Color[] overworld_BackgroundPalette = new Color[160]; // 8*20
 
         static string asmString = "";
 
         public static Color[] ReadPalette(byte[] romData, int romPosition, int colorCount)
         {
-            //Lets write new palette code since i can't find the old one :scream:
+            // Lets write new palette code since i can't find the old one :scream:
             int colorPos = 0;
             Color[] colors = new Color[colorCount];
             while (colorPos < colorCount)
@@ -44,7 +45,7 @@ namespace ZeldaFullEditor
 
         public static Color ReadPaletteSingle(byte[] romData, int romPosition)
         {
-            //Lets write new palette code since i can't find the old one :scream:
+            // Lets write new palette code since i can't find the old one :scream:
             int colorPos = 0;
             Color colors;
             short color = (short)((romData[romPosition + 1] << 8) + romData[romPosition]);
@@ -124,6 +125,35 @@ namespace ZeldaFullEditor
             {
                 object3D_Palettes[i] = ReadPalette(romData, Constants.dungeonMainPalettes + (i * 180), 90);
             }*/
+
+            // TODO: check for the paletts in the empty bank space that kan will allocate and read them in here
+            // LW
+            int j = 0;
+            while (j < 64)
+            {
+                overworld_BackgroundPalette[j] = new Color();
+                overworld_BackgroundPalette[j] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
+
+                j++;
+            }
+
+            // DW
+            while (j < 128)
+            {
+                overworld_BackgroundPalette[j] = new Color();
+                overworld_BackgroundPalette[j] = Color.FromArgb(0xFF, 0x90, 0x88, 0x50);
+
+                j++;
+            }
+
+            // SP
+            while (j < 160)
+            {
+                overworld_BackgroundPalette[j] = new Color();
+                overworld_BackgroundPalette[j] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
+
+                j++;
+            }
         }
 
         public static Color getColorShade(Color col, byte shade)

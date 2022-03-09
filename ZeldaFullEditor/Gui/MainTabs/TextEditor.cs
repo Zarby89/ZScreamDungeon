@@ -488,8 +488,8 @@ namespace ZeldaFullEditor {
         public void setTextsDictionaries() 
         {
             savedTexts.Clear();
-            //this function scan for keyword existing in dictionaries
-            //if we find one replace that text by [DICXX]
+            // this function scan for keyword existing in dictionaries
+            // if we find one replace that text by [DICXX]
             foreach (StringKey texts in listOfTexts)
             {
                 string s = texts.text;
