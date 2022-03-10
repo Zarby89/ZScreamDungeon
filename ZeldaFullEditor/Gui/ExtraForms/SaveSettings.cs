@@ -25,7 +25,6 @@ namespace ZeldaFullEditor.Gui
             LoadSaveSettings();
         }
 
-        // @author: Jared_Brian_
         /// <summary>
         /// Called when the Apply button is clicked in the save settings window
         /// </summary>

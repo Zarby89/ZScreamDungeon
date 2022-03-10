@@ -11,14 +11,14 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
-    //Tiles Information
-    //iiiiiiii vhoopppc
-    //i = tile index
-    //v - vertical flip
-    //h - horizontal flip
-    //p - palette
-    //o - on top?
-    //c - the 9th(and most significant) bit of the character number for this sprite.
+    // Tiles Information
+    // iiiiiiii vhoopppc
+    // i = tile index
+    // v - vertical flip
+    // h - horizontal flip
+    // p - palette
+    // o - on top?
+    // c - the 9th(and most significant) bit of the character number for this sprite.
 
     [Serializable]
     public class Tile
@@ -29,7 +29,7 @@ namespace ZeldaFullEditor
         public ushort ontop = 0;
         public byte palette = 4;
 
-        public Tile(ushort id, ushort mirror_x = 0, ushort mirror_y = 0, ushort ontop = 0, byte palette = 4) //custom tile
+        public Tile(ushort id, ushort mirror_x = 0, ushort mirror_y = 0, ushort ontop = 0, byte palette = 4) // Custom tile
         {
             this.id = id;
             this.mirror_x = mirror_x;
@@ -43,7 +43,7 @@ namespace ZeldaFullEditor
             return new TileInfo(id, palette, mirror_y, mirror_x, ontop);
         }
 
-        public Tile(byte b1, byte b2) //tile from game data
+        public Tile(byte b1, byte b2) // Tile from game data
         {
             this.id = (ushort)(((b2 & 0x01) << 8) + (b1));
             this.mirror_y = (ushort)(((b2 & 0x80) == 0x80) ? 1 : 0);
@@ -72,7 +72,7 @@ namespace ZeldaFullEditor
         public ushort getshortileinfo()
         {
             ushort value = 0;
-            //vhopppcc cccccccc
+            // vhopppcc cccccccc
             if (this.ontop == 1) { value |= 0x2000; };
             if (this.mirror_x == 1) { value |= 0x4000; };
             if (this.mirror_y == 1) { value |= 0x8000; };
@@ -83,12 +83,12 @@ namespace ZeldaFullEditor
 
         public unsafe void Draw(IntPtr bitmapPointer)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         public unsafe void CopyTile(int x, int y, int xx, int yy)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
     }
 }

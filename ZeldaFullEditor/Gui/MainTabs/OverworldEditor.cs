@@ -41,6 +41,10 @@ namespace ZeldaFullEditor.Gui
         byte palSelected = 0;
         int tile8selected = 0;
 
+        public int BGColorToUpdate = 0;
+
+        ColorDialog cd = new ColorDialog();
+
         public OverworldEditor()
         {
             InitializeComponent();
@@ -130,7 +134,7 @@ namespace ZeldaFullEditor.Gui
 
         private void ModeButton_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < owToolStrip.Items.Count; i++) //uncheck every modes
+            for (int i = 0; i < owToolStrip.Items.Count; i++) // Uncheck every modes
             {
                 if (owToolStrip.Items[i] is ToolStripButton)
                 {
@@ -278,22 +282,11 @@ namespace ZeldaFullEditor.Gui
             tilePictureBox.Refresh();
         }
 
-        private void spButton_Click(object sender, EventArgs e)
-        {
-            scene.selectedMap = 128;
-            scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap].parent;
-            scene.ow.worldOffset = 128;
-            scene.Refresh();
-        }
-
-        private void dwButton_Click(object sender, EventArgs e)
-        {
-            scene.selectedMap = 64;
-            scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap].parent;
-            scene.ow.worldOffset = 64;
-            scene.Refresh();
-        }
-
+        /// <summary>
+        /// Called when the LW button on the overworld editor form is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lwButton_Click(object sender, EventArgs e)
         {
             scene.selectedMap = 0;
@@ -302,11 +295,36 @@ namespace ZeldaFullEditor.Gui
             scene.Refresh();
         }
 
+        /// <summary>
+        /// Called when the DW button on the overworld editor form is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dwButton_Click(object sender, EventArgs e)
+        {
+            scene.selectedMap = 64;
+            scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap].parent;
+            scene.ow.worldOffset = 64;
+            scene.Refresh();
+        }
+
+        /// <summary>
+        /// Called when the SP button on the overworld editor form is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void spButton_Click(object sender, EventArgs e)
+        {
+            scene.selectedMap = 128;
+            scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap].parent;
+            scene.ow.worldOffset = 128;
+            scene.Refresh();
+        }
+
         private void runtestButton_Click(object sender, EventArgs e)
         {
             mainForm.runtestButton_Click(sender, e);
         }
-
 
         private void tilePictureBox_DoubleClick(object sender, EventArgs e)
         {
@@ -603,7 +621,7 @@ namespace ZeldaFullEditor.Gui
         {
             if (GFX.mapblockset16Bitmap != null)
             {
-                //USE mapblockset16 to draw tiles on this !! :GRIMACING:
+                // USE mapblockset16 to draw tiles on this !! :GRIMACING:
                 //public static IntPtr mapblockset16 = Marshal.AllocHGlobal(1048576);
                 //public static Bitmap mapblockset16Bitmap;
                 //base.OnPaint(e);
@@ -619,10 +637,9 @@ namespace ZeldaFullEditor.Gui
 
                 g.DrawImage(GFX.scratchblockset16Bitmap,0,0);
                 
-
                 int x = 0;
                 int y = 0;
-                //DRAW ALL THE TILES 16x225
+                // DRAW ALL THE TILES 16x225
 
                 g.CompositingMode = CompositingMode.SourceOver;
 
@@ -637,7 +654,6 @@ namespace ZeldaFullEditor.Gui
                 g.DrawImage(scene.tilesgfxBitmap, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, scene.selectedTileSizeX * 16, (scene.selectedTile.Length / scene.selectedTileSizeX) * 16), 0, 0, scene.selectedTileSizeX * 16, (scene.selectedTile.Length / scene.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
                 g.DrawRectangle(Pens.LightGreen, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, scene.selectedTileSizeX * 16, (scene.selectedTile.Length / scene.selectedTileSizeX) * 16));
 
-
                 g.CompositingMode = CompositingMode.SourceCopy;
                 //hideText = false;
             }
@@ -646,12 +662,12 @@ namespace ZeldaFullEditor.Gui
         public unsafe void BuildScratchTilesGfx()
         {
             GFX.scratchblockset16Bitmap.Palette = GFX.mapblockset16Bitmap.Palette;
-            var gfx16Data = (byte*)GFX.mapblockset16.ToPointer();//(byte*)allgfx8Ptr.ToPointer();
-            var gfx16DataScratch = (byte*)GFX.scratchblockset16.ToPointer();//(byte*)allgfx16Ptr.ToPointer();
+            var gfx16Data = (byte*)GFX.mapblockset16.ToPointer(); //(byte*)allgfx8Ptr.ToPointer();
+            var gfx16DataScratch = (byte*)GFX.scratchblockset16.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
             int ytile = 0;
             int xtile = 0;
 
-            for (var i = 0; i < 3600; i++) //number of tiles16 3748?
+            for (var i = 0; i < 3600; i++) // Number of tiles16 3748?
             {
                 ushort srcTile = scratchPadTiles[xtile, ytile];
                 //Console.WriteLine(srcTile);
@@ -701,9 +717,10 @@ namespace ZeldaFullEditor.Gui
         {
             if (tabControl1.SelectedTab.Name == "Tiles8")
             {
-                //TODO: Add something here?
+                // TODO: Add something here?
 
-                /*int sx = 0;
+                /*
+                int sx = 0;
                 int sy = 0;
                 int c = 0;
 
@@ -1043,6 +1060,11 @@ namespace ZeldaFullEditor.Gui
             e.Graphics.DrawImage(GFX.editingtile16Bitmap, new Rectangle(0,0,64,64));
         }
 
+        /// <summary>
+        /// Called when the largemap checkbox is clicke, upataes the world layout and then updates all of the sprites within that area.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void largemapCheckbox_Clicked(object sender, EventArgs e)
         {
             if (propertiesChangedFromForm == false)
@@ -2066,6 +2088,36 @@ namespace ZeldaFullEditor.Gui
         {
             overworld.alloverlays[scene.selectedMapParent].tilesData.Clear();
             scene.Refresh();
+        }
+
+        /// <summary>
+        /// Called when the area background color box is double cliked, brings up color editor.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AreaBGColorPicturebox_MouseDoubleClick(object sender, EventArgs e)
+        {
+            cd.Color = Palettes.overworld_BackgroundPalette[BGColorToUpdate];
+            if (cd.ShowDialog() == DialogResult.OK)
+            {
+                Palettes.overworld_BackgroundPalette[BGColorToUpdate] = cd.Color;
+                areaBGColorPictureBox.Refresh();
+            }
+
+            mainForm.overworldEditor.overworld.allmaps[scene.selectedMap].ReloadPalettes();
+        }
+
+        /// <summary>
+        /// Paints the Area Background color box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AreaBGColorPicturebox_Paint(object sender, PaintEventArgs e)
+        {
+            if (BGColorToUpdate < Palettes.overworld_BackgroundPalette.Length)
+            {
+                e.Graphics.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[BGColorToUpdate]), new Rectangle(0, 0, 24, 24));
+            } 
         }
     }
 }

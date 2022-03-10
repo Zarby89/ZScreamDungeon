@@ -10,6 +10,7 @@ namespace ZeldaFullEditor
     {
         public string s = "";
         public byte[] bytes;
+
         public StringByte(string s, byte[] bytes)
         {
             this.s = s;

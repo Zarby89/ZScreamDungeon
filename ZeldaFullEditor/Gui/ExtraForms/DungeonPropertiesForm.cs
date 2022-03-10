@@ -38,10 +38,12 @@ namespace ZeldaFullEditor.Gui
 
             for(int i = 0; i < 12; i++)
             {
-                properties[i] = new DungeonProperty(
-                ROM.DATA[Constants.dungeons_startrooms + i],
-                 ROM.DATA[Constants.dungeons_endrooms + i],
-                  (short)((ROM.DATA[Constants.dungeons_bossrooms + (i*2) +1] << 8) + ROM.DATA[Constants.dungeons_bossrooms + (i * 2)]));
+                properties[i] = new DungeonProperty
+                (
+                    ROM.DATA[Constants.dungeons_startrooms + i],
+                    ROM.DATA[Constants.dungeons_endrooms + i],
+                    (short)((ROM.DATA[Constants.dungeons_bossrooms + (i*2) +1] << 8) + ROM.DATA[Constants.dungeons_bossrooms + (i * 2)])
+                );
             }
 
             listBox1.SelectedIndex = 0;

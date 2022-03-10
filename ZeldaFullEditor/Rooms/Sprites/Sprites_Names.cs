@@ -37,6 +37,7 @@ namespace ZeldaFullEditor
                         {
                             break;
                         }
+
                         name[l] = s[i];
                         l++;
                     }

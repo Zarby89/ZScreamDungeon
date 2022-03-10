@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-    public class Entrance //can be used for starting entrance as well
+    public class Entrance // Can be used for starting entrance as well
     {
-        short room;//word value for each room
+        short room; // word value for each room
 
-        public byte scrolledge_HU;//8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+        public byte scrolledge_HU; // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
         public byte scrolledge_FU;
         public byte scrolledge_HD;
         public byte scrolledge_FD;
@@ -20,21 +20,21 @@ namespace ZeldaFullEditor
         public byte scrolledge_HR;
         public byte scrolledge_FR;
 
-        short yscroll;//2bytes each room
-        short xscroll; //2bytes
-        short yposition;//2bytes
-        short xposition;//2bytes
-        short ycamera;//2bytes
-        short xcamera;//2bytes
-        byte blockset; //1byte
-        byte floor; //1byte
-        byte dungeon; //1byte (dungeon id) //Same as music might use the project dungeon name instead
-        byte door; //1byte
-        byte ladderbg; ////1 byte, ---b ---a b = bg2, a = need to check -_-
-        byte scrolling;////1byte --h- --v- 
+        short yscroll; // 2bytes each room
+        short xscroll; // 2bytes
+        short yposition; // 2bytes
+        short xposition; // 2bytes
+        short ycamera; // 2bytes
+        short xcamera; // 2bytes
+        byte blockset; // 1byte
+        byte floor; // 1byte
+        byte dungeon; // 1byte (dungeon id) // Same as music might use the project dungeon name instead
+        byte door; // 1byte
+        byte ladderbg; // 1 byte, ---b ---a b = bg2, a = need to check -_-
+        byte scrolling; // 1byte --h- --v- 
         byte scrollquadrant; //1byte
-        short exit;//2byte word 
-        byte music; //1byte //Will need to be renamed and changed to add support to MSU1
+        short exit; // 2byte word 
+        byte music; // 1byte // Will need to be renamed and changed to add support to MSU1
 
         [DisplayName("Room Id"), Description("The room id the entrance is leading to"), Category("Entrance")]
         public short Room
@@ -221,7 +221,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        //why is that even a thing?
+        // Why is that even a thing?
         [DisplayName("Exit"), Description("Used to determine where you will exit ?"), Category("Entrance")]
         public short Exit
         {
@@ -267,7 +267,7 @@ namespace ZeldaFullEditor
             scrollquadrant = (byte)(ROM.DATA[(Constants.entrance_scrollquadrant + entranceId)]);
             exit = (short)(((ROM.DATA[(Constants.entrance_exit + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_exit + (entranceId * 2)]);
 
-            scrolledge_HU = (ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))]);//8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+            scrolledge_HU = (ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))]); // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
             scrolledge_FU = (ROM.DATA[(Constants.entrance_scrolledge + 1 + (entranceId * 8))]);
             scrolledge_HD = (ROM.DATA[(Constants.entrance_scrolledge + 2 + (entranceId * 8))]);
             scrolledge_FD = (ROM.DATA[(Constants.entrance_scrolledge + 3 + (entranceId * 8))]);
@@ -301,7 +301,7 @@ namespace ZeldaFullEditor
                 scrolling = (byte)(ROM.DATA[(Constants.startingentrance_scrolling + entranceId)]);
                 scrollquadrant = (byte)(ROM.DATA[(Constants.startingentrance_scrollquadrant + entranceId)]);
                 exit = (short)(((ROM.DATA[(Constants.startingentrance_exit + (entranceId * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_exit + (entranceId * 2)]);
-                scrolledge_HU = (ROM.DATA[(Constants.startingentrance_scrolledge + 0 + (entranceId * 8))]);//8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+                scrolledge_HU = (ROM.DATA[(Constants.startingentrance_scrolledge + 0 + (entranceId * 8))]); // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
                 scrolledge_FU = (ROM.DATA[(Constants.startingentrance_scrolledge + 1 + (entranceId * 8))]);
                 scrolledge_HD = (ROM.DATA[(Constants.startingentrance_scrolledge + 2 + (entranceId * 8))]);
                 scrolledge_FD = (ROM.DATA[(Constants.startingentrance_scrolledge + 3 + (entranceId * 8))]);
@@ -314,7 +314,7 @@ namespace ZeldaFullEditor
 
         public void save(int entranceId, bool startingentrance = false, bool jp = false)
         {
-            //TODO: Change these save
+            // TODO: Change these save
             if (startingentrance == false)
             {
                 ROM.WriteShort(Constants.entrance_room + (entranceId * 2), room, true, "Entrance Related");
@@ -380,8 +380,6 @@ namespace ZeldaFullEditor
                 //ROM.DATA[(Constants.entrance_scrolledge + 6 + (entranceId * 8))] = scrolledge_HR;
                 ROM.Write((Constants.entrance_scrolledge + 7 + (entranceId * 8)), scrolledge_FR, true, "Entrance Related");
                 //ROM.DATA[(Constants.entrance_scrolledge + 7 + (entranceId * 8))] = scrolledge_FR;
-
-
             }
             else
             {
@@ -410,7 +408,7 @@ namespace ZeldaFullEditor
                 ROM.Write(Constants.startingentrance_ladderbg + entranceId,(byte)(ladderbg & 0xFF), true, "Starting Entrance Related");
                 ROM.Write(Constants.startingentrance_scrolling + entranceId,(byte)(scrolling & 0xFF), true, "Starting Entrance Related");
                 ROM.Write(Constants.startingentrance_scrollquadrant + entranceId,(byte)(scrollquadrant & 0xFF), true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 0 + (entranceId * 8)),scrolledge_HU, true, "Starting Entrance Related"); //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+                ROM.Write((Constants.startingentrance_scrolledge + 0 + (entranceId * 8)),scrolledge_HU, true, "Starting Entrance Related"); // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
                 ROM.Write((Constants.startingentrance_scrolledge + 1 + (entranceId * 8)),scrolledge_FU, true, "Starting Entrance Related");
                 ROM.Write((Constants.startingentrance_scrolledge + 2 + (entranceId * 8)),scrolledge_HD, true, "Starting Entrance Related");
                 ROM.Write((Constants.startingentrance_scrolledge + 3 + (entranceId * 8)),scrolledge_FD, true, "Starting Entrance Related");

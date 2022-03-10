@@ -17,6 +17,6 @@ namespace ZeldaFullEditor.Gui
             InitializeComponent();
         }
 
-        // public Bitmap allmap;
+        //public Bitmap allmap;
     }
 }

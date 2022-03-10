@@ -40,10 +40,9 @@ namespace ZeldaFullEditor.Gui
             if (data[32] != 0x00)
             {
                 nbrColor = data[32];
-
             }
 
-            int pos = data[0] + (nbrColor * 4); //palette data useless for now
+            int pos = data[0] + (nbrColor * 4); // Palette data useless for now
             unsafe
             {
                 byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
@@ -132,7 +131,7 @@ namespace ZeldaFullEditor.Gui
                     {
                         if (modifiedSheets[i] != null)
                         {
-                            //Console.WriteLine(i.ToString() + " Sheet has been modified");
+                            // Console.WriteLine(i.ToString() + " Sheet has been modified");
                             gfxSheets3bpp[i] = modifiedSheets[i];
                             modifiedSheets[i] = null;
                         }
@@ -160,7 +159,7 @@ namespace ZeldaFullEditor.Gui
 
             for (int i = 0; i < 223; i++)
             {
-                if (i < 115 || i > 126) //not compressed
+                if (i < 115 || i > 126) // Not compressed
                 {
                     bpp2 = false;
                     if (!GFX.isbpp3[i])
@@ -189,7 +188,7 @@ namespace ZeldaFullEditor.Gui
                             pos += s;
                         }
                     }
-                    else //save it back in expanded data if it was already
+                    else // Save it back in expanded data if it was already
                     {
                         if (bpp2 == false)
                         {
@@ -225,14 +224,16 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            /*if (pos >= Constants.maxGfx)
+            /*
+            if (pos >= Constants.maxGfx)
             {
                 MessageBox.Show("It is possible the gfx are overwriting data :( new gfx size is " + (pos - 0x8b800).ToString("X6"));
             }
             else
             {
                 MessageBox.Show("Saved successfully total of remaining space for gfx : " + (Constants.maxGfx - pos).ToString("X6"));
-            }*/
+            }
+            */
 
             infoLabel.Text =
             "Compressed Size = "+ (pos - 0x8b800).ToString("X6")+"\r\n" +
@@ -251,7 +252,6 @@ namespace ZeldaFullEditor.Gui
                 {
                     e.Graphics.FillRectangle(new SolidBrush(GFX.mapgfx16Bitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
                 }
-
             }
 
             e.Graphics.DrawRectangle(Pens.Lime, new Rectangle(0, selectedPal*16, 256, 16));
@@ -290,6 +290,7 @@ namespace ZeldaFullEditor.Gui
         {
             Clipboard.Clear();
             byte[] sdata = new byte[0x800];
+
             unsafe
             {
                 byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
@@ -359,17 +360,17 @@ namespace ZeldaFullEditor.Gui
 
                     byte* gdata = (byte*)GFX.allgfx16Ptr.ToPointer();
                     byte* data = (byte*)bd.Scan0.ToPointer();
-                    //one line is 512 - palette (32 bytes per palettes)
+                    // One line is 512 - palette (32 bytes per palettes)
                     for (int i = 0; i < 8; i++)
                     {
                         palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x4800], data[(i * 32) + 1 - 0x4800], data[(i * 32) - 0x4800]);
                         Console.WriteLine("R: " + palettes[i].R + " G: " + palettes[i] .G+ " B: "+ palettes[i].B);
                     }
 
-                    int pos = 0; //should be line where data start inverted
-                    for(int y = 0; y<32;y++) //for each lines
+                    int pos = 0; // Should be line where data start inverted
+                    for(int y = 0; y<32;y++) // for each line
                     {
-                        for(int x = 0; x< 64; x++)//advance by 64 pixel but merge them together
+                        for(int x = 0; x< 64; x++) // Advance by 64 pixel but merge them together
                         {
                             byte pix1 = matchPalette(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) - (y * 512)]));
                             byte pix2 = matchPalette(Color.FromArgb(data[(x * 8) + 6 - (y * 512)], data[(x * 8) + 5 - (y * 512)], data[(x * 8) +4 - (y * 512)]));
@@ -422,6 +423,7 @@ namespace ZeldaFullEditor.Gui
         {
             OpenFileDialog ofd = new OpenFileDialog();
             ofd.Filter = "all *.bin |*.bin";
+
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 FileStream fs = new FileStream(ofd.FileName,FileMode.Open,FileAccess.Read);

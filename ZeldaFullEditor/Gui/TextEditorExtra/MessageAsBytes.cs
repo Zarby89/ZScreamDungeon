@@ -8,31 +8,41 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZeldaFullEditor.Gui.TextEditorExtra {
-	public partial class MessageAsBytes : Form {
+namespace ZeldaFullEditor.Gui.TextEditorExtra 
+{
+	public partial class MessageAsBytes : Form 
+	{
 		private byte[] data;
 		private int sep = 1;
 		private int pre = 0;
-		public MessageAsBytes() {
+
+		public MessageAsBytes() 
+		{
 			InitializeComponent();
 			SeparatorChoose.SelectedIndex = sep;
 			PrefixChoose.SelectedIndex = pre;
 		}
 
-		public void ShowBytes(byte[] d) {
+		public void ShowBytes(byte[] d) 
+		{
 			data = d;
 			SizeOfMessage.Text = string.Format("{0:D} (0x{0:X}) bytes", d.Length + 1);
 			UpdateTextBox();
 			ShowDialog();
 		}
 
-		private void UpdateTextBox() {
+		private void UpdateTextBox() 
+		{
 			StringBuilder s = new StringBuilder();
-			if (data == null) {
+			if (data == null) 
+			{
 				return;
 			}
-			foreach (byte b in data) {
-				switch (pre) {
+
+			foreach (byte b in data) 
+			{
+				switch (pre) 
+				{
 					case 0:
 					default:
 						break;
@@ -43,8 +53,10 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra {
 						s.Append("$");
 						break;
 				}
+
 				s.Append(b.ToString("X2"));
-				switch (sep) {
+				switch (sep) 
+				{
 					case 0:
 					default:
 						break;
@@ -57,7 +69,8 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra {
 				}
 			}
 
-			switch (pre) {
+			switch (pre) 
+			{
 				case 0:
 				default:
 					break;
@@ -74,12 +87,14 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra {
 			this.textBox1.Text = s.ToString();
 		}
 
-		private void SeparatorChoose_SelectedIndexChanged(object sender, EventArgs e) {
+		private void SeparatorChoose_SelectedIndexChanged(object sender, EventArgs e) 
+		{
 			sep = SeparatorChoose.SelectedIndex;
 			UpdateTextBox();
 		}
 
-		private void PrefixChoose_SelectedIndexChanged(object sender, EventArgs e) {
+		private void PrefixChoose_SelectedIndexChanged(object sender, EventArgs e) 
+		{
 			pre = PrefixChoose.SelectedIndex;
 			UpdateTextBox();
 		}
