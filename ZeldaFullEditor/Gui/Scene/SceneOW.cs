@@ -856,15 +856,19 @@ namespace ZeldaFullEditor
                     offset = 128;
                 }
 
-                int my = (ow.allmaps[mapHover + offset].parent - offset) / 8;
-                int mx = (ow.allmaps[mapHover + offset].parent - offset) - (my * 8);
-                if (ow.allmaps[mapHover + offset].largeMap)
+                if((mapHover + offset) < ow.allmaps.Length)
                 {
-                    g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 1024, 1024));
-                }
-                else
-                {
-                    g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 512, 512));
+                    int my = (ow.allmaps[mapHover + offset].parent - offset) / 8;
+                    int mx = (ow.allmaps[mapHover + offset].parent - offset) - (my * 8);
+
+                    if (ow.allmaps[mapHover + offset].largeMap)
+                    {
+                        g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 1024, 1024));
+                    }
+                    else
+                    {
+                        g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 512, 512));
+                    }
                 }
 
                 if (showExits)

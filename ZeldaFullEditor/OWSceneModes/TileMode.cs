@@ -99,6 +99,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     return;
                 }
+
                 if (scene.needRedraw)
                 {
                     scene.needRedraw = false;

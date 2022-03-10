@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -301,6 +301,7 @@ namespace ZeldaFullEditor
             this.importRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showRoomsInHexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.selectedObjectInHexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.autoDoorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.overworldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearSpritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveZeldaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -313,6 +314,8 @@ namespace ZeldaFullEditor
             this.clearAllOverlaysToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem6 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem5 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripMenuItem();
             this.areaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.clearSpritesToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -350,7 +353,6 @@ namespace ZeldaFullEditor
             this.entranceCameraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.entrancePositionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.invisibleObjectsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.overworldOverlayVisibleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showMapIndexInHexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.overworldViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showSpritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -400,9 +402,7 @@ namespace ZeldaFullEditor
             this.tabControl2 = new System.Windows.Forms.TabControl();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.customPanel3 = new ZeldaFullEditor.CustomPanel();
-            this.toolStripMenuItem9 = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
-            this.autoDoorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.overworldOverlayVisibleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStrip1.SuspendLayout();
             this.nothingselectedcontextMenu.SuspendLayout();
             this.singleselectedcontextMenu.SuspendLayout();
@@ -1660,13 +1660,13 @@ namespace ZeldaFullEditor
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode7.Name = "EntranceNode";
-            treeNode7.Text = "Entrances";
-            treeNode8.Name = "StartingEntranceNode";
-            treeNode8.Text = "Spawn points";
+            treeNode1.Name = "EntranceNode";
+            treeNode1.Text = "Entrances";
+            treeNode2.Name = "StartingEntranceNode";
+            treeNode2.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode7,
-            treeNode8});
+            treeNode1,
+            treeNode2});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 301);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -3145,6 +3145,13 @@ namespace ZeldaFullEditor
             this.selectedObjectInHexToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
             this.selectedObjectInHexToolStripMenuItem.Text = "Selected Object in Hex";
             // 
+            // autoDoorsToolStripMenuItem
+            // 
+            this.autoDoorsToolStripMenuItem.Name = "autoDoorsToolStripMenuItem";
+            this.autoDoorsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
+            this.autoDoorsToolStripMenuItem.Text = "Auto. Doors";
+            this.autoDoorsToolStripMenuItem.Click += new System.EventHandler(this.autodoorButton_Click_1);
+            // 
             // overworldToolStripMenuItem
             // 
             this.overworldToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -3244,6 +3251,20 @@ namespace ZeldaFullEditor
             this.toolStripMenuItem5.Size = new System.Drawing.Size(172, 22);
             this.toolStripMenuItem5.Text = "Import All Areas";
             this.toolStripMenuItem5.Click += new System.EventHandler(this.importAllMapsToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem9
+            // 
+            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem9.Text = "Export All Tiles";
+            this.toolStripMenuItem9.Click += new System.EventHandler(this.exportAllTilesToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem10
+            // 
+            this.toolStripMenuItem10.Name = "toolStripMenuItem10";
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem10.Text = "Import All Tiles";
+            this.toolStripMenuItem10.Click += new System.EventHandler(this.importAllTilesToolStripMenuItem_Click);
             // 
             // toolStripMenuItem7
             // 
@@ -3356,7 +3377,6 @@ namespace ZeldaFullEditor
             this.entranceCameraToolStripMenuItem,
             this.entrancePositionToolStripMenuItem,
             this.invisibleObjectsTextToolStripMenuItem,
-            this.overworldOverlayVisibleToolStripMenuItem,
             this.showMapIndexInHexToolStripMenuItem});
             this.dungeonViewToolStripMenuItem.Enabled = false;
             this.dungeonViewToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
@@ -3595,13 +3615,6 @@ namespace ZeldaFullEditor
             this.invisibleObjectsTextToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
             this.invisibleObjectsTextToolStripMenuItem.Text = "Show Text for Invisible Objects";
             // 
-            // overworldOverlayVisibleToolStripMenuItem
-            // 
-            this.overworldOverlayVisibleToolStripMenuItem.CheckOnClick = true;
-            this.overworldOverlayVisibleToolStripMenuItem.Name = "overworldOverlayVisibleToolStripMenuItem";
-            this.overworldOverlayVisibleToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
-            this.overworldOverlayVisibleToolStripMenuItem.Text = "Always Show Overworld Overlay";
-            // 
             // showMapIndexInHexToolStripMenuItem
             // 
             this.showMapIndexInHexToolStripMenuItem.Checked = true;
@@ -3622,6 +3635,7 @@ namespace ZeldaFullEditor
             this.showTransportsToolStripMenuItem,
             this.showItemsToolStripMenuItem,
             this.showEntranceExitPreviewToolStripMenuItem,
+            this.overworldOverlayVisibleToolStripMenuItem,
             this.showGridToolStripMenuItem1});
             this.overworldViewToolStripMenuItem.Enabled = false;
             this.overworldViewToolStripMenuItem.Name = "overworldViewToolStripMenuItem";
@@ -3635,7 +3649,7 @@ namespace ZeldaFullEditor
             this.showSpritesToolStripMenuItem.CheckOnClick = true;
             this.showSpritesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showSpritesToolStripMenuItem.Name = "showSpritesToolStripMenuItem";
-            this.showSpritesToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.showSpritesToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.showSpritesToolStripMenuItem.Text = "Show sSprites";
             this.showSpritesToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showSpritesToolStripMenuItem_CheckedChanged);
             // 
@@ -3645,7 +3659,7 @@ namespace ZeldaFullEditor
             this.showEntrancesToolStripMenuItem.CheckOnClick = true;
             this.showEntrancesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showEntrancesToolStripMenuItem.Name = "showEntrancesToolStripMenuItem";
-            this.showEntrancesToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.showEntrancesToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.showEntrancesToolStripMenuItem.Text = "Show Entrances";
             this.showEntrancesToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showSpritesToolStripMenuItem_CheckedChanged);
             // 
@@ -3655,7 +3669,7 @@ namespace ZeldaFullEditor
             this.showExitsToolStripMenuItem.CheckOnClick = true;
             this.showExitsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showExitsToolStripMenuItem.Name = "showExitsToolStripMenuItem";
-            this.showExitsToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.showExitsToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.showExitsToolStripMenuItem.Text = "Show Exits";
             this.showExitsToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showSpritesToolStripMenuItem_CheckedChanged);
             // 
@@ -3665,7 +3679,7 @@ namespace ZeldaFullEditor
             this.showTransportsToolStripMenuItem.CheckOnClick = true;
             this.showTransportsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showTransportsToolStripMenuItem.Name = "showTransportsToolStripMenuItem";
-            this.showTransportsToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.showTransportsToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.showTransportsToolStripMenuItem.Text = "Show Transports";
             this.showTransportsToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showSpritesToolStripMenuItem_CheckedChanged);
             // 
@@ -3675,7 +3689,7 @@ namespace ZeldaFullEditor
             this.showItemsToolStripMenuItem.CheckOnClick = true;
             this.showItemsToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showItemsToolStripMenuItem.Name = "showItemsToolStripMenuItem";
-            this.showItemsToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.showItemsToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.showItemsToolStripMenuItem.Text = "Show Items";
             this.showItemsToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showSpritesToolStripMenuItem_CheckedChanged);
             // 
@@ -3685,7 +3699,7 @@ namespace ZeldaFullEditor
             this.showEntranceExitPreviewToolStripMenuItem.CheckOnClick = true;
             this.showEntranceExitPreviewToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showEntranceExitPreviewToolStripMenuItem.Name = "showEntranceExitPreviewToolStripMenuItem";
-            this.showEntranceExitPreviewToolStripMenuItem.Size = new System.Drawing.Size(225, 22);
+            this.showEntranceExitPreviewToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
             this.showEntranceExitPreviewToolStripMenuItem.Text = "Show Entrance/Exit Previews";
             this.showEntranceExitPreviewToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showSpritesToolStripMenuItem_CheckedChanged);
             // 
@@ -3697,27 +3711,27 @@ namespace ZeldaFullEditor
             this.x32ToolStripMenuItem1,
             this.noneToolStripMenuItem});
             this.showGridToolStripMenuItem1.Name = "showGridToolStripMenuItem1";
-            this.showGridToolStripMenuItem1.Size = new System.Drawing.Size(225, 22);
+            this.showGridToolStripMenuItem1.Size = new System.Drawing.Size(244, 22);
             this.showGridToolStripMenuItem1.Text = "Show Grid";
             // 
             // x8ToolStripMenuItem1
             // 
             this.x8ToolStripMenuItem1.Name = "x8ToolStripMenuItem1";
-            this.x8ToolStripMenuItem1.Size = new System.Drawing.Size(104, 22);
+            this.x8ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.x8ToolStripMenuItem1.Text = "8x8";
             this.x8ToolStripMenuItem1.Click += new System.EventHandler(this.x8ToolStripMenuItem1_Click);
             // 
             // x16ToolStripMenuItem1
             // 
             this.x16ToolStripMenuItem1.Name = "x16ToolStripMenuItem1";
-            this.x16ToolStripMenuItem1.Size = new System.Drawing.Size(104, 22);
+            this.x16ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.x16ToolStripMenuItem1.Text = "16x16";
             this.x16ToolStripMenuItem1.Click += new System.EventHandler(this.x8ToolStripMenuItem1_Click);
             // 
             // x32ToolStripMenuItem1
             // 
             this.x32ToolStripMenuItem1.Name = "x32ToolStripMenuItem1";
-            this.x32ToolStripMenuItem1.Size = new System.Drawing.Size(104, 22);
+            this.x32ToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.x32ToolStripMenuItem1.Text = "32x32";
             this.x32ToolStripMenuItem1.Click += new System.EventHandler(this.x8ToolStripMenuItem1_Click);
             // 
@@ -3726,7 +3740,7 @@ namespace ZeldaFullEditor
             this.noneToolStripMenuItem.Checked = true;
             this.noneToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
-            this.noneToolStripMenuItem.Size = new System.Drawing.Size(104, 22);
+            this.noneToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.noneToolStripMenuItem.Text = "None";
             this.noneToolStripMenuItem.Click += new System.EventHandler(this.x8ToolStripMenuItem1_Click);
             // 
@@ -4075,26 +4089,12 @@ namespace ZeldaFullEditor
             this.customPanel3.Size = new System.Drawing.Size(603, 523);
             this.customPanel3.TabIndex = 19;
             // 
-            // toolStripMenuItem9
+            // overworldOverlayVisibleToolStripMenuItem
             // 
-            this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem9.Text = "Export All Tiles";
-            this.toolStripMenuItem9.Click += new System.EventHandler(this.exportAllTilesToolStripMenuItem_Click);
-            // 
-            // toolStripMenuItem10
-            // 
-            this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(180, 22);
-            this.toolStripMenuItem10.Text = "Import All Tiles";
-            this.toolStripMenuItem10.Click += new System.EventHandler(this.importAllTilesToolStripMenuItem_Click);
-            // 
-            // autoDoorsToolStripMenuItem
-            // 
-            this.autoDoorsToolStripMenuItem.Name = "autoDoorsToolStripMenuItem";
-            this.autoDoorsToolStripMenuItem.Size = new System.Drawing.Size(196, 22);
-            this.autoDoorsToolStripMenuItem.Text = "Auto. Doors";
-            this.autoDoorsToolStripMenuItem.Click += new System.EventHandler(this.autodoorButton_Click_1);
+            this.overworldOverlayVisibleToolStripMenuItem.CheckOnClick = true;
+            this.overworldOverlayVisibleToolStripMenuItem.Name = "overworldOverlayVisibleToolStripMenuItem";
+            this.overworldOverlayVisibleToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
+            this.overworldOverlayVisibleToolStripMenuItem.Text = "Always Show Overworld Overlay";
             // 
             // DungeonMain
             // 
@@ -4414,7 +4414,6 @@ namespace ZeldaFullEditor
         private System.Windows.Forms.ToolStripMenuItem saveMapsOnlyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importRoomToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem invisibleObjectsTextToolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem overworldOverlayVisibleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showRoomsInHexToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem showMapIndexInHexToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveVRAMAsPngToolStripMenuItem;
@@ -4546,6 +4545,7 @@ namespace ZeldaFullEditor
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem9;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem10;
         private System.Windows.Forms.ToolStripMenuItem autoDoorsToolStripMenuItem;
+        public System.Windows.Forms.ToolStripMenuItem overworldOverlayVisibleToolStripMenuItem;
     }
 }
 

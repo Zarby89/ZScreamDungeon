@@ -75,6 +75,8 @@
             this.objCombobox = new System.Windows.Forms.ComboBox();
             this.objinfoLabel = new System.Windows.Forms.Label();
             this.mapGroupbox = new System.Windows.Forms.GroupBox();
+            this.areaBGColorPictureBox = new System.Windows.Forms.PictureBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.largemapCheckbox = new System.Windows.Forms.CheckBox();
             this.button1 = new System.Windows.Forms.Button();
             this.musicButton = new System.Windows.Forms.Button();
@@ -93,8 +95,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.areaBGColorPictureBox = new System.Windows.Forms.PictureBox();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -115,9 +115,9 @@
             this.owPropertyPanel.SuspendLayout();
             this.objectGroupbox.SuspendLayout();
             this.mapGroupbox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // owToolStrip
@@ -642,6 +642,27 @@
             this.mapGroupbox.TabStop = false;
             this.mapGroupbox.Text = "Selected map";
             // 
+            // areaBGColorPictureBox
+            // 
+            this.areaBGColorPictureBox.Location = new System.Drawing.Point(426, 28);
+            this.areaBGColorPictureBox.Name = "areaBGColorPictureBox";
+            this.areaBGColorPictureBox.Size = new System.Drawing.Size(24, 24);
+            this.areaBGColorPictureBox.TabIndex = 23;
+            this.areaBGColorPictureBox.TabStop = false;
+            this.areaBGColorPictureBox.Visible = false;
+            this.areaBGColorPictureBox.Click += new System.EventHandler(this.AreaBGColorPicturebox_MouseDoubleClick);
+            this.areaBGColorPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.AreaBGColorPicturebox_Paint);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(415, 9);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(48, 13);
+            this.label7.TabIndex = 15;
+            this.label7.Text = "BG color";
+            this.label7.Visible = false;
+            // 
             // largemapCheckbox
             // 
             this.largemapCheckbox.AutoSize = true;
@@ -816,27 +837,6 @@
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(415, 9);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(48, 13);
-            this.label7.TabIndex = 15;
-            this.label7.Text = "BG color";
-            this.label7.Visible = false;
-            // 
-            // areaBGColorPictureBox
-            // 
-            this.areaBGColorPictureBox.Location = new System.Drawing.Point(426, 28);
-            this.areaBGColorPictureBox.Name = "areaBGColorPictureBox";
-            this.areaBGColorPictureBox.Size = new System.Drawing.Size(24, 24);
-            this.areaBGColorPictureBox.TabIndex = 23;
-            this.areaBGColorPictureBox.TabStop = false;
-            this.areaBGColorPictureBox.Visible = false;
-            this.areaBGColorPictureBox.Click += new System.EventHandler(this.AreaBGColorPicturebox_MouseDoubleClick);
-            this.areaBGColorPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.AreaBGColorPicturebox_Paint);
-            // 
             // OverworldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -871,10 +871,10 @@
             this.objectGroupbox.PerformLayout();
             this.mapGroupbox.ResumeLayout(false);
             this.mapGroupbox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

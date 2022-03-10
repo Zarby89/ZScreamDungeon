@@ -282,22 +282,11 @@ namespace ZeldaFullEditor.Gui
             tilePictureBox.Refresh();
         }
 
-        private void spButton_Click(object sender, EventArgs e)
-        {
-            scene.selectedMap = 128;
-            scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap].parent;
-            scene.ow.worldOffset = 128;
-            scene.Refresh();
-        }
-
-        private void dwButton_Click(object sender, EventArgs e)
-        {
-            scene.selectedMap = 64;
-            scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap].parent;
-            scene.ow.worldOffset = 64;
-            scene.Refresh();
-        }
-
+        /// <summary>
+        /// Called when the LW button on the overworld editor form is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lwButton_Click(object sender, EventArgs e)
         {
             scene.selectedMap = 0;
@@ -306,11 +295,36 @@ namespace ZeldaFullEditor.Gui
             scene.Refresh();
         }
 
+        /// <summary>
+        /// Called when the DW button on the overworld editor form is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void dwButton_Click(object sender, EventArgs e)
+        {
+            scene.selectedMap = 64;
+            scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap].parent;
+            scene.ow.worldOffset = 64;
+            scene.Refresh();
+        }
+
+        /// <summary>
+        /// Called when the SP button on the overworld editor form is clicked.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void spButton_Click(object sender, EventArgs e)
+        {
+            scene.selectedMap = 128;
+            scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap].parent;
+            scene.ow.worldOffset = 128;
+            scene.Refresh();
+        }
+
         private void runtestButton_Click(object sender, EventArgs e)
         {
             mainForm.runtestButton_Click(sender, e);
         }
-
 
         private void tilePictureBox_DoubleClick(object sender, EventArgs e)
         {
