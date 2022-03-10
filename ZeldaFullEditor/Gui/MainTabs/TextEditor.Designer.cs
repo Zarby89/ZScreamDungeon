@@ -61,8 +61,6 @@
 			this.button4 = new System.Windows.Forms.Button();
 			this.button3 = new System.Windows.Forms.Button();
 			this.button2 = new System.Windows.Forms.Button();
-			this.upButton = new System.Windows.Forms.Button();
-			this.downButton = new System.Windows.Forms.Button();
 			this.label5 = new System.Windows.Forms.Label();
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -156,8 +154,6 @@
 			this.panel2.Controls.Add(this.button4);
 			this.panel2.Controls.Add(this.button3);
 			this.panel2.Controls.Add(this.button2);
-			this.panel2.Controls.Add(this.upButton);
-			this.panel2.Controls.Add(this.downButton);
 			this.panel2.Controls.Add(this.label5);
 			this.panel2.Controls.Add(this.pictureBox2);
 			this.panel2.Controls.Add(this.pictureBox1);
@@ -169,7 +165,7 @@
 			// fontGridBox
 			// 
 			this.fontGridBox.AutoSize = true;
-			this.fontGridBox.Location = new System.Drawing.Point(408, 596);
+			this.fontGridBox.Location = new System.Drawing.Point(411, 596);
 			this.fontGridBox.Name = "fontGridBox";
 			this.fontGridBox.Size = new System.Drawing.Size(73, 17);
 			this.fontGridBox.TabIndex = 34;
@@ -183,14 +179,14 @@
 			this.BytesDDD.Name = "BytesDDD";
 			this.BytesDDD.Size = new System.Drawing.Size(105, 28);
 			this.BytesDDD.TabIndex = 33;
-			this.BytesDDD.Text = "Show text data";
+			this.BytesDDD.Text = "View text data";
 			this.BytesDDD.UseVisualStyleBackColor = true;
 			this.BytesDDD.Click += new System.EventHandler(this.BytesDDD_Click);
 			// 
 			// label11
 			// 
 			this.label11.AutoSize = true;
-			this.label11.Location = new System.Drawing.Point(395, 156);
+			this.label11.Location = new System.Drawing.Point(398, 156);
 			this.label11.Name = "label11";
 			this.label11.Size = new System.Drawing.Size(86, 13);
 			this.label11.TabIndex = 32;
@@ -199,10 +195,11 @@
 			// MessageAddress
 			// 
 			this.MessageAddress.AutoSize = true;
-			this.MessageAddress.Location = new System.Drawing.Point(305, 1);
+			this.MessageAddress.Location = new System.Drawing.Point(293, 1);
 			this.MessageAddress.Name = "MessageAddress";
-			this.MessageAddress.Size = new System.Drawing.Size(0, 13);
+			this.MessageAddress.Size = new System.Drawing.Size(10, 13);
 			this.MessageAddress.TabIndex = 31;
+			this.MessageAddress.Text = "-";
 			// 
 			// label9
 			// 
@@ -216,7 +213,7 @@
 			// label10
 			// 
 			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(375, 1);
+			this.label10.Location = new System.Drawing.Point(349, 1);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(82, 13);
 			this.label10.TabIndex = 24;
@@ -234,9 +231,9 @@
 			// TextCommandList
 			// 
 			this.TextCommandList.FormattingEnabled = true;
-			this.TextCommandList.Location = new System.Drawing.Point(381, 17);
+			this.TextCommandList.Location = new System.Drawing.Point(352, 17);
 			this.TextCommandList.Name = "TextCommandList";
-			this.TextCommandList.Size = new System.Drawing.Size(134, 134);
+			this.TextCommandList.Size = new System.Drawing.Size(163, 134);
 			this.TextCommandList.TabIndex = 25;
 			this.TextCommandList.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
 			this.TextCommandList.DoubleClick += new System.EventHandler(this.InsertCommandButton_Click_1);
@@ -264,7 +261,7 @@
 			// ParamsBox
 			// 
 			this.ParamsBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.ParamsBox.Location = new System.Drawing.Point(487, 153);
+			this.ParamsBox.Location = new System.Drawing.Point(489, 153);
 			this.ParamsBox.MaxLength = 2;
 			this.ParamsBox.Name = "ParamsBox";
 			this.ParamsBox.Size = new System.Drawing.Size(26, 20);
@@ -276,7 +273,7 @@
 			// label12
 			// 
 			this.label12.AutoSize = true;
-			this.label12.Location = new System.Drawing.Point(378, 183);
+			this.label12.Location = new System.Drawing.Point(349, 183);
 			this.label12.Name = "label12";
 			this.label12.Size = new System.Drawing.Size(118, 13);
 			this.label12.TabIndex = 30;
@@ -304,9 +301,9 @@
 			// SpecialsList
 			// 
 			this.SpecialsList.FormattingEnabled = true;
-			this.SpecialsList.Location = new System.Drawing.Point(378, 199);
+			this.SpecialsList.Location = new System.Drawing.Point(352, 199);
 			this.SpecialsList.Name = "SpecialsList";
-			this.SpecialsList.Size = new System.Drawing.Size(137, 186);
+			this.SpecialsList.Size = new System.Drawing.Size(163, 186);
 			this.SpecialsList.TabIndex = 29;
 			this.SpecialsList.DoubleClick += new System.EventHandler(this.InsertSpecialButton_Click);
 			// 
@@ -358,15 +355,16 @@
 			// 
 			// numericUpDown1
 			// 
-			this.numericUpDown1.Location = new System.Drawing.Point(78, 45);
+			this.numericUpDown1.Location = new System.Drawing.Point(87, 45);
 			this.numericUpDown1.Maximum = new decimal(new int[] {
             8,
             0,
             0,
             0});
 			this.numericUpDown1.Name = "numericUpDown1";
-			this.numericUpDown1.Size = new System.Drawing.Size(53, 20);
+			this.numericUpDown1.Size = new System.Drawing.Size(44, 20);
 			this.numericUpDown1.TabIndex = 3;
+			this.numericUpDown1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
 			// 
 			// label8
@@ -426,28 +424,6 @@
 			this.button2.UseVisualStyleBackColor = true;
 			this.button2.Click += new System.EventHandler(this.button2_Click);
 			// 
-			// upButton
-			// 
-			this.upButton.Enabled = false;
-			this.upButton.Location = new System.Drawing.Point(349, 193);
-			this.upButton.Name = "upButton";
-			this.upButton.Size = new System.Drawing.Size(23, 23);
-			this.upButton.TabIndex = 12;
-			this.upButton.Text = "🡅";
-			this.upButton.UseVisualStyleBackColor = true;
-			this.upButton.Click += new System.EventHandler(this.upButton_Click);
-			// 
-			// downButton
-			// 
-			this.downButton.Enabled = false;
-			this.downButton.Location = new System.Drawing.Point(349, 362);
-			this.downButton.Name = "downButton";
-			this.downButton.Size = new System.Drawing.Size(23, 23);
-			this.downButton.TabIndex = 13;
-			this.downButton.Text = "🡇";
-			this.downButton.UseVisualStyleBackColor = true;
-			this.downButton.Click += new System.EventHandler(this.downButton_Click);
-			// 
 			// label5
 			// 
 			this.label5.AutoSize = true;
@@ -459,7 +435,7 @@
 			// 
 			// pictureBox2
 			// 
-			this.pictureBox2.Location = new System.Drawing.Point(3, 413);
+			this.pictureBox2.Location = new System.Drawing.Point(6, 413);
 			this.pictureBox2.MinimumSize = new System.Drawing.Size(256, 244);
 			this.pictureBox2.Name = "pictureBox2";
 			this.pictureBox2.Size = new System.Drawing.Size(256, 258);
@@ -548,8 +524,6 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button downButton;
-        private System.Windows.Forms.Button upButton;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ToolStrip toolStrip1;
