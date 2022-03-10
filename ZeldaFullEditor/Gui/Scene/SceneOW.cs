@@ -24,7 +24,7 @@ namespace ZeldaFullEditor
     {
         //public IntPtr allgfx8array = Marshal.AllocHGlobal(32768);
 
-        //  int selectedIndex = 0;
+        //int selectedIndex = 0;
         public int selectedMap = 0;
         public int selectedMapParent = 0;
         //public int lockedMap = -1;
@@ -103,7 +103,7 @@ namespace ZeldaFullEditor
         public void CreateScene()
         {
             //tileBitmapPtr = ow.allmaps[0].blockset16;
-           // tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr);
+            //tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr);
         }
 
         private void SceneOW_MouseWheel(object sender, MouseEventArgs e)
@@ -1007,11 +1007,11 @@ namespace ZeldaFullEditor
             }
         }
 
-        //0 = none
-        //1 = left
-        //2 = up
-        //4 = right
-        //8 = bottom
+        // 0 = none
+        // 1 = left
+        // 2 = up
+        // 4 = right
+        // 8 = bottom
 
         public byte compareTilePos(TilePos tpc, TilePos[] tpa)
         {
@@ -1083,9 +1083,10 @@ namespace ZeldaFullEditor
 
         public void drawGrid(Graphics graphics)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
 
-            /*if (showGrid)
+            /*
+            if (showGrid)
             {
                 //int s = mainForm.gridSize;
                 int wh = (512 / s)+1;
@@ -1098,7 +1099,8 @@ namespace ZeldaFullEditor
                 {
                     graphics.DrawLine(new Pen(Color.FromArgb(128, 255, 255, 255)), 0, y * s, 512, y * s);
                 }
-            }*/
+            }
+            */
         }
 
 

@@ -56,7 +56,7 @@ namespace ZeldaFullEditor.Gui
         
         private void pictureBox2_Paint(object sender, PaintEventArgs e)
         {
-            //Dungeons Palettes
+            // Dungeons Palettes
             for(int i = 0;i<bigPalettes.Length;i++)
             {
                 if (bigPalettes[i] != null)
@@ -70,20 +70,20 @@ namespace ZeldaFullEditor.Gui
 
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (comboBox2.SelectedIndex == 0)//Dungeons
+            if (comboBox2.SelectedIndex == 0) // Dungeons
             {
                 int ColorPos = 0;
-                for (int i = 0; i < 6; i++) //6 pack of palettes
+                for (int i = 0; i < 6; i++) // 6 pack of palettes
                 {
-                    for (int k = 0; k < 6; k++) //6 lines per pack
+                    for (int k = 0; k < 6; k++) // 6 lines per pack
                     {
-                        //black default + //read7 + read8
-                        bigPalettes[ColorPos] = Color.Black;//Color0
+                        // Black default + // read7 + read8
+                        bigPalettes[ColorPos] = Color.Black; // Color0
                         ColorPos++;
 
                         for (int j = 0; j < 7; j++)
                         {
-                            bigPalettes[ColorPos] = Palettes.dungeonsMain_Palettes[i][j + (k * 15)]; //
+                            bigPalettes[ColorPos] = Palettes.dungeonsMain_Palettes[i][j + (k * 15)];
                             ColorPos++;
                         }
 
@@ -106,13 +106,13 @@ namespace ZeldaFullEditor.Gui
                 {
                     for (int k = 0; k < 5; k++) // 6 lines per pack
                     {
-                        // black default + // read7 + read8
+                        // Black default + // read7 + read8
                         bigPalettes[ColorPos] = Palettes.overworld_GrassPalettes[0]; // Color0
                         ColorPos++;
 
                         for (int j = 0; j < 7; j++)
                         {
-                            bigPalettes[ColorPos] = Palettes.overworld_MainPalettes[i][j + (k * 7)]; //
+                            bigPalettes[ColorPos] = Palettes.overworld_MainPalettes[i][j + (k * 7)];
                             ColorPos++;
                         }
 
@@ -130,7 +130,7 @@ namespace ZeldaFullEditor.Gui
 
                         for (int j = 0; j < 7; j++)
                         {
-                            bigPalettes[ColorPos] = Palettes.overworld_AuxPalettes[i][j + (k * 7)]; //
+                            bigPalettes[ColorPos] = Palettes.overworld_AuxPalettes[i][j + (k * 7)];
                             ColorPos++;
                         }
 
@@ -138,14 +138,14 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
             }
-            else if (comboBox2.SelectedIndex == 2) // sprites
+            else if (comboBox2.SelectedIndex == 2) // Sprites
             {
                 int ColorPos = 0;
                 for (int i = 0; i < 2; i++) // 6 pack of palettes
                 {
                     for (int k = 0; k < 4; k++) // 6 lines per pack
                     {
-                        // black default + // read7 + read8
+                        // Black default + // read7 + read8
                         bigPalettes[ColorPos] = Color.Black; // Color0
                         ColorPos++;
 
@@ -219,7 +219,7 @@ namespace ZeldaFullEditor.Gui
                     //allgfx16Data[index] = (byte)(0x04);
                 }
 
-                mainscreenPicturebox.Invalidate();// (new Rectangle(panel2.VerticalScroll.Value, panel2.HorizontalScroll.Value, panel2.Width, panel2.Height));
+                mainscreenPicturebox.Invalidate(); //(new Rectangle(panel2.VerticalScroll.Value, panel2.HorizontalScroll.Value, panel2.Width, panel2.Height));
             }
         }
 

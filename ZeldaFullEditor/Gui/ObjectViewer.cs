@@ -31,7 +31,7 @@ namespace ZeldaFullEditor
 
         private void ObjectViewer_Paint(object sender, PaintEventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -157,7 +157,7 @@ namespace ZeldaFullEditor
 
         private void ObjectViewer_Load(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
@@ -180,7 +180,7 @@ namespace ZeldaFullEditor
                         selectedObject = o;
                         if (itemstarRect.Contains((new Point(e.X, e.Y))))
                         {
-                            //Make Favourite or not
+                            // Make Favourite or not
                             if (Settings.Default.favoriteObjects[o.id] == "true")
                             {
                                 Settings.Default.favoriteObjects[o.id] = "false";

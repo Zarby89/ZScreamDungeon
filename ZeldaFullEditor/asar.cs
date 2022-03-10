@@ -111,8 +111,8 @@ namespace AsarCLR
 
         /// <summary>
         /// Returns the API version, format major*100+minor. Minor is incremented on backwards compatible
-        ///  changes; major is incremented on incompatible changes. Does not have any correlation with the
-        ///  Asar version.
+        /// changes; major is incremented on incompatible changes. Does not have any correlation with the
+        /// Asar version.
         /// It's not very useful directly, since Asar.init() verifies this automatically.
         /// </summary>
         /// <returns>Asar API version</returns>
@@ -156,7 +156,7 @@ namespace AsarCLR
         /// <param name="includePaths">lists additional include paths</param>
         /// <param name="shouldReset">specifies whether asar should clear out all defines, labels,
         /// etc from the last inserted file. Setting it to False will make Asar act like the
-        //  currently patched file was directly appended to the previous one.</param>
+        /// currently patched file was directly appended to the previous one.</param>
         /// <param name="additionalDefines">specifies extra defines to give to the patch</param>
         /// <param name="stdIncludeFile">path to a file that specifes additional include paths</param>
         /// <param name="stdDefineFile">path to a file that specifes additional defines</param>
@@ -169,11 +169,13 @@ namespace AsarCLR
             var includes = new byte*[includePaths.Length];
             var defines = new Rawasardefine[additionalDefines.Count];
 
-            try{
+            try
+            {
                 for(int i=0; i<includePaths.Length; i++)
                 {
                     includes[i] = (byte*)Marshal.StringToCoTaskMemAnsi(includePaths[i]);
                 }
+
                 var keys=additionalDefines.Keys.ToArray();
                 for(int i=0; i<additionalDefines.Count; i++)
                 {
@@ -333,7 +335,7 @@ namespace AsarCLR
             Asarlabel[] output = new Asarlabel[length];
 
             // Better create a new array
-            // to avoid pointer erros, corruption and may other problems.
+            // To avoid pointer erros, corruption and may other problems.
             for (int i = 0; i < length; i++)
             {
                 output[i].Name = Marshal.PtrToStringAnsi(ptr[i].name);
@@ -380,7 +382,7 @@ namespace AsarCLR
             Asardefine[] output = new Asardefine[length];
 
             // Better create a new array
-            // to avoid pointer erros, corruption and may other problems.
+            // To avoid pointer erros, corruption and may other problems.
             for (int i = 0; i < length; i++)
             {
                 output[i].Name = Marshal.PtrToStringAnsi(ptr[i].name);
@@ -429,7 +431,7 @@ namespace AsarCLR
             Asarwrittenblock[] output = new Asarwrittenblock[length];
 
             // Better create a new array
-            // to avoid pointer erros, corruption and may other problems.
+            // To avoid pointer erros, corruption and may other problems.
             for (int i = 0; i < length; i++)
             {
                 output[i].Snesoffset = ptr[i].snesoffset;

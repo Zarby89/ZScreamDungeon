@@ -134,7 +134,7 @@ namespace ZeldaFullEditor.Gui
 
         private void ModeButton_Click(object sender, EventArgs e)
         {
-            for (int i = 0; i < owToolStrip.Items.Count; i++) //uncheck every modes
+            for (int i = 0; i < owToolStrip.Items.Count; i++) // Uncheck every modes
             {
                 if (owToolStrip.Items[i] is ToolStripButton)
                 {
@@ -621,7 +621,7 @@ namespace ZeldaFullEditor.Gui
         {
             if (GFX.mapblockset16Bitmap != null)
             {
-                //USE mapblockset16 to draw tiles on this !! :GRIMACING:
+                // USE mapblockset16 to draw tiles on this !! :GRIMACING:
                 //public static IntPtr mapblockset16 = Marshal.AllocHGlobal(1048576);
                 //public static Bitmap mapblockset16Bitmap;
                 //base.OnPaint(e);
@@ -639,7 +639,7 @@ namespace ZeldaFullEditor.Gui
                 
                 int x = 0;
                 int y = 0;
-                //DRAW ALL THE TILES 16x225
+                // DRAW ALL THE TILES 16x225
 
                 g.CompositingMode = CompositingMode.SourceOver;
 
@@ -662,12 +662,12 @@ namespace ZeldaFullEditor.Gui
         public unsafe void BuildScratchTilesGfx()
         {
             GFX.scratchblockset16Bitmap.Palette = GFX.mapblockset16Bitmap.Palette;
-            var gfx16Data = (byte*)GFX.mapblockset16.ToPointer();//(byte*)allgfx8Ptr.ToPointer();
-            var gfx16DataScratch = (byte*)GFX.scratchblockset16.ToPointer();//(byte*)allgfx16Ptr.ToPointer();
+            var gfx16Data = (byte*)GFX.mapblockset16.ToPointer(); //(byte*)allgfx8Ptr.ToPointer();
+            var gfx16DataScratch = (byte*)GFX.scratchblockset16.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
             int ytile = 0;
             int xtile = 0;
 
-            for (var i = 0; i < 3600; i++) //number of tiles16 3748?
+            for (var i = 0; i < 3600; i++) // Number of tiles16 3748?
             {
                 ushort srcTile = scratchPadTiles[xtile, ytile];
                 //Console.WriteLine(srcTile);
@@ -717,9 +717,10 @@ namespace ZeldaFullEditor.Gui
         {
             if (tabControl1.SelectedTab.Name == "Tiles8")
             {
-                //TODO: Add something here?
+                // TODO: Add something here?
 
-                /*int sx = 0;
+                /*
+                int sx = 0;
                 int sy = 0;
                 int c = 0;
 

@@ -40,7 +40,7 @@ namespace ZeldaFullEditor.Gui
         }
 
         private void titleBarPanel_Paint(object sender, PaintEventArgs e)
-        {//
+        {
             e.Graphics.DrawString((Tag as string), Font, Brushes.Black, new Point(4, 4));
             e.Graphics.DrawString("X", Font, Brushes.Black, new Point(titleBarPanel.Width - 16, 4));
         }
@@ -52,7 +52,7 @@ namespace ZeldaFullEditor.Gui
 
         private void titleBarPanel_MouseLeave(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         private void titleBarPanel_MouseMove(object sender, MouseEventArgs e)

@@ -11,6 +11,7 @@ namespace ZeldaFullEditor
         public List<ushort> data = new List<ushort>();
         int startAddr = 0;
         bool fix = false;
+
         public ScreenStrip(ushort[] data, int startAddr, bool fix = false)
         {
             this.data = data.ToList();
@@ -27,6 +28,7 @@ namespace ZeldaFullEditor
 
                 d[2] = (byte)((((data.Count * 2) - 1) & 0xFF00) >> 8);
                 d[3] = (byte)((((data.Count * 2) - 1) & 0xFF));
+
                 for (int i = 0; i < data.Count; i++)
                 {
                     d[(i * 2) + 4] = (byte)(data[i] & 0xFF);
@@ -59,6 +61,7 @@ namespace ZeldaFullEditor
         public ushort value = 0;
         public int count = 0;
         public bool same = false;
+
         public DataStrip(int pos, ushort value, int count, bool same)
         {
             this.pos = pos;

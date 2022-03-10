@@ -143,6 +143,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             {
                                 scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] = scene.selectedTile[0];
                                 scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX) * 16) - (superX * 512), ((tileY) * 16) - (superY * 512), scene.selectedTile[0], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
+
                                 //scene.Invalidate(new Rectangle(e.X - 16, e.Y - 16, 32,  32));
                             }
                         }
@@ -181,6 +182,7 @@ namespace ZeldaFullEditor.OWSceneModes
                             redoList.Clear();
                             scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] = scene.selectedTile[0];
                             scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX) * 16) - (superX * 512), ((tileY) * 16) - (superY * 512), scene.selectedTile[0], scene.ow.allmaps[mapId].gfxPtr, GFX.mapblockset16);
+
                             //scene.Invalidate(new Rectangle(e.X - 16, e.Y - 16, 32,  32));
                         }
                     }
@@ -266,6 +268,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
             scene.selecting = false;
             scene.mouse_down = false;
+
             //scene.Refresh();
             //scene.mainForm.pictureboxOWTiles.Refresh();
             //scene.mainForm.pictureGroupTiles.Refresh();
@@ -399,20 +402,24 @@ namespace ZeldaFullEditor.OWSceneModes
 
                                     undoList.Add(new TileUndo(scene.globalmouseTileDownX, scene.globalmouseTileDownY, scene.selectedTileSizeX, undotiles, (ushort[])scene.selectedTile.Clone(), ref scene.ow.allmaps[mapId].tilesUsed));
                                     redoList.Clear();
+
                                     //scene.Invalidate(new Rectangle((scene.globalmouseTileDownX * 16), scene.globalmouseTileDownY * 16, scene.selectedTileSizeX * 16, y * 16));
                                     // }
-                                    /*else
+
+                                    /*
+                                    else
                                     {
                                         ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX, scene.globalmouseTileDownY] = selectedTile[0];
                                         ow.allmaps[mapId].CopyTile8bpp16(((tileX) * 16) - (superX * 512), ((tileY) * 16) - (superY * 512), selectedTile[0], ow.allmaps[mapId].gfxPtr, ow.allmaps[mapId].blockset16);
                                         this.Invalidate(new Rectangle(e.X - 16, e.Y - 16, 32, 32));
-                                    }*/
+                                    }
+                                    */
                                 }
                             }
                         }
                     }
 
-                    //Refresh the tile preview
+                    // Refresh the tile preview
                     if (scene.selectedTile.Length >= 1)
                     {
                         int sX = (mouseTileX / 32);
@@ -462,22 +469,26 @@ namespace ZeldaFullEditor.OWSceneModes
                         //this.Invalidate(new Rectangle((mouseTileX * 16)-16, (mouseTileY * 16)-16, (selectedTileSizeX * 16)+32, (y * 16)+32));
                     }
 
-                    /*if (selecting)
+                    /*
+                    if (selecting)
                     {
                         this.Invalidate(new Rectangle((globalmouseTileDownX * 16), (globalmouseTileDownY * 16), (mouseTileX * 16) - (globalmouseTileDownX * 16) + 48, (mouseTileY * 16) - (globalmouseTileDownY * 16) + 48));
-                    }*/
+                    }
+                    */
 
                     scene.lastTileHoverX = mouseTileX;
                     scene.lastTileHoverY = mouseTileY;
-                    /* int tileX = (e.X / 16);
-                     int tileY = (e.Y / 16);
-                     int superX = (tileX / 32);
-                     int superY = (tileY / 32);
-                     int mapId = (superY * 8) + superX;
-                     ow.allmapsTiles[tileX, tileY] = selectedTile[0];
-                     ow.allmaps[mapId].CopyTile8bpp16(((e.X / 16)*16)-(superX*512), ((e.Y / 16)*16) - (superY * 512), selectedTile[0], ow.allmaps[mapId].gfxPtr, ow.allmaps[mapId].blockset16);
-                     this.Invalidate(new Rectangle(e.X-16, e.Y-16, 48, 48));
-                     //this.Refresh();*/
+                    /*
+                    int tileX = (e.X / 16);
+                    int tileY = (e.Y / 16);
+                    int superX = (tileX / 32);
+                    int superY = (tileY / 32);
+                    int mapId = (superY * 8) + superX;
+                    ow.allmapsTiles[tileX, tileY] = selectedTile[0];
+                    ow.allmaps[mapId].CopyTile8bpp16(((e.X / 16)*16)-(superX*512), ((e.Y / 16)*16) - (superY * 512), selectedTile[0], ow.allmaps[mapId].gfxPtr, ow.allmaps[mapId].blockset16);
+                    this.Invalidate(new Rectangle(e.X-16, e.Y-16, 48, 48));
+                    //this.Refresh();
+                    */
                 }
             }
         }

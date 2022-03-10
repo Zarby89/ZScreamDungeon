@@ -25,7 +25,7 @@ namespace ZeldaFullEditor
             this.bg2 = bg2;
         }
 
-        //pots items
+        // Pots items
         public void Draw()
         {
             byte x = nx;
@@ -37,116 +37,116 @@ namespace ZeldaFullEditor
                 id += 23;
             }
 
-            if (id == 0)//Nothing
+            if (id == 0)// Nothing
             {
-                //draw_item_tile(x * 8, y * 8, 16, 16, 0x6C, 10, true);
+                // draw_item_tile(x * 8, y * 8, 16, 16, 0x6C, 10, true);
             }
-            else if (id == 1)//rupee
+            else if (id == 1)// Rupee
             {
                 draw_item_tile(x*8 +4, y*8, 0, 828, 11, false, false, 1);
             }
-            else if (id == 2) //Rock Crab
+            else if (id == 2) // Rock Crab
             {
                 draw_item_tile(x * 8, y * 8, 10, 520, 5);
             }
-            else if (id == 3) //bee
+            else if (id == 3) // Bee
             {
                 drawSpriteTile((x * 8)+4, (y * 8)+4, 4, 14, 11, false, false, 1, 1);
             }
-            else if (id == 4) //Random
+            else if (id == 4) // Random
             {
                 //draw_item_tile(x*8+4, y*8+4, 8, 8);
             }
-            else if (id == 5) //bomb
+            else if (id == 5) // Bomb
             {
                 draw_item_tile(x*8 + 0, y*8 + 0, 4, 824, 7);
             }
-            else if (id == 6)//rupee
+            else if (id == 6) // Rupee
             {
                 draw_item_tile(x * 8 +4, y * 8, 0, 828, 11, false, false, 1);
             }
-            else if (id == 7)//blue rupee
+            else if (id == 7) // Blue rupee
             {
                 draw_item_tile(x * 8 +4, y * 8, 0, 828, 7, false, false, 1);
             }
-            else if (id == 8)//key*8
+            else if (id == 8) // Key*8
             {
                 draw_item_tile(x*8 + 4, y*8 + 0, 14, 822, 11, false, false, 1);
             }
-            else if (id == 9)//arrow
+            else if (id == 9) // Arrow
             {
                 draw_item_tile(x*8 + 4, y*8, 8, 830, 11, false, false, 1);
             }
-            else if (id == 10)//1bomb
+            else if (id == 10) // 1bomb
             {
                 draw_item_tile(x * 8 + 0, y * 8 + 0, 4, 824, 7);
             }
-            else if (id == 11)//heart
+            else if (id == 11) // Heart
             {
                 draw_item_tile(x*8 + 4, y*8, 6, 830, 5, false, false, 1);
             }
-            else if (id == 12)//magic
+            else if (id == 12) // Magic
             {
                 draw_item_tile(x*8 + 4, y*8, 7, 830, 11, false, false, 1);
             }
-            else if (id == 13)//big magic - need gfx
+            else if (id == 13) // Big magic - need gfx
             {
                 draw_item_tile(x * 8 + 4, y * 8, 2, 466, 11, false, false, 1);
             }
-            else if (id == 14)//chicken 
+            else if (id == 14) // Chicken 
             {
                 drawSpriteTile((x * 8), (y * 8), 10, 30, 5);
             }
-            else if (id == 15)//green soldier
+            else if (id == 15) // Green soldier
             {
                 drawSpriteTile((x * 8), (y * 8), 0, 20, 12);
             }
-            else if (id == 16)//alive rock
+            else if (id == 16) // Alive rock
             {
                 draw_item_tile(x * 8, y * 8, 10, 520, 5);
             }
-            else if (id == 17)//blue soldier
+            else if (id == 17) // Blue soldier
             {
                 drawSpriteTile((x * 8), (y * 8), 0, 20, 10);
             }
-            else if (id == 18)//ground bomb
+            else if (id == 18) // Ground bomb
             {
                 draw_item_tile(x * 8, y * 8 +4, 0, 467, 7,false,false,1,1);
                 draw_item_tile(x * 8 + 8, y * 8+4, 0, 467, 7, true, false, 1, 1);
             }
-            else if (id == 19)//heart
+            else if (id == 19) // Heart
             {
                 draw_item_tile(x * 8 + 4, y * 8, 6, 830, 5, false, false, 1);
             }
-            else if (id == 20)//fairy*8
+            else if (id == 20) // Fairy*8
             {
                 draw_item_tile(x * 8, y * 8, 10, 490, 10);
             }
-            else if (id == 21)//heart
+            else if (id == 21) // Heart
             {
                 draw_item_tile(x * 8 + 4, y * 8, 6, 830, 5, false, false, 1);
             }
-            else if (id == 22)//nothing
+            else if (id == 22) // Nothing
             {
                 //draw_item_tile(x*8, y*8, 16, 16, 0x6C, 10, true);
             }
-            else if (id == 23)//hole
+            else if (id == 23) // Hole
             {
                 //draw_item_tile(x * 8, y * 8, 16, 16, 0x60, 9, false);
             }
-            else if (id == 24)//warp
+            else if (id == 24) // Warp
             {
                 draw_item_tile(x*8, y*8, 6, 832, 11);
             }
-            else if (id == 25)//staircase
+            else if (id == 25) // Staircase
             {
-                //TODO: Add draw here?
+                // TODO: Add draw here?
             }
-            else if (id == 26)//bombale
+            else if (id == 26) // Bombale
             {
-                //TODO: Add draw here?
+                // TODO: Add draw here?
             }
-            else if (id == 27)//switch
+            else if (id == 27) // Switch
             {
                 draw_item_tile(x * 8, y * 8, 11, 56, 5,false,false,1);
             }
@@ -176,7 +176,7 @@ namespace ZeldaFullEditor
                         my = (((sizey * 8)) - 1) - yl;
                     }
 
-                    //Formula information to get tile index position in the array
+                    // Formula information to get tile index position in the array
                     //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
                     int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
                     var pixel = alltilesData[tx + (yl * 64) + xl];
@@ -218,7 +218,7 @@ namespace ZeldaFullEditor
                         my = (((sizey * 8)) - 1) - yl;
                     }
 
-                    //Formula information to get tile index position in the array
+                    // Formula information to get tile index position in the array
                     //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
                     int tx = ((drawid / 16) * 512) + ((drawid - ((drawid / 16) * 16)) * 4);
                     var pixel = alltilesData[tx + (yl * 64) + xl];

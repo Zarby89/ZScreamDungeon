@@ -14,6 +14,7 @@ namespace ZeldaFullEditor
         {
             this.x = x;
             this.y = y;
+
             if (upper)
             {
                 this.tile = (ushort)(tile + 512);

@@ -75,7 +75,7 @@ namespace ZeldaFullEditor
             "Magic Mirror",
             "Power Gloves",
             "Titans Mitt",
-            "Book of Mudora",//29
+            "Book of Mudora", // 29
             "Flippers",
             "Moon Pearl",
             "Crystal - Crash Game",
@@ -89,7 +89,7 @@ namespace ZeldaFullEditor
             "3 Bombs", // 40
             "Mushroom",
             "Red Boomerang",
-            "Bottle with Red Potion", //43
+            "Bottle with Red Potion", // 43
             "Bottle with Green Potion",
             "Bottle with Blue Potion",
             "Red Potion - fill bottle",
@@ -121,7 +121,7 @@ namespace ZeldaFullEditor
             "Bottle with Gold Bee",
             "L1 fighter Sword",
             "Ocarina Active",
-            "Pegasus Boots", //75
+            "Pegasus Boots", // 75
             "Max Bombs(VT)",
             "Max Arrows(VT)",
             "Half Magic(VT)",
@@ -145,10 +145,10 @@ namespace ZeldaFullEditor
             "Progressive Armor(VT)",
             "Progressive Lifting Glove(VT)",
             "RNG Pool Item (Single)(VT)",
-            "RNG Pool Item (Multi)(VT)",//99
+            "RNG Pool Item (Multi)(VT)" ,// 99
             "","","","","","","",
-            "Goal Item (Single/Triforce)(VT)",//
-            "Goal Item (Multi/Power Star)(VT)",//6B
+            "Goal Item (Single/Triforce)(VT)", //
+            "Goal Item (Multi/Power Star)(VT)", // 6B
             "","","",
             "Escape Map(VT)",
             "Hyrule Castle Map(VT)",

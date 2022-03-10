@@ -18,10 +18,12 @@ namespace ZeldaFullEditor
         public RoomLayout(DungeonMain f)
         {
             InitializeComponent();
-            /*foreach (string s in Directory.EnumerateDirectories("Layout\\"))
+            /*
+            foreach (string s in Directory.EnumerateDirectories("Layout\\"))
             {
                 tabControl1.TabPages.Add(Path.GetFileName(s));
-            }*/
+            }
+            */
 
             scene = new SceneUW(f);
             Controls.Add(scene);
@@ -58,7 +60,7 @@ namespace ZeldaFullEditor
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             clearRoom();
-            //add layout objects !
+            // Add layout objects !
             string f = (string)listBox1.Items[listBox1.SelectedIndex];
             BinaryReader br = new BinaryReader(new FileStream("Layout\\" + f, FileMode.Open, FileAccess.Read));
 
@@ -91,7 +93,7 @@ namespace ZeldaFullEditor
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
     }
 }
