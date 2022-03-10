@@ -913,7 +913,7 @@ namespace ZeldaFullEditor
                 {
                     int mid = ow.allmaps[selectedMap].parent;
                     int msy = ((ow.allmaps[selectedMap].parent - ow.worldOffset) / 8);
-                    int msx = (ow.allmaps[selectedMap].parent - ow.worldOffset) - (my * 8);
+                    int msx = (ow.allmaps[selectedMap].parent - ow.worldOffset) - (msy * 8);
                     drawText(g, 0 + 4, 0 + 64, "Selected Map : " + selectedMap.ToString());
                     drawText(g, 0 + 4, 0 + 80, "Selected Map PARENT : " + ow.allmaps[selectedMap].parent.ToString());
                     drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
