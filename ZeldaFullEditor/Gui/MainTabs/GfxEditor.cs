@@ -102,17 +102,17 @@ namespace ZeldaFullEditor.Gui
             else if (comboBox2.SelectedIndex == 1)
             {
                 int ColorPos = 0;
-                for (int i = 0; i < 4; i++) //6 pack of palettes
+                for (int i = 0; i < 4; i++) // 6 pack of palettes
                 {
-                    for (int k = 0; k < 5; k++) //6 lines per pack
+                    for (int k = 0; k < 5; k++) // 6 lines per pack
                     {
-                        //black default + //read7 + read8
-                        bigPalettes[ColorPos] = Palettes.overworld_GrassPalettes[0];//Color0
+                        // black default + // read7 + read8
+                        bigPalettes[ColorPos] = Palettes.overworld_GrassPalettes[0]; // Color0
                         ColorPos++;
 
                         for (int j = 0; j < 7; j++)
                         {
-                            bigPalettes[ColorPos] = Palettes.overworld_MainPalettes[i][j+(k*7)]; //
+                            bigPalettes[ColorPos] = Palettes.overworld_MainPalettes[i][j + (k * 7)]; //
                             ColorPos++;
                         }
 
@@ -124,8 +124,8 @@ namespace ZeldaFullEditor.Gui
                 {
                     for (int k = 0; k < 3; k++) //6 lines per pack
                     {
-                        //black default + //read7 + read8
-                        bigPalettes[ColorPos] = Palettes.overworld_GrassPalettes[0];//Color0
+                        // black default + // read7 + read8
+                        bigPalettes[ColorPos] = Palettes.overworld_GrassPalettes[0]; // Color0
                         ColorPos++;
 
                         for (int j = 0; j < 7; j++)
@@ -138,20 +138,20 @@ namespace ZeldaFullEditor.Gui
                     }
                 }
             }
-            else if (comboBox2.SelectedIndex == 2) //sprites
+            else if (comboBox2.SelectedIndex == 2) // sprites
             {
                 int ColorPos = 0;
-                for (int i = 0; i < 2; i++) //6 pack of palettes
+                for (int i = 0; i < 2; i++) // 6 pack of palettes
                 {
-                    for (int k = 0; k < 4; k++) //6 lines per pack
+                    for (int k = 0; k < 4; k++) // 6 lines per pack
                     {
-                        //black default + //read7 + read8
-                        bigPalettes[ColorPos] = Color.Black;//Color0
+                        // black default + // read7 + read8
+                        bigPalettes[ColorPos] = Color.Black; // Color0
                         ColorPos++;
 
                         for (int j = 0; j < 7; j++)
                         {
-                            bigPalettes[ColorPos] = Palettes.globalSprite_Palettes[i][j + (k * 15)]; //
+                            bigPalettes[ColorPos] = Palettes.globalSprite_Palettes[i][j + (k * 15)];
                             ColorPos++;
                         }
 
@@ -159,7 +159,7 @@ namespace ZeldaFullEditor.Gui
 
                         for (int j = 0; j < 8; j++)
                         {
-                            bigPalettes[ColorPos] = Palettes.globalSprite_Palettes[i][j + (k * 15)+7];
+                            bigPalettes[ColorPos] = Palettes.globalSprite_Palettes[i][j + (k * 15) + 7];
                             ColorPos++;
                         }
 

@@ -750,6 +750,10 @@ namespace ZeldaFullEditor
                     {
                         g.Clear(Palettes.overworld_GrassPalettes[1]);
                     }
+                    else if (ow.worldOffset == 128)
+                    {
+                        g.Clear(Palettes.overworld_GrassPalettes[2]);
+                    }
                     else
                     {
                         g.Clear(Palettes.overworld_GrassPalettes[0]);
@@ -797,6 +801,24 @@ namespace ZeldaFullEditor
                                 {
                                     g.CompositingMode = CompositingMode.SourceOver;
                                     g.DrawImage(ow.allmaps[150].gfxBitmap, new PointF(x * 512, y * 512));
+                                }
+                            }
+                            else
+                            {
+                                if (i < 64)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawRectangle(new Pen(Palettes.overworld_GrassPalettes[0]), new Rectangle(x * 512, y * 512, 512, 512));
+                                }
+                                else if (i >= 64 && i < 128)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawRectangle(new Pen(Palettes.overworld_GrassPalettes[1]), new Rectangle(x * 512, y * 512, 512, 512));
+                                }
+                                else
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawRectangle(new Pen(Palettes.overworld_GrassPalettes[2]), new Rectangle(x * 512, y * 512, 512, 512));
                                 }
                             }
 

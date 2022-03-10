@@ -451,10 +451,11 @@ namespace ZeldaFullEditor
 
             if (parent < 0x40)
             {
-                //default LW Palette
+                // Default LW Palette
                 pal0 = 0;
                 bgr = Palettes.overworld_GrassPalettes[0];
-                //hardcoded LW DM palettes if we are on one of those maps (might change it to read game code)
+
+                // Hardcoded LW DM palettes if we are on one of those maps (might change it to read game code)
                 if ((parent >= 0x03 && parent <= 0x07))
                 {
                     pal0 = 2;
@@ -466,10 +467,11 @@ namespace ZeldaFullEditor
             }
             else if (parent >= 0x40 && parent < 0x80)
             {
-                bgr = Palettes.overworld_GrassPalettes[1];
-                //default DW Palette
+                // Default DW Palette
                 pal0 = 1;
-                //hardcoded DW DM palettes if we are on one of those maps (might change it to read game code)
+                bgr = Palettes.overworld_GrassPalettes[1];
+
+                // Hardcoded DW DM palettes if we are on one of those maps (might change it to read game code)
                 if (parent >= 0x43 && parent <= 0x47)
                 {
                     pal0 = 3;
@@ -478,6 +480,12 @@ namespace ZeldaFullEditor
                 {
                     pal0 = 3;
                 }
+            }
+            else if (parent >= 128 && parent < 160)
+            {
+                // Default SP Palette
+                pal0 = 0;
+                bgr = Palettes.overworld_GrassPalettes[2];
             }
 
             if (parent == 0x88)

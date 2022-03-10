@@ -637,7 +637,6 @@ namespace ZeldaFullEditor.Gui
 
                 g.DrawImage(GFX.scratchblockset16Bitmap,0,0);
                 
-
                 int x = 0;
                 int y = 0;
                 //DRAW ALL THE TILES 16x225
@@ -654,7 +653,6 @@ namespace ZeldaFullEditor.Gui
 
                 g.DrawImage(scene.tilesgfxBitmap, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, scene.selectedTileSizeX * 16, (scene.selectedTile.Length / scene.selectedTileSizeX) * 16), 0, 0, scene.selectedTileSizeX * 16, (scene.selectedTile.Length / scene.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
                 g.DrawRectangle(Pens.LightGreen, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, scene.selectedTileSizeX * 16, (scene.selectedTile.Length / scene.selectedTileSizeX) * 16));
-
 
                 g.CompositingMode = CompositingMode.SourceCopy;
                 //hideText = false;
