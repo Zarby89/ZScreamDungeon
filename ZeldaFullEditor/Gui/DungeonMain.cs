@@ -5968,8 +5968,8 @@ namespace ZeldaFullEditor
                 string.Format("{0} from OW screen {1:X2}", w, overworldEditor.scene.selectedMapParent));
 		}
 
-		private void toolStripMenuItem8_Click(object sender, EventArgs e) {
-            System.Diagnostics.Process.Start("https://discord.gg/XNyyFXbgHg");
+		private void discordToolStripMenuItem_Click(object sender, EventArgs e) {
+            System.Diagnostics.Process.Start("https://discord.gg/5QpWFxqTnfg");
         }
 	}
 }
