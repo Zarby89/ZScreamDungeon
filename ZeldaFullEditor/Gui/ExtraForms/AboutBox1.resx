@@ -181,7 +181,7 @@ Special thanks:
 
 Links:
 * Source code: https://github.com/Zarby89/ZScreamDungeon
-* Discord: https://discord.gg/XNyyFXbgHg</value>
+* Discord: https://discord.gg/5QpWFxqTnf</value>
   </data>
   <data name="&gt;&gt;richTextBox1.Name" xml:space="preserve">
     <value>richTextBox1</value>
@@ -250,9 +250,6 @@ Links:
         AA/wAAAP8AAAD/wAAD/8AAA/8AAAD/AAAA/AAAADwAAAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
         AAAAAAAAzAAAA8wAAAP/AAA//wAAP//AAP//wAD///AP///wD////////////w==
 </value>
-  </data>
-  <data name="$this.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
-    <value>NoControl</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
     <value>421, 311</value>
