@@ -3317,7 +3317,6 @@ namespace ZeldaFullEditor
             this.entranceCameraToolStripMenuItem,
             this.entrancePositionToolStripMenuItem,
             this.invisibleObjectsTextToolStripMenuItem,
-            this.overworldOverlayVisibleToolStripMenuItem,
             this.showMapIndexInHexToolStripMenuItem});
 			this.dungeonViewToolStripMenuItem.Enabled = false;
 			this.dungeonViewToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
@@ -3577,12 +3576,14 @@ namespace ZeldaFullEditor
 			// overworldViewToolStripMenuItem
 			// 
 			this.overworldViewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+
             this.showSpritesToolStripMenuItem,
             this.showEntrancesToolStripMenuItem,
             this.showExitsToolStripMenuItem,
             this.showTransportsToolStripMenuItem,
             this.showItemsToolStripMenuItem,
             this.showEntranceExitPreviewToolStripMenuItem,
+            this.overworldOverlayVisibleToolStripMenuItem,
             this.showGridToolStripMenuItem1});
 			this.overworldViewToolStripMenuItem.Enabled = false;
 			this.overworldViewToolStripMenuItem.Name = "overworldViewToolStripMenuItem";
@@ -4238,7 +4239,6 @@ namespace ZeldaFullEditor
 			this.customPanel1.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
-
         }
 
         #endregion
@@ -4481,7 +4481,6 @@ namespace ZeldaFullEditor
         private System.Windows.Forms.ToolStripMenuItem saveMapsOnlyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importRoomToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem invisibleObjectsTextToolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem overworldOverlayVisibleToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showRoomsInHexToolStripMenuItem;
         public System.Windows.Forms.ToolStripMenuItem showMapIndexInHexToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveVRAMAsPngToolStripMenuItem;

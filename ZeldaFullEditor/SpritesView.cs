@@ -145,7 +145,7 @@ namespace ZeldaFullEditor
 
         private void ObjectViewer_Load(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
         
         private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
@@ -185,7 +185,7 @@ namespace ZeldaFullEditor
 
         private void SpritesView_Load(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
     }
 }

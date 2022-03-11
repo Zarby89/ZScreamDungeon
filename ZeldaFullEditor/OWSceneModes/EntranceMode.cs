@@ -89,6 +89,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         selectedEntrance = scene.ow.allholes[i];
                         scene.mouse_down = true;
                         isLeftPress = true;
+
                         //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                         break;
                     }
@@ -117,6 +118,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         selectedEntrance = scene.ow.allentrances[i];
                         scene.mouse_down = true;
                         isLeftPress = true;
+
                         //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                         break;
                     }
@@ -209,6 +211,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 //scene.owForm.thumbnailBox.Visible = true;
                 //scene.owForm.thumbnailBox.Size = new Size(256, 256);
+
                 int roomId = DungeonsData.entrances[selectedEntrance.entranceId].Room;
                 if (roomId >= 296)
                 {
@@ -263,7 +266,8 @@ namespace ZeldaFullEditor.OWSceneModes
                 // Create an ImageAttributes object and set its color matrix.
                 ImageAttributes imageAtt = new ImageAttributes();
 
-                imageAtt.SetColorMatrix(
+                imageAtt.SetColorMatrix
+                (
                    colorMatrix,
                    ColorMatrixFlag.Default,
                    ColorAdjustType.Bitmap
@@ -493,7 +497,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.ow.allentrances[i].y = (myRightclick / 16) * 16;
                     scene.ow.allentrances[i].updateMapStuff(mid);
                     found = true;
-                   // scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
+                    //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                     break;
                 }
             }

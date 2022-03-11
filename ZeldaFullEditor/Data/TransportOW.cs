@@ -71,9 +71,9 @@ namespace ZeldaFullEditor
             AreaX = (byte)((Math.Abs(playerX - (mapX * 512)) / 16));
             AreaY = (byte)((Math.Abs(playerY - (mapY * 512)) / 16));
 
-            //if map is large, large = 768, otherwise 256
+            // If map is large, large = 768, otherwise 256
 
-            //mapx, mapy = "super map" position on the grid *512
+            // mapx, mapy = "super map" position on the grid *512
             if (mapId >= 64)
             {
                 mapId -= 64;

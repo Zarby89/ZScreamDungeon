@@ -17,7 +17,7 @@ namespace ZeldaFullEditor
         public bool isHole = false;
         public bool deleted = false;
 
-        //mapId might be useless but we will need it to check if the entrance is in the darkworld or lightworld
+        // mapId might be useless but we will need it to check if the entrance is in the darkworld or lightworld
         public EntranceOWEditor(int x, int y, byte entranceId, short mapId, ushort mapPos)
         {
             this.x = x;

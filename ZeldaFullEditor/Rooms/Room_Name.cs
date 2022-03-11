@@ -45,7 +45,8 @@ namespace ZeldaFullEditor
             }
         }
 
-        public static string[] room_name = new string[]{
+        public static string[] room_name = new string[]
+        {
             "Ganon","Hyrule Castle (North Corridor)","Behind Sanctuary (Switch)",
             "Houlihan","Turtle Rock (Crysta-Roller)",
             "Empty","Swamp Palace (Arrghus[Boss])",

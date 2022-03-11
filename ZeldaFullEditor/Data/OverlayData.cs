@@ -9,9 +9,10 @@ namespace ZeldaFullEditor
     public class OverlayData
     {
         public List<TilePos> tilesData = new List<TilePos>();
+
         public OverlayData()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
     }
 }

@@ -16,7 +16,7 @@ namespace ZeldaFullEditor
         ColorPalette palettes = null;
         public bool showName = false;
 
-        public int selectedIndex = 0; //setted on 0 by default
+        public int selectedIndex = 0; // Setted on 0 by default
         public event EventHandler SelectedIndexChanged;
 
         public Chest selectedObject = null;
@@ -30,12 +30,12 @@ namespace ZeldaFullEditor
 
         private void Chestviewer_Load(object sender, EventArgs e)
         {
-            //TODO: add something here?
+            // TODO: add something here?
         }
 
         private void ObjectViewer_Paint(object sender, PaintEventArgs e)
         {
-            //TODO: add something here?
+            // TODO: add something here?
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -146,7 +146,7 @@ namespace ZeldaFullEditor
 
         private void ObjectViewer_Load(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)

@@ -105,54 +105,54 @@ namespace ZeldaFullEditor
 
         public virtual void Clear()
         {
-            //TODO: Add something here?
+            //T ODO: Add something here?
         }
 
         public virtual void deleteSelected()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         public virtual void selectAll()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         public virtual void copy()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
         public virtual void cut()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
         public virtual void paste()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
         public virtual void insertNew()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
         public virtual void SendSelectedToBack()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
         public virtual void UpdateSelectedZ(int i)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
         public virtual void changeObject()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
         public virtual void loadLayout()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
         public virtual void DecreaseSelectedZ()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         public void drawSelection(Graphics graphics)
@@ -185,7 +185,7 @@ namespace ZeldaFullEditor
                 {
                     foreach (Room_Object obj in room.tilesObjects)
                     {
-                        //Draw doors here since they'll all be put on bg3 anyways
+                        // Draw doors here since they'll all be put on bg3 anyways
                         if (obj.showRectangle)
                         {
                             int yfix = 0;
@@ -193,6 +193,7 @@ namespace ZeldaFullEditor
                             {
                                 yfix = -(6 + obj.size);
                             }
+
                             graphics.DrawRectangle(Pens.DarkCyan, new Rectangle((obj.nx + obj.offsetX) * 8, (obj.ny + obj.offsetY + yfix) * 8, obj.width, obj.height));
                         }
                     }
@@ -237,6 +238,7 @@ namespace ZeldaFullEditor
                         {
                             yfix = -(6 + obj.size);
                         }
+
                         graphics.DrawRectangle(Pens.LimeGreen, new Rectangle((obj.nx+obj.offsetX) * 8, (obj.ny + obj.offsetY+yfix) * 8, obj.width, obj.height));
                     }
                 }
@@ -245,14 +247,15 @@ namespace ZeldaFullEditor
 
         public void drawEntrancePosition()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         public void drawDoorsPosition()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
 
-            /*if (mouse_down)
+            /*
+            if (mouse_down)
             {
                 if (room.selectedObject.Count > 0)
                 {
@@ -267,7 +270,8 @@ namespace ZeldaFullEditor
                         }
                     }
                 }
-            }*/
+            }
+            */
         }
 
         private void InitializeComponent()
@@ -278,6 +282,6 @@ namespace ZeldaFullEditor
             this.ResumeLayout(false);
         }
 
-        //END OF DRAW CODE
+        // END OF DRAW CODE
     }
 }

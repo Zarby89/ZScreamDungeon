@@ -8,14 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace ZeldaFullEditor.Gui.TextEditorExtra {
 	public partial class MessageAsBytes : Form {
 		private byte[] datar;
 		private byte[] datap;
 		private bool showparsed = false;
+
 		private int sep = 1;
 		private int pre = 0;
-		public MessageAsBytes() {
+
+		public MessageAsBytes() 
+		{
 			InitializeComponent();
 			SeparatorChoose.SelectedIndex = sep;
 			PrefixChoose.SelectedIndex = pre;
@@ -24,6 +28,7 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra {
 		public void ShowBytes(TextEditor.MessageData a) {
 			datar = a.Data;
 			datap = a.DataParsed;
+
 			UpdateTextBox();
 			ShowDialog();
 		}
@@ -50,8 +55,10 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra {
 						s.Append("$");
 						break;
 				}
+
 				s.Append(b.ToString("X2"));
-				switch (sep) {
+				switch (sep) 
+				{
 					case 0:
 					default:
 						break;
@@ -64,7 +71,8 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra {
 				}
 			}
 
-			switch (pre) {
+			switch (pre) 
+			{
 				case 0:
 				default:
 					break;
@@ -81,12 +89,14 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra {
 			this.textBox1.Text = s.ToString();
 		}
 
-		private void SeparatorChoose_SelectedIndexChanged(object sender, EventArgs e) {
+		private void SeparatorChoose_SelectedIndexChanged(object sender, EventArgs e) 
+		{
 			sep = SeparatorChoose.SelectedIndex;
 			UpdateTextBox();
 		}
 
-		private void PrefixChoose_SelectedIndexChanged(object sender, EventArgs e) {
+		private void PrefixChoose_SelectedIndexChanged(object sender, EventArgs e) 
+		{
 			pre = PrefixChoose.SelectedIndex;
 			UpdateTextBox();
 		}

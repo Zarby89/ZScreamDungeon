@@ -14,6 +14,7 @@ namespace ZeldaFullEditor.OWSceneModes
         SceneOW scene;
         public TransportOW selectedTransport = null;
         public TransportOW lastselectedTransport = null;
+
         public TransportMode(SceneOW scene)
         {
             this.scene = scene;
@@ -113,6 +114,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         }
                     }
                 }
+
                 //scene.Invalidate(new Rectangle((scene.owForm.splitContainer1.Panel2.HorizontalScroll.Value), (scene.owForm.splitContainer1.Panel2.VerticalScroll.Value), (scene.owForm.splitContainer1.Panel2.Width), (scene.owForm.splitContainer1.Panel2.Height)));
             }
         }
@@ -167,14 +169,17 @@ namespace ZeldaFullEditor.OWSceneModes
                         g.FillRectangle(bgrBrush, new Rectangle(e.playerX, e.playerY, 16, 16));
                         g.DrawRectangle(contourPen, new Rectangle(e.playerX, e.playerY, 16, 16));
                         scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
-                        /*if (i > 8)
+
+                        /*
+                        if (i > 8)
                         {
                             scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
                         }
                         else
                         {
                             scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
-                        }*/
+                        }
+                        */
                     }
                 }
             }
@@ -209,14 +214,17 @@ namespace ZeldaFullEditor.OWSceneModes
                         g.FillRectangle(bgrBrush, new Rectangle(e.playerX, e.playerY, 16, 16));
                         g.DrawRectangle(contourPen, new Rectangle(e.playerX, e.playerY, 16, 16));
                         scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
-                        /*if (i > 8)
+
+                        /*
+                         if (i > 8)
                         {
                             scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
                         }
                         else
                         {
                             scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
-                        }*/
+                        }
+                        */
                     }
                 }
             }

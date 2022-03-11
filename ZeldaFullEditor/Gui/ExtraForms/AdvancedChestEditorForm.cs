@@ -26,7 +26,8 @@ namespace ZeldaFullEditor.Gui
             {
                 listBox1.Items.Add(ChestItems_Name.name[i]);
 
-                chestsdata[i] = new ChestAdvancedData(
+                chestsdata[i] = new ChestAdvancedData
+                (
                      ROM.DATA[Constants.chests_backupitems + i],
                      ROM.DATA[Constants.chests_yoffset + i],
                      ROM.DATA[Constants.chests_xoffset + i],

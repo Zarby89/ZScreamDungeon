@@ -131,7 +131,6 @@
             this.palettePicturebox.Size = new System.Drawing.Size(256, 256);
             this.palettePicturebox.TabIndex = 1;
             this.palettePicturebox.TabStop = false;
-            this.palettePicturebox.Click += new System.EventHandler(this.palettePicturebox_Click);
             this.palettePicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.palettePicturebox_Paint);
             this.palettePicturebox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDoubleClick);
             this.palettePicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palettePicturebox_MouseDown);

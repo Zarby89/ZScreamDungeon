@@ -24,7 +24,7 @@ namespace ZeldaFullEditor
     {
         //public IntPtr allgfx8array = Marshal.AllocHGlobal(32768);
 
-        //  int selectedIndex = 0;
+        //int selectedIndex = 0;
         public int selectedMap = 0;
         public int selectedMapParent = 0;
         //public int lockedMap = -1;
@@ -103,7 +103,7 @@ namespace ZeldaFullEditor
         public void CreateScene()
         {
             //tileBitmapPtr = ow.allmaps[0].blockset16;
-           // tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr);
+            //tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr);
         }
 
         private void SceneOW_MouseWheel(object sender, MouseEventArgs e)
@@ -165,12 +165,12 @@ namespace ZeldaFullEditor
 
                 if (ow.worldOffset >= 64)
                 {
-
                     owForm.gfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].gfx.ToString("X2");
                     owForm.sprgfxTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].sprgfx[0].ToString("X2");
                     owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].palette.ToString("X2");
                     owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].sprpalette[0].ToString("X2");
                     owForm.largemapCheckbox.Checked = ow.allmaps[ow.allmaps[selectedMap + ow.worldOffset].parent].largeMap;
+                    owForm.BGColorToUpdate = ow.allmaps[selectedMap + ow.worldOffset].parent;
                 }
                 else
                 {
@@ -179,10 +179,13 @@ namespace ZeldaFullEditor
                     owForm.paletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].palette.ToString("X2");
                     owForm.sprpaletteTextbox.Text = ow.allmaps[ow.allmaps[selectedMap].parent].sprpalette[ow.gameState].ToString("X2");
                     owForm.largemapCheckbox.Checked = ow.allmaps[ow.allmaps[selectedMap].parent].largeMap;
+                    owForm.BGColorToUpdate = ow.allmaps[selectedMap].parent;
                 }
 
                 owForm.propertiesChangedFromForm = false;
                 owForm.tilePictureBox.Refresh();
+
+                owForm.areaBGColorPictureBox.Refresh();
             }
 
             owForm.BuildScratchTilesGfx();
@@ -196,73 +199,82 @@ namespace ZeldaFullEditor
             int superX = (tileX / 32);
             int superY = (tileY / 32);
             int mapId = (superY * 8) + superX;
-            globalmouseTileDownX = tileX;
-            globalmouseTileDownY = tileY;
+            
+            if(mapId + ow.worldOffset < ow.allmaps.Length)
+            {
+                globalmouseTileDownX = tileX;
+                globalmouseTileDownY = tileY;
 
-            mainForm.anychange = true;
-            selectedMap = mapId;
-            selectedMapParent = ow.allmaps[selectedMap + ow.worldOffset].parent;
+                mainForm.anychange = true;
+                selectedMap = mapId;
 
-            owForm.previewTextPicturebox.Visible = false;
-            updateMapGfx();
-            owForm.updateTiles();
+                selectedMapParent = ow.allmaps[selectedMap + ow.worldOffset].parent;
 
-            if (selectedMode == ObjectMode.Tile)
-            {
-                tilemode.OnMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Overlay)
-            {
-                overlayMode.OnMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Exits)
-            {
-                exitmode.onMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.OWDoor)
-            {
-                doorMode.OnMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Entrances)
-            {
-                entranceMode.onMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Itemmode)
-            {
-                itemMode.onMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Spritemode)
-            {
-                spriteMode.onMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Flute)
-            {
-                transportMode.onMouseDown(e);
-            }
-            else if (selectedMode == ObjectMode.Gravestone)
-            {
-                gravestoneMode.onMouseDown(e);
-            }
+                owForm.previewTextPicturebox.Visible = false;
+                updateMapGfx();
+                owForm.updateTiles();
 
-            if (lowEndMode)
-            {
-                int x = ow.allmaps[selectedMap].parent % 8;
-                int y = ow.allmaps[selectedMap].parent / 8;
-                if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                if (selectedMode == ObjectMode.Tile)
                 {
-                    Invalidate(new Rectangle(x*512, y*512, 512, 512));
+                    tilemode.OnMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Overlay)
+                {
+                    overlayMode.OnMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Exits)
+                {
+                    exitmode.onMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.OWDoor)
+                {
+                    doorMode.OnMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Entrances)
+                {
+                    entranceMode.onMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Itemmode)
+                {
+                    itemMode.onMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Spritemode)
+                {
+                    spriteMode.onMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Flute)
+                {
+                    transportMode.onMouseDown(e);
+                }
+                else if (selectedMode == ObjectMode.Gravestone)
+                {
+                    gravestoneMode.onMouseDown(e);
+                }
+
+                if (lowEndMode)
+                {
+                    int x = ow.allmaps[selectedMap].parent % 8;
+                    int y = ow.allmaps[selectedMap].parent / 8;
+                    if (!ow.allmaps[ow.allmaps[selectedMap].parent].largeMap)
+                    {
+                        Invalidate(new Rectangle(x * 512, y * 512, 512, 512));
+                    }
+                    else
+                    {
+                        Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                    }
                 }
                 else
                 {
-                    Invalidate(new Rectangle(x * 512, y * 512, 1024, 1024));
+                    Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
                 }
+
+                base.OnMouseDown(e);
             }
             else
             {
-                Invalidate(new Rectangle(owForm.splitContainer1.Panel2.HorizontalScroll.Value, owForm.splitContainer1.Panel2.VerticalScroll.Value, owForm.splitContainer1.Panel2.Width, owForm.splitContainer1.Panel2.Height));
+                Console.WriteLine("Invalid area selected");
             }
-
-            base.OnMouseDown(e);
         }
 
         private unsafe void onMouseUp(object sender, MouseEventArgs e)
@@ -738,6 +750,10 @@ namespace ZeldaFullEditor
                     {
                         g.Clear(Palettes.overworld_GrassPalettes[1]);
                     }
+                    else if (ow.worldOffset == 128)
+                    {
+                        g.Clear(Palettes.overworld_GrassPalettes[2]);
+                    }
                     else
                     {
                         g.Clear(Palettes.overworld_GrassPalettes[0]);
@@ -785,6 +801,24 @@ namespace ZeldaFullEditor
                                 {
                                     g.CompositingMode = CompositingMode.SourceOver;
                                     g.DrawImage(ow.allmaps[150].gfxBitmap, new PointF(x * 512, y * 512));
+                                }
+                            }
+                            else
+                            {
+                                if (i < 64)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawRectangle(new Pen(Palettes.overworld_GrassPalettes[0]), new Rectangle(x * 512, y * 512, 512, 512));
+                                }
+                                else if (i >= 64 && i < 128)
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawRectangle(new Pen(Palettes.overworld_GrassPalettes[1]), new Rectangle(x * 512, y * 512, 512, 512));
+                                }
+                                else
+                                {
+                                    g.CompositingMode = CompositingMode.SourceOver;
+                                    g.DrawRectangle(new Pen(Palettes.overworld_GrassPalettes[2]), new Rectangle(x * 512, y * 512, 512, 512));
                                 }
                             }
 
@@ -838,15 +872,25 @@ namespace ZeldaFullEditor
                     g.DrawRectangle(Pens.LightGreen, new Rectangle((mouseX_Real / 16) * 16, (mouseY_Real / 16) * 16, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16));
                 }
 
-                int my = (ow.allmaps[mapHover].parent / 8);
-                int mx = ow.allmaps[mapHover].parent - (my * 8);
-                if (ow.allmaps[mapHover].largeMap)
+                int offset = 0;
+                if(selectedMap >= 128)
                 {
-                    g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 1024, 1024));
+                    offset = 128;
                 }
-                else
+
+                if((mapHover + offset) < ow.allmaps.Length)
                 {
-                    g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 512, 512));
+                    int my = (ow.allmaps[mapHover + offset].parent - offset) / 8;
+                    int mx = (ow.allmaps[mapHover + offset].parent - offset) - (my * 8);
+
+                    if (ow.allmaps[mapHover + offset].largeMap)
+                    {
+                        g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 1024, 1024));
+                    }
+                    else
+                    {
+                        g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, 512, 512));
+                    }
                 }
 
                 if (showExits)
@@ -891,7 +935,7 @@ namespace ZeldaFullEditor
                 {
                     int mid = ow.allmaps[selectedMap].parent;
                     int msy = ((ow.allmaps[selectedMap].parent - ow.worldOffset) / 8);
-                    int msx = (ow.allmaps[selectedMap].parent - ow.worldOffset) - (my * 8);
+                    int msx = (ow.allmaps[selectedMap].parent - ow.worldOffset) - (msy * 8);
                     drawText(g, 0 + 4, 0 + 64, "Selected Map : " + selectedMap.ToString());
                     drawText(g, 0 + 4, 0 + 80, "Selected Map PARENT : " + ow.allmaps[selectedMap].parent.ToString());
                     drawText(g, (msx * 512) + 4, (msy * 512) + 4, "use ctrl key + click to delete overlay tiles");
@@ -963,11 +1007,11 @@ namespace ZeldaFullEditor
             }
         }
 
-        //0 = none
-        //1 = left
-        //2 = up
-        //4 = right
-        //8 = bottom
+        // 0 = none
+        // 1 = left
+        // 2 = up
+        // 4 = right
+        // 8 = bottom
 
         public byte compareTilePos(TilePos tpc, TilePos[] tpa)
         {
@@ -1039,9 +1083,10 @@ namespace ZeldaFullEditor
 
         public void drawGrid(Graphics graphics)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
 
-            /*if (showGrid)
+            /*
+            if (showGrid)
             {
                 //int s = mainForm.gridSize;
                 int wh = (512 / s)+1;
@@ -1054,7 +1099,8 @@ namespace ZeldaFullEditor
                 {
                     graphics.DrawLine(new Pen(Color.FromArgb(128, 255, 255, 255)), 0, y * s, 512, y * s);
                 }
-            }*/
+            }
+            */
         }
 
 

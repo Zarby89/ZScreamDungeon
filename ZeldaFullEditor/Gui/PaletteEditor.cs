@@ -30,13 +30,17 @@ namespace ZeldaFullEditor.Gui
 
         ColorDialog cd = new ColorDialog();
 
+        DungeonMain mainForm;
+        Color[] selectedPalette = null;
+        int selectedX = 16;
+
         public PaletteEditor(DungeonMain mainForm)
         {
             InitializeComponent();
             this.mainForm = mainForm;
 
             CreateTempPalettes();
-            //Create temp of all palettes
+            // Create temp of all palettes
             for (int i = 0;i<2;i++)
             {
                 palettesTreeView.Nodes["HudPal"].Nodes.Add("Hud " + i.ToString("D2"));
@@ -98,9 +102,6 @@ namespace ZeldaFullEditor.Gui
             }
         }
 
-        DungeonMain mainForm;
-        Color[] selectedPalette = null;
-        int selectedX = 16;
         private void PaletteEditor_VisibleChanged(object sender, EventArgs e)
         {
             this.BackColor = Color.FromKnownColor(KnownColor.Control);
@@ -110,17 +111,17 @@ namespace ZeldaFullEditor.Gui
         {
             CreateTempPalettes();
             
-            //Recreate temp of all palettes
+            // Recreate temp of all palettes
         }
 
         private void PaletteEditor_Load(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         private void restoreallButton_Click(object sender, EventArgs e)
         {
-            //Restore temp of all palettes
+            // Restore temp of all palettes
             if (MessageBox.Show("Are you sure you want to restore all palettes " +
                 "to the last applied values?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
@@ -133,7 +134,7 @@ namespace ZeldaFullEditor.Gui
             restoreSelected();
             refreshallGfx();
 
-            //Restore the temp selected palette only
+            // Restore the temp selected palette only
         }
 
         private void refreshallGfx()
@@ -598,11 +599,6 @@ namespace ZeldaFullEditor.Gui
 
                 refreshallGfx();
             }
-        }
-
-        private void palettePicturebox_Click(object sender, EventArgs e)
-        {
-            //TODO: Add something here?
         }
     }
 }

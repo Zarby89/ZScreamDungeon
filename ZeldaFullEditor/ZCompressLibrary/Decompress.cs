@@ -41,7 +41,7 @@ namespace ZCompressLibrary
                 byte command;
 
                 command = (byte)(header >> 5); // 3 hightest bits are the command
-                length = (header & 0x1F); // the rest is the length
+                length = (header & 0x1F); // The rest is the length
 
                 // Extended header, to allow for bigger length value than 32
                 if (command == 7)
@@ -49,7 +49,7 @@ namespace ZCompressLibrary
                     // The command are the next 3 bits
                     command = (byte)((header >> 2) & 7);
                     // 2 bits in the original header are the height bit for the new length
-                    // the next byte is added to this length
+                    // The next byte is added to this length
 
                     length = ((int)((header & 3) << 8)) + (byte)c_data[c_data_pos + 1];
                     c_data_pos++;
@@ -153,10 +153,13 @@ namespace ZCompressLibrary
                         break;
 
                     default:
-                        //{
-                        //    std_nintendo_decompression_error = "Invalid command in the header for decompression";
-                        //    goto error;
-                        //}
+                        /*
+                        {
+                            std_nintendo_decompression_error = "Invalid command in the header for decompression";
+                            goto error;
+                        }
+                        */
+
                         throw new Exception("Invalid command in the header for decompression");
                 }
 

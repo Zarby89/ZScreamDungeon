@@ -53,11 +53,9 @@ namespace ZeldaFullEditor
 
             if (log)
             {
-
-                    advancedLogData.Add(new LogInfos(addr, addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : " + value.ToString("X2") + " // " + info + "\r\n"));
+                advancedLogData.Add(new LogInfos(addr, addr.ToString("X6") + "/" + Utils.PcToSnes(addr).ToString("X6") + " : " + value.ToString("X2") + " // " + info + "\r\n"));
                 
                 //romLog.Append(addr.ToString("X6") +"/" + Utils.PcToSnes(addr).ToString("X6") +" : " +value.ToString("X2") + " // " + info + "\r\n");
-               
             }
         }
 

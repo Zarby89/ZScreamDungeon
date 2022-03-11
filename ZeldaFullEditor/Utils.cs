@@ -31,7 +31,7 @@ namespace ZeldaFullEditor
             }
 
             return BitConverter.ToInt32(b, 0);
-            //snes always have + 0x8000 no matter what, the bank on pc is always / 2
+            // SNES always have + 0x8000 no matter what, the bank on pc is always / 2
 
             //return ((addr * 2) & 0xFF0000) + (addr & 0x7FFF) + 0x8000;
         }
@@ -74,46 +74,73 @@ namespace ZeldaFullEditor
 
         public static int Clamp(int v, int min, int max)
         {
-            if (v >= max) { v = max; }
-            if (v <= min) { v = min; }
+            if (v >= max) 
+            {
+                v = max; 
+            }
+            if (v <= min)
+            {
+                v = min; 
+            }
+
             return (v );
         }
 
         public static short Clamp(short v, int min, int max)
         {
-            if (v >= max) { v = (short)max; }
-            if (v <= min) { v = (short)min; }
+            if (v >= max) 
+            { 
+                v = (short)max;
+            }
+            if (v <= min) 
+            {
+                v = (short)min; 
+            }
+
             return (v);
         }
 
         public static byte Clamp(byte v, int min, int max)
         {
-            if (v >= max) { v = (byte)max; }
-            if (v <= min) { v = (byte)min; }
+            if (v >= max) 
+            {
+                v = (byte)max; 
+            }
+            if (v <= min) 
+            { 
+                v = (byte)min; 
+            }
+
             return (v);
         }
 
-        public static string[] DeepCopyStrings(string[] a) {
+        public static string[] DeepCopyStrings(string[] a) 
+        {
             string[] ret = new string[a.Length];
             int i = 0;
-            foreach (string s in a) {
+            foreach (string s in a) 
+            {
                 ret[i++] = s.Substring(0);
             }
+
             return ret;
         }
 
-        public static string[] CreateIndexedList(string[] a) {
+        public static string[] CreateIndexedList(string[] a) 
+        {
             string[] ret = new string[a.Length];
             int i = 0;
-            foreach (string s in a) {
+            foreach (string s in a)
+            {
                 ret[i++] = string.Format("{0:X2} - {1}", i, s);
 			}
+
             return ret;
 		}
+
         public static string ForceTextToHex(string s) {
 
             return Regex.Replace(s, @"[^A-F\d]", "");
-
         }
     }
 }

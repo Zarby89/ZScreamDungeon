@@ -21,7 +21,7 @@ namespace ZeldaFullEditor
         public ObjectOption options { get; set; }
 
         public Type type;
-        public SaveObject(Sprite sprite) //Sprite Format
+        public SaveObject(Sprite sprite) // Sprite Format
         {
             this.x = sprite.x;
             this.y = sprite.y;
@@ -31,7 +31,7 @@ namespace ZeldaFullEditor
             type = typeof(Sprite);
         }
 
-        public SaveObject(Room_Object o) //Room_Object
+        public SaveObject(Room_Object o) // Room_Object
         {
             this.x = o.x;
             this.y = o.y;
@@ -42,7 +42,7 @@ namespace ZeldaFullEditor
             type = typeof(Room_Object);
         }
 
-        public SaveObject(PotItem o) //Pot Item
+        public SaveObject(PotItem o) // Pot Item
         {
             this.x = o.x;
             this.y = o.y;
@@ -64,7 +64,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        public SaveObject(BinaryReader br, Type type) // from file
+        public SaveObject(BinaryReader br, Type type) // From file
         {
             tid = br.ReadInt16();
             x = br.ReadByte();
