@@ -36,6 +36,32 @@ namespace ZeldaFullEditor
             //return ((addr * 2) & 0xFF0000) + (addr & 0x7FFF) + 0x8000;
         }
 
+        /// gets a 24-bit address from the specified snes address, using the input's high byte as the bank
+        public static int Get24Local(int addr, bool pc = true) {
+            int a = SnesToPc(addr);
+            int ret = (addr & 0xFF0000) |
+                       (ROM.DATA[a + 1] << 8) |
+                       ROM.DATA[a];
+            if (pc) {
+                return SnesToPc(ret);
+            } else {
+                return ret;
+            }
+        }
+
+        /// gets a 24-bit address from the specified snes address, using the input's high byte as the bank
+        public static int Get24LocalFromPC(int addr, bool pc = true) {
+            int ret = (PcToSnes(addr) & 0xFF0000) |
+                       (ROM.DATA[addr + 1] << 8) |
+                       ROM.DATA[addr];
+            if (pc) {
+                return SnesToPc(ret);
+            } else {
+                return ret;
+            }
+        }
+
+
         public static int AddressFromBytes(byte addr1, byte addr2, byte addr3)
         {
             return (addr1 << 16) | (addr2 << 8) | addr3;

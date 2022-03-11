@@ -30,17 +30,22 @@
 			this.SeparatorChoose = new System.Windows.Forms.ComboBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.SizeOfMessage = new System.Windows.Forms.Label();
+			this.radioButton1 = new System.Windows.Forms.RadioButton();
+			this.radioButton2 = new System.Windows.Forms.RadioButton();
 			this.SuspendLayout();
 			// 
 			// textBox1
 			// 
+			this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.textBox1.BackColor = System.Drawing.SystemColors.Window;
 			this.textBox1.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
 			this.textBox1.Location = new System.Drawing.Point(2, 26);
 			this.textBox1.Multiline = true;
 			this.textBox1.Name = "textBox1";
 			this.textBox1.ReadOnly = true;
 			this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.textBox1.Size = new System.Drawing.Size(471, 226);
+			this.textBox1.Size = new System.Drawing.Size(417, 226);
 			this.textBox1.TabIndex = 0;
 			// 
 			// label1
@@ -55,7 +60,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(220, 264);
+			this.label2.Location = new System.Drawing.Point(12, 294);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(53, 13);
 			this.label2.TabIndex = 2;
@@ -83,7 +88,7 @@
             "None",
             "Space",
             "Comma"});
-			this.SeparatorChoose.Location = new System.Drawing.Point(279, 261);
+			this.SeparatorChoose.Location = new System.Drawing.Point(71, 291);
 			this.SeparatorChoose.Name = "SeparatorChoose";
 			this.SeparatorChoose.Size = new System.Drawing.Size(121, 21);
 			this.SeparatorChoose.TabIndex = 4;
@@ -106,11 +111,40 @@
 			this.SizeOfMessage.Size = new System.Drawing.Size(0, 13);
 			this.SizeOfMessage.TabIndex = 6;
 			// 
+			// radioButton1
+			// 
+			this.radioButton1.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.radioButton1.AutoSize = true;
+			this.radioButton1.Checked = true;
+			this.radioButton1.Location = new System.Drawing.Point(313, 265);
+			this.radioButton1.Name = "radioButton1";
+			this.radioButton1.Size = new System.Drawing.Size(83, 17);
+			this.radioButton1.TabIndex = 7;
+			this.radioButton1.TabStop = true;
+			this.radioButton1.Text = "Compressed";
+			this.radioButton1.UseVisualStyleBackColor = true;
+			this.radioButton1.CheckedChanged += new System.EventHandler(this.FormatCheckedChanged);
+			// 
+			// radioButton2
+			// 
+			this.radioButton2.Anchor = System.Windows.Forms.AnchorStyles.Right;
+			this.radioButton2.AutoSize = true;
+			this.radioButton2.Location = new System.Drawing.Point(313, 288);
+			this.radioButton2.Name = "radioButton2";
+			this.radioButton2.Size = new System.Drawing.Size(58, 17);
+			this.radioButton2.TabIndex = 8;
+			this.radioButton2.Text = "Parsed";
+			this.radioButton2.UseVisualStyleBackColor = true;
+			this.radioButton2.CheckedChanged += new System.EventHandler(this.FormatCheckedChanged);
+			// 
 			// MessageAsBytes
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(475, 290);
+			this.BackColor = System.Drawing.SystemColors.Control;
+			this.ClientSize = new System.Drawing.Size(421, 322);
+			this.Controls.Add(this.radioButton2);
+			this.Controls.Add(this.radioButton1);
 			this.Controls.Add(this.SizeOfMessage);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.SeparatorChoose);
@@ -135,5 +169,7 @@
 		private System.Windows.Forms.ComboBox SeparatorChoose;
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.Label SizeOfMessage;
+		private System.Windows.Forms.RadioButton radioButton1;
+		private System.Windows.Forms.RadioButton radioButton2;
 	}
 }

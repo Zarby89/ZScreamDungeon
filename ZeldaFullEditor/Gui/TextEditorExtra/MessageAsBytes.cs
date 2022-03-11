@@ -8,11 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZeldaFullEditor.Gui.TextEditorExtra 
-{
-	public partial class MessageAsBytes : Form 
-	{
-		private byte[] data;
+
+namespace ZeldaFullEditor.Gui.TextEditorExtra {
+	public partial class MessageAsBytes : Form {
+		private byte[] datar;
+		private byte[] datap;
+		private bool showparsed = false;
+
 		private int sep = 1;
 		private int pre = 0;
 
@@ -23,26 +25,26 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra
 			PrefixChoose.SelectedIndex = pre;
 		}
 
-		public void ShowBytes(byte[] d) 
-		{
-			data = d;
-			SizeOfMessage.Text = string.Format("{0:D} (0x{0:X}) bytes", d.Length + 1);
+		public void ShowBytes(TextEditor.MessageData a) {
+			datar = a.Data;
+			datap = a.DataParsed;
+
 			UpdateTextBox();
 			ShowDialog();
 		}
 
-		private void UpdateTextBox() 
-		{
-			StringBuilder s = new StringBuilder();
-			if (data == null) 
-			{
+		private void UpdateTextBox() {
+			byte[] data = showparsed ? datap : datar;
+
+			if (data == null) {
 				return;
 			}
 
-			foreach (byte b in data) 
-			{
-				switch (pre) 
-				{
+			StringBuilder s = new StringBuilder();
+			SizeOfMessage.Text = string.Format("{0:D} (0x{0:X}) bytes", data.Length + 1);
+
+			foreach (byte b in data) {
+				switch (pre) {
 					case 0:
 					default:
 						break;
@@ -96,6 +98,11 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra
 		private void PrefixChoose_SelectedIndexChanged(object sender, EventArgs e) 
 		{
 			pre = PrefixChoose.SelectedIndex;
+			UpdateTextBox();
+		}
+
+		private void FormatCheckedChanged(object sender, EventArgs e) {
+			showparsed = radioButton2.Checked;
 			UpdateTextBox();
 		}
 	}
