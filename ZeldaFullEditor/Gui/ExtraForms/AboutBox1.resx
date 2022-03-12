@@ -171,7 +171,7 @@ Author:
 Other contributors:
 * kan - Logo, feedback, proofreading, code
 * Scawful - Code
-* Jared_Brian_ - Code
+* Jared_Brian_ - Code, Git management
 
 Special thanks:
 * MathOnNapkins - Documentation and help
@@ -211,7 +211,7 @@ Links:
     <value>30</value>
   </data>
   <data name="AboutVersion.Text" xml:space="preserve">
-    <value>Version 1.0.2 Doodoo</value>
+    <value>Version 1.0.3 Doodoo</value>
   </data>
   <data name="&gt;&gt;AboutVersion.Name" xml:space="preserve">
     <value>AboutVersion</value>
