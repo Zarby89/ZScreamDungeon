@@ -94,27 +94,25 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
         private const string Format3 = "X3";
         private const string Format4 = "X4";
         private bool enforcepad = false;
-        private void updateText(bool pad = false) {
-            enforcepad = pad;
+        private void updateText() {
             switch (Digits) {
                 case hexDigits.One:
-                    this.Text = hexValue.ToString(pad ? Format1 : Format0);
+                    this.Text = hexValue.ToString(enforcepad ? Format1 : Format0);
                     this.MaxLength = 1;
                     break;
                 case hexDigits.Two:
-                    this.Text = hexValue.ToString(pad ? Format2 : Format0);
+                    this.Text = hexValue.ToString(enforcepad ? Format2 : Format0);
                     this.MaxLength = 2;
                     break;
                 case hexDigits.Three:
-                    this.Text = hexValue.ToString(pad ? Format3 : Format0);
+                    this.Text = hexValue.ToString(enforcepad ? Format3 : Format0);
                     this.MaxLength = 3;
                     break;
                 case hexDigits.Four:
-                    this.Text = hexValue.ToString(pad ? Format4 : Format0);
+                    this.Text = hexValue.ToString(enforcepad ? Format4 : Format0);
                     this.MaxLength = 4;
                     break;
             }
-            enforcepad = false;
         }
 
         private void enforceRange() {
@@ -146,7 +144,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
             hexValue = tb;
 
             enforceRange();
-            updateText(!enforcepad);
+            updateText();
 
             if (!disableTextChanged) //
             {
@@ -165,7 +163,9 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
             }
 
             enforceRange();
-            updateText(true);
+            enforcepad = true;
+            updateText();
+            enforcepad = false;
             base.OnMouseWheel(e);
         }
 
@@ -175,7 +175,9 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
             }
 
             enforceRange();
-            updateText(true);
+            enforcepad = true;
+            updateText();
+            enforcepad = false;
             base.OnLeave(e);
         }
 
@@ -184,7 +186,9 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
                 hexValue = minValue;
             }
             enforceRange();
-            updateText(true);
+            enforcepad = true;
+            updateText();
+            enforcepad = false;
             base.OnLostFocus(e);
         }
     }
