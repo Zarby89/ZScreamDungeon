@@ -36,8 +36,8 @@ namespace ZeldaFullEditor {
         public TextEditor() 
         {
             InitializeComponent();
-            this.TextCommandList.Items.AddRange(TextEditor.GetElementListing(TCommands));
-            this.SpecialsList.Items.AddRange(TextEditor.GetElementListing(SpecialChars));
+            this.TextCommandList.Items.AddRange(TCommands);
+            this.SpecialsList.Items.AddRange(SpecialChars);
             pictureBox1.MouseWheel += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseWheel);
         }
 
@@ -78,6 +78,7 @@ namespace ZeldaFullEditor {
             private readonly bool hasParam; public bool HasArgument { get => hasParam; }
             private readonly byte b; public byte ID { get => b; }
             private readonly string gt; public string GenericToken { get => gt; }
+            private readonly string strout;
 
             public TextElement(byte a, string t, bool arg, string d) 
             {
@@ -96,7 +97,8 @@ namespace ZeldaFullEditor {
 
                 desc = d;
                 b = a;
-			}
+                strout = string.Format("{0} {1}", gt, desc);
+            }
 
             public string GetParameterizedToken(byte b) 
             {
@@ -109,6 +111,10 @@ namespace ZeldaFullEditor {
                     return string.Format("[{0}]", token);
                 }
             }
+
+            override public string ToString() {
+                return strout;
+			}
 
             public Match MatchMe(string dfrag) 
             {
@@ -403,19 +409,6 @@ namespace ZeldaFullEditor {
                 { 0x65, ' ' },
                 { 0x66, '_' },
         };
-
-        public static string[] GetElementListing(TextElement[] list) 
-        {
-            string[] ret = new string[list.Length];
-
-            int i = 0;
-            foreach (TextElement t in list) 
-            {
-                ret[i++] = string.Format( "{0} {1}", t.GenericToken, t.Description);
-            }
-
-            return ret;
-        }
 
         private void TextEditor_Load(object sender, EventArgs e) 
         {
@@ -1147,9 +1140,7 @@ namespace ZeldaFullEditor {
         /// <param name="e"></param>
         private void InsertCommandButton_Click_1(object sender, EventArgs e) 
         {
-            Byte.TryParse(ParamsBox.Text, NumberStyles.HexNumber, null, out byte par);
-
-            InsertSelectedText(TCommands[TextCommandList.SelectedIndex].GetParameterizedToken(par));
+            InsertSelectedText(TCommands[TextCommandList.SelectedIndex].GetParameterizedToken((byte) ParamsBox.HexValue));
         }
 
         /// <summary>
@@ -1351,12 +1342,8 @@ namespace ZeldaFullEditor {
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e) 
         {
-            ParamsBox.Enabled = (TextCommandList.SelectedIndex <= 8);
+            ParamsBox.Enabled = TCommands[TextCommandList.SelectedIndex].HasArgument;
         }
-
-		private void ParamsBox_TextChanged(object sender, EventArgs e) {
-            ParamsBox.Text = Utils.ForceTextToHex(ParamsBox.Text);
-		}
 
 		readonly MessageAsBytes byter = new MessageAsBytes();
 		private void BytesDDD_Click(object sender, EventArgs e) {

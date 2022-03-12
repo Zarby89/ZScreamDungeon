@@ -35,6 +35,7 @@
 			this.searchTextbox = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.ParamsBox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.fontGridBox = new System.Windows.Forms.CheckBox();
 			this.BytesDDD = new System.Windows.Forms.Button();
 			this.label11 = new System.Windows.Forms.Label();
@@ -45,7 +46,6 @@
 			this.TextCommandList = new System.Windows.Forms.ListBox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.ParamsBox = new System.Windows.Forms.TextBox();
 			this.label12 = new System.Windows.Forms.Label();
 			this.button5 = new System.Windows.Forms.Button();
 			this.button6 = new System.Windows.Forms.Button();
@@ -135,6 +135,7 @@
 			// 
 			this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.panel2.Controls.Add(this.ParamsBox);
 			this.panel2.Controls.Add(this.fontGridBox);
 			this.panel2.Controls.Add(this.BytesDDD);
 			this.panel2.Controls.Add(this.label11);
@@ -145,7 +146,6 @@
 			this.panel2.Controls.Add(this.TextCommandList);
 			this.panel2.Controls.Add(this.label3);
 			this.panel2.Controls.Add(this.textBox1);
-			this.panel2.Controls.Add(this.ParamsBox);
 			this.panel2.Controls.Add(this.label12);
 			this.panel2.Controls.Add(this.button5);
 			this.panel2.Controls.Add(this.button6);
@@ -161,6 +161,21 @@
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(520, 715);
 			this.panel2.TabIndex = 23;
+			// 
+			// ParamsBox
+			// 
+			this.ParamsBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.ParamsBox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.ParamsBox.HexValue = 0;
+			this.ParamsBox.Location = new System.Drawing.Point(483, 153);
+			this.ParamsBox.MaxLength = 2;
+			this.ParamsBox.MaxValue = 255;
+			this.ParamsBox.MinValue = 0;
+			this.ParamsBox.Name = "ParamsBox";
+			this.ParamsBox.Size = new System.Drawing.Size(32, 20);
+			this.ParamsBox.TabIndex = 35;
+			this.ParamsBox.Text = "0";
+			this.ParamsBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// fontGridBox
 			// 
@@ -257,18 +272,6 @@
 			this.textBox1.Size = new System.Drawing.Size(340, 152);
 			this.textBox1.TabIndex = 20;
 			this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-			// 
-			// ParamsBox
-			// 
-			this.ParamsBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.ParamsBox.Location = new System.Drawing.Point(489, 153);
-			this.ParamsBox.MaxLength = 2;
-			this.ParamsBox.Name = "ParamsBox";
-			this.ParamsBox.Size = new System.Drawing.Size(26, 20);
-			this.ParamsBox.TabIndex = 26;
-			this.ParamsBox.Text = "00";
-			this.ParamsBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.ParamsBox.TextChanged += new System.EventHandler(this.ParamsBox_TextChanged);
 			// 
 			// label12
 			// 
@@ -533,7 +536,6 @@
         public System.Windows.Forms.PictureBox pictureBox1;
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.ListBox TextCommandList;
-		private System.Windows.Forms.TextBox ParamsBox;
 		private System.Windows.Forms.Label label12;
 		private System.Windows.Forms.ListBox SpecialsList;
 		private System.Windows.Forms.Button button5;
@@ -555,5 +557,6 @@
 		private System.Windows.Forms.Button BytesDDD;
 		private System.Windows.Forms.PictureBox pictureBox3;
 		private System.Windows.Forms.CheckBox fontGridBox;
+		private Gui.ExtraForms.Hexbox ParamsBox;
 	}
 }

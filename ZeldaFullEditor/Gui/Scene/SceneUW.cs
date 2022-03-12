@@ -440,61 +440,61 @@ namespace ZeldaFullEditor
                     mainForm.selectedEntrance.YScroll = (short)(mainForm.selectedEntrance.XCamera + (ex * 512));
                     mainForm.selectedEntrance.XScroll = (short)(mainForm.selectedEntrance.YCamera + (ey * 512));
 
-                    mainForm.selectedEntrance.scrolledge_HL = (byte)(ex * 2);
-                    mainForm.selectedEntrance.scrolledge_FL = (byte)(ex * 2);
-                    mainForm.selectedEntrance.scrolledge_HR = (byte)(ex * 2);
-                    mainForm.selectedEntrance.scrolledge_FR = (byte)((ex * 2) + 1);
+                    mainForm.selectedEntrance.cameraBoundaryQW = (byte)(ex * 2);
+                    mainForm.selectedEntrance.cameraBoundaryFW = (byte)(ex * 2);
+                    mainForm.selectedEntrance.cameraBoundaryQE = (byte)(ex * 2);
+                    mainForm.selectedEntrance.cameraBoundaryFE = (byte)((ex * 2) + 1);
 
-                    mainForm.selectedEntrance.scrolledge_HU = (byte)((ey * 2) + 1);
-                    mainForm.selectedEntrance.scrolledge_FU = (byte)(ey * 2);
-                    mainForm.selectedEntrance.scrolledge_HD = (byte)((ey * 2) + 1);
-                    mainForm.selectedEntrance.scrolledge_FD = (byte)((ey * 2) + 1);
+                    mainForm.selectedEntrance.cameraBoundaryQN = (byte)((ey * 2) + 1);
+                    mainForm.selectedEntrance.cameraBoundaryFN = (byte)(ey * 2);
+                    mainForm.selectedEntrance.cameraBoundaryQS = (byte)((ey * 2) + 1);
+                    mainForm.selectedEntrance.cameraBoundaryFS = (byte)((ey * 2) + 1);
 
                     if (MX < 256 && MY < 256) // Top left quadrant
                     {
                         mainForm.selectedEntrance.Scrollquadrant = 0x00;
 
-                        mainForm.selectedEntrance.scrolledge_HU = (byte)((ey * 2) + 1);
-                        mainForm.selectedEntrance.scrolledge_FU = (byte)(ey * 2);
-                        mainForm.selectedEntrance.scrolledge_HD = (byte)((ey * 2) + 1);
-                        mainForm.selectedEntrance.scrolledge_FD = (byte)((ey * 2) + 1);
+                        mainForm.selectedEntrance.cameraBoundaryQN = (byte)((ey * 2) + 1);
+                        mainForm.selectedEntrance.cameraBoundaryFN = (byte)(ey * 2);
+                        mainForm.selectedEntrance.cameraBoundaryQS = (byte)((ey * 2) + 1);
+                        mainForm.selectedEntrance.cameraBoundaryFS = (byte)((ey * 2) + 1);
 
-                        mainForm.selectedEntrance.scrolledge_HL = (byte)(ex * 2);
-                        mainForm.selectedEntrance.scrolledge_FL = (byte)(ex * 2);
-                        mainForm.selectedEntrance.scrolledge_HR = (byte)(ex * 2);
-                        mainForm.selectedEntrance.scrolledge_FR = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.cameraBoundaryQW = (byte)(ex * 2);
+                        mainForm.selectedEntrance.cameraBoundaryFW = (byte)(ex * 2);
+                        mainForm.selectedEntrance.cameraBoundaryQE = (byte)(ex * 2);
+                        mainForm.selectedEntrance.cameraBoundaryFE = (byte)((ex * 2) + 1);
                     }
 
                     if (MX > 256 && MY < 256) // Top right quadrant
                     {
                         mainForm.selectedEntrance.Scrollquadrant = 0x10;
-                        mainForm.selectedEntrance.scrolledge_HU = (byte)((ey * 2)+1);
-                        mainForm.selectedEntrance.scrolledge_FU = (byte)(ey * 2);
-                        mainForm.selectedEntrance.scrolledge_HD = (byte)((ey * 2)+1);
-                        mainForm.selectedEntrance.scrolledge_FD = (byte)((ey * 2)+1);
+                        mainForm.selectedEntrance.cameraBoundaryQN = (byte)((ey * 2)+1);
+                        mainForm.selectedEntrance.cameraBoundaryFN = (byte)(ey * 2);
+                        mainForm.selectedEntrance.cameraBoundaryQS = (byte)((ey * 2)+1);
+                        mainForm.selectedEntrance.cameraBoundaryFS = (byte)((ey * 2)+1);
 
-                        mainForm.selectedEntrance.scrolledge_HL = (byte)((ex * 2) + 1);
-                        mainForm.selectedEntrance.scrolledge_FL = (byte)((ex * 2) + 1);
-                        mainForm.selectedEntrance.scrolledge_HR = (byte)((ex * 2) + 1);
-                        mainForm.selectedEntrance.scrolledge_FR = (byte)((ex * 2) + 2);
+                        mainForm.selectedEntrance.cameraBoundaryQW = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.cameraBoundaryFW = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.cameraBoundaryQE = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.cameraBoundaryFE = (byte)((ex * 2) + 2);
                     }
 
                     if (MX < 256 && MY > 256) // Bottom left quadrant
                     {
                         mainForm.selectedEntrance.Scrollquadrant = 0x02;
-                        mainForm.selectedEntrance.scrolledge_HL = (byte)(ex * 2);
-                        mainForm.selectedEntrance.scrolledge_FL = (byte)(ex * 2);
-                        mainForm.selectedEntrance.scrolledge_HR = (byte)(ex * 2);
-                        mainForm.selectedEntrance.scrolledge_FR = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.cameraBoundaryQW = (byte)(ex * 2);
+                        mainForm.selectedEntrance.cameraBoundaryFW = (byte)(ex * 2);
+                        mainForm.selectedEntrance.cameraBoundaryQE = (byte)(ex * 2);
+                        mainForm.selectedEntrance.cameraBoundaryFE = (byte)((ex * 2) + 1);
                     }
 
                     if (MX > 256 && MY > 256) // Bottom right quadrant
                     {
                         mainForm.selectedEntrance.Scrollquadrant = 0x12;
-                        mainForm.selectedEntrance.scrolledge_HL = (byte)((ex * 2) + 1);
-                        mainForm.selectedEntrance.scrolledge_FL = (byte)((ex * 2) + 1);
-                        mainForm.selectedEntrance.scrolledge_HR = (byte)((ex * 2) + 1);
-                        mainForm.selectedEntrance.scrolledge_FR = (byte)((ex * 2) + 2);
+                        mainForm.selectedEntrance.cameraBoundaryQW = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.cameraBoundaryFW = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.cameraBoundaryQE = (byte)((ex * 2) + 1);
+                        mainForm.selectedEntrance.cameraBoundaryFE = (byte)((ex * 2) + 2);
                         mainForm.selectedEntrance.YScroll = (short)((ex * 512) + 256);
                         mainForm.selectedEntrance.XScroll = (short)((ey * 512) + 256);
                     }
@@ -2858,111 +2858,7 @@ namespace ZeldaFullEditor
 
         public void updateRoomInfos(DungeonMain mainForm)
         {
-            mainForm.propertiesChangedFromForm = true;
-            mainForm.roomProperty_bg2.SelectedIndex = (int)room.bg2;
-            mainForm.roomProperty_blockset.Text = room.blockset.ToString("X2");
-            mainForm.roomProperty_tag1.SelectedIndex = (int)room.tag1;
-            mainForm.roomProperty_tag2.SelectedIndex = (int)room.tag2;
-            mainForm.roomProperty_effect.SelectedIndex = (int)room.effect;
-            mainForm.roomProperty_collision.SelectedIndex = (int)room.collision;
-            mainForm.roomProperty_floor1.Text = room.floor1.ToString("X2");
-            mainForm.roomProperty_floor2.Text = room.floor2.ToString("X2");
-
-            mainForm.roomProperty_layout.Text = room.layout.ToString("X2");
-            mainForm.roomProperty_msgid.Text = room.messageid.ToString("X2");
-            mainForm.roomProperty_palette.Text = room.palette.ToString("X2");
-            mainForm.roomProperty_pit.Checked = room.damagepit;
-            mainForm.roomProperty_sortsprite.Checked = room.sortsprites;
-            mainForm.roomProperty_spriteset.Text = room.spriteset.ToString("X2");
-
-            mainForm.roomProperty_hole.Text = room.holewarp.ToString("X2");
-            mainForm.bg2checkbox1.Checked = room.holewarp_plane == 2 ? true : false;
-            mainForm.roomProperty_stair1.Text = room.staircase1.ToString("X2");
-            mainForm.bg2checkbox2.Checked = room.staircase1Plane == 2 ? true : false;
-            mainForm.roomProperty_stair2.Text = room.staircase2.ToString("X2");
-            mainForm.bg2checkbox3.Checked = room.staircase2Plane == 2 ? true : false;
-            mainForm.roomProperty_stair3.Text = room.staircase3.ToString("X2");
-            mainForm.bg2checkbox4.Checked = room.staircase3Plane == 2 ? true : false;
-            mainForm.roomProperty_stair4.Text = room.staircase4.ToString("X2");
-            mainForm.bg2checkbox5.Checked = room.staircase4Plane == 2 ? true : false;
-
-            mainForm.propertiesChangedFromForm = false;
-        }
-
-        public void updateEntranceInfo(DungeonMain mainForm)
-        {
-            mainForm.entranceProperty_room.Text = mainForm.selectedEntrance.Room.ToString("X2");
-            mainForm.entranceProperty_floor.Text = mainForm.selectedEntrance.Floor.ToString("X2");
-            mainForm.entranceProperty_dungeon.Text = mainForm.selectedEntrance.Dungeon.ToString("X2");
-            mainForm.entranceProperty_music.Text = mainForm.selectedEntrance.Music.ToString("X2");
-            mainForm.entranceProperty_blockset.Text = mainForm.selectedEntrance.Blockset.ToString("X2");
-            mainForm.entranceProperty_exit.Text = mainForm.selectedEntrance.Exit.ToString("X2");
-
-            // Jared_Brian_ removed because its not needed right now but may be later
-            /*
-            mainForm.entranceProperty_bg.Checked = false;
-            if ((mainForm.selectedEntrance.Ladderbg & 0x10) == 0x10)
-            {
-                mainForm.entranceProperty_bg.Checked = true;
-            }
-            */
-
-            mainForm.entranceProperty_scrollx.Text = mainForm.selectedEntrance.XScroll.ToString("X4");
-            mainForm.entranceProperty_scrolly.Text = mainForm.selectedEntrance.YScroll.ToString("X4");
-            mainForm.entranceProperty_xpos.Text = mainForm.selectedEntrance.XPosition.ToString("X4");
-            mainForm.entranceProperty_ypos.Text = mainForm.selectedEntrance.YPosition.ToString("X4");
-            mainForm.entranceProperty_camx.Text = mainForm.selectedEntrance.XCamera.ToString("X4");
-            mainForm.entranceProperty_camy.Text = mainForm.selectedEntrance.YCamera.ToString("X4");
-
-            int p = (mainForm.selectedEntrance.Exit & 0x7FFF) >> 1;
-            mainForm.doorxTextbox.Text = (p % 64).ToString("X2");
-            mainForm.dooryTextbox.Text = (p >> 6).ToString("X2");
-
-            //Jared_Brian_ removed because its not needed right now but may be later
-            /*
-            mainForm.entranceProperty_vscroll.Checked = false;
-            mainForm.entranceProperty_hscroll.Checked = false;
-            mainForm.entranceProperty_quadbr.Checked = false;
-            mainForm.entranceProperty_quadbl.Checked = false;
-            mainForm.entranceProperty_quadtl.Checked = false;
-            mainForm.entranceProperty_quadtr.Checked = false;
-            
-            if ((mainForm.selectedEntrance.Scrolling & 0x20) == 0x20)
-            {
-                mainForm.entranceProperty_hscroll.Checked = true;
-            }
-
-            if ((mainForm.selectedEntrance.Scrolling & 0x02) == 0x02)
-            {
-                mainForm.entranceProperty_vscroll.Checked = true;
-            }
-
-            if (mainForm.selectedEntrance.Scrollquadrant == 0x12) //bottom right
-            {
-                mainForm.entranceProperty_quadbr.Checked = true;
-            }
-            else if (mainForm.selectedEntrance.Scrollquadrant == 0x02) //bottom left
-            {
-                mainForm.entranceProperty_quadbl.Checked = true;
-            }
-            else if (mainForm.selectedEntrance.Scrollquadrant == 0x00) //top left
-            {
-                mainForm.entranceProperty_quadtl.Checked = true;
-            }
-            else if (mainForm.selectedEntrance.Scrollquadrant == 0x10) //top right
-            {
-                mainForm.entranceProperty_quadtr.Checked = true;
-            }
-            */
-
-            mainForm.entranceProperty_FU.Text = mainForm.selectedEntrance.scrolledge_FU.ToString("X2");
-            mainForm.entranceProperty_HU.Text = mainForm.selectedEntrance.scrolledge_HU.ToString("X2");
-            mainForm.entranceProperty_HD.Text = mainForm.selectedEntrance.scrolledge_HD.ToString("X2");
-            mainForm.entranceProperty_FD.Text = mainForm.selectedEntrance.scrolledge_FD.ToString("X2");
-            mainForm.entranceProperty_FL.Text = mainForm.selectedEntrance.scrolledge_FL.ToString("X2");
-            mainForm.entranceProperty_FR.Text = mainForm.selectedEntrance.scrolledge_FR.ToString("X2");
-            mainForm.entranceProperty_HL.Text = mainForm.selectedEntrance.scrolledge_HL.ToString("X2");
-            mainForm.entranceProperty_HR.Text = mainForm.selectedEntrance.scrolledge_HR.ToString("X2");
+            mainForm.UpdateUIForRoom(room, true);
         }
     }
 }

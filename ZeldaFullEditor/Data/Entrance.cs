@@ -11,14 +11,14 @@ namespace ZeldaFullEditor
     {
         short room; // word value for each room
 
-        public byte scrolledge_HU; // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-        public byte scrolledge_FU;
-        public byte scrolledge_HD;
-        public byte scrolledge_FD;
-        public byte scrolledge_HL;
-        public byte scrolledge_FL;
-        public byte scrolledge_HR;
-        public byte scrolledge_FR;
+        public byte cameraBoundaryQN; // 8 bytes per room Q (quadrant) and F (full) for cardinal directions NSWE
+        public byte cameraBoundaryFN;
+        public byte cameraBoundaryQS;
+        public byte cameraBoundaryFS;
+        public byte cameraBoundaryQW;
+        public byte cameraBoundaryFW;
+        public byte cameraBoundaryQE;
+        public byte cameraBoundaryFE;
 
         short yscroll; // 2bytes each room
         short xscroll; // 2bytes
@@ -36,7 +36,7 @@ namespace ZeldaFullEditor
         short exit; // 2byte word 
         byte music; // 1byte // Will need to be renamed and changed to add support to MSU1
 
-        [DisplayName("Room Id"), Description("The room id the entrance is leading to"), Category("Entrance")]
+        [DisplayName("Room ID"), Description("The room id the entrance is leading to"), Category("Entrance")]
         public short Room
         {
             get
@@ -157,7 +157,7 @@ namespace ZeldaFullEditor
             }
         }
 
-        [DisplayName("Dungeon Id"), Description("Used to determine what dungeon we are in when entering from that entrance"), Category("Entrance")]
+        [DisplayName("Dungeon ID"), Description("Used to determine what dungeon we are in when entering from that entrance"), Category("Entrance")]
         public byte Dungeon
         {
             get
@@ -267,14 +267,14 @@ namespace ZeldaFullEditor
             scrollquadrant = (byte)(ROM.DATA[(Constants.entrance_scrollquadrant + entranceId)]);
             exit = (short)(((ROM.DATA[(Constants.entrance_exit + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_exit + (entranceId * 2)]);
 
-            scrolledge_HU = (ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))]); // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-            scrolledge_FU = (ROM.DATA[(Constants.entrance_scrolledge + 1 + (entranceId * 8))]);
-            scrolledge_HD = (ROM.DATA[(Constants.entrance_scrolledge + 2 + (entranceId * 8))]);
-            scrolledge_FD = (ROM.DATA[(Constants.entrance_scrolledge + 3 + (entranceId * 8))]);
-            scrolledge_HL = (ROM.DATA[(Constants.entrance_scrolledge + 4 + (entranceId * 8))]);
-            scrolledge_FL = (ROM.DATA[(Constants.entrance_scrolledge + 5 + (entranceId * 8))]);
-            scrolledge_HR = (ROM.DATA[(Constants.entrance_scrolledge + 6 + (entranceId * 8))]);
-            scrolledge_FR = (ROM.DATA[(Constants.entrance_scrolledge + 7 + (entranceId * 8))]);
+            cameraBoundaryQN = (ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))]); // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+            cameraBoundaryFN = (ROM.DATA[(Constants.entrance_scrolledge + 1 + (entranceId * 8))]);
+            cameraBoundaryQS = (ROM.DATA[(Constants.entrance_scrolledge + 2 + (entranceId * 8))]);
+            cameraBoundaryFS = (ROM.DATA[(Constants.entrance_scrolledge + 3 + (entranceId * 8))]);
+            cameraBoundaryQW = (ROM.DATA[(Constants.entrance_scrolledge + 4 + (entranceId * 8))]);
+            cameraBoundaryFW = (ROM.DATA[(Constants.entrance_scrolledge + 5 + (entranceId * 8))]);
+            cameraBoundaryQE = (ROM.DATA[(Constants.entrance_scrolledge + 6 + (entranceId * 8))]);
+            cameraBoundaryFE = (ROM.DATA[(Constants.entrance_scrolledge + 7 + (entranceId * 8))]);
 
 
             if (startingEntrance == true)
@@ -301,14 +301,14 @@ namespace ZeldaFullEditor
                 scrolling = (byte)(ROM.DATA[(Constants.startingentrance_scrolling + entranceId)]);
                 scrollquadrant = (byte)(ROM.DATA[(Constants.startingentrance_scrollquadrant + entranceId)]);
                 exit = (short)(((ROM.DATA[(Constants.startingentrance_exit + (entranceId * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_exit + (entranceId * 2)]);
-                scrolledge_HU = (ROM.DATA[(Constants.startingentrance_scrolledge + 0 + (entranceId * 8))]); // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                scrolledge_FU = (ROM.DATA[(Constants.startingentrance_scrolledge + 1 + (entranceId * 8))]);
-                scrolledge_HD = (ROM.DATA[(Constants.startingentrance_scrolledge + 2 + (entranceId * 8))]);
-                scrolledge_FD = (ROM.DATA[(Constants.startingentrance_scrolledge + 3 + (entranceId * 8))]);
-                scrolledge_HL = (ROM.DATA[(Constants.startingentrance_scrolledge + 4 + (entranceId * 8))]);
-                scrolledge_FL = (ROM.DATA[(Constants.startingentrance_scrolledge + 5 + (entranceId * 8))]);
-                scrolledge_HR = (ROM.DATA[(Constants.startingentrance_scrolledge + 6 + (entranceId * 8))]);
-                scrolledge_FR = (ROM.DATA[(Constants.startingentrance_scrolledge + 7 + (entranceId * 8))]);
+                cameraBoundaryQN = (ROM.DATA[(Constants.startingentrance_scrolledge + 0 + (entranceId * 8))]); // 8 bytes per room
+                cameraBoundaryFN = (ROM.DATA[(Constants.startingentrance_scrolledge + 1 + (entranceId * 8))]);
+                cameraBoundaryQS = (ROM.DATA[(Constants.startingentrance_scrolledge + 2 + (entranceId * 8))]);
+                cameraBoundaryFS = (ROM.DATA[(Constants.startingentrance_scrolledge + 3 + (entranceId * 8))]);
+                cameraBoundaryQW = (ROM.DATA[(Constants.startingentrance_scrolledge + 4 + (entranceId * 8))]);
+                cameraBoundaryFW = (ROM.DATA[(Constants.startingentrance_scrolledge + 5 + (entranceId * 8))]);
+                cameraBoundaryQE = (ROM.DATA[(Constants.startingentrance_scrolledge + 6 + (entranceId * 8))]);
+                cameraBoundaryFE = (ROM.DATA[(Constants.startingentrance_scrolledge + 7 + (entranceId * 8))]);
             }
         }
 
@@ -364,21 +364,21 @@ namespace ZeldaFullEditor
                 //ROM.DATA[Constants.entrance_scrolling + entranceId] = (byte)(scrolling & 0xFF);
                 ROM.Write(Constants.entrance_scrollquadrant + entranceId, (byte)(scrollquadrant & 0xFF), true, "Entrance Related");
                 //ROM.DATA[Constants.entrance_scrollquadrant + entranceId] = (byte)(scrollquadrant & 0xFF);
-                ROM.Write((Constants.entrance_scrolledge + 0 + (entranceId * 8)), scrolledge_HU, true, "Entrance Related");
+                ROM.Write((Constants.entrance_scrolledge + 0 + (entranceId * 8)), cameraBoundaryQN, true, "Entrance Related");
                 //ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))] = scrolledge_HU; //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                ROM.Write((Constants.entrance_scrolledge + 1 + (entranceId * 8)), scrolledge_FU, true, "Entrance Related");
+                ROM.Write((Constants.entrance_scrolledge + 1 + (entranceId * 8)), cameraBoundaryFN, true, "Entrance Related");
                 //ROM.DATA[(Constants.entrance_scrolledge + 1 + (entranceId * 8))] = scrolledge_FU;
-                ROM.Write((Constants.entrance_scrolledge + 2 + (entranceId * 8)), scrolledge_HD, true, "Entrance Related");
+                ROM.Write((Constants.entrance_scrolledge + 2 + (entranceId * 8)), cameraBoundaryQS, true, "Entrance Related");
                 //ROM.DATA[(Constants.entrance_scrolledge + 2 + (entranceId * 8))] = scrolledge_HD;
-                ROM.Write((Constants.entrance_scrolledge + 3 + (entranceId * 8)), scrolledge_FD, true, "Entrance Related");
+                ROM.Write((Constants.entrance_scrolledge + 3 + (entranceId * 8)), cameraBoundaryFS, true, "Entrance Related");
                 //ROM.DATA[(Constants.entrance_scrolledge + 3 + (entranceId * 8))] = scrolledge_FD;
-                ROM.Write((Constants.entrance_scrolledge + 4 + (entranceId * 8)), scrolledge_HL, true, "Entrance Related");
+                ROM.Write((Constants.entrance_scrolledge + 4 + (entranceId * 8)), cameraBoundaryQW, true, "Entrance Related");
                 //ROM.DATA[(Constants.entrance_scrolledge + 4 + (entranceId * 8))] = scrolledge_HL;
-                ROM.Write((Constants.entrance_scrolledge + 5 + (entranceId * 8)), scrolledge_FL, true, "Entrance Related");
+                ROM.Write((Constants.entrance_scrolledge + 5 + (entranceId * 8)), cameraBoundaryFW, true, "Entrance Related");
                 //ROM.DATA[(Constants.entrance_scrolledge + 5 + (entranceId * 8))] = scrolledge_FL;
-                ROM.Write((Constants.entrance_scrolledge + 6 + (entranceId * 8)), scrolledge_HR, true, "Entrance Related");
+                ROM.Write((Constants.entrance_scrolledge + 6 + (entranceId * 8)), cameraBoundaryQE, true, "Entrance Related");
                 //ROM.DATA[(Constants.entrance_scrolledge + 6 + (entranceId * 8))] = scrolledge_HR;
-                ROM.Write((Constants.entrance_scrolledge + 7 + (entranceId * 8)), scrolledge_FR, true, "Entrance Related");
+                ROM.Write((Constants.entrance_scrolledge + 7 + (entranceId * 8)), cameraBoundaryFE, true, "Entrance Related");
                 //ROM.DATA[(Constants.entrance_scrolledge + 7 + (entranceId * 8))] = scrolledge_FR;
             }
             else
@@ -408,14 +408,14 @@ namespace ZeldaFullEditor
                 ROM.Write(Constants.startingentrance_ladderbg + entranceId,(byte)(ladderbg & 0xFF), true, "Starting Entrance Related");
                 ROM.Write(Constants.startingentrance_scrolling + entranceId,(byte)(scrolling & 0xFF), true, "Starting Entrance Related");
                 ROM.Write(Constants.startingentrance_scrollquadrant + entranceId,(byte)(scrollquadrant & 0xFF), true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 0 + (entranceId * 8)),scrolledge_HU, true, "Starting Entrance Related"); // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-                ROM.Write((Constants.startingentrance_scrolledge + 1 + (entranceId * 8)),scrolledge_FU, true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 2 + (entranceId * 8)),scrolledge_HD, true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 3 + (entranceId * 8)),scrolledge_FD, true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 4 + (entranceId * 8)),scrolledge_HL, true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 5 + (entranceId * 8)),scrolledge_FL, true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 6 + (entranceId * 8)),scrolledge_HR, true, "Starting Entrance Related");
-                ROM.Write((Constants.startingentrance_scrolledge + 7 + (entranceId * 8)),scrolledge_FR, true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 0 + (entranceId * 8)),cameraBoundaryQN, true, "Starting Entrance Related"); // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+                ROM.Write((Constants.startingentrance_scrolledge + 1 + (entranceId * 8)),cameraBoundaryFN, true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 2 + (entranceId * 8)),cameraBoundaryQS, true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 3 + (entranceId * 8)),cameraBoundaryFS, true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 4 + (entranceId * 8)),cameraBoundaryQW, true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 5 + (entranceId * 8)),cameraBoundaryFW, true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 6 + (entranceId * 8)),cameraBoundaryQE, true, "Starting Entrance Related");
+                ROM.Write((Constants.startingentrance_scrolledge + 7 + (entranceId * 8)),cameraBoundaryFE, true, "Starting Entrance Related");
             }
         }
     }

@@ -300,6 +300,9 @@
     <Compile Include="Gui\ExtraForms\DungeonPropertiesForm.Designer.cs">
       <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Gui\ExtraForms\HexBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Gui\ExtraForms\OWMusicForm.cs">
       <SubType>Form</SubType>
     </Compile>

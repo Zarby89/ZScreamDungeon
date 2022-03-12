@@ -454,6 +454,53 @@ namespace ZeldaFullEditor {
         }
 
         //===========================================================================================
+        // Things
+        //===========================================================================================
+
+        public class FloorNumber {
+            private string nom; public string Name { get => nom; }
+            private byte val; public byte ByteValue { get => val; }
+
+            public FloorNumber(string n, byte v) {
+                nom = n;
+                val = v;
+			}
+
+            override public string ToString() {
+                return nom;
+			}
+
+            public static int FindFloorIndex(byte b) {
+                for (int i = 0; i < floors.Length; i++) {
+                    if (b == floors[i].ByteValue) {
+                        return i;
+					}
+				}
+                return -1;
+			}
+		}
+
+
+        public static FloorNumber[] floors = new FloorNumber[] {
+            new FloorNumber("B8", 0xF8),
+            new FloorNumber("B7", 0xF9),
+            new FloorNumber("B6", 0xFA),
+            new FloorNumber("B5", 0xFB),
+            new FloorNumber("B4", 0xFC),
+            new FloorNumber("B3", 0xFD),
+            new FloorNumber("B2", 0xFE),
+            new FloorNumber("B1", 0xFF),
+            new FloorNumber("1F", 0x00),
+            new FloorNumber("2F", 0x01),
+            new FloorNumber("3F", 0x02),
+            new FloorNumber("4F", 0x03),
+            new FloorNumber("5F", 0x04),
+            new FloorNumber("6F", 0x05),
+            new FloorNumber("7F", 0x06),
+            new FloorNumber("8F", 0x07)
+        };
+
+        //===========================================================================================
         // Names
         //===========================================================================================
         public static string[] RoomEffect = new string[]
