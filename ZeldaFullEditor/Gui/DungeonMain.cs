@@ -1686,10 +1686,10 @@ namespace ZeldaFullEditor
 
             EntranceProperties_PlayerX.HexValue = en.XPosition;
             EntranceProperties_PlayerY.HexValue = en.YPosition;
-            EntranceProperties_CameraX.HexValue = en.XCamera;
-            EntranceProperties_CameraY.HexValue = en.YCamera;
-            EntranceProperties_CameraTriggerX.HexValue = en.XScroll;
-            EntranceProperties_CameraTriggerY.HexValue = en.YScroll;
+            EntranceProperties_CameraX.HexValue = en.CameraX;
+            EntranceProperties_CameraY.HexValue = en.CameraY;
+            EntranceProperties_CameraTriggerX.HexValue = en.CameraTriggerX;
+            EntranceProperties_CameraTriggerY.HexValue = en.CameraTriggerY;
 
 
             EntranceProperties_FloorSel.SelectedIndex = Constants.FloorNumber.FindFloorIndex(en.Floor);
@@ -2205,17 +2205,17 @@ namespace ZeldaFullEditor
             data[(Constants.startingentrance_xposition + 1)] = (byte)((selectedEntrance.XPosition >> 8) & 0xFF);
             data[Constants.startingentrance_xposition] = (byte)(selectedEntrance.XPosition & 0xFF);
 
-            data[(Constants.startingentrance_xscroll + 1)] = (byte)((selectedEntrance.XScroll >> 8) & 0xFF);
-            data[Constants.startingentrance_xscroll] = (byte)(selectedEntrance.XScroll & 0xFF);
+            data[(Constants.startingentrance_camerax + 1)] = (byte)((selectedEntrance.CameraX >> 8) & 0xFF);
+            data[Constants.startingentrance_camerax] = (byte)(selectedEntrance.CameraX & 0xFF);
 
-            data[(Constants.startingentrance_yscroll + 1)] = (byte)((selectedEntrance.YScroll >> 8) & 0xFF);
-            data[Constants.startingentrance_yscroll] = (byte)(selectedEntrance.YScroll & 0xFF);
+            data[(Constants.startingentrance_cameray + 1)] = (byte)((selectedEntrance.CameraY >> 8) & 0xFF);
+            data[Constants.startingentrance_cameray] = (byte)(selectedEntrance.CameraY & 0xFF);
 
-            data[(Constants.startingentrance_cameraxposition + 1)] = (byte)((selectedEntrance.XCamera >> 8) & 0xFF);
-            data[Constants.startingentrance_cameraxposition] = (byte)(selectedEntrance.XCamera & 0xFF);
+            data[(Constants.startingentrance_cameraxtrigger + 1)] = (byte)((selectedEntrance.CameraTriggerX >> 8) & 0xFF);
+            data[Constants.startingentrance_cameraxtrigger] = (byte)(selectedEntrance.CameraTriggerX & 0xFF);
 
-            data[(Constants.startingentrance_camerayposition) + 1] = (byte)((selectedEntrance.YCamera >> 8) & 0xFF);
-            data[Constants.startingentrance_camerayposition] = (byte)(selectedEntrance.YCamera & 0xFF);
+            data[(Constants.startingentrance_cameraytrigger) + 1] = (byte)((selectedEntrance.CameraTriggerY >> 8) & 0xFF);
+            data[Constants.startingentrance_cameraytrigger] = (byte)(selectedEntrance.CameraTriggerY & 0xFF);
 
             data[(Constants.startingentrance_exit + 1)] = (byte)((selectedEntrance.Exit >> 8) & 0xFF);
             data[Constants.startingentrance_exit] = (byte)(selectedEntrance.Exit & 0xFF);
@@ -2417,10 +2417,10 @@ namespace ZeldaFullEditor
 
                 selectedEntrance.XPosition = (short) EntranceProperties_PlayerX.HexValue;
                 selectedEntrance.YPosition = (short) EntranceProperties_PlayerY.HexValue;
-                selectedEntrance.XCamera = (short) EntranceProperties_CameraX.HexValue;
-                selectedEntrance.YCamera = (short) EntranceProperties_CameraY.HexValue;
-                selectedEntrance.XScroll = (short) EntranceProperties_CameraTriggerX.HexValue;
-                selectedEntrance.YScroll = (short) EntranceProperties_CameraTriggerY.HexValue;
+                selectedEntrance.CameraX = (short) EntranceProperties_CameraTriggerX.HexValue;
+                selectedEntrance.CameraY = (short) EntranceProperties_CameraTriggerY.HexValue;
+                selectedEntrance.CameraTriggerX = (short) EntranceProperties_CameraTriggerX.HexValue;
+                selectedEntrance.CameraTriggerY = (short) EntranceProperties_CameraTriggerY.HexValue;
 
 
                 int rr = 0;
@@ -2444,11 +2444,11 @@ namespace ZeldaFullEditor
                 byte b = 0;
                 if (entranceProperty_hscroll.Checked)
                 {
-                    b += 0x20;
+                    b |= 0x20;
                 }
                 if (entranceProperty_vscroll.Checked)
                 {
-                    b += 0x02;
+                    b |= 0x02;
                 }
 
                 if (entranceProperty_quadbr.Checked) // Bottom right

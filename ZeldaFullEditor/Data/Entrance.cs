@@ -20,12 +20,12 @@ namespace ZeldaFullEditor
         public byte cameraBoundaryQE;
         public byte cameraBoundaryFE;
 
-        short yscroll; // 2bytes each room
-        short xscroll; // 2bytes
+        short ycamera; // 2bytes each room
+        short xcamera; // 2bytes
         short yposition; // 2bytes
         short xposition; // 2bytes
-        short ycamera; // 2bytes
-        short xcamera; // 2bytes
+        short ytrigger; // 2bytes
+        short xtrigger; // 2bytes
         byte blockset; // 1byte
         byte floor; // 1byte
         byte dungeon; // 1byte (dungeon id) // Same as music might use the project dungeon name instead
@@ -37,138 +37,36 @@ namespace ZeldaFullEditor
         byte music; // 1byte // Will need to be renamed and changed to add support to MSU1
 
         [DisplayName("Room ID"), Description("The room id the entrance is leading to"), Category("Entrance")]
-        public short Room
-        {
-            get
-            {
-                return room;
-            }
-            set
-            {
-                room = value;
-            }
-        }
+        public short Room { get => room; set => room = value; }
 
-        [DisplayName("X Scroll"), Description("FILL ME"), Category("Entrance")]
-        public short XScroll
-        {
-            get
-            {
-                return xscroll;
-            }
-            set
-            {
-                xscroll = value;
-            }
-        }
+        [DisplayName("Background X scroll"), Description("FILL ME"), Category("Entrance")]
+        public short CameraX { get => xcamera; set => xcamera = value; }
 
-        [DisplayName("Y Scroll"), Description("FILL ME"), Category("Entrance")]
-        public short YScroll
-        {
-            get
-            {
-                return yscroll;
-            }
-            set
-            {
-                yscroll = value;
-            }
-        }
+
+        [DisplayName("Background Y scroll"), Description("FILL ME"), Category("Entrance")]
+        public short CameraY { get => ycamera; set => ycamera = value; }
 
         [DisplayName("X Position"), Description("The X position the player will enter the room (0,0) origin"), Category("Entrance")]
-        public short XPosition
-        {
-            get
-            {
-                return xposition;
-            }
-            set
-            {
-                xposition = value;
-            }
-        }
+        public short XPosition { get => xposition; set => xposition = value; }
 
         [DisplayName("Y Position"), Description("The Y position the player will enter the room (0,0) origin"), Category("Entrance")]
-        public short YPosition
-        {
-            get
-            {
-                return yposition;
-            }
-            set
-            {
-                yposition = value;
-            }
-        }
+        public short YPosition { get => yposition; set => yposition = value; }
 
-        [DisplayName("X Camera"), Description("The X position of the camera when entering that room"), Category("Entrance")]
-        public short XCamera
-        {
-            get
-            {
-                return xcamera;
-            }
-            set
-            {
-                xcamera = value;
-            }
-        }
+        [DisplayName("X camera trigger"), Description("Where the camera begins scrolling on the X-axis"), Category("Entrance")]
+        public short CameraTriggerX { get => xtrigger; set => xtrigger = value; }
 
-        [DisplayName("Y Camera"), Description("The Y position of the camera when entering that room"), Category("Entrance")]
-        public short YCamera
-        {
-            get
-            {
-                return ycamera;
-            }
-            set
-            {
-                ycamera = value;
-            }
-        }
+        [DisplayName("Y camera trigger"), Description("Where the camera begins scrolling on the X-axis"), Category("Entrance")]
+        public short CameraTriggerY { get => ytrigger; set => ytrigger = value; }
 
         [DisplayName("Blockset"), Description("Used to determine the walls gfx of the dungeon"), Category("Entrance")]
-        public byte Blockset
-        {
-            get
-            {
-                return blockset;
-            }
-            set
-            {
-                blockset = value;
-            }
-        }
+        public byte Blockset { get => blockset; set => blockset = value; }
+
 
         [DisplayName("Floor"), Description("FILL ME ?"), Category("Entrance")]
-        public byte Floor
-        {
-            get
-            {
-                return floor;
-            }
-            set
-            {
-                floor = value;
-                /*if (floor >= 2)
-                {
-                    floor = 1;
-                }*/
-            }
-        }
+        public byte Floor { get => floor; set => floor = value; }
 
         [DisplayName("Dungeon ID"), Description("Used to determine what dungeon we are in when entering from that entrance"), Category("Entrance")]
-        public byte Dungeon
-        {
-            get
-            {
-                return dungeon;
-            }
-            set
-            {
-                dungeon = value;
-            }
-        }
+        public byte Dungeon { get => dungeon; set => dungeon = value; }
 
         [DisplayName("Ladder Bg"), Description("Used to determine the layer we will be on when entering"), Category("Entrance")]
         public byte Ladderbg
@@ -236,27 +134,17 @@ namespace ZeldaFullEditor
         }
 
         [DisplayName("Music"), Description("Determine the music playing when entering from that entrance"), Category("Entrance")]
-        public byte Music
-        {
-            get
-            {
-                return music;
-            }
-            set
-            {
-                music = value;
-            }
-        }
+        public byte Music { get => music; set => music = value; }
 
         public Entrance(byte entranceId, bool startingEntrance = false)
         {
             room = (short)((ROM.DATA[(Constants.entrance_room + (entranceId * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_room + (entranceId * 2)]);
             yposition = (short)(((ROM.DATA[(Constants.entrance_yposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_yposition + (entranceId * 2)]);
             xposition = (short)(((ROM.DATA[(Constants.entrance_xposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_xposition + (entranceId * 2)]);
-            xscroll = (short)(((ROM.DATA[(Constants.entrance_xscroll + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_xscroll + (entranceId * 2)]);
-            yscroll = (short)(((ROM.DATA[(Constants.entrance_yscroll + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_yscroll + (entranceId * 2)]);
-            ycamera = (short)(((ROM.DATA[(Constants.entrance_camerayposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_camerayposition + (entranceId * 2)]);
-            xcamera = (short)(((ROM.DATA[(Constants.entrance_cameraxposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_cameraxposition + (entranceId * 2)]);
+            xcamera = (short)(((ROM.DATA[(Constants.entrance_camerax + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_camerax + (entranceId * 2)]);
+            ycamera = (short)(((ROM.DATA[(Constants.entrance_cameray + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_cameray + (entranceId * 2)]);
+            ytrigger = (short)(((ROM.DATA[(Constants.entrance_cameraytrigger + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_cameraytrigger + (entranceId * 2)]);
+            xtrigger = (short)(((ROM.DATA[(Constants.entrance_cameraxtrigger + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_cameraxtrigger + (entranceId * 2)]);
             blockset = (byte)(ROM.DATA[(Constants.entrance_blockset + entranceId)]);
             music = (byte)(ROM.DATA[(Constants.entrance_music + entranceId)]);
             dungeon = (byte)(ROM.DATA[(Constants.entrance_dungeon + entranceId)]);
@@ -288,10 +176,10 @@ namespace ZeldaFullEditor
                 //xcamera = (short)(((ROM.DATA[(Constants.startingentrance_cameraxposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_cameraxposition + ((entranceId) * 2)]);
                 yposition = (short)(((ROM.DATA[(Constants.startingentrance_yposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_yposition + (entranceId * 2)]);
                 xposition = (short)(((ROM.DATA[(Constants.startingentrance_xposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_xposition + (entranceId * 2)]);
-                xscroll = (short)(((ROM.DATA[(Constants.startingentrance_xscroll + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_xscroll + (entranceId * 2)]);
-                yscroll = (short)(((ROM.DATA[(Constants.startingentrance_yscroll + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_yscroll + (entranceId * 2)]);
-                ycamera = (short)(((ROM.DATA[(Constants.startingentrance_camerayposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_camerayposition + (entranceId * 2)]);
-                xcamera = (short)(((ROM.DATA[(Constants.startingentrance_cameraxposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_cameraxposition + (entranceId * 2)]);
+                xcamera = (short)(((ROM.DATA[(Constants.startingentrance_camerax + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_camerax + (entranceId * 2)]);
+                ycamera = (short)(((ROM.DATA[(Constants.startingentrance_cameray + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_cameray + (entranceId * 2)]);
+                ytrigger = (short)(((ROM.DATA[(Constants.startingentrance_cameraytrigger + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_cameraytrigger + (entranceId * 2)]);
+                xtrigger = (short)(((ROM.DATA[(Constants.startingentrance_cameraxtrigger + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.startingentrance_cameraxtrigger + (entranceId * 2)]);
                 blockset = (byte)(ROM.DATA[(Constants.startingentrance_blockset + entranceId)]);
                 music = (byte)(ROM.DATA[(Constants.startingentrance_music + entranceId)]);
                 dungeon = (byte)(ROM.DATA[(Constants.startingentrance_dungeon + entranceId)]);
@@ -329,19 +217,19 @@ namespace ZeldaFullEditor
                 //ROM.DATA[(Constants.entrance_xposition + (entranceId * 2)) + 1] = (byte)((xposition >> 8) & 0xFF);
                 //ROM.DATA[Constants.entrance_xposition + (entranceId * 2)] = (byte)(xposition & 0xFF);
 
-                ROM.WriteShort(Constants.entrance_yscroll + (entranceId * 2), yscroll, true, "Entrance Related");
+                ROM.WriteShort(Constants.entrance_cameray + (entranceId * 2), ycamera, true, "Entrance Related");
                 //ROM.DATA[(Constants.entrance_xscroll + (entranceId * 2)) + 1] = (byte)((xscroll >> 8) & 0xFF);
                 //ROM.DATA[Constants.entrance_xscroll + (entranceId * 2)] = (byte)(xscroll & 0xFF);
 
-                ROM.WriteShort(Constants.entrance_xscroll + (entranceId * 2), xscroll, true, "Entrance Related");
+                ROM.WriteShort(Constants.entrance_camerax + (entranceId * 2), xcamera, true, "Entrance Related");
                 //ROM.DATA[(Constants.entrance_yscroll + (entranceId * 2)) + 1] = (byte)((yscroll >> 8) & 0xFF);
                 //ROM.DATA[Constants.entrance_yscroll + (entranceId * 2)] = (byte)(yscroll & 0xFF);
 
-                ROM.WriteShort(Constants.entrance_cameraxposition + (entranceId * 2), xcamera, true, "Entrance Related");
+                ROM.WriteShort(Constants.entrance_cameraxtrigger + (entranceId * 2), xtrigger, true, "Entrance Related");
                 //ROM.DATA[(Constants.entrance_cameraxposition + (entranceId * 2)) + 1] = (byte)((xcamera >> 8) & 0xFF);
                 //ROM.DATA[Constants.entrance_cameraxposition + (entranceId * 2)] = (byte)(xcamera & 0xFF);
 
-                ROM.WriteShort(Constants.entrance_camerayposition + (entranceId * 2), ycamera, true, "Entrance Related");
+                ROM.WriteShort(Constants.entrance_cameraytrigger + (entranceId * 2), ytrigger, true, "Entrance Related");
                 //ROM.DATA[(Constants.entrance_camerayposition + (entranceId * 2)) + 1] = (byte)((ycamera >> 8) & 0xFF);
                 //ROM.DATA[Constants.entrance_camerayposition + (entranceId * 2)] = (byte)(ycamera & 0xFF);
 
@@ -390,13 +278,13 @@ namespace ZeldaFullEditor
 
                 ROM.WriteShort(Constants.startingentrance_xposition + (entranceId * 2), xposition, true, "Starting Entrance Related");
 
-                ROM.WriteShort(Constants.startingentrance_yscroll + (entranceId * 2), yscroll, true, "Starting Entrance Related");
+                ROM.WriteShort(Constants.startingentrance_cameray + (entranceId * 2), ycamera, true, "Starting Entrance Related");
 
-                ROM.WriteShort(Constants.startingentrance_xscroll + (entranceId * 2), xscroll, true, "Starting Entrance Related");
+                ROM.WriteShort(Constants.startingentrance_camerax + (entranceId * 2), xcamera, true, "Starting Entrance Related");
 
-                ROM.WriteShort(Constants.startingentrance_cameraxposition + (entranceId * 2), xcamera, true, "Starting Entrance Related");
+                ROM.WriteShort(Constants.startingentrance_cameraxtrigger + (entranceId * 2), xtrigger, true, "Starting Entrance Related");
 
-                ROM.WriteShort(Constants.startingentrance_camerayposition + (entranceId * 2), ycamera, true, "Starting Entrance Related");
+                ROM.WriteShort(Constants.startingentrance_cameraytrigger + (entranceId * 2), ytrigger, true, "Starting Entrance Related");
 
                 ROM.WriteShort(Constants.startingentrance_exit + (entranceId * 2), exit, true, "Starting Entrance Related");
 

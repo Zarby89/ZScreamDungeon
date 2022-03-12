@@ -11,13 +11,15 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
         private int hexValue;
         private int minValue;
         private int maxValue;
-        public enum hexDigits {
+
+        // value = max possible value with X digits
+        public enum HexDigits {
             One = 15,
             Two = 255,
             Three = 4095,
             Four = 65535
 		};
-        private hexDigits digits;
+        private HexDigits digits;
 
         public bool errorValue = false;
         //just turn that on when updating the Hexvalue so the textchanged event is not called
@@ -30,8 +32,8 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
             set {
                 hexValue = value;
 
-                enforceRange();
-                updateText();
+                EnforceRange();
+                UpdateText();
             }
         }
 
@@ -41,8 +43,8 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
             set {
                 maxValue = value;
 
-                enforceRange();
-                updateText();
+                EnforceRange();
+                UpdateText();
             }
         }
 
@@ -52,26 +54,41 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
             set {
                 minValue = value;
 
-                enforceRange();
-                updateText();
+                EnforceRange();
+                UpdateText();
             }
         }
 
 
 
         [Description("MinValue"), Category("Data")]
-        public hexDigits Digits {
+        public HexDigits Digits {
             get => digits;
             set {
                 digits = value;
 
-                enforceRange();
-                updateText();
+                switch (Digits) {
+                    case HexDigits.One:
+                        this.MaxLength = 1;
+                        break;
+                    case HexDigits.Two:
+                        this.MaxLength = 2;
+                        break;
+                    case HexDigits.Three:
+                        this.MaxLength = 3;
+                        break;
+                    case HexDigits.Four:
+                        this.MaxLength = 4;
+                        break;
+                }
+
+                EnforceRange();
+                UpdateText();
             }
         }
 
         public Hexbox() : base() {
-            digits = hexDigits.Two;
+            digits = HexDigits.Two;
             maxValue = 0xFF;
             minValue = 0x00;
             hexValue = 0x00;
@@ -81,8 +98,8 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
 
 
         protected override void InitLayout() {
-            enforceRange();
-            updateText();
+            EnforceRange();
+            UpdateText();
 
             base.InitLayout();
         }
@@ -94,28 +111,25 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
         private const string Format3 = "X3";
         private const string Format4 = "X4";
         private bool enforcepad = false;
-        private void updateText() {
+        private void UpdateText() {
+            bool pad = enforcepad | !this.Focused;
             switch (Digits) {
-                case hexDigits.One:
-                    this.Text = hexValue.ToString(enforcepad ? Format1 : Format0);
-                    this.MaxLength = 1;
+                case HexDigits.One:
+                    this.Text = hexValue.ToString(pad ? Format1 : Format0);
                     break;
-                case hexDigits.Two:
-                    this.Text = hexValue.ToString(enforcepad ? Format2 : Format0);
-                    this.MaxLength = 2;
+                case HexDigits.Two:
+                    this.Text = hexValue.ToString(pad ? Format2 : Format0);
                     break;
-                case hexDigits.Three:
-                    this.Text = hexValue.ToString(enforcepad ? Format3 : Format0);
-                    this.MaxLength = 3;
+                case HexDigits.Three:
+                    this.Text = hexValue.ToString(pad ? Format3 : Format0);
                     break;
-                case hexDigits.Four:
-                    this.Text = hexValue.ToString(enforcepad ? Format4 : Format0);
-                    this.MaxLength = 4;
+                case HexDigits.Four:
+                    this.Text = hexValue.ToString(pad ? Format4 : Format0);
                     break;
             }
         }
 
-        private void enforceRange() {
+        private void EnforceRange() {
             if (minValue > (int) digits) {
                 minValue = 0;
 			}
@@ -143,8 +157,8 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
 
             hexValue = tb;
 
-            enforceRange();
-            updateText();
+            EnforceRange();
+            UpdateText();
 
             if (!disableTextChanged) //
             {
@@ -162,9 +176,9 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
                 hexValue--;
             }
 
-            enforceRange();
+            EnforceRange();
             enforcepad = true;
-            updateText();
+            UpdateText();
             enforcepad = false;
             base.OnMouseWheel(e);
         }
@@ -174,9 +188,9 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
                 hexValue = minValue;
             }
 
-            enforceRange();
+            EnforceRange();
             enforcepad = true;
-            updateText();
+            UpdateText();
             enforcepad = false;
             base.OnLeave(e);
         }
@@ -185,9 +199,9 @@ namespace ZeldaFullEditor.Gui.ExtraForms {
             if (errorValue) {
                 hexValue = minValue;
             }
-            enforceRange();
+            EnforceRange();
             enforcepad = true;
-            updateText();
+            UpdateText();
             enforcepad = false;
             base.OnLostFocus(e);
         }

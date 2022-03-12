@@ -416,29 +416,29 @@ namespace ZeldaFullEditor
 
                     mainForm.selectedEntrance.XPosition = (short)(MX + (ex*512));
                     mainForm.selectedEntrance.YPosition = (short)(MY + (ey*512));
-                    mainForm.selectedEntrance.XCamera = (short)(MX);
-                    mainForm.selectedEntrance.YCamera = (short)(MY);
+                    mainForm.selectedEntrance.CameraTriggerX = (short)(MX);
+                    mainForm.selectedEntrance.CameraTriggerY = (short)(MY);
                     mainForm.selectedEntrance.Room = (short)room.index;
 
-                    if (mainForm.selectedEntrance.XCamera > 383)
+                    if (mainForm.selectedEntrance.CameraTriggerX > 383)
                     {
-                        mainForm.selectedEntrance.XCamera = 383;
+                        mainForm.selectedEntrance.CameraTriggerX = 383;
                     }
-                    if (mainForm.selectedEntrance.YCamera > 392)
+                    if (mainForm.selectedEntrance.CameraTriggerY > 392)
                     {
-                        mainForm.selectedEntrance.YCamera = 392;
+                        mainForm.selectedEntrance.CameraTriggerY = 392;
                     }
-                    if (mainForm.selectedEntrance.XCamera < 128)
+                    if (mainForm.selectedEntrance.CameraTriggerX < 128)
                     {
-                        mainForm.selectedEntrance.XCamera = 128;
+                        mainForm.selectedEntrance.CameraTriggerX = 128;
                     }
-                    if (mainForm.selectedEntrance.YCamera < 112)
+                    if (mainForm.selectedEntrance.CameraTriggerY < 112)
                     {
-                        mainForm.selectedEntrance.YCamera = 112;
+                        mainForm.selectedEntrance.CameraTriggerY = 112;
                     }
 
-                    mainForm.selectedEntrance.YScroll = (short)(mainForm.selectedEntrance.XCamera + (ex * 512));
-                    mainForm.selectedEntrance.XScroll = (short)(mainForm.selectedEntrance.YCamera + (ey * 512));
+                    mainForm.selectedEntrance.CameraY = (short)(mainForm.selectedEntrance.CameraTriggerX + (ex * 512));
+                    mainForm.selectedEntrance.CameraX = (short)(mainForm.selectedEntrance.CameraTriggerY + (ey * 512));
 
                     mainForm.selectedEntrance.cameraBoundaryQW = (byte)(ex * 2);
                     mainForm.selectedEntrance.cameraBoundaryFW = (byte)(ex * 2);
@@ -495,39 +495,39 @@ namespace ZeldaFullEditor
                         mainForm.selectedEntrance.cameraBoundaryFW = (byte)((ex * 2) + 1);
                         mainForm.selectedEntrance.cameraBoundaryQE = (byte)((ex * 2) + 1);
                         mainForm.selectedEntrance.cameraBoundaryFE = (byte)((ex * 2) + 2);
-                        mainForm.selectedEntrance.YScroll = (short)((ex * 512) + 256);
-                        mainForm.selectedEntrance.XScroll = (short)((ey * 512) + 256);
+                        mainForm.selectedEntrance.CameraY = (short)((ex * 512) + 256);
+                        mainForm.selectedEntrance.CameraX = (short)((ey * 512) + 256);
                     }
 
-                    mainForm.selectedEntrance.YScroll = (short)(mainForm.selectedEntrance.XPosition);
-                    mainForm.selectedEntrance.XScroll = (short)(mainForm.selectedEntrance.YPosition);
+                    mainForm.selectedEntrance.CameraY = (short)(mainForm.selectedEntrance.XPosition);
+                    mainForm.selectedEntrance.CameraX = (short)(mainForm.selectedEntrance.YPosition);
 
-                    int scrollXRange = mainForm.selectedEntrance.XScroll % 512;
+                    int scrollXRange = mainForm.selectedEntrance.CameraX % 512;
                     if (scrollXRange >= 350)
                     {
-                        mainForm.selectedEntrance.XScroll = (short)((ey * 512) + 256+16);
+                        mainForm.selectedEntrance.CameraX = (short)((ey * 512) + 256+16);
                     }
                     else if (scrollXRange <= 150)
                     {
-                        mainForm.selectedEntrance.XScroll = (short)((ey * 512));
+                        mainForm.selectedEntrance.CameraX = (short)((ey * 512));
                     }
                     else
                     {
-                        mainForm.selectedEntrance.XScroll = (short)(mainForm.selectedEntrance.YPosition - 112);
+                        mainForm.selectedEntrance.CameraX = (short)(mainForm.selectedEntrance.YPosition - 112);
                     }
 
-                    int scrollYRange = mainForm.selectedEntrance.YScroll % 512;
+                    int scrollYRange = mainForm.selectedEntrance.CameraY % 512;
                     if (scrollYRange >= 350)
                     {
-                        mainForm.selectedEntrance.YScroll = (short)((ex * 512) + 256);
+                        mainForm.selectedEntrance.CameraY = (short)((ex * 512) + 256);
                     }
                     else if (scrollYRange <= 150)
                     {
-                        mainForm.selectedEntrance.YScroll = (short)((ex * 512));
+                        mainForm.selectedEntrance.CameraY = (short)((ex * 512));
                     }
                     else
                     {
-                        mainForm.selectedEntrance.YScroll = (short)(mainForm.selectedEntrance.XPosition - 128);
+                        mainForm.selectedEntrance.CameraY = (short)(mainForm.selectedEntrance.XPosition - 128);
                     }
 
                     //mainForm.selectedEntrance.YPosition = (short)(e.Y + (ey * 512));
@@ -743,8 +743,8 @@ namespace ZeldaFullEditor
             {
                 if (mainForm.selectedEntrance != null)
                 {
-                    int localCameraX = mainForm.selectedEntrance.XCamera - 128;
-                    int localCameraY = mainForm.selectedEntrance.YCamera - 116;
+                    int localCameraX = mainForm.selectedEntrance.CameraTriggerX - 128;
+                    int localCameraY = mainForm.selectedEntrance.CameraTriggerY - 116;
 
                     g.DrawRectangle(Pens.Orange, new Rectangle(localCameraX, localCameraY, 256, 224));
                     //Console.WriteLine(localCameraX + "," + localCameraY);

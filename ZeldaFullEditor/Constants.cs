@@ -205,12 +205,12 @@ namespace ZeldaFullEditor {
         //===========================================================================================
         public static int entrance_room = 0x14813; // 0x14577 // Word value for each room
         public static int entrance_scrolledge = 0x1491D; // 0x14681 // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-        public static int entrance_yscroll = 0x14D45; // 0x14AA9 // 2bytes each room
-        public static int entrance_xscroll = 0x14E4F; // 0x14BB3 // 2bytes
+        public static int entrance_cameray = 0x14D45; // 0x14AA9 // 2bytes each room
+        public static int entrance_camerax = 0x14E4F; // 0x14BB3 // 2bytes
         public static int entrance_yposition = 0x14F59; //0x14CBD 2bytes
         public static int entrance_xposition = 0x15063;// 0x14DC7 2bytes
-        public static int entrance_camerayposition = 0x1516D;// 0x14ED1 2bytes
-        public static int entrance_cameraxposition = 0x15277;// 0x14FDB 2bytes
+        public static int entrance_cameraytrigger = 0x1516D;// 0x14ED1 2bytes
+        public static int entrance_cameraxtrigger = 0x15277;// 0x14FDB 2bytes
 
         public static int entrance_gfx_group = 0x5D97;
         public static int entrance_blockset = 0x15381; // 0x150E5 1byte
@@ -225,12 +225,12 @@ namespace ZeldaFullEditor {
 
         public static int startingentrance_room = 0x15B6E; // 0x158D2 // Word value for each room
         public static int startingentrance_scrolledge = 0x15B7C; // 0x158E0 // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-        public static int startingentrance_yscroll = 0x15BB4; // 0x14AA9 // 2bytes each room
-        public static int startingentrance_xscroll = 0x15BC2; // 0x14BB3 // 2bytes
+        public static int startingentrance_cameray = 0x15BB4; // 0x14AA9 // 2bytes each room
+        public static int startingentrance_camerax = 0x15BC2; // 0x14BB3 // 2bytes
         public static int startingentrance_yposition = 0x15BD0; // 0x14CBD 2bytes
         public static int startingentrance_xposition = 0x15BDE; // 0x14DC7 2bytes
-        public static int startingentrance_camerayposition = 0x15BEC; // 0x14ED1 2bytes
-        public static int startingentrance_cameraxposition = 0x15BFA; // 0x14FDB 2bytes
+        public static int startingentrance_cameraytrigger = 0x15BEC; // 0x14ED1 2bytes
+        public static int startingentrance_cameraxtrigger = 0x15BFA; // 0x14FDB 2bytes
 
         public static int startingentrance_blockset = 0x15C08; // 0x150E5 1byte
         public static int startingentrance_floor = 0x15C0F; // 0x1516A 1byte
@@ -367,12 +367,12 @@ namespace ZeldaFullEditor {
             // Entrances
             entrance_room = 0x14577; // Word value for each room
             entrance_scrolledge = 0x1491D; // 0x14681 / /8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-            entrance_xscroll = 0x14AA9; // 2bytes each room
-            entrance_yscroll = 0x14BB3; // 2bytes
+            entrance_camerax = 0x14AA9; // 2bytes each room
+            entrance_cameray = 0x14BB3; // 2bytes
             entrance_yposition = 0x14CBD; // 2bytes
             entrance_xposition = 0x14DC7; // 2bytes
-            entrance_camerayposition = 0x14ED1; // 2bytes
-            entrance_cameraxposition = 0x14FDB; // 2bytes
+            entrance_cameraytrigger = 0x14ED1; // 2bytes
+            entrance_cameraxtrigger = 0x14FDB; // 2bytes
             entrance_blockset = 0x150E5; // 1byte
             entrance_floor = 0x1516A; // 1byte
             entrance_dungeon = 0x151EF; // 1byte (dungeon id)
@@ -385,12 +385,12 @@ namespace ZeldaFullEditor {
 
             startingentrance_room -= 0x29C; // 0x158D2 // word value for each room
             startingentrance_scrolledge -= 0x29C; // 0x158E0 //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-            startingentrance_yscroll -= 0x29C; // 0x14AA9 // 2bytes each room
-            startingentrance_xscroll -= 0x29C; // 0x14BB3 // 2bytes
+            startingentrance_cameray -= 0x29C; // 0x14AA9 // 2bytes each room
+            startingentrance_camerax -= 0x29C; // 0x14BB3 // 2bytes
             startingentrance_yposition -= 0x29C; // 0x14CBD 2bytes
             startingentrance_xposition -= 0x29C; // 0x14DC7 2bytes
-            startingentrance_camerayposition -= 0x29C; // 0x14ED1 2bytes
-            startingentrance_cameraxposition -= 0x29C; // 0x14FDB 2bytes
+            startingentrance_cameraytrigger -= 0x29C; // 0x14ED1 2bytes
+            startingentrance_cameraxtrigger -= 0x29C; // 0x14FDB 2bytes
 
             startingentrance_blockset -= 0x29C; // 0x150E5 1byte
             startingentrance_floor -= 0x29C; // 0x1516A 1byte

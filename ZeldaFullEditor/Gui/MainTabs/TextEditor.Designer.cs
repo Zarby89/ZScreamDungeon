@@ -165,7 +165,7 @@
 			// ParamsBox
 			// 
 			this.ParamsBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.ParamsBox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.ParamsBox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.ParamsBox.HexValue = 0;
 			this.ParamsBox.Location = new System.Drawing.Point(483, 153);
 			this.ParamsBox.MaxLength = 2;
@@ -174,7 +174,7 @@
 			this.ParamsBox.Name = "ParamsBox";
 			this.ParamsBox.Size = new System.Drawing.Size(32, 20);
 			this.ParamsBox.TabIndex = 35;
-			this.ParamsBox.Text = "0";
+			this.ParamsBox.Text = "00";
 			this.ParamsBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// fontGridBox

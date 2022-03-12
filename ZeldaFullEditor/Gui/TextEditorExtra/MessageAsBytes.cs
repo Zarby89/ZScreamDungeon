@@ -84,7 +84,7 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra {
 					break;
 			}
 
-			s.Append("7F");
+			s.Append(TextEditor.MESSAGETERMINATOR.ToString("X2"));
 
 			this.textBox1.Text = s.ToString();
 		}

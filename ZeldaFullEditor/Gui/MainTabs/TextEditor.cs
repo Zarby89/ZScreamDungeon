@@ -32,6 +32,7 @@ namespace ZeldaFullEditor {
         int selectedTile = 0;
         public const string DICTIONARYTOKEN = "D";
         public const byte DICTOFF = 0x88;
+        public const byte MESSAGETERMINATOR = 0x7F;
 
         public TextEditor() 
         {
@@ -100,7 +101,7 @@ namespace ZeldaFullEditor {
                 strout = string.Format("{0} {1}", gt, desc);
             }
 
-            public string GetParameterizedToken(byte b) 
+            public string GetParameterizedToken(byte b = 0) 
             {
                 if (hasParam) 
                 {
@@ -185,8 +186,9 @@ namespace ZeldaFullEditor {
         private static string ReplaceAllDictionaryWords(string s) {
             string ret = s;
             foreach (DictionaryEntry w in AllDicts) {
-                if (w.ContainedInString(ret))
-                    ret = w.ReplaceInstancesOfIn(ret);
+                if (w.ContainedInString(ret)) {
+                ret = w.ReplaceInstancesOfIn(ret);
+                }
             }
             return ret;
         }
@@ -431,8 +433,7 @@ namespace ZeldaFullEditor {
             {
                 b = ROM.DATA[pos++];
 
-                // check for end of message
-                if (b == 0x7F) 
+                if (b == MESSAGETERMINATOR) 
                 {
                     listOfTexts.Add(new MessageData(tt, pos,
                         currentMessageRaw.ToString(),
@@ -482,8 +483,8 @@ namespace ZeldaFullEditor {
 
                 if (t != null) 
                 {
-                    currentMessageRaw.Append(t.GetParameterizedToken(0));
-                    currentMessageParsed.Append(t.GetParameterizedToken(0));
+                    currentMessageRaw.Append(t.GetParameterizedToken());
+                    currentMessageParsed.Append(t.GetParameterizedToken());
                     tempBytesParsed.Add(b);
                     continue;
                 }
@@ -1072,8 +1073,7 @@ namespace ZeldaFullEditor {
                     pos++;
                 }
 
-                // ROM.DATA[pos] = 0x7F;
-                ROM.Write(pos, 0x7F, true, "Terminator text");
+                ROM.Write(pos, MESSAGETERMINATOR, true, "Terminator text");
                 pos++;
             }
 
@@ -1150,7 +1150,7 @@ namespace ZeldaFullEditor {
         /// <param name="e"></param>
         private void InsertSpecialButton_Click(object sender, EventArgs e)
         {
-            InsertSelectedText(SpecialChars[SpecialsList.SelectedIndex].GetParameterizedToken(0));
+            InsertSelectedText(SpecialChars[SpecialsList.SelectedIndex].GetParameterizedToken());
         }
 
         private void InsertSelectedText(string s) 

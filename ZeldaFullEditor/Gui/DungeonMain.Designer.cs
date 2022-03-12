@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
         {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
+			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
+			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
 			this.updateTimer = new System.Windows.Forms.Timer(this.components);
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -1161,7 +1161,7 @@ namespace ZeldaFullEditor
 			// EntranceProperties_Blockset
 			// 
 			this.EntranceProperties_Blockset.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_Blockset.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.EntranceProperties_Blockset.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.EntranceProperties_Blockset.HexValue = 0;
 			this.EntranceProperties_Blockset.Location = new System.Drawing.Point(174, 29);
 			this.EntranceProperties_Blockset.MaxLength = 2;
@@ -1176,7 +1176,7 @@ namespace ZeldaFullEditor
 			// EntranceProperties_Music
 			// 
 			this.EntranceProperties_Music.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_Music.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.EntranceProperties_Music.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.EntranceProperties_Music.HexValue = 0;
 			this.EntranceProperties_Music.Location = new System.Drawing.Point(118, 29);
 			this.EntranceProperties_Music.MaxLength = 2;
@@ -1191,7 +1191,7 @@ namespace ZeldaFullEditor
 			// EntranceProperties_DungeonID
 			// 
 			this.EntranceProperties_DungeonID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_DungeonID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.EntranceProperties_DungeonID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.EntranceProperties_DungeonID.HexValue = 0;
 			this.EntranceProperties_DungeonID.Location = new System.Drawing.Point(62, 29);
 			this.EntranceProperties_DungeonID.MaxLength = 2;
@@ -1206,9 +1206,9 @@ namespace ZeldaFullEditor
 			// EntranceProperties_Exit
 			// 
 			this.EntranceProperties_Exit.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_Exit.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.EntranceProperties_Exit.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.EntranceProperties_Exit.HexValue = 0;
-			this.EntranceProperties_Exit.Location = new System.Drawing.Point(228, 199);
+			this.EntranceProperties_Exit.Location = new System.Drawing.Point(228, 198);
 			this.EntranceProperties_Exit.MaxLength = 2;
 			this.EntranceProperties_Exit.MaxValue = 255;
 			this.EntranceProperties_Exit.MinValue = 0;
@@ -1221,7 +1221,7 @@ namespace ZeldaFullEditor
 			// EntranceProperties_CameraTriggerY
 			// 
 			this.EntranceProperties_CameraTriggerY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_CameraTriggerY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Four;
+			this.EntranceProperties_CameraTriggerY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
 			this.EntranceProperties_CameraTriggerY.HexValue = 0;
 			this.EntranceProperties_CameraTriggerY.Location = new System.Drawing.Point(131, 142);
 			this.EntranceProperties_CameraTriggerY.MaxLength = 4;
@@ -1236,7 +1236,7 @@ namespace ZeldaFullEditor
 			// EntranceProperties_CameraTriggerX
 			// 
 			this.EntranceProperties_CameraTriggerX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_CameraTriggerX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Four;
+			this.EntranceProperties_CameraTriggerX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
 			this.EntranceProperties_CameraTriggerX.HexValue = 0;
 			this.EntranceProperties_CameraTriggerX.Location = new System.Drawing.Point(68, 142);
 			this.EntranceProperties_CameraTriggerX.MaxLength = 4;
@@ -1269,7 +1269,7 @@ namespace ZeldaFullEditor
 			// EntranceProperties_CameraY
 			// 
 			this.EntranceProperties_CameraY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_CameraY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Four;
+			this.EntranceProperties_CameraY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
 			this.EntranceProperties_CameraY.HexValue = 0;
 			this.EntranceProperties_CameraY.Location = new System.Drawing.Point(131, 117);
 			this.EntranceProperties_CameraY.MaxLength = 4;
@@ -1284,7 +1284,7 @@ namespace ZeldaFullEditor
 			// EntranceProperties_CameraX
 			// 
 			this.EntranceProperties_CameraX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_CameraX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Four;
+			this.EntranceProperties_CameraX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
 			this.EntranceProperties_CameraX.HexValue = 0;
 			this.EntranceProperties_CameraX.Location = new System.Drawing.Point(68, 117);
 			this.EntranceProperties_CameraX.MaxLength = 4;
@@ -1299,7 +1299,7 @@ namespace ZeldaFullEditor
 			// EntranceProperties_PlayerY
 			// 
 			this.EntranceProperties_PlayerY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_PlayerY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Four;
+			this.EntranceProperties_PlayerY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
 			this.EntranceProperties_PlayerY.HexValue = 0;
 			this.EntranceProperties_PlayerY.Location = new System.Drawing.Point(131, 93);
 			this.EntranceProperties_PlayerY.MaxLength = 4;
@@ -1314,7 +1314,7 @@ namespace ZeldaFullEditor
 			// EntranceProperties_PlayerX
 			// 
 			this.EntranceProperties_PlayerX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_PlayerX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Four;
+			this.EntranceProperties_PlayerX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
 			this.EntranceProperties_PlayerX.HexValue = 0;
 			this.EntranceProperties_PlayerX.Location = new System.Drawing.Point(68, 93);
 			this.EntranceProperties_PlayerX.MaxLength = 4;
@@ -1347,7 +1347,7 @@ namespace ZeldaFullEditor
 			// EntranceProperties_RoomID
 			// 
 			this.EntranceProperties_RoomID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_RoomID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Three;
+			this.EntranceProperties_RoomID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Three;
 			this.EntranceProperties_RoomID.HexValue = 0;
 			this.EntranceProperties_RoomID.Location = new System.Drawing.Point(6, 29);
 			this.EntranceProperties_RoomID.MaxLength = 3;
@@ -1385,7 +1385,7 @@ namespace ZeldaFullEditor
 			// EntranceProperty_BoundaryFE
 			// 
 			this.EntranceProperty_BoundaryFE.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryFE.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.EntranceProperty_BoundaryFE.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.EntranceProperty_BoundaryFE.HexValue = 0;
 			this.EntranceProperty_BoundaryFE.Location = new System.Drawing.Point(225, 61);
 			this.EntranceProperty_BoundaryFE.MaxLength = 2;
@@ -1400,7 +1400,7 @@ namespace ZeldaFullEditor
 			// EntranceProperty_BoundaryFW
 			// 
 			this.EntranceProperty_BoundaryFW.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryFW.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.EntranceProperty_BoundaryFW.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.EntranceProperty_BoundaryFW.HexValue = 0;
 			this.EntranceProperty_BoundaryFW.Location = new System.Drawing.Point(169, 61);
 			this.EntranceProperty_BoundaryFW.MaxLength = 2;
@@ -1415,7 +1415,7 @@ namespace ZeldaFullEditor
 			// EntranceProperty_BoundaryQE
 			// 
 			this.EntranceProperty_BoundaryQE.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryQE.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.EntranceProperty_BoundaryQE.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.EntranceProperty_BoundaryQE.HexValue = 0;
 			this.EntranceProperty_BoundaryQE.Location = new System.Drawing.Point(225, 35);
 			this.EntranceProperty_BoundaryQE.MaxLength = 2;
@@ -1430,7 +1430,7 @@ namespace ZeldaFullEditor
 			// EntranceProperty_BoundaryQW
 			// 
 			this.EntranceProperty_BoundaryQW.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryQW.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.EntranceProperty_BoundaryQW.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.EntranceProperty_BoundaryQW.HexValue = 0;
 			this.EntranceProperty_BoundaryQW.Location = new System.Drawing.Point(169, 35);
 			this.EntranceProperty_BoundaryQW.MaxLength = 2;
@@ -1445,7 +1445,7 @@ namespace ZeldaFullEditor
 			// EntranceProperty_BoundaryFS
 			// 
 			this.EntranceProperty_BoundaryFS.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryFS.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.EntranceProperty_BoundaryFS.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.EntranceProperty_BoundaryFS.HexValue = 0;
 			this.EntranceProperty_BoundaryFS.Location = new System.Drawing.Point(116, 61);
 			this.EntranceProperty_BoundaryFS.MaxLength = 2;
@@ -1460,7 +1460,7 @@ namespace ZeldaFullEditor
 			// EntranceProperty_BoundaryFN
 			// 
 			this.EntranceProperty_BoundaryFN.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryFN.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.EntranceProperty_BoundaryFN.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.EntranceProperty_BoundaryFN.HexValue = 0;
 			this.EntranceProperty_BoundaryFN.Location = new System.Drawing.Point(60, 61);
 			this.EntranceProperty_BoundaryFN.MaxLength = 2;
@@ -1475,7 +1475,7 @@ namespace ZeldaFullEditor
 			// EntranceProperty_BoundaryQS
 			// 
 			this.EntranceProperty_BoundaryQS.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryQS.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.EntranceProperty_BoundaryQS.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.EntranceProperty_BoundaryQS.HexValue = 0;
 			this.EntranceProperty_BoundaryQS.Location = new System.Drawing.Point(116, 35);
 			this.EntranceProperty_BoundaryQS.MaxLength = 2;
@@ -1490,7 +1490,7 @@ namespace ZeldaFullEditor
 			// EntranceProperty_BoundaryQN
 			// 
 			this.EntranceProperty_BoundaryQN.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryQN.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.EntranceProperty_BoundaryQN.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.EntranceProperty_BoundaryQN.HexValue = 0;
 			this.EntranceProperty_BoundaryQN.Location = new System.Drawing.Point(60, 35);
 			this.EntranceProperty_BoundaryQN.MaxLength = 2;
@@ -1794,13 +1794,13 @@ namespace ZeldaFullEditor
 			this.entrancetreeView.HideSelection = false;
 			this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
 			this.entrancetreeView.Name = "entrancetreeView";
-			treeNode1.Name = "EntranceNode";
-			treeNode1.Text = "Entrances";
-			treeNode2.Name = "StartingEntranceNode";
-			treeNode2.Text = "Spawn points";
+			treeNode3.Name = "EntranceNode";
+			treeNode3.Text = "Entrances";
+			treeNode4.Name = "StartingEntranceNode";
+			treeNode4.Text = "Spawn points";
 			this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
 			this.entrancetreeView.Size = new System.Drawing.Size(292, 301);
 			this.entrancetreeView.TabIndex = 0;
 			this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -2365,7 +2365,7 @@ namespace ZeldaFullEditor
 			// RoomProperty_DestinationStair4
 			// 
 			this.RoomProperty_DestinationStair4.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_DestinationStair4.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.RoomProperty_DestinationStair4.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.RoomProperty_DestinationStair4.HexValue = 0;
 			this.RoomProperty_DestinationStair4.Location = new System.Drawing.Point(428, 102);
 			this.RoomProperty_DestinationStair4.MaxLength = 2;
@@ -2381,7 +2381,7 @@ namespace ZeldaFullEditor
 			// RoomProperty_DestinationStair3
 			// 
 			this.RoomProperty_DestinationStair3.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_DestinationStair3.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.RoomProperty_DestinationStair3.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.RoomProperty_DestinationStair3.HexValue = 0;
 			this.RoomProperty_DestinationStair3.Location = new System.Drawing.Point(428, 82);
 			this.RoomProperty_DestinationStair3.MaxLength = 2;
@@ -2397,7 +2397,7 @@ namespace ZeldaFullEditor
 			// RoomProperty_DestinationStair2
 			// 
 			this.RoomProperty_DestinationStair2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_DestinationStair2.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.RoomProperty_DestinationStair2.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.RoomProperty_DestinationStair2.HexValue = 0;
 			this.RoomProperty_DestinationStair2.Location = new System.Drawing.Point(428, 62);
 			this.RoomProperty_DestinationStair2.MaxLength = 2;
@@ -2413,7 +2413,7 @@ namespace ZeldaFullEditor
 			// RoomProperty_DestinationStair1
 			// 
 			this.RoomProperty_DestinationStair1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_DestinationStair1.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.RoomProperty_DestinationStair1.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.RoomProperty_DestinationStair1.HexValue = 0;
 			this.RoomProperty_DestinationStair1.Location = new System.Drawing.Point(428, 42);
 			this.RoomProperty_DestinationStair1.MaxLength = 2;
@@ -2429,7 +2429,7 @@ namespace ZeldaFullEditor
 			// RoomProperty_DestinationPit
 			// 
 			this.RoomProperty_DestinationPit.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_DestinationPit.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.RoomProperty_DestinationPit.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.RoomProperty_DestinationPit.HexValue = 0;
 			this.RoomProperty_DestinationPit.Location = new System.Drawing.Point(428, 22);
 			this.RoomProperty_DestinationPit.MaxLength = 2;
@@ -2445,7 +2445,7 @@ namespace ZeldaFullEditor
 			// RoomProperty_MessageID
 			// 
 			this.RoomProperty_MessageID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_MessageID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Three;
+			this.RoomProperty_MessageID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Three;
 			this.RoomProperty_MessageID.HexValue = 0;
 			this.RoomProperty_MessageID.Location = new System.Drawing.Point(300, 22);
 			this.RoomProperty_MessageID.MaxLength = 3;
@@ -2461,7 +2461,7 @@ namespace ZeldaFullEditor
 			// RoomProperty_SpriteSet
 			// 
 			this.RoomProperty_SpriteSet.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_SpriteSet.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.RoomProperty_SpriteSet.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.RoomProperty_SpriteSet.HexValue = 0;
 			this.RoomProperty_SpriteSet.Location = new System.Drawing.Point(245, 22);
 			this.RoomProperty_SpriteSet.MaxLength = 2;
@@ -2477,7 +2477,7 @@ namespace ZeldaFullEditor
 			// RoomProperty_Palette
 			// 
 			this.RoomProperty_Palette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_Palette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.RoomProperty_Palette.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.RoomProperty_Palette.HexValue = 0;
 			this.RoomProperty_Palette.Location = new System.Drawing.Point(246, 62);
 			this.RoomProperty_Palette.MaxLength = 2;
@@ -2493,7 +2493,7 @@ namespace ZeldaFullEditor
 			// RoomProperty_Floor2
 			// 
 			this.RoomProperty_Floor2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_Floor2.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.RoomProperty_Floor2.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.RoomProperty_Floor2.HexValue = 0;
 			this.RoomProperty_Floor2.Location = new System.Drawing.Point(190, 62);
 			this.RoomProperty_Floor2.MaxLength = 2;
@@ -2509,7 +2509,7 @@ namespace ZeldaFullEditor
 			// RoomProperty_Floor1
 			// 
 			this.RoomProperty_Floor1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_Floor1.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.RoomProperty_Floor1.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.RoomProperty_Floor1.HexValue = 0;
 			this.RoomProperty_Floor1.Location = new System.Drawing.Point(135, 62);
 			this.RoomProperty_Floor1.MaxLength = 2;
@@ -2525,7 +2525,7 @@ namespace ZeldaFullEditor
 			// RoomProperty_Blockset
 			// 
 			this.RoomProperty_Blockset.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_Blockset.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.Two;
+			this.RoomProperty_Blockset.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
 			this.RoomProperty_Blockset.HexValue = 0;
 			this.RoomProperty_Blockset.Location = new System.Drawing.Point(190, 22);
 			this.RoomProperty_Blockset.MaxLength = 2;
@@ -2541,7 +2541,7 @@ namespace ZeldaFullEditor
 			// RoomProperty_Layout
 			// 
 			this.RoomProperty_Layout.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_Layout.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.hexDigits.One;
+			this.RoomProperty_Layout.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
 			this.RoomProperty_Layout.HexValue = 0;
 			this.RoomProperty_Layout.Location = new System.Drawing.Point(135, 22);
 			this.RoomProperty_Layout.MaxLength = 1;
@@ -2781,7 +2781,7 @@ namespace ZeldaFullEditor
 			this.comboBox1.Name = "comboBox1";
 			this.comboBox1.Size = new System.Drawing.Size(125, 21);
 			this.comboBox1.TabIndex = 8;
-			this.comboBox1.Text = "No";
+			this.comboBox1.Text = "None";
 			this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged_1);
 			// 
 			// label23
