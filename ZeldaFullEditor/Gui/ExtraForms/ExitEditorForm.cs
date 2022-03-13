@@ -86,11 +86,6 @@ namespace ZeldaFullEditor
             setPositionButton.Enabled = !nodoorradioButton.Checked;
         }
 
-        private void ExitEditorForm_Load(object sender, EventArgs e)
-        {
-            //TODO: Add something here?
-        }
-
         public void SetExit(ExitOW exit)
         {
             settingValues = true;
@@ -105,8 +100,8 @@ namespace ZeldaFullEditor
             pixelMapx = ((mapx) * 512);
             pixelMapy = ((mapy) * 512);
 
-            xPosUpDown.Value = (editingExit.playerX - pixelMapx);//editingExit.playerX;
-            yPosUpDown.Value = (editingExit.playerY - ((pixelMapy)));//editingExit.playerY;
+            xPosUpDown.Value = (editingExit.playerX - pixelMapx); //editingExit.playerX;
+            yPosUpDown.Value = (editingExit.playerY - ((pixelMapy))); //editingExit.playerY;
             xCameraUpDown.Value = (editingExit.cameraX - (pixelMapx));
             yCameraUpDown.Value = (editingExit.cameraY - (pixelMapy));
             xScrollUpDown.Value = (editingExit.xScroll - (pixelMapx));

@@ -17,27 +17,27 @@ namespace ZeldaFullEditor
     public unsafe class Room_Object
     {
         //==========================================================================================
-        //Game Related Variables that are used to save data in the rom 
+        // Game Related Variables that are used to save data in the rom 
         //==========================================================================================
-        public byte x, y; //position of the object in the room (*8 for draw)
+        public byte x, y; // Position of the object in the room (*8 for draw)
         public byte layer = 0;
-        public byte size; //size of the object
-        public bool allBgs = false; //if the object is drawn on BG1 and BG2 regardless of type of BG
+        public byte size; // Size of the object
+        public bool allBgs = false; // If the object is drawn on BG1 and BG2 regardless of type of BG
         //==========================================================================================
-        //Editor Related Variables that are used to draw/position objects
+        // Editor Related Variables that are used to draw/position objects
         //==========================================================================================
         public bool lit = false;
         public List<Tile> tiles = new List<Tile>();
         public short id;
         public int tileIndex = 0;
-        public string name; //name of the object will be shown on the form
+        public string name; // Name of the object will be shown on the form
         public byte nx, ny;
         public byte ox, oy;
         public int width, height;
         public int basewidth, baseheight;
         public int sizewidth, sizeheight;
         public Room room;
-        public ObjectOption options = 0;//
+        public ObjectOption options = 0;
         public int offsetX = 0;
         public int offsetY = 0;
         public bool diagonalFix = false;
@@ -49,6 +49,7 @@ namespace ZeldaFullEditor
         byte previousSize = 0;
         public bool showRectangle = false;
         public List<Point> collisionPoint = new List<Point>();
+
         public Room_Object(short id, byte x, byte y, byte size, byte layer = 0)
         {
             this.x = x;
@@ -69,11 +70,11 @@ namespace ZeldaFullEditor
             previousSize = size;
             size = 1;
             Draw();
-            getBaseSize(); //48
+            getBaseSize(); // 48
             UpdateSize();
             size = 2;
             Draw();
-            getSizeSized(); //64 - 48
+            getSizeSized(); // 64 - 48
             UpdateSize();
             size = previousSize;
             collisionPoint.Clear();
@@ -81,7 +82,7 @@ namespace ZeldaFullEditor
 
         public void getBaseSize()
         {
-            //set size on 1
+            // Set size on 1
             basewidth = width;
             baseheight = height;
         }
@@ -104,7 +105,7 @@ namespace ZeldaFullEditor
 
         public void GetTileCollision()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         public void UpdateSize()
@@ -149,10 +150,10 @@ namespace ZeldaFullEditor
             }
         }
 
-        //Object Initialization (Tiles and special stuff)
+        // Object Initialization (Tiles and special stuff)
         public void init_objects()
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         public void updatePos()
@@ -196,7 +197,7 @@ namespace ZeldaFullEditor
                                 my = 7 - yl;
                             }
 
-                            //Formula information to get tile index position in the array
+                            // Formula information to get tile index position in the array
                             //((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
                             int tx = ((ti.id / 16) * 512) + ((ti.id - ((ti.id / 16) * 16)) * 4);
                             var pixel = alltilesData[tx + (yl * 64) + xl];
@@ -276,7 +277,7 @@ namespace ZeldaFullEditor
                 }
             }
             throw new ArgumentException("Not found.", nameof(description));
-            // or return default(T);
+            // Or return default(T);
         }
 
         public static string GetDescription<T>(this T enumerationValue)
@@ -288,8 +289,8 @@ namespace ZeldaFullEditor
                 throw new ArgumentException("EnumerationValue must be of Enum type", "enumerationValue");
             }
 
-            //Tries to find a DescriptionAttribute for a potential friendly name
-            //for the enum
+            // Tries to find a DescriptionAttribute for a potential friendly name
+            // for the enum
             MemberInfo[] memberInfo = type.GetMember(enumerationValue.ToString());
             if (memberInfo != null && memberInfo.Length > 0)
             {
@@ -297,12 +298,12 @@ namespace ZeldaFullEditor
 
                 if (attrs != null && attrs.Length > 0)
                 {
-                    //Pull out the description value
+                    // Pull out the description value
                     return ((DescriptionAttribute)attrs[0]).Description;
                 }
             }
 
-            //If we have no description attribute, just return the ToString of the enum
+            // If we have no description attribute, just return the ToString of the enum
             return enumerationValue.ToString();
         }
     }

@@ -9,8 +9,8 @@ namespace ZeldaFullEditor
     public class Tile32
     {
         public ushort tile0, tile1, tile2, tile3;
-        //[0,1]
-        //[2,3]
+        // [0,1]
+        // [2,3]
 
         public Tile32(ushort tile0, ushort tile1, ushort tile2, ushort tile3)
         {

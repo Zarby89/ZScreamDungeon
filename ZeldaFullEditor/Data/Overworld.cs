@@ -37,7 +37,7 @@ namespace ZeldaFullEditor
 
         public bool showSprites = true;
 
-        //That must stay global - that's a problem
+        // That must stay global - that's a problem
         public ushort[,] allmapsTilesLW = new ushort[512, 512]; //64 maps * (32*32 tiles)
         public ushort[,] allmapsTilesDW = new ushort[512, 512]; //64 maps * (32*32 tiles)
         public ushort[,] allmapsTilesSP = new ushort[512, 512]; //32 maps * (32*32 tiles)
@@ -51,7 +51,7 @@ namespace ZeldaFullEditor
 
         public int worldOffset = 0;
 
-        //TODO : Fix Whirlpool on large maps
+        // TODO : Fix Whirlpool on large maps
         public List<TransportOW> allWhirlpools = new List<TransportOW>();
         public List<TransportOW> allBirds = new List<TransportOW>();
 
@@ -100,7 +100,7 @@ namespace ZeldaFullEditor
             loadTilesTypes();
             loadGravesStone();
 
-            //Map Initialization :
+            // Map Initialization :
             for (int i = 0; i < 160; i++)
             {
                 allmaps[i] = new OverworldMap((byte)i, this);
@@ -166,6 +166,7 @@ namespace ZeldaFullEditor
             {
                 mapChecked[i] = false;
             }
+
             int xx = 0;
             int yy = 0;
             while (true)
@@ -205,6 +206,7 @@ namespace ZeldaFullEditor
                 {
                     xx = 0;
                     yy += 1;
+
                     if (yy >= 8)
                     {
                         break;
@@ -216,7 +218,7 @@ namespace ZeldaFullEditor
         public void AssembleMap16Tiles()
         {
             int tpos = Constants.map16Tiles;
-            for (int i = 0; i < 4096; i += 1)//3760
+            for (int i = 0; i < 4096; i += 1) // 3760 // 4096
             {
                 TileInfo t0 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, (tpos)));
                 tpos += 2;
@@ -226,6 +228,7 @@ namespace ZeldaFullEditor
                 tpos += 2;
                 TileInfo t3 = GFX.gettilesinfo((ushort)BitConverter.ToInt16(ROM.DATA, (tpos)));
                 tpos += 2;
+
                 tiles16.Add(new Tile16(t0, t1, t2, t3));
             }
         }
@@ -233,7 +236,7 @@ namespace ZeldaFullEditor
         public void SaveMap16Tiles()
         {
             int tpos = Constants.map16Tiles;
-            for (int i = 0; i < 3760; i += 1)//3760
+            for (int i = 0; i < 3760; i += 1) // 3760
             {
                 ROM.WriteShort(tpos, tiles16[i].tile0.toShort(), true, "Tile16Data");
                 //ROM.DATA[tpos] = (byte)(tiles16[i].tile0.toShort() & 0xFF);
@@ -268,6 +271,7 @@ namespace ZeldaFullEditor
             {
                 ushort[,] b = new ushort[4, 4];
                 ushort tl, tr, bl, br;
+
                 for (int k = 0; k < 4; k++)
                 {
                     tl = generate(i, k, (int)Dimension.map32TilesTL);
@@ -302,6 +306,7 @@ namespace ZeldaFullEditor
             int sy = 0;
             int c = 0;
             //int furthestPtr = 0;
+
             for (int i = 0; i < 160; i++)
             {
                 int p1 =
@@ -460,7 +465,6 @@ namespace ZeldaFullEditor
         }
 
         /*
-         * 
             for (int i = 0; i < 128; i++)
             {
                 byte m = entranceOWs[i].entranceId;
@@ -470,7 +474,7 @@ namespace ZeldaFullEditor
                 int y = (p >> 6);
                 entranceOWsEditor[i] = new EntranceOWEditor((x * 16) + (((s % 64) - (((s % 64) / 8) * 8)) * 512), (y * 16) + (((s % 64) / 8) * 512), m, s, entranceOWs[i].mapPos);
             }
-         * */
+         */
         public void loadExits()
         {
             for (int i = 0; i < 0x4F; i++)
@@ -567,7 +571,7 @@ namespace ZeldaFullEditor
         {
             t32Unique.Clear();
             t32.Clear();
-            //Create tile32 from tiles16
+            // Create tile32 from tiles16
             List<ulong> alltiles16 = new List<ulong>();
 
             int sx = 0;
@@ -614,28 +618,28 @@ namespace ZeldaFullEditor
                 }
             }
 
-            List<ulong> tiles = alltiles16.Distinct().ToList();//that get rid of duplicated tiles using linq
-            //alltiles16 = all tiles32...
-            //tiles = all tiles32 that are uniques double are removed
+            List<ulong> tiles = alltiles16.Distinct().ToList(); // that get rid of duplicated tiles using linq
+            // alltiles16 = all tiles32...
+            // tiles = all tiles32 that are uniques double are removed
             Dictionary<ulong, ushort> alltilesIndexed = new Dictionary<ulong, ushort>();
 
             for (int i = 0; i < tiles.Count; i++)
             {
-                alltilesIndexed.Add(tiles[i], (ushort)i); //index the uniques tiles with a dictionary
+                alltilesIndexed.Add(tiles[i], (ushort)i); // index the uniques tiles with a dictionary
             }
 
-            for (int i = 0; i < 40960; i++) //40960 = numbers of 32x32 tiles (160 * (16*16))
+            for (int i = 0; i < 40960; i++) // 40960 = numbers of 32x32 tiles (160 * (16*16))
             {
                 t32.Add(alltilesIndexed[alltiles16[i]]); //add all tiles32 from all maps
-                //convert all tiles32 non-unique ids into unique array of ids
+                // convert all tiles32 non-unique ids into unique array of ids
             }
 
-            for (int i = 0; i < tiles.Count; i++) //for each uniques tile32
+            for (int i = 0; i < tiles.Count; i++) // for each uniques tile32
             {
-                t32Unique.Add(new Tile32(tiles[i])); //create new tileunique
+                t32Unique.Add(new Tile32(tiles[i])); // create new tileunique
             }
 
-            while (t32Unique.Count % 4 != 0) //prevent a bug if tilecount is not a multiple of 4
+            while (t32Unique.Count % 4 != 0) // prevent a bug if tilecount is not a multiple of 4
             {
                 t32Unique.Add(new Tile32(0));
             }
@@ -656,7 +660,7 @@ namespace ZeldaFullEditor
             int v = t32Unique.Count;
             for(int i = v;i<8864;i++)
             {
-                t32Unique.Add(new Tile32(666, 666, 666, 666)); //create new tileunique
+                t32Unique.Add(new Tile32(666, 666, 666, 666)); // create new tileunique
             }
 
             return false;
@@ -684,6 +688,7 @@ namespace ZeldaFullEditor
             int sx = 0;
             int sy = 0;
             int c = 0;
+
             for (int i = 0; i < 160; i++)
             {
                 BinaryReader bw = new BinaryReader(new FileStream(path + "\\map" + i.ToString(), FileMode.Open, FileAccess.Read));
@@ -798,11 +803,10 @@ namespace ZeldaFullEditor
 
                 bw.Close();
             }
-
         }
 
 
-        //UNUSED CODE
+        // UNUSED CODE
         public void AllMapTilesFromMap(int mapid, ushort[,] tiles, bool large = false)
         {
             string s = "";
@@ -828,13 +832,13 @@ namespace ZeldaFullEditor
             int c = t32Unique.Count;
             for (int i = 0; i < c; i += 6)
             {
-                if (index >= 0x4540) //3C87??
+                if (index >= 0x4540) // 3C87??
                 {
                     Console.WriteLine("Too Many Unique Tiles !");
                     break;
                 }
 
-                //Top Left
+                // Top Left
                 ROM.Write(Constants.map32TilesTL + (i),(byte)(t32Unique[index].tile0 & 0xFF), true, "Tile32Data");
                 ROM.Write(Constants.map32TilesTL + (i + 1),(byte)(t32Unique[index + 1].tile0 & 0xFF), true, "Tile32Data");
                 ROM.Write(Constants.map32TilesTL + (i + 2),(byte)(t32Unique[index + 2].tile0 & 0xFF), true, "Tile32Data");
@@ -843,7 +847,7 @@ namespace ZeldaFullEditor
                 ROM.Write(Constants.map32TilesTL + (i + 4),(byte)(((t32Unique[index].tile0 >> 4) & 0xF0) + ((t32Unique[index + 1].tile0 >> 8) & 0x0F)), true, "Tile32Data");
                 ROM.Write(Constants.map32TilesTL + (i + 5),(byte)(((t32Unique[index + 2].tile0 >> 4) & 0xF0) + ((t32Unique[index + 3].tile0 >> 8) & 0x0F)), true, "Tile32Data");
 
-                //Top Right
+                // Top Right
                 ROM.Write(Constants.map32TilesTR + (i),(byte)(t32Unique[index].tile1 & 0xFF), true, "Tile32Data");
                 ROM.Write(Constants.map32TilesTR + (i + 1),(byte)(t32Unique[index + 1].tile1 & 0xFF), true, "Tile32Data");
                 ROM.Write(Constants.map32TilesTR + (i + 2),(byte)(t32Unique[index + 2].tile1 & 0xFF), true, "Tile32Data");
@@ -852,7 +856,7 @@ namespace ZeldaFullEditor
                 ROM.Write(Constants.map32TilesTR + (i + 4),(byte)(((t32Unique[index].tile1 >> 4) & 0xF0) | ((t32Unique[index + 1].tile1 >> 8) & 0x0F)), true, "Tile32Data");
                 ROM.Write(Constants.map32TilesTR + (i + 5),(byte)(((t32Unique[index + 2].tile1 >> 4) & 0xF0) | ((t32Unique[index + 3].tile1 >> 8) & 0x0F)), true, "Tile32Data");
 
-                //Bottom Left
+                // Bottom Left
                 ROM.Write(Constants.map32TilesBL + (i),(byte)(t32Unique[index].tile2 & 0xFF), true, "Tile32Data");
                 ROM.Write(Constants.map32TilesBL + (i + 1),(byte)(t32Unique[index + 1].tile2 & 0xFF), true, "Tile32Data");
                 ROM.Write(Constants.map32TilesBL + (i + 2),(byte)(t32Unique[index + 2].tile2 & 0xFF), true, "Tile32Data");
@@ -861,7 +865,7 @@ namespace ZeldaFullEditor
                 ROM.Write(Constants.map32TilesBL + (i + 4),(byte)(((t32Unique[index].tile2 >> 4) & 0xF0) | ((t32Unique[index + 1].tile2 >> 8) & 0x0F)), true, "Tile32Data");
                 ROM.Write(Constants.map32TilesBL + (i + 5),(byte)(((t32Unique[index + 2].tile2 >> 4) & 0xF0) | ((t32Unique[index + 3].tile2 >> 8) & 0x0F)), true, "Tile32Data");
 
-                //Bottom Right
+                // Bottom Right
                 ROM.Write(Constants.map32TilesBR + (i),(byte)(t32Unique[index].tile3 & 0xFF), true, "Tile32Data");
                 ROM.Write(Constants.map32TilesBR + (i + 1),(byte)(t32Unique[index + 1].tile3 & 0xFF), true, "Tile32Data");
                 ROM.Write(Constants.map32TilesBR + (i + 2),(byte)(t32Unique[index + 2].tile3 & 0xFF), true, "Tile32Data");
@@ -870,10 +874,8 @@ namespace ZeldaFullEditor
                 ROM.Write(Constants.map32TilesBR + (i + 4),(byte)(((t32Unique[index].tile3 >> 4) & 0xF0) | ((t32Unique[index + 1].tile3 >> 8) & 0x0F)), true, "Tile32Data");
                 ROM.Write(Constants.map32TilesBR + (i + 5),(byte)(((t32Unique[index + 2].tile3 >> 4) & 0xF0) | ((t32Unique[index + 3].tile3 >> 8) & 0x0F)), true, "Tile32Data");
 
-
-
                 /*
-                                 ROM.DATA[Constants.map32TilesTL + (i)] = (byte)(t32Unique[index].tile0 & 0xFF);
+                ROM.DATA[Constants.map32TilesTL + (i)] = (byte)(t32Unique[index].tile0 & 0xFF);
                 ROM.DATA[Constants.map32TilesTL + (i + 1)] = (byte)(t32Unique[index + 1].tile0 & 0xFF);
                 ROM.DATA[Constants.map32TilesTL + (i + 2)] = (byte)(t32Unique[index + 2].tile0 & 0xFF);
                 ROM.DATA[Constants.map32TilesTL + (i + 3)] = (byte)(t32Unique[index + 3].tile0 & 0xFF);
@@ -881,7 +883,7 @@ namespace ZeldaFullEditor
                 ROM.DATA[Constants.map32TilesTL + (i + 4)] = (byte)(((t32Unique[index].tile0 >> 4) & 0xF0) + ((t32Unique[index + 1].tile0 >> 8) & 0x0F));
                 ROM.DATA[Constants.map32TilesTL + (i + 5)] = (byte)(((t32Unique[index + 2].tile0 >> 4) & 0xF0) + ((t32Unique[index + 3].tile0 >> 8) & 0x0F));
 
-                //Top Right
+                // Top Right
                 ROM.DATA[Constants.map32TilesTR + (i)] = (byte)(t32Unique[index].tile1 & 0xFF);
                 ROM.DATA[Constants.map32TilesTR + (i + 1)] = (byte)(t32Unique[index + 1].tile1 & 0xFF);
                 ROM.DATA[Constants.map32TilesTR + (i + 2)] = (byte)(t32Unique[index + 2].tile1 & 0xFF);
@@ -890,7 +892,7 @@ namespace ZeldaFullEditor
                 ROM.DATA[Constants.map32TilesTR + (i + 4)] = (byte)(((t32Unique[index].tile1 >> 4) & 0xF0) | ((t32Unique[index + 1].tile1 >> 8) & 0x0F));
                 ROM.DATA[Constants.map32TilesTR + (i + 5)] = (byte)(((t32Unique[index + 2].tile1 >> 4) & 0xF0) | ((t32Unique[index + 3].tile1 >> 8) & 0x0F));
 
-                //Bottom Left
+                // Bottom Left
                 ROM.DATA[Constants.map32TilesBL + (i)] = (byte)(t32Unique[index].tile2 & 0xFF);
                 ROM.DATA[Constants.map32TilesBL + (i + 1)] = (byte)(t32Unique[index + 1].tile2 & 0xFF);
                 ROM.DATA[Constants.map32TilesBL + (i + 2)] = (byte)(t32Unique[index + 2].tile2 & 0xFF);
@@ -899,7 +901,7 @@ namespace ZeldaFullEditor
                 ROM.DATA[Constants.map32TilesBL + (i + 4)] = (byte)(((t32Unique[index].tile2 >> 4) & 0xF0) | ((t32Unique[index + 1].tile2 >> 8) & 0x0F));
                 ROM.DATA[Constants.map32TilesBL + (i + 5)] = (byte)(((t32Unique[index + 2].tile2 >> 4) & 0xF0) | ((t32Unique[index + 3].tile2 >> 8) & 0x0F));
 
-                //Bottom Right
+                // Bottom Right
                 ROM.DATA[Constants.map32TilesBR + (i)] = (byte)(t32Unique[index].tile3 & 0xFF);
                 ROM.DATA[Constants.map32TilesBR + (i + 1)] = (byte)(t32Unique[index + 1].tile3 & 0xFF);
                 ROM.DATA[Constants.map32TilesBR + (i + 2)] = (byte)(t32Unique[index + 2].tile3 & 0xFF);
@@ -907,16 +909,15 @@ namespace ZeldaFullEditor
 
                 ROM.DATA[Constants.map32TilesBR + (i + 4)] = (byte)(((t32Unique[index].tile3 >> 4) & 0xF0) | ((t32Unique[index + 1].tile3 >> 8) & 0x0F));
                 ROM.DATA[Constants.map32TilesBR + (i + 5)] = (byte)(((t32Unique[index + 2].tile3 >> 4) & 0xF0) | ((t32Unique[index + 3].tile3 >> 8) & 0x0F)); 
-               
                 */
-
 
                 index += 4;
                 c += 2;
             }
         }
 
-        /* public void savemapstorom()
+         /* 
+         public void savemapstorom()
          {
              int pos = 0x120000;
              for (int i = 0; i < 160; i++)
@@ -925,6 +926,7 @@ namespace ZeldaFullEditor
                  byte[]
                      singlemap1 = new byte[256],
                      singlemap2 = new byte[256];
+
                  for (int y = 0; y < 16; y++)
                  {
                      for (int x = 0; x < 16; x++)
@@ -943,11 +945,13 @@ namespace ZeldaFullEditor
                  ROM.DATA[pos] = 0xE0;
                  ROM.DATA[pos + 1] = 0xFF;
                  pos += 2;
+
                  for (int j = 0; j < 256; j++)
                  {
                      ROM.DATA[pos] = singlemap2[j];
                      pos += 1;
                  }
+
                  ROM.DATA[pos] = 0xFF;
                  pos += 1;
                  snesPos = Utils.PcToSnes(pos);
@@ -958,28 +962,32 @@ namespace ZeldaFullEditor
                  ROM.DATA[pos] = 0xE0;
                  ROM.DATA[pos + 1] = 0xFF;
                  pos += 2;
+
                  for (int j = 0; j < 256; j++)
                  {
                      ROM.DATA[pos] = singlemap1[j];
                      pos += 1;
                  }
+
                  ROM.DATA[pos] = 0xFF;
                  pos += 1;
 
              }
+
              //Console.WriteLine();
              //Save32Tiles();
-         }*/
+         }
+         */
 
         public void loadItems()
         {
             int ptr = ROM.ReadLong(Constants.overworldItemsAddress);
-            int ptrpc = Utils.SnesToPc(ptr);//1BC2F9 -> 0DC2F9
+            int ptrpc = Utils.SnesToPc(ptr); // 1BC2F9 -> 0DC2F9
             for (int i = 0; i < 128; i++)
             {
-                int addr =  ((ptr & 0xFF0000) + //1B
-                            (ROM.DATA[ptrpc + (i * 2) + 1] << 8) + //F9
-                            (ROM.DATA[ptrpc + (i * 2)]) //3C
+                int addr =  ((ptr & 0xFF0000) + // 1B
+                            (ROM.DATA[ptrpc + (i * 2) + 1] << 8) + // F9
+                            (ROM.DATA[ptrpc + (i * 2)]) // 3C
                             ); 
 
                 addr = Utils.SnesToPc(addr);
@@ -1028,15 +1036,14 @@ namespace ZeldaFullEditor
         public void loadOverlays()
         {
             /*
-             0x7765B: ;Original byte = 0x0A
+            0x7765B: ;Original byte = 0x0A
             22 9C 87 00 EA ;JSL long jump table
-
-             */
+            */
 
             for (int index = 0; index < 128; index++)
             {
                 alloverlays[index] = new OverlayData();
-                //overlayPointers
+                // OverlayPointers
                 Console.WriteLine("MapIndex Overlay : " + index.ToString());
 
                 int addr = (Constants.overlayPointersBank << 16) +
@@ -1050,21 +1057,23 @@ namespace ZeldaFullEditor
                     (ROM.DATA[(0x077677 + 1) + (index * 3)] << 8) +
                     ROM.DATA[(0x077677 + 0) + (index * 3)];
                     addr = Utils.SnesToPc(addr);
-                    //Load New Address
+                    // Load New Address
                 }
 
                 int a = 0;
                 int x = 0;
                 int sta = 0;
-                //16-bit mode : 
-                //A9 (LDA #$)
-                //A2 (LDX #$)
-                //8D (STA $xxxx)
-                //9D (STA $xxxx ,x)
-                //8F (STA $xxxxxx)
-                //1A (INC A)
-                //4C (JMP)
-                //60 (END)
+
+                // 16-bit mode : 
+                // A9 (LDA #$)
+                // A2 (LDX #$)
+                // 8D (STA $xxxx)
+                // 9D (STA $xxxx ,x)
+                // 8F (STA $xxxxxx)
+                // 1A (INC A)
+                // 4C (JMP)
+                // 60 (END)
+
                 byte b = 0;
                 while (b != 0x60)
                 {
@@ -1073,21 +1082,21 @@ namespace ZeldaFullEditor
                     {
                         break;
                     }
-                    else if (b == 0xA9) //LDA #$xxxx (Increase addr+3)
+                    else if (b == 0xA9) // LDA #$xxxx (Increase addr+3)
                     {
                         a = (ROM.DATA[addr + 2] << 8) +
                         ROM.DATA[addr + 1];
                         addr += 3;
                         continue;
                     }
-                    else if (b == 0xA2) //LDX #$xxxx (Increase addr+3)
+                    else if (b == 0xA2) // LDX #$xxxx (Increase addr+3)
                     {
                         x = (ROM.DATA[addr + 2] << 8) +
                         ROM.DATA[addr + 1];
                         addr += 3;
                         continue;
                     }
-                    else if (b == 0x8D) //STA $xxxx (Increase addr+3)
+                    else if (b == 0x8D) // STA $xxxx (Increase addr+3)
                     {
                         sta = (ROM.DATA[addr + 2] << 8) +
                         ROM.DATA[addr + 1];
@@ -1099,11 +1108,11 @@ namespace ZeldaFullEditor
                         addr += 3;
                         continue;
                     }
-                    else if (b == 0x9D) //STA $xxxx, x (Increase addr+3)
+                    else if (b == 0x9D) // STA $xxxx, x (Increase addr+3)
                     {
                         sta = (ROM.DATA[addr + 2] << 8) +
                         ROM.DATA[addr + 1];
-                        //draw tile at sta,X position
+                        // Draw tile at sta,X position
 
                         int stax = (sta & 0x1FFF) + x;
                         int yp = ((stax / 2) / 0x40);
@@ -1113,7 +1122,7 @@ namespace ZeldaFullEditor
                         addr += 3;
                         continue;
                     }
-                    else if (b == 0x8F) //STA $xxxxxx (Increase addr+4)
+                    else if (b == 0x8F) // STA $xxxxxx (Increase addr+4)
                     {
                         sta = (ROM.DATA[addr + 2] << 8) +
                         ROM.DATA[addr + 1];
@@ -1127,28 +1136,28 @@ namespace ZeldaFullEditor
                         addr += 4;
                         continue;
                     }
-                    else if (b == 0x1A) //INC A (Increase addr+1)
+                    else if (b == 0x1A) // INC A (Increase addr+1)
                     {
                         a += 1;
                         addr += 1;
                         continue;
                     }
-                    else if (b == 0x4C) //JMP $xxxx (move addr to the new address)
+                    else if (b == 0x4C) // JMP $xxxx (move addr to the new address)
                     {
                         addr = (Constants.overlayPointersBank << 16) +
                         (ROM.DATA[addr + 2] << 8) +
                         ROM.DATA[addr + 1];
                         addr = Utils.SnesToPc(addr);
-                        //THAT SHOULD NOT EXIST IN MOVED CODE SO NO NEED TO CHANGE IT
+                        // THAT SHOULD NOT EXIST IN MOVED CODE SO NO NEED TO CHANGE IT
                         continue;
                     }
-                    else if (b == 0x60) //RTS
+                    else if (b == 0x60) // RTS
                     {
-                        break; //just to be sure
+                        break; // Just to be sure
                     }
-                    else if (b == 0x6B) //RTL
+                    else if (b == 0x6B) // RTL
                     {
-                        break; //just to be sure
+                        break; // Just to be sure
                     }
                 }
             }
@@ -1156,16 +1165,16 @@ namespace ZeldaFullEditor
 
         public void loadSprites()
         {
-            //LW[0] = RainState 0 to 63 there's no data for DW
-            //LW[1] = ZeldaState 0 to 128 ; Contains LW and DW <128 or 144 wtf
-            //LW[2] = AgahState 0 to ?? ;Contains data for LW and DW
+            // LW[0] = RainState 0 to 63 there's no data for DW
+            // LW[1] = ZeldaState 0 to 128 ; Contains LW and DW <128 or 144 wtf
+            // LW[2] = AgahState 0 to ?? ;Contains data for LW and DW
 
             //Console.WriteLine(((Constants.overworldSpritesBegining & 0xFFFF) + (09 << 16)).ToString("X6"));
             for (int i = 0; i < 64; i++) 
             {
                 if (mapParent[i] == i)
                 {
-                    //Beginning Sprites
+                    // Beginning Sprites
                     int ptrPos = Constants.overworldSpritesBegining + (i * 2);
                     int spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
                     while (true)
@@ -1192,7 +1201,7 @@ namespace ZeldaFullEditor
             {
                 if (mapParent[i] == i)
                 {
-                    //Zelda Saved Sprites
+                    // Zelda Saved Sprites
                     int ptrPos = Constants.overworldSpritesZelda + (i * 2);
                     int spriteAddress = Utils.SnesToPc((09 << 16) + ROM.ReadShort(ptrPos));
                     while (true)
@@ -1224,7 +1233,7 @@ namespace ZeldaFullEditor
                     }
                 }
 
-                //Agahnim Dead Sprites
+                // Agahnim Dead Sprites
                 if (mapParent[i] == i)
                 {
                     int ptrPos = Constants.overworldSpritesAgahnim + (i * 2);
@@ -1266,7 +1275,8 @@ namespace ZeldaFullEditor
         {
             t16Unique.Clear();
             t16.Clear();
-            //Create tile32 from tiles16
+
+            // Create tile32 from tiles16
             List<ulong> alltiles8 = new List<ulong>();
 
             int sx = 0;
@@ -1297,8 +1307,6 @@ namespace ZeldaFullEditor
                         ushort tf02 = tilesused[x + (sx * 64), y + 1 + (sy * 64)].toShort();
                         ushort tf03 = tilesused[x + 1 + (sx * 64), y + 1 + (sy * 64)].toShort();
 
-                        
-
                         alltiles8.Add(new Tile16(GFX.gettilesinfo(tf00), GFX.gettilesinfo(tf01), GFX.gettilesinfo(tf02), GFX.gettilesinfo(tf03)).getLongValue());
                     }
                 }
@@ -1308,7 +1316,6 @@ namespace ZeldaFullEditor
                 {
                     sy++;
                     sx = 0;
-
                 }
 
                 c++;
@@ -1320,28 +1327,28 @@ namespace ZeldaFullEditor
                 }
             }
 
-            List<ulong> tiles = alltiles8.Distinct().ToList();//that get rid of duplicated tiles using linq
-            //alltiles16 = all tiles32...
-            //tiles = all tiles32 that are uniques double are removed
+            List<ulong> tiles = alltiles8.Distinct().ToList(); // that get rid of duplicated tiles using linq
+            // alltiles16 = all tiles32...
+            // tiles = all tiles32 that are uniques double are removed
             Dictionary<ulong, ushort> alltilesIndexed = new Dictionary<ulong, ushort>();
 
             for (int i = 0; i < tiles.Count; i++)
             {
-                alltilesIndexed.Add(tiles[i], (ushort)i); //index the uniques tiles with a dictionary
+                alltilesIndexed.Add(tiles[i], (ushort)i); // index the uniques tiles with a dictionary
             }
 
-            for (int i = 0; i < 163840; i++) //163840 = numbers of 16x16 tiles (160 * (32*32))
+            for (int i = 0; i < 163840; i++) // 163840 = numbers of 16x16 tiles (160 * (32*32))
             {
-                t16.Add(alltilesIndexed[alltiles8[i]]); //add all tiles32 from all maps
-                //convert all tiles32 non-unique ids into unique array of ids
+                t16.Add(alltilesIndexed[alltiles8[i]]); // add all tiles32 from all maps
+                // convert all tiles32 non-unique ids into unique array of ids
             }
 
-            for (int i = 0; i < tiles.Count; i++) //for each uniques tile32
+            for (int i = 0; i < tiles.Count; i++) // for each uniques tile32
             {
-                t16Unique.Add(new Tile16(tiles[i])); //create new tileunique
+                t16Unique.Add(new Tile16(tiles[i])); // create new tileunique
             }
 
-            while (t16Unique.Count % 4 != 0) //prevent a bug if tilecount is not a multiple of 4
+            while (t16Unique.Count % 4 != 0) // prevent a bug if tilecount is not a multiple of 4
             {
                 t16Unique.Add(new Tile16(0));
             }
@@ -1350,7 +1357,7 @@ namespace ZeldaFullEditor
             {
                 if (MessageBox.Show("Unique Tiles16 count exceed the limit in the rom\nTiles data won't be saved would you like to export map data?", "Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-
+                    // TODO: add something here?
                 }
 
                 return true;

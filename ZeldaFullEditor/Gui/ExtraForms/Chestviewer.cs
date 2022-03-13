@@ -16,10 +16,12 @@ namespace ZeldaFullEditor
         ColorPalette palettes = null;
         public bool showName = false;
 
-        public int selectedIndex = 0; //setted on 0 by default
+        public int selectedIndex = 0; // Setted on 0 by default
         public event EventHandler SelectedIndexChanged;
 
         public Chest selectedObject = null;
+
+        public List<Chest> items = new List<Chest>();
 
         public Chestviewer()
         {
@@ -28,13 +30,12 @@ namespace ZeldaFullEditor
 
         private void Chestviewer_Load(object sender, EventArgs e)
         {
-            //TODO: add something here?
+            // TODO: add something here?
         }
 
-        public List<Chest> items = new List<Chest>();
         private void ObjectViewer_Paint(object sender, PaintEventArgs e)
         {
-            //TODO: add something here?
+            // TODO: add something here?
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -64,7 +65,6 @@ namespace ZeldaFullEditor
                 {
                     xpos = 0;
                     ypos++;
-
                 }
             }
 
@@ -135,6 +135,7 @@ namespace ZeldaFullEditor
                         ptr[i] = 0;
                     }
                 }
+
                 o.ItemsDraw(o.item,0,0);
                 if (palettes != null)
                 {
@@ -145,7 +146,7 @@ namespace ZeldaFullEditor
 
         private void ObjectViewer_Load(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
@@ -156,6 +157,7 @@ namespace ZeldaFullEditor
             int ypos = 0;
             int index = 0;
             this.Size = new Size(this.Size.Width, h);
+
             foreach (Chest o in items)
             {
                 Rectangle itemRect = new Rectangle(xpos * 64, ypos * 64, 64, 64);
@@ -170,7 +172,6 @@ namespace ZeldaFullEditor
                 {
                     xpos = 0;
                     ypos++;
-
                 }
 
                 index++;

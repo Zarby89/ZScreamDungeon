@@ -47,7 +47,7 @@ namespace ZeldaFullEditor.Gui
 
         private void GfxGroupsForm_Load(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         public void CreateTempGfx()
@@ -149,10 +149,10 @@ namespace ZeldaFullEditor.Gui
 
         private void main1Box_TextChanged(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
-        private byte getTextBoxValue(TextBox tb) //changed to hex
+        private byte getTextBoxValue(TextBox tb) // Changed to hex
         {
             byte r = 0;
             byte.TryParse(tb.Text, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out r);
@@ -225,7 +225,7 @@ namespace ZeldaFullEditor.Gui
 
         private void GfxGroupsForm_Shown(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         private void blocksetchanged(object sender, EventArgs e)
@@ -236,7 +236,7 @@ namespace ZeldaFullEditor.Gui
 
         private void allbox_click(object sender, EventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
             //(sender as TextBox).SelectionStart = (sender as TextBox).Text.Length;
         }
 
@@ -250,7 +250,7 @@ namespace ZeldaFullEditor.Gui
                 blocks[i] = 0;
             }
 
-            if (tabControl1.SelectedIndex == 0) //main 
+            if (tabControl1.SelectedIndex == 0) // Main 
             {
                 main = true;
                 byte blockset = (byte)mainBlocksetUpDown.Value;
@@ -261,30 +261,30 @@ namespace ZeldaFullEditor.Gui
                 }
             }
 
-            if (tabControl1.SelectedIndex == 1) //room ?
+            if (tabControl1.SelectedIndex == 1) // Room ?
             {
                 byte blockset = (byte)roomUpDown.Value;
 
                 for (int i = 0; i < 4; i++)
                 {
                     blocks[i] = GfxGroups.roomGfx[blockset][i];
-                } //12-16 sprites
+                } // 12-16 sprites
             }
 
-            if (tabControl1.SelectedIndex == 2) //room ?
+            if (tabControl1.SelectedIndex == 2) // Room ?
             {
                 byte blockset = (byte)spriteUpDown.Value;
 
                 for (int i = 0; i < 4; i++)
                 {
                     blocks[i] = (byte)(GfxGroups.spriteGfx[blockset][i] + 115);
-                } //12-16 sprites
+                } // 12-16 sprites
             }
 
             unsafe
             {
-                byte* newPdata = (byte*)GFX.allgfx16Ptr.ToPointer(); //turn gfx16 (all 222 of them)
-                byte* sheetsData = (byte*)GFX.currentEditinggfx16Ptr.ToPointer(); //into "room gfx16" 16 of them
+                byte* newPdata = (byte*)GFX.allgfx16Ptr.ToPointer(); // Turn gfx16 (all 222 of them)
+                byte* sheetsData = (byte*)GFX.currentEditinggfx16Ptr.ToPointer(); // Into "room gfx16" 16 of them
                 int sheetPos = 0;
 
                 for (int i = 0; i < 8; i++)
@@ -292,14 +292,14 @@ namespace ZeldaFullEditor.Gui
                     int d = 0;
                     while (d < 2048)
                     {
-                        //NOTE LOAD BLOCKSETS SOMEWHERE FIRST
+                        // NOTE LOAD BLOCKSETS SOMEWHERE FIRST
                         byte mapByte = newPdata[d + (blocks[i] * 2048)];
                         if (main)
                         {
                             if(i < 4)
                             {   
                                 mapByte += 0x88;
-                            } //last line of 6, first line of 7 ?
+                            } // Last line of 6, first line of 7 ?
                         }
 
                         sheetsData[d + (sheetPos * 2048)] = mapByte;
@@ -451,10 +451,12 @@ namespace ZeldaFullEditor.Gui
                 pPos = 145;
                 for (int i = 0; i < 15; i++)
                 {
-                    /*if (pPos % 16 == 0)
+                    /*
+                    if (pPos % 16 == 0)
                     {
                         pPos++;
-                    }*/
+                    }
+                    */
 
                     palettes[pPos] = Palettes.globalSprite_Palettes[0][i];
                     palettes[pPos + 16] = Palettes.globalSprite_Palettes[0][i + 15];

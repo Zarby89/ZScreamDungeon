@@ -26,7 +26,8 @@ namespace ZeldaFullEditor.Gui
             {
                 listBox1.Items.Add(ChestItems_Name.name[i]);
 
-                chestsdata[i] = new ChestAdvancedData(
+                chestsdata[i] = new ChestAdvancedData
+                (
                      ROM.DATA[Constants.chests_backupitems + i],
                      ROM.DATA[Constants.chests_yoffset + i],
                      ROM.DATA[Constants.chests_xoffset + i],
@@ -36,7 +37,7 @@ namespace ZeldaFullEditor.Gui
                      (short)((ROM.DATA[Constants.chests_sramaddress + (i * 2) + 1] << 8) + ROM.DATA[Constants.chests_sramaddress + (i * 2)]),
                      ROM.DATA[Constants.chests_sramvalue + i],
                      (short)((ROM.DATA[Constants.chests_msgid + (i * 2) + 1] << 8) + ROM.DATA[Constants.chests_msgid + (i * 2)])
-                     );
+                );
             }
 
             listBox1.SelectedIndex = 0;

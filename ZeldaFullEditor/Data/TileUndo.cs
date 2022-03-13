@@ -15,6 +15,7 @@ namespace ZeldaFullEditor
         public ushort[] savedTiles { get; set; }
         public ushort[] redosavedTiles { get; set; }
         public ushort[,] usedTiles { get; set; }
+
         public TileUndo(int mouseXDown, int mouseYDown, int lengthX, ushort[] savedTiles, ushort[] redosavedTiles, ref ushort[,] usedTiles)
         {
             this.mouseXDown = mouseXDown;

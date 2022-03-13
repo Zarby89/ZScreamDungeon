@@ -83,7 +83,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(87, 13);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Custom Objects :";
+            this.label1.Text = "Custom objects";
             // 
             // groupBox1
             // 
@@ -100,7 +100,7 @@
             this.groupBox1.Size = new System.Drawing.Size(683, 638);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Selected Object";
+            this.groupBox1.Text = "Selected object";
             // 
             // label7
             // 
@@ -109,7 +109,7 @@
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(52, 13);
             this.label7.TabIndex = 6;
-            this.label7.Text = "Tile Gfx : ";
+            this.label7.Text = "Tile graphics";
             // 
             // pictureBox2
             // 
@@ -135,7 +135,7 @@
             this.groupBox3.Size = new System.Drawing.Size(361, 111);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Tile Properties (Set this before placing tile)";
+            this.groupBox3.Text = "Tile properties";
             // 
             // comboBox2
             // 
@@ -176,7 +176,7 @@
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(46, 13);
             this.label6.TabIndex = 4;
-            this.label6.Text = "Palette :";
+            this.label6.Text = "Palette";
             // 
             // numericUpDown1
             // 
@@ -192,7 +192,7 @@
             this.checkBox3.Name = "checkBox3";
             this.checkBox3.Size = new System.Drawing.Size(68, 17);
             this.checkBox3.TabIndex = 2;
-            this.checkBox3.Text = "On Top?";
+            this.checkBox3.Text = "Priority";
             this.checkBox3.UseVisualStyleBackColor = true;
             // 
             // checkBox2
@@ -202,7 +202,7 @@
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Size = new System.Drawing.Size(62, 17);
             this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "V Mirror";
+            this.checkBox2.Text = "Flip Y";
             this.checkBox2.UseVisualStyleBackColor = true;
             // 
             // checkBox1
@@ -212,7 +212,7 @@
             this.checkBox1.Name = "checkBox1";
             this.checkBox1.Size = new System.Drawing.Size(63, 17);
             this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "H Mirror";
+            this.checkBox1.Text = "Flip X";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // groupBox2
@@ -231,7 +231,7 @@
             this.groupBox2.Size = new System.Drawing.Size(301, 621);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Vram";
+            this.groupBox2.Text = "VRAM";
             // 
             // textBox3
             // 
@@ -248,7 +248,7 @@
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(187, 13);
             this.label8.TabIndex = 6;
-            this.label8.Text = "Selected Dungeon Sprite GFX index : ";
+            this.label8.Text = "Selected dungeon sprite GFX";
             // 
             // panel1
             // 
@@ -293,7 +293,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(203, 13);
             this.label5.TabIndex = 1;
-            this.label5.Text = "Selected Dungeon Entrance GFX index : ";
+            this.label5.Text = "Selected dungeon entrance GFX";
             // 
             // label4
             // 
@@ -302,7 +302,7 @@
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(157, 13);
             this.label4.TabIndex = 0;
-            this.label4.Text = "Selected Dungeon GFX index : ";
+            this.label4.Text = "Selected dungeon GFX";
             // 
             // label3
             // 
@@ -311,24 +311,24 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(98, 13);
             this.label3.TabIndex = 2;
-            this.label3.Text = "Nbr of tiles used : 4";
+            this.label3.Text = "Tiles used: 4";
             // 
             // comboBox1
             // 
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
-            "2x2 <->",
-            "3x3 <->",
-            "4x4 <->",
-            "2x3 <->",
-            "2x4 <->",
-            "4x2 <->",
-            "2x3 <->"});
+            "2x2 ↔",
+            "3x3 ↔",
+            "4x4 ↔",
+            "2x3 ↔",
+            "2x4 ↔",
+            "4x2 ↔",
+            "2x3 ↔"});
             this.comboBox1.Location = new System.Drawing.Point(9, 32);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(256, 21);
             this.comboBox1.TabIndex = 1;
-            this.comboBox1.Text = "2x2 <->";
+            this.comboBox1.Text = "2x2 ↔";
             // 
             // label2
             // 
@@ -337,7 +337,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(67, 13);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Draw Style : ";
+            this.label2.Text = "Draw style";
             // 
             // Object_Designer
             // 

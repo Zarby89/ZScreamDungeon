@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
@@ -30,10 +31,36 @@ namespace ZeldaFullEditor
             }
 
             return BitConverter.ToInt32(b, 0);
-            //snes always have + 0x8000 no matter what, the bank on pc is always / 2
+            // SNES always have + 0x8000 no matter what, the bank on pc is always / 2
 
             //return ((addr * 2) & 0xFF0000) + (addr & 0x7FFF) + 0x8000;
         }
+
+        /// gets a 24-bit address from the specified snes address, using the input's high byte as the bank
+        public static int Get24Local(int addr, bool pc = true) {
+            int a = SnesToPc(addr);
+            int ret = (addr & 0xFF0000) |
+                       (ROM.DATA[a + 1] << 8) |
+                       ROM.DATA[a];
+            if (pc) {
+                return SnesToPc(ret);
+            } else {
+                return ret;
+            }
+        }
+
+        /// gets a 24-bit address from the specified snes address, using the input's high byte as the bank
+        public static int Get24LocalFromPC(int addr, bool pc = true) {
+            int ret = (PcToSnes(addr) & 0xFF0000) |
+                       (ROM.DATA[addr + 1] << 8) |
+                       ROM.DATA[addr];
+            if (pc) {
+                return SnesToPc(ret);
+            } else {
+                return ret;
+            }
+        }
+
 
         public static int AddressFromBytes(byte addr1, byte addr2, byte addr3)
         {
@@ -47,33 +74,73 @@ namespace ZeldaFullEditor
 
         public static int Clamp(int v, int min, int max)
         {
-            if (v >= max) { v = max; }
-            if (v <= min) { v = min; }
+            if (v >= max) 
+            {
+                v = max; 
+            }
+            if (v <= min)
+            {
+                v = min; 
+            }
+
             return (v );
         }
 
         public static short Clamp(short v, int min, int max)
         {
-            if (v >= max) { v = (short)max; }
-            if (v <= min) { v = (short)min; }
+            if (v >= max) 
+            { 
+                v = (short)max;
+            }
+            if (v <= min) 
+            {
+                v = (short)min; 
+            }
+
             return (v);
         }
 
         public static byte Clamp(byte v, int min, int max)
         {
-            if (v >= max) { v = (byte)max; }
-            if (v <= min) { v = (byte)min; }
+            if (v >= max) 
+            {
+                v = (byte)max; 
+            }
+            if (v <= min) 
+            { 
+                v = (byte)min; 
+            }
+
             return (v);
         }
 
-        public static string[] DeepCopyStrings(string[] a) {
+        public static string[] DeepCopyStrings(string[] a) 
+        {
             string[] ret = new string[a.Length];
             int i = 0;
-            foreach (string s in a) {
+            foreach (string s in a) 
+            {
                 ret[i++] = s.Substring(0);
             }
+
             return ret;
         }
 
+        public static string[] CreateIndexedList(string[] a) 
+        {
+            string[] ret = new string[a.Length];
+            int i = 0;
+            foreach (string s in a)
+            {
+                ret[i++] = string.Format("{0:X2} - {1}", i, s);
+			}
+
+            return ret;
+		}
+
+        public static string ForceTextToHex(string s) {
+
+            return Regex.Replace(s, @"[^A-F\d]", "");
+        }
     }
 }

@@ -19,6 +19,8 @@ namespace ZeldaFullEditor.OWSceneModes
         int mxRightclick = 0;
         int myRightclick = 0;
 
+        ExitEditorForm exitPropForm = new ExitEditorForm();
+
         public ExitMode(SceneOW scene)
         {
             this.scene = scene;
@@ -90,6 +92,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.ow.allexits[i].updateMapStuff(mid, scene.ow);
 
                     found = i;
+
                     //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                     break;
                 }
@@ -160,7 +163,7 @@ namespace ZeldaFullEditor.OWSceneModes
             }
         }
 
-        public void Delete() //set exit data to 0
+        public void Delete() // Set exit data to 0
         {
             lastselectedExit.playerX = 0xFFFF;
             lastselectedExit.playerY = 0xFFFF;
@@ -186,6 +189,7 @@ namespace ZeldaFullEditor.OWSceneModes
                 {
                     selectedExit.playerX = (ushort)e.X;
                     selectedExit.playerY = (ushort)e.Y;
+
                     if (scene.snapToGrid)
                     {
                         selectedExit.playerX = (ushort)((e.X / 8) * 8);
@@ -220,6 +224,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 bool clickedon = false;
                 ContextMenuStrip menu = new ContextMenuStrip();
+
                 for (int i = 0; i < 78; i++)
                 {
                     ExitOW en = scene.ow.allexits[i];
@@ -267,7 +272,6 @@ namespace ZeldaFullEditor.OWSceneModes
             Delete();
         }
 
-            ExitEditorForm exitPropForm = new ExitEditorForm();
         public void exitProperty_Click(object sender, EventArgs e)
         {
             exitPropForm.SetExit(lastselectedExit);
@@ -284,7 +288,7 @@ namespace ZeldaFullEditor.OWSceneModes
             else if (dr == DialogResult.Yes)
             {
                 scene.selectedMode = ObjectMode.OWDoor;
-                if (lastselectedExit.doorType1 != 0) //wooden door
+                if (lastselectedExit.doorType1 != 0) // Wooden door
                 {
                     scene.selectedTile = new ushort[2];
                     scene.selectedTileSizeX = 2;
@@ -292,7 +296,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.selectedTile[1] = 1866;
                     
                 }
-                else if ((lastselectedExit.doorType2 & 0x8000) != 0) //castle door
+                else if ((lastselectedExit.doorType2 & 0x8000) != 0) // Castle door
                 {
                     scene.selectedTile = new ushort[4];
                     scene.selectedTileSizeX = 2;
@@ -301,7 +305,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.selectedTile[2] = 3512;
                     scene.selectedTile[3] = 3513;
                 }
-                else if ((lastselectedExit.doorType2 & 0x7FFF) != 0) //sanc door
+                else if ((lastselectedExit.doorType2 & 0x7FFF) != 0) // Sanctuary door
                 {
                     scene.selectedTile = new ushort[2];
                     scene.selectedTileSizeX = 2;
@@ -370,6 +374,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
                                 //g.DrawImage(jsonData.linkGfx, ex.playerX, ex.playerY, new Rectangle(16, 0, 16, 16), GraphicsUnit.Pixel);
                                 //g.DrawImage(jsonData.linkGfx, ex.playerX, ex.playerY + 8, new Rectangle(48, 16, 16, 16), GraphicsUnit.Pixel);
+
                                 g.CompositingMode = CompositingMode.SourceOver;
                                 bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 160, 160, 160));
                                 g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
@@ -440,6 +445,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
                                 //g.DrawImage(jsonData.linkGfx, ex.playerX, ex.playerY, new Rectangle(16, 0, 16, 16), GraphicsUnit.Pixel);
                                 //g.DrawImage(jsonData.linkGfx, ex.playerX, ex.playerY + 8, new Rectangle(48, 16, 16, 16), GraphicsUnit.Pixel);
+
                                 g.CompositingMode = CompositingMode.SourceOver;
                                 bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 160, 160, 160));
                                 g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));

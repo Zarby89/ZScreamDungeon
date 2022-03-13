@@ -36,7 +36,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public void OnMouseUp(MouseEventArgs e)
         {
-            //TODO: Add something here?
+            // TODO: Add something here?
         }
 
         public void onMouseMove(MouseEventArgs e)
@@ -65,7 +65,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     scene.globalmouseTileDownX = tileX;
                     scene.globalmouseTileDownY = tileY;
 
-                    //Refresh the tile preview
+                    // Refresh the tile preview
                     if (scene.selectedTile.Length >= 1)
                     {
                         int sX = (mouseTileX / 32);
@@ -108,22 +108,26 @@ namespace ZeldaFullEditor.OWSceneModes
                         //this.Invalidate(new Rectangle((mouseTileX * 16)-16, (mouseTileY * 16)-16, (selectedTileSizeX * 16)+32, (y * 16)+32));
                     }
 
-                    /*if (selecting)
+                    /*
+                    if (selecting)
                     {
                         this.Invalidate(new Rectangle((globalmouseTileDownX * 16), (globalmouseTileDownY * 16), (mouseTileX * 16) - (globalmouseTileDownX * 16) + 48, (mouseTileY * 16) - (globalmouseTileDownY * 16) + 48));
-                    }*/
+                    }
+                    */
 
                     scene.lastTileHoverX = mouseTileX;
                     scene.lastTileHoverY = mouseTileY;
-                    /* int tileX = (e.X / 16);
-                     int tileY = (e.Y / 16);
-                     int superX = (tileX / 32);
-                     int superY = (tileY / 32);
-                     int mapId = (superY * 8) + superX;
-                     ow.allmapsTiles[tileX, tileY] = selectedTile[0];
-                     ow.allmaps[mapId].CopyTile8bpp16(((e.X / 16)*16)-(superX*512), ((e.Y / 16)*16) - (superY * 512), selectedTile[0], ow.allmaps[mapId].gfxPtr, ow.allmaps[mapId].blockset16);
-                     this.Invalidate(new Rectangle(e.X-16, e.Y-16, 48, 48));
-                     //this.Refresh();*/
+                    /* 
+                    int tileX = (e.X / 16);
+                    int tileY = (e.Y / 16);
+                    int superX = (tileX / 32);
+                    int superY = (tileY / 32);
+                    int mapId = (superY * 8) + superX;
+                    ow.allmapsTiles[tileX, tileY] = selectedTile[0];
+                    ow.allmaps[mapId].CopyTile8bpp16(((e.X / 16)*16)-(superX*512), ((e.Y / 16)*16) - (superY * 512), selectedTile[0], ow.allmaps[mapId].gfxPtr, ow.allmaps[mapId].blockset16);
+                    this.Invalidate(new Rectangle(e.X-16, e.Y-16, 48, 48));
+                    //this.Refresh();
+                    */
                 }
             }
         }

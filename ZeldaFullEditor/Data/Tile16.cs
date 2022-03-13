@@ -10,8 +10,8 @@ namespace ZeldaFullEditor
     {
         public TileInfo tile0, tile1, tile2, tile3;
         public TileInfo[] tilesinfos = new TileInfo[4];
-        //[0,1]
-        //[2,3]
+        // [0,1]
+        // [2,3]
 
         public Tile16(TileInfo tile0, TileInfo tile1, TileInfo tile2, TileInfo tile3)
         {
@@ -28,6 +28,7 @@ namespace ZeldaFullEditor
             this.tile1 = GFX.gettilesinfo((ushort)(tiles >> 16));
             this.tile2 = GFX.gettilesinfo((ushort)(tiles >> 32));
             this.tile3 = GFX.gettilesinfo((ushort)(tiles >> 48));
+            this.tilesinfos = new TileInfo[] { this.tile0, this.tile1, this.tile2, this.tile3 };
         }
 
         public ulong getLongValue()

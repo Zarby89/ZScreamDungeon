@@ -11,24 +11,25 @@ namespace ZeldaFullEditor
     {
         public static Color[][] HudPalettes = new Color[2][]; // 32 (0,0)
         public static Color[][] overworld_MainPalettes = new Color[6][]; // 35 colors each, 7x5 (0,2 on grid)
-        public static Color[][] overworld_AuxPalettes = new Color[20][]; //21 colors each, 7x3 (8,2 and 8,5 on grid)
-        public static Color[][] overworld_AnimatedPalettes = new Color[14][]; //7 colors each 7x1 (0,7 on grid)
-        public static Color[] overworld_GrassPalettes = new Color[3];//3 hardcoded grass colors
+        public static Color[][] overworld_AuxPalettes = new Color[20][]; // 21 colors each, 7x3 (8,2 and 8,5 on grid)
+        public static Color[][] overworld_AnimatedPalettes = new Color[14][]; // 7 colors each 7x1 (0,7 on grid)
+        public static Color[] overworld_GrassPalettes = new Color[3]; // 3 hardcoded grass colors
         public static Color[][] globalSprite_Palettes = new Color[2][]; // 60 (1,9) 
         public static Color[][] armors_Palettes = new Color[5][]; // 15
         public static Color[][] swords_Palettes = new Color[4][]; // 3
         public static Color[][] spritesAux1_Palettes = new Color[12][]; // 7
         public static Color[][] spritesAux2_Palettes = new Color[11][]; // 7
         public static Color[][] spritesAux3_Palettes = new Color[24][]; // 7
-        public static Color[][] shields_Palettes = new Color[3][]; //4
-        public static Color[][] dungeonsMain_Palettes = new Color[20][]; //15*6
-        public static Color[][] object3D_Palettes = new Color[2][]; //15*6
+        public static Color[][] shields_Palettes = new Color[3][]; // 4
+        public static Color[][] dungeonsMain_Palettes = new Color[20][]; // 15*6
+        public static Color[][] object3D_Palettes = new Color[2][]; // 15*6
+        public static Color[] overworld_BackgroundPalette = new Color[160]; // 8*20
 
         static string asmString = "";
 
         public static Color[] ReadPalette(byte[] romData, int romPosition, int colorCount)
         {
-            //Lets write new palette code since i can't find the old one :scream:
+            // Lets write new palette code since i can't find the old one :scream:
             int colorPos = 0;
             Color[] colors = new Color[colorCount];
             while (colorPos < colorCount)
@@ -44,7 +45,7 @@ namespace ZeldaFullEditor
 
         public static Color ReadPaletteSingle(byte[] romData, int romPosition)
         {
-            //Lets write new palette code since i can't find the old one :scream:
+            // Lets write new palette code since i can't find the old one :scream:
             int colorPos = 0;
             Color colors;
             short color = (short)((romData[romPosition + 1] << 8) + romData[romPosition]);
@@ -62,33 +63,35 @@ namespace ZeldaFullEditor
             overworld_GrassPalettes[1] = ReadPaletteSingle(romData, Constants.hardcodedGrassDW);
             overworld_GrassPalettes[2] = ReadPaletteSingle(romData, Constants.hardcodedGrassSpecial);
 
-            //35 colors each, 7x5 (0,2 on grid)
+            // 35 colors each, 7x5 (0,2 on grid)
             for (int i = 0; i < 6; i++)
             {
                 overworld_MainPalettes[i] = ReadPalette(romData, Constants.overworldPaletteMain + (i * (35 * 2)), 35);
             }
-            //21 colors each, 7x3 (8,2 and 8,5 on grid)
+            // 21 colors each, 7x3 (8,2 and 8,5 on grid)
             for (int i = 0; i < 20; i++)
             {
                 overworld_AuxPalettes[i] = ReadPalette(romData, Constants.overworldPaletteAuxialiary + (i * (21 * 2)), 21);
             }
-            //7 colors each 7x1 (0,7 on grid)
+            // 7 colors each 7x1 (0,7 on grid)
             for (int i = 0; i < 14; i++)
             {
                 overworld_AnimatedPalettes[i] = ReadPalette(romData, Constants.overworldPaletteAnimated + (i * (7 * 2)), 7);
             }
-            //32 colors each 16x2 (0,0 on grid)
+            // 32 colors each 16x2 (0,0 on grid)
             for (int i = 0; i < 2; i++)
             {
                 HudPalettes[i] = ReadPalette(romData, Constants.hudPalettes + (i * 64), 32);
             }
 
-            /*public static Color[][] globalSprite_Palettes = new Color[2][]; // 32 (1,9)
+            /*
+            public static Color[][] globalSprite_Palettes = new Color[2][]; // 32 (1,9)
             public static Color[][] armors_Palettes = new Color[5][]; // 15
             public static Color[][] swords_Palettes = new Color[4][]; // 3
             public static Color[][] spritesAux_Palettes = new Color[47][]; // 7
-            public static Color[][] shields_Palettes = new Color[3][]; //4
-            public static Color[][] dungeonsMain_Palettes = new Color[20][]; //15*6*/
+            public static Color[][] shields_Palettes = new Color[3][]; // 4
+            public static Color[][] dungeonsMain_Palettes = new Color[20][]; // 15*6
+            */
 
             globalSprite_Palettes[0] = ReadPalette(romData, Constants.globalSpritePalettesLW, 60);
             globalSprite_Palettes[1] = ReadPalette(romData, Constants.globalSpritePalettesDW, 60);
@@ -120,10 +123,41 @@ namespace ZeldaFullEditor
             {
                 dungeonsMain_Palettes[i] = ReadPalette(romData, Constants.dungeonMainPalettes + (i * 180), 90);
             }
-            /*for (int i = 0; i < 20; i++)
+            /*
+            for (int i = 0; i < 20; i++)
             {
                 object3D_Palettes[i] = ReadPalette(romData, Constants.dungeonMainPalettes + (i * 180), 90);
-            }*/
+            }
+            */
+
+            // TODO: check for the paletts in the empty bank space that kan will allocate and read them in here
+            // LW
+            int j = 0;
+            while (j < 64)
+            {
+                overworld_BackgroundPalette[j] = new Color();
+                overworld_BackgroundPalette[j] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
+
+                j++;
+            }
+
+            // DW
+            while (j < 128)
+            {
+                overworld_BackgroundPalette[j] = new Color();
+                overworld_BackgroundPalette[j] = Color.FromArgb(0xFF, 0x90, 0x88, 0x50);
+
+                j++;
+            }
+
+            // SP
+            while (j < 160)
+            {
+                overworld_BackgroundPalette[j] = new Color();
+                overworld_BackgroundPalette[j] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
+
+                j++;
+            }
         }
 
         public static Color getColorShade(Color col, byte shade)
@@ -152,6 +186,7 @@ namespace ZeldaFullEditor
             {
                 max = colors.Length;
             }
+
             int colorPos = 0;
             while (colorPos < max)
             {
@@ -175,10 +210,12 @@ namespace ZeldaFullEditor
             string s = "\r\n\r\n\r\n;" + comment + "\r\norg $" + Utils.PcToSnes(romPosition).ToString("X6") + "\r\ndw ";
             int colorPos = 0;
             int x = 0;
+
             while (colorPos < colors.Length)
             {
                 short color = (short)(((colors[colorPos].B / 8) << 10) | ((colors[colorPos].G / 8) << 5) | ((colors[colorPos].R / 8)));
                 x++;
+
                 if (x == width)
                 {
                     if (colorPos == colors.Length - 1)
@@ -189,6 +226,7 @@ namespace ZeldaFullEditor
                     {
                         s += "#$" + color.ToString("X4") + "\r\ndw ";
                     }
+
                     x = 0;
                 }
                 else
@@ -208,22 +246,22 @@ namespace ZeldaFullEditor
             WriteSinglePalette(romData, Constants.hardcodedGrassDW, overworld_GrassPalettes[1]);
             WriteSinglePalette(romData, Constants.hardcodedGrassSpecial, overworld_GrassPalettes[2]);
 
-            //35 colors each, 7x5 (0,2 on grid)
+            // 35 colors each, 7x5 (0,2 on grid)
             for (int i = 0; i < 6; i++)
             {
                 WritePalette(romData, Constants.overworldPaletteMain + (i * (35 * 2)), overworld_MainPalettes[i]);
             }
-            //21 colors each, 7x3 (8,2 and 8,5 on grid)
+            // 21 colors each, 7x3 (8,2 and 8,5 on grid)
             for (int i = 0; i < 20; i++)
             {
                 WritePalette(romData, Constants.overworldPaletteAuxialiary + (i * (21 * 2)), overworld_AuxPalettes[i]);
             }
-            //7 colors each 7x1 (0,7 on grid)
+            // 7 colors each 7x1 (0,7 on grid)
             for (int i = 0; i < 14; i++)
             {
                 WritePalette(romData, Constants.overworldPaletteAnimated + (i * (7 * 2)), overworld_AnimatedPalettes[i]);
             }
-            //32 colors each 16x2 (0,0 on grid)
+            // 32 colors each 16x2 (0,0 on grid)
             for (int i = 0; i < 2; i++)
             {
                 WritePalette(romData, Constants.hudPalettes + (i * 64), HudPalettes[i]);
@@ -268,22 +306,22 @@ namespace ZeldaFullEditor
         {
             asmString = "";
             WritePaletteAsm(overworld_GrassPalettes, 1, "Grass Color", Constants.hardcodedGrassLW);
-            //35 colors each, 7x5 (0,2 on grid)
+            // 35 colors each, 7x5 (0,2 on grid)
             for (int i = 0; i < 6; i++)
             {
                 WritePaletteAsm(overworld_MainPalettes[i], 7, "Main Overworld " + i.ToString("X2"), Constants.overworldPaletteMain + (i * (35 * 2)));
             }
-            //21 colors each, 7x3 (8,2 and 8,5 on grid)
+            // 21 colors each, 7x3 (8,2 and 8,5 on grid)
             for (int i = 0; i < 20; i++)
             {
                 WritePaletteAsm(overworld_AuxPalettes[i], 7, "Overworld Aux Palettes " + i.ToString("X2"), Constants.overworldPaletteAuxialiary + (i * (21 * 2)));
             }
-            //7 colors each 7x1 (0,7 on grid)
+            // 7 colors each 7x1 (0,7 on grid)
             for (int i = 0; i < 14; i++)
             {
                 WritePaletteAsm(overworld_AnimatedPalettes[i], 7, "Overworld Animated Palettes " + i.ToString("X2"), Constants.overworldPaletteAnimated + (i * (7 * 2)));
             }
-            //32 colors each 16x2 (0,0 on grid)
+            // 32 colors each 16x2 (0,0 on grid)
             for (int i = 0; i < 2; i++)
             {
                 WritePaletteAsm(HudPalettes[i], 16, "Hud Palettes " + i.ToString("X2"), Constants.hudPalettes + (i * 64));

@@ -8,19 +8,19 @@ namespace ZeldaFullEditor
 {
     public static class ZSSerializer
     {
-        //initialize the value
+        // Initialize the value
         public static string SerializeInit()
         {
             return "";
         }
 
-        //turn the passed value into a string
+        // Turn the passed value into a string
         public static string SerializeAdd()
         {
             return "";
         }
 
-        //turn all passed values into a string
+        // Turn all passed values into a string
         public static string SerializeEnd()
         {
             return "";

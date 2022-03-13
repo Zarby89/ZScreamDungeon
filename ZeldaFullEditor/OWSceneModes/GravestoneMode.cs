@@ -14,6 +14,7 @@ namespace ZeldaFullEditor.OWSceneModes
         SceneOW scene;
         public Gravestone selectedGrave = null;
         public Gravestone lastselectedGrave = null;
+
         public GravestoneMode(SceneOW scene)
         {
             this.scene = scene;
@@ -117,12 +118,12 @@ namespace ZeldaFullEditor.OWSceneModes
                 scene.drawText(g, e.xTilePos+8, e.yTilePos+8, i.ToString("X2"));
 
                 //scene.drawText(g, e.xTilePos + 8, e.yTilePos + 40, e.tilemapPos.ToString("X4"));
-                if (i == 0x0D) //stairs
+                if (i == 0x0D) // Stairs
                 {
                     scene.drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL STAIRS");
                 }
 
-                if (i == 0x0E) //hole
+                if (i == 0x0E) // Hole
                 {
                     scene.drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL HOLE");
                 }

@@ -18,7 +18,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
         public ItemMode(SceneOW scene)
         {
-
             this.scene = scene;
         }
 
@@ -46,6 +45,7 @@ namespace ZeldaFullEditor.OWSceneModes
                         {
                             nid = (byte)(((item.id - 0x80) / 2) + 0x17);
                         }
+
                         //scene.mainForm.owcombobox.SelectedIndex = nid;
                         //scene.mainForm.itemOWGroupbox.Visible = true;
                     }
@@ -68,6 +68,7 @@ namespace ZeldaFullEditor.OWSceneModes
             RoomPotSaveEditor id = lastselectedItem.Copy();
             Clipboard.SetData("owitem", id);
             Delete();
+
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
@@ -139,6 +140,7 @@ namespace ZeldaFullEditor.OWSceneModes
             lastselectedItem = selectedItem;
             isLeftPress = true;
             scene.mouse_down = true;
+
             //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
         }
 
@@ -161,6 +163,7 @@ namespace ZeldaFullEditor.OWSceneModes
                     {
                         selectedItem.x = (e.X/16) * 16;
                         selectedItem.y = (e.Y/16) * 16;
+
                        // scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 
                     }
@@ -174,6 +177,7 @@ namespace ZeldaFullEditor.OWSceneModes
             {
                 scene.ow.allitems.Remove(lastselectedItem);
                 lastselectedItem = null;
+
                 //scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
                 //scene.mainForm.itemOWGroupbox.Visible = false;
             }

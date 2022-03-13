@@ -462,7 +462,6 @@
             this.Name = "ExitEditorForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Close";
-            this.Load += new System.EventHandler(this.ExitEditorForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.roomUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.mapUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.xPosUpDown)).EndInit();
