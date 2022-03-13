@@ -225,7 +225,7 @@
     <Compile Include="Data\DefaultEntities.cs" />
     <Compile Include="Data\DoorData.cs" />
     <Compile Include="Data\DungeonMap.cs" />
-    <Compile Include="Data\Entity.cs" />
+    <Compile Include="Data\EntityName.cs" />
     <Compile Include="Data\Gravestone.cs" />
     <Compile Include="Data\MapIcon.cs" />
     <Compile Include="Data\OAMTile.cs" />
@@ -720,6 +720,7 @@
     <EmbeddedResource Include="Gui\MainTabs\TextEditor.resx">
       <DependentUpon>TextEditor.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include=".editorconfig" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
