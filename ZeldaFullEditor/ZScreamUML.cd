@@ -1,0 +1,1081 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="AsarCLR.Asar" Collapsed="true">
+    <Position X="24.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BCACECoEBgBgAQABKAAEAQBYAgABBIYBEIAAAAYBWQA=</HashCode>
+      <FileName>asar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.ChestDraw" Collapsed="true">
+    <Position X="33" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAABgAAAAAAI=</HashCode>
+      <FileName>ChestDraw.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Constants" Collapsed="true">
+    <Position X="24.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>9DP4VPu6rHPiGx4/Y/8p/J0f9P5ov92zfA+oVF6K1wc=</HashCode>
+      <FileName>Constants.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.dataObject" Collapsed="true">
+    <Position X="31.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAIAAAAAAQAAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Data\dataObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.DataRoom" Collapsed="true">
+    <Position X="33" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Data\DataRoom.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.DoorData" Collapsed="true">
+    <Position X="20.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\DoorData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.DungeonMap" Collapsed="true">
+    <Position X="26" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAABAAAAAAEAAAAAAAAgAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\DungeonMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.DungeonsData" Collapsed="true">
+    <Position X="31.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAEAAEAAAAQAAAAAAACAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Data\DungeonsData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Entrance" Collapsed="true">
+    <Position X="34.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IUBCgAEAAIDhoAiAALAIAEEQABAAAACQIwAAACAAAgA=</HashCode>
+      <FileName>Data\Entrance.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.EntranceOWEditor" Collapsed="true">
+    <Position X="19" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAoAAAAAAAAAAAAAAACAAhAAAAAAIABgAAEAAAA=</HashCode>
+      <FileName>Data\EntranceOW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.ExitOW" Collapsed="true">
+    <Position X="27.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAUAAAoAAAAgAgAACAMAAAAAAhAAAAAgAAAAAAOAAQA=</HashCode>
+      <FileName>Data\ExitOW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.OAMTile" Collapsed="true">
+    <Position X="27.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAACAAAAAAAAABAAAAAAAAAAAAAAAABgAAAAAAI=</HashCode>
+      <FileName>Data\OAMTile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.OverlayData" Collapsed="true">
+    <Position X="33" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\OverlayData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Overworld" Collapsed="true">
+    <Position X="36.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CRCEABAAALCCJAAARGAAiBBQiAMBgAQAQCgsBSULBoA=</HashCode>
+      <FileName>Data\Overworld.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.OverworldMap" Collapsed="true">
+    <Position X="19" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAUEAAAAABgCJUIAABCBACAABwAgAABAAABAABBIA=</HashCode>
+      <FileName>Data\OverworldMap.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Palettes" Collapsed="true">
+    <Position X="24.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAGACAAAgAKBhAKAAEAACJAwAAAAAAgwAAIAAAgA=</HashCode>
+      <FileName>Data\Palettes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.RoomPotSaveEditor" Collapsed="true">
+    <Position X="24.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAIAAAAAAAAgAgAAAAAAAABhAQAAAgA=</HashCode>
+      <FileName>Data\RoomPotSaveEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.SaveObject" Collapsed="true">
+    <Position X="29.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ANAAAAAAAAAAIAAAAIAAAAAgAAABAAAAAABgBAAAAgA=</HashCode>
+      <FileName>Data\SaveObject.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.ScreenStrip" Collapsed="true">
+    <Position X="34.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEIAAAAAIAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Data\ScreenStrip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.DataStrip" Collapsed="true">
+    <Position X="34.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAABAAAAIAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\ScreenStrip.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.StringByte" Collapsed="true">
+    <Position X="36.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAIAAAAAAAAA=</HashCode>
+      <FileName>Data\StringByte.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.StringKey" Collapsed="true">
+    <Position X="38.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>Data\StringKey.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Tile" Collapsed="true">
+    <Position X="20.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAEAAAAAEgAEIAAAAAAAAAAAEAACEAAAAAAAAgA=</HashCode>
+      <FileName>Data\Tile.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Tile16" Collapsed="true">
+    <Position X="22.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAABAEAAAAAgEAAAAAAACAAAAA=</HashCode>
+      <FileName>Data\Tile16.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Tile32" Collapsed="true">
+    <Position X="26" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAAAEAAAAAgEAAAAAAACAAAAA=</HashCode>
+      <FileName>Data\Tile32.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.TileInfo" Collapsed="true">
+    <Position X="29.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAEIAAAAAAAAAAAAAAASBAAAAAAAgA=</HashCode>
+      <FileName>Data\TileInfo.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.TilePos" Collapsed="true">
+    <Position X="33" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Data\TilePos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.TileUndo" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="34.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAACAAAAAAAAAAQAAACAAAAAAAAAAAAAAAAAEAAAhA=</HashCode>
+      <FileName>Data\TileUndo.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="ZeldaFullEditor.TransportOW" Collapsed="true">
+    <Position X="38.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>kAEAAAoAAAAAAAAACAMAAAAAAAAAAAAgAAAAAAOAAQA=</HashCode>
+      <FileName>Data\TransportOW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.DoAction" Collapsed="true">
+    <Position X="19" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAEAAAQAAAABAAAAAAAAAACAAAA=</HashCode>
+      <FileName>DoAction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.GFX" Collapsed="true">
+    <Position X="33" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIxMsGpMUAwA9g+YgCIAIADBBwdDkkQABYAgnBCA4B4=</HashCode>
+      <FileName>GFX.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.GfxGroups" Collapsed="true">
+    <Position X="36.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAIAAAUAAAAAABAAgAAAAAAAAAAAA=</HashCode>
+      <FileName>GfxGroups.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.CustomPanel" Collapsed="true">
+    <Position X="26" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Gui\CustomPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.CustomTabControl" Collapsed="true">
+    <Position X="27.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAACAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Gui\CustomTabControl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.DungeonMain" Collapsed="true">
+    <Position X="24.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>///+/////7+97//ed3+Tv/v/3+7/////d/+7v3/+z/s=</HashCode>
+      <FileName>Gui\DungeonMain.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.AboutBox1" Collapsed="true">
+    <Position X="19" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQACAAAAEAAACAAIACAAAAAEAAAAAQAAAAAAA=</HashCode>
+      <FileName>Gui\ExtraForms\AboutBox1.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.ChestPicker" Collapsed="true">
+    <Position X="36.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAQACACARCAgACAAAACAAAYAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Gui\ExtraForms\ChestPicker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Chestviewer" Collapsed="true">
+    <Position X="38.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AICAAAAEACBAAAAEAAiRAgACAAAAgAEAAABAABAAQAA=</HashCode>
+      <FileName>Gui\ExtraForms\Chestviewer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.ExitEditorForm" Collapsed="true">
+    <Position X="24.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EQAACCQRESAQMhMlAACAAACCgAAYAIiAAFEAAAAAAIA=</HashCode>
+      <FileName>Gui\ExtraForms\ExitEditorForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.GlobalOptionForm" Collapsed="true">
+    <Position X="20.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACEAAAAAAAEAAQAACAAAA=</HashCode>
+      <FileName>Gui\ExtraForms\GlobalOptionForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.GotoRoom" Collapsed="true">
+    <Position X="22.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAQCgAAAEAQISIAAACABAAAACAAAAAAAAAQAQ=</HashCode>
+      <FileName>Gui\ExtraForms\GotoRoom.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.MovePointer" Collapsed="true">
+    <Position X="26" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACAAIIAAAAEEAAAAAAAAA=</HashCode>
+      <FileName>Gui\ExtraForms\MovePointer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.TextEditor" Collapsed="true">
+    <Position X="19" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAUCAA0ArGIATECaMWAAcgSDdk5AAIAmHAcNQXIgCQ=</HashCode>
+      <FileName>Gui\MainTabs\TextEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.ObjectViewer" Collapsed="true">
+    <Position X="31.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AICAAAAEACBAAAAEAAiRAgACAAAAgAEAAABAABAAAAA=</HashCode>
+      <FileName>Gui\ObjectViewer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.PaletteViewer" Collapsed="true">
+    <Position X="26" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAIAAQAAEgIABAABAAAcQIAAAAJgEAAAAAgAMgAA=</HashCode>
+      <FileName>Gui\PaletteViewer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.RoomLayout" Collapsed="true">
+    <Position X="20.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAAAAEAACAAAAAAABCAAIAKAAAYAAAAAEAAAAABBAA=</HashCode>
+      <FileName>Gui\RoomLayout.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.RoomMover" Collapsed="true">
+    <Position X="22.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACAAAYAEAAMGAAEAEAAAA=</HashCode>
+      <FileName>Gui\RoomMover.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Scene">
+    <Position X="1" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ACQogAKEEAQAIAAAAhAAYIKSAAECAAIJALUCIAJYAAc=</HashCode>
+      <FileName>Gui\Scene\SceneBase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.SceneOW">
+    <Position X="3.25" Y="0.5" Width="3" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>QAqgB4QkiBkgtDC6AEQAMlgDAgESCDpIIAQAhCCIEhQ=</HashCode>
+      <FileName>Gui\Scene\SceneOW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.SceneUW">
+    <Position X="6.5" Y="0.5" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AGILgoCEMBgCEBgoCAABkgACAiArAAIIKDAAIJbBgBQ=</HashCode>
+      <FileName>Gui\Scene\SceneUW.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.WhirlpoolForm" Collapsed="true">
+    <Position X="24.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACAAAYAAAAEGAAAAAAAAA=</HashCode>
+      <FileName>Gui\WhirlpoolForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.ImgClipboard" Collapsed="true">
+    <Position X="33" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIQACCAAAAAAAAAgBAIAAAAACAIAAAAAQEAACAAAAAA=</HashCode>
+      <FileName>ImgClipboard.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.LogInfos" Collapsed="true">
+    <Position X="20.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAIAAAAAAAAAAA=</HashCode>
+      <FileName>LogInfos.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Point3D" Collapsed="true">
+    <Position X="27.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAQAAAAA=</HashCode>
+      <FileName>Point3D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Program" Collapsed="true">
+    <Position X="31.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADABgAAA=</HashCode>
+      <FileName>Program.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Project" Collapsed="true">
+    <Position X="33" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Project.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.ROM" Collapsed="true">
+    <Position X="36.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BEAACChQgQAAECAGAIgAAQAAAIAAIEAAABAAACEAAAA=</HashCode>
+      <FileName>ROM.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.ROMStructure" Collapsed="true">
+    <Position X="38.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAQAAgACAAAAAAACAAQgAAAAZAAAAAAAAAACAAAAgE=</HashCode>
+      <FileName>ROMStructure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Chest" Collapsed="true">
+    <Position X="27.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAAAIAAAAAAQAAAAAAAAEACAAAABgAAAAAAA=</HashCode>
+      <FileName>Rooms\Chests\Chest.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.ChestItems_Name" Collapsed="true">
+    <Position X="34.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Rooms\Chests\ChestItems_Name.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.PotItem" Collapsed="true">
+    <Position X="29.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAIAgIAAAIAAgAAAAAAAAAAAABgBgAAAhA=</HashCode>
+      <FileName>Rooms\Items\Items_Draw.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.ItemsNames" Collapsed="true">
+    <Position X="19" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Rooms\Items\ItemsNames.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Room">
+    <Position X="9" Y="2.5" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="ZeldaFullEditor.Room.CollisionRectangle" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Rooms\Room.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>TA6SvBkBRAQICtoDZx48OAUIJ6cMACJACYAIDFqVFJA=</HashCode>
+      <FileName>Rooms\Room.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ZeldaFullEditor.SpriteName" Collapsed="true">
+    <Position X="27.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Rooms\Room.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.StaircaseRoom" Collapsed="true">
+    <Position X="34.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Rooms\Room.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.ChestData" Collapsed="true">
+    <Position X="31.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Rooms\Room.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Room_Name" Collapsed="true">
+    <Position X="19" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Rooms\Room_Name.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.EnumEx" Collapsed="true">
+    <Position X="22.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAIAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Rooms\Room_Object.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Sprite" Collapsed="true">
+    <Position X="20.75" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AJCAEAgAAAAKAgQBQAIAAgARAAQERDAoAADgBgAEAhA=</HashCode>
+      <FileName>Rooms\Sprites\Sprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Sprites_Names" Collapsed="true">
+    <Position X="31.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAQAAAAAAAAAAEAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>Rooms\Sprites\Sprites_Names.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Save" Collapsed="true">
+    <Position X="27.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>NIcQAFKiCAA1RQBCIgEJIQiBIAABIRAQBABBAEAFgAA=</HashCode>
+      <FileName>Save.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Sprite_SubsetNames" Collapsed="true">
+    <Position X="22.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIA=</HashCode>
+      <FileName>Sprite_SubsetNames.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.SpriteOWEditor" Collapsed="true">
+    <Position X="29.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AJAAAAgAAAAAAAAAAAAAAAAgAAAEAAAAAABhAQAAAgA=</HashCode>
+      <FileName>SpriteOWEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.SpritesView" Collapsed="true">
+    <Position X="33" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AICAAAAAACBAAAAEAAiRAgACAAAAgAEAAABAABAQAAA=</HashCode>
+      <FileName>SpritesView.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Utils" Collapsed="true">
+    <Position X="19" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgEABAAAAAAAAAAAAAAAAAAAAAAAggAAAAAAAAAA=</HashCode>
+      <FileName>Utils.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.ZSSerializer" Collapsed="true">
+    <Position X="27.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AFAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>ZSSerializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Data.Gravestone" Collapsed="true">
+    <Position X="24.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAkAAAAAAAAAAAAAAGAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Data\Gravestone.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Data.MapIcon" Collapsed="true">
+    <Position X="22.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAABgAAAAAAA=</HashCode>
+      <FileName>Data\MapIcon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.CGRamViewer" Collapsed="true">
+    <Position X="26" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAACAAEACAAAAAAAAAAAIAAAAAAA=</HashCode>
+      <FileName>Gui\CGRamViewer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.DataExtractor" Collapsed="true">
+    <Position X="29.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAIAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Gui\DataExtractor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.ExpandedManagement" Collapsed="true">
+    <Position X="29.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAACAAAAAAAACAAAACAAgwAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Gui\ExpandedManagement.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.AddSprite" Collapsed="true">
+    <Position X="20.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAACAAAACAAAaAAAAAGAAAAAAAAA=</HashCode>
+      <FileName>Gui\ExtraForms\AddSprite.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.AdvancedChestEditorForm" Collapsed="true">
+    <Position X="22.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAEgACANAhQAABCAAAACAIAYAAAAAGAQAQAAABA=</HashCode>
+      <FileName>Gui\ExtraForms\AdvancedChestEditorForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.ChestAdvancedData" Collapsed="true">
+    <Position X="29.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAACAAAAAAAAAAAIACAgAAEAABAAAAAABgAAAAAAAA=</HashCode>
+      <FileName>Gui\ExtraForms\AdvancedChestEditorForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.DungeonPropertiesForm" Collapsed="true">
+    <Position X="27.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEoAAAECACAAABAEABCAAAACEAAYAAAAAGAAAQAAEAA=</HashCode>
+      <FileName>Gui\ExtraForms\DungeonPropertiesForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.DungeonProperty" Collapsed="true">
+    <Position X="29.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAAAAABAgAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Gui\ExtraForms\DungeonPropertiesForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.EntranceForm" Collapsed="true">
+    <Position X="36.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAIAASAAAJAAAACAAADCIAAYAAAAMGBgAAEAAAA=</HashCode>
+      <FileName>Gui\ExtraForms\EntranceForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.EntrancePropertyForm" Collapsed="true">
+    <Position X="20.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAIAACABAACAAAAAAAAASAAAAAAABA=</HashCode>
+      <FileName>Gui\ExtraForms\EntrancePropertyForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.SaveSettings" Collapsed="true">
+    <Position X="31.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAiAAAAAABACAAAACAEA4AAAAAHAIAAH4hwE=</HashCode>
+      <FileName>Gui\ExtraForms\SaveSettings.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.SearchForm" Collapsed="true">
+    <Position X="36.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAEiAAABAwAgCAAAACAAAYIAAAAGAQAQAAgAA=</HashCode>
+      <FileName>Gui\ExtraForms\SearchForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.Tile16Editor" Collapsed="true">
+    <Position X="24.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIIAAIEQACIAABKEAACcAJCCEBE4EQAAAnQAgQABgMA=</HashCode>
+      <FileName>Gui\ExtraForms\Tile16Editor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.WarpsForm" Collapsed="true">
+    <Position X="22.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>nwAgAAAAACAAAAgAAACQAAACAAAYAAQAAGCAAAAAABA=</HashCode>
+      <FileName>Gui\ExtraForms\WarpsForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.GfxGroupsForm" Collapsed="true">
+    <Position X="38.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>cYViNhhEIKUkCBwQgwCIAEVikAEAWQAJBKAQkTBAVCI=</HashCode>
+      <FileName>Gui\GfxGroupsForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.ImportFromRom" Collapsed="true">
+    <Position X="34.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAABAAAACAAAACAAAIAAAAMCAAAAEAAAA=</HashCode>
+      <FileName>Gui\ImportFromRom.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.DungeonViewer" Collapsed="true">
+    <Position X="33" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAACAAAAAAAACAAAACAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Gui\MainTabs\DungeonViewer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.GfxEditor" Collapsed="true">
+    <Position X="34.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAC0ABCAgABAQBESMgX/mBASJAgAQBIAAAwBAAAQ=</HashCode>
+      <FileName>Gui\MainTabs\GfxEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.GfxImportExport" Collapsed="true">
+    <Position X="19" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAUAAJACAACJgBAgCGAACCEEA6ACIAAHAACRBBhAY=</HashCode>
+      <FileName>Gui\MainTabs\GfxImportExport.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.Object_Designer" Collapsed="true">
+    <Position X="29.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAEAACAAABAQAACAAABCAAAIAAAAECAAAQFAgAI=</HashCode>
+      <FileName>Gui\MainTabs\ObjectDesigner.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.OverworldEditor" Collapsed="true">
+    <Position X="38.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEn+VA1gSTgWoLS8IlCdcNKXsM1YRQbCKuEKywlHTUA=</HashCode>
+      <FileName>Gui\MainTabs\OverworldEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.PaletteEditor" Collapsed="true">
+    <Position X="22.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACgGQAABA6BBABBAFgGAEgCGAkIAAAyACAAAAoAJgAA=</HashCode>
+      <FileName>Gui\PaletteEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.VramViewer" Collapsed="true">
+    <Position X="20.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAQCAAAAAAAAAAAAAAAAAgA=</HashCode>
+      <FileName>Gui\VramViewer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.WindowPanel" Collapsed="true">
+    <Position X="26" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAUAIADAAAAAAAACAAAAiCAAAIAAAAQABAAgAAAA=</HashCode>
+      <FileName>Gui\WindowPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.ExtraForms.OWMusicForm" Collapsed="true">
+    <Position X="20.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAgQAQCADABAAAICAACACAAEYEAAAAGAAQABAAAA=</HashCode>
+      <FileName>Gui\ExtraForms\OWMusicForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.ExtraForms.SearchTilesForm" Collapsed="true">
+    <Position X="38.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAACAAAAAAAACAAAACAAAAAAAAEAAAAAAAAAA=</HashCode>
+      <FileName>Gui\ExtraForms\SearchTilesForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.MainTabs.ScreenEditor" Collapsed="true">
+    <Position X="33" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>+eGU2NEFdCswRP2Xe5TMm7W3Ld+7KA877nFfY38RRhI=</HashCode>
+      <FileName>Gui\MainTabs\ScreenEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.MainTabs.SpriteEditor" Collapsed="true">
+    <Position X="24.25" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>/yAAAAGAgSwAAhDAACCUAABCIQoQQQAAEiACAAEAAIA=</HashCode>
+      <FileName>Gui\MainTabs\SpriteEditor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.TextEditorExtra.DictionariesForm" Collapsed="true">
+    <Position X="38.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAEAACAAAAAAAACAAAACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Gui\TextEditorExtra\DictionariesForm.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Gui.TextEditorExtra.MessageAsBytes" Collapsed="true">
+    <Position X="24.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAIAAAAACCAABQAAASAAAACIAIAAQAAEIEQAAAAAAA=</HashCode>
+      <FileName>Gui\TextEditorExtra\MessageAsBytes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.OWSceneModes.ClipboardData.TileData" Collapsed="true">
+    <Position X="27.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAEAAAAAAAgAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>OWSceneModes\ClipboardData\TileData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.OWSceneModes.DoorMode" Collapsed="true">
+    <Position X="22.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEIAAAAAAAAAAIAAAAAACAAA=</HashCode>
+      <FileName>OWSceneModes\DoorMode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.OWSceneModes.EntranceMode" Collapsed="true">
+    <Position X="38.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABYAxAAAAAAAAgAAgAAAEIQAAmEiAAgAAAAAAACAAgA=</HashCode>
+      <FileName>OWSceneModes\EntranceMode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.OWSceneModes.ExitMode" Collapsed="true">
+    <Position X="26" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYARAAAAIAAEgCAIEAAEIAAAiEgABAAAAAEAAAAAAA=</HashCode>
+      <FileName>OWSceneModes\ExitMode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.OWSceneModes.GravestoneMode" Collapsed="true">
+    <Position X="26" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAgCAAAAAEIAAAAAgEAAAAAAAAAAAAAA=</HashCode>
+      <FileName>OWSceneModes\GravestoneMode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.OWSceneModes.ItemMode" Collapsed="true">
+    <Position X="38.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYBhAAAIAAAAgAAAAAAEIAAAgEgAAAAAAQAAAAQAAA=</HashCode>
+      <FileName>OWSceneModes\ItemMode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.OWSceneModes.OverlayMode" Collapsed="true">
+    <Position X="34.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAIAAABAAAAAAIAAAAAACAAA=</HashCode>
+      <FileName>OWSceneModes\OverlayMode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.OWSceneModes.SpriteMode" Collapsed="true">
+    <Position X="26" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAcAhAAAAIAAAgAAABAAEIAAAgEkAAAAAAAAAAQAEAA=</HashCode>
+      <FileName>OWSceneModes\SpriteMode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.OWSceneModes.TileMode" Collapsed="true">
+    <Position X="31.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAgAFAAAAAAABAACABAAAIABAhAAAAEAIAAAAAACAAA=</HashCode>
+      <FileName>OWSceneModes\TileMode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.OWSceneModes.TransportMode" Collapsed="true">
+    <Position X="36.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAgAAAAAAEICAAAAgABAAAAAAABAAAAA=</HashCode>
+      <FileName>OWSceneModes\TransportMode.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Properties.Resources" Collapsed="true">
+    <Position X="34.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAIAAAAAAiABEEABAQAAAAAAAAAgAAAAAIA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Properties.Settings" Collapsed="true">
+    <Position X="19" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACQAIEAAgAIABgQAABAAABAAAAAACKQBA=</HashCode>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZeldaFullEditor.Rooms.RoomLayout">
+    <Position X="9" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Rooms\RoomLayout.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSScriptEvaluatorApi.HostApp" Collapsed="true">
+    <Position X="27.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAACAAAAAA=</HashCode>
+      <FileName>Scripting.evaluator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSScriptEvaluatorApi.InputData" Collapsed="true">
+    <Position X="36.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAA=</HashCode>
+      <FileName>Scripting.evaluator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSScriptEvaluatorExtensions.HostApp" Collapsed="true">
+    <Position X="29.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Scripting.Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSScriptNativeApi.HostApp" Collapsed="true">
+    <Position X="31.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAACAAAAAA=</HashCode>
+      <FileName>Scripting.native.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CSScriptNativeApi.Samples" Collapsed="true">
+    <Position X="26" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Scripting.native.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZCompressLibrary.Common" Collapsed="true">
+    <Position X="19" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CBAAAAgAYAAgAAAAAAAAAAAAAAAAAAAEAAAAAAAACAA=</HashCode>
+      <FileName>ZCompressLibrary\Common.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZCompressLibrary.Compress" Collapsed="true">
+    <Position X="20.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAgAAQAAAABAAAAAAgAAAAgAAAAAAAAA=</HashCode>
+      <FileName>ZCompressLibrary\Compress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZCompressLibrary.compression_piece" Collapsed="true">
+    <Position X="22.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAEAAAAAAAASgAAAAAAAAAAIAAAA=</HashCode>
+      <FileName>ZCompressLibrary\compression_piece.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZCompressLibrary.Decompress" Collapsed="true">
+    <Position X="36.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAQCAAAAAACAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ZCompressLibrary\Decompress.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ZCompressLibrary.fake_mem" Collapsed="true">
+    <Position X="31.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAQAAA=</HashCode>
+      <FileName>ZCompressLibrary\fake_mem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="AsarCLR.Asarerror" Collapsed="true">
+    <Position X="13.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgEAAAgAAAAQAACAAAAAAAAAAAAAAAAAAQAAAABAAA=</HashCode>
+      <FileName>asar.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="AsarCLR.Asarlabel" Collapsed="true">
+    <Position X="15" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>asar.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="AsarCLR.Asardefine" Collapsed="true">
+    <Position X="11.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>asar.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Struct Name="AsarCLR.Asarwrittenblock" Collapsed="true">
+    <Position X="16.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAABAAAQAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>asar.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Interface Name="CSScriptEvaluatorApi.ICalc" Collapsed="true">
+    <Position X="11.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Scripting.evaluator.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSScriptEvaluatorExtensions.ICalc" Collapsed="true">
+    <Position X="13.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Scripting.Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSScriptEvaluatorExtensions.IFullCalc" Collapsed="true">
+    <Position X="16.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Scripting.Extensions.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSScriptNativeApi.IScript" Collapsed="true">
+    <Position X="11.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Scripting.native.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="CSScriptNativeApi.ICalc" Collapsed="true">
+    <Position X="15" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAQ=</HashCode>
+      <FileName>Scripting.native.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="AsarCLR.MapperType" Collapsed="true">
+    <Position X="13.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAgAAAQAAAAAAAAAIAAAAAAAAAAIAgCAACAEAAAA=</HashCode>
+      <FileName>asar.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ZeldaFullEditor.DragMode" Collapsed="true">
+    <Position X="16.75" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAACAAAAAAAAAAgAAAAIAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Data\DragMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ZeldaFullEditor.TagKey" Collapsed="true">
+    <Position X="15" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACHEKgCiIRASABw1CASIBEkx5B8AAQQAEDBEECCCAUA=</HashCode>
+      <FileName>Data\TagKey.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ZeldaFullEditor.EffectKey" Collapsed="true">
+    <Position X="11.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACBgAAAAAAAAAAABAAAEAAAAAAAABAAAAAAAAAgAAIA=</HashCode>
+      <FileName>Data\TagKey.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ZeldaFullEditor.CollisionKey" Collapsed="true">
+    <Position X="15" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAgAEAAAAAAAAAQAAAAAAAAAAAIA=</HashCode>
+      <FileName>Data\TagKey.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ZeldaFullEditor.ActionType" Collapsed="true">
+    <Position X="11.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAIBAAAAAAAAAAAAAAAEAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>DoAction.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ZeldaFullEditor.SceneResizing" Collapsed="true">
+    <Position X="11.5" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAACAAAAAAAAAAAAAAAIAAAAAAAAAgAAgAA=</HashCode>
+      <FileName>Gui\Scene\SceneResizing.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ZeldaFullEditor.ObjectMode" Collapsed="true">
+    <Position X="15" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>JAACAAIAkAAAAAAAEAQAAAAgAQAAAABACAgAAEAEQRA=</HashCode>
+      <FileName>ObjectMode.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ZeldaFullEditor.Background2" Collapsed="true">
+    <Position X="13.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAMAQAAAAAAAIAAAQAAAAACAIAgBAAAAAAAAAAAA=</HashCode>
+      <FileName>Rooms\Background2.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ZeldaFullEditor.Sorting" Collapsed="true">
+    <Position X="13.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAJAAAgAAAAEAAIAAAAAAAQAAIAAAAAAAAA=</HashCode>
+      <FileName>Rooms\Room_Object.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ZeldaFullEditor.ObjectOption" Collapsed="true">
+    <Position X="16.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAEACAAAAAAQAAAAAAGAAAAAAAAAAAAAAAAABAAAAA=</HashCode>
+      <FileName>Rooms\Room_Object.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
