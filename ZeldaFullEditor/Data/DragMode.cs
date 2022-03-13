@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-    public enum DragMode
-    {
-        left,top,right,down,none
-    }
+	public enum DragMode
+	{
+		left, top, right, down, none
+	}
 }

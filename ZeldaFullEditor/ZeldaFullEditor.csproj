@@ -222,8 +222,10 @@
   <ItemGroup>
     <Compile Include="asar.cs" />
     <Compile Include="ChestDraw.cs" />
+    <Compile Include="Data\DefaultEntities.cs" />
     <Compile Include="Data\DoorData.cs" />
     <Compile Include="Data\DungeonMap.cs" />
+    <Compile Include="Data\Entity.cs" />
     <Compile Include="Data\Gravestone.cs" />
     <Compile Include="Data\MapIcon.cs" />
     <Compile Include="Data\OAMTile.cs" />
@@ -688,7 +690,7 @@
       <DependentUpon>ObjectViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -760,7 +762,7 @@
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.2">
       <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 et x64%29</ProductName>
+      <ProductName>Microsoft .NET Framework 4.5.2 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
