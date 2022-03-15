@@ -161,7 +161,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void allBox_TextChanged(object sender, EventArgs e)
 		{
-			if (editedFromForm == false)
+			if (!editedFromForm)
 			{
 				GfxGroups.mainGfx[(int) mainBlocksetUpDown.Value][0] = getTextBoxValue(main1Box);
 				GfxGroups.mainGfx[(int) mainBlocksetUpDown.Value][1] = getTextBoxValue(main2Box);

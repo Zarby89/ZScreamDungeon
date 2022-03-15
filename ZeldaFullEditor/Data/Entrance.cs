@@ -136,7 +136,7 @@ namespace ZeldaFullEditor
 		[DisplayName("Music"), Description("Determine the music playing when entering from that entrance"), Category("Entrance")]
 		public byte Music { get => music; set => music = value; }
 
-		public Entrance(byte entranceId, bool startingEntrance = false)
+		public Entrance(byte entranceId, bool isSpawnPoint = false)
 		{
 			room = (short) ((ROM.DATA[(Constants.entrance_room + (entranceId * 2)) + 1] << 8) + ROM.DATA[Constants.entrance_room + (entranceId * 2)]);
 			yposition = (short) (((ROM.DATA[(Constants.entrance_yposition + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_yposition + (entranceId * 2)]);
@@ -155,7 +155,7 @@ namespace ZeldaFullEditor
 			scrollquadrant = ROM.DATA[(Constants.entrance_scrollquadrant + entranceId)];
 			exit = (short) (((ROM.DATA[(Constants.entrance_exit + (entranceId * 2)) + 1]) << 8) + ROM.DATA[Constants.entrance_exit + (entranceId * 2)]);
 
-			cameraBoundaryQN = (ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))]); // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
+			cameraBoundaryQN = (ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))]);
 			cameraBoundaryFN = (ROM.DATA[(Constants.entrance_scrolledge + 1 + (entranceId * 8))]);
 			cameraBoundaryQS = (ROM.DATA[(Constants.entrance_scrolledge + 2 + (entranceId * 8))]);
 			cameraBoundaryFS = (ROM.DATA[(Constants.entrance_scrolledge + 3 + (entranceId * 8))]);
@@ -165,7 +165,7 @@ namespace ZeldaFullEditor
 			cameraBoundaryFE = (ROM.DATA[(Constants.entrance_scrolledge + 7 + (entranceId * 8))]);
 
 
-			if (startingEntrance == true)
+			if (isSpawnPoint)
 			{
 				room = (short) ((ROM.DATA[(Constants.startingentrance_room + ((entranceId) * 2)) + 1] << 8) + ROM.DATA[Constants.startingentrance_room + ((entranceId) * 2)]);
 				//yposition = (short)(((ROM.DATA[(Constants.startingentrance_yposition + ((entranceId) * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_yposition + ((entranceId) * 2)]);
@@ -189,7 +189,7 @@ namespace ZeldaFullEditor
 				scrolling = ROM.DATA[(Constants.startingentrance_scrolling + entranceId)];
 				scrollquadrant = ROM.DATA[(Constants.startingentrance_scrollquadrant + entranceId)];
 				exit = (short) (((ROM.DATA[(Constants.startingentrance_exit + (entranceId * 2)) + 1] & 0x01) << 8) + ROM.DATA[Constants.startingentrance_exit + (entranceId * 2)]);
-				cameraBoundaryQN = (ROM.DATA[(Constants.startingentrance_scrolledge + 0 + (entranceId * 8))]); // 8 bytes per room
+				cameraBoundaryQN = (ROM.DATA[(Constants.startingentrance_scrolledge + 0 + (entranceId * 8))]);
 				cameraBoundaryFN = (ROM.DATA[(Constants.startingentrance_scrolledge + 1 + (entranceId * 8))]);
 				cameraBoundaryQS = (ROM.DATA[(Constants.startingentrance_scrolledge + 2 + (entranceId * 8))]);
 				cameraBoundaryFS = (ROM.DATA[(Constants.startingentrance_scrolledge + 3 + (entranceId * 8))]);
@@ -200,110 +200,110 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public void save(int entranceId, bool startingentrance = false, bool jp = false)
+		public void save(int entranceId, bool isSpawnPoint = false, bool jp = false)
 		{
 			// TODO: Change these save
-			if (startingentrance == false)
+			if (!isSpawnPoint)
 			{
-				ROM.WriteShort(Constants.entrance_room + (entranceId * 2), room, true, "Entrance Related");
+				ROM.WriteShort(Constants.entrance_room + (entranceId * 2), room, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_room + (entranceId * 2) + 1)] = (byte)((room >> 8) & 0xFF);
 				//ROM.DATA[Constants.entrance_room + (entranceId * 2)] = (byte)(room & 0xFF);
 
-				ROM.WriteShort(Constants.entrance_yposition + (entranceId * 2), yposition, true, "Entrance Related");
+				ROM.WriteShort(Constants.entrance_yposition + (entranceId * 2), yposition, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_yposition + (entranceId * 2)) + 1] = (byte)((yposition >> 8) & 0xFF);
 				//ROM.DATA[Constants.entrance_yposition + (entranceId * 2)] = (byte)(yposition & 0xFF);
 
-				ROM.WriteShort(Constants.entrance_xposition + (entranceId * 2), xposition, true, "Entrance Related");
+				ROM.WriteShort(Constants.entrance_xposition + (entranceId * 2), xposition, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_xposition + (entranceId * 2)) + 1] = (byte)((xposition >> 8) & 0xFF);
 				//ROM.DATA[Constants.entrance_xposition + (entranceId * 2)] = (byte)(xposition & 0xFF);
 
-				ROM.WriteShort(Constants.entrance_cameray + (entranceId * 2), ycamera, true, "Entrance Related");
+				ROM.WriteShort(Constants.entrance_cameray + (entranceId * 2), ycamera, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_xscroll + (entranceId * 2)) + 1] = (byte)((xscroll >> 8) & 0xFF);
 				//ROM.DATA[Constants.entrance_xscroll + (entranceId * 2)] = (byte)(xscroll & 0xFF);
 
-				ROM.WriteShort(Constants.entrance_camerax + (entranceId * 2), xcamera, true, "Entrance Related");
+				ROM.WriteShort(Constants.entrance_camerax + (entranceId * 2), xcamera, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_yscroll + (entranceId * 2)) + 1] = (byte)((yscroll >> 8) & 0xFF);
 				//ROM.DATA[Constants.entrance_yscroll + (entranceId * 2)] = (byte)(yscroll & 0xFF);
 
-				ROM.WriteShort(Constants.entrance_cameraxtrigger + (entranceId * 2), xtrigger, true, "Entrance Related");
+				ROM.WriteShort(Constants.entrance_cameraxtrigger + (entranceId * 2), xtrigger, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_cameraxposition + (entranceId * 2)) + 1] = (byte)((xcamera >> 8) & 0xFF);
 				//ROM.DATA[Constants.entrance_cameraxposition + (entranceId * 2)] = (byte)(xcamera & 0xFF);
 
-				ROM.WriteShort(Constants.entrance_cameraytrigger + (entranceId * 2), ytrigger, true, "Entrance Related");
+				ROM.WriteShort(Constants.entrance_cameraytrigger + (entranceId * 2), ytrigger, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_camerayposition + (entranceId * 2)) + 1] = (byte)((ycamera >> 8) & 0xFF);
 				//ROM.DATA[Constants.entrance_camerayposition + (entranceId * 2)] = (byte)(ycamera & 0xFF);
 
-				ROM.WriteShort(Constants.entrance_exit + (entranceId * 2), exit, true, "Entrance Related");
+				ROM.WriteShort(Constants.entrance_exit + (entranceId * 2), exit, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_exit + (entranceId * 2) + 1)] = (byte)((exit >> 8) & 0xFF);
 				//ROM.DATA[Constants.entrance_exit + (entranceId * 2)] = (byte)(exit & 0xFF);
-				ROM.Write(Constants.entrance_blockset + entranceId, (byte) (blockset & 0xFF), true, "Entrance Related");
+				ROM.Write(Constants.entrance_blockset + entranceId, (byte) (blockset & 0xFF), WriteType.EntranceProperties);
 				//ROM.DATA[Constants.entrance_blockset + entranceId] = (byte)(blockset & 0xFF);
-				ROM.Write(Constants.entrance_music + entranceId, (byte) (music & 0xFF), true, "Entrance Related");
+				ROM.Write(Constants.entrance_music + entranceId, (byte) (music & 0xFF), WriteType.EntranceProperties);
 				//ROM.DATA[Constants.entrance_music + entranceId] = (byte)(music & 0xFF);
-				ROM.Write(Constants.entrance_dungeon + entranceId, (byte) (dungeon & 0xFF), true, "Entrance Related");
+				ROM.Write(Constants.entrance_dungeon + entranceId, (byte) (dungeon & 0xFF), WriteType.EntranceProperties);
 				//ROM.DATA[Constants.entrance_dungeon + entranceId] = (byte)(dungeon & 0xFF);
-				ROM.Write(Constants.entrance_door + entranceId, (byte) (door & 0xFF), true, "Entrance Related");
+				ROM.Write(Constants.entrance_door + entranceId, (byte) (door & 0xFF), WriteType.EntranceProperties);
 				//ROM.DATA[Constants.entrance_door + entranceId] = (byte)(door & 0xFF);
-				ROM.Write(Constants.entrance_floor + entranceId, (byte) (floor & 0xFF), true, "Entrance Related");
+				ROM.Write(Constants.entrance_floor + entranceId, (byte) (floor & 0xFF), WriteType.EntranceProperties);
 				//ROM.DATA[Constants.entrance_floor + entranceId] = (byte)(floor & 0xFF);
-				ROM.Write(Constants.entrance_ladderbg + entranceId, (byte) (ladderbg & 0xFF), true, "Entrance Related");
+				ROM.Write(Constants.entrance_ladderbg + entranceId, (byte) (ladderbg & 0xFF), WriteType.EntranceProperties);
 				//ROM.DATA[Constants.entrance_ladderbg + entranceId] = (byte)(ladderbg & 0xFF);
-				ROM.Write(Constants.entrance_scrolling + entranceId, (byte) (scrolling & 0xFF), true, "Entrance Related");
+				ROM.Write(Constants.entrance_scrolling + entranceId, (byte) (scrolling & 0xFF), WriteType.EntranceProperties);
 				//ROM.DATA[Constants.entrance_scrolling + entranceId] = (byte)(scrolling & 0xFF);
-				ROM.Write(Constants.entrance_scrollquadrant + entranceId, (byte) (scrollquadrant & 0xFF), true, "Entrance Related");
+				ROM.Write(Constants.entrance_scrollquadrant + entranceId, (byte) (scrollquadrant & 0xFF), WriteType.EntranceProperties);
 				//ROM.DATA[Constants.entrance_scrollquadrant + entranceId] = (byte)(scrollquadrant & 0xFF);
-				ROM.Write((Constants.entrance_scrolledge + 0 + (entranceId * 8)), cameraBoundaryQN, true, "Entrance Related");
-				//ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))] = scrolledge_HU; //8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-				ROM.Write((Constants.entrance_scrolledge + 1 + (entranceId * 8)), cameraBoundaryFN, true, "Entrance Related");
+				ROM.Write((Constants.entrance_scrolledge + 0 + (entranceId * 8)), cameraBoundaryQN, WriteType.EntranceProperties);
+				//ROM.DATA[(Constants.entrance_scrolledge + 0 + (entranceId * 8))] = scrolledge_HU;
+				ROM.Write((Constants.entrance_scrolledge + 1 + (entranceId * 8)), cameraBoundaryFN, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_scrolledge + 1 + (entranceId * 8))] = scrolledge_FU;
-				ROM.Write((Constants.entrance_scrolledge + 2 + (entranceId * 8)), cameraBoundaryQS, true, "Entrance Related");
+				ROM.Write((Constants.entrance_scrolledge + 2 + (entranceId * 8)), cameraBoundaryQS, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_scrolledge + 2 + (entranceId * 8))] = scrolledge_HD;
-				ROM.Write((Constants.entrance_scrolledge + 3 + (entranceId * 8)), cameraBoundaryFS, true, "Entrance Related");
+				ROM.Write((Constants.entrance_scrolledge + 3 + (entranceId * 8)), cameraBoundaryFS, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_scrolledge + 3 + (entranceId * 8))] = scrolledge_FD;
-				ROM.Write((Constants.entrance_scrolledge + 4 + (entranceId * 8)), cameraBoundaryQW, true, "Entrance Related");
+				ROM.Write((Constants.entrance_scrolledge + 4 + (entranceId * 8)), cameraBoundaryQW, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_scrolledge + 4 + (entranceId * 8))] = scrolledge_HL;
-				ROM.Write((Constants.entrance_scrolledge + 5 + (entranceId * 8)), cameraBoundaryFW, true, "Entrance Related");
+				ROM.Write((Constants.entrance_scrolledge + 5 + (entranceId * 8)), cameraBoundaryFW, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_scrolledge + 5 + (entranceId * 8))] = scrolledge_FL;
-				ROM.Write((Constants.entrance_scrolledge + 6 + (entranceId * 8)), cameraBoundaryQE, true, "Entrance Related");
+				ROM.Write((Constants.entrance_scrolledge + 6 + (entranceId * 8)), cameraBoundaryQE, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_scrolledge + 6 + (entranceId * 8))] = scrolledge_HR;
-				ROM.Write((Constants.entrance_scrolledge + 7 + (entranceId * 8)), cameraBoundaryFE, true, "Entrance Related");
+				ROM.Write((Constants.entrance_scrolledge + 7 + (entranceId * 8)), cameraBoundaryFE, WriteType.EntranceProperties);
 				//ROM.DATA[(Constants.entrance_scrolledge + 7 + (entranceId * 8))] = scrolledge_FR;
 			}
 			else
 			{
 
-				ROM.WriteShort(Constants.startingentrance_room + (entranceId * 2), room, true, "Starting Entrance Related");
+				ROM.WriteShort(Constants.startingentrance_room + (entranceId * 2), room, WriteType.SpawnProperties);
 
-				ROM.WriteShort(Constants.startingentrance_yposition + (entranceId * 2), yposition, true, "Starting Entrance Related");
+				ROM.WriteShort(Constants.startingentrance_yposition + (entranceId * 2), yposition, WriteType.SpawnProperties);
 
-				ROM.WriteShort(Constants.startingentrance_xposition + (entranceId * 2), xposition, true, "Starting Entrance Related");
+				ROM.WriteShort(Constants.startingentrance_xposition + (entranceId * 2), xposition, WriteType.SpawnProperties);
 
-				ROM.WriteShort(Constants.startingentrance_cameray + (entranceId * 2), ycamera, true, "Starting Entrance Related");
+				ROM.WriteShort(Constants.startingentrance_cameray + (entranceId * 2), ycamera, WriteType.SpawnProperties);
 
-				ROM.WriteShort(Constants.startingentrance_camerax + (entranceId * 2), xcamera, true, "Starting Entrance Related");
+				ROM.WriteShort(Constants.startingentrance_camerax + (entranceId * 2), xcamera, WriteType.SpawnProperties);
 
-				ROM.WriteShort(Constants.startingentrance_cameraxtrigger + (entranceId * 2), xtrigger, true, "Starting Entrance Related");
+				ROM.WriteShort(Constants.startingentrance_cameraxtrigger + (entranceId * 2), xtrigger, WriteType.SpawnProperties);
 
-				ROM.WriteShort(Constants.startingentrance_cameraytrigger + (entranceId * 2), ytrigger, true, "Starting Entrance Related");
+				ROM.WriteShort(Constants.startingentrance_cameraytrigger + (entranceId * 2), ytrigger, WriteType.SpawnProperties);
 
-				ROM.WriteShort(Constants.startingentrance_exit + (entranceId * 2), exit, true, "Starting Entrance Related");
+				ROM.WriteShort(Constants.startingentrance_exit + (entranceId * 2), exit, WriteType.SpawnProperties);
 
-				ROM.Write(Constants.startingentrance_blockset + entranceId, (byte) (blockset & 0xFF), true, "Starting Entrance Related");
-				ROM.Write(Constants.startingentrance_music + entranceId, (byte) (music & 0xFF), true, "Starting Entrance Related");
-				ROM.Write(Constants.startingentrance_dungeon + entranceId, (byte) (dungeon & 0xFF), true, "Starting Entrance Related");
-				ROM.Write(Constants.startingentrance_door + entranceId, (byte) (door & 0xFF), true, "Starting Entrance Related");
-				ROM.Write(Constants.startingentrance_floor + entranceId, (byte) (floor & 0xFF), true, "Starting Entrance Related");
-				ROM.Write(Constants.startingentrance_ladderbg + entranceId, (byte) (ladderbg & 0xFF), true, "Starting Entrance Related");
-				ROM.Write(Constants.startingentrance_scrolling + entranceId, (byte) (scrolling & 0xFF), true, "Starting Entrance Related");
-				ROM.Write(Constants.startingentrance_scrollquadrant + entranceId, (byte) (scrollquadrant & 0xFF), true, "Starting Entrance Related");
-				ROM.Write((Constants.startingentrance_scrolledge + 0 + (entranceId * 8)), cameraBoundaryQN, true, "Starting Entrance Related"); // 8 bytes per room, HU, FU, HD, FD, HL, FL, HR, FR
-				ROM.Write((Constants.startingentrance_scrolledge + 1 + (entranceId * 8)), cameraBoundaryFN, true, "Starting Entrance Related");
-				ROM.Write((Constants.startingentrance_scrolledge + 2 + (entranceId * 8)), cameraBoundaryQS, true, "Starting Entrance Related");
-				ROM.Write((Constants.startingentrance_scrolledge + 3 + (entranceId * 8)), cameraBoundaryFS, true, "Starting Entrance Related");
-				ROM.Write((Constants.startingentrance_scrolledge + 4 + (entranceId * 8)), cameraBoundaryQW, true, "Starting Entrance Related");
-				ROM.Write((Constants.startingentrance_scrolledge + 5 + (entranceId * 8)), cameraBoundaryFW, true, "Starting Entrance Related");
-				ROM.Write((Constants.startingentrance_scrolledge + 6 + (entranceId * 8)), cameraBoundaryQE, true, "Starting Entrance Related");
-				ROM.Write((Constants.startingentrance_scrolledge + 7 + (entranceId * 8)), cameraBoundaryFE, true, "Starting Entrance Related");
+				ROM.Write(Constants.startingentrance_blockset + entranceId, (byte) (blockset & 0xFF), WriteType.SpawnProperties);
+				ROM.Write(Constants.startingentrance_music + entranceId, (byte) (music & 0xFF), WriteType.SpawnProperties);
+				ROM.Write(Constants.startingentrance_dungeon + entranceId, (byte) (dungeon & 0xFF), WriteType.SpawnProperties);
+				ROM.Write(Constants.startingentrance_door + entranceId, (byte) (door & 0xFF), WriteType.SpawnProperties);
+				ROM.Write(Constants.startingentrance_floor + entranceId, (byte) (floor & 0xFF), WriteType.SpawnProperties);
+				ROM.Write(Constants.startingentrance_ladderbg + entranceId, (byte) (ladderbg & 0xFF), WriteType.SpawnProperties);
+				ROM.Write(Constants.startingentrance_scrolling + entranceId, (byte) (scrolling & 0xFF), WriteType.SpawnProperties);
+				ROM.Write(Constants.startingentrance_scrollquadrant + entranceId, (byte) (scrollquadrant & 0xFF), WriteType.SpawnProperties);
+				ROM.Write((Constants.startingentrance_scrolledge + 0 + (entranceId * 8)), cameraBoundaryQN, WriteType.SpawnProperties);
+				ROM.Write((Constants.startingentrance_scrolledge + 1 + (entranceId * 8)), cameraBoundaryFN, WriteType.SpawnProperties);
+				ROM.Write((Constants.startingentrance_scrolledge + 2 + (entranceId * 8)), cameraBoundaryQS, WriteType.SpawnProperties);
+				ROM.Write((Constants.startingentrance_scrolledge + 3 + (entranceId * 8)), cameraBoundaryFS, WriteType.SpawnProperties);
+				ROM.Write((Constants.startingentrance_scrolledge + 4 + (entranceId * 8)), cameraBoundaryQW, WriteType.SpawnProperties);
+				ROM.Write((Constants.startingentrance_scrolledge + 5 + (entranceId * 8)), cameraBoundaryFW, WriteType.SpawnProperties);
+				ROM.Write((Constants.startingentrance_scrolledge + 6 + (entranceId * 8)), cameraBoundaryQE, WriteType.SpawnProperties);
+				ROM.Write((Constants.startingentrance_scrolledge + 7 + (entranceId * 8)), cameraBoundaryFE, WriteType.SpawnProperties);
 			}
 		}
 	}

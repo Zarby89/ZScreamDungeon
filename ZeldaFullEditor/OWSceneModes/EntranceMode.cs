@@ -160,7 +160,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				{
 					if (e.X >= en.x && e.X < en.x + 16 && e.Y >= en.y && e.Y < en.y + 16)
 					{
-						if (scene.mouse_down == false)
+						if (!scene.mouse_down)
 						{
 							if (e.Button == MouseButtons.Left)
 							{
@@ -187,7 +187,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				{
 					if (e.X >= en.x && e.X < en.x + 16 && e.Y >= en.y && e.Y < en.y + 16)
 					{
-						if (scene.mouse_down == false)
+						if (!scene.mouse_down)
 						{
 							if (e.Button == MouseButtons.Left)
 							{
@@ -248,10 +248,10 @@ namespace ZeldaFullEditor.OWSceneModes
 			if (scene.mainForm.previewRoom.bg2 != Background2.Translucent || scene.mainForm.previewRoom.bg2 != Background2.Transparent ||
 			 scene.mainForm.previewRoom.bg2 != Background2.OnTop || scene.mainForm.previewRoom.bg2 != Background2.Off)
 			{
-				g.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+				g.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
-			g.DrawImage(GFX.roomBg1Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+			g.DrawImage(GFX.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 
 			if (scene.mainForm.previewRoom.bg2 == Background2.Translucent || scene.mainForm.previewRoom.bg2 == Background2.Transparent)
 			{
@@ -274,11 +274,11 @@ namespace ZeldaFullEditor.OWSceneModes
 				);
 
 				//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
-				g.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
+				g.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
 			}
 			else if (scene.mainForm.previewRoom.bg2 == Background2.OnTop)
 			{
-				g.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+				g.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
 			scene.mainForm.activeScene.drawText(g, 0, 0, "ROOM : " + scene.mainForm.previewRoom.index.ToString());
@@ -288,7 +288,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void onMouseDoubleClick(MouseEventArgs e)
 		{
-			string tname = "";
 			for (int i = 0; i < scene.ow.allentrances.Length; i++)
 			{
 				EntranceOWEditor en = scene.ow.allentrances[i];
@@ -323,7 +322,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				{
 					if (e.X >= en.x && e.X < en.x + 16 && e.Y >= en.y && e.Y < en.y + 16)
 					{
-						if (scene.mouse_down == false)
+						if (!scene.mouse_down)
 						{
 							if (e.Button == MouseButtons.Left)
 							{
@@ -537,9 +536,7 @@ namespace ZeldaFullEditor.OWSceneModes
 		{
 			if (scene.lowEndMode)
 			{
-				int transparency = 200;
-				Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 255, 200, 16));
-				Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
+				Brush bgrBrush = Constants.Goldenrod200Brush;
 				g.CompositingMode = CompositingMode.SourceOver;
 
 				for (int i = 0; i < scene.ow.allentrances.Length; i++)
@@ -556,19 +553,19 @@ namespace ZeldaFullEditor.OWSceneModes
 						{
 							if (e == selectedEntrance)
 							{
-								bgrBrush = new SolidBrush(Color.FromArgb(transparency, 0, 55, 240));
+								bgrBrush = Constants.Azure200Brush;
 								scene.drawText(g, e.x - 1, e.y + 26, "map : " + e.mapId.ToString());
 								scene.drawText(g, e.x - 1, e.y + 36, "entrance : " + e.entranceId.ToString());
 								scene.drawText(g, e.x - 1, e.y + 46, "mpos : " + e.mapPos.ToString());
 							}
 							else
 							{
-								bgrBrush = new SolidBrush(Color.FromArgb(transparency, 255, 200, 16));
+								bgrBrush = Constants.Goldenrod200Brush;
 							}
 						}
 
 						g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
-						g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
+						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.x, e.y, 16, 16));
 						scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
 					}
 				}
@@ -581,19 +578,19 @@ namespace ZeldaFullEditor.OWSceneModes
 						continue;
 					}
 
-					bgrBrush = new SolidBrush(Color.FromArgb(transparency, 32, 32, 32));
+					bgrBrush = Constants.Charcoal200Brush;
 					if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
 					{
 						if (selectedEntrance != null)
 						{
 							if (e == selectedEntrance)
 							{
-								bgrBrush = new SolidBrush(Color.FromArgb(transparency, 0, 55, 240));
+								bgrBrush = Constants.Azure200Brush;
 							}
 						}
 
 						g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
-						g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
+						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.x, e.y, 16, 16));
 						scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
 					}
 				}
@@ -603,9 +600,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 			else
 			{
-				int transparency = 200;
-				Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 255, 200, 16));
-				Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
+				Brush bgrBrush = Constants.Goldenrod200Brush;
 				g.CompositingMode = CompositingMode.SourceOver;
 
 				for (int i = 0; i < scene.ow.allentrances.Length; i++)
@@ -618,19 +613,19 @@ namespace ZeldaFullEditor.OWSceneModes
 						{
 							if (e == selectedEntrance)
 							{
-								bgrBrush = new SolidBrush(Color.FromArgb(transparency, 0, 55, 240));
+								bgrBrush = Constants.Azure200Brush;
 								scene.drawText(g, e.x - 1, e.y + 26, "map : " + e.mapId.ToString());
 								scene.drawText(g, e.x - 1, e.y + 36, "entrance : " + e.entranceId.ToString());
 								scene.drawText(g, e.x - 1, e.y + 46, "mpos : " + e.mapPos.ToString());
 							}
 							else
 							{
-								bgrBrush = new SolidBrush(Color.FromArgb(transparency, 255, 200, 16));
+								bgrBrush = Constants.Goldenrod200Brush;
 							}
 						}
 
 						g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
-						g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
+						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.x, e.y, 16, 16));
 						scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
 					}
 				}
@@ -638,7 +633,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				for (int i = 0; i < scene.ow.allholes.Length; i++)
 				{
 					EntranceOWEditor e = scene.ow.allholes[i];
-					bgrBrush = new SolidBrush(Color.FromArgb(transparency, 32, 32, 32));
+					bgrBrush = Constants.Charcoal200Brush;
 
 					if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
 					{
@@ -646,12 +641,12 @@ namespace ZeldaFullEditor.OWSceneModes
 						{
 							if (e == selectedEntrance)
 							{
-								bgrBrush = new SolidBrush(Color.FromArgb(transparency, 0, 55, 240));
+								bgrBrush = Constants.Azure200Brush;
 							}
 						}
 
 						g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
-						g.DrawRectangle(contourPen, new Rectangle(e.x, e.y, 16, 16));
+						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.x, e.y, 16, 16));
 						scene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
 					}
 				}

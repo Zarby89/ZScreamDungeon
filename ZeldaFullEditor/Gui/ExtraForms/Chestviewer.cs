@@ -51,11 +51,11 @@ namespace ZeldaFullEditor
 				e.Graphics.DrawImage(GFX.previewChestsBitmap[o.item], new Point((xpos * 64) + 24, (ypos * 64) + 8));
 				if (selectedObject == o)
 				{
-					e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(50, 0, 0, 255)), new Rectangle(xpos * 64, (ypos * 64), 64, 64));
+					e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(xpos * 64, (ypos * 64), 64, 64));
 				}
 
 				e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos * 64, ypos * 64, 64, 64));
-				if (showName == false)
+				if (!showName)
 				{
 					e.Graphics.DrawString(ChestItems_Name.name[o.item], this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 32, 64, 32));
 				}

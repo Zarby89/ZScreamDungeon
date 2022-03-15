@@ -563,7 +563,7 @@ namespace ZeldaFullEditor
 			ROM.DATA[spritePointer + (index * 2)];
 
 			int sprite_address = Utils.SnesToPc(sprite_address_snes);
-			sortsprites = ROM.DATA[sprite_address] == 1 ? true : false;
+			sortsprites = ROM.DATA[sprite_address] == 1;
 			sprite_address += 1;
 
 			while (true)
@@ -606,7 +606,7 @@ namespace ZeldaFullEditor
 
 		public void update()
 		{
-			if (objectInitialized == false)
+			if (!objectInitialized)
 			{
 				// TODO: Add condition?
 			}
@@ -618,14 +618,14 @@ namespace ZeldaFullEditor
 		{
 			foreach (Sprite spr in sprites)
 			{
-				if (layer1 == false)
+				if (!layer1)
 				{
 					if (spr.layer == 0)
 					{
 						continue;
 					}
 				}
-				if (layer2 == false)
+				if (!layer2)
 				{
 					if (spr.layer == 1)
 					{
@@ -1029,8 +1029,8 @@ namespace ZeldaFullEditor
 				int address = ((b2 & 0x1F) << 8 | b1) >> 1;
 				int px = address % 64;
 				int py = address >> 6;
-				PotItem p = new PotItem(b3, (byte) ((px)), (byte) ((py)), (b2 & 0x20) == 0x20 ? true : false);
-				if (p.bg2 == true)
+				PotItem p = new PotItem(b3, (byte) ((px)), (byte) ((py)), (b2 & 0x20) == 0x20);
+				if (p.bg2)
 				{
 					p.layer = 1;
 				}
@@ -1117,7 +1117,7 @@ namespace ZeldaFullEditor
 			bool door = false;
 			bool endRead = false;
 
-			while (endRead == false)
+			while (!endRead)
 			{
 				b1 = ROM.DATA[pos];
 				b2 = ROM.DATA[pos + 1];
@@ -1129,7 +1129,6 @@ namespace ZeldaFullEditor
 					door = false;
 					if (layer == 3)
 					{
-						endRead = true;
 						break;
 					}
 
@@ -1155,7 +1154,7 @@ namespace ZeldaFullEditor
 					pos += 3;
 				}
 
-				if (door == false)
+				if (!door)
 				{
 					if (b3 >= 0xF8)
 					{
@@ -1273,7 +1272,7 @@ namespace ZeldaFullEditor
 			bool door = false;
 			bool endRead = false;
 
-			while (endRead == false)
+			while (!endRead)
 			{
 				b1 = DATA[pos];
 				b2 = DATA[pos + 1];
@@ -1285,7 +1284,6 @@ namespace ZeldaFullEditor
 
 					if (layer == 3)
 					{
-						endRead = true;
 						break;
 					}
 
@@ -1310,7 +1308,7 @@ namespace ZeldaFullEditor
 					pos += 3;
 				}
 
-				if (door == false)
+				if (!door)
 				{
 					if (b3 >= 0xF8) // Subtype3
 					{
@@ -2688,7 +2686,7 @@ namespace ZeldaFullEditor
 
 			bg2 = (Background2) ((ROM.DATA[header_location] >> 5) & 0x07);
 			collision = (CollisionKey) ((ROM.DATA[header_location] >> 2) & 0x07);
-			light = (((ROM.DATA[header_location]) & 0x01) == 1 ? true : false);
+			light = ((ROM.DATA[header_location]) & 0x01) == 1;
 
 			if (light)
 			{

@@ -71,7 +71,7 @@ namespace ZeldaFullEditor
 
 					if (ai == null)
 					{
-						if (x2 == true)
+						if (x2)
 						{
 							g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 16, 16), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
 						}
@@ -91,7 +91,7 @@ namespace ZeldaFullEditor
 						continue;
 					}
 
-					if (x2 == true)
+					if (x2)
 					{
 						cpos += (spriteFontSpacing[arrayPos] * 2);
 					}
@@ -159,17 +159,16 @@ namespace ZeldaFullEditor
 		{
 			foreach (Object o in room.selectedObject)
 			{
-				if (o is Sprite)
+				if (o is Sprite sb)
 				{
-					graphics.DrawRectangle(Pens.Green, (o as Sprite).boundingbox);
+					graphics.DrawRectangle(Pens.Green, sb.boundingbox);
 				}
-				else if (o is PotItem)
+				else if (o is PotItem pp)
 				{
-					graphics.DrawRectangle(Pens.Green, new Rectangle((o as PotItem).nx * 8, (o as PotItem).ny * 8, 16, 16));
+					graphics.DrawRectangle(Pens.Green, new Rectangle(pp.nx * 8, pp.ny * 8, 16, 16));
 				}
-				else if (o is Room_Object)
+				else if (o is Room_Object obj)
 				{
-					Room_Object obj = (o as Room_Object);
 					int yfix = 0;
 					if (obj.diagonalFix)
 					{
@@ -194,7 +193,10 @@ namespace ZeldaFullEditor
 								yfix = -(6 + obj.size);
 							}
 
-							graphics.DrawRectangle(Pens.DarkCyan, new Rectangle((obj.nx + obj.offsetX) * 8, (obj.ny + obj.offsetY + yfix) * 8, obj.width, obj.height));
+							graphics.DrawRectangle(Pens.DarkCyan,
+								new Rectangle((obj.nx + obj.offsetX) * 8,
+								(obj.ny + obj.offsetY + yfix) * 8,
+								obj.width, obj.height));
 						}
 					}
 				}
@@ -211,28 +213,26 @@ namespace ZeldaFullEditor
 				{
 					if (selectedMode == ObjectMode.Spritemode)
 					{
-						graphics.DrawRectangle(new Pen(Brushes.White), new Rectangle(rx * 16, ry * 16, Math.Abs(move_x) * 16, Math.Abs(move_y) * 16));
+						graphics.DrawRectangle(Constants.WhitePen, new Rectangle(rx * 16, ry * 16, Math.Abs(move_x) * 16, Math.Abs(move_y) * 16));
 					}
 					else
 					{
-						graphics.DrawRectangle(new Pen(Brushes.White), new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8));
+						graphics.DrawRectangle(Constants.WhitePen, new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8));
 					}
 				}
 
 				foreach (Object o in room.selectedObject)
 				{
-					if (o is Sprite)
+					if (o is Sprite sb)
 					{
-						graphics.DrawRectangle(Pens.LimeGreen, (o as Sprite).boundingbox);
+						graphics.DrawRectangle(Pens.LimeGreen, sb.boundingbox);
 					}
-					else if (o is PotItem)
+					else if (o is PotItem pp)
 					{
-						graphics.DrawRectangle(Pens.LimeGreen, new Rectangle((o as PotItem).nx * 8, (o as PotItem).ny * 8, 16, 16));
+						graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(pp.nx * 8, pp.ny * 8, 16, 16));
 					}
-					else if (o is Room_Object)
+					else if (o is Room_Object obj)
 					{
-
-						Room_Object obj = (o as Room_Object);
 						int yfix = 0;
 						if (obj.diagonalFix)
 						{

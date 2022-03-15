@@ -88,7 +88,7 @@ namespace ZeldaFullEditor
 
 		public void DrawKey(bool bigKey = false)
 		{
-			if (bigKey == false)
+			if (!bigKey)
 			{
 				int dx = (boundingbox.X + boundingbox.Width / 2) - 8;
 				int dy = boundingbox.Y - 10;
@@ -1255,7 +1255,7 @@ namespace ZeldaFullEditor
 				int suby = 0;
 				byte* ptr = (byte*) GFX.roomBg1Ptr.ToPointer();
 
-				if (iskey == false)
+				if (!iskey)
 				{
 					if (lowerX > (x - (this.nx * 16)))
 					{

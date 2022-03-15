@@ -57,11 +57,11 @@ namespace ZeldaFullEditor
 
 				if (selectedObject == o)
 				{
-					e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(50, 0, 0, 255)), new Rectangle(xpos * 64, (ypos * 64), 64, 64));
+					e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(xpos * 64, (ypos * 64), 64, 64));
 				}
 
 				e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos * 64, ypos * 64, 64, 64));
-				if (showName == false)
+				if (!showName)
 				{
 					e.Graphics.DrawString(o.id.ToString("X3"), this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 48, 64, 64));
 				}

@@ -494,8 +494,8 @@ namespace ZeldaFullEditor
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			OpenFileDialog projectFile = new OpenFileDialog();
-			projectFile.Filter = "Alttp US ROM .sfc|*.sfc;*.smc";
-			projectFile.DefaultExt = ".sfc";
+			projectFile.Filter = UIText.USROMType;
+			projectFile.DefaultExt = UIText.ROMExtension;
 
 			if (projectFile.ShowDialog() == DialogResult.OK)
 			{
@@ -552,7 +552,7 @@ namespace ZeldaFullEditor
 			LoadPalettes();
 
 			activeScene = new SceneUW(this);
-			activeScene.Location = new Point(0, 0);
+			activeScene.Location = Constants.Point_0_0;
 			activeScene.Size = new Size(512, 512);
 			activeScene.MouseWheel += SceneUW_MouseWheel;
 
@@ -564,7 +564,7 @@ namespace ZeldaFullEditor
 
 			initProject();
 
-			this.Text = "ZScream Magic - " + filename;
+			this.Text = string.Format("{0} - {1}", UIText.APPNAME, filename);
 		}
 
 		// TODO : Move that to a data class
@@ -701,11 +701,11 @@ namespace ZeldaFullEditor
 			entrancetreeView_AfterSelect(null, null);
 			gfxGroupsForm = new GfxGroupsForm(this);
 			gfxGroupsForm.CreateTempGfx();
-			gfxGroupsForm.Location = new Point(0, 0);
+			gfxGroupsForm.Location = Constants.Point_0_0;
 
 			paletteForm = new PaletteEditor(this);
 
-			paletteForm.Location = new Point(0, 0);
+			paletteForm.Location = Constants.Point_0_0;
 			refreshRecentsFiles();
 			overworldEditor.InitOpen(this);
 			textEditor.initOpen();
@@ -758,6 +758,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
+		// TODO copy and reconfiguring
 		public void initEntrancesList()
 		{
 			// Entrances
@@ -1124,9 +1125,9 @@ namespace ZeldaFullEditor
 
 		private void saveLayoutButton_Click(object sender, EventArgs e)
 		{
-			if (!Directory.Exists("Layout"))
+			if (!Directory.Exists(UIText.LayoutFolder))
 			{
-				Directory.CreateDirectory("Layout");
+				Directory.CreateDirectory(UIText.LayoutFolder);
 			}
 
 			saveLayout();
@@ -1141,7 +1142,7 @@ namespace ZeldaFullEditor
 			}
 			else
 			{
-				foreach (Object o in activeScene.room.selectedObject)
+				foreach (var o in activeScene.room.selectedObject)
 				{
 					if (selectedLayer >= 0)
 					{
@@ -1172,7 +1173,10 @@ namespace ZeldaFullEditor
 					string f = Interaction.InputBox("Name of the new layout", "Name?", "Layout00");
 					if (f != "")
 					{
-						BinaryWriter bw = new BinaryWriter(new FileStream("Layout\\" + f, FileMode.OpenOrCreate, FileAccess.Write));
+						BinaryWriter bw = new BinaryWriter(new FileStream(
+							string.Format("{0}{1}{2}", UIText.LayoutFolder, Path.DirectorySeparatorChar, f),
+							FileMode.OpenOrCreate,
+							FileAccess.Write));
 						bw.Write(name);
 						foreach (SaveObject o in data)
 						{
@@ -1188,9 +1192,9 @@ namespace ZeldaFullEditor
 		private void loadlayoutButton_Click(object sender, EventArgs e)
 		{
 			//scene.loadLayout();
-			if (!Directory.Exists("Layout"))
+			if (!Directory.Exists(UIText.LayoutFolder))
 			{
-				Directory.CreateDirectory("Layout");
+				Directory.CreateDirectory(UIText.LayoutFolder);
 			}
 
 			if ((byte) activeScene.selectedMode > 3)
@@ -1525,7 +1529,7 @@ namespace ZeldaFullEditor
 		{
 			saveToolStripMenuItem_Click(sender, e);
 			SaveFileDialog saveFile = new SaveFileDialog();
-			saveFile.Filter = "SNES ROM image|.sfc";
+			saveFile.Filter = UIText.SNESROMType;
 
 			if (saveFile.ShowDialog() == DialogResult.OK)
 			{
@@ -2058,9 +2062,9 @@ namespace ZeldaFullEditor
 
 		private void debugtestButton_Click(object sender, EventArgs e)
 		{
-			if (File.Exists("temp.sfc"))
+			if (File.Exists(UIText.TestROM))
 			{
-				File.Delete("temp.sfc");
+				File.Delete(UIText.TestROM);
 			}
 
 			//Console.WriteLine(Path.GetDirectoryName(projectFilename));
@@ -2121,12 +2125,13 @@ namespace ZeldaFullEditor
 			data[(Constants.startingentrance_scrolledge + 6)] = selectedEntrance.cameraBoundaryQE;
 			data[(Constants.startingentrance_scrolledge + 7)] = selectedEntrance.cameraBoundaryFE;
 
-			FileStream fs = new FileStream("temp.sfc", FileMode.CreateNew, FileAccess.Write);
+			FileStream fs = new FileStream(UIText.TestROM, FileMode.CreateNew, FileAccess.Write);
 			fs.Write(data, 0, data.Length);
 			fs.Close();
-			Process p = Process.Start("temp.sfc");
+			Process p = Process.Start(UIText.TestROM);
 		}
 
+		// TODO going away with projects (or being changed drastically)
 		private void saveasToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			SaveFileDialog sf = new SaveFileDialog();
@@ -2251,7 +2256,7 @@ namespace ZeldaFullEditor
 
 				if (!visibleEntranceGFX)
 				{
-					activeScene.room.reloadGfx(DungeonsData.entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+					activeScene.room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
 				}
 				else
 				{
@@ -2362,7 +2367,7 @@ namespace ZeldaFullEditor
 
 				if (!visibleEntranceGFX)
 				{
-					activeScene.room.reloadGfx(DungeonsData.entrances[Int32.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+					activeScene.room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
 				}
 				else
 				{
@@ -2393,6 +2398,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
+		// TODO copy
 		private void CloseTab(int i)
 		{
 			if ((tabControl2.TabPages[i].Tag as Room).has_changed)
@@ -2671,6 +2677,7 @@ namespace ZeldaFullEditor
 					gb.DrawImage(b, 0, 0, new Rectangle(image_start_x, image_start_y, image_size_x, image_size_y), GraphicsUnit.Pixel);
 				}
 
+				// TODO better names so we can have more than 1 map
 				nb.Save("MapTest.png");
 				b.Dispose();
 				b = null;
@@ -2680,7 +2687,7 @@ namespace ZeldaFullEditor
 			else
 			{
 				Bitmap b = new Bitmap(512, 512);
-				activeScene.DrawToBitmap(b, new Rectangle(0, 0, 512, 512));
+				activeScene.DrawToBitmap(b, Constants.Rect_0_0_512_512);
 				b.Save("singlemap.png");
 			}
 
@@ -2765,7 +2772,7 @@ namespace ZeldaFullEditor
 					{
 						if (s == i)
 						{
-							e.Graphics.DrawRectangle(new Pen(Color.Aqua, 2), new Rectangle((xd * 16), (yd * 16) + yoff, 16, 16));
+							e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle((xd * 16), (yd * 16) + yoff, 16, 16));
 						}
 					}
 				}
@@ -2829,12 +2836,12 @@ namespace ZeldaFullEditor
 
 			if (x2zoom)
 			{
-				activeScene.Size = new Size(1024, 1024);
+				activeScene.Size = Constants.Size1024x1024;
 				panel3.Location = new Point(1032, -1);
 			}
 			else
 			{
-				activeScene.Size = new Size(512, 512);
+				activeScene.Size = Constants.Size512x512;
 				panel3.Location = new Point(520, -1);
 			}
 
@@ -2884,6 +2891,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
+		// TODO DISGUSTING, these "Contains" should instead become properties of the object itself
 		private void removeMasksObjectsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			List<Room_Object> toRemove = new List<Room_Object>();
@@ -2959,7 +2967,7 @@ namespace ZeldaFullEditor
 		{
 			using (SaveFileDialog sf = new SaveFileDialog())
 			{
-				sf.Filter = "ZScream Room Data|*.zrd";
+				sf.Filter = UIText.ExportedRoomDataType;
 				if (sf.ShowDialog() == DialogResult.OK)
 				{
 					FileStream fs = new FileStream(sf.FileName, FileMode.OpenOrCreate, FileAccess.Write);
@@ -2974,7 +2982,7 @@ namespace ZeldaFullEditor
 		{
 			vramViewer = new VramViewer();
 			WindowPanel wp = new WindowPanel();
-			wp.Location = new Point(512, 0);
+			wp.Location = Constants.Point_512_0;
 			wp.containerPanel.Controls.Add(vramViewer);
 			wp.Tag = "VRAM Viewer";
 			wp.Size = new Size(vramViewer.Size.Width + 2, vramViewer.Size.Height + 26);
@@ -3020,12 +3028,13 @@ namespace ZeldaFullEditor
 			}
 		}
 
+		// TODO simplify and stuff, etc
 		private void cGramViewerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			cgramViewer = new CGRamViewer();
 			WindowPanel wp = new WindowPanel();
 			wp.Tag = "CGRAM Viewer - Right click to export palettes";
-			wp.Location = new Point(512, 0);
+			wp.Location = Constants.Point_512_0;
 			wp.containerPanel.Controls.Add(cgramViewer);
 			wp.Size = new Size(cgramViewer.Size.Width + 2, cgramViewer.Size.Height + 26);
 			customPanel3.Controls.Add(wp);
@@ -3038,7 +3047,7 @@ namespace ZeldaFullEditor
 			{
 				WindowPanel wp = new WindowPanel();
 				wp.Tag = "Gfx Groupset Editor";
-				wp.Location = new Point(512, 0);
+				wp.Location = Constants.Point_512_0;
 				wp.containerPanel.Controls.Add(gfxGroupsForm);
 				wp.Size = new Size(gfxGroupsForm.Size.Width + 2, gfxGroupsForm.Size.Height + 26);
 				customPanel3.Controls.Add(wp);
@@ -3048,7 +3057,7 @@ namespace ZeldaFullEditor
 			{
 				WindowPanel wp = new WindowPanel();
 				wp.Tag = "GFX Groups Editor";
-				wp.Location = new Point(512, 0);
+				wp.Location = Constants.Point_512_0;
 				wp.containerPanel.Controls.Add(new GfxGroupsForm(this));
 				wp.Size = new Size(gfxGroupsForm.Size.Width + 2, gfxGroupsForm.Size.Height + 26);
 				overworldEditor.splitContainer1.Panel2.Controls.Add(wp);
@@ -3095,7 +3104,7 @@ namespace ZeldaFullEditor
 			{
 				WindowPanel wp = new WindowPanel();
 				wp.Tag = "Palettes Editor";
-				wp.Location = new Point(512, 0);
+				wp.Location = Constants.Point_512_0;
 				wp.Size = new Size(paletteForm.Size.Width + 2, paletteForm.Size.Height + 26);
 
 				if (editorsTabControl.SelectedTab.Name == "dungeonPage")
@@ -3123,7 +3132,6 @@ namespace ZeldaFullEditor
 		private void DrawOnTab(object sender, DrawItemEventArgs e)
 		{
 			Graphics g = e.Graphics;
-			Pen p = new Pen(Color.Blue);
 			Font font = (sender as TabControl).Font;
 			SolidBrush b = new SolidBrush(Color.FromKnownColor(KnownColor.Control));
 			SolidBrush bs = new SolidBrush(Color.FromKnownColor(KnownColor.ControlLight));
@@ -3413,11 +3421,11 @@ namespace ZeldaFullEditor
 			if (previewRoom.bg2 != Background2.Translucent || previewRoom.bg2 != Background2.Transparent ||
 				previewRoom.bg2 != Background2.OnTop || previewRoom.bg2 != Background2.Off)
 			{
-				e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+				e.Graphics.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
 			//e.Graphics.DrawImage(GFX.roomBgLayoutBitmap,0,0);
-			e.Graphics.DrawImage(GFX.roomBg1Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+			e.Graphics.DrawImage(GFX.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 
 			if (previewRoom.bg2 == Background2.Translucent || previewRoom.bg2 == Background2.Transparent)
 			{
@@ -3440,14 +3448,14 @@ namespace ZeldaFullEditor
 				);
 
 				//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
-				e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
+				e.Graphics.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
 			}
 			else if (previewRoom.bg2 == Background2.OnTop)
 			{
-				e.Graphics.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+				e.Graphics.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
-			activeScene.drawText(e.Graphics, 0, 0, "ROOM : " + previewRoom.index.ToString());
+			activeScene.drawText(e.Graphics, 0, 0, "ROOM: " + previewRoom.index.ToString());
 		}
 
 		private void mapPicturebox_MouseUp(object sender, MouseEventArgs e)
@@ -3790,13 +3798,14 @@ namespace ZeldaFullEditor
 			//StringBuilder sb = new StringBuilder();
 			//sb.Append("lorom\r\n");
 			SaveFileDialog sf = new SaveFileDialog();
-			sf.Filter = "Zelda Room Data .zrd|*.zrd";
+			sf.Filter = UIText.ExportedRoomDataType;
 
 			if (sf.ShowDialog() == DialogResult.OK)
 			{
 				string path = Path.GetDirectoryName(sf.FileName);
 				for (int i = 0; i < 296; i++)
 				{
+					// TODO system specific path separators
 					byte[] roomBytes = DungeonsData.all_rooms[i].getTilesBytes();
 					Directory.CreateDirectory(path + "//ExportedRooms");
 					using (FileStream fs = new FileStream(path + "//ExportedRooms//room" + i.ToString("D3") + ".zrd", FileMode.OpenOrCreate, FileAccess.Write))
@@ -3879,8 +3888,8 @@ namespace ZeldaFullEditor
 		{
 			Constants.Init_Jp();
 			OpenFileDialog projectFile = new OpenFileDialog();
-			projectFile.Filter = "ALTTP JP ROM .sfc|*.sfc;*.smc";
-			projectFile.DefaultExt = ".sfc";
+			projectFile.Filter = UIText.JPROMType;
+			projectFile.DefaultExt = UIText.ROMExtension;
 
 			if (projectFile.ShowDialog() == DialogResult.OK)
 			{
@@ -4081,7 +4090,7 @@ namespace ZeldaFullEditor
 			sprites_buffer[pos] = 0xFF;
 			using (SaveFileDialog ofd = new SaveFileDialog())
 			{
-				ofd.Filter = "Zelda Sprite Data .zsd|*.zsd";
+				ofd.Filter = UIText.ExportedSpriteDataType;
 				if (ofd.ShowDialog() == DialogResult.OK)
 				{
 					FileStream fs = new FileStream(ofd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
@@ -4100,7 +4109,7 @@ namespace ZeldaFullEditor
 			byte[] mapArrayData = new byte[0x50000];
 			using (SaveFileDialog sfd = new SaveFileDialog())
 			{
-				sfd.Filter = "Zelda Map Data .zmd|*.zmd";
+				sfd.Filter = UIText.ExportedOWMapDataType;
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
 					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
@@ -4152,7 +4161,7 @@ namespace ZeldaFullEditor
 			byte[] mapArrayData = new byte[0x50000];
 			using (OpenFileDialog sfd = new OpenFileDialog())
 			{
-				sfd.Filter = "Zelda Map Data .zmd|*.zmd";
+				sfd.Filter = UIText.ExportedOWMapDataType;
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
 					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
@@ -4197,7 +4206,7 @@ namespace ZeldaFullEditor
 			byte[] mapArrayData = new byte[0x7540];
 			using (SaveFileDialog sfd = new SaveFileDialog())
 			{
-				sfd.Filter = "Zelda Tile Data .ztd|*.ztd";
+				sfd.Filter = UIText.ExportedTileDataType;
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
 					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
@@ -4225,7 +4234,7 @@ namespace ZeldaFullEditor
 			byte[] mapArrayData = new byte[0x8000]; // Real amount: 0x7540
 			using (OpenFileDialog sfd = new OpenFileDialog())
 			{
-				sfd.Filter = "Zelda Map Data .ztd|*.ztd";
+				sfd.Filter = UIText.ExportedTileDataType;
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
 					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
@@ -4354,6 +4363,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
+		// TODO system specific path separators, etc
 		private void importRoomsFromFolderToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (MessageBox.Show("Warning this will close all opened unsaved rooms do you wish to proceed?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
@@ -4416,7 +4426,7 @@ namespace ZeldaFullEditor
 		private void importRoomToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.Filter = "Zelda Room Data .zrd|*.zrd";
+			ofd.Filter = UIText.ExportedRoomDataType;
 
 			if (ofd.ShowDialog() == DialogResult.OK)
 			{
@@ -4473,7 +4483,7 @@ namespace ZeldaFullEditor
 
 		private void moveRoomsToOtherROMToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			MessageBox.Show("This will close your current ROM, and you will lose any unsaved progress\n" +
+			MessageBox.Show("This will close your current ROM, and you will lose any unsaved progress.\n" +
 				"Are you sure you want to continue?",
 				"Warning",
 				MessageBoxButtons.YesNo);
@@ -5087,7 +5097,7 @@ namespace ZeldaFullEditor
 
 		private void discordToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			System.Diagnostics.Process.Start(Constants.DISCORD);
+			System.Diagnostics.Process.Start(UIText.DISCORD);
 		}
 
 		private void RoomPropertyChanged(object sender, EventArgs e)

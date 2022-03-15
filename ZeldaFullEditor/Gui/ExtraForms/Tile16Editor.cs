@@ -122,18 +122,18 @@ namespace ZeldaFullEditor.Gui
 		{
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 			e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
-			e.Graphics.DrawImage(GFX.editort16Bitmap, new Rectangle(0, 0, 256, 1024));
+			e.Graphics.DrawImage(GFX.editort16Bitmap, Constants.Rect_0_0_256_1024);
 
 			if (gridcheckBox.Checked)
 			{
 				for (int xs = 0; xs < 16; xs++)
 				{
-					e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), xs * 16, 0, xs * 16, 1024);
+					e.Graphics.DrawLine(Constants.ThirdWhitePen1, xs * 16, 0, xs * 16, 1024);
 
 				}
 				for (int ys = 0; ys < 256; ys++)
 				{
-					e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 0, ys * 16, 256, ys * 16);
+					e.Graphics.DrawLine(Constants.ThirdWhitePen1, 0, ys * 16, 256, ys * 16);
 				}
 			}
 
@@ -145,7 +145,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void mirrorXCheckbox_CheckedChanged(object sender, EventArgs e)
 		{
-			if (fromForm == false)
+			if (!fromForm)
 			{
 				updateTiles();
 			}
@@ -173,12 +173,12 @@ namespace ZeldaFullEditor.Gui
 			{
 				for (int x = 0; x < 16; x++)
 				{
-					e.Graphics.DrawLine(new Pen(Color.FromArgb(100, Color.White), 1), x * 32, 0, x * 32, 16000);
+					e.Graphics.DrawLine(Constants.White100Pen1, x * 32, 0, x * 32, 16000);
 
 				}
 				for (int y = 0; y < 512; y++)
 				{
-					e.Graphics.DrawLine(new Pen(Color.FromArgb(100, Color.White), 1), 0, y * 32, 256, y * 32);
+					e.Graphics.DrawLine(Constants.White100Pen1, 0, y * 32, 256, y * 32);
 				}
 			}
 
@@ -189,7 +189,7 @@ namespace ZeldaFullEditor.Gui
 			{
 				int xP2 = (searchedTile % 8) * 32;
 				int yP2 = ((searchedTile / 8)) * 32;
-				e.Graphics.DrawRectangle(new Pen(Color.FromArgb(220, Color.Orange), 1), new Rectangle(xP2, yP2, 32, 32));
+				e.Graphics.DrawRectangle(Constants.Orange220Pen1, new Rectangle(xP2, yP2, 32, 32));
 			}
 
 			/*
@@ -199,7 +199,7 @@ namespace ZeldaFullEditor.Gui
                 xP += 256;
             }
             */
-			e.Graphics.DrawRectangle(new Pen(Color.FromArgb(220, Color.Red), 1), new Rectangle(xP, yP, 32, 32));
+			e.Graphics.DrawRectangle(Constants.Red220Pen1, new Rectangle(xP, yP, 32, 32));
 
 			//e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 32, 0, 32, 64);
 			//e.Graphics.DrawLine(new Pen(Color.FromArgb(80, Color.White), 1), 0, 32, 64, 32);
@@ -439,7 +439,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void tileTypeBox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (fromForm == false)
+			if (!fromForm)
 			{
 				tempTiletype[tile8selected] = (byte) tileTypeBox.SelectedIndex;
 			}

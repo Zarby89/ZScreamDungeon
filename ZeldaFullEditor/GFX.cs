@@ -122,7 +122,7 @@ namespace ZeldaFullEditor
 
 		public static byte[] spriteFontSpacing = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6 };
 
-		public unsafe static void DrawBG1()
+		public static unsafe void DrawBG1()
 		{
 			var alltilesData = (byte*) currentgfx16Ptr.ToPointer();
 			byte* ptr = (byte*) roomBg1Ptr.ToPointer();
@@ -164,7 +164,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public unsafe static void DrawBG2()
+		public static unsafe void DrawBG2()
 		{
 			var alltilesData = (byte*) currentgfx16Ptr.ToPointer();
 			byte* ptr = (byte*) roomBg2Ptr.ToPointer();
@@ -839,7 +839,7 @@ namespace ZeldaFullEditor
 
 				if (ai == null)
 				{
-					if (x2 == true)
+					if (x2)
 					{
 						g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 16, 16), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
 					}
@@ -859,7 +859,7 @@ namespace ZeldaFullEditor
 					continue;
 				}
 
-				if (x2 == true)
+				if (x2)
 				{
 					cpos += (spriteFontSpacing[arrayPos] * 2);
 				}

@@ -187,9 +187,7 @@ namespace ZeldaFullEditor.OWSceneModes
 		{
 			if (scene.lowEndMode)
 			{
-				int transparency = 200;
-				Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 200, 0, 0));
-				Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
+				Brush bgrBrush;
 				g.CompositingMode = CompositingMode.SourceOver;
 				foreach (RoomPotSaveEditor item in scene.ow.allitems)
 				{
@@ -201,20 +199,10 @@ namespace ZeldaFullEditor.OWSceneModes
 					if (item.roomMapId >= (0 + scene.ow.worldOffset) && item.roomMapId < (64 + scene.ow.worldOffset))
 					{
 
-						if (selectedItem == item)
-						{
-							bgrBrush = new SolidBrush(Color.FromArgb(transparency, 00, 200, 200));
-							contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
-
-						}
-						else
-						{
-							bgrBrush = new SolidBrush(Color.FromArgb(transparency, 200, 0, 0));
-							contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
-						}
+						bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
 
 						g.FillRectangle(bgrBrush, new Rectangle((item.x), (item.y), 16, 16));
-						g.DrawRectangle(contourPen, new Rectangle((item.x), (item.y), 16, 16));
+						g.DrawRectangle(Constants.Black200Pen, new Rectangle((item.x), (item.y), 16, 16));
 						byte nid = item.id;
 
 						if ((item.id & 0x80) == 0x80)
@@ -235,29 +223,17 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 			else
 			{
-				int transparency = 200;
-				Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 200, 0, 0));
-				Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
+				Brush bgrBrush;
 				g.CompositingMode = CompositingMode.SourceOver;
 
 				foreach (RoomPotSaveEditor item in scene.ow.allitems)
 				{
 					if (item.roomMapId >= (0 + scene.ow.worldOffset) && item.roomMapId < (64 + scene.ow.worldOffset))
 					{
-						if (selectedItem == item)
-						{
-							bgrBrush = new SolidBrush(Color.FromArgb(transparency, 00, 200, 200));
-							contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
-
-						}
-						else
-						{
-							bgrBrush = new SolidBrush(Color.FromArgb(transparency, 200, 0, 0));
-							contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
-						}
+						bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
 
 						g.FillRectangle(bgrBrush, new Rectangle((item.x), (item.y), 16, 16));
-						g.DrawRectangle(contourPen, new Rectangle((item.x), (item.y), 16, 16));
+						g.DrawRectangle(Constants.Black200Pen, new Rectangle((item.x), (item.y), 16, 16));
 						byte nid = item.id;
 
 						if ((item.id & 0x80) == 0x80)

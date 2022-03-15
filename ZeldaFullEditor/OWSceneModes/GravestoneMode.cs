@@ -29,7 +29,7 @@ namespace ZeldaFullEditor.OWSceneModes
 					Gravestone en = scene.ow.graves[i];
 					if (e.X >= en.xTilePos && e.X < en.xTilePos + 32 && e.Y >= en.yTilePos && e.Y < en.yTilePos + 32)
 					{
-						if (scene.mouse_down == false)
+						if (!scene.mouse_down)
 						{
 							selectedGrave = en;
 							lastselectedGrave = en;
@@ -93,8 +93,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void Draw(Graphics g)
 		{
-			int transparency = 200;
-			Pen bgrBrush = new Pen(Color.FromArgb(transparency, 222, 16, 145));
+			Pen bgrBrush = Constants.Magenta200Pen;
 			g.CompositingMode = CompositingMode.SourceOver;
 
 			for (int i = 0; i < scene.ow.graves.Length; i++)
@@ -105,12 +104,12 @@ namespace ZeldaFullEditor.OWSceneModes
 				{
 					if (e == selectedGrave)
 					{
-						bgrBrush = new Pen(Color.FromArgb(transparency, 14, 224, 146));
+						bgrBrush = Constants.MediumMint200Pen;
 						//scene.drawText(g, e.xTilePos + 8, e.yTilePos + 8, "ID : " + i.ToString("X2"));
 					}
 					else
 					{
-						bgrBrush = new Pen(Color.FromArgb(transparency, 222, 16, 145));
+						bgrBrush = Constants.Magenta200Pen;
 					}
 				}
 

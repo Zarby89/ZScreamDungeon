@@ -118,7 +118,7 @@ namespace ZeldaFullEditor.OWSceneModes
 					{
 						if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
 						{
-							if (scene.mouse_down == false)
+							if (!scene.mouse_down)
 							{
 								selectedExit = en;
 								lastselectedExit = en;
@@ -324,7 +324,6 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void Draw(Graphics g)
 		{
-			int transparency = 200;
 			if (scene.lowEndMode)
 			{
 				for (int i = 0; i < 78; i++)
@@ -338,8 +337,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 					if (ex.mapId < 64 + scene.ow.worldOffset && ex.mapId >= scene.ow.worldOffset)
 					{
-						Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 222, 222, 222));
-						Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
+						Brush bgrBrush = Constants.LightGray200Brush;
 						Brush fontBrush = Brushes.Black;
 
 						if (selectedExit == null)
@@ -347,9 +345,9 @@ namespace ZeldaFullEditor.OWSceneModes
 							if (lastselectedExit == ex)
 							{
 								g.CompositingMode = CompositingMode.SourceOver;
-								bgrBrush = new SolidBrush(Color.FromArgb(transparency, 160, 160, 160));
+								bgrBrush = Constants.MediumGray200Brush;
 								g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-								g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
 
 								int sy = ex.mapId / 8;
@@ -363,7 +361,7 @@ namespace ZeldaFullEditor.OWSceneModes
 							}
 
 							g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-							g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+							g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 							scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
 						}
 						else
@@ -376,9 +374,9 @@ namespace ZeldaFullEditor.OWSceneModes
 								//g.DrawImage(jsonData.linkGfx, ex.playerX, ex.playerY + 8, new Rectangle(48, 16, 16, 16), GraphicsUnit.Pixel);
 
 								g.CompositingMode = CompositingMode.SourceOver;
-								bgrBrush = new SolidBrush(Color.FromArgb(transparency, 160, 160, 160));
+								bgrBrush = Constants.MediumGray200Brush;
 								g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-								g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
 								g.CompositingMode = CompositingMode.SourceCopy;
 								int sy = ex.mapId / 8;
@@ -390,7 +388,7 @@ namespace ZeldaFullEditor.OWSceneModes
 							else
 							{
 								g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-								g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 
 								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
 							}
@@ -409,8 +407,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 					if (ex.mapId < 64 + scene.ow.worldOffset && ex.mapId >= scene.ow.worldOffset)
 					{
-						Brush bgrBrush = new SolidBrush(Color.FromArgb(transparency, 222, 222, 222));
-						Pen contourPen = new Pen(Color.FromArgb(transparency, 0, 0, 0));
+						Brush bgrBrush = Constants.LightGray200Brush;
 						Brush fontBrush = Brushes.Black;
 
 						if (selectedExit == null)
@@ -418,9 +415,9 @@ namespace ZeldaFullEditor.OWSceneModes
 							if (lastselectedExit == ex)
 							{
 								g.CompositingMode = CompositingMode.SourceOver;
-								bgrBrush = new SolidBrush(Color.FromArgb(transparency, 160, 160, 160));
+								bgrBrush = Constants.MediumGray200Brush;
 								g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-								g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
 
 								int sy = ex.mapId / 8;
@@ -434,7 +431,7 @@ namespace ZeldaFullEditor.OWSceneModes
 							}
 
 							g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-							g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+							g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 							scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
 						}
 						else
@@ -447,9 +444,9 @@ namespace ZeldaFullEditor.OWSceneModes
 								//g.DrawImage(jsonData.linkGfx, ex.playerX, ex.playerY + 8, new Rectangle(48, 16, 16, 16), GraphicsUnit.Pixel);
 
 								g.CompositingMode = CompositingMode.SourceOver;
-								bgrBrush = new SolidBrush(Color.FromArgb(transparency, 160, 160, 160));
+								bgrBrush = Constants.MediumGray200Brush;
 								g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-								g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
 								g.CompositingMode = CompositingMode.SourceCopy;
 								int sy = ex.mapId / 8;
@@ -461,7 +458,7 @@ namespace ZeldaFullEditor.OWSceneModes
 							else
 							{
 								g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-								g.DrawRectangle(contourPen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
+								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 
 								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
 							}
@@ -480,10 +477,10 @@ namespace ZeldaFullEditor.OWSceneModes
 			if (scene.mainForm.previewRoom.bg2 != Background2.Translucent || scene.mainForm.previewRoom.bg2 != Background2.Transparent ||
 			 scene.mainForm.previewRoom.bg2 != Background2.OnTop || scene.mainForm.previewRoom.bg2 != Background2.Off)
 			{
-				g.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+				g.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
-			g.DrawImage(GFX.roomBg1Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+			g.DrawImage(GFX.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 
 			if (scene.mainForm.previewRoom.bg2 == Background2.Translucent || scene.mainForm.previewRoom.bg2 == Background2.Transparent)
 			{
@@ -504,11 +501,11 @@ namespace ZeldaFullEditor.OWSceneModes
 				);
 
 				//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
-				g.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
+				g.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
 			}
 			else if (scene.mainForm.previewRoom.bg2 == Background2.OnTop)
 			{
-				g.DrawImage(GFX.roomBg2Bitmap, new Rectangle(0, 0, 256, 256), 0, 0, 512, 512, GraphicsUnit.Pixel);
+				g.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
 			scene.mainForm.activeScene.drawText(g, 0, 0, "ROOM : " + scene.mainForm.previewRoom.index.ToString());

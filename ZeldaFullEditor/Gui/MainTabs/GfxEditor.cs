@@ -199,7 +199,7 @@ namespace ZeldaFullEditor.Gui
 				}
 			}
 
-			e.Graphics.DrawRectangle(new Pen(Brushes.LimeGreen, 2), new Rectangle((32 * selectedColor) + 1, 1, 31, 31));
+			e.Graphics.DrawRectangle(Constants.LimeGreenPen2, new Rectangle((32 * selectedColor) + 1, 1, 31, 31));
 		}
 
 		private void mainpalettePicturebox_MouseDown(object sender, MouseEventArgs e)

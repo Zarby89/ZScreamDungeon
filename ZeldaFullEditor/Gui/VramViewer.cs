@@ -38,7 +38,7 @@ namespace ZeldaFullEditor.Gui
 				}
 
 				tempBitmap.Palette = cp;
-				e.Graphics.DrawImage(tempBitmap, new Rectangle(0, 0, 256, 1024), 0, 0, 128, 512, GraphicsUnit.Pixel);
+				e.Graphics.DrawImage(tempBitmap, Constants.Rect_0_0_256_1024, 0, 0, 128, 512, GraphicsUnit.Pixel);
 			}
 		}
 	}

@@ -106,15 +106,17 @@ namespace ZeldaFullEditor
 				strout = string.Format("{0} {1}", gt, desc);
 			}
 
+			private const string TokenWithParam = "[{0}:{1:X2}]";
+			private const string TokenWithoutParam = "[{0}]";
 			public string GetParameterizedToken(byte b = 0)
 			{
 				if (hasParam)
 				{
-					return string.Format("[{0}:{1:X2}]", token, b);
+					return string.Format(TokenWithParam, token, b);
 				}
 				else
 				{
-					return string.Format("[{0}]", token);
+					return string.Format(TokenWithoutParam, token);
 				}
 			}
 
@@ -172,7 +174,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		private const char cmdprot = '\uBEBE'; // cheese
+		private const char CHEESE = '\uBEBE'; // inserted into commands to protect them from dictionary replacements
 		private static string OptimizeMessageForDictionary(string str)
 		{
 
@@ -193,10 +195,10 @@ namespace ZeldaFullEditor
 				protons.Append(c);
 				if (cmd)
 				{
-					protons.Append(cmdprot);
+					protons.Append(CHEESE);
 				}
 			}
-			return ReplaceAllDictionaryWords(protons.ToString()).Replace(cmdprot.ToString(), "");
+			return ReplaceAllDictionaryWords(protons.ToString()).Replace(CHEESE.ToString(), "");
 		}
 
 		private static string ReplaceAllDictionaryWords(string s)
@@ -221,7 +223,7 @@ namespace ZeldaFullEditor
 				{
 					if (t.HasArgument)
 					{
-						return new ParsedElement(t, Byte.Parse(g.Groups[1].Value, NumberStyles.HexNumber));
+						return new ParsedElement(t, byte.Parse(g.Groups[1].Value, NumberStyles.HexNumber));
 					}
 					else
 					{
@@ -295,6 +297,8 @@ namespace ZeldaFullEditor
 			return 0xFF;
 		}
 
+		private const string BANKToken = "BANK";
+
 		public static TextElement DictionaryElement = new TextElement(0x80, DICTIONARYTOKEN, true, "Dictionary");
 
 		public static TextElement[] TCommands = new TextElement[] {
@@ -318,7 +322,7 @@ namespace ZeldaFullEditor
 			new TextElement(0x68, "CH2I", false, "Choose 2 indented"),
 			new TextElement(0x69, "CHI", false, "Choose item"),
 			new TextElement(0x67, "IMG", false, "Next attract image"),
-			new TextElement(0x80, "BANK", false, "Bank marker (automatic)"),
+			new TextElement(0x80, BANKToken, false, "Bank marker (automatic)"),
 			new TextElement(0x70, "NONO", false, "Crash"),
 		};
 
@@ -499,7 +503,7 @@ namespace ZeldaFullEditor
 					currentMessageRaw.Append(t.GetParameterizedToken(b));
 					currentMessageParsed.Append(t.GetParameterizedToken(b));
 
-					if (t.Token == "BANK")
+					if (t.Token == BANKToken)
 					{
 						pos = Constants.text_data2;
 					}
@@ -762,7 +766,6 @@ namespace ZeldaFullEditor
 			textBox1.Text = Regex.Replace(msg.ContentsParsed, @"\[[123V]\]", "\r\n$0");
 
 			drawTextPreview();
-			MessageAddress.Text = msg.Address.ToString("X6");
 
 			pictureBox1.Refresh();
 		}
@@ -780,6 +783,10 @@ namespace ZeldaFullEditor
 			drawLetter(FindMatchingCharacter(c));
 		}
 
+		/// <summary>
+		/// Includes parentheses to be longer, since player names can be up to 6 characters.
+		/// </summary>
+		private const string NAMEPreview = "(NAME)";
 		public unsafe void drawLetter(params byte[] text)
 		{
 			foreach (byte b in text)
@@ -824,7 +831,7 @@ namespace ZeldaFullEditor
 				}
 				else if (b == 0x6A)
 				{
-					drawLetter("(NAME)");
+					drawLetter(NAMEPreview);
 				}
 				else if (b >= DICTOFF && b < (DICTOFF + 97))
 				{
@@ -944,7 +951,7 @@ namespace ZeldaFullEditor
 		{
 			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.DrawImage(GFX.fontgfxBitmap, new Rectangle(0, 0, 256, 256));
+			e.Graphics.DrawImage(GFX.fontgfxBitmap, Constants.Rect_0_0_256_256);
 
 			if (fontGridBox.Checked)
 			{
@@ -970,7 +977,7 @@ namespace ZeldaFullEditor
 			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 			e.Graphics.DrawImage(GFX.fontgfxBitmap,
-				new Rectangle(0, 0, 64, 128),
+				Constants.Rect_0_0_64_128,
 				new Rectangle((selectedTile - (selectedTile & 0xF0)) * 8, selectedTile & 0xF0, 8, 16),
 				GraphicsUnit.Pixel);
 
@@ -1014,9 +1021,8 @@ namespace ZeldaFullEditor
 				new Rectangle(0, shownLines * 16, 170, pictureBox2.Height / 2),
 				GraphicsUnit.Pixel);
 			e.Graphics.FillRectangle(
-				new SolidBrush(Color.FromArgb(128, 255, 0, 0)),
-				new Rectangle(344 - 8, 0, 4,
-				pictureBox2.Height));
+				Constants.HalfRedBrush,
+				new Rectangle(344 - 8, 0, 4, pictureBox2.Height));
 		}
 
 		private void richTextBox1_TextChanged(object sender, EventArgs e)
@@ -1099,7 +1105,7 @@ namespace ZeldaFullEditor
 			{
 				foreach (byte b in m.Data)
 				{
-					if (expandedRegion == false)
+					if (!expandedRegion)
 					{
 						if (pos > Constants.text_data + 0x8000)
 						{
@@ -1171,7 +1177,7 @@ namespace ZeldaFullEditor
 
 		private void numericUpDown1_ValueChanged(object sender, EventArgs e)
 		{
-			if (fromForm == false)
+			if (!fromForm)
 			{
 				widthArray[selectedTile] = (byte) numericUpDown1.Value;
 			}
@@ -1198,7 +1204,7 @@ namespace ZeldaFullEditor
 		private void textBox1_TextChanged(object sender, EventArgs e)
 		{
 			// TODO is fromForm necessary?
-			//if (fromForm == false) 
+			//if (!fromForm) 
 			//{
 			UpdateTextBox();
 			//}
@@ -1385,7 +1391,7 @@ namespace ZeldaFullEditor
 		public void paste()
 		{
 			// Determine if there is any text in the Clipboard to paste into the textbox        
-			if (Clipboard.GetDataObject().GetDataPresent(DataFormats.Text) == true)
+			if (Clipboard.GetDataObject().GetDataPresent(DataFormats.Text))
 			{
 				textBox1.Paste();
 			}
@@ -1404,7 +1410,7 @@ namespace ZeldaFullEditor
 		public void undo()
 		{
 			// Determine if last operation can be undone in text box.   
-			if (textBox1.CanUndo == true)
+			if (textBox1.CanUndo)
 			{
 				// Undo the last operation.
 				textBox1.Undo();

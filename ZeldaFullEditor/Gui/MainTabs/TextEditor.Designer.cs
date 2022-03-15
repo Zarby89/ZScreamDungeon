@@ -39,8 +39,6 @@
 			this.fontGridBox = new System.Windows.Forms.CheckBox();
 			this.BytesDDD = new System.Windows.Forms.Button();
 			this.label11 = new System.Windows.Forms.Label();
-			this.MessageAddress = new System.Windows.Forms.Label();
-			this.label9 = new System.Windows.Forms.Label();
 			this.label10 = new System.Windows.Forms.Label();
 			this.label2 = new System.Windows.Forms.Label();
 			this.TextCommandList = new System.Windows.Forms.ListBox();
@@ -139,8 +137,6 @@
 			this.panel2.Controls.Add(this.fontGridBox);
 			this.panel2.Controls.Add(this.BytesDDD);
 			this.panel2.Controls.Add(this.label11);
-			this.panel2.Controls.Add(this.MessageAddress);
-			this.panel2.Controls.Add(this.label9);
 			this.panel2.Controls.Add(this.label10);
 			this.panel2.Controls.Add(this.label2);
 			this.panel2.Controls.Add(this.TextCommandList);
@@ -206,24 +202,6 @@
 			this.label11.Size = new System.Drawing.Size(86, 13);
 			this.label11.TabIndex = 32;
 			this.label11.Text = "Parameter (HEX)";
-			// 
-			// MessageAddress
-			// 
-			this.MessageAddress.AutoSize = true;
-			this.MessageAddress.Location = new System.Drawing.Point(293, 1);
-			this.MessageAddress.Name = "MessageAddress";
-			this.MessageAddress.Size = new System.Drawing.Size(10, 13);
-			this.MessageAddress.TabIndex = 31;
-			this.MessageAddress.Text = "-";
-			// 
-			// label9
-			// 
-			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(247, 1);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(45, 13);
-			this.label9.TabIndex = 22;
-			this.label9.Text = "Address";
 			// 
 			// label10
 			// 
@@ -525,7 +503,6 @@
         private System.Windows.Forms.TextBox searchTextbox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label3;
@@ -552,7 +529,6 @@
 		private System.Windows.Forms.PictureBox pictureBox2;
 		private System.Windows.Forms.Label SelectedTileASCII;
 		private System.Windows.Forms.Label SelectedTileID;
-		private System.Windows.Forms.Label MessageAddress;
 		private System.Windows.Forms.Label label11;
 		private System.Windows.Forms.Button BytesDDD;
 		private System.Windows.Forms.PictureBox pictureBox3;

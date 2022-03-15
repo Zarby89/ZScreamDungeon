@@ -72,8 +72,8 @@ namespace ZeldaFullEditor.Gui
 		{
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
-			e.Graphics.DrawImage(GFX.allgfxBitmap, new Rectangle(0, 0, 256, 14272), new Rectangle(0, 0, 128, 7136), GraphicsUnit.Pixel);
-			e.Graphics.DrawRectangle(new Pen(Brushes.Aqua, 2), new Rectangle(0, selectedSheet * 64, 256, 64));
+			e.Graphics.DrawImage(GFX.allgfxBitmap, Constants.Rect_0_0_256_14272, Constants.Rect_0_0_128_7136, GraphicsUnit.Pixel);
+			e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(0, selectedSheet * 64, 256, 64));
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -170,10 +170,10 @@ namespace ZeldaFullEditor.Gui
 					if (ROM.DATA[gfxPointer1 + i] <= 0x20)
 					{
 						int saddr = Utils.PcToSnes(pos);
-						ROM.Write(gfxPointer3 + i, (byte) (saddr & 0xFF), true, "Gfx Ptrs");
-						ROM.Write(gfxPointer2 + i, (byte) (saddr >> 8 & 0xFF), true, "Gfx Ptrs");
-						ROM.Write(gfxPointer1 + i, (byte) (saddr >> 16 & 0xFF), true, "Gfx Ptrs");
-						if (bpp2 == false)
+						ROM.Write(gfxPointer3 + i, (byte) (saddr & 0xFF), WriteType.GFXPTR);
+						ROM.Write(gfxPointer2 + i, (byte) (saddr >> 8 & 0xFF), WriteType.GFXPTR);
+						ROM.Write(gfxPointer1 + i, (byte) (saddr >> 16 & 0xFF), WriteType.GFXPTR);
+						if (!bpp2)
 						{
 							byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, 0x600);
 							int s = cbytes.Length;
@@ -190,7 +190,7 @@ namespace ZeldaFullEditor.Gui
 					}
 					else // Save it back in expanded data if it was already
 					{
-						if (bpp2 == false)
+						if (!bpp2)
 						{
 							byte[] b = new byte[] { ROM.DATA[gfxPointer3 + i], ROM.DATA[gfxPointer2 + i], ROM.DATA[gfxPointer1 + i], 0 };
 							int addr = BitConverter.ToInt32(b, 0);
@@ -216,7 +216,7 @@ namespace ZeldaFullEditor.Gui
 					{
 						for (int j = 0; j < 0x600; j++)
 						{
-							ROM.Write(uPos + j, gfxSheets3bpp[i][j], true, "Gfx data");
+							ROM.Write(uPos + j, gfxSheets3bpp[i][j], WriteType.GFX);
 						}
 
 						uPos += 0x600;
@@ -353,7 +353,7 @@ namespace ZeldaFullEditor.Gui
 			if (Clipboard.ContainsImage())
 			{
 				Bitmap b = (Bitmap) Clipboard.GetImage();
-				BitmapData bd = b.LockBits(new Rectangle(0, 0, 128, 40), ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+				BitmapData bd = b.LockBits(Constants.Rect_0_0_128_40, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
 
 				unsafe
 				{
@@ -410,7 +410,7 @@ namespace ZeldaFullEditor.Gui
 		private void GfxImportExport_Load(object sender, EventArgs e)
 		{
 			GfxGroupsForm gfxgf = new GfxGroupsForm(this.mainForm);
-			gfxgf.Location = new Point(0, 0);
+			gfxgf.Location = Constants.Point_0_0;
 			this.panel2.Controls.Add(mainForm.gfxGroupsForm);
 
 			PaletteEditor palf = new PaletteEditor(mainForm);

@@ -47,7 +47,7 @@ namespace ZeldaFullEditor
 			this.x = o.x;
 			this.y = o.y;
 			this.tid = o.id;
-			this.layer = (byte) (o.bg2 == true ? 1 : 0);
+			this.layer = (byte) (o.bg2 ? 1 : 0);
 			type = typeof(PotItem);
 		}
 

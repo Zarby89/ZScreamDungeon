@@ -562,11 +562,13 @@
     <Compile Include="Data\TilePos.cs" />
     <Compile Include="Data\TileUndo.cs" />
     <Compile Include="Data\TransportOW.cs" />
+    <Compile Include="UIText.cs" />
     <Compile Include="Utils.cs" />
     <Compile Include="Gui\WhirlpoolForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WhirlpoolForm.Designer.cs" />
+    <Compile Include="WriteType.cs" />
     <Compile Include="ZCompressLibrary\Common.cs" />
     <Compile Include="ZCompressLibrary\Compress.cs" />
     <Compile Include="ZCompressLibrary\compression_piece.cs" />

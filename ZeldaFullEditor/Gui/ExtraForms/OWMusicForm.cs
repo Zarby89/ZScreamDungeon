@@ -130,7 +130,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
 		private void music1Box_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (fromForm == false)
+			if (!fromForm)
 			{
 				musics[0] = (byte) ((ambient1Box.SelectedIndex << 4) + music1Box.SelectedIndex);
 				musics[1] = (byte) ((ambient2Box.SelectedIndex << 4) + music2Box.SelectedIndex);

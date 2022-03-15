@@ -54,8 +54,8 @@ namespace ZeldaFullEditor.Gui
 		{
 			overworld = new Overworld();
 			scene = new SceneOW(this, overworld, mainForm);
-			scene.Location = new Point(0, 0);
-			scene.Size = new Size(4096, 4096);
+			scene.Location = Constants.Point_0_0;
+			scene.Size = Constants.Size4096x4096;
 			splitContainer1.Panel2.Controls.Clear();
 			splitContainer1.Panel2.Controls.Add(scene);
 			this.mainForm = mainForm;
@@ -90,18 +90,9 @@ namespace ZeldaFullEditor.Gui
 			int t = 0;
 			for (ushort x = 0; x < 225; x++)
 			{
-				for (ushort y = 0; y < 16; y++)
+				for (ushort y = 0; y < 16; y++, t+=2)
 				{
-					if (fromFile)
-					{
-						scratchPadTiles[y, x] = (ushort) ((file[t] << 8) + file[t + 1]);
-					}
-					else
-					{
-						scratchPadTiles[y, x] = 0;
-					}
-
-					t += 2;
+					scratchPadTiles[y, x] = fromFile ? (ushort) ((file[t] << 8) + file[t + 1]) : (ushort) 0;
 				}
 			}
 
@@ -119,9 +110,8 @@ namespace ZeldaFullEditor.Gui
 			{
 				for (ushort y = 0; y < 16; y++)
 				{
-					file[t] = (byte) ((scratchPadTiles[y, x] >> 8) & 0xFF);
-					file[t + 1] = (byte) ((scratchPadTiles[y, x]) & 0xFF);
-					t += 2;
+					file[t++] = (byte) ((scratchPadTiles[y, x] >> 8) & 0xFF);
+					file[t++] = (byte) ((scratchPadTiles[y, x]) & 0xFF);
 				}
 			}
 
@@ -147,9 +137,9 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < owToolStrip.Items.Count; i++) // Uncheck every modes
 			{
-				if (owToolStrip.Items[i] is ToolStripButton)
+				if (owToolStrip.Items[i] is ToolStripButton tt)
 				{
-					(owToolStrip.Items[i] as ToolStripButton).Checked = false;
+					tt.Checked = false;
 				}
 			}
 
@@ -231,19 +221,27 @@ namespace ZeldaFullEditor.Gui
 			{
 				e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 				e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
-				e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new Rectangle(0, 0, 128, 4096), new Rectangle(0, 0, 128, 4096), GraphicsUnit.Pixel);
-				e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new Rectangle(128, 0, 128, 4096), new Rectangle(0, 4096, 128, 4096), GraphicsUnit.Pixel);
+				e.Graphics.DrawImage(GFX.mapblockset16Bitmap,
+					Constants.Rect_0_0_128_4096,
+					Constants.Rect_0_0_128_4096,
+					GraphicsUnit.Pixel);
+				e.Graphics.DrawImage(GFX.mapblockset16Bitmap,
+					Constants.Rect_128_0_128_4096,
+					Constants.Rect_0_4096_128_4096,
+					GraphicsUnit.Pixel);
 
 				if (scene.selectedTile.Length > 0)
 				{
 					int x = (scene.selectedTile[0] % 8) * 16;
 					int y = ((scene.selectedTile[0] / 8)) * 16;
+
 					if (scene.selectedTile[0] >= 2048)
 					{
 						y -= 4096;
 						x += 128;
 					}
 
+					// TODO copy
 					e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(x, y, 16, 16));
 					selectedTileLabel.Text = "Selected Tile : " + scene.selectedTile[0].ToString("X4");
 				}
@@ -304,7 +302,7 @@ namespace ZeldaFullEditor.Gui
 		private void SelectMapOffset(int o)
 		{
 			scene.selectedMap = o;
-			scene.selectedMapParent = scene.ow.allmaps[scene.selectedMap].parent;
+			scene.selectedMapParent = scene.ow.allmaps[o].parent;
 			scene.ow.worldOffset = o;
 			scene.Refresh();
 		}
@@ -407,16 +405,17 @@ namespace ZeldaFullEditor.Gui
 
 			GFX.currentfontgfx16Bitmap.Palette = cp;
 
+			// TODO make new brushes
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.DrawImage(GFX.currentfontgfx16Bitmap, new Rectangle(0, 0, 340, 102), new Rectangle(0, 0, 170, 51), GraphicsUnit.Pixel);
-			e.Graphics.FillRectangle(new SolidBrush(Color.FromArgb(128, 255, 0, 0)), new Rectangle(344 - 8, 0, 4, 102));
+			e.Graphics.DrawImage(GFX.currentfontgfx16Bitmap, Constants.Rect_0_0_340_102, Constants.Rect_0_0_170_51, GraphicsUnit.Pixel);
+			e.Graphics.FillRectangle(Constants.HalfRedBrush, Constants.Rect_336_0_4_102);
 		}
 
 		private void textidTextbox_Click(object sender, EventArgs e)
 		{
 			mainForm.textEditor.SelectMessageID(OWProperty_MessageID.HexValue);
 			mainForm.textEditor.Refresh();
-			previewTextPicturebox.Size = new Size(340, 102);
+			previewTextPicturebox.Size = Constants.Size340x102;
 			previewTextPicturebox.Visible = true;
 			previewTextPicturebox.Refresh();
 		}
@@ -428,10 +427,8 @@ namespace ZeldaFullEditor.Gui
 
 		private void scratchPicturebox_MouseDown(object sender, MouseEventArgs e)
 		{
-			int tileX = (e.X / 16);
-			int tileY = (e.Y / 16);
-			globalmouseTileDownX = tileX;
-			globalmouseTileDownY = tileY;
+			globalmouseTileDownX = e.X / 16;
+			globalmouseTileDownY = e.Y / 16;
 
 			if (scene.needRedraw)
 			{
@@ -447,7 +444,7 @@ namespace ZeldaFullEditor.Gui
 				{
 					int y = 0;
 					int x = 0;
-					ushort[] undotiles = new ushort[scene.selectedTile.Length];
+					//ushort[] undotiles = new ushort[scene.selectedTile.Length];
 
 					for (int i = 0; i < scene.selectedTile.Length; i++)
 					{
@@ -677,7 +674,7 @@ namespace ZeldaFullEditor.Gui
 
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 			e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
-			e.Graphics.DrawImage(GFX.editort16Bitmap, new Rectangle(0, 0, 256, 1024));
+			e.Graphics.DrawImage(GFX.editort16Bitmap, Constants.Rect_0_0_256_1024);
 
 			int y = (tile8selected / 16);
 			int x = tile8selected - (y * 16);
@@ -687,6 +684,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			// TODO copy
 			if (tabControl1.SelectedTab.Name == "Tiles8")
 			{
 				// TODO: Add something here?
@@ -760,12 +758,8 @@ namespace ZeldaFullEditor.Gui
 
 		public unsafe void updateSelectedTile16()
 		{
-			byte p;
-			ushort tempTile = 0;
-
-			tile8selected = tempTile;
-
-			p = palSelected;
+			byte p = palSelected;
+			tile8selected = 0;
 			byte* destPtr = (byte*) GFX.editingtile16.ToPointer();
 			byte* srcPtr = (byte*) GFX.currentOWgfx16Ptr.ToPointer();
 			Tile16 t = overworld.tiles16[scene.selectedTile[0]];
@@ -809,12 +803,9 @@ namespace ZeldaFullEditor.Gui
 
 		public unsafe void updateTiles()
 		{
-			byte p;
-			ushort tempTile = 0;
+			byte p = palSelected;
 
-			tile8selected = tempTile;
-
-			p = palSelected;
+			tile8selected = 0;
 			byte* destPtr = (byte*) GFX.editort16Ptr.ToPointer();
 			byte* srcPtr = (byte*) GFX.currentOWgfx16Ptr.ToPointer();
 			int xx = 0;
@@ -944,6 +935,7 @@ namespace ZeldaFullEditor.Gui
 				{
 					alltilesIndexed[t.tileId]++;
 				}
+
 				foreach (TilePos t in overworld.alloverlays[i + 64].tilesData)
 				{
 					alltilesIndexed[t.tileId]++;
@@ -960,6 +952,7 @@ namespace ZeldaFullEditor.Gui
 			StringBuilder sb = new StringBuilder();
 			foreach (KeyValuePair<ushort, ushort> tiles in alltilesIndexed.OrderBy(key => key.Value))
 			{
+				// TODO copy
 				sb.AppendLine("Tile - " + tiles.Key.ToString("X4") + " : " + tiles.Value.ToString("X4"));
 			}
 
@@ -1021,7 +1014,7 @@ namespace ZeldaFullEditor.Gui
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 			e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
 			updateSelectedTile16();
-			e.Graphics.DrawImage(GFX.editingtile16Bitmap, new Rectangle(0, 0, 64, 64));
+			e.Graphics.DrawImage(GFX.editingtile16Bitmap, Constants.Rect_0_0_64_64);
 		}
 
 		/// <summary>
@@ -1029,6 +1022,7 @@ namespace ZeldaFullEditor.Gui
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
+		// TODO copy and string builder
 		private void largemapCheckbox_Clicked(object sender, EventArgs e)
 		{
 			if (!propertiesChangedFromForm)
@@ -2077,7 +2071,7 @@ namespace ZeldaFullEditor.Gui
 		{
 			if (BGColorToUpdate < Palettes.overworld_BackgroundPalette.Length)
 			{
-				e.Graphics.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[BGColorToUpdate]), new Rectangle(0, 0, 24, 24));
+				e.Graphics.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[BGColorToUpdate]), Constants.Rect_0_0_24_24);
 			}
 		}
 	}

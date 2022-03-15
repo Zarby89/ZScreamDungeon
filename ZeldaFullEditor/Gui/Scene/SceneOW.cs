@@ -368,7 +368,8 @@ namespace ZeldaFullEditor
 					owForm.splitContainer1.Panel2.HorizontalScroll.Value,
 					owForm.splitContainer1.Panel2.VerticalScroll.Value,
 					owForm.splitContainer1.Panel2.Width,
-					owForm.splitContainer1.Panel2.Height));
+					owForm.splitContainer1.Panel2.Height
+					));
 			}
 		}
 
@@ -620,6 +621,7 @@ namespace ZeldaFullEditor
 						g.Clear(Palettes.overworld_GrassPalettes[0]);
 					}
 
+					// TODO make a single PointF and Rectangle variable to reuse
 					int x = 0;
 					int y = 0;
 					for (int i = (0 + ow.worldOffset); i < 64 + (ow.worldOffset); i++)
@@ -851,12 +853,16 @@ namespace ZeldaFullEditor
 
 					for (int gx = 0; gx < (gridsize / owForm.gridDisplay); gx++)
 					{
-						g.DrawLine(new Pen(Color.FromArgb(100, 255, 255, 255), 1), new Point((x * 512) + gx * owForm.gridDisplay, y * 512), new Point((x * 512) + gx * owForm.gridDisplay, (y * 512) + gridsize));
+						g.DrawLine(Constants.ThirdWhitePen1,
+							new Point((x * 512) + gx * owForm.gridDisplay, y * 512),
+							new Point((x * 512) + gx * owForm.gridDisplay, (y * 512) + gridsize));
 					}
 
 					for (int gy = 0; gy < (gridsize / owForm.gridDisplay); gy++)
 					{
-						g.DrawLine(new Pen(Color.FromArgb(100, 255, 255, 255), 1), new Point((x * 512), (y * 512) + (gy * owForm.gridDisplay)), new Point((x * 512) + gridsize, (y * 512) + (gy * owForm.gridDisplay)));
+						g.DrawLine(Constants.ThirdWhitePen1,
+							new Point((x * 512), (y * 512) + (gy * owForm.gridDisplay)),
+							new Point((x * 512) + gridsize, (y * 512) + (gy * owForm.gridDisplay)));
 					}
 				}
 

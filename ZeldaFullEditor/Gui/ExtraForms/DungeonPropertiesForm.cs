@@ -60,10 +60,9 @@ namespace ZeldaFullEditor.Gui
 
 		private void bossroomTextbox_TextChanged(object sender, EventArgs e)
 		{
-			if (changedFromForm == false)
+			if (!changedFromForm)
 			{
-				int r = 0;
-				if (int.TryParse(startroomTextbox.Text, out r))
+				if (int.TryParse(startroomTextbox.Text, out int r))
 				{
 					properties[listBox1.SelectedIndex].startroom = (byte) r;
 				}

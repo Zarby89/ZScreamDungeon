@@ -119,7 +119,7 @@ namespace ZeldaFullEditor
 		{
 			if (palette_mouse_down)
 			{
-				if (middle == false)
+				if (!middle)
 				{
 					colorpalettes[mousePal] = oldColor;
 					update();

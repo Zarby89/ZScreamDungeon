@@ -345,7 +345,7 @@ namespace ZeldaFullEditor
 			var alltilesData = (byte*) GFX.allgfx16Ptr.ToPointer();
 			byte* ptr = (byte*) GFX.roomBg1Ptr.ToPointer();
 
-			if (picker == false)
+			if (!picker)
 			{
 				int drawid = (srcx + (srcy * 16));
 				for (var yl = 0; yl < sizey * 8; yl++)
