@@ -720,6 +720,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <None Include="ZScreamUML.cd" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
