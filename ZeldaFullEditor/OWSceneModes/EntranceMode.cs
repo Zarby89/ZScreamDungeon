@@ -213,7 +213,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				//scene.owForm.thumbnailBox.Size = new Size(256, 256);
 
 				int roomId = DungeonsData.entrances[selectedEntrance.entranceId].Room;
-				if (roomId >= 296)
+				if (roomId >= Constants.NumberOfRooms)
 				{
 					//scene.owForm.thumbnailBox.Visible = false;
 					return;

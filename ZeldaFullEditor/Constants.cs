@@ -35,6 +35,18 @@ namespace ZeldaFullEditor
 		public const int Uncompressed3BPPSize = 0x0600;
 		public const int UncompressedSheetSize = 0x0800;
 
+		public const int NumberOfSheets = 223;
+		public const int NumberOfMap16 = 4096;
+		public const int NumberOfMap32 = 40960;
+		public const int LimitOfMap32 = 8864;
+		public const int NumberOfOWMaps = 160;
+		public const int NumberOfRooms = 296;
+
+		// TODO zarby stop making magic numbers
+		public const int IDKZarby = 0x54727;
+
+		public static byte[] FontSpacings = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6 };
+		
 		//===========================================================================================
 		// Geometry - shapes and points we don't need to constantly reinstantiate
 		//===========================================================================================
@@ -610,7 +622,7 @@ namespace ZeldaFullEditor
 			overworldTilesType = 0x7FD94;
 			Rando = rando;
 
-			if (rando == true)
+			if (rando)
 			{
 				// TODO: Add condition here?
 			}

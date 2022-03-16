@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-	// TODO this and Tile.cs should have their constructors standardized with each other
 	public class TileInfo
 	{
 		private bool o, h, v;
@@ -73,7 +72,7 @@ namespace ZeldaFullEditor
 		public byte palette;
 		public ushort id;
 		// vhopppcc cccccccc
-		public TileInfo(ushort id, byte palette, bool v, bool h, bool o)
+		public TileInfo(ushort id, byte palette, bool o, bool h, bool v)
 		{
 			this.id = id;
 			this.palette = palette;

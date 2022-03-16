@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
@@ -51,7 +52,9 @@ namespace ZeldaFullEditor
 		public const string Range0toFF = "The selected value must be between 0x00 and 0xFF, inclusive.";
 
 
-
+		//===========================================================================================
+		// Formatting
+		//===========================================================================================
 		public static string FormatSelectedObject(Room_Object o)
 		{
 			switch (o.options)
@@ -71,6 +74,55 @@ namespace ZeldaFullEditor
 		public static string FormatSelectedPotItem(PotItem p, string n)
 		{
 			return string.Format("Selected prize: {0:02X} {1}", p.id, n);
+		}
+
+		/// <summary>
+		/// Returns a path with system-specific path separators, where each argument is a different segment of the file path.
+		/// </summary>
+		/// <param name="p"></param>
+		/// <returns></returns>
+		public static string GetFileName(params string[] p)
+		{
+			StringBuilder ret = new StringBuilder((p.Length * 2) - 1);
+			int i = p.Length;
+			foreach (string s in p)
+			{
+				ret.Append(s);
+				if (--i > 0)
+				{
+					ret.Append(System.IO.Path.DirectorySeparatorChar);
+				}
+			}
+			return ret.ToString();
+		}
+
+		//===========================================================================================
+		// Messages
+		//===========================================================================================
+		public const string DefaultWarning = "You have unsaved changes that will be lost.";
+		public const string RoomWarning = "You have unsaved room changes that will be lost by closing this tab.";
+		public const string CloseROMWarning = "Closing this ROM will result in all unsaved changes being lost.";
+		public static DialogResult WarnAboutSaving(string message = DefaultWarning)
+		{
+			return MessageBox.Show
+				(
+					message + "\nDo you wish to save before continuing?",
+					"Unsaved changes",
+					MessageBoxButtons.YesNoCancel,
+					MessageBoxIcon.Warning
+				);
+		}
+
+
+
+		public static void CryAboutSaving(string message = "OHNO")
+		{
+			MessageBox.Show
+			(
+				"Failed to save;\n" + message,
+				"Bad Error",
+				MessageBoxButtons.OK
+			);
 		}
 	}
 }

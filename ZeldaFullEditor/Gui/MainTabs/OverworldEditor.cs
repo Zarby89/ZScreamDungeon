@@ -219,8 +219,8 @@ namespace ZeldaFullEditor.Gui
 		{
 			if (GFX.mapblockset16Bitmap != null)
 			{
-				e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-				e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceOver;
+				e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+				e.Graphics.CompositingMode = CompositingMode.SourceOver;
 				e.Graphics.DrawImage(GFX.mapblockset16Bitmap,
 					Constants.Rect_0_0_128_4096,
 					Constants.Rect_0_0_128_4096,
@@ -387,7 +387,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void previewTextPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			ColorPalette cp = GFX.currentfontgfx16Bitmap.Palette;
 			int defaultColor = 6;
 
@@ -406,7 +406,7 @@ namespace ZeldaFullEditor.Gui
 			GFX.currentfontgfx16Bitmap.Palette = cp;
 
 			// TODO make new brushes
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			e.Graphics.DrawImage(GFX.currentfontgfx16Bitmap, Constants.Rect_0_0_340_102, Constants.Rect_0_0_170_51, GraphicsUnit.Pixel);
 			e.Graphics.FillRectangle(Constants.HalfRedBrush, Constants.Rect_336_0_4_102);
 		}
@@ -509,18 +509,16 @@ namespace ZeldaFullEditor.Gui
 						}
 
 						scene.selectedTileSizeX = sizeX;
-						scene.selectedTile = new ushort[(sizeX) * (sizeY)];
+						scene.selectedTile = new ushort[sizeX * sizeY];
 
 						for (int y = 0; y < sizeY; y++)
 						{
 							for (int x = 0; x < sizeX; x++)
 							{
-								int pX = globalmouseTileDownX;
-								int pY = globalmouseTileDownY;
+								int pX = reverseX ? tileX : globalmouseTileDownX;
+								int pY = reverseY ? tileY : globalmouseTileDownY;
 
-								if (reverseX) { pX = tileX; }
-								if (reverseY) { pY = tileY; }
-								scene.selectedTile[x + (y * sizeX)] = scratchPadTiles[(pX) + x, (pY) + y];
+								scene.selectedTile[x + (y * sizeX)] = scratchPadTiles[pX + x, pY + y];
 							}
 						}
 					}
@@ -645,15 +643,11 @@ namespace ZeldaFullEditor.Gui
 				int tPos = (xtile * 16) + (ytile * 4096);
 				int srctPos = (srcTileX * 16) + (srcTileY * 2048);
 
-				int pxPos = 0;
-				int pxPosSrc = 0;
 				for (int y = 0; y < 16; y++)
 				{
 					for (int x = 0; x < 16; x++)
 					{
-						pxPos = (x + (y * 256));
-						pxPosSrc = (x + (y * 128));
-						gfx16DataScratch[tPos + pxPos] = gfx16Data[srctPos + pxPosSrc];
+						gfx16DataScratch[tPos + (x + (y * 256))] = gfx16Data[srctPos + (x + (y * 128))];
 					}
 				}
 
@@ -851,8 +845,8 @@ namespace ZeldaFullEditor.Gui
 			}
 
 			int tx = ((tile.id / 16) * 512) + ((tile.id - ((tile.id / 16) * 16)) * 4);
-			var index = xx + yy + offset + (mx * 2) + (my * 16);
-			var pixel = gfx8Pointer[tx + (y * 64) + x];
+			int index = xx + yy + offset + (mx * 2) + (my * 16);
+			int pixel = gfx8Pointer[tx + (y * 64) + x];
 
 			gfx16Pointer[index + r ^ 1] = (byte) ((pixel & 0x0F) + tile.palette * 16);
 			gfx16Pointer[index + r] = (byte) (((pixel >> 4) & 0x0F) + tile.palette * 16);
@@ -875,8 +869,8 @@ namespace ZeldaFullEditor.Gui
 			}
 
 			int tx = ((id / 16) * 512) + ((id - ((id / 16) * 16)) * 4);
-			var index = xx + yy + (mx * 2) + (my * destwidth);
-			var pixel = gfx8Pointer[tx + (y * 64) + x];
+			int index = xx + yy + (mx * 2) + (my * destwidth);
+			int pixel = gfx8Pointer[tx + (y * 64) + x];
 
 			gfx16Pointer[index + r ^ 1] = (byte) ((pixel & 0x0F) + p * 16);
 			gfx16Pointer[index + r] = (byte) (((pixel >> 4) & 0x0F) + p * 16);

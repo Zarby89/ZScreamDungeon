@@ -78,21 +78,18 @@ namespace ZeldaFullEditor.Gui
 					for (int k = 0; k < 6; k++) // 6 lines per pack
 					{
 						// Black default + // read7 + read8
-						bigPalettes[ColorPos] = Color.Black; // Color0
-						ColorPos++;
+						bigPalettes[ColorPos++] = Color.Black; // Color0
 
 						for (int j = 0; j < 7; j++)
 						{
-							bigPalettes[ColorPos] = Palettes.dungeonsMain_Palettes[i][j + (k * 15)];
-							ColorPos++;
+							bigPalettes[ColorPos++] = Palettes.dungeonsMain_Palettes[i][j + (k * 15)];
 						}
 
 						ColorPos += 8;
 
 						for (int j = 0; j < 8; j++)
 						{
-							bigPalettes[ColorPos] = Palettes.dungeonsMain_Palettes[i][j + (k * 15) + 7];
-							ColorPos++;
+							bigPalettes[ColorPos++] = Palettes.dungeonsMain_Palettes[i][j + (k * 15) + 7];
 						}
 
 						ColorPos += 8;
@@ -107,13 +104,11 @@ namespace ZeldaFullEditor.Gui
 					for (int k = 0; k < 5; k++) // 6 lines per pack
 					{
 						// Black default + // read7 + read8
-						bigPalettes[ColorPos] = Palettes.overworld_GrassPalettes[0]; // Color0
-						ColorPos++;
+						bigPalettes[ColorPos++] = Palettes.overworld_GrassPalettes[0]; // Color0
 
 						for (int j = 0; j < 7; j++)
 						{
-							bigPalettes[ColorPos] = Palettes.overworld_MainPalettes[i][j + (k * 7)];
-							ColorPos++;
+							bigPalettes[ColorPos++] = Palettes.overworld_MainPalettes[i][j + (k * 7)];
 						}
 
 						ColorPos += 8;
@@ -125,13 +120,11 @@ namespace ZeldaFullEditor.Gui
 					for (int k = 0; k < 3; k++) //6 lines per pack
 					{
 						// black default + // read7 + read8
-						bigPalettes[ColorPos] = Palettes.overworld_GrassPalettes[0]; // Color0
-						ColorPos++;
+						bigPalettes[ColorPos++] = Palettes.overworld_GrassPalettes[0]; // Color0
 
 						for (int j = 0; j < 7; j++)
 						{
-							bigPalettes[ColorPos] = Palettes.overworld_AuxPalettes[i][j + (k * 7)];
-							ColorPos++;
+							bigPalettes[ColorPos++] = Palettes.overworld_AuxPalettes[i][j + (k * 7)];
 						}
 
 						ColorPos += 8;
@@ -146,21 +139,18 @@ namespace ZeldaFullEditor.Gui
 					for (int k = 0; k < 4; k++) // 6 lines per pack
 					{
 						// Black default + // read7 + read8
-						bigPalettes[ColorPos] = Color.Black; // Color0
-						ColorPos++;
+						bigPalettes[ColorPos++] = Color.Black; // Color0
 
 						for (int j = 0; j < 7; j++)
 						{
-							bigPalettes[ColorPos] = Palettes.globalSprite_Palettes[i][j + (k * 15)];
-							ColorPos++;
+							bigPalettes[ColorPos++] = Palettes.globalSprite_Palettes[i][j + (k * 15)];
 						}
 
 						ColorPos += 8;
 
 						for (int j = 0; j < 8; j++)
 						{
-							bigPalettes[ColorPos] = Palettes.globalSprite_Palettes[i][j + (k * 15) + 7];
-							ColorPos++;
+							bigPalettes[ColorPos++] = Palettes.globalSprite_Palettes[i][j + (k * 15) + 7];
 						}
 
 						ColorPos += 8;

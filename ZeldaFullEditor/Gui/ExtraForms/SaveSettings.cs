@@ -138,92 +138,57 @@ namespace ZeldaFullEditor.Gui
 
 		private void button3_Click(object sender, EventArgs e)
 		{
-			checkBox1.Checked = true;  //save dungeon sprites
-			checkBox2.Checked = true;  //save dungeon pot items
-			checkBox3.Checked = true;  //save dungeon chest items
-			checkBox4.Checked = true;  //save dungeon tile objects
-			checkBox5.Checked = true;  //save dungeon blocks
-			checkBox6.Checked = true;  //save dungeon torches
-			checkBox7.Checked = true;  //save dungeon damage pits
-			checkBox8.Checked = true;  //save dungeon room headers
-			checkBox9.Checked = true;  //save dungeon entrance data
-			checkBox10.Checked = true; //save overworld sprites
-			checkBox11.Checked = true; //save overworld bush items
-			checkBox12.Checked = true; //save overworld entrance data
-			checkBox13.Checked = true; //save Whirlpool/Flute
-			checkBox14.Checked = true; //save overworld exits
-			checkBox15.Checked = true; //save overworld tiles
-			checkBox16.Checked = true; //save Group Tiles
-			checkBox17.Checked = true; //save overworld map header
-			checkBox18.Checked = true; //save dungeon auto doors
-			checkBox19.Checked = true; //save misc Adv. chests
-			checkBox20.Checked = true; //save misc dungeon properties
-			checkBox21.Checked = true; //load Texts
-			checkBox22.Checked = true; //load Dung. items
-			checkBox23.Checked = true; //load Dung. sprites
-			checkBox24.Checked = true; //misc gfx groups
-			checkBox25.Checked = true; //misc palettes
-			checkBox26.Checked = true; //save misc texts
-			checkBox27.Checked = true; //load Dung. blocks
-			checkBox28.Checked = true; //load Dung. torches
-			checkBox29.Checked = true; //save dungeon custom collision
-			checkBox30.Checked = true; //load Over. sprites
-			checkBox31.Checked = true; //load Over. items
-			checkBox32.Checked = true; //save overworld overlays
-			checkBox33.Checked = true; //save overworld music
-			checkBox34.Checked = true; //save misc title screen 
-			checkBox35.Checked = true; //save misc mini map
-			checkBox36.Checked = true; //save overworld tile types
-			checkBox37.Checked = true; //save overworld properties
-			checkBox38.Checked = true; //save misc grave stones
-			checkBox39.Checked = true; //save dungeon maps
-			checkBox40.Checked = true; //save misc triforce
-			checkBox41.Checked = true; //overworld message IDs
+			SetEveryBox(true);
 		}
 
 		private void button4_Click(object sender, EventArgs e)
 		{
-			checkBox1.Checked = false;  //save dungeon sprites
-			checkBox2.Checked = false;  //save dungeon pot items
-			checkBox3.Checked = false;  //save dungeon chest items
-			checkBox4.Checked = false;  //save dungeon tile objects
-			checkBox5.Checked = false;  //save dungeon blocks
-			checkBox6.Checked = false;  //save dungeon torches
-			checkBox7.Checked = false;  //save dungeon damage pits
-			checkBox8.Checked = false;  //save dungeon room headers
-			checkBox9.Checked = false;  //save dungeon entrance data
-			checkBox10.Checked = false; //save overworld sprites
-			checkBox11.Checked = false; //save overworld bush items
-			checkBox12.Checked = false; //save overworld entrance data
-			checkBox13.Checked = false; //save Whirlpool/Flute
-			checkBox14.Checked = false; //save overworld exits
-			checkBox15.Checked = false; //save overworld tiles
-			checkBox16.Checked = false; //save Group Tiles
-			checkBox17.Checked = false; //save overworld map header
-			checkBox18.Checked = false; //save dungeon auto doors
-			checkBox19.Checked = false; //save misc Adv. chests
-			checkBox20.Checked = false; //save misc dungeon properties
-			checkBox21.Checked = false; //load Texts
-			checkBox22.Checked = false; //load Dung. items
-			checkBox23.Checked = false; //load Dung. sprites
-			checkBox24.Checked = false; //misc gfx groups
-			checkBox25.Checked = false; //misc palettes
-			checkBox26.Checked = false; //save misc texts
-			checkBox27.Checked = false; //load Dung. blocks
-			checkBox28.Checked = false; //load Dung. torches
-			checkBox29.Checked = false; //save dungeon custom collision
-			checkBox30.Checked = false; //load Over. sprites
-			checkBox31.Checked = false; //load Over. items
-			checkBox32.Checked = false; //save overworld overlays
-			checkBox33.Checked = false; //save overworld music
-			checkBox34.Checked = false; //save misc title screen 
-			checkBox35.Checked = false; //save misc mini map
-			checkBox36.Checked = false; //save overworld tile types
-			checkBox37.Checked = false; //save overworld properties
-			checkBox38.Checked = false; //save misc grave stones
-			checkBox39.Checked = false; //save dungeon maps
-			checkBox40.Checked = false; //save misc triforce
-			checkBox41.Checked = false; //overworld message IDs
+			SetEveryBox(false);
+		}
+
+		private void SetEveryBox(bool v)
+		{
+			checkBox1.Checked = v;  //save dungeon sprites
+			checkBox2.Checked = v;  //save dungeon pot items
+			checkBox3.Checked = v;  //save dungeon chest items
+			checkBox4.Checked = v;  //save dungeon tile objects
+			checkBox5.Checked = v;  //save dungeon blocks
+			checkBox6.Checked = v;  //save dungeon torches
+			checkBox7.Checked = v;  //save dungeon damage pits
+			checkBox8.Checked = v;  //save dungeon room headers
+			checkBox9.Checked = v;  //save dungeon entrance data
+			checkBox10.Checked = v; //save overworld sprites
+			checkBox11.Checked = v; //save overworld bush items
+			checkBox12.Checked = v; //save overworld entrance data
+			checkBox13.Checked = v; //save Whirlpool/Flute
+			checkBox14.Checked = v; //save overworld exits
+			checkBox15.Checked = v; //save overworld tiles
+			checkBox16.Checked = v; //save Group Tiles
+			checkBox17.Checked = v; //save overworld map header
+			checkBox18.Checked = v; //save dungeon auto doors
+			checkBox19.Checked = v; //save misc Adv. chests
+			checkBox20.Checked = v; //save misc dungeon properties
+			checkBox21.Checked = v; //load Texts
+			checkBox22.Checked = v; //load Dung. items
+			checkBox23.Checked = v; //load Dung. sprites
+			checkBox24.Checked = v; //misc gfx groups
+			checkBox25.Checked = v; //misc palettes
+			checkBox26.Checked = v; //save misc texts
+			checkBox27.Checked = v; //load Dung. blocks
+			checkBox28.Checked = v; //load Dung. torches
+			checkBox29.Checked = v; //save dungeon custom collision
+			checkBox30.Checked = v; //load Over. sprites
+			checkBox31.Checked = v; //load Over. items
+			checkBox32.Checked = v; //save overworld overlays
+			checkBox33.Checked = v; //save overworld music
+			checkBox34.Checked = v; //save misc title screen 
+			checkBox35.Checked = v; //save misc mini map
+			checkBox36.Checked = v; //save overworld tile types
+			checkBox37.Checked = v; //save overworld properties
+			checkBox38.Checked = v; //save misc grave stones
+			checkBox39.Checked = v; //save dungeon maps
+			checkBox40.Checked = v; //save misc triforce
+			checkBox41.Checked = v; //overworld message IDs
 		}
 	}
 }

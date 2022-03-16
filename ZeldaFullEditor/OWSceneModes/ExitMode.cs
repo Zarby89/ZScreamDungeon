@@ -135,7 +135,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				//scene.owForm.thumbnailBox.Visible = true;
 				//scene.owForm.thumbnailBox.Size = new Size(256, 256);
 				int roomId = selectedExit.roomId;
-				if (roomId >= 296)
+				if (roomId >= Constants.NumberOfRooms)
 				{
 					//scene.owForm.thumbnailBox.Visible = false;
 					return;
@@ -350,8 +350,8 @@ namespace ZeldaFullEditor.OWSceneModes
 								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
 
-								int sy = ex.mapId / 8;
-								int sx = ex.mapId - (sy * 8);
+								//int sy = ex.mapId / 8;
+								//int sx = ex.mapId - (sy * 8);
 
 								g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
 								g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
@@ -378,9 +378,11 @@ namespace ZeldaFullEditor.OWSceneModes
 								g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+
 								g.CompositingMode = CompositingMode.SourceCopy;
-								int sy = ex.mapId / 8;
-								int sx = ex.mapId - (sy * 8);
+								//int sy = ex.mapId / 8;
+								//int sx = ex.mapId - (sy * 8);
+
 								g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
 								g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
 								g.DrawLine(Pens.Blue, ex.cameraX, ex.cameraY - 8, ex.cameraX, ex.cameraY + 8);
@@ -420,8 +422,8 @@ namespace ZeldaFullEditor.OWSceneModes
 								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
 
-								int sy = ex.mapId / 8;
-								int sx = ex.mapId - (sy * 8);
+								//int sy = ex.mapId / 8;
+								//int sx = ex.mapId - (sy * 8);
 
 								g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
 								g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
@@ -449,8 +451,10 @@ namespace ZeldaFullEditor.OWSceneModes
 								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
 								g.CompositingMode = CompositingMode.SourceCopy;
-								int sy = ex.mapId / 8;
-								int sx = ex.mapId - (sy * 8);
+
+								//int sy = ex.mapId / 8;
+								//int sx = ex.mapId - (sy * 8);
+
 								g.DrawRectangle(Pens.LightPink, new Rectangle(ex.xScroll, ex.yScroll, 256, 224));
 								g.DrawLine(Pens.Blue, ex.cameraX - 8, ex.cameraY, ex.cameraX + 8, ex.cameraY);
 								g.DrawLine(Pens.Blue, ex.cameraX, ex.cameraY - 8, ex.cameraX, ex.cameraY + 8);
@@ -485,11 +489,11 @@ namespace ZeldaFullEditor.OWSceneModes
 			if (scene.mainForm.previewRoom.bg2 == Background2.Translucent || scene.mainForm.previewRoom.bg2 == Background2.Transparent)
 			{
 				float[][] matrixItems ={
-			   new float[] {1f, 0, 0, 0, 0},
-			   new float[] {0, 1f, 0, 0, 0},
-			   new float[] {0, 0, 1f, 0, 0},
-			   new float[] {0, 0, 0, 0.5f, 0},
-			   new float[] {0, 0, 0, 0, 1}};
+				new float[] {1f, 0, 0, 0, 0},
+				new float[] {0, 1f, 0, 0, 0},
+				new float[] {0, 0, 1f, 0, 0},
+				new float[] {0, 0, 0, 0.5f, 0},
+				new float[] {0, 0, 0, 0, 1}};
 				ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
 
 				// Create an ImageAttributes object and set its color matrix.

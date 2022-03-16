@@ -90,7 +90,7 @@ namespace ZeldaFullEditor
 		public ushort id = 0;
 		public byte palette = 4;
 
-		public Tile(ushort id, bool hflip = false, bool vflip = false, bool priority = false, byte palette = 4) // Custom tile
+		public Tile(ushort id, byte palette = 4, bool priority = false, bool hflip = false, bool vflip = false) // Custom tile
 		{
 			this.id = id;
 			this.hflip = hflip;
@@ -101,7 +101,7 @@ namespace ZeldaFullEditor
 
 		public TileInfo GetTileInfo()
 		{
-			return new TileInfo(id, palette, vflip, hflip, priority);
+			return new TileInfo(id, palette, priority, hflip, vflip);
 		}
 
 		public Tile(byte b1, byte b2) // Tile from game data

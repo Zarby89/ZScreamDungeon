@@ -41,7 +41,7 @@ namespace ZeldaFullEditor
 		public ushort[,] allmapsTilesLW = new ushort[512, 512]; //64 maps * (32*32 tiles)
 		public ushort[,] allmapsTilesDW = new ushort[512, 512]; //64 maps * (32*32 tiles)
 		public ushort[,] allmapsTilesSP = new ushort[512, 512]; //32 maps * (32*32 tiles)
-		public OverworldMap[] allmaps = new OverworldMap[160];
+		public OverworldMap[] allmaps = new OverworldMap[Constants.NumberOfOWMaps];
 		public EntranceOWEditor[] allentrances = new EntranceOWEditor[129];
 		public EntranceOWEditor[] allholes = new EntranceOWEditor[0x13];
 		public List<RoomPotSaveEditor> allitems = new List<RoomPotSaveEditor>();
@@ -57,7 +57,7 @@ namespace ZeldaFullEditor
 
 		public byte gameState = 1;
 
-		public byte[] mapParent = new byte[160];
+		public byte[] mapParent = new byte[Constants.NumberOfOWMaps];
 
 		public bool isLoaded = false;
 
@@ -76,7 +76,7 @@ namespace ZeldaFullEditor
 			tiles16 = new List<Tile16>();
 			tiles32 = new List<Tile32>();
 
-			map16tiles = new Tile32[40960];
+			map16tiles = new Tile32[Constants.NumberOfMap32];
 			posSize = new List<Size>();
 
 			t32 = new List<ushort>();
@@ -101,7 +101,7 @@ namespace ZeldaFullEditor
 			loadGravesStone();
 
 			// Map Initialization :
-			for (int i = 0; i < 160; i++)
+			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
 				allmaps[i] = new OverworldMap((byte) i, this);
 			}
@@ -117,7 +117,7 @@ namespace ZeldaFullEditor
 			new Thread(() =>
 			{
 				Thread.CurrentThread.IsBackground = true;
-				for (int i = 0; i < 160; i++)
+				for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 				{
 					allmaps[i].BuildMap();
 				}
@@ -218,7 +218,7 @@ namespace ZeldaFullEditor
 		public void AssembleMap16Tiles()
 		{
 			int tpos = Constants.map16Tiles;
-			for (int i = 0; i < 4096; i += 1) // 3760 // 4096
+			for (int i = 0; i < Constants.NumberOfMap16; i += 1)
 			{
 				TileInfo t0 = GFX.gettilesinfo((ushort) BitConverter.ToInt16(ROM.DATA, (tpos)));
 				tpos += 2;
@@ -238,19 +238,19 @@ namespace ZeldaFullEditor
 			int tpos = Constants.map16Tiles;
 			for (int i = 0; i < 3760; i += 1) // 3760
 			{
-				ROM.WriteShort(tpos, tiles16[i].tile0.toShort(), true, "Tile16Data");
+				ROM.WriteShort(tpos, tiles16[i].tile0.toShort(), WriteType.Tile16);
 				//ROM.DATA[tpos] = (byte)(tiles16[i].tile0.toShort() & 0xFF);
 				//ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile0.toShort() >> 8) & 0xFF);
 				tpos += 2;
-				ROM.WriteShort(tpos, tiles16[i].tile1.toShort(), true, "Tile16Data");
+				ROM.WriteShort(tpos, tiles16[i].tile1.toShort(), WriteType.Tile16);
 				//ROM.DATA[tpos] = (byte)(tiles16[i].tile1.toShort() & 0xFF);
 				//ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile1.toShort() >> 8) & 0xFF);
 				tpos += 2;
-				ROM.WriteShort(tpos, tiles16[i].tile2.toShort(), true, "Tile16Data");
+				ROM.WriteShort(tpos, tiles16[i].tile2.toShort(), WriteType.Tile16);
 				//ROM.DATA[tpos] = (byte)(tiles16[i].tile2.toShort() & 0xFF);
 				//ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile2.toShort() >> 8) & 0xFF);
 				tpos += 2;
-				ROM.WriteShort(tpos, tiles16[i].tile3.toShort(), true, "Tile16Data");
+				ROM.WriteShort(tpos, tiles16[i].tile3.toShort(), WriteType.Tile16);
 				//ROM.DATA[tpos] = (byte)(tiles16[i].tile3.toShort() & 0xFF);
 				//ROM.DATA[tpos + 1] = (byte)((tiles16[i].tile3.toShort() >> 8) & 0xFF);
 				tpos += 2;
@@ -307,7 +307,7 @@ namespace ZeldaFullEditor
 			int c = 0;
 			//int furthestPtr = 0;
 
-			for (int i = 0; i < 160; i++)
+			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
 				int p1 =
 				(ROM.DATA[(Constants.compressedAllMap32PointersHigh) + 2 + 3 * i] << 16) +
@@ -431,25 +431,19 @@ namespace ZeldaFullEditor
 			tiles32count = 0;
 
 			const int nullVal = -1;
-			for (int i = 0; i < 40960; i++) //40960 = numbers of 32x32 tiles
+			for (int i = 0; i < Constants.NumberOfMap32; i++)
 			{
 				short foundIndex = nullVal;
 				for (int j = 0; j < tiles32count; j++)
 				{
-					if (t32Unique[j].tile0 == map16tiles[i].tile0)
-					{
-						if (t32Unique[j].tile1 == map16tiles[i].tile1)
+					if (t32Unique[j].tile0 == map16tiles[i].tile0 &&
+						t32Unique[j].tile1 == map16tiles[i].tile1 &&
+						t32Unique[j].tile2 == map16tiles[i].tile2 &&
+						t32Unique[j].tile3 == map16tiles[i].tile3)
 						{
-							if (t32Unique[j].tile2 == map16tiles[i].tile2)
-							{
-								if (t32Unique[j].tile3 == map16tiles[i].tile3)
-								{
-									foundIndex = (short) j;
-									break;
-								}
-							}
+							foundIndex = (short) j;
+							break;
 						}
-					}
 				}
 
 				if (foundIndex == nullVal)
@@ -577,7 +571,7 @@ namespace ZeldaFullEditor
 			int sx = 0;
 			int sy = 0;
 			int c = 0;
-			for (int i = 0; i < 160; i++)
+			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
 				ushort[,] tilesused = allmapsTilesLW;
 				if (i < 64)
@@ -628,7 +622,7 @@ namespace ZeldaFullEditor
 				alltilesIndexed.Add(tiles[i], (ushort) i); // index the uniques tiles with a dictionary
 			}
 
-			for (int i = 0; i < 40960; i++) // 40960 = numbers of 32x32 tiles (160 * (16*16))
+			for (int i = 0; i < Constants.NumberOfMap32; i++)
 			{
 				t32.Add(alltilesIndexed[alltiles16[i]]); //add all tiles32 from all maps
 														 // convert all tiles32 non-unique ids into unique array of ids
@@ -644,9 +638,11 @@ namespace ZeldaFullEditor
 				t32Unique.Add(new Tile32(0));
 			}
 
-			if (t32Unique.Count > 8864)
+			if (t32Unique.Count > Constants.LimitOfMap32)
 			{
-				if (MessageBox.Show("Unique Tile32 count exceed the limit in the rom\n    ====== " + t32Unique.Count + " Used out of 8864 ======    \nThe ROM will NOT be saved, would you like to export map data?", "Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
+				if (MessageBox.Show("Unique Tile32 count exceed the limit in the rom\n    ====== " + t32Unique.Count +
+					" Used out of " + Constants.LimitOfMap32 + " ======    \nThe ROM will NOT be saved, would you like to export map data?",
+					"Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
 				{
 					ExportMaps();
 				}
@@ -658,7 +654,7 @@ namespace ZeldaFullEditor
 
 			Console.WriteLine("Nbr of uniquetiles32 = " + tiles.Count + " " + t32Unique.Count);
 			int v = t32Unique.Count;
-			for (int i = v; i < 8864; i++)
+			for (int i = v; i < Constants.LimitOfMap32; i++)
 			{
 				t32Unique.Add(new Tile32(666, 666, 666, 666)); // create new tileunique
 			}
@@ -689,7 +685,7 @@ namespace ZeldaFullEditor
 			int sy = 0;
 			int c = 0;
 
-			for (int i = 0; i < 160; i++)
+			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
 				BinaryReader bw = new BinaryReader(new FileStream(path + "\\map" + i.ToString(), FileMode.Open, FileAccess.Read));
 				ushort[,] tilesused = allmapsTilesLW;
@@ -758,7 +754,7 @@ namespace ZeldaFullEditor
 			int sx = 0;
 			int sy = 0;
 			int c = 0;
-			for (int i = 0; i < 160; i++)
+			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
 				BinaryWriter bw = new BinaryWriter(new FileStream(path + "\\map" + i.ToString(), FileMode.Create, FileAccess.Write));
 				ushort[,] tilesused = allmapsTilesLW;
@@ -920,7 +916,7 @@ namespace ZeldaFullEditor
 		public void savemapstorom()
 		{
 			int pos = 0x120000;
-			for (int i = 0; i < 160; i++)
+			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
 				int npos = 0;
 				byte[]
@@ -1282,7 +1278,7 @@ namespace ZeldaFullEditor
 			int sx = 0;
 			int sy = 0;
 			int c = 0;
-			for (int i = 0; i < 160; i++)
+			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
 				TileInfo[,] tilesused = tempTiles8_LW;
 				if (i < 64)
@@ -1337,7 +1333,7 @@ namespace ZeldaFullEditor
 				alltilesIndexed.Add(tiles[i], (ushort) i); // index the uniques tiles with a dictionary
 			}
 
-			for (int i = 0; i < 163840; i++) // 163840 = numbers of 16x16 tiles (160 * (32*32))
+			for (int i = 0; i < Constants.NumberOfOWMaps * 32 * 32; i++) // 163840 = numbers of 16x16 tiles (160 * (32*32))
 			{
 				t16.Add(alltilesIndexed[alltiles8[i]]); // add all tiles32 from all maps
 														// convert all tiles32 non-unique ids into unique array of ids
@@ -1353,7 +1349,7 @@ namespace ZeldaFullEditor
 				t16Unique.Add(new Tile16(0));
 			}
 
-			if (t16Unique.Count > 8864)
+			if (t16Unique.Count > Constants.LimitOfMap32)
 			{
 				if (MessageBox.Show("Unique Tiles16 count exceed the limit in the rom\nTiles data won't be saved would you like to export map data?", "Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
 				{

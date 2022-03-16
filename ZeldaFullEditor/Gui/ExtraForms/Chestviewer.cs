@@ -101,8 +101,7 @@ namespace ZeldaFullEditor
 				{
 					for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
 					{
-						palettes.Entries[pindex] = GFX.loadedPalettes[x, y];
-						pindex++;
+						palettes.Entries[pindex++] = GFX.loadedPalettes[x, y];
 					}
 				}
 
@@ -112,8 +111,7 @@ namespace ZeldaFullEditor
 					{
 						if (pindex < 256)
 						{
-							palettes.Entries[pindex] = GFX.loadedSprPalettes[x, y];
-							pindex++;
+							palettes.Entries[pindex++] = GFX.loadedSprPalettes[x, y];
 						}
 					}
 				}

@@ -2372,7 +2372,7 @@ namespace ZeldaFullEditor
 				for (int yy = 0; yy < 3; yy++)
 				{
 					draw_tile(tiles[2 + yy], (xx * 2) * 8, (yy + 3) * 8);
-					Tile t = new Tile(tiles[2 + yy].id, tiles[2 + yy].HFlip, tiles[2 + yy].VFlip, tiles[2 + yy].Priority, tiles[2 + yy].palette);
+					Tile t = new Tile(tiles[2 + yy].id, tiles[2 + yy].palette, tiles[2 + yy].Priority, tiles[2 + yy].HFlip, tiles[2 + yy].VFlip);
 					t.HFlip = true;
 					draw_tile(t, ((1 + (xx * 2)) * 8), (yy + 3) * 8);
 				}

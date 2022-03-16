@@ -126,8 +126,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 			if (wf.ShowDialog() == DialogResult.OK)
 			{
-				short v = 0;
-				short.TryParse(wf.textBox1.Text, out v);
+				short.TryParse(wf.textBox1.Text, out short v);
 				lastselectedTransport.whirlpoolPos = v;
 			}
 		}

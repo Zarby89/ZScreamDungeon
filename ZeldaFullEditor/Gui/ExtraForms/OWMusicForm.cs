@@ -16,6 +16,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 		public byte[] musics = new byte[4];
 		bool fromForm = false;
 
+		// TODO move to DefaultEntities
 		string[] musicNames = new string[]
 		{
 			"0x00 None",

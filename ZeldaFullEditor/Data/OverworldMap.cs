@@ -473,7 +473,7 @@ namespace ZeldaFullEditor
 					pal0 = 3;
 				}
 			}
-			else if (parent >= 128 && parent < 160)
+			else if (parent >= 128 && parent < Constants.NumberOfOWMaps)
 			{
 				// Default SP Palette
 				pal0 = 0;

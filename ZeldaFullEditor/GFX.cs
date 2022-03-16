@@ -67,7 +67,7 @@ namespace ZeldaFullEditor
 		public static IntPtr owactualMapPointer; // = Marshal.AllocHGlobal(0x40000);
 		public static Bitmap owactualMapBitmap;
 
-		public static bool[] isbpp3 = new bool[223];
+		public static bool[] isbpp3 = new bool[Constants.NumberOfSheets];
 
 		public static byte[] gfxdata;
 
@@ -120,8 +120,7 @@ namespace ZeldaFullEditor
 
 		public static Color[,] loadedSprPalettes = new Color[1, 1];
 
-		public static byte[] spriteFontSpacing = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6 };
-
+		public static byte[] spriteFontSpacing = Utils.DeepCopyBytes(Constants.FontSpacings);
 		public static unsafe void DrawBG1()
 		{
 			var alltilesData = (byte*) currentgfx16Ptr.ToPointer();
@@ -325,7 +324,7 @@ namespace ZeldaFullEditor
 			byte[] data;
 			int compressedSize = 0;
 
-			for (int i = 0; i < 223; i++)
+			for (int i = 0; i < Constants.NumberOfSheets; i++)
 			{
 				isbpp3[i] = (
 					(i >= 0 && i <= 112) || // Compressed 3bpp bg
@@ -389,7 +388,7 @@ namespace ZeldaFullEditor
 			int sheetPosition = 0;
 
 			// 8x8 tile
-			for (int s = 0; s < 223; s++) // Per Sheet
+			for (int s = 0; s < Constants.NumberOfSheets; s++) // Per Sheet
 			{
 				for (int j = 0; j < 4; j++) // Per Tile Line Y
 				{
@@ -469,9 +468,9 @@ namespace ZeldaFullEditor
 
 		public static int GetPCGfxAddress(byte[] romData, byte id)
 		{
-			int gfxPointer1 = Utils.SnesToPc((romData[Constants.gfx_1_pointer + 1] << 8) + (romData[Constants.gfx_1_pointer])),
-				gfxPointer2 = Utils.SnesToPc((romData[Constants.gfx_2_pointer + 1] << 8) + (romData[Constants.gfx_2_pointer])),
-				gfxPointer3 = Utils.SnesToPc((romData[Constants.gfx_3_pointer + 1] << 8) + (romData[Constants.gfx_3_pointer]));
+			int gfxPointer1 = Utils.SnesToPc((romData[Constants.gfx_1_pointer + 1] << 8) + (romData[Constants.gfx_1_pointer]));
+			int gfxPointer2 = Utils.SnesToPc((romData[Constants.gfx_2_pointer + 1] << 8) + (romData[Constants.gfx_2_pointer]));
+			int gfxPointer3 = Utils.SnesToPc((romData[Constants.gfx_3_pointer + 1] << 8) + (romData[Constants.gfx_3_pointer]));
 
 			byte gfxGamePointer1 = romData[gfxPointer1 + id];
 			byte gfxGamePointer2 = romData[gfxPointer2 + id];
@@ -490,7 +489,7 @@ namespace ZeldaFullEditor
 			bool h = (tile & Constants.TileHFlipBit) == Constants.TileHFlipBit;
 			bool v = (tile & Constants.TileVFlipBit) == Constants.TileVFlipBit;
 
-			return new TileInfo(tid, p, v, h, o);
+			return new TileInfo(tid, p, o, h, v);
 		}
 
 		public static ushort getshortilesinfo(TileInfo t)
@@ -554,8 +553,7 @@ namespace ZeldaFullEditor
 				{
 					// Hud Palette load from hud array instead of rom
 					//getColor((short)((ROM.DATA[0xDD660 + 1 + j] << 8) + (ROM.DATA[0xDD660 + j])));
-					palettes[x, y] = Palettes.HudPalettes[0][j];
-					j += 1;
+					palettes[x, y] = Palettes.HudPalettes[0][j++];
 				}
 			}
 
@@ -577,7 +575,7 @@ namespace ZeldaFullEditor
 						palettes[x, y] = Color.Black;
 					}
 
-					i += 1;
+					i++;
 				}
 			}
 
@@ -811,9 +809,8 @@ namespace ZeldaFullEditor
 				{
 					for (int x = 0; x < 15; x++)
 					{
-						cp.Entries[145 + k] = Palettes.globalSprite_Palettes[0][j];
+						cp.Entries[145 + k] = Palettes.globalSprite_Palettes[0][j++];
 						k++;
-						j++;
 					}
 					k++;
 				}
@@ -841,16 +838,16 @@ namespace ZeldaFullEditor
 				{
 					if (x2)
 					{
-						g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 16, 16), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
+						g.DrawImage(spriteFont, new Rectangle(x + cpos, y, 16, 16), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
 					}
 					else
 					{
-						g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
+						g.DrawImage(spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
 					}
 				}
 				else
 				{
-					g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
+					g.DrawImage(spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
 				}
 
 				if (arrayPos > spriteFontSpacing.Length - 1)
