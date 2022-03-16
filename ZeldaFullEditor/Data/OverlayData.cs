@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-    public class OverlayData
-    {
-        public List<TilePos> tilesData = new List<TilePos>();
+	public class OverlayData
+	{
+		public List<TilePos> tilesData = new List<TilePos>();
 
-        public OverlayData()
-        {
-            // TODO: Add something here?
-        }
-    }
+		public OverlayData()
+		{
+			// TODO: Add something here?
+		}
+	}
 }

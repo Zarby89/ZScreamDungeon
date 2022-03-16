@@ -30,52 +30,52 @@ using System.Threading.Tasks;
 // All samples rely on the compiler agnostic CSScript.Evaluator API.
 namespace CSScriptEvaluatorExtensions
 {
-    public class HostApp
-    {
-        public static void Test()
-        {
-            Console.WriteLine("---------------------------------------------");
-            Console.WriteLine("Testing asynchronous API");
-            Console.WriteLine("---------------------------------------------");
-            new AsyncSamples().RunAll();
-            Thread.Sleep(2000);
-            Console.WriteLine("\nPress 'Enter' to run uloading samples...");
-            Console.ReadLine();
-            Console.WriteLine("---------------------------------------------");
-            Console.WriteLine("Testing unloading API");
-            Console.WriteLine("---------------------------------------------");
-            new UnloadingSamples().RunAll();
-        }
+	public class HostApp
+	{
+		public static void Test()
+		{
+			Console.WriteLine("---------------------------------------------");
+			Console.WriteLine("Testing asynchronous API");
+			Console.WriteLine("---------------------------------------------");
+			new AsyncSamples().RunAll();
+			Thread.Sleep(2000);
+			Console.WriteLine("\nPress 'Enter' to run uloading samples...");
+			Console.ReadLine();
+			Console.WriteLine("---------------------------------------------");
+			Console.WriteLine("Testing unloading API");
+			Console.WriteLine("---------------------------------------------");
+			new UnloadingSamples().RunAll();
+		}
 
-        class AsyncSamples
-        {
-            public void RunAll()
-            {
-                Action<Action, string> run = (action, name) => { action(); Console.WriteLine(name); };
+		class AsyncSamples
+		{
+			public void RunAll()
+			{
+				Action<Action, string> run = (action, name) => { action(); Console.WriteLine(name); };
 
-                run(LoadDelegateAsync, "Start of " + nameof(LoadDelegateAsync));
-                run(LoadMethodAsync, "Start of " + nameof(LoadMethodAsync));
-                run(LoadCodeAsync, "Start of " + nameof(LoadCodeAsync));
-                run(CreateDelegateAsync, "Start of " + nameof(CreateDelegateAsync));
-                run(CompileCodeAsync, "Start of " + nameof(CompileCodeAsync));
-                run(RemoteAsynch, "Start of " + nameof(RemoteAsynch));
-            }
+				run(LoadDelegateAsync, "Start of " + nameof(LoadDelegateAsync));
+				run(LoadMethodAsync, "Start of " + nameof(LoadMethodAsync));
+				run(LoadCodeAsync, "Start of " + nameof(LoadCodeAsync));
+				run(CreateDelegateAsync, "Start of " + nameof(CreateDelegateAsync));
+				run(CompileCodeAsync, "Start of " + nameof(CompileCodeAsync));
+				run(RemoteAsynch, "Start of " + nameof(RemoteAsynch));
+			}
 
-            async void LoadDelegateAsync()
-            {
-                var product = await CSScript.Evaluator
-                                            .LoadDelegateAsync<Func<int, int, int>>(
-                                                  @"int Product(int a, int b)
+			async void LoadDelegateAsync()
+			{
+				var product = await CSScript.Evaluator
+											.LoadDelegateAsync<Func<int, int, int>>(
+												  @"int Product(int a, int b)
                                                     {
                                                         return a * b;
                                                     }");
-                Console.WriteLine("   End of {0}: {1}", nameof(LoadDelegateAsync), product(4, 2));
-            }
+				Console.WriteLine("   End of {0}: {1}", nameof(LoadDelegateAsync), product(4, 2));
+			}
 
-            public async void LoadMethodAsync()
-            {
-                dynamic script = await CSScript.Evaluator
-                                               .LoadMethodAsync(@"public int Sum(int a, int b)
+			public async void LoadMethodAsync()
+			{
+				dynamic script = await CSScript.Evaluator
+											   .LoadMethodAsync(@"public int Sum(int a, int b)
                                                                   {
                                                                       return a + b;
                                                                   }
@@ -83,18 +83,18 @@ namespace CSScriptEvaluatorExtensions
                                                                   {
                                                                       return a/b;
                                                                   }");
-                Console.WriteLine("   End of {0}: {1}", nameof(LoadMethodAsync), script.Div(15, 3));
-            }
+				Console.WriteLine("   End of {0}: {1}", nameof(LoadMethodAsync), script.Div(15, 3));
+			}
 
-            public async void LoadCodeAsync()
-            {
-                //This use-case uses Interface Alignment and this requires all assemblies involved to have
-                //non-empty Assembly.Location
-                CSScript.GlobalSettings.InMemoryAssembly = false;
+			public async void LoadCodeAsync()
+			{
+				//This use-case uses Interface Alignment and this requires all assemblies involved to have
+				//non-empty Assembly.Location
+				CSScript.GlobalSettings.InMemoryAssembly = false;
 
-                ICalc calc = await CSScript.Evaluator
-                                           .LoadCodeAsync<ICalc>(
-                                                  @"using System;
+				ICalc calc = await CSScript.Evaluator
+										   .LoadCodeAsync<ICalc>(
+												  @"using System;
                                                     public class Script
                                                     {
                                                         public int Sum(int a, int b)
@@ -102,24 +102,24 @@ namespace CSScriptEvaluatorExtensions
                                                             return a+b;
                                                         }
                                                     }");
-                Console.WriteLine("   End of {0}: {1}", nameof(LoadCodeAsync), calc.Sum(1, 2));
-            }
+				Console.WriteLine("   End of {0}: {1}", nameof(LoadCodeAsync), calc.Sum(1, 2));
+			}
 
-            public async void CreateDelegateAsync()
-            {
-                var product = await CSScript.Evaluator
-                                            .CreateDelegateAsync<int>(
-                                                  @"int Product(int a, int b)
+			public async void CreateDelegateAsync()
+			{
+				var product = await CSScript.Evaluator
+											.CreateDelegateAsync<int>(
+												  @"int Product(int a, int b)
                                                     {
                                                         return a * b;
                                                     }");
-                Console.WriteLine("   End of {0}: {1}", nameof(CreateDelegateAsync), product(15, 3));
-            }
+				Console.WriteLine("   End of {0}: {1}", nameof(CreateDelegateAsync), product(15, 3));
+			}
 
-            public async void CompileCodeAsync()
-            {
-                Assembly script = await CSScript.Evaluator
-                                                .CompileCodeAsync(@"using System;
+			public async void CompileCodeAsync()
+			{
+				Assembly script = await CSScript.Evaluator
+												.CompileCodeAsync(@"using System;
                                                                     public class Script
                                                                     {
                                                                         public int Sum(int a, int b)
@@ -127,65 +127,65 @@ namespace CSScriptEvaluatorExtensions
                                                                             return a+b;
                                                                         }
                                                                     }");
-                dynamic calc = script.CreateObject("*");
+				dynamic calc = script.CreateObject("*");
 
-                Console.WriteLine("   End of {0}: {1}", nameof(CompileCodeAsync), calc.Sum(15, 3));
-            }
+				Console.WriteLine("   End of {0}: {1}", nameof(CompileCodeAsync), calc.Sum(15, 3));
+			}
 
-            public async void RemoteAsynch()
-            {
-                var sum = await Task.Run(() =>
-                                     CSScript.Evaluator
-                                             .CreateDelegateRemotely<int>(
-                                                                   @"int Sum(int a, int b)
+			public async void RemoteAsynch()
+			{
+				var sum = await Task.Run(() =>
+									 CSScript.Evaluator
+											 .CreateDelegateRemotely<int>(
+																   @"int Sum(int a, int b)
                                                                      {
                                                                          return a+b;
                                                                      }")
-                                                                    );
-                Console.WriteLine("   End of {0}: {1}", nameof(RemoteAsynch), sum(1, 2));
+																	);
+				Console.WriteLine("   End of {0}: {1}", nameof(RemoteAsynch), sum(1, 2));
 
-                sum.UnloadOwnerDomain();
-            }
-        }
+				sum.UnloadOwnerDomain();
+			}
+		}
 
-        class UnloadingSamples
-        {
-            public void RunAll()
-            {
-                CreateDelegateRemotely();
-                LoadMethodRemotely();
-                LoadCodeRemotely();
-                LoadCodeRemotelyWithInterface();
-            }
+		class UnloadingSamples
+		{
+			public void RunAll()
+			{
+				CreateDelegateRemotely();
+				LoadMethodRemotely();
+				LoadCodeRemotely();
+				LoadCodeRemotelyWithInterface();
+			}
 
-            public void CreateDelegateRemotely()
-            {
-                var sum = CSScript.Evaluator
-                                    .CreateDelegateRemotely<int>(@"int Sum(int a, int b)
+			public void CreateDelegateRemotely()
+			{
+				var sum = CSScript.Evaluator
+									.CreateDelegateRemotely<int>(@"int Sum(int a, int b)
                                                     {
                                                         return a+b;
                                                     }");
-                Console.WriteLine("{0}: {1}", nameof(CreateDelegateRemotely), sum(15, 3));
+				Console.WriteLine("{0}: {1}", nameof(CreateDelegateRemotely), sum(15, 3));
 
-                sum.UnloadOwnerDomain();
-            }
+				sum.UnloadOwnerDomain();
+			}
 
-            public void LoadCodeRemotely()
-            {
-                // Class Calc doesn't implement ICals interface. Thus the compiled object cannot be typecasted into
-                // the interface and Evaluator will emit duck-typed assembly instead.
-                // But Mono and Roslyn build file-less assemblies, meaning that they cannot be used to build
-                // duck-typed proxies and CodeDomEvaluator needs to be used explicitly.
-                // Note class Calc also inherits from MarshalByRefObject. This is required for all object that
-                // are passed between AppDomain: they must inherit from MarshalByRefObject or be serializable.
+			public void LoadCodeRemotely()
+			{
+				// Class Calc doesn't implement ICals interface. Thus the compiled object cannot be typecasted into
+				// the interface and Evaluator will emit duck-typed assembly instead.
+				// But Mono and Roslyn build file-less assemblies, meaning that they cannot be used to build
+				// duck-typed proxies and CodeDomEvaluator needs to be used explicitly.
+				// Note class Calc also inherits from MarshalByRefObject. This is required for all object that
+				// are passed between AppDomain: they must inherit from MarshalByRefObject or be serializable.
 
-                //This use-case uses Interface Alignment and this requires all assemblies involved to have
-                //non-empty Assembly.Location
-                CSScript.GlobalSettings.InMemoryAssembly = false;
+				//This use-case uses Interface Alignment and this requires all assemblies involved to have
+				//non-empty Assembly.Location
+				CSScript.GlobalSettings.InMemoryAssembly = false;
 
-                var script = CSScript.CodeDomEvaluator
-                                     .LoadCodeRemotely<ICalc>(
-                                                      @"using System;
+				var script = CSScript.CodeDomEvaluator
+									 .LoadCodeRemotely<ICalc>(
+													  @"using System;
                                                         public class Calc : MarshalByRefObject
                                                         {
                                                             object t;
@@ -204,18 +204,18 @@ namespace CSScriptEvaluatorExtensions
                                                             }
                                                         }
                                                         ");
-                Console.WriteLine("{0}: {1}", nameof(LoadCodeRemotely), script.Sum(15, 3));
+				Console.WriteLine("{0}: {1}", nameof(LoadCodeRemotely), script.Sum(15, 3));
 
-                script.UnloadOwnerDomain();
-            }
+				script.UnloadOwnerDomain();
+			}
 
-            public void LoadCodeRemotelyWithInterface()
-            {
-                // Note class Calc also inherits from MarshalByRefObject. This is required for all object that
-                // are passed between AppDomain: they must inherit from MarshalByRefObject or be serializable.
-                var script = CSScript.Evaluator
-                                     .LoadCodeRemotely<ICalc>(
-                                                      @"using System;
+			public void LoadCodeRemotelyWithInterface()
+			{
+				// Note class Calc also inherits from MarshalByRefObject. This is required for all object that
+				// are passed between AppDomain: they must inherit from MarshalByRefObject or be serializable.
+				var script = CSScript.Evaluator
+									 .LoadCodeRemotely<ICalc>(
+													  @"using System;
                                                         public class Calc : MarshalByRefObject, CSScriptEvaluatorExtensions.ICalc
                                                         {
                                                             public int Sum(int a, int b)
@@ -224,26 +224,26 @@ namespace CSScriptEvaluatorExtensions
                                                             }
                                                         }
                                                         ");
-                Console.WriteLine("{0}: {1}", nameof(LoadCodeRemotelyWithInterface), script.Sum(15, 3));
+				Console.WriteLine("{0}: {1}", nameof(LoadCodeRemotelyWithInterface), script.Sum(15, 3));
 
-                script.UnloadOwnerDomain();
-            }
+				script.UnloadOwnerDomain();
+			}
 
-            public void LoadMethodRemotely()
-            {
-                // LoadMethodRemotely is essentially the same as LoadCodeRemotely. It just deals not with the
-                // whole class definition but a single method(s) only. And the rest of the class definition is
-                // added automatically by CS-Script. The auto-generated class declaration also indicates
-                // that the class implements ICalc interface. Meaning that it will trigger compile error
-                // if the set of methods in the script code doesn't implement all interface members.
+			public void LoadMethodRemotely()
+			{
+				// LoadMethodRemotely is essentially the same as LoadCodeRemotely. It just deals not with the
+				// whole class definition but a single method(s) only. And the rest of the class definition is
+				// added automatically by CS-Script. The auto-generated class declaration also indicates
+				// that the class implements ICalc interface. Meaning that it will trigger compile error
+				// if the set of methods in the script code doesn't implement all interface members.
 
-                //This use-case uses Interface Alignment and this requires all assemblies involved to have
-                //non-empty Assembly.Location
-                CSScript.GlobalSettings.InMemoryAssembly = false;
+				//This use-case uses Interface Alignment and this requires all assemblies involved to have
+				//non-empty Assembly.Location
+				CSScript.GlobalSettings.InMemoryAssembly = false;
 
-                var script = CSScript.Evaluator
-                                        .LoadMethodRemotely<IFullCalc>(
-                                                        @"public int Sum(int a, int b)
+				var script = CSScript.Evaluator
+										.LoadMethodRemotely<IFullCalc>(
+														@"public int Sum(int a, int b)
                                                             {
                                                                 return a+b;
                                                             }
@@ -251,38 +251,38 @@ namespace CSScriptEvaluatorExtensions
                                                             {
                                                                 return a-b;
                                                             }");
-                Console.WriteLine("{0}: {1}", nameof(LoadMethodRemotely), script.Sum(15, 3));
+				Console.WriteLine("{0}: {1}", nameof(LoadMethodRemotely), script.Sum(15, 3));
 
-                script.UnloadOwnerDomain();
-            }
+				script.UnloadOwnerDomain();
+			}
 
-            MethodDelegate sum;
-            ClientSponsor sumSponsor;
+			MethodDelegate sum;
+			ClientSponsor sumSponsor;
 
-            public void KeepRemoteObjectAlive()
-            {
-                sum = CSScript.Evaluator
-                              .CreateDelegateRemotely(@"int Sum(int a, int b)
+			public void KeepRemoteObjectAlive()
+			{
+				sum = CSScript.Evaluator
+							  .CreateDelegateRemotely(@"int Sum(int a, int b)
                                                         {
                                                             return a+b;
                                                         }");
 
-                //Normally remote objects are disposed if they are not accessed withing a default timeout period.
-                //It is not even enough to keep transparent proxies or their wrappers (e.g. 'sum') referenced.
-                //To prevent GC collection in the remote domain use .NET ClientSponsor mechanism as below.
-                sumSponsor = sum.ExtendLifeFromMinutes(30);
-            }
-        }
-    }
+				//Normally remote objects are disposed if they are not accessed withing a default timeout period.
+				//It is not even enough to keep transparent proxies or their wrappers (e.g. 'sum') referenced.
+				//To prevent GC collection in the remote domain use .NET ClientSponsor mechanism as below.
+				sumSponsor = sum.ExtendLifeFromMinutes(30);
+			}
+		}
+	}
 
-    public interface ICalc
-    {
-        int Sum(int a, int b);
-    }
+	public interface ICalc
+	{
+		int Sum(int a, int b);
+	}
 
-    public interface IFullCalc
-    {
-        int Sum(int a, int b);
-        int Sub(int a, int b);
-    }
+	public interface IFullCalc
+	{
+		int Sum(int a, int b);
+		int Sub(int a, int b);
+	}
 }

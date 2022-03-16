@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-namespace ZeldaFullEditor.Gui.TextEditorExtra {
-	public partial class MessageAsBytes : Form {
+namespace ZeldaFullEditor.Gui.TextEditorExtra
+{
+	public partial class MessageAsBytes : Form
+	{
 		private byte[] datar;
 		private byte[] datap;
 		private bool showparsed = false;
@@ -18,14 +20,15 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra {
 		private int sep = 1;
 		private int pre = 0;
 
-		public MessageAsBytes() 
+		public MessageAsBytes()
 		{
 			InitializeComponent();
 			SeparatorChoose.SelectedIndex = sep;
 			PrefixChoose.SelectedIndex = pre;
 		}
 
-		public void ShowBytes(TextEditor.MessageData a) {
+		public void ShowBytes(TextEditor.MessageData a)
+		{
 			datar = a.Data;
 			datap = a.DataParsed;
 
@@ -33,18 +36,22 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra {
 			ShowDialog();
 		}
 
-		private void UpdateTextBox() {
+		private void UpdateTextBox()
+		{
 			byte[] data = showparsed ? datap : datar;
 
-			if (data == null) {
+			if (data == null)
+			{
 				return;
 			}
 
 			StringBuilder s = new StringBuilder();
 			SizeOfMessage.Text = string.Format("{0:D} (0x{0:X}) bytes", data.Length + 1);
 
-			foreach (byte b in data) {
-				switch (pre) {
+			foreach (byte b in data)
+			{
+				switch (pre)
+				{
 					case 0:
 					default:
 						break;
@@ -57,7 +64,7 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra {
 				}
 
 				s.Append(b.ToString("X2"));
-				switch (sep) 
+				switch (sep)
 				{
 					case 0:
 					default:
@@ -71,7 +78,7 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra {
 				}
 			}
 
-			switch (pre) 
+			switch (pre)
 			{
 				case 0:
 				default:
@@ -84,24 +91,25 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra {
 					break;
 			}
 
-			s.Append("7F");
+			s.Append(TextEditor.MESSAGETERMINATOR.ToString("X2"));
 
 			this.textBox1.Text = s.ToString();
 		}
 
-		private void SeparatorChoose_SelectedIndexChanged(object sender, EventArgs e) 
+		private void SeparatorChoose_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			sep = SeparatorChoose.SelectedIndex;
 			UpdateTextBox();
 		}
 
-		private void PrefixChoose_SelectedIndexChanged(object sender, EventArgs e) 
+		private void PrefixChoose_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			pre = PrefixChoose.SelectedIndex;
 			UpdateTextBox();
 		}
 
-		private void FormatCheckedChanged(object sender, EventArgs e) {
+		private void FormatCheckedChanged(object sender, EventArgs e)
+		{
 			showparsed = radioButton2.Checked;
 			UpdateTextBox();
 		}
