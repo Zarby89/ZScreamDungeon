@@ -2068,5 +2068,12 @@ namespace ZeldaFullEditor.Gui
 				e.Graphics.FillRectangle(new SolidBrush(Palettes.overworld_BackgroundPalette[BGColorToUpdate]), Constants.Rect_0_0_24_24);
 			}
 		}
+
+		public void SetSelectedObjectLabels(int id, int x, int y)
+		{
+			SelectedObjectID.Text = id.ToString("X2");
+			SelectedObjectX.Text = x.ToString("X2");
+			SelectedObjectY.Text = y.ToString("X2");
+		}
 	}
 }

@@ -26,11 +26,15 @@ namespace ZeldaFullEditor
 		public static readonly WriteType Tile32 = new WriteType("Tile32 data");
 		public static readonly WriteType Tile16 = new WriteType("Tile16 data");
 		public static readonly WriteType Gravestone = new WriteType("Gravestone data");
+		public static readonly WriteType SpriteData = new WriteType("Sprite data");
 
 		public static readonly WriteType EntranceProperties = new WriteType("Entrance properties");
+		public static readonly WriteType ExitProperties = new WriteType("Dungeon exit properties");
 		public static readonly WriteType SpawnProperties = new WriteType("Spawn point properties");
 
 		public static readonly WriteType ChestData = new WriteType("Chest items data");
+		public static readonly WriteType TorchData = new WriteType("Torch data");
+		public static readonly WriteType PotItemData = new WriteType("Pot item data");
 		public static readonly WriteType SpriteSet = new WriteType("Sprite set");
 		public static readonly WriteType SpritePalette = new WriteType("Sprite palette");
 		public static readonly WriteType DungeonMap = new WriteType("Dungeon map data");
@@ -41,5 +45,7 @@ namespace ZeldaFullEditor
 		public static readonly WriteType TitleScreenPointer = new WriteType("Title screen pointer");
 
 		public static readonly WriteType Polyhedral = new WriteType("Polyhedral parameters");
+
+		public static readonly WriteType FontData = new WriteType("Font data");
 	}
 }

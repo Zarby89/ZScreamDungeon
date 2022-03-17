@@ -421,8 +421,8 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			Console.WriteLine("MapPointers(lowest) : " + lowest.ToString("X6"));
-			Console.WriteLine("MapPointers(highest) : " + highest.ToString("X6"));
+			Console.WriteLine("Map pointers (lowest) : " + lowest.ToString("X6"));
+			Console.WriteLine("Map pointers (highest) : " + highest.ToString("X6"));
 		}
 
 		public void createMap32TilesFrom16()
@@ -756,6 +756,7 @@ namespace ZeldaFullEditor
 			int c = 0;
 			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
+				// TODO file name in UIText
 				BinaryWriter bw = new BinaryWriter(new FileStream(path + "\\map" + i.ToString(), FileMode.Create, FileAccess.Write));
 				ushort[,] tilesused = allmapsTilesLW;
 				if (i < 64)

@@ -233,7 +233,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		// TODO clean up strings into multiple labels
+		// TODO switch statements
 		private unsafe void onMouseUp(object sender, MouseEventArgs e)
 		{
 			owForm.objCombobox.Items.Clear();
@@ -255,9 +255,10 @@ namespace ZeldaFullEditor
 				text += "Exit";
 				if (exitmode.lastselectedExit != null)
 				{
-					owForm.objinfoLabel.Text = "Map ID : " + exitmode.lastselectedExit.mapId + "\n" +
-						"X : " + exitmode.lastselectedExit.playerX + "\n" +
-						"Y : " + exitmode.lastselectedExit.playerY;
+					owForm.SetSelectedObjectLabels(
+						exitmode.lastselectedExit.mapId,
+						exitmode.lastselectedExit.playerX,
+						exitmode.lastselectedExit.playerY);
 				}
 			}
 			else if (selectedMode == ObjectMode.OWDoor)
@@ -271,9 +272,10 @@ namespace ZeldaFullEditor
 
 				if (entranceMode.lastselectedEntrance != null)
 				{
-					owForm.objinfoLabel.Text = "Entrance ID : " + entranceMode.lastselectedEntrance.entranceId + "\n" +
-						"X : " + entranceMode.lastselectedEntrance.x + "\n" +
-						"Y : " + entranceMode.lastselectedEntrance.y;
+					owForm.SetSelectedObjectLabels(
+						entranceMode.lastselectedEntrance.entranceId,
+						entranceMode.lastselectedEntrance.x,
+						entranceMode.lastselectedEntrance.y);
 				}
 			}
 			else if (selectedMode == ObjectMode.Itemmode)
@@ -283,9 +285,10 @@ namespace ZeldaFullEditor
 
 				if (itemMode.lastselectedItem != null)
 				{
-					owForm.objinfoLabel.Text = "ID : 0x" + itemMode.lastselectedItem.id.ToString("X2") + "\n" +
-						"X : " + itemMode.lastselectedItem.x + "\n" +
-						"Y : " + itemMode.lastselectedItem.y;
+					owForm.SetSelectedObjectLabels(
+						itemMode.lastselectedItem.id,
+						itemMode.lastselectedItem.x,
+						itemMode.lastselectedItem.y);
 
 					owForm.objCombobox.Items.AddRange(ItemsNames.name);
 
@@ -308,10 +311,10 @@ namespace ZeldaFullEditor
 
 				if (spriteMode.lastselectedSprite != null)
 				{
-					owForm.objinfoLabel.Text = "ID : 0x" + spriteMode.lastselectedSprite.id.ToString("X2") + "\n" +
-
-						"X : " + spriteMode.lastselectedSprite.x + "\n" +
-						"Y : " + spriteMode.lastselectedSprite.y;
+					owForm.SetSelectedObjectLabels(
+						spriteMode.lastselectedSprite.id,
+						spriteMode.lastselectedSprite.x,
+						spriteMode.lastselectedSprite.y);
 					owForm.objCombobox.Items.AddRange(Sprites_Names.name);
 					owForm.objCombobox.SelectedIndex = spriteMode.lastselectedSprite.id;
 
@@ -325,9 +328,10 @@ namespace ZeldaFullEditor
 
 				if (transportMode.lastselectedTransport != null)
 				{
-					owForm.objinfoLabel.Text = "Map ID : " + transportMode.lastselectedTransport.mapId + "\n" +
-						"X : " + transportMode.lastselectedTransport.playerX + "\n" +
-						"Y : " + transportMode.lastselectedTransport.playerY;
+					owForm.SetSelectedObjectLabels(
+						transportMode.lastselectedTransport.mapId,
+						transportMode.lastselectedTransport.playerX,
+						transportMode.lastselectedTransport.playerY);
 				}
 			}
 			else if (selectedMode == ObjectMode.Gravestone)
@@ -338,6 +342,7 @@ namespace ZeldaFullEditor
 			owForm.objectGroupbox.Text = text;
 			InvalidateHighEnd();
 		}
+
 
 		private void ObjCombobox_SelectedIndexChangedSprite(object sender, EventArgs e)
 		{

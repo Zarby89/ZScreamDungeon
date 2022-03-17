@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
+	// TODO: completely rewrite
+	// have a "set up consecutive writes" thing, where ROM class will handle all address increments
 	public static class ROM
 	{
 		public static byte[] DATA;

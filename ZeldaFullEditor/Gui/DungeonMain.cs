@@ -700,7 +700,7 @@ namespace ZeldaFullEditor
 			paletteForm.Location = Constants.Point_0_0;
 			refreshRecentsFiles();
 			overworldEditor.InitOpen(this);
-			textEditor.initOpen();
+			textEditor.InitializeOnOpen();
 			screenEditor.Init();
 			//InitDungeonViewer();
 		}
@@ -1151,32 +1151,29 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			if (data != null)
+			if (data?.Count > 0)
 			{
-				if (data.Count > 0)
+				// Name that layout
+				string name = "Room_Object";
+				if (data[0].type == typeof(Room_Object))
 				{
-					// Name that layout
-					string name = "Room_Object";
-					if (data[0].type == typeof(Room_Object))
+					name = "Room_Object";
+				}
+
+				string f = Interaction.InputBox("Name of the new layout", "Name?", "Layout00");
+				if (f != "")
+				{
+					BinaryWriter bw = new BinaryWriter(new FileStream(
+						UIText.GetFileName(UIText.LayoutFolder, f),
+						FileMode.OpenOrCreate,
+						FileAccess.Write));
+					bw.Write(name);
+					foreach (SaveObject o in data)
 					{
-						name = "Room_Object";
+						o.saveToFile(bw);
 					}
 
-					string f = Interaction.InputBox("Name of the new layout", "Name?", "Layout00");
-					if (f != "")
-					{
-						BinaryWriter bw = new BinaryWriter(new FileStream(
-							UIText.GetFileName(UIText.LayoutFolder, f),
-							FileMode.OpenOrCreate,
-							FileAccess.Write));
-						bw.Write(name);
-						foreach (SaveObject o in data)
-						{
-							o.saveToFile(bw);
-						}
-
-						bw.Close();
-					}
+					bw.Close();
 				}
 			}
 		}
@@ -1536,18 +1533,12 @@ namespace ZeldaFullEditor
 
 			propertiesChangedFromForm = true;
 			Entrance en = selectedEntrance;
-			if (e != null)
+			if (e?.Node.Tag != null)
 			{
-				if (e.Node.Tag != null)
+				en = DungeonsData.entrances[(int) e.Node.Tag];
+				if (e.Node.Parent?.Name == "StartingEntranceNode")
 				{
-					en = DungeonsData.entrances[(int) e.Node.Tag];
-					if (e.Node.Parent != null)
-					{
-						if (e.Node.Parent.Name == "StartingEntranceNode")
-						{
-							en = DungeonsData.starting_entrances[(int) e.Node.Tag];
-						}
-					}
+					en = DungeonsData.starting_entrances[(int) e.Node.Tag];
 				}
 			}
 
@@ -1942,12 +1933,13 @@ namespace ZeldaFullEditor
 
 		private void mapPicturebox_MouseDoubleClick_1(object sender, MouseEventArgs e)
 		{
-			int yc = e.Y;
-
+			
 			if (e.Y >= 256 && e.Y <= 264)
 			{
 				return;
 			}
+
+			int yc = e.Y;
 
 			if (e.Y > 256)
 			{

@@ -158,11 +158,5 @@ namespace ZeldaFullEditor
 
 			return ret;
 		}
-
-		public static string ForceTextToHex(string s)
-		{
-
-			return Regex.Replace(s, @"[^A-F\d]", "");
-		}
 	}
 }
