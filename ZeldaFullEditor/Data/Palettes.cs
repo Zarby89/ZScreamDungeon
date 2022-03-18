@@ -23,7 +23,7 @@ namespace ZeldaFullEditor
 		public static Color[][] shields_Palettes = new Color[3][]; // 4
 		public static Color[][] dungeonsMain_Palettes = new Color[20][]; // 15*6
 		public static Color[][] object3D_Palettes = new Color[2][]; // 15*6
-		public static Color[] overworld_BackgroundPalette = new Color[160]; // 8*20
+		public static Color[] overworld_BackgroundPalette = new Color[Constants.NumberOfOWMaps]; // 8*20
 
 		static string asmString = "";
 
@@ -145,7 +145,7 @@ namespace ZeldaFullEditor
 			}
 
 			// SP
-			while (j < 160)
+			while (j < Constants.NumberOfOWMaps)
 			{
 				overworld_BackgroundPalette[j++] = Color.FromArgb(0xFF, 0x48, 0x98, 0x48);
 			}

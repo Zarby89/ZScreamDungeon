@@ -151,12 +151,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				Palettes.spritesAux1_Palettes[1]
 			);
 
-			// TODO magic number
-			int p = 0x54727;
-			int p2 = p + 0x400;
-			int p3 = p + 0x800;
-			int p4 = p + 0xC00;
-			int p5 = 0x55727;
+			int p = Constants.IDKZarby;
+			int p2 = Constants.IDKZarby + 0x0400;
+			int p3 = Constants.IDKZarby + 0x0800;
+			int p4 = Constants.IDKZarby + 0x0C00;
+			int p5 = Constants.IDKZarby + 0x1000;
 			bool rSide = false;
 			int cSide = 0;
 			int count = 0;
@@ -352,7 +351,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					}
 					else
 					{
-						destAddr += 1;
+						destAddr++;
 					}
 
 					if (!fixsource)
@@ -505,10 +504,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		public unsafe void updateTiles()
 		{
-			byte p;
-			ushort tempTile = selectedTile;
-
-			p = palSelected;
+			byte p = palSelected; ;
+			//ushort tempTile = selectedTile;
 			byte* destPtr = (byte*) tiles8Ptr.ToPointer();
 			byte* srcPtr = (byte*) GFX.currentTileScreengfx16Ptr.ToPointer();
 			int xx = 0;
@@ -776,9 +773,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				//Set Tile
 				TileInfo t = new TileInfo(
 					selectedTile,
-					palSelected, mirrorYCheckbox.Checked,
+					palSelected, onTopCheckbox.Checked,
 					mirrorXCheckbox.Checked,
-					onTopCheckbox.Checked);
+					mirrorYCheckbox.Checked);
 
 				if (bg1Radio.Checked)
 				{
@@ -848,9 +845,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					TileInfo t = new TileInfo(
 						selectedTile,
 						palSelected,
-						mirrorYCheckbox.Checked,
+						onTopCheckbox.Checked,
 						mirrorXCheckbox.Checked,
-						onTopCheckbox.Checked);
+						mirrorYCheckbox.Checked);
 					if (bg1Radio.Checked)
 					{
 						tilesBG1Buffer[mX + (mY * 32)] = t.toShort();
@@ -1149,10 +1146,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 							int ty = (tid / 16) * 1024;
 							int tx = (tid % 16) * 8;
-							var pixel = alltilesData[(tx + ty) + (yl * 128) + xl];
 
 							int index = (xx * 8) + (yy * 4096) + xl + (yl * 512);
-							ptr[index] = (pixel);
+							ptr[index] = alltilesData[(tx + ty) + (yl * 128) + xl];
 						}
 					}
 				}
@@ -1263,6 +1259,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			owMapTilesBox.Refresh();
 		}
 
+		// TODO magic numbers
 		public void Save()
 		{
 			for (int i = 0; i < 10; i++)
@@ -1444,11 +1441,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		public bool saveOverworldMap()
 		{
-			int p = 0x54727;
-			int p2 = 0x54727 + 0x400;
-			int p3 = 0x54727 + 0x800;
-			int p4 = 0x54727 + 0xC00;
-			int p5 = 0x55727;
+			int p = Constants.IDKZarby;
+			int p2 = Constants.IDKZarby + 0x0400;
+			int p3 = Constants.IDKZarby + 0x0800;
+			int p4 = Constants.IDKZarby + 0x0C00;
+			int p5 = Constants.IDKZarby + 0x1000;
 			bool rSide = false;
 			int cSide = 0;
 			int count = 0;
@@ -1553,9 +1550,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 					if (e < 9)
 					{
-						ROM.WriteShort(addresses[i] + (e * 2), (allMapIcons[e][i].x << 4), true, "Overworld Map Icons");
-						ROM.WriteShort((addresses[i] + 18) + (e * 2), (allMapIcons[e][i].y << 4), true, "Overworld Map Icons");
-						ROM.WriteShort((addressesgfx[i] + e * 2), allMapIcons[e][i].gfx, true, "Overworld Map Icons");
+						ROM.WriteShort(addresses[i] + (e * 2), (allMapIcons[e][i].x << 4), WriteType.OverworldMapIcon);
+						ROM.WriteShort((addresses[i] + 18) + (e * 2), (allMapIcons[e][i].y << 4), WriteType.OverworldMapIcon);
+						ROM.WriteShort((addressesgfx[i] + e * 2), allMapIcons[e][i].gfx, WriteType.OverworldMapIcon);
 					}
 					else
 					{
@@ -1667,8 +1664,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 						}
 						else
 						{
-							gdata[j] = ROM.DATA[pcPtrGFX];
-							pcPtrGFX++;
+							gdata[j] = ROM.DATA[pcPtrGFX++];
 						}
 					}
 
@@ -1684,7 +1680,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		{
 			if (currentDungeonChanged)
 			{
-				if (MessageBox.Show("The previous selected dungeon had changes do you want to keep them?", "Save Changes?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+				if (UIText.WarnAboutSaving("The previous selected dungeon had changes that will be lost.") == DialogResult.Yes)
 				{
 					// TODO: Add save
 					// do save
@@ -2016,7 +2012,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		{
 			if (!editedFromEditor)
 			{
-				if (int.TryParse(dungmaproomidTextbox.Text, System.Globalization.NumberStyles.HexNumber, CultureInfo.CurrentCulture, out int i))
+				if (int.TryParse(dungmaproomidTextbox.Text, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out int i))
 				{
 					currentFloorRooms[currentFloor][dungmapSelectedTile] = (byte) i;
 				}
@@ -2035,7 +2031,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		{
 			if (!editedFromEditor)
 			{
-				if (int.TryParse(dungmapbossTextbox.Text, System.Globalization.NumberStyles.HexNumber, CultureInfo.CurrentCulture, out int i))
+				if (int.TryParse(dungmapbossTextbox.Text, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out int i))
 				{
 					dungmaps[dungmapListbox.SelectedIndex].bossRoom = (byte) i;
 					bossRoom = (byte) i;
@@ -2130,13 +2126,13 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 				floors = ((dungmaps[d].nbrOfFloor << 4) | dungmaps[d].nbrOfBasement);
 
-				ROM.WriteShort((Constants.dungeonMap_floors) + (d * 2), floors, true, "Dungeon Map Data");
-				ROM.WriteShort((Constants.dungeonMap_bossrooms) + (d * 2), dungmaps[d].bossRoom, true, "Dungeon Map Data");
+				ROM.WriteShort((Constants.dungeonMap_floors) + (d * 2), floors, WriteType.DungeonMap);
+				ROM.WriteShort((Constants.dungeonMap_bossrooms) + (d * 2), dungmaps[d].bossRoom, WriteType.DungeonMap);
 
 				bool searchBoss = true;
 				if (dungmaps[d].bossRoom == 0x000F)
 				{
-					ROM.WriteShort((0x56E79) + (d * 2), 0xFFFF, true, "Dungeon Map Data");
+					ROM.WriteShort((0x56E79) + (d * 2), 0xFFFF, WriteType.DungeonMap);
 					searchBoss = false;
 				}
 
@@ -2151,7 +2147,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 						{
 							if (dungmaps[d].bossRoom == dungmaps[d].FloorRooms[f][r])
 							{
-								ROM.WriteShort((0x56E79) + (d * 2), f, true, "Dungeon Map Data");
+								ROM.WriteShort((0x56E79) + (d * 2), f, WriteType.DungeonMap);
 								searchBoss = false;
 							}
 						}
@@ -2239,7 +2235,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			dungmaps[dungmapListbox.SelectedIndex].FloorRooms.Add(rdata);
 			dungmaps[dungmapListbox.SelectedIndex].FloorGfx.Add(gdata);
 			currentFloor = 0;
-			dungmaps[dungmapListbox.SelectedIndex].nbrOfFloor += 1;
+			dungmaps[dungmapListbox.SelectedIndex].nbrOfFloor++;
 			updateDungMap();
 		}
 
@@ -2281,7 +2277,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			dungmaps[dungmapListbox.SelectedIndex].FloorRooms.Insert(0, rdata);
 			dungmaps[dungmapListbox.SelectedIndex].FloorGfx.Insert(0, gdata);
 			currentFloor = 0;
-			dungmaps[dungmapListbox.SelectedIndex].nbrOfBasement += 1;
+			dungmaps[dungmapListbox.SelectedIndex].nbrOfBasement++;
 			updateDungMap();
 		}
 
@@ -2294,7 +2290,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 			dungmaps[dungmapListbox.SelectedIndex].FloorRooms.RemoveAt(0);
 			dungmaps[dungmapListbox.SelectedIndex].FloorGfx.RemoveAt(0);
-			dungmaps[dungmapListbox.SelectedIndex].nbrOfBasement -= 1;
+			dungmaps[dungmapListbox.SelectedIndex].nbrOfBasement--;
 			updateDungMap();
 		}
 
@@ -2307,7 +2303,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 			dungmaps[dungmapListbox.SelectedIndex].FloorRooms.RemoveAt(dungmaps[dungmapListbox.SelectedIndex].FloorRooms.Count - 1);
 			dungmaps[dungmapListbox.SelectedIndex].FloorGfx.RemoveAt(dungmaps[dungmapListbox.SelectedIndex].FloorGfx.Count - 1);
-			dungmaps[dungmapListbox.SelectedIndex].nbrOfFloor -= 1;
+			dungmaps[dungmapListbox.SelectedIndex].nbrOfFloor--;
 			updateDungMap();
 		}
 
@@ -2537,7 +2533,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 								for (int x = 0; x < 8; x++)
 								{
 									//ROM.DATA[0x0C4000 + pos] = ptr[x + (sx * 8) + (y * 128) + (sy * 1024)];
-									ROM.Write(0x0C4000 + pos, ptr[x + (sx * 8) + (y * 128) + (sy * 1024)], true, "Overworld 8bpp Map");
+									ROM.Write(0x0C4000 + pos, ptr[x + (sx * 8) + (y * 128) + (sy * 1024)], WriteType.OverworldMapData);
 									pos++;
 								}
 							}

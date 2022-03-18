@@ -17,7 +17,7 @@ namespace ZeldaFullEditor.Gui
 		bool fromForm = false;
 		byte[] tempTiletype = new byte[0x200];
 
-		Tile16[] allTiles = new Tile16[4096];
+		Tile16[] allTiles = new Tile16[Constants.NumberOfMap16];
 
 		ushort searchedTile = 0xFFFF;
 
@@ -35,14 +35,11 @@ namespace ZeldaFullEditor.Gui
 		/// </summary>
 		public unsafe void updateTiles()
 		{
-			byte p;
-			ushort tValue = 0;
-			ushort.TryParse(tileUpDown.Text, System.Globalization.NumberStyles.HexNumber, null, out tValue);
-			ushort tempTile = tValue;
+			ushort.TryParse(tileUpDown.Text, System.Globalization.NumberStyles.HexNumber, null, out ushort tempTile);
 
-			tile8selected = tValue;
+			tile8selected = tempTile;
 
-			p = (byte) paletteUpDown.Value;
+			byte p = (byte) paletteUpDown.Value;
 			byte* destPtr = (byte*) GFX.editort16Ptr.ToPointer();
 			byte* srcPtr = (byte*) GFX.currentOWgfx16Ptr.ToPointer();
 			int xx = 0;
@@ -226,16 +223,8 @@ namespace ZeldaFullEditor.Gui
 		/// <param name="e"></param>
 		private void pictureboxTile16_MouseDown(object sender, MouseEventArgs e)
 		{
-			int offset = 0;
+			int offset = (e.X < 256) ? 0 : 1992;
 			int yp = e.Y;
-			if (e.X < 256)
-			{
-				offset = 0;
-			}
-			else
-			{
-				offset = 1992;
-			}
 
 			int t16 = offset + (e.X / 32) + ((e.Y / 32) * 8);
 			int t8x = (e.X / 16) & 0x01;
@@ -247,9 +236,9 @@ namespace ZeldaFullEditor.Gui
 			{
 				TileInfo t = new TileInfo(tile8selected,
 					(byte) paletteUpDown.Value,
-					mirrorYCheckbox.Checked,
+					inFrontCheckbox.Checked,
 					mirrorXCheckbox.Checked,
-					inFrontCheckbox.Checked);
+					mirrorYCheckbox.Checked);
 				if (t8x == 0 && t8y == 0)
 				{
 					allTiles[t16] = new Tile16(t, allTiles[t16].tile1, allTiles[t16].tile2, allTiles[t16].tile3);
@@ -314,7 +303,7 @@ namespace ZeldaFullEditor.Gui
 			var yy = 0;
 			var xx = 0;
 
-			for (var i = 0; i < 4096; i++) // Number of tiles16 3748? // its 3752
+			for (var i = 0; i < Constants.NumberOfMap16; i++) // Number of tiles16 3748? // its 3752
 			{
 				// 8x8 tile draw
 				// gfx8 = 4bpp so everyting is /2
@@ -411,7 +400,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			for (int i = 0; i < 4096; i++)
+			for (int i = 0; i < Constants.NumberOfMap16; i++)
 			{
 				scene.ow.tiles16[i] = allTiles[i];
 			}

@@ -21,6 +21,7 @@ namespace ZeldaFullEditor.Gui
 			InitializeComponent();
 		}
 
+		// TODO move elsewhere for consistency
 		private void DungeonPropertiesForm_Load(object sender, EventArgs e)
 		{
 			listBox1.Items.Add("Pendant 1 - Green (Eastern)");
@@ -81,9 +82,9 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < 12; i++)
 			{
-				ROM.Write(Constants.dungeons_startrooms + i, properties[i].startroom, true, "Dungeon Data Boss/pendantcrystall Rooms");
-				ROM.Write(Constants.dungeons_endrooms + i, properties[i].endroom, true, "Dungeon Data Boss/pendantcrystall Rooms");
-				ROM.WriteShort(Constants.dungeons_bossrooms + (i * 2), properties[i].bossroom, true, "Dungeon Data Boss/pendantcrystall Rooms");
+				ROM.Write(Constants.dungeons_startrooms + i, properties[i].startroom, WriteType.DungeonPrize);
+				ROM.Write(Constants.dungeons_endrooms + i, properties[i].endroom, WriteType.DungeonPrize);
+				ROM.WriteShort(Constants.dungeons_bossrooms + (i * 2), properties[i].bossroom, WriteType.DungeonPrize);
 			}
 
 			this.Close();

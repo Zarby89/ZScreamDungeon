@@ -45,6 +45,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void alternateTextbox_TextChanged(object sender, EventArgs e)
 		{
+			// TODO hexbox
 			if (!changedFromForm)
 			{
 				int r;

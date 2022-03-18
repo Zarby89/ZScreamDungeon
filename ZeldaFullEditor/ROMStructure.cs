@@ -33,6 +33,7 @@ namespace ZeldaFullEditor
 		static public short[][] dungeonsRooms = new short[17][];
 		static public List<DataRoom> dungeonsRoomList = new List<DataRoom>();
 
+		// TODO move to default entities
 		static public void defaultDungeonNames()
 		{
 			dungeonsNames[0] = "Sewers";
@@ -87,6 +88,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
+		// TODO move to DefaultEntities
 		static public void defaultRoomsNames()
 		{
 			roomsNames = new string[]{

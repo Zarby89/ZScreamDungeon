@@ -340,10 +340,10 @@ namespace ZeldaFullEditor
 
 				case 0x50: // Special object id doesnt matter (Torches)
 						   //setdata("Torch", 2, 2);
-					tiles.Add(new Tile(480, false, false, false, 3));
-					tiles.Add(new Tile(496, false, false, false, 3));
-					tiles.Add(new Tile(480, true, false, false, 3));
-					tiles.Add(new Tile(496, true, false, false, 3));
+					tiles.Add(new Tile(480, 3, false, false, false));
+					tiles.Add(new Tile(496, 3, false, false, false));
+					tiles.Add(new Tile(480, 3, false, true, false));
+					tiles.Add(new Tile(496, 3, false, true, false));
 					options |= ObjectOption.Torch;
 					this.name = "Torch";
 					tx = 2;

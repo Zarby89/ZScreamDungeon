@@ -26,14 +26,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void onMouseDown(MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Left)
-			{
-				isLeftPress = true;
-			}
-			else
-			{
-				isLeftPress = false;
-			}
+			isLeftPress = e.Button == MouseButtons.Left;
 
 			for (int i = scene.ow.worldOffset; i < 64 + scene.ow.worldOffset; i++)
 			{

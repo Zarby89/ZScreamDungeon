@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
+	// TODO function for ByteBitIsSet(), etc
 	public static class Utils
 	{
 		public static int SnesToPc(int addr)
@@ -134,6 +135,18 @@ namespace ZeldaFullEditor
 			return ret;
 		}
 
+		public static byte[] DeepCopyBytes(byte[] a)
+		{
+			byte[] ret = new byte[a.Length];
+			int i = 0;
+			foreach (byte b in a)
+			{
+				ret[i++] = b;
+			}
+
+			return ret;
+		}
+
 		public static string[] CreateIndexedList(string[] a)
 		{
 			string[] ret = new string[a.Length];
@@ -144,12 +157,6 @@ namespace ZeldaFullEditor
 			}
 
 			return ret;
-		}
-
-		public static string ForceTextToHex(string s)
-		{
-
-			return Regex.Replace(s, @"[^A-F\d]", "");
 		}
 	}
 }

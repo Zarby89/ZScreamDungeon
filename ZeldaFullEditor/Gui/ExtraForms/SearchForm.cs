@@ -53,7 +53,7 @@ namespace ZeldaFullEditor.Gui
 		{
 			if (tileRadio.Checked)
 			{
-				for (int i = 0; i < 296; i++)
+				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
 					int l = DungeonsData.all_rooms[i].tilesObjects.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
 					if (l > 0)
@@ -64,7 +64,7 @@ namespace ZeldaFullEditor.Gui
 			}
 			else if (spriteRadio.Checked)
 			{
-				for (int i = 0; i < 296; i++)
+				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
 					int l = DungeonsData.all_rooms[i].sprites.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
 					if (l > 0)
@@ -75,7 +75,7 @@ namespace ZeldaFullEditor.Gui
 			}
 			else if (itemRadio.Checked)
 			{
-				for (int i = 0; i < 296; i++)
+				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
 					int l = DungeonsData.all_rooms[i].pot_items.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
 					if (l > 0)
@@ -86,7 +86,7 @@ namespace ZeldaFullEditor.Gui
 			}
 			else if (chestRadio.Checked)
 			{
-				for (int i = 0; i < 296; i++)
+				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
 					int l = DungeonsData.all_rooms[i].chest_list.Where(o => o.item == comboBox1.SelectedIndex).ToArray().Length;
 					if (l > 0)

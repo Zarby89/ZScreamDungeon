@@ -177,7 +177,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
 		protected override void OnTextChanged(EventArgs e)
 		{
-			errorValue = !Int32.TryParse(this.Text, System.Globalization.NumberStyles.HexNumber, null, out int tb);
+			errorValue = !int.TryParse(this.Text, System.Globalization.NumberStyles.HexNumber, null, out int tb);
 
 			hexValue = tb;
 

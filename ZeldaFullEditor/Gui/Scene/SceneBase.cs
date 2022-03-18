@@ -51,7 +51,7 @@ namespace ZeldaFullEditor
 		public dataObject selectedDragSprite = null;
 		public bool updating_info = false;
 
-		byte[] spriteFontSpacing = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6 };
+		byte[] spriteFontSpacing = Utils.DeepCopyBytes(Constants.FontSpacings);
 
 		public void drawText(Graphics g, int x, int y, string text, ImageAttributes ai = null, bool x2 = false)
 		{
