@@ -4147,7 +4147,7 @@ namespace ZeldaFullEditor
 		private void exportAllTilesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			int p = 0;
-			byte[] mapArrayData = new byte[0x7540];
+			byte[] mapArrayData = new byte[0x8000]; // Real amount: 0x7540
 			using (SaveFileDialog sfd = new SaveFileDialog())
 			{
 				sfd.Filter = UIText.ExportedTileDataType;

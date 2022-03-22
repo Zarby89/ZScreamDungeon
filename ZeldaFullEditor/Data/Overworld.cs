@@ -236,7 +236,7 @@ namespace ZeldaFullEditor
 		public void SaveMap16Tiles()
 		{
 			int tpos = Constants.map16Tiles;
-			for (int i = 0; i < 3760; i += 1) // 3760
+			for (int i = 0; i < Constants.NumberOfMap16; i += 1) // 3760
 			{
 				ROM.WriteShort(tpos, tiles16[i].tile0.toShort(), WriteType.Tile16);
 				//ROM.DATA[tpos] = (byte)(tiles16[i].tile0.toShort() & 0xFF);

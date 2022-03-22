@@ -41,7 +41,7 @@ namespace ZeldaFullEditor
 
 		public const int NumberOfOWMaps = 160;
 		public const int Map32PerScreen = 256;
-		public const int NumberOfMap16 = 4096;
+		public const int NumberOfMap16 = 3752; // 4096
 		public const int NumberOfMap32 = Map32PerScreen * NumberOfOWMaps;
 		public const int NumberOfOWSprites = 352;
 
