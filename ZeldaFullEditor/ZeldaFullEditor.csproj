@@ -272,6 +272,18 @@
     <Compile Include="Data\EntranceOW.cs" />
     <Compile Include="Data\ExitOW.cs" />
     <Compile Include="GfxGroups.cs" />
+    <Compile Include="Gui\ExtraForms\ExitEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\ExitEditorForm.Designer.cs">
+      <DependentUpon>ExitEditorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\EntranceForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Gui\ExtraForms\EntranceForm.Designer.cs">
+      <DependentUpon>EntranceForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Gui\ExtraForms\GlobalOptionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -335,20 +347,12 @@
     <Compile Include="Gui\MainTabs\DungeonViewer.Designer.cs">
       <DependentUpon>DungeonViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\ExtraForms\EntranceForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\EntranceForm.Designer.cs" />
     <Compile Include="Gui\ExtraForms\EntrancePropertyForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Gui\ExtraForms\EntrancePropertyForm.Designer.cs">
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\ExtraForms\ExitEditorForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Gui\ExtraForms\ExitEditorForm.designer.cs" />
     <Compile Include="Gui\MainTabs\GfxEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -590,6 +594,12 @@
     <EmbeddedResource Include="Gui\CustomTabControl.resx">
       <DependentUpon>CustomTabControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\EntranceForm.resx">
+      <DependentUpon>EntranceForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Gui\ExtraForms\ExitEditorForm.resx">
+      <DependentUpon>ExitEditorForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\GlobalOptionForm.resx">
       <DependentUpon>GlobalOptionForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -625,11 +635,9 @@
     <EmbeddedResource Include="Gui\MainTabs\DungeonViewer.resx">
       <DependentUpon>DungeonViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\EntranceForm.resx" />
     <EmbeddedResource Include="Gui\ExtraForms\EntrancePropertyForm.resx">
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\ExtraForms\ExitEditorForm.resx" />
     <EmbeddedResource Include="Gui\MainTabs\GfxEditor.resx">
       <DependentUpon>GfxEditor.cs</DependentUpon>
       <SubType>Designer</SubType>

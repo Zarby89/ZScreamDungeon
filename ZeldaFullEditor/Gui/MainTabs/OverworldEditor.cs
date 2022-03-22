@@ -135,7 +135,7 @@ namespace ZeldaFullEditor.Gui
 		}
 		private void ModeButton_Click(object sender, EventArgs e)
 		{
-			for (int i = 0; i < owToolStrip.Items.Count; i++) // Uncheck every modes
+			for (int i = 0; i < owToolStrip.Items.Count; i++) // Uncheck all the other modes.
 			{
 				if (owToolStrip.Items[i] is ToolStripButton tt)
 				{

@@ -14,6 +14,17 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 		private int minValue;
 		private int maxValue;
 
+		private const string Format0 = "X";
+		private const string Format1 = "X1";
+		private const string Format2 = "X2";
+		private const string Format3 = "X3";
+		private const string Format4 = "X4";
+		private bool enforcepad = false;
+
+		public bool errorValue = false;
+		// Just turn that on when updating the Hexvalue so the textchanged event is not called.
+		private bool disableTextChanged = false;
+
 		// value = max possible value with X digits
 		public enum HexDigits
 		{
@@ -23,11 +34,6 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			Four = 65535
 		};
 		private HexDigits digits;
-
-		public bool errorValue = false;
-		//just turn that on when updating the Hexvalue so the textchanged event is not called
-		private bool disableTextChanged = false;
-
 
 		[Description("HexValue"), Category("Data")]
 		public int HexValue
@@ -68,8 +74,6 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			}
 		}
 
-
-
 		[Description("MinValue"), Category("Data")]
 		public HexDigits Digits
 		{
@@ -105,10 +109,10 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			maxValue = 0xFF;
 			minValue = 0x00;
 			hexValue = 0x00;
-			this.TextAlign = HorizontalAlignment.Right;
+			// Removed as its not necessary, can be set in the properties tab under text align.
+			//this.TextAlign = HorizontalAlignment.Right;
 			this.CharacterCasing = CharacterCasing.Upper;
 		}
-
 
 		protected override void InitLayout()
 		{
@@ -118,13 +122,6 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			base.InitLayout();
 		}
 
-
-		private const string Format0 = "X";
-		private const string Format1 = "X1";
-		private const string Format2 = "X2";
-		private const string Format3 = "X3";
-		private const string Format4 = "X4";
-		private bool enforcepad = false;
 		private void UpdateText()
 		{
 			bool pad = enforcepad | !this.Focused;
@@ -164,7 +161,6 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 				maxValue = t;
 			}
 
-
 			if (hexValue < minValue)
 			{
 				hexValue = minValue;
@@ -184,13 +180,11 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			EnforceRange();
 			UpdateText();
 
-			if (!disableTextChanged) //
+			if (!disableTextChanged)
 			{
 				base.OnTextChanged(e);
 				disableTextChanged = false;
 			}
-
-
 		}
 
 		protected override void OnMouseWheel(MouseEventArgs e)
