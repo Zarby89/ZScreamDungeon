@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -598,6 +599,327 @@ namespace ZeldaFullEditor.Gui
 				}
 
 				refreshallGfx();
+			}
+		}
+
+		// Is called when the export palettes button is clicked, writes a .zpd file with all the palette colors.
+		private void exportAllPalettes(object sender, EventArgs e)
+		{
+			byte[] colorArrayData = new byte[Constants.NumberOfColors * 4]; // 3143 total colors * 4 for 4 bytes
+			using (SaveFileDialog sfd = new SaveFileDialog())
+			{
+				sfd.Filter = UIText.ExportedPaletteDataType;
+				if (sfd.ShowDialog() == DialogResult.OK)
+				{
+					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+
+					int count = 0;
+
+					foreach (Color[] _palette in Palettes.HudPalettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
+					foreach (Color[] _palette in Palettes.overworld_MainPalettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
+					foreach (Color[] _palette in Palettes.overworld_AuxPalettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
+					foreach (Color[] _palette in Palettes.overworld_AnimatedPalettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
+					foreach (Color _color in Palettes.overworld_GrassPalettes)
+					{
+						byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+						for (int i = buffer.Length - 1; i >= 0; i--)
+						{
+							colorArrayData[count] = buffer[i];
+							count++;
+						}
+					}
+					foreach (Color[] _palette in Palettes.globalSprite_Palettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
+					foreach (Color[] _palette in Palettes.armors_Palettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
+					foreach (Color[] _palette in Palettes.swords_Palettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
+					foreach (Color[] _palette in Palettes.spritesAux1_Palettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
+					foreach (Color[] _palette in Palettes.spritesAux2_Palettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
+					foreach (Color[] _palette in Palettes.spritesAux3_Palettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
+					foreach (Color[] _palette in Palettes.shields_Palettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
+					foreach (Color[] _palette in Palettes.dungeonsMain_Palettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
+
+					Console.WriteLine("Total color count: " + count);
+
+					fileStreamMap.Write(colorArrayData, 0, colorArrayData.Length);
+					fileStreamMap.Close();
+				}
+			}
+		}
+
+		private void importAllPalettes(object sender, EventArgs e)
+		{
+
+			byte[] colorArrayData = new byte[Constants.NumberOfColors * 4]; // 3143 total colors * 4 for 4 bytes
+			using (OpenFileDialog sfd = new OpenFileDialog())
+			{
+				sfd.Filter = UIText.ExportedPaletteDataType;
+				if (sfd.ShowDialog() == DialogResult.OK)
+				{
+					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
+					fileStreamMap.Read(colorArrayData, 0, colorArrayData.Length);
+
+					int count = 0;
+
+					for (int i = 0; i < Palettes.HudPalettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.HudPalettes[i].Length; j++)
+						{
+							byte[] buffer = {colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count]};
+							Palettes.HudPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+					for (int i = 0; i < Palettes.overworld_MainPalettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.overworld_MainPalettes[i].Length; j++)
+						{
+							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count]};
+							Palettes.overworld_MainPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+					for (int i = 0; i < Palettes.overworld_AuxPalettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.overworld_AuxPalettes[i].Length; j++)
+						{
+							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count]};
+							Palettes.overworld_AuxPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+					for (int i = 0; i < Palettes.overworld_AnimatedPalettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.overworld_AnimatedPalettes[i].Length; j++)
+						{
+							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+							Palettes.overworld_AnimatedPalettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+					for (int i = 0; i < Palettes.overworld_GrassPalettes.Length; i++)
+					{
+						byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+						Palettes.overworld_GrassPalettes[i] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+						count += 4;
+					}
+					for (int i = 0; i < Palettes.globalSprite_Palettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.globalSprite_Palettes[i].Length; j++)
+						{
+							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+							Palettes.globalSprite_Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+					for (int i = 0; i < Palettes.armors_Palettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.armors_Palettes[i].Length; j++)
+						{
+							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+							Palettes.armors_Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+					for (int i = 0; i < Palettes.swords_Palettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.swords_Palettes[i].Length; j++)
+						{
+							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+							Palettes.swords_Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+					for (int i = 0; i < Palettes.spritesAux1_Palettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.spritesAux1_Palettes[i].Length; j++)
+						{
+							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+							Palettes.spritesAux1_Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+					for (int i = 0; i < Palettes.spritesAux2_Palettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.spritesAux2_Palettes[i].Length; j++)
+						{
+							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+							Palettes.spritesAux2_Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+					for (int i = 0; i < Palettes.spritesAux3_Palettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.spritesAux3_Palettes[i].Length; j++)
+						{
+							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+							Palettes.spritesAux3_Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+					for (int i = 0; i < Palettes.shields_Palettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.shields_Palettes[i].Length; j++)
+						{
+							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+							Palettes.shields_Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+					for (int i = 0; i < Palettes.dungeonsMain_Palettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.dungeonsMain_Palettes[i].Length; j++)
+						{
+							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+							Palettes.dungeonsMain_Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+
+				}
 			}
 		}
 	}

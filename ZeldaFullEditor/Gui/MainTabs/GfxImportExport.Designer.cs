@@ -276,5 +276,5 @@
         public System.Windows.Forms.PictureBox allgfxPicturebox;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button3;
-    }
+	}
 }

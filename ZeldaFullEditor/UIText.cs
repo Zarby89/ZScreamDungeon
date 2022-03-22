@@ -43,6 +43,8 @@ namespace ZeldaFullEditor
 		public const string ExportedOWMapDataType = "ZScream Map Data|*" + ExportedOWMapDataExtension;
 		public const string ExportedTileDataExtension = ".ztd";
 		public const string ExportedTileDataType = "ZScream Tile Data|*" + ExportedTileDataExtension;
+		public const string ExportedPaletteDataExtension = ".zpd";
+		public const string ExportedPaletteDataType = "ZScream Palette Data|*" + ExportedPaletteDataExtension;
 
 		public const string BMP8Type = "Indexed Image File (8 bits per pixel)|*.bmp";
 

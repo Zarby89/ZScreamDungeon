@@ -44,6 +44,7 @@ namespace ZeldaFullEditor
 		public const int NumberOfMap16 = 3752; // 4096
 		public const int NumberOfMap32 = Map32PerScreen * NumberOfOWMaps;
 		public const int NumberOfOWSprites = 352;
+		public const int NumberOfColors = 3143;
 
 		// TODO zarby stop making magic numbers
 		public const int IDKZarby = 0x54727;
