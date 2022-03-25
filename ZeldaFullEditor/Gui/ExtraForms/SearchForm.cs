@@ -10,13 +10,11 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-	public partial class SearchForm : Form
+	public partial class SearchForm : ScreamForm
 	{
-		DungeonMain mainForm;
 
-		public SearchForm(DungeonMain mainForm)
+		public SearchForm(ZScreamer parent) : base(parent)
 		{
-			this.mainForm = mainForm;
 			InitializeComponent();
 		}
 
@@ -30,9 +28,9 @@ namespace ZeldaFullEditor.Gui
 			comboBox1.Items.Clear();
 			if (tileRadio.Checked)
 			{
-				for (int i = 0; i < mainForm.listoftilesobjects.Count; i++)
+				for (int i = 0; i < ZS.MainForm.listoftilesobjects.Count; i++)
 				{
-					comboBox1.Items.Add(mainForm.listoftilesobjects[i].id.ToString("X4") + " " + mainForm.listoftilesobjects[i].name);
+					comboBox1.Items.Add(ZS.MainForm.listoftilesobjects[i].id.ToString("X4") + " " + ZS.MainForm.listoftilesobjects[i].name);
 				}
 			}
 			else if (spriteRadio.Checked)
@@ -58,7 +56,7 @@ namespace ZeldaFullEditor.Gui
 					int l = DungeonsData.all_rooms[i].tilesObjects.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
 					if (l > 0)
 					{
-						richTextBox1.AppendText("Tile Object ID : " + mainForm.listoftilesobjects[comboBox1.SelectedIndex].id.ToString("X4") + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");
+						richTextBox1.AppendText("Tile Object ID : " + ZS.MainForm.listoftilesobjects[comboBox1.SelectedIndex].id.ToString("X4") + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");
 					}
 				}
 			}

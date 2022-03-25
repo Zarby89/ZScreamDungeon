@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-	public enum ObjectMode
+	public enum ObjectMode22
 	{
 		Bg1mode, Bg2mode, Bg3mode, Bgallmode, Spritemode, Itemmode, Chestmode, Blockmode, Torchmode, Doormode, Warpmode,
 		Tile, Exits, Entrances, OWDoor, Flute, EntrancePlacing, Overlay, Gravestone, CollisionMap

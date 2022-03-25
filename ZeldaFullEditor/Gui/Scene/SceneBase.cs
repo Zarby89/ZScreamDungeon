@@ -17,8 +17,11 @@ using System.Drawing.Drawing2D;
 
 namespace ZeldaFullEditor
 {
+	[Serializable]
 	public class Scene : PictureBox
 	{
+		public readonly ZScreamer ZS;
+
 		public bool active = false;
 		public bool found = false;
 		public bool mouse_down = false;
@@ -34,14 +37,12 @@ namespace ZeldaFullEditor
 		public bool need_refresh = false;
 		public Rectangle[] doorArray = new Rectangle[48];
 		public Room room;
-		public ObjectMode selectedMode;
 		public bool showTexts = true;
 		public bool showLayer1 = true;
 		public bool showLayer2 = true;
 		public bool showGrid = false;
 		public bool showSpriteText = false;
 		public bool showBG2Outline = true;
-		public DungeonMain mainForm;
 		public bool canSelectUnselectedBG = true;
 		public bool isDungeon = true;
 		//public List<Room> undoRooms = new List<Room>();
@@ -51,7 +52,16 @@ namespace ZeldaFullEditor
 		public dataObject selectedDragSprite = null;
 		public bool updating_info = false;
 
-		byte[] spriteFontSpacing = Utils.DeepCopyBytes(Constants.FontSpacings);
+		byte[] spriteFontSpacing = Constants.FontSpacings.DeepCopy();
+
+		public Scene(ZScreamer parent = null)
+		{
+			ZS = parent ?? new ZScreamer(22);
+		}
+		//public Scene()
+		//{
+		//	ZS = new ZScreamer(22);
+		//}
 
 		public void drawText(Graphics g, int x, int y, string text, ImageAttributes ai = null, bool x2 = false)
 		{
@@ -73,16 +83,16 @@ namespace ZeldaFullEditor
 					{
 						if (x2)
 						{
-							g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 16, 16), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
+							g.DrawImage(ZS.GFXManager.spriteFont, new Rectangle(x + cpos, y, 16, 16), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
 						}
 						else
 						{
-							g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
+							g.DrawImage(ZS.GFXManager.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
 						}
 					}
 					else
 					{
-						g.DrawImage(GFX.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
+						g.DrawImage(ZS.GFXManager.spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
 					}
 
 					if (arrayPos > spriteFontSpacing.Length - 1)
@@ -103,9 +113,16 @@ namespace ZeldaFullEditor
 			}
 		}
 
+
+		//public virtual void SetMode(ObjectMode o)
+		//{
+		//
+		//}
+
+
 		public virtual void Clear()
 		{
-			//T ODO: Add something here?
+			// TODO: Add something here?
 		}
 
 		public virtual void deleteSelected()
@@ -157,7 +174,7 @@ namespace ZeldaFullEditor
 
 		public void drawSelection(Graphics graphics)
 		{
-			foreach (Object o in room.selectedObject)
+			foreach (object o in room.selectedObject)
 			{
 				if (o is Sprite sb)
 				{
@@ -169,35 +186,28 @@ namespace ZeldaFullEditor
 				}
 				else if (o is Room_Object obj)
 				{
-					int yfix = 0;
-					if (obj.diagonalFix)
-					{
-						yfix = -(6 + obj.size);
-					}
+					int yfix = obj.diagonalFix ? -6 - obj.size : 0;
 					graphics.DrawRectangle(Pens.Green, new Rectangle((obj.nx + obj.offsetX) * 8, (obj.ny + obj.offsetY + yfix) * 8, obj.width, obj.height));
 				}
 			}
 
-			if (showBG2Outline)
+			if (showBG2Outline && room.bg2 != Background2.Off)
 			{
-				if (room.bg2 != Background2.Off)
+				foreach (Room_Object obj in room.tilesObjects)
 				{
-					foreach (Room_Object obj in room.tilesObjects)
+					// Draw doors here since they'll all be put on bg3 anyways
+					if (obj.showRectangle)
 					{
-						// Draw doors here since they'll all be put on bg3 anyways
-						if (obj.showRectangle)
+						int yfix = 0;
+						if (obj.diagonalFix)
 						{
-							int yfix = 0;
-							if (obj.diagonalFix)
-							{
-								yfix = -(6 + obj.size);
-							}
-
-							graphics.DrawRectangle(Pens.DarkCyan,
-								new Rectangle((obj.nx + obj.offsetX) * 8,
-								(obj.ny + obj.offsetY + yfix) * 8,
-								obj.width, obj.height));
+							yfix = -(6 + obj.size);
 						}
+
+						graphics.DrawRectangle(Pens.DarkCyan,
+							new Rectangle((obj.nx + obj.offsetX) * 8,
+							(obj.ny + obj.offsetY + yfix) * 8,
+							obj.width, obj.height));
 					}
 				}
 			}
@@ -211,7 +221,8 @@ namespace ZeldaFullEditor
 
 				if (room.selectedObject.Count == 0)
 				{
-					if (selectedMode == ObjectMode.Spritemode)
+					if ((this is SceneUW && ZS.CurrentUWMode == DungeonEditMode.Sprites) ||
+						 (this is SceneOW && ZS.CurrentOWMode == OverworldEditMode.Sprites))
 					{
 						graphics.DrawRectangle(Constants.WhitePen, new Rectangle(rx * 16, ry * 16, Math.Abs(move_x) * 16, Math.Abs(move_y) * 16));
 					}
@@ -221,7 +232,7 @@ namespace ZeldaFullEditor
 					}
 				}
 
-				foreach (Object o in room.selectedObject)
+				foreach (object o in room.selectedObject)
 				{
 					if (o is Sprite sb)
 					{
@@ -233,13 +244,10 @@ namespace ZeldaFullEditor
 					}
 					else if (o is Room_Object obj)
 					{
-						int yfix = 0;
-						if (obj.diagonalFix)
-						{
-							yfix = -(6 + obj.size);
-						}
+						int yfix = obj.diagonalFix ? -6 - obj.size : 0;
 
-						graphics.DrawRectangle(Pens.LimeGreen, new Rectangle((obj.nx + obj.offsetX) * 8, (obj.ny + obj.offsetY + yfix) * 8, obj.width, obj.height));
+						graphics.DrawRectangle(Pens.LimeGreen,
+							new Rectangle((obj.nx + obj.offsetX) * 8, (obj.ny + obj.offsetY + yfix) * 8, obj.width, obj.height));
 					}
 				}
 			}
@@ -272,14 +280,6 @@ namespace ZeldaFullEditor
                 }
             }
             */
-		}
-
-		private void InitializeComponent()
-		{
-			((System.ComponentModel.ISupportInitialize) (this)).BeginInit();
-			this.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize) (this)).EndInit();
-			this.ResumeLayout(false);
 		}
 
 		// END OF DRAW CODE

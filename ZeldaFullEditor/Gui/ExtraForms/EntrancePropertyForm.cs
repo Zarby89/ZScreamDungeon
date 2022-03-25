@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-	public partial class EntrancePropertyForm : Form
+	public partial class EntrancePropertyForm : ScreamForm
 	{
-		public EntrancePropertyForm()
+		public EntrancePropertyForm(ZScreamer parent) : base(parent)
 		{
 			InitializeComponent();
 		}

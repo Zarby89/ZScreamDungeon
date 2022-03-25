@@ -25,12 +25,12 @@ namespace ZeldaFullEditor
 		public byte door_dir = 0;
 		public byte door_type = 0;
 
-		public object_door(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_door(ushort id, byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, id, x, y, size, layer)
 		{
 			options |= ObjectOption.Door;
 			door_pos = (byte) ((id & 0xF0) >> 3); //*2
-			door_dir = (byte) ((id & 0x03));
-			door_type = (byte) ((id >> 8) & 0xFF);
+			door_dir = (byte) (id & 0x03);
+			door_type = (byte) (id >> 8);
 			name = "Door";
 		}
 
@@ -38,7 +38,7 @@ namespace ZeldaFullEditor
 		{
 			byte b1 = (byte) ((door_pos << 3) + door_dir);
 			byte b2 = door_type;
-			id = (short) ((b2 << 8) + b1);
+			id = (ushort) ((b2 << 8) | b1);
 		}
 
 		/* 
@@ -67,7 +67,7 @@ namespace ZeldaFullEditor
 			if (door_dir == 1) { address = Constants.door_gfx_down; }
 			if (door_dir == 2) { address = Constants.door_gfx_left; }
 			if (door_dir == 3) { address = Constants.door_gfx_right; }
-			int pos = Constants.tile_address + (short) ((ROM.DATA[(address + ((id >> 8) & 0xFF)) + 1] << 8) + ROM.DATA[address + ((id >> 8) & 0xFF)]);
+			int pos = Constants.tile_address + ZS.ROM[address + (id >> 8), 2];
 			addTiles(12, pos); // ??
 
 			int addresspos = 0;
@@ -76,7 +76,7 @@ namespace ZeldaFullEditor
 			if (door_dir == 2) { addresspos = Constants.door_pos_left; }
 			if (door_dir == 3) { addresspos = Constants.door_pos_right; }
 
-			short posxy = (short) (((ROM.DATA[(addresspos + 1 + (door_pos))] << 8) + ROM.DATA[(addresspos + (door_pos))]) / 2);
+			ushort posxy = (ushort) (ZS.ROM[addresspos + door_pos, 2] / 2);
 			float n = (((float) posxy / 64) - (byte) (posxy / 64)) * 64;
 			x = (byte) n;
 			y = (byte) (posxy / 64);
@@ -87,21 +87,23 @@ namespace ZeldaFullEditor
 			{
 				w = 4;
 				h = 3;
-			}
-			if (door_dir == 1) // If direction is down y+=1 ? why
-			{
-				y += 1;
+				if (door_dir == 1) // If direction is down y+=1 ? why
+				{
+					y += 1;
+				}
 			}
 			else if (door_dir == 2 || door_dir == 3) // left / right
 			{
 				h = 4;
 				w = 3;
-			}
-			if (door_dir == 3)
-			{
-				x += 1;
+				if (door_dir == 3)
+				{
+					x += 1;
+				}
 			}
 
+
+			// TODO oh my fuck
 			// 0x26,0x40,0x46,0x0C
 			if ((((id >> 8) & 0xFF) == 0x26) || (((id >> 8) & 0xFF) == 0x40) || (((id >> 8) & 0xFF) == 0x46) || (((id >> 8) & 0xFF) == 0x0C))
 			{
@@ -146,14 +148,13 @@ namespace ZeldaFullEditor
 				{
 					for (int xx = 0; xx < w; xx++)
 					{
-						draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
-						tid++;
+						draw_tile(tiles[tid++], xx * 8, yy * 8);
 					}
 				}
 				return;
 			}
 
-			if ((((id >> 8) & 0xFF) == 0x30)) // Hole in wall
+			if (((id >> 8) & 0xFF) == 0x30) // Hole in wall
 			{
 				if (door_pos == 0)
 				{
@@ -188,15 +189,13 @@ namespace ZeldaFullEditor
 				{
 					tiles[tid].VFlip = false;
 					tiles[tid].HFlip = false;
-					draw_tile(tiles[tid], (0) * 8, (yy) * 8);
-					tid++;
+					draw_tile(tiles[tid++], 0 * 8, yy * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
 					tiles[tid].VFlip = false;
 					tiles[tid].HFlip = false;
-					draw_tile(tiles[tid], (1) * 8, (yy) * 8);
-					tid++;
+					draw_tile(tiles[tid++], 1 * 8, yy * 8);
 				}
 
 				tid = 0;
@@ -206,15 +205,13 @@ namespace ZeldaFullEditor
 				{
 					tiles[tid].VFlip = false;
 					tiles[tid].HFlip = true;
-					draw_tile(tiles[tid], (21) * 8, (yy) * 8);
-					tid++;
+					draw_tile(tiles[tid++], 21 * 8, yy * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
 					tiles[tid].VFlip = false;
 					tiles[tid].HFlip = true;
-					draw_tile(tiles[tid], (20) * 8, (yy) * 8);
-					tid++;
+					draw_tile(tiles[tid++], 20 * 8, yy * 8);
 				}
 
 				// Draw Top Mirror
@@ -224,30 +221,26 @@ namespace ZeldaFullEditor
 				{
 					tiles[tid].VFlip = true;
 					tiles[tid].HFlip = false;
-					draw_tile(tiles[tid], (1) * 8, (yy - 6) * 8);
-					tid--;
+					draw_tile(tiles[tid--], 1 * 8, (yy - 6) * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
 					tiles[tid].VFlip = true;
 					tiles[tid].HFlip = false;
-					draw_tile(tiles[tid], (0) * 8, (yy - 6) * 8);
-					tid--;
+					draw_tile(tiles[tid--], 0 * 8, (yy - 6) * 8);
 				}
 				tid = 11;
 				for (int yy = 5; yy >= 0; yy--)
 				{
 					tiles[tid].VFlip = false;
 					tiles[tid].HFlip = true;
-					draw_tile(tiles[tid], (20) * 8, (yy - 6) * 8);
-					tid--;
+					draw_tile(tiles[tid--], 20 * 8, (yy - 6) * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
 					tiles[tid].VFlip = false;
 					tiles[tid].HFlip = true;
-					draw_tile(tiles[tid], (21) * 8, (yy - 6) * 8);
-					tid--;
+					draw_tile(tiles[tid--], 21 * 8, (yy - 6) * 8);
 				}
 
 				tiles.Clear();
@@ -292,8 +285,7 @@ namespace ZeldaFullEditor
 			{
 				for (int yy = 0; yy < h; yy++)
 				{
-					draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
-					tid++;
+					draw_tile(tiles[tid++], xx * 8, yy * 8);
 				}
 			}
 			layer = 2;
@@ -315,20 +307,20 @@ namespace ZeldaFullEditor
 			tiles.Clear();
 			int address = 0;
 			if (door_dir == 0) { address = Constants.door_gfx_down; }
-			if (door_dir == 1) { return; }
-			if (door_dir == 2) { address = Constants.door_gfx_right; }
-			if (door_dir == 3) { return; }
-			int pos = Constants.tile_address + (short) ((ROM.DATA[(address + ((id >> 8) & 0xFF)) + 1] << 8) + ROM.DATA[address + ((id >> 8) & 0xFF)]);
+			else if (door_dir == 1) { return; }
+			else if (door_dir == 2) { address = Constants.door_gfx_right; }
+			else if (door_dir == 3) { return; }
+			int pos = Constants.tile_address + ZS.ROM[address + ((id >> 8) & 0xFF), 2];
 			addTiles(12, pos);//??
 
 			int addresspos = 0;
 			if (door_dir == 0) { addresspos = Constants.door_pos_down; }
-			if (door_dir == 1) { return; }
-			if (door_dir == 2) { addresspos = Constants.door_pos_right; }
-			if (door_dir == 3) { return; }
+			else if (door_dir == 1) { return; }
+			else if (door_dir == 2) { addresspos = Constants.door_pos_right; }
+			else if (door_dir == 3) { return; }
 
 			byte tempPos = (byte) (door_pos - 12);
-			short posxy = (short) (((ROM.DATA[(addresspos + 1 + (tempPos))] << 8) + ROM.DATA[(addresspos + (tempPos))]) / 2);
+			ushort posxy = (ushort) (ZS.ROM[addresspos + tempPos, 2] / 2);
 			float n = (((float) posxy / 64) - (byte) (posxy / 64)) * 64;
 			x = (byte) n;
 			y = (byte) (posxy / 64);
@@ -341,7 +333,7 @@ namespace ZeldaFullEditor
 			}
 			if (door_dir == 0) // If direction is down y+=1 ? why
 			{
-				y += 1;
+				y++;
 			}
 
 			else if (door_dir == 2 || door_dir == 3) // left / right
@@ -351,7 +343,7 @@ namespace ZeldaFullEditor
 			}
 			if (door_dir == 2)
 			{
-				x += 1;
+				x++;
 			}
 			if ((((id >> 8) & 0xFF) == 22) || (((id >> 8) & 0xFF) == 18))
 			{
@@ -364,7 +356,7 @@ namespace ZeldaFullEditor
 				addTiles(16, Constants.tile_address + 0x26F6);
 				w = 4;
 				h = 4;
-				y -= 1;
+				y--;
 			}
 
 			int tid = 0;
@@ -385,8 +377,7 @@ namespace ZeldaFullEditor
 				{
 					for (int xx = 0; xx < w; xx++)
 					{
-						draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
-						tid++;
+						draw_tile(tiles[tid++], xx * 8, yy * 8);
 					}
 				}
 
@@ -427,15 +418,13 @@ namespace ZeldaFullEditor
 				{
 					tiles[tid].VFlip = false;
 					tiles[tid].HFlip = false;
-					draw_tile(tiles[tid], (0) * 8, (yy) * 8);
-					tid++;
+					draw_tile(tiles[tid++], 0 * 8, yy * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
 					tiles[tid].VFlip = false;
 					tiles[tid].HFlip = false;
-					draw_tile(tiles[tid], (1) * 8, (yy) * 8);
-					tid++;
+					draw_tile(tiles[tid++], 1 * 8, yy * 8);
 				}
 
 				tid = 0;
@@ -444,15 +433,13 @@ namespace ZeldaFullEditor
 				{
 					tiles[tid].VFlip = false;
 					tiles[tid].HFlip = true;
-					draw_tile(tiles[tid], (21) * 8, (yy) * 8);
-					tid++;
+					draw_tile(tiles[tid++], 21 * 8, yy * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
 					tiles[tid].VFlip = false;
 					tiles[tid].HFlip = true;
-					draw_tile(tiles[tid], (20) * 8, (yy) * 8);
-					tid++;
+					draw_tile(tiles[tid++], 20 * 8, yy * 8);
 				}
 
 				// Draw Top Mirror
@@ -462,15 +449,13 @@ namespace ZeldaFullEditor
 				{
 					tiles[tid].VFlip = true;
 					tiles[tid].HFlip = false;
-					draw_tile(tiles[tid], (1) * 8, (yy - 6) * 8);
-					tid--;
+					draw_tile(tiles[tid--], 1 * 8, (yy - 6) * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
 					tiles[tid].VFlip = true;
 					tiles[tid].HFlip = false;
-					draw_tile(tiles[tid], (0) * 8, (yy - 6) * 8);
-					tid--;
+					draw_tile(tiles[tid--], 0 * 8, (yy - 6) * 8);
 				}
 
 				tid = 11;
@@ -478,15 +463,13 @@ namespace ZeldaFullEditor
 				{
 					tiles[tid].VFlip = false;
 					tiles[tid].HFlip = true;
-					draw_tile(tiles[tid], (20) * 8, (yy - 6) * 8);
-					tid--;
+					draw_tile(tiles[tid--], 20 * 8, (yy - 6) * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
 					tiles[tid].VFlip = false;
 					tiles[tid].HFlip = true;
-					draw_tile(tiles[tid], (21) * 8, (yy - 6) * 8);
-					tid--;
+					draw_tile(tiles[tid--], 21 * 8, (yy - 6) * 8);
 				}
 
 				tiles.Clear();
@@ -531,8 +514,7 @@ namespace ZeldaFullEditor
 			{
 				for (int yy = 0; yy < h; yy++)
 				{
-					draw_tile(tiles[tid], (xx) * 8, (yy) * 8);
-					tid++;
+					draw_tile(tiles[tid++], xx * 8, yy * 8);
 				}
 			}
 

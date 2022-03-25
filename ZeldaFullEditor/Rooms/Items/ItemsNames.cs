@@ -43,6 +43,6 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public static string[] name = Utils.DeepCopyStrings(Constants.SecretItemNames);
+		public static string[] name = Constants.SecretItemNames.DeepCopy();
 	}
 }

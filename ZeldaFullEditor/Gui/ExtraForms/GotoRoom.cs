@@ -69,7 +69,7 @@ namespace ZeldaFullEditor
 		{
 			tbxRoomNumber.Text = SelectedRoom.ToString
 			(
-				ParseAsHex ? "X" : String.Empty,
+				ParseAsHex ? "X" : string.Empty,
 				CultureInfo.CurrentCulture
 			);
 		}

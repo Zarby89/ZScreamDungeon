@@ -12,32 +12,33 @@ namespace ZeldaFullEditor.OWSceneModes
 {
 	public class ExitMode
 	{
-		SceneOW scene;
 		public ExitOW selectedExit = null;
 		public ExitOW lastselectedExit = null;
 
 		int mxRightclick = 0;
 		int myRightclick = 0;
 
-		ExitEditorForm exitPropForm = new ExitEditorForm();
+		ExitEditorForm exitPropForm;
 
-		public ExitMode(SceneOW scene)
+		private readonly ZScreamer ZS;
+		public ExitMode(ZScreamer parent)
 		{
-			this.scene = scene;
+			ZS = parent;
+			exitPropForm = new ExitEditorForm(ZS);
 		}
 
 		public void Copy()
 		{
 			Clipboard.Clear();
 			ExitOW ed = lastselectedExit.Copy();
-			Clipboard.SetData("owexit", ed);
+			Clipboard.SetData(Constants.OverworldExitClipboardData, ed);
 		}
 
 		public void Cut()
 		{
 			Clipboard.Clear();
 			ExitOW ed = lastselectedExit.Copy();
-			Clipboard.SetData("owexit", ed);
+			Clipboard.SetData(Constants.OverworldExitClipboardData, ed);
 			Delete();
 		}
 
@@ -46,50 +47,49 @@ namespace ZeldaFullEditor.OWSceneModes
 			ExitOW ae = AddExit(true);
 			if (ae != null)
 			{
-				selectedExit = ae;
-				lastselectedExit = selectedExit;
-				scene.mouse_down = true;
+				lastselectedExit = selectedExit = ae;
+				ZS.OverworldScene.mouse_down = true;
 			}
 		}
 
 		public ExitOW AddExit(bool clipboard = false)
 		{
 			int found = -1;
-			for (int i = 0; i < scene.ow.allexits.Length; i++)
+			for (int i = 0; i < ZS.OverworldManager.allexits.Length; i++)
 			{
-				if (scene.ow.allexits[i].deleted)
+				if (ZS.OverworldManager.allexits[i].deleted)
 				{
-					byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (scene.mapHover + scene.ow.worldOffset);
+						mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
 					}
 
-					scene.ow.allexits[i].deleted = false;
-					scene.ow.allexits[i].mapId = mid;
-					scene.ow.allexits[i].playerX = (ushort) ((mxRightclick / 16) * 16);
-					scene.ow.allexits[i].playerY = (ushort) ((myRightclick / 16) * 16);
+					ZS.OverworldManager.allexits[i].deleted = false;
+					ZS.OverworldManager.allexits[i].mapId = mid;
+					ZS.OverworldManager.allexits[i].playerX = (ushort) ((mxRightclick / 16) * 16);
+					ZS.OverworldManager.allexits[i].playerY = (ushort) ((myRightclick / 16) * 16);
 
 					if (clipboard)
 					{
-						ExitOW data = (ExitOW) Clipboard.GetData("owexit");
+						ExitOW data = (ExitOW) Clipboard.GetData(Constants.OverworldExitClipboardData);
 						if (data != null)
 						{
-							scene.ow.allexits[i].cameraX = data.cameraX;
-							scene.ow.allexits[i].cameraY = data.cameraY;
-							scene.ow.allexits[i].xScroll = data.xScroll;
-							scene.ow.allexits[i].yScroll = data.yScroll;
-							scene.ow.allexits[i].unk1 = data.unk1;
-							scene.ow.allexits[i].unk2 = data.unk2;
-							scene.ow.allexits[i].roomId = data.roomId;
-							scene.ow.allexits[i].doorType1 = data.doorType1;
-							scene.ow.allexits[i].doorType2 = data.doorType2;
-							scene.ow.allexits[i].doorXEditor = data.doorXEditor;
-							scene.ow.allexits[i].doorYEditor = data.doorYEditor;
+							ZS.OverworldManager.allexits[i].cameraX = data.cameraX;
+							ZS.OverworldManager.allexits[i].cameraY = data.cameraY;
+							ZS.OverworldManager.allexits[i].xScroll = data.xScroll;
+							ZS.OverworldManager.allexits[i].yScroll = data.yScroll;
+							ZS.OverworldManager.allexits[i].unk1 = data.unk1;
+							ZS.OverworldManager.allexits[i].unk2 = data.unk2;
+							ZS.OverworldManager.allexits[i].roomId = data.roomId;
+							ZS.OverworldManager.allexits[i].doorType1 = data.doorType1;
+							ZS.OverworldManager.allexits[i].doorType2 = data.doorType2;
+							ZS.OverworldManager.allexits[i].doorXEditor = data.doorXEditor;
+							ZS.OverworldManager.allexits[i].doorYEditor = data.doorYEditor;
 						}
 					}
 
-					scene.ow.allexits[i].updateMapStuff(mid, scene.ow);
+					ZS.OverworldManager.allexits[i].updateMapStuff(mid, ZS.OverworldManager);
 
 					found = i;
 
@@ -104,7 +104,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				return null;
 			}
 
-			return scene.ow.allexits[found];
+			return ZS.OverworldManager.allexits[found];
 		}
 
 		public void onMouseDown(MouseEventArgs e)
@@ -113,17 +113,16 @@ namespace ZeldaFullEditor.OWSceneModes
 			{
 				for (int i = 0; i < 78; i++)
 				{
-					ExitOW en = scene.ow.allexits[i];
-					if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
+					ExitOW en = ZS.OverworldManager.allexits[i];
+					if (en.mapId >= ZS.OverworldManager.worldOffset && en.mapId < 64 + ZS.OverworldManager.worldOffset)
 					{
 						if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
 						{
-							if (!scene.mouse_down)
+							if (!ZS.OverworldScene.mouse_down)
 							{
-								selectedExit = en;
-								lastselectedExit = en;
+								selectedExit = lastselectedExit = en;
 								//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-								scene.mouse_down = true;
+								ZS.OverworldScene.mouse_down = true;
 							}
 						}
 					}
@@ -141,25 +140,25 @@ namespace ZeldaFullEditor.OWSceneModes
 					return;
 				}
 
-				if (scene.mainForm.lastRoomID != roomId)
+				if (ZS.DungeonForm.lastRoomID != roomId)
 				{
-					scene.mainForm.previewRoom = DungeonsData.all_rooms[roomId];
-					scene.mainForm.previewRoom.reloadGfx();
-					GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.previewRoom.palette);
-					scene.mainForm.DrawRoom();
+					ZS.DungeonForm.previewRoom = DungeonsData.all_rooms[roomId];
+					ZS.DungeonForm.previewRoom.reloadGfx();
+					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.DungeonForm.previewRoom.palette);
+					ZS.DungeonForm.DrawRoom();
 					DrawTempExit();
-					scene.entrancePreview = true;
+					ZS.OverworldScene.entrancePreview = true;
 					//scene.Refresh();
 
-					if (scene.mainForm.activeScene.room != null)
+					if (ZS.UnderworldScene.room != null)
 					{
-						GFX.loadedPalettes = GFX.LoadDungeonPalette(scene.mainForm.activeScene.room.palette);
-						scene.mainForm.activeScene.room.reloadGfx();
-						scene.mainForm.activeScene.DrawRoom();
+						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.room.palette);
+						ZS.UnderworldScene.room.reloadGfx();
+						ZS.UnderworldScene.DrawRoom();
 					}
 				}
 
-				scene.mainForm.lastRoomID = roomId;
+				ZS.DungeonForm.lastRoomID = roomId;
 			}
 		}
 
@@ -176,33 +175,23 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void onMouseMove(MouseEventArgs e)
 		{
-			if (scene.mouse_down)
+			if (ZS.OverworldScene.mouse_down)
 			{
-				int mouseTileX = e.X / 16;
-				int mouseTileY = e.Y / 16;
-				int mapX = (mouseTileX / 32);
-				int mapY = (mouseTileY / 32);
 
-				scene.mapHover = mapX + (mapY * 8);
+				ZS.OverworldScene.mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
 
 				if (selectedExit != null)
 				{
-					selectedExit.playerX = (ushort) e.X;
-					selectedExit.playerY = (ushort) e.Y;
+					selectedExit.playerX = (ushort) (ZS.OverworldScene.snapToGrid ? e.X & ~0x7 : e.X);
+					selectedExit.playerY = (ushort) (ZS.OverworldScene.snapToGrid ? e.Y & ~0x7 : e.Y);
 
-					if (scene.snapToGrid)
-					{
-						selectedExit.playerX = (ushort) ((e.X / 8) * 8);
-						selectedExit.playerY = (ushort) ((e.Y / 8) * 8);
-					}
-
-					byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (scene.mapHover + scene.ow.worldOffset);
+						mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
 					}
 
-					selectedExit.updateMapStuff(mid, scene.ow);
+					selectedExit.updateMapStuff(mid, ZS.OverworldManager);
 
 					//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 				}
@@ -217,7 +206,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				{
 					lastselectedExit = selectedExit;
 					selectedExit = null;
-					scene.mouse_down = false;
+					ZS.OverworldScene.mouse_down = false;
 				}
 			}
 			else if (e.Button == MouseButtons.Right)
@@ -227,15 +216,15 @@ namespace ZeldaFullEditor.OWSceneModes
 
 				for (int i = 0; i < 78; i++)
 				{
-					ExitOW en = scene.ow.allexits[i];
-					if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
+					ExitOW en = ZS.OverworldManager.allexits[i];
+					if (en.mapId >= ZS.OverworldManager.worldOffset && en.mapId < 64 + ZS.OverworldManager.worldOffset)
 					{
 						if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
 						{
 							menu.Items.Add("Exit Properties");
 							lastselectedExit = en;
 							selectedExit = null;
-							scene.mouse_down = false;
+							ZS.OverworldScene.mouse_down = false;
 
 							if (lastselectedExit == null)
 							{
@@ -279,63 +268,62 @@ namespace ZeldaFullEditor.OWSceneModes
 
 			if (dr == DialogResult.OK)
 			{
-				int index = Array.IndexOf(scene.ow.allexits, lastselectedExit);
-				scene.ow.allexits[index] = exitPropForm.editingExit;
-				lastselectedExit = scene.ow.allexits[index];
-				scene.selectedMode = ObjectMode.Exits;
+				int index = Array.IndexOf(ZS.OverworldManager.allexits, lastselectedExit);
+				lastselectedExit = ZS.OverworldManager.allexits[index] = exitPropForm.editingExit;
+				ZS.CurrentOWMode = OverworldEditMode.Exits;
 				//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 			}
 			else if (dr == DialogResult.Yes)
 			{
-				scene.selectedMode = ObjectMode.OWDoor;
+				ZS.CurrentOWMode = OverworldEditMode.Doors;
 				if (lastselectedExit.doorType1 != 0) // Wooden door
 				{
-					scene.selectedTile = new ushort[2];
-					scene.selectedTileSizeX = 2;
-					scene.selectedTile[0] = 1865;
-					scene.selectedTile[1] = 1866;
+					ZS.OverworldScene.selectedTile = new ushort[2];
+					ZS.OverworldScene.selectedTileSizeX = 2;
+					ZS.OverworldScene.selectedTile[0] = 1865;
+					ZS.OverworldScene.selectedTile[1] = 1866;
 
 				}
 				else if ((lastselectedExit.doorType2 & 0x8000) != 0) // Castle door
 				{
-					scene.selectedTile = new ushort[4];
-					scene.selectedTileSizeX = 2;
-					scene.selectedTile[0] = 3510;
-					scene.selectedTile[1] = 3511;
-					scene.selectedTile[2] = 3512;
-					scene.selectedTile[3] = 3513;
+					ZS.OverworldScene.selectedTile = new ushort[4];
+					ZS.OverworldScene.selectedTileSizeX = 2;
+					ZS.OverworldScene.selectedTile[0] = 3510;
+					ZS.OverworldScene.selectedTile[1] = 3511;
+					ZS.OverworldScene.selectedTile[2] = 3512;
+					ZS.OverworldScene.selectedTile[3] = 3513;
 				}
 				else if ((lastselectedExit.doorType2 & 0x7FFF) != 0) // Sanctuary door
 				{
-					scene.selectedTile = new ushort[2];
-					scene.selectedTileSizeX = 2;
-					scene.selectedTile[0] = 3502;
-					scene.selectedTile[1] = 3503;
+					ZS.OverworldScene.selectedTile = new ushort[2];
+					ZS.OverworldScene.selectedTileSizeX = 2;
+					ZS.OverworldScene.selectedTile[0] = 3502;
+					ZS.OverworldScene.selectedTile[1] = 3503;
 				}
 			}
 			else
 			{
-				scene.selectedMode = ObjectMode.Exits;
+				ZS.CurrentOWMode = OverworldEditMode.Exits;
 			}
 
 			selectedExit = null;
-			scene.mouse_down = false;
+			ZS.OverworldScene.mouse_down = false;
 		}
 
 		public void Draw(Graphics g)
 		{
-			if (scene.lowEndMode)
+			if (ZS.OverworldScene.lowEndMode)
 			{
 				for (int i = 0; i < 78; i++)
 				{
 					g.CompositingMode = CompositingMode.SourceOver;
-					ExitOW ex = scene.ow.allexits[i];
-					if (ex.mapId != scene.ow.allmaps[scene.selectedMap].parent)
+					ExitOW ex = ZS.OverworldManager.allexits[i];
+					if (ex.mapId != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
 					{
 						continue;
 					}
 
-					if (ex.mapId < 64 + scene.ow.worldOffset && ex.mapId >= scene.ow.worldOffset)
+					if (ex.mapId < 64 + ZS.OverworldManager.worldOffset && ex.mapId >= ZS.OverworldManager.worldOffset)
 					{
 						Brush bgrBrush = Constants.LightGray200Brush;
 						Brush fontBrush = Brushes.Black;
@@ -348,7 +336,7 @@ namespace ZeldaFullEditor.OWSceneModes
 								bgrBrush = Constants.MediumGray200Brush;
 								g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+								ZS.OverworldScene.drawText(g, ex.playerX + 4, ex.playerY + 4, $"{i:X2}");
 
 								//int sy = ex.mapId / 8;
 								//int sx = ex.mapId - (sy * 8);
@@ -362,7 +350,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 							g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 							g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-							scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+							ZS.OverworldScene.drawText(g, ex.playerX + 4, ex.playerY + 4, $"{i:X2}");
 						}
 						else
 						{
@@ -377,7 +365,7 @@ namespace ZeldaFullEditor.OWSceneModes
 								bgrBrush = Constants.MediumGray200Brush;
 								g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+								ZS.OverworldScene.drawText(g, ex.playerX + 4, ex.playerY + 4, $"{i:X2}");
 
 								g.CompositingMode = CompositingMode.SourceCopy;
 								//int sy = ex.mapId / 8;
@@ -392,7 +380,7 @@ namespace ZeldaFullEditor.OWSceneModes
 								g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 
-								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+								ZS.OverworldScene.drawText(g, ex.playerX + 4, ex.playerY + 4, $"{i:X2}");
 							}
 						}
 					}
@@ -405,9 +393,9 @@ namespace ZeldaFullEditor.OWSceneModes
 				for (int i = 0; i < 78; i++)
 				{
 					g.CompositingMode = CompositingMode.SourceOver;
-					ExitOW ex = scene.ow.allexits[i];
+					ExitOW ex = ZS.OverworldManager.allexits[i];
 
-					if (ex.mapId < 64 + scene.ow.worldOffset && ex.mapId >= scene.ow.worldOffset)
+					if (ex.mapId < 64 + ZS.OverworldManager.worldOffset && ex.mapId >= ZS.OverworldManager.worldOffset)
 					{
 						Brush bgrBrush = Constants.LightGray200Brush;
 						Brush fontBrush = Brushes.Black;
@@ -420,7 +408,7 @@ namespace ZeldaFullEditor.OWSceneModes
 								bgrBrush = Constants.MediumGray200Brush;
 								g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+								ZS.OverworldScene.drawText(g, ex.playerX + 4, ex.playerY + 4, $"{i:X2}");
 
 								//int sy = ex.mapId / 8;
 								//int sx = ex.mapId - (sy * 8);
@@ -434,7 +422,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 							g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 							g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-							scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+							ZS.OverworldScene.drawText(g, ex.playerX + 4, ex.playerY + 4, $"{i:X2}");
 						}
 						else
 						{
@@ -449,7 +437,7 @@ namespace ZeldaFullEditor.OWSceneModes
 								bgrBrush = Constants.MediumGray200Brush;
 								g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
-								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+								ZS.OverworldScene.drawText(g, ex.playerX + 4, ex.playerY + 4, $"{i:X2}");
 								g.CompositingMode = CompositingMode.SourceCopy;
 
 								//int sy = ex.mapId / 8;
@@ -464,7 +452,7 @@ namespace ZeldaFullEditor.OWSceneModes
 								g.FillRectangle(bgrBrush, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 								g.DrawRectangle(Constants.Black200Pen, new Rectangle(ex.playerX, ex.playerY, 16, 16));
 
-								scene.drawText(g, ex.playerX + 4, ex.playerY + 4, i.ToString("X2"));
+								ZS.OverworldScene.drawText(g, ex.playerX + 4, ex.playerY + 4, $"{i:X2}");
 							}
 						}
 					}
@@ -476,24 +464,25 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void DrawTempExit()
 		{
-			Graphics g = Graphics.FromImage(scene.owForm.tmpPreviewBitmap);
+			Graphics g = Graphics.FromImage(ZS.OverworldForm.tmpPreviewBitmap);
 			g.InterpolationMode = InterpolationMode.Bilinear;
-			if (scene.mainForm.previewRoom.bg2 != Background2.Translucent || scene.mainForm.previewRoom.bg2 != Background2.Transparent ||
-			 scene.mainForm.previewRoom.bg2 != Background2.OnTop || scene.mainForm.previewRoom.bg2 != Background2.Off)
+			if (ZS.DungeonForm.previewRoom.bg2 != Background2.Translucent || ZS.DungeonForm.previewRoom.bg2 != Background2.Transparent ||
+			 ZS.DungeonForm.previewRoom.bg2 != Background2.OnTop || ZS.DungeonForm.previewRoom.bg2 != Background2.Off)
 			{
-				g.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
+				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
-			g.DrawImage(GFX.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
+			g.DrawImage(ZS.GFXManager.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 
-			if (scene.mainForm.previewRoom.bg2 == Background2.Translucent || scene.mainForm.previewRoom.bg2 == Background2.Transparent)
+			if (ZS.DungeonForm.previewRoom.bg2 == Background2.Translucent || ZS.DungeonForm.previewRoom.bg2 == Background2.Transparent)
 			{
 				float[][] matrixItems ={
-				new float[] {1f, 0, 0, 0, 0},
-				new float[] {0, 1f, 0, 0, 0},
-				new float[] {0, 0, 1f, 0, 0},
-				new float[] {0, 0, 0, 0.5f, 0},
-				new float[] {0, 0, 0, 0, 1}};
+					new float[] {1f, 0, 0, 0, 0},
+					new float[] {0, 1f, 0, 0, 0},
+					new float[] {0, 0, 1f, 0, 0},
+					new float[] {0, 0, 0, 0.5f, 0},
+					new float[] {0, 0, 0, 0, 1}
+				};
 				ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
 
 				// Create an ImageAttributes object and set its color matrix.
@@ -505,14 +494,14 @@ namespace ZeldaFullEditor.OWSceneModes
 				);
 
 				//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
-				g.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
+				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
 			}
-			else if (scene.mainForm.previewRoom.bg2 == Background2.OnTop)
+			else if (ZS.DungeonForm.previewRoom.bg2 == Background2.OnTop)
 			{
-				g.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
+				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
-			scene.mainForm.activeScene.drawText(g, 0, 0, "ROOM : " + scene.mainForm.previewRoom.index.ToString("X2"));
+			ZS.UnderworldScene.drawText(g, 0, 0, "ROOM : " + ZS.DungeonForm.previewRoom.index.ToString("X2"));
 			g.InterpolationMode = InterpolationMode.NearestNeighbor;
 			g.Dispose();
 		}

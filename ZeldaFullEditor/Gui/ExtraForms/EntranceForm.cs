@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-	public partial class EntranceForm : Form
+	public partial class EntranceForm : ScreamForm
 	{
-		public EntranceForm()
+		public EntranceForm(ZScreamer parent) : base(parent)
 		{
 			InitializeComponent();
 		}
@@ -21,7 +21,7 @@ namespace ZeldaFullEditor.Gui
 		public int y;
 		public ushort mapPos;
 		public byte entranceId;
-		public short mapId;
+		public ushort mapId;
 		public bool isHole = false;
 
 		private void EntranceForm_Load(object sender, EventArgs e)
@@ -54,7 +54,7 @@ namespace ZeldaFullEditor.Gui
 				return;
 			}
 
-			mapId = (short) v;
+			mapId = (ushort) v;
 			int.TryParse(textBox3.Text, out v); // Map Pos (read only)
 
 			int.TryParse(textBox4.Text, out v); // X

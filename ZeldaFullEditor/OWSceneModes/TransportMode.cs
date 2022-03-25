@@ -11,13 +11,12 @@ namespace ZeldaFullEditor.OWSceneModes
 {
 	public class TransportMode
 	{
-		SceneOW scene;
 		public TransportOW selectedTransport = null;
 		public TransportOW lastselectedTransport = null;
-
-		public TransportMode(SceneOW scene)
+		private readonly ZScreamer ZS;
+		public TransportMode(ZScreamer parent)
 		{
-			this.scene = scene;
+			ZS = parent;
 		}
 
 		public void onMouseDown(MouseEventArgs e)
@@ -26,17 +25,17 @@ namespace ZeldaFullEditor.OWSceneModes
 			{
 				for (int i = 0; i < 0x11; i++)
 				{
-					TransportOW en = scene.ow.allWhirlpools[i];
-					if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
+					TransportOW en = ZS.OverworldManager.allWhirlpools[i];
+					if (en.mapId >= ZS.OverworldManager.worldOffset && en.mapId < 64 + ZS.OverworldManager.worldOffset)
 					{
 						if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
 						{
-							if (!scene.mouse_down)
+							if (!ZS.OverworldScene.mouse_down)
 							{
 								selectedTransport = en;
 								lastselectedTransport = en;
 								//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-								scene.mouse_down = true;
+								ZS.OverworldScene.mouse_down = true;
 							}
 						}
 					}
@@ -46,32 +45,22 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void onMouseMove(MouseEventArgs e)
 		{
-			if (scene.mouse_down)
+			if (ZS.OverworldScene.mouse_down)
 			{
-				int mouseTileX = e.X / 16;
-				int mouseTileY = e.Y / 16;
-				int mapX = (mouseTileX / 32);
-				int mapY = (mouseTileY / 32);
-
-				scene.mapHover = mapX + (mapY * 8);
+				ZS.OverworldScene.mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
 
 				if (selectedTransport != null)
 				{
-					selectedTransport.playerX = (short) e.X;
-					selectedTransport.playerY = (short) e.Y;
-					if (scene.snapToGrid)
-					{
-						selectedTransport.playerX = (short) ((e.X / 8) * 8);
-						selectedTransport.playerY = (short) ((e.Y / 8) * 8);
-					}
+					selectedTransport.playerX = (ushort) (ZS.OverworldScene.snapToGrid ? e.X & ~0x7 : e.X);
+					selectedTransport.playerY = (ushort) (ZS.OverworldScene.snapToGrid ? e.Y & ~0x7 : e.Y);
 
-					byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (scene.mapHover + scene.ow.worldOffset);
+						mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
 					}
 
-					selectedTransport.updateMapStuff(mid, scene.ow);
+					selectedTransport.updateMapStuff(mid, ZS.OverworldManager);
 
 					//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 				}
@@ -86,15 +75,15 @@ namespace ZeldaFullEditor.OWSceneModes
 				{
 					lastselectedTransport = selectedTransport;
 					selectedTransport = null;
-					scene.mouse_down = false;
+					ZS.OverworldScene.mouse_down = false;
 				}
 			}
 			else if (e.Button == MouseButtons.Right)
 			{
 				for (int i = 0; i < 0x11; i++)
 				{
-					TransportOW en = scene.ow.allWhirlpools[i];
-					if (en.mapId >= scene.ow.worldOffset && en.mapId < 64 + scene.ow.worldOffset)
+					TransportOW en = ZS.OverworldManager.allWhirlpools[i];
+					if (en.mapId >= ZS.OverworldManager.worldOffset && en.mapId < 64 + ZS.OverworldManager.worldOffset)
 					{
 						if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
 						{
@@ -102,7 +91,7 @@ namespace ZeldaFullEditor.OWSceneModes
 							menu.Items.Add("Whirlpool Properties");
 							lastselectedTransport = en;
 							selectedTransport = null;
-							scene.mouse_down = false;
+							ZS.OverworldScene.mouse_down = false;
 
 							if (lastselectedTransport == null)
 							{
@@ -126,36 +115,37 @@ namespace ZeldaFullEditor.OWSceneModes
 
 			if (wf.ShowDialog() == DialogResult.OK)
 			{
-				short.TryParse(wf.textBox1.Text, out short v);
+				ushort.TryParse(wf.textBox1.Text, out ushort v);
 				lastselectedTransport.whirlpoolPos = v;
 			}
 		}
 
 		public void Draw(Graphics g)
 		{
-			if (scene.lowEndMode)
+			if (ZS.OverworldScene.lowEndMode)
 			{
 				Brush bgrBrush = Constants.DarkMint200Brush;
 				g.CompositingMode = CompositingMode.SourceOver;
 
-				for (int i = 0; i < scene.ow.allWhirlpools.Count; i++)
+				for (int i = 0; i < ZS.OverworldManager.allWhirlpools.Count; i++)
 				{
-					TransportOW e = scene.ow.allWhirlpools[i];
-					if (e.mapId != scene.ow.allmaps[scene.selectedMap].parent)
+					TransportOW e = ZS.OverworldManager.allWhirlpools[i];
+
+					if (e.mapId != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
 					{
 						continue;
 					}
 
-					if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
+					if (e.mapId < 64 + ZS.OverworldManager.worldOffset && e.mapId >= ZS.OverworldManager.worldOffset)
 					{
 						if (selectedTransport != null)
 						{
 							if (e == selectedTransport)
 							{
 								bgrBrush = Constants.Azure200Brush;
-								scene.drawText(g, e.playerX - 1, e.playerY + 16, "map : " + e.mapId.ToString());
+								ZS.OverworldScene.drawText(g, e.playerX - 1, e.playerY + 16, $"map : {e.mapId:X2}");
 								//scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
-								scene.drawText(g, e.playerX - 4, e.playerY + 36, "mpos : " + e.vramLocation.ToString());
+								ZS.OverworldScene.drawText(g, e.playerX - 4, e.playerY + 36, $"mpos : {e.vramLocation:X4}");
 							}
 							else
 							{
@@ -165,7 +155,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 						g.FillRectangle(bgrBrush, new Rectangle(e.playerX, e.playerY, 16, 16));
 						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.playerX, e.playerY, 16, 16));
-						scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
+						ZS.OverworldScene.drawText(g, e.playerX + 4, e.playerY + 4, $"{i:X2} - Transport");
 
 						/*
                         if (i > 8)
@@ -185,20 +175,20 @@ namespace ZeldaFullEditor.OWSceneModes
 				Brush bgrBrush = Constants.DarkMint200Brush;
 				g.CompositingMode = CompositingMode.SourceOver;
 
-				for (int i = 0; i < scene.ow.allWhirlpools.Count; i++)
+				for (int i = 0; i < ZS.OverworldManager.allWhirlpools.Count; i++)
 				{
-					TransportOW e = scene.ow.allWhirlpools[i];
+					TransportOW e = ZS.OverworldManager.allWhirlpools[i];
 
-					if (e.mapId < 64 + scene.ow.worldOffset && e.mapId >= scene.ow.worldOffset)
+					if (e.mapId < 64 + ZS.OverworldManager.worldOffset && e.mapId >= ZS.OverworldManager.worldOffset)
 					{
 						if (selectedTransport != null)
 						{
 							if (e == selectedTransport)
 							{
 								bgrBrush = Constants.Azure200Brush;
-								scene.drawText(g, e.playerX - 1, e.playerY + 16, "map : " + e.mapId.ToString());
+								ZS.OverworldScene.drawText(g, e.playerX - 1, e.playerY + 16, $"map : {e.mapId:X2}");
 								//scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
-								scene.drawText(g, e.playerX - 4, e.playerY + 36, "mpos : " + e.vramLocation.ToString());
+								ZS.OverworldScene.drawText(g, e.playerX - 4, e.playerY + 36, $"mpos : {e.vramLocation:X4}");
 							}
 							else
 							{
@@ -208,7 +198,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 						g.FillRectangle(bgrBrush, new Rectangle(e.playerX, e.playerY, 16, 16));
 						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.playerX, e.playerY, 16, 16));
-						scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
+						ZS.OverworldScene.drawText(g, e.playerX + 4, e.playerY + 4, $"{i:X2} - Transport");
 
 						/*
                          if (i > 8)

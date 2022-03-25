@@ -7,11 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ZeldaFullEditor;
 
 namespace ZeldaFullEditor
 {
-	public partial class ExitEditorForm : Form
+	public partial class ExitEditorForm : Gui.ScreamForm
 	{
 		public ExitOW editingExit;
 		bool settingValues = false;
@@ -19,7 +18,7 @@ namespace ZeldaFullEditor
 		int pixelMapy;
 		public ExitOW selectedExit;
 
-		public ExitEditorForm()
+		public ExitEditorForm(ZScreamer parent) : base(parent)
 		{
 			InitializeComponent();
 		}
@@ -32,11 +31,11 @@ namespace ZeldaFullEditor
 				editingExit.playerX = (ushort) (xPosUpDown.Value + pixelMapx);
 				editingExit.playerY = (ushort) (yPosUpDown.Value + pixelMapy);
 
-				editingExit.cameraX = (short) (xCameraUpDown.Value + pixelMapx);
-				editingExit.cameraY = (short) (yCameraUpDown.Value + pixelMapy);
+				editingExit.cameraX = (ushort) (xCameraUpDown.Value + pixelMapx);
+				editingExit.cameraY = (ushort) (yCameraUpDown.Value + pixelMapy);
 
-				editingExit.xScroll = (short) (xScrollUpDown.Value + pixelMapx);
-				editingExit.yScroll = (short) (yScrollUpDown.Value + pixelMapy);
+				editingExit.xScroll = (ushort) (xScrollUpDown.Value + pixelMapx);
+				editingExit.yScroll = (ushort) (yScrollUpDown.Value + pixelMapy);
 
 				editingExit.doorXEditor = (byte) doorxUpDown.Value;
 				editingExit.doorYEditor = (byte) dooryUpDown.Value;
@@ -46,28 +45,28 @@ namespace ZeldaFullEditor
 			{
 				editingExit.doorXEditor = (byte) doorxUpDown.Value;
 				editingExit.doorYEditor = (byte) dooryUpDown.Value;
-				editingExit.doorType1 = (short) ((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1);
+				editingExit.doorType1 = (ushort) ((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1);
 				editingExit.doorType2 = 0;
 			}
 			else if (sancdoorButton.Checked)
 			{
 				editingExit.doorXEditor = (byte) doorxUpDown.Value;
 				editingExit.doorYEditor = (byte) dooryUpDown.Value;
-				editingExit.doorType2 = (short) ((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1);
+				editingExit.doorType2 = (ushort) ((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1);
 				editingExit.doorType1 = 0;
 			}
 			else if (bombdoorradioButton.Checked)
 			{
 				editingExit.doorXEditor = (byte) doorxUpDown.Value;
 				editingExit.doorYEditor = (byte) dooryUpDown.Value;
-				editingExit.doorType1 = (short) (((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1) + 0x8000);
+				editingExit.doorType1 = (ushort) (((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1) + 0x8000);
 				editingExit.doorType2 = 0;
 			}
 			else if (castledoorradioButton.Checked)
 			{
 				editingExit.doorXEditor = (byte) doorxUpDown.Value;
 				editingExit.doorYEditor = (byte) dooryUpDown.Value;
-				editingExit.doorType2 = (short) (((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1) + 0x8000);
+				editingExit.doorType2 = (ushort) (((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1) + 0x8000);
 				editingExit.doorType1 = 0;
 			}
 			else
@@ -138,21 +137,21 @@ namespace ZeldaFullEditor
 		{
 			if (!settingValues)
 			{
-				editingExit.roomId = (short) roomUpDown.HexValue;
+				editingExit.roomId = (ushort) roomUpDown.HexValue;
 				editingExit.mapId = (byte) mapUpDown.Value;
 				editingExit.playerX = (ushort) (xPosUpDown.Value + pixelMapx);
 				editingExit.playerY = (ushort) (yPosUpDown.Value + pixelMapy);
-				editingExit.cameraX = (short) (xCameraUpDown.Value + pixelMapx);
-				editingExit.cameraY = (short) (yCameraUpDown.Value + pixelMapy);
-				editingExit.xScroll = (short) (xScrollUpDown.Value + pixelMapx);
-				editingExit.yScroll = (short) (yScrollUpDown.Value + pixelMapy);
+				editingExit.cameraX = (ushort) (xCameraUpDown.Value + pixelMapx);
+				editingExit.cameraY = (ushort) (yCameraUpDown.Value + pixelMapy);
+				editingExit.xScroll = (ushort) (xScrollUpDown.Value + pixelMapx);
+				editingExit.yScroll = (ushort) (yScrollUpDown.Value + pixelMapy);
 
 				if (wooddoorradioButton.Checked)
 				{
 					editingExit.doorXEditor = (byte) doorxUpDown.Value;
 					editingExit.doorYEditor = (byte) dooryUpDown.Value;
 
-					editingExit.doorType1 = (short) ((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1);
+					editingExit.doorType1 = (ushort) ((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1);
 					editingExit.doorType2 = 0;
 
 				}
@@ -160,21 +159,21 @@ namespace ZeldaFullEditor
 				{
 					editingExit.doorXEditor = (byte) doorxUpDown.Value;
 					editingExit.doorYEditor = (byte) dooryUpDown.Value;
-					editingExit.doorType2 = (short) ((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1);
+					editingExit.doorType2 = (ushort) ((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1);
 					editingExit.doorType1 = 0;
 				}
 				else if (bombdoorradioButton.Checked)
 				{
 					editingExit.doorXEditor = (byte) doorxUpDown.Value;
 					editingExit.doorYEditor = (byte) dooryUpDown.Value;
-					editingExit.doorType1 = (short) (((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1) + 0x8000);
+					editingExit.doorType1 = (ushort) (((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1) + 0x8000);
 					editingExit.doorType2 = 0;
 				}
 				else if (castledoorradioButton.Checked)
 				{
 					editingExit.doorXEditor = (byte) doorxUpDown.Value;
 					editingExit.doorYEditor = (byte) dooryUpDown.Value;
-					editingExit.doorType2 = (short) (((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1) + 0x8000);
+					editingExit.doorType2 = (ushort) (((((((byte) dooryUpDown.Value)) << 6) | (((byte) doorxUpDown.Value) & 0x3F)) << 1) + 0x8000);
 					editingExit.doorType1 = 0;
 				}
 				else
@@ -212,28 +211,28 @@ namespace ZeldaFullEditor
 				{
 					editingExit.doorXEditor = (byte) doorxUpDown.Value;
 					editingExit.doorYEditor = (byte) dooryUpDown.Value;
-					editingExit.doorType1 = (short) ((((((byte) doorxUpDown.Value)) << 6) | (((byte) dooryUpDown.Value) & 0x3F)) << 1);
+					editingExit.doorType1 = (ushort) ((((((byte) doorxUpDown.Value)) << 6) | (((byte) dooryUpDown.Value) & 0x3F)) << 1);
 					editingExit.doorType2 = 0;
 				}
 				else if (sancdoorButton.Checked)
 				{
 					editingExit.doorXEditor = (byte) doorxUpDown.Value;
 					editingExit.doorYEditor = (byte) dooryUpDown.Value;
-					editingExit.doorType2 = (short) ((((((byte) doorxUpDown.Value)) << 6) | (((byte) dooryUpDown.Value) & 0x3F)) << 1);
+					editingExit.doorType2 = (ushort) ((((((byte) doorxUpDown.Value)) << 6) | (((byte) dooryUpDown.Value) & 0x3F)) << 1);
 					editingExit.doorType1 = 0;
 				}
 				else if (bombdoorradioButton.Checked)
 				{
 					editingExit.doorXEditor = (byte) doorxUpDown.Value;
 					editingExit.doorYEditor = (byte) dooryUpDown.Value;
-					editingExit.doorType1 = (short) (((((((byte) doorxUpDown.Value)) << 6) | (((byte) dooryUpDown.Value) & 0x3F)) << 1) + 0x8000);
+					editingExit.doorType1 = (ushort) (((((((byte) doorxUpDown.Value)) << 6) | (((byte) dooryUpDown.Value) & 0x3F)) << 1) + 0x8000);
 					editingExit.doorType2 = 0;
 				}
 				else if (castledoorradioButton.Checked)
 				{
 					editingExit.doorXEditor = (byte) doorxUpDown.Value;
 					editingExit.doorYEditor = (byte) dooryUpDown.Value;
-					editingExit.doorType2 = (short) (((((((byte) doorxUpDown.Value)) << 6) | (((byte) dooryUpDown.Value) & 0x3F)) << 1) + 0x8000);
+					editingExit.doorType2 = (ushort) (((((((byte) doorxUpDown.Value)) << 6) | (((byte) dooryUpDown.Value) & 0x3F)) << 1) + 0x8000);
 					editingExit.doorType1 = 0;
 				}
 				else if (nodoorradioButton.Checked)

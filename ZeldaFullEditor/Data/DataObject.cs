@@ -8,11 +8,11 @@ namespace ZeldaFullEditor
 {
 	public class dataObject
 	{
-		public short id;
+		public ushort id;
 		public string Name { get; set; }
 		public byte option = 0;
 
-		public dataObject(short id, string name, byte option = 0)
+		public dataObject(ushort id, string name, byte option = 0)
 		{
 			this.Name = name;
 			this.id = id;

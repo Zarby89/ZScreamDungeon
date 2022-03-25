@@ -225,6 +225,7 @@
     <Compile Include="Data\DefaultEntities.cs" />
     <Compile Include="Data\DoorData.cs" />
     <Compile Include="Data\DungeonMap.cs" />
+    <Compile Include="Data\DungeonRoomObject.cs" />
     <Compile Include="Data\EntityName.cs" />
     <Compile Include="Data\Gravestone.cs" />
     <Compile Include="Data\MapIcon.cs" />
@@ -472,6 +473,7 @@
     <Compile Include="Gui\RoomMover.Designer.cs">
       <DependentUpon>RoomMover.cs</DependentUpon>
     </Compile>
+    <Compile Include="ROMAddress.cs" />
     <Compile Include="Rooms\Items\ItemsNames.cs" />
     <Compile Include="Gui\ExtraForms\MovePointer.cs">
       <SubType>Form</SubType>
@@ -578,6 +580,9 @@
     <Compile Include="ZCompressLibrary\compression_piece.cs" />
     <Compile Include="ZCompressLibrary\Decompress.cs" />
     <Compile Include="ZCompressLibrary\fake_mem.cs" />
+    <Compile Include="ZScreamer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="ZSSerializer.cs" />
     <EmbeddedResource Include="Gui\DataExtractor.resx">
       <DependentUpon>DataExtractor.cs</DependentUpon>

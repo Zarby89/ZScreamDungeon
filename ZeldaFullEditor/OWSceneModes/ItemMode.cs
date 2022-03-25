@@ -13,35 +13,27 @@ namespace ZeldaFullEditor.OWSceneModes
 	{
 		public RoomPotSaveEditor selectedItem;
 		public RoomPotSaveEditor lastselectedItem;
-		SceneOW scene;
 		public bool isLeftPress = false;
-
-		public ItemMode(SceneOW scene)
+		private readonly ZScreamer ZS;
+		public ItemMode(ZScreamer parent)
 		{
-			this.scene = scene;
+			ZS = parent;
 		}
 
 		public void onMouseDown(MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Left)
-			{
-				isLeftPress = true;
-			}
-			else
-			{
-				isLeftPress = false;
-			}
+			isLeftPress = e.Button == MouseButtons.Left;
 
-			foreach (RoomPotSaveEditor item in scene.ow.allitems)
+			foreach (RoomPotSaveEditor item in ZS.OverworldManager.allitems)
 			{
-				if (item.roomMapId >= 0 + (scene.ow.worldOffset) && item.roomMapId < (64 + scene.ow.worldOffset))
+				if (item.roomMapId >= 0 + (ZS.OverworldManager.worldOffset) && item.roomMapId < (64 + ZS.OverworldManager.worldOffset))
 				{
 					if (e.X >= item.x && e.X <= item.x + 16 && e.Y >= item.y && e.Y <= item.y + 16)
 					{
 						selectedItem = item;
 						lastselectedItem = item;
 						byte nid = item.id;
-						if ((item.id & 0x80) == 0x80)
+						if (item.id.BitIsOn(0x80))
 						{
 							nid = (byte) (((item.id - 0x80) / 2) + 0x17);
 						}
@@ -52,21 +44,21 @@ namespace ZeldaFullEditor.OWSceneModes
 				}
 			}
 
-			scene.mouse_down = true;
+			ZS.OverworldScene.mouse_down = true;
 		}
 
 		public void Copy()
 		{
 			Clipboard.Clear();
 			RoomPotSaveEditor id = lastselectedItem.Copy();
-			Clipboard.SetData("owitem", id);
+			Clipboard.SetData(Constants.OverworldItemClipboardData, id);
 		}
 
 		public void Cut()
 		{
 			Clipboard.Clear();
 			RoomPotSaveEditor id = lastselectedItem.Copy();
-			Clipboard.SetData("owitem", id);
+			Clipboard.SetData(Constants.OverworldItemClipboardData, id);
 			Delete();
 
 			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
@@ -74,14 +66,13 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void Paste()
 		{
-			RoomPotSaveEditor data = (RoomPotSaveEditor) Clipboard.GetData("owitem");
+			RoomPotSaveEditor data = (RoomPotSaveEditor) Clipboard.GetData(Constants.OverworldItemClipboardData);
 			if (data != null)
 			{
-				scene.ow.allitems.Add(data);
-				selectedItem = data;
-				lastselectedItem = selectedItem;
+				ZS.OverworldManager.allitems.Add(data);
+				lastselectedItem = selectedItem = data;
 				isLeftPress = true;
-				scene.mouse_down = true;
+				ZS.OverworldScene.mouse_down = true;
 
 				//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 			}
@@ -93,10 +84,10 @@ namespace ZeldaFullEditor.OWSceneModes
 			{
 				if (selectedItem != null)
 				{
-					byte mid = scene.ow.allmaps[scene.mapHover + scene.ow.worldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (scene.mapHover + scene.ow.worldOffset);
+						mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
 					}
 					selectedItem.updateMapStuff(mid);
 					lastselectedItem = selectedItem;
@@ -124,7 +115,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				menu.Show(Cursor.Position);
 			}
 
-			scene.mouse_down = false;
+			ZS.OverworldScene.mouse_down = false;
 		}
 
 		private void deleteItem_Click(object sender, EventArgs e)
@@ -135,34 +126,30 @@ namespace ZeldaFullEditor.OWSceneModes
 		private void addItem_Click(object sender, EventArgs e)
 		{
 			RoomPotSaveEditor pitem = new RoomPotSaveEditor(0, 0, 0, 0, false);
-			scene.ow.allitems.Add(pitem);
+			ZS.OverworldManager.allitems.Add(pitem);
 			selectedItem = pitem;
 			lastselectedItem = selectedItem;
 			isLeftPress = true;
-			scene.mouse_down = true;
+			ZS.OverworldScene.mouse_down = true;
 
 			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 		}
 
 		public void onMouseMove(MouseEventArgs e)
 		{
-			scene.mouseX_Real = e.X;
-			scene.mouseY_Real = e.Y;
-			int mouseTileX = e.X / 16;
-			int mouseTileY = e.Y / 16;
-			int mapX = (mouseTileX / 32);
-			int mapY = (mouseTileY / 32);
+			ZS.OverworldScene.mouseX_Real = e.X;
+			ZS.OverworldScene.mouseY_Real = e.Y;
 
-			scene.mapHover = mapX + (mapY * 8);
+			ZS.OverworldScene.mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
 
 			if (selectedItem != null)
 			{
 				if (isLeftPress)
 				{
-					if (scene.mouse_down)
+					if (ZS.OverworldScene.mouse_down)
 					{
-						selectedItem.x = (e.X / 16) * 16;
-						selectedItem.y = (e.Y / 16) * 16;
+						selectedItem.x = e.X & ~0xF;
+						selectedItem.y = e.Y & ~0xF;
 
 						// scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 
@@ -175,7 +162,7 @@ namespace ZeldaFullEditor.OWSceneModes
 		{
 			if (lastselectedItem != null)
 			{
-				scene.ow.allitems.Remove(lastselectedItem);
+				ZS.OverworldManager.allitems.Remove(lastselectedItem);
 				lastselectedItem = null;
 
 				//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
@@ -185,18 +172,18 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void Draw(Graphics g)
 		{
-			if (scene.lowEndMode)
+			if (ZS.OverworldScene.lowEndMode)
 			{
 				Brush bgrBrush;
 				g.CompositingMode = CompositingMode.SourceOver;
-				foreach (RoomPotSaveEditor item in scene.ow.allitems)
+				foreach (RoomPotSaveEditor item in ZS.OverworldManager.allitems)
 				{
-					if (item.roomMapId != scene.ow.allmaps[scene.selectedMap].parent)
+					if (item.roomMapId != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
 					{
 						continue;
 					}
 
-					if (item.roomMapId >= (0 + scene.ow.worldOffset) && item.roomMapId < (64 + scene.ow.worldOffset))
+					if (item.roomMapId >= (0 + ZS.OverworldManager.worldOffset) && item.roomMapId < (64 + ZS.OverworldManager.worldOffset))
 					{
 
 						bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
@@ -205,7 +192,7 @@ namespace ZeldaFullEditor.OWSceneModes
 						g.DrawRectangle(Constants.Black200Pen, new Rectangle((item.x), (item.y), 16, 16));
 						byte nid = item.id;
 
-						if ((item.id & 0x80) == 0x80)
+						if (item.id.BitIsOn(0x80))
 						{
 							nid = (byte) (((item.id - 0x80) / 2) + 0x17);
 						}
@@ -215,7 +202,7 @@ namespace ZeldaFullEditor.OWSceneModes
 							continue;
 						}
 
-						scene.drawText(g, (item.x) - 1, (item.y) + 1, item.id.ToString("X2") + " - " + ItemsNames.name[nid]);
+						ZS.OverworldScene.drawText(g, item.x - 1, item.y + 1, $"{item.id:X2} - {ItemsNames.name[nid]}");
 					}
 				}
 
@@ -226,17 +213,17 @@ namespace ZeldaFullEditor.OWSceneModes
 				Brush bgrBrush;
 				g.CompositingMode = CompositingMode.SourceOver;
 
-				foreach (RoomPotSaveEditor item in scene.ow.allitems)
+				foreach (RoomPotSaveEditor item in ZS.OverworldManager.allitems)
 				{
-					if (item.roomMapId >= (0 + scene.ow.worldOffset) && item.roomMapId < (64 + scene.ow.worldOffset))
+					if (item.roomMapId >= (0 + ZS.OverworldManager.worldOffset) && item.roomMapId < (64 + ZS.OverworldManager.worldOffset))
 					{
 						bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
 
-						g.FillRectangle(bgrBrush, new Rectangle((item.x), (item.y), 16, 16));
-						g.DrawRectangle(Constants.Black200Pen, new Rectangle((item.x), (item.y), 16, 16));
+						g.FillRectangle(bgrBrush, new Rectangle(item.x, item.y, 16, 16));
+						g.DrawRectangle(Constants.Black200Pen, new Rectangle(item.x, item.y, 16, 16));
 						byte nid = item.id;
 
-						if ((item.id & 0x80) == 0x80)
+						if (item.id.BitIsOn(0x80))
 						{
 							nid = (byte) (((item.id - 0x80) / 2) + 0x17);
 						}
@@ -246,7 +233,7 @@ namespace ZeldaFullEditor.OWSceneModes
 							continue;
 						}
 
-						scene.drawText(g, (item.x) - 1, (item.y) + 1, item.id.ToString("X2") + " - " + ItemsNames.name[nid]);
+						ZS.OverworldScene.drawText(g, item.x - 1, item.y + 1, $"{item.id:X2} - {ItemsNames.name[nid]}");
 					}
 				}
 

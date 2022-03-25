@@ -15,8 +15,10 @@ namespace ZeldaFullEditor
 		public byte layer = 0;
 		public bool bg2 = false;
 
-		public PotItem(byte id, byte x, byte y, bool bg2)
+		private readonly ZScreamer ZS;
+		public PotItem(byte id, byte x, byte y, bool bg2, ZScreamer parent)
 		{
+			ZS = parent;
 			this.id = id;
 			this.x = x;
 			this.y = y;
@@ -154,8 +156,8 @@ namespace ZeldaFullEditor
 
 		public unsafe void draw_item_tile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2)
 		{
-			var alltilesData = (byte*) GFX.allgfx16Ptr.ToPointer();
-			byte* ptr = (byte*) GFX.roomBg1Ptr.ToPointer();
+			var alltilesData = (byte*) ZS.GFXManager.allgfx16Ptr.ToPointer();
+			byte* ptr = (byte*) ZS.GFXManager.roomBg1Ptr.ToPointer();
 
 			int drawid = (srcx + (srcy * 16));
 			for (var yl = 0; yl < sizey * 8; yl++)
@@ -197,8 +199,8 @@ namespace ZeldaFullEditor
 
 		public unsafe void drawSpriteTile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2, bool iskey = false)
 		{
-			var alltilesData = (byte*) GFX.currentgfx16Ptr.ToPointer();
-			byte* ptr = (byte*) GFX.roomBg1Ptr.ToPointer();
+			var alltilesData = (byte*) ZS.GFXManager.currentgfx16Ptr.ToPointer();
+			byte* ptr = (byte*) ZS.GFXManager.roomBg1Ptr.ToPointer();
 			int drawid = (srcx + (srcy * 16)) + 512;
 			for (var yl = 0; yl < sizey * 8; yl++)
 			{

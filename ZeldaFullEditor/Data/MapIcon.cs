@@ -8,10 +8,10 @@ namespace ZeldaFullEditor.Data
 {
 	class MapIcon
 	{
-		public short x = 0;
-		public short y = 0;
+		public ushort x = 0;
+		public ushort y = 0;
 		public ushort gfx = 0;
-		public MapIcon(short x, short y, ushort gfx)
+		public MapIcon(ushort x, ushort y, ushort gfx)
 		{
 			this.x = x;
 			this.y = y;

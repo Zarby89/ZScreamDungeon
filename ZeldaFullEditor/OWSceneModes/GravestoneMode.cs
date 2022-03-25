@@ -11,13 +11,13 @@ namespace ZeldaFullEditor.OWSceneModes
 {
 	public class GravestoneMode
 	{
-		SceneOW scene;
+		private readonly ZScreamer ZS;
 		public Gravestone selectedGrave = null;
 		public Gravestone lastselectedGrave = null;
 
-		public GravestoneMode(SceneOW scene)
+		public GravestoneMode(ZScreamer parent)
 		{
-			this.scene = scene;
+			ZS = parent;
 		}
 
 		public void onMouseDown(MouseEventArgs e)
@@ -26,15 +26,15 @@ namespace ZeldaFullEditor.OWSceneModes
 			{
 				for (int i = 0; i < 0x0F; i++)
 				{
-					Gravestone en = scene.ow.graves[i];
+					Gravestone en = ZS.OverworldManager.graves[i];
 					if (e.X >= en.xTilePos && e.X < en.xTilePos + 32 && e.Y >= en.yTilePos && e.Y < en.yTilePos + 32)
 					{
-						if (!scene.mouse_down)
+						if (!ZS.OverworldScene.mouse_down)
 						{
 							selectedGrave = en;
 							lastselectedGrave = en;
 							//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-							scene.mouse_down = true;
+							ZS.OverworldScene.mouse_down = true;
 						}
 					}
 				}
@@ -43,24 +43,19 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		public void onMouseMove(MouseEventArgs e)
 		{
-			if (scene.mouse_down)
+			if (ZS.OverworldScene.mouse_down)
 			{
 				int mouseTileX = e.X / 16;
 				int mouseTileY = e.Y / 16;
 				int mapX = (mouseTileX / 32);
 				int mapY = (mouseTileY / 32);
 
-				scene.mapHover = mapX + (mapY * 8);
+				ZS.OverworldScene.mapHover = mapX + (mapY * 8);
 
 				if (selectedGrave != null)
 				{
-					selectedGrave.xTilePos = (ushort) e.X;
-					selectedGrave.yTilePos = (ushort) e.Y;
-					if (scene.snapToGrid)
-					{
-						selectedGrave.xTilePos = (ushort) ((e.X / 8) * 8);
-						selectedGrave.yTilePos = (ushort) ((e.Y / 8) * 8);
-					}
+					selectedGrave.xTilePos = (ushort) (ZS.OverworldScene.snapToGrid ? e.X & ~0x7 : e.X);
+					selectedGrave.yTilePos = (ushort) (ZS.OverworldScene.snapToGrid ? e.Y & ~0x7 : e.Y);
 				}
 			}
 		}
@@ -71,12 +66,12 @@ namespace ZeldaFullEditor.OWSceneModes
 			{
 				if (selectedGrave != null)
 				{
-					if (scene.mapHover >= 64)
+					if (ZS.OverworldScene.mapHover >= 64)
 					{
-						scene.mapHover -= 64;
+						ZS.OverworldScene.mapHover -= 64;
 					}
-					int mx = (scene.mapHover - ((scene.mapHover / 8) * 8));
-					int my = ((scene.mapHover / 8));
+					int mx = ZS.OverworldScene.mapHover - (ZS.OverworldScene.mapHover & ~0x7);
+					int my = ZS.OverworldScene.mapHover / 8;
 
 					byte xx = (byte) ((selectedGrave.xTilePos - (mx * 512)) / 16);
 					byte yy = (byte) ((selectedGrave.yTilePos - (my * 512)) / 16);
@@ -85,7 +80,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 					lastselectedGrave = selectedGrave;
 					selectedGrave = null;
-					scene.mouse_down = false;
+					ZS.OverworldScene.mouse_down = false;
 				}
 			}
 		}
@@ -96,9 +91,9 @@ namespace ZeldaFullEditor.OWSceneModes
 			Pen bgrBrush = Constants.Magenta200Pen;
 			g.CompositingMode = CompositingMode.SourceOver;
 
-			for (int i = 0; i < scene.ow.graves.Length; i++)
+			for (int i = 0; i < ZS.OverworldManager.graves.Length; i++)
 			{
-				Gravestone e = scene.ow.graves[i];
+				Gravestone e = ZS.OverworldManager.graves[i];
 
 				if (selectedGrave != null)
 				{
@@ -114,17 +109,17 @@ namespace ZeldaFullEditor.OWSceneModes
 				}
 
 				g.DrawRectangle(bgrBrush, new Rectangle(e.xTilePos, e.yTilePos, 32, 32));
-				scene.drawText(g, e.xTilePos + 8, e.yTilePos + 8, i.ToString("X2"));
+				ZS.OverworldScene.drawText(g, e.xTilePos + 8, e.yTilePos + 8, i.ToString("X2"));
 
 				//scene.drawText(g, e.xTilePos + 8, e.yTilePos + 40, e.tilemapPos.ToString("X4"));
 				if (i == 0x0D) // Stairs
 				{
-					scene.drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL STAIRS");
+					ZS.OverworldScene.drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL STAIRS");
 				}
 
 				if (i == 0x0E) // Hole
 				{
-					scene.drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL HOLE");
+					ZS.OverworldScene.drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL HOLE");
 				}
 			}
 		}

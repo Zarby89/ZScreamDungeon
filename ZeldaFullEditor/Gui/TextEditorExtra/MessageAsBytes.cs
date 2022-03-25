@@ -78,21 +78,6 @@ namespace ZeldaFullEditor.Gui.TextEditorExtra
 				}
 			}
 
-			switch (pre)
-			{
-				case 0:
-				default:
-					break;
-				case 1:
-					s.Append("0x");
-					break;
-				case 2:
-					s.Append("$");
-					break;
-			}
-
-			s.Append(TextEditor.MESSAGETERMINATOR.ToString("X2"));
-
 			this.textBox1.Text = s.ToString();
 		}
 

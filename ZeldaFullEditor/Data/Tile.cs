@@ -25,65 +25,60 @@ namespace ZeldaFullEditor
 	{
 
 		private bool priority, hflip, vflip;
+		private ushort ps, hs, vs;
 
 		/// <summary>
 		/// True if high priority
 		/// </summary>
-		public bool Priority { get => priority; set => priority = value; }
+		public bool Priority
+		{
+			get => priority;
+			set
+			{
+				priority = value;
+				ps = (ushort) (priority ? 1 : 0);
+			}
+		}
 
 		/// <summary>
 		/// True if h flip
 		/// </summary>
-		public bool HFlip { get => hflip; set => hflip = value; }
+		public bool HFlip
+		{
+			get => hflip;
+			set
+			{
+				hflip = value;
+				hs = (ushort) (hflip ? 1 : 0);
+			}
+		}
 
 		/// <summary>
 		/// True if v flip
 		/// </summary>
-		public bool VFlip { get => vflip; set => vflip = value; }
+		public bool VFlip
+		{
+			get => vflip;
+			set
+			{
+				vflip = value;
+				vs = (ushort) (vflip ? 1 : 0);
+			}
+		}
 
 		/// <summary>
 		/// 0x0001 if high priority
 		/// </summary>
-		public ushort PriorityShort
-		{
-			get
-			{
-				return (ushort) (priority ? 1 : 0);
-			}
-			set
-			{
-				priority = value == 0x0001;
-			}
-		}
+		public ushort PriorityShort => ps;
 		/// <summary>
 		/// 0x0001 if h flip
 		/// </summary>
-		public ushort HFlipShort
-		{
-			get
-			{
-				return (ushort) (hflip ? 1 : 0);
-			}
-			set
-			{
-				hflip = value == 0x0001;
-			}
-		}
+		public ushort HFlipShort => hs;
 
 		/// <summary>
 		/// 0x0001 if v flip
 		/// </summary>
-		public ushort VFlipShort
-		{
-			get
-			{
-				return (ushort) (vflip ? 1 : 0);
-			}
-			set
-			{
-				vflip = value == 0x0001;
-			}
-		}
+		public ushort VFlipShort => vs;
 
 
 
@@ -93,9 +88,9 @@ namespace ZeldaFullEditor
 		public Tile(ushort id, byte palette = 4, bool priority = false, bool hflip = false, bool vflip = false) // Custom tile
 		{
 			this.id = id;
-			this.hflip = hflip;
-			this.vflip = vflip;
-			this.priority = priority;
+			HFlip = hflip;
+			VFlip = vflip;
+			Priority = priority;
 			this.palette = palette;
 		}
 
@@ -106,26 +101,26 @@ namespace ZeldaFullEditor
 
 		public Tile(byte b1, byte b2) // Tile from game data
 		{
-			this.id = (ushort) (((b2 & 0x01) << 8) + (b1));
-			this.vflip = (b2 & 0x80) == 0x80;
-			this.hflip = (b2 & 0x40) == 0x40;
-			this.priority = (b2 & 0x20) == 0x20;
+			this.id = (ushort) (((b2 & 0x01) << 8) | b1);
+			VFlip = (b2 & 0x80) == 0x80;
+			HFlip = (b2 & 0x40) == 0x40;
+			Priority = (b2 & 0x20) == 0x20;
 			this.palette = (byte) ((b2 >> 2) & 0x07);
 		}
 
-		public unsafe void SetTile(int xx, int yy, byte layer)
+		public unsafe void SetTile(int xx, int yy, byte layer, ZScreamer ZS)
 		{
 			if (xx + (yy * 64) < 4096)
 			{
-				ushort t = GFX.getshortilesinfo(GetTileInfo());
+				ushort t = GetGFXTileInfo(GetTileInfo());
 				if (layer == 0)
 				{
 
-					GFX.tilesBg1Buffer[xx + (yy * 64)] = t;
+					ZS.GFXManager.tilesBg1Buffer[xx + (yy * 64)] = t;
 				}
 				else
 				{
-					GFX.tilesBg2Buffer[xx + (yy * 64)] = t;
+					ZS.GFXManager.tilesBg2Buffer[xx + (yy * 64)] = t;
 				}
 			}
 		}
@@ -142,6 +137,19 @@ namespace ZeldaFullEditor
 			return value;
 		}
 
+		public static TileInfo GetTheGFXInfo(ushort tile)
+		{
+			// vhopppcc cccccccc
+			ushort tid = (ushort) (tile & Constants.TileNameMask);
+			byte p = (byte) ((tile >> 10) & 0x07);
+
+			bool o = (tile & Constants.TilePriorityBit) == Constants.TilePriorityBit;
+			bool h = (tile & Constants.TileHFlipBit) == Constants.TileHFlipBit;
+			bool v = (tile & Constants.TileVFlipBit) == Constants.TileVFlipBit;
+
+			return new TileInfo(tid, p, o, h, v);
+		}
+
 		public unsafe void Draw(IntPtr bitmapPointer)
 		{
 			// TODO: Add something here?
@@ -150,6 +158,26 @@ namespace ZeldaFullEditor
 		public unsafe void CopyTile(int x, int y, int xx, int yy)
 		{
 			// TODO: Add something here?
+		}
+
+		public static ushort GetGFXTileInfo(TileInfo t)
+		{
+			ushort tinfo = (ushort) (t.id | (t.palette << 10));
+
+			if (t.O)
+			{
+				tinfo |= Constants.TilePriorityBit;
+			}
+			if (t.H)
+			{
+				tinfo |= Constants.TileHFlipBit;
+			}
+			if (t.V)
+			{
+				tinfo |= Constants.TileVFlipBit;
+			}
+
+			return tinfo;
 		}
 	}
 }

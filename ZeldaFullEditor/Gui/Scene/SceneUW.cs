@@ -22,7 +22,7 @@ namespace ZeldaFullEditor
 	public class SceneUW : Scene
 	{
 		public Bitmap tempBitmap = new Bitmap(512, 512);
-		public short[] doorsObject = new short[] { 0x138, 0x139, 0x13A, 0x13B, 0xF9E, 0xFA9, 0xF9F, 0xFA0, 0x12D, 0x12E, 0x12F, 0x12E, 0x12D, 0x4632, 0x4693 };
+		public ushort[] doorsObject = new ushort[] { 0x138, 0x139, 0x13A, 0x13B, 0xF9E, 0xFA9, 0xF9F, 0xFA0, 0x12D, 0x12E, 0x12F, 0x12E, 0x12D, 0x4632, 0x4693 };
 		Rectangle lastSelectedRectangle;
 		SceneResizing resizeType = SceneResizing.none;
 
@@ -33,54 +33,30 @@ namespace ZeldaFullEditor
 		int rmx = 0;
 		int rmy = 0;
 
-		public SceneUW(DungeonMain f)
+		public SceneUW(ZScreamer parent) : base(parent)
 		{
 			//graphics = Graphics.FromImage(scene_bitmap);
 
-			this.MouseDown += new MouseEventHandler(onMouseDown);
-			this.MouseUp += new MouseEventHandler(onMouseUp);
-			this.MouseMove += new MouseEventHandler(onMouseMove);
-			this.MouseDoubleClick += new MouseEventHandler(onMouseDoubleClick);
-			this.MouseWheel += SceneUW_MouseWheel;
-			this.Paint += SceneUW_Paint;
-			mainForm = f;
+			MouseDown += new MouseEventHandler(onMouseDown);
+			MouseUp += new MouseEventHandler(onMouseUp);
+			MouseMove += new MouseEventHandler(onMouseMove);
+			MouseDoubleClick += new MouseEventHandler(onMouseDoubleClick);
+			MouseWheel += SceneUW_MouseWheel;
+			Paint += SceneUW_Paint;
 		}
 
 		private void SceneUW_MouseWheel(object sender, MouseEventArgs e)
 		{
-			if (room.selectedObject.Count > 0)
+			if (room.selectedObject.Count > 0 && room.selectedObject[0] is Room_Object objs)
 			{
-				if (room.selectedObject[0] is Room_Object objs)
+				if ((e.Delta > 0 && objs.IncreaseSize()) || (e.Delta < 0 && objs.DecreaseSize()))
 				{
-					if (e.Delta > 0)
-					{
-						if (objs.size < 15)
-						{
-							objs.UpdateSize();
-							objs.size++;
-							updateSelectionObject(objs);
-						}
-					}
-					else if (e.Delta < 0)
-					{
-						if (objs.size > 0)
-						{
-							objs.UpdateSize();
-							objs.size--;
-
-							if (objs.size >= 16)
-							{
-								objs.size = 15;
-							}
-
-							updateSelectionObject(objs);
-						}
-					}
+					updateSelectionObject(objs);
 				}
 			}
 
-			this.DrawRoom();
-			this.Refresh();
+			DrawRoom();
+			Refresh();
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -96,7 +72,7 @@ namespace ZeldaFullEditor
 
 			if ((resizeType & SceneResizing.left) == SceneResizing.left)
 			{
-				if (x <= (dragx) - lastElement.sizewidth)
+				if (x <= (dragx - lastElement.sizewidth))
 				{
 					if (lastElement.size < 15)
 					{
@@ -116,7 +92,7 @@ namespace ZeldaFullEditor
 						dragx -= lastElement.sizewidth;
 					}
 				}
-				else if (x >= (dragx) + lastElement.sizewidth)
+				else if (x >= (dragx + lastElement.sizewidth))
 				{
 					if (lastElement.size > 0)
 					{
@@ -140,7 +116,7 @@ namespace ZeldaFullEditor
 
 			if ((resizeType & SceneResizing.right) == SceneResizing.right)
 			{
-				if (x >= (dragx) + lastElement.sizewidth)
+				if (x >= (dragx + lastElement.sizewidth))
 				{
 					if (lastElement.size < 15)
 					{
@@ -159,7 +135,7 @@ namespace ZeldaFullEditor
 						dragx += lastElement.sizewidth;
 					}
 				}
-				else if (x <= (dragx) - lastElement.sizewidth)
+				else if (x <= (dragx - lastElement.sizewidth))
 				{
 					if (lastElement.size > 0)
 					{
@@ -185,7 +161,7 @@ namespace ZeldaFullEditor
 			//{
 			if ((resizeType & SceneResizing.down) == SceneResizing.down)
 			{
-				if (y >= (dragy) + lastElement.sizeheight)
+				if (y >= (dragy + lastElement.sizeheight))
 				{
 					if (lastElement.size < 15)
 					{
@@ -204,7 +180,7 @@ namespace ZeldaFullEditor
 						dragy += lastElement.sizeheight;
 					}
 				}
-				else if (y <= (dragy) - lastElement.sizeheight)
+				else if (y <= (dragy - lastElement.sizeheight))
 				{
 					if (lastElement.size > 0)
 					{
@@ -226,7 +202,7 @@ namespace ZeldaFullEditor
 
 			if ((resizeType & SceneResizing.up) == SceneResizing.up)
 			{
-				if (y <= (dragy) - lastElement.sizeheight)
+				if (y <= (dragy - lastElement.sizeheight))
 				{
 					if (lastElement.size < 15)
 					{
@@ -245,7 +221,7 @@ namespace ZeldaFullEditor
 						dragy -= lastElement.sizeheight;
 					}
 				}
-				else if (y >= (dragy) + lastElement.sizeheight)
+				else if (y >= (dragy + lastElement.sizeheight))
 				{
 					if (lastElement.size > 0)
 					{
@@ -272,7 +248,7 @@ namespace ZeldaFullEditor
 		// TODO: FIND PROBLEM THAT IS INCREASING SAVE TIME!!
 		private void onMouseMove(object sender, MouseEventArgs e)
 		{
-			mainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 
 			Cursor = Cursors.Default;
 			if (room == null)
@@ -370,137 +346,137 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			if (selectedMode == ObjectMode.EntrancePlacing)
+			if (ZS.CurrentUWMode == DungeonEditMode.Entrances)
 			{
-				if (mainForm.selectedEntrance != null)
+				if (ZS.DungeonForm.selectedEntrance != null)
 				{
 					int ey = (room.index / 16);
 					int ex = room.index - (ey * 16);
 
-					if (mainForm.gridEntranceCheckbox.Checked)
+					if (ZS.DungeonForm.gridEntranceCheckbox.Checked)
 					{
-						MX = (MX / 8) * 8;
-						MY = (MY / 8) * 8;
+						MX &= ~0x7;
+						MY &= ~0x7;
 					}
 
-					mainForm.selectedEntrance.XPosition = (short) (MX + (ex * 512));
-					mainForm.selectedEntrance.YPosition = (short) (MY + (ey * 512));
-					mainForm.selectedEntrance.CameraTriggerX = (short) (MX);
-					mainForm.selectedEntrance.CameraTriggerY = (short) (MY);
-					mainForm.selectedEntrance.Room = (short) room.index;
+					ZS.DungeonForm.selectedEntrance.XPosition = (ushort) (MX + (ex * 512));
+					ZS.DungeonForm.selectedEntrance.YPosition = (ushort) (MY + (ey * 512));
+					ZS.DungeonForm.selectedEntrance.CameraTriggerX = (ushort) MX;
+					ZS.DungeonForm.selectedEntrance.CameraTriggerY = (ushort) MY;
+					ZS.DungeonForm.selectedEntrance.Room = (ushort) room.index;
 
-					if (mainForm.selectedEntrance.CameraTriggerX > 383)
+					if (ZS.DungeonForm.selectedEntrance.CameraTriggerX > 383)
 					{
-						mainForm.selectedEntrance.CameraTriggerX = 383;
+						ZS.DungeonForm.selectedEntrance.CameraTriggerX = 383;
 					}
-					if (mainForm.selectedEntrance.CameraTriggerY > 392)
+					if (ZS.DungeonForm.selectedEntrance.CameraTriggerY > 392)
 					{
-						mainForm.selectedEntrance.CameraTriggerY = 392;
+						ZS.DungeonForm.selectedEntrance.CameraTriggerY = 392;
 					}
-					if (mainForm.selectedEntrance.CameraTriggerX < 128)
+					if (ZS.DungeonForm.selectedEntrance.CameraTriggerX < 128)
 					{
-						mainForm.selectedEntrance.CameraTriggerX = 128;
+						ZS.DungeonForm.selectedEntrance.CameraTriggerX = 128;
 					}
-					if (mainForm.selectedEntrance.CameraTriggerY < 112)
+					if (ZS.DungeonForm.selectedEntrance.CameraTriggerY < 112)
 					{
-						mainForm.selectedEntrance.CameraTriggerY = 112;
+						ZS.DungeonForm.selectedEntrance.CameraTriggerY = 112;
 					}
 
-					mainForm.selectedEntrance.CameraY = (short) (mainForm.selectedEntrance.CameraTriggerX + (ex * 512));
-					mainForm.selectedEntrance.CameraX = (short) (mainForm.selectedEntrance.CameraTriggerY + (ey * 512));
+					ZS.DungeonForm.selectedEntrance.CameraY = (ushort) (ZS.DungeonForm.selectedEntrance.CameraTriggerX + (ex * 512));
+					ZS.DungeonForm.selectedEntrance.CameraX = (ushort) (ZS.DungeonForm.selectedEntrance.CameraTriggerY + (ey * 512));
 
-					mainForm.selectedEntrance.cameraBoundaryQW = (byte) (ex * 2);
-					mainForm.selectedEntrance.cameraBoundaryFW = (byte) (ex * 2);
-					mainForm.selectedEntrance.cameraBoundaryQE = (byte) (ex * 2);
-					mainForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 1);
+					ZS.DungeonForm.selectedEntrance.cameraBoundaryQW = (byte) (ex * 2);
+					ZS.DungeonForm.selectedEntrance.cameraBoundaryFW = (byte) (ex * 2);
+					ZS.DungeonForm.selectedEntrance.cameraBoundaryQE = (byte) (ex * 2);
+					ZS.DungeonForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 1);
 
-					mainForm.selectedEntrance.cameraBoundaryQN = (byte) ((ey * 2) + 1);
-					mainForm.selectedEntrance.cameraBoundaryFN = (byte) (ey * 2);
-					mainForm.selectedEntrance.cameraBoundaryQS = (byte) ((ey * 2) + 1);
-					mainForm.selectedEntrance.cameraBoundaryFS = (byte) ((ey * 2) + 1);
+					ZS.DungeonForm.selectedEntrance.cameraBoundaryQN = (byte) ((ey * 2) + 1);
+					ZS.DungeonForm.selectedEntrance.cameraBoundaryFN = (byte) (ey * 2);
+					ZS.DungeonForm.selectedEntrance.cameraBoundaryQS = (byte) ((ey * 2) + 1);
+					ZS.DungeonForm.selectedEntrance.cameraBoundaryFS = (byte) ((ey * 2) + 1);
 
 					if (MX < 256 && MY < 256) // Top left quadrant
 					{
-						mainForm.selectedEntrance.Scrollquadrant = 0x00;
+						ZS.DungeonForm.selectedEntrance.Scrollquadrant = 0x00;
 
-						mainForm.selectedEntrance.cameraBoundaryQN = (byte) ((ey * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFN = (byte) (ey * 2);
-						mainForm.selectedEntrance.cameraBoundaryQS = (byte) ((ey * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFS = (byte) ((ey * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryQN = (byte) ((ey * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryFN = (byte) (ey * 2);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryQS = (byte) ((ey * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryFS = (byte) ((ey * 2) + 1);
 
-						mainForm.selectedEntrance.cameraBoundaryQW = (byte) (ex * 2);
-						mainForm.selectedEntrance.cameraBoundaryFW = (byte) (ex * 2);
-						mainForm.selectedEntrance.cameraBoundaryQE = (byte) (ex * 2);
-						mainForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryQW = (byte) (ex * 2);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryFW = (byte) (ex * 2);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryQE = (byte) (ex * 2);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 1);
 					}
 
 					if (MX > 256 && MY < 256) // Top right quadrant
 					{
-						mainForm.selectedEntrance.Scrollquadrant = 0x10;
-						mainForm.selectedEntrance.cameraBoundaryQN = (byte) ((ey * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFN = (byte) (ey * 2);
-						mainForm.selectedEntrance.cameraBoundaryQS = (byte) ((ey * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFS = (byte) ((ey * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.Scrollquadrant = 0x10;
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryQN = (byte) ((ey * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryFN = (byte) (ey * 2);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryQS = (byte) ((ey * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryFS = (byte) ((ey * 2) + 1);
 
-						mainForm.selectedEntrance.cameraBoundaryQW = (byte) ((ex * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFW = (byte) ((ex * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryQE = (byte) ((ex * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 2);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryQW = (byte) ((ex * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryFW = (byte) ((ex * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryQE = (byte) ((ex * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 2);
 					}
 
 					if (MX < 256 && MY > 256) // Bottom left quadrant
 					{
-						mainForm.selectedEntrance.Scrollquadrant = 0x02;
-						mainForm.selectedEntrance.cameraBoundaryQW = (byte) (ex * 2);
-						mainForm.selectedEntrance.cameraBoundaryFW = (byte) (ex * 2);
-						mainForm.selectedEntrance.cameraBoundaryQE = (byte) (ex * 2);
-						mainForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.Scrollquadrant = 0x02;
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryQW = (byte) (ex * 2);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryFW = (byte) (ex * 2);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryQE = (byte) (ex * 2);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 1);
 					}
 
 					if (MX > 256 && MY > 256) // Bottom right quadrant
 					{
-						mainForm.selectedEntrance.Scrollquadrant = 0x12;
-						mainForm.selectedEntrance.cameraBoundaryQW = (byte) ((ex * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFW = (byte) ((ex * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryQE = (byte) ((ex * 2) + 1);
-						mainForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 2);
-						mainForm.selectedEntrance.CameraY = (short) ((ex * 512) + 256);
-						mainForm.selectedEntrance.CameraX = (short) ((ey * 512) + 256);
+						ZS.DungeonForm.selectedEntrance.Scrollquadrant = 0x12;
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryQW = (byte) ((ex * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryFW = (byte) ((ex * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryQE = (byte) ((ex * 2) + 1);
+						ZS.DungeonForm.selectedEntrance.cameraBoundaryFE = (byte) ((ex * 2) + 2);
+						ZS.DungeonForm.selectedEntrance.CameraY = (ushort) ((ex * 512) + 256);
+						ZS.DungeonForm.selectedEntrance.CameraX = (ushort) ((ey * 512) + 256);
 					}
 
-					mainForm.selectedEntrance.CameraY = mainForm.selectedEntrance.XPosition;
-					mainForm.selectedEntrance.CameraX = mainForm.selectedEntrance.YPosition;
+					ZS.DungeonForm.selectedEntrance.CameraY = ZS.DungeonForm.selectedEntrance.XPosition;
+					ZS.DungeonForm.selectedEntrance.CameraX = ZS.DungeonForm.selectedEntrance.YPosition;
 
-					int scrollXRange = mainForm.selectedEntrance.CameraX % 512;
+					int scrollXRange = ZS.DungeonForm.selectedEntrance.CameraX % 512;
 					if (scrollXRange >= 350)
 					{
-						mainForm.selectedEntrance.CameraX = (short) ((ey * 512) + 256 + 16);
+						ZS.DungeonForm.selectedEntrance.CameraX = (ushort) ((ey * 512) + 256 + 16);
 					}
 					else if (scrollXRange <= 150)
 					{
-						mainForm.selectedEntrance.CameraX = (short) ((ey * 512));
+						ZS.DungeonForm.selectedEntrance.CameraX = (ushort) (ey * 512);
 					}
 					else
 					{
-						mainForm.selectedEntrance.CameraX = (short) (mainForm.selectedEntrance.YPosition - 112);
+						ZS.DungeonForm.selectedEntrance.CameraX = (ushort) (ZS.DungeonForm.selectedEntrance.YPosition - 112);
 					}
 
-					int scrollYRange = mainForm.selectedEntrance.CameraY % 512;
+					int scrollYRange = ZS.DungeonForm.selectedEntrance.CameraY % 512;
 					if (scrollYRange >= 350)
 					{
-						mainForm.selectedEntrance.CameraY = (short) ((ex * 512) + 256);
+						ZS.DungeonForm.selectedEntrance.CameraY = (ushort) ((ex * 512) + 256);
 					}
 					else if (scrollYRange <= 150)
 					{
-						mainForm.selectedEntrance.CameraY = (short) ((ex * 512));
+						ZS.DungeonForm.selectedEntrance.CameraY = (ushort) (ex * 512);
 					}
 					else
 					{
-						mainForm.selectedEntrance.CameraY = (short) (mainForm.selectedEntrance.XPosition - 128);
+						ZS.DungeonForm.selectedEntrance.CameraY = (ushort) (ZS.DungeonForm.selectedEntrance.XPosition - 128);
 					}
 
-					//mainForm.selectedEntrance.YPosition = (short)(e.Y + (ey * 512));
-					//mainForm.selectedEntrance.YPosition = (short)(e.Y + (ey * 512));
+					//ZS.DungeonForm.selectedEntrance.YPosition = (short)(e.Y + (ey * 512));
+					//ZS.DungeonForm.selectedEntrance.YPosition = (short)(e.Y + (ey * 512));
 
 					DrawRoom();
 					Refresh();
@@ -509,13 +485,13 @@ namespace ZeldaFullEditor
 			}
 
 			bool colliding_chest = false;
-			if (selectedMode == ObjectMode.Chestmode)
+			if (ZS.CurrentUWMode == DungeonEditMode.Chests)
 			{
 				foreach (Chest c in room.chest_list)
 				{
 					if (MX >= (c.x * 8) && MY >= (c.y * 8) - 16 && MX <= (c.x * 8) + 16 && MY <= (c.y * 8) + 16)
 					{
-						mainForm.toolTip1.Show(ChestItems_Name.name[c.item] + " " + c.item.ToString("X2"), this, new Point(e.X, e.Y + 16));
+						ZS.MainForm.toolTip1.Show(ChestItems_Name.name[c.item] + " " + c.item.ToString("X2"), this, new Point(e.X, e.Y + 16));
 						colliding_chest = true;
 					}
 				}
@@ -523,7 +499,7 @@ namespace ZeldaFullEditor
 
 			if (!colliding_chest)
 			{
-				mainForm.toolTip1.Hide(this);
+				ZS.MainForm.toolTip1.Hide(this);
 			}
 
 			if (mouse_down) // Slowdown problem in save caused by something here
@@ -531,7 +507,7 @@ namespace ZeldaFullEditor
 				//updating_info = true;
 
 				setMouseSizeMode(e); // Define the size of mx,my for each mode
-				if (selectedMode != ObjectMode.Doormode)
+				if (ZS.CurrentUWMode != DungeonEditMode.Doors)
 				{
 					if (mx != last_mx || my != last_my)
 					{
@@ -562,12 +538,12 @@ namespace ZeldaFullEditor
 							if (lastSelectedRectangle != r && new Rectangle(MX, MY, 1, 1).IntersectsWith(r))
 							{
 								lastSelectedRectangle = r;
-								int doordir = (i / 12);
+								int doordir = i / 12;
 								if (dobj.door_pos != (byte) ((i * 2) - (doordir * 12)) ||
-									dobj.door_dir != (byte) (doordir))
+									dobj.door_dir != (byte) doordir)
 								{
-									dobj.door_pos = (((byte) ((i - (doordir * 12)) * 2)));
-									dobj.door_dir = ((byte) (doordir));
+									dobj.door_pos = (byte) ((i - (doordir * 12)) * 2);
+									dobj.door_dir = (byte) doordir;
 									dobj.updateId();
 									dobj.Draw();
 									room.has_changed = true;
@@ -586,7 +562,7 @@ namespace ZeldaFullEditor
 
 		public void move_objects()
 		{
-			foreach (Object o in room.selectedObject)
+			foreach (object o in room.selectedObject)
 			{
 				if (o is Sprite sp)
 				{
@@ -639,13 +615,12 @@ namespace ZeldaFullEditor
 
 			if (room == null)
 			{
-				g.Clear(this.BackColor);
-
+				g.Clear(BackColor);
 				return;
 			}
 
 			// TODO can this be an or statement?
-			if (mainForm.x2zoom)
+			if (ZS.MainForm.x2zoom)
 			{
 				g = Graphics.FromImage(tempBitmap);
 			}
@@ -658,13 +633,14 @@ namespace ZeldaFullEditor
 			g.SetClip(Constants.Rect_0_0_512_512);
 			g.Clear(Color.Black);
 
-			if (room.bg2 != Background2.Translucent || room.bg2 != Background2.Transparent || room.bg2 != Background2.OnTop || room.bg2 != Background2.Off)
+			if (room.bg2 != Background2.Translucent || room.bg2 != Background2.Transparent
+				|| room.bg2 != Background2.OnTop || room.bg2 != Background2.Off)
 			{
-				g.DrawImage(GFX.roomBg2Bitmap, 0, 0);
+				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, 0, 0);
 			}
 
-			//e.Graphics.DrawImage(GFX.roomBgLayoutBitmap,0,0);
-			g.DrawImage(GFX.roomBg1Bitmap, 0, 0);
+			//e.Graphics.DrawImage(ZS.GFXManager.roomBgLayoutBitmap,0,0);
+			g.DrawImage(ZS.GFXManager.roomBg1Bitmap, 0, 0);
 
 			if (room.bg2 == Background2.Translucent || room.bg2 == Background2.Transparent)
 			{
@@ -686,14 +662,14 @@ namespace ZeldaFullEditor
 				   ColorAdjustType.Bitmap);
 
 				//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
-				g.DrawImage(GFX.roomBg2Bitmap, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
+				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
 			}
 			else if (room.bg2 == Background2.OnTop)
 			{
-				g.DrawImage(GFX.roomBg2Bitmap, 0, 0);
+				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, 0, 0);
 			}
 
-			//e.Graphics.DrawImage(GFX.currentgfx16Bitmap, 0, -256);
+			//e.Graphics.DrawImage(ZS.GFXManager.currentgfx16Bitmap, 0, -256);
 			drawSelection(g);
 
 			drawGrid(g);
@@ -703,31 +679,28 @@ namespace ZeldaFullEditor
 			int roomX = superX * 512;
 			int roomY = superY * 512;
 
-			if (mainForm.entranceCameraToolStripMenuItem.Checked)
+			if (ZS.MainForm.selectedEntrance != null)
 			{
-				if (mainForm.selectedEntrance != null)
+				if (ZS.MainForm.entranceCameraToolStripMenuItem.Checked)
 				{
-					int localCameraX = mainForm.selectedEntrance.CameraTriggerX - 128;
-					int localCameraY = mainForm.selectedEntrance.CameraTriggerY - 116;
-
-					g.DrawRectangle(Pens.Orange, new Rectangle(localCameraX, localCameraY, 256, 224));
-					//Console.WriteLine(localCameraX + "," + localCameraY);
+					g.DrawRectangle(Pens.Orange, new Rectangle(
+						ZS.MainForm.selectedEntrance.CameraTriggerX - 128,
+						ZS.MainForm.selectedEntrance.CameraTriggerY - 116,
+						256,
+						224));
 				}
-			}
 
-			if (mainForm.entrancePositionToolStripMenuItem.Checked)
-			{
-				if (mainForm.selectedEntrance != null)
+				if (ZS.MainForm.entrancePositionToolStripMenuItem.Checked)
 				{
-					int xpos = mainForm.selectedEntrance.XPosition - roomX;
-					int ypos = mainForm.selectedEntrance.YPosition - roomY;
+					int xpos = ZS.MainForm.selectedEntrance.XPosition - roomX;
+					int ypos = ZS.MainForm.selectedEntrance.YPosition - roomY;
 					g.DrawLine(Pens.White, xpos - 4, ypos, xpos + 4, ypos);
 					g.DrawLine(Pens.White, xpos, ypos - 4, xpos, ypos + 4);
 				}
 			}
 
-			//e.Graphics.DrawImage(GFX.roomObjectsBitmap,0,0);
-			//e.Graphics.DrawImage(GFX., 0, -512);
+			//e.Graphics.DrawImage(ZS.GFXManager.roomObjectsBitmap,0,0);
+			//e.Graphics.DrawImage(ZS.GFXManager., 0, -512);
 			//drawText(e.Graphics,4,4, "This is a test? []()abc 1234567890-+");
 			int stairCount = 0;
 			int chestCount = 0;
@@ -735,19 +708,21 @@ namespace ZeldaFullEditor
 
 			foreach (Room_Object o in room.tilesObjects)
 			{
-				if (mainForm.showChestIDs && (o.id == 0xF99 || o.id == 0xFB1))
+				if (ZS.DungeonForm.showChestIDs && (o.id == Constants.ChestID || o.id == Constants.BigChestID))
 				{
 					drawText(g, (o.nx * 8) + 6, (o.ny * 8) + 8, chestCount.ToString());
 					chestCount++;
 				}
 
-				if (mainForm.invisibleObjectsTextToolStripMenuItem.Checked)
+				// TODO :cry:
+				// TODO magic numbers
+				if (ZS.DungeonForm.invisibleObjectsTextToolStripMenuItem.Checked)
 				{
-					if (o.id == 0xFF3)
+					if (o.id == 0x273)
 					{
 						drawText(e.Graphics, o.x * 8, o.y * 8, "BG2\nFull\nMask");
 					}
-					else if (o.id == 0xFAA)
+					else if (o.id == 0x22A)
 					{
 						drawText(e.Graphics, o.x * 8, o.y * 8, "Lamp");
 					}
@@ -768,7 +743,7 @@ namespace ZeldaFullEditor
 
 				if (o.options == ObjectOption.Door)
 				{
-					if (mainForm.showDoorsIDs)
+					if (ZS.DungeonForm.showDoorsIDs)
 					{
 						drawText(g, (o.x * 8) + 12, (o.y * 8), doorCount.ToString());
 					}
@@ -787,7 +762,7 @@ namespace ZeldaFullEditor
 
 				if (o.options == ObjectOption.Block)
 				{
-					g.DrawImage(GFX.moveableBlock, o.nx * 8, o.ny * 8);
+					g.DrawImage(ZS.GFXManager.moveableBlock, o.nx * 8, o.ny * 8);
 				}
 
 				if (doorsObject.Contains(o.id))
@@ -797,7 +772,7 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			if (mainForm.showSpriteText)
+			if (ZS.MainForm.showSpriteText)
 			{
 				foreach (Sprite spr in room.sprites)
 				{
@@ -805,7 +780,7 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			if (mainForm.showChestText)
+			if (ZS.MainForm.showChestText)
 			{
 				foreach (Chest c in room.chest_list)
 				{
@@ -813,12 +788,12 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			if (mainForm.showItemsText)
+			if (ZS.MainForm.showItemsText)
 			{
 				foreach (PotItem c in room.pot_items)
 				{
 					int dropboxid = c.id;
-					if ((c.id & 0x80) == 0x80) // It is a special object
+					if (c.id.BitIsOn(0x80))
 					{
 						dropboxid = ((c.id - 0x80) / 2) + 0x17; // No idea if it will work
 					}
@@ -834,13 +809,14 @@ namespace ZeldaFullEditor
 			}
 
 			drawDoorsPosition(g);
-			if (mainForm.x2zoom)
+
+			if (ZS.MainForm.x2zoom)
 			{
 				e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 				e.Graphics.DrawImage(tempBitmap, Constants.Rect_0_0_1024_1024);
 			}
 
-			if (selectedMode == ObjectMode.CollisionMap)
+			if (ZS.CurrentUWMode == DungeonEditMode.CollisionMap)
 			{
 				for (int i = 0; i < 4096; i++)
 				{
@@ -889,75 +865,101 @@ namespace ZeldaFullEditor
 				return;
 			}
 
-			mainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 
 			//this.Focus();
-			mainForm.activeScene = this;
+			ZS.ActiveScene = this;
 
 			room.has_changed = true;
-			mainForm.checkAnyChanges();
+			ZS.DungeonForm.checkAnyChanges();
 
-			if (selectedMode == ObjectMode.EntrancePlacing)
+			if (ZS.CurrentUWMode == DungeonEditMode.Entrances)
 			{
-				mainForm.entrancetreeView_AfterSelect(null, null);
-				selectedMode = ObjectMode.Bgallmode;
+				ZS.DungeonForm.entrancetreeView_AfterSelect(null, null);
+				ZS.CurrentUWMode = DungeonEditMode.LayerAll;
 				return;
 			}
 
-			if ((byte) selectedMode >= 0 && (byte) selectedMode <= 3)
+			switch (ZS.CurrentUWMode)
 			{
-				if (room.selectedObject.Count == 1 && resizeType != SceneResizing.none)
-				{
-					//Room_Object obj = (room.selectedObject[0] as Room_Object);
-					mouse_down = true;
-					resizing = true;
-					dragx = MX;
-					dragy = MY;
-					return;
-				}
-			}
-
-			if (mainForm.tabControl1.SelectedIndex == 1) // If we are on object tab
-			{
-				if ((byte) selectedMode <= 2) // If selected mode == bg1,bg2,bg3
-				{
-					if (selectedDragObject != null) // If there's an object selected
+				case DungeonEditMode.Layer1:
+				case DungeonEditMode.Layer2:
+				case DungeonEditMode.Layer3:
+				case DungeonEditMode.LayerAll:
+					if (room.selectedObject.Count == 1 && resizeType != SceneResizing.none)
 					{
-						room.selectedObject.Clear(); // Clear the object buffer
-
-						// Add the new object in the buffer
-						Room_Object ro = room.addObject(selectedDragObject.id, 0, 0, 0, (byte) selectedMode);
-
-						if (ro != null)
-						{
-							ro.setRoom(room);
-							ro.getObjectSize();
-							room.tilesObjects.Add(ro);
-							room.selectedObject.Add(ro);
-							dragx = 0;
-							dragy = 0;
-						}
-
-						room.has_changed = true;
+						//Room_Object obj = (room.selectedObject[0] as Room_Object);
 						mouse_down = true;
-						selectedDragObject = null;
-						mainForm.objectViewer1.selectedObject = null;
-						mainForm.objectViewer1.Refresh();
+						resizing = true;
+						dragx = MX;
+						dragy = MY;
+						return;
 					}
-				}
-				else if (selectedDragObject != null) // If there's an object selected
-				{
-					selectedDragObject = null; // Set the object null
-					mainForm.objectViewer1.selectedIndex = -1;
-					mainForm.objectViewer1.selectedObject = null;
-					mainForm.objectViewer1.Refresh();
-					mouse_down = false;
+					break;
+			}
 
-					MessageBox.Show("Objects can only be placed while working on backgrounds 1, 2, or 3.");
-					return;
+			if (ZS.DungeonForm.tabControl1.SelectedIndex == 1) // If we are on object tab
+			{
+				switch (ZS.CurrentUWMode)
+				{
+					case DungeonEditMode.Layer1:
+					case DungeonEditMode.Layer2:
+					case DungeonEditMode.Layer3:
+						if (selectedDragObject != null) // If there's an object selected
+						{
+							room.selectedObject.Clear(); // Clear the object buffer
+
+							// Add the new object in the buffer
+							byte lay = 0;
+							switch (ZS.CurrentUWMode)
+							{
+								case DungeonEditMode.Layer1:
+									lay = 0;
+									break;
+								case DungeonEditMode.Layer2:
+									lay = 1;
+									break;
+								case DungeonEditMode.Layer3:
+									lay = 2;
+									break;
+							}
+
+							Room_Object ro = room.addObject(selectedDragObject.id, 0, 0, 0, lay);
+
+							if (ro != null)
+							{
+								ro.setRoom(room);
+								ro.getObjectSize();
+								room.tilesObjects.Add(ro);
+								room.selectedObject.Add(ro);
+								dragx = 0;
+								dragy = 0;
+							}
+
+							room.has_changed = true;
+							mouse_down = true;
+							selectedDragObject = null;
+							ZS.DungeonForm.objectViewer1.selectedObject = null;
+							ZS.DungeonForm.objectViewer1.Refresh();
+						}
+						break;
+
+					default:
+						if (selectedDragObject != null) // If there's an object selected
+						{
+							selectedDragObject = null; // Set the object null
+							ZS.DungeonForm.objectViewer1.selectedIndex = -1;
+							ZS.DungeonForm.objectViewer1.selectedObject = null;
+							ZS.DungeonForm.objectViewer1.Refresh();
+							mouse_down = false;
+
+							MessageBox.Show("Objects can only be placed while working on backgrounds 1, 2, or 3.");
+							return;
+						}
+						break;
 				}
 			}
-			else if (mainForm.tabControl1.SelectedIndex == 2)
+			else if (ZS.DungeonForm.tabControl1.SelectedIndex == 2)
 			{
 				if (selectedDragSprite != null)
 				{
@@ -967,7 +969,7 @@ namespace ZeldaFullEditor
 
 					if (spr != null)
 					{
-						mainForm.update_modes_buttons(mainForm.spritemodeButton, new EventArgs());
+						ZS.DungeonForm.UpdateUnderworldMode(DungeonEditMode.Sprites);
 						room.selectedObject.Add(spr);
 						dragx = 0;
 						dragy = 0;
@@ -979,8 +981,8 @@ namespace ZeldaFullEditor
 					selectedDragObject = null;
 					selectedDragSprite = null;
 
-					mainForm.spritesView1.selectedObject = null;
-					mainForm.spritesView1.Refresh();
+					ZS.DungeonForm.spritesView1.selectedObject = null;
+					ZS.DungeonForm.spritesView1.Refresh();
 				}
 			}
 
@@ -989,7 +991,7 @@ namespace ZeldaFullEditor
 				doorArray = new Rectangle[48];
 				found = false;
 
-				if (selectedMode == ObjectMode.Spritemode)
+				if (ZS.CurrentUWMode == DungeonEditMode.Blocks)
 				{
 					dragx = MX / 16;
 					dragy = MY / 16;
@@ -1001,14 +1003,11 @@ namespace ZeldaFullEditor
 
 					foreach (Sprite spr in room.sprites)
 					{
-						if (isMouseCollidingWith(spr, e))
+						if (isMouseCollidingWith(spr, e) && !spr.selected)
 						{
-							if (!spr.selected)
-							{
-								room.selectedObject.Add(spr);
-								found = true;
-								break;
-							}
+							room.selectedObject.Add(spr);
+							found = true;
+							break;
 						}
 					}
 
@@ -1017,32 +1016,29 @@ namespace ZeldaFullEditor
 						room.selectedObject.Clear();
 					}
 				}
-				else if (selectedMode == ObjectMode.Itemmode)
+				else if (ZS.CurrentUWMode == DungeonEditMode.Secrets)
 				{
 					dragx = MX / 8;
 					dragy = MY / 8;
 
 					if (room.selectedObject.Count == 1)
 					{
-						foreach (Object o in room.pot_items)
-						{
-							// TODO: Add something here?
-							//(o as PotItem).selected = false;
-						}
+						//foreach (Object o in room.pot_items)
+						//{
+						//	// TODO: Add something here?
+						//	//(o as PotItem).selected = false;
+						//}
 
 						room.selectedObject.Clear();
 					}
 
 					foreach (PotItem item in room.pot_items)
 					{
-						if (isMouseCollidingWith(item, e))
+						if (isMouseCollidingWith(item, e) && !item.selected)
 						{
-							if (!item.selected)
-							{
-								room.selectedObject.Add(item);
-								found = true;
-								break;
-							}
+							room.selectedObject.Add(item);
+							found = true;
+							break;
 						}
 					}
 
@@ -1051,7 +1047,8 @@ namespace ZeldaFullEditor
 						room.selectedObject.Clear();
 					}
 				}
-				else if ((byte) selectedMode >= 0 && (byte) selectedMode <= 3)
+				else if (ZS.CurrentUWMode == DungeonEditMode.Layer1 || ZS.CurrentUWMode == DungeonEditMode.Layer2 ||
+					ZS.CurrentUWMode == DungeonEditMode.Layer3 || ZS.CurrentUWMode == DungeonEditMode.LayerAll)
 				{
 					dragx = MX / 8;
 					dragy = MY / 8;
@@ -1060,12 +1057,9 @@ namespace ZeldaFullEditor
 					for (int i = room.tilesObjects.Count - 1; i >= 0; i--)
 					{
 						Room_Object obj = room.tilesObjects[i];
-						if (selectedMode != ObjectMode.Bgallmode)
+						if (ZS.CurrentUWMode != DungeonEditMode.LayerAll && ((byte) ZS.CurrentUWMode != obj.layer))
 						{
-							if ((byte) selectedMode != obj.layer)
-							{
-								continue;
-							}
+							continue;
 						}
 
 						if (isMouseCollidingWith(obj, e))
@@ -1084,7 +1078,10 @@ namespace ZeldaFullEditor
 								}
 							}
 
-							if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr && (obj.options & ObjectOption.Door) != ObjectOption.Door && (obj.options & ObjectOption.Torch) != ObjectOption.Torch && (obj.options & ObjectOption.Block) != ObjectOption.Block)
+							if ((obj.options & ObjectOption.Bgr) != ObjectOption.Bgr
+								&& (obj.options & ObjectOption.Door) != ObjectOption.Door
+								&& (obj.options & ObjectOption.Torch) != ObjectOption.Torch
+								&& (obj.options & ObjectOption.Block) != ObjectOption.Block)
 							{
 								for (int p = 0; p < obj.collisionPoint.Count; p++)
 								{
@@ -1116,7 +1113,7 @@ namespace ZeldaFullEditor
 						}
 					}
 				}
-				else if (selectedMode == ObjectMode.Doormode)
+				else if (ZS.CurrentUWMode == DungeonEditMode.Doors)
 				{
 					// Console.Write("Door mode");
 					room.selectedObject.Clear();
@@ -1141,7 +1138,7 @@ namespace ZeldaFullEditor
 						}
 					}
 				}
-				else if (selectedMode == ObjectMode.Blockmode)
+				else if (ZS.CurrentUWMode == DungeonEditMode.Blocks)
 				{
 					room.selectedObject.Clear();
 					dragx = MX / 8;
@@ -1162,7 +1159,7 @@ namespace ZeldaFullEditor
 						}
 					}
 				}
-				else if (selectedMode == ObjectMode.Torchmode)
+				else if (ZS.CurrentUWMode == DungeonEditMode.Torches)
 				{
 					room.selectedObject.Clear();
 					dragx = MX / 8;
@@ -1186,52 +1183,7 @@ namespace ZeldaFullEditor
 						}
 					}
 				}
-				else if (selectedMode == ObjectMode.Warpmode)
-				{
-					room.selectedObject.Clear();
-					dragx = MX / 8;
-					dragy = MY / 8;
-					int doorCount = 0;
-					foreach (Room_Object o in room.tilesObjects)
-					{
-						if (doorsObject.Contains(o.id))
-						{
-							if (isMouseCollidingWith(o, e))
-							{
-								string warpid = Interaction.InputBox("New Warp Room", "Room Id", room.staircase_rooms[doorCount].ToString("X2"));
-
-								if (byte.TryParse(warpid, NumberStyles.HexNumber, null, out byte b))
-								{
-									room.staircase_rooms[doorCount] = b;
-									updateRoomInfos(mainForm);
-								}
-								else
-								{
-									MessageBox.Show(UIText.Range0toFF);
-								}
-							}
-
-							doorCount++;
-						}
-						else if (o.id == 0xFCA)
-						{
-							if (isMouseCollidingWith(o, e))
-							{
-								string warpid = Interaction.InputBox("New Warp Room", "Room Id", room.holewarp.ToString("X2"));
-								if (byte.TryParse(warpid, NumberStyles.HexNumber, null, out byte  b))
-								{
-									room.holewarp = b;
-									updateRoomInfos(mainForm);
-								}
-								else
-								{
-									MessageBox.Show(UIText.Range0toFF);
-								}
-							}
-						}
-					}
-				}
-				else if (selectedMode == ObjectMode.CollisionMap)
+				else if (ZS.CurrentUWMode == DungeonEditMode.CollisionMap)
 				{
 					// What happens when the mouse is clicked in the Collision map mode
 					if (e.Button == MouseButtons.Left)
@@ -1239,7 +1191,7 @@ namespace ZeldaFullEditor
 						int px = e.X / 16;
 						int py = e.Y / 16;
 
-						room.collisionMap[px + (py * 64)] = (byte) mainForm.tileTypeCombobox.SelectedIndex;
+						room.collisionMap[px + (py * 64)] = (byte) ZS.MainForm.tileTypeCombobox.SelectedIndex;
 					}
 				}
 
@@ -1252,26 +1204,27 @@ namespace ZeldaFullEditor
 				last_my = my;
 			}
 
-			mainForm.spritepropertyPanel.Visible = false;
-			mainForm.potitemobjectPanel.Visible = false;
-			mainForm.doorselectPanel.Visible = false;
-			mainForm.litCheckbox.Visible = false;
+			ZS.DungeonForm.spritepropertyPanel.Visible = false;
+			ZS.DungeonForm.potitemobjectPanel.Visible = false;
+			ZS.DungeonForm.doorselectPanel.Visible = false;
+			ZS.DungeonForm.litCheckbox.Visible = false;
 			updating_info = false;
 
 			if (room.selectedObject.Count > 0)
 			{
 				if (room.selectedObject[0] is Room_Object oo)
 				{
-					updating_info = true;
+					ZS.DungeonForm.selectedGroupbox.Text = UIText.FormatSelectedObject(oo);
 
 					if (oo.options == ObjectOption.Door)
 					{
-						string name = oo.name;
-						string id = oo.id.ToString("X4");
-						mainForm.comboBox1.Enabled = false;
-						mainForm.selectedGroupbox.Text = "Selected object: " + id + " " + name + "";
-						mainForm.doorselectPanel.Visible = true;
-						int[] aposes = mainForm.door_index.Select((s, i) => new { s, i }).Where(x => x.s == (oo as object_door).door_type).Select(x => x.i).ToArray();
+						ZS.DungeonForm.comboBox1.Enabled = false;
+						ZS.DungeonForm.doorselectPanel.Visible = true;
+						int[] aposes = ZS.DungeonForm.door_index.Select(
+							(s, i) => new { s, i })
+							.Where(x => x.s == (oo as object_door).door_type)
+							.Select(x => x.i)
+							.ToArray();
 						int apos = 0;
 
 						if (aposes.Length > 0)
@@ -1279,7 +1232,7 @@ namespace ZeldaFullEditor
 							apos = aposes[0];
 						}
 
-						mainForm.comboBox2.SelectedIndex = apos;
+						ZS.DungeonForm.comboBox2.SelectedIndex = apos;
 						for (int i = 0; i < room.tilesObjects.Count; i++)
 						{
 							if (room.tilesObjects[i] == oo)
@@ -1293,18 +1246,13 @@ namespace ZeldaFullEditor
 					}
 					else if (oo.options == ObjectOption.Torch)
 					{
-						mainForm.selectedGroupbox.Text = UIText.FormatSelectedObject(oo);
-						updating_info = true;
-						mainForm.litCheckbox.Visible = true;
-						mainForm.litCheckbox.Checked = oo.lit;
+						ZS.DungeonForm.litCheckbox.Visible = true;
+						ZS.DungeonForm.litCheckbox.Checked = oo.lit;
 						updateSelectionObject(oo);
-						updating_info = false;
 					}
 					else
 					{
-						mainForm.comboBox1.Enabled = false;
-
-						mainForm.selectedGroupbox.Text = UIText.FormatSelectedObject(oo);
+						ZS.DungeonForm.comboBox1.Enabled = false;
 
 						for (int i = 0; i < room.tilesObjects.Count; i++)
 						{
@@ -1320,37 +1268,34 @@ namespace ZeldaFullEditor
 				}
 				else if (room.selectedObject[0] is Sprite sp)
 				{
-					mainForm.spritepropertyPanel.Visible = true;
-					updating_info = true;
-					string name = Sprites_Names.name[sp.id];
-					if ((sp.subtype & 0x07) == 0x07)
+					ZS.DungeonForm.spritepropertyPanel.Visible = true;
+					string name = null;
+					if (sp.subtype.BitsAllSet(0x07))
 					{
 						if (sp.id <= 0x1A && sp.id > 0x00)
 						{
 							name = Sprites_Names.overlordnames[sp.id - 1];
 						}
 
-						mainForm.spriteoverlordCheckbox.Checked = true;
+						ZS.DungeonForm.spriteoverlordCheckbox.Checked = true;
 					}
 					else
 					{
-						mainForm.spriteoverlordCheckbox.Checked = false;
+						ZS.DungeonForm.spriteoverlordCheckbox.Checked = false;
 					}
 
-					mainForm.selectedGroupbox.Text = UIText.FormatSelectedSprite(sp, name);
-					mainForm.comboBox1.Enabled = true;
+					name = name ?? Sprites_Names.name[sp.id];
+
+					ZS.DungeonForm.selectedGroupbox.Text = UIText.FormatSelectedSprite(sp, name);
+					ZS.DungeonForm.comboBox1.Enabled = true;
 					updateSelectionObject(sp);
 				}
 				else if (room.selectedObject[0] is PotItem pp)
 				{
-					updating_info = true; // ?
-					mainForm.potitemobjectPanel.Visible = true; // oO why this is not appearing
-					int dropboxid = pp.id;
-
-					if ((pp.id & 0x80) == 0x80) // It is a special object
-					{
-						dropboxid = ((pp.id - 0x80) / 2) + 0x17; // No idea if it will work
-					}
+					ZS.DungeonForm.potitemobjectPanel.Visible = true; // oO why this is not appearing
+					int dropboxid = pp.id.BitIsOn(0x80)
+						? ((pp.id - 0x80) / 2) + 0x17
+						: pp.id;
 
 					// If for some reason the dropboxid >= 28
 					if (dropboxid >= 28)
@@ -1358,10 +1303,9 @@ namespace ZeldaFullEditor
 						dropboxid = 27; // Prevent crash :yay:
 					}
 
-					mainForm.selectedGroupbox.Text = UIText.FormatSelectedPotItem(pp, ItemsNames.name[dropboxid]);
-					mainForm.selecteditemobjectCombobox.SelectedIndex = dropboxid;
+					ZS.DungeonForm.selectedGroupbox.Text = UIText.FormatSelectedPotItem(pp, ItemsNames.name[dropboxid]);
+					ZS.DungeonForm.selecteditemobjectCombobox.SelectedIndex = dropboxid;
 					updateSelectionObject(pp);
-					updating_info = false;
 				}
 			}
 
@@ -1370,8 +1314,8 @@ namespace ZeldaFullEditor
 
 		public unsafe void ClearBgGfx()
 		{
-			byte* bg1data = (byte*) GFX.roomBg1Ptr.ToPointer();
-			byte* bg2data = (byte*) GFX.roomBg2Ptr.ToPointer();
+			byte* bg1data = (byte*) ZS.GFXManager.roomBg1Ptr.ToPointer();
+			byte* bg2data = (byte*) ZS.GFXManager.roomBg2Ptr.ToPointer();
 
 			for (int i = 0; i < 512 * 512; i++)
 			{
@@ -1382,10 +1326,7 @@ namespace ZeldaFullEditor
 
 		public unsafe void DrawRoom()
 		{
-			if (room == null)
-			{
-				return;
-			}
+			if (room == null) return;
 
 			//Tile t = new Tile(0, false, false, 0, 0);
 			//t.Draw(0, 0);
@@ -1422,17 +1363,16 @@ namespace ZeldaFullEditor
 			// TODO can these ifs be merged?
 			foreach (Room_Object o in room.tilesObjects)
 			{
-				if (o.layer != 2)
+				if (o.options == ObjectOption.Door || o.layer != 2)
 				{
 					o.collisionPoint.Clear();
 					o.Draw();
 				}
-
-				if (o.options == ObjectOption.Door)
-				{
-					o.collisionPoint.Clear();
-					o.Draw();
-				}
+				//if (o.options == ObjectOption.Door)
+				//{
+				//	o.collisionPoint.Clear();
+				//	o.Draw();
+				//}
 			}
 
 			foreach (Room_Object o in room.tilesObjects)
@@ -1447,26 +1387,26 @@ namespace ZeldaFullEditor
 
 			if (showLayer1)
 			{
-				GFX.DrawBG1();
+				ZS.GFXManager.DrawBG1();
 			}
 			if (showLayer2)
 			{
-				GFX.DrawBG2();
+				ZS.GFXManager.DrawBG2();
 			}
-			if (mainForm.showSprite)
+			if (ZS.MainForm.showSprite)
 			{
 				room.drawSprites();
 			}
-			if (mainForm.showChest)
+			if (ZS.MainForm.showChest)
 			{
 				drawChests();
 			}
-			if (mainForm.showItems)
+			if (ZS.MainForm.showItems)
 			{
 				room.drawPotsItems();
 			}
 
-			mainForm.cgramViewer.Refresh();
+			ZS.MainForm.cgramViewer.Refresh();
 		}
 
 		public void drawChests()
@@ -1482,7 +1422,7 @@ namespace ZeldaFullEditor
 						{
 							room.chest_list[chest_count].x = o.nx;
 							room.chest_list[chest_count].y = o.ny;
-							if (o.id == 0xFB1)
+							if (o.id == Constants.BigChestID)
 							{
 								room.chest_list[chest_count].bigChest = true;
 							}
@@ -1507,7 +1447,7 @@ namespace ZeldaFullEditor
 							c.ItemsDraw(c.item, c.x * 8, (c.y - 2) * 8);
 						}
 
-						//graphics.DrawImage(GFX.chestitems_bitmap[c.item], (c.x * 8), (c.y - 2) * 8);
+						//graphics.DrawImage(ZS.GFXManager.chestitems_bitmap[c.item], (c.x * 8), (c.y - 2) * 8);
 					}
 				}
 			}
@@ -1517,7 +1457,7 @@ namespace ZeldaFullEditor
 		{
 			if (showGrid)
 			{
-				int s = mainForm.gridSize;
+				int s = ZS.MainForm.gridSize;
 				int wh = (512 / s) + 1;
 
 				for (int x = 0; x < wh; x++)
@@ -1535,58 +1475,56 @@ namespace ZeldaFullEditor
 		public void SetPalettesTransparent()
 		{
 			int pindex = 0;
-			ColorPalette palettes = GFX.roomBg1Bitmap.Palette;
-			for (int y = 0; y < GFX.loadedPalettes.GetLength(1); y++)
+			ColorPalette palettes = ZS.GFXManager.roomBg1Bitmap.Palette;
+			for (int y = 0; y < ZS.GFXManager.loadedPalettes.GetLength(1); y++)
 			{
-				for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
+				for (int x = 0; x < ZS.GFXManager.loadedPalettes.GetLength(0); x++)
 				{
-					palettes.Entries[pindex++] = GFX.loadedPalettes[x, y];
+					palettes.Entries[pindex++] = ZS.GFXManager.loadedPalettes[x, y];
 				}
 			}
 
-			for (int y = 0; y < GFX.loadedSprPalettes.GetLength(1); y++)
+			for (int y = 0; y < ZS.GFXManager.loadedSprPalettes.GetLength(1); y++)
 			{
-				for (int x = 0; x < GFX.loadedSprPalettes.GetLength(0); x++)
+				for (int x = 0; x < ZS.GFXManager.loadedSprPalettes.GetLength(0); x++)
 				{
 					if (pindex < 256)
 					{
-						palettes.Entries[pindex++] = GFX.loadedSprPalettes[x, y];
+						palettes.Entries[pindex++] = ZS.GFXManager.loadedSprPalettes[x, y];
 					}
 				}
 			}
 
-			for (int i = 0; i < 16; i++)
+			for (int i = 0; i < Constants.TotalPaletteSize; i += Constants.ColorsPerHalfPalette)
 			{
-				palettes.Entries[i * 16] = Color.Transparent;
-				palettes.Entries[(i * 16) + 8] = Color.Transparent;
+				palettes.Entries[i] = Color.Transparent;
 			}
 
-			GFX.roomBg1Bitmap.Palette = palettes;
-			GFX.roomBg2Bitmap.Palette = palettes;
-			GFX.roomBgLayoutBitmap.Palette = palettes;
+			ZS.GFXManager.roomBg1Bitmap.Palette = palettes;
+			ZS.GFXManager.roomBg2Bitmap.Palette = palettes;
+			ZS.GFXManager.roomBgLayoutBitmap.Palette = palettes;
 		}
 
 		public void SetPalettesBlack()
 		{
 			int pindex = 0;
-			ColorPalette palettes = GFX.roomBg1Bitmap.Palette;
-			for (int y = 0; y < GFX.loadedPalettes.GetLength(1); y++)
+			ColorPalette palettes = ZS.GFXManager.roomBg1Bitmap.Palette;
+			for (int y = 0; y < ZS.GFXManager.loadedPalettes.GetLength(1); y++)
 			{
-				for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
+				for (int x = 0; x < ZS.GFXManager.loadedPalettes.GetLength(0); x++)
 				{
-					palettes.Entries[pindex++] = GFX.loadedPalettes[x, y];
+					palettes.Entries[pindex++] = ZS.GFXManager.loadedPalettes[x, y];
 				}
 			}
 
-			for (int i = 0; i < 16; i++)
+			for (int i = 0; i < Constants.TotalPaletteSize; i += Constants.ColorsPerHalfPalette)
 			{
-				palettes.Entries[i * 16] = Color.Black;
-				palettes.Entries[(i * 16) + 8] = Color.Black;
+				palettes.Entries[i] = Color.Black;
 			}
 
-			GFX.roomBg1Bitmap.Palette = palettes;
-			GFX.roomBg2Bitmap.Palette = palettes;
-			GFX.roomBgLayoutBitmap.Palette = palettes;
+			ZS.GFXManager.roomBg1Bitmap.Palette = palettes;
+			ZS.GFXManager.roomBg2Bitmap.Palette = palettes;
+			ZS.GFXManager.roomBgLayoutBitmap.Palette = palettes;
 		}
 
 		private unsafe void onMouseUp(object sender, MouseEventArgs e)
@@ -1610,64 +1548,64 @@ namespace ZeldaFullEditor
 				{
 					rmx = e.X;
 					rmy = e.Y;
-					mainForm.nothingselectedcontextMenu.Items[0].Enabled = true;
-					mainForm.singleselectedcontextMenu.Items[0].Enabled = true;
-					mainForm.groupselectedcontextMenu.Items[0].Enabled = true;
-					mainForm.nothingselectedcontextMenu.Items[0].Visible = true;
-					mainForm.singleselectedcontextMenu.Items[0].Visible = true;
-					mainForm.groupselectedcontextMenu.Items[0].Visible = true;
+					ZS.DungeonForm.nothingselectedcontextMenu.Items[0].Enabled = true;
+					ZS.DungeonForm.singleselectedcontextMenu.Items[0].Enabled = true;
+					ZS.DungeonForm.groupselectedcontextMenu.Items[0].Enabled = true;
+					ZS.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = true;
+					ZS.DungeonForm.singleselectedcontextMenu.Items[0].Visible = true;
+					ZS.DungeonForm.groupselectedcontextMenu.Items[0].Visible = true;
 					string nname = null;
 
 					// TODO copy
-					switch (selectedMode)
+					switch (ZS.CurrentUWMode)
 					{
-						case ObjectMode.Chestmode:
+						case DungeonEditMode.Chests:
 							nname = "chest item";
-							mainForm.nothingselectedcontextMenu.Items[2].Visible = true;
-							mainForm.nothingselectedcontextMenu.Items[3].Visible = false;
+							ZS.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = true;
+							ZS.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = false;
 							break;
 
-						case ObjectMode.Itemmode:
+						case DungeonEditMode.Secrets:
 							nname = "pot item";
 							break;
 
-						case ObjectMode.Blockmode:
+						case DungeonEditMode.Blocks:
 							nname = "pushable block";
 							break;
 
-						case ObjectMode.Torchmode:
+						case DungeonEditMode.Torches:
 							nname = "torch";
 							break;
 
-						case ObjectMode.Doormode:
+						case DungeonEditMode.Doors:
 							nname = "door";
 							break;
 
-						case ObjectMode.CollisionMap:
+						case DungeonEditMode.CollisionMap:
 							nname = "custom collision map";
-							mainForm.nothingselectedcontextMenu.Items[0].Visible = false;
-							mainForm.nothingselectedcontextMenu.Items[1].Visible = false;
-							mainForm.nothingselectedcontextMenu.Items[2].Visible = true;
-							mainForm.nothingselectedcontextMenu.Items[3].Visible = true;
+							ZS.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = false;
+							ZS.DungeonForm.nothingselectedcontextMenu.Items[1].Visible = false;
+							ZS.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = true;
+							ZS.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = true;
 							break;
 
-						case ObjectMode.Spritemode:
-							mainForm.nothingselectedcontextMenu.Items[0].Visible = false;
-							mainForm.nothingselectedcontextMenu.Items[2].Visible = false;
-							mainForm.nothingselectedcontextMenu.Items[3].Visible = false;
-							mainForm.singleselectedcontextMenu.Items[0].Visible = false;
-							mainForm.groupselectedcontextMenu.Items[0].Visible = false;
+						case DungeonEditMode.Sprites:
+							ZS.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = false;
+							ZS.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = false;
+							ZS.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = false;
+							ZS.DungeonForm.singleselectedcontextMenu.Items[0].Visible = false;
+							ZS.DungeonForm.groupselectedcontextMenu.Items[0].Visible = false;
 							break;
 
-						case ObjectMode.Bg1mode:
-						case ObjectMode.Bg2mode:
-						case ObjectMode.Bg3mode:
-						case ObjectMode.Bgallmode:
-							mainForm.nothingselectedcontextMenu.Items[0].Visible = false;
-							mainForm.nothingselectedcontextMenu.Items[2].Visible = false;
-							mainForm.nothingselectedcontextMenu.Items[3].Visible = false;
-							mainForm.singleselectedcontextMenu.Items[0].Visible = false;
-							mainForm.groupselectedcontextMenu.Items[0].Visible = false;
+						case DungeonEditMode.Layer1:
+						case DungeonEditMode.Layer2:
+						case DungeonEditMode.Layer3:
+						case DungeonEditMode.LayerAll:
+							ZS.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = false;
+							ZS.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = false;
+							ZS.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = false;
+							ZS.DungeonForm.singleselectedcontextMenu.Items[0].Visible = false;
+							ZS.DungeonForm.groupselectedcontextMenu.Items[0].Visible = false;
 							break;
 					}
 
@@ -1675,22 +1613,22 @@ namespace ZeldaFullEditor
 					if (nname != null)
 					{
 						string s = string.Format("Insert new {0}", nname);
-						mainForm.nothingselectedcontextMenu.Items[0].Text = s;
-						mainForm.singleselectedcontextMenu.Items[0].Text = s;
-						mainForm.groupselectedcontextMenu.Items[0].Text = s;
+						ZS.DungeonForm.nothingselectedcontextMenu.Items[0].Text = s;
+						ZS.DungeonForm.singleselectedcontextMenu.Items[0].Text = s;
+						ZS.DungeonForm.groupselectedcontextMenu.Items[0].Text = s;
 					}
 
 					if (room.selectedObject.Count == 0)
 					{
-						mainForm.nothingselectedcontextMenu.Show(Cursor.Position);
+						ZS.DungeonForm.nothingselectedcontextMenu.Show(Cursor.Position);
 					}
 					else if (room.selectedObject.Count == 1)
 					{
-						mainForm.singleselectedcontextMenu.Show(Cursor.Position);
+						ZS.DungeonForm.singleselectedcontextMenu.Show(Cursor.Position);
 					}
 					else if (room.selectedObject.Count > 1)
 					{
-						mainForm.groupselectedcontextMenu.Show(Cursor.Position);
+						ZS.DungeonForm.groupselectedcontextMenu.Show(Cursor.Position);
 					}
 
 					mouse_down = false;
@@ -1713,13 +1651,13 @@ namespace ZeldaFullEditor
 			int MX = rmx;
 			int MY = rmy;
 
-			if (mainForm.x2zoom)
+			if (ZS.MainForm.x2zoom)
 			{
 				MX /= 2;
 				MY /= 2;
 			}
 
-			if (selectedMode == ObjectMode.Chestmode)
+			if (ZS.CurrentUWMode == DungeonEditMode.Chests)
 			{
 				Chest chestToRemove = null;
 				bool foundChest = false;
@@ -1727,15 +1665,16 @@ namespace ZeldaFullEditor
 				foreach (Chest c in room.chest_list)
 				{
 					if (MX >= (c.x * 8) && MX <= (c.x * 8) + 16 &&
-						MY >= ((c.y - 2) * 8) && MY <= ((c.y) * 8) + 16)
+						MY >= ((c.y - 2) * 8) && MY <= (c.y * 8) + 16)
 					{
-						mainForm.chestPicker.button1.Enabled = true; // Enable delete button
-						DialogResult result = mainForm.chestPicker.ShowDialog();
+						ZS.DungeonForm.chestPicker.button1.Enabled = true; // Enable delete button
+						DialogResult result = ZS.DungeonForm.chestPicker.ShowDialog();
 
 						if (result == DialogResult.OK)
 						{
 							// Change chest item
-							if (int.TryParse(mainForm.chestPicker.idtextbox.Text, out int r))
+							// TODO hexbox
+							if (int.TryParse(ZS.DungeonForm.chestPicker.idtextbox.Text, out int r))
 							{
 								c.item = (byte) r;
 							}
@@ -1754,14 +1693,14 @@ namespace ZeldaFullEditor
 
 				if (!foundChest)
 				{
-					mainForm.chestPicker.button1.Enabled = false; // Disable delete button
-					DialogResult result = mainForm.chestPicker.ShowDialog();
+					ZS.DungeonForm.chestPicker.button1.Enabled = false; // Disable delete button
 
-					if (result == DialogResult.OK)
+					if (ZS.DungeonForm.chestPicker.ShowDialog() == DialogResult.OK)
 					{
 						room.has_changed = true;
 						// Change chest item
-						Chest c = new Chest((byte) (MX / 8), (byte) (MY / 8), (byte) mainForm.chestPicker.chestviewer1.selectedIndex, false, false);
+						// TODO hexbox
+						Chest c = new Chest(ZS, (byte) (MX / 8), (byte) (MY / 8), (byte) ZS.DungeonForm.chestPicker.chestviewer1.selectedIndex, false, false);
 						room.chest_list.Add(c);
 					}
 				}
@@ -1780,20 +1719,20 @@ namespace ZeldaFullEditor
 			int MX = rmx;
 			int MY = rmy;
 
-			if (mainForm.x2zoom)
+			if (ZS.MainForm.x2zoom)
 			{
 				MX /= 2;
 				MY /= 2;
 			}
 
-			if (selectedMode == ObjectMode.Chestmode)
+			if (ZS.CurrentUWMode == DungeonEditMode.Chests)
 			{
 				Chest chestToRemove = null;
 
 				foreach (Chest c in room.chest_list)
 				{
 					if (MX >= (c.x * 8) && MX <= (c.x * 8) + 16 &&
-						MY >= ((c.y - 2) * 8) && MY <= ((c.y) * 8) + 16)
+						MY >= ((c.y - 2) * 8) && MY <= (c.y * 8) + 16)
 					{
 						//mainForm.chestPicker.button1.Enabled = true;//enable delete button
 						//DialogResult result = mainForm.chestPicker.ShowDialog();
@@ -1805,8 +1744,6 @@ namespace ZeldaFullEditor
 
 				if (chestToRemove != null)
 				{
-					Console.WriteLine("delete chest item." + chestToRemove.item);
-
 					room.chest_list.Remove(chestToRemove);
 				}
 
@@ -1818,7 +1755,7 @@ namespace ZeldaFullEditor
 
 		public void deleteCollisionMapTile()
 		{
-			if (selectedMode == ObjectMode.CollisionMap)
+			if (ZS.CurrentUWMode == DungeonEditMode.CollisionMap)
 			{
 				int px = rmx / 16;
 				int py = rmy / 16;
@@ -1847,57 +1784,66 @@ namespace ZeldaFullEditor
 			Refresh();
 		}
 
-		// TODO switch statements
 		public void setObjectsPosition()
 		{
 			if (room.selectedObject.Count > 0)
 			{
-				if (selectedMode == ObjectMode.Spritemode)
+				switch (ZS.CurrentUWMode)
 				{
-					foreach (Object o in room.selectedObject)
-					{
-						(o as Sprite).x = (o as Sprite).nx;
-						(o as Sprite).y = (o as Sprite).ny;
-						//(o as Sprite).boundingbox
-					}
-				}
-				else if (selectedMode == ObjectMode.Itemmode)
-				{
-					foreach (Object o in room.selectedObject)
-					{
-						(o as PotItem).x = (o as PotItem).nx;
-						(o as PotItem).y = (o as PotItem).ny;
-					}
-				}
-				else if ((byte) selectedMode >= 0 && (byte) selectedMode <= 3)
-				{
-					foreach (Object o in room.selectedObject)
-					{
-						(o as Room_Object).x = (o as Room_Object).nx;
-						(o as Room_Object).y = (o as Room_Object).ny;
-						(o as Room_Object).ox = (o as Room_Object).x;
-						(o as Room_Object).oy = (o as Room_Object).y;
-					}
-				}
-				else if (selectedMode == ObjectMode.Torchmode)
-				{
-					foreach (Object o in room.selectedObject)
-					{
-						(o as Room_Object).x = (o as Room_Object).nx;
-						(o as Room_Object).y = (o as Room_Object).ny;
-						(o as Room_Object).ox = (o as Room_Object).x;
-						(o as Room_Object).oy = (o as Room_Object).y;
-					}
-				}
-				else if (selectedMode == ObjectMode.Blockmode)
-				{
-					foreach (Object o in room.selectedObject)
-					{
-						(o as Room_Object).x = (o as Room_Object).nx;
-						(o as Room_Object).y = (o as Room_Object).ny;
-						(o as Room_Object).ox = (o as Room_Object).x;
-						(o as Room_Object).oy = (o as Room_Object).y;
-					}
+					case DungeonEditMode.Sprites:
+						foreach (object o in room.selectedObject)
+						{
+							Sprite s = o as Sprite;
+							s.x = s.nx;
+							s.y = s.ny;
+							//(o as Sprite).boundingbox
+						}
+						break;
+
+					case DungeonEditMode.Secrets:
+						foreach (object o in room.selectedObject)
+						{
+							PotItem p = o as PotItem;
+							p.x = p.nx;
+							p.y = p.ny;
+						}
+						break;
+
+					case DungeonEditMode.Layer1:
+					case DungeonEditMode.Layer2:
+					case DungeonEditMode.Layer3:
+					case DungeonEditMode.LayerAll:
+						foreach (object o in room.selectedObject)
+						{
+							Room_Object r = o as Room_Object;
+							r.x = r.nx;
+							r.y = r.ny;
+							r.ox = r.x;
+							r.oy = r.y;
+						}
+						break;
+
+					case DungeonEditMode.Torches:
+						foreach (object o in room.selectedObject)
+						{
+							Room_Object r = o as Room_Object;
+							r.x = r.nx;
+							r.y = r.ny;
+							r.ox = r.x;
+							r.oy = r.y;
+						}
+						break;
+
+					case DungeonEditMode.Blocks:
+						foreach (object o in room.selectedObject)
+						{
+							Room_Object r = o as Room_Object;
+							r.x = r.nx;
+							r.y = r.ny;
+							r.ox = r.x;
+							r.oy = r.y;
+						}
+						break;
 				}
 			}
 
@@ -1932,41 +1878,41 @@ namespace ZeldaFullEditor
 		// TODO switch statements and no casting the selected mode
 		public void setMouseSizeMode(MouseEventArgs e)
 		{
-			mainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 
-			if (selectedMode == ObjectMode.Spritemode)
+			switch (ZS.CurrentUWMode)
 			{
-				mx = MX / 16;
-				my = MY / 16;
-			}
-			else if (selectedMode == ObjectMode.Itemmode)
-			{
-				mx = MX / 8;
-				my = MY / 8;
-			}
-			else if ((byte) selectedMode >= 0 && (byte) selectedMode <= 3)
-			{
-				mx = MX / 8;
-				my = MY / 8;
-			}
-			else if (selectedMode == ObjectMode.Torchmode || selectedMode == ObjectMode.Blockmode)
-			{
-				mx = MX / 8;
-				my = MY / 8;
+				case DungeonEditMode.Sprites:
+					mx = MX / 16;
+					my = MY / 16;
+					break;
+
+				case DungeonEditMode.Secrets:
+
+				case DungeonEditMode.Layer1:
+				case DungeonEditMode.Layer2:
+				case DungeonEditMode.Layer3:
+				case DungeonEditMode.LayerAll:
+
+				case DungeonEditMode.Torches:
+				case DungeonEditMode.Blocks:
+					mx = MX / 8;
+					my = MY / 8;
+					break;
 			}
 
 			move_x = mx - dragx; // Number of tiles mouse is compared to starting drag point X
 			move_y = my - dragy; // Number of tiles mouse is compared to starting drag point Y
 		}
 
-		public bool isMouseCollidingWith(Object o, MouseEventArgs e)
+		public bool isMouseCollidingWith(object o, MouseEventArgs e)
 		{
-			mainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 
 			if (o is Sprite objS)
 			{
 				if (MX >= objS.boundingbox.X && MX <= objS.boundingbox.X + objS.boundingbox.Width &&
-				MY >= objS.boundingbox.Y && MY <= objS.boundingbox.Y + objS.boundingbox.Height)
+					MY >= objS.boundingbox.Y && MY <= objS.boundingbox.Y + objS.boundingbox.Height)
 				{
 					return true;
 				}
@@ -1984,14 +1930,12 @@ namespace ZeldaFullEditor
 				//if ((o as Room_Object).layer == (byte)selectedMode || selectedMode == ObjectMode.Bgallmode)
 				//{
 
-				int yfix = 0;
-				if (objR.diagonalFix)
-				{
-					yfix = -(6 + objR.size);
-				}
+				int yfix = objR.diagonalFix
+					? -(6 + objR.size)
+					: 0;
 
-				if (MX >= ((objR.x + objR.offsetX) * 8) && MX <= ((objR.x + objR.offsetX) * 8) + (objR.width) &&
-						MY >= ((objR.y + objR.offsetY + yfix) * 8) && MY <= ((objR.y + objR.offsetY + yfix) * 8) + (objR.height))
+				if (MX >= ((objR.x + objR.offsetX) * 8) && MX <= ((objR.x + objR.offsetX) * 8) + objR.width &&
+						MY >= ((objR.y + objR.offsetY + yfix) * 8) && MY <= ((objR.y + objR.offsetY + yfix) * 8) + objR.height)
 				{
 					return true;
 				}
@@ -2005,78 +1949,99 @@ namespace ZeldaFullEditor
 		{
 			if (room.selectedObject.Count == 0)
 			{
-				if (selectedMode == ObjectMode.Spritemode) // We're looking for sprites
+				switch (ZS.CurrentUWMode)
 				{
-					foreach (Sprite spr in room.sprites)
-					{
-						int rx = dragx;
-						int ry = dragy;
-						if (move_x < 0) { Math.Abs(rx = dragx + move_x); }
-						if (move_y < 0) { Math.Abs(ry = dragy + move_y); }
+					case DungeonEditMode.Sprites:
+						foreach (Sprite spr in room.sprites)
+						{
+							int rx = dragx;
+							int ry = dragy;
 
-						if (spr.boundingbox.IntersectsWith(new Rectangle(rx * 16, ry * 16, Math.Abs(move_x) * 16, Math.Abs(move_y) * 16)))
-						{
-							room.selectedObject.Add(spr);
-						}
-					}
-				}
-				else if (selectedMode == ObjectMode.Itemmode)// wW're looking for pot items
-				{
-					foreach (PotItem item in room.pot_items)
-					{
-						int rx = dragx;
-						int ry = dragy;
-						if (move_x < 0)
-						{
-							Math.Abs(rx = dragx + move_x);
-						}
-
-						if (move_y < 0)
-						{
-							Math.Abs(ry = dragy + move_y);
-						}
-
-						if ((new Rectangle(item.x * 8, item.y * 8, 16, 16)).IntersectsWith(new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8)))
-						{
-							room.selectedObject.Add(item);
-						}
-					}
-				}
-				else if ((byte) selectedMode >= 0 && (byte) selectedMode <= 3) // We're looking for tiles
-				{
-					foreach (Room_Object o in room.tilesObjects)
-					{
-						int rx = dragx;
-						int ry = dragy;
-						if (move_x < 0) { Math.Abs(rx = dragx + move_x); }
-						if (move_y < 0) { Math.Abs(ry = dragy + move_y); }
-
-						int yfix = 0;
-						if (o.diagonalFix)
-						{
-							yfix = -(6 + o.size);
-						}
-
-						if ((new Rectangle(
-							(o.x + o.offsetX) * 8,
-							(o.y + o.offsetY + yfix) * 8,
-							(o.width + o.offsetX),
-							(o.height + o.offsetY + yfix))
-							).IntersectsWith(new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8)))
-						{
-							if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Door) != ObjectOption.Door && (o.options & ObjectOption.Torch) != ObjectOption.Torch && (o.options & ObjectOption.Block) != ObjectOption.Block)
+							if (move_x < 0)
 							{
-								if (selectedMode == ObjectMode.Bgallmode)
+								Math.Abs(rx = dragx + move_x);
+							}
+							if (move_y < 0)
+							{
+								Math.Abs(ry = dragy + move_y);
+							}
+
+							if (spr.boundingbox.IntersectsWith(new Rectangle(rx * 16, ry * 16, Math.Abs(move_x) * 16, Math.Abs(move_y) * 16)))
+							{
+								room.selectedObject.Add(spr);
+							}
+						}
+						break;
+
+					case DungeonEditMode.Secrets:
+						foreach (PotItem item in room.pot_items)
+						{
+							int rx = dragx;
+							int ry = dragy;
+							if (move_x < 0)
+							{
+								Math.Abs(rx = dragx + move_x);
+							}
+
+							if (move_y < 0)
+							{
+								Math.Abs(ry = dragy + move_y);
+							}
+
+							if (new Rectangle(item.x * 8, item.y * 8, 16, 16).IntersectsWith(
+								new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8)))
+							{
+								room.selectedObject.Add(item);
+							}
+						}
+						break;
+
+					case DungeonEditMode.Layer1:
+					case DungeonEditMode.Layer2:
+					case DungeonEditMode.Layer3:
+					case DungeonEditMode.LayerAll:
+						foreach (Room_Object o in room.tilesObjects)
+						{
+							int rx = dragx;
+							int ry = dragy;
+
+							if (move_x < 0)
+							{
+								Math.Abs(rx = dragx + move_x);
+							}
+							if (move_y < 0)
+							{
+								Math.Abs(ry = dragy + move_y);
+							}
+
+							int yfix = o.diagonalFix
+								? -(6 + o.size)
+								: 0;
+
+							if (new Rectangle(
+								(o.x + o.offsetX) * 8,
+								(o.y + o.offsetY + yfix) * 8,
+								o.width + o.offsetX,
+								o.height + o.offsetY + yfix)
+								.IntersectsWith(new Rectangle(rx * 8, ry * 8, Math.Abs(move_x) * 8, Math.Abs(move_y) * 8)))
+							{
+								if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr
+									&& (o.options & ObjectOption.Door) != ObjectOption.Door
+									&& (o.options & ObjectOption.Torch) != ObjectOption.Torch
+									&& (o.options & ObjectOption.Block) != ObjectOption.Block)
 								{
-									room.selectedObject.Add(o);
-								}
-								else if ((byte) selectedMode == o.layer)
-								{
-									room.selectedObject.Add(o);
+									if (ZS.CurrentUWMode == DungeonEditMode.LayerAll)
+									{
+										room.selectedObject.Add(o);
+									}
+									else if ((byte) ZS.CurrentUWMode == o.layer)
+									{
+										room.selectedObject.Add(o);
+									}
 								}
 							}
 						}
-					}
+						break;
 				}
 			}
 
@@ -2088,15 +2053,15 @@ namespace ZeldaFullEditor
             */
 		}
 
-		private const int garbageobjdata = -999999;
+		// TODO move to main form
 		public void updateSelectionObject(object o)
 		{
 			if (room.selectedObject.Count == 1)
 			{
-				int objx = garbageobjdata;
-				int objy = garbageobjdata;
-				int objs = garbageobjdata;
-				int objl = garbageobjdata;
+				int? objx = null;
+				int? objy = null;
+				int? objs = null;
+				int? objl = null;
 				byte[] objdata = null;
 
 				if (o is Room_Object objR)
@@ -2157,9 +2122,8 @@ namespace ZeldaFullEditor
                     }
                     */
 				}
-				else if (o is object_door)
+				else if (o is object_door dobj)
 				{
-					object_door dobj = (o as object_door);
 					if (dobj.nx >= 63)
 					{
 						dobj.nx = 63;
@@ -2181,9 +2145,8 @@ namespace ZeldaFullEditor
 					objy = dobj.ny;
 					objl = dobj.layer;
 				}
-				else if (o is Sprite)
+				else if (o is Sprite spr)
 				{
-					Sprite spr = (o as Sprite);
 					if (spr.nx >= 31)
 					{
 						spr.nx = 31;
@@ -2201,17 +2164,15 @@ namespace ZeldaFullEditor
 					objy = spr.ny;
 					objl = spr.layer;
 
-					mainForm.spritesubtypeUpDown.Value = spr.subtype;
-
-					mainForm.spriteoverlordCheckbox.Checked = (spr.subtype & 0x07) == 0x07;
-					mainForm.comboBox1.SelectedIndex = spr.keyDrop;
+					ZS.DungeonForm.spritesubtypeUpDown.Value = spr.subtype;
+					ZS.DungeonForm.spriteoverlordCheckbox.Checked = spr.subtype.BitsAllSet(0x07);
+					ZS.DungeonForm.comboBox1.SelectedIndex = spr.keyDrop;
 
 					updating_info = false;
 					//info = name + "\nId : " + id + "\nX : " + x + "\nY : " + y + "\nLayer : " + layer;
 				}
-				else if (o is PotItem)
+				else if (o is PotItem poti)
 				{
-					PotItem poti = (o as PotItem);
 					if (poti.nx >= 63)
 					{
 						poti.nx = 63;
@@ -2230,53 +2191,19 @@ namespace ZeldaFullEditor
 					objl = poti.layer;
 				}
 
-
-				if (objx != garbageobjdata)
-				{
-					mainForm.SelectedObjectDataX.Text = objx.ToString("X2");
-				}
-				else
-				{
-					mainForm.SelectedObjectDataX.Text = "-";
-				}
-
-				if (objy != garbageobjdata)
-				{
-					mainForm.SelectedObjectDataY.Text = objy.ToString("X2");
-				}
-				else
-				{
-					mainForm.SelectedObjectDataY.Text = "-";
-				}
-
-				if (objs != garbageobjdata)
-				{
-					mainForm.SelectedObjectDataSize.Text = objs.ToString("X2");
-				}
-				else
-				{
-					mainForm.SelectedObjectDataSize.Text = "-";
-				}
-
-				if (objl != garbageobjdata)
-				{
-					mainForm.SelectedObjectDataLayer.Text = objl.ToString("X2");
-				}
-				else
-				{
-					mainForm.SelectedObjectDataLayer.Text = "-";
-				}
+				ZS.DungeonForm.SelectedObjectDataX.Text = objx?.ToString("X2") ?? UIText.NullField;
+				ZS.DungeonForm.SelectedObjectDataY.Text = objy?.ToString("X2") ?? UIText.NullField;
+				ZS.DungeonForm.SelectedObjectDataSize.Text = objs?.ToString("X2") ?? UIText.NullField;
+				ZS.DungeonForm.SelectedObjectDataLayer.Text = objl?.ToString("X2") ?? UIText.NullField;
 
 				if (objdata != null)
 				{
-					mainForm.SelectedObjectDataHEX.Text =
-						string.Format("{0:X2} {1:X2} {2:X2}",
-						objdata[0], objdata[1], objdata[2]
-						);
+					ZS.DungeonForm.SelectedObjectDataHEX.Text =
+						string.Format("{0:X2} {1:X2} {2:X2}", objdata[0], objdata[1], objdata[2] );
 				}
 				else
 				{
-					mainForm.SelectedObjectDataHEX.Text = "-";
+					ZS.DungeonForm.SelectedObjectDataHEX.Text = UIText.NullField;
 				}
 			}
 		}
@@ -2333,23 +2260,32 @@ namespace ZeldaFullEditor
 		public override void selectAll()
 		{
 			room.selectedObject.Clear();
-			if (selectedMode == ObjectMode.Spritemode)
+			if (ZS.CurrentUWMode == DungeonEditMode.Sprites)
 			{
 				foreach (Sprite spr in room.sprites)
 				{
 					room.selectedObject.Add(spr);
 				}
 			}
-
-			foreach (Room_Object o in room.tilesObjects)
+			else if (ZS.CurrentUWMode == DungeonEditMode.Layer1 ||
+				ZS.CurrentUWMode == DungeonEditMode.Layer2 ||
+				ZS.CurrentUWMode == DungeonEditMode.Layer3)
 			{
-				if (o.options == ObjectOption.Nothing && ((byte) selectedMode <= 3))
+				byte lay = (byte) ZS.CurrentUWMode;
+				foreach (Room_Object o in room.tilesObjects)
 				{
-					if (selectedMode == ObjectMode.Bgallmode)
+					if (o.options == ObjectOption.Nothing && o.layer == lay)
 					{
 						room.selectedObject.Add(o);
 					}
-					else if ((byte) selectedMode == o.layer)
+				}
+			}
+			// fewer conditionals to have this separate from other layers
+			else if (ZS.CurrentUWMode == DungeonEditMode.LayerAll)
+			{
+				foreach (Room_Object o in room.tilesObjects)
+				{
+					if (o.options == ObjectOption.Nothing)
 					{
 						room.selectedObject.Add(o);
 					}
@@ -2362,9 +2298,9 @@ namespace ZeldaFullEditor
 		public override void deleteSelected()
 		{
 			room.has_changed = true;
-			mainForm.checkAnyChanges();
+			ZS.DungeonForm.checkAnyChanges();
 
-			foreach (Object o in room.selectedObject)
+			foreach (object o in room.selectedObject)
 			{
 				if (o is Room_Object r)
 				{
@@ -2392,12 +2328,9 @@ namespace ZeldaFullEditor
 				List<SaveObject> data = null;
 				try
 				{
-					data = (List<SaveObject>) Clipboard.GetData("ObjectZ");
+					data = (List<SaveObject>) Clipboard.GetData(Constants.ObjectZClipboardData);
 				}
-				catch (Exception e)
-				{
-					Console.WriteLine(e.Message);
-				}
+				catch (Exception) {}
 
 				if (data != null)
 				{
@@ -2432,8 +2365,8 @@ namespace ZeldaFullEditor
 						{
 							if (o.type == typeof(Sprite))
 							{
-								selectedMode = ObjectMode.Spritemode;
-								Sprite spr = (new Sprite(room, o.id, (byte) (o.x - most_x), (byte) (o.y - most_y), o.subtype, o.layer));
+								ZS.CurrentUWMode = DungeonEditMode.Sprites;
+								Sprite spr = new Sprite(room, o.id, (byte) (o.x - most_x), (byte) (o.y - most_y), o.subtype, o.layer);
 								room.sprites.Add(spr);
 								room.selectedObject.Add(spr);
 							}
@@ -2441,8 +2374,8 @@ namespace ZeldaFullEditor
 							{
 								if ((o.options & ObjectOption.Door) == ObjectOption.Door)
 								{
-									selectedMode = ObjectMode.Doormode;
-									object_door ro = new object_door(o.tid, o.x, o.y, 0, o.layer);
+									ZS.CurrentUWMode = DungeonEditMode.Doors;
+									object_door ro = new object_door(o.tid, o.x, o.y, 0, o.layer, ZS);
 									ro.setRoom(room);
 									ro.options = o.options;
 									room.tilesObjects.Add(ro);
@@ -2454,17 +2387,22 @@ namespace ZeldaFullEditor
 
 									if (ro != null)
 									{
-										if ((byte) selectedMode > 3) // If it not BGAll or bg1-3
+
+										switch (ZS.CurrentUWMode)
 										{
-											selectedMode = ObjectMode.Bg1mode; // Set it on bg1 by default
-										}
-										else if ((byte) selectedMode == 3) // If it bgall do nothing
-										{
-											// TODO: Add something here?
-										}
-										else // If it actually a layer set the roomobject on the current selected layer
-										{
-											ro.layer = (byte) selectedMode;
+											case DungeonEditMode.LayerAll:
+												// TODO???
+												break;
+
+											case DungeonEditMode.Layer1:
+											case DungeonEditMode.Layer2:
+											case DungeonEditMode.Layer3:
+												ro.layer = (byte) ZS.CurrentUWMode;
+												break;
+
+											default:
+												ZS.CurrentUWMode = DungeonEditMode.Layer1;
+												break;
 										}
 
 										ro.setRoom(room);
@@ -2476,8 +2414,8 @@ namespace ZeldaFullEditor
 							}
 							else if (o.type == typeof(PotItem))
 							{
-								selectedMode = ObjectMode.Itemmode;
-								PotItem item = (new PotItem((byte) o.tid, (byte) (o.x - most_x), (byte) (o.y - most_y), o.layer == 1));
+								ZS.CurrentUWMode = DungeonEditMode.Secrets;
+								PotItem item = new PotItem((byte) o.tid, (byte) (o.x - most_x), (byte) (o.y - most_y), o.layer == 1, ZS);
 								room.pot_items.Add(item);
 								room.selectedObject.Add(item);
 							}
@@ -2506,19 +2444,19 @@ namespace ZeldaFullEditor
 					odata.Add(new SaveObject(objS));
 					mouse_down = false;
 				}
-				if (o is PotItem objP)
+				else if (o is PotItem objP)
 				{
 					odata.Add(new SaveObject(objP));
 					mouse_down = false;
 				}
-				if (o is Room_Object objR)
+				else if (o is Room_Object objR)
 				{
 					odata.Add(new SaveObject(objR));
 					mouse_down = false;
 				}
 			}
 
-			Clipboard.SetData("ObjectZ", odata);
+			Clipboard.SetData(Constants.ObjectZClipboardData, odata);
 		}
 
 		// TODO copy
@@ -2563,7 +2501,7 @@ namespace ZeldaFullEditor
 				{
 					if (o.type == typeof(Sprite))
 					{
-						Sprite spr = (new Sprite(room, o.id, (byte) (o.x - most_x), (byte) (o.y - most_y), o.subtype, o.layer));
+						Sprite spr = new Sprite(room, o.id, (byte) (o.x - most_x), (byte) (o.y - most_y), o.subtype, o.layer);
 						room.sprites.Add(spr);
 						room.selectedObject.Add(spr);
 					}
@@ -2592,7 +2530,7 @@ namespace ZeldaFullEditor
 			//Room r = (Room)room.Clone();
 			//clearUselessRoomStuff(r);
 			room.has_changed = true;
-			mainForm.checkAnyChanges();
+			ZS.MainForm.checkAnyChanges();
 			//undoRooms.Add(r);
 
 			var odata = new List<SaveObject>();
@@ -2602,29 +2540,29 @@ namespace ZeldaFullEditor
 				{
 					odata.Add(new SaveObject(objS));
 				}
-				if (o is PotItem objP)
+				else if (o is PotItem objP)
 				{
 					odata.Add(new SaveObject(objP));
 				}
-				if (o is Room_Object objR)
+				else if (o is Room_Object objR)
 				{
 					odata.Add(new SaveObject(objR));
 				}
 			}
 
-			Clipboard.SetData("ObjectZ", odata);
+			Clipboard.SetData(Constants.ObjectZClipboardData, odata);
 
-			foreach (var o in room.selectedObject)
+			foreach (object o in room.selectedObject)
 			{
 				if (o is Sprite objS)
 				{
 					room.sprites.Remove(objS);
 				}
-				if (o is PotItem objP)
+				else if (o is PotItem objP)
 				{
 					room.pot_items.Remove(objP);
 				}
-				if (o is Room_Object objR)
+				else if (o is Room_Object objR)
 				{
 					room.tilesObjects.Remove(objR);
 				}
@@ -2635,71 +2573,73 @@ namespace ZeldaFullEditor
 			Refresh();
 		}
 
-		// TODO switch statements and magic numbers
+		// TODO magic numbers
 		public override void insertNew()
 		{
-			// If block selected
-			if (selectedMode == ObjectMode.Blockmode)
+			switch (ZS.CurrentUWMode)
 			{
-				room.selectedObject.Clear();
-				Room_Object ro = room.addObject(0x0E00, 0, 0, 0, 0);
+				case DungeonEditMode.Blocks:
+					room.selectedObject.Clear();
+					Room_Object rb = room.addObject(Constants.TorchPseudoID, 0, 0, 0, 0);
 
-				if (ro != null)
-				{
-					ro.setRoom(room);
-					ro.options = ObjectOption.Block;
-					room.tilesObjects.Add(ro);
-					room.selectedObject.Add(ro);
+					if (rb != null)
+					{
+						rb.setRoom(room);
+						rb.options = ObjectOption.Block;
+						room.tilesObjects.Add(rb);
+						room.selectedObject.Add(rb);
+						dragx = 0;
+						dragy = 0;
+						mouse_down = true;
+					}
+					break;
+
+				case DungeonEditMode.Secrets:
+					room.selectedObject.Clear();
+					PotItem p = new PotItem(1, 0, 0, false, ZS);
+					room.pot_items.Add(p);
+					room.selectedObject.Add(p);
 					dragx = 0;
 					dragy = 0;
 					mouse_down = true;
-				}
+					break;
+
+				case DungeonEditMode.Chests:
+					addChest();
+					break;
+
+				case DungeonEditMode.Torches:
+					room.selectedObject.Clear();
+					Room_Object rt = room.addObject(0x150, 0, 0, 0, 0);
+					if (rt != null)
+					{
+						rt.setRoom(room);
+						rt.options = ObjectOption.Torch;
+						room.tilesObjects.Add(rt);
+						room.selectedObject.Add(rt);
+						dragx = 0;
+						dragy = 0;
+						mouse_down = true;
+					}
+					break;
+
+				case DungeonEditMode.Doors:
+					room.selectedObject.Clear();
+					Room_Object rd = new object_door(0, 0, 0, 0, 0, ZS);
+					if (rd != null)
+					{
+						rd.setRoom(room);
+						rd.options = ObjectOption.Door;
+						room.tilesObjects.Add(rd);
+						Focus();
+						ZS.ActiveScene = this;
+						//room.selectedObject.Add(ro);
+					}
+					break;
+
 			}
-			else if (selectedMode == ObjectMode.Itemmode)
-			{
-				room.selectedObject.Clear();
-				PotItem p = new PotItem(1, 0, 0, false);
-				room.pot_items.Add(p);
-				room.selectedObject.Add(p);
-				dragx = 0;
-				dragy = 0;
-				mouse_down = true;
-			}
-			else if (selectedMode == ObjectMode.Chestmode)
-			{
-				addChest();
-			}
-			else if (selectedMode == ObjectMode.Torchmode)
-			{
-				room.selectedObject.Clear();
-				Room_Object ro = room.addObject(0x150, 0, 0, 0, 0);
-				if (ro != null)
-				{
-					ro.setRoom(room);
-					ro.options = ObjectOption.Torch;
-					room.tilesObjects.Add(ro);
-					room.selectedObject.Add(ro);
-					dragx = 0;
-					dragy = 0;
-					mouse_down = true;
-				}
-			}
-			else if (selectedMode == ObjectMode.Doormode)
-			{
-				room.selectedObject.Clear();
-				Room_Object ro = new object_door(0, 0, 0, 0, 0);
-				if (ro != null)
-				{
-					ro.setRoom(room);
-					ro.options = ObjectOption.Door;
-					room.tilesObjects.Add(ro);
-					this.Focus();
-					mainForm.activeScene = this;
-					//room.selectedObject.Add(ro);
-				}
-			}
-			else if ((byte) selectedMode >= 0 && (byte) selectedMode < 3) //if != allbg
-			{
+			//else if ((byte) selectedMode >= 0 && (byte) selectedMode < 3) //if != allbg
+			//{
 				//picker object :thinking:
 				//pObj.createObjects(room);
 				//pObj.ShowDialog();
@@ -2729,7 +2669,7 @@ namespace ZeldaFullEditor
                     }
                 }
                 */
-			}
+			//}
 
 			DrawRoom();
 			Refresh();
@@ -2793,14 +2733,6 @@ namespace ZeldaFullEditor
 				Refresh();
 				mouse_down = false;
 			}
-		}
-
-		private void InitializeComponent()
-		{
-			((System.ComponentModel.ISupportInitialize) (this)).BeginInit();
-			this.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize) (this)).EndInit();
-			this.ResumeLayout(false);
 		}
 
 		public void updateRoomInfos(DungeonMain mainForm)

@@ -10,13 +10,12 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-	public partial class DungeonPropertiesForm : Form
+	public partial class DungeonPropertiesForm : Gui.ScreamForm
 	{
 		DungeonProperty[] properties = new DungeonProperty[12];
 
 		bool changedFromForm = false;
-
-		public DungeonPropertiesForm()
+		public DungeonPropertiesForm(ZScreamer parent) : base(parent)
 		{
 			InitializeComponent();
 		}
@@ -41,9 +40,9 @@ namespace ZeldaFullEditor.Gui
 			{
 				properties[i] = new DungeonProperty
 				(
-					ROM.DATA[Constants.dungeons_startrooms + i],
-					ROM.DATA[Constants.dungeons_endrooms + i],
-					(short) ((ROM.DATA[Constants.dungeons_bossrooms + (i * 2) + 1] << 8) + ROM.DATA[Constants.dungeons_bossrooms + (i * 2)])
+					ZS.ROM[Constants.dungeons_startrooms + i],
+					ZS.ROM[Constants.dungeons_endrooms + i],
+					ZS.ROM[Constants.dungeons_bossrooms + (i * 2), 2]
 				);
 			}
 
@@ -73,7 +72,7 @@ namespace ZeldaFullEditor.Gui
 				}
 				if (int.TryParse(bossroomTextbox.Text, out r))
 				{
-					properties[listBox1.SelectedIndex].bossroom = (short) r;
+					properties[listBox1.SelectedIndex].bossroom = (ushort) r;
 				}
 			}
 		}
@@ -82,17 +81,17 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < 12; i++)
 			{
-				ROM.Write(Constants.dungeons_startrooms + i, properties[i].startroom, WriteType.DungeonPrize);
-				ROM.Write(Constants.dungeons_endrooms + i, properties[i].endroom, WriteType.DungeonPrize);
-				ROM.WriteShort(Constants.dungeons_bossrooms + (i * 2), properties[i].bossroom, WriteType.DungeonPrize);
+				ZS.ROM[Constants.dungeons_startrooms + i] = properties[i].startroom;
+				ZS.ROM[Constants.dungeons_endrooms + i] = properties[i].endroom;
+				ZS.ROM[Constants.dungeons_bossrooms + (i * 2), 2] = properties[i].bossroom;
 			}
 
-			this.Close();
+			Close();
 		}
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			this.Close();
+			Close();
 		}
 	}
 
@@ -100,9 +99,9 @@ namespace ZeldaFullEditor.Gui
 	{
 		public byte startroom = 0;
 		public byte endroom = 0;
-		public short bossroom = 0;
+		public ushort bossroom = 0;
 
-		public DungeonProperty(byte startroom, byte endroom, short bossroom)
+		public DungeonProperty(byte startroom, byte endroom, ushort bossroom)
 		{
 			this.startroom = startroom;
 			this.endroom = endroom;

@@ -9,33 +9,32 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class ExitOW
 	{
-		public byte
-			mapId,
-			unk1,
-			unk2,
-			doorXEditor,
-			doorYEditor,
-			AreaX,
-			AreaY;
+		public byte mapId { get; set; }
+		public byte unk1 { get; set; }
+		public byte unk2 { get; set; }
+		public byte doorXEditor { get; set; }
+		public byte doorYEditor { get; set; }
+		public byte AreaX { get; set; }
+		public byte AreaY { get; set; }
 
-		public short
-			vramLocation,
-			roomId,
-			xScroll,
-			yScroll,
-			cameraX,
-			cameraY,
-			doorType1,
-			doorType2;
+		public ushort vramLocation { get; set; }
+		public ushort roomId { get; set; }
+		public ushort xScroll { get; set; }
+		public ushort yScroll { get; set; }
+		public ushort cameraX { get; set; }
+		public ushort cameraY { get; set; }
+		public ushort doorType1 { get; set; }
+		public ushort doorType2 { get; set; }
 
-		public ushort
-			playerX,
-			playerY;
+		public ushort playerX { get; set; }
+		public ushort playerY { get; set; }
 
 		public bool isAutomatic = true;
 		public bool deleted = false;
 
-		public ExitOW(short roomId, byte mapId, short vramLocation, short yScroll, short xScroll, ushort playerY, ushort playerX, short cameraY, short cameraX, byte unk1, byte unk2, short doorType1, short doorType2)
+		public ExitOW(ushort roomId, byte mapId, ushort vramLocation,
+			ushort yScroll, ushort xScroll, ushort playerY, ushort playerX,
+			ushort cameraY, ushort cameraX, byte unk1, byte unk2, ushort doorType1, ushort doorType2)
 		{
 			this.roomId = roomId;
 			this.mapId = mapId;
@@ -125,31 +124,54 @@ namespace ZeldaFullEditor
 			int mapy = ((mapId & 56) << 6);
 			if (isAutomatic)
 			{
-				xScroll = (short) (playerX - 134);
-				yScroll = (short) (playerY - 78);
+				xScroll = (ushort) (playerX - 134);
+				yScroll = (ushort) (playerY - 78);
 
-				if (xScroll < mapx) { xScroll = (short) ((mapx)); }
-				if (yScroll < mapy) { yScroll = (short) ((mapy)); }
+				if (xScroll < mapx)
+				{
+					xScroll = (ushort) mapx;
+				}
 
-				if (xScroll > mapx + large) { xScroll = (short) ((mapx) + large); }
-				if (yScroll > (mapy + large) + 30) { yScroll = (short) (((mapy) + large) + 30); }
+				if (yScroll < mapy)
+				{
+					yScroll = (ushort) mapy;
+				}
 
-				cameraX = (short) (playerX);
-				cameraY = (short) (playerY + 19);
+				if (xScroll > mapx + large)
+				{
+					xScroll = (ushort) (mapx + large);
+				}
+				if (yScroll > (mapy + large) + 30)
+				{
+					yScroll = (ushort) (((mapy) + large) + 30);
+				}
 
-				if (cameraX < mapx + 127) { cameraX = (short) (mapx + 127); }
-				if (cameraY < mapy + 111) { cameraY = (short) (mapy + 111); }
+				cameraX = (ushort) playerX;
+				cameraY = (ushort) (playerY + 19);
 
-				if (cameraX > mapx + 127 + large) { cameraX = (short) (mapx + 127 + large); }
-				if (cameraY > mapy + 143 + large) { cameraY = (short) (mapy + 143 + large); }
+				if (cameraX < mapx + 127)
+				{
+					cameraX = (ushort) (mapx + 127);
+				}
+				if (cameraY < mapy + 111)
+				{
+					cameraY = (ushort) (mapy + 111);
+				}
+
+				if (cameraX > mapx + 127 + large)
+				{
+					cameraX = (ushort) (mapx + 127 + large);
+				}
+				if (cameraY > mapy + 143 + large)
+				{
+					cameraY = (ushort) (mapy + 143 + large);
+				}
 			}
 
-			short vramXScroll = (short) (xScroll - mapx);
-			short vramYScroll = (short) (yScroll - mapy);
+			ushort vramXScroll = (ushort) (xScroll - mapx);
+			ushort vramYScroll = (ushort) (yScroll - mapy);
 
-			vramLocation = (short) (((vramYScroll & 0xFFF0) << 3) | ((vramXScroll & 0xFFF0) >> 3));
-
-			Console.WriteLine("Exit:      " + roomId + " MapId: " + mapid.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
+			vramLocation = (ushort) (((vramYScroll & 0xFFF0) << 3) | ((vramXScroll & 0xFFF0) >> 3));
 		}
 	}
 }

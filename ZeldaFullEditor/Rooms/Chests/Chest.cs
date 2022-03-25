@@ -13,8 +13,10 @@ namespace ZeldaFullEditor
 		public bool picker = false;
 		public bool bigChest = false;
 
-		public Chest(byte x, byte y, byte item, bool bigChest, bool picker = false)
+		private readonly ZScreamer ZS;
+		public Chest(ZScreamer parent, byte x, byte y, byte item, bool bigChest, bool picker = false)
 		{
+			ZS = parent;
 			this.x = x;
 			this.y = y;
 			this.item = item;
@@ -342,8 +344,8 @@ namespace ZeldaFullEditor
 
 		public unsafe void draw_item_tile(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 2, int sizey = 2)
 		{
-			var alltilesData = (byte*) GFX.allgfx16Ptr.ToPointer();
-			byte* ptr = (byte*) GFX.roomBg1Ptr.ToPointer();
+			var alltilesData = (byte*) ZS.GFXManager.allgfx16Ptr.ToPointer();
+			byte* ptr = (byte*) ZS.GFXManager.roomBg1Ptr.ToPointer();
 
 			if (!picker)
 			{
@@ -386,7 +388,7 @@ namespace ZeldaFullEditor
 			}
 			else
 			{
-				ptr = (byte*) GFX.previewChestsPtr[item].ToPointer();
+				ptr = (byte*) ZS.GFXManager.previewChestsPtr[item].ToPointer();
 				int drawid = (srcx + (srcy * 16));
 
 				for (var yl = 0; yl < sizey * 8; yl++)

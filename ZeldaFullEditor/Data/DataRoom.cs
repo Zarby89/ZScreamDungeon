@@ -8,10 +8,10 @@ namespace ZeldaFullEditor
 {
 	public class DataRoom
 	{
-		public short id;
+		public ushort id;
 		public byte dungeonId;
 		public string name;
-		public DataRoom(short id, byte dungeonId, string name)
+		public DataRoom(ushort id, byte dungeonId, string name)
 		{
 			this.id = id;
 			this.dungeonId = dungeonId;

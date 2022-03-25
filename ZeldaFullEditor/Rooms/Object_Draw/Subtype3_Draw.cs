@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace ZeldaFullEditor
 {
 	[Serializable]
-	public class object_F80 : Room_Object
+	public class object_200 : Room_Object
 	{
-		public object_F80(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_200(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x200, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x00];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -33,12 +33,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F81 : Room_Object
+	public class object_201 : Room_Object
 	{
-		public object_F81(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_201(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x201, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x01];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(20, pos); // ??
 		}
@@ -59,12 +59,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F82 : Room_Object
+	public class object_202 : Room_Object
 	{
-		public object_F82(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_202(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x202, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x02];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(28, pos); // ??
 		}
@@ -85,12 +85,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F83 : Room_Object
+	public class object_203 : Room_Object
 	{
-		public object_F83(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_203(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x203, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x03];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(1, pos); // ??
 		}
@@ -104,12 +104,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F84 : Room_Object
+	public class object_204 : Room_Object
 	{
-		public object_F84(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_204(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x204, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x04];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(1, pos); // ??
 		}
@@ -122,12 +122,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F85 : Room_Object
+	public class object_205 : Room_Object
 	{
-		public object_F85(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_205(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x205, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x05];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(1, pos); // ??
 		}
@@ -141,12 +141,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F86 : Room_Object
+	public class object_206 : Room_Object
 	{
-		public object_F86(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_206(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x206, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x06];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(1, pos); // ??
 		}
@@ -159,12 +159,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F87 : Room_Object
+	public class object_207 : Room_Object
 	{
-		public object_F87(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_207(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x207, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x07];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(1, pos); // ??
 		}
@@ -178,12 +178,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F88 : Room_Object
+	public class object_208 : Room_Object
 	{
-		public object_F88(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_208(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x208, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x08];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(1, pos); // ??
 		}
@@ -197,12 +197,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F89 : Room_Object
+	public class object_209 : Room_Object
 	{
-		public object_F89(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_209(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x209, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x09];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(1, pos); // ??
 		}
@@ -216,12 +216,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F8A : Room_Object
+	public class object_20A : Room_Object
 	{
-		public object_F8A(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_20A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x20A, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x0A];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -235,12 +235,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F8B : Room_Object
+	public class object_20B : Room_Object
 	{
-		public object_F8B(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_20B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x20B, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x0B];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -254,12 +254,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F8C : Room_Object
+	public class object_20C : Room_Object
 	{
-		public object_F8C(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_20C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x20C, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x0C];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -273,12 +273,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F8D : Room_Object
+	public class object_20D : Room_Object
 	{
-		public object_F8D(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_20D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x20D, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x0D];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(6, pos);
 			addTiles(6, pos);
 			sort = Sorting.NonScalable;
@@ -312,12 +312,12 @@ namespace ZeldaFullEditor
 		}
 	}
 	[Serializable]
-	public class object_F8E : Room_Object
+	public class object_20E : Room_Object
 	{
-		public object_F8E(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_20E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x20E, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x0E];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -331,12 +331,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F8F : Room_Object
+	public class object_20F : Room_Object
 	{
-		public object_F8F(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_20F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x20F, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x0F];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -350,12 +350,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F90 : Room_Object
+	public class object_210 : Room_Object
 	{
-		public object_F90(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_210(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x210, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x10];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -376,12 +376,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F91 : Room_Object
+	public class object_211 : Room_Object
 	{
-		public object_F91(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_211(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x211, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x11];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -402,12 +402,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F92 : Room_Object
+	public class object_212 : Room_Object
 	{
-		public object_F92(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_212(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x212, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x12];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.Floors | Sorting.NonScalable;
 		}
@@ -427,12 +427,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F93 : Room_Object
+	public class object_213 : Room_Object
 	{
-		public object_F93(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_213(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x213, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x13];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(4, pos); // ??
 		}
@@ -454,12 +454,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F94 : Room_Object
+	public class object_214 : Room_Object
 	{
-		public object_F94(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_214(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x214, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x14];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(12, pos); // ??
 		}
@@ -479,12 +479,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F95 : Room_Object
+	public class object_215 : Room_Object
 	{
-		public object_F95(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_215(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x215, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x15];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 
 			addTiles(80, pos); // ??
@@ -505,12 +505,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F96 : Room_Object
+	public class object_216 : Room_Object
 	{
-		public object_F96(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_216(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x216, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x16];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(4, pos); // ??
 		}
@@ -531,12 +531,12 @@ namespace ZeldaFullEditor
 
 
 	[Serializable]
-	public class object_F97 : Room_Object
+	public class object_217 : Room_Object
 	{
-		public object_F97(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_217(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x217, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x17];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(6, pos);
 			addTiles(6, pos);
@@ -572,12 +572,12 @@ namespace ZeldaFullEditor
 
 
 	[Serializable]
-	public class object_F98 : Room_Object
+	public class object_218 : Room_Object
 	{
-		public object_F98(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_218(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x218, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x18];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(4, pos); // ??
 		}
@@ -600,12 +600,12 @@ namespace ZeldaFullEditor
 
 
 	[Serializable]
-	public class object_F99 : Room_Object
+	public class object_219 : Room_Object
 	{
-		public object_F99(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_219(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x219, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x19];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(4, pos); // ??
 			this.options |= ObjectOption.Chest;
@@ -628,12 +628,12 @@ namespace ZeldaFullEditor
 
 
 	[Serializable]
-	public class object_F9A : Room_Object
+	public class object_21A : Room_Object
 	{
-		public object_F9A(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_21A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x21A, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x1A];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(4, pos); // ??
 		}
@@ -654,12 +654,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F9B : Room_Object
+	public class object_21B : Room_Object
 	{
-		public object_F9B(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_21B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x21B, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x1B];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable | Sorting.Stairs;
 			allBgs = true;
 			addTiles(16, pos); // ??
@@ -681,12 +681,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F9C : Room_Object
+	public class object_21C : Room_Object
 	{
-		public object_F9C(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_21C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x21C, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x1C];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			allBgs = true;
 			sort = Sorting.NonScalable | Sorting.Stairs;
 			addTiles(16, pos); // ??
@@ -708,12 +708,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F9D : Room_Object
+	public class object_21D : Room_Object
 	{
-		public object_F9D(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_21D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x21D, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x1D];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			allBgs = true;
 			sort = Sorting.NonScalable | Sorting.Stairs;
 			addTiles(16, pos); // ??
@@ -735,12 +735,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F9E : Room_Object
+	public class object_21E : Room_Object
 	{
-		public object_F9E(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_21E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x21E, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x1E];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos); // ??
 			sort = Sorting.NonScalable | Sorting.Stairs;
 		}
@@ -761,12 +761,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_F9F : Room_Object
+	public class object_21F : Room_Object
 	{
-		public object_F9F(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_21F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x21F, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x1F];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos); // ??
 			sort = Sorting.NonScalable | Sorting.Stairs;
 		}
@@ -787,12 +787,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FA0 : Room_Object
+	public class object_220 : Room_Object
 	{
-		public object_FA0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_220(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x220, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x20];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos); // ??
 			sort = Sorting.NonScalable | Sorting.Stairs;
 		}
@@ -813,12 +813,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FA1 : Room_Object
+	public class object_221 : Room_Object
 	{
-		public object_FA1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_221(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x221, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x21];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos); // ??
 			sort = Sorting.NonScalable | Sorting.Stairs;
 		}
@@ -839,12 +839,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FA2 : Room_Object
+	public class object_222 : Room_Object
 	{
-		public object_FA2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_222(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x222, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x22];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -865,12 +865,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FA3 : Room_Object
+	public class object_223 : Room_Object
 	{
-		public object_FA3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_223(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x223, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x23];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -891,12 +891,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FA4 : Room_Object
+	public class object_224 : Room_Object
 	{
-		public object_FA4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_224(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x224, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x24];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -917,12 +917,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FA5 : Room_Object
+	public class object_225 : Room_Object
 	{
-		public object_FA5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_225(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x225, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x25];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -943,12 +943,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FA6 : Room_Object
+	public class object_226 : Room_Object
 	{
-		public object_FA6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_226(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x226, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x26];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos); // ??
 			sort = Sorting.NonScalable | Sorting.Stairs;
 		}
@@ -969,12 +969,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FA7 : Room_Object
+	public class object_227 : Room_Object
 	{
-		public object_FA7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_227(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x227, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x27];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable | Sorting.Stairs;
 			addTiles(16, pos); // ??
 		}
@@ -995,12 +995,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FA8 : Room_Object
+	public class object_228 : Room_Object
 	{
-		public object_FA8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_228(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x228, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x28];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable | Sorting.Stairs;
 			addTiles(16, pos); // ??
 		}
@@ -1021,12 +1021,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FA9 : Room_Object
+	public class object_229 : Room_Object
 	{
-		public object_FA9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_229(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x229, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x29];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable | Sorting.Stairs;
 			addTiles(16, pos); // ??
 		}
@@ -1047,13 +1047,13 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FAA : Room_Object
+	public class object_22A : Room_Object
 	{
-		public object_FAA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_22A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x22A, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x2A];
 			allBgs = true;
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1074,12 +1074,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FAB : Room_Object
+	public class object_22B : Room_Object
 	{
-		public object_FAB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_22B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x22B, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x2B];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable | Sorting.Stairs;
 			addTiles(4, pos); // ??
 		}
@@ -1100,12 +1100,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FAC : Room_Object
+	public class object_22C : Room_Object
 	{
-		public object_FAC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_22C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x22C, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x2C];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(16, pos); // ??
 		}
@@ -1131,9 +1131,9 @@ namespace ZeldaFullEditor
 
 
 	[Serializable]
-	public class object_FAD : Room_Object
+	public class object_22D : Room_Object
 	{
-		public object_FAD(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_22D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x22D, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x2D];
 			// Harcoded position wtf ?!?
@@ -1184,9 +1184,9 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FAE : Room_Object
+	public class object_22E : Room_Object
 	{
-		public object_FAE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_22E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x22E, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x2E];
 			int pos = Constants.tile_address + 0x1BF2;
@@ -1313,12 +1313,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FAF : Room_Object
+	public class object_22F : Room_Object
 	{
-		public object_FAF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_22F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x22F, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x2F];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			// 0x0E92; for skulls
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable | Sorting.Dungeons;
@@ -1340,12 +1340,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FB0 : Room_Object
+	public class object_230 : Room_Object
 	{
-		public object_FB0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_230(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x230, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x30];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1366,12 +1366,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FB1 : Room_Object
+	public class object_231 : Room_Object
 	{
-		public object_FB1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_231(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x231, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x31];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos); // ??
 			sort = Sorting.NonScalable | Sorting.Dungeons;
 			options |= ObjectOption.Chest;
@@ -1394,12 +1394,12 @@ namespace ZeldaFullEditor
 
 
 	[Serializable]
-	public class object_FB2 : Room_Object
+	public class object_232 : Room_Object
 	{
-		public object_FB2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_232(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x232, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x32];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1421,12 +1421,12 @@ namespace ZeldaFullEditor
 
 
 	[Serializable]
-	public class object_FB3 : Room_Object
+	public class object_233 : Room_Object
 	{
-		public object_FB3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_233(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x233, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x33];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			allBgs = true;
 			addTiles(16, pos); // ??
 			sort = Sorting.NonScalable | Sorting.Stairs;
@@ -1448,12 +1448,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FB4 : Room_Object
+	public class object_234 : Room_Object
 	{
-		public object_FB4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_234(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x234, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x34];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(6, pos); // ??
 		}
@@ -1474,12 +1474,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FB5 : Room_Object
+	public class object_235 : Room_Object
 	{
-		public object_FB5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_235(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x235, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x35];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(6, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1500,12 +1500,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FB6 : Room_Object
+	public class object_236 : Room_Object
 	{
-		public object_FB6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_236(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x236, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x36];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1526,12 +1526,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FB7 : Room_Object
+	public class object_237 : Room_Object
 	{
-		public object_FB7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_237(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x237, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x37];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1552,12 +1552,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FB8 : Room_Object
+	public class object_238 : Room_Object
 	{
-		public object_FB8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_238(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x238, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x38];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1578,12 +1578,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FB9 : Room_Object
+	public class object_239 : Room_Object
 	{
-		public object_FB9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_239(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x239, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x39];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1604,12 +1604,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FBA : Room_Object
+	public class object_23A : Room_Object
 	{
-		public object_FBA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_23A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x23A, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x3A];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(24, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1641,12 +1641,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FBB : Room_Object
+	public class object_23B : Room_Object
 	{
-		public object_FBB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_23B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x23B, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x3B];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(24, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1678,12 +1678,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FBC : Room_Object
+	public class object_23C : Room_Object
 	{
-		public object_FBC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_23C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x23C, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x3C];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(24, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1705,12 +1705,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FBD : Room_Object
+	public class object_23D : Room_Object
 	{
-		public object_FBD(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_23D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x23D, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x3D];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(24, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1731,12 +1731,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FBE : Room_Object
+	public class object_23E : Room_Object
 	{
-		public object_FBE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_23E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x23E, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x3E];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);//??
 			sort = Sorting.NonScalable;
 		}
@@ -1757,12 +1757,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FBF : Room_Object
+	public class object_23F : Room_Object
 	{
-		public object_FBF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_23F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x23F, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x3F];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1783,37 +1783,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FC : Room_Object
+	public class object_240 : Room_Object
 	{
-		public object_FC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
-		{
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
-			addTiles(4, pos); // ??
-			sort = Sorting.NonScalable;
-		}
-
-		public override void Draw()
-		{
-			base.Draw();
-
-			int tid = 0;
-			for (int xx = 0; xx < 2; xx++)
-			{
-				for (int yy = 0; yy < 2; yy++)
-				{
-					draw_tile(tiles[tid++], xx * 8, yy * 8);
-				}
-			}
-		}
-	}
-
-	[Serializable]
-	public class object_FC0 : Room_Object
-	{
-		public object_FC0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_240(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x240, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x40];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1834,12 +1809,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FC1 : Room_Object
+	public class object_241 : Room_Object
 	{
-		public object_FC1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_241(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x241, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x41];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1860,12 +1835,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FC2 : Room_Object
+	public class object_242 : Room_Object
 	{
-		public object_FC2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_242(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x242, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x42];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1886,12 +1861,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FC3 : Room_Object
+	public class object_243 : Room_Object
 	{
-		public object_FC3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_243(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x243, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x43];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1912,12 +1887,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FC4 : Room_Object
+	public class object_244 : Room_Object
 	{
-		public object_FC4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_244(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x244, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x44];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1938,12 +1913,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FC5 : Room_Object
+	public class object_245 : Room_Object
 	{
-		public object_FC5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_245(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x245, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x45];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1964,12 +1939,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FC6 : Room_Object
+	public class object_246 : Room_Object
 	{
-		public object_FC6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_246(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x246, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x46];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -1990,12 +1965,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FC7 : Room_Object
+	public class object_247 : Room_Object
 	{
-		public object_FC7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_247(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x247, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x47];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2008,8 +1983,6 @@ namespace ZeldaFullEditor
 			// 08 12 10 14
 			// 01 05 03 07
 			// 09 13 11 15
-			int tid = 0;
-
 			draw_tile(tiles[00], (0) * 8, (0) * 8); draw_tile(tiles[04], (1) * 8, (0) * 8); draw_tile(tiles[02], (2) * 8, (0) * 8); draw_tile(tiles[06], (3) * 8, (0) * 8);
 			draw_tile(tiles[08], (0) * 8, (1) * 8); draw_tile(tiles[12], (1) * 8, (1) * 8); draw_tile(tiles[10], (2) * 8, (1) * 8); draw_tile(tiles[14], (3) * 8, (1) * 8);
 			draw_tile(tiles[01], (0) * 8, (2) * 8); draw_tile(tiles[05], (1) * 8, (2) * 8); draw_tile(tiles[03], (2) * 8, (2) * 8); draw_tile(tiles[07], (3) * 8, (2) * 8);
@@ -2018,12 +1991,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FC8 : Room_Object
+	public class object_248 : Room_Object
 	{
-		public object_FC8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_248(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x248, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x48];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2044,12 +2017,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FC9 : Room_Object
+	public class object_249 : Room_Object
 	{
-		public object_FC9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_249(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x249, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x49];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2070,12 +2043,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FCA : Room_Object
+	public class object_24A : Room_Object
 	{
-		public object_FCA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_24A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x24A, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x4A];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2096,12 +2069,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FCB : Room_Object
+	public class object_24B : Room_Object
 	{
-		public object_FCB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_24B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x24B, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x4B];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(24, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2122,12 +2095,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FCC : Room_Object
+	public class object_24C : Room_Object
 	{
-		public object_FCC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_24C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x24C, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x4C];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(48, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2148,12 +2121,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FCD : Room_Object
+	public class object_24D : Room_Object
 	{
-		public object_FCD(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_24D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x24D, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x4D];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2178,12 +2151,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FCE : Room_Object
+	public class object_24E : Room_Object
 	{
-		public object_FCE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_24E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x24E, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x4E];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2205,12 +2178,12 @@ namespace ZeldaFullEditor
 
 
 	[Serializable]
-	public class object_FCF : Room_Object
+	public class object_24F : Room_Object
 	{
-		public object_FCF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_24F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x24F, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x4F];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2231,12 +2204,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FD0 : Room_Object
+	public class object_250 : Room_Object
 	{
-		public object_FD0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_250(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x250, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x50];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2258,12 +2231,12 @@ namespace ZeldaFullEditor
 
 
 	[Serializable]
-	public class object_FD1 : Room_Object
+	public class object_251 : Room_Object
 	{
-		public object_FD1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_251(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x251, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x51];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2284,12 +2257,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FD2 : Room_Object
+	public class object_252 : Room_Object
 	{
-		public object_FD2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_252(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x252, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x52];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2311,12 +2284,12 @@ namespace ZeldaFullEditor
 
 
 	[Serializable]
-	public class object_FD3 : Room_Object
+	public class object_253 : Room_Object
 	{
-		public object_FD3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_253(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x253, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x53];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2338,12 +2311,12 @@ namespace ZeldaFullEditor
 
 
 	[Serializable]
-	public class object_FD4 : Room_Object
+	public class object_254 : Room_Object
 	{
-		public object_FD4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_254(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x254, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x54];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(26, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2354,7 +2327,7 @@ namespace ZeldaFullEditor
 
 			for (int xx = 0; xx < 12; xx++)
 			{
-				tiles[1].HFlipShort = (ushort) (xx & 0x01);
+				tiles[1].HFlip = (xx & 0x01) == 0x01;
 				for (int yy = 0; yy < 3; yy++)
 				{
 					if (yy < 2)
@@ -2381,7 +2354,7 @@ namespace ZeldaFullEditor
 			// xx 4, yy 4
 			for (int xx = 0; xx < 6; xx++)
 			{
-				tiles[6].HFlipShort = (ushort) (xx & 0x01);
+				tiles[6].HFlip = xx.BitIsOn(0x01);
 				for (int yy = 0; yy < 1; yy++)
 				{
 					draw_tile(tiles[6], (((xx + 4)) * 8), (yy + 4) * 8);
@@ -2425,12 +2398,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FD5 : Room_Object
+	public class object_255 : Room_Object
 	{
-		public object_FD5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_255(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x255, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x55];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2450,12 +2423,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FD6 : Room_Object
+	public class object_256 : Room_Object
 	{
-		public object_FD6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_256(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x256, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x56];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2476,12 +2449,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FD7 : Room_Object
+	public class object_257 : Room_Object
 	{
-		public object_FD7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_257(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x257, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x57];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2502,12 +2475,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FD8 : Room_Object
+	public class object_258 : Room_Object
 	{
-		public object_FD8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_258(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x258, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x58];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(6, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2528,12 +2501,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FD9 : Room_Object
+	public class object_259 : Room_Object
 	{
-		public object_FD9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_259(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x259, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x59];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2554,12 +2527,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FDA : Room_Object
+	public class object_25A : Room_Object
 	{
-		public object_FDA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_25A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x25A, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x5A];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2579,12 +2552,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FDB : Room_Object
+	public class object_25B : Room_Object
 	{
-		public object_FDB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_25B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x25B, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x5B];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(32, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2621,12 +2594,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FDC : Room_Object
+	public class object_25C : Room_Object
 	{
-		public object_FDC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_25C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x25C, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x5C];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(24, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2647,12 +2620,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FDD : Room_Object
+	public class object_25D : Room_Object
 	{
-		public object_FDD(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_25D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x25D, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x5D];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2673,12 +2646,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FDE : Room_Object
+	public class object_25E : Room_Object
 	{
-		public object_FDE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_25E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x25E, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x5E];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2699,12 +2672,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FDF : Room_Object
+	public class object_25F : Room_Object
 	{
-		public object_FDF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_25F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x25F, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x5F];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2726,12 +2699,12 @@ namespace ZeldaFullEditor
 
 
 	[Serializable]
-	public class object_FE0 : Room_Object
+	public class object_260 : Room_Object
 	{
-		public object_FE0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_260(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x260, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x60];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2757,12 +2730,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FE1 : Room_Object
+	public class object_261 : Room_Object
 	{
-		public object_FE1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_261(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x261, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x61];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos); // ??
 		}
 
@@ -2787,12 +2760,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FE2 : Room_Object
+	public class object_262 : Room_Object
 	{
-		public object_FE2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_262(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x262, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x62];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(242, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2813,12 +2786,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FE3 : Room_Object
+	public class object_263 : Room_Object
 	{
-		public object_FE3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_263(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x263, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x63];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2839,12 +2812,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FE4 : Room_Object
+	public class object_264 : Room_Object
 	{
-		public object_FE4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_264(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x264, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x64];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2865,12 +2838,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FE5 : Room_Object
+	public class object_265 : Room_Object
 	{
-		public object_FE5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_265(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x265, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x65];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 		}
 
@@ -2890,12 +2863,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FE6 : Room_Object
+	public class object_266 : Room_Object
 	{
-		public object_FE6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_266(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x266, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x66];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -2916,12 +2889,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FE7 : Room_Object
+	public class object_267 : Room_Object
 	{
-		public object_FE7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_267(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x267, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x67];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos); // ??
 			sort = Sorting.NonScalable | Sorting.Wall;
 		}
@@ -2943,12 +2916,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FE8 : Room_Object
+	public class object_268 : Room_Object
 	{
-		public object_FE8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_268(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x268, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x68];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos); // ??
 			sort = Sorting.NonScalable | Sorting.Wall;
 		}
@@ -2969,12 +2942,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FE9 : Room_Object
+	public class object_269 : Room_Object
 	{
-		public object_FE9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_269(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x269, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x69];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos); // ??
 			sort = Sorting.NonScalable | Sorting.Wall;
 		}
@@ -2995,12 +2968,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FEA : Room_Object
+	public class object_26A : Room_Object
 	{
-		public object_FEA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_26A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x26A, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x6A];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos); // ??
 			sort = Sorting.NonScalable | Sorting.Wall;
 		}
@@ -3021,12 +2994,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FEB : Room_Object
+	public class object_26B : Room_Object
 	{
-		public object_FEB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_26B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x26B, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x6B];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(16, pos); // ??
 		}
@@ -3048,12 +3021,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FEC : Room_Object
+	public class object_26C : Room_Object
 	{
-		public object_FEC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_26C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x26C, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x6C];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(12, pos); // ??
 		}
@@ -3074,12 +3047,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FED : Room_Object
+	public class object_26D : Room_Object
 	{
-		public object_FED(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_26D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x26D, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x6D];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(12, pos); // ??
 		}
@@ -3100,12 +3073,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FEE : Room_Object
+	public class object_26E : Room_Object
 	{
-		public object_FEE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_26E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x26E, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x6E];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(12, pos); // ??
 		}
@@ -3126,12 +3099,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FEF : Room_Object
+	public class object_26F : Room_Object
 	{
-		public object_FEF(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_26F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x26F, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x6F];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(12, pos); // ??
 		}
@@ -3152,12 +3125,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FF0 : Room_Object
+	public class object_270 : Room_Object
 	{
-		public object_FF0(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_270(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x270, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x70];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(32, pos); //? ?
 		}
@@ -3198,12 +3171,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FF1 : Room_Object
+	public class object_271 : Room_Object
 	{
-		public object_FF1(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_271(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x271, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x71];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			sort = Sorting.NonScalable;
 			addTiles(64, pos); // ??
 		}
@@ -3226,12 +3199,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FF2 : Room_Object
+	public class object_272 : Room_Object
 	{
-		public object_FF2(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_272(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x272, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x72];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(80, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -3252,12 +3225,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FF3 : Room_Object
+	public class object_273 : Room_Object
 	{
-		public object_FF3(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_273(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x273, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x73];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);//??
 			sort = Sorting.NonScalable;
 		}
@@ -3277,12 +3250,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FF4 : Room_Object
+	public class object_274 : Room_Object
 	{
-		public object_FF4(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_274(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x274, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x74];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(64, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -3306,12 +3279,12 @@ namespace ZeldaFullEditor
 
 
 	[Serializable]
-	public class object_FF5 : Room_Object
+	public class object_275 : Room_Object
 	{
-		public object_FF5(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_275(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x275, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x75];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -3331,12 +3304,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FF6 : Room_Object
+	public class object_276 : Room_Object
 	{
-		public object_FF6(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_276(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x276, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x76];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(24, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -3357,12 +3330,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FF7 : Room_Object
+	public class object_277 : Room_Object
 	{
-		public object_FF7(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_277(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x277, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x77];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(24, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -3383,12 +3356,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FF8 : Room_Object
+	public class object_278 : Room_Object
 	{
-		public object_FF8(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_278(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x278, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x78];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(32, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -3430,12 +3403,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FF9 : Room_Object
+	public class object_279 : Room_Object
 	{
-		public object_FF9(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_279(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x279, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x79];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -3456,12 +3429,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FFA : Room_Object
+	public class object_27A : Room_Object
 	{
-		public object_FFA(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_27A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x27A, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x7A];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -3482,12 +3455,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FFB : Room_Object
+	public class object_27B : Room_Object
 	{
-		public object_FFB(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_27B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x27B, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x7B];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -3517,12 +3490,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FFC : Room_Object
+	public class object_27C : Room_Object
 	{
-		public object_FFC(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_27C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x27C, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x7C];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -3543,12 +3516,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FFD : Room_Object
+	public class object_27D : Room_Object
 	{
-		public object_FFD(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_27D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x27D, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x7D];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}
@@ -3569,12 +3542,12 @@ namespace ZeldaFullEditor
 	}
 
 	[Serializable]
-	public class object_FFE : Room_Object
+	public class object_27E : Room_Object
 	{
-		public object_FFE(short id, byte x, byte y, byte size, byte layer) : base(id, x, y, size, layer)
+		public object_27E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x27E, x, y, size, layer)
 		{
 			name = Constants.Type3RoomObjectNames[0x7E];
-			int pos = Constants.tile_address + (short) ((ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2) + 1] << 8) + ROM.DATA[Constants.subtype3_tiles + (((id & 0xFF) - 0x80) * 2)]);
+			int pos = Constants.tile_address + ZS.ROM[Constants.subtype3_tiles + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos); // ??
 			sort = Sorting.NonScalable;
 		}

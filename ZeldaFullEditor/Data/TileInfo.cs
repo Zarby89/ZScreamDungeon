@@ -13,61 +13,56 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// True if high priority
 		/// </summary>
-		public bool O { get => o; set => o = value; }
+		public bool O
+		{
+			get => o;
+			set
+			{
+				o = value;
+				OS = (ushort) (o ? 1 : 0);
+			}
+		}
 
 		/// <summary>
 		/// True if h flip
 		/// </summary>
-		public bool H { get => h; set => h = value; }
+		public bool H
+		{
+			get => h;
+			set
+			{
+				h = value;
+				HS = (ushort) (h ? 1 : 0);
+			}
+		}
 
 		/// <summary>
 		/// True if v flip
 		/// </summary>
-		public bool V { get => v; set => v = value; }
+
+		public bool V
+		{
+			get => v;
+			set
+			{
+				v = value;
+				VS = (ushort) (v ? 1 : 0);
+			}
+		}
 
 		/// <summary>
 		/// 0x0001 if high priority
 		/// </summary>
-		public ushort OS
-		{
-			get
-			{
-				return (ushort) (o ? 1 : 0);
-			}
-			set
-			{
-				o = value == 0x0001;
-			}
-		}
+		public ushort OS { get; private set; }
 		/// <summary>
 		/// 0x0001 if h flip
 		/// </summary>
-		public ushort HS
-		{
-			get
-			{
-				return (ushort) (h ? 1 : 0);
-			}
-			set
-			{
-				h = value == 0x0001;
-			}
-		}
+		public ushort HS { get; private set; }
 
 		/// <summary>
 		/// 0x0001 if v flip
 		/// </summary>
-		public ushort VS
-		{
-			get
-			{
-				return (ushort) (v ? 1 : 0);
-			}
-			set
-			{
-				v = value == 0x0001;
-			}
-		}
+		public ushort VS { get; private set; }
 
 		public byte palette;
 		public ushort id;
@@ -76,20 +71,25 @@ namespace ZeldaFullEditor
 		{
 			this.id = id;
 			this.palette = palette;
-			this.V = v;
-			this.H = h;
-			this.O = o;
+			V = v;
+			H = h;
+			O = o;
 		}
-		public ushort toShort()
+		public ushort ToUnsignedShort()
 		{
 			ushort value = 0;
 			// vhopppcc cccccccc
-			if (this.o) { value |= Constants.TilePriorityBit; };
-			if (this.h) { value |= Constants.TileHFlipBit; };
-			if (this.v) { value |= Constants.TileVFlipBit; };
-			value |= (ushort) ((this.palette << 10) & 0x1C00);
-			value |= (ushort) (this.id & Constants.TileNameMask);
+			if (o) { value |= Constants.TilePriorityBit; };
+			if (h) { value |= Constants.TileHFlipBit; };
+			if (v) { value |= Constants.TileVFlipBit; };
+			value |= (ushort) ((palette << 10) & 0x1C00);
+			value |= (ushort) (id & Constants.TileNameMask);
 			return value;
+		}
+
+		public void FlipHFlip()
+		{
+			H = !H;
 		}
 	}
 }

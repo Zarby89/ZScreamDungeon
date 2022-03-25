@@ -29,7 +29,7 @@ namespace ZeldaFullEditor
 			gameY = (byte) ((Math.Abs(y - (mapY * 512)) / 16));
 		}
 
-		public void updateMapStuff(short mapId)
+		public void updateMapStuff(ushort mapId)
 		{
 			this.roomMapId = (ushort) mapId;
 
@@ -43,8 +43,6 @@ namespace ZeldaFullEditor
 
 			gameX = (byte) ((Math.Abs(x - (mapX * 512)) / 16));
 			gameY = (byte) ((Math.Abs(y - (mapY * 512)) / 16));
-
-			Console.WriteLine("Item:      " + id.ToString("X2") + " MapId: " + roomMapId.ToString("X2") + " X: " + gameX + " Y: " + gameY);
 		}
 
 		public RoomPotSaveEditor Copy()

@@ -16,7 +16,7 @@ namespace ZeldaFullEditor
 		public byte subtype { get; set; }
 		public byte overlord { get; set; }
 		public byte id { get; set; }
-		public short tid { get; set; }
+		public ushort tid { get; set; }
 		public byte size { get; set; }
 		public ObjectOption options { get; set; }
 
@@ -66,7 +66,7 @@ namespace ZeldaFullEditor
 
 		public SaveObject(BinaryReader br, Type type) // From file
 		{
-			tid = br.ReadInt16();
+			tid = (ushort) br.ReadInt16();
 			x = br.ReadByte();
 			y = br.ReadByte();
 			layer = br.ReadByte();

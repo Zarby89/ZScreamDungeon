@@ -9,16 +9,18 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class EntranceOWEditor
 	{
-		public int x;
-		public int y;
-		public ushort mapPos;
-		public byte entranceId, AreaX, AreaY;
-		public short mapId;
+		public int x { get; set; }
+		public int y { get; set; }
+		public ushort mapPos { get; set; }
+		public byte entranceId { get; set; }
+		public byte AreaX { get; set; }
+		public byte AreaY { get; set; }
+		public ushort mapId { get; set; }
 		public bool isHole = false;
 		public bool deleted = false;
 
 		// mapId might be useless but we will need it to check if the entrance is in the darkworld or lightworld
-		public EntranceOWEditor(int x, int y, byte entranceId, short mapId, ushort mapPos)
+		public EntranceOWEditor(int x, int y, byte entranceId, ushort mapId, ushort mapPos)
 		{
 			this.x = x;
 			this.y = y;
@@ -38,7 +40,7 @@ namespace ZeldaFullEditor
 			return new EntranceOWEditor(this.x, this.y, this.entranceId, this.mapId, this.mapPos);
 		}
 
-		public void updateMapStuff(short mapId)
+		public void updateMapStuff(ushort mapId)
 		{
 			this.mapId = mapId;
 
@@ -60,16 +62,6 @@ namespace ZeldaFullEditor
 			byte yy = (byte) ((y - (my * 512)) / 16);
 
 			mapPos = (ushort) ((((AreaY) << 6) | (AreaX & 0x3F)) << 1);
-			//Console.WriteLine(xx + ", " +yy+ ", " +mapPos);
-
-			if (isHole)
-			{
-				Console.WriteLine("Hole:      " + entranceId + " MapId: " + mapId.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
-			}
-			else
-			{
-				Console.WriteLine("Entrance:  " + entranceId + " MapId: " + mapId.ToString("X2") + " X: " + AreaX + " Y: " + AreaY);
-			}
 		}
 	}
 }

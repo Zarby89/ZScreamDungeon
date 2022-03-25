@@ -11,7 +11,7 @@ using System.Drawing.Imaging;
 
 namespace ZeldaFullEditor
 {
-	public partial class SpritesView : UserControl
+	public partial class SpritesView : Gui.ScreamControl
 	{
 		public List<Sprite> items = new List<Sprite>();
 		ColorPalette palettes = null;
@@ -21,7 +21,7 @@ namespace ZeldaFullEditor
 
 		public Sprite selectedObject = null;
 
-		public SpritesView()
+		public SpritesView(ZScreamer parent) : base(parent)
 		{
 			InitializeComponent();
 		}
@@ -38,7 +38,7 @@ namespace ZeldaFullEditor
 			{
 				unsafe
 				{
-					byte* ptr = (byte*) GFX.previewSpritesPtr[o.id].ToPointer();
+					byte* ptr = (byte*) ZS.GFXManager.previewSpritesPtr[o.id].ToPointer();
 					for (int i = 0; i < (64 * 64); i++)
 					{
 						ptr[i] = 0;
@@ -47,7 +47,7 @@ namespace ZeldaFullEditor
 
 				o.Draw();
 
-				e.Graphics.DrawImage(GFX.previewSpritesBitmap[o.id], new Point((xpos * 64) + (xpos * 4), (ypos * 64) + (ypos * 4)));
+				e.Graphics.DrawImage(ZS.GFXManager.previewSpritesBitmap[o.id], new Point((xpos * 64) + (xpos * 4), (ypos * 64) + (ypos * 4)));
 
 				if (selectedObject == o)
 				{
@@ -101,26 +101,24 @@ namespace ZeldaFullEditor
 
 			if (items.Count > 0)
 			{
-				palettes = GFX.previewSpritesBitmap[items[0].id].Palette;
+				palettes = ZS.GFXManager.previewSpritesBitmap[items[0].id].Palette;
 
 				int pindex = 0;
-				for (int y = 0; y < GFX.loadedPalettes.GetLength(1); y++)
+				for (int y = 0; y < ZS.GFXManager.loadedPalettes.GetLength(1); y++)
 				{
-					for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
+					for (int x = 0; x < ZS.GFXManager.loadedPalettes.GetLength(0); x++)
 					{
-						palettes.Entries[pindex] = GFX.loadedPalettes[x, y];
-						pindex++;
+						palettes.Entries[pindex++] = ZS.GFXManager.loadedPalettes[x, y];
 					}
 				}
 
-				for (int y = 0; y < GFX.loadedSprPalettes.GetLength(1); y++)
+				for (int y = 0; y < ZS.GFXManager.loadedSprPalettes.GetLength(1); y++)
 				{
-					for (int x = 0; x < GFX.loadedSprPalettes.GetLength(0); x++)
+					for (int x = 0; x < ZS.GFXManager.loadedSprPalettes.GetLength(0); x++)
 					{
 						if (pindex < 256)
 						{
-							palettes.Entries[pindex] = GFX.loadedSprPalettes[x, y];
-							pindex++;
+							palettes.Entries[pindex++] = ZS.GFXManager.loadedSprPalettes[x, y];
 						}
 					}
 				}
@@ -135,7 +133,7 @@ namespace ZeldaFullEditor
 				{
 					if (palettes != null)
 					{
-						GFX.previewSpritesBitmap[o.id].Palette = palettes;
+						ZS.GFXManager.previewSpritesBitmap[o.id].Palette = palettes;
 					}
 				}
 			}

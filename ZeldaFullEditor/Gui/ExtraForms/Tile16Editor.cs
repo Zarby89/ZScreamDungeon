@@ -10,9 +10,8 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-	public partial class Tile16Editor : Form
+	public partial class Tile16Editor : ScreamForm
 	{
-		SceneOW scene;
 		ushort tile8selected = 0;
 		bool fromForm = false;
 		byte[] tempTiletype = new byte[0x200];
@@ -20,10 +19,8 @@ namespace ZeldaFullEditor.Gui
 		Tile16[] allTiles = new Tile16[Constants.NumberOfMap16];
 
 		ushort searchedTile = 0xFFFF;
-
-		public Tile16Editor(SceneOW scene)
+		public Tile16Editor(ZScreamer parent) : base(parent)
 		{
-			this.scene = scene;
 			InitializeComponent();
 
 			panel1.VerticalScroll.SmallChange = 32;
@@ -40,8 +37,8 @@ namespace ZeldaFullEditor.Gui
 			tile8selected = tempTile;
 
 			byte p = (byte) paletteUpDown.Value;
-			byte* destPtr = (byte*) GFX.editort16Ptr.ToPointer();
-			byte* srcPtr = (byte*) GFX.currentOWgfx16Ptr.ToPointer();
+			byte* destPtr = (byte*) ZS.GFXManager.editort16Ptr.ToPointer();
+			byte* srcPtr = (byte*) ZS.GFXManager.currentOWgfx16Ptr.ToPointer();
 			int xx = 0;
 			int yy = 0;
 
@@ -63,63 +60,40 @@ namespace ZeldaFullEditor.Gui
 				}
 			}
 
-			GFX.editort16Bitmap.Palette = scene.ow.allmaps[scene.selectedMap].gfxBitmap.Palette;
+			ZS.GFXManager.editort16Bitmap.Palette = ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].gfxBitmap.Palette;
 			pictureboxTile8.Refresh();
-		}
-
-		private unsafe void CopyTile(int x, int y, int xx, int yy, TileInfo tile, int offset, byte* gfx16Pointer, byte* gfx8Pointer)
-		{
-			int mx = x;
-			int my = y;
-			byte r = 0;
-
-			if (tile.H)
-			{
-				mx = 3 - x;
-				r = 1;
-			}
-			if (tile.V)
-			{
-				my = 7 - y;
-			}
-
-			int tx = ((tile.id / 16) * 512) + ((tile.id - ((tile.id / 16) * 16)) * 4);
-			var index = xx + yy + offset + (mx * 2) + (my * 16);
-			var pixel = gfx8Pointer[tx + (y * 64) + x];
-
-			gfx16Pointer[index + r ^ 1] = (byte) ((pixel & 0x0F) + tile.palette * 16);
-			gfx16Pointer[index + r] = (byte) (((pixel >> 4) & 0x0F) + tile.palette * 16);
 		}
 
 		private unsafe void CopyTile(int x, int y, int xx, int yy, int id, byte p, byte* gfx16Pointer, byte* gfx8Pointer)
 		{
-			int mx = x;
-			int my = y;
-			byte r = 0;
+			int mx;
+			int my = mirrorYCheckbox.Checked ? 7 - y : y;
+			byte r;
 
 			if (mirrorXCheckbox.Checked)
 			{
 				mx = 3 - x;
 				r = 1;
 			}
-			if (mirrorYCheckbox.Checked)
+			else
 			{
-				my = 7 - y;
+				mx = x;
+				r = 0;
 			}
 
-			int tx = ((id / 16) * 512) + ((id - ((id / 16) * 16)) * 4);
-			var index = xx + yy + (mx * 2) + (my * 128);
-			var pixel = gfx8Pointer[tx + (y * 64) + x];
+			int tx = ((id & ~0xF) << 5) | ((id & 0xF) << 2);
+			int index = xx + yy + (x * 2) + (my * 128);
+			int pixel = gfx8Pointer[tx + (y * 64) + x];
 
-			gfx16Pointer[index + r ^ 1] = (byte) ((pixel & 0x0F) + p * 16);
-			gfx16Pointer[index + r] = (byte) (((pixel >> 4) & 0x0F) + p * 16);
+			gfx16Pointer[index + r ^ 1] = (byte) ((pixel & 0x0F) | (p << 4));
+			gfx16Pointer[index + r] = (byte) ((pixel >> 4) | (p << 4));
 		}
 
 		private void pictureboxTile8_Paint(object sender, PaintEventArgs e)
 		{
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 			e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
-			e.Graphics.DrawImage(GFX.editort16Bitmap, Constants.Rect_0_0_256_1024);
+			e.Graphics.DrawImage(ZS.GFXManager.editort16Bitmap, Constants.Rect_0_0_256_1024);
 
 			if (gridcheckBox.Checked)
 			{
@@ -158,12 +132,14 @@ namespace ZeldaFullEditor.Gui
 			}
 		}
 
+		private static readonly RectangleF RectF1 = new RectangleF(0f, 0f, 256.5f, 16000f);
+		private static readonly RectangleF RectF2 = new RectangleF(0, 0, 128, 8000);
 		private void pictureboxTile16_Paint(object sender, PaintEventArgs e)
 		{
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 			e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
 			//e.Graphics.DrawImage(GFX.editortileBitmap, new Rectangle(0, 0, 64, 64));
-			e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(0f, 0f, 256.5f, 16000f), new RectangleF(0, 0, 128, 8000), GraphicsUnit.Pixel);
+			e.Graphics.DrawImage(ZS.GFXManager.mapblockset16Bitmap, RectF1, RectF2, GraphicsUnit.Pixel);
 			//e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8000f), new RectangleF(0, 4000, 128, 4000-192), GraphicsUnit.Pixel);
 
 			if (gridcheckBox.Checked)
@@ -179,8 +155,8 @@ namespace ZeldaFullEditor.Gui
 				}
 			}
 
-			int xP = (scene.selectedTile[0] % 8) * 32;
-			int yP = ((scene.selectedTile[0] / 8)) * 32;
+			int xP = (ZS.OverworldScene.selectedTile[0] % 8) * 32;
+			int yP = (ZS.OverworldScene.selectedTile[0] / 8) * 32;
 
 			if (searchedTile != 0xFFFF)
 			{
@@ -229,7 +205,6 @@ namespace ZeldaFullEditor.Gui
 			int t16 = offset + (e.X / 32) + ((e.Y / 32) * 8);
 			int t8x = (e.X / 16) & 0x01;
 			int t8y = (e.Y / 16) & 0x01;
-			int t8i = 0;
 
 			// When left clicked, draw the tile 8 selected in the corrisponding quadrant of the tile 16
 			if (e.Button == MouseButtons.Left)
@@ -297,8 +272,8 @@ namespace ZeldaFullEditor.Gui
 
 		private unsafe void BuildTiles16Gfx()
 		{
-			var gfx16Data = (byte*) GFX.mapblockset16.ToPointer(); //(byte*)allgfx8Ptr.ToPointer();
-			var gfx8Data = (byte*) GFX.currentOWgfx16Ptr.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
+			var gfx16Data = (byte*) ZS.GFXManager.mapblockset16.ToPointer(); //(byte*)allgfx8Ptr.ToPointer();
+			var gfx8Data = (byte*) ZS.GFXManager.currentOWgfx16Ptr.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
 			int[] offsets = { 0, 8, 1024, 1032 };
 			var yy = 0;
 			var xx = 0;
@@ -367,21 +342,21 @@ namespace ZeldaFullEditor.Gui
 
 			for (int i = 0; i < 0x200; i++)
 			{
-				tempTiletype[i] = scene.ow.allTilesTypes[i];
+				tempTiletype[i] = ZS.OverworldManager.allTilesTypes[i];
 			}
 
-			scene.ow.tiles16.CopyTo(allTiles);
+			ZS.OverworldManager.Tile16List.CopyTo(allTiles);
 
 			unsafe
 			{
 				// Update gfx to be on selected map
-				byte* currentmapgfx8Data = (byte*) GFX.currentOWgfx16Ptr.ToPointer(); // Loaded gfx for the current map (empty at this point)
-				byte* allgfxData = (byte*) GFX.allgfx16Ptr.ToPointer(); // All gfx of the game pack of 2048 bytes (4bpp)
+				byte* currentmapgfx8Data = (byte*) ZS.GFXManager.currentOWgfx16Ptr.ToPointer(); // Loaded gfx for the current map (empty at this point)
+				byte* allgfxData = (byte*) ZS.GFXManager.allgfx16Ptr.ToPointer(); // All gfx of the game pack of 2048 bytes (4bpp)
 				for (int i = 0; i < 16; i++)
 				{
 					for (int j = 0; j < 2048; j++)
 					{
-						byte mapByte = allgfxData[j + (scene.ow.allmaps[scene.selectedMap].staticgfx[i] * 2048)];
+						byte mapByte = allgfxData[j + (ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].staticgfx[i] * 2048)];
 						switch (i)
 						{
 							case 0:
@@ -402,28 +377,28 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < Constants.NumberOfMap16; i++)
 			{
-				scene.ow.tiles16[i] = allTiles[i];
+				ZS.OverworldManager.Tile16List[i] = allTiles[i];
 			}
 
 			for (int i = 0; i < 0x200; i++)
 			{
-				scene.ow.allTilesTypes[i] = tempTiletype[i];
+				ZS.OverworldManager.allTilesTypes[i] = tempTiletype[i];
 			}
 
 			for (int i = 0; i < 159; i++)
 			{
-				scene.ow.allmaps[i].needRefresh = true;
+				ZS.OverworldManager.allmaps[i].needRefresh = true;
 			}
 
-			scene.ow.allmaps[scene.selectedMap].BuildMap();
-			scene.ow.allmaps[scene.selectedMap].needRefresh = false;
+			ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].BuildMap();
+			ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].needRefresh = false;
 
-			this.Close();
+			Close();
 		}
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			this.Close();
+			Close();
 		}
 
 		private void tileTypeBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -531,15 +506,15 @@ namespace ZeldaFullEditor.Gui
 
 		private void pictureboxTile8_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			scene.mainForm.editorsTabControl.SelectedIndex = 2;
-			scene.mainForm.gfxEditor.selectedSheet = scene.ow.allmaps[scene.selectedMap].staticgfx[(e.Y / 64)];
-			scene.mainForm.gfxEditor.allgfxPicturebox.Refresh();
+			ZS.MainForm.editorsTabControl.SelectedIndex = 2;
+			ZS.MainForm.gfxEditor.selectedSheet = ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].staticgfx[(e.Y / 64)];
+			ZS.MainForm.gfxEditor.allgfxPicturebox.Refresh();
 			this.Close();
 		}
 
 		private void Tile16Editor_Shown(object sender, EventArgs e)
 		{
-			panel1.VerticalScroll.Value = ((scene.selectedTile[0] / 8) * 32);
+			panel1.VerticalScroll.Value = ((ZS.OverworldScene.selectedTile[0] / 8) * 32);
 			panel1.PerformLayout();
 		}
 

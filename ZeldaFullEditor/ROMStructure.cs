@@ -30,7 +30,7 @@ namespace ZeldaFullEditor
 		static public string[] dungeonsNames = new string[17];
 		static public string[] roomsNames;
 		static public string[] mapsNames;
-		static public short[][] dungeonsRooms = new short[17][];
+		static public ushort[][] dungeonsRooms = new ushort[17][];
 		static public List<DataRoom> dungeonsRoomList = new List<DataRoom>();
 
 		// TODO move to default entities
@@ -58,23 +58,23 @@ namespace ZeldaFullEditor
 		static public void defaultDungeonRooms()
 		{
 			// 29,30,31,32,33,34
-			dungeonsRooms[0] = new short[] { 2, 17, 18, 33, 34, 50, 65, 66 }; // Sewer
-			dungeonsRooms[1] = new short[] { 1, 80, 81, 82, 85, 96, 97, 98, 112, 113, 114, 128, 129, 130 };
-			dungeonsRooms[2] = new short[] { 137, 153, 168, 169, 170, 184, 185, 186, 200, 201, 216, 217, 218 };
-			dungeonsRooms[3] = new short[] { 51, 67, 83, 99, 115, 116, 117, 131, 132, 133 };
-			dungeonsRooms[4] = new short[] { 48, 32, 64, 176, 192, 208, 224 }; // Agah
-			dungeonsRooms[5] = new short[] { 6, 22, 38, 40, 52, 53, 54, 55, 56, 70, 84, 102, 118 };
-			dungeonsRooms[6] = new short[] { 9, 10, 11, 25, 26, 27, 42, 43, 58, 59, 74, 75, 90, 106 };
-			dungeonsRooms[7] = new short[] { 144, 145, 146, 147, 151, 152, 160, 161, 162, 163, 177, 178, 179, 193, 194, 195, 209, 210 };
-			dungeonsRooms[8] = new short[] { 41, 57, 73, 86, 87, 88, 89, 103, 104 };
-			dungeonsRooms[9] = new short[] { 14, 30, 31, 46, 62, 63, 78, 79, 94, 95, 110, 126, 127, 142, 158, 159, 174, 175, 190, 191, 206, 222 };
-			dungeonsRooms[10] = new short[] { 7, 23, 39, 49, 119, 135, 167 };
-			dungeonsRooms[11] = new short[] { 68, 69, 100, 101, 171, 172, 187, 188, 203, 204, 219, 220 };
-			dungeonsRooms[12] = new short[] { 4, 19, 20, 21, 35, 36, 164, 180, 181, 182, 183, 196, 197, 198, 199, 213, 214 };
-			dungeonsRooms[13] = new short[] { 12, 13, 28, 29, 61, 76, 77, 91, 92, 93, 107, 108, 109, 123, 124, 125, 139, 140, 141, 149, 150, 155, 156, 157, 165, 166 };
-			dungeonsRooms[14] = new short[] { };
-			dungeonsRooms[15] = new short[] { };
-			dungeonsRooms[16] = new short[] { 0, 3, 8, 16, 24, 44, 47, 60, 223, 225, 226, 227, 228, 229, 230, 231, 232, 234, 235, 237, 238, 239, 240, 241,
+			dungeonsRooms[0] = new ushort[] { 2, 17, 18, 33, 34, 50, 65, 66 }; // Sewer
+			dungeonsRooms[1] = new ushort[] { 1, 80, 81, 82, 85, 96, 97, 98, 112, 113, 114, 128, 129, 130 };
+			dungeonsRooms[2] = new ushort[] { 137, 153, 168, 169, 170, 184, 185, 186, 200, 201, 216, 217, 218 };
+			dungeonsRooms[3] = new ushort[] { 51, 67, 83, 99, 115, 116, 117, 131, 132, 133 };
+			dungeonsRooms[4] = new ushort[] { 48, 32, 64, 176, 192, 208, 224 }; // Agah
+			dungeonsRooms[5] = new ushort[] { 6, 22, 38, 40, 52, 53, 54, 55, 56, 70, 84, 102, 118 };
+			dungeonsRooms[6] = new ushort[] { 9, 10, 11, 25, 26, 27, 42, 43, 58, 59, 74, 75, 90, 106 };
+			dungeonsRooms[7] = new ushort[] { 144, 145, 146, 147, 151, 152, 160, 161, 162, 163, 177, 178, 179, 193, 194, 195, 209, 210 };
+			dungeonsRooms[8] = new ushort[] { 41, 57, 73, 86, 87, 88, 89, 103, 104 };
+			dungeonsRooms[9] = new ushort[] { 14, 30, 31, 46, 62, 63, 78, 79, 94, 95, 110, 126, 127, 142, 158, 159, 174, 175, 190, 191, 206, 222 };
+			dungeonsRooms[10] = new ushort[] { 7, 23, 39, 49, 119, 135, 167 };
+			dungeonsRooms[11] = new ushort[] { 68, 69, 100, 101, 171, 172, 187, 188, 203, 204, 219, 220 };
+			dungeonsRooms[12] = new ushort[] { 4, 19, 20, 21, 35, 36, 164, 180, 181, 182, 183, 196, 197, 198, 199, 213, 214 };
+			dungeonsRooms[13] = new ushort[] { 12, 13, 28, 29, 61, 76, 77, 91, 92, 93, 107, 108, 109, 123, 124, 125, 139, 140, 141, 149, 150, 155, 156, 157, 165, 166 };
+			dungeonsRooms[14] = new ushort[] { };
+			dungeonsRooms[15] = new ushort[] { };
+			dungeonsRooms[16] = new ushort[] { 0, 3, 8, 16, 24, 44, 47, 60, 223, 225, 226, 227, 228, 229, 230, 231, 232, 234, 235, 237, 238, 239, 240, 241,
 				248, 249, 250, 251, 253, 254, 255, 266, 267, 268, 269, 270, 274, 275, 276, 277, 278, 279, 283, 286, 288, 291, 292, 293, 294, 295, 242, 243,
 				244, 245, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 271, 272, 273, 280, 281, 282, 284, 285, 287, 5, 15, 37, 45, 71, 72, 105, 111, 120,
 				121, 122, 134, 136, 138, 143, 148, 154, 173, 189, 202, 205, 207, 211, 212, 215, 221, 233, 236, 246, 247, 252,289,290 };

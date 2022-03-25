@@ -55,7 +55,7 @@
 			this.refreshToolStrip = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-			this.tabControl1 = new System.Windows.Forms.TabControl();
+			this.OverworldAuxSideTabs = new System.Windows.Forms.TabControl();
 			this.tabPage1 = new System.Windows.Forms.TabPage();
 			this.tilePictureBox = new System.Windows.Forms.PictureBox();
 			this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -69,9 +69,42 @@
 			this.mirrorYCheckbox = new System.Windows.Forms.CheckBox();
 			this.palette8Box = new System.Windows.Forms.PictureBox();
 			this.mirrorXCheckbox = new System.Windows.Forms.CheckBox();
+			this.OWTabExitProps = new System.Windows.Forms.TabPage();
+			this.OWExitPanel = new System.Windows.Forms.Panel();
+			this.OWExitDisabled = new System.Windows.Forms.Label();
+			this.OWExitPropY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.OWExitPropX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.OWExitPropID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.label13 = new System.Windows.Forms.Label();
+			this.label12 = new System.Windows.Forms.Label();
+			this.label11 = new System.Windows.Forms.Label();
+			this.OWTabEntranceProps = new System.Windows.Forms.TabPage();
+			this.OWEntrancePanel = new System.Windows.Forms.Panel();
+			this.OWEntranceDisabled = new System.Windows.Forms.Label();
+			this.OWEntrancePropY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.OWEntrancePropX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.OWEntrancePropID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.label15 = new System.Windows.Forms.Label();
+			this.label17 = new System.Windows.Forms.Label();
+			this.label18 = new System.Windows.Forms.Label();
+			this.OWTabTransportProps = new System.Windows.Forms.TabPage();
+			this.OWTransportPanel = new System.Windows.Forms.Panel();
+			this.OWTransportDisabled = new System.Windows.Forms.Label();
+			this.OWTransportPropY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.OWTransportPropX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.OWTransportPropID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.label16 = new System.Windows.Forms.Label();
+			this.label19 = new System.Windows.Forms.Label();
+			this.label20 = new System.Windows.Forms.Label();
 			this.thumbnailBox = new System.Windows.Forms.PictureBox();
 			this.owPropertyPanel = new System.Windows.Forms.Panel();
 			this.objectGroupbox = new System.Windows.Forms.GroupBox();
+			this.SelectedObjectY = new System.Windows.Forms.Label();
+			this.SelectedObjectX = new System.Windows.Forms.Label();
+			this.SelectedObjectID = new System.Windows.Forms.Label();
+			this.label10 = new System.Windows.Forms.Label();
+			this.label9 = new System.Windows.Forms.Label();
+			this.label8 = new System.Windows.Forms.Label();
 			this.objCombobox = new System.Windows.Forms.ComboBox();
 			this.mapGroupbox = new System.Windows.Forms.GroupBox();
 			this.OWProperty_MessageID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
@@ -94,18 +127,12 @@
 			this.label1 = new System.Windows.Forms.Label();
 			this.stateCombobox = new System.Windows.Forms.ComboBox();
 			this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-			this.label8 = new System.Windows.Forms.Label();
-			this.label9 = new System.Windows.Forms.Label();
-			this.label10 = new System.Windows.Forms.Label();
-			this.SelectedObjectID = new System.Windows.Forms.Label();
-			this.SelectedObjectX = new System.Windows.Forms.Label();
-			this.SelectedObjectY = new System.Windows.Forms.Label();
 			this.owToolStrip.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
 			this.splitContainer1.Panel1.SuspendLayout();
 			this.splitContainer1.Panel2.SuspendLayout();
 			this.splitContainer1.SuspendLayout();
-			this.tabControl1.SuspendLayout();
+			this.OverworldAuxSideTabs.SuspendLayout();
 			this.tabPage1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).BeginInit();
 			this.tabPage2.SuspendLayout();
@@ -116,6 +143,12 @@
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.palette8Box)).BeginInit();
+			this.OWTabExitProps.SuspendLayout();
+			this.OWExitPanel.SuspendLayout();
+			this.OWTabEntranceProps.SuspendLayout();
+			this.OWEntrancePanel.SuspendLayout();
+			this.OWTabTransportProps.SuspendLayout();
+			this.OWTransportPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
 			this.owPropertyPanel.SuspendLayout();
 			this.objectGroupbox.SuspendLayout();
@@ -408,7 +441,7 @@
 			// splitContainer1.Panel1
 			// 
 			this.splitContainer1.Panel1.AutoScroll = true;
-			this.splitContainer1.Panel1.Controls.Add(this.tabControl1);
+			this.splitContainer1.Panel1.Controls.Add(this.OverworldAuxSideTabs);
 			// 
 			// splitContainer1.Panel2
 			// 
@@ -418,27 +451,31 @@
 			this.splitContainer1.SplitterDistance = 288;
 			this.splitContainer1.TabIndex = 1;
 			// 
-			// tabControl1
+			// OverworldAuxSideTabs
 			// 
-			this.tabControl1.Controls.Add(this.tabPage1);
-			this.tabControl1.Controls.Add(this.tabPage2);
-			this.tabControl1.Controls.Add(this.Tiles8);
-			this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.tabControl1.Location = new System.Drawing.Point(0, 0);
-			this.tabControl1.Name = "tabControl1";
-			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(288, 619);
-			this.tabControl1.TabIndex = 1;
-			this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+			this.OverworldAuxSideTabs.Controls.Add(this.tabPage1);
+			this.OverworldAuxSideTabs.Controls.Add(this.tabPage2);
+			this.OverworldAuxSideTabs.Controls.Add(this.Tiles8);
+			this.OverworldAuxSideTabs.Controls.Add(this.OWTabExitProps);
+			this.OverworldAuxSideTabs.Controls.Add(this.OWTabEntranceProps);
+			this.OverworldAuxSideTabs.Controls.Add(this.OWTabTransportProps);
+			this.OverworldAuxSideTabs.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.OverworldAuxSideTabs.Location = new System.Drawing.Point(0, 0);
+			this.OverworldAuxSideTabs.Multiline = true;
+			this.OverworldAuxSideTabs.Name = "OverworldAuxSideTabs";
+			this.OverworldAuxSideTabs.SelectedIndex = 0;
+			this.OverworldAuxSideTabs.Size = new System.Drawing.Size(288, 619);
+			this.OverworldAuxSideTabs.TabIndex = 1;
+			this.OverworldAuxSideTabs.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
 			// 
 			// tabPage1
 			// 
 			this.tabPage1.AutoScroll = true;
 			this.tabPage1.Controls.Add(this.tilePictureBox);
-			this.tabPage1.Location = new System.Drawing.Point(4, 22);
+			this.tabPage1.Location = new System.Drawing.Point(4, 40);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(280, 593);
+			this.tabPage1.Size = new System.Drawing.Size(280, 575);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Tile 16";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -575,6 +612,321 @@
 			this.mirrorXCheckbox.UseVisualStyleBackColor = true;
 			this.mirrorXCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
 			// 
+			// OWTabExitProps
+			// 
+			this.OWTabExitProps.Controls.Add(this.OWExitPanel);
+			this.OWTabExitProps.Location = new System.Drawing.Point(4, 22);
+			this.OWTabExitProps.Name = "OWTabExitProps";
+			this.OWTabExitProps.Size = new System.Drawing.Size(280, 593);
+			this.OWTabExitProps.TabIndex = 3;
+			this.OWTabExitProps.Text = "Exit";
+			this.OWTabExitProps.UseVisualStyleBackColor = true;
+			// 
+			// OWExitPanel
+			// 
+			this.OWExitPanel.Controls.Add(this.OWExitDisabled);
+			this.OWExitPanel.Controls.Add(this.OWExitPropY);
+			this.OWExitPanel.Controls.Add(this.OWExitPropX);
+			this.OWExitPanel.Controls.Add(this.OWExitPropID);
+			this.OWExitPanel.Controls.Add(this.label13);
+			this.OWExitPanel.Controls.Add(this.label12);
+			this.OWExitPanel.Controls.Add(this.label11);
+			this.OWExitPanel.Location = new System.Drawing.Point(17, 4);
+			this.OWExitPanel.Name = "OWExitPanel";
+			this.OWExitPanel.Size = new System.Drawing.Size(205, 220);
+			this.OWExitPanel.TabIndex = 9;
+			// 
+			// OWExitDisabled
+			// 
+			this.OWExitDisabled.AutoSize = true;
+			this.OWExitDisabled.Location = new System.Drawing.Point(8, 7);
+			this.OWExitDisabled.Name = "OWExitDisabled";
+			this.OWExitDisabled.Size = new System.Drawing.Size(83, 13);
+			this.OWExitDisabled.TabIndex = 8;
+			this.OWExitDisabled.Text = "No exit selected";
+			// 
+			// OWExitPropY
+			// 
+			this.OWExitPropY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.OWExitPropY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+			this.OWExitPropY.HexValue = 0;
+			this.OWExitPropY.Location = new System.Drawing.Point(55, 78);
+			this.OWExitPropY.MaxLength = 4;
+			this.OWExitPropY.MaxValue = 255;
+			this.OWExitPropY.MinValue = 0;
+			this.OWExitPropY.Name = "OWExitPropY";
+			this.OWExitPropY.Size = new System.Drawing.Size(56, 20);
+			this.OWExitPropY.TabIndex = 7;
+			this.OWExitPropY.Text = "0000";
+			this.OWExitPropY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// OWExitPropX
+			// 
+			this.OWExitPropX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.OWExitPropX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+			this.OWExitPropX.HexValue = 0;
+			this.OWExitPropX.Location = new System.Drawing.Point(55, 52);
+			this.OWExitPropX.MaxLength = 4;
+			this.OWExitPropX.MaxValue = 255;
+			this.OWExitPropX.MinValue = 0;
+			this.OWExitPropX.Name = "OWExitPropX";
+			this.OWExitPropX.Size = new System.Drawing.Size(55, 20);
+			this.OWExitPropX.TabIndex = 6;
+			this.OWExitPropX.Text = "0000";
+			this.OWExitPropX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// OWExitPropID
+			// 
+			this.OWExitPropID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.OWExitPropID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+			this.OWExitPropID.HexValue = 0;
+			this.OWExitPropID.Location = new System.Drawing.Point(55, 26);
+			this.OWExitPropID.MaxLength = 2;
+			this.OWExitPropID.MaxValue = 255;
+			this.OWExitPropID.MinValue = 0;
+			this.OWExitPropID.Name = "OWExitPropID";
+			this.OWExitPropID.Size = new System.Drawing.Size(55, 20);
+			this.OWExitPropID.TabIndex = 5;
+			this.OWExitPropID.Text = "00";
+			this.OWExitPropID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// label13
+			// 
+			this.label13.AutoSize = true;
+			this.label13.Location = new System.Drawing.Point(35, 81);
+			this.label13.Name = "label13";
+			this.label13.Size = new System.Drawing.Size(14, 13);
+			this.label13.TabIndex = 4;
+			this.label13.Text = "Y";
+			// 
+			// label12
+			// 
+			this.label12.AutoSize = true;
+			this.label12.Location = new System.Drawing.Point(35, 55);
+			this.label12.Name = "label12";
+			this.label12.Size = new System.Drawing.Size(14, 13);
+			this.label12.TabIndex = 2;
+			this.label12.Text = "X";
+			// 
+			// label11
+			// 
+			this.label11.AutoSize = true;
+			this.label11.Location = new System.Drawing.Point(11, 29);
+			this.label11.Name = "label11";
+			this.label11.Size = new System.Drawing.Size(38, 13);
+			this.label11.TabIndex = 0;
+			this.label11.Text = "Exit ID";
+			// 
+			// OWTabEntranceProps
+			// 
+			this.OWTabEntranceProps.Controls.Add(this.OWEntrancePanel);
+			this.OWTabEntranceProps.Location = new System.Drawing.Point(4, 22);
+			this.OWTabEntranceProps.Name = "OWTabEntranceProps";
+			this.OWTabEntranceProps.Size = new System.Drawing.Size(280, 593);
+			this.OWTabEntranceProps.TabIndex = 4;
+			this.OWTabEntranceProps.Text = "Entrance";
+			this.OWTabEntranceProps.UseVisualStyleBackColor = true;
+			// 
+			// OWEntrancePanel
+			// 
+			this.OWEntrancePanel.Controls.Add(this.OWEntranceDisabled);
+			this.OWEntrancePanel.Controls.Add(this.OWEntrancePropY);
+			this.OWEntrancePanel.Controls.Add(this.OWEntrancePropX);
+			this.OWEntrancePanel.Controls.Add(this.OWEntrancePropID);
+			this.OWEntrancePanel.Controls.Add(this.label15);
+			this.OWEntrancePanel.Controls.Add(this.label17);
+			this.OWEntrancePanel.Controls.Add(this.label18);
+			this.OWEntrancePanel.Location = new System.Drawing.Point(17, 18);
+			this.OWEntrancePanel.Name = "OWEntrancePanel";
+			this.OWEntrancePanel.Size = new System.Drawing.Size(205, 220);
+			this.OWEntrancePanel.TabIndex = 10;
+			// 
+			// OWEntranceDisabled
+			// 
+			this.OWEntranceDisabled.AutoSize = true;
+			this.OWEntranceDisabled.Location = new System.Drawing.Point(8, 7);
+			this.OWEntranceDisabled.Name = "OWEntranceDisabled";
+			this.OWEntranceDisabled.Size = new System.Drawing.Size(109, 13);
+			this.OWEntranceDisabled.TabIndex = 8;
+			this.OWEntranceDisabled.Text = "No entrance selected";
+			// 
+			// OWEntrancePropY
+			// 
+			this.OWEntrancePropY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.OWEntrancePropY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+			this.OWEntrancePropY.HexValue = 0;
+			this.OWEntrancePropY.Location = new System.Drawing.Point(55, 78);
+			this.OWEntrancePropY.MaxLength = 4;
+			this.OWEntrancePropY.MaxValue = 255;
+			this.OWEntrancePropY.MinValue = 0;
+			this.OWEntrancePropY.Name = "OWEntrancePropY";
+			this.OWEntrancePropY.Size = new System.Drawing.Size(56, 20);
+			this.OWEntrancePropY.TabIndex = 7;
+			this.OWEntrancePropY.Text = "0000";
+			this.OWEntrancePropY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// OWEntrancePropX
+			// 
+			this.OWEntrancePropX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.OWEntrancePropX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+			this.OWEntrancePropX.HexValue = 0;
+			this.OWEntrancePropX.Location = new System.Drawing.Point(55, 52);
+			this.OWEntrancePropX.MaxLength = 4;
+			this.OWEntrancePropX.MaxValue = 255;
+			this.OWEntrancePropX.MinValue = 0;
+			this.OWEntrancePropX.Name = "OWEntrancePropX";
+			this.OWEntrancePropX.Size = new System.Drawing.Size(55, 20);
+			this.OWEntrancePropX.TabIndex = 6;
+			this.OWEntrancePropX.Text = "0000";
+			this.OWEntrancePropX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// OWEntrancePropID
+			// 
+			this.OWEntrancePropID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.OWEntrancePropID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+			this.OWEntrancePropID.HexValue = 0;
+			this.OWEntrancePropID.Location = new System.Drawing.Point(55, 26);
+			this.OWEntrancePropID.MaxLength = 2;
+			this.OWEntrancePropID.MaxValue = 255;
+			this.OWEntrancePropID.MinValue = 0;
+			this.OWEntrancePropID.Name = "OWEntrancePropID";
+			this.OWEntrancePropID.Size = new System.Drawing.Size(55, 20);
+			this.OWEntrancePropID.TabIndex = 5;
+			this.OWEntrancePropID.Text = "00";
+			this.OWEntrancePropID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// label15
+			// 
+			this.label15.AutoSize = true;
+			this.label15.Location = new System.Drawing.Point(35, 81);
+			this.label15.Name = "label15";
+			this.label15.Size = new System.Drawing.Size(14, 13);
+			this.label15.TabIndex = 4;
+			this.label15.Text = "Y";
+			// 
+			// label17
+			// 
+			this.label17.AutoSize = true;
+			this.label17.Location = new System.Drawing.Point(35, 55);
+			this.label17.Name = "label17";
+			this.label17.Size = new System.Drawing.Size(14, 13);
+			this.label17.TabIndex = 2;
+			this.label17.Text = "X";
+			// 
+			// label18
+			// 
+			this.label18.AutoSize = true;
+			this.label18.Location = new System.Drawing.Point(31, 29);
+			this.label18.Name = "label18";
+			this.label18.Size = new System.Drawing.Size(18, 13);
+			this.label18.TabIndex = 0;
+			this.label18.Text = "ID";
+			// 
+			// OWTabTransportProps
+			// 
+			this.OWTabTransportProps.Controls.Add(this.OWTransportPanel);
+			this.OWTabTransportProps.Location = new System.Drawing.Point(4, 40);
+			this.OWTabTransportProps.Name = "OWTabTransportProps";
+			this.OWTabTransportProps.Size = new System.Drawing.Size(280, 575);
+			this.OWTabTransportProps.TabIndex = 5;
+			this.OWTabTransportProps.Text = "Transport";
+			this.OWTabTransportProps.UseVisualStyleBackColor = true;
+			// 
+			// OWTransportPanel
+			// 
+			this.OWTransportPanel.Controls.Add(this.OWTransportDisabled);
+			this.OWTransportPanel.Controls.Add(this.OWTransportPropY);
+			this.OWTransportPanel.Controls.Add(this.OWTransportPropX);
+			this.OWTransportPanel.Controls.Add(this.OWTransportPropID);
+			this.OWTransportPanel.Controls.Add(this.label16);
+			this.OWTransportPanel.Controls.Add(this.label19);
+			this.OWTransportPanel.Controls.Add(this.label20);
+			this.OWTransportPanel.Location = new System.Drawing.Point(17, 18);
+			this.OWTransportPanel.Name = "OWTransportPanel";
+			this.OWTransportPanel.Size = new System.Drawing.Size(205, 220);
+			this.OWTransportPanel.TabIndex = 10;
+			// 
+			// OWTransportDisabled
+			// 
+			this.OWTransportDisabled.AutoSize = true;
+			this.OWTransportDisabled.Location = new System.Drawing.Point(8, 7);
+			this.OWTransportDisabled.Name = "OWTransportDisabled";
+			this.OWTransportDisabled.Size = new System.Drawing.Size(108, 13);
+			this.OWTransportDisabled.TabIndex = 8;
+			this.OWTransportDisabled.Text = "No transport selected";
+			// 
+			// OWTransportPropY
+			// 
+			this.OWTransportPropY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.OWTransportPropY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+			this.OWTransportPropY.HexValue = 0;
+			this.OWTransportPropY.Location = new System.Drawing.Point(55, 78);
+			this.OWTransportPropY.MaxLength = 4;
+			this.OWTransportPropY.MaxValue = 255;
+			this.OWTransportPropY.MinValue = 0;
+			this.OWTransportPropY.Name = "OWTransportPropY";
+			this.OWTransportPropY.Size = new System.Drawing.Size(56, 20);
+			this.OWTransportPropY.TabIndex = 7;
+			this.OWTransportPropY.Text = "0000";
+			this.OWTransportPropY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// OWTransportPropX
+			// 
+			this.OWTransportPropX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.OWTransportPropX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
+			this.OWTransportPropX.HexValue = 0;
+			this.OWTransportPropX.Location = new System.Drawing.Point(55, 52);
+			this.OWTransportPropX.MaxLength = 4;
+			this.OWTransportPropX.MaxValue = 255;
+			this.OWTransportPropX.MinValue = 0;
+			this.OWTransportPropX.Name = "OWTransportPropX";
+			this.OWTransportPropX.Size = new System.Drawing.Size(55, 20);
+			this.OWTransportPropX.TabIndex = 6;
+			this.OWTransportPropX.Text = "0000";
+			this.OWTransportPropX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// OWTransportPropID
+			// 
+			this.OWTransportPropID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.OWTransportPropID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+			this.OWTransportPropID.HexValue = 0;
+			this.OWTransportPropID.Location = new System.Drawing.Point(55, 26);
+			this.OWTransportPropID.MaxLength = 2;
+			this.OWTransportPropID.MaxValue = 255;
+			this.OWTransportPropID.MinValue = 0;
+			this.OWTransportPropID.Name = "OWTransportPropID";
+			this.OWTransportPropID.Size = new System.Drawing.Size(55, 20);
+			this.OWTransportPropID.TabIndex = 5;
+			this.OWTransportPropID.Text = "00";
+			this.OWTransportPropID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// label16
+			// 
+			this.label16.AutoSize = true;
+			this.label16.Location = new System.Drawing.Point(35, 81);
+			this.label16.Name = "label16";
+			this.label16.Size = new System.Drawing.Size(14, 13);
+			this.label16.TabIndex = 4;
+			this.label16.Text = "Y";
+			// 
+			// label19
+			// 
+			this.label19.AutoSize = true;
+			this.label19.Location = new System.Drawing.Point(35, 55);
+			this.label19.Name = "label19";
+			this.label19.Size = new System.Drawing.Size(14, 13);
+			this.label19.TabIndex = 2;
+			this.label19.Text = "X";
+			// 
+			// label20
+			// 
+			this.label20.AutoSize = true;
+			this.label20.Location = new System.Drawing.Point(31, 29);
+			this.label20.Name = "label20";
+			this.label20.Size = new System.Drawing.Size(18, 13);
+			this.label20.TabIndex = 0;
+			this.label20.Text = "ID";
+			// 
 			// thumbnailBox
 			// 
 			this.thumbnailBox.Location = new System.Drawing.Point(3, 3);
@@ -610,6 +962,60 @@
 			this.objectGroupbox.TabIndex = 10;
 			this.objectGroupbox.TabStop = false;
 			this.objectGroupbox.Text = "Selected object";
+			// 
+			// SelectedObjectY
+			// 
+			this.SelectedObjectY.AutoSize = true;
+			this.SelectedObjectY.Location = new System.Drawing.Point(33, 44);
+			this.SelectedObjectY.Name = "SelectedObjectY";
+			this.SelectedObjectY.Size = new System.Drawing.Size(10, 13);
+			this.SelectedObjectY.TabIndex = 7;
+			this.SelectedObjectY.Text = "-";
+			// 
+			// SelectedObjectX
+			// 
+			this.SelectedObjectX.AutoSize = true;
+			this.SelectedObjectX.Location = new System.Drawing.Point(33, 31);
+			this.SelectedObjectX.Name = "SelectedObjectX";
+			this.SelectedObjectX.Size = new System.Drawing.Size(10, 13);
+			this.SelectedObjectX.TabIndex = 6;
+			this.SelectedObjectX.Text = "-";
+			// 
+			// SelectedObjectID
+			// 
+			this.SelectedObjectID.AutoSize = true;
+			this.SelectedObjectID.Location = new System.Drawing.Point(33, 16);
+			this.SelectedObjectID.Name = "SelectedObjectID";
+			this.SelectedObjectID.Size = new System.Drawing.Size(10, 13);
+			this.SelectedObjectID.TabIndex = 5;
+			this.SelectedObjectID.Text = "-";
+			// 
+			// label10
+			// 
+			this.label10.AutoSize = true;
+			this.label10.Location = new System.Drawing.Point(10, 44);
+			this.label10.Name = "label10";
+			this.label10.Size = new System.Drawing.Size(17, 13);
+			this.label10.TabIndex = 4;
+			this.label10.Text = "Y:";
+			// 
+			// label9
+			// 
+			this.label9.AutoSize = true;
+			this.label9.Location = new System.Drawing.Point(10, 31);
+			this.label9.Name = "label9";
+			this.label9.Size = new System.Drawing.Size(17, 13);
+			this.label9.TabIndex = 3;
+			this.label9.Text = "X:";
+			// 
+			// label8
+			// 
+			this.label8.AutoSize = true;
+			this.label8.Location = new System.Drawing.Point(6, 16);
+			this.label8.Name = "label8";
+			this.label8.Size = new System.Drawing.Size(21, 13);
+			this.label8.TabIndex = 2;
+			this.label8.Text = "ID:";
 			// 
 			// objCombobox
 			// 
@@ -672,6 +1078,7 @@
 			this.OWProperty_SPRPalette.TabIndex = 27;
 			this.OWProperty_SPRPalette.Text = "00";
 			this.OWProperty_SPRPalette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.OWProperty_SPRPalette.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
 			// 
 			// OWProperty_SPRGFX
 			// 
@@ -687,6 +1094,7 @@
 			this.OWProperty_SPRGFX.TabIndex = 26;
 			this.OWProperty_SPRGFX.Text = "00";
 			this.OWProperty_SPRGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.OWProperty_SPRGFX.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
 			// 
 			// OWProperty_BGPalette
 			// 
@@ -702,6 +1110,7 @@
 			this.OWProperty_BGPalette.TabIndex = 25;
 			this.OWProperty_BGPalette.Text = "00";
 			this.OWProperty_BGPalette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.OWProperty_BGPalette.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
 			// 
 			// OWProperty_BGGFX
 			// 
@@ -717,6 +1126,7 @@
 			this.OWProperty_BGGFX.TabIndex = 24;
 			this.OWProperty_BGGFX.Text = "00";
 			this.OWProperty_BGGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.OWProperty_BGGFX.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
 			// 
 			// areaBGColorPictureBox
 			// 
@@ -871,60 +1281,6 @@
 			this.previewTextPicturebox.Visible = false;
 			this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
 			// 
-			// label8
-			// 
-			this.label8.AutoSize = true;
-			this.label8.Location = new System.Drawing.Point(6, 16);
-			this.label8.Name = "label8";
-			this.label8.Size = new System.Drawing.Size(21, 13);
-			this.label8.TabIndex = 2;
-			this.label8.Text = "ID:";
-			// 
-			// label9
-			// 
-			this.label9.AutoSize = true;
-			this.label9.Location = new System.Drawing.Point(10, 31);
-			this.label9.Name = "label9";
-			this.label9.Size = new System.Drawing.Size(17, 13);
-			this.label9.TabIndex = 3;
-			this.label9.Text = "X:";
-			// 
-			// label10
-			// 
-			this.label10.AutoSize = true;
-			this.label10.Location = new System.Drawing.Point(10, 44);
-			this.label10.Name = "label10";
-			this.label10.Size = new System.Drawing.Size(17, 13);
-			this.label10.TabIndex = 4;
-			this.label10.Text = "Y:";
-			// 
-			// SelectedObjectID
-			// 
-			this.SelectedObjectID.AutoSize = true;
-			this.SelectedObjectID.Location = new System.Drawing.Point(33, 16);
-			this.SelectedObjectID.Name = "SelectedObjectID";
-			this.SelectedObjectID.Size = new System.Drawing.Size(10, 13);
-			this.SelectedObjectID.TabIndex = 5;
-			this.SelectedObjectID.Text = "-";
-			// 
-			// SelectedObjectX
-			// 
-			this.SelectedObjectX.AutoSize = true;
-			this.SelectedObjectX.Location = new System.Drawing.Point(33, 31);
-			this.SelectedObjectX.Name = "SelectedObjectX";
-			this.SelectedObjectX.Size = new System.Drawing.Size(10, 13);
-			this.SelectedObjectX.TabIndex = 6;
-			this.SelectedObjectX.Text = "-";
-			// 
-			// SelectedObjectY
-			// 
-			this.SelectedObjectY.AutoSize = true;
-			this.SelectedObjectY.Location = new System.Drawing.Point(33, 44);
-			this.SelectedObjectY.Name = "SelectedObjectY";
-			this.SelectedObjectY.Size = new System.Drawing.Size(10, 13);
-			this.SelectedObjectY.TabIndex = 7;
-			this.SelectedObjectY.Text = "-";
-			// 
 			// OverworldEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -941,7 +1297,7 @@
 			this.splitContainer1.Panel2.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
 			this.splitContainer1.ResumeLayout(false);
-			this.tabControl1.ResumeLayout(false);
+			this.OverworldAuxSideTabs.ResumeLayout(false);
 			this.tabPage1.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).EndInit();
 			this.tabPage2.ResumeLayout(false);
@@ -953,6 +1309,15 @@
 			this.panel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.palette8Box)).EndInit();
+			this.OWTabExitProps.ResumeLayout(false);
+			this.OWExitPanel.ResumeLayout(false);
+			this.OWExitPanel.PerformLayout();
+			this.OWTabEntranceProps.ResumeLayout(false);
+			this.OWEntrancePanel.ResumeLayout(false);
+			this.OWEntrancePanel.PerformLayout();
+			this.OWTabTransportProps.ResumeLayout(false);
+			this.OWTransportPanel.ResumeLayout(false);
+			this.OWTransportPanel.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
 			this.owPropertyPanel.ResumeLayout(false);
 			this.objectGroupbox.ResumeLayout(false);
@@ -1011,7 +1376,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button button1;
         public System.Windows.Forms.PictureBox previewTextPicturebox;
-        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.TabControl OverworldAuxSideTabs;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         public System.Windows.Forms.PictureBox scratchPicturebox;
@@ -1041,5 +1406,32 @@
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.TabPage OWTabExitProps;
+		private System.Windows.Forms.TabPage OWTabEntranceProps;
+		private System.Windows.Forms.TabPage OWTabTransportProps;
+		private System.Windows.Forms.Label label13;
+		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.Label label11;
+		private System.Windows.Forms.Panel OWExitPanel;
+		private System.Windows.Forms.Label OWExitDisabled;
+		private ExtraForms.Hexbox OWExitPropY;
+		private ExtraForms.Hexbox OWExitPropX;
+		private ExtraForms.Hexbox OWExitPropID;
+		private System.Windows.Forms.Panel OWEntrancePanel;
+		private System.Windows.Forms.Label OWEntranceDisabled;
+		private ExtraForms.Hexbox OWEntrancePropY;
+		private ExtraForms.Hexbox OWEntrancePropX;
+		private ExtraForms.Hexbox OWEntrancePropID;
+		private System.Windows.Forms.Label label15;
+		private System.Windows.Forms.Label label17;
+		private System.Windows.Forms.Label label18;
+		private System.Windows.Forms.Panel OWTransportPanel;
+		private System.Windows.Forms.Label OWTransportDisabled;
+		private ExtraForms.Hexbox OWTransportPropY;
+		private ExtraForms.Hexbox OWTransportPropX;
+		private ExtraForms.Hexbox OWTransportPropID;
+		private System.Windows.Forms.Label label16;
+		private System.Windows.Forms.Label label19;
+		private System.Windows.Forms.Label label20;
 	}
 }

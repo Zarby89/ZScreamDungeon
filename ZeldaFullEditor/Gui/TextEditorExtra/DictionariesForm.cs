@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui.TextEditorExtra
 {
-	public partial class DictionariesForm : Form
+	public partial class DictionariesForm : ScreamForm
 	{
-		public DictionariesForm()
+		public DictionariesForm(ZScreamer parent) : base(parent)
 		{
 			InitializeComponent();
 		}

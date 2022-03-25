@@ -11,7 +11,7 @@ using System.Drawing.Imaging;
 
 namespace ZeldaFullEditor.Gui
 {
-	public partial class GfxEditor : UserControl
+	public partial class GfxEditor : ScreamControl
 	{
 		int zoomLevel = 1;
 		Color[] bigPalettes = new Color[1280];
@@ -25,7 +25,7 @@ namespace ZeldaFullEditor.Gui
 
 		string[] palettesGroups = new string[3] { "Dungeons BG", "Overworld BG", "Sprites" };
 
-		public GfxEditor()
+		public GfxEditor(ZScreamer parent) : base(parent)
 		{
 			InitializeComponent();
 		}
@@ -82,14 +82,14 @@ namespace ZeldaFullEditor.Gui
 
 						for (int j = 0; j < 7; j++)
 						{
-							bigPalettes[ColorPos++] = Palettes.dungeonsMain_Palettes[i][j + (k * 15)];
+							bigPalettes[ColorPos++] = ZS.PaletteManager.UnderworldMain[i][j + (k * 15)];
 						}
 
 						ColorPos += 8;
 
 						for (int j = 0; j < 8; j++)
 						{
-							bigPalettes[ColorPos++] = Palettes.dungeonsMain_Palettes[i][j + (k * 15) + 7];
+							bigPalettes[ColorPos++] = ZS.PaletteManager.UnderworldMain[i][j + (k * 15) + 7];
 						}
 
 						ColorPos += 8;
@@ -104,11 +104,11 @@ namespace ZeldaFullEditor.Gui
 					for (int k = 0; k < 5; k++) // 6 lines per pack
 					{
 						// Black default + // read7 + read8
-						bigPalettes[ColorPos++] = Palettes.overworld_GrassPalettes[0]; // Color0
+						bigPalettes[ColorPos++] = ZS.PaletteManager.OverworldGrass[0]; // Color0
 
 						for (int j = 0; j < 7; j++)
 						{
-							bigPalettes[ColorPos++] = Palettes.overworld_MainPalettes[i][j + (k * 7)];
+							bigPalettes[ColorPos++] = ZS.PaletteManager.OverworldMain[i][j + (k * 7)];
 						}
 
 						ColorPos += 8;
@@ -120,11 +120,11 @@ namespace ZeldaFullEditor.Gui
 					for (int k = 0; k < 3; k++) //6 lines per pack
 					{
 						// black default + // read7 + read8
-						bigPalettes[ColorPos++] = Palettes.overworld_GrassPalettes[0]; // Color0
+						bigPalettes[ColorPos++] = ZS.PaletteManager.OverworldGrass[0]; // Color0
 
 						for (int j = 0; j < 7; j++)
 						{
-							bigPalettes[ColorPos++] = Palettes.overworld_AuxPalettes[i][j + (k * 7)];
+							bigPalettes[ColorPos++] = ZS.PaletteManager.OverworldAux[i][j + (k * 7)];
 						}
 
 						ColorPos += 8;
@@ -143,14 +143,14 @@ namespace ZeldaFullEditor.Gui
 
 						for (int j = 0; j < 7; j++)
 						{
-							bigPalettes[ColorPos++] = Palettes.globalSprite_Palettes[i][j + (k * 15)];
+							bigPalettes[ColorPos++] = ZS.PaletteManager.SpriteGlobal[i][j + (k * 15)];
 						}
 
 						ColorPos += 8;
 
 						for (int j = 0; j < 8; j++)
 						{
-							bigPalettes[ColorPos++] = Palettes.globalSprite_Palettes[i][j + (k * 15) + 7];
+							bigPalettes[ColorPos++] = ZS.PaletteManager.SpriteGlobal[i][j + (k * 15) + 7];
 						}
 
 						ColorPos += 8;

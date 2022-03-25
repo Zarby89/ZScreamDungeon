@@ -46,11 +46,46 @@ namespace ZeldaFullEditor
 		public const int NumberOfOWSprites = 352;
 		public const int NumberOfColors = 3143;
 
+		public const int NumberOfEntranceTypes = 0x2B;
+		public const int NumberOfOverworldExits = 0x4F;
+		public const int NumberOfOverworldGraves = 0x0F;
+
+
+		public const int ROMSize = 0x200000;
+		public const int ROMHeaderSize = 0x200;
+
+		public const int RoomsPerFloorOnMap = 25;
+
+		public const int ColorsPerPalette = 16;
+		public const int ColorsPerHalfPalette = 8;
+		public const int NumberOfPalettes = 16;
+		public const int TotalPaletteSize = ColorsPerPalette * NumberOfPalettes;
+
 		// TODO zarby stop making magic numbers
 		public const int IDKZarby = 0x54727;
 
 		public static byte[] FontSpacings = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6 };
-		
+
+		//===========================================================================================
+		// IDs
+		//===========================================================================================
+		public const ushort ChestID = 0x219;
+		public const ushort BigChestID = 0x231;
+		public const ushort TorchPseudoID = 0x0E00;
+
+		public const byte SpriteTerminator = 0xFF;
+
+		//===========================================================================================
+		// Clipboard stuff
+		//===========================================================================================
+		public const string OverworldSpriteClipboardData = "owsprite";
+		public const string OverworldTilesClipboardData = "owtiles";
+		public const string OverworldEntranceClipboardData = "owentrance";
+		public const string OverworldExitClipboardData = "owexit";
+		public const string OverworldItemClipboardData = "owitem";
+
+		public const string ObjectZClipboardData = "objectz";
+
 		//===========================================================================================
 		// Geometry - shapes and points we don't need to constantly reinstantiate
 		//===========================================================================================
@@ -99,6 +134,7 @@ namespace ZeldaFullEditor
 		// Colors - colors we use for consistency and avoiding redundant instantiations
 		//===========================================================================================
 		public static readonly Color HalfWhite = Color.FromArgb(128, 255, 255, 255);
+		public static readonly Color HalfWhite2 = Color.FromArgb(255, 255, 255);
 		public static readonly Pen HalfWhitePen = new Pen(HalfWhite);
 
 		public static readonly Color ThirdWhite = Color.FromArgb(85, 255, 255, 255);
@@ -220,9 +256,9 @@ namespace ZeldaFullEditor
 		public static int overworldSpecialGFXGroup = 0x16821;
 		public static int overworldSpecialPALGroup = 0x16831;
 
-		public static int overworldSpritesBegining = 0x4C881;
-		public static int overworldSpritesAgahnim = 0x4CA21;
-		public static int overworldSpritesZelda = 0x4C901;
+		public static int OverworldSpritesTableState0 = 0x4C881;
+		public static int OverworldSpritesTableState3 = 0x4CA21;
+		public static int OverworldSpritesTableState2 = 0x4C901;
 
 		/*
         public static int overworldSpritesBeginingEditor = 0x108100;
@@ -237,7 +273,7 @@ namespace ZeldaFullEditor
 
 		public static int mapGfx = 0x7C9C;
 		public static int overlayPointers = 0x77664;
-		public static int overlayPointersBank = 0x0E;
+		public static int overlayPointersBank = 0x0E0000;
 
 		public static int overworldTilesType = 0x71459;
 		public static int overworldMessages = 0x3F51D;
@@ -273,8 +309,8 @@ namespace ZeldaFullEditor
 		public static int OverworldScreenSizeForLoading = 0x4C635;
 		public static int OverworldScreenTileMapChangeByScreen = 0x12634;
 
-		public static int transition_target_north = 0x13ee2;
-		public static int transition_target_west = 0x13f62;
+		public static int transition_target_north = 0x13EE2;
+		public static int transition_target_west = 0x13F62;
 
 		//===========================================================================================
 		// Overworld Exits/Entrances Variables
@@ -515,6 +551,12 @@ namespace ZeldaFullEditor
 
 		public static bool Rando = false; // Is it a rando rom?
 
+		//===========================================================================================
+		// Stuff
+		//===========================================================================================
+		public const int DungeonSpritePointers = 0x09_0000;
+		public const int OverworldSpritePointers = 0x09_0000;
+
 		public static void Init_Jp(bool rando = false)
 		{
 			pit_pointer = 0x394A2;
@@ -622,7 +664,7 @@ namespace ZeldaFullEditor
 			overworldMapPaletteGroup = 0x67E74;
 			overworldMapSize = 0x1273B; // JP
 			overlayPointers = 0x3FAF4;
-			overlayPointersBank = 0x07;
+			overlayPointersBank = 0x070000;
 			overworldTilesType = 0x7FD94;
 			Rando = rando;
 
@@ -631,59 +673,6 @@ namespace ZeldaFullEditor
 				// TODO: Add condition here?
 			}
 		}
-
-		//===========================================================================================
-		// Things
-		//===========================================================================================
-
-		public class FloorNumber
-		{
-			private readonly string nom; public string Name { get => nom; }
-			private readonly byte val; public byte ByteValue { get => val; }
-
-			public FloorNumber(string n, byte v)
-			{
-				nom = n;
-				val = v;
-			}
-
-			public override string ToString()
-			{
-				return nom;
-			}
-
-			public static int FindFloorIndex(byte b)
-			{
-				for (int i = 0; i < floors.Length; i++)
-				{
-					if (b == floors[i].ByteValue)
-					{
-						return i;
-					}
-				}
-				return -1;
-			}
-		}
-
-
-		public static FloorNumber[] floors = new FloorNumber[] {
-			new FloorNumber("B8", 0xF8),
-			new FloorNumber("B7", 0xF9),
-			new FloorNumber("B6", 0xFA),
-			new FloorNumber("B5", 0xFB),
-			new FloorNumber("B4", 0xFC),
-			new FloorNumber("B3", 0xFD),
-			new FloorNumber("B2", 0xFE),
-			new FloorNumber("B1", 0xFF),
-			new FloorNumber("1F", 0x00),
-			new FloorNumber("2F", 0x01),
-			new FloorNumber("3F", 0x02),
-			new FloorNumber("4F", 0x03),
-			new FloorNumber("5F", 0x04),
-			new FloorNumber("6F", 0x05),
-			new FloorNumber("7F", 0x06),
-			new FloorNumber("8F", 0x07)
-		};
 
 		//===========================================================================================
 		// Names
@@ -1521,4 +1510,53 @@ namespace ZeldaFullEditor
 			"Door X top? (unused?)"
 		};
 	}
+
+	public class FloorNumber
+	{
+		private readonly string nom; public string Name { get => nom; }
+		private readonly byte val; public byte ByteValue { get => val; }
+
+		public FloorNumber(string n, byte v)
+		{
+			nom = n;
+			val = v;
+		}
+
+		public override string ToString()
+		{
+			return nom;
+		}
+
+		public static int FindFloorIndex(byte b)
+{
+			for (int i = 0; i < floors.Length; i++)
+			{
+				if (b == floors[i].ByteValue)
+				{
+					return i;
+				}
+			}
+			return -1;
+		}
+
+		public static FloorNumber[] floors = new FloorNumber[] {
+			new FloorNumber("B8", 0xF8),
+			new FloorNumber("B7", 0xF9),
+			new FloorNumber("B6", 0xFA),
+			new FloorNumber("B5", 0xFB),
+			new FloorNumber("B4", 0xFC),
+			new FloorNumber("B3", 0xFD),
+			new FloorNumber("B2", 0xFE),
+			new FloorNumber("B1", 0xFF),
+			new FloorNumber("1F", 0x00),
+			new FloorNumber("2F", 0x01),
+			new FloorNumber("3F", 0x02),
+			new FloorNumber("4F", 0x03),
+			new FloorNumber("5F", 0x04),
+			new FloorNumber("6F", 0x05),
+			new FloorNumber("7F", 0x06),
+			new FloorNumber("8F", 0x07)
+	};
+	}
+
 }

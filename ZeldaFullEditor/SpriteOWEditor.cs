@@ -26,7 +26,7 @@ namespace ZeldaFullEditor
 			this.roomMapId = roomMapId;
 		}
 
-		public void updateMapStuff(short mapId)
+		public void updateMapStuff(ushort mapId)
 		{
 			this.roomMapId = (ushort) mapId;
 			int mx = (mapId - ((mapId / 8) * 8));

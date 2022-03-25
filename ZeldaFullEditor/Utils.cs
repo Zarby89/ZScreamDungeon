@@ -7,81 +7,49 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-	// TODO function for ByteBitIsSet(), etc
-	public static class Utils
+	public static class IntFunctions
 	{
-		public static int SnesToPc(int addr)
+		public static bool BitIsOn(this byte b, byte test) => (b & test) != 0;
+		public static bool BitsAllSet(this byte b, byte test) => (b & test) == test;
+		public static bool BitIsOn(this int b, int test) => (b & test) != 0;
+		public static bool BitsAllSet(this int b, int test) => (b & test) == test;
+		public static bool BitIsOn(this short b, short test) => (b & test) != 0;
+		public static bool BitsAllSet(this short b, short test) => (b & test) == test;
+		public static bool BitIsOn(this ushort b, ushort test) => (b & test) != 0;
+		public static bool BitsAllSet(this ushort b, ushort test) => (b & test) == test;
+
+		public static byte SetFieldBits(byte baseval = 0,
+			bool bit0 = false, bool bit1 = false, bool bit2 = false, bool bit3 = false,
+			bool bit4 = false, bool bit5 = false, bool bit6 = false, bool bit7 = false)
 		{
-			if (addr >= 0x808000) { addr -= 0x808000; }
-			int temp = (addr & 0x7FFF) + ((addr / 2) & 0xFF8000);
-			return (temp + 0x0);
+			return (byte) (baseval | 
+				(bit0 ? 1 << 0 : 0) |
+				(bit1 ? 1 << 1 : 0) |
+				(bit2 ? 1 << 2 : 0) |
+				(bit3 ? 1 << 3 : 0) |
+				(bit4 ? 1 << 4 : 0) |
+				(bit5 ? 1 << 5 : 0) |
+				(bit6 ? 1 << 6 : 0) |
+				(bit7 ? 1 << 7 : 0));
 		}
 
-		public static int PcToSnes(int addr)
+		public static bool Flip(ref bool b) => b = !b;
+
+		public static int Clamp(this int v, int min, int max)
 		{
-			byte[] b = BitConverter.GetBytes(addr);
-			b[2] = (byte) (b[2] * 2);
-
-			if (b[1] >= 0x80)
+			if (v >= max)
 			{
-				b[2] += 1;
+				v = max;
 			}
-			else
+			else if (v <= min)
 			{
-				b[1] += 0x80;
+				v = min;
 			}
 
-			return BitConverter.ToInt32(b, 0);
-			// SNES always have + 0x8000 no matter what, the bank on pc is always / 2
-
-			//return ((addr * 2) & 0xFF0000) + (addr & 0x7FFF) + 0x8000;
+			return v;
 		}
 
-		/// gets a 24-bit address from the specified snes address, using the input's high byte as the bank
-		public static int Get24Local(int addr, bool pc = true)
-		{
-			int a = SnesToPc(addr);
-			int ret = (addr & 0xFF0000) |
-					   (ROM.DATA[a + 1] << 8) |
-					   ROM.DATA[a];
-			if (pc)
-			{
-				return SnesToPc(ret);
-			}
-			else
-			{
-				return ret;
-			}
-		}
-
-		/// gets a 24-bit address from the specified snes address, using the input's high byte as the bank
-		public static int Get24LocalFromPC(int addr, bool pc = true)
-		{
-			int ret = (PcToSnes(addr) & 0xFF0000) |
-					   (ROM.DATA[addr + 1] << 8) |
-					   ROM.DATA[addr];
-			if (pc)
-			{
-				return SnesToPc(ret);
-			}
-			else
-			{
-				return ret;
-			}
-		}
-
-
-		public static int AddressFromBytes(byte addr1, byte addr2, byte addr3)
-		{
-			return (addr1 << 16) | (addr2 << 8) | addr3;
-		}
-
-		public static short AddressFromBytes(byte addr1, byte addr2)
-		{
-			return (short) ((addr1 << 8) | (addr2));
-		}
-
-		public static int Clamp(int v, int min, int max)
+		public static short Clamp(this short v, short min, short max)
 		{
 			if (v >= max)
 			{
@@ -92,38 +60,44 @@ namespace ZeldaFullEditor
 				v = min;
 			}
 
-			return (v);
+			return v;
 		}
-
-		public static short Clamp(short v, int min, int max)
+		public static ushort Clamp(this ushort v, ushort min, ushort max)
 		{
 			if (v >= max)
 			{
-				v = (short) max;
+				v = max;
 			}
 			if (v <= min)
 			{
-				v = (short) min;
+				v = min;
 			}
 
-			return (v);
+			return v;
 		}
 
-		public static byte Clamp(byte v, int min, int max)
+		public static byte Clamp(this byte v, byte min, byte max)
 		{
 			if (v >= max)
 			{
-				v = (byte) max;
+				v = max;
 			}
 			if (v <= min)
 			{
-				v = (byte) min;
+				v = min;
 			}
 
-			return (v);
+			return v;
+		}
+	}
+	public static class Utils
+	{
+		public static int AddressFromBytes(byte addr1, byte addr2, byte addr3)
+		{
+			return (addr1 << 16) | (addr2 << 8) | addr3;
 		}
 
-		public static string[] DeepCopyStrings(string[] a)
+		public static string[] DeepCopy(this string[] a)
 		{
 			string[] ret = new string[a.Length];
 			int i = 0;
@@ -135,7 +109,7 @@ namespace ZeldaFullEditor
 			return ret;
 		}
 
-		public static byte[] DeepCopyBytes(byte[] a)
+		public static byte[] DeepCopy(this byte[] a)
 		{
 			byte[] ret = new byte[a.Length];
 			int i = 0;
@@ -153,10 +127,22 @@ namespace ZeldaFullEditor
 			int i = 0;
 			foreach (string s in a)
 			{
-				ret[i++] = string.Format("{0:X2} - {1}", i, s);
+				ret[i] = string.Format("{0:X2} - {1}", i, s);
+				i++;
 			}
 
 			return ret;
+		}
+
+		public static List<T> DeepCopy<T>(this List<T> me)
+		{
+			using (var ms = new System.IO.MemoryStream())
+			{
+				var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+				formatter.Serialize(ms, me);
+				ms.Position = 0;
+				return (List<T>) formatter.Deserialize(ms);
+			}
 		}
 	}
 }

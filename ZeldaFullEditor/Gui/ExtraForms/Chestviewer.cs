@@ -8,10 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
+using ZeldaFullEditor.Gui;
 
 namespace ZeldaFullEditor
 {
-	public partial class Chestviewer : UserControl
+	public partial class Chestviewer : ScreamControl
 	{
 		ColorPalette palettes = null;
 		public bool showName = false;
@@ -23,7 +24,7 @@ namespace ZeldaFullEditor
 
 		public List<Chest> items = new List<Chest>();
 
-		public Chestviewer()
+		public Chestviewer(ZScreamer parent) : base(parent)
 		{
 			InitializeComponent();
 		}
@@ -48,7 +49,7 @@ namespace ZeldaFullEditor
 
 			foreach (Chest o in items)
 			{
-				e.Graphics.DrawImage(GFX.previewChestsBitmap[o.item], new Point((xpos * 64) + 24, (ypos * 64) + 8));
+				e.Graphics.DrawImage(ZS.GFXManager.previewChestsBitmap[o.item], new Point((xpos * 64) + 24, (ypos * 64) + 8));
 				if (selectedObject == o)
 				{
 					e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(xpos * 64, (ypos * 64), 64, 64));
@@ -94,24 +95,24 @@ namespace ZeldaFullEditor
 
 			if (items.Count > 0)
 			{
-				palettes = GFX.previewChestsBitmap[items[0].item].Palette;
+				palettes = ZS.GFXManager.previewChestsBitmap[items[0].item].Palette;
 
 				int pindex = 0;
-				for (int y = 0; y < GFX.loadedPalettes.GetLength(1); y++)
+				for (int y = 0; y < ZS.GFXManager.loadedPalettes.GetLength(1); y++)
 				{
-					for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
+					for (int x = 0; x < ZS.GFXManager.loadedPalettes.GetLength(0); x++)
 					{
-						palettes.Entries[pindex++] = GFX.loadedPalettes[x, y];
+						palettes.Entries[pindex++] = ZS.GFXManager.loadedPalettes[x, y];
 					}
 				}
 
-				for (int y = 0; y < GFX.loadedSprPalettes.GetLength(1); y++)
+				for (int y = 0; y < ZS.GFXManager.loadedSprPalettes.GetLength(1); y++)
 				{
-					for (int x = 0; x < GFX.loadedSprPalettes.GetLength(0); x++)
+					for (int x = 0; x < ZS.GFXManager.loadedSprPalettes.GetLength(0); x++)
 					{
 						if (pindex < 256)
 						{
-							palettes.Entries[pindex++] = GFX.loadedSprPalettes[x, y];
+							palettes.Entries[pindex++] = ZS.GFXManager.loadedSprPalettes[x, y];
 						}
 					}
 				}
@@ -127,7 +128,7 @@ namespace ZeldaFullEditor
 			{
 				unsafe
 				{
-					byte* ptr = (byte*) GFX.previewChestsPtr[o.item].ToPointer();
+					byte* ptr = (byte*) ZS.GFXManager.previewChestsPtr[o.item].ToPointer();
 					for (int i = 0; i < (64 * 64); i++)
 					{
 						ptr[i] = 0;
@@ -137,7 +138,7 @@ namespace ZeldaFullEditor
 				o.ItemsDraw(o.item, 0, 0);
 				if (palettes != null)
 				{
-					GFX.previewChestsBitmap[o.item].Palette = palettes;
+					ZS.GFXManager.previewChestsBitmap[o.item].Palette = palettes;
 				}
 			}
 		}

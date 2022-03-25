@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
-	public partial class RoomLayout : Form
+	public partial class RoomLayout : Gui.ScreamForm
 	{
-		public SceneUW scene;
+		public readonly SceneUW scene;
 
-		public RoomLayout(DungeonMain f)
+		public RoomLayout(ZScreamer parent) : base(parent)
 		{
 			InitializeComponent();
 			/*
@@ -25,7 +25,7 @@ namespace ZeldaFullEditor
             }
             */
 
-			scene = new SceneUW(f);
+			scene = new SceneUW(ZS);
 			Controls.Add(scene);
 			scene.Size = new Size(512, 512);
 			scene.Location = new Point(176, 23);
@@ -65,6 +65,7 @@ namespace ZeldaFullEditor
 			BinaryReader br = new BinaryReader(new FileStream("Layout\\" + f, FileMode.Open, FileAccess.Read));
 
 			string type = br.ReadString();
+
 			List<SaveObject> data = new List<SaveObject>();
 			while (br.BaseStream.Position != br.BaseStream.Length)
 			{

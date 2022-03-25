@@ -24,16 +24,30 @@ namespace ZeldaFullEditor
 
 		public Tile16(ulong tiles)
 		{
-			this.tile0 = GFX.gettilesinfo((ushort) tiles);
-			this.tile1 = GFX.gettilesinfo((ushort) (tiles >> 16));
-			this.tile2 = GFX.gettilesinfo((ushort) (tiles >> 32));
-			this.tile3 = GFX.gettilesinfo((ushort) (tiles >> 48));
-			this.tilesinfos = new TileInfo[] { this.tile0, this.tile1, this.tile2, this.tile3 };
+			tile0 = Tile.GetTheGFXInfo((ushort) tiles);
+			tile1 = Tile.GetTheGFXInfo((ushort) (tiles >> 16));
+			tile2 = Tile.GetTheGFXInfo((ushort) (tiles >> 32));
+			tile3 = Tile.GetTheGFXInfo((ushort) (tiles >> 48));
+			tilesinfos = new TileInfo[] { tile0, tile1, tile2, tile3 };
+		}
+
+		public Tile16(ushort a, ushort b, ushort c, ushort d)
+		{
+			tile0 = Tile.GetTheGFXInfo(a);
+			tile1 = Tile.GetTheGFXInfo(b);
+			tile2 = Tile.GetTheGFXInfo(c);
+			tile3 = Tile.GetTheGFXInfo(d);
+			tilesinfos = new TileInfo[] { tile0, tile1, tile2, tile3 };
+		}
+
+		public Tile16 Clone()
+		{
+			return new Tile16(tile0, tile1, tile2, tile3);
 		}
 
 		public ulong getLongValue()
 		{
-			return (ulong) (tile3.toShort()) << 48 | ((ulong) (tile2.toShort()) << 32) | ((ulong) (tile1.toShort()) << 16) | (tile0.toShort()); ;
+			return (ulong) (tile3.ToUnsignedShort()) << 48 | ((ulong) (tile2.ToUnsignedShort()) << 32) | ((ulong) (tile1.ToUnsignedShort()) << 16) | (tile0.ToUnsignedShort()); ;
 		}
 	}
 }
