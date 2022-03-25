@@ -19,18 +19,17 @@ namespace ZeldaFullEditor.Gui
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			this.Close();
+			Close();
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			this.Close();
+			Close();
 		}
 
 		private void AddSprite_Load(object sender, EventArgs e)
 		{
-			spriteListBox.Items.Clear();
-			spriteListBox.Items.AddRange(Sprites_Names.name);
+			spriteListBox.DataSource = DefaultEntities.ListOfSprites;
 			spriteListBox.SelectedIndex = 0;
 		}
 	}

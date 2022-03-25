@@ -14,7 +14,6 @@ namespace ZeldaFullEditor.Gui
 	public partial class VramViewer : Panel
 	{
 		public PictureBox vramBox = new PictureBox();
-
 		public VramViewer()
 		{
 			InitializeComponent();
@@ -29,12 +28,12 @@ namespace ZeldaFullEditor.Gui
 		private void VramBox_Paint(object sender, PaintEventArgs e)
 		{
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			using (Bitmap tempBitmap = (Bitmap) GFX.currentgfx16Bitmap.Clone())
+			using (Bitmap tempBitmap = (Bitmap) ZScreamer.ActiveGraphicsManager.currentgfx16Bitmap.Clone())
 			{
 				ColorPalette cp = tempBitmap.Palette;
-				for (int i = 0; i < 16; i++)
+				for (int i = 0, j = 0; i < 16; i++, j += 15)
 				{
-					cp.Entries[i] = Color.FromArgb(i * 15, i * 15, i * 15);
+					cp.Entries[i] = Color.FromArgb(j, j, j);
 				}
 
 				tempBitmap.Palette = cp;

@@ -21,9 +21,11 @@ namespace ZeldaFullEditor
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			OpenFileDialog of = new OpenFileDialog();
-			of.Filter = UIText.USROMType;
-			of.DefaultExt = UIText.ROMExtension;
+			OpenFileDialog of = new OpenFileDialog
+			{
+				Filter = UIText.USROMType,
+				DefaultExt = UIText.ROMExtension
+			};
 			if (of.ShowDialog() == DialogResult.OK)
 			{
 				filePath = of.FileName;
@@ -35,7 +37,7 @@ namespace ZeldaFullEditor
 		{
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
 			{
-				checkedListBox1.Items.Add("Room " + i.ToString("X3") + " - " + Room_Name.room_name[i], true);
+				checkedListBox1.Items.Add("Room " + i.ToString("X3"), true);
 			}
 		}
 

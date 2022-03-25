@@ -14,12 +14,12 @@ namespace ZeldaFullEditor
 
 		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			System.Diagnostics.Process.Start(UIText.GITHUB);
+			Process.Start(UIText.GITHUB);
 		}
 
 		private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
 		{
-			System.Diagnostics.Process.Start(UIText.DISCORD);
+			Process.Start(UIText.DISCORD);
 		}
 	}
 }

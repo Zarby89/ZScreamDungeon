@@ -216,5 +216,17 @@ namespace ZeldaFullEditor.Properties {
                 this["favoriteObjects"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UpdateRequired {
+            get {
+                return ((bool)(this["UpdateRequired"]));
+            }
+            set {
+                this["UpdateRequired"] = value;
+            }
+        }
     }
 }

@@ -12,15 +12,12 @@ namespace ZeldaFullEditor.Gui
 {
 	public partial class SaveSettings : Form
 	{
-		private DungeonMain dungeonMain;
 
 		bool[] saveArr;
 
-		public SaveSettings(DungeonMain _dungeonMain)
+		public SaveSettings()
 		{
 			InitializeComponent();
-
-			this.dungeonMain = _dungeonMain;
 
 			LoadSaveSettings();
 		}
@@ -74,7 +71,7 @@ namespace ZeldaFullEditor.Gui
 			saveArr[39] = checkBox40.Checked; //misc triforce
 			saveArr[40] = checkBox41.Checked; //overworld message IDs
 
-			dungeonMain.saveSettingsArr = saveArr;
+			Program.MainForm.saveSettingsArr = saveArr;
 
 			this.Close();
 		}
@@ -91,7 +88,7 @@ namespace ZeldaFullEditor.Gui
 
 		public void LoadSaveSettings()
 		{
-			saveArr = dungeonMain.saveSettingsArr;
+			saveArr = Program.MainForm.saveSettingsArr;
 
 			checkBox1.Checked = saveArr[0];   //save dungeon sprites
 			checkBox2.Checked = saveArr[1];   //save dungeon pot items

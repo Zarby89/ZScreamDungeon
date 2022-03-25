@@ -45,6 +45,8 @@
 			this.linkLabel1 = new System.Windows.Forms.LinkLabel();
 			this.linkLabel2 = new System.Windows.Forms.LinkLabel();
 			this.label1 = new System.Windows.Forms.Label();
+			this.label14 = new System.Windows.Forms.Label();
+			this.label15 = new System.Windows.Forms.Label();
 			this.SuspendLayout();
 			// 
 			// btnOK
@@ -139,11 +141,23 @@
 			resources.ApplyResources(this.label1, "label1");
 			this.label1.Name = "label1";
 			// 
+			// label14
+			// 
+			resources.ApplyResources(this.label14, "label14");
+			this.label14.Name = "label14";
+			// 
+			// label15
+			// 
+			resources.ApplyResources(this.label15, "label15");
+			this.label15.Name = "label15";
+			// 
 			// AboutBox1
 			// 
 			this.AcceptButton = this.btnOK;
 			resources.ApplyResources(this, "$this");
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Controls.Add(this.label15);
+			this.Controls.Add(this.label14);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.linkLabel2);
 			this.Controls.Add(this.linkLabel1);
@@ -190,5 +204,7 @@
 		private System.Windows.Forms.LinkLabel linkLabel1;
 		private System.Windows.Forms.LinkLabel linkLabel2;
 		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label label14;
+		private System.Windows.Forms.Label label15;
 	}
 }

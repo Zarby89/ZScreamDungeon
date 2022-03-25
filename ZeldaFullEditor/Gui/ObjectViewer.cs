@@ -9,12 +9,13 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using ZeldaFullEditor.Properties;
+using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor
 {
 	public partial class ObjectViewer : UserControl
 	{
-		public List<Room_Object> items = new List<Room_Object>();
+		public List<RoomObjectPreview> items = new List<RoomObjectPreview>();
 
 		ColorPalette palettes = null;
 		public bool showName = false;
@@ -22,12 +23,18 @@ namespace ZeldaFullEditor
 		public int selectedIndex = -1;
 		public event EventHandler SelectedIndexChanged;
 
-		public Room_Object selectedObject = null;
+		public RoomObjectPreview selectedObject = null;
 
 		public ObjectViewer()
 		{
 			InitializeComponent();
 		}
+
+		public RoomObject CreateSelectedObject()
+		{
+			return new RoomObject(selectedObject.ObjectType, ZScreamer.ActiveScreamer.TileLister[selectedObject.ID]);
+		}
+
 
 		private void ObjectViewer_Paint(object sender, PaintEventArgs e)
 		{
@@ -37,44 +44,35 @@ namespace ZeldaFullEditor
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			e.Graphics.Clear(Color.Black);
-			int w = (this.Size.Width / 64);
-			int h = (((items.Count / w) + 1) * 64);
+			int w = Size.Width & ~0x3F;
 			int xpos = 0;
 			int ypos = 0;
 
-			foreach (Room_Object o in items)
+			foreach (RoomObject o in items)
 			{
-				e.Graphics.DrawImage(GFX.previewObjectsBitmap[o.previewId], new Point(xpos * 64, ypos * 64));
+				e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.previewObjectsBitmap[o.ID], new Point(xpos, ypos));
 
-				if (Settings.Default.favoriteObjects[o.id] == "true")
-				{
-					e.Graphics.DrawImage(GFX.favStar2, new Rectangle((xpos * 64) + 40, (ypos * 64) + 40, 16, 16));
-				}
-				else
-				{
-					e.Graphics.DrawImage(GFX.favStar1, new Rectangle((xpos * 64) + 40, (ypos * 64) + 40, 16, 16));
-				}
+				e.Graphics.DrawImage(
+					Settings.Default.favoriteObjects[o.ID] == "true" ?
+					ZScreamer.ActiveGraphicsManager.favStar2 : ZScreamer.ActiveGraphicsManager.favStar1,
+					new Rectangle(xpos + 40, ypos + 40, 16, 16)
+				);
 
 				if (selectedObject == o)
 				{
-					e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(xpos * 64, (ypos * 64), 64, 64));
+					e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(xpos, ypos, 64, 64));
 				}
 
-				e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos * 64, ypos * 64, 64, 64));
-				if (!showName)
-				{
-					e.Graphics.DrawString(o.id.ToString("X3"), this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 48, 64, 64));
-				}
-				else
-				{
-					e.Graphics.DrawString(o.id.ToString("X3") + o.name.ToString(), this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 24, 64, 40));
-				}
+				e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos, ypos, 64, 64));
 
-				xpos++;
+				e.Graphics.DrawString(showName ? o.ObjectType.ToString() : o.ID.ToString("X3"),						
+						Font, Brushes.White, new Rectangle(xpos, ypos + 48, 64, 64));
+
+				xpos += 64;
 				if (xpos >= w)
 				{
 					xpos = 0;
-					ypos++;
+					ypos += 64;
 				}
 			}
 
@@ -98,59 +96,54 @@ namespace ZeldaFullEditor
 
 		public void updateSize()
 		{
-			int w = (this.Size.Width / 64);
-			int h = (((items.Count / w) + 1) * 64);
-			this.Size = new Size(this.Size.Width, h);
+			int w = Size.Width / 64;
+			int h = ((items.Count / w) + 1) * 64;
+			Size = new Size(Size.Width, h);
 
 			if (items.Count > 0)
 			{
-				palettes = GFX.previewObjectsBitmap[items[0].previewId].Palette;
+				palettes = ZScreamer.ActiveGraphicsManager.previewObjectsBitmap[items[0].ID].Palette;
 
 				int pindex = 0;
-				for (int y = 0; y < GFX.loadedPalettes.GetLength(1); y++)
+				for (int y = 0; y < ZScreamer.ActiveGraphicsManager.loadedPalettes.GetLength(1); y++)
 				{
-					for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
+					for (int x = 0; x < ZScreamer.ActiveGraphicsManager.loadedPalettes.GetLength(0); x++)
 					{
-						palettes.Entries[pindex] = GFX.loadedPalettes[x, y];
+						palettes.Entries[pindex] = ZScreamer.ActiveGraphicsManager.loadedPalettes[x, y];
 						pindex++;
 					}
 				}
 
-				for (int y = 0; y < GFX.loadedSprPalettes.GetLength(1); y++)
+				for (int y = 0; y < ZScreamer.ActiveGraphicsManager.loadedSprPalettes.GetLength(1); y++)
 				{
-					for (int x = 0; x < GFX.loadedSprPalettes.GetLength(0); x++)
+					for (int x = 0; x < ZScreamer.ActiveGraphicsManager.loadedSprPalettes.GetLength(0); x++)
 					{
-						if (pindex < 256)
+						if (pindex < Constants.TotalPaletteSize)
 						{
-							palettes.Entries[pindex] = GFX.loadedSprPalettes[x, y];
-							pindex++;
+							palettes.Entries[pindex++] = ZScreamer.ActiveGraphicsManager.loadedSprPalettes[x, y];
 						}
 					}
 				}
 
-				for (int i = 0; i < 16; i++)
-				{
-					palettes.Entries[i * 16] = Color.Transparent;
-					palettes.Entries[(i * 16) + 8] = Color.Transparent;
-				}
+				Palettes.FillInHalfPaletteZeros(palettes.Entries, Color.Transparent);
 			}
 
-			foreach (Room_Object o in items)
+			foreach (RoomObject o in items)
 			{
-				o.size = 5;
+				o.Size = 5;
 				unsafe
 				{
-					byte* ptr = (byte*) GFX.previewObjectsPtr[o.previewId].ToPointer();
+					byte* ptr = (byte*) ZScreamer.ActiveGraphicsManager.previewObjectsPtr[o.ID].ToPointer();
 					for (int i = 0; i < (64 * 64); i++)
 					{
 						ptr[i] = 0;
 					}
 				}
 
-				o.Draw();
+				o.Draw(ZScreamer.ActiveScreamer);
 				if (palettes != null)
 				{
-					GFX.previewObjectsBitmap[o.previewId].Palette = palettes;
+					ZScreamer.ActiveGraphicsManager.previewObjectsBitmap[o.ID].Palette = palettes;
 				}
 			}
 		}
@@ -168,7 +161,7 @@ namespace ZeldaFullEditor
 			int ypos = 0;
 			int index = 0;
 			this.Size = new Size(this.Size.Width, h);
-			foreach (Room_Object o in items)
+			foreach (RoomObjectPreview o in items)
 			{
 				if (index < items.Count)
 				{
@@ -181,13 +174,13 @@ namespace ZeldaFullEditor
 						if (itemstarRect.Contains((new Point(e.X, e.Y))))
 						{
 							// Make Favourite or not
-							if (Settings.Default.favoriteObjects[o.id] == "true")
+							if (Settings.Default.favoriteObjects[o.ID] == "true")
 							{
-								Settings.Default.favoriteObjects[o.id] = "false";
+								Settings.Default.favoriteObjects[o.ID] = "false";
 							}
 							else
 							{
-								Settings.Default.favoriteObjects[o.id] = "true";
+								Settings.Default.favoriteObjects[o.ID] = "true";
 							}
 						}
 

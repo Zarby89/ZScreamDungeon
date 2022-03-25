@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
+using ZeldaFullEditor.Gui;
 
 namespace ZeldaFullEditor
 {
@@ -20,11 +21,17 @@ namespace ZeldaFullEditor
 		[DllImport("user32.dll")]
 		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
+
+		public static DungeonMain DungeonForm { get; private set; }
+		public static DungeonMain MainForm { get; private set; }
+		public static OverworldEditor OverworldForm { get; private set; }
+		public static TextEditor TextForm { get; private set; }
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>
 		[STAThread]
-		static void Main(String[] args)
+		static void Main(string[] args)
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
@@ -33,7 +40,7 @@ namespace ZeldaFullEditor
 			if (args != null)
 			{
 				// Loop through them all
-				foreach (String arg in args)
+				foreach (string arg in args)
 				{
 					// Look for hide console arg
 					if (arg.Equals("-hideConsole"))
@@ -56,7 +63,15 @@ namespace ZeldaFullEditor
 			ShowWindow(handle, showConsole);
 
 			// Run the app
-			Application.Run(new DungeonMain());
+			ZScreamer ZS = new ZScreamer();
+			ZS.SetAsActiveScreamer();
+
+			DungeonForm = new DungeonMain();
+			MainForm = DungeonForm;
+			OverworldForm = new OverworldEditor();
+			TextForm = new TextEditor();
+
+			Application.Run(MainForm);
 		}
 	}
 }
