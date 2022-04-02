@@ -652,7 +652,7 @@ namespace ZeldaFullEditor
 
 			alltiles16.Clear();
 
-			Console.WriteLine("Nbr of uniquetiles32 = " + tiles.Count + " " + t32Unique.Count);
+			Console.WriteLine("Number of unique Tiles32: " + tiles.Count + " Saved:" + t32Unique.Count + " Out of: " + Constants.LimitOfMap32);
 			int v = t32Unique.Count;
 			for (int i = v; i < Constants.LimitOfMap32; i++)
 			{

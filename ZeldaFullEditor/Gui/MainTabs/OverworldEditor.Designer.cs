@@ -100,6 +100,7 @@
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
+            this.exportPNGToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -150,6 +151,7 @@
             this.overlayButton,
             this.gravestoneButton,
             this.searchtilesButton,
+            this.exportPNGToolStripButton,
             this.refreshToolStrip,
             this.toolStripButton1});
             this.owToolStrip.Location = new System.Drawing.Point(0, 0);
@@ -929,6 +931,16 @@
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
             // 
+            // exportPNGToolStripButton
+            // 
+            this.exportPNGToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.exportPNGToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("exportPNGToolStripButton.Image")));
+            this.exportPNGToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.exportPNGToolStripButton.Name = "exportPNGToolStripButton";
+            this.exportPNGToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.exportPNGToolStripButton.Text = "Map export to PNG";
+            this.exportPNGToolStripButton.Click += new System.EventHandler(this.exportPNGToolStripButton_Click);
+            // 
             // OverworldEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1045,5 +1057,6 @@
 		private System.Windows.Forms.Label label10;
 		private System.Windows.Forms.Label label9;
 		private System.Windows.Forms.Label label8;
+		private System.Windows.Forms.ToolStripButton exportPNGToolStripButton;
 	}
 }

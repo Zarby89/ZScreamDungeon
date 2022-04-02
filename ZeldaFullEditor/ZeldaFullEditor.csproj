@@ -581,15 +581,18 @@
     <Compile Include="ZSSerializer.cs" />
     <EmbeddedResource Include="Gui\DataExtractor.resx">
       <DependentUpon>DataExtractor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExpandedManagement.resx">
       <DependentUpon>ExpandedManagement.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\ChestPicker.resx">
       <DependentUpon>ChestPicker.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\Chestviewer.resx">
       <DependentUpon>Chestviewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\CustomTabControl.resx">
       <DependentUpon>CustomTabControl.cs</DependentUpon>
@@ -609,12 +612,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\AddSprite.resx">
       <DependentUpon>AddSprite.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\AdvancedChestEditorForm.resx">
       <DependentUpon>AdvancedChestEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\CGRamViewer.resx">
       <DependentUpon>CGRamViewer.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\DungeonPropertiesForm.resx">
       <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
@@ -676,6 +682,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\TextEditorExtra\DictionariesForm.resx">
       <DependentUpon>DictionariesForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\Tile16Editor.resx">
       <DependentUpon>Tile16Editor.cs</DependentUpon>

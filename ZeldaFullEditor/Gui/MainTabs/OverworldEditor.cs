@@ -904,7 +904,7 @@ namespace ZeldaFullEditor.Gui
 			int sx = 0;
 			int sy = 0;
 
-			for (ushort i = 0; i < 3750; i++)
+			for (ushort i = 0; i < 3752; i++)
 			{
 				alltilesIndexed.Add(i, 0);
 			}
@@ -915,8 +915,10 @@ namespace ZeldaFullEditor.Gui
 				{
 					for (int x = 0; x < 32; x += 1)
 					{
-						alltilesIndexed[overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)]]++;
-						alltilesIndexed[overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)]]++;
+						ushort LWTile = overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)];
+						alltilesIndexed[LWTile]++;
+						ushort DWTile = overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)];
+						alltilesIndexed[DWTile]++;
 
 						if (i < 32)
 						{
@@ -2074,6 +2076,51 @@ namespace ZeldaFullEditor.Gui
 			SelectedObjectID.Text = id.ToString("X2");
 			SelectedObjectX.Text = x.ToString("X2");
 			SelectedObjectY.Text = y.ToString("X2");
+		}
+
+		private void exportPNGToolStripButton_Click(object sender, EventArgs e)
+		{
+			Bitmap temp = new Bitmap(4096, 4096);
+			Graphics g = Graphics.FromImage(temp);
+			g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[0]), new Rectangle(0, 0, 4096, 4096));
+
+			for (int i = 0; i < 64; i++)
+			{
+				int x = (i % 8) * 512;
+				int y = (i / 8) * 512;
+				
+				g.DrawImage(overworld.allmaps[i].gfxBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
+			}
+
+			temp.Save("LW.png");
+
+			temp = new Bitmap(4096, 4096);
+			g = Graphics.FromImage(temp);
+			g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[1]), new Rectangle(0, 0, 4096, 4096));
+
+			for (int i = 0; i < 64; i++)
+			{
+				int x = (i % 8) * 512;
+				int y = (i / 8) * 512;
+
+				g.DrawImage(overworld.allmaps[i + 64].gfxBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
+			}
+
+			temp.Save("DW.png");
+
+			temp = new Bitmap(4096, 4096);
+			g = Graphics.FromImage(temp);
+			g.FillRectangle(new SolidBrush(Palettes.overworld_GrassPalettes[2]), new Rectangle(0, 0, 4096, 4096));
+
+			for (int i = 0; i < 32; i++)
+			{
+				int x = (i % 8) * 512;
+				int y = (i / 8) * 512;
+
+				g.DrawImage(overworld.allmaps[i + 128].gfxBitmap, x, y, new Rectangle(0, 0, 512, 512), GraphicsUnit.Pixel);
+			}
+
+			temp.Save("SP.png");
 		}
 	}
 }
