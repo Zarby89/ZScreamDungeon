@@ -81,7 +81,7 @@ namespace ZeldaFullEditor.Gui
 
 			if (sfd.ShowDialog() == DialogResult.OK)
 			{
-				byte[] ndata = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(ZS.ROM.DataStream, ZS.GFXManager.GetPCGfxAddress(ZS.ROM.DataStream, (byte) selectedSheet), 0x1000, ref csize);
+				byte[] ndata = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(ZS.ROM.DataStream, ZS.GFXManager.GetPCGfxAddress((byte) selectedSheet), 0x1000, ref csize);
 				FileStream fs = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
 				fs.Write(ndata, 0, ndata.Length);
 				fs.Close();
@@ -136,7 +136,7 @@ namespace ZeldaFullEditor.Gui
 						{
 							int compressedSize = 0;
 							gfxSheets3bpp[i] = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(ZS.ROM.DataStream,
-								ZS.GFXManager.GetPCGfxAddress(ZS.ROM.DataStream, (byte) i),
+								ZS.GFXManager.GetPCGfxAddress((byte) i),
 								Constants.UncompressedSheetSize,
 								ref compressedSize);
 						}
@@ -149,9 +149,9 @@ namespace ZeldaFullEditor.Gui
 
 		public void recompressAllGfx()
 		{
-			int gfxPointer1 = SNESFunctions.SNEStoPC(ZS.ROM[Constants.gfx_1_pointer, 2]);
-			int gfxPointer2 = SNESFunctions.SNEStoPC(ZS.ROM[Constants.gfx_2_pointer, 2]);
-			int gfxPointer3 = SNESFunctions.SNEStoPC(ZS.ROM[Constants.gfx_3_pointer, 2]);
+			int gfxPointer1 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_1_pointer, 2]);
+			int gfxPointer2 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_2_pointer, 2]);
+			int gfxPointer3 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_3_pointer, 2]);
 			int pos = 0x8B800;
 			int uPos = 0x87000;
 			bool bpp2;
@@ -218,19 +218,19 @@ namespace ZeldaFullEditor.Gui
 			}
 
 			/*
-            if (pos >= Constants.maxGfx)
+            if (pos >= ZS.Offsets.maxGfx)
             {
                 MessageBox.Show("It is possible the gfx are overwriting data :( new gfx size is " + (pos - 0x8b800).ToString("X6"));
             }
             else
             {
-                MessageBox.Show("Saved successfully total of remaining space for gfx : " + (Constants.maxGfx - pos).ToString("X6"));
+                MessageBox.Show("Saved successfully total of remaining space for gfx : " + (ZS.Offsets.maxGfx - pos).ToString("X6"));
             }
             */
 
 			infoLabel.Text =
 			"Compressed Size = " + (pos - 0x8b800).ToString("X6") + "\r\n" +
-			"Available Space = " + (Constants.maxGfx - pos).ToString("X6");
+			"Available Space = " + (ZS.Offsets.maxGfx - pos).ToString("X6");
 		}
 
 		private void palettePicturebox_Paint(object sender, PaintEventArgs e)

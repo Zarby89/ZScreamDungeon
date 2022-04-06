@@ -21,7 +21,7 @@ namespace ZeldaFullEditor
 
 		public void LoadGfxGroups()
 		{
-			int gfxPointer = ZS.ROM[Constants.gfx_groups_pointer, 2];
+			int gfxPointer = ZS.ROM[ZS.Offsets.gfx_groups_pointer, 2];
 			gfxPointer = gfxPointer.SNEStoPC();
 
 			for (int i = 0; i < 37; i++)
@@ -38,7 +38,7 @@ namespace ZeldaFullEditor
 				roomGfx[i] = new byte[4];
 				for (int j = 0; j < 4; j++)
 				{
-					roomGfx[i][j] = ZS.ROM[Constants.entrance_gfx_group + (i * 4) + j];
+					roomGfx[i][j] = ZS.ROM[ZS.Offsets.overworldgfxGroups + (i * 4) + j];
 				}
 			}
 
@@ -47,7 +47,7 @@ namespace ZeldaFullEditor
 				spriteGfx[i] = new byte[4];
 				for (int j = 0; j < 4; j++)
 				{
-					spriteGfx[i][j] = ZS.ROM[Constants.sprite_blockset_pointer + (i * 4) + j];
+					spriteGfx[i][j] = ZS.ROM[ZS.Offsets.sprite_blockset_pointer + (i * 4) + j];
 				}
 			}
 
@@ -56,14 +56,14 @@ namespace ZeldaFullEditor
 				paletteGfx[i] = new byte[4];
 				for (int j = 0; j < 4; j++)
 				{
-					paletteGfx[i][j] = ZS.ROM[Constants.dungeons_palettes_groups + (i * 4) + j];
+					paletteGfx[i][j] = ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (i * 4) + j];
 				}
 			}
 		}
 
 		public bool SaveGroupsToROM()
 		{
-			int gfxPointer = SNESFunctions.SNEStoPC(ZS.ROM[Constants.gfx_groups_pointer, 2]);
+			int gfxPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_groups_pointer, 2]);
 
 			for (int i = 0; i < 37; i++)
 			{
@@ -77,7 +77,7 @@ namespace ZeldaFullEditor
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					ZS.ROM[Constants.entrance_gfx_group + (i * 4) + j] = roomGfx[i][j];
+					ZS.ROM[ZS.Offsets.overworldgfxGroups + (i * 4) + j] = roomGfx[i][j];
 				}
 			}
 
@@ -85,7 +85,7 @@ namespace ZeldaFullEditor
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					ZS.ROM[Constants.sprite_blockset_pointer + (i * 4) + j] = spriteGfx[i][j];
+					ZS.ROM[ZS.Offsets.sprite_blockset_pointer + (i * 4) + j] = spriteGfx[i][j];
 				}
 			}
 
@@ -93,7 +93,7 @@ namespace ZeldaFullEditor
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					ZS.ROM[Constants.dungeons_palettes_groups + (i * 4) + j] = paletteGfx[i][j];
+					ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (i * 4) + j] = paletteGfx[i][j];
 				}
 			}
 

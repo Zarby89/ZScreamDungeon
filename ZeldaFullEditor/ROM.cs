@@ -7,9 +7,6 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-	// TODO: completely rewrite
-	// have a "set up consecutive writes" thing, where ROM class will handle all address increments (maybe not)
-	// TODO: set up duplication to replace the Write*2 functions
 	public class ROMFile
 	{
 		private byte[] DATA = new byte[Constants.ROMSize];
@@ -22,6 +19,7 @@ namespace ZeldaFullEditor
 		{
 
 		}
+
 		public bool OhShitLastResortBackup(byte[] uhoh)
 		{
 			DATA = (byte[]) uhoh.Clone();

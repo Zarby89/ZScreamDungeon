@@ -865,10 +865,10 @@ namespace ZeldaFullEditor.Gui
 			{
 				for (int x = 0; x < 4; x++)
 				{
-					CopyTile(x, y, 0, 0, t.tile0.id, p, destPtr, srcPtr, 16);
-					CopyTile(x, y, 8, 0, t.tile1.id, p, destPtr, srcPtr, 16);
-					CopyTile(x, y, 0, 8, t.tile2.id, p, destPtr, srcPtr, 16);
-					CopyTile(x, y, 8, 8, t.tile3.id, p, destPtr, srcPtr, 16);
+					CopyTile(x, y, 0, 0, t.tile0.ID, p, destPtr, srcPtr, 16);
+					CopyTile(x, y, 8, 0, t.tile1.ID, p, destPtr, srcPtr, 16);
+					CopyTile(x, y, 0, 8, t.tile2.ID, p, destPtr, srcPtr, 16);
+					CopyTile(x, y, 8, 8, t.tile3.ID, p, destPtr, srcPtr, 16);
 				}
 			}
 

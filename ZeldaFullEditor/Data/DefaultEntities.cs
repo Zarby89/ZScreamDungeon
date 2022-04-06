@@ -2,7 +2,7 @@
 {
 	public static class DefaultEntities
 	{
-		public static readonly SpriteName[] ListOfSprites = new SpriteName[]
+		public static readonly SpriteName[] ListOfSprites =
 		{
 			new SpriteName(0x00, "Raven"),
 			new SpriteName(0x01, "Vulture"),
@@ -97,10 +97,10 @@
 			new SpriteName(0x5A, "Lost woods squirrel"),
 			new SpriteName(0x5B, "Spark (clockwise)"),
 			new SpriteName(0x5C, "Spark (counterclockwise)"),
-			new SpriteName(0x5D, "Roller (vertical, up)"),
-			new SpriteName(0x5E, "Roller (vertical, down)"),
-			new SpriteName(0x5F, "Roller (horizontal, left)"),
-			new SpriteName(0x60, "Roller (horizontal, right)"),
+			new SpriteName(0x5D, "Roller (vertical, down)"),
+			new SpriteName(0x5E, "Roller (vertical, up)"),
+			new SpriteName(0x5F, "Roller (horizontal, right)"),
+			new SpriteName(0x60, "Roller (horizontal, left)"),
 			new SpriteName(0x61, "Beamos"),
 			new SpriteName(0x62, "Mastersword"),
 			new SpriteName(0x63, "Debirando"),
@@ -251,8 +251,8 @@
 			new SpriteName(0xF4, "Boulders (OW)")
 		};
 
-		// TODO rename everything
-		public static readonly RoomEffectName[] ListOfRoomEffects = new RoomEffectName[] {
+		public static readonly RoomEffectName[] ListOfRoomEffects =
+		{
 			new RoomEffectName(0x00, "Nothing"),
 			new RoomEffectName(0x01, "Nothing"),
 			new RoomEffectName(0x02, "Moving Floor"),
@@ -264,7 +264,7 @@
 		};
 
 		// TODO rename everything
-		public static readonly RoomTagName[] ListOfRoomTags = new RoomTagName[]
+		public static readonly RoomTagName[] ListOfRoomTags =
 		{
 			new RoomTagName(0x00, "Nothing"),
 			new RoomTagName(0x01, "NW Kill Enemy to Open"),
@@ -332,7 +332,8 @@
 			new RoomTagName(0x3F, "Kill Boss Again")
 		};
 
-		public static readonly RoomObjectName[] ListOfSet0RoomObjects = new RoomObjectName[] {
+		public static readonly RoomObjectName[] ListOfSet0RoomObjects =
+		{
 			new RoomObjectName(0x000, "Ceiling ↔"),
 			new RoomObjectName(0x001, "Wall (top, north) ↔"),
 			new RoomObjectName(0x002, "Wall (top, south) ↔"),
@@ -583,7 +584,7 @@
 			new RoomObjectName(0x0F7, "Nothing"),
 		};
 
-		public static readonly RoomObjectName[] ListOfSet1RoomObjects = new RoomObjectName[]
+		public static readonly RoomObjectName[] ListOfSet1RoomObjects =
 		{
 			new RoomObjectName(0x100, "Corner (top, concave) ▛"),
 			new RoomObjectName(0x101, "Corner (top, concave) ▙"),
@@ -651,7 +652,7 @@
 			new RoomObjectName(0x13F, "Magic bat altar"),
 		};
 
-		public static readonly RoomObjectName[] ListOfSet2RoomObjects = new RoomObjectName[]
+		public static readonly RoomObjectName[] ListOfSet2RoomObjects =
 		{
 			new RoomObjectName(0x200, "Waterfall face (empty)"),
 			new RoomObjectName(0x201, "Waterfall face (short)"),
@@ -783,21 +784,20 @@
 			new RoomObjectName(0x27F, "Nothing"),
 		};
 
-
-		public static readonly TileTypeName[] ListOfTileTypes = new TileTypeName[]
+		public static readonly TileTypeName[] ListOfTileTypes =
 		{
 			new TileTypeName(0x00, "Nothing (standard floor)"),
 			new TileTypeName(0x01, "Collision"),
 			new TileTypeName(0x02, "Collision"),
 			new TileTypeName(0x03, "Collision"),
 			new TileTypeName(0x04, "Collision"),
-			new TileTypeName(0x05, "Nothing (unused?)"),
-			new TileTypeName(0x06, "Nothing (unused?)"),
-			new TileTypeName(0x07, "Nothing (unused?)"),
+			new TileTypeName(0x05, "Nothing"),
+			new TileTypeName(0x06, "Nothing"),
+			new TileTypeName(0x07, "Nothing"),
 			new TileTypeName(0x08, "Deep water"),
 			new TileTypeName(0x09, "Shallow water"),
-			new TileTypeName(0x0A, "Unknown? Possibly unused"),
-			new TileTypeName(0x0B, "Collision (different in Overworld and unknown)"),
+			new TileTypeName(0x0A, "Short water ladder"),
+			new TileTypeName(0x0B, "Collision (weird deep water in Overworld)"),
 			new TileTypeName(0x0C, "Overlay mask"),
 			new TileTypeName(0x0D, "Spike floor"),
 			new TileTypeName(0x0E, "GT ice"),
@@ -806,10 +806,10 @@
 			new TileTypeName(0x11, "Slope ◥"),
 			new TileTypeName(0x12, "Slope ◣"),
 			new TileTypeName(0x13, "Slope ◢"),
-			new TileTypeName(0x14, "Nothing (unused?)"),
-			new TileTypeName(0x15, "Nothing (unused?)"),
-			new TileTypeName(0x16, "Nothing (unused?)"),
-			new TileTypeName(0x17, "Nothing (unused?)"),
+			new TileTypeName(0x14, "Nothing"),
+			new TileTypeName(0x15, "Nothing"),
+			new TileTypeName(0x16, "Nothing"),
+			new TileTypeName(0x17, "Nothing"),
 			new TileTypeName(0x18, "Slope ◤"),
 			new TileTypeName(0x19, "Slope ◥"),
 			new TileTypeName(0x1A, "Slope ◣"),
@@ -819,13 +819,13 @@
 			new TileTypeName(0x1E, "North layer-swap auto stairs"),
 			new TileTypeName(0x1F, "North layer-swap auto stairs"),
 			new TileTypeName(0x20, "Pit"),
-			new TileTypeName(0x21, "Nothing (unused?)"),
+			new TileTypeName(0x21, "Nothing"),
 			new TileTypeName(0x22, "Manual stairs"),
 			new TileTypeName(0x23, "Pot switch"),
 			new TileTypeName(0x24, "Pressure switch"),
 			new TileTypeName(0x25, "Nothing (unused but referenced by somaria blocks)"),
 			new TileTypeName(0x26, "Collision (near stairs?)"),
-			new TileTypeName(0x27, "Brazier/Fence/Statue/Block/General hookable things"),
+			new TileTypeName(0x27, "Hookshottable object"),
 			new TileTypeName(0x28, "North ledge"),
 			new TileTypeName(0x29, "South ledge"),
 			new TileTypeName(0x2A, "East ledge"),
@@ -846,26 +846,26 @@
 			new TileTypeName(0x39, "Straight inter-room stairs south/up edge"),
 			new TileTypeName(0x3A, "Star tile (inactive on load)"),
 			new TileTypeName(0x3B, "Star tile (active on load)"),
-			new TileTypeName(0x3C, "Nothing (unused?)"),
+			new TileTypeName(0x3C, "Nothing"),
 			new TileTypeName(0x3D, "South single-layer auto stairs"),
 			new TileTypeName(0x3E, "South layer-swap auto stairs"),
 			new TileTypeName(0x3F, "South layer-swap auto stairs"),
 			new TileTypeName(0x40, "Thick grass"),
-			new TileTypeName(0x41, "Nothing (unused?)"),
-			new TileTypeName(0x42, "Gravestone / Tower of hera ledge shadows??"),
-			new TileTypeName(0x43, "Skull Woods entrance/Hera columns???"),
+			new TileTypeName(0x41, "Nothing"),
+			new TileTypeName(0x42, "Gravestone"),
+			new TileTypeName(0x43, "Skull Woods entrance"),
 			new TileTypeName(0x44, "Spike"),
-			new TileTypeName(0x45, "Nothing (unused?)"),
+			new TileTypeName(0x45, "Nothing"),
 			new TileTypeName(0x46, "Desert Tablet"),
-			new TileTypeName(0x47, "Nothing (unused?)"),
+			new TileTypeName(0x47, "Nothing"),
 			new TileTypeName(0x48, "Diggable ground"),
-			new TileTypeName(0x49, "Nothing (unused?)"),
+			new TileTypeName(0x49, "Nothing"),
 			new TileTypeName(0x4A, "Diggable ground"),
 			new TileTypeName(0x4B, "Warp tile"),
-			new TileTypeName(0x4C, "Nothing (unused?) | Something unknown in overworld"),
-			new TileTypeName(0x4D, "Nothing (unused?) | Something unknown in overworld"),
-			new TileTypeName(0x4E, "Square corners in EP overworld"),
-			new TileTypeName(0x4F, "Square corners in EP overworld"),
+			new TileTypeName(0x4C, "Nothing / Overworld square corner"),
+			new TileTypeName(0x4D, "Nothing / Overworld square corner"),
+			new TileTypeName(0x4E, "Nothing / Overworld square corner"),
+			new TileTypeName(0x4F, "Nothing / Overworld square corner"),
 			new TileTypeName(0x50, "Green bush"),
 			new TileTypeName(0x51, "Dark bush"),
 			new TileTypeName(0x52, "Gray rock"),
@@ -883,11 +883,11 @@
 			new TileTypeName(0x5E, "Spiral stairs"),
 			new TileTypeName(0x5F, "Spiral stairs"),
 			new TileTypeName(0x60, "Rupee tile"),
-			new TileTypeName(0x61, "Nothing (unused?)"),
+			new TileTypeName(0x61, "Nothing"),
 			new TileTypeName(0x62, "Bombable floor"),
 			new TileTypeName(0x63, "Minigame chest"),
-			new TileTypeName(0x64, "Nothing (unused?)"),
-			new TileTypeName(0x65, "Nothing (unused?)"),
+			new TileTypeName(0x64, "Nothing"),
+			new TileTypeName(0x65, "Nothing"),
 			new TileTypeName(0x66, "Crystal peg down"),
 			new TileTypeName(0x67, "Crystal peg up"),
 			new TileTypeName(0x68, "Upwards conveyor"),
@@ -952,8 +952,8 @@
 			new TileTypeName(0xA3, "Dungeon toggle door (?)"),
 			new TileTypeName(0xA4, "Dungeon toggle door (?)"),
 			new TileTypeName(0xA5, "Dungeon toggle door (?)"),
-			new TileTypeName(0xA6, "Nothing (unused?)"),
-			new TileTypeName(0xA7, "Nothing (unused?)"),
+			new TileTypeName(0xA6, "Nothing"),
+			new TileTypeName(0xA7, "Nothing"),
 			new TileTypeName(0xA8, "Layer+Dungeon toggle shutter door (?)"),
 			new TileTypeName(0xA9, "Layer+Dungeon toggle shutter door (?)"),
 			new TileTypeName(0xAA, "Layer+Dungeon toggle shutter door (?)"),
@@ -977,7 +977,7 @@
 			new TileTypeName(0xBC, "Somaria ⍰ 2 way"),
 			new TileTypeName(0xBD, "Somaria ┼ crossover"),
 			new TileTypeName(0xBE, "Pipe entrance"),
-			new TileTypeName(0xBF, "Nothing (unused?)"),
+			new TileTypeName(0xBF, "Nothing"),
 			new TileTypeName(0xC0, "Torch 00"),
 			new TileTypeName(0xC1, "Torch 01"),
 			new TileTypeName(0xC2, "Torch 02"),
@@ -994,38 +994,38 @@
 			new TileTypeName(0xCD, "Torch 0D"),
 			new TileTypeName(0xCE, "Torch 0E"),
 			new TileTypeName(0xCF, "Torch 0F"),
-			new TileTypeName(0xD0, "Nothing (unused?)"),
-			new TileTypeName(0xD1, "Nothing (unused?)"),
-			new TileTypeName(0xD2, "Nothing (unused?)"),
-			new TileTypeName(0xD3, "Nothing (unused?)"),
-			new TileTypeName(0xD4, "Nothing (unused?)"),
-			new TileTypeName(0xD5, "Nothing (unused?)"),
-			new TileTypeName(0xD6, "Nothing (unused?)"),
-			new TileTypeName(0xD7, "Nothing (unused?)"),
-			new TileTypeName(0xD8, "Nothing (unused?)"),
-			new TileTypeName(0xD9, "Nothing (unused?)"),
-			new TileTypeName(0xDA, "Nothing (unused?)"),
-			new TileTypeName(0xDB, "Nothing (unused?)"),
-			new TileTypeName(0xDC, "Nothing (unused?)"),
-			new TileTypeName(0xDD, "Nothing (unused?)"),
-			new TileTypeName(0xDE, "Nothing (unused?)"),
-			new TileTypeName(0xDF, "Nothing (unused?)"),
-			new TileTypeName(0xE0, "Nothing (unused?)"),
-			new TileTypeName(0xE1, "Nothing (unused?)"),
-			new TileTypeName(0xE2, "Nothing (unused?)"),
-			new TileTypeName(0xE3, "Nothing (unused?)"),
-			new TileTypeName(0xE4, "Nothing (unused?)"),
-			new TileTypeName(0xE5, "Nothing (unused?)"),
-			new TileTypeName(0xE6, "Nothing (unused?)"),
-			new TileTypeName(0xE7, "Nothing (unused?)"),
-			new TileTypeName(0xE8, "Nothing (unused?)"),
-			new TileTypeName(0xE9, "Nothing (unused?)"),
-			new TileTypeName(0xEA, "Nothing (unused?)"),
-			new TileTypeName(0xEB, "Nothing (unused?)"),
-			new TileTypeName(0xEC, "Nothing (unused?)"),
-			new TileTypeName(0xED, "Nothing (unused?)"),
-			new TileTypeName(0xEE, "Nothing (unused?)"),
-			new TileTypeName(0xEF, "Nothing (unused?)"),
+			new TileTypeName(0xD0, "Nothing"),
+			new TileTypeName(0xD1, "Nothing"),
+			new TileTypeName(0xD2, "Nothing"),
+			new TileTypeName(0xD3, "Nothing"),
+			new TileTypeName(0xD4, "Nothing"),
+			new TileTypeName(0xD5, "Nothing"),
+			new TileTypeName(0xD6, "Nothing"),
+			new TileTypeName(0xD7, "Nothing"),
+			new TileTypeName(0xD8, "Nothing"),
+			new TileTypeName(0xD9, "Nothing"),
+			new TileTypeName(0xDA, "Nothing"),
+			new TileTypeName(0xDB, "Nothing"),
+			new TileTypeName(0xDC, "Nothing"),
+			new TileTypeName(0xDD, "Nothing"),
+			new TileTypeName(0xDE, "Nothing"),
+			new TileTypeName(0xDF, "Nothing"),
+			new TileTypeName(0xE0, "Nothing"),
+			new TileTypeName(0xE1, "Nothing"),
+			new TileTypeName(0xE2, "Nothing"),
+			new TileTypeName(0xE3, "Nothing"),
+			new TileTypeName(0xE4, "Nothing"),
+			new TileTypeName(0xE5, "Nothing"),
+			new TileTypeName(0xE6, "Nothing"),
+			new TileTypeName(0xE7, "Nothing"),
+			new TileTypeName(0xE8, "Nothing"),
+			new TileTypeName(0xE9, "Nothing"),
+			new TileTypeName(0xEA, "Nothing"),
+			new TileTypeName(0xEB, "Nothing"),
+			new TileTypeName(0xEC, "Nothing"),
+			new TileTypeName(0xED, "Nothing"),
+			new TileTypeName(0xEE, "Nothing"),
+			new TileTypeName(0xEF, "Nothing"),
 			new TileTypeName(0xF0, "Door 0 bottom"),
 			new TileTypeName(0xF1, "Door 1 bottom"),
 			new TileTypeName(0xF2, "Door 2 bottom"),
@@ -1043,5 +1043,38 @@
 			new TileTypeName(0xFE, "Door X top? (unused?)"),
 			new TileTypeName(0xFF, "Door X top? (unused?)")
 		};
+
+		public static readonly SecretsName[] ListOfSecrets =
+		{
+			new SecretsName(0x00, "Nothing"),
+			new SecretsName(0x01, "Green rupee"),
+			new SecretsName(0x02, "Hoarder"),
+			new SecretsName(0x03, "Bee"),
+			new SecretsName(0x04, "Health pack"),
+			new SecretsName(0x05, "Bomb"),
+			new SecretsName(0x06, "Heart"),
+			new SecretsName(0x07, "Blue rupee"),
+			new SecretsName(0x08, "Key"),
+			new SecretsName(0x09, "Arrow"),
+			new SecretsName(0x0A, "Bomb"),
+			new SecretsName(0x0B, "Heart"),
+			new SecretsName(0x0C, "Small magic"),
+			new SecretsName(0x0D, "Full magic"),
+			new SecretsName(0x0E, "Cucco"),
+			new SecretsName(0x0F, "Green soldier"),
+			new SecretsName(0x10, "Bush stal"),
+			new SecretsName(0x11, "Blue soldier"),
+			new SecretsName(0x12, "Landmine"),
+			new SecretsName(0x13, "Heart"),
+			new SecretsName(0x14, "Fairy"),
+			new SecretsName(0x15, "Heart"),
+			new SecretsName(0x16, "Nothing"),
+
+			new SecretsName(0x80, "Hole"),
+			new SecretsName(0x82, "Warp"),
+			new SecretsName(0x84, "Staircase"),
+			new SecretsName(0x86, "Bombable"),
+			new SecretsName(0x88, "Switch")
+		   };
 	}
 }

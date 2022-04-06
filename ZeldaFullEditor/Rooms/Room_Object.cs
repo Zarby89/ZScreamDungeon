@@ -10,9 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-
 namespace ZeldaFullEditor
 {
+
 	[Serializable]
 	public unsafe class Room_Object
 	{
@@ -101,6 +101,11 @@ namespace ZeldaFullEditor
 		}
 
 		public virtual void Draw()
+		{
+			collisionPoint.Clear();
+		}
+
+		public void ClearBeforeDrawing()
 		{
 			collisionPoint.Clear();
 		}
@@ -212,7 +217,6 @@ namespace ZeldaFullEditor
 				{
 					var alltilesData = (byte*) ZS.GFXManager.currentgfx16Ptr.ToPointer();
 					byte* ptr = (byte*) ZS.GFXManager.previewObjectsPtr[previewId].ToPointer();
-					TileInfo ti = t.GetTileInfo();
 					for (int yl = 0; yl < 8; yl++)
 					{
 						for (int xl = 0; xl < 4; xl++)
@@ -221,25 +225,25 @@ namespace ZeldaFullEditor
 							int my = yl;
 							byte r = 0;
 
-							if (ti.H)
+							if (t.HFlip)
 							{
 								mx = 3 - xl;
 								r = 1;
 							}
-							if (ti.V)
+							if (t.VFlip)
 							{
 								my = 7 - yl;
 							}
 
 							// Formula information to get tile index position in the array
 							//((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
-							int tx = ((ti.id / 16) * 512) + ((ti.id - ((ti.id / 16) * 16)) * 4);
+							int tx = ((t.ID / 16) * 512) + ((t.ID - ((t.ID / 16) * 16)) * 4);
 							var pixel = alltilesData[tx + (yl * 64) + xl];
 							//nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
 
 							int index = ((xx / 8) * 8) + ((yy / 8) * 512) + ((mx * 2) + (my * 64));
-							ptr[index + r ^ 1] = (byte) ((pixel & 0x0F) + ti.palette * 16);
-							ptr[index + r] = (byte) (((pixel >> 4) & 0x0F) + ti.palette * 16);
+							ptr[index + r ^ 1] = (byte) ((pixel & 0x0F) + t.Palette * 16);
+							ptr[index + r] = (byte) (((pixel >> 4) & 0x0F) + t.Palette * 16);
 						}
 					}
 				}
@@ -248,7 +252,7 @@ namespace ZeldaFullEditor
 			{
 				if (((xx / 8) + nx + offsetX) + ((ny + offsetY + (yy / 8)) * 64) < 4096 && ((xx / 8) + nx + offsetX) + ((ny + offsetY + (yy / 8)) * 64) >= 0)
 				{
-					ushort td = Tile.GetGFXTileInfo(t.GetTileInfo());
+					ushort td = t.ToUnsignedShort();
 
 					collisionPoint.Add(new Point(xx + ((nx + offsetX) * 8), yy + ((ny + +offsetY) * 8)));
 

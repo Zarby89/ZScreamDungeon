@@ -19,322 +19,322 @@ namespace ZeldaFullEditor
 			switch (oid)
 			{
 				case 0x00:
-					setData(Constants.Type2RoomObjectNames[0x00], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x01:
-					setData(Constants.Type2RoomObjectNames[0x01], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x02:
-					setData(Constants.Type2RoomObjectNames[0x02], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x03:
-					setData(Constants.Type2RoomObjectNames[0x03], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x04:
-					setData(Constants.Type2RoomObjectNames[0x04], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x05:
-					setData(Constants.Type2RoomObjectNames[0x05], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x06:
-					setData(Constants.Type2RoomObjectNames[0x06], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x07:
-					setData(Constants.Type2RoomObjectNames[0x07], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x08:
-					setData(Constants.Type2RoomObjectNames[0x08], 4, 4, true);
+					setData(4, 4, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x09:
-					setData(Constants.Type2RoomObjectNames[0x09], 4, 4, true);
+					setData(4, 4, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x0A:
-					setData(Constants.Type2RoomObjectNames[0x0A], 4, 4, true);
+					setData(4, 4, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x0B:
-					setData(Constants.Type2RoomObjectNames[0x0B], 4, 4, true);
+					setData(4, 4, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x0D:
-					setData(Constants.Type2RoomObjectNames[0x0C], 4, 4, true);
+					setData(4, 4, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x0C:
-					setData(Constants.Type2RoomObjectNames[0x0D], 4, 4, true);
+					setData(4, 4, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x0E:
-					setData(Constants.Type2RoomObjectNames[0x0E], 4, 4, true);
+					setData(4, 4, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x0F:
-					setData(Constants.Type2RoomObjectNames[0x0F], 4, 4, true);
+					setData(4, 4, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x10:
-					setData(Constants.Type2RoomObjectNames[0x10], 3, 4, true);
+					setData(3, 4, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x11:
-					setData(Constants.Type2RoomObjectNames[0x11], 3, 4, true);
+					setData(3, 4, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x12:
-					setData(Constants.Type2RoomObjectNames[0x12], 3, 4, true);
+					setData(3, 4, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x13:
-					setData(Constants.Type2RoomObjectNames[0x13], 3, 4, true);
+					setData(3, 4, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x14:
-					setData(Constants.Type2RoomObjectNames[0x14], 4, 3, true);
+					setData(4, 3, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x15:
-					setData(Constants.Type2RoomObjectNames[0x15], 4, 3, true);
+					setData(4, 3, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x16:
-					setData(Constants.Type2RoomObjectNames[0x16], 4, 3, true);
+					setData(4, 3, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x17:
-					setData(Constants.Type2RoomObjectNames[0x17], 4, 3, true);
+					setData(4, 3, true);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x18:
-					setData(Constants.Type2RoomObjectNames[0x18], 2, 2);
+					setData(2, 2);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x19:
-					setData(Constants.Type2RoomObjectNames[0x19], 2, 2);
+					setData(2, 2);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x1A:
-					setData(Constants.Type2RoomObjectNames[0x1A], 2, 2);
+					setData(2, 2);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x1B:
-					setData(Constants.Type2RoomObjectNames[0x1B], 2, 2);
+					setData(2, 2);
 					sort = Sorting.Wall | Sorting.NonScalable;
 					break;
 
 				case 0x1C:
-					setData(Constants.Type2RoomObjectNames[0x1C], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Dungeons | Sorting.NonScalable;
 					break;
 
 				case 0x1D:
-					setData(Constants.Type2RoomObjectNames[0x1D], 2, 3);
+					setData(2, 3);
 					sort = Sorting.Dungeons | Sorting.NonScalable;
 					break;
 
 				case 0x1E:
-					setData(Constants.Type2RoomObjectNames[0x1E], 2, 2);
+					setData(2, 2);
 					sort = Sorting.Dungeons | Sorting.NonScalable;
 					break;
 
 				case 0x1F:
-					setData(Constants.Type2RoomObjectNames[0x1F], 2, 2);
+					setData(2, 2);
 					sort = Sorting.Dungeons | Sorting.NonScalable;
 					break;
 
 				case 0x20:
-					setData(Constants.Type2RoomObjectNames[0x20], 2, 2);
+					setData(2, 2);
 					sort = Sorting.Dungeons | Sorting.NonScalable;
 					break;
 
 				case 0x21:
-					setData(Constants.Type2RoomObjectNames[0x21], 2, 3);
+					setData(2, 3);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x22:
-					setData(Constants.Type2RoomObjectNames[0x22], 4, 5);
+					setData(4, 5);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x23:
-					setData(Constants.Type2RoomObjectNames[0x23], 4, 3);
+					setData(4, 3);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x24:
-					setData(Constants.Type2RoomObjectNames[0x24], 4, 4);
+					setData(4, 4);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x25:
-					setData(Constants.Type2RoomObjectNames[0x25], 4, 4);
+					setData(4, 4);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x26:
-					setData(Constants.Type2RoomObjectNames[0x26], 2, 3);
+					setData(2, 3);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x27:
-					setData(Constants.Type2RoomObjectNames[0x27], 2, 2);
+					setData(2, 2);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x28:
-					setData(Constants.Type2RoomObjectNames[0x28], 4, 5);
+					setData(4, 5);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x29:
-					setData(Constants.Type2RoomObjectNames[0x29], 4, 4);
+					setData(4, 4);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x2A:
-					setData(Constants.Type2RoomObjectNames[0x2A], 4, 2);
+					setData(4, 2);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x2B:
-					setData(Constants.Type2RoomObjectNames[0x2B], 2, 2);
+					setData(2, 2);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x2C:
-					setData(Constants.Type2RoomObjectNames[0x2C], 6, 3);
+					setData(6, 3);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x2D:
-					setData(Constants.Type2RoomObjectNames[0x2D], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Stairs | Sorting.NonScalable;
 					break;
 
 				case 0x2E:
-					setData(Constants.Type2RoomObjectNames[0x2E], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Stairs | Sorting.NonScalable;
 					break;
 
 				case 0x2F:
-					setData(Constants.Type2RoomObjectNames[0x2F], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Stairs | Sorting.NonScalable;
 					break;
 
 				case 0x30:
-					setData(Constants.Type2RoomObjectNames[0x30], 4, 4, true);
+					setData(4, 4, true);
 					sort = Sorting.Stairs | Sorting.NonScalable;
 					break;
 
 				case 0x31:
-					setData(Constants.Type2RoomObjectNames[0x31], 4, 4, true);
+					setData(4, 4, true);
 					sort = Sorting.Stairs | Sorting.NonScalable;
 					break;
 
 				case 0x32:
-					setData(Constants.Type2RoomObjectNames[0x32], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Stairs | Sorting.NonScalable;
 					break;
 
 				case 0x33:
-					setData(Constants.Type2RoomObjectNames[0x33], 4, 4);
+					setData(4, 4);
 					sort = Sorting.Stairs | Sorting.NonScalable;
 					break;
 
 				case 0x34:
-					setData(Constants.Type2RoomObjectNames[0x34], 2, 2);
+					setData(2, 2);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x35:
-					setData(Constants.Type2RoomObjectNames[0x35], 4, 2);
+					setData(4, 2);
 					sort = Sorting.Stairs | Sorting.NonScalable;
 					break;
 
 				case 0x36:
-					setData(Constants.Type2RoomObjectNames[0x36], 4, 2, true);
+					setData(4, 2, true);
 					sort = Sorting.Stairs | Sorting.NonScalable;
 					break;
 
 				case 0x37:
-					setData(Constants.Type2RoomObjectNames[0x37], 10, 4);
+					setData(10, 4);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x38:
-					setData(Constants.Type2RoomObjectNames[0x38], 4, 3);
+					setData(4, 3);
 					sort = Sorting.Stairs | Sorting.NonScalable;
 					break;
 
 				case 0x39:
-					setData(Constants.Type2RoomObjectNames[0x39], 4, 3);
+					setData(4, 3);
 					sort = Sorting.Stairs | Sorting.NonScalable;
 					break;
 
 				case 0x3A:
-					setData(Constants.Type2RoomObjectNames[0x3A], 4, 3);
+					setData(4, 3);
 					sort = Sorting.Stairs | Sorting.NonScalable;
 					break;
 
 				case 0x3B:
-					setData(Constants.Type2RoomObjectNames[0x3B], 4, 3);
+					setData(4, 3);
 					sort = Sorting.Stairs | Sorting.NonScalable;
 					break;
 
 				case 0x3C:
-					setData(Constants.Type2RoomObjectNames[0x3C], 4, 6);
+					setData(4, 6);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x3D:
-					setData(Constants.Type2RoomObjectNames[0x3D], 4, 3);
+					setData(4, 3);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x3E:
-					setData(Constants.Type2RoomObjectNames[0x3E], 6, 3);
+					setData(6, 3);
 					sort = Sorting.NonScalable;
 					break;
 
 				case 0x3F:
-					setData(Constants.Type2RoomObjectNames[0x3F], 8, 7);
+					setData(8, 7);
 					sort = Sorting.NonScalable;
 					break;
 
@@ -420,11 +420,11 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public void setData(string name, int tx, int ty, bool allbg = false)
+		public void setData(int tx, int ty, bool allbg = false)
 		{
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype2_tiles + ((id & 0xFF) * 2), 2];
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype2TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(tx * ty, pos);
-			this.name = name;
+			name = Data.DefaultEntities.ListOfSet1RoomObjects[id & 0xFF].Name;
 			this.tx = tx;
 			this.ty = ty;
 			this.allBgs = allbg;

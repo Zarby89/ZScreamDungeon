@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Gui;
+using ZeldaFullEditor.Data.DungeonObjects;
+using System.Text.RegularExpressions;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -56,13 +58,16 @@ namespace ZeldaFullEditor
 			set => SetActiveScene(value);
 		}
 
-		public DungeonMain DungeonForm;
-		public DungeonMain MainForm;
-		public OverworldEditor OverworldForm;
-		public TextEditor TextForm;
+		public AddressSet Offsets { get; }
 
-		public Overworld OverworldManager;
-		public PaletteHandler PaletteManager;
+		public DungeonMain DungeonForm { get; }
+		public DungeonMain MainForm { get; }
+		public OverworldEditor OverworldForm { get; }
+		public TextEditor TextForm { get; }
+		public RoomObjectTileLister TileLister { get; }
+
+		public Overworld OverworldManager { get; }
+		public PaletteHandler PaletteManager { get; }
 
 		public TabSelection curtab;
 		public TabSelection CurrentTab
@@ -71,7 +76,7 @@ namespace ZeldaFullEditor
 			set => SelectTab(value);
 		}
 
-		public SceneUW UnderworldScene;
+		public SceneUW UnderworldScene { get; }
 		private DungeonEditMode uwmode;
 		public DungeonEditMode CurrentUWMode
 		{
@@ -93,7 +98,7 @@ namespace ZeldaFullEditor
 		private ROMFile rom;
 		public ROMFile ROM { get => rom; }
 
-		public ZScreamer(int dummy)
+		public ZScreamer(int _)
 		{
 
 		}
@@ -103,6 +108,10 @@ namespace ZeldaFullEditor
 		public ZScreamer()
 		{
 			rom = new ROMFile();
+
+			Offsets = new AddressSet(SNESFunctions.ROMVersion.US);
+
+			TileLister = new RoomObjectTileLister(this);
 
 			GFXGroups = new GfxGroups(this);
 			GFXManager = new GFX(this);

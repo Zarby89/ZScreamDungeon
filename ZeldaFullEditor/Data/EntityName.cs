@@ -11,16 +11,16 @@ namespace ZeldaFullEditor.Data
 	/// </summary>
 	public class EntityName
 	{
-		protected readonly int id; public int ID { get => id; }
-		protected readonly string name; public string Name { get => name; }
+		public int ID { get; }
+		public string Name { get; }
 
 		public EntityName(int id, string name)
 		{
-			this.id = id;
-			this.name = name;
+			ID = id;
+			Name = name;
 		}
 
-		public override string ToString() => string.Format("{0:2X} {1}", id, name);
+		public override string ToString() => string.Format("{0:2X} {1}", ID, Name);
 	}
 
 	public class SpriteName : EntityName
@@ -33,22 +33,27 @@ namespace ZeldaFullEditor.Data
 		public TileTypeName(int i, string n) : base(i, n) { }
 	}
 
+	public class SecretsName : EntityName
+	{
+		public SecretsName(int i, string n) : base(i, n) { }
+	}
+
 	public class RoomObjectName : EntityName
 	{
 		public RoomObjectName(int i, string n) : base(i, n) { }
-		public override string ToString() => string.Format("{0:3X} {1}", id, name);
+		public override string ToString() => string.Format("{0:3X} {1}", ID, Name);
 
 	}
 
 	public class RoomTagName : EntityName
 	{
 		public RoomTagName(int i, string n) : base(i, n) { }
-		public override string ToString() => name;
+		public override string ToString() => Name;
 	}
 
 	public class RoomEffectName : EntityName
 	{
 		public RoomEffectName(int i, string n) : base(i, n) { }
-		public override string ToString() => name;
+		public override string ToString() => Name;
 	}
 }

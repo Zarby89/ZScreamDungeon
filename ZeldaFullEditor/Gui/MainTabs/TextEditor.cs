@@ -489,7 +489,7 @@ namespace ZeldaFullEditor
 		{
 			int tt = 0;
 			byte b;
-			int pos = Constants.text_data;
+			int pos = ZS.Offsets.text_data;
 			List<byte> tempBytesRaw = new List<byte>();
 			List<byte> tempBytesParsed = new List<byte>();
 
@@ -540,7 +540,7 @@ namespace ZeldaFullEditor
 
 					if (t.Token == BANKToken)
 					{
-						pos = Constants.text_data2;
+						pos = ZS.Offsets.text_data2;
 					}
 
 					continue;
@@ -562,8 +562,8 @@ namespace ZeldaFullEditor
 				{
 					currentMessageRaw.Append($"[{DICTIONARYTOKEN}:{dict:X2}]");
 
-					int addr = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM[Constants.pointers_dictionaries + (dict * 2), 2]);
-					int addrend = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM[Constants.pointers_dictionaries + ((dict + 1) * 2), 2]);
+					int addr = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM[ZS.Offsets.pointers_dictionaries + (dict * 2), 2]);
+					int addrend = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM[ZS.Offsets.pointers_dictionaries + ((dict + 1) * 2), 2]);
 
 					for (int i = addr; i < addrend; i++)
 					{
@@ -594,8 +594,8 @@ namespace ZeldaFullEditor
 				List<byte> bytes = new List<byte>();
 				StringBuilder s = new StringBuilder();
 
-				int addr = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM[Constants.pointers_dictionaries + (i * 2), 2]);
-				int tempaddr = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM[Constants.pointers_dictionaries + ((i + 1) * 2), 2]);
+				int addr = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM[ZS.Offsets.pointers_dictionaries + (i * 2), 2]);
+				int tempaddr = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM[ZS.Offsets.pointers_dictionaries + ((i + 1) * 2), 2]);
 
 				while (addr < tempaddr)
 				{
@@ -730,7 +730,7 @@ namespace ZeldaFullEditor
 			panel1.Enabled = true;
 			for (int i = 0; i < 100; i++)
 			{
-				widthArray[i] = ZS.ROM[Constants.characters_width + i];
+				widthArray[i] = ZS.ROM[ZS.Offsets.characters_width + i];
 			}
 
 			ZS.GFXManager.fontgfxBitmap = new Bitmap(128, 128, 64, PixelFormat.Format4bppIndexed, ZS.GFXManager.fontgfx16Ptr);
@@ -762,7 +762,7 @@ namespace ZeldaFullEditor
 			SelectedTileID.Text = selectedTile.ToString("X2");
 			SelectedTileASCII.Text = ParseTextDataByte((byte) selectedTile);
 
-			ZS.GFXManager.CreateFontGfxData(ZS.ROM.DataStream);
+			ZS.GFXManager.CreateFontGfxData();
 		}
 
 
@@ -1045,7 +1045,7 @@ namespace ZeldaFullEditor
 					byte[] data = new byte[0x1000];
 					for (int i = 0; i < 0x1000; i++)
 					{
-						data[i] = ZS.ROM[Constants.gfx_font + i];
+						data[i] = ZS.ROM[ZS.Offsets.gfx_font + i];
 					}
 
 					using (var fs = new FileStream(sf.FileName, FileMode.OpenOrCreate, FileAccess.Write))
@@ -1073,15 +1073,15 @@ namespace ZeldaFullEditor
 
 					for (int i = 0; i < 0x1000; i++)
 					{
-						ZS.ROM[Constants.gfx_font + i] = data[i];
+						ZS.ROM[ZS.Offsets.gfx_font + i] = data[i];
 					}
 
 					for (int i = 0; i < 100; i++)
 					{
-						ZS.ROM[Constants.characters_width + i] = data[i + 0x1000];
+						ZS.ROM[ZS.Offsets.characters_width + i] = data[i + 0x1000];
 					}
 
-					ZS.GFXManager.CreateFontGfxData(ZS.ROM.DataStream);
+					ZS.GFXManager.CreateFontGfxData();
 					pictureBox2.Refresh();
 				}
 			}
@@ -1093,9 +1093,9 @@ namespace ZeldaFullEditor
 		{
 			byte[] backup = ZS.ROM.DataStream.DeepCopy();
 
-			ZS.ROM.Write(Constants.characters_width, widthArray);
+			ZS.ROM.Write(ZS.Offsets.characters_width, widthArray);
 
-			int pos = Constants.text_data;
+			int pos = ZS.Offsets.text_data;
 			bool expandedRegion = false;
 
 			foreach (MessageData m in listOfTexts)
@@ -1109,15 +1109,15 @@ namespace ZeldaFullEditor
 					if (hasarg)
 					{
 						// not much space, add the bank token
-						if (!expandedRegion && pos >= (Constants.text_data + SpaceForBank1Text - 1))
+						if (!expandedRegion && pos >= (ZS.Offsets.text_data + SpaceForBank1Text - 1))
 						{
 							ZS.ROM[pos] = BANKID;
-							pos = Constants.text_data2;
+							pos = ZS.Offsets.text_data2;
 							expandedRegion = true;
 							continue;
 						}
 						// oh no! way too much space
-						else if (expandedRegion && (pos >= (Constants.text_data2 + SpaceForBank2Text - 1)))
+						else if (expandedRegion && (pos >= (ZS.Offsets.text_data2 + SpaceForBank2Text - 1)))
 						{
 							int spaceused = 0;
 
@@ -1140,7 +1140,7 @@ namespace ZeldaFullEditor
 					}
 
 					// add the bank byte when we hit this spot
-					if (!expandedRegion && pos == Constants.text_data + SpaceForBank1Text)
+					if (!expandedRegion && pos == ZS.Offsets.text_data + SpaceForBank1Text)
 					{
 						if (b == BANKID) // catch user-inserted bank token
 						{
@@ -1148,7 +1148,7 @@ namespace ZeldaFullEditor
 						}
 
 						ZS.ROM[pos] = BANKID;
-						pos = Constants.text_data2;
+						pos = ZS.Offsets.text_data2;
 						expandedRegion = true;
 						continue;
 					}
@@ -1298,7 +1298,7 @@ namespace ZeldaFullEditor
 
 		private void button5_Click(object sender, EventArgs e)
 		{
-			ZS.ROM.Write(Constants.characters_width, widthArray);
+			ZS.ROM.Write(ZS.Offsets.characters_width, widthArray);
 
 			using (var fs = new FileStream(romname, FileMode.OpenOrCreate, FileAccess.Write))
 			{

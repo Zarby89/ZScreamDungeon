@@ -63,18 +63,18 @@ namespace ZeldaFullEditor
 			DrawMirror();
 			tiles.Clear();
 			int address = 0;
-			if (door_dir == 0) { address = Constants.door_gfx_up; }
-			if (door_dir == 1) { address = Constants.door_gfx_down; }
-			if (door_dir == 2) { address = Constants.door_gfx_left; }
-			if (door_dir == 3) { address = Constants.door_gfx_right; }
-			int pos = Constants.tile_address + ZS.ROM[address + (id >> 8), 2];
+			if (door_dir == 0) { address = ZS.Offsets.door_gfx_up; }
+			if (door_dir == 1) { address = ZS.Offsets.door_gfx_down; }
+			if (door_dir == 2) { address = ZS.Offsets.door_gfx_left; }
+			if (door_dir == 3) { address = ZS.Offsets.door_gfx_right; }
+			int pos = ZS.Offsets.tile_address + ZS.ROM[address + (id >> 8), 2];
 			addTiles(12, pos); // ??
 
 			int addresspos = 0;
-			if (door_dir == 0) { addresspos = Constants.door_pos_up; }
-			if (door_dir == 1) { addresspos = Constants.door_pos_down; }
-			if (door_dir == 2) { addresspos = Constants.door_pos_left; }
-			if (door_dir == 3) { addresspos = Constants.door_pos_right; }
+			if (door_dir == 0) { addresspos = ZS.Offsets.door_pos_up; }
+			if (door_dir == 1) { addresspos = ZS.Offsets.door_pos_down; }
+			if (door_dir == 2) { addresspos = ZS.Offsets.door_pos_left; }
+			if (door_dir == 3) { addresspos = ZS.Offsets.door_pos_right; }
 
 			ushort posxy = (ushort) (ZS.ROM[addresspos + door_pos, 2] / 2);
 			float n = (((float) posxy / 64) - (byte) (posxy / 64)) * 64;
@@ -125,7 +125,7 @@ namespace ZeldaFullEditor
 			if ((((id >> 8) & 0xFF) == 0x0E))
 			{
 				tiles.Clear();
-				addTiles(16, Constants.tile_address + 0x26F6);
+				addTiles(16, ZS.Offsets.tile_address + 0x26F6);
 				w = 4;
 				h = 4;
 				y -= 1;
@@ -135,7 +135,7 @@ namespace ZeldaFullEditor
 			if ((((id >> 8) & 0xFF) == 0x0A))
 			{
 				tiles.Clear();
-				addTiles(80, Constants.tile_address + 0x2656);
+				addTiles(80, ZS.Offsets.tile_address + 0x2656);
 				w = 10;
 				h = 8;
 				x -= 3;
@@ -174,7 +174,7 @@ namespace ZeldaFullEditor
 
 				// Only valid position are 0,1,2
 				tiles.Clear();
-				addTiles(6, Constants.tile_address + 0x2BE8);
+				addTiles(6, ZS.Offsets.tile_address + 0x2BE8);
 				addTiles(6, 0x1B5E + 0x2926);
 				nx = x;
 				ny = y;
@@ -244,7 +244,7 @@ namespace ZeldaFullEditor
 				}
 
 				tiles.Clear();
-				addTiles(1, Constants.tile_address + 0x293E);
+				addTiles(1, ZS.Offsets.tile_address + 0x293E);
 				tid = 0;
 
 				// Middle ground
@@ -262,7 +262,7 @@ namespace ZeldaFullEditor
 			if ((((id >> 8) & 0xFF) == 0x32))
 			{
 				tiles.Clear();
-				addTiles(16, Constants.tile_address + 0x078A);
+				addTiles(16, ZS.Offsets.tile_address + 0x078A);
 				nx = x;
 				ny = y;
 				ox = x;
@@ -306,17 +306,17 @@ namespace ZeldaFullEditor
 
 			tiles.Clear();
 			int address = 0;
-			if (door_dir == 0) { address = Constants.door_gfx_down; }
+			if (door_dir == 0) { address = ZS.Offsets.door_gfx_down; }
 			else if (door_dir == 1) { return; }
-			else if (door_dir == 2) { address = Constants.door_gfx_right; }
+			else if (door_dir == 2) { address = ZS.Offsets.door_gfx_right; }
 			else if (door_dir == 3) { return; }
-			int pos = Constants.tile_address + ZS.ROM[address + ((id >> 8) & 0xFF), 2];
+			int pos = ZS.Offsets.tile_address + ZS.ROM[address + ((id >> 8) & 0xFF), 2];
 			addTiles(12, pos);//??
 
 			int addresspos = 0;
-			if (door_dir == 0) { addresspos = Constants.door_pos_down; }
+			if (door_dir == 0) { addresspos = ZS.Offsets.door_pos_down; }
 			else if (door_dir == 1) { return; }
-			else if (door_dir == 2) { addresspos = Constants.door_pos_right; }
+			else if (door_dir == 2) { addresspos = ZS.Offsets.door_pos_right; }
 			else if (door_dir == 3) { return; }
 
 			byte tempPos = (byte) (door_pos - 12);
@@ -353,7 +353,7 @@ namespace ZeldaFullEditor
 			if ((((id >> 8) & 0xFF) == 0x0E))
 			{
 				tiles.Clear();
-				addTiles(16, Constants.tile_address + 0x26F6);
+				addTiles(16, ZS.Offsets.tile_address + 0x26F6);
 				w = 4;
 				h = 4;
 				y--;
@@ -363,7 +363,7 @@ namespace ZeldaFullEditor
 			if ((((id >> 8) & 0xFF) == 0x0A))
 			{
 				tiles.Clear();
-				addTiles(80, Constants.tile_address + 0x2656);
+				addTiles(80, ZS.Offsets.tile_address + 0x2656);
 				w = 10;
 				h = 8;
 				x -= 3;
@@ -404,7 +404,7 @@ namespace ZeldaFullEditor
 
 				// Only valid position are 0,1,2
 				tiles.Clear();
-				addTiles(6, Constants.tile_address + 0x2BE8);
+				addTiles(6, ZS.Offsets.tile_address + 0x2BE8);
 				addTiles(6, 0x1B5E + 0x2926);
 				nx = x;
 				ny = y;
@@ -473,7 +473,7 @@ namespace ZeldaFullEditor
 				}
 
 				tiles.Clear();
-				addTiles(1, Constants.tile_address + 0x293E);
+				addTiles(1, ZS.Offsets.tile_address + 0x293E);
 				tid = 0;
 
 				// Middle ground
@@ -491,7 +491,7 @@ namespace ZeldaFullEditor
 			if ((((id >> 8) & 0xFF) == 0x32))
 			{
 				tiles.Clear();
-				addTiles(16, Constants.tile_address + 0x078A);
+				addTiles(16, ZS.Offsets.tile_address + 0x078A);
 				nx = x;
 				ny = y;
 				ox = x;

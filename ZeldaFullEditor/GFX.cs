@@ -83,15 +83,15 @@ namespace ZeldaFullEditor
 		public IntPtr[] previewChestsPtr;
 		public Bitmap[] previewChestsBitmap;
 
-		public ushort[] tilesBg1Buffer = new ushort[4096];
+		public ushort[] tilesBg1Buffer = new ushort[Constants.TilesPerUnderworldRoom];
 		public IntPtr roomBg1Ptr = Marshal.AllocHGlobal(512 * 512);
 		public Bitmap roomBg1Bitmap;
 
-		public ushort[] tilesBg2Buffer = new ushort[4096];
+		public ushort[] tilesBg2Buffer = new ushort[Constants.TilesPerUnderworldRoom];
 		public IntPtr roomBg2Ptr = Marshal.AllocHGlobal(512 * 512);
 		public Bitmap roomBg2Bitmap;
 
-		public ushort[] tilesObjectsBuffer = new ushort[4096];
+		public ushort[] tilesObjectsBuffer = new ushort[Constants.TilesPerUnderworldRoom];
 		public IntPtr roomObjectsPtr = Marshal.AllocHGlobal(512 * 512);
 		public Bitmap roomObjectsBitmap;
 
@@ -108,7 +108,7 @@ namespace ZeldaFullEditor
 		public Bitmap favStar1;
 		public Bitmap favStar2;
 
-		public Color[] palettes = new Color[256];
+		public Color[] palettes = new Color[Constants.TotalPaletteSize];
 
 		// Test code
 		public string[] objectsName = new string[0xFFF];
@@ -136,6 +136,33 @@ namespace ZeldaFullEditor
 		public unsafe void DrawBG2()
 		{
 			DrawBackground(2);
+		}
+
+
+		public static unsafe void DrawTileToBuffer(Tile tile, byte* canvas, byte* tiledata, int indexoffset = 0)
+		{
+			int tx = (tile.ID / 16 * 512) + ((tile.ID & 0xF) * 4);
+			byte palnibble = (byte) (tile.Palette << 4);
+			byte r = (byte) tile.HFlipShort;
+
+			for (int yl = 0; yl < 512; yl += 64)
+			{
+				// 448 = 64 * 7
+				// slightly faster than 64 * (7 - yl) where yl is +1 instead of +64 each iteration
+				// everything with index is additive, so we can add it in here
+				int my = indexoffset + (tile.VFlip ? 448 - yl : yl);
+
+				for (int xl = 0; xl < 4; xl++)
+				{
+					int mx = 2 * (tile.HFlip ? 3 - xl : xl);
+
+					byte pixel = tiledata[tx + yl + xl];
+
+					int index = mx + my;
+					canvas[index + r ^ 1] = (byte) ((pixel & 0x0F) | palnibble);
+					canvas[index + r] = (byte) ((pixel >> 4) | palnibble);
+				}
+			}
 		}
 
 		private unsafe void DrawBackground(int bg)
@@ -166,35 +193,7 @@ namespace ZeldaFullEditor
 				{
 					if (buffer[xx + yy] != 0xFFFF) // Prevent draw if tile == 0xFFFF since it 0 indexed
 					{
-						TileInfo t = Tile.GetTheGFXInfo(buffer[xx + yy]);
-						for (var yl = 0; yl < 8; yl++)
-						{
-							for (var xl = 0; xl < 4; xl++)
-							{
-								// TODO performance benchmark for which is faster
-								//int mx = xl * (1 - t.HS) + (3 - xl) * (t.HS);
-								//int my = yl * (1 - t.VS) + (7 - yl) * (t.VS);
-								int mx = t.H ? 3 - xl : xl;
-								int my = t.V ? 7 - yl : yl;
-
-								// Formula information to get tile index position in the array
-								//((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
-								/*
-                                int tx = ((t.id / 16) * 512) + ((t.id - ((t.id / 16) * 16)) * 4);
-                                var pixel = alltilesData[tx + (yl * 64) + xl];
-                                */
-
-								int ty = (t.id / 16) * 512;
-								int tx = (t.id % 16) * 4;
-								var pixel = alltilesData[(tx + ty) + (yl * 64) + xl];
-
-								//nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
-
-								int index = (xx * 8) + (yy * 64) + ((mx * 2) + (my * 512));
-								ptr[index + t.HS ^ 1] = (byte) ((pixel & 0x0F) | t.palette << 4);
-								ptr[index + t.HS] = (byte) ((pixel >> 4) | t.palette << 4);
-							}
-						}
+						GFX.DrawTileToBuffer(new Tile(buffer[xx + yy]), ptr, alltilesData);
 					}
 				}
 			}
@@ -257,12 +256,12 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public void CreateFontGfxData(byte[] romData)
+		public void CreateFontGfxData()
 		{
 			byte[] data = new byte[0x2000];
 			for (int i = 0; i < 0x2000; i++)
 			{
-				data[i] = romData[Constants.gfx_font + i];
+				data[i] = ZS.ROM[ZS.Offsets.gfx_font + i];
 			}
 
 			byte[] newData = new byte[0x4000]; // NEED TO GET THE APPROPRIATE SIZE FOR THAT
@@ -312,7 +311,7 @@ namespace ZeldaFullEditor
 		}
 
 		// TODO magic numbers
-		public byte[] CreateAllGfxDataRaw(byte[] romData)
+		public byte[] CreateAllGfxDataRaw()
 		{
 			// 0-112 -> compressed 3bpp bgr -> (decompressed each) 0x600 bytes
 			// 113-114 -> compressed 2bpp -> (decompressed each) 0x800 bytes
@@ -337,16 +336,16 @@ namespace ZeldaFullEditor
 				if (i >= 115 && i <= 126)
 				{
 					data = new byte[Constants.Uncompressed3BPPSize];
-					int startAddress = GetPCGfxAddress(romData, (byte) i);
+					int startAddress = GetPCGfxAddress((byte) i);
 					for (int j = 0; j < Constants.Uncompressed3BPPSize; j++)
 					{
-						data[j] = romData[j + startAddress];
+						data[j] = ZS.ROM[j + startAddress];
 					}
 				}
 				else
 				{
-					data = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(romData,
-						GetPCGfxAddress(romData, (byte) i),
+					data = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(ZS.ROM.DataStream,
+						GetPCGfxAddress((byte) i),
 						Constants.UncompressedSheetSize,
 						ref compressedSize);
 				}
@@ -381,9 +380,9 @@ namespace ZeldaFullEditor
 			}
 		}
 		// TODO this can probably be heavily optimized
-		public void CreateAllGfxData(byte[] romData)
+		public void CreateAllGfxData()
 		{
-			byte[] data = CreateAllGfxDataRaw(romData);
+			byte[] data = CreateAllGfxDataRaw();
 			byte[] newData = new byte[0x6F800]; // NEED TO GET THE APPROPRIATE SIZE FOR THAT
 			byte[] mask = new byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
 			int sheetPosition = 0;
@@ -467,15 +466,15 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public int GetPCGfxAddress(byte[] romData, byte id)
+		public int GetPCGfxAddress(byte id)
 		{
-			int gfxPointer1 = ((romData[Constants.gfx_1_pointer + 1] << 8) | romData[Constants.gfx_1_pointer]).SNEStoPC();
-			int gfxPointer2 = ((romData[Constants.gfx_2_pointer + 1] << 8) | romData[Constants.gfx_2_pointer]).SNEStoPC();
-			int gfxPointer3 = ((romData[Constants.gfx_3_pointer + 1] << 8) | romData[Constants.gfx_3_pointer]).SNEStoPC();
+			int gfxPointer1 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_1_pointer, 2]);
+			int gfxPointer2 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_2_pointer, 2]);
+			int gfxPointer3 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_3_pointer, 2]);
 
-			byte gfxGamePointer1 = romData[gfxPointer1 + id];
-			byte gfxGamePointer2 = romData[gfxPointer2 + id];
-			byte gfxGamePointer3 = romData[gfxPointer3 + id];
+			byte gfxGamePointer1 = ZS.ROM[gfxPointer1 + id];
+			byte gfxGamePointer2 = ZS.ROM[gfxPointer2 + id];
+			byte gfxGamePointer3 = ZS.ROM[gfxPointer3 + id];
 
 			return Utils.AddressFromBytes(gfxGamePointer1, gfxGamePointer2, gfxGamePointer3).SNEStoPC();
 		}
@@ -527,7 +526,7 @@ namespace ZeldaFullEditor
 					}
 
 					// Dungeon Palette
-					//palettes[x, y] = getColor((short)((ROM.DATA[Constants.dungeons_palettes + palette_pos + 1 + i] << 8) + ROM.DATA[Constants.dungeons_palettes + palette_pos + i]));
+					//palettes[x, y] = getColor((short)((ROM.DATA[ZS.Offsets.dungeons_palettes + palette_pos + 1 + i] << 8) + ROM.DATA[ZS.Offsets.dungeons_palettes + palette_pos + i]));
 					palettes[x, y] = ZS.PaletteManager.UnderworldMain[pId][i];
 					if (x == 8)
 					{
@@ -545,9 +544,9 @@ namespace ZeldaFullEditor
 		public Color[,] LoadSpritesPalette(byte id)
 		{
 			Color[,] palettes = new Color[16, 8];
-			byte sprite1_palette_ptr = ZS.ROM[Constants.dungeons_palettes_groups + (id * 4) + 1]; // ID of the 1st group of 4
-			byte sprite2_palette_ptr = (byte) (ZS.ROM[Constants.dungeons_palettes_groups + (id * 4) + 2] * 2); // ID of the 1st group of 4
-			byte sprite3_palette_ptr = (byte) (ZS.ROM[Constants.dungeons_palettes_groups + (id * 4) + 3] * 2); // ID of the 1st group of 4
+			byte sprite1_palette_ptr = ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (id * 4) + 1]; // ID of the 1st group of 4
+			byte sprite2_palette_ptr = (byte) (ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (id * 4) + 2] * 2); // ID of the 1st group of 4
+			byte sprite3_palette_ptr = (byte) (ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (id * 4) + 3] * 2); // ID of the 1st group of 4
 
 			ushort palette_pos1 = ZS.ROM[0xDEBC6 + sprite1_palette_ptr]; // /14
 			ushort palette_pos2 = ZS.ROM[0xDEBD6 + sprite2_palette_ptr, 2]; // /14

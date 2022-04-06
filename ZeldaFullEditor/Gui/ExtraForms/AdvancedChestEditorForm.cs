@@ -28,15 +28,15 @@ namespace ZeldaFullEditor.Gui
 
 				chestsdata[i] = new ChestAdvancedData
 				(
-					ZS.ROM[Constants.chests_backupitems + i],
-					ZS.ROM[Constants.chests_yoffset + i],
-					ZS.ROM[Constants.chests_xoffset + i],
-					ZS.ROM[Constants.chests_itemsgfx + i],
-					ZS.ROM[Constants.chests_itemswide + i],
-					ZS.ROM[Constants.chests_itemsproperties + i],
-					ZS.ROM[Constants.chests_sramaddress + (i * 2), 2],
-					ZS.ROM[Constants.chests_sramvalue + i],
-					ZS.ROM[Constants.chests_msgid + (i * 2), 2]
+					ZS.ROM[ZS.Offsets.chests_backupitems + i],
+					ZS.ROM[ZS.Offsets.chests_yoffset + i],
+					ZS.ROM[ZS.Offsets.chests_xoffset + i],
+					ZS.ROM[ZS.Offsets.chests_itemsgfx + i],
+					ZS.ROM[ZS.Offsets.chests_itemswide + i],
+					ZS.ROM[ZS.Offsets.chests_itemsproperties + i],
+					ZS.ROM[ZS.Offsets.chests_sramaddress + (i * 2), 2],
+					ZS.ROM[ZS.Offsets.chests_sramvalue + i],
+					ZS.ROM[ZS.Offsets.chests_msgid + (i * 2), 2]
 				);
 			}
 
@@ -110,15 +110,15 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < 76; i++)
 			{
-				ZS.ROM[Constants.chests_backupitems + i] = chestsdata[i].backupitems;
-				ZS.ROM[Constants.chests_yoffset + i] = chestsdata[i].yoffset;
-				ZS.ROM[Constants.chests_xoffset + i] = chestsdata[i].xoffset;
-				ZS.ROM[Constants.chests_itemsgfx + i] = chestsdata[i].itemsgfx;
-				ZS.ROM[Constants.chests_itemswide + i] = chestsdata[i].itemswide;
-				ZS.ROM[Constants.chests_itemsproperties + i] = chestsdata[i].itemsproperties;
-				ZS.ROM[Constants.chests_sramaddress + (i * 2), 2] = chestsdata[i].sramaddress;
-				ZS.ROM[Constants.chests_sramvalue + i] = chestsdata[i].sramvalue;
-				ZS.ROM[Constants.chests_msgid + (i * 2), 2] = chestsdata[i].msgid;
+				ZS.ROM[ZS.Offsets.chests_backupitems + i] = chestsdata[i].backupitems;
+				ZS.ROM[ZS.Offsets.chests_yoffset + i] = chestsdata[i].yoffset;
+				ZS.ROM[ZS.Offsets.chests_xoffset + i] = chestsdata[i].xoffset;
+				ZS.ROM[ZS.Offsets.chests_itemsgfx + i] = chestsdata[i].itemsgfx;
+				ZS.ROM[ZS.Offsets.chests_itemswide + i] = chestsdata[i].itemswide;
+				ZS.ROM[ZS.Offsets.chests_itemsproperties + i] = chestsdata[i].itemsproperties;
+				ZS.ROM[ZS.Offsets.chests_sramaddress + (i * 2), 2] = chestsdata[i].sramaddress;
+				ZS.ROM[ZS.Offsets.chests_sramvalue + i] = chestsdata[i].sramvalue;
+				ZS.ROM[ZS.Offsets.chests_msgid + (i * 2), 2] = chestsdata[i].msgid;
 			}
 
 			this.Close();

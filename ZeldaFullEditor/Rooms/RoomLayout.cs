@@ -15,7 +15,7 @@ namespace ZeldaFullEditor.Rooms
 
 		public void loadLayout(int layout)
 		{
-			int pointer = SNESFunctions.SNEStoPC(ZS.ROM[Constants.room_object_layout_pointer, 3]);
+			int pointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.room_object_layout_pointer, 3]);
 			int layout_address = ZS.ROM[pointer + (layout * 3), 3];
 
 			int layout_location = layout_address.SNEStoPC();

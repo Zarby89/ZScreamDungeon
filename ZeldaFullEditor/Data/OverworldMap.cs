@@ -40,13 +40,13 @@ namespace ZeldaFullEditor
 			this.parent = index;
 			gfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, gfxPtr);
 
-			messageID = ZS.ROM[Constants.overworldMessages + (parent * 2), 2];
+			messageID = ZS.ROM[ZS.Offsets.overworldMessages + (parent * 2), 2];
 
 			if (index != 0x80)
 			{
 				if (index <= 128)
 				{
-					largeMap = ZS.ROM[Constants.overworldMapSize + (index & 0x3F)] != 0;
+					largeMap = ZS.ROM[ZS.Offsets.overworldMapSize + (index & 0x3F)] != 0;
 				}
 				else
 				{
@@ -56,30 +56,30 @@ namespace ZeldaFullEditor
 
 			if (index < 64)
 			{
-				sprgfx[0] = ZS.ROM[Constants.overworldSpriteset + parent];
-				sprgfx[1] = ZS.ROM[Constants.overworldSpriteset + parent + 64];
-				sprgfx[2] = ZS.ROM[Constants.overworldSpriteset + parent + 128];
-				gfx = ZS.ROM[Constants.mapGfx + parent];
-				palette = ZS.ROM[Constants.overworldMapPalette + parent];
-				sprpalette[0] = ZS.ROM[Constants.overworldSpritePalette + parent];
-				sprpalette[1] = ZS.ROM[Constants.overworldSpritePalette + parent + 64];
-				sprpalette[2] = ZS.ROM[Constants.overworldSpritePalette + parent + 128];
-				musics[0] = ZS.ROM[Constants.overworldMusicBegining + parent];
-				musics[1] = ZS.ROM[Constants.overworldMusicZelda + parent];
-				musics[2] = ZS.ROM[Constants.overworldMusicMasterSword + parent];
-				musics[3] = ZS.ROM[Constants.overworldMusicAgahim + parent];
+				sprgfx[0] = ZS.ROM[ZS.Offsets.overworldSpriteset + parent];
+				sprgfx[1] = ZS.ROM[ZS.Offsets.overworldSpriteset + parent + 64];
+				sprgfx[2] = ZS.ROM[ZS.Offsets.overworldSpriteset + parent + 128];
+				gfx = ZS.ROM[ZS.Offsets.mapGfx + parent];
+				palette = ZS.ROM[ZS.Offsets.overworldMapPalette + parent];
+				sprpalette[0] = ZS.ROM[ZS.Offsets.overworldSpritePalette + parent];
+				sprpalette[1] = ZS.ROM[ZS.Offsets.overworldSpritePalette + parent + 64];
+				sprpalette[2] = ZS.ROM[ZS.Offsets.overworldSpritePalette + parent + 128];
+				musics[0] = ZS.ROM[ZS.Offsets.overworldMusicBegining + parent];
+				musics[1] = ZS.ROM[ZS.Offsets.overworldMusicZelda + parent];
+				musics[2] = ZS.ROM[ZS.Offsets.overworldMusicMasterSword + parent];
+				musics[3] = ZS.ROM[ZS.Offsets.overworldMusicAgahim + parent];
 			}
 			else if (index < 128)
 			{
-				sprgfx[0] = ZS.ROM[Constants.overworldSpriteset + parent + 128];
-				sprgfx[1] = ZS.ROM[Constants.overworldSpriteset + parent + 128];
-				sprgfx[2] = ZS.ROM[Constants.overworldSpriteset + parent + 128];
-				gfx = ZS.ROM[Constants.mapGfx + parent];
-				palette = ZS.ROM[Constants.overworldMapPalette + parent];
-				sprpalette[0] = ZS.ROM[Constants.overworldSpritePalette + parent + 128];
-				sprpalette[1] = ZS.ROM[Constants.overworldSpritePalette + parent + 128];
-				sprpalette[2] = ZS.ROM[Constants.overworldSpritePalette + parent + 128];
-				musics[0] = ZS.ROM[Constants.overworldMusicDW + parent - 64];
+				sprgfx[0] = ZS.ROM[ZS.Offsets.overworldSpriteset + parent + 128];
+				sprgfx[1] = ZS.ROM[ZS.Offsets.overworldSpriteset + parent + 128];
+				sprgfx[2] = ZS.ROM[ZS.Offsets.overworldSpriteset + parent + 128];
+				gfx = ZS.ROM[ZS.Offsets.mapGfx + parent];
+				palette = ZS.ROM[ZS.Offsets.overworldMapPalette + parent];
+				sprpalette[0] = ZS.ROM[ZS.Offsets.overworldSpritePalette + parent + 128];
+				sprpalette[1] = ZS.ROM[ZS.Offsets.overworldSpritePalette + parent + 128];
+				sprpalette[2] = ZS.ROM[ZS.Offsets.overworldSpritePalette + parent + 128];
+				musics[0] = ZS.ROM[ZS.Offsets.overworldMusicDW + parent - 64];
 			}
 			else
 			{
@@ -125,15 +125,15 @@ namespace ZeldaFullEditor
 					parent = 129;
 				}
 
-				messageID = ZS.ROM[Constants.overworldMessages + parent];
-				sprgfx[0] = ZS.ROM[Constants.overworldSpriteset + parent + 128];
-				sprgfx[1] = ZS.ROM[Constants.overworldSpriteset + parent + 128];
-				sprgfx[2] = ZS.ROM[Constants.overworldSpriteset + parent + 128];
-				sprpalette[0] = ZS.ROM[Constants.overworldSpritePalette + parent + 128];
-				sprpalette[1] = ZS.ROM[Constants.overworldSpritePalette + parent + 128];
-				sprpalette[2] = ZS.ROM[Constants.overworldSpritePalette + parent + 128];
+				messageID = ZS.ROM[ZS.Offsets.overworldMessages + parent];
+				sprgfx[0] = ZS.ROM[ZS.Offsets.overworldSpriteset + parent + 128];
+				sprgfx[1] = ZS.ROM[ZS.Offsets.overworldSpriteset + parent + 128];
+				sprgfx[2] = ZS.ROM[ZS.Offsets.overworldSpriteset + parent + 128];
+				sprpalette[0] = ZS.ROM[ZS.Offsets.overworldSpritePalette + parent + 128];
+				sprpalette[1] = ZS.ROM[ZS.Offsets.overworldSpritePalette + parent + 128];
+				sprpalette[2] = ZS.ROM[ZS.Offsets.overworldSpritePalette + parent + 128];
 
-				palette = ZS.ROM[Constants.overworldSpecialPALGroup + parent - 128];
+				palette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + parent - 128];
 
 				if (index == 0x88)
 				{
@@ -143,13 +143,13 @@ namespace ZeldaFullEditor
 				}
 				else if ((index >= 0x80 && index <= 0x8A) || index == 0x94)
 				{
-					gfx = ZS.ROM[Constants.overworldSpecialGFXGroup + (parent - 128)];
-					palette = ZS.ROM[Constants.overworldSpecialPALGroup + 1];
+					gfx = ZS.ROM[ZS.Offsets.overworldSpecialGFXGroup + (parent - 128)];
+					palette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + 1];
 				}
 				else // Pyramid bg use 0x5B map
 				{
-					gfx = ZS.ROM[Constants.mapGfx + parent];
-					palette = ZS.ROM[Constants.overworldMapPalette + parent];
+					gfx = ZS.ROM[ZS.Offsets.mapGfx + parent];
+					palette = ZS.ROM[ZS.Offsets.overworldMapPalette + parent];
 				}
 			}
 		}
@@ -162,9 +162,9 @@ namespace ZeldaFullEditor
 
 				if (parent != index)
 				{
-					//sprgfx[0] = ZS.ROM[Constants.overworldSpriteset + parent];
-					//sprgfx[1] = ZS.ROM[Constants.overworldSpriteset + parent + 64];
-					//sprgfx[2] = ZS.ROM[Constants.overworldSpriteset + parent + 128];
+					//sprgfx[0] = ZS.ROM[ZS.Offsets.overworldSpriteset + parent];
+					//sprgfx[1] = ZS.ROM[ZS.Offsets.overworldSpriteset + parent + 64];
+					//sprgfx[2] = ZS.ROM[ZS.Offsets.overworldSpriteset + parent + 128];
 
 					if (!firstLoad)
 					{
@@ -176,13 +176,13 @@ namespace ZeldaFullEditor
 						}
 						else if (index >= 0x80 && index <= 0x8A)
 						{
-							gfx = ZS.ROM[Constants.overworldSpecialGFXGroup + (parent - 128)];
-							palette = ZS.ROM[Constants.overworldSpecialPALGroup + 1];
+							gfx = ZS.ROM[ZS.Offsets.overworldSpecialGFXGroup + (parent - 128)];
+							palette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + 1];
 						}
 						else
 						{
-							gfx = ZS.ROM[Constants.mapGfx + parent];
-							palette = ZS.ROM[Constants.overworldMapPalette + parent];
+							gfx = ZS.ROM[ZS.Offsets.mapGfx + parent];
+							palette = ZS.ROM[ZS.Offsets.overworldMapPalette + parent];
 						}
 
 						firstLoad = true;
@@ -261,9 +261,9 @@ namespace ZeldaFullEditor
 
 			var tiles = ZS.OverworldManager.Tile16List[tileID];
 
-			for (var tile = 0; tile < 4; tile++)
+			for (int tile = 0; tile < 4; tile++)
 			{
-				TileInfo info = tiles.tilesinfos[tile];
+				Tile info = tiles.tilesinfos[tile];
 				int offset = offsets[tile];
 
 				for (var y = 0; y < 8; y++)
@@ -296,7 +296,7 @@ namespace ZeldaFullEditor
 
 				for (int tile = 0; tile < 4; tile++)
 				{
-					TileInfo info = ZS.OverworldManager.Tile16List[i].tilesinfos[tile];
+					Tile info = ZS.OverworldManager.Tile16List[i].tilesinfos[tile];
 					int offset = TileOffsetsIDK[tile];
 
 					for (int y = 0; y < 8; y++)
@@ -325,18 +325,18 @@ namespace ZeldaFullEditor
 			LoadPalette();
 		}
 
-		private unsafe void CopyTile(int x, int y, int xx, int yy, int offset, TileInfo tile, byte* gfx16Pointer, byte* gfx8Pointer) // map,current
+		private unsafe void CopyTile(int x, int y, int xx, int yy, int offset, Tile tile, byte* gfx16Pointer, byte* gfx8Pointer) // map,current
 		{
-			int mx = tile.H ? 3 - x : x;
-			int my = tile.V ? 7 - y : y;
-			byte r = (byte) tile.HS;
+			int mx = tile.HFlip ? 3 - x : x;
+			int my = tile.VFlip ? 7 - y : y;
+			byte r = (byte) tile.HFlipShort;
 
-			int tx = ((tile.id & ~0xF) << 5) | ((tile.id & 0xF) << 2);
+			int tx = ((tile.ID & ~0xF) << 5) | ((tile.ID & 0xF) << 2);
 			var index = xx + yy + offset + (mx << 1) + (my << 7);
 			var pixel = gfx8Pointer[tx + (y << 6) + x];
 
-			gfx16Pointer[index + (r ^ 1)] = (byte) ((pixel & 0x0F) | (tile.palette << 4));
-			gfx16Pointer[index + r] = (byte) ((pixel >> 4) | (tile.palette << 4));
+			gfx16Pointer[index + (r ^ 1)] = (byte) ((pixel & 0x0F) | (tile.Palette << 4));
+			gfx16Pointer[index + r] = (byte) ((pixel >> 4) | (tile.Palette << 4));
 		}
 
 		public void LoadPalette()
@@ -345,8 +345,8 @@ namespace ZeldaFullEditor
 			int previousSprPalId = 0;
 			if (index > 0)
 			{
-				previousPalId = ZS.ROM[Constants.overworldMapPalette + parent - 1];
-				previousSprPalId = ZS.ROM[Constants.overworldSpritePalette + parent - 1];
+				previousPalId = ZS.ROM[ZS.Offsets.overworldMapPalette + parent - 1];
+				previousSprPalId = ZS.ROM[ZS.Offsets.overworldSpritePalette + parent - 1];
 			}
 
 			if (palette >= 0xA3)
@@ -356,19 +356,19 @@ namespace ZeldaFullEditor
 
 			byte pal0 = 0;
 
-			byte pal1 = ZS.ROM[Constants.overworldMapPaletteGroup + (palette * 4)]; // aux1
-			byte pal2 = ZS.ROM[Constants.overworldMapPaletteGroup + (palette * 4) + 1]; // aux2
-			byte pal3 = ZS.ROM[Constants.overworldMapPaletteGroup + (palette * 4) + 2]; // animated
+			byte pal1 = ZS.ROM[ZS.Offsets.overworldMapPaletteGroup + (palette * 4)]; // aux1
+			byte pal2 = ZS.ROM[ZS.Offsets.overworldMapPaletteGroup + (palette * 4) + 1]; // aux2
+			byte pal3 = ZS.ROM[ZS.Offsets.overworldMapPaletteGroup + (palette * 4) + 2]; // animated
 
-			byte pal4 = ZS.ROM[Constants.overworldSpritePaletteGroup + (sprpalette[ZS.OverworldManager.gameState] * 2)]; // spr3
-			byte pal5 = ZS.ROM[Constants.overworldSpritePaletteGroup + (sprpalette[ZS.OverworldManager.gameState] * 2) + 1]; // spr4
+			byte pal4 = ZS.ROM[ZS.Offsets.overworldSpritePaletteGroup + (sprpalette[ZS.OverworldManager.gameState] * 2)]; // spr3
+			byte pal5 = ZS.ROM[ZS.Offsets.overworldSpritePaletteGroup + (sprpalette[ZS.OverworldManager.gameState] * 2) + 1]; // spr4
 
 			Color[] aux1, aux2, main, animated, hud, spr, spr2;
 			Color bgr = ZS.PaletteManager.OverworldGrass[0];
 
 			if (pal1 == 255)
 			{
-				pal1 = ZS.ROM[Constants.overworldMapPaletteGroup + (previousPalId * 4)];
+				pal1 = ZS.ROM[ZS.Offsets.overworldMapPaletteGroup + (previousPalId * 4)];
 			}
 			if (pal1 != 255)
 			{
@@ -386,7 +386,7 @@ namespace ZeldaFullEditor
 
 			if (pal2 == 255)
 			{
-				pal2 = ZS.ROM[Constants.overworldMapPaletteGroup + (previousPalId * 4) + 1];
+				pal2 = ZS.ROM[ZS.Offsets.overworldMapPaletteGroup + (previousPalId * 4) + 1];
 			}
 			if (pal2 != 255)
 			{
@@ -404,7 +404,7 @@ namespace ZeldaFullEditor
 
 			if (pal3 == 255)
 			{
-				pal3 = ZS.ROM[Constants.overworldMapPaletteGroup + (previousPalId * 4) + 2];
+				pal3 = ZS.ROM[ZS.Offsets.overworldMapPaletteGroup + (previousPalId * 4) + 2];
 			}
 
 			if (parent < 0x40)
@@ -472,12 +472,12 @@ namespace ZeldaFullEditor
 			{
 				pal3 = 13;
 			}
-			animated = ZS.PaletteManager.OverworldAnimated[(pal3)];
+			animated = ZS.PaletteManager.OverworldAnimated[pal3];
 
 			hud = ZS.PaletteManager.HUD[0];
 			if (pal4 == 255)
 			{
-				pal4 = ZS.ROM[Constants.overworldSpritePaletteGroup + (previousSprPalId * 2)]; // spr3
+				pal4 = ZS.ROM[ZS.Offsets.overworldSpritePaletteGroup + (previousSprPalId * 2)]; // spr3
 
 			}
 
@@ -493,7 +493,7 @@ namespace ZeldaFullEditor
 
 			if (pal5 == 255)
 			{
-				pal5 = ZS.ROM[Constants.overworldSpritePaletteGroup + (previousSprPalId * 2) + 1]; // spr3
+				pal5 = ZS.ROM[ZS.Offsets.overworldSpritePaletteGroup + (previousSprPalId * 2) + 1]; // spr3
 			}
 
 			if (pal5 == 255)
@@ -680,30 +680,30 @@ namespace ZeldaFullEditor
 
 			for (int i = 0; i < 4; i++)
 			{
-				staticgfx[12 + i] = (byte) (ZS.ROM[Constants.sprite_blockset_pointer + (sprgfx[ZS.OverworldManager.gameState] * 4) + i] + 115);
+				staticgfx[12 + i] = (byte) (ZS.ROM[ZS.Offsets.sprite_blockset_pointer + (sprgfx[ZS.OverworldManager.gameState] * 4) + i] + 115);
 			}
 
 			// Main Blocksets
 			for (int i = 0; i < 8; i++)
 			{
-				staticgfx[i] = ZS.ROM[Constants.overworldgfxGroups2 + (indexWorld * 8) + i];
+				staticgfx[i] = ZS.ROM[ZS.Offsets.overworldgfxGroups2 + (indexWorld * 8) + i];
 			}
 
-			if (ZS.ROM[Constants.overworldgfxGroups + (gfx * 4)] != 0)
+			if (ZS.ROM[ZS.Offsets.overworldgfxGroups + (gfx * 4)] != 0)
 			{
-				staticgfx[3] = ZS.ROM[Constants.overworldgfxGroups + (gfx * 4)];
+				staticgfx[3] = ZS.ROM[ZS.Offsets.overworldgfxGroups + (gfx * 4)];
 			}
-			if (ZS.ROM[Constants.overworldgfxGroups + (gfx * 4) + 1] != 0)
+			if (ZS.ROM[ZS.Offsets.overworldgfxGroups + (gfx * 4) + 1] != 0)
 			{
-				staticgfx[4] = ZS.ROM[Constants.overworldgfxGroups + (gfx * 4) + 1];
+				staticgfx[4] = ZS.ROM[ZS.Offsets.overworldgfxGroups + (gfx * 4) + 1];
 			}
-			if (ZS.ROM[Constants.overworldgfxGroups + (gfx * 4) + 2] != 0)
+			if (ZS.ROM[ZS.Offsets.overworldgfxGroups + (gfx * 4) + 2] != 0)
 			{
-				staticgfx[5] = ZS.ROM[Constants.overworldgfxGroups + (gfx * 4) + 2];
+				staticgfx[5] = ZS.ROM[ZS.Offsets.overworldgfxGroups + (gfx * 4) + 2];
 			}
-			if (ZS.ROM[Constants.overworldgfxGroups + (gfx * 4) + 3] != 0)
+			if (ZS.ROM[ZS.Offsets.overworldgfxGroups + (gfx * 4) + 3] != 0)
 			{
-				staticgfx[6] = ZS.ROM[Constants.overworldgfxGroups + (gfx * 4) + 3];
+				staticgfx[6] = ZS.ROM[ZS.Offsets.overworldgfxGroups + (gfx * 4) + 3];
 			}
 
 			// Hardcoded overworld GFX Values, for death mountain

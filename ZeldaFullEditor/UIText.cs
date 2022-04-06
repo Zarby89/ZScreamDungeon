@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -128,5 +129,15 @@ namespace ZeldaFullEditor
 				MessageBoxButtons.OK
 			);
 		}
+
+
+		//===========================================================================================
+		// Extension functions
+		//===========================================================================================
+		public static string ToFormattedString(this Data.DungeonObjects.ObjCategory b)
+		{
+			return string.Join(" ", Regex.Split(b.ToString(), @"[A-Z]", RegexOptions.None));
+		}
+
 	}
 }

@@ -351,7 +351,7 @@ namespace ZeldaFullEditor
 				if (ZS.DungeonForm.selectedEntrance != null)
 				{
 					int ey = (room.index / 16);
-					int ex = room.index - (ey * 16);
+					int ex = room.index & 0xF;
 
 					if (ZS.DungeonForm.gridEntranceCheckbox.Checked)
 					{
@@ -1775,7 +1775,7 @@ namespace ZeldaFullEditor
 			}
 
 			int i = 0;
-			while (i < 4096)
+			while (i < Constants.TilesPerTilemap)
 			{
 				room.collisionMap[i++] = 0xFF;
 			}

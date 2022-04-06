@@ -79,29 +79,29 @@ namespace ZeldaFullEditor
 			//public static Color[][] overworld_MainPalettes = new Color[6][]; 
 			//public static Color[][] overworld_AuxPalettes = new Color[20][]; 
 			//public static Color[][] overworld_AnimatedPalettes = new Color[14][]; 
-			OverworldGrass[0] = ReadPaletteSingle(Constants.hardcodedGrassLW);
-			OverworldGrass[1] = ReadPaletteSingle(Constants.hardcodedGrassDW);
-			OverworldGrass[2] = ReadPaletteSingle(Constants.hardcodedGrassSpecial);
+			OverworldGrass[0] = ReadPaletteSingle(ZS.Offsets.hardcodedGrassLW);
+			OverworldGrass[1] = ReadPaletteSingle(ZS.Offsets.hardcodedGrassDW);
+			OverworldGrass[2] = ReadPaletteSingle(ZS.Offsets.hardcodedGrassSpecial);
 
 			// 35 colors each, 7x5 (0,2 on grid)
 			for (int i = 0; i < 6; i++)
 			{
-				OverworldMain[i] = ReadPalette(Constants.overworldPaletteMain + (i * (35 * 2)), 35);
+				OverworldMain[i] = ReadPalette(ZS.Offsets.overworldPaletteMain + (i * (35 * 2)), 35);
 			}
 			// 21 colors each, 7x3 (8,2 and 8,5 on grid)
 			for (int i = 0; i < 20; i++)
 			{
-				OverworldAux[i] = ReadPalette(Constants.overworldPaletteAuxialiary + (i * (21 * 2)), 21);
+				OverworldAux[i] = ReadPalette(ZS.Offsets.overworldPaletteAuxialiary + (i * (21 * 2)), 21);
 			}
 			// 7 colors each 7x1 (0,7 on grid)
 			for (int i = 0; i < 14; i++)
 			{
-				OverworldAnimated[i] = ReadPalette(Constants.overworldPaletteAnimated + (i * (7 * 2)), 7);
+				OverworldAnimated[i] = ReadPalette(ZS.Offsets.overworldPaletteAnimated + (i * (7 * 2)), 7);
 			}
 			// 32 colors each 16x2 (0,0 on grid)
 			for (int i = 0; i < 2; i++)
 			{
-				HUD[i] = ReadPalette(Constants.hudPalettes + (i * 64), 32);
+				HUD[i] = ReadPalette(ZS.Offsets.hudPalettes + (i * 64), 32);
 			}
 
 			/*
@@ -113,35 +113,35 @@ namespace ZeldaFullEditor
             public static Color[][] dungeonsMain_Palettes = new Color[20][]; // 15*6
             */
 
-			SpriteGlobal[0] = ReadPalette(Constants.globalSpritePalettesLW, 60);
-			SpriteGlobal[1] = ReadPalette(Constants.globalSpritePalettesDW, 60);
+			SpriteGlobal[0] = ReadPalette(ZS.Offsets.globalSpritePalettesLW, 60);
+			SpriteGlobal[1] = ReadPalette(ZS.Offsets.globalSpritePalettesDW, 60);
 			for (int i = 0; i < 5; i++)
 			{
-				PlayerMail[i] = ReadPalette(Constants.armorPalettes + (i * 30), 15);
+				PlayerMail[i] = ReadPalette(ZS.Offsets.armorPalettes + (i * 30), 15);
 			}
 			for (int i = 0; i < 4; i++)
 			{
-				PlayerSword[i] = ReadPalette(Constants.swordPalettes + (i * 6), 3);
+				PlayerSword[i] = ReadPalette(ZS.Offsets.swordPalettes + (i * 6), 3);
 			}
 			for (int i = 0; i < 3; i++)
 			{
-				PlayerShield[i] = ReadPalette(Constants.shieldPalettes + (i * 8), 4);
+				PlayerShield[i] = ReadPalette(ZS.Offsets.shieldPalettes + (i * 8), 4);
 			}
 			for (int i = 0; i < 12; i++)
 			{
-				SpriteAux1[i] = ReadPalette(Constants.spritePalettesAux1 + (i * 14), 7);
+				SpriteAux1[i] = ReadPalette(ZS.Offsets.spritePalettesAux1 + (i * 14), 7);
 			}
 			for (int i = 0; i < 11; i++)
 			{
-				SpriteAux2[i] = ReadPalette(Constants.spritePalettesAux2 + (i * 14), 7);
+				SpriteAux2[i] = ReadPalette(ZS.Offsets.spritePalettesAux2 + (i * 14), 7);
 			}
 			for (int i = 0; i < 24; i++)
 			{
-				SpriteAux3[i] = ReadPalette(Constants.spritePalettesAux3 + (i * 14), 7);
+				SpriteAux3[i] = ReadPalette(ZS.Offsets.spritePalettesAux3 + (i * 14), 7);
 			}
 			for (int i = 0; i < 20; i++)
 			{
-				UnderworldMain[i] = ReadPalette(Constants.dungeonMainPalettes + (i * 180), 90);
+				UnderworldMain[i] = ReadPalette(ZS.Offsets.dungeonMainPalettes + (i * 180), 90);
 			}
 			/*
             for (int i = 0; i < 20; i++)
@@ -244,61 +244,61 @@ namespace ZeldaFullEditor
 
 		public bool SavePalettesToROM()
 		{
-			WriteSinglePalette(Constants.hardcodedGrassLW, OverworldGrass[0]);
-			WriteSinglePalette(Constants.hardcodedGrassDW, OverworldGrass[1]);
-			WriteSinglePalette(Constants.hardcodedGrassSpecial, OverworldGrass[2]);
+			WriteSinglePalette(ZS.Offsets.hardcodedGrassLW, OverworldGrass[0]);
+			WriteSinglePalette(ZS.Offsets.hardcodedGrassDW, OverworldGrass[1]);
+			WriteSinglePalette(ZS.Offsets.hardcodedGrassSpecial, OverworldGrass[2]);
 
 			// 35 colors each, 7x5 (0,2 on grid)
 			for (int i = 0; i < 6; i++)
 			{
-				WritePalette(Constants.overworldPaletteMain + (i * (35 * 2)), OverworldMain[i]);
+				WritePalette(ZS.Offsets.overworldPaletteMain + (i * (35 * 2)), OverworldMain[i]);
 			}
 			// 21 colors each, 7x3 (8,2 and 8,5 on grid)
 			for (int i = 0; i < 20; i++)
 			{
-				WritePalette(Constants.overworldPaletteAuxialiary + (i * (21 * 2)), OverworldAux[i]);
+				WritePalette(ZS.Offsets.overworldPaletteAuxialiary + (i * (21 * 2)), OverworldAux[i]);
 			}
 			// 7 colors each 7x1 (0,7 on grid)
 			for (int i = 0; i < 14; i++)
 			{
-				WritePalette(Constants.overworldPaletteAnimated + (i * (7 * 2)), OverworldAnimated[i]);
+				WritePalette(ZS.Offsets.overworldPaletteAnimated + (i * (7 * 2)), OverworldAnimated[i]);
 			}
 			// 32 colors each 16x2 (0,0 on grid)
 			for (int i = 0; i < 2; i++)
 			{
-				WritePalette(Constants.hudPalettes + (i * 64), HUD[i]);
+				WritePalette(ZS.Offsets.hudPalettes + (i * 64), HUD[i]);
 			}
 
-			WritePalette(Constants.globalSpritePalettesLW, SpriteGlobal[0]);
-			WritePalette(Constants.globalSpritePalettesDW, SpriteGlobal[1]);
+			WritePalette(ZS.Offsets.globalSpritePalettesLW, SpriteGlobal[0]);
+			WritePalette(ZS.Offsets.globalSpritePalettesDW, SpriteGlobal[1]);
 
 			for (int i = 0; i < 5; i++)
 			{
-				WritePalette(Constants.armorPalettes + (i * 30), PlayerMail[i]);
+				WritePalette(ZS.Offsets.armorPalettes + (i * 30), PlayerMail[i]);
 			}
 			for (int i = 0; i < 4; i++)
 			{
-				WritePalette(Constants.swordPalettes + (i * 6), PlayerSword[i]);
+				WritePalette(ZS.Offsets.swordPalettes + (i * 6), PlayerSword[i]);
 			}
 			for (int i = 0; i < 3; i++)
 			{
-				WritePalette(Constants.shieldPalettes + (i * 8), PlayerShield[i]);
+				WritePalette(ZS.Offsets.shieldPalettes + (i * 8), PlayerShield[i]);
 			}
 			for (int i = 0; i < 12; i++)
 			{
-				WritePalette(Constants.spritePalettesAux1 + (i * 14), SpriteAux1[i]);
+				WritePalette(ZS.Offsets.spritePalettesAux1 + (i * 14), SpriteAux1[i]);
 			}
 			for (int i = 0; i < 11; i++)
 			{
-				WritePalette(Constants.spritePalettesAux2 + (i * 14), SpriteAux2[i]);
+				WritePalette(ZS.Offsets.spritePalettesAux2 + (i * 14), SpriteAux2[i]);
 			}
 			for (int i = 0; i < 24; i++)
 			{
-				WritePalette(Constants.spritePalettesAux3 + (i * 14), SpriteAux3[i]);
+				WritePalette(ZS.Offsets.spritePalettesAux3 + (i * 14), SpriteAux3[i]);
 			}
 			for (int i = 0; i < 20; i++)
 			{
-				WritePalette(Constants.dungeonMainPalettes + (i * 180), UnderworldMain[i]);
+				WritePalette(ZS.Offsets.dungeonMainPalettes + (i * 180), UnderworldMain[i]);
 			}
 
 			return false;
@@ -307,57 +307,57 @@ namespace ZeldaFullEditor
 		public string SavePalettesToAsm()
 		{
 			asmString = "";
-			WritePaletteAsm(OverworldGrass, 1, "Grass Color", Constants.hardcodedGrassLW);
+			WritePaletteAsm(OverworldGrass, 1, "Grass Color", ZS.Offsets.hardcodedGrassLW);
 			// 35 colors each, 7x5 (0,2 on grid)
 			for (int i = 0; i < 6; i++)
 			{
-				WritePaletteAsm(OverworldMain[i], 7, "Main Overworld " + i.ToString("X2"), Constants.overworldPaletteMain + (i * (35 * 2)));
+				WritePaletteAsm(OverworldMain[i], 7, "Main Overworld " + i.ToString("X2"), ZS.Offsets.overworldPaletteMain + (i * (35 * 2)));
 			}
 			// 21 colors each, 7x3 (8,2 and 8,5 on grid)
 			for (int i = 0; i < 20; i++)
 			{
-				WritePaletteAsm(OverworldAux[i], 7, "Overworld Aux Palettes " + i.ToString("X2"), Constants.overworldPaletteAuxialiary + (i * (21 * 2)));
+				WritePaletteAsm(OverworldAux[i], 7, "Overworld Aux Palettes " + i.ToString("X2"), ZS.Offsets.overworldPaletteAuxialiary + (i * (21 * 2)));
 			}
 			// 7 colors each 7x1 (0,7 on grid)
 			for (int i = 0; i < 14; i++)
 			{
-				WritePaletteAsm(OverworldAnimated[i], 7, "Overworld Animated Palettes " + i.ToString("X2"), Constants.overworldPaletteAnimated + (i * (7 * 2)));
+				WritePaletteAsm(OverworldAnimated[i], 7, "Overworld Animated Palettes " + i.ToString("X2"), ZS.Offsets.overworldPaletteAnimated + (i * (7 * 2)));
 			}
 			// 32 colors each 16x2 (0,0 on grid)
 			for (int i = 0; i < 2; i++)
 			{
-				WritePaletteAsm(HUD[i], 16, "Hud Palettes " + i.ToString("X2"), Constants.hudPalettes + (i * 64));
+				WritePaletteAsm(HUD[i], 16, "Hud Palettes " + i.ToString("X2"), ZS.Offsets.hudPalettes + (i * 64));
 			}
 
-			WritePaletteAsm(SpriteGlobal[0], 15, "LW Global Sprite Palettes ", Constants.globalSpritePalettesLW);
-			WritePaletteAsm(SpriteGlobal[1], 15, "DW Global Sprite Palettes ", Constants.globalSpritePalettesDW);
+			WritePaletteAsm(SpriteGlobal[0], 15, "LW Global Sprite Palettes ", ZS.Offsets.globalSpritePalettesLW);
+			WritePaletteAsm(SpriteGlobal[1], 15, "DW Global Sprite Palettes ", ZS.Offsets.globalSpritePalettesDW);
 			for (int i = 0; i < 5; i++)
 			{
-				WritePaletteAsm(PlayerMail[i], 16, "Mails Palettes / bunny / electrocuted " + i.ToString("X2"), Constants.armorPalettes + (i * 30));
+				WritePaletteAsm(PlayerMail[i], 16, "Mails Palettes / bunny / electrocuted " + i.ToString("X2"), ZS.Offsets.armorPalettes + (i * 30));
 			}
 			for (int i = 0; i < 4; i++)
 			{
-				WritePaletteAsm(PlayerSword[i], 3, "Sword Palettes " + i.ToString("X2"), Constants.swordPalettes + (i * 6));
+				WritePaletteAsm(PlayerSword[i], 3, "Sword Palettes " + i.ToString("X2"), ZS.Offsets.swordPalettes + (i * 6));
 			}
 			for (int i = 0; i < 3; i++)
 			{
-				WritePaletteAsm(PlayerShield[i], 4, "Shield Palettes " + i.ToString("X2"), Constants.shieldPalettes + (i * 8));
+				WritePaletteAsm(PlayerShield[i], 4, "Shield Palettes " + i.ToString("X2"), ZS.Offsets.shieldPalettes + (i * 8));
 			}
 			for (int i = 0; i < 12; i++)
 			{
-				WritePaletteAsm(SpriteAux1[i], 7, "Sprite Aux1 Palettes " + i.ToString("X2"), Constants.spritePalettesAux1 + (i * 14));
+				WritePaletteAsm(SpriteAux1[i], 7, "Sprite Aux1 Palettes " + i.ToString("X2"), ZS.Offsets.spritePalettesAux1 + (i * 14));
 			}
 			for (int i = 0; i < 11; i++)
 			{
-				WritePaletteAsm(SpriteAux2[i], 7, "Sprite Aux2 Palettes " + i.ToString("X2"), Constants.spritePalettesAux2 + (i * 14));
+				WritePaletteAsm(SpriteAux2[i], 7, "Sprite Aux2 Palettes " + i.ToString("X2"), ZS.Offsets.spritePalettesAux2 + (i * 14));
 			}
 			for (int i = 0; i < 24; i++)
 			{
-				WritePaletteAsm(SpriteAux3[i], 7, "Sprite Aux3 Palettes " + i.ToString("X2"), Constants.spritePalettesAux3 + (i * 14));
+				WritePaletteAsm(SpriteAux3[i], 7, "Sprite Aux3 Palettes " + i.ToString("X2"), ZS.Offsets.spritePalettesAux3 + (i * 14));
 			}
 			for (int i = 0; i < 20; i++)
 			{
-				WritePaletteAsm(UnderworldMain[i], 15, "Dungeon Palettes " + i.ToString("X2"), Constants.dungeonMainPalettes + (i * 180));
+				WritePaletteAsm(UnderworldMain[i], 15, "Dungeon Palettes " + i.ToString("X2"), ZS.Offsets.dungeonMainPalettes + (i * 180));
 			}
 
 			return asmString;

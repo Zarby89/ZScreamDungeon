@@ -12,8 +12,8 @@ namespace ZeldaFullEditor
 	{
 		public object_00(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x00, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x00];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x00].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -29,7 +29,7 @@ namespace ZeldaFullEditor
 			for (int s = 0; s < size; s++)
 			{
 				draw_tile(tiles[0], ((s * 2)) * 8, 0); draw_tile(tiles[2], (1 + (s * 2)) * 8, 0);
-				draw_tile(tiles[1], ((s * 2)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 2)) * 8, (1) * 8);
+				draw_tile(tiles[1], ((s * 2)) * 8, 8); draw_tile(tiles[3], (1 + (s * 2)) * 8, 8);
 			}
 		}
 	}
@@ -39,8 +39,8 @@ namespace ZeldaFullEditor
 	{
 		public object_01(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x01, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x01];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x01].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Horizontal | Sorting.Wall;
 		}
@@ -55,10 +55,10 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[0], ((s * 2)) * 8, (0) * 8); draw_tile(tiles[4], (1 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 2)) * 8, (1) * 8); draw_tile(tiles[5], (1 + (s * 2)) * 8, (1) * 8);
-				draw_tile(tiles[2], ((s * 2)) * 8, (2) * 8); draw_tile(tiles[6], (1 + (s * 2)) * 8, (2) * 8);
-				draw_tile(tiles[3], ((s * 2)) * 8, (3) * 8); draw_tile(tiles[7], (1 + (s * 2)) * 8, (3) * 8);
+				draw_tile(tiles[0], ((s * 2)) * 8, 0); draw_tile(tiles[4], (1 + (s * 2)) * 8, 0);
+				draw_tile(tiles[1], ((s * 2)) * 8, 8); draw_tile(tiles[5], (1 + (s * 2)) * 8, 8);
+				draw_tile(tiles[2], ((s * 2)) * 8, 16); draw_tile(tiles[6], (1 + (s * 2)) * 8, 16);
+				draw_tile(tiles[3], ((s * 2)) * 8, 24); draw_tile(tiles[7], (1 + (s * 2)) * 8, 24);
 			}
 		}
 	}
@@ -68,8 +68,8 @@ namespace ZeldaFullEditor
 	{
 		public object_02(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x02, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x02];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x02].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Horizontal | Sorting.Wall;
 		}
@@ -84,10 +84,10 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[0], ((s * 2)) * 8, (0) * 8); draw_tile(tiles[4], (1 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 2)) * 8, (1) * 8); draw_tile(tiles[5], (1 + (s * 2)) * 8, (1) * 8);
-				draw_tile(tiles[2], ((s * 2)) * 8, (2) * 8); draw_tile(tiles[6], (1 + (s * 2)) * 8, (2) * 8);
-				draw_tile(tiles[3], ((s * 2)) * 8, (3) * 8); draw_tile(tiles[7], (1 + (s * 2)) * 8, (3) * 8);
+				draw_tile(tiles[0], ((s * 2)) * 8, 0); draw_tile(tiles[4], (1 + (s * 2)) * 8, 0);
+				draw_tile(tiles[1], ((s * 2)) * 8, 8); draw_tile(tiles[5], (1 + (s * 2)) * 8, 8);
+				draw_tile(tiles[2], ((s * 2)) * 8, 16); draw_tile(tiles[6], (1 + (s * 2)) * 8, 16);
+				draw_tile(tiles[3], ((s * 2)) * 8, 24); draw_tile(tiles[7], (1 + (s * 2)) * 8, 24);
 			}
 		}
 	}
@@ -97,8 +97,8 @@ namespace ZeldaFullEditor
 	{
 		public object_03(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x03, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x03];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x03].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			allBgs = true;
 			sort = Sorting.Horizontal | Sorting.Wall;
@@ -109,10 +109,10 @@ namespace ZeldaFullEditor
 			base.Draw();
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], ((s * 2)) * 8, (0) * 8); draw_tile(tiles[4], (1 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 2)) * 8, (1) * 8); draw_tile(tiles[5], (1 + (s * 2)) * 8, (1) * 8);
-				draw_tile(tiles[2], ((s * 2)) * 8, (2) * 8); draw_tile(tiles[6], (1 + (s * 2)) * 8, (2) * 8);
-				draw_tile(tiles[3], ((s * 2)) * 8, (3) * 8); draw_tile(tiles[7], (1 + (s * 2)) * 8, (3) * 8);
+				draw_tile(tiles[0], ((s * 2)) * 8, 0); draw_tile(tiles[4], (1 + (s * 2)) * 8, 0);
+				draw_tile(tiles[1], ((s * 2)) * 8, 8); draw_tile(tiles[5], (1 + (s * 2)) * 8, 8);
+				draw_tile(tiles[2], ((s * 2)) * 8, 16); draw_tile(tiles[6], (1 + (s * 2)) * 8, 16);
+				draw_tile(tiles[3], ((s * 2)) * 8, 24); draw_tile(tiles[7], (1 + (s * 2)) * 8, 24);
 			}
 		}
 	}
@@ -122,8 +122,8 @@ namespace ZeldaFullEditor
 	{
 		public object_04(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x04, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x04];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x04].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			allBgs = true;
 			sort = Sorting.Horizontal | Sorting.Wall;
@@ -134,10 +134,10 @@ namespace ZeldaFullEditor
 			base.Draw();
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], ((s * 2)) * 8, (0) * 8); draw_tile(tiles[4], (1 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 2)) * 8, (1) * 8); draw_tile(tiles[5], (1 + (s * 2)) * 8, (1) * 8);
-				draw_tile(tiles[2], ((s * 2)) * 8, (2) * 8); draw_tile(tiles[6], (1 + (s * 2)) * 8, (2) * 8);
-				draw_tile(tiles[3], ((s * 2)) * 8, (3) * 8); draw_tile(tiles[7], (1 + (s * 2)) * 8, (3) * 8);
+				draw_tile(tiles[0], ((s * 2)) * 8, 0); draw_tile(tiles[4], (1 + (s * 2)) * 8, 0);
+				draw_tile(tiles[1], ((s * 2)) * 8, 8); draw_tile(tiles[5], (1 + (s * 2)) * 8, 8);
+				draw_tile(tiles[2], ((s * 2)) * 8, 16); draw_tile(tiles[6], (1 + (s * 2)) * 8, 16);
+				draw_tile(tiles[3], ((s * 2)) * 8, 24); draw_tile(tiles[7], (1 + (s * 2)) * 8, 24);
 			}
 		}
 	}
@@ -147,8 +147,8 @@ namespace ZeldaFullEditor
 	{
 		public object_05(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x05, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x05];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x05].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -158,10 +158,10 @@ namespace ZeldaFullEditor
 			base.Draw();
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], ((s * 6)) * 8, (0) * 8); draw_tile(tiles[4], (1 + (s * 6)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 6)) * 8, (1) * 8); draw_tile(tiles[5], (1 + (s * 6)) * 8, (1) * 8);
-				draw_tile(tiles[2], ((s * 6)) * 8, (2) * 8); draw_tile(tiles[6], (1 + (s * 6)) * 8, (2) * 8);
-				draw_tile(tiles[3], ((s * 6)) * 8, (3) * 8); draw_tile(tiles[7], (1 + (s * 6)) * 8, (3) * 8);
+				draw_tile(tiles[0], ((s * 6)) * 8, 0); draw_tile(tiles[4], (1 + (s * 6)) * 8, 0);
+				draw_tile(tiles[1], ((s * 6)) * 8, 8); draw_tile(tiles[5], (1 + (s * 6)) * 8, 8);
+				draw_tile(tiles[2], ((s * 6)) * 8, 16); draw_tile(tiles[6], (1 + (s * 6)) * 8, 16);
+				draw_tile(tiles[3], ((s * 6)) * 8, 24); draw_tile(tiles[7], (1 + (s * 6)) * 8, 24);
 			}
 		}
 	}
@@ -171,8 +171,8 @@ namespace ZeldaFullEditor
 	{
 		public object_06(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x06, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x06];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x06].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -182,10 +182,10 @@ namespace ZeldaFullEditor
 			base.Draw();
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], ((s * 6)) * 8, (0) * 8); draw_tile(tiles[4], (1 + (s * 6)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 6)) * 8, (1) * 8); draw_tile(tiles[5], (1 + (s * 6)) * 8, (1) * 8);
-				draw_tile(tiles[2], ((s * 6)) * 8, (2) * 8); draw_tile(tiles[6], (1 + (s * 6)) * 8, (2) * 8);
-				draw_tile(tiles[3], ((s * 6)) * 8, (3) * 8); draw_tile(tiles[7], (1 + (s * 6)) * 8, (3) * 8);
+				draw_tile(tiles[0], ((s * 6)) * 8, 0); draw_tile(tiles[4], (1 + (s * 6)) * 8, 0);
+				draw_tile(tiles[1], ((s * 6)) * 8, 8); draw_tile(tiles[5], (1 + (s * 6)) * 8, 8);
+				draw_tile(tiles[2], ((s * 6)) * 8, 16); draw_tile(tiles[6], (1 + (s * 6)) * 8, 16);
+				draw_tile(tiles[3], ((s * 6)) * 8, 24); draw_tile(tiles[7], (1 + (s * 6)) * 8, 24);
 			}
 		}
 	}
@@ -195,8 +195,8 @@ namespace ZeldaFullEditor
 	{
 		public object_07(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x07, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x07];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x07].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -206,8 +206,8 @@ namespace ZeldaFullEditor
 			base.Draw();
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], ((s * 2)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 2)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 2)) * 8, (1) * 8);
+				draw_tile(tiles[0], ((s * 2)) * 8, 0); draw_tile(tiles[2], (1 + (s * 2)) * 8, 0);
+				draw_tile(tiles[1], ((s * 2)) * 8, 8); draw_tile(tiles[3], (1 + (s * 2)) * 8, 8);
 			}
 		}
 	}
@@ -217,8 +217,8 @@ namespace ZeldaFullEditor
 	{
 		public object_08(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x08, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x08];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x08].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -228,8 +228,8 @@ namespace ZeldaFullEditor
 			base.Draw();
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], ((s * 2)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 2)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 2)) * 8, (1) * 8);
+				draw_tile(tiles[0], ((s * 2)) * 8, 0); draw_tile(tiles[2], (1 + (s * 2)) * 8, 0);
+				draw_tile(tiles[1], ((s * 2)) * 8, 8); draw_tile(tiles[3], (1 + (s * 2)) * 8, 8);
 			}
 		}
 	}
@@ -239,8 +239,8 @@ namespace ZeldaFullEditor
 	{
 		public object_09(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x09, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x09];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x09].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 		}
@@ -257,8 +257,8 @@ namespace ZeldaFullEditor
 	{
 		public object_0A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x0A, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x0A];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x0A].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 		}
@@ -275,8 +275,8 @@ namespace ZeldaFullEditor
 	{
 		public object_0B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x0B, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x0B];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x0B].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 		}
@@ -293,8 +293,8 @@ namespace ZeldaFullEditor
 	{
 		public object_0C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x0C, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x0C];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x0C].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 		}
@@ -311,8 +311,8 @@ namespace ZeldaFullEditor
 	{
 		public object_0D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x0D, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x0D];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x0D].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 		}
@@ -329,8 +329,8 @@ namespace ZeldaFullEditor
 	{
 		public object_0E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x0E, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x0E];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x0E].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 		}
@@ -347,8 +347,8 @@ namespace ZeldaFullEditor
 	{
 		public object_0F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x0F, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x0F];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x0F].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 		}
@@ -365,8 +365,8 @@ namespace ZeldaFullEditor
 	{
 		public object_10(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x10, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x10];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x10].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 		}
@@ -383,8 +383,8 @@ namespace ZeldaFullEditor
 	{
 		public object_11(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x11, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x11];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x11].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 		}
@@ -401,8 +401,8 @@ namespace ZeldaFullEditor
 	{
 		public object_12(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x12, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x12];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x12].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 		}
@@ -419,8 +419,8 @@ namespace ZeldaFullEditor
 	{
 		public object_13(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x13, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x13];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x13].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 		}
@@ -437,8 +437,8 @@ namespace ZeldaFullEditor
 	{
 		public object_14(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x14, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x14];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x14].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 		}
@@ -455,8 +455,8 @@ namespace ZeldaFullEditor
 	{
 		public object_15(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x15, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x15];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x15].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -474,8 +474,8 @@ namespace ZeldaFullEditor
 	{
 		public object_16(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x16, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x16];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x16].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -493,8 +493,8 @@ namespace ZeldaFullEditor
 	{
 		public object_17(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x17, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x17];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x17].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -512,8 +512,8 @@ namespace ZeldaFullEditor
 	{
 		public object_18(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x18, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x18];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x18].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -531,8 +531,8 @@ namespace ZeldaFullEditor
 	{
 		public object_19(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x19, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x19];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x19].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -550,8 +550,8 @@ namespace ZeldaFullEditor
 	{
 		public object_1A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x1A, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x1A];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x1A].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -569,8 +569,8 @@ namespace ZeldaFullEditor
 	{
 		public object_1B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x1B, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x1B];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x1B].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -588,8 +588,8 @@ namespace ZeldaFullEditor
 	{
 		public object_1C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x1C, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x1C];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x1C].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -607,8 +607,8 @@ namespace ZeldaFullEditor
 	{
 		public object_1D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x1D, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x1D];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x1D].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -626,8 +626,8 @@ namespace ZeldaFullEditor
 	{
 		public object_1E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x1E, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x1E];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x1E].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -645,8 +645,8 @@ namespace ZeldaFullEditor
 	{
 		public object_1F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x1F, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x1F];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x1F].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -664,8 +664,8 @@ namespace ZeldaFullEditor
 	{
 		public object_20(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x20, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x20];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x20].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(5, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -684,8 +684,8 @@ namespace ZeldaFullEditor
 	{
 		public object_21(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x21, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x21];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x21].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(9, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -696,18 +696,18 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[3], (1 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[3], (2 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[4], (1 + (s * 2)) * 8, (1) * 8); draw_tile(tiles[4], (2 + (s * 2)) * 8, (1) * 8);
-				draw_tile(tiles[5], (1 + (s * 2)) * 8, (2) * 8); draw_tile(tiles[5], (2 + (s * 2)) * 8, (2) * 8);
+				draw_tile(tiles[3], (1 + (s * 2)) * 8, 0); draw_tile(tiles[3], (2 + (s * 2)) * 8, 0);
+				draw_tile(tiles[4], (1 + (s * 2)) * 8, 8); draw_tile(tiles[4], (2 + (s * 2)) * 8, 8);
+				draw_tile(tiles[5], (1 + (s * 2)) * 8, 16); draw_tile(tiles[5], (2 + (s * 2)) * 8, 16);
 			}
 
-			draw_tile(tiles[0], 0, (0) * 8);
-			draw_tile(tiles[1], 0, (1) * 8);
-			draw_tile(tiles[2], 0, (2) * 8);
+			draw_tile(tiles[0], 0, 0);
+			draw_tile(tiles[1], 0, 8);
+			draw_tile(tiles[2], 0, 16);
 
-			draw_tile(tiles[6], ((size * 2) + 3) * 8, (0) * 8);
-			draw_tile(tiles[7], ((size * 2) + 3) * 8, (1) * 8);
-			draw_tile(tiles[8], ((size * 2) + 3) * 8, (2) * 8);
+			draw_tile(tiles[6], ((size * 2) + 3) * 8, 0);
+			draw_tile(tiles[7], ((size * 2) + 3) * 8, 8);
+			draw_tile(tiles[8], ((size * 2) + 3) * 8, 16);
 		}
 	}
 
@@ -717,8 +717,8 @@ namespace ZeldaFullEditor
 	{
 		public object_22(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x22, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x22];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x22].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal | Sorting.Dungeons;
 		}
@@ -729,11 +729,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 2; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 2) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 2) + 1) * 8, 0);
 		}
 	}
 
@@ -742,8 +742,8 @@ namespace ZeldaFullEditor
 	{
 		public object_23(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x23, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x23];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x23].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -754,11 +754,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], 0, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -767,8 +767,8 @@ namespace ZeldaFullEditor
 	{
 		public object_24(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x24, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x24];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x24].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -779,11 +779,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -792,8 +792,8 @@ namespace ZeldaFullEditor
 	{
 		public object_25(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x25, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x25];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x25].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -804,11 +804,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -817,8 +817,8 @@ namespace ZeldaFullEditor
 	{
 		public object_26(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x26, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x26];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x26].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -829,11 +829,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -842,8 +842,8 @@ namespace ZeldaFullEditor
 	{
 		public object_27(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x27, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x27];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x27].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -854,11 +854,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -867,8 +867,8 @@ namespace ZeldaFullEditor
 	{
 		public object_28(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x28, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x28];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x28].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -879,11 +879,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 
 		}
 	}
@@ -893,8 +893,8 @@ namespace ZeldaFullEditor
 	{
 		public object_29(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x29, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x29];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x29].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -905,11 +905,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 
 		}
 	}
@@ -919,8 +919,8 @@ namespace ZeldaFullEditor
 	{
 		public object_2A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x2A, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x2A];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x2A].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -931,11 +931,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -944,8 +944,8 @@ namespace ZeldaFullEditor
 	{
 		public object_2B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x2B, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x2B];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x2B].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -956,11 +956,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -969,8 +969,8 @@ namespace ZeldaFullEditor
 	{
 		public object_2C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x2C, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x2C];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x2C].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 
 			sort = Sorting.Horizontal;
@@ -982,11 +982,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -995,8 +995,8 @@ namespace ZeldaFullEditor
 	{
 		public object_2D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x2D, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x2D];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x2D].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 
 			sort = Sorting.Horizontal;
@@ -1008,11 +1008,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -1021,8 +1021,8 @@ namespace ZeldaFullEditor
 	{
 		public object_2E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x2E, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x2E];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x2E].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 
 			sort = Sorting.Horizontal;
@@ -1034,11 +1034,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -1047,8 +1047,8 @@ namespace ZeldaFullEditor
 	{
 		public object_2F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x2F, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x2F];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x2F].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(6, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1059,15 +1059,15 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 14; s++)
 			{
-				draw_tile(tiles[3], ((s * 1)) * 8, (0) * 8);
-				draw_tile(tiles[0], ((s * 1)) * 8, (1) * 8);
+				draw_tile(tiles[3], ((s * 1)) * 8, 0);
+				draw_tile(tiles[0], ((s * 1)) * 8, 8);
 			}
 
-			draw_tile(tiles[1], (0) * 8, (0) * 8);
-			draw_tile(tiles[2], (1) * 8, (0) * 8);
+			draw_tile(tiles[1], 0, 0);
+			draw_tile(tiles[2], 8, 0);
 
-			draw_tile(tiles[4], (size + 12) * 8, (0) * 8);
-			draw_tile(tiles[5], (size + 12 + 1) * 8, (0) * 8);
+			draw_tile(tiles[4], (size + 12) * 8, 0);
+			draw_tile(tiles[5], (size + 12 + 1) * 8, 0);
 		}
 	}
 
@@ -1076,8 +1076,8 @@ namespace ZeldaFullEditor
 	{
 		public object_30(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x30, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x30];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x30].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(6, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1088,15 +1088,15 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 14; s++)
 			{
-				draw_tile(tiles[3], ((s * 1)) * 8, (1) * 8);
-				draw_tile(tiles[0], ((s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[3], ((s * 1)) * 8, 8);
+				draw_tile(tiles[0], ((s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[1], (0) * 8, (1) * 8);
-			draw_tile(tiles[2], (1) * 8, (1) * 8);
+			draw_tile(tiles[1], 0, 8);
+			draw_tile(tiles[2], 8, 8);
 
-			draw_tile(tiles[4], (size + 12) * 8, (1) * 8);
-			draw_tile(tiles[5], (size + 12 + 1) * 8, (1) * 8);
+			draw_tile(tiles[4], (size + 12) * 8, 8);
+			draw_tile(tiles[5], (size + 12 + 1) * 8, 8);
 		}
 	}
 
@@ -1105,7 +1105,7 @@ namespace ZeldaFullEditor
 	{
 		public object_31(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x31, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x31];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x31].Name;
 		}
 
 		public override void Draw()
@@ -1123,7 +1123,7 @@ namespace ZeldaFullEditor
 	{
 		public object_32(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x32, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x32];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x32].Name;
 		}
 
 		public override void Draw()
@@ -1141,8 +1141,8 @@ namespace ZeldaFullEditor
 	{
 		public object_33(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x33, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x33];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x33].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1172,8 +1172,8 @@ namespace ZeldaFullEditor
 	{
 		public object_34(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x34, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x34];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x34].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1184,7 +1184,7 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 4; s++)
 			{
-				draw_tile(tiles[0], ((s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[0], ((s * 1)) * 8, 0);
 			}
 		}
 	}
@@ -1194,8 +1194,8 @@ namespace ZeldaFullEditor
 	{
 		public object_35(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x35, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x35];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x35].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 		}
 
@@ -1203,7 +1203,7 @@ namespace ZeldaFullEditor
 		{
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], ((s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[0], ((s * 1)) * 8, 0);
 			}
 
 			base.Draw();
@@ -1215,8 +1215,8 @@ namespace ZeldaFullEditor
 	{
 		public object_36(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x36, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x36];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x36].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1245,8 +1245,8 @@ namespace ZeldaFullEditor
 	{
 		public object_37(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x37, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x37];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x37].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1276,8 +1276,8 @@ namespace ZeldaFullEditor
 	{
 		public object_38(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x38, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x38];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x38].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(6, pos);
 			sort = Sorting.Horizontal | Sorting.Dungeons;
 		}
@@ -1288,9 +1288,9 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], ((s * 4)) * 8, (0) * 8); draw_tile(tiles[3], (1 + (s * 4)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 4)) * 8, (1) * 8); draw_tile(tiles[4], (1 + (s * 4)) * 8, (1) * 8);
-				draw_tile(tiles[2], ((s * 4)) * 8, (2) * 8); draw_tile(tiles[5], (1 + (s * 4)) * 8, (2) * 8);
+				draw_tile(tiles[0], ((s * 4)) * 8, 0); draw_tile(tiles[3], (1 + (s * 4)) * 8, 0);
+				draw_tile(tiles[1], ((s * 4)) * 8, 8); draw_tile(tiles[4], (1 + (s * 4)) * 8, 8);
+				draw_tile(tiles[2], ((s * 4)) * 8, 16); draw_tile(tiles[5], (1 + (s * 4)) * 8, 16);
 			}
 		}
 	}
@@ -1300,8 +1300,8 @@ namespace ZeldaFullEditor
 	{
 		public object_39(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x39, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x39];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x39].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 		}
 
@@ -1311,10 +1311,10 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], ((s * 6)) * 8, (0) * 8); draw_tile(tiles[4], (1 + (s * 6)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 6)) * 8, (1) * 8); draw_tile(tiles[5], (1 + (s * 6)) * 8, (1) * 8);
-				draw_tile(tiles[2], ((s * 6)) * 8, (2) * 8); draw_tile(tiles[6], (1 + (s * 6)) * 8, (2) * 8);
-				draw_tile(tiles[3], ((s * 6)) * 8, (3) * 8); draw_tile(tiles[7], (1 + (s * 6)) * 8, (3) * 8);
+				draw_tile(tiles[0], ((s * 6)) * 8, 0); draw_tile(tiles[4], (1 + (s * 6)) * 8, 0);
+				draw_tile(tiles[1], ((s * 6)) * 8, 8); draw_tile(tiles[5], (1 + (s * 6)) * 8, 8);
+				draw_tile(tiles[2], ((s * 6)) * 8, 16); draw_tile(tiles[6], (1 + (s * 6)) * 8, 16);
+				draw_tile(tiles[3], ((s * 6)) * 8, 24); draw_tile(tiles[7], (1 + (s * 6)) * 8, 24);
 			}
 
 			sort = Sorting.Horizontal;
@@ -1326,8 +1326,8 @@ namespace ZeldaFullEditor
 	{
 		public object_3A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x3A, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x3A];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x3A].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos);
 		}
 
@@ -1357,8 +1357,8 @@ namespace ZeldaFullEditor
 	{
 		public object_3B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x3B, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x3B];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x3B].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos);
 		}
 
@@ -1388,8 +1388,8 @@ namespace ZeldaFullEditor
 	{
 		public object_3C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x3C, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x3C];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x3C].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 		}
 
@@ -1399,8 +1399,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], ((s * 4)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 4)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 4)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 4)) * 8, (1) * 8);
+				draw_tile(tiles[0], ((s * 4)) * 8, 0); draw_tile(tiles[2], (1 + (s * 4)) * 8, 0);
+				draw_tile(tiles[1], ((s * 4)) * 8, 8); draw_tile(tiles[3], (1 + (s * 4)) * 8, 8);
 
 				draw_tile(tiles[0], ((s * 4)) * 8, (6) * 8); draw_tile(tiles[2], (1 + (s * 4)) * 8, (6) * 8);
 				draw_tile(tiles[1], ((s * 4)) * 8, (7) * 8); draw_tile(tiles[3], (1 + (s * 4)) * 8, (7) * 8);
@@ -1415,8 +1415,8 @@ namespace ZeldaFullEditor
 	{
 		public object_3D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x3D, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x3D];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x3D].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Horizontal | Sorting.Dungeons;
 		}
@@ -1427,10 +1427,10 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], ((s * 6)) * 8, (0) * 8); draw_tile(tiles[4], (1 + (s * 6)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 6)) * 8, (1) * 8); draw_tile(tiles[5], (1 + (s * 6)) * 8, (1) * 8);
-				draw_tile(tiles[2], ((s * 6)) * 8, (2) * 8); draw_tile(tiles[6], (1 + (s * 6)) * 8, (2) * 8);
-				draw_tile(tiles[3], ((s * 6)) * 8, (3) * 8); draw_tile(tiles[7], (1 + (s * 6)) * 8, (3) * 8);
+				draw_tile(tiles[0], ((s * 6)) * 8, 0); draw_tile(tiles[4], (1 + (s * 6)) * 8, 0);
+				draw_tile(tiles[1], ((s * 6)) * 8, 8); draw_tile(tiles[5], (1 + (s * 6)) * 8, 8);
+				draw_tile(tiles[2], ((s * 6)) * 8, 16); draw_tile(tiles[6], (1 + (s * 6)) * 8, 16);
+				draw_tile(tiles[3], ((s * 6)) * 8, 24); draw_tile(tiles[7], (1 + (s * 6)) * 8, 24);
 			}
 		}
 	}
@@ -1441,8 +1441,8 @@ namespace ZeldaFullEditor
 	{
 		public object_3E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x3E, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x3E];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x3E].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1453,8 +1453,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], ((s * 14)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 14)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 14)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 14)) * 8, (1) * 8);
+				draw_tile(tiles[0], ((s * 14)) * 8, 0); draw_tile(tiles[2], (1 + (s * 14)) * 8, 0);
+				draw_tile(tiles[1], ((s * 14)) * 8, 8); draw_tile(tiles[3], (1 + (s * 14)) * 8, 8);
 			}
 		}
 	}
@@ -1464,8 +1464,8 @@ namespace ZeldaFullEditor
 	{
 		public object_3F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x3F, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x3F];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x3F].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1476,11 +1476,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -1489,8 +1489,8 @@ namespace ZeldaFullEditor
 	{
 		public object_40(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x40, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x40];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x40].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1501,11 +1501,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -1514,8 +1514,8 @@ namespace ZeldaFullEditor
 	{
 		public object_41(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x41, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x41];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x41].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1526,11 +1526,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -1539,8 +1539,8 @@ namespace ZeldaFullEditor
 	{
 		public object_42(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x42, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x42];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x42].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1551,11 +1551,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -1564,8 +1564,8 @@ namespace ZeldaFullEditor
 	{
 		public object_43(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x43, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x43];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x43].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1576,11 +1576,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -1589,8 +1589,8 @@ namespace ZeldaFullEditor
 	{
 		public object_44(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x44, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x44];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x44].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1601,11 +1601,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -1614,8 +1614,8 @@ namespace ZeldaFullEditor
 	{
 		public object_45(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x45, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x45];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x45].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1626,11 +1626,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -1640,8 +1640,8 @@ namespace ZeldaFullEditor
 	{
 		public object_46(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x46, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x46];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x46].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1652,11 +1652,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], ((size + 1) + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], ((size + 1) + 1) * 8, 0);
 		}
 	}
 
@@ -1665,7 +1665,7 @@ namespace ZeldaFullEditor
 	{
 		public object_47(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x47, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x47];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x47].Name;
 			sort = Sorting.Horizontal;
 		}
 
@@ -1681,7 +1681,7 @@ namespace ZeldaFullEditor
 	{
 		public object_48(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x48, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x48];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x48].Name;
 			sort = Sorting.Horizontal;
 		}
 
@@ -1697,8 +1697,8 @@ namespace ZeldaFullEditor
 	{
 		public object_49(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x49, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x49];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x49].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 		}
 
@@ -1707,8 +1707,14 @@ namespace ZeldaFullEditor
 			base.Draw();
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0 + (s * 4)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 4)) * 8, (0) * 8); draw_tile(tiles[4], (2 + (s * 4)) * 8, (0) * 8); draw_tile(tiles[6], (3 + (s * 4)) * 8, (0) * 8);
-				draw_tile(tiles[1], (0 + (s * 4)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 4)) * 8, (1) * 8); draw_tile(tiles[5], (2 + (s * 4)) * 8, (1) * 8); draw_tile(tiles[7], (3 + (s * 4)) * 8, (1) * 8);
+				draw_tile(tiles[0], (0 + (s * 4)) * 8, 0);
+				draw_tile(tiles[2], (1 + (s * 4)) * 8, 0);
+				draw_tile(tiles[4], (2 + (s * 4)) * 8, 0);
+				draw_tile(tiles[6], (3 + (s * 4)) * 8, 0);
+				draw_tile(tiles[1], (0 + (s * 4)) * 8, 8);
+				draw_tile(tiles[3], (1 + (s * 4)) * 8, 8);
+				draw_tile(tiles[5], (2 + (s * 4)) * 8, 8);
+				draw_tile(tiles[7], (3 + (s * 4)) * 8, 8);
 			}
 		}
 	}
@@ -1719,8 +1725,8 @@ namespace ZeldaFullEditor
 	{
 		public object_4A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x4A, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x4A];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x4A].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 		}
 
@@ -1730,8 +1736,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0 + (s * 4)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 4)) * 8, (0) * 8); draw_tile(tiles[4], (2 + (s * 4)) * 8, (0) * 8); draw_tile(tiles[6], (3 + (s * 4)) * 8, (0) * 8);
-				draw_tile(tiles[1], (0 + (s * 4)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 4)) * 8, (1) * 8); draw_tile(tiles[5], (2 + (s * 4)) * 8, (1) * 8); draw_tile(tiles[7], (3 + (s * 4)) * 8, (1) * 8);
+				draw_tile(tiles[0], (0 + (s * 4)) * 8, 0); draw_tile(tiles[2], (1 + (s * 4)) * 8, 0); draw_tile(tiles[4], (2 + (s * 4)) * 8, 0); draw_tile(tiles[6], (3 + (s * 4)) * 8, 0);
+				draw_tile(tiles[1], (0 + (s * 4)) * 8, 8); draw_tile(tiles[3], (1 + (s * 4)) * 8, 8); draw_tile(tiles[5], (2 + (s * 4)) * 8, 8); draw_tile(tiles[7], (3 + (s * 4)) * 8, 8);
 			}
 		}
 	}
@@ -1741,8 +1747,8 @@ namespace ZeldaFullEditor
 	{
 		public object_4B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x4B, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x4B];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x4B].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1753,8 +1759,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], ((s * 14)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 14)) * 8, (0) * 8);
-				draw_tile(tiles[1], ((s * 14)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 14)) * 8, (1) * 8);
+				draw_tile(tiles[0], ((s * 14)) * 8, 0); draw_tile(tiles[2], (1 + (s * 14)) * 8, 0);
+				draw_tile(tiles[1], ((s * 14)) * 8, 8); draw_tile(tiles[3], (1 + (s * 14)) * 8, 8);
 			}
 		}
 	}
@@ -1764,8 +1770,8 @@ namespace ZeldaFullEditor
 	{
 		public object_4C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x4C, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x4C];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x4C].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(9, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1775,18 +1781,18 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[3], (1 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[3], (2 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[4], (1 + (s * 2)) * 8, (1) * 8); draw_tile(tiles[4], (2 + (s * 2)) * 8, (1) * 8);
-				draw_tile(tiles[5], (1 + (s * 2)) * 8, (2) * 8); draw_tile(tiles[5], (2 + (s * 2)) * 8, (2) * 8);
+				draw_tile(tiles[3], (1 + (s * 2)) * 8, 0); draw_tile(tiles[3], (2 + (s * 2)) * 8, 0);
+				draw_tile(tiles[4], (1 + (s * 2)) * 8, 8); draw_tile(tiles[4], (2 + (s * 2)) * 8, 8);
+				draw_tile(tiles[5], (1 + (s * 2)) * 8, 16); draw_tile(tiles[5], (2 + (s * 2)) * 8, 16);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8);
-			draw_tile(tiles[1], (0) * 8, (1) * 8);
-			draw_tile(tiles[2], (0) * 8, (2) * 8);
+			draw_tile(tiles[0], 0, 0);
+			draw_tile(tiles[1], 0, 8);
+			draw_tile(tiles[2], 0, 16);
 
-			draw_tile(tiles[6], ((size * 2) + 3) * 8, (0) * 8);
-			draw_tile(tiles[7], ((size * 2) + 3) * 8, (1) * 8);
-			draw_tile(tiles[8], ((size * 2) + 3) * 8, (2) * 8);
+			draw_tile(tiles[6], ((size * 2) + 3) * 8, 0);
+			draw_tile(tiles[7], ((size * 2) + 3) * 8, 8);
+			draw_tile(tiles[8], ((size * 2) + 3) * 8, 16);
 		}
 	}
 
@@ -1795,8 +1801,8 @@ namespace ZeldaFullEditor
 	{
 		public object_4D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x4D, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x4D];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x4D].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1807,21 +1813,21 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[4], (1 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[8], (2 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[5], (1 + (s * 2)) * 8, (1) * 8); draw_tile(tiles[9], (2 + (s * 2)) * 8, (1) * 8);
-				draw_tile(tiles[6], (1 + (s * 2)) * 8, (2) * 8); draw_tile(tiles[10], (2 + (s * 2)) * 8, (2) * 8);
-				draw_tile(tiles[7], (1 + (s * 2)) * 8, (3) * 8); draw_tile(tiles[11], (2 + (s * 2)) * 8, (3) * 8);
+				draw_tile(tiles[4], (1 + (s * 2)) * 8, 0); draw_tile(tiles[8], (2 + (s * 2)) * 8, 0);
+				draw_tile(tiles[5], (1 + (s * 2)) * 8, 8); draw_tile(tiles[9], (2 + (s * 2)) * 8, 8);
+				draw_tile(tiles[6], (1 + (s * 2)) * 8, 16); draw_tile(tiles[10], (2 + (s * 2)) * 8, 16);
+				draw_tile(tiles[7], (1 + (s * 2)) * 8, 24); draw_tile(tiles[11], (2 + (s * 2)) * 8, 24);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8);
-			draw_tile(tiles[1], (0) * 8, (1) * 8);
-			draw_tile(tiles[2], (0) * 8, (2) * 8);
-			draw_tile(tiles[3], (0) * 8, (3) * 8);
+			draw_tile(tiles[0], 0, 0);
+			draw_tile(tiles[1], 0, 8);
+			draw_tile(tiles[2], 0, 16);
+			draw_tile(tiles[3], 0, 24);
 
-			draw_tile(tiles[12], ((size * 2) + 3) * 8, (0) * 8);
-			draw_tile(tiles[13], ((size * 2) + 3) * 8, (1) * 8);
-			draw_tile(tiles[14], ((size * 2) + 3) * 8, (2) * 8);
-			draw_tile(tiles[15], ((size * 2) + 3) * 8, (3) * 8);
+			draw_tile(tiles[12], ((size * 2) + 3) * 8, 0);
+			draw_tile(tiles[13], ((size * 2) + 3) * 8, 8);
+			draw_tile(tiles[14], ((size * 2) + 3) * 8, 16);
+			draw_tile(tiles[15], ((size * 2) + 3) * 8, 24);
 		}
 	}
 
@@ -1830,8 +1836,8 @@ namespace ZeldaFullEditor
 	{
 		public object_4E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x4E, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x4E];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x4E].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1842,21 +1848,21 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[4], (1 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[8], (2 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[5], (1 + (s * 2)) * 8, (1) * 8); draw_tile(tiles[9], (2 + (s * 2)) * 8, (1) * 8);
-				draw_tile(tiles[6], (1 + (s * 2)) * 8, (2) * 8); draw_tile(tiles[10], (2 + (s * 2)) * 8, (2) * 8);
-				draw_tile(tiles[7], (1 + (s * 2)) * 8, (3) * 8); draw_tile(tiles[11], (2 + (s * 2)) * 8, (3) * 8);
+				draw_tile(tiles[4], (1 + (s * 2)) * 8, 0); draw_tile(tiles[8], (2 + (s * 2)) * 8, 0);
+				draw_tile(tiles[5], (1 + (s * 2)) * 8, 8); draw_tile(tiles[9], (2 + (s * 2)) * 8, 8);
+				draw_tile(tiles[6], (1 + (s * 2)) * 8, 16); draw_tile(tiles[10], (2 + (s * 2)) * 8, 16);
+				draw_tile(tiles[7], (1 + (s * 2)) * 8, 24); draw_tile(tiles[11], (2 + (s * 2)) * 8, 24);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8);
-			draw_tile(tiles[1], (0) * 8, (1) * 8);
-			draw_tile(tiles[2], (0) * 8, (2) * 8);
-			draw_tile(tiles[3], (0) * 8, (3) * 8);
+			draw_tile(tiles[0], 0, 0);
+			draw_tile(tiles[1], 0, 8);
+			draw_tile(tiles[2], 0, 16);
+			draw_tile(tiles[3], 0, 24);
 
-			draw_tile(tiles[12], ((size * 2) + 3) * 8, (0) * 8);
-			draw_tile(tiles[13], ((size * 2) + 3) * 8, (1) * 8);
-			draw_tile(tiles[14], ((size * 2) + 3) * 8, (2) * 8);
-			draw_tile(tiles[15], ((size * 2) + 3) * 8, (3) * 8);
+			draw_tile(tiles[12], ((size * 2) + 3) * 8, 0);
+			draw_tile(tiles[13], ((size * 2) + 3) * 8, 8);
+			draw_tile(tiles[14], ((size * 2) + 3) * 8, 16);
+			draw_tile(tiles[15], ((size * 2) + 3) * 8, 24);
 		}
 	}
 
@@ -1865,8 +1871,8 @@ namespace ZeldaFullEditor
 	{
 		public object_4F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x4F, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x4F];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x4F].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1877,21 +1883,21 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[4], (1 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[8], (2 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[5], (1 + (s * 2)) * 8, (1) * 8); draw_tile(tiles[9], (2 + (s * 2)) * 8, (1) * 8);
-				draw_tile(tiles[6], (1 + (s * 2)) * 8, (2) * 8); draw_tile(tiles[10], (2 + (s * 2)) * 8, (2) * 8);
-				draw_tile(tiles[7], (1 + (s * 2)) * 8, (3) * 8); draw_tile(tiles[11], (2 + (s * 2)) * 8, (3) * 8);
+				draw_tile(tiles[4], (1 + (s * 2)) * 8, 0); draw_tile(tiles[8], (2 + (s * 2)) * 8, 0);
+				draw_tile(tiles[5], (1 + (s * 2)) * 8, 8); draw_tile(tiles[9], (2 + (s * 2)) * 8, 8);
+				draw_tile(tiles[6], (1 + (s * 2)) * 8, 16); draw_tile(tiles[10], (2 + (s * 2)) * 8, 16);
+				draw_tile(tiles[7], (1 + (s * 2)) * 8, 24); draw_tile(tiles[11], (2 + (s * 2)) * 8, 24);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8);
-			draw_tile(tiles[1], (0) * 8, (1) * 8);
-			draw_tile(tiles[2], (0) * 8, (2) * 8);
-			draw_tile(tiles[3], (0) * 8, (3) * 8);
+			draw_tile(tiles[0], 0, 0);
+			draw_tile(tiles[1], 0, 8);
+			draw_tile(tiles[2], 0, 16);
+			draw_tile(tiles[3], 0, 24);
 
-			draw_tile(tiles[12], ((size * 2) + 3) * 8, (0) * 8);
-			draw_tile(tiles[13], ((size * 2) + 3) * 8, (1) * 8);
-			draw_tile(tiles[14], ((size * 2) + 3) * 8, (2) * 8);
-			draw_tile(tiles[15], ((size * 2) + 3) * 8, (3) * 8);
+			draw_tile(tiles[12], ((size * 2) + 3) * 8, 0);
+			draw_tile(tiles[13], ((size * 2) + 3) * 8, 8);
+			draw_tile(tiles[14], ((size * 2) + 3) * 8, 16);
+			draw_tile(tiles[15], ((size * 2) + 3) * 8, 24);
 		}
 	}
 
@@ -1900,8 +1906,8 @@ namespace ZeldaFullEditor
 	{
 		public object_50(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x50, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x50];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x50].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 		}
 
@@ -1911,7 +1917,7 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 2; s++)
 			{
-				draw_tile(tiles[0], ((s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[0], ((s * 1)) * 8, 0);
 			}
 		}
 	}
@@ -1921,8 +1927,8 @@ namespace ZeldaFullEditor
 	{
 		public object_51(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x51, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x51];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x51].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1933,18 +1939,18 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[6], (2 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[9], (3 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[7], (2 + (s * 2)) * 8, (1) * 8); draw_tile(tiles[10], (3 + (s * 2)) * 8, (1) * 8);
-				draw_tile(tiles[8], (2 + (s * 2)) * 8, (2) * 8); draw_tile(tiles[11], (3 + (s * 2)) * 8, (2) * 8);
+				draw_tile(tiles[6], (2 + (s * 2)) * 8, 0); draw_tile(tiles[9], (3 + (s * 2)) * 8, 0);
+				draw_tile(tiles[7], (2 + (s * 2)) * 8, 8); draw_tile(tiles[10], (3 + (s * 2)) * 8, 8);
+				draw_tile(tiles[8], (2 + (s * 2)) * 8, 16); draw_tile(tiles[11], (3 + (s * 2)) * 8, 16);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8); draw_tile(tiles[3], (1) * 8, (0) * 8);
-			draw_tile(tiles[1], (0) * 8, (1) * 8); draw_tile(tiles[4], (1) * 8, (1) * 8);
-			draw_tile(tiles[2], (0) * 8, (2) * 8); draw_tile(tiles[5], (1) * 8, (2) * 8);
+			draw_tile(tiles[0], 0, 0); draw_tile(tiles[3], 8, 0);
+			draw_tile(tiles[1], 0, 8); draw_tile(tiles[4], 8, 8);
+			draw_tile(tiles[2], 0, 16); draw_tile(tiles[5], 8, 16);
 
-			draw_tile(tiles[12], ((size * 2) + 2) * 8, (0) * 8); draw_tile(tiles[15], ((size * 2) + 3) * 8, (0) * 8);
-			draw_tile(tiles[13], ((size * 2) + 2) * 8, (1) * 8); draw_tile(tiles[16], ((size * 2) + 3) * 8, (1) * 8);
-			draw_tile(tiles[14], ((size * 2) + 2) * 8, (2) * 8); draw_tile(tiles[17], ((size * 2) + 3) * 8, (2) * 8);
+			draw_tile(tiles[12], ((size * 2) + 2) * 8, 0); draw_tile(tiles[15], ((size * 2) + 3) * 8, 0);
+			draw_tile(tiles[13], ((size * 2) + 2) * 8, 8); draw_tile(tiles[16], ((size * 2) + 3) * 8, 8);
+			draw_tile(tiles[14], ((size * 2) + 2) * 8, 16); draw_tile(tiles[17], ((size * 2) + 3) * 8, 16);
 		}
 	}
 
@@ -1953,8 +1959,8 @@ namespace ZeldaFullEditor
 	{
 		public object_52(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x52, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x52];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x52].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -1965,18 +1971,18 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[6], (2 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[9], (3 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[7], (2 + (s * 2)) * 8, (1) * 8); draw_tile(tiles[10], (3 + (s * 2)) * 8, (1) * 8);
-				draw_tile(tiles[8], (2 + (s * 2)) * 8, (2) * 8); draw_tile(tiles[11], (3 + (s * 2)) * 8, (2) * 8);
+				draw_tile(tiles[6], (2 + (s * 2)) * 8, 0); draw_tile(tiles[9], (3 + (s * 2)) * 8, 0);
+				draw_tile(tiles[7], (2 + (s * 2)) * 8, 8); draw_tile(tiles[10], (3 + (s * 2)) * 8, 8);
+				draw_tile(tiles[8], (2 + (s * 2)) * 8, 16); draw_tile(tiles[11], (3 + (s * 2)) * 8, 16);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8); draw_tile(tiles[3], (1) * 8, (0) * 8);
-			draw_tile(tiles[1], (0) * 8, (1) * 8); draw_tile(tiles[4], (1) * 8, (1) * 8);
-			draw_tile(tiles[2], (0) * 8, (2) * 8); draw_tile(tiles[5], (1) * 8, (2) * 8);
+			draw_tile(tiles[0], 0, 0); draw_tile(tiles[3], 8, 0);
+			draw_tile(tiles[1], 0, 8); draw_tile(tiles[4], 8, 8);
+			draw_tile(tiles[2], 0, 16); draw_tile(tiles[5], 8, 16);
 
-			draw_tile(tiles[12], ((size * 2) + 2) * 8, (0) * 8); draw_tile(tiles[15], ((size * 2) + 3) * 8, (0) * 8);
-			draw_tile(tiles[13], ((size * 2) + 2) * 8, (1) * 8); draw_tile(tiles[16], ((size * 2) + 3) * 8, (1) * 8);
-			draw_tile(tiles[14], ((size * 2) + 2) * 8, (2) * 8); draw_tile(tiles[17], ((size * 2) + 3) * 8, (2) * 8);
+			draw_tile(tiles[12], ((size * 2) + 2) * 8, 0); draw_tile(tiles[15], ((size * 2) + 3) * 8, 0);
+			draw_tile(tiles[13], ((size * 2) + 2) * 8, 8); draw_tile(tiles[16], ((size * 2) + 3) * 8, 8);
+			draw_tile(tiles[14], ((size * 2) + 2) * 8, 16); draw_tile(tiles[17], ((size * 2) + 3) * 8, 16);
 		}
 	}
 
@@ -1985,8 +1991,8 @@ namespace ZeldaFullEditor
 	{
 		public object_53(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x53, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x53];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x53].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 		}
 
@@ -1996,8 +2002,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[1], (0 + (s * 2)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 2)) * 8, (1) * 8);
+				draw_tile(tiles[0], (0 + (s * 2)) * 8, 0); draw_tile(tiles[2], (1 + (s * 2)) * 8, 0);
+				draw_tile(tiles[1], (0 + (s * 2)) * 8, 8); draw_tile(tiles[3], (1 + (s * 2)) * 8, 8);
 			}
 		}
 	}
@@ -2007,7 +2013,7 @@ namespace ZeldaFullEditor
 	{
 		public object_54(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x54, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x54];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x54].Name;
 		}
 
 		public override void Draw()
@@ -2021,8 +2027,8 @@ namespace ZeldaFullEditor
 	{
 		public object_55(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x55, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x55];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x55].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -2032,8 +2038,8 @@ namespace ZeldaFullEditor
 			base.Draw();
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0 + (s * 12)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 12)) * 8, (0) * 8); draw_tile(tiles[1], (2 + (s * 12)) * 8, (0) * 8); draw_tile(tiles[3], (3 + (s * 12)) * 8, (0) * 8);
-				draw_tile(tiles[4], (0 + (s * 12)) * 8, (1) * 8); draw_tile(tiles[6], (1 + (s * 12)) * 8, (1) * 8); draw_tile(tiles[5], (2 + (s * 12)) * 8, (1) * 8); draw_tile(tiles[7], (3 + (s * 12)) * 8, (1) * 8);
+				draw_tile(tiles[0], (0 + (s * 12)) * 8, 0); draw_tile(tiles[2], (1 + (s * 12)) * 8, 0); draw_tile(tiles[1], (2 + (s * 12)) * 8, 0); draw_tile(tiles[3], (3 + (s * 12)) * 8, 0);
+				draw_tile(tiles[4], (0 + (s * 12)) * 8, 8); draw_tile(tiles[6], (1 + (s * 12)) * 8, 8); draw_tile(tiles[5], (2 + (s * 12)) * 8, 8); draw_tile(tiles[7], (3 + (s * 12)) * 8, 8);
 			}
 		}
 	}
@@ -2043,8 +2049,8 @@ namespace ZeldaFullEditor
 	{
 		public object_56(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x56, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x56];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x56].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -2054,8 +2060,8 @@ namespace ZeldaFullEditor
 			base.Draw();
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0 + (s * 12)) * 8, (0) * 8); draw_tile(tiles[1], (1 + (s * 12)) * 8, (0) * 8); draw_tile(tiles[2], (2 + (s * 12)) * 8, (0) * 8); draw_tile(tiles[3], (3 + (s * 12)) * 8, (0) * 8);
-				draw_tile(tiles[4], (0 + (s * 12)) * 8, (1) * 8); draw_tile(tiles[5], (1 + (s * 12)) * 8, (1) * 8); draw_tile(tiles[6], (2 + (s * 12)) * 8, (1) * 8); draw_tile(tiles[7], (3 + (s * 12)) * 8, (1) * 8);
+				draw_tile(tiles[0], (0 + (s * 12)) * 8, 0); draw_tile(tiles[1], (1 + (s * 12)) * 8, 0); draw_tile(tiles[2], (2 + (s * 12)) * 8, 0); draw_tile(tiles[3], (3 + (s * 12)) * 8, 0);
+				draw_tile(tiles[4], (0 + (s * 12)) * 8, 8); draw_tile(tiles[5], (1 + (s * 12)) * 8, 8); draw_tile(tiles[6], (2 + (s * 12)) * 8, 8); draw_tile(tiles[7], (3 + (s * 12)) * 8, 8);
 			}
 		}
 	}
@@ -2065,7 +2071,7 @@ namespace ZeldaFullEditor
 	{
 		public object_57(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x57, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x57];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x57].Name;
 		}
 
 		public override void Draw()
@@ -2079,7 +2085,7 @@ namespace ZeldaFullEditor
 	{
 		public object_58(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x58, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x58];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x58].Name;
 		}
 
 		public override void Draw()
@@ -2093,7 +2099,7 @@ namespace ZeldaFullEditor
 	{
 		public object_59(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x59, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x59];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x59].Name;
 		}
 
 		public override void Draw()
@@ -2107,7 +2113,7 @@ namespace ZeldaFullEditor
 	{
 		public object_5A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x5A, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x5A];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x5A].Name;
 		}
 
 		public override void Draw()
@@ -2121,8 +2127,8 @@ namespace ZeldaFullEditor
 	{
 		public object_5B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x5B, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x5B];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x5B].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -2133,18 +2139,18 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[6], (2 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[9], (3 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[7], (2 + (s * 2)) * 8, (1) * 8); draw_tile(tiles[10], (3 + (s * 2)) * 8, (1) * 8);
-				draw_tile(tiles[8], (2 + (s * 2)) * 8, (2) * 8); draw_tile(tiles[11], (3 + (s * 2)) * 8, (2) * 8);
+				draw_tile(tiles[6], (2 + (s * 2)) * 8, 0); draw_tile(tiles[9], (3 + (s * 2)) * 8, 0);
+				draw_tile(tiles[7], (2 + (s * 2)) * 8, 8); draw_tile(tiles[10], (3 + (s * 2)) * 8, 8);
+				draw_tile(tiles[8], (2 + (s * 2)) * 8, 16); draw_tile(tiles[11], (3 + (s * 2)) * 8, 16);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8); draw_tile(tiles[3], (1) * 8, (0) * 8);
-			draw_tile(tiles[1], (0) * 8, (1) * 8); draw_tile(tiles[4], (1) * 8, (1) * 8);
-			draw_tile(tiles[2], (0) * 8, (2) * 8); draw_tile(tiles[5], (1) * 8, (2) * 8);
+			draw_tile(tiles[0], 0, 0); draw_tile(tiles[3], 8, 0);
+			draw_tile(tiles[1], 0, 8); draw_tile(tiles[4], 8, 8);
+			draw_tile(tiles[2], 0, 16); draw_tile(tiles[5], 8, 16);
 
-			draw_tile(tiles[12], ((size * 2) + 2) * 8, (0) * 8); draw_tile(tiles[15], ((size * 2) + 3) * 8, (0) * 8);
-			draw_tile(tiles[13], ((size * 2) + 2) * 8, (1) * 8); draw_tile(tiles[16], ((size * 2) + 3) * 8, (1) * 8);
-			draw_tile(tiles[14], ((size * 2) + 2) * 8, (2) * 8); draw_tile(tiles[17], ((size * 2) + 3) * 8, (2) * 8);
+			draw_tile(tiles[12], ((size * 2) + 2) * 8, 0); draw_tile(tiles[15], ((size * 2) + 3) * 8, 0);
+			draw_tile(tiles[13], ((size * 2) + 2) * 8, 8); draw_tile(tiles[16], ((size * 2) + 3) * 8, 8);
+			draw_tile(tiles[14], ((size * 2) + 2) * 8, 16); draw_tile(tiles[17], ((size * 2) + 3) * 8, 16);
 		}
 	}
 
@@ -2153,8 +2159,8 @@ namespace ZeldaFullEditor
 	{
 		public object_5C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x5C, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x5C];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x5C].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -2165,18 +2171,18 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[6], (2 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[9], (3 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[7], (2 + (s * 2)) * 8, (1) * 8); draw_tile(tiles[10], (3 + (s * 2)) * 8, (1) * 8);
-				draw_tile(tiles[8], (2 + (s * 2)) * 8, (2) * 8); draw_tile(tiles[11], (3 + (s * 2)) * 8, (2) * 8);
+				draw_tile(tiles[6], (2 + (s * 2)) * 8, 0); draw_tile(tiles[9], (3 + (s * 2)) * 8, 0);
+				draw_tile(tiles[7], (2 + (s * 2)) * 8, 8); draw_tile(tiles[10], (3 + (s * 2)) * 8, 8);
+				draw_tile(tiles[8], (2 + (s * 2)) * 8, 16); draw_tile(tiles[11], (3 + (s * 2)) * 8, 16);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8); draw_tile(tiles[3], (1) * 8, (0) * 8);
-			draw_tile(tiles[1], (0) * 8, (1) * 8); draw_tile(tiles[4], (1) * 8, (1) * 8);
-			draw_tile(tiles[2], (0) * 8, (2) * 8); draw_tile(tiles[5], (1) * 8, (2) * 8);
+			draw_tile(tiles[0], 0, 0); draw_tile(tiles[3], 8, 0);
+			draw_tile(tiles[1], 0, 8); draw_tile(tiles[4], 8, 8);
+			draw_tile(tiles[2], 0, 16); draw_tile(tiles[5], 8, 16);
 
-			draw_tile(tiles[12], ((size * 2) + 2) * 8, (0) * 8); draw_tile(tiles[15], ((size * 2) + 3) * 8, (0) * 8);
-			draw_tile(tiles[13], ((size * 2) + 2) * 8, (1) * 8); draw_tile(tiles[16], ((size * 2) + 3) * 8, (1) * 8);
-			draw_tile(tiles[14], ((size * 2) + 2) * 8, (2) * 8); draw_tile(tiles[17], ((size * 2) + 3) * 8, (2) * 8);
+			draw_tile(tiles[12], ((size * 2) + 2) * 8, 0); draw_tile(tiles[15], ((size * 2) + 3) * 8, 0);
+			draw_tile(tiles[13], ((size * 2) + 2) * 8, 8); draw_tile(tiles[16], ((size * 2) + 3) * 8, 8);
+			draw_tile(tiles[14], ((size * 2) + 2) * 8, 16); draw_tile(tiles[17], ((size * 2) + 3) * 8, 16);
 		}
 	}
 
@@ -2185,8 +2191,8 @@ namespace ZeldaFullEditor
 	{
 		public object_5D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x5D, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x5D];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x5D].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(15, pos);
 			sort = Sorting.Horizontal | Sorting.Dungeons;
 		}
@@ -2197,18 +2203,18 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 2; s++)
 			{
-				draw_tile(tiles[6], (2 + (s * 1)) * 8, (0) * 8);
-				draw_tile(tiles[7], (2 + (s * 1)) * 8, (1) * 8);
-				draw_tile(tiles[8], (2 + (s * 1)) * 8, (2) * 8);
+				draw_tile(tiles[6], (2 + (s * 1)) * 8, 0);
+				draw_tile(tiles[7], (2 + (s * 1)) * 8, 8);
+				draw_tile(tiles[8], (2 + (s * 1)) * 8, 16);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8); draw_tile(tiles[3], (1) * 8, (0) * 8);
-			draw_tile(tiles[1], (0) * 8, (1) * 8); draw_tile(tiles[4], (1) * 8, (1) * 8);
-			draw_tile(tiles[2], (0) * 8, (2) * 8); draw_tile(tiles[5], (1) * 8, (2) * 8);
+			draw_tile(tiles[0], 0, 0); draw_tile(tiles[3], 8, 0);
+			draw_tile(tiles[1], 0, 8); draw_tile(tiles[4], 8, 8);
+			draw_tile(tiles[2], 0, 16); draw_tile(tiles[5], 8, 16);
 
-			draw_tile(tiles[9], ((size * 1) + 4) * 8, (0) * 8); draw_tile(tiles[12], ((size * 1) + 5) * 8, (0) * 8);
-			draw_tile(tiles[10], ((size * 1) + 4) * 8, (1) * 8); draw_tile(tiles[13], ((size * 1) + 5) * 8, (1) * 8);
-			draw_tile(tiles[11], ((size * 1) + 4) * 8, (2) * 8); draw_tile(tiles[14], ((size * 1) + 5) * 8, (2) * 8);
+			draw_tile(tiles[9], ((size * 1) + 4) * 8, 0); draw_tile(tiles[12], ((size * 1) + 5) * 8, 0);
+			draw_tile(tiles[10], ((size * 1) + 4) * 8, 8); draw_tile(tiles[13], ((size * 1) + 5) * 8, 8);
+			draw_tile(tiles[11], ((size * 1) + 4) * 8, 16); draw_tile(tiles[14], ((size * 1) + 5) * 8, 16);
 		}
 	}
 
@@ -2217,8 +2223,8 @@ namespace ZeldaFullEditor
 	{
 		public object_5E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x5E, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x5E];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x5E].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Horizontal | Sorting.Dungeons;
 		}
@@ -2229,8 +2235,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0 + (s * 4)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 4)) * 8, (0) * 8);
-				draw_tile(tiles[1], (0 + (s * 4)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 4)) * 8, (1) * 8);
+				draw_tile(tiles[0], (0 + (s * 4)) * 8, 0); draw_tile(tiles[2], (1 + (s * 4)) * 8, 0);
+				draw_tile(tiles[1], (0 + (s * 4)) * 8, 8); draw_tile(tiles[3], (1 + (s * 4)) * 8, 8);
 			}
 		}
 	}
@@ -2241,8 +2247,8 @@ namespace ZeldaFullEditor
 	{
 		public object_5F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x5F, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x5F];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x5F].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -2253,11 +2259,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 22; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8);
-			draw_tile(tiles[2], ((size + 22)) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0);
+			draw_tile(tiles[2], ((size + 22)) * 8, 0);
 		}
 	}
 
@@ -2266,8 +2272,8 @@ namespace ZeldaFullEditor
 	{
 		public object_60(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x60, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x60];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x60].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2283,8 +2289,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 2)) * 8); draw_tile(tiles[2], (1) * 8, ((s * 2)) * 8);
-				draw_tile(tiles[1], (0) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[3], (1) * 8, (1 + (s * 2)) * 8);
+				draw_tile(tiles[0], 0, ((s * 2)) * 8); draw_tile(tiles[2], 8, ((s * 2)) * 8);
+				draw_tile(tiles[1], 0, (1 + (s * 2)) * 8); draw_tile(tiles[3], 8, (1 + (s * 2)) * 8);
 			}
 		}
 	}
@@ -2294,8 +2300,8 @@ namespace ZeldaFullEditor
 	{
 		public object_61(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x61, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x61];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x61].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Vertical | Sorting.Wall;
 		}
@@ -2311,8 +2317,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 2)) * 8); draw_tile(tiles[1], (1) * 8, ((s * 2)) * 8); draw_tile(tiles[2], (2) * 8, ((s * 2)) * 8); draw_tile(tiles[3], (3) * 8, ((s * 2)) * 8);
-				draw_tile(tiles[4], (0) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[5], (1) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[6], (2) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[7], (3) * 8, (1 + (s * 2)) * 8);
+				draw_tile(tiles[0], 0, ((s * 2)) * 8); draw_tile(tiles[1], 8, ((s * 2)) * 8); draw_tile(tiles[2], 16, ((s * 2)) * 8); draw_tile(tiles[3], 24, ((s * 2)) * 8);
+				draw_tile(tiles[4], 0, (1 + (s * 2)) * 8); draw_tile(tiles[5], 8, (1 + (s * 2)) * 8); draw_tile(tiles[6], 16, (1 + (s * 2)) * 8); draw_tile(tiles[7], 24, (1 + (s * 2)) * 8);
 			}
 		}
 	}
@@ -2322,8 +2328,8 @@ namespace ZeldaFullEditor
 	{
 		public object_62(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x62, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x62];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x62].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Vertical | Sorting.Wall;
 		}
@@ -2339,8 +2345,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 2)) * 8); draw_tile(tiles[1], (1) * 8, ((s * 2)) * 8); draw_tile(tiles[2], (2) * 8, ((s * 2)) * 8); draw_tile(tiles[3], (3) * 8, ((s * 2)) * 8);
-				draw_tile(tiles[4], (0) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[5], (1) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[6], (2) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[7], (3) * 8, (1 + (s * 2)) * 8);
+				draw_tile(tiles[0], 0, ((s * 2)) * 8); draw_tile(tiles[1], 8, ((s * 2)) * 8); draw_tile(tiles[2], 16, ((s * 2)) * 8); draw_tile(tiles[3], 24, ((s * 2)) * 8);
+				draw_tile(tiles[4], 0, (1 + (s * 2)) * 8); draw_tile(tiles[5], 8, (1 + (s * 2)) * 8); draw_tile(tiles[6], 16, (1 + (s * 2)) * 8); draw_tile(tiles[7], 24, (1 + (s * 2)) * 8);
 			}
 		}
 	}
@@ -2350,8 +2356,8 @@ namespace ZeldaFullEditor
 	{
 		public object_63(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x63, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x63];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x63].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -2363,8 +2369,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 2)) * 8); draw_tile(tiles[1], (1) * 8, ((s * 2)) * 8); draw_tile(tiles[2], (2) * 8, ((s * 2)) * 8); draw_tile(tiles[3], (3) * 8, ((s * 2)) * 8);
-				draw_tile(tiles[4], (0) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[5], (1) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[6], (2) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[7], (3) * 8, (1 + (s * 2)) * 8);
+				draw_tile(tiles[0], 0, ((s * 2)) * 8); draw_tile(tiles[1], 8, ((s * 2)) * 8); draw_tile(tiles[2], 16, ((s * 2)) * 8); draw_tile(tiles[3], 24, ((s * 2)) * 8);
+				draw_tile(tiles[4], 0, (1 + (s * 2)) * 8); draw_tile(tiles[5], 8, (1 + (s * 2)) * 8); draw_tile(tiles[6], 16, (1 + (s * 2)) * 8); draw_tile(tiles[7], 24, (1 + (s * 2)) * 8);
 			}
 		}
 	}
@@ -2374,8 +2380,8 @@ namespace ZeldaFullEditor
 	{
 		public object_64(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x64, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x64];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x64].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Vertical | Sorting.Wall;
 			allBgs = true;
@@ -2387,8 +2393,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 2)) * 8); draw_tile(tiles[1], (1) * 8, ((s * 2)) * 8); draw_tile(tiles[2], (2) * 8, ((s * 2)) * 8); draw_tile(tiles[3], (3) * 8, ((s * 2)) * 8);
-				draw_tile(tiles[4], (0) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[5], (1) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[6], (2) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[7], (3) * 8, (1 + (s * 2)) * 8);
+				draw_tile(tiles[0], 0, ((s * 2)) * 8); draw_tile(tiles[1], 8, ((s * 2)) * 8); draw_tile(tiles[2], 16, ((s * 2)) * 8); draw_tile(tiles[3], 24, ((s * 2)) * 8);
+				draw_tile(tiles[4], 0, (1 + (s * 2)) * 8); draw_tile(tiles[5], 8, (1 + (s * 2)) * 8); draw_tile(tiles[6], 16, (1 + (s * 2)) * 8); draw_tile(tiles[7], 24, (1 + (s * 2)) * 8);
 			}
 		}
 	}
@@ -2398,8 +2404,8 @@ namespace ZeldaFullEditor
 	{
 		public object_65(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x65, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x65];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x65].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Vertical;
 
@@ -2411,8 +2417,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 6)) * 8); draw_tile(tiles[1], (1) * 8, ((s * 6)) * 8); draw_tile(tiles[2], (2) * 8, ((s * 6)) * 8); draw_tile(tiles[3], (3) * 8, ((s * 6)) * 8);
-				draw_tile(tiles[4], (0) * 8, (1 + (s * 6)) * 8); draw_tile(tiles[5], (1) * 8, (1 + (s * 6)) * 8); draw_tile(tiles[6], (2) * 8, (1 + (s * 6)) * 8); draw_tile(tiles[7], (3) * 8, (1 + (s * 6)) * 8);
+				draw_tile(tiles[0], 0, ((s * 6)) * 8); draw_tile(tiles[1], 8, ((s * 6)) * 8); draw_tile(tiles[2], 16, ((s * 6)) * 8); draw_tile(tiles[3], 24, ((s * 6)) * 8);
+				draw_tile(tiles[4], 0, (1 + (s * 6)) * 8); draw_tile(tiles[5], 8, (1 + (s * 6)) * 8); draw_tile(tiles[6], 16, (1 + (s * 6)) * 8); draw_tile(tiles[7], 24, (1 + (s * 6)) * 8);
 			}
 		}
 	}
@@ -2423,8 +2429,8 @@ namespace ZeldaFullEditor
 	{
 		public object_66(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x66, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x66];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x66].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Vertical;
 
@@ -2436,8 +2442,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 6)) * 8); draw_tile(tiles[1], (1) * 8, ((s * 6)) * 8); draw_tile(tiles[2], (2) * 8, ((s * 6)) * 8); draw_tile(tiles[3], (3) * 8, ((s * 6)) * 8);
-				draw_tile(tiles[4], (0) * 8, (1 + (s * 6)) * 8); draw_tile(tiles[5], (1) * 8, (1 + (s * 6)) * 8); draw_tile(tiles[6], (2) * 8, (1 + (s * 6)) * 8); draw_tile(tiles[7], (3) * 8, (1 + (s * 6)) * 8);
+				draw_tile(tiles[0], 0, ((s * 6)) * 8); draw_tile(tiles[1], 8, ((s * 6)) * 8); draw_tile(tiles[2], 16, ((s * 6)) * 8); draw_tile(tiles[3], 24, ((s * 6)) * 8);
+				draw_tile(tiles[4], 0, (1 + (s * 6)) * 8); draw_tile(tiles[5], 8, (1 + (s * 6)) * 8); draw_tile(tiles[6], 16, (1 + (s * 6)) * 8); draw_tile(tiles[7], 24, (1 + (s * 6)) * 8);
 			}
 		}
 	}
@@ -2447,8 +2453,8 @@ namespace ZeldaFullEditor
 	{
 		public object_67(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x67, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x67];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x67].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2459,8 +2465,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 2)) * 8); draw_tile(tiles[2], (1) * 8, ((s * 2)) * 8);
-				draw_tile(tiles[1], (0) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[3], (1) * 8, (1 + (s * 2)) * 8);
+				draw_tile(tiles[0], 0, ((s * 2)) * 8); draw_tile(tiles[2], 8, ((s * 2)) * 8);
+				draw_tile(tiles[1], 0, (1 + (s * 2)) * 8); draw_tile(tiles[3], 8, (1 + (s * 2)) * 8);
 			}
 		}
 	}
@@ -2470,8 +2476,8 @@ namespace ZeldaFullEditor
 	{
 		public object_68(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x68, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x68];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x68].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2482,8 +2488,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 2)) * 8); draw_tile(tiles[2], (1) * 8, ((s * 2)) * 8);
-				draw_tile(tiles[1], (0) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[3], (1) * 8, (1 + (s * 2)) * 8);
+				draw_tile(tiles[0], 0, ((s * 2)) * 8); draw_tile(tiles[2], 8, ((s * 2)) * 8);
+				draw_tile(tiles[1], 0, (1 + (s * 2)) * 8); draw_tile(tiles[3], 8, (1 + (s * 2)) * 8);
 			}
 		}
 	}
@@ -2494,8 +2500,8 @@ namespace ZeldaFullEditor
 
 		public object_69(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x69, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x69];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x69].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Vertical | Sorting.Dungeons;
 		}
@@ -2506,11 +2512,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 2; s++)
 			{
-				draw_tile(tiles[1], (0) * 8, (1 + (s * 1)) * 8);
+				draw_tile(tiles[1], 0, (1 + (s * 1)) * 8);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8, tiles[1].getshortileinfo());
-			draw_tile(tiles[2], (0) * 8, ((size + 2) + 1) * 8);
+			draw_tile(tiles[0], 0, 0, tiles[1].ToUnsignedShort());
+			draw_tile(tiles[2], 0, ((size + 2) + 1) * 8);
 		}
 	}
 
@@ -2520,8 +2526,8 @@ namespace ZeldaFullEditor
 	{
 		public object_6A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x6A, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x6A];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x6A].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2532,7 +2538,7 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 1)) * 8);
+				draw_tile(tiles[0], 0, ((s * 1)) * 8);
 			}
 		}
 	}
@@ -2542,8 +2548,8 @@ namespace ZeldaFullEditor
 	{
 		public object_6B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x6B, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x6B];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x6B].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2554,7 +2560,7 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 1)) * 8);
+				draw_tile(tiles[0], 0, ((s * 1)) * 8);
 			}
 		}
 	}
@@ -2565,8 +2571,8 @@ namespace ZeldaFullEditor
 	{
 		public object_6C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x6C, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x6C];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x6C].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(6, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2577,15 +2583,15 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 14; s++)
 			{
-				draw_tile(tiles[3], (0) * 8, (0 + (s * 1)) * 8);
+				draw_tile(tiles[3], 0, (0 + (s * 1)) * 8);
 				draw_tile(tiles[0], (0 + 1) * 8, (((s * 1)) * 8));
 			}
 
-			draw_tile(tiles[1], (0) * 8, (0) * 8);
-			draw_tile(tiles[2], (0) * 8, (1) * 8);
+			draw_tile(tiles[1], 0, 0);
+			draw_tile(tiles[2], 0, 8);
 
-			draw_tile(tiles[4], (0) * 8, (size + 12) * 8);
-			draw_tile(tiles[5], (0) * 8, (size + 12 + 1) * 8);
+			draw_tile(tiles[4], 0, (size + 12) * 8);
+			draw_tile(tiles[5], 0, (size + 12 + 1) * 8);
 		}
 	}
 
@@ -2594,8 +2600,8 @@ namespace ZeldaFullEditor
 	{
 		public object_6D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x6D, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x6D];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x6D].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(6, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2607,11 +2613,11 @@ namespace ZeldaFullEditor
 			for (int s = 0; s < size + 14; s++)
 			{
 				draw_tile(tiles[3], (0 + 1) * 8, (0 + (s * 1)) * 8);
-				draw_tile(tiles[0], (0) * 8, (((s * 1)) * 8));
+				draw_tile(tiles[0], 0, (((s * 1)) * 8));
 			}
 
-			draw_tile(tiles[1], (0 + 1) * 8, (0) * 8);
-			draw_tile(tiles[2], (0 + 1) * 8, (1) * 8);
+			draw_tile(tiles[1], (0 + 1) * 8, 0);
+			draw_tile(tiles[2], (0 + 1) * 8, 8);
 
 			draw_tile(tiles[4], (0 + 1) * 8, (size + 12) * 8);
 			draw_tile(tiles[5], (0 + 1) * 8, (size + 12 + 1) * 8);
@@ -2623,7 +2629,7 @@ namespace ZeldaFullEditor
 	{
 		public object_6E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x6E, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x6E];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x6E].Name;
 		}
 
 		public override void Draw()
@@ -2637,7 +2643,7 @@ namespace ZeldaFullEditor
 	{
 		public object_6F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x6F, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x6F];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x6F].Name;
 		}
 
 		public override void Draw()
@@ -2651,8 +2657,8 @@ namespace ZeldaFullEditor
 	{
 		public object_70(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x70, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x70];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x70].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2681,8 +2687,8 @@ namespace ZeldaFullEditor
 	{
 		public object_71(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x71, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x71];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x71].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2693,7 +2699,7 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 4; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 1)) * 8);
+				draw_tile(tiles[0], 0, ((s * 1)) * 8);
 			}
 		}
 	}
@@ -2704,7 +2710,7 @@ namespace ZeldaFullEditor
 	{
 		public object_72(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x72, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x72];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x72].Name;
 		}
 
 		public override void Draw()
@@ -2718,8 +2724,8 @@ namespace ZeldaFullEditor
 	{
 		public object_73(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x73, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x73];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x73].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2748,8 +2754,8 @@ namespace ZeldaFullEditor
 	{
 		public object_74(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x74, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x74];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x74].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2778,8 +2784,8 @@ namespace ZeldaFullEditor
 	{
 		public object_75(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x75, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x75];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x75].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2790,10 +2796,10 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 6)) * 8); draw_tile(tiles[4], (1) * 8, ((s * 6)) * 8);
-				draw_tile(tiles[1], (0) * 8, (1 + (s * 6)) * 8); draw_tile(tiles[5], (1) * 8, (1 + (s * 6)) * 8);
-				draw_tile(tiles[2], (0) * 8, (2 + (s * 6)) * 8); draw_tile(tiles[6], (1) * 8, (2 + (s * 6)) * 8);
-				draw_tile(tiles[3], (0) * 8, (3 + (s * 6)) * 8); draw_tile(tiles[7], (1) * 8, (3 + (s * 6)) * 8);
+				draw_tile(tiles[0], 0, ((s * 6)) * 8); draw_tile(tiles[4], 8, ((s * 6)) * 8);
+				draw_tile(tiles[1], 0, (1 + (s * 6)) * 8); draw_tile(tiles[5], 8, (1 + (s * 6)) * 8);
+				draw_tile(tiles[2], 0, (2 + (s * 6)) * 8); draw_tile(tiles[6], 8, (2 + (s * 6)) * 8);
+				draw_tile(tiles[3], 0, (3 + (s * 6)) * 8); draw_tile(tiles[7], 8, (3 + (s * 6)) * 8);
 			}
 		}
 	}
@@ -2803,8 +2809,8 @@ namespace ZeldaFullEditor
 	{
 		public object_76(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x76, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x76];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x76].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2834,8 +2840,8 @@ namespace ZeldaFullEditor
 	{
 		public object_77(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x77, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x77];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x77].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2864,8 +2870,8 @@ namespace ZeldaFullEditor
 	{
 		public object_78(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x78, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x78];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x78].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2894,8 +2900,8 @@ namespace ZeldaFullEditor
 	{
 		public object_79(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x79, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x79];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x79].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2906,7 +2912,7 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 1)) * 8);
+				draw_tile(tiles[0], 0, ((s * 1)) * 8);
 			}
 		}
 	}
@@ -2916,8 +2922,8 @@ namespace ZeldaFullEditor
 	{
 		public object_7A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x7A, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x7A];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x7A].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2928,7 +2934,7 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 1)) * 8);
+				draw_tile(tiles[0], 0, ((s * 1)) * 8);
 			}
 		}
 	}
@@ -2938,8 +2944,8 @@ namespace ZeldaFullEditor
 	{
 		public object_7B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x7B, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x7B];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x7B].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2968,8 +2974,8 @@ namespace ZeldaFullEditor
 	{
 		public object_7C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x7C, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x7C];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x7C].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Vertical;
 		}
@@ -2980,7 +2986,7 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 2; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 1)) * 8);
+				draw_tile(tiles[0], 0, ((s * 1)) * 8);
 			}
 		}
 	}
@@ -2990,8 +2996,8 @@ namespace ZeldaFullEditor
 	{
 		public object_7D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x7D, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x7D];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x7D].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 		}
 
@@ -3020,7 +3026,7 @@ namespace ZeldaFullEditor
 	{
 		public object_7E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x7E, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x7E];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x7E].Name;
 		}
 
 		public override void Draw()
@@ -3034,8 +3040,8 @@ namespace ZeldaFullEditor
 	{
 		public object_7F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x7F, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x7F];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x7F].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Vertical;
 		}
@@ -3065,8 +3071,8 @@ namespace ZeldaFullEditor
 	{
 		public object_80(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x80, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x80];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x80].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Vertical;
 		}
@@ -3095,8 +3101,8 @@ namespace ZeldaFullEditor
 	{
 		public object_81(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x81, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x81];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x81].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos);
 			sort = Sorting.Vertical;
 		}
@@ -3125,8 +3131,8 @@ namespace ZeldaFullEditor
 	{
 		public object_82(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x82, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x82];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x82].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos);
 			sort = Sorting.Vertical;
 		}
@@ -3155,8 +3161,8 @@ namespace ZeldaFullEditor
 	{
 		public object_83(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x83, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x83];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x83].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos);
 			sort = Sorting.Vertical;
 		}
@@ -3185,8 +3191,8 @@ namespace ZeldaFullEditor
 	{
 		public object_84(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x84, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x84];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x84].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos);
 			sort = Sorting.Vertical;
 		}
@@ -3215,8 +3221,8 @@ namespace ZeldaFullEditor
 	{
 		public object_85(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x85, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x85];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x85].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos);
 			sort = Sorting.Vertical;
 		}
@@ -3227,18 +3233,18 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[6], (0) * 8, (2 + (s * 2)) * 8); draw_tile(tiles[9], (0) * 8, (3 + (s * 2)) * 8);
-				draw_tile(tiles[7], (1) * 8, (2 + (s * 2)) * 8); draw_tile(tiles[10], (1) * 8, (3 + (s * 2)) * 8);
-				draw_tile(tiles[8], (2) * 8, (2 + (s * 2)) * 8); draw_tile(tiles[11], (2) * 8, (3 + (s * 2)) * 8);
+				draw_tile(tiles[6], 0, (2 + (s * 2)) * 8); draw_tile(tiles[9], 0, (3 + (s * 2)) * 8);
+				draw_tile(tiles[7], 8, (2 + (s * 2)) * 8); draw_tile(tiles[10], 8, (3 + (s * 2)) * 8);
+				draw_tile(tiles[8], 16, (2 + (s * 2)) * 8); draw_tile(tiles[11], 16, (3 + (s * 2)) * 8);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8); draw_tile(tiles[3], (0) * 8, (1) * 8);
-			draw_tile(tiles[1], (1) * 8, (0) * 8); draw_tile(tiles[4], (1) * 8, (1) * 8);
-			draw_tile(tiles[2], (2) * 8, (0) * 8); draw_tile(tiles[5], (2) * 8, (1) * 8);
+			draw_tile(tiles[0], 0, 0); draw_tile(tiles[3], 0, 8);
+			draw_tile(tiles[1], 8, 0); draw_tile(tiles[4], 8, 8);
+			draw_tile(tiles[2], 16, 0); draw_tile(tiles[5], 16, 8);
 
-			draw_tile(tiles[12], (0) * 8, ((size * 2) + 2) * 8); draw_tile(tiles[15], (0) * 8, ((size * 2) + 3) * 8);
-			draw_tile(tiles[13], (1) * 8, ((size * 2) + 2) * 8); draw_tile(tiles[16], (1) * 8, ((size * 2) + 3) * 8);
-			draw_tile(tiles[14], (2) * 8, ((size * 2) + 2) * 8); draw_tile(tiles[17], (2) * 8, ((size * 2) + 3) * 8);
+			draw_tile(tiles[12], 0, ((size * 2) + 2) * 8); draw_tile(tiles[15], 0, ((size * 2) + 3) * 8);
+			draw_tile(tiles[13], 8, ((size * 2) + 2) * 8); draw_tile(tiles[16], 8, ((size * 2) + 3) * 8);
+			draw_tile(tiles[14], 16, ((size * 2) + 2) * 8); draw_tile(tiles[17], 16, ((size * 2) + 3) * 8);
 		}
 	}
 
@@ -3247,8 +3253,8 @@ namespace ZeldaFullEditor
 	{
 		public object_86(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x86, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x86];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x86].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(18, pos);
 			sort = Sorting.Vertical;
 		}
@@ -3259,18 +3265,18 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[6], (0) * 8, (2 + (s * 2)) * 8); draw_tile(tiles[9], (0) * 8, (3 + (s * 2)) * 8);
-				draw_tile(tiles[7], (1) * 8, (2 + (s * 2)) * 8); draw_tile(tiles[10], (1) * 8, (3 + (s * 2)) * 8);
-				draw_tile(tiles[8], (2) * 8, (2 + (s * 2)) * 8); draw_tile(tiles[11], (2) * 8, (3 + (s * 2)) * 8);
+				draw_tile(tiles[6], 0, (2 + (s * 2)) * 8); draw_tile(tiles[9], 0, (3 + (s * 2)) * 8);
+				draw_tile(tiles[7], 8, (2 + (s * 2)) * 8); draw_tile(tiles[10], 8, (3 + (s * 2)) * 8);
+				draw_tile(tiles[8], 16, (2 + (s * 2)) * 8); draw_tile(tiles[11], 16, (3 + (s * 2)) * 8);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8); draw_tile(tiles[3], (0) * 8, (1) * 8);
-			draw_tile(tiles[1], (1) * 8, (0) * 8); draw_tile(tiles[4], (1) * 8, (1) * 8);
-			draw_tile(tiles[2], (2) * 8, (0) * 8); draw_tile(tiles[5], (2) * 8, (1) * 8);
+			draw_tile(tiles[0], 0, 0); draw_tile(tiles[3], 0, 8);
+			draw_tile(tiles[1], 8, 0); draw_tile(tiles[4], 8, 8);
+			draw_tile(tiles[2], 16, 0); draw_tile(tiles[5], 16, 8);
 
-			draw_tile(tiles[12], (0) * 8, ((size * 2) + 2) * 8); draw_tile(tiles[15], (0) * 8, ((size * 2) + 3) * 8);
-			draw_tile(tiles[13], (1) * 8, ((size * 2) + 2) * 8); draw_tile(tiles[16], (1) * 8, ((size * 2) + 3) * 8);
-			draw_tile(tiles[14], (2) * 8, ((size * 2) + 2) * 8); draw_tile(tiles[17], (2) * 8, ((size * 2) + 3) * 8);
+			draw_tile(tiles[12], 0, ((size * 2) + 2) * 8); draw_tile(tiles[15], 0, ((size * 2) + 3) * 8);
+			draw_tile(tiles[13], 8, ((size * 2) + 2) * 8); draw_tile(tiles[16], 8, ((size * 2) + 3) * 8);
+			draw_tile(tiles[14], 16, ((size * 2) + 2) * 8); draw_tile(tiles[17], 16, ((size * 2) + 3) * 8);
 		}
 	}
 
@@ -3279,8 +3285,8 @@ namespace ZeldaFullEditor
 	{
 		public object_87(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x87, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x87];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x87].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Vertical | Sorting.Dungeons;
 		}
@@ -3291,10 +3297,10 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 6)) * 8); draw_tile(tiles[4], (1) * 8, ((s * 6)) * 8);
-				draw_tile(tiles[1], (0) * 8, (1 + (s * 6)) * 8); draw_tile(tiles[5], (1) * 8, (1 + (s * 6)) * 8);
-				draw_tile(tiles[2], (0) * 8, (2 + (s * 6)) * 8); draw_tile(tiles[6], (1) * 8, (2 + (s * 6)) * 8);
-				draw_tile(tiles[3], (0) * 8, (3 + (s * 6)) * 8); draw_tile(tiles[7], (1) * 8, (3 + (s * 6)) * 8);
+				draw_tile(tiles[0], 0, ((s * 6)) * 8); draw_tile(tiles[4], 8, ((s * 6)) * 8);
+				draw_tile(tiles[1], 0, (1 + (s * 6)) * 8); draw_tile(tiles[5], 8, (1 + (s * 6)) * 8);
+				draw_tile(tiles[2], 0, (2 + (s * 6)) * 8); draw_tile(tiles[6], 8, (2 + (s * 6)) * 8);
+				draw_tile(tiles[3], 0, (3 + (s * 6)) * 8); draw_tile(tiles[7], 8, (3 + (s * 6)) * 8);
 			}
 		}
 	}
@@ -3304,8 +3310,8 @@ namespace ZeldaFullEditor
 	{
 		public object_88(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x88, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x88];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x88].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(12, pos);
 			sort = Sorting.Vertical | Sorting.Dungeons;
 		}
@@ -3316,15 +3322,15 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 2; s++)
 			{
-				draw_tile(tiles[4], (0) * 8, (0 + 2 + s) * 8); draw_tile(tiles[5], (1) * 8, (0 + 2 + s) * 8);
+				draw_tile(tiles[4], 0, (0 + 2 + s) * 8); draw_tile(tiles[5], 8, (0 + 2 + s) * 8);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8); draw_tile(tiles[2], (1) * 8, (0) * 8);
-			draw_tile(tiles[1], (0) * 8, (0 + 1) * 8); draw_tile(tiles[3], (1) * 8, (1) * 8);
+			draw_tile(tiles[0], 0, 0); draw_tile(tiles[2], 8, 0);
+			draw_tile(tiles[1], 0, (0 + 1) * 8); draw_tile(tiles[3], 8, 8);
 
-			draw_tile(tiles[6], (0) * 8, (size + 3) * 8); draw_tile(tiles[9], (1) * 8, (size + 3) * 8);
-			draw_tile(tiles[7], (0) * 8, (1 + size + 3) * 8); draw_tile(tiles[10], (1) * 8, (1 + size + 3) * 8);
-			draw_tile(tiles[8], (0) * 8, (2 + size + 3) * 8); draw_tile(tiles[11], (1) * 8, (2 + size + 3) * 8);
+			draw_tile(tiles[6], 0, (size + 3) * 8); draw_tile(tiles[9], 8, (size + 3) * 8);
+			draw_tile(tiles[7], 0, (1 + size + 3) * 8); draw_tile(tiles[10], 8, (1 + size + 3) * 8);
+			draw_tile(tiles[8], 0, (2 + size + 3) * 8); draw_tile(tiles[11], 8, (2 + size + 3) * 8);
 		}
 	}
 
@@ -3333,8 +3339,8 @@ namespace ZeldaFullEditor
 	{
 		public object_89(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x89, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x89];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x89].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Vertical | Sorting.Dungeons;
 		}
@@ -3345,8 +3351,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 4)) * 8); draw_tile(tiles[2], (1) * 8, ((s * 4)) * 8);
-				draw_tile(tiles[1], (0) * 8, (1 + (s * 4)) * 8); draw_tile(tiles[3], (1) * 8, (1 + (s * 4)) * 8);
+				draw_tile(tiles[0], 0, ((s * 4)) * 8); draw_tile(tiles[2], 8, ((s * 4)) * 8);
+				draw_tile(tiles[1], 0, (1 + (s * 4)) * 8); draw_tile(tiles[3], 8, (1 + (s * 4)) * 8);
 			}
 		}
 	}
@@ -3356,8 +3362,8 @@ namespace ZeldaFullEditor
 	{
 		public object_8A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x8A, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x8A];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x8A].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 		}
 
@@ -3367,11 +3373,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 21; s++)
 			{
-				draw_tile(tiles[1], (0) * 8, (1 + (s * 1)) * 8);
+				draw_tile(tiles[1], 0, (1 + (s * 1)) * 8);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8);
-			draw_tile(tiles[2], (0) * 8, ((size + 21) + 1) * 8);
+			draw_tile(tiles[0], 0, 0);
+			draw_tile(tiles[2], 0, ((size + 21) + 1) * 8);
 		}
 	}
 
@@ -3380,8 +3386,8 @@ namespace ZeldaFullEditor
 	{
 		public object_8B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x8B, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x8B];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x8B].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Vertical;
 		}
@@ -3392,7 +3398,7 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 8; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 1)) * 8);
+				draw_tile(tiles[0], 0, ((s * 1)) * 8);
 			}
 		}
 	}
@@ -3402,8 +3408,8 @@ namespace ZeldaFullEditor
 	{
 		public object_8C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x8C, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x8C];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x8C].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 			sort = Sorting.Vertical;
 		}
@@ -3413,7 +3419,7 @@ namespace ZeldaFullEditor
 			base.Draw();
 			for (int s = 0; s < size + 8; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 1)) * 8);
+				draw_tile(tiles[0], 0, ((s * 1)) * 8);
 			}
 		}
 	}
@@ -3424,8 +3430,8 @@ namespace ZeldaFullEditor
 	{
 		public object_8D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x8D, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x8D];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x8D].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Vertical;
 		}
@@ -3436,7 +3442,7 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 1)) * 8);
+				draw_tile(tiles[0], 0, ((s * 1)) * 8);
 			}
 		}
 	}
@@ -3446,8 +3452,8 @@ namespace ZeldaFullEditor
 	{
 		public object_8E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x8E, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x8E];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x8E].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Vertical;
 		}
@@ -3458,7 +3464,7 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 1)) * 8);
+				draw_tile(tiles[0], 0, ((s * 1)) * 8);
 			}
 		}
 	}
@@ -3468,8 +3474,8 @@ namespace ZeldaFullEditor
 	{
 		public object_8F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x8F, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x8F];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x8F].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(6, pos);
 		}
 
@@ -3479,11 +3485,11 @@ namespace ZeldaFullEditor
 			for (int s =
 				0; s < size + 2; s++)
 			{
-				draw_tile(tiles[2], (0) * 8, (0 + 1 + (s * 2)) * 8); draw_tile(tiles[3], (0 + 1) * 8, (0 + 1 + (s * 2)) * 8);
-				draw_tile(tiles[2], (0) * 8, (2 + (s * 2)) * 8); draw_tile(tiles[3], (1) * 8, (2 + (s * 2)) * 8);
+				draw_tile(tiles[2], 0, (0 + 1 + (s * 2)) * 8); draw_tile(tiles[3], (0 + 1) * 8, (0 + 1 + (s * 2)) * 8);
+				draw_tile(tiles[2], 0, (2 + (s * 2)) * 8); draw_tile(tiles[3], 8, (2 + (s * 2)) * 8);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8); draw_tile(tiles[1], (0 + 1) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0); draw_tile(tiles[1], (0 + 1) * 8, 0);
 		}
 	}
 
@@ -3494,8 +3500,8 @@ namespace ZeldaFullEditor
 	{
 		public object_90(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x90, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x90];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x90].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Vertical | Sorting.Wall;
 		}
@@ -3511,8 +3517,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 2)) * 8); draw_tile(tiles[1], (1) * 8, ((s * 2)) * 8); draw_tile(tiles[2], (2) * 8, ((s * 2)) * 8); draw_tile(tiles[3], (3) * 8, ((s * 2)) * 8);
-				draw_tile(tiles[4], (0) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[5], (1) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[6], (2) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[7], (3) * 8, (1 + (s * 2)) * 8);
+				draw_tile(tiles[0], 0, ((s * 2)) * 8); draw_tile(tiles[1], 8, ((s * 2)) * 8); draw_tile(tiles[2], 16, ((s * 2)) * 8); draw_tile(tiles[3], 24, ((s * 2)) * 8);
+				draw_tile(tiles[4], 0, (1 + (s * 2)) * 8); draw_tile(tiles[5], 8, (1 + (s * 2)) * 8); draw_tile(tiles[6], 16, (1 + (s * 2)) * 8); draw_tile(tiles[7], 24, (1 + (s * 2)) * 8);
 			}
 		}
 	}
@@ -3522,8 +3528,8 @@ namespace ZeldaFullEditor
 	{
 		public object_91(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x91, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x91];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x91].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Vertical | Sorting.Wall;
 		}
@@ -3539,8 +3545,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 2)) * 8); draw_tile(tiles[1], (1) * 8, ((s * 2)) * 8); draw_tile(tiles[2], (2) * 8, ((s * 2)) * 8); draw_tile(tiles[3], (3) * 8, ((s * 2)) * 8);
-				draw_tile(tiles[4], (0) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[5], (1) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[6], (2) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[7], (3) * 8, (1 + (s * 2)) * 8);
+				draw_tile(tiles[0], 0, ((s * 2)) * 8); draw_tile(tiles[1], 8, ((s * 2)) * 8); draw_tile(tiles[2], 16, ((s * 2)) * 8); draw_tile(tiles[3], 24, ((s * 2)) * 8);
+				draw_tile(tiles[4], 0, (1 + (s * 2)) * 8); draw_tile(tiles[5], 8, (1 + (s * 2)) * 8); draw_tile(tiles[6], 16, (1 + (s * 2)) * 8); draw_tile(tiles[7], 24, (1 + (s * 2)) * 8);
 			}
 		}
 	}
@@ -3551,8 +3557,8 @@ namespace ZeldaFullEditor
 	{
 		public object_92(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x92, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x92];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x92].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Vertical | Sorting.Dungeons;
 		}
@@ -3568,8 +3574,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 2)) * 8); draw_tile(tiles[2], (1) * 8, ((s * 2)) * 8);
-				draw_tile(tiles[1], (0) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[3], (1) * 8, (1 + (s * 2)) * 8);
+				draw_tile(tiles[0], 0, ((s * 2)) * 8); draw_tile(tiles[2], 8, ((s * 2)) * 8);
+				draw_tile(tiles[1], 0, (1 + (s * 2)) * 8); draw_tile(tiles[3], 8, (1 + (s * 2)) * 8);
 			}
 		}
 	}
@@ -3579,8 +3585,8 @@ namespace ZeldaFullEditor
 	{
 		public object_93(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x93, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x93];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x93].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Vertical | Sorting.Dungeons;
 		}
@@ -3596,8 +3602,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 2)) * 8); draw_tile(tiles[2], (1) * 8, ((s * 2)) * 8);
-				draw_tile(tiles[1], (0) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[3], (1) * 8, (1 + (s * 2)) * 8);
+				draw_tile(tiles[0], 0, ((s * 2)) * 8); draw_tile(tiles[2], 8, ((s * 2)) * 8);
+				draw_tile(tiles[1], 0, (1 + (s * 2)) * 8); draw_tile(tiles[3], 8, (1 + (s * 2)) * 8);
 			}
 		}
 	}
@@ -3607,8 +3613,8 @@ namespace ZeldaFullEditor
 	{
 		public object_94(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x94, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x94];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x94].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Vertical | Sorting.Dungeons | Sorting.Floors;
 		}
@@ -3637,8 +3643,8 @@ namespace ZeldaFullEditor
 	{
 		public object_95(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x95, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x95];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x95].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Vertical;
 		}
@@ -3649,8 +3655,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 2)) * 8); draw_tile(tiles[2], (1) * 8, ((s * 2)) * 8);
-				draw_tile(tiles[1], (0) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[3], (1) * 8, (1 + (s * 2)) * 8);
+				draw_tile(tiles[0], 0, ((s * 2)) * 8); draw_tile(tiles[2], 8, ((s * 2)) * 8);
+				draw_tile(tiles[1], 0, (1 + (s * 2)) * 8); draw_tile(tiles[3], 8, (1 + (s * 2)) * 8);
 			}
 		}
 	}
@@ -3660,8 +3666,8 @@ namespace ZeldaFullEditor
 	{
 		public object_96(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x96, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x96];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x96].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Vertical | Sorting.Dungeons;
 		}
@@ -3672,8 +3678,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0) * 8, ((s * 2)) * 8); draw_tile(tiles[2], (1) * 8, ((s * 2)) * 8);
-				draw_tile(tiles[1], (0) * 8, (1 + (s * 2)) * 8); draw_tile(tiles[3], (1) * 8, (1 + (s * 2)) * 8);
+				draw_tile(tiles[0], 0, ((s * 2)) * 8); draw_tile(tiles[2], 8, ((s * 2)) * 8);
+				draw_tile(tiles[1], 0, (1 + (s * 2)) * 8); draw_tile(tiles[3], 8, (1 + (s * 2)) * 8);
 			}
 		}
 	}
@@ -3683,7 +3689,7 @@ namespace ZeldaFullEditor
 	{
 		public object_97(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x97, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x97];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x97].Name;
 		}
 
 		public override void Draw()
@@ -3697,7 +3703,7 @@ namespace ZeldaFullEditor
 	{
 		public object_98(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x98, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x98];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x98].Name;
 		}
 
 		public override void Draw()
@@ -3711,7 +3717,7 @@ namespace ZeldaFullEditor
 	{
 		public object_99(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x99, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x99];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x99].Name;
 		}
 
 		public override void Draw()
@@ -3725,7 +3731,7 @@ namespace ZeldaFullEditor
 	{
 		public object_9A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x9A, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x9A];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x9A].Name;
 		}
 
 		public override void Draw()
@@ -3739,7 +3745,7 @@ namespace ZeldaFullEditor
 	{
 		public object_9B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x9B, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x9B];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x9B].Name;
 		}
 
 		public override void Draw()
@@ -3753,7 +3759,7 @@ namespace ZeldaFullEditor
 	{
 		public object_9C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x9C, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x9C];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x9C].Name;
 		}
 
 		public override void Draw()
@@ -3767,7 +3773,7 @@ namespace ZeldaFullEditor
 	{
 		public object_9D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x9D, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x9D];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x9D].Name;
 		}
 
 		public override void Draw()
@@ -3781,7 +3787,7 @@ namespace ZeldaFullEditor
 	{
 		public object_9E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x9E, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x9E];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x9E].Name;
 		}
 
 		public override void Draw()
@@ -3795,7 +3801,7 @@ namespace ZeldaFullEditor
 	{
 		public object_9F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x9F, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0x9F];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0x9F].Name;
 		}
 
 		public override void Draw()
@@ -3809,8 +3815,8 @@ namespace ZeldaFullEditor
 	{
 		public object_A0(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xA0, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xA0];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xA0].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -3837,8 +3843,8 @@ namespace ZeldaFullEditor
 	{
 		public object_A1(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xA1, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xA1];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xA1].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -3870,8 +3876,8 @@ namespace ZeldaFullEditor
 	{
 		public object_A2(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xA2, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xA2];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xA2].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -3899,8 +3905,8 @@ namespace ZeldaFullEditor
 	{
 		public object_A3(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xA3, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xA3];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xA3].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -3930,8 +3936,8 @@ namespace ZeldaFullEditor
 	{
 		public object_A4(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xA4, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xA4];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xA4].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(24, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -3940,14 +3946,14 @@ namespace ZeldaFullEditor
 		{
 			base.Draw();
 
-			draw_tile(tiles[8], (0) * 8, (0) * 8);//top left corner
-			draw_tile(tiles[9], (1) * 8, (0) * 8); //vertical tile
+			draw_tile(tiles[8], 0, 0);//top left corner
+			draw_tile(tiles[9], 8, 0); //vertical tile
 												   //horizontal tile
 			draw_tile(tiles[23], (size + 3) * 8, (size + 3) * 8);
 
-			draw_tile(tiles[17], (0) * 8, (size + 3) * 8);//bottom left corner
+			draw_tile(tiles[17], 0, (size + 3) * 8);//bottom left corner
 
-			draw_tile(tiles[14], (size + 3) * 8, (0) * 8);
+			draw_tile(tiles[14], (size + 3) * 8, 0);
 
 			for (int xx = 1; xx < size + 3; xx++)
 			{
@@ -3956,12 +3962,12 @@ namespace ZeldaFullEditor
 					draw_tile(tiles[0], (xx) * 8, (yy) * 8);
 				}
 				draw_tile(tiles[19], (xx) * 8, (size + 3) * 8);
-				draw_tile(tiles[10], (xx) * 8, (0) * 8);
+				draw_tile(tiles[10], (xx) * 8, 0);
 			}
 
 			for (int yy = 1; yy < size + 3; yy++)
 			{
-				draw_tile(tiles[9], (0) * 8, (yy) * 8);
+				draw_tile(tiles[9], 0, (yy) * 8);
 				draw_tile(tiles[15], (size + 3) * 8, (yy) * 8);
 			}
 		}
@@ -3972,8 +3978,8 @@ namespace ZeldaFullEditor
 	{
 		public object_A5(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xA5, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xA5];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xA5].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -4000,8 +4006,8 @@ namespace ZeldaFullEditor
 	{
 		public object_A6(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xA6, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xA6];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xA6].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -4029,8 +4035,8 @@ namespace ZeldaFullEditor
 	{
 		public object_A7(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xA7, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xA7];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xA7].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -4058,8 +4064,8 @@ namespace ZeldaFullEditor
 	{
 		public object_A8(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xA8, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xA8];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xA8].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -4086,8 +4092,8 @@ namespace ZeldaFullEditor
 	{
 		public object_A9(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xA9, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xA9];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xA9].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 			showRectangle = true;
@@ -4115,8 +4121,8 @@ namespace ZeldaFullEditor
 	{
 		public object_AA(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xAA, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xAA];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xAA].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 			showRectangle = true;
@@ -4144,8 +4150,8 @@ namespace ZeldaFullEditor
 	{
 		public object_AB(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xAB, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xAB];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xAB].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 			showRectangle = true;
@@ -4174,8 +4180,8 @@ namespace ZeldaFullEditor
 	{
 		public object_AC(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xAC, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xAC];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xAC].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 			showRectangle = true;
@@ -4210,8 +4216,8 @@ namespace ZeldaFullEditor
 	{
 		public object_AD(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xAD, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xAD];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xAD].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 
 		}
@@ -4220,7 +4226,7 @@ namespace ZeldaFullEditor
 		{
 			base.Draw();
 
-			draw_tile(tiles[0], ((0) * 8), (0) * 8);
+			draw_tile(tiles[0], (0), 0);
 		}
 	}
 
@@ -4229,8 +4235,8 @@ namespace ZeldaFullEditor
 	{
 		public object_AE(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xAE, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xAE];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xAE].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 		}
 
@@ -4238,7 +4244,7 @@ namespace ZeldaFullEditor
 		{
 			base.Draw();
 
-			draw_tile(tiles[0], ((0) * 8), (0) * 8);
+			draw_tile(tiles[0], (0), 0);
 		}
 	}
 
@@ -4247,8 +4253,8 @@ namespace ZeldaFullEditor
 	{
 		public object_AF(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xAF, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xAF];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xAF].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 		}
 
@@ -4256,7 +4262,7 @@ namespace ZeldaFullEditor
 		{
 			base.Draw();
 
-			draw_tile(tiles[0], ((0) * 8), (0) * 8);
+			draw_tile(tiles[0], (0), 0);
 		}
 	}
 
@@ -4265,8 +4271,8 @@ namespace ZeldaFullEditor
 	{
 		public object_B0(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xB0, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xB0];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xB0].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -4277,7 +4283,7 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 8; s++)
 			{
-				draw_tile(tiles[0], ((s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[0], ((s * 1)) * 8, 0);
 			}
 		}
 	}
@@ -4288,8 +4294,8 @@ namespace ZeldaFullEditor
 
 		public object_B1(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xB1, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xB1];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xB1].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -4300,7 +4306,7 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 8; s++)
 			{
-				draw_tile(tiles[0], ((s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[0], ((s * 1)) * 8, 0);
 			}
 		}
 	}
@@ -4311,8 +4317,8 @@ namespace ZeldaFullEditor
 	{
 		public object_B2(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xB2, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xB2];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xB2].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Horizontal | Sorting.Floors;
 		}
@@ -4341,8 +4347,8 @@ namespace ZeldaFullEditor
 	{
 		public object_B3(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xB3, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xB3];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xB3].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 		}
 
@@ -4352,11 +4358,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8);
-			draw_tile(tiles[2], ((size + 2)) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0);
+			draw_tile(tiles[2], ((size + 2)) * 8, 0);
 		}
 	}
 
@@ -4365,8 +4371,8 @@ namespace ZeldaFullEditor
 	{
 		public object_B4(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xB4, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xB4];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xB4].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(3, pos);
 		}
 
@@ -4377,11 +4383,11 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[1], (1 + (s * 1)) * 8, (0) * 8);
+				draw_tile(tiles[1], (1 + (s * 1)) * 8, 0);
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8);
-			draw_tile(tiles[2], ((size + 2)) * 8, (0) * 8);
+			draw_tile(tiles[0], 0, 0);
+			draw_tile(tiles[2], ((size + 2)) * 8, 0);
 		}
 	}
 
@@ -4391,8 +4397,8 @@ namespace ZeldaFullEditor
 
 		public object_B5(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xB5, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xB5];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xB5].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 		}
 
@@ -4420,8 +4426,8 @@ namespace ZeldaFullEditor
 	{
 		public object_B6(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xB6, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xB6];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xB6].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Horizontal | Sorting.Wall;
 		}
@@ -4450,8 +4456,8 @@ namespace ZeldaFullEditor
 	{
 		public object_B7(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xB7, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xB7];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xB7].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Horizontal | Sorting.Wall;
 		}
@@ -4480,8 +4486,8 @@ namespace ZeldaFullEditor
 	{
 		public object_B8(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xB8, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xB8];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xB8].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Horizontal | Sorting.Dungeons;
 		}
@@ -4515,8 +4521,8 @@ namespace ZeldaFullEditor
 	{
 		public object_B9(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xB9, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xB9];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xB9].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Horizontal | Sorting.Dungeons;
 		}
@@ -4550,8 +4556,8 @@ namespace ZeldaFullEditor
 	{
 		public object_BA(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xBA, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xBA];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xBA].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(16, pos);
 			sort = Sorting.Horizontal | Sorting.Floors;
 		}
@@ -4581,8 +4587,8 @@ namespace ZeldaFullEditor
 
 		public object_BB(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xBB, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xBB];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xBB].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 		}
 
@@ -4592,8 +4598,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0 + (s * 4)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 4)) * 8, (0) * 8);
-				draw_tile(tiles[1], (0 + (s * 4)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 4)) * 8, (1) * 8);
+				draw_tile(tiles[0], (0 + (s * 4)) * 8, 0); draw_tile(tiles[2], (1 + (s * 4)) * 8, 0);
+				draw_tile(tiles[1], (0 + (s * 4)) * 8, 8); draw_tile(tiles[3], (1 + (s * 4)) * 8, 8);
 			}
 		}
 	}
@@ -4603,8 +4609,8 @@ namespace ZeldaFullEditor
 	{
 		public object_BC(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xBC, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xBC];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xBC].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -4614,8 +4620,8 @@ namespace ZeldaFullEditor
 			base.Draw();
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[1], (0 + (s * 2)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 2)) * 8, (1) * 8);
+				draw_tile(tiles[0], (0 + (s * 2)) * 8, 0); draw_tile(tiles[2], (1 + (s * 2)) * 8, 0);
+				draw_tile(tiles[1], (0 + (s * 2)) * 8, 8); draw_tile(tiles[3], (1 + (s * 2)) * 8, 8);
 			}
 		}
 	}
@@ -4626,8 +4632,8 @@ namespace ZeldaFullEditor
 	{
 		public object_BD(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xBD, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xBD];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xBD].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Horizontal;
 		}
@@ -4638,8 +4644,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0 + (s * 2)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 2)) * 8, (0) * 8);
-				draw_tile(tiles[1], (0 + (s * 2)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 2)) * 8, (1) * 8);
+				draw_tile(tiles[0], (0 + (s * 2)) * 8, 0); draw_tile(tiles[2], (1 + (s * 2)) * 8, 0);
+				draw_tile(tiles[1], (0 + (s * 2)) * 8, 8); draw_tile(tiles[3], (1 + (s * 2)) * 8, 8);
 			}
 		}
 	}
@@ -4650,7 +4656,7 @@ namespace ZeldaFullEditor
 	{
 		public object_BE(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xBE, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xBE];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xBE].Name;
 		}
 
 		public override void Draw()
@@ -4665,7 +4671,7 @@ namespace ZeldaFullEditor
 	{
 		public object_BF(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xBF, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xBF];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xBF].Name;
 		}
 
 		public override void Draw()
@@ -4679,8 +4685,8 @@ namespace ZeldaFullEditor
 	{
 		public object_C0(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xC0, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xC0];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xC0].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			sort = Sorting.Horizontal | Sorting.Vertical;
 			addTiles(1, pos);
 		}
@@ -4713,8 +4719,8 @@ namespace ZeldaFullEditor
 	{
 		public object_C1(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xC1, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xC1];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xC1].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(68, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -4753,7 +4759,7 @@ namespace ZeldaFullEditor
 
 			for (int sx = 0; sx < sizex + 4; sx++)
 			{
-				draw_tile(tiles[9], (3 + (sx * 2)) * 8, 0 * 8); draw_tile(tiles[12], (4 + (sx * 2)) * 8, 0 * 8);
+				draw_tile(tiles[9], (3 + (sx * 2)) * 8, 0); draw_tile(tiles[12], (4 + (sx * 2)) * 8, 0);
 				draw_tile(tiles[10], (3 + (sx * 2)) * 8, 1 * 8); draw_tile(tiles[13], (4 + (sx * 2)) * 8, 1 * 8);
 				draw_tile(tiles[11], (3 + (sx * 2)) * 8, 2 * 8); draw_tile(tiles[14], (4 + (sx * 2)) * 8, 2 * 8);
 
@@ -4767,8 +4773,8 @@ namespace ZeldaFullEditor
 
 			for (int sy = 0; sy < sizey + 1; sy++)
 			{
-				draw_tile(tiles[24], (0) * 8, (3 + sy * 2) * 8); draw_tile(tiles[25], (1) * 8, (3 + sy * 2) * 8); draw_tile(tiles[26], (2) * 8, (3 + sy * 2) * 8);
-				draw_tile(tiles[27], (0) * 8, (4 + sy * 2) * 8); draw_tile(tiles[28], (1) * 8, (4 + sy * 2) * 8); draw_tile(tiles[29], (2) * 8, (4 + sy * 2) * 8);
+				draw_tile(tiles[24], 0, (3 + sy * 2) * 8); draw_tile(tiles[25], 8, (3 + sy * 2) * 8); draw_tile(tiles[26], 16, (3 + sy * 2) * 8);
+				draw_tile(tiles[27], 0, (4 + sy * 2) * 8); draw_tile(tiles[28], 8, (4 + sy * 2) * 8); draw_tile(tiles[29], 16, (4 + sy * 2) * 8);
 
 				draw_tile(tiles[34], (((sizex + 4) * 2) + 3) * 8, (3 + sy * 2) * 8); draw_tile(tiles[35], (((sizex + 4) * 2) + 4) * 8, (3 + sy * 2) * 8); draw_tile(tiles[36], (((sizex + 4) * 2) + 5) * 8, (3 + sy * 2) * 8);
 				draw_tile(tiles[37], (((sizex + 4) * 2) + 3) * 8, (4 + sy * 2) * 8); draw_tile(tiles[38], (((sizex + 4) * 2) + 4) * 8, (4 + sy * 2) * 8); draw_tile(tiles[39], (((sizex + 4) * 2) + 5) * 8, (4 + sy * 2) * 8);
@@ -4781,8 +4787,8 @@ namespace ZeldaFullEditor
 	{
 		public object_C2(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xC2, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xC2];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xC2].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical;
 			showRectangle = true;
@@ -4816,8 +4822,8 @@ namespace ZeldaFullEditor
 	{
 		public object_C3(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xC3, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xC3];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xC3].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos);//??
 			sort = Sorting.Horizontal | Sorting.Vertical;
 			showRectangle = true;
@@ -4851,7 +4857,7 @@ namespace ZeldaFullEditor
 	{
 		public object_C4(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xC4, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xC4];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xC4].Name;
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
 
@@ -4863,7 +4869,7 @@ namespace ZeldaFullEditor
 			int sizey = ((size) & 0x03);
 
 			byte f = (byte) (room.floor1 << 4); // How can it be null oO ?
-			int pos = Constants.tile_address + f;
+			int pos = ZS.Offsets.tile_address + f;
 			addTiles(8, pos);//??
 
 			for (int xx = 0; xx < sizex + 1; xx++)
@@ -4891,9 +4897,9 @@ namespace ZeldaFullEditor
 	{
 		public object_C5(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xC5, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xC5];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xC5].Name;
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 		}
 
@@ -4928,8 +4934,8 @@ namespace ZeldaFullEditor
 	{
 		public object_C6(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xC6, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xC6];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xC6].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical;
 			showRectangle = true;
@@ -4968,8 +4974,8 @@ namespace ZeldaFullEditor
 	{
 		public object_C7(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xC7, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xC7];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xC7].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);//??
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
@@ -5006,8 +5012,8 @@ namespace ZeldaFullEditor
 	{
 		public object_C8(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xC8, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xC8];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xC8].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 			addTiles(8, pos);//??
 		}
@@ -5044,8 +5050,8 @@ namespace ZeldaFullEditor
 	{
 		public object_C9(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xC9, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xC9];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xC9].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 			addTiles(8, pos);//??
 		}
@@ -5082,8 +5088,8 @@ namespace ZeldaFullEditor
 	{
 		public object_CA(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xCA, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xCA];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xCA].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 			addTiles(8, pos); // ??
 		}
@@ -5120,7 +5126,7 @@ namespace ZeldaFullEditor
 	{
 		public object_CB(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xCB, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xCB];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xCB].Name;
 		}
 
 		public override void Draw()
@@ -5134,7 +5140,7 @@ namespace ZeldaFullEditor
 	{
 		public object_CC(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xCC, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xCC];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xCC].Name;
 		}
 
 		public override void Draw()
@@ -5148,11 +5154,11 @@ namespace ZeldaFullEditor
 	{
 		public object_CD(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xCD, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xCD];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xCD].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			addTiles(24, pos); // ??
-			pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((0 & 0xFF) * 2), 2];
+			pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((0 & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			offsetX = -8;
 		}
@@ -5163,9 +5169,9 @@ namespace ZeldaFullEditor
 
 			int sizey = ((size >> 2) & 0x03);
 			int sizex = ((size) & 0x03);
-			draw_tile(tiles[0], ((sizex * 8) + 8) * 8, (0) * 8); draw_tile(tiles[3], ((sizex * 8) + 9) * 8, (0) * 8); draw_tile(tiles[6], ((sizex * 8) + 10) * 8, (0) * 8);
-			draw_tile(tiles[1], ((sizex * 8) + 8) * 8, (1) * 8); draw_tile(tiles[4], ((sizex * 8) + 9) * 8, (1) * 8); draw_tile(tiles[7], ((sizex * 8) + 10) * 8, (1) * 8);
-			draw_tile(tiles[2], ((sizex * 8) + 8) * 8, (2) * 8); draw_tile(tiles[5], ((sizex * 8) + 9) * 8, (2) * 8); draw_tile(tiles[8], ((sizex * 8) + 10) * 8, (2) * 8);
+			draw_tile(tiles[0], ((sizex * 8) + 8) * 8, 0); draw_tile(tiles[3], ((sizex * 8) + 9) * 8, 0); draw_tile(tiles[6], ((sizex * 8) + 10) * 8, 0);
+			draw_tile(tiles[1], ((sizex * 8) + 8) * 8, 8); draw_tile(tiles[4], ((sizex * 8) + 9) * 8, 8); draw_tile(tiles[7], ((sizex * 8) + 10) * 8, 8);
+			draw_tile(tiles[2], ((sizex * 8) + 8) * 8, 16); draw_tile(tiles[5], ((sizex * 8) + 9) * 8, 16); draw_tile(tiles[8], ((sizex * 8) + 10) * 8, 16);
 
 			draw_tile(tiles[15], ((sizex * 8) + 8) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[18], ((sizex * 8) + 9) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[21], ((sizex * 8) + 10) * 8, ((0 + 13) + sizey * 4) * 8);
 			draw_tile(tiles[16], ((sizex * 8) + 8) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[19], ((sizex * 8) + 9) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[22], ((sizex * 8) + 10) * 8, ((1 + 13) + sizey * 4) * 8);
@@ -5193,12 +5199,12 @@ namespace ZeldaFullEditor
 	{
 		public object_CE(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xCE, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xCE];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xCE].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Wall;
 			addTiles(24, pos); // ??
 							   // Ceiling tiles
-			pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((0 & 0xFF) * 2), 2];
+			pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((0 & 0xFF) * 2), 2];
 			addTiles(4, pos);
 		}
 
@@ -5209,13 +5215,13 @@ namespace ZeldaFullEditor
 			int sizey = ((size >> 2) & 0x03);
 			int sizex = ((size) & 0x03);
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8); draw_tile(tiles[3], (1) * 8, (0) * 8); draw_tile(tiles[6], (2) * 8, (0) * 8);
-			draw_tile(tiles[1], (0) * 8, (1) * 8); draw_tile(tiles[4], (1) * 8, (1) * 8); draw_tile(tiles[7], (2) * 8, (1) * 8);
-			draw_tile(tiles[2], (0) * 8, (2) * 8); draw_tile(tiles[5], (1) * 8, (2) * 8); draw_tile(tiles[8], (2) * 8, (2) * 8);
+			draw_tile(tiles[0], 0, 0); draw_tile(tiles[3], 8, 0); draw_tile(tiles[6], 16, 0);
+			draw_tile(tiles[1], 0, 8); draw_tile(tiles[4], 8, 8); draw_tile(tiles[7], 16, 8);
+			draw_tile(tiles[2], 0, 16); draw_tile(tiles[5], 8, 16); draw_tile(tiles[8], 16, 16);
 
-			draw_tile(tiles[15], (0) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[18], (1) * 8, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[21], (2) * 8, ((0 + 13) + sizey * 4) * 8);
-			draw_tile(tiles[16], (0) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[19], (1) * 8, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[22], (2) * 8, ((1 + 13) + sizey * 4) * 8);
-			draw_tile(tiles[17], (0) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(tiles[20], (1) * 8, ((2 + 13) + sizey * 4) * 8); draw_tile(tiles[23], (2) * 8, ((2 + 13) + sizey * 4) * 8);
+			draw_tile(tiles[15], 0, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[18], 8, ((0 + 13) + sizey * 4) * 8); draw_tile(tiles[21], 16, ((0 + 13) + sizey * 4) * 8);
+			draw_tile(tiles[16], 0, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[19], 8, ((1 + 13) + sizey * 4) * 8); draw_tile(tiles[22], 16, ((1 + 13) + sizey * 4) * 8);
+			draw_tile(tiles[17], 0, ((2 + 13) + sizey * 4) * 8); draw_tile(tiles[20], 8, ((2 + 13) + sizey * 4) * 8); draw_tile(tiles[23], 16, ((2 + 13) + sizey * 4) * 8);
 
 			for (int xx = 0; xx < 4 + (sizex * 4); xx++)
 			{
@@ -5228,8 +5234,8 @@ namespace ZeldaFullEditor
 
 			for (int yy = 0; yy < 5 + (sizey * 2); yy++)
 			{
-				draw_tile(tiles[9], (0) * 8, ((yy * 2) + 3) * 8); draw_tile(tiles[10], (1) * 8, ((yy * 2) + 3) * 8); draw_tile(tiles[11], (2) * 8, ((yy * 2) + 3) * 8);
-				draw_tile(tiles[12], (0) * 8, ((yy * 2) + 4) * 8); draw_tile(tiles[13], (1) * 8, ((yy * 2) + 4) * 8); draw_tile(tiles[14], (2) * 8, ((yy * 2) + 4) * 8);
+				draw_tile(tiles[9], 0, ((yy * 2) + 3) * 8); draw_tile(tiles[10], 8, ((yy * 2) + 3) * 8); draw_tile(tiles[11], 16, ((yy * 2) + 3) * 8);
+				draw_tile(tiles[12], 0, ((yy * 2) + 4) * 8); draw_tile(tiles[13], 8, ((yy * 2) + 4) * 8); draw_tile(tiles[14], 16, ((yy * 2) + 4) * 8);
 			}
 
 		}
@@ -5240,7 +5246,7 @@ namespace ZeldaFullEditor
 	{
 		public object_CF(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xCF, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xCF];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xCF].Name;
 		}
 
 		public override void Draw()
@@ -5254,7 +5260,7 @@ namespace ZeldaFullEditor
 	{
 		public object_D0(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xD0, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xD0];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xD0].Name;
 		}
 
 		public override void Draw()
@@ -5268,8 +5274,8 @@ namespace ZeldaFullEditor
 	{
 		public object_D1(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xD1, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xD1];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xD1].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
@@ -5306,8 +5312,8 @@ namespace ZeldaFullEditor
 	{
 		public object_D2(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xD2, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xD2];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xD2].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
@@ -5344,7 +5350,7 @@ namespace ZeldaFullEditor
 	{
 		public object_D3(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xD3, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xD3];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xD3].Name;
 		}
 
 		public override void Draw()
@@ -5358,7 +5364,7 @@ namespace ZeldaFullEditor
 	{
 		public object_D4(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xD4, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xD4];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xD4].Name;
 		}
 
 		public override void Draw()
@@ -5372,7 +5378,7 @@ namespace ZeldaFullEditor
 	{
 		public object_D5(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xD5, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xD5];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xD5].Name;
 		}
 
 		public override void Draw()
@@ -5386,7 +5392,7 @@ namespace ZeldaFullEditor
 	{
 		public object_D6(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xD6, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xD6];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xD6].Name;
 		}
 
 		public override void Draw()
@@ -5400,8 +5406,8 @@ namespace ZeldaFullEditor
 	{
 		public object_D7(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xD7, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xD7];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xD7].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(1, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -5435,8 +5441,8 @@ namespace ZeldaFullEditor
 	{
 		public object_D8(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xD8, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xD8];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xD8].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 			addTiles(8, pos); // ??
 		}
@@ -5473,8 +5479,8 @@ namespace ZeldaFullEditor
 	{
 		public object_D9(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xD9, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xD9];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xD9].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -5511,8 +5517,8 @@ namespace ZeldaFullEditor
 	{
 		public object_DA(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xDA, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xDA];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xDA].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 			addTiles(8, pos); // ??
 		}
@@ -5550,7 +5556,7 @@ namespace ZeldaFullEditor
 
 		public object_DB(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xDB, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xDB];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xDB].Name;
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
 
@@ -5562,7 +5568,7 @@ namespace ZeldaFullEditor
 			int sizey = ((size) & 0x03);
 
 			byte f = (byte) (room.floor2 << 4);
-			int pos = Constants.tile_address + f;
+			int pos = ZS.Offsets.tile_address + f;
 			tiles.Clear();
 			addTiles(8, pos);// ??
 
@@ -5591,8 +5597,8 @@ namespace ZeldaFullEditor
 	{
 		public object_DC(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xDC, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xDC];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xDC].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(21, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -5647,10 +5653,10 @@ namespace ZeldaFullEditor
 				// draw_tile(tiles[15], ((xx + 8 + sizex) * 8), (4 + (sizey * 2)) * 8); // Last line of carpet right side chunk
 			}
 
-			draw_tile(tiles[9], (3 + sizex) * 8, (0) * 8); // Middle
-			draw_tile(tiles[9], (4 + sizex) * 8, (0) * 8); // Middle
-			draw_tile(tiles[9], (5 + sizex) * 8, (0) * 8); // Middle
-			draw_tile(tiles[9], (6 + sizex) * 8, (0) * 8); // Middle
+			draw_tile(tiles[9], (3 + sizex) * 8, 0); // Middle
+			draw_tile(tiles[9], (4 + sizex) * 8, 0); // Middle
+			draw_tile(tiles[9], (5 + sizex) * 8, 0); // Middle
+			draw_tile(tiles[9], (6 + sizex) * 8, 0); // Middle
 
 			draw_tile(tiles[10], (3 + sizex) * 8, (5 + (sizey * 2)) * 8); // Stairs1
 			draw_tile(tiles[10], (4 + sizex) * 8, (5 + (sizey * 2)) * 8); // Stairs1
@@ -5690,8 +5696,8 @@ namespace ZeldaFullEditor
 	{
 		public object_DD(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xDD, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xDD];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xDD].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			sort = Sorting.Horizontal | Sorting.Vertical;
 			addTiles(16, pos);
 		}
@@ -5717,26 +5723,26 @@ namespace ZeldaFullEditor
 
 			for (int yy = 0; yy < sizey + 1; yy++)
 			{
-				draw_tile(tiles[4], (0) * 8, (1 + (yy * 2)) * 8); // Left border
-				draw_tile(tiles[8], (0) * 8, (2 + (yy * 2)) * 8); // Left border
+				draw_tile(tiles[4], 0, (1 + (yy * 2)) * 8); // Left border
+				draw_tile(tiles[8], 0, (2 + (yy * 2)) * 8); // Left border
 
 				draw_tile(tiles[7], (3 + (sizex * 2)) * 8, (1 + (yy * 2)) * 8); // Right border
 				draw_tile(tiles[11], (3 + (sizex * 2)) * 8, (2 + (yy * 2)) * 8); // Right border
 			}
 
-			draw_tile(tiles[0], (0) * 8, (0) * 8); // Top left corner
-			draw_tile(tiles[12], (0) * 8, (3 + (sizey * 2)) * 8); // Bottom left corner
+			draw_tile(tiles[0], 0, 0); // Top left corner
+			draw_tile(tiles[12], 0, (3 + (sizey * 2)) * 8); // Bottom left corner
 
 			for (int xx = 0; xx < sizex + 1; xx++)
 			{
-				draw_tile(tiles[1], (1 + (xx * 2)) * 8, (0) * 8); // Top border
-				draw_tile(tiles[2], (2 + (xx * 2)) * 8, (0) * 8); // Top border
+				draw_tile(tiles[1], (1 + (xx * 2)) * 8, 0); // Top border
+				draw_tile(tiles[2], (2 + (xx * 2)) * 8, 0); // Top border
 
 				draw_tile(tiles[13], (1 + (xx * 2)) * 8, (3 + (sizey * 2)) * 8); // Bottom border
 				draw_tile(tiles[14], (2 + (xx * 2)) * 8, (3 + (sizey * 2)) * 8); // Bottom border
 			}
 
-			draw_tile(tiles[3], (3 + (sizex * 2)) * 8, (0) * 8); // Top right corner
+			draw_tile(tiles[3], (3 + (sizex * 2)) * 8, 0); // Top right corner
 			draw_tile(tiles[15], (3 + (sizex * 2)) * 8, (3 + (sizey * 2)) * 8); // Bottom right corner
 		}
 	}
@@ -5746,8 +5752,8 @@ namespace ZeldaFullEditor
 	{
 		public object_DE(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xDE, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xDE];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xDE].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical;
 		}
@@ -5778,8 +5784,8 @@ namespace ZeldaFullEditor
 	{
 		public object_DF(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xDF, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xDF];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xDF].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
@@ -5816,8 +5822,8 @@ namespace ZeldaFullEditor
 	{
 		public object_E0(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xE0, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xE0];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xE0].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos);//??
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
@@ -5854,8 +5860,8 @@ namespace ZeldaFullEditor
 	{
 		public object_E1(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xE1, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xE1];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xE1].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
@@ -5892,8 +5898,8 @@ namespace ZeldaFullEditor
 	{
 		public object_E2(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xE2, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xE2];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xE2].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
@@ -5930,8 +5936,8 @@ namespace ZeldaFullEditor
 	{
 		public object_E3(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xE3, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xE3];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xE3].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
@@ -5968,8 +5974,8 @@ namespace ZeldaFullEditor
 	{
 		public object_E4(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xE4, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xE4];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xE4].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
@@ -6005,8 +6011,8 @@ namespace ZeldaFullEditor
 	{
 		public object_E5(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xE5, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xE5];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xE5].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
@@ -6043,8 +6049,8 @@ namespace ZeldaFullEditor
 	{
 		public object_E6(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xE6, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xE6];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xE6].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
@@ -6081,8 +6087,8 @@ namespace ZeldaFullEditor
 	{
 		public object_E7(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xE7, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xE7];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xE7].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
@@ -6120,8 +6126,8 @@ namespace ZeldaFullEditor
 
 		public object_E8(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xE8, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xE8];
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((id & 0xFF) * 2), 2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xE8].Name;
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((id & 0xFF) * 2), 2];
 			addTiles(8, pos); // ??
 			sort = Sorting.Horizontal | Sorting.Vertical | Sorting.Floors;
 		}
@@ -6158,7 +6164,7 @@ namespace ZeldaFullEditor
 	{
 		public object_E9(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xE9, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xE9];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xE9].Name;
 		}
 	}
 
@@ -6167,7 +6173,7 @@ namespace ZeldaFullEditor
 	{
 		public object_EA(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xEA, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xEA];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xEA].Name;
 		}
 	}
 
@@ -6176,7 +6182,7 @@ namespace ZeldaFullEditor
 	{
 		public object_EB(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xEB, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xEB];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xEB].Name;
 		}
 	}
 
@@ -6185,7 +6191,7 @@ namespace ZeldaFullEditor
 	{
 		public object_EC(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xEC, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xEC];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xEC].Name;
 		}
 	}
 
@@ -6194,7 +6200,7 @@ namespace ZeldaFullEditor
 	{
 		public object_ED(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xED, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xED];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xED].Name;
 		}
 	}
 
@@ -6203,7 +6209,7 @@ namespace ZeldaFullEditor
 	{
 		public object_EE(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xEE, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xEE];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xEE].Name;
 		}
 	}
 
@@ -6212,7 +6218,7 @@ namespace ZeldaFullEditor
 	{
 		public object_EF(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xEF, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xEF];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xEF].Name;
 		}
 	}
 
@@ -6221,7 +6227,7 @@ namespace ZeldaFullEditor
 	{
 		public object_F0(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xF0, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xF0];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xF0].Name;
 		}
 	}
 
@@ -6230,7 +6236,7 @@ namespace ZeldaFullEditor
 	{
 		public object_F1(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xF1, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xF1];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xF1].Name;
 		}
 	}
 
@@ -6239,7 +6245,7 @@ namespace ZeldaFullEditor
 	{
 		public object_F2(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xF2, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xF2];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xF2].Name;
 		}
 	}
 
@@ -6248,7 +6254,7 @@ namespace ZeldaFullEditor
 	{
 		public object_F3(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xF3, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xF3];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xF3].Name;
 		}
 	}
 
@@ -6257,7 +6263,7 @@ namespace ZeldaFullEditor
 	{
 		public object_F4(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xF4, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xF4];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xF4].Name;
 		}
 	}
 
@@ -6266,7 +6272,7 @@ namespace ZeldaFullEditor
 	{
 		public object_F5(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xF5, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xF5];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xF5].Name;
 		}
 	}
 
@@ -6275,7 +6281,7 @@ namespace ZeldaFullEditor
 	{
 		public object_F6(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xF6, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xF6];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xF6].Name;
 		}
 	}
 
@@ -6284,7 +6290,7 @@ namespace ZeldaFullEditor
 	{
 		public object_F7(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0xF7, x, y, size, layer)
 		{
-			name = Constants.Type1RoomObjectNames[0xF7];
+			name = Data.DefaultEntities.ListOfSet0RoomObjects[0xF7].Name;
 		}
 	}
 
@@ -6293,7 +6299,7 @@ namespace ZeldaFullEditor
 	{
 		public object_Block(ushort id, byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, id, x, y, size, layer)
 		{
-			int pos = Constants.tile_address + ZS.ROM[Constants.subtype1_tiles + ((0x5E & 0xFF) * 2), 2];
+			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + ((0x5E & 0xFF) * 2), 2];
 			addTiles(4, pos);
 			name = "Pushable Block"; // ID E00
 			options = ObjectOption.Block;
@@ -6305,8 +6311,8 @@ namespace ZeldaFullEditor
 
 			for (int s = 0; s < size + 1; s++)
 			{
-				draw_tile(tiles[0], (0 + (s * 4)) * 8, (0) * 8); draw_tile(tiles[2], (1 + (s * 4)) * 8, (0) * 8);
-				draw_tile(tiles[1], (0 + (s * 4)) * 8, (1) * 8); draw_tile(tiles[3], (1 + (s * 4)) * 8, (1) * 8);
+				draw_tile(tiles[0], (0 + (s * 4)) * 8, 0); draw_tile(tiles[2], (1 + (s * 4)) * 8, 0);
+				draw_tile(tiles[1], (0 + (s * 4)) * 8, 8); draw_tile(tiles[3], (1 + (s * 4)) * 8, 8);
 			}
 		}
 	}

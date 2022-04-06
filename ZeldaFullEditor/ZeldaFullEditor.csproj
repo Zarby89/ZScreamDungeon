@@ -220,17 +220,26 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AddressSet.cs" />
     <Compile Include="asar.cs" />
     <Compile Include="ChestDraw.cs" />
     <Compile Include="Data\DefaultEntities.cs" />
     <Compile Include="Data\DoorData.cs" />
     <Compile Include="Data\DungeonMap.cs" />
-    <Compile Include="Data\DungeonRoomObject.cs" />
+    <Compile Include="Data\DungeonObjects\DungeonObjectDraw.cs" />
+    <Compile Include="Data\DungeonObjects\DungeonObjectTypes.cs" />
+    <Compile Include="Data\DungeonObjects\DungeonRoom.cs" />
+    <Compile Include="Data\DungeonObjects\DungeonRoomObject.cs" />
+    <Compile Include="Data\DungeonObjects\RoomObjectTileLister.cs" />
     <Compile Include="Data\EntityName.cs" />
     <Compile Include="Data\Gravestone.cs" />
     <Compile Include="Data\MapIcon.cs" />
     <Compile Include="Data\OAMTile.cs" />
     <Compile Include="Data\ScreenStrip.cs" />
+    <Compile Include="Data\Sprites\Sprite.cs" />
+    <Compile Include="Data\Sprites\SpriteDraw.cs" />
+    <Compile Include="Data\Sprites\SpriteTypes.cs" />
+    <Compile Include="FloorNumber.cs" />
     <Compile Include="Gui\DataExtractor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -564,7 +573,6 @@
     <Compile Include="Data\Tile.cs" />
     <Compile Include="Data\Tile16.cs" />
     <Compile Include="Data\Tile32.cs" />
-    <Compile Include="Data\TileInfo.cs" />
     <Compile Include="Data\TilePos.cs" />
     <Compile Include="Data\TileUndo.cs" />
     <Compile Include="Data\TransportOW.cs" />

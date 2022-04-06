@@ -123,7 +123,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
 		private void UpdateText()
 		{
-			bool pad = enforcepad | !Focused;
+			bool pad = enforcepad || !Focused;
 			switch (Digits)
 			{
 				case HexDigits.One:

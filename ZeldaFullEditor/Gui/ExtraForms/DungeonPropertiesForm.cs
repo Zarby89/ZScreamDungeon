@@ -40,9 +40,9 @@ namespace ZeldaFullEditor.Gui
 			{
 				properties[i] = new DungeonProperty
 				(
-					ZS.ROM[Constants.dungeons_startrooms + i],
-					ZS.ROM[Constants.dungeons_endrooms + i],
-					ZS.ROM[Constants.dungeons_bossrooms + (i * 2), 2]
+					ZS.ROM[ZS.Offsets.dungeons_startrooms + i],
+					ZS.ROM[ZS.Offsets.dungeons_endrooms + i],
+					ZS.ROM[ZS.Offsets.dungeons_bossrooms + (i * 2), 2]
 				);
 			}
 
@@ -81,9 +81,9 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < 12; i++)
 			{
-				ZS.ROM[Constants.dungeons_startrooms + i] = properties[i].startroom;
-				ZS.ROM[Constants.dungeons_endrooms + i] = properties[i].endroom;
-				ZS.ROM[Constants.dungeons_bossrooms + (i * 2), 2] = properties[i].bossroom;
+				ZS.ROM[ZS.Offsets.dungeons_startrooms + i] = properties[i].startroom;
+				ZS.ROM[ZS.Offsets.dungeons_endrooms + i] = properties[i].endroom;
+				ZS.ROM[ZS.Offsets.dungeons_bossrooms + (i * 2), 2] = properties[i].bossroom;
 			}
 
 			Close();

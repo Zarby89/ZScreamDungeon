@@ -247,7 +247,7 @@ namespace ZeldaFullEditor
 			addPotsItems();
 			isdamagePit();
 			this.name = ROMStructure.roomsNames[index];
-			messageid = ZS.ROM[Constants.messages_id_dungeon + (index * 2), 2];
+			messageid = ZS.ROM[ZS.Offsets.messages_id_dungeon + (index * 2), 2];
 
 			LoadCustomCollisionFromRom();
 		}
@@ -266,8 +266,8 @@ namespace ZeldaFullEditor
 
 		public void isdamagePit()
 		{
-			int pitCount = ZS.ROM[Constants.pit_count] / 2;
-			int pitPointer = SNESFunctions.SNEStoPC(ZS.ROM[Constants.pit_pointer, 3]);
+			int pitCount = ZS.ROM[ZS.Offsets.pit_count] / 2;
+			int pitPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.pit_pointer, 3]);
 
 			for (int i = 0; i < pitCount; i++)
 			{
@@ -475,7 +475,7 @@ namespace ZeldaFullEditor
 
 		public unsafe void reloadAnimatedGfx()
 		{
-			int gfxanimatedPointer = SNESFunctions.SNEStoPC(ZS.ROM[Constants.gfx_animated_pointer, 3]);
+			int gfxanimatedPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_animated_pointer, 3]);
 
 			byte* newPdata = (byte*) ZS.GFXManager.allgfx16Ptr.ToPointer(); // Turn gfx16 (all 222 of them)
 			byte* sheetsData = (byte*) ZS.GFXManager.currentgfx16Ptr.ToPointer(); // Into "room gfx16" 16 of them
@@ -551,7 +551,7 @@ namespace ZeldaFullEditor
 
 		public void addSprites()
 		{
-			int spritePointer = 0x040000 | ZS.ROM[Constants.rooms_sprite_pointer, 2];
+			int spritePointer = 0x040000 | ZS.ROM[ZS.Offsets.rooms_sprite_pointer, 2];
 
 			// 09 bank ? Need to check if HM change that
 			int sprite_address = SNESFunctions.SNEStoPC(Constants.DungeonSpritePointers | ZS.ROM[spritePointer + (index * 2), 2]);
@@ -824,10 +824,10 @@ namespace ZeldaFullEditor
 
 		public void addlistBlock(ref byte[] blocksdata, int maxCount)
 		{
-			int pos1 = SNESFunctions.SNEStoPC(ZS.ROM[Constants.blocks_pointer1, 3]);
-			int pos2 = SNESFunctions.SNEStoPC(ZS.ROM[Constants.blocks_pointer2, 3]);
-			int pos3 = SNESFunctions.SNEStoPC(ZS.ROM[Constants.blocks_pointer3, 3]);
-			int pos4 = SNESFunctions.SNEStoPC(ZS.ROM[Constants.blocks_pointer4, 3]);
+			int pos1 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.blocks_pointer1, 3]);
+			int pos2 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.blocks_pointer2, 3]);
+			int pos3 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.blocks_pointer3, 3]);
+			int pos4 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.blocks_pointer4, 3]);
 
 			for (int i = 0; i < 0x80; i += 1)
 			{
@@ -849,7 +849,7 @@ namespace ZeldaFullEditor
 		{
 			// 288
 
-			int blocksCount = ZS.ROM[Constants.blocks_length, 2];
+			int blocksCount = ZS.ROM[ZS.Offsets.blocks_length, 2];
 			byte[] blocksdata = new byte[blocksCount];
 
 			addlistBlock(ref blocksdata, blocksCount);
@@ -879,12 +879,12 @@ namespace ZeldaFullEditor
 
 		public void addTorches()
 		{
-			int bytes_count = ZS.ROM[Constants.torches_length_pointer, 2];
+			int bytes_count = ZS.ROM[ZS.Offsets.torches_length_pointer, 2];
 
 			for (int i = 0; i < bytes_count; i += 2)
 			{
-				byte b1 = ZS.ROM[Constants.torch_data + i];
-				byte b2 = ZS.ROM[Constants.torch_data + i + 1];
+				byte b1 = ZS.ROM[ZS.Offsets.torch_data + i];
+				byte b2 = ZS.ROM[ZS.Offsets.torch_data + i + 1];
 
 				if (b1 == 0xFF && b2 == 0xFF) { continue; }
 
@@ -893,8 +893,8 @@ namespace ZeldaFullEditor
 					i += 2;
 					while (true)
 					{
-						b1 = ZS.ROM[Constants.torch_data + i];
-						b2 = ZS.ROM[Constants.torch_data + i + 1];
+						b1 = ZS.ROM[ZS.Offsets.torch_data + i];
+						b2 = ZS.ROM[ZS.Offsets.torch_data + i + 1];
 
 						if (b1 == 0xFF && b2 == 0xFF) { break; }
 						int address = ((b2 & 0x1F) << 8 | b1) >> 1;
@@ -920,8 +920,8 @@ namespace ZeldaFullEditor
 				{
 					while (true)
 					{
-						b1 = ZS.ROM[Constants.torch_data + i];
-						b2 = ZS.ROM[Constants.torch_data + i + 1];
+						b1 = ZS.ROM[ZS.Offsets.torch_data + i];
+						b2 = ZS.ROM[ZS.Offsets.torch_data + i + 1];
 						if (b1 == 0xFF && b2 == 0xFF) { break; }
 						i += 2;
 					}
@@ -932,7 +932,7 @@ namespace ZeldaFullEditor
 
 		public void addPotsItems()
 		{
-			int item_address_snes = 0x010000 | ZS.ROM[Constants.room_items_pointers + (index * 2), 2];
+			int item_address_snes = 0x010000 | ZS.ROM[ZS.Offsets.room_items_pointers + (index * 2), 2];
 
 			int item_address = item_address_snes.SNEStoPC();
 
@@ -960,15 +960,16 @@ namespace ZeldaFullEditor
 
 		public void loadChests(ref List<ChestData> chests_in_room)
 		{
-			int cpos = SNESFunctions.SNEStoPC(ZS.ROM[Constants.chests_data_pointer1, 3]);
-			int clength = ZS.ROM[Constants.chests_length_pointer, 2];
+			int cpos = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.chests_data_pointer1, 3]);
+			int clength = ZS.ROM[ZS.Offsets.chests_length_pointer, 2];
 
 			for (int i = 0; i < clength; i++)
 			{
 				if ((ZS.ROM[cpos + (i * 3), 2] & 0x7FFF) == index)
 				{
 					//There's a chest in that room !
-					bool big = IntFunctions.BitIsOn(ZS.ROM[cpos + (i * 3), 2], 0x18000); // HACK: need to make this bigger than ushort.max
+					// HACK: need to make this bigger than ushort.max to avoid confusion between int and ushort when using dynamic
+					bool big = IntFunctions.BitIsOn(ZS.ROM[cpos + (i * 3), 2], 0x18000);  
 
 					chests_in_room.Add(new ChestData(ZS.ROM[cpos + (i * 3) + 2], big));
 				}
@@ -978,7 +979,7 @@ namespace ZeldaFullEditor
 		public void loadTilesObjects(bool floor = true)
 		{
 			// Adddress of the room objects
-			int objectPointer = SNESFunctions.SNEStoPC(ZS.ROM[Constants.room_object_pointer, 3]);
+			int objectPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.room_object_pointer, 3]);
 			int room_address = objectPointer + (index * 3);
 
 			int objects_location = SNESFunctions.SNEStoPC(ZS.ROM[room_address, 3]);
@@ -1035,7 +1036,7 @@ namespace ZeldaFullEditor
 
 			layout = (byte) ((datasource[pos++] >> 2) & 0x07);
 
-			byte b1 , b2, b3;
+			byte b1, b2, b3;
 			ushort oid = 0;
 			int layer = 0;
 			bool door = false;
@@ -1147,7 +1148,7 @@ namespace ZeldaFullEditor
 
 		public void loadLayoutObjects(bool floor = true) // That is dumb!
 		{
-			int pointer = SNESFunctions.SNEStoPC(ZS.ROM[Constants.room_object_layout_pointer, 3]);
+			int pointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.room_object_layout_pointer, 3]);
 			int layout_address = ZS.ROM[pointer + (layout * 3), 3];
 
 			int pos = layout_address.SNEStoPC();
@@ -1580,15 +1581,15 @@ namespace ZeldaFullEditor
 			byte f = (byte) (floor2 << 4);
 			//int f = 1024+ (floor2 << 4);
 			//x x 4
-			Tile floorTile1 = new Tile(ZS.ROM[Constants.tile_address + f], ZS.ROM[Constants.tile_address + f + 1]);
-			Tile floorTile2 = new Tile(ZS.ROM[Constants.tile_address + f + 2], ZS.ROM[Constants.tile_address + f + 3]);
-			Tile floorTile3 = new Tile(ZS.ROM[Constants.tile_address + f + 4], ZS.ROM[Constants.tile_address + f + 5]);
-			Tile floorTile4 = new Tile(ZS.ROM[Constants.tile_address + f + 6], ZS.ROM[Constants.tile_address + f + 7]);
+			Tile floorTile1 = new Tile(ZS.ROM[ZS.Offsets.tile_address + f], ZS.ROM[ZS.Offsets.tile_address + f + 1]);
+			Tile floorTile2 = new Tile(ZS.ROM[ZS.Offsets.tile_address + f + 2], ZS.ROM[ZS.Offsets.tile_address + f + 3]);
+			Tile floorTile3 = new Tile(ZS.ROM[ZS.Offsets.tile_address + f + 4], ZS.ROM[ZS.Offsets.tile_address + f + 5]);
+			Tile floorTile4 = new Tile(ZS.ROM[ZS.Offsets.tile_address + f + 6], ZS.ROM[ZS.Offsets.tile_address + f + 7]);
 
-			Tile floorTile5 = new Tile(ZS.ROM[Constants.tile_address_floor + f], ZS.ROM[Constants.tile_address_floor + f + 1]);
-			Tile floorTile6 = new Tile(ZS.ROM[Constants.tile_address_floor + f + 2], ZS.ROM[Constants.tile_address_floor + f + 3]);
-			Tile floorTile7 = new Tile(ZS.ROM[Constants.tile_address_floor + f + 4], ZS.ROM[Constants.tile_address_floor + f + 5]);
-			Tile floorTile8 = new Tile(ZS.ROM[Constants.tile_address_floor + f + 6], ZS.ROM[Constants.tile_address_floor + f + 7]);
+			Tile floorTile5 = new Tile(ZS.ROM[ZS.Offsets.tile_address_floor + f], ZS.ROM[ZS.Offsets.tile_address_floor + f + 1]);
+			Tile floorTile6 = new Tile(ZS.ROM[ZS.Offsets.tile_address_floor + f + 2], ZS.ROM[ZS.Offsets.tile_address_floor + f + 3]);
+			Tile floorTile7 = new Tile(ZS.ROM[ZS.Offsets.tile_address_floor + f + 4], ZS.ROM[ZS.Offsets.tile_address_floor + f + 5]);
+			Tile floorTile8 = new Tile(ZS.ROM[ZS.Offsets.tile_address_floor + f + 6], ZS.ROM[ZS.Offsets.tile_address_floor + f + 7]);
 
 			for (int xx = 0; xx < 16; xx++)
 			{
@@ -1613,15 +1614,15 @@ namespace ZeldaFullEditor
 			byte f = (byte) (floor1 << 4);
 			//int f = 1024 + (floor1<<4);
 			//x x 4
-			Tile floorTile1 = new Tile(ZS.ROM[Constants.tile_address + f], ZS.ROM[Constants.tile_address + f + 1]);
-			Tile floorTile2 = new Tile(ZS.ROM[Constants.tile_address + f + 2], ZS.ROM[Constants.tile_address + f + 3]);
-			Tile floorTile3 = new Tile(ZS.ROM[Constants.tile_address + f + 4], ZS.ROM[Constants.tile_address + f + 5]);
-			Tile floorTile4 = new Tile(ZS.ROM[Constants.tile_address + f + 6], ZS.ROM[Constants.tile_address + f + 7]);
+			Tile floorTile1 = new Tile(ZS.ROM[ZS.Offsets.tile_address + f], ZS.ROM[ZS.Offsets.tile_address + f + 1]);
+			Tile floorTile2 = new Tile(ZS.ROM[ZS.Offsets.tile_address + f + 2], ZS.ROM[ZS.Offsets.tile_address + f + 3]);
+			Tile floorTile3 = new Tile(ZS.ROM[ZS.Offsets.tile_address + f + 4], ZS.ROM[ZS.Offsets.tile_address + f + 5]);
+			Tile floorTile4 = new Tile(ZS.ROM[ZS.Offsets.tile_address + f + 6], ZS.ROM[ZS.Offsets.tile_address + f + 7]);
 
-			Tile floorTile5 = new Tile(ZS.ROM[Constants.tile_address_floor + f], ZS.ROM[Constants.tile_address_floor + f + 1]);
-			Tile floorTile6 = new Tile(ZS.ROM[Constants.tile_address_floor + f + 2], ZS.ROM[Constants.tile_address_floor + f + 3]);
-			Tile floorTile7 = new Tile(ZS.ROM[Constants.tile_address_floor + f + 4], ZS.ROM[Constants.tile_address_floor + f + 5]);
-			Tile floorTile8 = new Tile(ZS.ROM[Constants.tile_address_floor + f + 6], ZS.ROM[Constants.tile_address_floor + f + 7]);
+			Tile floorTile5 = new Tile(ZS.ROM[ZS.Offsets.tile_address_floor + f], ZS.ROM[ZS.Offsets.tile_address_floor + f + 1]);
+			Tile floorTile6 = new Tile(ZS.ROM[ZS.Offsets.tile_address_floor + f + 2], ZS.ROM[ZS.Offsets.tile_address_floor + f + 3]);
+			Tile floorTile7 = new Tile(ZS.ROM[ZS.Offsets.tile_address_floor + f + 4], ZS.ROM[ZS.Offsets.tile_address_floor + f + 5]);
+			Tile floorTile8 = new Tile(ZS.ROM[ZS.Offsets.tile_address_floor + f + 6], ZS.ROM[ZS.Offsets.tile_address_floor + f + 7]);
 
 			for (int xx = 0; xx < 16; xx++)
 			{
@@ -1648,9 +1649,9 @@ namespace ZeldaFullEditor
 		public void loadHeader()
 		{
 			// Sddress of the room header
-			int headerPointer = SNESFunctions.SNEStoPC(ZS.ROM[Constants.room_header_pointer, 3]);
+			int headerPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.room_header_pointer, 3]);
 
-			int address = (ZS.ROM[Constants.room_header_pointers_bank] << 16) | ZS.ROM[headerPointer + (index * 2), 2];
+			int address = (ZS.ROM[ZS.Offsets.room_header_pointers_bank] << 16) | ZS.ROM[headerPointer + (index * 2), 2];
 
 			header_location = address.SNEStoPC();
 

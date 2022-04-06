@@ -116,7 +116,7 @@ namespace ZeldaFullEditor
 		{
 			InitializeComponent();
 
-			this.tileTypeCombobox.Items.AddRange(Utils.CreateIndexedList(Constants.TileTypeNames));
+			this.tileTypeCombobox.Items.AddRange(Data.DefaultEntities.ListOfTileTypes);
 			this.EntranceProperties_FloorSel.Items.AddRange(FloorNumber.floors);
 			objDesigner = new Object_Designer(ZS);
 			objectViewer1 = new ObjectViewer(ZS);
@@ -466,7 +466,7 @@ namespace ZeldaFullEditor
 
 			//sw.Stop();
 			//Console.WriteLine("Saved Overworld- " + sw.ElapsedMilliseconds.ToString() + "ms");
-			//Console.WriteLine("ROMDATA[" + (Constants.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[Constants.overworldMapPalette + 2]);
+			//Console.WriteLine("ROMDATA[" + (ZS.Offsets.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[ZS.Offsets.overworldMapPalette + 2]);
 			//AsarCLR.Asar.init();
 			//AsarCLR.Asar.patch("titlescreen.asm", ref ROM.DATA);
 			//ZS.OverworldManager.SaveMap16Tiles();
@@ -529,7 +529,7 @@ namespace ZeldaFullEditor
 			LoadPalettes();
 
 			ZS.UnderworldScene.Location = Constants.Point_0_0;
-			ZS.UnderworldScene.Size = new Size(512, 512);
+			ZS.UnderworldScene.Size = Constants.Size512x512;
 			ZS.UnderworldScene.MouseWheel += SceneUW_MouseWheel;
 
 			if (loadFromExported != "")
@@ -552,7 +552,7 @@ namespace ZeldaFullEditor
 		{
 			tabControl1.Enabled = true;
 			ZS.GFXGroups.LoadGfxGroups();
-			ZS.GFXManager.CreateAllGfxData(ZS.ROM.DataStream);
+			ZS.GFXManager.CreateAllGfxData();
 
 			ZS.OverworldManager.Init();
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
@@ -2098,24 +2098,24 @@ namespace ZeldaFullEditor
 				Console.WriteLine(error.Fullerrdata.ToString());
 			}
 
-			testrom[Constants.startingentrance_room, 2] = selectedEntrance.Room;
+			testrom[ZS.Offsets.startingentrance_room, 2] = selectedEntrance.Room;
 
-			testrom[Constants.startingentrance_yposition, 2] = selectedEntrance.YPosition;
-			testrom[Constants.startingentrance_xposition, 2] = selectedEntrance.XPosition;
-			testrom[Constants.startingentrance_camerax, 2] = selectedEntrance.CameraX;
-			testrom[Constants.startingentrance_cameray, 2] = selectedEntrance.CameraY;
-			testrom[Constants.startingentrance_cameraxtrigger, 2] = selectedEntrance.CameraTriggerX;
-			testrom[Constants.startingentrance_cameraytrigger, 2] = selectedEntrance.CameraTriggerY;
-			testrom[Constants.startingentrance_exit, 2] = selectedEntrance.Exit;
-			testrom[Constants.startingentrance_blockset] = selectedEntrance.Blockset;
-			testrom[Constants.startingentrance_music] = selectedEntrance.Music;
-			testrom[Constants.startingentrance_dungeon] = selectedEntrance.Dungeon;
-			testrom[Constants.startingentrance_floor] = selectedEntrance.Floor;
-			testrom[Constants.startingentrance_ladderbg] = selectedEntrance.Ladderbg;
-			testrom[Constants.startingentrance_scrolling] = selectedEntrance.Scrolling;
-			testrom[Constants.startingentrance_scrollquadrant] = selectedEntrance.Scrollquadrant;
+			testrom[ZS.Offsets.startingentrance_yposition, 2] = selectedEntrance.YPosition;
+			testrom[ZS.Offsets.startingentrance_xposition, 2] = selectedEntrance.XPosition;
+			testrom[ZS.Offsets.startingentrance_camerax, 2] = selectedEntrance.CameraX;
+			testrom[ZS.Offsets.startingentrance_cameray, 2] = selectedEntrance.CameraY;
+			testrom[ZS.Offsets.startingentrance_cameraxtrigger, 2] = selectedEntrance.CameraTriggerX;
+			testrom[ZS.Offsets.startingentrance_cameraytrigger, 2] = selectedEntrance.CameraTriggerY;
+			testrom[ZS.Offsets.startingentrance_exit, 2] = selectedEntrance.Exit;
+			testrom[ZS.Offsets.startingentrance_blockset] = selectedEntrance.Blockset;
+			testrom[ZS.Offsets.startingentrance_music] = selectedEntrance.Music;
+			testrom[ZS.Offsets.startingentrance_dungeon] = selectedEntrance.Dungeon;
+			testrom[ZS.Offsets.startingentrance_floor] = selectedEntrance.Floor;
+			testrom[ZS.Offsets.startingentrance_ladderbg] = selectedEntrance.Ladderbg;
+			testrom[ZS.Offsets.startingentrance_scrolling] = selectedEntrance.Scrolling;
+			testrom[ZS.Offsets.startingentrance_scrollquadrant] = selectedEntrance.Scrollquadrant;
 
-			testrom.Write(Constants.startingentrance_scrolledge,
+			testrom.Write(ZS.Offsets.startingentrance_scrolledge,
 				selectedEntrance.cameraBoundaryQN, selectedEntrance.cameraBoundaryFN,
 				selectedEntrance.cameraBoundaryQS, selectedEntrance.cameraBoundaryFS,
 				selectedEntrance.cameraBoundaryQW, selectedEntrance.cameraBoundaryFW,
@@ -4225,18 +4225,18 @@ namespace ZeldaFullEditor
 			for (int i = 0; i < tile8ids.Count; i++)
 			{
 
-				ZS.OverworldManager.Tile16List[tile8ids[i]].tile0.FlipHFlip();
-				ZS.OverworldManager.Tile16List[tile8ids[i]].tile1.FlipHFlip();
-				ZS.OverworldManager.Tile16List[tile8ids[i]].tile2.FlipHFlip();
-				ZS.OverworldManager.Tile16List[tile8ids[i]].tile3.FlipHFlip();
+				ZS.OverworldManager.Tile16List[tile8ids[i]].tile0.HFlip ^= true;
+				ZS.OverworldManager.Tile16List[tile8ids[i]].tile1.HFlip ^= true;
+				ZS.OverworldManager.Tile16List[tile8ids[i]].tile2.HFlip ^= true;
+				ZS.OverworldManager.Tile16List[tile8ids[i]].tile3.HFlip ^= true;
 
-				ushort t0 = ZS.OverworldManager.Tile16List[i].tile0.id;
-				ushort t2 = ZS.OverworldManager.Tile16List[i].tile2.id;
+				ushort t0 = ZS.OverworldManager.Tile16List[i].tile0.ID;
+				ushort t2 = ZS.OverworldManager.Tile16List[i].tile2.ID;
 
-				ZS.OverworldManager.Tile16List[i].tile0.id = ZS.OverworldManager.Tile16List[i].tile1.id;
-				ZS.OverworldManager.Tile16List[i].tile1.id = t0;
-				ZS.OverworldManager.Tile16List[i].tile2.id = ZS.OverworldManager.Tile16List[i].tile3.id;
-				ZS.OverworldManager.Tile16List[i].tile3.id = t2;
+				ZS.OverworldManager.Tile16List[i].tile0.ID = ZS.OverworldManager.Tile16List[i].tile1.ID;
+				ZS.OverworldManager.Tile16List[i].tile1.ID = t0;
+				ZS.OverworldManager.Tile16List[i].tile2.ID = ZS.OverworldManager.Tile16List[i].tile3.ID;
+				ZS.OverworldManager.Tile16List[i].tile3.ID = t2;
 
 				for (int x = 0, mx = 31; x < 32; x++, mx--)
 				{
@@ -4583,7 +4583,7 @@ namespace ZeldaFullEditor
 		}
 
 		// TODO Magic colors
-		// make a ThemeConstants.cs file?
+		// make a ThemeZS.Offsets.cs file?
 		public void ChangeTheme(Control.ControlCollection container)
 		{
 			foreach (Control component in container)

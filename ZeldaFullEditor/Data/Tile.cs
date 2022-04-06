@@ -25,7 +25,6 @@ namespace ZeldaFullEditor
 	{
 
 		private bool priority, hflip, vflip;
-		private ushort ps, hs, vs;
 
 		/// <summary>
 		/// True if high priority
@@ -36,7 +35,7 @@ namespace ZeldaFullEditor
 			set
 			{
 				priority = value;
-				ps = (ushort) (priority ? 1 : 0);
+				PriorityShort = (ushort) (priority ? 1 : 0);
 			}
 		}
 
@@ -49,7 +48,7 @@ namespace ZeldaFullEditor
 			set
 			{
 				hflip = value;
-				hs = (ushort) (hflip ? 1 : 0);
+				HFlipShort = (ushort) (hflip ? 1 : 0);
 			}
 		}
 
@@ -62,92 +61,100 @@ namespace ZeldaFullEditor
 			set
 			{
 				vflip = value;
-				vs = (ushort) (vflip ? 1 : 0);
+				VFlipShort = (ushort) (vflip ? 1 : 0);
 			}
 		}
 
 		/// <summary>
 		/// 0x0001 if high priority
 		/// </summary>
-		public ushort PriorityShort => ps;
+		public ushort PriorityShort { get; private set; }
 		/// <summary>
 		/// 0x0001 if h flip
 		/// </summary>
-		public ushort HFlipShort => hs;
+		public ushort HFlipShort { get; private set; }
 
 		/// <summary>
 		/// 0x0001 if v flip
 		/// </summary>
-		public ushort VFlipShort => vs;
+		public ushort VFlipShort { get; private set; }
 
 
 
-		public ushort id = 0;
-		public byte palette = 4;
+		public ushort ID { get; set; } = 0;
+		public byte Palette { get; set; }
 
 		public Tile(ushort id, byte palette = 4, bool priority = false, bool hflip = false, bool vflip = false) // Custom tile
 		{
-			this.id = id;
+			ID = id;
 			HFlip = hflip;
 			VFlip = vflip;
 			Priority = priority;
-			this.palette = palette;
+			Palette = palette;
 		}
 
-		public TileInfo GetTileInfo()
+		public ushort GetModifiedUnsignedShort(bool? hflip = null, bool? vflip = null)
 		{
-			return new TileInfo(id, palette, priority, hflip, vflip);
+			ushort value = (ushort) (((Palette << 10) & 0x1C00) | (ID & Constants.TileNameMask));
+
+			if (hflip ?? HFlip)
+			{
+				value |= Constants.TileHFlipBit;
+			}
+			if (vflip ?? HFlip)
+			{
+				value |= Constants.TileVFlipBit;
+			}
+
+			return value;
+		}
+		
+		public Tile Clone()
+		{
+			return new Tile(ID, Palette, Priority, HFlip, VFlip);
+		}
+		
+		public Tile CloneModified(bool? hflip = null, bool? vflip = null)
+		{
+			return new Tile(ID, Palette, Priority, hflip ?? HFlip, vflip ?? VFlip);
 		}
 
 		public Tile(byte b1, byte b2) // Tile from game data
 		{
-			this.id = (ushort) (((b2 & 0x01) << 8) | b1);
+			ID = (ushort) (((b2 & 0x01) << 8) | b1);
 			VFlip = (b2 & 0x80) == 0x80;
 			HFlip = (b2 & 0x40) == 0x40;
 			Priority = (b2 & 0x20) == 0x20;
-			this.palette = (byte) ((b2 >> 2) & 0x07);
+			Palette = (byte) ((b2 >> 2) & 0x07);
 		}
 
-		public unsafe void SetTile(int xx, int yy, byte layer, ZScreamer ZS)
+		public unsafe void SetTile(int x, int y, byte layer, ZScreamer ZS)
 		{
-			if (xx + (yy * 64) < 4096)
+			if (x + (y * 64) < 4096)
 			{
-				ushort t = GetGFXTileInfo(GetTileInfo());
+				ushort t = ToUnsignedShort();
 				if (layer == 0)
 				{
 
-					ZS.GFXManager.tilesBg1Buffer[xx + (yy * 64)] = t;
+					ZS.GFXManager.tilesBg1Buffer[x + (y * 64)] = t;
 				}
 				else
 				{
-					ZS.GFXManager.tilesBg2Buffer[xx + (yy * 64)] = t;
+					ZS.GFXManager.tilesBg2Buffer[x + (y * 64)] = t;
 				}
 			}
 		}
 
-		public ushort getshortileinfo()
+		public ushort ToUnsignedShort()
 		{
 			ushort value = 0;
 			// vhopppcc cccccccc
 			if (priority) { value |= Constants.TilePriorityBit; };
 			if (hflip) { value |= Constants.TileHFlipBit; };
 			if (vflip) { value |= Constants.TileVFlipBit; };
-			value |= (ushort) ((this.palette << 10) & 0x1C00);
-			value |= (ushort) (this.id & Constants.TileNameMask);
+			value |= (ushort) ((this.Palette << 10) & 0x1C00);
+			value |= (ushort) (this.ID & Constants.TileNameMask);
 			return value;
-		}
-
-		public static TileInfo GetTheGFXInfo(ushort tile)
-		{
-			// vhopppcc cccccccc
-			ushort tid = (ushort) (tile & Constants.TileNameMask);
-			byte p = (byte) ((tile >> 10) & 0x07);
-
-			bool o = (tile & Constants.TilePriorityBit) == Constants.TilePriorityBit;
-			bool h = (tile & Constants.TileHFlipBit) == Constants.TileHFlipBit;
-			bool v = (tile & Constants.TileVFlipBit) == Constants.TileVFlipBit;
-
-			return new TileInfo(tid, p, o, h, v);
 		}
 
 		public unsafe void Draw(IntPtr bitmapPointer)
@@ -158,26 +165,6 @@ namespace ZeldaFullEditor
 		public unsafe void CopyTile(int x, int y, int xx, int yy)
 		{
 			// TODO: Add something here?
-		}
-
-		public static ushort GetGFXTileInfo(TileInfo t)
-		{
-			ushort tinfo = (ushort) (t.id | (t.palette << 10));
-
-			if (t.O)
-			{
-				tinfo |= Constants.TilePriorityBit;
-			}
-			if (t.H)
-			{
-				tinfo |= Constants.TileHFlipBit;
-			}
-			if (t.V)
-			{
-				tinfo |= Constants.TileVFlipBit;
-			}
-
-			return tinfo;
 		}
 	}
 }

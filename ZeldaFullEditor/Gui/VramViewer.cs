@@ -34,9 +34,9 @@ namespace ZeldaFullEditor.Gui
 			using (Bitmap tempBitmap = (Bitmap) ZS.GFXManager.currentgfx16Bitmap.Clone())
 			{
 				ColorPalette cp = tempBitmap.Palette;
-				for (int i = 0; i < 16 * 15; i += 15)
+				for (int i = 0, j = 0; i < 16; i++, j += 15)
 				{
-					cp.Entries[i] = Color.FromArgb(i, i, i);
+					cp.Entries[i] = Color.FromArgb(j, j, j);
 				}
 
 				tempBitmap.Palette = cp;

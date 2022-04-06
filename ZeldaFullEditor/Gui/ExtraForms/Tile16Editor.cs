@@ -209,7 +209,8 @@ namespace ZeldaFullEditor.Gui
 			// When left clicked, draw the tile 8 selected in the corrisponding quadrant of the tile 16
 			if (e.Button == MouseButtons.Left)
 			{
-				TileInfo t = new TileInfo(tile8selected,
+				Tile t = new Tile(
+					tile8selected,
 					(byte) paletteUpDown.Value,
 					inFrontCheckbox.Checked,
 					mirrorXCheckbox.Checked,
@@ -256,15 +257,15 @@ namespace ZeldaFullEditor.Gui
 			}
 		}
 
-		private void updateTileInfoFrom16(TileInfo t)
+		private void updateTileInfoFrom16(Tile t)
 		{
 			fromForm = true;
-			tileUpDown.Text = t.id.ToString("X2");
-			paletteUpDown.Value = t.palette;
-			mirrorXCheckbox.Checked = t.H;
-			mirrorYCheckbox.Checked = t.V;
-			inFrontCheckbox.Checked = t.O;
-			tileTypeBox.SelectedIndex = tempTiletype[t.id];
+			tileUpDown.Text = t.ID.ToString("X2");
+			paletteUpDown.Value = t.Palette;
+			mirrorXCheckbox.Checked = t.HFlip;
+			mirrorYCheckbox.Checked = t.VFlip;
+			inFrontCheckbox.Checked = t.Priority;
+			tileTypeBox.SelectedIndex = tempTiletype[t.ID];
 			fromForm = false;
 
 			updateTiles();
@@ -286,7 +287,7 @@ namespace ZeldaFullEditor.Gui
 
 				for (var tile = 0; tile < 4; tile++)
 				{
-					TileInfo info = tiles.tilesinfos[tile];
+					Tile info = tiles.tilesinfos[tile];
 					int offset = offsets[tile];
 
 					for (var y = 0; y < 8; y++)
@@ -307,28 +308,28 @@ namespace ZeldaFullEditor.Gui
 			}
 		}
 
-		private unsafe void CopyTile16(int x, int y, int xx, int yy, int offset, TileInfo tile, byte* gfx16Pointer, byte* gfx8Pointer) // map,current
+		private unsafe void CopyTile16(int x, int y, int xx, int yy, int offset, Tile tile, byte* gfx16Pointer, byte* gfx8Pointer) // map,current
 		{
 			int mx = x;
 			int my = y;
 			byte r = 0;
 
-			if (tile.H)
+			if (tile.HFlip)
 			{
 				mx = 3 - x;
 				r = 1;
 			}
-			if (tile.V)
+			if (tile.VFlip)
 			{
 				my = 7 - y;
 			}
 
-			int tx = ((tile.id / 16) * 512) + ((tile.id - ((tile.id / 16) * 16)) * 4);
+			int tx = (tile.ID / 16 * 512) + ((tile.ID & 0xF) * 4);
 			var index = xx + yy + offset + (mx * 2) + (my * 128);
 			var pixel = gfx8Pointer[tx + (y * 64) + x];
 
-			gfx16Pointer[index + r ^ 1] = (byte) ((pixel & 0x0F) + tile.palette * 16);
-			gfx16Pointer[index + r] = (byte) (((pixel >> 4) & 0x0F) + tile.palette * 16);
+			gfx16Pointer[index + r ^ 1] = (byte) ((pixel & 0x0F) | (tile.Palette << 4));
+			gfx16Pointer[index + r] = (byte) (((pixel >> 4)) |( tile.Palette << 4));
 		}
 
 		private void Tile16Editor_Load(object sender, EventArgs e)
