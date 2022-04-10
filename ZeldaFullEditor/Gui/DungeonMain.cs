@@ -3765,7 +3765,7 @@ namespace ZeldaFullEditor
 				{
 					// TODO system specific path separators
 					byte[] roomBytes = DungeonsData.all_rooms[i].getTilesBytes();
-					using (FileStream fs = new FileStream(path + "//ExportedRooms//room" + i.ToString("D3") + ".zrd", FileMode.OpenOrCreate, FileAccess.Write))
+					using (FileStream fs = new FileStream(path + "//ExportedRooms//room" + i.ToString("X3") + ".zrd", FileMode.OpenOrCreate, FileAccess.Write))
 					{
 						fs.Write(roomBytes, 0, roomBytes.Length);
 						fs.Close();
