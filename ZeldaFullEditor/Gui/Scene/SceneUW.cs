@@ -37,10 +37,10 @@ namespace ZeldaFullEditor
 		{
 			//graphics = Graphics.FromImage(scene_bitmap);
 
-			MouseDown += new MouseEventHandler(onMouseDown);
-			MouseUp += new MouseEventHandler(onMouseUp);
-			MouseMove += new MouseEventHandler(onMouseMove);
-			MouseDoubleClick += new MouseEventHandler(onMouseDoubleClick);
+			MouseDown += new MouseEventHandler(OnMouseDown);
+			MouseUp += new MouseEventHandler(OnMouseUp);
+			MouseMove += new MouseEventHandler(OnMouseMove);
+			MouseDoubleClick += new MouseEventHandler(OnMouseDoubleClick);
 			MouseWheel += SceneUW_MouseWheel;
 			Paint += SceneUW_Paint;
 		}
@@ -246,7 +246,7 @@ namespace ZeldaFullEditor
 		}
 
 		// TODO: FIND PROBLEM THAT IS INCREASING SAVE TIME!!
-		private void onMouseMove(object sender, MouseEventArgs e)
+		private void OnMouseMove(object sender, MouseEventArgs e)
 		{
 			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 
@@ -363,7 +363,7 @@ namespace ZeldaFullEditor
 					ZS.DungeonForm.selectedEntrance.YPosition = (ushort) (MY + (ey * 512));
 					ZS.DungeonForm.selectedEntrance.CameraTriggerX = (ushort) MX;
 					ZS.DungeonForm.selectedEntrance.CameraTriggerY = (ushort) MY;
-					ZS.DungeonForm.selectedEntrance.Room = (ushort) room.index;
+					ZS.DungeonForm.selectedEntrance.RoomID = (ushort) room.index;
 
 					if (ZS.DungeonForm.selectedEntrance.CameraTriggerX > 383)
 					{
@@ -858,7 +858,7 @@ namespace ZeldaFullEditor
 			//graphics.Clear(this.BackColor);
 		}
 
-		private void onMouseDown(object sender, MouseEventArgs e)
+		private void OnMouseDown(object sender, MouseEventArgs e)
 		{
 			if (room == null)
 			{
@@ -1527,7 +1527,7 @@ namespace ZeldaFullEditor
 			ZS.GFXManager.roomBgLayoutBitmap.Palette = palettes;
 		}
 
-		private unsafe void onMouseUp(object sender, MouseEventArgs e)
+		private unsafe void OnMouseUp(object sender, MouseEventArgs e)
 		{
 			resizing = false;
 			if (mouse_down)
@@ -1639,7 +1639,7 @@ namespace ZeldaFullEditor
 			Refresh();
 		}
 
-		private void onMouseDoubleClick(object sender, MouseEventArgs e)
+		private void OnMouseDoubleClick(object sender, MouseEventArgs e)
 		{
 			rmx = e.X;
 			rmy = e.Y;
@@ -2295,7 +2295,7 @@ namespace ZeldaFullEditor
 			Refresh();
 		}
 
-		public override void deleteSelected()
+		public override void Delete()
 		{
 			room.has_changed = true;
 			ZS.DungeonForm.checkAnyChanges();
@@ -2321,7 +2321,7 @@ namespace ZeldaFullEditor
 			Refresh();
 		}
 
-		public override void paste()
+		public override void Paste()
 		{
 			if (!mouse_down)
 			{
@@ -2432,7 +2432,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public override void copy()
+		public override void Copy()
 		{
 			Clipboard.Clear();
 			List<SaveObject> odata = new List<SaveObject>();
@@ -2524,7 +2524,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public override void cut()
+		public override void Cut()
 		{
 			Clipboard.Clear();
 			//Room r = (Room)room.Clone();

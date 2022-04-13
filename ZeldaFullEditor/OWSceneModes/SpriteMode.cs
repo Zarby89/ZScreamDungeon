@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
-	public class SpriteMode
+	public class SpriteMode : SceneMode
 	{
 		Sprite selectedSprite;
 		public Sprite lastselectedSprite;
@@ -17,14 +17,12 @@ namespace ZeldaFullEditor.OWSceneModes
 		bool isLeftPress = false;
 
 		Gui.AddSprite addspr;
-		private readonly ZScreamer ZS;
-		public SpriteMode(ZScreamer parent)
+		public SpriteMode(ZScreamer parent) : base(parent)
 		{
-			ZS = parent;
 			addspr = new Gui.AddSprite(ZS);
 		}
 
-		public void onMouseDown(MouseEventArgs e)
+		public override void OnMouseDown(MouseEventArgs e)
 		{
 			isLeftPress = e.Button == MouseButtons.Left;
 
@@ -50,14 +48,14 @@ namespace ZeldaFullEditor.OWSceneModes
 			ZS.OverworldScene.mouse_down = true;
 		}
 
-		public void Copy()
+		public override void Copy()
 		{
 			Clipboard.Clear();
 			int sd = lastselectedSprite.id;
 			Clipboard.SetData(Constants.OverworldSpriteClipboardData, sd);
 		}
 
-		public void Cut()
+		public override void Cut()
 		{
 			Clipboard.Clear();
 			int sd = lastselectedSprite.id;
@@ -67,7 +65,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 		}
 
-		public void Paste()
+		public override void Paste()
 		{
 			int data = (int) Clipboard.GetData(Constants.OverworldSpriteClipboardData);
 			if (data != -1)
@@ -101,7 +99,7 @@ namespace ZeldaFullEditor.OWSceneModes
 		}
 
 
-		public void onMouseUp(MouseEventArgs e)
+		public override void OnMouseUp(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -208,7 +206,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void onMouseMove(MouseEventArgs e)
+		public override void OnMouseMove(MouseEventArgs e)
 		{
 			if (ZS.OverworldScene.mouse_down)
 			{
@@ -235,7 +233,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void Delete()
+		public override void Delete()
 		{
 			if (lastselectedSprite != null)
 			{

@@ -253,30 +253,6 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public unsafe void CopyTile8bpp16From8(int xP, int yP, int tileID, IntPtr destbmpPtr, IntPtr sourcebmpPtr)
-		{
-			var gfx16Data = (byte*) destbmpPtr.ToPointer(); //(byte*)allgfx8Ptr.ToPointer();
-			var gfx8Data = (byte*) ZS.GFXManager.currentOWgfx16Ptr.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
-			int[] offsets = { 0, 8, 4096, 4104 };
-
-			var tiles = ZS.OverworldManager.Tile16List[tileID];
-
-			for (int tile = 0; tile < 4; tile++)
-			{
-				Tile info = tiles.tilesinfos[tile];
-				int offset = offsets[tile];
-
-				for (var y = 0; y < 8; y++)
-				{
-					for (var x = 0; x < 4; x++)
-					{
-						CopyTile(x, y, xP, yP, offset, info, gfx16Data, gfx8Data);
-					}
-				}
-			}
-
-		}
-
 		private static readonly int[] TileOffsetsIDK = { 0, 8, 1024, 1032 };
 		private unsafe void BuildTiles16Gfx()
 		{
@@ -296,7 +272,7 @@ namespace ZeldaFullEditor
 
 				for (int tile = 0; tile < 4; tile++)
 				{
-					Tile info = ZS.OverworldManager.Tile16List[i].tilesinfos[tile];
+					Tile info = ZS.OverworldManager.Tile16List[i][tile];
 					int offset = TileOffsetsIDK[tile];
 
 					for (int y = 0; y < 8; y++)
@@ -325,18 +301,17 @@ namespace ZeldaFullEditor
 			LoadPalette();
 		}
 
-		private unsafe void CopyTile(int x, int y, int xx, int yy, int offset, Tile tile, byte* gfx16Pointer, byte* gfx8Pointer) // map,current
+		private unsafe void CopyTile(int x, int y, int xx, int yy, int offset, in Tile tile, byte* gfx16Pointer, byte* gfx8Pointer) // map,current
 		{
 			int mx = tile.HFlip ? 3 - x : x;
 			int my = tile.VFlip ? 7 - y : y;
-			byte r = (byte) tile.HFlipShort;
 
 			int tx = ((tile.ID & ~0xF) << 5) | ((tile.ID & 0xF) << 2);
 			var index = xx + yy + offset + (mx << 1) + (my << 7);
 			var pixel = gfx8Pointer[tx + (y << 6) + x];
 
-			gfx16Pointer[index + (r ^ 1)] = (byte) ((pixel & 0x0F) | (tile.Palette << 4));
-			gfx16Pointer[index + r] = (byte) ((pixel >> 4) | (tile.Palette << 4));
+			gfx16Pointer[index + (tile.HFlipByte ^ 1)] = (byte) ((pixel & 0x0F) | (tile.Palette << 4));
+			gfx16Pointer[index + tile.HFlipByte] = (byte) ((pixel >> 4) | (tile.Palette << 4));
 		}
 
 		public void LoadPalette()

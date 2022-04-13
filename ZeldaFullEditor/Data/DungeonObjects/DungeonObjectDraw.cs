@@ -4,7 +4,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 {
 	public delegate void DrawObject(ZScreamer ZS, RoomObject obj);
 
-	public partial class DungeonRoomObject
+	public partial class RoomObjectType
 	{
 		/// <summary>
 		/// Represents a set of instructions for how to draw a new tile to the background.
@@ -222,11 +222,9 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			DrawTiles(ZS, obj, bothbg, list);
 		}
 
-
 		private static void RoomDraw_DownwardsXbyY(ZScreamer ZS, RoomObject obj,
 			int size, int sizex, int sizey, int spacing = 0,
-			int tilestart = 0, int yoff = 0, int xoff = 0,
-			bool bothbg = false)
+			int tilestart = 0, int yoff = 0, int xoff = 0, bool bothbg = false)
 		{
 			int inc = (sizey + spacing) * 8;
 			yoff *= 8;
@@ -252,8 +250,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		private static void RoomDraw_RightwardsXbyY(ZScreamer ZS, RoomObject obj,
 			int size, int sizex, int sizey, int spacing = 0,
-			int tilestart = 0, int yoff = 0, int xoff = 0,
-			bool bothbg = false)
+			int tilestart = 0, int yoff = 0, int xoff = 0, bool bothbg = false)
 		{
 			int inc = (sizex + spacing) * 8;
 			yoff *= 8;
@@ -517,12 +514,10 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			RoomDraw_ArbitraryXByY(ZS, obj, sizex: 4, sizey: 4);
 		}
 
-
 		public static void RoomDraw_AutoStairs(ZScreamer ZS, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(ZS, obj, sizex: 4, sizey: 4, bothbg: true);
 		}
-
 
 		public static void RoomDraw_BG2MaskFull(ZScreamer ZS, RoomObject obj)
 		{
@@ -817,7 +812,6 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				);
 			}
 		}
-
 		public static void RoomDraw_DiagonalGrave_1to16_BothBG(ZScreamer ZS, RoomObject obj)
 		{
 			obj.Height = (obj.Size + 10) * 8;
@@ -1733,5 +1727,12 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		{
 			RoomDraw_ArbitraryXByY(ZS, obj, sizex: 4, sizey: 3, bothbg: true);
 		}
+
+		//===================================================================================
+		//===================================================================================
+		// Doors
+		//===================================================================================
+		//===================================================================================
+
 	}
 }

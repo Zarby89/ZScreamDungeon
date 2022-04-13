@@ -11,7 +11,7 @@ using ZeldaFullEditor.OWSceneModes.ClipboardData;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
-	public class TileMode
+	public class TileMode : SceneMode
 	{
 		List<TileUndo> undoList = new List<TileUndo>();
 		List<TileUndo> redoList = new List<TileUndo>();
@@ -20,12 +20,10 @@ namespace ZeldaFullEditor.OWSceneModes
 		int globalmouseTileDownYLOCK = 0;
 
 		byte lockedDirection = 0x00;
-		Stopwatch sw = new Stopwatch();
-
-		private readonly ZScreamer ZS;
-		public TileMode(ZScreamer parent)
+		
+		public TileMode(ZScreamer parent) : base(parent)
 		{
-			ZS = parent;
+
 		}
 
 		public void Undo()
@@ -52,14 +50,24 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void Copy()
+		public override void Copy()
 		{
 			Clipboard.Clear();
 			TileData td = new TileData((ushort[]) ZS.OverworldScene.selectedTile.Clone(), ZS.OverworldScene.selectedTileSizeX);
 			Clipboard.SetData(Constants.OverworldTilesClipboardData, td);
 		}
 
-		public void Paste()
+		public override void Cut()
+		{
+			// TODO
+		}
+
+		public override void Delete()
+		{
+			// TODO
+		}
+
+		public override void Paste()
 		{
 			TileData data = (TileData) Clipboard.GetData(Constants.OverworldTilesClipboardData);
 
@@ -70,7 +78,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void OnMouseDown(MouseEventArgs e)
+		public override void OnMouseDown(MouseEventArgs e)
 		{
 			//Buildtileset();
 			//BuildTiles16Gfx();
@@ -194,7 +202,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void OnMouseUp(MouseEventArgs e)
+		public override void OnMouseUp(MouseEventArgs e)
 		{
 			if (ZS.OverworldScene.mouse_down)
 			{
@@ -270,7 +278,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			//ZS.OverworldScene.mainForm.pictureGroupTiles.Refresh();
 		}
 
-		public void OnMouseMove(MouseEventArgs e)
+		public override void OnMouseMove(MouseEventArgs e)
 		{
 			if (ZS.OverworldScene.initialized)
 			{

@@ -18,7 +18,7 @@ namespace ZeldaFullEditor
 		// META
 		//===========================================================================================
 		public const string APPNAME = "ZScream";
-		public const string VERSION = "1.0.3 Doodoo";
+		public const string VERSION = "4.0.0";
 
 		public const string GITHUB = "https://github.com/Zarby89/ZScreamDungeon";
 		public const string DISCORD = "https://discord.gg/8eJdz2YdW2";
@@ -76,6 +76,7 @@ namespace ZeldaFullEditor
 		{
 			return string.Format("Selected sprite: {0:X2} {1}", s.id, n);
 		}
+
 		public static string FormatSelectedPotItem(PotItem p, string n)
 		{
 			return string.Format("Selected prize: {0:X2} {1}", p.id, n);
@@ -109,8 +110,7 @@ namespace ZeldaFullEditor
 		public const string CloseROMWarning = "Closing this ROM will result in all unsaved changes being lost.";
 		public static DialogResult WarnAboutSaving(string message = DefaultWarning)
 		{
-			return MessageBox.Show
-				(
+			return MessageBox.Show(
 					message + "\nDo you wish to save before continuing?",
 					"Unsaved changes",
 					MessageBoxButtons.YesNoCancel,

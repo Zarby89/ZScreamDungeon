@@ -3605,7 +3605,7 @@ namespace ZeldaFullEditor
 			this.xScreenToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
 			this.xScreenToolStripMenuItem.Text = "2X Zoom";
 			this.xScreenToolStripMenuItem.CheckStateChanged += new System.EventHandler(this.hideSpritesToolStripMenuItem_CheckStateChanged);
-			this.xScreenToolStripMenuItem.Click += new System.EventHandler(this.xScreenToolStripMenuItem_Click);
+			this.xScreenToolStripMenuItem.Click += new System.EventHandler(this.DungeonMain_SizeChanged);
 			// 
 			// showBG2MaskOutlineToolStripMenuItem
 			// 

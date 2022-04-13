@@ -225,14 +225,10 @@ namespace ZeldaFullEditor
 			int tpos = ZS.Offsets.map16Tiles;
 			for (int i = 0; i < Constants.NumberOfMap16; i += 1)
 			{
-				Tile t0 = new Tile(ZS.ROM[tpos, 2]);
-				tpos += 2;
-				Tile t1 = new Tile(ZS.ROM[tpos, 2]);
-				tpos += 2;
-				Tile t2 = new Tile(ZS.ROM[tpos, 2]);
-				tpos += 2;
-				Tile t3 = new Tile(ZS.ROM[tpos, 2]);
-				tpos += 2;
+				Tile t0 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
+				Tile t1 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
+				Tile t2 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
+				Tile t3 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
 
 				Tile16List.Add(new Tile16(t0, t1, t2, t3));
 			}

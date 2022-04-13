@@ -8,26 +8,24 @@ using ZeldaFullEditor.Gui;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
-	public class EntranceMode
+	public class EntranceMode : SceneMode
 	{
 		public EntranceOWEditor selectedEntrance = null;
 		public EntranceOWEditor lastselectedEntrance = null;
 		bool isLeftPress = false;
 
-		private readonly ZScreamer ZS;
-		public EntranceMode(ZScreamer parent)
+		public EntranceMode(ZScreamer parent) : base(parent)
 		{
-			ZS = parent;
 		}
 
-		public void Copy()
+		public override void Copy()
 		{
 			Clipboard.Clear();
 			EntranceOWEditor ed = lastselectedEntrance.Copy();
 			Clipboard.SetData(Constants.OverworldEntranceClipboardData, ed);
 		}
 
-		public void Cut()
+		public override void Cut()
 		{
 			Clipboard.Clear();
 			EntranceOWEditor ed = lastselectedEntrance.Copy();
@@ -36,7 +34,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		}
 
-		public void Paste()
+		public override void Paste()
 		{
 			selectedEntrance = AddEntrance(true);
 			if (selectedEntrance != null)
@@ -139,16 +137,9 @@ namespace ZeldaFullEditor.OWSceneModes
 			return ZS.OverworldManager.allentrances[found];
 		}
 
-		public void onMouseDown(MouseEventArgs e)
+		public override void OnMouseDown(MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Left)
-			{
-				isLeftPress = true;
-			}
-			else
-			{
-				isLeftPress = false;
-			}
+			isLeftPress = e.Button == MouseButtons.Left;
 
 			for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
 			{
@@ -207,7 +198,7 @@ namespace ZeldaFullEditor.OWSceneModes
 				//ZS.OverworldManagerForm.thumbnailBox.Visible = true;
 				//ZS.OverworldManagerForm.thumbnailBox.Size = new Size(256, 256);
 
-				int roomId = DungeonsData.entrances[selectedEntrance.entranceId].Room;
+				int roomId = DungeonsData.entrances[selectedEntrance.entranceId].RoomID;
 				if (roomId >= Constants.NumberOfRooms)
 				{
 					//ZS.OverworldManagerForm.thumbnailBox.Visible = false;
@@ -282,7 +273,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			g.Dispose();
 		}
 
-		public void onMouseDoubleClick(MouseEventArgs e)
+		public void OnMouseDoubleClick(MouseEventArgs e)
 		{
 			for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
 			{
@@ -303,7 +294,7 @@ namespace ZeldaFullEditor.OWSceneModes
 								ZS.DungeonForm.entrancetreeView.SelectedNode = treeNodes[0];
 							}
 
-							ZS.DungeonForm.addRoomTab(DungeonsData.entrances[en.entranceId].Room);
+							ZS.DungeonForm.addRoomTab(DungeonsData.entrances[en.entranceId].RoomID);
 							ZS.DungeonForm.editorsTabControl.SelectedIndex = 0;
 							//ZS.DungeonForm.dungeonButton_Click(ZS.DungeonForm.dungeonButton, null);
 						}
@@ -332,7 +323,7 @@ namespace ZeldaFullEditor.OWSceneModes
 									ZS.DungeonForm.entrancetreeView.SelectedNode = treeNodes[0];
 								}
 
-								ZS.DungeonForm.addRoomTab(DungeonsData.entrances[en.entranceId].Room);
+								ZS.DungeonForm.addRoomTab(DungeonsData.entrances[en.entranceId].RoomID);
 								ZS.DungeonForm.editorsTabControl.SelectedIndex = 0;
 							}
 						}
@@ -341,7 +332,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void Delete()
+		public override void Delete()
 		{
 			lastselectedEntrance.x = 0xFFFF;
 			lastselectedEntrance.y = 0xFFFF;
@@ -353,7 +344,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));
 		}
 
-		public void onMouseMove(MouseEventArgs e)
+		public override void OnMouseMove(MouseEventArgs e)
 		{
 
 			ZS.OverworldScene.mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
@@ -373,7 +364,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		int mxRightclick = 0;
 		int myRightclick = 0;
-		public void onMouseUp(MouseEventArgs e)
+		public override void OnMouseUp(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -555,7 +546,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 						g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
 						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.x, e.y, 16, 16));
-						ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
+						ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].RoomID].name);
 					}
 				}
 
@@ -580,7 +571,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 						g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
 						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.x, e.y, 16, 16));
-						ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
+						ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].RoomID].name);
 					}
 				}
 
@@ -615,7 +606,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 						g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
 						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.x, e.y, 16, 16));
-						ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
+						ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].RoomID].name);
 					}
 				}
 
@@ -636,7 +627,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 						g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
 						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.x, e.y, 16, 16));
-						ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].Room].name);
+						ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].RoomID].name);
 					}
 				}
 

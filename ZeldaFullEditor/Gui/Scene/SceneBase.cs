@@ -125,7 +125,7 @@ namespace ZeldaFullEditor
 			// TODO: Add something here?
 		}
 
-		public virtual void deleteSelected()
+		public virtual void Delete()
 		{
 			// TODO: Add something here?
 		}
@@ -135,15 +135,15 @@ namespace ZeldaFullEditor
 			// TODO: Add something here?
 		}
 
-		public virtual void copy()
+		public virtual void Copy()
 		{
 			// TODO: Add something here?
 		}
-		public virtual void cut()
+		public virtual void Cut()
 		{
 			// TODO: Add something here?
 		}
-		public virtual void paste()
+		public virtual void Paste()
 		{
 			// TODO: Add something here?
 		}

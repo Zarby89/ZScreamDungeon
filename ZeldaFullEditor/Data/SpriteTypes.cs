@@ -1,7 +1,27 @@
-﻿namespace ZeldaFullEditor.Data.Sprites
+﻿using ZeldaFullEditor.Data.DungeonObjects;
+
+namespace ZeldaFullEditor.Data
 {
 	public partial class SpriteType
 	{
+		public string VanillaName { get; }
+		public byte ID { get; }
+		public bool IsOverlord { get; }
+
+		public DrawSprite Draw { get; }
+
+		protected SpriteType(byte id, DrawSprite d, SpriteCategory[] categories, byte[] gsets, bool overlord = false)
+		{
+			Draw = d;
+			ID = id;
+
+			// intentionally doing this stupid shit because it looks funny
+			VanillaName = (IsOverlord = overlord)
+				? "L" // DefaultEntities.ListOfOverlords[id].Name
+				: DefaultEntities.ListOfSprites[id].Name;
+		}
+
+
 		public static readonly SpriteType Sprite00 = new SpriteType(0x00, SpriteDraw_Sprite00,
 			new SpriteCategory[] { },
 			new byte[] { });
@@ -974,30 +994,6 @@
 			new SpriteCategory[] { },
 			new byte[] { });
 
-		public static readonly SpriteType SpriteF3 = new SpriteType(0xF3, SpriteDraw_SpriteF3,
-			new SpriteCategory[] { },
-			new byte[] { });
-
-		public static readonly SpriteType SpriteF4 = new SpriteType(0xF4, SpriteDraw_SpriteF4,
-			new SpriteCategory[] { },
-			new byte[] { });
-
-		public static readonly SpriteType SpriteF5 = new SpriteType(0xF5, SpriteDraw_SpriteF5,
-			new SpriteCategory[] { },
-			new byte[] { });
-
-		public static readonly SpriteType SpriteF6 = new SpriteType(0xF6, SpriteDraw_SpriteF6,
-			new SpriteCategory[] { },
-			new byte[] { });
-
-		public static readonly SpriteType SpriteF7 = new SpriteType(0xF7, SpriteDraw_SpriteF7,
-			new SpriteCategory[] { },
-			new byte[] { });
-
-		public static readonly SpriteType SpriteF8 = new SpriteType(0xF8, SpriteDraw_SpriteF8,
-			new SpriteCategory[] { },
-			new byte[] { });
-
 		public static SpriteType GetSpriteType(byte b)
 		{
 			switch (b)
@@ -1254,8 +1250,11 @@
 	//=============================================================================================
 	// Overlords
 	//=============================================================================================
-	public partial class OverlordType
+	public partial class OverlordType : SpriteType
 	{
+		private OverlordType(byte id, DrawSprite d, SpriteCategory[] categories, byte[] gsets)
+			: base(id, d, categories, gsets, true) { }
+
 		public static readonly OverlordType Overlord01 = new OverlordType(0x01, SpriteDraw_Overlord01,
 			new SpriteCategory[] { },
 			new byte[] { });

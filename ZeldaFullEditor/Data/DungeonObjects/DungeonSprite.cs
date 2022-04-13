@@ -1,12 +1,19 @@
-﻿namespace ZeldaFullEditor.Data.Sprites
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+
+namespace ZeldaFullEditor.Data.DungeonObjects
 {
-	public unsafe class Sprite
+	public unsafe class DungeonSprite : DungeonObject
 	{
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
 		public byte Layer { get; set; } = 0;
 
 		public byte KeyDrop { get; set; } = 0;
+
+		public override List<Point> CollisionPoints { get; } = new List<Point>();
+		public override TilesList Tiles { get; }
 
 		private byte subtype;
 		public byte Subtype {
@@ -26,6 +33,14 @@
 			get => IsCurrentlyOverlord ^ (Species is OverlordType);
 		}
 
+		public override byte[] Data => new byte[]
+			{
+				(byte) ((Layer << 7) | ((Subtype & 0x18) << 2) | Y),
+				(byte) ((Subtype << 5) | X),
+				Species.ID
+			};
+
+
 		public ushort ScreenID { get; set; }
 		public bool OnOverworld { get; set; }
 
@@ -44,7 +59,7 @@
 			get => IsCurrentlyOverlord ? otype : stype;
 		}
 
-		public Sprite(SpriteType type, bool onow = false, ushort screen = 0)
+		public DungeonSprite(SpriteType type, bool onow = false, ushort screen = 0)
 		{
 			Species = type;
 
@@ -56,14 +71,14 @@
 			OnOverworld = onow;
 		}
 
-		public void Draw(ZScreamer ZS)
+		public override void Draw(ZScreamer ZS)
 		{
 			Species.Draw(ZS, this);
 		}
 
-		public Sprite Clone()
+		public DungeonSprite Clone()
 		{
-			return new Sprite(Species, OnOverworld, ScreenID)
+			return new DungeonSprite(Species, OnOverworld, ScreenID)
 			{
 				X = X,
 				Y = Y,
@@ -73,33 +88,6 @@
 			};
 		}
 	}
-
-	public partial class SpriteType
-	{
-		public string VanillaName { get; }
-		public byte ID { get; }
-		public bool IsOverlord { get; }
-
-		public DrawSprite Draw { get; }
-
-		protected SpriteType(byte id, DrawSprite d, SpriteCategory[] categories, byte[] gsets, bool overlord = false)
-		{
-			Draw = d;
-			ID = id;
-
-			// intentionally doing this stupid shit because it looks funny
-			VanillaName = (IsOverlord = overlord)
-				? "L" // DefaultEntities.ListOfOverlords[id].Name
-				: DefaultEntities.ListOfSprites[id].Name;
-		}
-	}
-
-	public partial class OverlordType : SpriteType
-	{
-		private OverlordType(byte id, DrawSprite d, SpriteCategory[] categories, byte[] gsets)
-			: base(id, d, categories, gsets, true) { }
-	}
-
 
 	public enum SpriteCategory
 	{

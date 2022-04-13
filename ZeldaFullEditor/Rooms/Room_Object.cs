@@ -189,18 +189,6 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		// Object Initialization (Tiles and special stuff)
-		public void init_objects()
-		{
-			// TODO: Add something here?
-		}
-
-		public void updatePos()
-		{
-			x = nx;
-			y = ny;
-		}
-
 		public unsafe void draw_tile(Tile t, int xx, int yy, ushort tileUnder = 0xFFFF)
 		{
 			if (width < xx + 8)

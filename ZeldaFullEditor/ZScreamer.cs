@@ -49,7 +49,7 @@ namespace ZeldaFullEditor
 	/// <summary>
 	/// Handles everything ever
 	/// </summary>
-	public class ZScreamer
+	public partial class ZScreamer
 	{
 		private Scene active;
 		public Scene ActiveScene
@@ -86,10 +86,15 @@ namespace ZeldaFullEditor
 
 		public SceneOW OverworldScene;
 		private OverworldEditMode owmode;
+
 		public OverworldEditMode CurrentOWMode
 		{
 			get => owmode;
-			set => SetOverworldEditMode(value);
+			set
+			{
+				OverworldForm.UpdateForMode(value);
+				OverworldScene.UpdateForMode(value);
+			}
 		}
 
 		public GfxGroups GFXGroups;
@@ -160,11 +165,6 @@ namespace ZeldaFullEditor
 			DungeonForm.doormodeButton.Checked = em == DungeonEditMode.Doors;
 			DungeonForm.chestmodeButton.Checked = em == DungeonEditMode.Chests;
 			DungeonForm.collisionModeButton.Checked = em == DungeonEditMode.CollisionMap;
-		}
-
-		public void SetOverworldEditMode(OverworldEditMode em)
-		{
-			owmode = em;
 		}
 
 		public void SetSelectedMessageID(int id)

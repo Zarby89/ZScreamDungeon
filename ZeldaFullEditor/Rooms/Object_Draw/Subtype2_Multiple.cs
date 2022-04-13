@@ -370,8 +370,8 @@ namespace ZeldaFullEditor
 					{
 						for (int yy = 0; yy < 6; yy++)
 						{
-							tiles[yy].HFlip = xx.BitIsOn(0x01);
-							tiles[yy + 6].HFlip = xx.BitIsOn(0x01);
+							//tiles[yy].HFlip = xx.BitIsOn(0x01);
+							//tiles[yy + 6].HFlip = xx.BitIsOn(0x01);
 							draw_tile(tiles[yy], ((xx + (i * 14))) * 8, yy * 8);
 							draw_tile(tiles[yy + 6], (((xx + (i * 14) + 2))) * 8, yy * 8);
 

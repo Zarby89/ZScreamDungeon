@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
@@ -33,8 +34,6 @@ namespace ZeldaFullEditor
 				(bit7 ? 1 << 7 : 0));
 		}
 
-		public static bool Flip(ref bool b) => b = !b;
-
 		public static int Clamp(this int v, int min, int max)
 		{
 			if (v >= max)
@@ -49,26 +48,13 @@ namespace ZeldaFullEditor
 			return v;
 		}
 
-		public static short Clamp(this short v, short min, short max)
-		{
-			if (v >= max)
-			{
-				v = max;
-			}
-			if (v <= min)
-			{
-				v = min;
-			}
-
-			return v;
-		}
 		public static ushort Clamp(this ushort v, ushort min, ushort max)
 		{
 			if (v >= max)
 			{
 				v = max;
 			}
-			if (v <= min)
+			else if (v <= min)
 			{
 				v = min;
 			}
@@ -82,7 +68,7 @@ namespace ZeldaFullEditor
 			{
 				v = max;
 			}
-			if (v <= min)
+			else if (v <= min)
 			{
 				v = min;
 			}
@@ -121,19 +107,6 @@ namespace ZeldaFullEditor
 			return ret;
 		}
 
-		public static string[] CreateIndexedList(string[] a)
-		{
-			string[] ret = new string[a.Length];
-			int i = 0;
-			foreach (string s in a)
-			{
-				ret[i] = string.Format("{0:X2} - {1}", i, s);
-				i++;
-			}
-
-			return ret;
-		}
-
 		public static List<T> DeepCopy<T>(this List<T> me)
 		{
 			using (var ms = new System.IO.MemoryStream())
@@ -142,6 +115,21 @@ namespace ZeldaFullEditor
 				formatter.Serialize(ms, me);
 				ms.Position = 0;
 				return (List<T>) formatter.Deserialize(ms);
+			}
+		}
+
+		/// <summary>
+		/// Changes the given variable by a given magnitude based on the scroll wheel's delta.
+		/// </summary>
+		public static void ScrollByValue(this MouseEventArgs e, ref int value, int change)
+		{
+			if (e.Delta > 0)
+			{
+				value += change;
+			}
+			else
+			{
+				value -= change;
 			}
 		}
 	}

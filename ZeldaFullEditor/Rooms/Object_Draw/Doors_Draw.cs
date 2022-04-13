@@ -187,14 +187,14 @@ namespace ZeldaFullEditor
 
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = false;
-					tiles[tid].HFlip = false;
+					// tiles[tid].VFlip = false;
+					// tiles[tid].HFlip = false;
 					draw_tile(tiles[tid++], 0 * 8, yy * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = false;
-					tiles[tid].HFlip = false;
+					// tiles[tid].VFlip = false;
+					// tiles[tid].HFlip = false;
 					draw_tile(tiles[tid++], 1 * 8, yy * 8);
 				}
 
@@ -203,14 +203,14 @@ namespace ZeldaFullEditor
 				// Rigt Side Tiles (Must mirror them)
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = false;
-					tiles[tid].HFlip = true;
+					// tiles[tid].VFlip = false;
+					// tiles[tid].HFlip = true;
 					draw_tile(tiles[tid++], 21 * 8, yy * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = false;
-					tiles[tid].HFlip = true;
+					// tiles[tid].VFlip = false;
+					// tiles[tid].HFlip = true;
 					draw_tile(tiles[tid++], 20 * 8, yy * 8);
 				}
 
@@ -219,27 +219,27 @@ namespace ZeldaFullEditor
 				// Left Side tiles
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = true;
-					tiles[tid].HFlip = false;
+					// tiles[tid].VFlip = true;
+					// tiles[tid].HFlip = false;
 					draw_tile(tiles[tid--], 1 * 8, (yy - 6) * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = true;
-					tiles[tid].HFlip = false;
+					// tiles[tid].VFlip = true;
+					// tiles[tid].HFlip = false;
 					draw_tile(tiles[tid--], 0 * 8, (yy - 6) * 8);
 				}
 				tid = 11;
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = false;
-					tiles[tid].HFlip = true;
+					// tiles[tid].VFlip = false;
+					// tiles[tid].HFlip = true;
 					draw_tile(tiles[tid--], 20 * 8, (yy - 6) * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = false;
-					tiles[tid].HFlip = true;
+					// tiles[tid].VFlip = false;
+					// tiles[tid].HFlip = true;
 					draw_tile(tiles[tid--], 21 * 8, (yy - 6) * 8);
 				}
 
@@ -416,14 +416,14 @@ namespace ZeldaFullEditor
 				// Left Side tiles
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = false;
-					tiles[tid].HFlip = false;
+					// tiles[tid].VFlip = false;
+					// tiles[tid].HFlip = false;
 					draw_tile(tiles[tid++], 0 * 8, yy * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = false;
-					tiles[tid].HFlip = false;
+					// tiles[tid].VFlip = false;
+					// tiles[tid].HFlip = false;
 					draw_tile(tiles[tid++], 1 * 8, yy * 8);
 				}
 
@@ -431,14 +431,14 @@ namespace ZeldaFullEditor
 				// Rigt Side Tiles (Must mirror them)
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = false;
-					tiles[tid].HFlip = true;
+					// tiles[tid].VFlip = false;
+					// tiles[tid].HFlip = true;
 					draw_tile(tiles[tid++], 21 * 8, yy * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = false;
-					tiles[tid].HFlip = true;
+					// tiles[tid].VFlip = false;
+					// tiles[tid].HFlip = true;
 					draw_tile(tiles[tid++], 20 * 8, yy * 8);
 				}
 
@@ -447,28 +447,28 @@ namespace ZeldaFullEditor
 				// Left Side tiles
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = true;
-					tiles[tid].HFlip = false;
+					// tiles[tid].VFlip = true;
+					// tiles[tid].HFlip = false;
 					draw_tile(tiles[tid--], 1 * 8, (yy - 6) * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = true;
-					tiles[tid].HFlip = false;
+					// tiles[tid].VFlip = true;
+					// tiles[tid].HFlip = false;
 					draw_tile(tiles[tid--], 0 * 8, (yy - 6) * 8);
 				}
 
 				tid = 11;
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = false;
-					tiles[tid].HFlip = true;
+					// tiles[tid].VFlip = false;
+					// tiles[tid].HFlip = true;
 					draw_tile(tiles[tid--], 20 * 8, (yy - 6) * 8);
 				}
 				for (int yy = 5; yy >= 0; yy--)
 				{
-					tiles[tid].VFlip = false;
-					tiles[tid].HFlip = true;
+					// tiles[tid].VFlip = false;
+					// tiles[tid].HFlip = true;
 					draw_tile(tiles[tid--], 21 * 8, (yy - 6) * 8);
 				}
 

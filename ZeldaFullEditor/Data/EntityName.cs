@@ -44,6 +44,10 @@ namespace ZeldaFullEditor.Data
 		public override string ToString() => string.Format("{0:3X} {1}", ID, Name);
 
 	}
+	public class DoorObjectName : EntityName
+	{
+		public DoorObjectName(int i, string n) : base(i, n) { }
+	}
 
 	public class RoomTagName : EntityName
 	{

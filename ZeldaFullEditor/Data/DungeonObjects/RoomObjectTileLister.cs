@@ -6,10 +6,17 @@
 
 		public TilesList this[int i] => _list[i];
 
+		private readonly DoorTilesList[] _doors = new DoorTilesList[0x80];
+
 		private readonly ZScreamer ZS;
 		public RoomObjectTileLister(ZScreamer parent)
 		{
 			ZS = parent;
+		}
+
+		public DoorTilesList GetDoorTileSet(byte id)
+		{
+			return _doors[id];
 		}
 
 		public void InitializeTilesFromROM()
@@ -469,6 +476,60 @@
 			AutoFindTiles(0x27C, 4);
 			AutoFindTiles(0x27D, 4);
 			AutoFindTiles(0x27E, 4);
+
+			// Doors
+			AutoFindDoorTiles(0x00);
+			AutoFindDoorTiles(0x02);
+			AutoFindDoorTiles(0x04);
+			AutoFindDoorTiles(0x06);
+			AutoFindDoorTiles(0x08);
+			AutoFindDoorTiles(0x0A);
+			AutoFindDoorTiles(0x0C);
+			AutoFindDoorTiles(0x0E);
+			AutoFindDoorTiles(0x10);
+			AutoFindDoorTiles(0x12);
+			AutoFindDoorTiles(0x14);
+			AutoFindDoorTiles(0x16);
+			AutoFindDoorTiles(0x18);
+			AutoFindDoorTiles(0x1A);
+			AutoFindDoorTiles(0x1C);
+			AutoFindDoorTiles(0x1E);
+			AutoFindDoorTiles(0x20);
+			AutoFindDoorTiles(0x22);
+			AutoFindDoorTiles(0x24);
+			AutoFindDoorTiles(0x26);
+			AutoFindDoorTiles(0x28);
+			AutoFindDoorTiles(0x2A);
+			AutoFindDoorTiles(0x2C);
+			AutoFindDoorTiles(0x2E);
+			AutoFindDoorTiles(0x30);
+			AutoFindDoorTiles(0x32);
+			AutoFindDoorTiles(0x34);
+			AutoFindDoorTiles(0x36);
+			AutoFindDoorTiles(0x38);
+			AutoFindDoorTiles(0x3A);
+			AutoFindDoorTiles(0x3C);
+			AutoFindDoorTiles(0x3E);
+			AutoFindDoorTiles(0x40);
+			AutoFindDoorTiles(0x42);
+			AutoFindDoorTiles(0x44);
+			AutoFindDoorTiles(0x46);
+			AutoFindDoorTiles(0x48);
+			AutoFindDoorTiles(0x4A);
+			AutoFindDoorTiles(0x4C);
+			AutoFindDoorTiles(0x4E);
+			AutoFindDoorTiles(0x50);
+			AutoFindDoorTiles(0x52);
+			AutoFindDoorTiles(0x54);
+			AutoFindDoorTiles(0x56);
+			AutoFindDoorTiles(0x58);
+			AutoFindDoorTiles(0x5A);
+			AutoFindDoorTiles(0x5C);
+			AutoFindDoorTiles(0x5E);
+			AutoFindDoorTiles(0x60);
+			AutoFindDoorTiles(0x62);
+			AutoFindDoorTiles(0x64);
+			AutoFindDoorTiles(0x66);
 		}
 
 
@@ -506,6 +567,16 @@
 		private void SetTilesFromMultipleAddresses(ushort id, params (int address, int count)[] sources)
 		{
 			_list[id] = TilesList.CreateNewDefinitionFromMultipleAddresses(ZS, sources);
+		}
+
+		private void AutoFindDoorTiles(byte id)
+		{
+			_doors[id] = DoorTilesList.CreateNewDefinition(ZS,
+				ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.door_gfx_up + id, 2],
+				ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.door_gfx_down + id, 2],
+				ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.door_gfx_left + id, 2],
+				ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.door_gfx_right + id, 2]
+			);
 		}
 	}
 }

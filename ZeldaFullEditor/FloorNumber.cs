@@ -34,7 +34,7 @@ namespace ZeldaFullEditor
 			return -1;
 		}
 
-		public static FloorNumber[] floors =
+		public static readonly FloorNumber[] floors =
 		{
 			new FloorNumber("B8", 0xF8),
 			new FloorNumber("B7", 0xF9),

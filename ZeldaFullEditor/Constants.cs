@@ -12,24 +12,9 @@ namespace ZeldaFullEditor
 		//===========================================================================================
 		// Magic numbers
 		//===========================================================================================
-		/// <summary>
-		/// Bit set for object priority
-		/// </summary>
 		public const ushort TilePriorityBit = 0x2000;
-
-		/// <summary>
-		/// Bit set for object hflip
-		/// </summary>
 		public const ushort TileHFlipBit = 0x4000;
-
-		/// <summary>
-		/// Bit set for object vflip
-		/// </summary>
 		public const ushort TileVFlipBit = 0x8000;
-
-		/// <summary>
-		/// Bits used for tile name
-		/// </summary>
 		public const ushort TileNameMask = 0x03FF;
 
 		public const int Uncompressed3BPPSize = 0x0600;
@@ -66,7 +51,11 @@ namespace ZeldaFullEditor
 		// TODO zarby stop making magic numbers
 		public const int IDKZarby = 0x54727;
 
-		public static byte[] FontSpacings = new byte[] { 4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5, 5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6 };
+		public static byte[] FontSpacings = new byte[] {
+			4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5,
+			5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5,
+			5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5,
+			5, 5, 5, 5, 5, 5, 5, 7, 5, 5, 5, 4, 5, 4, 6, 6, 6, 6 };
 
 		//===========================================================================================
 		// Yes
@@ -95,12 +84,11 @@ namespace ZeldaFullEditor
 		public const string ObjectZClipboardData = "objectz";
 
 		//===========================================================================================
-		// Geometry - shapes and points we don't need to constantly reinstantiate
+		// Geometry - for consistency and we should probably give them better names
 		//===========================================================================================
 		public static readonly Point Point_0_0 = new Point(0, 0);
 		public static readonly Point Point_512_0 = new Point(512, 0);
 
-		// TODO these could probably use more descriptive names
 		public static readonly Rectangle Rect_0_0_24_24 = new Rectangle(0, 0, 24, 24);
 		public static readonly Rectangle Rect_0_0_64_64 = new Rectangle(0, 0, 64, 64);
 		public static readonly Rectangle Rect_0_0_64_128 = new Rectangle(0, 0, 64, 128);
@@ -139,7 +127,7 @@ namespace ZeldaFullEditor
 		public static readonly Font Arial7 = new Font("Arial", 7);
 
 		//===========================================================================================
-		// Colors - colors we use for consistency and avoiding redundant instantiations
+		// Colors - colors we use for consistency and we should probably give them better names
 		//===========================================================================================
 		public static readonly Color HalfWhite = Color.FromArgb(128, 255, 255, 255);
 		public static readonly Color HalfWhite2 = Color.FromArgb(255, 255, 255);

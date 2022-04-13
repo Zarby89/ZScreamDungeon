@@ -48,11 +48,11 @@ namespace ZeldaFullEditor
 		private byte _palette;
 		private Background2 _bg2;
 
-		public TagKey tag1 { get; set; }
-		public TagKey tag2 { get; set; }
+		public byte tag1 { get; set; }
+		public byte tag2 { get; set; }
 
 		public CollisionKey collision { get; set; }
-		public EffectKey effect { get; set; }
+		public byte effect { get; set; }
 
 		private byte _holewarp;
 		private byte _holewarp_plane;
@@ -235,7 +235,7 @@ namespace ZeldaFullEditor
 				loadTilesObjects();
 			}
 
-			for (int i = 0; i < 4096; i++)
+			for (int i = 0; i < Constants.TilesPerTilemap; i++)
 			{
 				collisionMap[i] = 0xFF; // Null byte
 			}
@@ -1667,9 +1667,9 @@ namespace ZeldaFullEditor
 			palette = (byte) (ZS.ROM[header_location + 1] & 0x3F);
 			blockset = ZS.ROM[header_location + 2];
 			spriteset = ZS.ROM[header_location + 3];
-			effect = (EffectKey) ZS.ROM[header_location + 4];
-			tag1 = (TagKey) ZS.ROM[header_location + 5];
-			tag2 = (TagKey) ZS.ROM[header_location + 6];
+			effect = ZS.ROM[header_location + 4];
+			tag1 = ZS.ROM[header_location + 5];
+			tag2 = ZS.ROM[header_location + 6];
 
 			holewarp_plane = (byte) ((ZS.ROM[header_location + 7]) & 0x03);
 			staircase_plane[0] = (byte) ((ZS.ROM[header_location + 7] >> 2) & 0x03);

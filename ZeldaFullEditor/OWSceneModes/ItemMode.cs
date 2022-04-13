@@ -9,18 +9,16 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
-	public class ItemMode
+	public class ItemMode : SceneMode
 	{
 		public RoomPotSaveEditor selectedItem;
 		public RoomPotSaveEditor lastselectedItem;
 		public bool isLeftPress = false;
-		private readonly ZScreamer ZS;
-		public ItemMode(ZScreamer parent)
+		public ItemMode(ZScreamer parent) : base(parent)
 		{
-			ZS = parent;
 		}
 
-		public void onMouseDown(MouseEventArgs e)
+		public override void OnMouseDown(MouseEventArgs e)
 		{
 			isLeftPress = e.Button == MouseButtons.Left;
 
@@ -47,14 +45,14 @@ namespace ZeldaFullEditor.OWSceneModes
 			ZS.OverworldScene.mouse_down = true;
 		}
 
-		public void Copy()
+		public override void Copy()
 		{
 			Clipboard.Clear();
 			RoomPotSaveEditor id = lastselectedItem.Copy();
 			Clipboard.SetData(Constants.OverworldItemClipboardData, id);
 		}
 
-		public void Cut()
+		public override void Cut()
 		{
 			Clipboard.Clear();
 			RoomPotSaveEditor id = lastselectedItem.Copy();
@@ -64,7 +62,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 		}
 
-		public void Paste()
+		public override void Paste()
 		{
 			RoomPotSaveEditor data = (RoomPotSaveEditor) Clipboard.GetData(Constants.OverworldItemClipboardData);
 			if (data != null)
@@ -78,7 +76,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void onMouseUp(MouseEventArgs e)
+		public override void OnMouseUp(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -135,7 +133,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 		}
 
-		public void onMouseMove(MouseEventArgs e)
+		public override void OnMouseMove(MouseEventArgs e)
 		{
 			ZS.OverworldScene.mouseX_Real = e.X;
 			ZS.OverworldScene.mouseY_Real = e.Y;
@@ -158,7 +156,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void Delete()
+		public override void Delete()
 		{
 			if (lastselectedItem != null)
 			{

@@ -11,86 +11,94 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
-	// Tiles Information
-	// iiiiiiii vhoopppc
-	// i = tile index
-	// v - vertical flip
-	// h - horizontal flip
-	// p - palette
-	// o - on top?
-	// c - the 9th(and most significant) bit of the character number for this sprite.
-
+	/// <summary>
+	/// Represents a background tile as used by the SNES PPU.
+	/// </summary>
 	[Serializable]
-	public class Tile
+	public readonly struct Tile
 	{
-
-		private bool priority, hflip, vflip;
-
 		/// <summary>
 		/// True if high priority
 		/// </summary>
-		public bool Priority
-		{
-			get => priority;
-			set
-			{
-				priority = value;
-				PriorityShort = (ushort) (priority ? 1 : 0);
-			}
-		}
+		public bool Priority { get; }
 
 		/// <summary>
 		/// True if h flip
 		/// </summary>
-		public bool HFlip
-		{
-			get => hflip;
-			set
-			{
-				hflip = value;
-				HFlipShort = (ushort) (hflip ? 1 : 0);
-			}
-		}
+		public bool HFlip { get; }
 
 		/// <summary>
 		/// True if v flip
 		/// </summary>
-		public bool VFlip
-		{
-			get => vflip;
-			set
-			{
-				vflip = value;
-				VFlipShort = (ushort) (vflip ? 1 : 0);
-			}
-		}
+		public bool VFlip { get; }
 
 		/// <summary>
 		/// 0x0001 if high priority
 		/// </summary>
-		public ushort PriorityShort { get; private set; }
+		public byte PriorityShort { get; }
 		/// <summary>
 		/// 0x0001 if h flip
 		/// </summary>
-		public ushort HFlipShort { get; private set; }
+		public byte HFlipByte { get; }
 
 		/// <summary>
 		/// 0x0001 if v flip
 		/// </summary>
-		public ushort VFlipShort { get; private set; }
+		public byte VFlipByte { get; }
 
 
+		public ushort ID { get; }
+		public byte Palette { get; }
 
-		public ushort ID { get; set; } = 0;
-		public byte Palette { get; set; }
 
-		public Tile(ushort id, byte palette = 4, bool priority = false, bool hflip = false, bool vflip = false) // Custom tile
+		public static readonly Tile Empty = new Tile(0);
+
+		public Tile(byte b1, byte b2) // Tile from game data
+		{
+			ID = (ushort) (((b2 & 0x01) << 8) | b1);
+
+			VFlip = (b2 & 0x80) == 0x80;
+			VFlipByte = (byte) (VFlip ? 1 : 0);
+
+			HFlip = (b2 & 0x40) == 0x40;
+			HFlipByte = (byte) (HFlip ? 1 : 0);
+
+			Priority = (b2 & 0x20) == 0x20;
+			PriorityShort = (byte) (Priority ? 1 : 0);
+
+			Palette = (byte) ((b2 >> 2) & 0x07);
+		}
+
+		public Tile(ushort id, byte palette, bool priority, bool hflip, bool vflip) // Custom tile
 		{
 			ID = id;
+
 			HFlip = hflip;
+			HFlipByte = (byte) (HFlip ? 1 : 0);
+
 			VFlip = vflip;
+			VFlipByte = (byte) (VFlip ? 1 : 0);
+
 			Priority = priority;
+			PriorityShort = (byte) (Priority ? 1 : 0);
+
 			Palette = palette;
+		}
+
+		public Tile(ushort v)
+		{
+			ID = (ushort) (v & Constants.TileNameMask);
+
+			VFlip = v.BitIsOn(Constants.TileVFlipBit);
+			VFlipByte = (byte) (VFlip ? 1 : 0);
+
+			HFlip = v.BitIsOn(Constants.TileHFlipBit);
+			HFlipByte = (byte) (HFlip ? 1 : 0);
+
+			Priority = v.BitIsOn(Constants.TilePriorityBit);
+			PriorityShort = (byte) (Priority ? 1 : 0);
+
+			Palette = (byte) ((v >> 10) & 0x07);
 		}
 
 		public ushort GetModifiedUnsignedShort(bool? hflip = null, bool? vflip = null)
@@ -119,15 +127,6 @@ namespace ZeldaFullEditor
 			return new Tile(ID, Palette, Priority, hflip ?? HFlip, vflip ?? VFlip);
 		}
 
-		public Tile(byte b1, byte b2) // Tile from game data
-		{
-			ID = (ushort) (((b2 & 0x01) << 8) | b1);
-			VFlip = (b2 & 0x80) == 0x80;
-			HFlip = (b2 & 0x40) == 0x40;
-			Priority = (b2 & 0x20) == 0x20;
-			Palette = (byte) ((b2 >> 2) & 0x07);
-		}
-
 		public unsafe void SetTile(int x, int y, byte layer, ZScreamer ZS)
 		{
 			if (x + (y * 64) < 4096)
@@ -149,22 +148,12 @@ namespace ZeldaFullEditor
 		{
 			ushort value = 0;
 			// vhopppcc cccccccc
-			if (priority) { value |= Constants.TilePriorityBit; };
-			if (hflip) { value |= Constants.TileHFlipBit; };
-			if (vflip) { value |= Constants.TileVFlipBit; };
-			value |= (ushort) ((this.Palette << 10) & 0x1C00);
-			value |= (ushort) (this.ID & Constants.TileNameMask);
+			if (Priority) { value |= Constants.TilePriorityBit; };
+			if (HFlip) { value |= Constants.TileHFlipBit; };
+			if (VFlip) { value |= Constants.TileVFlipBit; };
+			value |= (ushort) ((Palette << 10) & 0x1C00);
+			value |= (ushort) (ID & Constants.TileNameMask);
 			return value;
-		}
-
-		public unsafe void Draw(IntPtr bitmapPointer)
-		{
-			// TODO: Add something here?
-		}
-
-		public unsafe void CopyTile(int x, int y, int xx, int yy)
-		{
-			// TODO: Add something here?
 		}
 	}
 }

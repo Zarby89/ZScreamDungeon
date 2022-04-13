@@ -9,16 +9,13 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
-	public class DoorMode
+	public class DoorMode : SceneMode
 	{
-		private readonly ZScreamer ZS;
-
-		public DoorMode(ZScreamer parent)
+		public DoorMode(ZScreamer parent) : base(parent)
 		{
-			ZS = parent;
 		}
 
-		public void OnMouseDown(MouseEventArgs e)
+		public override void OnMouseDown(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -34,12 +31,12 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void OnMouseUp(MouseEventArgs e)
+		public override void OnMouseUp(MouseEventArgs e)
 		{
 			// TODO: Add something here?
 		}
 
-		public void onMouseMove(MouseEventArgs e)
+		public override void OnMouseMove(MouseEventArgs e)
 		{
 			if (ZS.OverworldScene.initialized)
 			{
@@ -130,6 +127,27 @@ namespace ZeldaFullEditor.OWSceneModes
                     */
 				}
 			}
+		}
+
+		// TODO
+		public override void Copy()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void Cut()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void Paste()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void Delete()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

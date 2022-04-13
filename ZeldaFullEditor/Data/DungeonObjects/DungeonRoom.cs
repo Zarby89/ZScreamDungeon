@@ -44,6 +44,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		private readonly ZScreamer ZS;
 		private DungeonRoom(ZScreamer parent, ushort id)
 		{
+			RoomID = id;
 			ZS = parent;
 		}
 
@@ -58,7 +59,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			// Load dungeon header
 			int headerPointer = SNESFunctions.SNEStoPC(Z.ROM[Z.Offsets.room_header_pointer, 3]);
 				
-			int address = (Z.ROM[Z.Offsets.room_header_pointers_bank] << 16) | Z.ROM[headerPointer + (id * 2), 2];
+			int address = (Z.ROM[Z.Offsets.room_header_pointers_bank] << 16) | Z.ROM[headerPointer + (id * 2), size: 2];
 
 
 			// Load room objects
@@ -86,7 +87,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 			// Load sprites
 			int spritePointer = 0x040000 | Z.ROM[Z.Offsets.rooms_sprite_pointer, 2];
-			int sprite_address = SNESFunctions.SNEStoPC(Constants.DungeonSpritePointers | Z.ROM[spritePointer + (id * 2), 2]);
+			int sprite_address = SNESFunctions.SNEStoPC(Constants.DungeonSpritePointers | Z.ROM[spritePointer + (id * 2), size: 2]);
 			ret.LoadSpritesFromArray(Z.ROM.DataStream, offset: sprite_address);
 
 
@@ -103,36 +104,34 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		}
 
 
-		private RoomObject ParseRoomObject(in byte layer, in byte b1, in byte b2, in byte b3, out byte posX, out byte posY, out ushort oid)
+		private RoomObject ParseRoomObject(in byte layer, in byte b1, in byte b2, in byte b3, out byte posX, out byte posY)
 		{
-			byte sizeX, sizeY, sizeXY;
+			byte size;
+			ushort oid;
 
-			if (b3 >= 0xF8)
+			if (b3 >= 0xF8) // Subtype 3
 			{
-				oid = (ushort) (((b3 << 4) | 0x80 + (((b2 & 0x03) << 2) + (b1 & 0x03))) - 0xD80); // TODO fix this ugly shit
+				oid = (ushort) (0x0300 | ((b2 & 0x03) << 2) | (b1 & 0x03)); // TODO fix this ugly shit
 				posX = (byte) ((b1 & 0xFC) >> 2);
 				posY = (byte) ((b2 & 0xFC) >> 2);
-				sizeXY = (byte) ((((b1 & 0x03) << 2) + (b2 & 0x03)));
+				size = 0;
+			}
+			else if (b1 >= 0xFC) // Subtype 2
+			{
+				oid = (ushort) ((b3 & 0x3F) | 0x100);
+				posX = (byte) ((b2 >> 4) | ((b1 & 0x03) << 4));
+				posY = (byte) (((b2 & 0x0F) << 2) | (b3 >> 6));
+				size = 0;
 			}
 			else // Subtype1
 			{
 				oid = b3;
 				posX = (byte) ((b1 & 0xFC) >> 2);
 				posY = (byte) ((b2 & 0xFC) >> 2);
-				sizeX = (byte) (b1 & 0x03);
-				sizeY = (byte) (b2 & 0x03);
-				sizeXY = (byte) ((sizeX << 2) + sizeY);
+				size = (byte) (((b1 & 0x03) << 2) | (b2 & 0x03));
 			}
 
-			if (b1 >= 0xFC) // Subtype2 (not scalable?)
-			{
-				oid = (ushort) ((b3 & 0x3F) | 0x100);
-				posX = (byte) (((b2 & 0xF0) >> 4) + ((b1 & 0x3) << 4));
-				posY = (byte) (((b2 & 0x0F) << 2) + ((b3 & 0xC0) >> 6));
-				sizeXY = 0;
-			}
-
-			DungeonRoomObject rtype = DungeonRoomObject.GetDungeonObject(oid);
+			RoomObjectType rtype = RoomObjectType.GetDungeonObject(oid);
 			if (rtype == null)
 			{
 				return null;
@@ -144,7 +143,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				return null;
 			}
 
-			return new RoomObject(rtype, defn, posX, posY, layer);
+			return new RoomObject(rtype, defn, posX, posY, layer, size);
 		}
 
 		private void LoadObjectsFromArray(byte[] data, int offset = 0)
@@ -205,7 +204,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 					b3 = data[offset++];
 					RoomObject r = ParseRoomObject(
 						in layer, in b1, in b2, in b3,
-						out byte posX, out byte posY, out ushort oid);
+						out byte posX, out byte posY);
 
 					if (r != null)
 					{

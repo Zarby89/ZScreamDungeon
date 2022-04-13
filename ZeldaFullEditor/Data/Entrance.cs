@@ -7,102 +7,60 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-	public class Entrance // Can be used for starting entrance as well
+	public class Entrance
 	{
-		ushort room; // word value for each room
+		public byte cameraBoundaryQN { get; set; }
+		public byte cameraBoundaryFN { get; set; }
+		public byte cameraBoundaryQS { get; set; }
+		public byte cameraBoundaryFS { get; set; }
+		public byte cameraBoundaryQW { get; set; }
+		public byte cameraBoundaryFW { get; set; }
+		public byte cameraBoundaryQE { get; set; }
+		public byte cameraBoundaryFE { get; set; }
+		public ushort RoomID { get; set; }
+		public ushort CameraX { get; set; }
+		public ushort CameraY { get; set; }
+		public ushort XPosition { get; set; }
+		public ushort YPosition { get; set; }
+		public ushort CameraTriggerX { get; set; }
+		public ushort CameraTriggerY { get; set; }
+		public byte Blockset { get; set; }
+		public byte Floor { get; set; }
+		public byte Dungeon { get; set; }
+		public byte Ladderbg { get; set; }
+		public byte Door { get; set; }
 
-		public byte cameraBoundaryQN; // 8 bytes per room Q (quadrant) and F (full) for cardinal directions NSWE
-		public byte cameraBoundaryFN;
-		public byte cameraBoundaryQS;
-		public byte cameraBoundaryFS;
-		public byte cameraBoundaryQW;
-		public byte cameraBoundaryFW;
-		public byte cameraBoundaryQE;
-		public byte cameraBoundaryFE;
+		public byte Scrolling { get; set; }
 
-		ushort ycamera; // 2bytes each room
-		ushort xcamera; // 2bytes
-		ushort yposition; // 2bytes
-		ushort xposition; // 2bytes
-		ushort ytrigger; // 2bytes
-		ushort xtrigger; // 2bytes
-		byte blockset; // 1byte
-		byte floor; // 1byte
-		byte dungeon; // 1byte (dungeon id) // Same as music might use the project dungeon name instead
-		byte door; // 1byte
-		byte ladderbg; // 1 byte, ---b ---a b = bg2, a = need to check -_-
-		byte scrolling; // 1byte --h- --v- 
-		byte scrollquadrant; //1byte
-		ushort exit; // 2byte word 
-		byte music; // 1byte // Will need to be renamed and changed to add support to MSU1
-		public ushort Room { get => room; set => room = value; }
-		public ushort CameraX { get => xcamera; set => xcamera = value; }
-		public ushort CameraY { get => ycamera; set => ycamera = value; }
-		public ushort XPosition { get => xposition; set => xposition = value; }
-		public ushort YPosition { get => yposition; set => yposition = value; }
-		public ushort CameraTriggerX { get => xtrigger; set => xtrigger = value; }
-		public ushort CameraTriggerY { get => ytrigger; set => ytrigger = value; }
-		public byte Blockset { get => blockset; set => blockset = value; }
-		public byte Floor { get => floor; set => floor = value; }
-		public byte Dungeon { get => dungeon; set => dungeon = value; }
-		public byte Ladderbg { get => ladderbg; set => ladderbg = value; }
-
-		public byte Scrolling { get => scrolling; set => scrolling = value; }
-
-		public byte Scrollquadrant { get => scrollquadrant; set => scrollquadrant = value; }
+		public byte Scrollquadrant { get; set; }
 
 		public ushort Exit { get; set; }
-		public byte Music { get => music; set => music = value; }
+		public byte Music { get; set; }
 
-		private readonly ZScreamer ZS;
-		public Entrance(ZScreamer parent, byte entranceId, bool isSpawnPoint = false)
+		public bool IsSpawnPoint { get; }
+
+		public Entrance(ZScreamer ZS, byte entranceId, bool isSpawnPoint = false)
 		{
-			ZS = parent;
-			room = ZS.ROM[ZS.Offsets.entrance_room + (entranceId * 2), 2];
-			yposition = ZS.ROM[ZS.Offsets.entrance_yposition + (entranceId * 2), 2];
-			xposition = ZS.ROM[ZS.Offsets.entrance_xposition + (entranceId * 2), 2];
-			xcamera = ZS.ROM[ZS.Offsets.entrance_camerax + (entranceId * 2), 2];
-			ycamera = ZS.ROM[ZS.Offsets.entrance_cameray + (entranceId * 2), 2];
-			ytrigger = ZS.ROM[ZS.Offsets.entrance_cameraytrigger + (entranceId * 2), 2];
-			xtrigger = ZS.ROM[ZS.Offsets.entrance_cameraxtrigger + (entranceId * 2), 2];
-			blockset = ZS.ROM[ZS.Offsets.entrance_blockset + entranceId];
-			music = ZS.ROM[ZS.Offsets.entrance_music + entranceId];
-			dungeon = ZS.ROM[ZS.Offsets.entrance_dungeon + entranceId];
-			floor = ZS.ROM[ZS.Offsets.entrance_floor + entranceId];
-			door = ZS.ROM[ZS.Offsets.entrance_door + entranceId];
-			ladderbg = ZS.ROM[ZS.Offsets.entrance_ladderbg + entranceId];
-			scrolling = ZS.ROM[ZS.Offsets.entrance_scrolling + entranceId];
-			scrollquadrant = ZS.ROM[ZS.Offsets.entrance_scrollquadrant + entranceId];
-			exit = ZS.ROM[ZS.Offsets.entrance_exit + (entranceId * 2), 2];
-
-			cameraBoundaryQN = ZS.ROM[ZS.Offsets.entrance_scrolledge + 0 + (entranceId * 8)];
-			cameraBoundaryFN = ZS.ROM[ZS.Offsets.entrance_scrolledge + 1 + (entranceId * 8)];
-			cameraBoundaryQS = ZS.ROM[ZS.Offsets.entrance_scrolledge + 2 + (entranceId * 8)];
-			cameraBoundaryFS = ZS.ROM[ZS.Offsets.entrance_scrolledge + 3 + (entranceId * 8)];
-			cameraBoundaryQW = ZS.ROM[ZS.Offsets.entrance_scrolledge + 4 + (entranceId * 8)];
-			cameraBoundaryFW = ZS.ROM[ZS.Offsets.entrance_scrolledge + 5 + (entranceId * 8)];
-			cameraBoundaryQE = ZS.ROM[ZS.Offsets.entrance_scrolledge + 6 + (entranceId * 8)];
-			cameraBoundaryFE = ZS.ROM[ZS.Offsets.entrance_scrolledge + 7 + (entranceId * 8)];
-
+			IsSpawnPoint = isSpawnPoint;
 
 			if (isSpawnPoint)
 			{
-				room = ZS.ROM[ZS.Offsets.startingentrance_room + ((entranceId) * 2), 2];
-				yposition = ZS.ROM[ZS.Offsets.startingentrance_yposition + (entranceId * 2), 2];
-				xposition = ZS.ROM[ZS.Offsets.startingentrance_xposition + (entranceId * 2), 2];
-				xcamera = ZS.ROM[ZS.Offsets.startingentrance_camerax + (entranceId * 2), 2];
-				ycamera = ZS.ROM[ZS.Offsets.startingentrance_cameray + (entranceId * 2), 2];
-				ytrigger = ZS.ROM[ZS.Offsets.startingentrance_cameraytrigger + (entranceId * 2), 2];
-				xtrigger = ZS.ROM[ZS.Offsets.startingentrance_cameraxtrigger + (entranceId * 2), 2];
-				blockset = ZS.ROM[ZS.Offsets.startingentrance_blockset + entranceId];
-				music = ZS.ROM[ZS.Offsets.startingentrance_music + entranceId];
-				dungeon = ZS.ROM[ZS.Offsets.startingentrance_dungeon + entranceId];
-				floor = ZS.ROM[ZS.Offsets.startingentrance_floor + entranceId];
-				door = ZS.ROM[ZS.Offsets.startingentrance_door + entranceId];
-				ladderbg = ZS.ROM[ZS.Offsets.startingentrance_ladderbg + entranceId];
-				scrolling = ZS.ROM[ZS.Offsets.startingentrance_scrolling + entranceId];
-				scrollquadrant = ZS.ROM[ZS.Offsets.startingentrance_scrollquadrant + entranceId];
-				exit = ZS.ROM[ZS.Offsets.startingentrance_exit + (entranceId * 2), 2];
+				RoomID = ZS.ROM[ + ((entranceId) * 2), 2];
+				YPosition = ZS.ROM[ZS.Offsets.startingentrance_yposition + (entranceId * 2), 2];
+				XPosition = ZS.ROM[ZS.Offsets.startingentrance_xposition + (entranceId * 2), 2];
+				CameraX = ZS.ROM[ZS.Offsets.startingentrance_camerax + (entranceId * 2), 2];
+				CameraY = ZS.ROM[ZS.Offsets.startingentrance_cameray + (entranceId * 2), 2];
+				CameraTriggerY = ZS.ROM[ZS.Offsets.startingentrance_cameraytrigger + (entranceId * 2), 2];
+				CameraTriggerX = ZS.ROM[ZS.Offsets.startingentrance_cameraxtrigger + (entranceId * 2), 2];
+				Blockset = ZS.ROM[ZS.Offsets.startingentrance_blockset + entranceId];
+				Music = ZS.ROM[ZS.Offsets.startingentrance_music + entranceId];
+				Dungeon = ZS.ROM[ZS.Offsets.startingentrance_dungeon + entranceId];
+				Floor = ZS.ROM[ZS.Offsets.startingentrance_floor + entranceId];
+				Door = ZS.ROM[ZS.Offsets.startingentrance_door + entranceId];
+				Ladderbg = ZS.ROM[ZS.Offsets.startingentrance_ladderbg + entranceId];
+				Scrolling = ZS.ROM[ZS.Offsets.startingentrance_scrolling + entranceId];
+				Scrollquadrant = ZS.ROM[ZS.Offsets.startingentrance_scrollquadrant + entranceId];
+				Exit = ZS.ROM[ZS.Offsets.startingentrance_exit + (entranceId * 2), 2];
 				cameraBoundaryQN = ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 0 + (entranceId * 8)];
 				cameraBoundaryFN = ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 1 + (entranceId * 8)];
 				cameraBoundaryQS = ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 2 + (entranceId * 8)];
@@ -112,67 +70,100 @@ namespace ZeldaFullEditor
 				cameraBoundaryQE = ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 6 + (entranceId * 8)];
 				cameraBoundaryFE = ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 7 + (entranceId * 8)];
 			}
+			else
+			{
+				RoomID = ZS.ROM[ZS.Offsets.entrance_room + (entranceId * 2), 2];
+				YPosition = ZS.ROM[ZS.Offsets.entrance_yposition + (entranceId * 2), 2];
+				XPosition = ZS.ROM[ZS.Offsets.entrance_xposition + (entranceId * 2), 2];
+				CameraX = ZS.ROM[ZS.Offsets.entrance_camerax + (entranceId * 2), 2];
+				CameraY = ZS.ROM[ZS.Offsets.entrance_cameray + (entranceId * 2), 2];
+				CameraTriggerY = ZS.ROM[ZS.Offsets.entrance_cameraytrigger + (entranceId * 2), 2];
+				CameraTriggerX = ZS.ROM[ZS.Offsets.entrance_cameraxtrigger + (entranceId * 2), 2];
+				Blockset = ZS.ROM[ZS.Offsets.entrance_blockset + entranceId];
+				Music = ZS.ROM[ZS.Offsets.entrance_music + entranceId];
+				Dungeon = ZS.ROM[ZS.Offsets.entrance_dungeon + entranceId];
+				Floor = ZS.ROM[ZS.Offsets.entrance_floor + entranceId];
+				Door = ZS.ROM[ZS.Offsets.entrance_door + entranceId];
+				Ladderbg = ZS.ROM[ZS.Offsets.entrance_ladderbg + entranceId];
+				Scrolling = ZS.ROM[ZS.Offsets.entrance_scrolling + entranceId];
+				Scrollquadrant = ZS.ROM[ZS.Offsets.entrance_scrollquadrant + entranceId];
+				Exit = ZS.ROM[ZS.Offsets.entrance_exit + (entranceId * 2), 2];
+
+				cameraBoundaryQN = ZS.ROM[ZS.Offsets.entrance_scrolledge + 0 + (entranceId * 8)];
+				cameraBoundaryFN = ZS.ROM[ZS.Offsets.entrance_scrolledge + 1 + (entranceId * 8)];
+				cameraBoundaryQS = ZS.ROM[ZS.Offsets.entrance_scrolledge + 2 + (entranceId * 8)];
+				cameraBoundaryFS = ZS.ROM[ZS.Offsets.entrance_scrolledge + 3 + (entranceId * 8)];
+				cameraBoundaryQW = ZS.ROM[ZS.Offsets.entrance_scrolledge + 4 + (entranceId * 8)];
+				cameraBoundaryFW = ZS.ROM[ZS.Offsets.entrance_scrolledge + 5 + (entranceId * 8)];
+				cameraBoundaryQE = ZS.ROM[ZS.Offsets.entrance_scrolledge + 6 + (entranceId * 8)];
+				cameraBoundaryFE = ZS.ROM[ZS.Offsets.entrance_scrolledge + 7 + (entranceId * 8)];
+			}
 		}
 
-		public void save(int entranceId, bool isSpawnPoint = false, bool jp = false)
+		public void AutoCalculateScrollBoundaries()
+		{
+			cameraBoundaryQN = (byte) (CameraY >> 8);
+			cameraBoundaryFN = (byte) ((CameraY >> 8) & 0xFE);
+			cameraBoundaryQS = (byte) (CameraY >> 8);
+			cameraBoundaryFS = (byte) ((CameraY >> 8) | 0x01);
+			cameraBoundaryQW = (byte) (CameraX >> 8);
+			cameraBoundaryFW = (byte) ((CameraX >> 8) & 0xFE);
+			cameraBoundaryQE = (byte) (CameraX >> 8);
+			cameraBoundaryFE = (byte) ((CameraX >> 8) | 0x01);
+		}
+
+		public void save(ZScreamer ZS, int entranceId)
 		{
 			// TODO: Change these save
-			if (!isSpawnPoint)
+			if (IsSpawnPoint)
 			{
-				ZS.ROM[ZS.Offsets.entrance_room + (entranceId * 2), 2] = room;
-				ZS.ROM[ZS.Offsets.entrance_yposition + (entranceId * 2), 2] = yposition;
-				ZS.ROM[ZS.Offsets.entrance_xposition + (entranceId * 2), 2] = xposition;
-				ZS.ROM[ZS.Offsets.entrance_cameray + (entranceId * 2), 2] = ycamera;
-				ZS.ROM[ZS.Offsets.entrance_camerax + (entranceId * 2), 2] = xcamera;
-				ZS.ROM[ZS.Offsets.entrance_cameraxtrigger + (entranceId * 2), 2] = xtrigger;
-				ZS.ROM[ZS.Offsets.entrance_cameraytrigger + (entranceId * 2), 2] = ytrigger;
-				ZS.ROM[ZS.Offsets.entrance_exit + (entranceId * 2), 2] = exit;
 
-				ZS.ROM[ZS.Offsets.entrance_blockset + entranceId] = blockset;
-				ZS.ROM[ZS.Offsets.entrance_music + entranceId] = music;
-				ZS.ROM[ZS.Offsets.entrance_dungeon + entranceId] = dungeon;
-				ZS.ROM[ZS.Offsets.entrance_door + entranceId] = door;
-				ZS.ROM[ZS.Offsets.entrance_floor + entranceId] = floor;
-				ZS.ROM[ZS.Offsets.entrance_ladderbg + entranceId] = ladderbg;
-				ZS.ROM[ZS.Offsets.entrance_scrolling + entranceId] = scrolling;
-				ZS.ROM[ZS.Offsets.entrance_scrollquadrant + entranceId] = scrollquadrant;
-				ZS.ROM[(ZS.Offsets.entrance_scrolledge + 0 + (entranceId * 8))] = cameraBoundaryQN;
-				ZS.ROM[(ZS.Offsets.entrance_scrolledge + 1 + (entranceId * 8))] = cameraBoundaryFN;
-				ZS.ROM[(ZS.Offsets.entrance_scrolledge + 2 + (entranceId * 8))] = cameraBoundaryQS;
-				ZS.ROM[(ZS.Offsets.entrance_scrolledge + 3 + (entranceId * 8))] = cameraBoundaryFS;
-				ZS.ROM[(ZS.Offsets.entrance_scrolledge + 4 + (entranceId * 8))] = cameraBoundaryQW;
-				ZS.ROM[(ZS.Offsets.entrance_scrolledge + 5 + (entranceId * 8))] = cameraBoundaryFW;
-				ZS.ROM[(ZS.Offsets.entrance_scrolledge + 6 + (entranceId * 8))] = cameraBoundaryQE;
-				ZS.ROM[(ZS.Offsets.entrance_scrolledge + 7 + (entranceId * 8))] = cameraBoundaryFE;
+				ZS.ROM[ZS.Offsets.startingentrance_room + (entranceId * 2), 2] = RoomID;
+				ZS.ROM[ZS.Offsets.startingentrance_yposition + (entranceId * 2), 2] = YPosition;
+				ZS.ROM[ZS.Offsets.startingentrance_xposition + (entranceId * 2), 2] = XPosition;
+				ZS.ROM[ZS.Offsets.startingentrance_cameray + (entranceId * 2), 2] = CameraY;
+				ZS.ROM[ZS.Offsets.startingentrance_camerax + (entranceId * 2), 2] = CameraX;
+				ZS.ROM[ZS.Offsets.startingentrance_cameraxtrigger + (entranceId * 2), 2] = CameraTriggerY;
+				ZS.ROM[ZS.Offsets.startingentrance_cameraytrigger + (entranceId * 2), 2] = CameraTriggerX;
+				ZS.ROM[ZS.Offsets.startingentrance_exit + (entranceId * 2), 2] = Exit;
+
+				ZS.ROM[ZS.Offsets.startingentrance_blockset + entranceId] = Blockset;
+				ZS.ROM[ZS.Offsets.startingentrance_music + entranceId] = Music;
+				ZS.ROM[ZS.Offsets.startingentrance_dungeon + entranceId] = Dungeon;
+				ZS.ROM[ZS.Offsets.startingentrance_door + entranceId] = Door;
+				ZS.ROM[ZS.Offsets.startingentrance_floor + entranceId] = Floor;
+				ZS.ROM[ZS.Offsets.startingentrance_ladderbg + entranceId] = Ladderbg;
+				ZS.ROM[ZS.Offsets.startingentrance_scrolling + entranceId] = Scrolling;
+				ZS.ROM[ZS.Offsets.startingentrance_scrollquadrant + entranceId] = Scrollquadrant;
+
+
+				ZS.ROM.Write(ZS.Offsets.startingentrance_scrolledge + (entranceId * 8),
+					cameraBoundaryQN, cameraBoundaryFN, cameraBoundaryQS, cameraBoundaryFS,
+					cameraBoundaryQW, cameraBoundaryFW, cameraBoundaryQE, cameraBoundaryFE);
 			}
 			else
 			{
+				ZS.ROM[ZS.Offsets.entrance_room + (entranceId * 2), 2] = RoomID;
+				ZS.ROM[ZS.Offsets.entrance_yposition + (entranceId * 2), 2] = YPosition;
+				ZS.ROM[ZS.Offsets.entrance_xposition + (entranceId * 2), 2] = XPosition;
+				ZS.ROM[ZS.Offsets.entrance_cameray + (entranceId * 2), 2] = CameraY;
+				ZS.ROM[ZS.Offsets.entrance_camerax + (entranceId * 2), 2] = CameraX;
+				ZS.ROM[ZS.Offsets.entrance_cameraxtrigger + (entranceId * 2), 2] = CameraTriggerY;
+				ZS.ROM[ZS.Offsets.entrance_cameraytrigger + (entranceId * 2), 2] = CameraTriggerX;
+				ZS.ROM[ZS.Offsets.entrance_exit + (entranceId * 2), 2] = Exit;
 
-				ZS.ROM[ZS.Offsets.startingentrance_room + (entranceId * 2), 2] = room;
-				ZS.ROM[ZS.Offsets.startingentrance_yposition + (entranceId * 2), 2] = yposition;
-				ZS.ROM[ZS.Offsets.startingentrance_xposition + (entranceId * 2), 2] = xposition;
-				ZS.ROM[ZS.Offsets.startingentrance_cameray + (entranceId * 2), 2] = ycamera;
-				ZS.ROM[ZS.Offsets.startingentrance_camerax + (entranceId * 2), 2] = xcamera;
-				ZS.ROM[ZS.Offsets.startingentrance_cameraxtrigger + (entranceId * 2), 2] = xtrigger;
-				ZS.ROM[ZS.Offsets.startingentrance_cameraytrigger + (entranceId * 2), 2] = ytrigger;
-				ZS.ROM[ZS.Offsets.startingentrance_exit + (entranceId * 2), 2] = exit;
+				ZS.ROM[ZS.Offsets.entrance_blockset + entranceId] = Blockset;
+				ZS.ROM[ZS.Offsets.entrance_music + entranceId] = Music;
+				ZS.ROM[ZS.Offsets.entrance_dungeon + entranceId] = Dungeon;
+				ZS.ROM[ZS.Offsets.entrance_door + entranceId] = Door;
+				ZS.ROM[ZS.Offsets.entrance_floor + entranceId] = Floor;
+				ZS.ROM[ZS.Offsets.entrance_ladderbg + entranceId] = Ladderbg;
+				ZS.ROM[ZS.Offsets.entrance_scrolling + entranceId] = Scrolling;
+				ZS.ROM[ZS.Offsets.entrance_scrollquadrant + entranceId] = Scrollquadrant;
 
-				ZS.ROM[ZS.Offsets.startingentrance_blockset + entranceId] = blockset;
-				ZS.ROM[ZS.Offsets.startingentrance_music + entranceId] = music;
-				ZS.ROM[ZS.Offsets.startingentrance_dungeon + entranceId] = dungeon;
-				ZS.ROM[ZS.Offsets.startingentrance_door + entranceId] = door;
-				ZS.ROM[ZS.Offsets.startingentrance_floor + entranceId] = floor;
-				ZS.ROM[ZS.Offsets.startingentrance_ladderbg + entranceId] = ladderbg;
-				ZS.ROM[ZS.Offsets.startingentrance_scrolling + entranceId] = scrolling;
-				ZS.ROM[ZS.Offsets.startingentrance_scrollquadrant + entranceId] = scrollquadrant;
-				ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 0 + (entranceId * 8)] = cameraBoundaryQN;
-				ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 1 + (entranceId * 8)] = cameraBoundaryFN;
-				ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 2 + (entranceId * 8)] = cameraBoundaryQS;
-				ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 3 + (entranceId * 8)] = cameraBoundaryFS;
-				ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 4 + (entranceId * 8)] = cameraBoundaryQW;
-				ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 5 + (entranceId * 8)] = cameraBoundaryFW;
-				ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 6 + (entranceId * 8)] = cameraBoundaryQE;
-				ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 7 + (entranceId * 8)] = cameraBoundaryFE;
+				ZS.ROM.Write(ZS.Offsets.entrance_scrolledge + (entranceId * 8),
+					cameraBoundaryQN, cameraBoundaryFN, cameraBoundaryQS, cameraBoundaryFS,
+					cameraBoundaryQW, cameraBoundaryFW, cameraBoundaryQE, cameraBoundaryFE);
 			}
 		}
 	}

@@ -9,17 +9,16 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
-	public class TransportMode
+	public class TransportMode : SceneMode
 	{
 		public TransportOW selectedTransport = null;
 		public TransportOW lastselectedTransport = null;
-		private readonly ZScreamer ZS;
-		public TransportMode(ZScreamer parent)
+
+		public TransportMode(ZScreamer parent) : base(parent)
 		{
-			ZS = parent;
 		}
 
-		public void onMouseDown(MouseEventArgs e)
+		public override void OnMouseDown(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -43,7 +42,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void onMouseMove(MouseEventArgs e)
+		public override void OnMouseMove(MouseEventArgs e)
 		{
 			if (ZS.OverworldScene.mouse_down)
 			{
@@ -67,7 +66,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void onMouseUp(MouseEventArgs e)
+		public override void OnMouseUp(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -213,6 +212,27 @@ namespace ZeldaFullEditor.OWSceneModes
 					}
 				}
 			}
+		}
+
+		// TODO
+		public override void Copy()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void Cut()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void Paste()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void Delete()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

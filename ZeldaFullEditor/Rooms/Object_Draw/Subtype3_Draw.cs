@@ -285,7 +285,7 @@ namespace ZeldaFullEditor
 
 			for (int i = 6; i < 12; i++)
 			{
-				tiles[i].HFlip = true;
+				// tiles[i].HFlip = true;
 			}
 		}
 
@@ -543,7 +543,7 @@ namespace ZeldaFullEditor
 
 			for (int i = 6; i < 12; i++)
 			{
-				tiles[i].HFlip = true;
+				// tiles[i].HFlip = true;
 			}
 		}
 
@@ -1151,32 +1151,32 @@ namespace ZeldaFullEditor
 			{
 				// 390
 
-				tiles[tid].HFlip = false;
+				// tiles[tid].HFlip = false;
 				draw_tile(tiles[tid], 0, (yy) * 8);
-				tiles[tid + 14].HFlip = false;
+				// tiles[tid + 14].HFlip = false;
 				draw_tile(tiles[tid + 14], 8, (yy) * 8);
 				draw_tile(tiles[tid + 14], 16, (yy) * 8);
-				tiles[tid + 28].HFlip = false;
+				// tiles[tid + 28].HFlip = false;
 				draw_tile(tiles[tid + 28], 24, (yy) * 8);
-				tiles[tid + 48].HFlip = true;
+				// tiles[tid + 48].HFlip = true;
 				draw_tile(tiles[tid + 42], (4) * 8, (yy) * 8);
-				tiles[tid + 56].HFlip = false;
+				// tiles[tid + 56].HFlip = false;
 				draw_tile(tiles[tid + 56], (5) * 8, (yy) * 8);
 
-				tiles[tid + 70].HFlip = false;
+				// tiles[tid + 70].HFlip = false;
 				draw_tile(tiles[tid + 70], (6) * 8, (yy) * 8);
-				tiles[tid + 70].HFlip = true;
+				// tiles[tid + 70].HFlip = true;
 				draw_tile(tiles[tid + 70], (7) * 8, (yy) * 8);
-				tiles[tid + 56].HFlip = true;
+				// tiles[tid + 56].HFlip = true;
 				draw_tile(tiles[tid + 56], (8) * 8, (yy) * 8);
-				tiles[tid + 48].HFlip = true;
+				// tiles[tid + 48].HFlip = true;
 				draw_tile(tiles[tid + 42], (9) * 8, (yy) * 8);
-				tiles[tid + 28].HFlip = true;
+				// tiles[tid + 28].HFlip = true;
 				draw_tile(tiles[tid + 28], (10) * 8, (yy) * 8);
-				tiles[tid + 14].HFlip = true;
+				// tiles[tid + 14].HFlip = true;
 				draw_tile(tiles[tid + 14], (11) * 8, (yy) * 8);
 				draw_tile(tiles[tid + 14], (12) * 8, (yy) * 8);
-				tiles[tid].HFlip = true;
+				// tiles[tid].HFlip = true;
 				draw_tile(tiles[tid], (13) * 8, (yy) * 8);
 				tid++;
 			}
@@ -1226,22 +1226,22 @@ namespace ZeldaFullEditor
 			for (int xx = 0; xx < 7; xx++)
 			{
 				// 5
-				tiles[24].HFlip = false;
-				tiles[25].HFlip = false;
-				tiles[26].HFlip = false;
-				tiles[27].HFlip = false;
-				tiles[28].HFlip = false;
+				// tiles[24].HFlip = false;
+				// tiles[25].HFlip = false;
+				// tiles[26].HFlip = false;
+				// tiles[27].HFlip = false;
+				// tiles[28].HFlip = false;
 				draw_tile(tiles[24], (8 - xx) * 8, (4 + xx) * 8);
 				draw_tile(tiles[25], (8 - xx) * 8, (5 + xx) * 8);
 				draw_tile(tiles[26], (8 - xx) * 8, (6 + xx) * 8);
 				draw_tile(tiles[27], (8 - xx) * 8, (7 + xx) * 8);
 				draw_tile(tiles[28], (8 - xx) * 8, (8 + xx) * 8);
 
-				tiles[24].HFlip = true;
-				tiles[25].HFlip = true;
-				tiles[26].HFlip = true;
-				tiles[27].HFlip = true;
-				tiles[28].HFlip = true;
+				// tiles[24].HFlip = true;
+				// tiles[25].HFlip = true;
+				// tiles[26].HFlip = true;
+				// tiles[27].HFlip = true;
+				// tiles[28].HFlip = true;
 				draw_tile(tiles[24], (23 + xx) * 8, (4 + xx) * 8);
 				draw_tile(tiles[25], (23 + xx) * 8, (5 + xx) * 8);
 				draw_tile(tiles[26], (23 + xx) * 8, (6 + xx) * 8);
@@ -1258,9 +1258,9 @@ namespace ZeldaFullEditor
 					for (int xx = 0; xx < 4; xx++)
 					{
 						// 5
-						tiles[tid].HFlip = false;
+						// tiles[tid].HFlip = false;
 						draw_tile(tiles[tid], (2 + xx) * 8, (11 + yy + (i * 6)) * 8);
-						tiles[tid].HFlip = true;
+						// tiles[tid].HFlip = true;
 						draw_tile(tiles[tid], (29 - xx) * 8, (11 + yy + (i * 6)) * 8);
 						tid++;
 					}
@@ -1276,7 +1276,7 @@ namespace ZeldaFullEditor
 					for (int xx = 0; xx < 6; xx++)
 					{
 						draw_tile(tiles[tid], (12 + xx + (i * 6)) * 8, (9 + yy) * 8);
-						//tiles[tid].HFlip = true;
+						//// tiles[tid].HFlip = true;
 						//draw_tile(tiles[tid], (29 - xx + (i * 6)) * 8, (8 + yy ) * 8);
 						tid++;
 					}
@@ -1291,7 +1291,7 @@ namespace ZeldaFullEditor
 					for (int xx = 0; xx < 2; xx++)
 					{
 						draw_tile(tiles[tid], (7 + xx) * 8, (14 + yy + (i * 6)) * 8);
-						//tiles[tid].HFlip = true;
+						//// tiles[tid].HFlip = true;
 						//draw_tile(tiles[tid], (29 - xx + (i * 6)) * 8, (8 + yy ) * 8);
 						tid++;
 					}
@@ -2327,7 +2327,7 @@ namespace ZeldaFullEditor
 
 			for (int xx = 0; xx < 12; xx++)
 			{
-				tiles[1].HFlip = (xx & 0x01) == 0x01;
+				// tiles[1].HFlip = (xx & 0x01) == 0x01;
 				for (int yy = 0; yy < 3; yy++)
 				{
 					if (yy < 2)
@@ -2345,8 +2345,7 @@ namespace ZeldaFullEditor
 				for (int yy = 0; yy < 3; yy++)
 				{
 					draw_tile(tiles[2 + yy], (xx * 2) * 8, (yy + 3) * 8);
-					Tile t = new Tile(tiles[2 + yy].ID, tiles[2 + yy].Palette, tiles[2 + yy].Priority, tiles[2 + yy].HFlip, tiles[2 + yy].VFlip);
-					t.HFlip = true;
+					Tile t = tiles[2 + yy].CloneModified(hflip: true);
 					draw_tile(t, ((1 + (xx * 2)) * 8), (yy + 3) * 8);
 				}
 			}
@@ -2354,7 +2353,7 @@ namespace ZeldaFullEditor
 			// xx 4, yy 4
 			for (int xx = 0; xx < 6; xx++)
 			{
-				tiles[6].HFlip = xx.BitIsOn(0x01);
+				// tiles[6].HFlip = xx.BitIsOn(0x01);
 				for (int yy = 0; yy < 1; yy++)
 				{
 					draw_tile(tiles[6], (((xx + 4)) * 8), (yy + 4) * 8);
@@ -2362,13 +2361,13 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			tiles[8].HFlip = false;
-			tiles[9].HFlip = false;
+			// tiles[8].HFlip = false;
+			// tiles[9].HFlip = false;
 			draw_tile(tiles[8], (0), 0);
 			draw_tile(tiles[8], (0), 8);
 			draw_tile(tiles[9], (0), 16);
-			tiles[8].HFlip = true;
-			tiles[9].HFlip = true;
+			// tiles[8].HFlip = true;
+			// tiles[9].HFlip = true;
 			draw_tile(tiles[8], ((13) * 8), 0);
 			draw_tile(tiles[8], ((13) * 8), 8);
 			draw_tile(tiles[9], ((13) * 8), 16);
@@ -2378,7 +2377,7 @@ namespace ZeldaFullEditor
 			{
 				for (int yy = 0; yy < 4; yy++)
 				{
-					tiles[tid].HFlip = false;
+					// tiles[tid].HFlip = false;
 					draw_tile(tiles[tid], (((xx + 3)) * 8), (yy + 10) * 8);
 					tid++;
 				}
@@ -2389,7 +2388,7 @@ namespace ZeldaFullEditor
 			{
 				for (int yy = 0; yy < 4; yy++)
 				{
-					tiles[tid].HFlip = true;
+					// tiles[tid].HFlip = true;
 					draw_tile(tiles[tid], (((xx + 6)) * 8), (yy + 10) * 8);
 					tid++;
 				}

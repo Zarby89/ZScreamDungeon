@@ -1,4 +1,7 @@
-﻿namespace ZeldaFullEditor
+﻿using System;
+using System.Reflection;
+
+namespace ZeldaFullEditor
 {
 	public class AddressSet
 	{
@@ -34,9 +37,9 @@
 		private static readonly ROMAddress _OverworldSpritesTableState0 = new ROMAddress(0x09C881, 0x09C881);
 		private static readonly ROMAddress _OverworldSpritesTableState3 = new ROMAddress(0x09CA21, 0x09CA21);
 		private static readonly ROMAddress _OverworldSpritesTableState2 = new ROMAddress(0x09C901, 0x09C901);
-		private static readonly ROMAddress _overworldSpritesBeginingEditor = new ROMAddress(0x218100, 0x218100);
-		private static readonly ROMAddress _overworldSpritesAgahnimEditor = new ROMAddress(0x218180, 0x218180);
-		private static readonly ROMAddress _overworldSpritesZeldaEditor = new ROMAddress(0x2182A0, 0x2182A0);
+		//private static readonly ROMAddress _overworldSpritesBeginingEditor = new ROMAddress(0x218100, 0x218100);
+		//private static readonly ROMAddress _overworldSpritesAgahnimEditor = new ROMAddress(0x218180, 0x218180);
+		//private static readonly ROMAddress _overworldSpritesZeldaEditor = new ROMAddress(0x2182A0, 0x2182A0);
 		private static readonly ROMAddress _overworldItemsPointers = new ROMAddress(0x1BC2F9, 0x1BC2F9);
 		private static readonly ROMAddress _overworldItemsAddress = new ROMAddress(0x1BC8B9, 0x1BC8B9);
 		private static readonly ROMAddress _overworldItemsBank = new ROMAddress(0x1BC8BF, 0x1BC8BF);

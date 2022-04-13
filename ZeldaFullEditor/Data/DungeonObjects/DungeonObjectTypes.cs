@@ -1,1249 +1,1307 @@
 ﻿using static ZeldaFullEditor.Data.DungeonObjects.ObjCategory;
 using static ZeldaFullEditor.Data.DungeonObjects.DungeonObjectSizeability;
 
+using System.Linq;
+using System.Collections.Generic;
+
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
-	public partial class DungeonRoomObject
+	public partial class RoomObjectType
 	{
+		public string VanillaName { get; }
+		public DungeonObjectSet ObjectSet { get; }
+		public byte ID { get; }
+		public DungeonObjectSizeability Resizeability { get; }
+
+		public DrawObject Draw { get; }
+		public SpecialObjectType Specialness { get; }
+
+		/// <summary>
+		/// What tile sets this object doesn't look like garbage in
+		/// </summary>
+		public List<byte> PrettyTileSets { get; }
+
+		public List<ObjCategory> Categories { get; }
+
+		public ushort FullID { get; }
+
+		// every tileset is beautiful
+		public static byte[] AllTileSets = { 0 };
+		protected RoomObjectType(ushort objectid, DrawObject drawfunc, DungeonObjectSizeability resizing, ObjCategory[] categories, byte[] gsets,
+			SpecialObjectType special = SpecialObjectType.None)
+		{
+			string name = "PROBLEM";
+
+			ObjectSet = (DungeonObjectSet) (objectid >> 8);
+			ID = (byte) objectid;
+			FullID = objectid;
+
+			switch (ObjectSet)
+			{
+				case DungeonObjectSet.Subtype1:
+					name = DefaultEntities.ListOfSet0RoomObjects[ID].Name;
+					break;
+				case DungeonObjectSet.Subtype2:
+					name = DefaultEntities.ListOfSet1RoomObjects[ID].Name;
+					break;
+				case DungeonObjectSet.Subtype3:
+					name = DefaultEntities.ListOfSet2RoomObjects[ID].Name;
+					break;
+			}
+
+			VanillaName = name;
+			Resizeability = resizing;
+			Specialness = special;
+			Categories = categories.ToList();
+			PrettyTileSets = gsets.ToList();
+			Draw = drawfunc;
+		}
+
+		public override string ToString()
+		{
+			return $"{FullID:X3} {VanillaName}";
+		}
+
+
 		/*
 		 * All room object defaults
 		 */
-		public static readonly DungeonRoomObject Object000 = new DungeonRoomObject(0x000,
+		public static readonly RoomObjectType Object000 = new RoomObjectType(0x000,
 			RoomDraw_Rightwards2x2_1to15or32, Horizontal,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object001 = new DungeonRoomObject(0x001,
+		public static readonly RoomObjectType Object001 = new RoomObjectType(0x001,
 			RoomDraw_Rightwards2x4_1to15or26, Horizontal,
 			new ObjCategory[] { Collision, Wall, NorthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object002 = new DungeonRoomObject(0x002,
+		public static readonly RoomObjectType Object002 = new RoomObjectType(0x002,
 			RoomDraw_Rightwards2x4_1to15or26, Horizontal,
 			new ObjCategory[] { Collision, Wall, SouthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object003 = new DungeonRoomObject(0x003,
+		public static readonly RoomObjectType Object003 = new RoomObjectType(0x003,
 			RoomDraw_Rightwards2x4spaced4_1to16, Horizontal,
 			new ObjCategory[] { Collision, Wall, NorthSide, Ledge, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object004 = new DungeonRoomObject(0x004,
+		public static readonly RoomObjectType Object004 = new RoomObjectType(0x004,
 			RoomDraw_Rightwards2x4spaced4_1to16, Horizontal,
 			new ObjCategory[] { Collision, Wall, SouthSide, Ledge, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object005 = new DungeonRoomObject(0x005,
+		public static readonly RoomObjectType Object005 = new RoomObjectType(0x005,
 			RoomDraw_Rightwards2x4spaced4_1to16_BothBG, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object006 = new DungeonRoomObject(0x006,
+		public static readonly RoomObjectType Object006 = new RoomObjectType(0x006,
 			RoomDraw_Rightwards2x4spaced4_1to16_BothBG, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, SouthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object007 = new DungeonRoomObject(0x007,
+		public static readonly RoomObjectType Object007 = new RoomObjectType(0x007,
 			RoomDraw_Rightwards2x2_1to16, Horizontal,
 			new ObjCategory[] { Pits, NorthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object008 = new DungeonRoomObject(0x008,
+		public static readonly RoomObjectType Object008 = new RoomObjectType(0x008,
 			RoomDraw_Rightwards2x2_1to16, Horizontal,
 			new ObjCategory[] { Pits, SouthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object009 = new DungeonRoomObject(0x009,
+		public static readonly RoomObjectType Object009 = new RoomObjectType(0x009,
 			RoomDraw_DiagonalAcute_1to16, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, NorthSide, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object00A = new DungeonRoomObject(0x00A,
+		public static readonly RoomObjectType Object00A = new RoomObjectType(0x00A,
 			RoomDraw_DiagonalGrave_1to16, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, SouthSide, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object00B = new DungeonRoomObject(0x00B,
+		public static readonly RoomObjectType Object00B = new RoomObjectType(0x00B,
 			RoomDraw_DiagonalGrave_1to16, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, NorthSide, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object00C = new DungeonRoomObject(0x00C,
+		public static readonly RoomObjectType Object00C = new RoomObjectType(0x00C,
 			RoomDraw_DiagonalAcute_1to16, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, SouthSide, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object00D = new DungeonRoomObject(0x00D,
+		public static readonly RoomObjectType Object00D = new RoomObjectType(0x00D,
 			RoomDraw_DiagonalAcute_1to16, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, NorthSide, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object00E = new DungeonRoomObject(0x00E,
+		public static readonly RoomObjectType Object00E = new RoomObjectType(0x00E,
 			RoomDraw_DiagonalGrave_1to16, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, SouthSide, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object00F = new DungeonRoomObject(0x00F,
+		public static readonly RoomObjectType Object00F = new RoomObjectType(0x00F,
 			RoomDraw_DiagonalGrave_1to16, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, NorthSide, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object010 = new DungeonRoomObject(0x010,
+		public static readonly RoomObjectType Object010 = new RoomObjectType(0x010,
 			RoomDraw_DiagonalAcute_1to16, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, SouthSide, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object011 = new DungeonRoomObject(0x011,
+		public static readonly RoomObjectType Object011 = new RoomObjectType(0x011,
 			RoomDraw_DiagonalAcute_1to16, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, NorthSide, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object012 = new DungeonRoomObject(0x012,
+		public static readonly RoomObjectType Object012 = new RoomObjectType(0x012,
 			RoomDraw_DiagonalGrave_1to16, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, SouthSide, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object013 = new DungeonRoomObject(0x013,
+		public static readonly RoomObjectType Object013 = new RoomObjectType(0x013,
 			RoomDraw_DiagonalGrave_1to16, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, NorthSide, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object014 = new DungeonRoomObject(0x014,
+		public static readonly RoomObjectType Object014 = new RoomObjectType(0x014,
 			RoomDraw_DiagonalAcute_1to16, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, SouthSide, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object015 = new DungeonRoomObject(0x015,
+		public static readonly RoomObjectType Object015 = new RoomObjectType(0x015,
 			RoomDraw_DiagonalAcute_1to16_BothBG, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, NorthSide, WestSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object016 = new DungeonRoomObject(0x016,
+		public static readonly RoomObjectType Object016 = new RoomObjectType(0x016,
 			RoomDraw_DiagonalGrave_1to16_BothBG, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, SouthSide, WestSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object017 = new DungeonRoomObject(0x017,
+		public static readonly RoomObjectType Object017 = new RoomObjectType(0x017,
 			RoomDraw_DiagonalGrave_1to16_BothBG, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, NorthSide, EastSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object018 = new DungeonRoomObject(0x018,
+		public static readonly RoomObjectType Object018 = new RoomObjectType(0x018,
 			RoomDraw_DiagonalAcute_1to16_BothBG, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, SouthSide, EastSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object019 = new DungeonRoomObject(0x019,
+		public static readonly RoomObjectType Object019 = new RoomObjectType(0x019,
 			RoomDraw_DiagonalAcute_1to16_BothBG, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, NorthSide, WestSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object01A = new DungeonRoomObject(0x01A,
+		public static readonly RoomObjectType Object01A = new RoomObjectType(0x01A,
 			RoomDraw_DiagonalGrave_1to16_BothBG, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, SouthSide, WestSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object01B = new DungeonRoomObject(0x01B,
+		public static readonly RoomObjectType Object01B = new RoomObjectType(0x01B,
 			RoomDraw_DiagonalGrave_1to16_BothBG, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, NorthSide, EastSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object01C = new DungeonRoomObject(0x01C,
+		public static readonly RoomObjectType Object01C = new RoomObjectType(0x01C,
 			RoomDraw_DiagonalAcute_1to16_BothBG, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, SouthSide, EastSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object01D = new DungeonRoomObject(0x01D,
+		public static readonly RoomObjectType Object01D = new RoomObjectType(0x01D,
 			RoomDraw_DiagonalAcute_1to16_BothBG, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, NorthSide, WestSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object01E = new DungeonRoomObject(0x01E,
+		public static readonly RoomObjectType Object01E = new RoomObjectType(0x01E,
 			RoomDraw_DiagonalGrave_1to16_BothBG, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, SouthSide, WestSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object01F = new DungeonRoomObject(0x01F,
+		public static readonly RoomObjectType Object01F = new RoomObjectType(0x01F,
 			RoomDraw_DiagonalGrave_1to16_BothBG, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, NorthSide, EastSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object020 = new DungeonRoomObject(0x020,
+		public static readonly RoomObjectType Object020 = new RoomObjectType(0x020,
 			RoomDraw_DiagonalAcute_1to16_BothBG, Horizontal,
 			new ObjCategory[] { DiagonalCollision, Wall, SouthSide, EastSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object021 = new DungeonRoomObject(0x021,
+		public static readonly RoomObjectType Object021 = new RoomObjectType(0x021,
 			RoomDraw_Rightwards1x2_1to16_plus2, Horizontal,
 			new ObjCategory[] { Stairs },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object022 = new DungeonRoomObject(0x022,
+		public static readonly RoomObjectType Object022 = new RoomObjectType(0x022,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus3, Horizontal,
 			new ObjCategory[] { Collision },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object023 = new DungeonRoomObject(0x023,
+		public static readonly RoomObjectType Object023 = new RoomObjectType(0x023,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object024 = new DungeonRoomObject(0x024,
+		public static readonly RoomObjectType Object024 = new RoomObjectType(0x024,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object025 = new DungeonRoomObject(0x025,
+		public static readonly RoomObjectType Object025 = new RoomObjectType(0x025,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object026 = new DungeonRoomObject(0x026,
+		public static readonly RoomObjectType Object026 = new RoomObjectType(0x026,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object027 = new DungeonRoomObject(0x027,
+		public static readonly RoomObjectType Object027 = new RoomObjectType(0x027,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object028 = new DungeonRoomObject(0x028,
+		public static readonly RoomObjectType Object028 = new RoomObjectType(0x028,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object029 = new DungeonRoomObject(0x029,
+		public static readonly RoomObjectType Object029 = new RoomObjectType(0x029,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object02A = new DungeonRoomObject(0x02A,
+		public static readonly RoomObjectType Object02A = new RoomObjectType(0x02A,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object02B = new DungeonRoomObject(0x02B,
+		public static readonly RoomObjectType Object02B = new RoomObjectType(0x02B,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object02C = new DungeonRoomObject(0x02C,
+		public static readonly RoomObjectType Object02C = new RoomObjectType(0x02C,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object02D = new DungeonRoomObject(0x02D,
+		public static readonly RoomObjectType Object02D = new RoomObjectType(0x02D,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object02E = new DungeonRoomObject(0x02E,
+		public static readonly RoomObjectType Object02E = new RoomObjectType(0x02E,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object02F = new DungeonRoomObject(0x02F,
+		public static readonly RoomObjectType Object02F = new RoomObjectType(0x02F,
 			RoomDraw_RightwardsWithCorners1x2_1to16_plus13, Horizontal,
 			new ObjCategory[] { Collision, Ledge, Wall, NorthSide, SouthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object030 = new DungeonRoomObject(0x030,
+		public static readonly RoomObjectType Object030 = new RoomObjectType(0x030,
 			RoomDraw_RightwardsWithCorners1x2_1to16_plus13, Horizontal,
 			new ObjCategory[] { Collision, Ledge, Wall, NorthSide, SouthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object031 = new DungeonRoomObject(0x031,
+		public static readonly RoomObjectType Object031 = new RoomObjectType(0x031,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object032 = new DungeonRoomObject(0x032,
+		public static readonly RoomObjectType Object032 = new RoomObjectType(0x032,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object033 = new DungeonRoomObject(0x033,
+		public static readonly RoomObjectType Object033 = new RoomObjectType(0x033,
 			RoomDraw_Rightwards4x4_1to16, Horizontal,
 			new ObjCategory[] { NoCollision, Floor, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object034 = new DungeonRoomObject(0x034,
+		public static readonly RoomObjectType Object034 = new RoomObjectType(0x034,
 			RoomDraw_Rightwards1x1Solid_1to16_plus3, Horizontal,
 			new ObjCategory[] { NoCollision, Floor, RoomDecoration, NorthPerimeter, SouthPerimeter },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object035 = new DungeonRoomObject(0x035,
+		public static readonly RoomObjectType Object035 = new RoomObjectType(0x035,
 			RoomDraw_DoorSwitcherer, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object036 = new DungeonRoomObject(0x036,
+		public static readonly RoomObjectType Object036 = new RoomObjectType(0x036,
 			RoomDraw_RightwardsDecor4x4spaced2_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object037 = new DungeonRoomObject(0x037,
+		public static readonly RoomObjectType Object037 = new RoomObjectType(0x037,
 			RoomDraw_RightwardsDecor4x4spaced2_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, SouthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object038 = new DungeonRoomObject(0x038,
+		public static readonly RoomObjectType Object038 = new RoomObjectType(0x038,
 			RoomDraw_RightwardsStatue2x3spaced2_1to16, Horizontal,
 			new ObjCategory[] { Collision, RoomDecoration, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object039 = new DungeonRoomObject(0x039,
+		public static readonly RoomObjectType Object039 = new RoomObjectType(0x039,
 			RoomDraw_RightwardsPillar2x4spaced4_1to16, Horizontal,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object03A = new DungeonRoomObject(0x03A,
+		public static readonly RoomObjectType Object03A = new RoomObjectType(0x03A,
 			RoomDraw_RightwardsDecor4x3spaced4_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object03B = new DungeonRoomObject(0x03B,
+		public static readonly RoomObjectType Object03B = new RoomObjectType(0x03B,
 			RoomDraw_RightwardsDecor4x3spaced4_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, SouthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object03C = new DungeonRoomObject(0x03C,
+		public static readonly RoomObjectType Object03C = new RoomObjectType(0x03C,
 			RoomDraw_RightwardsDoubled2x2spaced2_1to16, Horizontal,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object03D = new DungeonRoomObject(0x03D,
+		public static readonly RoomObjectType Object03D = new RoomObjectType(0x03D,
 			RoomDraw_RightwardsPillar2x4spaced4_1to16, Horizontal,
 			new ObjCategory[] { Collision, RoomDecoration, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object03E = new DungeonRoomObject(0x03E,
+		public static readonly RoomObjectType Object03E = new RoomObjectType(0x03E,
 			RoomDraw_RightwardsDecor2x2spaced12_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object03F = new DungeonRoomObject(0x03F,
+		public static readonly RoomObjectType Object03F = new RoomObjectType(0x03F,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { ShallowWater },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object040 = new DungeonRoomObject(0x040,
+		public static readonly RoomObjectType Object040 = new RoomObjectType(0x040,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { ShallowWater },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object041 = new DungeonRoomObject(0x041,
+		public static readonly RoomObjectType Object041 = new RoomObjectType(0x041,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { ShallowWater },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object042 = new DungeonRoomObject(0x042,
+		public static readonly RoomObjectType Object042 = new RoomObjectType(0x042,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { ShallowWater },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object043 = new DungeonRoomObject(0x043,
+		public static readonly RoomObjectType Object043 = new RoomObjectType(0x043,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { ShallowWater },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object044 = new DungeonRoomObject(0x044,
+		public static readonly RoomObjectType Object044 = new RoomObjectType(0x044,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { ShallowWater },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object045 = new DungeonRoomObject(0x045,
+		public static readonly RoomObjectType Object045 = new RoomObjectType(0x045,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { ShallowWater },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object046 = new DungeonRoomObject(0x046,
+		public static readonly RoomObjectType Object046 = new RoomObjectType(0x046,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { ShallowWater },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object047 = new DungeonRoomObject(0x047,
+		public static readonly RoomObjectType Object047 = new RoomObjectType(0x047,
 			RoomDraw_Waterfall47, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object048 = new DungeonRoomObject(0x048,
+		public static readonly RoomObjectType Object048 = new RoomObjectType(0x048,
 			RoomDraw_Waterfall48, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object049 = new DungeonRoomObject(0x049,
+		public static readonly RoomObjectType Object049 = new RoomObjectType(0x049,
 			RoomDraw_RightwardsFloorTile4x2_1to16, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object04A = new DungeonRoomObject(0x04A,
+		public static readonly RoomObjectType Object04A = new RoomObjectType(0x04A,
 			RoomDraw_RightwardsFloorTile4x2_1to16, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object04B = new DungeonRoomObject(0x04B,
+		public static readonly RoomObjectType Object04B = new RoomObjectType(0x04B,
 			RoomDraw_RightwardsDecor2x2spaced12_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, SouthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object04C = new DungeonRoomObject(0x04C,
+		public static readonly RoomObjectType Object04C = new RoomObjectType(0x04C,
 			RoomDraw_RightwardsBar4x3_1to16, Horizontal,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object04D = new DungeonRoomObject(0x04D,
+		public static readonly RoomObjectType Object04D = new RoomObjectType(0x04D,
 			RoomDraw_RightwardsShelf4x4_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object04E = new DungeonRoomObject(0x04E,
+		public static readonly RoomObjectType Object04E = new RoomObjectType(0x04E,
 			RoomDraw_RightwardsShelf4x4_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object04F = new DungeonRoomObject(0x04F,
+		public static readonly RoomObjectType Object04F = new RoomObjectType(0x04F,
 			RoomDraw_RightwardsShelf4x4_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object050 = new DungeonRoomObject(0x050,
+		public static readonly RoomObjectType Object050 = new RoomObjectType(0x050,
 			RoomDraw_RightwardsLine1x1_1to16plus1, Horizontal,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object051 = new DungeonRoomObject(0x051,
+		public static readonly RoomObjectType Object051 = new RoomObjectType(0x051,
 			RoomDraw_RightwardsCannonHole4x3_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object052 = new DungeonRoomObject(0x052,
+		public static readonly RoomObjectType Object052 = new RoomObjectType(0x052,
 			RoomDraw_RightwardsCannonHole4x3_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, SouthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object053 = new DungeonRoomObject(0x053,
+		public static readonly RoomObjectType Object053 = new RoomObjectType(0x053,
 			RoomDraw_Rightwards2x2_1to16, Horizontal,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object054 = new DungeonRoomObject(0x054,
+		public static readonly RoomObjectType Object054 = new RoomObjectType(0x054,
 			RoomDraw_Nothing, Horizontal,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object055 = new DungeonRoomObject(0x055,
+		public static readonly RoomObjectType Object055 = new RoomObjectType(0x055,
 			RoomDraw_RightwardsDecor4x2spaced8_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object056 = new DungeonRoomObject(0x056,
+		public static readonly RoomObjectType Object056 = new RoomObjectType(0x056,
 			RoomDraw_RightwardsDecor4x2spaced8_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, SouthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object057 = new DungeonRoomObject(0x057,
+		public static readonly RoomObjectType Object057 = new RoomObjectType(0x057,
 			RoomDraw_Nothing, Horizontal,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object058 = new DungeonRoomObject(0x058,
+		public static readonly RoomObjectType Object058 = new RoomObjectType(0x058,
 			RoomDraw_Nothing, Horizontal,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object059 = new DungeonRoomObject(0x059,
+		public static readonly RoomObjectType Object059 = new RoomObjectType(0x059,
 			RoomDraw_Nothing, Horizontal,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object05A = new DungeonRoomObject(0x05A,
+		public static readonly RoomObjectType Object05A = new RoomObjectType(0x05A,
 			RoomDraw_Nothing, Horizontal,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object05B = new DungeonRoomObject(0x05B,
+		public static readonly RoomObjectType Object05B = new RoomObjectType(0x05B,
 			RoomDraw_RightwardsCannonHole4x3_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object05C = new DungeonRoomObject(0x05C,
+		public static readonly RoomObjectType Object05C = new RoomObjectType(0x05C,
 			RoomDraw_RightwardsCannonHole4x3_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, SouthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object05D = new DungeonRoomObject(0x05D,
+		public static readonly RoomObjectType Object05D = new RoomObjectType(0x05D,
 			RoomDraw_RightwardsBigRail1x3_1to16plus5, Horizontal,
 			new ObjCategory[] { Collision, RoomDecoration, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object05E = new DungeonRoomObject(0x05E,
+		public static readonly RoomObjectType Object05E = new RoomObjectType(0x05E,
 			RoomDraw_RightwardsBlock2x2spaced2_1to16, Horizontal,
 			new ObjCategory[] { Collision, RoomDecoration, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object05F = new DungeonRoomObject(0x05F,
+		public static readonly RoomObjectType Object05F = new RoomObjectType(0x05F,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus23, Horizontal,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object060 = new DungeonRoomObject(0x060,
+		public static readonly RoomObjectType Object060 = new RoomObjectType(0x060,
 			RoomDraw_Downwards2x2_1to15or32, Horizontal,
 			new ObjCategory[] { Ceiling, Collision },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object061 = new DungeonRoomObject(0x061,
+		public static readonly RoomObjectType Object061 = new RoomObjectType(0x061,
 			RoomDraw_Downwards4x2_1to15or26, Horizontal,
 			new ObjCategory[] { Collision, Wall, WestSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object062 = new DungeonRoomObject(0x062,
+		public static readonly RoomObjectType Object062 = new RoomObjectType(0x062,
 			RoomDraw_Downwards4x2_1to15or26, Horizontal,
 			new ObjCategory[] { Collision, Wall, EastSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object063 = new DungeonRoomObject(0x063,
+		public static readonly RoomObjectType Object063 = new RoomObjectType(0x063,
 			RoomDraw_Downwards4x2_1to16_BothBG, Horizontal,
 			new ObjCategory[] { Collision, Wall, WestSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object064 = new DungeonRoomObject(0x064,
+		public static readonly RoomObjectType Object064 = new RoomObjectType(0x064,
 			RoomDraw_Downwards4x2_1to16_BothBG, Horizontal,
 			new ObjCategory[] { Collision, Wall, EastSide, LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object065 = new DungeonRoomObject(0x065,
+		public static readonly RoomObjectType Object065 = new RoomObjectType(0x065,
 			RoomDraw_DownwardsDecor4x2spaced4_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object066 = new DungeonRoomObject(0x066,
+		public static readonly RoomObjectType Object066 = new RoomObjectType(0x066,
 			RoomDraw_DownwardsDecor4x2spaced4_1to16, Horizontal,
 			new ObjCategory[] { Collision, WallDecoration, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object067 = new DungeonRoomObject(0x067,
+		public static readonly RoomObjectType Object067 = new RoomObjectType(0x067,
 			RoomDraw_Downwards2x2_1to16, Horizontal,
 			new ObjCategory[] { Pits, WestSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object068 = new DungeonRoomObject(0x068,
+		public static readonly RoomObjectType Object068 = new RoomObjectType(0x068,
 			RoomDraw_Downwards2x2_1to16, Horizontal,
 			new ObjCategory[] { Pits, EastSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object069 = new DungeonRoomObject(0x069,
+		public static readonly RoomObjectType Object069 = new RoomObjectType(0x069,
 			RoomDraw_DownwardsHasEdge1x1_1to16_plus3, Horizontal,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object06A = new DungeonRoomObject(0x06A,
+		public static readonly RoomObjectType Object06A = new RoomObjectType(0x06A,
 			RoomDraw_DownwardsEdge1x1_1to16, Horizontal,
 			new ObjCategory[] { Pits, WestPerimeter},
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object06B = new DungeonRoomObject(0x06B,
+		public static readonly RoomObjectType Object06B = new RoomObjectType(0x06B,
 			RoomDraw_DownwardsEdge1x1_1to16, Horizontal,
 			new ObjCategory[] { Pits, EastPerimeter },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object06C = new DungeonRoomObject(0x06C,
+		public static readonly RoomObjectType Object06C = new RoomObjectType(0x06C,
 			RoomDraw_DownwardsWithCorners2x1_1to16_plus12, Horizontal,
 			new ObjCategory[] { Collision, WestSide, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object06D = new DungeonRoomObject(0x06D,
+		public static readonly RoomObjectType Object06D = new RoomObjectType(0x06D,
 			RoomDraw_DownwardsWithCorners2x1_1to16_plus12, Horizontal,
 			new ObjCategory[] { Collision, WestSide, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object06E = new DungeonRoomObject(0x06E,
+		public static readonly RoomObjectType Object06E = new RoomObjectType(0x06E,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object06F = new DungeonRoomObject(0x06F,
+		public static readonly RoomObjectType Object06F = new RoomObjectType(0x06F,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object070 = new DungeonRoomObject(0x070,
+		public static readonly RoomObjectType Object070 = new RoomObjectType(0x070,
 			RoomDraw_DownwardsFloor4x4_1to16, Vertical,
 			new ObjCategory[] { NoCollision, Floor, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object071 = new DungeonRoomObject(0x071,
+		public static readonly RoomObjectType Object071 = new RoomObjectType(0x071,
 			RoomDraw_Downwards1x1Solid_1to16_plus3, Vertical,
 			new ObjCategory[] { NoCollision, Floor, RoomDecoration, WestPerimeter, EastPerimeter },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object072 = new DungeonRoomObject(0x072,
+		public static readonly RoomObjectType Object072 = new RoomObjectType(0x072,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object073 = new DungeonRoomObject(0x073,
+		public static readonly RoomObjectType Object073 = new RoomObjectType(0x073,
 			RoomDraw_DownwardsDecor4x4spaced2_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object074 = new DungeonRoomObject(0x074,
+		public static readonly RoomObjectType Object074 = new RoomObjectType(0x074,
 			RoomDraw_DownwardsDecor4x4spaced2_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object075 = new DungeonRoomObject(0x075,
+		public static readonly RoomObjectType Object075 = new RoomObjectType(0x075,
 			RoomDraw_DownwardsPillar2x4spaced2_1to16, Vertical,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object076 = new DungeonRoomObject(0x076,
+		public static readonly RoomObjectType Object076 = new RoomObjectType(0x076,
 			RoomDraw_DownwardsDecor4x4spaced4_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object077 = new DungeonRoomObject(0x077,
+		public static readonly RoomObjectType Object077 = new RoomObjectType(0x077,
 			RoomDraw_DownwardsDecor4x4spaced4_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object078 = new DungeonRoomObject(0x078,
+		public static readonly RoomObjectType Object078 = new RoomObjectType(0x078,
 			RoomDraw_DownwardsDecor2x2spaced12_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object079 = new DungeonRoomObject(0x079,
+		public static readonly RoomObjectType Object079 = new RoomObjectType(0x079,
 			RoomDraw_DownwardsEdge1x1_1to16, Vertical,
 			new ObjCategory[] { ShallowWater, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object07A = new DungeonRoomObject(0x07A,
+		public static readonly RoomObjectType Object07A = new RoomObjectType(0x07A,
 			RoomDraw_DownwardsEdge1x1_1to16, Vertical,
 			new ObjCategory[] { ShallowWater, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object07B = new DungeonRoomObject(0x07B,
+		public static readonly RoomObjectType Object07B = new RoomObjectType(0x07B,
 			RoomDraw_DownwardsDecor2x2spaced12_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object07C = new DungeonRoomObject(0x07C,
+		public static readonly RoomObjectType Object07C = new RoomObjectType(0x07C,
 			RoomDraw_DownwardsLine1x1_1to16plus1, Vertical,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object07D = new DungeonRoomObject(0x07D,
+		public static readonly RoomObjectType Object07D = new RoomObjectType(0x07D,
 			RoomDraw_Downwards2x2_1to16, Vertical,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object07E = new DungeonRoomObject(0x07E,
+		public static readonly RoomObjectType Object07E = new RoomObjectType(0x07E,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object07F = new DungeonRoomObject(0x07F,
+		public static readonly RoomObjectType Object07F = new RoomObjectType(0x07F,
 			RoomDraw_DownwardsDecor2x4spaced8_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object080 = new DungeonRoomObject(0x080,
+		public static readonly RoomObjectType Object080 = new RoomObjectType(0x080,
 			RoomDraw_DownwardsDecor2x4spaced8_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object081 = new DungeonRoomObject(0x081,
+		public static readonly RoomObjectType Object081 = new RoomObjectType(0x081,
 			RoomDraw_DownwardsDecor3x4spaced2_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object082 = new DungeonRoomObject(0x082,
+		public static readonly RoomObjectType Object082 = new RoomObjectType(0x082,
 			RoomDraw_DownwardsDecor3x4spaced2_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object083 = new DungeonRoomObject(0x083,
+		public static readonly RoomObjectType Object083 = new RoomObjectType(0x083,
 			RoomDraw_DownwardsDecor3x4spaced2_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object084 = new DungeonRoomObject(0x084,
+		public static readonly RoomObjectType Object084 = new RoomObjectType(0x084,
 			RoomDraw_DownwardsDecor3x4spaced2_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object085 = new DungeonRoomObject(0x085,
+		public static readonly RoomObjectType Object085 = new RoomObjectType(0x085,
 			RoomDraw_DownwardsCannonHole3x4_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, WestSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object086 = new DungeonRoomObject(0x086,
+		public static readonly RoomObjectType Object086 = new RoomObjectType(0x086,
 			RoomDraw_DownwardsCannonHole3x4_1to16, Vertical,
 			new ObjCategory[] { Collision, WallDecoration, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object087 = new DungeonRoomObject(0x087,
+		public static readonly RoomObjectType Object087 = new RoomObjectType(0x087,
 			RoomDraw_DownwardsPillar2x4spaced2_1to16, Vertical,
 			new ObjCategory[] { Collision, RoomDecoration, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object088 = new DungeonRoomObject(0x088,
+		public static readonly RoomObjectType Object088 = new RoomObjectType(0x088,
 			RoomDraw_DownwardsBigRail3x1_1to16plus5, Vertical,
 			new ObjCategory[] { Collision, RoomDecoration, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object089 = new DungeonRoomObject(0x089,
+		public static readonly RoomObjectType Object089 = new RoomObjectType(0x089,
 			RoomDraw_DownwardsBlock2x2spaced2_1to16, Vertical,
 			new ObjCategory[] { Collision, RoomDecoration, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object08A = new DungeonRoomObject(0x08A,
+		public static readonly RoomObjectType Object08A = new RoomObjectType(0x08A,
 			RoomDraw_DownwardsHasEdge1x1_1to16_plus23, Vertical,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object08B = new DungeonRoomObject(0x08B,
+		public static readonly RoomObjectType Object08B = new RoomObjectType(0x08B,
 			RoomDraw_DownwardsEdge1x1_1to16plus7, Vertical,
 			new ObjCategory[] { Ledge, UpperLayer, WestPerimeter },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object08C = new DungeonRoomObject(0x08C,
+		public static readonly RoomObjectType Object08C = new RoomObjectType(0x08C,
 			RoomDraw_DownwardsEdge1x1_1to16plus7, Vertical,
 			new ObjCategory[] { Ledge, UpperLayer, EastPerimeter },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object08D = new DungeonRoomObject(0x08D,
+		public static readonly RoomObjectType Object08D = new RoomObjectType(0x08D,
 			RoomDraw_DownwardsEdge1x1_1to16, Vertical,
 			new ObjCategory[] { NoCollision, Floor, RoomDecoration, WestPerimeter },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object08E = new DungeonRoomObject(0x08E,
+		public static readonly RoomObjectType Object08E = new RoomObjectType(0x08E,
 			RoomDraw_DownwardsEdge1x1_1to16, Vertical,
 			new ObjCategory[] { NoCollision, Floor, RoomDecoration, EastPerimeter },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object08F = new DungeonRoomObject(0x08F,
+		public static readonly RoomObjectType Object08F = new RoomObjectType(0x08F,
 			RoomDraw_DownwardsBar2x5_1to16, Vertical,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object090 = new DungeonRoomObject(0x090,
+		public static readonly RoomObjectType Object090 = new RoomObjectType(0x090,
 			RoomDraw_Downwards4x2_1to15or26, Vertical,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object091 = new DungeonRoomObject(0x091,
+		public static readonly RoomObjectType Object091 = new RoomObjectType(0x091,
 			RoomDraw_Downwards4x2_1to15or26, Vertical,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object092 = new DungeonRoomObject(0x092,
+		public static readonly RoomObjectType Object092 = new RoomObjectType(0x092,
 			RoomDraw_Downwards2x2_1to15or32, Vertical,
 			new ObjCategory[] { Collision, PuzzlePegs, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object093 = new DungeonRoomObject(0x093,
+		public static readonly RoomObjectType Object093 = new RoomObjectType(0x093,
 			RoomDraw_Downwards2x2_1to15or32, Vertical,
 			new ObjCategory[] { Collision, PuzzlePegs, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object094 = new DungeonRoomObject(0x094,
+		public static readonly RoomObjectType Object094 = new RoomObjectType(0x094,
 			RoomDraw_DownwardsFloor4x4_1to16, Vertical,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object095 = new DungeonRoomObject(0x095,
+		public static readonly RoomObjectType Object095 = new RoomObjectType(0x095,
 			RoomDraw_Downwards2x2_1to16, Vertical,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object096 = new DungeonRoomObject(0x096,
+		public static readonly RoomObjectType Object096 = new RoomObjectType(0x096,
 			RoomDraw_Downwards2x2_1to16, Vertical,
 			new ObjCategory[] { Collision, PuzzlePegs, Hookshottable, Manipulable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object097 = new DungeonRoomObject(0x097,
+		public static readonly RoomObjectType Object097 = new RoomObjectType(0x097,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object098 = new DungeonRoomObject(0x098,
+		public static readonly RoomObjectType Object098 = new RoomObjectType(0x098,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object099 = new DungeonRoomObject(0x099,
+		public static readonly RoomObjectType Object099 = new RoomObjectType(0x099,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object09A = new DungeonRoomObject(0x09A,
+		public static readonly RoomObjectType Object09A = new RoomObjectType(0x09A,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object09B = new DungeonRoomObject(0x09B,
+		public static readonly RoomObjectType Object09B = new RoomObjectType(0x09B,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object09C = new DungeonRoomObject(0x09C,
+		public static readonly RoomObjectType Object09C = new RoomObjectType(0x09C,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object09D = new DungeonRoomObject(0x09D,
+		public static readonly RoomObjectType Object09D = new RoomObjectType(0x09D,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object09E = new DungeonRoomObject(0x09E,
+		public static readonly RoomObjectType Object09E = new RoomObjectType(0x09E,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object09F = new DungeonRoomObject(0x09F,
+		public static readonly RoomObjectType Object09F = new RoomObjectType(0x09F,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0A0 = new DungeonRoomObject(0x0A0,
+		public static readonly RoomObjectType Object0A0 = new RoomObjectType(0x0A0,
 			RoomDraw_DiagonalCeilingTopLeft, Both,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0A1 = new DungeonRoomObject(0x0A1,
+		public static readonly RoomObjectType Object0A1 = new RoomObjectType(0x0A1,
 			RoomDraw_DiagonalCeilingBottomLeft, Both,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0A2 = new DungeonRoomObject(0x0A2,
+		public static readonly RoomObjectType Object0A2 = new RoomObjectType(0x0A2,
 			RoomDraw_DiagonalCeilingTopRight, Both,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0A3 = new DungeonRoomObject(0x0A3,
+		public static readonly RoomObjectType Object0A3 = new RoomObjectType(0x0A3,
 			RoomDraw_DiagonalCeilingBottomRight, Both,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0A4 = new DungeonRoomObject(0x0A4,
+		public static readonly RoomObjectType Object0A4 = new RoomObjectType(0x0A4,
 			RoomDraw_BigHole4x4_1to16, Both,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0A5 = new DungeonRoomObject(0x0A5,
+		public static readonly RoomObjectType Object0A5 = new RoomObjectType(0x0A5,
 			RoomDraw_DiagonalCeilingTopLeft, Both,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0A6 = new DungeonRoomObject(0x0A6,
+		public static readonly RoomObjectType Object0A6 = new RoomObjectType(0x0A6,
 			RoomDraw_DiagonalCeilingBottomLeft, Both,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0A7 = new DungeonRoomObject(0x0A7,
+		public static readonly RoomObjectType Object0A7 = new RoomObjectType(0x0A7,
 			RoomDraw_DiagonalCeilingTopRight, Both,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0A8 = new DungeonRoomObject(0x0A8,
+		public static readonly RoomObjectType Object0A8 = new RoomObjectType(0x0A8,
 			RoomDraw_DiagonalCeilingBottomRight, Both,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0A9 = new DungeonRoomObject(0x0A9,
+		public static readonly RoomObjectType Object0A9 = new RoomObjectType(0x0A9,
 			RoomDraw_DiagonalCeilingTopLeft, Both,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0AA = new DungeonRoomObject(0x0AA,
+		public static readonly RoomObjectType Object0AA = new RoomObjectType(0x0AA,
 			RoomDraw_DiagonalCeilingBottomLeft, Both,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0AB = new DungeonRoomObject(0x0AB,
+		public static readonly RoomObjectType Object0AB = new RoomObjectType(0x0AB,
 			RoomDraw_DiagonalCeilingTopRight, Both,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0AC = new DungeonRoomObject(0x0AC,
+		public static readonly RoomObjectType Object0AC = new RoomObjectType(0x0AC,
 			RoomDraw_DiagonalCeilingBottomRight, Both,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0AD = new DungeonRoomObject(0x0AD,
+		public static readonly RoomObjectType Object0AD = new RoomObjectType(0x0AD,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0AE = new DungeonRoomObject(0x0AE,
+		public static readonly RoomObjectType Object0AE = new RoomObjectType(0x0AE,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0AF = new DungeonRoomObject(0x0AF,
+		public static readonly RoomObjectType Object0AF = new RoomObjectType(0x0AF,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0B0 = new DungeonRoomObject(0x0B0,
+		public static readonly RoomObjectType Object0B0 = new RoomObjectType(0x0B0,
 			RoomDraw_RightwardsEdge1x1_1to16plus7, Horizontal,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0B1 = new DungeonRoomObject(0x0B1,
+		public static readonly RoomObjectType Object0B1 = new RoomObjectType(0x0B1,
 			RoomDraw_RightwardsEdge1x1_1to16plus7, Horizontal,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0B2 = new DungeonRoomObject(0x0B2,
+		public static readonly RoomObjectType Object0B2 = new RoomObjectType(0x0B2,
 			RoomDraw_Rightwards4x4_1to16, Horizontal,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0B3 = new DungeonRoomObject(0x0B3,
+		public static readonly RoomObjectType Object0B3 = new RoomObjectType(0x0B3,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { NoCollision, Floor, NorthPerimeter },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0B4 = new DungeonRoomObject(0x0B4,
+		public static readonly RoomObjectType Object0B4 = new RoomObjectType(0x0B4,
 			RoomDraw_RightwardsHasEdge1x1_1to16_plus2, Horizontal,
 			new ObjCategory[] { NoCollision, Floor, SouthPerimeter },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0B5 = new DungeonRoomObject(0x0B5,
+		public static readonly RoomObjectType Object0B5 = new RoomObjectType(0x0B5,
 			RoomDraw_Weird2x4_1_to_16, Horizontal,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0B6 = new DungeonRoomObject(0x0B6,
+		public static readonly RoomObjectType Object0B6 = new RoomObjectType(0x0B6,
 			RoomDraw_Rightwards2x4_1to15or26, Horizontal,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0B7 = new DungeonRoomObject(0x0B7,
+		public static readonly RoomObjectType Object0B7 = new RoomObjectType(0x0B7,
 			RoomDraw_Rightwards2x4_1to15or26, Horizontal,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0B8 = new DungeonRoomObject(0x0B8,
+		public static readonly RoomObjectType Object0B8 = new RoomObjectType(0x0B8,
 			RoomDraw_Rightwards2x2_1to15or32, Horizontal,
 			new ObjCategory[] { Collision, PuzzlePegs, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0B9 = new DungeonRoomObject(0x0B9,
+		public static readonly RoomObjectType Object0B9 = new RoomObjectType(0x0B9,
 			RoomDraw_Rightwards2x2_1to15or32, Horizontal,
 			new ObjCategory[] { Collision, PuzzlePegs, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0BA = new DungeonRoomObject(0x0BA,
+		public static readonly RoomObjectType Object0BA = new RoomObjectType(0x0BA,
 			RoomDraw_Rightwards4x4_1to16, Horizontal,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0BB = new DungeonRoomObject(0x0BB,
+		public static readonly RoomObjectType Object0BB = new RoomObjectType(0x0BB,
 			RoomDraw_RightwardsBlock2x2spaced2_1to16, Horizontal,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0BC = new DungeonRoomObject(0x0BC,
+		public static readonly RoomObjectType Object0BC = new RoomObjectType(0x0BC,
 			RoomDraw_RightwardsFakePots2x2_1to16, Horizontal,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0BD = new DungeonRoomObject(0x0BD,
+		public static readonly RoomObjectType Object0BD = new RoomObjectType(0x0BD,
 			RoomDraw_RightwardsHammerPegs2x2_1to16, Horizontal,
 			new ObjCategory[] { Collision, PuzzlePegs, Hookshottable, Manipulable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0BE = new DungeonRoomObject(0x0BE,
+		public static readonly RoomObjectType Object0BE = new RoomObjectType(0x0BE,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0BF = new DungeonRoomObject(0x0BF,
+		public static readonly RoomObjectType Object0BF = new RoomObjectType(0x0BF,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0C0 = new DungeonRoomObject(0x0C0,
+		public static readonly RoomObjectType Object0C0 = new RoomObjectType(0x0C0,
 			RoomDraw_4x4BlocksIn4x4SuperSquare, Both,
 			new ObjCategory[] { Collision, Ceiling },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0C1 = new DungeonRoomObject(0x0C1,
+		public static readonly RoomObjectType Object0C1 = new RoomObjectType(0x0C1,
 			RoomDraw_ClosedChestPlatform, Both,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0C2 = new DungeonRoomObject(0x0C2,
+		public static readonly RoomObjectType Object0C2 = new RoomObjectType(0x0C2,
 			RoomDraw_4x4BlocksIn4x4SuperSquare, Both,
 			new ObjCategory[] { Pits, MetaLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0C3 = new DungeonRoomObject(0x0C3,
+		public static readonly RoomObjectType Object0C3 = new RoomObjectType(0x0C3,
 			RoomDraw_3x3FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { Pits, MetaLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0C4 = new DungeonRoomObject(0x0C4,
+		public static readonly RoomObjectType Object0C4 = new RoomObjectType(0x0C4,
 			RoomDraw_4x4FloorOneIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0C5 = new DungeonRoomObject(0x0C5,
+		public static readonly RoomObjectType Object0C5 = new RoomObjectType(0x0C5,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0C6 = new DungeonRoomObject(0x0C6,
+		public static readonly RoomObjectType Object0C6 = new RoomObjectType(0x0C6,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { Pits, MetaLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0C7 = new DungeonRoomObject(0x0C7,
+		public static readonly RoomObjectType Object0C7 = new RoomObjectType(0x0C7,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0C8 = new DungeonRoomObject(0x0C8,
+		public static readonly RoomObjectType Object0C8 = new RoomObjectType(0x0C8,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0C9 = new DungeonRoomObject(0x0C9,
+		public static readonly RoomObjectType Object0C9 = new RoomObjectType(0x0C9,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0CA = new DungeonRoomObject(0x0CA,
+		public static readonly RoomObjectType Object0CA = new RoomObjectType(0x0CA,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0CB = new DungeonRoomObject(0x0CB,
+		public static readonly RoomObjectType Object0CB = new RoomObjectType(0x0CB,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0CC = new DungeonRoomObject(0x0CC,
+		public static readonly RoomObjectType Object0CC = new RoomObjectType(0x0CC,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0CD = new DungeonRoomObject(0x0CD,
+		public static readonly RoomObjectType Object0CD = new RoomObjectType(0x0CD,
 			RoomDraw_MovingWallWest, Both,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0CE = new DungeonRoomObject(0x0CE,
+		public static readonly RoomObjectType Object0CE = new RoomObjectType(0x0CE,
 			RoomDraw_MovingWallEast, Both,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0CF = new DungeonRoomObject(0x0CF,
+		public static readonly RoomObjectType Object0CF = new RoomObjectType(0x0CF,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0D0 = new DungeonRoomObject(0x0D0,
+		public static readonly RoomObjectType Object0D0 = new RoomObjectType(0x0D0,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0D1 = new DungeonRoomObject(0x0D1,
+		public static readonly RoomObjectType Object0D1 = new RoomObjectType(0x0D1,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0D2 = new DungeonRoomObject(0x0D2,
+		public static readonly RoomObjectType Object0D2 = new RoomObjectType(0x0D2,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0D3 = new DungeonRoomObject(0x0D3,
+		public static readonly RoomObjectType Object0D3 = new RoomObjectType(0x0D3,
 			RoomDraw_CheckIfWallIsMoved, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0D4 = new DungeonRoomObject(0x0D4,
+		public static readonly RoomObjectType Object0D4 = new RoomObjectType(0x0D4,
 			RoomDraw_CheckIfWallIsMoved, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0D5 = new DungeonRoomObject(0x0D5,
+		public static readonly RoomObjectType Object0D5 = new RoomObjectType(0x0D5,
 			RoomDraw_CheckIfWallIsMoved, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0D6 = new DungeonRoomObject(0x0D6,
+		public static readonly RoomObjectType Object0D6 = new RoomObjectType(0x0D6,
 			RoomDraw_CheckIfWallIsMoved, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0D7 = new DungeonRoomObject(0x0D7,
+		public static readonly RoomObjectType Object0D7 = new RoomObjectType(0x0D7,
 			RoomDraw_3x3FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0D8 = new DungeonRoomObject(0x0D8,
+		public static readonly RoomObjectType Object0D8 = new RoomObjectType(0x0D8,
 			RoomDraw_WaterOverlay8x8_1to16, Both,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0D9 = new DungeonRoomObject(0x0D9,
+		public static readonly RoomObjectType Object0D9 = new RoomObjectType(0x0D9,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0DA = new DungeonRoomObject(0x0DA,
+		public static readonly RoomObjectType Object0DA = new RoomObjectType(0x0DA,
 			RoomDraw_WaterOverlay8x8_1to16, Both,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0DB = new DungeonRoomObject(0x0DB,
+		public static readonly RoomObjectType Object0DB = new RoomObjectType(0x0DB,
 			RoomDraw_4x4FloorTwoIn4x4SuperSquare, Both,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0DC = new DungeonRoomObject(0x0DC,
+		public static readonly RoomObjectType Object0DC = new RoomObjectType(0x0DC,
 			RoomDraw_OpenChestPlatform, Both,
 			new ObjCategory[] { RoomDecoration, Stairs },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0DD = new DungeonRoomObject(0x0DD,
+		public static readonly RoomObjectType Object0DD = new RoomObjectType(0x0DD,
 			RoomDraw_TableRock4x4_1to16, Both,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0DE = new DungeonRoomObject(0x0DE,
+		public static readonly RoomObjectType Object0DE = new RoomObjectType(0x0DE,
 			RoomDraw_Spike2x2In4x4SuperSquare, Both,
 			new ObjCategory[] { Spikes },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0DF = new DungeonRoomObject(0x0DF,
+		public static readonly RoomObjectType Object0DF = new RoomObjectType(0x0DF,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { Spikes, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0E0 = new DungeonRoomObject(0x0E0,
+		public static readonly RoomObjectType Object0E0 = new RoomObjectType(0x0E0,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0E1 = new DungeonRoomObject(0x0E1,
+		public static readonly RoomObjectType Object0E1 = new RoomObjectType(0x0E1,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0E2 = new DungeonRoomObject(0x0E2,
+		public static readonly RoomObjectType Object0E2 = new RoomObjectType(0x0E2,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0E3 = new DungeonRoomObject(0x0E3,
+		public static readonly RoomObjectType Object0E3 = new RoomObjectType(0x0E3,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor, Conveyor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0E4 = new DungeonRoomObject(0x0E4,
+		public static readonly RoomObjectType Object0E4 = new RoomObjectType(0x0E4,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor, Conveyor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0E5 = new DungeonRoomObject(0x0E5,
+		public static readonly RoomObjectType Object0E5 = new RoomObjectType(0x0E5,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor, Conveyor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0E6 = new DungeonRoomObject(0x0E6,
+		public static readonly RoomObjectType Object0E6 = new RoomObjectType(0x0E6,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor, Conveyor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0E7 = new DungeonRoomObject(0x0E7,
+		public static readonly RoomObjectType Object0E7 = new RoomObjectType(0x0E7,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { NoCollision, Floor, Conveyor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0E8 = new DungeonRoomObject(0x0E8,
+		public static readonly RoomObjectType Object0E8 = new RoomObjectType(0x0E8,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0E9 = new DungeonRoomObject(0x0E9,
+		public static readonly RoomObjectType Object0E9 = new RoomObjectType(0x0E9,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0EA = new DungeonRoomObject(0x0EA,
+		public static readonly RoomObjectType Object0EA = new RoomObjectType(0x0EA,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0EB = new DungeonRoomObject(0x0EB,
+		public static readonly RoomObjectType Object0EB = new RoomObjectType(0x0EB,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0EC = new DungeonRoomObject(0x0EC,
+		public static readonly RoomObjectType Object0EC = new RoomObjectType(0x0EC,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0ED = new DungeonRoomObject(0x0ED,
+		public static readonly RoomObjectType Object0ED = new RoomObjectType(0x0ED,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0EE = new DungeonRoomObject(0x0EE,
+		public static readonly RoomObjectType Object0EE = new RoomObjectType(0x0EE,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0EF = new DungeonRoomObject(0x0EF,
+		public static readonly RoomObjectType Object0EF = new RoomObjectType(0x0EF,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0F0 = new DungeonRoomObject(0x0F0,
+		public static readonly RoomObjectType Object0F0 = new RoomObjectType(0x0F0,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0F1 = new DungeonRoomObject(0x0F1,
+		public static readonly RoomObjectType Object0F1 = new RoomObjectType(0x0F1,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0F2 = new DungeonRoomObject(0x0F2,
+		public static readonly RoomObjectType Object0F2 = new RoomObjectType(0x0F2,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0F3 = new DungeonRoomObject(0x0F3,
+		public static readonly RoomObjectType Object0F3 = new RoomObjectType(0x0F3,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0F4 = new DungeonRoomObject(0x0F4,
+		public static readonly RoomObjectType Object0F4 = new RoomObjectType(0x0F4,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0F5 = new DungeonRoomObject(0x0F5,
+		public static readonly RoomObjectType Object0F5 = new RoomObjectType(0x0F5,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0F6 = new DungeonRoomObject(0x0F6,
+		public static readonly RoomObjectType Object0F6 = new RoomObjectType(0x0F6,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object0F7 = new DungeonRoomObject(0x0F7,
+		public static readonly RoomObjectType Object0F7 = new RoomObjectType(0x0F7,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
@@ -1251,327 +1309,327 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 
 
-		public static readonly DungeonRoomObject Object100 = new DungeonRoomObject(0x100,
+		public static readonly RoomObjectType Object100 = new RoomObjectType(0x100,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object101 = new DungeonRoomObject(0x101,
+		public static readonly RoomObjectType Object101 = new RoomObjectType(0x101,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object102 = new DungeonRoomObject(0x102,
+		public static readonly RoomObjectType Object102 = new RoomObjectType(0x102,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object103 = new DungeonRoomObject(0x103,
+		public static readonly RoomObjectType Object103 = new RoomObjectType(0x103,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object104 = new DungeonRoomObject(0x104,
+		public static readonly RoomObjectType Object104 = new RoomObjectType(0x104,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object105 = new DungeonRoomObject(0x105,
+		public static readonly RoomObjectType Object105 = new RoomObjectType(0x105,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object106 = new DungeonRoomObject(0x106,
+		public static readonly RoomObjectType Object106 = new RoomObjectType(0x106,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object107 = new DungeonRoomObject(0x107,
+		public static readonly RoomObjectType Object107 = new RoomObjectType(0x107,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object108 = new DungeonRoomObject(0x108,
+		public static readonly RoomObjectType Object108 = new RoomObjectType(0x108,
 			RoomDraw_4x4Corner_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object109 = new DungeonRoomObject(0x109,
+		public static readonly RoomObjectType Object109 = new RoomObjectType(0x109,
 			RoomDraw_4x4Corner_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object10A = new DungeonRoomObject(0x10A,
+		public static readonly RoomObjectType Object10A = new RoomObjectType(0x10A,
 			RoomDraw_4x4Corner_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object10B = new DungeonRoomObject(0x10B,
+		public static readonly RoomObjectType Object10B = new RoomObjectType(0x10B,
 			RoomDraw_4x4Corner_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object10C = new DungeonRoomObject(0x10C,
+		public static readonly RoomObjectType Object10C = new RoomObjectType(0x10C,
 			RoomDraw_4x4Corner_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object10D = new DungeonRoomObject(0x10D,
+		public static readonly RoomObjectType Object10D = new RoomObjectType(0x10D,
 			RoomDraw_4x4Corner_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object10E = new DungeonRoomObject(0x10E,
+		public static readonly RoomObjectType Object10E = new RoomObjectType(0x10E,
 			RoomDraw_4x4Corner_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object10F = new DungeonRoomObject(0x10F,
+		public static readonly RoomObjectType Object10F = new RoomObjectType(0x10F,
 			RoomDraw_4x4Corner_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object110 = new DungeonRoomObject(0x110,
+		public static readonly RoomObjectType Object110 = new RoomObjectType(0x110,
 			RoomDraw_WeirdCornerBottom_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object111 = new DungeonRoomObject(0x111,
+		public static readonly RoomObjectType Object111 = new RoomObjectType(0x111,
 			RoomDraw_WeirdCornerBottom_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object112 = new DungeonRoomObject(0x112,
+		public static readonly RoomObjectType Object112 = new RoomObjectType(0x112,
 			RoomDraw_WeirdCornerBottom_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object113 = new DungeonRoomObject(0x113,
+		public static readonly RoomObjectType Object113 = new RoomObjectType(0x113,
 			RoomDraw_WeirdCornerBottom_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object114 = new DungeonRoomObject(0x114,
+		public static readonly RoomObjectType Object114 = new RoomObjectType(0x114,
 			RoomDraw_WeirdCornerTop_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object115 = new DungeonRoomObject(0x115,
+		public static readonly RoomObjectType Object115 = new RoomObjectType(0x115,
 			RoomDraw_WeirdCornerTop_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object116 = new DungeonRoomObject(0x116,
+		public static readonly RoomObjectType Object116 = new RoomObjectType(0x116,
 			RoomDraw_WeirdCornerTop_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object117 = new DungeonRoomObject(0x117,
+		public static readonly RoomObjectType Object117 = new RoomObjectType(0x117,
 			RoomDraw_WeirdCornerTop_BothBG, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object118 = new DungeonRoomObject(0x118,
+		public static readonly RoomObjectType Object118 = new RoomObjectType(0x118,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object119 = new DungeonRoomObject(0x119,
+		public static readonly RoomObjectType Object119 = new RoomObjectType(0x119,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object11A = new DungeonRoomObject(0x11A,
+		public static readonly RoomObjectType Object11A = new RoomObjectType(0x11A,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object11B = new DungeonRoomObject(0x11B,
+		public static readonly RoomObjectType Object11B = new RoomObjectType(0x11B,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object11C = new DungeonRoomObject(0x11C,
+		public static readonly RoomObjectType Object11C = new RoomObjectType(0x11C,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { Collision, Pits, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object11D = new DungeonRoomObject(0x11D,
+		public static readonly RoomObjectType Object11D = new RoomObjectType(0x11D,
 			RoomDraw_Single2x3Pillar, None,
 			new ObjCategory[] { Collision, RoomDecoration, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object11E = new DungeonRoomObject(0x11E,
+		public static readonly RoomObjectType Object11E = new RoomObjectType(0x11E,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { NoCollision, Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object11F = new DungeonRoomObject(0x11F,
+		public static readonly RoomObjectType Object11F = new RoomObjectType(0x11F,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { NoCollision, Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object120 = new DungeonRoomObject(0x120,
+		public static readonly RoomObjectType Object120 = new RoomObjectType(0x120,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object121 = new DungeonRoomObject(0x121,
+		public static readonly RoomObjectType Object121 = new RoomObjectType(0x121,
 			RoomDraw_Single2x3Pillar, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object122 = new DungeonRoomObject(0x122,
+		public static readonly RoomObjectType Object122 = new RoomObjectType(0x122,
 			RoomDraw_Bed4x5, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object123 = new DungeonRoomObject(0x123,
+		public static readonly RoomObjectType Object123 = new RoomObjectType(0x123,
 			RoomDraw_4x3OneLayer, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object124 = new DungeonRoomObject(0x124,
+		public static readonly RoomObjectType Object124 = new RoomObjectType(0x124,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { Collision, WallDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object125 = new DungeonRoomObject(0x125,
+		public static readonly RoomObjectType Object125 = new RoomObjectType(0x125,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { Collision, WallDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object126 = new DungeonRoomObject(0x126,
+		public static readonly RoomObjectType Object126 = new RoomObjectType(0x126,
 			RoomDraw_Single2x3Pillar, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object127 = new DungeonRoomObject(0x127,
+		public static readonly RoomObjectType Object127 = new RoomObjectType(0x127,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object128 = new DungeonRoomObject(0x128,
+		public static readonly RoomObjectType Object128 = new RoomObjectType(0x128,
 			RoomDraw_YBed4x5, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object129 = new DungeonRoomObject(0x129,
+		public static readonly RoomObjectType Object129 = new RoomObjectType(0x129,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { Collision, WallDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object12A = new DungeonRoomObject(0x12A,
+		public static readonly RoomObjectType Object12A = new RoomObjectType(0x12A,
 			RoomDraw_PortraitOfMario, None,
 			new ObjCategory[] { Collision, WallDecoration, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object12B = new DungeonRoomObject(0x12B,
+		public static readonly RoomObjectType Object12B = new RoomObjectType(0x12B,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object12C = new DungeonRoomObject(0x12C,
+		public static readonly RoomObjectType Object12C = new RoomObjectType(0x12C,
 			RoomDraw_DrawRightwards3x6, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object12D = new DungeonRoomObject(0x12D,
+		public static readonly RoomObjectType Object12D = new RoomObjectType(0x12D,
 			RoomDraw_InterRoomFatStairs, None,
 			new ObjCategory[] { Stairs },
 			new byte[] { },
 			special: SpecialObjectType.InterroomStairs);
 
-		public static readonly DungeonRoomObject Object12E = new DungeonRoomObject(0x12E,
+		public static readonly RoomObjectType Object12E = new RoomObjectType(0x12E,
 			RoomDraw_InterRoomFatStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { },
 			special: SpecialObjectType.InterroomStairs);
 
-		public static readonly DungeonRoomObject Object12F = new DungeonRoomObject(0x12F,
+		public static readonly RoomObjectType Object12F = new RoomObjectType(0x12F,
 			RoomDraw_InterRoomFatStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object130 = new DungeonRoomObject(0x130,
+		public static readonly RoomObjectType Object130 = new RoomObjectType(0x130,
 			RoomDraw_AutoStairs, None,
 			new ObjCategory[] { Stairs },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object131 = new DungeonRoomObject(0x131,
+		public static readonly RoomObjectType Object131 = new RoomObjectType(0x131,
 			RoomDraw_AutoStairs, None,
 			new ObjCategory[] { Stairs },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object132 = new DungeonRoomObject(0x132,
+		public static readonly RoomObjectType Object132 = new RoomObjectType(0x132,
 			RoomDraw_AutoStairsMerged, None,
 			new ObjCategory[] { Stairs },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object133 = new DungeonRoomObject(0x133,
+		public static readonly RoomObjectType Object133 = new RoomObjectType(0x133,
 			RoomDraw_AutoStairsMerged, None,
 			new ObjCategory[] { Stairs },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object134 = new DungeonRoomObject(0x134,
+		public static readonly RoomObjectType Object134 = new RoomObjectType(0x134,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object135 = new DungeonRoomObject(0x135,
+		public static readonly RoomObjectType Object135 = new RoomObjectType(0x135,
 			RoomDraw_WaterHopStairs_A, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object136 = new DungeonRoomObject(0x136,
+		public static readonly RoomObjectType Object136 = new RoomObjectType(0x136,
 			RoomDraw_WaterHopStairs_B, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object137 = new DungeonRoomObject(0x137,
+		public static readonly RoomObjectType Object137 = new RoomObjectType(0x137,
 			RoomDraw_DamFloodGate, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object138 = new DungeonRoomObject(0x138,
+		public static readonly RoomObjectType Object138 = new RoomObjectType(0x138,
 			RoomDraw_SpiralStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { },
 			special: SpecialObjectType.InterroomStairs);
 
-		public static readonly DungeonRoomObject Object139 = new DungeonRoomObject(0x139,
+		public static readonly RoomObjectType Object139 = new RoomObjectType(0x139,
 			RoomDraw_SpiralStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { },
 			special: SpecialObjectType.InterroomStairs);
 
-		public static readonly DungeonRoomObject Object13A = new DungeonRoomObject(0x13A,
+		public static readonly RoomObjectType Object13A = new RoomObjectType(0x13A,
 			RoomDraw_SpiralStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object13B = new DungeonRoomObject(0x13B,
+		public static readonly RoomObjectType Object13B = new RoomObjectType(0x13B,
 			RoomDraw_SpiralStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { },
 			special: SpecialObjectType.InterroomStairs);
 
-		public static readonly DungeonRoomObject Object13C = new DungeonRoomObject(0x13C,
+		public static readonly RoomObjectType Object13C = new RoomObjectType(0x13C,
 			RoomDraw_SanctuaryWall, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object13D = new DungeonRoomObject(0x13D,
+		public static readonly RoomObjectType Object13D = new RoomObjectType(0x13D,
 			RoomDraw_4x3OneLayer, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object13E = new DungeonRoomObject(0x13E,
+		public static readonly RoomObjectType Object13E = new RoomObjectType(0x13E,
 			RoomDraw_Utility6x3, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object13F = new DungeonRoomObject(0x13F,
+		public static readonly RoomObjectType Object13F = new RoomObjectType(0x13F,
 			RoomDraw_MagicBatAltar, None,
 			new ObjCategory[] { },
 			new byte[] { });
@@ -1579,649 +1637,649 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 
 
-		public static readonly DungeonRoomObject Object200 = new DungeonRoomObject(0x200,
+		public static readonly RoomObjectType Object200 = new RoomObjectType(0x200,
 			RoomDraw_EmptyWaterFace, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object201 = new DungeonRoomObject(0x201,
+		public static readonly RoomObjectType Object201 = new RoomObjectType(0x201,
 			RoomDraw_SpittingWaterFace, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object202 = new DungeonRoomObject(0x202,
+		public static readonly RoomObjectType Object202 = new RoomObjectType(0x202,
 			RoomDraw_DrenchingWaterFace, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object203 = new DungeonRoomObject(0x203,
+		public static readonly RoomObjectType Object203 = new RoomObjectType(0x203,
 			RoomDraw_SomariaLine, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object204 = new DungeonRoomObject(0x204,
+		public static readonly RoomObjectType Object204 = new RoomObjectType(0x204,
 			RoomDraw_SomariaLine, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object205 = new DungeonRoomObject(0x205,
+		public static readonly RoomObjectType Object205 = new RoomObjectType(0x205,
 			RoomDraw_SomariaLine, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object206 = new DungeonRoomObject(0x206,
+		public static readonly RoomObjectType Object206 = new RoomObjectType(0x206,
 			RoomDraw_SomariaLine, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object207 = new DungeonRoomObject(0x207,
+		public static readonly RoomObjectType Object207 = new RoomObjectType(0x207,
 			RoomDraw_SomariaLine, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object208 = new DungeonRoomObject(0x208,
+		public static readonly RoomObjectType Object208 = new RoomObjectType(0x208,
 			RoomDraw_SomariaLine, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object209 = new DungeonRoomObject(0x209,
+		public static readonly RoomObjectType Object209 = new RoomObjectType(0x209,
 			RoomDraw_SomariaLine, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object20A = new DungeonRoomObject(0x20A,
+		public static readonly RoomObjectType Object20A = new RoomObjectType(0x20A,
 			RoomDraw_SomariaLine, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object20B = new DungeonRoomObject(0x20B,
+		public static readonly RoomObjectType Object20B = new RoomObjectType(0x20B,
 			RoomDraw_SomariaLine, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object20C = new DungeonRoomObject(0x20C,
+		public static readonly RoomObjectType Object20C = new RoomObjectType(0x20C,
 			RoomDraw_SomariaLine, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object20D = new DungeonRoomObject(0x20D,
+		public static readonly RoomObjectType Object20D = new RoomObjectType(0x20D,
 			RoomDraw_PrisonCell, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object20E = new DungeonRoomObject(0x20E,
+		public static readonly RoomObjectType Object20E = new RoomObjectType(0x20E,
 			RoomDraw_SomariaLine, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object20F = new DungeonRoomObject(0x20F,
+		public static readonly RoomObjectType Object20F = new RoomObjectType(0x20F,
 			RoomDraw_SomariaLine, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object210 = new DungeonRoomObject(0x210,
+		public static readonly RoomObjectType Object210 = new RoomObjectType(0x210,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object211 = new DungeonRoomObject(0x211,
+		public static readonly RoomObjectType Object211 = new RoomObjectType(0x211,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object212 = new DungeonRoomObject(0x212,
+		public static readonly RoomObjectType Object212 = new RoomObjectType(0x212,
 			RoomDraw_RupeeFloor, None,
 			new ObjCategory[] { NoCollision, Floor, Secrets },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object213 = new DungeonRoomObject(0x213,
+		public static readonly RoomObjectType Object213 = new RoomObjectType(0x213,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, WallDecoration, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object214 = new DungeonRoomObject(0x214,
+		public static readonly RoomObjectType Object214 = new RoomObjectType(0x214,
 			RoomDraw_4x3OneLayer, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object215 = new DungeonRoomObject(0x215,
+		public static readonly RoomObjectType Object215 = new RoomObjectType(0x215,
 			RoomDraw_KholdstareShell, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object216 = new DungeonRoomObject(0x216,
+		public static readonly RoomObjectType Object216 = new RoomObjectType(0x216,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, PuzzlePegs, Hookshottable, Manipulable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object217 = new DungeonRoomObject(0x217,
+		public static readonly RoomObjectType Object217 = new RoomObjectType(0x217,
 			RoomDraw_PrisonCell, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object218 = new DungeonRoomObject(0x218,
+		public static readonly RoomObjectType Object218 = new RoomObjectType(0x218,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object219 = new DungeonRoomObject(0x219,
+		public static readonly RoomObjectType Object219 = new RoomObjectType(0x219,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration, Secrets, Hookshottable },
 			new byte[] { },
 			special: SpecialObjectType.Chest);
 
-		public static readonly DungeonRoomObject Object21A = new DungeonRoomObject(0x21A,
+		public static readonly RoomObjectType Object21A = new RoomObjectType(0x21A,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object21B = new DungeonRoomObject(0x21B,
+		public static readonly RoomObjectType Object21B = new RoomObjectType(0x21B,
 			RoomDraw_AutoStairs, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object21C = new DungeonRoomObject(0x21C,
+		public static readonly RoomObjectType Object21C = new RoomObjectType(0x21C,
 			RoomDraw_AutoStairs, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object21D = new DungeonRoomObject(0x21D,
+		public static readonly RoomObjectType Object21D = new RoomObjectType(0x21D,
 			RoomDraw_AutoStairs, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object21E = new DungeonRoomObject(0x21E,
+		public static readonly RoomObjectType Object21E = new RoomObjectType(0x21E,
 			RoomDraw_StraightInterroomStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object21F = new DungeonRoomObject(0x21F,
+		public static readonly RoomObjectType Object21F = new RoomObjectType(0x21F,
 			RoomDraw_StraightInterroomStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object220 = new DungeonRoomObject(0x220,
+		public static readonly RoomObjectType Object220 = new RoomObjectType(0x220,
 			RoomDraw_StraightInterroomStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object221 = new DungeonRoomObject(0x221,
+		public static readonly RoomObjectType Object221 = new RoomObjectType(0x221,
 			RoomDraw_StraightInterroomStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object222 = new DungeonRoomObject(0x222,
+		public static readonly RoomObjectType Object222 = new RoomObjectType(0x222,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object223 = new DungeonRoomObject(0x223,
+		public static readonly RoomObjectType Object223 = new RoomObjectType(0x223,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object224 = new DungeonRoomObject(0x224,
+		public static readonly RoomObjectType Object224 = new RoomObjectType(0x224,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object225 = new DungeonRoomObject(0x225,
+		public static readonly RoomObjectType Object225 = new RoomObjectType(0x225,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object226 = new DungeonRoomObject(0x226,
+		public static readonly RoomObjectType Object226 = new RoomObjectType(0x226,
 			RoomDraw_StraightInterroomStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object227 = new DungeonRoomObject(0x227,
+		public static readonly RoomObjectType Object227 = new RoomObjectType(0x227,
 			RoomDraw_StraightInterroomStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object228 = new DungeonRoomObject(0x228,
+		public static readonly RoomObjectType Object228 = new RoomObjectType(0x228,
 			RoomDraw_StraightInterroomStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object229 = new DungeonRoomObject(0x229,
+		public static readonly RoomObjectType Object229 = new RoomObjectType(0x229,
 			RoomDraw_StraightInterroomStairs, None,
 			new ObjCategory[] { Stairs, RoomTransition },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object22A = new DungeonRoomObject(0x22A,
+		public static readonly RoomObjectType Object22A = new RoomObjectType(0x22A,
 			RoomDraw_LampCones, None,
 			new ObjCategory[] { LowerLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object22B = new DungeonRoomObject(0x22B,
+		public static readonly RoomObjectType Object22B = new RoomObjectType(0x22B,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object22C = new DungeonRoomObject(0x22C,
+		public static readonly RoomObjectType Object22C = new RoomObjectType(0x22C,
 			RoomDraw_BigGrayRock, None,
 			new ObjCategory[] { Collision, RoomDecoration, Secrets, Manipulable, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object22D = new DungeonRoomObject(0x22D,
+		public static readonly RoomObjectType Object22D = new RoomObjectType(0x22D,
 			RoomDraw_AgahnimsAltar, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object22E = new DungeonRoomObject(0x22E,
+		public static readonly RoomObjectType Object22E = new RoomObjectType(0x22E,
 			RoomDraw_AgahnimsWindows, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object22F = new DungeonRoomObject(0x22F,
+		public static readonly RoomObjectType Object22F = new RoomObjectType(0x22F,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration, Secrets, Manipulable, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object230 = new DungeonRoomObject(0x230,
+		public static readonly RoomObjectType Object230 = new RoomObjectType(0x230,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object231 = new DungeonRoomObject(0x231,
+		public static readonly RoomObjectType Object231 = new RoomObjectType(0x231,
 			RoomDraw_4x3OneLayer, None,
 			new ObjCategory[] { Collision, RoomDecoration, Secrets, Hookshottable },
 			new byte[] { },
 			special: SpecialObjectType.BigChest);
 
-		public static readonly DungeonRoomObject Object232 = new DungeonRoomObject(0x232,
+		public static readonly RoomObjectType Object232 = new RoomObjectType(0x232,
 			RoomDraw_4x3OneLayer, None,
 			new ObjCategory[] { Collision, RoomDecoration, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object233 = new DungeonRoomObject(0x233,
+		public static readonly RoomObjectType Object233 = new RoomObjectType(0x233,
 			RoomDraw_AutoStairs, None,
 			new ObjCategory[] { Stairs },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object234 = new DungeonRoomObject(0x234,
+		public static readonly RoomObjectType Object234 = new RoomObjectType(0x234,
 			RoomDraw_ChestPlatformVerticalWall, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object235 = new DungeonRoomObject(0x235,
+		public static readonly RoomObjectType Object235 = new RoomObjectType(0x235,
 			RoomDraw_ChestPlatformVerticalWall, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object236 = new DungeonRoomObject(0x236,
+		public static readonly RoomObjectType Object236 = new RoomObjectType(0x236,
 			RoomDraw_DrawRightwards3x6, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object237 = new DungeonRoomObject(0x237,
+		public static readonly RoomObjectType Object237 = new RoomObjectType(0x237,
 			RoomDraw_DrawRightwards3x6, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object238 = new DungeonRoomObject(0x238,
+		public static readonly RoomObjectType Object238 = new RoomObjectType(0x238,
 			RoomDraw_ChestPlatformVerticalWall, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object239 = new DungeonRoomObject(0x239,
+		public static readonly RoomObjectType Object239 = new RoomObjectType(0x239,
 			RoomDraw_ChestPlatformVerticalWall, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object23A = new DungeonRoomObject(0x23A,
+		public static readonly RoomObjectType Object23A = new RoomObjectType(0x23A,
 			RoomDraw_VerticalTurtleRockPipe, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object23B = new DungeonRoomObject(0x23B,
+		public static readonly RoomObjectType Object23B = new RoomObjectType(0x23B,
 			RoomDraw_VerticalTurtleRockPipe, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object23C = new DungeonRoomObject(0x23C,
+		public static readonly RoomObjectType Object23C = new RoomObjectType(0x23C,
 			RoomDraw_HorizontalTurtleRockPipe, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object23D = new DungeonRoomObject(0x23D,
+		public static readonly RoomObjectType Object23D = new RoomObjectType(0x23D,
 			RoomDraw_HorizontalTurtleRockPipe, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object23E = new DungeonRoomObject(0x23E,
+		public static readonly RoomObjectType Object23E = new RoomObjectType(0x23E,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object23F = new DungeonRoomObject(0x23F,
+		public static readonly RoomObjectType Object23F = new RoomObjectType(0x23F,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object240 = new DungeonRoomObject(0x240,
+		public static readonly RoomObjectType Object240 = new RoomObjectType(0x240,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object241 = new DungeonRoomObject(0x241,
+		public static readonly RoomObjectType Object241 = new RoomObjectType(0x241,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object242 = new DungeonRoomObject(0x242,
+		public static readonly RoomObjectType Object242 = new RoomObjectType(0x242,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object243 = new DungeonRoomObject(0x243,
+		public static readonly RoomObjectType Object243 = new RoomObjectType(0x243,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object244 = new DungeonRoomObject(0x244,
+		public static readonly RoomObjectType Object244 = new RoomObjectType(0x244,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object245 = new DungeonRoomObject(0x245,
+		public static readonly RoomObjectType Object245 = new RoomObjectType(0x245,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object246 = new DungeonRoomObject(0x246,
+		public static readonly RoomObjectType Object246 = new RoomObjectType(0x246,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object247 = new DungeonRoomObject(0x247,
+		public static readonly RoomObjectType Object247 = new RoomObjectType(0x247,
 			RoomDraw_BombableFloor, None,
 			new ObjCategory[] { NoCollision, Floor, Pits, Manipulable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object248 = new DungeonRoomObject(0x248,
+		public static readonly RoomObjectType Object248 = new RoomObjectType(0x248,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object249 = new DungeonRoomObject(0x249,
+		public static readonly RoomObjectType Object249 = new RoomObjectType(0x249,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object24A = new DungeonRoomObject(0x24A,
+		public static readonly RoomObjectType Object24A = new RoomObjectType(0x24A,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { RoomTransition },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object24B = new DungeonRoomObject(0x24B,
+		public static readonly RoomObjectType Object24B = new RoomObjectType(0x24B,
 			RoomDraw_BigWallDecor, None,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object24C = new DungeonRoomObject(0x24C,
+		public static readonly RoomObjectType Object24C = new RoomObjectType(0x24C,
 			RoomDraw_SmithyFurnace, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object24D = new DungeonRoomObject(0x24D,
+		public static readonly RoomObjectType Object24D = new RoomObjectType(0x24D,
 			RoomDraw_Utility6x3, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object24E = new DungeonRoomObject(0x24E,
+		public static readonly RoomObjectType Object24E = new RoomObjectType(0x24E,
 			RoomDraw_4x3OneLayer, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object24F = new DungeonRoomObject(0x24F,
+		public static readonly RoomObjectType Object24F = new RoomObjectType(0x24F,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object250 = new DungeonRoomObject(0x250,
+		public static readonly RoomObjectType Object250 = new RoomObjectType(0x250,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object251 = new DungeonRoomObject(0x251,
+		public static readonly RoomObjectType Object251 = new RoomObjectType(0x251,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object252 = new DungeonRoomObject(0x252,
+		public static readonly RoomObjectType Object252 = new RoomObjectType(0x252,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, PuzzlePegs, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object253 = new DungeonRoomObject(0x253,
+		public static readonly RoomObjectType Object253 = new RoomObjectType(0x253,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, PuzzlePegs, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object254 = new DungeonRoomObject(0x254,
+		public static readonly RoomObjectType Object254 = new RoomObjectType(0x254,
 			RoomDraw_FortuneTellerRoom, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object255 = new DungeonRoomObject(0x255,
+		public static readonly RoomObjectType Object255 = new RoomObjectType(0x255,
 			RoomDraw_Utility3x5, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object256 = new DungeonRoomObject(0x256,
+		public static readonly RoomObjectType Object256 = new RoomObjectType(0x256,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object257 = new DungeonRoomObject(0x257,
+		public static readonly RoomObjectType Object257 = new RoomObjectType(0x257,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object258 = new DungeonRoomObject(0x258,
+		public static readonly RoomObjectType Object258 = new RoomObjectType(0x258,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object259 = new DungeonRoomObject(0x259,
+		public static readonly RoomObjectType Object259 = new RoomObjectType(0x259,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object25A = new DungeonRoomObject(0x25A,
+		public static readonly RoomObjectType Object25A = new RoomObjectType(0x25A,
 			RoomDraw_TableBowl, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object25B = new DungeonRoomObject(0x25B,
+		public static readonly RoomObjectType Object25B = new RoomObjectType(0x25B,
 			RoomDraw_Utility3x5, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object25C = new DungeonRoomObject(0x25C,
+		public static readonly RoomObjectType Object25C = new RoomObjectType(0x25C,
 			RoomDraw_HorizontalTurtleRockPipe, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object25D = new DungeonRoomObject(0x25D,
+		public static readonly RoomObjectType Object25D = new RoomObjectType(0x25D,
 			RoomDraw_Utility6x3, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object25E = new DungeonRoomObject(0x25E,
+		public static readonly RoomObjectType Object25E = new RoomObjectType(0x25E,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object25F = new DungeonRoomObject(0x25F,
+		public static readonly RoomObjectType Object25F = new RoomObjectType(0x25F,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object260 = new DungeonRoomObject(0x260,
+		public static readonly RoomObjectType Object260 = new RoomObjectType(0x260,
 			RoomDraw_ArcheryGameTargetDoor, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object261 = new DungeonRoomObject(0x261,
+		public static readonly RoomObjectType Object261 = new RoomObjectType(0x261,
 			RoomDraw_ArcheryGameTargetDoor, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object262 = new DungeonRoomObject(0x262,
+		public static readonly RoomObjectType Object262 = new RoomObjectType(0x262,
 			RoomDraw_VitreousGooGraphics, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object263 = new DungeonRoomObject(0x263,
+		public static readonly RoomObjectType Object263 = new RoomObjectType(0x263,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object264 = new DungeonRoomObject(0x264,
+		public static readonly RoomObjectType Object264 = new RoomObjectType(0x264,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object265 = new DungeonRoomObject(0x265,
+		public static readonly RoomObjectType Object265 = new RoomObjectType(0x265,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object266 = new DungeonRoomObject(0x266,
+		public static readonly RoomObjectType Object266 = new RoomObjectType(0x266,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { Pits },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object267 = new DungeonRoomObject(0x267,
+		public static readonly RoomObjectType Object267 = new RoomObjectType(0x267,
 			RoomDraw_4x3OneLayer, None,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object268 = new DungeonRoomObject(0x268,
+		public static readonly RoomObjectType Object268 = new RoomObjectType(0x268,
 			RoomDraw_4x3OneLayer, None,
 			new ObjCategory[] { Collision, WallDecoration, SouthSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object269 = new DungeonRoomObject(0x269,
+		public static readonly RoomObjectType Object269 = new RoomObjectType(0x269,
 			RoomDraw_SolidWallDecor3x4, None,
 			new ObjCategory[] { Collision, WallDecoration, WestSide, UpperLayer},
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object26A = new DungeonRoomObject(0x26A,
+		public static readonly RoomObjectType Object26A = new RoomObjectType(0x26A,
 			RoomDraw_SolidWallDecor3x4, None,
 			new ObjCategory[] { Collision, WallDecoration, EastSide, UpperLayer },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object26B = new DungeonRoomObject(0x26B,
+		public static readonly RoomObjectType Object26B = new RoomObjectType(0x26B,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object26C = new DungeonRoomObject(0x26C,
+		public static readonly RoomObjectType Object26C = new RoomObjectType(0x26C,
 			RoomDraw_4x3OneLayer, None,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object26D = new DungeonRoomObject(0x26D,
+		public static readonly RoomObjectType Object26D = new RoomObjectType(0x26D,
 			RoomDraw_4x3OneLayer, None,
 			new ObjCategory[] { Collision, WallDecoration, SouthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object26E = new DungeonRoomObject(0x26E,
+		public static readonly RoomObjectType Object26E = new RoomObjectType(0x26E,
 			RoomDraw_SolidWallDecor3x4, None,
 			new ObjCategory[] { Collision, WallDecoration, WestSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object26F = new DungeonRoomObject(0x26F,
+		public static readonly RoomObjectType Object26F = new RoomObjectType(0x26F,
 			RoomDraw_SolidWallDecor3x4, None,
 			new ObjCategory[] { Collision, WallDecoration, EastSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object270 = new DungeonRoomObject(0x270,
+		public static readonly RoomObjectType Object270 = new RoomObjectType(0x270,
 			RoomDraw_LightBeamOnFloor, None,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object271 = new DungeonRoomObject(0x271,
+		public static readonly RoomObjectType Object271 = new RoomObjectType(0x271,
 			RoomDraw_BigLightBeamOnFloor, None,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object272 = new DungeonRoomObject(0x272,
+		public static readonly RoomObjectType Object272 = new RoomObjectType(0x272,
 			RoomDraw_TrinexxShell, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object273 = new DungeonRoomObject(0x273,
+		public static readonly RoomObjectType Object273 = new RoomObjectType(0x273,
 			RoomDraw_BG2MaskFull, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object274 = new DungeonRoomObject(0x274,
+		public static readonly RoomObjectType Object274 = new RoomObjectType(0x274,
 			RoomDraw_FloorLight, None,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object275 = new DungeonRoomObject(0x275,
+		public static readonly RoomObjectType Object275 = new RoomObjectType(0x275,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { Collision, RoomDecoration, Secrets, Hookshottable },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object276 = new DungeonRoomObject(0x276,
+		public static readonly RoomObjectType Object276 = new RoomObjectType(0x276,
 			RoomDraw_BigWallDecor, None,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object277 = new DungeonRoomObject(0x277,
+		public static readonly RoomObjectType Object277 = new RoomObjectType(0x277,
 			RoomDraw_BigWallDecor, None,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object278 = new DungeonRoomObject(0x278,
+		public static readonly RoomObjectType Object278 = new RoomObjectType(0x278,
 			RoomDraw_GanonTriforceFloorDecor, None,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object279 = new DungeonRoomObject(0x279,
+		public static readonly RoomObjectType Object279 = new RoomObjectType(0x279,
 			RoomDraw_4x3OneLayer, None,
 			new ObjCategory[] { Collision, WallDecoration, NorthSide },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object27A = new DungeonRoomObject(0x27A,
+		public static readonly RoomObjectType Object27A = new RoomObjectType(0x27A,
 			RoomDraw_4x4Object, None,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object27B = new DungeonRoomObject(0x27B,
+		public static readonly RoomObjectType Object27B = new RoomObjectType(0x27B,
 			RoomDraw_VitreousGooDamage, None,
 			new ObjCategory[] { Spikes },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object27C = new DungeonRoomObject(0x27C,
+		public static readonly RoomObjectType Object27C = new RoomObjectType(0x27C,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object27D = new DungeonRoomObject(0x27D,
+		public static readonly RoomObjectType Object27D = new RoomObjectType(0x27D,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object27E = new DungeonRoomObject(0x27E,
+		public static readonly RoomObjectType Object27E = new RoomObjectType(0x27E,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { NoCollision, Floor },
 			new byte[] { });
 
-		public static readonly DungeonRoomObject Object27F = new DungeonRoomObject(0x27F,
+		public static readonly RoomObjectType Object27F = new RoomObjectType(0x27F,
 			RoomDraw_Nothing, None,
 			new ObjCategory[] { },
 			new byte[] { });
 
-		public static DungeonRoomObject GetDungeonObject(ushort id)
+		public static RoomObjectType GetDungeonObject(ushort id)
 		{
 			switch (id)
 			{

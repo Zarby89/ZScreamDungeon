@@ -6,19 +6,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ZeldaFullEditor.OWSceneModes.ClipboardData;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
-	public class OverlayMode
+	public class OverlayMode : SceneMode
 	{
-		private readonly ZScreamer ZS;
-		public OverlayMode(ZScreamer parent)
+		public OverlayMode(ZScreamer parent) : base(parent)
 		{
-			ZS = parent;
 		}
 
-		public void OnMouseDown(MouseEventArgs e)
+		public override void OnMouseDown(MouseEventArgs e)
 		{
 			if (!ZS.OverworldScene.mouse_down)
 			{
@@ -118,7 +115,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void OnMouseUp(MouseEventArgs e)
+		public override void OnMouseUp(MouseEventArgs e)
 		{
 			if (ZS.OverworldScene.mouse_down)
 			{
@@ -181,14 +178,14 @@ namespace ZeldaFullEditor.OWSceneModes
 
 						ZS.OverworldScene.selectedTileSizeX = sizeX;
 						ZS.OverworldScene.selectedTile = new ushort[sizeX * sizeY];
+						int pX = reverseX ? tileX : ZS.OverworldScene.globalmouseTileDownX;
+						int pY = reverseY ? tileY : ZS.OverworldScene.globalmouseTileDownY;
 						for (int y = 0; y < sizeY; y++)
 						{
 							for (int x = 0; x < sizeX; x++)
 							{
-								int pX = reverseX ? tileX : ZS.OverworldScene.globalmouseTileDownX;
-								int pY = reverseY ? tileY : ZS.OverworldScene.globalmouseTileDownY;
 
-								ZS.OverworldScene.selectedTile[x + (y * sizeX)] = ZS.OverworldManager.allmaps[mapId].tilesUsed[(pX) + x, (pY) + y];
+								ZS.OverworldScene.selectedTile[x + (y * sizeX)] = ZS.OverworldManager.allmaps[mapId].tilesUsed[pX + x, pY + y];
 							}
 						}
 					}
@@ -217,7 +214,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			//scene.mainForm.pictureGroupTiles.Refresh();
 		}
 
-		public void OnMouseMove(MouseEventArgs e)
+		public override void OnMouseMove(MouseEventArgs e)
 		{
 			if (ZS.OverworldScene.initialized)
 			{
@@ -360,6 +357,27 @@ namespace ZeldaFullEditor.OWSceneModes
 					}
 				}
 			}
+		}
+
+		// TODO
+		public override void Copy()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void Cut()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void Paste()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void Delete()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

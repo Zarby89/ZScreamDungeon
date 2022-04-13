@@ -139,11 +139,11 @@ namespace ZeldaFullEditor
 		}
 
 
-		public static unsafe void DrawTileToBuffer(Tile tile, byte* canvas, byte* tiledata, int indexoffset = 0)
+		public static unsafe void DrawTileToBuffer(in Tile tile, byte* canvas, byte* tiledata, int indexoffset = 0)
 		{
 			int tx = (tile.ID / 16 * 512) + ((tile.ID & 0xF) * 4);
 			byte palnibble = (byte) (tile.Palette << 4);
-			byte r = (byte) tile.HFlipShort;
+			byte r = (byte) tile.HFlipByte;
 
 			for (int yl = 0; yl < 512; yl += 64)
 			{

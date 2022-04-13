@@ -9,18 +9,17 @@ using System.Windows.Forms;
 using ZeldaFullEditor.Data;
 namespace ZeldaFullEditor.OWSceneModes
 {
-	public class GravestoneMode
+	public class GravestoneMode : SceneMode
 	{
-		private readonly ZScreamer ZS;
 		public Gravestone selectedGrave = null;
 		public Gravestone lastselectedGrave = null;
 
-		public GravestoneMode(ZScreamer parent)
+		public GravestoneMode(ZScreamer parent) : base(parent)
 		{
-			ZS = parent;
+
 		}
 
-		public void onMouseDown(MouseEventArgs e)
+		public override void OnMouseDown(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -41,7 +40,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void onMouseMove(MouseEventArgs e)
+		public override void OnMouseMove(MouseEventArgs e)
 		{
 			if (ZS.OverworldScene.mouse_down)
 			{
@@ -60,7 +59,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void onMouseUp(MouseEventArgs e)
+		public override void OnMouseUp(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -122,6 +121,27 @@ namespace ZeldaFullEditor.OWSceneModes
 					ZS.OverworldScene.drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL HOLE");
 				}
 			}
+		}
+
+		// TODO
+		public override void Copy()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void Cut()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void Paste()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void Delete()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

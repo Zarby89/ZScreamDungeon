@@ -140,7 +140,6 @@ namespace ZeldaFullEditor.Gui
 
 			(sender as ToolStripButton).Checked = true;
 			ZS.CurrentOWMode = (OverworldEditMode) ((sender as ToolStripButton).Tag);
-			UpdateForMode(ZS.CurrentOWMode);
 		}
 
 		public void UpdateForMode(OverworldEditMode m)

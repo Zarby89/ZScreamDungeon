@@ -257,7 +257,7 @@ namespace ZeldaFullEditor.Gui
 			}
 		}
 
-		private void updateTileInfoFrom16(Tile t)
+		private void updateTileInfoFrom16(in Tile t)
 		{
 			fromForm = true;
 			tileUpDown.Text = t.ID.ToString("X2");
@@ -285,9 +285,9 @@ namespace ZeldaFullEditor.Gui
 				// gfx8 = 4bpp so everyting is /2
 				var tiles = allTiles[i];
 
-				for (var tile = 0; tile < 4; tile++)
+				for (int tile = 0; tile < 4; tile++)
 				{
-					Tile info = tiles.tilesinfos[tile];
+					Tile info = tiles[tile];
 					int offset = offsets[tile];
 
 					for (var y = 0; y < 8; y++)
@@ -308,28 +308,17 @@ namespace ZeldaFullEditor.Gui
 			}
 		}
 
-		private unsafe void CopyTile16(int x, int y, int xx, int yy, int offset, Tile tile, byte* gfx16Pointer, byte* gfx8Pointer) // map,current
+		private unsafe void CopyTile16(int x, int y, int xx, int yy, int offset, in Tile tile, byte* gfx16Pointer, byte* gfx8Pointer) // map,current
 		{
-			int mx = x;
-			int my = y;
-			byte r = 0;
-
-			if (tile.HFlip)
-			{
-				mx = 3 - x;
-				r = 1;
-			}
-			if (tile.VFlip)
-			{
-				my = 7 - y;
-			}
+			int mx = tile.HFlip ? 3 - x : x;
+			int my = tile.VFlip ? 7 - y : y;
 
 			int tx = (tile.ID / 16 * 512) + ((tile.ID & 0xF) * 4);
 			var index = xx + yy + offset + (mx * 2) + (my * 128);
 			var pixel = gfx8Pointer[tx + (y * 64) + x];
 
-			gfx16Pointer[index + r ^ 1] = (byte) ((pixel & 0x0F) | (tile.Palette << 4));
-			gfx16Pointer[index + r] = (byte) (((pixel >> 4)) |( tile.Palette << 4));
+			gfx16Pointer[index + tile.HFlipByte ^ 1] = (byte) ((pixel & 0x0F) | (tile.Palette << 4));
+			gfx16Pointer[index + tile.HFlipByte] = (byte) (((pixel >> 4)) |( tile.Palette << 4));
 		}
 
 		private void Tile16Editor_Load(object sender, EventArgs e)
@@ -521,10 +510,8 @@ namespace ZeldaFullEditor.Gui
 
 		private void button3_Click(object sender, EventArgs e)
 		{
-			ushort tsearch;
-			ushort.TryParse(tile16searchTextbox.Text, System.Globalization.NumberStyles.HexNumber, null, out tsearch);
-			searchedTile = tsearch;
-			panel1.VerticalScroll.Value = ((searchedTile / 8) * 32);
+			ushort.TryParse(tile16searchTextbox.Text, System.Globalization.NumberStyles.HexNumber, null, out searchedTile);
+			panel1.VerticalScroll.Value = searchedTile / 8 * 32;
 			panel1.PerformLayout();
 		}
 	}

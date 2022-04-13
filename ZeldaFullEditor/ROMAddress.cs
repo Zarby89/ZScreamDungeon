@@ -50,8 +50,7 @@ namespace ZeldaFullEditor
 		/// with the assumption that the address is the same for both versions.<br/>
 		/// The input parameters are under SNES mapping.
 		/// </summary>
-		/// <param name="jp">JP1.0 SNES address</param>
-		/// <param name="us">US SNES address</param>
+		/// <param name="addr">SNES address</param>
 		public ROMAddress(int addr)
 		{
 			USAddress = JPAddress = addr & 0xFFFFFF;
@@ -155,8 +154,18 @@ namespace ZeldaFullEditor
 
 		public enum ROMVersion
 		{
+			/// <summary>
+			/// Japanese 1.0
+			/// </summary>
 			JP,
-			US
+			/// <summary>
+			/// United states
+			/// </summary>
+			US,
+			/// <summary>
+			/// French canada
+			/// </summary>
+			FRCA
 		}
 	}
 }

@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.OWSceneModes
 {
-	public class ExitMode
+	public class ExitMode : SceneMode
 	{
 		public ExitOW selectedExit = null;
 		public ExitOW lastselectedExit = null;
@@ -20,21 +20,19 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		ExitEditorForm exitPropForm;
 
-		private readonly ZScreamer ZS;
-		public ExitMode(ZScreamer parent)
+		public ExitMode(ZScreamer parent) : base(parent)
 		{
-			ZS = parent;
 			exitPropForm = new ExitEditorForm(ZS);
 		}
 
-		public void Copy()
+		public override void Copy()
 		{
 			Clipboard.Clear();
 			ExitOW ed = lastselectedExit.Copy();
 			Clipboard.SetData(Constants.OverworldExitClipboardData, ed);
 		}
 
-		public void Cut()
+		public override void Cut()
 		{
 			Clipboard.Clear();
 			ExitOW ed = lastselectedExit.Copy();
@@ -42,7 +40,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			Delete();
 		}
 
-		public void Paste()
+		public override void Paste()
 		{
 			ExitOW ae = AddExit(true);
 			if (ae != null)
@@ -107,7 +105,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			return ZS.OverworldManager.allexits[found];
 		}
 
-		public void onMouseDown(MouseEventArgs e)
+		public override void OnMouseDown(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -162,7 +160,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void Delete() // Set exit data to 0
+		public override void Delete() // Set exit data to 0
 		{
 			lastselectedExit.playerX = 0xFFFF;
 			lastselectedExit.playerY = 0xFFFF;
@@ -173,7 +171,7 @@ namespace ZeldaFullEditor.OWSceneModes
 		}
 
 
-		public void onMouseMove(MouseEventArgs e)
+		public override void OnMouseMove(MouseEventArgs e)
 		{
 			if (ZS.OverworldScene.mouse_down)
 			{
@@ -198,7 +196,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public void onMouseUp(MouseEventArgs e)
+		public override void OnMouseUp(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
