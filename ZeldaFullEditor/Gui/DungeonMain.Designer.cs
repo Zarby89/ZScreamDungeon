@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -1178,6 +1178,7 @@ namespace ZeldaFullEditor
             this.EntranceProperties_Blockset.TabIndex = 138;
             this.EntranceProperties_Blockset.Text = "00";
             this.EntranceProperties_Blockset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperties_Blockset.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_Music
             // 
@@ -1193,6 +1194,7 @@ namespace ZeldaFullEditor
             this.EntranceProperties_Music.TabIndex = 137;
             this.EntranceProperties_Music.Text = "00";
             this.EntranceProperties_Music.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperties_Music.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_DungeonID
             // 
@@ -1208,6 +1210,7 @@ namespace ZeldaFullEditor
             this.EntranceProperties_DungeonID.TabIndex = 136;
             this.EntranceProperties_DungeonID.Text = "00";
             this.EntranceProperties_DungeonID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperties_DungeonID.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_Exit
             // 
@@ -1223,6 +1226,7 @@ namespace ZeldaFullEditor
             this.EntranceProperties_Exit.TabIndex = 135;
             this.EntranceProperties_Exit.Text = "00";
             this.EntranceProperties_Exit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperties_Exit.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_CameraTriggerY
             // 
@@ -1238,6 +1242,7 @@ namespace ZeldaFullEditor
             this.EntranceProperties_CameraTriggerY.TabIndex = 134;
             this.EntranceProperties_CameraTriggerY.Text = "0000";
             this.EntranceProperties_CameraTriggerY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperties_CameraTriggerY.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_CameraTriggerX
             // 
@@ -1253,6 +1258,7 @@ namespace ZeldaFullEditor
             this.EntranceProperties_CameraTriggerX.TabIndex = 133;
             this.EntranceProperties_CameraTriggerX.Text = "0000";
             this.EntranceProperties_CameraTriggerX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperties_CameraTriggerX.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // label46
             // 
@@ -1286,6 +1292,7 @@ namespace ZeldaFullEditor
             this.EntranceProperties_CameraY.TabIndex = 130;
             this.EntranceProperties_CameraY.Text = "0000";
             this.EntranceProperties_CameraY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperties_CameraY.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_CameraX
             // 
@@ -1301,6 +1308,7 @@ namespace ZeldaFullEditor
             this.EntranceProperties_CameraX.TabIndex = 129;
             this.EntranceProperties_CameraX.Text = "0000";
             this.EntranceProperties_CameraX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperties_CameraX.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_PlayerY
             // 
@@ -1316,6 +1324,7 @@ namespace ZeldaFullEditor
             this.EntranceProperties_PlayerY.TabIndex = 128;
             this.EntranceProperties_PlayerY.Text = "0000";
             this.EntranceProperties_PlayerY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperties_PlayerY.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperties_PlayerX
             // 
@@ -1331,6 +1340,7 @@ namespace ZeldaFullEditor
             this.EntranceProperties_PlayerX.TabIndex = 127;
             this.EntranceProperties_PlayerX.Text = "0000";
             this.EntranceProperties_PlayerX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperties_PlayerX.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // label41
             // 
@@ -1364,6 +1374,7 @@ namespace ZeldaFullEditor
             this.EntranceProperties_RoomID.TabIndex = 124;
             this.EntranceProperties_RoomID.Text = "000";
             this.EntranceProperties_RoomID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperties_RoomID.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // groupBox2
             // 
@@ -1402,6 +1413,7 @@ namespace ZeldaFullEditor
             this.EntranceProperty_BoundaryFE.TabIndex = 133;
             this.EntranceProperty_BoundaryFE.Text = "00";
             this.EntranceProperty_BoundaryFE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperty_BoundaryFE.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperty_BoundaryFW
             // 
@@ -1417,6 +1429,7 @@ namespace ZeldaFullEditor
             this.EntranceProperty_BoundaryFW.TabIndex = 132;
             this.EntranceProperty_BoundaryFW.Text = "00";
             this.EntranceProperty_BoundaryFW.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperty_BoundaryFW.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperty_BoundaryQE
             // 
@@ -1432,6 +1445,7 @@ namespace ZeldaFullEditor
             this.EntranceProperty_BoundaryQE.TabIndex = 131;
             this.EntranceProperty_BoundaryQE.Text = "00";
             this.EntranceProperty_BoundaryQE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperty_BoundaryQE.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperty_BoundaryQW
             // 
@@ -1447,6 +1461,7 @@ namespace ZeldaFullEditor
             this.EntranceProperty_BoundaryQW.TabIndex = 130;
             this.EntranceProperty_BoundaryQW.Text = "00";
             this.EntranceProperty_BoundaryQW.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperty_BoundaryQW.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperty_BoundaryFS
             // 
@@ -1462,6 +1477,7 @@ namespace ZeldaFullEditor
             this.EntranceProperty_BoundaryFS.TabIndex = 129;
             this.EntranceProperty_BoundaryFS.Text = "00";
             this.EntranceProperty_BoundaryFS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperty_BoundaryFS.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperty_BoundaryFN
             // 
@@ -1477,6 +1493,7 @@ namespace ZeldaFullEditor
             this.EntranceProperty_BoundaryFN.TabIndex = 128;
             this.EntranceProperty_BoundaryFN.Text = "00";
             this.EntranceProperty_BoundaryFN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperty_BoundaryFN.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperty_BoundaryQS
             // 
@@ -1492,6 +1509,7 @@ namespace ZeldaFullEditor
             this.EntranceProperty_BoundaryQS.TabIndex = 127;
             this.EntranceProperty_BoundaryQS.Text = "00";
             this.EntranceProperty_BoundaryQS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperty_BoundaryQS.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // EntranceProperty_BoundaryQN
             // 
@@ -1507,6 +1525,7 @@ namespace ZeldaFullEditor
             this.EntranceProperty_BoundaryQN.TabIndex = 126;
             this.EntranceProperty_BoundaryQN.Text = "00";
             this.EntranceProperty_BoundaryQN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.EntranceProperty_BoundaryQN.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // label37
             // 
@@ -1588,6 +1607,7 @@ namespace ZeldaFullEditor
             this.dooryTextbox.Size = new System.Drawing.Size(44, 20);
             this.dooryTextbox.TabIndex = 104;
             this.dooryTextbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.dooryTextbox.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // doorxTextbox
             // 
@@ -1596,6 +1616,7 @@ namespace ZeldaFullEditor
             this.doorxTextbox.Size = new System.Drawing.Size(44, 20);
             this.doorxTextbox.TabIndex = 103;
             this.doorxTextbox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.doorxTextbox.TextChanged += new System.EventHandler(this.entranceProperty_room_TextChanged);
             // 
             // label27
             // 
@@ -1800,13 +1821,13 @@ namespace ZeldaFullEditor
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode1.Name = "EntranceNode";
-            treeNode1.Text = "Entrances";
-            treeNode2.Name = "StartingEntranceNode";
-            treeNode2.Text = "Spawn points";
+            treeNode3.Name = "EntranceNode";
+            treeNode3.Text = "Entrances";
+            treeNode4.Name = "StartingEntranceNode";
+            treeNode4.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 301);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
