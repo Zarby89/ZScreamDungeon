@@ -52,6 +52,7 @@
             this.overlayButton = new System.Windows.Forms.ToolStripButton();
             this.gravestoneButton = new System.Windows.Forms.ToolStripButton();
             this.searchtilesButton = new System.Windows.Forms.ToolStripButton();
+            this.exportPNGToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.refreshToolStrip = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -100,7 +101,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.stateCombobox = new System.Windows.Forms.ComboBox();
             this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-            this.exportPNGToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.owToolStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -377,6 +377,16 @@
             this.searchtilesButton.Size = new System.Drawing.Size(23, 22);
             this.searchtilesButton.Text = "Search for tiles";
             this.searchtilesButton.Click += new System.EventHandler(this.searchtilesButton_Click);
+            // 
+            // exportPNGToolStripButton
+            // 
+            this.exportPNGToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.exportPNGToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("exportPNGToolStripButton.Image")));
+            this.exportPNGToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.exportPNGToolStripButton.Name = "exportPNGToolStripButton";
+            this.exportPNGToolStripButton.Size = new System.Drawing.Size(23, 22);
+            this.exportPNGToolStripButton.Text = "Map export to PNG";
+            this.exportPNGToolStripButton.Click += new System.EventHandler(this.exportPNGToolStripButton_Click);
             // 
             // refreshToolStrip
             // 
@@ -713,6 +723,7 @@
             this.OWProperty_MessageID.TabIndex = 28;
             this.OWProperty_MessageID.Text = "0000";
             this.OWProperty_MessageID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.OWProperty_MessageID.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
             // 
             // OWProperty_SPRPalette
             // 
@@ -930,16 +941,6 @@
             this.previewTextPicturebox.TabStop = false;
             this.previewTextPicturebox.Visible = false;
             this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
-            // 
-            // exportPNGToolStripButton
-            // 
-            this.exportPNGToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.exportPNGToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("exportPNGToolStripButton.Image")));
-            this.exportPNGToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.exportPNGToolStripButton.Name = "exportPNGToolStripButton";
-            this.exportPNGToolStripButton.Size = new System.Drawing.Size(23, 22);
-            this.exportPNGToolStripButton.Text = "Map export to PNG";
-            this.exportPNGToolStripButton.Click += new System.EventHandler(this.exportPNGToolStripButton_Click);
             // 
             // OverworldEditor
             // 
