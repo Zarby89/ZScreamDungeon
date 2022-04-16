@@ -406,8 +406,8 @@ namespace ZeldaFullEditor
 						mainForm.selectedEntrance.CameraTriggerY = 112;
 					}
 
-					mainForm.selectedEntrance.CameraY = (short) (mainForm.selectedEntrance.CameraTriggerX + (ex * 512));
-					mainForm.selectedEntrance.CameraX = (short) (mainForm.selectedEntrance.CameraTriggerY + (ey * 512));
+					mainForm.selectedEntrance.CameraY = (short) (mainForm.selectedEntrance.CameraY + (ex * 512));
+					mainForm.selectedEntrance.CameraX = (short) (mainForm.selectedEntrance.CameraX + (ey * 512));
 
 					mainForm.selectedEntrance.cameraBoundaryQW = (byte) (ex * 2);
 					mainForm.selectedEntrance.cameraBoundaryFW = (byte) (ex * 2);

@@ -2285,11 +2285,14 @@ namespace ZeldaFullEditor
 
 				selectedEntrance.XPosition = (short) EntranceProperties_PlayerX.HexValue;
 				selectedEntrance.YPosition = (short) EntranceProperties_PlayerY.HexValue;
-				selectedEntrance.CameraX = (short) EntranceProperties_CameraTriggerX.HexValue;
-				selectedEntrance.CameraY = (short) EntranceProperties_CameraTriggerY.HexValue;
+				selectedEntrance.CameraX = (short) EntranceProperties_CameraX.HexValue;
+				selectedEntrance.CameraY = (short) EntranceProperties_CameraY.HexValue;
 				selectedEntrance.CameraTriggerX = (short) EntranceProperties_CameraTriggerX.HexValue;
 				selectedEntrance.CameraTriggerY = (short) EntranceProperties_CameraTriggerY.HexValue;
 
+				//Console.WriteLine("Pos X: " + EntranceProperties_PlayerX.HexValue.ToString() + " Pos Y: " + EntranceProperties_PlayerY.HexValue.ToString());
+				//Console.WriteLine("Camera X: " + EntranceProperties_CameraX.HexValue.ToString() + " Camera Y: " + EntranceProperties_CameraY.HexValue.ToString());
+				//Console.WriteLine("Camera trigger X: " + EntranceProperties_CameraTriggerX.HexValue.ToString() + " Camera trigger Y: " + EntranceProperties_CameraTriggerY.HexValue.ToString());
 
 				if (int.TryParse(doorxTextbox.Text, NumberStyles.HexNumber, null, out int r))
 				{
@@ -2354,6 +2357,8 @@ namespace ZeldaFullEditor
 				activeScene.DrawRoom();
 				activeScene.Refresh();
 				activeScene.room.has_changed = true;
+
+				anychange = true;
 			}
 		}
 
