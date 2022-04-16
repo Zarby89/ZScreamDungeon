@@ -768,10 +768,15 @@ namespace ZeldaFullEditor
 					itemPtrs[i] = dataPos;
 					foreach (RoomPotSaveEditor item in roomItems[i])
 					{
+						
 						short mapPos = (short) (((item.gameY << 6) + item.gameX) << 1);
-						ROM.Write(dataPos,
-							new byte[] { (byte) ((mapPos >> 8)), (byte) (mapPos & 0xFF), item.id},
-							WriteType.PotItemData);
+
+						ROM.Write(
+							dataPos, 
+							new byte[3] { (byte) (mapPos & 0xFF), (byte) (mapPos >> 8), (byte) (item.id) },
+							WriteType.PotItemData
+						);
+						
 						dataPos += 3;
 					}
 
