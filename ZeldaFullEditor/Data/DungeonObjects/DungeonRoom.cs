@@ -13,18 +13,20 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public DungeonObjectsList Layer1Objects { get; } = new DungeonObjectsList();
 		public DungeonObjectsList Layer2Objects { get; } = new DungeonObjectsList();
 		public DungeonObjectsList Layer3Objects { get; } = new DungeonObjectsList();
-		public DungeonDoorsList DungeonDoors { get; } = new DungeonDoorsList();
+		public DungeonDoorsList DoorsList { get; } = new DungeonDoorsList();
 		public DungeonChestsList ChestList { get; } = new DungeonChestsList();
 		public DungeonSecretsList SecretsList { get; } = new DungeonSecretsList();
 		public DungeonSpritesList SpritesList { get; } = new DungeonSpritesList();
+		public DungeonBlocksList BlocksList { get; } = new DungeonBlocksList();
 
 		public List<StaircaseRoom> StairsList { get; } = new List<StaircaseRoom>();
-		public List<DungeonObject> SelectedObjects { get; } = new List<DungeonObject>();
+		public List<DungeonPlaceable> SelectedObjects { get; } = new List<DungeonPlaceable>();
+
 
 		/// <summary>
 		/// Returns an object if it is the only member of selected objects; otherwise, null
 		/// </summary>
-		public DungeonObject OnlySelectedObject
+		public DungeonPlaceable OnlySelectedObject
 		{
 			get
 			{
@@ -45,10 +47,12 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			get => layout;
 			set
 			{
+				value &= 0x07;
 				layout = value;
-				// TODO layout draw/objects should probably be handled here with predefined layout lists
+				LayoutListing = ZS.LayoutLister[value];
 			}
 		}
+		public RoomLayoutObjects LayoutListing { get; private set; }
 
 		private bool moam = false;
 		internal object collisionMap;
@@ -159,6 +163,21 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		}
 
 
+
+		// TODO this is where we'll flush temporary edits to the new listing
+		public void FlushChanges()
+		{
+			HasUnsavedChanges = false;
+			throw new NotImplementedException();
+		}
+
+
+
+
+
+
+
+
 		public void DrawEntireRoom()
 		{
 			foreach (RoomObject r in Layer1Objects)
@@ -167,8 +186,13 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			}
 		}
 
-
 		private RoomObject ParseRoomObject(byte layer, byte b1, byte b2, byte b3, out byte posX, out byte posY)
+		{
+			return ParseRoomObject(ZS, layer, b1, b2, b3, out posX, out posY);
+		}
+
+
+		public static RoomObject ParseRoomObject(ZScreamer ZS, byte layer, byte b1, byte b2, byte b3, out byte posX, out byte posY)
 		{
 			byte size;
 			ushort oid;
@@ -259,7 +283,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			Layer1Objects.Clear();
 			Layer2Objects.Clear();
 			Layer3Objects.Clear();
-			DungeonDoors.Clear();
+			DoorsList.Clear();
 			int staircount = 0;
 
 			DungeonObjectsList currentList = Layer1Objects;
@@ -311,7 +335,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 				if (door)
 				{
-					DungeonDoors.Add(ParseDoorObject(b1, b2));
+					DoorsList.Add(ParseDoorObject(b1, b2));
 				}
 				else
 				{
@@ -350,7 +374,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 							{
 								posX++;
 							}
-							ChestList.Add(new Chest(ZS, posX, posY, chests[0].itemIn, bigChest));
+							ChestList.Add(new DungeonChestItem(ZS, posX, posY, chests[0].itemIn, bigChest));
 						}
 					}
 				}
@@ -375,6 +399,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		{
 			return this;
 		}
+
 		private void LoadSpritesFromArray(byte[] data, int offset = 0)
 		{
 			MultiLayerOAM = data[offset++] == 1;
@@ -395,11 +420,23 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			Layer1Objects.Clear();
 			Layer2Objects.Clear();
 			Layer3Objects.Clear();
-			DungeonDoors.Clear();
+			DoorsList.Clear();
 			SecretsList.Clear();
 			SpritesList.Clear();
 			ChestList.Clear();
 		}
+
+
+		public void DrawWholeRoom()
+		{
+
+		}
+
+
+
+
+
+
 
 
 		public void reloadGfx(byte blockset = 0xFF)
@@ -423,6 +460,15 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		}
 
 		internal void update()
+		{
+			throw new NotImplementedException();
+		}
+
+		internal void SendToFront(DungeonPlaceable o)
+		{
+			throw new NotImplementedException();
+		}
+		internal void SendToBack(DungeonPlaceable o)
 		{
 			throw new NotImplementedException();
 		}

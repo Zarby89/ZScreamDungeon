@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
-	public unsafe class DungeonSprite : DungeonObject, IByteable, IFreelyPlaceable
+	public unsafe class DungeonSprite : DungeonObject, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
 	{
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
@@ -87,6 +87,11 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				Subtype = Subtype,
 				KeyDrop = KeyDrop
 			};
+		}
+
+		public override bool PointIsInHitbox(int x, int y)
+		{
+			throw new NotImplementedException();
 		}
 	}
 

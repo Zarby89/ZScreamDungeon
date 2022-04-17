@@ -338,7 +338,7 @@ namespace ZeldaFullEditor
 				ROM[pos++] = 0xF0;
 				ROM[pos++] = 0xFF;
 
-				ROM.WriteContinuous(ref pos, all_rooms[i].DungeonDoors.Data);
+				ROM.WriteContinuous(ref pos, all_rooms[i].DoorsList.Data);
 
 			}
 
@@ -391,8 +391,7 @@ namespace ZeldaFullEditor
 
 		public bool saveallPots()
 		{
-			int pos = Offsets.items_data_start + 2; // Skip 2 FF FF that are empty pointer
-			// ROM.StartBlockLogWriting("Pots Items Data", pos);
+			int pos = Offsets.items_data_start + 2;
 
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
 			{
@@ -406,39 +405,18 @@ namespace ZeldaFullEditor
 				ROM[Offsets.room_items_pointers + (i * 2), 2] = pos.PCtoSNES();
 				for (int j = 0; j < all_rooms[i].SecretsList.Count; j++)
 				{
-					all_rooms[i].SecretsList[j].bg2 = all_rooms[i].SecretsList[j].layer != 0;
-
-					int xy = ((all_rooms[i].SecretsList[j].y * 64) + all_rooms[i].SecretsList[j].x) << 1;
-
-					ROM.WriteContinuous(ref pos, 
-					   (byte) xy,
-					   (byte) ((xy >> 8) | (all_rooms[i].SecretsList[j].bg2 ? 0x20 : 0x00)),
-					   all_rooms[i].SecretsList[j].id
-					);
+					ROM.WriteContinuous(ref pos, all_rooms[i].SecretsList[j].Data);
 				}
 
 				ROM[pos, 2] = 0xFFFF;
 				pos += 2;
 				if (pos > Offsets.items_data_end)
 				{
-					//ROM.SaveLogs();
 					return true;
 				}
 			}
 
-			// ROM.EndBlockLogWriting();
-			return false; // False = no error
-		}
-
-		/// <summary>
-		/// Tells the text editor to save all the texts.
-		/// </summary>
-		/// <param name="te"></param>
-		/// <returns></returns>
-		/// Jared_Brian_: The check box save for the text editor was removed per redundancy.
-		public bool saveAllText(TextEditor te)
-		{
-			return te.Save();
+			return false;
 		}
 
 		public bool saveallSprites()

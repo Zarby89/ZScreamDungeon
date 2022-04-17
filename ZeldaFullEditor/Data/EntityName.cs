@@ -9,7 +9,7 @@ namespace ZeldaFullEditor.Data
 	/// <summary>
 	/// General class for defining names and properties of objects
 	/// </summary>
-	public class EntityName
+	public abstract class EntityName
 	{
 		public int ID { get; }
 		public string Name { get; }

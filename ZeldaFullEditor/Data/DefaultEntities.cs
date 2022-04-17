@@ -1,7 +1,17 @@
-﻿namespace ZeldaFullEditor.Data
+﻿using System;
+
+namespace ZeldaFullEditor.Data
 {
 	public static class DefaultEntities
 	{
+		public static string GetNameFromVanillaList<T>(this T[] list, int id) where T : EntityName
+		{
+			int b = Array.FindIndex(list, s => s.ID == id);
+			return list[b].Name;
+		}
+
+
+
 		public static readonly SpriteName[] ListOfSprites =
 		{
 			new SpriteName(0x00, "Raven"),

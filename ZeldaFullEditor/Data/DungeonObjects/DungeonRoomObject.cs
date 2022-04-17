@@ -9,7 +9,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 {
 	// TODO new way to handle objects that change with the floor settings
 	[Serializable]
-	public unsafe class RoomObject : DungeonObject, IByteable, IFreelyPlaceable
+	public unsafe class RoomObject : DungeonObject, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
 	{
 
 		public ushort ID { get; }
@@ -129,6 +129,11 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				return true;
 			}
 			return false;
+		}
+
+		public override bool PointIsInHitbox(int x, int y)
+		{
+			throw new NotImplementedException();
 		}
 	}
 

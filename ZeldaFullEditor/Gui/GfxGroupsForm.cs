@@ -41,7 +41,6 @@ namespace ZeldaFullEditor.Gui
 				reloadGfx();
 				ZS.UnderworldScene.Room.reloadGfx();
 				ZS.UnderworldScene.DrawRoom();
-				ZS.UnderworldScene.Refresh();
 			}
 		}
 
@@ -189,7 +188,6 @@ namespace ZeldaFullEditor.Gui
 				ZS.UnderworldScene.Room.reloadGfx();
 				reloadGfx();
 				ZS.UnderworldScene.DrawRoom();
-				ZS.UnderworldScene.Refresh();
 			}
 		}
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
 	[Serializable]
-	public unsafe class DungeonDoorObject : DungeonObject, IByteable
+	public unsafe class DungeonDoorObject : DungeonObject, IByteable, IMouseCollidable
 	{
 		public byte ID { get; set; }
 		public byte X { get; set; }
@@ -51,6 +51,11 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public override void Draw(ZScreamer ZS)
 		{
 			DoorPosition.Draw(ZS, this);
+		}
+
+		public override bool PointIsInHitbox(int x, int y)
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

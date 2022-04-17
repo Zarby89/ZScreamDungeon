@@ -65,6 +65,7 @@ namespace ZeldaFullEditor
 		public OverworldEditor OverworldForm { get; }
 		public TextEditor TextForm { get; }
 		public RoomObjectTileLister TileLister { get; }
+		public RoomLayoutLister LayoutLister { get; private set; }
 
 		public Overworld OverworldManager { get; }
 		public PaletteHandler PaletteManager { get; }
@@ -134,6 +135,12 @@ namespace ZeldaFullEditor
 
 			// MainForm.SetForms(DungeonForm, OverworldForm)
 		}
+
+		public void OnRomLoad()
+		{
+			LayoutLister = RoomLayoutLister.CreateLayoutsFromROM(this);
+		}
+
 
 		public void SetActiveScene(Scene s)
 		{

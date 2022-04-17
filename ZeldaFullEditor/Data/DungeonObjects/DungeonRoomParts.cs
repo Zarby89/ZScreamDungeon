@@ -12,13 +12,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 	}
 
 
-
-
-
-
-
-
-	public class DungeonObjectsList : List<RoomObject>, IByteable
+	public abstract class DungeonLister<T> : List<T>, IByteable where T : IByteable
 	{
 		public byte[] Data
 		{
@@ -26,7 +20,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			{
 				List<byte> ret = new List<byte>();
 
-				foreach (RoomObject r in this)
+				foreach (var r in this)
 				{
 					ret.AddRange(r.Data);
 				}
@@ -34,82 +28,16 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				return ret.ToArray();
 			}
 		}
-
-	}
-	public class DungeonDoorsList : List<DungeonDoorObject>, IByteable
-	{
-		public byte[] Data
-		{
-			get
-			{
-				List<byte> ret = new List<byte>();
-
-				foreach (DungeonDoorObject r in this)
-				{
-					ret.AddRange(r.Data);
-				}
-
-				return ret.ToArray();
-			}
-		}
-
 	}
 
 
-	public class DungeonChestsList : List<Chest>, IByteable
-	{
-		public byte[] Data
-		{
-			get
-			{
-				List<byte> ret = new List<byte>();
 
-				foreach (Chest r in this)
-				{
-					throw new NotImplementedException();
-					//ret.AddRange(r.Data);
-				}
 
-				return ret.ToArray();
-			}
-		}
-	}
 
-	public class DungeonSecretsList : List<PotItem>, IByteable
-	{
-		public byte[] Data
-		{
-			get
-			{
-				List<byte> ret = new List<byte>();
-
-				foreach (PotItem r in this)
-				{
-					throw new NotImplementedException();
-					//ret.AddRange(r.Data);
-				}
-
-				return ret.ToArray();
-			}
-		}
-	}
-
-	public class DungeonSpritesList : List<DungeonSprite>, IByteable
-	{
-		public byte[] Data
-		{
-			get
-			{
-				List<byte> ret = new List<byte>();
-
-				foreach (DungeonSprite r in this)
-				{
-					throw new NotImplementedException();
-					//ret.AddRange(r.Data);
-				}
-
-				return ret.ToArray();
-			}
-		}
-	}
+	public class DungeonObjectsList : DungeonLister<RoomObject>, IByteable { }
+	public class DungeonDoorsList : DungeonLister<DungeonDoorObject>, IByteable { }
+	public class DungeonSecretsList : DungeonLister<DungeonSecret>, IByteable { }
+	public class DungeonSpritesList : DungeonLister<DungeonSprite>, IByteable { }
+	public class DungeonChestsList : List<DungeonChestItem> { }
+	public class DungeonBlocksList : List<DungeonBlock> { }
 }

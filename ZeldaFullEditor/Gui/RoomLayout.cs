@@ -36,7 +36,6 @@ namespace ZeldaFullEditor
 		{
 			clearRoom();
 			scene.DrawRoom();
-			scene.Refresh();
 			listBox1.Items.Clear();
 
 			string[] files = Directory.GetFiles("Layout");
@@ -89,7 +88,6 @@ namespace ZeldaFullEditor
 			scene.Room.reloadGfx();
 
 			scene.DrawRoom();
-			scene.Refresh();
 		}
 
 		private void button1_Click(object sender, EventArgs e)

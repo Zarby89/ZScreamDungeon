@@ -7,8 +7,15 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
+	public abstract class DungeonPlaceable : IDelegatedDraw, IMouseCollidable
+	{
+		public abstract void Draw(ZScreamer ZS);
+		public abstract bool PointIsInHitbox(int x, int y);
+	}
+
+
 	[Serializable]
-	public abstract class DungeonObject : IByteable
+	public abstract class DungeonObject : DungeonPlaceable, IByteable, IDelegatedDraw, IMouseCollidable
 	{
 		/// <summary>
 		/// Returns a list of points representing the collision box of the object within the GUI.
@@ -26,15 +33,8 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		/// Draws this object to the given controller's graphics or tilemap buffer.
 		/// </summary>
 		/// <param name="ZS">Graphics controller parent</param>
-		public abstract void Draw(ZScreamer ZS);
-	}
+		public override abstract void Draw(ZScreamer ZS);
 
-	public interface IFreelyPlaceable
-	{
-		byte X { get; set; }
-		byte Y { get; set; }
-		byte NX { get; set; }
-		byte NY { get; set; }
-		byte Layer { get; set; }
+		public override abstract bool PointIsInHitbox(int x, int y);
 	}
 }

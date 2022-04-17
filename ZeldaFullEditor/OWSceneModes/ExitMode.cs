@@ -152,7 +152,7 @@ namespace ZeldaFullEditor.OWSceneModes
 					{
 						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
 						ZS.UnderworldScene.Room.reloadGfx();
-						ZS.UnderworldScene.DrawRoom();
+						ZS.UnderworldScene.DrawRoom(false);
 					}
 				}
 

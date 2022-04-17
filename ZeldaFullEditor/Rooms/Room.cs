@@ -1743,20 +1743,6 @@ namespace ZeldaFullEditor
 		}
 	}
 
-	[Serializable]
-	public class SpriteName
-	{
-		public int x;
-		public int y;
-		public string name;
-
-		public SpriteName(int x, int y, string name)
-		{
-			this.x = x;
-			this.y = y;
-			this.name = name;
-		}
-	}
 
 	[Serializable]
 	public class StaircaseRoom
