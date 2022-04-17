@@ -226,12 +226,13 @@
     <Compile Include="Data\DefaultEntities.cs" />
     <Compile Include="Data\DungeonMap.cs" />
     <Compile Include="Data\DungeonObjects\DungeonObject.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonDoorObjectType.cs" />
+    <Compile Include="Data\DungeonObjects\DungeonDoor.cs" />
     <Compile Include="Data\DungeonObjects\DungeonDoorTypes.cs" />
     <Compile Include="Data\DungeonObjects\DungeonObjectDraw.cs" />
     <Compile Include="Data\DungeonObjects\DungeonObjectTypes.cs" />
     <Compile Include="Data\DungeonObjects\DungeonRoom.cs" />
     <Compile Include="Data\DungeonObjects\DungeonRoomObject.cs" />
+    <Compile Include="Data\DungeonObjects\DungeonRoomParts.cs" />
     <Compile Include="Data\DungeonObjects\RoomObjectProperties.cs" />
     <Compile Include="Data\DungeonObjects\RoomObjectTileLister.cs" />
     <Compile Include="Data\DungeonObjects\TilesList.cs" />
@@ -426,10 +427,10 @@
     <Compile Include="Gui\ExtraForms\SearchForm.Designer.cs">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\TextEditorExtra\DictionariesForm.cs">
+    <Compile Include="Gui\ExtraForms\DictionariesForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\TextEditorExtra\DictionariesForm.Designer.cs">
+    <Compile Include="Gui\ExtraForms\DictionariesForm.Designer.cs">
       <DependentUpon>DictionariesForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\ExtraForms\Tile16Editor.cs">
@@ -438,11 +439,17 @@
     <Compile Include="Gui\ExtraForms\Tile16Editor.Designer.cs">
       <DependentUpon>Tile16Editor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\TextEditorExtra\MessageAsBytes.cs">
+    <Compile Include="Gui\ExtraForms\MessageAsBytes.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Gui\TextEditorExtra\MessageAsBytes.Designer.cs">
+    <Compile Include="Gui\ExtraForms\MessageAsBytes.Designer.cs">
       <DependentUpon>MessageAsBytes.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneNew.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneUWnew.cs">
+      <SubType>Component</SubType>
     </Compile>
     <Compile Include="Gui\VramViewer.cs">
       <SubType>Component</SubType>
@@ -494,7 +501,6 @@
     <Compile Include="Gui\ExtraForms\MovePointer.Designer.cs">
       <DependentUpon>MovePointer.cs</DependentUpon>
     </Compile>
-    <Compile Include="ObjectMode.cs" />
     <Compile Include="Gui\ObjectViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -511,7 +517,6 @@
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\RoomPotSaveEditor.cs" />
-    <Compile Include="Rooms\Background2.cs" />
     <Compile Include="Rooms\Chests\Chest.cs" />
     <Compile Include="Rooms\Chests\ChestItems_Name.cs" />
     <Compile Include="Constants.cs" />
@@ -548,9 +553,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Gui\Scene\SceneResizing.cs" />
-    <Compile Include="Gui\Scene\SceneUW.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Gui\Scene\SceneUW.cs" />
     <Compile Include="Gui\Scene\SceneBase.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -565,7 +568,6 @@
       <DependentUpon>SpritesView.cs</DependentUpon>
     </Compile>
     <Compile Include="Sprite_SubsetNames.cs" />
-    <Compile Include="Data\TagKey.cs" />
     <Compile Include="Gui\MainTabs\TextEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -584,7 +586,6 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="WhirlpoolForm.Designer.cs" />
-    <Compile Include="WriteType.cs" />
     <Compile Include="ZCompressLibrary\Common.cs" />
     <Compile Include="ZCompressLibrary\Compress.cs" />
     <Compile Include="ZCompressLibrary\compression_piece.cs" />
@@ -689,13 +690,13 @@
     <EmbeddedResource Include="Gui\ExtraForms\SearchForm.resx">
       <DependentUpon>SearchForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\TextEditorExtra\DictionariesForm.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\DictionariesForm.resx">
       <DependentUpon>DictionariesForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\ExtraForms\Tile16Editor.resx">
       <DependentUpon>Tile16Editor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Gui\TextEditorExtra\MessageAsBytes.resx">
+    <EmbeddedResource Include="Gui\ExtraForms\MessageAsBytes.resx">
       <DependentUpon>MessageAsBytes.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\VramViewer.resx">

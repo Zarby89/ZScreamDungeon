@@ -46,12 +46,12 @@ namespace ZeldaFullEditor
 		private byte _blockset;
 		private byte _spriteset;
 		private byte _palette;
-		private Background2 _bg2;
+		private byte _bg2;
 
 		public byte tag1 { get; set; }
 		public byte tag2 { get; set; }
 
-		public CollisionKey collision { get; set; }
+		public byte collision { get; set; }
 		public byte effect { get; set; }
 
 		private byte _holewarp;
@@ -113,20 +113,13 @@ namespace ZeldaFullEditor
 			set => _palette = value.Clamp(0, 71);
 		}
 
-		public Background2 bg2
+		public byte bg2
 		{
 			get => _bg2;
 			set
 			{
 				_bg2 = value;
-				if (_bg2 == Background2.DarkRoom)
-				{
-					light = true;
-				}
-				else
-				{
-					light = false;
-				}
+				light = _bg2 == 0x08;
 			}
 		}
 
@@ -1655,13 +1648,13 @@ namespace ZeldaFullEditor
 
 			header_location = address.SNEStoPC();
 
-			bg2 = (Background2) ((ZS.ROM[header_location] >> 5) & 0x07);
-			collision = (CollisionKey) ((ZS.ROM[header_location] >> 2) & 0x07);
+			bg2 = (byte) ((ZS.ROM[header_location] >> 5) & 0x07);
+			collision = (byte) ((ZS.ROM[header_location] >> 2) & 0x07);
 			light = ((ZS.ROM[header_location]) & 0x01) == 1;
 
 			if (light)
 			{
-				bg2 = Background2.DarkRoom;
+				bg2 = Constants.LayerMergeDarkRoom;
 			}
 
 			palette = (byte) (ZS.ROM[header_location + 1] & 0x3F);

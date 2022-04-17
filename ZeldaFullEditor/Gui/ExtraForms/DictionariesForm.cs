@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZeldaFullEditor.Gui.TextEditorExtra
+namespace ZeldaFullEditor.Gui
 {
 	public partial class DictionariesForm : ScreamForm
 	{

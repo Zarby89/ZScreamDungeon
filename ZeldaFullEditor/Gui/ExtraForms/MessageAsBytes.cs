@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-namespace ZeldaFullEditor.Gui.TextEditorExtra
+namespace ZeldaFullEditor.Gui
 {
 	public partial class MessageAsBytes : Form
 	{

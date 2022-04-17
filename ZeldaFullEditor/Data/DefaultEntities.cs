@@ -332,6 +332,29 @@
 			new RoomTagName(0x3F, "Kill Boss Again")
 		};
 
+		public static readonly RoomCollisionName[] ListOfRoomCollisions =
+		{
+			new RoomCollisionName(0x00, "One"),
+			new RoomCollisionName(0x01, "Both"),
+			new RoomCollisionName(0x02, "Both with scroll"),
+			new RoomCollisionName(0x03, "Moving floor"),
+			new RoomCollisionName(0x04, "Moving water")
+		};
+
+		public static readonly Layer2TypeName[] ListOfLayer2Types =
+		{
+			new Layer2TypeName(Constants.LayerMergeOff, "Off"),
+			new Layer2TypeName(Constants.LayerMergeParallax, "Parallax"),
+			new Layer2TypeName(Constants.LayerMergeDark, "Dark"),
+			new Layer2TypeName(Constants.LayerMergeOnTop, "On top"),
+			new Layer2TypeName(Constants.LayerMergeTranslucent, "Translucent"),
+			new Layer2TypeName(Constants.LayerMergeAddition, "Addition"),
+			new Layer2TypeName(Constants.LayerMergeNormal, "Normal"),
+			new Layer2TypeName(Constants.LayerMergeTransparent, "Transparent"),
+			new Layer2TypeName(Constants.LayerMergeDarkRoom, "Dark room")
+		};
+
+
 		public static readonly RoomObjectName[] ListOfSet0RoomObjects =
 		{
 			new RoomObjectName(0x000, "Ceiling ↔"),

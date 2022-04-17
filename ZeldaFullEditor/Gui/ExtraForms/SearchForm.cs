@@ -64,7 +64,7 @@ namespace ZeldaFullEditor.Gui
 			{
 				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
-					int l = DungeonsData.all_rooms[i].sprites.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
+					int l = DungeonsData.all_rooms[i].SpritesList.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
 					if (l > 0)
 					{
 						richTextBox1.AppendText("Sprite ID : " + Sprites_Names.name[comboBox1.SelectedIndex] + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");

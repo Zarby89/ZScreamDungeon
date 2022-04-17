@@ -18,7 +18,7 @@ using System.Drawing.Drawing2D;
 namespace ZeldaFullEditor
 {
 	[Serializable]
-	public class Scene : PictureBox
+	public class Scene2 : PictureBox
 	{
 		public readonly ZScreamer ZS;
 
@@ -54,7 +54,7 @@ namespace ZeldaFullEditor
 
 		byte[] spriteFontSpacing = Constants.FontSpacings.DeepCopy();
 
-		public Scene(ZScreamer parent = null)
+		public Scene2(ZScreamer parent = null)
 		{
 			ZS = parent ?? new ZScreamer(22);
 		}
@@ -191,7 +191,7 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			if (showBG2Outline && room.bg2 != Background2.Off)
+			if (showBG2Outline && room.bg2 != Constants.LayerMergeOff)
 			{
 				foreach (Room_Object obj in room.tilesObjects)
 				{

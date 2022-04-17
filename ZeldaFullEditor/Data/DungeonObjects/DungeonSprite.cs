@@ -4,15 +4,16 @@ using System.Drawing;
 
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
-	public unsafe class DungeonSprite : DungeonObject
+	public unsafe class DungeonSprite : DungeonObject, IByteable, IFreelyPlaceable
 	{
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
+		public byte NX { get; set; }
+		public byte NY { get; set; }
 		public byte Layer { get; set; } = 0;
 
 		public byte KeyDrop { get; set; } = 0;
 
-		public override List<Point> CollisionPoints { get; } = new List<Point>();
 		public override TilesList Tiles { get; }
 
 		private byte subtype;

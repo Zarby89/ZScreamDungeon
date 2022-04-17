@@ -9,24 +9,25 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 {
 	// TODO new way to handle objects that change with the floor settings
 	[Serializable]
-	public unsafe class RoomObject : DungeonObject
+	public unsafe class RoomObject : DungeonObject, IByteable, IFreelyPlaceable
 	{
+
 		public ushort ID { get; }
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
+		public byte NX { get; set; }
+		public byte NY { get; set; }
 		public byte Layer { get; set; } = 0;
 		public byte Size { get; set; } = 0;
 
 		public int Width { get; set; } = 16;
 		public int Height { get; set; } = 16;
 
-		public byte NX { get; set; }
-		public byte NY { get; set; }
+		public bool IsChest => ObjectType.Specialness == SpecialObjectType.Chest || ObjectType.Specialness == SpecialObjectType.BigChest;
 		public bool DiagonalFix { get; set; } = false;
 
 		public RoomObjectType ObjectType { get; }
 
-		public override List<Point> CollisionPoints { get; } = new List<Point>();
 		public override TilesList Tiles { get; }
 
 		public override byte[] Data
@@ -65,22 +66,11 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			}
 		}
 
-		protected RoomObject(RoomObjectType type, TilesList tiles)
+		public RoomObject(RoomObjectType type, TilesList tiles)
 		{
 			ObjectType = type;
 			ID = type.FullID;
 			Tiles = tiles;
-		}
-
-		public RoomObject(RoomObjectType type, TilesList tileset, byte x = 0, byte y = 0, byte layer = 0, byte size = 0)
-		{
-			ObjectType = type;
-			ID = type.FullID;
-			NX = X = x;
-			NY = Y = y;
-			Layer = layer;
-			Size = size;
-			Tiles = tileset;
 		}
 
 		public RoomObject Clone()

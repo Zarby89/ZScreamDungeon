@@ -7,7 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using System.IO;
-using ZeldaFullEditor.Gui.TextEditorExtra;
+using ZeldaFullEditor.Gui;
 using System.Text.RegularExpressions;
 using System.Globalization;
 
@@ -84,6 +84,7 @@ namespace ZeldaFullEditor
 			{
 				sout = string.Format("{0:X3} - {1}", id, strp);
 			}
+
 			public override string ToString()
 			{
 				return sout;

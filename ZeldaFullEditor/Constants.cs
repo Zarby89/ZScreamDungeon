@@ -35,6 +35,8 @@ namespace ZeldaFullEditor
 		public const int NumberOfOverworldExits = 0x4F;
 		public const int NumberOfOverworldGraves = 0x0F;
 
+		public const int NumberOfChests = 168;
+
 
 		public const int ROMSize = 0x200000;
 		public const int ROMHeaderSize = 0x200;
@@ -71,6 +73,16 @@ namespace ZeldaFullEditor
 		public const ushort TorchPseudoID = 0x0E00;
 
 		public const byte SpriteTerminator = 0xFF;
+
+		public const byte LayerMergeOff = 0x00;
+		public const byte LayerMergeParallax = 0x01;
+		public const byte LayerMergeDark = 0x02;
+		public const byte LayerMergeOnTop = 0x03;
+		public const byte LayerMergeTranslucent = 0x04;
+		public const byte LayerMergeAddition = 0x05;
+		public const byte LayerMergeNormal = 0x06;
+		public const byte LayerMergeTransparent = 0x07;
+		public const byte LayerMergeDarkRoom = 0x08;
 
 		//===========================================================================================
 		// Clipboard stuff

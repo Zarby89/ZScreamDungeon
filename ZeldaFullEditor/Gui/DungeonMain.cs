@@ -21,6 +21,7 @@ using ZeldaFullEditor.Gui.MainTabs;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Globalization;
 using ZeldaFullEditor.Data;
+using ZeldaFullEditor.Data.DungeonObjects;
 
 
 // Main 
@@ -51,7 +52,7 @@ namespace ZeldaFullEditor
 		public string projectFilename = "";
 		public bool projectLoaded = false;
 		public bool anychange = false;
-		public List<Room> opened_rooms = new List<Room>();
+		public List<DungeonRoom> opened_rooms = new List<DungeonRoom>();
 		bool saved_changed = false;
 		public TreeNode lastNode = null;
 		RoomLayout layoutForm;
@@ -62,11 +63,11 @@ namespace ZeldaFullEditor
 		public Entrance selectedEntrance = null;
 		PaletteEditor paletteForm;
 		Bitmap xTabButton;
-		public Room previewRoom = null;
+		public DungeonRoom previewRoom = null;
 		public ScreenEditor screenEditor;
 		public string loadFromExported = "";
 
-		public List<Room_Object> listoftilesobjects = new List<Room_Object>();
+		public List<RoomObjectPreview> listoftilesobjects = new List<RoomObjectPreview>();
 		List<Sprite> listofspritesobjects = new List<Sprite>();
 		List<Chest> listofchests = new List<Chest>();
 
@@ -197,17 +198,8 @@ namespace ZeldaFullEditor
 		// Need to stay here
 		public void initialize_properties()
 		{
-			Background2[] bg2values = (Background2[]) Enum.GetValues(typeof(Background2));
-			foreach (Background2 s in bg2values)
-			{
-				roomProperty_bg2.Items.Add(s.ToString());
-			}
-
-			CollisionKey[] collisionvalues = (CollisionKey[]) Enum.GetValues(typeof(CollisionKey));
-			foreach (CollisionKey s in collisionvalues)
-			{
-				roomProperty_collision.Items.Add(s.ToString());
-			}
+			roomProperty_bg2.DataSource = DefaultEntities.ListOfLayer2Types;
+			roomProperty_collision.DataSource = DefaultEntities.ListOfRoomCollisions;
 			roomProperty_effect.DataSource = DefaultEntities.ListOfRoomEffects;
 			roomProperty_tag1.DataSource = DefaultEntities.ListOfRoomTags;
 			roomProperty_tag2.DataSource = DefaultEntities.ListOfRoomTags;
@@ -223,18 +215,18 @@ namespace ZeldaFullEditor
 
 			//sw.Reset();
 			//sw.Start();
-			foreach (Room r in opened_rooms)
+			foreach (DungeonRoom r in opened_rooms)
 			{
-				if (r.has_changed)
+				if (r.HasUnsavedChanges)
 				{
 					foreach (TabPage tp in tabControl2.TabPages)
 					{
 						tp.Text = tp.Text.Trim('*');
 					}
 
-					DungeonsData.all_rooms[r.index] = (Room) r.Clone();
-					r.has_changed = false;
-					DungeonsData.all_rooms[r.index].has_changed = false;
+					DungeonsData.all_rooms[r.RoomID] = r.Clone();
+					r.HasUnsavedChanges = false;
+					DungeonsData.all_rooms[r.RoomID].HasUnsavedChanges = false;
 				}
 			}
 
@@ -547,8 +539,8 @@ namespace ZeldaFullEditor
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
 			{
 				DungeonsData.all_rooms[i] = new Room(ZS, i, loadFromExported); // Create all rooms
-				DungeonsData.undoRoom[i] = new List<Room>();
-				DungeonsData.redoRoom[i] = new List<Room>();
+				//DungeonsData.undoRoom[i] = new List<Room>();
+				//DungeonsData.redoRoom[i] = new List<Room>();
 			}
 
 			editorsTabControl.Enabled = true;
@@ -606,7 +598,7 @@ namespace ZeldaFullEditor
 			}
 
 			objectViewer1.items.Clear();
-			foreach (Room_Object o in listoftilesobjects)
+			foreach (RoomObject o in listoftilesobjects)
 			{
 				objectViewer1.items.Add(o);
 			}
@@ -641,8 +633,8 @@ namespace ZeldaFullEditor
             File.WriteAllText("Unused.txt", s);
             */
 
-			ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.room.palette);
-			ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.room.palette);
+			ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+			ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
 			objectViewer1.updateSize();
 			spritesView1.updateSize();
 
@@ -687,10 +679,10 @@ namespace ZeldaFullEditor
 			{
 				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
-					ZS.UnderworldScene.room = DungeonsData.all_rooms[i];
-					ZS.UnderworldScene.room.reloadGfx();
-					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.room.palette);
-					ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.room.palette);
+					ZS.UnderworldScene.Room = DungeonsData.all_rooms[i];
+					ZS.UnderworldScene.Room.reloadGfx();
+					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+					ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
 					ZS.UnderworldScene.DrawRoom();
 
 					ZS.UnderworldScene.Refresh();
@@ -826,9 +818,9 @@ namespace ZeldaFullEditor
 		public void updateScenesMode()
 		{
 			collisionMapPanel.Visible = false;
-			foreach (Room room in opened_rooms)
+			foreach (DungeonRoom room in opened_rooms)
 			{
-				room.selectedObject.Clear();
+				room.SelectedObjects.Clear();
 			}
 
 			//objectsListbox.Enabled = false;
@@ -970,8 +962,8 @@ namespace ZeldaFullEditor
 
 			updateScenesMode();
 
-			ZS.UnderworldScene.room.update();
-			ZS.UnderworldScene.need_refresh = true;
+			ZS.UnderworldScene.Room.update();
+			ZS.UnderworldScene.NeedsRefreshing = true;
 		}
 
 		private void howToUseToolStripMenuItem_Click(object sender, EventArgs e)
@@ -989,7 +981,7 @@ namespace ZeldaFullEditor
 		{
 			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
 			{
-				ZS.UnderworldScene.mouse_down = false;
+				ZS.UnderworldScene.MouseIsDown = false;
 				ZS.UnderworldScene.Delete();
 			}
 			else if (editorsTabControl.SelectedIndex == 1) // Overworld editor
@@ -1007,7 +999,7 @@ namespace ZeldaFullEditor
 		{
 			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
 			{
-				ZS.UnderworldScene.mouse_down = false;
+				ZS.UnderworldScene.MouseIsDown = false;
 				ZS.UnderworldScene.selectAll();
 			}
 			else if (editorsTabControl.SelectedIndex == 1) // Overworld editor
@@ -1025,7 +1017,7 @@ namespace ZeldaFullEditor
 		{
 			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
 			{
-				ZS.UnderworldScene.mouse_down = false;
+				ZS.UnderworldScene.MouseIsDown = false;
 				ZS.UnderworldScene.Cut();
 			}
 			else if (editorsTabControl.SelectedIndex == 1) // Overworld editor
@@ -1063,7 +1055,7 @@ namespace ZeldaFullEditor
 		{
 			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
 			{
-				ZS.UnderworldScene.mouse_down = false;
+				ZS.UnderworldScene.MouseIsDown = false;
 				ZS.UnderworldScene.Copy();
 			}
 			else if (editorsTabControl.SelectedIndex == 1) // Overworld editor
@@ -1155,119 +1147,121 @@ namespace ZeldaFullEditor
 
 		public void saveLayout(bool clipboard = true)
 		{
-			List<SaveObject> data = new List<SaveObject>();
-			if (clipboard)
-			{
-				data = (List<SaveObject>) Clipboard.GetData(Constants.ObjectZClipboardData);
-			}
-			else
-			{
-				foreach (var o in ZS.UnderworldScene.room.selectedObject)
-				{
-					if (selectedLayer >= 0)
-					{
-						data.Add(new SaveObject((Room_Object) o));
-					}
-					else if (spritemodeButton.Checked)
-					{
-						data.Add(new SaveObject((Sprite) o));
-					}
-					else if (potmodeButton.Checked)
-					{
-						data.Add(new SaveObject((PotItem) o));
-					}
-				}
-			}
-
-			if (data?.Count > 0)
-			{
-				// Name that layout
-				string name = "Room_Object";
-				if (data[0].type == typeof(Room_Object))
-				{
-					name = "Room_Object";
-				}
-
-				string f = Interaction.InputBox("Name of the new layout", "Name?", "Layout00");
-				if (f != "")
-				{
-					BinaryWriter bw = new BinaryWriter(new FileStream(
-						UIText.GetFileName(UIText.LayoutFolder, f),
-						FileMode.OpenOrCreate,
-						FileAccess.Write));
-					bw.Write(name);
-					foreach (SaveObject o in data)
-					{
-						o.saveToFile(bw);
-					}
-
-					bw.Close();
-				}
-			}
+			throw new NotImplementedException();
+			//List<SaveObject> data = new List<SaveObject>();
+			//if (clipboard)
+			//{
+			//	data = (List<SaveObject>) Clipboard.GetData(Constants.ObjectZClipboardData);
+			//}
+			//else
+			//{
+			//	foreach (var o in ZS.UnderworldScene.room.selectedObject)
+			//	{
+			//		if (selectedLayer >= 0)
+			//		{
+			//			data.Add(new SaveObject((Room_Object) o));
+			//		}
+			//		else if (spritemodeButton.Checked)
+			//		{
+			//			data.Add(new SaveObject((Sprite) o));
+			//		}
+			//		else if (potmodeButton.Checked)
+			//		{
+			//			data.Add(new SaveObject((PotItem) o));
+			//		}
+			//	}
+			//}
+			//
+			//if (data?.Count > 0)
+			//{
+			//	// Name that layout
+			//	string name = "Room_Object";
+			//	if (data[0].type == typeof(Room_Object))
+			//	{
+			//		name = "Room_Object";
+			//	}
+			//
+			//	string f = Interaction.InputBox("Name of the new layout", "Name?", "Layout00");
+			//	if (f != "")
+			//	{
+			//		BinaryWriter bw = new BinaryWriter(new FileStream(
+			//			UIText.GetFileName(UIText.LayoutFolder, f),
+			//			FileMode.OpenOrCreate,
+			//			FileAccess.Write));
+			//		bw.Write(name);
+			//		foreach (SaveObject o in data)
+			//		{
+			//			o.saveToFile(bw);
+			//		}
+			//
+			//		bw.Close();
+			//	}
+			//}
 		}
 
 		private void loadlayoutButton_Click(object sender, EventArgs e)
 		{
+			throw new NotImplementedException();
 			//scene.loadLayout();
-			if (!Directory.Exists(UIText.LayoutFolder))
-			{
-				Directory.CreateDirectory(UIText.LayoutFolder);
-			}
-
-			// this is bad
-			if ((byte) ZS.CurrentUWMode > 3)
-			{
-				UpdateUnderworldMode(DungeonEditMode.Layer1);
-				//scene.selectedMode = ObjectMode.Bg1mode;
-			}
-
-			layoutForm.scene.room = (Room) ZS.UnderworldScene.room.Clone();
-			ZS.UnderworldScene.room.selectedObject.Clear();
-			if (layoutForm.ShowDialog() == DialogResult.OK)
-			{
-				int most_x = 512;
-				int most_y = 512;
-				foreach (Room_Object o in layoutForm.scene.room.tilesObjects)
-				{
-					if (layoutForm.scene.room.tilesObjects.Count > 0)
-					{
-						if (o.x < most_x)
-						{
-							most_x = o.x;
-						}
-						if (o.y < most_y)
-						{
-							most_y = o.y;
-						}
-					}
-					else
-					{
-						most_x = 0;
-						most_y = 0;
-					}
-				}
-
-				foreach (Room_Object o in layoutForm.scene.room.tilesObjects)
-				{
-					o.x = (byte) (o.x - most_x);
-					o.y = (byte) (o.y - most_y);
-					ZS.UnderworldScene.room.tilesObjects.Add(o);
-					ZS.UnderworldScene.room.selectedObject.Add(o);
-				}
-
-				ZS.UnderworldScene.dragx = 0;
-				ZS.UnderworldScene.dragy = 0;
-				ZS.UnderworldScene.mouse_down = true;
-				ZS.UnderworldScene.need_refresh = true;
-				if (!visibleEntranceGFX)
-				{
-					ZS.UnderworldScene.room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
-				}
-				else
-				{
-					ZS.UnderworldScene.room.reloadGfx();
-				}
-			}
+			//if (!Directory.Exists(UIText.LayoutFolder))
+			//{
+			//	Directory.CreateDirectory(UIText.LayoutFolder);
+			//}
+			//
+			//// this is bad
+			//if ((byte) ZS.CurrentUWMode > 3)
+			//{
+			//	UpdateUnderworldMode(DungeonEditMode.Layer1);
+			//	//scene.selectedMode = ObjectMode.Bg1mode;
+			//}
+			//
+			//layoutForm.scene.Room = (Room) ZS.UnderworldScene.room.Clone();
+			//ZS.UnderworldScene.room.selectedObject.Clear();
+			//if (layoutForm.ShowDialog() == DialogResult.OK)
+			//{
+			//	int most_x = 512;
+			//	int most_y = 512;
+			//	foreach (Room_Object o in layoutForm.scene.room.tilesObjects)
+			//	{
+			//		if (layoutForm.scene.room.tilesObjects.Count > 0)
+			//		{
+			//			if (o.x < most_x)
+			//			{
+			//				most_x = o.x;
+			//			}
+			//			if (o.y < most_y)
+			//			{
+			//				most_y = o.y;
+			//			}
+			//		}
+			//		else
+			//		{
+			//			most_x = 0;
+			//			most_y = 0;
+			//		}
+			//	}
+			//
+			//	foreach (Room_Object o in layoutForm.scene.room.tilesObjects)
+			//	{
+			//		o.x = (byte) (o.x - most_x);
+			//		o.y = (byte) (o.y - most_y);
+			//		ZS.UnderworldScene.room.tilesObjects.Add(o);
+			//		ZS.UnderworldScene.room.selectedObject.Add(o);
+			//	}
+			//
+			//	ZS.UnderworldScene.dragx = 0;
+			//	ZS.UnderworldScene.dragy = 0;
+			//	ZS.UnderworldScene.mouse_down = true;
+			//	ZS.UnderworldScene.NeedsRefreshing = true;
+			//	if (!visibleEntranceGFX)
+			//	{
+			//		ZS.UnderworldScene.room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+			//	}
+			//	else
+			//	{
+			//		ZS.UnderworldScene.room.reloadGfx();
+			//	}
+			//}
 		}
 
 		/// <summary>
@@ -1275,35 +1269,36 @@ namespace ZeldaFullEditor
 		/// </summary>
 		private void SendSelectedToFront(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.mouse_down = false;
-			if (ZS.UnderworldScene.room.selectedObject.Count > 0)
+			ZS.UnderworldScene.MouseIsDown = false;
+
+			if (ZS.UnderworldScene.Room.selectedObject.Count > 0)
 			{
-				if (ZS.UnderworldScene.room.selectedObject[0] is Room_Object)
+				if (.selectedObject[0] is Room_Object)
 				{
-					foreach (Room_Object o in ZS.UnderworldScene.room.selectedObject)
+					foreach (DungeonObject o in ZS.UnderworldScene.Room.selectedObject)
 					{
-						for (int i = 0; i < ZS.UnderworldScene.room.tilesObjects.Count; i++)
+						for (int i = 0; i < ZS.UnderworldScene.Room.tilesObjects.Count; i++)
 						{
-							if (o == ZS.UnderworldScene.room.tilesObjects[i])
+							if (o == ZS.UnderworldScene.Room.tilesObjects[i])
 							{
-								ZS.UnderworldScene.room.tilesObjects.RemoveAt(i);
-								ZS.UnderworldScene.room.tilesObjects.Add(o);
+								ZS.UnderworldScene.Room.tilesObjects.RemoveAt(i);
+								ZS.UnderworldScene.Room.tilesObjects.Add(o);
 
 								break;
 							}
 						}
 					}
 				}
-				else if (ZS.UnderworldScene.room.selectedObject[0] is Sprite)
+				else if (ZS.UnderworldScene.Room.selectedObject[0] is Sprite)
 				{
-					foreach (Sprite s in ZS.UnderworldScene.room.selectedObject)
+					foreach (DungeonSprite s in ZS.UnderworldScene.Room.selectedObject)
 					{
-						for (int i = 0; i < ZS.UnderworldScene.room.sprites.Count; i++)
+						for (int i = 0; i < ZS.UnderworldScene.Room.SpritesList.Count; i++)
 						{
-							if (s == ZS.UnderworldScene.room.sprites[i])
+							if (s == ZS.UnderworldScene.Room.SpritesList[i])
 							{
-								ZS.UnderworldScene.room.sprites.RemoveAt(i);
-								ZS.UnderworldScene.room.sprites.Add(s);
+								ZS.UnderworldScene.Room.SpritesList.RemoveAt(i);
+								ZS.UnderworldScene.Room.SpritesList.Add(s);
 
 								break;
 							}
@@ -1313,7 +1308,7 @@ namespace ZeldaFullEditor
 
 				ZS.UnderworldScene.DrawRoom();
 				ZS.UnderworldScene.Refresh();
-				ZS.UnderworldScene.mouse_down = false;
+				ZS.UnderworldScene.MouseIsDown = false;
 			}
 		}
 
@@ -1322,35 +1317,35 @@ namespace ZeldaFullEditor
 		/// </summary>
 		public void SendSelectedToBack(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.mouse_down = false;
-			if (ZS.UnderworldScene.room.selectedObject.Count > 0)
+			ZS.UnderworldScene.MouseIsDown = false;
+			if (ZS.UnderworldScene.Room.selectedObject.Count > 0)
 			{
-				if (ZS.UnderworldScene.room.selectedObject[0] is Room_Object)
+				if (ZS.UnderworldScene.Room.selectedObject[0] is Room_Object)
 				{
-					foreach (Room_Object o in ZS.UnderworldScene.room.selectedObject)
+					foreach (Room_Object o in ZS.UnderworldScene.Room.selectedObject)
 					{
-						for (int i = 0; i < ZS.UnderworldScene.room.tilesObjects.Count; i++)
+						for (int i = 0; i < ZS.UnderworldScene.Room.tilesObjects.Count; i++)
 						{
-							if (o == ZS.UnderworldScene.room.tilesObjects[i])
+							if (o == ZS.UnderworldScene.Room.tilesObjects[i])
 							{
-								ZS.UnderworldScene.room.tilesObjects.RemoveAt(i);
-								ZS.UnderworldScene.room.tilesObjects.Insert(0, o);
+								ZS.UnderworldScene.Room.tilesObjects.RemoveAt(i);
+								ZS.UnderworldScene.Room.tilesObjects.Insert(0, o);
 
 								break;
 							}
 						}
 					}
 				}
-				else if (ZS.UnderworldScene.room.selectedObject[0] is Sprite)
+				else if (ZS.UnderworldScene.Room.selectedObject[0] is DungeonSprite)
 				{
-					foreach (Sprite s in ZS.UnderworldScene.room.selectedObject)
+					foreach (DungeonSprite s in ZS.UnderworldScene.Room.selectedObject)
 					{
-						for (int i = 0; i < ZS.UnderworldScene.room.sprites.Count; i++)
+						for (int i = 0; i < ZS.UnderworldScene.Room.SpritesList.Count; i++)
 						{
-							if (s == ZS.UnderworldScene.room.sprites[i])
+							if (s == ZS.UnderworldScene.Room.SpritesList[i])
 							{
-								ZS.UnderworldScene.room.sprites.RemoveAt(i);
-								ZS.UnderworldScene.room.sprites.Insert(0, s);
+								ZS.UnderworldScene.Room.SpritesList.RemoveAt(i);
+								ZS.UnderworldScene.Room.SpritesList.Insert(0, s);
 
 								break;
 							}
@@ -1360,7 +1355,7 @@ namespace ZeldaFullEditor
 
 				ZS.UnderworldScene.DrawRoom();
 				ZS.UnderworldScene.Refresh();
-				ZS.UnderworldScene.mouse_down = false;
+				ZS.UnderworldScene.MouseIsDown = false;
 			}
 		}
 
@@ -1372,109 +1367,65 @@ namespace ZeldaFullEditor
 		private void textSpriteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ZS.UnderworldScene.showSpriteText = textSpriteToolStripMenuItem.Checked;
-			ZS.UnderworldScene.need_refresh = true;
+			ZS.UnderworldScene.NeedsRefreshing = true;
 		}
 
 		private void insertToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.mouse_down = false;
+			ZS.UnderworldScene.MouseIsDown = false;
 			ZS.UnderworldScene.insertNew();
 		}
 
 		private void sendToBg1ToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.mouse_down = false;
-			if (ZS.UnderworldScene.room.selectedObject.Count > 0)
-			{
-				//debuglabel.Text = activeScene.room.selectedObject[0].GetType().ToString();
-				if (ZS.UnderworldScene.room.selectedObject[0] is Room_Object)
-				{
-					ZS.UnderworldScene.updating_info = true;
-					foreach (Room_Object o in ZS.UnderworldScene.room.selectedObject)
-					{
-						o.layer = 0;
-					}
-
-					ZS.UnderworldScene.updating_info = false;
-				}
-				else if (ZS.UnderworldScene.room.selectedObject[0] is Sprite)
-				{
-					ZS.UnderworldScene.updating_info = true;
-					foreach (Sprite o in ZS.UnderworldScene.room.selectedObject)
-					{
-						o.layer = 0;
-					}
-
-					ZS.UnderworldScene.updating_info = false;
-				}
-				else if (ZS.UnderworldScene.room.selectedObject[0] is PotItem)
-				{
-					ZS.UnderworldScene.updating_info = true;
-					foreach (PotItem o in ZS.UnderworldScene.room.selectedObject)
-					{
-						o.layer = 0;
-					}
-
-					ZS.UnderworldScene.updating_info = false;
-				}
-
-				ZS.UnderworldScene.DrawRoom();
-				ZS.UnderworldScene.Refresh();
-			}
+			SendSelectedToLayer(0);
 		}
 
 		private void sendToBg1ToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.mouse_down = false;
-			if (ZS.UnderworldScene.room.selectedObject.Count > 0)
-			{
-				if (ZS.UnderworldScene.room.selectedObject[0] is Room_Object)
-				{
-					ZS.UnderworldScene.updating_info = true;
-					foreach (Room_Object o in ZS.UnderworldScene.room.selectedObject)
-					{
-						o.layer = 1;
-					}
-
-					ZS.UnderworldScene.updating_info = false;
-				}
-				else if (ZS.UnderworldScene.room.selectedObject[0] is Sprite)
-				{
-					ZS.UnderworldScene.updating_info = true;
-					foreach (Sprite o in ZS.UnderworldScene.room.selectedObject)
-					{
-						o.layer = 1;
-					}
-
-					ZS.UnderworldScene.updating_info = false;
-				}
-				else if (ZS.UnderworldScene.room.selectedObject[0] is PotItem)
-				{
-					ZS.UnderworldScene.updating_info = true;
-					foreach (PotItem o in ZS.UnderworldScene.room.selectedObject)
-					{
-						o.layer = 1;
-					}
-
-					ZS.UnderworldScene.updating_info = false;
-				}
-
-				ZS.UnderworldScene.DrawRoom();
-				ZS.UnderworldScene.Refresh();
-			}
+			SendSelectedToLayer(1);
 		}
 
 		private void sendToBg1ToolStripMenuItem2_Click(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.mouse_down = false;
-			if (ZS.UnderworldScene.room.selectedObject.Count > 0)
+			SendSelectedToLayer(2);
+		}
+
+
+		private void SendSelectedToLayer(int layer)
+		{
+			throw new NotImplementedException();
+
+			ZS.UnderworldScene.MouseIsDown = false;
+			if (ZS.UnderworldScene.Room.selectedObject.Count > 0)
 			{
-				if (ZS.UnderworldScene.room.selectedObject[0] is Room_Object)
+				//debuglabel.Text = activeScene.room.selectedObject[0].GetType().ToString();
+				if (ZS.UnderworldScene.Room.selectedObject[0] is Room_Object)
 				{
 					ZS.UnderworldScene.updating_info = true;
-					foreach (Room_Object o in ZS.UnderworldScene.room.selectedObject)
+					foreach (Room_Object o in ZS.UnderworldScene.Room.selectedObject)
 					{
-						o.layer = 2;
+						o.layer = 0;
+					}
+
+					ZS.UnderworldScene.updating_info = false;
+				}
+				else if (ZS.UnderworldScene.Room.selectedObject[0] is Sprite)
+				{
+					ZS.UnderworldScene.updating_info = true;
+					foreach (Sprite o in ZS.UnderworldScene.Room.selectedObject)
+					{
+						o.layer = 0;
+					}
+
+					ZS.UnderworldScene.updating_info = false;
+				}
+				else if (ZS.UnderworldScene.Room.selectedObject[0] is PotItem)
+				{
+					ZS.UnderworldScene.updating_info = true;
+					foreach (PotItem o in ZS.UnderworldScene.Room.selectedObject)
+					{
+						o.layer = 0;
 					}
 
 					ZS.UnderworldScene.updating_info = false;
@@ -1509,7 +1460,7 @@ namespace ZeldaFullEditor
 
 			if (anychange)
 			{
-				DungeonsData.all_rooms[ZS.UnderworldScene.room.index] = ZS.UnderworldScene.room;
+				DungeonsData.all_rooms[ZS.UnderworldScene.Room.RoomID] = ZS.UnderworldScene.Room;
 
 				saved_changed = true;
 			}
@@ -1621,16 +1572,16 @@ namespace ZeldaFullEditor
 				entranceProperty_bg.Checked = true;
 			}
 
-			if (ZS.UnderworldScene.room != null)
+			if (ZS.UnderworldScene.Room != null)
 			{
 				selectedEntrance = en;
 				if (!visibleEntranceGFX)
 				{
-					ZS.UnderworldScene.room.reloadGfx(en.Blockset);
+					ZS.UnderworldScene.Room.reloadGfx(en.Blockset);
 				}
 				else
 				{
-					ZS.UnderworldScene.room.reloadGfx();
+					ZS.UnderworldScene.Room.reloadGfx();
 				}
 
 				ZS.UnderworldScene.DrawRoom();
@@ -1689,68 +1640,70 @@ namespace ZeldaFullEditor
 
 		public void sortObject()
 		{
+			throw new NotImplementedException();
 			//objectViewer1.BeginUpdate();
-			objectViewer1.items.Clear();
-
-			if (favoriteCheckbox.Checked)
-			{
-				// Sorting sort;
-				string searchText = searchTextbox.Text.ToLower();
-
-				// ListView1
-				objectViewer1.items.AddRange(listoftilesobjects
-					.Where(x => x != null)
-					.Where(x => x.name.ToLower().Contains(searchText))
-					.Where(x => Settings.Default.favoriteObjects[x.id] == "true")
-					.OrderBy(x => x.id)
-					.Select(x => x) // ?
-					.ToArray());
-
-				panel1.VerticalScroll.Value = 0;
-				objectViewer1.Refresh();
-			}
-			else
-			{
-				// Sorting sort;
-				string searchText = searchTextbox.Text.ToLower();
-
-				// ListView1
-				objectViewer1.items.AddRange(listoftilesobjects
-					.Where(x => x != null)
-					.Where(x => (x.name.ToLower().Contains(searchText)))
-					.OrderBy(x => x.id)
-					.Select(x => x) // ?
-					.ToArray());
-				objectViewer1.updateSize();
-				panel1.VerticalScroll.Value = 0;
-				objectViewer1.Refresh();
-			}
+			//objectViewer1.items.Clear();
+			//
+			//if (favoriteCheckbox.Checked)
+			//{
+			//	// Sorting sort;
+			//	string searchText = searchTextbox.Text.ToLower();
+			//
+			//	// ListView1
+			//	objectViewer1.items.AddRange(listoftilesobjects
+			//		.Where(x => x != null)
+			//		.Where(x => x.name.ToLower().Contains(searchText))
+			//		.Where(x => Settings.Default.favoriteObjects[x.id] == "true")
+			//		.OrderBy(x => x.id)
+			//		.Select(x => x) // ?
+			//		.ToArray());
+			//
+			//	panel1.VerticalScroll.Value = 0;
+			//	objectViewer1.Refresh();
+			//}
+			//else
+			//{
+			//	// Sorting sort;
+			//	string searchText = searchTextbox.Text.ToLower();
+			//
+			//	// ListView1
+			//	objectViewer1.items.AddRange(listoftilesobjects
+			//		.Where(x => x != null)
+			//		.Where(x => (x.name.ToLower().Contains(searchText)))
+			//		.OrderBy(x => x.id)
+			//		.Select(x => x) // ?
+			//		.ToArray());
+			//	objectViewer1.updateSize();
+			//	panel1.VerticalScroll.Value = 0;
+			//	objectViewer1.Refresh();
+			//}
 		}
 
 		public void sortSprite()
 		{
-			spritesView1.items.Clear();
-			string searchText = searchspriteTextbox.Text.ToLower();
-
-			spritesView1.items.AddRange(listofspritesobjects
-				.Where(x => x != null)
-				.Where(x => (x.name.ToLower().Contains(searchText)))
-				.OrderBy(x => x.id)
-				.Select(x => x) // ?
-				.ToArray());
-
-			customPanel1.VerticalScroll.Value = 0;
-
-			if (searchText == "")
-			{
-				spritesView1.items.Clear();
-				foreach (Sprite o in listofspritesobjects)
-				{
-					spritesView1.items.Add((o));
-				}
-			}
-
-			spritesView1.Refresh();
+			throw new NotImplementedException();
+			//spritesView1.items.Clear();
+			//string searchText = searchspriteTextbox.Text.ToLower();
+			//
+			//spritesView1.items.AddRange(listofspritesobjects
+			//	.Where(x => x != null)
+			//	.Where(x => (x.name.ToLower().Contains(searchText)))
+			//	.OrderBy(x => x.id)
+			//	.Select(x => x) // ?
+			//	.ToArray());
+			//
+			//customPanel1.VerticalScroll.Value = 0;
+			//
+			//if (searchText == "")
+			//{
+			//	spritesView1.items.Clear();
+			//	foreach (Sprite o in listofspritesobjects)
+			//	{
+			//		spritesView1.items.Add((o));
+			//	}
+			//}
+			//
+			//spritesView1.Refresh();
 		}
 
 		private void searchTextbox_TextChanged(object sender, EventArgs e)
@@ -1772,13 +1725,13 @@ namespace ZeldaFullEditor
 			{
 				if (comboBox1.SelectedIndex > 0)
 				{
-					foreach (Sprite spr in ZS.UnderworldScene.room.sprites)
+					foreach (Sprite spr in ZS.UnderworldScene.Room.SpritesList)
 					{
 						spr.keyDrop = 0;
 					}
 				}
 
-				(ZS.UnderworldScene.room.selectedObject[0] as Sprite).keyDrop = (byte) comboBox1.SelectedIndex;
+				(ZS.UnderworldScene.Room.selectedObject[0] as Sprite).keyDrop = (byte) comboBox1.SelectedIndex;
 				ZS.UnderworldScene.DrawRoom();
 				ZS.UnderworldScene.Refresh();
 			}
@@ -1793,9 +1746,9 @@ namespace ZeldaFullEditor
 		{
 			if (selecteditemobjectCombobox.SelectedIndex != -1)
 			{
-				if (ZS.UnderworldScene.room.selectedObject.Count > 0)
+				if (ZS.UnderworldScene.Room.selectedObject.Count > 0)
 				{
-					if (ZS.UnderworldScene.room.selectedObject[0] is PotItem oo)
+					if (ZS.UnderworldScene.Room.selectedObject[0] is PotItem oo)
 					{
 						if (selecteditemobjectCombobox.SelectedIndex > 0x16)
 						{
@@ -1818,9 +1771,9 @@ namespace ZeldaFullEditor
 		public void addRoomTab(ushort roomId)
 		{
 			bool alreadyFound = false;
-			foreach (Room room in opened_rooms)
+			foreach (DungeonRoom room in opened_rooms)
 			{
-				if (room.index == roomId)
+				if (room.RoomID == roomId)
 				{
 					alreadyFound = true;
 					break;
@@ -1833,7 +1786,7 @@ namespace ZeldaFullEditor
 				//MessageBox.Show("That room is already opened !");
 				foreach (TabPage tp in tabControl2.TabPages)
 				{
-					if ((tp.Tag as Room).index == roomId)
+					if ((tp.Tag as DungeonRoom).RoomID == roomId)
 					{
 						tabControl2.SelectTab(tp);
 						break;
@@ -1846,7 +1799,7 @@ namespace ZeldaFullEditor
 			}
 			else
 			{
-				Room r = (Room) DungeonsData.all_rooms[roomId].Clone();
+				DungeonRoom r = DungeonsData.all_rooms[roomId].Clone();
 
 				/*
                 if (DungeonsData.undoRoom[r.index].Count == 0)
@@ -1879,12 +1832,12 @@ namespace ZeldaFullEditor
 				//mapPropertyGrid.SelectedObject = r;
 
 				opened_rooms.Add(r); // Add the double clicked room into rooms list     
-				ZS.UnderworldScene.room = r;
+				ZS.UnderworldScene.Room = r;
 
 				//string tn = r.index.ToString("D3");
 				//if (showRoomsInHexToolStripMenuItem.Checked)
 				//{
-				string tn = r.index.ToString("X3");
+				string tn = r.RoomID.ToString("X3");
 				//}
 
 				TabPage tp = new TabPage(tn);
@@ -1895,15 +1848,15 @@ namespace ZeldaFullEditor
 
 				if (!visibleEntranceGFX)
 				{
-					ZS.UnderworldScene.room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+					ZS.UnderworldScene.Room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
 				}
 				else
 				{
-					ZS.UnderworldScene.room.reloadGfx();
+					ZS.UnderworldScene.Room.reloadGfx();
 				}
 
-				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.room.palette);
-				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.room.palette);
+				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
 				ZS.UnderworldScene.SetPalettesBlack();
 				//paletteViewer.update();
 				ZS.UnderworldScene.DrawRoom();
@@ -2048,15 +2001,15 @@ namespace ZeldaFullEditor
 			// Doors
 			if (comboBox2.SelectedIndex != -1)
 			{
-				if (ZS.UnderworldScene.room.selectedObject.Count == 1)
+				if (ZS.UnderworldScene.Room.selectedObject.Count == 1)
 				{
-					if (ZS.UnderworldScene.room.selectedObject[0] is Room_Object o)
+					if (ZS.UnderworldScene.Room.selectedObject[0] is Room_Object o)
 					{
 						if (o.options == ObjectOption.Door)
 						{
 							(o as object_door).door_type = door_index[comboBox2.SelectedIndex];
 							(o as object_door).updateId();
-							ZS.UnderworldScene.room.has_changed = true;
+							ZS.UnderworldScene.Room.has_changed = true;
 							ZS.UnderworldScene.DrawRoom();
 							ZS.UnderworldScene.Refresh();
 						}
@@ -2167,7 +2120,7 @@ namespace ZeldaFullEditor
 			ZS.UnderworldScene.Refresh();
 		}
 
-		public void UpdateUIForRoom(Room room, bool prevent = true)
+		public void UpdateUIForRoom(DungeonRoom room, bool prevent = true)
 		{
 			propertiesChangedFromForm = prevent;
 
@@ -2184,7 +2137,7 @@ namespace ZeldaFullEditor
 			RoomProperty_SpriteSet.HexValue = room.spriteset;
 			RoomProperty_Floor1.HexValue = room.floor1;
 			RoomProperty_Floor2.HexValue = room.floor2;
-			RoomProperty_MessageID.HexValue = room.messageid;
+			RoomProperty_MessageID.HexValue = room.MessageID;
 			RoomProperty_Layout.HexValue = room.layout;
 			RoomProperty_Palette.HexValue = room.palette;
 
@@ -2205,47 +2158,47 @@ namespace ZeldaFullEditor
 
 		public void updateRoomInfo()
 		{
-			if (!propertiesChangedFromForm && ZS.UnderworldScene.room != null)
+			if (!propertiesChangedFromForm && ZS.UnderworldScene.Room != null)
 			{
-				ZS.UnderworldScene.room.bg2 = (Background2) roomProperty_bg2.SelectedIndex;
-				ZS.UnderworldScene.room.tag1 = (byte) (roomProperty_tag1.SelectedItem as RoomTagName).ID;
-				ZS.UnderworldScene.room.tag2 = (byte) (roomProperty_tag2.SelectedItem as RoomTagName).ID;
-				ZS.UnderworldScene.room.effect = (byte) (roomProperty_effect.SelectedItem as RoomEffectName).ID;
-				ZS.UnderworldScene.room.collision = (CollisionKey) roomProperty_collision.SelectedIndex;
+				ZS.UnderworldScene.Room.bg2 = (byte) (roomProperty_bg2.SelectedItem as Layer2TypeName).ID;
+				ZS.UnderworldScene.Room.tag1 = (byte) (roomProperty_tag1.SelectedItem as RoomTagName).ID;
+				ZS.UnderworldScene.Room.tag2 = (byte) (roomProperty_tag2.SelectedItem as RoomTagName).ID;
+				ZS.UnderworldScene.Room.effect = (byte) (roomProperty_effect.SelectedItem as RoomEffectName).ID;
+				ZS.UnderworldScene.Room.collision = (byte) (roomProperty_collision.SelectedItem as RoomCollisionName).ID;
 
 
-				ZS.UnderworldScene.room.blockset = (byte) RoomProperty_Blockset.HexValue;
-				ZS.UnderworldScene.room.floor1 = (byte) RoomProperty_Floor1.HexValue;
-				ZS.UnderworldScene.room.floor2 = (byte) RoomProperty_Floor2.HexValue;
-				ZS.UnderworldScene.room.layout = (byte) RoomProperty_Layout.HexValue;
+				ZS.UnderworldScene.Room.blockset = (byte) RoomProperty_Blockset.HexValue;
+				ZS.UnderworldScene.Room.floor1 = (byte) RoomProperty_Floor1.HexValue;
+				ZS.UnderworldScene.Room.floor2 = (byte) RoomProperty_Floor2.HexValue;
+				ZS.UnderworldScene.Room.layout = (byte) RoomProperty_Layout.HexValue;
 
-				ZS.UnderworldScene.room.messageid = (ushort) RoomProperty_MessageID.HexValue;
-				ZS.UnderworldScene.room.palette = (byte) RoomProperty_Palette.HexValue;
+				ZS.UnderworldScene.Room.messageid = (ushort) RoomProperty_MessageID.HexValue;
+				ZS.UnderworldScene.Room.palette = (byte) RoomProperty_Palette.HexValue;
 
-				ZS.UnderworldScene.room.holewarp = (byte) RoomProperty_DestinationPit.HexValue;
-				ZS.UnderworldScene.room.staircase1 = (byte) RoomProperty_DestinationStair1.HexValue;
-				ZS.UnderworldScene.room.staircase2 = (byte) RoomProperty_DestinationStair2.HexValue;
-				ZS.UnderworldScene.room.staircase3 = (byte) RoomProperty_DestinationStair3.HexValue;
-				ZS.UnderworldScene.room.staircase4 = (byte) RoomProperty_DestinationStair4.HexValue;
+				ZS.UnderworldScene.Room.holewarp = (byte) RoomProperty_DestinationPit.HexValue;
+				ZS.UnderworldScene.Room.staircase1 = (byte) RoomProperty_DestinationStair1.HexValue;
+				ZS.UnderworldScene.Room.staircase2 = (byte) RoomProperty_DestinationStair2.HexValue;
+				ZS.UnderworldScene.Room.staircase3 = (byte) RoomProperty_DestinationStair3.HexValue;
+				ZS.UnderworldScene.Room.staircase4 = (byte) RoomProperty_DestinationStair4.HexValue;
 
-				ZS.UnderworldScene.room.holewarp_plane = (byte) (bg2checkbox1.Checked ? 2 : 0);
-				ZS.UnderworldScene.room.staircase1Plane = (byte) (bg2checkbox2.Checked ? 2 : 0);
-				ZS.UnderworldScene.room.staircase2Plane = (byte) (bg2checkbox3.Checked ? 2 : 0);
-				ZS.UnderworldScene.room.staircase3Plane = (byte) (bg2checkbox4.Checked ? 2 : 0);
-				ZS.UnderworldScene.room.staircase4Plane = (byte) (bg2checkbox5.Checked ? 2 : 0);
+				ZS.UnderworldScene.Room.holewarp_plane = (byte) (bg2checkbox1.Checked ? 2 : 0);
+				ZS.UnderworldScene.Room.staircase1Plane = (byte) (bg2checkbox2.Checked ? 2 : 0);
+				ZS.UnderworldScene.Room.staircase2Plane = (byte) (bg2checkbox3.Checked ? 2 : 0);
+				ZS.UnderworldScene.Room.staircase3Plane = (byte) (bg2checkbox4.Checked ? 2 : 0);
+				ZS.UnderworldScene.Room.staircase4Plane = (byte) (bg2checkbox5.Checked ? 2 : 0);
 
-				ZS.UnderworldScene.room.damagepit = roomProperty_pit.Checked;
-				ZS.UnderworldScene.room.sortsprites = roomProperty_sortsprite.Checked;
+				ZS.UnderworldScene.Room.damagepit = roomProperty_pit.Checked;
+				ZS.UnderworldScene.Room.sortsprites = roomProperty_sortsprite.Checked;
 
-				ZS.UnderworldScene.room.spriteset = (byte) RoomProperty_SpriteSet.HexValue;
+				ZS.UnderworldScene.Room.spriteset = (byte) RoomProperty_SpriteSet.HexValue;
 
 				if (!visibleEntranceGFX)
 				{
-					ZS.UnderworldScene.room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+					ZS.UnderworldScene.Room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
 				}
 				else
 				{
-					ZS.UnderworldScene.room.reloadGfx();
+					ZS.UnderworldScene.Room.reloadGfx();
 				}
 
 				/*
@@ -2253,12 +2206,12 @@ namespace ZeldaFullEditor
                 redoRoom[activeScene.room.index].Clear();
                 */
 
-				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.room.palette);
-				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.room.palette);
+				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
 				ZS.UnderworldScene.SetPalettesBlack();
 				ZS.UnderworldScene.DrawRoom();
 				ZS.UnderworldScene.Refresh();
-				ZS.UnderworldScene.room.has_changed = true;
+				ZS.UnderworldScene.Room.has_changed = true;
 				checkAnyChanges();
 			}
 		}
@@ -2339,22 +2292,22 @@ namespace ZeldaFullEditor
 					bit5: entranceProperty_hscroll.Checked
 					); ;
 
-				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.room.palette);
-				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.room.palette);
+				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
 				ZS.UnderworldScene.SetPalettesBlack();
 
 				if (!visibleEntranceGFX)
 				{
-					ZS.UnderworldScene.room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+					ZS.UnderworldScene.Room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
 				}
 				else
 				{
-					ZS.UnderworldScene.room.reloadGfx();
+					ZS.UnderworldScene.Room.reloadGfx();
 				}
 
 				ZS.UnderworldScene.DrawRoom();
 				ZS.UnderworldScene.Refresh();
-				ZS.UnderworldScene.room.has_changed = true;
+				ZS.UnderworldScene.Room.has_changed = true;
 			}
 		}
 
@@ -2363,7 +2316,7 @@ namespace ZeldaFullEditor
 			int closedRoom = -1;
 			for (int j = 0; j < opened_rooms.Count; j++)
 			{
-				if (opened_rooms[j].index == index)
+				if (opened_rooms[j].RoomID == index)
 				{
 					closedRoom = j;
 					break;
@@ -2385,7 +2338,7 @@ namespace ZeldaFullEditor
 				switch (UIText.WarnAboutSaving(UIText.RoomWarning))
 				{
 					case DialogResult.Yes:
-						DungeonsData.all_rooms[(tabControl2.TabPages[i].Tag as Room).index] = (Room) (tabControl2.TabPages[i].Tag as Room).Clone();
+						DungeonsData.all_rooms[(tabControl2.TabPages[i].Tag as DungeonRoom).RoomID] = (tabControl2.TabPages[i].Tag as DungeonRoom).Clone();
 						closeRoom((tabControl2.TabPages[i].Tag as Room).index);
 						this.tabControl2.TabPages.RemoveAt(i);
 
@@ -2399,7 +2352,7 @@ namespace ZeldaFullEditor
 						break;
 
 					case DialogResult.No:
-						closeRoom((tabControl2.TabPages[i].Tag as Room).index);
+						closeRoom((tabControl2.TabPages[i].Tag as DungeonRoom).RoomID);
 						this.tabControl2.TabPages.RemoveAt(i);
 
 						if (tabControl2.TabPages.Count == 0)
@@ -2413,13 +2366,13 @@ namespace ZeldaFullEditor
 			}
 			else
 			{
-				closeRoom((tabControl2.TabPages[i].Tag as Room).index);
+				closeRoom((tabControl2.TabPages[i].Tag as DungeonRoom).RoomID);
 				this.tabControl2.TabPages.RemoveAt(i);
 				if (tabControl2.TabPages.Count == 0)
 				{
 					tabControl2.Visible = false;
 					ZS.UnderworldScene.Clear();
-					ZS.UnderworldScene.room = null;
+					ZS.UnderworldScene.Room = null;
 					ZS.UnderworldScene.Refresh();
 				}
 			}
@@ -2436,10 +2389,10 @@ namespace ZeldaFullEditor
 		{
 			if (tabControl2.TabPages.Count > 0)
 			{
-				ZS.UnderworldScene.room = (tabControl2.TabPages[tabControl2.SelectedIndex].Tag as Room);
+				ZS.UnderworldScene.Room = (tabControl2.TabPages[tabControl2.SelectedIndex].Tag as DungeonRoom);
 				ZS.UnderworldScene.updateRoomInfos(this);
 
-				if (DungeonsData.undoRoom[ZS.UnderworldScene.room.index].Count > 0)
+				if (DungeonsData.undoRoom[ZS.UnderworldScene.Room.RoomID].Count > 0)
 				{
 					undoButton.Enabled = true;
 					undoToolStripMenuItem.Enabled = true;
@@ -2451,7 +2404,7 @@ namespace ZeldaFullEditor
 					redoToolStripMenuItem.Enabled = false;
 				}
 
-				if (DungeonsData.redoRoom[ZS.UnderworldScene.room.index].Count > 0)
+				if (DungeonsData.redoRoom[ZS.UnderworldScene.Room.RoomID].Count > 0)
 				{
 					redoButton.Enabled = true;
 					redoToolStripMenuItem.Enabled = true;
@@ -2464,15 +2417,15 @@ namespace ZeldaFullEditor
 
 				if (!visibleEntranceGFX)
 				{
-					ZS.UnderworldScene.room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+					ZS.UnderworldScene.Room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
 				}
 				else
 				{
-					ZS.UnderworldScene.room.reloadGfx();
+					ZS.UnderworldScene.Room.reloadGfx();
 				}
 
-				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.room.palette);
-				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.room.palette);
+				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
 				ZS.UnderworldScene.SetPalettesBlack();
 
 				ZS.UnderworldScene.DrawRoom();
@@ -2492,62 +2445,27 @@ namespace ZeldaFullEditor
 
 		public void initObjectsList()
 		{
-			int index = 0;
-			for (int i = 0; i < 0xF8; i++) // Type 1 objects 
+			for (ushort i = 0; i < 0x300; i++)
 			{
-				Room_Object o = ZS.UnderworldScene.room.addObject((ushort) i, 0, 0, 0, 0);
-				o.preview = true;
-				o.previewId = index;
-				index++;
-				o.setRoom(ZS.UnderworldScene.room);
-
+				RoomObjectType o = RoomObjectType.GetDungeonObject(i);
 				if (o != null)
 				{
-					//objectsListbox.Items.Add(new dataObject((short)i,i.ToString("X3") +" "+ o.name));
-					listoftilesobjects.Add(o);
+					listoftilesobjects.Add(new RoomObjectPreview(o, ZS.TileLister[i]));
 				}
 			}
 
-			for (int i = 0x100; i < 0x140; i++) // Type 2 objects 
-			{
-				Room_Object o = ZS.UnderworldScene.room.addObject((ushort) i, 0, 0, 0, 0);
-				o.preview = true;
-				o.previewId = index;
-				index++;
-				o.setRoom(ZS.UnderworldScene.room);
-
-				if (o != null)
-				{
-					//objectsListbox.Items.Add(new dataObject((short)i, i.ToString("X3") + " " + o.name));
-					listoftilesobjects.Add(o);
-				}
-			}
-
-			for (int i = 0x200; i < 0x27F; i++) // Type 3 objects 
-			{
-				Room_Object o = ZS.UnderworldScene.room.addObject((ushort) i, 0, 0, 0, 0);
-				o.preview = true;
-				o.previewId = index;
-				index++;
-				o.setRoom(ZS.UnderworldScene.room);
-
-				if (o != null)
-				{
-					//objectsListbox.Items.Add(new dataObject((short)i, i.ToString("X3") + " " + o.name));
-					listoftilesobjects.Add(o);
-				}
-			}
+			throw new NotImplementedException();
 
 			for (int i = 0; i < 0xF2; i++)
 			{
-				Sprite s = new Sprite(ZS.UnderworldScene.room, (byte) i, 0, 0, 0, 0);
+				Sprite s = new Sprite(ZS.UnderworldScene.Room, (byte) i, 0, 0, 0, 0);
 				s.preview = true;
 				listofspritesobjects.Add(s);
 			}
 
 			for (int i = 1; i < 0x1B; i++)
 			{
-				Sprite s = new Sprite(ZS.UnderworldScene.room, (byte) i, 0, 0, 7, 0);
+				Sprite s = new Sprite(ZS.UnderworldScene.Room, (byte) i, 0, 0, 7, 0);
 				s.preview = true;
 				listofspritesobjects.Add(s);
 			}
@@ -2604,7 +2522,7 @@ namespace ZeldaFullEditor
 			int lowerY = 16; // What we need to remove from the image to the right
 			int higherX = 0; // What we need to remove from the image to the left
 			int higherY = 0; // What we need to remove from the image to the right
-			Room savedRoom = ZS.UnderworldScene.room;
+			DungeonRoom savedRoom = ZS.UnderworldScene.Room;
 			ZS.UnderworldScene.forPreview = true;
 
 			if (selectedMapPng.Count > 0)
@@ -2624,10 +2542,10 @@ namespace ZeldaFullEditor
 							if (cx > higherX) { higherX = cx; }
 							if (cy > higherY) { higherY = cy; }
 
-							ZS.UnderworldScene.room = DungeonsData.all_rooms[s];
-							ZS.UnderworldScene.room.reloadGfx();
-							ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.room.palette);
-							ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.room.palette);
+							ZS.UnderworldScene.Room = DungeonsData.all_rooms[s];
+							ZS.UnderworldScene.Room.reloadGfx();
+							ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+							ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
 							ZS.UnderworldScene.DrawRoom();
 
 							ZS.UnderworldScene.Refresh();
@@ -2662,17 +2580,17 @@ namespace ZeldaFullEditor
 			}
 
 			ZS.UnderworldScene.forPreview = false;
-			ZS.UnderworldScene.room = savedRoom;
-			ZS.UnderworldScene.room.reloadGfx();
-			ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.room.palette);
-			ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.room.palette);
+			ZS.UnderworldScene.Room = savedRoom;
+			ZS.UnderworldScene.Room.reloadGfx();
+			ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+			ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
 			ZS.UnderworldScene.DrawRoom();
 			ZS.UnderworldScene.Refresh();
 		}
 
 		private void litCheckbox_CheckedChanged(object sender, EventArgs e)
 		{
-			if (ZS.UnderworldScene.updating_info && ZS.UnderworldScene.room.selectedObject[0] is Room_Object robj)
+			if (ZS.UnderworldScene.updating_info && ZS.UnderworldScene.Room.selectedObject[0] is Room_Object robj)
 			{
 				robj.lit = litCheckbox.Checked;
 			}
@@ -2688,7 +2606,7 @@ namespace ZeldaFullEditor
 		{
 			if (!ZS.UnderworldScene.updating_info)
 			{
-				if (ZS.UnderworldScene.room.selectedObject.Count != 0 && ZS.UnderworldScene.room.selectedObject[0] is Sprite spr)
+				if (ZS.UnderworldScene.Room.selectedObject.Count != 0 && ZS.UnderworldScene.Room.selectedObject[0] is Sprite spr)
 				{
 					spr.subtype = (byte) spritesubtypeUpDown.Value;
 				}
@@ -2831,26 +2749,22 @@ namespace ZeldaFullEditor
 		// TODO DISGUSTING, these "Contains" should instead become properties of the object itself
 		private void removeMasksObjectsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			List<Room_Object> toRemove = new List<Room_Object>();
-			foreach (Room_Object o in ZS.UnderworldScene.room.tilesObjects)
+			foreach (
+				DungeonObjectsList list in
+				new DungeonObjectsList[]
+					{
+						ZS.UnderworldScene.Room.Layer1Objects,
+						ZS.UnderworldScene.Room.Layer1Objects,
+						ZS.UnderworldScene.Room.Layer1Objects
+					})
 			{
-				if (o.name.ToLower().Contains("bg2"))
+				foreach (RoomObject r in list)
 				{
-					toRemove.Add(o);
+					if (r.ObjectType.Specialness == SpecialObjectType.LayerMask)
+					{
+						list.Remove(r);
+					}
 				}
-				else if (o.name.ToLower().Contains("mask"))
-				{
-					toRemove.Add(o);
-				}
-				if (o.id >= 0xA9 && o.id <= 0xAC)
-				{
-					toRemove.Add(o);
-				}
-			}
-
-			foreach (Room_Object o in toRemove)
-			{
-				ZS.UnderworldScene.room.tilesObjects.Remove(o);
 			}
 		}
 
@@ -2865,10 +2779,7 @@ namespace ZeldaFullEditor
 
 		private void clearSelectedRoomToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.room.tilesObjects.Clear();
-			ZS.UnderworldScene.room.pot_items.Clear();
-			ZS.UnderworldScene.room.sprites.Clear();
-			ZS.UnderworldScene.room.chest_list.Clear();
+			ZS.UnderworldScene.Room.ClearAll();
 			ZS.UnderworldScene.DrawRoom();
 			ZS.UnderworldScene.Refresh();
 		}
@@ -2877,12 +2788,9 @@ namespace ZeldaFullEditor
 		{
 			if (MessageBox.Show("Are you sure you want to clear every room's data?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
 			{
-				foreach (Room r in DungeonsData.all_rooms)
+				foreach (DungeonRoom r in DungeonsData.all_rooms)
 				{
-					r.tilesObjects.Clear();
-					r.pot_items.Clear();
-					r.sprites.Clear();
-					r.chest_list.Clear();
+					r.ClearAll();
 				}
 
 				ZS.UnderworldScene.DrawRoom();
@@ -2893,10 +2801,10 @@ namespace ZeldaFullEditor
 		private void mouseEntranceButton_Click(object sender, EventArgs e)
 		{
 			settingEntrance = true;
-			ZS.UnderworldScene.mouse_down = false;
+			ZS.UnderworldScene.MouseIsDown = false;
 			ZS.UnderworldScene.selectedDragObject = null;
 			ZS.UnderworldScene.selectedDragSprite = null;
-			ZS.UnderworldScene.room.selectedObject.Clear();
+			ZS.UnderworldScene.Room.selectedObject.Clear();
 			ZS.CurrentUWMode = DungeonEditMode.Entrances;
 		}
 
@@ -2908,7 +2816,7 @@ namespace ZeldaFullEditor
 				if (sf.ShowDialog() == DialogResult.OK)
 				{
 					FileStream fs = new FileStream(sf.FileName, FileMode.OpenOrCreate, FileAccess.Write);
-					byte[] roomdata = ZS.UnderworldScene.room.getTilesBytes();
+					byte[] roomdata = ZS.UnderworldScene.Room.getTilesBytes();
 					fs.Write(roomdata, 0, roomdata.Length);
 					fs.Close();
 				}
@@ -3005,26 +2913,26 @@ namespace ZeldaFullEditor
 
 		private void insertToolStripMenuItem_Click_1(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.mouse_down = false;
+			ZS.UnderworldScene.MouseIsDown = false;
 			ZS.UnderworldScene.insertNew();
 		}
 
 		private void insertToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.mouse_down = false;
+			ZS.UnderworldScene.MouseIsDown = false;
 			ZS.UnderworldScene.insertNew();
 		}
 
 		private void insertToolStripMenuItem2_Click(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.mouse_down = false;
+			ZS.UnderworldScene.MouseIsDown = false;
 			ZS.UnderworldScene.insertNew();
 		}
 
 		// This is called when the delete option in the chest item editor option is selected.
 		private void deleteToolStripMenuItem2_Click(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.mouse_down = false;
+			ZS.UnderworldScene.MouseIsDown = false;
 
 			if (ZS.CurrentUWMode == DungeonEditMode.Chests)
 			{
@@ -3216,10 +3124,10 @@ namespace ZeldaFullEditor
 				DrawRoom();
 				thumbnailBox.Refresh();
 
-				if (ZS.UnderworldScene.room != null)
+				if (ZS.UnderworldScene.Room != null)
 				{
-					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.room.palette);
-					ZS.UnderworldScene.room.reloadGfx();
+					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+					ZS.UnderworldScene.Room.reloadGfx();
 					ZS.UnderworldScene.DrawRoom();
 				}
 			}
@@ -3250,7 +3158,7 @@ namespace ZeldaFullEditor
 
 			previewRoom.DrawFloor1();
 
-			if (previewRoom.bg2 != Background2.Off)
+			if (previewRoom.bg2 != Constants.LayerMergeOff)
 			{
 				SetPalettesTransparent();
 				previewRoom.DrawFloor2();
@@ -3258,7 +3166,6 @@ namespace ZeldaFullEditor
 			else
 			{
 				SetPalettesBlack();
-
 			}
 
 			previewRoom.reloadLayout();
@@ -3355,8 +3262,8 @@ namespace ZeldaFullEditor
 		{
 			e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
 			e.Graphics.Clear(Color.Black);
-			if (previewRoom.bg2 != Background2.Translucent || previewRoom.bg2 != Background2.Transparent ||
-				previewRoom.bg2 != Background2.OnTop || previewRoom.bg2 != Background2.Off)
+			if (previewRoom.bg2 != Constants.LayerMergeTranslucent || previewRoom.bg2 != Constants.LayerMergeTransparent ||
+				previewRoom.bg2 != Constants.LayerMergeOnTop || previewRoom.bg2 != Constants.LayerMergeOff)
 			{
 				e.Graphics.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
@@ -3364,7 +3271,7 @@ namespace ZeldaFullEditor
 			//e.Graphics.DrawImage(ZS.GFXManager.roomBgLayoutBitmap,0,0);
 			e.Graphics.DrawImage(ZS.GFXManager.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 
-			if (previewRoom.bg2 == Background2.Translucent || previewRoom.bg2 == Background2.Transparent)
+			if (previewRoom.bg2 == Constants.LayerMergeTranslucent || previewRoom.bg2 == Constants.LayerMergeTransparent)
 			{
 				float[][] matrixItems ={
 				   new float[] {1f, 0, 0, 0, 0},
@@ -3387,12 +3294,12 @@ namespace ZeldaFullEditor
 				//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
 				e.Graphics.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
 			}
-			else if (previewRoom.bg2 == Background2.OnTop)
+			else if (previewRoom.bg2 == Constants.LayerMergeOnTop)
 			{
 				e.Graphics.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
-			ZS.UnderworldScene.drawText(e.Graphics, 0, 0, "ROOM: " + previewRoom.index.ToString());
+			ZS.UnderworldScene.drawText(e.Graphics, 0, 0, "ROOM: " + previewRoom.RoomID.ToString());
 		}
 
 		private void mapPicturebox_MouseUp(object sender, MouseEventArgs e)
@@ -3434,10 +3341,10 @@ namespace ZeldaFullEditor
 					DrawRoom();
 					thumbnailBox.Refresh();
 
-					if (ZS.UnderworldScene.room != null)
+					if (ZS.UnderworldScene.Room != null)
 					{
-						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.room.palette);
-						ZS.UnderworldScene.room.reloadGfx();
+						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+						ZS.UnderworldScene.Room.reloadGfx();
 						ZS.UnderworldScene.DrawRoom();
 					}
 				}
@@ -3453,9 +3360,9 @@ namespace ZeldaFullEditor
 
 		private void openRightRoomToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (ZS.UnderworldScene.room != null)
+			if (ZS.UnderworldScene.Room != null)
 			{
-				int id = ZS.UnderworldScene.room.index + 1;
+				int id = ZS.UnderworldScene.Room.RoomID + 1;
 				if (id < Constants.NumberOfRooms)
 				{
 					addRoomTab((ushort) id);
@@ -3469,9 +3376,9 @@ namespace ZeldaFullEditor
 
 		private void openLeftRoomToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (ZS.UnderworldScene.room != null)
+			if (ZS.UnderworldScene.Room != null)
 			{
-				int id = ZS.UnderworldScene.room.index - 1;
+				int id = ZS.UnderworldScene.Room.RoomID - 1;
 				if (id >= 0)
 				{
 					addRoomTab((ushort) id);
@@ -3485,9 +3392,9 @@ namespace ZeldaFullEditor
 
 		private void openUpRoomToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (ZS.UnderworldScene.room != null)
+			if (ZS.UnderworldScene.Room != null)
 			{
-				int id = (ZS.UnderworldScene.room.index - 16);
+				int id = (ZS.UnderworldScene.Room.RoomID - 16);
 				if (id >= 0)
 				{
 					addRoomTab((ushort) id);
@@ -3508,9 +3415,9 @@ namespace ZeldaFullEditor
 
 		private void openDownRoomToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (ZS.UnderworldScene.room != null)
+			if (ZS.UnderworldScene.Room != null)
 			{
-				int id = ZS.UnderworldScene.room.index + 16;
+				int id = ZS.UnderworldScene.Room.RoomID + 16;
 				if (id < Constants.NumberOfRooms)
 				{
 					addRoomTab((ushort) id);
@@ -3998,7 +3905,8 @@ namespace ZeldaFullEditor
 			int pos = 1;
 			sprites_buffer[0] = 0x00;
 
-			foreach (Sprite spr in DungeonsData.all_rooms[ZS.UnderworldScene.room.index].sprites) //3bytes
+			// TODO Sprite.Data
+			foreach (Sprite spr in DungeonsData.all_rooms[ZS.UnderworldScene.Room.RoomID].SpritesList) //3bytes
 			{
 				sprites_buffer[pos++] = (byte) ((spr.layer << 7) + ((spr.subtype & 0x18) << 2) + spr.y);
 				sprites_buffer[pos++] = (byte) (((spr.subtype & 0x07) << 5) + spr.x);
@@ -4242,61 +4150,61 @@ namespace ZeldaFullEditor
 		// TODO magic string
 		private void exportRoomDataToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.room.CloneToFile("TestRoomData.dat");
+			//ZS.UnderworldScene.room.CloneToFile("TestRoomData.dat");
 		}
 
 		private void importRoomDataToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (var ms = new FileStream("TestRoomData.dat", FileMode.Open, FileAccess.Read))
-			{
-				var formatter = new BinaryFormatter();
-				Room r = (Room) formatter.Deserialize(ms);
-				ZS.UnderworldScene.room = r;
-				Room rtc = r;
-
-				foreach (Room ro in opened_rooms)
-				{
-					if (ro.index == ZS.UnderworldScene.room.index)
-					{
-						rtc = ro;
-					}
-				}
-
-				// TODO should this be rtc?
-				DungeonsData.all_rooms[ZS.UnderworldScene.room.index] = r;
-				ZS.UnderworldScene.DrawRoom();
-				ZS.UnderworldScene.Refresh();
-			}
+			//using (var ms = new FileStream("TestRoomData.dat", FileMode.Open, FileAccess.Read))
+			//{
+			//	var formatter = new BinaryFormatter();
+			//	DungeonRoom r = (DungeonRoom) formatter.Deserialize(ms);
+			//	ZS.UnderworldScene.Room = r;
+			//	DungeonRoom rtc = r;
+			//
+			//	foreach (DungeonRoom ro in opened_rooms)
+			//	{
+			//		if (ro.RoomID == ZS.UnderworldScene.Room.RoomID)
+			//		{
+			//			rtc = ro;
+			//		}
+			//	}
+			//
+			//	// TODO should this be rtc?
+			//	DungeonsData.all_rooms[ZS.UnderworldScene.Room.RoomID] = r;
+			//	ZS.UnderworldScene.DrawRoom();
+			//	ZS.UnderworldScene.Refresh();
+			//}
 		}
 
 		// TODO system specific path separators, etc
 		private void importRoomsFromFolderToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			// TODO change logic
-			if (UIText.WarnAboutSaving(UIText.RoomWarning) == DialogResult.Yes)
-			{
-				OpenFileDialog ofd = new OpenFileDialog();
-
-				if (ofd.ShowDialog() == DialogResult.OK)
-				{
-					string path = Path.GetDirectoryName(ofd.FileName);
-
-					for (int i = 0; i < Constants.NumberOfRooms; i++)
-					{
-						if (File.Exists(path + "// room" + i.ToString("D3") + ".bin"))
-						{
-							using (FileStream fs = new FileStream(path + "// room" + i.ToString("D3") + ".bin", FileMode.Open, FileAccess.Read))
-							{
-								DungeonsData.all_rooms[i].tilesObjects.Clear(); //Empty the room first
-								byte[] data = new byte[fs.Length];
-								fs.Read(data, 0, data.Length);
-								DungeonsData.all_rooms[i].loadTilesObjectsFromArray(data, true);
-								fs.Close();
-							}
-						}
-					}
-				}
-			}
+			//if (UIText.WarnAboutSaving(UIText.RoomWarning) == DialogResult.Yes)
+			//{
+			//	OpenFileDialog ofd = new OpenFileDialog();
+			//
+			//	if (ofd.ShowDialog() == DialogResult.OK)
+			//	{
+			//		string path = Path.GetDirectoryName(ofd.FileName);
+			//
+			//		for (int i = 0; i < Constants.NumberOfRooms; i++)
+			//		{
+			//			if (File.Exists(path + "// room" + i.ToString("D3") + ".bin"))
+			//			{
+			//				using (FileStream fs = new FileStream(path + "// room" + i.ToString("D3") + ".bin", FileMode.Open, FileAccess.Read))
+			//				{
+			//					DungeonsData.all_rooms[i].tilesObjects.Clear(); //Empty the room first
+			//					byte[] data = new byte[fs.Length];
+			//					fs.Read(data, 0, data.Length);
+			//					DungeonsData.all_rooms[i].loadTilesObjectsFromArray(data, true);
+			//					fs.Close();
+			//				}
+			//			}
+			//		}
+			//	}
+			//}
 		}
 
 		private void importFromROMToolStripMenuItem_Click(object sender, EventArgs e)
@@ -4341,7 +4249,6 @@ namespace ZeldaFullEditor
 				fs.Read(data, 0, data.Length);
 				fs.Close();
 
-				ZS.UnderworldScene.room.loadTilesObjectsFromArray(data);
 				ZS.UnderworldScene.Refresh();
 			}
 		}
@@ -4352,11 +4259,11 @@ namespace ZeldaFullEditor
 			{
 				if (showRoomsInHexToolStripMenuItem.Checked)
 				{
-					tp.Text = (tp.Tag as Room).index.ToString("X3");
+					tp.Text = (tp.Tag as DungeonRoom).RoomID.ToString("X3");
 				}
 				else
 				{
-					tp.Text = (tp.Tag as Room).index.ToString("D3");
+					tp.Text = (tp.Tag as DungeonRoom).RoomID.ToString("D3");
 				}
 			}
 		}
@@ -4533,9 +4440,9 @@ namespace ZeldaFullEditor
 
 		private void increaseObjectSizeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (ZS.UnderworldScene.room.selectedObject.Count > 0)
+			if (ZS.UnderworldScene.Room.selectedObject.Count > 0)
 			{
-				if (ZS.UnderworldScene.room.selectedObject[0] is Room_Object obj)
+				if (ZS.UnderworldScene.Room.selectedObject[0] is Room_Object obj)
 				{
 					if (obj.IncreaseSize())
 					{
@@ -4550,9 +4457,9 @@ namespace ZeldaFullEditor
 
 		private void decreaseObjectSizeToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (ZS.UnderworldScene.room.selectedObject.Count > 0)
+			if (ZS.UnderworldScene.Room.selectedObject.Count > 0)
 			{
-				if (ZS.UnderworldScene.room.selectedObject[0] is Room_Object obj)
+				if (ZS.UnderworldScene.Room.selectedObject[0] is Room_Object obj)
 				{
 					if (obj.DecreaseSize())
 					{
@@ -4641,7 +4548,7 @@ namespace ZeldaFullEditor
 			shutterdoors.Clear();
 			normaldoors.Clear();
 
-			foreach (Room_Object o in ZS.UnderworldScene.room.tilesObjects)
+			foreach (Room_Object o in ZS.UnderworldScene.Room.tilesObjects)
 			{
 				if (o.options == ObjectOption.Door)
 				{
@@ -4671,20 +4578,20 @@ namespace ZeldaFullEditor
 
 			foreach (Room_Object o in keydoors)
 			{
-				ZS.UnderworldScene.room.tilesObjects.Remove(o);
-				ZS.UnderworldScene.room.tilesObjects.Add(o);
+				ZS.UnderworldScene.Room.tilesObjects.Remove(o);
+				ZS.UnderworldScene.Room.tilesObjects.Add(o);
 			}
 
 			foreach (Room_Object o in shutterdoors)
 			{
-				ZS.UnderworldScene.room.tilesObjects.Remove(o);
-				ZS.UnderworldScene.room.tilesObjects.Add(o);
+				ZS.UnderworldScene.Room.tilesObjects.Remove(o);
+				ZS.UnderworldScene.Room.tilesObjects.Add(o);
 			}
 
 			foreach (Room_Object o in normaldoors)
 			{
-				ZS.UnderworldScene.room.tilesObjects.Remove(o);
-				ZS.UnderworldScene.room.tilesObjects.Add(o);
+				ZS.UnderworldScene.Room.tilesObjects.Remove(o);
+				ZS.UnderworldScene.Room.tilesObjects.Add(o);
 			}
 
 			ZS.UnderworldScene.DrawRoom();

@@ -58,6 +58,7 @@ namespace ZeldaFullEditor
 		public bool entrancePreview = false;
 
 		public bool lowEndMode = false;
+		internal bool mouse_down;
 
 		// TODO move Overworld ow to ZScreamer
 		public SceneOW(ZScreamer parent) : base(parent)

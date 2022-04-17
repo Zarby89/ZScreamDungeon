@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
+	public interface IByteable
+	{
+		byte[] Data { get; }
+	}
+
+
 	public interface IROMWritable
 	{
 		ROMWritePack Data { get; }

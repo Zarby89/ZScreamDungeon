@@ -24,6 +24,9 @@ namespace ZeldaFullEditor
 
 		public static int FindFloorIndex(byte b)
 		{
+			// Code by bhaalsen
+			// Array.FindIndex(floors, 0, floors.Length, f => f.ByteValue == b);
+
 			for (int i = 0; i < floors.Length; i++)
 			{
 				if (b == floors[i].ByteValue)

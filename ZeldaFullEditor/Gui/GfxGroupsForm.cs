@@ -39,7 +39,7 @@ namespace ZeldaFullEditor.Gui
 				LoadTempGfx();
 				okButton_Click(null, e);
 				reloadGfx();
-				ZS.UnderworldScene.room.reloadGfx();
+				ZS.UnderworldScene.Room.reloadGfx();
 				ZS.UnderworldScene.DrawRoom();
 				ZS.UnderworldScene.Refresh();
 			}
@@ -186,7 +186,7 @@ namespace ZeldaFullEditor.Gui
 				ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2] = getTextBoxValue(palette3Box);
 				ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3] = getTextBoxValue(palette4Box);
 
-				ZS.UnderworldScene.room.reloadGfx();
+				ZS.UnderworldScene.Room.reloadGfx();
 				reloadGfx();
 				ZS.UnderworldScene.DrawRoom();
 				ZS.UnderworldScene.Refresh();
@@ -617,8 +617,8 @@ namespace ZeldaFullEditor.Gui
 			{
 				if (ZS.GFXGroups.paletteGfx[(byte) paletteUpDown.Value][0] % 2 == 0)
 				{
-					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.room.palette);
-					ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.room.palette);
+					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+					ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
 				}
 			}
 		}

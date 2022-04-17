@@ -21,6 +21,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		BigChest,
 		PushBlock,
 		Torch,
+		LayerMask,
 	}
 
 	[Flags]

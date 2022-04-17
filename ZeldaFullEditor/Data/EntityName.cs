@@ -60,4 +60,16 @@ namespace ZeldaFullEditor.Data
 		public RoomEffectName(int i, string n) : base(i, n) { }
 		public override string ToString() => Name;
 	}
+
+	public class RoomCollisionName : EntityName
+	{
+		public RoomCollisionName(int i, string n) : base(i, n) { }
+		public override string ToString() => Name;
+	}
+
+	public class Layer2TypeName : EntityName
+	{
+		public Layer2TypeName(int i, string n) : base(i, n) { }
+		public override string ToString() => Name;
+	}
 }

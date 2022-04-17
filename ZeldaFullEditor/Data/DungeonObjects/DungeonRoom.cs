@@ -10,13 +10,33 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 	{
 		public ushort RoomID { get; }
 
-		public List<RoomObject> RoomObjectList { get; } = new List<RoomObject>();
-		public List<Chest> ChestList { get; } = new List<Chest>();
-		public List<PotItem> SecretsList { get; } = new List<PotItem>();
+		public DungeonObjectsList Layer1Objects { get; } = new DungeonObjectsList();
+		public DungeonObjectsList Layer2Objects { get; } = new DungeonObjectsList();
+		public DungeonObjectsList Layer3Objects { get; } = new DungeonObjectsList();
+		public DungeonDoorsList DungeonDoors { get; } = new DungeonDoorsList();
+		public DungeonChestsList ChestList { get; } = new DungeonChestsList();
+		public DungeonSecretsList SecretsList { get; } = new DungeonSecretsList();
+		public DungeonSpritesList SpritesList { get; } = new DungeonSpritesList();
 
 		public List<StaircaseRoom> StairsList { get; } = new List<StaircaseRoom>();
-		public List<object> SelectedObjects { get; } = new List<object>();
+		public List<DungeonObject> SelectedObjects { get; } = new List<DungeonObject>();
 
+		/// <summary>
+		/// Returns an object if it is the only member of selected objects; otherwise, null
+		/// </summary>
+		public DungeonObject OnlySelectedObject
+		{
+			get
+			{
+				if (SelectedObjects.Count == 1)
+				{
+					return SelectedObjects[0];
+				}
+				return null;
+			}
+		}
+
+		public bool HasUnsavedChanges { get; private set; }
 		public byte[] StairDestinations { get; } = new byte[4];
 
 		private byte layout;
@@ -31,6 +51,14 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		}
 
 		private bool moam = false;
+		internal object collisionMap;
+		internal byte palette;
+		internal int floor1;
+		internal int bg2;
+		internal int effect;
+		internal int tag2;
+
+		internal object[] collision_rectangles { get => throw new NotImplementedException(); }
 
 		public bool MultiLayerOAM
 		{
@@ -40,6 +68,42 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				moam = value;
 			}
 		}
+
+
+		// TODO
+		public byte[] HeaderData
+		{
+			get
+			{
+				//(byte) ((((byte) all_rooms[i].bg2 & 0x07) << 5) + ((int) all_rooms[i].collision << 2) + (all_rooms[i].light ? 1 : 0)),
+				//all_rooms[i].palette,
+				//all_rooms[i].blockset,
+				//all_rooms[i].spriteset,
+				//(byte) all_rooms[i].effect,
+				//(byte) all_rooms[i].tag1,
+				//(byte) all_rooms[i].tag2,
+				//(byte) ((all_rooms[i].holewarp_plane) | (all_rooms[i].staircase1Plane << 2) | (all_rooms[i].staircase2Plane << 4) | (all_rooms[i].staircase3Plane << 6)),
+				//all_rooms[i].staircase4Plane,
+				//all_rooms[i].holewarp,
+				//all_rooms[i].staircase1,
+				//all_rooms[i].staircase2,
+				//all_rooms[i].staircase3,
+				//all_rooms[i].staircase4
+				return null;
+			}
+		}
+
+
+
+
+
+
+		// TODO implement and rename
+		public ushort MessageID { get; set; }
+		public byte blockset { get; internal set; }
+		public int tag1 { get; internal set; }
+		public int collision { get; internal set; }
+
 
 		private readonly ZScreamer ZS;
 		private DungeonRoom(ZScreamer parent, ushort id)
@@ -97,14 +161,14 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public void DrawEntireRoom()
 		{
-			foreach (RoomObject r in RoomObjectList)
+			foreach (RoomObject r in Layer1Objects)
 			{
 				r.Draw(ZS);
 			}
 		}
 
 
-		private RoomObject ParseRoomObject(in byte layer, in byte b1, in byte b2, in byte b3, out byte posX, out byte posY)
+		private RoomObject ParseRoomObject(byte layer, byte b1, byte b2, byte b3, out byte posX, out byte posY)
 		{
 			byte size;
 			ushort oid;
@@ -143,10 +207,36 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				return null;
 			}
 
-			return new RoomObject(rtype, defn, posX, posY, layer, size);
+			return
+				new RoomObject(rtype, defn)
+				{
+					X = posX,
+					Y = posY,
+					Layer = layer,
+					Size = size
+				};
 		}
 
-		private void LoadObjectsFromArray(byte[] data, int offset = 0)
+		internal void ClearCollisionLayout()
+		{
+			throw new NotImplementedException();
+		}
+
+		internal void loadCollisionLayout(bool v)
+		{
+			throw new NotImplementedException();
+		}
+
+		private DungeonDoorObject ParseDoorObject(byte b1, byte b2)
+		{
+			return new DungeonDoorObject(
+					DungeonDoorDraw.GetDirectionFromToken(b1),
+					ZS.TileLister.GetDoorTileSet(b2)
+				);
+		}
+
+
+		public void LoadObjectsFromArray(byte[] data, int offset = 0)
 		{
 			// Load chest items
 			var chests = new List<ChestData>();
@@ -166,8 +256,13 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			}
 
 			StairsList.Clear();
+			Layer1Objects.Clear();
+			Layer2Objects.Clear();
+			Layer3Objects.Clear();
+			DungeonDoors.Clear();
 			int staircount = 0;
 
+			DungeonObjectsList currentList = Layer1Objects;
 			Layout = (byte) ((data[offset++] >> 2) & 0x07);
 
 			byte b1, b2, b3;
@@ -185,7 +280,26 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 					if (b1 == 0xFF)
 					{
 						door = false;
-						ended = layer == 3;
+						layer++;
+						switch (layer)
+						{
+							case 1:
+								currentList = Layer1Objects;
+								break;
+							
+							case 2:
+								currentList = Layer2Objects;
+								break;
+							
+							case 3:
+								currentList = Layer3Objects;
+								break;
+
+							default:
+								ended = true;
+								break;
+						}
+
 						continue;
 					}
 					else if (b1 == 0xF0)
@@ -197,18 +311,18 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 				if (door)
 				{
-					// TODO adding doors
+					DungeonDoors.Add(ParseDoorObject(b1, b2));
 				}
 				else
 				{
 					b3 = data[offset++];
 					RoomObject r = ParseRoomObject(
-						in layer, in b1, in b2, in b3,
+						layer, b1, b2, b3,
 						out byte posX, out byte posY);
 
 					if (r != null)
 					{
-						RoomObjectList.Add(r);
+						currentList.Add(r);
 					}
 					else
 					{
@@ -242,13 +356,25 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				}
 
 			}
+		}
 
-
-
-			RoomObjectList.Clear();
+		public RoomObject AddObject(ushort id, byte x, byte y, byte size, byte layer)
+		{
+			return
+				new RoomObject(RoomObjectType.GetDungeonObject(id), ZS.TileLister[id])
+				{
+					X = x,
+					Y = y,
+					Size = size,
+					Layer = layer
+				};
 		}
 
 
+		public DungeonRoom Clone()
+		{
+			return this;
+		}
 		private void LoadSpritesFromArray(byte[] data, int offset = 0)
 		{
 			MultiLayerOAM = data[offset++] == 1;
@@ -262,6 +388,43 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				byte b2 = data[offset++];
 				byte b3 = data[offset++];
 			}
+		}
+
+		public void ClearAll()
+		{
+			Layer1Objects.Clear();
+			Layer2Objects.Clear();
+			Layer3Objects.Clear();
+			DungeonDoors.Clear();
+			SecretsList.Clear();
+			SpritesList.Clear();
+			ChestList.Clear();
+		}
+
+
+		public void reloadGfx(byte blockset = 0xFF)
+		{
+			throw new NotImplementedException();
+		}
+
+		internal void reloadLayout()
+		{
+			throw new NotImplementedException();
+		}
+
+		internal void DrawFloor1()
+		{
+			throw new NotImplementedException();
+		}
+
+		internal void DrawFloor2()
+		{
+			throw new NotImplementedException();
+		}
+
+		internal void update()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

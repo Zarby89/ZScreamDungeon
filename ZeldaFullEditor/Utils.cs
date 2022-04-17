@@ -34,6 +34,7 @@ namespace ZeldaFullEditor
 				(bit7 ? 1 << 7 : 0));
 		}
 
+
 		public static int Clamp(this int v, int min, int max)
 		{
 			if (v >= max)

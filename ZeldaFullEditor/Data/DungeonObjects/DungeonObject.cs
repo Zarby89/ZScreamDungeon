@@ -8,13 +8,12 @@ using System.Threading.Tasks;
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
 	[Serializable]
-	public abstract class DungeonObject
+	public abstract class DungeonObject : IByteable
 	{
 		/// <summary>
 		/// Returns a list of points representing the collision box of the object within the GUI.
 		/// </summary>
-		public abstract List<Point> CollisionPoints { get; }
-
+		public virtual List<Point> CollisionPoints { get; } = new List<Point>();
 
 		public abstract TilesList Tiles { get; }
 
@@ -28,5 +27,14 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		/// </summary>
 		/// <param name="ZS">Graphics controller parent</param>
 		public abstract void Draw(ZScreamer ZS);
+	}
+
+	public interface IFreelyPlaceable
+	{
+		byte X { get; set; }
+		byte Y { get; set; }
+		byte NX { get; set; }
+		byte NY { get; set; }
+		byte Layer { get; set; }
 	}
 }

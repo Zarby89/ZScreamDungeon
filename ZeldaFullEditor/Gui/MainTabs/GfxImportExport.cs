@@ -374,7 +374,7 @@ namespace ZeldaFullEditor.Gui
 				}
 
 				b.UnlockBits(bd);
-				ZS.UnderworldScene.room.reloadGfx();
+				ZS.UnderworldScene.Room.reloadGfx();
 				ZS.UnderworldScene.DrawRoom();
 				ZS.UnderworldScene.Refresh();
 				allgfxPicturebox.Refresh();

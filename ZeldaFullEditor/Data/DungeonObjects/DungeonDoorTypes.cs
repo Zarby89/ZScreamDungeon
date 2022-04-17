@@ -47,6 +47,66 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		{
 		}
 
+		public static DungeonDoorDraw GetDirectionFromToken(byte b)
+		{
+			switch (b)
+			{
+				case (0x00 << 3) | 0x00: return North00;
+				case (0x02 << 3) | 0x00: return North02;
+				case (0x04 << 3) | 0x00: return North04;
+				case (0x06 << 3) | 0x00: return North06;
+				case (0x08 << 3) | 0x00: return North08;
+				case (0x0A << 3) | 0x00: return North0A;
+				case (0x0C << 3) | 0x00: return North0C;
+				case (0x0E << 3) | 0x00: return North0E;
+				case (0x10 << 3) | 0x00: return North10;
+				case (0x12 << 3) | 0x00: return North12;
+				case (0x14 << 3) | 0x00: return North14;
+				case (0x16 << 3) | 0x00: return North16;
+
+				case (0x00 << 3) | 0x01: return South00;
+				case (0x02 << 3) | 0x01: return South02;
+				case (0x04 << 3) | 0x01: return South04;
+				case (0x06 << 3) | 0x01: return South06;
+				case (0x08 << 3) | 0x01: return South08;
+				case (0x0A << 3) | 0x01: return South0A;
+				case (0x0C << 3) | 0x01: return South0C;
+				case (0x0E << 3) | 0x01: return South0E;
+				case (0x10 << 3) | 0x01: return South10;
+				case (0x12 << 3) | 0x01: return South12;
+				case (0x14 << 3) | 0x01: return South14;
+				case (0x16 << 3) | 0x01: return South16;
+
+				case (0x00 << 3) | 0x02: return West00;
+				case (0x02 << 3) | 0x02: return West02;
+				case (0x04 << 3) | 0x02: return West04;
+				case (0x06 << 3) | 0x02: return West06;
+				case (0x08 << 3) | 0x02: return West08;
+				case (0x0A << 3) | 0x02: return West0A;
+				case (0x0C << 3) | 0x02: return West0C;
+				case (0x0E << 3) | 0x02: return West0E;
+				case (0x10 << 3) | 0x02: return West10;
+				case (0x12 << 3) | 0x02: return West12;
+				case (0x14 << 3) | 0x02: return West14;
+				case (0x16 << 3) | 0x02: return West16;
+
+				case (0x00 << 3) | 0x03: return East00;
+				case (0x02 << 3) | 0x03: return East02;
+				case (0x04 << 3) | 0x03: return East04;
+				case (0x06 << 3) | 0x03: return East06;
+				case (0x08 << 3) | 0x03: return East08;
+				case (0x0A << 3) | 0x03: return East0A;
+				case (0x0C << 3) | 0x03: return East0C;
+				case (0x0E << 3) | 0x03: return East0E;
+				case (0x10 << 3) | 0x03: return East10;
+				case (0x12 << 3) | 0x03: return East12;
+				case (0x14 << 3) | 0x03: return East14;
+				case (0x16 << 3) | 0x03: return East16;
+			}
+			return null;
+		}
+
+
 		public static readonly DungeonDoorDraw North00 = new DungeonDoorDraw(North, 0x00, DrawNorth00, DrawNothing);
 		public static readonly DungeonDoorDraw North02 = new DungeonDoorDraw(North, 0x02, DrawNorth02, DrawNothing);
 		public static readonly DungeonDoorDraw North04 = new DungeonDoorDraw(North, 0x04, DrawNorth04, DrawNothing);

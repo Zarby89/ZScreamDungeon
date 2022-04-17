@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor.Gui.TextEditorExtra
+﻿namespace ZeldaFullEditor.Gui
 {
     partial class DictionariesForm
     {

@@ -215,10 +215,10 @@ namespace ZeldaFullEditor.OWSceneModes
 					ZS.OverworldScene.entrancePreview = true;
 					//scene.Refresh();
 
-					if (ZS.UnderworldScene.room != null)
+					if (ZS.UnderworldScene.Room != null)
 					{
-						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.room.palette);
-						ZS.UnderworldScene.room.reloadGfx();
+						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+						ZS.UnderworldScene.Room.reloadGfx();
 						ZS.UnderworldScene.DrawRoom();
 					}
 				}
@@ -231,15 +231,15 @@ namespace ZeldaFullEditor.OWSceneModes
 		{
 			Graphics g = Graphics.FromImage(ZS.OverworldForm.tmpPreviewBitmap);
 			g.InterpolationMode = InterpolationMode.Bilinear;
-			if (ZS.DungeonForm.previewRoom.bg2 != Background2.Translucent || ZS.DungeonForm.previewRoom.bg2 != Background2.Transparent ||
-			 ZS.DungeonForm.previewRoom.bg2 != Background2.OnTop || ZS.DungeonForm.previewRoom.bg2 != Background2.Off)
+			if (ZS.DungeonForm.previewRoom.bg2 != Constants.LayerMergeTranslucent || ZS.DungeonForm.previewRoom.bg2 != Constants.LayerMergeTransparent ||
+			 ZS.DungeonForm.previewRoom.bg2 != Constants.LayerMergeOnTop || ZS.DungeonForm.previewRoom.bg2 != Constants.LayerMergeOff)
 			{
 				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
 			g.DrawImage(ZS.GFXManager.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 
-			if (ZS.DungeonForm.previewRoom.bg2 == Background2.Translucent || ZS.DungeonForm.previewRoom.bg2 == Background2.Transparent)
+			if (ZS.DungeonForm.previewRoom.bg2 == Constants.LayerMergeTranslucent || ZS.DungeonForm.previewRoom.bg2 == Constants.LayerMergeTransparent)
 			{
 				float[][] matrixItems ={
 					new float[] {1f, 0, 0, 0, 0},
@@ -263,12 +263,12 @@ namespace ZeldaFullEditor.OWSceneModes
 				//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
 				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
 			}
-			else if (ZS.DungeonForm.previewRoom.bg2 == Background2.OnTop)
+			else if (ZS.DungeonForm.previewRoom.bg2 == Constants.LayerMergeOnTop)
 			{
 				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
-			ZS.UnderworldScene.drawText(g, 0, 0, "ROOM : " + ZS.DungeonForm.previewRoom.index.ToString("X2"));
+			ZS.UnderworldScene.drawText(g, 0, 0, "ROOM : " + ZS.DungeonForm.previewRoom.RoomID.ToString("X2"));
 			g.InterpolationMode = InterpolationMode.NearestNeighbor;
 			g.Dispose();
 		}

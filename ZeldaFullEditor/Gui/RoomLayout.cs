@@ -48,13 +48,13 @@ namespace ZeldaFullEditor
 
 		public void clearRoom()
 		{
-			scene.need_refresh = true;
-			scene.room.chest_list.Clear();
-			scene.room.layout = 7;
-			scene.room.tilesObjects.Clear();
-			scene.room.sprites.Clear();
-			scene.room.pot_items.Clear();
-			scene.room.selectedObject.Clear();
+			scene.NeedsRefreshing = true;
+			scene.Room.chest_list.Clear();
+			scene.Room.layout = 7;
+			scene.Room.tilesObjects.Clear();
+			scene.Room.SpritesList.Clear();
+			scene.Room.pot_items.Clear();
+			scene.Room.selectedObject.Clear();
 		}
 
 		private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -76,17 +76,17 @@ namespace ZeldaFullEditor
 			{
 				if (o.type == typeof(Room_Object))
 				{
-					Room_Object ro = scene.room.addObject(o.tid, o.x, o.y, o.size, o.layer);
+					Room_Object ro = scene.Room.addObject(o.tid, o.x, o.y, o.size, o.layer);
 					if (ro != null)
 					{
-						ro.setRoom(scene.room);
+						ro.setRoom(scene.Room);
 						ro.options = o.options;
-						scene.room.tilesObjects.Add(ro);
+						scene.Room.tilesObjects.Add(ro);
 					}
 				}
 			}
 
-			scene.room.reloadGfx();
+			scene.Room.reloadGfx();
 
 			scene.DrawRoom();
 			scene.Refresh();
