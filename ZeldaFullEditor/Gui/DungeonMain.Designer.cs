@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -781,33 +781,33 @@ namespace ZeldaFullEditor
             this.deleteToolStripMenuItem2,
             this.clearAllToolStripMenuItem});
             this.nothingselectedcontextMenu.Name = "nothingselectedcontextMenu";
-            this.nothingselectedcontextMenu.Size = new System.Drawing.Size(125, 92);
+            this.nothingselectedcontextMenu.Size = new System.Drawing.Size(181, 114);
             // 
             // insertToolStripMenuItem1
             // 
             this.insertToolStripMenuItem1.Name = "insertToolStripMenuItem1";
-            this.insertToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
+            this.insertToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
             this.insertToolStripMenuItem1.Text = "Insert";
             this.insertToolStripMenuItem1.Click += new System.EventHandler(this.insertToolStripMenuItem1_Click);
             // 
             // pasteToolStripMenuItem3
             // 
             this.pasteToolStripMenuItem3.Name = "pasteToolStripMenuItem3";
-            this.pasteToolStripMenuItem3.Size = new System.Drawing.Size(124, 22);
+            this.pasteToolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
             this.pasteToolStripMenuItem3.Text = "Paste";
             this.pasteToolStripMenuItem3.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
             // deleteToolStripMenuItem2
             // 
             this.deleteToolStripMenuItem2.Name = "deleteToolStripMenuItem2";
-            this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(124, 22);
+            this.deleteToolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
             this.deleteToolStripMenuItem2.Text = "Delete";
             this.deleteToolStripMenuItem2.Click += new System.EventHandler(this.deleteToolStripMenuItem2_Click);
             // 
             // clearAllToolStripMenuItem
             // 
             this.clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
-            this.clearAllToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
+            this.clearAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearAllToolStripMenuItem.Text = "Delete All";
             this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.clearAllToolStripMenuItem_Click);
             // 
@@ -1821,13 +1821,13 @@ namespace ZeldaFullEditor
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode3.Name = "EntranceNode";
-            treeNode3.Text = "Entrances";
-            treeNode4.Name = "StartingEntranceNode";
-            treeNode4.Text = "Spawn points";
+            treeNode1.Name = "EntranceNode";
+            treeNode1.Text = "Entrances";
+            treeNode2.Name = "StartingEntranceNode";
+            treeNode2.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode1,
+            treeNode2});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 301);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -3744,7 +3744,7 @@ namespace ZeldaFullEditor
             this.zeldaSavedToolStripMenuItem,
             this.agahDeadToolStripMenuItem});
             this.clearSpritesToolStripMenuItem.Name = "clearSpritesToolStripMenuItem";
-            this.clearSpritesToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.clearSpritesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearSpritesToolStripMenuItem.Text = "Clear All Sprites";
             // 
             // saveZeldaToolStripMenuItem
@@ -3771,63 +3771,63 @@ namespace ZeldaFullEditor
             // clearItemsToolStripMenuItem
             // 
             this.clearItemsToolStripMenuItem.Name = "clearItemsToolStripMenuItem";
-            this.clearItemsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.clearItemsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearItemsToolStripMenuItem.Text = "Clear All Items";
             this.clearItemsToolStripMenuItem.Click += new System.EventHandler(this.clearAllOWItemsToolStripMenuItem_Click);
             // 
             // clearEntrancesToolStripMenuItem
             // 
             this.clearEntrancesToolStripMenuItem.Name = "clearEntrancesToolStripMenuItem";
-            this.clearEntrancesToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.clearEntrancesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearEntrancesToolStripMenuItem.Text = "Clear All Entrances";
             this.clearEntrancesToolStripMenuItem.Click += new System.EventHandler(this.clearAllOWEntrancesToolStripMenuItem_Click);
             // 
             // clearAllHolesToolStripMenuItem
             // 
             this.clearAllHolesToolStripMenuItem.Name = "clearAllHolesToolStripMenuItem";
-            this.clearAllHolesToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.clearAllHolesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearAllHolesToolStripMenuItem.Text = "Clear All Holes";
             this.clearAllHolesToolStripMenuItem.Click += new System.EventHandler(this.clearAllOWHolesToolStripMenuItem_Click);
             // 
             // clearExitsToolStripMenuItem
             // 
             this.clearExitsToolStripMenuItem.Name = "clearExitsToolStripMenuItem";
-            this.clearExitsToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.clearExitsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearExitsToolStripMenuItem.Text = "Clear All Exits";
             this.clearExitsToolStripMenuItem.Click += new System.EventHandler(this.clearAllOWExitsToolStripMenuItem_Click);
             // 
             // clearAllOverlaysToolStripMenuItem
             // 
             this.clearAllOverlaysToolStripMenuItem.Name = "clearAllOverlaysToolStripMenuItem";
-            this.clearAllOverlaysToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.clearAllOverlaysToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.clearAllOverlaysToolStripMenuItem.Text = "Clear All Overlays";
             this.clearAllOverlaysToolStripMenuItem.Click += new System.EventHandler(this.clearAllOverworldOverlaysToolStripMenuItem_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem6.Text = "Export All Areas";
             this.toolStripMenuItem6.Click += new System.EventHandler(this.exportAllMapsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem5.Text = "Import All Areas";
             this.toolStripMenuItem5.Click += new System.EventHandler(this.importAllMapsToolStripMenuItem_Click);
             // 
             // toolStripMenuItem9
             // 
             this.toolStripMenuItem9.Name = "toolStripMenuItem9";
-            this.toolStripMenuItem9.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem9.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem9.Text = "Export All Tiles";
             this.toolStripMenuItem9.Click += new System.EventHandler(this.exportAllTilesToolStripMenuItem_Click);
             // 
             // toolStripMenuItem10
             // 
             this.toolStripMenuItem10.Name = "toolStripMenuItem10";
-            this.toolStripMenuItem10.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem10.Text = "Import All Tiles";
             this.toolStripMenuItem10.Click += new System.EventHandler(this.importAllTilesToolStripMenuItem_Click);
             // 
@@ -3835,7 +3835,7 @@ namespace ZeldaFullEditor
             // 
             this.toolStripMenuItem7.Enabled = false;
             this.toolStripMenuItem7.Name = "toolStripMenuItem7";
-            this.toolStripMenuItem7.Size = new System.Drawing.Size(172, 22);
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(180, 22);
             this.toolStripMenuItem7.Text = "Import from ROM";
             // 
             // areaToolStripMenuItem

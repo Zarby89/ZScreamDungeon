@@ -3709,6 +3709,7 @@ namespace ZeldaFullEditor
 
 			if (editorsTabControl.SelectedTab.Name == "ScreenEditor")
 			{
+				GFX.UpdatePalette(screenEditor.darkWorld);
 				screenEditor.BringToFront();
 				screenEditor.Buildtileset();
 				screenEditor.Visible = true;

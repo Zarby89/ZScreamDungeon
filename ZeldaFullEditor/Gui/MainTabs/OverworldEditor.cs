@@ -1906,14 +1906,18 @@ namespace ZeldaFullEditor.Gui
 		/// </summary>
 		public void clearOverworldEntrances()
 		{
-			foreach (EntranceOWEditor entrance in overworld.allentrances)
+			for (int i = 0; i < overworld.allentrances.Length; i++)
 			{
+				var entrance = overworld.allentrances[i];
+
 				entrance.x = 0xFFFF;
 				entrance.y = 0xFFFF;
 				entrance.mapId = 0;
 				entrance.mapPos = 0xFFFF;
 				entrance.entranceId = 0;
 				entrance.deleted = true;
+
+				//Console.WriteLine(Room_Name.room_name[i] + " X:" + entrance.x + " Y:" + entrance.y + " MapID:" + entrance.mapId + " MapPos:" + entrance.mapPos + " EntranceID:" + entrance.entranceId + " Deleted:" + entrance.deleted);
 			}
 		}
 
@@ -1922,14 +1926,16 @@ namespace ZeldaFullEditor.Gui
 		/// </summary>
 		public void clearOverworldHoles()
 		{
-			foreach (var hole in overworld.allholes)
+			for (int i = 0; i < overworld.allholes.Length; i++)
 			{
-				hole.x = 0xFFFF;
-				hole.y = 0xFFFF;
-				hole.mapId = 0;
-				hole.mapPos = 0xFFFF;
-				hole.entranceId = 0;
-				hole.deleted = true;
+				var entrance = overworld.allholes[i];
+
+				entrance.x = 0xFFFF;
+				entrance.y = 0xFFFF;
+				entrance.mapId = 0;
+				entrance.mapPos = 0xFFFF;
+				entrance.entranceId = 0;
+				entrance.deleted = true;
 			}
 		}
 

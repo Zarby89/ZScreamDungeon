@@ -473,7 +473,7 @@ namespace ZeldaFullEditor
 
 		//===========================================================================================
 		// Palettes Related Variables - This contain all the palettes of the game
-		//===========================================================================================
+		//===========================================================================================  asdfasdfasdfasfadf
 		public static int overworldPaletteMain = 0xDE6C8;
 		public static int overworldPaletteAuxialiary = 0xDE86C;
 		public static int overworldPaletteAnimated = 0xDE604;
@@ -492,6 +492,9 @@ namespace ZeldaFullEditor
 		public static int hardcodedGrassLW = 0x5FEA9; // Mirrored Value at 0x75645 : 0x75625
 		public static int hardcodedGrassDW = 0x05FEB3; // 0x7564F;
 		public static int hardcodedGrassSpecial = 0x75640;
+		public static int overworldMiniMapPalettes = 0x55B27;
+		public static int triforcePalette = 0x64425;
+		public static int crystalPalette = 0xF4CD3;
 
 		//===========================================================================================
 		// Dungeon Map Related Variables

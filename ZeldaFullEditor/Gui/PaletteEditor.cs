@@ -26,6 +26,10 @@ namespace ZeldaFullEditor.Gui
 		Color[][] SwordsPal = new Color[4][];
 		Color[][] ArmorsPal = new Color[5][];
 
+		Color[] overworld_GrassPal = new Color[3];
+		Color[][] object3D_Pal = new Color[2][];
+		Color[][] overworld_Maps_Pal = new Color[2][];
+
 		Color tempColor;
 		int tempIndex = -1;
 
@@ -100,6 +104,16 @@ namespace ZeldaFullEditor.Gui
 			for (int i = 0; i < 5; i++)
 			{
 				palettesTreeView.Nodes["ArmorsPal"].Nodes.Add("Armors " + i.ToString("D2"));
+			}
+
+			palettesTreeView.Nodes["OverworldGrassPal"].Nodes.Add("Overworld Grass");
+
+			palettesTreeView.Nodes["Objects3DPal"].Nodes.Add("Triforce");
+			palettesTreeView.Nodes["Objects3DPal"].Nodes.Add("Crystal");
+
+			for (int i = 0; i < 2; i++)
+			{
+				palettesTreeView.Nodes["OverworldMapsPal"].Nodes.Add("Overworld Maps  " + i.ToString("D2"));
 			}
 		}
 
@@ -210,6 +224,21 @@ namespace ZeldaFullEditor.Gui
 				selectedPalette = Palettes.armors_Palettes[palettesTreeView.SelectedNode.Index];
 				selectedX = 15;
 			}
+			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldGrassPal"])
+			{
+				selectedPalette = Palettes.overworld_GrassPalettes;
+				selectedX = 3;
+			}
+			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["Objects3DPal"])
+			{
+				selectedPalette = Palettes.object3D_Palettes[palettesTreeView.SelectedNode.Index];
+				selectedX = 8;
+			}
+			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldMapsPal"])
+			{
+				selectedPalette = Palettes.overworld_Mini_Map_Palettes[palettesTreeView.SelectedNode.Index];
+				selectedX = 16;
+			}
 			else
 			{
 				selectedPalette = null;
@@ -302,6 +331,20 @@ namespace ZeldaFullEditor.Gui
 				for (int i = 0; i < Palettes.armors_Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
 				{
 					Palettes.armors_Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(ArmorsPal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+				}
+			}
+			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["object3D_Pal"])
+			{
+				for (int i = 0; i < Palettes.object3D_Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
+				{
+					Palettes.object3D_Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(object3D_Pal[palettesTreeView.SelectedNode.Index][i].ToArgb());
+				}
+			}
+			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["overworld_Maps_Pal"])
+			{
+				for (int i = 0; i < Palettes.overworld_Mini_Map_Palettes[palettesTreeView.SelectedNode.Index].Length; i++)
+				{
+					Palettes.overworld_Mini_Map_Palettes[palettesTreeView.SelectedNode.Index][i] = Color.FromArgb(overworld_Maps_Pal[palettesTreeView.SelectedNode.Index][i].ToArgb());
 				}
 			}
 
@@ -409,7 +452,6 @@ namespace ZeldaFullEditor.Gui
 
 			for (int i = 0; i < 3; i++)
 			{
-
 				ShieldsPal[i] = new Color[Palettes.shields_Palettes[i].Length];
 				for (int j = 0; j < Palettes.shields_Palettes[i].Length; j++)
 				{
@@ -432,6 +474,24 @@ namespace ZeldaFullEditor.Gui
 				for (int j = 0; j < Palettes.armors_Palettes[i].Length; j++)
 				{
 					ArmorsPal[i][j] = Color.FromArgb(Palettes.armors_Palettes[i][j].ToArgb());
+				}
+			}
+
+			for (int i = 0; i < 2; i++)
+			{
+				object3D_Pal[i] = new Color[Palettes.object3D_Palettes[i].Length];
+				for (int j = 0; j < Palettes.object3D_Palettes[i].Length; j++)
+				{
+					object3D_Pal[i][j] = Color.FromArgb(Palettes.object3D_Palettes[i][j].ToArgb());
+				}
+			}
+
+			for (int i = 0; i < 2; i++)
+			{
+				overworld_Maps_Pal[i] = new Color[Palettes.overworld_Mini_Map_Palettes[i].Length];
+				for (int j = 0; j < Palettes.overworld_Mini_Map_Palettes[i].Length; j++)
+				{
+					overworld_Maps_Pal[i][j] = Color.FromArgb(Palettes.overworld_Mini_Map_Palettes[i][j].ToArgb());
 				}
 			}
 		}
@@ -534,6 +594,22 @@ namespace ZeldaFullEditor.Gui
 				}
 			}
 
+			for (int i = 0; i < 2; i++)
+			{
+				for (int j = 0; j < Palettes.object3D_Palettes[i].Length; j++)
+				{
+					Palettes.object3D_Palettes[i][j] = Color.FromArgb(object3D_Pal[i][j].ToArgb());
+				}
+			}
+
+			for (int i = 0; i < 2; i++)
+			{
+				for (int j = 0; j < Palettes.overworld_Mini_Map_Palettes[i].Length; j++)
+				{
+					Palettes.overworld_Mini_Map_Palettes[i][j] = Color.FromArgb(overworld_Maps_Pal[i][j].ToArgb());
+				}
+			}
+
 			refreshallGfx();
 		}
 
@@ -551,7 +627,6 @@ namespace ZeldaFullEditor.Gui
 					for (int i = 0; i < 159; i++)
 					{
 						mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
-
 					}
 
 					mainForm.overworldEditor.scene.Refresh();
@@ -568,7 +643,6 @@ namespace ZeldaFullEditor.Gui
 				for (int i = 0; i < 159; i++)
 				{
 					mainForm.overworldEditor.overworld.allmaps[i].ReloadPalettes();
-
 				}
 
 				mainForm.overworldEditor.scene.Refresh();
@@ -768,6 +842,30 @@ namespace ZeldaFullEditor.Gui
 							}
 						}
 					}
+					foreach (Color[] _palette in Palettes.object3D_Palettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
+					foreach (Color[] _palette in Palettes.overworld_Mini_Map_Palettes)
+					{
+						foreach (Color _color in _palette)
+						{
+							byte[] buffer = BitConverter.GetBytes(_color.ToArgb());
+							for (int i = buffer.Length - 1; i >= 0; i--)
+							{
+								colorArrayData[count] = buffer[i];
+								count++;
+							}
+						}
+					}
 
 					Console.WriteLine("Total color count: " + count);
 
@@ -914,6 +1012,26 @@ namespace ZeldaFullEditor.Gui
 						{
 							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
 							Palettes.dungeonsMain_Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+					for (int i = 0; i < Palettes.object3D_Palettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.object3D_Palettes[i].Length; j++)
+						{
+							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+							Palettes.object3D_Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
+
+							count += 4;
+						}
+					}
+					for (int i = 0; i < Palettes.overworld_Mini_Map_Palettes.Length; i++)
+					{
+						for (int j = 0; j < Palettes.overworld_Mini_Map_Palettes[i].Length; j++)
+						{
+							byte[] buffer = { colorArrayData[count + 3], colorArrayData[count + 2], colorArrayData[count + 1], colorArrayData[count] };
+							Palettes.overworld_Mini_Map_Palettes[i][j] = Color.FromArgb(BitConverter.ToInt32(buffer, 0));
 
 							count += 4;
 						}

@@ -61,7 +61,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		// Commented out because its unused
 		//bool v = false;
 
-		bool darkWorld = false;
+		public bool darkWorld = false;
 
 		List<MapIcon>[] allMapIcons = new List<MapIcon>[10];
 
@@ -1384,35 +1384,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		private void button4_Click(object sender, EventArgs e)
 		{
 			darkWorld = !darkWorld;
-			int offset = 0;
-			if (darkWorld)
-			{
-				offset = 256;
-			}
 
-			ColorPalette cp = GFX.overworldMapBitmap.Palette;
-			for (int i = 0; i < 256; i += 2)
-			{
-				// 55B27 = US LW
-				// 55C27 = US DW
-				cp.Entries[i / 2] = GFX.getColor((short) ((ROM.DATA[0x55B27 + (i + offset) + 1] << 8) + ROM.DATA[0x55B27 + (i + offset)]));
-				int k = 0;
-				int j = 0;
+			GFX.UpdatePalette(darkWorld);
 
-				for (int y = 10; y < 14; y++)
-				{
-					for (int x = 0; x < 15; x++)
-					{
-						cp.Entries[145 + k] = Palettes.globalSprite_Palettes[0][j++];
-						k++;
-					}
-
-					k++;
-				}
-			}
-
-			GFX.overworldMapBitmap.Palette = cp;
-			GFX.owactualMapBitmap.Palette = cp;
 			Buildtilesetmap();
 			mapPalettePicturebox.Refresh();
 			mapPicturebox.Refresh();
@@ -1925,6 +1899,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			}
 			else if (tabControl1.SelectedIndex == 1)
 			{
+				GFX.UpdatePalette(darkWorld);
 				Buildtilesetmap();
 				updateTiles();
 			}
@@ -2549,7 +2524,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					pos = 0x55C27;
 				}
 
-				Palettes.WritePalette(ROM.DATA, pos, b.Palette.Entries, 128);
+				//Palettes.WritePalette(ROM.DATA, pos, b.Palette.Entries, 128);
 
 				GFX.loadOverworldMap();
 				owMapTilesBox.Refresh();

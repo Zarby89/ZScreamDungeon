@@ -796,24 +796,35 @@ namespace ZeldaFullEditor
 				}
 			}
 
+			UpdatePalette(false);
+		}
+
+		public static void UpdatePalette(bool DW)
+		{
+			int offset = 0;
+			if (DW)
+			{
+				offset = 1;
+			}
+
 			ColorPalette cp = overworldMapBitmap.Palette;
-			for (int i = 0; i < 256; i += 2)
+			for (int i = 0; i < 128; i++)
 			{
 				// 55B27 = US LW
 				// 55C27 = US DW
-				cp.Entries[i / 2] = getColor((short) ((ROM.DATA[0x55B27 + i + 1] << 8) + ROM.DATA[0x55B27 + i]));
+				cp.Entries[i] = Palettes.overworld_Mini_Map_Palettes[offset][i];
+			}
 
-				int k = 0;
-				int j = 0;
-				for (int y = 10; y < 14; y++)
+			int k = 0;
+			int j = 0;
+			for (int y = 10; y < 14; y++)
+			{
+				for (int x = 0; x < 15; x++)
 				{
-					for (int x = 0; x < 15; x++)
-					{
-						cp.Entries[145 + k] = Palettes.globalSprite_Palettes[0][j++];
-						k++;
-					}
+					cp.Entries[145 + k] = Palettes.globalSprite_Palettes[0][j++];
 					k++;
 				}
+				k++;
 			}
 
 			overworldMapBitmap.Palette = cp;
