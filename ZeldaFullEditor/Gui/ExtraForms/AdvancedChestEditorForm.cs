@@ -15,7 +15,7 @@ namespace ZeldaFullEditor.Gui
 		bool changedFromForm = false;
 		ChestAdvancedData[] chestsdata = new ChestAdvancedData[76];
 
-		public AdvancedChestEditorForm(ZScreamer parent) : base(parent)
+		public AdvancedChestEditorForm(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

@@ -15,7 +15,7 @@ namespace ZeldaFullEditor.Gui
 		DungeonProperty[] properties = new DungeonProperty[12];
 
 		bool changedFromForm = false;
-		public DungeonPropertiesForm(ZScreamer parent) : base(parent)
+		public DungeonPropertiesForm(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
-using ZeldaFullEditor.OWSceneModes;
+using ZeldaFullEditor.SceneModes;
 using ZeldaFullEditor.Gui;
 
 namespace ZeldaFullEditor
@@ -38,17 +38,16 @@ namespace ZeldaFullEditor
 		public Bitmap tileBitmap;
 		public IntPtr tileBitmapPtr;
 		public bool snapToGrid = true;
-		public TileMode tilemode;
-		public ExitMode exitmode;
-		public DoorMode doorMode;
-		public EntranceMode entranceMode;
-		public SpriteMode spriteMode;
-		public ItemMode itemMode;
+		public OWTileMode tilemode;
+		public OWExitMode exitmode;
+		public OWDoorMode doorMode;
+		public OWEntranceMode entranceMode;
+		public OWSpriteMode spriteMode;
+		public OWSecretsMode itemMode;
 		public Sprite selectedFormSprite;
-		public TransportMode transportMode;
-		public OverlayMode overlayMode;
-		public GravestoneMode gravestoneMode;
-		public SceneMode ActiveMode;
+		public OWTransportMode transportMode;
+		public OWOverlayMode overlayMode;
+		public OWGravesMode gravestoneMode;
 		public bool showEntrances = true;
 		public bool showExits = true;
 		public bool showFlute = true;
@@ -61,7 +60,7 @@ namespace ZeldaFullEditor
 		internal bool mouse_down;
 
 		// TODO move Overworld ow to ZScreamer
-		public SceneOW(ZScreamer parent) : base(parent)
+		public SceneOW(ZScreamer zs) : base(zs)
 		{
 			//graphics = Graphics.FromImage(scene_bitmap);
 			//this.Image = new Bitmap(4096, 4096);
@@ -70,14 +69,14 @@ namespace ZeldaFullEditor
 			MouseDoubleClick += new MouseEventHandler(OnMouseDoubleClick);
 			MouseWheel += SceneOW_MouseWheel;
 			tilesgfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, temptilesgfxPtr);
-			tilemode = new TileMode(ZS);
-			exitmode = new ExitMode(ZS);
-			entranceMode = new EntranceMode(ZS);
-			itemMode = new ItemMode(ZS);
-			spriteMode = new SpriteMode(ZS);
-			transportMode = new TransportMode(ZS);
-			overlayMode = new OverlayMode(ZS);
-			gravestoneMode = new GravestoneMode(ZS);
+			tilemode = new OWTileMode(ZS);
+			exitmode = new OWExitMode(ZS);
+			entranceMode = new OWEntranceMode(ZS);
+			itemMode = new OWSecretsMode(ZS);
+			spriteMode = new OWSpriteMode(ZS);
+			transportMode = new OWTransportMode(ZS);
+			overlayMode = new OWOverlayMode(ZS);
+			gravestoneMode = new OWGravesMode(ZS);
 
 			//this.Width = 8192;
 			//this.Height = 8192;
@@ -391,14 +390,17 @@ namespace ZeldaFullEditor
 		public override void Copy()
 		{
 			ActiveMode.Copy();
+		}
+
+		public override void Delete()
+		{
+			ActiveMode.Delete();
 			InvalidateHighEnd();
 		}
 
-		public override void Cut()
+		public override void SelectAll()
 		{
-			ActiveMode.Cut();
-
-			InvalidateHighEnd();
+			throw new NotImplementedException();
 		}
 
 		/// <summary>
@@ -741,11 +743,6 @@ namespace ZeldaFullEditor
 			ZS.OverworldManager.allmaps[selectedMap].LoadPalette();
 		}
 
-		public override void Delete()
-		{
-			ActiveMode.Delete();
-		}
-
 
 		public void drawGrid(Graphics graphics)
 		{
@@ -830,6 +827,11 @@ namespace ZeldaFullEditor
 			{
 				entranceMode.OnMouseDoubleClick(e);
 			}
+		}
+
+		protected override void RequestRefresh()
+		{
+			InvalidateHighEnd();
 		}
 	}
 }

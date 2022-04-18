@@ -7,14 +7,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZeldaFullEditor.OWSceneModes
+namespace ZeldaFullEditor.SceneModes
 {
-	public class TransportMode : SceneMode
+	public class OWTransportMode : SceneMode
 	{
 		public TransportOW selectedTransport = null;
 		public TransportOW lastselectedTransport = null;
 
-		public TransportMode(ZScreamer parent) : base(parent)
+		public OWTransportMode(ZScreamer zs) : base(zs)
 		{
 		}
 
@@ -105,6 +105,11 @@ namespace ZeldaFullEditor.OWSceneModes
 
 				//scene.Invalidate(new Rectangle((scene.owForm.splitContainer1.Panel2.HorizontalScroll.Value), (scene.owForm.splitContainer1.Panel2.VerticalScroll.Value), (scene.owForm.splitContainer1.Panel2.Width), (scene.owForm.splitContainer1.Panel2.Height)));
 			}
+		}
+
+		public override void OnMouseWheel(MouseEventArgs e)
+		{
+
 		}
 
 		private void exitProperty_Click(object sender, EventArgs e)
@@ -231,6 +236,11 @@ namespace ZeldaFullEditor.OWSceneModes
 		}
 
 		public override void Delete()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void SelectAll()
 		{
 			throw new NotImplementedException();
 		}

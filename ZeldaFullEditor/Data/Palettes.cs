@@ -46,9 +46,9 @@ namespace ZeldaFullEditor
 		private string asmString = "";
 
 		private readonly ZScreamer ZS;
-		public PaletteHandler(ZScreamer parent)
+		public PaletteHandler(ZScreamer zs)
 		{
-			ZS = parent;
+			ZS = zs;
 		}
 
 		public Color ReadPaletteSingle(int romPosition)

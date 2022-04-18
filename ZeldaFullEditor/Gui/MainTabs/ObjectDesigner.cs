@@ -12,7 +12,7 @@ namespace ZeldaFullEditor.Gui
 {
 	public partial class Object_Designer : ScreamControl
 	{
-		public Object_Designer(ZScreamer parent) : base(parent)
+		public Object_Designer(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

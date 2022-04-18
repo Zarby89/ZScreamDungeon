@@ -25,7 +25,7 @@ namespace ZeldaFullEditor.Gui
 
 		string[] palettesGroups = new string[3] { "Dungeons BG", "Overworld BG", "Sprites" };
 
-		public GfxEditor(ZScreamer parent) : base(parent)
+		public GfxEditor(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

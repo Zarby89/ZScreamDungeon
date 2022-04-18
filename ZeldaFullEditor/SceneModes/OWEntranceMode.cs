@@ -6,16 +6,22 @@ using System.Linq;
 using System.Windows.Forms;
 using ZeldaFullEditor.Gui;
 
-namespace ZeldaFullEditor.OWSceneModes
+namespace ZeldaFullEditor.SceneModes
 {
-	public class EntranceMode : SceneMode
+	public class OWEntranceMode : SceneMode
 	{
 		public EntranceOWEditor selectedEntrance = null;
 		public EntranceOWEditor lastselectedEntrance = null;
 		bool isLeftPress = false;
 
-		public EntranceMode(ZScreamer parent) : base(parent)
+		public OWEntranceMode(ZScreamer zs) : base(zs)
 		{
+
+		}
+
+		public override void OnMouseWheel(MouseEventArgs e)
+		{
+
 		}
 
 		public override void Copy()
@@ -219,7 +225,7 @@ namespace ZeldaFullEditor.OWSceneModes
 					{
 						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
 						ZS.UnderworldScene.Room.reloadGfx();
-						ZS.UnderworldScene.DrawRoom(false);
+						ZS.UnderworldScene.NeedsRefreshing = true;
 					}
 				}
 
@@ -633,6 +639,11 @@ namespace ZeldaFullEditor.OWSceneModes
 
 				g.CompositingMode = CompositingMode.SourceCopy;
 			}
+		}
+
+		public override void SelectAll()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

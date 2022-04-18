@@ -16,10 +16,10 @@ namespace ZeldaFullEditor.Gui
 		public PictureBox vramBox = new PictureBox();
 
 		private readonly ZScreamer ZS;
-		public VramViewer(ZScreamer parent)
+		public VramViewer(ZScreamer zs)
 		{
 			InitializeComponent();
-			ZS = parent;
+			ZS = zs;
 			this.AutoScroll = true;
 			this.Size = new Size(274, 512);
 			vramBox.Location = new Point(0, 0);

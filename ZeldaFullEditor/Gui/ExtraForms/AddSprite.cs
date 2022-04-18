@@ -12,7 +12,7 @@ namespace ZeldaFullEditor.Gui
 {
 	public partial class AddSprite : ScreamForm
 	{
-		public AddSprite(ZScreamer parent) : base(parent)
+		public AddSprite(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

@@ -13,8 +13,6 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public abstract bool PointIsInHitbox(int x, int y);
 	}
 
-
-	[Serializable]
 	public abstract class DungeonObject : DungeonPlaceable, IByteable, IDelegatedDraw, IMouseCollidable
 	{
 		/// <summary>
@@ -33,8 +31,8 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		/// Draws this object to the given controller's graphics or tilemap buffer.
 		/// </summary>
 		/// <param name="ZS">Graphics controller parent</param>
-		public override abstract void Draw(ZScreamer ZS);
+		public abstract override void Draw(ZScreamer ZS);
 
-		public override abstract bool PointIsInHitbox(int x, int y);
+		public abstract override bool PointIsInHitbox(int x, int y);
 	}
 }

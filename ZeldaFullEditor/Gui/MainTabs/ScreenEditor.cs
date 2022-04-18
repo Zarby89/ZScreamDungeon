@@ -104,7 +104,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		private readonly Color[] currentPalette = new Color[Constants.TotalPaletteSize];
 
-		public ScreenEditor(ZScreamer parent) : base(parent)
+		public ScreenEditor(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 			overworldCombobox.SelectedIndex = 0;

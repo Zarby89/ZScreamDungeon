@@ -73,9 +73,9 @@ namespace ZeldaFullEditor
 
 		private readonly ZScreamer ZS;
 		public ZScreamer Screamer { get => ZS; }
-		public Overworld(ZScreamer parent)
+		public Overworld(ZScreamer zs)
 		{
-			ZS = parent;
+			ZS = zs;
 			Tile16List = new List<Tile16>();
 			Tile32List = new List<Tile32>();
 

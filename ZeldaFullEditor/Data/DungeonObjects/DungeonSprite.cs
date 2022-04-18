@@ -8,8 +8,19 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 	{
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
-		public byte NX { get; set; }
-		public byte NY { get; set; }
+
+		private byte nx, ny;
+		public byte NX
+		{
+			get => nx;
+			set => nx = value.Clamp(0, 31);
+		}
+		public byte NY
+		{
+			get => ny;
+			set => ny = value.Clamp(0, 31);
+		}
+
 		public byte Layer { get; set; } = 0;
 
 		public byte KeyDrop { get; set; } = 0;

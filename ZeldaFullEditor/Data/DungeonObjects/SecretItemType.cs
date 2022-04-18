@@ -171,5 +171,41 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		}
 
+
+		public static SecretItemType FindSecretFromID(byte id)
+		{
+			switch (id)
+			{
+				case 0x00: return Secret00;
+				case 0x01: return Secret01;
+				case 0x02: return Secret02;
+				case 0x03: return Secret03;
+				case 0x04: return Secret04;
+				case 0x05: return Secret05;
+				case 0x06: return Secret06;
+				case 0x07: return Secret07;
+				case 0x08: return Secret08;
+				case 0x09: return Secret09;
+				case 0x0A: return Secret0A;
+				case 0x0B: return Secret0B;
+				case 0x0C: return Secret0C;
+				case 0x0D: return Secret0D;
+				case 0x0E: return Secret0E;
+				case 0x0F: return Secret0F;
+				case 0x10: return Secret10;
+				case 0x11: return Secret11;
+				case 0x12: return Secret12;
+				case 0x13: return Secret13;
+				case 0x14: return Secret14;
+				case 0x15: return Secret15;
+				case 0x16: return Secret16;
+				case 0x80: return Secret80;
+				case 0x82: return Secret82;
+				case 0x84: return Secret84;
+				case 0x86: return Secret86;
+				case 0x88: return Secret88;
+			}
+			return Secret00;
+		}
 	}
 }

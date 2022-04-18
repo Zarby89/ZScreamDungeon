@@ -12,7 +12,7 @@ namespace ZeldaFullEditor.Gui
 {
 	public partial class EntranceForm : ScreamForm
 	{
-		public EntranceForm(ZScreamer parent) : base(parent)
+		public EntranceForm(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

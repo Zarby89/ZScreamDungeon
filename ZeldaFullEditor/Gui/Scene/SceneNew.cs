@@ -13,6 +13,7 @@ using Microsoft.VisualBasic;
 using System.IO.Compression;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
+using ZeldaFullEditor.SceneModes;
 
 namespace ZeldaFullEditor
 {
@@ -22,6 +23,7 @@ namespace ZeldaFullEditor
 
 		public bool Active => ZS.ActiveScene == this;
 
+		public bool IsUpdating { get; set; }
 		public bool MouseIsDown { get; set; }
 		public int MouseX { get; protected set; }
 		public int MouseY { get; protected set; }
@@ -32,12 +34,16 @@ namespace ZeldaFullEditor
 		public int DraggingX { get; protected set; }
 		public int DraggingY { get; protected set; }
 
+		public SceneMode ActiveMode { get; protected set; }
 
-		public bool NeedsRefreshing { get; set; }
-
-		protected Scene(ZScreamer parent)
+		public bool NeedsRefreshing
 		{
-			ZS = parent;
+			set => RequestRefresh();
+		}
+
+		protected Scene(ZScreamer zs)
+		{
+			ZS = zs;
 		}
 
 		public virtual void drawText(Graphics g, int x, int y, string text, ImageAttributes ai = null, bool x2 = false)
@@ -73,6 +79,34 @@ namespace ZeldaFullEditor
 			}
 		}
 
+		protected abstract void RequestRefresh();
 
+		public virtual void Copy()
+		{
+			ActiveMode.Copy();
+		}
+
+		public virtual void Paste()
+		{
+			ActiveMode.Paste();
+			RequestRefresh();
+		}
+
+		public virtual void Cut()
+		{
+			ActiveMode.Cut();
+			RequestRefresh();
+		}
+
+		public virtual void Delete()
+		{
+			ActiveMode.Delete();
+			RequestRefresh();
+		}
+
+		public virtual void SelectAll()
+		{
+			ActiveMode.SelectAll();
+		}
 	}
 }

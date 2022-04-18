@@ -12,7 +12,11 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 	}
 
 
-	public abstract class DungeonLister<T> : List<T>, IByteable where T : IByteable
+	public abstract class DungeonListing<T> : List<T> where T : DungeonPlaceable
+	{
+
+	}
+	public abstract class DungeonLister<T> : DungeonListing<T>, IByteable where T : DungeonPlaceable, IByteable
 	{
 		public byte[] Data
 		{
@@ -20,7 +24,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			{
 				List<byte> ret = new List<byte>();
 
-				foreach (var r in this)
+				foreach (T r in this)
 				{
 					ret.AddRange(r.Data);
 				}
@@ -28,6 +32,8 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				return ret.ToArray();
 			}
 		}
+
+
 	}
 
 
@@ -39,5 +45,6 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 	public class DungeonSecretsList : DungeonLister<DungeonSecret>, IByteable { }
 	public class DungeonSpritesList : DungeonLister<DungeonSprite>, IByteable { }
 	public class DungeonChestsList : List<DungeonChestItem> { }
-	public class DungeonBlocksList : List<DungeonBlock> { }
+	public class DungeonBlocksList : DungeonListing<DungeonBlock> { }
+	public class DungeonTorchList : DungeonListing<DungeonTorch> { }
 }

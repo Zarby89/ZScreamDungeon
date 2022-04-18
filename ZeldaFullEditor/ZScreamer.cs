@@ -15,9 +15,9 @@ namespace ZeldaFullEditor.Gui
 	{
 		protected readonly ZScreamer ZS;
 		public ZScreamer Screamer { get => ZS; }
-		public ScreamControl(ZScreamer parent = null)
+		public ScreamControl(ZScreamer zs = null)
 		{
-			ZS = parent ?? new ZScreamer(22);
+			ZS = zs ?? new ZScreamer(22);
 		}
 
 		public ScreamControl()
@@ -30,9 +30,9 @@ namespace ZeldaFullEditor.Gui
 	{
 		protected readonly ZScreamer ZS;
 		public ZScreamer Screamer { get => ZS; }
-		public ScreamForm(ZScreamer parent = null)
+		public ScreamForm(ZScreamer zs = null)
 		{
-			ZS = parent ?? new ZScreamer(22);
+			ZS = zs ?? new ZScreamer(22);
 		}
 
 		public ScreamForm()

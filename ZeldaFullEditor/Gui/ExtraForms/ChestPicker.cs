@@ -12,7 +12,7 @@ namespace ZeldaFullEditor
 {
 	public partial class ChestPicker : Gui.ScreamForm
 	{
-		public ChestPicker(ZScreamer parent) : base(parent)
+		public ChestPicker(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

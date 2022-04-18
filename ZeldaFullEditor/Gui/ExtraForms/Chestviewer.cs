@@ -24,7 +24,7 @@ namespace ZeldaFullEditor
 
 		public List<Chest> items = new List<Chest>();
 
-		public Chestviewer(ZScreamer parent) : base(parent)
+		public Chestviewer(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

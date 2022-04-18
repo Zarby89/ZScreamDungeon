@@ -12,7 +12,7 @@ namespace ZeldaFullEditor.Gui
 {
 	public partial class DictionariesForm : ScreamForm
 	{
-		public DictionariesForm(ZScreamer parent) : base(parent)
+		public DictionariesForm(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

@@ -9,7 +9,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_200 : Room_Object
 	{
-		public object_200(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x200, x, y, size, layer)
+		public object_200(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x200, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x00].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -35,7 +35,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_201 : Room_Object
 	{
-		public object_201(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x201, x, y, size, layer)
+		public object_201(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x201, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x01].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -61,7 +61,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_202 : Room_Object
 	{
-		public object_202(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x202, x, y, size, layer)
+		public object_202(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x202, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x02].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -87,7 +87,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_203 : Room_Object
 	{
-		public object_203(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x203, x, y, size, layer)
+		public object_203(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x203, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x03].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -106,7 +106,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_204 : Room_Object
 	{
-		public object_204(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x204, x, y, size, layer)
+		public object_204(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x204, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x04].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -124,7 +124,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_205 : Room_Object
 	{
-		public object_205(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x205, x, y, size, layer)
+		public object_205(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x205, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x05].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -143,7 +143,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_206 : Room_Object
 	{
-		public object_206(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x206, x, y, size, layer)
+		public object_206(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x206, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x06].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -161,7 +161,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_207 : Room_Object
 	{
-		public object_207(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x207, x, y, size, layer)
+		public object_207(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x207, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x07].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -180,7 +180,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_208 : Room_Object
 	{
-		public object_208(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x208, x, y, size, layer)
+		public object_208(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x208, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x08].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -199,7 +199,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_209 : Room_Object
 	{
-		public object_209(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x209, x, y, size, layer)
+		public object_209(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x209, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x09].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -218,7 +218,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_20A : Room_Object
 	{
-		public object_20A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x20A, x, y, size, layer)
+		public object_20A(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x20A, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x0A].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -237,7 +237,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_20B : Room_Object
 	{
-		public object_20B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x20B, x, y, size, layer)
+		public object_20B(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x20B, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x0B].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -256,7 +256,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_20C : Room_Object
 	{
-		public object_20C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x20C, x, y, size, layer)
+		public object_20C(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x20C, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x0C].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -275,7 +275,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_20D : Room_Object
 	{
-		public object_20D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x20D, x, y, size, layer)
+		public object_20D(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x20D, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x0D].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -314,7 +314,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_20E : Room_Object
 	{
-		public object_20E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x20E, x, y, size, layer)
+		public object_20E(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x20E, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x0E].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -333,7 +333,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_20F : Room_Object
 	{
-		public object_20F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x20F, x, y, size, layer)
+		public object_20F(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x20F, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x0F].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -352,7 +352,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_210 : Room_Object
 	{
-		public object_210(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x210, x, y, size, layer)
+		public object_210(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x210, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x10].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -378,7 +378,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_211 : Room_Object
 	{
-		public object_211(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x211, x, y, size, layer)
+		public object_211(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x211, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x11].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -404,7 +404,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_212 : Room_Object
 	{
-		public object_212(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x212, x, y, size, layer)
+		public object_212(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x212, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x12].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -429,7 +429,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_213 : Room_Object
 	{
-		public object_213(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x213, x, y, size, layer)
+		public object_213(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x213, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x13].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -456,7 +456,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_214 : Room_Object
 	{
-		public object_214(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x214, x, y, size, layer)
+		public object_214(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x214, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x14].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -481,7 +481,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_215 : Room_Object
 	{
-		public object_215(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x215, x, y, size, layer)
+		public object_215(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x215, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x15].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -507,7 +507,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_216 : Room_Object
 	{
-		public object_216(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x216, x, y, size, layer)
+		public object_216(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x216, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x16].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -533,7 +533,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_217 : Room_Object
 	{
-		public object_217(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x217, x, y, size, layer)
+		public object_217(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x217, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x17].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -574,7 +574,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_218 : Room_Object
 	{
-		public object_218(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x218, x, y, size, layer)
+		public object_218(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x218, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x18].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -602,7 +602,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_219 : Room_Object
 	{
-		public object_219(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x219, x, y, size, layer)
+		public object_219(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x219, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x19].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -630,7 +630,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_21A : Room_Object
 	{
-		public object_21A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x21A, x, y, size, layer)
+		public object_21A(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x21A, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x1A].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -656,7 +656,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_21B : Room_Object
 	{
-		public object_21B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x21B, x, y, size, layer)
+		public object_21B(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x21B, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x1B].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -683,7 +683,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_21C : Room_Object
 	{
-		public object_21C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x21C, x, y, size, layer)
+		public object_21C(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x21C, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x1C].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -710,7 +710,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_21D : Room_Object
 	{
-		public object_21D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x21D, x, y, size, layer)
+		public object_21D(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x21D, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x1D].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -737,7 +737,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_21E : Room_Object
 	{
-		public object_21E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x21E, x, y, size, layer)
+		public object_21E(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x21E, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x1E].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -763,7 +763,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_21F : Room_Object
 	{
-		public object_21F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x21F, x, y, size, layer)
+		public object_21F(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x21F, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x1F].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -789,7 +789,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_220 : Room_Object
 	{
-		public object_220(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x220, x, y, size, layer)
+		public object_220(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x220, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x20].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -815,7 +815,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_221 : Room_Object
 	{
-		public object_221(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x221, x, y, size, layer)
+		public object_221(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x221, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x21].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -841,7 +841,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_222 : Room_Object
 	{
-		public object_222(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x222, x, y, size, layer)
+		public object_222(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x222, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x22].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -867,7 +867,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_223 : Room_Object
 	{
-		public object_223(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x223, x, y, size, layer)
+		public object_223(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x223, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x23].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -893,7 +893,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_224 : Room_Object
 	{
-		public object_224(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x224, x, y, size, layer)
+		public object_224(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x224, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x24].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -919,7 +919,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_225 : Room_Object
 	{
-		public object_225(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x225, x, y, size, layer)
+		public object_225(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x225, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x25].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -945,7 +945,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_226 : Room_Object
 	{
-		public object_226(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x226, x, y, size, layer)
+		public object_226(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x226, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x26].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -971,7 +971,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_227 : Room_Object
 	{
-		public object_227(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x227, x, y, size, layer)
+		public object_227(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x227, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x27].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -997,7 +997,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_228 : Room_Object
 	{
-		public object_228(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x228, x, y, size, layer)
+		public object_228(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x228, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x28].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1023,7 +1023,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_229 : Room_Object
 	{
-		public object_229(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x229, x, y, size, layer)
+		public object_229(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x229, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x29].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1049,7 +1049,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_22A : Room_Object
 	{
-		public object_22A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x22A, x, y, size, layer)
+		public object_22A(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x22A, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x2A].Name;
 			allBgs = true;
@@ -1076,7 +1076,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_22B : Room_Object
 	{
-		public object_22B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x22B, x, y, size, layer)
+		public object_22B(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x22B, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x2B].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1102,7 +1102,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_22C : Room_Object
 	{
-		public object_22C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x22C, x, y, size, layer)
+		public object_22C(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x22C, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x2C].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1133,7 +1133,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_22D : Room_Object
 	{
-		public object_22D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x22D, x, y, size, layer)
+		public object_22D(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x22D, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x2D].Name;
 			// Harcoded position wtf ?!?
@@ -1186,7 +1186,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_22E : Room_Object
 	{
-		public object_22E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x22E, x, y, size, layer)
+		public object_22E(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x22E, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x2E].Name;
 			int pos = ZS.Offsets.tile_address + 0x1BF2;
@@ -1315,7 +1315,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_22F : Room_Object
 	{
-		public object_22F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x22F, x, y, size, layer)
+		public object_22F(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x22F, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x2F].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1342,7 +1342,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_230 : Room_Object
 	{
-		public object_230(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x230, x, y, size, layer)
+		public object_230(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x230, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x30].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1368,7 +1368,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_231 : Room_Object
 	{
-		public object_231(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x231, x, y, size, layer)
+		public object_231(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x231, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x31].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1396,7 +1396,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_232 : Room_Object
 	{
-		public object_232(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x232, x, y, size, layer)
+		public object_232(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x232, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x32].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1423,7 +1423,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_233 : Room_Object
 	{
-		public object_233(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x233, x, y, size, layer)
+		public object_233(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x233, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x33].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1450,7 +1450,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_234 : Room_Object
 	{
-		public object_234(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x234, x, y, size, layer)
+		public object_234(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x234, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x34].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1476,7 +1476,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_235 : Room_Object
 	{
-		public object_235(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x235, x, y, size, layer)
+		public object_235(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x235, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x35].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1502,7 +1502,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_236 : Room_Object
 	{
-		public object_236(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x236, x, y, size, layer)
+		public object_236(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x236, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x36].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1528,7 +1528,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_237 : Room_Object
 	{
-		public object_237(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x237, x, y, size, layer)
+		public object_237(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x237, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x37].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1554,7 +1554,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_238 : Room_Object
 	{
-		public object_238(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x238, x, y, size, layer)
+		public object_238(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x238, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x38].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1580,7 +1580,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_239 : Room_Object
 	{
-		public object_239(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x239, x, y, size, layer)
+		public object_239(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x239, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x39].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1606,7 +1606,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_23A : Room_Object
 	{
-		public object_23A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x23A, x, y, size, layer)
+		public object_23A(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x23A, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x3A].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1643,7 +1643,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_23B : Room_Object
 	{
-		public object_23B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x23B, x, y, size, layer)
+		public object_23B(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x23B, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x3B].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1680,7 +1680,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_23C : Room_Object
 	{
-		public object_23C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x23C, x, y, size, layer)
+		public object_23C(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x23C, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x3C].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1707,7 +1707,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_23D : Room_Object
 	{
-		public object_23D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x23D, x, y, size, layer)
+		public object_23D(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x23D, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x3D].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1733,7 +1733,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_23E : Room_Object
 	{
-		public object_23E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x23E, x, y, size, layer)
+		public object_23E(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x23E, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x3E].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1759,7 +1759,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_23F : Room_Object
 	{
-		public object_23F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x23F, x, y, size, layer)
+		public object_23F(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x23F, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x3F].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1785,7 +1785,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_240 : Room_Object
 	{
-		public object_240(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x240, x, y, size, layer)
+		public object_240(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x240, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x40].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1811,7 +1811,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_241 : Room_Object
 	{
-		public object_241(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x241, x, y, size, layer)
+		public object_241(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x241, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x41].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1837,7 +1837,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_242 : Room_Object
 	{
-		public object_242(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x242, x, y, size, layer)
+		public object_242(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x242, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x42].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1863,7 +1863,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_243 : Room_Object
 	{
-		public object_243(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x243, x, y, size, layer)
+		public object_243(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x243, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x43].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1889,7 +1889,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_244 : Room_Object
 	{
-		public object_244(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x244, x, y, size, layer)
+		public object_244(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x244, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x44].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1915,7 +1915,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_245 : Room_Object
 	{
-		public object_245(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x245, x, y, size, layer)
+		public object_245(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x245, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x45].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1941,7 +1941,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_246 : Room_Object
 	{
-		public object_246(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x246, x, y, size, layer)
+		public object_246(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x246, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x46].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1967,7 +1967,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_247 : Room_Object
 	{
-		public object_247(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x247, x, y, size, layer)
+		public object_247(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x247, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x47].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -1993,7 +1993,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_248 : Room_Object
 	{
-		public object_248(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x248, x, y, size, layer)
+		public object_248(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x248, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x48].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2019,7 +2019,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_249 : Room_Object
 	{
-		public object_249(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x249, x, y, size, layer)
+		public object_249(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x249, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x49].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2045,7 +2045,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_24A : Room_Object
 	{
-		public object_24A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x24A, x, y, size, layer)
+		public object_24A(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x24A, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x4A].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2071,7 +2071,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_24B : Room_Object
 	{
-		public object_24B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x24B, x, y, size, layer)
+		public object_24B(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x24B, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x4B].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2097,7 +2097,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_24C : Room_Object
 	{
-		public object_24C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x24C, x, y, size, layer)
+		public object_24C(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x24C, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x4C].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2123,7 +2123,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_24D : Room_Object
 	{
-		public object_24D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x24D, x, y, size, layer)
+		public object_24D(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x24D, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x4D].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2153,7 +2153,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_24E : Room_Object
 	{
-		public object_24E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x24E, x, y, size, layer)
+		public object_24E(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x24E, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x4E].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2180,7 +2180,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_24F : Room_Object
 	{
-		public object_24F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x24F, x, y, size, layer)
+		public object_24F(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x24F, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x4F].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2206,7 +2206,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_250 : Room_Object
 	{
-		public object_250(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x250, x, y, size, layer)
+		public object_250(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x250, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x50].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2233,7 +2233,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_251 : Room_Object
 	{
-		public object_251(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x251, x, y, size, layer)
+		public object_251(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x251, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x51].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2259,7 +2259,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_252 : Room_Object
 	{
-		public object_252(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x252, x, y, size, layer)
+		public object_252(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x252, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x52].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2286,7 +2286,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_253 : Room_Object
 	{
-		public object_253(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x253, x, y, size, layer)
+		public object_253(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x253, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x53].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2313,7 +2313,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_254 : Room_Object
 	{
-		public object_254(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x254, x, y, size, layer)
+		public object_254(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x254, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x54].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2399,7 +2399,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_255 : Room_Object
 	{
-		public object_255(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x255, x, y, size, layer)
+		public object_255(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x255, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x55].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2424,7 +2424,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_256 : Room_Object
 	{
-		public object_256(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x256, x, y, size, layer)
+		public object_256(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x256, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x56].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2450,7 +2450,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_257 : Room_Object
 	{
-		public object_257(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x257, x, y, size, layer)
+		public object_257(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x257, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x57].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2476,7 +2476,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_258 : Room_Object
 	{
-		public object_258(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x258, x, y, size, layer)
+		public object_258(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x258, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x58].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2502,7 +2502,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_259 : Room_Object
 	{
-		public object_259(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x259, x, y, size, layer)
+		public object_259(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x259, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x59].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2528,7 +2528,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_25A : Room_Object
 	{
-		public object_25A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x25A, x, y, size, layer)
+		public object_25A(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x25A, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x5A].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2553,7 +2553,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_25B : Room_Object
 	{
-		public object_25B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x25B, x, y, size, layer)
+		public object_25B(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x25B, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x5B].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2595,7 +2595,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_25C : Room_Object
 	{
-		public object_25C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x25C, x, y, size, layer)
+		public object_25C(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x25C, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x5C].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2621,7 +2621,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_25D : Room_Object
 	{
-		public object_25D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x25D, x, y, size, layer)
+		public object_25D(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x25D, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x5D].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2647,7 +2647,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_25E : Room_Object
 	{
-		public object_25E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x25E, x, y, size, layer)
+		public object_25E(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x25E, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x5E].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2673,7 +2673,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_25F : Room_Object
 	{
-		public object_25F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x25F, x, y, size, layer)
+		public object_25F(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x25F, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x5F].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2700,7 +2700,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_260 : Room_Object
 	{
-		public object_260(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x260, x, y, size, layer)
+		public object_260(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x260, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x60].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2731,7 +2731,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_261 : Room_Object
 	{
-		public object_261(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x261, x, y, size, layer)
+		public object_261(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x261, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x61].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2761,7 +2761,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_262 : Room_Object
 	{
-		public object_262(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x262, x, y, size, layer)
+		public object_262(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x262, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x62].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2787,7 +2787,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_263 : Room_Object
 	{
-		public object_263(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x263, x, y, size, layer)
+		public object_263(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x263, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x63].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2813,7 +2813,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_264 : Room_Object
 	{
-		public object_264(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x264, x, y, size, layer)
+		public object_264(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x264, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x64].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2839,7 +2839,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_265 : Room_Object
 	{
-		public object_265(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x265, x, y, size, layer)
+		public object_265(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x265, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x65].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2864,7 +2864,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_266 : Room_Object
 	{
-		public object_266(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x266, x, y, size, layer)
+		public object_266(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x266, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x66].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2890,7 +2890,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_267 : Room_Object
 	{
-		public object_267(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x267, x, y, size, layer)
+		public object_267(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x267, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x67].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2917,7 +2917,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_268 : Room_Object
 	{
-		public object_268(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x268, x, y, size, layer)
+		public object_268(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x268, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x68].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2943,7 +2943,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_269 : Room_Object
 	{
-		public object_269(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x269, x, y, size, layer)
+		public object_269(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x269, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x69].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2969,7 +2969,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_26A : Room_Object
 	{
-		public object_26A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x26A, x, y, size, layer)
+		public object_26A(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x26A, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x6A].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -2995,7 +2995,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_26B : Room_Object
 	{
-		public object_26B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x26B, x, y, size, layer)
+		public object_26B(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x26B, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x6B].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3022,7 +3022,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_26C : Room_Object
 	{
-		public object_26C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x26C, x, y, size, layer)
+		public object_26C(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x26C, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x6C].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3048,7 +3048,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_26D : Room_Object
 	{
-		public object_26D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x26D, x, y, size, layer)
+		public object_26D(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x26D, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x6D].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3074,7 +3074,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_26E : Room_Object
 	{
-		public object_26E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x26E, x, y, size, layer)
+		public object_26E(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x26E, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x6E].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3100,7 +3100,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_26F : Room_Object
 	{
-		public object_26F(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x26F, x, y, size, layer)
+		public object_26F(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x26F, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x6F].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3126,7 +3126,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_270 : Room_Object
 	{
-		public object_270(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x270, x, y, size, layer)
+		public object_270(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x270, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x70].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3172,7 +3172,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_271 : Room_Object
 	{
-		public object_271(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x271, x, y, size, layer)
+		public object_271(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x271, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x71].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3200,7 +3200,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_272 : Room_Object
 	{
-		public object_272(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x272, x, y, size, layer)
+		public object_272(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x272, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x72].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3226,7 +3226,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_273 : Room_Object
 	{
-		public object_273(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x273, x, y, size, layer)
+		public object_273(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x273, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x73].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3251,7 +3251,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_274 : Room_Object
 	{
-		public object_274(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x274, x, y, size, layer)
+		public object_274(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x274, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x74].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3280,7 +3280,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_275 : Room_Object
 	{
-		public object_275(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x275, x, y, size, layer)
+		public object_275(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x275, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x75].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3305,7 +3305,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_276 : Room_Object
 	{
-		public object_276(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x276, x, y, size, layer)
+		public object_276(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x276, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x76].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3331,7 +3331,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_277 : Room_Object
 	{
-		public object_277(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x277, x, y, size, layer)
+		public object_277(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x277, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x77].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3357,7 +3357,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_278 : Room_Object
 	{
-		public object_278(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x278, x, y, size, layer)
+		public object_278(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x278, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x78].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3404,7 +3404,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_279 : Room_Object
 	{
-		public object_279(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x279, x, y, size, layer)
+		public object_279(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x279, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x79].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3430,7 +3430,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_27A : Room_Object
 	{
-		public object_27A(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x27A, x, y, size, layer)
+		public object_27A(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x27A, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x7A].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3456,7 +3456,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_27B : Room_Object
 	{
-		public object_27B(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x27B, x, y, size, layer)
+		public object_27B(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x27B, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x7B].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3491,7 +3491,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_27C : Room_Object
 	{
-		public object_27C(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x27C, x, y, size, layer)
+		public object_27C(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x27C, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x7C].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3517,7 +3517,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_27D : Room_Object
 	{
-		public object_27D(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x27D, x, y, size, layer)
+		public object_27D(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x27D, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x7D].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];
@@ -3543,7 +3543,7 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class object_27E : Room_Object
 	{
-		public object_27E(byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, 0x27E, x, y, size, layer)
+		public object_27E(byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, 0x27E, x, y, size, layer)
 		{
 			name = Data.DefaultEntities.ListOfSet2RoomObjects[0x7E].Name;
 			int pos = ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subtype3TileDataPointers + ((id & 0xFF) * 2), 2];

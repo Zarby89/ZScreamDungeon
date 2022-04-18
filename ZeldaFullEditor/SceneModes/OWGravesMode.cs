@@ -7,14 +7,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Data;
-namespace ZeldaFullEditor.OWSceneModes
+namespace ZeldaFullEditor.SceneModes
 {
-	public class GravestoneMode : SceneMode
+	public class OWGravesMode : SceneMode
 	{
 		public Gravestone selectedGrave = null;
 		public Gravestone lastselectedGrave = null;
 
-		public GravestoneMode(ZScreamer parent) : base(parent)
+		public OWGravesMode(ZScreamer zs) : base(zs)
+		{
+
+		}
+
+		public override void OnMouseWheel(MouseEventArgs e)
 		{
 
 		}
@@ -140,6 +145,11 @@ namespace ZeldaFullEditor.OWSceneModes
 		}
 
 		public override void Delete()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void SelectAll()
 		{
 			throw new NotImplementedException();
 		}

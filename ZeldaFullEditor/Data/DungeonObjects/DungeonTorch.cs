@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
-	public unsafe class DungeonTorch : IFreelyPlaceable, IMouseCollidable, IMultilayered
+	public unsafe class DungeonTorch : DungeonPlaceable, IFreelyPlaceable, IMouseCollidable, IMultilayered
 	{
 
 		public byte X { get; set; } = 0;
@@ -20,12 +20,12 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		{
 		}
 
-		public void Draw(ZScreamer ZS)
+		public override void Draw(ZScreamer ZS)
 		{
 
 		}
 
-		public bool PointIsInHitbox(int x, int y)
+		public override bool PointIsInHitbox(int x, int y)
 		{
 			throw new NotImplementedException();
 		}

@@ -16,6 +16,7 @@ using System.Drawing.Drawing2D;
 using System.Threading.Tasks;
 using System.Globalization;
 
+using ZeldaFullEditor.SceneModes;
 using ZeldaFullEditor.Data.DungeonObjects;
 
 namespace ZeldaFullEditor
@@ -34,48 +35,75 @@ namespace ZeldaFullEditor
 		public bool showLayer1;
 		public bool showLayer2;
 
+		private SceneMode CurrentMode;
+		private readonly UWLayerMode layer1Mode;
+		private readonly UWLayerMode layer2Mode;
+		private readonly UWLayerMode layer3Mode;
+		private readonly UWDoorMode doorMode;
+		private readonly UWSpriteMode spriteMode;
+		private readonly UWSecretsMode secretsMode;
+		private readonly UWBlockMode blockMode;
+		private readonly UWTorchMode torchMode;
+		private readonly UWEntranceMode entranceMode;
+
+
 		public DungeonRoom Room { get; set; }
 
-		public SceneUW(ZScreamer parent) : base(parent)
+		public SceneUW(ZScreamer zs) : base(zs)
 		{
+			layer1Mode = new UWLayerMode(ZS, 1);
+			layer2Mode = new UWLayerMode(ZS, 2);
+			layer3Mode = new UWLayerMode(ZS, 3);
+			doorMode = new UWDoorMode(ZS);
+			spriteMode = new UWSpriteMode(ZS);
+			secretsMode = new UWSecretsMode(ZS);
+			blockMode = new UWBlockMode(ZS);
+			torchMode = new UWTorchMode(ZS);
+			entranceMode = new UWEntranceMode(ZS);
+
+
+
 			//graphics = Graphics.FromImage(scene_bitmap);
 
 			MouseDown += new MouseEventHandler(OnMouseDown);
 			MouseUp += new MouseEventHandler(OnMouseUp);
 			MouseMove += new MouseEventHandler(OnMouseMove);
 			MouseDoubleClick += new MouseEventHandler(OnMouseDoubleClick);
-			MouseWheel += SceneUW_MouseWheel;
+			MouseWheel += new MouseEventHandler(OnMouseWheel);
 			Paint += SceneUW_Paint;
 		}
 
-		private void SceneUW_MouseWheel(object sender, MouseEventArgs e)
+		private void OnMouseWheel(object o, MouseEventArgs e)
 		{
-			if (Room.SelectedObjects.Count == 1 && Room.SelectedObjects[0] is RoomObject obj)
-			{
-				if ((e.Delta > 0 && obj.IncreaseSize()) || (e.Delta < 0 && obj.DecreaseSize()))
-				{
-					updateSelectionObject(obj);
-				}
-			}
-
-			DrawRoom();
+			CurrentMode.OnMouseWheel(e);
 		}
 
-		protected override void OnMouseDown(MouseEventArgs e)
+		private void OnMouseDown(object sender, MouseEventArgs e)
 		{
+			CurrentMode.OnMouseDown(e);
 			base.OnMouseDown(e);
 		}
 
-		private void ResizeObject(RoomObject lastElement, int x, int y)
+
+		private unsafe void OnMouseUp(object sender, MouseEventArgs e)
 		{
 			throw new NotImplementedException();
 		}
 
-		// TODO: FIND PROBLEM THAT IS INCREASING SAVE TIME!!
+
 		private void OnMouseMove(object sender, MouseEventArgs e)
 		{
+			CurrentMode.OnMouseMove(e);
+
+
 			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 
+			throw new NotImplementedException();
+		}
+
+
+		private void OnMouseDoubleClick(object sender, MouseEventArgs e)
+		{
 			throw new NotImplementedException();
 		}
 
@@ -110,11 +138,6 @@ namespace ZeldaFullEditor
 			//graphics.Clear(this.BackColor);
 		}
 
-		private void OnMouseDown(object sender, MouseEventArgs e)
-		{
-			throw new NotImplementedException();
-		}
-
 		public unsafe void ClearBgGfx()
 		{
 			byte* bg1data = (byte*) ZS.GFXManager.roomBg1Ptr.ToPointer();
@@ -126,15 +149,10 @@ namespace ZeldaFullEditor
 				bg2data[i] = 0;
 			}
 		}
-
-		public unsafe void DrawRoom(bool refresh = true)
+		protected override void RequestRefresh()
 		{
 			throw new NotImplementedException();
-
-			if (refresh)
-			{
-				Refresh();
-			}
+			Refresh();
 		}
 
 		public void drawChests()
@@ -212,16 +230,6 @@ namespace ZeldaFullEditor
 			ZS.GFXManager.roomBgLayoutBitmap.Palette = palettes;
 		}
 
-		private unsafe void OnMouseUp(object sender, MouseEventArgs e)
-		{
-			throw new NotImplementedException();
-		}
-
-		private void OnMouseDoubleClick(object sender, MouseEventArgs e)
-		{
-			throw new NotImplementedException();
-		}
-
 		public void addChest()
 		{
 			throw new NotImplementedException();
@@ -268,32 +276,7 @@ namespace ZeldaFullEditor
 		// TODO move to main form
 		public void updateSelectionObject(object o)
 		{
-			throw new NotImplementedException();
-		}
-
-
-		public void SelectAll()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Delete()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Paste()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Copy()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Cut()
-		{
+			NeedsRefreshing = true;
 			throw new NotImplementedException();
 		}
 

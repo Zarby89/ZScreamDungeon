@@ -124,9 +124,9 @@ namespace ZeldaFullEditor
 
 
 		private readonly ZScreamer ZS;
-		public GFX(ZScreamer parent)
+		public GFX(ZScreamer zs)
 		{
-			ZS = parent;
+			ZS = zs;
 		}
 		public unsafe void DrawBG1()
 		{

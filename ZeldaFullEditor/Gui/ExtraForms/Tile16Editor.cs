@@ -19,7 +19,7 @@ namespace ZeldaFullEditor.Gui
 		Tile16[] allTiles = new Tile16[Constants.NumberOfMap16];
 
 		ushort searchedTile = 0xFFFF;
-		public Tile16Editor(ZScreamer parent) : base(parent)
+		public Tile16Editor(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 

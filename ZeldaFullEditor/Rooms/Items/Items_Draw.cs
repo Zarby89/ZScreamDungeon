@@ -16,9 +16,9 @@ namespace ZeldaFullEditor
 		public bool bg2 = false;
 
 		private readonly ZScreamer ZS;
-		public PotItem(byte id, byte x, byte y, bool bg2, ZScreamer parent)
+		public PotItem(byte id, byte x, byte y, bool bg2, ZScreamer zs)
 		{
-			ZS = parent;
+			ZS = zs;
 			this.id = id;
 			this.x = x;
 			this.y = y;

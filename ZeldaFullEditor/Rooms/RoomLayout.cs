@@ -8,7 +8,7 @@ namespace ZeldaFullEditor.Rooms
 {
 	class RoomLayout : Room
 	{
-		public RoomLayout(ZScreamer parent) : base(parent, -1)
+		public RoomLayout(ZScreamer zs) : base(zs, -1)
 		{
 			// TODO: Add something here?
 		}

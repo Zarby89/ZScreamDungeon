@@ -7,15 +7,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZeldaFullEditor.OWSceneModes
+namespace ZeldaFullEditor.SceneModes
 {
-	public class ItemMode : SceneMode
+	public class OWSecretsMode : SceneMode
 	{
 		public RoomPotSaveEditor selectedItem;
 		public RoomPotSaveEditor lastselectedItem;
 		public bool isLeftPress = false;
-		public ItemMode(ZScreamer parent) : base(parent)
+		public OWSecretsMode(ZScreamer zs) : base(zs)
 		{
+
+		}
+
+		public override void OnMouseWheel(MouseEventArgs e)
+		{
+
 		}
 
 		public override void OnMouseDown(MouseEventArgs e)
@@ -237,6 +243,11 @@ namespace ZeldaFullEditor.OWSceneModes
 
 				g.CompositingMode = CompositingMode.SourceCopy;
 			}
+		}
+
+		public override void SelectAll()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

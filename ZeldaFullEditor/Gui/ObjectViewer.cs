@@ -25,7 +25,7 @@ namespace ZeldaFullEditor
 
 		public RoomObject selectedObject = null;
 
-		public ObjectViewer(ZScreamer parent) : base(parent)
+		public ObjectViewer(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

@@ -12,7 +12,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 {
 	public partial class SpriteEditor : ScreamControl
 	{
-		public SpriteEditor(ZScreamer parent) : base(parent)
+		public SpriteEditor(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

@@ -34,7 +34,7 @@ namespace ZeldaFullEditor.Gui
 		Color[] selectedPalette = null;
 		int selectedX = 16;
 
-		public PaletteEditor(ZScreamer parent) : base(parent)
+		public PaletteEditor(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 
@@ -141,7 +141,7 @@ namespace ZeldaFullEditor.Gui
 			ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
 			ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
 			ZS.UnderworldScene.Room.reloadGfx();
-			ZS.UnderworldScene.DrawRoom();
+			ZS.UnderworldScene.NeedsRefreshing = true;
 			palettePicturebox.Refresh();
 		}
 

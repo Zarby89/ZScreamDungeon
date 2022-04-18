@@ -25,7 +25,7 @@ namespace ZeldaFullEditor
 		public byte door_dir = 0;
 		public byte door_type = 0;
 
-		public object_door(ushort id, byte x, byte y, byte size, byte layer, ZScreamer parent) : base(parent, id, x, y, size, layer)
+		public object_door(ushort id, byte x, byte y, byte size, byte layer, ZScreamer zs) : base(zs, id, x, y, size, layer)
 		{
 			options |= ObjectOption.Door;
 			door_pos = (byte) ((id & 0xF0) >> 3); //*2

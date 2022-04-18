@@ -27,14 +27,14 @@ namespace ZeldaFullEditor
 		// Dungeons Rooms - short (2byte) * 17 - 34bytes
 		// Rooms Names - 296 dynamic strings
 
-		static public string[] dungeonsNames = new string[17];
-		static public string[] roomsNames;
-		static public string[] mapsNames;
-		static public ushort[][] dungeonsRooms = new ushort[17][];
-		static public List<DataRoom> dungeonsRoomList = new List<DataRoom>();
+		public static string[] dungeonsNames = new string[17];
+		public static string[] roomsNames;
+		public static string[] mapsNames;
+		public static ushort[][] dungeonsRooms = new ushort[17][];
+		public static List<DataRoom> dungeonsRoomList = new List<DataRoom>();
 
 		// TODO move to default entities
-		static public void defaultDungeonNames()
+		public static void defaultDungeonNames()
 		{
 			dungeonsNames[0] = "Sewers";
 			dungeonsNames[1] = "Castle";
@@ -55,7 +55,7 @@ namespace ZeldaFullEditor
 			dungeonsNames[16] = "Caves and Houses";
 		}
 
-		static public void defaultDungeonRooms()
+		public static void defaultDungeonRooms()
 		{
 			// 29,30,31,32,33,34
 			dungeonsRooms[0] = new ushort[] { 2, 17, 18, 33, 34, 50, 65, 66 }; // Sewer
@@ -89,7 +89,7 @@ namespace ZeldaFullEditor
 		}
 
 		// TODO move to DefaultEntities
-		static public void defaultRoomsNames()
+		public static void defaultRoomsNames()
 		{
 			roomsNames = new string[]{
 				"Ganon","Hyrule Castle (North Corridor)","Behind Sanctuary (Switch)",
@@ -181,7 +181,7 @@ namespace ZeldaFullEditor
 			};
 		}
 
-		static public void defaultMapsNames()
+		public static void defaultMapsNames()
 		{
 			// DP = Duplicate
 			mapsNames = new string[]{
@@ -215,7 +215,7 @@ namespace ZeldaFullEditor
 			};
 		}
 
-		static public void loadDefaultProject()
+		public static void loadDefaultProject()
 		{
 			defaultDungeonNames();
 			defaultRoomsNames();

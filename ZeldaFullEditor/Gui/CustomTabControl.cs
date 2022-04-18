@@ -12,7 +12,7 @@ namespace ZeldaFullEditor
 {
 	public partial class CustomTabControl : Gui.ScreamControl
 	{
-		public CustomTabControl(ZScreamer parent) : base(parent)
+		public CustomTabControl(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

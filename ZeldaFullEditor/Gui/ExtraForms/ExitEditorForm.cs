@@ -18,7 +18,7 @@ namespace ZeldaFullEditor
 		int pixelMapy;
 		public ExitOW selectedExit;
 
-		public ExitEditorForm(ZScreamer parent) : base(parent)
+		public ExitEditorForm(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

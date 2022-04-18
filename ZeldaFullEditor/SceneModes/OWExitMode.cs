@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZeldaFullEditor.OWSceneModes
+namespace ZeldaFullEditor.SceneModes
 {
-	public class ExitMode : SceneMode
+	public class OWExitMode : SceneMode
 	{
 		public ExitOW selectedExit = null;
 		public ExitOW lastselectedExit = null;
@@ -20,7 +20,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		ExitEditorForm exitPropForm;
 
-		public ExitMode(ZScreamer parent) : base(parent)
+		public OWExitMode(ZScreamer zs) : base(zs)
 		{
 			exitPropForm = new ExitEditorForm(ZS);
 		}
@@ -48,6 +48,11 @@ namespace ZeldaFullEditor.OWSceneModes
 				lastselectedExit = selectedExit = ae;
 				ZS.OverworldScene.mouse_down = true;
 			}
+		}
+
+		public override void OnMouseWheel(MouseEventArgs e)
+		{
+
 		}
 
 		public ExitOW AddExit(bool clipboard = false)
@@ -152,7 +157,7 @@ namespace ZeldaFullEditor.OWSceneModes
 					{
 						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
 						ZS.UnderworldScene.Room.reloadGfx();
-						ZS.UnderworldScene.DrawRoom(false);
+						ZS.UnderworldScene.NeedsRefreshing = true;
 					}
 				}
 
@@ -502,6 +507,11 @@ namespace ZeldaFullEditor.OWSceneModes
 			ZS.UnderworldScene.drawText(g, 0, 0, "ROOM : " + ZS.DungeonForm.previewRoom.RoomID.ToString("X2"));
 			g.InterpolationMode = InterpolationMode.NearestNeighbor;
 			g.Dispose();
+		}
+
+		public override void SelectAll()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

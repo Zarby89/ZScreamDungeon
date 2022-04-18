@@ -15,10 +15,10 @@ namespace ZeldaFullEditor.Gui
 	public partial class CGRamViewer : PictureBox
 	{
 		private readonly ZScreamer ZS;
-		public CGRamViewer(ZScreamer parent)
+		public CGRamViewer(ZScreamer zs)
 		{
 			InitializeComponent();
-			ZS = parent;
+			ZS = zs;
 			this.Paint += CGRamViewer_Paint;
 			this.MouseDown += CGRamViewer_MouseDown;
 		}

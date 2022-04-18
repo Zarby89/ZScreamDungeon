@@ -7,23 +7,30 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZeldaFullEditor.OWSceneModes
+namespace ZeldaFullEditor.SceneModes
 {
 	public abstract class SceneMode
 	{
 		protected readonly ZScreamer ZS;
-
-		protected SceneMode(ZScreamer parent)
+		protected SceneMode(ZScreamer zs)
 		{
-			ZS = parent;
+			ZS = zs;
 		}
 
 		public abstract void OnMouseDown(MouseEventArgs e);
 		public abstract void OnMouseUp(MouseEventArgs e);
 		public abstract void OnMouseMove(MouseEventArgs e);
+		public abstract void OnMouseWheel(MouseEventArgs e);
 		public abstract void Copy();
-		public abstract void Cut();
+
+		public virtual void Cut()
+		{
+			Copy();
+			Delete();
+		}
+
 		public abstract void Paste();
 		public abstract void Delete();
+		public abstract void SelectAll();
 	}
 }

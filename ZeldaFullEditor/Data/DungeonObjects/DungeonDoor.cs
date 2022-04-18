@@ -14,7 +14,21 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public byte X { get; set; }
 		public byte Y { get; set; }
 
+		private byte nx, ny;
+		public byte NX
+		{
+			get => nx;
+			set => nx = value.Clamp(0, 63);
+		}
+		public byte NY
+		{
+			get => ny;
+			set => ny = value.Clamp(0, 63);
+		}
+
 		public override byte[] Data => new byte[] { ID, DoorPosition.Token };
+
+		public DungeonDoorType DoorType { get; set; }
 
 		private DungeonDoorDraw position;
 		public DungeonDoorDraw DoorPosition

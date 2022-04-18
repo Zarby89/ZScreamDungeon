@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZeldaFullEditor.OWSceneModes
+namespace ZeldaFullEditor.SceneModes
 {
-	public class SpriteMode : SceneMode
+	public class OWSpriteMode : SceneMode
 	{
 		Sprite selectedSprite;
 		public Sprite lastselectedSprite;
@@ -17,7 +17,7 @@ namespace ZeldaFullEditor.OWSceneModes
 		bool isLeftPress = false;
 
 		Gui.AddSprite addspr;
-		public SpriteMode(ZScreamer parent) : base(parent)
+		public OWSpriteMode(ZScreamer zs) : base(zs)
 		{
 			addspr = new Gui.AddSprite(ZS);
 		}
@@ -46,6 +46,11 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 
 			ZS.OverworldScene.mouse_down = true;
+		}
+
+		public override void OnMouseWheel(MouseEventArgs e)
+		{
+
 		}
 
 		public override void Copy()
@@ -348,6 +353,11 @@ namespace ZeldaFullEditor.OWSceneModes
 
 				g.CompositingMode = CompositingMode.SourceCopy;
 			}
+		}
+
+		public override void SelectAll()
+		{
+			throw new NotImplementedException();
 		}
 
 		/*

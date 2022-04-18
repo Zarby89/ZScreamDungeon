@@ -15,7 +15,7 @@ namespace ZeldaFullEditor.Gui
 
 		bool[] saveArr;
 
-		public SaveSettings(ZScreamer parent) : base(parent)
+		public SaveSettings(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 

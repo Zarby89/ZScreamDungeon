@@ -51,9 +51,9 @@ namespace ZeldaFullEditor
 		public List<Point> collisionPoint = new List<Point>();
 
 		protected readonly ZScreamer ZS;
-		public Room_Object(ZScreamer parent, ushort id, byte x, byte y, byte size, byte layer = 0)
+		public Room_Object(ZScreamer zs, ushort id, byte x, byte y, byte size, byte layer = 0)
 		{
-			ZS = parent;
+			ZS = zs;
 			this.x = x;
 			this.y = y;
 			this.size = size;

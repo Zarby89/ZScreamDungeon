@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZeldaFullEditor.OWSceneModes.ClipboardData
+namespace ZeldaFullEditor.SceneModes.ClipboardData
 {
 	[Serializable]
 	public class TileData

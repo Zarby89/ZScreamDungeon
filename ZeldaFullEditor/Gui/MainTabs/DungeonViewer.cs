@@ -12,7 +12,7 @@ namespace ZeldaFullEditor.Gui
 {
 	public partial class DungeonViewer : Gui.ScreamControl
 	{
-		public DungeonViewer(ZScreamer parent) : base(parent)
+		public DungeonViewer(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

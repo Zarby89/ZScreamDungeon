@@ -192,14 +192,14 @@ namespace ZeldaFullEditor
 		protected readonly ZScreamer ZS;
 		public ZScreamer Screamer { get => ZS; }
 
-		private Room(ZScreamer parent)
+		private Room(ZScreamer zs)
 		{
-			ZS = parent;
+			ZS = zs;
 		}
 
-		public Room(ZScreamer parent, int index, string fromExported = "")
+		public Room(ZScreamer zs, int index, string fromExported = "")
 		{
-			ZS = parent;
+			ZS = zs;
 			this.fromExported = fromExported;
 			this.index = index;
 			loadHeader();
@@ -628,53 +628,6 @@ namespace ZeldaFullEditor
 					spr.DrawKey(bigKey: true);
 				}
 			}
-		}
-
-		public byte[] getSelectedObjectHex()
-		{
-			byte[] bytes = new byte[3];
-			bool doorfound = false;
-
-			for (int j = 0; j < tilesObjects.Count; j++) // Save layer1 object 
-			{
-				Room_Object o = tilesObjects[j];
-				if (o == selectedObject[0])
-				{
-					if ((o.options & ObjectOption.Bgr) != ObjectOption.Bgr && (o.options & ObjectOption.Block) != ObjectOption.Block && (o.options & ObjectOption.Torch) != ObjectOption.Torch)
-					{
-						if ((tilesObjects[j].id & 0x200) == 0x200) // Type3
-						{
-							// xxxxxxii yyyyyyii 11111iii
-							bytes[0] = (byte) ((o.x << 2) + (o.id & 0x03));
-							bytes[1] = (byte) ((o.y << 2) + ((o.id >> 2) & 0x03));
-							bytes[2] = (byte) (o.id >> 4);
-						}
-						else if ((tilesObjects[j].id & 0x100) == 0x100) // Type2
-						{
-							// 111111xx xxxxyyyy yyiiiiii
-							bytes[0] = (byte) (0xFC + (((o.x & 0x30) >> 4)));
-							bytes[1] = (byte) (((o.x & 0x0F) << 4) + ((o.y & 0x3C) >> 2));
-							bytes[2] = (byte) (((o.y & 0x03) << 6) + ((o.id & 0x3F))); // wtf?
-						}
-						else // Type1
-						{
-							// xxxxxxss yyyyyyss iiiiiiii
-							if (o.size > 16)
-							{
-								o.size = 0;
-							}
-
-							bytes[0] = (byte) ((o.x << 2) | ((o.size >> 2) & 0x03));
-							bytes[1] = (byte) ((o.y << 2) | (o.size & 0x03));
-							bytes[2] = (byte) o.id;
-						}
-					}
-
-					return bytes;
-				}
-			}
-
-			return null;
 		}
 
 		public bool getLayerTiles(byte layer, ref List<byte> objectsBytes, ref List<byte> doorsBytes)

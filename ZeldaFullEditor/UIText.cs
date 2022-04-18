@@ -117,6 +117,16 @@ namespace ZeldaFullEditor
 					MessageBoxIcon.Warning
 				);
 		}
+		
+		public static void GeneralWarning(string message)
+		{
+			MessageBox.Show(
+				message,
+				"Warning",
+				MessageBoxButtons.OK,
+				MessageBoxIcon.Warning
+			);
+		}
 
 
 
@@ -139,5 +149,19 @@ namespace ZeldaFullEditor
 			return string.Join(" ", Regex.Split(b.ToString(), @"[A-Z]", RegexOptions.None));
 		}
 
+		public static string ToSimpleListing(this byte[] bl)
+		{
+			StringBuilder ret = new StringBuilder(bl.Length * 2 - 1);
+			int i = bl.Length;
+			foreach (byte b in bl)
+			{
+				ret.Append(b.ToString("X2"));
+				if (--i > 0)
+				{
+					ret.Append(" ");
+				}
+			}
+			return ret.ToString();
+		}
 	}
 }

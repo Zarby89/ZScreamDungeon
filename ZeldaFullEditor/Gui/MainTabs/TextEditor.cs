@@ -37,7 +37,7 @@ namespace ZeldaFullEditor
 		public const byte DICTOFF = 0x88;
 		public const byte MessageTerminator = 0x7F;
 
-		public TextEditor(ZScreamer parent) : base(parent)
+		public TextEditor(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 			TextCommandList.Items.AddRange(TCommands);
@@ -1176,11 +1176,6 @@ namespace ZeldaFullEditor
 			return false;
 		}
 
-		private void CryAboutTooMuchText(int pos, bool bank2)
-		{
-
-		}
-
 		private void numericUpDown1_ValueChanged(object sender, EventArgs e)
 		{
 			if (!fromForm)
@@ -1191,7 +1186,7 @@ namespace ZeldaFullEditor
 
 		private void pictureBox2_MouseDown(object sender, MouseEventArgs e)
 		{
-			selectedTile = (e.X / 16) + ((e.Y / 32) * 16);
+			selectedTile = (e.X / 16) + (e.Y / 32 * 16);
 
 			if (selectedTile >= 98)
 			{

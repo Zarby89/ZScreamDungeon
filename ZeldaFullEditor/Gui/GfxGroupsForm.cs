@@ -24,10 +24,10 @@ namespace ZeldaFullEditor.Gui
 		Color[] palettes = new Color[256];
 
 		private readonly ZScreamer ZS;
-		public GfxGroupsForm(ZScreamer parent)
+		public GfxGroupsForm(ZScreamer zs)
 		{
 			InitializeComponent();
-			ZS = parent;
+			ZS = zs;
 			this.BackColor = Color.FromKnownColor(KnownColor.Control);
 		}
 
@@ -40,7 +40,7 @@ namespace ZeldaFullEditor.Gui
 				okButton_Click(null, e);
 				reloadGfx();
 				ZS.UnderworldScene.Room.reloadGfx();
-				ZS.UnderworldScene.DrawRoom();
+				ZS.UnderworldScene.NeedsRefreshing = true;
 			}
 		}
 
@@ -187,7 +187,7 @@ namespace ZeldaFullEditor.Gui
 
 				ZS.UnderworldScene.Room.reloadGfx();
 				reloadGfx();
-				ZS.UnderworldScene.DrawRoom();
+				ZS.UnderworldScene.NeedsRefreshing = true;
 			}
 		}
 

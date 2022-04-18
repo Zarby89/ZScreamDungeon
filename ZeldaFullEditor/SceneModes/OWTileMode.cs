@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ZeldaFullEditor.OWSceneModes.ClipboardData;
+using ZeldaFullEditor.SceneModes.ClipboardData;
 
-namespace ZeldaFullEditor.OWSceneModes
+namespace ZeldaFullEditor.SceneModes
 {
-	public class TileMode : SceneMode
+	public class OWTileMode : SceneMode
 	{
 		List<TileUndo> undoList = new List<TileUndo>();
 		List<TileUndo> redoList = new List<TileUndo>();
@@ -21,7 +21,7 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		byte lockedDirection = 0x00;
 		
-		public TileMode(ZScreamer parent) : base(parent)
+		public OWTileMode(ZScreamer zs) : base(zs)
 		{
 
 		}
@@ -278,6 +278,11 @@ namespace ZeldaFullEditor.OWSceneModes
 			//ZS.OverworldScene.mainForm.pictureGroupTiles.Refresh();
 		}
 
+		public override void OnMouseWheel(MouseEventArgs e)
+		{
+
+		}
+
 		public override void OnMouseMove(MouseEventArgs e)
 		{
 			if (ZS.OverworldScene.initialized)
@@ -489,6 +494,11 @@ namespace ZeldaFullEditor.OWSceneModes
                     */
 				}
 			}
+		}
+
+		public override void SelectAll()
+		{
+			throw new NotImplementedException();
 		}
 	}
 }

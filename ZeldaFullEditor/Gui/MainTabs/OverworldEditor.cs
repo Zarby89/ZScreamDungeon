@@ -40,7 +40,7 @@ namespace ZeldaFullEditor.Gui
 		private TabControl.TabPageCollection AuxTabs;
 
 		readonly ColorDialog cd = new ColorDialog();
-		public OverworldEditor(ZScreamer parent = null) : base(parent)
+		public OverworldEditor(ZScreamer zs = null) : base(zs)
 		{
 			InitializeComponent();
 		}

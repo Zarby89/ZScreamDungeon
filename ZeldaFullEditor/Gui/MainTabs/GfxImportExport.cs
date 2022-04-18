@@ -24,7 +24,7 @@ namespace ZeldaFullEditor.Gui
 		int selectedPal = 0;
 
 		Color[] palettes = new Color[8];
-		public GfxImportExport(ZScreamer parent) : base(parent)
+		public GfxImportExport(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}
@@ -76,8 +76,10 @@ namespace ZeldaFullEditor.Gui
 		private void button1_Click(object sender, EventArgs e)
 		{
 			int csize = 0;
-			SaveFileDialog sfd = new SaveFileDialog();
-			sfd.Filter = "all *.bin |*.bin";
+			SaveFileDialog sfd = new SaveFileDialog()
+			{
+				Filter = "all *.bin |*.bin",
+			};
 
 			if (sfd.ShowDialog() == DialogResult.OK)
 			{
@@ -375,7 +377,7 @@ namespace ZeldaFullEditor.Gui
 
 				b.UnlockBits(bd);
 				ZS.UnderworldScene.Room.reloadGfx();
-				ZS.UnderworldScene.DrawRoom();
+				ZS.UnderworldScene.NeedsRefreshing = true;
 				allgfxPicturebox.Refresh();
 
 				for (int i = 0; i < 159; i++)
@@ -400,13 +402,18 @@ namespace ZeldaFullEditor.Gui
 
 		private void GfxImportExport_Load(object sender, EventArgs e)
 		{
-			GfxGroupsForm gfxgf = new GfxGroupsForm(ZS);
-			gfxgf.Location = Constants.Point_0_0;
+			//GfxGroupsForm gfxgf = new GfxGroupsForm(ZS)
+			//{
+			//	Location = Constants.Point_0_0,
+			//};
 			panel2.Controls.Add(ZS.MainForm.gfxGroupsForm);
 
-			PaletteEditor palf = new PaletteEditor(ZS);
-			palf.Location = new Point(0, 354);
-			panel2.Controls.Add(palf);
+			panel2.Controls.Add(
+				new PaletteEditor(ZS)
+				{
+					Location = new Point(0, 354),
+				}
+			);
 			Refresh();
 		}
 

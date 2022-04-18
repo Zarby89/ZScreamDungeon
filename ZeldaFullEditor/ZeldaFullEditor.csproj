@@ -228,6 +228,7 @@
     <Compile Include="Data\DungeonMap.cs" />
     <Compile Include="Data\DungeonObjects\DungeonBlock.cs" />
     <Compile Include="Data\DungeonObjects\DungeonChestItem.cs" />
+    <Compile Include="Data\DungeonObjects\DungeonDoorType.cs" />
     <Compile Include="Data\DungeonObjects\DungeonLayout.cs" />
     <Compile Include="Data\DungeonObjects\DungeonObject.cs" />
     <Compile Include="Data\DungeonObjects\DungeonDoor.cs" />
@@ -482,17 +483,18 @@
     <Compile Include="Data\Overworld.cs" />
     <Compile Include="Data\OverworldMap.cs" />
     <Compile Include="ImmutableArray.cs" />
-    <Compile Include="OWSceneModes\ClipboardData\TileData.cs" />
-    <Compile Include="OWSceneModes\DoorMode.cs" />
-    <Compile Include="OWSceneModes\EntranceMode.cs" />
-    <Compile Include="OWSceneModes\ExitMode.cs" />
-    <Compile Include="OWSceneModes\ItemMode.cs" />
-    <Compile Include="OWSceneModes\SceneMode.cs" />
-    <Compile Include="OWSceneModes\SpriteMode.cs" />
-    <Compile Include="OWSceneModes\OverlayMode.cs" />
-    <Compile Include="OWSceneModes\TileMode.cs" />
-    <Compile Include="OWSceneModes\GravestoneMode.cs" />
-    <Compile Include="OWSceneModes\TransportMode.cs" />
+    <Compile Include="SceneModes\ClipboardData\TileData.cs" />
+    <Compile Include="SceneModes\OWDoorMode.cs" />
+    <Compile Include="SceneModes\OWEntranceMode.cs" />
+    <Compile Include="SceneModes\OWExitMode.cs" />
+    <Compile Include="SceneModes\OWSecretsMode.cs" />
+    <Compile Include="SceneModes\UWLayerMode.cs" />
+    <Compile Include="SceneModes\SceneMode.cs" />
+    <Compile Include="SceneModes\OWSpriteMode.cs" />
+    <Compile Include="SceneModes\OWOverlayMode.cs" />
+    <Compile Include="SceneModes\OWTileMode.cs" />
+    <Compile Include="SceneModes\OWGravesMode.cs" />
+    <Compile Include="SceneModes\OWTransportMode.cs" />
     <Compile Include="Point3D.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Gui\RoomMover.cs">
@@ -562,10 +564,18 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Gui\Scene\SceneResizing.cs" />
-    <Compile Include="Gui\Scene\SceneUW.cs" />
+    <Compile Include="Gui\Scene\SceneUW.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Gui\Scene\SceneBase.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="SceneModes\UWBlockMode.cs" />
+    <Compile Include="SceneModes\UWDoorMode.cs" />
+    <Compile Include="SceneModes\UWEntranceMode.cs" />
+    <Compile Include="SceneModes\UWSecretsMode.cs" />
+    <Compile Include="SceneModes\UWSpriteMode.cs" />
+    <Compile Include="SceneModes\UWTorchMode.cs" />
     <Compile Include="Scripting.evaluator.cs" />
     <Compile Include="Scripting.Extensions.cs" />
     <Compile Include="Scripting.native.cs" />

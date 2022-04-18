@@ -6,12 +6,23 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
-	public unsafe class DungeonSecret : IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
+	public unsafe class DungeonSecret : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
 	{
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
-		public byte NX { get; set; }
-		public byte NY { get; set; }
+
+		private byte nx, ny;
+		public byte NX
+		{
+			get => nx;
+			set => nx = value.Clamp(0, 63);
+		}
+		public byte NY
+		{
+			get => ny;
+			set => ny = value.Clamp(0, 63);
+		}
+
 		public byte Layer { get; set; } = 0;
 
 		public SecretItemType SecretType { get; set; }
@@ -35,14 +46,15 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			SecretType = s;
 		}
 
-		public void Draw(ZScreamer ZS)
+		public override void Draw(ZScreamer ZS)
 		{
 			SecretType.Draw(ZS, this);
 		}
 
-		public bool PointIsInHitbox(int x, int y)
+		public override bool PointIsInHitbox(int x, int y)
 		{
-			throw new NotImplementedException();
+			return x >= (X * 8) && x <= (X * 8) + 16 &&
+					y >= (Y * 8) && y <= (Y * 8) + 16;
 		}
 	}
 }

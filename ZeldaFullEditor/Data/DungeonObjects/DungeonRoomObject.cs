@@ -11,7 +11,6 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 	[Serializable]
 	public unsafe class RoomObject : DungeonObject, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
 	{
-
 		public ushort ID { get; }
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
@@ -71,6 +70,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			ObjectType = type;
 			ID = type.FullID;
 			Tiles = tiles;
+			ResetSize();
 		}
 
 		public RoomObject Clone()
@@ -93,23 +93,24 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		}
 
 
-		override public void Draw(ZScreamer ZS)
+		public override void Draw(ZScreamer ZS)
 		{
 			CollisionPoints.Clear();
 			ObjectType.Draw(ZS, this);
 		}
 
-		public void ResetSize()
+		private void ResetSize()
 		{
 			Width = 8;
 			Height = 8;
 		}
 
-		public virtual bool DecreaseSize()
+		public bool DecreaseSize()
 		{
-			ResetSize();
-			if (Size > 0)
+			// Size > 0 will short circuit faster for unresizable objects
+			if (Size > 0 && ObjectType.Resizeability != DungeonObjectSizeability.None)
 			{
+				ResetSize();
 				Size--;
 				return true;
 			}
@@ -120,11 +121,11 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		/// Increases the object's size by 1.
 		/// </summary>
 		/// <returns><see langword="true"/> when successful</returns>
-		public virtual bool IncreaseSize()
+		public bool IncreaseSize()
 		{
-			ResetSize();
-			if (Size < 15)
+			if (ObjectType.Resizeability != DungeonObjectSizeability.None && Size < 15)
 			{
+				ResetSize();
 				Size++;
 				return true;
 			}

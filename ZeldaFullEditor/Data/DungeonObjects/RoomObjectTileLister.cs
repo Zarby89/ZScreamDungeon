@@ -9,9 +9,9 @@
 		private readonly DoorTilesList[] _doors = new DoorTilesList[0x80];
 
 		private readonly ZScreamer ZS;
-		public RoomObjectTileLister(ZScreamer parent)
+		public RoomObjectTileLister(ZScreamer zs)
 		{
-			ZS = parent;
+			ZS = zs;
 		}
 
 		public DoorTilesList GetDoorTileSet(byte id)

@@ -21,7 +21,7 @@ namespace ZeldaFullEditor
 
 		public Sprite selectedObject = null;
 
-		public SpritesView(ZScreamer parent) : base(parent)
+		public SpritesView(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

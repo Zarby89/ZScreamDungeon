@@ -14,9 +14,9 @@ namespace ZeldaFullEditor
 		public bool bigChest = false;
 
 		private readonly ZScreamer ZS;
-		public Chest(ZScreamer parent, byte x, byte y, byte item, bool bigChest, bool picker = false)
+		public Chest(ZScreamer zs, byte x, byte y, byte item, bool bigChest, bool picker = false)
 		{
-			ZS = parent;
+			ZS = zs;
 			this.x = x;
 			this.y = y;
 			this.item = item;

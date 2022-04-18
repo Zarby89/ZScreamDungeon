@@ -7,12 +7,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZeldaFullEditor.OWSceneModes
+namespace ZeldaFullEditor.SceneModes
 {
-	public class DoorMode : SceneMode
+	public class OWDoorMode : SceneMode
 	{
-		public DoorMode(ZScreamer parent) : base(parent)
+		public OWDoorMode(ZScreamer zs) : base(zs)
 		{
+
+		}
+
+		public override void OnMouseWheel(MouseEventArgs e)
+		{
+
 		}
 
 		public override void OnMouseDown(MouseEventArgs e)
@@ -146,6 +152,11 @@ namespace ZeldaFullEditor.OWSceneModes
 		}
 
 		public override void Delete()
+		{
+			throw new NotImplementedException();
+		}
+
+		public override void SelectAll()
 		{
 			throw new NotImplementedException();
 		}

@@ -14,9 +14,9 @@ namespace ZeldaFullEditor
 		public byte[][] paletteGfx = new byte[72][];
 
 		private readonly ZScreamer ZS;
-		public GfxGroups(ZScreamer parent)
+		public GfxGroups(ZScreamer zs)
 		{
-			ZS = parent;
+			ZS = zs;
 		}
 
 		public void LoadGfxGroups()

@@ -29,10 +29,10 @@ namespace ZeldaFullEditor
 		bool middle = false;
 
 		private readonly ZScreamer ZS;
-		public PaletteViewer(ZScreamer parent, PictureBox pb)
+		public PaletteViewer(ZScreamer zs, PictureBox pb)
 		{
 			this.pb = pb;
-			ZS = parent;
+			ZS = zs;
 		}
 
 		public void setColor(Color[] c)
@@ -280,9 +280,9 @@ namespace ZeldaFullEditor
 
 			for (int i = 0; i < shade; i++)
 			{
-				r = (r - (r / 5));
-				g = (g - (g / 5));
-				b = (b - (b / 5));
+				r -= r / 5;
+				g -= g / 5;
+				b -= b / 5;
 			}
 
 			r = (int) (r / 255f * 0x1F);

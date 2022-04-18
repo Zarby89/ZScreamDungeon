@@ -74,7 +74,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			"0x20 Some other jingle"
 		};
 
-		public OWMusicForm(ZScreamer parent) : base(parent)
+		public OWMusicForm(ZScreamer zs) : base(zs)
 		{
 			InitializeComponent();
 		}

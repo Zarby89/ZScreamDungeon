@@ -54,9 +54,9 @@ namespace ZeldaFullEditor
 
 		byte[] spriteFontSpacing = Constants.FontSpacings.DeepCopy();
 
-		public Scene2(ZScreamer parent = null)
+		public Scene2(ZScreamer zs = null)
 		{
-			ZS = parent ?? new ZScreamer(22);
+			ZS = zs ?? new ZScreamer(22);
 		}
 		//public Scene()
 		//{
