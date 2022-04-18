@@ -36,12 +36,11 @@ namespace ZeldaFullEditor.OWSceneModes
 			EntranceOWEditor ed = lastselectedEntrance.Copy();
 			Clipboard.SetData("owentrance", ed);
 			Delete();
-
 		}
 
 		public void Paste()
 		{
-			selectedEntrance = AddEntrance(true);
+			selectedEntrance = AddEntrance(false, true);
 			if (selectedEntrance != null)
 			{
 				lastselectedEntrance = selectedEntrance;
@@ -51,7 +50,7 @@ namespace ZeldaFullEditor.OWSceneModes
 			}
 		}
 
-		public EntranceOWEditor AddEntrance(bool clipboard = false)
+		public EntranceOWEditor AddEntrance(bool hole, bool clipboard = false)
 		{
 			byte entranceID = 0;
 			bool ishole = false;
@@ -63,6 +62,10 @@ namespace ZeldaFullEditor.OWSceneModes
 					entranceID = data.entranceId;
 					ishole = data.isHole;
 				}
+			}
+			else
+			{
+				ishole = hole;
 			}
 
 			int found = -1;
@@ -412,8 +415,9 @@ namespace ZeldaFullEditor.OWSceneModes
 						if (e.X >= en.x && e.X < en.x + 16 && e.Y >= en.y && e.Y < en.y + 16)
 						{
 							menu.Items.Add("Add Entrance");
+							menu.Items.Add("Add Hole");
 							menu.Items.Add("Entrance Properties");
-							menu.Items.Add("Delete Entrance");
+							menu.Items.Add("Delete Entrance/Hole");
 							lastselectedEntrance = en;
 							selectedEntrance = null;
 							scene.mouse_down = false;
@@ -425,8 +429,9 @@ namespace ZeldaFullEditor.OWSceneModes
 							}
 
 							menu.Items[0].Click += entranceAdd_Click;
-							menu.Items[1].Click += entranceProperty_Click;
-							menu.Items[2].Click += Delete_Click;
+							menu.Items[1].Click += entranceAdd_Click;
+							menu.Items[2].Click += entranceProperty_Click;
+							menu.Items[3].Click += Delete_Click;
 							menu.Show(Cursor.Position);
 							return;
 						}
@@ -442,8 +447,9 @@ namespace ZeldaFullEditor.OWSceneModes
 						if (e.X >= en.x && e.X < en.x + 16 && e.Y >= en.y && e.Y < en.y + 16)
 						{
 							menu.Items.Add("Add Entrance");
-							menu.Items.Add("Entrance Properties");
-							menu.Items.Add("Delete Entrance");
+							menu.Items.Add("Add Hole");
+							menu.Items.Add("Hole Properties");
+							menu.Items.Add("Delete Hole");
 							lastselectedEntrance = en;
 							selectedEntrance = null;
 							scene.mouse_down = false;
@@ -455,8 +461,9 @@ namespace ZeldaFullEditor.OWSceneModes
 							}
 
 							menu.Items[0].Click += entranceAdd_Click;
-							menu.Items[1].Click += entranceProperty_Click;
-							menu.Items[2].Click += Delete_Click;
+							menu.Items[1].Click += entranceAdd_Click;
+							menu.Items[2].Click += entranceProperty_Click;
+							menu.Items[3].Click += Delete_Click;
 							menu.Show(Cursor.Position);
 							return;
 						}
@@ -464,10 +471,13 @@ namespace ZeldaFullEditor.OWSceneModes
 				}
 
 				menu.Items.Add("Add Entrance");
+				menu.Items[0].Click += entranceAdd_Click;
+				menu.Items.Add("Add Hole");
+				menu.Items[1].Click += entranceAdd_Click;
+
 				selectedEntrance = null;
 				scene.mouse_down = false;
-				menu.Items[0].Click += entranceAdd_Click;
-
+				
 				menu.Show(Cursor.Position);
 				return;
 			}
@@ -475,7 +485,16 @@ namespace ZeldaFullEditor.OWSceneModes
 
 		private void entranceAdd_Click(object sender, EventArgs e)
 		{
-			AddEntrance();
+			string temp = sender.ToString();
+
+			if(temp == "Add Hole")
+			{
+				AddEntrance(true);
+			}
+			else
+			{
+				AddEntrance(false);
+			}
 		}
 
 		private void insertEntrance_Click(object sender, EventArgs e)
@@ -528,7 +547,6 @@ namespace ZeldaFullEditor.OWSceneModes
 				lastselectedEntrance.mapId = ef.mapId;
 				lastselectedEntrance.x = ef.x;
 				lastselectedEntrance.y = ef.y;
-
 			}
 		}
 

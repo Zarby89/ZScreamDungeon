@@ -537,7 +537,7 @@ namespace ZeldaFullEditor
 				int p = mapPos >> 1;
 				int x = (p % 64);
 				int y = (p >> 6);
-				EntranceOWEditor eo = new EntranceOWEditor((x * 16) + (((mapId % 64) - (((mapId % 64) / 8) * 8)) * 512), (y * 16) + (((mapId % 64) / 8) * 512), entranceId, mapId, mapPos);
+				EntranceOWEditor eo = new EntranceOWEditor((x * 16) + (((mapId % 64) - (((mapId % 64) / 8) * 8)) * 512), (y * 16) + (((mapId % 64) / 8) * 512), entranceId, mapId, mapPos, false);
 
 				if (eo.mapPos == 0xFFFF)
 				{
@@ -555,7 +555,7 @@ namespace ZeldaFullEditor
 				int p = (mapPos + 0x400) >> 1;
 				int x = (p % 64);
 				int y = (p >> 6);
-				EntranceOWEditor eo = new EntranceOWEditor((x * 16) + (((mapId % 64) - (((mapId % 64) / 8) * 8)) * 512), (y * 16) + (((mapId % 64) / 8) * 512), entranceId, mapId, (ushort) (mapPos + 0x400));
+				EntranceOWEditor eo = new EntranceOWEditor((x * 16) + (((mapId % 64) - (((mapId % 64) / 8) * 8)) * 512), (y * 16) + (((mapId % 64) / 8) * 512), entranceId, mapId, (ushort) (mapPos + 0x400), true);
 				allholes[i] = eo;
 			}
 		}

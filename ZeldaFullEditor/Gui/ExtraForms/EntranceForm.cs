@@ -22,7 +22,7 @@ namespace ZeldaFullEditor.Gui
 		public ushort mapPos;
 		public byte entranceId;
 		public short mapId;
-		public bool isHole = false;
+		public bool isHole;
 
 		private void EntranceForm_Load(object sender, EventArgs e)
 		{
