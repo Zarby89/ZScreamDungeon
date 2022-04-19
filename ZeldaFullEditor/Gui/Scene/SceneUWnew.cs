@@ -261,7 +261,7 @@ namespace ZeldaFullEditor
 			throw new NotImplementedException();
 		}
 
-		public bool isMouseCollidingWith<T>(T o, MouseEventArgs e) where T : IMouseCollidable
+		public bool isMouseCollidingWith(IMouseCollidable o, MouseEventArgs e)
 		{
 			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 

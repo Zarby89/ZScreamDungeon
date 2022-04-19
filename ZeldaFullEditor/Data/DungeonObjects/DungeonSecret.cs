@@ -31,13 +31,15 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		{
 			get
 			{
-				ushort xy = (ushort) ((Y << 6) | (X << 1) | (Layer << 13));
-				return new byte[]
-					{
-						(byte) xy,
-						(byte) (xy >> 8),
-						SecretType.ID
-					};
+				var p = UWTilemapPosition.CreateFromXYZ(X, Y, Layer);
+				return new byte[] { p.X, p.Y, SecretType.ID };
+				//ushort xy = (ushort) ((Y << 6) | (X << 1) | (Layer << 13));
+				//return new byte[]
+				//	{
+				//		(byte) xy,
+				//		(byte) (xy >> 8),
+				//		SecretType.ID
+				//	};
 			}
 		}
 

@@ -65,6 +65,10 @@ namespace ZeldaFullEditor
 		public const int OverworldSpritePointers = 0x09_0000;
 		public const int DungeonSpritePointers = 0x09_0000;
 
+		public const byte BigKeyDropToken = 0xFD;
+		public const byte SmallKeyDropToken = 0xFE;
+		public const byte KeyDropID = 0xE4;
+
 		//===========================================================================================
 		// IDs
 		//===========================================================================================

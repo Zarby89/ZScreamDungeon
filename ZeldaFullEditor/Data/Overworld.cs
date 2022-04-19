@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using ZeldaFullEditor.Data;
+using ZeldaFullEditor.Data.DungeonObjects;
 
 namespace ZeldaFullEditor
 {
@@ -47,7 +48,7 @@ namespace ZeldaFullEditor
 		public List<RoomPotSaveEditor> allitems = new List<RoomPotSaveEditor>();
 		public OverlayData[] alloverlays = new OverlayData[128];
 
-		public List<Sprite>[] allsprites = new List<Sprite>[3];
+		public List<OverworldSprite>[] allsprites = new List<OverworldSprite>[3];
 
 		public int worldOffset = 0;
 
@@ -91,9 +92,9 @@ namespace ZeldaFullEditor
 				//Console.WriteLine(tileLeftEntrance[i].ToString("D4") + " , " + tileRightEntrance[i].ToString("D4"));
 			}
 
-			allsprites[0] = new List<Sprite>();
-			allsprites[1] = new List<Sprite>();
-			allsprites[2] = new List<Sprite>();
+			allsprites[0] = new List<OverworldSprite>();
+			allsprites[1] = new List<OverworldSprite>();
+			allsprites[2] = new List<OverworldSprite>();
 		}
 		public void Init()
 		{

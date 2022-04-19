@@ -1,8 +1,9 @@
-﻿using ZeldaFullEditor.Data.DungeonObjects;
+﻿using System;
+using ZeldaFullEditor.Data.DungeonObjects;
 
 namespace ZeldaFullEditor.Data
 {
-	public delegate void DrawSprite(ZScreamer ZS, DungeonSprite spr);
+	public delegate void DrawSprite(ZScreamer ZS, SomeSprite spr);
 
 	public readonly struct SpriteDrawInfo
 	{
@@ -13,6 +14,10 @@ namespace ZeldaFullEditor.Data
 		public bool VFlip { get; }
 		public bool IsBig { get; }
 		public byte Palette { get; }
+
+		public int RectSideSize => IsBig ? 16 : 8;
+
+
 		public SpriteDrawInfo(ushort i, int x, int y, byte pal, bool hflip, bool vflip, bool big)
 		{
 			TileIndex = i;
@@ -27,12 +32,117 @@ namespace ZeldaFullEditor.Data
 
 	public partial class SpriteType
 	{
-		public static unsafe void DrawTiles(ZScreamer ZS, DungeonSprite spr, params SpriteDrawInfo[] instructions)
+		public static unsafe void DrawTiles(ZScreamer ZS, SomeSprite spr, params SpriteDrawInfo[] instructions)
 		{
-			// TODO
+			var alltilesData = (spr is OverworldSprite)
+				? (byte*) ZS.GFXManager.currentOWgfx16Ptr.ToPointer()
+				: (byte*) ZS.GFXManager.currentgfx16Ptr.ToPointer();
+
+
+			byte* ptr;
+
+			int mult;
+			int maxIndex;
+
+			int xoff = 0;
+			int yoff = 0;
+
+			if (spr is SpritePreview)
+			{
+				if (ZS.GFXManager.useOverworldGFX)
+				{
+					alltilesData = (byte*) ZS.GFXManager.currentOWgfx16Ptr.ToPointer();
+				}
+
+				xoff = 16;
+				yoff = 16;
+
+				mult = 64;
+				ptr = (byte*) ZS.GFXManager.previewSpritesPtr[spr.Species.ID].ToPointer();
+				maxIndex = 4096;
+			}
+			else
+			{
+				mult = 512;
+				ptr = (byte*) ZS.GFXManager.roomBg1Ptr.ToPointer();
+				maxIndex = 262144;
+			}
+
+			foreach (SpriteDrawInfo ti in instructions)
+			{
+				int size = ti.RectSideSize;
+				byte r = (byte) (ti.HFlip ? 1 : 0);
+				int tx = (ti.TileIndex / 16 * 512) + ((ti.TileIndex & 0xF) << 2); // TODO verify
+				int indexoff = spr.X + ti.XOff + xoff + (mult * (spr.Y + ti.YOff + yoff));
+				byte pal = (byte) (ti.Palette << 3);
+
+
+				for (int yl = 0, yl2 = tx; yl < size; yl++, yl2 += 64)
+				{
+					int my = (mult * (ti.VFlip ? size - 1 - yl : yl)) + indexoff; // this is alltilesData additive, so it can go here
+
+					for (int xl = 0, xl2 = yl2; xl < size; xl++, xl2++)
+					{
+						int mx = ti.HFlip ? size - 1 - xl : xl;
+						var pixel = alltilesData[xl2];
+						int index = (mx * 2) + my;
+
+						if (index >= 0 && index <= maxIndex)
+						{
+							if (pixel.BitIsOn(0x0F))
+							{
+								ptr[index + r ^ 1] = (byte) ((pixel & 0x0F) + 112 + pal);
+							}
+							if (pixel.BitIsOn(0xF0))
+							{
+								ptr[index + r] = (byte) ((pixel >> 4) + 112 + pal);
+							}
+						}
+					}
+				}
+			}
 		}
 
-		public static void SpriteDraw_Sprite00(ZScreamer ZS, DungeonSprite spr)
+		//public void DrawKey(bool bigKey)
+		//{
+		//	int dx = (boundingbox.X + boundingbox.Width / 2) - 8;
+		//	int dy = boundingbox.Y - 10;
+		//
+		//	if (bigKey)
+		//	{
+		//		draw_item_tile(dx, dy, 14, 826, 11);
+		//	}
+		//	else
+		//	{
+		//		draw_item_tile(dx + 4, dy, 14, 822, 11, false, false, 1);
+		//	}
+		//}
+
+		public static void SpriteDraw_SmallKeyDrop(ZScreamer ZS, SomeSprite spr)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static void SpriteDraw_BigKeyDrop(ZScreamer ZS, SomeSprite spr)
+		{
+			throw new NotImplementedException();
+		}
+
+		public static void SpriteDraw_GreenRupeeDrop(ZScreamer ZS, SomeSprite spr)
+		{
+			throw new NotImplementedException();
+		}
+
+
+
+
+
+
+
+
+
+
+		public static void SpriteDraw_Sprite00(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, -32, -22, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -40,7 +150,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite01(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite01(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -49,7 +159,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite02(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite02(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -57,7 +167,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite03(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite03(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -65,7 +175,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite04(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite04(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1CE, 0, 0, pal: 0x00, vflip: false, hflip: false, big: true),
@@ -73,7 +183,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite05(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite05(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1D2, -4, -3, pal: 0x00, vflip: false, hflip: true, big: false),
@@ -84,7 +194,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite06(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite06(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1CE, 0, 0, pal: 0x00, vflip: false, hflip: false, big: true),
@@ -92,7 +202,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite07(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite07(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1A2, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -100,7 +210,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite08(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite08(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -109,7 +219,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite09(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite09(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x18C, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -131,7 +241,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite0A(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite0A(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -140,7 +250,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite0B(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite0B(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -148,14 +258,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite0C(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite0C(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x184, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite0D(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite0D(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -165,7 +275,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite0E(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite0E(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -176,7 +286,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite0F(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite0F(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -187,7 +297,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite10(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite10(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x038, 0, 3, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -195,7 +305,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite11(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite11(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -206,7 +316,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite12(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite12(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -217,7 +327,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite13(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite13(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -225,14 +335,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite14(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite14(ZScreamer ZS, SomeSprite spr)
 		{
 			const int y = -8;
 
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite15(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite15(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1E3, 4, 7, pal: 0x01, vflip: false, hflip: false, big: false),
@@ -243,7 +353,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite16(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite16(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -252,7 +362,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite17(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite17(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x046, 0, 0, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -260,7 +370,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite18(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite18(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x15D, 4, 4, pal: 0x03, vflip: false, hflip: false, big: false),
@@ -271,7 +381,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite19(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite19(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -280,7 +390,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite1A(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite1A(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 2, y = -3; // TODO only applies in light world
 
@@ -291,7 +401,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite1B(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite1B(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x03A, -8, 0, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -299,7 +409,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite1C(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite1C(ZScreamer ZS, SomeSprite spr)
 		{
 			const int y = 7;
 
@@ -310,19 +420,19 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite1D(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite1D(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite1E(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite1E(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1E4, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite1F(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite1F(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x10A, 8, 14, pal: 0x06, vflip: true, hflip: true, big: true),
@@ -334,7 +444,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite20(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite20(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -342,7 +452,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite21(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite21(ZScreamer ZS, SomeSprite spr)
 		{
 			const int y = 5;
 
@@ -355,7 +465,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite22(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite22(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -365,7 +475,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite23(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite23(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -376,7 +486,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite24(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite24(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -387,13 +497,13 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite25(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite25(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = -8;
 			// DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite26(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite26(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -402,7 +512,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite27(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite27(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -410,7 +520,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite28(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite28(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -418,7 +528,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite29(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite29(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -427,7 +537,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite2A(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite2A(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -436,7 +546,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite2B(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite2B(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1A7, 3, 3, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -446,7 +556,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite2C(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite2C(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8;
 			DrawTiles(ZS, spr,
@@ -464,7 +574,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite2D(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite2D(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -474,7 +584,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite2E(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite2E(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8; // is 7 in light world but whatever
 			DrawTiles(ZS, spr,
@@ -484,7 +594,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite2F(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite2F(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -493,7 +603,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite30(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite30(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -502,7 +612,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite31(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite31(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, y = 8;
 
@@ -513,7 +623,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite32(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite32(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -522,13 +632,13 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite33(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite33(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = -8;
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite34(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite34(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -537,7 +647,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite35(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite35(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -546,7 +656,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite36(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite36(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x184, 0, 4, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -558,17 +668,17 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite37(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite37(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite38(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite38(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite39(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite39(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -577,13 +687,13 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite3A(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite3A(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8;
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite3B(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite3B(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -592,7 +702,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite3C(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite3C(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -601,7 +711,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite3D(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite3D(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -610,7 +720,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite3E(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite3E(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x044, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -618,7 +728,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite3F(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite3F(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -630,7 +740,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite40(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite40(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, y = -4;
 
@@ -647,7 +757,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite41(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite41(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -661,7 +771,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite42(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite42(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -675,7 +785,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite43(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite43(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -689,7 +799,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite44(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite44(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -702,7 +812,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite45(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite45(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -717,7 +827,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite46(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite46(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -732,7 +842,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite47(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite47(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x120, 0, 8, pal: 0x05, vflip: false, hflip: false, big: true),
@@ -740,7 +850,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite48(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite48(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -753,7 +863,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite49(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite49(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x120, 0, 8, pal: 0x03, vflip: false, hflip: false, big: true),
@@ -761,7 +871,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite4A(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite4A(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -774,7 +884,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite4B(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite4B(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -783,18 +893,18 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite4C(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite4C(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8;
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite4D(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite4D(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite4E(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite4E(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -802,7 +912,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite4F(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite4F(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -810,14 +920,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite50(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite50(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x180, 0, 0, pal: 0x04, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite51(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite51(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -826,12 +936,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite52(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite52(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite53(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite53(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, y = 8;
 			DrawTiles(ZS, spr,
@@ -844,7 +954,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite54(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite54(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 176, pal: 0x02, vflip: false, hflip: false, big: true),
@@ -866,18 +976,18 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite55(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite55(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8;
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite56(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite56(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite57(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite57(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, y = 8;
 			DrawTiles(ZS, spr,
@@ -888,7 +998,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite58(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite58(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -897,7 +1007,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite59(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite59(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -905,7 +1015,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite5A(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite5A(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -913,21 +1023,21 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite5B(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite5B(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x128, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite5C(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite5C(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x128, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite5D(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite5D(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x188, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -937,7 +1047,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite5E(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite5E(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x188, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -947,7 +1057,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite5F(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite5F(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x18E, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -961,7 +1071,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite60(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite60(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x18E, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -975,7 +1085,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite61(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite61(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x148, 0, -16, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -983,7 +1093,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite62(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite62(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 6, y = 6;
 			DrawTiles(ZS, spr,
@@ -996,17 +1106,17 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite63(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite63(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite64(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite64(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite65(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite65(ZScreamer ZS, SomeSprite spr)
 		{
 			const int y = -8;
 			DrawTiles(ZS, spr,
@@ -1017,35 +1127,35 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite66(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite66(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x10E, 0, 0, pal: 0x06, vflip: false, hflip: true, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite67(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite67(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x10E, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite68(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite68(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x10C, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite69(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite69(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x10C, 0, 0, pal: 0x06, vflip: true, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite6A(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite6A(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1061,7 +1171,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite6B(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite6B(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x14E, -4, 0, pal: 0x04, vflip: false, hflip: true, big: true),
@@ -1072,52 +1182,52 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite6C(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite6C(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x04C, 0, 0, pal: 0x02, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite6D(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite6D(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x186, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite6E(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite6E(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1A4, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite6F(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite6F(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x184, 0, 0, pal: 0x04, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite70(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite70(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1CC, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite71(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite71(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite72(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite72(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite73(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite73(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x120, 8, -19, pal: 0x05, vflip: false, hflip: true, big: true),
@@ -1128,7 +1238,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite74(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite74(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1137,7 +1247,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite75(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite75(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1146,7 +1256,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite76(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite76(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x022, 1, 3, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1154,7 +1264,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite77(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite77(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1E3, 4, 7, pal: 0x01, vflip: false, hflip: false, big: false),
@@ -1165,7 +1275,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite78(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite78(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, y = 8;
 			DrawTiles(ZS, spr,
@@ -1174,12 +1284,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite79(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite79(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite7A(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite7A(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, y = 8;
 
@@ -1192,14 +1302,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite7B(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite7B(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1C6, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite7C(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite7C(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1207,7 +1317,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite7D(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite7D(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, y = 8;
 			DrawTiles(ZS, spr,
@@ -1218,7 +1328,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite7E(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite7E(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x128, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true),
@@ -1228,7 +1338,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite7F(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite7F(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x128, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true),
@@ -1238,21 +1348,21 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite80(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite80(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x128, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite81(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite81(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x184, 0, 0, pal: 0x05, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite82(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite82(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = -10;
 			DrawTiles(ZS, spr,
@@ -1264,7 +1374,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite83(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite83(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 14, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1275,7 +1385,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite84(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite84(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 14, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1286,7 +1396,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite85(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite85(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1296,7 +1406,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite86(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite86(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = -5, y = 4;
 			DrawTiles(ZS, spr,
@@ -1305,14 +1415,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite87(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite87(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x18C, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite88(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite88(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 16, pal: 0x02, vflip: false, hflip: false, big: true),
@@ -1335,14 +1445,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite89(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite89(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1AA, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite8A(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite8A(ZScreamer ZS, SomeSprite spr)
 		{
 			const int y = -1;
 			DrawTiles(ZS, spr,
@@ -1350,7 +1460,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite8B(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite8B(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1359,7 +1469,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite8C(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite8C(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 6, 19, pal: 0x02, vflip: false, hflip: false, big: true),
@@ -1373,14 +1483,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite8D(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite8D(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1A6, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite8E(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite8E(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1388,12 +1498,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite8F(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite8F(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite90(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite90(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 6, 19, pal: 0x01, vflip: false, hflip: false, big: true),
@@ -1406,12 +1516,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite91(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite91(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite92(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite92(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1A4, -28, -12, pal: 0x05, vflip: false, hflip: false, big: true),
@@ -1470,7 +1580,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite93(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite93(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, y = 8;
 			DrawTiles(ZS, spr,
@@ -1481,14 +1591,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite94(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite94(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x187, 4, 4, pal: 0x06, vflip: false, hflip: false, big: false)
 			);
 		}
 
-		public static void SpriteDraw_Sprite95(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite95(ZScreamer ZS, SomeSprite spr)
 		{
 			// TODO offsets here are too fucking annoying
 			DrawTiles(ZS, spr,
@@ -1498,7 +1608,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite96(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite96(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1C8, 0, 12, pal: 0x00, vflip: true, hflip: false, big: false),
@@ -1507,7 +1617,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite97(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite97(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1C6, 12, 8, pal: 0x00, vflip: false, hflip: true, big: false),
@@ -1516,7 +1626,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite98(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite98(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1C6, 12, 0, pal: 0x00, vflip: true, hflip: true, big: false),
@@ -1525,7 +1635,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite99(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite99(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1534,28 +1644,28 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite9A(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite9A(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite9B(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite9B(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite9C(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite9C(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite9D(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite9D(ZScreamer ZS, SomeSprite spr)
 		{
 			const int y = 8;
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_Sprite9E(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite9E(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 18, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1566,7 +1676,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite9F(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_Sprite9F(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1574,7 +1684,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA0(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteA0(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1582,7 +1692,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA1(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteA1(ZScreamer ZS, SomeSprite spr)
 		{
 			const int yoff = 8;
 			DrawTiles(ZS, spr,
@@ -1593,7 +1703,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA2(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteA2(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, y = 8;
 			DrawTiles(ZS, spr,
@@ -1605,18 +1715,18 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA3(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteA3(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, y = 8;
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteA4(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteA4(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteA5(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteA5(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1626,7 +1736,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA6(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteA6(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1636,7 +1746,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA7(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteA7(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1646,7 +1756,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA8(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteA8(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1655,7 +1765,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA9(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteA9(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1664,7 +1774,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteAA(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteAA(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1673,17 +1783,17 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteAB(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteAB(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteAC(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteAC(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteAD(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteAD(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x022, 0, 8, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1691,7 +1801,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteAE(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteAE(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x022, 0, 8, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1699,7 +1809,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteAF(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteAF(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x022, 0, 8, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1707,7 +1817,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB0(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteB0(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x022, 0, 8, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1715,7 +1825,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB1(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteB1(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x022, 0, 8, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1723,19 +1833,19 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB2(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteB2(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteB3(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteB3(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 7; // only moves right in desert
 
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteB4(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteB4(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1743,7 +1853,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB5(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteB5(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1751,12 +1861,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB6(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteB6(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteB7(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteB7(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x022, 1, 3, pal: 0x07, vflip: false, hflip: false, big: true),
@@ -1764,7 +1874,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB8(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteB8(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -1773,7 +1883,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB9(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteB9(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1781,12 +1891,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteBA(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteBA(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteBB(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteBB(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1795,7 +1905,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteBC(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteBC(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1805,7 +1915,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteBD(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteBD(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, y = -8;
 			DrawTiles(ZS, spr,
@@ -1816,27 +1926,27 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteBE(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteBE(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1E6, 1, 0, pal: 0x05, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_SpriteBF(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteBF(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1CC, 0, 0, pal: 0x00, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_SpriteC0(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteC0(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, y = -4;
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteC1(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteC1(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 18, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1847,14 +1957,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteC2(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteC2(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x048, 0, 0, pal: 0x00, vflip: false, hflip: false, big: false)
 			);
 		}
 
-		public static void SpriteDraw_SpriteC3(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteC3(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x18C, -4, -12, pal: 0x05, vflip: false, hflip: true, big: true),
@@ -1866,7 +1976,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteC4(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteC4(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1875,17 +1985,17 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteC5(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteC5(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteC6(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteC6(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteC7(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteC7(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1896,7 +2006,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteC8(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteC8(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, z = 24;
 			const int y = 8 + z;
@@ -1909,7 +2019,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteC9(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteC9(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1918,7 +2028,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteCA(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteCA(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1932,7 +2042,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteCB(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteCB(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x12A, 36, 20, pal: 0x00, vflip: false, hflip: true, big: true),
@@ -1951,7 +2061,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteCC(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteCC(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x10A, -14, -30, pal: 0x05, vflip: false, hflip: false, big: true),
@@ -1962,7 +2072,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteCD(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteCD(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x10A, 13, -30, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -1973,7 +2083,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteCE(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteCE(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1A6, 19, 3, pal: 0x05, vflip: false, hflip: true, big: true),
@@ -1986,12 +2096,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteCF(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteCF(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteD0(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteD0(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2001,30 +2111,30 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteD1(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteD1(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteD2(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteD2(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteD3(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteD3(ZScreamer ZS, SomeSprite spr)
 		{
 			const int y = -1;
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteD4(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteD4(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x070, 8, 4, pal: 0x02, vflip: false, hflip: true, big: false)
 			);
 		}
 
-		public static void SpriteDraw_SpriteD5(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteD5(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2034,17 +2144,17 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteD6(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteD6(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteD7(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteD7(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteD8(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteD8(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x038, 0, 3, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2052,7 +2162,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteD9(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteD9(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2061,7 +2171,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteDA(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteDA(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2070,7 +2180,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteDB(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteDB(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2079,7 +2189,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteDC(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteDC(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2089,7 +2199,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteDD(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteDD(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2099,7 +2209,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteDE(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteDE(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2109,7 +2219,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteDF(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteDF(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x038, 0, 3, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2117,7 +2227,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE0(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteE0(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2126,7 +2236,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE1(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteE1(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2136,7 +2246,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE2(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteE2(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2146,7 +2256,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE3(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteE3(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2154,7 +2264,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE4(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteE4(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2163,7 +2273,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE5(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteE5(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8;
 			DrawTiles(ZS, spr,
@@ -2172,7 +2282,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE6(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteE6(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2180,14 +2290,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE7(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteE7(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x024, 0, 0, pal: 0x04, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_SpriteE8(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteE8(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x1F5, 4, 8, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2195,7 +2305,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE9(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteE9(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2204,7 +2314,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteEA(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteEA(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2212,7 +2322,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteEB(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteEB(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2220,7 +2330,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteEC(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteEC(ZScreamer ZS, SomeSprite spr)
 		{
 			DrawTiles(ZS, spr,
 				new SpriteDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2228,33 +2338,33 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteED(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteED(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteEE(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteEE(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8, y = 3;
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteEF(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteEF(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteF0(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteF0(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteF1(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteF1(ZScreamer ZS, SomeSprite spr)
 		{
 			//	DrawTiles(ZS, spr,
 		}
 
-		public static void SpriteDraw_SpriteF2(ZScreamer ZS, DungeonSprite spr)
+		public static void SpriteDraw_SpriteF2(ZScreamer ZS, SomeSprite spr)
 		{
 			const int x = 8; // but only if not ether tablet
 			//	DrawTiles(ZS, spr,
@@ -2262,57 +2372,57 @@ namespace ZeldaFullEditor.Data
 
 
 
-		public static void SpriteDraw_Overlord01(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord01(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord02(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord02(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord03(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord03(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord04(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord04(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord05(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord05(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord06(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord06(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord07(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord07(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord08(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord08(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord09(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord09(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord0A(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord0A(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord0B(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord0B(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord0C(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord0C(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord0D(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord0D(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord0E(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord0E(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord0F(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord0F(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord10(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord10(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord11(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord11(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord12(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord12(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord13(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord13(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord14(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord14(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord15(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord15(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord16(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord16(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord17(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord17(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord18(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord18(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord19(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord19(ZScreamer ZS, SomeSprite spr) { }
 
-		public static void SpriteDraw_Overlord1A(ZScreamer ZS, DungeonSprite spr) { }
+		public static void SpriteDraw_Overlord1A(ZScreamer ZS, SomeSprite spr) { }
 
 	}
 }

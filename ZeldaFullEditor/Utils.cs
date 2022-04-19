@@ -84,6 +84,11 @@ namespace ZeldaFullEditor
 			return (addr1 << 16) | (addr2 << 8) | addr3;
 		}
 
+		public static (byte, byte) UWXYFromTileMap(ushort t)
+		{
+			return UWXYFromTileMap((byte) t, (byte) (t >> 8));
+		}
+
 		public static string[] DeepCopy(this string[] a)
 		{
 			string[] ret = new string[a.Length];

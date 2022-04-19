@@ -236,6 +236,7 @@
     <Compile Include="Data\DungeonObjects\DungeonObjectDraw.cs" />
     <Compile Include="Data\DungeonObjects\DungeonObjectTypes.cs" />
     <Compile Include="Data\DungeonObjects\DungeonRoom.cs" />
+    <Compile Include="Data\DungeonObjects\DungeonRoomChestsHandler.cs" />
     <Compile Include="Data\DungeonObjects\DungeonRoomObject.cs" />
     <Compile Include="Data\DungeonObjects\DungeonRoomParts.cs" />
     <Compile Include="Data\DungeonObjects\DungeonSecret.cs" />
@@ -253,6 +254,7 @@
     <Compile Include="Data\DungeonObjects\DungeonSprite.cs" />
     <Compile Include="Data\SpriteDraw.cs" />
     <Compile Include="Data\SpriteTypes.cs" />
+    <Compile Include="Data\TilemapPosition.cs" />
     <Compile Include="FloorNumber.cs" />
     <Compile Include="Gui\DataExtractor.cs">
       <SubType>Form</SubType>

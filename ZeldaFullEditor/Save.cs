@@ -329,20 +329,10 @@ namespace ZeldaFullEditor
 
 			foreach (var room in all_rooms)
 			{
-				foreach (DungeonChestItem c in room.ChestList)
+				if (room.ChestList.Count > 0)
 				{
-					ushort r = room.RoomID;
-					if (c.IsBigChest)
-					{
-						r |= 0x8000;
-					}
-
-					ROM.WriteContinuous(ref pos,
-						(byte) r,
-						(byte) (r >> 8),
-						c.ReceiptType.ID
-					);
-					chestCount++;
+					ROM.WriteContinuous(ref pos, room.ChestList.Data);
+					chestCount += room.ChestList.Count;
 				}
 			}
 			return chestCount > Constants.NumberOfChests;
@@ -534,7 +524,7 @@ namespace ZeldaFullEditor
 			// ROM.StartBlockLogWriting("Sprites OW DATA & Pointers", Offsets.overworldSpritesBegining);
 			int[] sprPointers = new int[Constants.NumberOfOWSprites];
 			int?[] sprPointersReused = new int?[Constants.NumberOfOWSprites];
-			List<Sprite>[] allspr = new List<Sprite>[Constants.NumberOfOWSprites];
+			List<OverworldSprite>[] allspr = new List<OverworldSprite>[Constants.NumberOfOWSprites];
 
 			for (int j = 0; j < Constants.NumberOfOWSprites; j++)
 			{

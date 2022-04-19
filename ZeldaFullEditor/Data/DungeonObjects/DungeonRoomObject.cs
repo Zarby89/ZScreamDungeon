@@ -22,7 +22,8 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public int Width { get; set; } = 16;
 		public int Height { get; set; } = 16;
 
-		public bool IsChest => ObjectType.Specialness == SpecialObjectType.Chest || ObjectType.Specialness == SpecialObjectType.BigChest;
+		public bool IsChest => ObjectType.Specialness == SpecialObjectType.Chest || IsBigChest;
+		public bool IsBigChest => ObjectType.Specialness == SpecialObjectType.BigChest;
 		public bool DiagonalFix { get; set; } = false;
 
 		public RoomObjectType ObjectType { get; }
@@ -38,9 +39,9 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 					case DungeonObjectSet.Subtype1:
 						return new byte[]
 						{
-							(byte) (0xFC | (X >> 4)),
-							(byte) ((X << 4) | ((Y & 0x3C) >> 2)),
-							(byte) ((Y << 6) | (ID & 0x3F))
+							(byte) ((X << 2) | ((Size & 0x0C) >> 2)),
+							(byte) ((Y << 2) | (Size & 0x03)),
+							(byte) ID
 						};
 
 					case DungeonObjectSet.Subtype2:

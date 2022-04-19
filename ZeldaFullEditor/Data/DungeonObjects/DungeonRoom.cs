@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,11 +11,15 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 	{
 		public ushort RoomID { get; }
 
+		private byte[] blocks = new byte[16];
+
+
 		public DungeonObjectsList Layer1Objects { get; } = new DungeonObjectsList();
 		public DungeonObjectsList Layer2Objects { get; } = new DungeonObjectsList();
 		public DungeonObjectsList Layer3Objects { get; } = new DungeonObjectsList();
+
 		public DungeonDoorsList DoorsList { get; } = new DungeonDoorsList();
-		public DungeonChestsList ChestList { get; } = new DungeonChestsList();
+		public DungeonRoomChestsHandler ChestList { get; }
 		public DungeonSecretsList SecretsList { get; } = new DungeonSecretsList();
 		public DungeonSpritesList SpritesList { get; } = new DungeonSpritesList();
 		public DungeonBlocksList BlocksList { get; } = new DungeonBlocksList();
@@ -113,10 +118,15 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				ret.Add(0xFF);
 
 				ret.AddRange(Layer3Objects.Data);
-				ret.Add(0xF0);
-				ret.Add(0xFF);
 
-				ret.AddRange(DoorsList.Data);
+				if (DoorsList.Count > 0)
+				{
+					ret.Add(0xF0);
+					ret.Add(0xFF);
+
+					ret.AddRange(DoorsList.Data);
+				}
+
 				ret.Add(0xFF);
 				ret.Add(0xFF);
 
@@ -180,6 +190,83 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 
 
+		public unsafe void reloadAnimatedGfx()
+		{
+			int gfxanimatedPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_animated_pointer, 3]);
+
+			byte* newPdata = (byte*) ZS.GFXManager.allgfx16Ptr.ToPointer(); // Turn gfx16 (all 222 of them)
+			byte* sheetsData = (byte*) ZS.GFXManager.currentgfx16Ptr.ToPointer(); // Into "room gfx16" 16 of them
+
+			int data = 0;
+			while (data < 512)
+			{
+				byte mapByte = newPdata[data + (92 * 2048) + (512 * ZS.GFXManager.animated_frame)];
+				sheetsData[data + (7 * 2048)] = mapByte;
+
+				mapByte = newPdata[data + (ZS.ROM[gfxanimatedPointer + blockset] * 2048) + (512 * ZS.GFXManager.animated_frame)];
+				sheetsData[data + (7 * 2048) - 512] = mapByte;
+				data++;
+			}
+		}
+
+		public void reloadGfx(byte entrance_blockset = 0xFF)
+		{
+			for (int i = 0; i < 8; i++)
+			{
+				blocks[i] = ZS.GFXGroups.mainGfx[blockset][i];
+				if (i >= 6 && i <= 6)
+				{
+					if (entrance_blockset != 0xFF) //3-6
+					{
+						// 6 is wrong for the entrance? -NOP need to fix that 
+						// TODO: Find why this is wrong - Thats because of the stairs need to find a workaround
+						if (ZS.GFXGroups.roomGfx[entrance_blockset][i - 3] != 0)
+						{
+							blocks[i] = ZS.GFXGroups.roomGfx[entrance_blockset][i - 3];
+						}
+					}
+				}
+			}
+
+			blocks[8] = 115 + 0; // Static Sprites Blocksets (fairy,pot,ect...)
+			blocks[9] = 115 + 10;
+			blocks[10] = 115 + 6;
+			blocks[11] = 115 + 7;
+			for (int i = 0; i < 4; i++)
+			{
+				blocks[12 + i] = (byte) (ZS.GFXGroups.spriteGfx[spriteset + 64][i] + 115);
+			} // 12-16 sprites
+
+			unsafe
+			{
+				byte* newPdata = (byte*) ZS.GFXManager.allgfx16Ptr.ToPointer(); // Turn gfx16 (all 222 of them)
+				byte* sheetsData = (byte*) ZS.GFXManager.currentgfx16Ptr.ToPointer(); // Into "room gfx16" 16 of them
+				int sheetPos = 0;
+				for (int i = 0; i < 16; i++)
+				{
+					int d = 0;
+					int ioff = blocks[i] * 2048;
+					while (d < 2048)
+					{
+						// NOTE LOAD BLOCKSETS SOMEWHERE FIRST
+						byte mapByte = newPdata[d + ioff];
+						if (i < 4) //removed switch
+						{
+							mapByte += 0x88;
+						} // Last line of 6, first line of 7 ?
+
+						sheetsData[d + sheetPos] = mapByte;
+						d++;
+					}
+
+					sheetPos += 2048;
+				}
+
+				reloadAnimatedGfx();
+			}
+		}
+
+
 
 
 		public static DungeonRoom BuildRoomFromROM(ZScreamer Z, ushort id)
@@ -188,7 +275,9 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 			// Load dungeon header
 			int headerPointer = SNESFunctions.SNEStoPC(Z.ROM[Z.Offsets.room_header_pointer, 3]);
-				
+
+			ret.MessageID = Z.ROM[Z.Offsets.messages_id_dungeon + (id * 2), 2];
+
 			int address = (Z.ROM[Z.Offsets.room_header_pointers_bank] << 16) | Z.ROM[headerPointer + (id * 2), size: 2];
 
 
@@ -201,25 +290,61 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			ret.LoadObjectsFromArray(Z.ROM.DataStream, offset: objects_location);
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 			// Load sprites
 			int spritePointer = 0x040000 | Z.ROM[Z.Offsets.rooms_sprite_pointer, 2];
 			int sprite_address = SNESFunctions.SNEStoPC(Constants.DungeonSpritePointers | Z.ROM[spritePointer + (id * 2), size: 2]);
 			ret.LoadSpritesFromArray(Z.ROM.DataStream, offset: sprite_address);
 
+			// Load blocks
+			int blockCount = Z.ROM[Z.Offsets.blocks_length, size: 2];
+
+			int pos1 = SNESFunctions.SNEStoPC(Z.ROM[Z.Offsets.blocks_pointer1, size: 3]);
+			int pos2 = SNESFunctions.SNEStoPC(Z.ROM[Z.Offsets.blocks_pointer2, size: 3]);
+			int pos3 = SNESFunctions.SNEStoPC(Z.ROM[Z.Offsets.blocks_pointer3, size: 3]);
+			int pos4 = SNESFunctions.SNEStoPC(Z.ROM[Z.Offsets.blocks_pointer4, size: 3]);
+
+			for (int j = 0, i = 0; j < blockCount; j += 4, i++)
+			{
+				ushort room = (ushort) (Z.ROM[pos1 + i] | (Z.ROM[pos2 + i] << 8));
+				if (room != id) continue;
+
+				var p = UWTilemapPosition.CreateFromTileMapPosition(Z.ROM[pos3 + i], Z.ROM[pos4 + i]);
+				ret.BlocksList.Add(new DungeonBlock()
+					{
+						X = p.X,
+						Y = p.Y,
+					}
+				);
+			}
+
+			// Load torches
+
+
+			// Load secrets
+			int secpos = 0x010000 | Z.ROM[Z.Offsets.room_items_pointers + (ret.RoomID * 2), 2];
+			secpos = secpos.SNEStoPC();
+
+			while (true)
+			{
+				byte b1 = Z.ROM[secpos++];
+				byte b2 = Z.ROM[secpos++];
+
+				if ((b1 & b2) == 0xFF) break;
+
+				byte b3 = Z.ROM[secpos++];
+
+				var p = UWTilemapPosition.CreateFromTileMapPosition(b1, b2);
+
+				ret.SecretsList.Add(
+					new DungeonSecret(SecretItemType.FindSecretFromID(b3))
+					{
+						X = p.X,
+						Y = p.Y,
+						Layer = p.Layer,
+					}
+				);
+
+			}
 
 			return ret;
 		}
@@ -487,6 +612,8 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		{
 			MultiLayerOAM = data[offset++] == 1;
 
+			DungeonSprite last = null;
+
 			while (true)
 			{
 				byte b1 = data[offset++];
@@ -495,6 +622,42 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 				byte b2 = data[offset++];
 				byte b3 = data[offset++];
+
+				if (b3 == Constants.KeyDropID)
+				{
+					if (b1 == Constants.BigKeyDropToken)
+					{
+						last.KeyDrop = 2;
+						continue;
+					}
+					else if (b1 == Constants.SmallKeyDropToken)
+					{
+						last.KeyDrop = 1;
+						continue;
+					}
+				}
+
+				byte subtype = (byte) ((b2 >> 5) | ((b1 & 0x60) >> 2));
+				SpriteType t;
+
+				if (subtype.BitsAllSet(0x07))
+				{
+					t = OverlordType.GetOverlordType(b3) ?? SpriteType.GetSpriteType(b3);
+				}
+				else
+				{
+					t = SpriteType.GetSpriteType(b3);
+				}
+
+				last = new DungeonSprite(t, RoomID)
+				{
+					X = (byte) (b2 & 0x1F),
+					Y = (byte) (b1 & 0x1F),
+					Layer = (byte) (b1 >> 1),
+					Subtype = subtype
+				};
+
+				SpritesList.Add(last);
 			}
 		}
 
@@ -514,19 +677,6 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		{
 
 		}
-
-
-
-
-
-
-
-
-		public void reloadGfx(byte blockset = 0xFF)
-		{
-			throw new NotImplementedException();
-		}
-
 		internal void reloadLayout()
 		{
 			throw new NotImplementedException();
@@ -604,6 +754,69 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			DoorsList.AddRange(otherdoors);
 
 			return (openabledoors.Count + shutterdoors.Count) > 4;
+		}
+
+
+
+		public bool[] GetBigChestListing(int count)
+		{
+			var ret = new bool[count];
+			int cur = 0;
+
+
+			foreach (RoomObject r in Layer1Objects.Concat(Layer2Objects).Concat(Layer3Objects))
+			{
+				if (r.IsChest)
+				{
+					ret[cur++] = r.IsBigChest;
+					if (cur == count)
+					{
+						break;
+					}
+				}
+			}
+
+			return ret;
+		}
+
+
+
+
+
+
+
+
+
+
+
+		// TODO THIS IS AWFUL
+
+		public Rectangle[] getAllDoorPosition(Room_Object o)
+		{
+			Rectangle[] rects = new Rectangle[48];
+			int pos;
+			float n;
+
+			for (int i = 0, j = 0; i < 12; i++, j += 2) // Left
+			{
+				pos = ZS.ROM[0x197E + j, 2] / 2;
+				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
+				rects[i] = new Rectangle(((byte) n) * 8, (byte) (pos / 64) * 8, 32, 24);
+
+				pos = ZS.ROM[0x1996 + j, 2] / 2;
+				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
+				rects[i + 12] = new Rectangle(((byte) n) * 8, (byte) ((pos / 64) + 1) * 8, 32, 24);
+
+				pos = ZS.ROM[0x19AE + j, 2] / 2;
+				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
+				rects[i + 24] = new Rectangle(((byte) n) * 8, (byte) (pos / 64) * 8, 24, 32);
+
+				pos = ZS.ROM[0x19C6 + j, 2] / 2;
+				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
+				rects[i + 36] = new Rectangle(((byte) n + 1) * 8, (byte) (pos / 64) * 8, 24, 32);
+			}
+
+			return rects;
 		}
 	}
 }

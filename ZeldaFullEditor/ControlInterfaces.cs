@@ -26,6 +26,5 @@ namespace ZeldaFullEditor
 		byte Y { get; set; }
 		byte NX { get; set; }
 		byte NY { get; set; }
-		byte Layer { get; set; }
 	}
 }
