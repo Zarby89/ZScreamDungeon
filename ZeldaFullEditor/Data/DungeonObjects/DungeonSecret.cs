@@ -32,7 +32,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			get
 			{
 				var p = UWTilemapPosition.CreateFromXYZ(X, Y, Layer);
-				return new byte[] { p.X, p.Y, SecretType.ID };
+				return new byte[] { p.Low, p.High, SecretType.ID };
 				//ushort xy = (ushort) ((Y << 6) | (X << 1) | (Layer << 13));
 				//return new byte[]
 				//	{
@@ -57,6 +57,11 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		{
 			return x >= (X * 8) && x <= (X * 8) + 16 &&
 					y >= (Y * 8) && y <= (Y * 8) + 16;
+		}
+
+		public bool Equals(DungeonSecret s)
+		{
+			return X == s.X && Y == s.Y && SecretType.ID == s.SecretType.ID;
 		}
 	}
 }

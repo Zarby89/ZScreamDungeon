@@ -138,7 +138,7 @@ namespace ZeldaFullEditor
 
 				//Clear the room's rectangle list and then re-populate it
 				room.ClearCollisionLayout();
-				room.loadCollisionLayout(false);
+				room.LoadCollisionLayout(false);
 
 				// If there is triangle in the room, write the room pointer, otherwise wrtie 000000
 				if (room.collision_rectangles.Count() > 0)
@@ -197,58 +197,27 @@ namespace ZeldaFullEditor
 
 		public bool saveTorches()
 		{
-			int bytes_count = ROM[Offsets.torches_length_pointer, 2];
-
 			int pos = Offsets.torch_data;
-			// ROM.StartBlockLogWriting("Torches Data", pos);
-			// 288 torches?
+			int end = pos + ROM[Offsets.torches_length_pointer, 2];
 
-			for (int i = 0; i < Constants.NumberOfRooms; i++)
+			foreach (DungeonRoom r in all_rooms)
 			{
-				bool room = false;
-				foreach (Room_Object o in all_rooms[i].tilesObjects)
+				if (r.TorchList.Count > 0)
 				{
-					if ((o.options & ObjectOption.Torch) == ObjectOption.Torch) // If we find a torch
-					{
-						// If we find a torch then store room if it not stored
-
-						if (!room)
-						{
-							ROM[pos, 2] = i;
-							pos += 2;
-							room = true;
-						}
-
-						int xy = ((o.y * 64) + o.x) << 1;
-						ROM[pos++] = (byte) xy;
-						byte b2 = (byte) (xy >> 8);
-
-						if (o.layer == 1)
-						{
-							b2 |= 0x20;
-						}
-
-						b2 |= (byte) (o.lit ? 0x80 : 0x00);
-						ROM[pos++] = b2;
-					}
-				}
-				if (room)
-				{
-					ROM[pos, 2] = 0xFFFF;
-					pos += 2;
+					ROM.WriteContinuous(ref pos, r.TorchesData);
 				}
 			}
 
-			if ((pos - Offsets.torch_data) > 0x120)
+			if (pos > end)
 			{
 				return true;
 			}
-			else
+
+			while (pos < end)
 			{
-				ROM[Offsets.torches_length_pointer, 2] = pos - Offsets.torch_data;
+				ROM[pos++] = 0xFF;
 			}
 
-			// ROM.EndBlockLogWriting();
 			return false; // False = no error
 		}
 
@@ -529,31 +498,31 @@ namespace ZeldaFullEditor
 			for (int j = 0; j < Constants.NumberOfOWSprites; j++)
 			{
 				sprPointersReused[j] = null;
-				allspr[j] = new List<Sprite>();
+				allspr[j] = new List<OverworldSprite>();
 			}
 
 			for (int i = 0; i < Constants.NumberOfOWSprites; i++) // For each pointers
 			{
 				if (i < 64) // LW[0]
 				{
-					Sprite[] sprArray = OverworldManager.allsprites[0].Where(s => s.mapid == i).ToArray();
-					foreach (Sprite spr in sprArray)
+					var sprArray = OverworldManager.allsprites[0].Where(s => s.ScreenID == i).ToArray();
+					foreach (var spr in sprArray)
 					{
 						allspr[i].Add(spr);
 					}
 				}
 				else if (i < 208) // LW & DW[1]
 				{
-					Sprite[] sprArray = OverworldManager.allsprites[1].Where(s => s.mapid == (i - 64)).ToArray();
-					foreach (Sprite spr in sprArray)
+					var sprArray = OverworldManager.allsprites[1].Where(s => s.ScreenID == (i - 64)).ToArray();
+					foreach (var spr in sprArray)
 					{
 						allspr[i].Add(spr);
 					}
 				}
 				else if (i < Constants.NumberOfOWSprites) // LW[2]
 				{
-					Sprite[] sprArray = OverworldManager.allsprites[2].Where(s => s.mapid == (i - 208)).ToArray();
-					foreach (Sprite spr in sprArray)
+					var sprArray = OverworldManager.allsprites[2].Where(s => s.ScreenID == (i - 208)).ToArray();
+					foreach (var spr in sprArray)
 					{
 						allspr[i].Add(spr);
 					}
@@ -590,9 +559,9 @@ namespace ZeldaFullEditor
 				if (sprPointersReused[i] == null)
 				{
 					sprPointers[i] = dataPos;
-					foreach (Sprite spr in allspr[i])
+					foreach (var spr in allspr[i])
 					{
-						ROM.WriteContinuous(ref dataPos, spr.y, spr.x, spr.id);
+						ROM.WriteContinuous(ref dataPos, spr.Data);
 					}
 
 					ROM[dataPos++] = Constants.SpriteTerminator;
@@ -614,7 +583,7 @@ namespace ZeldaFullEditor
 			return false; // No errors
 		}
 
-		public bool compareSpriteArrays(List<Sprite> spr1, List<Sprite> spr2)
+		public bool compareSpriteArrays(List<OverworldSprite> spr1, List<OverworldSprite> spr2)
 		{
 			if (spr1.Count != spr2.Count)
 			{
@@ -622,12 +591,12 @@ namespace ZeldaFullEditor
 			}
 
 			bool match;
-			foreach (Sprite i in spr1)
+			foreach (var i in spr1)
 			{
 				match = false;
-				foreach (Sprite j in spr2)
+				foreach (var j in spr2)
 				{
-					if (i.x == j.x && i.y == j.y && i.id == j.id)
+					if (i.Equals(j))
 					{
 						match = true;
 						break;
@@ -656,7 +625,7 @@ namespace ZeldaFullEditor
 				match = false;
 				foreach (RoomPotSaveEditor j in itm2)
 				{
-					if (i.x == j.x && i.y == j.y && i.id == j.id)
+					if (i.Equals(j))
 					{
 						match = true;
 						break;

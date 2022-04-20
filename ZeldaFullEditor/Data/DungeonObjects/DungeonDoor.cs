@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
 	[Serializable]
-	public unsafe class DungeonDoorObject : DungeonObject, IByteable, IMouseCollidable
+	public unsafe class DungeonDoorObject : DungeonPlaceable, IByteable, IMouseCollidable
 	{
-		public byte ID { get; set; }
+		public byte ID => DoorType.ID;
 		public byte X { get; set; }
 		public byte Y { get; set; }
 
@@ -26,9 +26,9 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			set => ny = value.Clamp(0, 63);
 		}
 
-		public override byte[] Data => new byte[] { ID, DoorPosition.Token };
+		public byte[] Data => new byte[] { ID, DoorPosition.Token };
 
-		public DungeonDoorType DoorType { get; set; }
+		public DungeonDoorType DoorType { get; set; } = DungeonDoorType.DoorType00;
 
 		private DungeonDoorDraw position;
 		public DungeonDoorDraw DoorPosition
@@ -37,7 +37,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			set
 			{
 				position = value;
-				_tiles = DoorTiles[DoorPosition.Direction];
+				Tiles = DoorTiles[DoorPosition.Direction];
 			}
 		}
 
@@ -49,12 +49,11 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			set
 			{
 				doorset = value;
-				_tiles = DoorTiles[DoorPosition.Direction];
+				Tiles = DoorTiles[DoorPosition.Direction];
 			}
 		}
 
-		private TilesList _tiles;
-		public override TilesList Tiles => _tiles;
+		public TilesList Tiles { get; private set; }
 
 		public DungeonDoorObject(DungeonDoorDraw position, DoorTilesList tiles)
 		{

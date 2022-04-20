@@ -14,6 +14,9 @@ namespace ZeldaFullEditor.Data
 
 		public ushort Position { get; }
 
+		public byte Low => (byte) Position;
+		public byte High => (byte) (Position >> 8);
+
 		private UWTilemapPosition(byte low, byte high)
 		{
 			Position = (ushort) (low | (high << 8));
@@ -24,10 +27,16 @@ namespace ZeldaFullEditor.Data
 
 		}
 
+		public static UWTilemapPosition CreateFromTileMapPosition(ushort tmap)
+		{
+			return new UWTilemapPosition((byte) tmap, (byte) (tmap >> 8));
+		}
+
 		public static UWTilemapPosition CreateFromTileMapPosition(byte tlow, byte thigh)
 		{
 			return new UWTilemapPosition(tlow, thigh);
 		}
+
 		public static UWTilemapPosition CreateFromXYZ(byte x, byte y, byte layer)
 		{
 			int manip = (layer << 13) | (y << 6) | x;

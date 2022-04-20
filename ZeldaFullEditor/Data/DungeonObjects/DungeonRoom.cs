@@ -103,32 +103,42 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			// TODO add layout and shit
 			get
 			{
-
 				var ret = new List<byte>();
 
 				ret.Add(0x00); // TODO write floor
 				ret.Add(0x00); // TODO write layout
 
 				ret.AddRange(Layer1Objects.Data);
-				ret.Add(0xFF);
-				ret.Add(0xFF);
+				ret.Add(0xFFFF);
 
 				ret.AddRange(Layer2Objects.Data);
-				ret.Add(0xFF);
-				ret.Add(0xFF);
+				ret.Add(0xFFFF);
 
 				ret.AddRange(Layer3Objects.Data);
 
 				if (DoorsList.Count > 0)
 				{
-					ret.Add(0xF0);
-					ret.Add(0xFF);
+					ret.Add(0xFFF0);
 
 					ret.AddRange(DoorsList.Data);
 				}
 
-				ret.Add(0xFF);
-				ret.Add(0xFF);
+				ret.Add(0xFFFF);
+
+				return ret.ToArray();
+			}
+		}
+
+		public byte[] TorchesData
+		{
+			get
+			{
+				var ret = new List<byte>();
+				ret.Add(RoomID);
+
+				ret.AddRange(TorchList.Data);
+
+				ret.Add(0xFFFF);
 
 				return ret.ToArray();
 			}
@@ -295,56 +305,12 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			int sprite_address = SNESFunctions.SNEStoPC(Constants.DungeonSpritePointers | Z.ROM[spritePointer + (id * 2), size: 2]);
 			ret.LoadSpritesFromArray(Z.ROM.DataStream, offset: sprite_address);
 
-			// Load blocks
-			int blockCount = Z.ROM[Z.Offsets.blocks_length, size: 2];
-
-			int pos1 = SNESFunctions.SNEStoPC(Z.ROM[Z.Offsets.blocks_pointer1, size: 3]);
-			int pos2 = SNESFunctions.SNEStoPC(Z.ROM[Z.Offsets.blocks_pointer2, size: 3]);
-			int pos3 = SNESFunctions.SNEStoPC(Z.ROM[Z.Offsets.blocks_pointer3, size: 3]);
-			int pos4 = SNESFunctions.SNEStoPC(Z.ROM[Z.Offsets.blocks_pointer4, size: 3]);
-
-			for (int j = 0, i = 0; j < blockCount; j += 4, i++)
-			{
-				ushort room = (ushort) (Z.ROM[pos1 + i] | (Z.ROM[pos2 + i] << 8));
-				if (room != id) continue;
-
-				var p = UWTilemapPosition.CreateFromTileMapPosition(Z.ROM[pos3 + i], Z.ROM[pos4 + i]);
-				ret.BlocksList.Add(new DungeonBlock()
-					{
-						X = p.X,
-						Y = p.Y,
-					}
-				);
-			}
-
-			// Load torches
-
-
-			// Load secrets
-			int secpos = 0x010000 | Z.ROM[Z.Offsets.room_items_pointers + (ret.RoomID * 2), 2];
-			secpos = secpos.SNEStoPC();
-
-			while (true)
-			{
-				byte b1 = Z.ROM[secpos++];
-				byte b2 = Z.ROM[secpos++];
-
-				if ((b1 & b2) == 0xFF) break;
-
-				byte b3 = Z.ROM[secpos++];
-
-				var p = UWTilemapPosition.CreateFromTileMapPosition(b1, b2);
-
-				ret.SecretsList.Add(
-					new DungeonSecret(SecretItemType.FindSecretFromID(b3))
-					{
-						X = p.X,
-						Y = p.Y,
-						Layer = p.Layer,
-					}
-				);
-
-			}
+			// Load other stuff
+			ret.LoadChests();
+			ret.LoadBlocks();
+			ret.LoadTorches();
+			ret.LoadSecrets();
+			ret.ReassociateChestsAndItems();
 
 			return ret;
 		}
@@ -354,11 +320,132 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		// TODO this is where we'll flush temporary edits to the new listing
 		public void FlushChanges()
 		{
+			if (!HasUnsavedChanges)
+			{
+				return;
+			}
+
 			HasUnsavedChanges = false;
 			throw new NotImplementedException();
 		}
 
 
+		private void LoadChests()
+		{
+			ChestList.Clear();
+
+			int cpos = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.chests_data_pointer1, 3]);
+			int clength = ZS.ROM[ZS.Offsets.chests_length_pointer, 2];
+
+			for (int i = 0; i < clength; i += 3)
+			{
+				ushort roomid = (ushort) (ZS.ROM[cpos, size: 2] & 0x7FFF);
+				cpos += 2;
+				byte item = ZS.ROM[cpos++]; // get now so cpos is incremented too
+
+				if (roomid == RoomID)
+				{
+					ChestList.Add(new DungeonChestItem(ItemReceipt.FindFromID(item)));
+				}
+			}
+		}
+
+		private void LoadBlocks()
+		{
+			int blockCount = ZS.ROM[ZS.Offsets.blocks_length, size: 2];
+
+			int pos1 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.blocks_pointer1, size: 3]);
+			int pos2 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.blocks_pointer2, size: 3]);
+			int pos3 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.blocks_pointer3, size: 3]);
+			int pos4 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.blocks_pointer4, size: 3]);
+
+			for (int j = 0, i = 0; j < blockCount; j += 4, i++)
+			{
+				ushort room = (ushort) (ZS.ROM[pos1 + i] | (ZS.ROM[pos2 + i] << 8));
+
+				if (room != RoomID) continue;
+
+				var p = UWTilemapPosition.CreateFromTileMapPosition(ZS.ROM[pos3 + i], (byte) (ZS.ROM[pos4 + i] & 0x3F));
+				BlocksList.Add(
+					new DungeonBlock()
+					{
+						X = p.X,
+						Y = p.Y,
+						Layer = p.Layer,
+					}
+				);
+			}
+		}
+
+		private void LoadTorches()
+		{
+			int torchesSize = ZS.ROM[ZS.Offsets.torches_length_pointer, size: 2];
+			int pos = ZS.Offsets.torch_data;
+			int ending = pos + torchesSize;
+
+			while (pos < ending)
+			{
+				ushort room = ZS.ROM[pos, size: 2];
+				pos += 2;
+
+				bool correctRoom = room == RoomID;
+
+				ushort tpos = room; // assign it now to catch that one deleted thing in vanilla
+
+				while (tpos != 0xFFFF)
+				{
+					tpos = ZS.ROM[pos, size: 2];
+					pos += 2;
+
+					if (correctRoom && tpos != 0xFFFF)
+					{
+						UWTilemapPosition tt = UWTilemapPosition.CreateFromTileMapPosition(tpos);
+						TorchList.Add(
+							new DungeonTorch()
+							{
+								X = tt.X,
+								Y = tt.Y,
+								Layer = tt.Layer,
+							}
+						);
+					}
+				}
+
+				if (correctRoom)
+				{
+					break;
+				}
+			}
+		}
+
+
+		private void LoadSecrets()
+		{
+			int secpos = 0x010000 | ZS.ROM[ZS.Offsets.room_items_pointers + (RoomID * 2), 2];
+			secpos = secpos.SNEStoPC();
+
+			while (true)
+			{
+				byte b1 = ZS.ROM[secpos++];
+				byte b2 = ZS.ROM[secpos++];
+
+				if ((b1 & b2) == 0xFF) break;
+
+				byte b3 = ZS.ROM[secpos++];
+
+				var p = UWTilemapPosition.CreateFromTileMapPosition(b1, b2);
+
+				SecretsList.Add(
+					new DungeonSecret(SecretItemType.FindSecretFromID(b3))
+					{
+						X = p.X,
+						Y = p.Y,
+						Layer = p.Layer,
+					}
+				);
+
+			}
+		}
 
 		public DungeonObjectsList GetLayerList(byte layer)
 		{
@@ -371,14 +458,43 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			return null;
 		}
 
-
-
-
 		public void DrawEntireRoom()
 		{
-			foreach (RoomObject r in Layer1Objects)
+			DrawFloor1();
+
+			for (int i = 0; i < LayoutListing.Length; i++)
+			{
+				LayoutListing[i].Draw(ZS);
+			}
+
+			foreach (var r in Layer1Objects)
 			{
 				r.Draw(ZS);
+			}
+
+			foreach (var r in Layer2Objects)
+			{
+				r.Draw(ZS);
+			}
+
+			foreach (var r in Layer3Objects)
+			{
+				r.Draw(ZS);
+			}
+
+			foreach (var r in DoorsList)
+			{
+				r.Draw(ZS);
+			}
+
+			if (bg2 != Constants.LayerMergeOff)
+			{
+				ZS.DungeonForm.SetPalettesTransparent();
+				DrawFloor2();
+			}
+			else
+			{
+				ZS.DungeonForm.SetPalettesBlack();
 			}
 		}
 
@@ -447,7 +563,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			throw new NotImplementedException();
 		}
 
-		internal void loadCollisionLayout(bool v)
+		internal void LoadCollisionLayout(bool v)
 		{
 			throw new NotImplementedException();
 		}
@@ -464,22 +580,6 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public void LoadObjectsFromArray(byte[] data, int offset = 0)
 		{
 			// Load chest items
-			var chests = new List<ChestData>();
-
-			int cpos = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.chests_data_pointer1, 3]);
-			int clength = ZS.ROM[ZS.Offsets.chests_length_pointer, 2];
-
-			for (int i = 0; i < clength; i++)
-			{
-				if ((ZS.ROM[cpos + (i * 3), 2] & 0x7FFF) == RoomID)
-				{
-					//There's a chest in that room !
-					bool big = IntFunctions.BitIsOn(ZS.ROM[cpos + (i * 3), 2], 0x18000); // HACK: need to make this bigger than ushort.max
-
-					chests.Add(new ChestData(ZS.ROM[cpos + (i * 3) + 2], big));
-				}
-			}
-
 			StairsList.Clear();
 			Layer1Objects.Clear();
 			Layer2Objects.Clear();
@@ -563,26 +663,6 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 						else
 						{
 							StairsList.Add(new StaircaseRoom(posX, posY, "BAD STAIR INDEX"));
-						}
-					}
-					else if (r.ObjectType.Specialness == SpecialObjectType.Chest ||
-						r.ObjectType.Specialness == SpecialObjectType.BigChest)
-					{
-						if (chests.Count > 0)
-						{
-							bool bigChest = r.ObjectType.Specialness == SpecialObjectType.BigChest;
-							if (bigChest)
-							{
-								posX++;
-							}
-							ChestList.Add(
-								new DungeonChestItem(null) // TODO ITEM RECEIPT
-								{
-									X = posX,
-									Y = posY
-								}
-							);
-							//	ZS, posX, posY, chests[0].itemIn, bigChest));
 						}
 					}
 				}
@@ -697,13 +777,57 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			throw new NotImplementedException();
 		}
 
-		internal void SendToFront(DungeonPlaceable o)
+
+		private dynamic GetAssociatedList(DungeonPlaceable o)
 		{
-			throw new NotImplementedException();
+			if (o is RoomObject ro)
+			{
+				if (Layer1Objects.Contains(ro))
+				{
+					return Layer1Objects;
+				}
+				else if (Layer2Objects.Contains(ro))
+				{
+					return Layer2Objects;
+				}
+				else  if (Layer3Objects.Contains(ro))
+				{
+					return Layer3Objects;
+				}
+			}
+			else if (o is DungeonDoorObject door)
+			{
+				if (DoorsList.Contains(door))
+				{
+					return DoorsList;
+				}
+			}
+
+			return null;
 		}
-		internal void SendToBack(DungeonPlaceable o)
+
+		public void SendToFront(DungeonPlaceable o)
 		{
-			throw new NotImplementedException();
+			var mylist = GetAssociatedList(o);
+
+			if (mylist is List<DungeonPlaceable> l)
+			{
+				l.Remove(o);
+				l.Insert(0, o);
+				return;
+			}
+		}
+
+		public void SendToBack(DungeonPlaceable o)
+		{
+			var mylist = GetAssociatedList(o);
+
+			if (mylist is List<DungeonPlaceable> l)
+			{
+				l.Remove(o);
+				l.Add(o);
+				return;
+			}
 		}
 
 		public void RemoveCurrentlySelectedObjectsFromList<T>(List<T> thisList) where T : DungeonPlaceable
@@ -780,7 +904,43 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		}
 
 
+		public void ReassociateChestsAndItems()
+		{
+			var chests = new List<RoomObject>();
 
+			foreach (var r in Layer1Objects)
+			{
+				if (r.IsChest)
+				{
+					chests.Add(r);
+				}
+			}
+
+			foreach (var r in Layer2Objects)
+			{
+				if (r.IsChest)
+				{
+					chests.Add(r);
+				}
+			}
+
+			foreach (var r in Layer3Objects)
+			{
+				if (r.IsChest)
+				{
+					chests.Add(r);
+				}
+			}
+
+			int i = 0;
+			foreach (var c in ChestList)
+			{
+				c.AssociatedChest = null;
+				if (i >= chests.Count) continue;
+
+				c.AssociatedChest = chests[i++];
+			}
+		}
 
 
 
@@ -791,7 +951,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		// TODO THIS IS AWFUL
 
-		public Rectangle[] getAllDoorPosition(Room_Object o)
+		public Rectangle[] getAllDoorPosition()
 		{
 			Rectangle[] rects = new Rectangle[48];
 			int pos;

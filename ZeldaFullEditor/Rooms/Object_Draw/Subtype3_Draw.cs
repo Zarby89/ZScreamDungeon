@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
+	/*
 	[Serializable]
 	public class object_200 : Room_Object
 	{
@@ -3565,4 +3566,5 @@ namespace ZeldaFullEditor
 			}
 		}
 	}
+	*/
 }

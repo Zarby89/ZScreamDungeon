@@ -6,13 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ZeldaFullEditor.Data.DungeonObjects;
 
 namespace ZeldaFullEditor.SceneModes
 {
 	public class OWSpriteMode : SceneMode
 	{
-		Sprite selectedSprite;
-		public Sprite lastselectedSprite;
+		OverworldSprite selectedSprite;
+		public OverworldSprite lastselectedSprite;
 
 		bool isLeftPress = false;
 
@@ -34,7 +35,7 @@ namespace ZeldaFullEditor.SceneModes
 				}
 
 				int gs = ZS.OverworldManager.gameState;
-				foreach (Sprite spr in ZS.OverworldManager.allsprites[gs]) // TODO : Check if that need to be changed to LINQ mapid == maphover
+				foreach (var spr in ZS.OverworldManager.allsprites[gs]) // TODO : Check if that need to be changed to LINQ mapid == maphover
 				{
 					if (e.X >= spr.map_x && e.X <= spr.map_x + 16 && e.Y >= spr.map_y && e.Y <= spr.map_y + 16)
 					{
@@ -56,14 +57,14 @@ namespace ZeldaFullEditor.SceneModes
 		public override void Copy()
 		{
 			Clipboard.Clear();
-			int sd = lastselectedSprite.id;
+			int sd = lastselectedSprite.ID;
 			Clipboard.SetData(Constants.OverworldSpriteClipboardData, sd);
 		}
 
 		public override void Cut()
 		{
 			Clipboard.Clear();
-			int sd = lastselectedSprite.id;
+			int sd = lastselectedSprite.ID;
 			Clipboard.SetData(Constants.OverworldSpriteClipboardData, sd);
 			Delete();
 
@@ -75,14 +76,14 @@ namespace ZeldaFullEditor.SceneModes
 			int data = (int) Clipboard.GetData(Constants.OverworldSpriteClipboardData);
 			if (data != -1)
 			{
-				ZS.OverworldScene.selectedFormSprite = new Sprite(0, (byte) data, 0, 0, 0, 0);
+				ZS.OverworldScene.selectedFormSprite = new OverworldSprite(0, (byte) data, 0, 0, 0, 0);
 				byte mid = ZS.OverworldManager.allmaps[ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset].parent;
 				if (mid == 255)
 				{
 					mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
 				}
 
-				ZS.OverworldScene.selectedFormSprite.updateMapStuff(mid);
+				ZS.OverworldScene.selectedFormSprite.UpdateMapID(mid);
 				int gs = ZS.OverworldManager.gameState;
 				if (mid >= 64)
 				{
@@ -116,7 +117,7 @@ namespace ZeldaFullEditor.SceneModes
 
 				if (ZS.OverworldScene.selectedFormSprite != null)
 				{
-					ZS.OverworldScene.selectedFormSprite.updateMapStuff(mid);
+					ZS.OverworldScene.selectedFormSprite.UpdateMapID(mid);
 					int gs = ZS.OverworldManager.gameState;
 
 					if (mid >= 64)
@@ -135,7 +136,7 @@ namespace ZeldaFullEditor.SceneModes
 				}
 				if (selectedSprite != null)
 				{
-					selectedSprite.updateMapStuff(mid);
+					selectedSprite.UpdateMapID((ushort) mid);
 					lastselectedSprite = selectedSprite;
 					selectedSprite = null;
 
@@ -183,7 +184,7 @@ namespace ZeldaFullEditor.SceneModes
 			if (addspr.ShowDialog() == DialogResult.OK)
 			{
 				byte data = (byte) addspr.spriteListBox.SelectedIndex;
-				ZS.OverworldScene.selectedFormSprite = new Sprite(0, data, 0, 0, (ZS.OverworldScene.mouseX_Real / 16), (ZS.OverworldScene.mouseY_Real / 16));
+				ZS.OverworldScene.selectedFormSprite = new OverworldSprite(0, data, 0, 0, (ZS.OverworldScene.mouseX_Real / 16), (ZS.OverworldScene.mouseY_Real / 16));
 				byte mid = ZS.OverworldManager.allmaps[ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset].parent;
 
 				if (mid == 255)
@@ -191,7 +192,7 @@ namespace ZeldaFullEditor.SceneModes
 					mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
 				}
 
-				ZS.OverworldScene.selectedFormSprite.updateMapStuff(mid);
+				ZS.OverworldScene.selectedFormSprite.UpdateMapID(mid);
 				int gs = ZS.OverworldManager.gameState;
 
 				if (mid >= 64)
@@ -283,14 +284,14 @@ namespace ZeldaFullEditor.SceneModes
 
 				for (int i = 0; i < ZS.OverworldManager.allsprites[ZS.OverworldManager.gameState].Count; i++)
 				{
-					Sprite spr = ZS.OverworldManager.allsprites[ZS.OverworldManager.gameState][i];
+					var spr = ZS.OverworldManager.allsprites[ZS.OverworldManager.gameState][i];
 
-					if (spr.mapid != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
+					if (spr.ScreenID != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
 					{
 						continue;
 					}
 
-					if (spr.mapid < 64 + ZS.OverworldManager.worldOffset && spr.mapid >= ZS.OverworldManager.worldOffset)
+					if (spr.ScreenID < 64 + ZS.OverworldManager.worldOffset && spr.ScreenID >= ZS.OverworldManager.worldOffset)
 					{
 						/*
                         if (selectedEntrance != null)
@@ -311,7 +312,7 @@ namespace ZeldaFullEditor.SceneModes
 
 						g.FillRectangle(bgrBrush, new Rectangle(spr.map_x, spr.map_y, 16, 16));
 						g.DrawRectangle(Constants.Black200Pen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
-						ZS.OverworldScene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.name);
+						ZS.OverworldScene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.Name);
 					}
 				}
 
@@ -324,9 +325,9 @@ namespace ZeldaFullEditor.SceneModes
 
 				for (int i = 0; i < ZS.OverworldManager.allsprites[ZS.OverworldManager.gameState].Count; i++)
 				{
-					Sprite spr = ZS.OverworldManager.allsprites[ZS.OverworldManager.gameState][i];
+					var spr = ZS.OverworldManager.allsprites[ZS.OverworldManager.gameState][i];
 
-					if (spr.mapid < 64 + ZS.OverworldManager.worldOffset && spr.mapid >= ZS.OverworldManager.worldOffset)
+					if (spr.ScreenID < 64 + ZS.OverworldManager.worldOffset && spr.ScreenID >= ZS.OverworldManager.worldOffset)
 					{
 						/*
                         if (selectedEntrance != null)
@@ -347,7 +348,7 @@ namespace ZeldaFullEditor.SceneModes
 
 						g.FillRectangle(bgrBrush, new Rectangle(spr.map_x, spr.map_y, 16, 16));
 						g.DrawRectangle(Constants.Black200Pen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
-						ZS.OverworldScene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.name);
+						ZS.OverworldScene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.Name);
 					}
 				}
 

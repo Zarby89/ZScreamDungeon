@@ -10,19 +10,10 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 	{
 		public SecretItemType ReceiptType { get; set; }
 
-		public byte X { get; set; }
-		public byte Y { get; set; }
+		public byte X => AssociatedChest?.X ?? 0;
+		public byte Y => AssociatedChest?.Y ?? 0;
 
-		public byte[] Data
-		{
-			get
-			{
-				throw new NotImplementedException();
-				return null;
-			}
-		}
-
-
+		public RoomObject AssociatedChest { get; set; }
 
 		public DungeonChestItem(ItemReceipt s)
 		{

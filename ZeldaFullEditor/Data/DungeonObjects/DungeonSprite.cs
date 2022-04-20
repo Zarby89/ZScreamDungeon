@@ -4,10 +4,13 @@ using System.Drawing;
 
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
-	public abstract unsafe class SomeSprite : DungeonObject, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable
+	public abstract unsafe class SomeSprite : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable
 	{
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
+
+		public string Name => Species.VanillaName;
+		public byte ID => Species.ID;
 
 		private byte nx, ny;
 		public byte NX
@@ -21,11 +24,11 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			set => ny = value.Clamp(0, 31);
 		}
 
-		public override TilesList Tiles { get; }
+		public TilesList Tiles { get; }
 
 		public bool IsCurrentlyOverlord { get; protected set; }
 
-		public abstract override byte[] Data { get; }
+		public abstract byte[] Data { get; }
 
 		public ushort ScreenID { get; set; }
 
@@ -61,6 +64,11 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public override bool PointIsInHitbox(int x, int y)
 		{
 			throw new NotImplementedException();
+		}
+
+		public bool Equals(SomeSprite s)
+		{
+			return X == s.X && Y == s.Y && Species.ID == s.Species.ID;
 		}
 	}
 
@@ -149,9 +157,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 	public class OverworldSprite : SomeSprite, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable
 	{
-
 		public override byte[] Data => throw new NotImplementedException();
-
 		public OverworldSprite(SpriteType type, ushort screen = 0) : base(type, screen)
 		{
 			
@@ -159,15 +165,15 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public void UpdateMapID(ushort mapId)
 		{
-			ScreenID = mapId;
+			base.ScreenID = mapId;
 
 			if (mapId >= 64)
 			{
 				mapId -= 64;
 			}
 
-			X = (byte) ((map_x - ((mapId & 0x7) * 512)) / 16);
-			Y = (byte) ((map_y - ((mapId / 8) * 512)) / 16);
+			base.X = (byte) ((map_x - ((mapId & 0x7) * 512)) / 16);
+			base.Y = (byte) ((map_y - ((mapId / 8) * 512)) / 16);
 
 		}
 	}

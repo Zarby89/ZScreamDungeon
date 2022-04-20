@@ -7,6 +7,7 @@ using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using ZeldaFullEditor.SceneModes;
 using ZeldaFullEditor.Gui;
+using ZeldaFullEditor.Data.DungeonObjects;
 
 namespace ZeldaFullEditor
 {
@@ -44,7 +45,7 @@ namespace ZeldaFullEditor
 		public OWEntranceMode entranceMode;
 		public OWSpriteMode spriteMode;
 		public OWSecretsMode itemMode;
-		public Sprite selectedFormSprite;
+		public OverworldSprite selectedFormSprite;
 		public OWTransportMode transportMode;
 		public OWOverlayMode overlayMode;
 		public OWGravesMode gravestoneMode;
@@ -292,11 +293,11 @@ namespace ZeldaFullEditor
 					if (spriteMode.lastselectedSprite != null)
 					{
 						ZS.OverworldForm.SetSelectedObjectLabels(
-							spriteMode.lastselectedSprite.id,
-							spriteMode.lastselectedSprite.x,
-							spriteMode.lastselectedSprite.y);
+							spriteMode.lastselectedSprite.ID,
+							spriteMode.lastselectedSprite.X,
+							spriteMode.lastselectedSprite.Y);
 						ZS.OverworldForm.objCombobox.Items.AddRange(Sprites_Names.name);
-						ZS.OverworldForm.objCombobox.SelectedIndex = spriteMode.lastselectedSprite.id;
+						ZS.OverworldForm.objCombobox.SelectedIndex = spriteMode.lastselectedSprite.ID;
 
 						ZS.OverworldForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedSprite;
 					}
@@ -309,8 +310,7 @@ namespace ZeldaFullEditor
 
 		private void ObjCombobox_SelectedIndexChangedSprite(object sender, EventArgs e)
 		{
-			spriteMode.lastselectedSprite.id = (byte) ZS.OverworldForm.objCombobox.SelectedIndex;
-			spriteMode.lastselectedSprite.name = ZS.OverworldForm.objCombobox.Text;
+			spriteMode.lastselectedSprite.ID = (byte) ZS.OverworldForm.objCombobox.SelectedIndex;
 
 			InvalidateHighEnd();
 		}

@@ -9,9 +9,11 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 {
 	// TODO new way to handle objects that change with the floor settings
 	[Serializable]
-	public unsafe class RoomObject : DungeonObject, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
+	public unsafe class RoomObject : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
 	{
-		public ushort ID { get; }
+		public ushort ID => ObjectType.FullID;
+		public string Name => ObjectType.VanillaName;
+
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
 		public byte NX { get; set; }
@@ -28,9 +30,11 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public RoomObjectType ObjectType { get; }
 
-		public override TilesList Tiles { get; }
+		public TilesList Tiles { get; }
 
-		public override byte[] Data
+		public List<Point> CollisionPoints { get; } = new List<Point>();
+
+		public byte[] Data
 		{
 			get
 			{
@@ -69,7 +73,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public RoomObject(RoomObjectType type, TilesList tiles)
 		{
 			ObjectType = type;
-			ID = type.FullID;
+			//ID = type.FullID;
 			Tiles = tiles;
 			ResetSize();
 		}

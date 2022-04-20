@@ -2002,7 +2002,7 @@ namespace ZeldaFullEditor.Gui
 		/// <param name="phase"></param>
 		public void clearAreaSprites(int phase)
 		{
-			ZS.OverworldManager.allsprites[phase].RemoveAll(o => o.mapid == ZS.OverworldScene.selectedMapParent);
+			ZS.OverworldManager.allsprites[phase].RemoveAll(o => o.ScreenID == ZS.OverworldScene.selectedMapParent);
 		}
 
 		/// <summary>

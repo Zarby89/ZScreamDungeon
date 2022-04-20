@@ -12,13 +12,10 @@ using System.Diagnostics;
 using System.Drawing.Imaging;
 using System.Drawing.Drawing2D;
 using ZeldaFullEditor.Properties;
-using Microsoft.VisualBasic;
-using System.IO.Compression;
 using System.Runtime.InteropServices;
 using System.Threading;
 using ZeldaFullEditor.Gui;
 using ZeldaFullEditor.Gui.MainTabs;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Globalization;
 using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Data.DungeonObjects;
@@ -68,7 +65,7 @@ namespace ZeldaFullEditor
 		public string loadFromExported = "";
 
 		public List<RoomObjectPreview> listoftilesobjects = new List<RoomObjectPreview>();
-		List<Sprite> listofspritesobjects = new List<Sprite>();
+		List<SpritePreview> listofspritesobjects = new List<SpritePreview>();
 		List<Chest> listofchests = new List<Chest>();
 
 		// Groups of options for the Scene
@@ -215,17 +212,15 @@ namespace ZeldaFullEditor
 
 			//sw.Reset();
 			//sw.Start();
+
+			foreach (TabPage tp in tabControl2.TabPages)
+			{
+				tp.Text = tp.Text.Trim('*');
+			}
+
 			foreach (DungeonRoom r in opened_rooms)
 			{
-				if (r.HasUnsavedChanges)
-				{
-					foreach (TabPage tp in tabControl2.TabPages)
-					{
-						tp.Text = tp.Text.Trim('*');
-					}
-
-					r.FlushChanges();
-				}
+				r.FlushChanges();
 			}
 
 			anychange = false;
@@ -235,7 +230,7 @@ namespace ZeldaFullEditor
 
 			//sw.Reset();
 			//sw.Start();
-			byte[] romBackup = (byte[]) ZS.ROM.DataStream.Clone();
+			byte[] romBackup = ZS.ROM.DataStream.DeepCopy();
 
 			// TODO move to ZS
 			//sw.Stop();
@@ -258,181 +253,176 @@ namespace ZeldaFullEditor
 			// 29: load Over. sprites
 			// 30: load Over. items
 
-			// Probably a dumb hack, but this do-while makes everything execute exactly once
-			// And allows us to break out on failure cleanly to terminate the routine
 			bool badSave = true;
-			do
+			if (saveSettingsArr[0] && ZS.saveallSprites())
 			{
-				if (saveSettingsArr[0] && ZS.saveallSprites())
-				{
-					UIText.CryAboutSaving("there are too many sprites");
-					break;
-				}
-				if (saveSettingsArr[1] && ZS.saveallPots())
-				{
-					UIText.CryAboutSaving("there are too many pot items");
-					break;
-				}
-				if (saveSettingsArr[2] && ZS.saveallChests())
-				{
-					UIText.CryAboutSaving("there are too many chest items");
-					break;
-				}
-				if (saveSettingsArr[3] && ZS.saveAllObjects())
-				{
-					UIText.CryAboutSaving("there are too many tiles objects");
-					break;
-				}
-				if (saveSettingsArr[4] && ZS.saveBlocks())
-				{
-					UIText.CryAboutSaving("there are too many pushable blocks");
-					break;
-				}
-				if (saveSettingsArr[5] && ZS.saveTorches())
-				{
-					UIText.CryAboutSaving("there are too many torches");
-					break;
-				}
-				if (saveSettingsArr[6] && ZS.saveAllPits())
-				{
-					UIText.CryAboutSaving("there are too many pits with damage");
-					break;
-				}
-				if (saveSettingsArr[7] && ZS.saveRoomsHeaders())
-				{
-					//UIText.CryAboutSaving("there are too many chest items);
-					//break;
-				}
-				if (saveSettingsArr[8] && ZS.saveEntrances())
-				{
-					UIText.CryAboutSaving("something with entrances ?? no idea why LUL");
-					break;
-				}
-				if (saveSettingsArr[9] && ZS.SaveOWSprites())
-				{
-					UIText.CryAboutSaving("overworld sprites out of range");
-					break;
-				}
-				if (saveSettingsArr[10] && ZS.saveOWItems())
-				{
-					UIText.CryAboutSaving("overworld items out of range");
-					break;
-				}
-				if (saveSettingsArr[11] && ZS.saveOWEntrances())
-				{
-					UIText.CryAboutSaving("??, no idea why LUL");
-					break;
-				}
-				if (saveSettingsArr[12] && ZS.saveOWTransports())
-				{
-					UIText.CryAboutSaving("overworld transports out of range");
-					break;
-				}
-				if (saveSettingsArr[13] && ZS.saveOWExits())
-				{
-					UIText.CryAboutSaving("overworld Exits or something IDK");
-					break;
-				}
-				if (saveSettingsArr[14] && ZS.OverworldScene.SaveTiles())
-				{
-					// No need for a message box here because its handeled within the SaveTiles() function itslef.
-					break;
-				}
-
-				// 15
-
-				if (saveSettingsArr[16] && ZS.saveMapProperties())
-				{
-					UIText.CryAboutSaving("overworld map properties ???");
-					break;
-				}
-
-				// 17
-				// 18
-				// 19
-				// 20
-				// 21
-				// 22
-
-				if (saveSettingsArr[23] && ZS.GFXGroups.SaveGroupsToROM())
-				{
-					UIText.CryAboutSaving("problem saving GFX Groups");
-					break;
-				}
-				if (saveSettingsArr[24] && ZS.PaletteManager.SavePalettesToROM())
-				{
-					UIText.CryAboutSaving("problem saving palettes");
-					break;
-				}
-				if (saveSettingsArr[25] && ZS.TextForm.Save())
-				{
-					UIText.CryAboutSaving("impossible to save text");
-					break;
-				}
-
-				// 17
-
-				if (saveSettingsArr[28] && ZS.saveCustomCollision())
-				{
-					UIText.CryAboutSaving("there was an error saving the custom collision rectangles");
-					break;
-				}
-				if (saveSettingsArr[31] && ZS.saveMapOverlays())
-				{
-					UIText.CryAboutSaving("overworld map overlays ???");
-					break;
-				}
-				if (saveSettingsArr[32] && ZS.saveOverworldMusics())
-				{
-					UIText.CryAboutSaving("overworld map tile types ???");
-					break;
-				}
-				if (saveSettingsArr[33] && ZS.SaveTitleScreen())
-				{
-					UIText.CryAboutSaving("overworld title screen?");
-					break;
-				}
-				if (saveSettingsArr[34] && ZS.SaveOverworldMiniMap())
-				{
-					UIText.CryAboutSaving("problem saving overworld Minimap?");
-					break;
-				}
-				if (saveSettingsArr[35] && ZS.saveOverworldTilesType())
-				{
-					UIText.CryAboutSaving("problem saving overworld map tiles Types ???");
-					break;
-				}
-				if (saveSettingsArr[36] && ZS.saveOverworldMaps())
-				{
-					UIText.CryAboutSaving("problem saving overworld maps");
-					break;
-				}
-				if (saveSettingsArr[37] && ZS.SaveGravestones())
-				{
-					UIText.CryAboutSaving("problem saving gravestones");
-					break;
-				}
-				if (saveSettingsArr[38] && ZS.SaveDungeonMaps())
-				{
-					UIText.CryAboutSaving("problem saving dungeon maps");
-					break;
-				}
-				if (saveSettingsArr[39] && ZS.SaveTriforce())
-				{
-					UIText.CryAboutSaving("problem saving triforce");
-					break;
-				}
-				if (saveSettingsArr[40] && ZS.saveOverworldMessagesIds())
-				{
-					UIText.CryAboutSaving("problem saving  overworld map tiles Types ???");
-					break;
-				}
-
-				// If we made it here, everything was fine
-				badSave = false;
+				UIText.CryAboutSaving("there are too many sprites");
+				goto theend;
 			}
-			while (false);
+			if (saveSettingsArr[1] && ZS.saveallPots())
+			{
+				UIText.CryAboutSaving("there are too many pot items");
+				goto theend;
+			}
+			if (saveSettingsArr[2] && ZS.saveallChests())
+			{
+				UIText.CryAboutSaving("there are too many chest items");
+				goto theend;
+			}
+			if (saveSettingsArr[3] && ZS.saveAllObjects())
+			{
+				UIText.CryAboutSaving("there are too many tiles objects");
+				goto theend;
+			}
+			if (saveSettingsArr[4] && ZS.saveBlocks())
+			{
+				UIText.CryAboutSaving("there are too many pushable blocks");
+				goto theend;
+			}
+			if (saveSettingsArr[5] && ZS.saveTorches())
+			{
+				UIText.CryAboutSaving("there are too many torches");
+				goto theend;
+			}
+			if (saveSettingsArr[6] && ZS.saveAllPits())
+			{
+				UIText.CryAboutSaving("there are too many pits with damage");
+				goto theend;
+			}
+			if (saveSettingsArr[7] && ZS.saveRoomsHeaders())
+			{
+				//UIText.CryAboutSaving("there are too many chest items);
+				//goto theend;;
+			}
+			if (saveSettingsArr[8] && ZS.saveEntrances())
+			{
+				UIText.CryAboutSaving("something with entrances ?? no idea why LUL");
+				goto theend;
+			}
+			if (saveSettingsArr[9] && ZS.SaveOWSprites())
+			{
+				UIText.CryAboutSaving("overworld sprites out of range");
+				goto theend;
+			}
+			if (saveSettingsArr[10] && ZS.saveOWItems())
+			{
+				UIText.CryAboutSaving("overworld items out of range");
+				goto theend;
+			}
+			if (saveSettingsArr[11] && ZS.saveOWEntrances())
+			{
+				UIText.CryAboutSaving("??, no idea why LUL");
+				goto theend;
+			}
+			if (saveSettingsArr[12] && ZS.saveOWTransports())
+			{
+				UIText.CryAboutSaving("overworld transports out of range");
+				goto theend;
+			}
+			if (saveSettingsArr[13] && ZS.saveOWExits())
+			{
+				UIText.CryAboutSaving("overworld Exits or something IDK");
+				goto theend;
+			}
+			if (saveSettingsArr[14] && ZS.OverworldScene.SaveTiles())
+			{
+				// No need for a message box here because its handeled within the SaveTiles() function itself.
+				goto theend;
+			}
 
+			// 15
+
+			if (saveSettingsArr[16] && ZS.saveMapProperties())
+			{
+				UIText.CryAboutSaving("overworld map properties ???");
+				goto theend;
+			}
+
+			// 17
+			// 18
+			// 19
+			// 20
+			// 21
+			// 22
+
+			if (saveSettingsArr[23] && ZS.GFXGroups.SaveGroupsToROM())
+			{
+				UIText.CryAboutSaving("problem saving GFX Groups");
+				goto theend;
+			}
+			if (saveSettingsArr[24] && ZS.PaletteManager.SavePalettesToROM())
+			{
+				UIText.CryAboutSaving("problem saving palettes");
+				goto theend;
+			}
+			if (saveSettingsArr[25] && ZS.TextForm.Save())
+			{
+				UIText.CryAboutSaving("impossible to save text");
+				goto theend;
+			}
+
+			// 17
+
+			if (saveSettingsArr[28] && ZS.saveCustomCollision())
+			{
+				UIText.CryAboutSaving("there was an error saving the custom collision rectangles");
+				goto theend;
+			}
+			if (saveSettingsArr[31] && ZS.saveMapOverlays())
+			{
+				UIText.CryAboutSaving("overworld map overlays ???");
+				goto theend;
+			}
+			if (saveSettingsArr[32] && ZS.saveOverworldMusics())
+			{
+				UIText.CryAboutSaving("overworld map tile types ???");
+				goto theend;
+			}
+			if (saveSettingsArr[33] && ZS.SaveTitleScreen())
+			{
+				UIText.CryAboutSaving("overworld title screen?");
+				goto theend;
+			}
+			if (saveSettingsArr[34] && ZS.SaveOverworldMiniMap())
+			{
+				UIText.CryAboutSaving("problem saving overworld Minimap?");
+				goto theend;
+			}
+			if (saveSettingsArr[35] && ZS.saveOverworldTilesType())
+			{
+				UIText.CryAboutSaving("problem saving overworld map tiles Types ???");
+				goto theend;
+			}
+			if (saveSettingsArr[36] && ZS.saveOverworldMaps())
+			{
+				UIText.CryAboutSaving("problem saving overworld maps");
+				goto theend;
+			}
+			if (saveSettingsArr[37] && ZS.SaveGravestones())
+			{
+				UIText.CryAboutSaving("problem saving gravestones");
+				goto theend;
+			}
+			if (saveSettingsArr[38] && ZS.SaveDungeonMaps())
+			{
+				UIText.CryAboutSaving("problem saving dungeon maps");
+				goto theend;
+			}
+			if (saveSettingsArr[39] && ZS.SaveTriforce())
+			{
+				UIText.CryAboutSaving("problem saving triforce");
+				goto theend;
+			}
+			if (saveSettingsArr[40] && ZS.saveOverworldMessagesIds())
+			{
+				UIText.CryAboutSaving("problem saving overworld map tiles Types ???");
+				goto theend;
+			}
+
+			// If we made it here, everything was fine
+			badSave = false;
+
+			theend:
 			if (badSave)
 			{
 				ZS.ROM.OhShitLastResortBackup(romBackup);
@@ -547,7 +537,7 @@ namespace ZeldaFullEditor
 
 			initEntrancesList();
 			customPanel3.Controls.Add(ZS.UnderworldScene);
-			addRoomTab(260);
+			addRoomTab(0x0104);
 
 			projectLoaded = true;
 
@@ -583,32 +573,17 @@ namespace ZeldaFullEditor
 				ZS.GFXManager.previewChestsPtr[i] = Marshal.AllocHGlobal(64 * 64);
 				ZS.GFXManager.previewChestsBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, ZS.GFXManager.previewChestsPtr[i]);
 			}
-
-			Sprites_Names.loadFromFile();
-			Room_Name.loadFromFile();
-			ChestItems_Name.loadFromFile();
-			ItemsNames.loadFromFile();
-
+			
 			initObjectsList();
 			spritesView1.items.Clear();
 
-			foreach (Sprite o in listofspritesobjects)
-			{
-				spritesView1.items.Add(o);
-			}
+			spritesView1.items.AddRange(listofspritesobjects);
 
 			objectViewer1.items.Clear();
-			foreach (RoomObject o in listoftilesobjects)
-			{
-				objectViewer1.items.Add(o);
-			}
+			objectViewer1.items.AddRange(listoftilesobjects);
 
 			selecteditemobjectCombobox.Items.Clear();
-
-			for (int i = 0; i < ItemsNames.name.Length; i++)
-			{
-				selecteditemobjectCombobox.Items.Add(ItemsNames.name[i]);
-			}
+			selecteditemobjectCombobox.DataSource = DefaultEntities.ListOfSecrets;
 
 			/*
             string s = "";
@@ -2194,14 +2169,14 @@ namespace ZeldaFullEditor
 		// TODO copy
 		private void CloseTab(int i)
 		{
-			if ((tabControl2.TabPages[i].Tag as Room).has_changed)
+			if ((tabControl2.TabPages[i].Tag as DungeonRoom).HasUnsavedChanges)
 			{
 
 				switch (UIText.WarnAboutSaving(UIText.RoomWarning))
 				{
 					case DialogResult.Yes:
 						DungeonsData.all_rooms[(tabControl2.TabPages[i].Tag as DungeonRoom).RoomID] = (tabControl2.TabPages[i].Tag as DungeonRoom).Clone();
-						closeRoom((tabControl2.TabPages[i].Tag as Room).index);
+						closeRoom((tabControl2.TabPages[i].Tag as DungeonRoom).RoomID);
 						this.tabControl2.TabPages.RemoveAt(i);
 
 						// TODO this needs to be made a function
@@ -2315,21 +2290,15 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			throw new NotImplementedException();
-
 			// TODO previews for sprites and overlords
-			for (int i = 0; i < 0xF2; i++)
+			for (byte i = 0; i < 0xF2; i++)
 			{
-				Sprite s = new Sprite(ZS.UnderworldScene.Room, (byte) i, 0, 0, 0, 0);
-				s.preview = true;
-				listofspritesobjects.Add(s);
+				listofspritesobjects.Add(new SpritePreview(SpriteType.GetSpriteType(i)));
 			}
 
-			for (int i = 1; i < 0x1B; i++)
+			for (byte i = 1; i < 0x1B; i++)
 			{
-				Sprite s = new Sprite(ZS.UnderworldScene.Room, (byte) i, 0, 0, 7, 0);
-				s.preview = true;
-				listofspritesobjects.Add(s);
+				listofspritesobjects.Add(new SpritePreview(OverlordType.GetSpriteType(i)));
 			}
 
 			//sortObject();
@@ -2337,7 +2306,7 @@ namespace ZeldaFullEditor
 
 		private void objectViewer1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.selectedDragObject = new dataObject(objectViewer1.selectedObject.id, objectViewer1.selectedObject.name);
+			ZS.UnderworldScene.selectedDragObject = new dataObject(objectViewer1.selectedObject.ID, objectViewer1.selectedObject.Name);
 		}
 
 		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
@@ -2371,7 +2340,7 @@ namespace ZeldaFullEditor
 
 		private void spritesView1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ZS.UnderworldScene.selectedDragSprite = new dataObject(spritesView1.selectedObject.id, spritesView1.selectedObject.name, spritesView1.selectedObject.subtype);
+			ZS.UnderworldScene.selectedDragSprite = new dataObject(spritesView1.selectedObject.ID, spritesView1.selectedObject.Name, spritesView1.selectedObject.Subtype);
 		}
 
 		private void toolStripButton1_Click(object sender, EventArgs e)
@@ -2451,7 +2420,7 @@ namespace ZeldaFullEditor
 		{
 			if (ZS.UnderworldScene.IsUpdating && ZS.UnderworldScene.Room.OnlySelectedObject is DungeonTorch torch)
 			{
-				torch.lit = litCheckbox.Checked;
+				torch.Lit = litCheckbox.Checked;
 			}
 		}
 
@@ -2542,7 +2511,7 @@ namespace ZeldaFullEditor
 
 				foreach (TabPage tp in tabControl2.TabPages)
 				{
-					if ((tp.Tag as Room).index == (ushort) i)
+					if ((tp.Tag as DungeonRoom).RoomID == (ushort) i)
 					{
 						e.Graphics.DrawRectangle(
 								new Pen((tabControl2.SelectedTab == tp) ? Color.YellowGreen : Color.DarkGreen, 2),
@@ -2709,23 +2678,7 @@ namespace ZeldaFullEditor
 		// TODO delete when projects
 		private void loadNamesFileToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (OpenFileDialog ofd = new OpenFileDialog())
-			{
-				ofd.Filter = "Default Names .txt|*.txt";
-				if (ofd.ShowDialog() == DialogResult.OK)
-				{
-					Sprites_Names.loadFromFile(ofd.FileName);
-					Room_Name.loadFromFile(ofd.FileName);
-					ChestItems_Name.loadFromFile(ofd.FileName);
-					ItemsNames.loadFromFile(ofd.FileName);
-					selecteditemobjectCombobox.Items.Clear();
 
-					for (int i = 0; i < ItemsNames.name.Length; i++)
-					{
-						selecteditemobjectCombobox.Items.Add(ItemsNames.name[i]);
-					}
-				}
-			}
 		}
 
 		// TODO simplify and stuff, etc
@@ -3007,48 +2960,7 @@ namespace ZeldaFullEditor
 
 			//Tile t = new Tile(0, false, false, 0, 0);
 			//t.Draw(0, 0);
-			ClearBgGfx(); // Technically not required
-
-			previewRoom.DrawFloor1();
-
-			if (previewRoom.bg2 != Constants.LayerMergeOff)
-			{
-				SetPalettesTransparent();
-				previewRoom.DrawFloor2();
-			}
-			else
-			{
-				SetPalettesBlack();
-			}
-
-			previewRoom.reloadLayout();
-			foreach (Room_Object o in previewRoom.tilesLayoutObjects)
-			{
-				o.Draw();
-
-			}
-			// Draw object on bitmap
-
-			foreach (Room_Object o in previewRoom.tilesObjects)
-			{
-				// TODO can these ifs be merged?
-				if (o.layer != 2)
-				{
-					o.Draw();
-				}
-				else if (o.options == ObjectOption.Door)
-				{
-					o.Draw();
-				}
-			}
-			foreach (Room_Object o in previewRoom.tilesObjects)
-			{
-				// Draw doors here since they'll all be put on bg3 anyways
-				if (o.layer == 2)
-				{
-					o.Draw();
-				}
-			}
+			previewRoom.DrawEntireRoom();
 
 			ZS.GFXManager.DrawBG1();
 			ZS.GFXManager.DrawBG2();

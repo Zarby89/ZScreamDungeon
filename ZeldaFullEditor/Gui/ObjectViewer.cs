@@ -68,7 +68,7 @@ namespace ZeldaFullEditor
 				}
 				else
 				{
-					e.Graphics.DrawString(o.ID.ToString("X3") + o.ObjectType.VanillaName.ToString(), this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 24, 64, 40));
+					e.Graphics.DrawString(o.ID.ToString("X3") + o.ObjectType.ToString(), this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 24, 64, 40));
 				}
 
 				xpos++;

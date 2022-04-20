@@ -84,11 +84,6 @@ namespace ZeldaFullEditor
 			return (addr1 << 16) | (addr2 << 8) | addr3;
 		}
 
-		public static (byte, byte) UWXYFromTileMap(ushort t)
-		{
-			return UWXYFromTileMap((byte) t, (byte) (t >> 8));
-		}
-
 		public static string[] DeepCopy(this string[] a)
 		{
 			string[] ret = new string[a.Length];
@@ -112,6 +107,16 @@ namespace ZeldaFullEditor
 
 			return ret;
 		}
+
+		/// <summary>
+		/// Adds a little-endian short to the list as individual bytes.
+		/// </summary>
+		public static void Add(this List<byte> me, ushort val)
+		{
+			me.Add((byte) val);
+			me.Add((byte) (val >> 8));
+		}
+
 
 		public static List<T> DeepCopy<T>(this List<T> me)
 		{

@@ -223,8 +223,8 @@
     <Compile Include="AddressSet.cs" />
     <Compile Include="asar.cs" />
     <Compile Include="ChestDraw.cs" />
-    <Compile Include="ControlInterfaces.cs" />
     <Compile Include="Data\DefaultEntities.cs" />
+    <Compile Include="Data\Drawing.cs" />
     <Compile Include="Data\DungeonMap.cs" />
     <Compile Include="Data\DungeonObjects\DungeonBlock.cs" />
     <Compile Include="Data\DungeonObjects\DungeonChestItem.cs" />
@@ -245,7 +245,7 @@
     <Compile Include="Data\DungeonObjects\RoomObjectProperties.cs" />
     <Compile Include="Data\DungeonObjects\RoomObjectTileLister.cs" />
     <Compile Include="Data\DungeonObjects\SecretItemType.cs" />
-    <Compile Include="Data\DungeonObjects\TilesList.cs" />
+    <Compile Include="Data\TilesList.cs" />
     <Compile Include="Data\EntityName.cs" />
     <Compile Include="Data\Gravestone.cs" />
     <Compile Include="Data\MapIcon.cs" />
@@ -566,12 +566,8 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Gui\Scene\SceneResizing.cs" />
-    <Compile Include="Gui\Scene\SceneUW.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Gui\Scene\SceneBase.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Gui\Scene\SceneUW.cs" />
+    <Compile Include="Gui\Scene\SceneBase.cs" />
     <Compile Include="SceneModes\UWBlockMode.cs" />
     <Compile Include="SceneModes\UWDoorMode.cs" />
     <Compile Include="SceneModes\UWEntranceMode.cs" />

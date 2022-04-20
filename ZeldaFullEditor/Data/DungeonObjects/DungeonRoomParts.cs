@@ -44,7 +44,6 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 	public class DungeonDoorsList : DungeonLister<DungeonDoorObject>, IByteable { }
 	public class DungeonSecretsList : DungeonLister<DungeonSecret>, IByteable { }
 	public class DungeonSpritesList : DungeonLister<DungeonSprite>, IByteable { }
-	public class DungeonChestsList : List<DungeonChestItem> { }
 	public class DungeonBlocksList : DungeonListing<DungeonBlock> { }
-	public class DungeonTorchList : DungeonListing<DungeonTorch> { }
+	public class DungeonTorchList : DungeonLister<DungeonTorch>, IByteable { }
 }

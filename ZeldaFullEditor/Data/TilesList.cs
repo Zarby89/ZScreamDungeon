@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ZeldaFullEditor.Data.DungeonObjects
+namespace ZeldaFullEditor.Data
 {
 	/// <summary>
 	/// This class is essentually an immutable array of tiles with a more direct name.
@@ -73,6 +73,14 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 			return new TilesList(list);
 		}
+	}
+
+	public enum DoorDirection
+	{
+		North = 0x00,
+		South = 0x01,
+		West = 0x02,
+		East = 0x03
 	}
 
 	[Serializable]

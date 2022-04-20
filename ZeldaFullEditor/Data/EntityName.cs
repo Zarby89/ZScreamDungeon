@@ -23,6 +23,12 @@ namespace ZeldaFullEditor.Data
 		public override string ToString() => string.Format("{0:2X} {1}", ID, Name);
 	}
 
+	public class RoomName : EntityName
+	{
+		public RoomName(int i, string n) : base(i, n) { }
+		public override string ToString() => string.Format("{0:3X} {1}", ID, Name);
+	}
+
 	public class SpriteName : EntityName
 	{
 		public SpriteName(int i, string n) : base(i, n) { }

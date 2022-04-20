@@ -10,7 +10,6 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 	{
 		public delegate void DrawSecret(ZScreamer ZS, DungeonSecret s);
 
-
 		public byte ID { get; }
 		public string VanillaName { get; }
 
@@ -55,6 +54,44 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public static readonly SecretItemType Secret88 = new SecretItemType(0x88, SecretDraw_Switch);
 
 
+		public static unsafe void DrawTiles(ZScreamer ZS, DungeonSecret sec, params OAMDrawInfo[] instructions)
+		{
+			var alltilesData = (byte*) ZS.GFXManager.currentOWgfx16Ptr.ToPointer();
+
+			byte* ptr = (byte*) ZS.GFXManager.roomBg1Ptr.ToPointer(); ;
+
+			// TODO poorly copied and shit
+			foreach (OAMDrawInfo ti in instructions)
+			{
+				int size = ti.RectSideSize;
+				byte r = (byte) (ti.HFlip ? 1 : 0);
+				int tx = (ti.TileIndex / 16 * 512) + ((ti.TileIndex & 0xF) << 2); // TODO verify
+				int indexoff = sec.X + ti.XOff + (512 * (sec.Y + ti.YOff));
+				byte pal = (byte) (ti.Palette << 3);
+
+
+				for (int yl = 0, yl2 = tx; yl < size; yl++, yl2 += 64)
+				{
+					int my = (512 * (ti.VFlip ? size - 1 - yl : yl)) + indexoff; // this is alltilesData additive, so it can go here
+
+					for (int xl = 0, xl2 = yl2; xl < size; xl++, xl2++)
+					{
+						int mx = ti.HFlip ? size - 1 - xl : xl;
+						var pixel = alltilesData[xl2];
+						int index = (mx * 2) + my;
+
+						if (pixel.BitIsOn(0x0F))
+						{
+							ptr[index + r ^ 1] = (byte) ((pixel & 0x0F) + 112 + pal);
+						}
+						if (pixel.BitIsOn(0xF0))
+						{
+							ptr[index + r] = (byte) ((pixel >> 4) + 112 + pal);
+						}
+					}
+				}
+			}
+		}
 
 		private static void SecretDraw_Arrow(ZScreamer ZS, DungeonSecret s)
 		{

@@ -4,18 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using static ZeldaFullEditor.Data.DungeonObjects.DoorDirection;
+using static ZeldaFullEditor.Data.DoorDirection;
 
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
-	public enum DoorDirection
-	{
-		North = 0x00,
-		South = 0x01,
-		West = 0x02,
-		East = 0x03
-	}
-
 	public class DungeonDoorDraw
 	{
 		private delegate void DoorDrawFunction(ZScreamer ZS, DungeonDoorObject door);

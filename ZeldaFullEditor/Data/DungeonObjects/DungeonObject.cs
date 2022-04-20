@@ -7,32 +7,56 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
+
+	/// <summary>
+	/// Defines a method for items that require a ZScreamer to be passed to refer their drawing to.
+	/// </summary>
+	public interface IDelegatedDraw
+	{
+		void Draw(ZScreamer ZS);
+	}
+
+	/// <summary>
+	/// Represents objects that have draw routines based on the Bank00 tiles tables.
+	/// </summary>
+	public interface ITilesTableBasedDraw
+	{
+		TilesList Tiles { get; set; }
+	}
+
+	/// <summary>
+	/// Contains the <see cref="Layer">Layer</see> property indicating which layer an entity is on.
+	/// </summary>
+	public interface IMultilayered
+	{
+		byte Layer { get; set; }
+	}
+
+	/// <summary>
+	/// Contains methods for objects to communicate collision with user control.
+	/// </summary>
+	public interface IMouseCollidable
+	{
+		bool PointIsInHitbox(int x, int y);
+	}
+
+	/// <summary>
+	/// Contains properties common to objects that can be moved around freely with the mouse.
+	/// </summary>
+	public interface IFreelyPlaceable
+	{
+		byte X { get; set; }
+		byte Y { get; set; }
+		byte NX { get; set; }
+		byte NY { get; set; }
+	}
+
+	/// <summary>
+	/// Represents any object which can be placed inside a dungeon.
+	/// </summary>
 	public abstract class DungeonPlaceable : IDelegatedDraw, IMouseCollidable
 	{
 		public abstract void Draw(ZScreamer ZS);
 		public abstract bool PointIsInHitbox(int x, int y);
-	}
-
-	public abstract class DungeonObject : DungeonPlaceable, IByteable, IDelegatedDraw, IMouseCollidable
-	{
-		/// <summary>
-		/// Returns a list of points representing the collision box of the object within the GUI.
-		/// </summary>
-		public virtual List<Point> CollisionPoints { get; } = new List<Point>();
-
-		public abstract TilesList Tiles { get; }
-
-		/// <summary>
-		/// Returns an array of bytes representing the ROM data of the object in its current state.
-		/// </summary>
-		public abstract byte[] Data { get; }
-
-		/// <summary>
-		/// Draws this object to the given controller's graphics or tilemap buffer.
-		/// </summary>
-		/// <param name="ZS">Graphics controller parent</param>
-		public abstract override void Draw(ZScreamer ZS);
-
-		public abstract override bool PointIsInHitbox(int x, int y);
 	}
 }

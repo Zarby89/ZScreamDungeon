@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
-	public unsafe class DungeonTorch : DungeonPlaceable, IFreelyPlaceable, IMouseCollidable, IMultilayered
+	public unsafe class DungeonTorch : DungeonPlaceable, IFreelyPlaceable, IMouseCollidable, IMultilayered, IByteable
 	{
 
 		public byte X { get; set; } = 0;
@@ -15,6 +15,16 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public byte NY { get; set; }
 		public byte Layer { get; set; } = 0;
 
+		public bool Lit { get; set; } = false;
+
+		public byte[] Data
+		{
+			get
+			{
+				UWTilemapPosition t = UWTilemapPosition.CreateFromXYZ(X, Y, Layer);
+				return new byte[] { t.Low, t.High };
+			}
+		}
 
 		public DungeonTorch()
 		{

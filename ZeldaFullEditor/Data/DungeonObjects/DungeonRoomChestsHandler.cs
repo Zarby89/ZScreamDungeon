@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,24 +7,20 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
-	public class DungeonRoomChestsHandler : IByteable
+	public class DungeonRoomChestsHandler : List<DungeonChestItem>, IByteable
 	{
 		public DungeonRoom Room { get; }
-
-		private List<DungeonChestItem> chests = new List<DungeonChestItem>();
-
-		public int Count => chests.Count;
 
 		public byte[] Data
 		{
 			get
 			{
-				bool[] arebigs = Room.GetBigChestListing(chests.Count);
-				byte[] ret = new byte[chests.Count * 3];
+				bool[] arebigs = Room.GetBigChestListing(Count);
+				byte[] ret = new byte[Count * 3];
 
 				int pos = 0;
 				int i = 0;
-				foreach (DungeonChestItem c in chests)
+				foreach (DungeonChestItem c in this)
 				{
 					ushort e = Room.RoomID;
 					if (arebigs[i++])
@@ -40,24 +37,9 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			}
 		}
 
-
 		public DungeonRoomChestsHandler(DungeonRoom room)
 		{
 			Room = room;
-		}
-
-		public void Add(DungeonChestItem d)
-		{
-			chests.Add(d);
-		}
-
-		public void Remove(DungeonChestItem d)
-		{
-			chests.Remove(d);
-		}
-		public void Clear()
-		{
-			chests.Clear();
 		}
 	}
 }
