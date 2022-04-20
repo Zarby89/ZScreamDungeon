@@ -125,17 +125,32 @@ namespace ZeldaFullEditor
 			int mapy = ((mapId & 56) << 6);
 			if (isAutomatic)
 			{
-				xScroll = (short) (playerX - 134);
-				yScroll = (short) (playerY - 78);
+				/*
+				Zarby:
+				vanilla values of link's house are ->
+				ScrollY: 0A9A
+				ScrollX: 0832
+
+				PY: 0AE8
+				PX: 08B8
+
+				if you subtract these you get -134 and -78 
+
+				Jared_Brain_: further testing by zarby revealed that these values are different for every entrance.
+				completly centered is -120 and -80
+				*/
+
+				xScroll = (short) (playerX - 120); //134
+				yScroll = (short) (playerY - 80); //78
 
 				if (xScroll < mapx) { xScroll = (short) ((mapx)); }
 				if (yScroll < mapy) { yScroll = (short) ((mapy)); }
 
 				if (xScroll > mapx + large) { xScroll = (short) ((mapx) + large); }
-				if (yScroll > (mapy + large) + 30) { yScroll = (short) (((mapy) + large) + 30); }
+				if (yScroll > (mapy + large) + 32) { yScroll = (short) (((mapy) + large) + 32); }
 
-				cameraX = (short) (playerX);
-				cameraY = (short) (playerY + 19);
+				cameraX = (short) (playerX + 0x07);
+				cameraY = (short) (playerY + 0x1F);
 
 				if (cameraX < mapx + 127) { cameraX = (short) (mapx + 127); }
 				if (cameraY < mapy + 111) { cameraY = (short) (mapy + 111); }
