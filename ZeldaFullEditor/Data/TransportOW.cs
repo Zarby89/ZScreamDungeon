@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-	public class TransportOW
+	public class TransportOW : Data.OverworldEntity
 	{
 		public ushort vramLocation { get; set; }
 		public ushort xScroll { get; set; }
@@ -15,13 +15,13 @@ namespace ZeldaFullEditor
 		public ushort playerY { get; set; }
 		public ushort cameraX { get; set; }
 		public ushort cameraY { get; set; }
-		public ushort mapId { get; set; }
+		public byte MapID { get; set; }
 		public ushort whirlpoolPos { get; set; }
 
 		public byte unk1 { get; set; }
 		public byte unk2 { get; set; }
-		public byte AreaX { get; set; }
-		public byte AreaY { get; set; }
+		public byte MapX { get; set; }
+		public byte MapY { get; set; }
 
 		public bool isAutomatic = true;
 
@@ -29,7 +29,7 @@ namespace ZeldaFullEditor
 			ushort playerY, ushort playerX, ushort cameraY, ushort cameraX,
 			byte unk1, byte unk2, ushort whirlpoolPos)
 		{
-			this.mapId = mapId;
+			MapID = mapId;
 			this.vramLocation = vramLocation;
 			this.xScroll = xScroll;
 			this.yScroll = yScroll;
@@ -44,13 +44,13 @@ namespace ZeldaFullEditor
 			int mapX = (mapId - ((mapId / 8) * 8));
 			int mapY = (mapId / 8);
 
-			AreaX = (byte) ((Math.Abs(playerX - (mapX * 512)) / 16));
-			AreaY = (byte) ((Math.Abs(playerY - (mapY * 512)) / 16));
+			MapX = (byte) ((Math.Abs(playerX - (mapX * 512)) / 16));
+			MapY = (byte) ((Math.Abs(playerY - (mapY * 512)) / 16));
 		}
 
-		public void updateMapStuff(byte mapId, Overworld ow)
+		public void UpdateMapID(byte mapId, Overworld ow)
 		{
-			this.mapId = mapId;
+			MapID = mapId;
 
 			int large = 256;
 			int mapid = mapId;
@@ -68,8 +68,8 @@ namespace ZeldaFullEditor
 			int mapX = (mapId - ((mapId / 8) * 8));
 			int mapY = (mapId / 8);
 
-			AreaX = (byte) ((Math.Abs(playerX - (mapX * 512)) / 16));
-			AreaY = (byte) ((Math.Abs(playerY - (mapY * 512)) / 16));
+			MapX = (byte) ((Math.Abs(playerX - (mapX * 512)) / 16));
+			MapY = (byte) ((Math.Abs(playerY - (mapY * 512)) / 16));
 
 			// If map is large, large = 768, otherwise 256
 

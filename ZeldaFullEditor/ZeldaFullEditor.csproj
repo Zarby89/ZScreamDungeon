@@ -239,12 +239,14 @@
     <Compile Include="Data\DungeonObjects\DungeonRoomChestsHandler.cs" />
     <Compile Include="Data\DungeonObjects\DungeonRoomObject.cs" />
     <Compile Include="Data\DungeonObjects\DungeonRoomParts.cs" />
+    <Compile Include="Data\DungeonObjects\DungeonDestinationsHandler.cs" />
     <Compile Include="Data\DungeonObjects\DungeonSecret.cs" />
     <Compile Include="Data\DungeonObjects\DungeonTorch.cs" />
     <Compile Include="Data\DungeonObjects\ItemReceipt.cs" />
     <Compile Include="Data\DungeonObjects\RoomObjectProperties.cs" />
     <Compile Include="Data\DungeonObjects\RoomObjectTileLister.cs" />
     <Compile Include="Data\DungeonObjects\SecretItemType.cs" />
+    <Compile Include="Data\OverworldEntity.cs" />
     <Compile Include="Data\TilesList.cs" />
     <Compile Include="Data\EntityName.cs" />
     <Compile Include="Data\Gravestone.cs" />
@@ -292,7 +294,6 @@
     <Compile Include="Data\dataObject.cs" />
     <Compile Include="Data\DataRoom.cs" />
     <Compile Include="DoAction.cs" />
-    <Compile Include="Data\DungeonsData.cs" />
     <Compile Include="Data\Entrance.cs" />
     <Compile Include="Data\EntranceOW.cs" />
     <Compile Include="Data\ExitOW.cs" />
@@ -507,7 +508,6 @@
     </Compile>
     <Compile Include="ROMAddress.cs" />
     <Compile Include="ROMWrite.cs" />
-    <Compile Include="Rooms\Items\ItemsNames.cs" />
     <Compile Include="Gui\ExtraForms\MovePointer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -531,10 +531,8 @@
     </Compile>
     <Compile Include="Data\RoomPotSaveEditor.cs" />
     <Compile Include="Rooms\Chests\Chest.cs" />
-    <Compile Include="Rooms\Chests\ChestItems_Name.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Rooms\Items\Items_Draw.cs" />
-    <Compile Include="Rooms\Object_Draw\Doors_Draw.cs" />
     <Compile Include="Gui\DungeonMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -553,13 +551,7 @@
     <Compile Include="ROM.cs" />
     <Compile Include="Rooms\Room.cs" />
     <Compile Include="Rooms\RoomLayout.cs" />
-    <Compile Include="Rooms\Room_Name.cs" />
-    <Compile Include="Rooms\Sprites\Sprites_Names.cs" />
-    <Compile Include="Rooms\Object_Draw\Subtype1_Draw.cs" />
-    <Compile Include="Rooms\Object_Draw\Subtype2_Multiple.cs" />
     <Compile Include="Rooms\Room_Object.cs" />
-    <Compile Include="Rooms\Object_Draw\Subtype3_Draw.cs" />
-    <Compile Include="Rooms\Sprites\Sprite.cs" />
     <Compile Include="Save.cs" />
     <Compile Include="Data\SaveObject.cs" />
     <Compile Include="Gui\Scene\SceneOW.cs">
@@ -577,7 +569,6 @@
     <Compile Include="Scripting.evaluator.cs" />
     <Compile Include="Scripting.Extensions.cs" />
     <Compile Include="Scripting.native.cs" />
-    <Compile Include="SpriteOWEditor.cs" />
     <Compile Include="SpritesView.cs">
       <SubType>UserControl</SubType>
     </Compile>

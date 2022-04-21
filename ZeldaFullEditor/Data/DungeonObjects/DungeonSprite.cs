@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
-	public abstract unsafe class SomeSprite : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable
+	public abstract unsafe class SomeSprite : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IEquatable<SomeSprite>
 	{
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
@@ -30,7 +30,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public abstract byte[] Data { get; }
 
-		public ushort ScreenID { get; set; }
+		public virtual ushort ScreenID { get; set; }
 
 		/// <summary>
 		/// The intended type of the sprite or overlord.
@@ -68,7 +68,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public bool Equals(SomeSprite s)
 		{
-			return X == s.X && Y == s.Y && Species.ID == s.Species.ID;
+			return X == s.X && Y == s.Y && ID == s.ID;
 		}
 	}
 
@@ -155,26 +155,41 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		}
 	}
 
-	public class OverworldSprite : SomeSprite, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable
+	public class OverworldSprite : SomeSprite, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, OverworldEntity, IEquatable<OverworldSprite>
 	{
+		public byte MapX { get; set; }
+		public byte MapY { get; set; }
+
+		public byte MapID { get; set; }
+
+		public override ushort ScreenID
+		{
+			get => MapID;
+			set => MapID = (byte) value;
+		}
+
 		public override byte[] Data => throw new NotImplementedException();
 		public OverworldSprite(SpriteType type, ushort screen = 0) : base(type, screen)
 		{
 			
 		}
 
+		public bool Equals(OverworldSprite s)
+		{
+			return MapX == s.MapX && MapY == s.MapY && ID == s.ID;
+		}
+
 		public void UpdateMapID(ushort mapId)
 		{
-			base.ScreenID = mapId;
+			ScreenID = mapId;
 
 			if (mapId >= 64)
 			{
 				mapId -= 64;
 			}
 
-			base.X = (byte) ((map_x - ((mapId & 0x7) * 512)) / 16);
-			base.Y = (byte) ((map_y - ((mapId / 8) * 512)) / 16);
-
+			X = (byte) ((MapX - ((mapId & 0x7) * 512)) / 16);
+			Y = (byte) ((MapY - ((mapId / 8) * 512)) / 16);
 		}
 	}
 

@@ -89,16 +89,16 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			{
 				b1 = ZS.ROM[pos++];
 				b2 = ZS.ROM[pos++];
-				if ((b1 & b2) == 0xFF)
-				{
-					break;
-				}
+
+				if ((b1 & b2) == 0xFF) break;
 
 				b3 = ZS.ROM[pos++];
 
-				RoomObject r = DungeonRoom.ParseRoomObject(ZS, 0, b1, b2, b3, out byte _, out byte _);
+				RoomObject r = DungeonRoom.ParseRoomObject(ZS, b1, b2, b3);
+
 				if (r != null)
 				{
+					r.Layer = 0;
 					ret.Add(r);
 				}
 			}

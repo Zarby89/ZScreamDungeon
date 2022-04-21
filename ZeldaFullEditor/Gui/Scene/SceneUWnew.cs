@@ -95,7 +95,6 @@ namespace ZeldaFullEditor
 		{
 			CurrentMode.OnMouseMove(e);
 
-
 			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 
 			throw new NotImplementedException();

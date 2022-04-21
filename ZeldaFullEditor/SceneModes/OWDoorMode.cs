@@ -25,8 +25,8 @@ namespace ZeldaFullEditor.SceneModes
 		{
 			if (e.Button == MouseButtons.Left)
 			{
-				int mapy = (ZS.OverworldScene.exitmode.lastselectedExit.mapId / 8);
-				int mapx = ZS.OverworldScene.exitmode.lastselectedExit.mapId - (mapy * 8);
+				int mapy = (ZS.OverworldScene.exitmode.lastselectedExit.MapID / 8);
+				int mapx = ZS.OverworldScene.exitmode.lastselectedExit.MapID - (mapy * 8);
 				int mouse_tile_x_down = ((e.X / 16)) - (mapx * 32);
 				int mouse_tile_y_down = ((e.Y / 16)) - (mapy * 32);
 

@@ -29,7 +29,7 @@ namespace ZeldaFullEditor
 			gameY = (byte) ((Math.Abs(y - (mapY * 512)) / 16));
 		}
 
-		public void updateMapStuff(ushort mapId)
+		public void UpdateMapID(ushort mapId)
 		{
 			this.roomMapId = (ushort) mapId;
 

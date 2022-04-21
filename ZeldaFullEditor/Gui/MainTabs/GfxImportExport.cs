@@ -237,16 +237,11 @@ namespace ZeldaFullEditor.Gui
 
 		private void palettePicturebox_Paint(object sender, PaintEventArgs e)
 		{
+			Color[] cols = radioButton1.Checked ? ZS.GFXManager.roomBg1Bitmap.Palette.Entries : ZS.GFXManager.mapgfx16Bitmap.Palette.Entries;
+
 			for (int i = 0; i < 256; i++)
 			{
-				if (radioButton1.Checked)
-				{
-					e.Graphics.FillRectangle(new SolidBrush(ZS.GFXManager.roomBg1Bitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
-				}
-				else
-				{
-					e.Graphics.FillRectangle(new SolidBrush(ZS.GFXManager.mapgfx16Bitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
-				}
+				e.Graphics.FillRectangle(new SolidBrush(cols[i]), new Rectangle((i & 0xF) << 4, i & ~0xF, 16, 16));
 			}
 
 			e.Graphics.DrawRectangle(Pens.Lime, new Rectangle(0, selectedPal * 16, 256, 16));
@@ -262,18 +257,10 @@ namespace ZeldaFullEditor.Gui
 			selectedPal = (e.Y / 16);
 
 			ColorPalette cp = ZS.GFXManager.allgfxBitmap.Palette;
+			Color[] cols = radioButton1.Checked ? ZS.GFXManager.roomBg1Bitmap.Palette.Entries : ZS.GFXManager.mapgfx16Bitmap.Palette.Entries;
 			for (int i = 0; i < 16; i++)
 			{
-				if (radioButton1.Checked)
-				{
-					cp.Entries[i] = ZS.GFXManager.roomBg1Bitmap.Palette.Entries[i + selectedPal * 16];
-				}
-				else
-				{
-
-					cp.Entries[i] = ZS.GFXManager.mapgfx16Bitmap.Palette.Entries[i + selectedPal * 16];
-				}
-
+				cp.Entries[i] = cols[i + selectedPal * 16];
 			}
 
 			ZS.GFXManager.allgfxBitmap.Palette = cp;
@@ -296,16 +283,22 @@ namespace ZeldaFullEditor.Gui
 
 			}
 
-			byte[] pdata = new byte[64];
-			for (int i = 0; i < 16; i++)
-			{
-				pdata[(i * 4) + 0] = ZS.GFXManager.allgfxBitmap.Palette.Entries[i].B;
-				pdata[(i * 4) + 1] = ZS.GFXManager.allgfxBitmap.Palette.Entries[i].G;
-				pdata[(i * 4) + 2] = ZS.GFXManager.allgfxBitmap.Palette.Entries[i].R;
-				pdata[(i * 4) + 3] = ZS.GFXManager.allgfxBitmap.Palette.Entries[i].A;
-			}
 
-			ImgClipboard.SetImageData(sdata, pdata);
+
+			ImgClipboard.SetImageData(sdata, CopyPaletteData());
+		}
+
+		private byte[] CopyPaletteData()
+		{
+			byte[] pdata = new byte[64];
+			for (int i = 0; i < 16 * 4; i += 4)
+			{
+				pdata[i + 0] = ZS.GFXManager.allgfxBitmap.Palette.Entries[i].B;
+				pdata[i + 1] = ZS.GFXManager.allgfxBitmap.Palette.Entries[i].G;
+				pdata[i + 2] = ZS.GFXManager.allgfxBitmap.Palette.Entries[i].R;
+				pdata[i + 3] = ZS.GFXManager.allgfxBitmap.Palette.Entries[i].A;
+			}
+			return pdata;
 		}
 
 		private void copy24bpp_Click(object sender, EventArgs e)
@@ -321,16 +314,7 @@ namespace ZeldaFullEditor.Gui
 
 			}
 
-			byte[] pdata = new byte[64];
-			for (int i = 0; i < 16; i++)
-			{
-				pdata[(i * 4) + 0] = ZS.GFXManager.allgfxBitmap.Palette.Entries[i].B;
-				pdata[(i * 4) + 1] = ZS.GFXManager.allgfxBitmap.Palette.Entries[i].G;
-				pdata[(i * 4) + 2] = ZS.GFXManager.allgfxBitmap.Palette.Entries[i].R;
-				pdata[(i * 4) + 3] = ZS.GFXManager.allgfxBitmap.Palette.Entries[i].A;
-			}
-
-			ImgClipboard.SetImageDataWithPal(sdata, pdata);
+			ImgClipboard.SetImageDataWithPal(sdata, CopyPaletteData());
 		}
 
 		public void copy()
@@ -389,11 +373,11 @@ namespace ZeldaFullEditor.Gui
 
 		public byte matchPalette(Color c)
 		{
-			for (int i = 0; i < 8; i++)
+			for (byte i = 0; i < 8; i++)
 			{
 				if (palettes[i].R == c.R && palettes[i].G == c.G && palettes[i].B == c.B)
 				{
-					return (byte) i;
+					return i;
 				}
 			}
 

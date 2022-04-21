@@ -45,7 +45,7 @@ namespace ZeldaFullEditor
 		public OverworldMap[] allmaps = new OverworldMap[Constants.NumberOfOWMaps];
 		public EntranceOWEditor[] allentrances = new EntranceOWEditor[129];
 		public EntranceOWEditor[] allholes = new EntranceOWEditor[0x13];
-		public List<RoomPotSaveEditor> allitems = new List<RoomPotSaveEditor>();
+		public List<OverworldSecret> allitems = new List<OverworldSecret>();
 		public OverlayData[] alloverlays = new OverlayData[128];
 
 		public List<OverworldSprite>[] allsprites = new List<OverworldSprite>[3];
@@ -240,14 +240,7 @@ namespace ZeldaFullEditor
 			int tpos = ZS.Offsets.map16Tiles;
 			for (int i = 0; i < Constants.NumberOfMap16; i++)
 			{
-				ZS.ROM[tpos, 2] = Tile16List[i].tile0.ToUnsignedShort();
-				tpos += 2;
-				ZS.ROM[tpos, 2] = Tile16List[i].tile1.ToUnsignedShort();
-				tpos += 2;
-				ZS.ROM[tpos, 2] = Tile16List[i].tile2.ToUnsignedShort();
-				tpos += 2;
-				ZS.ROM[tpos, 2] = Tile16List[i].tile3.ToUnsignedShort();
-				tpos += 2;
+				ZS.ROM.WriteContinuous(ref tpos, Tile16List[i].Data);
 			}
 		}
 
@@ -526,7 +519,7 @@ namespace ZeldaFullEditor
 					(x * 16) + ((mapId & 0x7) * 512),
 					(y * 16) + (((mapId % 64) / 8) * 512),
 					entranceId,
-					mapId,
+					(byte) mapId,
 					mapPos
 				);
 
@@ -547,7 +540,7 @@ namespace ZeldaFullEditor
 					(x * 16) + ((mapId & 0x07) * 512),
 					(y * 16) + (((mapId % 64) / 8) * 512),
 					entranceId,
-					mapId,
+					(byte) mapId,
 					(ushort) p
 				);
 			}
@@ -956,8 +949,8 @@ namespace ZeldaFullEditor
 					int sx = fakeid - (sy * 8);
 
 					allitems.Add(new RoomPotSaveEditor(b3, (ushort) i, (x * 16) + (sx * 512), (y * 16) + (sy * 512), false));
-					allitems[allitems.Count - 1].gameX = (byte) x;
-					allitems[allitems.Count - 1].gameY = (byte) y;
+					allitems[allitems.Count - 1].MapX = (byte) x;
+					allitems[allitems.Count - 1].MapY = (byte) y;
 					addr += 3;
 				}
 			}

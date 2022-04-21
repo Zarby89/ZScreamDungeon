@@ -60,28 +60,6 @@ namespace ZeldaFullEditor
 		//===========================================================================================
 		public const string NullField = "-";
 
-		public static string FormatSelectedObject(Room_Object o)
-		{
-			switch (o.options)
-			{
-				case ObjectOption.Torch:
-					return string.Format("Selected object: {0:X2} torch", o.id);
-
-				default:
-					return string.Format("Selected object: {0:X4} {1}", o.id, o.name);
-			}
-		}
-
-		public static string FormatSelectedSprite(Sprite s, string n)
-		{
-			return string.Format("Selected sprite: {0:X2} {1}", s.id, n);
-		}
-
-		public static string FormatSelectedPotItem(PotItem p, string n)
-		{
-			return string.Format("Selected prize: {0:X2} {1}", p.id, n);
-		}
-
 		/// <summary>
 		/// Returns a path with system-specific path separators, where each argument is a different segment of the file path.
 		/// </summary>

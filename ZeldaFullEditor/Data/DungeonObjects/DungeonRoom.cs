@@ -13,6 +13,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		private byte[] blocks = new byte[16];
 
+		public string Name { get; set; }
 
 		public DungeonObjectsList Layer1Objects { get; } = new DungeonObjectsList();
 		public DungeonObjectsList Layer2Objects { get; } = new DungeonObjectsList();
@@ -25,7 +26,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public DungeonBlocksList BlocksList { get; } = new DungeonBlocksList();
 		public DungeonTorchList TorchList { get; } = new DungeonTorchList();
 
-		public List<StaircaseRoom> StairsList { get; } = new List<StaircaseRoom>();
+		public DungeonDestinationsHandler Destinations { get; } = new DungeonDestinationsHandler();
 		public List<DungeonPlaceable> SelectedObjects { get; } = new List<DungeonPlaceable>();
 
 
@@ -45,7 +46,6 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		}
 
 		public bool HasUnsavedChanges { get; internal set; }
-		public byte[] StairDestinations { get; } = new byte[4];
 
 		private byte layout;
 		public byte Layout
@@ -80,21 +80,24 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		{
 			get
 			{
-				//(byte) ((((byte) all_rooms[i].bg2 & 0x07) << 5) + ((int) all_rooms[i].collision << 2) + (all_rooms[i].light ? 1 : 0)),
-				//all_rooms[i].palette,
-				//all_rooms[i].blockset,
-				//all_rooms[i].spriteset,
-				//(byte) all_rooms[i].effect,
-				//(byte) all_rooms[i].tag1,
-				//(byte) all_rooms[i].tag2,
-				//(byte) ((all_rooms[i].holewarp_plane) | (all_rooms[i].staircase1Plane << 2) | (all_rooms[i].staircase2Plane << 4) | (all_rooms[i].staircase3Plane << 6)),
-				//all_rooms[i].staircase4Plane,
-				//all_rooms[i].holewarp,
-				//all_rooms[i].staircase1,
-				//all_rooms[i].staircase2,
-				//all_rooms[i].staircase3,
-				//all_rooms[i].staircase4
-				return null;
+				return new byte[]
+				{
+					(byte) ((Layer2Mode << 5) | (Layer2Behavior << 2) | (IsDark ? 1 : 0)),
+					Palette,
+					BackgroundTileset,
+					SpriteTileset,
+					Layer2Effect,
+					Tag1,
+					Tag2,
+					(byte) (Destinations.Pits.Layer | (Destinations.Stair1.Layer << 2)
+						| (Destinations.Stair2.Layer << 4) | (Destinations.Stair3.Layer << 6)),
+					Destinations.Stair4.Layer,
+					Destinations.Pits.Target,
+					Destinations.Stair1.Target,
+					Destinations.Stair2.Target,
+					Destinations.Stair3.Target,
+					Destinations.Stair4.Target
+				};
 			}
 		}
 
@@ -163,33 +166,24 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		// TODO implement and rename
 		public ushort MessageID { get; set; }
-		public byte blockset { get; set; }
-		public byte spriteset { get; set; }
-		public byte collision { get; set; }
-		public byte palette { get; set; }
-		public byte floor1 { get; set; }
-		public byte floor2 { get; set; }
-		public byte bg2 { get; set; }
-		public byte effect { get; set; }
-		public byte tag1 { get; set; }
-		public byte tag2 { get; set; }
+		public byte BackgroundTileset { get; set; }
+		public byte SpriteTileset { get; set; }
+		public byte Layer2Behavior { get; set; }
+		public byte Palette { get; set; }
+		public byte Floor1Graphics { get; set; }
+		public byte Floor2Graphics { get; set; }
+		public byte Layer2Mode { get; set; }
+		public byte Layer2Effect { get; set; }
+		public byte Tag1 { get; set; }
+		public byte Tag2 { get; set; }
+		public bool IsDark { get; set; }
+		public DungeonDestination Pits => Destinations.Pits;
+		public DungeonDestination Stair1 => Destinations.Stair1;
+		public DungeonDestination Stair2 => Destinations.Stair2;
+		public DungeonDestination Stair3 => Destinations.Stair3;
+		public DungeonDestination Stair4 => Destinations.Stair4;
 
-		public byte holewarp { get; set; }
-		public byte staircase1 { get; set; }
-		public byte staircase2 { get; set; }
-		public byte staircase3 { get; set; }
-		public byte staircase4 { get; set; }
-
-		public byte holewarp_plane { get; set; }
-		public byte staircase1Plane { get; set; }
-		public byte staircase2Plane { get; set; }
-		public byte staircase3Plane { get; set; }
-		public byte staircase4Plane { get; set; }
-
-
-
-
-		public bool damagepit { get; set; }
+		public bool HasDamagingPits { get; set; }
 
 		private readonly ZScreamer ZS;
 		private DungeonRoom(ZScreamer zs, ushort id)
@@ -198,32 +192,11 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			ZS = zs;
 		}
 
-
-
-		public unsafe void reloadAnimatedGfx()
-		{
-			int gfxanimatedPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_animated_pointer, 3]);
-
-			byte* newPdata = (byte*) ZS.GFXManager.allgfx16Ptr.ToPointer(); // Turn gfx16 (all 222 of them)
-			byte* sheetsData = (byte*) ZS.GFXManager.currentgfx16Ptr.ToPointer(); // Into "room gfx16" 16 of them
-
-			int data = 0;
-			while (data < 512)
-			{
-				byte mapByte = newPdata[data + (92 * 2048) + (512 * ZS.GFXManager.animated_frame)];
-				sheetsData[data + (7 * 2048)] = mapByte;
-
-				mapByte = newPdata[data + (ZS.ROM[gfxanimatedPointer + blockset] * 2048) + (512 * ZS.GFXManager.animated_frame)];
-				sheetsData[data + (7 * 2048) - 512] = mapByte;
-				data++;
-			}
-		}
-
 		public void reloadGfx(byte entrance_blockset = 0xFF)
 		{
 			for (int i = 0; i < 8; i++)
 			{
-				blocks[i] = ZS.GFXGroups.mainGfx[blockset][i];
+				blocks[i] = ZS.GFXGroups.mainGfx[BackgroundTileset][i];
 				if (i >= 6 && i <= 6)
 				{
 					if (entrance_blockset != 0xFF) //3-6
@@ -244,7 +217,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			blocks[11] = 115 + 7;
 			for (int i = 0; i < 4; i++)
 			{
-				blocks[12 + i] = (byte) (ZS.GFXGroups.spriteGfx[spriteset + 64][i] + 115);
+				blocks[12 + i] = (byte) (ZS.GFXGroups.spriteGfx[SpriteTileset + 64][i] + 115);
 			} // 12-16 sprites
 
 			unsafe
@@ -276,43 +249,85 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			}
 		}
 
+		private unsafe void reloadAnimatedGfx()
+		{
+			int gfxanimatedPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_animated_pointer, 3]);
 
+			byte* newPdata = (byte*) ZS.GFXManager.allgfx16Ptr.ToPointer(); // Turn gfx16 (all 222 of them)
+			byte* sheetsData = (byte*) ZS.GFXManager.currentgfx16Ptr.ToPointer(); // Into "room gfx16" 16 of them
+
+			int data = 0;
+			while (data < 512)
+			{
+				byte mapByte = newPdata[data + (92 * 2048) + (512 * ZS.GFXManager.animated_frame)];
+				sheetsData[data + (7 * 2048)] = mapByte;
+
+				mapByte = newPdata[data + (ZS.ROM[gfxanimatedPointer + BackgroundTileset] * 2048) + (512 * ZS.GFXManager.animated_frame)];
+				sheetsData[data + (7 * 2048) - 512] = mapByte;
+				data++;
+			}
+		}
 
 
 		public static DungeonRoom BuildRoomFromROM(ZScreamer Z, ushort id)
 		{
 			DungeonRoom ret = new DungeonRoom(Z, id);
+			ret.ReloadRoomFromROM();
+			return ret;
+		}
 
+		private void ReloadRoomFromROM() {
 			// Load dungeon header
-			int headerPointer = SNESFunctions.SNEStoPC(Z.ROM[Z.Offsets.room_header_pointer, 3]);
+			int headerPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.room_header_pointer, 3]);
 
-			ret.MessageID = Z.ROM[Z.Offsets.messages_id_dungeon + (id * 2), 2];
+			MessageID = ZS.ROM[ZS.Offsets.messages_id_dungeon + (RoomID * 2), 2];
 
-			int address = (Z.ROM[Z.Offsets.room_header_pointers_bank] << 16) | Z.ROM[headerPointer + (id * 2), size: 2];
+			int hpos = (ZS.ROM[ZS.Offsets.room_header_pointers_bank] << 16) | ZS.ROM[headerPointer + (RoomID * 2), size: 2];
+			byte b = ZS.ROM[hpos++];
+			Layer2Mode = (byte) (b >> 5);
+			Layer2Behavior = (byte) ((b & 0x0C) >> 2);
+			IsDark = (b & 0x01) == 0x01;
+			Palette = ZS.ROM[hpos++];
+			BackgroundTileset = ZS.ROM[hpos++];
+			SpriteTileset = ZS.ROM[hpos++];
+			Layer2Effect = ZS.ROM[hpos++];
+			Tag1 = ZS.ROM[hpos++];
+			Tag2 = ZS.ROM[hpos++];
 
+			b = ZS.ROM[hpos++];
+
+			Destinations.Pits.Layer = (byte) (b & 0x03);
+			Destinations.Stair1.Layer = (byte) ((b >> 2) & 0x03);
+			Destinations.Stair2.Layer = (byte) ((b >> 4) & 0x03);
+			Destinations.Stair3.Layer = (byte) ((b >> 6) & 0x03);
+			Destinations.Stair4.Layer = (byte) (ZS.ROM[hpos++] & 0x03);
+			
+			Destinations.Pits.Target = ZS.ROM[hpos++];
+			Destinations.Stair1.Target = ZS.ROM[hpos++];
+			Destinations.Stair2.Target = ZS.ROM[hpos++];
+			Destinations.Stair3.Target = ZS.ROM[hpos++];
+			Destinations.Stair4.Target = ZS.ROM[hpos++];
 
 			// Load room objects
-			int objectPointer = SNESFunctions.SNEStoPC(Z.ROM[Z.Offsets.room_object_pointer, 3]);
-			int room_address = objectPointer + (id * 3);
+			int objectPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.room_object_pointer, 3]);
+			int room_address = objectPointer + (RoomID * 3);
 
-			int objects_location = SNESFunctions.SNEStoPC(Z.ROM[room_address, 3]);
+			int objects_location = SNESFunctions.SNEStoPC(ZS.ROM[room_address, 3]);
 
-			ret.LoadObjectsFromArray(Z.ROM.DataStream, offset: objects_location);
+			LoadObjectsFromArray(ZS.ROM.DataStream, offset: objects_location);
 
 
 			// Load sprites
-			int spritePointer = 0x040000 | Z.ROM[Z.Offsets.rooms_sprite_pointer, 2];
-			int sprite_address = SNESFunctions.SNEStoPC(Constants.DungeonSpritePointers | Z.ROM[spritePointer + (id * 2), size: 2]);
-			ret.LoadSpritesFromArray(Z.ROM.DataStream, offset: sprite_address);
+			int spritePointer = 0x040000 | ZS.ROM[ZS.Offsets.rooms_sprite_pointer, 2];
+			int sprite_address = SNESFunctions.SNEStoPC(Constants.DungeonSpritePointers | ZS.ROM[spritePointer + (RoomID * 2), size: 2]);
+			LoadSpritesFromArray(ZS.ROM.DataStream, offset: sprite_address);
 
 			// Load other stuff
-			ret.LoadChests();
-			ret.LoadBlocks();
-			ret.LoadTorches();
-			ret.LoadSecrets();
-			ret.ReassociateChestsAndItems();
-
-			return ret;
+			LoadChests();
+			LoadBlocks();
+			LoadTorches();
+			LoadSecrets();
+			ReassociateChestsAndItems();
 		}
 
 
@@ -451,9 +466,9 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		{
 			switch (layer)
 			{
-				case 1: return Layer1Objects;
-				case 2: return Layer2Objects;
-				case 3: return Layer3Objects;
+				case 0: return Layer1Objects;
+				case 1: return Layer2Objects;
+				case 2: return Layer3Objects;
 			}
 			return null;
 		}
@@ -487,7 +502,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				r.Draw(ZS);
 			}
 
-			if (bg2 != Constants.LayerMergeOff)
+			if (Layer2Mode != Constants.LayerMergeOff)
 			{
 				ZS.DungeonForm.SetPalettesTransparent();
 				DrawFloor2();
@@ -498,15 +513,15 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			}
 		}
 
-		private RoomObject ParseRoomObject(byte layer, byte b1, byte b2, byte b3, out byte posX, out byte posY)
+		private RoomObject ParseRoomObject(byte b1, byte b2, byte b3)
 		{
-			return ParseRoomObject(ZS, layer, b1, b2, b3, out posX, out posY);
+			return ParseRoomObject(ZS,b1, b2, b3);
 		}
 
 
-		public static RoomObject ParseRoomObject(ZScreamer ZS, byte layer, byte b1, byte b2, byte b3, out byte posX, out byte posY)
+		public static RoomObject ParseRoomObject(ZScreamer ZS, byte b1, byte b2, byte b3)
 		{
-			byte size;
+			byte size, posX, posY;
 			ushort oid;
 
 			if (b3 >= 0xF8) // Subtype 3
@@ -553,7 +568,6 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				{
 					X = posX,
 					Y = posY,
-					Layer = layer,
 					Size = size
 				};
 		}
@@ -580,12 +594,12 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public void LoadObjectsFromArray(byte[] data, int offset = 0)
 		{
 			// Load chest items
-			StairsList.Clear();
+			Destinations.Clear();
+			ChestList.ResetAssociations();
 			Layer1Objects.Clear();
 			Layer2Objects.Clear();
 			Layer3Objects.Clear();
 			DoorsList.Clear();
-			int staircount = 0;
 
 			DungeonObjectsList currentList = Layer1Objects;
 			Layout = (byte) ((data[offset++] >> 2) & 0x07);
@@ -641,29 +655,16 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 				else
 				{
 					b3 = data[offset++];
-					RoomObject r = ParseRoomObject(
-						layer, b1, b2, b3,
-						out byte posX, out byte posY);
+					RoomObject r = ParseRoomObject(b1, b2, b3);
 
 					if (r != null)
 					{
+						r.Layer = layer;
 						currentList.Add(r);
 					}
 					else
 					{
 						throw new Exception("Shit that's a bad room object.");
-					}
-				
-					if (r.ObjectType.Specialness == SpecialObjectType.InterroomStairs)
-					{
-						if (staircount < 4)
-						{
-							StairsList.Add(new StaircaseRoom(posX, posY, $"To {StairDestinations[staircount++]:X2}"));
-						}
-						else
-						{
-							StairsList.Add(new StaircaseRoom(posX, posY, "BAD STAIR INDEX"));
-						}
 					}
 				}
 
@@ -757,6 +758,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		{
 
 		}
+
 		internal void reloadLayout()
 		{
 			throw new NotImplementedException();
@@ -942,7 +944,56 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 			}
 		}
 
+		public void ReassociateStairsAndTargets()
+		{
+			var stairs = new List<RoomObject>();
 
+			foreach (var r in Layer1Objects)
+			{
+				if (r.IsStairs)
+				{
+					stairs.Add(r);
+				}
+			}
+
+			foreach (var r in Layer2Objects)
+			{
+				if (r.IsStairs)
+				{
+					stairs.Add(r);
+				}
+			}
+
+			foreach (var r in Layer3Objects)
+			{
+				if (r.IsStairs)
+				{
+					stairs.Add(r);
+				}
+			}
+
+			int count = stairs.Count();
+
+			if (count > 0)
+			{
+				Destinations.Stair1.AssociatedObject = stairs[0];
+			}
+
+			if (count > 1)
+			{
+				Destinations.Stair1.AssociatedObject = stairs[1];
+			}
+
+			if (count > 2)
+			{
+				Destinations.Stair1.AssociatedObject = stairs[2];
+			}
+
+			if (count > 3)
+			{
+				Destinations.Stair1.AssociatedObject = stairs[3];
+			}
+		}
 
 
 

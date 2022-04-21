@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 namespace ZeldaFullEditor
 {
 	[Serializable]
-	public class ExitOW
+	public class ExitOW : Data.OverworldEntity
 	{
-		public byte mapId { get; set; }
+		public byte MapID { get; set; }
 		public byte unk1 { get; set; }
 		public byte unk2 { get; set; }
 		public byte doorXEditor { get; set; }
 		public byte doorYEditor { get; set; }
-		public byte AreaX { get; set; }
-		public byte AreaY { get; set; }
+		public byte MapX { get; set; }
+		public byte MapY { get; set; }
 
 		public ushort vramLocation { get; set; }
 		public ushort roomId { get; set; }
@@ -37,7 +37,7 @@ namespace ZeldaFullEditor
 			ushort cameraY, ushort cameraX, byte unk1, byte unk2, ushort doorType1, ushort doorType2)
 		{
 			this.roomId = roomId;
-			this.mapId = mapId;
+			this.MapID = mapId;
 			this.vramLocation = vramLocation;
 			this.xScroll = xScroll;
 			this.yScroll = yScroll;
@@ -67,15 +67,15 @@ namespace ZeldaFullEditor
 			int mapX = (mapId - ((mapId / 8) * 8));
 			int mapY = (mapId / 8);
 
-			AreaX = (byte) ((Math.Abs(playerX - (mapX * 512)) / 16));
-			AreaY = (byte) ((Math.Abs(playerY - (mapY * 512)) / 16));
+			MapX = (byte) ((Math.Abs(playerX - (mapX * 512)) / 16));
+			MapY = (byte) ((Math.Abs(playerY - (mapY * 512)) / 16));
 		}
 
 		public ExitOW Copy()
 		{
 			return new ExitOW(
 			roomId,
-			mapId,
+			MapID,
 			vramLocation,
 			xScroll,
 			yScroll,
@@ -89,9 +89,9 @@ namespace ZeldaFullEditor
 			doorType2);
 		}
 
-		public void updateMapStuff(byte mapId, Overworld ow)
+		public void UpdateMapID(byte mapId, Overworld ow)
 		{
-			this.mapId = mapId;
+			this.MapID = mapId;
 
 			int large = 256;
 			int mapid = mapId;
@@ -108,8 +108,8 @@ namespace ZeldaFullEditor
 			int mapX = (mapId - ((mapId / 8) * 8));
 			int mapY = (mapId / 8);
 
-			AreaX = (byte) ((Math.Abs(playerX - (mapX * 512)) / 16));
-			AreaY = (byte) ((Math.Abs(playerY - (mapY * 512)) / 16));
+			MapX = (byte) ((Math.Abs(playerX - (mapX * 512)) / 16));
+			MapY = (byte) ((Math.Abs(playerY - (mapY * 512)) / 16));
 
 			// If map is large, large = 768, otherwise 256
 

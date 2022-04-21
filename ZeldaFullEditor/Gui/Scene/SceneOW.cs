@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using ZeldaFullEditor.SceneModes;
 using ZeldaFullEditor.Gui;
 using ZeldaFullEditor.Data.DungeonObjects;
+using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
 {
@@ -267,20 +268,14 @@ namespace ZeldaFullEditor
 					if (itemMode.lastselectedItem != null)
 					{
 						ZS.OverworldForm.SetSelectedObjectLabels(
-							itemMode.lastselectedItem.id,
-							itemMode.lastselectedItem.x,
-							itemMode.lastselectedItem.y);
+							itemMode.lastselectedItem.ID,
+							itemMode.lastselectedItem.X,
+							itemMode.lastselectedItem.Y);
 
-						ZS.OverworldForm.objCombobox.Items.AddRange(ItemsNames.name);
+						ZS.OverworldForm.objCombobox.DataSource = DefaultEntities.ListOfSecrets;
 
-						if (itemMode.lastselectedItem.id.BitIsOn(0x80))
-						{
-							ZS.OverworldForm.objCombobox.SelectedIndex = (23 + ((itemMode.lastselectedItem.id - 0x80) / 2));
-						}
-						else
-						{
-							ZS.OverworldForm.objCombobox.SelectedIndex = itemMode.lastselectedItem.id;
-						}
+						// TODO
+						//ZS.OverworldForm.objCombobox.SelectedItem = 
 
 						ZS.OverworldForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedItem;
 					}
@@ -296,7 +291,7 @@ namespace ZeldaFullEditor
 							spriteMode.lastselectedSprite.ID,
 							spriteMode.lastselectedSprite.X,
 							spriteMode.lastselectedSprite.Y);
-						ZS.OverworldForm.objCombobox.Items.AddRange(Sprites_Names.name);
+						ZS.OverworldForm.objCombobox.DataSource = DefaultEntities.ListOfTileTypes;
 						ZS.OverworldForm.objCombobox.SelectedIndex = spriteMode.lastselectedSprite.ID;
 
 						ZS.OverworldForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedSprite;
@@ -310,7 +305,8 @@ namespace ZeldaFullEditor
 
 		private void ObjCombobox_SelectedIndexChangedSprite(object sender, EventArgs e)
 		{
-			spriteMode.lastselectedSprite.ID = (byte) ZS.OverworldForm.objCombobox.SelectedIndex;
+			byte id = (byte) (ZS.OverworldForm.objCombobox.SelectedItem as SpriteName).ID;
+			spriteMode.lastselectedSprite.Species = SpriteType.GetSpriteType(id);
 
 			InvalidateHighEnd();
 		}
@@ -345,13 +341,8 @@ namespace ZeldaFullEditor
 
 		private void ObjCombobox_SelectedIndexChangedItem(object sender, EventArgs e)
 		{
-			byte id = (byte) ZS.OverworldForm.objCombobox.SelectedIndex;
-			if (ZS.OverworldForm.objCombobox.SelectedIndex >= 23)
-			{
-				id = (byte) (((ZS.OverworldForm.objCombobox.SelectedIndex - 23) * 2) + 0x80);
-			}
-
-			itemMode.lastselectedItem.id = id;
+			byte id = (byte) (ZS.OverworldForm.objCombobox.SelectedItem as SecretsName).ID;
+			itemMode.lastselectedItem.SecretType = SecretItemType.FindSecretFromID(id);
 			InvalidateHighEnd();
 		}
 

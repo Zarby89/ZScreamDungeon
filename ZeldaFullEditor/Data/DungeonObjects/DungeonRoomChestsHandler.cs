@@ -20,7 +20,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 				int pos = 0;
 				int i = 0;
-				foreach (DungeonChestItem c in this)
+				foreach (var c in this)
 				{
 					ushort e = Room.RoomID;
 					if (arebigs[i++])
@@ -40,6 +40,14 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public DungeonRoomChestsHandler(DungeonRoom room)
 		{
 			Room = room;
+		}
+
+		public void ResetAssociations()
+		{
+			foreach (var c in this)
+			{
+				c.AssociatedChest = null;
+			}
 		}
 	}
 }

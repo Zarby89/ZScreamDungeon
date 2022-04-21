@@ -37,12 +37,12 @@ namespace ZeldaFullEditor.SceneModes
 				int gs = ZS.OverworldManager.gameState;
 				foreach (var spr in ZS.OverworldManager.allsprites[gs]) // TODO : Check if that need to be changed to LINQ mapid == maphover
 				{
-					if (e.X >= spr.map_x && e.X <= spr.map_x + 16 && e.Y >= spr.map_y && e.Y <= spr.map_y + 16)
+					if (e.X >= spr.MapX && e.X <= spr.MapX + 16 && e.Y >= spr.MapY && e.Y <= spr.MapY + 16)
 					{
 						selectedSprite = spr;
 					}
 
-					//Console.WriteLine("X:" + spr.map_x + ", Y:" + spr.map_y);
+					//Console.WriteLine("X:" + spr.MapX + ", Y:" + spr.MapY);
 				}
 			}
 
@@ -218,8 +218,8 @@ namespace ZeldaFullEditor.SceneModes
 			{
 				if (ZS.OverworldScene.selectedFormSprite != null)
 				{
-					ZS.OverworldScene.selectedFormSprite.map_x = e.X & ~0xF;
-					ZS.OverworldScene.selectedFormSprite.map_y = e.Y & ~0xF;
+					ZS.OverworldScene.selectedFormSprite.MapX = (byte) (e.X & ~0xF);
+					ZS.OverworldScene.selectedFormSprite.MapY = (byte) (e.Y & ~0xF);
 
 					//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 				}
@@ -230,8 +230,8 @@ namespace ZeldaFullEditor.SceneModes
 
 					if (selectedSprite != null)
 					{
-						selectedSprite.map_x = e.X & ~0xF;
-						selectedSprite.map_y = e.Y & ~0xF;
+						selectedSprite.MapX = (byte) (e.X & ~0xF);
+						selectedSprite.MapY = (byte) (e.Y & ~0xF);
 
 						//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 					}
@@ -277,83 +277,42 @@ namespace ZeldaFullEditor.SceneModes
 
 		public void Draw(Graphics g)
 		{
-			if (ZS.OverworldScene.lowEndMode)
+			Brush bgrBrush = Constants.VibrantMagenta200Brush;
+			g.CompositingMode = CompositingMode.SourceOver;
+
+			for (int i = 0; i < ZS.OverworldManager.allsprites[ZS.OverworldManager.gameState].Count; i++)
 			{
-				Brush bgrBrush = Constants.VibrantMagenta200Brush;
-				g.CompositingMode = CompositingMode.SourceOver;
+				var spr = ZS.OverworldManager.allsprites[ZS.OverworldManager.gameState][i];
 
-				for (int i = 0; i < ZS.OverworldManager.allsprites[ZS.OverworldManager.gameState].Count; i++)
+				if (ZS.OverworldScene.lowEndMode && spr.ScreenID != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
 				{
-					var spr = ZS.OverworldManager.allsprites[ZS.OverworldManager.gameState][i];
-
-					if (spr.ScreenID != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
-					{
-						continue;
-					}
-
-					if (spr.ScreenID < 64 + ZS.OverworldManager.worldOffset && spr.ScreenID >= ZS.OverworldManager.worldOffset)
-					{
-						/*
-                        if (selectedEntrance != null)
-                        {
-                            if (e == selectedEntrance)
-                            {
-                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
-                                scene.drawText(g, e.x - 1, e.y + 16, "map : " + e.mapId.ToString());
-                                scene.drawText(g, e.x - 1, e.y + 26, "entrance : " + e.entranceId.ToString());
-                                scene.drawText(g, e.x - 1, e.y + 36, "mpos : " + e.mapPos.ToString());
-                            }
-                            else
-                            {
-                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 200, 16));
-                            }
-                        }
-                        */
-
-						g.FillRectangle(bgrBrush, new Rectangle(spr.map_x, spr.map_y, 16, 16));
-						g.DrawRectangle(Constants.Black200Pen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
-						ZS.OverworldScene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.Name);
-					}
+					continue;
 				}
 
-				g.CompositingMode = CompositingMode.SourceCopy;
-			}
-			else
-			{
-				Brush bgrBrush = Constants.VibrantMagenta200Brush;
-				g.CompositingMode = CompositingMode.SourceOver;
-
-				for (int i = 0; i < ZS.OverworldManager.allsprites[ZS.OverworldManager.gameState].Count; i++)
+				if (spr.ScreenID < 64 + ZS.OverworldManager.worldOffset && spr.ScreenID >= ZS.OverworldManager.worldOffset)
 				{
-					var spr = ZS.OverworldManager.allsprites[ZS.OverworldManager.gameState][i];
-
-					if (spr.ScreenID < 64 + ZS.OverworldManager.worldOffset && spr.ScreenID >= ZS.OverworldManager.worldOffset)
-					{
-						/*
-                        if (selectedEntrance != null)
+					/*
+                    if (selectedEntrance != null)
+                    {
+                        if (e == selectedEntrance)
                         {
-                            if (e == selectedEntrance)
-                            {
-                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
-                                scene.drawText(g, e.x - 1, e.y + 16, "map : " + e.mapId.ToString());
-                                scene.drawText(g, e.x - 1, e.y + 26, "entrance : " + e.entranceId.ToString());
-                                scene.drawText(g, e.x - 1, e.y + 36, "mpos : " + e.mapPos.ToString());
-                            }
-                            else
-                            {
-                                bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 200, 16));
-                            }
+                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 0, 55, 240));
+                            scene.drawText(g, e.x - 1, e.y + 16, "map : " + e.mapId.ToString());
+                            scene.drawText(g, e.x - 1, e.y + 26, "entrance : " + e.entranceId.ToString());
+                            scene.drawText(g, e.x - 1, e.y + 36, "mpos : " + e.mapPos.ToString());
                         }
-                        */
-
-						g.FillRectangle(bgrBrush, new Rectangle(spr.map_x, spr.map_y, 16, 16));
-						g.DrawRectangle(Constants.Black200Pen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
-						ZS.OverworldScene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.Name);
-					}
+                        else
+                        {
+                            bgrBrush = new SolidBrush(Color.FromArgb((int)transparency, 255, 200, 16));
+                        }
+                    }
+                    */
+					g.DrawFilledRectangleWithOutline(spr.MapX, spr.MapY, 16, 16, Constants.Black200Pen, bgrBrush);
+					ZS.OverworldScene.drawText(g, spr.MapX + 4, spr.MapY + 4, spr.Name);
 				}
-
-				g.CompositingMode = CompositingMode.SourceCopy;
 			}
+
+			g.CompositingMode = CompositingMode.SourceCopy;
 		}
 
 		public override void SelectAll()
@@ -399,9 +358,9 @@ namespace ZeldaFullEditor.SceneModes
                                 contourPen = new Pen(Color.FromArgb((int)transparency, 0, 0, 0));
                             }
 
-                            g.FillRectangle(bgrBrush, new Rectangle((spr.map_x), spr.map_y, 16, 16));
-                            g.DrawRectangle(contourPen, new Rectangle(spr.map_x, spr.map_y, 16, 16));
-                            scene.drawText(g, spr.map_x + 4, spr.map_y + 4, spr.name);
+                            g.FillRectangle(bgrBrush, new Rectangle((spr.MapX), spr.MapY, 16, 16));
+                            g.DrawRectangle(contourPen, new Rectangle(spr.MapX, spr.MapY, 16, 16));
+                            scene.drawText(g, spr.MapX + 4, spr.MapY + 4, spr.name);
                         }
                     }
                 }

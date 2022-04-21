@@ -1760,7 +1760,8 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public static readonly RoomObjectType Object218 = new RoomObjectType(0x218,
 			RoomDraw_Single2x2, None,
 			new ObjCategory[] { },
-			new byte[] { });
+			new byte[] { },
+			special: SpecialObjectType.BigChest);
 
 		public static readonly RoomObjectType Object219 = new RoomObjectType(0x219,
 			RoomDraw_Single2x2, None,

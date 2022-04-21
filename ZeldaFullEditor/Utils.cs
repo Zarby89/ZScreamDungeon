@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -142,6 +143,13 @@ namespace ZeldaFullEditor
 			{
 				value -= change;
 			}
+		}
+
+		public static void DrawFilledRectangleWithOutline(this Graphics g, int x, int y, int w, int h, Pen outline, Brush fill)
+		{
+			Rectangle r = new Rectangle(x, y, w, h);
+			g.FillRectangle(fill, r);
+			g.DrawRectangle(outline, r);
 		}
 	}
 }

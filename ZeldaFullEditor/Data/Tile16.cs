@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-	public class Tile16
+	public class Tile16 : IByteable
 	{
 		public Tile tile0 { get; set; }
 		public Tile tile1 { get; set; }
@@ -14,6 +14,26 @@ namespace ZeldaFullEditor
 		public Tile tile3 { get; set; }
 		// [0,1]
 		// [2,3]
+
+		public byte[] Data
+		{
+			get
+			{
+				byte[] b0 = tile0.Data;
+				byte[] b1 = tile1.Data;
+				byte[] b2 = tile2.Data;
+				byte[] b3 = tile3.Data;
+
+				return new byte[]
+				{
+					b0[0], b0[1],
+					b1[0], b1[1],
+					b2[0], b2[1],
+					b3[0], b3[1]
+				};
+			}
+		}
+
 
 		public Tile this[int i]
 		{

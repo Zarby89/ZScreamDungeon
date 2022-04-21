@@ -79,12 +79,12 @@ namespace ZeldaFullEditor.SceneModes
 							mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
 						}
 						ZS.OverworldManager.allholes[i].deleted = false;
-						ZS.OverworldManager.allholes[i].mapId = mid;
+						ZS.OverworldManager.allholes[i].MapID = mid;
 						ZS.OverworldManager.allholes[i].x = (ushort) ((mxRightclick / 16) * 16);
 						ZS.OverworldManager.allholes[i].y = (ushort) ((myRightclick / 16) * 16);
 						ZS.OverworldManager.allholes[i].entranceId = entranceID;
 
-						ZS.OverworldManager.allholes[i].updateMapStuff(mid);
+						ZS.OverworldManager.allholes[i].UpdateMapID(mid);
 
 						found = i;
 						selectedEntrance = ZS.OverworldManager.allholes[i];
@@ -108,12 +108,12 @@ namespace ZeldaFullEditor.SceneModes
 							mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
 						}
 						ZS.OverworldManager.allentrances[i].deleted = false;
-						ZS.OverworldManager.allentrances[i].mapId = mid;
+						ZS.OverworldManager.allentrances[i].MapID = mid;
 						ZS.OverworldManager.allentrances[i].x = (ushort) ((mxRightclick / 16) * 16);
 						ZS.OverworldManager.allentrances[i].y = (ushort) ((myRightclick / 16) * 16);
 						ZS.OverworldManager.allentrances[i].entranceId = entranceID;
 
-						ZS.OverworldManager.allentrances[i].updateMapStuff(mid);
+						ZS.OverworldManager.allentrances[i].UpdateMapID(mid);
 
 						found = i;
 						selectedEntrance = ZS.OverworldManager.allentrances[i];
@@ -150,7 +150,7 @@ namespace ZeldaFullEditor.SceneModes
 			for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
 			{
 				EntranceOWEditor en = ZS.OverworldManager.allentrances[i];
-				if (en.mapId >= ZS.OverworldManager.worldOffset && en.mapId < 64 + ZS.OverworldManager.worldOffset)
+				if (en.MapID >= ZS.OverworldManager.worldOffset && en.MapID < 64 + ZS.OverworldManager.worldOffset)
 				{
 					if (e.X >= en.x && e.X < en.x + 16 && e.Y >= en.y && e.Y < en.y + 16)
 					{
@@ -176,7 +176,7 @@ namespace ZeldaFullEditor.SceneModes
 			for (int i = 0; i < ZS.OverworldManager.allholes.Length; i++)
 			{
 				EntranceOWEditor en = ZS.OverworldManager.allholes[i];
-				if (en.mapId >= ZS.OverworldManager.worldOffset && en.mapId < 64 + ZS.OverworldManager.worldOffset)
+				if (en.MapID >= ZS.OverworldManager.worldOffset && en.MapID < 64 + ZS.OverworldManager.worldOffset)
 				{
 					if (e.X >= en.x && e.X < en.x + 16 && e.Y >= en.y && e.Y < en.y + 16)
 					{
@@ -204,7 +204,7 @@ namespace ZeldaFullEditor.SceneModes
 				//ZS.OverworldManagerForm.thumbnailBox.Visible = true;
 				//ZS.OverworldManagerForm.thumbnailBox.Size = new Size(256, 256);
 
-				int roomId = DungeonsData.entrances[selectedEntrance.entranceId].RoomID;
+				int roomId = ZS.entrances[selectedEntrance.entranceId].RoomID;
 				if (roomId >= Constants.NumberOfRooms)
 				{
 					//ZS.OverworldManagerForm.thumbnailBox.Visible = false;
@@ -213,9 +213,9 @@ namespace ZeldaFullEditor.SceneModes
 
 				if (ZS.DungeonForm.lastRoomID != roomId)
 				{
-					ZS.DungeonForm.previewRoom = DungeonsData.all_rooms[roomId];
+					ZS.DungeonForm.previewRoom = ZS.all_rooms[roomId];
 					ZS.DungeonForm.previewRoom.reloadGfx();
-					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.DungeonForm.previewRoom.palette);
+					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.DungeonForm.previewRoom.Palette);
 					ZS.DungeonForm.DrawRoom();
 					DrawTempEntrance();
 					ZS.OverworldScene.entrancePreview = true;
@@ -223,7 +223,7 @@ namespace ZeldaFullEditor.SceneModes
 
 					if (ZS.UnderworldScene.Room != null)
 					{
-						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
 						ZS.UnderworldScene.Room.reloadGfx();
 						ZS.UnderworldScene.NeedsRefreshing = true;
 					}
@@ -237,15 +237,15 @@ namespace ZeldaFullEditor.SceneModes
 		{
 			Graphics g = Graphics.FromImage(ZS.OverworldForm.tmpPreviewBitmap);
 			g.InterpolationMode = InterpolationMode.Bilinear;
-			if (ZS.DungeonForm.previewRoom.bg2 != Constants.LayerMergeTranslucent || ZS.DungeonForm.previewRoom.bg2 != Constants.LayerMergeTransparent ||
-			 ZS.DungeonForm.previewRoom.bg2 != Constants.LayerMergeOnTop || ZS.DungeonForm.previewRoom.bg2 != Constants.LayerMergeOff)
+			if (ZS.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeTranslucent || ZS.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeTransparent ||
+			 ZS.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeOnTop || ZS.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeOff)
 			{
 				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
 			g.DrawImage(ZS.GFXManager.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 
-			if (ZS.DungeonForm.previewRoom.bg2 == Constants.LayerMergeTranslucent || ZS.DungeonForm.previewRoom.bg2 == Constants.LayerMergeTransparent)
+			if (ZS.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeTranslucent || ZS.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeTransparent)
 			{
 				float[][] matrixItems ={
 					new float[] {1f, 0, 0, 0, 0},
@@ -269,7 +269,7 @@ namespace ZeldaFullEditor.SceneModes
 				//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
 				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
 			}
-			else if (ZS.DungeonForm.previewRoom.bg2 == Constants.LayerMergeOnTop)
+			else if (ZS.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeOnTop)
 			{
 				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
@@ -284,7 +284,7 @@ namespace ZeldaFullEditor.SceneModes
 			for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
 			{
 				EntranceOWEditor en = ZS.OverworldManager.allentrances[i];
-				if (en.mapId >= ZS.OverworldManager.worldOffset && en.mapId < 64 + ZS.OverworldManager.worldOffset)
+				if (en.MapID >= ZS.OverworldManager.worldOffset && en.MapID < 64 + ZS.OverworldManager.worldOffset)
 				{
 					if (e.X >= en.x && e.X < en.x + 16 && e.Y >= en.y && e.Y < en.y + 16)
 					{
@@ -300,7 +300,7 @@ namespace ZeldaFullEditor.SceneModes
 								ZS.DungeonForm.entrancetreeView.SelectedNode = treeNodes[0];
 							}
 
-							ZS.DungeonForm.addRoomTab(DungeonsData.entrances[en.entranceId].RoomID);
+							ZS.DungeonForm.addRoomTab(ZS.entrances[en.entranceId].RoomID);
 							ZS.DungeonForm.editorsTabControl.SelectedIndex = 0;
 							//ZS.DungeonForm.dungeonButton_Click(ZS.DungeonForm.dungeonButton, null);
 						}
@@ -311,7 +311,7 @@ namespace ZeldaFullEditor.SceneModes
 			for (int i = 0; i < ZS.OverworldManager.allholes.Length; i++)
 			{
 				EntranceOWEditor en = ZS.OverworldManager.allholes[i];
-				if (en.mapId >= ZS.OverworldManager.worldOffset && en.mapId < 64 + ZS.OverworldManager.worldOffset)
+				if (en.MapID >= ZS.OverworldManager.worldOffset && en.MapID < 64 + ZS.OverworldManager.worldOffset)
 				{
 					if (e.X >= en.x && e.X < en.x + 16 && e.Y >= en.y && e.Y < en.y + 16)
 					{
@@ -329,7 +329,7 @@ namespace ZeldaFullEditor.SceneModes
 									ZS.DungeonForm.entrancetreeView.SelectedNode = treeNodes[0];
 								}
 
-								ZS.DungeonForm.addRoomTab(DungeonsData.entrances[en.entranceId].RoomID);
+								ZS.DungeonForm.addRoomTab(ZS.entrances[en.entranceId].RoomID);
 								ZS.DungeonForm.editorsTabControl.SelectedIndex = 0;
 							}
 						}
@@ -342,7 +342,7 @@ namespace ZeldaFullEditor.SceneModes
 		{
 			lastselectedEntrance.x = 0xFFFF;
 			lastselectedEntrance.y = 0xFFFF;
-			lastselectedEntrance.mapId = 0;
+			lastselectedEntrance.MapID = 0;
 			lastselectedEntrance.mapPos = 0xFFFF;
 			lastselectedEntrance.entranceId = 0;
 			lastselectedEntrance.deleted = true;
@@ -382,7 +382,7 @@ namespace ZeldaFullEditor.SceneModes
 						mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
 					}
 
-					selectedEntrance.updateMapStuff(mid);
+					selectedEntrance.UpdateMapID(mid);
 					selectedEntrance = null;
 					ZS.OverworldScene.mouse_down = false;
 				}
@@ -393,7 +393,7 @@ namespace ZeldaFullEditor.SceneModes
 				for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
 				{
 					EntranceOWEditor en = ZS.OverworldManager.allentrances[i];
-					if (en.mapId >= ZS.OverworldManager.worldOffset && en.mapId < 64 + ZS.OverworldManager.worldOffset)
+					if (en.MapID >= ZS.OverworldManager.worldOffset && en.MapID < 64 + ZS.OverworldManager.worldOffset)
 					{
 						if (e.X >= en.x && e.X < en.x + 16 && e.Y >= en.y && e.Y < en.y + 16)
 						{
@@ -423,7 +423,7 @@ namespace ZeldaFullEditor.SceneModes
 				{
 
 					EntranceOWEditor en = ZS.OverworldManager.allholes[i];
-					if (en.mapId >= ZS.OverworldManager.worldOffset && en.mapId < 64 + ZS.OverworldManager.worldOffset)
+					if (en.MapID >= ZS.OverworldManager.worldOffset && en.MapID < 64 + ZS.OverworldManager.worldOffset)
 					{
 						if (e.X >= en.x && e.X < en.x + 16 && e.Y >= en.y && e.Y < en.y + 16)
 						{
@@ -477,10 +477,10 @@ namespace ZeldaFullEditor.SceneModes
 						mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
 					}
 					ZS.OverworldManager.allentrances[i].deleted = false;
-					ZS.OverworldManager.allentrances[i].mapId = mid;
+					ZS.OverworldManager.allentrances[i].MapID = mid;
 					ZS.OverworldManager.allentrances[i].x = mxRightclick & ~0xF;
 					ZS.OverworldManager.allentrances[i].y = myRightclick & ~0xF;
-					ZS.OverworldManager.allentrances[i].updateMapStuff(mid);
+					ZS.OverworldManager.allentrances[i].UpdateMapID(mid);
 					found = true;
 					//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));
 					break;
@@ -502,7 +502,7 @@ namespace ZeldaFullEditor.SceneModes
 		{
 			EntranceForm ef = new EntranceForm(ZS);
 			ef.entranceId = lastselectedEntrance.entranceId;
-			ef.mapId = lastselectedEntrance.mapId;
+			ef.mapId = lastselectedEntrance.MapID;
 			ef.mapPos = lastselectedEntrance.mapPos;
 			ef.x = lastselectedEntrance.x;
 			ef.y = lastselectedEntrance.y;
@@ -511,7 +511,7 @@ namespace ZeldaFullEditor.SceneModes
 			if (ef.ShowDialog() == DialogResult.OK)
 			{
 				lastselectedEntrance.entranceId = ef.entranceId;
-				lastselectedEntrance.mapId = ef.mapId;
+				lastselectedEntrance.MapID = (byte) ef.mapId;
 				lastselectedEntrance.x = ef.x;
 				lastselectedEntrance.y = ef.y;
 
@@ -520,125 +520,65 @@ namespace ZeldaFullEditor.SceneModes
 
 		public void Draw(Graphics g)
 		{
-			if (ZS.OverworldScene.lowEndMode)
+			Brush bgrBrush = Constants.Goldenrod200Brush;
+			g.CompositingMode = CompositingMode.SourceOver;
+
+			for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
 			{
-				Brush bgrBrush = Constants.Goldenrod200Brush;
-				g.CompositingMode = CompositingMode.SourceOver;
-
-				for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
+				EntranceOWEditor e = ZS.OverworldManager.allentrances[i];
+				if (ZS.OverworldScene.lowEndMode && e.MapID != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
 				{
-					EntranceOWEditor e = ZS.OverworldManager.allentrances[i];
-					if (e.mapId != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
-					{
-						continue;
-					}
-
-					if (e.mapId < 64 + ZS.OverworldManager.worldOffset && e.mapId >= ZS.OverworldManager.worldOffset)
-					{
-						if (selectedEntrance != null)
-						{
-							if (e == selectedEntrance)
-							{
-								bgrBrush = Constants.Azure200Brush;
-								ZS.OverworldScene.drawText(g, e.x - 1, e.y + 26, "map : " + e.mapId.ToString());
-								ZS.OverworldScene.drawText(g, e.x - 1, e.y + 36, "entrance : " + e.entranceId.ToString());
-								ZS.OverworldScene.drawText(g, e.x - 1, e.y + 46, "mpos : " + e.mapPos.ToString());
-							}
-							else
-							{
-								bgrBrush = Constants.Goldenrod200Brush;
-							}
-						}
-
-						g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
-						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.x, e.y, 16, 16));
-						ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].RoomID].name);
-					}
+					continue;
 				}
 
-				for (int i = 0; i < ZS.OverworldManager.allholes.Length; i++)
+				if (e.MapID < 64 + ZS.OverworldManager.worldOffset && e.MapID >= ZS.OverworldManager.worldOffset)
 				{
-					EntranceOWEditor e = ZS.OverworldManager.allholes[i];
-					if (e.mapId != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
+					if (selectedEntrance != null)
 					{
-						continue;
-					}
-
-					bgrBrush = Constants.Charcoal200Brush;
-					if (e.mapId < 64 + ZS.OverworldManager.worldOffset && e.mapId >= ZS.OverworldManager.worldOffset)
-					{
-						if (selectedEntrance != null)
+						if (e == selectedEntrance)
 						{
-							if (e == selectedEntrance)
-							{
-								bgrBrush = Constants.Azure200Brush;
-							}
+							bgrBrush = Constants.Azure200Brush;
+							ZS.OverworldScene.drawText(g, e.x - 1, e.y + 26, "map : " + e.MapID.ToString());
+							ZS.OverworldScene.drawText(g, e.x - 1, e.y + 36, "entrance : " + e.entranceId.ToString());
+							ZS.OverworldScene.drawText(g, e.x - 1, e.y + 46, "mpos : " + e.mapPos.ToString());
 						}
-
-						g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
-						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.x, e.y, 16, 16));
-						ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].RoomID].name);
+						else
+						{
+							bgrBrush = Constants.Goldenrod200Brush;
+						}
 					}
-				}
 
-				g.CompositingMode = CompositingMode.SourceCopy;
+					g.DrawFilledRectangleWithOutline(e.x, e.y, 16, 16, Constants.Black200Pen, bgrBrush);
+					ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + ZS.all_rooms[ZS.entrances[e.entranceId].RoomID].Name);
+				}
 			}
 
-			else
+			for (int i = 0; i < ZS.OverworldManager.allholes.Length; i++)
 			{
-				Brush bgrBrush = Constants.Goldenrod200Brush;
-				g.CompositingMode = CompositingMode.SourceOver;
-
-				for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
+				EntranceOWEditor e = ZS.OverworldManager.allholes[i];
+				if (e.MapID != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
 				{
-					EntranceOWEditor e = ZS.OverworldManager.allentrances[i];
-
-					if (e.mapId < 64 + ZS.OverworldManager.worldOffset && e.mapId >= ZS.OverworldManager.worldOffset)
-					{
-						if (selectedEntrance != null)
-						{
-							if (e == selectedEntrance)
-							{
-								bgrBrush = Constants.Azure200Brush;
-								ZS.OverworldScene.drawText(g, e.x - 1, e.y + 26, $"map: {e.mapId:X2}");
-								ZS.OverworldScene.drawText(g, e.x - 1, e.y + 36, $"entrance: {e.entranceId:X2}");
-								ZS.OverworldScene.drawText(g, e.x - 1, e.y + 46, $"mpos: { e.mapPos:X4}");
-							}
-							else
-							{
-								bgrBrush = Constants.Goldenrod200Brush;
-							}
-						}
-
-						g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
-						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.x, e.y, 16, 16));
-						ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].RoomID].name);
-					}
+					continue;
 				}
 
-				for (int i = 0; i < ZS.OverworldManager.allholes.Length; i++)
+				bgrBrush = Constants.Charcoal200Brush;
+				if (e.MapID < 64 + ZS.OverworldManager.worldOffset && e.MapID >= ZS.OverworldManager.worldOffset)
 				{
-					EntranceOWEditor e = ZS.OverworldManager.allholes[i];
-					bgrBrush = Constants.Charcoal200Brush;
-
-					if (e.mapId < 64 + ZS.OverworldManager.worldOffset && e.mapId >= ZS.OverworldManager.worldOffset)
+					if (selectedEntrance != null)
 					{
-						if (selectedEntrance != null)
+						if (e == selectedEntrance)
 						{
-							if (e == selectedEntrance)
-							{
-								bgrBrush = Constants.Azure200Brush;
-							}
+							bgrBrush = Constants.Azure200Brush;
 						}
-
-						g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
-						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.x, e.y, 16, 16));
-						ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + DungeonsData.all_rooms[DungeonsData.entrances[e.entranceId].RoomID].name);
 					}
-				}
 
-				g.CompositingMode = CompositingMode.SourceCopy;
+					g.FillRectangle(bgrBrush, new Rectangle(e.x, e.y, 16, 16));
+					g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.x, e.y, 16, 16));
+					ZS.OverworldScene.drawText(g, e.x - 1, e.y + 9, e.entranceId.ToString("X2") + " - " + ZS.all_rooms[ZS.entrances[e.entranceId].RoomID].Name);
+				}
 			}
+
+			g.CompositingMode = CompositingMode.SourceCopy;
 		}
 
 		public override void SelectAll()

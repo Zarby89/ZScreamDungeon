@@ -493,7 +493,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public static void RoomDraw_Bed4x5(ZScreamer ZS, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(ZS, obj, sizex: 4, sizey: 5);
-			; }
+		}
 
 		public static void RoomDraw_YBed4x5(ZScreamer ZS, RoomObject obj)
 		{
@@ -1066,7 +1066,57 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public static void RoomDraw_FortuneTellerRoom(ZScreamer ZS, RoomObject obj)
 		{
-			// TODO ROOM DRAW
+			for (int x = 8; x < (13 * 8); x += 8)
+			{
+				DrawTiles(ZS, obj, false,
+					new DrawInfo(0, x, 0),
+					new DrawInfo(0, x, 8),
+					new DrawInfo(1, x, 16)
+				);
+			}
+
+
+			for (int x = 0; x < (16 * 7); x += 16)
+			{
+				DrawTiles(ZS, obj, false,
+					new DrawInfo(2, x, 24),
+					new DrawInfo(2, x + 8, 24, hflip: true),
+
+					new DrawInfo(3, x, 32),
+					new DrawInfo(3, x + 8, 32, hflip: true),
+
+					new DrawInfo(4, x, 40),
+					new DrawInfo(4, x + 8, 40, hflip: true)
+				);
+			}
+
+			for (int x = 4 * 8; x < 10 * 8; x += 8)
+			{
+
+				DrawTiles(ZS, obj, false,
+					new DrawInfo(6, x, 32),
+					new DrawInfo(7, x, 40),
+
+					new DrawInfo(6, x, 32),
+					new DrawInfo(7, x, 40)
+				);
+			}
+
+			DrawTiles(ZS, obj, false,
+				new DrawInfo(8, 0, 0),
+				new DrawInfo(8, 0, 8),
+				new DrawInfo(9, 0, 16),
+
+				new DrawInfo(8, 104, 0),
+				new DrawInfo(8, 104, 8),
+				new DrawInfo(9, 104, 16)
+			);
+
+
+
+			RoomDraw_ArbitraryXByY(ZS, obj, sizex: 4, sizey: 4, xstart: 3, ystart: 10, tilestart: 10);
+			RoomDraw_ArbitraryXByY(ZS, obj, sizex: 4, sizey: 4, xstart: 6, ystart: 10, tilestart: 10);
+
 		}
 
 		public static void RoomDraw_GanonTriforceFloorDecor(ZScreamer ZS, RoomObject obj)
@@ -1168,7 +1218,58 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public static void RoomDraw_MovingWallEast(ZScreamer ZS, RoomObject obj)
 		{
-			// TODO ROOM DRAW
+			int sizey = (obj.Size >> 2) & 0x03;
+			int sizex = 64 * (1 + (obj.Size & 0x03));
+
+
+			int sizey2 = sizey * 32;
+			DrawTiles(ZS, obj, false,
+				new DrawInfo(0, 0, 0),
+				new DrawInfo(3, 8, 0),
+				new DrawInfo(6, 16, 0),
+				new DrawInfo(1, 0, 8),
+				new DrawInfo(4, 8, 8),
+				new DrawInfo(7, 16, 8),
+				new DrawInfo(2, 0, 16),
+				new DrawInfo(5, 8, 16),
+				new DrawInfo(8, 16, 16),
+				new DrawInfo(15, 0, 104 + sizey2),
+				new DrawInfo(18, 8, 104 + sizey2),
+				new DrawInfo(21, 16, 104 + sizey2),
+				new DrawInfo(16, 0, 112 + sizey2),
+				new DrawInfo(19, 8, 112 + sizey2),
+				new DrawInfo(22, 16, 112 + sizey2),
+				new DrawInfo(17, 0, 120 + sizey2),
+				new DrawInfo(20, 8, 120 + sizey2),
+				new DrawInfo(23, 16, 120 + sizey2)
+			);
+
+			sizey *= 32;
+
+			for (int x = 0; x < sizex; x += 16)
+			{
+				for (int y = 0; y < 256 + sizey; y += 16)
+				{
+					DrawTiles(ZS, obj, false,
+						new DrawInfo(24, x + 24, y),
+						new DrawInfo(25, x + 32, y),
+						new DrawInfo(26, x + 24, y + 8),
+						new DrawInfo(27, x + 32, y + 8)
+					);
+				}
+			}
+
+			for (int y = 0; y < 160 + sizey; y++)
+			{
+				DrawTiles(ZS, obj, false,
+					new DrawInfo(9, 0, y + 24),
+					new DrawInfo(10, 8, y + 24),
+					new DrawInfo(11, 16, y + 24),
+					new DrawInfo(12, 0, y + 32),
+					new DrawInfo(13, 8, y + 32),
+					new DrawInfo(14, 16, y + 32)
+				);
+			}
 		}
 
 		public static void RoomDraw_MovingWallWest(ZScreamer ZS, RoomObject obj)
@@ -1239,7 +1340,85 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public static void RoomDraw_OpenChestPlatform(ZScreamer ZS, RoomObject obj)
 		{
-			// TODO ROOM DRAW
+			int sizex = (obj.Size >> 2) & 0x03;
+			int sizey = obj.Size & 0x03;
+
+			int sizex2 = sizex * 16;
+			int sizey2 = sizey * 16;
+
+			int sizex3 = sizex * 8;
+
+			DrawTiles(ZS, obj, false,
+				new DrawInfo(18, sizex2 + 72, 0),
+				new DrawInfo(0, 0, 0),
+				new DrawInfo(1, 0, sizey2 + 40),
+				new DrawInfo(2, 0, sizey2 + 48),
+				new DrawInfo(19, sizex2 + 72, sizey2 + 40),
+				new DrawInfo(20, sizex2 + 72, sizey2 + 48),
+				new DrawInfo(9, sizex3 + 24, 0),
+				new DrawInfo(9, sizex3 + 32, 0),
+				new DrawInfo(9, sizex3 + 40, 0),
+				new DrawInfo(9, sizex3 + 48, 0),
+				new DrawInfo(10, sizex3 + 24, sizey2 + 40),
+				new DrawInfo(10, sizex3 + 32, sizey2 + 40),
+				new DrawInfo(10, sizex3 + 40, sizey2 + 40),
+				new DrawInfo(10, sizex3 + 48, sizey2 + 40),
+				new DrawInfo(11, sizex3 + 24, sizey2 + 48),
+				new DrawInfo(11, sizex3 + 32, sizey2 + 48),
+				new DrawInfo(11, sizex3 + 40, sizey2 + 48),
+				new DrawInfo(11, sizex3 + 48, sizey2 + 48),
+				new DrawInfo(7, sizex3 + 16, sizey2 + 40),
+				new DrawInfo(6, sizex3 + 16, sizey2 + 32),
+				new DrawInfo(12, sizex3 + 56, sizey2 + 32),
+				new DrawInfo(13, sizex3 + 56, sizey2 + 40),
+				new DrawInfo(14, sizex3 + 56, sizey2 + 48),
+				new DrawInfo(8, sizex3 + 16, sizey2 + 48)
+			);
+
+			for (int y = 0; y < sizey2 + 32; y += 16)
+			{
+				DrawTiles(ZS, obj, false,
+					new DrawInfo(0, 0, 8 + y),
+					new DrawInfo(0, 0, 16 + y),
+					new DrawInfo(9, sizex3 + 24, 8 + y),
+					new DrawInfo(9, sizex3 + 32, 8 + y),
+					new DrawInfo(9, sizex3 + 40, 8 + y),
+					new DrawInfo(9, sizex3 + 48, 8 + y),
+					new DrawInfo(9, sizex3 + 24, 16 + 6),
+					new DrawInfo(9, sizex3 + 32, 16 + 6),
+					new DrawInfo(9, sizex3 + 40, 16 + 6),
+					new DrawInfo(9, sizex3 + 48, 16 + 6),
+					new DrawInfo(6, sizex3 + 16, y),
+					new DrawInfo(6, sizex3 + 16, 8 + y),
+					new DrawInfo(12, 56 + sizex3, y),
+					new DrawInfo(12, 56 + sizex3, 8 + y),
+					new DrawInfo(18, 72 + sizex2, 8 + y),
+					new DrawInfo(18, 72 + sizex2, 16 + y)
+				);
+
+				for (int x = 8; x < sizex3 + 16; x += 8)
+				{
+					DrawTiles(ZS, obj, false,
+						new DrawInfo(3, x, y),
+						new DrawInfo(3, x, y + 8),
+						new DrawInfo(15, x + sizex3 + 56, y),
+						new DrawInfo(15, x + sizex3 + 56, y + 8)
+					);
+				}
+			}
+
+			for (int x = 8; x < sizex3 + 16; x += 8)
+			{
+				DrawTiles(ZS, obj, false,
+					new DrawInfo(3, x, sizey2 + 32),
+					new DrawInfo(4, x, sizey2 + 40),
+					new DrawInfo(5, x, sizey2 + 48),
+					new DrawInfo(15, x + sizex3 + 56, sizey2 + 32),
+					new DrawInfo(16, x + sizex3 + 56, sizey2 + 40),
+					new DrawInfo(17, x + sizex3 + 56, sizey2 + 48)
+				);
+			}
+
 		}
 
 		public static void RoomDraw_PortraitOfMario(ZScreamer ZS, RoomObject obj)
@@ -1249,7 +1428,28 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public static void RoomDraw_PrisonCell(ZScreamer ZS, RoomObject obj)
 		{
-			// TODO ROOM DRAW
+			DrawTiles(ZS, obj, false,
+				new DrawInfo(0, 0, 0),
+				new DrawInfo(0, 120, 0, hflip: true),
+				new DrawInfo(1, 8, 0),
+				new DrawInfo(1, 112, 0, hflip: true),
+				new DrawInfo(3, 8, 16),
+				new DrawInfo(3, 112, 16, hflip: true)
+			);
+
+			for (int x = 16; x < 56; x += 8)
+			{
+				DrawTiles(ZS, obj, false,
+					new DrawInfo(1, x, 0),
+					new DrawInfo(1, x + 56, 0, hflip: true),
+					new DrawInfo(2, x, 8),
+					new DrawInfo(2, x + 56, 8, hflip: true),
+					new DrawInfo(4, x, 16),
+					new DrawInfo(4, x, 16, hflip: true),
+					new DrawInfo(5, x + 56, 24),
+					new DrawInfo(5, x, 24, hflip: true)
+				);
+			}
 		}
 
 		public static void RoomDraw_Rightwards1x1Solid_1to16_plus3(ZScreamer ZS, RoomObject obj)
@@ -1312,12 +1512,56 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public static void RoomDraw_RightwardsBar4x3_1to16(ZScreamer ZS, RoomObject obj)
 		{
-			// TODO ROOM DRAW
+			int size = (obj.Size + 1) * 16;
+
+			for (int s = 8; s < size + 16; s += 16)
+			{
+				DrawTiles(ZS, obj, false,
+					new DrawInfo(3, s, 0),
+					new DrawInfo(3, s + 8, 0),
+					new DrawInfo(4, s, 8),
+					new DrawInfo(4, s + 8, 8),
+					new DrawInfo(5, s, 16),
+					new DrawInfo(5, s + 8, 16)
+				);
+			}
+
+			DrawTiles(ZS, obj, false,
+				new DrawInfo(0, 0, 0),
+				new DrawInfo(1, 0, 8),
+				new DrawInfo(2, 0, 16),
+				new DrawInfo(6, size + 16, 0),
+				new DrawInfo(7, size + 16, 8),
+				new DrawInfo(8, size + 16, 16)
+			);
 		}
 
 		public static void RoomDraw_RightwardsBigRail1x3_1to16plus5(ZScreamer ZS, RoomObject obj)
 		{
-			// TODO ROOM DRAW
+			int size = obj.Size * 8;
+
+			for (int s = 16; s < size + 32; s += 8)
+			{
+				DrawTiles(ZS, obj, false,
+					new DrawInfo(6, s, 0),
+					new DrawInfo(7, s, 8),
+					new DrawInfo(8, s, 16)
+				);
+			}
+			DrawTiles(ZS, obj, false,
+				new DrawInfo(0, 0, 0),
+				new DrawInfo(3, 8, 0),
+				new DrawInfo(1, 0, 8),
+				new DrawInfo(4, 8, 8),
+				new DrawInfo(2, 0, 16),
+				new DrawInfo(5, 8, 16),
+				new DrawInfo(9, size + 32, 0),
+				new DrawInfo(12, size + 40, 0),
+				new DrawInfo(10, size + 32, 8),
+				new DrawInfo(13, size + 40, 8),
+				new DrawInfo(11, size + 32, 16),
+				new DrawInfo(14, size + 40, 16)
+			);
 		}
 
 		public static void RoomDraw_RightwardsBlock2x2spaced2_1to16(ZScreamer ZS, RoomObject obj)
@@ -1542,7 +1786,28 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public static void RoomDraw_SanctuaryWall(ZScreamer ZS, RoomObject obj)
 		{
-			// TODO ROOM DRAW
+			int tid = 0;
+			for (int i = 0; i < (2 * 14 * 8); i += (14 * 8))
+			{
+				for (int x = i; x < (i + 16); x += 8)
+				{
+					tid = 0;
+					for (int y = 0; y < 6 * 8; y += 8)
+					{
+						DrawTiles(ZS, obj, false,
+							new DrawInfo(tid, x, y),
+							new DrawInfo(tid + 6, x + 16, y),
+
+							new DrawInfo(tid, x + 32, y),
+							new DrawInfo(tid + 6, x + 48, y),
+
+							new DrawInfo(tid, x + 64, y)
+						);
+					}
+				}
+			}
+
+			RoomDraw_ArbitraryXByY(ZS, obj, sizex: 4, sizey: 3, xstart: 10, tilestart: 12);
 		}
 
 		public static void RoomDraw_Single2x2(ZScreamer ZS, RoomObject obj)
@@ -1621,7 +1886,48 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public static void RoomDraw_TableRock4x4_1to16(ZScreamer ZS, RoomObject obj)
 		{
-			// TODO ROOM DRAW
+			int sizex = (obj.Size >> 2) & 0x03;
+			int sizey = obj.Size & 0x03;
+
+			sizex = sizex * 16 + 24;
+			sizey = sizey * 16 + 24;
+
+			for (int x = 8; x < sizex; x += 16)
+			{
+				for (int y = 8; y < sizey; y += 16)
+				{
+					DrawTiles(ZS, obj, false,
+						new DrawInfo(5, x, y),
+						new DrawInfo(6, x + 8, y),
+						new DrawInfo(9, x, y + 8),
+						new DrawInfo(10, x + 8, y + 8)
+					);
+				}
+
+				DrawTiles(ZS, obj, false,
+					new DrawInfo(1, x, 0),
+					new DrawInfo(2, x + 8, 0),
+					new DrawInfo(13, x, sizey),
+					new DrawInfo(14, x + 8, sizey)
+				);
+			}
+			
+			for (int y = 8; y < sizey; y += 16)
+			{
+				DrawTiles(ZS, obj, false,
+					new DrawInfo(4, 0, y),
+					new DrawInfo(8, 0, y + 8),
+					new DrawInfo(7, sizex, y),
+					new DrawInfo(11, sizex, y + 8)
+				);
+			}
+
+			DrawTiles(ZS, obj, false,
+				new DrawInfo(0, 0, 0),
+				new DrawInfo(12, 0, sizey),
+				new DrawInfo(3, sizex, 0),
+				new DrawInfo(15, sizex, sizey)
+			);
 		}
 
 		public static void RoomDraw_TrinexxShell(ZScreamer ZS, RoomObject obj)
@@ -1641,12 +1947,68 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public static void RoomDraw_VerticalTurtleRockPipe(ZScreamer ZS, RoomObject obj)
 		{
-			// TODO ROOM DRAW
+			DrawTiles(ZS, obj, false,
+				new DrawInfo(0, 0, 0),
+				new DrawInfo(6, 16, 0),
+
+				new DrawInfo(1, 0, 8),
+				new DrawInfo(7, 16, 8),
+
+				new DrawInfo(2, 0, 16),
+				new DrawInfo(8, 16, 16),
+
+				new DrawInfo(3, 1, 0),
+				new DrawInfo(9, 24, 0),
+
+				new DrawInfo(4, 1, 8),
+				new DrawInfo(10, 24, 8),
+
+				new DrawInfo(5, 1, 16),
+				new DrawInfo(11, 24, 16),
+
+				new DrawInfo(12, 0, 24),
+				new DrawInfo(15, 8, 24),
+				new DrawInfo(18, 16, 24),
+				new DrawInfo(21, 24, 24),
+
+				new DrawInfo(13, 0, 32),
+				new DrawInfo(16, 8, 32),
+				new DrawInfo(19, 16, 32),
+				new DrawInfo(22, 24, 32),
+
+				new DrawInfo(14, 0, 40),
+				new DrawInfo(17, 8, 40),
+				new DrawInfo(20, 16, 40),
+				new DrawInfo(23, 24, 40)
+			);
 		}
 
 		public static void RoomDraw_VitreousGooDamage(ZScreamer ZS, RoomObject obj)
 		{
-			// TODO ROOM DRAW
+			for (int x = 0; x < 5 * 64; x += 32)
+			{
+				for (int y = 0; y < 64; y += 32)
+				{
+					DrawTiles(ZS, obj, false,
+						new DrawInfo(0, x, y),
+						new DrawInfo(1, x + 8, y),
+						new DrawInfo(2, x + 16, y),
+						new DrawInfo(3, x + 24, y),
+						new DrawInfo(4, x, y + 8),
+						new DrawInfo(5, x + 8, y + 8),
+						new DrawInfo(6, x + 16, y + 8),
+						new DrawInfo(7, x + 24, y + 8),
+						new DrawInfo(0, x, y + 16),
+						new DrawInfo(1, x + 8, y + 16),
+						new DrawInfo(2, x + 16, y + 16),
+						new DrawInfo(3, x + 24, y + 16),
+						new DrawInfo(4, x, y + 24),
+						new DrawInfo(5, x + 8, y + 24),
+						new DrawInfo(6, x + 16, y + 24),
+						new DrawInfo(7, x + 24, y + 24)
+					);
+				}
+			}
 		}
 
 		public static void RoomDraw_VitreousGooGraphics(ZScreamer ZS, RoomObject obj)

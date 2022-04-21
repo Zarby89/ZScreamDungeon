@@ -6,6 +6,49 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.DungeonObjects
 {
+
+	public unsafe class OverworldSecret : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, OverworldEntity, IEquatable<OverworldSecret>
+	{
+		public byte ID => SecretType.ID;
+		public byte X { get; set; }
+		public byte Y { get; set; }
+		public byte NX { get; set; }
+		public byte NY { get; set; }
+		public byte MapX { get; set; }
+		public byte MapY { get; set; }
+		public byte MapID { get; set; }
+		public SecretItemType SecretType { get; set; }
+		public string Name => SecretType.VanillaName;
+
+		public byte[] Data => throw new NotImplementedException();
+
+		public OverworldSecret(SecretItemType s)
+		{
+			SecretType = s;
+		}
+
+		public override void Draw(ZScreamer ZS)
+		{
+			throw new NotImplementedException();
+		}
+
+		public override bool PointIsInHitbox(int x, int y)
+		{
+			throw new NotImplementedException();
+		}
+
+		public void UpdateMapID(ushort mapid)
+		{
+			throw new NotImplementedException();
+		}
+
+		public bool Equals(OverworldSecret other)
+		{
+			return ID == other.ID && MapX == other.MapX && MapY == other.MapY;
+		}
+	}
+
+
 	public unsafe class DungeonSecret : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
 	{
 		public byte X { get; set; } = 0;
@@ -26,6 +69,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public byte Layer { get; set; } = 0;
 
 		public SecretItemType SecretType { get; set; }
+		public string Name => SecretType.VanillaName;
 
 		public byte[] Data
 		{

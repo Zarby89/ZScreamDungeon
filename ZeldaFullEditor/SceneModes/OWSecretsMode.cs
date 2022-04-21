@@ -6,13 +6,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ZeldaFullEditor.Data;
+using ZeldaFullEditor.Data.DungeonObjects;
 
 namespace ZeldaFullEditor.SceneModes
 {
 	public class OWSecretsMode : SceneMode
 	{
-		public RoomPotSaveEditor selectedItem;
-		public RoomPotSaveEditor lastselectedItem;
+		public OverworldSecret selectedItem;
+		public OverworldSecret lastselectedItem;
 		public bool isLeftPress = false;
 		public OWSecretsMode(ZScreamer zs) : base(zs)
 		{
@@ -28,19 +30,16 @@ namespace ZeldaFullEditor.SceneModes
 		{
 			isLeftPress = e.Button == MouseButtons.Left;
 
-			foreach (RoomPotSaveEditor item in ZS.OverworldManager.allitems)
+			foreach (var item in ZS.OverworldManager.allitems)
 			{
-				if (item.roomMapId >= 0 + (ZS.OverworldManager.worldOffset) && item.roomMapId < (64 + ZS.OverworldManager.worldOffset))
+				if (item.MapID >= 0 + (ZS.OverworldManager.worldOffset) && item.MapID < (64 + ZS.OverworldManager.worldOffset))
 				{
-					if (e.X >= item.x && e.X <= item.x + 16 && e.Y >= item.y && e.Y <= item.y + 16)
+					if (e.X >= item.X && e.X <= item.X + 16 && e.Y >= item.Y && e.Y <= item.Y + 16)
 					{
 						selectedItem = item;
 						lastselectedItem = item;
-						byte nid = item.id;
-						if (item.id.BitIsOn(0x80))
-						{
-							nid = (byte) (((item.id - 0x80) / 2) + 0x17);
-						}
+						byte nid = item.ID;
+						SecretItemType.FindSecretFromID(item.ID);
 
 						//scene.mainForm.owcombobox.SelectedIndex = nid;
 						//scene.mainForm.itemOWGroupbox.Visible = true;
@@ -54,14 +53,14 @@ namespace ZeldaFullEditor.SceneModes
 		public override void Copy()
 		{
 			Clipboard.Clear();
-			RoomPotSaveEditor id = lastselectedItem.Copy();
+			var id = lastselectedItem.Clone();
 			Clipboard.SetData(Constants.OverworldItemClipboardData, id);
 		}
 
 		public override void Cut()
 		{
 			Clipboard.Clear();
-			RoomPotSaveEditor id = lastselectedItem.Copy();
+			var id = lastselectedItem.Clone();
 			Clipboard.SetData(Constants.OverworldItemClipboardData, id);
 			Delete();
 
@@ -70,7 +69,7 @@ namespace ZeldaFullEditor.SceneModes
 
 		public override void Paste()
 		{
-			RoomPotSaveEditor data = (RoomPotSaveEditor) Clipboard.GetData(Constants.OverworldItemClipboardData);
+			var data = (OverworldSecret) Clipboard.GetData(Constants.OverworldItemClipboardData);
 			if (data != null)
 			{
 				ZS.OverworldManager.allitems.Add(data);
@@ -93,7 +92,7 @@ namespace ZeldaFullEditor.SceneModes
 					{
 						mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
 					}
-					selectedItem.updateMapStuff(mid);
+					selectedItem.UpdateMapID(mid);
 					lastselectedItem = selectedItem;
 					selectedItem = null;
 				}
@@ -129,7 +128,7 @@ namespace ZeldaFullEditor.SceneModes
 
 		private void addItem_Click(object sender, EventArgs e)
 		{
-			RoomPotSaveEditor pitem = new RoomPotSaveEditor(0, 0, 0, 0, false);
+			var pitem = new OverworldSecret(null);
 			ZS.OverworldManager.allitems.Add(pitem);
 			selectedItem = pitem;
 			lastselectedItem = selectedItem;
@@ -152,8 +151,8 @@ namespace ZeldaFullEditor.SceneModes
 				{
 					if (ZS.OverworldScene.mouse_down)
 					{
-						selectedItem.x = e.X & ~0xF;
-						selectedItem.y = e.Y & ~0xF;
+						selectedItem.X = (byte) (e.X & ~0xF);
+						selectedItem.Y = (byte) (e.Y & ~0xF);
 
 						// scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 
@@ -176,73 +175,27 @@ namespace ZeldaFullEditor.SceneModes
 
 		public void Draw(Graphics g)
 		{
-			if (ZS.OverworldScene.lowEndMode)
+			Brush bgrBrush;
+			g.CompositingMode = CompositingMode.SourceOver;
+			foreach (var item in ZS.OverworldManager.allitems)
 			{
-				Brush bgrBrush;
-				g.CompositingMode = CompositingMode.SourceOver;
-				foreach (RoomPotSaveEditor item in ZS.OverworldManager.allitems)
+				if (ZS.OverworldScene.lowEndMode && item.MapID != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
 				{
-					if (item.roomMapId != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
-					{
-						continue;
-					}
-
-					if (item.roomMapId >= (0 + ZS.OverworldManager.worldOffset) && item.roomMapId < (64 + ZS.OverworldManager.worldOffset))
-					{
-
-						bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
-
-						g.FillRectangle(bgrBrush, new Rectangle((item.x), (item.y), 16, 16));
-						g.DrawRectangle(Constants.Black200Pen, new Rectangle((item.x), (item.y), 16, 16));
-						byte nid = item.id;
-
-						if (item.id.BitIsOn(0x80))
-						{
-							nid = (byte) (((item.id - 0x80) / 2) + 0x17);
-						}
-
-						if (nid > ItemsNames.name.Length)
-						{
-							continue;
-						}
-
-						ZS.OverworldScene.drawText(g, item.x - 1, item.y + 1, $"{item.id:X2} - {ItemsNames.name[nid]}");
-					}
+					continue;
 				}
 
-				g.CompositingMode = CompositingMode.SourceCopy;
-			}
-			else
-			{
-				Brush bgrBrush;
-				g.CompositingMode = CompositingMode.SourceOver;
-
-				foreach (RoomPotSaveEditor item in ZS.OverworldManager.allitems)
+				if (item.MapID >= (0 + ZS.OverworldManager.worldOffset) && item.MapID < (64 + ZS.OverworldManager.worldOffset))
 				{
-					if (item.roomMapId >= (0 + ZS.OverworldManager.worldOffset) && item.roomMapId < (64 + ZS.OverworldManager.worldOffset))
-					{
-						bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
 
-						g.FillRectangle(bgrBrush, new Rectangle(item.x, item.y, 16, 16));
-						g.DrawRectangle(Constants.Black200Pen, new Rectangle(item.x, item.y, 16, 16));
-						byte nid = item.id;
+					bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
 
-						if (item.id.BitIsOn(0x80))
-						{
-							nid = (byte) (((item.id - 0x80) / 2) + 0x17);
-						}
+					g.DrawFilledRectangleWithOutline(item.MapX, item.MapY, 16, 16, Constants.Black200Pen, bgrBrush);
 
-						if (nid > ItemsNames.name.Length)
-						{
-							continue;
-						}
-
-						ZS.OverworldScene.drawText(g, item.x - 1, item.y + 1, $"{item.id:X2} - {ItemsNames.name[nid]}");
-					}
+					ZS.OverworldScene.drawText(g, item.X - 1, item.Y + 1, item.Name);
 				}
-
-				g.CompositingMode = CompositingMode.SourceCopy;
 			}
+
+			g.CompositingMode = CompositingMode.SourceCopy;
 		}
 
 		public override void SelectAll()

@@ -37,7 +37,7 @@ namespace ZeldaFullEditor.SceneModes
 			{
 				if ((e.Delta > 0 && r.IncreaseSize()) || (e.Delta < 0 && r.DecreaseSize()))
 				{
-					updateSelectionObject(objs);
+					updateSelectionObject(r);
 				}
 			}
 		}

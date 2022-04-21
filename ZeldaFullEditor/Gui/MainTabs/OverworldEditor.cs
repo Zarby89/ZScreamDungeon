@@ -10,6 +10,8 @@ using System.IO;
 using System.Threading;
 using System.Drawing.Drawing2D;
 using ZeldaFullEditor.Gui.ExtraForms;
+using ZeldaFullEditor.Data;
+using ZeldaFullEditor.Data.DungeonObjects;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -214,7 +216,7 @@ namespace ZeldaFullEditor.Gui
 
 		public void UpdateSelectedExitProps(ExitOW e)
 		{
-			OWExitPropID.HexValue = e?.mapId ?? 0;
+			OWExitPropID.HexValue = e?.MapID ?? 0;
 			OWExitPropX.HexValue = e?.playerX ?? 0;
 			OWExitPropY.HexValue = e?.playerY ?? 0;
 		}
@@ -229,7 +231,7 @@ namespace ZeldaFullEditor.Gui
 
 		public void UpdateSelectedEntranceProps(EntranceOWEditor e)
 		{
-			OWEntrancePropID.HexValue = e?.mapId ?? 0;
+			OWEntrancePropID.HexValue = e?.MapID ?? 0;
 			OWEntrancePropX.HexValue = e?.x ?? 0;
 			OWEntrancePropY.HexValue = e?.y ?? 0;
 		}
@@ -245,7 +247,7 @@ namespace ZeldaFullEditor.Gui
 
 		public void UpdateSelectedransportProps(TransportOW e)
 		{
-			OWTransportPropID.HexValue = e?.mapId ?? 0;
+			OWTransportPropID.HexValue = e?.MapID ?? 0;
 			OWTransportPropX.HexValue = e?.playerX ?? 0;
 			OWTransportPropY.HexValue = e?.playerY ?? 0;
 		}
@@ -1067,857 +1069,149 @@ namespace ZeldaFullEditor.Gui
 			e.Graphics.DrawImage(ZS.GFXManager.editingtile16Bitmap, Constants.Rect_0_0_64_64);
 		}
 
+
+		private void UpdateEntireListForBigMap<T>(IEnumerable<T> l, int map) where T : OverworldEntity
+		{
+			foreach (var o in l)
+			{
+				if (o.MapID == map)
+				{
+					UpdateForBigMap(o);
+				}
+			}
+		}
+
+		private void UpdateForBigMap(OverworldEntity o)
+		{
+			if (o.MapX < 32)
+			{
+				if (o.MapY < 32)
+				{
+					o.UpdateMapID(ZS.OverworldManager.allmaps[o.MapID].index);
+				}
+				else
+				{
+					o.UpdateMapID(ZS.OverworldManager.allmaps[o.MapID + 8].index);
+				}
+			}
+			else
+			{
+				if (o.MapY < 32)
+				{
+					o.UpdateMapID(ZS.OverworldManager.allmaps[o.MapID + 1].index);
+				}
+				else
+				{
+					o.UpdateMapID(ZS.OverworldManager.allmaps[o.MapID + 9].index);
+				}
+			}
+		}
+
+
 		/// <summary>
 		/// Called when the largemap checkbox is clicke, upataes the world layout and then updates all of the sprites within that area.
 		/// </summary>
 		/// <param name="sender"></param>
 		/// <param name="e"></param>
-		// TODO copy and string builder
 		private void largemapCheckbox_Clicked(object sender, EventArgs e)
 		{
-			if (!propertiesChangedFromForm)
+			if (propertiesChangedFromForm) return;
+
+			byte sel = ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent;
+
+			// Search for adjacent maps being large
+			bool big1 = ZS.OverworldManager.allmaps[sel + 1].largeMap;
+			bool big2 = ZS.OverworldManager.allmaps[sel + 8].largeMap;
+			bool big3 = ZS.OverworldManager.allmaps[sel + 9].largeMap;
+
+			if (big1 || big2 || big3)
 			{
-				int m = ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent;
+				StringBuilder no = new StringBuilder(4);
+				no.Append($"Unable to make map {sel:X2} large because the following large maps are overlapping it:\n");
 
-				if (largemapCheckbox.Checked) // Large map
+				if (big1)
 				{
-					// If we are trying to overlap large areas, fail.
-					if (ZS.OverworldManager.allmaps[m + 1].largeMap || ZS.OverworldManager.allmaps[m + 8].largeMap || ZS.OverworldManager.allmaps[m + 9].largeMap)
-					{
-						int i = 0;
-						string temp = "";
-
-						if (ZS.OverworldManager.allmaps[m + 1].largeMap)
-						{
-							temp += (m + 1).ToString("X2") + ", ";
-							i++;
-						}
-						if (ZS.OverworldManager.allmaps[m + 8].largeMap)
-						{
-							temp += (m + 8).ToString("X2") + ", ";
-							i++;
-						}
-						if (ZS.OverworldManager.allmaps[m + 9].largeMap)
-						{
-							temp += (m + 9).ToString("X2") + ", ";
-							i++;
-						}
-
-						temp = temp.Remove(temp.Length - 2);
-						if (i == 1)
-						{
-							MessageBox.Show("Cannot make overlapping large area. Area: " + temp + " is already part of a large area.", "Bad Error", MessageBoxButtons.OK);
-						}
-						else if (i == 2)
-						{
-							temp = temp.Remove(2, 1);
-							temp = temp.Insert(temp.Length - 2, "and ");
-							MessageBox.Show("Cannot make overlapping large area. Areas: " + temp + " are already part of a large area.", "Bad Error", MessageBoxButtons.OK);
-						}
-						else
-						{
-							temp = temp.Insert(temp.Length - 2, "and ");
-							MessageBox.Show("Cannot make overlapping large area. Areas: " + temp + " are already part of a large area.", "Bad Error", MessageBoxButtons.OK);
-						}
-
-						largemapCheckbox.Checked = false;
-					}
-					else
-					{
-						ZS.OverworldManager.allmaps[m].largeMap = true;
-						ZS.OverworldManager.allmaps[m + 1].largeMap = true;
-						ZS.OverworldManager.allmaps[m + 8].largeMap = true;
-						ZS.OverworldManager.allmaps[m + 9].largeMap = true;
-
-						ZS.OverworldManager.allmaps[m].parent = (byte) m;
-						ZS.OverworldManager.allmaps[m + 1].parent = (byte) m;
-						ZS.OverworldManager.allmaps[m + 8].parent = (byte) m;
-						ZS.OverworldManager.allmaps[m + 9].parent = (byte) m;
-
-						if (m < 64)
-						{
-							ZS.OverworldManager.allmaps[m + 64].largeMap = true;
-							ZS.OverworldManager.allmaps[m + 64 + 1].largeMap = true;
-							ZS.OverworldManager.allmaps[m + 64 + 8].largeMap = true;
-							ZS.OverworldManager.allmaps[m + 64 + 9].largeMap = true;
-
-							ZS.OverworldManager.allmaps[m + 64].parent = (byte) (m + 64);
-							ZS.OverworldManager.allmaps[m + 64 + 1].parent = (byte) (m + 64);
-							ZS.OverworldManager.allmaps[m + 64 + 8].parent = (byte) (m + 64);
-							ZS.OverworldManager.allmaps[m + 64 + 9].parent = (byte) (m + 64);
-						}
-						else if (m >= 64 && m < 128)
-						{
-							ZS.OverworldManager.allmaps[m - 64].largeMap = true;
-							ZS.OverworldManager.allmaps[m - 64 + 1].largeMap = true;
-							ZS.OverworldManager.allmaps[m - 64 + 8].largeMap = true;
-							ZS.OverworldManager.allmaps[m - 64 + 9].largeMap = true;
-
-							ZS.OverworldManager.allmaps[m - 64].parent = (byte) (m - 64);
-							ZS.OverworldManager.allmaps[m - 64 + 1].parent = (byte) (m - 64);
-							ZS.OverworldManager.allmaps[m - 64 + 8].parent = (byte) (m - 64);
-							ZS.OverworldManager.allmaps[m - 64 + 9].parent = (byte) (m - 64);
-						}
-
-						ZS.OverworldManager.getLargeMaps();
-
-						if (m < 64)
-						{
-							int[] mtable = new int[8] { 0, 1, 8, 9, 64, 64 + 1, 64 + 8, 64 + 9 };
-
-							for (int i = 0; i < 8; i++)
-							{
-								m = ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent + mtable[i];
-
-								foreach (EntranceOWEditor o in ZS.OverworldManager.allentrances)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent);
-									}
-								}
-								foreach (EntranceOWEditor o in ZS.OverworldManager.allholes)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent);
-									}
-								}
-								foreach (TransportOW o in ZS.OverworldManager.allBirds)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent, ZS.OverworldManager);
-									}
-								}
-								foreach (TransportOW o in ZS.OverworldManager.allWhirlpools)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent, ZS.OverworldManager);
-									}
-								}
-								foreach (ExitOW o in ZS.OverworldManager.allexits)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent, ZS.OverworldManager);
-									}
-								}
-								foreach (RoomPotSaveEditor o in ZS.OverworldManager.allitems)
-								{
-									if (o.roomMapId == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent);
-									}
-								}
-								foreach (Sprite o in ZS.OverworldManager.allsprites[0])
-								{
-									if (o.mapid == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent);
-									}
-								}
-								foreach (Sprite o in ZS.OverworldManager.allsprites[1])
-								{
-									if (o.mapid == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent);
-									}
-								}
-								foreach (Sprite o in ZS.OverworldManager.allsprites[2])
-								{
-									if (o.mapid == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent);
-									}
-								}
-							}
-						}
-						else if (m >= 64 && m < 128)
-						{
-							int[] mtable = new int[8] { 0, 1, 8, 9, -64, -64 + 1, -64 + 8, -64 + 9 };
-
-							for (int i = 0; i < 8; i++)
-							{
-								m = ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent + mtable[i];
-
-								foreach (EntranceOWEditor o in ZS.OverworldManager.allentrances)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent);
-									}
-								}
-								foreach (EntranceOWEditor o in ZS.OverworldManager.allholes)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent);
-									}
-								}
-								foreach (TransportOW o in ZS.OverworldManager.allBirds)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent, ZS.OverworldManager);
-									}
-								}
-								foreach (TransportOW o in ZS.OverworldManager.allWhirlpools)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent, ZS.OverworldManager);
-									}
-								}
-								foreach (ExitOW o in ZS.OverworldManager.allexits)
-								{
-									if (o.mapId == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent, ZS.OverworldManager);
-									}
-								}
-								foreach (RoomPotSaveEditor o in ZS.OverworldManager.allitems)
-								{
-									if (o.roomMapId == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent);
-									}
-								}
-								foreach (Sprite o in ZS.OverworldManager.allsprites[0])
-								{
-									if (o.mapid == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent);
-									}
-								}
-								foreach (Sprite o in ZS.OverworldManager.allsprites[1])
-								{
-									if (o.mapid == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent);
-									}
-								}
-								foreach (Sprite o in ZS.OverworldManager.allsprites[2])
-								{
-									if (o.mapid == m)
-									{
-										o.updateMapStuff(ZS.OverworldManager.allmaps[m].parent);
-									}
-								}
-							}
-						}
-					}
+					no.Append($"{sel + 1:X2} ");
 				}
-				else // Small maps
+
+				if (big2)
 				{
-					ZS.OverworldManager.allmaps[m].largeMap = false;
-					ZS.OverworldManager.allmaps[m + 1].largeMap = false;
-					ZS.OverworldManager.allmaps[m + 8].largeMap = false;
-					ZS.OverworldManager.allmaps[m + 9].largeMap = false;
-
-					ZS.OverworldManager.allmaps[m].parent = (byte) m;
-					ZS.OverworldManager.allmaps[m + 1].parent = (byte) (m + 1);
-					ZS.OverworldManager.allmaps[m + 8].parent = (byte) (m + 8);
-					ZS.OverworldManager.allmaps[m + 9].parent = (byte) (m + 9);
-
-					if (m < 64)
-					{
-						ZS.OverworldManager.allmaps[m + 64].largeMap = false;
-						ZS.OverworldManager.allmaps[m + 64 + 1].largeMap = false;
-						ZS.OverworldManager.allmaps[m + 64 + 8].largeMap = false;
-						ZS.OverworldManager.allmaps[m + 64 + 9].largeMap = false;
-
-						ZS.OverworldManager.allmaps[m + 64].parent = (byte) (m + 64);
-						ZS.OverworldManager.allmaps[m + 64 + 1].parent = (byte) (m + 64 + 1);
-						ZS.OverworldManager.allmaps[m + 64 + 8].parent = (byte) (m + 64 + 8);
-						ZS.OverworldManager.allmaps[m + 64 + 9].parent = (byte) (m + 64 + 9);
-					}
-					else if (m >= 64 && m < 128)
-					{
-						ZS.OverworldManager.allmaps[m - 64].largeMap = false;
-						ZS.OverworldManager.allmaps[m - 64 + 1].largeMap = false;
-						ZS.OverworldManager.allmaps[m - 64 + 8].largeMap = false;
-						ZS.OverworldManager.allmaps[m - 64 + 9].largeMap = false;
-
-						ZS.OverworldManager.allmaps[m - 64].parent = (byte) (m - 64);
-						ZS.OverworldManager.allmaps[m - 64 + 1].parent = (byte) (m - 64 + 1);
-						ZS.OverworldManager.allmaps[m - 64 + 8].parent = (byte) (m - 64 + 8);
-						ZS.OverworldManager.allmaps[m - 64 + 9].parent = (byte) (m - 64 + 9);
-					}
-
-					ZS.OverworldManager.getLargeMaps();
-
-					if (m < 64)
-					{
-						int[] mtable = new int[2] { 0, 64 };
-
-						for (int i = 0; i < 2; i++)
-						{
-							m = ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent + mtable[i];
-
-							int j = 0;
-							// We are unchecking the large map box so all sprites on map00 are returning to other maps
-							foreach (EntranceOWEditor o in ZS.OverworldManager.allentrances)
-							{
-								if (o.mapId == m)
-								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index);
-											j++;
-										}
-									}
-								}
-							}
-							j = 0;
-							foreach (EntranceOWEditor o in ZS.OverworldManager.allholes)
-							{
-								if (o.mapId == m)
-								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index);
-											j++;
-										}
-									}
-								}
-							}
-							j = 0;
-							foreach (TransportOW o in ZS.OverworldManager.allBirds)
-							{
-								if (o.mapId == m)
-								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index, ZS.OverworldManager);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index, ZS.OverworldManager);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index, ZS.OverworldManager);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index, ZS.OverworldManager);
-											j++;
-										}
-									}
-								}
-							}
-							j = 0;
-							foreach (TransportOW o in ZS.OverworldManager.allWhirlpools)
-							{
-								if (o.mapId == m)
-								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index, ZS.OverworldManager);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index, ZS.OverworldManager);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index, ZS.OverworldManager);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index, ZS.OverworldManager);
-											j++;
-										}
-									}
-								}
-							}
-							j = 0;
-							foreach (ExitOW o in ZS.OverworldManager.allexits)
-							{
-								if (o.mapId == m)
-								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index, ZS.OverworldManager);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index, ZS.OverworldManager);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index, ZS.OverworldManager);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index, ZS.OverworldManager);
-											j++;
-										}
-									}
-								}
-							}
-							j = 0;
-							foreach (RoomPotSaveEditor o in ZS.OverworldManager.allitems)
-							{
-								if (o.roomMapId == m)
-								{
-									if (o.gameX < 32)
-									{
-										if (o.gameY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.gameY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index);
-											j++;
-										}
-									}
-								}
-							}
-							j = 0;
-							foreach (Sprite o in ZS.OverworldManager.allsprites[0])
-							{
-								if (o.mapid == m)
-								{
-									if (o.x < 32)
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index);
-											j++;
-										}
-									}
-								}
-							}
-							j = 0;
-							foreach (Sprite o in ZS.OverworldManager.allsprites[1])
-							{
-								if (o.mapid == m)
-								{
-									if (o.x < 32)
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index);
-											j++;
-										}
-									}
-									else
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index);
-											j++;
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index);
-											j++;
-										}
-									}
-								}
-							}
-							j = 0;
-							foreach (Sprite o in ZS.OverworldManager.allsprites[2])
-							{
-								if (o.mapid == m)
-								{
-									if (o.x < 32)
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index);
-										}
-									}
-									j++;
-								}
-							}
-							j = 0;
-						}
-					}
-					else if (m >= 64 && m < 128)
-					{
-						int[] mtable = new int[2] { 0, -64 };
-
-						for (int i = 0; i < 2; i++)
-						{
-							m = ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent + mtable[i];
-
-							// We are unchecking the large map box so all sprites on map00 are returning to other maps.
-							foreach (EntranceOWEditor o in ZS.OverworldManager.allentrances)
-							{
-								if (o.mapId == m)
-								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index);
-										}
-									}
-								}
-							}
-							foreach (EntranceOWEditor o in ZS.OverworldManager.allholes)
-							{
-								if (o.mapId == m)
-								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index);
-										}
-									}
-								}
-							}
-							foreach (TransportOW o in ZS.OverworldManager.allBirds)
-							{
-								if (o.mapId == m)
-								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index, ZS.OverworldManager);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index, ZS.OverworldManager);
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index, ZS.OverworldManager);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index, ZS.OverworldManager);
-										}
-									}
-								}
-							}
-							foreach (TransportOW o in ZS.OverworldManager.allWhirlpools)
-							{
-								if (o.mapId == m)
-								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index, ZS.OverworldManager);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index, ZS.OverworldManager);
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index, ZS.OverworldManager);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index, ZS.OverworldManager);
-										}
-									}
-								}
-							}
-							foreach (ExitOW o in ZS.OverworldManager.allexits)
-							{
-								if (o.mapId == m)
-								{
-									if (o.AreaX < 32)
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index, ZS.OverworldManager);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index, ZS.OverworldManager);
-										}
-									}
-									else
-									{
-										if (o.AreaY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index, ZS.OverworldManager);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index, ZS.OverworldManager);
-										}
-									}
-								}
-							}
-							foreach (RoomPotSaveEditor o in ZS.OverworldManager.allitems)
-							{
-								if (o.roomMapId == m)
-								{
-									if (o.gameX < 32)
-									{
-										if (o.gameY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.gameY < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index);
-										}
-									}
-								}
-							}
-							foreach (Sprite o in ZS.OverworldManager.allsprites[0])
-							{
-								if (o.mapid == m)
-								{
-									if (o.x < 32)
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index);
-										}
-									}
-								}
-							}
-							foreach (Sprite o in ZS.OverworldManager.allsprites[1])
-							{
-								if (o.mapid == m)
-								{
-									if (o.x < 32)
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index);
-										}
-									}
-								}
-							}
-							foreach (Sprite o in ZS.OverworldManager.allsprites[2])
-							{
-								if (o.mapid == m)
-								{
-									if (o.x < 32)
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 8].index);
-										}
-									}
-									else
-									{
-										if (o.y < 32)
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 1].index);
-										}
-										else
-										{
-											o.updateMapStuff(ZS.OverworldManager.allmaps[m + 9].index);
-										}
-									}
-								}
-							}
-						}
-					}
+					no.Append($"{sel + 8:X2} ");
 				}
+
+				if (big3)
+				{
+					no.Append($"{sel + 9:X2}");
+				}
+
+				UIText.GeneralWarning(no.ToString());
+
+				largemapCheckbox.Checked = false;
+				return;
+			}
+
+			bool big = largemapCheckbox.Checked;
+			byte sel2 = (byte) (sel ^ 64);
+			byte par1 = sel;
+			byte par2, par3, par4;
+
+			ZS.OverworldManager.allmaps[sel].largeMap = big;
+			ZS.OverworldManager.allmaps[sel + 1].largeMap = big;
+			ZS.OverworldManager.allmaps[sel + 8].largeMap = big;
+			ZS.OverworldManager.allmaps[sel + 9].largeMap = big;
+
+			ZS.OverworldManager.allmaps[sel2].largeMap = big;
+			ZS.OverworldManager.allmaps[sel2 + 1].largeMap = big;
+			ZS.OverworldManager.allmaps[sel2 + 8].largeMap = big;
+			ZS.OverworldManager.allmaps[sel2 + 9].largeMap = big;
+
+			int[] modthese;
+			byte par = ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent;
+
+			if (big)
+			{
+				modthese = new int[] {
+					par, par + 1, par + 8, par + 9,
+					par ^ 64, (par ^ 64) + 1, (par ^ 64) + 8, (par ^ 64) + 9,
+				};
+				par2 = sel;
+				par3 = sel;
+				par4 = sel;
+			}
+			else
+			{
+				modthese = new int[] { par, par ^ 64 };
+				par2 = (byte) (sel + 1);
+				par3 = (byte) (sel + 8);
+				par4 = (byte) (sel + 9);
+			}
+
+			ZS.OverworldManager.allmaps[sel].parent = par1;
+			ZS.OverworldManager.allmaps[sel + 1].parent = par2;
+			ZS.OverworldManager.allmaps[sel + 8].parent = par3;
+			ZS.OverworldManager.allmaps[sel + 9].parent = par4;
+
+			par1 ^= 64;
+			par2 ^= 64;
+			par3 ^= 64;
+			par4 ^= 64;
+
+			ZS.OverworldManager.allmaps[sel2].parent = par1;
+			ZS.OverworldManager.allmaps[sel2 + 1].parent = par2;
+			ZS.OverworldManager.allmaps[sel2 + 8].parent = par3;
+			ZS.OverworldManager.allmaps[sel2 + 9].parent = par4;
+
+			foreach (int m in modthese)
+			{
+				UpdateEntireListForBigMap(ZS.OverworldManager.allentrances, m);
+				UpdateEntireListForBigMap(ZS.OverworldManager.allholes, m);
+				UpdateEntireListForBigMap(ZS.OverworldManager.allitems, m);
+				UpdateEntireListForBigMap(ZS.OverworldManager.allBirds, m);
+				UpdateEntireListForBigMap(ZS.OverworldManager.allWhirlpools, m);
+				UpdateEntireListForBigMap(ZS.OverworldManager.allexits, m);
+				UpdateEntireListForBigMap(ZS.OverworldManager.allsprites[0], m);
+				UpdateEntireListForBigMap(ZS.OverworldManager.allsprites[1], m);
+				UpdateEntireListForBigMap(ZS.OverworldManager.allsprites[2], m);
 			}
 		}
 
@@ -1947,7 +1241,7 @@ namespace ZeldaFullEditor.Gui
 			{
 				entrance.x = NullEntrance;
 				entrance.y = NullEntrance;
-				entrance.mapId = 0;
+				entrance.MapID = 0;
 				entrance.mapPos = NullEntrance;
 				entrance.entranceId = 0;
 				entrance.deleted = true;
@@ -1963,7 +1257,7 @@ namespace ZeldaFullEditor.Gui
 			{
 				hole.x = NullEntrance;
 				hole.y = NullEntrance;
-				hole.mapId = 0;
+				hole.MapID = 0;
 				hole.mapPos = NullEntrance;
 				hole.entranceId = 0;
 				hole.deleted = true;
@@ -1979,7 +1273,7 @@ namespace ZeldaFullEditor.Gui
 			{
 				exit.playerX = NullEntrance;
 				exit.playerY = NullEntrance;
-				exit.mapId = 0;
+				exit.MapID = 0;
 				exit.roomId = 0;
 				exit.deleted = true;
 			}
@@ -2002,7 +1296,7 @@ namespace ZeldaFullEditor.Gui
 		/// <param name="phase"></param>
 		public void clearAreaSprites(int phase)
 		{
-			ZS.OverworldManager.allsprites[phase].RemoveAll(o => o.ScreenID == ZS.OverworldScene.selectedMapParent);
+			ZS.OverworldManager.allsprites[phase].RemoveAll(o => o.MapID == ZS.OverworldScene.selectedMapParent);
 		}
 
 		/// <summary>
@@ -2010,7 +1304,7 @@ namespace ZeldaFullEditor.Gui
 		/// </summary>
 		public void clearAreaItems()
 		{
-			ZS.OverworldManager.allitems.RemoveAll(o => o.roomMapId == ZS.OverworldScene.selectedMapParent);
+			ZS.OverworldManager.allitems.RemoveAll(o => o.MapID == ZS.OverworldScene.selectedMapParent);
 		}
 
 		/// <summary>
@@ -2020,11 +1314,11 @@ namespace ZeldaFullEditor.Gui
 		{
 			foreach (EntranceOWEditor entrance in ZS.OverworldManager.allentrances)
 			{
-				if (entrance.mapId == ZS.OverworldScene.selectedMapParent)
+				if (entrance.MapID == ZS.OverworldScene.selectedMapParent)
 				{
 					entrance.x = NullEntrance;
 					entrance.y = NullEntrance;
-					entrance.mapId = 0;
+					entrance.MapID = 0;
 					entrance.mapPos = NullEntrance;
 					entrance.entranceId = 0;
 					entrance.deleted = true;
@@ -2039,11 +1333,11 @@ namespace ZeldaFullEditor.Gui
 		{
 			foreach (var hole in ZS.OverworldManager.allholes)
 			{
-				if (hole.mapId == ZS.OverworldScene.selectedMapParent)
+				if (hole.MapID == ZS.OverworldScene.selectedMapParent)
 				{
 					hole.x = NullEntrance;
 					hole.y = NullEntrance;
-					hole.mapId = 0;
+					hole.MapID = 0;
 					hole.mapPos = NullEntrance;
 					hole.entranceId = 0;
 					hole.deleted = true;
@@ -2058,11 +1352,11 @@ namespace ZeldaFullEditor.Gui
 		{
 			foreach (var exit in ZS.OverworldManager.allexits)
 			{
-				if (exit.mapId == ZS.OverworldScene.selectedMapParent)
+				if (exit.MapID == ZS.OverworldScene.selectedMapParent)
 				{
 					exit.playerX = NullEntrance;
 					exit.playerY = NullEntrance;
-					exit.mapId = 0;
+					exit.MapID = 0;
 					exit.roomId = 0;
 					exit.deleted = true;
 				}

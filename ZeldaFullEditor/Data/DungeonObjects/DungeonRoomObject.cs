@@ -26,6 +26,8 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 
 		public bool IsChest => ObjectType.Specialness == SpecialObjectType.Chest || IsBigChest;
 		public bool IsBigChest => ObjectType.Specialness == SpecialObjectType.BigChest;
+		public bool IsStairs => ObjectType.Specialness == SpecialObjectType.InterroomStairs;
+
 		public bool DiagonalFix { get; set; } = false;
 
 		public RoomObjectType ObjectType { get; }

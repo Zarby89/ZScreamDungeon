@@ -89,12 +89,12 @@ namespace ZeldaFullEditor
 		{
 			settingValues = true;
 			selectedExit = exit;
-			editingExit = new ExitOW(exit.roomId, exit.mapId, exit.vramLocation, exit.yScroll, exit.xScroll, exit.playerY, exit.playerX, exit.cameraY, exit.cameraX, exit.unk1, exit.unk2, exit.doorType1, exit.doorType2);
+			editingExit = new ExitOW(exit.roomId, exit.MapID, exit.vramLocation, exit.yScroll, exit.xScroll, exit.playerY, exit.playerX, exit.cameraY, exit.cameraX, exit.unk1, exit.unk2, exit.doorType1, exit.doorType2);
 			roomUpDown.HexValue = editingExit.roomId;
-			mapUpDown.Value = editingExit.mapId;
+			mapUpDown.Value = editingExit.MapID;
 
-			int mapy = (editingExit.mapId / 8);
-			int mapx = editingExit.mapId - (mapy * 8);
+			int mapy = (editingExit.MapID / 8);
+			int mapx = editingExit.MapID - (mapy * 8);
 
 			pixelMapx = ((mapx) * 512);
 			pixelMapy = ((mapy) * 512);
@@ -138,7 +138,7 @@ namespace ZeldaFullEditor
 			if (!settingValues)
 			{
 				editingExit.roomId = (ushort) roomUpDown.HexValue;
-				editingExit.mapId = (byte) mapUpDown.Value;
+				editingExit.MapID = (byte) mapUpDown.Value;
 				editingExit.playerX = (ushort) (xPosUpDown.Value + pixelMapx);
 				editingExit.playerY = (ushort) (yPosUpDown.Value + pixelMapy);
 				editingExit.cameraX = (ushort) (xCameraUpDown.Value + pixelMapx);

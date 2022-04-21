@@ -615,8 +615,8 @@ namespace ZeldaFullEditor.Gui
 			{
 				if (ZS.GFXGroups.paletteGfx[(byte) paletteUpDown.Value][0] % 2 == 0)
 				{
-					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
-					ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
+					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
+					ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.Palette);
 				}
 			}
 		}

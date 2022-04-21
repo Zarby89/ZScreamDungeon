@@ -254,17 +254,17 @@ namespace ZeldaFullEditor
 			// 30: load Over. items
 
 			bool badSave = true;
-			if (saveSettingsArr[0] && ZS.saveallSprites())
+			if (saveSettingsArr[0] && ZS.SaveUnderworldSprites())
 			{
 				UIText.CryAboutSaving("there are too many sprites");
 				goto theend;
 			}
-			if (saveSettingsArr[1] && ZS.saveallPots())
+			if (saveSettingsArr[1] && ZS.SaveUnderworldSecrets())
 			{
 				UIText.CryAboutSaving("there are too many pot items");
 				goto theend;
 			}
-			if (saveSettingsArr[2] && ZS.saveallChests())
+			if (saveSettingsArr[2] && ZS.SaveUnderworldChests())
 			{
 				UIText.CryAboutSaving("there are too many chest items");
 				goto theend;
@@ -299,17 +299,17 @@ namespace ZeldaFullEditor
 				UIText.CryAboutSaving("something with entrances ?? no idea why LUL");
 				goto theend;
 			}
-			if (saveSettingsArr[9] && ZS.SaveOWSprites())
+			if (saveSettingsArr[9] && ZS.SaveOverworldSprites())
 			{
 				UIText.CryAboutSaving("overworld sprites out of range");
 				goto theend;
 			}
-			if (saveSettingsArr[10] && ZS.saveOWItems())
+			if (saveSettingsArr[10] && ZS.SaverOverworldSecrets())
 			{
 				UIText.CryAboutSaving("overworld items out of range");
 				goto theend;
 			}
-			if (saveSettingsArr[11] && ZS.saveOWEntrances())
+			if (saveSettingsArr[11] && ZS.SaveOverworldEntrances())
 			{
 				UIText.CryAboutSaving("??, no idea why LUL");
 				goto theend;
@@ -319,7 +319,7 @@ namespace ZeldaFullEditor
 				UIText.CryAboutSaving("overworld transports out of range");
 				goto theend;
 			}
-			if (saveSettingsArr[13] && ZS.saveOWExits())
+			if (saveSettingsArr[13] && ZS.SaveOverworldExits())
 			{
 				UIText.CryAboutSaving("overworld Exits or something IDK");
 				goto theend;
@@ -393,7 +393,7 @@ namespace ZeldaFullEditor
 				UIText.CryAboutSaving("problem saving overworld map tiles Types ???");
 				goto theend;
 			}
-			if (saveSettingsArr[36] && ZS.saveOverworldMaps())
+			if (saveSettingsArr[36] && ZS.SaveOverworldScreens())
 			{
 				UIText.CryAboutSaving("problem saving overworld maps");
 				goto theend;
@@ -413,7 +413,7 @@ namespace ZeldaFullEditor
 				UIText.CryAboutSaving("problem saving triforce");
 				goto theend;
 			}
-			if (saveSettingsArr[40] && ZS.saveOverworldMessagesIds())
+			if (saveSettingsArr[40] && ZS.SaveOverworldMessageIDs())
 			{
 				UIText.CryAboutSaving("problem saving overworld map tiles Types ???");
 				goto theend;
@@ -528,7 +528,7 @@ namespace ZeldaFullEditor
 			ZS.OverworldManager.Init();
 			for (ushort i = 0; i < Constants.NumberOfRooms; i++)
 			{
-				DungeonsData.all_rooms[i] = DungeonRoom.BuildRoomFromROM(ZS, i);
+				ZS.all_rooms[i] = DungeonRoom.BuildRoomFromROM(ZS, i);
 				//DungeonsData.undoRoom[i] = new List<Room>();
 				//DungeonsData.redoRoom[i] = new List<Room>();
 			}
@@ -608,8 +608,8 @@ namespace ZeldaFullEditor
             File.WriteAllText("Unused.txt", s);
             */
 
-			ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
-			ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
+			ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
+			ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.Palette);
 			objectViewer1.updateSize();
 			spritesView1.updateSize();
 
@@ -653,10 +653,10 @@ namespace ZeldaFullEditor
 			{
 				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
-					ZS.UnderworldScene.Room = DungeonsData.all_rooms[i];
+					ZS.UnderworldScene.Room = ZS.all_rooms[i];
 					ZS.UnderworldScene.Room.reloadGfx();
-					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
-					ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
+					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
+					ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.Palette);
 					ZS.UnderworldScene.NeedsRefreshing = true;
 
 					gb.DrawImage(ZS.UnderworldScene.tempBitmap, new Point((i % 16) * 512, (i / 16) * 512));
@@ -693,11 +693,11 @@ namespace ZeldaFullEditor
 			// Entrances
 			for (int i = 0; i < 0x07; i++)
 			{
-				DungeonsData.starting_entrances[i] = new Entrance(ZS, (byte) i, true);
+				ZS.starting_entrances[i] = new Entrance(ZS, (byte) i, true);
 				string tname = "[" + i.ToString("X2") + "] -> ";
 				foreach (DataRoom d in ROMStructure.dungeonsRoomList)
 				{
-					if (d.id == DungeonsData.starting_entrances[i].RoomID)
+					if (d.id == ZS.starting_entrances[i].RoomID)
 					{
 						tname += "[" + d.id.ToString("X2") + "]" + d.name;
 						break;
@@ -714,11 +714,11 @@ namespace ZeldaFullEditor
 
 			for (int i = 0; i < Constants.NumberOfEntrances; i++)
 			{
-				DungeonsData.entrances[i] = new Entrance(ZS, (byte) i, false);
+				ZS.entrances[i] = new Entrance(ZS, (byte) i, false);
 				string tname = "[" + i.ToString("X2") + "] -> ";
 				foreach (DataRoom d in ROMStructure.dungeonsRoomList)
 				{
-					if (d.id == DungeonsData.entrances[i].RoomID)
+					if (d.id == ZS.entrances[i].RoomID)
 					{
 						tname += "[" + d.id.ToString("X2") + "]" + d.name;
 						break;
@@ -734,7 +734,7 @@ namespace ZeldaFullEditor
 			}
 
 			entrancetreeView.SelectedNode = entrancetreeView.Nodes[0].Nodes[0];
-			selectedEntrance = DungeonsData.entrances[0];
+			selectedEntrance = ZS.entrances[0];
 		}
 
 		public void enableProjectButtons()
@@ -1329,7 +1329,7 @@ namespace ZeldaFullEditor
 
 			if (anychange)
 			{
-				DungeonsData.all_rooms[ZS.UnderworldScene.Room.RoomID] = ZS.UnderworldScene.Room;
+				ZS.all_rooms[ZS.UnderworldScene.Room.RoomID] = ZS.UnderworldScene.Room;
 
 				saved_changed = true;
 			}
@@ -1383,10 +1383,10 @@ namespace ZeldaFullEditor
 			if (e?.Node.Tag != null)
 			{
 				// TODO gross
-				en = DungeonsData.entrances[(int) e.Node.Tag];
+				en = ZS.entrances[(int) e.Node.Tag];
 				if (e.Node.Parent?.Name == "StartingEntranceNode")
 				{
-					en = DungeonsData.starting_entrances[(int) e.Node.Tag];
+					en = ZS.starting_entrances[(int) e.Node.Tag];
 				}
 			}
 
@@ -1644,7 +1644,7 @@ namespace ZeldaFullEditor
 			}
 			else
 			{
-				DungeonRoom r = DungeonsData.all_rooms[roomId].Clone();
+				var r = ZS.all_rooms[roomId].Clone();
 
 				/*
                 if (DungeonsData.undoRoom[r.index].Count == 0)
@@ -1695,15 +1695,15 @@ namespace ZeldaFullEditor
 
 				if (!visibleEntranceGFX)
 				{
-					ZS.UnderworldScene.Room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+					ZS.UnderworldScene.Room.reloadGfx(ZS.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
 				}
 				else
 				{
 					ZS.UnderworldScene.Room.reloadGfx();
 				}
 
-				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
-				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
+				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
+				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.Palette);
 				ZS.UnderworldScene.SetPalettesBlack();
 				//paletteViewer.update();
 				ZS.UnderworldScene.NeedsRefreshing = true;
@@ -1749,11 +1749,11 @@ namespace ZeldaFullEditor
 			{
 				if (e.Node.Parent == entrancetreeView.Nodes[0])
 				{
-					addRoomTab(DungeonsData.entrances[(int) e.Node.Tag].RoomID);
+					addRoomTab(ZS.entrances[(int) e.Node.Tag].RoomID);
 				}
 				else
 				{
-					addRoomTab(DungeonsData.starting_entrances[(int) e.Node.Tag].RoomID);
+					addRoomTab(ZS.starting_entrances[(int) e.Node.Tag].RoomID);
 				}
 			}
 		}
@@ -1963,34 +1963,34 @@ namespace ZeldaFullEditor
 		{
 			propertiesChangedFromForm = prevent;
 
-			roomProperty_bg2.SelectedIndex = (int) room.bg2;
-			roomProperty_tag1.SelectedIndex = (int) room.tag1;
-			roomProperty_tag2.SelectedIndex = (int) room.tag2;
-			roomProperty_effect.SelectedIndex = (int) room.effect;
-			roomProperty_collision.SelectedIndex = (int) room.collision;
+			roomProperty_bg2.SelectedIndex = (int) room.Layer2Mode;
+			roomProperty_tag1.SelectedIndex = (int) room.Tag1;
+			roomProperty_tag2.SelectedIndex = (int) room.Tag2;
+			roomProperty_effect.SelectedIndex = (int) room.Layer2Effect;
+			roomProperty_collision.SelectedIndex = (int) room.Layer2Behavior;
 
-			roomProperty_pit.Checked = room.damagepit;
+			roomProperty_pit.Checked = room.HasDamagingPits;
 			roomProperty_sortsprite.Checked = room.MultiLayerOAM;
 
-			RoomProperty_Blockset.HexValue = room.blockset;
-			RoomProperty_SpriteSet.HexValue = room.spriteset;
-			RoomProperty_Floor1.HexValue = room.floor1;
-			RoomProperty_Floor2.HexValue = room.floor2;
+			RoomProperty_Blockset.HexValue = room.BackgroundTileset;
+			RoomProperty_SpriteSet.HexValue = room.SpriteTileset;
+			RoomProperty_Floor1.HexValue = room.Floor1Graphics;
+			RoomProperty_Floor2.HexValue = room.Floor2Graphics;
 			RoomProperty_MessageID.HexValue = room.MessageID;
 			RoomProperty_Layout.HexValue = room.Layout;
-			RoomProperty_Palette.HexValue = room.palette;
+			RoomProperty_Palette.HexValue = room.Palette;
 
-			RoomProperty_DestinationPit.HexValue = room.holewarp;
-			RoomProperty_DestinationStair1.HexValue = room.staircase1;
-			RoomProperty_DestinationStair2.HexValue = room.staircase2;
-			RoomProperty_DestinationStair3.HexValue = room.staircase3;
-			RoomProperty_DestinationStair4.HexValue = room.staircase4;
+			RoomProperty_DestinationPit.HexValue = room.Pits.Target;
+			RoomProperty_DestinationStair1.HexValue = room.Stair1.Target;
+			RoomProperty_DestinationStair2.HexValue = room.Stair2.Target;
+			RoomProperty_DestinationStair3.HexValue = room.Stair3.Target;
+			RoomProperty_DestinationStair4.HexValue = room.Stair4.Target;
 
-			bg2checkbox1.Checked = room.holewarp_plane == 2;
-			bg2checkbox2.Checked = room.staircase1Plane == 2;
-			bg2checkbox3.Checked = room.staircase2Plane == 2;
-			bg2checkbox4.Checked = room.staircase3Plane == 2;
-			bg2checkbox5.Checked = room.staircase4Plane == 2;
+			bg2checkbox1.Checked = room.Pits.Layer == 2;
+			bg2checkbox2.Checked = room.Stair1.Layer == 2;
+			bg2checkbox3.Checked = room.Stair2.Layer == 2;
+			bg2checkbox4.Checked = room.Stair3.Layer == 2;
+			bg2checkbox5.Checked = room.Stair4.Layer == 2;
 
 			propertiesChangedFromForm = false;
 		}
@@ -1999,41 +1999,41 @@ namespace ZeldaFullEditor
 		{
 			if (!propertiesChangedFromForm && ZS.UnderworldScene.Room != null)
 			{
-				ZS.UnderworldScene.Room.bg2 = (byte) (roomProperty_bg2.SelectedItem as Layer2TypeName).ID;
-				ZS.UnderworldScene.Room.tag1 = (byte) (roomProperty_tag1.SelectedItem as RoomTagName).ID;
-				ZS.UnderworldScene.Room.tag2 = (byte) (roomProperty_tag2.SelectedItem as RoomTagName).ID;
-				ZS.UnderworldScene.Room.effect = (byte) (roomProperty_effect.SelectedItem as RoomEffectName).ID;
-				ZS.UnderworldScene.Room.collision = (byte) (roomProperty_collision.SelectedItem as RoomCollisionName).ID;
+				ZS.UnderworldScene.Room.Layer2Mode = (byte) (roomProperty_bg2.SelectedItem as Layer2TypeName).ID;
+				ZS.UnderworldScene.Room.Tag1 = (byte) (roomProperty_tag1.SelectedItem as RoomTagName).ID;
+				ZS.UnderworldScene.Room.Tag2 = (byte) (roomProperty_tag2.SelectedItem as RoomTagName).ID;
+				ZS.UnderworldScene.Room.Layer2Effect = (byte) (roomProperty_effect.SelectedItem as RoomEffectName).ID;
+				ZS.UnderworldScene.Room.Layer2Behavior = (byte) (roomProperty_collision.SelectedItem as RoomCollisionName).ID;
 
 
-				ZS.UnderworldScene.Room.blockset = (byte) RoomProperty_Blockset.HexValue;
-				ZS.UnderworldScene.Room.floor1 = (byte) RoomProperty_Floor1.HexValue;
-				ZS.UnderworldScene.Room.floor2 = (byte) RoomProperty_Floor2.HexValue;
+				ZS.UnderworldScene.Room.BackgroundTileset = (byte) RoomProperty_Blockset.HexValue;
+				ZS.UnderworldScene.Room.Floor1Graphics = (byte) RoomProperty_Floor1.HexValue;
+				ZS.UnderworldScene.Room.Floor2Graphics = (byte) RoomProperty_Floor2.HexValue;
 				ZS.UnderworldScene.Room.Layout = (byte) RoomProperty_Layout.HexValue;
 
 				ZS.UnderworldScene.Room.MessageID = (ushort) RoomProperty_MessageID.HexValue;
-				ZS.UnderworldScene.Room.palette = (byte) RoomProperty_Palette.HexValue;
+				ZS.UnderworldScene.Room.Palette = (byte) RoomProperty_Palette.HexValue;
 
-				ZS.UnderworldScene.Room.holewarp = (byte) RoomProperty_DestinationPit.HexValue;
-				ZS.UnderworldScene.Room.staircase1 = (byte) RoomProperty_DestinationStair1.HexValue;
-				ZS.UnderworldScene.Room.staircase2 = (byte) RoomProperty_DestinationStair2.HexValue;
-				ZS.UnderworldScene.Room.staircase3 = (byte) RoomProperty_DestinationStair3.HexValue;
-				ZS.UnderworldScene.Room.staircase4 = (byte) RoomProperty_DestinationStair4.HexValue;
+				ZS.UnderworldScene.Room.Pits.Target = (byte) RoomProperty_DestinationPit.HexValue;
+				ZS.UnderworldScene.Room.Stair1.Target = (byte) RoomProperty_DestinationStair1.HexValue;
+				ZS.UnderworldScene.Room.Stair2.Target = (byte) RoomProperty_DestinationStair2.HexValue;
+				ZS.UnderworldScene.Room.Stair3.Target = (byte) RoomProperty_DestinationStair3.HexValue;
+				ZS.UnderworldScene.Room.Stair4.Target = (byte) RoomProperty_DestinationStair4.HexValue;
 
-				ZS.UnderworldScene.Room.holewarp_plane = (byte) (bg2checkbox1.Checked ? 2 : 0);
-				ZS.UnderworldScene.Room.staircase1Plane = (byte) (bg2checkbox2.Checked ? 2 : 0);
-				ZS.UnderworldScene.Room.staircase2Plane = (byte) (bg2checkbox3.Checked ? 2 : 0);
-				ZS.UnderworldScene.Room.staircase3Plane = (byte) (bg2checkbox4.Checked ? 2 : 0);
-				ZS.UnderworldScene.Room.staircase4Plane = (byte) (bg2checkbox5.Checked ? 2 : 0);
+				ZS.UnderworldScene.Room.Pits.Layer = (byte) (bg2checkbox1.Checked ? 2 : 0);
+				ZS.UnderworldScene.Room.Stair1.Layer = (byte) (bg2checkbox2.Checked ? 2 : 0);
+				ZS.UnderworldScene.Room.Stair2.Layer = (byte) (bg2checkbox3.Checked ? 2 : 0);
+				ZS.UnderworldScene.Room.Stair3.Layer = (byte) (bg2checkbox4.Checked ? 2 : 0);
+				ZS.UnderworldScene.Room.Stair4.Layer = (byte) (bg2checkbox5.Checked ? 2 : 0);
 
-				ZS.UnderworldScene.Room.damagepit = roomProperty_pit.Checked;
+				ZS.UnderworldScene.Room.HasDamagingPits = roomProperty_pit.Checked;
 				ZS.UnderworldScene.Room.MultiLayerOAM = roomProperty_sortsprite.Checked;
 
-				ZS.UnderworldScene.Room.spriteset = (byte) RoomProperty_SpriteSet.HexValue;
+				ZS.UnderworldScene.Room.SpriteTileset = (byte) RoomProperty_SpriteSet.HexValue;
 
 				if (!visibleEntranceGFX)
 				{
-					ZS.UnderworldScene.Room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+					ZS.UnderworldScene.Room.reloadGfx(ZS.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
 				}
 				else
 				{
@@ -2045,8 +2045,8 @@ namespace ZeldaFullEditor
                 redoRoom[activeScene.room.index].Clear();
                 */
 
-				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
-				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
+				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
+				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.Palette);
 				ZS.UnderworldScene.SetPalettesBlack();
 				ZS.UnderworldScene.NeedsRefreshing = true;
 				ZS.UnderworldScene.Room.HasUnsavedChanges = true;
@@ -2130,13 +2130,13 @@ namespace ZeldaFullEditor
 					bit5: entranceProperty_hscroll.Checked
 					); ;
 
-				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
-				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
+				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
+				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.Palette);
 				ZS.UnderworldScene.SetPalettesBlack();
 
 				if (!visibleEntranceGFX)
 				{
-					ZS.UnderworldScene.Room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+					ZS.UnderworldScene.Room.reloadGfx(ZS.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
 				}
 				else
 				{
@@ -2175,7 +2175,7 @@ namespace ZeldaFullEditor
 				switch (UIText.WarnAboutSaving(UIText.RoomWarning))
 				{
 					case DialogResult.Yes:
-						DungeonsData.all_rooms[(tabControl2.TabPages[i].Tag as DungeonRoom).RoomID] = (tabControl2.TabPages[i].Tag as DungeonRoom).Clone();
+						ZS.all_rooms[(tabControl2.TabPages[i].Tag as DungeonRoom).RoomID] = (tabControl2.TabPages[i].Tag as DungeonRoom).Clone();
 						closeRoom((tabControl2.TabPages[i].Tag as DungeonRoom).RoomID);
 						this.tabControl2.TabPages.RemoveAt(i);
 
@@ -2229,7 +2229,7 @@ namespace ZeldaFullEditor
 				ZS.UnderworldScene.Room = (tabControl2.TabPages[tabControl2.SelectedIndex].Tag as DungeonRoom);
 				ZS.UnderworldScene.updateRoomInfos(this);
 
-				if (DungeonsData.undoRoom[ZS.UnderworldScene.Room.RoomID].Count > 0)
+				if (ZS.undoRoom[ZS.UnderworldScene.Room.RoomID].Count > 0)
 				{
 					undoButton.Enabled = true;
 					undoToolStripMenuItem.Enabled = true;
@@ -2241,7 +2241,7 @@ namespace ZeldaFullEditor
 					redoToolStripMenuItem.Enabled = false;
 				}
 
-				if (DungeonsData.redoRoom[ZS.UnderworldScene.Room.RoomID].Count > 0)
+				if (ZS.redoRoom[ZS.UnderworldScene.Room.RoomID].Count > 0)
 				{
 					redoButton.Enabled = true;
 					redoToolStripMenuItem.Enabled = true;
@@ -2254,15 +2254,15 @@ namespace ZeldaFullEditor
 
 				if (!visibleEntranceGFX)
 				{
-					ZS.UnderworldScene.Room.reloadGfx(DungeonsData.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
+					ZS.UnderworldScene.Room.reloadGfx(ZS.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
 				}
 				else
 				{
 					ZS.UnderworldScene.Room.reloadGfx();
 				}
 
-				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
-				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
+				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
+				ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.Palette);
 				ZS.UnderworldScene.SetPalettesBlack();
 
 				ZS.UnderworldScene.NeedsRefreshing = true;
@@ -2364,7 +2364,7 @@ namespace ZeldaFullEditor
 				{
 					foreach (ushort s in selectedMapPng)
 					{
-						if (s < DungeonsData.all_rooms.Length && DungeonsData.all_rooms[s] != null)
+						if (s < ZS.all_rooms.Length && ZS.all_rooms[s] != null)
 						{
 							int cy = (s / 16);
 							int cx = s - (cy * 16);
@@ -2373,10 +2373,10 @@ namespace ZeldaFullEditor
 							if (cx > higherX) { higherX = cx; }
 							if (cy > higherY) { higherY = cy; }
 
-							ZS.UnderworldScene.Room = DungeonsData.all_rooms[s];
+							ZS.UnderworldScene.Room = ZS.all_rooms[s];
 							ZS.UnderworldScene.Room.reloadGfx();
-							ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
-							ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
+							ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
+							ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.Palette);
 							ZS.UnderworldScene.NeedsRefreshing = true;
 
 							gb.DrawImage(ZS.UnderworldScene.tempBitmap, new Point(cx * 512, cy * 512));
@@ -2411,8 +2411,8 @@ namespace ZeldaFullEditor
 			ZS.UnderworldScene.forPreview = false;
 			ZS.UnderworldScene.Room = savedRoom;
 			ZS.UnderworldScene.Room.reloadGfx();
-			ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
-			ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.palette);
+			ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
+			ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.Palette);
 			ZS.UnderworldScene.NeedsRefreshing = true;
 		}
 
@@ -2468,10 +2468,10 @@ namespace ZeldaFullEditor
 			{
 				yoff = (i >= 256) ? 8 : 0;
 
-				if (!DungeonsData.all_rooms[i].IsEmpty)
+				if (!ZS.all_rooms[i].IsEmpty)
 				{
 					e.Graphics.FillRectangle(
-						new SolidBrush(ZS.GFXManager.LoadDungeonPalette(DungeonsData.all_rooms[i].palette)[4, 2]),
+						new SolidBrush(ZS.GFXManager.LoadDungeonPalette(ZS.all_rooms[i].Palette)[4, 2]),
 						new Rectangle(xd * 16, (yd * 16) + yoff,
 						16,
 						16));
@@ -2612,7 +2612,7 @@ namespace ZeldaFullEditor
 		{
 			if (MessageBox.Show("Are you sure you want to clear every room's data?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
 			{
-				foreach (DungeonRoom r in DungeonsData.all_rooms)
+				foreach (var r in ZS.all_rooms)
 				{
 					r.ClearAll();
 				}
@@ -2925,15 +2925,15 @@ namespace ZeldaFullEditor
 					return;
 				}
 
-				previewRoom = DungeonsData.all_rooms[roomId];
+				previewRoom = ZS.all_rooms[roomId];
 				previewRoom.reloadGfx();
-				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(previewRoom.palette);
+				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(previewRoom.Palette);
 				DrawRoom();
 				thumbnailBox.Refresh();
 
 				if (ZS.UnderworldScene.Room != null)
 				{
-					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
 					ZS.UnderworldScene.Room.reloadGfx();
 				}
 			}
@@ -3027,8 +3027,8 @@ namespace ZeldaFullEditor
 		{
 			e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
 			e.Graphics.Clear(Color.Black);
-			if (previewRoom.bg2 != Constants.LayerMergeTranslucent || previewRoom.bg2 != Constants.LayerMergeTransparent ||
-				previewRoom.bg2 != Constants.LayerMergeOnTop || previewRoom.bg2 != Constants.LayerMergeOff)
+			if (previewRoom.Layer2Mode != Constants.LayerMergeTranslucent || previewRoom.Layer2Mode != Constants.LayerMergeTransparent ||
+				previewRoom.Layer2Mode != Constants.LayerMergeOnTop || previewRoom.Layer2Mode != Constants.LayerMergeOff)
 			{
 				e.Graphics.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
@@ -3036,7 +3036,7 @@ namespace ZeldaFullEditor
 			//e.Graphics.DrawImage(ZS.GFXManager.roomBgLayoutBitmap,0,0);
 			e.Graphics.DrawImage(ZS.GFXManager.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 
-			if (previewRoom.bg2 == Constants.LayerMergeTranslucent || previewRoom.bg2 == Constants.LayerMergeTransparent)
+			if (previewRoom.Layer2Mode == Constants.LayerMergeTranslucent || previewRoom.Layer2Mode == Constants.LayerMergeTransparent)
 			{
 				float[][] matrixItems ={
 				   new float[] {1f, 0, 0, 0, 0},
@@ -3059,7 +3059,7 @@ namespace ZeldaFullEditor
 				//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
 				e.Graphics.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
 			}
-			else if (previewRoom.bg2 == Constants.LayerMergeOnTop)
+			else if (previewRoom.Layer2Mode == Constants.LayerMergeOnTop)
 			{
 				e.Graphics.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
@@ -3100,15 +3100,15 @@ namespace ZeldaFullEditor
 
 				if (lastRoomID != roomId)
 				{
-					previewRoom = DungeonsData.all_rooms[roomId];
+					previewRoom = ZS.all_rooms[roomId];
 					previewRoom.reloadGfx();
-					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(previewRoom.palette);
+					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(previewRoom.Palette);
 					DrawRoom();
 					thumbnailBox.Refresh();
 
 					if (ZS.UnderworldScene.Room != null)
 					{
-						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.palette);
+						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
 						ZS.UnderworldScene.Room.reloadGfx();
 						ZS.UnderworldScene.NeedsRefreshing = true;
 					}
@@ -3443,7 +3443,7 @@ namespace ZeldaFullEditor
 				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
 					// TODO system specific path separators
-					byte[] roomBytes = DungeonsData.all_rooms[i].TileObjectData;
+					byte[] roomBytes = ZS.all_rooms[i].TileObjectData;
 					using (FileStream fs = new FileStream(path + "//ExportedRooms//room" + i.ToString("D3") + ".zrd", FileMode.OpenOrCreate, FileAccess.Write))
 					{
 						fs.Write(roomBytes, 0, roomBytes.Length);
@@ -4029,7 +4029,7 @@ namespace ZeldaFullEditor
 			}
 			else
 			{
-				if (ZS.saveOverworldMaps())
+				if (ZS.SaveOverworldScreens())
 				{
 					// TODO messagebox for failure "too many maps out of bound error"
 				}

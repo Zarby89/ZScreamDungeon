@@ -25,7 +25,7 @@ namespace ZeldaFullEditor.SceneModes
 				for (int i = 0; i < 0x11; i++)
 				{
 					TransportOW en = ZS.OverworldManager.allWhirlpools[i];
-					if (en.mapId >= ZS.OverworldManager.worldOffset && en.mapId < 64 + ZS.OverworldManager.worldOffset)
+					if (en.MapID >= ZS.OverworldManager.worldOffset && en.MapID < 64 + ZS.OverworldManager.worldOffset)
 					{
 						if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
 						{
@@ -59,7 +59,7 @@ namespace ZeldaFullEditor.SceneModes
 						mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
 					}
 
-					selectedTransport.updateMapStuff(mid, ZS.OverworldManager);
+					selectedTransport.UpdateMapID(mid, ZS.OverworldManager);
 
 					//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 				}
@@ -82,7 +82,7 @@ namespace ZeldaFullEditor.SceneModes
 				for (int i = 0; i < 0x11; i++)
 				{
 					TransportOW en = ZS.OverworldManager.allWhirlpools[i];
-					if (en.mapId >= ZS.OverworldManager.worldOffset && en.mapId < 64 + ZS.OverworldManager.worldOffset)
+					if (en.MapID >= ZS.OverworldManager.worldOffset && en.MapID < 64 + ZS.OverworldManager.worldOffset)
 					{
 						if (e.X >= en.playerX && e.X < en.playerX + 16 && e.Y >= en.playerY && e.Y < en.playerY + 16)
 						{
@@ -126,95 +126,48 @@ namespace ZeldaFullEditor.SceneModes
 
 		public void Draw(Graphics g)
 		{
-			if (ZS.OverworldScene.lowEndMode)
+			Brush bgrBrush = Constants.DarkMint200Brush;
+			g.CompositingMode = CompositingMode.SourceOver;
+
+			for (int i = 0; i < ZS.OverworldManager.allWhirlpools.Count; i++)
 			{
-				Brush bgrBrush = Constants.DarkMint200Brush;
-				g.CompositingMode = CompositingMode.SourceOver;
+				TransportOW e = ZS.OverworldManager.allWhirlpools[i];
 
-				for (int i = 0; i < ZS.OverworldManager.allWhirlpools.Count; i++)
+				if (ZS.OverworldScene.lowEndMode && e.MapID != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
 				{
-					TransportOW e = ZS.OverworldManager.allWhirlpools[i];
-
-					if (e.mapId != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
-					{
-						continue;
-					}
-
-					if (e.mapId < 64 + ZS.OverworldManager.worldOffset && e.mapId >= ZS.OverworldManager.worldOffset)
-					{
-						if (selectedTransport != null)
-						{
-							if (e == selectedTransport)
-							{
-								bgrBrush = Constants.Azure200Brush;
-								ZS.OverworldScene.drawText(g, e.playerX - 1, e.playerY + 16, $"map : {e.mapId:X2}");
-								//scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
-								ZS.OverworldScene.drawText(g, e.playerX - 4, e.playerY + 36, $"mpos : {e.vramLocation:X4}");
-							}
-							else
-							{
-								bgrBrush = Constants.Goldenrod200Brush;
-							}
-						}
-
-						g.FillRectangle(bgrBrush, new Rectangle(e.playerX, e.playerY, 16, 16));
-						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.playerX, e.playerY, 16, 16));
-						ZS.OverworldScene.drawText(g, e.playerX + 4, e.playerY + 4, $"{i:X2} - Transport");
-
-						/*
-                        if (i > 8)
-                        {
-                            scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
-                        }
-                        else
-                        {
-                            scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
-                        }
-                        */
-					}
+					continue;
 				}
-			}
-			else
-			{
-				Brush bgrBrush = Constants.DarkMint200Brush;
-				g.CompositingMode = CompositingMode.SourceOver;
 
-				for (int i = 0; i < ZS.OverworldManager.allWhirlpools.Count; i++)
+				if (e.MapID < 64 + ZS.OverworldManager.worldOffset && e.MapID >= ZS.OverworldManager.worldOffset)
 				{
-					TransportOW e = ZS.OverworldManager.allWhirlpools[i];
-
-					if (e.mapId < 64 + ZS.OverworldManager.worldOffset && e.mapId >= ZS.OverworldManager.worldOffset)
+					if (selectedTransport != null)
 					{
-						if (selectedTransport != null)
+						if (e == selectedTransport)
 						{
-							if (e == selectedTransport)
-							{
-								bgrBrush = Constants.Azure200Brush;
-								ZS.OverworldScene.drawText(g, e.playerX - 1, e.playerY + 16, $"map : {e.mapId:X2}");
-								//scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
-								ZS.OverworldScene.drawText(g, e.playerX - 4, e.playerY + 36, $"mpos : {e.vramLocation:X4}");
-							}
-							else
-							{
-								bgrBrush = Constants.Goldenrod200Brush;
-							}
+							bgrBrush = Constants.Azure200Brush;
+							ZS.OverworldScene.drawText(g, e.playerX - 1, e.playerY + 16, $"map : {e.MapID:X2}");
+							//scene.drawText(g, e.playerX - 1, e.playerY + 26, "entrance : " + e.mapId.ToString());
+							ZS.OverworldScene.drawText(g, e.playerX - 4, e.playerY + 36, $"mpos : {e.vramLocation:X4}");
 						}
-
-						g.FillRectangle(bgrBrush, new Rectangle(e.playerX, e.playerY, 16, 16));
-						g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.playerX, e.playerY, 16, 16));
-						ZS.OverworldScene.drawText(g, e.playerX + 4, e.playerY + 4, $"{i:X2} - Transport");
-
-						/*
-                         if (i > 8)
-                        {
-                            scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
-                        }
-                        else
-                        {
-                            scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
-                        }
-                        */
+						else
+						{
+							bgrBrush = Constants.Goldenrod200Brush;
+						}
 					}
+
+					g.DrawFilledRectangleWithOutline(e.playerX, e.playerY, 16, 16, Constants.Black200Pen, bgrBrush);
+					ZS.OverworldScene.drawText(g, e.playerX + 4, e.playerY + 4, $"{i:X2} - Transport");
+
+					/*
+                     if (i > 8)
+                     {
+                         scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
+                     }
+                     else
+                     {
+                         scene.drawText(g, e.playerX + 4, e.playerY + 4, i.ToString("X2") + " - Transport - " + i.ToString("X2"));
+                     }
+                     */
 				}
 			}
 		}

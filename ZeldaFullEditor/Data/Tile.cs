@@ -1,12 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 
 namespace ZeldaFullEditor
@@ -15,7 +7,7 @@ namespace ZeldaFullEditor
 	/// Represents a background tile as used by the SNES PPU.
 	/// </summary>
 	[Serializable]
-	public readonly struct Tile
+	public readonly struct Tile : IByteable
 	{
 		/// <summary>
 		/// True if high priority
@@ -46,7 +38,14 @@ namespace ZeldaFullEditor
 		/// </summary>
 		public byte VFlipByte { get; }
 
-
+		public byte[] Data
+		{
+			get
+			{
+				ushort s = ToUnsignedShort();
+				return new byte[] { (byte) s, (byte) (s >> 8) };
+			}
+		}
 		public ushort ID { get; }
 		public byte Palette { get; }
 
@@ -125,23 +124,6 @@ namespace ZeldaFullEditor
 		public Tile CloneModified(bool? hflip = null, bool? vflip = null)
 		{
 			return new Tile(ID, Palette, Priority, hflip ?? HFlip, vflip ?? VFlip);
-		}
-
-		public unsafe void SetTile(int x, int y, byte layer, ZScreamer ZS)
-		{
-			if (x + (y * 64) < 4096)
-			{
-				ushort t = ToUnsignedShort();
-				if (layer == 0)
-				{
-
-					ZS.GFXManager.tilesBg1Buffer[x + (y * 64)] = t;
-				}
-				else
-				{
-					ZS.GFXManager.tilesBg2Buffer[x + (y * 64)] = t;
-				}
-			}
 		}
 
 		public ushort ToUnsignedShort()

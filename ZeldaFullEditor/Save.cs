@@ -12,12 +12,15 @@ namespace ZeldaFullEditor
 {
 	public partial class ZScreamer
 	{
-		public DungeonRoom[] all_rooms = DungeonsData.all_rooms; // TODO this is bad
-
+		public DungeonRoom[] all_rooms = new DungeonRoom[Constants.NumberOfRooms];
+		public DungeonRoom[] all_rooms_moved = new DungeonRoom[Constants.NumberOfRooms];
+		public Entrance[] entrances = new Entrance[Constants.NumberOfEntrances];
+		public Entrance[] starting_entrances = new Entrance[0x07];
+		public List<DungeonRoom>[] undoRoom = new List<DungeonRoom>[Constants.NumberOfRooms];
+		public List<DungeonRoom>[] redoRoom = new List<DungeonRoom>[Constants.NumberOfRooms];
 
 		int[] roomTilesPointers = new int[Constants.NumberOfRooms];
 		int[] roomDoorsPointers = new int[Constants.NumberOfRooms];
-		int saddr = 0;
 
 		byte[][] mapDatap1 = new byte[Constants.NumberOfOWMaps][];
 		byte[][] mapDatap2 = new byte[Constants.NumberOfOWMaps][];
@@ -31,12 +34,12 @@ namespace ZeldaFullEditor
 		{
 			for (int i = 0; i < 0x84; i++)
 			{
-				DungeonsData.entrances[i].save(this, i);
+				entrances[i].save(this, i);
 			}
 
 			for (int i = 0; i < 0x07; i++)
 			{
-				DungeonsData.starting_entrances[i].save(this, i);
+				starting_entrances[i].save(this, i);
 			}
 
 			return false;
@@ -221,28 +224,21 @@ namespace ZeldaFullEditor
 			return false; // False = no error
 		}
 
-		public void saveHeader(int pos, int i)
-		{
-			
-		}
-
 		public bool saveAllPits()
 		{
 			int pitCount = ROM[Offsets.pit_count] / 2;
 			int pitPointer = SNESFunctions.SNEStoPC(ROM[Offsets.pit_pointer, 3]);
-			// ROM.StartBlockLogWriting("Pits Data", pitPointer);
 			int pitCountNew = 0;
 
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
 			{
-				if (all_rooms[i].damagepit)
+				if (all_rooms[i].HasDamagingPits)
 				{
 					ROM[pitPointer, 2] = all_rooms[i].RoomID;
 					pitPointer += 2;
 					pitCountNew++;
 				}
 			}
-			// ROM.EndBlockLogWriting();
 
 			return pitCountNew > pitCount;
 		}
@@ -291,7 +287,7 @@ namespace ZeldaFullEditor
 			// TODO: Add something here?
 		}
 
-		public bool saveallChests()
+		public bool SaveUnderworldChests()
 		{
 			int pos = SNESFunctions.SNEStoPC(ROM[Offsets.chests_data_pointer1, 3]);
 			int chestCount = 0;
@@ -307,7 +303,7 @@ namespace ZeldaFullEditor
 			return chestCount > Constants.NumberOfChests;
 		}
 
-		public bool saveallPots()
+		public bool SaveUnderworldSecrets()
 		{
 			int pos = Offsets.items_data_start + 2;
 
@@ -330,12 +326,11 @@ namespace ZeldaFullEditor
 			return pos > Offsets.items_data_end;
 		}
 
-		public bool saveallSprites()
+		public bool SaveUnderworldSprites()
 		{
 			int spritePointer = Constants.DungeonSpritePointers | ROM[Offsets.rooms_sprite_pointer];
 			int pointerpointer = spritePointer.SNEStoPC();
 			int datapointer = pointerpointer + 0x280;
-			// ROM.StartBlockLogWriting("Dungeon Sprites", spritePointerPC);
 			byte[] sprites_buffer = new byte[Offsets.sprites_end_data - spritePointer.SNEStoPC()];
 
 			ushort emptyroom = (ushort) (datapointer.PCtoSNES() & 0xFFFF);
@@ -361,13 +356,11 @@ namespace ZeldaFullEditor
 			return datapointer > Offsets.sprites_end_data;
 		}
 
-		public bool saveOWExits()
+		public bool SaveOverworldExits()
 		{
-			// ROM.StartBlockLogWriting("OW Exits", Constants.OWExitMapId);
-
 			for (int i = 0, j = 0; i < 78; i++, j += 2)
 			{
-				ROM[Offsets.OWExitMapId + i] = OverworldManager.allexits[i].mapId;
+				ROM[Offsets.OWExitMapId + i] = OverworldManager.allexits[i].MapID;
 				ROM[Offsets.OWExitXScroll + j, 2] = OverworldManager.allexits[i].xScroll;
 				ROM[Offsets.OWExitYScroll + j, 2] = OverworldManager.allexits[i].yScroll;
 				ROM[Offsets.OWExitXCamera + j, 2] = OverworldManager.allexits[i].cameraX;
@@ -379,45 +372,37 @@ namespace ZeldaFullEditor
 				ROM[Offsets.OWExitDoorType1 + j, 2] = OverworldManager.allexits[i].doorType1;
 				ROM[Offsets.OWExitDoorType2 + j, 2] = OverworldManager.allexits[i].doorType2;
 			}
-
-			// ROM.EndBlockLogWriting();
 			return false;
 		}
 
-		public bool saveOWEntrances()
+		public bool SaveOverworldEntrances()
 		{
-			// ROM.StartBlockLogWriting("OW Entrances/Holes", Constants.OWEntranceMap);
-
 			for (int i = 0, j = 0; i < OverworldManager.allentrances.Length; i++, j += 2)
 			{
-				ROM[Offsets.OWEntranceMap + j, 2] = OverworldManager.allentrances[i].mapId;
+				ROM[Offsets.OWEntranceMap + j, 2] = OverworldManager.allentrances[i].MapID;
 				ROM[Offsets.OWEntrancePos + j, 2] = OverworldManager.allentrances[i].mapPos;
 				ROM[Offsets.OWEntranceEntranceId + i] = OverworldManager.allentrances[i].entranceId;
 			}
 
 			for (int i = 0, j = 0; i < OverworldManager.allholes.Length; i++, j += 2)
 			{
-				ROM[Offsets.OWHoleArea + j, 2] = OverworldManager.allholes[i].mapId;
+				ROM[Offsets.OWHoleArea + j, 2] = OverworldManager.allholes[i].MapID;
 				ROM[Offsets.OWHolePos + j, 2] = OverworldManager.allholes[i].mapPos - 0x400;
 				ROM[Offsets.OWHoleEntrance + i] = OverworldManager.allholes[i].entranceId;
 			}
-
-			// ROM.EndBlockLogWriting();
-			//WriteLog("Overworld Entrances data loaded properly", Color.Green);
 			return false;
 		}
 
-		public bool saveOWItems()
+		public bool SaverOverworldSecrets()
 		{
-			// ROM.StartBlockLogWriting("Items OW DATA & Pointers", Offsets.overworldItemsPointers);
-			List<RoomPotSaveEditor>[] roomItems = new List<RoomPotSaveEditor>[128];
+			List<OverworldSecret>[] roomItems = new List<OverworldSecret>[128];
 
 			for (int i = 0; i < 128; i++)
 			{
-				roomItems[i] = new List<RoomPotSaveEditor>();
-				foreach (RoomPotSaveEditor item in OverworldManager.allitems)
+				roomItems[i] = new List<OverworldSecret>();
+				foreach (var item in OverworldManager.allitems)
 				{
-					if (item.roomMapId == i)
+					if (item.MapID == i)
 					{
 						roomItems[i].Add(item);
 					}
@@ -440,7 +425,7 @@ namespace ZeldaFullEditor
 						itemPtrsReuse[i] = -2;
 						break;
 					}
-					if (compareItemsArrays(roomItems[i], roomItems[ci]))
+					if (CompareOverworldArrays(roomItems[i], roomItems[ci]))
 					{
 						itemPtrsReuse[i] = ci;
 						break;
@@ -453,13 +438,13 @@ namespace ZeldaFullEditor
 				if (itemPtrsReuse[i] == -1)
 				{
 					itemPtrs[i] = dataPos;
-					foreach (RoomPotSaveEditor item in roomItems[i])
+					foreach (var item in roomItems[i])
 					{
-						ushort mapPos = (ushort) (((item.gameY << 6) + item.gameX) << 1);
+						ushort mapPos = (ushort) (((item.MapY << 6) + item.MapX) << 1);
 						ROM.WriteContinuous(ref dataPos,
 							(byte) (mapPos >> 8),
 							(byte) mapPos,
-							item.id);
+							item.ID);
 					}
 
 					emptyPtr = dataPos;
@@ -483,14 +468,11 @@ namespace ZeldaFullEditor
 				return true;
 			}
 
-			// ROM.EndBlockLogWriting();
-
 			return false;
 		}
 
-		public bool SaveOWSprites()
+		public bool SaveOverworldSprites()
 		{
-			// ROM.StartBlockLogWriting("Sprites OW DATA & Pointers", Offsets.overworldSpritesBegining);
 			int[] sprPointers = new int[Constants.NumberOfOWSprites];
 			int?[] sprPointersReused = new int?[Constants.NumberOfOWSprites];
 			List<OverworldSprite>[] allspr = new List<OverworldSprite>[Constants.NumberOfOWSprites];
@@ -540,7 +522,7 @@ namespace ZeldaFullEditor
 					}
 
 					// the i != ci condition was useless, because it would have hit the break if we were equal
-					if (compareSpriteArrays(allspr[i], allspr[ci]))
+					if (CompareOverworldArrays(allspr[i], allspr[ci]))
 					{
 						sprPointersReused[i] = ci;
 					}
@@ -574,27 +556,24 @@ namespace ZeldaFullEditor
 				ROM[Offsets.OverworldSpritesTableState0 + (i * 2), 2] = sprPointers[i].PCtoSNES();
 			}
 
-			if (dataPos > 0x4D62E)
-			{
-				return true; // Error
-			}
-
-			// ROM.EndBlockLogWriting();
-			return false; // No errors
+			return dataPos > 0x4D62E;
 		}
 
-		public bool compareSpriteArrays(List<OverworldSprite> spr1, List<OverworldSprite> spr2)
+		// TODO is probably bad and we should probably use IComparable to sort the lists firsts
+		public bool CompareOverworldArrays<T>(List<T> list1, List<T> list2) where T : IEquatable<T>
 		{
-			if (spr1.Count != spr2.Count)
+			if (list1.Count != list2.Count)
 			{
 				return false;
 			}
 
 			bool match;
-			foreach (var i in spr1)
+
+			foreach (var i in list1)
 			{
 				match = false;
-				foreach (var j in spr2)
+
+				foreach (var j in list2)
 				{
 					if (i.Equals(j))
 					{
@@ -602,36 +581,6 @@ namespace ZeldaFullEditor
 						break;
 					}
 				}
-
-				if (!match)
-				{
-					return false;
-				}
-			}
-
-			return true;
-		}
-
-		public bool compareItemsArrays(List<RoomPotSaveEditor> itm1, List<RoomPotSaveEditor> itm2)
-		{
-			if (itm1.Count != itm2.Count)
-			{
-				return false;
-			}
-
-			bool match;
-			foreach (RoomPotSaveEditor i in itm1)
-			{
-				match = false;
-				foreach (RoomPotSaveEditor j in itm2)
-				{
-					if (i.Equals(j))
-					{
-						match = true;
-						break;
-					}
-				}
-
 				if (!match)
 				{
 					return false;
@@ -643,11 +592,9 @@ namespace ZeldaFullEditor
 
 		public bool saveOWTransports()
 		{
-			// ROM.StartBlockLogWriting("Transports Data", Constants.OWExitMapIdWhirlpool);
-
 			for (int i = 0, j = 0; i < 0x11; i++, j += 2)
 			{
-				ROM[Offsets.OWExitMapIdWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].mapId;
+				ROM[Offsets.OWExitMapIdWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].MapID;
 				ROM[Offsets.OWExitXScrollWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].xScroll;
 				ROM[Offsets.OWExitYScrollWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].yScroll;
 				ROM[Offsets.OWExitXCameraWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].cameraX;
@@ -661,15 +608,11 @@ namespace ZeldaFullEditor
 					ROM[Offsets.OWWhirlpoolPosition + ((i - 9) * 2), 2] = OverworldManager.allWhirlpools[i].whirlpoolPos;
 				}
 			}
-
-			// ROM.EndBlockLogWriting();
 			return false;
 		}
 
 		public bool saveMapProperties()
 		{
-			// ROM.StartBlockLogWriting("Map Properties", Offsets.mapGfx);
-
 			for (int i = 0; i < 64; i++)
 			{
 				ROM[Offsets.mapGfx + i] = OverworldManager.allmaps[i].gfx;
@@ -694,14 +637,11 @@ namespace ZeldaFullEditor
 				ROM[Offsets.overworldSpritePalette + 128 + i] = OverworldManager.allmaps[i].sprpalette[2];
 			}
 
-			// ROM.EndBlockLogWriting();
 			return false;
 		}
 
 		public bool saveMapOverlays()
 		{
-			// ROM.StartBlockLogWriting("Map Overlays", Offsets.mapGfx);
-
 			byte[] newOverlayCode = new byte[]
 			{
 				0xC2, 0x30, // REP #$30
@@ -808,16 +748,12 @@ namespace ZeldaFullEditor
         }
         */
 
-		public bool saveOverworldMessagesIds()
+		public bool SaveOverworldMessageIDs()
 		{
-			// ROM.StartBlockLogWriting("Overworld Messages IDs", Offsets.overworldMessages);
-
 			for (int i = 0; i < 128; i++)
 			{
 				ROM[Offsets.overworldMessages + (i * 2), 2] = OverworldManager.allmaps[i].messageID;
 			}
-
-			// ROM.EndBlockLogWriting();
 
 			return false;
 		}
@@ -833,14 +769,9 @@ namespace ZeldaFullEditor
 				ROM[Offsets.overworldMusicMasterSword + i] = OverworldManager.allmaps[i].musics[2];
 				ROM[Offsets.overworldMusicAgahim + i] = OverworldManager.allmaps[i].musics[3];
 
-			}
-
-			for (int i = 0; i < 64; i++)
-			{
 				ROM[Offsets.overworldMusicDW + i] = OverworldManager.allmaps[i].musics[0];
-			}
 
-			// ROM.EndBlockLogWriting();
+			}
 
 			return false;
 		}
@@ -863,7 +794,7 @@ namespace ZeldaFullEditor
 			return true;
 		}
 
-		public bool saveOverworldMaps()
+		public bool SaveOverworldScreens()
 		{
 			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
@@ -1016,14 +947,14 @@ namespace ZeldaFullEditor
 
 				// Always write the map parent since it should not matter
 				ROM[Offsets.overworldMapParentId + i] = OverworldManager.allmaps[i].parent;
-				parentMapLine += OverworldManager.allmaps[i].parent.ToString("X2").PadLeft(2, '0') + " ";
+				//parentMapLine += OverworldManager.allmaps[i].parent.ToString("X2").PadLeft(2, '0') + " ";
 
-				if ((i + 1) % 8 == 0)
-				{
-					parentMap[((i + 1) / 8) - 1] = parentMapLine;
-
-					parentMapLine = "";
-				}
+				//if ((i + 1) % 8 == 0)
+				//{
+				//	parentMap[((i + 1) / 8) - 1] = parentMapLine;
+				//
+				//	parentMapLine = "";
+				//}
 
 				if (checkedMap.Contains((byte) i))
 				{
@@ -1182,7 +1113,7 @@ namespace ZeldaFullEditor
 				{
 					ROM[Offsets.GraveLinkSpecialStairs, 2] = OverworldManager.graves[i].tilemapPos - 0x80;
 				}
-				if (i == 0x0D)
+				else if (i == 0x0D)
 				{
 					ROM[Offsets.GraveLinkSpecialHole, 2] = OverworldManager.graves[i].tilemapPos - 0x80;
 				}

@@ -39,6 +39,11 @@ namespace ZeldaFullEditor.Data
 		public TileTypeName(int i, string n) : base(i, n) { }
 	}
 
+	public class ItemReceiptName : EntityName
+	{
+		public ItemReceiptName(int i, string n) : base(i, n) { }
+	}
+
 	public class SecretsName : EntityName
 	{
 		public SecretsName(int i, string n) : base(i, n) { }

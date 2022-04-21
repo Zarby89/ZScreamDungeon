@@ -1187,16 +1187,17 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				int xpos = 256 + (allMapIcons[overworldCombobox.SelectedIndex][i].x * 2);
 				int ypos = 256 + (allMapIcons[overworldCombobox.SelectedIndex][i].y * 2);
 
+				Brush brush;
 				if (allMapIcons[overworldCombobox.SelectedIndex][i] == selectedMapIcon)
 				{
-					e.Graphics.FillRectangle(Brushes.Teal, new Rectangle(xpos, ypos, 24, 24));
-					e.Graphics.DrawRectangle(Constants.BlackPen2, new Rectangle(xpos, ypos, 24, 24));
+					brush = Brushes.Teal;
 				}
 				else
 				{
-					e.Graphics.FillRectangle(Brushes.Yellow, new Rectangle(xpos, ypos, 24, 24));
-					e.Graphics.DrawRectangle(Constants.BlackPen2, new Rectangle(xpos, ypos, 24, 24));
+					brush = Brushes.Yellow;
 				}
+
+				e.Graphics.DrawFilledRectangleWithOutline(xpos, ypos, 24, 24, Constants.BlackPen2, brush);
 
 				ZS.GFXManager.drawText(e.Graphics, xpos + 6, ypos + 4, (i + 1).ToString(), null, true);
 			}

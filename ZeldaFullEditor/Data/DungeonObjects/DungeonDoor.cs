@@ -11,6 +11,7 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 	public unsafe class DungeonDoorObject : DungeonPlaceable, IByteable, IMouseCollidable
 	{
 		public byte ID => DoorType.ID;
+
 		public byte X { get; set; }
 		public byte Y { get; set; }
 
@@ -69,6 +70,13 @@ namespace ZeldaFullEditor.Data.DungeonObjects
 		public override bool PointIsInHitbox(int x, int y)
 		{
 			throw new NotImplementedException();
+		}
+	}
+
+	public unsafe class DungeonDoorPreview : DungeonDoorObject
+	{
+		public DungeonDoorPreview(DungeonDoorDraw position, DoorTilesList tiles) : base(position, tiles)
+		{
 		}
 	}
 }

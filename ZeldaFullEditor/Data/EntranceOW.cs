@@ -7,42 +7,42 @@ using System.Threading.Tasks;
 namespace ZeldaFullEditor
 {
 	[Serializable]
-	public class EntranceOWEditor
+	public class EntranceOWEditor : Data.OverworldEntity
 	{
 		public int x { get; set; }
 		public int y { get; set; }
 		public ushort mapPos { get; set; }
 		public byte entranceId { get; set; }
-		public byte AreaX { get; set; }
-		public byte AreaY { get; set; }
-		public ushort mapId { get; set; }
+		public byte MapX { get; set; }
+		public byte MapY { get; set; }
+		public byte MapID { get; set; }
 		public bool isHole = false;
 		public bool deleted = false;
 
 		// mapId might be useless but we will need it to check if the entrance is in the darkworld or lightworld
-		public EntranceOWEditor(int x, int y, byte entranceId, ushort mapId, ushort mapPos)
+		public EntranceOWEditor(int x, int y, byte entranceId, byte mapId, ushort mapPos)
 		{
 			this.x = x;
 			this.y = y;
 			this.entranceId = entranceId;
-			this.mapId = mapId;
+			this.MapID = mapId;
 			this.mapPos = mapPos;
 
 			int mapX = (mapId - ((mapId / 8) * 8));
 			int mapY = (mapId / 8);
 
-			AreaX = (byte) ((Math.Abs(x - (mapX * 512)) / 16));
-			AreaY = (byte) ((Math.Abs(y - (mapY * 512)) / 16));
+			MapX = (byte) ((Math.Abs(x - (mapX * 512)) / 16));
+			MapY = (byte) ((Math.Abs(y - (mapY * 512)) / 16));
 		}
 
 		public EntranceOWEditor Copy()
 		{
-			return new EntranceOWEditor(this.x, this.y, this.entranceId, this.mapId, this.mapPos);
+			return new EntranceOWEditor(this.x, this.y, this.entranceId, this.MapID, this.mapPos);
 		}
 
-		public void updateMapStuff(ushort mapId)
+		public void UpdateMapID(byte mapId)
 		{
-			this.mapId = mapId;
+			MapID = mapId;
 
 			if (mapId >= 64)
 			{
@@ -52,8 +52,8 @@ namespace ZeldaFullEditor
 			int mapX = (mapId - ((mapId / 8) * 8));
 			int mapY = (mapId / 8);
 
-			AreaX = (byte) ((Math.Abs(x - (mapX * 512)) / 16));
-			AreaY = (byte) ((Math.Abs(y - (mapY * 512)) / 16));
+			MapX = (byte) ((Math.Abs(x - (mapX * 512)) / 16));
+			MapY = (byte) ((Math.Abs(y - (mapY * 512)) / 16));
 
 			int mx = (mapId - ((mapId / 8) * 8));
 			int my = (mapId / 8);
@@ -61,7 +61,7 @@ namespace ZeldaFullEditor
 			byte xx = (byte) ((x - (mx * 512)) / 16);
 			byte yy = (byte) ((y - (my * 512)) / 16);
 
-			mapPos = (ushort) ((((AreaY) << 6) | (AreaX & 0x3F)) << 1);
+			mapPos = (ushort) ((((MapY) << 6) | (MapX & 0x3F)) << 1);
 		}
 	}
 }
