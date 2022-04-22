@@ -220,44 +220,63 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AddressSet.cs" />
-    <Compile Include="asar.cs" />
-    <Compile Include="ChestDraw.cs" />
-    <Compile Include="Data\DefaultEntities.cs" />
-    <Compile Include="Data\Drawing.cs" />
-    <Compile Include="Data\DungeonMap.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonBlock.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonChestItem.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonDoorType.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonLayout.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonObject.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonDoor.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonDoorTypes.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonObjectDraw.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonObjectTypes.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonRoom.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonRoomChestsHandler.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonRoomObject.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonRoomParts.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonDestinationsHandler.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonSecret.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonTorch.cs" />
-    <Compile Include="Data\DungeonObjects\ItemReceipt.cs" />
-    <Compile Include="Data\DungeonObjects\RoomObjectProperties.cs" />
-    <Compile Include="Data\DungeonObjects\RoomObjectTileLister.cs" />
-    <Compile Include="Data\DungeonObjects\SecretItemType.cs" />
-    <Compile Include="Data\OverworldEntity.cs" />
-    <Compile Include="Data\TilesList.cs" />
-    <Compile Include="Data\EntityName.cs" />
-    <Compile Include="Data\Gravestone.cs" />
-    <Compile Include="Data\MapIcon.cs" />
-    <Compile Include="Data\OAMTile.cs" />
+    <Compile Include="Data\Overworld\OverworldDestination.cs" />
+    <Compile Include="Data\Overworld\OverworldSprite.cs" />
+    <Compile Include="Data\Overworld\OverworldSecret.cs" />
+    <Compile Include="Utility\DataObjects\AddressSet.cs" />
+    <Compile Include="Hacks\asar.cs" />
+    <Compile Include="Utility\DataObjects\DoorTilesList.cs" />
+    <Compile Include="Utility\DefaultEntities.cs" />
+    <Compile Include="Utility\Enums\DoorCategory.cs" />
+    <Compile Include="Utility\Enums\DoorDirection.cs" />
+    <Compile Include="Utility\Enums\DungeonObjectSet.cs" />
+    <Compile Include="Utility\Enums\DungeonObjectSizeability.cs" />
+    <Compile Include="Utility\Enums\RoomObjectCategory.cs" />
+    <Compile Include="Utility\Enums\SpecialObjectType.cs" />
+    <Compile Include="Utility\Enums\SpriteCategory.cs" />
+    <Compile Include="Utility\Interfaces\IByteable.cs" />
+    <Compile Include="Utility\Interfaces\IDelegatedDraw.cs" />
+    <Compile Include="Utility\Interfaces\IDrawableSprite.cs" />
+    <Compile Include="Utility\Interfaces\IFreelyPlaceable.cs" />
+    <Compile Include="Utility\Interfaces\IMouseCollidable.cs" />
+    <Compile Include="Utility\Interfaces\IMultilayered.cs" />
+    <Compile Include="Utility\Interfaces\ITilesTableBasedDraw.cs" />
+    <Compile Include="Utility\IntFunctions.cs" />
+    <Compile Include="Utility\SNESFunctions.cs" />
+    <Compile Include="Utility\Structs\OAMDrawInfo.cs" />
+    <Compile Include="Data\Misc\DungeonMap.cs" />
+    <Compile Include="Data\Underworld\DungeonBlock.cs" />
+    <Compile Include="Data\Underworld\DungeonChestItem.cs" />
+    <Compile Include="Data\Types\DungeonDoorType.cs" />
+    <Compile Include="Data\Underworld\DungeonLayout.cs" />
+    <Compile Include="Data\Underworld\DungeonObject.cs" />
+    <Compile Include="Data\Underworld\DungeonDoor.cs" />
+    <Compile Include="Data\Types\DungeonDoorTypes.cs" />
+    <Compile Include="Data\Types\DungeonObjectDraw.cs" />
+    <Compile Include="Data\Types\DungeonObjectTypes.cs" />
+    <Compile Include="Data\Underworld\DungeonRoom.cs" />
+    <Compile Include="Data\Underworld\DungeonRoomChestsHandler.cs" />
+    <Compile Include="Data\Underworld\DungeonRoomObject.cs" />
+    <Compile Include="Data\Underworld\DungeonRoomParts.cs" />
+    <Compile Include="Data\Underworld\DungeonDestinationsHandler.cs" />
+    <Compile Include="Data\Underworld\DungeonSecret.cs" />
+    <Compile Include="Data\Underworld\DungeonTorch.cs" />
+    <Compile Include="Data\Types\ItemReceipt.cs" />
+    <Compile Include="Data\Underworld\RoomObjectTileLister.cs" />
+    <Compile Include="Data\Types\SecretItemType.cs" />
+    <Compile Include="Data\Overworld\OverworldEntity.cs" />
+    <Compile Include="Utility\DataObjects\TilesList.cs" />
+    <Compile Include="Utility\EntityName.cs" />
+    <Compile Include="Data\Overworld\Gravestone.cs" />
+    <Compile Include="Data\Misc\MapIcon.cs" />
+    <Compile Include="Utility\Structs\OAMTile.cs" />
     <Compile Include="Data\ScreenStrip.cs" />
-    <Compile Include="Data\DungeonObjects\DungeonSprite.cs" />
-    <Compile Include="Data\SpriteDraw.cs" />
-    <Compile Include="Data\SpriteTypes.cs" />
-    <Compile Include="Data\TilemapPosition.cs" />
-    <Compile Include="FloorNumber.cs" />
+    <Compile Include="Data\Underworld\DungeonSprite.cs" />
+    <Compile Include="Data\Types\SpriteDraw.cs" />
+    <Compile Include="Data\Types\SpriteTypes.cs" />
+    <Compile Include="Utility\Structs\DrawInfo.cs" />
+    <Compile Include="Utility\Structs\TilemapPosition.cs" />
+    <Compile Include="Utility\DataObjects\FloorNumber.cs" />
     <Compile Include="Gui\DataExtractor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -294,9 +313,9 @@
     <Compile Include="Data\dataObject.cs" />
     <Compile Include="Data\DataRoom.cs" />
     <Compile Include="DoAction.cs" />
-    <Compile Include="Data\Entrance.cs" />
-    <Compile Include="Data\EntranceOW.cs" />
-    <Compile Include="Data\ExitOW.cs" />
+    <Compile Include="Data\Underworld\Entrance.cs" />
+    <Compile Include="Data\Overworld\EntranceOW.cs" />
+    <Compile Include="Data\Overworld\ExitOW.cs" />
     <Compile Include="GfxGroups.cs" />
     <Compile Include="Gui\ExtraForms\ExitEditorForm.cs">
       <SubType>Form</SubType>
@@ -482,23 +501,23 @@
       <DependentUpon>WindowPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="ImgClipboard.cs" />
-    <Compile Include="Data\OverlayData.cs" />
-    <Compile Include="Data\Overworld.cs" />
-    <Compile Include="Data\OverworldMap.cs" />
-    <Compile Include="ImmutableArray.cs" />
-    <Compile Include="SceneModes\ClipboardData\TileData.cs" />
-    <Compile Include="SceneModes\OWDoorMode.cs" />
-    <Compile Include="SceneModes\OWEntranceMode.cs" />
-    <Compile Include="SceneModes\OWExitMode.cs" />
-    <Compile Include="SceneModes\OWSecretsMode.cs" />
-    <Compile Include="SceneModes\UWLayerMode.cs" />
-    <Compile Include="SceneModes\SceneMode.cs" />
-    <Compile Include="SceneModes\OWSpriteMode.cs" />
-    <Compile Include="SceneModes\OWOverlayMode.cs" />
-    <Compile Include="SceneModes\OWTileMode.cs" />
-    <Compile Include="SceneModes\OWGravesMode.cs" />
-    <Compile Include="SceneModes\OWTransportMode.cs" />
-    <Compile Include="Point3D.cs" />
+    <Compile Include="Data\Overworld\OverlayData.cs" />
+    <Compile Include="Data\Overworld\Overworld.cs" />
+    <Compile Include="Data\Misc\OverworldMap.cs" />
+    <Compile Include="Utility\DataObjects\ImmutableArray.cs" />
+    <Compile Include="Gui\Scene\SceneModes\ClipboardData\TileData.cs" />
+    <Compile Include="Gui\Scene\SceneModes\OWDoorMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\OWEntranceMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\OWExitMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\OWSecretsMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\UWLayerMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\SceneMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\OWSpriteMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\OWOverlayMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\OWTileMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\OWGravesMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\OWTransportMode.cs" />
+    <Compile Include="Utility\DataObjects\Point3D.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Gui\RoomMover.cs">
       <SubType>Form</SubType>
@@ -506,8 +525,7 @@
     <Compile Include="Gui\RoomMover.Designer.cs">
       <DependentUpon>RoomMover.cs</DependentUpon>
     </Compile>
-    <Compile Include="ROMAddress.cs" />
-    <Compile Include="ROMWrite.cs" />
+    <Compile Include="Utility\Structs\ROMAddress.cs" />
     <Compile Include="Gui\ExtraForms\MovePointer.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -522,17 +540,14 @@
     </Compile>
     <Compile Include="Data\Palettes.cs" />
     <Compile Include="Gui\PaletteViewer.cs" />
-    <Compile Include="ROMStructure.cs" />
+    <Compile Include="Utility\DataObjects\ROMStructure.cs" />
     <Compile Include="Gui\RoomLayout.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Gui\RoomLayout.Designer.cs">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </Compile>
-    <Compile Include="Data\RoomPotSaveEditor.cs" />
-    <Compile Include="Rooms\Chests\Chest.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="Rooms\Items\Items_Draw.cs" />
+    <Compile Include="Utility\Constants.cs" />
     <Compile Include="Gui\DungeonMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -549,9 +564,9 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ROM.cs" />
-    <Compile Include="Rooms\Room.cs" />
-    <Compile Include="Rooms\RoomLayout.cs" />
-    <Compile Include="Rooms\Room_Object.cs" />
+    <Compile Include="Data\Underworld\Room.cs" />
+    <Compile Include="Data\Underworld\RoomLayout.cs" />
+    <Compile Include="Data\Underworld\Room_Object.cs" />
     <Compile Include="Save.cs" />
     <Compile Include="Data\SaveObject.cs" />
     <Compile Include="Gui\Scene\SceneOW.cs">
@@ -560,12 +575,12 @@
     <Compile Include="Gui\Scene\SceneResizing.cs" />
     <Compile Include="Gui\Scene\SceneUW.cs" />
     <Compile Include="Gui\Scene\SceneBase.cs" />
-    <Compile Include="SceneModes\UWBlockMode.cs" />
-    <Compile Include="SceneModes\UWDoorMode.cs" />
-    <Compile Include="SceneModes\UWEntranceMode.cs" />
-    <Compile Include="SceneModes\UWSecretsMode.cs" />
-    <Compile Include="SceneModes\UWSpriteMode.cs" />
-    <Compile Include="SceneModes\UWTorchMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\UWBlockMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\UWDoorMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\UWEntranceMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\UWSecretsMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\UWSpriteMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\UWTorchMode.cs" />
     <Compile Include="Scripting.evaluator.cs" />
     <Compile Include="Scripting.Extensions.cs" />
     <Compile Include="Scripting.native.cs" />
@@ -575,21 +590,21 @@
     <Compile Include="SpritesView.Designer.cs">
       <DependentUpon>SpritesView.cs</DependentUpon>
     </Compile>
-    <Compile Include="Sprite_SubsetNames.cs" />
+    <Compile Include="Utility\Sprite_SubsetNames.cs" />
     <Compile Include="Gui\MainTabs\TextEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Gui\MainTabs\TextEditor.Designer.cs">
       <DependentUpon>TextEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Data\Tile.cs" />
-    <Compile Include="Data\Tile16.cs" />
-    <Compile Include="Data\Tile32.cs" />
+    <Compile Include="Utility\Structs\Tile.cs" />
+    <Compile Include="Utility\Structs\Tile16.cs" />
+    <Compile Include="Utility\Structs\Tile32.cs" />
     <Compile Include="Data\TilePos.cs" />
     <Compile Include="Data\TileUndo.cs" />
-    <Compile Include="Data\TransportOW.cs" />
-    <Compile Include="UIText.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="Data\Overworld\TransportOW.cs" />
+    <Compile Include="Utility\UIText.cs" />
+    <Compile Include="Utility\Utils.cs" />
     <Compile Include="Gui\WhirlpoolForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -772,13 +787,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="asar.dll">
+    <Content Include="Hacks\asar.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="debug.asm">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="DefaultNames.txt">
+    <Content Include="Hacks\debug.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="PatchNotes.txt" />
@@ -788,7 +800,7 @@
     <None Include="Resources\darkbg.png" />
     <None Include="Resources\floorSelector.bmp" />
     <None Include="Resources\floorselector.png" />
-    <Content Include="spritesmove.asm">
+    <Content Include="Hacks\spritesmove.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\Mblock.png" />

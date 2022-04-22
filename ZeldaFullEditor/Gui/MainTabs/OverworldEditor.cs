@@ -11,7 +11,6 @@ using System.Threading;
 using System.Drawing.Drawing2D;
 using ZeldaFullEditor.Gui.ExtraForms;
 using ZeldaFullEditor.Data;
-using ZeldaFullEditor.Data.DungeonObjects;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -33,6 +32,9 @@ namespace ZeldaFullEditor.Gui
 		int mouseY_Real = 0;
 		int lastTileHoverX = 0;
 		int lastTileHoverY = 0;
+
+
+		public bool ShowGrid { get; set; }
 
 		byte palSelected = 0;
 		int tile8selected = 0;
@@ -217,8 +219,8 @@ namespace ZeldaFullEditor.Gui
 		public void UpdateSelectedExitProps(ExitOW e)
 		{
 			OWExitPropID.HexValue = e?.MapID ?? 0;
-			OWExitPropX.HexValue = e?.playerX ?? 0;
-			OWExitPropY.HexValue = e?.playerY ?? 0;
+			OWExitPropX.HexValue = e?.GlobalX ?? 0;
+			OWExitPropY.HexValue = e?.GlobalY ?? 0;
 		}
 		public void SetSelectedEntrance(EntranceOWEditor e)
 		{
@@ -232,8 +234,8 @@ namespace ZeldaFullEditor.Gui
 		public void UpdateSelectedEntranceProps(EntranceOWEditor e)
 		{
 			OWEntrancePropID.HexValue = e?.MapID ?? 0;
-			OWEntrancePropX.HexValue = e?.x ?? 0;
-			OWEntrancePropY.HexValue = e?.y ?? 0;
+			OWEntrancePropX.HexValue = e?.GlobalX ?? 0;
+			OWEntrancePropY.HexValue = e?.GlobalY ?? 0;
 		}
 
 		public void SetSelectedTransport(TransportOW e)
@@ -248,8 +250,8 @@ namespace ZeldaFullEditor.Gui
 		public void UpdateSelectedransportProps(TransportOW e)
 		{
 			OWTransportPropID.HexValue = e?.MapID ?? 0;
-			OWTransportPropX.HexValue = e?.playerX ?? 0;
-			OWTransportPropY.HexValue = e?.playerY ?? 0;
+			OWTransportPropX.HexValue = e?.GlobalX ?? 0;
+			OWTransportPropY.HexValue = e?.GlobalY ?? 0;
 		}
 
 		private void stateCombobox_SelectedIndexChanged(object sender, EventArgs e)
@@ -1239,8 +1241,8 @@ namespace ZeldaFullEditor.Gui
 		{
 			foreach (EntranceOWEditor entrance in ZS.OverworldManager.allentrances)
 			{
-				entrance.x = NullEntrance;
-				entrance.y = NullEntrance;
+				entrance.GlobalX = NullEntrance;
+				entrance.GlobalY = NullEntrance;
 				entrance.MapID = 0;
 				entrance.mapPos = NullEntrance;
 				entrance.entranceId = 0;
@@ -1255,8 +1257,8 @@ namespace ZeldaFullEditor.Gui
 		{
 			foreach (var hole in ZS.OverworldManager.allholes)
 			{
-				hole.x = NullEntrance;
-				hole.y = NullEntrance;
+				hole.GlobalX = NullEntrance;
+				hole.GlobalY = NullEntrance;
 				hole.MapID = 0;
 				hole.mapPos = NullEntrance;
 				hole.entranceId = 0;
@@ -1271,8 +1273,8 @@ namespace ZeldaFullEditor.Gui
 		{
 			foreach (var exit in ZS.OverworldManager.allexits)
 			{
-				exit.playerX = NullEntrance;
-				exit.playerY = NullEntrance;
+				exit.GlobalX = NullEntrance;
+				exit.GlobalY = NullEntrance;
 				exit.MapID = 0;
 				exit.roomId = 0;
 				exit.deleted = true;
@@ -1316,8 +1318,8 @@ namespace ZeldaFullEditor.Gui
 			{
 				if (entrance.MapID == ZS.OverworldScene.selectedMapParent)
 				{
-					entrance.x = NullEntrance;
-					entrance.y = NullEntrance;
+					entrance.GlobalX = NullEntrance;
+					entrance.GlobalY = NullEntrance;
 					entrance.MapID = 0;
 					entrance.mapPos = NullEntrance;
 					entrance.entranceId = 0;
@@ -1335,8 +1337,8 @@ namespace ZeldaFullEditor.Gui
 			{
 				if (hole.MapID == ZS.OverworldScene.selectedMapParent)
 				{
-					hole.x = NullEntrance;
-					hole.y = NullEntrance;
+					hole.GlobalX = NullEntrance;
+					hole.GlobalY = NullEntrance;
 					hole.MapID = 0;
 					hole.mapPos = NullEntrance;
 					hole.entranceId = 0;
@@ -1354,8 +1356,8 @@ namespace ZeldaFullEditor.Gui
 			{
 				if (exit.MapID == ZS.OverworldScene.selectedMapParent)
 				{
-					exit.playerX = NullEntrance;
-					exit.playerY = NullEntrance;
+					exit.GlobalX = NullEntrance;
+					exit.GlobalY = NullEntrance;
 					exit.MapID = 0;
 					exit.roomId = 0;
 					exit.deleted = true;

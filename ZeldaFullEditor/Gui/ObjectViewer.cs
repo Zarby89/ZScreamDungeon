@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using ZeldaFullEditor.Properties;
-using ZeldaFullEditor.Data.DungeonObjects;
+using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor
 {

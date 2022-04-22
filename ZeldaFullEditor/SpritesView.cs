@@ -8,19 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
-using ZeldaFullEditor.Data.DungeonObjects;
+using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor
 {
 	public partial class SpritesView : Gui.ScreamControl
 	{
-		public List<SomeSprite> items = new List<SomeSprite>();
+		public List<SpritePreview> items = new List<SpritePreview>();
 		ColorPalette palettes = null;
 
 		public int selectedIndex = -1;
 		public event EventHandler SelectedIndexChanged;
 
-		public SomeSprite selectedObject = null;
+		public SpritePreview selectedObject = null;
 
 		public SpritesView(ZScreamer zs) : base(zs)
 		{
@@ -56,7 +56,7 @@ namespace ZeldaFullEditor
 				}
 
 				e.Graphics.DrawRectangle(Pens.LightGray, new Rectangle(xpos * 64 + (xpos * 4), ypos * 64 + (ypos * 4), 64, 64));
-				e.Graphics.DrawString(o.CurrentType.VanillaName, Constants.Arial7, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4) + 40, 64, 24));
+				e.Graphics.DrawString(o.Name, Constants.Arial7, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4) + 40, 64, 24));
 
 				xpos++;
 				if (xpos >= w)

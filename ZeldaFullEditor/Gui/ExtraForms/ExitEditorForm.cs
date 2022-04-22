@@ -28,14 +28,14 @@ namespace ZeldaFullEditor
 			editingExit.isAutomatic = automaticcheckBox.Checked;
 			if (!automaticcheckBox.Checked)
 			{
-				editingExit.playerX = (ushort) (xPosUpDown.Value + pixelMapx);
-				editingExit.playerY = (ushort) (yPosUpDown.Value + pixelMapy);
+				editingExit.GlobalX = (ushort) (xPosUpDown.Value + pixelMapx);
+				editingExit.GlobalY = (ushort) (yPosUpDown.Value + pixelMapy);
 
-				editingExit.cameraX = (ushort) (xCameraUpDown.Value + pixelMapx);
-				editingExit.cameraY = (ushort) (yCameraUpDown.Value + pixelMapy);
+				editingExit.CameraX = (ushort) (xCameraUpDown.Value + pixelMapx);
+				editingExit.CameraY = (ushort) (yCameraUpDown.Value + pixelMapy);
 
-				editingExit.xScroll = (ushort) (xScrollUpDown.Value + pixelMapx);
-				editingExit.yScroll = (ushort) (yScrollUpDown.Value + pixelMapy);
+				editingExit.ScrollX = (ushort) (xScrollUpDown.Value + pixelMapx);
+				editingExit.ScrollY = (ushort) (yScrollUpDown.Value + pixelMapy);
 
 				editingExit.doorXEditor = (byte) doorxUpDown.Value;
 				editingExit.doorYEditor = (byte) dooryUpDown.Value;
@@ -89,22 +89,22 @@ namespace ZeldaFullEditor
 		{
 			settingValues = true;
 			selectedExit = exit;
-			editingExit = new ExitOW(exit.roomId, exit.MapID, exit.vramLocation, exit.yScroll, exit.xScroll, exit.playerY, exit.playerX, exit.cameraY, exit.cameraX, exit.unk1, exit.unk2, exit.doorType1, exit.doorType2);
+			editingExit = new ExitOW(exit.roomId, exit.MapID, exit.VRAMBase, exit.ScrollY, exit.ScrollX, exit.GlobalY, exit.GlobalX, exit.CameraY, exit.CameraX, exit.unk1, exit.unk2, exit.doorType1, exit.doorType2);
 			roomUpDown.HexValue = editingExit.roomId;
 			mapUpDown.Value = editingExit.MapID;
 
 			int mapy = (editingExit.MapID / 8);
 			int mapx = editingExit.MapID - (mapy * 8);
 
-			pixelMapx = ((mapx) * 512);
-			pixelMapy = ((mapy) * 512);
+			pixelMapx = mapx * 512;
+			pixelMapy = mapy * 512;
 
-			xPosUpDown.Value = (editingExit.playerX - pixelMapx); //editingExit.playerX;
-			yPosUpDown.Value = (editingExit.playerY - ((pixelMapy))); //editingExit.playerY;
-			xCameraUpDown.Value = (editingExit.cameraX - (pixelMapx));
-			yCameraUpDown.Value = (editingExit.cameraY - (pixelMapy));
-			xScrollUpDown.Value = (editingExit.xScroll - (pixelMapx));
-			yScrollUpDown.Value = (editingExit.yScroll - (pixelMapy));
+			xPosUpDown.Value = (editingExit.GlobalX - pixelMapx); //editingExit.GlobalX;
+			yPosUpDown.Value = (editingExit.GlobalY - ((pixelMapy))); //editingExit.GlobalY;
+			xCameraUpDown.Value = (editingExit.CameraX - (pixelMapx));
+			yCameraUpDown.Value = (editingExit.CameraY - (pixelMapy));
+			xScrollUpDown.Value = (editingExit.ScrollX - (pixelMapx));
+			yScrollUpDown.Value = (editingExit.ScrollY - (pixelMapy));
 			editingExit.doorXEditor = exit.doorXEditor;
 			editingExit.doorYEditor = exit.doorYEditor;
 			doorxUpDown.Value = editingExit.doorXEditor;
@@ -139,12 +139,12 @@ namespace ZeldaFullEditor
 			{
 				editingExit.roomId = (ushort) roomUpDown.HexValue;
 				editingExit.MapID = (byte) mapUpDown.Value;
-				editingExit.playerX = (ushort) (xPosUpDown.Value + pixelMapx);
-				editingExit.playerY = (ushort) (yPosUpDown.Value + pixelMapy);
-				editingExit.cameraX = (ushort) (xCameraUpDown.Value + pixelMapx);
-				editingExit.cameraY = (ushort) (yCameraUpDown.Value + pixelMapy);
-				editingExit.xScroll = (ushort) (xScrollUpDown.Value + pixelMapx);
-				editingExit.yScroll = (ushort) (yScrollUpDown.Value + pixelMapy);
+				editingExit.GlobalX = (ushort) (xPosUpDown.Value + pixelMapx);
+				editingExit.GlobalY = (ushort) (yPosUpDown.Value + pixelMapy);
+				editingExit.CameraX = (ushort) (xCameraUpDown.Value + pixelMapx);
+				editingExit.CameraY = (ushort) (yCameraUpDown.Value + pixelMapy);
+				editingExit.ScrollX = (ushort) (xScrollUpDown.Value + pixelMapx);
+				editingExit.ScrollY = (ushort) (yScrollUpDown.Value + pixelMapy);
 
 				if (wooddoorradioButton.Checked)
 				{

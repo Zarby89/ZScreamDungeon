@@ -6,8 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Gui;
-using ZeldaFullEditor.Data.DungeonObjects;
+using ZeldaFullEditor.Data.Underworld;
 using System.Text.RegularExpressions;
+using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor.Gui
 {

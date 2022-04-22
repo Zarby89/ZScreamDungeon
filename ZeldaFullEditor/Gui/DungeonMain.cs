@@ -18,7 +18,7 @@ using ZeldaFullEditor.Gui;
 using ZeldaFullEditor.Gui.MainTabs;
 using System.Globalization;
 using ZeldaFullEditor.Data;
-using ZeldaFullEditor.Data.DungeonObjects;
+using ZeldaFullEditor.Data.Underworld;
 
 
 // Main 
@@ -66,7 +66,6 @@ namespace ZeldaFullEditor
 
 		public List<RoomObjectPreview> listoftilesobjects = new List<RoomObjectPreview>();
 		List<SpritePreview> listofspritesobjects = new List<SpritePreview>();
-		List<Chest> listofchests = new List<Chest>();
 
 		// Groups of options for the Scene
 		public bool showSprite = true;
@@ -1455,8 +1454,8 @@ namespace ZeldaFullEditor
 				ZS.UnderworldScene.NeedsRefreshing = true;
 			}
 
-			entranceProperty_vscroll.Checked = false;
-			entranceProperty_hscroll.Checked = false;
+			entranceProperty_vscroll.Checked = en.Scrolling.BitIsOn(0x02);
+			entranceProperty_hscroll.Checked = en.Scrolling.BitIsOn(0x20);
 			entranceProperty_quadbr.Checked = false;
 			entranceProperty_quadbl.Checked = false;
 			entranceProperty_quadtl.Checked = false;
@@ -1474,16 +1473,6 @@ namespace ZeldaFullEditor
 			int p = (en.Exit & 0x7FFF) >> 1;
 			doorxTextbox.Text = (p % 64).ToString("X2");
 			dooryTextbox.Text = (p >> 6).ToString("X2");
-
-			if (en.Scrolling.BitIsOn(0x20))
-			{
-				entranceProperty_hscroll.Checked = true;
-			}
-
-			if (en.Scrolling.BitIsOn(0x02))
-			{
-				entranceProperty_vscroll.Checked = true;
-			}
 
 			if (en.Scrollquadrant == 0x12) // Bottom right
 			{
@@ -1592,7 +1581,7 @@ namespace ZeldaFullEditor
 			{
 				foreach (DungeonSprite spr in ZS.UnderworldScene.Room.SpritesList)
 				{
-						spr.KeyDrop = 0;
+					spr.KeyDrop = 0;
 				}
 				s.KeyDrop = (byte) comboBox1.SelectedIndex;
 				ZS.UnderworldScene.NeedsRefreshing = true;
@@ -3371,15 +3360,6 @@ namespace ZeldaFullEditor
 		{
 			new SaveSettings(ZS).ShowDialog();
 		}
-
-		public enum Direction
-		{
-			gauche = 0x01,
-			droit = 0x02,
-			haut = 0x04,
-			bas = 0x08
-		};
-
 
 		public void UpdateFormForSelectedObject(DungeonPlaceable o)
 		{

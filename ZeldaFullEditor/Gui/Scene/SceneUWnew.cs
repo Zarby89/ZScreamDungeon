@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using System.Globalization;
 
 using ZeldaFullEditor.SceneModes;
-using ZeldaFullEditor.Data.DungeonObjects;
+using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor
 {
@@ -161,7 +161,7 @@ namespace ZeldaFullEditor
 
 		public void drawGrid(Graphics graphics)
 		{
-			if (showGrid)
+			if (ZS.OverworldForm.ShowGrid)
 			{
 				int s = ZS.MainForm.gridSize;
 				int wh = (512 / s) + 1;

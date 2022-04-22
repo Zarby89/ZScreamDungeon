@@ -7,7 +7,6 @@ using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 using ZeldaFullEditor.SceneModes;
 using ZeldaFullEditor.Gui;
-using ZeldaFullEditor.Data.DungeonObjects;
 using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
@@ -592,11 +591,11 @@ namespace ZeldaFullEditor
 				{
 					if (entranceMode.selectedEntrance != null)
 					{
-						g.DrawImage(ZS.OverworldForm.tmpPreviewBitmap, entranceMode.selectedEntrance.x + 16, entranceMode.selectedEntrance.y + 16);
+						g.DrawImage(ZS.OverworldForm.tmpPreviewBitmap, entranceMode.selectedEntrance.GlobalX + 16, entranceMode.selectedEntrance.GlobalY + 16);
 					}
 					if (exitmode.selectedExit != null)
 					{
-						g.DrawImage(ZS.OverworldForm.tmpPreviewBitmap, exitmode.selectedExit.playerX + 16, exitmode.selectedExit.playerY + 16);
+						g.DrawImage(ZS.OverworldForm.tmpPreviewBitmap, exitmode.selectedExit.GlobalX + 16, exitmode.selectedExit.GlobalY + 16);
 					}
 				}
 

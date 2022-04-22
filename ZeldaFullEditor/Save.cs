@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Compression;
-using ZeldaFullEditor.Data.DungeonObjects;
+using ZeldaFullEditor.Data;
+using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor
 {
@@ -361,14 +362,14 @@ namespace ZeldaFullEditor
 			for (int i = 0, j = 0; i < 78; i++, j += 2)
 			{
 				ROM[Offsets.OWExitMapId + i] = OverworldManager.allexits[i].MapID;
-				ROM[Offsets.OWExitXScroll + j, 2] = OverworldManager.allexits[i].xScroll;
-				ROM[Offsets.OWExitYScroll + j, 2] = OverworldManager.allexits[i].yScroll;
-				ROM[Offsets.OWExitXCamera + j, 2] = OverworldManager.allexits[i].cameraX;
-				ROM[Offsets.OWExitYCamera + j, 2] = OverworldManager.allexits[i].cameraY;
-				ROM[Offsets.OWExitVram + j, 2] = OverworldManager.allexits[i].vramLocation;
+				ROM[Offsets.OWExitXScroll + j, 2] = OverworldManager.allexits[i].ScrollX;
+				ROM[Offsets.OWExitYScroll + j, 2] = OverworldManager.allexits[i].ScrollY;
+				ROM[Offsets.OWExitXCamera + j, 2] = OverworldManager.allexits[i].CameraX;
+				ROM[Offsets.OWExitYCamera + j, 2] = OverworldManager.allexits[i].CameraY;
+				ROM[Offsets.OWExitVram + j, 2] = OverworldManager.allexits[i].VRAMBase;
 				ROM[Offsets.OWExitRoomId + j, 2] = OverworldManager.allexits[i].roomId;
-				ROM[Offsets.OWExitXPlayer + j, 2] = OverworldManager.allexits[i].playerX;
-				ROM[Offsets.OWExitYPlayer + j, 2] = OverworldManager.allexits[i].playerY;
+				ROM[Offsets.OWExitXPlayer + j, 2] = OverworldManager.allexits[i].GlobalX;
+				ROM[Offsets.OWExitYPlayer + j, 2] = OverworldManager.allexits[i].GlobalY;
 				ROM[Offsets.OWExitDoorType1 + j, 2] = OverworldManager.allexits[i].doorType1;
 				ROM[Offsets.OWExitDoorType2 + j, 2] = OverworldManager.allexits[i].doorType2;
 			}
@@ -487,7 +488,7 @@ namespace ZeldaFullEditor
 			{
 				if (i < 64) // LW[0]
 				{
-					var sprArray = OverworldManager.allsprites[0].Where(s => s.ScreenID == i).ToArray();
+					var sprArray = OverworldManager.allsprites[0].Where(s => s.MapID == i).ToArray();
 					foreach (var spr in sprArray)
 					{
 						allspr[i].Add(spr);
@@ -495,7 +496,7 @@ namespace ZeldaFullEditor
 				}
 				else if (i < 208) // LW & DW[1]
 				{
-					var sprArray = OverworldManager.allsprites[1].Where(s => s.ScreenID == (i - 64)).ToArray();
+					var sprArray = OverworldManager.allsprites[1].Where(s => s.MapID == (i - 64)).ToArray();
 					foreach (var spr in sprArray)
 					{
 						allspr[i].Add(spr);
@@ -503,7 +504,7 @@ namespace ZeldaFullEditor
 				}
 				else if (i < Constants.NumberOfOWSprites) // LW[2]
 				{
-					var sprArray = OverworldManager.allsprites[2].Where(s => s.ScreenID == (i - 208)).ToArray();
+					var sprArray = OverworldManager.allsprites[2].Where(s => s.MapID == (i - 208)).ToArray();
 					foreach (var spr in sprArray)
 					{
 						allspr[i].Add(spr);
@@ -595,13 +596,13 @@ namespace ZeldaFullEditor
 			for (int i = 0, j = 0; i < 0x11; i++, j += 2)
 			{
 				ROM[Offsets.OWExitMapIdWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].MapID;
-				ROM[Offsets.OWExitXScrollWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].xScroll;
-				ROM[Offsets.OWExitYScrollWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].yScroll;
-				ROM[Offsets.OWExitXCameraWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].cameraX;
-				ROM[Offsets.OWExitYCameraWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].cameraY;
-				ROM[Offsets.OWExitVramWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].vramLocation;
-				ROM[Offsets.OWExitXPlayerWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].playerX;
-				ROM[Offsets.OWExitYPlayerWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].playerY;
+				ROM[Offsets.OWExitXScrollWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].ScrollX;
+				ROM[Offsets.OWExitYScrollWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].ScrollY;
+				ROM[Offsets.OWExitXCameraWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].CameraX;
+				ROM[Offsets.OWExitYCameraWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].CameraY;
+				ROM[Offsets.OWExitVramWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].VRAMBase;
+				ROM[Offsets.OWExitXPlayerWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].GlobalX;
+				ROM[Offsets.OWExitYPlayerWhirlpool + j, 2] = OverworldManager.allWhirlpools[i].GlobalY;
 
 				if (i > 8)
 				{
