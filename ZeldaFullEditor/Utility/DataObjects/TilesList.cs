@@ -16,7 +16,7 @@ namespace ZeldaFullEditor
 	{
 		private readonly Tile[] _list;
 
-		public ref Tile this[int i] => ref _list[i];
+		public Tile this[int i] => _list[i];
 
 		private TilesList(Tile[] list)
 		{
@@ -36,7 +36,7 @@ namespace ZeldaFullEditor
 
 			for (int i = 0; i < count; i++)
 			{
-				list[i] = new Tile(ZS.ROM[position + i * 2, size: 2]);
+				list[i] = new Tile(ZS.ROM.Read16(position + i * 2));
 			}
 
 			return new TilesList(list);
@@ -64,7 +64,7 @@ namespace ZeldaFullEditor
 			{
 				for (int j = 0; j < s.Item2; j++, i++)
 				{
-					list[i] = new Tile(ZS.ROM[s.Item1 + i * 2, size: 2]);
+					list[i] = new Tile(ZS.ROM.Read16(s.Item1 + i * 2));
 				}
 			}
 

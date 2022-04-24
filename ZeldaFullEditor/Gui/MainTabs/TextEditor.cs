@@ -563,8 +563,8 @@ namespace ZeldaFullEditor
 				{
 					currentMessageRaw.Append($"[{DICTIONARYTOKEN}:{dict:X2}]");
 
-					int addr = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM[ZS.Offsets.pointers_dictionaries + (dict * 2), 2]);
-					int addrend = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM[ZS.Offsets.pointers_dictionaries + ((dict + 1) * 2), 2]);
+					int addr = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM.Read16(ZS.Offsets.pointers_dictionaries + (dict * 2)));
+					int addrend = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM.Read16(ZS.Offsets.pointers_dictionaries + ((dict + 1) * 2)));
 
 					for (int i = addr; i < addrend; i++)
 					{
@@ -595,8 +595,8 @@ namespace ZeldaFullEditor
 				List<byte> bytes = new List<byte>();
 				StringBuilder s = new StringBuilder();
 
-				int addr = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM[ZS.Offsets.pointers_dictionaries + (i * 2), 2]);
-				int tempaddr = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM[ZS.Offsets.pointers_dictionaries + ((i + 1) * 2), 2]);
+				int addr = (0x0E0000 | ZS.ROM.Read16(ZS.Offsets.pointers_dictionaries + (i * 2))).SNEStoPC();
+				int tempaddr = (0x0E0000 | ZS.ROM.Read16(ZS.Offsets.pointers_dictionaries + ((i + 1) * 2))).SNEStoPC();
 
 				while (addr < tempaddr)
 				{

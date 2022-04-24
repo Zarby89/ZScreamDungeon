@@ -42,7 +42,7 @@ namespace ZeldaFullEditor.Gui
 				(
 					ZS.ROM[ZS.Offsets.dungeons_startrooms + i],
 					ZS.ROM[ZS.Offsets.dungeons_endrooms + i],
-					ZS.ROM[ZS.Offsets.dungeons_bossrooms + (i * 2), 2]
+					ZS.ROM.Read16(ZS.Offsets.dungeons_bossrooms + (i * 2))
 				);
 			}
 
@@ -83,7 +83,7 @@ namespace ZeldaFullEditor.Gui
 			{
 				ZS.ROM[ZS.Offsets.dungeons_startrooms + i] = properties[i].startroom;
 				ZS.ROM[ZS.Offsets.dungeons_endrooms + i] = properties[i].endroom;
-				ZS.ROM[ZS.Offsets.dungeons_bossrooms + (i * 2), 2] = properties[i].bossroom;
+				ZS.ROM.Write16(ZS.Offsets.dungeons_bossrooms + (i * 2), properties[i].bossroom);
 			}
 
 			Close();

@@ -24,7 +24,7 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < 76; i++)
 			{
-				listBox1.Items.Add(ChestItems_Name.name[i]);
+				listBox1.Items.Add(DefaultEntities.ListOfItemReceipts[i].Name);
 
 				chestsdata[i] = new ChestAdvancedData
 				(
@@ -34,9 +34,9 @@ namespace ZeldaFullEditor.Gui
 					ZS.ROM[ZS.Offsets.chests_itemsgfx + i],
 					ZS.ROM[ZS.Offsets.chests_itemswide + i],
 					ZS.ROM[ZS.Offsets.chests_itemsproperties + i],
-					ZS.ROM[ZS.Offsets.chests_sramaddress + (i * 2), 2],
+					ZS.ROM.Read16(ZS.Offsets.chests_sramaddress + (i * 2)),
 					ZS.ROM[ZS.Offsets.chests_sramvalue + i],
-					ZS.ROM[ZS.Offsets.chests_msgid + (i * 2), 2]
+					ZS.ROM.Read16(ZS.Offsets.chests_msgid + (i * 2))
 				);
 			}
 
@@ -89,7 +89,7 @@ namespace ZeldaFullEditor.Gui
 			}
 			else
 			{
-				label8.Text = ChestItems_Name.name[chestsdata[listBox1.SelectedIndex].backupitems];
+				label8.Text = DefaultEntities.ListOfItemReceipts[chestsdata[listBox1.SelectedIndex].backupitems].Name;
 			}
 		}
 
@@ -116,9 +116,9 @@ namespace ZeldaFullEditor.Gui
 				ZS.ROM[ZS.Offsets.chests_itemsgfx + i] = chestsdata[i].itemsgfx;
 				ZS.ROM[ZS.Offsets.chests_itemswide + i] = chestsdata[i].itemswide;
 				ZS.ROM[ZS.Offsets.chests_itemsproperties + i] = chestsdata[i].itemsproperties;
-				ZS.ROM[ZS.Offsets.chests_sramaddress + (i * 2), 2] = chestsdata[i].sramaddress;
+				ZS.ROM.Write16(ZS.Offsets.chests_sramaddress + (i * 2), chestsdata[i].sramaddress);
 				ZS.ROM[ZS.Offsets.chests_sramvalue + i] = chestsdata[i].sramvalue;
-				ZS.ROM[ZS.Offsets.chests_msgid + (i * 2), 2] = chestsdata[i].msgid;
+				ZS.ROM.Write16(ZS.Offsets.chests_msgid + (i * 2), chestsdata[i].msgid);
 			}
 
 			this.Close();

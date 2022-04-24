@@ -35,7 +35,7 @@ namespace ZeldaFullEditor
 		{
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
 			{
-				checkedListBox1.Items.Add("Room " + i.ToString("X3") + " - " + Room_Name.room_name[i], true);
+				checkedListBox1.Items.Add("Room " + i.ToString("X3"), true);
 			}
 		}
 

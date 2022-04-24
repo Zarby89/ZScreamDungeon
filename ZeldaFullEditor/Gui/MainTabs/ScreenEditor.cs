@@ -314,9 +314,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			while (!ZS.ROM[pos].BitIsOn(0x80))
 			{
 				//Console.WriteLine(ZS.ROM.DATA[pos].ToString("X2") + " "+ ZS.ROM.DATA[pos+1].ToString("X2") + " "+ ZS.ROM.DATA[pos+2].ToString("X2") + " "+ ZS.ROM.DATA[pos+3].ToString("X2") + " ");
-				ushort destAddr = ZS.ROM[pos, -2]; // $03 and $04
+				ushort destAddr = ZS.ROM.Read16BE(pos); // $03 and $04
 				pos += 2;
-				ushort length = ZS.ROM[pos, -2];
+				ushort length = ZS.ROM.Read16BE(pos);
 				bool increment64 = length.BitIsOn(0x8000);
 				bool fixsource = length.BitIsOn(0x4000);
 				pos += 2;
@@ -328,7 +328,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				int posB = pos;
 				while (j < (length / 2) + 1)
 				{
-					ushort tiledata = ZS.ROM[pos, size: 2];
+					ushort tiledata = ZS.ROM.Read16(pos);
 					if (destAddr >= 0x1000)
 					{
 						//destAddr -= 0x1000;
@@ -493,7 +493,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 			for (int i = 0; i < 80; i++)
 			{
-				cp.Entries[i + 32] = Palettes.ToColor(ZS.ROM[0xDE544 + (i * 2), 2]);
+				cp.Entries[i + 32] = Palettes.ToColor(ZS.ROM.Read16(0xDE544 + (i * 2)));
 				if ((i % 16) == 0)
 				{
 					cp.Entries[i + 32] = Color.Transparent;
@@ -1125,8 +1125,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					if (e == 9)
 					{
 						// TODO magic numbers
-						xPos = (ushort) ((ZS.ROM[0x53763 + i] + (ZS.ROM[0x5376b + i] << 8)) >> 4);
-						yPos = (ushort) ((ZS.ROM[0x53773 + i] + (ZS.ROM[0x5377b + i] << 8)) >> 4);
+						xPos = (ushort) ((ZS.ROM[0x53763 + i] + (ZS.ROM[0x5376B + i] << 8)) >> 4);
+						yPos = (ushort) ((ZS.ROM[0x53773 + i] + (ZS.ROM[0x5377B + i] << 8)) >> 4);
 					}
 					else
 					{
@@ -1135,7 +1135,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 							break;
 						}
 
-						ushort xData = ZS.ROM[addresses[i] + e * 2, 2];
+						ushort xData = ZS.ROM.Read16(addresses[i] + e * 2);
 
 						if (xData < 0)
 						{
@@ -1143,7 +1143,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 						}
 
 						xPos = (ushort) (xData >> 4);
-						ushort yData = ZS.ROM[(addresses[i] + 18 + e * 2), 2];
+						ushort yData = ZS.ROM.Read16(addresses[i] + 18 + e * 2);
 						yPos = (ushort) (yData >> 4);
 						//rc->top = ((short*)(rom + wmmark_ofs[i] + 18))[b] >> 4
 					}
@@ -1151,7 +1151,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					ushort gfx = 0;
 					if (e != 9)
 					{
-						gfx = ZS.ROM[addressesgfx[i] + e * 2, 2];
+						gfx = ZS.ROM.Read16(addressesgfx[i] + e * 2);
 					}
 
 					allMapIcons[e].Add(new MapIcon(xPos, yPos, gfx));
@@ -1332,7 +1332,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			{
 				// 55B27 = US LW
 				// 55C27 = US DW
-				cp.Entries[i / 2] = Palettes.To555Short(ZS.ROM[0x55B27 + i + offset + 1, 2]);
+				cp.Entries[i / 2] = ZS.ROM.Read16(0x55B27 + i + offset + 1).ToColor();
 				int k = 0;
 				int j = 0;
 
@@ -1480,9 +1480,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 					if (e < 9)
 					{
-						ZS.ROM[addresses[i] + (e * 2), 2] = allMapIcons[e][i].x << 4;
-						ZS.ROM[(addresses[i] + 18) + (e * 2), 2] = allMapIcons[e][i].y << 4;
-						ZS.ROM[(addressesgfx[i] + e * 2), 2] = allMapIcons[e][i].gfx;
+						ZS.ROM.Write16(addresses[i] + (e * 2), allMapIcons[e][i].x << 4);
+						ZS.ROM.Write16((addresses[i] + 18) + (e * 2), allMapIcons[e][i].y << 4);
+						ZS.ROM.Write16((addressesgfx[i] + e * 2), allMapIcons[e][i].gfx);
 					}
 					else
 					{
@@ -1508,9 +1508,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
 
 			// TODO magic numbers
-			Color r1 = Palettes.ToColor(ZS.ROM[0x0DE56E, 2]);
-			Color r2 = Palettes.ToColor(ZS.ROM[0x0DE570, 2]);
-			Color gridcolor = Palettes.ToColor(ZS.ROM[0x0DE572, 2]);
+			Color r1 = ZS.ROM.Read16(0x0DE56E).ToColor();
+			Color r2 = ZS.ROM.Read16(0x0DE570).ToColor();
+			Color gridcolor = ZS.ROM.Read16(0x0DE572).ToColor();
 			Pen ppp = new Pen(gridcolor, 2);
 
 
@@ -1561,12 +1561,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			{
 				currentFloorRoomsD.Clear();
 				currentFloorGfxD.Clear();
-				int ptr = 0x0A0000 | ZS.ROM[ZS.Offsets.dungeonMap_rooms_ptr + (d * 2), 2];
-				int ptrGFX = 0x0A0000 | ZS.ROM[ZS.Offsets.dungeonMap_gfx_ptr + (d * 2), 2];
+				int ptr = 0x0A0000 | ZS.ROM.Read16(ZS.Offsets.dungeonMap_rooms_ptr + (d * 2));
+				int ptrGFX = 0x0A0000 | ZS.ROM.Read16(ZS.Offsets.dungeonMap_gfx_ptr + (d * 2));
 				int pcPtr = ptr.SNEStoPC(); // Contains data for the next 25 rooms
 				int pcPtrGFX = ptrGFX.SNEStoPC(); // Contains data for the next 25 rooms
 
-				ushort bossRoomD = ZS.ROM[ZS.Offsets.dungeonMap_bossrooms + (d * 2), 2];
+				ushort bossRoomD = ZS.ROM.Read16(ZS.Offsets.dungeonMap_bossrooms + (d * 2));
 				nbrBasementD = ZS.ROM[ZS.Offsets.dungeonMap_floors + (d * 2)];
 				nbrFloorD = (byte) (nbrBasementD >> 4);
 				nbrBasementD &= 0x0F;
@@ -1580,7 +1580,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					for (int j = 0; j < Constants.RoomsPerFloorOnMap; j++) // for each room on the floor
 					{
 						//rdata[j] = 0x0F;
-						gdata[j] = 0xFF;
 						rdata[j] = ZS.ROM[pcPtr + j + i]; // Set the rooms
 
 						if (rdata[j] == 0x0F)
@@ -1750,8 +1749,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			for (int i = 0; i < 80; i++)
 			{
 				cp.Entries[i + 32] = ((i % 16) == 0) ?
-					cp.Entries[i + 32] = Color.Transparent :
-					Palettes.ToColor(ZS.ROM[0xDE544 + (i * 2), 2]);
+					Color.Transparent :
+					ZS.ROM.Read16(0xDE544 + (i * 2)).ToColor();
 			}
 
 			dungmaptiles8Bitmap.Palette = cp;
@@ -1805,10 +1804,10 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					addr = ZS.Offsets.dungeonMap_tile16Exp;
 				}
 
-				Tile t1 = new Tile(ZS.ROM[addr + i, 2]); // Top left
-				Tile t2 = new Tile(ZS.ROM[addr + 2 + i, 2]); // Top right
-				Tile t3 = new Tile(ZS.ROM[addr + 4 + i, 2]); // Bottom left
-				Tile t4 = new Tile(ZS.ROM[addr + 6 + i, 2]); // Bottom right
+				Tile t1 = new Tile(ZS.ROM.Read16(addr + i)); // Top left
+				Tile t2 = new Tile(ZS.ROM.Read16(addr + 2 + i)); // Top right
+				Tile t3 = new Tile(ZS.ROM.Read16(addr + 4 + i)); // Bottom left
+				Tile t4 = new Tile(ZS.ROM.Read16(addr + 6 + i)); // Bottom right
 
 				for (int y = 0; y < 8; y++)
 				{
@@ -2036,18 +2035,18 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			for (int d = 0; d < 14; d++) // For all dungeons !
 			{
 				// Needs to write floors data
-				ZS.ROM[ZS.Offsets.dungeonMap_floors + (d * 2), 2] = (dungmaps[d].nbrOfFloor << 4) | dungmaps[d].nbrOfBasement;
-				ZS.ROM[ZS.Offsets.dungeonMap_bossrooms + (d * 2), 2] = dungmaps[d].bossRoom;
+				ZS.ROM.Write16(ZS.Offsets.dungeonMap_floors + (d * 2), (dungmaps[d].nbrOfFloor << 4) | dungmaps[d].nbrOfBasement);
+				ZS.ROM.Write16(ZS.Offsets.dungeonMap_bossrooms + (d * 2), dungmaps[d].bossRoom);
 
 				bool searchBoss = true;
 				if (dungmaps[d].bossRoom == BossRoomNull)
 				{
-					ZS.ROM[0x56E79 + (d * 2), 2] = 0xFFFF;
+					ZS.ROM.Write16(0x56E79 + (d * 2), 0xFFFF);
 					searchBoss = false;
 				}
 
 				// Write that dungeon pointer
-				ZS.ROM[ZS.Offsets.dungeonMap_rooms_ptr + (d * 2), 2] = pos.PCtoSNES();
+				ZS.ROM.Write16(ZS.Offsets.dungeonMap_rooms_ptr + (d * 2), pos.PCtoSNES());
 
 				for (int f = 0; f < dungmaps[d].nbrOfFloor + dungmaps[d].nbrOfBasement; f++) // For all floors in that dungeon
 				{
@@ -2055,7 +2054,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					{
 						if (searchBoss && dungmaps[d].bossRoom == dungmaps[d].FloorRooms[f][r])
 						{
-							ZS.ROM[0x56E79 + (d * 2), 2] = f;
+							ZS.ROM.Write16(0x56E79 + (d * 2), f);
 							searchBoss = false;
 						}
 
@@ -2076,7 +2075,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				// When it is done with the floors ROOMS do the gfx
 
 				// Write that dungeon gfx pointer
-				ZS.ROM[ZS.Offsets.dungeonMap_gfx_ptr + (d * 2), 2] = pos.PCtoSNES();
+				ZS.ROM.Write16(ZS.Offsets.dungeonMap_gfx_ptr + (d * 2), pos.PCtoSNES());
 				for (int f = 0; f < dungmaps[d].nbrOfFloor + dungmaps[d].nbrOfBasement; f++) // For all floors in that dungeon
 				{
 					for (int r = 0; r < 25; r++) // For all rooms on that floor
@@ -2089,7 +2088,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 							if (pos >= 0x575D9 && pos <= 0x57620)
 							{
 								pos = 0x57621;
-								ZS.ROM[ZS.Offsets.dungeonMap_gfx_ptr + (d * 2), 2] = pos.PCtoSNES();
+								ZS.ROM.Write16(ZS.Offsets.dungeonMap_gfx_ptr + (d * 2), pos.PCtoSNES());
 								f = 50; // Restart the room since it was in reserved space
 								d -= 1;
 								searchBoss = false;

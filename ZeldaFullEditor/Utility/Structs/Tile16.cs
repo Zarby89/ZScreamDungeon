@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public class Tile16 : IByteable
 	{
@@ -14,26 +8,6 @@ namespace ZeldaFullEditor
 		public Tile tile3 { get; set; }
 		// [0,1]
 		// [2,3]
-
-		public byte[] Data
-		{
-			get
-			{
-				byte[] b0 = tile0.Data;
-				byte[] b1 = tile1.Data;
-				byte[] b2 = tile2.Data;
-				byte[] b3 = tile3.Data;
-
-				return new byte[]
-				{
-					b0[0], b0[1],
-					b1[0], b1[1],
-					b2[0], b2[1],
-					b3[0], b3[1]
-				};
-			}
-		}
-
 
 		public Tile this[int i]
 		{
@@ -89,6 +63,22 @@ namespace ZeldaFullEditor
 		public static ulong CreateLongValue(ushort a, ushort b, ushort c, ushort d)
 		{
 			return (ulong) a << 48 | ((ulong) b << 32) | ((ulong) c << 16) | d;
+		}
+		
+		public byte[] GetByteData()
+		{
+			byte[] b0 = tile0.GetByteData();
+			byte[] b1 = tile1.GetByteData();
+			byte[] b2 = tile2.GetByteData();
+			byte[] b3 = tile3.GetByteData();
+
+			return new byte[]
+			{
+				b0[0], b0[1],
+				b1[0], b1[1],
+				b2[0], b2[1],
+				b3[0], b3[1]
+			};
 		}
 	}
 }

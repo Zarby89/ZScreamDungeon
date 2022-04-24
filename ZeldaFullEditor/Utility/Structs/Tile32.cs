@@ -1,36 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
-	public class Tile32
+	public readonly struct Tile32
 	{
-		public ushort tile0, tile1, tile2, tile3;
-		// [0,1]
-		// [2,3]
+		// 0 1
+		// 2 3
+		public ushort Tile0 { get; }
+		public ushort Tile1 { get; }
+		public ushort Tile2 { get; }
+		public ushort Tile3 { get; }
 
 		public Tile32(ushort tile0, ushort tile1, ushort tile2, ushort tile3)
 		{
-			this.tile0 = tile0;
-			this.tile1 = tile1;
-			this.tile2 = tile2;
-			this.tile3 = tile3;
+			Tile0 = tile0;
+			Tile1 = tile1;
+			Tile2 = tile2;
+			Tile3 = tile3;
 		}
 
 		public Tile32(ulong tiles)
 		{
-			this.tile0 = (ushort) tiles;
-			this.tile1 = (ushort) (tiles >> 16);
-			this.tile2 = (ushort) (tiles >> 32);
-			this.tile3 = (ushort) (tiles >> 48);
+			Tile0 = (ushort) tiles;
+			Tile1 = (ushort) (tiles >> 16);
+			Tile2 = (ushort) (tiles >> 32);
+			Tile3 = (ushort) (tiles >> 48);
 		}
 
 		public ulong getLongValue()
 		{
-			return (ulong) tile3 << 48 | ((ulong) tile2 << 32) | ((ulong) tile1 << 16) | tile0; ;
+			return (ulong) Tile3 << 48 | ((ulong) Tile2 << 32) | ((ulong) Tile1 << 16) | Tile0;
 		}
 	}
 }

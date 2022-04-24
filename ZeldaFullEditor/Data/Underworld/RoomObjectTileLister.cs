@@ -230,12 +230,12 @@
 
 			// big boy stuff
 			SetTilesFromMultipleAddresses(0x0CD,
-				(ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + (0xCD * 2), 2], 24),
-				(ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers, 2], 4)
+				(ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.Subytype1TileDataPointers + (0xCD * 2)), 24),
+				(ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.Subytype1TileDataPointers), 4)
 			);
 			SetTilesFromMultipleAddresses(0x0CE,
-				(ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers + (0xCE * 2), 2], 24),
-				(ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.Subytype1TileDataPointers, 2], 4)
+				(ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.Subytype1TileDataPointers + (0xCE * 2)), 24),
+				(ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.Subytype1TileDataPointers), 4)
 			);
 
 
@@ -554,7 +554,7 @@
 					return;
 			}
 
-			int pos = ZS.Offsets.tile_address + ZS.ROM[typebase + (((byte) id) * 2), 2];
+			int pos = ZS.Offsets.tile_address + ZS.ROM.Read16(typebase + (((byte) id) * 2));
 			_list[id] = TilesList.CreateNewDefinition(ZS, pos, count);
 		}
 
@@ -572,10 +572,10 @@
 		private void AutoFindDoorTiles(byte id)
 		{
 			_doors[id] = DoorTilesList.CreateNewDefinition(ZS,
-				ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.door_gfx_up + id, 2],
-				ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.door_gfx_down + id, 2],
-				ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.door_gfx_left + id, 2],
-				ZS.Offsets.tile_address + ZS.ROM[ZS.Offsets.door_gfx_right + id, 2]
+				ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.door_gfx_up + id),
+				ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.door_gfx_down + id),
+				ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.door_gfx_left + id),
+				ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.door_gfx_right + id)
 			);
 		}
 	}

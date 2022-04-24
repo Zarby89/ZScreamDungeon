@@ -4,7 +4,7 @@ using System.Drawing;
 
 namespace ZeldaFullEditor.Data.Underworld
 {
-	public unsafe class DungeonSprite : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite
+	public unsafe class DungeonSprite : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID
 	{
 
 		public byte X { get; set; } = 0;
@@ -16,6 +16,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public string Name => Species.VanillaName;
 		public byte ID => Species.ID;
+		public int TypeID => Species.ID;
 
 		private byte nx, ny;
 		public byte NX
@@ -51,26 +52,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public byte KeyDrop { get; set; } = 0;
 
-		public byte[] Data
-		{
-			get
-			{
-				int size = (KeyDrop == 1 || KeyDrop == 2) ? 6 : 3;
-				byte[] ret = new byte[size];
-				ret[0] = (byte) ((Layer << 7) | ((Subtype & 0x18) << 2) | Y);
-				ret[1] = (byte) ((Subtype << 5) | X);
-				ret[2] = Species.ID;
-
-				if (size == 6)
-				{
-					ret[3] = KeyDrop == 1 ? Constants.SmallKeyDropToken : Constants.BigKeyDropToken;
-					ret[4] = 0x00;
-					ret[5] = Constants.KeyDropID;
-				}
-
-				return ret;
-			}
-		}
+	
 
 		public DungeonSprite(SpriteType type, ushort screen = 0)
 		{
@@ -95,7 +77,23 @@ namespace ZeldaFullEditor.Data.Underworld
 				KeyDrop = KeyDrop
 			};
 		}
+		public byte[] GetByteData()
+		{
+			int size = (KeyDrop == 1 || KeyDrop == 2) ? 6 : 3;
+			byte[] ret = new byte[size];
+			ret[0] = (byte) ((Layer << 7) | ((Subtype & 0x18) << 2) | Y);
+			ret[1] = (byte) ((Subtype << 5) | X);
+			ret[2] = Species.ID;
 
+			if (size == 6)
+			{
+				ret[3] = KeyDrop == 1 ? Constants.SmallKeyDropToken : Constants.BigKeyDropToken;
+				ret[4] = 0x00;
+				ret[5] = Constants.KeyDropID;
+			}
+
+			return ret;
+		}
 		public override bool PointIsInHitbox(int x, int y)
 		{
 			throw new NotImplementedException();

@@ -21,7 +21,7 @@ namespace ZeldaFullEditor
 
 		public void LoadGfxGroups()
 		{
-			int gfxPointer = ZS.ROM[ZS.Offsets.gfx_groups_pointer, 2];
+			int gfxPointer = ZS.ROM.Read16(ZS.Offsets.gfx_groups_pointer);
 			gfxPointer = gfxPointer.SNEStoPC();
 
 			for (int i = 0; i < 37; i++)
@@ -63,7 +63,7 @@ namespace ZeldaFullEditor
 
 		public bool SaveGroupsToROM()
 		{
-			int gfxPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_groups_pointer, 2]);
+			int gfxPointer = SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_groups_pointer));
 
 			for (int i = 0; i < 37; i++)
 			{

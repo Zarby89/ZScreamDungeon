@@ -468,9 +468,9 @@ namespace ZeldaFullEditor
 
 		public int GetPCGfxAddress(byte id)
 		{
-			int gfxPointer1 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_1_pointer, 2]);
-			int gfxPointer2 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_2_pointer, 2]);
-			int gfxPointer3 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_3_pointer, 2]);
+			int gfxPointer1 = SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_1_pointer));
+			int gfxPointer2 = SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_2_pointer));
+			int gfxPointer3 = SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_3_pointer));
 
 			byte gfxGamePointer1 = ZS.ROM[gfxPointer1 + id];
 			byte gfxGamePointer2 = ZS.ROM[gfxPointer2 + id];
@@ -490,7 +490,7 @@ namespace ZeldaFullEditor
 
 			// id = dungeon palette id
 			byte dungeon_palette_ptr = ZS.GFXGroups.paletteGfx[id][0]; //id of the 1st group of 4
-			paletteid = ZS.ROM[0xDEC4B + dungeon_palette_ptr, 2];
+			paletteid = ZS.ROM.Read16(0xDEC4B + dungeon_palette_ptr);
 			int pId = paletteid / 180;
 
 			int i = 0;
@@ -549,8 +549,8 @@ namespace ZeldaFullEditor
 			byte sprite3_palette_ptr = (byte) (ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (id * 4) + 3] * 2); // ID of the 1st group of 4
 
 			ushort palette_pos1 = ZS.ROM[0xDEBC6 + sprite1_palette_ptr]; // /14
-			ushort palette_pos2 = ZS.ROM[0xDEBD6 + sprite2_palette_ptr, 2]; // /14
-			ushort palette_pos3 = ZS.ROM[0xDEBD6 + sprite3_palette_ptr, 2]; // /14
+			ushort palette_pos2 = ZS.ROM.Read16(0xDEBD6 + sprite2_palette_ptr); // /14
+			ushort palette_pos3 = ZS.ROM.Read16(0xDEBD6 + sprite3_palette_ptr); // /14
 			//ushort palette_pos4 = ROM.DATA[0xDEBC6 + 10]; // 140?
 
 			// ID = dungeon palette id
@@ -766,7 +766,7 @@ namespace ZeldaFullEditor
 			{
 				// 55B27 = US LW
 				// 55C27 = US DW
-				cp.Entries[i / 2] = Palettes.ToColor(ZS.ROM[0x55B27 + i, 2]);
+				cp.Entries[i / 2] = ZS.ROM.Read16(0x55B27 + i).ToColor();
 
 				int k = 0;
 				int j = 0;

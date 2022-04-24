@@ -37,7 +37,6 @@ namespace ZeldaFullEditor.SceneModes
 					{
 						selectedItem = item;
 						lastselectedItem = item;
-						byte nid = item.ID;
 						SecretItemType.FindSecretFromID(item.ID);
 
 						//scene.mainForm.owcombobox.SelectedIndex = nid;

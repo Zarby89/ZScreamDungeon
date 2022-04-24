@@ -9,9 +9,10 @@ namespace ZeldaFullEditor.Data.Underworld
 {
 	// TODO new way to handle objects that change with the floor settings
 	[Serializable]
-	public unsafe class RoomObject : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
+	public unsafe class RoomObject : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, ITypeID
 	{
 		public ushort ID => ObjectType.FullID;
+		public int TypeID => ObjectType.FullID;
 		public string Name => ObjectType.VanillaName;
 
 		public byte X { get; set; } = 0;
@@ -36,46 +37,9 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public List<Point> CollisionPoints { get; } = new List<Point>();
 
-		public byte[] Data
-		{
-			get
-			{
-				switch (ObjectType.ObjectSet)
-				{
-					case DungeonObjectSet.Subtype1:
-						return new byte[]
-						{
-							(byte) ((X << 2) | ((Size & 0x0C) >> 2)),
-							(byte) ((Y << 2) | (Size & 0x03)),
-							(byte) ID
-						};
-
-					case DungeonObjectSet.Subtype2:
-						return new byte[]
-						{
-							(byte) (0xFC | (X >> 4)),
-							(byte) ((X << 4) | ((Y & 0x3C) >> 2)),
-							(byte) ((Y << 6) | (ID & 0x3F))
-						};
-
-					case DungeonObjectSet.Subtype3:
-						return new byte[]
-						{
-							(byte) ((X << 2) | (ID & 0x03)),
-							(byte) ((Y << 2) | ((ID & 0x0C) >> 2)),
-							(byte) (0xF8 | (ID >> 4))
-						};
-
-					default:
-						return new byte[0];
-				}
-			}
-		}
-
 		public RoomObject(RoomObjectType type, TilesList tiles)
 		{
 			ObjectType = type;
-			//ID = type.FullID;
 			Tiles = tiles;
 			ResetSize();
 		}
@@ -142,6 +106,38 @@ namespace ZeldaFullEditor.Data.Underworld
 		public override bool PointIsInHitbox(int x, int y)
 		{
 			throw new NotImplementedException();
+		}
+		public byte[] GetByteData()
+		{
+			switch (ObjectType.ObjectSet)
+			{
+				case DungeonObjectSet.Subtype1:
+					return new byte[]
+					{
+						(byte) ((X << 2) | ((Size & 0x0C) >> 2)),
+						(byte) ((Y << 2) | (Size & 0x03)),
+						(byte) ID
+					};
+
+				case DungeonObjectSet.Subtype2:
+					return new byte[]
+					{
+						(byte) (0xFC | (X >> 4)),
+						(byte) ((X << 4) | ((Y & 0x3C) >> 2)),
+						(byte) ((Y << 6) | (ID & 0x3F))
+					};
+
+				case DungeonObjectSet.Subtype3:
+					return new byte[]
+					{
+						(byte) ((X << 2) | (ID & 0x03)),
+						(byte) ((Y << 2) | ((ID & 0x0C) >> 2)),
+						(byte) (0xF8 | (ID >> 4))
+					};
+
+				default:
+					return new byte[0];
+			}
 		}
 	}
 

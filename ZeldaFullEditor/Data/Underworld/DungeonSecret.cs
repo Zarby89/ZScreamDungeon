@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.Underworld
 {
-	public unsafe class DungeonSecret : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite
+	public unsafe class DungeonSecret : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID
 	{
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
 
 		public byte ID => SecretType.ID;
+		public int TypeID => SecretType.ID;
 		public int RealX => X;
 		public int RealY => Y;
 
@@ -33,22 +34,6 @@ namespace ZeldaFullEditor.Data.Underworld
 		public SecretItemType SecretType { get; set; }
 		public string Name => SecretType.VanillaName;
 
-		public byte[] Data
-		{
-			get
-			{
-				UWTilemapPosition.CreateLowAndHighBytesFromXYZ(X, Y, Layer, out byte low, out byte high);
-				return new byte[] { low, high, SecretType.ID };
-				//ushort xy = (ushort) ((Y << 6) | (X << 1) | (Layer << 13));
-				//return new byte[]
-				//	{
-				//		(byte) xy,
-				//		(byte) (xy >> 8),
-				//		SecretType.ID
-				//	};
-			}
-		}
-
 		public DungeonSecret(SecretItemType s)
 		{
 			SecretType = s;
@@ -68,6 +53,20 @@ namespace ZeldaFullEditor.Data.Underworld
 		public bool Equals(DungeonSecret s)
 		{
 			return X == s.X && Y == s.Y && SecretType.ID == s.SecretType.ID;
+		}
+
+		public byte[] GetByteData()
+		{
+			UWTilemapPosition.CreateLowAndHighBytesFromXYZ(X, Y, Layer, out byte low, out byte high);
+			return new byte[] { low, high, SecretType.ID };
+			//ushort xy = (ushort) ((Y << 6) | (X << 1) | (Layer << 13));
+			//return new byte[]
+			//	{
+			//		(byte) xy,
+			//		(byte) (xy >> 8),
+			//		SecretType.ID
+			//	};
+
 		}
 	}
 }

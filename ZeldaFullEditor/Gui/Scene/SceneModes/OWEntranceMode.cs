@@ -359,8 +359,8 @@ namespace ZeldaFullEditor.SceneModes
 			{
 				if (isLeftPress && ZS.OverworldScene.mouse_down)
 				{
-					selectedEntrance.GlobalX = e.X & ~0x0F;
-					selectedEntrance.GlobalY = e.Y & ~0x0F;
+					selectedEntrance.GlobalX = (ushort) (e.X & ~0x0F);
+					selectedEntrance.GlobalY = (ushort) (e.Y & ~0x0F);
 				}
 
 				//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));
@@ -478,8 +478,8 @@ namespace ZeldaFullEditor.SceneModes
 					}
 					ZS.OverworldManager.allentrances[i].deleted = false;
 					ZS.OverworldManager.allentrances[i].MapID = mid;
-					ZS.OverworldManager.allentrances[i].GlobalX = mxRightclick & ~0xF;
-					ZS.OverworldManager.allentrances[i].GlobalY = myRightclick & ~0xF;
+					ZS.OverworldManager.allentrances[i].GlobalX = (ushort) (mxRightclick & ~0xF);
+					ZS.OverworldManager.allentrances[i].GlobalY = (ushort) (myRightclick & ~0xF);
 					ZS.OverworldManager.allentrances[i].UpdateMapID(mid);
 					found = true;
 					//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));

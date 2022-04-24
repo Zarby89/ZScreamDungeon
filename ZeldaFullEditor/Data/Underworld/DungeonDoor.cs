@@ -27,7 +27,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			set => ny = value.Clamp(0, 63);
 		}
 
-		public byte[] Data => new byte[] { ID, DoorPosition.Token };
+		public byte[] GetByteData() => new byte[] { ID, DoorPosition.Token };
 
 		public DungeonDoorType DoorType { get; set; } = DungeonDoorType.DoorType00;
 

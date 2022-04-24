@@ -54,7 +54,7 @@ namespace ZeldaFullEditor
 		public Color ReadPaletteSingle(int romPosition)
 		{
 			// Lets write new palette code since i can't find the old one :scream:
-			ushort color = ZS.ROM[romPosition, 2];
+			ushort color = ZS.ROM.Read16(romPosition);
 
 			return color.ToColor();
 		}
@@ -66,7 +66,7 @@ namespace ZeldaFullEditor
 
 			for (int i = 0; i < count; i++)
 			{
-				ushort color = ZS.ROM[address, 2];
+				ushort color = ZS.ROM.Read16(address);
 				colors[i] = color.ToColor();
 				address += 2;
 			}
@@ -201,14 +201,14 @@ namespace ZeldaFullEditor
 
 			for (int i = 0; i < max; i++)
 			{
-				ZS.ROM[address, 2] = colors[i].To555Short();
+				ZS.ROM.Write16(address, colors[i].To555Short());
 				address += 2;
 			}
 		}
 
 		public void WriteSinglePalette(int address, Color col)
 		{
-			ZS.ROM[address, 2] = col.To555Short();
+			ZS.ROM.Write16(address, col.To555Short());
 		}
 
 		// TODO string.format and string builder

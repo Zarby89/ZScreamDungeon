@@ -36,8 +36,10 @@ namespace ZeldaFullEditor.Gui
 
 		private void CGRamViewer_Click(object sender, EventArgs e)
 		{
-			SaveFileDialog sf = new SaveFileDialog();
-			sf.DefaultExt = ".pal";
+			SaveFileDialog sf = new SaveFileDialog
+			{
+				DefaultExt = ".pal"
+			};
 
 			if (sf.ShowDialog() == DialogResult.OK)
 			{

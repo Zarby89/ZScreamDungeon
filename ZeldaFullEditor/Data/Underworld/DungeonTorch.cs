@@ -16,15 +16,6 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public bool Lit { get; set; } = false;
 
-		public byte[] Data
-		{
-			get
-			{
-				UWTilemapPosition.CreateLowAndHighBytesFromXYZ(X, Y, Layer, out byte low, out byte high);
-				return new byte[] { low, high };
-			}
-		}
-
 		public DungeonTorch()
 		{
 		}
@@ -37,6 +28,12 @@ namespace ZeldaFullEditor.Data.Underworld
 		public override bool PointIsInHitbox(int x, int y)
 		{
 			throw new NotImplementedException();
+		}
+
+		public byte[] GetByteData()
+		{
+			UWTilemapPosition.CreateLowAndHighBytesFromXYZ(X, Y, Layer, out byte low, out byte high);
+			return new byte[] { low, high };
 		}
 	}
 }

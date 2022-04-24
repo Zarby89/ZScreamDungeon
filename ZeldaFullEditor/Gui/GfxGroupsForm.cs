@@ -373,7 +373,7 @@ namespace ZeldaFullEditor.Gui
 
 				if (ZS.GFXGroups.paletteGfx[(byte) paletteUpDown.Value][0] % 2 == 0)
 				{
-					palette_pos = ZS.ROM[0xDEC4B + dungeon_palette_ptr, 2];
+					palette_pos = ZS.ROM.Read16(0xDEC4B + dungeon_palette_ptr);
 					pId = (palette_pos / 180);
 
 					for (int i = 0; i < 90; i++)

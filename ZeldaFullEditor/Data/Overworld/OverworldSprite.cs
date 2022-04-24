@@ -13,7 +13,6 @@ namespace ZeldaFullEditor.Data
 		public int RealX { get; }
 		public int RealY { get; }
 
-		public byte[] Data => throw new NotImplementedException();
 		public string Name => Species.VanillaName;
 		public byte ID => Species.ID;
 
@@ -36,7 +35,10 @@ namespace ZeldaFullEditor.Data
 			Species.Draw(ZS, this);
 		}
 
-
+		public byte[] GetByteData()
+		{
+			throw new NotImplementedException();
+		}
 
 		public override bool PointIsInHitbox(int x, int y)
 		{

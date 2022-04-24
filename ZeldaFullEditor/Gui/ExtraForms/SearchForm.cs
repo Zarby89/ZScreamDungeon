@@ -7,92 +7,100 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor.Gui
 {
 	public partial class SearchForm : ScreamForm
 	{
-//
-//		public SearchForm(ZScreamer zs) : base(zs)
-//		{
-//			InitializeComponent();
-//		}
-//
-//		private void button2_Click(object sender, EventArgs e)
-//		{
-//			richTextBox1.Clear();
-//		}
-//
-//		private void tileRadio_CheckedChanged(object sender, EventArgs e)
-//		{
-//			comboBox1.Items.Clear();
-//			if (tileRadio.Checked)
-//			{
-//				for (int i = 0; i < ZS.MainForm.listoftilesobjects.Count; i++)
-//				{
-//					comboBox1.Items.Add(ZS.MainForm.listoftilesobjects[i].id.ToString("X4") + " " + ZS.MainForm.listoftilesobjects[i].name);
-//				}
-//			}
-//			else if (spriteRadio.Checked)
-//			{
-//				comboBox1.Items.AddRange(Sprites_Names.name);
-//			}
-//			else if (itemRadio.Checked)
-//			{
-//				comboBox1.Items.AddRange(ItemsNames.name);
-//			}
-//			else if (chestRadio.Checked)
-//			{
-//				comboBox1.Items.AddRange(ChestItems_Name.name);
-//			}
-//		}
-//
-//		private void button1_Click(object sender, EventArgs e)
-//		{
-//			if (tileRadio.Checked)
-//			{
-//				for (int i = 0; i < Constants.NumberOfRooms; i++)
-//				{
-//					int l = DungeonsData.all_rooms[i].tilesObjects.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
-//					if (l > 0)
-//					{
-//						richTextBox1.AppendText("Tile Object ID : " + ZS.MainForm.listoftilesobjects[comboBox1.SelectedIndex].id.ToString("X4") + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");
-//					}
-//				}
-//			}
-//			else if (spriteRadio.Checked)
-//			{
-//				for (int i = 0; i < Constants.NumberOfRooms; i++)
-//				{
-//					int l = DungeonsData.all_rooms[i].SpritesList.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
-//					if (l > 0)
-//					{
-//						richTextBox1.AppendText("Sprite ID : " + Sprites_Names.name[comboBox1.SelectedIndex] + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");
-//					}
-//				}
-//			}
-//			else if (itemRadio.Checked)
-//			{
-//				for (int i = 0; i < Constants.NumberOfRooms; i++)
-//				{
-//					int l = DungeonsData.all_rooms[i].pot_items.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
-//					if (l > 0)
-//					{
-//						richTextBox1.AppendText("Item ID : " + ItemsNames.name[comboBox1.SelectedIndex] + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");
-//					}
-//				}
-//			}
-//			else if (chestRadio.Checked)
-//			{
-//				for (int i = 0; i < Constants.NumberOfRooms; i++)
-//				{
-//					int l = DungeonsData.all_rooms[i].chest_list.Where(o => o.item == comboBox1.SelectedIndex).ToArray().Length;
-//					if (l > 0)
-//					{
-//						richTextBox1.AppendText("Chest Items : " + ChestItems_Name.name[comboBox1.SelectedIndex] + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");
-//					}
-//				}
-//			}
-//		}
+
+		public SearchForm(ZScreamer zs) : base(zs)
+		{
+			InitializeComponent();
+		}
+
+		private void button2_Click(object sender, EventArgs e)
+		{
+			richTextBox1.Clear();
+		}
+
+		private void tileRadio_CheckedChanged(object sender, EventArgs e)
+		{
+			comboBox1.Items.Clear();
+			if (tileRadio.Checked)
+			{
+				var list = new List<RoomObjectName>();
+				list.Concat(DefaultEntities.ListOfSet0RoomObjects);
+				list.Concat(DefaultEntities.ListOfSet1RoomObjects);
+				list.Concat(DefaultEntities.ListOfSet2RoomObjects);
+				comboBox1.DataSource = list;
+			}
+			else if (spriteRadio.Checked)
+			{
+				comboBox1.DataSource = DefaultEntities.ListOfSprites;
+			}
+			else if (itemRadio.Checked)
+			{
+				comboBox1.DataSource = DefaultEntities.ListOfSecrets;
+			}
+			else if (chestRadio.Checked)
+			{
+				comboBox1.DataSource = DefaultEntities.ListOfItemReceipts;
+			}
+		}
+
+		private void button1_Click(object sender, EventArgs e)
+		{
+			var v = comboBox1.SelectedItem as EntityName;
+
+			var f = new Func<ITypeID, bool>(o => o.TypeID == v.ID);
+
+			if (tileRadio.Checked)
+			{
+				foreach (var r in ZS.all_rooms)
+				{
+					int l = r.Layer1Objects.Where(f).ToArray().Length;
+					l += r.Layer2Objects.Where(f).ToArray().Length;
+					l += r.Layer3Objects.Where(f).ToArray().Length;
+					if (l > 0)
+					{
+						richTextBox1.AppendText($"Found in room {r.RoomID:X3} : {l} x object {v.ID:X3}\r\n");
+					}
+				}
+			}
+			else if (spriteRadio.Checked)
+			{
+				foreach (var r in ZS.all_rooms)
+				{
+					int l = r.SpritesList.Where(f).ToArray().Length;
+					if (l > 0)
+					{
+						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x sprite {v.ID:X2}\r\n");
+					}
+				}
+			}
+			else if (itemRadio.Checked)
+			{
+				foreach (var r in ZS.all_rooms)
+				{
+					int l = r.SecretsList.Where(f).ToArray().Length;
+					if (l > 0)
+					{
+						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x secret {v.ID:X2}\r\n");
+					}
+				}
+			}
+			else if (chestRadio.Checked)
+			{
+				foreach (var r in ZS.all_rooms)
+				{
+					int l = r.ChestList.Where(f).ToArray().Length;
+					if (l > 0)
+					{
+						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x item receipt {v.ID:X2}\r\n");
+					}
+				}
+			}
+		}
 	}
 }

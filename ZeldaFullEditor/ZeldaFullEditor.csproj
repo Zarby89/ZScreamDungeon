@@ -223,6 +223,7 @@
     <Compile Include="Data\Overworld\OverworldDestination.cs" />
     <Compile Include="Data\Overworld\OverworldSprite.cs" />
     <Compile Include="Data\Overworld\OverworldSecret.cs" />
+    <Compile Include="Data\Underworld\CollisionRectangle.cs" />
     <Compile Include="Utility\DataObjects\AddressSet.cs" />
     <Compile Include="Hacks\asar.cs" />
     <Compile Include="Utility\DataObjects\DoorTilesList.cs" />
@@ -238,6 +239,7 @@
     <Compile Include="Utility\Interfaces\IDelegatedDraw.cs" />
     <Compile Include="Utility\Interfaces\IDrawableSprite.cs" />
     <Compile Include="Utility\Interfaces\IFreelyPlaceable.cs" />
+    <Compile Include="Utility\Interfaces\ITypeID.cs" />
     <Compile Include="Utility\Interfaces\IMouseCollidable.cs" />
     <Compile Include="Utility\Interfaces\IMultilayered.cs" />
     <Compile Include="Utility\Interfaces\ITilesTableBasedDraw.cs" />
@@ -504,7 +506,6 @@
     <Compile Include="Data\Overworld\OverlayData.cs" />
     <Compile Include="Data\Overworld\Overworld.cs" />
     <Compile Include="Data\Misc\OverworldMap.cs" />
-    <Compile Include="Utility\DataObjects\ImmutableArray.cs" />
     <Compile Include="Gui\Scene\SceneModes\ClipboardData\TileData.cs" />
     <Compile Include="Gui\Scene\SceneModes\OWDoorMode.cs" />
     <Compile Include="Gui\Scene\SceneModes\OWEntranceMode.cs" />
@@ -790,6 +791,7 @@
     <Content Include="Hacks\asar.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Hacks\CustomCollision.asm" />
     <Content Include="Hacks\debug.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

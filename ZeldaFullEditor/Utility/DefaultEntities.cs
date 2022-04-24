@@ -6,8 +6,13 @@ namespace ZeldaFullEditor
 	{
 		public static string GetNameFromVanillaList<T>(this T[] list, int id) where T : EntityName
 		{
+			return GetObjectFromVanillaList(list, id).Name;
+		}
+		
+		public static T GetObjectFromVanillaList<T>(this T[] list, int id) where T : EntityName
+		{
 			int b = Array.FindIndex(list, s => s.ID == id);
-			return list[b].Name;
+			return list[b];
 		}
 
 		public static readonly RoomName[] ListOfRoomNames =

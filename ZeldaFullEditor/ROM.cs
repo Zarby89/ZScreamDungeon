@@ -35,108 +35,6 @@ namespace ZeldaFullEditor
 			set => DATA[addr] = value;
 		}
 
-		/// <summary>
-		/// Read or write an integer of size <paramref name="size"/> bytes at offset <paramref name="addr"/>.
-		/// Up to 4 bytes may be accessed at once via this operation.
-		/// <br/>
-		/// Reads of 0 or greater than 4 will be treated as 1 byte access.
-		/// <para>
-		/// Little-endian conversion is automatically handled by this operation.
-		/// <br/>
-		/// Use negative values of <paramref name="size"/> for big-endian access.
-		/// </para>
-		/// The data type returned depends on the size of the access:<br/>
-		/// 1 - <see langword="byte"/><br/>
-		/// 2 - <see langword="ushort"/><br/>
-		/// 3 - <see langword="int"/><br/>
-		/// 4 - <see langword="int"/><br/>
-		/// </summary>
-		// This use of a second parameter is frowned upon, but I don't care.
-		public dynamic this[int addr, int size]
-		{
-			get
-			{
-				switch (size)
-				{
-					default:
-					case 1:
-					case -1:
-						return DATA[addr];
-
-					case 2:
-						return (ushort) (DATA[addr] | (DATA[addr + 1] << 8));
-
-					case -2:
-						return (ushort) (DATA[addr + 1] | (DATA[addr] << 8));
-
-					case 3:
-						return DATA[addr] | (DATA[addr + 1] << 8) | (DATA[addr + 2] << 16);
-
-					case -3:
-						return DATA[addr + 2] | (DATA[addr + 1] << 8) | (DATA[addr] << 16);
-
-					case 4:
-						return DATA[addr] | (DATA[addr + 1] << 8) | (DATA[addr + 2] << 16) | (DATA[addr + 3] << 24);
-
-					case -4:
-						return DATA[addr+3] | (DATA[addr + 2] << 8) | (DATA[addr + 1] << 16) | (DATA[addr] << 24);
-				}
-			}
-
-			set
-			{
-				switch (size)
-				{
-					case 1:
-					case -1:
-						DATA[addr] = (byte) value;
-						break;
-
-					case 2:
-						DATA[addr] = (byte) value;
-						DATA[addr + 1] = (byte) (value >> 8);
-						break;
-
-					case -2:
-						DATA[addr + 1] = (byte) value;
-						DATA[addr] = (byte) (value >> 8);
-						break;
-
-					case 3:
-						DATA[addr] = (byte) value;
-						DATA[addr + 1] = (byte) (value >> 8);
-						DATA[addr + 2] = (byte) (value >> 16);
-						break;
-
-					case -3:
-						DATA[addr + 2] = (byte) value;
-						DATA[addr + 1] = (byte) (value >> 8);
-						DATA[addr] = (byte) (value >> 16);
-						break;
-
-					case 4:
-						DATA[addr] = (byte) value;
-						DATA[addr + 1] = (byte) (value >> 8);
-						DATA[addr + 2] = (byte) (value >> 16);
-						DATA[addr + 3] = (byte) (value >> 24);
-						break;
-
-					case -4:
-						DATA[addr + 3] = (byte) value;
-						DATA[addr + 2] = (byte) (value >> 8);
-						DATA[addr + 1] = (byte) (value >> 16);
-						DATA[addr] = (byte) (value >> 24);
-						break;
-
-					case 0:
-						throw new Exception("What does 0 byte access even mean?");
-
-					default:
-						throw new Exception("Quick access cannot exceed 4 bytes.");
-				}
-			}
-		}
-
 		public void LoadNewROM(string filename)
 		{
 			FileStream fs = new FileStream(filename, FileMode.Open, FileAccess.Read);
@@ -193,6 +91,64 @@ namespace ZeldaFullEditor
 			foreach (byte b in bytes)
 			{
 				DATA[addr++] = b;
+			}
+		}
+
+		public ushort Read16(int addr)
+		{
+			return (ushort) (DATA[addr++] | (DATA[addr++] << 8));
+		}
+
+		public int Read24(int addr)
+		{
+			return (ushort) (DATA[addr++] | (DATA[addr++] << 8) | (DATA[addr++] << 16));
+		}
+
+		public ushort Read16BE(int addr)
+		{
+			return (ushort) ((DATA[addr++] << 8) | DATA[addr++]);
+		}
+
+		public ushort Read24BE(int addr)
+		{
+			return (ushort) (DATA[addr++] << 16 | (DATA[addr++] << 8) | (DATA[addr++]));
+		}
+
+		public void Write16(int addr, params int[] words)
+		{
+			foreach (int i in words)
+			{
+				DATA[addr++] = (byte) i;
+				DATA[addr++] = (byte) (i >> 8);
+			}
+		}
+
+		public void Write24(int addr, params int[] words)
+		{
+			foreach (int i in words)
+			{
+				DATA[addr++] = (byte) i;
+				DATA[addr++] = (byte) (i >> 8);
+				DATA[addr++] = (byte) (i >> 16);
+			}
+		}
+
+		public void Write16BE(int addr, params int[] words)
+		{
+			foreach (int i in words)
+			{
+				DATA[addr++] = (byte) (i >> 8);
+				DATA[addr++] = (byte) i;
+			}
+		}
+
+		public void Write24BE(int addr, params int[] words)
+		{
+			foreach (int i in words)
+			{
+				DATA[addr++] = (byte) (i >> 16);
+				DATA[addr++] = (byte) (i >> 8);
+				DATA[addr++] = (byte) i;
 			}
 		}
 

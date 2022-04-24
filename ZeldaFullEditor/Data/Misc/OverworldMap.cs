@@ -40,7 +40,7 @@ namespace ZeldaFullEditor
 			this.parent = index;
 			gfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, gfxPtr);
 
-			messageID = ZS.ROM[ZS.Offsets.overworldMessages + (parent * 2), 2];
+			messageID = ZS.ROM.Read16(ZS.Offsets.overworldMessages + (parent * 2));
 
 			if (index != 0x80)
 			{

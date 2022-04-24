@@ -6,34 +6,23 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.Underworld
 {
-	public class DungeonRoomHeader : IByteable
-	{
-		public byte[] Data => null;
-	}
-
-
 	public abstract class DungeonListing<T> : List<T> where T : DungeonPlaceable
 	{
 
 	}
 	public abstract class DungeonLister<T> : DungeonListing<T>, IByteable where T : DungeonPlaceable, IByteable
 	{
-		public byte[] Data
+		public byte[] GetByteData()
 		{
-			get
+			List<byte> ret = new List<byte>();
+
+			foreach (T r in this)
 			{
-				List<byte> ret = new List<byte>();
-
-				foreach (T r in this)
-				{
-					ret.AddRange(r.Data);
-				}
-
-				return ret.ToArray();
+				ret.AddRange(r.GetByteData());
 			}
+
+			return ret.ToArray();
 		}
-
-
 	}
 
 

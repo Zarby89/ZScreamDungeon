@@ -45,13 +45,13 @@ namespace ZeldaFullEditor
 
 			if (isSpawnPoint)
 			{
-				RoomID = ZS.ROM[ + ((entranceId) * 2), 2];
-				YPosition = ZS.ROM[ZS.Offsets.startingentrance_yposition + (entranceId * 2), 2];
-				XPosition = ZS.ROM[ZS.Offsets.startingentrance_xposition + (entranceId * 2), 2];
-				CameraX = ZS.ROM[ZS.Offsets.startingentrance_camerax + (entranceId * 2), 2];
-				CameraY = ZS.ROM[ZS.Offsets.startingentrance_cameray + (entranceId * 2), 2];
-				CameraTriggerY = ZS.ROM[ZS.Offsets.startingentrance_cameraytrigger + (entranceId * 2), 2];
-				CameraTriggerX = ZS.ROM[ZS.Offsets.startingentrance_cameraxtrigger + (entranceId * 2), 2];
+				RoomID = ZS.ROM.Read16(ZS.Offsets.startingentrance_room + (entranceId * 2));
+				YPosition = ZS.ROM.Read16(ZS.Offsets.startingentrance_yposition + (entranceId * 2));
+				XPosition = ZS.ROM.Read16(ZS.Offsets.startingentrance_xposition + (entranceId * 2));
+				CameraX = ZS.ROM.Read16(ZS.Offsets.startingentrance_camerax + (entranceId * 2));
+				CameraY = ZS.ROM.Read16(ZS.Offsets.startingentrance_cameray + (entranceId * 2));
+				CameraTriggerY = ZS.ROM.Read16(ZS.Offsets.startingentrance_cameraytrigger + (entranceId * 2));
+				CameraTriggerX = ZS.ROM.Read16(ZS.Offsets.startingentrance_cameraxtrigger + (entranceId * 2));
 				Blockset = ZS.ROM[ZS.Offsets.startingentrance_blockset + entranceId];
 				Music = ZS.ROM[ZS.Offsets.startingentrance_music + entranceId];
 				Dungeon = ZS.ROM[ZS.Offsets.startingentrance_dungeon + entranceId];
@@ -60,7 +60,7 @@ namespace ZeldaFullEditor
 				Ladderbg = ZS.ROM[ZS.Offsets.startingentrance_ladderbg + entranceId];
 				Scrolling = ZS.ROM[ZS.Offsets.startingentrance_scrolling + entranceId];
 				Scrollquadrant = ZS.ROM[ZS.Offsets.startingentrance_scrollquadrant + entranceId];
-				Exit = ZS.ROM[ZS.Offsets.startingentrance_exit + (entranceId * 2), 2];
+				Exit = ZS.ROM.Read16(ZS.Offsets.startingentrance_exit + (entranceId * 2));
 				cameraBoundaryQN = ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 0 + (entranceId * 8)];
 				cameraBoundaryFN = ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 1 + (entranceId * 8)];
 				cameraBoundaryQS = ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 2 + (entranceId * 8)];
@@ -72,13 +72,13 @@ namespace ZeldaFullEditor
 			}
 			else
 			{
-				RoomID = ZS.ROM[ZS.Offsets.entrance_room + (entranceId * 2), 2];
-				YPosition = ZS.ROM[ZS.Offsets.entrance_yposition + (entranceId * 2), 2];
-				XPosition = ZS.ROM[ZS.Offsets.entrance_xposition + (entranceId * 2), 2];
-				CameraX = ZS.ROM[ZS.Offsets.entrance_camerax + (entranceId * 2), 2];
-				CameraY = ZS.ROM[ZS.Offsets.entrance_cameray + (entranceId * 2), 2];
-				CameraTriggerY = ZS.ROM[ZS.Offsets.entrance_cameraytrigger + (entranceId * 2), 2];
-				CameraTriggerX = ZS.ROM[ZS.Offsets.entrance_cameraxtrigger + (entranceId * 2), 2];
+				RoomID = ZS.ROM.Read16(ZS.Offsets.entrance_room + (entranceId * 2));
+				YPosition = ZS.ROM.Read16(ZS.Offsets.entrance_yposition + (entranceId * 2));
+				XPosition = ZS.ROM.Read16(ZS.Offsets.entrance_xposition + (entranceId * 2));
+				CameraX = ZS.ROM.Read16(ZS.Offsets.entrance_camerax + (entranceId * 2));
+				CameraY = ZS.ROM.Read16(ZS.Offsets.entrance_cameray + (entranceId * 2));
+				CameraTriggerY = ZS.ROM.Read16(ZS.Offsets.entrance_cameraytrigger + (entranceId * 2));
+				CameraTriggerX = ZS.ROM.Read16(ZS.Offsets.entrance_cameraxtrigger + (entranceId * 2));
 				Blockset = ZS.ROM[ZS.Offsets.entrance_blockset + entranceId];
 				Music = ZS.ROM[ZS.Offsets.entrance_music + entranceId];
 				Dungeon = ZS.ROM[ZS.Offsets.entrance_dungeon + entranceId];
@@ -87,7 +87,7 @@ namespace ZeldaFullEditor
 				Ladderbg = ZS.ROM[ZS.Offsets.entrance_ladderbg + entranceId];
 				Scrolling = ZS.ROM[ZS.Offsets.entrance_scrolling + entranceId];
 				Scrollquadrant = ZS.ROM[ZS.Offsets.entrance_scrollquadrant + entranceId];
-				Exit = ZS.ROM[ZS.Offsets.entrance_exit + (entranceId * 2), 2];
+				Exit = ZS.ROM.Read16(ZS.Offsets.entrance_exit + (entranceId * 2));
 
 				cameraBoundaryQN = ZS.ROM[ZS.Offsets.entrance_scrolledge + 0 + (entranceId * 8)];
 				cameraBoundaryFN = ZS.ROM[ZS.Offsets.entrance_scrolledge + 1 + (entranceId * 8)];
@@ -118,14 +118,14 @@ namespace ZeldaFullEditor
 			if (IsSpawnPoint)
 			{
 
-				ZS.ROM[ZS.Offsets.startingentrance_room + (entranceId * 2), 2] = RoomID;
-				ZS.ROM[ZS.Offsets.startingentrance_yposition + (entranceId * 2), 2] = YPosition;
-				ZS.ROM[ZS.Offsets.startingentrance_xposition + (entranceId * 2), 2] = XPosition;
-				ZS.ROM[ZS.Offsets.startingentrance_cameray + (entranceId * 2), 2] = CameraY;
-				ZS.ROM[ZS.Offsets.startingentrance_camerax + (entranceId * 2), 2] = CameraX;
-				ZS.ROM[ZS.Offsets.startingentrance_cameraxtrigger + (entranceId * 2), 2] = CameraTriggerY;
-				ZS.ROM[ZS.Offsets.startingentrance_cameraytrigger + (entranceId * 2), 2] = CameraTriggerX;
-				ZS.ROM[ZS.Offsets.startingentrance_exit + (entranceId * 2), 2] = Exit;
+				ZS.ROM.Write16(ZS.Offsets.startingentrance_room + (entranceId * 2), RoomID);
+				ZS.ROM.Write16(ZS.Offsets.startingentrance_yposition + (entranceId * 2), YPosition);
+				ZS.ROM.Write16(ZS.Offsets.startingentrance_xposition + (entranceId * 2), XPosition);
+				ZS.ROM.Write16(ZS.Offsets.startingentrance_cameray + (entranceId * 2), CameraY);
+				ZS.ROM.Write16(ZS.Offsets.startingentrance_camerax + (entranceId * 2), CameraX);
+				ZS.ROM.Write16(ZS.Offsets.startingentrance_cameraxtrigger + (entranceId * 2), CameraTriggerY);
+				ZS.ROM.Write16(ZS.Offsets.startingentrance_cameraytrigger + (entranceId * 2), CameraTriggerX);
+				ZS.ROM.Write16(ZS.Offsets.startingentrance_exit + (entranceId * 2), Exit);
 
 				ZS.ROM[ZS.Offsets.startingentrance_blockset + entranceId] = Blockset;
 				ZS.ROM[ZS.Offsets.startingentrance_music + entranceId] = Music;
@@ -143,14 +143,14 @@ namespace ZeldaFullEditor
 			}
 			else
 			{
-				ZS.ROM[ZS.Offsets.entrance_room + (entranceId * 2), 2] = RoomID;
-				ZS.ROM[ZS.Offsets.entrance_yposition + (entranceId * 2), 2] = YPosition;
-				ZS.ROM[ZS.Offsets.entrance_xposition + (entranceId * 2), 2] = XPosition;
-				ZS.ROM[ZS.Offsets.entrance_cameray + (entranceId * 2), 2] = CameraY;
-				ZS.ROM[ZS.Offsets.entrance_camerax + (entranceId * 2), 2] = CameraX;
-				ZS.ROM[ZS.Offsets.entrance_cameraxtrigger + (entranceId * 2), 2] = CameraTriggerY;
-				ZS.ROM[ZS.Offsets.entrance_cameraytrigger + (entranceId * 2), 2] = CameraTriggerX;
-				ZS.ROM[ZS.Offsets.entrance_exit + (entranceId * 2), 2] = Exit;
+				ZS.ROM.Write16(ZS.Offsets.entrance_room + (entranceId * 2), RoomID);
+				ZS.ROM.Write16(ZS.Offsets.entrance_yposition + (entranceId * 2), YPosition);
+				ZS.ROM.Write16(ZS.Offsets.entrance_xposition + (entranceId * 2), XPosition);
+				ZS.ROM.Write16(ZS.Offsets.entrance_cameray + (entranceId * 2), CameraY);
+				ZS.ROM.Write16(ZS.Offsets.entrance_camerax + (entranceId * 2), CameraX);
+				ZS.ROM.Write16(ZS.Offsets.entrance_cameraxtrigger + (entranceId * 2), CameraTriggerY);
+				ZS.ROM.Write16(ZS.Offsets.entrance_cameraytrigger + (entranceId * 2), CameraTriggerX);
+				ZS.ROM.Write16(ZS.Offsets.entrance_exit + (entranceId * 2), Exit);
 
 				ZS.ROM[ZS.Offsets.entrance_blockset + entranceId] = Blockset;
 				ZS.ROM[ZS.Offsets.entrance_music + entranceId] = Music;

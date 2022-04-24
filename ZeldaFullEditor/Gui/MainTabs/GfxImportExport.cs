@@ -151,9 +151,9 @@ namespace ZeldaFullEditor.Gui
 
 		public void recompressAllGfx()
 		{
-			int gfxPointer1 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_1_pointer, 2]);
-			int gfxPointer2 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_2_pointer, 2]);
-			int gfxPointer3 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_3_pointer, 2]);
+			int gfxPointer1 = SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_1_pointer));
+			int gfxPointer2 = SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_2_pointer));
+			int gfxPointer3 = SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_3_pointer));
 			int pos = 0x8B800;
 			int uPos = 0x87000;
 			bool bpp2;

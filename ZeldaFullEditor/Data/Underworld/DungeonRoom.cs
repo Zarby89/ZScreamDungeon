@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -29,7 +30,6 @@ namespace ZeldaFullEditor.Data.Underworld
 		public DungeonDestinationsHandler Destinations { get; } = new DungeonDestinationsHandler();
 		public List<DungeonPlaceable> SelectedObjects { get; } = new List<DungeonPlaceable>();
 
-
 		/// <summary>
 		/// Returns an object if it is the only member of selected objects; otherwise, null
 		/// </summary>
@@ -58,12 +58,11 @@ namespace ZeldaFullEditor.Data.Underworld
 				LayoutListing = ZS.LayoutLister[value];
 			}
 		}
-		public RoomLayoutObjects LayoutListing { get; private set; }
+		public ImmutableArray<RoomObject> LayoutListing { get; private set; }
 
 		private bool moam = false;
-		internal object collisionMap;
 
-		internal object[] collision_rectangles { get => throw new NotImplementedException(); }
+		public byte?[] CollisionMap { get; } = new byte?[Constants.TilesPerTilemap];
 
 		public bool MultiLayerOAM
 		{
@@ -73,80 +72,6 @@ namespace ZeldaFullEditor.Data.Underworld
 				moam = value;
 			}
 		}
-
-
-		// TODO
-		public byte[] HeaderData
-		{
-			get
-			{
-				return new byte[]
-				{
-					(byte) ((Layer2Mode << 5) | (Layer2Behavior << 2) | (IsDark ? 1 : 0)),
-					Palette,
-					BackgroundTileset,
-					SpriteTileset,
-					Layer2Effect,
-					Tag1,
-					Tag2,
-					(byte) (Destinations.Pits.Layer | (Destinations.Stair1.Layer << 2)
-						| (Destinations.Stair2.Layer << 4) | (Destinations.Stair3.Layer << 6)),
-					Destinations.Stair4.Layer,
-					Destinations.Pits.Target,
-					Destinations.Stair1.Target,
-					Destinations.Stair2.Target,
-					Destinations.Stair3.Target,
-					Destinations.Stair4.Target
-				};
-			}
-		}
-
-		public byte[] TileObjectData
-		{
-			// TODO add layout and shit
-			get
-			{
-				var ret = new List<byte>();
-
-				ret.Add(0x00); // TODO write floor
-				ret.Add(0x00); // TODO write layout
-
-				ret.AddRange(Layer1Objects.Data);
-				ret.Add(0xFFFF);
-
-				ret.AddRange(Layer2Objects.Data);
-				ret.Add(0xFFFF);
-
-				ret.AddRange(Layer3Objects.Data);
-
-				if (DoorsList.Count > 0)
-				{
-					ret.Add(0xFFF0);
-
-					ret.AddRange(DoorsList.Data);
-				}
-
-				ret.Add(0xFFFF);
-
-				return ret.ToArray();
-			}
-		}
-
-		public byte[] TorchesData
-		{
-			get
-			{
-				var ret = new List<byte>();
-				ret.Add(RoomID);
-
-				ret.AddRange(TorchList.Data);
-
-				ret.Add(0xFFFF);
-
-				return ret.ToArray();
-			}
-		}
-
 
 		public bool IsEmpty
 		{
@@ -251,7 +176,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		private unsafe void reloadAnimatedGfx()
 		{
-			int gfxanimatedPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.gfx_animated_pointer, 3]);
+			int gfxanimatedPointer = ZS.ROM.Read24(ZS.Offsets.gfx_animated_pointer).SNEStoPC();
 
 			byte* newPdata = (byte*) ZS.GFXManager.allgfx16Ptr.ToPointer(); // Turn gfx16 (all 222 of them)
 			byte* sheetsData = (byte*) ZS.GFXManager.currentgfx16Ptr.ToPointer(); // Into "room gfx16" 16 of them
@@ -278,11 +203,11 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		private void ReloadRoomFromROM() {
 			// Load dungeon header
-			int headerPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.room_header_pointer, 3]);
+			int headerPointer = ZS.ROM.Read24(ZS.Offsets.room_header_pointer).SNEStoPC();
 
-			MessageID = ZS.ROM[ZS.Offsets.messages_id_dungeon + (RoomID * 2), 2];
+			MessageID = ZS.ROM.Read16(ZS.Offsets.messages_id_dungeon + (RoomID * 2));
 
-			int hpos = (ZS.ROM[ZS.Offsets.room_header_pointers_bank] << 16) | ZS.ROM[headerPointer + (RoomID * 2), size: 2];
+			int hpos = (ZS.ROM[ZS.Offsets.room_header_pointers_bank] << 16) | ZS.ROM.Read16(headerPointer + (RoomID * 2));
 			byte b = ZS.ROM[hpos++];
 			Layer2Mode = (byte) (b >> 5);
 			Layer2Behavior = (byte) ((b & 0x0C) >> 2);
@@ -309,17 +234,17 @@ namespace ZeldaFullEditor.Data.Underworld
 			Destinations.Stair4.Target = ZS.ROM[hpos++];
 
 			// Load room objects
-			int objectPointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.room_object_pointer, 3]);
+			int objectPointer = ZS.ROM.Read24(ZS.Offsets.room_object_pointer).SNEStoPC();
 			int room_address = objectPointer + (RoomID * 3);
 
-			int objects_location = SNESFunctions.SNEStoPC(ZS.ROM[room_address, 3]);
+			int objects_location = ZS.ROM.Read24(room_address).SNEStoPC();
 
 			LoadObjectsFromArray(ZS.ROM.DataStream, offset: objects_location);
 
 
 			// Load sprites
-			int spritePointer = 0x040000 | ZS.ROM[ZS.Offsets.rooms_sprite_pointer, 2];
-			int sprite_address = SNESFunctions.SNEStoPC(Constants.DungeonSpritePointers | ZS.ROM[spritePointer + (RoomID * 2), size: 2]);
+			int spritePointer = 0x040000 | ZS.ROM.Read16(ZS.Offsets.rooms_sprite_pointer);
+			int sprite_address = (Constants.DungeonSpritePointers | ZS.ROM.Read16(spritePointer + (RoomID * 2))).SNEStoPC();
 			LoadSpritesFromArray(ZS.ROM.DataStream, offset: sprite_address);
 
 			// Load other stuff
@@ -349,12 +274,12 @@ namespace ZeldaFullEditor.Data.Underworld
 		{
 			ChestList.Clear();
 
-			int cpos = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.chests_data_pointer1, 3]);
-			int clength = ZS.ROM[ZS.Offsets.chests_length_pointer, 2];
+			int cpos = ZS.ROM.Read24(ZS.Offsets.chests_data_pointer1).SNEStoPC();
+			int clength = ZS.ROM.Read16(ZS.Offsets.chests_length_pointer);
 
 			for (int i = 0; i < clength; i += 3)
 			{
-				ushort roomid = (ushort) (ZS.ROM[cpos, size: 2] & 0x7FFF);
+				ushort roomid = (ushort) (ZS.ROM.Read16(cpos) & 0x7FFF);
 				cpos += 2;
 				byte item = ZS.ROM[cpos++]; // get now so cpos is incremented too
 
@@ -367,12 +292,12 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		private void LoadBlocks()
 		{
-			int blockCount = ZS.ROM[ZS.Offsets.blocks_length, size: 2];
+			int blockCount = ZS.ROM.Read16(ZS.Offsets.blocks_length);
 
-			int pos1 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.blocks_pointer1, size: 3]);
-			int pos2 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.blocks_pointer2, size: 3]);
-			int pos3 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.blocks_pointer3, size: 3]);
-			int pos4 = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.blocks_pointer4, size: 3]);
+			int pos1 = ZS.ROM.Read24(ZS.Offsets.blocks_pointer1).SNEStoPC();
+			int pos2 = ZS.ROM.Read24(ZS.Offsets.blocks_pointer2).SNEStoPC();
+			int pos3 = ZS.ROM.Read24(ZS.Offsets.blocks_pointer3).SNEStoPC();
+			int pos4 = ZS.ROM.Read24(ZS.Offsets.blocks_pointer4).SNEStoPC();
 
 			for (int j = 0, i = 0; j < blockCount; j += 4, i++)
 			{
@@ -394,13 +319,13 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		private void LoadTorches()
 		{
-			int torchesSize = ZS.ROM[ZS.Offsets.torches_length_pointer, size: 2];
+			int torchesSize = ZS.ROM.Read16(ZS.Offsets.torches_length_pointer);
 			int pos = ZS.Offsets.torch_data;
 			int ending = pos + torchesSize;
 
 			while (pos < ending)
 			{
-				ushort room = ZS.ROM[pos, size: 2];
+				ushort room = ZS.ROM.Read16(pos);
 				pos += 2;
 
 				bool correctRoom = room == RoomID;
@@ -409,7 +334,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 				while (tpos != 0xFFFF)
 				{
-					tpos = ZS.ROM[pos, size: 2];
+					tpos = ZS.ROM.Read16(pos);
 					pos += 2;
 
 					if (correctRoom && tpos != 0xFFFF)
@@ -436,7 +361,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		private void LoadSecrets()
 		{
-			int secpos = 0x010000 | ZS.ROM[ZS.Offsets.room_items_pointers + (RoomID * 2), 2];
+			int secpos = 0x010000 | ZS.ROM.Read16(ZS.Offsets.room_items_pointers + (RoomID * 2));
 			secpos = secpos.SNEStoPC();
 
 			while (true)
@@ -883,6 +808,58 @@ namespace ZeldaFullEditor.Data.Underworld
 		}
 
 
+		// @author: scawful
+		private List<CollisionRectangle> LoadCollisionLayout()
+		{
+			var ret = new List<CollisionRectangle>();
+			var freespace = new bool[CollisionMap.Length];
+
+			for (ushort i = 0; i < CollisionMap.Length; i++)
+			{
+				byte? check = CollisionMap[i];
+
+				if (check == null || !freespace[i])
+				{
+					continue;
+				}
+
+				if (CollisionMap[i+1] == null && CollisionMap[i+64] == null)
+				{
+					freespace[i] = true;
+					ret.Add(new CollisionRectangle(1, 1, i, (byte) check));
+					continue;
+				}
+
+				int rectumw = 1;
+				int rectumh = 64;
+
+				while (CollisionMap[i + rectumw] != null)
+				{
+					rectumw++;
+				}
+
+				while  (((i + rectumh) < Constants.TilesPerTilemap)
+						&& CollisionMap[i + rectumh] != null)
+				{
+					rectumh += 64;
+				}
+
+				var rectumadd = new List<byte>();
+				for (int y = 0; y < rectumh; y += 64)
+				{
+					for (int x = 0; x < rectumw; x++)
+					{
+						rectumadd.Add((byte) CollisionMap[i + x + y]);
+					}
+				}
+
+				ret.Add(new CollisionRectangle((byte) rectumw, (byte) (rectumh / 64), i, rectumadd.ToArray()));
+			}
+
+			return ret;
+		}
+
+
 
 		public bool[] GetBigChestListing(int count)
 		{
@@ -1010,24 +987,125 @@ namespace ZeldaFullEditor.Data.Underworld
 
 			for (int i = 0, j = 0; i < 12; i++, j += 2) // Left
 			{
-				pos = ZS.ROM[0x197E + j, 2] / 2;
+				pos = ZS.ROM.Read16(0x197E + j) / 2;
 				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
 				rects[i] = new Rectangle(((byte) n) * 8, (byte) (pos / 64) * 8, 32, 24);
 
-				pos = ZS.ROM[0x1996 + j, 2] / 2;
+				pos = ZS.ROM.Read16(0x1996 + j) / 2;
 				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
 				rects[i + 12] = new Rectangle(((byte) n) * 8, (byte) ((pos / 64) + 1) * 8, 32, 24);
 
-				pos = ZS.ROM[0x19AE + j, 2] / 2;
+				pos = ZS.ROM.Read16(0x19AE + j) / 2;
 				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
 				rects[i + 24] = new Rectangle(((byte) n) * 8, (byte) (pos / 64) * 8, 24, 32);
 
-				pos = ZS.ROM[0x19C6 + j, 2] / 2;
+				pos = ZS.ROM.Read16(0x19C6 + j) / 2;
 				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
 				rects[i + 36] = new Rectangle(((byte) n + 1) * 8, (byte) (pos / 64) * 8, 24, 32);
 			}
 
 			return rects;
+		}
+
+
+		//================================================================================================
+		// Data output
+		//================================================================================================
+
+		// TODO
+		public byte[] GetHeaderData()
+		{
+			return new byte[]
+			{
+				(byte) ((Layer2Mode << 5) | (Layer2Behavior << 2) | (IsDark ? 1 : 0)),
+				Palette,
+				BackgroundTileset,
+				SpriteTileset,
+				Layer2Effect,
+				Tag1,
+				Tag2,
+				(byte) (Destinations.Pits.Layer | (Destinations.Stair1.Layer << 2)
+					| (Destinations.Stair2.Layer << 4) | (Destinations.Stair3.Layer << 6)),
+				Destinations.Stair4.Layer,
+				Destinations.Pits.Target,
+				Destinations.Stair1.Target,
+				Destinations.Stair2.Target,
+				Destinations.Stair3.Target,
+				Destinations.Stair4.Target
+			};
+		}
+
+		public byte[] GetTileObjectData()
+		{
+			// TODO add layout and shit
+			var ret = new List<byte>();
+
+			ret.Add(0x00); // TODO write floor
+			ret.Add(0x00); // TODO write layout
+
+			ret.AddRange(Layer1Objects.GetByteData());
+			ret.Add(0xFFFF);
+
+			ret.AddRange(Layer2Objects.GetByteData());
+			ret.Add(0xFFFF);
+
+			ret.AddRange(Layer3Objects.GetByteData());
+
+			if (DoorsList.Count > 0)
+			{
+				ret.Add(0xFFF0);
+
+				ret.AddRange(DoorsList.GetByteData());
+			}
+
+			ret.Add(0xFFFF);
+
+			return ret.ToArray();
+		}
+
+		public byte[] GetTorchesData()
+		{
+			var ret = new List<byte>();
+			ret.Add(RoomID);
+
+			ret.AddRange(TorchList.GetByteData());
+
+			ret.Add(0xFFFF);
+
+			return ret.ToArray();
+		}
+
+		public bool CheckForNonemptyCollision()
+		{
+			foreach (byte? b in CollisionMap)
+			{
+				if (b != null)
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+
+		public byte[] GetCollisionData()
+		{
+			var ret = new List<byte>();
+			var red = LoadCollisionLayout();
+
+			foreach (var rectum in red)
+			{
+				ret.Add(rectum.Position);
+				ret.Add(rectum.Width);
+				ret.Add(rectum.Height);
+				ret.AddRange(rectum.TileData);
+			}
+
+			if (ret.Count() > 0)
+			{
+				ret.Add(0xFFFF);
+			}
+
+			return ret.ToArray();
 		}
 	}
 }

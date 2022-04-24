@@ -3,31 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.Immutable;
 
 namespace ZeldaFullEditor.Data.Underworld
 {
-	public class RoomLayoutObjects : ImmutableArray<RoomObject>
-	{
-		public byte ID { get; }
-		public RoomLayoutObjects(List<RoomObject> list, byte id) : base(list)
-		{
-			ID = id;
-		}
-	}
-
-
 	public class RoomLayoutLister
 	{
-		private readonly RoomLayoutObjects lay0;
-		private readonly RoomLayoutObjects lay1;
-		private readonly RoomLayoutObjects lay2;
-		private readonly RoomLayoutObjects lay3;
-		private readonly RoomLayoutObjects lay4;
-		private readonly RoomLayoutObjects lay5;
-		private readonly RoomLayoutObjects lay6;
-		private readonly RoomLayoutObjects lay7;
+		private readonly ImmutableArray<RoomObject> lay0;
+		private readonly ImmutableArray<RoomObject> lay1;
+		private readonly ImmutableArray<RoomObject> lay2;
+		private readonly ImmutableArray<RoomObject> lay3;
+		private readonly ImmutableArray<RoomObject> lay4;
+		private readonly ImmutableArray<RoomObject> lay5;
+		private readonly ImmutableArray<RoomObject> lay6;
+		private readonly ImmutableArray<RoomObject> lay7;
 
-		public RoomLayoutObjects this[int i]
+		public ImmutableArray<RoomObject> this[int i]
 		{
 			get
 			{
@@ -42,7 +33,7 @@ namespace ZeldaFullEditor.Data.Underworld
 					case 6 : return lay6;
 					case 7 : return lay7;
 				}
-				return null;
+				return lay0;
 		}
 
 
@@ -51,14 +42,14 @@ namespace ZeldaFullEditor.Data.Underworld
 		private RoomLayoutLister(List<RoomObject> _0, List<RoomObject> _1, List<RoomObject> _2, List<RoomObject> _3,
 			List<RoomObject> _4, List<RoomObject> _5, List<RoomObject> _6, List<RoomObject> _7)
 		{
-			lay0 = new RoomLayoutObjects(_0, 0);
-			lay1 = new RoomLayoutObjects(_1, 1);
-			lay2 = new RoomLayoutObjects(_2, 2);
-			lay3 = new RoomLayoutObjects(_3, 3);
-			lay4 = new RoomLayoutObjects(_4, 4);
-			lay5 = new RoomLayoutObjects(_5, 5);
-			lay6 = new RoomLayoutObjects(_6, 6);
-			lay7 = new RoomLayoutObjects(_7, 7);
+			lay0 = _0.ToImmutableArray();
+			lay1 = _1.ToImmutableArray();
+			lay2 = _2.ToImmutableArray();
+			lay3 = _3.ToImmutableArray();
+			lay4 = _4.ToImmutableArray();
+			lay5 = _5.ToImmutableArray();
+			lay6 = _6.ToImmutableArray();
+			lay7 = _7.ToImmutableArray();
 		}
 
 		public static RoomLayoutLister CreateLayoutsFromROM(ZScreamer ZS)
@@ -80,8 +71,8 @@ namespace ZeldaFullEditor.Data.Underworld
 		{
 			var ret = new List<RoomObject>();
 
-			int pointer = SNESFunctions.SNEStoPC(ZS.ROM[ZS.Offsets.room_object_layout_pointer, 3]);
-			int pos = SNESFunctions.SNEStoPC(ZS.ROM[pointer + (layout * 3), 3]);
+			int pointer = ZS.ROM.Read24(ZS.Offsets.room_object_layout_pointer).SNEStoPC();
+			int pos = ZS.ROM.Read24(pointer + (layout * 3)).SNEStoPC();
 
 			byte b1, b2, b3;
 
