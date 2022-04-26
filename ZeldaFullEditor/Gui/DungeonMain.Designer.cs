@@ -256,7 +256,6 @@ namespace ZeldaFullEditor
             this.GfxEditorPage = new System.Windows.Forms.TabPage();
             this.textPage = new System.Windows.Forms.TabPage();
             this.ScreenEditor = new System.Windows.Forms.TabPage();
-            this.spritesPage = new System.Windows.Forms.TabPage();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -2963,7 +2962,6 @@ namespace ZeldaFullEditor
             this.editorsTabControl.Controls.Add(this.GfxEditorPage);
             this.editorsTabControl.Controls.Add(this.textPage);
             this.editorsTabControl.Controls.Add(this.ScreenEditor);
-            this.editorsTabControl.Controls.Add(this.spritesPage);
             this.editorsTabControl.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.editorsTabControl.Enabled = false;
             this.editorsTabControl.Location = new System.Drawing.Point(0, 739);
@@ -3019,15 +3017,6 @@ namespace ZeldaFullEditor
             this.ScreenEditor.TabIndex = 5;
             this.ScreenEditor.Text = "Screen Editor";
             this.ScreenEditor.UseVisualStyleBackColor = true;
-            // 
-            // spritesPage
-            // 
-            this.spritesPage.Location = new System.Drawing.Point(4, 25);
-            this.spritesPage.Name = "spritesPage";
-            this.spritesPage.Size = new System.Drawing.Size(1169, 0);
-            this.spritesPage.TabIndex = 6;
-            this.spritesPage.Text = "Sprites Editor";
-            this.spritesPage.UseVisualStyleBackColor = true;
             // 
             // menuStrip1
             // 
@@ -4723,7 +4712,6 @@ namespace ZeldaFullEditor
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.PictureBox edit8x8palettebox;
         private System.Windows.Forms.ToolStripMenuItem moveRoomsToOtherROMToolStripMenuItem;
-        private System.Windows.Forms.TabPage spritesPage;
         private System.Windows.Forms.ToolStripMenuItem selectedObjectInHexToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem overworldViewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showSpritesToolStripMenuItem;
