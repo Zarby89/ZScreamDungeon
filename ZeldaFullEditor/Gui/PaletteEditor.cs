@@ -141,7 +141,7 @@ namespace ZeldaFullEditor.Gui
 			ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
 			ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.Palette);
 			ZS.UnderworldScene.Room.reloadGfx();
-			ZS.UnderworldScene.NeedsRefreshing = true;
+			ZS.UnderworldScene.TriggerRefresh = true;
 			palettePicturebox.Refresh();
 		}
 

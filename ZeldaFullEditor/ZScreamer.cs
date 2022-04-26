@@ -171,7 +171,6 @@ namespace ZeldaFullEditor
 			DungeonForm.torchmodeButton.Checked = em == DungeonEditMode.Torches;
 			DungeonForm.blockmodeButton.Checked = em == DungeonEditMode.Blocks;
 			DungeonForm.doormodeButton.Checked = em == DungeonEditMode.Doors;
-			DungeonForm.chestmodeButton.Checked = em == DungeonEditMode.Chests;
 			DungeonForm.collisionModeButton.Checked = em == DungeonEditMode.CollisionMap;
 		}
 
@@ -197,7 +196,6 @@ namespace ZeldaFullEditor
 		LayerAll = 3,
 		Sprites,
 		Secrets,
-		Chests,
 		Blocks,
 		Torches,
 		Doors,

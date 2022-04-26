@@ -40,7 +40,7 @@ namespace ZeldaFullEditor.Gui
 				okButton_Click(null, e);
 				reloadGfx();
 				ZS.UnderworldScene.Room.reloadGfx();
-				ZS.UnderworldScene.NeedsRefreshing = true;
+				ZS.UnderworldScene.TriggerRefresh = true;
 			}
 		}
 
@@ -187,7 +187,7 @@ namespace ZeldaFullEditor.Gui
 
 				ZS.UnderworldScene.Room.reloadGfx();
 				reloadGfx();
-				ZS.UnderworldScene.NeedsRefreshing = true;
+				ZS.UnderworldScene.TriggerRefresh = true;
 			}
 		}
 

@@ -7,55 +7,49 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZeldaFullEditor.SceneModes
+namespace ZeldaFullEditor
 {
-	public class OWDoorMode : SceneMode
+	public partial class SceneOW
 	{
-		public OWDoorMode(ZScreamer zs) : base(zs)
+		// TODO changes door type
+		private void OnMouseWheel_OWDoor(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseWheel(MouseEventArgs e)
-		{
-
-		}
-
-		public override void OnMouseDown(MouseEventArgs e)
+		private void OnMouseDown_OWDoor(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
-				int mapy = (ZS.OverworldScene.exitmode.lastselectedExit.MapID / 8);
-				int mapx = ZS.OverworldScene.exitmode.lastselectedExit.MapID - (mapy * 8);
+				int mapy = lastselectedExit.MapID / 8;
+				int mapx = lastselectedExit.MapID - (mapy * 8);
 				int mouse_tile_x_down = ((e.X / 16)) - (mapx * 32);
 				int mouse_tile_y_down = ((e.Y / 16)) - (mapy * 32);
 
-				ZS.OverworldScene.exitmode.lastselectedExit.doorXEditor = (byte) mouse_tile_x_down;
-				ZS.OverworldScene.exitmode.lastselectedExit.doorYEditor = (byte) mouse_tile_y_down;
-				//ZS.OverworldScene.Invalidate(new Rectangle(ZS.OverworldScene.mainForm.panel5.HorizontalScroll.Value, ZS.OverworldScene.mainForm.panel5.VerticalScroll.Value, ZS.OverworldScene.mainForm.panel5.Width, ZS.OverworldScene.mainForm.panel5.Height));
-				ZS.OverworldScene.exitmode.exitProperty_Click(null, null);
+				lastselectedExit.doorXEditor = (byte) mouse_tile_x_down;
+				lastselectedExit.doorYEditor = (byte) mouse_tile_y_down;
 			}
 		}
 
-		public override void OnMouseUp(MouseEventArgs e)
+		private void OnMouseUp_OWDoor(MouseEventArgs e)
 		{
 			// TODO: Add something here?
 		}
 
-		public override void OnMouseMove(MouseEventArgs e)
+		private void OnMouseMove_OWDoor(MouseEventArgs e)
 		{
-			if (ZS.OverworldScene.initialized)
+			if (initialized)
 			{
-				ZS.OverworldScene.mouseX_Real = e.X;
-				ZS.OverworldScene.mouseY_Real = e.Y;
+				mouseX_Real = e.X;
+				mouseY_Real = e.Y;
 				int mouseTileX = e.X / 16;
 				int mouseTileY = e.Y / 16;
 				int mapX = (mouseTileX / 32);
 				int mapY = (mouseTileY / 32);
 
-				ZS.OverworldScene.mapHover = mapX + (mapY * 8);
+				mapHover = mapX + (mapY * 8);
 
-				if (ZS.OverworldScene.lastTileHoverX != mouseTileX || ZS.OverworldScene.lastTileHoverY != mouseTileY)
+				if (lastTileHoverX != mouseTileX || lastTileHoverY != mouseTileY)
 				{
 					int tileX = (e.X / 16);
 					int tileY = (e.Y / 16);
@@ -65,20 +59,20 @@ namespace ZeldaFullEditor.SceneModes
 					if (tileY > 255) { tileY = 255; }
 					int superX = (tileX / 32);
 					int superY = (tileY / 32);
-					ZS.OverworldScene.globalmouseTileDownX = tileX;
-					ZS.OverworldScene.globalmouseTileDownY = tileY;
+					globalmouseTileDownX = tileX;
+					globalmouseTileDownY = tileY;
 
 					// Refresh the tile preview
-					if (ZS.OverworldScene.selectedTile.Length >= 1)
+					if (selectedTile.Length >= 1)
 					{
 						int sX = (mouseTileX / 32);
 						int sY = (mouseTileY / 32);
 						int y = 0;
 						int x = 0;
 						int mapId = 0;
-						for (int i = 0; i < ZS.OverworldScene.selectedTile.Length; i++)
+						for (int i = 0; i < selectedTile.Length; i++)
 						{
-							if (ZS.OverworldScene.globalmouseTileDownX + x < 255 && ZS.OverworldScene.globalmouseTileDownY + y < 255)
+							if (globalmouseTileDownX + x < 255 && globalmouseTileDownY + y < 255)
 							{
 								sX = ((mouseTileX + x) / 32);
 								sY = ((mouseTileY + y) / 32);
@@ -88,11 +82,11 @@ namespace ZeldaFullEditor.SceneModes
 									break;
 								}
 
-								ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, ZS.OverworldScene.selectedTile[i], ZS.OverworldScene.temptilesgfxPtr, ZS.GFXManager.mapblockset16);
+								ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, selectedTile[i], temptilesgfxPtr, ZS.GFXManager.mapblockset16);
 							}
 
 							x++;
-							if (x >= ZS.OverworldScene.selectedTileSizeX)
+							if (x >= selectedTileSizeX)
 							{
 								y++;
 								x = 0;
@@ -104,9 +98,9 @@ namespace ZeldaFullEditor.SceneModes
 							return;
 						}
 
-						ZS.OverworldScene.tilesgfxBitmap.Palette = ZS.OverworldManager.allmaps[mapId].gfxBitmap.Palette;
+						tilesgfxBitmap.Palette = ZS.OverworldManager.allmaps[mapId].gfxBitmap.Palette;
 
-						//ZS.OverworldScene.Invalidate(new Rectangle(ZS.OverworldScene.mainForm.panel5.HorizontalScroll.Value, ZS.OverworldScene.mainForm.panel5.VerticalScroll.Value, ZS.OverworldScene.mainForm.panel5.Width, ZS.OverworldScene.mainForm.panel5.Height));
+						//Invalidate(new Rectangle(mainForm.panel5.HorizontalScroll.Value, mainForm.panel5.VerticalScroll.Value, mainForm.panel5.Width, mainForm.panel5.Height));
 						//this.Refresh();
 						//this.Invalidate(new Rectangle((mouseTileX * 16)-16, (mouseTileY * 16)-16, (selectedTileSizeX * 16)+32, (y * 16)+32));
 					}
@@ -118,8 +112,8 @@ namespace ZeldaFullEditor.SceneModes
                     }
                     */
 
-					ZS.OverworldScene.lastTileHoverX = mouseTileX;
-					ZS.OverworldScene.lastTileHoverY = mouseTileY;
+					lastTileHoverX = mouseTileX;
+					lastTileHoverY = mouseTileY;
 					/* 
                     int tileX = (e.X / 16);
                     int tileY = (e.Y / 16);
@@ -136,27 +130,27 @@ namespace ZeldaFullEditor.SceneModes
 		}
 
 		// TODO
-		public override void Copy()
+		private void Copy_OWDoor()
 		{
 			throw new NotImplementedException();
 		}
 
-		public override void Cut()
+		private void Cut_OWDoor()
 		{
 			throw new NotImplementedException();
 		}
 
-		public override void Paste()
+		private void Paste_OWDoor()
 		{
 			throw new NotImplementedException();
 		}
 
-		public override void Delete()
+		private void Delete_OWDoor()
 		{
 			throw new NotImplementedException();
 		}
 
-		public override void SelectAll()
+		private void SelectAll_OWDoor()
 		{
 			throw new NotImplementedException();
 		}

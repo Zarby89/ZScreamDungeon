@@ -6,47 +6,27 @@ using System.Linq;
 using System.Windows.Forms;
 using ZeldaFullEditor.Gui;
 
-namespace ZeldaFullEditor.SceneModes
+namespace ZeldaFullEditor
 {
-	public class OWEntranceMode : SceneMode
+	public partial class SceneOW
 	{
 		public EntranceOWEditor selectedEntrance = null;
 		public EntranceOWEditor lastselectedEntrance = null;
-		bool isLeftPress = false;
 
-		public OWEntranceMode(ZScreamer zs) : base(zs)
-		{
-
-		}
-
-		public override void OnMouseWheel(MouseEventArgs e)
-		{
-
-		}
-
-		public override void Copy()
+		private void Copy_Entrance()
 		{
 			Clipboard.Clear();
 			EntranceOWEditor ed = lastselectedEntrance.Copy();
 			Clipboard.SetData(Constants.OverworldEntranceClipboardData, ed);
 		}
 
-		public override void Cut()
-		{
-			Clipboard.Clear();
-			EntranceOWEditor ed = lastselectedEntrance.Copy();
-			Clipboard.SetData(Constants.OverworldEntranceClipboardData, ed);
-			Delete();
-
-		}
-
-		public override void Paste()
+		private void Paste_Entrance()
 		{
 			selectedEntrance = AddEntrance(true);
 			if (selectedEntrance != null)
 			{
 				lastselectedEntrance = selectedEntrance;
-				ZS.OverworldScene.mouse_down = true;
+				mouse_down = true;
 				isLeftPress = true;
 				//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));
 			}
@@ -73,10 +53,10 @@ namespace ZeldaFullEditor.SceneModes
 				{
 					if (ZS.OverworldManager.allholes[i].deleted)
 					{
-						byte mid = ZS.OverworldManager.allmaps[ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset].parent;
+						byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.worldOffset].parent;
 						if (mid == 255)
 						{
-							mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
+							mid = (byte) (mapHover + ZS.OverworldManager.worldOffset);
 						}
 						ZS.OverworldManager.allholes[i].deleted = false;
 						ZS.OverworldManager.allholes[i].MapID = mid;
@@ -88,7 +68,7 @@ namespace ZeldaFullEditor.SceneModes
 
 						found = i;
 						selectedEntrance = ZS.OverworldManager.allholes[i];
-						ZS.OverworldScene.mouse_down = true;
+						mouse_down = true;
 						isLeftPress = true;
 
 						//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));
@@ -102,10 +82,10 @@ namespace ZeldaFullEditor.SceneModes
 				{
 					if (ZS.OverworldManager.allentrances[i].deleted)
 					{
-						byte mid = ZS.OverworldManager.allmaps[ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset].parent;
+						byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.worldOffset].parent;
 						if (mid == 255)
 						{
-							mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
+							mid = (byte) (mapHover + ZS.OverworldManager.worldOffset);
 						}
 						ZS.OverworldManager.allentrances[i].deleted = false;
 						ZS.OverworldManager.allentrances[i].MapID = mid;
@@ -117,7 +97,7 @@ namespace ZeldaFullEditor.SceneModes
 
 						found = i;
 						selectedEntrance = ZS.OverworldManager.allentrances[i];
-						ZS.OverworldScene.mouse_down = true;
+						mouse_down = true;
 						isLeftPress = true;
 
 						//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));
@@ -143,7 +123,7 @@ namespace ZeldaFullEditor.SceneModes
 			return ZS.OverworldManager.allentrances[found];
 		}
 
-		public override void OnMouseDown(MouseEventArgs e)
+		private void OnMouseDown_Entrance(MouseEventArgs e)
 		{
 			isLeftPress = e.Button == MouseButtons.Left;
 
@@ -154,17 +134,17 @@ namespace ZeldaFullEditor.SceneModes
 				{
 					if (e.X >= en.GlobalX && e.X < en.GlobalX + 16 && e.Y >= en.GlobalY && e.Y < en.GlobalY + 16)
 					{
-						if (!ZS.OverworldScene.mouse_down)
+						if (!mouse_down)
 						{
 							if (e.Button == MouseButtons.Left)
 							{
 								selectedEntrance = lastselectedEntrance = en;
-								ZS.OverworldScene.mouse_down = true;
+								mouse_down = true;
 							}
 							else if (e.Button == MouseButtons.Right)
 							{
 								lastselectedEntrance = en;
-								ZS.OverworldScene.mouse_down = true;
+								mouse_down = true;
 								mxRightclick = e.X;
 								myRightclick = e.Y;
 							}
@@ -180,17 +160,17 @@ namespace ZeldaFullEditor.SceneModes
 				{
 					if (e.X >= en.GlobalX && e.X < en.GlobalX + 16 && e.Y >= en.GlobalY && e.Y < en.GlobalY + 16)
 					{
-						if (!ZS.OverworldScene.mouse_down)
+						if (!mouse_down)
 						{
 							if (e.Button == MouseButtons.Left)
 							{
 								selectedEntrance = lastselectedEntrance = en;
-								ZS.OverworldScene.mouse_down = true;
+								mouse_down = true;
 							}
 							else if (e.Button == MouseButtons.Right)
 							{
 								lastselectedEntrance = en;
-								ZS.OverworldScene.mouse_down = true;
+								mouse_down = true;
 								mxRightclick = e.X;
 								myRightclick = e.Y;
 							}
@@ -218,14 +198,14 @@ namespace ZeldaFullEditor.SceneModes
 					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.DungeonForm.previewRoom.Palette);
 					ZS.DungeonForm.DrawRoom();
 					DrawTempEntrance();
-					ZS.OverworldScene.entrancePreview = true;
+					entrancePreview = true;
 					//scene.Refresh();
 
 					if (ZS.UnderworldScene.Room != null)
 					{
 						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
 						ZS.UnderworldScene.Room.reloadGfx();
-						ZS.UnderworldScene.NeedsRefreshing = true;
+						ZS.UnderworldScene.TriggerRefresh = true;
 					}
 				}
 
@@ -279,7 +259,7 @@ namespace ZeldaFullEditor.SceneModes
 			g.Dispose();
 		}
 
-		public void OnMouseDoubleClick(MouseEventArgs e)
+		public void OnMouseDoubleClick_Entrance(MouseEventArgs e)
 		{
 			for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
 			{
@@ -315,7 +295,7 @@ namespace ZeldaFullEditor.SceneModes
 				{
 					if (e.X >= en.GlobalX && e.X < en.GlobalX + 16 && e.Y >= en.GlobalY && e.Y < en.GlobalY + 16)
 					{
-						if (!ZS.OverworldScene.mouse_down)
+						if (!mouse_down)
 						{
 							if (e.Button == MouseButtons.Left)
 							{
@@ -338,7 +318,7 @@ namespace ZeldaFullEditor.SceneModes
 			}
 		}
 
-		public override void Delete()
+		private void Delete_Entrance()
 		{
 			lastselectedEntrance.GlobalX = 0xFFFF;
 			lastselectedEntrance.GlobalY = 0xFFFF;
@@ -350,14 +330,14 @@ namespace ZeldaFullEditor.SceneModes
 			//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));
 		}
 
-		public override void OnMouseMove(MouseEventArgs e)
+		private void OnMouseMove_Entrance(MouseEventArgs e)
 		{
 
-			ZS.OverworldScene.mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
+			mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
 
 			if (selectedEntrance != null)
 			{
-				if (isLeftPress && ZS.OverworldScene.mouse_down)
+				if (isLeftPress && mouse_down)
 				{
 					selectedEntrance.GlobalX = (ushort) (e.X & ~0x0F);
 					selectedEntrance.GlobalY = (ushort) (e.Y & ~0x0F);
@@ -370,21 +350,21 @@ namespace ZeldaFullEditor.SceneModes
 
 		int mxRightclick = 0;
 		int myRightclick = 0;
-		public override void OnMouseUp(MouseEventArgs e)
+		private void OnMouseUp_Entrance(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
 				if (selectedEntrance != null)
 				{
-					byte mid = ZS.OverworldManager.allmaps[ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.worldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
+						mid = (byte) (mapHover + ZS.OverworldManager.worldOffset);
 					}
 
 					selectedEntrance.UpdateMapID(mid);
 					selectedEntrance = null;
-					ZS.OverworldScene.mouse_down = false;
+					mouse_down = false;
 				}
 			}
 			else if (e.Button == MouseButtons.Right)
@@ -402,7 +382,7 @@ namespace ZeldaFullEditor.SceneModes
 							menu.Items.Add("Delete Entrance");
 							lastselectedEntrance = en;
 							selectedEntrance = null;
-							ZS.OverworldScene.mouse_down = false;
+							mouse_down = false;
 
 							if (lastselectedEntrance == null)
 							{
@@ -432,7 +412,7 @@ namespace ZeldaFullEditor.SceneModes
 							menu.Items.Add("Delete Entrance");
 							lastselectedEntrance = en;
 							selectedEntrance = null;
-							ZS.OverworldScene.mouse_down = false;
+							mouse_down = false;
 
 							if (lastselectedEntrance == null)
 							{
@@ -451,7 +431,7 @@ namespace ZeldaFullEditor.SceneModes
 
 				menu.Items.Add("Add Entrance");
 				selectedEntrance = null;
-				ZS.OverworldScene.mouse_down = false;
+				mouse_down = false;
 				menu.Items[0].Click += entranceAdd_Click;
 
 				menu.Show(Cursor.Position);
@@ -471,10 +451,10 @@ namespace ZeldaFullEditor.SceneModes
 			{
 				if (ZS.OverworldManager.allentrances[i].deleted)
 				{
-					byte mid = ZS.OverworldManager.allmaps[ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.worldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
+						mid = (byte) (mapHover + ZS.OverworldManager.worldOffset);
 					}
 					ZS.OverworldManager.allentrances[i].deleted = false;
 					ZS.OverworldManager.allentrances[i].MapID = mid;
@@ -495,7 +475,7 @@ namespace ZeldaFullEditor.SceneModes
 
 		private void Delete_Click(object sender, EventArgs e)
 		{
-			Delete();
+			Delete_Exit();
 		}
 
 		private void entranceProperty_Click(object sender, EventArgs e)
@@ -518,7 +498,7 @@ namespace ZeldaFullEditor.SceneModes
 			}
 		}
 
-		public void Draw(Graphics g)
+		public void Draw_Entrance(Graphics g)
 		{
 			Brush bgrBrush = Constants.Goldenrod200Brush;
 			g.CompositingMode = CompositingMode.SourceOver;
@@ -526,7 +506,7 @@ namespace ZeldaFullEditor.SceneModes
 			for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
 			{
 				EntranceOWEditor e = ZS.OverworldManager.allentrances[i];
-				if (ZS.OverworldScene.lowEndMode && e.MapID != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
+				if (lowEndMode && e.MapID != ZS.OverworldManager.allmaps[selectedMap].parent)
 				{
 					continue;
 				}
@@ -538,9 +518,9 @@ namespace ZeldaFullEditor.SceneModes
 						if (e == selectedEntrance)
 						{
 							bgrBrush = Constants.Azure200Brush;
-							ZS.OverworldScene.drawText(g, e.GlobalX - 1, e.GlobalY + 26, "map : " + e.MapID.ToString());
-							ZS.OverworldScene.drawText(g, e.GlobalX - 1, e.GlobalY + 36, "entrance : " + e.entranceId.ToString());
-							ZS.OverworldScene.drawText(g, e.GlobalX - 1, e.GlobalY + 46, "mpos : " + e.mapPos.ToString());
+							drawText(g, e.GlobalX - 1, e.GlobalY + 26, "map : " + e.MapID.ToString());
+							drawText(g, e.GlobalX - 1, e.GlobalY + 36, "entrance : " + e.entranceId.ToString());
+							drawText(g, e.GlobalX - 1, e.GlobalY + 46, "mpos : " + e.mapPos.ToString());
 						}
 						else
 						{
@@ -549,14 +529,14 @@ namespace ZeldaFullEditor.SceneModes
 					}
 
 					g.DrawFilledRectangleWithOutline(e.GlobalX, e.GlobalY, 16, 16, Constants.Black200Pen, bgrBrush);
-					ZS.OverworldScene.drawText(g, e.GlobalX - 1, e.GlobalY + 9, e.entranceId.ToString("X2") + " - " + ZS.all_rooms[ZS.entrances[e.entranceId].RoomID].Name);
+					drawText(g, e.GlobalX - 1, e.GlobalY + 9, e.entranceId.ToString("X2") + " - " + ZS.all_rooms[ZS.entrances[e.entranceId].RoomID].Name);
 				}
 			}
 
 			for (int i = 0; i < ZS.OverworldManager.allholes.Length; i++)
 			{
 				EntranceOWEditor e = ZS.OverworldManager.allholes[i];
-				if (e.MapID != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
+				if (e.MapID != ZS.OverworldManager.allmaps[selectedMap].parent)
 				{
 					continue;
 				}
@@ -574,16 +554,11 @@ namespace ZeldaFullEditor.SceneModes
 
 					g.FillRectangle(bgrBrush, new Rectangle(e.GlobalX, e.GlobalY, 16, 16));
 					g.DrawRectangle(Constants.Black200Pen, new Rectangle(e.GlobalX, e.GlobalY, 16, 16));
-					ZS.OverworldScene.drawText(g, e.GlobalX - 1, e.GlobalY + 9, e.entranceId.ToString("X2") + " - " + ZS.all_rooms[ZS.entrances[e.entranceId].RoomID].Name);
+					drawText(g, e.GlobalX - 1, e.GlobalY + 9, e.entranceId.ToString("X2") + " - " + ZS.all_rooms[ZS.entrances[e.entranceId].RoomID].Name);
 				}
 			}
 
 			g.CompositingMode = CompositingMode.SourceCopy;
-		}
-
-		public override void SelectAll()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

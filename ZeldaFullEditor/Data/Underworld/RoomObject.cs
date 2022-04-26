@@ -15,15 +15,20 @@ namespace ZeldaFullEditor.Data.Underworld
 		public int TypeID => ObjectType.FullID;
 		public string Name => ObjectType.VanillaName;
 
-		public byte X { get; set; } = 0;
-		public byte Y { get; set; } = 0;
-		public byte NX { get; set; }
-		public byte NY { get; set; }
+		public byte GridX { get; set; } = 0;
+		public byte GridY { get; set; } = 0;
+
+		public int RealX => NewX * 8;
+		public int RealY => NewY * 8;
+
+		public byte NewX { get; set; }
+		public byte NewY { get; set; }
 		public byte Layer { get; set; } = 0;
 		public byte Size { get; set; } = 0;
 
 		public int Width { get; set; } = 16;
 		public int Height { get; set; } = 16;
+		public Rectangle OutlineBox => new Rectangle(RealX, RealY, Width, Height);
 
 		public bool IsChest => ObjectType.Specialness == SpecialObjectType.Chest || IsBigChest;
 		public bool IsBigChest => ObjectType.Specialness == SpecialObjectType.BigChest;
@@ -48,14 +53,14 @@ namespace ZeldaFullEditor.Data.Underworld
 		{
 			RoomObject ret = new RoomObject(ObjectType, Tiles)
 			{
-				X = X,
-				Y = Y,
+				GridX = GridX,
+				GridY = GridY,
 				Layer = Layer,
 				Size = Size,
 				Width = Width,
 				Height = Height,
-				NX = NX,
-				NY = NY,
+				NewX = NewX,
+				NewY = NewY,
 				DiagonalFix = DiagonalFix
 			};
 			ret.CollisionPoints.Clear();
@@ -64,7 +69,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		}
 
 
-		public override void Draw(ZScreamer ZS)
+		public void Draw(ZScreamer ZS)
 		{
 			CollisionPoints.Clear();
 			ObjectType.Draw(ZS, this);
@@ -103,9 +108,12 @@ namespace ZeldaFullEditor.Data.Underworld
 			return false;
 		}
 
-		public override bool PointIsInHitbox(int x, int y)
+		public bool PointIsInHitbox(int x, int y)
 		{
-			throw new NotImplementedException();
+			int yfix = DiagonalFix
+					? -(6 + Size)
+					: 0;
+			return false;
 		}
 		public byte[] GetByteData()
 		{
@@ -114,24 +122,24 @@ namespace ZeldaFullEditor.Data.Underworld
 				case DungeonObjectSet.Subtype1:
 					return new byte[]
 					{
-						(byte) ((X << 2) | ((Size & 0x0C) >> 2)),
-						(byte) ((Y << 2) | (Size & 0x03)),
+						(byte) ((GridX << 2) | ((Size & 0x0C) >> 2)),
+						(byte) ((GridY << 2) | (Size & 0x03)),
 						(byte) ID
 					};
 
 				case DungeonObjectSet.Subtype2:
 					return new byte[]
 					{
-						(byte) (0xFC | (X >> 4)),
-						(byte) ((X << 4) | ((Y & 0x3C) >> 2)),
-						(byte) ((Y << 6) | (ID & 0x3F))
+						(byte) (0xFC | (GridX >> 4)),
+						(byte) ((GridX << 4) | ((GridY & 0x3C) >> 2)),
+						(byte) ((GridY << 6) | (ID & 0x3F))
 					};
 
 				case DungeonObjectSet.Subtype3:
 					return new byte[]
 					{
-						(byte) ((X << 2) | (ID & 0x03)),
-						(byte) ((Y << 2) | ((ID & 0x0C) >> 2)),
+						(byte) ((GridX << 2) | (ID & 0x03)),
+						(byte) ((GridY << 2) | ((ID & 0x0C) >> 2)),
 						(byte) (0xF8 | (ID >> 4))
 					};
 

@@ -4,61 +4,60 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Data.Underworld;
 
-namespace ZeldaFullEditor.SceneModes
+namespace ZeldaFullEditor
 {
-	public class UWDoorMode : SceneMode
+	public partial class SceneUW
 	{
-		public UWDoorMode(ZScreamer zs) : base(zs)
+
+		private void OnMouseDown_Door(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseDown(MouseEventArgs e)
-		{
-
-		}
-
-		public override void OnMouseUp(MouseEventArgs e)
+		private void OnMouseUp_Door(MouseEventArgs e)
 		{
 			
 		}
 
-		public override void OnMouseMove(MouseEventArgs e)
+		private void OnMouseMove_Door(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseWheel(MouseEventArgs e)
+		// TO make this change the door type
+		private void OnMouseWheel_Door(MouseEventArgs e)
 		{
 
 		}
 
-		public override void Copy()
+		private void Copy_Door()
 		{
 
 		}
 
-		public override void Cut()
+		private void Paste_Door()
 		{
 
 		}
 
-		public override void Paste()
+		private void Delete_Door()
 		{
-
+			Room.RemoveCurrentlySelectedObjectsFromList(Room.DoorsList);
+		}
+		
+		private void Insert_Door()
+		{
+			var d = new DungeonDoor(DungeonDoorDraw.North00, ZS.TileLister.GetDoorTileSet(0));
+			Room.AttemptToAddEntityAsSelected(d, CurrentMode);
 		}
 
-		public override void Delete()
+		private void SelectAll_Door()
 		{
-
-		}
-		public override void SelectAll()
-		{
-			DungeonRoom room = ZS.UnderworldScene.Room;
-			room.SelectedObjects.Clear();
-			room.SelectedObjects.AddRange(room.DoorsList);
+			Room.ClearSelectedList();
+			Room.SelectedObjects.AddRange(Room.DoorsList);
 		}
 	}
 }

@@ -6,6 +6,8 @@
 		Openable,
 		Shutter,
 		Meta,
+		LayerSwap,
+		DungeonSwap,
 		Garbage,
 	}
 }

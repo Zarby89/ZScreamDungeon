@@ -112,46 +112,46 @@ namespace ZeldaFullEditor
 		}
 		private class TextElement
 		{
-			private readonly string token; public string Token { get => token; }
-			private readonly string pattern; public string Pattern { get => pattern; }
-			private readonly string patternStrict; public string StrictPattern { get => patternStrict; }
-			private readonly string desc; public string Description { get => desc; }
-			private readonly bool hasParam; public bool HasArgument { get => hasParam; }
-			private readonly byte b; public byte ID { get => b; }
-			private readonly string gt; public string GenericToken { get => gt; }
+			public string Token { get; }
+			public string Pattern { get; }
+			public string StrictPattern { get; }
+			public string Description { get; }
+			public bool HasArgument { get; }
+			public byte ID { get; }
+			public string GenericToken { get; }
 			private readonly string strout;
 
 			public TextElement(byte a, string t, bool arg, string d)
 			{
-				token = t;
-				hasParam = arg;
+				Token = t;
+				HasArgument = arg;
 
-				pattern = string.Format(
+				Pattern = string.Format(
 					arg ? "\\[{0}:?([0-9A-F]{{1,2}})\\]" : "\\[{0}\\]",
-					Regex.Escape(token)); // need to escape to prevent bad with [...]
+					Regex.Escape(Token)); // need to escape to prevent bad with [...]
 
-				patternStrict = string.Format("^{0}$", pattern);
+				StrictPattern = string.Format("^{0}$", Pattern);
 
-				gt = string.Format(
+				GenericToken = string.Format(
 						 arg ? "[{0}:##]" : "[{0}]",
-						 token);
+						 Token);
 
-				desc = d;
-				b = a;
-				strout = string.Format("{0} {1}", gt, desc);
+				Description = d;
+				ID = a;
+				strout = string.Format("{0} {1}", GenericToken, Description);
 			}
 
 			private const string TokenWithParam = "[{0}:{1:X2}]";
 			private const string TokenWithoutParam = "[{0}]";
 			public string GetParameterizedToken(byte b = 0)
 			{
-				if (hasParam)
+				if (HasArgument)
 				{
-					return string.Format(TokenWithParam, token, b);
+					return string.Format(TokenWithParam, Token, b);
 				}
 				else
 				{
-					return string.Format(TokenWithoutParam, token);
+					return string.Format(TokenWithoutParam, Token);
 				}
 			}
 
@@ -162,50 +162,50 @@ namespace ZeldaFullEditor
 
 			public Match MatchMe(string dfrag)
 			{
-				return Regex.Match(dfrag, patternStrict);
+				return Regex.Match(dfrag, StrictPattern);
 			}
 		}
 
 		private class ParsedElement
 		{
-			private readonly TextElement parent; public TextElement Parent { get => parent; }
-			private readonly byte val; public byte Value { get => val; }
+			public TextElement Parent { get; }
+			public byte Value { get; }
 
 			public ParsedElement(TextElement t, byte v)
 			{
-				parent = t;
-				val = v;
+				Parent = t;
+				Value = v;
 			}
 		}
 
-		private static List<DictionaryEntry> AllDicts = new List<DictionaryEntry>();
+		private static readonly List<DictionaryEntry> AllDicts = new List<DictionaryEntry>();
 
 		public class DictionaryEntry
 		{
-			private readonly byte id; public byte ID { get => id; }
-			private readonly string str; public string Contents { get => str; }
-			private readonly byte[] data; public byte[] Data { get => data; }
-			private readonly int len; public int Length { get => len; }
+			public byte ID { get; }
+			public string Contents { get; }
+			public byte[] Data { get; }
+			public int Length { get; }
 
-			private readonly string token; public string Token { get => token; }
+			public string Token { get; }
 
 			public DictionaryEntry(byte i, string s)
 			{
-				str = s;
-				id = i;
-				len = s.Length;
-				token = string.Format("[{0}:{1:X2}]", DICTIONARYTOKEN, id);
-				data = ParseMessageToData(str);
+				Contents = s;
+				ID = i;
+				Length = s.Length;
+				Token = $"[{DICTIONARYTOKEN}:{ID:X2}]";
+				Data = ParseMessageToData(Contents);
 			}
 
 			public bool ContainedInString(string s)
 			{
-				return s.IndexOf(str) >= 0;
+				return s.IndexOf(Contents) >= 0;
 			}
 
 			public string ReplaceInstancesOfIn(string s)
 			{
-				return s.Replace(str, token);
+				return s.Replace(Contents, Token);
 			}
 		}
 
@@ -719,7 +719,7 @@ namespace ZeldaFullEditor
             }*/
 		}
 
-		private static readonly Color[] previewColors = new Color[] {
+		private static readonly Color[] previewColors = {
 			Color.DimGray,
 			Color.DarkBlue,
 			Color.White,
@@ -813,7 +813,8 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// Includes parentheses to be longer, since player names can be up to 6 characters.
 		/// </summary>
-		private const string NAMEPreview = "(NAME)";
+		private static readonly string NAMEPreview = "(NAME)";
+
 		private unsafe void DrawCharacterToPreview(params byte[] text)
 		{
 			foreach (byte b in text)
@@ -932,7 +933,7 @@ namespace ZeldaFullEditor
 
 					if (pixel.BitIsOn(0xF0))
 					{
-						ptr[index + 0] = (byte) (pixel >> 4);
+						ptr[index] = (byte) (pixel >> 4);
 					}
 				}
 			}
@@ -979,7 +980,7 @@ namespace ZeldaFullEditor
 			}
 
 			int srcY = selectedTile / 16;
-			int srcX = selectedTile - (srcY * 16);
+			int srcX = selectedTile & 0xF;
 			e.Graphics.DrawRectangle(CharHilite, new Rectangle(srcX * 16, srcY * 32, 16, 32));
 		}
 
@@ -1107,6 +1108,7 @@ namespace ZeldaFullEditor
 
 					// check if this byte corresponds to a command with an argument or not
 					bool hasarg = FindMatchingCommand(b)?.HasArgument ?? false;
+
 					if (hasarg)
 					{
 						// not much space, add the bank token
@@ -1214,8 +1216,6 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// Adds a command to the text field when the Add command button is pressed or the command is double clicked in the list.
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void InsertCommandButton_Click_1(object sender, EventArgs e)
 		{
 			InsertSelectedText(TCommands[TextCommandList.SelectedIndex].GetParameterizedToken((byte) ParamsBox.HexValue));
@@ -1224,8 +1224,6 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// Adds a special character to the text field when the Add command button is pressed or the character is double clicked in the list.
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void InsertSpecialButton_Click(object sender, EventArgs e)
 		{
 			InsertSelectedText(SpecialChars[SpecialsList.SelectedIndex].GetParameterizedToken());
@@ -1241,9 +1239,6 @@ namespace ZeldaFullEditor
 			textBox1.Focus();
 		}
 
-		/// <summary>
-		/// Is called when the text box is updated, updates the preview and writes the char byts to an array.
-		/// </summary>
 		private void UpdateTextBox()
 		{
 			if (textListbox.SelectedItem != null)
@@ -1254,8 +1249,6 @@ namespace ZeldaFullEditor
 				textListbox.DataSource = null;
 				textListbox.DataSource = DisplayedMessages;
 				textListbox.EndUpdate();
-
-				//savedBytes[(int)selectedTextTag] = parseTextToBytes(textBox1.Text);
 
 				DrawMessagePreview();
 				pictureBox1.Refresh();
@@ -1274,7 +1267,7 @@ namespace ZeldaFullEditor
 					string.Format("{0:X2} [{1:X2}] - {2}",
 					d.ID,
 					d.ID + DICTOFF,
-					d.Contents.Replace(" ", "[Space]")));
+					d.Contents.Replace(" ", "_")));
 			}
 
 			df.ShowDialog();
@@ -1301,11 +1294,6 @@ namespace ZeldaFullEditor
 				fs.Write(ZS.ROM.DataStream, 0, ZS.ROM.Length);
 				fs.Close();
 			}
-		}
-
-		private void panel1_Paint(object sender, PaintEventArgs e)
-		{
-			//TODO: Add something here?
 		}
 
 		// TODO needs a rewrite
@@ -1439,8 +1427,7 @@ namespace ZeldaFullEditor
 			pictureBox3.Refresh();
 		}
 
-
-		private void pictureBox1_MouseWheel(object sender, System.Windows.Forms.MouseEventArgs e)
+		private void pictureBox1_MouseWheel(object sender, MouseEventArgs e)
 		{
 			if (e.Delta > 1)
 			{
@@ -1452,11 +1439,11 @@ namespace ZeldaFullEditor
 			}
 		}
 
-
 		private void downButton_Click(object sender, EventArgs e)
 		{
 			ScrollTextPreviewDown();
 		}
+
 		private void ScrollTextPreviewDown()
 		{
 			if (shownLines < textLine - 2)
@@ -1471,7 +1458,6 @@ namespace ZeldaFullEditor
 		{
 			ScrollTextPreviewUp();
 		}
-
 		private void ScrollTextPreviewUp()
 		{
 			if (shownLines > 0)

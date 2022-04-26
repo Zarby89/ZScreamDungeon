@@ -7,18 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZeldaFullEditor.SceneModes
+namespace ZeldaFullEditor
 {
-	public class OWTransportMode : SceneMode
+	public partial class SceneOW
 	{
 		public TransportOW selectedTransport = null;
 		public TransportOW lastselectedTransport = null;
 
-		public OWTransportMode(ZScreamer zs) : base(zs)
-		{
-		}
-
-		public override void OnMouseDown(MouseEventArgs e)
+		// TODO use IMouseCollidable
+		private void OnMouseDown_Transports(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -29,12 +26,12 @@ namespace ZeldaFullEditor.SceneModes
 					{
 						if (e.X >= en.GlobalX && e.X < en.GlobalX + 16 && e.Y >= en.GlobalY && e.Y < en.GlobalY + 16)
 						{
-							if (!ZS.OverworldScene.mouse_down)
+							if (!mouse_down)
 							{
 								selectedTransport = en;
 								lastselectedTransport = en;
 								//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-								ZS.OverworldScene.mouse_down = true;
+								mouse_down = true;
 							}
 						}
 					}
@@ -42,21 +39,21 @@ namespace ZeldaFullEditor.SceneModes
 			}
 		}
 
-		public override void OnMouseMove(MouseEventArgs e)
+		private void OnMouseMove_Transports(MouseEventArgs e)
 		{
-			if (ZS.OverworldScene.mouse_down)
+			if (mouse_down)
 			{
-				ZS.OverworldScene.mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
+				mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
 
 				if (selectedTransport != null)
 				{
-					selectedTransport.GlobalX = (ushort) (ZS.OverworldScene.snapToGrid ? e.X & ~0x7 : e.X);
-					selectedTransport.GlobalY = (ushort) (ZS.OverworldScene.snapToGrid ? e.Y & ~0x7 : e.Y);
+					selectedTransport.GlobalX = (ushort) (snapToGrid ? e.X & ~0x7 : e.X);
+					selectedTransport.GlobalY = (ushort) (snapToGrid ? e.Y & ~0x7 : e.Y);
 
-					byte mid = ZS.OverworldManager.allmaps[ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.worldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
+						mid = (byte) (mapHover + ZS.OverworldManager.worldOffset);
 					}
 
 					selectedTransport.UpdateMapID(mid, ZS.OverworldManager);
@@ -66,65 +63,21 @@ namespace ZeldaFullEditor.SceneModes
 			}
 		}
 
-		public override void OnMouseUp(MouseEventArgs e)
+		private void OnMouseUp_Transports(MouseEventArgs e)
 		{
+			// TODO integrate with properties tab
 			if (e.Button == MouseButtons.Left)
 			{
 				if (selectedTransport != null)
 				{
 					lastselectedTransport = selectedTransport;
 					selectedTransport = null;
-					ZS.OverworldScene.mouse_down = false;
+					mouse_down = false;
 				}
 			}
-			else if (e.Button == MouseButtons.Right)
-			{
-				for (int i = 0; i < 0x11; i++)
-				{
-					TransportOW en = ZS.OverworldManager.allWhirlpools[i];
-					if (en.MapID >= ZS.OverworldManager.worldOffset && en.MapID < 64 + ZS.OverworldManager.worldOffset)
-					{
-						if (e.X >= en.GlobalX && e.X < en.GlobalX + 16 && e.Y >= en.GlobalY && e.Y < en.GlobalY + 16)
-						{
-							ContextMenuStrip menu = new ContextMenuStrip();
-							menu.Items.Add("Whirlpool Properties");
-							lastselectedTransport = en;
-							selectedTransport = null;
-							ZS.OverworldScene.mouse_down = false;
-
-							if (lastselectedTransport == null)
-							{
-								menu.Items[0].Enabled = false;
-							}
-
-							menu.Items[0].Click += exitProperty_Click;
-							menu.Show(Cursor.Position);
-						}
-					}
-				}
-
-				//scene.Invalidate(new Rectangle((scene.owForm.splitContainer1.Panel2.HorizontalScroll.Value), (scene.owForm.splitContainer1.Panel2.VerticalScroll.Value), (scene.owForm.splitContainer1.Panel2.Width), (scene.owForm.splitContainer1.Panel2.Height)));
-			}
 		}
 
-		public override void OnMouseWheel(MouseEventArgs e)
-		{
-
-		}
-
-		private void exitProperty_Click(object sender, EventArgs e)
-		{
-			WhirlpoolForm wf = new WhirlpoolForm();
-			wf.textBox1.Text = lastselectedTransport.whirlpoolPos.ToString();
-
-			if (wf.ShowDialog() == DialogResult.OK)
-			{
-				ushort.TryParse(wf.textBox1.Text, out ushort v);
-				lastselectedTransport.whirlpoolPos = v;
-			}
-		}
-
-		public void Draw(Graphics g)
+		public void Draw_Transports(Graphics g)
 		{
 			Brush bgrBrush = Constants.DarkMint200Brush;
 			g.CompositingMode = CompositingMode.SourceOver;
@@ -133,7 +86,7 @@ namespace ZeldaFullEditor.SceneModes
 			{
 				TransportOW e = ZS.OverworldManager.allWhirlpools[i];
 
-				if (ZS.OverworldScene.lowEndMode && e.MapID != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
+				if (lowEndMode && e.MapID != ZS.OverworldManager.allmaps[selectedMap].parent)
 				{
 					continue;
 				}
@@ -145,8 +98,8 @@ namespace ZeldaFullEditor.SceneModes
 						if (e == selectedTransport)
 						{
 							bgrBrush = Constants.Azure200Brush;
-							ZS.OverworldScene.drawText(g, e.GlobalX - 1, e.GlobalY + 16, $"map : {e.MapID:X2}");
-							ZS.OverworldScene.drawText(g, e.GlobalX - 4, e.GlobalY + 36, $"mpos : {e.VRAMBase:X4}");
+							drawText(g, e.GlobalX - 1, e.GlobalY + 16, $"map : {e.MapID:X2}");
+							drawText(g, e.GlobalX - 4, e.GlobalY + 36, $"mpos : {e.VRAMBase:X4}");
 						}
 						else
 						{
@@ -155,35 +108,9 @@ namespace ZeldaFullEditor.SceneModes
 					}
 
 					g.DrawFilledRectangleWithOutline(e.GlobalX, e.GlobalY, 16, 16, Constants.Black200Pen, bgrBrush);
-					ZS.OverworldScene.drawText(g, e.GlobalX + 4, e.GlobalY + 4, $"{i:X2} - Transport");
+					drawText(g, e.GlobalX + 4, e.GlobalY + 4, $"{i:X2} - Transport");
 				}
 			}
-		}
-
-		// TODO
-		public override void Copy()
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void Cut()
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void Paste()
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void Delete()
-		{
-			throw new NotImplementedException();
-		}
-
-		public override void SelectAll()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

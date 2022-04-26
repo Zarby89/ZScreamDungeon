@@ -11,7 +11,7 @@ using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
 {
-	public class SceneOW : Scene
+	public partial class SceneOW : Scene
 	{
 		//public IntPtr allgfx8array = Marshal.AllocHGlobal(32768);
 
@@ -39,16 +39,18 @@ namespace ZeldaFullEditor
 		public Bitmap tileBitmap;
 		public IntPtr tileBitmapPtr;
 		public bool snapToGrid = true;
-		public OWTileMode tilemode;
-		public OWExitMode exitmode;
-		public OWDoorMode doorMode;
-		public OWEntranceMode entranceMode;
-		public OWSpriteMode spriteMode;
-		public OWSecretsMode itemMode;
 		public OverworldSprite selectedFormSprite;
-		public OWTransportMode transportMode;
-		public OWOverlayMode overlayMode;
-		public OWGravesMode gravestoneMode;
+
+		private readonly ModeActions tilemode;
+		private readonly ModeActions exitmode;
+		private readonly ModeActions doorMode;
+		private readonly ModeActions entranceMode;
+		private readonly ModeActions spriteMode;
+		private readonly ModeActions itemMode;
+		private readonly ModeActions transportMode;
+		private readonly ModeActions overlayMode;
+		private readonly ModeActions gravestoneMode;
+
 		public bool showEntrances = true;
 		public bool showExits = true;
 		public bool showFlute = true;
@@ -65,19 +67,35 @@ namespace ZeldaFullEditor
 		{
 			//graphics = Graphics.FromImage(scene_bitmap);
 			//this.Image = new Bitmap(4096, 4096);
-			MouseUp += new MouseEventHandler(OnMouseUp);
-			MouseMove += new MouseEventHandler(OnMouseMove);
-			MouseDoubleClick += new MouseEventHandler(OnMouseDoubleClick);
-			MouseWheel += SceneOW_MouseWheel;
 			tilesgfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, temptilesgfxPtr);
-			tilemode = new OWTileMode(ZS);
-			exitmode = new OWExitMode(ZS);
-			entranceMode = new OWEntranceMode(ZS);
-			itemMode = new OWSecretsMode(ZS);
-			spriteMode = new OWSpriteMode(ZS);
-			transportMode = new OWTransportMode(ZS);
-			overlayMode = new OWOverlayMode(ZS);
-			gravestoneMode = new OWGravesMode(ZS);
+
+
+			tilemode = new ModeActions(OnMouseDown_Tiles, OnMouseUp_Tiles, OnMouseMove_Tiles, null,
+				Copy_Tiles, Paste_Tiles, null, Delete_Tiles, null, null);
+
+			exitmode = new ModeActions(OnMouseDown_Exit, OnMouseUp_Exit, OnMouseMove_Exit, null,
+				Copy_Exit, Paste_Exit, null, Delete_Exit, null, Draw_Exit);
+
+			doorMode = new ModeActions(OnMouseDown_OWDoor, OnMouseUp_OWDoor, OnMouseMove_OWDoor, OnMouseWheel_OWDoor,
+				Copy_OWDoor, Paste_OWDoor, null, Delete_OWDoor, SelectAll_OWDoor, null);
+
+			entranceMode = new ModeActions(OnMouseDown_Entrance, OnMouseUp_Entrance, OnMouseMove_Entrance, null,
+				Copy_Entrance, Paste_Entrance, null, Delete_Entrance, null, Draw_Entrance);
+
+			spriteMode = new ModeActions(OnMouseDown_Sprites, OnMouseUp_Sprites, OnMouseMove_Sprites, OnMouseWheel_Sprites,
+				Copy_Sprites, Paste_Sprites, null, Delete_Sprites, SelectAll_Sprites, Draw_Sprites);
+
+			itemMode = new ModeActions(OnMouseDown_Secrets, OnMouseUp_Secrets, OnMouseMove_Secrets, OnMouseWheel_Secrets,
+				Copy_Secrets, Paste_Secrets, null, Delete_Secrets, null, Draw_Secrets);
+
+			transportMode = new ModeActions(OnMouseDown_Transports, OnMouseUp_Transports, OnMouseMove_Transports, null,
+				null, null, null, null, null, Draw_Transports);
+
+			overlayMode = new ModeActions(OnMouseDown_Overlay, OnMouseUp_Overlay, OnMouseMove_Overlay, null,
+				Copy_Overlay, Paste_Overlay, null, Delete_Overlay, null, null);
+
+			gravestoneMode = new ModeActions(OnMouseDown_Graves, OnMouseUp_Graves, OnMouseMove_Graves, null,
+				null, null, null,Delete_Graves, null, Draw_Graves);
 
 			//this.Width = 8192;
 			//this.Height = 8192;
@@ -134,7 +152,7 @@ namespace ZeldaFullEditor
 			//tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr);
 		}
 
-		private void SceneOW_MouseWheel(object sender, MouseEventArgs e)
+		protected override void OnMouseWheel(object sender, MouseEventArgs e)
 		{
 			((HandledMouseEventArgs) e).Handled = true;
 			int xPos = ZS.OverworldForm.splitContainer1.Panel2.HorizontalScroll.Value;
@@ -151,6 +169,7 @@ namespace ZeldaFullEditor
 
 			ZS.OverworldForm.splitContainer1.Panel2.AutoScrollPosition = new Point(xPos, yPos);
 			//e.Delta
+			base.OnMouseWheel(sender, e);
 		}
 
 		public void updateMapGfx()
@@ -205,11 +224,9 @@ namespace ZeldaFullEditor
 				updateMapGfx();
 				ZS.OverworldForm.updateTiles();
 
-				ActiveMode.OnMouseDown(e);
+				base.OnMouseDown(e);
 
 				InvalidateHighEnd();
-
-				base.OnMouseDown(e);
 			}
 			else
 			{
@@ -220,56 +237,56 @@ namespace ZeldaFullEditor
 		public void SetSelectedExit(ExitOW e)
 		{
 			ZS.OverworldForm.SetSelectedExit(e);
-			exitmode.lastselectedExit = e;
+			lastselectedExit = e;
 		}
 
 		public void SetSelectedExitSilently(ExitOW e)
 		{
-			exitmode.lastselectedExit = e;
+			lastselectedExit = e;
 		}
 
 		public void SetSelectedEntrance(EntranceOWEditor e)
 		{
 			ZS.OverworldForm.SetSelectedEntrance(e);
-			entranceMode.lastselectedEntrance = e;
+			lastselectedEntrance = e;
 		}
 
 		public void SetSelectedEntranceSilently(EntranceOWEditor e)
 		{
-			entranceMode.lastselectedEntrance = e;
+			lastselectedEntrance = e;
 		}
 
 		public void SetSelectedTransport(TransportOW e)
 		{
 			ZS.OverworldForm.SetSelectedTransport(e);
-			transportMode.lastselectedTransport = e;
+			lastselectedTransport = e;
 		}
 
 		public void SetSelectedTransportSilently(TransportOW e)
 		{
-			transportMode.lastselectedTransport = e;
+			lastselectedTransport = e;
 		}
 
 		// TODO switch statements
-		private unsafe void OnMouseUp(object sender, MouseEventArgs e)
+		protected override void OnMouseUp(object sender, MouseEventArgs e)
 		{
 			ZS.OverworldForm.objCombobox.Items.Clear();
 			ZS.OverworldForm.objCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedSprite;
 			ZS.OverworldForm.objCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedItem;
 			string text = "Selected object: ";
 
-			ActiveMode.OnMouseUp(e);
+			base.OnMouseUp(sender, e);
 			switch (ZS.CurrentOWMode) {
 				// TODO tab for items
 				case OverworldEditMode.Secrets:
 					text += "Item";
 
-					if (itemMode.lastselectedItem != null)
+					if (lastselectedItem != null)
 					{
 						ZS.OverworldForm.SetSelectedObjectLabels(
-							itemMode.lastselectedItem.ID,
-							itemMode.lastselectedItem.X,
-							itemMode.lastselectedItem.Y);
+							lastselectedItem.ID,
+							lastselectedItem.GridX,
+							lastselectedItem.GridY);
 
 						ZS.OverworldForm.objCombobox.DataSource = DefaultEntities.ListOfSecrets;
 
@@ -284,14 +301,14 @@ namespace ZeldaFullEditor
 				case OverworldEditMode.Sprites:
 					text += "Sprite";
 
-					if (spriteMode.lastselectedSprite != null)
+					if (lastselectedSprite != null)
 					{
 						ZS.OverworldForm.SetSelectedObjectLabels(
-							spriteMode.lastselectedSprite.ID,
-							spriteMode.lastselectedSprite.X,
-							spriteMode.lastselectedSprite.Y);
+							lastselectedSprite.ID,
+							lastselectedSprite.GridX,
+							lastselectedSprite.GridY);
 						ZS.OverworldForm.objCombobox.DataSource = DefaultEntities.ListOfTileTypes;
-						ZS.OverworldForm.objCombobox.SelectedIndex = spriteMode.lastselectedSprite.ID;
+						ZS.OverworldForm.objCombobox.SelectedIndex = lastselectedSprite.ID;
 
 						ZS.OverworldForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedSprite;
 					}
@@ -305,7 +322,7 @@ namespace ZeldaFullEditor
 		private void ObjCombobox_SelectedIndexChangedSprite(object sender, EventArgs e)
 		{
 			byte id = (byte) (ZS.OverworldForm.objCombobox.SelectedItem as SpriteName).ID;
-			spriteMode.lastselectedSprite.Species = SpriteType.GetSpriteType(id);
+			lastselectedSprite.Species = SpriteType.GetSpriteType(id);
 
 			InvalidateHighEnd();
 		}
@@ -341,51 +358,25 @@ namespace ZeldaFullEditor
 		private void ObjCombobox_SelectedIndexChangedItem(object sender, EventArgs e)
 		{
 			byte id = (byte) (ZS.OverworldForm.objCombobox.SelectedItem as SecretsName).ID;
-			itemMode.lastselectedItem.SecretType = SecretItemType.FindSecretFromID(id);
+			lastselectedItem.SecretType = SecretItemType.FindSecretFromID(id);
 			InvalidateHighEnd();
 		}
 
-		private void OnMouseMove(object sender, MouseEventArgs e)
+		protected override void OnMouseMove(object sender, MouseEventArgs e)
 		{
-			//Stopwatch sw = new Stopwatch();
-			//sw.Start();
-
-			ActiveMode.OnMouseMove(e);
-
-			InvalidateHighEnd();
-
-			//sw.Stop();
-			//Console.WriteLine("Entire OW draw ms: " + sw.ElapsedMilliseconds);
+			base.OnMouseMove(sender, e);
 		}
 
-		public void Undo()
+		public override void Undo()
 		{
-			tilemode.Undo();
-			InvalidateHighEnd();
+			//tilemode.Undo();
+			RequestRefresh();
 		}
 
-		public void Redo()
+		public override void Redo()
 		{
-			tilemode.Redo();
-			InvalidateHighEnd();
-		}
-
-		public override void Paste()
-		{
-			ActiveMode.Paste();
-
-			InvalidateHighEnd();
-		}
-
-		public override void Copy()
-		{
-			ActiveMode.Copy();
-		}
-
-		public override void Delete()
-		{
-			ActiveMode.Delete();
-			InvalidateHighEnd();
+			//tilemode.Redo();
+			RequestRefresh();
 		}
 
 		public override void SelectAll()
@@ -589,13 +580,13 @@ namespace ZeldaFullEditor
 
 				if (entrancePreview)
 				{
-					if (entranceMode.selectedEntrance != null)
+					if (selectedEntrance != null)
 					{
-						g.DrawImage(ZS.OverworldForm.tmpPreviewBitmap, entranceMode.selectedEntrance.GlobalX + 16, entranceMode.selectedEntrance.GlobalY + 16);
+						g.DrawImage(ZS.OverworldForm.tmpPreviewBitmap, selectedEntrance.GlobalX + 16, selectedEntrance.GlobalY + 16);
 					}
-					if (exitmode.selectedExit != null)
+					if (selectedExit != null)
 					{
-						g.DrawImage(ZS.OverworldForm.tmpPreviewBitmap, exitmode.selectedExit.GlobalX + 16, exitmode.selectedExit.GlobalY + 16);
+						g.DrawImage(ZS.OverworldForm.tmpPreviewBitmap, selectedExit.GlobalX + 16, selectedExit.GlobalY + 16);
 					}
 				}
 
@@ -728,11 +719,6 @@ namespace ZeldaFullEditor
 			return null;
 		}
 
-		public void ReLoadPalettes()
-		{
-			ZS.OverworldManager.allmaps[selectedMap].LoadPalette();
-		}
-
 
 		public void drawGrid(Graphics graphics)
 		{
@@ -809,14 +795,6 @@ namespace ZeldaFullEditor
 			ZS.GFXManager.roomBg1Bitmap.Palette = palettes;
 			ZS.GFXManager.roomBg2Bitmap.Palette = palettes;
 			ZS.GFXManager.roomBgLayoutBitmap.Palette = palettes;
-		}
-
-		private void OnMouseDoubleClick(object sender, MouseEventArgs e)
-		{
-			if (ZS.CurrentOWMode == OverworldEditMode.Entrances)
-			{
-				entranceMode.OnMouseDoubleClick(e);
-			}
 		}
 
 		protected override void RequestRefresh()

@@ -51,7 +51,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			var v = comboBox1.SelectedItem as EntityName;
+			var v = (EntityName) comboBox1.SelectedItem;
 
 			var f = new Func<ITypeID, bool>(o => o.TypeID == v.ID);
 
@@ -59,12 +59,12 @@ namespace ZeldaFullEditor.Gui
 			{
 				foreach (var r in ZS.all_rooms)
 				{
-					int l = r.Layer1Objects.Where(f).ToArray().Length;
-					l += r.Layer2Objects.Where(f).ToArray().Length;
-					l += r.Layer3Objects.Where(f).ToArray().Length;
+					int l = r.Layer1Objects.Count(f);
+					l += r.Layer2Objects.Count(f);
+					l += r.Layer3Objects.Count(f);
 					if (l > 0)
 					{
-						richTextBox1.AppendText($"Found in room {r.RoomID:X3} : {l} x object {v.ID:X3}\r\n");
+						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x object {v.ID:X3}\r\n");
 					}
 				}
 			}
@@ -72,7 +72,7 @@ namespace ZeldaFullEditor.Gui
 			{
 				foreach (var r in ZS.all_rooms)
 				{
-					int l = r.SpritesList.Where(f).ToArray().Length;
+					int l = r.SpritesList.Count(f);
 					if (l > 0)
 					{
 						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x sprite {v.ID:X2}\r\n");
@@ -83,7 +83,7 @@ namespace ZeldaFullEditor.Gui
 			{
 				foreach (var r in ZS.all_rooms)
 				{
-					int l = r.SecretsList.Where(f).ToArray().Length;
+					int l = r.SecretsList.Count(f);
 					if (l > 0)
 					{
 						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x secret {v.ID:X2}\r\n");
@@ -94,7 +94,7 @@ namespace ZeldaFullEditor.Gui
 			{
 				foreach (var r in ZS.all_rooms)
 				{
-					int l = r.ChestList.Where(f).ToArray().Length;
+					int l = r.ChestList.Count(f);
 					if (l > 0)
 					{
 						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x item receipt {v.ID:X2}\r\n");

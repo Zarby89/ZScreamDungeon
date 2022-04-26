@@ -10,8 +10,10 @@ namespace ZeldaFullEditor.Data.Underworld
 	{
 		public ItemReceipt ReceiptType { get; set; }
 
-		public byte X => AssociatedChest?.X ?? 0;
-		public byte Y => AssociatedChest?.Y ?? 0;
+		public int RealX => AssociatedChest?.RealX ?? 0;
+		public int RealY => AssociatedChest?.RealY ?? 0;
+
+		public bool IsAssociated => AssociatedChest != null;
 
 		public byte ID => ReceiptType?.ID ?? 0xFF;
 		public int TypeID => ReceiptType?.ID ?? -1;

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,22 +9,23 @@ namespace ZeldaFullEditor.Data.Underworld
 {
 	public unsafe class DungeonSecret : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID
 	{
-		public byte X { get; set; } = 0;
-		public byte Y { get; set; } = 0;
+		public byte GridX { get; set; } = 0;
+		public byte GridY { get; set; } = 0;
 
 		public byte ID => SecretType.ID;
 		public int TypeID => SecretType.ID;
-		public int RealX => X;
-		public int RealY => Y;
 
+		public int RealX => NewX * 8;
+		public int RealY => NewY * 8;
+		public Rectangle OutlineBox => new Rectangle(RealX, RealY, 16, 16);
 
 		private byte nx, ny;
-		public byte NX
+		public byte NewX
 		{
 			get => nx;
 			set => nx = value.Clamp(0, 63);
 		}
-		public byte NY
+		public byte NewY
 		{
 			get => ny;
 			set => ny = value.Clamp(0, 63);
@@ -39,25 +41,25 @@ namespace ZeldaFullEditor.Data.Underworld
 			SecretType = s;
 		}
 
-		public override void Draw(ZScreamer ZS)
+		public void Draw(ZScreamer ZS)
 		{
 			SecretType.Draw(ZS, this);
 		}
 
-		public override bool PointIsInHitbox(int x, int y)
+		public bool PointIsInHitbox(int x, int y)
 		{
-			return x >= (X * 8) && x <= (X * 8) + 16 &&
-					y >= (Y * 8) && y <= (Y * 8) + 16;
+			return x >= (GridX * 8) && x <= (GridX * 8) + 16 &&
+					y >= (GridY * 8) && y <= (GridY * 8) + 16;
 		}
 
 		public bool Equals(DungeonSecret s)
 		{
-			return X == s.X && Y == s.Y && SecretType.ID == s.SecretType.ID;
+			return GridX == s.GridX && GridY == s.GridY && SecretType.ID == s.SecretType.ID;
 		}
 
 		public byte[] GetByteData()
 		{
-			UWTilemapPosition.CreateLowAndHighBytesFromXYZ(X, Y, Layer, out byte low, out byte high);
+			UWTilemapPosition.CreateLowAndHighBytesFromXYZ(GridX, GridY, Layer, out byte low, out byte high);
 			return new byte[] { low, high, SecretType.ID };
 			//ushort xy = (ushort) ((Y << 6) | (X << 1) | (Layer << 13));
 			//return new byte[]

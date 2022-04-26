@@ -10,10 +10,12 @@ namespace ZeldaFullEditor.Data
 {
 	public class DungeonDoorDraw
 	{
-		private delegate void DoorDrawFunction(ZScreamer ZS, DungeonDoorObject door);
+		private delegate void DoorDrawFunction(ZScreamer ZS, DungeonDoor door);
 
 		public byte Position { get; }
 		public DoorDirection Direction { get; }
+
+		public bool IsHorizontal { get; }
 
 		public byte Token { get; }
 
@@ -27,9 +29,10 @@ namespace ZeldaFullEditor.Data
 			draw = drawMain;
 			drawopp = drawOpposing;
 			Token = (byte) ((pos << 3) | (byte) dir);
+			IsHorizontal = dir == West || dir == East;
 		}
 
-		public void Draw(ZScreamer ZS, DungeonDoorObject door)
+		public void Draw(ZScreamer ZS, DungeonDoor door)
 		{
 			draw(ZS, door);
 			drawopp(ZS, door);
@@ -148,59 +151,59 @@ namespace ZeldaFullEditor.Data
 		public static readonly DungeonDoorDraw East16 = new DungeonDoorDraw(East, 0x16, DrawEast16, DrawNothing);
 
 
-		private static void DrawNothing(ZScreamer ZS, DungeonDoorObject door) { } // THIS PAGE LEFT INTENTIONALLY BLANK
+		private static void DrawNothing(ZScreamer ZS, DungeonDoor door) { } // THIS PAGE LEFT INTENTIONALLY BLANK
 
-		private static void DrawNorth00(ZScreamer ZS, DungeonDoorObject door) { DrawNorth(ZS, door, 0x021C, false); }
-		private static void DrawNorth02(ZScreamer ZS, DungeonDoorObject door) { DrawNorth(ZS, door, 0x023C, false); }
-		private static void DrawNorth04(ZScreamer ZS, DungeonDoorObject door) { DrawNorth(ZS, door, 0x025C, false); }
-		private static void DrawNorth06(ZScreamer ZS, DungeonDoorObject door) { DrawNorth(ZS, door, 0x039C, false); }
-		private static void DrawNorth08(ZScreamer ZS, DungeonDoorObject door) { DrawNorth(ZS, door, 0x03BC, false); }
-		private static void DrawNorth0A(ZScreamer ZS, DungeonDoorObject door) { DrawNorth(ZS, door, 0x03DC, false); }
-		private static void DrawNorth0C(ZScreamer ZS, DungeonDoorObject door) { DrawNorth(ZS, door, 0x121C, false); }
-		private static void DrawNorth0E(ZScreamer ZS, DungeonDoorObject door) { DrawNorth(ZS, door, 0x123C, false); }
-		private static void DrawNorth10(ZScreamer ZS, DungeonDoorObject door) { DrawNorth(ZS, door, 0x125C, false); }
-		private static void DrawNorth12(ZScreamer ZS, DungeonDoorObject door) { DrawNorth(ZS, door, 0x139C, false); }
-		private static void DrawNorth14(ZScreamer ZS, DungeonDoorObject door) { DrawNorth(ZS, door, 0x13BC, false); }
-		private static void DrawNorth16(ZScreamer ZS, DungeonDoorObject door) { DrawNorth(ZS, door, 0x13DC, false); }
+		private static void DrawNorth00(ZScreamer ZS, DungeonDoor door) { DrawNorth(ZS, door, 0x021C, false); }
+		private static void DrawNorth02(ZScreamer ZS, DungeonDoor door) { DrawNorth(ZS, door, 0x023C, false); }
+		private static void DrawNorth04(ZScreamer ZS, DungeonDoor door) { DrawNorth(ZS, door, 0x025C, false); }
+		private static void DrawNorth06(ZScreamer ZS, DungeonDoor door) { DrawNorth(ZS, door, 0x039C, false); }
+		private static void DrawNorth08(ZScreamer ZS, DungeonDoor door) { DrawNorth(ZS, door, 0x03BC, false); }
+		private static void DrawNorth0A(ZScreamer ZS, DungeonDoor door) { DrawNorth(ZS, door, 0x03DC, false); }
+		private static void DrawNorth0C(ZScreamer ZS, DungeonDoor door) { DrawNorth(ZS, door, 0x121C, false); }
+		private static void DrawNorth0E(ZScreamer ZS, DungeonDoor door) { DrawNorth(ZS, door, 0x123C, false); }
+		private static void DrawNorth10(ZScreamer ZS, DungeonDoor door) { DrawNorth(ZS, door, 0x125C, false); }
+		private static void DrawNorth12(ZScreamer ZS, DungeonDoor door) { DrawNorth(ZS, door, 0x139C, false); }
+		private static void DrawNorth14(ZScreamer ZS, DungeonDoor door) { DrawNorth(ZS, door, 0x13BC, false); }
+		private static void DrawNorth16(ZScreamer ZS, DungeonDoor door) { DrawNorth(ZS, door, 0x13DC, false); }
 
-		private static void DrawSouth00(ZScreamer ZS, DungeonDoorObject door) { DrawSouth(ZS, door, 0x0D1C, false); }
-		private static void DrawSouth02(ZScreamer ZS, DungeonDoorObject door) { DrawSouth(ZS, door, 0x0D3C, false); }
-		private static void DrawSouth04(ZScreamer ZS, DungeonDoorObject door) { DrawSouth(ZS, door, 0x0D5C, false); }
-		private static void DrawSouth06(ZScreamer ZS, DungeonDoorObject door) { DrawSouth(ZS, door, 0x0B9C, false); }
-		private static void DrawSouth08(ZScreamer ZS, DungeonDoorObject door) { DrawSouth(ZS, door, 0x0BBC, false); }
-		private static void DrawSouth0A(ZScreamer ZS, DungeonDoorObject door) { DrawSouth(ZS, door, 0x0BDC, false); }
-		private static void DrawSouth0C(ZScreamer ZS, DungeonDoorObject door) { DrawSouth(ZS, door, 0x1D1C, false); }
-		private static void DrawSouth0E(ZScreamer ZS, DungeonDoorObject door) { DrawSouth(ZS, door, 0x1D3C, false); }
-		private static void DrawSouth10(ZScreamer ZS, DungeonDoorObject door) { DrawSouth(ZS, door, 0x1D5C, false); }
-		private static void DrawSouth12(ZScreamer ZS, DungeonDoorObject door) { DrawSouth(ZS, door, 0x1B9C, false); }
-		private static void DrawSouth14(ZScreamer ZS, DungeonDoorObject door) { DrawSouth(ZS, door, 0x1BBC, false); }
-		private static void DrawSouth16(ZScreamer ZS, DungeonDoorObject door) { DrawSouth(ZS, door, 0x1BDC, false); }
+		private static void DrawSouth00(ZScreamer ZS, DungeonDoor door) { DrawSouth(ZS, door, 0x0D1C, false); }
+		private static void DrawSouth02(ZScreamer ZS, DungeonDoor door) { DrawSouth(ZS, door, 0x0D3C, false); }
+		private static void DrawSouth04(ZScreamer ZS, DungeonDoor door) { DrawSouth(ZS, door, 0x0D5C, false); }
+		private static void DrawSouth06(ZScreamer ZS, DungeonDoor door) { DrawSouth(ZS, door, 0x0B9C, false); }
+		private static void DrawSouth08(ZScreamer ZS, DungeonDoor door) { DrawSouth(ZS, door, 0x0BBC, false); }
+		private static void DrawSouth0A(ZScreamer ZS, DungeonDoor door) { DrawSouth(ZS, door, 0x0BDC, false); }
+		private static void DrawSouth0C(ZScreamer ZS, DungeonDoor door) { DrawSouth(ZS, door, 0x1D1C, false); }
+		private static void DrawSouth0E(ZScreamer ZS, DungeonDoor door) { DrawSouth(ZS, door, 0x1D3C, false); }
+		private static void DrawSouth10(ZScreamer ZS, DungeonDoor door) { DrawSouth(ZS, door, 0x1D5C, false); }
+		private static void DrawSouth12(ZScreamer ZS, DungeonDoor door) { DrawSouth(ZS, door, 0x1B9C, false); }
+		private static void DrawSouth14(ZScreamer ZS, DungeonDoor door) { DrawSouth(ZS, door, 0x1BBC, false); }
+		private static void DrawSouth16(ZScreamer ZS, DungeonDoor door) { DrawSouth(ZS, door, 0x1BDC, false); }
 
-		private static void DrawWest00(ZScreamer ZS, DungeonDoorObject door) { DrawWest(ZS, door, 0x0784, false); }
-		private static void DrawWest02(ZScreamer ZS, DungeonDoorObject door) { DrawWest(ZS, door, 0x0F84, false); }
-		private static void DrawWest04(ZScreamer ZS, DungeonDoorObject door) { DrawWest(ZS, door, 0x1784, false); }
-		private static void DrawWest06(ZScreamer ZS, DungeonDoorObject door) { DrawWest(ZS, door, 0x078A, false); }
-		private static void DrawWest08(ZScreamer ZS, DungeonDoorObject door) { DrawWest(ZS, door, 0x0F8A, false); }
-		private static void DrawWest0A(ZScreamer ZS, DungeonDoorObject door) { DrawWest(ZS, door, 0x178A, false); }
-		private static void DrawWest0C(ZScreamer ZS, DungeonDoorObject door) { DrawWest(ZS, door, 0x07C4, false); }
-		private static void DrawWest0E(ZScreamer ZS, DungeonDoorObject door) { DrawWest(ZS, door, 0x0FC4, false); }
-		private static void DrawWest10(ZScreamer ZS, DungeonDoorObject door) { DrawWest(ZS, door, 0x17C4, false); }
-		private static void DrawWest12(ZScreamer ZS, DungeonDoorObject door) { DrawWest(ZS, door, 0x07CA, false); }
-		private static void DrawWest14(ZScreamer ZS, DungeonDoorObject door) { DrawWest(ZS, door, 0x0FCA, false); }
-		private static void DrawWest16(ZScreamer ZS, DungeonDoorObject door) { DrawWest(ZS, door, 0x17CA, false); }
+		private static void DrawWest00(ZScreamer ZS, DungeonDoor door) { DrawWest(ZS, door, 0x0784, false); }
+		private static void DrawWest02(ZScreamer ZS, DungeonDoor door) { DrawWest(ZS, door, 0x0F84, false); }
+		private static void DrawWest04(ZScreamer ZS, DungeonDoor door) { DrawWest(ZS, door, 0x1784, false); }
+		private static void DrawWest06(ZScreamer ZS, DungeonDoor door) { DrawWest(ZS, door, 0x078A, false); }
+		private static void DrawWest08(ZScreamer ZS, DungeonDoor door) { DrawWest(ZS, door, 0x0F8A, false); }
+		private static void DrawWest0A(ZScreamer ZS, DungeonDoor door) { DrawWest(ZS, door, 0x178A, false); }
+		private static void DrawWest0C(ZScreamer ZS, DungeonDoor door) { DrawWest(ZS, door, 0x07C4, false); }
+		private static void DrawWest0E(ZScreamer ZS, DungeonDoor door) { DrawWest(ZS, door, 0x0FC4, false); }
+		private static void DrawWest10(ZScreamer ZS, DungeonDoor door) { DrawWest(ZS, door, 0x17C4, false); }
+		private static void DrawWest12(ZScreamer ZS, DungeonDoor door) { DrawWest(ZS, door, 0x07CA, false); }
+		private static void DrawWest14(ZScreamer ZS, DungeonDoor door) { DrawWest(ZS, door, 0x0FCA, false); }
+		private static void DrawWest16(ZScreamer ZS, DungeonDoor door) { DrawWest(ZS, door, 0x17CA, false); }
 
-		private static void DrawEast00(ZScreamer ZS, DungeonDoorObject door) { DrawEast(ZS, door, 0x07B4, false); }
-		private static void DrawEast02(ZScreamer ZS, DungeonDoorObject door) { DrawEast(ZS, door, 0x0FB4, false); }
-		private static void DrawEast04(ZScreamer ZS, DungeonDoorObject door) { DrawEast(ZS, door, 0x17B4, false); }
-		private static void DrawEast06(ZScreamer ZS, DungeonDoorObject door) { DrawEast(ZS, door, 0x07AE, false); }
-		private static void DrawEast08(ZScreamer ZS, DungeonDoorObject door) { DrawEast(ZS, door, 0x0FAE, false); }
-		private static void DrawEast0A(ZScreamer ZS, DungeonDoorObject door) { DrawEast(ZS, door, 0x17AE, false); }
-		private static void DrawEast0C(ZScreamer ZS, DungeonDoorObject door) { DrawEast(ZS, door, 0x07F4, false); }
-		private static void DrawEast0E(ZScreamer ZS, DungeonDoorObject door) { DrawEast(ZS, door, 0x0FF4, false); }
-		private static void DrawEast10(ZScreamer ZS, DungeonDoorObject door) { DrawEast(ZS, door, 0x17F4, false); }
-		private static void DrawEast12(ZScreamer ZS, DungeonDoorObject door) { DrawEast(ZS, door, 0x07EE, false); }
-		private static void DrawEast14(ZScreamer ZS, DungeonDoorObject door) { DrawEast(ZS, door, 0x0FEE, false); }
-		private static void DrawEast16(ZScreamer ZS, DungeonDoorObject door) { DrawEast(ZS, door, 0x17EE, false); }
+		private static void DrawEast00(ZScreamer ZS, DungeonDoor door) { DrawEast(ZS, door, 0x07B4, false); }
+		private static void DrawEast02(ZScreamer ZS, DungeonDoor door) { DrawEast(ZS, door, 0x0FB4, false); }
+		private static void DrawEast04(ZScreamer ZS, DungeonDoor door) { DrawEast(ZS, door, 0x17B4, false); }
+		private static void DrawEast06(ZScreamer ZS, DungeonDoor door) { DrawEast(ZS, door, 0x07AE, false); }
+		private static void DrawEast08(ZScreamer ZS, DungeonDoor door) { DrawEast(ZS, door, 0x0FAE, false); }
+		private static void DrawEast0A(ZScreamer ZS, DungeonDoor door) { DrawEast(ZS, door, 0x17AE, false); }
+		private static void DrawEast0C(ZScreamer ZS, DungeonDoor door) { DrawEast(ZS, door, 0x07F4, false); }
+		private static void DrawEast0E(ZScreamer ZS, DungeonDoor door) { DrawEast(ZS, door, 0x0FF4, false); }
+		private static void DrawEast10(ZScreamer ZS, DungeonDoor door) { DrawEast(ZS, door, 0x17F4, false); }
+		private static void DrawEast12(ZScreamer ZS, DungeonDoor door) { DrawEast(ZS, door, 0x07EE, false); }
+		private static void DrawEast14(ZScreamer ZS, DungeonDoor door) { DrawEast(ZS, door, 0x0FEE, false); }
+		private static void DrawEast16(ZScreamer ZS, DungeonDoor door) { DrawEast(ZS, door, 0x17EE, false); }
 
 
 		// ???
@@ -209,7 +212,7 @@ namespace ZeldaFullEditor.Data
 		// x = (byte) n;
 		// y = (byte) (posxy / 64);
 
-		public static unsafe void DrawTiles(ZScreamer ZS, DungeonDoorObject obj, bool bg2, ushort tmap, params DrawInfo[] instructions)
+		public static unsafe void DrawTiles(ZScreamer ZS, DungeonDoor obj, bool bg2, ushort tmap, params DrawInfo[] instructions)
 		{
 			foreach (DrawInfo d in instructions)
 			{
@@ -232,7 +235,7 @@ namespace ZeldaFullEditor.Data
 		}
 
 
-		private static void DrawNorth(ZScreamer ZS, DungeonDoorObject door, ushort tmap, bool bg2)
+		private static void DrawNorth(ZScreamer ZS, DungeonDoor door, ushort tmap, bool bg2)
 		{
 			// trim always goes on top
 			DrawTiles(ZS, door, false, tmap,
@@ -255,7 +258,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		private static void DrawSouth(ZScreamer ZS, DungeonDoorObject door, ushort tmap, bool bg2)
+		private static void DrawSouth(ZScreamer ZS, DungeonDoor door, ushort tmap, bool bg2)
 		{
 			// trim always goes on top
 			DrawTiles(ZS, door, false, tmap,
@@ -279,7 +282,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		private static void DrawWest(ZScreamer ZS, DungeonDoorObject door, ushort tmap, bool bg2)
+		private static void DrawWest(ZScreamer ZS, DungeonDoor door, ushort tmap, bool bg2)
 		{
 			// trim always goes on top
 			DrawTiles(ZS, door, false, tmap,
@@ -302,7 +305,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		private static void DrawEast(ZScreamer ZS, DungeonDoorObject door, ushort tmap, bool bg2)
+		private static void DrawEast(ZScreamer ZS, DungeonDoor door, ushort tmap, bool bg2)
 		{
 			// trim always goes on top
 			DrawTiles(ZS, door, false, tmap,

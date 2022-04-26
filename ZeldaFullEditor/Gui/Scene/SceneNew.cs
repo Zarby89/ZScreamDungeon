@@ -34,16 +34,19 @@ namespace ZeldaFullEditor
 		public int DraggingX { get; protected set; }
 		public int DraggingY { get; protected set; }
 
-		public SceneMode ActiveMode { get; protected set; }
+		public ModeActions ActiveMode { get; protected set; }
 
-		public bool NeedsRefreshing
-		{
-			set => RequestRefresh();
-		}
+		public bool TriggerRefresh { get; set; }
 
 		protected Scene(ZScreamer zs)
 		{
 			ZS = zs;
+
+			MouseDown += new MouseEventHandler(OnMouseDown);
+			MouseUp += new MouseEventHandler(OnMouseUp);
+			MouseMove += new MouseEventHandler(OnMouseMove);
+			MouseDoubleClick += new MouseEventHandler(OnMouseDoubleClick);
+			MouseWheel += new MouseEventHandler(OnMouseWheel);
 		}
 
 		public virtual void drawText(Graphics g, int x, int y, string text, ImageAttributes ai = null, bool x2 = false)
@@ -81,26 +84,124 @@ namespace ZeldaFullEditor
 
 		protected abstract void RequestRefresh();
 
+
+		protected virtual void OnMouseWheel(object o, MouseEventArgs e)
+		{
+			try
+			{
+				ActiveMode.OnMouseWheel(e);
+			}
+			catch (ZeldaException ze)
+			{
+				UIText.GeneralWarning(ze.Message);
+			}
+		}
+
+		protected virtual void OnMouseDown(object sender, MouseEventArgs e)
+		{
+			try
+			{
+				ActiveMode.OnMouseDown(e);
+			}
+			catch (ZeldaException ze)
+			{
+				UIText.GeneralWarning(ze.Message);
+			}
+
+			base.OnMouseDown(e);
+		}
+
+
+		protected virtual void OnMouseUp(object sender, MouseEventArgs e)
+		{
+			try
+			{
+				ActiveMode.OnMouseUp(e);
+			}
+			catch (ZeldaException ze)
+			{
+				UIText.GeneralWarning(ze.Message);
+			}
+		}
+
+
+		protected virtual void OnMouseMove(object sender, MouseEventArgs e)
+		{
+			try
+			{
+				ActiveMode.OnMouseMove(e);
+			}
+			catch (ZeldaException ze)
+			{
+				UIText.GeneralWarning(ze.Message);
+			}
+		}
+
+
+		protected virtual void OnMouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			
+		}
+
+		public abstract void Undo();
+		public abstract void Redo();
+
 		public virtual void Copy()
 		{
-			ActiveMode.Copy();
+			try
+			{
+				ActiveMode.Copy();
+			}
+			catch (ZeldaException ze)
+			{
+				UIText.GeneralWarning(ze.Message);
+			}
 		}
 
 		public virtual void Paste()
 		{
-			ActiveMode.Paste();
+			try
+			{
+				ActiveMode.Paste();
+			}
+			catch (ZeldaException ze)
+			{
+				UIText.GeneralWarning(ze.Message);
+			}
+
 			RequestRefresh();
 		}
 
 		public virtual void Cut()
 		{
-			ActiveMode.Cut();
+			ActiveMode.Copy();
+			ActiveMode.Delete();
+		}
+
+
+		public virtual void Insert()
+		{
+			try
+			{
+				ActiveMode.Insert();
+			}
+			catch (ZeldaException ze)
+			{
+				UIText.GeneralWarning(ze.Message);
+			}
 			RequestRefresh();
 		}
 
 		public virtual void Delete()
 		{
-			ActiveMode.Delete();
+			try
+			{
+				ActiveMode.Delete();
+			}
+			catch (ZeldaException ze)
+			{
+				UIText.GeneralWarning(ze.Message);
+			}
 			RequestRefresh();
 		}
 

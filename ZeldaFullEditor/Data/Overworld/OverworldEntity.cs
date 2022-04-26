@@ -9,11 +9,13 @@ namespace ZeldaFullEditor
 		public byte MapID { get; set; }
 		public byte MapX { get; set; }
 		public byte MapY { get; set; }
+		public int RealX { get; }
+		public int RealY { get; }
 
-		public byte X { get; set; }
-		public byte Y { get; set; }
-		public byte NX { get; set; }
-		public byte NY { get; set; }
+		public byte GridX { get; set; }
+		public byte GridY { get; set; }
+		public byte NewX { get; set; }
+		public byte NewY { get; set; }
 
 		public ushort MapPos => (ushort) (((MapY << 6) | (MapX & 0x3F)) << 1);
 

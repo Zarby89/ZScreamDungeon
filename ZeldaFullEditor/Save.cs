@@ -86,7 +86,7 @@ namespace ZeldaFullEditor
 			{
 				foreach (DungeonBlock b in all_rooms[i].BlocksList)
 				{
-					int xy = ((b.Y * 64) + b.X) << 1;
+					int xy = ((b.GridY * 64) + b.GridX) << 1;
 					
 					ROM.WriteContinuous(ref pos, 
 						(byte) i,

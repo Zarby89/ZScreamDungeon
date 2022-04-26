@@ -8,51 +8,28 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZeldaFullEditor.SceneModes
+namespace ZeldaFullEditor
 {
-	public class OWExitMode : SceneMode
+	public partial class SceneOW
 	{
 		public ExitOW selectedExit = null;
 		public ExitOW lastselectedExit = null;
 
-		int mxRightclick = 0;
-		int myRightclick = 0;
-
-		ExitEditorForm exitPropForm;
-
-		public OWExitMode(ZScreamer zs) : base(zs)
-		{
-			exitPropForm = new ExitEditorForm(ZS);
-		}
-
-		public override void Copy()
+		private void Copy_Exit()
 		{
 			Clipboard.Clear();
 			ExitOW ed = lastselectedExit.Copy();
 			Clipboard.SetData(Constants.OverworldExitClipboardData, ed);
 		}
 
-		public override void Cut()
-		{
-			Clipboard.Clear();
-			ExitOW ed = lastselectedExit.Copy();
-			Clipboard.SetData(Constants.OverworldExitClipboardData, ed);
-			Delete();
-		}
-
-		public override void Paste()
+		private void Paste_Exit()
 		{
 			ExitOW ae = AddExit(true);
 			if (ae != null)
 			{
 				lastselectedExit = selectedExit = ae;
-				ZS.OverworldScene.mouse_down = true;
+				mouse_down = true;
 			}
-		}
-
-		public override void OnMouseWheel(MouseEventArgs e)
-		{
-
 		}
 
 		public ExitOW AddExit(bool clipboard = false)
@@ -62,10 +39,10 @@ namespace ZeldaFullEditor.SceneModes
 			{
 				if (ZS.OverworldManager.allexits[i].deleted)
 				{
-					byte mid = ZS.OverworldManager.allmaps[ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.worldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
+						mid = (byte) (mapHover + ZS.OverworldManager.worldOffset);
 					}
 
 					ZS.OverworldManager.allexits[i].deleted = false;
@@ -110,7 +87,7 @@ namespace ZeldaFullEditor.SceneModes
 			return ZS.OverworldManager.allexits[found];
 		}
 
-		public override void OnMouseDown(MouseEventArgs e)
+		private void OnMouseDown_Exit(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -121,10 +98,10 @@ namespace ZeldaFullEditor.SceneModes
 					{
 						if (e.X >= en.GlobalX && e.X < en.GlobalX + 16 && e.Y >= en.GlobalY && e.Y < en.GlobalY + 16)
 						{
-							if (!ZS.OverworldScene.mouse_down)
+							if (!mouse_down)
 							{
 								selectedExit = lastselectedExit = en;
-								ZS.OverworldScene.mouse_down = true;
+								mouse_down = true;
 							}
 						}
 					}
@@ -149,14 +126,14 @@ namespace ZeldaFullEditor.SceneModes
 					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.DungeonForm.previewRoom.Palette);
 					ZS.DungeonForm.DrawRoom();
 					DrawTempExit();
-					ZS.OverworldScene.entrancePreview = true;
+					entrancePreview = true;
 					//scene.Refresh();
 
 					if (ZS.UnderworldScene.Room != null)
 					{
 						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
 						ZS.UnderworldScene.Room.reloadGfx();
-						ZS.UnderworldScene.NeedsRefreshing = true;
+						ZS.UnderworldScene.TriggerRefresh = true;
 					}
 				}
 
@@ -164,7 +141,7 @@ namespace ZeldaFullEditor.SceneModes
 			}
 		}
 
-		public override void Delete() // Set exit data to 0
+		private void Delete_Exit() // Set exit data to 0
 		{
 			lastselectedExit.GlobalX = 0xFFFF;
 			lastselectedExit.GlobalY = 0xFFFF;
@@ -174,22 +151,22 @@ namespace ZeldaFullEditor.SceneModes
 			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 		}
 
-		public override void OnMouseMove(MouseEventArgs e)
+		private void OnMouseMove_Exit(MouseEventArgs e)
 		{
-			if (ZS.OverworldScene.mouse_down)
+			if (mouse_down)
 			{
 
-				ZS.OverworldScene.mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
+				mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
 
 				if (selectedExit != null)
 				{
-					selectedExit.GlobalX = (ushort) (ZS.OverworldScene.snapToGrid ? e.X & ~0x7 : e.X);
-					selectedExit.GlobalY = (ushort) (ZS.OverworldScene.snapToGrid ? e.Y & ~0x7 : e.Y);
+					selectedExit.GlobalX = (ushort) (snapToGrid ? e.X & ~0x7 : e.X);
+					selectedExit.GlobalY = (ushort) (snapToGrid ? e.Y & ~0x7 : e.Y);
 
-					byte mid = ZS.OverworldManager.allmaps[ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.worldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (ZS.OverworldScene.mapHover + ZS.OverworldManager.worldOffset);
+						mid = (byte) (mapHover + ZS.OverworldManager.worldOffset);
 					}
 
 					selectedExit.UpdateMapID(mid, ZS.OverworldManager);
@@ -199,7 +176,7 @@ namespace ZeldaFullEditor.SceneModes
 			}
 		}
 
-		public override void OnMouseUp(MouseEventArgs e)
+		private void OnMouseUp_Exit(MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Left)
 			{
@@ -207,9 +184,10 @@ namespace ZeldaFullEditor.SceneModes
 				{
 					lastselectedExit = selectedExit;
 					selectedExit = null;
-					ZS.OverworldScene.mouse_down = false;
+					mouse_down = false;
 				}
 			}
+			// TODO IMouseCollidable
 			else if (e.Button == MouseButtons.Right)
 			{
 				bool clickedon = false;
@@ -222,21 +200,11 @@ namespace ZeldaFullEditor.SceneModes
 					{
 						if (e.X >= en.GlobalX && e.X < en.GlobalX + 16 && e.Y >= en.GlobalY && e.Y < en.GlobalY + 16)
 						{
-							menu.Items.Add("Exit Properties");
-							lastselectedExit = en;
-							selectedExit = null;
-							ZS.OverworldScene.mouse_down = false;
 
 							if (lastselectedExit == null)
 							{
 								menu.Items[0].Enabled = false;
 							}
-
-							clickedon = true;
-							menu.Items[0].Click += exitProperty_Click;
-							menu.Items.Add("Delete Exit");
-							menu.Items[1].Click += exitDelete_Click;
-							menu.Show(Cursor.Position);
 						}
 					}
 				}
@@ -259,66 +227,44 @@ namespace ZeldaFullEditor.SceneModes
 
 		public void exitDelete_Click(object sender, EventArgs e)
 		{
-			Delete();
+			Delete_Exit();
 		}
 
-		public void exitProperty_Click(object sender, EventArgs e)
-		{
-			exitPropForm.SetExit(lastselectedExit);
-			DialogResult dr = exitPropForm.ShowDialog();
+		// TODO move to the side tab
+		//ZS.CurrentOWMode = OverworldEditMode.Doors;
+		//if (lastselectedExit.doorType1 != 0) // Wooden door
+		//{
+		//	selectedTile = new ushort[2];
+		//	selectedTileSizeX = 2;
+		//	selectedTile[0] = 1865;
+		//	selectedTile[1] = 1866;
+		//
+		//}
+		//else if ((lastselectedExit.doorType2 & 0x8000) != 0) // Castle door
+		//{
+		//	selectedTile = new ushort[4];
+		//	selectedTileSizeX = 2;
+		//	selectedTile[0] = 3510;
+		//	selectedTile[1] = 3511;
+		//	selectedTile[2] = 3512;
+		//	selectedTile[3] = 3513;
+		//}
+		//else if ((lastselectedExit.doorType2 & 0x7FFF) != 0) // Sanctuary door
+		//{
+		//	selectedTile = new ushort[2];
+		//	selectedTileSizeX = 2;
+		//	selectedTile[0] = 3502;
+		//	selectedTile[1] = 3503;
+		//}
 
-			if (dr == DialogResult.OK)
-			{
-				int index = Array.IndexOf(ZS.OverworldManager.allexits, lastselectedExit);
-				lastselectedExit = ZS.OverworldManager.allexits[index] = exitPropForm.editingExit;
-				ZS.CurrentOWMode = OverworldEditMode.Exits;
-				//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-			}
-			else if (dr == DialogResult.Yes)
-			{
-				ZS.CurrentOWMode = OverworldEditMode.Doors;
-				if (lastselectedExit.doorType1 != 0) // Wooden door
-				{
-					ZS.OverworldScene.selectedTile = new ushort[2];
-					ZS.OverworldScene.selectedTileSizeX = 2;
-					ZS.OverworldScene.selectedTile[0] = 1865;
-					ZS.OverworldScene.selectedTile[1] = 1866;
-
-				}
-				else if ((lastselectedExit.doorType2 & 0x8000) != 0) // Castle door
-				{
-					ZS.OverworldScene.selectedTile = new ushort[4];
-					ZS.OverworldScene.selectedTileSizeX = 2;
-					ZS.OverworldScene.selectedTile[0] = 3510;
-					ZS.OverworldScene.selectedTile[1] = 3511;
-					ZS.OverworldScene.selectedTile[2] = 3512;
-					ZS.OverworldScene.selectedTile[3] = 3513;
-				}
-				else if ((lastselectedExit.doorType2 & 0x7FFF) != 0) // Sanctuary door
-				{
-					ZS.OverworldScene.selectedTile = new ushort[2];
-					ZS.OverworldScene.selectedTileSizeX = 2;
-					ZS.OverworldScene.selectedTile[0] = 3502;
-					ZS.OverworldScene.selectedTile[1] = 3503;
-				}
-			}
-			else
-			{
-				ZS.CurrentOWMode = OverworldEditMode.Exits;
-			}
-
-			selectedExit = null;
-			ZS.OverworldScene.mouse_down = false;
-		}
-
-		public void Draw(Graphics g)
+		public void Draw_Exit(Graphics g)
 		{
 			for (int i = 0; i < 78; i++)
 			{
 				g.CompositingMode = CompositingMode.SourceOver;
 				ExitOW ex = ZS.OverworldManager.allexits[i];
 
-				if (ZS.OverworldScene.lowEndMode && ex.MapID != ZS.OverworldManager.allmaps[ZS.OverworldScene.selectedMap].parent)
+				if (lowEndMode && ex.MapID != ZS.OverworldManager.allmaps[selectedMap].parent)
 				{
 					continue;
 				}
@@ -333,7 +279,7 @@ namespace ZeldaFullEditor.SceneModes
 						g.CompositingMode = CompositingMode.SourceOver;
 						bgrBrush = Constants.MediumGray200Brush;
 						g.DrawFilledRectangleWithOutline(ex.GlobalX, ex.GlobalY, 16, 16, Constants.Black200Pen, bgrBrush);
-						ZS.OverworldScene.drawText(g, ex.GlobalX + 4, ex.GlobalY + 4, $"{i:X2}");
+						drawText(g, ex.GlobalX + 4, ex.GlobalY + 4, $"{i:X2}");
 
 						g.DrawRectangle(Pens.LightPink, new Rectangle(ex.ScrollX, ex.ScrollY, 256, 224));
 						g.DrawLine(Pens.Blue, ex.CameraX - 8, ex.CameraY, ex.CameraX + 8, ex.CameraY);
@@ -343,7 +289,7 @@ namespace ZeldaFullEditor.SceneModes
 					}
 
 					g.DrawFilledRectangleWithOutline(ex.GlobalX, ex.GlobalY, 16, 16, Constants.Black200Pen, bgrBrush);
-					ZS.OverworldScene.drawText(g, ex.GlobalX + 4, ex.GlobalY + 4, $"{i:X2}");
+					drawText(g, ex.GlobalX + 4, ex.GlobalY + 4, $"{i:X2}");
 				}
 			}
 
@@ -392,11 +338,6 @@ namespace ZeldaFullEditor.SceneModes
 			ZS.UnderworldScene.drawText(g, 0, 0, "ROOM : " + ZS.DungeonForm.previewRoom.RoomID.ToString("X2"));
 			g.InterpolationMode = InterpolationMode.NearestNeighbor;
 			g.Dispose();
-		}
-
-		public override void SelectAll()
-		{
-			throw new NotImplementedException();
 		}
 	}
 }

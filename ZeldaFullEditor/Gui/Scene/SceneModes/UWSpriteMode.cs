@@ -6,54 +6,52 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Data.Underworld;
 
-namespace ZeldaFullEditor.SceneModes
+namespace ZeldaFullEditor
 {
-	public class UWSpriteMode : SceneMode
+	public partial class SceneUW
 	{
-		public UWSpriteMode(ZScreamer zs) : base(zs)
+		private void OnMouseDown_Sprites(MouseEventArgs e)
+		{
+			if (ObjectToPlace == null) return;
+
+			CheckIfObjectIsInvalidForPlacement();
+
+			Room.AttemptToAddEntityAsSelected(ObjectToPlace, CurrentMode));
+
+			MouseIsDown = true;
+
+			ResetPlacementProperties();
+		}
+
+		private void OnMouseUp_Sprites(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseDown(MouseEventArgs e)
+		private void OnMouseMove_Sprites(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseUp(MouseEventArgs e)
+		private void Copy_Sprites()
 		{
 
 		}
 
-		public override void OnMouseMove(MouseEventArgs e)
+		private void Paste_Sprites()
 		{
 
 		}
 
-		public override void OnMouseWheel(MouseEventArgs e)
+		private void Delete_Sprites()
 		{
-
+			Room.RemoveCurrentlySelectedObjectsFromList(Room.SpritesList);
 		}
 
-		public override void Copy()
+		private void SelectAll_Sprites()
 		{
-
-		}
-
-		public override void Paste()
-		{
-
-		}
-
-		public override void Delete()
-		{
-			ZS.UnderworldScene.Room.RemoveCurrentlySelectedObjectsFromList(ZS.UnderworldScene.Room.SpritesList);
-		}
-		public override void SelectAll()
-		{
-			DungeonRoom room = ZS.UnderworldScene.Room;
-			room.SelectedObjects.Clear();
-			room.SelectedObjects.AddRange(room.SpritesList);
+			Room.ClearSelectedList();
+			Room.SelectedObjects.AddRange(Room.SpritesList);
 		}
 
 	}

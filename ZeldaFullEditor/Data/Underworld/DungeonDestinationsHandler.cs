@@ -9,34 +9,38 @@ namespace ZeldaFullEditor.Data.Underworld
 {
 	public class DungeonDestination
 	{
+		public byte Index { get; }
+
 		public byte Target { get; set; } = 0;
 
 		public byte Layer { get; set; } = 0;
 
+		public override string ToString() => $"{Index}: To {Target:X2}";
+
 		public RoomObject AssociatedObject { get; set; } = null;
+		public bool IsAssociated => AssociatedObject != null;
 
-		public byte X => AssociatedObject?.X ?? 0;
-		public byte Y => AssociatedObject?.Y ?? 0;
+		public int RealX => AssociatedObject?.RealX ?? 0;
+		public int RealY => AssociatedObject?.RealY ?? 0;
 
-		public DungeonDestination() { }
+		public DungeonDestination(byte i)
+		{
+			Index = i;
+		}
 
 		public void Clear()
 		{
 			AssociatedObject = null;
 		}
-		public void Draw(ZScreamer ZS)
-		{
-
-		}
 	}
 
 	public class DungeonDestinationsHandler
 	{
-		public DungeonDestination Pits { get; } = new DungeonDestination();
-		public DungeonDestination Stair1 { get; } = new DungeonDestination();
-		public DungeonDestination Stair2 { get; } = new DungeonDestination();
-		public DungeonDestination Stair3 { get; } = new DungeonDestination();
-		public DungeonDestination Stair4 { get; } = new DungeonDestination();
+		public DungeonDestination Pits { get; } = new DungeonDestination(0);
+		public DungeonDestination Stair1 { get; } = new DungeonDestination(1);
+		public DungeonDestination Stair2 { get; } = new DungeonDestination(2);
+		public DungeonDestination Stair3 { get; } = new DungeonDestination(3);
+		public DungeonDestination Stair4 { get; } = new DungeonDestination(4);
 
 		public DungeonDestinationsHandler()
 		{

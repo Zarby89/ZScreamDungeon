@@ -7,24 +7,27 @@ namespace ZeldaFullEditor.Data.Underworld
 	public unsafe class DungeonSprite : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID
 	{
 
-		public byte X { get; set; } = 0;
-		public byte Y { get; set; } = 0;
+		public byte GridX { get; set; } = 0;
+		public byte GridY { get; set; } = 0;
+
+		public int RealX => NewX * 16;
+		public int RealY => NewY * 16;
 		public ushort RoomID { get; set; } = 0;
 
-		public int RealX { get; }
-		public int RealY { get; }
+		public Rectangle OutlineBox => new Rectangle(RealX, RealY, 16, 16); // TODO
+
 
 		public string Name => Species.VanillaName;
 		public byte ID => Species.ID;
 		public int TypeID => Species.ID;
 
 		private byte nx, ny;
-		public byte NX
+		public byte NewX
 		{
 			get => nx;
 			set => nx = value.Clamp(0, 31);
 		}
-		public byte NY
+		public byte NewY
 		{
 			get => ny;
 			set => ny = value.Clamp(0, 31);
@@ -70,8 +73,8 @@ namespace ZeldaFullEditor.Data.Underworld
 		{
 			return new DungeonSprite(Species, RoomID)
 			{
-				X = X,
-				Y = Y,
+				GridX = GridX,
+				GridY = GridY,
 				Layer = Layer,
 				Subtype = Subtype,
 				KeyDrop = KeyDrop
@@ -81,8 +84,8 @@ namespace ZeldaFullEditor.Data.Underworld
 		{
 			int size = (KeyDrop == 1 || KeyDrop == 2) ? 6 : 3;
 			byte[] ret = new byte[size];
-			ret[0] = (byte) ((Layer << 7) | ((Subtype & 0x18) << 2) | Y);
-			ret[1] = (byte) ((Subtype << 5) | X);
+			ret[0] = (byte) ((Layer << 7) | ((Subtype & 0x18) << 2) | GridY);
+			ret[1] = (byte) ((Subtype << 5) | GridX);
 			ret[2] = Species.ID;
 
 			if (size == 6)
@@ -94,17 +97,17 @@ namespace ZeldaFullEditor.Data.Underworld
 
 			return ret;
 		}
-		public override bool PointIsInHitbox(int x, int y)
+		public bool PointIsInHitbox(int x, int y)
 		{
 			throw new NotImplementedException();
 		}
 
 		public bool Equals(DungeonSprite s)
 		{
-			return X == s.X && Y == s.Y && ID == s.ID && Subtype == s.Subtype;
+			return GridX == s.GridX && GridY == s.GridY && ID == s.ID && Subtype == s.Subtype;
 		}
 
-		public override void Draw(ZScreamer ZS)
+		public void Draw(ZScreamer ZS)
 		{
 			Species.Draw(ZS, this);
 

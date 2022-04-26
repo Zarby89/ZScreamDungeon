@@ -5,38 +5,34 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ZeldaFullEditor.SceneModes
+namespace ZeldaFullEditor
 {
-	public class UWEntranceMode : SceneMode
+	public partial class SceneUW
 	{
-		public UWEntranceMode(ZScreamer zs) : base(zs)
+		private void OnMouseDown_Entrance(MouseEventArgs e)
+		{
+			ZS.DungeonForm.entrancetreeView_AfterSelect(null, null);
+			ZS.CurrentUWMode = DungeonEditMode.LayerAll;
+		}
+
+		private void OnMouseUp_Entrance(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseDown(MouseEventArgs e)
-		{
-
-		}
-
-		public override void OnMouseUp(MouseEventArgs e)
-		{
-
-		}
-
-		public override void OnMouseMove(MouseEventArgs e)
+		private void OnMouseMove_Entrance(MouseEventArgs e)
 		{
 
 			Entrance sel = ZS.DungeonForm.selectedEntrance;
 
 			if (sel == null) return;
 
-			int ey = ZS.UnderworldScene.Room.RoomID >> 4;
-			int ex = ZS.UnderworldScene.Room.RoomID & 0xF;
+			int ey = Room.RoomID >> 4;
+			int ex = Room.RoomID & 0xF;
 
 
-			int MX = ZS.UnderworldScene.MouseX;
-			int MY = ZS.UnderworldScene.MouseY;
+			int MX = MouseX;
+			int MY = MouseY;
 
 			if (ZS.DungeonForm.gridEntranceCheckbox.Checked)
 			{
@@ -48,7 +44,7 @@ namespace ZeldaFullEditor.SceneModes
 			sel.YPosition = (ushort) (MY + (ey * 512));
 			sel.CameraTriggerX = (ushort) MX;
 			sel.CameraTriggerY = (ushort) MY;
-			sel.RoomID = ZS.UnderworldScene.Room.RoomID;
+			sel.RoomID = Room.RoomID;
 
 			if (sel.CameraTriggerX > 383)
 			{
@@ -120,38 +116,7 @@ namespace ZeldaFullEditor.SceneModes
 
 			sel.AutoCalculateScrollBoundaries();
 
-			ZS.UnderworldScene.NeedsRefreshing = true;
-
-		}
-
-		public override void OnMouseWheel(MouseEventArgs e)
-		{
-
-		}
-
-		public override void Copy()
-		{
-			// Do nothing
-		}
-
-		public override void Cut()
-		{
-			// Do nothing
-		}
-
-		public override void Paste()
-		{
-			// Do nothing
-		}
-
-		public override void Delete()
-		{
-			// Do nothing
-		}
-
-		public override void SelectAll()
-		{
-			// Do nothing
+			TriggerRefresh = true;
 		}
 	}
 }

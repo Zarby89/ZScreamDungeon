@@ -6,60 +6,60 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Data.Underworld;
 
-namespace ZeldaFullEditor.SceneModes
+namespace ZeldaFullEditor
 {
-	public class UWBlockMode : SceneMode
+	public partial class SceneUW
 	{
-		public UWBlockMode(ZScreamer zs) : base(zs)
+		private void OnMouseDown_Blocks(MouseEventArgs e)
+		{
+			if (MouseIsDown) return;
+
+			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+			DraggingX = MX / 16;
+			DraggingY = MY / 16;
+		}
+
+		private void OnMouseUp_Blocks(MouseEventArgs e)
+		{
+			// Nothing
+		}
+
+		private void OnMouseMove_Blocks(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseDown(MouseEventArgs e)
+		private void Copy_Blocks()
 		{
 
 		}
 
-		public override void OnMouseUp(MouseEventArgs e)
+		private void Paste_Blocks()
 		{
 
 		}
 
-		public override void OnMouseMove(MouseEventArgs e)
+		private void Delete_Blocks()
 		{
+			Room.RemoveCurrentlySelectedObjectsFromList(Room.BlocksList);
+		}
+		
+		private void Insert_Blocks()
+		{
+			var b = new DungeonBlock()
+			{
+				GridX = (byte) MouseX,
+				GridY = (byte) MouseY,
+				Layer = 0,
+			};
 
+			Room.AttemptToAddEntityAsSelected(b, CurrentMode);
 		}
 
-		public override void OnMouseWheel(MouseEventArgs e)
+		private void SelectAll_Blocks()
 		{
-
-		}
-
-		public override void Copy()
-		{
-
-		}
-
-		public override void Cut()
-		{
-
-		}
-
-		public override void Paste()
-		{
-
-		}
-
-		public override void Delete()
-		{
-
-		}
-
-		public override void SelectAll()
-		{
-			DungeonRoom room = ZS.UnderworldScene.Room;
-			room.SelectedObjects.Clear();
-			room.SelectedObjects.AddRange(room.BlocksList);
+			Room.ClearSelectedList();
+			Room.SelectedObjects.AddRange(Room.BlocksList);
 		}
 	}
 }

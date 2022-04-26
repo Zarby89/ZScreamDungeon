@@ -6,55 +6,56 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Data.Underworld;
 
-namespace ZeldaFullEditor.SceneModes
+namespace ZeldaFullEditor
 {
-	public class UWTorchMode : SceneMode
+	public partial class SceneUW
 	{
-		public UWTorchMode(ZScreamer zs) : base(zs)
+		private void OnMouseDown_Torch(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseDown(MouseEventArgs e)
+		private void OnMouseUp_Torch(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseUp(MouseEventArgs e)
+		private void OnMouseMove_Torch(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseMove(MouseEventArgs e)
+		private void Copy_Torch()
 		{
 
 		}
 
-		public override void OnMouseWheel(MouseEventArgs e)
+		private void Paste_Torch()
 		{
 
 		}
 
-		public override void Copy()
+		private void Delete_Torch()
 		{
-
+			Room.RemoveCurrentlySelectedObjectsFromList(Room.TorchList);
 		}
 
-		public override void Paste()
+		private void Insert_Torch()
 		{
+			var b = new DungeonTorch()
+			{
+				GridX = (byte) MouseX,
+				GridY = (byte) MouseY,
+				Layer = 0,
+			};
 
+			Room.AttemptToAddEntityAsSelected(b, CurrentMode);
 		}
 
-		public override void Delete()
+		private void SelectAll_Torch()
 		{
-			ZS.UnderworldScene.Room.RemoveCurrentlySelectedObjectsFromList(ZS.UnderworldScene.Room.TorchList);
-		}
-
-		public override void SelectAll()
-		{
-			DungeonRoom room = ZS.UnderworldScene.Room;
-			room.SelectedObjects.Clear();
-			room.SelectedObjects.AddRange(room.TorchList);
+			Room.ClearSelectedList();
+			Room.SelectedObjects.AddRange(Room.TorchList);
 		}
 	}
 }

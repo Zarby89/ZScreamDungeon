@@ -223,7 +223,11 @@
     <Compile Include="Data\Overworld\OverworldDestination.cs" />
     <Compile Include="Data\Overworld\OverworldSprite.cs" />
     <Compile Include="Data\Overworld\OverworldSecret.cs" />
+    <Compile Include="Data\Types\LayerMergeType.cs" />
     <Compile Include="Data\Underworld\CollisionRectangle.cs" />
+    <Compile Include="Gui\Scene\SceneModes\UWCollisionMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utility\DataObjects\AddressSet.cs" />
     <Compile Include="Hacks\asar.cs" />
     <Compile Include="Utility\DataObjects\DoorTilesList.cs" />
@@ -251,14 +255,14 @@
     <Compile Include="Data\Underworld\DungeonChestItem.cs" />
     <Compile Include="Data\Types\DungeonDoorType.cs" />
     <Compile Include="Data\Underworld\DungeonLayout.cs" />
-    <Compile Include="Data\Underworld\DungeonObject.cs" />
+    <Compile Include="Utility\Interfaces\DungeonObject.cs" />
     <Compile Include="Data\Underworld\DungeonDoor.cs" />
-    <Compile Include="Data\Types\DungeonDoorTypes.cs" />
+    <Compile Include="Data\Types\DungeonDoorDraw.cs" />
     <Compile Include="Data\Types\DungeonObjectDraw.cs" />
     <Compile Include="Data\Types\DungeonObjectTypes.cs" />
     <Compile Include="Data\Underworld\DungeonRoom.cs" />
     <Compile Include="Data\Underworld\DungeonRoomChestsHandler.cs" />
-    <Compile Include="Data\Underworld\DungeonRoomObject.cs" />
+    <Compile Include="Data\Underworld\RoomObject.cs" />
     <Compile Include="Data\Underworld\DungeonRoomParts.cs" />
     <Compile Include="Data\Underworld\DungeonDestinationsHandler.cs" />
     <Compile Include="Data\Underworld\DungeonSecret.cs" />
@@ -507,17 +511,37 @@
     <Compile Include="Data\Overworld\Overworld.cs" />
     <Compile Include="Data\Misc\OverworldMap.cs" />
     <Compile Include="Gui\Scene\SceneModes\ClipboardData\TileData.cs" />
-    <Compile Include="Gui\Scene\SceneModes\OWDoorMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\OWEntranceMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\OWExitMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\OWSecretsMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\UWLayerMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\OWDoorMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneModes\OWEntranceMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneModes\OWExitMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneModes\OWSecretsMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneModes\UWLayerMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Gui\Scene\SceneModes\SceneMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\OWSpriteMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\OWOverlayMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\OWTileMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\OWGravesMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\OWTransportMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\OWSpriteMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneModes\OWOverlayMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneModes\OWTileMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneModes\OWGravesMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneModes\OWTransportMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utility\DataObjects\Point3D.cs" />
     <Compile Include="Project.cs" />
     <Compile Include="Gui\RoomMover.cs">
@@ -576,12 +600,24 @@
     <Compile Include="Gui\Scene\SceneResizing.cs" />
     <Compile Include="Gui\Scene\SceneUW.cs" />
     <Compile Include="Gui\Scene\SceneBase.cs" />
-    <Compile Include="Gui\Scene\SceneModes\UWBlockMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\UWDoorMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\UWEntranceMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\UWSecretsMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\UWSpriteMode.cs" />
-    <Compile Include="Gui\Scene\SceneModes\UWTorchMode.cs" />
+    <Compile Include="Gui\Scene\SceneModes\UWBlockMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneModes\UWDoorMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneModes\UWEntranceMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneModes\UWSecretsMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneModes\UWSpriteMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Gui\Scene\SceneModes\UWTorchMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Scripting.evaluator.cs" />
     <Compile Include="Scripting.Extensions.cs" />
     <Compile Include="Scripting.native.cs" />
@@ -609,6 +645,7 @@
     <Compile Include="Gui\WhirlpoolForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Utility\ZeldaException.cs" />
     <Compile Include="WhirlpoolForm.Designer.cs" />
     <Compile Include="ZCompressLibrary\Common.cs" />
     <Compile Include="ZCompressLibrary\Compress.cs" />

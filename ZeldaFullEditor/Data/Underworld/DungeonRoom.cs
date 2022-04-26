@@ -20,6 +20,10 @@ namespace ZeldaFullEditor.Data.Underworld
 		public DungeonObjectsList Layer2Objects { get; } = new DungeonObjectsList();
 		public DungeonObjectsList Layer3Objects { get; } = new DungeonObjectsList();
 
+		public DungeonObjectsList[] AllObjects =>
+			new DungeonObjectsList[] { Layer1Objects, Layer2Objects, Layer3Objects };
+
+
 		public DungeonDoorsList DoorsList { get; } = new DungeonDoorsList();
 		public DungeonRoomChestsHandler ChestList { get; }
 		public DungeonSecretsList SecretsList { get; } = new DungeonSecretsList();
@@ -42,6 +46,12 @@ namespace ZeldaFullEditor.Data.Underworld
 					return SelectedObjects[0];
 				}
 				return null;
+			}
+
+			private set
+			{
+				SelectedObjects.Clear();
+				SelectedObjects.Add(value);
 			}
 		}
 
@@ -98,7 +108,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		public byte Floor1Graphics { get; set; }
 		public byte Floor2Graphics { get; set; }
 		public byte Layer2Mode { get; set; }
-		public byte Layer2Effect { get; set; }
+		public LayerMergeType LayerMerging { get; set; }
 		public byte Tag1 { get; set; }
 		public byte Tag2 { get; set; }
 		public bool IsDark { get; set; }
@@ -107,6 +117,9 @@ namespace ZeldaFullEditor.Data.Underworld
 		public DungeonDestination Stair2 => Destinations.Stair2;
 		public DungeonDestination Stair3 => Destinations.Stair3;
 		public DungeonDestination Stair4 => Destinations.Stair4;
+
+		public DungeonDestination[] AllStairs =>
+			new DungeonDestination[] { Stair1, Stair2, Stair3, Stair4 };
 
 		public bool HasDamagingPits { get; set; }
 
@@ -215,7 +228,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			Palette = ZS.ROM[hpos++];
 			BackgroundTileset = ZS.ROM[hpos++];
 			SpriteTileset = ZS.ROM[hpos++];
-			Layer2Effect = ZS.ROM[hpos++];
+			LayerMerging = LayerMergeType.GetMergeType(ZS.ROM[hpos++]);
 			Tag1 = ZS.ROM[hpos++];
 			Tag2 = ZS.ROM[hpos++];
 
@@ -309,8 +322,8 @@ namespace ZeldaFullEditor.Data.Underworld
 				BlocksList.Add(
 					new DungeonBlock()
 					{
-						X = x,
-						Y = y,
+						GridX = x,
+						GridY = y,
 						Layer = layer,
 					}
 				);
@@ -343,8 +356,8 @@ namespace ZeldaFullEditor.Data.Underworld
 						TorchList.Add(
 							new DungeonTorch()
 							{
-								X = x,
-								Y = y,
+								GridX = x,
+								GridY = y,
 								Layer = layer,
 							}
 						);
@@ -357,7 +370,6 @@ namespace ZeldaFullEditor.Data.Underworld
 				}
 			}
 		}
-
 
 		private void LoadSecrets()
 		{
@@ -378,8 +390,8 @@ namespace ZeldaFullEditor.Data.Underworld
 				SecretsList.Add(
 					new DungeonSecret(SecretItemType.FindSecretFromID(b3))
 					{
-						X = x,
-						Y = y,
+						GridX = x,
+						GridY = y,
 						Layer = layer,
 					}
 				);
@@ -440,7 +452,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		private RoomObject ParseRoomObject(byte b1, byte b2, byte b3)
 		{
-			return ParseRoomObject(ZS,b1, b2, b3);
+			return ParseRoomObject(ZS, b1, b2, b3);
 		}
 
 
@@ -491,8 +503,8 @@ namespace ZeldaFullEditor.Data.Underworld
 			return
 				new RoomObject(rtype, defn)
 				{
-					X = posX,
-					Y = posY,
+					GridX = posX,
+					GridY = posY,
 					Size = size
 				};
 		}
@@ -507,9 +519,9 @@ namespace ZeldaFullEditor.Data.Underworld
 			throw new NotImplementedException();
 		}
 
-		private DungeonDoorObject ParseDoorObject(byte b1, byte b2)
+		private DungeonDoor ParseDoorObject(byte b1, byte b2)
 		{
-			return new DungeonDoorObject(
+			return new DungeonDoor(
 					DungeonDoorDraw.GetDirectionFromToken(b1),
 					ZS.TileLister.GetDoorTileSet(b2)
 				);
@@ -601,8 +613,8 @@ namespace ZeldaFullEditor.Data.Underworld
 			return
 				new RoomObject(RoomObjectType.GetDungeonObject(id), ZS.TileLister[id])
 				{
-					X = x,
-					Y = y,
+					GridX = x,
+					GridY = y,
 					Size = size,
 					Layer = layer
 				};
@@ -657,8 +669,8 @@ namespace ZeldaFullEditor.Data.Underworld
 
 				last = new DungeonSprite(t, RoomID)
 				{
-					X = (byte) (b2 & 0x1F),
-					Y = (byte) (b1 & 0x1F),
+					GridX = (byte) (b2 & 0x1F),
+					GridY = (byte) (b1 & 0x1F),
 					Layer = (byte) (b1 >> 1),
 					Subtype = subtype
 				};
@@ -704,6 +716,105 @@ namespace ZeldaFullEditor.Data.Underworld
 			throw new NotImplementedException();
 		}
 
+		public bool AttemptToAddEntityAsSelected(DungeonPlaceable o, DungeonEditMode m)
+		{
+			if (AttemptToAddEntity(o, m))
+			{
+				OnlySelectedObject = o;
+				return true;
+			}
+
+			return false;
+		}
+
+
+		public bool AttemptToAddEntity(DungeonPlaceable o, DungeonEditMode m)
+		{
+
+			switch (m)
+			{
+				case DungeonEditMode.Layer1:
+				case DungeonEditMode.Layer2:
+				case DungeonEditMode.Layer3:
+					var l = GetLayerList((byte) m);
+					if (l == null) return false;
+					if (!(o is RoomObject ro)) return false;
+
+					return AddRoomObject(ro, l);
+
+				case DungeonEditMode.Doors:
+					if (!(o is DungeonDoor dr)) return false;
+					return AddDoor(dr);
+
+				case DungeonEditMode.Sprites:
+					if (!(o is DungeonSprite so)) return false;
+					return AddSprite(so);
+
+				case DungeonEditMode.Blocks:
+					if (!(o is DungeonBlock bo)) return false;
+					return AddBlock(bo);
+
+				case DungeonEditMode.Torches:
+					if (!(o is DungeonTorch to)) return false;
+					return AddTorch(to);
+
+				default:
+					return false;
+			}
+		}
+
+		// TODO logic for too many of certain things
+		private bool AddRoomObject(RoomObject o, DungeonObjectsList l)
+		{
+			l.Add(o);
+
+			HasUnsavedChanges = true;
+			return true;
+		}
+
+
+		// TODO logic for too many sprites
+		private bool AddSprite(DungeonSprite s)
+		{
+			SpritesList.Add(s);
+
+			HasUnsavedChanges = true;
+			return true;
+		}
+		
+		// TODO
+		private bool AddBlock(DungeonBlock b)
+		{
+			BlocksList.Add(b);
+
+			HasUnsavedChanges = true;
+			return true;
+		}	
+		
+		// TODO
+		private bool AddDoor(DungeonDoor d)
+		{
+			DoorsList.Add(d);
+
+			HasUnsavedChanges = true;
+			return true;
+		}
+		
+		// TODO
+		private bool AddTorch(DungeonTorch t)
+		{
+			if (TorchList.Count >= 16)
+			{
+				throw new ZeldaException("You cannot place more than 16 torches in a room.");
+			}
+
+			TorchList.Add(t);
+
+			HasUnsavedChanges = true;
+			return true;
+		}
+
+
 
 		private dynamic GetAssociatedList(DungeonPlaceable o)
 		{
@@ -717,12 +828,12 @@ namespace ZeldaFullEditor.Data.Underworld
 				{
 					return Layer2Objects;
 				}
-				else  if (Layer3Objects.Contains(ro))
+				else if (Layer3Objects.Contains(ro))
 				{
 					return Layer3Objects;
 				}
 			}
-			else if (o is DungeonDoorObject door)
+			else if (o is DungeonDoor door)
 			{
 				if (DoorsList.Contains(door))
 				{
@@ -745,6 +856,22 @@ namespace ZeldaFullEditor.Data.Underworld
 			}
 		}
 
+		public void SendAllSelectedToFront()
+		{
+			foreach (var o in SelectedObjects)
+			{
+				SendToFront(o);
+			}
+		}
+
+		public void SendAllSelectedToBack()
+		{
+			foreach (var o in SelectedObjects)
+			{
+				SendToBack(o);
+			}
+		}
+
 		public void SendToBack(DungeonPlaceable o)
 		{
 			var mylist = GetAssociatedList(o);
@@ -755,6 +882,19 @@ namespace ZeldaFullEditor.Data.Underworld
 				l.Add(o);
 				return;
 			}
+		}
+
+		public object FindFirstCollidingObject<T>(IEnumerable<T> list, int x, int y) where T : IMouseCollidable
+		{
+			foreach (var o in list)
+			{
+				if (o.PointIsInHitbox(x, y))
+				{
+					return o;
+				}
+			}
+
+			return null;
 		}
 
 		public void RemoveCurrentlySelectedObjectsFromList<T>(List<T> thisList) where T : DungeonPlaceable
@@ -776,12 +916,12 @@ namespace ZeldaFullEditor.Data.Underworld
 		/// </summary>
 		public bool AutoSortDoors()
 		{
-			var openabledoors = new List<DungeonDoorObject>();
-			var shutterdoors = new List<DungeonDoorObject>();
-			var otherdoors = new List<DungeonDoorObject>();
+			var openabledoors = new List<DungeonDoor>();
+			var shutterdoors = new List<DungeonDoor>();
+			var otherdoors = new List<DungeonDoor>();
 
 
-			foreach (DungeonDoorObject door in DoorsList)
+			foreach (DungeonDoor door in DoorsList)
 			{
 				switch (door.DoorType.Category)
 				{
@@ -857,6 +997,26 @@ namespace ZeldaFullEditor.Data.Underworld
 			}
 
 			return ret;
+		}
+
+		// TODO
+		public bool AddChest()
+		{
+
+
+			ReassociateChestsAndItems();
+
+			return true;
+		}
+		
+		// TODO
+		public bool DeleteChest()
+		{
+
+
+			ReassociateChestsAndItems();
+
+			return true;
 		}
 
 
@@ -973,7 +1133,10 @@ namespace ZeldaFullEditor.Data.Underworld
 		}
 
 
-
+		public void ClearSelectedList()
+		{
+			SelectedObjects.Clear();
+		}
 
 
 
@@ -1021,7 +1184,7 @@ namespace ZeldaFullEditor.Data.Underworld
 				Palette,
 				BackgroundTileset,
 				SpriteTileset,
-				Layer2Effect,
+				LayerMerging.ID,
 				Tag1,
 				Tag2,
 				(byte) (Destinations.Pits.Layer | (Destinations.Stair1.Layer << 2)
@@ -1106,6 +1269,15 @@ namespace ZeldaFullEditor.Data.Underworld
 			}
 
 			return ret.ToArray();
+		}
+
+		public void ClearCustomCollision()
+		{
+			for(int i = 0; i < CollisionMap.Length; i++)
+			{
+				CollisionMap[i] = null;
+			}
+			HasUnsavedChanges = true;
 		}
 	}
 }

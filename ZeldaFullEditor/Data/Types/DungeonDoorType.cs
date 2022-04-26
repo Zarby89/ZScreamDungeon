@@ -31,8 +31,8 @@ namespace ZeldaFullEditor.Data
 		public static readonly DungeonDoorType DoorType0E = new DungeonDoorType(0x0E, Unspecial, exit: true);
 		public static readonly DungeonDoorType DoorType10 = new DungeonDoorType(0x10, Unspecial, exit: true);
 		public static readonly DungeonDoorType DoorType12 = new DungeonDoorType(0x12, Meta, exit: true);
-		public static readonly DungeonDoorType DoorType14 = new DungeonDoorType(0x14, Meta);
-		public static readonly DungeonDoorType DoorType16 = new DungeonDoorType(0x16, Meta);
+		public static readonly DungeonDoorType DoorType14 = new DungeonDoorType(0x14, DungeonSwap);
+		public static readonly DungeonDoorType DoorType16 = new DungeonDoorType(0x16, LayerSwap);
 		public static readonly DungeonDoorType DoorType18 = new DungeonDoorType(0x18, Shutter);
 		public static readonly DungeonDoorType DoorType1A = new DungeonDoorType(0x1A, Shutter);
 		public static readonly DungeonDoorType DoorType1C = new DungeonDoorType(0x1C, Openable);

@@ -9,28 +9,44 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.SceneModes
 {
-	public abstract class SceneMode
+	/// <summary>
+	/// 
+	/// </summary>
+	public class ModeActions
 	{
-		protected readonly ZScreamer ZS;
-		protected SceneMode(ZScreamer zs)
+		public delegate void SceneActionMouse(MouseEventArgs e);
+		public delegate void SceneAction();
+		public delegate void SceneActionDraw(Graphics g);
+		public ModeActions(SceneActionMouse mousedown, SceneActionMouse mouseup, SceneActionMouse mousemove, SceneActionMouse mousewheel,
+			SceneAction copy, SceneAction paste, SceneAction insert, SceneAction delete, SceneAction selectall, SceneActionDraw draw)
 		{
-			ZS = zs;
+			OnMouseDown = mousedown ?? NoMouse;
+			OnMouseUp = mouseup ?? NoMouse;
+			OnMouseMove = mousemove ?? NoMouse;
+			OnMouseWheel = mousewheel ?? NoMouse;
+			Copy = copy ?? NoAct;
+			Paste = paste ?? NoAct;
+			Insert = insert ?? NoAct;
+			Delete = delete ?? NoAct;
+			SelectAll = selectall ?? NoAct;
+			Draw = draw ?? NoGraphics;
 		}
 
-		public abstract void OnMouseDown(MouseEventArgs e);
-		public abstract void OnMouseUp(MouseEventArgs e);
-		public abstract void OnMouseMove(MouseEventArgs e);
-		public abstract void OnMouseWheel(MouseEventArgs e);
-		public abstract void Copy();
+		private static void NoMouse(MouseEventArgs e) { }
+		private static void NoAct() { }
+		private static void NoGraphics(Graphics g) { }
 
-		public virtual void Cut()
-		{
-			Copy();
-			Delete();
-		}
 
-		public abstract void Paste();
-		public abstract void Delete();
-		public abstract void SelectAll();
+		public SceneActionMouse OnMouseDown { get; }
+		public SceneActionMouse OnMouseUp { get; }
+		public SceneActionMouse OnMouseMove { get; }
+		public SceneActionMouse OnMouseWheel { get; }
+		public SceneAction Copy { get; }
+		public SceneAction Paste { get; }
+		public SceneAction Delete { get; }
+		public SceneAction Insert { get; }
+		public SceneAction SelectAll { get; }
+		public SceneActionDraw Draw { get; }
+
 	}
 }

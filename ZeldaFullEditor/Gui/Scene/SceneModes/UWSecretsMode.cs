@@ -4,57 +4,65 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Data.Underworld;
 
-namespace ZeldaFullEditor.SceneModes
+namespace ZeldaFullEditor
 {
-	public class UWSecretsMode : SceneMode
+	public partial class SceneUW
 	{
-		public UWSecretsMode(ZScreamer zs) : base(zs)
+		private void OnMouseDown_Secrets(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseDown(MouseEventArgs e)
+		private void OnMouseUp_Secrets(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseUp(MouseEventArgs e)
+		private void OnMouseMove_Secrets(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseMove(MouseEventArgs e)
+		// TODO make this change secrets type
+		private void OnMouseWheel_Secrets(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseWheel(MouseEventArgs e)
+		private void Copy_Secrets()
 		{
 
 		}
 
-		public override void Copy()
+		private void Paste_Secrets()
 		{
 
 		}
 
-		public override void Paste()
+		private void Delete_Secrets()
 		{
-
+			Room.RemoveCurrentlySelectedObjectsFromList(Room.SecretsList);
 		}
 
-		public override void Delete()
+		private void Insert_Secrets()
 		{
-			ZS.UnderworldScene.Room.RemoveCurrentlySelectedObjectsFromList(ZS.UnderworldScene.Room.SecretsList);
+			var b = new DungeonSecret(SecretItemType.Secret00)
+			{
+				GridX = (byte) MouseX,
+				GridY = (byte) MouseY,
+				Layer = 0,
+			};
+
+			Room.AttemptToAddEntityAsSelected(b, CurrentMode);
 		}
 
-		public override void SelectAll()
+		private void SelectAll_Secrets()
 		{
-			DungeonRoom room = ZS.UnderworldScene.Room;
-			room.SelectedObjects.Clear();
-			room.SelectedObjects.AddRange(room.SecretsList);
+			Room.ClearSelectedList();
+			Room.SelectedObjects.AddRange(Room.SecretsList);
 		}
 	}
 }

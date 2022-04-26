@@ -6,62 +6,83 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Data.Underworld;
 
-namespace ZeldaFullEditor.SceneModes
+namespace ZeldaFullEditor
 {
-	public class UWLayerMode : SceneMode
+	public partial class SceneUW
 	{
-		public byte Layer { get; }
-		public UWLayerMode(ZScreamer zs, int layer) : base(zs)
+
+		private void OnMouseDown_Layer(MouseEventArgs e)
 		{
-			Layer = Layer;
+			if (ObjectToPlace == null) return;
+
+			CheckIfObjectIsInvalidForPlacement();
+
+			Room.AttemptToAddEntityAsSelected(ObjectToPlace, CurrentMode);
+
+			MouseIsDown = true;
+
+			ResetPlacementProperties();
 		}
 
-		public override void OnMouseDown(MouseEventArgs e)
+		private void OnMouseUp_Layer(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseUp(MouseEventArgs e)
+		private void OnMouseMove_Layer(MouseEventArgs e)
 		{
 
 		}
 
-		public override void OnMouseMove(MouseEventArgs e)
-		{
 
-		}
-
-		public override void OnMouseWheel(MouseEventArgs e)
+		public void IncreaseSizeOfSelectedObject()
 		{
-			if (ZS.UnderworldScene.Room.OnlySelectedObject is RoomObject r)
+			if (Room.OnlySelectedObject is RoomObject r && r.IncreaseSize())
 			{
-				if ((e.Delta > 0 && r.IncreaseSize()) || (e.Delta < 0 && r.DecreaseSize()))
-				{
-					updateSelectionObject(r);
-				}
+				RedrawRoom();
 			}
 		}
 
-		public override void Copy()
+		public void DecreaseSizeOfSelectedObject()
+		{
+			if (Room.OnlySelectedObject is RoomObject r && r.DecreaseSize())
+			{
+				RedrawRoom();
+			}
+		}
+
+
+		private void OnMouseWheel_Layer(MouseEventArgs e)
+		{
+			if (e.Delta > 0)
+			{
+				IncreaseSizeOfSelectedObject();
+			}
+			else if (e.Delta < 0)
+			{
+				DecreaseSizeOfSelectedObject();
+			}
+		}
+
+		private void Copy_Layer()
 		{
 
 		}
 
-		public override void Paste()
+		private void Paste_Layer()
 		{
 
 		}
 
-		public override void Delete()
+		private void Delete_Layer()
 		{
-			ZS.UnderworldScene.Room.RemoveCurrentlySelectedObjectsFromList(ZS.UnderworldScene.Room.GetLayerList(Layer));
+			Room.RemoveCurrentlySelectedObjectsFromList(Room.GetLayerList(Layer));
 		}
 
-		public override void SelectAll()
+		private void SelectAll_Layer()
 		{
-			DungeonRoom room = ZS.UnderworldScene.Room;
-			room.SelectedObjects.Clear();
-			room.SelectedObjects.AddRange(room.GetLayerList(Layer));
+			Room.ClearSelectedList();
+			Room.SelectedObjects.AddRange(Room.GetLayerList(Layer));
 		}
 	}
 }

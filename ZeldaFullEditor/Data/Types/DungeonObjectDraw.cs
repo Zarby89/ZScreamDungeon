@@ -54,13 +54,13 @@ namespace ZeldaFullEditor.Data
 						obj.Height = d.YOff + 8;
 					}
 
-					int tm = (d.XOff / 8) + obj.NX + ((obj.NY + (d.YOff / 8)) * 64);
+					int tm = (d.XOff / 8) + obj.NewX + ((obj.NewY + (d.YOff / 8)) * 64);
 
 					if (tm < Constants.TilesPerUnderworldRoom && tm >= 0)
 					{
 						ushort td = obj.Tiles[d.TileIndex].GetModifiedUnsignedShort(hflip: d.HFlip, vflip: d.VFlip);
 
-						obj.CollisionPoints.Add(new Point(d.XOff + (obj.NX * 8), d.YOff + (obj.NY * 8)));
+						obj.CollisionPoints.Add(new Point(d.XOff + (obj.NewX * 8), d.YOff + (obj.NewY * 8)));
 
 						if (obj.Layer == 0 || obj.Layer == 2 || allbg)
 						{

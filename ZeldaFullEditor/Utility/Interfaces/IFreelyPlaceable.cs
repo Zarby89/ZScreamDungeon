@@ -5,9 +5,9 @@
 	/// </summary>
 	public interface IFreelyPlaceable
 	{
-		byte X { get; set; }
-		byte Y { get; set; }
-		byte NX { get; set; }
-		byte NY { get; set; }
+		byte GridX { get; set; }
+		byte GridY { get; set; }
+		byte NewX { get; set; }
+		byte NewY { get; set; }
 	}
 }
