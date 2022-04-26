@@ -21,5 +21,10 @@ namespace ZeldaFullEditor
 		{
 			System.Diagnostics.Process.Start(UIText.DISCORD);
 		}
+
+		private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			System.Diagnostics.Process.Start(UIText.ASAR);
+		}
 	}
 }

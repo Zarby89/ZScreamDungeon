@@ -45,8 +45,20 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_1073E65E54FE40779A9A06BE97A1560A"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_10AD626115A5D7DC94C1FA918C25DCB1"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1588C8052F854159820B32B2EDD1E808"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -183,6 +195,48 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_298E8288918F437C61230A02B01F9120"
+        "OwnerKey" = "8:_881026FD74BE7AB35C134AB292238344"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_298E8288918F437C61230A02B01F9120"
+        "OwnerKey" = "8:_819B25E8A7F1EE549C0B87679CB39D19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_298E8288918F437C61230A02B01F9120"
+        "OwnerKey" = "8:_779E4D5EBC6C1C62EC8CB5B9D1E140F2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_298E8288918F437C61230A02B01F9120"
+        "OwnerKey" = "8:_6994C56CA667E77157219979D1E8529F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_298E8288918F437C61230A02B01F9120"
+        "OwnerKey" = "8:_2CBEDB7047EC42A1FCE5A6C29F1A3092"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_298E8288918F437C61230A02B01F9120"
+        "OwnerKey" = "8:_21B9EBE30833644222A24203DC15F2C3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_298E8288918F437C61230A02B01F9120"
+        "OwnerKey" = "8:_1CF11F545A1BE245A33D3CB5B8900958"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_2CBEDB7047EC42A1FCE5A6C29F1A3092"
         "OwnerKey" = "8:_F93D3776E5DEDEB6F1FD3117F0B43E39"
         "MsmSig" = "8:_UNDEFINED"
@@ -273,8 +327,20 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_42949C224FDD42F58788DB7DD309CC18"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_44C59DDD8A6A65952B8B5D85BE30ECC9"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_44C59DDD8A6A65952B8B5D85BE30ECC9"
+        "OwnerKey" = "8:_819B25E8A7F1EE549C0B87679CB39D19"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -311,6 +377,12 @@
         {
         "MsmKey" = "8:_5535D4DC068976CACCA5B157C7971B81"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_5535D4DC068976CACCA5B157C7971B81"
+        "OwnerKey" = "8:_819B25E8A7F1EE549C0B87679CB39D19"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -365,6 +437,24 @@
         {
         "MsmKey" = "8:_68400B66E2BACA6F7D40400553C7D13B"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_68400B66E2BACA6F7D40400553C7D13B"
+        "OwnerKey" = "8:_819B25E8A7F1EE549C0B87679CB39D19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_68400B66E2BACA6F7D40400553C7D13B"
+        "OwnerKey" = "8:_21B9EBE30833644222A24203DC15F2C3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_68400B66E2BACA6F7D40400553C7D13B"
+        "OwnerKey" = "8:_1CF11F545A1BE245A33D3CB5B8900958"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -435,6 +525,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_6E74EBF3F07C81058EBA296C4E546E47"
+        "OwnerKey" = "8:_1CF11F545A1BE245A33D3CB5B8900958"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_6FB1DF662592CC07D250E594CAE045AE"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
         "MsmSig" = "8:_UNDEFINED"
@@ -477,6 +573,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_770F3EA1148702B713C94BDD43E566AB"
+        "OwnerKey" = "8:_819B25E8A7F1EE549C0B87679CB39D19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_7762FE666485C6C99802478605C39E98"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
         "MsmSig" = "8:_UNDEFINED"
@@ -503,6 +605,12 @@
         {
         "MsmKey" = "8:_7E045E8037FB6E2317D450E7BDB541B7"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7FF067BC633E4C9286D0C0656EF3F5FE"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -537,14 +645,38 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_823EA64B69B94F63B44EA8B3308BB15A"
-        "OwnerKey" = "8:_UNDEFINED"
+        "MsmKey" = "8:_8391C32255D917C059A3298C9C3E487E"
+        "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_8391C32255D917C059A3298C9C3E487E"
-        "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
+        "OwnerKey" = "8:_819B25E8A7F1EE549C0B87679CB39D19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8391C32255D917C059A3298C9C3E487E"
+        "OwnerKey" = "8:_779E4D5EBC6C1C62EC8CB5B9D1E140F2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8391C32255D917C059A3298C9C3E487E"
+        "OwnerKey" = "8:_6994C56CA667E77157219979D1E8529F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8391C32255D917C059A3298C9C3E487E"
+        "OwnerKey" = "8:_21B9EBE30833644222A24203DC15F2C3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8391C32255D917C059A3298C9C3E487E"
+        "OwnerKey" = "8:_1CF11F545A1BE245A33D3CB5B8900958"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -617,6 +749,24 @@
         {
         "MsmKey" = "8:_8F5C4C6AE5FBAAA4C86A178B17A4C887"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8F5C4C6AE5FBAAA4C86A178B17A4C887"
+        "OwnerKey" = "8:_819B25E8A7F1EE549C0B87679CB39D19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8F5C4C6AE5FBAAA4C86A178B17A4C887"
+        "OwnerKey" = "8:_21B9EBE30833644222A24203DC15F2C3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_8F5C4C6AE5FBAAA4C86A178B17A4C887"
+        "OwnerKey" = "8:_1CF11F545A1BE245A33D3CB5B8900958"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -747,12 +897,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_BA5F54969BCC4CF591B694721410848E"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_C22BE97F487896C0BBE70757307790A9"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
         "MsmSig" = "8:_UNDEFINED"
@@ -761,6 +905,12 @@
         {
         "MsmKey" = "8:_C271B1A151BEEDEEA87BF993D2208707"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_C3B554C0E1A14F9B8D12FCAC37D54367"
+        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -791,12 +941,6 @@
         {
         "MsmKey" = "8:_CC313556675AD1F7302FC28F32FB85CD"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_CC7A8D884725404EA53CBA276C725454"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -861,6 +1005,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_D880A28B39D843A883D7ADEAA20073CF"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_D92508595C3E610311DF202A54B5966F"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
         "MsmSig" = "8:_UNDEFINED"
@@ -879,8 +1029,86 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_DAB894EC0CAF5D81BF1590E74CE38353"
+        "OwnerKey" = "8:_881026FD74BE7AB35C134AB292238344"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DAB894EC0CAF5D81BF1590E74CE38353"
+        "OwnerKey" = "8:_819B25E8A7F1EE549C0B87679CB39D19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DAB894EC0CAF5D81BF1590E74CE38353"
+        "OwnerKey" = "8:_779E4D5EBC6C1C62EC8CB5B9D1E140F2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DAB894EC0CAF5D81BF1590E74CE38353"
+        "OwnerKey" = "8:_6994C56CA667E77157219979D1E8529F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DAB894EC0CAF5D81BF1590E74CE38353"
+        "OwnerKey" = "8:_2CBEDB7047EC42A1FCE5A6C29F1A3092"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DAB894EC0CAF5D81BF1590E74CE38353"
+        "OwnerKey" = "8:_21B9EBE30833644222A24203DC15F2C3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DAB894EC0CAF5D81BF1590E74CE38353"
+        "OwnerKey" = "8:_1CF11F545A1BE245A33D3CB5B8900958"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_DBEB6222E4B6D66D6E061E9C52F6F164"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DBEB6222E4B6D66D6E061E9C52F6F164"
+        "OwnerKey" = "8:_819B25E8A7F1EE549C0B87679CB39D19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DBEB6222E4B6D66D6E061E9C52F6F164"
+        "OwnerKey" = "8:_779E4D5EBC6C1C62EC8CB5B9D1E140F2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DBEB6222E4B6D66D6E061E9C52F6F164"
+        "OwnerKey" = "8:_6994C56CA667E77157219979D1E8529F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DBEB6222E4B6D66D6E061E9C52F6F164"
+        "OwnerKey" = "8:_2CBEDB7047EC42A1FCE5A6C29F1A3092"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DBEB6222E4B6D66D6E061E9C52F6F164"
+        "OwnerKey" = "8:_21B9EBE30833644222A24203DC15F2C3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_DBEB6222E4B6D66D6E061E9C52F6F164"
+        "OwnerKey" = "8:_1CF11F545A1BE245A33D3CB5B8900958"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -933,12 +1161,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_E64C14777FA44889BC4C5CBFE4AD9538"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_E6DEFE88C09A682361E92117739E6243"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
         "MsmSig" = "8:_UNDEFINED"
@@ -953,6 +1175,12 @@
         {
         "MsmKey" = "8:_EA5D41FBE25CF612A441877CC1FCDF3A"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_EA5D41FBE25CF612A441877CC1FCDF3A"
+        "OwnerKey" = "8:_819B25E8A7F1EE549C0B87679CB39D19"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1007,6 +1235,42 @@
         {
         "MsmKey" = "8:_F10D79DD411D0983371CED45D3DF673E"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F10D79DD411D0983371CED45D3DF673E"
+        "OwnerKey" = "8:_819B25E8A7F1EE549C0B87679CB39D19"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F10D79DD411D0983371CED45D3DF673E"
+        "OwnerKey" = "8:_779E4D5EBC6C1C62EC8CB5B9D1E140F2"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F10D79DD411D0983371CED45D3DF673E"
+        "OwnerKey" = "8:_6994C56CA667E77157219979D1E8529F"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F10D79DD411D0983371CED45D3DF673E"
+        "OwnerKey" = "8:_2CBEDB7047EC42A1FCE5A6C29F1A3092"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F10D79DD411D0983371CED45D3DF673E"
+        "OwnerKey" = "8:_21B9EBE30833644222A24203DC15F2C3"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_F10D79DD411D0983371CED45D3DF673E"
+        "OwnerKey" = "8:_1CF11F545A1BE245A33D3CB5B8900958"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1101,6 +1365,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_F9A81FE94ADF485AB1F185970869469F"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_FA1F80F5D0C0B0EC711DF44C515D4A8A"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
         "MsmSig" = "8:_UNDEFINED"
@@ -1109,12 +1379,6 @@
         {
         "MsmKey" = "8:_FDB9AF92F650C4E5BCF00D710EE1C1C7"
         "OwnerKey" = "8:_6953B59F46064264A7EA5953F2DAF355"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_FDDA3C0A890A4D9F9C1665A96E4168B4"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -1904,6 +2168,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
         "Release"
@@ -1928,6 +2200,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.7.2"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.7.2 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.7.2"
+                    }
+                }
             }
         }
     }
@@ -1950,7 +2230,7 @@
                 {
                 "Name" = "8:.NET Framework"
                 "Message" = "8:[VSDNETMSG]"
-                "FrameworkVersion" = "8:v4.7.2"
+                "FrameworkVersion" = "8:v4.7.2 "
                 "AllowLaterVersions" = "11:FALSE"
                 "InstallUrl" = "8:http://go.microsoft.com/fwlink/?LinkId=863262"
                 }
@@ -2113,6 +2393,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1073E65E54FE40779A9A06BE97A1560A"
+            {
+            "SourcePath" = "8:..\\ZeldaFullEditor\\ScratchPad.dat"
+            "TargetName" = "8:ScratchPad.dat"
+            "Tag" = "8:"
+            "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
+            "Condition" = "8:not FILEEXISTS1"
+            "Transitive" = "11:TRUE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_10AD626115A5D7DC94C1FA918C25DCB1"
             {
             "AssemblyRegister" = "3:1"
@@ -2142,6 +2442,26 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1588C8052F854159820B32B2EDD1E808"
+            {
+            "SourcePath" = "8:..\\ZeldaFullEditor\\CustomCollision.asm"
+            "TargetName" = "8:CustomCollision.asm"
+            "Tag" = "8:"
+            "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
+            "Condition" = "8:"
+            "Transitive" = "11:TRUE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_19C1F78A27F79E6A1302A34A365C0D28"
@@ -2855,6 +3175,26 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_42949C224FDD42F58788DB7DD309CC18"
+            {
+            "SourcePath" = "8:..\\ZeldaFullEditor\\spritesmove.asm"
+            "TargetName" = "8:spritesmove.asm"
+            "Tag" = "8:"
+            "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
+            "Condition" = "8:"
+            "Transitive" = "11:TRUE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_44C59DDD8A6A65952B8B5D85BE30ECC9"
@@ -3849,6 +4189,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7FF067BC633E4C9286D0C0656EF3F5FE"
+            {
+            "SourcePath" = "8:..\\ZeldaFullEditor\\debug.asm"
+            "TargetName" = "8:debug.asm"
+            "Tag" = "8:"
+            "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
+            "Condition" = "8:"
+            "Transitive" = "11:TRUE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_819B25E8A7F1EE549C0B87679CB39D19"
             {
             "AssemblyRegister" = "3:1"
@@ -3878,26 +4238,6 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_823EA64B69B94F63B44EA8B3308BB15A"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\..\\Desktop\\ZScream 2.8.6\\debug.asm"
-            "TargetName" = "8:debug.asm"
-            "Tag" = "8:"
-            "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
-            "Condition" = "8:"
-            "Transitive" = "11:TRUE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_8391C32255D917C059A3298C9C3E487E"
@@ -4644,26 +4984,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_BA5F54969BCC4CF591B694721410848E"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\..\\Desktop\\ZScream 2.8.6\\spritesmove.asm"
-            "TargetName" = "8:spritesmove.asm"
-            "Tag" = "8:"
-            "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C22BE97F487896C0BBE70757307790A9"
             {
             "AssemblyRegister" = "3:1"
@@ -4724,6 +5044,26 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_C3B554C0E1A14F9B8D12FCAC37D54367"
+            {
+            "SourcePath" = "8:..\\ZeldaFullEditor\\screamlink.ico"
+            "TargetName" = "8:screamlink.ico"
+            "Tag" = "8:"
+            "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C49398B155E313E4A69D60162F6A09AB"
@@ -4879,26 +5219,6 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CC7A8D884725404EA53CBA276C725454"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\..\\Desktop\\ZScream 2.8.6\\asar.dll"
-            "TargetName" = "8:asar.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
-            "Condition" = "8:"
-            "Transitive" = "11:TRUE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CCBA4BE25BACEB2E08C9970F518BDDE6"
@@ -5116,6 +5436,26 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D880A28B39D843A883D7ADEAA20073CF"
+            {
+            "SourcePath" = "8:..\\ZeldaFullEditor\\asar.dll"
+            "TargetName" = "8:asar.dll"
+            "Tag" = "8:"
+            "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
+            "Condition" = "8:"
+            "Transitive" = "11:TRUE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D92508595C3E610311DF202A54B5966F"
@@ -5488,26 +5828,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_E64C14777FA44889BC4C5CBFE4AD9538"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\..\\Desktop\\ZScream 2.8.6\\ScratchPad.dat"
-            "TargetName" = "8:ScratchPad.dat"
-            "Tag" = "8:"
-            "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
-            "Condition" = "8:not FILEEXISTS1"
-            "Transitive" = "11:TRUE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:TRUE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E6DEFE88C09A682361E92117739E6243"
@@ -6037,6 +6357,26 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F9A81FE94ADF485AB1F185970869469F"
+            {
+            "SourcePath" = "8:..\\ZeldaFullEditor\\DefaultNames.txt"
+            "TargetName" = "8:DefaultNames.txt"
+            "Tag" = "8:"
+            "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
+            "Condition" = "8:not FILEEXISTS2"
+            "Transitive" = "11:TRUE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FA1F80F5D0C0B0EC711DF44C515D4A8A"
             {
             "AssemblyRegister" = "3:1"
@@ -6097,26 +6437,6 @@
             "Register" = "3:1"
             "Exclude" = "11:TRUE"
             "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_FDDA3C0A890A4D9F9C1665A96E4168B4"
-            {
-            "SourcePath" = "8:..\\..\\..\\..\\..\\Desktop\\ZScream 2.8.6\\DefaultNames.txt"
-            "TargetName" = "8:DefaultNames.txt"
-            "Tag" = "8:"
-            "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
-            "Condition" = "8:not FILEEXISTS2"
-            "Transitive" = "11:TRUE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:TRUE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_FE01B1E57D4D4572F008152B019589DF"
@@ -6237,7 +6557,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:ZScream"
         "ProductCode" = "8:{840C9687-F289-4DFE-9D11-3E1463FEB414}"
-        "PackageCode" = "8:{2A2B54AE-928F-464C-A25D-2D31F851601B}"
+        "PackageCode" = "8:{F6DDF359-F5FA-4EFA-AAF3-6A0BB4EDBC7A}"
         "UpgradeCode" = "8:{ED51CA06-91DF-453A-9EF2-4949388AE9BC}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -6252,9 +6572,9 @@
         "Subject" = "8:"
         "ARPCONTACT" = "8:Zarby89"
         "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:"
+        "ARPCOMMENTS" = "8:Installs the ZScream alttp editor."
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_C3B554C0E1A14F9B8D12FCAC37D54367"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
@@ -6359,30 +6679,30 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_DB5869FEBDA04752B6835C5BCEFFF007"
             {
-            "Name" = "8:Shortcut to Sortie principale from ZeldaFullEditor (Active)"
-            "Arguments" = "8:"
-            "Description" = "8:"
+            "Name" = "8:ZScream"
+            "Arguments" = "8:-hideConsole"
+            "Description" = "8:Launches the ZScream alttp editor."
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
             "Target" = "8:_6953B59F46064264A7EA5953F2DAF355"
             "Folder" = "8:_9BD060E2F1AE4C4881F4CFD74A2257F2"
             "WorkingFolder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
-            "Icon" = "8:"
+            "Icon" = "8:_C3B554C0E1A14F9B8D12FCAC37D54367"
             "Feature" = "8:"
             }
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_DD1CC56B5D2544D7AA71A4319BF46C63"
             {
-            "Name" = "8:Shortcut to Sortie principale from ZeldaFullEditor (Active)"
-            "Arguments" = "8:"
-            "Description" = "8:"
+            "Name" = "8:ZScream"
+            "Arguments" = "8:-hideConsole"
+            "Description" = "8:Launches the ZScream alttp editor."
             "ShowCmd" = "3:1"
             "IconIndex" = "3:0"
             "Transitive" = "11:FALSE"
             "Target" = "8:_6953B59F46064264A7EA5953F2DAF355"
             "Folder" = "8:_D8F15B497CE04A24B0309B57A0C22CA1"
             "WorkingFolder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"
-            "Icon" = "8:"
+            "Icon" = "8:_C3B554C0E1A14F9B8D12FCAC37D54367"
             "Feature" = "8:"
             }
         }
@@ -6786,7 +7106,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_6953B59F46064264A7EA5953F2DAF355"
             {
-            "SourcePath" = "8:..\\ZeldaFullEditor\\obj\\Debug\\ZScream.exe"
+            "SourcePath" = "8:..\\ZeldaFullEditor\\obj\\Release\\ZScream.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D1AE0A1ADBB6435681B32BAF1E9BBACB"

@@ -21,6 +21,7 @@ namespace ZeldaFullEditor
 
 		public const string GITHUB = "https://github.com/Zarby89/ZScreamDungeon";
 		public const string DISCORD = "https://discord.gg/8eJdz2YdW2";
+		public const string ASAR = "https://github.com/RPGHacker/asar";
 
 
 		//===========================================================================================
