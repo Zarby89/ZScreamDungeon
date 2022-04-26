@@ -3951,7 +3951,7 @@ namespace ZeldaFullEditor
             this.showSpritesToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.showSpritesToolStripMenuItem.Name = "showSpritesToolStripMenuItem";
             this.showSpritesToolStripMenuItem.Size = new System.Drawing.Size(244, 22);
-            this.showSpritesToolStripMenuItem.Text = "Show sSprites";
+            this.showSpritesToolStripMenuItem.Text = "Show Sprites";
             this.showSpritesToolStripMenuItem.CheckedChanged += new System.EventHandler(this.showSpritesToolStripMenuItem_CheckedChanged);
             // 
             // showEntrancesToolStripMenuItem
@@ -4420,7 +4420,7 @@ namespace ZeldaFullEditor
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DungeonMain";
-            this.Text = "ZScream Magic - 1.0.3 Doodoo";
+            this.Text = "ZScream Magic - 3.0.0";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.zscreamForm_FormClosing_1);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.LocationChanged += new System.EventHandler(this.DungeonMain_LocationChanged);

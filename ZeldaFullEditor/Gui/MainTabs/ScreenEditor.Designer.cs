@@ -544,9 +544,9 @@
             // button12
             // 
             this.button12.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button12.Location = new System.Drawing.Point(942, 556);
+            this.button12.Location = new System.Drawing.Point(936, 556);
             this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(75, 23);
+            this.button12.Size = new System.Drawing.Size(81, 23);
             this.button12.TabIndex = 11;
             this.button12.Text = "Import Gfx";
             this.button12.UseVisualStyleBackColor = true;
@@ -555,9 +555,9 @@
             // button11
             // 
             this.button11.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button11.Location = new System.Drawing.Point(861, 556);
+            this.button11.Location = new System.Drawing.Point(936, 527);
             this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(75, 23);
+            this.button11.Size = new System.Drawing.Size(81, 23);
             this.button11.TabIndex = 10;
             this.button11.Text = "Export Gfx";
             this.button11.UseVisualStyleBackColor = true;
@@ -617,7 +617,7 @@
             this.button4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.button4.Location = new System.Drawing.Point(761, 527);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.Size = new System.Drawing.Size(69, 23);
             this.button4.TabIndex = 8;
             this.button4.Text = "Switch";
             this.button4.UseVisualStyleBackColor = true;
@@ -657,22 +657,22 @@
             // button3
             // 
             this.button3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button3.Location = new System.Drawing.Point(942, 527);
+            this.button3.Location = new System.Drawing.Point(836, 556);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(94, 23);
             this.button3.TabIndex = 5;
-            this.button3.Text = "Import Tiles";
+            this.button3.Text = "Import Tile Map";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(861, 527);
+            this.button2.Location = new System.Drawing.Point(836, 527);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.Size = new System.Drawing.Size(94, 23);
             this.button2.TabIndex = 4;
-            this.button2.Text = "Export Tiles";
+            this.button2.Text = "Export Tile Map";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 

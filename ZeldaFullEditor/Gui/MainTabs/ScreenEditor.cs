@@ -1457,6 +1457,12 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				}
 
 				fs.Close();
+
+				GFX.UpdatePalette(darkWorld);
+
+				Buildtilesetmap();
+				mapPalettePicturebox.Refresh();
+				mapPicturebox.Refresh();
 			}
 		}
 
@@ -2505,7 +2511,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		private void gfxiconTextbox_TextChanged(object sender, EventArgs e)
 		{
-			if (!editedFromEditor)
+			if (!editedFromEditor && selectedMapIcon != null)
 			{
 				if (int.TryParse(gfxiconTextbox.Text, System.Globalization.NumberStyles.HexNumber, CultureInfo.CurrentCulture, out int i))
 				{

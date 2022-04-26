@@ -17,7 +17,7 @@ namespace ZeldaFullEditor
 		// META
 		//===========================================================================================
 		public const string APPNAME = "ZScream";
-		public const string VERSION = "1.0.3 Doodoo";
+		public const string VERSION = "3.0.0";
 
 		public const string GITHUB = "https://github.com/Zarby89/ZScreamDungeon";
 		public const string DISCORD = "https://discord.gg/8eJdz2YdW2";
