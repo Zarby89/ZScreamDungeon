@@ -30,6 +30,14 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.extraSpritesLable = new System.Windows.Forms.Label();
+            this.extraSpritesNumBox = new System.Windows.Forms.NumericUpDown();
+            this.extraTilesLabel = new System.Windows.Forms.Label();
+            this.extraTilesNumBox = new System.Windows.Forms.NumericUpDown();
+            this.spritesLabel = new System.Windows.Forms.Label();
+            this.spritesNumBox = new System.Windows.Forms.NumericUpDown();
+            this.tilesLabel = new System.Windows.Forms.Label();
+            this.tilesNumBox = new System.Windows.Forms.NumericUpDown();
             this.button6 = new System.Windows.Forms.Button();
             this.uppersprCheckbox = new System.Windows.Forms.CheckBox();
             this.lockCheckbox = new System.Windows.Forms.CheckBox();
@@ -97,16 +105,20 @@
             this.label5 = new System.Windows.Forms.Label();
             this.dungmapPicturebox = new System.Windows.Forms.PictureBox();
             this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.crystalRadio = new System.Windows.Forms.RadioButton();
+            this.triforceRadio = new System.Windows.Forms.RadioButton();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.triforcebox3 = new System.Windows.Forms.PictureBox();
             this.triforcebox2 = new System.Windows.Forms.PictureBox();
             this.triforceLabel1 = new System.Windows.Forms.Label();
             this.triforcebox1 = new System.Windows.Forms.PictureBox();
-            this.triforceRadio = new System.Windows.Forms.RadioButton();
-            this.crystalRadio = new System.Windows.Forms.RadioButton();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.extraSpritesNumBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.extraTilesNumBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spritesNumBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tilesNumBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.paletteBox)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tilesBox)).BeginInit();
@@ -144,6 +156,14 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.extraSpritesLable);
+            this.tabPage1.Controls.Add(this.extraSpritesNumBox);
+            this.tabPage1.Controls.Add(this.extraTilesLabel);
+            this.tabPage1.Controls.Add(this.extraTilesNumBox);
+            this.tabPage1.Controls.Add(this.spritesLabel);
+            this.tabPage1.Controls.Add(this.spritesNumBox);
+            this.tabPage1.Controls.Add(this.tilesLabel);
+            this.tabPage1.Controls.Add(this.tilesNumBox);
             this.tabPage1.Controls.Add(this.button6);
             this.tabPage1.Controls.Add(this.uppersprCheckbox);
             this.tabPage1.Controls.Add(this.lockCheckbox);
@@ -172,6 +192,94 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Titlescreen";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // extraSpritesLable
+            // 
+            this.extraSpritesLable.AutoSize = true;
+            this.extraSpritesLable.Location = new System.Drawing.Point(705, 497);
+            this.extraSpritesLable.Name = "extraSpritesLable";
+            this.extraSpritesLable.Size = new System.Drawing.Size(66, 13);
+            this.extraSpritesLable.TabIndex = 30;
+            this.extraSpritesLable.Text = "Extra Sprites";
+            // 
+            // extraSpritesNumBox
+            // 
+            this.extraSpritesNumBox.Location = new System.Drawing.Point(708, 513);
+            this.extraSpritesNumBox.Maximum = new decimal(new int[] {
+            72,
+            0,
+            0,
+            0});
+            this.extraSpritesNumBox.Name = "extraSpritesNumBox";
+            this.extraSpritesNumBox.Size = new System.Drawing.Size(57, 20);
+            this.extraSpritesNumBox.TabIndex = 29;
+            this.extraSpritesNumBox.ValueChanged += new System.EventHandler(this.gfxGroupChanged);
+            // 
+            // extraTilesLabel
+            // 
+            this.extraTilesLabel.AutoSize = true;
+            this.extraTilesLabel.Location = new System.Drawing.Point(579, 497);
+            this.extraTilesLabel.Name = "extraTilesLabel";
+            this.extraTilesLabel.Size = new System.Drawing.Size(56, 13);
+            this.extraTilesLabel.TabIndex = 28;
+            this.extraTilesLabel.Text = "Extra Tiles";
+            // 
+            // extraTilesNumBox
+            // 
+            this.extraTilesNumBox.Location = new System.Drawing.Point(582, 513);
+            this.extraTilesNumBox.Maximum = new decimal(new int[] {
+            82,
+            0,
+            0,
+            0});
+            this.extraTilesNumBox.Name = "extraTilesNumBox";
+            this.extraTilesNumBox.Size = new System.Drawing.Size(57, 20);
+            this.extraTilesNumBox.TabIndex = 27;
+            this.extraTilesNumBox.ValueChanged += new System.EventHandler(this.gfxGroupChanged);
+            // 
+            // spritesLabel
+            // 
+            this.spritesLabel.AutoSize = true;
+            this.spritesLabel.Location = new System.Drawing.Point(642, 497);
+            this.spritesLabel.Name = "spritesLabel";
+            this.spritesLabel.Size = new System.Drawing.Size(39, 13);
+            this.spritesLabel.TabIndex = 26;
+            this.spritesLabel.Text = "Sprites";
+            // 
+            // spritesNumBox
+            // 
+            this.spritesNumBox.Location = new System.Drawing.Point(645, 513);
+            this.spritesNumBox.Maximum = new decimal(new int[] {
+            144,
+            0,
+            0,
+            0});
+            this.spritesNumBox.Name = "spritesNumBox";
+            this.spritesNumBox.Size = new System.Drawing.Size(57, 20);
+            this.spritesNumBox.TabIndex = 25;
+            this.spritesNumBox.ValueChanged += new System.EventHandler(this.gfxGroupChanged);
+            // 
+            // tilesLabel
+            // 
+            this.tilesLabel.AutoSize = true;
+            this.tilesLabel.Location = new System.Drawing.Point(516, 497);
+            this.tilesLabel.Name = "tilesLabel";
+            this.tilesLabel.Size = new System.Drawing.Size(29, 13);
+            this.tilesLabel.TabIndex = 24;
+            this.tilesLabel.Text = "Tiles";
+            // 
+            // tilesNumBox
+            // 
+            this.tilesNumBox.Location = new System.Drawing.Point(519, 513);
+            this.tilesNumBox.Maximum = new decimal(new int[] {
+            37,
+            0,
+            0,
+            0});
+            this.tilesNumBox.Name = "tilesNumBox";
+            this.tilesNumBox.Size = new System.Drawing.Size(57, 20);
+            this.tilesNumBox.TabIndex = 23;
+            this.tilesNumBox.ValueChanged += new System.EventHandler(this.gfxGroupChanged);
             // 
             // button6
             // 
@@ -754,7 +862,7 @@
             this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label10.Location = new System.Drawing.Point(5, 731);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(265, 32);
+            this.label10.Size = new System.Drawing.Size(264, 32);
             this.label10.TabIndex = 17;
             this.label10.Text = "Note : \r\n*to set gfx you must have room setted";
             // 
@@ -937,6 +1045,30 @@
             this.tabPage4.Text = "Triforce/Crystal Editor";
             this.tabPage4.UseVisualStyleBackColor = true;
             // 
+            // crystalRadio
+            // 
+            this.crystalRadio.AutoSize = true;
+            this.crystalRadio.Location = new System.Drawing.Point(109, 17);
+            this.crystalRadio.Name = "crystalRadio";
+            this.crystalRadio.Size = new System.Drawing.Size(56, 17);
+            this.crystalRadio.TabIndex = 7;
+            this.crystalRadio.Text = "Crystal";
+            this.crystalRadio.UseVisualStyleBackColor = true;
+            this.crystalRadio.CheckedChanged += new System.EventHandler(this.crystalRadio_CheckedChanged);
+            // 
+            // triforceRadio
+            // 
+            this.triforceRadio.AutoSize = true;
+            this.triforceRadio.Checked = true;
+            this.triforceRadio.Location = new System.Drawing.Point(25, 17);
+            this.triforceRadio.Name = "triforceRadio";
+            this.triforceRadio.Size = new System.Drawing.Size(61, 17);
+            this.triforceRadio.TabIndex = 6;
+            this.triforceRadio.TabStop = true;
+            this.triforceRadio.Text = "Triforce";
+            this.triforceRadio.UseVisualStyleBackColor = true;
+            this.triforceRadio.CheckedChanged += new System.EventHandler(this.crystalRadio_CheckedChanged);
+            // 
             // label13
             // 
             this.label13.AutoSize = true;
@@ -1003,29 +1135,6 @@
             this.triforcebox1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseMove);
             this.triforcebox1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.triforcebox1_MouseUp);
             // 
-            // triforceRadio
-            // 
-            this.triforceRadio.AutoSize = true;
-            this.triforceRadio.Checked = true;
-            this.triforceRadio.Location = new System.Drawing.Point(25, 17);
-            this.triforceRadio.Name = "triforceRadio";
-            this.triforceRadio.Size = new System.Drawing.Size(61, 17);
-            this.triforceRadio.TabIndex = 6;
-            this.triforceRadio.Text = "Triforce";
-            this.triforceRadio.UseVisualStyleBackColor = true;
-            this.triforceRadio.CheckedChanged += new System.EventHandler(this.crystalRadio_CheckedChanged);
-            // 
-            // crystalRadio
-            // 
-            this.crystalRadio.AutoSize = true;
-            this.crystalRadio.Location = new System.Drawing.Point(109, 17);
-            this.crystalRadio.Name = "crystalRadio";
-            this.crystalRadio.Size = new System.Drawing.Size(56, 17);
-            this.crystalRadio.TabIndex = 7;
-            this.crystalRadio.Text = "Crystal";
-            this.crystalRadio.UseVisualStyleBackColor = true;
-            this.crystalRadio.CheckedChanged += new System.EventHandler(this.crystalRadio_CheckedChanged);
-            // 
             // ScreenEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1036,6 +1145,10 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.extraSpritesNumBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.extraTilesNumBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.spritesNumBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.tilesNumBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.paletteBox)).EndInit();
             this.panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.tilesBox)).EndInit();
@@ -1142,5 +1255,13 @@
         private System.Windows.Forms.PictureBox triforcebox1;
         private System.Windows.Forms.RadioButton crystalRadio;
         private System.Windows.Forms.RadioButton triforceRadio;
-    }
+		private System.Windows.Forms.Label spritesLabel;
+		private System.Windows.Forms.NumericUpDown spritesNumBox;
+		private System.Windows.Forms.Label tilesLabel;
+		private System.Windows.Forms.NumericUpDown tilesNumBox;
+		private System.Windows.Forms.Label extraSpritesLable;
+		private System.Windows.Forms.NumericUpDown extraSpritesNumBox;
+		private System.Windows.Forms.Label extraTilesLabel;
+		private System.Windows.Forms.NumericUpDown extraTilesNumBox;
+	}
 }

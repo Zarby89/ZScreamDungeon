@@ -101,6 +101,13 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		Color[] currentPalette = new Color[256];
 
+		int titleScreenTilesGFX = 0; //35
+		int titleScreenExtraTilesGFX = 0; //81
+		int titleScreenSpritesGFX = 0; //125
+		int titleScreenExtraSpritesGFX = 0; //8
+
+		bool stupidEventTrigger = true;
+
 		public ScreenEditor()
 		{
 			InitializeComponent();
@@ -282,11 +289,25 @@ namespace ZeldaFullEditor.Gui.MainTabs
             oamData[9] = new OAMTile(64  ,150 ,14, 00);
             */
 
+			titleScreenTilesGFX = ROM.DATA[Constants.titleScreenTilesGFX];
+			titleScreenExtraTilesGFX = ROM.DATA[Constants.titleScreenExtraTilesGFX];
+			titleScreenSpritesGFX = ROM.DATA[Constants.titleScreenSpritesGFX];
+			titleScreenExtraSpritesGFX = ROM.DATA[Constants.titleScreenExtraSpritesGFX];
+
+			stupidEventTrigger = false;
+			tilesNumBox.Value = titleScreenTilesGFX;
+			extraTilesNumBox.Value = titleScreenExtraTilesGFX;
+			spritesNumBox.Value = titleScreenSpritesGFX;
+			extraSpritesNumBox.Value = titleScreenExtraSpritesGFX;
+			stupidEventTrigger = true;
+
 			LoadTitleScreen();
 			LoadOverworldMap();
 			LoadDungeonMaps();
 			LoadAllMapIcons();
 			dungmapListbox.SelectedIndex = 0;
+
+			updateGFXGroup();
 		}
 
 
@@ -386,16 +407,17 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 			// Main Blocksets
 
+			// TODO: get the gfx from the GFX class rather than the rom.
 			for (int i = 0; i < 8; i++)
 			{
-				staticgfx[i] = ROM.DATA[Constants.overworldgfxGroups2 + (35 * 8) + i];
+				staticgfx[i] = GfxGroups.mainGfx[titleScreenTilesGFX][i];
 			}
 
 			staticgfx[8] = 115 + 0;
-			staticgfx[9] = (byte) (ROM.DATA[Constants.sprite_blockset_pointer + (125 * 4) + 3] + 115);
+			staticgfx[9] = (byte) (GfxGroups.spriteGfx[titleScreenSpritesGFX][3] + 115);
 			staticgfx[10] = 115 + 6;
 			staticgfx[11] = 115 + 7;
-			staticgfx[12] = (byte) (ROM.DATA[Constants.sprite_blockset_pointer + (125 * 4)] + 115);
+			staticgfx[12] = (byte) (GfxGroups.spriteGfx[titleScreenSpritesGFX][0] + 115);
 			staticgfx[13] = 112;
 			staticgfx[14] = 112;
 			staticgfx[15] = 112;
@@ -431,6 +453,26 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					}
 				}
 			}
+		}
+
+		private void gfxGroupChanged(object sender, EventArgs e)
+		{
+			if (stupidEventTrigger)
+			{
+				updateGFXGroup();
+			}
+		}
+
+		public void updateGFXGroup()
+		{
+			titleScreenTilesGFX = (int) tilesNumBox.Value;
+			titleScreenExtraTilesGFX = (int) extraTilesNumBox.Value;
+			titleScreenSpritesGFX = (int) spritesNumBox.Value;
+			titleScreenExtraSpritesGFX = (int) extraSpritesNumBox.Value;
+
+			Buildtileset();
+			updateTiles();
+			screenBox.Refresh();
 		}
 
 
@@ -1342,6 +1384,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			}
 
 			ROM.Write(titleScreenPosition, allData.ToArray(), WriteType.TitleScreenData);
+
+			ROM.Write(Constants.titleScreenTilesGFX, (byte) titleScreenTilesGFX, WriteType.GFX);
+			ROM.Write(Constants.titleScreenExtraTilesGFX, (byte) titleScreenExtraTilesGFX, WriteType.GFX);
+			ROM.Write(Constants.titleScreenSpritesGFX, (byte) titleScreenSpritesGFX, WriteType.GFX);
+			ROM.Write(Constants.titleScreenExtraSpritesGFX, (byte) titleScreenExtraSpritesGFX, WriteType.GFX);
 		}
 
 		private void button2_Click(object sender, EventArgs e)

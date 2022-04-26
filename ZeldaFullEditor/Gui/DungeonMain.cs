@@ -3712,6 +3712,7 @@ namespace ZeldaFullEditor
 				GFX.UpdatePalette(screenEditor.darkWorld);
 				screenEditor.BringToFront();
 				screenEditor.Buildtileset();
+				screenEditor.updateGFXGroup();
 				screenEditor.Visible = true;
 			}
 			else

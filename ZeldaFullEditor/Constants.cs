@@ -516,6 +516,18 @@ namespace ZeldaFullEditor
 
 		public static int crystalVertices = 0x04FF98;
 
+		//===========================================================================================
+		// Title screen GFX group set
+		//===========================================================================================
+		public static int titleScreenTilesGFX = 0x64207; // 1 Byte
+		public static int titleScreenSpritesGFX = 0x6420C; // 1 Byte
+		public static int titleScreenExtraTilesGFX = 0x64211; // 1 Byte
+		public static int titleScreenExtraSpritesGFX = 0x64216; // 1 Byte
+
+		//===========================================================================================
+		// End Main Addresses
+		//===========================================================================================
+
 		public static bool Rando = false; // Is it a rando rom?
 
 		public static void Init_Jp(bool rando = false)
