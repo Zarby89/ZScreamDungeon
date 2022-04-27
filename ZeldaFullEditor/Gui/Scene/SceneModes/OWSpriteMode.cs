@@ -12,8 +12,8 @@ namespace ZeldaFullEditor
 {
 	public partial class SceneOW
 	{
-		OverworldSprite selectedSprite;
-		public OverworldSprite lastselectedSprite;
+		private OverworldSprite selectedSprite;
+		private OverworldSprite lastselectedSprite;
 
 		bool isLeftPress = false;
 

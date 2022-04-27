@@ -1013,7 +1013,7 @@ namespace ZeldaFullEditor
 						sta = ZS.ROM.Read16(addr + 1) & 0x1FFF;
 						int yp = ((sta / 2) / 0x40);
 						int xp = (sta / 2) - (yp * 0x40);
-						alloverlays[index].tilesData.Add(new TilePos((byte) xp, (byte) yp, (ushort) a));
+						alloverlays[index].tilesData.Add(new OverlayTile((byte) xp, (byte) yp, (ushort) a));
 						addr += 3;
 						continue;
 					}
@@ -1025,7 +1025,7 @@ namespace ZeldaFullEditor
 						int stax = (sta & 0x1FFF) + x;
 						int yp = ((stax / 2) / 0x40);
 						int xp = (stax / 2) - (yp * 0x40);
-						alloverlays[index].tilesData.Add(new TilePos((byte) xp, (byte) yp, (ushort) a));
+						alloverlays[index].tilesData.Add(new OverlayTile((byte) xp, (byte) yp, (ushort) a));
 
 						addr += 3;
 						continue;
@@ -1037,7 +1037,7 @@ namespace ZeldaFullEditor
 						int stax = (sta & 0x1FFF) + x;
 						int yp = ((stax / 2) / 0x40);
 						int xp = (stax / 2) - (yp * 0x40);
-						alloverlays[index].tilesData.Add(new TilePos((byte) xp, (byte) yp, (ushort) a));
+						alloverlays[index].tilesData.Add(new OverlayTile((byte) xp, (byte) yp, (ushort) a));
 
 						addr += 4;
 						continue;

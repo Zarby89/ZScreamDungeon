@@ -1,13 +1,26 @@
 ﻿namespace ZeldaFullEditor
 {
-	public class Tile16 : IByteable
+	public readonly struct Tile16 : IByteable
 	{
-		public Tile tile0 { get; set; }
-		public Tile tile1 { get; set; }
-		public Tile tile2 { get; set; }
-		public Tile tile3 { get; set; }
-		// [0,1]
-		// [2,3]
+		/// <summary>
+		/// The <see cref="Tile"/> in the top-left corner
+		/// </summary>
+		public Tile Tile0 { get; }
+
+		/// <summary>
+		/// The <see cref="Tile"/> in the top-right corner
+		/// </summary>
+		public Tile Tile1 { get; }
+
+		/// <summary>
+		/// The <see cref="Tile"/> in the bottom-left corner
+		/// </summary>
+		public Tile Tile2 { get; }
+
+		/// <summary>
+		/// The <see cref="Tile"/> in the bottom-right corner
+		/// </summary>
+		public Tile Tile3 { get; }
 
 		public Tile this[int i]
 		{
@@ -15,12 +28,12 @@
 			{
 				switch (i)
 				{
-					case 0: return tile0;
-					case 1: return tile1;
-					case 2: return tile2;
-					case 3: return tile3;
+					case 0: return Tile0;
+					case 1: return Tile1;
+					case 2: return Tile2;
+					case 3: return Tile3;
 				}
-				return tile0;
+				return Tile0;
 			}
 			
 		}
@@ -28,36 +41,42 @@
 
 		public Tile16(Tile tile0, Tile tile1, Tile tile2, Tile tile3)
 		{
-			this.tile0 = tile0;
-			this.tile1 = tile1;
-			this.tile2 = tile2;
-			this.tile3 = tile3;
+			Tile0 = tile0;
+			Tile1 = tile1;
+			Tile2 = tile2;
+			Tile3 = tile3;
 		}
 
 		public Tile16(ulong tiles)
 		{
-			tile0 = new Tile((ushort) tiles);
-			tile1 = new Tile((ushort) (tiles >> 16));
-			tile2 = new Tile((ushort) (tiles >> 32));
-			tile3 = new Tile((ushort) (tiles >> 48));
+			Tile0 = new Tile((ushort) tiles);
+			Tile1 = new Tile((ushort) (tiles >> 16));
+			Tile2 = new Tile((ushort) (tiles >> 32));
+			Tile3 = new Tile((ushort) (tiles >> 48));
 		}
 
 		public Tile16(ushort a, ushort b, ushort c, ushort d)
 		{
-			tile0 = new Tile(a);
-			tile1 = new Tile(b);
-			tile2 = new Tile(c);
-			tile3 = new Tile(d);
+			Tile0 = new Tile(a);
+			Tile1 = new Tile(b);
+			Tile2 = new Tile(c);
+			Tile3 = new Tile(d);
 		}
 
 		public Tile16 Clone()
 		{
-			return new Tile16(tile0, tile1, tile2, tile3);
+			return new Tile16(Tile0, Tile1, Tile2, Tile3);
 		}
+
+		public Tile16 ChangeTiles(Tile? tile0 = null, Tile? tile1 = null, Tile? tile2 = null, Tile? tile3 = null)
+		{
+			return new Tile16(tile0 ?? Tile0, tile1 ?? Tile1, tile2 ?? Tile2, tile3 ?? Tile3);
+		}
+
 
 		public ulong getLongValue()
 		{
-			return (ulong) tile3.ToUnsignedShort() << 48 | ((ulong) tile2.ToUnsignedShort() << 32) | ((ulong) tile1.ToUnsignedShort() << 16) | tile0.ToUnsignedShort();
+			return (ulong) Tile3.ToUnsignedShort() << 48 | ((ulong) Tile2.ToUnsignedShort() << 32) | ((ulong) Tile1.ToUnsignedShort() << 16) | Tile0.ToUnsignedShort();
 		}
 
 		public static ulong CreateLongValue(ushort a, ushort b, ushort c, ushort d)
@@ -67,10 +86,10 @@
 		
 		public byte[] GetByteData()
 		{
-			byte[] b0 = tile0.GetByteData();
-			byte[] b1 = tile1.GetByteData();
-			byte[] b2 = tile2.GetByteData();
-			byte[] b3 = tile3.GetByteData();
+			byte[] b0 = Tile0.GetByteData();
+			byte[] b1 = Tile1.GetByteData();
+			byte[] b2 = Tile2.GetByteData();
+			byte[] b3 = Tile3.GetByteData();
 
 			return new byte[]
 			{

@@ -30,7 +30,7 @@ namespace ZeldaFullEditor
 		public byte[] staticgfx = new byte[16]; // Need to be used to display map and not pre render it!
 		public ushort[,] tilesUsed;
 
-		public bool needRefresh = false;
+		public bool NeedsRefresh = false;
 
 		private readonly ZScreamer ZS;
 		public OverworldMap(byte index, ZScreamer mom)

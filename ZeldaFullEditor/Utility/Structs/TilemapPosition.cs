@@ -5,7 +5,6 @@
 		public byte X { get; }
 		public byte Y { get; }
 		public byte Layer { get; }
-
 		public ushort Position { get; }
 
 		public byte Low => (byte) Position;

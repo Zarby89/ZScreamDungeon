@@ -366,7 +366,7 @@ namespace ZeldaFullEditor.Gui
 
 				for (int i = 0; i < 159; i++)
 				{
-					ZScreamer.ActiveOW.allmaps[i].needRefresh = true;
+					ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = true;
 				}
 			}
 		}
@@ -403,8 +403,10 @@ namespace ZeldaFullEditor.Gui
 
 		private void button3_Click_1(object sender, EventArgs e)
 		{
-			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.Filter = "all *.bin |*.bin";
+			OpenFileDialog ofd = new OpenFileDialog
+			{
+				Filter = "all *.bin |*.bin"
+			};
 
 			if (ofd.ShowDialog() == DialogResult.OK)
 			{

@@ -1085,7 +1085,7 @@ namespace ZeldaFullEditor
 		private const int SpaceForBank1Text = 0x8000;
 		private const int SpaceForBank2Text = 0x14BF;
 
-		public bool Save()
+		public void Save()
 		{
 			ZScreamer.ActiveROM.Write(ZScreamer.ActiveOffsets.characters_width, widthArray);
 

@@ -1333,6 +1333,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		public byte[] GetTorchesData()
 		{
 			var ret = new List<byte>();
+
 			ret.Add(RoomID);
 
 			ret.AddRange(TorchList.GetByteData());

@@ -23,16 +23,16 @@ namespace ZeldaFullEditor
 		public int selectedIndex = -1;
 		public event EventHandler SelectedIndexChanged;
 
-		public RoomObject selectedObject = null;
+		public RoomObjectPreview selectedObject = null;
 
 		public ObjectViewer()
 		{
 			InitializeComponent();
 		}
 
-		public IDungeonPlaceable CreateSelectedObject()
+		public RoomObject CreateSelectedObject()
 		{
-			//return this.Sele
+			return new RoomObject(selectedObject.ObjectType, ZScreamer.ActiveScreamer.TileLister[selectedObject.ID]);
 		}
 
 
@@ -44,44 +44,35 @@ namespace ZeldaFullEditor
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			e.Graphics.Clear(Color.Black);
-			int w = (this.Size.Width / 64);
-			int h = (((items.Count / w) + 1) * 64);
+			int w = Size.Width & ~0x3F;
 			int xpos = 0;
 			int ypos = 0;
 
 			foreach (RoomObject o in items)
 			{
-				e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.previewObjectsBitmap[o.ID], new Point(xpos * 64, ypos * 64));
+				e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.previewObjectsBitmap[o.ID], new Point(xpos, ypos));
 
-				if (Settings.Default.favoriteObjects[o.ID] == "true")
-				{
-					e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.favStar2, new Rectangle((xpos * 64) + 40, (ypos * 64) + 40, 16, 16));
-				}
-				else
-				{
-					e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.favStar1, new Rectangle((xpos * 64) + 40, (ypos * 64) + 40, 16, 16));
-				}
+				e.Graphics.DrawImage(
+					Settings.Default.favoriteObjects[o.ID] == "true" ?
+					ZScreamer.ActiveGraphicsManager.favStar2 : ZScreamer.ActiveGraphicsManager.favStar1,
+					new Rectangle(xpos + 40, ypos + 40, 16, 16)
+				);
 
 				if (selectedObject == o)
 				{
-					e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(xpos * 64, (ypos * 64), 64, 64));
+					e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(xpos, ypos, 64, 64));
 				}
 
-				e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos * 64, ypos * 64, 64, 64));
-				if (!showName)
-				{
-					e.Graphics.DrawString(o.ID.ToString("X3"), this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 48, 64, 64));
-				}
-				else
-				{
-					e.Graphics.DrawString(o.ID.ToString("X3") + o.ObjectType.ToString(), this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 24, 64, 40));
-				}
+				e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos, ypos, 64, 64));
 
-				xpos++;
+				e.Graphics.DrawString(showName ? o.ObjectType.ToString() : o.ID.ToString("X3"),						
+						Font, Brushes.White, new Rectangle(xpos, ypos + 48, 64, 64));
+
+				xpos += 64;
 				if (xpos >= w)
 				{
 					xpos = 0;
-					ypos++;
+					ypos += 64;
 				}
 			}
 
@@ -107,7 +98,7 @@ namespace ZeldaFullEditor
 		{
 			int w = (this.Size.Width / 64);
 			int h = (((items.Count / w) + 1) * 64);
-			this.Size = new Size(this.Size.Width, h);
+			Size = new Size(Size.Width, h);
 
 			if (items.Count > 0)
 			{
@@ -127,18 +118,14 @@ namespace ZeldaFullEditor
 				{
 					for (int x = 0; x < ZScreamer.ActiveGraphicsManager.loadedSprPalettes.GetLength(0); x++)
 					{
-						if (pindex < 256)
+						if (pindex < Constants.TotalPaletteSize)
 						{
 							palettes.Entries[pindex++] = ZScreamer.ActiveGraphicsManager.loadedSprPalettes[x, y];
 						}
 					}
 				}
 
-				for (int i = 0; i < 16; i++)
-				{
-					palettes.Entries[i * 16] = Color.Transparent;
-					palettes.Entries[(i * 16) + 8] = Color.Transparent;
-				}
+				Palettes.FillInHalfPaletteZeros(palettes.Entries, Color.Transparent);
 			}
 
 			foreach (RoomObject o in items)
@@ -174,7 +161,7 @@ namespace ZeldaFullEditor
 			int ypos = 0;
 			int index = 0;
 			this.Size = new Size(this.Size.Width, h);
-			foreach (RoomObject o in items)
+			foreach (RoomObjectPreview o in items)
 			{
 				if (index < items.Count)
 				{

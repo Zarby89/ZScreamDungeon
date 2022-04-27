@@ -277,7 +277,6 @@
     <Compile Include="Data\Overworld\Gravestone.cs" />
     <Compile Include="Data\Misc\MapIcon.cs" />
     <Compile Include="Utility\Structs\OAMTile.cs" />
-    <Compile Include="Data\ScreenStrip.cs" />
     <Compile Include="Data\Underworld\DungeonSprite.cs" />
     <Compile Include="Data\Types\SpriteDraw.cs" />
     <Compile Include="Data\Types\SpriteTypes.cs" />
@@ -296,12 +295,14 @@
     <Compile Include="Gui\ExpandedManagement.Designer.cs">
       <DependentUpon>ExpandedManagement.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\ExtraForms\ChestPicker.cs" />
+    <Compile Include="Gui\ExtraForms\ChestPicker.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Gui\ExtraForms\ChestPicker.Designer.cs">
       <DependentUpon>ChestPicker.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\ExtraForms\Chestviewer.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Gui\ExtraForms\Chestviewer.Designer.cs">
       <DependentUpon>Chestviewer.cs</DependentUpon>
@@ -309,18 +310,20 @@
     <Compile Include="Gui\CustomPanel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Gui\CustomTabControl.cs" />
+    <Compile Include="Gui\CustomTabControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Gui\CustomTabControl.Designer.cs">
       <DependentUpon>CustomTabControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="Data\dataObject.cs" />
-    <Compile Include="Data\DataRoom.cs" />
     <Compile Include="DoAction.cs" />
     <Compile Include="Data\Underworld\Entrance.cs" />
     <Compile Include="Data\Overworld\EntranceOW.cs" />
     <Compile Include="Data\Overworld\ExitOW.cs" />
     <Compile Include="GfxGroups.cs" />
-    <Compile Include="Gui\ExtraForms\ExitEditorForm.cs" />
+    <Compile Include="Gui\ExtraForms\ExitEditorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Gui\ExtraForms\ExitEditorForm.Designer.cs">
       <DependentUpon>ExitEditorForm.cs</DependentUpon>
     </Compile>
@@ -360,7 +363,9 @@
     <Compile Include="Gui\CGRamViewer.Designer.cs">
       <DependentUpon>CGRamViewer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\ExtraForms\DungeonPropertiesForm.cs" />
+    <Compile Include="Gui\ExtraForms\DungeonPropertiesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Gui\ExtraForms\DungeonPropertiesForm.Designer.cs">
       <DependentUpon>DungeonPropertiesForm.cs</DependentUpon>
     </Compile>
@@ -385,7 +390,9 @@
     <Compile Include="Gui\ImportFromRom.Designer.cs">
       <DependentUpon>ImportFromRom.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\MainTabs\DungeonViewer.cs" />
+    <Compile Include="Gui\MainTabs\DungeonViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Gui\MainTabs\DungeonViewer.Designer.cs">
       <DependentUpon>DungeonViewer.cs</DependentUpon>
     </Compile>
@@ -395,7 +402,9 @@
     <Compile Include="Gui\ExtraForms\EntrancePropertyForm.Designer.cs">
       <DependentUpon>EntrancePropertyForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\MainTabs\GfxEditor.cs" />
+    <Compile Include="Gui\MainTabs\GfxEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Gui\MainTabs\GfxEditor.Designer.cs">
       <DependentUpon>GfxEditor.cs</DependentUpon>
     </Compile>
@@ -406,28 +415,38 @@
       <DependentUpon>GfxGroupsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Gui\MainTabs\GfxImportExport.cs">
-      <SubType>Component</SubType>
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Gui\MainTabs\GfxImportExport.Designer.cs">
       <DependentUpon>GfxImportExport.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\MainTabs\ObjectDesigner.cs" />
+    <Compile Include="Gui\MainTabs\ObjectDesigner.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Gui\MainTabs\ObjectDesigner.Designer.cs">
       <DependentUpon>ObjectDesigner.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\MainTabs\OverworldEditor.cs" />
+    <Compile Include="Gui\MainTabs\OverworldEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Gui\MainTabs\OverworldEditor.Designer.cs">
       <DependentUpon>OverworldEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\MainTabs\ScreenEditor.cs" />
+    <Compile Include="Gui\MainTabs\ScreenEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Gui\MainTabs\ScreenEditor.Designer.cs">
       <DependentUpon>ScreenEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\MainTabs\SpriteEditor.cs" />
+    <Compile Include="Gui\MainTabs\SpriteEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Gui\MainTabs\SpriteEditor.Designer.cs">
       <DependentUpon>SpriteEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\PaletteEditor.cs" />
+    <Compile Include="Gui\PaletteEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Gui\PaletteEditor.Designer.cs">
       <DependentUpon>PaletteEditor.cs</DependentUpon>
     </Compile>
@@ -536,13 +555,17 @@
     <Compile Include="Gui\ExtraForms\MovePointer.Designer.cs">
       <DependentUpon>MovePointer.cs</DependentUpon>
     </Compile>
-    <Compile Include="Gui\ObjectViewer.cs" />
+    <Compile Include="Gui\ObjectViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Gui\ObjectViewer.Designer.cs">
       <DependentUpon>ObjectViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Data\Palettes.cs" />
     <Compile Include="Gui\PaletteViewer.cs" />
-    <Compile Include="Gui\RoomLayout.cs" />
+    <Compile Include="Gui\RoomLayout.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Gui\RoomLayout.Designer.cs">
       <DependentUpon>RoomLayout.cs</DependentUpon>
     </Compile>
@@ -591,15 +614,16 @@
     <Compile Include="Gui\Scene\SceneModes\UWTorchMode.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Scripting.evaluator.cs" />
-    <Compile Include="Scripting.Extensions.cs" />
-    <Compile Include="Scripting.native.cs" />
-    <Compile Include="SpritesView.cs" />
+    <Compile Include="SpritesView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="SpritesView.Designer.cs">
       <DependentUpon>SpritesView.cs</DependentUpon>
     </Compile>
     <Compile Include="Utility\Sprite_SubsetNames.cs" />
-    <Compile Include="Gui\MainTabs\TextEditor.cs" />
+    <Compile Include="Gui\MainTabs\TextEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Gui\MainTabs\TextEditor.Designer.cs">
       <DependentUpon>TextEditor.cs</DependentUpon>
     </Compile>
@@ -622,7 +646,6 @@
     <Compile Include="ZCompressLibrary\Decompress.cs" />
     <Compile Include="ZCompressLibrary\fake_mem.cs" />
     <Compile Include="ZScreamer.cs" />
-    <Compile Include="ZSSerializer.cs" />
     <EmbeddedResource Include="Gui\DataExtractor.resx">
       <DependentUpon>DataExtractor.cs</DependentUpon>
     </EmbeddedResource>
@@ -796,7 +819,6 @@
     <Content Include="Hacks\debug.asm">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="PatchNotes.txt" />
     <None Include="Resources\xbutton.png" />
     <None Include="Resources\starn.bmp" />
     <None Include="Resources\starl.bmp" />
@@ -808,6 +830,7 @@
     </Content>
     <None Include="Resources\Mblock.png" />
     <None Include="Resources\spriteFont.png" />
+    <Content Include="Resources\screamlink.ico" />
     <Content Include="screamlink.ico" />
   </ItemGroup>
   <ItemGroup>

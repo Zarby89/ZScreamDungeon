@@ -480,13 +480,15 @@ namespace ZeldaFullEditor
 
 		private void entranceProperty_Click(object sender, EventArgs e)
 		{
-			EntranceForm ef = new EntranceForm();
-			ef.entranceId = lastselectedEntrance.entranceId;
-			ef.mapId = lastselectedEntrance.MapID;
-			ef.mapPos = lastselectedEntrance.mapPos;
-			ef.x = lastselectedEntrance.GlobalX;
-			ef.y = lastselectedEntrance.GlobalY;
-			ef.isHole = lastselectedEntrance.isHole;
+			EntranceForm ef = new EntranceForm
+			{
+				entranceId = lastselectedEntrance.entranceId,
+				mapId = lastselectedEntrance.MapID,
+				mapPos = lastselectedEntrance.mapPos,
+				x = lastselectedEntrance.GlobalX,
+				y = lastselectedEntrance.GlobalY,
+				isHole = lastselectedEntrance.isHole
+			};
 
 			if (ef.ShowDialog() == DialogResult.OK)
 			{

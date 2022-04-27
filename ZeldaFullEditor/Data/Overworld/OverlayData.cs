@@ -8,7 +8,7 @@ namespace ZeldaFullEditor
 {
 	public class OverlayData
 	{
-		public List<TilePos> tilesData = new List<TilePos>();
+		public List<OverlayTile> tilesData = new List<OverlayTile>();
 
 		public OverlayData()
 		{

@@ -9,11 +9,10 @@ using System.Windows.Forms;
 namespace ZeldaFullEditor
 {
 	/// <summary>
-	/// Class for all text that is visible to the user.
+	/// Class for consistency with text that is visible to the user.
 	/// </summary>
 	public static class UIText
 	{
-
 		//===========================================================================================
 		// META
 		//===========================================================================================
@@ -22,7 +21,6 @@ namespace ZeldaFullEditor
 
 		public const string GITHUB = "https://github.com/Zarby89/ZScreamDungeon";
 		public const string DISCORD = "https://discord.gg/8eJdz2YdW2";
-
 
 		//===========================================================================================
 		// File explorer
@@ -54,7 +52,6 @@ namespace ZeldaFullEditor
 		//===========================================================================================
 		public const string Range0toFF = "The selected value must be between 0x00 and 0xFF, inclusive.";
 
-
 		//===========================================================================================
 		// Formatting
 		//===========================================================================================
@@ -63,8 +60,6 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// Returns a path with system-specific path separators, where each argument is a different segment of the file path.
 		/// </summary>
-		/// <param name="p"></param>
-		/// <returns></returns>
 		public static string GetFileName(params string[] p)
 		{
 			StringBuilder ret = new StringBuilder((p.Length * 2) - 1);
@@ -86,10 +81,11 @@ namespace ZeldaFullEditor
 		public const string DefaultWarning = "You have unsaved changes that will be lost.";
 		public const string RoomWarning = "You have unsaved room changes that will be lost by closing this tab.";
 		public const string CloseROMWarning = "Closing this ROM will result in all unsaved changes being lost.";
+
 		public static DialogResult WarnAboutSaving(string message = DefaultWarning)
 		{
 			return MessageBox.Show(
-					message + "\nDo you wish to save before continuing?",
+					$"{message}\nDo you wish to save before continuing?",
 					"Unsaved changes",
 					MessageBoxButtons.YesNoCancel,
 					MessageBoxIcon.Warning
@@ -106,8 +102,6 @@ namespace ZeldaFullEditor
 			);
 		}
 
-
-
 		public static void CryAboutSaving(string message = "OHNO")
 		{
 			MessageBox.Show
@@ -117,7 +111,6 @@ namespace ZeldaFullEditor
 				MessageBoxButtons.OK
 			);
 		}
-
 
 		//===========================================================================================
 		// Extension functions

@@ -431,10 +431,10 @@ namespace ZeldaFullEditor.Gui
 					Thread.CurrentThread.IsBackground = true;
 					for (int i = 0; i < 159; i++)
 					{
-						if (ZScreamer.ActiveOW.allmaps[i].needRefresh)
+						if (ZScreamer.ActiveOW.allmaps[i].NeedsRefresh)
 						{
 							ZScreamer.ActiveOW.allmaps[i].BuildMap();
-							ZScreamer.ActiveOW.allmaps[i].needRefresh = false;
+							ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = false;
 						}
 					}
 				}).Start();
@@ -458,10 +458,10 @@ namespace ZeldaFullEditor.Gui
 				Thread.CurrentThread.IsBackground = true;
 				for (int i = 0; i < 159; i++)
 				{
-					if (ZScreamer.ActiveOW.allmaps[i].needRefresh)
+					if (ZScreamer.ActiveOW.allmaps[i].NeedsRefresh)
 					{
 						ZScreamer.ActiveOW.allmaps[i].BuildMap();
-						ZScreamer.ActiveOW.allmaps[i].needRefresh = false;
+						ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = false;
 					}
 				}
 			}).Start();
@@ -469,8 +469,10 @@ namespace ZeldaFullEditor.Gui
 
 		private void musicButton_Click(object sender, EventArgs e)
 		{
-			OWMusicForm owmf = new OWMusicForm();
-			owmf.mapIndex = (byte) ZScreamer.ActiveOWScene.selectedMap;
+			OWMusicForm owmf = new OWMusicForm
+			{
+				mapIndex = (byte) ZScreamer.ActiveOWScene.selectedMap
+			};
 			owmf.musics[0] = ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.selectedMap].musics[0];
 			owmf.musics[1] = ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.selectedMap].musics[1];
 			owmf.musics[2] = ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.selectedMap].musics[2];
@@ -868,10 +870,10 @@ namespace ZeldaFullEditor.Gui
 			{
 				for (int x = 0; x < 4; x++)
 				{
-					CopyTile(x, y, 0, 0, t.tile0.ID, p, destPtr, srcPtr, 16);
-					CopyTile(x, y, 8, 0, t.tile1.ID, p, destPtr, srcPtr, 16);
-					CopyTile(x, y, 0, 8, t.tile2.ID, p, destPtr, srcPtr, 16);
-					CopyTile(x, y, 8, 8, t.tile3.ID, p, destPtr, srcPtr, 16);
+					CopyTile(x, y, 0, 0, t.Tile0.ID, p, destPtr, srcPtr, 16);
+					CopyTile(x, y, 8, 0, t.Tile1.ID, p, destPtr, srcPtr, 16);
+					CopyTile(x, y, 0, 8, t.Tile2.ID, p, destPtr, srcPtr, 16);
+					CopyTile(x, y, 8, 8, t.Tile3.ID, p, destPtr, srcPtr, 16);
 				}
 			}
 
@@ -986,12 +988,12 @@ namespace ZeldaFullEditor.Gui
 					}
 				}
 
-				foreach (TilePos t in ZScreamer.ActiveOW.alloverlays[i].tilesData)
+				foreach (OverlayTile t in ZScreamer.ActiveOW.alloverlays[i].tilesData)
 				{
 					alltilesIndexed[t.Map16Value]++;
 				}
 
-				foreach (TilePos t in ZScreamer.ActiveOW.alloverlays[i + 64].tilesData)
+				foreach (OverlayTile t in ZScreamer.ActiveOW.alloverlays[i + 64].tilesData)
 				{
 					alltilesIndexed[t.Map16Value]++;
 				}

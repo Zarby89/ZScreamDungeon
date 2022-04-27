@@ -60,11 +60,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		byte lastY = 0;
 		int xIn = 0;
 		bool swordSelected = false;
-
-		// Commented out because its unused
-		//bool v = false;
-
-		bool darkWorld = false;
+		private bool darkWorld = false;
 
 		List<MapIcon>[] allMapIcons = new List<MapIcon>[10];
 
@@ -1257,8 +1253,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 			for (int i = 0; i < 1024; i++)
 			{
-				allData.Add((byte) tilesBG1Buffer[i]);
-				allData.Add((byte) (tilesBG1Buffer[i] >> 8));
+				allData.Add(tilesBG1Buffer[i]);
 			}
 
 			allData.Add(0x00);
@@ -1269,8 +1264,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 			for (int i = 0; i < 1024; i++)
 			{
-				allData.Add((byte) tilesBG2Buffer[i]);
-				allData.Add((byte) (tilesBG2Buffer[i] >> 8));
+				allData.Add(tilesBG2Buffer[i]);
 			}
 
 			allData.Add(0xFF);
@@ -1281,11 +1275,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 			if (uppersprCheckbox.Checked)
 			{
-				ZScreamer.ActiveROM[0x67E92] = (byte)(0x20 + (oamData[0].pal << 1));
+				ZScreamer.ActiveROM[0x67E92] = (byte) (0x20 + (oamData[0].pal << 1));
 			}
 			else
 			{
-				ZScreamer.ActiveROM[0x67E92] = (byte)(0x21 + (oamData[0].pal << 1));
+				ZScreamer.ActiveROM[0x67E92] = (byte) (0x21 + (oamData[0].pal << 1));
 			}
 
 			ZScreamer.ActiveROM.Write(titleScreenPosition, allData.ToArray());
@@ -1302,8 +1296,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
             }
             */
 
-			SaveFileDialog sfd = new SaveFileDialog();
-			sfd.Filter = "all *.bin |*.bin";
+			SaveFileDialog sfd = new SaveFileDialog
+			{
+				// TODO standardize
+				Filter = "all *.bin |*.bin"
+			};
 			if (sfd.ShowDialog() == DialogResult.OK)
 			{
 				FileStream fs = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
@@ -1357,20 +1354,17 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		private void button3_Click(object sender, EventArgs e)
 		{
-			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.Filter = "all *.bin |*.bin";
+			OpenFileDialog ofd = new OpenFileDialog
+			{
+				// TODO standardize
+				Filter = "all *.bin |*.bin"
+			};
 
 			if (ofd.ShowDialog() == DialogResult.OK)
 			{
 				FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read);
-				if (darkWorld)
-				{
-					fs.Read(dwmapdata, 0, (64 * 64));
-				}
-				else
-				{
-					fs.Read(mapdata, 0, (64 * 64));
-				}
+
+				fs.Read(darkWorld ? dwmapdata : mapdata, 0, 64 * 64);
 
 				fs.Close();
 			}
@@ -1393,9 +1387,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				{
 					if (!rSide)
 					{
-						ZScreamer.ActiveROM[p] = mapdata[count];
+						ZScreamer.ActiveROM[p++] = mapdata[count];
 
-						p++;
 						if (cSide >= 31)
 						{
 							cSide = 0;
@@ -1406,9 +1399,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					}
 					else
 					{
-						ZScreamer.ActiveROM[p2] = mapdata[count] ;
+						ZScreamer.ActiveROM[p2++] = mapdata[count] ;
 
-						p2++;
 						if (cSide >= 31)
 						{
 							cSide = 0;
@@ -1481,18 +1473,18 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					if (e < 9)
 					{
 						ZScreamer.ActiveROM.Write16(addresses[i] + (e * 2), allMapIcons[e][i].x << 4);
-						ZScreamer.ActiveROM.Write16((addresses[i] + 18) + (e * 2), allMapIcons[e][i].y << 4);
-						ZScreamer.ActiveROM.Write16((addressesgfx[i] + e * 2), allMapIcons[e][i].gfx);
+						ZScreamer.ActiveROM.Write16(addresses[i] + 18 + (e * 2), allMapIcons[e][i].y << 4);
+						ZScreamer.ActiveROM.Write16(addressesgfx[i] + (e * 2), allMapIcons[e][i].gfx);
 					}
 					else
 					{
 						ushort px = (ushort) (allMapIcons[e][i].x << 4);
 						ushort py = (ushort) (allMapIcons[e][i].y << 4);
 						ZScreamer.ActiveROM[0x53763 + i] = (byte) px;
-						ZScreamer.ActiveROM[0x5376b + i] = (byte) (px>>8);
+						ZScreamer.ActiveROM[0x5376B + i] = (byte) (px>>8);
 
 						ZScreamer.ActiveROM[0x53773 + i] = (byte) py;
-						ZScreamer.ActiveROM[0x5377b + i] = (byte) (py >> 8);
+						ZScreamer.ActiveROM[0x5377B + i] = (byte) (py >> 8);
 					}
 				}
 			}
@@ -1525,13 +1517,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			{
 				for (int i = 0; i < 25; i++)
 				{
+					var box = new Rectangle(10 + ((i % 5) * 32), 12 + ((i / 5) * 32), 32, 32);
+
 					if (currentFloorRooms[currentFloor][i] != 0x0F)
 					{
 						int gId = currentFloorGfx[currentFloor][i];
-						e.Graphics.DrawImage(dungmaptiles16Bitmap, new Rectangle(10 + ((i % 5) * 32), 12 + ((i / 5) * 32), 32, 32), new Rectangle((gId % 16) * 16, (gId / 16) * 16, 16, 16), GraphicsUnit.Pixel);
+						e.Graphics.DrawImage(dungmaptiles16Bitmap, box, new Rectangle((gId % 16) * 16, gId & ~0xF, 16, 16), GraphicsUnit.Pixel);
 						if (currentFloorRooms[currentFloor][i] == bossRoom)
 						{
-							e.Graphics.DrawRectangle(Constants.RedPen4, new Rectangle(10 + ((i % 5) * 32), 12 + ((i / 5) * 32), 32, 32));
+							e.Graphics.DrawRectangle(Constants.RedPen4, box);
 						}
 
 						if (roomidshowCheckbox.Checked)
@@ -1542,7 +1536,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 					if (dungmapSelectedTile == i)
 					{
-						e.Graphics.DrawRectangle(Constants.AzurePen2, new Rectangle(10 + ((i % 5) * 32), 12 + ((i / 5) * 32), 32, 32));
+						e.Graphics.DrawRectangle(Constants.AzurePen2, box);
 					}
 				}
 			}
@@ -1640,13 +1634,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			dungmapSelected = dungmapListbox.SelectedIndex;
 		}
 
-		private void floorselectorPicturebox_Paint(object sender, PaintEventArgs e)
-		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
-
-			float[][] matrixItems = {
+		private static readonly float[][] matrixItems1 = {
 				new float[] { 1f, 0, 0, 0, 0 },
 				new float[] { 0, 1f, 0, 0, 0 },
 				new float[] { 0, 0, 1f, 0, 0 },
@@ -1654,7 +1642,22 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				new float[] { 0, 0, 0, 0, 1 }
 			};
 
-			ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
+		private static readonly float[][] matrixItems2 = new float[][] {
+				new float[] { 0f, 0, 0, 0, 0 },
+				new float[] { 0, 1f, 0, 0, 0 },
+				new float[] { 0, 0, 0f, 0, 0 },
+				new float[] { 0, 0, 0, 1f, 0 },
+				new float[] { 0, 0, 0, 0, 1 }
+			};
+		private void floorselectorPicturebox_Paint(object sender, PaintEventArgs e)
+		{
+			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
+			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+
+
+
+			ColorMatrix colorMatrix = new ColorMatrix(matrixItems1);
 			ImageAttributes ia = new ImageAttributes();
 			ia.SetColorMatrix(colorMatrix);
 
@@ -1673,15 +1676,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			{
 				if (i == currentFloor)
 				{
-					matrixItems = new float[][] {
-						new float[] { 0f, 0, 0, 0, 0 },
-						new float[] { 0, 1f, 0, 0, 0 },
-						new float[] { 0, 0, 0f, 0, 0 },
-						new float[] { 0, 0, 0, 1f, 0 },
-						new float[] { 0, 0, 0, 0, 1 }
-					};
-
-					colorMatrix = new ColorMatrix(matrixItems);
+					colorMatrix = new ColorMatrix(matrixItems2);
 
 					ia.SetColorMatrix(colorMatrix);
 					e.Graphics.DrawImage(floorSelector,
@@ -1715,11 +1710,14 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				// NEED TO BE EXECUTED AFTER THE TILESET ARE LOADED NOT BEFORE -_-
 				byte* currentmapgfx8Data = (byte*) ZScreamer.ActiveGraphicsManager.currentTileScreengfx16Ptr.ToPointer(); // Loaded gfx for the current map (empty at this point)
 				byte* allgfxData = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer(); // All gfx of the game pack of 2048 bytes (4bpp)
+				
 				for (int i = 0; i < 4; i++)
 				{
+					int i2 = i * 2048;
+					int i3 = staticgfx[i] * 2048;
 					for (int j = 0; j < 2048; j++)
 					{
-						currentmapgfx8Data[(i * 2048) + j] = allgfxData[j + (staticgfx[i] * 2048)];
+						currentmapgfx8Data[i2 + j] = allgfxData[j + i3];
 					}
 				}
 			}
@@ -1911,14 +1909,14 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		private void dungmaproomgfxPicturebox_MouseDown(object sender, MouseEventArgs e)
 		{
-			currentFloorGfx[currentFloor][dungmapSelectedTile] = (byte) ((((e.Y) / 32) * 16) + ((e.X / 32)));
+			currentFloorGfx[currentFloor][dungmapSelectedTile] = (byte) ((e.Y / 32 * 16) + (e.X / 32));
 			dungmapPicturebox.Refresh();
 			floorselectorPicturebox.Refresh();
 		}
 
 		private void dungmapPicturebox_MouseDown(object sender, MouseEventArgs e)
 		{
-			dungmapSelectedTile = (((e.Y - 12) / 32) * 5) + ((e.X - 10) / 32);
+			dungmapSelectedTile = ((e.Y - 12) / 32 * 5) + ((e.X - 10) / 32);
 			editedFromEditor = true;
 			dungmaproomidTextbox.Text = currentFloorRooms[currentFloor][dungmapSelectedTile].ToString("X2");
 			editedFromEditor = false;
@@ -1979,47 +1977,48 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				// 0x566B6
 				// 0x5671A
 				// 0x5677E
-				string expAsm =
-					"org $0AE652\r\n" +
-					"JSR Load1\r\n" +
-					"org $0AE6B6\r\n" +
-					"JSR Load2\r\n" +
-					"org $0AE71A\r\n" +
-					"JSR Load3\r\n" +
-					"org $0AE77E\r\n" +
-					"JSR Load4\r\n" +
-					"org $219010\r\n" +
-					"NewTile16:\r\n" +
-					"org $0AF009\r\n" +
-					"Load1:\r\n" +
-					"PHX\r\n" +
-					"TYX\r\n" +
-					"LDA.l NewTile16, X\r\n" +
-					"TXY\r\n" +
-					"PLX\r\n" +
-					"RTS\r\n" +
-					"Load2:\r\n" +
-					"PHX\r\n" +
-					"TYX\r\n" +
-					"LDA.l NewTile16+2, X\r\n" +
-					"TXY\r\n" +
-					"PLX\r\n" +
-					"RTS\r\n" +
-					"Load3:\r\n" +
-					"PHX\r\n" +
-					"TYX\r\n" +
-					"LDA.l NewTile16+4, X\r\n" +
-					"TXY\r\n" +
-					"PLX\r\n" +
-					"RTS\r\n" +
-					"Load4:\r\n" +
-					"PHX\r\n" +
-					"TYX\r\n" +
-					"LDA.l NewTile16+6, X\r\n" +
-					"TXY\r\n" +
-					"PLX\r\n" +
-					"RTS\r\n"
-				; // 48 bytes
+
+				// TODO add to resources
+				string expAsm =	@"
+					org $0AE652
+					JSR Load1
+					org $0AE6B6
+					JSR Load2
+					org $0AE71A
+					JSR Load3
+					org $0AE77E
+					JSR Load4
+					org $219010
+					NewTile16:
+					org $0AF009
+					Load1:
+					PHX
+					TYX
+					LDA.l NewTile16, X
+					TXY
+					PLX
+					RTS
+					Load2:
+					PHX
+					TYX
+					LDA.l NewTile16+2, X
+					TXY
+					PLX
+					RTS
+					Load3:
+					PHX
+					TYX
+					LDA.l NewTile16+4, X
+					TXY
+					PLX
+					RTS
+					Load4:
+					PHX
+					TYX
+					LDA.l NewTile16+6, X
+					TXY
+					PLX
+					RTS"; // 48 bytes
 
 				File.WriteAllText("tempPatch.asm", expAsm);
 				ZScreamer.ActiveROM.ApplyPatch("tempPatch.asm");
@@ -2088,7 +2087,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 								pos = 0x57621;
 								ZScreamer.ActiveROM.Write16(ZScreamer.ActiveOffsets.dungeonMap_gfx_ptr + (d * 2), pos.PCtoSNES());
 								f = 50; // Restart the room since it was in reserved space
-								d -= 1;
+								d--;
 								searchBoss = false;
 
 								break;
@@ -2397,8 +2396,10 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		private void button11_Click(object sender, EventArgs e)
 		{
-			SaveFileDialog sfd = new SaveFileDialog();
-			sfd.Filter = UIText.BMP8Type;
+			SaveFileDialog sfd = new SaveFileDialog
+			{
+				Filter = UIText.BMP8Type
+			};
 
 			if (sfd.ShowDialog() == DialogResult.OK)
 			{
@@ -2408,8 +2409,10 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		private unsafe void button12_Click(object sender, EventArgs e)
 		{
-			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.Filter = UIText.BMP8Type;
+			OpenFileDialog ofd = new OpenFileDialog
+			{
+				Filter = UIText.BMP8Type
+			};
 
 			if (ofd.ShowDialog() == DialogResult.OK)
 			{
@@ -2423,15 +2426,15 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				{
 					byte* ptr = (byte*) bd.Scan0.ToPointer();
 
-					for (int sy = 0; sy < 16; sy++)
+					for (int sy = 0; sy < 16 * 1024; sy += 1024)
 					{
-						for (int sx = 0; sx < 16; sx++)
+						for (int sx = 0; sx < 16 * 8; sx += 8)
 						{
-							for (int y = 0; y < 8; y++)
+							for (int y = 0; y < 8 * 128; y += 128)
 							{
 								for (int x = 0; x < 8; x++)
 								{
-									ZScreamer.ActiveROM[0x0C4000 + pos] = ptr[x + (sx * 8) + (y * 128) + (sy * 1024)];
+									ZScreamer.ActiveROM[0x0C4000 + pos] = ptr[x + sx + y + sy];
 									pos++;
 								}
 							}
@@ -2444,8 +2447,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				pos = darkWorld ? 0x55C27 : 0x55B27;
 
 				ZScreamer.ActivePaletteManager.WritePalette(pos, b.Palette.Entries, 128);
-
 				ZScreamer.ActiveGraphicsManager.loadOverworldMap();
+
 				owMapTilesBox.Refresh();
 				mapPicturebox.Refresh();
 			}

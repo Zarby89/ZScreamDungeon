@@ -110,10 +110,6 @@ namespace ZeldaFullEditor
 
 		public Color[] palettes = new Color[Constants.TotalPaletteSize];
 
-		// Test code
-		public string[] objectsName = new string[0xFFF];
-		public bool[] objects = new bool[0xFFF];
-
 		public Color[,] editingPalettes; // Dynamic
 		public Color[,] loadedPalettes = new Color[1, 1];
 		public ushort paletteid;
@@ -128,12 +124,13 @@ namespace ZeldaFullEditor
 		{
 			ZS = zs;
 		}
-		public unsafe void DrawBG1()
+
+		public void DrawBG1()
 		{
 			DrawBackground(1);
 		}
 
-		public unsafe void DrawBG2()
+		public void DrawBG2()
 		{
 			DrawBackground(2);
 		}
@@ -143,7 +140,7 @@ namespace ZeldaFullEditor
 		{
 			int tx = (tile.ID / 16 * 512) + ((tile.ID & 0xF) * 4);
 			byte palnibble = (byte) (tile.Palette << 4);
-			byte r = (byte) tile.HFlipByte;
+			byte r = tile.HFlipByte;
 
 			for (int yl = 0; yl < 512; yl += 64)
 			{
@@ -193,7 +190,7 @@ namespace ZeldaFullEditor
 				{
 					if (buffer[xx + yy] != 0xFFFF) // Prevent draw if tile == 0xFFFF since it 0 indexed
 					{
-						GraphicsManager.DrawTileToBuffer(new Tile(buffer[xx + yy]), ptr, alltilesData);
+						DrawTileToBuffer(new Tile(buffer[xx + yy]), ptr, alltilesData);
 					}
 				}
 			}
@@ -361,24 +358,6 @@ namespace ZeldaFullEditor
 			return buffer;
 		}
 
-		public unsafe void CopyTile8bpp16(int x, int y, int tile, int sizeX, IntPtr destbmpPtr, IntPtr sourcebmpPtr)
-		{
-			int sourceY = (tile / 8);
-			int sourceX = (tile) - ((sourceY) * 8);
-			int sourcePtrPos = ((tile - ((tile / 8) * 8)) * 16) + ((tile / 8) * 2048); //(sourceX * 16) + (sourceY * 128);
-			byte* sourcePtr = (byte*) sourcebmpPtr.ToPointer();
-
-			int destPtrPos = (x + (y * sizeX));
-			byte* destPtr = (byte*) destbmpPtr.ToPointer();
-
-			for (int ystrip = 0; ystrip < 16; ystrip++)
-			{
-				for (int xstrip = 0; xstrip < 16; xstrip++)
-				{
-					destPtr[destPtrPos + xstrip + (ystrip * sizeX)] = sourcePtr[sourcePtrPos + xstrip + (ystrip * 128)];
-				}
-			}
-		}
 		// TODO this can probably be heavily optimized
 		public void CreateAllGfxData()
 		{
@@ -544,9 +523,9 @@ namespace ZeldaFullEditor
 		public Color[,] LoadSpritesPalette(byte id)
 		{
 			Color[,] palettes = new Color[16, 8];
-			byte sprite1_palette_ptr = ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (id * 4) + 1]; // ID of the 1st group of 4
-			byte sprite2_palette_ptr = (byte) (ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (id * 4) + 2] * 2); // ID of the 1st group of 4
-			byte sprite3_palette_ptr = (byte) (ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (id * 4) + 3] * 2); // ID of the 1st group of 4
+			byte sprite1_palette_ptr = ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (id * 4) + 1];
+			byte sprite2_palette_ptr = (byte) (ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (id * 4) + 2] * 2);
+			byte sprite3_palette_ptr = (byte) (ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (id * 4) + 3] * 2);
 
 			ushort palette_pos1 = ZS.ROM[0xDEBC6 + sprite1_palette_ptr]; // /14
 			ushort palette_pos2 = ZS.ROM.Read16(0xDEBD6 + sprite2_palette_ptr); // /14

@@ -26,7 +26,7 @@ namespace ZeldaFullEditor
 			/// <summary>
 			/// French canada
 			/// </summary>
-			FRCA
+			//FRCA
 		}
 	}
 }

@@ -2,11 +2,24 @@
 {
 	public readonly struct Tile32
 	{
-		// 0 1
-		// 2 3
+		/// <summary>
+		/// The tile16 in the top-left corner
+		/// </summary>
 		public ushort Tile0 { get; }
+
+		/// <summary>
+		/// The tile16 in the top-right corner
+		/// </summary>
 		public ushort Tile1 { get; }
+
+		/// <summary>
+		/// The tile16 in the bottom-left corner
+		/// </summary>
 		public ushort Tile2 { get; }
+
+		/// <summary>
+		/// The tile16 in the bottom-right corner
+		/// </summary>
 		public ushort Tile3 { get; }
 
 		public Tile32(ushort tile0, ushort tile1, ushort tile2, ushort tile3)

@@ -23,6 +23,14 @@ namespace ZeldaFullEditor
 		{
 			return Color.FromArgb(255, col);
 		}
+
+		public static void FillInHalfPaletteZeros(Color[] palette, Color fill)
+		{
+			for (int i = 0; i < Constants.TotalPaletteSize; i += Constants.ColorsPerHalfPalette)
+			{
+				palette[i] = fill;
+			}
+		}
 	}
 
 	public class PaletteHandler
@@ -54,9 +62,7 @@ namespace ZeldaFullEditor
 		public Color ReadPaletteSingle(int romPosition)
 		{
 			// Lets write new palette code since i can't find the old one :scream:
-			ushort color = ZS.ROM.Read16(romPosition);
-
-			return color.ToColor();
+			return ZS.ROM.Read16(romPosition).ToColor();
 		}
 
 		public Color[] ReadPalette(int address, int count)
@@ -66,8 +72,7 @@ namespace ZeldaFullEditor
 
 			for (int i = 0; i < count; i++)
 			{
-				ushort color = ZS.ROM.Read16(address);
-				colors[i] = color.ToColor();
+				colors[i] = ZS.ROM.Read16(address).ToColor();
 				address += 2;
 			}
 
@@ -115,30 +120,37 @@ namespace ZeldaFullEditor
 
 			SpriteGlobal[0] = ReadPalette(ZS.Offsets.globalSpritePalettesLW, 60);
 			SpriteGlobal[1] = ReadPalette(ZS.Offsets.globalSpritePalettesDW, 60);
+
 			for (int i = 0; i < 5; i++)
 			{
 				PlayerMail[i] = ReadPalette(ZS.Offsets.armorPalettes + (i * 30), 15);
 			}
+
 			for (int i = 0; i < 4; i++)
 			{
 				PlayerSword[i] = ReadPalette(ZS.Offsets.swordPalettes + (i * 6), 3);
 			}
+
 			for (int i = 0; i < 3; i++)
 			{
 				PlayerShield[i] = ReadPalette(ZS.Offsets.shieldPalettes + (i * 8), 4);
 			}
+
 			for (int i = 0; i < 12; i++)
 			{
 				SpriteAux1[i] = ReadPalette(ZS.Offsets.spritePalettesAux1 + (i * 14), 7);
 			}
+
 			for (int i = 0; i < 11; i++)
 			{
 				SpriteAux2[i] = ReadPalette(ZS.Offsets.spritePalettesAux2 + (i * 14), 7);
 			}
+
 			for (int i = 0; i < 24; i++)
 			{
 				SpriteAux3[i] = ReadPalette(ZS.Offsets.spritePalettesAux3 + (i * 14), 7);
 			}
+
 			for (int i = 0; i < 20; i++)
 			{
 				UnderworldMain[i] = ReadPalette(ZS.Offsets.dungeonMainPalettes + (i * 180), 90);
@@ -180,9 +192,9 @@ namespace ZeldaFullEditor
 
 			for (int i = 0; i < shade; i++)
 			{
-				r -= (r / 5);
-				g -= (g / 5);
-				b -= (b / 5);
+				r -= r / 5;
+				g -= g / 5;
+				b -= b / 5;
 			}
 
 			r = (int) (r / 255f * 0x1F);

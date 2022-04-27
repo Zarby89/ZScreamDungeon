@@ -8,9 +8,6 @@ namespace ZeldaFullEditor
 	[Serializable]
 	internal class ZeldaException : Exception
 	{
-		public ZeldaException(string message) : base(message)
-		{
-		}
-
+		public ZeldaException(string message) : base(message) { }
 	}
 }

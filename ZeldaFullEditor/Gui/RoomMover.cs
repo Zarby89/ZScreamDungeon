@@ -21,9 +21,11 @@ namespace ZeldaFullEditor
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			OpenFileDialog of = new OpenFileDialog();
-			of.Filter = UIText.USROMType;
-			of.DefaultExt = UIText.ROMExtension;
+			OpenFileDialog of = new OpenFileDialog
+			{
+				Filter = UIText.USROMType,
+				DefaultExt = UIText.ROMExtension
+			};
 			if (of.ShowDialog() == DialogResult.OK)
 			{
 				filePath = of.FileName;

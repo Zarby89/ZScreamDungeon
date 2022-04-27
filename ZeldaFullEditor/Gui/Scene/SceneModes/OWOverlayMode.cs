@@ -31,8 +31,10 @@ namespace ZeldaFullEditor
 				int superMY = (mid / 8) * 32;
 
 				tileBitmapPtr = ZS.GFXManager.mapblockset16;
-				tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr);
-				tileBitmap.Palette = ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[mapId].parent].gfxBitmap.Palette;
+				tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr)
+				{
+					Palette = ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[mapId].parent].gfxBitmap.Palette
+				};
 
 				if (needRedraw)
 				{
@@ -61,12 +63,12 @@ namespace ZeldaFullEditor
                             scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, scene.ow.allmaps[mapId].blockset16);
                             */
 
-							TilePos tp = new TilePos((byte) ((globalmouseTileDownX + x) - (superMX)), (byte) ((globalmouseTileDownY + y) - (superMY)), selectedTile[i]);
-							TilePos tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
+							OverlayTile tp = new OverlayTile((byte) ((globalmouseTileDownX + x) - (superMX)), (byte) ((globalmouseTileDownY + y) - (superMY)), selectedTile[i]);
+							OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
 
 							if (ZS.OverworldManager.allmaps[selectedMap].largeMap)
 							{
-								tp = new TilePos((byte) ((globalmouseTileDownX + x) - (superMX)), (byte) ((globalmouseTileDownY + y) - (superMY)), selectedTile[i]);
+								tp = new OverlayTile((byte) ((globalmouseTileDownX + x) - (superMX)), (byte) ((globalmouseTileDownY + y) - (superMY)), selectedTile[i]);
 								tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
 							}
 
@@ -127,8 +129,8 @@ namespace ZeldaFullEditor
 				{
 					if (tileX == globalmouseTileDownX && tileY == globalmouseTileDownY)
 					{
-						TilePos tp = new TilePos((byte) (tileX - (superMX)), (byte) (tileY - (superMY)), 0);
-						TilePos tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
+						OverlayTile tp = new OverlayTile((byte) (tileX - (superMX)), (byte) (tileY - (superMY)), 0);
+						OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
 
 						if (tf.IsGarbage)
 						{
@@ -258,8 +260,8 @@ namespace ZeldaFullEditor
                                     scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, scene.ow.allmaps[mapId].blockset16);
                                     */
 
-									TilePos tp = new TilePos((byte) (tileX - (superMX) + x), (byte) (tileY - (superMY) + y), selectedTile[i]);
-									TilePos tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
+									OverlayTile tp = new OverlayTile((byte) (tileX - (superMX) + x), (byte) (tileY - (superMY) + y), selectedTile[i]);
+									OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
 									if (ModifierKeys == Keys.Control)
 									{
 										ZS.OverworldManager.alloverlays[mid].tilesData.Remove(tf);

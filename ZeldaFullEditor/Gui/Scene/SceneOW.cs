@@ -179,10 +179,10 @@ namespace ZeldaFullEditor
 				Program.OverworldForm.propertiesChangedFromForm = true;
 				OverworldMap map = ZS.OverworldManager.allmaps[selectedMap + ZS.OverworldManager.worldOffset];
 
-				if (map.needRefresh)
+				if (map.NeedsRefresh)
 				{
 					map.BuildMap();
-					map.needRefresh = false;
+					map.NeedsRefresh = false;
 				}
 
 				Program.OverworldForm.mapGroupbox.Text = string.Format(
@@ -386,7 +386,7 @@ namespace ZeldaFullEditor
 		/// </summary>
 		public void SaveTiles()
 		{
-			ZS.OverworldManager.createMap32Tilesmap()
+			ZS.OverworldManager.createMap32Tilesmap();
 			ZS.OverworldManager.SaveMap32DefinitionsToROM();
 			//ZS.OverworldManager.savemapstorom();
 			ZS.OverworldManager.SaveMap16DefinitionsToROM();
@@ -665,10 +665,10 @@ namespace ZeldaFullEditor
 		// 4 = right
 		// 8 = bottom
 
-		public byte compareTilePos(TilePos tpc, TilePos[] tpa)
+		public byte compareTilePos(OverlayTile tpc, OverlayTile[] tpa)
 		{
 			byte detected = 0;
-			foreach (TilePos t in tpa)
+			foreach (OverlayTile t in tpa)
 			{
 				if (t.MapX == tpc.MapX - 1 && t.MapY == tpc.MapY)
 				{
@@ -695,16 +695,16 @@ namespace ZeldaFullEditor
 			return detected;
 		}
 
-		public TilePos compareTilePosT(TilePos tpc, TilePos[] tpa)
+		public OverlayTile compareTilePosT(OverlayTile tpc, OverlayTile[] tpa)
 		{
-			foreach (TilePos t in tpa)
+			foreach (OverlayTile t in tpa)
 			{
 				if (t.MapX == tpc.MapX && t.MapY == tpc.MapY)
 				{
 					return t;
 				}
 			}
-			return TilePos.GarbageTile;
+			return OverlayTile.GarbageTile;
 		}
 
 		protected override void RequestRefresh()

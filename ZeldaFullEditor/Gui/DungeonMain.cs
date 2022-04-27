@@ -472,9 +472,10 @@ namespace ZeldaFullEditor
 			gfxGroupsForm.CreateTempGfx();
 			gfxGroupsForm.Location = Constants.Point_0_0;
 
-			paletteForm = new PaletteEditor();
-
-			paletteForm.Location = Constants.Point_0_0;
+			paletteForm = new PaletteEditor
+			{
+				Location = Constants.Point_0_0
+			};
 			refreshRecentsFiles();
 			Program.OverworldForm.InitOpen();
 			Program.TextForm.InitializeOnOpen();
@@ -2413,8 +2414,10 @@ namespace ZeldaFullEditor
 		{
 			// do we need a new one every time?
 			vramViewer = new VramViewer();
-			WindowPanel wp = new WindowPanel();
-			wp.Location = Constants.Point_512_0;
+			WindowPanel wp = new WindowPanel
+			{
+				Location = Constants.Point_512_0
+			};
 			wp.containerPanel.Controls.Add(vramViewer);
 			wp.Tag = "VRAM Viewer";
 			wp.Size = new Size(vramViewer.Size.Width + 2, vramViewer.Size.Height + 26);
@@ -2448,9 +2451,11 @@ namespace ZeldaFullEditor
 		private void cGramViewerToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			cgramViewer = new CGRamViewer();
-			WindowPanel wp = new WindowPanel();
-			wp.Tag = "CGRAM Viewer - Right click to export palettes";
-			wp.Location = Constants.Point_512_0;
+			WindowPanel wp = new WindowPanel
+			{
+				Tag = "CGRAM Viewer - Right click to export palettes",
+				Location = Constants.Point_512_0
+			};
 			wp.containerPanel.Controls.Add(cgramViewer);
 			wp.Size = new Size(cgramViewer.Size.Width + 2, cgramViewer.Size.Height + 26);
 			customPanel3.Controls.Add(wp);
@@ -2461,9 +2466,11 @@ namespace ZeldaFullEditor
 		{
 			if (editorsTabControl.SelectedTab.Name == "dungeonPage")
 			{
-				WindowPanel wp = new WindowPanel();
-				wp.Tag = "Gfx Groupset Editor";
-				wp.Location = Constants.Point_512_0;
+				WindowPanel wp = new WindowPanel
+				{
+					Tag = "Gfx Groupset Editor",
+					Location = Constants.Point_512_0
+				};
 				wp.containerPanel.Controls.Add(gfxGroupsForm);
 				wp.Size = new Size(gfxGroupsForm.Size.Width + 2, gfxGroupsForm.Size.Height + 26);
 				customPanel3.Controls.Add(wp);
@@ -2471,9 +2478,11 @@ namespace ZeldaFullEditor
 			}
 			else if (editorsTabControl.SelectedTab.Name == "overworldPage")
 			{
-				WindowPanel wp = new WindowPanel();
-				wp.Tag = "GFX Groups Editor";
-				wp.Location = Constants.Point_512_0;
+				WindowPanel wp = new WindowPanel
+				{
+					Tag = "GFX Groups Editor",
+					Location = Constants.Point_512_0
+				};
 				wp.containerPanel.Controls.Add(new GfxGroupsForm());
 				wp.Size = new Size(gfxGroupsForm.Size.Width + 2, gfxGroupsForm.Size.Height + 26);
 				Program.OverworldForm.splitContainer1.Panel2.Controls.Add(wp);
@@ -2514,10 +2523,12 @@ namespace ZeldaFullEditor
 		{
 			if (editorsTabControl.SelectedTab.Name == "dungeonPage" || editorsTabControl.SelectedTab.Name == "overworldPage")
 			{
-				WindowPanel wp = new WindowPanel();
-				wp.Tag = "Palettes Editor";
-				wp.Location = Constants.Point_512_0;
-				wp.Size = new Size(paletteForm.Size.Width + 2, paletteForm.Size.Height + 26);
+				WindowPanel wp = new WindowPanel
+				{
+					Tag = "Palettes Editor",
+					Location = Constants.Point_512_0,
+					Size = new Size(paletteForm.Size.Width + 2, paletteForm.Size.Height + 26)
+				};
 
 				if (editorsTabControl.SelectedTab.Name == "dungeonPage")
 				{
@@ -2771,10 +2782,7 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			for (int i = 0; i < Constants.TotalPaletteSize; i += Constants.ColorsPerHalfPalette)
-			{
-				palettes.Entries[i] = Color.Black;
-			}
+			Palettes.FillInHalfPaletteZeros(palettes.Entries, Color.Black);
 
 			ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette = palettes;
 			ZScreamer.ActiveGraphicsManager.roomBg2Bitmap.Palette = palettes;
@@ -3182,8 +3190,10 @@ namespace ZeldaFullEditor
 			//int[] doorsoffset = new int[Constants.NumberOfRooms];
 			//StringBuilder sb = new StringBuilder();
 			//sb.Append("lorom\r\n");
-			SaveFileDialog sf = new SaveFileDialog();
-			sf.Filter = UIText.ExportedRoomDataType;
+			SaveFileDialog sf = new SaveFileDialog
+			{
+				Filter = UIText.ExportedRoomDataType
+			};
 
 			if (sf.ShowDialog() == DialogResult.OK)
 			{
@@ -3767,27 +3777,27 @@ namespace ZeldaFullEditor
 		/// <param name="e"></param>
 		private void saveMapsOnlyToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (ZScreamer.ActiveOWScene.SaveTiles())
+			try
 			{
-				// TODO messagebox for failure
-			}
-			else
-			{
-				if (ZScreamer.ActiveScreamer.SaveOverworldScreens())
-				{
-					// TODO messagebox for failure "too many maps out of bound error"
-				}
+				ZScreamer.ActiveOWScene.SaveTiles();
+				ZScreamer.ActiveScreamer.SaveOverworldScreens();
 
 				FileStream fs = new FileStream(projectFilename, FileMode.OpenOrCreate, FileAccess.Write);
 				fs.Write(ZScreamer.ActiveScreamer.ROM.DataStream, 0, ZScreamer.ActiveScreamer.ROM.Length);
 				fs.Close();
 			}
+			catch(ZeldaException a)
+			{
+				// TODO messagebox for failure "too many maps out of bound error"
+			}
 		}
 
 		private void importRoomToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			OpenFileDialog ofd = new OpenFileDialog();
-			ofd.Filter = UIText.ExportedRoomDataType;
+			OpenFileDialog ofd = new OpenFileDialog
+			{
+				Filter = UIText.ExportedRoomDataType
+			};
 
 			if (ofd.ShowDialog() == DialogResult.OK)
 			{
@@ -3802,29 +3812,18 @@ namespace ZeldaFullEditor
 
 		private void showRoomsInHexToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			string dotFormat = showRoomsInHexToolStripMenuItem.Checked ? "X3" : "D3";
 			foreach (TabPage tp in tabControl2.TabPages)
 			{
-				if (showRoomsInHexToolStripMenuItem.Checked)
-				{
-					tp.Text = (tp.Tag as DungeonRoom).RoomID.ToString("X3");
-				}
-				else
-				{
-					tp.Text = (tp.Tag as DungeonRoom).RoomID.ToString("D3");
-				}
+				tp.Text = (tp.Tag as DungeonRoom).RoomID.ToString(dotFormat);
 			}
 		}
 
 		private void showMapIndexInHexToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (showMapIndexInHexToolStripMenuItem.Checked)
-			{
-				Program.OverworldForm.mapGroupbox.Text = "Selected Map - " + ZScreamer.ActiveOWScene.selectedMapParent.ToString("X2") + " Properties : ";
-			}
-			else
-			{
-				Program.OverworldForm.mapGroupbox.Text = "Selected Map - " + ZScreamer.ActiveOWScene.selectedMapParent.ToString() + " Properties : ";
-			}
+			Program.OverworldForm.mapGroupbox.Text = "Selected Map - " +
+				ZScreamer.ActiveOWScene.selectedMapParent.ToString(showMapIndexInHexToolStripMenuItem.Checked ? "X2" : "D3")
+				+ " Properties : ";
 		}
 
 		private void saveVRAMAsPngToolStripMenuItem_Click(object sender, EventArgs e)
@@ -3837,7 +3836,7 @@ namespace ZeldaFullEditor
 			ColorPalette cp = ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette;
 			for (int i = 0; i < 128; i++)
 			{
-				e.Graphics.FillRectangle(new SolidBrush(cp.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
+				e.Graphics.FillRectangle(new SolidBrush(cp.Entries[i]), new Rectangle((i % 16) * 16, i & ~0xF, 16, 16));
 			}
 		}
 
