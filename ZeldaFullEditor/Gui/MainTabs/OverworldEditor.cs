@@ -988,12 +988,12 @@ namespace ZeldaFullEditor.Gui
 
 				foreach (TilePos t in ZScreamer.ActiveOW.alloverlays[i].tilesData)
 				{
-					alltilesIndexed[t.tileId]++;
+					alltilesIndexed[t.Map16Value]++;
 				}
 
 				foreach (TilePos t in ZScreamer.ActiveOW.alloverlays[i + 64].tilesData)
 				{
-					alltilesIndexed[t.tileId]++;
+					alltilesIndexed[t.Map16Value]++;
 				}
 
 				sx++;

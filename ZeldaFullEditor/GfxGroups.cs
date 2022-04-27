@@ -61,7 +61,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public bool SaveGroupsToROM()
+		public void SaveGroupsToROM()
 		{
 			int gfxPointer = SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_groups_pointer));
 
@@ -96,8 +96,6 @@ namespace ZeldaFullEditor
 					ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (i * 4) + j] = paletteGfx[i][j];
 				}
 			}
-
-			return false;
 		}
 	}
 }

@@ -547,7 +547,7 @@ namespace ZeldaFullEditor
 		}
 
 
-		public bool createMap32Tilesmap()
+		public void createMap32Tilesmap()
 		{
 			t32Unique.Clear();
 			t32.Clear();
@@ -640,8 +640,7 @@ namespace ZeldaFullEditor
 				{
 					ExportMaps();
 				}
-
-				return true;
+				throw new ZeldaException("overworld map save failed");
 			}
 
 			alltiles16.Clear();
@@ -651,8 +650,6 @@ namespace ZeldaFullEditor
 			{
 				t32Unique.Add(new Tile32(666, 666, 666, 666)); // create new tileunique
 			}
-
-			return false;
 		}
 
 		public void ImportMaps()

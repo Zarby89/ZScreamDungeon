@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ZeldaFullEditor.Data.Underworld
 {
 	[Serializable]
-	public unsafe class DungeonDoor : IDungeonPlaceable, IByteable
+	public class DungeonDoor : IDungeonPlaceable, IByteable
 	{
 		public byte ID => DoorType.ID;
 

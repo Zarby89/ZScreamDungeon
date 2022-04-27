@@ -4,7 +4,8 @@ using System.Drawing;
 
 namespace ZeldaFullEditor.Data.Underworld
 {
-	public unsafe class DungeonSprite : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID
+	[Serializable]
+	public class DungeonSprite : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID
 	{
 
 		public byte GridX { get; set; } = 0;
@@ -57,22 +58,21 @@ namespace ZeldaFullEditor.Data.Underworld
 
 	
 
-		public DungeonSprite(SpriteType type, ushort screen = 0)
+		public DungeonSprite(SpriteType type)
 		{
 			Species = type;
 
 			stype = type.IsOverlord ? SpriteType.GetSpriteType(type.ID) : type;
 			otype = (OverlordType) (type.IsOverlord ? type : OverlordType.GetOverlordType(type.ID));
 
-			RoomID = screen;
-
 			Subtype = (byte) (type.IsOverlord ? 7 : 0);
 		}
 
 		public DungeonSprite Clone()
 		{
-			return new DungeonSprite(Species, RoomID)
+			return new DungeonSprite(Species)
 			{
+				RoomID = RoomID,
 				GridX = GridX,
 				GridY = GridY,
 				Layer = Layer,

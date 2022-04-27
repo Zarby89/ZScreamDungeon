@@ -1084,10 +1084,9 @@ namespace ZeldaFullEditor
 
 		private const int SpaceForBank1Text = 0x8000;
 		private const int SpaceForBank2Text = 0x14BF;
+
 		public bool Save()
 		{
-			byte[] backup = ZScreamer.ActiveROM.DataStream.DeepCopy();
-
 			ZScreamer.ActiveROM.Write(ZScreamer.ActiveOffsets.characters_width, widthArray);
 
 			int pos = ZScreamer.ActiveOffsets.text_data;
@@ -1152,10 +1151,7 @@ namespace ZeldaFullEditor
 					{
 						if (expandedRegion)
 						{
-							MessageBox.Show(
-								$"A second bank marker was found in Message {m.ID:X3}.\nThis is not a legal move.");
-
-							return ZScreamer.ActiveROM.OhShitLastResortBackup(backup);
+							throw new ZeldaException($"A second bank marker was found in Message {m.ID:X3}.\nThis is not a legal move.");
 						}
 					}
 
@@ -1165,8 +1161,6 @@ namespace ZeldaFullEditor
 					// never get too close to the end
 				}
 			}
-
-			return false;
 		}
 
 		private void numericUpDown1_ValueChanged(object sender, EventArgs e)

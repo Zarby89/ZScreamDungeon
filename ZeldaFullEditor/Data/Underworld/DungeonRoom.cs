@@ -23,7 +23,6 @@ namespace ZeldaFullEditor.Data.Underworld
 		public DungeonObjectsList[] AllObjects =>
 			new DungeonObjectsList[] { Layer1Objects, Layer2Objects, Layer3Objects };
 
-
 		public DungeonDoorsList DoorsList { get; } = new DungeonDoorsList();
 		public DungeonRoomChestsHandler ChestList { get; }
 		public DungeonSecretsList SecretsList { get; } = new DungeonSecretsList();
@@ -681,8 +680,9 @@ namespace ZeldaFullEditor.Data.Underworld
 					t = SpriteType.GetSpriteType(b3);
 				}
 
-				last = new DungeonSprite(t, RoomID)
+				last = new DungeonSprite(t)
 				{
+					RoomID = RoomID,
 					GridX = (byte) (b2 & 0x1F),
 					GridY = (byte) (b1 & 0x1F),
 					Layer = (RoomLayer) (b1 >> 7),

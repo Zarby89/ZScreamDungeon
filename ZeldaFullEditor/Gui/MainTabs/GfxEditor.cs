@@ -23,7 +23,7 @@ namespace ZeldaFullEditor.Gui
 
 		bool mDown = false;
 
-		string[] palettesGroups = new string[3] { "Dungeons BG", "Overworld BG", "Sprites" };
+		//string[] palettesGroups = new string[3] { "Dungeons BG", "Overworld BG", "Sprites" };
 
 		public GfxEditor()
 		{

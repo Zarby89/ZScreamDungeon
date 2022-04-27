@@ -384,18 +384,12 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// Creates a map32 tile map and saves the overworld tiles in the rom. 
 		/// </summary>
-		/// <returns><see langword="truw"/> if saving failed. For example if the unique tile32 limit was passed. </returns>
-		public bool SaveTiles()
+		public void SaveTiles()
 		{
-			if (ZS.OverworldManager.createMap32Tilesmap())
-			{
-				return true;
-			}
-
+			ZS.OverworldManager.createMap32Tilesmap()
 			ZS.OverworldManager.SaveMap32DefinitionsToROM();
 			//ZS.OverworldManager.savemapstorom();
 			ZS.OverworldManager.SaveMap16DefinitionsToROM();
-			return false;
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -595,9 +589,9 @@ namespace ZeldaFullEditor
 
 					for (int i = 0; i < ZS.OverworldManager.alloverlays[mid].tilesData.Count; i++)
 					{
-						int xo = ZS.OverworldManager.alloverlays[mid].tilesData[i].x * 16;
-						int yo = ZS.OverworldManager.alloverlays[mid].tilesData[i].y * 16;
-						int to = ZS.OverworldManager.alloverlays[mid].tilesData[i].tileId;
+						int xo = ZS.OverworldManager.alloverlays[mid].tilesData[i].MapX * 16;
+						int yo = ZS.OverworldManager.alloverlays[mid].tilesData[i].MapY * 16;
+						int to = ZS.OverworldManager.alloverlays[mid].tilesData[i].Map16Value;
 						int toy = (to / 8) * 16;
 						int tox = (to % 8) * 16;
 						g.DrawImage(ZS.GFXManager.mapblockset16Bitmap, new Rectangle(msx + xo, msy + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
@@ -676,23 +670,23 @@ namespace ZeldaFullEditor
 			byte detected = 0;
 			foreach (TilePos t in tpa)
 			{
-				if (t.x == tpc.x - 1 && t.y == tpc.y)
+				if (t.MapX == tpc.MapX - 1 && t.MapY == tpc.MapY)
 				{
 					detected |= 0x01;
 				}
-				else if (t.x == tpc.x + 1 && t.y == tpc.y)
+				else if (t.MapX == tpc.MapX + 1 && t.MapY == tpc.MapY)
 				{
 					detected |= 0x04;
 				}
-				else if (t.x == tpc.x && t.y == tpc.y - 1)
+				else if (t.MapX == tpc.MapX && t.MapY == tpc.MapY - 1)
 				{
 					detected |= 0x02;
 				}
-				else if (t.x == tpc.x && t.y == tpc.y + 1)
+				else if (t.MapX == tpc.MapX && t.MapY == tpc.MapY + 1)
 				{
 					detected |= 0x08;
 				}
-				else if (t.x == tpc.x && t.y == tpc.y)
+				else if (t.MapX == tpc.MapX && t.MapY == tpc.MapY)
 				{
 					detected |= 0x80;
 				}
@@ -705,12 +699,12 @@ namespace ZeldaFullEditor
 		{
 			foreach (TilePos t in tpa)
 			{
-				if (t.x == tpc.x && t.y == tpc.y)
+				if (t.MapX == tpc.MapX && t.MapY == tpc.MapY)
 				{
 					return t;
 				}
 			}
-			return null;
+			return TilePos.GarbageTile;
 		}
 
 		protected override void RequestRefresh()

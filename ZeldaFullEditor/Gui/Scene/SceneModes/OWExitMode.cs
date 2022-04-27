@@ -272,7 +272,7 @@ namespace ZeldaFullEditor
 				if (ex.MapID < 64 + ZS.OverworldManager.worldOffset && ex.MapID >= ZS.OverworldManager.worldOffset)
 				{
 					Brush bgrBrush = Constants.LightGray200Brush;
-					Brush fontBrush = Brushes.Black;
+					//Brush fontBrush;
 
 					if (lastselectedExit == ex || selectedExit == ex)
 					{

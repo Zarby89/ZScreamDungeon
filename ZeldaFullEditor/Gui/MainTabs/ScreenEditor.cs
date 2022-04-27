@@ -1222,7 +1222,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		}
 
 		// TODO magic numbers
-		public bool Save()
+		public void Save()
 		{
 			for (int i = 0; i < 10; i++)
 			{
@@ -1289,8 +1289,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			}
 
 			ZScreamer.ActiveROM.Write(titleScreenPosition, allData.ToArray());
-
-			return false;
 		}
 
 		private void button2_Click(object sender, EventArgs e)
@@ -1378,7 +1376,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			}
 		}
 
-		public bool saveOverworldMap()
+		public void saveOverworldMap()
 		{
 			int p = Constants.IDKZarby;
 			int p2 = Constants.IDKZarby + 0x0400;
@@ -1498,8 +1496,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					}
 				}
 			}
-
-			return false;
 		}
 
 		// DUNGEON MAP START
@@ -1968,7 +1964,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		}
 
 		// TODO so many magic numbers
-		public bool dungmapSaveAllCurrentDungeon()
+		public void dungmapSaveAllCurrentDungeon()
 		{
 			if (ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.dungeonMap_expCheck] == 0xB9)
 			{
@@ -2104,17 +2100,14 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				// Protection here if we're over pointers location we need to decrease loop by one and continue further
 				if (pos >= 0x57CE0) // We reached the limit uh oh
 				{
-					return true;
+					throw new ZeldaException("too many maps or something");
 				}
 
 				if (searchBoss)
 				{
-					MessageBox.Show("One of the boss room in the dungeon map editor can't be found in dungeon id " + d.ToString());
-					return true;
+					throw new ZeldaException($"One of the boss room in the dungeon map editor can't be found in dungeon id {d:X2}");
 				}
 			}
-
-			return false;
 		}
 
 		public void shiftAllGfx()
@@ -2692,7 +2685,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			}
 		}
 
-		public bool saveTriforce()
+		public void saveTriforce()
 		{
 			for (int i = 0; i < 6; i++)
 			{
@@ -2708,8 +2701,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					(byte) crystalVertices[i].z
 				);
 			}
-
-			return false;
 		}
 
 		private void crystalRadio_CheckedChanged(object sender, EventArgs e)

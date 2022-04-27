@@ -200,7 +200,6 @@ namespace ZeldaFullEditor.Gui
 		private void pictureboxTile16_MouseDown(object sender, MouseEventArgs e)
 		{
 			int offset = (e.X < 256) ? 0 : 1992;
-			int yp = e.Y;
 
 			int t16 = offset + (e.X / 32) + ((e.Y / 32) * 8);
 			int t8x = (e.X / 16) & 0x01;
@@ -271,11 +270,13 @@ namespace ZeldaFullEditor.Gui
 			updateTiles();
 		}
 
+		private static readonly int[] m16offsets = { 0, 8, 1024, 1032 };
+
 		private unsafe void BuildTiles16Gfx()
 		{
 			var gfx16Data = (byte*) ZScreamer.ActiveGraphicsManager.mapblockset16.ToPointer(); //(byte*)allgfx8Ptr.ToPointer();
 			var gfx8Data = (byte*) ZScreamer.ActiveGraphicsManager.currentOWgfx16Ptr.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
-			int[] offsets = { 0, 8, 1024, 1032 };
+			
 			var yy = 0;
 			var xx = 0;
 
@@ -288,7 +289,7 @@ namespace ZeldaFullEditor.Gui
 				for (int tile = 0; tile < 4; tile++)
 				{
 					Tile info = tiles[tile];
-					int offset = offsets[tile];
+					int offset = m16offsets[tile];
 
 					for (var y = 0; y < 8; y++)
 					{
@@ -323,12 +324,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void Tile16Editor_Load(object sender, EventArgs e)
 		{
-			for (int i = 0; i < 0xFF; i++)
-			{
-				tilesTypesNames[i] = i.ToString("X2") + " - ????";
-			}
-
-			loadTilesNames();
+			tileTypeBox.DataSource = DefaultEntities.ListOfTileTypes;
 
 			for (int i = 0; i < 0x200; i++)
 			{
@@ -398,95 +394,6 @@ namespace ZeldaFullEditor.Gui
 				tempTiletype[tile8selected] = (byte) tileTypeBox.SelectedIndex;
 			}
 		}
-
-		// TODO for kan ah fuck
-		public void loadTilesNames()
-		{
-			tilesTypesNames[0x00] = "0x00 - Normal tile(no interaction)";
-			tilesTypesNames[0x01] = "0x01 - Blocked";
-			tilesTypesNames[0x02] = "0x02 - Blocked)";
-			tilesTypesNames[0x03] = "0x03 - Blocked";
-			tilesTypesNames[0x04] = "0x04 - Normal? Unknown";
-			tilesTypesNames[0x05] = "0x05 - Normal tile(no interaction)";
-			tilesTypesNames[0x06] = "0x06 - Normal tile(no interaction)";
-			tilesTypesNames[0x07] = "0x07 - Normal tile(no interaction)";
-
-			tilesTypesNames[0x08] = "0x08 - Deep Water";
-			tilesTypesNames[0x09] = "0x09 - Shallow Water";
-
-			tilesTypesNames[0x0C] = "0x0C - Moving Floor";
-			tilesTypesNames[0x0D] = "0x0D - Sprite Floor";
-
-			tilesTypesNames[0x1C] = "0x1C - Top of in room staircase";
-
-			tilesTypesNames[0x20] = "0x20 - Hole Tile";
-			tilesTypesNames[0x22] = "0x22 - Wooden steps(slow you down)";
-			tilesTypesNames[0x27] = "0x27 - (empty chest and maybe others)";
-
-			tilesTypesNames[0x28] = "0x28 - Ledge leading up";
-			tilesTypesNames[0x29] = "0x29 - Ledge leading down";
-			tilesTypesNames[0x2A] = "0x2A - Ledge leading left";
-			tilesTypesNames[0x2B] = "0x2B - Ledge leading right";
-			tilesTypesNames[0x2C] = "0x2C - Ledge leading up + left";
-			tilesTypesNames[0x2D] = "0x2D - Ledge leading down + left";
-			tilesTypesNames[0x2E] = "0x2E - Ledge leading up + right";
-			tilesTypesNames[0x2F] = "0x2F - Ledge leading down + right";
-
-			tilesTypesNames[0x40] = "0x40 - Grass Tile";
-			tilesTypesNames[0x44] = "0x44 - Cactus Tile";
-			tilesTypesNames[0x48] = "0x48 - aftermath tiles of picking things up?";
-			tilesTypesNames[0x4A] = "0x4A - aftermath tiles of picking things up?";
-			tilesTypesNames[0x4B] = "0x4B - Warp Tile";
-			tilesTypesNames[0x4C] = "0x4C - Certain mountain tiles?";
-			tilesTypesNames[0x4D] = "0x4D - Certain mountain tiles?";
-			tilesTypesNames[0x4E] = "0x4E - Certain mountain tiles?";
-			tilesTypesNames[0x4F] = "0x4F - Certain mountain tiles?";
-
-
-			tilesTypesNames[0x50] = "0x50 - bush";
-			tilesTypesNames[0x51] = "0x51 - off color bush";
-			tilesTypesNames[0x52] = "0x52 - small light rock";
-			tilesTypesNames[0x53] = "0x53 - small heavy rock";
-			tilesTypesNames[0x54] = "0x54 - sign";
-			tilesTypesNames[0x55] = "0x55 - large light rock";
-			tilesTypesNames[0x56] = "0x56 - large heavy rock";
-
-			tilesTypesNames[0x58] = "0x58 - Chest block";
-			tilesTypesNames[0x59] = "0x59 - Chest block";
-			tilesTypesNames[0x5A] = "0x5A - Chest block";
-			tilesTypesNames[0x5B] = "0x5B - Chest block";
-			tilesTypesNames[0x5C] = "0x5C - Chest block";
-			tilesTypesNames[0x5D] = "0x5D - Chest block";
-
-			tilesTypesNames[0x63] = "0x63 - Minigame chest tile";
-			tilesTypesNames[0xB0] = "0xB0 - Hole Tile or Somaria?";
-
-			tilesTypesNames[0xC0] = "0xC0 - Torch";
-			tilesTypesNames[0xC1] = "0xC1 - Torch";
-			tilesTypesNames[0xC2] = "0xC2 - Torch";
-			tilesTypesNames[0xC3] = "0xC3 - Torch";
-			tilesTypesNames[0xC4] = "0xC4 - Torch";
-			tilesTypesNames[0xC5] = "0xC5 - Torch";
-			tilesTypesNames[0xC6] = "0xC6 - Torch";
-			tilesTypesNames[0xC7] = "0xC7 - Torch";
-			tilesTypesNames[0xC8] = "0xC8 - Torch";
-			tilesTypesNames[0xC9] = "0xC9 - Torch";
-			tilesTypesNames[0xCA] = "0xCA - Torch";
-			tilesTypesNames[0xCB] = "0xCB - Torch";
-			tilesTypesNames[0xCC] = "0xCC - Torch";
-			tilesTypesNames[0xCD] = "0xCD - Torch";
-			tilesTypesNames[0xCE] = "0xCE - Torch";
-			tilesTypesNames[0xCF] = "0xCF - Torch";
-
-			tilesTypesNames[0xF0] = "0xF0 - Key door 1";
-			tilesTypesNames[0xF1] = "0xF1 - Key door 2";
-
-			tileTypeBox.Items.Clear();
-			tileTypeBox.Items.AddRange(tilesTypesNames);
-		}
-
-		// TODO switch to entities.cs version, etc
-		string[] tilesTypesNames = new string[0xFF];
 
 		private void gridcheckBox_CheckedChanged(object sender, EventArgs e)
 		{

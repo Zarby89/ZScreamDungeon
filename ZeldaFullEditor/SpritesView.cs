@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
 using ZeldaFullEditor.Data.Underworld;
+using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
 {
@@ -25,6 +26,14 @@ namespace ZeldaFullEditor
 		public SpritesView()
 		{
 			InitializeComponent();
+		}
+
+		public DungeonSprite CreateSelectedSprite()
+		{
+			return new DungeonSprite(selectedObject.Species)
+			{
+				RoomID = ZScreamer.ActiveUWScene.Room.RoomID,
+			};
 		}
 
 		protected override void OnPaint(PaintEventArgs e)

@@ -9,7 +9,7 @@ namespace ZeldaFullEditor.Data.Underworld
 {
 	// TODO new way to handle objects that change with the floor settings
 	[Serializable]
-	public unsafe class RoomObject : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, ITypeID
+	public class RoomObject : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, ITypeID
 	{
 		public ushort ID => ObjectType.FullID;
 		public int TypeID => ObjectType.FullID;

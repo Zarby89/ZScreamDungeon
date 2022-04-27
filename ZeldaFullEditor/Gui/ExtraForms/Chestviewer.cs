@@ -43,7 +43,7 @@ namespace ZeldaFullEditor
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			e.Graphics.Clear(Color.Black);
-			int w = (this.Size.Width / 64);
+			int w = (Size.Width / 64);
 			int h = (((items.Count / w) + 1) * 64);
 			int xpos = 0;
 			int ypos = 0;
@@ -59,7 +59,7 @@ namespace ZeldaFullEditor
 				e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos * 64, ypos * 64, 64, 64));
 				if (!showName)
 				{
-					e.Graphics.DrawString(ChestItems_Name.name[o.item], this.Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 32, 64, 32));
+					e.Graphics.DrawString(ChestItems_Name.name[o.item], Font, Brushes.White, new Rectangle(xpos * 64, (ypos * 64) + 32, 64, 32));
 				}
 
 				xpos++;
@@ -90,9 +90,9 @@ namespace ZeldaFullEditor
 
 		public void updateSize()
 		{
-			int w = (this.Size.Width / 64);
+			int w = (Size.Width / 64);
 			int h = (((items.Count / w) + 1) * 64);
-			this.Size = new Size(this.Size.Width, h);
+			Size = new Size(Size.Width, h);
 
 			if (items.Count > 0)
 			{
@@ -151,12 +151,12 @@ namespace ZeldaFullEditor
 
 		private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
 		{
-			int w = (this.Size.Width / 64);
+			int w = (Size.Width / 64);
 			int h = (((items.Count / w) + 1) * 64);
 			int xpos = 0;
 			int ypos = 0;
 			int index = 0;
-			this.Size = new Size(this.Size.Width, h);
+			Size = new Size(Size.Width, h);
 
 			foreach (Chest o in items)
 			{

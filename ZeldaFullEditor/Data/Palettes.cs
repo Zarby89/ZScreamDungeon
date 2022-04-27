@@ -242,7 +242,7 @@ namespace ZeldaFullEditor
 			asmString += s;
 		}
 
-		public bool SavePalettesToROM()
+		public void SavePalettesToROM()
 		{
 			WriteSinglePalette(ZS.Offsets.hardcodedGrassLW, OverworldGrass[0]);
 			WriteSinglePalette(ZS.Offsets.hardcodedGrassDW, OverworldGrass[1]);
@@ -300,8 +300,6 @@ namespace ZeldaFullEditor
 			{
 				WritePalette(ZS.Offsets.dungeonMainPalettes + (i * 180), UnderworldMain[i]);
 			}
-
-			return false;
 		}
 
 		public string SavePalettesToAsm()

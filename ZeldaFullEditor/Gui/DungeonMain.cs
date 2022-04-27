@@ -74,9 +74,13 @@ namespace ZeldaFullEditor
 		public bool showChestIDs { get; set; } = true;
 
 		public bool showSpriteText { get; set; } = false;
+		public bool showUWSpriteText { get; set; } = false;
 		public bool showChestText { get; set; } = false;
 		public bool showItemsText { get; set; } = false;
 
+		public bool canSelectUnselectedBG { get; set; } = false;
+
+		public bool ShowUWGrid { get; set; }
 		public bool visibleEntranceGFX { get; set; } = false;
 		public bool x2zoom { get; set; } = false;
 
@@ -246,91 +250,24 @@ namespace ZeldaFullEditor
 
 			try
 			{
-				// TODO change all these to ZeldaException throwers
-				bool badsave = false;
-				if (saveSettingsArr[0] && ZScreamer.ActiveScreamer.SaveUnderworldSprites())
-				{
-					UIText.CryAboutSaving("there are too many sprites");
-					badsave = true;
-				}
-				else if (saveSettingsArr[1] && ZScreamer.ActiveScreamer.SaveUnderworldSecrets())
-				{
-					UIText.CryAboutSaving("there are too many pot items");
-					badsave = true;
-				}
-				else if (saveSettingsArr[2] && ZScreamer.ActiveScreamer.SaveUnderworldChests())
-				{
-					UIText.CryAboutSaving("there are too many chest items");
-					badsave = true;
-				}
-				else if (saveSettingsArr[3] && ZScreamer.ActiveScreamer.saveAllObjects())
-				{
-					UIText.CryAboutSaving("there are too many tiles objects");
-					badsave = true;
-				}
-				else if (saveSettingsArr[4] && ZScreamer.ActiveScreamer.saveBlocks())
-				{
-					UIText.CryAboutSaving("there are too many pushable blocks");
-					badsave = true;
-				}
-				else if (saveSettingsArr[5] && ZScreamer.ActiveScreamer.saveTorches())
-				{
-					UIText.CryAboutSaving("there are too many torches");
-					badsave = true;
-				}
-				else if (saveSettingsArr[6] && ZScreamer.ActiveScreamer.saveAllPits())
-				{
-					UIText.CryAboutSaving("there are too many pits with damage");
-					badsave = true;
-				}
-				else if (saveSettingsArr[7] && ZScreamer.ActiveScreamer.saveRoomsHeaders())
-				{
-					//UIText.CryAboutSaving("there are too many chest items);
-					//badsave = true;;;
-				}
-				else if (saveSettingsArr[8] && ZScreamer.ActiveScreamer.saveEntrances())
-				{
-					UIText.CryAboutSaving("something with entrances ?? no idea why LUL");
-					badsave = true;
-				}
-				else if (saveSettingsArr[9] && ZScreamer.ActiveScreamer.SaveOverworldSprites())
-				{
-					UIText.CryAboutSaving("overworld sprites out of range");
-					badsave = true;
-				}
-				else if (saveSettingsArr[10] && ZScreamer.ActiveScreamer.SaverOverworldSecrets())
-				{
-					UIText.CryAboutSaving("overworld items out of range");
-					badsave = true;
-				}
-				else if (saveSettingsArr[11] && ZScreamer.ActiveScreamer.SaveOverworldEntrances())
-				{
-					UIText.CryAboutSaving("??, no idea why LUL");
-					badsave = true;
-				}
-				else if (saveSettingsArr[12] && ZScreamer.ActiveScreamer.saveOWTransports())
-				{
-					UIText.CryAboutSaving("overworld transports out of range");
-					badsave = true;
-				}
-				else if (saveSettingsArr[13] && ZScreamer.ActiveScreamer.SaveOverworldExits())
-				{
-					UIText.CryAboutSaving("overworld Exits or something IDK");
-					badsave = true;
-				}
-				else if (saveSettingsArr[14] && ZScreamer.ActiveOWScene.SaveTiles())
-				{
-					// No need for a message box here because its handeled within the SaveTiles() function itself.
-					badsave = true;
-				}
-
+				if (saveSettingsArr[0]) ZScreamer.ActiveScreamer.SaveUnderworldSprites();
+				if (saveSettingsArr[1]) ZScreamer.ActiveScreamer.SaveUnderworldSecrets();
+				if (saveSettingsArr[2]) ZScreamer.ActiveScreamer.SaveUnderworldChests();
+				if (saveSettingsArr[3]) ZScreamer.ActiveScreamer.saveAllObjects();
+				if (saveSettingsArr[4]) ZScreamer.ActiveScreamer.saveBlocks();
+				if (saveSettingsArr[5]) ZScreamer.ActiveScreamer.saveTorches();
+				if (saveSettingsArr[6]) ZScreamer.ActiveScreamer.saveAllPits();
+				if (saveSettingsArr[7]) ZScreamer.ActiveScreamer.saveRoomsHeaders();
+				if (saveSettingsArr[8]) ZScreamer.ActiveScreamer.saveEntrances();
+				if (saveSettingsArr[9]) ZScreamer.ActiveScreamer.SaveOverworldSprites();
+				if (saveSettingsArr[10]) ZScreamer.ActiveScreamer.SaveOverworldSecrets();
+				if (saveSettingsArr[11]) ZScreamer.ActiveScreamer.SaveOverworldEntrances();
+				if (saveSettingsArr[12]) ZScreamer.ActiveScreamer.saveOWTransports();
+				if (saveSettingsArr[13]) ZScreamer.ActiveScreamer.SaveOverworldExits();
+				if (saveSettingsArr[14]) ZScreamer.ActiveOWScene.SaveTiles();
 				// 15
 
-				else if (saveSettingsArr[16] && ZScreamer.ActiveScreamer.saveMapProperties())
-				{
-					UIText.CryAboutSaving("overworld map properties ???");
-					badsave = true; ;
-				}
+				if (saveSettingsArr[16]) ZScreamer.ActiveScreamer.saveMapProperties();
 
 				// 17
 				// 18
@@ -339,85 +276,23 @@ namespace ZeldaFullEditor
 				// 21
 				// 22
 
-				else if (saveSettingsArr[23] && ZScreamer.ActiveScreamer.GFXGroups.SaveGroupsToROM())
-				{
-					UIText.CryAboutSaving("problem saving GFX Groups");
-					badsave = true;
-				}
-				else if (saveSettingsArr[24] && ZScreamer.ActiveScreamer.PaletteManager.SavePalettesToROM())
-				{
-					UIText.CryAboutSaving("problem saving palettes");
-					badsave = true;
-				}
-				else if (saveSettingsArr[25] && Program.TextForm.Save())
-				{
-					UIText.CryAboutSaving("impossible to save text");
-					badsave = true;
-				}
+				if (saveSettingsArr[23]) ZScreamer.ActiveScreamer.GFXGroups.SaveGroupsToROM();
+				if (saveSettingsArr[24]) ZScreamer.ActiveScreamer.PaletteManager.SavePalettesToROM();
+				if (saveSettingsArr[25]) Program.TextForm.Save();
 
 				// 17
 
-				else if (saveSettingsArr[28] && ZScreamer.ActiveScreamer.saveCustomCollision())
-				{
-					UIText.CryAboutSaving("there was an error saving the custom collision rectangles");
-					badsave = true;
-				}
-				else if (saveSettingsArr[31] && ZScreamer.ActiveScreamer.saveMapOverlays())
-				{
-					UIText.CryAboutSaving("overworld map overlays ???");
-					badsave = true;
-				}
-				else if (saveSettingsArr[32] && ZScreamer.ActiveScreamer.saveOverworldMusics())
-				{
-					UIText.CryAboutSaving("overworld map tile types ???");
-					badsave = true;
-				}
-				else if (saveSettingsArr[33] && ZScreamer.ActiveScreamer.SaveTitleScreen())
-				{
-					UIText.CryAboutSaving("overworld title screen?");
-					badsave = true;
-				}
-				else if (saveSettingsArr[34] && ZScreamer.ActiveScreamer.SaveOverworldMiniMap())
-				{
-					UIText.CryAboutSaving("problem saving overworld Minimap?");
-					badsave = true;
-				}
-				else if (saveSettingsArr[35] && ZScreamer.ActiveScreamer.saveOverworldTilesType())
-				{
-					UIText.CryAboutSaving("problem saving overworld map tiles Types ???");
-					badsave = true;
-				}
-				else if (saveSettingsArr[36] && ZScreamer.ActiveScreamer.SaveOverworldScreens())
-				{
-					UIText.CryAboutSaving("problem saving overworld maps");
-					badsave = true;
-				}
-				else if (saveSettingsArr[37] && ZScreamer.ActiveScreamer.SaveGravestones())
-				{
-					UIText.CryAboutSaving("problem saving gravestones");
-					badsave = true;
-				}
-				else if (saveSettingsArr[38] && ZScreamer.ActiveScreamer.SaveDungeonMaps())
-				{
-					UIText.CryAboutSaving("problem saving dungeon maps");
-					badsave = true;
-				}
-				else if (saveSettingsArr[39] && ZScreamer.ActiveScreamer.SaveTriforce())
-				{
-					UIText.CryAboutSaving("problem saving triforce");
-					badsave = true;
-				}
-				else if (saveSettingsArr[40] && ZScreamer.ActiveScreamer.SaveOverworldMessageIDs())
-				{
-					UIText.CryAboutSaving("problem saving overworld map tiles Types ???");
-					badsave = true;
-				}
-
-				if (badsave)
-				{
-					ZScreamer.ActiveScreamer.ROM.OhShitLastResortBackup(romBackup);
-					return;
-				}
+				if (saveSettingsArr[28]) ZScreamer.ActiveScreamer.saveCustomCollision();
+				if (saveSettingsArr[31]) ZScreamer.ActiveScreamer.saveMapOverlays();
+				if (saveSettingsArr[32]) ZScreamer.ActiveScreamer.saveOverworldMusics();
+				if (saveSettingsArr[33]) ZScreamer.ActiveScreamer.SaveTitleScreen();
+				if (saveSettingsArr[34]) ZScreamer.ActiveScreamer.SaveOverworldMiniMap();
+				if (saveSettingsArr[35]) ZScreamer.ActiveScreamer.saveOverworldTilesType();
+				if (saveSettingsArr[36]) ZScreamer.ActiveScreamer.SaveOverworldScreens();
+				if (saveSettingsArr[37]) ZScreamer.ActiveScreamer.SaveGravestones();
+				if (saveSettingsArr[38]) ZScreamer.ActiveScreamer.SaveDungeonMaps();
+				if (saveSettingsArr[39]) ZScreamer.ActiveScreamer.SaveTriforce();
+				if (saveSettingsArr[40]) ZScreamer.ActiveScreamer.SaveOverworldMessageIDs();
 
 				ZScreamer.ActiveScreamer.ROM[0x5D4E] = 0x00;
 
@@ -1195,7 +1070,7 @@ namespace ZeldaFullEditor
 
 		private void textSpriteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveUWScene.showSpriteText = textSpriteToolStripMenuItem.Checked;
+			showUWSpriteText = textSpriteToolStripMenuItem.Checked;
 			ZScreamer.ActiveUWScene.TriggerRefresh = true;
 		}
 
@@ -1493,7 +1368,7 @@ namespace ZeldaFullEditor
 
 		private void showGridToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveUWScene.showGrid = showGridToolStripMenuItem.Checked;
+			ShowUWGrid = showGridToolStripMenuItem.Checked;
 			// Added refresh here so that the grid will appear when the checkbox is clicked.
 			ZScreamer.ActiveUWScene.Refresh();
 		}
@@ -1749,7 +1624,7 @@ namespace ZeldaFullEditor
 
 		private void unselectedBGTransparentToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveUWScene.canSelectUnselectedBG = unselectedBGTransparentToolStripMenuItem.Checked;
+			canSelectUnselectedBG = unselectedBGTransparentToolStripMenuItem.Checked;
 		}
 
 		private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
@@ -1863,7 +1738,7 @@ namespace ZeldaFullEditor
 				gridSize = 256;
 			}
 
-			ZScreamer.ActiveUWScene.showGrid = true;
+			ShowUWGrid = gridSize > 0;
 			ZScreamer.ActiveUWScene.Refresh();
 		}
 
@@ -2232,7 +2107,7 @@ namespace ZeldaFullEditor
 
 		private void spritesView1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveUWScene.ObjectToPlace = new dataObject(spritesView1.selectedObject.ID, spritesView1.selectedObject.Name, spritesView1.selectedObject.Subtype);
+			ZScreamer.ActiveUWScene.ObjectToPlace = spritesView1.CreateSelectedSprite();
 		}
 
 		private void toolStripButton1_Click(object sender, EventArgs e)
