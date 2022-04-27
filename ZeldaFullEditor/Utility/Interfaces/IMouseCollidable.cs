@@ -8,5 +8,8 @@
 		int RealX { get; }
 		int RealY { get; }
 		bool PointIsInHitbox(int x, int y);
+
+		// TODO
+		//bool IsCapturedByRectangle(Rectangle r);
 	}
 }

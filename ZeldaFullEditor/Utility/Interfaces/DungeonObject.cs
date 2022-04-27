@@ -5,7 +5,7 @@ namespace ZeldaFullEditor
 	/// <summary>
 	/// Represents any object which can be placed inside a dungeon.
 	/// </summary>
-	public interface DungeonPlaceable : IMouseCollidable
+	public interface IDungeonPlaceable : IMouseCollidable
 	{
 		void Draw(ZScreamer ZS);
 

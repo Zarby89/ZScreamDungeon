@@ -11,7 +11,7 @@ namespace ZeldaFullEditor
 	{
 		private void OnMouseDown_Entrance(MouseEventArgs e)
 		{
-			ZS.DungeonForm.entrancetreeView_AfterSelect(null, null);
+			Program.DungeonForm.entrancetreeView_AfterSelect(null, null);
 			ZS.CurrentUWMode = DungeonEditMode.LayerAll;
 		}
 
@@ -23,7 +23,7 @@ namespace ZeldaFullEditor
 		private void OnMouseMove_Entrance(MouseEventArgs e)
 		{
 
-			Entrance sel = ZS.DungeonForm.selectedEntrance;
+			Entrance sel = Program.DungeonForm.selectedEntrance;
 
 			if (sel == null) return;
 
@@ -34,7 +34,7 @@ namespace ZeldaFullEditor
 			int MX = MouseX;
 			int MY = MouseY;
 
-			if (ZS.DungeonForm.gridEntranceCheckbox.Checked)
+			if (Program.DungeonForm.gridEntranceCheckbox.Checked)
 			{
 				 MX &= ~0x7;
 				 MY &= ~0x7;

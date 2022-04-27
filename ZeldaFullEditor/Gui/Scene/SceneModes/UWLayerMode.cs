@@ -13,7 +13,10 @@ namespace ZeldaFullEditor
 
 		private void OnMouseDown_Layer(MouseEventArgs e)
 		{
-			if (ObjectToPlace == null) return;
+			if (ObjectToPlace == null)
+			{
+				return;
+			}
 
 			CheckIfObjectIsInvalidForPlacement();
 

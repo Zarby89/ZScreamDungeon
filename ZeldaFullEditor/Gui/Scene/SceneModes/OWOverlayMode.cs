@@ -188,16 +188,16 @@ namespace ZeldaFullEditor
 					if (selectedTile.Length > 0)
 					{
 						int scrollpos = ((selectedTile[0] / 8) * 16);
-						if (scrollpos >= ZS.OverworldForm.splitContainer1.Panel1.VerticalScroll.Maximum)
+						if (scrollpos >= Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Maximum)
 						{
-							ZS.OverworldForm.splitContainer1.Panel1.VerticalScroll.Value = ZS.OverworldForm.splitContainer1.Panel1.VerticalScroll.Maximum;
+							Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Value = Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Maximum;
 						}
 						else
 						{
-							ZS.OverworldForm.splitContainer1.Panel1.VerticalScroll.Value = scrollpos;
+							Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Value = scrollpos;
 						}
 
-						ZS.OverworldForm.tilePictureBox.Refresh();
+						Program.OverworldForm.tilePictureBox.Refresh();
 					}
 				}
 			}

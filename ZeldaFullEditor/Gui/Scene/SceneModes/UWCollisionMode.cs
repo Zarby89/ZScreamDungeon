@@ -13,6 +13,7 @@ namespace ZeldaFullEditor
 	{
 		private void OnMouseDown_Collision(MouseEventArgs e)
 		{
+
 		}
 
 		private void OnMouseUp_Collision(MouseEventArgs e)

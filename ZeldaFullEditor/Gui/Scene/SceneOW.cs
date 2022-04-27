@@ -71,31 +71,31 @@ namespace ZeldaFullEditor
 
 
 			tilemode = new ModeActions(OnMouseDown_Tiles, OnMouseUp_Tiles, OnMouseMove_Tiles, null,
-				Copy_Tiles, Paste_Tiles, null, Delete_Tiles, null, null);
+				Copy_Tiles, Paste_Tiles, null, Delete_Tiles, null);
 
 			exitmode = new ModeActions(OnMouseDown_Exit, OnMouseUp_Exit, OnMouseMove_Exit, null,
-				Copy_Exit, Paste_Exit, null, Delete_Exit, null, Draw_Exit);
+				Copy_Exit, Paste_Exit, null, Delete_Exit, null);
 
-			doorMode = new ModeActions(OnMouseDown_OWDoor, OnMouseUp_OWDoor, OnMouseMove_OWDoor, OnMouseWheel_OWDoor,
-				Copy_OWDoor, Paste_OWDoor, null, Delete_OWDoor, SelectAll_OWDoor, null);
+			doorMode = new ModeActions(OnMouseDown_OWDoor, OnMouseUp_OWDoor, OnMouseMove_OWDoor, null,
+				Copy_OWDoor, Paste_OWDoor, null, Delete_OWDoor, SelectAll_OWDoor);
 
 			entranceMode = new ModeActions(OnMouseDown_Entrance, OnMouseUp_Entrance, OnMouseMove_Entrance, null,
-				Copy_Entrance, Paste_Entrance, null, Delete_Entrance, null, Draw_Entrance);
+				Copy_Entrance, Paste_Entrance, null, Delete_Entrance, null);
 
-			spriteMode = new ModeActions(OnMouseDown_Sprites, OnMouseUp_Sprites, OnMouseMove_Sprites, OnMouseWheel_Sprites,
-				Copy_Sprites, Paste_Sprites, null, Delete_Sprites, SelectAll_Sprites, Draw_Sprites);
+			spriteMode = new ModeActions(OnMouseDown_Sprites, OnMouseUp_Sprites, OnMouseMove_Sprites, null,
+				Copy_Sprites, Paste_Sprites, null, Delete_Sprites, SelectAll_Sprites);
 
-			itemMode = new ModeActions(OnMouseDown_Secrets, OnMouseUp_Secrets, OnMouseMove_Secrets, OnMouseWheel_Secrets,
-				Copy_Secrets, Paste_Secrets, null, Delete_Secrets, null, Draw_Secrets);
+			itemMode = new ModeActions(OnMouseDown_Secrets, OnMouseUp_Secrets, OnMouseMove_Secrets, null,
+				Copy_Secrets, Paste_Secrets, null, Delete_Secrets, null);
 
 			transportMode = new ModeActions(OnMouseDown_Transports, OnMouseUp_Transports, OnMouseMove_Transports, null,
-				null, null, null, null, null, Draw_Transports);
+				null, null, null, null, null);
 
 			overlayMode = new ModeActions(OnMouseDown_Overlay, OnMouseUp_Overlay, OnMouseMove_Overlay, null,
-				Copy_Overlay, Paste_Overlay, null, Delete_Overlay, null, null);
+				Copy_Overlay, Paste_Overlay, null, Delete_Overlay, null);
 
 			gravestoneMode = new ModeActions(OnMouseDown_Graves, OnMouseUp_Graves, OnMouseMove_Graves, null,
-				null, null, null,Delete_Graves, null, Draw_Graves);
+				null, null, null, Delete_Graves, null);
 
 			//this.Width = 8192;
 			//this.Height = 8192;
@@ -155,8 +155,8 @@ namespace ZeldaFullEditor
 		protected override void OnMouseWheel(object sender, MouseEventArgs e)
 		{
 			((HandledMouseEventArgs) e).Handled = true;
-			int xPos = ZS.OverworldForm.splitContainer1.Panel2.HorizontalScroll.Value;
-			int yPos = ZS.OverworldForm.splitContainer1.Panel2.VerticalScroll.Value;
+			int xPos = Program.OverworldForm.splitContainer1.Panel2.HorizontalScroll.Value;
+			int yPos = Program.OverworldForm.splitContainer1.Panel2.VerticalScroll.Value;
 
 			if (ModifierKeys == Keys.Shift)
 			{
@@ -167,16 +167,16 @@ namespace ZeldaFullEditor
 				e.ScrollByValue(ref yPos, 48);
 			}
 
-			ZS.OverworldForm.splitContainer1.Panel2.AutoScrollPosition = new Point(xPos, yPos);
+			Program.OverworldForm.splitContainer1.Panel2.AutoScrollPosition = new Point(xPos, yPos);
 			//e.Delta
-			base.OnMouseWheel(sender, e);
+			//base.OnMouseWheel(sender, e);
 		}
 
 		public void updateMapGfx()
 		{
 			if (selectedMap + ZS.OverworldManager.worldOffset <= 159)
 			{
-				ZS.OverworldForm.propertiesChangedFromForm = true;
+				Program.OverworldForm.propertiesChangedFromForm = true;
 				OverworldMap map = ZS.OverworldManager.allmaps[selectedMap + ZS.OverworldManager.worldOffset];
 
 				if (map.needRefresh)
@@ -185,23 +185,23 @@ namespace ZeldaFullEditor
 					map.needRefresh = false;
 				}
 
-				ZS.OverworldForm.mapGroupbox.Text = string.Format(
-					ZS.MainForm.showMapIndexInHexToolStripMenuItem.Checked ? "Selected map: {0}" : "Selected map: {0}",
+				Program.OverworldForm.mapGroupbox.Text = string.Format(
+					Program.MainForm.showMapIndexInHexToolStripMenuItem.Checked ? "Selected map: {0}" : "Selected map: {0}",
 					map.parent
 					);
 
-				ZS.OverworldForm.OWProperty_MessageID.HexValue = ZS.OverworldManager.allmaps[map.parent].messageID;
+				Program.OverworldForm.OWProperty_MessageID.HexValue = ZS.OverworldManager.allmaps[map.parent].messageID;
 
-				ZS.OverworldForm.UpdateGUIProperties(ZS.OverworldManager.allmaps[map.parent], ZS.OverworldManager.worldOffset >= 64 ? 0 : ZS.OverworldManager.gameState);
+				Program.OverworldForm.UpdateGUIProperties(ZS.OverworldManager.allmaps[map.parent], ZS.OverworldManager.worldOffset >= 64 ? 0 : ZS.OverworldManager.gameState);
 
-				ZS.OverworldForm.propertiesChangedFromForm = false;
-				ZS.OverworldForm.tilePictureBox.Refresh();
+				Program.OverworldForm.propertiesChangedFromForm = false;
+				Program.OverworldForm.tilePictureBox.Refresh();
 
-				ZS.OverworldForm.areaBGColorPictureBox.Refresh();
+				Program.OverworldForm.areaBGColorPictureBox.Refresh();
 			}
 
-			ZS.OverworldForm.BuildScratchTilesGfx();
-			ZS.OverworldForm.scratchPicturebox.Refresh();
+			Program.OverworldForm.BuildScratchTilesGfx();
+			Program.OverworldForm.scratchPicturebox.Refresh();
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -215,14 +215,14 @@ namespace ZeldaFullEditor
 				globalmouseTileDownX = tileX;
 				globalmouseTileDownY = tileY;
 
-				ZS.MainForm.anychange = true;
+				Program.MainForm.anychange = true;
 				selectedMap = mapId;
 
 				selectedMapParent = ZS.OverworldManager.allmaps[selectedMap + ZS.OverworldManager.worldOffset].parent;
 
-				ZS.OverworldForm.previewTextPicturebox.Visible = false;
+				Program.OverworldForm.previewTextPicturebox.Visible = false;
 				updateMapGfx();
-				ZS.OverworldForm.updateTiles();
+				Program.OverworldForm.updateTiles();
 
 				base.OnMouseDown(e);
 
@@ -236,7 +236,7 @@ namespace ZeldaFullEditor
 
 		public void SetSelectedExit(ExitOW e)
 		{
-			ZS.OverworldForm.SetSelectedExit(e);
+			Program.OverworldForm.SetSelectedExit(e);
 			lastselectedExit = e;
 		}
 
@@ -247,7 +247,7 @@ namespace ZeldaFullEditor
 
 		public void SetSelectedEntrance(EntranceOWEditor e)
 		{
-			ZS.OverworldForm.SetSelectedEntrance(e);
+			Program.OverworldForm.SetSelectedEntrance(e);
 			lastselectedEntrance = e;
 		}
 
@@ -258,7 +258,7 @@ namespace ZeldaFullEditor
 
 		public void SetSelectedTransport(TransportOW e)
 		{
-			ZS.OverworldForm.SetSelectedTransport(e);
+			Program.OverworldForm.SetSelectedTransport(e);
 			lastselectedTransport = e;
 		}
 
@@ -267,12 +267,11 @@ namespace ZeldaFullEditor
 			lastselectedTransport = e;
 		}
 
-		// TODO switch statements
 		protected override void OnMouseUp(object sender, MouseEventArgs e)
 		{
-			ZS.OverworldForm.objCombobox.Items.Clear();
-			ZS.OverworldForm.objCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedSprite;
-			ZS.OverworldForm.objCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedItem;
+			Program.OverworldForm.objCombobox.Items.Clear();
+			Program.OverworldForm.objCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedSprite;
+			Program.OverworldForm.objCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedItem;
 			string text = "Selected object: ";
 
 			base.OnMouseUp(sender, e);
@@ -283,17 +282,17 @@ namespace ZeldaFullEditor
 
 					if (lastselectedItem != null)
 					{
-						ZS.OverworldForm.SetSelectedObjectLabels(
+						Program.OverworldForm.SetSelectedObjectLabels(
 							lastselectedItem.ID,
 							lastselectedItem.GridX,
 							lastselectedItem.GridY);
 
-						ZS.OverworldForm.objCombobox.DataSource = DefaultEntities.ListOfSecrets;
+						Program.OverworldForm.objCombobox.DataSource = DefaultEntities.ListOfSecrets;
 
 						// TODO
-						//ZS.OverworldForm.objCombobox.SelectedItem = 
+						//Program.OverworldForm.objCombobox.SelectedItem = 
 
-						ZS.OverworldForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedItem;
+						Program.OverworldForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedItem;
 					}
 					break;
 
@@ -303,25 +302,25 @@ namespace ZeldaFullEditor
 
 					if (lastselectedSprite != null)
 					{
-						ZS.OverworldForm.SetSelectedObjectLabels(
+						Program.OverworldForm.SetSelectedObjectLabels(
 							lastselectedSprite.ID,
 							lastselectedSprite.GridX,
 							lastselectedSprite.GridY);
-						ZS.OverworldForm.objCombobox.DataSource = DefaultEntities.ListOfTileTypes;
-						ZS.OverworldForm.objCombobox.SelectedIndex = lastselectedSprite.ID;
+						Program.OverworldForm.objCombobox.DataSource = DefaultEntities.ListOfTileTypes;
+						Program.OverworldForm.objCombobox.SelectedIndex = lastselectedSprite.ID;
 
-						ZS.OverworldForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedSprite;
+						Program.OverworldForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedSprite;
 					}
 					break;
 			}
-			ZS.OverworldForm.objectGroupbox.Text = text;
+			Program.OverworldForm.objectGroupbox.Text = text;
 			InvalidateHighEnd();
 		}
 
 
 		private void ObjCombobox_SelectedIndexChangedSprite(object sender, EventArgs e)
 		{
-			byte id = (byte) (ZS.OverworldForm.objCombobox.SelectedItem as SpriteName).ID;
+			byte id = (byte) (Program.OverworldForm.objCombobox.SelectedItem as SpriteName).ID;
 			lastselectedSprite.Species = SpriteType.GetSpriteType(id);
 
 			InvalidateHighEnd();
@@ -345,19 +344,17 @@ namespace ZeldaFullEditor
 			else
 			{
 				Invalidate(new Rectangle(
-					ZS.OverworldForm.splitContainer1.Panel2.HorizontalScroll.Value,
-					ZS.OverworldForm.splitContainer1.Panel2.VerticalScroll.Value,
-					ZS.OverworldForm.splitContainer1.Panel2.Width,
-					ZS.OverworldForm.splitContainer1.Panel2.Height
-					));
+					Program.OverworldForm.splitContainer1.Panel2.HorizontalScroll.Value,
+					Program.OverworldForm.splitContainer1.Panel2.VerticalScroll.Value,
+					Program.OverworldForm.splitContainer1.Panel2.Width,
+					Program.OverworldForm.splitContainer1.Panel2.Height
+				));
 			}
 		}
 
-
-
 		private void ObjCombobox_SelectedIndexChangedItem(object sender, EventArgs e)
 		{
-			byte id = (byte) (ZS.OverworldForm.objCombobox.SelectedItem as SecretsName).ID;
+			byte id = (byte) (Program.OverworldForm.objCombobox.SelectedItem as SecretsName).ID;
 			lastselectedItem.SecretType = SecretItemType.FindSecretFromID(id);
 			InvalidateHighEnd();
 		}
@@ -387,21 +384,18 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// Creates a map32 tile map and saves the overworld tiles in the rom. 
 		/// </summary>
-		/// <returns>True if saving failed. For example if the unique tile32 limit was passed. </returns>
+		/// <returns><see langword="truw"/> if saving failed. For example if the unique tile32 limit was passed. </returns>
 		public bool SaveTiles()
 		{
-			if (!ZS.OverworldManager.createMap32Tilesmap())
-			{
-				ZS.OverworldManager.SaveMap32DefinitionsToROM();
-				//ZS.OverworldManager.savemapstorom();
-				ZS.OverworldManager.SaveMap16DefinitionsToROM();
-
-				return false;
-			}
-			else
+			if (ZS.OverworldManager.createMap32Tilesmap())
 			{
 				return true;
 			}
+
+			ZS.OverworldManager.SaveMap32DefinitionsToROM();
+			//ZS.OverworldManager.savemapstorom();
+			ZS.OverworldManager.SaveMap16DefinitionsToROM();
+			return false;
 		}
 
 		protected override void OnPaint(PaintEventArgs e)
@@ -462,7 +456,7 @@ namespace ZeldaFullEditor
 					{
 						if (i <= 159)
 						{
-							if (ZS.MainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
+							if (Program.MainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
 							{
 								if ((i >= 0x03) && (i <= 0x07))
 								{
@@ -482,7 +476,7 @@ namespace ZeldaFullEditor
 									g.CompositingMode = CompositingMode.SourceOver;
 									g.DrawRectangle(new Pen(ZS.PaletteManager.OverworldGrass[0]), new Rectangle(x, y, 512, 512));
 								}
-								else if (i >= 64 && i < 128)
+								else if (i < 128)
 								{
 									g.CompositingMode = CompositingMode.SourceOver;
 									g.DrawRectangle(new Pen(ZS.PaletteManager.OverworldGrass[1]), new Rectangle(x, y, 512, 512));
@@ -496,7 +490,7 @@ namespace ZeldaFullEditor
 
 							g.DrawImage(ZS.OverworldManager.allmaps[i].gfxBitmap, new PointF(x, y));
 
-							if (ZS.MainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
+							if (Program.MainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
 							{
 								if (i == 0 || i == 1 || i == 8 || i == 9)
 								{
@@ -553,40 +547,40 @@ namespace ZeldaFullEditor
 
 				if (showExits)
 				{
-					exitmode.Draw(g);
+					Draw_Exit(g);
 				}
 
 				if (showEntrances)
 				{
-					entranceMode.Draw(g);
+					Draw_Entrance(g);
 				}
 
 				if (showItems)
 				{
-					itemMode.Draw(g);
+					Draw_Secrets(g);
 				}
 
-				gravestoneMode.Draw(g);
+				Draw_Graves(g);
 
 				if (showSprites)
 				{
-					spriteMode.Draw(g);
+					Draw_Sprites(g);
 				}
 
 				if (showFlute)
 				{
-					transportMode.Draw(g);
+					Draw_Transports(g);
 				}
 
 				if (entrancePreview)
 				{
 					if (selectedEntrance != null)
 					{
-						g.DrawImage(ZS.OverworldForm.tmpPreviewBitmap, selectedEntrance.GlobalX + 16, selectedEntrance.GlobalY + 16);
+						g.DrawImage(Program.OverworldForm.tmpPreviewBitmap, selectedEntrance.GlobalX + 16, selectedEntrance.GlobalY + 16);
 					}
 					if (selectedExit != null)
 					{
-						g.DrawImage(ZS.OverworldForm.tmpPreviewBitmap, selectedExit.GlobalX + 16, selectedExit.GlobalY + 16);
+						g.DrawImage(Program.OverworldForm.tmpPreviewBitmap, selectedExit.GlobalX + 16, selectedExit.GlobalY + 16);
 					}
 				}
 
@@ -640,7 +634,7 @@ namespace ZeldaFullEditor
 					drawText(g, 4, 48, globalmouseTileDownY.ToString());
 				}
 
-				if (ZS.OverworldForm.gridDisplay != 0)
+				if (Program.OverworldForm.gridDisplay != 0)
 				{
 					int gridsize = 512;
 					if (ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[selectedMap].parent].largeMap)
@@ -651,18 +645,18 @@ namespace ZeldaFullEditor
 					int x = 512 * (ZS.OverworldManager.allmaps[selectedMap].parent % 8);
 					int y = 512 * (ZS.OverworldManager.allmaps[selectedMap].parent / 8);
 
-					for (int gx = 0; gx < (gridsize / ZS.OverworldForm.gridDisplay); gx++)
+					for (int gx = 0; gx < (gridsize / Program.OverworldForm.gridDisplay); gx++)
 					{
 						g.DrawLine(Constants.ThirdWhitePen1,
-							new Point(x + gx * ZS.OverworldForm.gridDisplay, y),
-							new Point(x + gx * ZS.OverworldForm.gridDisplay, y + gridsize));
+							new Point(x + gx * Program.OverworldForm.gridDisplay, y),
+							new Point(x + gx * Program.OverworldForm.gridDisplay, y + gridsize));
 					}
 
-					for (int gy = 0; gy < (gridsize / ZS.OverworldForm.gridDisplay); gy++)
+					for (int gy = 0; gy < (gridsize / Program.OverworldForm.gridDisplay); gy++)
 					{
 						g.DrawLine(Constants.ThirdWhitePen1,
-							new Point(x, y + (gy * ZS.OverworldForm.gridDisplay)),
-							new Point(x + gridsize, y + (gy * ZS.OverworldForm.gridDisplay)));
+							new Point(x, y + (gy * Program.OverworldForm.gridDisplay)),
+							new Point(x + gridsize, y + (gy * Program.OverworldForm.gridDisplay)));
 					}
 				}
 
@@ -717,84 +711,6 @@ namespace ZeldaFullEditor
 				}
 			}
 			return null;
-		}
-
-
-		public void drawGrid(Graphics graphics)
-		{
-			// TODO: Add something here?
-
-			/*
-            if (showGrid)
-            {
-                //int s = mainForm.gridSize;
-                int wh = (512 / s)+1;
-
-                for (int x = 0; x < wh; x++)
-                {
-                    graphics.DrawLine(new Pen(Color.FromArgb(128, 255, 255, 255)), x * s, 0, x * s, 512);
-                }
-                for (int y = 0; y < wh; y++)
-                {
-                    graphics.DrawLine(new Pen(Color.FromArgb(128, 255, 255, 255)), 0, y * s, 512, y * s);
-                }
-            }
-            */
-		}
-
-		public void SetPalettesTransparent()
-		{
-			int pindex = 0;
-			ColorPalette palettes = ZS.GFXManager.roomBg1Bitmap.Palette;
-			for (int y = 0; y < ZS.GFXManager.loadedPalettes.GetLength(1); y++)
-			{
-				for (int x = 0; x < ZS.GFXManager.loadedPalettes.GetLength(0); x++)
-				{
-					palettes.Entries[pindex++] = ZS.GFXManager.loadedPalettes[x, y];
-				}
-			}
-
-			for (int y = 0; y < ZS.GFXManager.loadedSprPalettes.GetLength(1); y++)
-			{
-				for (int x = 0; x < ZS.GFXManager.loadedSprPalettes.GetLength(0); x++)
-				{
-					if (pindex < 256)
-					{
-						palettes.Entries[pindex++] = ZS.GFXManager.loadedSprPalettes[x, y];
-					}
-				}
-			}
-
-			for (int i = 0; i < 16 * 16; i += 8)
-			{
-				palettes.Entries[i] = Color.Transparent;
-			}
-
-			ZS.GFXManager.roomBg1Bitmap.Palette = palettes;
-			ZS.GFXManager.roomBg2Bitmap.Palette = palettes;
-			ZS.GFXManager.roomBgLayoutBitmap.Palette = palettes;
-		}
-
-		public void SetPalettesBlack()
-		{
-			int pindex = 0;
-			ColorPalette palettes = ZS.GFXManager.roomBg1Bitmap.Palette;
-			for (int y = 0; y < ZS.GFXManager.loadedPalettes.GetLength(1); y++)
-			{
-				for (int x = 0; x < ZS.GFXManager.loadedPalettes.GetLength(0); x++)
-				{
-					palettes.Entries[pindex++] = ZS.GFXManager.loadedPalettes[x, y];
-				}
-			}
-
-			for (int i = 0; i < 16 * 16; i += 8)
-			{
-				palettes.Entries[i] = Color.Black;
-			}
-
-			ZS.GFXManager.roomBg1Bitmap.Palette = palettes;
-			ZS.GFXManager.roomBg2Bitmap.Palette = palettes;
-			ZS.GFXManager.roomBgLayoutBitmap.Palette = palettes;
 		}
 
 		protected override void RequestRefresh()

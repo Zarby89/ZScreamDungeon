@@ -12,7 +12,6 @@ namespace ZeldaFullEditor.Data
 		public string Name { get; }
 		public bool Layer2OnTop { get; }
 		public bool Layer2Translucent { get; }
-
 		public bool Layer2Visible { get; }
 
 		private LayerMergeType(byte id, string name, bool see, bool top, bool trans)
@@ -36,7 +35,6 @@ namespace ZeldaFullEditor.Data
 		public static readonly LayerMergeType LayerMerge07 = new LayerMergeType(0x07, "Transparent", true, true, true);
 		public static readonly LayerMergeType LayerMerge08 = new LayerMergeType(0x08, "Dark room", true, true, true);
 
-
 		public static readonly LayerMergeType[] ListOf =
 		{
 			LayerMerge00,
@@ -49,7 +47,6 @@ namespace ZeldaFullEditor.Data
 			LayerMerge07,
 			LayerMerge08
 		};
-
 
 		public static LayerMergeType GetMergeType(byte id)
 		{

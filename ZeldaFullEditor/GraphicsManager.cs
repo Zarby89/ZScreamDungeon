@@ -15,7 +15,7 @@ using ZeldaFullEditor.Properties;
 // TODO clean up all the magic numbers
 namespace ZeldaFullEditor
 {
-	public class GFX
+	public class GraphicsManager
 	{
 		public IntPtr allgfx16Ptr = Marshal.AllocHGlobal((128 * 7136) / 2);
 		public Bitmap allgfxBitmap;
@@ -124,7 +124,7 @@ namespace ZeldaFullEditor
 
 
 		private readonly ZScreamer ZS;
-		public GFX(ZScreamer zs)
+		public GraphicsManager(ZScreamer zs)
 		{
 			ZS = zs;
 		}
@@ -193,7 +193,7 @@ namespace ZeldaFullEditor
 				{
 					if (buffer[xx + yy] != 0xFFFF) // Prevent draw if tile == 0xFFFF since it 0 indexed
 					{
-						GFX.DrawTileToBuffer(new Tile(buffer[xx + yy]), ptr, alltilesData);
+						GraphicsManager.DrawTileToBuffer(new Tile(buffer[xx + yy]), ptr, alltilesData);
 					}
 				}
 			}

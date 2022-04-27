@@ -49,57 +49,60 @@ namespace ZeldaFullEditor
 		private readonly ModeActions entranceMode;
 		private readonly ModeActions collisionMode;
 
-		public DungeonPlaceable ObjectToPlace { get; set; }
+		public IDungeonPlaceable ObjectToPlace { get; set; }
 
 		public DungeonRoom Room { get; set; }
 
+		private readonly Rectangle[] DoorRectangles;
 		public SceneUW(ZScreamer zs) : base(zs)
 		{
+			DoorRectangles = BuildDoorRectangles();
+
 			layer1Mode = layer2Mode = layer3Mode =
 			layerAllMode = new ModeActions(OnMouseDown_Layer, OnMouseUp_Layer, OnMouseMove_Layer, OnMouseWheel_Layer,
-				Copy_Layer, Paste_Layer, null, Delete_Layer, SelectAll_Layer, null);
+				Copy_Layer, Paste_Layer, null, Delete_Layer, SelectAll_Layer);
 
 			doorMode = new ModeActions(OnMouseDown_Door, OnMouseUp_Door, OnMouseMove_Door, OnMouseWheel_Door,
-				Copy_Door, Paste_Door, Insert_Door, Delete_Door, SelectAll_Door, null);
+				Copy_Door, Paste_Door, Insert_Door, Delete_Door, SelectAll_Door);
 
 			spriteMode = new ModeActions(OnMouseDown_Sprites, OnMouseUp_Sprites, OnMouseMove_Sprites, null,
-				Copy_Sprites, Paste_Sprites, null, Delete_Sprites, SelectAll_Sprites, null);
+				Copy_Sprites, Paste_Sprites, null, Delete_Sprites, SelectAll_Sprites);
 
 			secretsMode = new ModeActions(OnMouseDown_Secrets, OnMouseUp_Secrets, OnMouseMove_Secrets, OnMouseWheel_Secrets,
-				Copy_Secrets, Paste_Secrets, Insert_Secrets, Delete_Secrets, SelectAll_Secrets, null);
+				Copy_Secrets, Paste_Secrets, Insert_Secrets, Delete_Secrets, SelectAll_Secrets);
 
 			blockMode = new ModeActions(OnMouseDown_Blocks, OnMouseUp_Blocks, OnMouseMove_Blocks, null,
-				Copy_Blocks, Paste_Blocks, Insert_Blocks, Delete_Blocks, SelectAll_Blocks, null);
+				Copy_Blocks, Paste_Blocks, Insert_Blocks, Delete_Blocks, SelectAll_Blocks);
 
 			torchMode = new ModeActions(OnMouseDown_Torch, OnMouseUp_Torch, OnMouseMove_Torch, null,
-				Copy_Torch, Paste_Torch, Insert_Torch, Delete_Torch, SelectAll_Torch, null);
+				Copy_Torch, Paste_Torch, Insert_Torch, Delete_Torch, SelectAll_Torch);
 
 			entranceMode = new ModeActions(OnMouseDown_Entrance, OnMouseUp_Entrance, OnMouseMove_Entrance,
-				null, null, null, null, null, null, null);
+				null, null, null, null, null, null);
 
 			collisionMode = new ModeActions(OnMouseDown_Collision, OnMouseUp_Collision, OnMouseMove_Collision, null,
-				null, null, null, null, null, Draw_Collision);
+				null, null, null, null, null);
 
 			Paint += SceneUW_Paint;
 		}
 
-		public byte Layer { get; private set; }
+		public RoomLayer Layer { get; private set; }
 		public void UpdateForMode(DungeonEditMode e)
 		{
-			Layer = 0xFF;
+			Layer = RoomLayer.None;
 			switch (e)
 			{
 				case DungeonEditMode.Layer1:
 					ActiveMode = layer1Mode;
-					Layer = 0;
+					Layer = RoomLayer.Layer1;
 					break;
 				case DungeonEditMode.Layer2:
 					ActiveMode = layer2Mode;
-					Layer = 1;
+					Layer = RoomLayer.Layer2;
 					break;
 				case DungeonEditMode.Layer3:
 					ActiveMode = layer3Mode;
-					Layer = 2;
+					Layer = RoomLayer.Layer3;
 					break;
 				case DungeonEditMode.LayerAll:
 					ActiveMode = layerAllMode;
@@ -145,14 +148,6 @@ namespace ZeldaFullEditor
 			RedrawRoom();
 		}
 
-		public void drawDoorsPosition(Graphics g)
-		{
-			if (MouseIsDown && Room.SelectedObjects.Count > 0 && Room.SelectedObjects[0] is DungeonDoor rr)
-			{
-				g.DrawRectangles(Constants.ThirdGreenPen, doorArray);
-			}
-		}
-
 		public void Clear()
 		{
 			// TODO: Add something here?
@@ -173,7 +168,7 @@ namespace ZeldaFullEditor
 
 		private void RedrawRoom()
 		{
-			ZS.DungeonForm.UpdateFormForSelectedObject(Room.OnlySelectedObject);
+			Program.DungeonForm.UpdateFormForSelectedObject(Room.OnlySelectedObject);
 
 			// TODO ROOM.DRAW()
 
@@ -183,7 +178,7 @@ namespace ZeldaFullEditor
 		protected override void RequestRefresh()
 		{
 			Refresh();
-			ZS.DungeonForm.UpdateUIForRoom(Room, true);
+			Program.DungeonForm.UpdateUIForRoom(Room, true);
 		}
 
 
@@ -212,7 +207,7 @@ namespace ZeldaFullEditor
 
 		private void CalculateMouseMoveSize(MouseEventArgs e)
 		{
-			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 		
 			switch (ZS.CurrentUWMode)
 			{
@@ -245,61 +240,6 @@ namespace ZeldaFullEditor
 			throw new NotImplementedException();
 		}
 
-		public void SetPalettesTransparent()
-		{
-			int pindex = 0;
-			ColorPalette palettes = ZS.GFXManager.roomBg1Bitmap.Palette;
-			for (int y = 0; y < ZS.GFXManager.loadedPalettes.GetLength(1); y++)
-			{
-				for (int x = 0; x < ZS.GFXManager.loadedPalettes.GetLength(0); x++)
-				{
-					palettes.Entries[pindex++] = ZS.GFXManager.loadedPalettes[x, y];
-				}
-			}
-
-			for (int y = 0; y < ZS.GFXManager.loadedSprPalettes.GetLength(1); y++)
-			{
-				for (int x = 0; x < ZS.GFXManager.loadedSprPalettes.GetLength(0); x++)
-				{
-					if (pindex < 256)
-					{
-						palettes.Entries[pindex++] = ZS.GFXManager.loadedSprPalettes[x, y];
-					}
-				}
-			}
-
-			for (int i = 0; i < Constants.TotalPaletteSize; i += Constants.ColorsPerHalfPalette)
-			{
-				palettes.Entries[i] = Color.Transparent;
-			}
-
-			ZS.GFXManager.roomBg1Bitmap.Palette = palettes;
-			ZS.GFXManager.roomBg2Bitmap.Palette = palettes;
-			ZS.GFXManager.roomBgLayoutBitmap.Palette = palettes;
-		}
-
-		public void SetPalettesBlack()
-		{
-			int pindex = 0;
-			ColorPalette palettes = ZS.GFXManager.roomBg1Bitmap.Palette;
-			for (int y = 0; y < ZS.GFXManager.loadedPalettes.GetLength(1); y++)
-			{
-				for (int x = 0; x < ZS.GFXManager.loadedPalettes.GetLength(0); x++)
-				{
-					palettes.Entries[pindex++] = ZS.GFXManager.loadedPalettes[x, y];
-				}
-			}
-
-			for (int i = 0; i < Constants.TotalPaletteSize; i += Constants.ColorsPerHalfPalette)
-			{
-				palettes.Entries[i] = Color.Black;
-			}
-
-			ZS.GFXManager.roomBg1Bitmap.Palette = palettes;
-			ZS.GFXManager.roomBg2Bitmap.Palette = palettes;
-			ZS.GFXManager.roomBgLayoutBitmap.Palette = palettes;
-		}
-
 		public void addChest()
 		{
 			throw new NotImplementedException();
@@ -327,7 +267,7 @@ namespace ZeldaFullEditor
 
 		public bool isMouseCollidingWith(IMouseCollidable o, MouseEventArgs e)
 		{
-			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 
 			// TODO
 
@@ -385,13 +325,13 @@ namespace ZeldaFullEditor
 			}
 
 			// TODO ????
-			//if (ZS.MainForm.x2zoom)
+			//if (Program.MainForm.x2zoom)
 			//{
 			//	e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			//	e.Graphics.DrawImage(tempBitmap, Constants.Rect_0_0_1024_1024);
 			//}
 
-				if (ZS.DungeonForm.x2zoom)
+				if (Program.DungeonForm.x2zoom)
 			{
 				g = Graphics.FromImage(tempBitmap);
 			}
@@ -444,7 +384,7 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw BG2 outlines
-			if (showBG2Outline && Room.LayerMerging != Data.LayerMergeType.LayerMerge00)
+			if (Program.DungeonForm.ShowBG2Outline)
 			{
 				foreach (var l in Room.AllObjects)
 				{
@@ -459,7 +399,7 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw BG2 annotations
-			if (ZS.DungeonForm.invisibleObjectsTextToolStripMenuItem.Checked)
+			if (Program.DungeonForm.invisibleObjectsTextToolStripMenuItem.Checked)
 			{
 				foreach (var l in Room.AllObjects)
 				{
@@ -475,7 +415,7 @@ namespace ZeldaFullEditor
 
 			// Draw chest numbers
 			int id = 0;
-			if (ZS.DungeonForm.showChestIDs)
+			if (Program.DungeonForm.showChestIDs)
 			{
 				foreach (var c in Room.ChestList)
 				{
@@ -490,7 +430,7 @@ namespace ZeldaFullEditor
 			// TODO deal with overlapping shit
 			// Draw door text
 			id = 0;
-			if (ZS.DungeonForm.showDoorsIDs)
+			if (Program.DungeonForm.showDoorsIDs)
 			{
 				foreach (var d in Room.DoorsList)
 				{
@@ -529,7 +469,7 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw secret item names
-			if (ZS.MainForm.showItemsText)
+			if (Program.MainForm.showItemsText)
 			{
 				foreach (var s in Room.SecretsList)
 				{
@@ -538,7 +478,7 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw sprite names
-			if (ZS.MainForm.showSpriteText)
+			if (Program.MainForm.showSpriteText)
 			{
 				foreach (var s in Room.SpritesList)
 				{
@@ -547,9 +487,9 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw selected entrance position
-			if (ZS.MainForm.selectedEntrance != null && ZS.MainForm.entrancePositionToolStripMenuItem.Checked)
+			if (Program.MainForm.selectedEntrance != null && Program.MainForm.entrancePositionToolStripMenuItem.Checked)
 			{
-				var n = ZS.MainForm.selectedEntrance;
+				var n = Program.MainForm.selectedEntrance;
 				if (n.RoomID == Room.RoomID)
 				{
 					g.DrawRectangle(Pens.Orange, n.CameraTriggerX - 128, n.CameraTriggerY - 116, 256, 224);
@@ -561,17 +501,23 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw grid
-			int wh = (512 / ZS.MainForm.gridSize) + 1;
+			int wh = (512 / Program.MainForm.gridSize) + 1;
 
-			for (int x = 0, l = 0; x < wh; x++, l += ZS.MainForm.gridSize)
+			for (int x = 0, l = 0; x < wh; x++, l += Program.MainForm.gridSize)
 			{
 				g.DrawLine(Constants.HalfWhitePen, l, 0, l, 512);
 				g.DrawLine(Constants.HalfWhitePen, 0, l, 512, l);
 			}
 
 			// Done
-
-			ActiveMode.Draw(g);
+			if (CurrentMode == DungeonEditMode.Doors)
+			{
+				g.DrawRectangles(Constants.ThirdGreenPen, DoorRectangles);
+			}
+			else if (CurrentMode == DungeonEditMode.CollisionMap)
+			{
+				Draw_Collision(g);
+			}
 
 		} // End Paint();
 

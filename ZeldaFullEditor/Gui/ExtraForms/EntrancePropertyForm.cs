@@ -10,16 +10,16 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-	public partial class EntrancePropertyForm : ScreamForm
+	public partial class EntrancePropertyForm : Form
 	{
-		public EntrancePropertyForm(ZScreamer zs) : base(zs)
+		public EntrancePropertyForm()
 		{
 			InitializeComponent();
 		}
 
 		private void buttonOk_Click(object sender, EventArgs e)
 		{
-			this.Close();
+			Close();
 		}
 	}
 }

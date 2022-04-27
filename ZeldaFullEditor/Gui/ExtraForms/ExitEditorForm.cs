@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
-	public partial class ExitEditorForm : Gui.ScreamForm
+	public partial class ExitEditorForm : Form
 	{
 		public ExitOW editingExit;
 		bool settingValues = false;
@@ -18,7 +18,7 @@ namespace ZeldaFullEditor
 		int pixelMapy;
 		public ExitOW selectedExit;
 
-		public ExitEditorForm(ZScreamer zs) : base(zs)
+		public ExitEditorForm()
 		{
 			InitializeComponent();
 		}

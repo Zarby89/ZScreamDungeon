@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui.ExtraForms
 {
-	public partial class OWMusicForm : ScreamForm
+	public partial class OWMusicForm : Form
 	{
 		public byte mapIndex = 0;
 		public byte[] musics = new byte[4];
@@ -74,7 +74,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			"0x20 Some other jingle"
 		};
 
-		public OWMusicForm(ZScreamer zs) : base(zs)
+		public OWMusicForm()
 		{
 			InitializeComponent();
 		}

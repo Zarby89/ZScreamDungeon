@@ -10,12 +10,12 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-	public partial class SaveSettings : ScreamForm
+	public partial class SaveSettings : Form
 	{
 
 		bool[] saveArr;
 
-		public SaveSettings(ZScreamer zs) : base(zs)
+		public SaveSettings()
 		{
 			InitializeComponent();
 
@@ -71,7 +71,7 @@ namespace ZeldaFullEditor.Gui
 			saveArr[39] = checkBox40.Checked; //misc triforce
 			saveArr[40] = checkBox41.Checked; //overworld message IDs
 
-			ZS.MainForm.saveSettingsArr = saveArr;
+			Program.MainForm.saveSettingsArr = saveArr;
 
 			this.Close();
 		}
@@ -88,7 +88,7 @@ namespace ZeldaFullEditor.Gui
 
 		public void LoadSaveSettings()
 		{
-			saveArr = ZS.MainForm.saveSettingsArr;
+			saveArr = Program.MainForm.saveSettingsArr;
 
 			checkBox1.Checked = saveArr[0];   //save dungeon sprites
 			checkBox2.Checked = saveArr[1];   //save dungeon pot items

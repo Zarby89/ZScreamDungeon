@@ -17,7 +17,7 @@ namespace ZeldaFullEditor
 
 		bool isLeftPress = false;
 
-		Gui.AddSprite addspr = new Gui.AddSprite(ZS);
+		Gui.AddSprite addspr = new Gui.AddSprite();
 
 		private void OnMouseDown_Sprites(MouseEventArgs e)
 		{
@@ -43,12 +43,6 @@ namespace ZeldaFullEditor
 			}
 
 			mouse_down = true;
-		}
-
-		// TODO changes sprite ID
-		private void OnMouseWheel_Sprites(MouseEventArgs e)
-		{
-
 		}
 
 		private void Copy_Sprites()
@@ -262,10 +256,10 @@ namespace ZeldaFullEditor
 				}
 				else
 				{
-					Invalidate(new Rectangle(ZS.OverworldForm.splitContainer1.Panel2.HorizontalScroll.Value,
-						ZS.OverworldForm.splitContainer1.Panel2.VerticalScroll.Value,
-						ZS.OverworldForm.splitContainer1.Panel2.Width,
-						ZS.OverworldForm.splitContainer1.Panel2.Height));
+					Invalidate(new Rectangle(Program.OverworldForm.splitContainer1.Panel2.HorizontalScroll.Value,
+						Program.OverworldForm.splitContainer1.Panel2.VerticalScroll.Value,
+						Program.OverworldForm.splitContainer1.Panel2.Width,
+						Program.OverworldForm.splitContainer1.Panel2.Height));
 				}
 
 				//scene.Invalidate();

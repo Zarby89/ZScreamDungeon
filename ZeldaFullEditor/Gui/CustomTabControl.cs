@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
-	public partial class CustomTabControl : Gui.ScreamControl
+	public partial class CustomTabControl : UserControl
 	{
-		public CustomTabControl(ZScreamer zs) : base(zs)
+		public CustomTabControl()
 		{
 			InitializeComponent();
 		}

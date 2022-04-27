@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui.MainTabs
 {
-	public partial class SpriteEditor : ScreamControl
+	public partial class SpriteEditor : UserControl
 	{
-		public SpriteEditor(ZScreamer zs) : base(zs)
+		public SpriteEditor()
 		{
 			InitializeComponent();
 		}

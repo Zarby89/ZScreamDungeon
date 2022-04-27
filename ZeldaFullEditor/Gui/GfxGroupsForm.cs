@@ -23,11 +23,9 @@ namespace ZeldaFullEditor.Gui
 
 		Color[] palettes = new Color[256];
 
-		private readonly ZScreamer ZS;
-		public GfxGroupsForm(ZScreamer zs)
+		public GfxGroupsForm()
 		{
 			InitializeComponent();
-			ZS = zs;
 			this.BackColor = Color.FromKnownColor(KnownColor.Control);
 		}
 
@@ -39,8 +37,8 @@ namespace ZeldaFullEditor.Gui
 				LoadTempGfx();
 				okButton_Click(null, e);
 				reloadGfx();
-				ZS.UnderworldScene.Room.reloadGfx();
-				ZS.UnderworldScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Room.reloadGfx();
+				ZScreamer.ActiveUWScene.TriggerRefresh = true;
 			}
 		}
 
@@ -56,7 +54,7 @@ namespace ZeldaFullEditor.Gui
 				tempmainGfx[i] = new byte[8];
 				for (int j = 0; j < 8; j++)
 				{
-					tempmainGfx[i][j] = ZS.GFXGroups.mainGfx[i][j];
+					tempmainGfx[i][j] = ZScreamer.ActiveScreamer.GFXGroups.mainGfx[i][j];
 				}
 			}
 
@@ -65,7 +63,7 @@ namespace ZeldaFullEditor.Gui
 				temproomGfx[i] = new byte[4];
 				for (int j = 0; j < 4; j++)
 				{
-					temproomGfx[i][j] = ZS.GFXGroups.roomGfx[i][j];
+					temproomGfx[i][j] = ZScreamer.ActiveScreamer.GFXGroups.roomGfx[i][j];
 				}
 			}
 
@@ -74,7 +72,7 @@ namespace ZeldaFullEditor.Gui
 				tempspriteGfx[i] = new byte[4];
 				for (int j = 0; j < 4; j++)
 				{
-					tempspriteGfx[i][j] = ZS.GFXGroups.spriteGfx[i][j];
+					tempspriteGfx[i][j] = ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[i][j];
 				}
 			}
 
@@ -83,7 +81,7 @@ namespace ZeldaFullEditor.Gui
 				temppaletteGfx[i] = new byte[4];
 				for (int j = 0; j < 4; j++)
 				{
-					temppaletteGfx[i][j] = ZS.GFXGroups.paletteGfx[i][j];
+					temppaletteGfx[i][j] = ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[i][j];
 				}
 			}
 		}
@@ -120,29 +118,29 @@ namespace ZeldaFullEditor.Gui
 		private void LoadGfx()
 		{
 			editedFromForm = true;
-			main1Box.Text = ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][0].ToString("X2");
-			main2Box.Text = ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][1].ToString("X2");
-			main3Box.Text = ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][2].ToString("X2");
-			main4Box.Text = ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][3].ToString("X2");
-			main5Box.Text = ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][4].ToString("X2");
-			main6Box.Text = ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][5].ToString("X2");
-			main7Box.Text = ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][6].ToString("X2");
-			main8Box.Text = ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][7].ToString("X2");
+			main1Box.Text = ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][0].ToString("X2");
+			main2Box.Text = ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][1].ToString("X2");
+			main3Box.Text = ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][2].ToString("X2");
+			main4Box.Text = ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][3].ToString("X2");
+			main5Box.Text = ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][4].ToString("X2");
+			main6Box.Text = ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][5].ToString("X2");
+			main7Box.Text = ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][6].ToString("X2");
+			main8Box.Text = ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][7].ToString("X2");
 
-			room1Box.Text = ZS.GFXGroups.roomGfx[(int) roomUpDown.Value][0].ToString("X2");
-			room2Box.Text = ZS.GFXGroups.roomGfx[(int) roomUpDown.Value][1].ToString("X2");
-			room3Box.Text = ZS.GFXGroups.roomGfx[(int) roomUpDown.Value][2].ToString("X2");
-			room4Box.Text = ZS.GFXGroups.roomGfx[(int) roomUpDown.Value][3].ToString("X2");
+			room1Box.Text = ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][0].ToString("X2");
+			room2Box.Text = ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][1].ToString("X2");
+			room3Box.Text = ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][2].ToString("X2");
+			room4Box.Text = ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][3].ToString("X2");
 
-			sprite1Box.Text = ZS.GFXGroups.spriteGfx[(int) spriteUpDown.Value][0].ToString("X2");
-			sprite2Box.Text = ZS.GFXGroups.spriteGfx[(int) spriteUpDown.Value][1].ToString("X2");
-			sprite3Box.Text = ZS.GFXGroups.spriteGfx[(int) spriteUpDown.Value][2].ToString("X2");
-			sprite4Box.Text = ZS.GFXGroups.spriteGfx[(int) spriteUpDown.Value][3].ToString("X2");
+			sprite1Box.Text = ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][0].ToString("X2");
+			sprite2Box.Text = ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][1].ToString("X2");
+			sprite3Box.Text = ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][2].ToString("X2");
+			sprite4Box.Text = ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][3].ToString("X2");
 
-			palette1Box.Text = ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0].ToString("X2");
-			palette2Box.Text = ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1].ToString("X2");
-			palette3Box.Text = ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2].ToString("X2");
-			palette4Box.Text = ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3].ToString("X2");
+			palette1Box.Text = ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0].ToString("X2");
+			palette2Box.Text = ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1].ToString("X2");
+			palette3Box.Text = ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2].ToString("X2");
+			palette4Box.Text = ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3].ToString("X2");
 			editedFromForm = false;
 		}
 
@@ -161,61 +159,61 @@ namespace ZeldaFullEditor.Gui
 		{
 			if (!editedFromForm)
 			{
-				ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][0] = getTextBoxValue(main1Box);
-				ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][1] = getTextBoxValue(main2Box);
-				ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][2] = getTextBoxValue(main3Box);
-				ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][3] = getTextBoxValue(main4Box);
-				ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][4] = getTextBoxValue(main5Box);
-				ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][5] = getTextBoxValue(main6Box);
-				ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][6] = getTextBoxValue(main7Box);
-				ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][7] = getTextBoxValue(main8Box);
+				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][0] = getTextBoxValue(main1Box);
+				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][1] = getTextBoxValue(main2Box);
+				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][2] = getTextBoxValue(main3Box);
+				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][3] = getTextBoxValue(main4Box);
+				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][4] = getTextBoxValue(main5Box);
+				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][5] = getTextBoxValue(main6Box);
+				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][6] = getTextBoxValue(main7Box);
+				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][7] = getTextBoxValue(main8Box);
 
-				ZS.GFXGroups.roomGfx[(int) roomUpDown.Value][0] = getTextBoxValue(room1Box);
-				ZS.GFXGroups.roomGfx[(int) roomUpDown.Value][1] = getTextBoxValue(room2Box);
-				ZS.GFXGroups.roomGfx[(int) roomUpDown.Value][2] = getTextBoxValue(room3Box);
-				ZS.GFXGroups.roomGfx[(int) roomUpDown.Value][3] = getTextBoxValue(room4Box);
+				ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][0] = getTextBoxValue(room1Box);
+				ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][1] = getTextBoxValue(room2Box);
+				ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][2] = getTextBoxValue(room3Box);
+				ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][3] = getTextBoxValue(room4Box);
 
-				ZS.GFXGroups.spriteGfx[(int) spriteUpDown.Value][0] = getTextBoxValue(sprite1Box);
-				ZS.GFXGroups.spriteGfx[(int) spriteUpDown.Value][1] = getTextBoxValue(sprite2Box);
-				ZS.GFXGroups.spriteGfx[(int) spriteUpDown.Value][2] = getTextBoxValue(sprite3Box);
-				ZS.GFXGroups.spriteGfx[(int) spriteUpDown.Value][3] = getTextBoxValue(sprite4Box);
+				ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][0] = getTextBoxValue(sprite1Box);
+				ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][1] = getTextBoxValue(sprite2Box);
+				ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][2] = getTextBoxValue(sprite3Box);
+				ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][3] = getTextBoxValue(sprite4Box);
 
-				ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0] = getTextBoxValue(palette1Box);
-				ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1] = getTextBoxValue(palette2Box);
-				ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2] = getTextBoxValue(palette3Box);
-				ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3] = getTextBoxValue(palette4Box);
+				ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0] = getTextBoxValue(palette1Box);
+				ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1] = getTextBoxValue(palette2Box);
+				ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2] = getTextBoxValue(palette3Box);
+				ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3] = getTextBoxValue(palette4Box);
 
-				ZS.UnderworldScene.Room.reloadGfx();
+				ZScreamer.ActiveUWScene.Room.reloadGfx();
 				reloadGfx();
-				ZS.UnderworldScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.TriggerRefresh = true;
 			}
 		}
 
 		private void okButton_Click(object sender, EventArgs e)
 		{
-			ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][0] = getTextBoxValue(main1Box);
-			ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][1] = getTextBoxValue(main2Box);
-			ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][2] = getTextBoxValue(main3Box);
-			ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][3] = getTextBoxValue(main4Box);
-			ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][4] = getTextBoxValue(main5Box);
-			ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][5] = getTextBoxValue(main6Box);
-			ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][6] = getTextBoxValue(main7Box);
-			ZS.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][7] = getTextBoxValue(main8Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][0] = getTextBoxValue(main1Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][1] = getTextBoxValue(main2Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][2] = getTextBoxValue(main3Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][3] = getTextBoxValue(main4Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][4] = getTextBoxValue(main5Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][5] = getTextBoxValue(main6Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][6] = getTextBoxValue(main7Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][7] = getTextBoxValue(main8Box);
 
-			ZS.GFXGroups.roomGfx[(int) roomUpDown.Value][0] = getTextBoxValue(room1Box);
-			ZS.GFXGroups.roomGfx[(int) roomUpDown.Value][1] = getTextBoxValue(room2Box);
-			ZS.GFXGroups.roomGfx[(int) roomUpDown.Value][2] = getTextBoxValue(room3Box);
-			ZS.GFXGroups.roomGfx[(int) roomUpDown.Value][3] = getTextBoxValue(room4Box);
+			ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][0] = getTextBoxValue(room1Box);
+			ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][1] = getTextBoxValue(room2Box);
+			ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][2] = getTextBoxValue(room3Box);
+			ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][3] = getTextBoxValue(room4Box);
 
-			ZS.GFXGroups.spriteGfx[(int) spriteUpDown.Value][0] = getTextBoxValue(sprite1Box);
-			ZS.GFXGroups.spriteGfx[(int) spriteUpDown.Value][1] = getTextBoxValue(sprite2Box);
-			ZS.GFXGroups.spriteGfx[(int) spriteUpDown.Value][2] = getTextBoxValue(sprite3Box);
-			ZS.GFXGroups.spriteGfx[(int) spriteUpDown.Value][3] = getTextBoxValue(sprite4Box);
+			ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][0] = getTextBoxValue(sprite1Box);
+			ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][1] = getTextBoxValue(sprite2Box);
+			ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][2] = getTextBoxValue(sprite3Box);
+			ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][3] = getTextBoxValue(sprite4Box);
 
-			ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0] = getTextBoxValue(palette1Box);
-			ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1] = getTextBoxValue(palette2Box);
-			ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2] = getTextBoxValue(palette3Box);
-			ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3] = getTextBoxValue(palette4Box);
+			ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0] = getTextBoxValue(palette1Box);
+			ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1] = getTextBoxValue(palette2Box);
+			ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2] = getTextBoxValue(palette3Box);
+			ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3] = getTextBoxValue(palette4Box);
 
 			CreateTempGfx();
 		}
@@ -254,7 +252,7 @@ namespace ZeldaFullEditor.Gui
 
 				for (int i = 0; i < 8; i++)
 				{
-					blocks[i] = ZS.GFXGroups.mainGfx[blockset][i];
+					blocks[i] = ZScreamer.ActiveScreamer.GFXGroups.mainGfx[blockset][i];
 				}
 			}
 
@@ -264,7 +262,7 @@ namespace ZeldaFullEditor.Gui
 
 				for (int i = 0; i < 4; i++)
 				{
-					blocks[i] = ZS.GFXGroups.roomGfx[blockset][i];
+					blocks[i] = ZScreamer.ActiveScreamer.GFXGroups.roomGfx[blockset][i];
 				} // 12-16 sprites
 			}
 
@@ -274,14 +272,14 @@ namespace ZeldaFullEditor.Gui
 
 				for (int i = 0; i < 4; i++)
 				{
-					blocks[i] = (byte) (ZS.GFXGroups.spriteGfx[blockset][i] + 115);
+					blocks[i] = (byte) (ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[blockset][i] + 115);
 				} // 12-16 sprites
 			}
 
 			unsafe
 			{
-				byte* newPdata = (byte*) ZS.GFXManager.allgfx16Ptr.ToPointer(); // Turn gfx16 (all 222 of them)
-				byte* sheetsData = (byte*) ZS.GFXManager.currentEditinggfx16Ptr.ToPointer(); // Into "room gfx16" 16 of them
+				byte* newPdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer(); // Turn gfx16 (all 222 of them)
+				byte* sheetsData = (byte*) ZScreamer.ActiveGraphicsManager.currentEditinggfx16Ptr.ToPointer(); // Into "room gfx16" 16 of them
 				int sheetPos = 0;
 
 				for (int i = 0; i < 8; i++)
@@ -317,27 +315,27 @@ namespace ZeldaFullEditor.Gui
 		{
 			if (grayscaleRadioButton.Checked)
 			{
-				ColorPalette cp = ZS.GFXManager.currentEditingfx16Bitmap.Palette;
+				ColorPalette cp = ZScreamer.ActiveGraphicsManager.currentEditingfx16Bitmap.Palette;
 				for (int i = 0; i < 16; i++)
 				{
 					cp.Entries[i] = Color.FromArgb(i * 15, i * 15, i * 15);
 				}
 
-				ZS.GFXManager.currentEditingfx16Bitmap.Palette = cp;
+				ZScreamer.ActiveGraphicsManager.currentEditingfx16Bitmap.Palette = cp;
 			}
 			else if (paletteRadioButton.Checked)
 			{
-				ColorPalette cp = ZS.GFXManager.currentEditingfx16Bitmap.Palette;
+				ColorPalette cp = ZScreamer.ActiveGraphicsManager.currentEditingfx16Bitmap.Palette;
 				for (int i = 0; i < 16; i++)
 				{
 					cp.Entries[i] = palettes[i + ((int) numericUpDown1.Value * 16)];
 				}
 
-				ZS.GFXManager.currentEditingfx16Bitmap.Palette = cp;
+				ZScreamer.ActiveGraphicsManager.currentEditingfx16Bitmap.Palette = cp;
 			}
 
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.DrawImage(ZS.GFXManager.currentEditingfx16Bitmap, 0, 0);
+			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.currentEditingfx16Bitmap, 0, 0);
 		}
 
 		private void palettepreviewPaint(object sender, PaintEventArgs e)
@@ -366,14 +364,14 @@ namespace ZeldaFullEditor.Gui
 				label11.Text = "Dungeon Sprite Pal2";
 				label12.Text = "Dungeon Sprite Pal3";
 
-				byte dungeon_palette_ptr = ZS.GFXGroups.paletteGfx[(byte) paletteUpDown.Value][0];
+				byte dungeon_palette_ptr = ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(byte) paletteUpDown.Value][0];
 				ushort palette_pos;
 				int pId;
 				int pPos = 32;
 
-				if (ZS.GFXGroups.paletteGfx[(byte) paletteUpDown.Value][0] % 2 == 0)
+				if (ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(byte) paletteUpDown.Value][0] % 2 == 0)
 				{
-					palette_pos = ZS.ROM.Read16(0xDEC4B + dungeon_palette_ptr);
+					palette_pos = ZScreamer.ActiveROM.Read16(0xDEC4B + dungeon_palette_ptr);
 					pId = (palette_pos / 180);
 
 					for (int i = 0; i < 90; i++)
@@ -383,9 +381,9 @@ namespace ZeldaFullEditor.Gui
 							pPos++;
 						}
 
-						if (pId < ZS.PaletteManager.UnderworldMain.Length)
+						if (pId < ZScreamer.ActivePaletteManager.UnderworldMain.Length)
 						{
-							palettes[pPos] = ZS.PaletteManager.UnderworldMain[pId][i];
+							palettes[pPos] = ZScreamer.ActivePaletteManager.UnderworldMain[pId][i];
 						}
 
 						pPos++;
@@ -393,7 +391,7 @@ namespace ZeldaFullEditor.Gui
 				}
 
 				pPos = 128;
-				if (ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1] != 255)
+				if (ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1] != 255)
 				{
 					for (int i = 0; i < 7; i++)
 					{
@@ -402,15 +400,15 @@ namespace ZeldaFullEditor.Gui
 							pPos++;
 						}
 
-						if (ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1] < ZS.PaletteManager.SpriteAux1.Length)
+						if (ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1] < ZScreamer.ActivePaletteManager.SpriteAux1.Length)
 						{
-							palettes[pPos++] = ZS.PaletteManager.SpriteAux1[ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1]][i];
+							palettes[pPos++] = ZScreamer.ActivePaletteManager.SpriteAux1[ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1]][i];
 						}
 					}
 				}
 
 				pPos = 208;
-				if (ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2] != 255)
+				if (ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2] != 255)
 				{
 					for (int i = 0; i < 7; i++)
 					{
@@ -419,15 +417,15 @@ namespace ZeldaFullEditor.Gui
 							pPos++;
 						}
 
-						if (ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2] < ZS.PaletteManager.SpriteAux3.Length)
+						if (ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2] < ZScreamer.ActivePaletteManager.SpriteAux3.Length)
 						{
-							palettes[pPos++] = ZS.PaletteManager.SpriteAux3[ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2]][i];
+							palettes[pPos++] = ZScreamer.ActivePaletteManager.SpriteAux3[ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2]][i];
 						}
 					}
 				}
 
 				pPos = 224;
-				if (ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3] != 255)
+				if (ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3] != 255)
 				{
 					for (int i = 0; i < 7; i++)
 					{
@@ -436,9 +434,9 @@ namespace ZeldaFullEditor.Gui
 							pPos++;
 						}
 
-						if (ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3] < ZS.PaletteManager.SpriteAux3.Length)
+						if (ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3] < ZScreamer.ActivePaletteManager.SpriteAux3.Length)
 						{
-							palettes[pPos] = ZS.PaletteManager.SpriteAux3[ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3]][i];
+							palettes[pPos] = ZScreamer.ActivePaletteManager.SpriteAux3[ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3]][i];
 						}
 
 						pPos++;
@@ -455,10 +453,10 @@ namespace ZeldaFullEditor.Gui
                     }
                     */
 
-					palettes[pPos] = ZS.PaletteManager.SpriteGlobal[0][i];
-					palettes[pPos + 16] = ZS.PaletteManager.SpriteGlobal[0][i + 15];
-					palettes[pPos + 32] = ZS.PaletteManager.SpriteGlobal[0][i + 30];
-					palettes[pPos + 48] = ZS.PaletteManager.SpriteGlobal[0][i + 45];
+					palettes[pPos] = ZScreamer.ActivePaletteManager.SpriteGlobal[0][i];
+					palettes[pPos + 16] = ZScreamer.ActivePaletteManager.SpriteGlobal[0][i + 15];
+					palettes[pPos + 32] = ZScreamer.ActivePaletteManager.SpriteGlobal[0][i + 30];
+					palettes[pPos + 48] = ZScreamer.ActivePaletteManager.SpriteGlobal[0][i + 45];
 					pPos++;
 				}
 			}
@@ -470,7 +468,7 @@ namespace ZeldaFullEditor.Gui
 				label12.Text = "???";
 				int pPos = 40;
 
-				if (ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0] != 255)
+				if (ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0] != 255)
 				{
 					for (int i = 0; i < 7; i++)
 					{
@@ -479,7 +477,7 @@ namespace ZeldaFullEditor.Gui
 							pPos++;
 						}
 
-						palettes[pPos++] = ZS.PaletteManager.OverworldAux[ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0]][i];
+						palettes[pPos++] = ZScreamer.ActivePaletteManager.OverworldAux[ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0]][i];
 					}
 
 					pPos = 56;
@@ -490,7 +488,7 @@ namespace ZeldaFullEditor.Gui
 							pPos++;
 						}
 
-						palettes[pPos++] = ZS.PaletteManager.OverworldAux[ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0]][i + 7];
+						palettes[pPos++] = ZScreamer.ActivePaletteManager.OverworldAux[ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0]][i + 7];
 					}
 
 					pPos = 72;
@@ -501,12 +499,12 @@ namespace ZeldaFullEditor.Gui
 							pPos++;
 						}
 
-						palettes[pPos++] = ZS.PaletteManager.OverworldAux[ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0]][i + 14];
+						palettes[pPos++] = ZScreamer.ActivePaletteManager.OverworldAux[ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0]][i + 14];
 					}
 				}
 
 				pPos = 88;
-				if (ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1] != 255)
+				if (ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1] != 255)
 				{
 					for (int i = 0; i < 7; i++)
 					{
@@ -515,7 +513,7 @@ namespace ZeldaFullEditor.Gui
 							pPos++;
 						}
 
-						palettes[pPos++] = ZS.PaletteManager.OverworldAux[ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1]][i];
+						palettes[pPos++] = ZScreamer.ActivePaletteManager.OverworldAux[ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1]][i];
 					}
 
 					pPos = 104;
@@ -526,7 +524,7 @@ namespace ZeldaFullEditor.Gui
 							pPos++;
 						}
 
-						palettes[pPos++] = ZS.PaletteManager.OverworldAux[ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1]][i + 7];
+						palettes[pPos++] = ZScreamer.ActivePaletteManager.OverworldAux[ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1]][i + 7];
 					}
 
 					pPos = 120;
@@ -537,12 +535,12 @@ namespace ZeldaFullEditor.Gui
 							pPos++;
 						}
 
-						palettes[pPos++] = ZS.PaletteManager.OverworldAux[ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1]][i + 14];
+						palettes[pPos++] = ZScreamer.ActivePaletteManager.OverworldAux[ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1]][i + 14];
 					}
 				}
 
 				pPos = 112;
-				if (ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2] != 255)
+				if (ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2] != 255)
 				{
 					for (int i = 0; i < 7; i++)
 					{
@@ -551,7 +549,7 @@ namespace ZeldaFullEditor.Gui
 							pPos++;
 						}
 
-						palettes[pPos++] = ZS.PaletteManager.OverworldAnimated[ZS.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2]][i];
+						palettes[pPos++] = ZScreamer.ActivePaletteManager.OverworldAnimated[ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2]][i];
 					}
 				}
 
@@ -563,7 +561,7 @@ namespace ZeldaFullEditor.Gui
 						pPos++;
 					}
 
-					palettes[pPos++] = ZS.PaletteManager.OverworldMain[0][i];
+					palettes[pPos++] = ZScreamer.ActivePaletteManager.OverworldMain[0][i];
 				}
 
 				pPos = 48;
@@ -574,7 +572,7 @@ namespace ZeldaFullEditor.Gui
 						pPos++;
 					}
 
-					palettes[pPos++] = ZS.PaletteManager.OverworldMain[0][i + 7];
+					palettes[pPos++] = ZScreamer.ActivePaletteManager.OverworldMain[0][i + 7];
 				}
 
 				pPos = 64;
@@ -585,7 +583,7 @@ namespace ZeldaFullEditor.Gui
 						pPos++;
 					}
 
-					palettes[pPos++] = ZS.PaletteManager.OverworldMain[0][i + 14];
+					palettes[pPos++] = ZScreamer.ActivePaletteManager.OverworldMain[0][i + 14];
 				}
 
 				pPos = 80;
@@ -596,7 +594,7 @@ namespace ZeldaFullEditor.Gui
 						pPos++;
 					}
 
-					palettes[pPos++] = ZS.PaletteManager.OverworldMain[0][i + 21];
+					palettes[pPos++] = ZScreamer.ActivePaletteManager.OverworldMain[0][i + 21];
 				}
 
 				pPos = 96;
@@ -607,16 +605,16 @@ namespace ZeldaFullEditor.Gui
 						pPos++;
 					}
 
-					palettes[pPos++] = ZS.PaletteManager.OverworldMain[0][i + 28];
+					palettes[pPos++] = ZScreamer.ActivePaletteManager.OverworldMain[0][i + 28];
 				}
 			}
 
 			if (paletteUpDown.Value <= 40)
 			{
-				if (ZS.GFXGroups.paletteGfx[(byte) paletteUpDown.Value][0] % 2 == 0)
+				if (ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(byte) paletteUpDown.Value][0] % 2 == 0)
 				{
-					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
-					ZS.GFXManager.loadedSprPalettes = ZS.GFXManager.LoadSpritesPalette(ZS.UnderworldScene.Room.Palette);
+					ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
+					ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
 				}
 			}
 		}

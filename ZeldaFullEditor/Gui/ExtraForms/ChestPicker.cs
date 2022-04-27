@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
-	public partial class ChestPicker : Gui.ScreamForm
+	public partial class ChestPicker : Form
 	{
-		public ChestPicker(ZScreamer zs) : base(zs)
+		public ChestPicker()
 		{
 			InitializeComponent();
 		}

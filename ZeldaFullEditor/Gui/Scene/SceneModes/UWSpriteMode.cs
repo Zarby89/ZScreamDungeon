@@ -16,7 +16,7 @@ namespace ZeldaFullEditor
 
 			CheckIfObjectIsInvalidForPlacement();
 
-			Room.AttemptToAddEntityAsSelected(ObjectToPlace, CurrentMode));
+			Room.AttemptToAddEntityAsSelected(ObjectToPlace, CurrentMode);
 
 			MouseIsDown = true;
 

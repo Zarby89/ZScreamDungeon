@@ -9,32 +9,33 @@ namespace ZeldaFullEditor.Data.Underworld
 {
 	// TODO new way to handle objects that change with the floor settings
 	[Serializable]
-	public unsafe class RoomObject : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, ITypeID
+	public unsafe class RoomObject : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, ITypeID
 	{
 		public ushort ID => ObjectType.FullID;
 		public int TypeID => ObjectType.FullID;
 		public string Name => ObjectType.VanillaName;
+		public bool IsChest => ObjectType.Specialness == SpecialObjectType.Chest || IsBigChest;
+		public bool IsBigChest => ObjectType.Specialness == SpecialObjectType.BigChest;
+		public bool IsStairs => ObjectType.Specialness == SpecialObjectType.InterroomStairs;
+		public DungeonLimits LimitClass => ObjectType.LimitClass;
 
-		public byte GridX { get; set; } = 0;
-		public byte GridY { get; set; } = 0;
+
+		public byte GridX { get; set; }
+		public byte GridY { get; set; }
 
 		public int RealX => NewX * 8;
 		public int RealY => NewY * 8;
 
 		public byte NewX { get; set; }
 		public byte NewY { get; set; }
-		public byte Layer { get; set; } = 0;
-		public byte Size { get; set; } = 0;
+		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
+		public byte Size { get; set; }
 
 		public int Width { get; set; } = 16;
 		public int Height { get; set; } = 16;
 		public Rectangle OutlineBox => new Rectangle(RealX, RealY, Width, Height);
 
-		public bool IsChest => ObjectType.Specialness == SpecialObjectType.Chest || IsBigChest;
-		public bool IsBigChest => ObjectType.Specialness == SpecialObjectType.BigChest;
-		public bool IsStairs => ObjectType.Specialness == SpecialObjectType.InterroomStairs;
-
-		public bool DiagonalFix { get; set; } = false;
+		public bool DiagonalFix { get; set; }
 
 		public RoomObjectType ObjectType { get; }
 
@@ -63,8 +64,6 @@ namespace ZeldaFullEditor.Data.Underworld
 				NewY = NewY,
 				DiagonalFix = DiagonalFix
 			};
-			ret.CollisionPoints.Clear();
-			// TODO do we need to set collision points?
 			return ret;
 		}
 
@@ -113,8 +112,9 @@ namespace ZeldaFullEditor.Data.Underworld
 			int yfix = DiagonalFix
 					? -(6 + Size)
 					: 0;
-			return false;
+			throw new NotImplementedException();
 		}
+
 		public byte[] GetByteData()
 		{
 			switch (ObjectType.ObjectSet)
@@ -154,6 +154,9 @@ namespace ZeldaFullEditor.Data.Underworld
 	/// </summary>
 	public unsafe class RoomObjectPreview : RoomObject
 	{
-		public RoomObjectPreview(RoomObjectType type, TilesList tiles) : base(type, tiles) { }
+		public RoomObjectPreview(RoomObjectType type, TilesList tiles) : base(type, tiles)
+		{
+			Size = 4;
+		}
 	}
 }

@@ -12,7 +12,7 @@ namespace ZeldaFullEditor.Data.Underworld
 	{
 		public ushort RoomID { get; }
 
-		private byte[] blocks = new byte[16];
+		private readonly byte[] blocks = new byte[16];
 
 		public string Name { get; set; }
 
@@ -32,12 +32,12 @@ namespace ZeldaFullEditor.Data.Underworld
 		public DungeonTorchList TorchList { get; } = new DungeonTorchList();
 
 		public DungeonDestinationsHandler Destinations { get; } = new DungeonDestinationsHandler();
-		public List<DungeonPlaceable> SelectedObjects { get; } = new List<DungeonPlaceable>();
+		public List<IDungeonPlaceable> SelectedObjects { get; } = new List<IDungeonPlaceable>();
 
 		/// <summary>
 		/// Returns an object if it is the only member of selected objects; otherwise, null
 		/// </summary>
-		public DungeonPlaceable OnlySelectedObject
+		public IDungeonPlaceable OnlySelectedObject
 		{
 			get
 			{
@@ -228,7 +228,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			Palette = ZS.ROM[hpos++];
 			BackgroundTileset = ZS.ROM[hpos++];
 			SpriteTileset = ZS.ROM[hpos++];
-			LayerMerging = LayerMergeType.GetMergeType(ZS.ROM[hpos++]);
+			LayerMerging = LayerMergeType.ListOf[ZS.ROM[hpos++]];
 			Tag1 = ZS.ROM[hpos++];
 			Tag2 = ZS.ROM[hpos++];
 
@@ -282,6 +282,19 @@ namespace ZeldaFullEditor.Data.Underworld
 			throw new NotImplementedException();
 		}
 
+		public void ClearChanges()
+		{
+			if (!HasUnsavedChanges)
+			{
+				return;
+			}
+
+			HasUnsavedChanges = false;
+			throw new NotImplementedException();
+		}
+
+
+
 
 		private void LoadChests()
 		{
@@ -318,13 +331,14 @@ namespace ZeldaFullEditor.Data.Underworld
 
 				if (room != RoomID) continue;
 
-				UWTilemapPosition.CreateXYZFromTileMap(ZS.ROM[pos3 + i], (byte) (ZS.ROM[pos4 + i] & 0x3F), out byte x, out byte y, out byte layer);
+				UWTilemapPosition.CreateXYZFromTileMap(ZS.ROM[pos3 + i], (byte) (ZS.ROM[pos4 + i] & 0x3F),
+					out byte x, out byte y, out byte layer);
 				BlocksList.Add(
 					new DungeonBlock()
 					{
 						GridX = x,
 						GridY = y,
-						Layer = layer,
+						Layer = (RoomLayer) layer,
 					}
 				);
 			}
@@ -358,7 +372,7 @@ namespace ZeldaFullEditor.Data.Underworld
 							{
 								GridX = x,
 								GridY = y,
-								Layer = layer,
+								Layer = (RoomLayer) layer,
 							}
 						);
 					}
@@ -392,20 +406,20 @@ namespace ZeldaFullEditor.Data.Underworld
 					{
 						GridX = x,
 						GridY = y,
-						Layer = layer,
+						Layer = (RoomLayer) layer,
 					}
 				);
 
 			}
 		}
 
-		public DungeonObjectsList GetLayerList(byte layer)
+		public DungeonObjectsList GetLayerList(RoomLayer layer)
 		{
 			switch (layer)
 			{
-				case 0: return Layer1Objects;
-				case 1: return Layer2Objects;
-				case 2: return Layer3Objects;
+				case RoomLayer.Layer1: return Layer1Objects;
+				case RoomLayer.Layer2: return Layer2Objects;
+				case RoomLayer.Layer3: return Layer3Objects;
 			}
 			return null;
 		}
@@ -441,12 +455,12 @@ namespace ZeldaFullEditor.Data.Underworld
 
 			if (Layer2Mode != Constants.LayerMergeOff)
 			{
-				ZS.DungeonForm.SetPalettesTransparent();
+				Program.DungeonForm.SetPalettesTransparent();
 				DrawFloor2();
 			}
 			else
 			{
-				ZS.DungeonForm.SetPalettesBlack();
+				Program.DungeonForm.SetPalettesBlack();
 			}
 		}
 
@@ -596,7 +610,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 					if (r != null)
 					{
-						r.Layer = layer;
+						r.Layer = (RoomLayer) layer;
 						currentList.Add(r);
 					}
 					else
@@ -616,7 +630,7 @@ namespace ZeldaFullEditor.Data.Underworld
 					GridX = x,
 					GridY = y,
 					Size = size,
-					Layer = layer
+					Layer = (RoomLayer) layer
 				};
 		}
 
@@ -671,7 +685,7 @@ namespace ZeldaFullEditor.Data.Underworld
 				{
 					GridX = (byte) (b2 & 0x1F),
 					GridY = (byte) (b1 & 0x1F),
-					Layer = (byte) (b1 >> 1),
+					Layer = (RoomLayer) (b1 >> 7),
 					Subtype = subtype
 				};
 
@@ -716,7 +730,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			throw new NotImplementedException();
 		}
 
-		public bool AttemptToAddEntityAsSelected(DungeonPlaceable o, DungeonEditMode m)
+		public bool AttemptToAddEntityAsSelected(IDungeonPlaceable o, DungeonEditMode m)
 		{
 			if (AttemptToAddEntity(o, m))
 			{
@@ -728,7 +742,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		}
 
 
-		public bool AttemptToAddEntity(DungeonPlaceable o, DungeonEditMode m)
+		public bool AttemptToAddEntity(IDungeonPlaceable o, DungeonEditMode m)
 		{
 
 			switch (m)
@@ -736,7 +750,7 @@ namespace ZeldaFullEditor.Data.Underworld
 				case DungeonEditMode.Layer1:
 				case DungeonEditMode.Layer2:
 				case DungeonEditMode.Layer3:
-					var l = GetLayerList((byte) m);
+					var l = GetLayerList((RoomLayer) m);
 					if (l == null) return false;
 					if (!(o is RoomObject ro)) return false;
 
@@ -766,32 +780,129 @@ namespace ZeldaFullEditor.Data.Underworld
 		// TODO logic for too many of certain things
 		private bool AddRoomObject(RoomObject o, DungeonObjectsList l)
 		{
+			var lim = o.LimitClass;
+
+			// TODO 
+			if (lim == DungeonLimits.GeneralManipulable || lim == DungeonLimits.GeneralManipulable4x)
+			{
+				ValidateManipulables();
+			}
+			else if (lim != DungeonLimits.None)
+			{
+				int count = CountLimitedObjects(lim);
+				// TODO fill in limits
+				// TODO maybe move elsewhere
+				switch (lim)
+				{
+					case DungeonLimits.StarTiles:
+						if (count > 16)
+						{
+							throw new ZeldaException("Too many star tiles!!!");
+						}
+						break;
+
+				}
+			}
+
+
 			l.Add(o);
 
 			HasUnsavedChanges = true;
 			return true;
 		}
 
-
-		// TODO logic for too many sprites
 		private bool AddSprite(DungeonSprite s)
 		{
+			int sprites = 0;
+			int overlords = 0;
+
+			foreach (var k in SpritesList)
+			{
+				if (k.IsCurrentlyOverlord)
+				{
+					overlords++;
+				}
+				else
+				{
+					sprites++;
+				}
+			}
+
+			if (overlords > 7)
+			{
+				throw new ZeldaException("There are too many overlords. Only 8 may be placed in a single room.");
+			}
+
+			if (sprites > 16)
+			{
+				throw new ZeldaException("There are too many non-overlord sprites. Only 16 may be placed in a single room.");
+			}
+
 			SpritesList.Add(s);
 
 			HasUnsavedChanges = true;
 			return true;
 		}
 		
-		// TODO
+		private int CountLimitedObjects(DungeonLimits type)
+		{
+			int count = 0;
+
+			foreach (var l in AllObjects)
+			{
+				foreach (var o in l)
+				{
+					if (o.LimitClass == type)
+					{
+						count++;
+					}
+				}
+			}
+
+			return count;
+		}
+
+		private int CountManipulables()
+		{
+			int count = BlocksList.Count;
+
+			foreach (var l in AllObjects)
+			{
+				foreach (var o in l)
+				{
+					if (o.LimitClass == DungeonLimits.GeneralManipulable)
+					{
+						count += o.Size + 1;
+					}
+					else if (o.LimitClass == DungeonLimits.GeneralManipulable4x)
+					{
+						count += 4;
+					}
+				}
+			}
+
+			return count;
+		}
+
+		private void ValidateManipulables()
+		{
+			if (CountManipulables() > 16)
+			{
+				throw new ZeldaException("Too many manipulable objects!");
+			}
+		}
+
+
 		private bool AddBlock(DungeonBlock b)
 		{
+			ValidateManipulables();
+
 			BlocksList.Add(b);
 
 			HasUnsavedChanges = true;
 			return true;
 		}	
-		
-		// TODO
+
 		private bool AddDoor(DungeonDoor d)
 		{
 			DoorsList.Add(d);
@@ -816,7 +927,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 
 
-		private dynamic GetAssociatedList(DungeonPlaceable o)
+		private dynamic GetAssociatedList(IDungeonPlaceable o)
 		{
 			if (o is RoomObject ro)
 			{
@@ -844,11 +955,11 @@ namespace ZeldaFullEditor.Data.Underworld
 			return null;
 		}
 
-		public void SendToFront(DungeonPlaceable o)
+		public void SendToFront(IDungeonPlaceable o)
 		{
 			var mylist = GetAssociatedList(o);
 
-			if (mylist is List<DungeonPlaceable> l)
+			if (mylist is List<IDungeonPlaceable> l)
 			{
 				l.Remove(o);
 				l.Insert(0, o);
@@ -872,11 +983,11 @@ namespace ZeldaFullEditor.Data.Underworld
 			}
 		}
 
-		public void SendToBack(DungeonPlaceable o)
+		public void SendToBack(IDungeonPlaceable o)
 		{
 			var mylist = GetAssociatedList(o);
 
-			if (mylist is List<DungeonPlaceable> l)
+			if (mylist is List<IDungeonPlaceable> l)
 			{
 				l.Remove(o);
 				l.Add(o);
@@ -884,6 +995,30 @@ namespace ZeldaFullEditor.Data.Underworld
 			}
 		}
 
+		internal void SendAllSelectedToLayer(RoomLayer layer)
+		{
+			foreach (IDungeonPlaceable o in SelectedObjects)
+			{
+				if (o is IMultilayered m)
+				{
+					if (m.Layer == layer)
+					{
+						continue;
+					}
+
+					if (m is RoomObject r)
+					{
+						var d = GetLayerList(m.Layer);
+						d.Remove(r);
+
+						var l = GetLayerList(layer);
+						l.Add(r);
+					}
+
+					m.Layer = layer;
+				}
+			}
+		}
 		public object FindFirstCollidingObject<T>(IEnumerable<T> list, int x, int y) where T : IMouseCollidable
 		{
 			foreach (var o in list)
@@ -897,9 +1032,9 @@ namespace ZeldaFullEditor.Data.Underworld
 			return null;
 		}
 
-		public void RemoveCurrentlySelectedObjectsFromList<T>(List<T> thisList) where T : DungeonPlaceable
+		public void RemoveCurrentlySelectedObjectsFromList<T>(List<T> thisList) where T : IDungeonPlaceable
 		{
-			List<DungeonPlaceable> check = new List<DungeonPlaceable>();
+			List<IDungeonPlaceable> check = new List<IDungeonPlaceable>();
 			check.AddRange(SelectedObjects);
 			foreach (var o in check)
 			{
@@ -1026,15 +1161,17 @@ namespace ZeldaFullEditor.Data.Underworld
 			var ret = new bool[count];
 			int cur = 0;
 
-
-			foreach (RoomObject r in Layer1Objects.Concat(Layer2Objects).Concat(Layer3Objects))
+			foreach (var l in AllObjects)
 			{
-				if (r.IsChest)
+				foreach (var r in l)
 				{
-					ret[cur++] = r.IsBigChest;
-					if (cur == count)
+					if (r.IsChest)
 					{
-						break;
+						ret[cur++] = r.IsBigChest;
+						if (cur == count)
+						{
+							break;
+						}
 					}
 				}
 			}
@@ -1137,39 +1274,6 @@ namespace ZeldaFullEditor.Data.Underworld
 		{
 			SelectedObjects.Clear();
 		}
-
-
-
-		// TODO THIS IS AWFUL
-
-		public Rectangle[] getAllDoorPosition()
-		{
-			Rectangle[] rects = new Rectangle[48];
-			int pos;
-			float n;
-
-			for (int i = 0, j = 0; i < 12; i++, j += 2) // Left
-			{
-				pos = ZS.ROM.Read16(0x197E + j) / 2;
-				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
-				rects[i] = new Rectangle(((byte) n) * 8, (byte) (pos / 64) * 8, 32, 24);
-
-				pos = ZS.ROM.Read16(0x1996 + j) / 2;
-				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
-				rects[i + 12] = new Rectangle(((byte) n) * 8, (byte) ((pos / 64) + 1) * 8, 32, 24);
-
-				pos = ZS.ROM.Read16(0x19AE + j) / 2;
-				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
-				rects[i + 24] = new Rectangle(((byte) n) * 8, (byte) (pos / 64) * 8, 24, 32);
-
-				pos = ZS.ROM.Read16(0x19C6 + j) / 2;
-				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
-				rects[i + 36] = new Rectangle(((byte) n + 1) * 8, (byte) (pos / 64) * 8, 24, 32);
-			}
-
-			return rects;
-		}
-
 
 		//================================================================================================
 		// Data output

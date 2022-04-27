@@ -5,6 +5,16 @@
 	/// </summary>
 	public interface IMultilayered
 	{
-		byte Layer { get; set; }
+		RoomLayer Layer { get; set; }
+
+	}
+
+	public enum RoomLayer
+	{
+		Layer1 = 0,
+		Layer2 = 1,
+		Layer3 = 2,
+
+		None = -1
 	}
 }

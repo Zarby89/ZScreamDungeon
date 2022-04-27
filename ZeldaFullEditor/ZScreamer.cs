@@ -10,41 +10,6 @@ using ZeldaFullEditor.Data.Underworld;
 using System.Text.RegularExpressions;
 using ZeldaFullEditor.Data;
 
-namespace ZeldaFullEditor.Gui
-{
-	public partial class ScreamControl : UserControl
-	{
-		protected readonly ZScreamer ZS;
-		public ZScreamer Screamer { get => ZS; }
-		public ScreamControl(ZScreamer zs = null)
-		{
-			ZS = zs ?? new ZScreamer(22);
-		}
-
-		public ScreamControl()
-		{
-			ZS = new ZScreamer(22); ;
-		}
-	}
-
-	public partial class ScreamForm : Form
-	{
-		protected readonly ZScreamer ZS;
-		public ZScreamer Screamer { get => ZS; }
-		public ScreamForm(ZScreamer zs = null)
-		{
-			ZS = zs ?? new ZScreamer(22);
-		}
-
-		public ScreamForm()
-		{
-			ZS = new ZScreamer(22);
-		}
-	}
-}
-
-
-
 namespace ZeldaFullEditor
 {
 	/// <summary>
@@ -52,6 +17,16 @@ namespace ZeldaFullEditor
 	/// </summary>
 	public partial class ZScreamer
 	{
+		public static ZScreamer ActiveScreamer { get; private set; } = new ZScreamer(1);
+		public static ROMFile ActiveROM => ActiveScreamer.ROM;
+		public static AddressSet ActiveOffsets => ActiveScreamer.Offsets;
+		public static GraphicsManager ActiveGraphicsManager => ActiveScreamer.GFXManager;
+		public static SceneOW ActiveOWScene => ActiveScreamer.OverworldScene;
+		public static SceneUW ActiveUWScene => ActiveScreamer.UnderworldScene;
+		public static Overworld ActiveOW => ActiveScreamer.OverworldManager;
+		public static PaletteHandler ActivePaletteManager => ActiveScreamer.PaletteManager;
+
+
 		private Scene active;
 		public Scene ActiveScene
 		{
@@ -60,11 +35,6 @@ namespace ZeldaFullEditor
 		}
 
 		public AddressSet Offsets { get; }
-
-		public DungeonMain DungeonForm { get; }
-		public DungeonMain MainForm { get; }
-		public OverworldEditor OverworldForm { get; }
-		public TextEditor TextForm { get; }
 		public RoomObjectTileLister TileLister { get; }
 		public RoomLayoutLister LayoutLister { get; private set; }
 
@@ -94,13 +64,13 @@ namespace ZeldaFullEditor
 			get => owmode;
 			set
 			{
-				OverworldForm.UpdateForMode(value);
+				Program.OverworldForm.UpdateForMode(value);
 				OverworldScene.UpdateForMode(value);
 			}
 		}
 
 		public GfxGroups GFXGroups;
-		public GFX GFXManager;
+		public GraphicsManager GFXManager;
 
 		private ROMFile rom;
 		public ROMFile ROM { get => rom; }
@@ -110,6 +80,10 @@ namespace ZeldaFullEditor
 
 		}
 
+		public void SetAsActiveScreamer()
+		{
+			ActiveScreamer = this;
+		}
 
 		// TODO things needs to be split from Dungeon main
 		public ZScreamer()
@@ -121,18 +95,11 @@ namespace ZeldaFullEditor
 			TileLister = new RoomObjectTileLister(this);
 
 			GFXGroups = new GfxGroups(this);
-			GFXManager = new GFX(this);
+			GFXManager = new GraphicsManager(this);
 			OverworldScene = new SceneOW(this);
 			OverworldManager = new Overworld(this);
 			UnderworldScene = new SceneUW(this);
-
-			DungeonForm = new DungeonMain(this);
-			MainForm = DungeonForm;
-			OverworldForm = new OverworldEditor(this);
-
 			PaletteManager = new PaletteHandler(this);
-
-			TextForm = new TextEditor(this);
 
 			// MainForm.SetForms(DungeonForm, OverworldForm)
 		}
@@ -150,7 +117,7 @@ namespace ZeldaFullEditor
 
 		public void SelectTab(TabSelection st)
 		{
-			MainForm.editorsTabControl.SelectTab((int) st);
+			Program.MainForm.editorsTabControl.SelectTab((int) st);
 			switch (st)
 			{
 				case TabSelection.DungeonEditor:
@@ -162,22 +129,22 @@ namespace ZeldaFullEditor
 		public void SetDungeonEditMode(DungeonEditMode em)
 		{
 			uwmode = em;
-			DungeonForm.allbgsButton.Checked = em == DungeonEditMode.LayerAll;
-			DungeonForm.bg1modeButton.Checked = em == DungeonEditMode.Layer1;
-			DungeonForm.bg2modeButton.Checked = em == DungeonEditMode.Layer2;
-			DungeonForm.bg3modeButton.Checked = em == DungeonEditMode.Layer3;
-			DungeonForm.spritemodeButton.Checked = em == DungeonEditMode.Sprites;
-			DungeonForm.potmodeButton.Checked = em == DungeonEditMode.Secrets;
-			DungeonForm.torchmodeButton.Checked = em == DungeonEditMode.Torches;
-			DungeonForm.blockmodeButton.Checked = em == DungeonEditMode.Blocks;
-			DungeonForm.doormodeButton.Checked = em == DungeonEditMode.Doors;
-			DungeonForm.collisionModeButton.Checked = em == DungeonEditMode.CollisionMap;
+			Program.DungeonForm.allbgsButton.Checked = em == DungeonEditMode.LayerAll;
+			Program.DungeonForm.bg1modeButton.Checked = em == DungeonEditMode.Layer1;
+			Program.DungeonForm.bg2modeButton.Checked = em == DungeonEditMode.Layer2;
+			Program.DungeonForm.bg3modeButton.Checked = em == DungeonEditMode.Layer3;
+			Program.DungeonForm.spritemodeButton.Checked = em == DungeonEditMode.Sprites;
+			Program.DungeonForm.potmodeButton.Checked = em == DungeonEditMode.Secrets;
+			Program.DungeonForm.torchmodeButton.Checked = em == DungeonEditMode.Torches;
+			Program.DungeonForm.blockmodeButton.Checked = em == DungeonEditMode.Blocks;
+			Program.DungeonForm.doormodeButton.Checked = em == DungeonEditMode.Doors;
+			Program.DungeonForm.collisionModeButton.Checked = em == DungeonEditMode.CollisionMap;
 		}
 
 		public void SetSelectedMessageID(int id)
 		{
-			TextForm.SelectMessageID(id);
-			TextForm.Refresh();
+			Program.TextForm.SelectMessageID(id);
+			Program.TextForm.Refresh();
 		}
 	}
 

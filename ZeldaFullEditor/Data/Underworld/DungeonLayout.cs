@@ -89,7 +89,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 				if (r != null)
 				{
-					r.Layer = 0;
+					r.Layer = RoomLayer.Layer1;
 					ret.Add(r);
 				}
 			}

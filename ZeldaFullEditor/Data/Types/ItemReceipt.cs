@@ -198,7 +198,7 @@ namespace ZeldaFullEditor.Data
 				int tx = (ti.TileIndex / 16 * 512) + ((ti.TileIndex & 0xF) << 2); // TODO verify
 
 				// TODO add stuff for automatic chest positioning
-				int indexoff = sec.X + ti.XOff + (512 * (sec.Y + ti.YOff));
+				int indexoff = sec.RealX + ti.XOff + (512 * (sec.RealY + ti.YOff));
 				byte pal = (byte) (ti.Palette << 3);
 
 

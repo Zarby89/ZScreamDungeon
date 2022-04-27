@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-	public partial class DungeonViewer : Gui.ScreamControl
+	public partial class DungeonViewer : UserControl
 	{
-		public DungeonViewer(ZScreamer zs) : base(zs)
+		public DungeonViewer()
 		{
 			InitializeComponent();
 		}

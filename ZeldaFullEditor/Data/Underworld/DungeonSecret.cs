@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.Underworld
 {
-	public unsafe class DungeonSecret : DungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID
+	public unsafe class DungeonSecret : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID
 	{
 		public byte GridX { get; set; } = 0;
 		public byte GridY { get; set; } = 0;
@@ -31,7 +31,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			set => ny = value.Clamp(0, 63);
 		}
 
-		public byte Layer { get; set; } = 0;
+		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
 
 		public SecretItemType SecretType { get; set; }
 		public string Name => SecretType.VanillaName;
@@ -59,7 +59,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public byte[] GetByteData()
 		{
-			UWTilemapPosition.CreateLowAndHighBytesFromXYZ(GridX, GridY, Layer, out byte low, out byte high);
+			UWTilemapPosition.CreateLowAndHighBytesFromXYZ(GridX, GridY, (byte) Layer, out byte low, out byte high);
 			return new byte[] { low, high, SecretType.ID };
 			//ushort xy = (ushort) ((Y << 6) | (X << 1) | (Layer << 13));
 			//return new byte[]

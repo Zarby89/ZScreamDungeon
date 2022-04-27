@@ -31,6 +31,20 @@ namespace ZeldaFullEditor
 		int[] mapPointers1 = new int[Constants.NumberOfOWMaps];
 		int[] mapPointers2 = new int[Constants.NumberOfOWMaps];
 		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		public bool saveEntrances()
 		{
 			for (int i = 0; i < 0x84; i++)
@@ -63,10 +77,6 @@ namespace ZeldaFullEditor
 			{
 				ROM.Write16(headerPointer + (i * 2), (headerPointer + 640 + (i * 14)).PCtoSNES());
 				ROM.Write(headerPointer + 640 + (i * 14), all_rooms[i].GetHeaderData());
-			}
-
-			for (int i = 0; i < Constants.NumberOfRooms; i++)
-			{
 				ROM.Write16(Offsets.messages_id_dungeon + (i * 2), all_rooms[i].MessageID);
 			}
 
@@ -92,7 +102,7 @@ namespace ZeldaFullEditor
 						(byte) i,
 						(byte) (i >> 8),
 						(byte) xy,
-						(byte) (((xy >> 8) & 0x1F) | (b.Layer << 5))
+						(byte) (((xy >> 8) & 0x1F) | (((int) b.Layer) << 5))
 					);
 
 					count += 4;
@@ -283,8 +293,7 @@ namespace ZeldaFullEditor
 
 				ROM.Write16(Offsets.room_items_pointers + (room.RoomID * 2), pos.PCtoSNES());
 				ROM.WriteContinuous(ref pos, room.SecretsList.GetByteData());
-				ROM[pos++] = 0xFF;
-				ROM[pos++] = 0xFF;
+				ROM.Write16Continuous(ref pos, 0xFFFF);
 			}
 
 			return pos > Offsets.items_data_end;
@@ -295,7 +304,6 @@ namespace ZeldaFullEditor
 			int spritePointer = Constants.DungeonSpritePointers | ROM[Offsets.rooms_sprite_pointer];
 			int pointerpointer = spritePointer.SNEStoPC();
 			int datapointer = pointerpointer + 0x280;
-			byte[] sprites_buffer = new byte[Offsets.sprites_end_data - spritePointer.SNEStoPC()];
 
 			ushort emptyroom = (ushort) (datapointer.PCtoSNES() & 0xFFFF);
 
@@ -306,11 +314,11 @@ namespace ZeldaFullEditor
 			{
 				if (room.SpritesList.Count == 0)
 				{
-					ROM.Write16(pointerpointer + 2 * room.RoomID, emptyroom);
+					ROM.Write16Continuous(ref pointerpointer, emptyroom);
 					continue;
 				}
 
-				ROM.Write16(pointerpointer + 2 * room.RoomID, datapointer);
+				ROM.Write16Continuous(ref pointerpointer, datapointer);
 
 				ROM[datapointer++] = (byte) (room.MultiLayerOAM ? 1 : 0);
 				ROM.WriteContinuous(ref datapointer, room.SpritesList.GetByteData());
@@ -359,18 +367,16 @@ namespace ZeldaFullEditor
 
 		public bool SaverOverworldSecrets()
 		{
-			List<OverworldSecret>[] roomItems = new List<OverworldSecret>[128];
+			List<OverworldSecret>[] screenItems = new List<OverworldSecret>[128];
 
 			for (int i = 0; i < 128; i++)
 			{
-				roomItems[i] = new List<OverworldSecret>();
-				foreach (var item in OverworldManager.allitems)
-				{
-					if (item.MapID == i)
-					{
-						roomItems[i].Add(item);
-					}
-				}
+				screenItems[i] = new List<OverworldSecret>();
+			}
+
+			foreach (var item in OverworldManager.allitems)
+			{
+				screenItems[item.MapID].Add(item);
 			}
 
 			int dataPos = Offsets.overworldItemsPointers + 0x100;
@@ -384,12 +390,12 @@ namespace ZeldaFullEditor
 				itemPtrsReuse[i] = -1;
 				for (int ci = 0; ci < i; ci++)
 				{
-					if (roomItems[i].Count == 0)
+					if (screenItems[i].Count == 0)
 					{
 						itemPtrsReuse[i] = -2;
 						break;
 					}
-					if (CompareOverworldArrays(roomItems[i], roomItems[ci]))
+					if (CompareOverworldArrays(screenItems[i], screenItems[ci]))
 					{
 						itemPtrsReuse[i] = ci;
 						break;
@@ -402,7 +408,7 @@ namespace ZeldaFullEditor
 				if (itemPtrsReuse[i] == -1)
 				{
 					itemPtrs[i] = dataPos;
-					foreach (var item in roomItems[i])
+					foreach (var item in screenItems[i])
 					{
 						ushort mapPos = (ushort) (((item.MapY << 6) + item.MapX) << 1);
 						ROM.WriteContinuous(ref dataPos,
@@ -412,8 +418,7 @@ namespace ZeldaFullEditor
 					}
 
 					emptyPtr = dataPos;
-					ROM.Write16(dataPos, 0xFFFF);
-					dataPos += 2;
+					ROM.Write16Continuous(ref dataPos, 0xFFFF);
 				}
 				else if (itemPtrsReuse[i] == -2)
 				{
@@ -429,7 +434,7 @@ namespace ZeldaFullEditor
 
 			if (dataPos > Offsets.overworldItemsEndData)
 			{
-				return true;
+				throw new ZeldaException("AAAAAAAAAAAAAAAA"); // TODO
 			}
 
 			return false;
@@ -443,7 +448,6 @@ namespace ZeldaFullEditor
 
 			for (int j = 0; j < Constants.NumberOfOWSprites; j++)
 			{
-				sprPointersReused[j] = null;
 				allspr[j] = new List<OverworldSprite>();
 			}
 
@@ -733,7 +737,6 @@ namespace ZeldaFullEditor
 				ROM[Offsets.overworldMusicMasterSword + i] = OverworldManager.allmaps[i].musics[2];
 				ROM[Offsets.overworldMusicAgahim + i] = OverworldManager.allmaps[i].musics[3];
 				ROM[Offsets.overworldMusicDW + i] = OverworldManager.allmaps[i].musics[0];
-
 			}
 
 			return false;
@@ -802,7 +805,7 @@ namespace ZeldaFullEditor
 				{
 					pos = 0x60000;
 				}
-				if ((pos + a.Length) >= 0x6411F && (pos + a.Length) <= 0x70000)
+				else if ((pos + a.Length) >= 0x6411F && (pos + a.Length) <= 0x70000)
 				{
 					pos = 0x130000; // 0x0F8780;
 				}
@@ -847,7 +850,7 @@ namespace ZeldaFullEditor
 				{
 					pos = 0x60000;
 				}
-				if ((pos + b.Length) >= 0x6411F && (pos + b.Length) <= 0x70000)
+				else if ((pos + b.Length) >= 0x6411F && (pos + b.Length) <= 0x70000)
 				{
 					pos = 0x130000;
 				}
@@ -877,7 +880,7 @@ namespace ZeldaFullEditor
 			if (pos > 0x137FFF)
 			{
 				// TODO messagebox for failure "Too many maps data {pos:X6}"
-				return true;
+				throw new ZeldaException("FIP");
 			}
 
 			SaveLargeMaps();
@@ -891,8 +894,6 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// Saves the overworld area layout (whether the area is big or small).
 		/// </summary>
-		/// <param name="scene"></param>
-		/// <returns></returns>
 		public bool SaveLargeMaps()
 		{
 			// TODO: these temp vars can be removed along with thier print once testing is done

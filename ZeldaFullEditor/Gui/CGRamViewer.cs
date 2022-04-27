@@ -14,11 +14,9 @@ namespace ZeldaFullEditor.Gui
 {
 	public partial class CGRamViewer : PictureBox
 	{
-		private readonly ZScreamer ZS;
-		public CGRamViewer(ZScreamer zs)
+		public CGRamViewer()
 		{
 			InitializeComponent();
-			ZS = zs;
 			this.Paint += CGRamViewer_Paint;
 			this.MouseDown += CGRamViewer_MouseDown;
 		}
@@ -44,7 +42,7 @@ namespace ZeldaFullEditor.Gui
 			if (sf.ShowDialog() == DialogResult.OK)
 			{
 				FileStream fs = new FileStream(sf.FileName, FileMode.Create, FileAccess.Write);
-				ColorPalette cp = ZS.GFXManager.roomBg1Bitmap.Palette;
+				ColorPalette cp = ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette;
 
 				foreach (Color c in cp.Entries)
 				{
@@ -61,7 +59,7 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < 256; i++)
 			{
-				e.Graphics.FillRectangle(new SolidBrush(ZS.GFXManager.roomBg1Bitmap.Palette.Entries[i]),
+				e.Graphics.FillRectangle(new SolidBrush(ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette.Entries[i]),
 					new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
 			}
 		}

@@ -23,6 +23,15 @@ namespace ZeldaFullEditor
 		public override string ToString() => string.Format("{0:2X} {1}", ID, Name);
 	}
 
+	public class DungeonName : EntityName
+	{
+		public DungeonName(int i, string n) : base(i, n) { }
+	}
+	public class OverworldScreenName : EntityName
+	{
+		public OverworldScreenName(int i, string n) : base(i, n) { }
+	}
+
 	public class RoomName : EntityName
 	{
 		public RoomName(int i, string n) : base(i, n) { }

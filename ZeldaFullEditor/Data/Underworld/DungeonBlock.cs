@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.Underworld
 {
-	public class DungeonBlock : DungeonPlaceable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
+	public class DungeonBlock : IDungeonPlaceable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
 	{
 		public byte GridX { get; set; }
 		public byte GridY { get; set; }
 		public byte NewX { get; set; }
 		public byte NewY { get; set; }
-		public byte Layer { get; set; }
+		public RoomLayer Layer { get; set; }
 		public int RealX => NewX * 8;
 		public int RealY => NewY * 8;
 

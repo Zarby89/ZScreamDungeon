@@ -109,12 +109,16 @@ namespace ZeldaFullEditor
 			return (ushort) ((DATA[addr++] << 8) | DATA[addr++]);
 		}
 
-		public ushort Read24BE(int addr)
+		public void Write16(int addr, params int[] words)
 		{
-			return (ushort) (DATA[addr++] << 16 | (DATA[addr++] << 8) | (DATA[addr++]));
+			foreach (int i in words)
+			{
+				DATA[addr++] = (byte) i;
+				DATA[addr++] = (byte) (i >> 8);
+			}
 		}
 
-		public void Write16(int addr, params int[] words)
+		public void Write16Continuous(ref int addr, params int[] words)
 		{
 			foreach (int i in words)
 			{

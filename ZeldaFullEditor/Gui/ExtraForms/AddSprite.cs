@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-	public partial class AddSprite : ScreamForm
+	public partial class AddSprite : Form
 	{
-		public AddSprite(ZScreamer zs) : base(zs)
+		public AddSprite()
 		{
 			InitializeComponent();
 		}

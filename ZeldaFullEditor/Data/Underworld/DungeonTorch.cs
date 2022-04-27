@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.Underworld
 {
-	public unsafe class DungeonTorch : DungeonPlaceable, IFreelyPlaceable, IMouseCollidable, IMultilayered, IByteable
+	public unsafe class DungeonTorch : IDungeonPlaceable, IFreelyPlaceable, IMouseCollidable, IMultilayered, IByteable
 	{
 		public byte GridX { get; set; } = 0;
 		public byte GridY { get; set; } = 0;
 		public byte NewX { get; set; }
 		public byte NewY { get; set; }
-		public byte Layer { get; set; } = 0;
+		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
 
 		public int RealX => NewX * 8;
 		public int RealY => NewY * 8;
@@ -38,7 +38,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public byte[] GetByteData()
 		{
-			UWTilemapPosition.CreateLowAndHighBytesFromXYZ(GridX, GridY, Layer, out byte low, out byte high);
+			UWTilemapPosition.CreateLowAndHighBytesFromXYZ(GridX, GridY, (byte) Layer, out byte low, out byte high);
 			return new byte[] { low, high };
 		}
 	}

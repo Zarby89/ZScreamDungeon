@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,5 +60,35 @@ namespace ZeldaFullEditor
 			Room.ClearSelectedList();
 			Room.SelectedObjects.AddRange(Room.DoorsList);
 		}
+
+		private Rectangle[] BuildDoorRectangles()
+		{
+			Rectangle[] recturn = new Rectangle[48];
+			int pos;
+			float n;
+
+			for (int i = 0, j = 0; i < 12; i++, j += 2) // Left
+			{
+				pos = ZS.ROM.Read16(0x197E + j) / 2;
+				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
+				recturn[i] = new Rectangle(((byte) n) * 8, (byte) (pos / 64) * 8, 32, 24);
+
+				pos = ZS.ROM.Read16(0x1996 + j) / 2;
+				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
+				recturn[i + 12] = new Rectangle(((byte) n) * 8, (byte) ((pos / 64) + 1) * 8, 32, 24);
+
+				pos = ZS.ROM.Read16(0x19AE + j) / 2;
+				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
+				recturn[i + 24] = new Rectangle(((byte) n) * 8, (byte) (pos / 64) * 8, 24, 32);
+
+				pos = ZS.ROM.Read16(0x19C6 + j) / 2;
+				n = (((float) pos / 64) - (byte) (pos / 64)) * 64;
+				recturn[i + 36] = new Rectangle(((byte) n + 1) * 8, (byte) (pos / 64) * 8, 24, 32);
+			}
+
+			return recturn;
+		}
+
+
 	}
 }

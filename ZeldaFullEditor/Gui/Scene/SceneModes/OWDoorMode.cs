@@ -11,11 +11,6 @@ namespace ZeldaFullEditor
 {
 	public partial class SceneOW
 	{
-		// TODO changes door type
-		private void OnMouseWheel_OWDoor(MouseEventArgs e)
-		{
-
-		}
 
 		private void OnMouseDown_OWDoor(MouseEventArgs e)
 		{

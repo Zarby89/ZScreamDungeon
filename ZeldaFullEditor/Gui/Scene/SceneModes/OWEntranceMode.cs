@@ -28,7 +28,7 @@ namespace ZeldaFullEditor
 				lastselectedEntrance = selectedEntrance;
 				mouse_down = true;
 				isLeftPress = true;
-				//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));
+				//scene.Invalidate(new Rectangle(Program.DungeonForm.panel5.HorizontalScroll.Value, Program.DungeonForm.panel5.VerticalScroll.Value, Program.DungeonForm.panel5.Width, Program.DungeonForm.panel5.Height));
 			}
 		}
 
@@ -71,7 +71,7 @@ namespace ZeldaFullEditor
 						mouse_down = true;
 						isLeftPress = true;
 
-						//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));
+						//scene.Invalidate(new Rectangle(Program.DungeonForm.panel5.HorizontalScroll.Value, Program.DungeonForm.panel5.VerticalScroll.Value, Program.DungeonForm.panel5.Width, Program.DungeonForm.panel5.Height));
 						break;
 					}
 				}
@@ -100,7 +100,7 @@ namespace ZeldaFullEditor
 						mouse_down = true;
 						isLeftPress = true;
 
-						//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));
+						//scene.Invalidate(new Rectangle(Program.DungeonForm.panel5.HorizontalScroll.Value, Program.DungeonForm.panel5.VerticalScroll.Value, Program.DungeonForm.panel5.Width, Program.DungeonForm.panel5.Height));
 						break;
 					}
 				}
@@ -191,12 +191,12 @@ namespace ZeldaFullEditor
 					return;
 				}
 
-				if (ZS.DungeonForm.lastRoomID != roomId)
+				if (Program.DungeonForm.lastRoomID != roomId)
 				{
-					ZS.DungeonForm.previewRoom = ZS.all_rooms[roomId];
-					ZS.DungeonForm.previewRoom.reloadGfx();
-					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.DungeonForm.previewRoom.Palette);
-					ZS.DungeonForm.DrawRoom();
+					Program.DungeonForm.previewRoom = ZS.all_rooms[roomId];
+					Program.DungeonForm.previewRoom.reloadGfx();
+					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(Program.DungeonForm.previewRoom.Palette);
+					Program.DungeonForm.DrawRoom();
 					DrawTempEntrance();
 					entrancePreview = true;
 					//scene.Refresh();
@@ -209,23 +209,23 @@ namespace ZeldaFullEditor
 					}
 				}
 
-				ZS.DungeonForm.lastRoomID = roomId;
+				Program.DungeonForm.lastRoomID = roomId;
 			}
 		}
 
 		public void DrawTempEntrance()
 		{
-			Graphics g = Graphics.FromImage(ZS.OverworldForm.tmpPreviewBitmap);
+			Graphics g = Graphics.FromImage(Program.OverworldForm.tmpPreviewBitmap);
 			g.InterpolationMode = InterpolationMode.Bilinear;
-			if (ZS.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeTranslucent || ZS.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeTransparent ||
-			 ZS.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeOnTop || ZS.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeOff)
+			if (Program.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeTranslucent || Program.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeTransparent ||
+			 Program.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeOnTop || Program.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeOff)
 			{
 				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
 			g.DrawImage(ZS.GFXManager.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 
-			if (ZS.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeTranslucent || ZS.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeTransparent)
+			if (Program.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeTranslucent || Program.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeTransparent)
 			{
 				float[][] matrixItems ={
 					new float[] {1f, 0, 0, 0, 0},
@@ -249,12 +249,12 @@ namespace ZeldaFullEditor
 				//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
 				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
 			}
-			else if (ZS.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeOnTop)
+			else if (Program.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeOnTop)
 			{
 				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			}
 
-			ZS.UnderworldScene.drawText(g, 0, 0, "ROOM : " + ZS.DungeonForm.previewRoom.RoomID.ToString("X2"));
+			ZS.UnderworldScene.drawText(g, 0, 0, "ROOM : " + Program.DungeonForm.previewRoom.RoomID.ToString("X2"));
 			g.InterpolationMode = InterpolationMode.NearestNeighbor;
 			g.Dispose();
 		}
@@ -270,19 +270,19 @@ namespace ZeldaFullEditor
 					{
 						if (e.Button == MouseButtons.Left)
 						{
-							TreeNode[] treeNodes = ZS.DungeonForm.entrancetreeView.Nodes[0].Nodes
+							TreeNode[] treeNodes = Program.DungeonForm.entrancetreeView.Nodes[0].Nodes
 									.Cast<TreeNode>()
 									.Where(r => (int) (r.Tag) == en.entranceId)
 									.ToArray();
 
 							if (treeNodes.Length != 0)
 							{
-								ZS.DungeonForm.entrancetreeView.SelectedNode = treeNodes[0];
+								Program.DungeonForm.entrancetreeView.SelectedNode = treeNodes[0];
 							}
 
-							ZS.DungeonForm.addRoomTab(ZS.entrances[en.entranceId].RoomID);
-							ZS.DungeonForm.editorsTabControl.SelectedIndex = 0;
-							//ZS.DungeonForm.dungeonButton_Click(ZS.DungeonForm.dungeonButton, null);
+							Program.DungeonForm.addRoomTab(ZS.entrances[en.entranceId].RoomID);
+							Program.DungeonForm.editorsTabControl.SelectedIndex = 0;
+							//Program.DungeonForm.dungeonButton_Click(Program.DungeonForm.dungeonButton, null);
 						}
 					}
 				}
@@ -299,18 +299,18 @@ namespace ZeldaFullEditor
 						{
 							if (e.Button == MouseButtons.Left)
 							{
-								TreeNode[] treeNodes = ZS.DungeonForm.entrancetreeView.Nodes[0].Nodes
+								TreeNode[] treeNodes = Program.DungeonForm.entrancetreeView.Nodes[0].Nodes
 										.Cast<TreeNode>()
 										.Where(r => (int) (r.Tag) == en.entranceId)
 										.ToArray();
 
 								if (treeNodes.Length != 0)
 								{
-									ZS.DungeonForm.entrancetreeView.SelectedNode = treeNodes[0];
+									Program.DungeonForm.entrancetreeView.SelectedNode = treeNodes[0];
 								}
 
-								ZS.DungeonForm.addRoomTab(ZS.entrances[en.entranceId].RoomID);
-								ZS.DungeonForm.editorsTabControl.SelectedIndex = 0;
+								Program.DungeonForm.addRoomTab(ZS.entrances[en.entranceId].RoomID);
+								Program.DungeonForm.editorsTabControl.SelectedIndex = 0;
 							}
 						}
 					}
@@ -327,7 +327,7 @@ namespace ZeldaFullEditor
 			lastselectedEntrance.entranceId = 0;
 			lastselectedEntrance.deleted = true;
 
-			//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));
+			//scene.Invalidate(new Rectangle(Program.DungeonForm.panel5.HorizontalScroll.Value, Program.DungeonForm.panel5.VerticalScroll.Value, Program.DungeonForm.panel5.Width, Program.DungeonForm.panel5.Height));
 		}
 
 		private void OnMouseMove_Entrance(MouseEventArgs e)
@@ -343,7 +343,7 @@ namespace ZeldaFullEditor
 					selectedEntrance.GlobalY = (ushort) (e.Y & ~0x0F);
 				}
 
-				//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));
+				//scene.Invalidate(new Rectangle(Program.DungeonForm.panel5.HorizontalScroll.Value, Program.DungeonForm.panel5.VerticalScroll.Value, Program.DungeonForm.panel5.Width, Program.DungeonForm.panel5.Height));
 			}
 		}
 
@@ -462,7 +462,7 @@ namespace ZeldaFullEditor
 					ZS.OverworldManager.allentrances[i].GlobalY = (ushort) (myRightclick & ~0xF);
 					ZS.OverworldManager.allentrances[i].UpdateMapID(mid);
 					found = true;
-					//scene.Invalidate(new Rectangle(ZS.DungeonForm.panel5.HorizontalScroll.Value, ZS.DungeonForm.panel5.VerticalScroll.Value, ZS.DungeonForm.panel5.Width, ZS.DungeonForm.panel5.Height));
+					//scene.Invalidate(new Rectangle(Program.DungeonForm.panel5.HorizontalScroll.Value, Program.DungeonForm.panel5.VerticalScroll.Value, Program.DungeonForm.panel5.Width, Program.DungeonForm.panel5.Height));
 					break;
 				}
 			}
@@ -480,7 +480,7 @@ namespace ZeldaFullEditor
 
 		private void entranceProperty_Click(object sender, EventArgs e)
 		{
-			EntranceForm ef = new EntranceForm(ZS);
+			EntranceForm ef = new EntranceForm();
 			ef.entranceId = lastselectedEntrance.entranceId;
 			ef.mapId = lastselectedEntrance.MapID;
 			ef.mapPos = lastselectedEntrance.mapPos;

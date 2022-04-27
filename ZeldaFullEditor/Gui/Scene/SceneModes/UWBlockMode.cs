@@ -14,7 +14,7 @@ namespace ZeldaFullEditor
 		{
 			if (MouseIsDown) return;
 
-			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 			DraggingX = MX / 16;
 			DraggingY = MY / 16;
 		}

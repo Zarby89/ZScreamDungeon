@@ -23,21 +23,12 @@ namespace ZeldaFullEditor.Data
 
 				foreach (DrawInfo d in instructions)
 				{
-					if (obj.Width < d.XOff + 8)
-					{
-						obj.Width = d.XOff + 8;
-					}
-					if (obj.Height < d.YOff + 8)
-					{
-						obj.Height = d.YOff + 8;
-					}
-
 					if (d.XOff > 56 || d.YOff > 56 || d.XOff < 0 || d.YOff < 0) continue;
 
 					Tile t = obj.Tiles[d.TileIndex].CloneModified(hflip: d.HFlip, vflip: d.VFlip);
 
 					int indexoff = (d.XOff & ~0x7) + ((d.YOff & ~0x7) << 6);
-					GFX.DrawTileToBuffer(t, ptr, alltilesData, indexoff);
+					GraphicsManager.DrawTileToBuffer(t, ptr, alltilesData, indexoff);
 				}
 
 			} // end of if preview
@@ -60,9 +51,9 @@ namespace ZeldaFullEditor.Data
 					{
 						ushort td = obj.Tiles[d.TileIndex].GetModifiedUnsignedShort(hflip: d.HFlip, vflip: d.VFlip);
 
-						obj.CollisionPoints.Add(new Point(d.XOff + (obj.NewX * 8), d.YOff + (obj.NewY * 8)));
+						obj.CollisionPoints.Add(new Point(d.XOff + obj.RealX, d.YOff + obj.RealY));
 
-						if (obj.Layer == 0 || obj.Layer == 2 || allbg)
+						if (obj.Layer == RoomLayer.Layer1 || obj.Layer == RoomLayer.Layer3 || allbg)
 						{
 							if (d.TileUnder == ZS.GFXManager.tilesBg1Buffer[tm])
 							{
@@ -72,7 +63,7 @@ namespace ZeldaFullEditor.Data
 							ZS.GFXManager.tilesBg1Buffer[tm] = td;
 						}
 
-						if (obj.Layer == 1 || allbg)
+						if (obj.Layer == RoomLayer.Layer2 || allbg)
 						{
 							if (d.TileUnder == ZS.GFXManager.tilesBg2Buffer[tm])
 							{
@@ -1787,12 +1778,11 @@ namespace ZeldaFullEditor.Data
 
 		public static void RoomDraw_SanctuaryWall(ZScreamer ZS, RoomObject obj)
 		{
-			int tid = 0;
 			for (int i = 0; i < (2 * 14 * 8); i += (14 * 8))
 			{
+				int tid = 0;
 				for (int x = i; x < (i + 16); x += 8)
 				{
-					tid = 0;
 					for (int y = 0; y < 6 * 8; y += 8)
 					{
 						DrawTiles(ZS, obj, false,
@@ -1805,6 +1795,7 @@ namespace ZeldaFullEditor.Data
 							new DrawInfo(tid, x + 64, y)
 						);
 					}
+					tid++;
 				}
 			}
 

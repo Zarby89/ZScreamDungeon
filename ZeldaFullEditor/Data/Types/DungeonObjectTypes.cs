@@ -17,6 +17,7 @@ namespace ZeldaFullEditor.Data
 		public DrawObject Draw { get; }
 		public SpecialObjectType Specialness { get; }
 
+		public DungeonLimits LimitClass { get; }
 		/// <summary>
 		/// What tile sets this object doesn't look like garbage in
 		/// </summary>
@@ -29,7 +30,7 @@ namespace ZeldaFullEditor.Data
 		// every tileset is beautiful
 		public static byte[] AllTileSets = { 0 };
 		protected RoomObjectType(ushort objectid, DrawObject drawfunc, DungeonObjectSizeability resizing, RoomObjectCategory[] categories, byte[] gsets,
-			SpecialObjectType special = SpecialObjectType.None)
+			SpecialObjectType special = SpecialObjectType.None, DungeonLimits limit = DungeonLimits.None)
 		{
 			string name = "PROBLEM";
 
@@ -55,6 +56,7 @@ namespace ZeldaFullEditor.Data
 			Specialness = special;
 			Categories = categories.ToList();
 			PrettyTileSets = gsets.ToList();
+			LimitClass = limit;
 			Draw = drawfunc;
 		}
 
@@ -820,7 +822,8 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object096 = new RoomObjectType(0x096,
 			RoomDraw_Downwards2x2_1to16, Vertical,
 			new RoomObjectCategory[] { Collision, PuzzlePegs, Hookshottable, Manipulable },
-			new byte[] { });
+			new byte[] { },
+			limit: DungeonLimits.GeneralManipulable);
 
 		public static readonly RoomObjectType Object097 = new RoomObjectType(0x097,
 			RoomDraw_Nothing, None,
@@ -1015,7 +1018,8 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object0BD = new RoomObjectType(0x0BD,
 			RoomDraw_RightwardsHammerPegs2x2_1to16, Horizontal,
 			new RoomObjectCategory[] { Collision, PuzzlePegs, Hookshottable, Manipulable },
-			new byte[] { });
+			new byte[] { },
+			limit: DungeonLimits.GeneralManipulable);
 
 		public static readonly RoomObjectType Object0BE = new RoomObjectType(0x0BE,
 			RoomDraw_Nothing, None,
@@ -1751,7 +1755,8 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object216 = new RoomObjectType(0x216,
 			RoomDraw_Single2x2, None,
 			new RoomObjectCategory[] { Collision, PuzzlePegs, Hookshottable, Manipulable },
-			new byte[] { });
+			new byte[] { },
+			limit: DungeonLimits.GeneralManipulable);
 
 		public static readonly RoomObjectType Object217 = new RoomObjectType(0x217,
 			RoomDraw_PrisonCell, None,
@@ -1863,7 +1868,8 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object22C = new RoomObjectType(0x22C,
 			RoomDraw_BigGrayRock, None,
 			new RoomObjectCategory[] { Collision, RoomDecoration, Secrets, Manipulable, Hookshottable },
-			new byte[] { });
+			new byte[] { },
+			limit: DungeonLimits.GeneralManipulable4x);
 
 		public static readonly RoomObjectType Object22D = new RoomObjectType(0x22D,
 			RoomDraw_AgahnimsAltar, None,
@@ -1878,7 +1884,8 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object22F = new RoomObjectType(0x22F,
 			RoomDraw_Single2x2, None,
 			new RoomObjectCategory[] { Collision, RoomDecoration, Secrets, Manipulable, Hookshottable },
-			new byte[] { });
+			new byte[] { },
+			limit: DungeonLimits.GeneralManipulable);
 
 		public static readonly RoomObjectType Object230 = new RoomObjectType(0x230,
 			RoomDraw_Single2x2, None,
@@ -1999,7 +2006,8 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object247 = new RoomObjectType(0x247,
 			RoomDraw_BombableFloor, None,
 			new RoomObjectCategory[] { NoCollision, Floor, Pits, Manipulable },
-			new byte[] { });
+			new byte[] { },
+			limit: DungeonLimits.GeneralManipulable4x);
 
 		public static readonly RoomObjectType Object248 = new RoomObjectType(0x248,
 			RoomDraw_4x4Object, None,

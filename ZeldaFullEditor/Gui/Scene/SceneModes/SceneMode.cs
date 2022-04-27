@@ -18,7 +18,7 @@ namespace ZeldaFullEditor.SceneModes
 		public delegate void SceneAction();
 		public delegate void SceneActionDraw(Graphics g);
 		public ModeActions(SceneActionMouse mousedown, SceneActionMouse mouseup, SceneActionMouse mousemove, SceneActionMouse mousewheel,
-			SceneAction copy, SceneAction paste, SceneAction insert, SceneAction delete, SceneAction selectall, SceneActionDraw draw)
+			SceneAction copy, SceneAction paste, SceneAction insert, SceneAction delete, SceneAction selectall)
 		{
 			OnMouseDown = mousedown ?? NoMouse;
 			OnMouseUp = mouseup ?? NoMouse;
@@ -29,13 +29,10 @@ namespace ZeldaFullEditor.SceneModes
 			Insert = insert ?? NoAct;
 			Delete = delete ?? NoAct;
 			SelectAll = selectall ?? NoAct;
-			Draw = draw ?? NoGraphics;
 		}
 
 		private static void NoMouse(MouseEventArgs e) { }
 		private static void NoAct() { }
-		private static void NoGraphics(Graphics g) { }
-
 
 		public SceneActionMouse OnMouseDown { get; }
 		public SceneActionMouse OnMouseUp { get; }
@@ -46,7 +43,6 @@ namespace ZeldaFullEditor.SceneModes
 		public SceneAction Delete { get; }
 		public SceneAction Insert { get; }
 		public SceneAction SelectAll { get; }
-		public SceneActionDraw Draw { get; }
 
 	}
 }

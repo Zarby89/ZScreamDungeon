@@ -13,15 +13,15 @@ using System.Globalization;
 
 namespace ZeldaFullEditor
 {
-	public partial class TextEditor : Gui.ScreamControl
+	public partial class TextEditor : UserControl
 	{
 		readonly byte[] widthArray = new byte[100];
 		private const int DefaultTextColor = 6;
 		readonly string romname = "";
 
 		private int textLine = 0;
-		readonly List<MessageData> listOfTexts = new List<MessageData>();
-		private List<MessageData> DisplayedMessages = new List<MessageData>();
+		private readonly List<MessageData> listOfTexts = new List<MessageData>();
+		private readonly List<MessageData> DisplayedMessages = new List<MessageData>();
 		private MessageData CurrentMessage;
 
 		private int textPos = 0;
@@ -37,7 +37,7 @@ namespace ZeldaFullEditor
 		public const byte DICTOFF = 0x88;
 		public const byte MessageTerminator = 0x7F;
 
-		public TextEditor(ZScreamer zs) : base(zs)
+		public TextEditor()
 		{
 			InitializeComponent();
 			TextCommandList.Items.AddRange(TCommands);
@@ -119,7 +119,6 @@ namespace ZeldaFullEditor
 			public bool HasArgument { get; }
 			public byte ID { get; }
 			public string GenericToken { get; }
-			private readonly string strout;
 
 			public TextElement(byte a, string t, bool arg, string d)
 			{
@@ -138,11 +137,11 @@ namespace ZeldaFullEditor
 
 				Description = d;
 				ID = a;
-				strout = string.Format("{0} {1}", GenericToken, Description);
 			}
 
-			private const string TokenWithParam = "[{0}:{1:X2}]";
-			private const string TokenWithoutParam = "[{0}]";
+			private static readonly string TokenWithParam = "[{0}:{1:X2}]";
+			private static readonly string TokenWithoutParam = "[{0}]";
+
 			public string GetParameterizedToken(byte b = 0)
 			{
 				if (HasArgument)
@@ -157,7 +156,7 @@ namespace ZeldaFullEditor
 
 			public override string ToString()
 			{
-				return strout;
+				return $"{GenericToken} {Description}";
 			}
 
 			public Match MatchMe(string dfrag)
@@ -227,7 +226,9 @@ namespace ZeldaFullEditor
 				{
 					cmd = false;
 				}
+
 				protons.Append(c);
+
 				if (cmd)
 				{
 					protons.Append(CHEESE);
@@ -272,7 +273,7 @@ namespace ZeldaFullEditor
 			if (g.Success)
 			{
 				return new ParsedElement(DictionaryElement,
-					(byte) (DICTOFF + (byte.Parse(g.Groups[1].Value, NumberStyles.HexNumber))
+					(byte) (DICTOFF + byte.Parse(g.Groups[1].Value, NumberStyles.HexNumber)
 				));
 			}
 
@@ -335,7 +336,7 @@ namespace ZeldaFullEditor
 		private const string BANKToken = "BANK";
 		private const byte BANKID = 0x80;
 
-		private static TextElement DictionaryElement = new TextElement(0x80, DICTIONARYTOKEN, true, "Dictionary");
+		private static readonly TextElement DictionaryElement = new TextElement(0x80, DICTIONARYTOKEN, true, "Dictionary");
 
 		private static readonly TextElement[] TCommands = new TextElement[] {
 			new TextElement(0x6B, "W", true, "Window border"),
@@ -489,18 +490,16 @@ namespace ZeldaFullEditor
 		public void ReadAllTextDataFromROM()
 		{
 			int tt = 0;
-			byte b;
-			int pos = ZS.Offsets.text_data;
+			int pos = ZScreamer.ActiveOffsets.text_data;
 			List<byte> tempBytesRaw = new List<byte>();
 			List<byte> tempBytesParsed = new List<byte>();
 
 			StringBuilder currentMessageRaw = new StringBuilder();
 			StringBuilder currentMessageParsed = new StringBuilder();
-			TextElement t;
 
 			while (true)
 			{
-				b = ZS.ROM[pos++];
+				byte b = ZScreamer.ActiveROM[pos++];
 
 				tempBytesRaw.Add(b);
 
@@ -525,13 +524,15 @@ namespace ZeldaFullEditor
 				}
 
 
+				TextElement t;
+
 				// check for command
 				if ((t = FindMatchingCommand(b)) != null)
 				{
 					tempBytesParsed.Add(b);
 					if (t.HasArgument)
 					{
-						b = ZS.ROM[pos++];
+						b = ZScreamer.ActiveROM[pos++];
 						tempBytesRaw.Add(b);
 						tempBytesParsed.Add(b);
 					}
@@ -541,7 +542,7 @@ namespace ZeldaFullEditor
 
 					if (t.Token == BANKToken)
 					{
-						pos = ZS.Offsets.text_data2;
+						pos = ZScreamer.ActiveOffsets.text_data2;
 					}
 
 					continue;
@@ -563,12 +564,12 @@ namespace ZeldaFullEditor
 				{
 					currentMessageRaw.Append($"[{DICTIONARYTOKEN}:{dict:X2}]");
 
-					int addr = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM.Read16(ZS.Offsets.pointers_dictionaries + (dict * 2)));
-					int addrend = SNESFunctions.SNEStoPC(0x0E0000 | ZS.ROM.Read16(ZS.Offsets.pointers_dictionaries + ((dict + 1) * 2)));
+					int addr = SNESFunctions.SNEStoPC(0x0E0000 | ZScreamer.ActiveROM.Read16(ZScreamer.ActiveOffsets.pointers_dictionaries + (dict * 2)));
+					int addrend = SNESFunctions.SNEStoPC(0x0E0000 | ZScreamer.ActiveROM.Read16(ZScreamer.ActiveOffsets.pointers_dictionaries + ((dict + 1) * 2)));
 
 					for (int i = addr; i < addrend; i++)
 					{
-						byte dadd = ZS.ROM[i];
+						byte dadd = ZScreamer.ActiveROM[i];
 						tempBytesParsed.Add(dadd);
 						currentMessageParsed.Append(ParseTextDataByte(dadd));
 					}
@@ -595,12 +596,12 @@ namespace ZeldaFullEditor
 				List<byte> bytes = new List<byte>();
 				StringBuilder s = new StringBuilder();
 
-				int addr = (0x0E0000 | ZS.ROM.Read16(ZS.Offsets.pointers_dictionaries + (i * 2))).SNEStoPC();
-				int tempaddr = (0x0E0000 | ZS.ROM.Read16(ZS.Offsets.pointers_dictionaries + ((i + 1) * 2))).SNEStoPC();
+				int addr = (0x0E0000 | ZScreamer.ActiveROM.Read16(ZScreamer.ActiveOffsets.pointers_dictionaries + (i * 2))).SNEStoPC();
+				int tempaddr = (0x0E0000 | ZScreamer.ActiveROM.Read16(ZScreamer.ActiveOffsets.pointers_dictionaries + ((i + 1) * 2))).SNEStoPC();
 
 				while (addr < tempaddr)
 				{
-					byte bdictionary = ZS.ROM[addr++];
+					byte bdictionary = ZScreamer.ActiveROM[addr++];
 					bytes.Add(bdictionary);
 					s.Append(ParseTextDataByte(bdictionary));
 				}
@@ -624,6 +625,7 @@ namespace ZeldaFullEditor
 				if (s[pos] == '[')
 				{
 					int next = s.IndexOf(']', pos);
+
 					if (next == -1)
 					{
 						break;
@@ -696,7 +698,7 @@ namespace ZeldaFullEditor
 				return $"[{DICTIONARYTOKEN}:{dict:X2}]";
 			}
 
-			return "";
+			return "[SOMETHINGBADHAPPENED]";
 		}
 
 		private void openToolStripMenuItem_Click(object sender, EventArgs e)
@@ -712,8 +714,8 @@ namespace ZeldaFullEditor
                 using (FileStream fs = new FileStream(of.FileName, FileMode.Open, FileAccess.Read))
                 {
                     romname = of.FileName;
-                    ZS.ROM.DATA = new byte[fs.Length];
-                    fs.Read(ZS.ROM.DATA, 0, (int)fs.Length);
+                    ZScreamer.ActiveROM.DATA = new byte[fs.Length];
+                    fs.Read(ZScreamer.ActiveROM.DATA, 0, (int)fs.Length);
                     fs.Close();
                 }
             }*/
@@ -731,19 +733,19 @@ namespace ZeldaFullEditor
 			panel1.Enabled = true;
 			for (int i = 0; i < 100; i++)
 			{
-				widthArray[i] = ZS.ROM[ZS.Offsets.characters_width + i];
+				widthArray[i] = ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.characters_width + i];
 			}
 
-			ZS.GFXManager.fontgfxBitmap = new Bitmap(128, 128, 64, PixelFormat.Format4bppIndexed, ZS.GFXManager.fontgfx16Ptr);
-			ZS.GFXManager.currentfontgfx16Bitmap = new Bitmap(172, 4096, 172, PixelFormat.Format8bppIndexed, ZS.GFXManager.currentfontgfx16Ptr);
+			ZScreamer.ActiveGraphicsManager.fontgfxBitmap = new Bitmap(128, 128, 64, PixelFormat.Format4bppIndexed, ZScreamer.ActiveGraphicsManager.fontgfx16Ptr);
+			ZScreamer.ActiveGraphicsManager.currentfontgfx16Bitmap = new Bitmap(172, 4096, 172, PixelFormat.Format8bppIndexed, ZScreamer.ActiveGraphicsManager.currentfontgfx16Ptr);
 
 
-			ColorPalette cp1 = ZS.GFXManager.fontgfxBitmap.Palette;
+			ColorPalette cp1 = ZScreamer.ActiveGraphicsManager.fontgfxBitmap.Palette;
 			for (int i = 0; i < previewColors.Length; i++)
 			{
 				cp1.Entries[i] = previewColors[i];
 			}
-			ZS.GFXManager.fontgfxBitmap.Palette = cp1;
+			ZScreamer.ActiveGraphicsManager.fontgfxBitmap.Palette = cp1;
 
 			BuildDictionaryEntriesFromROM();
 			ReadAllTextDataFromROM();
@@ -763,7 +765,7 @@ namespace ZeldaFullEditor
 			SelectedTileID.Text = selectedTile.ToString("X2");
 			SelectedTileASCII.Text = ParseTextDataByte((byte) selectedTile);
 
-			ZS.GFXManager.CreateFontGfxData();
+			ZScreamer.ActiveGraphicsManager.CreateFontGfxData();
 		}
 
 
@@ -890,7 +892,7 @@ namespace ZeldaFullEditor
 		{
 			//defaultColor = 6;
 			textLine = 0;
-			byte* ptr = (byte*) ZS.GFXManager.currentfontgfx16Ptr.ToPointer();
+			byte* ptr = (byte*) ZScreamer.ActiveGraphicsManager.currentfontgfx16Ptr.ToPointer();
 
 			for (int i = 0; i < (172 * 4096); i++)
 			{
@@ -905,9 +907,9 @@ namespace ZeldaFullEditor
 
 		private unsafe void DrawTileToPreview(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 1, int sizey = 1)
 		{
-			var alltilesData = (byte*) ZS.GFXManager.fontgfx16Ptr.ToPointer();
+			var alltilesData = (byte*) ZScreamer.ActiveGraphicsManager.fontgfx16Ptr.ToPointer();
 
-			byte* ptr = (byte*) ZS.GFXManager.currentfontgfx16Ptr.ToPointer();
+			byte* ptr = (byte*) ZScreamer.ActiveGraphicsManager.currentfontgfx16Ptr.ToPointer();
 
 			int drawid = srcx + (srcy * 32);
 			int tx = (drawid / 16 * 512) + ((drawid & 0x0F) * 4);
@@ -918,11 +920,7 @@ namespace ZeldaFullEditor
 			{
 				for (int xl = 0; xl < 4; xl++)
 				{
-
-					//Formula information to get tile index position in the array
-					//((ID / nbrofXtiles) * (imgwidth/2) + (ID - ((ID/16)*16) ))
 					byte pixel = alltilesData[tx + (yl * 64) + xl];
-					//nx,ny = object position, xx,yy = tile position, xl,yl = pixel position
 
 					int index = x + y + (xl * 2) + (yl * 172);
 
@@ -964,18 +962,14 @@ namespace ZeldaFullEditor
 		{
 			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.DrawImage(ZS.GFXManager.fontgfxBitmap, Constants.Rect_0_0_256_256);
+			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.fontgfxBitmap, Constants.Rect_0_0_256_256);
 
 			if (fontGridBox.Checked)
 			{
 				for (int i = 0; i < 16; i++)
 				{
 					e.Graphics.DrawLine(GridHilite, 16 * i, 0, 16 * i, 128 * 4);
-				}
-
-				for (int j = 0; j < 16; j++)
-				{
-					e.Graphics.DrawLine(GridHilite, 0, 32 * j, 64 * 4, 32 * j);
+					e.Graphics.DrawLine(GridHilite, 0, 32 * i, 64 * 4, 32 * i);
 				}
 			}
 
@@ -984,12 +978,11 @@ namespace ZeldaFullEditor
 			e.Graphics.DrawRectangle(CharHilite, new Rectangle(srcX * 16, srcY * 32, 16, 32));
 		}
 
-
 		private void pictureBox3_Paint(object sender, PaintEventArgs e)
 		{
 			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.DrawImage(ZS.GFXManager.fontgfxBitmap,
+			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.fontgfxBitmap,
 				Constants.Rect_0_0_64_128,
 				new Rectangle((selectedTile - (selectedTile & 0xF0)) * 8, selectedTile & 0xF0, 8, 16),
 				GraphicsUnit.Pixel);
@@ -1011,7 +1004,7 @@ namespace ZeldaFullEditor
 		private void pictureBox1_Paint(object sender, PaintEventArgs e)
 		{
 			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
-			ColorPalette cp = ZS.GFXManager.currentfontgfx16Bitmap.Palette;
+			ColorPalette cp = ZScreamer.ActiveGraphicsManager.currentfontgfx16Bitmap.Palette;
 
 			for (int i = 0; i < 4; i++)
 			{
@@ -1021,15 +1014,15 @@ namespace ZeldaFullEditor
 				}
 				else
 				{
-					cp.Entries[i] = ZS.GFXManager.roomBg1Bitmap.Palette.Entries[(DefaultTextColor * 4) + i];
+					cp.Entries[i] = ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette.Entries[(DefaultTextColor * 4) + i];
 				}
 			}
 
-			ZS.GFXManager.currentfontgfx16Bitmap.Palette = cp;
+			ZScreamer.ActiveGraphicsManager.currentfontgfx16Bitmap.Palette = cp;
 
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 			e.Graphics.DrawImage(
-				ZS.GFXManager.currentfontgfx16Bitmap,
+				ZScreamer.ActiveGraphicsManager.currentfontgfx16Bitmap,
 				new Rectangle(0, 0, 340, pictureBox2.Height),
 				new Rectangle(0, shownLines * 16, 170, pictureBox2.Height / 2),
 				GraphicsUnit.Pixel);
@@ -1047,7 +1040,7 @@ namespace ZeldaFullEditor
 					byte[] data = new byte[0x1000];
 					for (int i = 0; i < 0x1000; i++)
 					{
-						data[i] = ZS.ROM[ZS.Offsets.gfx_font + i];
+						data[i] = ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.gfx_font + i];
 					}
 
 					using (var fs = new FileStream(sf.FileName, FileMode.OpenOrCreate, FileAccess.Write))
@@ -1075,15 +1068,15 @@ namespace ZeldaFullEditor
 
 					for (int i = 0; i < 0x1000; i++)
 					{
-						ZS.ROM[ZS.Offsets.gfx_font + i] = data[i];
+						ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.gfx_font + i] = data[i];
 					}
 
 					for (int i = 0; i < 100; i++)
 					{
-						ZS.ROM[ZS.Offsets.characters_width + i] = data[i + 0x1000];
+						ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.characters_width + i] = data[i + 0x1000];
 					}
 
-					ZS.GFXManager.CreateFontGfxData();
+					ZScreamer.ActiveGraphicsManager.CreateFontGfxData();
 					pictureBox2.Refresh();
 				}
 			}
@@ -1093,11 +1086,11 @@ namespace ZeldaFullEditor
 		private const int SpaceForBank2Text = 0x14BF;
 		public bool Save()
 		{
-			byte[] backup = ZS.ROM.DataStream.DeepCopy();
+			byte[] backup = ZScreamer.ActiveROM.DataStream.DeepCopy();
 
-			ZS.ROM.Write(ZS.Offsets.characters_width, widthArray);
+			ZScreamer.ActiveROM.Write(ZScreamer.ActiveOffsets.characters_width, widthArray);
 
-			int pos = ZS.Offsets.text_data;
+			int pos = ZScreamer.ActiveOffsets.text_data;
 			bool expandedRegion = false;
 
 			foreach (MessageData m in listOfTexts)
@@ -1112,15 +1105,15 @@ namespace ZeldaFullEditor
 					if (hasarg)
 					{
 						// not much space, add the bank token
-						if (!expandedRegion && pos >= (ZS.Offsets.text_data + SpaceForBank1Text - 1))
+						if (!expandedRegion && pos >= (ZScreamer.ActiveOffsets.text_data + SpaceForBank1Text - 1))
 						{
-							ZS.ROM[pos] = BANKID;
-							pos = ZS.Offsets.text_data2;
+							ZScreamer.ActiveROM[pos] = BANKID;
+							pos = ZScreamer.ActiveOffsets.text_data2;
 							expandedRegion = true;
 							continue;
 						}
 						// oh no! way too much space
-						else if (expandedRegion && (pos >= (ZS.Offsets.text_data2 + SpaceForBank2Text - 1)))
+						else if (expandedRegion && (pos >= (ZScreamer.ActiveOffsets.text_data2 + SpaceForBank2Text - 1)))
 						{
 							int spaceused = 0;
 
@@ -1129,29 +1122,27 @@ namespace ZeldaFullEditor
 								spaceused += m2.Data.Length;
 							}
 
-							MessageBox.Show(string.Format(
+							throw new ZeldaException(string.Format(
 								"There is too much text data to save.\n" +
 								"Available: {0:X4} | Used: {1:X4}",
 								SpaceForBank1Text + SpaceForBank2Text, spaceused));
-
-							return ZS.ROM.OhShitLastResortBackup(backup);
 						}
 
-						ZS.ROM[pos++] = m.Data[i++];
-						ZS.ROM[pos++] = m.Data[i++];
+						ZScreamer.ActiveROM[pos++] = m.Data[i++];
+						ZScreamer.ActiveROM[pos++] = m.Data[i++];
 						continue;
 					}
 
 					// add the bank byte when we hit this spot
-					if (!expandedRegion && pos == ZS.Offsets.text_data + SpaceForBank1Text)
+					if (!expandedRegion && pos == ZScreamer.ActiveOffsets.text_data + SpaceForBank1Text)
 					{
 						if (b == BANKID) // catch user-inserted bank token
 						{
 							i++; // increment to skip it from being written in second text bank
 						}
 
-						ZS.ROM[pos] = BANKID;
-						pos = ZS.Offsets.text_data2;
+						ZScreamer.ActiveROM[pos] = BANKID;
+						pos = ZScreamer.ActiveOffsets.text_data2;
 						expandedRegion = true;
 						continue;
 					}
@@ -1164,11 +1155,11 @@ namespace ZeldaFullEditor
 							MessageBox.Show(
 								$"A second bank marker was found in Message {m.ID:X3}.\nThis is not a legal move.");
 
-							return ZS.ROM.OhShitLastResortBackup(backup);
+							return ZScreamer.ActiveROM.OhShitLastResortBackup(backup);
 						}
 					}
 
-					ZS.ROM[pos++] = b;
+					ZScreamer.ActiveROM[pos++] = b;
 					i++;
 
 					// never get too close to the end
@@ -1257,7 +1248,7 @@ namespace ZeldaFullEditor
 
 		private void button4_Click(object sender, EventArgs e)
 		{
-			DictionariesForm df = new DictionariesForm(ZS);
+			DictionariesForm df = new DictionariesForm();
 			df.listBox1.Items.Clear();
 
 			foreach (DictionaryEntry d in AllDicts)
@@ -1287,11 +1278,11 @@ namespace ZeldaFullEditor
 
 		private void button5_Click(object sender, EventArgs e)
 		{
-			ZS.ROM.Write(ZS.Offsets.characters_width, widthArray);
+			ZScreamer.ActiveROM.Write(ZScreamer.ActiveOffsets.characters_width, widthArray);
 
 			using (var fs = new FileStream(romname, FileMode.OpenOrCreate, FileAccess.Write))
 			{
-				fs.Write(ZS.ROM.DataStream, 0, ZS.ROM.Length);
+				fs.Write(ZScreamer.ActiveROM.DataStream, 0, ZScreamer.ActiveROM.Length);
 				fs.Close();
 			}
 		}

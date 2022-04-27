@@ -11,10 +11,10 @@ using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor.Gui
 {
-	public partial class SearchForm : ScreamForm
+	public partial class SearchForm : Form
 	{
 
-		public SearchForm(ZScreamer zs) : base(zs)
+		public SearchForm()
 		{
 			InitializeComponent();
 		}
@@ -57,7 +57,7 @@ namespace ZeldaFullEditor.Gui
 
 			if (tileRadio.Checked)
 			{
-				foreach (var r in ZS.all_rooms)
+				foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
 				{
 					int l = r.Layer1Objects.Count(f);
 					l += r.Layer2Objects.Count(f);
@@ -70,7 +70,7 @@ namespace ZeldaFullEditor.Gui
 			}
 			else if (spriteRadio.Checked)
 			{
-				foreach (var r in ZS.all_rooms)
+				foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
 				{
 					int l = r.SpritesList.Count(f);
 					if (l > 0)
@@ -81,7 +81,7 @@ namespace ZeldaFullEditor.Gui
 			}
 			else if (itemRadio.Checked)
 			{
-				foreach (var r in ZS.all_rooms)
+				foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
 				{
 					int l = r.SecretsList.Count(f);
 					if (l > 0)
@@ -92,7 +92,7 @@ namespace ZeldaFullEditor.Gui
 			}
 			else if (chestRadio.Checked)
 			{
-				foreach (var r in ZS.all_rooms)
+				foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
 				{
 					int l = r.ChestList.Count(f);
 					if (l > 0)

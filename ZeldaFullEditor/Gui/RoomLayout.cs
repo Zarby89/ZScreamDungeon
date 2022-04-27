@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor
 {
-	public partial class RoomLayout : Gui.ScreamForm
+	public partial class RoomLayout : Form
 	{
 //		public readonly SceneUW scene;
 //
-//		public RoomLayout(ZScreamer zs) : base(zs)
+//		public RoomLayout()
 //		{
 //			InitializeComponent();
 //			/*

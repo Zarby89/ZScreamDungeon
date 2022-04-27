@@ -37,11 +37,11 @@ namespace ZeldaFullEditor
 //		// TODO: FIND PROBLEM THAT IS INCREASING SAVE TIME!!
 //		private void OnMouseMove(object sender, MouseEventArgs e)
 //		{
-//			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+//			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 //
 //			if (!colliding_chest)
 //			{
-//				ZS.MainForm.toolTip1.Hide(this);
+//				Program.MainForm.toolTip1.Hide(this);
 //			}
 //
 //			if (mouse_down) // Slowdown problem in save caused by something here
@@ -61,7 +61,7 @@ namespace ZeldaFullEditor
 //							room.has_changed = true;
 //							last_mx = mx;
 //							last_my = my;
-//							ZS.DungeonForm.UpdateFormForSelectedObject((room.selectedObject[0]);
+//							Program.DungeonForm.UpdateFormForSelectedObject((room.selectedObject[0]);
 //						}
 //
 //					}
@@ -131,12 +131,12 @@ namespace ZeldaFullEditor
 //				return;
 //			}
 //
-//			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+//			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 //
 //			//this.Focus();
 //
 //			room.has_changed = true;
-//			ZS.DungeonForm.checkAnyChanges();
+//			Program.DungeonForm.checkAnyChanges();
 //
 //			switch (ZS.CurrentUWMode)
 //			{
@@ -156,7 +156,7 @@ namespace ZeldaFullEditor
 //					break;
 //			}
 //
-//			if (ZS.DungeonForm.tabControl1.SelectedIndex == 1) // If we are on object tab
+//			if (Program.DungeonForm.tabControl1.SelectedIndex == 1) // If we are on object tab
 //			{
 //				switch (ZS.CurrentUWMode)
 //				{
@@ -197,8 +197,8 @@ namespace ZeldaFullEditor
 //							room.has_changed = true;
 //							mouse_down = true;
 //							selectedDragObject = null;
-//							ZS.DungeonForm.objectViewer1.selectedObject = null;
-//							ZS.DungeonForm.objectViewer1.Refresh();
+//							Program.DungeonForm.objectViewer1.selectedObject = null;
+//							Program.DungeonForm.objectViewer1.Refresh();
 //						}
 //						break;
 //
@@ -206,9 +206,9 @@ namespace ZeldaFullEditor
 //						if (selectedDragObject != null) // If there's an object selected
 //						{
 //							selectedDragObject = null; // Set the object null
-//							ZS.DungeonForm.objectViewer1.selectedIndex = -1;
-//							ZS.DungeonForm.objectViewer1.selectedObject = null;
-//							ZS.DungeonForm.objectViewer1.Refresh();
+//							Program.DungeonForm.objectViewer1.selectedIndex = -1;
+//							Program.DungeonForm.objectViewer1.selectedObject = null;
+//							Program.DungeonForm.objectViewer1.Refresh();
 //							mouse_down = false;
 //
 //							MessageBox.Show("Objects can only be placed while working on backgrounds 1, 2, or 3.");
@@ -217,7 +217,7 @@ namespace ZeldaFullEditor
 //						break;
 //				}
 //			}
-//			else if (ZS.DungeonForm.tabControl1.SelectedIndex == 2)
+//			else if (Program.DungeonForm.tabControl1.SelectedIndex == 2)
 //			{
 //				if (selectedDragSprite != null)
 //				{
@@ -227,7 +227,7 @@ namespace ZeldaFullEditor
 //
 //					if (spr != null)
 //					{
-//						ZS.DungeonForm.UpdateUnderworldMode(DungeonEditMode.Sprites);
+//						Program.DungeonForm.UpdateUnderworldMode(DungeonEditMode.Sprites);
 //						room.selectedObject.Add(spr);
 //						dragx = 0;
 //						dragy = 0;
@@ -239,8 +239,8 @@ namespace ZeldaFullEditor
 //					selectedDragObject = null;
 //					selectedDragSprite = null;
 //
-//					ZS.DungeonForm.spritesView1.selectedObject = null;
-//					ZS.DungeonForm.spritesView1.Refresh();
+//					Program.DungeonForm.spritesView1.selectedObject = null;
+//					Program.DungeonForm.spritesView1.Refresh();
 //				}
 //			}
 //
@@ -449,7 +449,7 @@ namespace ZeldaFullEditor
 //						int px = e.X / 16;
 //						int py = e.Y / 16;
 //
-//						room.collisionMap[px + (py * 64)] = (byte) ZS.MainForm.tileTypeCombobox.SelectedIndex;
+//						room.collisionMap[px + (py * 64)] = (byte) Program.MainForm.tileTypeCombobox.SelectedIndex;
 //					}
 //				}
 //
@@ -462,23 +462,23 @@ namespace ZeldaFullEditor
 //				last_my = my;
 //			} end of mouse down
 //
-//			ZS.DungeonForm.spritepropertyPanel.Visible = false;
-//			ZS.DungeonForm.potitemobjectPanel.Visible = false;
-//			ZS.DungeonForm.doorselectPanel.Visible = false;
-//			ZS.DungeonForm.litCheckbox.Visible = false;
+//			Program.DungeonForm.spritepropertyPanel.Visible = false;
+//			Program.DungeonForm.potitemobjectPanel.Visible = false;
+//			Program.DungeonForm.doorselectPanel.Visible = false;
+//			Program.DungeonForm.litCheckbox.Visible = false;
 //			updating_info = false;
 //
 //			if (room.selectedObject.Count > 0)
 //			{
 //				if (room.selectedObject[0] is Room_Object oo)
 //				{
-//					ZS.DungeonForm.selectedGroupbox.Text = UIText.FormatSelectedObject(oo);
+//					Program.DungeonForm.selectedGroupbox.Text = UIText.FormatSelectedObject(oo);
 //
 //					if (oo.options == ObjectOption.Door)
 //					{
-//						ZS.DungeonForm.comboBox1.Enabled = false;
-//						ZS.DungeonForm.doorselectPanel.Visible = true;
-//						int[] aposes = ZS.DungeonForm.door_index.Select(
+//						Program.DungeonForm.comboBox1.Enabled = false;
+//						Program.DungeonForm.doorselectPanel.Visible = true;
+//						int[] aposes = Program.DungeonForm.door_index.Select(
 //							(s, i) => new { s, i })
 //							.Where(x => x.s == (oo as object_door).door_type)
 //							.Select(x => x.i)
@@ -490,7 +490,7 @@ namespace ZeldaFullEditor
 //							apos = aposes[0];
 //						}
 //
-//						ZS.DungeonForm.comboBox2.SelectedIndex = apos;
+//						Program.DungeonForm.comboBox2.SelectedIndex = apos;
 //						for (int i = 0; i < room.tilesObjects.Count; i++)
 //						{
 //							if (room.tilesObjects[i] == oo)
@@ -504,13 +504,13 @@ namespace ZeldaFullEditor
 //					}
 //					else if (oo.options == ObjectOption.Torch)
 //					{
-//						ZS.DungeonForm.litCheckbox.Visible = true;
-//						ZS.DungeonForm.litCheckbox.Checked = oo.lit;
+//						Program.DungeonForm.litCheckbox.Visible = true;
+//						Program.DungeonForm.litCheckbox.Checked = oo.lit;
 //						updateSelectionObject(oo);
 //					}
 //					else
 //					{
-//						ZS.DungeonForm.comboBox1.Enabled = false;
+//						Program.DungeonForm.comboBox1.Enabled = false;
 //
 //						for (int i = 0; i < room.tilesObjects.Count; i++)
 //						{
@@ -526,7 +526,7 @@ namespace ZeldaFullEditor
 //				}
 //				else if (room.selectedObject[0] is Sprite sp)
 //				{
-//					ZS.DungeonForm.spritepropertyPanel.Visible = true;
+//					Program.DungeonForm.spritepropertyPanel.Visible = true;
 //					string name = null;
 //					if (sp.subtype.BitsAllSet(0x07))
 //					{
@@ -535,22 +535,22 @@ namespace ZeldaFullEditor
 //							name = Sprites_Names.overlordnames[sp.id - 1];
 //						}
 //
-//						ZS.DungeonForm.spriteoverlordCheckbox.Checked = true;
+//						Program.DungeonForm.spriteoverlordCheckbox.Checked = true;
 //					}
 //					else
 //					{
-//						ZS.DungeonForm.spriteoverlordCheckbox.Checked = false;
+//						Program.DungeonForm.spriteoverlordCheckbox.Checked = false;
 //					}
 //
 //					name = name ?? Sprites_Names.name[sp.id];
 //
-//					ZS.DungeonForm.selectedGroupbox.Text = UIText.FormatSelectedSprite(sp, name);
-//					ZS.DungeonForm.comboBox1.Enabled = true;
+//					Program.DungeonForm.selectedGroupbox.Text = UIText.FormatSelectedSprite(sp, name);
+//					Program.DungeonForm.comboBox1.Enabled = true;
 //					updateSelectionObject(sp);
 //				}
 //				else if (room.selectedObject[0] is PotItem pp)
 //				{
-//					ZS.DungeonForm.potitemobjectPanel.Visible = true; // oO why this is not appearing
+//					Program.DungeonForm.potitemobjectPanel.Visible = true; // oO why this is not appearing
 //					int dropboxid = pp.id.BitIsOn(0x80)
 //						? ((pp.id - 0x80) / 2) + 0x17
 //						: pp.id;
@@ -561,8 +561,8 @@ namespace ZeldaFullEditor
 //						dropboxid = 27; // Prevent crash :yay:
 //					}
 //
-//					ZS.DungeonForm.selectedGroupbox.Text = UIText.FormatSelectedPotItem(pp, ItemsNames.name[dropboxid]);
-//					ZS.DungeonForm.selecteditemobjectCombobox.SelectedIndex = dropboxid;
+//					Program.DungeonForm.selectedGroupbox.Text = UIText.FormatSelectedPotItem(pp, ItemsNames.name[dropboxid]);
+//					Program.DungeonForm.selecteditemobjectCombobox.SelectedIndex = dropboxid;
 //					updateSelectionObject(pp);
 //				}
 //			}
@@ -651,20 +651,20 @@ namespace ZeldaFullEditor
 //			{
 //				ZS.GFXManager.DrawBG2();
 //			}
-//			if (ZS.MainForm.showSprite)
+//			if (Program.MainForm.showSprite)
 //			{
 //				room.drawSprites();
 //			}
-//			if (ZS.MainForm.showChest)
+//			if (Program.MainForm.showChest)
 //			{
 //				drawChests();
 //			}
-//			if (ZS.MainForm.showItems)
+//			if (Program.MainForm.showItems)
 //			{
 //				room.drawPotsItems();
 //			}
 //
-//			ZS.MainForm.cgramViewer.Refresh();
+//			Program.MainForm.cgramViewer.Refresh();
 //		}
 //
 //		public void drawChests()
@@ -732,12 +732,12 @@ namespace ZeldaFullEditor
 //				{
 //					rmx = e.X;
 //					rmy = e.Y;
-//					ZS.DungeonForm.nothingselectedcontextMenu.Items[0].Enabled = true;
-//					ZS.DungeonForm.singleselectedcontextMenu.Items[0].Enabled = true;
-//					ZS.DungeonForm.groupselectedcontextMenu.Items[0].Enabled = true;
-//					ZS.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = true;
-//					ZS.DungeonForm.singleselectedcontextMenu.Items[0].Visible = true;
-//					ZS.DungeonForm.groupselectedcontextMenu.Items[0].Visible = true;
+//					Program.DungeonForm.nothingselectedcontextMenu.Items[0].Enabled = true;
+//					Program.DungeonForm.singleselectedcontextMenu.Items[0].Enabled = true;
+//					Program.DungeonForm.groupselectedcontextMenu.Items[0].Enabled = true;
+//					Program.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = true;
+//					Program.DungeonForm.singleselectedcontextMenu.Items[0].Visible = true;
+//					Program.DungeonForm.groupselectedcontextMenu.Items[0].Visible = true;
 //					string nname = null;
 //
 //					// TODO copy
@@ -745,8 +745,8 @@ namespace ZeldaFullEditor
 //					{
 //						case DungeonEditMode.Chests:
 //							nname = "chest item";
-//							ZS.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = true;
-//							ZS.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = false;
+//							Program.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = true;
+//							Program.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = false;
 //							break;
 //
 //						case DungeonEditMode.Secrets:
@@ -767,29 +767,29 @@ namespace ZeldaFullEditor
 //
 //						case DungeonEditMode.CollisionMap:
 //							nname = "custom collision map";
-//							ZS.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = false;
-//							ZS.DungeonForm.nothingselectedcontextMenu.Items[1].Visible = false;
-//							ZS.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = true;
-//							ZS.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = true;
+//							Program.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = false;
+//							Program.DungeonForm.nothingselectedcontextMenu.Items[1].Visible = false;
+//							Program.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = true;
+//							Program.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = true;
 //							break;
 //
 //						case DungeonEditMode.Sprites:
-//							ZS.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = false;
-//							ZS.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = false;
-//							ZS.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = false;
-//							ZS.DungeonForm.singleselectedcontextMenu.Items[0].Visible = false;
-//							ZS.DungeonForm.groupselectedcontextMenu.Items[0].Visible = false;
+//							Program.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = false;
+//							Program.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = false;
+//							Program.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = false;
+//							Program.DungeonForm.singleselectedcontextMenu.Items[0].Visible = false;
+//							Program.DungeonForm.groupselectedcontextMenu.Items[0].Visible = false;
 //							break;
 //
 //						case DungeonEditMode.Layer1:
 //						case DungeonEditMode.Layer2:
 //						case DungeonEditMode.Layer3:
 //						case DungeonEditMode.LayerAll:
-//							ZS.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = false;
-//							ZS.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = false;
-//							ZS.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = false;
-//							ZS.DungeonForm.singleselectedcontextMenu.Items[0].Visible = false;
-//							ZS.DungeonForm.groupselectedcontextMenu.Items[0].Visible = false;
+//							Program.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = false;
+//							Program.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = false;
+//							Program.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = false;
+//							Program.DungeonForm.singleselectedcontextMenu.Items[0].Visible = false;
+//							Program.DungeonForm.groupselectedcontextMenu.Items[0].Visible = false;
 //							break;
 //					}
 //
@@ -797,22 +797,22 @@ namespace ZeldaFullEditor
 //					if (nname != null)
 //					{
 //						string s = string.Format("Insert new {0}", nname);
-//						ZS.DungeonForm.nothingselectedcontextMenu.Items[0].Text = s;
-//						ZS.DungeonForm.singleselectedcontextMenu.Items[0].Text = s;
-//						ZS.DungeonForm.groupselectedcontextMenu.Items[0].Text = s;
+//						Program.DungeonForm.nothingselectedcontextMenu.Items[0].Text = s;
+//						Program.DungeonForm.singleselectedcontextMenu.Items[0].Text = s;
+//						Program.DungeonForm.groupselectedcontextMenu.Items[0].Text = s;
 //					}
 //
 //					if (room.selectedObject.Count == 0)
 //					{
-//						ZS.DungeonForm.nothingselectedcontextMenu.Show(Cursor.Position);
+//						Program.DungeonForm.nothingselectedcontextMenu.Show(Cursor.Position);
 //					}
 //					else if (room.selectedObject.Count == 1)
 //					{
-//						ZS.DungeonForm.singleselectedcontextMenu.Show(Cursor.Position);
+//						Program.DungeonForm.singleselectedcontextMenu.Show(Cursor.Position);
 //					}
 //					else if (room.selectedObject.Count > 1)
 //					{
-//						ZS.DungeonForm.groupselectedcontextMenu.Show(Cursor.Position);
+//						Program.DungeonForm.groupselectedcontextMenu.Show(Cursor.Position);
 //					}
 //
 //					mouse_down = false;
@@ -892,7 +892,7 @@ namespace ZeldaFullEditor
 //		// TODO switch statements and no casting the selected mode
 //		public void setMouseSizeMode(MouseEventArgs e)
 //		{
-//			ZS.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+//			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 //
 //			switch (ZS.CurrentUWMode)
 //			{

@@ -10,12 +10,12 @@ using System.Windows.Forms;
 using System.Globalization;
 namespace ZeldaFullEditor.Gui
 {
-	public partial class AdvancedChestEditorForm : ScreamForm
+	public partial class AdvancedChestEditorForm : Form
 	{
 		bool changedFromForm = false;
 		ChestAdvancedData[] chestsdata = new ChestAdvancedData[76];
 
-		public AdvancedChestEditorForm(ZScreamer zs) : base(zs)
+		public AdvancedChestEditorForm()
 		{
 			InitializeComponent();
 		}
@@ -28,15 +28,15 @@ namespace ZeldaFullEditor.Gui
 
 				chestsdata[i] = new ChestAdvancedData
 				(
-					ZS.ROM[ZS.Offsets.chests_backupitems + i],
-					ZS.ROM[ZS.Offsets.chests_yoffset + i],
-					ZS.ROM[ZS.Offsets.chests_xoffset + i],
-					ZS.ROM[ZS.Offsets.chests_itemsgfx + i],
-					ZS.ROM[ZS.Offsets.chests_itemswide + i],
-					ZS.ROM[ZS.Offsets.chests_itemsproperties + i],
-					ZS.ROM.Read16(ZS.Offsets.chests_sramaddress + (i * 2)),
-					ZS.ROM[ZS.Offsets.chests_sramvalue + i],
-					ZS.ROM.Read16(ZS.Offsets.chests_msgid + (i * 2))
+					ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_backupitems + i],
+					ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_yoffset + i],
+					ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_xoffset + i],
+					ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_itemsgfx + i],
+					ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_itemswide + i],
+					ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_itemsproperties + i],
+					ZScreamer.ActiveROM.Read16(ZScreamer.ActiveOffsets.chests_sramaddress + (i * 2)),
+					ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_sramvalue + i],
+					ZScreamer.ActiveROM.Read16(ZScreamer.ActiveOffsets.chests_msgid + (i * 2))
 				);
 			}
 
@@ -110,15 +110,15 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < 76; i++)
 			{
-				ZS.ROM[ZS.Offsets.chests_backupitems + i] = chestsdata[i].backupitems;
-				ZS.ROM[ZS.Offsets.chests_yoffset + i] = chestsdata[i].yoffset;
-				ZS.ROM[ZS.Offsets.chests_xoffset + i] = chestsdata[i].xoffset;
-				ZS.ROM[ZS.Offsets.chests_itemsgfx + i] = chestsdata[i].itemsgfx;
-				ZS.ROM[ZS.Offsets.chests_itemswide + i] = chestsdata[i].itemswide;
-				ZS.ROM[ZS.Offsets.chests_itemsproperties + i] = chestsdata[i].itemsproperties;
-				ZS.ROM.Write16(ZS.Offsets.chests_sramaddress + (i * 2), chestsdata[i].sramaddress);
-				ZS.ROM[ZS.Offsets.chests_sramvalue + i] = chestsdata[i].sramvalue;
-				ZS.ROM.Write16(ZS.Offsets.chests_msgid + (i * 2), chestsdata[i].msgid);
+				ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_backupitems + i] = chestsdata[i].backupitems;
+				ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_yoffset + i] = chestsdata[i].yoffset;
+				ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_xoffset + i] = chestsdata[i].xoffset;
+				ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_itemsgfx + i] = chestsdata[i].itemsgfx;
+				ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_itemswide + i] = chestsdata[i].itemswide;
+				ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_itemsproperties + i] = chestsdata[i].itemsproperties;
+				ZScreamer.ActiveROM.Write16(ZScreamer.ActiveOffsets.chests_sramaddress + (i * 2), chestsdata[i].sramaddress);
+				ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.chests_sramvalue + i] = chestsdata[i].sramvalue;
+				ZScreamer.ActiveROM.Write16(ZScreamer.ActiveOffsets.chests_msgid + (i * 2), chestsdata[i].msgid);
 			}
 
 			this.Close();

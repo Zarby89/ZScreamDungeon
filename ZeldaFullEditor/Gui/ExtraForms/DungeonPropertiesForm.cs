@@ -10,12 +10,12 @@ using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
-	public partial class DungeonPropertiesForm : Gui.ScreamForm
+	public partial class DungeonPropertiesForm : Form
 	{
 		DungeonProperty[] properties = new DungeonProperty[12];
 
 		bool changedFromForm = false;
-		public DungeonPropertiesForm(ZScreamer zs) : base(zs)
+		public DungeonPropertiesForm()
 		{
 			InitializeComponent();
 		}
@@ -40,9 +40,9 @@ namespace ZeldaFullEditor.Gui
 			{
 				properties[i] = new DungeonProperty
 				(
-					ZS.ROM[ZS.Offsets.dungeons_startrooms + i],
-					ZS.ROM[ZS.Offsets.dungeons_endrooms + i],
-					ZS.ROM.Read16(ZS.Offsets.dungeons_bossrooms + (i * 2))
+					ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.dungeons_startrooms + i],
+					ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.dungeons_endrooms + i],
+					ZScreamer.ActiveROM.Read16(ZScreamer.ActiveOffsets.dungeons_bossrooms + (i * 2))
 				);
 			}
 
@@ -81,9 +81,9 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < 12; i++)
 			{
-				ZS.ROM[ZS.Offsets.dungeons_startrooms + i] = properties[i].startroom;
-				ZS.ROM[ZS.Offsets.dungeons_endrooms + i] = properties[i].endroom;
-				ZS.ROM.Write16(ZS.Offsets.dungeons_bossrooms + (i * 2), properties[i].bossroom);
+				ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.dungeons_startrooms + i] = properties[i].startroom;
+				ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.dungeons_endrooms + i] = properties[i].endroom;
+				ZScreamer.ActiveROM.Write16(ZScreamer.ActiveOffsets.dungeons_bossrooms + (i * 2), properties[i].bossroom);
 			}
 
 			Close();

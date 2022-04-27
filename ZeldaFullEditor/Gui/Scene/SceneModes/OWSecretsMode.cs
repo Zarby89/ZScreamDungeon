@@ -15,12 +15,6 @@ namespace ZeldaFullEditor
 		public OverworldSecret selectedItem;
 		public OverworldSecret lastselectedItem;
 
-		// TODO changes secret type
-		private void OnMouseWheel_Secrets(MouseEventArgs e)
-		{
-
-		}
-
 		private void OnMouseDown_Secrets(MouseEventArgs e)
 		{
 			isLeftPress = e.Button == MouseButtons.Left;
