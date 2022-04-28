@@ -31,7 +31,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.customPanel1 = new ZeldaFullEditor.CustomPanel();
-            this.chestviewer1 = new ZeldaFullEditor.Chestviewer();
+            this.chestviewer1 = new ZeldaFullEditor.Chestviewer(ZS);
             this.idtextbox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.customPanel1.SuspendLayout();
