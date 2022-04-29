@@ -380,38 +380,32 @@ namespace ZeldaFullEditor.Gui
 		/// <summary>
 		/// Called when the LW button on the overworld editor form is clicked.
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void lwButton_Click(object sender, EventArgs e)
 		{
-			SelectMapOffset(0);
+			SelectMapOffset(Worldiness.LightWorld);
 		}
 
 		/// <summary>
 		/// Called when the DW button on the overworld editor form is clicked.
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void dwButton_Click(object sender, EventArgs e)
 		{
-			SelectMapOffset(64);
+			SelectMapOffset(Worldiness.DarkWorld);
 		}
 
 		/// <summary>
 		/// Called when the SP button on the overworld editor form is clicked.
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void spButton_Click(object sender, EventArgs e)
 		{
-			SelectMapOffset(128);
+			SelectMapOffset(Worldiness.SpecialWorld);
 		}
 
-		private void SelectMapOffset(int o)
+		private void SelectMapOffset(Worldiness o)
 		{
-			ZScreamer.ActiveOWScene.CurrentMap = o;
-			ZScreamer.ActiveOWScene.CurrentMapParent = ZScreamer.ActiveOW.allmaps[o].parent;
-			ZScreamer.ActiveOW.worldOffset = o;
+			ZScreamer.ActiveOW.World = o;
+			ZScreamer.ActiveOWScene.CurrentMap = (int) o;
+			ZScreamer.ActiveOWScene.CurrentMapParent = ZScreamer.ActiveOW.allmaps[(int) o].parent;
 			ZScreamer.ActiveOWScene.Refresh();
 		}
 
@@ -1084,23 +1078,28 @@ namespace ZeldaFullEditor.Gui
 					{
 						if (o.MapY < 32)
 						{
-							o.UpdateMapID(ZScreamer.ActiveOW.allmaps[o.MapID].index);
+							o.MapID = ZScreamer.ActiveOW.allmaps[o.MapID].index;
 						}
 						else
 						{
-							o.UpdateMapID(ZScreamer.ActiveOW.allmaps[o.MapID + 8].index);
+							o.MapID = ZScreamer.ActiveOW.allmaps[o.MapID + 8].index;
 						}
 					}
 					else
 					{
 						if (o.MapY < 32)
 						{
-							o.UpdateMapID(ZScreamer.ActiveOW.allmaps[o.MapID + 1].index);
+							o.MapID = ZScreamer.ActiveOW.allmaps[o.MapID + 1].index;
 						}
 						else
 						{
-							o.UpdateMapID(ZScreamer.ActiveOW.allmaps[o.MapID + 9].index);
+							o.MapID = ZScreamer.ActiveOW.allmaps[o.MapID + 9].index;
 						}
+					}
+
+					if (o is OverworldDestination d)
+					{
+						d.UpdateMapProperties(ZScreamer.ActiveOW.allmaps[o.MapID].largeMap);
 					}
 				}
 			}

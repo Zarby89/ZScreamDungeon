@@ -18,7 +18,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		public byte Grid { get; set; }
 		public byte GridY { get; set; }
 
-		public Rectangle OutlineBox
+		public Rectangle SquareHitbox
 		{
 			get
 			{

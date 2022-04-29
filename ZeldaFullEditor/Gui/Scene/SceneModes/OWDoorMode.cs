@@ -126,11 +126,6 @@ namespace ZeldaFullEditor
 			throw new NotImplementedException();
 		}
 
-		private void Cut_OWDoor()
-		{
-			throw new NotImplementedException();
-		}
-
 		private void Paste_OWDoor()
 		{
 			throw new NotImplementedException();

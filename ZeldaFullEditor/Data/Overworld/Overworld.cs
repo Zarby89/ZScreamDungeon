@@ -51,7 +51,9 @@ namespace ZeldaFullEditor
 		public List<OverworldSprite>[] allsprites = new List<OverworldSprite>[3];
 
 		// TOGO ugh
-		public int worldOffset = 0;
+		public Worldiness World { get; set; } = Worldiness.LightWorld;
+		public int WorldOffset => (int) World;
+		public int WorldOffsetEnd => WorldOffset + 64;
 
 		// TODO : Fix Whirlpool on large maps
 		public List<TransportOW> allWhirlpools = new List<TransportOW>();
@@ -910,21 +912,11 @@ namespace ZeldaFullEditor
 
 					int p = (((b2 & 0x1F) << 8) | b1) >> 1;
 
-					int x = p & 0x3F;
-					int y = p >> 6;
-
-					byte fakeid = (byte) (i & 0x3F);
-
-					int sy = (fakeid / 8);
-					int sx = fakeid & 0x7;
-
 					allitems.Add(new OverworldSecret(SecretItemType.GetTypeFromID(b3))
 					{
-						MapID = fakeid,
-						GridX = (byte) x,
-						GridY = (byte) y,
-						GlobalX = (ushort) (sx * 512 + x * 16),
-						GlobalY = (ushort) (sy * 512 + y * 16),
+						MapID = (byte) i,
+						MapX = (byte) (p & 0x3F),
+						MapY = (byte) (p >> 6),
 
 					});
 				}
@@ -1068,9 +1060,6 @@ namespace ZeldaFullEditor
 
 			spriteAddress = SNESFunctions.SNEStoPC(Constants.OverworldSpritePointers | ZS.ROM.Read16(spriteAddress));
 
-			int screenX = (screen % 8) * 512;
-			int screenY = (screen / 8) * 512;
-
 			while (true)
 			{
 				byte b1 = ZS.ROM[spriteAddress++];
@@ -1080,16 +1069,26 @@ namespace ZeldaFullEditor
 					return;
 				}
 
+				b1 &= 0x3F;
 				byte b2 = (byte) (ZS.ROM[spriteAddress++] & 0x3F);
-				byte b3 = (byte) (ZS.ROM[spriteAddress++] & 0x3F);
+				byte b3 = ZS.ROM[spriteAddress++];
 
-				allsprites[gamestate].Add(new OverworldSprite(SpriteType.GetTypeFromID(b3))
+				SpriteType st;
+
+				if (b3 > 0xF2)
 				{
-					GridX = b2,
-					GridY = b1,
-					GlobalX = (ushort) (screenX + (b2 * 16)),
-					GlobalY = (ushort) (screenY + (b1 * 16)),
-					MapID = screen
+					st = OverlordType.GetTypeFromID(b3 - 0xF2);
+				}
+				else
+				{
+					st = SpriteType.GetTypeFromID(b3);
+				}
+
+				allsprites[gamestate].Add(new OverworldSprite(st)
+				{
+					MapID = screen,
+					MapX = b2,
+					MapY = b1,
 				});
 			}
 		}

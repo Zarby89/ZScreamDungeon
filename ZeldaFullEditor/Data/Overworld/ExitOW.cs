@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,17 +59,11 @@ namespace ZeldaFullEditor
 				doorXEditor = (byte) (p % 64);
 				doorYEditor = (byte) (p >> 6);
 			}
-
-			int mapX = (mapId - ((mapId / 8) * 8));
-			int mapY = (mapId / 8);
-
-			MapX = (byte) ((Math.Abs(playerX - (mapX * 512)) / 16));
-			MapY = (byte) ((Math.Abs(playerY - (mapY * 512)) / 16));
 		}
 
 		public override bool PointIsInHitbox(int x, int y)
 		{
-			throw new NotImplementedException();
+			return base.PointIsInHitbox(x, y);
 		}
 	}
 }

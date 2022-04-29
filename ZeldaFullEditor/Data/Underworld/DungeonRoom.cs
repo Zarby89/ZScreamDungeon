@@ -220,7 +220,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 			MessageID = ZS.ROM.Read16(ZS.Offsets.messages_id_dungeon + (RoomID * 2));
 
-			int hpos = (ZS.ROM[ZS.Offsets.room_header_pointers_bank] << 16) | ZS.ROM.Read16(headerPointer + (RoomID * 2));
+			int hpos = ((ZS.ROM[ZS.Offsets.room_header_pointers_bank] << 16) | ZS.ROM.Read16(headerPointer + (RoomID * 2))).SNEStoPC();
 			byte b = ZS.ROM[hpos++];
 			// TODO verify merge versus behavor
 
@@ -969,7 +969,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			if (mylist is List<IDungeonPlaceable> l)
 			{
 				l.Remove(o);
-				l.Insert(0, o);
+				l.Add(o);
 				return;
 			}
 		}
@@ -997,7 +997,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			if (mylist is List<IDungeonPlaceable> l)
 			{
 				l.Remove(o);
-				l.Add(o);
+				l.Insert(0, o);
 				return;
 			}
 		}

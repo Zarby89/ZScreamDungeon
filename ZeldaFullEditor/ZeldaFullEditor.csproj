@@ -244,6 +244,7 @@
     <Compile Include="Utility\Enums\RoomObjectCategory.cs" />
     <Compile Include="Utility\Enums\SpecialObjectType.cs" />
     <Compile Include="Utility\Enums\SpriteCategory.cs" />
+    <Compile Include="Utility\Enums\Worldiness.cs" />
     <Compile Include="Utility\Interfaces\IByteable.cs" />
     <Compile Include="Utility\Interfaces\IDelegatedDraw.cs" />
     <Compile Include="Utility\Interfaces\IDrawableSprite.cs" />

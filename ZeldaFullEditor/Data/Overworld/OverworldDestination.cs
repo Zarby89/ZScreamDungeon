@@ -14,21 +14,17 @@ namespace ZeldaFullEditor
 		public ushort CameraY { get; set; }
 		public ushort VRAMBase { get; set; }
 
-		public void UpdateMapID(byte mapid, Overworld ow)
+		public void UpdateMapProperties(bool isLarge)
 		{
-			base.UpdateMapID(mapid);
-
 			int large = 256;
 
-			if (mapid < 128)
+			if (MapID < 128)
 			{
-				large = ow.allmaps[mapid].largeMap ? 768 : 256;
+				large = isLarge ? 768 : 256;
 			}
 
-			mapid &= 0x3F;
-
-			int mapx = (mapid & 7) << 9;
-			int mapy = ((mapid & 56) << 6);
+			int mapx = (MapID & 7) << 9;
+			int mapy = ((MapID & 0x38) << 6);
 			ScrollX = (ushort) (GlobalX - 134);
 			ScrollY = (ushort) (GlobalY - 78);
 
@@ -46,9 +42,9 @@ namespace ZeldaFullEditor
 			{
 				ScrollX = (ushort) (mapx + large);
 			}
-			if (ScrollY > (mapy + large) + 30)
+			if (ScrollY > (mapy + large + 30))
 			{
-				ScrollY = (ushort) (((mapy) + large) + 30);
+				ScrollY = (ushort) (mapy + large + 30);
 			}
 
 			CameraX = GlobalX;
@@ -58,16 +54,16 @@ namespace ZeldaFullEditor
 			{
 				CameraX = (ushort) (mapx + 127);
 			}
+			else if (CameraX > mapx + 127 + large)
+			{
+				CameraX = (ushort) (mapx + 127 + large);
+			}
+
 			if (CameraY < mapy + 111)
 			{
 				CameraY = (ushort) (mapy + 111);
 			}
-
-			if (CameraX > mapx + 127 + large)
-			{
-				CameraX = (ushort) (mapx + 127 + large);
-			}
-			if (CameraY > mapy + 143 + large)
+			else if (CameraY > mapy + 143 + large)
 			{
 				CameraY = (ushort) (mapy + 143 + large);
 			}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,22 +19,16 @@ namespace ZeldaFullEditor
 
 		public EntranceOWEditor(ushort x, ushort y, byte entranceId, byte mapId, ushort mapPos)
 		{
+			MapID = mapId;
 			GlobalX = x;
 			GlobalY = y;
 			TargetEntranceID = entranceId;
-			MapID = mapId;
 			this.mapPos = mapPos;
-
-			int mapX = mapId & 0x7;
-			int mapY = mapId / 8;
-
-			MapX = (byte) (Math.Abs(x - (mapX * 512)) / 16);
-			MapY = (byte) (Math.Abs(y - (mapY * 512)) / 16);
 		}
 
 		public override bool PointIsInHitbox(int x, int y)
 		{
-			throw new NotImplementedException();
+			return base.PointIsInHitbox(x, y);
 		}
 	}
 }

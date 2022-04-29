@@ -18,8 +18,6 @@ namespace ZeldaFullEditor
 
 			Room.AttemptToAddEntityAsSelected(ObjectToPlace, CurrentMode);
 
-			MouseIsDown = true;
-
 			ResetPlacementProperties();
 		}
 

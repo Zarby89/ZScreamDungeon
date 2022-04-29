@@ -42,16 +42,16 @@ namespace ZeldaFullEditor
 			{
 				if (ZS.OverworldManager.allexits[i].Deleted)
 				{
-					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.worldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.WorldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (mapHover + ZS.OverworldManager.worldOffset);
+						mid = (byte) (mapHover + ZS.OverworldManager.WorldOffset);
 					}
 
 					ZS.OverworldManager.allexits[i].Deleted = false;
 					ZS.OverworldManager.allexits[i].MapID = mid;
-					ZS.OverworldManager.allexits[i].GlobalX = (ushort) ((mxRightclick / 16) * 16);
-					ZS.OverworldManager.allexits[i].GlobalY = (ushort) ((myRightclick / 16) * 16);
+					ZS.OverworldManager.allexits[i].GlobalX = (ushort) (mxRightclick & ~0xF);
+					ZS.OverworldManager.allexits[i].GlobalY = (ushort) (myRightclick & ~0xF);
 
 					if (clipboard)
 					{
@@ -72,11 +72,9 @@ namespace ZeldaFullEditor
 						}
 					}
 
-					ZS.OverworldManager.allexits[i].UpdateMapID(mid, ZS.OverworldManager);
+					ZS.OverworldManager.allexits[i].UpdateMapProperties(ZScreamer.ActiveOW.allmaps[ZS.OverworldManager.allexits[i].MapID].largeMap);
 
 					found = i;
-
-					//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 					break;
 				}
 			}
@@ -92,56 +90,49 @@ namespace ZeldaFullEditor
 
 		private void OnMouseDown_Exit(MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Left)
+			if (e.Button == MouseButtons.Left && !MouseIsDown)
 			{
 				for (int i = 0; i < 78; i++)
 				{
 					ExitOW en = ZS.OverworldManager.allexits[i];
-					if (en.MapID >= ZS.OverworldManager.worldOffset && en.MapID < 64 + ZS.OverworldManager.worldOffset)
+					if (en.IsInThisWorld(ZS.OverworldManager.WorldOffset) && en.MouseIsInHitbox(e))
 					{
-						if (e.X >= en.GlobalX && e.X < en.GlobalX + 16 && e.Y >= en.GlobalY && e.Y < en.GlobalY + 16)
-						{
-							if (!MouseIsDown)
-							{
-								SelectedExit = LastSelectedExit = en;
-								MouseIsDown = true;
-							}
-						}
+						SelectedExit = LastSelectedExit = en;
+						break;
 					}
 				}
 			}
 
-			if (SelectedExit != null)
+			if (SelectedExit == null) return;
+			
+			//scene.owForm.thumbnailBox.Visible = true;
+			//scene.owForm.thumbnailBox.Size = new Size(256, 256);
+			int roomId = SelectedExit.TargetRoomID;
+			if (roomId >= Constants.NumberOfRooms)
 			{
-				//scene.owForm.thumbnailBox.Visible = true;
-				//scene.owForm.thumbnailBox.Size = new Size(256, 256);
-				int roomId = SelectedExit.TargetRoomID;
-				if (roomId >= Constants.NumberOfRooms)
-				{
-					//scene.owForm.thumbnailBox.Visible = false;
-					return;
-				}
-
-				if (Program.DungeonForm.lastRoomID != roomId)
-				{
-					Program.DungeonForm.previewRoom = ZS.all_rooms[roomId];
-					Program.DungeonForm.previewRoom.reloadGfx();
-					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(Program.DungeonForm.previewRoom.Palette);
-					Program.DungeonForm.DrawRoom();
-					DrawTempExit();
-					entrancePreview = true;
-					//scene.Refresh();
-
-					if (ZS.UnderworldScene.Room != null)
-					{
-						ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
-						ZS.UnderworldScene.Room.reloadGfx();
-						ZS.UnderworldScene.TriggerRefresh = true;
-					}
-				}
-
-				Program.DungeonForm.lastRoomID = roomId;
+				//scene.owForm.thumbnailBox.Visible = false;
+				return;
 			}
+
+			if (Program.DungeonForm.lastRoomID != roomId)
+			{
+				Program.DungeonForm.previewRoom = ZS.all_rooms[roomId];
+				Program.DungeonForm.previewRoom.reloadGfx();
+				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(Program.DungeonForm.previewRoom.Palette);
+				Program.DungeonForm.DrawRoom();
+				DrawTempExit();
+				entrancePreview = true;
+				//scene.Refresh();
+
+				if (ZS.UnderworldScene.Room != null)
+				{
+					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
+					ZS.UnderworldScene.Room.reloadGfx();
+					ZS.UnderworldScene.TriggerRefresh = true;
+				}
+			}
+
+			Program.DungeonForm.lastRoomID = roomId;	
 		}
 
 		private void Delete_Exit() // Set exit data to 0
@@ -151,76 +142,39 @@ namespace ZeldaFullEditor
 			LastSelectedExit.MapID = 0;
 			LastSelectedExit.TargetRoomID = 0;
 			LastSelectedExit.Deleted = true;
-			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 		}
 
 		private void OnMouseMove_Exit(MouseEventArgs e)
 		{
 			if (MouseIsDown)
 			{
-
-				mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
-
-				if (SelectedExit != null)
-				{
-					SelectedExit.GlobalX = (ushort) (snapToGrid ? e.X & ~0x7 : e.X);
-					SelectedExit.GlobalY = (ushort) (snapToGrid ? e.Y & ~0x7 : e.Y);
-
-					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.worldOffset].parent;
-					if (mid == 255)
-					{
-						mid = (byte) (mapHover + ZS.OverworldManager.worldOffset);
-					}
-
-					SelectedExit.UpdateMapID(mid, ZS.OverworldManager);
-
-					//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-				}
+				MoveDestinationToMouse(SelectedExit, e);
 			}
 		}
 
 		private void OnMouseUp_Exit(MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Left)
+			if (e.Button == MouseButtons.Left && SelectedExit != null)
 			{
-				if (SelectedExit != null)
-				{
-					LastSelectedExit = SelectedExit;
-					SelectedExit = null;
-					MouseIsDown = false;
-				}
+				LastSelectedExit = SelectedExit;
+				SelectedExit = null;
+				return;
 			}
-			// TODO IMouseCollidable
-			else if (e.Button == MouseButtons.Right)
+
+			if (e.Button != MouseButtons.Right) return;
+			
+			bool clickedon = false;
+			ContextMenuStrip menu = new ContextMenuStrip();
+
+			if (!clickedon)
 			{
-				bool clickedon = false;
-				ContextMenuStrip menu = new ContextMenuStrip();
-
-				for (int i = 0; i < 78; i++)
-				{
-					ExitOW en = ZS.OverworldManager.allexits[i];
-					if (en.MapID >= ZS.OverworldManager.worldOffset && en.MapID < 64 + ZS.OverworldManager.worldOffset)
-					{
-						if (e.X >= en.GlobalX && e.X < en.GlobalX + 16 && e.Y >= en.GlobalY && e.Y < en.GlobalY + 16)
-						{
-
-							if (LastSelectedExit == null)
-							{
-								menu.Items[0].Enabled = false;
-							}
-						}
-					}
-				}
-
-				if (!clickedon)
-				{
-					mxRightclick = e.X;
-					myRightclick = e.Y;
-					menu.Items.Add("Insert Exit");
-					menu.Items[0].Click += insertExit_Click;
-					menu.Show(Cursor.Position);
-				}
+				mxRightclick = e.X;
+				myRightclick = e.Y;
+				menu.Items.Add("Insert Exit");
+				menu.Items[0].Click += insertExit_Click;
+				menu.Show(Cursor.Position);
 			}
+			
 		}
 
 		public void insertExit_Click(object sender, EventArgs e)
@@ -264,7 +218,6 @@ namespace ZeldaFullEditor
 		{
 			for (int i = 0; i < 78; i++)
 			{
-				g.CompositingMode = CompositingMode.SourceOver;
 				ExitOW ex = ZS.OverworldManager.allexits[i];
 
 				if (lowEndMode && ex.MapID != ZS.OverworldManager.allmaps[CurrentMap].parent)
@@ -272,33 +225,29 @@ namespace ZeldaFullEditor
 					continue;
 				}
 
-				if (ex.MapID < 64 + ZS.OverworldManager.worldOffset && ex.MapID >= ZS.OverworldManager.worldOffset)
+				if (ex.IsInThisWorld(ZS.OverworldManager.WorldOffset))
 				{
 					Brush bgrBrush = Constants.LightGray200Brush;
-					//Brush fontBrush;
 
 					if (LastSelectedExit == ex || SelectedExit == ex)
 					{
-						g.CompositingMode = CompositingMode.SourceOver;
 						bgrBrush = Constants.MediumGray200Brush;
-						g.DrawFilledRectangleWithOutline(ex.GlobalX, ex.GlobalY, 16, 16, Constants.Black200Pen, bgrBrush);
+						g.DrawFilledRectangleWithOutline(ex.SquareHitbox, Constants.Black200Pen, bgrBrush);
 						drawText(g, ex.GlobalX + 4, ex.GlobalY + 4, $"{i:X2}");
 
 						g.DrawRectangle(Pens.LightPink, new Rectangle(ex.ScrollX, ex.ScrollY, 256, 224));
 						g.DrawLine(Pens.Blue, ex.CameraX - 8, ex.CameraY, ex.CameraX + 8, ex.CameraY);
 						g.DrawLine(Pens.Blue, ex.CameraX, ex.CameraY - 8, ex.CameraX, ex.CameraY + 8);
-						g.CompositingMode = CompositingMode.SourceCopy;
 						continue;
 					}
 
-					g.DrawFilledRectangleWithOutline(ex.GlobalX, ex.GlobalY, 16, 16, Constants.Black200Pen, bgrBrush);
+					g.DrawFilledRectangleWithOutline(ex.SquareHitbox, Constants.Black200Pen, bgrBrush);
 					drawText(g, ex.GlobalX + 4, ex.GlobalY + 4, $"{i:X2}");
 				}
 			}
-
-			g.CompositingMode = CompositingMode.SourceCopy;
 		}
 
+		// TODO move this dumb shit to the dungeon room class
 		public void DrawTempExit()
 		{
 			Graphics g = Graphics.FromImage(Program.OverworldForm.tmpPreviewBitmap);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,12 +20,12 @@ namespace ZeldaFullEditor.Data
 
 		public void Draw(ZScreamer ZS)
 		{
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
 		}
 
 		public override bool PointIsInHitbox(int x, int y)
 		{
-			throw new NotImplementedException();
+			return base.PointIsInHitbox(x, y);
 		}
 
 		public bool Equals(OverworldSecret other)

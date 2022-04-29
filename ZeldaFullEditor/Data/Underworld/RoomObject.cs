@@ -33,7 +33,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public int Width { get; set; } = 16;
 		public int Height { get; set; } = 16;
-		public Rectangle OutlineBox => new Rectangle(RealX, RealY, Width, Height);
+		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, Width, Height);
 
 		public bool DiagonalFix { get; set; }
 

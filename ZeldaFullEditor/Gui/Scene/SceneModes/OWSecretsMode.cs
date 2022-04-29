@@ -21,21 +21,16 @@ namespace ZeldaFullEditor
 
 			foreach (var item in ZS.OverworldManager.allitems)
 			{
-				if (item.MapID >= 0 + (ZS.OverworldManager.worldOffset) && item.MapID < (64 + ZS.OverworldManager.worldOffset))
+				if (item.IsInThisWorld(ZS.OverworldManager.WorldOffset) && item.MouseIsInHitbox(e))
 				{
-					if (e.X >= item.GridX && e.X <= item.GridX + 16 && e.Y >= item.GridY && e.Y <= item.GridY + 16)
-					{
-						selectedItem = item;
-						lastselectedItem = item;
-						SecretItemType.GetTypeFromID(item.ID);
-
-						//scene.mainForm.owcombobox.SelectedIndex = nid;
-						//scene.mainForm.itemOWGroupbox.Visible = true;
-					}
+					selectedItem = item;
+					lastselectedItem = item;
+					SecretItemType.GetTypeFromID(item.ID);
+					break;
+					//scene.mainForm.owcombobox.SelectedIndex = nid;
+					//scene.mainForm.itemOWGroupbox.Visible = true;
 				}
 			}
-
-			MouseIsDown = true;
 		}
 
 		private void Copy_Secrets()
@@ -54,8 +49,6 @@ namespace ZeldaFullEditor
 				lastselectedItem = selectedItem = data;
 				isLeftPress = true;
 				MouseIsDown = true;
-
-				//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 			}
 		}
 
@@ -65,12 +58,12 @@ namespace ZeldaFullEditor
 			{
 				if (selectedItem != null)
 				{
-					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.worldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.WorldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (mapHover + ZS.OverworldManager.worldOffset);
+						mid = (byte) (mapHover + ZS.OverworldManager.WorldOffset);
 					}
-					selectedItem.UpdateMapID(mid);
+					selectedItem.MapID = mid;
 					lastselectedItem = selectedItem;
 					selectedItem = null;
 				}
@@ -95,8 +88,6 @@ namespace ZeldaFullEditor
 				menu.Items[1].Click += deleteItem_Click;
 				menu.Show(Cursor.Position);
 			}
-
-			MouseIsDown = false;
 		}
 
 		private void deleteItem_Click(object sender, EventArgs e)
@@ -112,8 +103,6 @@ namespace ZeldaFullEditor
 			lastselectedItem = selectedItem;
 			isLeftPress = true;
 			MouseIsDown = true;
-
-			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 		}
 
 		private void OnMouseMove_Secrets(MouseEventArgs e)
@@ -123,19 +112,10 @@ namespace ZeldaFullEditor
 
 			mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
 
-			if (selectedItem != null)
+			if (selectedItem != null && isLeftPress && MouseIsDown)
 			{
-				if (isLeftPress)
-				{
-					if (MouseIsDown)
-					{
-						selectedItem.GridX = (byte) (e.X & ~0xF);
-						selectedItem.GridY = (byte) (e.Y & ~0xF);
-
-						// scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-
-					}
-				}
+				selectedItem.MapX = (byte) (e.X & ~0xF);
+				selectedItem.MapY = (byte) (e.Y & ~0xF);
 			}
 		}
 
@@ -145,9 +125,6 @@ namespace ZeldaFullEditor
 			{
 				ZS.OverworldManager.allitems.Remove(lastselectedItem);
 				lastselectedItem = null;
-
-				//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-				//scene.mainForm.itemOWGroupbox.Visible = false;
 			}
 		}
 
@@ -162,14 +139,13 @@ namespace ZeldaFullEditor
 					continue;
 				}
 
-				if (item.MapID >= (0 + ZS.OverworldManager.worldOffset) && item.MapID < (64 + ZS.OverworldManager.worldOffset))
+				if (item.IsInThisWorld(ZS.OverworldManager.WorldOffset))
 				{
-
 					bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
 
-					g.DrawFilledRectangleWithOutline(item.MapX, item.MapY, 16, 16, Constants.Black200Pen, bgrBrush);
+					g.DrawFilledRectangleWithOutline(item.SquareHitbox, Constants.Black200Pen, bgrBrush);
 
-					drawText(g, item.GridX - 1, item.GridY + 1, item.Name);
+					drawText(g, item.GlobalX - 1, item.GlobalY + 1, item.Name);
 				}
 			}
 

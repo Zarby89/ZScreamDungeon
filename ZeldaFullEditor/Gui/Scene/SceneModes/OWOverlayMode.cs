@@ -13,202 +13,190 @@ namespace ZeldaFullEditor
 	{
 		private void OnMouseDown_Overlay(MouseEventArgs e)
 		{
-			if (!MouseIsDown)
+			if (MouseIsDown) return;
+
+			int tileX = (e.X / 16);
+			int tileY = (e.Y / 16);
+			int superX = (tileX / 32);
+			int superY = (tileY / 32);
+			int mapId = (superY * 8) + superX;
+			globalmouseTileDownX = tileX;
+			globalmouseTileDownY = tileY;
+
+			CurrentMap = mapId + ZS.OverworldManager.WorldOffset;
+			CurrentMapParent = ZS.OverworldManager.allmaps[CurrentMap + ZS.OverworldManager.WorldOffset].parent;
+
+			int mid = ZS.OverworldManager.allmaps[CurrentMap].parent;
+			int superMX = (mid % 8) * 32;
+			int superMY = (mid / 8) * 32;
+
+			tileBitmapPtr = ZS.GFXManager.mapblockset16;
+			tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr)
 			{
-				int tileX = (e.X / 16);
-				int tileY = (e.Y / 16);
-				int superX = (tileX / 32);
-				int superY = (tileY / 32);
-				int mapId = (superY * 8) + superX;
-				globalmouseTileDownX = tileX;
-				globalmouseTileDownY = tileY;
+				Palette = ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[mapId].parent].gfxBitmap.Palette
+			};
 
-				CurrentMap = mapId + ZS.OverworldManager.worldOffset;
-				CurrentMapParent = ZS.OverworldManager.allmaps[CurrentMap + ZS.OverworldManager.worldOffset].parent;
+			if (TriggerRefresh)
+			{
+				TriggerRefresh = false;
+				return;
+			}
 
-				int mid = ZS.OverworldManager.allmaps[CurrentMap].parent;
-				int superMX = (mid % 8) * 32;
-				int superMY = (mid / 8) * 32;
-
-				tileBitmapPtr = ZS.GFXManager.mapblockset16;
-				tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr)
+			if (e.Button == MouseButtons.Left)
+			{
+				if (selectedTile.Length >= 1)
 				{
-					Palette = ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[mapId].parent].gfxBitmap.Palette
-				};
-
-				if (TriggerRefresh)
-				{
-					TriggerRefresh = false;
-					return;
-				}
-
-				MouseIsDown = true;
-
-				if (e.Button == MouseButtons.Left)
-				{
-					if (selectedTile.Length >= 1)
+					int y = 0;
+					int x = 0;
+					ushort[] undotiles = new ushort[selectedTile.Length];
+					for (int i = 0; i < selectedTile.Length; i++)
 					{
-						int y = 0;
-						int x = 0;
-						ushort[] undotiles = new ushort[selectedTile.Length];
-						for (int i = 0; i < selectedTile.Length; i++)
+						superX = ((tileX + x) / 32);
+						superY = ((tileY + y) / 32);
+
+						/*
+                          undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
+                          scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
+                          scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, scene.ow.allmaps[mapId].blockset16);
+                          */
+
+						OverlayTile tp = new OverlayTile((byte) ((globalmouseTileDownX + x) - (superMX)), (byte) ((globalmouseTileDownY + y) - (superMY)), selectedTile[i]);
+						OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
+
+						if (ZS.OverworldManager.allmaps[CurrentMap].largeMap)
 						{
-							superX = ((tileX + x) / 32);
-							superY = ((tileY + y) / 32);
-							mapId = (superY * 8) + superX + ZS.OverworldManager.worldOffset;
+							tp = new OverlayTile((byte) ((globalmouseTileDownX + x) - (superMX)), (byte) ((globalmouseTileDownY + y) - (superMY)), selectedTile[i]);
+							tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
+						}
 
-							/*
-                            undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
-                            scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y] = scene.selectedTile[i];
-                            scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, scene.ow.allmaps[mapId].blockset16);
-                            */
-
-							OverlayTile tp = new OverlayTile((byte) ((globalmouseTileDownX + x) - (superMX)), (byte) ((globalmouseTileDownY + y) - (superMY)), selectedTile[i]);
-							OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
-
-							if (ZS.OverworldManager.allmaps[CurrentMap].largeMap)
-							{
-								tp = new OverlayTile((byte) ((globalmouseTileDownX + x) - (superMX)), (byte) ((globalmouseTileDownY + y) - (superMY)), selectedTile[i]);
-								tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
-							}
-
-							if (ModifierKeys == Keys.Control)
-							{
-								ZS.OverworldManager.alloverlays[mid].tilesData.Remove(tf);
-								x++;
-								if (x >= selectedTileSizeX)
-								{
-									y++;
-									x = 0;
-								}
-
-								continue;
-							}
-
-							if (tf.IsGarbage)
-							{
-								ZS.OverworldManager.alloverlays[mid].tilesData.Add(tp);
-							}
-							else
-							{
-								ZS.OverworldManager.alloverlays[mid].tilesData.Remove(tf);
-								ZS.OverworldManager.alloverlays[mid].tilesData.Add(tp);
-							}
-
+						if (ModifierKeys == Keys.Control)
+						{
+							ZS.OverworldManager.alloverlays[mid].tilesData.Remove(tf);
 							x++;
 							if (x >= selectedTileSizeX)
 							{
 								y++;
 								x = 0;
 							}
+
+							continue;
+						}
+
+						if (tf.IsGarbage)
+						{
+							ZS.OverworldManager.alloverlays[mid].tilesData.Add(tp);
+						}
+						else
+						{
+							ZS.OverworldManager.alloverlays[mid].tilesData.Remove(tf);
+							ZS.OverworldManager.alloverlays[mid].tilesData.Add(tp);
+						}
+
+						x++;
+						if (x >= selectedTileSizeX)
+						{
+							y++;
+							x = 0;
 						}
 					}
+				}
 
-				}
-				else if (e.Button == MouseButtons.Right)
-				{
-					selecting = true;
-				}
+			}
+			else if (e.Button == MouseButtons.Right)
+			{
+				selecting = true;
 			}
 		}
 
 		private void OnMouseUp_Overlay(MouseEventArgs e)
 		{
-			if (MouseIsDown)
+			if (!MouseIsDown) return;
+			
+			int tileX = (e.X / 16);
+			int tileY = (e.Y / 16);
+			int superX = (tileX / 32);
+			int superY = (tileY / 32);
+			int mapId = (superY * 8) + superX + ZS.OverworldManager.WorldOffset;
+			int mid = ZS.OverworldManager.allmaps[CurrentMap].parent;
+			int superMX = (mid % 8) * 32;
+			int superMY = (mid / 8) * 32;
+
+			if (e.Button == MouseButtons.Right)
 			{
-				int tileX = (e.X / 16);
-				int tileY = (e.Y / 16);
-				int superX = (tileX / 32);
-				int superY = (tileY / 32);
-				int mapId = (superY * 8) + superX + ZS.OverworldManager.worldOffset;
-				int mid = ZS.OverworldManager.allmaps[CurrentMap].parent;
-				int superMX = (mid % 8) * 32;
-				int superMY = (mid / 8) * 32;
-
-				if (e.Button == MouseButtons.Right)
+				if (tileX == globalmouseTileDownX && tileY == globalmouseTileDownY)
 				{
-					if (tileX == globalmouseTileDownX && tileY == globalmouseTileDownY)
-					{
-						OverlayTile tp = new OverlayTile((byte) (tileX - (superMX)), (byte) (tileY - (superMY)), 0);
-						OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
+					OverlayTile tp = new OverlayTile((byte) (tileX - (superMX)), (byte) (tileY - (superMY)), 0);
+					OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
 
-						if (tf.IsGarbage)
+					if (tf.IsGarbage)
+					{
+						if (tileX == globalmouseTileDownX && tileY == globalmouseTileDownY)
 						{
-							if (tileX == globalmouseTileDownX && tileY == globalmouseTileDownY)
-							{
-								selectedTile = new ushort[1] {
-									ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY]
-								};
-								selectedTileSizeX = 1;
-							}
-						}
-						else
-						{
-							selectedTile = new ushort[1] { tf.Map16Value };
+							selectedTile = new ushort[1] {
+								ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY]
+							};
 							selectedTileSizeX = 1;
 						}
 					}
 					else
 					{
-						bool reverseX = tileX < globalmouseTileDownX;
-						bool reverseY = tileY < globalmouseTileDownY;
-
-						int sizeX, sizeY;
-
-						if (reverseX)
-						{
-							sizeX = (globalmouseTileDownX - tileX) + 1;
-						}
-						else
-						{
-							sizeX = (tileX - globalmouseTileDownX) + 1;
-						}
-
-						if (reverseY)
-						{
-							sizeY = (globalmouseTileDownY - tileY) + 1;
-						}
-						else
-						{
-							sizeY = (tileY - globalmouseTileDownY) + 1;
-						}
-
-						selectedTileSizeX = sizeX;
-						selectedTile = new ushort[sizeX * sizeY];
-						int pX = reverseX ? tileX : globalmouseTileDownX;
-						int pY = reverseY ? tileY : globalmouseTileDownY;
-						for (int y = 0; y < sizeY; y++)
-						{
-							for (int x = 0; x < sizeX; x++)
-							{
-
-								selectedTile[x + (y * sizeX)] = ZS.OverworldManager.allmaps[mapId].tilesUsed[pX + x, pY + y];
-							}
-						}
-					}
-					if (selectedTile.Length > 0)
-					{
-						int scrollpos = ((selectedTile[0] / 8) * 16);
-						if (scrollpos >= Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Maximum)
-						{
-							Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Value = Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Maximum;
-						}
-						else
-						{
-							Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Value = scrollpos;
-						}
-
-						Program.OverworldForm.tilePictureBox.Refresh();
+						selectedTile = new ushort[1] { tf.Map16Value };
+						selectedTileSizeX = 1;
 					}
 				}
+				else
+				{
+					bool reverseX = tileX < globalmouseTileDownX;
+					bool reverseY = tileY < globalmouseTileDownY;
+
+					int sizeX, sizeY;
+
+					if (reverseX)
+					{
+						sizeX = (globalmouseTileDownX - tileX) + 1;
+					}
+					else
+					{
+						sizeX = (tileX - globalmouseTileDownX) + 1;
+					}
+
+					if (reverseY)
+					{
+						sizeY = (globalmouseTileDownY - tileY) + 1;
+					}
+					else
+					{
+						sizeY = (tileY - globalmouseTileDownY) + 1;
+					}
+
+					selectedTileSizeX = sizeX;
+					selectedTile = new ushort[sizeX * sizeY];
+					int pX = reverseX ? tileX : globalmouseTileDownX;
+					int pY = reverseY ? tileY : globalmouseTileDownY;
+					for (int y = 0; y < sizeY; y++)
+					{
+						for (int x = 0; x < sizeX; x++)
+						{
+
+							selectedTile[x + (y * sizeX)] = ZS.OverworldManager.allmaps[mapId].tilesUsed[pX + x, pY + y];
+						}
+					}
+				}
+				if (selectedTile.Length > 0)
+				{
+					int scrollpos = selectedTile[0] / 8 * 16;
+					if (scrollpos >= Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Maximum)
+					{
+						Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Value = Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Maximum;
+					}
+					else
+					{
+						Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Value = scrollpos;
+					}
+
+					Program.OverworldForm.tilePictureBox.Refresh();
+				}
 			}
-
-			selecting = false;
-			MouseIsDown = false;
-
-			//scene.Refresh();
-			//scene.mainForm.pictureboxOWTiles.Refresh();
-			//scene.mainForm.pictureGroupTiles.Refresh();
 		}
 
 		private void OnMouseMove_Overlay(MouseEventArgs e)
@@ -251,7 +239,7 @@ namespace ZeldaFullEditor
 							{
 								superX = ((tileX + x) / 32);
 								superY = ((tileY + y) / 32);
-								mapId = (superY * 8) + superX + ZS.OverworldManager.worldOffset;
+								mapId = (superY * 8) + superX + ZS.OverworldManager.WorldOffset;
 								if (globalmouseTileDownX + x < 255 && globalmouseTileDownY + y < 255)
 								{
 									/*
@@ -307,7 +295,7 @@ namespace ZeldaFullEditor
 					int sY = (mouseTileY / 32);
 					int y = 0;
 					int x = 0;
-					int mapId = ZS.OverworldManager.worldOffset;
+					int mapId = ZS.OverworldManager.WorldOffset;
 
 					for (int i = 0; i < selectedTile.Length; i++)
 					{
@@ -315,9 +303,9 @@ namespace ZeldaFullEditor
 						{
 							sX = ((mouseTileX + x) / 32);
 							sY = ((mouseTileY + y) / 32);
-							mapId = (sY * 8) + sX + ZS.OverworldManager.worldOffset;
+							mapId = (sY * 8) + sX + ZS.OverworldManager.WorldOffset;
 
-							if (mapId > 63 + ZS.OverworldManager.worldOffset)
+							if (mapId > 63 + ZS.OverworldManager.WorldOffset)
 							{
 								break;
 							}
@@ -336,7 +324,7 @@ namespace ZeldaFullEditor
 						}
 					}
 
-					if (mapId > 63 + ZS.OverworldManager.worldOffset)
+					if (mapId >= ZS.OverworldManager.WorldOffsetEnd)
 					{
 						return;
 					}
@@ -345,11 +333,6 @@ namespace ZeldaFullEditor
 					{
 						tilesgfxBitmap.Palette = ZS.OverworldManager.allmaps[mapId].gfxBitmap.Palette;
 					}
-
-					//scene.Invalidate(new Rectangle((scene.owForm.splitContainer1.Panel2.HorizontalScroll.Value), (scene.owForm.splitContainer1.Panel2.VerticalScroll.Value), (scene.owForm.splitContainer1.Panel2.Width), (scene.owForm.splitContainer1.Panel2.Height)));
-					//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-					//this.Refresh();
-					//this.Invalidate(new Rectangle((mouseTileX * 16)-16, (mouseTileY * 16)-16, (selectedTileSizeX * 16)+32, (y * 16)+32));
 				}
 			}
 			
@@ -357,11 +340,6 @@ namespace ZeldaFullEditor
 
 		// TODO
 		private void Copy_Overlay()
-		{
-			throw new NotImplementedException();
-		}
-
-		private void Cut_Overlay()
 		{
 			throw new NotImplementedException();
 		}

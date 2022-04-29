@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,7 +12,6 @@ namespace ZeldaFullEditor.Data
 	{
 		public string Name => Species.VanillaName;
 		public byte ID => Species.ID;
-
 		public bool IsCurrentlyOverlord => ID > 0xF2;
 
 		/// <summary>
@@ -38,7 +38,7 @@ namespace ZeldaFullEditor.Data
 
 		public override bool PointIsInHitbox(int x, int y)
 		{
-			throw new NotImplementedException();
+			return base.PointIsInHitbox(x, y);
 		}
 
 		public bool Equals(OverworldSprite s)

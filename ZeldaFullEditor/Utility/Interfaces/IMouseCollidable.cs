@@ -1,4 +1,6 @@
-﻿namespace ZeldaFullEditor
+﻿using System.Drawing;
+
+namespace ZeldaFullEditor
 {
 	/// <summary>
 	/// Contains methods for objects to communicate collision with user control.
@@ -7,9 +9,9 @@
 	{
 		int RealX { get; }
 		int RealY { get; }
-		bool PointIsInHitbox(int x, int y);
 
-		// TODO
-		//bool IsCapturedByRectangle(Rectangle r);
+		Rectangle SquareHitbox { get; }
+
+		bool PointIsInHitbox(int x, int y);
 	}
 }

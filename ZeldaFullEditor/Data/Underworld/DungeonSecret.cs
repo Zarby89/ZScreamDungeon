@@ -18,7 +18,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public int RealX => NewX * 8;
 		public int RealY => NewY * 8;
-		public Rectangle OutlineBox => new Rectangle(RealX, RealY, 16, 16);
+		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, 16, 16);
 
 		private byte nx, ny;
 		public byte NewX

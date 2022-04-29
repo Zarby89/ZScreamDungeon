@@ -19,7 +19,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		public int RealY => NewY * 8;
 		public bool Lit { get; set; } = false;
 
-		public Rectangle OutlineBox => new Rectangle(RealX, RealY, 16, 16);
+		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, 16, 16);
 
 		public DungeonTorch()
 		{

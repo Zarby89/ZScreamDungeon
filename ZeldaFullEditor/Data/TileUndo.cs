@@ -35,7 +35,7 @@ namespace ZeldaFullEditor
 				{
 					int superX = ((mouseXDown + x) / 32);
 					int superY = ((mouseYDown + y) / 32);
-					int mapId = (superY * 8) + superX + ow.worldOffset;
+					int mapId = (superY * 8) + superX + ow.WorldOffset;
 					usedTiles[x + mouseXDown, y + mouseYDown] = savedTiles[i];
 					ow.allmaps[mapId].BuildMap();
 					ow.allmaps[mapId].CopyTile8bpp16(((mouseXDown + x) * 16) - (superX * 512), ((mouseYDown + y) * 16) - (superY * 512), savedTiles[i],
@@ -43,8 +43,6 @@ namespace ZeldaFullEditor
 					i++;
 				}
 			}
-
-			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 		}
 
 		public void RestoreRedo(Overworld ow)
@@ -56,20 +54,18 @@ namespace ZeldaFullEditor
 				{
 					int superX = ((mouseXDown + x) / 32);
 					int superY = ((mouseYDown + y) / 32);
-					int mapId = (superY * 8) + superX + ow.worldOffset; ;
+					int mapId = (superY * 8) + superX + ow.WorldOffset; ;
 					usedTiles[x + mouseXDown, y + mouseYDown] = redosavedTiles[i];
 					ow.allmaps[mapId].CopyTile8bpp16(((mouseXDown + x) * 16) - (superX * 512), ((mouseYDown + y) * 16) - (superY * 512),
 						redosavedTiles[i], ow.allmaps[mapId].gfxPtr, ow.ZS.GFXManager.mapblockset16);
 					i++;
 				}
 			}
-
-			//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
 		}
 
 		public object Clone()
 		{
-			return this.MemberwiseClone();
+			return MemberwiseClone();
 		}
 	}
 }

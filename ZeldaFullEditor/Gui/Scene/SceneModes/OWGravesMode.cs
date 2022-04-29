@@ -17,67 +17,58 @@ namespace ZeldaFullEditor
 
 		private void OnMouseDown_Graves(MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Left)
+			if (e.Button != MouseButtons.Left || MouseIsDown) return;
+			
+			for (int i = 0; i < 0x0F; i++)
 			{
-				for (int i = 0; i < 0x0F; i++)
+				// TODO IMouseCollidable
+				Gravestone en = ZS.OverworldManager.graves[i];
+				if (e.X >= en.xTilePos && e.X < en.xTilePos + 32 && e.Y >= en.yTilePos && e.Y < en.yTilePos + 32)
 				{
-					Gravestone en = ZS.OverworldManager.graves[i];
-					if (e.X >= en.xTilePos && e.X < en.xTilePos + 32 && e.Y >= en.yTilePos && e.Y < en.yTilePos + 32)
-					{
-						if (!MouseIsDown)
-						{
-							selectedGrave = en;
-							lastselectedGrave = en;
-							//scene.Invalidate(new Rectangle(scene.mainForm.panel5.HorizontalScroll.Value, scene.mainForm.panel5.VerticalScroll.Value, scene.mainForm.panel5.Width, scene.mainForm.panel5.Height));
-							MouseIsDown = true;
-						}
-					}
+					selectedGrave = en;
+					lastselectedGrave = en;
 				}
 			}
+			
 		}
 
 		private void OnMouseMove_Graves(MouseEventArgs e)
 		{
-			if (MouseIsDown)
+			if (!MouseIsDown) return;
+			
+			int mouseTileX = e.X / 16;
+			int mouseTileY = e.Y / 16;
+			int mapX = (mouseTileX / 32);
+			int mapY = (mouseTileY / 32);
+
+			mapHover = mapX + (mapY * 8);
+
+			if (selectedGrave != null)
 			{
-				int mouseTileX = e.X / 16;
-				int mouseTileY = e.Y / 16;
-				int mapX = (mouseTileX / 32);
-				int mapY = (mouseTileY / 32);
-
-				mapHover = mapX + (mapY * 8);
-
-				if (selectedGrave != null)
-				{
-					selectedGrave.xTilePos = (ushort) (snapToGrid ? e.X & ~0x7 : e.X);
-					selectedGrave.yTilePos = (ushort) (snapToGrid ? e.Y & ~0x7 : e.Y);
-				}
+				selectedGrave.xTilePos = (ushort) (snapToGrid ? e.X & ~0x7 : e.X);
+				selectedGrave.yTilePos = (ushort) (snapToGrid ? e.Y & ~0x7 : e.Y);
 			}
+			
 		}
 
 		private void OnMouseUp_Graves(MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Left)
+			if (e.Button != MouseButtons.Left || selectedGrave == null) return;
+						
+			if (mapHover >= 64)
 			{
-				if (selectedGrave != null)
-				{
-					if (mapHover >= 64)
-					{
-						mapHover -= 64;
-					}
-					int mx = mapHover - (mapHover & ~0x7);
-					int my = mapHover / 8;
-
-					byte xx = (byte) ((selectedGrave.xTilePos - (mx * 512)) / 16);
-					byte yy = (byte) ((selectedGrave.yTilePos - (my * 512)) / 16);
-
-					selectedGrave.tilemapPos = (ushort) ((((yy) << 6) | (xx & 0x3F)) << 1);
-
-					lastselectedGrave = selectedGrave;
-					selectedGrave = null;
-					MouseIsDown = false;
-				}
+				mapHover -= 64;
 			}
+			int mx = mapHover - (mapHover & ~0x7);
+			int my = mapHover / 8;
+
+			byte xx = (byte) ((selectedGrave.xTilePos - (mx * 512)) / 16);
+			byte yy = (byte) ((selectedGrave.yTilePos - (my * 512)) / 16);
+
+			selectedGrave.tilemapPos = (ushort) ((((yy) << 6) | (xx & 0x3F)) << 1);
+
+			lastselectedGrave = selectedGrave;
+			selectedGrave = null;
 		}
 
 

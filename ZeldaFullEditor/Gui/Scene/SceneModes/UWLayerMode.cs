@@ -10,7 +10,6 @@ namespace ZeldaFullEditor
 {
 	public partial class SceneUW
 	{
-
 		private void OnMouseDown_Layer(MouseEventArgs e)
 		{
 			if (ObjectToPlace == null)
@@ -21,8 +20,6 @@ namespace ZeldaFullEditor
 			CheckIfObjectIsInvalidForPlacement();
 
 			Room.AttemptToAddEntityAsSelected(ObjectToPlace, CurrentMode);
-
-			MouseIsDown = true;
 
 			ResetPlacementProperties();
 		}

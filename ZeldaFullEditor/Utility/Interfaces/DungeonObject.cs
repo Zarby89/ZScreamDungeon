@@ -8,7 +8,5 @@ namespace ZeldaFullEditor
 	public interface IDungeonPlaceable : IMouseCollidable
 	{
 		void Draw(ZScreamer ZS);
-
-		Rectangle OutlineBox { get; }
 	}
 }

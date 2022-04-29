@@ -1022,18 +1022,15 @@ namespace ZeldaFullEditor
 
 			if (anychange || (ZScreamer.ActiveOWScene?.HasUnsavedChanges ?? false))
 			{
-				ZScreamer.ActiveScreamer.all_rooms[ZScreamer.ActiveUWScene.Room.RoomID] = ZScreamer.ActiveUWScene.Room;
-
-				saved_changed = true;
-			}
-
-			if (saved_changed)
-			{
 				anychange = false;
 				
 				switch (UIText.WarnAboutSaving())
 				{
 					case DialogResult.Yes:
+						foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
+						{
+							r.FlushChanges();
+						}
 						saveToolStripMenuItem_Click(this, new EventArgs());
 						break;
 

@@ -49,7 +49,7 @@ namespace ZeldaFullEditor
 		{
 			text = text.ToUpper();
 			int cpos = 0;
-			int size = (ai == null && !x2) ? 16 : 8;
+			int size = (ai == null && !x2) ? 8 : 16;
 			int spacingmult = x2 ? 2 : 1;
 
 			foreach (char c in text)
@@ -96,14 +96,17 @@ namespace ZeldaFullEditor
 		{
 			try
 			{
+				MouseIsDown = true;
 				ActiveMode.OnMouseDown(e);
 			}
 			catch (ZeldaException ze)
 			{
 				UIText.GeneralWarning(ze.Message);
 			}
-
-			base.OnMouseDown(e);
+			finally
+			{
+				MouseIsDown = false;
+			}
 		}
 
 
@@ -111,6 +114,7 @@ namespace ZeldaFullEditor
 		{
 			try
 			{
+				MouseIsDown = false;
 				ActiveMode.OnMouseUp(e);
 			}
 			catch (ZeldaException ze)

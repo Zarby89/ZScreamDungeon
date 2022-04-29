@@ -82,5 +82,23 @@ namespace ZeldaFullEditor
 			g.FillRectangle(fill, r);
 			g.DrawRectangle(outline, r);
 		}
+		
+		public static void DrawFilledRectangleWithOutline(this Graphics g, Rectangle r, Pen outline, Brush fill)
+		{
+			g.FillRectangle(fill, r);
+			g.DrawRectangle(outline, r);
+		}
+
+		public static bool IsCapturedByRectangle<T>(this T me, Rectangle cap) where T : IMouseCollidable
+		{
+			return cap.IntersectsWith(me.SquareHitbox);
+		}
+		
+		public static bool MouseIsInHitbox<T>(this T me, MouseEventArgs e) where T : IMouseCollidable
+		{
+			return me.PointIsInHitbox(e.X, e.Y);
+		}
+
+
 	}
 }

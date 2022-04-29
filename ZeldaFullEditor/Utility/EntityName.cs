@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	/// <summary>
 	/// General class for defining names and properties of objects
@@ -20,7 +14,7 @@ namespace ZeldaFullEditor
 			Name = name;
 		}
 
-		public override string ToString() => string.Format("{0:2X} {1}", ID, Name);
+		public override string ToString() => $"{ID:X2} {Name}";
 	}
 
 	public class DungeonName : EntityName
@@ -35,7 +29,7 @@ namespace ZeldaFullEditor
 	public class RoomName : EntityName
 	{
 		public RoomName(int i, string n) : base(i, n) { }
-		public override string ToString() => string.Format("{0:3X} {1}", ID, Name);
+		public override string ToString() => $"{ID:X3} {Name}";
 	}
 
 	public class SpriteName : EntityName
@@ -61,7 +55,7 @@ namespace ZeldaFullEditor
 	public class RoomObjectName : EntityName
 	{
 		public RoomObjectName(int i, string n) : base(i, n) { }
-		public override string ToString() => string.Format("{0:3X} {1}", ID, Name);
+		public override string ToString() => $"{ID:X3} {Name}";
 
 	}
 	public class DoorObjectName : EntityName
