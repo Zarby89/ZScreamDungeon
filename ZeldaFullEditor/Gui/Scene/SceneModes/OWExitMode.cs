@@ -12,9 +12,9 @@ namespace ZeldaFullEditor
 {
 	public partial class SceneOW
 	{
-		private ExitOW selexit, lastexit;
+		private OverworldExit selexit, lastexit;
 
-		public ExitOW SelectedExit
+		public OverworldExit SelectedExit
 		{
 			get => selexit;
 			set
@@ -23,7 +23,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public ExitOW LastSelectedExit
+		public OverworldExit LastSelectedExit
 		{
 			get => lastexit;
 			set
@@ -35,17 +35,17 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public ExitOW AddExit(bool clipboard = false)
+		public OverworldExit AddExit(bool clipboard = false)
 		{
 			int found = -1;
 			for (int i = 0; i < ZS.OverworldManager.allexits.Length; i++)
 			{
 				if (ZS.OverworldManager.allexits[i].Deleted)
 				{
-					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.WorldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (mapHover + ZS.OverworldManager.WorldOffset);
+						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
 					}
 
 					ZS.OverworldManager.allexits[i].Deleted = false;
@@ -55,7 +55,7 @@ namespace ZeldaFullEditor
 
 					if (clipboard)
 					{
-						ExitOW data = (ExitOW) Clipboard.GetData(Constants.OverworldExitClipboardData);
+						OverworldExit data = (OverworldExit) Clipboard.GetData(Constants.OverworldExitClipboardData);
 						if (data != null)
 						{
 							ZS.OverworldManager.allexits[i].CameraX = data.CameraX;
@@ -90,12 +90,12 @@ namespace ZeldaFullEditor
 
 		private void OnMouseDown_Exit(MouseEventArgs e)
 		{
-			if (e.Button == MouseButtons.Left && !MouseIsDown)
+			if (e.Button == MouseButtons.Left)
 			{
 				for (int i = 0; i < 78; i++)
 				{
-					ExitOW en = ZS.OverworldManager.allexits[i];
-					if (en.IsInThisWorld(ZS.OverworldManager.WorldOffset) && en.MouseIsInHitbox(e))
+					OverworldExit en = ZS.OverworldManager.allexits[i];
+					if (en.IsInThisWorld(ZS.OverworldManager.World) && en.MouseIsInHitbox(e))
 					{
 						SelectedExit = LastSelectedExit = en;
 						break;
@@ -128,7 +128,7 @@ namespace ZeldaFullEditor
 				{
 					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
 					ZS.UnderworldScene.Room.reloadGfx();
-					ZS.UnderworldScene.TriggerRefresh = true;
+					ZS.UnderworldScene.Refresh();
 				}
 			}
 
@@ -146,10 +146,13 @@ namespace ZeldaFullEditor
 
 		private void OnMouseMove_Exit(MouseEventArgs e)
 		{
-			if (MouseIsDown)
+			if (!MouseIsDown)
 			{
-				MoveDestinationToMouse(SelectedExit, e);
+				FindHoveredEntity(ZS.OverworldManager.allexits, e);
+				return;
 			}
+
+			MoveDestinationToMouse(SelectedExit, e);
 		}
 
 		private void OnMouseUp_Exit(MouseEventArgs e)
@@ -216,33 +219,63 @@ namespace ZeldaFullEditor
 
 		public void Draw_Exit(Graphics g)
 		{
+			Brush bgrBrush;
+			Pen outline;
+
 			for (int i = 0; i < 78; i++)
 			{
-				ExitOW ex = ZS.OverworldManager.allexits[i];
+				OverworldExit ex = ZS.OverworldManager.allexits[i];
 
 				if (lowEndMode && ex.MapID != ZS.OverworldManager.allmaps[CurrentMap].parent)
 				{
 					continue;
 				}
 
-				if (ex.IsInThisWorld(ZS.OverworldManager.WorldOffset))
+				if (ex.IsInThisWorld(ZS.OverworldManager.World))
 				{
-					Brush bgrBrush = Constants.LightGray200Brush;
-
-					if (LastSelectedExit == ex || SelectedExit == ex)
+					string txt;
+					if (SelectedExit == ex)
 					{
-						bgrBrush = Constants.MediumGray200Brush;
-						g.DrawFilledRectangleWithOutline(ex.SquareHitbox, Constants.Black200Pen, bgrBrush);
-						drawText(g, ex.GlobalX + 4, ex.GlobalY + 4, $"{i:X2}");
+						bgrBrush = UIColors.ExitSelectedBrush;
+						outline = UIColors.OutlineSelectedPen;
 
 						g.DrawRectangle(Pens.LightPink, new Rectangle(ex.ScrollX, ex.ScrollY, 256, 224));
 						g.DrawLine(Pens.Blue, ex.CameraX - 8, ex.CameraY, ex.CameraX + 8, ex.CameraY);
 						g.DrawLine(Pens.Blue, ex.CameraX, ex.CameraY - 8, ex.CameraX, ex.CameraY + 8);
-						continue;
+					}
+					else if (hoveredEntity == ex)
+					{
+						bgrBrush = UIColors.ExitBrush;
+						outline = UIColors.OutlineHoverPen;
+					}
+					else
+					{
+						bgrBrush = UIColors.ExitBrush;
+						outline = UIColors.OutlinePen;
 					}
 
-					g.DrawFilledRectangleWithOutline(ex.SquareHitbox, Constants.Black200Pen, bgrBrush);
-					drawText(g, ex.GlobalX + 4, ex.GlobalY + 4, $"{i:X2}");
+					switch (ExitTextView)
+					{
+						case TextView.NeverShowName:
+							txt = $"{i:X2}";
+							break;
+
+						case TextView.AlwaysShowName:
+							txt = $"{i:X2} from {ex.TargetRoomID:X3}";
+							break;
+
+						default:
+						case TextView.ShowNameOnHover:
+							if (ex == SelectedExit || ex == hoveredEntity)
+							{
+								goto case TextView.AlwaysShowName;
+							}
+							goto case TextView.NeverShowName;
+					}
+
+					g.DrawFilledRectangleWithOutline(ex.SquareHitbox, outline, bgrBrush);
+
+					drawText(g, ex.GlobalX + 4, ex.GlobalY + 4, txt);
 				}
 			}
 		}

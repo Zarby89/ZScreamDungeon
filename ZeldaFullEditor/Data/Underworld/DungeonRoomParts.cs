@@ -10,6 +10,7 @@ namespace ZeldaFullEditor.Data.Underworld
 	{
 
 	}
+
 	public abstract class DungeonLister<T> : DungeonListing<T>, IByteable where T : IDungeonPlaceable, IByteable
 	{
 		public byte[] GetByteData()

@@ -13,14 +13,13 @@ namespace ZeldaFullEditor
 		// var to keep track whether to show the console or not
 		// 0 = dont show
 		// 5 = show
-		private static int showConsole = 5;
+		private static int showConsole = 0;
 
 		[DllImport("kernel32.dll")]
 		static extern IntPtr GetConsoleWindow();
 
 		[DllImport("user32.dll")]
 		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
 
 		public static DungeonMain DungeonForm { get; private set; }
 		public static DungeonMain MainForm { get; private set; }

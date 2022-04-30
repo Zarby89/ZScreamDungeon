@@ -12,17 +12,16 @@ namespace ZeldaFullEditor
 {
 	public partial class SceneOW
 	{
+		private const string NotInTheRain = "Can't add sprites to Dark World in rain state!";
+
 		private OverworldSprite selectedSprite;
 		private OverworldSprite lastselectedSprite;
 
-		bool isLeftPress = false;
 
 		Gui.AddSprite addspr = new Gui.AddSprite();
 
 		private void OnMouseDown_Sprites(MouseEventArgs e)
 		{
-			isLeftPress = e.Button == MouseButtons.Left;
-
 			for (int i = ZS.OverworldManager.WorldOffset; i < ZS.OverworldManager.WorldOffsetEnd; i++)
 			{
 				if (i > 159)
@@ -40,7 +39,6 @@ namespace ZeldaFullEditor
 					}
 				}
 			}
-
 		}
 
 		private void Copy_Sprites()
@@ -56,17 +54,17 @@ namespace ZeldaFullEditor
 			if (data != -1)
 			{
 				selectedFormSprite = new OverworldSprite(SpriteType.Sprite00); // TODO
-				byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.WorldOffset].parent;
+				byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
 				if (mid == 255)
 				{
-					mid = (byte) (mapHover + ZS.OverworldManager.WorldOffset);
+					mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
 				}
 
 				selectedFormSprite.MapID = mid;
 				int gs = ZS.OverworldManager.GameState;
 				if (mid >= 64 && gs == 0)
 				{
-					throw new ZeldaException("Can't add sprite in rain state in the Dark World!");
+					throw new ZeldaException(NotInTheRain);
 				}
 
 				ZS.OverworldManager.allsprites[gs].Add(selectedFormSprite);
@@ -82,10 +80,10 @@ namespace ZeldaFullEditor
 		{
 			if (e.Button == MouseButtons.Left)
 			{
-				byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.WorldOffset].parent;
+				byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
 				if (mid == 255)
 				{
-					mid = (byte) (mapHover + ZS.OverworldManager.WorldOffset);
+					mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
 				}
 
 				if (selectedFormSprite != null)
@@ -97,7 +95,7 @@ namespace ZeldaFullEditor
 					{
 						if (gs == 0)
 						{
-							throw new ZeldaException("Can't add sprite in rain state in the Dark World!");
+							throw new ZeldaException(NotInTheRain);
 						}
 					}
 
@@ -133,6 +131,20 @@ namespace ZeldaFullEditor
 				menu.Items[2].Click += deleteSprite_Click;
 				menu.Show(Cursor.Position);
 			}
+
+			Program.OverworldForm.objectGroupbox.Text = "Selected sprite";
+
+			if (lastselectedSprite != null)
+			{
+				Program.OverworldForm.SetSelectedObjectLabels(
+					lastselectedSprite.ID,
+					lastselectedSprite.MapX,
+					lastselectedSprite.MapY);
+				Program.OverworldForm.objCombobox.DataSource = DefaultEntities.ListOfTileTypes;
+				Program.OverworldForm.objCombobox.SelectedIndex = lastselectedSprite.ID;
+
+				Program.OverworldForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedSprite;
+			}
 		}
 
 		private void deleteSprite_Click(object sender, EventArgs e)
@@ -153,14 +165,14 @@ namespace ZeldaFullEditor
 				byte data = (byte) addspr.spriteListBox.SelectedIndex;
 				selectedFormSprite = new OverworldSprite(SpriteType.Sprite00)
 				{
-					GlobalX = (ushort) mouseX_Real,
-					GlobalY = (ushort) mouseY_Real,
+					GlobalX = (ushort) MouseX,
+					GlobalY = (ushort) MouseY,
 				}; // TODO
-				byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.WorldOffset].parent;
+				byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
 
 				if (mid == 255)
 				{
-					mid = (byte) (mapHover + ZS.OverworldManager.WorldOffset);
+					mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
 				}
 
 				selectedFormSprite.MapID = mid;
@@ -170,7 +182,7 @@ namespace ZeldaFullEditor
 				{
 					if (gs == 0)
 					{
-						throw new ZeldaException("Can't add sprite in rain state in the Dark World!");
+						throw new ZeldaException(NotInTheRain);
 					}
 				}
 
@@ -184,23 +196,24 @@ namespace ZeldaFullEditor
 
 		private void OnMouseMove_Sprites(MouseEventArgs e)
 		{
-			if (!MouseIsDown) return;
-			
-			if (selectedFormSprite != null)
+			if (!MouseIsDown)
 			{
-				selectedFormSprite.MapX = (byte) (e.X & ~0xF);
-				selectedFormSprite.MapY = (byte) (e.Y & ~0xF);
+				FindHoveredEntity(ZS.OverworldManager.allsprites[ZS.OverworldManager.GameState], e);
+				return;
 			}
 
-			if (isLeftPress)
+			if (selectedFormSprite != null)
 			{
-				mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
+				selectedFormSprite.GlobalX = (ushort) (e.X & ~0xF);
+				selectedFormSprite.GlobalY = (ushort) (e.Y & ~0xF);
+				selectedFormSprite.SnapToGrid();
+			}
 
-				if (selectedSprite != null)
-				{
-					selectedSprite.MapX = (byte) (e.X & ~0xF);
-					selectedSprite.MapY = (byte) (e.Y & ~0xF);
-				}
+			if (isLeftPress && selectedSprite != null)
+			{
+				selectedSprite.GlobalX = (ushort) e.X;
+				selectedSprite.GlobalY = (ushort) e.Y;
+				selectedSprite.SnapToGrid();
 			}
 		}
 
@@ -208,7 +221,6 @@ namespace ZeldaFullEditor
 		{
 			if (lastselectedSprite == null) return;
 
-			
 			for (int i = ZS.OverworldManager.WorldOffset; i < ZS.OverworldManager.WorldOffsetEnd; i++)
 			{
 				ZS.OverworldManager.allsprites[ZS.OverworldManager.GameState].Remove(lastselectedSprite);
@@ -219,7 +231,8 @@ namespace ZeldaFullEditor
 
 		public void Draw_Sprites(Graphics g)
 		{
-			Brush bgrBrush = Constants.VibrantMagenta200Brush;
+			Brush bgrBrush;
+			Pen outline;
 
 			for (int i = 0; i < ZS.OverworldManager.allsprites[ZS.OverworldManager.GameState].Count; i++)
 			{
@@ -230,10 +243,46 @@ namespace ZeldaFullEditor
 					continue;
 				}
 
-				if (spr.IsInThisWorld(ZS.OverworldManager.WorldOffset))
+				if (spr.IsInThisWorld(ZS.OverworldManager.World))
 				{
-					g.DrawFilledRectangleWithOutline(spr.SquareHitbox, Constants.Black200Pen, bgrBrush);
-					drawText(g, spr.RealX + 4, spr.RealY + 4, spr.Name);
+					if (spr == selectedSprite)
+					{
+						bgrBrush = UIColors.SpriteSelectedBrush;
+						outline = UIColors.OutlineSelectedPen;
+					}
+					else if (hoveredEntity == spr)
+					{
+						bgrBrush = UIColors.SpriteBrush;
+						outline = UIColors.OutlineHoverPen;
+					}
+					else
+					{
+						bgrBrush = UIColors.SpriteBrush;
+						outline = UIColors.OutlinePen;
+					}
+
+					string txt;
+					switch (SpriteTextView)
+					{
+						case TextView.NeverShowName:
+							txt = $"{spr.ID:X2}";
+							break;
+
+						case TextView.AlwaysShowName:
+							txt = $"{spr.ID:X2} - {spr.Name}";
+							break;
+
+						default:
+						case TextView.ShowNameOnHover:
+							if (spr == selectedSprite || spr == hoveredEntity)
+							{
+								goto case TextView.AlwaysShowName;
+							}
+							goto case TextView.NeverShowName;
+					}
+
+					g.DrawFilledRectangleWithOutline(spr.SquareHitbox, outline, bgrBrush);
+					drawText(g, spr.GlobalX + 4, spr.GlobalY + 4, txt);
 				}
 			}
 		}

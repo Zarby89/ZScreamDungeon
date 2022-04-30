@@ -14,6 +14,12 @@ namespace ZeldaFullEditor
 		public ushort CameraY { get; set; }
 		public ushort VRAMBase { get; set; }
 
+		public override void SnapToGrid()
+		{
+			GlobalX &= 0xFFF8;
+			GlobalY &= 0xFFF8;
+		}
+
 		public void UpdateMapProperties(bool isLarge)
 		{
 			int large = 256;

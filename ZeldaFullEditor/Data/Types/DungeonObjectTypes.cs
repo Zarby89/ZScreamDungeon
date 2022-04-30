@@ -4,6 +4,7 @@ using static ZeldaFullEditor.DungeonObjectSizeability;
 using System.Linq;
 using System.Collections.Generic;
 using ZeldaFullEditor.Data.Underworld;
+using System.Collections.Immutable;
 
 namespace ZeldaFullEditor.Data
 {
@@ -11,19 +12,19 @@ namespace ZeldaFullEditor.Data
 	{
 		public string VanillaName { get; }
 		public DungeonObjectSet ObjectSet { get; }
-		public byte ID { get; }
 		public DungeonObjectSizeability Resizeability { get; }
 
 		public DrawObject Draw { get; }
 		public SpecialObjectType Specialness { get; }
 
 		public DungeonLimits LimitClass { get; }
+
 		/// <summary>
 		/// What tile sets this object doesn't look like garbage in
 		/// </summary>
-		public List<byte> PrettyTileSets { get; }
+		public ImmutableArray<byte> PrettyTileSets { get; }
 
-		public List<RoomObjectCategory> Categories { get; }
+		public ImmutableArray<RoomObjectCategory> Categories { get; }
 
 		public ushort FullID { get; }
 
@@ -35,27 +36,26 @@ namespace ZeldaFullEditor.Data
 			string name = "PROBLEM";
 
 			ObjectSet = (DungeonObjectSet) (objectid >> 8);
-			ID = (byte) objectid;
 			FullID = objectid;
 
 			switch (ObjectSet)
 			{
 				case DungeonObjectSet.Subtype1:
-					name = DefaultEntities.ListOfSet0RoomObjects[ID].Name;
+					name = DefaultEntities.ListOfSet0RoomObjects[(byte) objectid].Name;
 					break;
 				case DungeonObjectSet.Subtype2:
-					name = DefaultEntities.ListOfSet1RoomObjects[ID].Name;
+					name = DefaultEntities.ListOfSet1RoomObjects[(byte) objectid].Name;
 					break;
 				case DungeonObjectSet.Subtype3:
-					name = DefaultEntities.ListOfSet2RoomObjects[ID].Name;
+					name = DefaultEntities.ListOfSet2RoomObjects[(byte) objectid].Name;
 					break;
 			}
 
 			VanillaName = name;
 			Resizeability = resizing;
 			Specialness = special;
-			Categories = categories.ToList();
-			PrettyTileSets = gsets.ToList();
+			Categories = categories.ToImmutableArray();
+			PrettyTileSets = gsets.ToImmutableArray();
 			LimitClass = limit;
 			Draw = drawfunc;
 		}

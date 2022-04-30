@@ -309,7 +309,7 @@ namespace ZeldaFullEditor
 			ushort emptyroom = (ushort) (datapointer.PCtoSNES() & 0xFFFF);
 
 			ROM[datapointer++] = 0x00;
-			ROM[datapointer++] = Constants.SpriteTerminator;
+			ROM[datapointer++] = Constants.SpriteSentinel;
 
 			foreach (var room in all_rooms)
 			{
@@ -323,7 +323,7 @@ namespace ZeldaFullEditor
 
 				ROM[datapointer++] = (byte) (room.MultiLayerOAM ? 1 : 0);
 				ROM.WriteContinuous(ref datapointer, room.SpritesList.GetByteData());
-				ROM[datapointer++] = Constants.SpriteTerminator;
+				ROM[datapointer++] = Constants.SpriteSentinel;
 			}
 
 			if (datapointer > Offsets.sprites_end_data)
@@ -514,7 +514,7 @@ namespace ZeldaFullEditor
 						ROM.WriteContinuous(ref dataPos, spr.GetByteData());
 					}
 
-					ROM[dataPos++] = Constants.SpriteTerminator;
+					ROM[dataPos++] = Constants.SpriteSentinel;
 				}
 				else
 				{
@@ -565,18 +565,18 @@ namespace ZeldaFullEditor
 		{
 			for (int i = 0, j = 0; i < 0x11; i++, j += 2)
 			{
-				ROM.Write16(Offsets.OWExitMapIdWhirlpool + j, OverworldManager.allWhirlpools[i].MapID);
-				ROM.Write16(Offsets.OWExitXScrollWhirlpool + j, OverworldManager.allWhirlpools[i].ScrollX);
-				ROM.Write16(Offsets.OWExitYScrollWhirlpool + j, OverworldManager.allWhirlpools[i].ScrollY);
-				ROM.Write16(Offsets.OWExitXCameraWhirlpool + j, OverworldManager.allWhirlpools[i].CameraX);
-				ROM.Write16(Offsets.OWExitYCameraWhirlpool + j, OverworldManager.allWhirlpools[i].CameraY);
-				ROM.Write16(Offsets.OWExitVramWhirlpool + j, OverworldManager.allWhirlpools[i].VRAMBase);
-				ROM.Write16(Offsets.OWExitXPlayerWhirlpool + j, OverworldManager.allWhirlpools[i].GlobalX);
-				ROM.Write16(Offsets.OWExitYPlayerWhirlpool + j, OverworldManager.allWhirlpools[i].GlobalY);
+				ROM.Write16(Offsets.OWExitMapIdWhirlpool + j, OverworldManager.AllTransports[i].MapID);
+				ROM.Write16(Offsets.OWExitXScrollWhirlpool + j, OverworldManager.AllTransports[i].ScrollX);
+				ROM.Write16(Offsets.OWExitYScrollWhirlpool + j, OverworldManager.AllTransports[i].ScrollY);
+				ROM.Write16(Offsets.OWExitXCameraWhirlpool + j, OverworldManager.AllTransports[i].CameraX);
+				ROM.Write16(Offsets.OWExitYCameraWhirlpool + j, OverworldManager.AllTransports[i].CameraY);
+				ROM.Write16(Offsets.OWExitVramWhirlpool + j, OverworldManager.AllTransports[i].VRAMBase);
+				ROM.Write16(Offsets.OWExitXPlayerWhirlpool + j, OverworldManager.AllTransports[i].GlobalX);
+				ROM.Write16(Offsets.OWExitYPlayerWhirlpool + j, OverworldManager.AllTransports[i].GlobalY);
 
 				if (i > 8)
 				{
-					ROM.Write16(Offsets.OWWhirlpoolPosition + ((i - 9) * 2), OverworldManager.allWhirlpools[i].whirlpoolPos);
+					ROM.Write16(Offsets.OWWhirlpoolPosition + ((i - 9) * 2), OverworldManager.AllTransports[i].whirlpoolPos);
 				}
 			}
 		}
@@ -863,8 +863,7 @@ namespace ZeldaFullEditor
 
 			if (pos > 0x137FFF)
 			{
-				// TODO messagebox for failure "Too many maps data {pos:X6}"
-				throw new ZeldaException("FIP");
+				throw new ZeldaException("Too much map data {pos:X6}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			}
 
 			SaveLargeMaps();

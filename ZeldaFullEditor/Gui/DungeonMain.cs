@@ -58,7 +58,7 @@ namespace ZeldaFullEditor
 		private readonly List<SpritePreview> listofspritesobjects = new List<SpritePreview>();
 
 		// Groups of options for the Scene
-		public bool showSprites => showSpritesToolStripMenuItem.Checked;
+		public bool ShowSprites => showSpritesToolStripMenuItem.Checked;
 		public bool showChest => hideChestItemsToolStripMenuItem.Checked;
 		public bool showItems => hideItemsToolStripMenuItem.Checked;
 		public bool showDoorsIDs => showDoorIDsToolStripMenuItem.Checked;
@@ -430,7 +430,7 @@ namespace ZeldaFullEditor
 			objectViewer1.updateSize();
 			spritesView1.updateSize();
 
-			ZScreamer.ActiveUWScene.TriggerRefresh = true;
+			ZScreamer.ActiveUWScene.Refresh();
 
 			undoButton.Enabled = true;
 			redoButton.Enabled = true;
@@ -475,7 +475,7 @@ namespace ZeldaFullEditor
 					ZScreamer.ActiveUWScene.Room.reloadGfx();
 					ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
 					ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
-					ZScreamer.ActiveUWScene.TriggerRefresh = true;
+					ZScreamer.ActiveUWScene.Refresh();
 
 					gb.DrawImage(ZScreamer.ActiveUWScene.tempBitmap, new Point((i % 16) * 512, (i / 16) * 512));
 					//activeScene.DrawToBitmap(b, new Rectangle(cx * 512, cy * 512, 512, 512));
@@ -808,7 +808,7 @@ namespace ZeldaFullEditor
 			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
 			{
 				ZScreamer.ActiveUWScene.showLayer1 = showBG1ToolStripMenuItem.Checked;
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 			}
 		}
 
@@ -948,7 +948,7 @@ namespace ZeldaFullEditor
 		{
 			ZScreamer.ActiveUWScene.MouseIsDown = false;
 			ZScreamer.ActiveUWScene.Room.SendAllSelectedToFront();
-			ZScreamer.ActiveUWScene.TriggerRefresh = true;
+			ZScreamer.ActiveUWScene.Refresh();
 		}
 
 		/// <summary>
@@ -958,7 +958,7 @@ namespace ZeldaFullEditor
 		{
 			ZScreamer.ActiveUWScene.MouseIsDown = false;
 			ZScreamer.ActiveUWScene.Room.SendAllSelectedToBack();
-			ZScreamer.ActiveUWScene.TriggerRefresh = true;
+			ZScreamer.ActiveUWScene.Refresh();
 		}
 
 		private void toolStripMenuItem4_Click(object sender, EventArgs e)
@@ -968,7 +968,7 @@ namespace ZeldaFullEditor
 
 		private void textSpriteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveUWScene.TriggerRefresh = true;
+			ZScreamer.ActiveUWScene.Refresh();
 		}
 
 		private void insertToolStripMenuItem_Click(object sender, EventArgs e)
@@ -995,7 +995,7 @@ namespace ZeldaFullEditor
 		{
 			ZScreamer.ActiveUWScene.MouseIsDown = false;
 			ZScreamer.ActiveUWScene.Room.SendAllSelectedToLayer(layer);
-			ZScreamer.ActiveUWScene.TriggerRefresh = true;
+			ZScreamer.ActiveUWScene.Refresh();
 		}
 
 		private void zscreamForm_FormClosing_1(object sender, FormClosingEventArgs e)
@@ -1045,7 +1045,7 @@ namespace ZeldaFullEditor
 		private void showBG2ToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ZScreamer.ActiveUWScene.showLayer2 = showBG2ToolStripMenuItem.Checked;
-			ZScreamer.ActiveUWScene.TriggerRefresh = true;
+			ZScreamer.ActiveUWScene.Refresh();
 		}
 		//private void exportProjectAsROMToolStripMenuItem_Click(object sender, EventArgs e)
 		//{
@@ -1101,30 +1101,6 @@ namespace ZeldaFullEditor
 
 			EntranceProperties_Exit.HexValue = en.Exit;
 
-			// Jared_Brian_: commented out because it is unused?
-			/*
-            bool b = false;
-            bool r = false;
-
-            if ((en.Scrollquadrant & 0xF0) != 0x00)
-            {
-                r = false;//0x2X
-            }
-            else
-            {
-                r = true; //0x0X
-            }
-
-            if ((en.Scrollquadrant & 0x0F) == 0x00)
-            {
-                b = false; //0xX0
-            }
-            else
-            {
-                b = true; //0xX2
-            }
-            */
-
 			if (en.Ladderbg.BitIsOn(0x10))
 			{
 				entranceProperty_bg.Checked = true;
@@ -1142,7 +1118,7 @@ namespace ZeldaFullEditor
 					ZScreamer.ActiveUWScene.Room.reloadGfx();
 				}
 
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 			}
 
 			entranceProperty_vscroll.Checked = en.Scrolling.BitIsOn(0x02);
@@ -1274,7 +1250,7 @@ namespace ZeldaFullEditor
 					spr.KeyDrop = 0;
 				}
 				s.KeyDrop = (byte) comboBox1.SelectedIndex;
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 			}
 		}
 
@@ -1288,7 +1264,7 @@ namespace ZeldaFullEditor
 			if (selecteditemobjectCombobox.SelectedIndex != -1 && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is DungeonSecret p)
 			{
 				p.SecretType = SecretItemType.GetTypeFromID((byte) (selecteditemobjectCombobox.SelectedItem as SecretsName).ID);
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 			}
 		}
 
@@ -1323,7 +1299,7 @@ namespace ZeldaFullEditor
 			}
 			else
 			{
-				var r = ZScreamer.ActiveScreamer.all_rooms[roomId].Clone();
+				var r = ZScreamer.ActiveScreamer.all_rooms[roomId];
 
 				/*
                 if (DungeonsData.undoRoom[r.index].Count == 0)
@@ -1385,7 +1361,7 @@ namespace ZeldaFullEditor
 				ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
 				Program.DungeonForm.SetPalettesBlack();
 				//paletteViewer.update();
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 
 				objectViewer1.updateSize();
 				spritesView1.updateSize();
@@ -1523,7 +1499,7 @@ namespace ZeldaFullEditor
 				d.DoorTiles = ZScreamer.ActiveScreamer.TileLister.GetDoorTileSet(b);
 				d.DoorType = DungeonDoorType.GetTypeFromID(b);
 				ZScreamer.ActiveUWScene.Room.HasUnsavedChanges = true;
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 			}
 		}
 
@@ -1629,13 +1605,18 @@ namespace ZeldaFullEditor
 
 		public void UpdateUIForRoom(DungeonRoom room, bool prevent = true)
 		{
+			if (room == null)
+			{
+				return;
+			}
+
 			propertiesChangedFromForm = prevent;
 
-			roomProperty_bg2.SelectedIndex = (int) room.Layer2Mode;
-			roomProperty_tag1.SelectedIndex = (int) room.Tag1;
-			roomProperty_tag2.SelectedIndex = (int) room.Tag2;
+			roomProperty_bg2.SelectedIndex = room.Layer2Mode;
+			roomProperty_tag1.SelectedIndex = room.Tag1;
+			roomProperty_tag2.SelectedIndex = room.Tag2;
 			roomProperty_effect.SelectedItem = room.LayerMerging;
-			roomProperty_collision.SelectedIndex = (int) room.Layer2Behavior;
+			roomProperty_collision.SelectedIndex = room.Layer2Behavior;
 
 			roomProperty_pit.Checked = room.HasDamagingPits;
 			roomProperty_sortsprite.Checked = room.MultiLayerOAM;
@@ -1654,11 +1635,11 @@ namespace ZeldaFullEditor
 			RoomProperty_DestinationStair3.HexValue = room.Stair3.Target;
 			RoomProperty_DestinationStair4.HexValue = room.Stair4.Target;
 
-			bg2checkbox1.Checked = room.Pits.Layer == 2;
-			bg2checkbox2.Checked = room.Stair1.Layer == 2;
-			bg2checkbox3.Checked = room.Stair2.Layer == 2;
-			bg2checkbox4.Checked = room.Stair3.Layer == 2;
-			bg2checkbox5.Checked = room.Stair4.Layer == 2;
+			bg2checkbox1.Checked = room.Pits.TargetLayer == 2;
+			bg2checkbox2.Checked = room.Stair1.TargetLayer == 2;
+			bg2checkbox3.Checked = room.Stair2.TargetLayer == 2;
+			bg2checkbox4.Checked = room.Stair3.TargetLayer == 2;
+			bg2checkbox5.Checked = room.Stair4.TargetLayer == 2;
 
 			propertiesChangedFromForm = false;
 		}
@@ -1688,11 +1669,11 @@ namespace ZeldaFullEditor
 				ZScreamer.ActiveUWScene.Room.Stair3.Target = (byte) RoomProperty_DestinationStair3.HexValue;
 				ZScreamer.ActiveUWScene.Room.Stair4.Target = (byte) RoomProperty_DestinationStair4.HexValue;
 
-				ZScreamer.ActiveUWScene.Room.Pits.Layer = (byte) (bg2checkbox1.Checked ? 2 : 0);
-				ZScreamer.ActiveUWScene.Room.Stair1.Layer = (byte) (bg2checkbox2.Checked ? 2 : 0);
-				ZScreamer.ActiveUWScene.Room.Stair2.Layer = (byte) (bg2checkbox3.Checked ? 2 : 0);
-				ZScreamer.ActiveUWScene.Room.Stair3.Layer = (byte) (bg2checkbox4.Checked ? 2 : 0);
-				ZScreamer.ActiveUWScene.Room.Stair4.Layer = (byte) (bg2checkbox5.Checked ? 2 : 0);
+				ZScreamer.ActiveUWScene.Room.Pits.TargetLayer = (byte) (bg2checkbox1.Checked ? 2 : 0);
+				ZScreamer.ActiveUWScene.Room.Stair1.TargetLayer = (byte) (bg2checkbox2.Checked ? 2 : 0);
+				ZScreamer.ActiveUWScene.Room.Stair2.TargetLayer = (byte) (bg2checkbox3.Checked ? 2 : 0);
+				ZScreamer.ActiveUWScene.Room.Stair3.TargetLayer = (byte) (bg2checkbox4.Checked ? 2 : 0);
+				ZScreamer.ActiveUWScene.Room.Stair4.TargetLayer = (byte) (bg2checkbox5.Checked ? 2 : 0);
 
 				ZScreamer.ActiveUWScene.Room.HasDamagingPits = roomProperty_pit.Checked;
 				ZScreamer.ActiveUWScene.Room.MultiLayerOAM = roomProperty_sortsprite.Checked;
@@ -1716,7 +1697,7 @@ namespace ZeldaFullEditor
 				ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
 				ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
 				Program.DungeonForm.SetPalettesBlack();
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 				ZScreamer.ActiveUWScene.Room.HasUnsavedChanges = true;
 				checkAnyChanges();
 			}
@@ -1811,7 +1792,7 @@ namespace ZeldaFullEditor
 					ZScreamer.ActiveUWScene.Room.reloadGfx();
 				}
 
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 				ZScreamer.ActiveUWScene.Room.HasUnsavedChanges = true;
 			}
 		}
@@ -1928,7 +1909,7 @@ namespace ZeldaFullEditor
 				ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
 				Program.DungeonForm.SetPalettesBlack();
 
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 				spritesView1.updateSize();
 				spritesView1.Refresh();
 				objectViewer1.updateSize();
@@ -2029,7 +2010,7 @@ namespace ZeldaFullEditor
 							ZScreamer.ActiveUWScene.Room.reloadGfx();
 							ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
 							ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
-							ZScreamer.ActiveUWScene.TriggerRefresh = true;
+							ZScreamer.ActiveUWScene.Refresh();
 
 							gb.DrawImage(ZScreamer.ActiveUWScene.tempBitmap, new Point(cx * 512, cy * 512));
 							//activeScene.DrawToBitmap(b, new Rectangle(cx * 512, cy * 512, 512, 512));
@@ -2065,7 +2046,7 @@ namespace ZeldaFullEditor
 			ZScreamer.ActiveUWScene.Room.reloadGfx();
 			ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
 			ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
-			ZScreamer.ActiveUWScene.TriggerRefresh = true;
+			ZScreamer.ActiveUWScene.Refresh();
 		}
 
 		private void litCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -2246,7 +2227,7 @@ namespace ZeldaFullEditor
 		private void clearSelectedRoomToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ZScreamer.ActiveUWScene.Room.ClearAll();
-			ZScreamer.ActiveUWScene.TriggerRefresh = true;
+			ZScreamer.ActiveUWScene.Refresh();
 		}
 
 		private void clearAllRoomsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2258,7 +2239,7 @@ namespace ZeldaFullEditor
 					r.ClearAll();
 				}
 
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 			}
 		}
 
@@ -2741,7 +2722,7 @@ namespace ZeldaFullEditor
 					{
 						ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
 						ZScreamer.ActiveUWScene.Room.reloadGfx();
-						ZScreamer.ActiveUWScene.TriggerRefresh = true;
+						ZScreamer.ActiveUWScene.Refresh();
 					}
 				}
 
@@ -3033,7 +3014,7 @@ namespace ZeldaFullEditor
 				spriteoverlordCheckbox.Checked = s.IsCurrentlyOverlord;
 				comboBox1.SelectedIndex = s.KeyDrop;
 
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 			}
 
 
@@ -3337,7 +3318,7 @@ namespace ZeldaFullEditor
 			byte[] sprites_buffer = new byte[sprdata.Length + 2];
 
 			sprites_buffer[0] = 0x00;
-			sprites_buffer[sprdata.Length + 1] = Constants.SpriteTerminator;
+			sprites_buffer[sprdata.Length + 1] = Constants.SpriteSentinel;
 
 			sprdata.CopyTo(sprites_buffer, 1);
 
@@ -3638,8 +3619,6 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// Runs when the save only maps button is clicked.
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void saveMapsOnlyToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			try
@@ -3927,7 +3906,7 @@ namespace ZeldaFullEditor
 				UIText.GeneralWarning("The count of openable doors and shutter doors is too high and may result in weird behaviot");
 			}
 
-			ZScreamer.ActiveUWScene.TriggerRefresh = true;
+			ZScreamer.ActiveUWScene.Refresh();
 		}
 
 		// TODO magic points and merge identical functions

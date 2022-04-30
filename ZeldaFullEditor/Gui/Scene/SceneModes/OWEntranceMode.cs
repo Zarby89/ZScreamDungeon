@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -10,9 +11,9 @@ namespace ZeldaFullEditor
 {
 	public partial class SceneOW
 	{
-		private EntranceOWEditor selentrance, lastentrance;
+		private OverworldEntrance selentrance, lastentrance;
 
-		public EntranceOWEditor SelectedEntrance
+		public OverworldEntrance SelectedEntrance
 		{
 			get => selentrance;
 			set
@@ -21,7 +22,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public EntranceOWEditor LastSelectedEntrance
+		public OverworldEntrance LastSelectedEntrance
 		{
 			get => lastentrance;
 			set
@@ -33,13 +34,13 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public EntranceOWEditor AddEntrance(bool clipboard = false)
+		public OverworldEntrance AddEntrance(bool clipboard = false)
 		{
 			byte entranceID = 0;
 			bool ishole = false;
 			if (clipboard)
 			{
-				EntranceOWEditor data = (EntranceOWEditor) Clipboard.GetData(Constants.OverworldEntranceClipboardData);
+				OverworldEntrance data = (OverworldEntrance) Clipboard.GetData(Constants.OverworldEntranceClipboardData);
 				if (data != null)
 				{
 					entranceID = data.TargetEntranceID;
@@ -47,122 +48,78 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			int found = -1;
-			if (ishole)
+			OverworldEntrance[] list = ishole ? ZS.OverworldManager.allholes : ZS.OverworldManager.allentrances;
+			OverworldEntrance found = null;
+
+			foreach (var e in list)
 			{
-				for (int i = 0; i < ZS.OverworldManager.allholes.Length; i++)
+				if (e.deleted)
 				{
-					if (ZS.OverworldManager.allholes[i].deleted)
-					{
-						byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.WorldOffset].parent;
-						if (mid == 255)
-						{
-							mid = (byte) (mapHover + ZS.OverworldManager.WorldOffset);
-						}
-						ZS.OverworldManager.allholes[i].deleted = false;
-						ZS.OverworldManager.allholes[i].MapID = mid;
-						ZS.OverworldManager.allholes[i].GlobalX = (ushort) (mxRightclick & ~0x0F);
-						ZS.OverworldManager.allholes[i].GlobalY = (ushort) (myRightclick & ~0x0F);
-						ZS.OverworldManager.allholes[i].TargetEntranceID = entranceID;
-
-						found = i;
-						SelectedEntrance = ZS.OverworldManager.allholes[i];
-						MouseIsDown = true;
-						isLeftPress = true;
-
-						break;
-					}
-				}
-			}
-			else
-			{
-				for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
-				{
-					if (ZS.OverworldManager.allentrances[i].deleted)
-					{
-						byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.WorldOffset].parent;
-						if (mid == 255)
-						{
-							mid = (byte) (mapHover + ZS.OverworldManager.WorldOffset);
-						}
-						ZS.OverworldManager.allentrances[i].deleted = false;
-						ZS.OverworldManager.allentrances[i].MapID = mid;
-						ZS.OverworldManager.allentrances[i].GlobalX = (ushort) (mxRightclick & ~0x0F);
-						ZS.OverworldManager.allentrances[i].GlobalY = (ushort) (myRightclick & ~0x0F);
-						ZS.OverworldManager.allentrances[i].TargetEntranceID = entranceID;
-
-						found = i;
-						SelectedEntrance = ZS.OverworldManager.allentrances[i];
-						MouseIsDown = true;
-						isLeftPress = true;
-
-						break;
-					}
+					found = e;
+					break;
 				}
 			}
 
-			if (found == -1)
+			if (found == null)
 			{
 				if (ishole)
 				{
-					throw new ZeldaException("No space available for new hole, delete one first");
+					throw new ZeldaException("No space available for new hole. Delete one first.");
 				}
 				else
 				{
-					throw new ZeldaException("No space available for new entrance, delete one first");
+					throw new ZeldaException("No space available for new entrance. Delete one first.");
 				}
 			}
 
-			return ZS.OverworldManager.allentrances[found];
+			byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
+			if (mid == 255)
+			{
+				mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
+			}
+
+			found.deleted = false;
+			found.MapID = mid;
+			found.GlobalX = (ushort) (mxRightclick & ~0x0F);
+			found.GlobalY = (ushort) (myRightclick & ~0x0F);
+			found.TargetEntranceID = entranceID;
+
+			SelectedEntrance = found;
+			MouseIsDown = true;
+			isLeftPress = true;
+
+			return found;
 		}
 
-		// TODO fucking mess it is; need a delegate to loop everything probably
 		private void OnMouseDown_Entrance(MouseEventArgs e)
 		{
-			if (MouseIsDown) return;
-			isLeftPress = e.Button == MouseButtons.Left;
-
-			for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
+			var f = new Func<OverworldEntrance[], OverworldEntrance>(list =>
 			{
-				EntranceOWEditor en = ZS.OverworldManager.allentrances[i];
-				if (en.IsInThisWorld(ZS.OverworldManager.WorldOffset) && en.MouseIsInHitbox(e))
+				foreach (var en in list)
 				{
-					if (e.Button == MouseButtons.Left)
+					if (en.IsInThisWorld(ZS.OverworldManager.World) && en.MouseIsInHitbox(e))
 					{
-						SelectedEntrance = LastSelectedEntrance = en;
-						
-					}
-					else if (e.Button == MouseButtons.Right)
-					{
-						LastSelectedEntrance = en;
-						mxRightclick = e.X;
-						myRightclick = e.Y;
+						return en;
 					}
 				}
+
+				return null;
+			});
+
+			LastSelectedEntrance = f(ZS.OverworldManager.allentrances) ?? f(ZS.OverworldManager.allholes);
+
+			if (e.Button == MouseButtons.Left)
+			{
+				SelectedEntrance = LastSelectedEntrance;
+			}
+			else if (e.Button == MouseButtons.Right)
+			{
+				mxRightclick = e.X;
+				myRightclick = e.Y;
 			}
 
-			for (int i = 0; i < ZS.OverworldManager.allholes.Length; i++)
-			{
-				EntranceOWEditor en = ZS.OverworldManager.allholes[i];
-				if (en.IsInThisWorld(ZS.OverworldManager.WorldOffset) && en.MouseIsInHitbox(e))
-				{
-					if (e.Button == MouseButtons.Left)
-					{
-						SelectedEntrance = LastSelectedEntrance = en;
-					}
-					else if (e.Button == MouseButtons.Right)
-					{
-						LastSelectedEntrance = en;
-						mxRightclick = e.X;
-						myRightclick = e.Y;
-					}
-				}
-			}
 
 			if (SelectedEntrance == null) return;
-			
-			//ZS.OverworldManagerForm.thumbnailBox.Visible = true;
-			//ZS.OverworldManagerForm.thumbnailBox.Size = new Size(256, 256);
 
 			int roomId = ZS.entrances[SelectedEntrance.TargetEntranceID].RoomID;
 			if (roomId >= Constants.NumberOfRooms)
@@ -185,12 +142,11 @@ namespace ZeldaFullEditor
 				{
 					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
 					ZS.UnderworldScene.Room.reloadGfx();
-					ZS.UnderworldScene.TriggerRefresh = true;
+					ZS.UnderworldScene.Refresh();
 				}
 			}
 
 			Program.DungeonForm.lastRoomID = roomId;
-			
 		}
 
 		public void DrawTempEntrance()
@@ -239,59 +195,6 @@ namespace ZeldaFullEditor
 			g.Dispose();
 		}
 
-		public void OnMouseDoubleClick_Entrance(MouseEventArgs e)
-		{
-			for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
-			{
-				EntranceOWEditor en = ZS.OverworldManager.allentrances[i];
-				if (en.IsInThisWorld(ZS.OverworldManager.WorldOffset) && en.MouseIsInHitbox(e))
-				{
-					if (e.Button == MouseButtons.Left)
-					{
-						TreeNode[] treeNodes = Program.DungeonForm.entrancetreeView.Nodes[0].Nodes
-								.Cast<TreeNode>()
-								.Where(r => (int) (r.Tag) == en.TargetEntranceID)
-								.ToArray();
-
-						if (treeNodes.Length != 0)
-						{
-							Program.DungeonForm.entrancetreeView.SelectedNode = treeNodes[0];
-						}
-
-						Program.DungeonForm.addRoomTab(ZS.entrances[en.TargetEntranceID].RoomID);
-						Program.DungeonForm.editorsTabControl.SelectedIndex = 0;
-						//Program.DungeonForm.dungeonButton_Click(Program.DungeonForm.dungeonButton, null);
-					}
-				}
-			}
-
-			for (int i = 0; i < ZS.OverworldManager.allholes.Length; i++)
-			{
-				EntranceOWEditor en = ZS.OverworldManager.allholes[i];
-				if (en.IsInThisWorld(ZS.OverworldManager.WorldOffset) && en.MouseIsInHitbox(e))
-				{
-					if (!MouseIsDown)
-					{
-						if (e.Button == MouseButtons.Left)
-						{
-							TreeNode[] treeNodes = Program.DungeonForm.entrancetreeView.Nodes[0].Nodes
-									.Cast<TreeNode>()
-									.Where(r => (int) (r.Tag) == en.TargetEntranceID)
-									.ToArray();
-
-							if (treeNodes.Length != 0)
-							{
-								Program.DungeonForm.entrancetreeView.SelectedNode = treeNodes[0];
-							}
-
-							Program.DungeonForm.addRoomTab(ZS.entrances[en.TargetEntranceID].RoomID);
-							Program.DungeonForm.editorsTabControl.SelectedIndex = 0;
-						}
-					}
-				}
-			}
-		}
-
 		private void Delete_Entrance()
 		{
 			LastSelectedEntrance.GlobalX = 0xFFFF;
@@ -304,15 +207,24 @@ namespace ZeldaFullEditor
 
 		private void OnMouseMove_Entrance(MouseEventArgs e)
 		{
-			mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
-
-			if (SelectedEntrance != null)
+			if (!MouseIsDown)
 			{
-				if (isLeftPress && MouseIsDown)
+				FindHoveredEntity(ZS.OverworldManager.allentrances, e);
+
+				if (hoveredEntity == null)
 				{
-					SelectedEntrance.GlobalX = (ushort) (e.X & ~0x0F);
-					SelectedEntrance.GlobalY = (ushort) (e.Y & ~0x0F);
+					FindHoveredEntity(ZS.OverworldManager.allholes, e);
+
 				}
+
+				return;
+			}
+
+			if (isLeftPress && SelectedEntrance != null)
+			{
+				SelectedEntrance.GlobalX = (ushort) e.X;
+				SelectedEntrance.GlobalY = (ushort) e.Y;
+				SelectedEntrance.SnapToGrid();
 			}
 		}
 
@@ -325,12 +237,11 @@ namespace ZeldaFullEditor
 			{
 				if (SelectedEntrance != null)
 				{
-					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.WorldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (mapHover + ZS.OverworldManager.WorldOffset);
+						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
 					}
-
 					SelectedEntrance.MapID = mid;
 					SelectedEntrance = null;
 				}
@@ -341,8 +252,8 @@ namespace ZeldaFullEditor
 			ContextMenuStrip menu = new ContextMenuStrip();
 			for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
 			{
-				EntranceOWEditor en = ZS.OverworldManager.allentrances[i];
-				if (en.IsInThisWorld(ZS.OverworldManager.WorldOffset) && en.MouseIsInHitbox(e))
+				OverworldEntrance en = ZS.OverworldManager.allentrances[i];
+				if (en.IsInThisWorld(ZS.OverworldManager.World) && en.MouseIsInHitbox(e))
 				{
 					menu.Items.Add("Add Entrance");
 					menu.Items.Add("Entrance Properties");
@@ -367,8 +278,8 @@ namespace ZeldaFullEditor
 			for (int i = 0; i < ZS.OverworldManager.allholes.Length; i++)
 			{
 
-				EntranceOWEditor en = ZS.OverworldManager.allholes[i];
-				if (en.IsInThisWorld(ZS.OverworldManager.WorldOffset) && en.MouseIsInHitbox(e))
+				OverworldEntrance en = ZS.OverworldManager.allholes[i];
+				if (en.IsInThisWorld(ZS.OverworldManager.World) && en.MouseIsInHitbox(e))
 				{
 					
 					menu.Items.Add("Add Entrance");
@@ -411,10 +322,10 @@ namespace ZeldaFullEditor
 			{
 				if (ZS.OverworldManager.allentrances[i].deleted)
 				{
-					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.WorldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (mapHover + ZS.OverworldManager.WorldOffset);
+						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
 					}
 					ZS.OverworldManager.allentrances[i].deleted = false;
 					ZS.OverworldManager.allentrances[i].MapID = mid;
@@ -427,7 +338,7 @@ namespace ZeldaFullEditor
 
 			if (!found)
 			{
-				throw new ZeldaException("No space available for new entrances, delete one first");
+				throw new ZeldaException("No space available for new entrances; Delete one first.");
 			}
 		}
 
@@ -461,49 +372,61 @@ namespace ZeldaFullEditor
 		private void Draw_Entrance(Graphics g)
 		{
 			Brush bgrBrush;
-			for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
+			Pen outline;
+
+			var draw = new Action<IEnumerable<OverworldEntrance>, SolidBrush, SolidBrush>((list, col, sel) =>
 			{
-				EntranceOWEditor e = ZS.OverworldManager.allentrances[i];
-				if (lowEndMode && e.MapID != ZS.OverworldManager.allmaps[CurrentMap].parent)
+				int i = 0;
+				foreach (var ent in list)
 				{
-					continue;
-				}
-
-				if (e.IsInThisWorld(ZS.OverworldManager.WorldOffset))
-				{
-					if (SelectedEntrance != null && e == SelectedEntrance)
+					if (ent.IsInThisWorld(ZS.OverworldManager.World))
 					{
-						bgrBrush = Constants.Azure200Brush;
-						drawText(g, e.GlobalX - 1, e.GlobalY + 26, "map : " + e.MapID.ToString());
-						drawText(g, e.GlobalX - 1, e.GlobalY + 36, "entrance : " + e.TargetEntranceID.ToString());
-						drawText(g, e.GlobalX - 1, e.GlobalY + 46, "mpos : " + e.mapPos.ToString());
+						string txt;
+						if (SelectedEntrance == ent)
+						{
+							bgrBrush = sel;
+							outline = UIColors.OutlineSelectedPen;
+						}
+						else if (hoveredEntity == ent)
+						{
+							bgrBrush = col;
+							outline = UIColors.OutlineHoverPen;
+						}
+						else
+						{
+							bgrBrush = col;
+							outline = UIColors.OutlinePen;
+						}
+
+						switch (SecretsTextView)
+						{
+							case TextView.NeverShowName:
+								txt = $"{i:X2}";
+								break;
+
+							case TextView.AlwaysShowName:
+								txt = $"{i:X2} is {ent.TargetEntranceID:X2} to {ZS.all_rooms[ZS.entrances[ent.TargetEntranceID].RoomID].Name}";
+								break;
+
+							default:
+							case TextView.ShowNameOnHover:
+								if (ent == SelectedEntrance || ent == hoveredEntity)
+								{
+									goto case TextView.AlwaysShowName;
+								}
+								goto case TextView.NeverShowName;
+						}
+
+						g.DrawFilledRectangleWithOutline(ent.SquareHitbox, outline, bgrBrush);
+
+						drawText(g, ent.GlobalX, ent.GlobalY + 9, txt);
+						i++;
 					}
-					else
-					{
-						bgrBrush = Constants.Goldenrod200Brush;
-					}
-
-					g.DrawFilledRectangleWithOutline(e.SquareHitbox, Constants.Black200Pen, bgrBrush);
-					drawText(g, e.GlobalX - 1, e.GlobalY + 9, e.TargetEntranceID.ToString("X2") + " - " + ZS.all_rooms[ZS.entrances[e.TargetEntranceID].RoomID].Name);
 				}
-			}
+			}); // end draw Action
 
-			for (int i = 0; i < ZS.OverworldManager.allholes.Length; i++)
-			{
-				EntranceOWEditor e = ZS.OverworldManager.allholes[i];
-				if (e.MapID != ZS.OverworldManager.allmaps[CurrentMap].parent)
-				{
-					continue;
-				}
-
-				if (e.IsInThisWorld(ZS.OverworldManager.WorldOffset))
-				{
-					bgrBrush = (e == SelectedEntrance) ? Constants.Azure200Brush : Constants.Charcoal200Brush;
-
-					g.DrawFilledRectangleWithOutline(e.SquareHitbox, outline: Constants.Black200Pen, fill: bgrBrush);
-					drawText(g, e.GlobalX - 1, e.GlobalY + 9, e.TargetEntranceID.ToString("X2") + " - " + ZS.all_rooms[ZS.entrances[e.TargetEntranceID].RoomID].Name);
-				}
-			}
+			draw(ZS.OverworldManager.allentrances, UIColors.EntranceBrush, UIColors.EntranceSelectedBrush);
+			draw(ZS.OverworldManager.allholes, UIColors.HoleEntranceBrush, UIColors.HoleEntranceSelectedBrush);
 		}
 	}
 }

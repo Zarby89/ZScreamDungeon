@@ -26,8 +26,8 @@ namespace ZeldaFullEditor
 		protected int MoveY;
 		protected int LastX;
 		protected int LastY;
-		protected int DraggingX;
-		protected int DraggingY;
+
+		protected bool isLeftPress = false;
 
 		protected ModeActions ActiveMode { get; set; } = ModeActions.Nothing;
 
@@ -75,9 +75,9 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		protected virtual void RequestRefresh()
+		public override void Refresh()
 		{
-			Refresh();
+			base.Refresh();
 		}
 
 		protected virtual void OnMouseWheel(object o, MouseEventArgs e)
@@ -94,18 +94,20 @@ namespace ZeldaFullEditor
 
 		protected virtual void OnMouseDown(object sender, MouseEventArgs e)
 		{
+			if (!MouseIsDown)
+			{
+				isLeftPress = e.Button == MouseButtons.Left;
+			}
+
 			try
 			{
-				MouseIsDown = true;
 				ActiveMode.OnMouseDown(e);
+				MouseIsDown = true;
 			}
 			catch (ZeldaException ze)
 			{
-				UIText.GeneralWarning(ze.Message);
-			}
-			finally
-			{
 				MouseIsDown = false;
+				UIText.GeneralWarning(ze.Message);
 			}
 		}
 
@@ -114,8 +116,8 @@ namespace ZeldaFullEditor
 		{
 			try
 			{
-				MouseIsDown = false;
 				ActiveMode.OnMouseUp(e);
+				MouseIsDown = false;
 			}
 			catch (ZeldaException ze)
 			{
@@ -126,6 +128,9 @@ namespace ZeldaFullEditor
 
 		protected virtual void OnMouseMove(object sender, MouseEventArgs e)
 		{
+			MouseX = e.X;
+			MouseY = e.Y;
+
 			try
 			{
 				ActiveMode.OnMouseMove(e);
@@ -133,6 +138,10 @@ namespace ZeldaFullEditor
 			catch (ZeldaException ze)
 			{
 				UIText.GeneralWarning(ze.Message);
+			}
+			finally
+			{
+				Refresh();
 			}
 		}
 
@@ -170,7 +179,7 @@ namespace ZeldaFullEditor
 				UIText.GeneralWarning(ze.Message);
 			}
 
-			RequestRefresh();
+			Refresh();
 		}
 
 		public virtual void Cut()
@@ -192,7 +201,7 @@ namespace ZeldaFullEditor
 				UIText.GeneralWarning(ze.Message);
 			}
 
-			RequestRefresh();
+			Refresh();
 		}
 
 		public virtual void Delete()
@@ -206,7 +215,7 @@ namespace ZeldaFullEditor
 			{
 				UIText.GeneralWarning(ze.Message);
 			}
-			RequestRefresh();
+			Refresh();
 		}
 
 		public virtual void SelectAll()

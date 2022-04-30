@@ -12,11 +12,7 @@ namespace ZeldaFullEditor
 	{
 		private void OnMouseDown_Blocks(MouseEventArgs e)
 		{
-			if (MouseIsDown) return;
-
 			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
-			DraggingX = MX / 16;
-			DraggingY = MY / 16;
 		}
 
 		private void OnMouseUp_Blocks(MouseEventArgs e)

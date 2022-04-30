@@ -1,4 +1,5 @@
-﻿using ZeldaFullEditor.Data;
+﻿using System.Collections.Immutable;
+using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor.Data
@@ -10,18 +11,22 @@ namespace ZeldaFullEditor.Data
 		public bool IsOverlord { get; }
 
 		public DrawSprite Draw { get; }
+		public ImmutableArray<SpriteCategory> Categories { get; }
+		public ImmutableArray<byte> PrettyTileSets { get; }
 
 		protected SpriteType(byte id, DrawSprite d, SpriteCategory[] categories, byte[] gsets, bool overlord = false)
 		{
 			Draw = d;
 			ID = id;
 
+			Categories = categories.ToImmutableArray();
+			PrettyTileSets = gsets.ToImmutableArray();
+
 			// intentionally doing this stupid shit because it looks funny
 			VanillaName = (IsOverlord = overlord)
 				? "L" // DefaultEntities.ListOfOverlords[id].Name
 				: DefaultEntities.ListOfSprites[id].Name;
 		}
-
 
 		public static readonly SpriteType Sprite00 = new SpriteType(0x00, SpriteDraw_Sprite00,
 			new SpriteCategory[] { },

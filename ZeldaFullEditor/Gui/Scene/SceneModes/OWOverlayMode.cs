@@ -13,12 +13,10 @@ namespace ZeldaFullEditor
 	{
 		private void OnMouseDown_Overlay(MouseEventArgs e)
 		{
-			if (MouseIsDown) return;
-
-			int tileX = (e.X / 16);
-			int tileY = (e.Y / 16);
-			int superX = (tileX / 32);
-			int superY = (tileY / 32);
+			int tileX = e.X / 16;
+			int tileY = e.Y / 16;
+			int superX = tileX / 32;
+			int superY = tileY / 32;
 			int mapId = (superY * 8) + superX;
 			globalmouseTileDownX = tileX;
 			globalmouseTileDownY = tileY;
@@ -27,8 +25,8 @@ namespace ZeldaFullEditor
 			CurrentMapParent = ZS.OverworldManager.allmaps[CurrentMap + ZS.OverworldManager.WorldOffset].parent;
 
 			int mid = ZS.OverworldManager.allmaps[CurrentMap].parent;
-			int superMX = (mid % 8) * 32;
-			int superMY = (mid / 8) * 32;
+			int superMX = mid % 8 * 32;
+			int superMY = mid / 8 * 32;
 
 			tileBitmapPtr = ZS.GFXManager.mapblockset16;
 			tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr)
@@ -51,8 +49,8 @@ namespace ZeldaFullEditor
 					ushort[] undotiles = new ushort[selectedTile.Length];
 					for (int i = 0; i < selectedTile.Length; i++)
 					{
-						superX = ((tileX + x) / 32);
-						superY = ((tileY + y) / 32);
+						superX = (tileX + x) / 32;
+						superY = (tileY + y) / 32;
 
 						/*
                           undotiles[i] = scene.ow.allmaps[mapId].tilesUsed[scene.globalmouseTileDownX + x, scene.globalmouseTileDownY + y];
@@ -60,12 +58,12 @@ namespace ZeldaFullEditor
                           scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, scene.ow.allmaps[mapId].blockset16);
                           */
 
-						OverlayTile tp = new OverlayTile((byte) ((globalmouseTileDownX + x) - (superMX)), (byte) ((globalmouseTileDownY + y) - (superMY)), selectedTile[i]);
+						OverlayTile tp = new OverlayTile((byte) (globalmouseTileDownX + x - superMX), (byte) (globalmouseTileDownY + y - superMY), selectedTile[i]);
 						OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
 
 						if (ZS.OverworldManager.allmaps[CurrentMap].largeMap)
 						{
-							tp = new OverlayTile((byte) ((globalmouseTileDownX + x) - (superMX)), (byte) ((globalmouseTileDownY + y) - (superMY)), selectedTile[i]);
+							tp = new OverlayTile((byte) (globalmouseTileDownX + x - superMX), (byte) (globalmouseTileDownY + y - superMY), selectedTile[i]);
 							tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
 						}
 
@@ -109,23 +107,21 @@ namespace ZeldaFullEditor
 		}
 
 		private void OnMouseUp_Overlay(MouseEventArgs e)
-		{
-			if (!MouseIsDown) return;
-			
-			int tileX = (e.X / 16);
-			int tileY = (e.Y / 16);
-			int superX = (tileX / 32);
-			int superY = (tileY / 32);
+		{			
+			int tileX = e.X / 16;
+			int tileY = e.Y / 16;
+			int superX = tileX / 32;
+			int superY = tileY / 32;
 			int mapId = (superY * 8) + superX + ZS.OverworldManager.WorldOffset;
 			int mid = ZS.OverworldManager.allmaps[CurrentMap].parent;
-			int superMX = (mid % 8) * 32;
-			int superMY = (mid / 8) * 32;
+			int superMX = mid % 8 * 32;
+			int superMY = mid / 8 * 32;
 
 			if (e.Button == MouseButtons.Right)
 			{
 				if (tileX == globalmouseTileDownX && tileY == globalmouseTileDownY)
 				{
-					OverlayTile tp = new OverlayTile((byte) (tileX - (superMX)), (byte) (tileY - (superMY)), 0);
+					OverlayTile tp = new OverlayTile((byte) (tileX - superMX), (byte) (tileY - superMY), 0);
 					OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
 
 					if (tf.IsGarbage)
@@ -153,20 +149,20 @@ namespace ZeldaFullEditor
 
 					if (reverseX)
 					{
-						sizeX = (globalmouseTileDownX - tileX) + 1;
+						sizeX = globalmouseTileDownX - tileX + 1;
 					}
 					else
 					{
-						sizeX = (tileX - globalmouseTileDownX) + 1;
+						sizeX = tileX - globalmouseTileDownX + 1;
 					}
 
 					if (reverseY)
 					{
-						sizeY = (globalmouseTileDownY - tileY) + 1;
+						sizeY = globalmouseTileDownY - tileY + 1;
 					}
 					else
 					{
-						sizeY = (tileY - globalmouseTileDownY) + 1;
+						sizeY = tileY - globalmouseTileDownY + 1;
 					}
 
 					selectedTileSizeX = sizeX;
@@ -201,15 +197,8 @@ namespace ZeldaFullEditor
 
 		private void OnMouseMove_Overlay(MouseEventArgs e)
 		{
-			
-			mouseX_Real = e.X;
-			mouseY_Real = e.Y;
 			int mouseTileX = e.X / 16;
 			int mouseTileY = e.Y / 16;
-			int mapX = (mouseTileX / 32);
-			int mapY = (mouseTileY / 32);
-
-			mapHover = mapX + (mapY * 8);
 
 			if (lastTileHoverX != mouseTileX || lastTileHoverY != mouseTileY)
 			{
@@ -220,14 +209,14 @@ namespace ZeldaFullEditor
 						int tileX = (e.X / 16).Clamp(0, 255);
 						int tileY = (e.Y / 16).Clamp(0, 255);
 
-						int superX = (tileX / 32);
-						int superY = (tileY / 32);
-						int mapId = (superY * 8) + superX;
+						int superX = tileX / 32;
+						int superY = tileY / 32;
+						int mapId;
 						globalmouseTileDownX = tileX;
 						globalmouseTileDownY = tileY;
 						int mid = ZS.OverworldManager.allmaps[CurrentMap].parent;
-						int superMX = (mid % 8) * 32;
-						int superMY = (mid / 8) * 32;
+						int superMX = mid % 8 * 32;
+						int superMY = mid / 8 * 32;
 
 						if (selectedTile.Length >= 1)
 						{
@@ -237,8 +226,8 @@ namespace ZeldaFullEditor
 
 							for (int i = 0; i < selectedTile.Length; i++)
 							{
-								superX = ((tileX + x) / 32);
-								superY = ((tileY + y) / 32);
+								superX = (tileX + x) / 32;
+								superY = (tileY + y) / 32;
 								mapId = (superY * 8) + superX + ZS.OverworldManager.WorldOffset;
 								if (globalmouseTileDownX + x < 255 && globalmouseTileDownY + y < 255)
 								{
@@ -248,7 +237,7 @@ namespace ZeldaFullEditor
                                     scene.ow.allmaps[mapId].CopyTile8bpp16(((tileX + x) * 16) - (superX * 512), ((tileY + y) * 16) - (superY * 512), scene.selectedTile[i], scene.ow.allmaps[mapId].gfxPtr, scene.ow.allmaps[mapId].blockset16);
                                     */
 
-									OverlayTile tp = new OverlayTile((byte) (tileX - (superMX) + x), (byte) (tileY - (superMY) + y), selectedTile[i]);
+									OverlayTile tp = new OverlayTile((byte) (tileX - superMX + x), (byte) (tileY - superMY + y), selectedTile[i]);
 									OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
 									if (ModifierKeys == Keys.Control)
 									{
@@ -291,8 +280,8 @@ namespace ZeldaFullEditor
 				// Refresh the tile preview
 				if (selectedTile.Length >= 1)
 				{
-					int sX = (mouseTileX / 32);
-					int sY = (mouseTileY / 32);
+					int sX;
+					int sY;
 					int y = 0;
 					int x = 0;
 					int mapId = ZS.OverworldManager.WorldOffset;
@@ -301,8 +290,8 @@ namespace ZeldaFullEditor
 					{
 						if (globalmouseTileDownX + x < 255 && globalmouseTileDownY + y < 255)
 						{
-							sX = ((mouseTileX + x) / 32);
-							sY = ((mouseTileY + y) / 32);
+							sX = (mouseTileX + x) / 32;
+							sY = (mouseTileY + y) / 32;
 							mapId = (sY * 8) + sX + ZS.OverworldManager.WorldOffset;
 
 							if (mapId > 63 + ZS.OverworldManager.WorldOffset)

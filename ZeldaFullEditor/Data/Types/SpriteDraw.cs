@@ -2372,7 +2372,11 @@ namespace ZeldaFullEditor.Data
 
 
 
-		public static void SpriteDraw_Overlord01(ZScreamer ZS, IDrawableSprite spr) { }
+#pragma warning disable IDE0060 // Remove unused parameter
+		public static void SpriteDraw_Overlord01(ZScreamer ZS, IDrawableSprite spr)
+		{
+			throw new NotImplementedException();
+		}
 
 		public static void SpriteDraw_Overlord02(ZScreamer ZS, IDrawableSprite spr) { }
 
@@ -2423,6 +2427,8 @@ namespace ZeldaFullEditor.Data
 		public static void SpriteDraw_Overlord19(ZScreamer ZS, IDrawableSprite spr) { }
 
 		public static void SpriteDraw_Overlord1A(ZScreamer ZS, IDrawableSprite spr) { }
+
+#pragma warning restore IDE0060 // Remove unused parameter
 
 	}
 }

@@ -27,19 +27,15 @@ namespace ZeldaFullEditor
 
 		private void OnMouseUp_OWDoor(MouseEventArgs e)
 		{
-			// TODO: Add something here?
+
 		}
 
 		private void OnMouseMove_OWDoor(MouseEventArgs e)
 		{
-			mouseX_Real = e.X;
-			mouseY_Real = e.Y;
 			int mouseTileX = e.X / 16;
 			int mouseTileY = e.Y / 16;
 			int mapX = (mouseTileX / 32);
 			int mapY = (mouseTileY / 32);
-
-			mapHover = mapX + (mapY * 8);
 
 			if (lastTileHoverX != mouseTileX || lastTileHoverY != mouseTileY)
 			{
@@ -57,8 +53,8 @@ namespace ZeldaFullEditor
 				// Refresh the tile preview
 				if (selectedTile.Length >= 1)
 				{
-					int sX = (mouseTileX / 32);
-					int sY = (mouseTileY / 32);
+					int sX;
+					int sY;
 					int y = 0;
 					int x = 0;
 					int mapId = 0;
@@ -91,18 +87,7 @@ namespace ZeldaFullEditor
 					}
 
 					tilesgfxBitmap.Palette = ZS.OverworldManager.allmaps[mapId].gfxBitmap.Palette;
-
-					//Invalidate(new Rectangle(mainForm.panel5.HorizontalScroll.Value, mainForm.panel5.VerticalScroll.Value, mainForm.panel5.Width, mainForm.panel5.Height));
-					//this.Refresh();
-					//this.Invalidate(new Rectangle((mouseTileX * 16)-16, (mouseTileY * 16)-16, (selectedTileSizeX * 16)+32, (y * 16)+32));
 				}
-
-				/*
-                if (selecting)
-                {
-                    this.Invalidate(new Rectangle((globalmouseTileDownX * 16), (globalmouseTileDownY * 16), (mouseTileX * 16) - (globalmouseTileDownX * 16) + 48, (mouseTileY * 16) - (globalmouseTileDownY * 16) + 48));
-                }
-                */
 
 				lastTileHoverX = mouseTileX;
 				lastTileHoverY = mouseTileY;
@@ -114,22 +99,11 @@ namespace ZeldaFullEditor
                 int mapId = (superY * 8) + superX;
                 ow.allmapsTiles[tileX, tileY] = selectedTile[0];
                 ow.allmaps[mapId].CopyTile8bpp16(((e.X / 16)*16)-(superX*512), ((e.Y / 16)*16) - (superY * 512), selectedTile[0], ow.allmaps[mapId].gfxPtr, ow.allmaps[mapId].blockset16);
-                this.Invalidate(new Rectangle(e.X-16, e.Y-16, 48, 48));
-                //this.Refresh();
                 */
 			}
 		}
 
 		// TODO
-		private void Copy_OWDoor()
-		{
-			throw new NotImplementedException();
-		}
-
-		private void Paste_OWDoor()
-		{
-			throw new NotImplementedException();
-		}
 
 		private void Delete_OWDoor()
 		{

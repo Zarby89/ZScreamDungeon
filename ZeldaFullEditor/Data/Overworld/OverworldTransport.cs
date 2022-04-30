@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-	public class TransportOW : OverworldDestination, IMouseCollidable, IFreelyPlaceable
+	public class OverworldTransport : OverworldDestination, IMouseCollidable, IFreelyPlaceable
 	{
 		public ushort whirlpoolPos { get; set; }
 
@@ -16,7 +16,7 @@ namespace ZeldaFullEditor
 
 		public bool isAutomatic = true;
 
-		public TransportOW(byte mapId, ushort vramLocation, ushort yScroll, ushort xScroll,
+		public OverworldTransport(byte mapId, ushort vramLocation, ushort yScroll, ushort xScroll,
 			ushort playerY, ushort playerX, ushort cameraY, ushort cameraX,
 			byte unk1, byte unk2, ushort whirlpoolPos)
 		{

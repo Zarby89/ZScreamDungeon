@@ -11,9 +11,9 @@ namespace ZeldaFullEditor
 {
 	public partial class SceneOW
 	{
-		private TransportOW selbird, lastbird;
+		private OverworldTransport selbird, lastbird;
 
-		public TransportOW SelectedTransport
+		public OverworldTransport SelectedTransport
 		{
 			get => selbird;
 			set
@@ -22,7 +22,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public TransportOW LastSelectedTransport
+		public OverworldTransport LastSelectedTransport
 		{
 			get => lastbird;
 			set
@@ -34,15 +34,14 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		// TODO use IMouseCollidable
 		private void OnMouseDown_Transports(MouseEventArgs e)
 		{
-			if (e.Button != MouseButtons.Left || MouseIsDown) return;
+			if (e.Button != MouseButtons.Left) return;
 
 			for (int i = 0; i < 0x11; i++)
 			{
-				TransportOW en = ZS.OverworldManager.allWhirlpools[i];
-				if (en.IsInThisWorld(ZS.OverworldManager.WorldOffset) && en.MouseIsInHitbox(e))
+				OverworldTransport en = ZS.OverworldManager.AllTransports[i];
+				if (en.IsInThisWorld(ZS.OverworldManager.World) && en.MouseIsInHitbox(e))
 				{
 					SelectedTransport = LastSelectedTransport = en;
 				}
@@ -53,10 +52,14 @@ namespace ZeldaFullEditor
 
 		private void OnMouseMove_Transports(MouseEventArgs e)
 		{
-			if (MouseIsDown)
+			if (!MouseIsDown)
 			{
-				MoveDestinationToMouse(SelectedTransport, e);
+				FindHoveredEntity(ZS.OverworldManager.AllTransports, e);
+
+				return;
 			}
+
+			MoveDestinationToMouse(SelectedTransport, e);
 		}
 
 		private void OnMouseUp_Transports(MouseEventArgs e)
@@ -74,31 +77,60 @@ namespace ZeldaFullEditor
 		public void Draw_Transports(Graphics g)
 		{
 			Brush bgrBrush;
+			Pen outline;
 
-			for (int i = 0; i < ZS.OverworldManager.allWhirlpools.Count; i++)
+			for (int i = 0; i < ZS.OverworldManager.AllTransports.Count; i++)
 			{
-				TransportOW e = ZS.OverworldManager.allWhirlpools[i];
+				OverworldTransport e = ZS.OverworldManager.AllTransports[i];
 
 				if (lowEndMode && e.MapID != ZS.OverworldManager.allmaps[CurrentMap].parent)
 				{
 					continue;
 				}
 
-				if (e.IsInThisWorld(ZS.OverworldManager.WorldOffset))
+				if (e.IsInThisWorld(ZS.OverworldManager.World))
 				{
-					if (SelectedTransport != null && e == SelectedTransport)
+					string txt;
+					if (SelectedTransport == e)
 					{
-						bgrBrush = Constants.Azure200Brush;
-						drawText(g, e.GlobalX - 1, e.GlobalY + 16, $"map : {e.MapID:X2}");
-						drawText(g, e.GlobalX - 4, e.GlobalY + 36, $"mpos : {e.VRAMBase:X4}");
+						bgrBrush = UIColors.TransportSelectedBrush;
+						outline = UIColors.OutlineSelectedPen;
+					}
+					else if (hoveredEntity == e)
+					{
+						bgrBrush = UIColors.TransportBrush;
+						outline = UIColors.OutlineHoverPen;
 					}
 					else
 					{
-						bgrBrush = Constants.Goldenrod200Brush;
+						bgrBrush = UIColors.TransportBrush;
+						outline = UIColors.OutlinePen;
 					}
 
-					g.DrawFilledRectangleWithOutline(e.SquareHitbox, Constants.Black200Pen, bgrBrush);
-					drawText(g, e.GlobalX + 4, e.GlobalY + 4, $"{i:X2} - Transport");
+					switch (TransportTextView)
+					{
+						// TODO might add more stuff in the future
+						default:
+						case TextView.NeverShowName:
+							txt = $"{i:X2}";
+							break;
+
+					//case TextView.AlwaysShowName:
+					//	txt = $"{e.ID} - {Transport.Name}";
+					//	break;
+					//
+					//default:
+					//case TextView.ShowNameOnHover:
+					//	if (item == SelectedSecret || item == hoveredEntity)
+					//	{
+					//		goto case TextView.AlwaysShowName;
+					//	}
+					//	goto case TextView.NeverShowName;
+					}
+
+					g.DrawFilledRectangleWithOutline(e.SquareHitbox, outline, bgrBrush);
+
+					drawText(g, e.GlobalX + 3, e.GlobalY + 5, txt);
 				}
 			}
 		}

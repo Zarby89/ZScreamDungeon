@@ -7,7 +7,6 @@ using static ZeldaFullEditor.DoorCategory;
 
 namespace ZeldaFullEditor.Data
 {
-	// TODO
 	public class DungeonDoorType : IEntityType<DungeonDoorType>
 	{
 		public byte ID { get; }

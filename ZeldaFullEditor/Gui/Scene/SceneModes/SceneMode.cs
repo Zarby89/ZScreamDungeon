@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace ZeldaFullEditor.SceneModes
@@ -14,9 +8,9 @@ namespace ZeldaFullEditor.SceneModes
 	/// </summary>
 	public class ModeActions
 	{
-		public delegate void SceneActionMouse(MouseEventArgs e);
 		public delegate void SceneAction();
-		public delegate void SceneActionDraw(Graphics g);
+		public delegate void SceneActionMouse(MouseEventArgs e);
+
 		public ModeActions(SceneActionMouse mousedown, SceneActionMouse mouseup, SceneActionMouse mousemove, SceneActionMouse mousewheel,
 			SceneAction copy, SceneAction paste, SceneAction insert, SceneAction delete, SceneAction selectall)
 		{
@@ -45,6 +39,5 @@ namespace ZeldaFullEditor.SceneModes
 		public SceneAction Delete { get; }
 		public SceneAction Insert { get; }
 		public SceneAction SelectAll { get; }
-
 	}
 }

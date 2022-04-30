@@ -19,7 +19,6 @@ namespace ZeldaFullEditor.Data.Underworld
 		public bool IsStairs => ObjectType.Specialness == SpecialObjectType.InterroomStairs;
 		public DungeonLimits LimitClass => ObjectType.LimitClass;
 
-
 		public byte GridX { get; set; }
 		public byte GridY { get; set; }
 

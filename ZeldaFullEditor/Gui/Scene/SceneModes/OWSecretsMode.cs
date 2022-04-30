@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Data;
 
@@ -12,19 +8,17 @@ namespace ZeldaFullEditor
 {
 	public partial class SceneOW
 	{
-		public OverworldSecret selectedItem;
-		public OverworldSecret lastselectedItem;
+		public OverworldSecret SelectedSecret;
+		public OverworldSecret LastSelectedSecret;
 
 		private void OnMouseDown_Secrets(MouseEventArgs e)
 		{
-			isLeftPress = e.Button == MouseButtons.Left;
-
 			foreach (var item in ZS.OverworldManager.allitems)
 			{
-				if (item.IsInThisWorld(ZS.OverworldManager.WorldOffset) && item.MouseIsInHitbox(e))
+				if (item.IsInThisWorld(ZS.OverworldManager.World) && item.MouseIsInHitbox(e))
 				{
-					selectedItem = item;
-					lastselectedItem = item;
+					SelectedSecret = item;
+					LastSelectedSecret = item;
 					SecretItemType.GetTypeFromID(item.ID);
 					break;
 					//scene.mainForm.owcombobox.SelectedIndex = nid;
@@ -36,7 +30,7 @@ namespace ZeldaFullEditor
 		private void Copy_Secrets()
 		{
 			Clipboard.Clear();
-			var id = lastselectedItem.Clone();
+			var id = LastSelectedSecret.Clone();
 			Clipboard.SetData(Constants.OverworldItemClipboardData, id);
 		}
 
@@ -46,7 +40,7 @@ namespace ZeldaFullEditor
 			if (data != null)
 			{
 				ZS.OverworldManager.allitems.Add(data);
-				lastselectedItem = selectedItem = data;
+				LastSelectedSecret = SelectedSecret = data;
 				isLeftPress = true;
 				MouseIsDown = true;
 			}
@@ -56,20 +50,20 @@ namespace ZeldaFullEditor
 		{
 			if (e.Button == MouseButtons.Left)
 			{
-				if (selectedItem != null)
+				if (SelectedSecret != null)
 				{
-					byte mid = ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.WorldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
 					if (mid == 255)
 					{
-						mid = (byte) (mapHover + ZS.OverworldManager.WorldOffset);
+						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
 					}
-					selectedItem.MapID = mid;
-					lastselectedItem = selectedItem;
-					selectedItem = null;
+					SelectedSecret.MapID = mid;
+					LastSelectedSecret = SelectedSecret;
+					SelectedSecret = null;
 				}
 				else
 				{
-					lastselectedItem = null;
+					LastSelectedSecret = null;
 					//scene.mainForm.itemOWGroupbox.Visible = false;
 				}
 			}
@@ -79,7 +73,7 @@ namespace ZeldaFullEditor
 				menu.Items.Add("Add Item");
 				menu.Items.Add("Delete Item");
 
-				if (lastselectedItem == null)
+				if (LastSelectedSecret == null)
 				{
 					menu.Items[1].Enabled = false;
 				}
@@ -87,6 +81,23 @@ namespace ZeldaFullEditor
 				menu.Items[0].Click += addItem_Click;
 				menu.Items[1].Click += deleteItem_Click;
 				menu.Show(Cursor.Position);
+			}
+
+			Program.OverworldForm.objectGroupbox.Text = "Selected secret";
+
+			if (LastSelectedSecret != null)
+			{
+				Program.OverworldForm.SetSelectedObjectLabels(
+					LastSelectedSecret.ID,
+					LastSelectedSecret.MapX,
+					LastSelectedSecret.MapY);
+
+				Program.OverworldForm.objCombobox.DataSource = DefaultEntities.ListOfSecrets;
+
+				// TODO
+				//Program.OverworldForm.objCombobox.SelectedItem = 
+
+				Program.OverworldForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedItem;
 			}
 		}
 
@@ -99,38 +110,41 @@ namespace ZeldaFullEditor
 		{
 			var pitem = new OverworldSecret(null);
 			ZS.OverworldManager.allitems.Add(pitem);
-			selectedItem = pitem;
-			lastselectedItem = selectedItem;
+			SelectedSecret = pitem;
+			LastSelectedSecret = SelectedSecret;
 			isLeftPress = true;
 			MouseIsDown = true;
 		}
 
 		private void OnMouseMove_Secrets(MouseEventArgs e)
 		{
-			mouseX_Real = e.X;
-			mouseY_Real = e.Y;
-
-			mapHover = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
-
-			if (selectedItem != null && isLeftPress && MouseIsDown)
+			if (!MouseIsDown)
 			{
-				selectedItem.MapX = (byte) (e.X & ~0xF);
-				selectedItem.MapY = (byte) (e.Y & ~0xF);
+				FindHoveredEntity(ZS.OverworldManager.allitems, e);
+				return;
+			}
+
+			if (SelectedSecret != null && isLeftPress)
+			{
+				SelectedSecret.GlobalX = (ushort) e.X;
+				SelectedSecret.GlobalY = (ushort) e.Y;
+				SelectedSecret.SnapToGrid();
 			}
 		}
 
 		private void Delete_Secrets()
 		{
-			if (lastselectedItem != null)
+			if (LastSelectedSecret != null)
 			{
-				ZS.OverworldManager.allitems.Remove(lastselectedItem);
-				lastselectedItem = null;
+				ZS.OverworldManager.allitems.Remove(LastSelectedSecret);
+				LastSelectedSecret = null;
 			}
 		}
 
 		public void Draw_Secrets(Graphics g)
 		{
 			Brush bgrBrush;
+			Pen outline;
 			g.CompositingMode = CompositingMode.SourceOver;
 			foreach (var item in ZS.OverworldManager.allitems)
 			{
@@ -139,17 +153,49 @@ namespace ZeldaFullEditor
 					continue;
 				}
 
-				if (item.IsInThisWorld(ZS.OverworldManager.WorldOffset))
+				if (item.IsInThisWorld(ZS.OverworldManager.World))
 				{
-					bgrBrush = (selectedItem == item) ? Constants.Turquoise200Brush : Constants.Scarlet200Brush;
+					string txt;
+					if (SelectedSecret == item)
+					{
+						bgrBrush = UIColors.SecretSelectedBrush;
+						outline = UIColors.OutlineSelectedPen;
+					}
+					else if (hoveredEntity == item)
+					{
+						bgrBrush = UIColors.SecretBrush;
+						outline = UIColors.OutlineHoverPen;
+					}
+					else
+					{
+						bgrBrush = UIColors.SecretBrush;
+						outline = UIColors.OutlinePen;
+					}
 
-					g.DrawFilledRectangleWithOutline(item.SquareHitbox, Constants.Black200Pen, bgrBrush);
+					switch (SecretsTextView)
+					{
+						case TextView.NeverShowName:
+							txt = $"{item.ID:X2}";
+							break;
 
-					drawText(g, item.GlobalX - 1, item.GlobalY + 1, item.Name);
+						case TextView.AlwaysShowName:
+							txt = $"{item.ID:X2} - {item.Name}";
+							break;
+
+						default:
+						case TextView.ShowNameOnHover:
+							if (item == SelectedSecret || item == hoveredEntity)
+							{
+								goto case TextView.AlwaysShowName;
+							}
+							goto case TextView.NeverShowName;
+					}
+
+					g.DrawFilledRectangleWithOutline(item.SquareHitbox, outline, bgrBrush);
+
+					drawText(g, item.GlobalX + 3, item.GlobalY + 5, txt);
 				}
 			}
-
-			g.CompositingMode = CompositingMode.SourceCopy;
 		}
 	}
 }

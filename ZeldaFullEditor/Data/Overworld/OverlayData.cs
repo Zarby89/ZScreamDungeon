@@ -12,7 +12,6 @@ namespace ZeldaFullEditor
 
 		public OverlayData()
 		{
-			// TODO: Add something here?
 		}
 	}
 }

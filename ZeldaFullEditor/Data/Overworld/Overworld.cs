@@ -32,7 +32,7 @@ namespace ZeldaFullEditor
 		public List<Tile32> t32Unique = new List<Tile32>();
 		public List<ushort> t32;
 
-		public ExitOW[] allexits = new ExitOW[Constants.NumberOfOverworldExits];
+		public OverworldExit[] allexits = new OverworldExit[Constants.NumberOfOverworldExits];
 
 		public byte[] allTilesTypes = new byte[0x200];
 
@@ -43,8 +43,8 @@ namespace ZeldaFullEditor
 		public ushort[,] allmapsTilesDW = new ushort[512, 512]; //64 maps * (32*32 tiles)
 		public ushort[,] allmapsTilesSP = new ushort[512, 512]; //32 maps * (32*32 tiles)
 		public OverworldMap[] allmaps = new OverworldMap[Constants.NumberOfOWMaps];
-		public EntranceOWEditor[] allentrances = new EntranceOWEditor[129];
-		public EntranceOWEditor[] allholes = new EntranceOWEditor[0x13];
+		public OverworldEntrance[] allentrances = new OverworldEntrance[129];
+		public OverworldEntrance[] allholes = new OverworldEntrance[0x13];
 		public List<OverworldSecret> allitems = new List<OverworldSecret>();
 		public OverlayData[] alloverlays = new OverlayData[128];
 
@@ -56,8 +56,8 @@ namespace ZeldaFullEditor
 		public int WorldOffsetEnd => WorldOffset + 64;
 
 		// TODO : Fix Whirlpool on large maps
-		public List<TransportOW> allWhirlpools = new List<TransportOW>();
-		public List<TransportOW> allBirds = new List<TransportOW>();
+		public List<OverworldTransport> AllTransports = new List<OverworldTransport>();
+		public List<OverworldTransport> allBirds = new List<OverworldTransport>();
 
 		public byte GameState { get; set; } = 1;
 
@@ -444,7 +444,7 @@ namespace ZeldaFullEditor
 				ushort py = ZS.ROM.Read16(ZS.Offsets.OWExitYPlayer + j);
 				ushort px = ZS.ROM.Read16(ZS.Offsets.OWExitXPlayer + j);
 
-				allexits[i] = new ExitOW(
+				allexits[i] = new OverworldExit(
 					ZS.ROM.Read16(ZS.Offsets.OWExitRoomId + j),
 					ZS.ROM[ZS.Offsets.OWExitMapId + i],
 					ZS.ROM.Read16(ZS.Offsets.OWExitVram + j),
@@ -481,8 +481,8 @@ namespace ZeldaFullEditor
 					e10 = ZS.ROM.Read16(ZS.Offsets.OWWhirlpoolPosition + j);
 				}
 
-				allWhirlpools.Add(
-					new TransportOW(
+				AllTransports.Add(
+					new OverworldTransport(
 						ZS.ROM[ZS.Offsets.OWExitMapIdWhirlpool + j],
 						ZS.ROM.Read16(ZS.Offsets.OWExitVramWhirlpool + j),
 						ZS.ROM.Read16(ZS.Offsets.OWExitYScrollWhirlpool + j),
@@ -509,7 +509,7 @@ namespace ZeldaFullEditor
 				int p = mapPos >> 1;
 				int x = p & 0x3F;
 				int y = p >> 6;
-				EntranceOWEditor eo = new EntranceOWEditor(
+				OverworldEntrance eo = new OverworldEntrance(
 					(ushort) ((x * 16) + ((mapId & 0x7) * 512)),
 					(ushort) ((y * 16) + (((mapId % 64) / 8) * 512)),
 					entranceId,
@@ -530,7 +530,7 @@ namespace ZeldaFullEditor
 				int p = mapPos + 0x400;
 				int x = (p >> 1) & 0x3F;
 				int y = p >> 7;
-				allholes[i] = new EntranceOWEditor(
+				allholes[i] = new OverworldEntrance(
 					(ushort) ((x * 16) + ((mapId & 0x07) * 512)),
 					(ushort) ((y * 16) + (((mapId % 64) / 8) * 512)),
 					entranceId,
@@ -798,7 +798,7 @@ namespace ZeldaFullEditor
 			{
 				if (index >= 0x4540) // 3C87??
 				{
-					// TODO messagebox for failure "Too many unique tiles!"
+					throw new ZeldaException("TOO MANY MAP32");
 					break;
 				}
 
@@ -1064,7 +1064,7 @@ namespace ZeldaFullEditor
 			{
 				byte b1 = ZS.ROM[spriteAddress++];
 
-				if (b1 == Constants.SpriteTerminator)
+				if (b1 == Constants.SpriteSentinel)
 				{
 					return;
 				}
@@ -1096,11 +1096,6 @@ namespace ZeldaFullEditor
 
 		public void LoadOverworldSpritesFromROM()
 		{
-			// LW[0] = RainState 0 to 63 there's no data for DW
-			// LW[1] = ZeldaState 0 to 128 ; Contains LW and DW <128 or 144 wtf
-			// LW[2] = AgahState 0 to ?? ;Contains data for LW and DW
-
-			//Console.WriteLine(((ZS.Offsets.overworldSpritesBegining & 0xFFFF) + (09 << 16)).ToString("X6"));
 			for (byte i = 0; i < 144; i++)
 			{
 				if (mapParent[i] == i)
@@ -1113,8 +1108,6 @@ namespace ZeldaFullEditor
 					LoadScreenOfSprites(2, i);
 				}
 			}
-
-			//Console.WriteLine("Finished loading sprites");
 		}
 
 		public bool createMap16Tilesmap()

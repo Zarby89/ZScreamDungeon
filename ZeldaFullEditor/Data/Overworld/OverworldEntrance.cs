@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace ZeldaFullEditor
 {
 	[Serializable]
-	public class EntranceOWEditor : OverworldEntity, IFreelyPlaceable, IMouseCollidable
+	public class OverworldEntrance : OverworldEntity, IFreelyPlaceable, IMouseCollidable
 	{
 		public ushort mapPos { get; set; }
 		public byte TargetEntranceID { get; set; }
@@ -17,7 +17,7 @@ namespace ZeldaFullEditor
 		// TODO make this based on map position and make deleted map position consistent
 		public bool deleted { get; set; }
 
-		public EntranceOWEditor(ushort x, ushort y, byte entranceId, byte mapId, ushort mapPos)
+		public OverworldEntrance(ushort x, ushort y, byte entranceId, byte mapId, ushort mapPos)
 		{
 			MapID = mapId;
 			GlobalX = x;

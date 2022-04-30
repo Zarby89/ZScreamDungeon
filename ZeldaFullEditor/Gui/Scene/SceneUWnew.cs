@@ -172,13 +172,13 @@ namespace ZeldaFullEditor
 
 			// TODO ROOM.DRAW()
 
-			RequestRefresh();
+			Refresh();
 		}
 
-		protected override void RequestRefresh()
+		public override void Refresh()
 		{
 			Program.DungeonForm.UpdateUIForRoom(Room, true);
-			base.RequestRefresh();
+			base.Refresh();
 		}
 
 
@@ -198,40 +198,10 @@ namespace ZeldaFullEditor
 			{
 				if (MouseX != LastX || MouseY != LastY)
 				{
-					CalculateMouseMoveSize(e);
 					MoveSelectedObjects();
 				}
 			}
 			base.OnMouseDown(sender, e);
-		}
-
-		private void CalculateMouseMoveSize(MouseEventArgs e)
-		{
-			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
-		
-			switch (ZS.CurrentUWMode)
-			{
-				case DungeonEditMode.Sprites:
-					MouseX = MX / 16;
-					MouseY = MY / 16;
-					break;
-		
-				case DungeonEditMode.Secrets:
-		
-				case DungeonEditMode.Layer1:
-				case DungeonEditMode.Layer2:
-				case DungeonEditMode.Layer3:
-				case DungeonEditMode.LayerAll:
-		
-				case DungeonEditMode.Torches:
-				case DungeonEditMode.Blocks:
-					MouseX = MX / 8;
-					MouseY = MY / 8;
-					break;
-			}
-		
-			MoveX = MouseX - DraggingX; // Number of tiles mouse is compared to starting drag point X
-			MoveY = MouseY - DraggingY; // Number of tiles mouse is compared to starting drag point Y
 		}
 
 
@@ -321,7 +291,7 @@ namespace ZeldaFullEditor
 			//	e.Graphics.DrawImage(tempBitmap, Constants.Rect_0_0_1024_1024);
 			//}
 
-				if (Program.DungeonForm.x2zoom)
+			if (Program.DungeonForm.x2zoom)
 			{
 				g = Graphics.FromImage(tempBitmap);
 			}
@@ -517,8 +487,6 @@ namespace ZeldaFullEditor
 		private void ResetPlacementProperties()
 		{
 			ObjectToPlace = null;
-			DraggingX = 0;
-			DraggingY = 0;
 		}
 
 		// TODO

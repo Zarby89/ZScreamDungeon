@@ -361,7 +361,7 @@ namespace ZeldaFullEditor.Gui
 
 				b.UnlockBits(bd);
 				ZScreamer.ActiveUWScene.Room.reloadGfx();
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 				allgfxPicturebox.Refresh();
 
 				for (int i = 0; i < 159; i++)

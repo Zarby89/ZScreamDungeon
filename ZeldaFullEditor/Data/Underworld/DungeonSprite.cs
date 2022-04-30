@@ -16,6 +16,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		public ushort RoomID { get; set; } = 0;
 
 		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, 16, 16); // TODO
+
 		public string Name => Species.VanillaName;
 		public byte ID => Species.ID;
 		public int TypeID => Species.ID;

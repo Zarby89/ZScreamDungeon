@@ -8,7 +8,7 @@ using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor.Data
 {
-	public class OverworldSprite : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IEquatable<OverworldSprite>, IDrawableSprite
+	public class OverworldSprite : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IEquatable<OverworldSprite>
 	{
 		public string Name => Species.VanillaName;
 		public byte ID => Species.ID;

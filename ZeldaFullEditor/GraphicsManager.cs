@@ -116,9 +116,6 @@ namespace ZeldaFullEditor
 
 		public Color[,] loadedSprPalettes = new Color[1, 1];
 
-		public byte[] spriteFontSpacing = Constants.FontSpacings.DeepCopy();
-
-
 		private readonly ZScreamer ZS;
 		public GraphicsManager(ZScreamer zs)
 		{
@@ -711,11 +708,6 @@ namespace ZeldaFullEditor
 			return blockdata;
 		}
 
-		public byte[] Convert32to4bpp(byte[] data)
-		{
-			return null;
-		}
-
 		// TODO magic numbers
 		public void loadOverworldMap()
 		{
@@ -798,7 +790,7 @@ namespace ZeldaFullEditor
 					g.DrawImage(spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
 				}
 
-				if (arrayPos > spriteFontSpacing.Length - 1)
+				if (arrayPos > Constants.FontSpacings.Length - 1)
 				{
 					cpos += 8;
 					continue;
@@ -806,11 +798,11 @@ namespace ZeldaFullEditor
 
 				if (x2)
 				{
-					cpos += spriteFontSpacing[arrayPos] * 2;
+					cpos += Constants.FontSpacings[arrayPos] * 2;
 				}
 				else
 				{
-					cpos += spriteFontSpacing[arrayPos];
+					cpos += Constants.FontSpacings[arrayPos];
 				}
 			}
 		}

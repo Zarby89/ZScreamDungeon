@@ -9,9 +9,9 @@ namespace ZeldaFullEditor.Data
 {
 	public class OverworldSecret : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IEquatable<OverworldSecret>
 	{
-		public byte ID => SecretType.ID;
+		public byte ID => SecretType?.ID ?? 0;
 		public SecretItemType SecretType { get; set; }
-		public string Name => SecretType.VanillaName;
+		public string Name => SecretType?.VanillaName ?? "Secret";
 
 		public OverworldSecret(SecretItemType s)
 		{

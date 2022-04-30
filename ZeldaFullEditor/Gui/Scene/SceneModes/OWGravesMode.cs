@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ZeldaFullEditor.Data;
 
@@ -17,7 +13,7 @@ namespace ZeldaFullEditor
 
 		private void OnMouseDown_Graves(MouseEventArgs e)
 		{
-			if (e.Button != MouseButtons.Left || MouseIsDown) return;
+			if (e.Button != MouseButtons.Left) return;
 			
 			for (int i = 0; i < 0x0F; i++)
 			{
@@ -35,32 +31,20 @@ namespace ZeldaFullEditor
 		private void OnMouseMove_Graves(MouseEventArgs e)
 		{
 			if (!MouseIsDown) return;
-			
-			int mouseTileX = e.X / 16;
-			int mouseTileY = e.Y / 16;
-			int mapX = (mouseTileX / 32);
-			int mapY = (mouseTileY / 32);
-
-			mapHover = mapX + (mapY * 8);
 
 			if (selectedGrave != null)
 			{
 				selectedGrave.xTilePos = (ushort) (snapToGrid ? e.X & ~0x7 : e.X);
 				selectedGrave.yTilePos = (ushort) (snapToGrid ? e.Y & ~0x7 : e.Y);
 			}
-			
 		}
 
 		private void OnMouseUp_Graves(MouseEventArgs e)
 		{
 			if (e.Button != MouseButtons.Left || selectedGrave == null) return;
-						
-			if (mapHover >= 64)
-			{
-				mapHover -= 64;
-			}
-			int mx = mapHover - (mapHover & ~0x7);
-			int my = mapHover / 8;
+
+			int mx = hoveredMap & 0x7;
+			int my = (hoveredMap & 0x3F) >> 3;
 
 			byte xx = (byte) ((selectedGrave.xTilePos - (mx * 512)) / 16);
 			byte yy = (byte) ((selectedGrave.yTilePos - (my * 512)) / 16);

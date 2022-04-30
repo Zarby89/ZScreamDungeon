@@ -8,7 +8,7 @@ namespace ZeldaFullEditor
 		private ushort globalx, globaly;
 		private byte mapx, mapy;
 
-		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, 16, 16);
+		public Rectangle SquareHitbox => new Rectangle(GlobalX, GlobalY, 16, 16);
 
 		public ushort GlobalX {
 			get => globalx;
@@ -56,9 +56,6 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public int RealX => GlobalX;
-		public int RealY => GlobalY;
-
 		public byte GridX {
 			get => MapX;
 			set => MapX = value;
@@ -67,6 +64,8 @@ namespace ZeldaFullEditor
 			get => MapY;
 			set => MapY = value;
 		}
+		public int RealX => RealX;
+		public int RealY => RealY;
 
 		public byte NewX { get; set; }
 		public byte NewY { get; set; }
@@ -90,9 +89,16 @@ namespace ZeldaFullEditor
 			return x >= GlobalX && x < GlobalX + 16 && y >= GlobalY && y < GlobalY + 16;
 		}
 
-		public bool IsInThisWorld(int w)
+		public bool IsInThisWorld(Worldiness world)
 		{
+			int w = (int) world;
 			return MapID >= w && MapID < 64 + w;
+		}
+
+		public virtual void SnapToGrid()
+		{
+			GlobalX &= 0xFFF0;
+			GlobalY &= 0xFFF0;
 		}
 	}
 }

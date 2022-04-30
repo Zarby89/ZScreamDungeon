@@ -29,12 +29,10 @@ namespace ZeldaFullEditor.Data.Underworld
 		public DungeonSpritesList SpritesList { get; } = new DungeonSpritesList();
 		public DungeonBlocksList BlocksList { get; } = new DungeonBlocksList();
 		public DungeonTorchList TorchList { get; } = new DungeonTorchList();
-
-		public DungeonDestinationsHandler Destinations { get; } = new DungeonDestinationsHandler();
 		public List<IDungeonPlaceable> SelectedObjects { get; } = new List<IDungeonPlaceable>();
 
 		/// <summary>
-		/// Returns an object if it is the only member of selected objects; otherwise, null
+		/// Returns an object if it is the only member of selected objects; otherwise, <see langword="null"/>.
 		/// </summary>
 		public IDungeonPlaceable OnlySelectedObject
 		{
@@ -67,12 +65,12 @@ namespace ZeldaFullEditor.Data.Underworld
 				LayoutListing = ZS.LayoutLister[value];
 			}
 		}
-		public ImmutableArray<RoomObject> LayoutListing { get; private set; }
 
-		private bool moam = false;
+		public ImmutableArray<RoomObject> LayoutListing { get; private set; }
 
 		public byte?[] CollisionMap { get; } = new byte?[Constants.TilesPerTilemap];
 
+		private bool moam = false;
 		public bool MultiLayerOAM
 		{
 			get => moam;
@@ -84,9 +82,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public bool IsEmpty
 		{
-			get
-			{
-				return Layer1Objects.Count == 0 &&
+			get => Layer1Objects.Count == 0 &&
 					Layer2Objects.Count == 0 &&
 					Layer3Objects.Count == 0 &&
 					DoorsList.Count == 0 &&
@@ -95,7 +91,6 @@ namespace ZeldaFullEditor.Data.Underworld
 					SpritesList.Count == 0 &&
 					BlocksList.Count == 0 &&
 					TorchList.Count == 0;
-			}
 		}
 
 		// TODO implement and rename
@@ -111,11 +106,12 @@ namespace ZeldaFullEditor.Data.Underworld
 		public byte Tag1 { get; set; }
 		public byte Tag2 { get; set; }
 		public bool IsDark { get; set; }
-		public DungeonDestination Pits => Destinations.Pits;
-		public DungeonDestination Stair1 => Destinations.Stair1;
-		public DungeonDestination Stair2 => Destinations.Stair2;
-		public DungeonDestination Stair3 => Destinations.Stair3;
-		public DungeonDestination Stair4 => Destinations.Stair4;
+
+		public DungeonDestination Pits { get; } = new DungeonDestination(0);
+		public DungeonDestination Stair1 { get; } = new DungeonDestination(1);
+		public DungeonDestination Stair2 { get; } = new DungeonDestination(2);
+		public DungeonDestination Stair3 { get; } = new DungeonDestination(3);
+		public DungeonDestination Stair4 { get; } = new DungeonDestination(4);
 
 		public DungeonDestination[] AllStairs =>
 			new DungeonDestination[] { Stair1, Stair2, Stair3, Stair4 };
@@ -127,6 +123,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		{
 			RoomID = id;
 			ZS = zs;
+			Name = DefaultEntities.ListOfRoomNames[id].Name;
 			ChestList = new DungeonRoomChestsHandler(this);
 		}
 
@@ -225,7 +222,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			// TODO verify merge versus behavor
 
 			Layer2Mode = (byte) (b >> 5);
-			LayerMerging = LayerMergeType.ListOf[((b & 0x0C) >> 2)];
+			LayerMerging = LayerMergeType.ListOf[(b & 0x0C) >> 2];
 			//Layer2Behavior = (byte) ((b & 0x0C) >> 2);
 			IsDark = (b & 0x01) == 0x01;
 			Palette = ZS.ROM[hpos++];
@@ -238,17 +235,17 @@ namespace ZeldaFullEditor.Data.Underworld
 
 			b = ZS.ROM[hpos++];
 
-			Destinations.Pits.Layer = (byte) (b & 0x03);
-			Destinations.Stair1.Layer = (byte) ((b >> 2) & 0x03);
-			Destinations.Stair2.Layer = (byte) ((b >> 4) & 0x03);
-			Destinations.Stair3.Layer = (byte) ((b >> 6) & 0x03);
-			Destinations.Stair4.Layer = (byte) (ZS.ROM[hpos++] & 0x03);
+			Pits.TargetLayer = (byte) (b & 0x03);
+			Stair1.TargetLayer = (byte) ((b >> 2) & 0x03);
+			Stair2.TargetLayer = (byte) ((b >> 4) & 0x03);
+			Stair3.TargetLayer = (byte) ((b >> 6) & 0x03);
+			Stair4.TargetLayer = (byte) (ZS.ROM[hpos++] & 0x03);
 			
-			Destinations.Pits.Target = ZS.ROM[hpos++];
-			Destinations.Stair1.Target = ZS.ROM[hpos++];
-			Destinations.Stair2.Target = ZS.ROM[hpos++];
-			Destinations.Stair3.Target = ZS.ROM[hpos++];
-			Destinations.Stair4.Target = ZS.ROM[hpos++];
+			Pits.Target = ZS.ROM[hpos++];
+			Stair1.Target = ZS.ROM[hpos++];
+			Stair2.Target = ZS.ROM[hpos++];
+			Stair3.Target = ZS.ROM[hpos++];
+			Stair4.Target = ZS.ROM[hpos++];
 
 			// Load room objects
 			int objectPointer = ZS.ROM.Read24(ZS.Offsets.room_object_pointer).SNEStoPC();
@@ -296,9 +293,6 @@ namespace ZeldaFullEditor.Data.Underworld
 			HasUnsavedChanges = false;
 			throw new NotImplementedException();
 		}
-
-
-
 
 		private void LoadChests()
 		{
@@ -363,12 +357,12 @@ namespace ZeldaFullEditor.Data.Underworld
 
 				ushort tpos = room; // assign it now to catch that one deleted thing in vanilla
 
-				while (tpos != 0xFFFF)
+				while (tpos != Constants.ObjectSentinel)
 				{
 					tpos = ZS.ROM.Read16(pos);
 					pos += 2;
 
-					if (correctRoom && tpos != 0xFFFF)
+					if (correctRoom && tpos != Constants.ObjectSentinel)
 					{
 						UWTilemapPosition.CreateXYZFromTileMap(tpos, out byte x, out byte y, out byte layer);
 						TorchList.Add(
@@ -481,7 +475,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 			if (b3 >= 0xF8) // Subtype 3
 			{
-				oid = (ushort) (0x0200 | ((b2 & 0x03) << 2) | (b1 & 0x03)); // TODO fix this ugly shit
+				oid = (ushort) (0x0200 | ((b2 & 0x03) << 2) | (b1 & 0x03));
 				posX = (byte) ((b1 & 0xFC) >> 2);
 				posY = (byte) ((b2 & 0xFC) >> 2);
 				size = 0;
@@ -549,7 +543,11 @@ namespace ZeldaFullEditor.Data.Underworld
 		public void LoadObjectsFromArray(byte[] data, int offset = 0)
 		{
 			// Load chest items
-			Destinations.Clear();
+			Pits.Reset();
+			Stair1.Reset();
+			Stair2.Reset();
+			Stair3.Reset();
+			Stair4.Reset();
 			ChestList.ResetAssociations();
 			Layer1Objects.Clear();
 			Layer2Objects.Clear();
@@ -558,8 +556,8 @@ namespace ZeldaFullEditor.Data.Underworld
 
 			DungeonObjectsList currentList = Layer1Objects;
 			Layout = (byte) ((data[offset++] >> 2) & 0x07);
-			Floor1Graphics = (byte) (data[offset] & 0x0F); // TODO
-			Floor2Graphics = (byte) (data[offset++] >> 4); // TODO
+			Floor1Graphics = (byte) (data[offset] & 0x0F); // TODO is this correct?
+			Floor2Graphics = (byte) (data[offset++] >> 4);
 
 			byte b1, b2, b3;
 			byte layer = 0;
@@ -628,24 +626,6 @@ namespace ZeldaFullEditor.Data.Underworld
 			}
 		}
 
-		public RoomObject AddObject(ushort id, byte x, byte y, byte size, byte layer)
-		{
-			return
-				new RoomObject(RoomObjectType.GetTypeFromID(id), ZS.TileLister[id])
-				{
-					GridX = x,
-					GridY = y,
-					Size = size,
-					Layer = (RoomLayer) layer
-				};
-		}
-
-
-		public DungeonRoom Clone()
-		{
-			return this;
-		}
-
 		private void LoadSpritesFromArray(byte[] data, int offset = 0)
 		{
 			MultiLayerOAM = data[offset++] == 1;
@@ -656,7 +636,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			{
 				byte b1 = data[offset++];
 
-				if (b1 == Constants.SpriteTerminator) break;
+				if (b1 == Constants.SpriteSentinel) break;
 
 				byte b2 = data[offset++];
 				byte b3 = data[offset++];
@@ -724,12 +704,12 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		internal void DrawFloor1()
 		{
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
 		}
 
 		internal void DrawFloor2()
 		{
-			throw new NotImplementedException();
+			//throw new NotImplementedException();
 		}
 
 		internal void update()
@@ -751,7 +731,6 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public bool AttemptToAddEntity(IDungeonPlaceable o, DungeonEditMode m)
 		{
-
 			switch (m)
 			{
 				case DungeonEditMode.Layer1:
@@ -789,7 +768,6 @@ namespace ZeldaFullEditor.Data.Underworld
 		{
 			var lim = o.LimitClass;
 
-			// TODO 
 			if (lim == DungeonLimits.GeneralManipulable || lim == DungeonLimits.GeneralManipulable4x)
 			{
 				ValidateManipulables();
@@ -810,7 +788,6 @@ namespace ZeldaFullEditor.Data.Underworld
 
 				}
 			}
-
 
 			l.Add(o);
 
@@ -917,8 +894,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			HasUnsavedChanges = true;
 			return true;
 		}
-		
-		// TODO
+
 		private bool AddTorch(DungeonTorch t)
 		{
 			if (TorchList.Count >= 16)
@@ -932,30 +908,28 @@ namespace ZeldaFullEditor.Data.Underworld
 			return true;
 		}
 
-
-
-		private dynamic GetAssociatedList(IDungeonPlaceable o)
+		private IList<IDungeonPlaceable> GetAssociatedList(IDungeonPlaceable o)
 		{
 			if (o is RoomObject ro)
 			{
 				if (Layer1Objects.Contains(ro))
 				{
-					return Layer1Objects;
+					return (IList<IDungeonPlaceable>) Layer1Objects;
 				}
 				else if (Layer2Objects.Contains(ro))
 				{
-					return Layer2Objects;
+					return (IList<IDungeonPlaceable>) Layer2Objects;
 				}
 				else if (Layer3Objects.Contains(ro))
 				{
-					return Layer3Objects;
+					return (IList<IDungeonPlaceable>) Layer3Objects;
 				}
 			}
 			else if (o is DungeonDoor door)
 			{
 				if (DoorsList.Contains(door))
 				{
-					return DoorsList;
+					return (IList<IDungeonPlaceable>) DoorsList;
 				}
 			}
 
@@ -965,13 +939,15 @@ namespace ZeldaFullEditor.Data.Underworld
 		public void SendToFront(IDungeonPlaceable o)
 		{
 			var mylist = GetAssociatedList(o);
+			mylist?.Remove(o);
+			mylist?.Add(o);
+		}
 
-			if (mylist is List<IDungeonPlaceable> l)
-			{
-				l.Remove(o);
-				l.Add(o);
-				return;
-			}
+		public void SendToBack(IDungeonPlaceable o)
+		{
+			var mylist = GetAssociatedList(o);
+			mylist?.Remove(o);
+			mylist?.Insert(0, o);
 		}
 
 		public void SendAllSelectedToFront()
@@ -987,18 +963,6 @@ namespace ZeldaFullEditor.Data.Underworld
 			foreach (var o in SelectedObjects)
 			{
 				SendToBack(o);
-			}
-		}
-
-		public void SendToBack(IDungeonPlaceable o)
-		{
-			var mylist = GetAssociatedList(o);
-
-			if (mylist is List<IDungeonPlaceable> l)
-			{
-				l.Remove(o);
-				l.Insert(0, o);
-				return;
 			}
 		}
 
@@ -1026,7 +990,8 @@ namespace ZeldaFullEditor.Data.Underworld
 				}
 			}
 		}
-		public object FindFirstCollidingObject<T>(IEnumerable<T> list, int x, int y) where T : IMouseCollidable
+
+		public object FindFirstCollidingObject(IEnumerable<IMouseCollidable> list, int x, int y)
 		{
 			foreach (var o in list)
 			{
@@ -1061,7 +1026,6 @@ namespace ZeldaFullEditor.Data.Underworld
 			var openabledoors = new List<DungeonDoor>();
 			var shutterdoors = new List<DungeonDoor>();
 			var otherdoors = new List<DungeonDoor>();
-
 
 			foreach (DungeonDoor door in DoorsList)
 			{
@@ -1142,23 +1106,19 @@ namespace ZeldaFullEditor.Data.Underworld
 		}
 
 		// TODO
-		public bool AddChest()
+		public void AddChest()
 		{
 
 
 			ReassociateChestsAndItems();
-
-			return true;
 		}
 		
 		// TODO
-		public bool DeleteChest()
+		public void DeleteChest()
 		{
 
 
 			ReassociateChestsAndItems();
-
-			return true;
 		}
 
 
@@ -1257,22 +1217,22 @@ namespace ZeldaFullEditor.Data.Underworld
 
 			if (count > 0)
 			{
-				Destinations.Stair1.AssociatedObject = stairs[0];
+				Stair1.AssociatedObject = stairs[0];
 			}
 
 			if (count > 1)
 			{
-				Destinations.Stair1.AssociatedObject = stairs[1];
+				Stair1.AssociatedObject = stairs[1];
 			}
 
 			if (count > 2)
 			{
-				Destinations.Stair1.AssociatedObject = stairs[2];
+				Stair1.AssociatedObject = stairs[2];
 			}
 
 			if (count > 3)
 			{
-				Destinations.Stair1.AssociatedObject = stairs[3];
+				Stair1.AssociatedObject = stairs[3];
 			}
 		}
 
@@ -1286,7 +1246,6 @@ namespace ZeldaFullEditor.Data.Underworld
 		// Data output
 		//================================================================================================
 
-		// TODO
 		public byte[] GetHeaderData()
 		{
 			return new byte[]
@@ -1298,30 +1257,29 @@ namespace ZeldaFullEditor.Data.Underworld
 				LayerMerging.ID,
 				Tag1,
 				Tag2,
-				(byte) (Destinations.Pits.Layer | (Destinations.Stair1.Layer << 2)
-					| (Destinations.Stair2.Layer << 4) | (Destinations.Stair3.Layer << 6)),
-				Destinations.Stair4.Layer,
-				Destinations.Pits.Target,
-				Destinations.Stair1.Target,
-				Destinations.Stair2.Target,
-				Destinations.Stair3.Target,
-				Destinations.Stair4.Target
+				(byte) (Pits.TargetLayer | (Stair1.TargetLayer << 2)
+					| (Stair2.TargetLayer << 4) | (Stair3.TargetLayer << 6)),
+				Stair4.TargetLayer,
+				Pits.Target,
+				Stair1.Target,
+				Stair2.Target,
+				Stair3.Target,
+				Stair4.Target
 			};
 		}
 
 		public byte[] GetTileObjectData()
 		{
-			// TODO add layout and shit
 			var ret = new List<byte>();
 
 			ret.Add(0x00); // TODO write floor
 			ret.Add(0x00); // TODO write layout
 
 			ret.AddRange(Layer1Objects.GetByteData());
-			ret.Add(0xFFFF);
+			ret.Add(Constants.ObjectSentinel);
 
 			ret.AddRange(Layer2Objects.GetByteData());
-			ret.Add(0xFFFF);
+			ret.Add(Constants.ObjectSentinel);
 
 			ret.AddRange(Layer3Objects.GetByteData());
 
@@ -1332,7 +1290,7 @@ namespace ZeldaFullEditor.Data.Underworld
 				ret.AddRange(DoorsList.GetByteData());
 			}
 
-			ret.Add(0xFFFF);
+			ret.Add(Constants.ObjectSentinel);
 
 			return ret.ToArray();
 		}
@@ -1345,7 +1303,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 			ret.AddRange(TorchList.GetByteData());
 
-			ret.Add(0xFFFF);
+			ret.Add(Constants.ObjectSentinel);
 
 			return ret.ToArray();
 		}
@@ -1377,7 +1335,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 			if (ret.Count() > 0)
 			{
-				ret.Add(0xFFFF);
+				ret.Add(Constants.ObjectSentinel);
 			}
 
 			return ret.ToArray();

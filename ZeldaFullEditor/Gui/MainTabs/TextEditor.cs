@@ -71,7 +71,7 @@ namespace ZeldaFullEditor
 					protons.Append(CHEESE);
 				}
 			}
-			return ReplaceAllDictionaryWords(protons.ToString()).Replace(CHEESE.ToString(), "");
+			return ReplaceAllDictionaryWords(protons.ToString()).Replace(CHEESE.ToString(), string.Empty);
 		}
 
 		private static string ReplaceAllDictionaryWords(string s)
@@ -86,6 +86,7 @@ namespace ZeldaFullEditor
 			}
 			return ret;
 		}
+
 		private static ParsedElement FindMatchingElement(string s)
 		{
 			Match g;
@@ -170,8 +171,6 @@ namespace ZeldaFullEditor
 			return 0xFF;
 		}
 
-
-
 		public bool SelectMessageID(int i)
 		{
 			if (i < textListbox.Items.Count)
@@ -181,6 +180,7 @@ namespace ZeldaFullEditor
 			}
 			return false;
 		}
+
 		private void TextEditor_Load(object sender, EventArgs e)
 		{
 			//TODO: Add something here?
@@ -221,7 +221,6 @@ namespace ZeldaFullEditor
 				{
 					break;
 				}
-
 
 				TextElement t;
 
@@ -274,7 +273,6 @@ namespace ZeldaFullEditor
 					}
 					continue;
 				}
-
 
 				// everything else
 				if (CharEncoder.ContainsKey(b))
@@ -367,7 +365,6 @@ namespace ZeldaFullEditor
 			return bytes.ToArray();
 		}
 
-
 		public string ParseTextDataByte(byte b)
 		{
 			if (CharEncoder.ContainsKey(b))
@@ -400,26 +397,6 @@ namespace ZeldaFullEditor
 			return "[SOMETHINGBADHAPPENED]";
 		}
 
-		private void openToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			//TODO: Add Something here?
-
-			/* 
-            OpenFileDialog of = new OpenFileDialog();
-            of.Filter = "Snes ROM|*.sfc;*.smc";
-
-            if (of.ShowDialog() == DialogResult.OK)
-            {
-                using (FileStream fs = new FileStream(of.FileName, FileMode.Open, FileAccess.Read))
-                {
-                    romname = of.FileName;
-                    ZScreamer.ActiveROM.DATA = new byte[fs.Length];
-                    fs.Read(ZScreamer.ActiveROM.DATA, 0, (int)fs.Length);
-                    fs.Close();
-                }
-            }*/
-		}
-
 		private static readonly Color[] previewColors = {
 			Color.DimGray,
 			Color.DarkBlue,
@@ -437,7 +414,6 @@ namespace ZeldaFullEditor
 
 			ZScreamer.ActiveGraphicsManager.fontgfxBitmap = new Bitmap(128, 128, 64, PixelFormat.Format4bppIndexed, ZScreamer.ActiveGraphicsManager.fontgfx16Ptr);
 			ZScreamer.ActiveGraphicsManager.currentfontgfx16Bitmap = new Bitmap(172, 4096, 172, PixelFormat.Format8bppIndexed, ZScreamer.ActiveGraphicsManager.currentfontgfx16Ptr);
-
 
 			ColorPalette cp1 = ZScreamer.ActiveGraphicsManager.fontgfxBitmap.Palette;
 			for (int i = 0; i < previewColors.Length; i++)
@@ -467,7 +443,6 @@ namespace ZeldaFullEditor
 			ZScreamer.ActiveGraphicsManager.CreateFontGfxData();
 		}
 
-
 		private static string AddNewLinesToCommands(string s)
 		{
 			return Regex.Replace(s, @"\[[123V]\]", "\r\n$0");
@@ -481,14 +456,9 @@ namespace ZeldaFullEditor
 				//CurrentMessage = null;
 				return;
 			}
+
 			//MessageData msg = listOfTexts[(int) (textListbox.Items[textListbox.SelectedIndex] as ListViewItem).Tag];
 			CurrentMessage = textListbox.Items[textListbox.SelectedIndex] as MessageData;
-			//Console.WriteLine(savedTexts[textListbox.SelectedIndex]);
-			/*for (int i = 0; i < savedBytes[textListbox.SelectedIndex].Length; i++)
-            {
-                Console.Write(savedBytes[textListbox.SelectedIndex][i].ToString("X2") + " ");
-            }*/
-			//Console.WriteLine();
 
 			// TODO need to adjust this because it keeps moving where the cursor is
 			textBox1.Text = AddNewLinesToCommands(CurrentMessage.ContentsParsed);
@@ -534,7 +504,7 @@ namespace ZeldaFullEditor
 						textLine++;
 					}
 
-					DrawTileToPreview(textPos, textLine * 16, b & 0xF, b / 16, 0, false, false, 1, 2);
+					DrawTileToPreview(textPos, textLine * 16, b & 0xF, b / 16);
 					textPos += widthArray[b];
 				}
 				else if (b == 0x74)
@@ -604,24 +574,24 @@ namespace ZeldaFullEditor
 			shownLines = 0;
 		}
 
-		private unsafe void DrawTileToPreview(int x, int y, int srcx, int srcy, int pal, bool mirror_x = false, bool mirror_y = false, int sizex = 1, int sizey = 1)
+		private unsafe void DrawTileToPreview(int x, int y, int srcx, int srcy)
 		{
 			var alltilesData = (byte*) ZScreamer.ActiveGraphicsManager.fontgfx16Ptr.ToPointer();
 
 			byte* ptr = (byte*) ZScreamer.ActiveGraphicsManager.currentfontgfx16Ptr.ToPointer();
 
 			int drawid = srcx + (srcy * 32);
-			int tx = (drawid / 16 * 512) + ((drawid & 0x0F) * 4);
+			int tx = ((drawid & ~0xF) * 32) + ((drawid & 0x0F) * 4);
 
-			y *= 172;
+			int ioff = x + y * 172;
 
-			for (int yl = 0; yl < sizey * 8; yl++)
+			for (int yl = 0; yl < 16; yl++)
 			{
 				for (int xl = 0; xl < 4; xl++)
 				{
 					byte pixel = alltilesData[tx + (yl * 64) + xl];
 
-					int index = x + y + (xl * 2) + (yl * 172);
+					int index = ioff + (xl * 2) + (yl * 172);
 
 					if (pixel.BitIsOn(0x0F))
 					{

@@ -12,11 +12,11 @@ namespace ZeldaFullEditor
 {
 	public partial class ExitEditorForm : Form
 	{
-		public ExitOW editingExit;
+		public OverworldExit editingExit;
 		bool settingValues = false;
 		int pixelMapx;
 		int pixelMapy;
-		public ExitOW selectedExit;
+		public OverworldExit selectedExit;
 
 		public ExitEditorForm()
 		{
@@ -85,11 +85,11 @@ namespace ZeldaFullEditor
 			setPositionButton.Enabled = !nodoorradioButton.Checked;
 		}
 
-		public void SetExit(ExitOW exit)
+		public void SetExit(OverworldExit exit)
 		{
 			settingValues = true;
 			selectedExit = exit;
-			editingExit = new ExitOW(exit.TargetRoomID, exit.MapID, exit.VRAMBase, exit.ScrollY, exit.ScrollX, exit.GlobalY, exit.GlobalX, exit.CameraY, exit.CameraX, exit.unk1, exit.unk2, exit.doorType1, exit.doorType2);
+			editingExit = new OverworldExit(exit.TargetRoomID, exit.MapID, exit.VRAMBase, exit.ScrollY, exit.ScrollX, exit.GlobalY, exit.GlobalX, exit.CameraY, exit.CameraX, exit.unk1, exit.unk2, exit.doorType1, exit.doorType2);
 			roomUpDown.HexValue = editingExit.TargetRoomID;
 			mapUpDown.Value = editingExit.MapID;
 

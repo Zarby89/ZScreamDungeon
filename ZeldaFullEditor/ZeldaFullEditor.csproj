@@ -241,9 +241,11 @@
     <Compile Include="Utility\Enums\DungeonLimits.cs" />
     <Compile Include="Utility\Enums\DungeonObjectSet.cs" />
     <Compile Include="Utility\Enums\DungeonObjectSizeability.cs" />
+    <Compile Include="Utility\Enums\Lizard.cs" />
     <Compile Include="Utility\Enums\RoomObjectCategory.cs" />
     <Compile Include="Utility\Enums\SpecialObjectType.cs" />
     <Compile Include="Utility\Enums\SpriteCategory.cs" />
+    <Compile Include="Utility\Enums\TextView.cs" />
     <Compile Include="Utility\Enums\Worldiness.cs" />
     <Compile Include="Utility\Interfaces\IByteable.cs" />
     <Compile Include="Utility\Interfaces\IDelegatedDraw.cs" />
@@ -254,6 +256,7 @@
     <Compile Include="Utility\Interfaces\IMultilayered.cs" />
     <Compile Include="Utility\Interfaces\ITilesTableBasedDraw.cs" />
     <Compile Include="Utility\IntFunctions.cs" />
+    <Compile Include="Utility\Palettes.cs" />
     <Compile Include="Utility\SNESFunctions.cs" />
     <Compile Include="Utility\Structs\OAMDrawInfo.cs" />
     <Compile Include="Data\Misc\DungeonMap.cs" />
@@ -270,7 +273,7 @@
     <Compile Include="Data\Underworld\DungeonRoomChestsHandler.cs" />
     <Compile Include="Data\Underworld\RoomObject.cs" />
     <Compile Include="Data\Underworld\DungeonRoomParts.cs" />
-    <Compile Include="Data\Underworld\DungeonDestinationsHandler.cs" />
+    <Compile Include="Data\Underworld\DungeonDestination.cs" />
     <Compile Include="Data\Underworld\DungeonSecret.cs" />
     <Compile Include="Data\Underworld\DungeonTorch.cs" />
     <Compile Include="Data\Types\ItemReceipt.cs" />
@@ -323,8 +326,8 @@
     </Compile>
     <Compile Include="DoAction.cs" />
     <Compile Include="Data\Underworld\Entrance.cs" />
-    <Compile Include="Data\Overworld\EntranceOW.cs" />
-    <Compile Include="Data\Overworld\ExitOW.cs" />
+    <Compile Include="Data\Overworld\OverworldEntrance.cs" />
+    <Compile Include="Data\Overworld\OverworldExit.cs" />
     <Compile Include="GfxGroups.cs" />
     <Compile Include="Gui\ExtraForms\ExitEditorForm.cs">
       <SubType>Form</SubType>
@@ -593,7 +596,6 @@
     <Compile Include="ROM.cs" />
     <Compile Include="Data\Underworld\Room.cs" />
     <Compile Include="Data\Underworld\RoomLayout.cs" />
-    <Compile Include="Data\Underworld\Room_Object.cs" />
     <Compile Include="Save.cs" />
     <Compile Include="Data\SaveObject.cs" />
     <Compile Include="Gui\Scene\SceneOW.cs">
@@ -637,7 +639,8 @@
     <Compile Include="Utility\Structs\Tile32.cs" />
     <Compile Include="Data\OverlayTile.cs" />
     <Compile Include="Data\TileUndo.cs" />
-    <Compile Include="Data\Overworld\TransportOW.cs" />
+    <Compile Include="Data\Overworld\OverworldTransport.cs" />
+    <Compile Include="Utility\UIColors.cs" />
     <Compile Include="Utility\UIText.cs" />
     <Compile Include="Utility\Utils.cs" />
     <Compile Include="Gui\WhirlpoolForm.cs">

@@ -38,7 +38,7 @@ namespace ZeldaFullEditor.Gui
 				okButton_Click(null, e);
 				reloadGfx();
 				ZScreamer.ActiveUWScene.Room.reloadGfx();
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 			}
 		}
 
@@ -185,7 +185,7 @@ namespace ZeldaFullEditor.Gui
 
 				ZScreamer.ActiveUWScene.Room.reloadGfx();
 				reloadGfx();
-				ZScreamer.ActiveUWScene.TriggerRefresh = true;
+				ZScreamer.ActiveUWScene.Refresh();
 			}
 		}
 
