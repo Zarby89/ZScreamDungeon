@@ -35,7 +35,6 @@
 			this.searchTextbox = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.panel2 = new System.Windows.Forms.Panel();
-			this.ParamsBox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.fontGridBox = new System.Windows.Forms.CheckBox();
 			this.BytesDDD = new System.Windows.Forms.Button();
 			this.label11 = new System.Windows.Forms.Label();
@@ -65,6 +64,7 @@
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+			this.ParamsBox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.panel1.SuspendLayout();
 			this.panel2.SuspendLayout();
 			this.groupBox1.SuspendLayout();
@@ -157,21 +157,6 @@
 			this.panel2.Name = "panel2";
 			this.panel2.Size = new System.Drawing.Size(520, 715);
 			this.panel2.TabIndex = 23;
-			// 
-			// ParamsBox
-			// 
-			this.ParamsBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.ParamsBox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-			this.ParamsBox.HexValue = 0;
-			this.ParamsBox.Location = new System.Drawing.Point(483, 153);
-			this.ParamsBox.MaxLength = 2;
-			this.ParamsBox.MaxValue = 255;
-			this.ParamsBox.MinValue = 0;
-			this.ParamsBox.Name = "ParamsBox";
-			this.ParamsBox.Size = new System.Drawing.Size(32, 20);
-			this.ParamsBox.TabIndex = 35;
-			this.ParamsBox.Text = "00";
-			this.ParamsBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// fontGridBox
 			// 
@@ -468,6 +453,21 @@
 			this.toolStripButton2.Size = new System.Drawing.Size(23, 22);
 			this.toolStripButton2.Text = "Import text";
 			this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+			// 
+			// ParamsBox
+			// 
+			this.ParamsBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.ParamsBox.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
+			this.ParamsBox.HexValue = 0;
+			this.ParamsBox.Location = new System.Drawing.Point(483, 153);
+			this.ParamsBox.MaxLength = 2;
+			this.ParamsBox.MaxValue = 255;
+			this.ParamsBox.MinValue = 0;
+			this.ParamsBox.Name = "ParamsBox";
+			this.ParamsBox.Size = new System.Drawing.Size(32, 20);
+			this.ParamsBox.TabIndex = 35;
+			this.ParamsBox.Text = "00";
+			this.ParamsBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// TextEditor
 			// 

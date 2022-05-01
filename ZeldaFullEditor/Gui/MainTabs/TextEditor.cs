@@ -282,7 +282,6 @@ namespace ZeldaFullEditor
 					tempBytesParsed.Add(b);
 				}
 			}
-
 			//00074703
 		}
 
@@ -1112,6 +1111,7 @@ namespace ZeldaFullEditor
 		{
 			ScrollTextPreviewUp();
 		}
+
 		private void ScrollTextPreviewUp()
 		{
 			if (shownLines > 0)

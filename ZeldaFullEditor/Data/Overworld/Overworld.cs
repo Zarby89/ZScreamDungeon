@@ -799,7 +799,6 @@ namespace ZeldaFullEditor
 				if (index >= 0x4540) // 3C87??
 				{
 					throw new ZeldaException("TOO MANY MAP32");
-					break;
 				}
 
 				for (int j = i, k = index; j < (i + 4); j++, k++)

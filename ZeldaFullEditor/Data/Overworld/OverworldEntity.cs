@@ -45,6 +45,17 @@ namespace ZeldaFullEditor
 				RecalculateGlobalFromLocal();
 			}
 		}
+		public int RealX
+		{
+			get => GlobalX;
+			set => GlobalX = (ushort) value;
+		}
+
+		public int RealY
+		{
+			get => GlobalY;
+			set => GlobalY = (ushort) value;
+		}
 
 		private byte mapid;
 		public byte MapID {
@@ -64,11 +75,6 @@ namespace ZeldaFullEditor
 			get => MapY;
 			set => MapY = value;
 		}
-		public int RealX => RealX;
-		public int RealY => RealY;
-
-		public byte NewX { get; set; }
-		public byte NewY { get; set; }
 
 		public ushort MapPos => (ushort) (((MapY << 6) | (MapX & 0x3F)) << 1);
 

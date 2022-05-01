@@ -232,6 +232,23 @@ namespace ZeldaFullEditor
 		public int triforceVertices => new ROMAddress(0x09FFD2, 0x09FFD2).GetOffsetForVersion(Version);
 		public int TriforceFaces => new ROMAddress(0x09FFE4, 0x09FFE4).GetOffsetForVersion(Version);
 		public int crystalVertices => new ROMAddress(0x09FF98, 0x09FF98).GetOffsetForVersion(Version);
+
+
+
+
+		public int SpriteOAMHarmData => new ROMAddress(0x0DB080, 0x0DB080).GetOffsetForVersion(Version);
+		public int SpriteHealthData => new ROMAddress(0x0DB173, 0x0DB173).GetOffsetForVersion(Version);
+		public int SpriteBumpData => new ROMAddress(0x0DB266, 0x0DB266).GetOffsetForVersion(Version);
+		public int SpriteOAMPropData => new ROMAddress(0x0DB359, 0x0DB359).GetOffsetForVersion(Version);
+		public int SpriteHitboxData => new ROMAddress(0x0DB44C, 0x0DB44C).GetOffsetForVersion(Version);
+		public int SpriteTileIntData => new ROMAddress(0x0DB53F, 0x0DB53F).GetOffsetForVersion(Version);
+		public int SpritePrizePackData => new ROMAddress(0x0DB632, 0x0DB632).GetOffsetForVersion(Version);
+		public int SpriteDeflectionData => new ROMAddress(0x0DB725, 0x0DB725).GetOffsetForVersion(Version);
+
+
+
+
+
 		public SNESFunctions.ROMVersion Version { get; }
 		public AddressSet(SNESFunctions.ROMVersion version)
 		{

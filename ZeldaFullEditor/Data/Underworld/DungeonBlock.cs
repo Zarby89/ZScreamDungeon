@@ -9,13 +9,33 @@ namespace ZeldaFullEditor.Data.Underworld
 {
 	public class DungeonBlock : IDungeonPlaceable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered
 	{
-		public byte GridX { get; set; }
-		public byte GridY { get; set; }
-		public byte NewX { get; set; }
-		public byte NewY { get; set; }
+		private byte gridx, gridy;
+		private const int Scale = 8;
+
+		public byte GridX
+		{
+			get => gridx;
+			set => gridy = value;
+		}
+
+		public byte GridY
+		{
+			get => gridy;
+			set => gridy = value;
+		}
+
+		public int RealX
+		{
+			get => gridx * Scale;
+			set => gridx = (byte) (value / Scale);
+		}
+
+		public int RealY
+		{
+			get => gridy * Scale;
+			set => gridy = (byte) (value / Scale);
+		}
 		public RoomLayer Layer { get; set; }
-		public int RealX => NewX * 8;
-		public int RealY => NewY * 8;
 
 		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, 16, 16);
 

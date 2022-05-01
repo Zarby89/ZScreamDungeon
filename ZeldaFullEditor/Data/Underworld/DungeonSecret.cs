@@ -10,27 +10,37 @@ namespace ZeldaFullEditor.Data.Underworld
 	[Serializable]
 	public class DungeonSecret : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID
 	{
-		public byte GridX { get; set; } = 0;
-		public byte GridY { get; set; } = 0;
+		private byte gridx, gridy;
+		private const int Scale = 8;
+
+		public byte GridX
+		{
+			get => gridx;
+			set => gridy = value;
+		}
+
+		public byte GridY
+		{
+			get => gridy;
+			set => gridy = value;
+		}
+
+		public int RealX
+		{
+			get => gridx * Scale;
+			set => gridx = (byte) (value / Scale);
+		}
+
+		public int RealY
+		{
+			get => gridy * Scale;
+			set => gridy = (byte) (value / Scale);
+		}
 
 		public byte ID => SecretType.ID;
 		public int TypeID => SecretType.ID;
 
-		public int RealX => NewX * 8;
-		public int RealY => NewY * 8;
 		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, 16, 16);
-
-		private byte nx, ny;
-		public byte NewX
-		{
-			get => nx;
-			set => nx = value.Clamp(0, 63);
-		}
-		public byte NewY
-		{
-			get => ny;
-			set => ny = value.Clamp(0, 63);
-		}
 
 		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
 

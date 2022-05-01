@@ -19,7 +19,8 @@ namespace ZeldaFullEditor.Gui
 		// TODO move to Constants
 		private const int NullEntrance = 0xFFFF;
 		private const int ScratchPadSize = 225 * 16 * 2;
-
+		private const int Tile16EntryWidth = 16;
+		private const int Tile16RowWidth = 8 * Tile16EntryWidth;
 
 		public bool propertiesChangedFromForm = false;
 		public Bitmap tmpPreviewBitmap = new Bitmap(256, 256);
@@ -321,7 +322,9 @@ namespace ZeldaFullEditor.Gui
 			}
 		}
 
-		private static readonly RectangleF TileRect = new RectangleF(128, 3408, 128, 688);
+		private static readonly RectangleF TileRect =
+			new RectangleF(8 * Tile16EntryWidth, 213 * Tile16EntryWidth, 8 * Tile16EntryWidth, 43 * Tile16EntryWidth);
+
 		private void tilePictureBox_Paint(object sender, PaintEventArgs e)
 		{
 			if (ZScreamer.ActiveGraphicsManager.mapblockset16Bitmap != null)
@@ -339,17 +342,17 @@ namespace ZeldaFullEditor.Gui
 
 				if (ZScreamer.ActiveOWScene.selectedTile.Length > 0)
 				{
-					int x = ZScreamer.ActiveOWScene.selectedTile[0] % 8 * 16;
-					int y = ZScreamer.ActiveOWScene.selectedTile[0] / 8 * 16;
+					int x = ZScreamer.ActiveOWScene.selectedTile[0] % 8 * Tile16EntryWidth;
+					int y = ZScreamer.ActiveOWScene.selectedTile[0] / 8 * Tile16EntryWidth;
 
 					if (ZScreamer.ActiveOWScene.selectedTile[0] >= 2048)
 					{
-						y -= 4096;
-						x += 128;
+						y -= 256 * Tile16EntryWidth;
+						x += 8 * Tile16EntryWidth;
 					}
 
 					// TODO copy
-					e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(x, y, 16, 16));
+					e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(x, y, Tile16EntryWidth, Tile16EntryWidth));
 					selectedTileLabel.Text = "Selected tile: " + ZScreamer.ActiveOWScene.selectedTile[0].ToString("X4");
 				}
 
@@ -362,7 +365,8 @@ namespace ZeldaFullEditor.Gui
 			ZScreamer.ActiveOWScene.selectedTileSizeX = 1;
 			if (e.X > 128)
 			{
-				ZScreamer.ActiveOWScene.selectedTile = new ushort[1] { (ushort) (((e.X - 128) / 16) + (e.Y / 16 * 8) + 2048) };
+				ZScreamer.ActiveOWScene.selectedTile = new ushort[1]
+					{ (ushort) (((e.X - Tile16RowWidth) / Tile16EntryWidth) + (e.Y / Tile16EntryWidth * 8) + (128 * Tile16EntryWidth)) };
 				if (ZScreamer.ActiveOWScene.selectedTile[0] > 3751)
 				{
 					ZScreamer.ActiveOWScene.selectedTile[0] = 3751;
@@ -370,7 +374,7 @@ namespace ZeldaFullEditor.Gui
 			}
 			else
 			{
-				ZScreamer.ActiveOWScene.selectedTile = new ushort[1] { (ushort) ((e.X / 16) + (e.Y / 16 * 8)) };
+				ZScreamer.ActiveOWScene.selectedTile = new ushort[1] { (ushort) ((e.X / Tile16EntryWidth) + (e.Y / Tile16EntryWidth * 8)) };
 			}
 
 			tilePictureBox.Refresh();
@@ -527,8 +531,8 @@ namespace ZeldaFullEditor.Gui
 
 		private void scratchPicturebox_MouseDown(object sender, MouseEventArgs e)
 		{
-			globalmouseTileDownX = e.X / 16;
-			globalmouseTileDownY = e.Y / 16;
+			globalmouseTileDownX = e.X / Tile16EntryWidth;
+			globalmouseTileDownY = e.Y / Tile16EntryWidth;
 
 			if (ZScreamer.ActiveOWScene.TriggerRefresh)
 			{
@@ -580,8 +584,8 @@ namespace ZeldaFullEditor.Gui
 		{
 			if (MouseIsDown)
 			{
-				int tileX = e.X / 16;
-				int tileY = e.Y / 16;
+				int tileX = e.X / Tile16EntryWidth;
+				int tileY = e.Y / Tile16EntryWidth;
 
 				if (e.Button == MouseButtons.Right)
 				{
@@ -636,8 +640,8 @@ namespace ZeldaFullEditor.Gui
 			{
 				mouseX_Real = e.X;
 				mouseY_Real = e.Y;
-				int mouseTileX = e.X / 16;
-				int mouseTileY = e.Y / 16;
+				int mouseTileX = e.X / Tile16EntryWidth;
+				int mouseTileY = e.Y / Tile16EntryWidth;
 
 				if (lastTileHoverX != mouseTileX || lastTileHoverY != mouseTileY)
 				{
@@ -645,8 +649,8 @@ namespace ZeldaFullEditor.Gui
 					{
 						if (e.Button == MouseButtons.Left)
 						{
-							int tileX = e.X / 16;
-							int tileY = e.Y / 16;
+							int tileX = e.X / Tile16EntryWidth;
+							int tileY = e.Y / Tile16EntryWidth;
 							if (tileX <= 0) { tileX = 0; }
 							if (tileY <= 0) { tileY = 0; }
 							if (tileX > 16) { tileX = 16; }
@@ -712,12 +716,12 @@ namespace ZeldaFullEditor.Gui
 
 				if (selecting)
 				{
-					g.DrawRectangle(Pens.White, new Rectangle(globalmouseTileDownX * 16, globalmouseTileDownY * 16, (((mouseX_Real / 16) - globalmouseTileDownX) * 16) + 16, (((mouseY_Real / 16) - globalmouseTileDownY) * 16) + 16));
+					g.DrawRectangle(Pens.White, new Rectangle(globalmouseTileDownX * Tile16EntryWidth, globalmouseTileDownY * Tile16EntryWidth, (((mouseX_Real / Tile16EntryWidth) - globalmouseTileDownX) * Tile16EntryWidth) + Tile16EntryWidth, (((mouseY_Real / Tile16EntryWidth) - globalmouseTileDownY) * Tile16EntryWidth) + Tile16EntryWidth));
 				}
 
-				Rectangle r = new Rectangle(mouseX_Real & ~0xF, mouseY_Real & ~0xF, ZScreamer.ActiveOWScene.selectedTileSizeX * 16, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX * 16);
+				Rectangle r = new Rectangle(mouseX_Real & ~0xF, mouseY_Real & ~0xF, ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16EntryWidth, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16EntryWidth);
 
-				g.DrawImage(ZScreamer.ActiveOWScene.tilesgfxBitmap, r, 0, 0, ZScreamer.ActiveOWScene.selectedTileSizeX * 16, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX * 16, GraphicsUnit.Pixel, ia);
+				g.DrawImage(ZScreamer.ActiveOWScene.tilesgfxBitmap, r, 0, 0, ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16EntryWidth, ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX * Tile16EntryWidth, GraphicsUnit.Pixel, ia);
 				g.DrawRectangle(Pens.LightGreen, r);
 				//g.DrawImage(ZScreamer.ActiveOWScene.tilesgfxBitmap, r, 0, 0, ZScreamer.ActiveOWScene.selectedTileSizeX * 16, (ZScreamer.ActiveOWScene.selectedTile.Length / ZScreamer.ActiveOWScene.selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
 				//g.DrawRectangle(Pens.LightGreen, r);
@@ -741,7 +745,7 @@ namespace ZeldaFullEditor.Gui
 				//Console.WriteLine(srcTile);
 				int srcTileY = srcTile / 8;
 				int srcTileX = srcTile - (srcTileY * 8);
-				int tPos = (xtile * 16) + (ytile * 4096);
+				int tPos = (xtile * Tile16EntryWidth) + (ytile * 256 * Tile16EntryWidth);
 				int srctPos = (srcTileX * 16) + (srcTileY * 2048);
 
 				for (int y = 0; y < 16; y++)
@@ -774,7 +778,7 @@ namespace ZeldaFullEditor.Gui
 			int y = tile8selected / 16;
 			int x = tile8selected & 0xF;
 
-			e.Graphics.DrawRectangle(Pens.GreenYellow, new Rectangle(x * 16, y * 16, 16, 16));
+			e.Graphics.DrawRectangle(Pens.GreenYellow, new Rectangle(x * Tile16EntryWidth, y * Tile16EntryWidth, Tile16EntryWidth, Tile16EntryWidth));
 		}
 
 		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)

@@ -7,7 +7,7 @@
 	{
 		byte GridX { get; set; }
 		byte GridY { get; set; }
-		byte NewX { get; set; }
-		byte NewY { get; set; }
+		int RealX { get; set; }
+		int RealY { get; set; }
 	}
 }

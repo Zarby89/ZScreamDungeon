@@ -266,12 +266,15 @@ namespace ZeldaFullEditor.Data.Underworld
 			LoadBlocks();
 			LoadTorches();
 			LoadSecrets();
-			ReassociateChestsAndItems();
+			ResyncAllLists();
 		}
 
 
 
 		// TODO this is where we'll flush temporary edits to the new listing
+		/// <summary>
+		/// Flushes all pending changes to the keep buffer.
+		/// </summary>
 		public void FlushChanges()
 		{
 			if (!HasUnsavedChanges)
@@ -283,6 +286,9 @@ namespace ZeldaFullEditor.Data.Underworld
 			throw new NotImplementedException();
 		}
 
+		/// <summary>
+		/// Deletes all pending changes and restores the edit buffer from the keep buffer.
+		/// </summary>
 		public void ClearChanges()
 		{
 			if (!HasUnsavedChanges)
@@ -688,7 +694,10 @@ namespace ZeldaFullEditor.Data.Underworld
 			DoorsList.Clear();
 			SecretsList.Clear();
 			SpritesList.Clear();
+			TorchList.Clear();
+			BlocksList.Clear();
 			ChestList.Clear();
+			ResyncAllLists();
 		}
 
 
@@ -722,6 +731,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			if (AttemptToAddEntity(o, m))
 			{
 				OnlySelectedObject = o;
+				ResyncAllLists();
 				return true;
 			}
 
@@ -729,7 +739,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		}
 
 
-		public bool AttemptToAddEntity(IDungeonPlaceable o, DungeonEditMode m)
+		private bool AttemptToAddEntity(IDungeonPlaceable o, DungeonEditMode m)
 		{
 			switch (m)
 			{
@@ -908,6 +918,55 @@ namespace ZeldaFullEditor.Data.Underworld
 			return true;
 		}
 
+		private IDungeonPlaceable FindRelevantEntityUnderMouseForMode(DungeonEditMode em, int x, int y)
+		{
+			var l = FindRelevantListForMode(em);
+			if (l == null) return null;
+
+			return FindEntityUnderMouseInList(l, x, y);
+		}
+
+
+		private IList<IDungeonPlaceable> FindRelevantListForMode(DungeonEditMode em)
+		{
+			switch (em)
+			{
+				case DungeonEditMode.Layer1: return (IList<IDungeonPlaceable>) Layer1Objects;
+				case DungeonEditMode.Layer2: return (IList<IDungeonPlaceable>) Layer2Objects;
+				case DungeonEditMode.Layer3: return (IList<IDungeonPlaceable>) Layer3Objects;
+				case DungeonEditMode.LayerAll: return (IList<IDungeonPlaceable>) Layer1Objects.Concat(Layer2Objects).Concat(Layer3Objects);
+				case DungeonEditMode.Sprites: return (IList<IDungeonPlaceable>) SpritesList;
+				case DungeonEditMode.Secrets: return (IList<IDungeonPlaceable>) SecretsList;
+				case DungeonEditMode.Blocks: return (IList<IDungeonPlaceable>) BlocksList;
+				case DungeonEditMode.Torches: return (IList<IDungeonPlaceable>) TorchList;
+				case DungeonEditMode.Doors: return (IList<IDungeonPlaceable>) DoorsList;
+				default: return null;
+			}
+		}
+
+
+		private IDungeonPlaceable FindEntityUnderMouseInList(IList<IDungeonPlaceable> l, int x, int y)
+		{
+			for (int i = l.Count - 1; i >= 0; i--) // count down because the objects on top are the most visible
+			{
+				var o = l[i];
+				if (o.PointIsInHitbox(x, y))
+				{
+					return o;
+				}
+			}
+			return null;
+		}
+
+		private void ResyncAllLists()
+		{
+			ReassociateChestsAndItems();
+			ReassociateStairsAndTargets();
+		}
+
+
+
+		// TODO finish listing
 		private IList<IDungeonPlaceable> GetAssociatedList(IDungeonPlaceable o)
 		{
 			if (o is RoomObject ro)
@@ -936,34 +995,67 @@ namespace ZeldaFullEditor.Data.Underworld
 			return null;
 		}
 
-		public void SendToFront(IDungeonPlaceable o)
+		private void SendOneToFront(IDungeonPlaceable o)
 		{
 			var mylist = GetAssociatedList(o);
 			mylist?.Remove(o);
 			mylist?.Add(o);
 		}
 
-		public void SendToBack(IDungeonPlaceable o)
+		public void SendToFront(IDungeonPlaceable o)
+		{
+			SendOneToFront(o);
+			ResyncAllLists();
+		}
+
+		private void SendOneToBack(IDungeonPlaceable o)
 		{
 			var mylist = GetAssociatedList(o);
 			mylist?.Remove(o);
 			mylist?.Insert(0, o);
 		}
 
+		public void SendToBack(IDungeonPlaceable o)
+		{
+			SendOneToBack(o);
+			ResyncAllLists();
+		}
+
 		public void SendAllSelectedToFront()
 		{
 			foreach (var o in SelectedObjects)
 			{
-				SendToFront(o);
+				SendOneToFront(o);
 			}
+			ResyncAllLists();
 		}
 
 		public void SendAllSelectedToBack()
 		{
 			foreach (var o in SelectedObjects)
 			{
-				SendToBack(o);
+				SendOneToBack(o);
 			}
+			ResyncAllLists();
+		}
+
+		private void SendOneToLayer(IMultilayered o, RoomLayer layer)
+		{
+			if (o.Layer == layer)
+			{
+				return;
+			}
+
+			if (o is RoomObject r)
+			{
+				var d = GetLayerList(o.Layer);
+				d.Remove(r);
+
+				var l = GetLayerList(layer);
+				l.Add(r);
+			}
+
+			o.Layer = layer;
 		}
 
 		internal void SendAllSelectedToLayer(RoomLayer layer)
@@ -972,36 +1064,10 @@ namespace ZeldaFullEditor.Data.Underworld
 			{
 				if (o is IMultilayered m)
 				{
-					if (m.Layer == layer)
-					{
-						continue;
-					}
-
-					if (m is RoomObject r)
-					{
-						var d = GetLayerList(m.Layer);
-						d.Remove(r);
-
-						var l = GetLayerList(layer);
-						l.Add(r);
-					}
-
-					m.Layer = layer;
+					SendOneToLayer(m, layer);
 				}
 			}
-		}
-
-		public object FindFirstCollidingObject(IEnumerable<IMouseCollidable> list, int x, int y)
-		{
-			foreach (var o in list)
-			{
-				if (o.PointIsInHitbox(x, y))
-				{
-					return o;
-				}
-			}
-
-			return null;
+			ResyncAllLists();
 		}
 
 		public void RemoveCurrentlySelectedObjectsFromList<T>(List<T> thisList) where T : IDungeonPlaceable
@@ -1016,6 +1082,7 @@ namespace ZeldaFullEditor.Data.Underworld
 					SelectedObjects.Remove(o);
 				}
 			}
+			ResyncAllLists();
 		}
 
 		/// <summary>
@@ -1049,6 +1116,8 @@ namespace ZeldaFullEditor.Data.Underworld
 			DoorsList.AddRange(openabledoors);
 			DoorsList.AddRange(shutterdoors);
 			DoorsList.AddRange(otherdoors);
+
+			ResyncAllLists();
 
 			return (openabledoors.Count + shutterdoors.Count) > 4;
 		}
@@ -1147,7 +1216,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		}
 
 
-		public void ReassociateChestsAndItems()
+		private void ReassociateChestsAndItems()
 		{
 			var chests = new List<RoomObject>();
 
@@ -1185,7 +1254,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			}
 		}
 
-		public void ReassociateStairsAndTargets()
+		private void ReassociateStairsAndTargets()
 		{
 			var stairs = new List<RoomObject>();
 

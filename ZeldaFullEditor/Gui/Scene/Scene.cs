@@ -27,6 +27,9 @@ namespace ZeldaFullEditor
 		protected int LastX;
 		protected int LastY;
 
+		protected int RightClickedXAt;
+		protected int RightClickedYAt;
+
 		protected bool isLeftPress = false;
 
 		protected ModeActions ActiveMode { get; set; } = ModeActions.Nothing;
@@ -97,6 +100,12 @@ namespace ZeldaFullEditor
 			if (!MouseIsDown)
 			{
 				isLeftPress = e.Button == MouseButtons.Left;
+			}
+
+			if (e.Button == MouseButtons.Right)
+			{
+				RightClickedXAt = e.X;
+				RightClickedYAt = e.Y;
 			}
 
 			try

@@ -19,14 +19,32 @@ namespace ZeldaFullEditor.Data.Underworld
 		public bool IsStairs => ObjectType.Specialness == SpecialObjectType.InterroomStairs;
 		public DungeonLimits LimitClass => ObjectType.LimitClass;
 
-		public byte GridX { get; set; }
-		public byte GridY { get; set; }
+		private byte gridx, gridy;
+		private const int Scale = 8;
 
-		public int RealX => NewX * 8;
-		public int RealY => NewY * 8;
+		public byte GridX
+		{
+			get => gridx;
+			set => gridy = value;
+		}
 
-		public byte NewX { get; set; }
-		public byte NewY { get; set; }
+		public byte GridY
+		{
+			get => gridy;
+			set => gridy = value;
+		}
+
+		public int RealX
+		{
+			get => gridx * Scale;
+			set => gridx = (byte) (value / Scale);
+		}
+
+		public int RealY
+		{
+			get => gridy * Scale;
+			set => gridy = (byte) (value / Scale);
+		}
 		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
 		public byte Size { get; set; }
 
@@ -59,8 +77,6 @@ namespace ZeldaFullEditor.Data.Underworld
 				Size = Size,
 				Width = Width,
 				Height = Height,
-				NewX = NewX,
-				NewY = NewY,
 				DiagonalFix = DiagonalFix
 			};
 		}

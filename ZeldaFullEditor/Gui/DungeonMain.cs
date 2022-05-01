@@ -138,13 +138,15 @@ namespace ZeldaFullEditor
 			ZScreamer.ActiveGraphicsManager.overworldMapPointer = Marshal.AllocHGlobal(0x40000);
 			ZScreamer.ActiveGraphicsManager.owactualMapPointer = Marshal.AllocHGlobal(0x40000);
 
-			if (Settings.Default.favoriteObjects.Count < 0xFFF)
-			{
-				while (Settings.Default.favoriteObjects.Count < 0xFFF)
-				{
-					Settings.Default.favoriteObjects.Add("false");
-				}
-			}
+			// TODO load all settings
+			//if (Settings.Default.favoriteObjects.Count < 0xFFF)
+			//{
+			//	while (Settings.Default.favoriteObjects.Count < 0xFFF)
+			//	{
+			//		Settings.Default.favoriteObjects.Add("false");
+			//	}
+			//}
+
 			//layoutForm = new RoomLayout(ZS);
 			gfxEditor = new GfxImportExport();
 			initialize_properties();
@@ -190,6 +192,73 @@ namespace ZeldaFullEditor
 			roomProperty_tag1.DataSource = DefaultEntities.ListOfRoomTags;
 			roomProperty_tag2.DataSource = DefaultEntities.ListOfRoomTags;
 		}
+
+		private void AdjustContextMenuForSelectionChange()
+		{
+			bool theresASelection = ZScreamer.ActiveUWScene.Room.SelectedObjects.Count > 0;
+
+			var mode = ZScreamer.ActiveUWMode;
+			switch (mode)
+			{
+				case DungeonEditMode.Layer1:
+				case DungeonEditMode.Layer2:
+				case DungeonEditMode.Layer3:
+				case DungeonEditMode.LayerAll:
+					UWContextSendToLayer1.Enabled = theresASelection && mode != DungeonEditMode.Layer1;
+					UWContextSendToLayer2.Enabled = theresASelection && mode != DungeonEditMode.Layer2;
+					UWContextSendToLayer3.Enabled = theresASelection && mode != DungeonEditMode.Layer3;
+					goto case DungeonEditMode.Doors;
+
+				case DungeonEditMode.Doors:
+					UWContextSendToBack.Enabled = theresASelection;
+					UWContextSendToFront.Enabled = theresASelection;
+					break;
+			}
+
+			UWContextCopy.Enabled = theresASelection;
+			UWContextCut.Enabled = theresASelection;
+			UWContextSelectNone.Enabled = theresASelection;
+		}
+
+
+		private void AdjustContextMenu()
+		{
+			var mode = ZScreamer.ActiveUWMode;
+			switch (mode)
+			{
+				case DungeonEditMode.Layer1:
+				case DungeonEditMode.Layer2:
+				case DungeonEditMode.Layer3:
+				case DungeonEditMode.LayerAll:
+					UWContextInsert.Visible = false;
+					UWContextSignificanceSubmenu.Visible = true;
+					UWContextLayerSubmenu.Visible = true;
+					break;
+
+				case DungeonEditMode.Doors:
+					UWContextInsert.Visible = true;
+					UWContextSignificanceSubmenu.Visible = true;
+					UWContextLayerSubmenu.Visible = false;
+					break;
+
+				default:
+					UWContextInsert.Visible = true;
+					UWContextSignificanceSubmenu.Visible = false;
+					UWContextLayerSubmenu.Visible = true;
+					break;
+			}
+
+			AdjustContextMenuForSelectionChange();
+		}
+
+
+
+
+
+
+
+
+
 
 		//Stopwatch sw = new Stopwatch();
 		// TODO : Move that to the save class
@@ -358,6 +427,7 @@ namespace ZeldaFullEditor
 				//recentROMToolStripMenuItem.Enabled = false;
 			}
 		}
+
 
 		public void checkAnyChanges()
 		{
@@ -667,7 +737,7 @@ namespace ZeldaFullEditor
 		{
 			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
 			{
-				ZScreamer.ActiveUWScene.Delete();
+				UWDelete(sender, e);
 			}
 			else if (editorsTabControl.SelectedIndex == 1) // Overworld editor
 			{
@@ -683,7 +753,7 @@ namespace ZeldaFullEditor
 		{
 			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
 			{
-				ZScreamer.ActiveUWScene.SelectAll();
+				UWSelectAll(sender, e);
 			}
 			else if (editorsTabControl.SelectedIndex == 1) // Overworld editor
 			{
@@ -699,7 +769,7 @@ namespace ZeldaFullEditor
 		{
 			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
 			{
-				ZScreamer.ActiveUWScene.Cut();
+				UWCut(sender, e);
 			}
 			else if (editorsTabControl.SelectedIndex == 1) // Overworld editor
 			{
@@ -715,7 +785,7 @@ namespace ZeldaFullEditor
 		{
 			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
 			{
-				ZScreamer.ActiveUWScene.Paste();
+				UWPaste(sender, e);
 			}
 			else if (editorsTabControl.SelectedIndex == 1) // Overworld editor
 			{
@@ -735,7 +805,7 @@ namespace ZeldaFullEditor
 		{
 			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
 			{
-				ZScreamer.ActiveUWScene.Copy();
+				UWCopy(sender, e);
 			}
 			else if (editorsTabControl.SelectedIndex == 1) // Overworld editor
 			{
@@ -941,82 +1011,24 @@ namespace ZeldaFullEditor
 			//}
 		}
 
-		/// <summary>
-		/// Sends an object to the front in the list when using one of the 3 "send to front" options
-		/// </summary>
-		private void SendSelectedToFront(object sender, EventArgs e)
-		{
-			ZScreamer.ActiveUWScene.MouseIsDown = false;
-			ZScreamer.ActiveUWScene.Room.SendAllSelectedToFront();
-			ZScreamer.ActiveUWScene.Refresh();
-		}
-
-		/// <summary>
-		/// Sends an object to the back in the list when using one of the 3 "send to back" options
-		/// </summary>
-		public void SendSelectedToBack(object sender, EventArgs e)
-		{
-			ZScreamer.ActiveUWScene.MouseIsDown = false;
-			ZScreamer.ActiveUWScene.Room.SendAllSelectedToBack();
-			ZScreamer.ActiveUWScene.Refresh();
-		}
-
-		private void toolStripMenuItem4_Click(object sender, EventArgs e)
-		{
-			saveLayout(false);
-		}
-
-		private void textSpriteToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ZScreamer.ActiveUWScene.Refresh();
-		}
-
-		private void insertToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ZScreamer.ActiveUWScene.Insert();
-		}
-
-		private void sendToBg1ToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			SendSelectedToLayer(RoomLayer.Layer1);
-		}
-
-		private void sendToBg1ToolStripMenuItem1_Click(object sender, EventArgs e)
-		{
-			SendSelectedToLayer(RoomLayer.Layer2);
-		}
-
-		private void sendToBg1ToolStripMenuItem2_Click(object sender, EventArgs e)
-		{
-			SendSelectedToLayer(RoomLayer.Layer3);
-		}
-
-		private void SendSelectedToLayer(RoomLayer layer)
-		{
-			ZScreamer.ActiveUWScene.MouseIsDown = false;
-			ZScreamer.ActiveUWScene.Room.SendAllSelectedToLayer(layer);
-			ZScreamer.ActiveUWScene.Refresh();
-		}
-
 		private void zscreamForm_FormClosing_1(object sender, FormClosingEventArgs e)
 		{
 			if (projectLoaded)
 			{
 				//Properties.Settings.Default.ViewParameters;
-				Settings.Default.spriteText = textSpriteToolStripMenuItem.Checked;
-				Settings.Default.chestText = textChestItemToolStripMenuItem.Checked;
-				Settings.Default.itemText = textPotItemToolStripMenuItem.Checked;
-				Settings.Default.transparentBG = unselectedBGTransparentToolStripMenuItem.Checked;
-				Settings.Default.rightToolbox = rightSideToolboxToolStripMenuItem.Checked;
-				Settings.Default.spriteShow = hideSpritesToolStripMenuItem.Checked;
-				Settings.Default.itemsShow = hideItemsToolStripMenuItem.Checked;
-				Settings.Default.chestitemShow = hideChestItemsToolStripMenuItem.Checked;
-				Settings.Default.dooridShow = showDoorIDsToolStripMenuItem.Checked;
-				Settings.Default.chestidShow = showChestsIDsToolStripMenuItem.Checked;
-				Settings.Default.disableentranceGfx = disableEntranceGFXToolStripMenuItem.Checked;
-				Settings.Default.bg2maskShow = showBG2MaskOutlineToolStripMenuItem.Checked;
-				Settings.Default.entranceCamera = entranceCameraToolStripMenuItem.Checked;
-				Settings.Default.entrancePos = entrancePositionToolStripMenuItem.Checked;
+				//Settings.Default.spriteText = textSpriteToolStripMenuItem.Checked;
+				//Settings.Default.chestText = textChestItemToolStripMenuItem.Checked;
+				//Settings.Default.itemText = textPotItemToolStripMenuItem.Checked;
+				//Settings.Default.transparentBG = unselectedBGTransparentToolStripMenuItem.Checked;
+				//Settings.Default.rightToolbox = rightSideToolboxToolStripMenuItem.Checked;
+				//Settings.Default.spriteShow = hideSpritesToolStripMenuItem.Checked;
+				//Settings.Default.itemsShow = hideItemsToolStripMenuItem.Checked;
+				//Settings.Default.chestitemShow = hideChestItemsToolStripMenuItem.Checked;
+				//Settings.Default.dooridShow = showDoorIDsToolStripMenuItem.Checked;
+				//Settings.Default.chestidShow = showChestsIDsToolStripMenuItem.Checked;
+				//Settings.Default.disableentranceGfx = disableEntranceGFXToolStripMenuItem.Checked;
+				//Settings.Default.bg2maskShow = showBG2MaskOutlineToolStripMenuItem.Checked;
+				//Settings.Default.entrancePos = entrancePositionToolStripMenuItem.Checked;
 				Settings.Default.Save();
 			}
 
@@ -1376,26 +1388,6 @@ namespace ZeldaFullEditor
 			cgramViewer.Refresh();
 		}
 
-		private void rightSideToolboxToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			splitContainer3.Panel1.Controls.Clear();
-			splitContainer3.Panel2.Controls.Clear();
-			if (rightSideToolboxToolStripMenuItem.Checked)
-			{
-				//toolboxPanel.Dock = DockStyle.Right;
-				//splitter1.Dock = DockStyle.Right;
-				splitContainer3.Panel2.Controls.Add(panel2);
-				splitContainer3.Panel1.Controls.Add(entrancetreeView);
-			}
-			else
-			{
-				splitContainer3.Panel1.Controls.Add(panel2);
-				splitContainer3.Panel2.Controls.Add(entrancetreeView);
-				//toolboxPanel.Dock = DockStyle.Left;
-				//splitter1.Dock = DockStyle.Left;
-			}
-		}
-
 		private void entrancetreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
 		{
 			if (e.Node.Tag != null)
@@ -1739,16 +1731,10 @@ namespace ZeldaFullEditor
 				selectedEntrance.CameraTriggerY = (ushort) EntranceProperties_CameraTriggerY.HexValue;
 
 
-				if (int.TryParse(doorxTextbox.Text, NumberStyles.HexNumber, null, out int r))
+				if (int.TryParse(doorxTextbox.Text, NumberStyles.HexNumber, null, out int r) &&
+					int.TryParse(dooryTextbox.Text, NumberStyles.HexNumber, null, out int rr))
 				{
-					if (int.TryParse(dooryTextbox.Text, NumberStyles.HexNumber, null, out int rr))
-					{
-						selectedEntrance.Exit = (ushort) (((rr << 6) + (r & 0x3F)) << 1);
-					}
-					else
-					{
-						selectedEntrance.Exit = 0;
-					}
+					selectedEntrance.Exit = (ushort) (((rr << 6) + (r & 0x3F)) << 1);
 				}
 				else
 				{
@@ -1814,42 +1800,37 @@ namespace ZeldaFullEditor
 		{
 			var room = (DungeonRoom) tabControl2.TabPages[i].Tag;
 
+			bool close;
+
 			if (room.HasUnsavedChanges)
 			{
 				switch (UIText.WarnAboutSaving(UIText.RoomWarning))
 				{
 					case DialogResult.Yes:
 						room.FlushChanges();
-						closeRoom(room.RoomID);
-						this.tabControl2.TabPages.RemoveAt(i);
-
-						// TODO this needs to be made a function
-						if (tabControl2.TabPages.Count == 0)
-						{
-							ZScreamer.ActiveUWScene.Clear();
-							tabControl2.Visible = false;
-							ZScreamer.ActiveUWScene.Refresh();
-						}
+						close = true;
 						break;
 
 					case DialogResult.No:
 						room.ClearChanges();
-						closeRoom(room.RoomID);
-						this.tabControl2.TabPages.RemoveAt(i);
+						close = true;
+						break;
 
-						if (tabControl2.TabPages.Count == 0)
-						{
-							ZScreamer.ActiveUWScene.Clear();
-							tabControl2.Visible = false;
-							ZScreamer.ActiveUWScene.Refresh();
-						}
+					default:
+					case DialogResult.Cancel:
+						close = false;
 						break;
 				}
 			}
 			else
 			{
+				close = true;
+			}
+
+			if (close)
+			{
 				closeRoom(room.RoomID);
-				this.tabControl2.TabPages.RemoveAt(i);
+				tabControl2.TabPages.RemoveAt(i);
 				if (tabControl2.TabPages.Count == 0)
 				{
 					tabControl2.Visible = false;
@@ -2099,7 +2080,7 @@ namespace ZeldaFullEditor
 			e.Graphics.Clear(Color.Black);
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
 			{
-				yoff = (i >= 256) ? 8 : 0;
+				yoff = (i > 255) ? 8 : 0;
 
 				if (!ZScreamer.ActiveScreamer.all_rooms[i].IsEmpty)
 				{
@@ -2140,7 +2121,7 @@ namespace ZeldaFullEditor
 
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
 			{
-				yoff = (i >= 256) ? 8 : 0;
+				yoff = (i > 255) ? 8 : 0;
 
 				foreach (TabPage tp in tabControl2.TabPages)
 				{
@@ -2148,7 +2129,7 @@ namespace ZeldaFullEditor
 					{
 						e.Graphics.DrawRectangle(
 								new Pen((tabControl2.SelectedTab == tp) ? Color.YellowGreen : Color.DarkGreen, 2),
-								new Rectangle((i % 16) * 16, ((i / 16) * 16) + yoff, 16, 16));
+								new Rectangle((i % 16) * 16, (i & ~0xF) + yoff, 16, 16));
 					}
 				}
 			}
@@ -2193,17 +2174,9 @@ namespace ZeldaFullEditor
 		
 		}
 
-		// TODO DISGUSTING, these "Contains" should instead become properties of the object itself
 		private void removeMasksObjectsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			foreach (
-				DungeonObjectsList list in
-				new DungeonObjectsList[]
-					{
-						ZScreamer.ActiveUWScene.Room.Layer1Objects,
-						ZScreamer.ActiveUWScene.Room.Layer1Objects,
-						ZScreamer.ActiveUWScene.Room.Layer1Objects
-					})
+			foreach (var list in ZScreamer.ActiveUWScene.Room.AllObjects)
 			{
 				foreach (RoomObject r in list)
 				{
@@ -3687,8 +3660,7 @@ namespace ZeldaFullEditor
 		private void moveRoomsToOtherROMToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			UIText.WarnAboutSaving(UIText.CloseROMWarning);
-			RoomMover rm = new RoomMover();
-
+			//RoomMover rm = new RoomMover();
 			//if (rm.ShowDialog() == DialogResult.OK)
 			//{
 			//	List<short> listofrooms = new List<short>();
@@ -4214,6 +4186,78 @@ namespace ZeldaFullEditor
 				x = e.X;
 				y = e.Y;
 			}
+		}
+
+		private void UWInsert(object sender, EventArgs e)
+		{
+			ZScreamer.ActiveUWScene.Insert();
+		}
+
+		private void UWDelete(object sender, EventArgs e)
+		{
+			ZScreamer.ActiveUWScene.Delete();
+		}
+
+		private void UWCopy(object sender, EventArgs e)
+		{
+			ZScreamer.ActiveUWScene.Copy();
+		}
+
+		private void UWCut(object sender, EventArgs e)
+		{
+			ZScreamer.ActiveUWScene.Cut();
+		}
+
+		private void UWPaste(object sender, EventArgs e)
+		{
+			ZScreamer.ActiveUWScene.Paste();
+		}
+
+		private void UWSelectAll(object sender, EventArgs e)
+		{
+			ZScreamer.ActiveUWScene.SelectAll();
+		}
+
+		private void UWAddToSelection(object sender, EventArgs e)
+		{
+
+		}
+
+		private void UWSelectNone(object sender, EventArgs e)
+		{
+			ZScreamer.ActiveUWScene.Room.ClearSelectedList();
+		}
+
+
+		/// <summary>
+		/// Sends an object to the front in the list when using one of the 3 "send to front" options
+		/// </summary>
+		private void SendSelectedToFront(object sender, EventArgs e)
+		{
+			ZScreamer.ActiveUWScene.Room.SendAllSelectedToFront();
+		}
+
+		/// <summary>
+		/// Sends an object to the back in the list when using one of the 3 "send to back" options
+		/// </summary>
+		public void SendSelectedToBack(object sender, EventArgs e)
+		{
+			ZScreamer.ActiveUWScene.Room.SendAllSelectedToBack();
+		}
+
+		public void UWSendSelectedToLayer1(object sender, EventArgs e)
+		{
+			ZScreamer.ActiveUWScene.Room.SendAllSelectedToLayer(RoomLayer.Layer1);
+		}
+
+		public void UWSendSelectedToLayer2(object sender, EventArgs e)
+		{
+			ZScreamer.ActiveUWScene.Room.SendAllSelectedToLayer(RoomLayer.Layer2);
+		}
+
+		public void UWSendSelectedToLayer3(object sender, EventArgs e)
+		{
+			ZScreamer.ActiveUWScene.Room.SendAllSelectedToLayer(RoomLayer.Layer3);
 		}
 	}
 }

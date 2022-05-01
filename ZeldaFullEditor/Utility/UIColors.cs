@@ -36,5 +36,8 @@ namespace ZeldaFullEditor
 		public static readonly Color TransportColor = Color.FromArgb(50, 175, 175);
 		public static readonly SolidBrush TransportBrush = new SolidBrush(Color.FromArgb(EntityAlpha, TransportColor));
 		public static readonly SolidBrush TransportSelectedBrush = new SolidBrush(Color.FromArgb(EntitySelectedAlpha, TransportColor));
+
+
+		public static readonly Pen GridPen = new Pen(Color.FromArgb(150, 255, 255, 255));
 	}
 }

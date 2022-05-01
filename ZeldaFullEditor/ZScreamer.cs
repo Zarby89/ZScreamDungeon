@@ -26,6 +26,9 @@ namespace ZeldaFullEditor
 		public static Overworld ActiveOW => ActiveScreamer.OverworldManager;
 		public static PaletteHandler ActivePaletteManager => ActiveScreamer.PaletteManager;
 
+		public static DungeonEditMode ActiveUWMode => ActiveScreamer.CurrentUWMode;
+		public static OverworldEditMode ActiveOWMode => ActiveScreamer.CurrentOWMode;
+
 		//----------------------------------------------------------------------------------------//
 
 		private Scene active;
@@ -118,6 +121,9 @@ namespace ZeldaFullEditor
 			GFXManager.OnROMLoad();
 
 			OverworldManager.Init();
+
+			SpriteProps = SpriteProperties.MakeNewSpriteListFromROM(this);
+
 			for (ushort i = 0; i < Constants.NumberOfRooms; i++)
 			{
 				all_rooms[i] = DungeonRoom.BuildRoomFromROM(this, i);

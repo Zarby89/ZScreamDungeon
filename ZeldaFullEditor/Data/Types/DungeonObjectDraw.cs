@@ -45,7 +45,7 @@ namespace ZeldaFullEditor.Data
 						obj.Height = d.YOff + 8;
 					}
 
-					int tm = (d.XOff / 8) + obj.NewX + ((obj.NewY + (d.YOff / 8)) * 64);
+					int tm = (d.XOff / 8) + obj.GridX + ((obj.GridY + (d.YOff / 8)) * 64);
 
 					if (tm < Constants.TilesPerUnderworldRoom && tm >= 0)
 					{

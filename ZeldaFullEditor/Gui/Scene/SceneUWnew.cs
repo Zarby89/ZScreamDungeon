@@ -31,9 +31,6 @@ namespace ZeldaFullEditor
 		public bool forPreview = false;
 
 		bool resizing = false;
-
-		int rmx = 0;
-		int rmy = 0;
 		public bool showLayer1;
 		public bool showLayer2;
 
@@ -87,6 +84,7 @@ namespace ZeldaFullEditor
 		}
 
 		public RoomLayer Layer { get; private set; }
+
 		public void UpdateForMode(DungeonEditMode e)
 		{
 			Layer = RoomLayer.None;
@@ -140,8 +138,8 @@ namespace ZeldaFullEditor
 			{
 				if (o is IFreelyPlaceable gg)
 				{
-					gg.NewX = (byte) (gg.GridX + MoveX).Clamp(0, 80);
-					gg.NewY = (byte) (gg.GridY + MoveY).Clamp(0, 80);
+					gg.RealX = (byte) (gg.GridX + MoveX).Clamp(0, 80);
+					gg.RealY = (byte) (gg.GridY + MoveY).Clamp(0, 80);
 				}
 			}
 
@@ -204,28 +202,7 @@ namespace ZeldaFullEditor
 			base.OnMouseDown(sender, e);
 		}
 
-
-		public void drawChests()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void addChest()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void deleteChestItem()
-		{
-			throw new NotImplementedException();
-		}
-
 		public void clearCustomCollisionMap()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void setObjectsPosition()
 		{
 			throw new NotImplementedException();
 		}
@@ -240,16 +217,6 @@ namespace ZeldaFullEditor
 		}
 
 		public void getObjectsRectangle()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void DecreaseSelectedZ()
-		{
-			throw new NotImplementedException();
-		}
-
-		public void UpdateSelectedZ(int position)
 		{
 			throw new NotImplementedException();
 		}
@@ -480,8 +447,6 @@ namespace ZeldaFullEditor
 			}
 
 		} // End Paint();
-
-
 
 
 		private void ResetPlacementProperties()

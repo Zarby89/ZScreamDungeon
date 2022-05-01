@@ -68,6 +68,7 @@ namespace ZeldaFullEditor
 		public const byte BigKeyDropToken = 0xFD;
 		public const byte SmallKeyDropToken = 0xFE;
 		public const byte KeyDropID = 0xE4;
+		public const byte NumberOfValidSprites = 0xF3;
 
 		public const ushort ObjectSentinel = 0xFFFF;
 

@@ -1070,6 +1070,25 @@ namespace ZeldaFullEditor
 		// OW Musics Saves
 
 		// Move ROOM FEATURES
+
+		public SpriteProperties[] SpriteProps { get; private set; }
+		public void SaveSpriteProps()
+		{
+			int i = 0;
+			foreach (var sprite in SpriteProps)
+			{
+				ROM[Offsets.SpriteOAMHarmData + i] = sprite.DataOAMHarm;
+				ROM[Offsets.SpriteHealthData + i] = sprite.Health;
+				ROM[Offsets.SpriteBumpData + i] = sprite.DataBump;
+				ROM[Offsets.SpriteOAMPropData + i] = sprite.DataOAMProp;
+				ROM[Offsets.SpriteHitboxData + i] = sprite.DataHitbox;
+				ROM[Offsets.SpriteTileIntData + i] = sprite.DataTileInteraction;
+				ROM[Offsets.SpritePrizePackData + i] = sprite.DataPrizePack;
+				ROM[Offsets.SpriteDeflectionData + i] = sprite.DataDeflection;
+
+				i++;
+			}
+		}
 	}
 }
 

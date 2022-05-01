@@ -220,6 +220,7 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\Misc\SpriteProperties.cs" />
     <Compile Include="Data\Overworld\OverworldDestination.cs" />
     <Compile Include="Data\Overworld\OverworldSprite.cs" />
     <Compile Include="Data\Overworld\OverworldSecret.cs" />

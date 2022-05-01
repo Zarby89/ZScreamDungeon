@@ -258,7 +258,7 @@ namespace ZeldaFullEditor
 		{
 			hoveredEntity = null;
 			Cursor = Cursors.Default;
-			snapToGrid = ModifierKeys == Keys.Control;
+			snapToGrid = ModifierKeys != Keys.Control;
 			hoveredMap = (e.X / 16 / 32) + (e.Y / 16 / 32 * 8);
 			base.OnMouseMove(e);
 		}
