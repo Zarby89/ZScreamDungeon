@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
 
 		private int selectedTile = 0;
 
-		public const string DICTIONARYTOKEN = "D";
-		public const byte DICTOFF = 0x88;
+		public const string DictionaryToken = "D";
+		public const byte DictionaryBaseValue = 0x88;
 		public const byte MessageTerminator = 0x7F;
 
 		public TextEditor()
@@ -111,7 +111,7 @@ namespace ZeldaFullEditor
 			if (g.Success)
 			{
 				return new ParsedElement(DictionaryElement,
-					(byte) (DICTOFF + byte.Parse(g.Groups[1].Value, NumberStyles.HexNumber)
+					(byte) (DictionaryBaseValue + byte.Parse(g.Groups[1].Value, NumberStyles.HexNumber)
 				));
 			}
 
@@ -145,12 +145,12 @@ namespace ZeldaFullEditor
 
 		private int FindDictionaryEntry(byte b)
 		{
-			if (b < DICTOFF || b == 0xFF)
+			if (b < DictionaryBaseValue || b == 0xFF)
 			{
 				return -1;
 			}
 
-			return b - DICTOFF;
+			return b - DictionaryBaseValue;
 		}
 
 		public DictionaryEntry GetDictionaryFromID(byte b)
@@ -260,7 +260,7 @@ namespace ZeldaFullEditor
 
 				if (dict >= 0)
 				{
-					currentMessageRaw.Append($"[{DICTIONARYTOKEN}:{dict:X2}]");
+					currentMessageRaw.Append($"[{DictionaryToken}:{dict:X2}]");
 
 					int addr = SNESFunctions.SNEStoPC(0x0E0000 | ZScreamer.ActiveROM.Read16(ZScreamer.ActiveOffsets.pointers_dictionaries + (dict * 2)));
 					int addrend = SNESFunctions.SNEStoPC(0x0E0000 | ZScreamer.ActiveROM.Read16(ZScreamer.ActiveOffsets.pointers_dictionaries + ((dict + 1) * 2)));
@@ -390,7 +390,7 @@ namespace ZeldaFullEditor
 
 			if (dict >= 0)
 			{
-				return $"[{DICTIONARYTOKEN}:{dict:X2}]";
+				return $"[{DictionaryToken}:{dict:X2}]";
 			}
 
 			return "[SOMETHINGBADHAPPENED]";
@@ -541,9 +541,9 @@ namespace ZeldaFullEditor
 				{
 					DrawStringToPreview(NAMEPreview);
 				}
-				else if (b >= DICTOFF && b < (DICTOFF + 97))
+				else if (b >= DictionaryBaseValue && b < (DictionaryBaseValue + 97))
 				{
-					DictionaryEntry d = GetDictionaryFromID((byte) (b - DICTOFF));
+					DictionaryEntry d = GetDictionaryFromID((byte) (b - DictionaryBaseValue));
 					if (d != null)
 					{
 						DrawCharacterToPreview(d.Data);
@@ -919,7 +919,7 @@ namespace ZeldaFullEditor
 					d.ID,
 					string.Format("{0:X2} [{1:X2}] - {2}",
 					d.ID,
-					d.ID + DICTOFF,
+					d.ID + DictionaryBaseValue,
 					d.Contents.Replace(" ", "_")));
 			}
 

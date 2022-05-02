@@ -2,17 +2,18 @@
 {
 	public class RoomObjectTileLister
 	{
-		private readonly TilesList[] _list = new TilesList[0x300];
+		private readonly TilesList[] _list;
 
 		public TilesList this[int i] => _list[i];
 
-		private readonly DoorTilesList[] _doors = new DoorTilesList[0x80];
+		private readonly DoorTilesList[] _doors;
 
 		private readonly ZScreamer ZS;
 
-		internal RoomObjectTileLister(ZScreamer zs)
+		private RoomObjectTileLister(TilesList[] tiles, DoorTilesList[] doors)
 		{
-			ZS = zs;
+			_list = tiles;
+			_doors = doors;
 		}
 
 		public DoorTilesList GetDoorTileSet(byte id)
@@ -20,8 +21,13 @@
 			return _doors[id];
 		}
 
-		public void InitializeTilesFromROM()
+		public static RoomObjectTileLister CreateTileListingsFromROM(ZScreamer ZS)
 		{
+
+			var list = new TilesList[0x300];
+			var doors = new DoorTilesList[0x80];
+
+
 			AutoFindTiles(0x000, 4);
 			AutoFindTiles(0x001, 8);
 			AutoFindTiles(0x002, 8);
@@ -531,53 +537,57 @@
 			AutoFindDoorTiles(0x62);
 			AutoFindDoorTiles(0x64);
 			AutoFindDoorTiles(0x66);
-		}
+
+			return new RoomObjectTileLister(list, doors);
 
 
-		private void AutoFindTiles(ushort id, int count)
-		{
-			int typebase;
-			switch (id >> 8)
+
+
+			void AutoFindTiles(ushort id, int count)
 			{
-				case 0x00:
-					typebase = ZS.Offsets.subtype1_tiles;
-					break;
+				int typebase;
+				switch (id >> 8)
+				{
+					case 0x00:
+						typebase = ZS.Offsets.subtype1_tiles;
+						break;
 
-				case 0x01:
-					typebase = ZS.Offsets.subtype2_tiles;
-					break;
+					case 0x01:
+						typebase = ZS.Offsets.subtype2_tiles;
+						break;
 
-				case 0x02:
-					typebase = ZS.Offsets.subtype3_tiles;
-					break;
+					case 0x02:
+						typebase = ZS.Offsets.subtype3_tiles;
+						break;
 
-				default:
-					return;
+					default:
+						return;
+				}
+
+				int pos = ZS.Offsets.tile_address + ZS.ROM.Read16(typebase + (((byte) id) * 2));
+				list[id] = TilesList.CreateNewDefinition(ZS, pos, count);
 			}
 
-			int pos = ZS.Offsets.tile_address + ZS.ROM.Read16(typebase + (((byte) id) * 2));
-			_list[id] = TilesList.CreateNewDefinition(ZS, pos, count);
-		}
+			// local functions
+			void SetTilesFromKnownOffset(ushort id, int offset, int count)
+			{
+				list[id] = TilesList.CreateNewDefinition(ZS, ZS.Offsets.tile_address + offset, count);
+			}
 
+			void SetTilesFromMultipleAddresses(ushort id, params (int address, int count)[] sources)
+			{
+				list[id] = TilesList.CreateNewDefinitionFromMultipleAddresses(ZS, sources);
+			}
 
-		private void SetTilesFromKnownOffset(ushort id, int offset, int count)
-		{
-			_list[id] = TilesList.CreateNewDefinition(ZS, ZS.Offsets.tile_address + offset, count);
-		}
-
-		private void SetTilesFromMultipleAddresses(ushort id, params (int address, int count)[] sources)
-		{
-			_list[id] = TilesList.CreateNewDefinitionFromMultipleAddresses(ZS, sources);
-		}
-
-		private void AutoFindDoorTiles(byte id)
-		{
-			_doors[id] = DoorTilesList.CreateNewDefinition(ZS,
-				ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.door_gfx_up + id),
-				ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.door_gfx_down + id),
-				ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.door_gfx_left + id),
-				ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.door_gfx_right + id)
-			);
-		}
+			void AutoFindDoorTiles(byte id)
+			{
+				doors[id] = DoorTilesList.CreateNewDefinition(ZS,
+					ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.door_gfx_up + id),
+					ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.door_gfx_down + id),
+					ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.door_gfx_left + id),
+					ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.door_gfx_right + id)
+				);
+			}
+		} // end factory method
 	}
 }

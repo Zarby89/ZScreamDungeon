@@ -34,9 +34,7 @@ namespace ZeldaFullEditor.Data.Underworld
 					case 7 : return lay7;
 				}
 				return lay0;
-		}
-
-
+			}
 		}
 
 		private RoomLayoutLister(List<RoomObject> _0, List<RoomObject> _1, List<RoomObject> _2, List<RoomObject> _3,

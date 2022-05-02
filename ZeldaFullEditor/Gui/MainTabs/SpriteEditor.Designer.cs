@@ -37,17 +37,17 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			this.NoPermaDeathBox = new System.Windows.Forms.CheckBox();
 			this.DieOffScreenBox = new System.Windows.Forms.CheckBox();
 			this.ActiveOffscreenBox = new System.Windows.Forms.CheckBox();
-			this.hexbox4 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.PrizePackField = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.label19 = new System.Windows.Forms.Label();
 			this.DamageSFXBox = new System.Windows.Forms.CheckBox();
 			this.IgnoreConveyorBox = new System.Windows.Forms.CheckBox();
 			this.OverworldPersistBox = new System.Windows.Forms.CheckBox();
 			this.IgnoreForKillBox = new System.Windows.Forms.CheckBox();
-			this.hexbox3 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.PaletteField = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.label18 = new System.Windows.Forms.Label();
 			this.HasShadowBox = new System.Windows.Forms.CheckBox();
 			this.ImmuneToAttacksBox = new System.Windows.Forms.CheckBox();
-			this.hexbox2 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.DamageClassField = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.label17 = new System.Windows.Forms.Label();
 			this.AllowWithBossesBox = new System.Windows.Forms.CheckBox();
 			this.PowderImmuneBox = new System.Windows.Forms.CheckBox();
@@ -320,17 +320,17 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			this.propertiesgroupbox.Controls.Add(this.NoPermaDeathBox);
 			this.propertiesgroupbox.Controls.Add(this.DieOffScreenBox);
 			this.propertiesgroupbox.Controls.Add(this.ActiveOffscreenBox);
-			this.propertiesgroupbox.Controls.Add(this.hexbox4);
+			this.propertiesgroupbox.Controls.Add(this.PrizePackField);
 			this.propertiesgroupbox.Controls.Add(this.label19);
 			this.propertiesgroupbox.Controls.Add(this.DamageSFXBox);
 			this.propertiesgroupbox.Controls.Add(this.IgnoreConveyorBox);
 			this.propertiesgroupbox.Controls.Add(this.OverworldPersistBox);
 			this.propertiesgroupbox.Controls.Add(this.IgnoreForKillBox);
-			this.propertiesgroupbox.Controls.Add(this.hexbox3);
+			this.propertiesgroupbox.Controls.Add(this.PaletteField);
 			this.propertiesgroupbox.Controls.Add(this.label18);
 			this.propertiesgroupbox.Controls.Add(this.HasShadowBox);
 			this.propertiesgroupbox.Controls.Add(this.ImmuneToAttacksBox);
-			this.propertiesgroupbox.Controls.Add(this.hexbox2);
+			this.propertiesgroupbox.Controls.Add(this.DamageClassField);
 			this.propertiesgroupbox.Controls.Add(this.label17);
 			this.propertiesgroupbox.Controls.Add(this.AllowWithBossesBox);
 			this.propertiesgroupbox.Controls.Add(this.PowderImmuneBox);
@@ -399,21 +399,21 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			this.ActiveOffscreenBox.UseVisualStyleBackColor = true;
 			this.ActiveOffscreenBox.CheckedChanged += new System.EventHandler(this.OnSpritePropertyChange);
 			// 
-			// hexbox4
+			// PrizePackField
 			// 
-			this.hexbox4.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.hexbox4.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
-			this.hexbox4.HexValue = 0;
-			this.hexbox4.Location = new System.Drawing.Point(91, 89);
-			this.hexbox4.MaxLength = 1;
-			this.hexbox4.MaxValue = 7;
-			this.hexbox4.MinValue = 0;
-			this.hexbox4.Name = "hexbox4";
-			this.hexbox4.Size = new System.Drawing.Size(37, 20);
-			this.hexbox4.TabIndex = 18;
-			this.hexbox4.Text = "0";
-			this.hexbox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.hexbox4.TextChanged += new System.EventHandler(this.OnSpritePropertyChange);
+			this.PrizePackField.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.PrizePackField.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+			this.PrizePackField.HexValue = 0;
+			this.PrizePackField.Location = new System.Drawing.Point(91, 89);
+			this.PrizePackField.MaxLength = 1;
+			this.PrizePackField.MaxValue = 7;
+			this.PrizePackField.MinValue = 0;
+			this.PrizePackField.Name = "PrizePackField";
+			this.PrizePackField.Size = new System.Drawing.Size(37, 20);
+			this.PrizePackField.TabIndex = 18;
+			this.PrizePackField.Text = "0";
+			this.PrizePackField.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.PrizePackField.TextChanged += new System.EventHandler(this.OnSpritePropertyChange);
 			// 
 			// label19
 			// 
@@ -468,21 +468,21 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			this.IgnoreForKillBox.UseVisualStyleBackColor = true;
 			this.IgnoreForKillBox.CheckedChanged += new System.EventHandler(this.OnSpritePropertyChange);
 			// 
-			// hexbox3
+			// PaletteField
 			// 
-			this.hexbox3.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.hexbox3.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
-			this.hexbox3.HexValue = 0;
-			this.hexbox3.Location = new System.Drawing.Point(91, 66);
-			this.hexbox3.MaxLength = 1;
-			this.hexbox3.MaxValue = 7;
-			this.hexbox3.MinValue = 0;
-			this.hexbox3.Name = "hexbox3";
-			this.hexbox3.Size = new System.Drawing.Size(37, 20);
-			this.hexbox3.TabIndex = 12;
-			this.hexbox3.Text = "0";
-			this.hexbox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.hexbox3.TextChanged += new System.EventHandler(this.OnSpritePropertyChange);
+			this.PaletteField.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.PaletteField.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+			this.PaletteField.HexValue = 0;
+			this.PaletteField.Location = new System.Drawing.Point(91, 66);
+			this.PaletteField.MaxLength = 1;
+			this.PaletteField.MaxValue = 7;
+			this.PaletteField.MinValue = 0;
+			this.PaletteField.Name = "PaletteField";
+			this.PaletteField.Size = new System.Drawing.Size(37, 20);
+			this.PaletteField.TabIndex = 12;
+			this.PaletteField.Text = "0";
+			this.PaletteField.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.PaletteField.TextChanged += new System.EventHandler(this.OnSpritePropertyChange);
 			// 
 			// label18
 			// 
@@ -515,21 +515,21 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			this.ImmuneToAttacksBox.UseVisualStyleBackColor = true;
 			this.ImmuneToAttacksBox.CheckedChanged += new System.EventHandler(this.OnSpritePropertyChange);
 			// 
-			// hexbox2
+			// DamageClassField
 			// 
-			this.hexbox2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.hexbox2.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
-			this.hexbox2.HexValue = 0;
-			this.hexbox2.Location = new System.Drawing.Point(91, 44);
-			this.hexbox2.MaxLength = 1;
-			this.hexbox2.MaxValue = 9;
-			this.hexbox2.MinValue = 0;
-			this.hexbox2.Name = "hexbox2";
-			this.hexbox2.Size = new System.Drawing.Size(37, 20);
-			this.hexbox2.TabIndex = 8;
-			this.hexbox2.Text = "0";
-			this.hexbox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.hexbox2.TextChanged += new System.EventHandler(this.OnSpritePropertyChange);
+			this.DamageClassField.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.DamageClassField.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
+			this.DamageClassField.HexValue = 0;
+			this.DamageClassField.Location = new System.Drawing.Point(91, 44);
+			this.DamageClassField.MaxLength = 1;
+			this.DamageClassField.MaxValue = 9;
+			this.DamageClassField.MinValue = 0;
+			this.DamageClassField.Name = "DamageClassField";
+			this.DamageClassField.Size = new System.Drawing.Size(37, 20);
+			this.DamageClassField.TabIndex = 8;
+			this.DamageClassField.Text = "0";
+			this.DamageClassField.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.DamageClassField.TextChanged += new System.EventHandler(this.OnSpritePropertyChange);
 			// 
 			// label17
 			// 
@@ -3799,17 +3799,17 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		private System.Windows.Forms.GroupBox propertiesgroupbox;
 		private System.Windows.Forms.ListBox SpritePropChooser;
 		private ExtraForms.Hexbox HealthField;
-		private ExtraForms.Hexbox hexbox4;
+		private ExtraForms.Hexbox PrizePackField;
 		private System.Windows.Forms.Label label19;
 		private System.Windows.Forms.CheckBox DamageSFXBox;
 		private System.Windows.Forms.CheckBox IgnoreConveyorBox;
 		private System.Windows.Forms.CheckBox OverworldPersistBox;
 		private System.Windows.Forms.CheckBox IgnoreForKillBox;
-		private ExtraForms.Hexbox hexbox3;
+		private ExtraForms.Hexbox PaletteField;
 		private System.Windows.Forms.Label label18;
 		private System.Windows.Forms.CheckBox HasShadowBox;
 		private System.Windows.Forms.CheckBox ImmuneToAttacksBox;
-		private ExtraForms.Hexbox hexbox2;
+		private ExtraForms.Hexbox DamageClassField;
 		private System.Windows.Forms.Label label17;
 		private System.Windows.Forms.CheckBox AllowWithBossesBox;
 		private System.Windows.Forms.CheckBox PowderImmuneBox;

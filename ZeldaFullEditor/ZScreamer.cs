@@ -1,14 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ZeldaFullEditor.Gui;
+﻿using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Data.Underworld;
-using System.Text.RegularExpressions;
-using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
 {
@@ -75,10 +66,8 @@ namespace ZeldaFullEditor
 
 		public ROMFile ROM { get; private set; }
 
-		public ZScreamer(int _)
-		{
-
-		}
+		// Dummy constructor just to make something that does literally nothing for the designer
+		private ZScreamer(int _) { }
 
 		public void SetAsActiveScreamer()
 		{
@@ -92,17 +81,12 @@ namespace ZeldaFullEditor
 
 			Offsets = new AddressSet(SNESFunctions.ROMVersion.US);
 
-
 			GFXGroups = new GfxGroups(this);
 			GFXManager = new GraphicsManager(this);
 			OverworldScene = new SceneOW(this);
 			OverworldManager = new Overworld(this);
 			UnderworldScene = new SceneUW(this);
 			PaletteManager = new PaletteHandler(this);
-			TileLister = new RoomObjectTileLister(this);
-
-
-			// MainForm.SetForms(DungeonForm, OverworldForm)
 		}
 
 		public void LoadNewROM(string filename)
@@ -114,7 +98,7 @@ namespace ZeldaFullEditor
 		public void OnROMLoad()
 		{
 			PaletteManager.CreateAllPalettes();
-			TileLister.InitializeTilesFromROM();
+			TileLister = RoomObjectTileLister.CreateTileListingsFromROM(this);
 			LayoutLister = RoomLayoutLister.CreateLayoutsFromROM(this);
 
 			GFXGroups.LoadGfxGroups();
@@ -150,6 +134,10 @@ namespace ZeldaFullEditor
 
 				case TabSelection.OverworldEditor:
 					active = OverworldScene;
+					break;
+
+				default:
+					active = null;
 					break;
 			}
 		}

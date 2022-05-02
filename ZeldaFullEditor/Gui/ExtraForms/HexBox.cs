@@ -14,11 +14,11 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 		private int minValue;
 		private int maxValue;
 
-		private static readonly string Format0 = "X";
-		private static readonly string Format1 = "X1";
-		private static readonly string Format2 = "X2";
-		private static readonly string Format3 = "X3";
-		private static readonly string Format4 = "X4";
+		private const string Format0 = "X";
+		private const string Format1 = "X1";
+		private const string Format2 = "X2";
+		private const string Format3 = "X3";
+		private const string Format4 = "X4";
 
 		private bool errorValue = false;
 
@@ -34,6 +34,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 		private HexDigits digits;
 
 		[Description("HexValue"), Category("Data")]
+		[DefaultValue(0x00)]
 		public int HexValue
 		{
 			get => hexValue;
@@ -47,6 +48,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 		}
 
 		[Description("MaxValue"), Category("Data")]
+		[DefaultValue(0xFF)]
 		public int MaxValue
 		{
 			get => maxValue;
@@ -60,6 +62,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 		}
 
 		[Description("MinValue"), Category("Data")]
+		[DefaultValue(0x00)]
 		public int MinValue
 		{
 			get => minValue;
@@ -73,6 +76,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 		}
 
 		[Description("Digits"), Category("Data")]
+		[DefaultValue(HexDigits.Two)]
 		public HexDigits Digits
 		{
 			get => digits;
@@ -103,12 +107,8 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
 		public Hexbox() : base()
 		{
-			digits = HexDigits.Two;
-			maxValue = 0xFF;
-			minValue = 0x00;
-			hexValue = 0x00;
-			this.TextAlign = HorizontalAlignment.Right; // default to right alignment - don't fucking change this, Jared
-			this.CharacterCasing = CharacterCasing.Upper;
+			TextAlign = HorizontalAlignment.Right; // default to right alignment - don't fucking change this, Jared
+			CharacterCasing = CharacterCasing.Upper;
 		}
 
 		protected override void InitLayout()

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor.Data
+﻿namespace ZeldaFullEditor.Data
 {
 	public class SpriteProperties
 	{
@@ -41,14 +35,14 @@ namespace ZeldaFullEditor.Data
 		// OAMProp
 		public bool CustomDeath { get; set; }
 		public bool Impervious { get; set; }
-		public bool OffsetShadow { get; set; }
+		public bool SmallShadow { get; set; }
 		public bool DrawShadow { get; set; }
 		public byte Palette { get; set; }
 		public bool NameTable { get; set; }
 		public byte DataOAMProp => IntFunctions.SetFieldBits(
 			bit7: CustomDeath,
 			bit6: Impervious,
-			bit5: OffsetShadow,
+			bit5: SmallShadow,
 			bit4: DrawShadow,
 			bit0: NameTable,
 			baseval: (byte) ((Palette & 0x7) << 1)
@@ -149,7 +143,7 @@ namespace ZeldaFullEditor.Data
 				b = zs.ROM[zs.Offsets.SpriteOAMPropData + i];
 				s.CustomDeath = b.BitIsOn(0x80);
 				s.Impervious = b.BitIsOn(0x40);
-				s.OffsetShadow = b.BitIsOn(0x20);
+				s.SmallShadow = b.BitIsOn(0x20);
 				s.DrawShadow = b.BitIsOn(0x10);
 				s.Palette = (byte) ((b >> 1) & 0x7);
 				s.NameTable = b.BitIsOn(0x01);

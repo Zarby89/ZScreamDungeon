@@ -546,7 +546,6 @@ namespace ZeldaFullEditor.Data.Underworld
 				);
 		}
 
-
 		public void LoadObjectsFromArray(byte[] data, int offset = 0)
 		{
 			Pits.Reset();
