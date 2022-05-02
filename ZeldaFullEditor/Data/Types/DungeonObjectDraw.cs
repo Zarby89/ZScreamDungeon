@@ -28,7 +28,7 @@ namespace ZeldaFullEditor.Data
 					Tile t = obj.Tiles[d.TileIndex].CloneModified(hflip: d.HFlip, vflip: d.VFlip);
 
 					int indexoff = (d.XOff & ~0x7) + ((d.YOff & ~0x7) << 6);
-					GraphicsManager.DrawTileToBuffer(t, ptr, alltilesData, indexoff);
+					GraphicsManager.DrawTileToBuffer(t, indexoff, ptr, alltilesData);
 				}
 
 			} // end of if preview

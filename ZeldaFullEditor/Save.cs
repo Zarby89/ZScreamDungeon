@@ -2,10 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO.Compression;
 using ZeldaFullEditor.Data;
 using ZeldaFullEditor.Data.Underworld;
 
@@ -14,36 +10,10 @@ namespace ZeldaFullEditor
 	public partial class ZScreamer
 	{
 		public DungeonRoom[] all_rooms = new DungeonRoom[Constants.NumberOfRooms];
-		public DungeonRoom[] all_rooms_moved = new DungeonRoom[Constants.NumberOfRooms];
 		public Entrance[] entrances = new Entrance[Constants.NumberOfEntrances];
 		public Entrance[] starting_entrances = new Entrance[0x07];
 		public List<DungeonRoom>[] undoRoom = new List<DungeonRoom>[Constants.NumberOfRooms];
 		public List<DungeonRoom>[] redoRoom = new List<DungeonRoom>[Constants.NumberOfRooms];
-
-		int[] roomTilesPointers = new int[Constants.NumberOfRooms];
-		int[] roomDoorsPointers = new int[Constants.NumberOfRooms];
-
-		byte[][] mapDatap1 = new byte[Constants.NumberOfOWMaps][];
-		byte[][] mapDatap2 = new byte[Constants.NumberOfOWMaps][];
-		int[] mapPointers1id = new int[Constants.NumberOfOWMaps];
-		int[] mapPointers2id = new int[Constants.NumberOfOWMaps];
-
-		int[] mapPointers1 = new int[Constants.NumberOfOWMaps];
-		int[] mapPointers2 = new int[Constants.NumberOfOWMaps];
-		
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 		public void saveEntrances()
 		{
@@ -115,7 +85,7 @@ namespace ZeldaFullEditor
 
 			if (blockCount > 99)
 			{
-				throw new ZeldaException("there are too many pushable blocks");
+				throw new ZeldaException("There are too many pushable blocks.");
 			}
 		}
 
@@ -184,7 +154,7 @@ namespace ZeldaFullEditor
 
 			if (pos > end)
 			{
-				throw new ZeldaException("there are too many torches");
+				throw new ZeldaException("There are too many torches.");
 			}
 
 			while (pos < end)
@@ -211,48 +181,95 @@ namespace ZeldaFullEditor
 
 			if (pitCountNew > pitCount)
 			{
-				throw new ZeldaException("there are too many pits with damage");
+				throw new ZeldaException("There are too many rooms that have pit damage.");
 			}
 		}
 
 		// TODO magic numbers
 		public void saveAllObjects()
 		{
+			var roomsaves = new List<RoomSaveEntry>();
+
+			foreach (var room in all_rooms)
+			{
+				roomsaves.Add(new RoomSaveEntry(room));
+			}
+
+			roomsaves.Sort();
+
+			var section1saves = new List<RoomSaveEntry>();
+			var section2saves = new List<RoomSaveEntry>();
+			var section3saves = new List<RoomSaveEntry>();
+			var section4saves = new List<RoomSaveEntry>();
+
 			int section1Index = 0x50008; // 0x50000 to 0x5374F  // 53730
 			int section2Index = 0xF878A; // 0xF878A to 0xFFFFF
 			int section3Index = 0x1EB90; // 0x1EB90 to 0x1FFFF
 			int section4Index = 0x1112C0; // If vanilla space is used use expanded region
-			int section4Start = 0x1112C0;
-			/*
-            while (ROM.DATA[section4Index] != 0)
-            {
-                 //section4Index += 0x010000;
-            }
-            */
 
-			// Check if room is already using that space first before skipping position!!
-			section4Start = section4Index;
-			// Reorder room from bigger to lower
+			int i = 0;
 
-			throw new NotImplementedException("Add rom positioning and pointer placement");
-			int pos = 0;
-			for (int i = 0; i < Constants.NumberOfRooms; i++)
+			int size = 0;
+			while ((size + roomsaves[i].Length) < 0x374F)
 			{
-				ROM.WriteContinuous(ref pos, all_rooms[i].GetTileObjectData());
+				section1saves.Add(roomsaves[i]);
+				size += roomsaves[i++].Length;
+			}
+
+			size = 0;
+			while ((size + roomsaves[i].Length) < 0x7875)
+			{
+				section2saves.Add(roomsaves[i]);
+				size += roomsaves[i++].Length;
+			}
+
+			size = 0;
+			while ((size + roomsaves[i].Length) < 0x146F)
+			{
+				section3saves.Add(roomsaves[i]);
+				size += roomsaves[i++].Length;
+			}
+
+			size = 0;
+			while ((size + roomsaves[i].Length) < 0xFFFF)
+			{
+				section4saves.Add(roomsaves[i]);
+				size += roomsaves[i++].Length;
+			}
+
+			if (i < all_rooms.Length)
+			{
+				throw new ZeldaException("There were too many objects to save every room.");
 			}
 
 			int objectPointer = ROM.Read24(Offsets.room_object_pointer).SNEStoPC();
 
-			for (int i = 0; i < Constants.NumberOfRooms; i++)
+			foreach (var room in section1saves)
 			{
-				ROM.Write24(objectPointer + (i * 3), roomTilesPointers[i]);
-				ROM.Write24(Offsets.doorPointers + (i * 3), roomDoorsPointers[i]);
+				ROM.Write24(objectPointer + room.TableIndex, section1Index);
+				ROM.Write24(Offsets.doorPointers + room.TableIndex, section1Index + room.DoorOffset);
+				ROM.WriteContinuous(ref section1Index, room.Data);
+
+			}
+			foreach (var room in section2saves)
+			{
+				ROM.Write24(objectPointer + room.TableIndex, section2Index);
+				ROM.Write24(Offsets.doorPointers + room.TableIndex, section2Index + room.DoorOffset);
+				ROM.WriteContinuous(ref section2Index, room.Data);
 			}
 
-			// TODO implement this
-			if (false)
+			foreach (var room in section3saves)
 			{
-				throw new ZeldaException("there are too many tiles objects");
+				ROM.Write24(objectPointer + room.TableIndex, section3Index);
+				ROM.Write24(Offsets.doorPointers + room.TableIndex, section3Index + room.DoorOffset);
+				ROM.WriteContinuous(ref section3Index, room.Data);
+			}
+
+			foreach (var room in section4saves)
+			{
+				ROM.Write24(objectPointer + room.TableIndex, section4Index);
+				ROM.Write24(Offsets.doorPointers + room.TableIndex, section4Index + room.DoorOffset);
+				ROM.WriteContinuous(ref section4Index, room.Data);
 			}
 		}
 
@@ -271,7 +288,7 @@ namespace ZeldaFullEditor
 			}
 			if (chestCount > Constants.NumberOfChests)
 			{
-				throw new ZeldaException("there are too many chest items");
+				throw new ZeldaException("There are too many chest items.");
 			}
 		}
 
@@ -296,7 +313,7 @@ namespace ZeldaFullEditor
 
 			if (pos > Offsets.items_data_end)
 			{
-				throw new ZeldaException("there are too many pot items");
+				throw new ZeldaException("There are too many underworld pot items.");
 			}
 		}
 
@@ -328,7 +345,7 @@ namespace ZeldaFullEditor
 
 			if (datapointer > Offsets.sprites_end_data)
 			{
-				throw new ZeldaException("there are too many sprites!");
+				throw new ZeldaException("There are too many underworld sprites!");
 			}
 		}
 
@@ -436,7 +453,7 @@ namespace ZeldaFullEditor
 
 			if (dataPos > Offsets.overworldItemsEndData)
 			{
-				throw new ZeldaException("overworld secrets: there are too many!");
+				throw new ZeldaException("Overworld secrets: there are too many!");
 			}
 		}
 
@@ -526,7 +543,7 @@ namespace ZeldaFullEditor
 
 			if (dataPos > 0x4D62E)
 			{
-				throw new ZeldaException("overworld sprites out of range");
+				throw new ZeldaException("There are too many overworld sprites.");
 			}
 		}
 
@@ -749,6 +766,16 @@ namespace ZeldaFullEditor
 
 		public void SaveOverworldScreens()
 		{
+
+			int[] mapPointers1 = new int[Constants.NumberOfOWMaps];
+			int[] mapPointers2 = new int[Constants.NumberOfOWMaps];
+
+			int[] mapPointers1id = new int[Constants.NumberOfOWMaps];
+			int[] mapPointers2id = new int[Constants.NumberOfOWMaps];
+
+			byte[][] mapDatap1 = new byte[Constants.NumberOfOWMaps][];
+			byte[][] mapDatap2 = new byte[Constants.NumberOfOWMaps][];
+
 			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
 				mapPointers1id[i] = -1;
@@ -863,7 +890,7 @@ namespace ZeldaFullEditor
 
 			if (pos > 0x137FFF)
 			{
-				throw new ZeldaException("Too much map data {pos:X6}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+				throw new ZeldaException("Too much map data: {pos:X6}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 			}
 
 			SaveLargeMaps();

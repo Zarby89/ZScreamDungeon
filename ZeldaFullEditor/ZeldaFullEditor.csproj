@@ -224,6 +224,7 @@
     <Compile Include="Data\Overworld\OverworldDestination.cs" />
     <Compile Include="Data\Overworld\OverworldSprite.cs" />
     <Compile Include="Data\Overworld\OverworldSecret.cs" />
+    <Compile Include="Data\RoomSaveEntry.cs" />
     <Compile Include="Data\Types\IEntityType.cs" />
     <Compile Include="Data\Types\LayerMergeType.cs" />
     <Compile Include="Data\Underworld\CollisionRectangle.cs" />

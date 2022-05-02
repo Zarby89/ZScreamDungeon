@@ -480,25 +480,25 @@ namespace ZeldaFullEditor.Data.Underworld
 			byte size, posX, posY;
 			ushort oid;
 
-			if (b3 >= 0xF8) // Subtype 3
-			{
-				oid = (ushort) (0x0200 | ((b2 & 0x03) << 2) | (b1 & 0x03));
-				posX = (byte) ((b1 & 0xFC) >> 2);
-				posY = (byte) ((b2 & 0xFC) >> 2);
-				size = 0;
-			}
-			else if (b1 >= 0xFC) // Subtype 2
+			if (b1 >= 0xFC) // Subtype 2
 			{
 				oid = (ushort) ((b3 & 0x3F) | 0x100);
 				posX = (byte) ((b2 >> 4) | ((b1 & 0x03) << 4));
 				posY = (byte) (((b2 & 0x0F) << 2) | (b3 >> 6));
 				size = 0;
 			}
+			else if (b3 >= 0xF8) // Subtype 3
+			{
+				oid = (ushort) (0x0200 | ((b3 & 0x07) << 4) | ((b2 & 0x03) << 2) | (b1 & 0x03));
+				posX = (byte) (b1 >> 2);
+				posY = (byte) (b2 >> 2);
+				size = 0;
+			}
 			else // Subtype1
 			{
 				oid = b3;
-				posX = (byte) ((b1 & 0xFC) >> 2);
-				posY = (byte) ((b2 & 0xFC) >> 2);
+				posX = (byte) (b1 >> 2);
+				posY = (byte) (b2 >> 2);
 				size = (byte) (((b1 & 0x03) << 2) | (b2 & 0x03));
 			}
 
@@ -549,7 +549,6 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public void LoadObjectsFromArray(byte[] data, int offset = 0)
 		{
-			// Load chest items
 			Pits.Reset();
 			Stair1.Reset();
 			Stair2.Reset();
@@ -580,19 +579,19 @@ namespace ZeldaFullEditor.Data.Underworld
 				{
 					if (b1 == 0xFF)
 					{
-						door = false;
 						layer++;
+						door = false;
 						switch (layer)
 						{
-							case 1:
+							case 0:
 								currentList = Layer1Objects;
 								break;
 							
-							case 2:
+							case 1:
 								currentList = Layer2Objects;
 								break;
 							
-							case 3:
+							case 2:
 								currentList = Layer3Objects;
 								break;
 
@@ -1231,7 +1230,6 @@ namespace ZeldaFullEditor.Data.Underworld
 			return ret;
 		}
 
-
 		private void ReassociateChestsAndItems()
 		{
 			var chests = new List<RoomObject>();
@@ -1330,7 +1328,6 @@ namespace ZeldaFullEditor.Data.Underworld
 		//================================================================================================
 		// Data output
 		//================================================================================================
-
 		public byte[] GetHeaderData()
 		{
 			return new byte[]
@@ -1351,33 +1348,6 @@ namespace ZeldaFullEditor.Data.Underworld
 				Stair3.Target,
 				Stair4.Target
 			};
-		}
-
-		public byte[] GetTileObjectData()
-		{
-			var ret = new List<byte>();
-
-			ret.Add(0x00); // TODO write floor
-			ret.Add(0x00); // TODO write layout
-
-			ret.AddRange(Layer1Objects.GetByteData());
-			ret.Add(Constants.ObjectSentinel);
-
-			ret.AddRange(Layer2Objects.GetByteData());
-			ret.Add(Constants.ObjectSentinel);
-
-			ret.AddRange(Layer3Objects.GetByteData());
-
-			if (DoorsList.Count > 0)
-			{
-				ret.Add(0xFFF0);
-
-				ret.AddRange(DoorsList.GetByteData());
-			}
-
-			ret.Add(Constants.ObjectSentinel);
-
-			return ret.ToArray();
 		}
 
 		public byte[] GetTorchesData()

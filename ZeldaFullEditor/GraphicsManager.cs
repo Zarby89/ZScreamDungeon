@@ -137,18 +137,23 @@ namespace ZeldaFullEditor
 			CreateAllGfxData();
 		}
 
-		public static unsafe void DrawTileToBuffer(in Tile tile, byte* canvas, byte* tiledata, int indexoffset = 0)
+		public static unsafe void DrawTileToBuffer(in Tile tile, int x, int y, byte* canvas, byte* tiledata)
+		{
+			DrawTileToBuffer(in tile, x * 8 + y * 64, canvas, tiledata);
+		}
+
+		public static unsafe void DrawTileToBuffer(in Tile tile, int offset, byte* canvas, byte* tiledata)
 		{
 			int tx = (tile.ID / 16 * 512) + ((tile.ID & 0xF) * 4);
 			byte palnibble = (byte) (tile.Palette << 4);
 			byte r = tile.HFlipByte;
 
-			for (int yl = 0; yl < 512; yl += 64)
+			for (int yl = 0; yl < 8 * 64; yl += 64)
 			{
 				// 448 = 64 * 7
 				// slightly faster than 64 * (7 - yl) where yl is +1 instead of +64 each iteration
 				// everything with index is additive, so we can add it in here
-				int my = indexoffset + (tile.VFlip ? 448 - yl : yl);
+				int my = offset + 8 * (tile.VFlip ? 448 - yl : yl);
 
 				for (int xl = 0; xl < 4; xl++)
 				{
@@ -191,7 +196,7 @@ namespace ZeldaFullEditor
 				{
 					if (buffer[xx + yy] != 0xFFFF) // Prevent draw if tile == 0xFFFF since it 0 indexed
 					{
-						DrawTileToBuffer(new Tile(buffer[xx + yy]), ptr, alltilesData);
+						DrawTileToBuffer(new Tile(buffer[xx + yy]), xx, yy, ptr, alltilesData);
 					}
 				}
 			}

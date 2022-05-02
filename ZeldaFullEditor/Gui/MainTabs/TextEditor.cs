@@ -657,14 +657,14 @@ namespace ZeldaFullEditor
 
 			if (fontGridBox.Checked)
 			{
-				for (int i = 0; i < 8; i++)
+				for (int i = 0; i < 8 * 8; i += 8)
 				{
-					e.Graphics.DrawLine(GridHilite, 8 * i, 0, 8 * i, 128);
+					e.Graphics.DrawLine(GridHilite, i, 0, i, 128);
 				}
 
-				for (int j = 0; j < 16; j++)
+				for (int j = 0; j < 16 * 8; j += 8)
 				{
-					e.Graphics.DrawLine(GridHilite, 0, 8 * j, 64, 8 * j);
+					e.Graphics.DrawLine(GridHilite, 0, j, 64, j);
 				}
 			}
 		}

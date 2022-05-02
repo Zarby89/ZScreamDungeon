@@ -2186,7 +2186,7 @@ namespace ZeldaFullEditor
 				if (sf.ShowDialog() == DialogResult.OK)
 				{
 					FileStream fs = new FileStream(sf.FileName, FileMode.OpenOrCreate, FileAccess.Write);
-					byte[] roomdata = ZScreamer.ActiveUWScene.Room.GetTileObjectData();
+					byte[] roomdata = new RoomSaveEntry(ZScreamer.ActiveUWScene.Room).Data;
 					fs.Write(roomdata, 0, roomdata.Length);
 					fs.Close();
 				}
@@ -2976,7 +2976,7 @@ namespace ZeldaFullEditor
 				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
 					// TODO system specific path separators
-					byte[] roomBytes = ZScreamer.ActiveScreamer.all_rooms[i].GetTileObjectData();
+					byte[] roomBytes = new RoomSaveEntry(ZScreamer.ActiveScreamer.all_rooms[i]).Data;
 					using (FileStream fs = new FileStream(path + "//ExportedRooms//room" + i.ToString("D3") + ".zrd", FileMode.OpenOrCreate, FileAccess.Write))
 					{
 						fs.Write(roomBytes, 0, roomBytes.Length);
