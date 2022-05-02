@@ -1271,6 +1271,7 @@ namespace ZeldaFullEditor
 						mainForm.comboBox1.Enabled = false;
 						mainForm.selectedGroupbox.Text = "Selected object: " + id + " " + name + "";
 						mainForm.doorselectPanel.Visible = true;
+						mainForm.doorselectPanel.BringToFront();
 						int[] aposes = mainForm.door_index.Select((s, i) => new { s, i }).Where(x => x.s == (oo as object_door).door_type).Select(x => x.i).ToArray();
 						int apos = 0;
 
@@ -1321,6 +1322,7 @@ namespace ZeldaFullEditor
 				else if (room.selectedObject[0] is Sprite sp)
 				{
 					mainForm.spritepropertyPanel.Visible = true;
+					mainForm.spritepropertyPanel.BringToFront();
 					updating_info = true;
 					string name = Sprites_Names.name[sp.id];
 					if ((sp.subtype & 0x07) == 0x07)
@@ -1345,6 +1347,7 @@ namespace ZeldaFullEditor
 				{
 					updating_info = true; // ?
 					mainForm.potitemobjectPanel.Visible = true; // oO why this is not appearing
+					mainForm.potitemobjectPanel.BringToFront();
 					int dropboxid = pp.id;
 
 					if ((pp.id & 0x80) == 0x80) // It is a special object

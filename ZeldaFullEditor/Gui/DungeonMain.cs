@@ -858,6 +858,10 @@ namespace ZeldaFullEditor
 
 		public void updateScenesMode()
 		{
+			spritepropertyPanel.Visible = false;
+			potitemobjectPanel.Visible = false;
+			doorselectPanel.Visible = false;
+			litCheckbox.Visible = false;
 			collisionMapPanel.Visible = false;
 			foreach (Room room in opened_rooms)
 			{

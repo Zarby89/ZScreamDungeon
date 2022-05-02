@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
             this.updateTimer = new System.Windows.Forms.Timer(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -198,12 +198,6 @@ namespace ZeldaFullEditor
             this.label2 = new System.Windows.Forms.Label();
             this.splitter1 = new System.Windows.Forms.Splitter();
             this.headerGroupbox = new System.Windows.Forms.GroupBox();
-            this.doorselectPanel = new System.Windows.Forms.Panel();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.collisionMapPanel = new System.Windows.Forms.Panel();
-            this.tileTypeCombobox = new System.Windows.Forms.ComboBox();
-            this.collisionMapLabel = new System.Windows.Forms.Label();
             this.selectedGroupbox = new System.Windows.Forms.GroupBox();
             this.SelectedObjectDataHEX = new System.Windows.Forms.Label();
             this.label17 = new System.Windows.Forms.Label();
@@ -241,15 +235,21 @@ namespace ZeldaFullEditor
             this.bg2checkbox2 = new System.Windows.Forms.CheckBox();
             this.bg2checkbox1 = new System.Windows.Forms.CheckBox();
             this.litCheckbox = new System.Windows.Forms.CheckBox();
+            this.doorselectPanel = new System.Windows.Forms.Panel();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.label25 = new System.Windows.Forms.Label();
             this.potitemobjectPanel = new System.Windows.Forms.Panel();
+            this.selecteditemobjectCombobox = new System.Windows.Forms.ComboBox();
+            this.label31 = new System.Windows.Forms.Label();
             this.spritepropertyPanel = new System.Windows.Forms.Panel();
             this.spriteoverlordCheckbox = new System.Windows.Forms.CheckBox();
             this.label26 = new System.Windows.Forms.Label();
             this.spritesubtypeUpDown = new System.Windows.Forms.NumericUpDown();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label23 = new System.Windows.Forms.Label();
-            this.selecteditemobjectCombobox = new System.Windows.Forms.ComboBox();
-            this.label31 = new System.Windows.Forms.Label();
+            this.collisionMapPanel = new System.Windows.Forms.Panel();
+            this.tileTypeCombobox = new System.Windows.Forms.ComboBox();
+            this.collisionMapLabel = new System.Windows.Forms.Label();
             this.editorsTabControl = new System.Windows.Forms.TabControl();
             this.dungeonPage = new System.Windows.Forms.TabPage();
             this.overworldPage = new System.Windows.Forms.TabPage();
@@ -430,13 +430,13 @@ namespace ZeldaFullEditor
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.edit8x8palettebox)).BeginInit();
             this.headerGroupbox.SuspendLayout();
-            this.doorselectPanel.SuspendLayout();
-            this.collisionMapPanel.SuspendLayout();
             this.selectedGroupbox.SuspendLayout();
             this.roomHeaderPanel.SuspendLayout();
+            this.doorselectPanel.SuspendLayout();
             this.potitemobjectPanel.SuspendLayout();
             this.spritepropertyPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).BeginInit();
+            this.collisionMapPanel.SuspendLayout();
             this.editorsTabControl.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -1828,13 +1828,13 @@ namespace ZeldaFullEditor
             this.entrancetreeView.HideSelection = false;
             this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
             this.entrancetreeView.Name = "entrancetreeView";
-            treeNode1.Name = "EntranceNode";
-            treeNode1.Text = "Entrances";
-            treeNode2.Name = "StartingEntranceNode";
-            treeNode2.Text = "Spawn points";
+            treeNode3.Name = "EntranceNode";
+            treeNode3.Text = "Entrances";
+            treeNode4.Name = "StartingEntranceNode";
+            treeNode4.Text = "Spawn points";
             this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
             this.entrancetreeView.Size = new System.Drawing.Size(292, 301);
             this.entrancetreeView.TabIndex = 0;
             this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -2233,12 +2233,13 @@ namespace ZeldaFullEditor
             // headerGroupbox
             // 
             this.headerGroupbox.BackColor = System.Drawing.SystemColors.Control;
-            this.headerGroupbox.Controls.Add(this.doorselectPanel);
-            this.headerGroupbox.Controls.Add(this.collisionMapPanel);
             this.headerGroupbox.Controls.Add(this.selectedGroupbox);
             this.headerGroupbox.Controls.Add(this.roomHeaderPanel);
             this.headerGroupbox.Controls.Add(this.litCheckbox);
+            this.headerGroupbox.Controls.Add(this.doorselectPanel);
             this.headerGroupbox.Controls.Add(this.potitemobjectPanel);
+            this.headerGroupbox.Controls.Add(this.spritepropertyPanel);
+            this.headerGroupbox.Controls.Add(this.collisionMapPanel);
             this.headerGroupbox.Dock = System.Windows.Forms.DockStyle.Top;
             this.headerGroupbox.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.headerGroupbox.Location = new System.Drawing.Point(303, 49);
@@ -2247,83 +2248,6 @@ namespace ZeldaFullEditor
             this.headerGroupbox.TabIndex = 0;
             this.headerGroupbox.TabStop = false;
             this.headerGroupbox.Text = "Room header";
-            // 
-            // doorselectPanel
-            // 
-            this.doorselectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.doorselectPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.doorselectPanel.Controls.Add(this.comboBox2);
-            this.doorselectPanel.Controls.Add(this.label25);
-            this.doorselectPanel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.doorselectPanel.Location = new System.Drawing.Point(514, 16);
-            this.doorselectPanel.Name = "doorselectPanel";
-            this.doorselectPanel.Size = new System.Drawing.Size(363, 50);
-            this.doorselectPanel.TabIndex = 18;
-            this.doorselectPanel.Visible = false;
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.comboBox2.BackColor = System.Drawing.SystemColors.Window;
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(6, 26);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(348, 21);
-            this.comboBox2.TabIndex = 8;
-            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
-            // 
-            // label25
-            // 
-            this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.label25.AutoSize = true;
-            this.label25.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.label25.Location = new System.Drawing.Point(3, 8);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(66, 13);
-            this.label25.TabIndex = 9;
-            this.label25.Text = "Door Type : ";
-            // 
-            // collisionMapPanel
-            // 
-            this.collisionMapPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.collisionMapPanel.BackColor = System.Drawing.SystemColors.Control;
-            this.collisionMapPanel.Controls.Add(this.tileTypeCombobox);
-            this.collisionMapPanel.Controls.Add(this.collisionMapLabel);
-            this.collisionMapPanel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.collisionMapPanel.Location = new System.Drawing.Point(514, 16);
-            this.collisionMapPanel.Name = "collisionMapPanel";
-            this.collisionMapPanel.Size = new System.Drawing.Size(363, 50);
-            this.collisionMapPanel.TabIndex = 19;
-            this.collisionMapPanel.Visible = false;
-            // 
-            // tileTypeCombobox
-            // 
-            this.tileTypeCombobox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tileTypeCombobox.BackColor = System.Drawing.SystemColors.Window;
-            this.tileTypeCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.tileTypeCombobox.FormattingEnabled = true;
-            this.tileTypeCombobox.Location = new System.Drawing.Point(6, 25);
-            this.tileTypeCombobox.Name = "tileTypeCombobox";
-            this.tileTypeCombobox.Size = new System.Drawing.Size(348, 21);
-            this.tileTypeCombobox.TabIndex = 8;
-            // 
-            // collisionMapLabel
-            // 
-            this.collisionMapLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.collisionMapLabel.AutoSize = true;
-            this.collisionMapLabel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.collisionMapLabel.Location = new System.Drawing.Point(3, 8);
-            this.collisionMapLabel.Name = "collisionMapLabel";
-            this.collisionMapLabel.Size = new System.Drawing.Size(88, 13);
-            this.collisionMapLabel.TabIndex = 9;
-            this.collisionMapLabel.Text = "Selected tile type";
             // 
             // selectedGroupbox
             // 
@@ -2813,18 +2737,108 @@ namespace ZeldaFullEditor
             this.litCheckbox.Visible = false;
             this.litCheckbox.CheckedChanged += new System.EventHandler(this.litCheckbox_CheckedChanged);
             // 
+            // doorselectPanel
+            // 
+            this.doorselectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.doorselectPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.doorselectPanel.Controls.Add(this.comboBox2);
+            this.doorselectPanel.Controls.Add(this.label25);
+            this.doorselectPanel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.doorselectPanel.Location = new System.Drawing.Point(508, 16);
+            this.doorselectPanel.Name = "doorselectPanel";
+            this.doorselectPanel.Size = new System.Drawing.Size(363, 50);
+            this.doorselectPanel.TabIndex = 18;
+            this.doorselectPanel.Visible = false;
+            // 
+            // comboBox2
+            // 
+            this.comboBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.comboBox2.BackColor = System.Drawing.SystemColors.Window;
+            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Location = new System.Drawing.Point(6, 26);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(348, 21);
+            this.comboBox2.TabIndex = 8;
+            this.comboBox2.SelectedIndexChanged += new System.EventHandler(this.comboBox2_SelectedIndexChanged);
+            // 
+            // label25
+            // 
+            this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label25.AutoSize = true;
+            this.label25.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.label25.Location = new System.Drawing.Point(3, 8);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(66, 13);
+            this.label25.TabIndex = 9;
+            this.label25.Text = "Door Type : ";
+            // 
             // potitemobjectPanel
             // 
             this.potitemobjectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.potitemobjectPanel.Controls.Add(this.spritepropertyPanel);
             this.potitemobjectPanel.Controls.Add(this.selecteditemobjectCombobox);
             this.potitemobjectPanel.Controls.Add(this.label31);
-            this.potitemobjectPanel.Location = new System.Drawing.Point(514, 16);
+            this.potitemobjectPanel.Location = new System.Drawing.Point(508, 16);
             this.potitemobjectPanel.Name = "potitemobjectPanel";
             this.potitemobjectPanel.Size = new System.Drawing.Size(363, 50);
             this.potitemobjectPanel.TabIndex = 17;
             this.potitemobjectPanel.Visible = false;
+            // 
+            // selecteditemobjectCombobox
+            // 
+            this.selecteditemobjectCombobox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.selecteditemobjectCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.selecteditemobjectCombobox.FormattingEnabled = true;
+            this.selecteditemobjectCombobox.Items.AddRange(new object[] {
+            "Nothing",
+            "Green Rupee",
+            "Rock hoarder",
+            "Bee",
+            "Health pack",
+            "Bomb",
+            "Heart ",
+            "Blue Rupee",
+            "Key",
+            "Arrow",
+            "Bomb",
+            "Heart",
+            "Magic",
+            "Full Magic",
+            "Cucco",
+            "Green Soldier",
+            "Bush Stal",
+            "Blue Soldier",
+            "Landmine",
+            "Heart",
+            "Fairy",
+            "Heart",
+            "Nothing ",
+            "Hole",
+            "Warp",
+            "Staircase",
+            "Bombable",
+            "Switch"});
+            this.selecteditemobjectCombobox.Location = new System.Drawing.Point(6, 26);
+            this.selecteditemobjectCombobox.Name = "selecteditemobjectCombobox";
+            this.selecteditemobjectCombobox.Size = new System.Drawing.Size(348, 21);
+            this.selecteditemobjectCombobox.TabIndex = 8;
+            this.selecteditemobjectCombobox.SelectedIndexChanged += new System.EventHandler(this.selecteditemobjectCombobox_SelectedIndexChanged);
+            // 
+            // label31
+            // 
+            this.label31.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.label31.AutoSize = true;
+            this.label31.Location = new System.Drawing.Point(3, 10);
+            this.label31.Name = "label31";
+            this.label31.Size = new System.Drawing.Size(33, 13);
+            this.label31.TabIndex = 9;
+            this.label31.Text = "Item :";
             // 
             // spritepropertyPanel
             // 
@@ -2835,7 +2849,7 @@ namespace ZeldaFullEditor
             this.spritepropertyPanel.Controls.Add(this.spritesubtypeUpDown);
             this.spritepropertyPanel.Controls.Add(this.comboBox1);
             this.spritepropertyPanel.Controls.Add(this.label23);
-            this.spritepropertyPanel.Location = new System.Drawing.Point(0, 0);
+            this.spritepropertyPanel.Location = new System.Drawing.Point(508, 16);
             this.spritepropertyPanel.Name = "spritepropertyPanel";
             this.spritepropertyPanel.Size = new System.Drawing.Size(363, 50);
             this.spritepropertyPanel.TabIndex = 12;
@@ -2902,57 +2916,43 @@ namespace ZeldaFullEditor
             this.label23.TabIndex = 9;
             this.label23.Text = "Key drop";
             // 
-            // selecteditemobjectCombobox
+            // collisionMapPanel
             // 
-            this.selecteditemobjectCombobox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.collisionMapPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.selecteditemobjectCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.selecteditemobjectCombobox.FormattingEnabled = true;
-            this.selecteditemobjectCombobox.Items.AddRange(new object[] {
-            "Nothing",
-            "Green Rupee",
-            "Rock hoarder",
-            "Bee",
-            "Health pack",
-            "Bomb",
-            "Heart ",
-            "Blue Rupee",
-            "Key",
-            "Arrow",
-            "Bomb",
-            "Heart",
-            "Magic",
-            "Full Magic",
-            "Cucco",
-            "Green Soldier",
-            "Bush Stal",
-            "Blue Soldier",
-            "Landmine",
-            "Heart",
-            "Fairy",
-            "Heart",
-            "Nothing ",
-            "Hole",
-            "Warp",
-            "Staircase",
-            "Bombable",
-            "Switch"});
-            this.selecteditemobjectCombobox.Location = new System.Drawing.Point(6, 26);
-            this.selecteditemobjectCombobox.Name = "selecteditemobjectCombobox";
-            this.selecteditemobjectCombobox.Size = new System.Drawing.Size(348, 21);
-            this.selecteditemobjectCombobox.TabIndex = 8;
-            this.selecteditemobjectCombobox.SelectedIndexChanged += new System.EventHandler(this.selecteditemobjectCombobox_SelectedIndexChanged);
+            this.collisionMapPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.collisionMapPanel.Controls.Add(this.tileTypeCombobox);
+            this.collisionMapPanel.Controls.Add(this.collisionMapLabel);
+            this.collisionMapPanel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.collisionMapPanel.Location = new System.Drawing.Point(508, 16);
+            this.collisionMapPanel.Name = "collisionMapPanel";
+            this.collisionMapPanel.Size = new System.Drawing.Size(363, 50);
+            this.collisionMapPanel.TabIndex = 19;
+            this.collisionMapPanel.Visible = false;
             // 
-            // label31
+            // tileTypeCombobox
             // 
-            this.label31.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.tileTypeCombobox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label31.AutoSize = true;
-            this.label31.Location = new System.Drawing.Point(3, 10);
-            this.label31.Name = "label31";
-            this.label31.Size = new System.Drawing.Size(33, 13);
-            this.label31.TabIndex = 9;
-            this.label31.Text = "Item :";
+            this.tileTypeCombobox.BackColor = System.Drawing.SystemColors.Window;
+            this.tileTypeCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.tileTypeCombobox.FormattingEnabled = true;
+            this.tileTypeCombobox.Location = new System.Drawing.Point(6, 25);
+            this.tileTypeCombobox.Name = "tileTypeCombobox";
+            this.tileTypeCombobox.Size = new System.Drawing.Size(348, 21);
+            this.tileTypeCombobox.TabIndex = 8;
+            // 
+            // collisionMapLabel
+            // 
+            this.collisionMapLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.collisionMapLabel.AutoSize = true;
+            this.collisionMapLabel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.collisionMapLabel.Location = new System.Drawing.Point(3, 8);
+            this.collisionMapLabel.Name = "collisionMapLabel";
+            this.collisionMapLabel.Size = new System.Drawing.Size(88, 13);
+            this.collisionMapLabel.TabIndex = 9;
+            this.collisionMapLabel.Text = "Selected tile type";
             // 
             // editorsTabControl
             // 
@@ -4409,7 +4409,7 @@ namespace ZeldaFullEditor
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "DungeonMain";
-            this.Text = "ZScream Magic - 3.0.0";
+            this.Text = "ZScream Magic - 3.0.1";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.zscreamForm_FormClosing_1);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.LocationChanged += new System.EventHandler(this.DungeonMain_LocationChanged);
@@ -4444,19 +4444,19 @@ namespace ZeldaFullEditor
             ((System.ComponentModel.ISupportInitialize)(this.edit8x8palettebox)).EndInit();
             this.headerGroupbox.ResumeLayout(false);
             this.headerGroupbox.PerformLayout();
-            this.doorselectPanel.ResumeLayout(false);
-            this.doorselectPanel.PerformLayout();
-            this.collisionMapPanel.ResumeLayout(false);
-            this.collisionMapPanel.PerformLayout();
             this.selectedGroupbox.ResumeLayout(false);
             this.selectedGroupbox.PerformLayout();
             this.roomHeaderPanel.ResumeLayout(false);
             this.roomHeaderPanel.PerformLayout();
+            this.doorselectPanel.ResumeLayout(false);
+            this.doorselectPanel.PerformLayout();
             this.potitemobjectPanel.ResumeLayout(false);
             this.potitemobjectPanel.PerformLayout();
             this.spritepropertyPanel.ResumeLayout(false);
             this.spritepropertyPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).EndInit();
+            this.collisionMapPanel.ResumeLayout(false);
+            this.collisionMapPanel.PerformLayout();
             this.editorsTabControl.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
