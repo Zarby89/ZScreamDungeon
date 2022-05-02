@@ -111,6 +111,10 @@ namespace ZeldaFullEditor
 			{
 				value |= Constants.TileVFlipBit;
 			}
+			if (Priority)
+			{
+				value |= Constants.TilePriorityBit;
+			}
 
 			return value;
 		}

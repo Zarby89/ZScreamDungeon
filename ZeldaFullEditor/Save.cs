@@ -195,7 +195,7 @@ namespace ZeldaFullEditor
 				roomsaves.Add(new RoomSaveEntry(room));
 			}
 
-			roomsaves.Sort();
+			roomsaves.Sort((r1, r2) => r1.Length - r2.Length);
 
 			var section1saves = new List<RoomSaveEntry>();
 			var section2saves = new List<RoomSaveEntry>();

@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor
 {
-	public class RoomSaveEntry : IComparer<RoomSaveEntry>
+	public class RoomSaveEntry
 	{
 		public ushort ID { get; }
 		public int TableIndex => ID * 3;
@@ -21,8 +18,8 @@ namespace ZeldaFullEditor
 
 			ID = room.RoomID;
 
-			ret.Add(0x00); // TODO write floor
-			ret.Add(0x00); // TODO write layout
+			ret.Add((byte) (((room.Floor1Graphics & 0x0F) << 4) | (room.Floor2Graphics & 0x0F)));
+			ret.Add((byte) (room.Layout << 2));
 
 			ret.AddRange(room.Layer1Objects.GetByteData());
 			ret.Add(Constants.ObjectSentinel);
@@ -47,16 +44,6 @@ namespace ZeldaFullEditor
 			ret.Add(Constants.ObjectSentinel);
 
 			Data = ret.ToArray();
-		}
-
-		public int CompareTo(RoomSaveEntry other)
-		{
-			return Length - other.Length;
-		}
-
-		public int Compare(RoomSaveEntry x, RoomSaveEntry y)
-		{
-			return x.Length - y.Length;
 		}
 	}
 }

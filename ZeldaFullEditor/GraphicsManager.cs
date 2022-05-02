@@ -186,7 +186,6 @@ namespace ZeldaFullEditor
 
 				default:
 					return;
-
 			}
 
 			var alltilesData = (byte*) currentgfx16Ptr.ToPointer();

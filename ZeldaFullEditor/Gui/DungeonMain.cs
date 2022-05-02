@@ -45,7 +45,6 @@ namespace ZeldaFullEditor
 		private bool projectLoaded = false;
 		private bool anychange = false;
 		private readonly List<DungeonRoom> opened_rooms = new List<DungeonRoom>();
-		private bool saved_changed = false;
 		private readonly List<ushort> selectedMapPng = new List<ushort>();
 		public ChestPicker chestPicker;
 		public Entrance selectedEntrance = null;
@@ -370,7 +369,6 @@ namespace ZeldaFullEditor
 				Program.OverworldForm.saveScratchPad();
 
 				anychange = false;
-				saved_changed = false;
 
 				//ROMStructure.saveProjectFile(version, projectFilename);
 				//ZScreamer.ActiveScreamer.ROM.SaveLogs();
@@ -2033,12 +2031,10 @@ namespace ZeldaFullEditor
 
 			int xd = 0;
 			int yd = 0;
-			int yoff;
+			int yoff = 0;
 			e.Graphics.Clear(Color.Black);
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
 			{
-				yoff = (i > 255) ? 8 : 0;
-
 				if (!ZScreamer.ActiveScreamer.all_rooms[i].IsEmpty)
 				{
 					e.Graphics.FillRectangle(
@@ -2051,7 +2047,7 @@ namespace ZeldaFullEditor
 					{
 						if (s == i)
 						{
-							e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle((xd * 16), (yd * 16) + yoff, 16, 16));
+							e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(xd * 16, (yd * 16) + yoff, 16, 16));
 						}
 					}
 				}
@@ -2060,6 +2056,7 @@ namespace ZeldaFullEditor
 				if (xd == 16)
 				{
 					yd++;
+					yoff = (yd > 15) ? 8 : 0;
 					xd = 0;
 				}
 			}
