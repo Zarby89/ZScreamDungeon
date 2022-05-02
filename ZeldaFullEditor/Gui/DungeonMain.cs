@@ -198,28 +198,18 @@ namespace ZeldaFullEditor
 			bool theresASelection = ZScreamer.ActiveUWScene.Room.SelectedObjects.Count > 0;
 
 			var mode = ZScreamer.ActiveUWMode;
-			switch (mode)
-			{
-				case DungeonEditMode.Layer1:
-				case DungeonEditMode.Layer2:
-				case DungeonEditMode.Layer3:
-				case DungeonEditMode.LayerAll:
-					UWContextSendToLayer1.Enabled = theresASelection && mode != DungeonEditMode.Layer1;
-					UWContextSendToLayer2.Enabled = theresASelection && mode != DungeonEditMode.Layer2;
-					UWContextSendToLayer3.Enabled = theresASelection && mode != DungeonEditMode.Layer3;
-					goto case DungeonEditMode.Doors;
 
-				case DungeonEditMode.Doors:
-					UWContextSendToBack.Enabled = theresASelection;
-					UWContextSendToFront.Enabled = theresASelection;
-					break;
-			}
+			UWContextSendToBack.Enabled = theresASelection;
+			UWContextSendToFront.Enabled = theresASelection;
+
+			UWContextSendToLayer1.Enabled = theresASelection && mode != DungeonEditMode.Layer1;
+			UWContextSendToLayer2.Enabled = theresASelection && mode != DungeonEditMode.Layer2;
+			UWContextSendToLayer3.Enabled = theresASelection && mode != DungeonEditMode.Layer3;
 
 			UWContextCopy.Enabled = theresASelection;
 			UWContextCut.Enabled = theresASelection;
 			UWContextSelectNone.Enabled = theresASelection;
 		}
-
 
 		private void AdjustContextMenu()
 		{
@@ -231,34 +221,43 @@ namespace ZeldaFullEditor
 				case DungeonEditMode.Layer3:
 				case DungeonEditMode.LayerAll:
 					UWContextInsert.Visible = false;
-					UWContextSignificanceSubmenu.Visible = true;
-					UWContextLayerSubmenu.Visible = true;
+					UWContextSendToBack.Visible = true;
+					UWContextSendToFront.Visible = true;
+					UWContextSendToLayer1.Visible = true;
+					UWContextSendToLayer2.Visible = true;
+					UWContextSendToLayer3.Visible = true;
 					break;
 
 				case DungeonEditMode.Doors:
 					UWContextInsert.Visible = true;
-					UWContextSignificanceSubmenu.Visible = true;
-					UWContextLayerSubmenu.Visible = false;
+					UWContextSendToBack.Visible = true;
+					UWContextSendToFront.Visible = true;
+					UWContextSendToLayer1.Visible = false;
+					UWContextSendToLayer2.Visible = false;
+					UWContextSendToLayer3.Visible = false;
+					break;
+
+				case DungeonEditMode.Sprites:
+					UWContextInsert.Visible = false;
+					UWContextSendToBack.Visible = true;
+					UWContextSendToFront.Visible = true;
+					UWContextSendToLayer1.Visible = true;
+					UWContextSendToLayer2.Visible = true;
+					UWContextSendToLayer3.Visible = false;
 					break;
 
 				default:
 					UWContextInsert.Visible = true;
-					UWContextSignificanceSubmenu.Visible = false;
-					UWContextLayerSubmenu.Visible = true;
+					UWContextSendToBack.Visible = false;
+					UWContextSendToFront.Visible = false;
+					UWContextSendToLayer1.Visible = true;
+					UWContextSendToLayer2.Visible = true;
+					UWContextSendToLayer3.Visible = false;
 					break;
 			}
 
 			AdjustContextMenuForSelectionChange();
 		}
-
-
-
-
-
-
-
-
-
 
 		//Stopwatch sw = new Stopwatch();
 		// TODO : Move that to the save class
@@ -472,8 +471,7 @@ namespace ZeldaFullEditor
 
 			initEntrancesList();
 			customPanel3.Controls.Add(ZScreamer.ActiveUWScene);
-			//addRoomTab(0x0104);
-
+			addRoomTab(0x0104);
 			projectLoaded = true;
 
 			//tabControl2_SelectedIndexChanged(tabControl2.TabPages[0], new EventArgs());
@@ -646,50 +644,9 @@ namespace ZeldaFullEditor
 			aboutBox.ShowDialog();
 		}
 
-		// TODO use tags?
-		private void UpdateUnderworldMode_AllLayers(object sender, EventArgs e)
+		private void UpdateUnderworldMode(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveScreamer.CurrentUWMode = DungeonEditMode.LayerAll;
-		}
-
-		private void UpdateUnderworldMode_Layer1(object sender, EventArgs e)
-		{
-			ZScreamer.ActiveScreamer.CurrentUWMode = DungeonEditMode.Layer1;
-		}
-
-		private void UpdateUnderworldMode_Layer2(object sender, EventArgs e)
-		{
-			ZScreamer.ActiveScreamer.CurrentUWMode = DungeonEditMode.Layer2;
-		}
-
-		private void UpdateUnderworldMode_Layer3(object sender, EventArgs e)
-		{
-			ZScreamer.ActiveScreamer.CurrentUWMode = DungeonEditMode.Layer3;
-		}
-
-		private void UpdateUnderworldMode_Sprites(object sender, EventArgs e)
-		{
-			ZScreamer.ActiveScreamer.CurrentUWMode = DungeonEditMode.Sprites;
-		}
-
-		private void UpdateUnderworldMode_Secrets(object sender, EventArgs e)
-		{
-			ZScreamer.ActiveScreamer.CurrentUWMode = DungeonEditMode.Secrets;
-		}
-
-		private void UpdateUnderworldMode_Blocks(object sender, EventArgs e)
-		{
-			ZScreamer.ActiveScreamer.CurrentUWMode = DungeonEditMode.Blocks;
-		}
-
-		private void UpdateUnderworldMode_Torches(object sender, EventArgs e)
-		{
-			ZScreamer.ActiveScreamer.CurrentUWMode = DungeonEditMode.Torches;
-		}
-
-		private void UpdateUnderworldMode_Doors(object sender, EventArgs e)
-		{
-			ZScreamer.ActiveScreamer.CurrentUWMode = DungeonEditMode.Doors;
+			ZScreamer.ActiveScreamer.CurrentUWMode = ((DungeonEditMode) ((ToolStripItem) sender).Tag);
 		}
 
 		private void UpdateUnderworldMode_Collision(object sender, EventArgs e)
@@ -2547,8 +2504,6 @@ namespace ZeldaFullEditor
 				return;
 			}
 
-			//Tile t = new Tile(0, false, false, 0, 0);
-			//t.Draw(0, 0);
 			previewRoom.DrawEntireRoom();
 
 			ZScreamer.ActiveGraphicsManager.DrawBG1();
@@ -2962,7 +2917,7 @@ namespace ZeldaFullEditor
 			int? objx = null;
 			int? objy = null;
 			int? objs = null;
-			int? objl = null;
+			RoomLayer? objl = null;
 			byte[] objdata = null;
 
 			if (o is IFreelyPlaceable f)
@@ -2973,7 +2928,7 @@ namespace ZeldaFullEditor
 
 			if (o is IMultilayered l)
 			{
-				objl = ((int) l.Layer) + 1;
+				objl = l.Layer;
 			}
 
 			if (o is IByteable b)
@@ -2994,7 +2949,7 @@ namespace ZeldaFullEditor
 			SelectedObjectDataX.Text = objx?.ToString("X2") ?? UIText.NullField;
 			SelectedObjectDataY.Text = objy?.ToString("X2") ?? UIText.NullField;
 			SelectedObjectDataSize.Text = objs?.ToString("X2") ?? UIText.NullField;
-			SelectedObjectDataLayer.Text = objl?.ToString("X2") ?? UIText.NullField;
+			SelectedObjectDataLayer.Text = objl?.ToLayerString() ?? UIText.NullField;
 			SelectedObjectDataHEX.Text = objdata?.ToSimpleListing() ?? UIText.NullField;
 		}
 

@@ -430,6 +430,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public void DrawEntireRoom()
 		{
+
 			DrawFloor1();
 
 			for (int i = 0; i < LayoutListing.Length; i++)
@@ -703,7 +704,22 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public void DrawWholeRoom()
 		{
-
+			foreach (var o in LayoutListing)
+			{
+				o.Draw(ZS);
+			}
+			foreach (var o in Layer1Objects)
+			{
+				o.Draw(ZS);
+			}
+			foreach (var o in Layer2Objects)
+			{
+				o.Draw(ZS);
+			}
+			foreach (var o in Layer3Objects)
+			{
+				o.Draw(ZS);
+			}
 		}
 
 		internal void reloadLayout()

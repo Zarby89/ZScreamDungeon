@@ -48,7 +48,16 @@ namespace ZeldaFullEditor
 
 		public IDungeonPlaceable ObjectToPlace { get; set; }
 
-		public DungeonRoom Room { get; set; }
+		private DungeonRoom room;
+		public DungeonRoom Room
+		{
+			get => room;
+			set
+			{
+				room = value;
+				RedrawRoom();
+			}
+		}
 
 		private readonly Rectangle[] DoorRectangles;
 		public SceneUW(ZScreamer zs) : base(zs)
@@ -169,6 +178,10 @@ namespace ZeldaFullEditor
 			Program.DungeonForm.UpdateFormForSelectedObject(Room.OnlySelectedObject);
 
 			// TODO ROOM.DRAW()
+			Room.DrawWholeRoom();
+
+			ZS.GFXManager.DrawBG1();
+			ZS.GFXManager.DrawBG2();
 
 			Refresh();
 		}
@@ -176,6 +189,7 @@ namespace ZeldaFullEditor
 		public override void Refresh()
 		{
 			Program.DungeonForm.UpdateUIForRoom(Room, true);
+			Invalidate();
 			base.Refresh();
 		}
 

@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
         {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
-			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
+			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
+			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
 			this.updateTimer = new System.Windows.Forms.Timer(this.components);
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -391,10 +391,9 @@ namespace ZeldaFullEditor
 			this.UWContextSelectAll = new System.Windows.Forms.ToolStripMenuItem();
 			this.UWContextSelectNone = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
-			this.UWContextSignificanceSubmenu = new System.Windows.Forms.ToolStripMenuItem();
 			this.UWContextSendToFront = new System.Windows.Forms.ToolStripMenuItem();
 			this.UWContextSendToBack = new System.Windows.Forms.ToolStripMenuItem();
-			this.UWContextLayerSubmenu = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator16 = new System.Windows.Forms.ToolStripSeparator();
 			this.UWContextSendToLayer1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.UWContextSendToLayer2 = new System.Windows.Forms.ToolStripMenuItem();
 			this.UWContextSendToLayer3 = new System.Windows.Forms.ToolStripMenuItem();
@@ -554,8 +553,9 @@ namespace ZeldaFullEditor
 			this.allbgsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.allbgsButton.Name = "allbgsButton";
 			this.allbgsButton.Size = new System.Drawing.Size(23, 22);
+			this.allbgsButton.Tag = ZeldaFullEditor.DungeonEditMode.LayerAll;
 			this.allbgsButton.Text = "All Layers";
-			this.allbgsButton.Click += new System.EventHandler(this.UpdateUnderworldMode_AllLayers);
+			this.allbgsButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// bg1modeButton
 			// 
@@ -568,8 +568,9 @@ namespace ZeldaFullEditor
 			this.bg1modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bg1modeButton.Name = "bg1modeButton";
 			this.bg1modeButton.Size = new System.Drawing.Size(23, 22);
+			this.bg1modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer1;
 			this.bg1modeButton.Text = "Layer 1";
-			this.bg1modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode_Layer1);
+			this.bg1modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// bg2modeButton
 			// 
@@ -580,8 +581,9 @@ namespace ZeldaFullEditor
 			this.bg2modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bg2modeButton.Name = "bg2modeButton";
 			this.bg2modeButton.Size = new System.Drawing.Size(23, 22);
+			this.bg2modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer2;
 			this.bg2modeButton.Text = "Layer 2";
-			this.bg2modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode_Layer2);
+			this.bg2modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// bg3modeButton
 			// 
@@ -592,8 +594,9 @@ namespace ZeldaFullEditor
 			this.bg3modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bg3modeButton.Name = "bg3modeButton";
 			this.bg3modeButton.Size = new System.Drawing.Size(23, 22);
+			this.bg3modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer3;
 			this.bg3modeButton.Text = "Layer 3";
-			this.bg3modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode_Layer3);
+			this.bg3modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// spritemodeButton
 			// 
@@ -604,8 +607,9 @@ namespace ZeldaFullEditor
 			this.spritemodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.spritemodeButton.Name = "spritemodeButton";
 			this.spritemodeButton.Size = new System.Drawing.Size(23, 22);
+			this.spritemodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Sprites;
 			this.spritemodeButton.Text = "Object Mode";
-			this.spritemodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode_Sprites);
+			this.spritemodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// blockmodeButton
 			// 
@@ -616,8 +620,9 @@ namespace ZeldaFullEditor
 			this.blockmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.blockmodeButton.Name = "blockmodeButton";
 			this.blockmodeButton.Size = new System.Drawing.Size(23, 22);
+			this.blockmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Blocks;
 			this.blockmodeButton.Text = "Block Mode";
-			this.blockmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode_Blocks);
+			this.blockmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// torchmodeButton
 			// 
@@ -628,8 +633,9 @@ namespace ZeldaFullEditor
 			this.torchmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.torchmodeButton.Name = "torchmodeButton";
 			this.torchmodeButton.Size = new System.Drawing.Size(23, 22);
+			this.torchmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Torches;
 			this.torchmodeButton.Text = "Torch Mode";
-			this.torchmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode_Torches);
+			this.torchmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// potmodeButton
 			// 
@@ -640,8 +646,9 @@ namespace ZeldaFullEditor
 			this.potmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.potmodeButton.Name = "potmodeButton";
 			this.potmodeButton.Size = new System.Drawing.Size(23, 22);
-			this.potmodeButton.Text = "Pot Item Mode";
-			this.potmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode_Secrets);
+			this.potmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Secrets;
+			this.potmodeButton.Text = "Secrets Mode";
+			this.potmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// doormodeButton
 			// 
@@ -652,8 +659,9 @@ namespace ZeldaFullEditor
 			this.doormodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.doormodeButton.Name = "doormodeButton";
 			this.doormodeButton.Size = new System.Drawing.Size(23, 22);
+			this.doormodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Doors;
 			this.doormodeButton.Text = "Door Mode";
-			this.doormodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode_Doors);
+			this.doormodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// collisionModeButton
 			// 
@@ -664,6 +672,7 @@ namespace ZeldaFullEditor
 			this.collisionModeButton.ImageTransparentColor = System.Drawing.Color.White;
 			this.collisionModeButton.Name = "collisionModeButton";
 			this.collisionModeButton.Size = new System.Drawing.Size(23, 22);
+			this.collisionModeButton.Tag = ZeldaFullEditor.DungeonEditMode.CollisionMap;
 			this.collisionModeButton.Text = "Collision Mode";
 			this.collisionModeButton.Click += new System.EventHandler(this.UpdateUnderworldMode_Collision);
 			// 
@@ -742,6 +751,7 @@ namespace ZeldaFullEditor
             this.deleteToolStripMenuItem2,
             this.clearAllToolStripMenuItem});
 			this.nothingselectedcontextMenu.Name = "nothingselectedcontextMenu";
+			this.nothingselectedcontextMenu.RightToLeft = System.Windows.Forms.RightToLeft.Inherit;
 			this.nothingselectedcontextMenu.Size = new System.Drawing.Size(125, 92);
 			// 
 			// insertToolStripMenuItem1
@@ -1541,13 +1551,13 @@ namespace ZeldaFullEditor
 			this.entrancetreeView.HideSelection = false;
 			this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
 			this.entrancetreeView.Name = "entrancetreeView";
-			treeNode3.Name = "EntranceNode";
-			treeNode3.Text = "Entrances";
-			treeNode4.Name = "StartingEntranceNode";
-			treeNode4.Text = "Spawn points";
+			treeNode1.Name = "EntranceNode";
+			treeNode1.Text = "Entrances";
+			treeNode2.Name = "StartingEntranceNode";
+			treeNode2.Text = "Spawn points";
 			this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode1,
+            treeNode2});
 			this.entrancetreeView.Size = new System.Drawing.Size(292, 301);
 			this.entrancetreeView.TabIndex = 0;
 			this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -4127,10 +4137,14 @@ namespace ZeldaFullEditor
             this.UWContextSelectAll,
             this.UWContextSelectNone,
             this.toolStripSeparator15,
-            this.UWContextSignificanceSubmenu,
-            this.UWContextLayerSubmenu});
+            this.UWContextSendToFront,
+            this.UWContextSendToBack,
+            this.toolStripSeparator16,
+            this.UWContextSendToLayer1,
+            this.UWContextSendToLayer2,
+            this.UWContextSendToLayer3});
 			this.UWContextMenu.Name = "UWContextMenu";
-			this.UWContextMenu.Size = new System.Drawing.Size(181, 264);
+			this.UWContextMenu.Size = new System.Drawing.Size(181, 336);
 			// 
 			// UWContextInsert
 			// 
@@ -4203,15 +4217,6 @@ namespace ZeldaFullEditor
 			this.toolStripSeparator15.Name = "toolStripSeparator15";
 			this.toolStripSeparator15.Size = new System.Drawing.Size(177, 6);
 			// 
-			// UWContextSignificanceSubmenu
-			// 
-			this.UWContextSignificanceSubmenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.UWContextSendToFront,
-            this.UWContextSendToBack});
-			this.UWContextSignificanceSubmenu.Name = "UWContextSignificanceSubmenu";
-			this.UWContextSignificanceSubmenu.Size = new System.Drawing.Size(180, 22);
-			this.UWContextSignificanceSubmenu.Text = "Significance";
-			// 
 			// UWContextSendToFront
 			// 
 			this.UWContextSendToFront.Name = "UWContextSendToFront";
@@ -4226,36 +4231,28 @@ namespace ZeldaFullEditor
 			this.UWContextSendToBack.Text = "Send to Back";
 			this.UWContextSendToBack.Click += new System.EventHandler(this.SendSelectedToBack);
 			// 
-			// UWContextLayerSubmenu
+			// toolStripSeparator16
 			// 
-			this.UWContextLayerSubmenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.UWContextSendToLayer1,
-            this.UWContextSendToLayer2,
-            this.UWContextSendToLayer3});
-			this.UWContextLayerSubmenu.Name = "UWContextLayerSubmenu";
-			this.UWContextLayerSubmenu.Size = new System.Drawing.Size(180, 22);
-			this.UWContextLayerSubmenu.Text = "Layer";
+			this.toolStripSeparator16.Name = "toolStripSeparator16";
+			this.toolStripSeparator16.Size = new System.Drawing.Size(177, 6);
 			// 
 			// UWContextSendToLayer1
 			// 
 			this.UWContextSendToLayer1.Name = "UWContextSendToLayer1";
-			this.UWContextSendToLayer1.Size = new System.Drawing.Size(154, 22);
+			this.UWContextSendToLayer1.Size = new System.Drawing.Size(180, 22);
 			this.UWContextSendToLayer1.Text = "Send to Layer 1";
-			this.UWContextSendToLayer1.Click += new System.EventHandler(this.UWSendSelectedToLayer1);
 			// 
 			// UWContextSendToLayer2
 			// 
 			this.UWContextSendToLayer2.Name = "UWContextSendToLayer2";
-			this.UWContextSendToLayer2.Size = new System.Drawing.Size(154, 22);
+			this.UWContextSendToLayer2.Size = new System.Drawing.Size(180, 22);
 			this.UWContextSendToLayer2.Text = "Send to Layer 2";
-			this.UWContextSendToLayer2.Click += new System.EventHandler(this.UWSendSelectedToLayer2);
 			// 
 			// UWContextSendToLayer3
 			// 
 			this.UWContextSendToLayer3.Name = "UWContextSendToLayer3";
-			this.UWContextSendToLayer3.Size = new System.Drawing.Size(154, 22);
+			this.UWContextSendToLayer3.Size = new System.Drawing.Size(180, 22);
 			this.UWContextSendToLayer3.Text = "Send to Layer 3";
-			this.UWContextSendToLayer3.Click += new System.EventHandler(this.UWSendSelectedToLayer3);
 			// 
 			// DungeonMain
 			// 
@@ -4696,10 +4693,9 @@ namespace ZeldaFullEditor
 		private System.Windows.Forms.ToolStripMenuItem UWContextSelectAll;
 		private System.Windows.Forms.ToolStripMenuItem UWContextSelectNone;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
-		private System.Windows.Forms.ToolStripMenuItem UWContextSignificanceSubmenu;
 		private System.Windows.Forms.ToolStripMenuItem UWContextSendToFront;
 		private System.Windows.Forms.ToolStripMenuItem UWContextSendToBack;
-		private System.Windows.Forms.ToolStripMenuItem UWContextLayerSubmenu;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
 		private System.Windows.Forms.ToolStripMenuItem UWContextSendToLayer1;
 		private System.Windows.Forms.ToolStripMenuItem UWContextSendToLayer2;
 		private System.Windows.Forms.ToolStripMenuItem UWContextSendToLayer3;

@@ -123,6 +123,19 @@ namespace ZeldaFullEditor
 		{
 			return string.Join(" ", Regex.Split(b.ToString(), @"[A-Z]", RegexOptions.None));
 		}
+		
+		public static string ToLayerString(this RoomLayer l)
+		{
+			switch (l)
+			{
+				default:
+				case RoomLayer.None: return "None";
+				case RoomLayer.Layer1: return "Layer 1";
+				case RoomLayer.Layer2: return "Layer 2";
+				case RoomLayer.Layer3: return "Layer 3";
+
+			}
+		}
 
 		public static string ToSimpleListing(this byte[] bl)
 		{

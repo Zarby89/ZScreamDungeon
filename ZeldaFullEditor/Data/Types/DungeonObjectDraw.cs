@@ -198,7 +198,7 @@ namespace ZeldaFullEditor.Data
 				{
 					for (int y = yoff + s2, iy = 0; iy < sizey; iy++, y += 8)
 					{
-						list[i] = new DrawInfo(t++, x, y);
+						list[i++] = new DrawInfo(t++, x, y);
 					}
 				}
 			}
@@ -224,7 +224,7 @@ namespace ZeldaFullEditor.Data
 				{
 					for (int y = yoff, iy = 0; iy < sizey; iy++, y += 8)
 					{
-						list[i] = new DrawInfo(t++, x, y);
+						list[i++] = new DrawInfo(t++, x, y);
 					}
 				}
 			}
