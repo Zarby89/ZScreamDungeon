@@ -184,11 +184,11 @@ namespace ZeldaFullEditor
 				// 448 = 64 * 7
 				// instead of 64 * (7 - yl)
 				// everything with index is additive, so we can add offset in here
-				int index = offset + (8 * (tile.VFlip ? 448 - yl : yl));
+				int my = offset + (8 * (tile.VFlip ? 448 - yl : yl));
 
 				for (int xl = 0; xl < 4; xl++)
 				{
-					index += 2 * (tile.HFlip ? 3 - xl : xl);
+					int index = my + 2 * (tile.HFlip ? 3 - xl : xl);
 
 					byte pixel = tiledata[tx + yl + xl];
 

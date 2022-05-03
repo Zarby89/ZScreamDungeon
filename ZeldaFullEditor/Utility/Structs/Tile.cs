@@ -65,7 +65,7 @@ namespace ZeldaFullEditor
 
 		public Tile(ushort id, byte palette, bool priority, bool hflip, bool vflip) // Custom tile
 		{
-			ID = id;
+			ID = (ushort) (id & Constants.TileNameMask);
 
 			HFlip = hflip;
 			HFlipByte = (byte) (HFlip ? 1 : 0);
@@ -107,7 +107,7 @@ namespace ZeldaFullEditor
 			{
 				value |= Constants.TileHFlipBit;
 			}
-			if (vflip ?? HFlip)
+			if (vflip ?? VFlip)
 			{
 				value |= Constants.TileVFlipBit;
 			}
@@ -117,11 +117,6 @@ namespace ZeldaFullEditor
 			}
 
 			return value;
-		}
-		
-		public Tile Clone()
-		{
-			return new Tile(ID, Palette, Priority, HFlip, VFlip);
 		}
 		
 		/// <summary>

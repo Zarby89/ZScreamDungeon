@@ -50,8 +50,8 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public byte Size { get; set; }
 
-		public int Width { get; set; } = 16;
-		public int Height { get; set; } = 16;
+		public int Width { get; set; } = 8;
+		public int Height { get; set; } = 8;
 		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, Width, Height);
 
 		public bool DiagonalFix { get; set; }
@@ -156,7 +156,7 @@ namespace ZeldaFullEditor.Data.Underworld
 					{
 						(byte) ((GridX << 2) | (ID & 0x03)),
 						(byte) ((GridY << 2) | ((ID & 0x0C) >> 2)),
-						(byte) (0xF8 | (ID >> 4))
+						(byte) (0xF8 | ((ID & 0x70) >> 4))
 					};
 
 				default:
