@@ -25,6 +25,36 @@ namespace ZeldaFullEditor
 
 		public static readonly TilesList EmptySet = new TilesList(new Tile[] { Tile.Empty, Tile.Empty, Tile.Empty, Tile.Empty });
 
+		/// <summary>
+		/// Handles the dynamic listing of floor 1
+		/// </summary>
+		public static readonly TilesList Floor1List =
+			new TilesList(new Tile[] {
+				Tile.Empty, Tile.Empty, Tile.Empty, Tile.Empty,
+				Tile.Empty, Tile.Empty, Tile.Empty, Tile.Empty
+			});
+
+		/// <summary>
+		/// Handles the dynamic listing of floor 2
+		/// </summary>
+		public static readonly TilesList Floor2List =
+			new TilesList(new Tile[] {
+				Tile.Empty, Tile.Empty, Tile.Empty, Tile.Empty,
+				Tile.Empty, Tile.Empty, Tile.Empty, Tile.Empty
+			});
+
+		public ushort[] ToUnsignedShorts()
+		{
+			var ret = new ushort[_list.Length];
+
+			for (int i = 0; i < ret.Length; i++)
+			{
+				ret[i] = _list[i].ToUnsignedShort();
+			}
+
+			return ret;
+		}
+
 		public static TilesList CreateNewDefinition(ZScreamer ZS, int position, int count)
 		{
 			if (count <= 0)

@@ -945,7 +945,7 @@ namespace ZeldaFullEditor.Data
 
 		public static void RoomDraw_DownwardsDecor2x4spaced8_1to16(ZScreamer ZS, RoomObject obj)
 		{
-			RoomDraw_DownwardsXbyY(ZS, obj, obj.Size + 1, sizex: 2, sizey: 4, spacing: 88);
+			RoomDraw_DownwardsXbyY(ZS, obj, obj.Size + 1, sizex: 2, sizey: 4, spacing: 8);
 		}
 
 		public static void RoomDraw_DownwardsDecor4x2spaced4_1to16(ZScreamer ZS, RoomObject obj)

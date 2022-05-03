@@ -132,7 +132,7 @@ namespace ZeldaFullEditor
 				case RoomLayer.None: return "None";
 				case RoomLayer.Layer1: return "Layer 1";
 				case RoomLayer.Layer2: return "Layer 2";
-				case RoomLayer.Layer3: return "Layer 3";
+				case RoomLayer.Layer3: return "Mask layer";
 
 			}
 		}

@@ -13,7 +13,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		public byte GridX
 		{
 			get => gridx;
-			set => gridy = value;
+			set => gridx = value;
 		}
 
 		public byte GridY

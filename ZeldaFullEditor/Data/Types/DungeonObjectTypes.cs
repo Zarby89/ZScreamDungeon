@@ -41,13 +41,13 @@ namespace ZeldaFullEditor.Data
 			switch (ObjectSet)
 			{
 				case DungeonObjectSet.Subtype1:
-					name = DefaultEntities.ListOfSet0RoomObjects[(byte) objectid].Name;
+					name = DefaultEntities.ListOfSubtype1RoomObjects[(byte) objectid].Name;
 					break;
 				case DungeonObjectSet.Subtype2:
-					name = DefaultEntities.ListOfSet1RoomObjects[(byte) objectid].Name;
+					name = DefaultEntities.ListOfSubtype2RoomObjects[(byte) objectid].Name;
 					break;
 				case DungeonObjectSet.Subtype3:
-					name = DefaultEntities.ListOfSet2RoomObjects[(byte) objectid].Name;
+					name = DefaultEntities.ListOfSubtype3RoomObjects[(byte) objectid].Name;
 					break;
 			}
 
@@ -64,7 +64,6 @@ namespace ZeldaFullEditor.Data
 		{
 			return $"{FullID:X3} {VanillaName}";
 		}
-
 
 		/*
 		 * All room object defaults

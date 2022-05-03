@@ -15,7 +15,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		public byte GridX
 		{
 			get => gridx;
-			set => gridy = value;
+			set => gridx = value;
 		}
 
 		public byte GridY
@@ -35,6 +35,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			get => gridy * Scale;
 			set => gridy = (byte) (value / Scale);
 		}
+
 		public RoomLayer Layer { get; set; }
 
 		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, 16, 16);

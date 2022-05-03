@@ -441,14 +441,15 @@ namespace ZeldaFullEditor
 				}
 			}
 
+			// TODO add back with proper stuff
 			// Draw grid
-			int wh = (512 / Program.MainForm.gridSize) + 1;
-
-			for (int x = 0, l = 0; x < wh; x++, l += Program.MainForm.gridSize)
-			{
-				g.DrawLine(Constants.HalfWhitePen, l, 0, l, 512);
-				g.DrawLine(Constants.HalfWhitePen, 0, l, 512, l);
-			}
+			//int wh = (512 / Program.MainForm.gridSize) + 1;
+			//
+			//for (int x = 0, l = 0; x < wh; x++, l += Program.MainForm.gridSize)
+			//{
+			//	g.DrawLine(Constants.HalfWhitePen, l, 0, l, 512);
+			//	g.DrawLine(Constants.HalfWhitePen, 0, l, 512, l);
+			//}
 
 			// Done
 			if (CurrentMode == DungeonEditMode.Doors)

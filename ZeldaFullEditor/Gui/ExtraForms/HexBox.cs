@@ -34,7 +34,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 		private HexDigits digits;
 
 		[Description("HexValue"), Category("Data")]
-		[DefaultValue(0x00)]
+		[DefaultValue(HexDigits.Two)]
 		public int HexValue
 		{
 			get => hexValue;

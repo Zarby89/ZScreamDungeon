@@ -224,7 +224,9 @@
 			AutoFindTiles(0x0C1, 68);
 			AutoFindTiles(0x0C2, 1);
 			AutoFindTiles(0x0C3, 1);
-			AutoFindTiles(0x0C4, 8); // TODO handle floor 1
+			
+			list[0xC4] = TilesList.Floor1List; //AutoFindTiles(0x0C4, 8);
+			
 			AutoFindTiles(0x0C5, 8);
 			AutoFindTiles(0x0C6, 8);
 			AutoFindTiles(0x0C7, 8);
@@ -258,7 +260,9 @@
 			AutoFindTiles(0x0D8, 8);
 			AutoFindTiles(0x0D9, 8);
 			AutoFindTiles(0x0DA, 8);
-			AutoFindTiles(0x0DB, 8); // TODO handle floor 2
+
+			list[0xDB] = TilesList.Floor2List; //AutoFindTiles(0x0DB, 8);
+
 			AutoFindTiles(0x0DC, 21);
 			AutoFindTiles(0x0DD, 16);
 			AutoFindTiles(0x0DE, 4);

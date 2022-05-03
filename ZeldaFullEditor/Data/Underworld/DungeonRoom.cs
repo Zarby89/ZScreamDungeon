@@ -430,8 +430,8 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public void DrawEntireRoom()
 		{
-
-			DrawFloor1();
+			ZS.GFXManager.RestoreFloor1();
+			ZS.GFXManager.RestoreFloor2();
 
 			for (int i = 0; i < LayoutListing.Length; i++)
 			{
@@ -461,7 +461,6 @@ namespace ZeldaFullEditor.Data.Underworld
 			if (Layer2Mode != Constants.LayerMergeOff)
 			{
 				Program.DungeonForm.SetPalettesTransparent();
-				DrawFloor2();
 			}
 			else
 			{
@@ -718,26 +717,6 @@ namespace ZeldaFullEditor.Data.Underworld
 			{
 				o.Draw(ZS);
 			}
-		}
-
-		internal void reloadLayout()
-		{
-			throw new NotImplementedException();
-		}
-
-		internal void DrawFloor1()
-		{
-			//throw new NotImplementedException();
-		}
-
-		internal void DrawFloor2()
-		{
-			//throw new NotImplementedException();
-		}
-
-		internal void update()
-		{
-			throw new NotImplementedException();
 		}
 
 		public bool AttemptToAddEntityAsSelected(IDungeonPlaceable o, DungeonEditMode m)

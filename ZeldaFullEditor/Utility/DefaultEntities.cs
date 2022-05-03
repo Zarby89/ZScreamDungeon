@@ -1120,7 +1120,7 @@ namespace ZeldaFullEditor
 		};
 
 
-		public static readonly RoomObjectName[] ListOfSet0RoomObjects =
+		public static readonly RoomObjectName[] ListOfSubtype1RoomObjects =
 		{
 			new RoomObjectName(0x000, "Ceiling ↔"),
 			new RoomObjectName(0x001, "Wall (top, north) ↔"),
@@ -1372,7 +1372,7 @@ namespace ZeldaFullEditor
 			new RoomObjectName(0x0F7, "Nothing"),
 		};
 
-		public static readonly RoomObjectName[] ListOfSet1RoomObjects =
+		public static readonly RoomObjectName[] ListOfSubtype2RoomObjects =
 		{
 			new RoomObjectName(0x100, "Corner (top, concave) ▛"),
 			new RoomObjectName(0x101, "Corner (top, concave) ▙"),
@@ -1440,7 +1440,7 @@ namespace ZeldaFullEditor
 			new RoomObjectName(0x13F, "Magic bat altar"),
 		};
 
-		public static readonly RoomObjectName[] ListOfSet2RoomObjects =
+		public static readonly RoomObjectName[] ListOfSubtype3RoomObjects =
 		{
 			new RoomObjectName(0x200, "Waterfall face (empty)"),
 			new RoomObjectName(0x201, "Waterfall face (short)"),

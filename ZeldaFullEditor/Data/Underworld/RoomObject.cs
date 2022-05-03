@@ -25,7 +25,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		public byte GridX
 		{
 			get => gridx;
-			set => gridy = value;
+			set => gridx = value;
 		}
 
 		public byte GridY
@@ -45,7 +45,9 @@ namespace ZeldaFullEditor.Data.Underworld
 			get => gridy * Scale;
 			set => gridy = (byte) (value / Scale);
 		}
+
 		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
+
 		public byte Size { get; set; }
 
 		public int Width { get; set; } = 16;

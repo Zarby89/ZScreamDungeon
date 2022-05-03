@@ -30,9 +30,9 @@ namespace ZeldaFullEditor.Gui
 			if (tileRadio.Checked)
 			{
 				var list = new List<RoomObjectName>();
-				list.Concat(DefaultEntities.ListOfSet0RoomObjects);
-				list.Concat(DefaultEntities.ListOfSet1RoomObjects);
-				list.Concat(DefaultEntities.ListOfSet2RoomObjects);
+				list.Concat(DefaultEntities.ListOfSubtype1RoomObjects);
+				list.Concat(DefaultEntities.ListOfSubtype2RoomObjects);
+				list.Concat(DefaultEntities.ListOfSubtype3RoomObjects);
 				comboBox1.DataSource = list;
 			}
 			else if (spriteRadio.Checked)

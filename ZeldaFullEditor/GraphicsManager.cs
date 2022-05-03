@@ -122,6 +122,48 @@ namespace ZeldaFullEditor
 			ZS = zs;
 		}
 
+		private static readonly ushort[] Floor1Shorts = TilesList.Floor1List.ToUnsignedShorts();
+		private static readonly ushort[] Floor2Shorts = TilesList.Floor2List.ToUnsignedShorts();
+
+		public void RestoreFloor1()
+		{
+			for (int x = 0; x < 16 * 4; x += 4)
+			{
+				for (int y = 0; y < (64 * (32 * 2)); y += (2 * 64))
+				{
+					tilesBg1Buffer[x + y] = Floor1Shorts[0];
+					tilesBg1Buffer[x + y + 1] = Floor1Shorts[1];
+					tilesBg1Buffer[x + y + 2] = Floor1Shorts[2];
+					tilesBg1Buffer[x + y + 3] = Floor1Shorts[3];
+
+					tilesBg1Buffer[x + y + 64] = Floor1Shorts[4];
+					tilesBg1Buffer[x + y + 65] = Floor1Shorts[5];
+					tilesBg1Buffer[x + y + 66] = Floor1Shorts[6];
+					tilesBg1Buffer[x + y + 67] = Floor1Shorts[7];
+				}
+			}
+		}
+
+		public void RestoreFloor2()
+		{
+			for (int x = 0; x < 16 * 4; x += 4)
+			{
+				for (int y = 0; y < (64 * (32 * 2)); y += (2 * 64))
+				{
+					tilesBg2Buffer[x + y] = Floor2Shorts[0];
+					tilesBg2Buffer[x + y + 1] = Floor2Shorts[1];
+					tilesBg2Buffer[x + y + 2] = Floor2Shorts[2];
+					tilesBg2Buffer[x + y + 3] = Floor2Shorts[3];
+
+					tilesBg2Buffer[x + y + 64] = Floor2Shorts[4];
+					tilesBg2Buffer[x + y + 65] = Floor2Shorts[5];
+					tilesBg2Buffer[x + y + 66] = Floor2Shorts[6];
+					tilesBg2Buffer[x + y + 67] = Floor2Shorts[7];
+				}
+			}
+		}
+
+
 		public void DrawBG1()
 		{
 			DrawBackground(1);
@@ -144,24 +186,24 @@ namespace ZeldaFullEditor
 
 		public static unsafe void DrawTileToBuffer(in Tile tile, int offset, byte* canvas, byte* tiledata)
 		{
-			int tx = (tile.ID / 16 * 512) + ((tile.ID & 0xF) * 4);
+			//int tx = ((tile.ID & ~0xF) << 5) | ((tile.ID & 0xF) << 2);
+			int tx = (tile.ID / 16 * 512) | ((tile.ID & 0xF) << 2);
 			byte palnibble = (byte) (tile.Palette << 4);
 			byte r = tile.HFlipByte;
 
 			for (int yl = 0; yl < 8 * 64; yl += 64)
 			{
 				// 448 = 64 * 7
-				// slightly faster than 64 * (7 - yl) where yl is +1 instead of +64 each iteration
-				// everything with index is additive, so we can add it in here
-				int my = offset + 8 * (tile.VFlip ? 448 - yl : yl);
+				// instead of 64 * (7 - yl)
+				// everything with index is additive, so we can add offset in here
+				int index = offset + (8 * (tile.VFlip ? 448 - yl : yl));
 
 				for (int xl = 0; xl < 4; xl++)
 				{
-					int mx = 2 * (tile.HFlip ? 3 - xl : xl);
+					index += 2 * (tile.HFlip ? 3 - xl : xl);
 
 					byte pixel = tiledata[tx + yl + xl];
 
-					int index = mx + my;
 					canvas[index + r ^ 1] = (byte) ((pixel & 0x0F) | palnibble);
 					canvas[index + r] = (byte) ((pixel >> 4) | palnibble);
 				}
@@ -189,14 +231,12 @@ namespace ZeldaFullEditor
 			}
 
 			var alltilesData = (byte*) currentgfx16Ptr.ToPointer();
-			for (int yy = 0; yy < 64 * 64; yy += 64) // For each tile on the tile buffer
+
+			for (int y = 0; y < 64 * 64; y += 64)
 			{
-				for (int xx = 0; xx < 64; xx++)
+				for (int x = 0; x < 64; x++)
 				{
-					if (buffer[xx + yy] != 0xFFFF) // Prevent draw if tile == 0xFFFF since it 0 indexed
-					{
-						DrawTileToBuffer(new Tile(buffer[xx + yy]), xx, yy, ptr, alltilesData);
-					}
+					DrawTileToBuffer(new Tile(buffer[x + y]), x, y, ptr, alltilesData);
 				}
 			}
 		}
