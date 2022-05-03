@@ -122,47 +122,35 @@ namespace ZeldaFullEditor
 			ZS = zs;
 		}
 
-		private static readonly ushort[] Floor1Shorts = TilesList.Floor1List.ToUnsignedShorts();
-		private static readonly ushort[] Floor2Shorts = TilesList.Floor2List.ToUnsignedShorts();
-
 		public void RestoreFloor1()
 		{
-			for (int x = 0; x < 16 * 4; x += 4)
-			{
-				for (int y = 0; y < (64 * (32 * 2)); y += (2 * 64))
-				{
-					tilesBg1Buffer[x + y] = Floor1Shorts[0];
-					tilesBg1Buffer[x + y + 1] = Floor1Shorts[1];
-					tilesBg1Buffer[x + y + 2] = Floor1Shorts[2];
-					tilesBg1Buffer[x + y + 3] = Floor1Shorts[3];
-
-					tilesBg1Buffer[x + y + 64] = Floor1Shorts[4];
-					tilesBg1Buffer[x + y + 65] = Floor1Shorts[5];
-					tilesBg1Buffer[x + y + 66] = Floor1Shorts[6];
-					tilesBg1Buffer[x + y + 67] = Floor1Shorts[7];
-				}
-			}
+			var Floor1Shorts = ZS.TileLister[Constants.Floor1ObjectID].ToUnsignedShorts();
+			FillTilemapWithFloorShort(tilesBg1Buffer, Floor1Shorts);
 		}
 
 		public void RestoreFloor2()
 		{
+			var Floor2Shorts = ZS.TileLister[Constants.Floor2ObjectID].ToUnsignedShorts();
+			FillTilemapWithFloorShort(tilesBg2Buffer, Floor2Shorts);
+		}
+
+		private void FillTilemapWithFloorShort(ushort[] tilemap, ushort[] floor)
+		{
 			for (int x = 0; x < 16 * 4; x += 4)
 			{
-				for (int y = 0; y < (64 * (32 * 2)); y += (2 * 64))
+				for (int y = 0; y < (64 * 32 * 2); y += 2 * 64)
 				{
-					tilesBg2Buffer[x + y] = Floor2Shorts[0];
-					tilesBg2Buffer[x + y + 1] = Floor2Shorts[1];
-					tilesBg2Buffer[x + y + 2] = Floor2Shorts[2];
-					tilesBg2Buffer[x + y + 3] = Floor2Shorts[3];
-
-					tilesBg2Buffer[x + y + 64] = Floor2Shorts[4];
-					tilesBg2Buffer[x + y + 65] = Floor2Shorts[5];
-					tilesBg2Buffer[x + y + 66] = Floor2Shorts[6];
-					tilesBg2Buffer[x + y + 67] = Floor2Shorts[7];
+					tilemap[x + y] = floor[0];
+					tilemap[x + y + 1] = floor[1];
+					tilemap[x + y + 2] = floor[2];
+					tilemap[x + y + 3] = floor[3];
+					tilemap[x + y + 64] = floor[4];
+					tilemap[x + y + 65] = floor[5];
+					tilemap[x + y + 66] = floor[6];
+					tilemap[x + y + 67] = floor[7];
 				}
 			}
 		}
-
 
 		public void DrawBG1()
 		{

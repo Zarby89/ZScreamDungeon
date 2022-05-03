@@ -430,6 +430,9 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public void DrawEntireRoom()
 		{
+			ZS.TileLister.CurrentFloor1 = Floor1Graphics;
+			ZS.TileLister.CurrentFloor2 = Floor2Graphics;
+
 			ZS.GFXManager.RestoreFloor1();
 			ZS.GFXManager.RestoreFloor2();
 

@@ -8,7 +8,24 @@
 
 		private readonly DoorTilesList[] _doors;
 
-		private readonly ZScreamer ZS;
+		public byte CurrentFloor1
+		{
+			set
+			{
+				value &= 0x0F;
+				((FloorsTileList) this[Constants.Floor1ObjectID]).Floor = value;
+			}
+		}
+		public byte CurrentFloor2
+		{
+			set
+			{
+				value &= 0x0F;
+				((FloorsTileList) this[Constants.Floor2ObjectID]).Floor = value;
+			}
+		}
+
+
 
 		private RoomObjectTileLister(TilesList[] tiles, DoorTilesList[] doors)
 		{
@@ -224,9 +241,9 @@
 			AutoFindTiles(0x0C1, 68);
 			AutoFindTiles(0x0C2, 1);
 			AutoFindTiles(0x0C3, 1);
-			
-			list[0xC4] = TilesList.Floor1List; //AutoFindTiles(0x0C4, 8);
-			
+
+			list[0xC4] = FloorsTileList.CreateNewFloors(ZS, ZS.Offsets.tile_address); //AutoFindTiles(0x0C4, 8);
+
 			AutoFindTiles(0x0C5, 8);
 			AutoFindTiles(0x0C6, 8);
 			AutoFindTiles(0x0C7, 8);
@@ -235,7 +252,6 @@
 			AutoFindTiles(0x0CA, 8);
 			AutoFindTiles(0x0CB, 0); // nothing
 			AutoFindTiles(0x0CC, 0); // nothing
-
 
 			// big boy stuff
 			SetTilesFromMultipleAddresses(0x0CD,
@@ -246,7 +262,6 @@
 				(ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.subtype1_tiles + (0xCE * 2)), 24),
 				(ZS.Offsets.tile_address + ZS.ROM.Read16(ZS.Offsets.subtype1_tiles), 4)
 			);
-
 
 			AutoFindTiles(0x0CF, 0); // nothing
 			AutoFindTiles(0x0D0, 0); // nothing
@@ -261,7 +276,7 @@
 			AutoFindTiles(0x0D9, 8);
 			AutoFindTiles(0x0DA, 8);
 
-			list[0xDB] = TilesList.Floor2List; //AutoFindTiles(0x0DB, 8);
+			list[0xDB] = FloorsTileList.CreateNewFloors(ZS, ZS.Offsets.tile_address); //AutoFindTiles(0x0DB, 8);
 
 			AutoFindTiles(0x0DC, 21);
 			AutoFindTiles(0x0DD, 16);

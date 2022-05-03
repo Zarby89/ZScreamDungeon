@@ -14,36 +14,18 @@ namespace ZeldaFullEditor
 	[Serializable]
 	public class TilesList
 	{
-		private readonly Tile[] _list;
+		protected readonly Tile[] _list;
 
-		public Tile this[int i] => _list[i];
+		public virtual Tile this[int i] => _list[i];
 
-		private TilesList(Tile[] list)
+		protected TilesList(Tile[] list)
 		{
 			_list = list;
 		}
 
 		public static readonly TilesList EmptySet = new TilesList(new Tile[] { Tile.Empty, Tile.Empty, Tile.Empty, Tile.Empty });
 
-		/// <summary>
-		/// Handles the dynamic listing of floor 1
-		/// </summary>
-		public static readonly TilesList Floor1List =
-			new TilesList(new Tile[] {
-				Tile.Empty, Tile.Empty, Tile.Empty, Tile.Empty,
-				Tile.Empty, Tile.Empty, Tile.Empty, Tile.Empty
-			});
-
-		/// <summary>
-		/// Handles the dynamic listing of floor 2
-		/// </summary>
-		public static readonly TilesList Floor2List =
-			new TilesList(new Tile[] {
-				Tile.Empty, Tile.Empty, Tile.Empty, Tile.Empty,
-				Tile.Empty, Tile.Empty, Tile.Empty, Tile.Empty
-			});
-
-		public ushort[] ToUnsignedShorts()
+		public virtual ushort[] ToUnsignedShorts()
 		{
 			var ret = new ushort[_list.Length];
 
@@ -99,6 +81,42 @@ namespace ZeldaFullEditor
 			}
 
 			return new TilesList(list);
+		}	
+
+	}
+
+	public class FloorsTileList : TilesList
+	{
+		private const int Count = 8 * 16;
+		public override Tile this[int i] => base[i + (8 * Floor)];
+
+		public byte Floor { get; set; } = 0;
+
+		private FloorsTileList(Tile[] list) : base(list) { }
+
+		public override ushort[] ToUnsignedShorts()
+		{
+			var ret = new ushort[8];
+
+			for (int i = 0; i < ret.Length; i++)
+			{
+				ret[i] = this[i].ToUnsignedShort();
+			}
+
+			return ret;
 		}
+
+		public static FloorsTileList CreateNewFloors(ZScreamer ZS, int position)
+		{
+			Tile[] list = new Tile[Count];
+
+			for (int i = 0; i < Count; i++)
+			{
+				list[i] = new Tile(ZS.ROM.Read16(position + i * 2));
+			}
+
+			return new FloorsTileList(list);
+		}
+
 	}
 }

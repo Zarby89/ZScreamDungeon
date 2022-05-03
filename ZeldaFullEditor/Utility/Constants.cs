@@ -91,6 +91,9 @@ namespace ZeldaFullEditor
 		public const byte LayerMergeTransparent = 0x07;
 		public const byte LayerMergeDarkRoom = 0x08;
 
+		public const ushort Floor1ObjectID = 0xC4;
+		public const ushort Floor2ObjectID = 0xDB;
+
 		//===========================================================================================
 		// Clipboard stuff
 		//===========================================================================================
