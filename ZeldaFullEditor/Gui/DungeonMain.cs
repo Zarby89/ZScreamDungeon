@@ -185,9 +185,9 @@ namespace ZeldaFullEditor
 		// Need to stay here
 		public void initialize_properties()
 		{
-			roomProperty_bg2.DataSource = DefaultEntities.ListOfLayer2Types;
+			roomPropertyLayerMerge.DataSource = LayerMergeType.ListOf;
 			roomProperty_collision.DataSource = DefaultEntities.ListOfRoomCollisions;
-			roomProperty_effect.DataSource = LayerMergeType.ListOf;
+			roomProperty_effect.DataSource = DefaultEntities.ListOfRoomEffects;
 			roomProperty_tag1.DataSource = DefaultEntities.ListOfRoomTags;
 			roomProperty_tag2.DataSource = DefaultEntities.ListOfRoomTags;
 		}
@@ -1085,7 +1085,7 @@ namespace ZeldaFullEditor
 					ZScreamer.ActiveUWScene.Room.reloadGfx();
 				}
 
-				ZScreamer.ActiveUWScene.Refresh();
+				ZScreamer.ActiveUWScene.HardRefresh();
 			}
 
 			entranceProperty_vscroll.Checked = en.Scrolling.BitIsOn(0x02);
@@ -1328,7 +1328,7 @@ namespace ZeldaFullEditor
 				ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
 				Program.DungeonForm.SetPalettesBlack();
 				//paletteViewer.update();
-				ZScreamer.ActiveUWScene.Refresh();
+				ZScreamer.ActiveUWScene.HardRefresh();
 
 				objectViewer1.updateSize();
 				spritesView1.updateSize();
@@ -1337,7 +1337,7 @@ namespace ZeldaFullEditor
 			if (tabControl2.TabPages.Count > 0)
 			{
 				tabControl2.Visible = true;
-				ZScreamer.ActiveUWScene.Refresh();
+				ZScreamer.ActiveUWScene.HardRefresh();
 			}
 
 			cgramViewer.Refresh();
@@ -1446,7 +1446,7 @@ namespace ZeldaFullEditor
 				d.DoorTiles = ZScreamer.ActiveScreamer.TileLister.GetDoorTileSet(b);
 				d.DoorType = DungeonDoorType.GetTypeFromID(b);
 				ZScreamer.ActiveUWScene.Room.HasUnsavedChanges = true;
-				ZScreamer.ActiveUWScene.Refresh();
+				ZScreamer.ActiveUWScene.HardRefresh();
 			}
 		}
 
@@ -1559,10 +1559,10 @@ namespace ZeldaFullEditor
 
 			propertiesChangedFromForm = prevent;
 
-			roomProperty_bg2.SelectedIndex = room.Layer2Mode;
+			roomPropertyLayerMerge.SelectedItem = room.LayerMerging;
 			roomProperty_tag1.SelectedIndex = room.Tag1;
 			roomProperty_tag2.SelectedIndex = room.Tag2;
-			roomProperty_effect.SelectedItem = room.LayerMerging;
+			roomProperty_effect.SelectedIndex = room.Layer2Mode;
 			roomProperty_collision.SelectedIndex = room.Layer2Behavior;
 
 			roomProperty_pit.Checked = room.HasDamagingPits;
@@ -1595,12 +1595,11 @@ namespace ZeldaFullEditor
 		{
 			if (!propertiesChangedFromForm && ZScreamer.ActiveUWScene.Room != null)
 			{
-				ZScreamer.ActiveUWScene.Room.Layer2Mode = (byte) (roomProperty_bg2.SelectedItem as Layer2TypeName).ID;
+				ZScreamer.ActiveUWScene.Room.Layer2Mode = (byte) (roomProperty_effect.SelectedItem as RoomEffectName).ID;
 				ZScreamer.ActiveUWScene.Room.Tag1 = (byte) (roomProperty_tag1.SelectedItem as RoomTagName).ID;
 				ZScreamer.ActiveUWScene.Room.Tag2 = (byte) (roomProperty_tag2.SelectedItem as RoomTagName).ID;
-				ZScreamer.ActiveUWScene.Room.LayerMerging = ((LayerMergeType) roomProperty_effect.SelectedItem);
+				ZScreamer.ActiveUWScene.Room.LayerMerging = (LayerMergeType) roomPropertyLayerMerge.SelectedItem; 
 				ZScreamer.ActiveUWScene.Room.Layer2Behavior = (byte) (roomProperty_collision.SelectedItem as RoomCollisionName).ID;
-
 
 				ZScreamer.ActiveUWScene.Room.BackgroundTileset = (byte) RoomProperty_Blockset.HexValue;
 				ZScreamer.ActiveUWScene.Room.Floor1Graphics = (byte) RoomProperty_Floor1.HexValue;
@@ -1644,7 +1643,7 @@ namespace ZeldaFullEditor
 				ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
 				ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
 				Program.DungeonForm.SetPalettesBlack();
-				ZScreamer.ActiveUWScene.Refresh();
+				ZScreamer.ActiveUWScene.HardRefresh();
 				ZScreamer.ActiveUWScene.Room.HasUnsavedChanges = true;
 				checkAnyChanges();
 			}

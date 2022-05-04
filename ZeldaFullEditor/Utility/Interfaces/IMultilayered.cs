@@ -6,7 +6,6 @@
 	public interface IMultilayered
 	{
 		RoomLayer Layer { get; set; }
-
 	}
 
 	public enum RoomLayer

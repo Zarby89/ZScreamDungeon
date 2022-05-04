@@ -154,16 +154,10 @@
             // textBox1
             // 
             this.textBox1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.textBox1.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Two;
-            this.textBox1.HexValue = 0;
             this.textBox1.Location = new System.Drawing.Point(15, 25);
-            this.textBox1.MaxLength = 3;
-            this.textBox1.MaxValue = 132;
-            this.textBox1.MinValue = 0;
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(100, 20);
             this.textBox1.TabIndex = 13;
-            this.textBox1.Text = "00";
             // 
             // EntranceForm
             // 

@@ -25,10 +25,10 @@ namespace ZeldaFullEditor.Data
 				{
 					if (d.XOff > 56 || d.YOff > 56 || d.XOff < 0 || d.YOff < 0) continue;
 
-					Tile t = obj.Tiles[d.TileIndex].CloneModified(hflip: d.HFlip, vflip: d.VFlip);
+					Tile t = obj.Tiles[d.TileIndex].CloneModified(hflip: d.HFlip, vflip: d.VFlip, hox: d.HXOR, vox: d.VXOR);
 
 					int indexoff = (d.XOff & ~0x7) + ((d.YOff & ~0x7) << 6);
-					GraphicsManager.DrawTileToBuffer(t, indexoff, ptr, alltilesData);
+					//GraphicsManager.DrawTileToBuffer(t, indexoff, ptr, alltilesData);
 				}
 
 			} // end of if preview
@@ -49,7 +49,7 @@ namespace ZeldaFullEditor.Data
 
 					if (tm < Constants.TilesPerUnderworldRoom && tm >= 0)
 					{
-						ushort td = obj.Tiles[d.TileIndex].GetModifiedUnsignedShort(hflip: d.HFlip, vflip: d.VFlip);
+						ushort td = obj.Tiles[d.TileIndex].GetModifiedUnsignedShort(hflip: d.HFlip, vflip: d.VFlip, hox: d.HXOR, vox: d.VXOR);
 
 						obj.CollisionPoints.Add(new Point(d.XOff + obj.RealX, d.YOff + obj.RealY));
 
@@ -326,20 +326,20 @@ namespace ZeldaFullEditor.Data
 			for (int y = 0; y < 14 * 8; y += 8)
 			{
 				DrawTiles(ZS, obj, false,
-					new DrawInfo(tid, 0, y, hflip: false),
-					new DrawInfo(tid + 14, 8, y, hflip: false),
-					new DrawInfo(tid + 14, 16, y, hflip: false),
-					new DrawInfo(tid + 28, 24, y, hflip: false),
-					new DrawInfo(tid + 42, 32, y, hflip: false),
-					new DrawInfo(tid + 56, 40, y, hflip: false),
-					new DrawInfo(tid + 70, 48, y, hflip: false),
+					new DrawInfo(tid, 0, y),
+					new DrawInfo(tid + 14, 8, y),
+					new DrawInfo(tid + 14, 16, y),
+					new DrawInfo(tid + 28, 24, y),
+					new DrawInfo(tid + 42, 32, y),
+					new DrawInfo(tid + 56, 40, y),
+					new DrawInfo(tid + 70, 48, y),
 
-					new DrawInfo(tid + 70, 56, y, hflip: true),
-					new DrawInfo(tid + 56, 64, y, hflip: true),
-					new DrawInfo(tid + 42, 72, y, hflip: true),
-					new DrawInfo(tid + 28, 80, y, hflip: true),
-					new DrawInfo(tid + 14, 88, y, hflip: true),
-					new DrawInfo(tid + 14, 96, y, hflip: true),
+					new DrawInfo(tid + 70, 56, y, hox: true),
+					new DrawInfo(tid + 56, 64, y, hox: true),
+					new DrawInfo(tid + 42, 72, y, hox: true),
+					new DrawInfo(tid + 28, 80, y, hox: true),
+					new DrawInfo(tid + 14, 88, y, hox: true),
+					new DrawInfo(tid + 14, 96, y, hox: true),
 					new DrawInfo(tid, 104, y, hflip: true)
 				);
 				tid++;
@@ -835,12 +835,39 @@ namespace ZeldaFullEditor.Data
 		public static void RoomDraw_Downwards4x2_1to15or26(ZScreamer ZS, RoomObject obj)
 		{
 			int size = obj.Size == 0 ? 26 : obj.Size;
-			RoomDraw_DownwardsXbyY(ZS, obj, size, sizex: 4, sizey: 2);
+
+			for (int s = 0; s < (size * 16); s += 16)
+			{
+				DrawTiles(ZS, obj, true,
+					new DrawInfo(0, 0, s),
+					new DrawInfo(1, 8, s),
+					new DrawInfo(2, 16, s),
+					new DrawInfo(3, 24, s),
+
+					new DrawInfo(4, 0, s + 8),
+					new DrawInfo(5, 8, s + 8),
+					new DrawInfo(6, 16, s + 8),
+					new DrawInfo(7, 24, s + 8)
+				);
+			}
 		}
 
 		public static void RoomDraw_Downwards4x2_1to16_BothBG(ZScreamer ZS, RoomObject obj)
 		{
-			RoomDraw_DownwardsXbyY(ZS, obj, obj.Size + 1, sizex: 4, sizey: 2, bothbg: true);
+			for (int s = 0; s < ((obj.Size + 1) * 16); s += 16)
+			{
+				DrawTiles(ZS, obj, true,
+					new DrawInfo(0, 0, s),
+					new DrawInfo(1, 8, s),
+					new DrawInfo(2, 16, s),
+					new DrawInfo(3, 24, s),
+
+					new DrawInfo(4, 0, s + 8),
+					new DrawInfo(5, 8, s + 8),
+					new DrawInfo(6, 16, s + 8),
+					new DrawInfo(7, 24, s + 8)
+				);
+			}
 		}
 
 		public static void RoomDraw_DownwardsBar2x5_1to16(ZScreamer ZS, RoomObject obj)
@@ -1076,6 +1103,7 @@ namespace ZeldaFullEditor.Data
 			//}
 		}
 
+		// TODO wrong
 		public static void RoomDraw_FortuneTellerRoom(ZScreamer ZS, RoomObject obj)
 		{
 			for (int x = 8; x < (13 * 8); x += 8)
@@ -1092,13 +1120,13 @@ namespace ZeldaFullEditor.Data
 			{
 				DrawTiles(ZS, obj, false,
 					new DrawInfo(2, x, 24),
-					new DrawInfo(2, x + 8, 24, hflip: true),
+					new DrawInfo(2, x + 8, 24, hox: true),
 
 					new DrawInfo(3, x, 32),
-					new DrawInfo(3, x + 8, 32, hflip: true),
+					new DrawInfo(3, x + 8, 32, hox: true),
 
 					new DrawInfo(4, x, 40),
-					new DrawInfo(4, x + 8, 40, hflip: true)
+					new DrawInfo(4, x + 8, 40, hox: true)
 				);
 			}
 
@@ -1134,42 +1162,8 @@ namespace ZeldaFullEditor.Data
 		public static void RoomDraw_GanonTriforceFloorDecor(ZScreamer ZS, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(ZS, obj, sizex: 4, sizey: 4);
-			RoomDraw_ArbitraryXByY(ZS, obj, sizex: 4, sizey: 4, xstart: -2, ystart: 8, tilestart: 16);
-			RoomDraw_ArbitraryXByY(ZS, obj, sizex: 4, sizey: 4, xstart: +2, ystart: 8, tilestart: 16);
-
-			//int tid = 0;
-			//// Top triforce
-			//for (int x = 0; x < 4 * 8; x += 8)
-			//{
-			//	DrawTiles(ZS, obj, false,
-			//		new DrawInfo(tid++, x, 0),
-			//		new DrawInfo(tid++, x, 8),
-			//		new DrawInfo(tid++, x, 16),
-			//		new DrawInfo(tid++, x, 24)
-			//	);
-			//}
-			//
-			//// Bottom triforce
-			//for (int x = 0; x < 4 * 8; x += 8)
-			//{
-			//	DrawTiles(ZS, obj, false,
-			//		new DrawInfo(tid++, x - 16, 32),
-			//		new DrawInfo(tid++, x - 16, 40),
-			//		new DrawInfo(tid++, x - 16, 48),
-			//		new DrawInfo(tid++, x - 16, 56)
-			//	);
-			//}
-			//
-			//tid = 16;
-			//for (int x = 0; x < 4 * 8; x += 8)
-			//{
-			//	DrawTiles(ZS, obj, false,
-			//		new DrawInfo(tid++, x + 16, 32),
-			//		new DrawInfo(tid++, x + 16, 40),
-			//		new DrawInfo(tid++, x + 16, 48),
-			//		new DrawInfo(tid++, x + 16, 56)
-			//	);
-			//}
+			RoomDraw_ArbitraryXByY(ZS, obj, sizex: 4, sizey: 4, xstart: -2, ystart: 4, tilestart: 16);
+			RoomDraw_ArbitraryXByY(ZS, obj, sizex: 4, sizey: 4, xstart: +2, ystart: 4, tilestart: 16);
 		}
 
 		public static void RoomDraw_HorizontalTurtleRockPipe(ZScreamer ZS, RoomObject obj)

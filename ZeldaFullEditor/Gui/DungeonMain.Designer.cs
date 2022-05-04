@@ -33,8 +33,8 @@ namespace ZeldaFullEditor
         {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
-			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
-			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
+			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Entrances");
+			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Spawn points");
 			this.updateTimer = new System.Windows.Forms.Timer(this.components);
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.openfileButton = new System.Windows.Forms.ToolStripButton();
@@ -45,6 +45,16 @@ namespace ZeldaFullEditor
 			this.undoButton = new System.Windows.Forms.ToolStripButton();
 			this.redoButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+			this.allbgsButton = new System.Windows.Forms.ToolStripButton();
+			this.bg1modeButton = new System.Windows.Forms.ToolStripButton();
+			this.bg2modeButton = new System.Windows.Forms.ToolStripButton();
+			this.bg3modeButton = new System.Windows.Forms.ToolStripButton();
+			this.spritemodeButton = new System.Windows.Forms.ToolStripButton();
+			this.blockmodeButton = new System.Windows.Forms.ToolStripButton();
+			this.torchmodeButton = new System.Windows.Forms.ToolStripButton();
+			this.potmodeButton = new System.Windows.Forms.ToolStripButton();
+			this.doormodeButton = new System.Windows.Forms.ToolStripButton();
+			this.collisionModeButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.saveLayoutButton = new System.Windows.Forms.ToolStripButton();
 			this.loadlayoutButton = new System.Windows.Forms.ToolStripButton();
@@ -66,11 +76,30 @@ namespace ZeldaFullEditor
 			this.splitContainer3 = new System.Windows.Forms.SplitContainer();
 			this.panel2 = new System.Windows.Forms.Panel();
 			this.EntranceProperties_FloorSel = new System.Windows.Forms.ComboBox();
+			this.EntranceProperties_Blockset = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperties_Music = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperties_DungeonID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperties_Exit = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperties_CameraTriggerY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperties_CameraTriggerX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.label46 = new System.Windows.Forms.Label();
 			this.label45 = new System.Windows.Forms.Label();
+			this.EntranceProperties_CameraY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperties_CameraX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperties_PlayerY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperties_PlayerX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.label41 = new System.Windows.Forms.Label();
 			this.label38 = new System.Windows.Forms.Label();
+			this.EntranceProperties_RoomID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.groupBox2 = new System.Windows.Forms.GroupBox();
+			this.EntranceProperty_BoundaryFE = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperty_BoundaryFW = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperty_BoundaryQE = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperty_BoundaryQW = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperty_BoundaryFS = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperty_BoundaryFN = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperty_BoundaryQS = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.EntranceProperty_BoundaryQN = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.label37 = new System.Windows.Forms.Label();
 			this.label36 = new System.Windows.Forms.Label();
 			this.label35 = new System.Windows.Forms.Label();
@@ -102,10 +131,12 @@ namespace ZeldaFullEditor
 			this.label24 = new System.Windows.Forms.Label();
 			this.entrancetreeView = new System.Windows.Forms.TreeView();
 			this.objectstabPage = new System.Windows.Forms.TabPage();
+			this.panel1 = new ZeldaFullEditor.CustomPanel();
 			this.favoriteCheckbox = new System.Windows.Forms.CheckBox();
 			this.showNameObjectCheckbox = new System.Windows.Forms.CheckBox();
 			this.searchTextbox = new System.Windows.Forms.TextBox();
 			this.tabPage4 = new System.Windows.Forms.TabPage();
+			this.customPanel1 = new ZeldaFullEditor.CustomPanel();
 			this.searchspriteTextbox = new System.Windows.Forms.TextBox();
 			this.edit8x8 = new System.Windows.Forms.TabPage();
 			this.edit8x8Panel = new System.Windows.Forms.Panel();
@@ -131,7 +162,7 @@ namespace ZeldaFullEditor
 			this.label4 = new System.Windows.Forms.Label();
 			this.roomProperty_collision = new System.Windows.Forms.ComboBox();
 			this.label3 = new System.Windows.Forms.Label();
-			this.roomProperty_bg2 = new System.Windows.Forms.ComboBox();
+			this.roomPropertyLayerMerge = new System.Windows.Forms.ComboBox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.splitter1 = new System.Windows.Forms.Splitter();
 			this.headerGroupbox = new System.Windows.Forms.GroupBox();
@@ -147,6 +178,18 @@ namespace ZeldaFullEditor
 			this.object_y_label = new System.Windows.Forms.Label();
 			this.object_layer_label = new System.Windows.Forms.Label();
 			this.roomHeaderPanel = new System.Windows.Forms.Panel();
+			this.RoomProperty_DestinationStair4 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.RoomProperty_DestinationStair3 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.RoomProperty_DestinationStair2 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.RoomProperty_DestinationStair1 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.RoomProperty_DestinationPit = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.RoomProperty_MessageID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.RoomProperty_SpriteSet = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.RoomProperty_Palette = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.RoomProperty_Floor2 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.RoomProperty_Floor1 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.RoomProperty_Blockset = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
+			this.RoomProperty_Layout = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
 			this.label16 = new System.Windows.Forms.Label();
 			this.label15 = new System.Windows.Forms.Label();
 			this.label7 = new System.Windows.Forms.Label();
@@ -216,9 +259,6 @@ namespace ZeldaFullEditor
 			this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.debugRunToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.AllViewMenu = new System.Windows.Forms.ToolStripMenuItem();
-			this.UWSpriteDisplay = new System.Windows.Forms.ToolStripMenuItem();
-			this.UWSpriteTextNever = new System.Windows.Forms.ToolStripMenuItem();
 			this.roomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.gotoRoomToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
@@ -335,6 +375,7 @@ namespace ZeldaFullEditor
 			this.thumbnailBox = new System.Windows.Forms.PictureBox();
 			this.tabControl2 = new System.Windows.Forms.TabControl();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+			this.customPanel3 = new ZeldaFullEditor.CustomPanel();
 			this.UWContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.UWContextInsert = new System.Windows.Forms.ToolStripMenuItem();
 			this.UWContextDelete = new System.Windows.Forms.ToolStripMenuItem();
@@ -353,50 +394,7 @@ namespace ZeldaFullEditor
 			this.UWContextSendToLayer1 = new System.Windows.Forms.ToolStripMenuItem();
 			this.UWContextSendToLayer2 = new System.Windows.Forms.ToolStripMenuItem();
 			this.UWContextSendToLayer3 = new System.Windows.Forms.ToolStripMenuItem();
-			this.customPanel3 = new ZeldaFullEditor.CustomPanel();
-			this.RoomProperty_DestinationStair4 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.RoomProperty_DestinationStair3 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.RoomProperty_DestinationStair2 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.RoomProperty_DestinationStair1 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.RoomProperty_DestinationPit = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.RoomProperty_MessageID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.RoomProperty_SpriteSet = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.RoomProperty_Palette = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.RoomProperty_Floor2 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.RoomProperty_Floor1 = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.RoomProperty_Blockset = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.RoomProperty_Layout = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperties_Blockset = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperties_Music = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperties_DungeonID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperties_Exit = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperties_CameraTriggerY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperties_CameraTriggerX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperties_CameraY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperties_CameraX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperties_PlayerY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperties_PlayerX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperties_RoomID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperty_BoundaryFE = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperty_BoundaryFW = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperty_BoundaryQE = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperty_BoundaryQW = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperty_BoundaryFS = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperty_BoundaryFN = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperty_BoundaryQS = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.EntranceProperty_BoundaryQN = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.panel1 = new ZeldaFullEditor.CustomPanel();
-			this.customPanel1 = new ZeldaFullEditor.CustomPanel();
-			this.allbgsButton = new System.Windows.Forms.ToolStripButton();
-			this.bg1modeButton = new System.Windows.Forms.ToolStripButton();
-			this.bg2modeButton = new System.Windows.Forms.ToolStripButton();
-			this.bg3modeButton = new System.Windows.Forms.ToolStripButton();
-			this.spritemodeButton = new System.Windows.Forms.ToolStripButton();
-			this.blockmodeButton = new System.Windows.Forms.ToolStripButton();
-			this.torchmodeButton = new System.Windows.Forms.ToolStripButton();
-			this.potmodeButton = new System.Windows.Forms.ToolStripButton();
-			this.doormodeButton = new System.Windows.Forms.ToolStripButton();
-			this.collisionModeButton = new System.Windows.Forms.ToolStripButton();
+			this.roomProperty_bg2 = new System.Windows.Forms.ComboBox();
 			this.toolStrip1.SuspendLayout();
 			this.nothingselectedcontextMenu.SuspendLayout();
 			this.toolboxPanel.SuspendLayout();
@@ -543,6 +541,138 @@ namespace ZeldaFullEditor
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+			// 
+			// allbgsButton
+			// 
+			this.allbgsButton.CheckOnClick = true;
+			this.allbgsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.allbgsButton.Enabled = false;
+			this.allbgsButton.Image = ((System.Drawing.Image)(resources.GetObject("allbgsButton.Image")));
+			this.allbgsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.allbgsButton.Name = "allbgsButton";
+			this.allbgsButton.Size = new System.Drawing.Size(23, 22);
+			this.allbgsButton.Tag = ZeldaFullEditor.DungeonEditMode.LayerAll;
+			this.allbgsButton.Text = "All Layers";
+			this.allbgsButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
+			// 
+			// bg1modeButton
+			// 
+			this.bg1modeButton.Checked = true;
+			this.bg1modeButton.CheckOnClick = true;
+			this.bg1modeButton.CheckState = System.Windows.Forms.CheckState.Checked;
+			this.bg1modeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.bg1modeButton.Enabled = false;
+			this.bg1modeButton.Image = ((System.Drawing.Image)(resources.GetObject("bg1modeButton.Image")));
+			this.bg1modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.bg1modeButton.Name = "bg1modeButton";
+			this.bg1modeButton.Size = new System.Drawing.Size(23, 22);
+			this.bg1modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer1;
+			this.bg1modeButton.Text = "Layer 1";
+			this.bg1modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
+			// 
+			// bg2modeButton
+			// 
+			this.bg2modeButton.CheckOnClick = true;
+			this.bg2modeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.bg2modeButton.Enabled = false;
+			this.bg2modeButton.Image = ((System.Drawing.Image)(resources.GetObject("bg2modeButton.Image")));
+			this.bg2modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.bg2modeButton.Name = "bg2modeButton";
+			this.bg2modeButton.Size = new System.Drawing.Size(23, 22);
+			this.bg2modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer2;
+			this.bg2modeButton.Text = "Layer 2";
+			this.bg2modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
+			// 
+			// bg3modeButton
+			// 
+			this.bg3modeButton.CheckOnClick = true;
+			this.bg3modeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.bg3modeButton.Enabled = false;
+			this.bg3modeButton.Image = ((System.Drawing.Image)(resources.GetObject("bg3modeButton.Image")));
+			this.bg3modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.bg3modeButton.Name = "bg3modeButton";
+			this.bg3modeButton.Size = new System.Drawing.Size(23, 22);
+			this.bg3modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer3;
+			this.bg3modeButton.Text = "Layer 3";
+			this.bg3modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
+			// 
+			// spritemodeButton
+			// 
+			this.spritemodeButton.CheckOnClick = true;
+			this.spritemodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.spritemodeButton.Enabled = false;
+			this.spritemodeButton.Image = ((System.Drawing.Image)(resources.GetObject("spritemodeButton.Image")));
+			this.spritemodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.spritemodeButton.Name = "spritemodeButton";
+			this.spritemodeButton.Size = new System.Drawing.Size(23, 22);
+			this.spritemodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Sprites;
+			this.spritemodeButton.Text = "Object Mode";
+			this.spritemodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
+			// 
+			// blockmodeButton
+			// 
+			this.blockmodeButton.CheckOnClick = true;
+			this.blockmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.blockmodeButton.Enabled = false;
+			this.blockmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("blockmodeButton.Image")));
+			this.blockmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.blockmodeButton.Name = "blockmodeButton";
+			this.blockmodeButton.Size = new System.Drawing.Size(23, 22);
+			this.blockmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Blocks;
+			this.blockmodeButton.Text = "Block Mode";
+			this.blockmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
+			// 
+			// torchmodeButton
+			// 
+			this.torchmodeButton.CheckOnClick = true;
+			this.torchmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.torchmodeButton.Enabled = false;
+			this.torchmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("torchmodeButton.Image")));
+			this.torchmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.torchmodeButton.Name = "torchmodeButton";
+			this.torchmodeButton.Size = new System.Drawing.Size(23, 22);
+			this.torchmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Torches;
+			this.torchmodeButton.Text = "Torch Mode";
+			this.torchmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
+			// 
+			// potmodeButton
+			// 
+			this.potmodeButton.CheckOnClick = true;
+			this.potmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.potmodeButton.Enabled = false;
+			this.potmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("potmodeButton.Image")));
+			this.potmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.potmodeButton.Name = "potmodeButton";
+			this.potmodeButton.Size = new System.Drawing.Size(23, 22);
+			this.potmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Secrets;
+			this.potmodeButton.Text = "Secrets Mode";
+			this.potmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
+			// 
+			// doormodeButton
+			// 
+			this.doormodeButton.CheckOnClick = true;
+			this.doormodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.doormodeButton.Enabled = false;
+			this.doormodeButton.Image = ((System.Drawing.Image)(resources.GetObject("doormodeButton.Image")));
+			this.doormodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.doormodeButton.Name = "doormodeButton";
+			this.doormodeButton.Size = new System.Drawing.Size(23, 22);
+			this.doormodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Doors;
+			this.doormodeButton.Text = "Door Mode";
+			this.doormodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
+			// 
+			// collisionModeButton
+			// 
+			this.collisionModeButton.CheckOnClick = true;
+			this.collisionModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.collisionModeButton.Enabled = false;
+			this.collisionModeButton.Image = ((System.Drawing.Image)(resources.GetObject("collisionModeButton.Image")));
+			this.collisionModeButton.ImageTransparentColor = System.Drawing.Color.White;
+			this.collisionModeButton.Name = "collisionModeButton";
+			this.collisionModeButton.Size = new System.Drawing.Size(23, 22);
+			this.collisionModeButton.Tag = ZeldaFullEditor.DungeonEditMode.CollisionMap;
+			this.collisionModeButton.Text = "Collision Mode";
+			this.collisionModeButton.Click += new System.EventHandler(this.UpdateUnderworldMode_Collision);
 			// 
 			// toolStripSeparator3
 			// 
@@ -782,6 +912,84 @@ namespace ZeldaFullEditor
 			this.EntranceProperties_FloorSel.Size = new System.Drawing.Size(55, 21);
 			this.EntranceProperties_FloorSel.TabIndex = 139;
 			// 
+			// EntranceProperties_Blockset
+			// 
+			this.EntranceProperties_Blockset.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperties_Blockset.HexValue = 0;
+			this.EntranceProperties_Blockset.Location = new System.Drawing.Point(174, 29);
+			this.EntranceProperties_Blockset.MaxLength = 2;
+			this.EntranceProperties_Blockset.Name = "EntranceProperties_Blockset";
+			this.EntranceProperties_Blockset.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperties_Blockset.Size = new System.Drawing.Size(50, 20);
+			this.EntranceProperties_Blockset.TabIndex = 138;
+			this.EntranceProperties_Blockset.Text = "00";
+			this.EntranceProperties_Blockset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperties_Music
+			// 
+			this.EntranceProperties_Music.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperties_Music.HexValue = 0;
+			this.EntranceProperties_Music.Location = new System.Drawing.Point(118, 29);
+			this.EntranceProperties_Music.MaxLength = 2;
+			this.EntranceProperties_Music.Name = "EntranceProperties_Music";
+			this.EntranceProperties_Music.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperties_Music.Size = new System.Drawing.Size(50, 20);
+			this.EntranceProperties_Music.TabIndex = 137;
+			this.EntranceProperties_Music.Text = "00";
+			this.EntranceProperties_Music.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperties_DungeonID
+			// 
+			this.EntranceProperties_DungeonID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperties_DungeonID.HexValue = 0;
+			this.EntranceProperties_DungeonID.Location = new System.Drawing.Point(62, 29);
+			this.EntranceProperties_DungeonID.MaxLength = 2;
+			this.EntranceProperties_DungeonID.Name = "EntranceProperties_DungeonID";
+			this.EntranceProperties_DungeonID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperties_DungeonID.Size = new System.Drawing.Size(50, 20);
+			this.EntranceProperties_DungeonID.TabIndex = 136;
+			this.EntranceProperties_DungeonID.Text = "00";
+			this.EntranceProperties_DungeonID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperties_Exit
+			// 
+			this.EntranceProperties_Exit.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperties_Exit.HexValue = 0;
+			this.EntranceProperties_Exit.Location = new System.Drawing.Point(228, 198);
+			this.EntranceProperties_Exit.MaxLength = 2;
+			this.EntranceProperties_Exit.Name = "EntranceProperties_Exit";
+			this.EntranceProperties_Exit.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperties_Exit.Size = new System.Drawing.Size(49, 20);
+			this.EntranceProperties_Exit.TabIndex = 135;
+			this.EntranceProperties_Exit.Text = "00";
+			this.EntranceProperties_Exit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperties_CameraTriggerY
+			// 
+			this.EntranceProperties_CameraTriggerY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperties_CameraTriggerY.HexValue = 0;
+			this.EntranceProperties_CameraTriggerY.Location = new System.Drawing.Point(131, 142);
+			this.EntranceProperties_CameraTriggerY.MaxLength = 4;
+			this.EntranceProperties_CameraTriggerY.Name = "EntranceProperties_CameraTriggerY";
+			this.EntranceProperties_CameraTriggerY.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 65535);
+			this.EntranceProperties_CameraTriggerY.Size = new System.Drawing.Size(44, 20);
+			this.EntranceProperties_CameraTriggerY.TabIndex = 134;
+			this.EntranceProperties_CameraTriggerY.Text = "00";
+			this.EntranceProperties_CameraTriggerY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperties_CameraTriggerX
+			// 
+			this.EntranceProperties_CameraTriggerX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperties_CameraTriggerX.HexValue = 0;
+			this.EntranceProperties_CameraTriggerX.Location = new System.Drawing.Point(68, 142);
+			this.EntranceProperties_CameraTriggerX.MaxLength = 4;
+			this.EntranceProperties_CameraTriggerX.Name = "EntranceProperties_CameraTriggerX";
+			this.EntranceProperties_CameraTriggerX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 65535);
+			this.EntranceProperties_CameraTriggerX.Size = new System.Drawing.Size(44, 20);
+			this.EntranceProperties_CameraTriggerX.TabIndex = 133;
+			this.EntranceProperties_CameraTriggerX.Text = "00";
+			this.EntranceProperties_CameraTriggerX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
 			// label46
 			// 
 			this.label46.AutoSize = true;
@@ -800,6 +1008,58 @@ namespace ZeldaFullEditor
 			this.label45.TabIndex = 131;
 			this.label45.Text = "Player";
 			// 
+			// EntranceProperties_CameraY
+			// 
+			this.EntranceProperties_CameraY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperties_CameraY.HexValue = 0;
+			this.EntranceProperties_CameraY.Location = new System.Drawing.Point(131, 117);
+			this.EntranceProperties_CameraY.MaxLength = 4;
+			this.EntranceProperties_CameraY.Name = "EntranceProperties_CameraY";
+			this.EntranceProperties_CameraY.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 65535);
+			this.EntranceProperties_CameraY.Size = new System.Drawing.Size(44, 20);
+			this.EntranceProperties_CameraY.TabIndex = 130;
+			this.EntranceProperties_CameraY.Text = "00";
+			this.EntranceProperties_CameraY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperties_CameraX
+			// 
+			this.EntranceProperties_CameraX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperties_CameraX.HexValue = 0;
+			this.EntranceProperties_CameraX.Location = new System.Drawing.Point(68, 117);
+			this.EntranceProperties_CameraX.MaxLength = 4;
+			this.EntranceProperties_CameraX.Name = "EntranceProperties_CameraX";
+			this.EntranceProperties_CameraX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 65535);
+			this.EntranceProperties_CameraX.Size = new System.Drawing.Size(44, 20);
+			this.EntranceProperties_CameraX.TabIndex = 129;
+			this.EntranceProperties_CameraX.Text = "00";
+			this.EntranceProperties_CameraX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperties_PlayerY
+			// 
+			this.EntranceProperties_PlayerY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperties_PlayerY.HexValue = 0;
+			this.EntranceProperties_PlayerY.Location = new System.Drawing.Point(131, 93);
+			this.EntranceProperties_PlayerY.MaxLength = 4;
+			this.EntranceProperties_PlayerY.Name = "EntranceProperties_PlayerY";
+			this.EntranceProperties_PlayerY.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 65535);
+			this.EntranceProperties_PlayerY.Size = new System.Drawing.Size(44, 20);
+			this.EntranceProperties_PlayerY.TabIndex = 128;
+			this.EntranceProperties_PlayerY.Text = "00";
+			this.EntranceProperties_PlayerY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperties_PlayerX
+			// 
+			this.EntranceProperties_PlayerX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperties_PlayerX.HexValue = 0;
+			this.EntranceProperties_PlayerX.Location = new System.Drawing.Point(68, 93);
+			this.EntranceProperties_PlayerX.MaxLength = 4;
+			this.EntranceProperties_PlayerX.Name = "EntranceProperties_PlayerX";
+			this.EntranceProperties_PlayerX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 65535);
+			this.EntranceProperties_PlayerX.Size = new System.Drawing.Size(44, 20);
+			this.EntranceProperties_PlayerX.TabIndex = 127;
+			this.EntranceProperties_PlayerX.Text = "00";
+			this.EntranceProperties_PlayerX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
 			// label41
 			// 
 			this.label41.AutoSize = true;
@@ -817,6 +1077,19 @@ namespace ZeldaFullEditor
 			this.label38.Size = new System.Drawing.Size(14, 13);
 			this.label38.TabIndex = 125;
 			this.label38.Text = "X";
+			// 
+			// EntranceProperties_RoomID
+			// 
+			this.EntranceProperties_RoomID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperties_RoomID.HexValue = 0;
+			this.EntranceProperties_RoomID.Location = new System.Drawing.Point(6, 29);
+			this.EntranceProperties_RoomID.MaxLength = 2;
+			this.EntranceProperties_RoomID.Name = "EntranceProperties_RoomID";
+			this.EntranceProperties_RoomID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperties_RoomID.Size = new System.Drawing.Size(50, 20);
+			this.EntranceProperties_RoomID.TabIndex = 124;
+			this.EntranceProperties_RoomID.Text = "00";
+			this.EntranceProperties_RoomID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// groupBox2
 			// 
@@ -840,6 +1113,110 @@ namespace ZeldaFullEditor
 			this.groupBox2.TabIndex = 123;
 			this.groupBox2.TabStop = false;
 			this.groupBox2.Text = "Camera boundaries";
+			// 
+			// EntranceProperty_BoundaryFE
+			// 
+			this.EntranceProperty_BoundaryFE.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperty_BoundaryFE.HexValue = 0;
+			this.EntranceProperty_BoundaryFE.Location = new System.Drawing.Point(225, 61);
+			this.EntranceProperty_BoundaryFE.MaxLength = 2;
+			this.EntranceProperty_BoundaryFE.Name = "EntranceProperty_BoundaryFE";
+			this.EntranceProperty_BoundaryFE.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperty_BoundaryFE.Size = new System.Drawing.Size(39, 20);
+			this.EntranceProperty_BoundaryFE.TabIndex = 133;
+			this.EntranceProperty_BoundaryFE.Text = "00";
+			this.EntranceProperty_BoundaryFE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperty_BoundaryFW
+			// 
+			this.EntranceProperty_BoundaryFW.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperty_BoundaryFW.HexValue = 0;
+			this.EntranceProperty_BoundaryFW.Location = new System.Drawing.Point(169, 61);
+			this.EntranceProperty_BoundaryFW.MaxLength = 2;
+			this.EntranceProperty_BoundaryFW.Name = "EntranceProperty_BoundaryFW";
+			this.EntranceProperty_BoundaryFW.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperty_BoundaryFW.Size = new System.Drawing.Size(39, 20);
+			this.EntranceProperty_BoundaryFW.TabIndex = 132;
+			this.EntranceProperty_BoundaryFW.Text = "00";
+			this.EntranceProperty_BoundaryFW.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperty_BoundaryQE
+			// 
+			this.EntranceProperty_BoundaryQE.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperty_BoundaryQE.HexValue = 0;
+			this.EntranceProperty_BoundaryQE.Location = new System.Drawing.Point(225, 35);
+			this.EntranceProperty_BoundaryQE.MaxLength = 2;
+			this.EntranceProperty_BoundaryQE.Name = "EntranceProperty_BoundaryQE";
+			this.EntranceProperty_BoundaryQE.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperty_BoundaryQE.Size = new System.Drawing.Size(39, 20);
+			this.EntranceProperty_BoundaryQE.TabIndex = 131;
+			this.EntranceProperty_BoundaryQE.Text = "00";
+			this.EntranceProperty_BoundaryQE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperty_BoundaryQW
+			// 
+			this.EntranceProperty_BoundaryQW.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperty_BoundaryQW.HexValue = 0;
+			this.EntranceProperty_BoundaryQW.Location = new System.Drawing.Point(169, 35);
+			this.EntranceProperty_BoundaryQW.MaxLength = 2;
+			this.EntranceProperty_BoundaryQW.Name = "EntranceProperty_BoundaryQW";
+			this.EntranceProperty_BoundaryQW.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperty_BoundaryQW.Size = new System.Drawing.Size(39, 20);
+			this.EntranceProperty_BoundaryQW.TabIndex = 130;
+			this.EntranceProperty_BoundaryQW.Text = "00";
+			this.EntranceProperty_BoundaryQW.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperty_BoundaryFS
+			// 
+			this.EntranceProperty_BoundaryFS.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperty_BoundaryFS.HexValue = 0;
+			this.EntranceProperty_BoundaryFS.Location = new System.Drawing.Point(116, 61);
+			this.EntranceProperty_BoundaryFS.MaxLength = 2;
+			this.EntranceProperty_BoundaryFS.Name = "EntranceProperty_BoundaryFS";
+			this.EntranceProperty_BoundaryFS.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperty_BoundaryFS.Size = new System.Drawing.Size(39, 20);
+			this.EntranceProperty_BoundaryFS.TabIndex = 129;
+			this.EntranceProperty_BoundaryFS.Text = "00";
+			this.EntranceProperty_BoundaryFS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperty_BoundaryFN
+			// 
+			this.EntranceProperty_BoundaryFN.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperty_BoundaryFN.HexValue = 0;
+			this.EntranceProperty_BoundaryFN.Location = new System.Drawing.Point(60, 61);
+			this.EntranceProperty_BoundaryFN.MaxLength = 2;
+			this.EntranceProperty_BoundaryFN.Name = "EntranceProperty_BoundaryFN";
+			this.EntranceProperty_BoundaryFN.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperty_BoundaryFN.Size = new System.Drawing.Size(39, 20);
+			this.EntranceProperty_BoundaryFN.TabIndex = 128;
+			this.EntranceProperty_BoundaryFN.Text = "00";
+			this.EntranceProperty_BoundaryFN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperty_BoundaryQS
+			// 
+			this.EntranceProperty_BoundaryQS.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperty_BoundaryQS.HexValue = 0;
+			this.EntranceProperty_BoundaryQS.Location = new System.Drawing.Point(116, 35);
+			this.EntranceProperty_BoundaryQS.MaxLength = 2;
+			this.EntranceProperty_BoundaryQS.Name = "EntranceProperty_BoundaryQS";
+			this.EntranceProperty_BoundaryQS.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperty_BoundaryQS.Size = new System.Drawing.Size(39, 20);
+			this.EntranceProperty_BoundaryQS.TabIndex = 127;
+			this.EntranceProperty_BoundaryQS.Text = "00";
+			this.EntranceProperty_BoundaryQS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// EntranceProperty_BoundaryQN
+			// 
+			this.EntranceProperty_BoundaryQN.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.EntranceProperty_BoundaryQN.HexValue = 0;
+			this.EntranceProperty_BoundaryQN.Location = new System.Drawing.Point(60, 35);
+			this.EntranceProperty_BoundaryQN.MaxLength = 2;
+			this.EntranceProperty_BoundaryQN.Name = "EntranceProperty_BoundaryQN";
+			this.EntranceProperty_BoundaryQN.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperty_BoundaryQN.Size = new System.Drawing.Size(39, 20);
+			this.EntranceProperty_BoundaryQN.TabIndex = 126;
+			this.EntranceProperty_BoundaryQN.Text = "00";
+			this.EntranceProperty_BoundaryQN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// label37
 			// 
@@ -1133,13 +1510,13 @@ namespace ZeldaFullEditor
 			this.entrancetreeView.HideSelection = false;
 			this.entrancetreeView.Location = new System.Drawing.Point(0, 0);
 			this.entrancetreeView.Name = "entrancetreeView";
-			treeNode3.Name = "EntranceNode";
-			treeNode3.Text = "Entrances";
-			treeNode4.Name = "StartingEntranceNode";
-			treeNode4.Text = "Spawn points";
+			treeNode5.Name = "EntranceNode";
+			treeNode5.Text = "Entrances";
+			treeNode6.Name = "StartingEntranceNode";
+			treeNode6.Text = "Spawn points";
 			this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode5,
+            treeNode6});
 			this.entrancetreeView.Size = new System.Drawing.Size(292, 301);
 			this.entrancetreeView.TabIndex = 0;
 			this.entrancetreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.entrancetreeView_AfterSelect);
@@ -1157,6 +1534,15 @@ namespace ZeldaFullEditor
 			this.objectstabPage.TabIndex = 4;
 			this.objectstabPage.Text = "Objects";
 			this.objectstabPage.UseVisualStyleBackColor = true;
+			// 
+			// panel1
+			// 
+			this.panel1.AutoScroll = true;
+			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.panel1.Location = new System.Drawing.Point(0, 54);
+			this.panel1.Name = "panel1";
+			this.panel1.Size = new System.Drawing.Size(292, 610);
+			this.panel1.TabIndex = 1;
 			// 
 			// favoriteCheckbox
 			// 
@@ -1201,6 +1587,15 @@ namespace ZeldaFullEditor
 			this.tabPage4.TabIndex = 10;
 			this.tabPage4.Text = "Sprites";
 			this.tabPage4.UseVisualStyleBackColor = true;
+			// 
+			// customPanel1
+			// 
+			this.customPanel1.AutoScroll = true;
+			this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.customPanel1.Location = new System.Drawing.Point(0, 20);
+			this.customPanel1.Name = "customPanel1";
+			this.customPanel1.Size = new System.Drawing.Size(292, 644);
+			this.customPanel1.TabIndex = 2;
 			// 
 			// searchspriteTextbox
 			// 
@@ -1466,17 +1861,17 @@ namespace ZeldaFullEditor
 			this.label3.TabIndex = 3;
 			this.label3.Text = "Collision";
 			// 
-			// roomProperty_bg2
+			// roomPropertyLayerMerge
 			// 
-			this.roomProperty_bg2.BackColor = System.Drawing.SystemColors.Window;
-			this.roomProperty_bg2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.roomProperty_bg2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.roomProperty_bg2.FormattingEnabled = true;
-			this.roomProperty_bg2.Location = new System.Drawing.Point(6, 22);
-			this.roomProperty_bg2.Name = "roomProperty_bg2";
-			this.roomProperty_bg2.Size = new System.Drawing.Size(124, 21);
-			this.roomProperty_bg2.TabIndex = 2;
-			this.roomProperty_bg2.SelectedIndexChanged += new System.EventHandler(this.RoomPropertyChanged);
+			this.roomPropertyLayerMerge.BackColor = System.Drawing.SystemColors.Window;
+			this.roomPropertyLayerMerge.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.roomPropertyLayerMerge.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+			this.roomPropertyLayerMerge.FormattingEnabled = true;
+			this.roomPropertyLayerMerge.Location = new System.Drawing.Point(6, 22);
+			this.roomPropertyLayerMerge.Name = "roomPropertyLayerMerge";
+			this.roomPropertyLayerMerge.Size = new System.Drawing.Size(124, 21);
+			this.roomPropertyLayerMerge.TabIndex = 2;
+			this.roomPropertyLayerMerge.SelectedIndexChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// label2
 			// 
@@ -1484,9 +1879,9 @@ namespace ZeldaFullEditor
 			this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.label2.Location = new System.Drawing.Point(3, 6);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(65, 13);
+			this.label2.Size = new System.Drawing.Size(74, 13);
 			this.label2.TabIndex = 1;
-			this.label2.Text = "Layer 2 type";
+			this.label2.Text = "Layer 2 merge";
 			// 
 			// splitter1
 			// 
@@ -1501,7 +1896,6 @@ namespace ZeldaFullEditor
 			this.headerGroupbox.BackColor = System.Drawing.SystemColors.Control;
 			this.headerGroupbox.Controls.Add(this.selectedGroupbox);
 			this.headerGroupbox.Controls.Add(this.roomHeaderPanel);
-			this.headerGroupbox.Controls.Add(this.litCheckbox);
 			this.headerGroupbox.Controls.Add(this.spritepropertyPanel);
 			this.headerGroupbox.Controls.Add(this.potitemobjectPanel);
 			this.headerGroupbox.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1660,7 +2054,7 @@ namespace ZeldaFullEditor
 			this.roomHeaderPanel.Controls.Add(this.roomProperty_effect);
 			this.roomHeaderPanel.Controls.Add(this.roomProperty_sortsprite);
 			this.roomHeaderPanel.Controls.Add(this.label2);
-			this.roomHeaderPanel.Controls.Add(this.roomProperty_bg2);
+			this.roomHeaderPanel.Controls.Add(this.roomPropertyLayerMerge);
 			this.roomHeaderPanel.Controls.Add(this.label3);
 			this.roomHeaderPanel.Controls.Add(this.roomProperty_collision);
 			this.roomHeaderPanel.Controls.Add(this.label9);
@@ -1681,6 +2075,175 @@ namespace ZeldaFullEditor
 			this.roomHeaderPanel.Name = "roomHeaderPanel";
 			this.roomHeaderPanel.Size = new System.Drawing.Size(490, 128);
 			this.roomHeaderPanel.TabIndex = 20;
+			// 
+			// RoomProperty_DestinationStair4
+			// 
+			this.RoomProperty_DestinationStair4.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.RoomProperty_DestinationStair4.HexValue = 0;
+			this.RoomProperty_DestinationStair4.Location = new System.Drawing.Point(428, 102);
+			this.RoomProperty_DestinationStair4.MaxLength = 2;
+			this.RoomProperty_DestinationStair4.Name = "RoomProperty_DestinationStair4";
+			this.RoomProperty_DestinationStair4.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.RoomProperty_DestinationStair4.Size = new System.Drawing.Size(24, 20);
+			this.RoomProperty_DestinationStair4.TabIndex = 97;
+			this.RoomProperty_DestinationStair4.Text = "00";
+			this.RoomProperty_DestinationStair4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.RoomProperty_DestinationStair4.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
+			// 
+			// RoomProperty_DestinationStair3
+			// 
+			this.RoomProperty_DestinationStair3.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.RoomProperty_DestinationStair3.HexValue = 0;
+			this.RoomProperty_DestinationStair3.Location = new System.Drawing.Point(428, 82);
+			this.RoomProperty_DestinationStair3.MaxLength = 2;
+			this.RoomProperty_DestinationStair3.Name = "RoomProperty_DestinationStair3";
+			this.RoomProperty_DestinationStair3.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.RoomProperty_DestinationStair3.Size = new System.Drawing.Size(24, 20);
+			this.RoomProperty_DestinationStair3.TabIndex = 96;
+			this.RoomProperty_DestinationStair3.Text = "00";
+			this.RoomProperty_DestinationStair3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.RoomProperty_DestinationStair3.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
+			// 
+			// RoomProperty_DestinationStair2
+			// 
+			this.RoomProperty_DestinationStair2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.RoomProperty_DestinationStair2.Cursor = System.Windows.Forms.Cursors.IBeam;
+			this.RoomProperty_DestinationStair2.HexValue = 0;
+			this.RoomProperty_DestinationStair2.Location = new System.Drawing.Point(428, 62);
+			this.RoomProperty_DestinationStair2.MaxLength = 2;
+			this.RoomProperty_DestinationStair2.Name = "RoomProperty_DestinationStair2";
+			this.RoomProperty_DestinationStair2.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.RoomProperty_DestinationStair2.Size = new System.Drawing.Size(24, 20);
+			this.RoomProperty_DestinationStair2.TabIndex = 95;
+			this.RoomProperty_DestinationStair2.Text = "00";
+			this.RoomProperty_DestinationStair2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.RoomProperty_DestinationStair2.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
+			// 
+			// RoomProperty_DestinationStair1
+			// 
+			this.RoomProperty_DestinationStair1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.RoomProperty_DestinationStair1.HexValue = 0;
+			this.RoomProperty_DestinationStair1.Location = new System.Drawing.Point(428, 42);
+			this.RoomProperty_DestinationStair1.MaxLength = 2;
+			this.RoomProperty_DestinationStair1.Name = "RoomProperty_DestinationStair1";
+			this.RoomProperty_DestinationStair1.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.RoomProperty_DestinationStair1.Size = new System.Drawing.Size(24, 20);
+			this.RoomProperty_DestinationStair1.TabIndex = 94;
+			this.RoomProperty_DestinationStair1.Text = "00";
+			this.RoomProperty_DestinationStair1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.RoomProperty_DestinationStair1.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
+			// 
+			// RoomProperty_DestinationPit
+			// 
+			this.RoomProperty_DestinationPit.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.RoomProperty_DestinationPit.HexValue = 0;
+			this.RoomProperty_DestinationPit.Location = new System.Drawing.Point(428, 22);
+			this.RoomProperty_DestinationPit.MaxLength = 2;
+			this.RoomProperty_DestinationPit.Name = "RoomProperty_DestinationPit";
+			this.RoomProperty_DestinationPit.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.RoomProperty_DestinationPit.Size = new System.Drawing.Size(24, 20);
+			this.RoomProperty_DestinationPit.TabIndex = 93;
+			this.RoomProperty_DestinationPit.Text = "00";
+			this.RoomProperty_DestinationPit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.RoomProperty_DestinationPit.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
+			// 
+			// RoomProperty_MessageID
+			// 
+			this.RoomProperty_MessageID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.RoomProperty_MessageID.HexValue = 0;
+			this.RoomProperty_MessageID.Location = new System.Drawing.Point(300, 22);
+			this.RoomProperty_MessageID.MaxLength = 3;
+			this.RoomProperty_MessageID.Name = "RoomProperty_MessageID";
+			this.RoomProperty_MessageID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 512);
+			this.RoomProperty_MessageID.Size = new System.Drawing.Size(49, 20);
+			this.RoomProperty_MessageID.TabIndex = 92;
+			this.RoomProperty_MessageID.Text = "000";
+			this.RoomProperty_MessageID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.RoomProperty_MessageID.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
+			// 
+			// RoomProperty_SpriteSet
+			// 
+			this.RoomProperty_SpriteSet.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.RoomProperty_SpriteSet.HexValue = 0;
+			this.RoomProperty_SpriteSet.Location = new System.Drawing.Point(245, 22);
+			this.RoomProperty_SpriteSet.MaxLength = 2;
+			this.RoomProperty_SpriteSet.Name = "RoomProperty_SpriteSet";
+			this.RoomProperty_SpriteSet.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.RoomProperty_SpriteSet.Size = new System.Drawing.Size(49, 20);
+			this.RoomProperty_SpriteSet.TabIndex = 91;
+			this.RoomProperty_SpriteSet.Text = "00";
+			this.RoomProperty_SpriteSet.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.RoomProperty_SpriteSet.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
+			// 
+			// RoomProperty_Palette
+			// 
+			this.RoomProperty_Palette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.RoomProperty_Palette.HexValue = 0;
+			this.RoomProperty_Palette.Location = new System.Drawing.Point(246, 62);
+			this.RoomProperty_Palette.MaxLength = 2;
+			this.RoomProperty_Palette.Name = "RoomProperty_Palette";
+			this.RoomProperty_Palette.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.RoomProperty_Palette.Size = new System.Drawing.Size(49, 20);
+			this.RoomProperty_Palette.TabIndex = 90;
+			this.RoomProperty_Palette.Text = "00";
+			this.RoomProperty_Palette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.RoomProperty_Palette.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
+			// 
+			// RoomProperty_Floor2
+			// 
+			this.RoomProperty_Floor2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.RoomProperty_Floor2.HexValue = 0;
+			this.RoomProperty_Floor2.Location = new System.Drawing.Point(190, 62);
+			this.RoomProperty_Floor2.MaxLength = 1;
+			this.RoomProperty_Floor2.Name = "RoomProperty_Floor2";
+			this.RoomProperty_Floor2.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 15);
+			this.RoomProperty_Floor2.Size = new System.Drawing.Size(49, 20);
+			this.RoomProperty_Floor2.TabIndex = 89;
+			this.RoomProperty_Floor2.Text = "0";
+			this.RoomProperty_Floor2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.RoomProperty_Floor2.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
+			// 
+			// RoomProperty_Floor1
+			// 
+			this.RoomProperty_Floor1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.RoomProperty_Floor1.HexValue = 0;
+			this.RoomProperty_Floor1.Location = new System.Drawing.Point(135, 62);
+			this.RoomProperty_Floor1.MaxLength = 1;
+			this.RoomProperty_Floor1.Name = "RoomProperty_Floor1";
+			this.RoomProperty_Floor1.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 15);
+			this.RoomProperty_Floor1.Size = new System.Drawing.Size(49, 20);
+			this.RoomProperty_Floor1.TabIndex = 88;
+			this.RoomProperty_Floor1.Text = "0";
+			this.RoomProperty_Floor1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.RoomProperty_Floor1.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
+			// 
+			// RoomProperty_Blockset
+			// 
+			this.RoomProperty_Blockset.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.RoomProperty_Blockset.HexValue = 0;
+			this.RoomProperty_Blockset.Location = new System.Drawing.Point(190, 22);
+			this.RoomProperty_Blockset.MaxLength = 2;
+			this.RoomProperty_Blockset.Name = "RoomProperty_Blockset";
+			this.RoomProperty_Blockset.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.RoomProperty_Blockset.Size = new System.Drawing.Size(49, 20);
+			this.RoomProperty_Blockset.TabIndex = 87;
+			this.RoomProperty_Blockset.Text = "00";
+			this.RoomProperty_Blockset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.RoomProperty_Blockset.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
+			// 
+			// RoomProperty_Layout
+			// 
+			this.RoomProperty_Layout.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
+			this.RoomProperty_Layout.HexValue = 0;
+			this.RoomProperty_Layout.Location = new System.Drawing.Point(135, 22);
+			this.RoomProperty_Layout.MaxLength = 1;
+			this.RoomProperty_Layout.Name = "RoomProperty_Layout";
+			this.RoomProperty_Layout.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 7);
+			this.RoomProperty_Layout.Size = new System.Drawing.Size(49, 20);
+			this.RoomProperty_Layout.TabIndex = 86;
+			this.RoomProperty_Layout.Text = "0";
+			this.RoomProperty_Layout.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.RoomProperty_Layout.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// label16
 			// 
@@ -1800,7 +2363,7 @@ namespace ZeldaFullEditor
 			// litCheckbox
 			// 
 			this.litCheckbox.AutoSize = true;
-			this.litCheckbox.Location = new System.Drawing.Point(618, 46);
+			this.litCheckbox.Location = new System.Drawing.Point(151, 27);
 			this.litCheckbox.Name = "litCheckbox";
 			this.litCheckbox.Size = new System.Drawing.Size(61, 17);
 			this.litCheckbox.TabIndex = 19;
@@ -1880,6 +2443,7 @@ namespace ZeldaFullEditor
 			this.collisionMapPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.collisionMapPanel.Controls.Add(this.tileTypeCombobox);
 			this.collisionMapPanel.Controls.Add(this.collisionMapLabel);
+			this.collisionMapPanel.Controls.Add(this.litCheckbox);
 			this.collisionMapPanel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.collisionMapPanel.Location = new System.Drawing.Point(0, 0);
 			this.collisionMapPanel.Name = "collisionMapPanel";
@@ -2110,7 +2674,6 @@ namespace ZeldaFullEditor
             this.editToolStripMenuItem,
             this.projectToolStripMenuItem,
             this.testToolStripMenuItem,
-            this.AllViewMenu,
             this.roomToolStripMenuItem,
             this.dungeonViewToolStripMenuItem,
             this.overworldToolStripMenuItem,
@@ -2404,32 +2967,6 @@ namespace ZeldaFullEditor
 			this.debugRunToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Shift | System.Windows.Forms.Keys.F5)));
 			this.debugRunToolStripMenuItem.Size = new System.Drawing.Size(193, 22);
 			this.debugRunToolStripMenuItem.Text = "Debug Run…";
-			// 
-			// AllViewMenu
-			// 
-			this.AllViewMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.UWSpriteDisplay});
-			this.AllViewMenu.Name = "AllViewMenu";
-			this.AllViewMenu.Size = new System.Drawing.Size(61, 20);
-			this.AllViewMenu.Text = "Viewing";
-			// 
-			// UWSpriteDisplay
-			// 
-			this.UWSpriteDisplay.Checked = true;
-			this.UWSpriteDisplay.CheckOnClick = true;
-			this.UWSpriteDisplay.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.UWSpriteDisplay.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.UWSpriteTextNever});
-			this.UWSpriteDisplay.Name = "UWSpriteDisplay";
-			this.UWSpriteDisplay.Size = new System.Drawing.Size(141, 22);
-			this.UWSpriteDisplay.Text = "Show Sprites";
-			// 
-			// UWSpriteTextNever
-			// 
-			this.UWSpriteTextNever.CheckOnClick = true;
-			this.UWSpriteTextNever.Name = "UWSpriteTextNever";
-			this.UWSpriteTextNever.Size = new System.Drawing.Size(159, 22);
-			this.UWSpriteTextNever.Text = "Never show text";
 			// 
 			// roomToolStripMenuItem
 			// 
@@ -3486,6 +4023,17 @@ namespace ZeldaFullEditor
 			this.splitContainer1.SplitterDistance = 603;
 			this.splitContainer1.TabIndex = 23;
 			// 
+			// customPanel3
+			// 
+			this.customPanel3.AutoScroll = true;
+			this.customPanel3.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+			this.customPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.customPanel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
+			this.customPanel3.Location = new System.Drawing.Point(0, 20);
+			this.customPanel3.Name = "customPanel3";
+			this.customPanel3.Size = new System.Drawing.Size(603, 523);
+			this.customPanel3.TabIndex = 19;
+			// 
 			// UWContextMenu
 			// 
 			this.UWContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -3617,559 +4165,17 @@ namespace ZeldaFullEditor
 			this.UWContextSendToLayer3.Size = new System.Drawing.Size(161, 22);
 			this.UWContextSendToLayer3.Text = "Send to Layer 3";
 			// 
-			// customPanel3
-			// 
-			this.customPanel3.AutoScroll = true;
-			this.customPanel3.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.customPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.customPanel3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-			this.customPanel3.Location = new System.Drawing.Point(0, 20);
-			this.customPanel3.Name = "customPanel3";
-			this.customPanel3.Size = new System.Drawing.Size(603, 523);
-			this.customPanel3.TabIndex = 19;
-			// 
-			// RoomProperty_DestinationStair4
-			// 
-			this.RoomProperty_DestinationStair4.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_DestinationStair4.Location = new System.Drawing.Point(428, 102);
-			this.RoomProperty_DestinationStair4.MaxLength = 2;
-			this.RoomProperty_DestinationStair4.MaxValue = 0;
-			this.RoomProperty_DestinationStair4.Name = "RoomProperty_DestinationStair4";
-			this.RoomProperty_DestinationStair4.Size = new System.Drawing.Size(24, 20);
-			this.RoomProperty_DestinationStair4.TabIndex = 97;
-			this.RoomProperty_DestinationStair4.Text = "00";
-			this.RoomProperty_DestinationStair4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_DestinationStair4.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
-			// 
-			// RoomProperty_DestinationStair3
-			// 
-			this.RoomProperty_DestinationStair3.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_DestinationStair3.Location = new System.Drawing.Point(428, 82);
-			this.RoomProperty_DestinationStair3.MaxLength = 2;
-			this.RoomProperty_DestinationStair3.MaxValue = 0;
-			this.RoomProperty_DestinationStair3.Name = "RoomProperty_DestinationStair3";
-			this.RoomProperty_DestinationStair3.Size = new System.Drawing.Size(24, 20);
-			this.RoomProperty_DestinationStair3.TabIndex = 96;
-			this.RoomProperty_DestinationStair3.Text = "00";
-			this.RoomProperty_DestinationStair3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_DestinationStair3.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
-			// 
-			// RoomProperty_DestinationStair2
-			// 
-			this.RoomProperty_DestinationStair2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_DestinationStair2.Location = new System.Drawing.Point(428, 62);
-			this.RoomProperty_DestinationStair2.MaxLength = 2;
-			this.RoomProperty_DestinationStair2.MaxValue = 0;
-			this.RoomProperty_DestinationStair2.Name = "RoomProperty_DestinationStair2";
-			this.RoomProperty_DestinationStair2.Size = new System.Drawing.Size(24, 20);
-			this.RoomProperty_DestinationStair2.TabIndex = 95;
-			this.RoomProperty_DestinationStair2.Text = "00";
-			this.RoomProperty_DestinationStair2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_DestinationStair2.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
-			// 
-			// RoomProperty_DestinationStair1
-			// 
-			this.RoomProperty_DestinationStair1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_DestinationStair1.Location = new System.Drawing.Point(428, 42);
-			this.RoomProperty_DestinationStair1.MaxLength = 2;
-			this.RoomProperty_DestinationStair1.MaxValue = 0;
-			this.RoomProperty_DestinationStair1.Name = "RoomProperty_DestinationStair1";
-			this.RoomProperty_DestinationStair1.Size = new System.Drawing.Size(24, 20);
-			this.RoomProperty_DestinationStair1.TabIndex = 94;
-			this.RoomProperty_DestinationStair1.Text = "00";
-			this.RoomProperty_DestinationStair1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_DestinationStair1.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
-			// 
-			// RoomProperty_DestinationPit
-			// 
-			this.RoomProperty_DestinationPit.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_DestinationPit.Location = new System.Drawing.Point(428, 22);
-			this.RoomProperty_DestinationPit.MaxLength = 2;
-			this.RoomProperty_DestinationPit.MaxValue = 0;
-			this.RoomProperty_DestinationPit.Name = "RoomProperty_DestinationPit";
-			this.RoomProperty_DestinationPit.Size = new System.Drawing.Size(24, 20);
-			this.RoomProperty_DestinationPit.TabIndex = 93;
-			this.RoomProperty_DestinationPit.Text = "00";
-			this.RoomProperty_DestinationPit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_DestinationPit.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
-			// 
-			// RoomProperty_MessageID
-			// 
-			this.RoomProperty_MessageID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_MessageID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Three;
-			this.RoomProperty_MessageID.Location = new System.Drawing.Point(300, 22);
-			this.RoomProperty_MessageID.MaxLength = 3;
-			this.RoomProperty_MessageID.MaxValue = 4095;
-			this.RoomProperty_MessageID.Name = "RoomProperty_MessageID";
-			this.RoomProperty_MessageID.Size = new System.Drawing.Size(49, 20);
-			this.RoomProperty_MessageID.TabIndex = 92;
-			this.RoomProperty_MessageID.Text = "000";
-			this.RoomProperty_MessageID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_MessageID.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
-			// 
-			// RoomProperty_SpriteSet
-			// 
-			this.RoomProperty_SpriteSet.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_SpriteSet.Location = new System.Drawing.Point(245, 22);
-			this.RoomProperty_SpriteSet.MaxLength = 2;
-			this.RoomProperty_SpriteSet.MaxValue = 0;
-			this.RoomProperty_SpriteSet.Name = "RoomProperty_SpriteSet";
-			this.RoomProperty_SpriteSet.Size = new System.Drawing.Size(49, 20);
-			this.RoomProperty_SpriteSet.TabIndex = 91;
-			this.RoomProperty_SpriteSet.Text = "00";
-			this.RoomProperty_SpriteSet.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_SpriteSet.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
-			// 
-			// RoomProperty_Palette
-			// 
-			this.RoomProperty_Palette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_Palette.Location = new System.Drawing.Point(246, 62);
-			this.RoomProperty_Palette.MaxLength = 2;
-			this.RoomProperty_Palette.MaxValue = 0;
-			this.RoomProperty_Palette.Name = "RoomProperty_Palette";
-			this.RoomProperty_Palette.Size = new System.Drawing.Size(49, 20);
-			this.RoomProperty_Palette.TabIndex = 90;
-			this.RoomProperty_Palette.Text = "00";
-			this.RoomProperty_Palette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_Palette.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
-			// 
-			// RoomProperty_Floor2
-			// 
-			this.RoomProperty_Floor2.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_Floor2.Location = new System.Drawing.Point(190, 62);
-			this.RoomProperty_Floor2.MaxLength = 2;
-			this.RoomProperty_Floor2.MaxValue = 0;
-			this.RoomProperty_Floor2.Name = "RoomProperty_Floor2";
-			this.RoomProperty_Floor2.Size = new System.Drawing.Size(49, 20);
-			this.RoomProperty_Floor2.TabIndex = 89;
-			this.RoomProperty_Floor2.Text = "00";
-			this.RoomProperty_Floor2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_Floor2.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
-			// 
-			// RoomProperty_Floor1
-			// 
-			this.RoomProperty_Floor1.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_Floor1.Location = new System.Drawing.Point(135, 62);
-			this.RoomProperty_Floor1.MaxLength = 2;
-			this.RoomProperty_Floor1.MaxValue = 0;
-			this.RoomProperty_Floor1.Name = "RoomProperty_Floor1";
-			this.RoomProperty_Floor1.Size = new System.Drawing.Size(49, 20);
-			this.RoomProperty_Floor1.TabIndex = 88;
-			this.RoomProperty_Floor1.Text = "00";
-			this.RoomProperty_Floor1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_Floor1.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
-			// 
-			// RoomProperty_Blockset
-			// 
-			this.RoomProperty_Blockset.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_Blockset.Location = new System.Drawing.Point(190, 22);
-			this.RoomProperty_Blockset.MaxLength = 2;
-			this.RoomProperty_Blockset.MaxValue = 0;
-			this.RoomProperty_Blockset.Name = "RoomProperty_Blockset";
-			this.RoomProperty_Blockset.Size = new System.Drawing.Size(49, 20);
-			this.RoomProperty_Blockset.TabIndex = 87;
-			this.RoomProperty_Blockset.Text = "00";
-			this.RoomProperty_Blockset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_Blockset.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
-			// 
-			// RoomProperty_Layout
-			// 
-			this.RoomProperty_Layout.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.RoomProperty_Layout.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.One;
-			this.RoomProperty_Layout.Location = new System.Drawing.Point(135, 22);
-			this.RoomProperty_Layout.MaxLength = 1;
-			this.RoomProperty_Layout.MaxValue = 7;
-			this.RoomProperty_Layout.Name = "RoomProperty_Layout";
-			this.RoomProperty_Layout.Size = new System.Drawing.Size(49, 20);
-			this.RoomProperty_Layout.TabIndex = 86;
-			this.RoomProperty_Layout.Text = "0";
-			this.RoomProperty_Layout.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_Layout.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
-			// 
-			// EntranceProperties_Blockset
-			// 
-			this.EntranceProperties_Blockset.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_Blockset.Location = new System.Drawing.Point(174, 29);
-			this.EntranceProperties_Blockset.MaxLength = 2;
-			this.EntranceProperties_Blockset.MaxValue = 0;
-			this.EntranceProperties_Blockset.Name = "EntranceProperties_Blockset";
-			this.EntranceProperties_Blockset.Size = new System.Drawing.Size(50, 20);
-			this.EntranceProperties_Blockset.TabIndex = 138;
-			this.EntranceProperties_Blockset.Text = "00";
-			this.EntranceProperties_Blockset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperties_Music
-			// 
-			this.EntranceProperties_Music.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_Music.Location = new System.Drawing.Point(118, 29);
-			this.EntranceProperties_Music.MaxLength = 2;
-			this.EntranceProperties_Music.MaxValue = 0;
-			this.EntranceProperties_Music.Name = "EntranceProperties_Music";
-			this.EntranceProperties_Music.Size = new System.Drawing.Size(50, 20);
-			this.EntranceProperties_Music.TabIndex = 137;
-			this.EntranceProperties_Music.Text = "00";
-			this.EntranceProperties_Music.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperties_DungeonID
-			// 
-			this.EntranceProperties_DungeonID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_DungeonID.Location = new System.Drawing.Point(62, 29);
-			this.EntranceProperties_DungeonID.MaxLength = 2;
-			this.EntranceProperties_DungeonID.MaxValue = 0;
-			this.EntranceProperties_DungeonID.Name = "EntranceProperties_DungeonID";
-			this.EntranceProperties_DungeonID.Size = new System.Drawing.Size(50, 20);
-			this.EntranceProperties_DungeonID.TabIndex = 136;
-			this.EntranceProperties_DungeonID.Text = "00";
-			this.EntranceProperties_DungeonID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperties_Exit
-			// 
-			this.EntranceProperties_Exit.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_Exit.Location = new System.Drawing.Point(228, 198);
-			this.EntranceProperties_Exit.MaxLength = 2;
-			this.EntranceProperties_Exit.MaxValue = 0;
-			this.EntranceProperties_Exit.Name = "EntranceProperties_Exit";
-			this.EntranceProperties_Exit.Size = new System.Drawing.Size(49, 20);
-			this.EntranceProperties_Exit.TabIndex = 135;
-			this.EntranceProperties_Exit.Text = "00";
-			this.EntranceProperties_Exit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperties_CameraTriggerY
-			// 
-			this.EntranceProperties_CameraTriggerY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_CameraTriggerY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
-			this.EntranceProperties_CameraTriggerY.Location = new System.Drawing.Point(131, 142);
-			this.EntranceProperties_CameraTriggerY.MaxLength = 4;
-			this.EntranceProperties_CameraTriggerY.MaxValue = 65535;
-			this.EntranceProperties_CameraTriggerY.Name = "EntranceProperties_CameraTriggerY";
-			this.EntranceProperties_CameraTriggerY.Size = new System.Drawing.Size(44, 20);
-			this.EntranceProperties_CameraTriggerY.TabIndex = 134;
-			this.EntranceProperties_CameraTriggerY.Text = "0000";
-			this.EntranceProperties_CameraTriggerY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperties_CameraTriggerX
-			// 
-			this.EntranceProperties_CameraTriggerX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_CameraTriggerX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
-			this.EntranceProperties_CameraTriggerX.Location = new System.Drawing.Point(68, 142);
-			this.EntranceProperties_CameraTriggerX.MaxLength = 4;
-			this.EntranceProperties_CameraTriggerX.MaxValue = 65535;
-			this.EntranceProperties_CameraTriggerX.Name = "EntranceProperties_CameraTriggerX";
-			this.EntranceProperties_CameraTriggerX.Size = new System.Drawing.Size(44, 20);
-			this.EntranceProperties_CameraTriggerX.TabIndex = 133;
-			this.EntranceProperties_CameraTriggerX.Text = "0000";
-			this.EntranceProperties_CameraTriggerX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperties_CameraY
-			// 
-			this.EntranceProperties_CameraY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_CameraY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
-			this.EntranceProperties_CameraY.Location = new System.Drawing.Point(131, 117);
-			this.EntranceProperties_CameraY.MaxLength = 4;
-			this.EntranceProperties_CameraY.MaxValue = 65535;
-			this.EntranceProperties_CameraY.Name = "EntranceProperties_CameraY";
-			this.EntranceProperties_CameraY.Size = new System.Drawing.Size(44, 20);
-			this.EntranceProperties_CameraY.TabIndex = 130;
-			this.EntranceProperties_CameraY.Text = "0000";
-			this.EntranceProperties_CameraY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperties_CameraX
-			// 
-			this.EntranceProperties_CameraX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_CameraX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
-			this.EntranceProperties_CameraX.Location = new System.Drawing.Point(68, 117);
-			this.EntranceProperties_CameraX.MaxLength = 4;
-			this.EntranceProperties_CameraX.MaxValue = 65535;
-			this.EntranceProperties_CameraX.Name = "EntranceProperties_CameraX";
-			this.EntranceProperties_CameraX.Size = new System.Drawing.Size(44, 20);
-			this.EntranceProperties_CameraX.TabIndex = 129;
-			this.EntranceProperties_CameraX.Text = "0000";
-			this.EntranceProperties_CameraX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperties_PlayerY
-			// 
-			this.EntranceProperties_PlayerY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_PlayerY.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
-			this.EntranceProperties_PlayerY.Location = new System.Drawing.Point(131, 93);
-			this.EntranceProperties_PlayerY.MaxLength = 4;
-			this.EntranceProperties_PlayerY.MaxValue = 65535;
-			this.EntranceProperties_PlayerY.Name = "EntranceProperties_PlayerY";
-			this.EntranceProperties_PlayerY.Size = new System.Drawing.Size(44, 20);
-			this.EntranceProperties_PlayerY.TabIndex = 128;
-			this.EntranceProperties_PlayerY.Text = "0000";
-			this.EntranceProperties_PlayerY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperties_PlayerX
-			// 
-			this.EntranceProperties_PlayerX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_PlayerX.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Four;
-			this.EntranceProperties_PlayerX.Location = new System.Drawing.Point(68, 93);
-			this.EntranceProperties_PlayerX.MaxLength = 4;
-			this.EntranceProperties_PlayerX.MaxValue = 65535;
-			this.EntranceProperties_PlayerX.Name = "EntranceProperties_PlayerX";
-			this.EntranceProperties_PlayerX.Size = new System.Drawing.Size(44, 20);
-			this.EntranceProperties_PlayerX.TabIndex = 127;
-			this.EntranceProperties_PlayerX.Text = "0000";
-			this.EntranceProperties_PlayerX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperties_RoomID
-			// 
-			this.EntranceProperties_RoomID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperties_RoomID.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Three;
-			this.EntranceProperties_RoomID.Location = new System.Drawing.Point(6, 29);
-			this.EntranceProperties_RoomID.MaxLength = 3;
-			this.EntranceProperties_RoomID.MaxValue = 4095;
-			this.EntranceProperties_RoomID.Name = "EntranceProperties_RoomID";
-			this.EntranceProperties_RoomID.Size = new System.Drawing.Size(50, 20);
-			this.EntranceProperties_RoomID.TabIndex = 124;
-			this.EntranceProperties_RoomID.Text = "000";
-			this.EntranceProperties_RoomID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperty_BoundaryFE
-			// 
-			this.EntranceProperty_BoundaryFE.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryFE.Location = new System.Drawing.Point(225, 61);
-			this.EntranceProperty_BoundaryFE.MaxLength = 2;
-			this.EntranceProperty_BoundaryFE.MaxValue = 0;
-			this.EntranceProperty_BoundaryFE.Name = "EntranceProperty_BoundaryFE";
-			this.EntranceProperty_BoundaryFE.Size = new System.Drawing.Size(39, 20);
-			this.EntranceProperty_BoundaryFE.TabIndex = 133;
-			this.EntranceProperty_BoundaryFE.Text = "00";
-			this.EntranceProperty_BoundaryFE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperty_BoundaryFW
-			// 
-			this.EntranceProperty_BoundaryFW.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryFW.Location = new System.Drawing.Point(169, 61);
-			this.EntranceProperty_BoundaryFW.MaxLength = 2;
-			this.EntranceProperty_BoundaryFW.MaxValue = 0;
-			this.EntranceProperty_BoundaryFW.Name = "EntranceProperty_BoundaryFW";
-			this.EntranceProperty_BoundaryFW.Size = new System.Drawing.Size(39, 20);
-			this.EntranceProperty_BoundaryFW.TabIndex = 132;
-			this.EntranceProperty_BoundaryFW.Text = "00";
-			this.EntranceProperty_BoundaryFW.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperty_BoundaryQE
-			// 
-			this.EntranceProperty_BoundaryQE.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryQE.Location = new System.Drawing.Point(225, 35);
-			this.EntranceProperty_BoundaryQE.MaxLength = 2;
-			this.EntranceProperty_BoundaryQE.MaxValue = 0;
-			this.EntranceProperty_BoundaryQE.Name = "EntranceProperty_BoundaryQE";
-			this.EntranceProperty_BoundaryQE.Size = new System.Drawing.Size(39, 20);
-			this.EntranceProperty_BoundaryQE.TabIndex = 131;
-			this.EntranceProperty_BoundaryQE.Text = "00";
-			this.EntranceProperty_BoundaryQE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperty_BoundaryQW
-			// 
-			this.EntranceProperty_BoundaryQW.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryQW.Location = new System.Drawing.Point(169, 35);
-			this.EntranceProperty_BoundaryQW.MaxLength = 2;
-			this.EntranceProperty_BoundaryQW.MaxValue = 0;
-			this.EntranceProperty_BoundaryQW.Name = "EntranceProperty_BoundaryQW";
-			this.EntranceProperty_BoundaryQW.Size = new System.Drawing.Size(39, 20);
-			this.EntranceProperty_BoundaryQW.TabIndex = 130;
-			this.EntranceProperty_BoundaryQW.Text = "00";
-			this.EntranceProperty_BoundaryQW.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperty_BoundaryFS
-			// 
-			this.EntranceProperty_BoundaryFS.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryFS.Location = new System.Drawing.Point(116, 61);
-			this.EntranceProperty_BoundaryFS.MaxLength = 2;
-			this.EntranceProperty_BoundaryFS.MaxValue = 0;
-			this.EntranceProperty_BoundaryFS.Name = "EntranceProperty_BoundaryFS";
-			this.EntranceProperty_BoundaryFS.Size = new System.Drawing.Size(39, 20);
-			this.EntranceProperty_BoundaryFS.TabIndex = 129;
-			this.EntranceProperty_BoundaryFS.Text = "00";
-			this.EntranceProperty_BoundaryFS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperty_BoundaryFN
-			// 
-			this.EntranceProperty_BoundaryFN.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryFN.Location = new System.Drawing.Point(60, 61);
-			this.EntranceProperty_BoundaryFN.MaxLength = 2;
-			this.EntranceProperty_BoundaryFN.MaxValue = 0;
-			this.EntranceProperty_BoundaryFN.Name = "EntranceProperty_BoundaryFN";
-			this.EntranceProperty_BoundaryFN.Size = new System.Drawing.Size(39, 20);
-			this.EntranceProperty_BoundaryFN.TabIndex = 128;
-			this.EntranceProperty_BoundaryFN.Text = "00";
-			this.EntranceProperty_BoundaryFN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperty_BoundaryQS
-			// 
-			this.EntranceProperty_BoundaryQS.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryQS.Location = new System.Drawing.Point(116, 35);
-			this.EntranceProperty_BoundaryQS.MaxLength = 2;
-			this.EntranceProperty_BoundaryQS.MaxValue = 0;
-			this.EntranceProperty_BoundaryQS.Name = "EntranceProperty_BoundaryQS";
-			this.EntranceProperty_BoundaryQS.Size = new System.Drawing.Size(39, 20);
-			this.EntranceProperty_BoundaryQS.TabIndex = 127;
-			this.EntranceProperty_BoundaryQS.Text = "00";
-			this.EntranceProperty_BoundaryQS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// EntranceProperty_BoundaryQN
-			// 
-			this.EntranceProperty_BoundaryQN.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.EntranceProperty_BoundaryQN.Location = new System.Drawing.Point(60, 35);
-			this.EntranceProperty_BoundaryQN.MaxLength = 2;
-			this.EntranceProperty_BoundaryQN.MaxValue = 0;
-			this.EntranceProperty_BoundaryQN.Name = "EntranceProperty_BoundaryQN";
-			this.EntranceProperty_BoundaryQN.Size = new System.Drawing.Size(39, 20);
-			this.EntranceProperty_BoundaryQN.TabIndex = 126;
-			this.EntranceProperty_BoundaryQN.Text = "00";
-			this.EntranceProperty_BoundaryQN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// panel1
-			// 
-			this.panel1.AutoScroll = true;
-			this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel1.Location = new System.Drawing.Point(0, 54);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(292, 610);
-			this.panel1.TabIndex = 1;
-			// 
-			// customPanel1
-			// 
-			this.customPanel1.AutoScroll = true;
-			this.customPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.customPanel1.Location = new System.Drawing.Point(0, 20);
-			this.customPanel1.Name = "customPanel1";
-			this.customPanel1.Size = new System.Drawing.Size(292, 644);
-			this.customPanel1.TabIndex = 2;
-			// 
-			// allbgsButton
-			// 
-			this.allbgsButton.CheckOnClick = true;
-			this.allbgsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.allbgsButton.Enabled = false;
-			this.allbgsButton.Image = ((System.Drawing.Image)(resources.GetObject("allbgsButton.Image")));
-			this.allbgsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.allbgsButton.Name = "allbgsButton";
-			this.allbgsButton.Size = new System.Drawing.Size(23, 22);
-			this.allbgsButton.Tag = ZeldaFullEditor.DungeonEditMode.LayerAll;
-			this.allbgsButton.Text = "All Layers";
-			this.allbgsButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
-			// 
-			// bg1modeButton
-			// 
-			this.bg1modeButton.Checked = true;
-			this.bg1modeButton.CheckOnClick = true;
-			this.bg1modeButton.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.bg1modeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.bg1modeButton.Enabled = false;
-			this.bg1modeButton.Image = ((System.Drawing.Image)(resources.GetObject("bg1modeButton.Image")));
-			this.bg1modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.bg1modeButton.Name = "bg1modeButton";
-			this.bg1modeButton.Size = new System.Drawing.Size(23, 22);
-			this.bg1modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer1;
-			this.bg1modeButton.Text = "Layer 1";
-			this.bg1modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
-			// 
-			// bg2modeButton
-			// 
-			this.bg2modeButton.CheckOnClick = true;
-			this.bg2modeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.bg2modeButton.Enabled = false;
-			this.bg2modeButton.Image = ((System.Drawing.Image)(resources.GetObject("bg2modeButton.Image")));
-			this.bg2modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.bg2modeButton.Name = "bg2modeButton";
-			this.bg2modeButton.Size = new System.Drawing.Size(23, 22);
-			this.bg2modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer2;
-			this.bg2modeButton.Text = "Layer 2";
-			this.bg2modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
-			// 
-			// bg3modeButton
-			// 
-			this.bg3modeButton.CheckOnClick = true;
-			this.bg3modeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.bg3modeButton.Enabled = false;
-			this.bg3modeButton.Image = ((System.Drawing.Image)(resources.GetObject("bg3modeButton.Image")));
-			this.bg3modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.bg3modeButton.Name = "bg3modeButton";
-			this.bg3modeButton.Size = new System.Drawing.Size(23, 22);
-			this.bg3modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer3;
-			this.bg3modeButton.Text = "Layer 3";
-			this.bg3modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
-			// 
-			// spritemodeButton
-			// 
-			this.spritemodeButton.CheckOnClick = true;
-			this.spritemodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.spritemodeButton.Enabled = false;
-			this.spritemodeButton.Image = ((System.Drawing.Image)(resources.GetObject("spritemodeButton.Image")));
-			this.spritemodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.spritemodeButton.Name = "spritemodeButton";
-			this.spritemodeButton.Size = new System.Drawing.Size(23, 22);
-			this.spritemodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Sprites;
-			this.spritemodeButton.Text = "Object Mode";
-			this.spritemodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
-			// 
-			// blockmodeButton
-			// 
-			this.blockmodeButton.CheckOnClick = true;
-			this.blockmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.blockmodeButton.Enabled = false;
-			this.blockmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("blockmodeButton.Image")));
-			this.blockmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.blockmodeButton.Name = "blockmodeButton";
-			this.blockmodeButton.Size = new System.Drawing.Size(23, 22);
-			this.blockmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Blocks;
-			this.blockmodeButton.Text = "Block Mode";
-			this.blockmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
-			// 
-			// torchmodeButton
-			// 
-			this.torchmodeButton.CheckOnClick = true;
-			this.torchmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.torchmodeButton.Enabled = false;
-			this.torchmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("torchmodeButton.Image")));
-			this.torchmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.torchmodeButton.Name = "torchmodeButton";
-			this.torchmodeButton.Size = new System.Drawing.Size(23, 22);
-			this.torchmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Torches;
-			this.torchmodeButton.Text = "Torch Mode";
-			this.torchmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
-			// 
-			// potmodeButton
-			// 
-			this.potmodeButton.CheckOnClick = true;
-			this.potmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.potmodeButton.Enabled = false;
-			this.potmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("potmodeButton.Image")));
-			this.potmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.potmodeButton.Name = "potmodeButton";
-			this.potmodeButton.Size = new System.Drawing.Size(23, 22);
-			this.potmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Secrets;
-			this.potmodeButton.Text = "Secrets Mode";
-			this.potmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
-			// 
-			// doormodeButton
-			// 
-			this.doormodeButton.CheckOnClick = true;
-			this.doormodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.doormodeButton.Enabled = false;
-			this.doormodeButton.Image = ((System.Drawing.Image)(resources.GetObject("doormodeButton.Image")));
-			this.doormodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.doormodeButton.Name = "doormodeButton";
-			this.doormodeButton.Size = new System.Drawing.Size(23, 22);
-			this.doormodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Doors;
-			this.doormodeButton.Text = "Door Mode";
-			this.doormodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
-			// 
-			// collisionModeButton
-			// 
-			this.collisionModeButton.CheckOnClick = true;
-			this.collisionModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.collisionModeButton.Enabled = false;
-			this.collisionModeButton.Image = ((System.Drawing.Image)(resources.GetObject("collisionModeButton.Image")));
-			this.collisionModeButton.ImageTransparentColor = System.Drawing.Color.White;
-			this.collisionModeButton.Name = "collisionModeButton";
-			this.collisionModeButton.Size = new System.Drawing.Size(23, 22);
-			this.collisionModeButton.Tag = ZeldaFullEditor.DungeonEditMode.CollisionMap;
-			this.collisionModeButton.Text = "Collision Mode";
-			this.collisionModeButton.Click += new System.EventHandler(this.UpdateUnderworldMode_Collision);
+			// roomProperty_bg2
+			// 
+			this.roomProperty_bg2.BackColor = System.Drawing.SystemColors.Window;
+			this.roomProperty_bg2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.roomProperty_bg2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+			this.roomProperty_bg2.FormattingEnabled = true;
+			this.roomProperty_bg2.Location = new System.Drawing.Point(6, 22);
+			this.roomProperty_bg2.Name = "roomProperty_bg2";
+			this.roomProperty_bg2.Size = new System.Drawing.Size(124, 21);
+			this.roomProperty_bg2.TabIndex = 2;
+			this.roomProperty_bg2.SelectedIndexChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// DungeonMain
 			// 
@@ -4217,7 +4223,6 @@ namespace ZeldaFullEditor
 			this.groupBox1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.edit8x8palettebox)).EndInit();
 			this.headerGroupbox.ResumeLayout(false);
-			this.headerGroupbox.PerformLayout();
 			this.selectedGroupbox.ResumeLayout(false);
 			this.selectedGroupbox.PerformLayout();
 			this.roomHeaderPanel.ResumeLayout(false);
@@ -4339,7 +4344,7 @@ namespace ZeldaFullEditor
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label20;
         public System.Windows.Forms.ComboBox roomProperty_collision;
-        public System.Windows.Forms.ComboBox roomProperty_bg2;
+        public System.Windows.Forms.ComboBox roomPropertyLayerMerge;
         public System.Windows.Forms.ComboBox roomProperty_effect;
         public System.Windows.Forms.ComboBox roomProperty_tag2;
         public System.Windows.Forms.ComboBox roomProperty_tag1;
@@ -4595,9 +4600,6 @@ namespace ZeldaFullEditor
 		public System.Windows.Forms.Label SelectedObjectDataHEX;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
-		private System.Windows.Forms.ToolStripMenuItem AllViewMenu;
-		private System.Windows.Forms.ToolStripMenuItem UWSpriteDisplay;
-		private System.Windows.Forms.ToolStripMenuItem UWSpriteTextNever;
 		private System.Windows.Forms.ContextMenuStrip UWContextMenu;
 		private System.Windows.Forms.ToolStripMenuItem UWContextInsert;
 		private System.Windows.Forms.ToolStripMenuItem UWContextDelete;
@@ -4616,6 +4618,7 @@ namespace ZeldaFullEditor
 		private System.Windows.Forms.ToolStripMenuItem UWContextSendToLayer1;
 		private System.Windows.Forms.ToolStripMenuItem UWContextSendToLayer2;
 		private System.Windows.Forms.ToolStripMenuItem UWContextSendToLayer3;
+		public System.Windows.Forms.ComboBox roomProperty_bg2;
 	}
 }
 

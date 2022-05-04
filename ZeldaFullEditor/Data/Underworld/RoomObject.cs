@@ -19,31 +19,20 @@ namespace ZeldaFullEditor.Data.Underworld
 		public bool IsStairs => ObjectType.Specialness == SpecialObjectType.InterroomStairs;
 		public DungeonLimits LimitClass => ObjectType.LimitClass;
 
-		private byte gridx, gridy;
 		private const int Scale = 8;
-
-		public byte GridX
-		{
-			get => gridx;
-			set => gridx = value;
-		}
-
-		public byte GridY
-		{
-			get => gridy;
-			set => gridy = value;
-		}
+		public byte GridX { get; set; }
+		public byte GridY { get; set; }
 
 		public int RealX
 		{
-			get => gridx * Scale;
-			set => gridx = (byte) (value / Scale);
+			get => GridX * Scale;
+			set => GridX = (byte) (value / Scale);
 		}
 
 		public int RealY
 		{
-			get => gridy * Scale;
-			set => gridy = (byte) (value / Scale);
+			get => GridY * Scale;
+			set => GridY = (byte) (value / Scale);
 		}
 
 		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
@@ -66,7 +55,6 @@ namespace ZeldaFullEditor.Data.Underworld
 		{
 			ObjectType = type;
 			Tiles = tiles;
-			ResetSize();
 		}
 
 		public RoomObject Clone()
@@ -86,14 +74,10 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public void Draw(ZScreamer ZS)
 		{
-			CollisionPoints.Clear();
-			ObjectType.Draw(ZS, this);
-		}
-
-		private void ResetSize()
-		{
 			Width = 8;
 			Height = 8;
+			CollisionPoints.Clear();
+			ObjectType.Draw(ZS, this);
 		}
 
 		public bool DecreaseSize()
@@ -101,7 +85,6 @@ namespace ZeldaFullEditor.Data.Underworld
 			// Size > 0 will short circuit faster for unresizable objects
 			if (Size > 0 && ObjectType.Resizeability != DungeonObjectSizeability.None)
 			{
-				ResetSize();
 				Size--;
 				return true;
 			}
@@ -116,7 +99,6 @@ namespace ZeldaFullEditor.Data.Underworld
 		{
 			if (ObjectType.Resizeability != DungeonObjectSizeability.None && Size < 15)
 			{
-				ResetSize();
 				Size++;
 				return true;
 			}

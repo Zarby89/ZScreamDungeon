@@ -414,16 +414,10 @@
             // roomUpDown
             // 
             this.roomUpDown.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-            this.roomUpDown.Digits = ZeldaFullEditor.Gui.ExtraForms.Hexbox.HexDigits.Three;
-            this.roomUpDown.HexValue = 0;
             this.roomUpDown.Location = new System.Drawing.Point(15, 25);
-            this.roomUpDown.MaxLength = 3;
-            this.roomUpDown.MaxValue = 295;
-            this.roomUpDown.MinValue = 0;
             this.roomUpDown.Name = "roomUpDown";
             this.roomUpDown.Size = new System.Drawing.Size(92, 20);
             this.roomUpDown.TabIndex = 29;
-            this.roomUpDown.Text = "000";
             this.roomUpDown.TextChanged += new System.EventHandler(this.xPosUpDown_ValueChanged);
             // 
             // ExitEditorForm

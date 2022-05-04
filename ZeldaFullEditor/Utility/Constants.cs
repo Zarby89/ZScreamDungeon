@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 
 namespace ZeldaFullEditor
 {
@@ -193,7 +188,5 @@ namespace ZeldaFullEditor
 		public static readonly Color MediumMint200 = Color.FromArgb(200, 14, 224, 146);
 		public static readonly Pen MediumMint200Pen = new Pen(MediumMint200);
 		public static readonly Brush MediumMint200Brush = new SolidBrush(MediumMint200);
-
-
 	}
 }

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ZeldaFullEditor
@@ -14,18 +9,6 @@ namespace ZeldaFullEditor
 		public static int AddressFromBytes(byte addr1, byte addr2, byte addr3)
 		{
 			return (addr1 << 16) | (addr2 << 8) | addr3;
-		}
-
-		public static string[] DeepCopy(this string[] a)
-		{
-			string[] ret = new string[a.Length];
-			int i = 0;
-			foreach (string s in a)
-			{
-				ret[i++] = s.Substring(0);
-			}
-
-			return ret;
 		}
 
 		public static byte[] DeepCopy(this byte[] a)
@@ -49,18 +32,6 @@ namespace ZeldaFullEditor
 			me.Add((byte) (val >> 8));
 		}
 
-
-		public static List<T> DeepCopy<T>(this List<T> me)
-		{
-			using (var ms = new System.IO.MemoryStream())
-			{
-				var formatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-				formatter.Serialize(ms, me);
-				ms.Position = 0;
-				return (List<T>) formatter.Deserialize(ms);
-			}
-		}
-
 		/// <summary>
 		/// Changes the given variable by a given magnitude based on the scroll wheel's delta.
 		/// </summary>
@@ -76,6 +47,23 @@ namespace ZeldaFullEditor
 			}
 		}
 
+		/// <summary>
+		/// Changes the given variable by a given magnitude based on the scroll wheel's delta.
+		/// </summary>
+		public static int ScrollByValue(this MouseEventArgs e, int value, int change)
+		{
+			if (e.Delta > 0)
+			{
+				value += change;
+			}
+			else
+			{
+				value -= change;
+			}
+
+			return value;
+		}
+
 		public static void DrawFilledRectangleWithOutline(this Graphics g, int x, int y, int w, int h, Pen outline, Brush fill)
 		{
 			Rectangle r = new Rectangle(x, y, w, h);
@@ -88,17 +76,5 @@ namespace ZeldaFullEditor
 			g.FillRectangle(fill, r);
 			g.DrawRectangle(outline, r);
 		}
-
-		public static bool IsCapturedByRectangle(this IMouseCollidable me, Rectangle cap)
-		{
-			return cap.IntersectsWith(me.SquareHitbox);
-		}
-		
-		public static bool MouseIsInHitbox(this IMouseCollidable me, MouseEventArgs e)
-		{
-			return me.PointIsInHitbox(e.X, e.Y);
-		}
-
-
 	}
 }

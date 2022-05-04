@@ -38,8 +38,6 @@ namespace ZeldaFullEditor
 		/// </summary>
 		public byte VFlipByte { get; }
 
-
-
 		public ushort ID { get; }
 
 		public byte Palette { get; }
@@ -99,15 +97,15 @@ namespace ZeldaFullEditor
 			ushort s = ToUnsignedShort();
 			return new byte[] { (byte) s, (byte) (s >> 8) };
 		}
-		public ushort GetModifiedUnsignedShort(bool? hflip = null, bool? vflip = null)
+		public ushort GetModifiedUnsignedShort(bool? hflip = null, bool? vflip = null, bool hox = false, bool vox = false)
 		{
 			ushort value = (ushort) (((Palette << 10) & 0x1C00) | (ID & Constants.TileNameMask));
 
-			if (hflip ?? HFlip)
+			if (hflip ?? (HFlip ^ hox))
 			{
 				value |= Constants.TileHFlipBit;
 			}
-			if (vflip ?? VFlip)
+			if (vflip ?? (VFlip ^ vox))
 			{
 				value |= Constants.TileVFlipBit;
 			}
@@ -123,9 +121,9 @@ namespace ZeldaFullEditor
 		/// Returns a copy of this tile with the specified properties changed.
 		/// Properties set to <see langword="null"/> are left alone.
 		/// </summary>
-		public Tile CloneModified(bool? hflip = null, bool? vflip = null)
+		public Tile CloneModified(bool? hflip = null, bool? vflip = null, bool hox = false, bool vox = false)
 		{
-			return new Tile(ID, Palette, Priority, hflip ?? HFlip, vflip ?? VFlip);
+			return new Tile(ID, Palette, Priority, hflip ?? (HFlip ^ hox), vflip ?? (VFlip ^ vox));
 		}
 
 		public ushort ToUnsignedShort()

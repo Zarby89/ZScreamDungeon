@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	/// <summary>
 	/// Represents any object which can be placed inside a dungeon.

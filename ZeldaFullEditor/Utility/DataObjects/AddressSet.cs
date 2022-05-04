@@ -6,7 +6,7 @@ namespace ZeldaFullEditor
 	public class AddressSet
 	{
 		public int tile_address => new ROMAddress(0x009B52, 0x009B52).GetOffsetForVersion(Version);
-		public int tile_address_floor => new ROMAddress(0x009B5A, 0x009B5A).GetOffsetForVersion(Version);
+		public int tile_address_floor => new ROMAddress(0x009B52, 0x009B52).GetOffsetForVersion(Version);
 		public int subtype1_tiles => new ROMAddress(0x018000, 0x018000).GetOffsetForVersion(Version);
 		public int subtype2_tiles => new ROMAddress(0x0183F0, 0x0183F0).GetOffsetForVersion(Version);
 		public int subtype3_tiles => new ROMAddress(0x0184F0, 0x0184F0).GetOffsetForVersion(Version);

@@ -11,8 +11,6 @@ namespace ZeldaFullEditor.Data.Underworld
 	{
 		public DungeonRoom Room { get; }
 
-		
-
 		public DungeonRoomChestsHandler(DungeonRoom room)
 		{
 			Room = room;

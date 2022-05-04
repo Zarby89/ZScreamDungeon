@@ -62,11 +62,8 @@ namespace ZeldaFullEditor.Data.Underworld
 			{
 				value &= 0x07;
 				layout = value;
-				LayoutListing = ZS.LayoutLister[value];
 			}
 		}
-
-		public ImmutableArray<RoomObject> LayoutListing { get; private set; }
 
 		public byte?[] CollisionMap { get; } = new byte?[Constants.TilesPerTilemap];
 
@@ -436,39 +433,29 @@ namespace ZeldaFullEditor.Data.Underworld
 			ZS.GFXManager.RestoreFloor1();
 			ZS.GFXManager.RestoreFloor2();
 
-			for (int i = 0; i < LayoutListing.Length; i++)
+			DrawEntireList(ZS.LayoutLister[Layout]);
+			DrawEntireList(Layer1Objects);
+			DrawEntireList(Layer2Objects);
+			DrawEntireList(Layer3Objects);
+			DrawEntireList(DoorsList);
+
+			//if (Layer2Mode != Constants.LayerMergeOff)
+			//{
+			//	Program.DungeonForm.SetPalettesTransparent();
+			//}
+			//else
+			//{
+			//	Program.DungeonForm.SetPalettesBlack();
+			//}
+
+			void DrawEntireList(IEnumerable<IDelegatedDraw> list)
 			{
-				LayoutListing[i].Draw(ZS);
+				foreach (var o in list)
+				{
+					o.Draw(ZS);
+				}
 			}
 
-			foreach (var r in Layer1Objects)
-			{
-				r.Draw(ZS);
-			}
-
-			foreach (var r in Layer2Objects)
-			{
-				r.Draw(ZS);
-			}
-
-			foreach (var r in Layer3Objects)
-			{
-				r.Draw(ZS);
-			}
-
-			foreach (var r in DoorsList)
-			{
-				r.Draw(ZS);
-			}
-
-			if (Layer2Mode != Constants.LayerMergeOff)
-			{
-				Program.DungeonForm.SetPalettesTransparent();
-			}
-			else
-			{
-				Program.DungeonForm.SetPalettesBlack();
-			}
 		}
 
 		private RoomObject ParseRoomObject(byte b1, byte b2, byte b3)
@@ -562,9 +549,9 @@ namespace ZeldaFullEditor.Data.Underworld
 			DoorsList.Clear();
 
 			DungeonObjectsList currentList = Layer1Objects;
-			Layout = (byte) ((data[offset++] >> 2) & 0x07);
-			Floor1Graphics = (byte) (data[offset] & 0x0F); // TODO is this correct?
+			Floor1Graphics = (byte) (data[offset] & 0x0F);
 			Floor2Graphics = (byte) (data[offset++] >> 4);
+			Layout = (byte) ((data[offset++] >> 2) & 0x07);
 
 			byte b1, b2, b3;
 			byte layer = 0;
@@ -699,27 +686,6 @@ namespace ZeldaFullEditor.Data.Underworld
 			BlocksList.Clear();
 			ChestList.Clear();
 			ResyncAllLists();
-		}
-
-
-		public void DrawWholeRoom()
-		{
-			foreach (var o in LayoutListing)
-			{
-				o.Draw(ZS);
-			}
-			foreach (var o in Layer1Objects)
-			{
-				o.Draw(ZS);
-			}
-			foreach (var o in Layer2Objects)
-			{
-				o.Draw(ZS);
-			}
-			foreach (var o in Layer3Objects)
-			{
-				o.Draw(ZS);
-			}
 		}
 
 		public bool AttemptToAddEntityAsSelected(IDungeonPlaceable o, DungeonEditMode m)

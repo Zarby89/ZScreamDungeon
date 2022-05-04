@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public static class SNESFunctions
 	{
@@ -20,7 +14,7 @@ namespace ZeldaFullEditor
 			/// </summary>
 			JP,
 			/// <summary>
-			/// United states
+			/// United States
 			/// </summary>
 			US,
 			/// <summary>

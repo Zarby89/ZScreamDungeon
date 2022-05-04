@@ -36,6 +36,16 @@
 		public bool? VFlip { get; }
 
 		/// <summary>
+		/// Inverts HFlip of target tile if <see langword="true"/>
+		/// </summary>
+		public bool HXOR { get; }
+
+		/// <summary>
+		/// Inverts VFlip of target tile if <see langword="true"/>
+		/// </summary>
+		public bool VXOR { get; }
+
+		/// <summary>
 		/// Represents a set of instructions for how to draw a new tile to the background.
 		/// </summary>
 		/// <param name="i">The index into the object's tile listing to use</param>
@@ -44,7 +54,7 @@
 		/// <param name="hflip">Forces the horizontal flip of the tile; set to <see langword="null"/> to leave it unchanged.</param>
 		/// <param name="vflip">Forces the vertical flip of the tile; set to <see langword="null"/> to leave it unchanged.</param>
 		/// <param name="under">The data this tile is forbidden to overwrite.</param>
-		public DrawInfo(int i, int x, int y, bool? hflip = null, bool? vflip = null, ushort? under = null)
+		public DrawInfo(int i, int x, int y, bool? hflip = null, bool? vflip = null, ushort? under = null, bool hox = false, bool vox = false)
 		{
 			TileIndex = i;
 			XOff = x;
@@ -52,6 +62,8 @@
 			TileUnder = under;
 			HFlip = hflip;
 			VFlip = vflip;
+			HXOR = hox;
+			VXOR = vox;
 		}
 	}
 }

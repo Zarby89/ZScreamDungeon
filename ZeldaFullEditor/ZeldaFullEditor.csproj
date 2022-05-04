@@ -228,6 +228,7 @@
     <Compile Include="Data\Types\IEntityType.cs" />
     <Compile Include="Data\Types\LayerMergeType.cs" />
     <Compile Include="Data\Underworld\CollisionRectangle.cs" />
+    <Compile Include="Gui\ExtraForms\ValueRange.cs" />
     <Compile Include="Gui\MainTabs\TextEditorMessages.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -256,7 +257,6 @@
     <Compile Include="Utility\Interfaces\ITypeID.cs" />
     <Compile Include="Utility\Interfaces\IMouseCollidable.cs" />
     <Compile Include="Utility\Interfaces\IMultilayered.cs" />
-    <Compile Include="Utility\Interfaces\ITilesTableBasedDraw.cs" />
     <Compile Include="Utility\IntFunctions.cs" />
     <Compile Include="Utility\Palettes.cs" />
     <Compile Include="Utility\SNESFunctions.cs" />
@@ -803,6 +803,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Gui\MainTabs\TextEditor.resx">
       <DependentUpon>TextEditor.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include=".editorconfig" />
     <None Include="packages.config" />

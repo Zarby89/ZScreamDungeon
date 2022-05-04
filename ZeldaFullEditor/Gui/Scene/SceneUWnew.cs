@@ -173,12 +173,18 @@ namespace ZeldaFullEditor
 			}
 		}
 
+		public void HardRefresh()
+		{
+			RedrawRoom();
+			Refresh();
+		}
+
 		private void RedrawRoom()
 		{
 			Program.DungeonForm.UpdateFormForSelectedObject(Room.OnlySelectedObject);
 
 			// TODO ROOM.DRAW()
-			Room.DrawWholeRoom();
+			Room.DrawEntireRoom();
 
 			ZS.GFXManager.DrawBG1();
 			ZS.GFXManager.DrawBG2();

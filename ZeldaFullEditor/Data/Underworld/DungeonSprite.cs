@@ -7,32 +7,22 @@ namespace ZeldaFullEditor.Data.Underworld
 	[Serializable]
 	public class DungeonSprite : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID
 	{
-		private byte gridx, gridy;
 		private const int Scale = 16;
-
-		public byte GridX
-		{
-			get => gridx;
-			set => gridx = value;
-		}
-
-		public byte GridY
-		{
-			get => gridy;
-			set => gridy = value;
-		}
+		public byte GridX { get; set; }
+		public byte GridY { get; set; }
 
 		public int RealX
 		{
-			get => gridx * Scale;
-			set => gridx = (byte) (value / Scale);
+			get => GridX * Scale;
+			set => GridX = (byte) (value / Scale);
 		}
 
 		public int RealY
 		{
-			get => gridy * Scale;
-			set => gridy = (byte) (value / Scale);
+			get => GridY * Scale;
+			set => GridY = (byte) (value / Scale);
 		}
+
 		public ushort RoomID { get; set; } = 0;
 
 		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, 16, 16); // TODO

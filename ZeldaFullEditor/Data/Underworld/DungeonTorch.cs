@@ -9,31 +9,20 @@ namespace ZeldaFullEditor.Data.Underworld
 {
 	public class DungeonTorch : IDungeonPlaceable, IFreelyPlaceable, IMouseCollidable, IMultilayered, IByteable
 	{
-		private byte gridx, gridy;
 		private const int Scale = 8;
-
-		public byte GridX
-		{
-			get => gridx;
-			set => gridx = value;
-		}
-
-		public byte GridY
-		{
-			get => gridy;
-			set => gridy = value;
-		}
+		public byte GridX { get; set; }
+		public byte GridY { get; set; }
 
 		public int RealX
 		{
-			get => gridx * Scale;
-			set => gridx = (byte) (value / Scale);
+			get => GridX * Scale;
+			set => GridX = (byte) (value / Scale);
 		}
 
 		public int RealY
 		{
-			get => gridy * Scale;
-			set => gridy = (byte) (value / Scale);
+			get => GridY * Scale;
+			set => GridY = (byte) (value / Scale);
 		}
 
 		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
