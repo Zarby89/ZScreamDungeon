@@ -26,6 +26,9 @@ namespace ZeldaFullEditor
 		public static OverworldEditor OverworldForm { get; private set; }
 		public static TextEditor TextForm { get; private set; }
 
+		public static RoomArtist RoomEditingArtist { get; } = new RoomArtist(false);
+		public static RoomArtist RoomPreviewArtist { get; } = new RoomArtist(true);
+
 		/// <summary>
 		/// The main entry point for the application.
 		/// </summary>

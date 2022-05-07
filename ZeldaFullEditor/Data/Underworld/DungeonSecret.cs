@@ -42,9 +42,9 @@ namespace ZeldaFullEditor.Data.Underworld
 			SecretType = s;
 		}
 
-		public void Draw(ZScreamer ZS)
+		public void Draw(Artist art)
 		{
-			SecretType.Draw(ZS, this);
+			SecretType.Draw(art, this);
 		}
 
 		public bool PointIsInHitbox(int x, int y)

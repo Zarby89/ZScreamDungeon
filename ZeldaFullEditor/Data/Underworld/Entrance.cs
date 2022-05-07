@@ -34,8 +34,20 @@ namespace ZeldaFullEditor
 
 		public byte Scrollquadrant { get; set; }
 
-		public ushort Exit { get; set; }
-		public byte Music { get; set; }
+		public ushort OverworldEntranceLocation { get; set; }
+
+		private byte assent;
+		public byte AssociatedEntrance
+		{
+			get => assent;
+			set
+			{
+				if (!IsSpawnPoint) return;
+				assent = value;
+			}
+		}
+
+		public MusicName Music { get; set; }
 
 		public bool IsSpawnPoint { get; }
 
@@ -53,14 +65,15 @@ namespace ZeldaFullEditor
 				CameraTriggerY = ZS.ROM.Read16(ZS.Offsets.startingentrance_cameraytrigger + (entranceId * 2));
 				CameraTriggerX = ZS.ROM.Read16(ZS.Offsets.startingentrance_cameraxtrigger + (entranceId * 2));
 				Blockset = ZS.ROM[ZS.Offsets.startingentrance_blockset + entranceId];
-				Music = ZS.ROM[ZS.Offsets.startingentrance_music + entranceId];
+				Music = DefaultEntities.GetObjectFromVanillaList(DefaultEntities.ListOfUnderworldMusics, ZS.ROM[ZS.Offsets.startingentrance_music + entranceId]);
 				Dungeon = ZS.ROM[ZS.Offsets.startingentrance_dungeon + entranceId];
 				Floor = ZS.ROM[ZS.Offsets.startingentrance_floor + entranceId];
 				Door = ZS.ROM[ZS.Offsets.startingentrance_door + entranceId];
 				Ladderbg = ZS.ROM[ZS.Offsets.startingentrance_ladderbg + entranceId];
 				Scrolling = ZS.ROM[ZS.Offsets.startingentrance_scrolling + entranceId];
 				Scrollquadrant = ZS.ROM[ZS.Offsets.startingentrance_scrollquadrant + entranceId];
-				Exit = ZS.ROM.Read16(ZS.Offsets.startingentrance_exit + (entranceId * 2));
+				assent = ZS.ROM[ZS.Offsets.startingentrance_entrance + entranceId * 2];
+				OverworldEntranceLocation = ZS.ROM.Read16(ZS.Offsets.startingentrance_exit + (entranceId * 2));
 				cameraBoundaryQN = ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 0 + (entranceId * 8)];
 				cameraBoundaryFN = ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 1 + (entranceId * 8)];
 				cameraBoundaryQS = ZS.ROM[ZS.Offsets.startingentrance_scrolledge + 2 + (entranceId * 8)];
@@ -80,14 +93,15 @@ namespace ZeldaFullEditor
 				CameraTriggerY = ZS.ROM.Read16(ZS.Offsets.entrance_cameraytrigger + (entranceId * 2));
 				CameraTriggerX = ZS.ROM.Read16(ZS.Offsets.entrance_cameraxtrigger + (entranceId * 2));
 				Blockset = ZS.ROM[ZS.Offsets.entrance_blockset + entranceId];
-				Music = ZS.ROM[ZS.Offsets.entrance_music + entranceId];
+				Music = DefaultEntities.GetObjectFromVanillaList(DefaultEntities.ListOfUnderworldMusics, ZS.ROM[ZS.Offsets.entrance_music + entranceId]);
 				Dungeon = ZS.ROM[ZS.Offsets.entrance_dungeon + entranceId];
 				Floor = ZS.ROM[ZS.Offsets.entrance_floor + entranceId];
 				Door = ZS.ROM[ZS.Offsets.entrance_door + entranceId];
 				Ladderbg = ZS.ROM[ZS.Offsets.entrance_ladderbg + entranceId];
 				Scrolling = ZS.ROM[ZS.Offsets.entrance_scrolling + entranceId];
 				Scrollquadrant = ZS.ROM[ZS.Offsets.entrance_scrollquadrant + entranceId];
-				Exit = ZS.ROM.Read16(ZS.Offsets.entrance_exit + (entranceId * 2));
+				OverworldEntranceLocation = ZS.ROM.Read16(ZS.Offsets.entrance_exit + (entranceId * 2));
+				assent = entranceId;
 
 				cameraBoundaryQN = ZS.ROM[ZS.Offsets.entrance_scrolledge + 0 + (entranceId * 8)];
 				cameraBoundaryFN = ZS.ROM[ZS.Offsets.entrance_scrolledge + 1 + (entranceId * 8)];
@@ -125,17 +139,18 @@ namespace ZeldaFullEditor
 				ZS.ROM.Write16(ZS.Offsets.startingentrance_camerax + (entranceId * 2), CameraX);
 				ZS.ROM.Write16(ZS.Offsets.startingentrance_cameraxtrigger + (entranceId * 2), CameraTriggerY);
 				ZS.ROM.Write16(ZS.Offsets.startingentrance_cameraytrigger + (entranceId * 2), CameraTriggerX);
-				ZS.ROM.Write16(ZS.Offsets.startingentrance_exit + (entranceId * 2), Exit);
+				ZS.ROM.Write16(ZS.Offsets.startingentrance_exit + (entranceId * 2), OverworldEntranceLocation);
+
+				ZS.ROM.Write16(ZS.Offsets.startingentrance_entrance + (entranceId * 2), AssociatedEntrance);
 
 				ZS.ROM[ZS.Offsets.startingentrance_blockset + entranceId] = Blockset;
-				ZS.ROM[ZS.Offsets.startingentrance_music + entranceId] = Music;
+				ZS.ROM[ZS.Offsets.startingentrance_music + entranceId] = (byte) Music.ID;
 				ZS.ROM[ZS.Offsets.startingentrance_dungeon + entranceId] = Dungeon;
 				ZS.ROM[ZS.Offsets.startingentrance_door + entranceId] = Door;
 				ZS.ROM[ZS.Offsets.startingentrance_floor + entranceId] = Floor;
 				ZS.ROM[ZS.Offsets.startingentrance_ladderbg + entranceId] = Ladderbg;
 				ZS.ROM[ZS.Offsets.startingentrance_scrolling + entranceId] = Scrolling;
 				ZS.ROM[ZS.Offsets.startingentrance_scrollquadrant + entranceId] = Scrollquadrant;
-
 
 				ZS.ROM.Write(ZS.Offsets.startingentrance_scrolledge + (entranceId * 8),
 					cameraBoundaryQN, cameraBoundaryFN, cameraBoundaryQS, cameraBoundaryFS,
@@ -150,10 +165,10 @@ namespace ZeldaFullEditor
 				ZS.ROM.Write16(ZS.Offsets.entrance_camerax + (entranceId * 2), CameraX);
 				ZS.ROM.Write16(ZS.Offsets.entrance_cameraxtrigger + (entranceId * 2), CameraTriggerY);
 				ZS.ROM.Write16(ZS.Offsets.entrance_cameraytrigger + (entranceId * 2), CameraTriggerX);
-				ZS.ROM.Write16(ZS.Offsets.entrance_exit + (entranceId * 2), Exit);
+				ZS.ROM.Write16(ZS.Offsets.entrance_exit + (entranceId * 2), OverworldEntranceLocation);
 
 				ZS.ROM[ZS.Offsets.entrance_blockset + entranceId] = Blockset;
-				ZS.ROM[ZS.Offsets.entrance_music + entranceId] = Music;
+				ZS.ROM[ZS.Offsets.entrance_music + entranceId] = (byte) Music.ID;
 				ZS.ROM[ZS.Offsets.entrance_dungeon + entranceId] = Dungeon;
 				ZS.ROM[ZS.Offsets.entrance_door + entranceId] = Door;
 				ZS.ROM[ZS.Offsets.entrance_floor + entranceId] = Floor;

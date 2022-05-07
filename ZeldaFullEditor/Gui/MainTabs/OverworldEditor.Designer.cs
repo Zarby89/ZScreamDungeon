@@ -1074,6 +1074,7 @@
 			this.OWExitPropY.Location = new System.Drawing.Point(55, 78);
 			this.OWExitPropY.MaxLength = 2;
 			this.OWExitPropY.Name = "OWExitPropY";
+			this.OWExitPropY.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.OWExitPropY.Size = new System.Drawing.Size(56, 20);
 			this.OWExitPropY.TabIndex = 7;
 			this.OWExitPropY.Text = "00";
@@ -1086,6 +1087,7 @@
 			this.OWExitPropX.Location = new System.Drawing.Point(55, 52);
 			this.OWExitPropX.MaxLength = 2;
 			this.OWExitPropX.Name = "OWExitPropX";
+			this.OWExitPropX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.OWExitPropX.Size = new System.Drawing.Size(55, 20);
 			this.OWExitPropX.TabIndex = 6;
 			this.OWExitPropX.Text = "00";
@@ -1098,6 +1100,7 @@
 			this.OWExitPropID.Location = new System.Drawing.Point(55, 26);
 			this.OWExitPropID.MaxLength = 2;
 			this.OWExitPropID.Name = "OWExitPropID";
+			this.OWExitPropID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.OWExitPropID.Size = new System.Drawing.Size(55, 20);
 			this.OWExitPropID.TabIndex = 5;
 			this.OWExitPropID.Text = "00";
@@ -1110,6 +1113,7 @@
 			this.OWEntrancePropY.Location = new System.Drawing.Point(55, 78);
 			this.OWEntrancePropY.MaxLength = 2;
 			this.OWEntrancePropY.Name = "OWEntrancePropY";
+			this.OWEntrancePropY.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.OWEntrancePropY.Size = new System.Drawing.Size(56, 20);
 			this.OWEntrancePropY.TabIndex = 7;
 			this.OWEntrancePropY.Text = "00";
@@ -1122,6 +1126,7 @@
 			this.OWEntrancePropX.Location = new System.Drawing.Point(55, 52);
 			this.OWEntrancePropX.MaxLength = 2;
 			this.OWEntrancePropX.Name = "OWEntrancePropX";
+			this.OWEntrancePropX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.OWEntrancePropX.Size = new System.Drawing.Size(55, 20);
 			this.OWEntrancePropX.TabIndex = 6;
 			this.OWEntrancePropX.Text = "00";
@@ -1134,6 +1139,7 @@
 			this.OWEntrancePropID.Location = new System.Drawing.Point(55, 26);
 			this.OWEntrancePropID.MaxLength = 2;
 			this.OWEntrancePropID.Name = "OWEntrancePropID";
+			this.OWEntrancePropID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.OWEntrancePropID.Size = new System.Drawing.Size(55, 20);
 			this.OWEntrancePropID.TabIndex = 5;
 			this.OWEntrancePropID.Text = "00";
@@ -1146,6 +1152,7 @@
 			this.OWTransportPropY.Location = new System.Drawing.Point(55, 78);
 			this.OWTransportPropY.MaxLength = 2;
 			this.OWTransportPropY.Name = "OWTransportPropY";
+			this.OWTransportPropY.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.OWTransportPropY.Size = new System.Drawing.Size(56, 20);
 			this.OWTransportPropY.TabIndex = 7;
 			this.OWTransportPropY.Text = "00";
@@ -1158,6 +1165,7 @@
 			this.OWTransportPropX.Location = new System.Drawing.Point(55, 52);
 			this.OWTransportPropX.MaxLength = 2;
 			this.OWTransportPropX.Name = "OWTransportPropX";
+			this.OWTransportPropX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.OWTransportPropX.Size = new System.Drawing.Size(55, 20);
 			this.OWTransportPropX.TabIndex = 6;
 			this.OWTransportPropX.Text = "00";
@@ -1170,6 +1178,7 @@
 			this.OWTransportPropID.Location = new System.Drawing.Point(55, 26);
 			this.OWTransportPropID.MaxLength = 2;
 			this.OWTransportPropID.Name = "OWTransportPropID";
+			this.OWTransportPropID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.OWTransportPropID.Size = new System.Drawing.Size(55, 20);
 			this.OWTransportPropID.TabIndex = 5;
 			this.OWTransportPropID.Text = "00";
@@ -1182,6 +1191,7 @@
 			this.OWProperty_MessageID.Location = new System.Drawing.Point(270, 32);
 			this.OWProperty_MessageID.MaxLength = 3;
 			this.OWProperty_MessageID.Name = "OWProperty_MessageID";
+			this.OWProperty_MessageID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 4095);
 			this.OWProperty_MessageID.Size = new System.Drawing.Size(45, 20);
 			this.OWProperty_MessageID.TabIndex = 28;
 			this.OWProperty_MessageID.Text = "00";
@@ -1194,6 +1204,7 @@
 			this.OWProperty_SPRPalette.Location = new System.Drawing.Point(204, 32);
 			this.OWProperty_SPRPalette.MaxLength = 2;
 			this.OWProperty_SPRPalette.Name = "OWProperty_SPRPalette";
+			this.OWProperty_SPRPalette.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.OWProperty_SPRPalette.Size = new System.Drawing.Size(60, 20);
 			this.OWProperty_SPRPalette.TabIndex = 27;
 			this.OWProperty_SPRPalette.Text = "00";
@@ -1207,6 +1218,7 @@
 			this.OWProperty_SPRGFX.Location = new System.Drawing.Point(138, 32);
 			this.OWProperty_SPRGFX.MaxLength = 2;
 			this.OWProperty_SPRGFX.Name = "OWProperty_SPRGFX";
+			this.OWProperty_SPRGFX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.OWProperty_SPRGFX.Size = new System.Drawing.Size(60, 20);
 			this.OWProperty_SPRGFX.TabIndex = 26;
 			this.OWProperty_SPRGFX.Text = "00";
@@ -1220,6 +1232,7 @@
 			this.OWProperty_BGPalette.Location = new System.Drawing.Point(72, 32);
 			this.OWProperty_BGPalette.MaxLength = 2;
 			this.OWProperty_BGPalette.Name = "OWProperty_BGPalette";
+			this.OWProperty_BGPalette.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.OWProperty_BGPalette.Size = new System.Drawing.Size(60, 20);
 			this.OWProperty_BGPalette.TabIndex = 25;
 			this.OWProperty_BGPalette.Text = "00";
@@ -1233,6 +1246,7 @@
 			this.OWProperty_BGGFX.Location = new System.Drawing.Point(6, 32);
 			this.OWProperty_BGGFX.MaxLength = 2;
 			this.OWProperty_BGGFX.Name = "OWProperty_BGGFX";
+			this.OWProperty_BGGFX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.OWProperty_BGGFX.Size = new System.Drawing.Size(60, 20);
 			this.OWProperty_BGGFX.TabIndex = 24;
 			this.OWProperty_BGGFX.Text = "00";

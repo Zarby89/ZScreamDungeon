@@ -17,7 +17,6 @@ namespace ZeldaFullEditor.Gui
 	public partial class OverworldEditor : UserControl
 	{
 		// TODO move to Constants
-		private const int NullEntrance = 0xFFFF;
 		private const int ScratchPadSize = 225 * 16 * 2;
 		private const int Tile16EntryWidth = 16;
 		private const int Tile16RowWidth = 8 * Tile16EntryWidth;
@@ -134,6 +133,7 @@ namespace ZeldaFullEditor.Gui
 			BGColorToUpdate = m.parent;
 
 		}
+
 		private void ModeButton_Click(object sender, EventArgs e)
 		{
 			for (int i = 0; i < owToolStrip.Items.Count; i++) // Uncheck all the other modes.
@@ -170,7 +170,6 @@ namespace ZeldaFullEditor.Gui
 
 			}
 		}
-
 		private void SwapInAuxTab(TabPage t)
 		{
 			if (t != OWTabEntranceProps)
@@ -412,56 +411,47 @@ namespace ZeldaFullEditor.Gui
 			ZScreamer.ActiveOWScene.Refresh();
 		}
 
-
 		private void runtestButton_Click(object sender, EventArgs e)
 		{
 			Program.MainForm.runtestButton_Click(sender, e);
 		}
+
+		private void RefreshAllMaps()
+		{
+			Thread.CurrentThread.IsBackground = true;
+			for (int i = 0; i < 159; i++)
+			{
+				if (ZScreamer.ActiveOW.allmaps[i].NeedsRefresh)
+				{
+					ZScreamer.ActiveOW.allmaps[i].BuildMap();
+					ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = false;
+				}
+			}
+		}
+
 
 		private void tilePictureBox_DoubleClick(object sender, EventArgs e)
 		{
 			Tile16Editor ted = new Tile16Editor();
 			if (ted.ShowDialog() == DialogResult.OK)
 			{
-				new Thread(() =>
-				{
-					Thread.CurrentThread.IsBackground = true;
-					for (int i = 0; i < 159; i++)
-					{
-						if (ZScreamer.ActiveOW.allmaps[i].NeedsRefresh)
-						{
-							ZScreamer.ActiveOW.allmaps[i].BuildMap();
-							ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = false;
-						}
-					}
-				}).Start();
+				new Thread(RefreshAllMaps).Start();
 			}
 		}
 
 		private void undoButton_Click(object sender, EventArgs e)
 		{
-			Program.MainForm.undoButton_Click(sender, e);
+			ZScreamer.ActiveScreamer.OverworldScene.Undo();
 		}
 
 		private void redoButton_Click(object sender, EventArgs e)
 		{
-			Program.MainForm.redoButton_Click(sender, e);
+			ZScreamer.ActiveScreamer.OverworldScene.Redo();
 		}
 
 		private void refreshToolStrip_Click(object sender, EventArgs e)
 		{
-			new Thread(() =>
-			{
-				Thread.CurrentThread.IsBackground = true;
-				for (int i = 0; i < 159; i++)
-				{
-					if (ZScreamer.ActiveOW.allmaps[i].NeedsRefresh)
-					{
-						ZScreamer.ActiveOW.allmaps[i].BuildMap();
-						ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = false;
-					}
-				}
-			}).Start();
+			new Thread(RefreshAllMaps).Start();
 		}
 
 		private void musicButton_Click(object sender, EventArgs e)
@@ -946,7 +936,7 @@ namespace ZeldaFullEditor.Gui
 			for (int i = 0; i < 128; i++)
 			{
 				Color c = ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.CurrentMap].gfxBitmap.Palette.Entries[i];
-				e.Graphics.FillRectangle(new SolidBrush(c), new Rectangle(i % 16 * 16, i / 16 * 16, 16, 16));
+				e.Graphics.FillRectangle(new SolidBrush(c), new Rectangle(i % 16 * 16, i & ~0xF, 16, 16));
 			}
 
 			e.Graphics.DrawRectangle(Pens.GreenYellow, new Rectangle(0, palSelected * 16, 256, 16));
@@ -1246,7 +1236,8 @@ namespace ZeldaFullEditor.Gui
 		{
 			foreach (OverworldEntrance entrance in ZScreamer.ActiveOW.allentrances)
 			{
-				entrance.deleted = true;
+				entrance.GlobalX = Constants.NullEntrance;
+				entrance.GlobalY = Constants.NullEntrance;
 			}
 		}
 
@@ -1257,7 +1248,8 @@ namespace ZeldaFullEditor.Gui
 		{
 			foreach (var hole in ZScreamer.ActiveOW.allholes)
 			{
-				hole.deleted = true;
+				hole.GlobalX = Constants.NullEntrance;
+				hole.GlobalY = Constants.NullEntrance;
 			}
 		}
 
@@ -1268,7 +1260,8 @@ namespace ZeldaFullEditor.Gui
 		{
 			foreach (var exit in ZScreamer.ActiveOW.allexits)
 			{
-				exit.Deleted = true;
+				exit.GlobalX = Constants.NullEntrance;
+				exit.GlobalY = Constants.NullEntrance;
 			}
 		}
 
@@ -1312,12 +1305,11 @@ namespace ZeldaFullEditor.Gui
 			{
 				if (entrance.MapID == ZScreamer.ActiveOWScene.CurrentMapParent)
 				{
-					entrance.GlobalX = NullEntrance;
-					entrance.GlobalY = NullEntrance;
+					entrance.GlobalX = Constants.NullEntrance;
+					entrance.GlobalY = Constants.NullEntrance;
 					entrance.MapID = 0;
-					entrance.mapPos = NullEntrance;
+					entrance.mapPos = Constants.NullEntrance;
 					entrance.TargetEntranceID = 0;
-					entrance.deleted = true;
 				}
 			}
 		}
@@ -1331,12 +1323,11 @@ namespace ZeldaFullEditor.Gui
 			{
 				if (hole.MapID == ZScreamer.ActiveOWScene.CurrentMapParent)
 				{
-					hole.GlobalX = NullEntrance;
-					hole.GlobalY = NullEntrance;
 					hole.MapID = 0;
-					hole.mapPos = NullEntrance;
+					hole.GlobalX = Constants.NullEntrance;
+					hole.GlobalY = Constants.NullEntrance;
+					hole.mapPos = Constants.NullEntrance;
 					hole.TargetEntranceID = 0;
-					hole.deleted = true;
 				}
 			}
 		}
@@ -1350,11 +1341,10 @@ namespace ZeldaFullEditor.Gui
 			{
 				if (exit.MapID == ZScreamer.ActiveOWScene.CurrentMapParent)
 				{
-					exit.GlobalX = NullEntrance;
-					exit.GlobalY = NullEntrance;
 					exit.MapID = 0;
+					exit.GlobalX = Constants.NullEntrance;
+					exit.GlobalY = Constants.NullEntrance;
 					exit.TargetRoomID = 0;
-					exit.Deleted = true;
 				}
 			}
 		}

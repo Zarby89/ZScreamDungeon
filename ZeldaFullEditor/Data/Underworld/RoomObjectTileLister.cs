@@ -16,6 +16,7 @@
 				((FloorsTileList) this[Constants.Floor1ObjectID]).Floor = value;
 			}
 		}
+
 		public byte CurrentFloor2
 		{
 			set
@@ -24,8 +25,6 @@
 				((FloorsTileList) this[Constants.Floor2ObjectID]).Floor = value;
 			}
 		}
-
-
 
 		private RoomObjectTileLister(TilesList[] tiles, DoorTilesList[] doors)
 		{
@@ -40,10 +39,8 @@
 
 		public static RoomObjectTileLister CreateTileListingsFromROM(ZScreamer ZS)
 		{
-
 			var list = new TilesList[0x300];
 			var doors = new DoorTilesList[0x80];
-
 
 			AutoFindTiles(0x000, 4);
 			AutoFindTiles(0x001, 8);

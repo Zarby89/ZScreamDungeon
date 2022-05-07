@@ -601,7 +601,7 @@ namespace ZeldaFullEditor
 				{
 					pal.Entries[i] = currentPalette[i];
 					// TODO this is stupid and inefficient
-					pal.Entries[(i / 16) * 16] = Color.Transparent;
+					pal.Entries[i & ~0xF] = Color.Transparent;
 				}
 
 				ZS.GFXManager.mapgfx16Bitmap.Palette = pal;
@@ -616,7 +616,7 @@ namespace ZeldaFullEditor
                     }
                     else if (index == 4)
                     {
-                        pal.Entries[(i / 16) * 16] = Color.Transparent;
+                        pal.Entries[i & ~0xF] = Color.Transparent;
                     }
                 }
                 */

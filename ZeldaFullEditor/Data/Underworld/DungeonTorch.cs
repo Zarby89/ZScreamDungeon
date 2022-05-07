@@ -35,7 +35,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		}
 
-		public void Draw(ZScreamer ZS)
+		public void Draw(Artist art)
 		{
 
 		}

@@ -14,6 +14,7 @@ namespace ZeldaFullEditor
 		public ushort CameraY { get; set; }
 		public ushort VRAMBase { get; set; }
 
+		public bool Deleted => (GlobalX & GlobalY) == Constants.NullEntrance;
 		public override void SnapToGrid()
 		{
 			GlobalX &= 0xFFF8;

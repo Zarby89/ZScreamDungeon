@@ -76,9 +76,9 @@ namespace ZeldaFullEditor.Data.Underworld
 			DoorTiles = tiles;
 		}
 
-		public void Draw(ZScreamer ZS)
+		public void Draw(Artist art)
 		{
-			DoorPosition.Draw(ZS, this);
+			DoorPosition.Draw(art, this);
 		}
 
 		public bool PointIsInHitbox(int x, int y)

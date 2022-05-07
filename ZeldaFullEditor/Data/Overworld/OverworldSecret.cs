@@ -18,7 +18,7 @@ namespace ZeldaFullEditor.Data
 			SecretType = s;
 		}
 
-		public void Draw(ZScreamer ZS)
+		public void Draw(Artist art)
 		{
 			//throw new NotImplementedException();
 		}

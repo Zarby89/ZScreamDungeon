@@ -94,8 +94,8 @@ namespace ZeldaFullEditor
 		// TODO move this?
 		public int lastRoomID = -1;
 
-		ushort[,] lwmdata = new ushort[512, 512];
-		ushort[,] dwmdata = new ushort[512, 512];
+		readonly ushort[,] lwmdata = new ushort[512, 512];
+		readonly ushort[,] dwmdata = new ushort[512, 512];
 
 		private bool propertiesChangedFromForm = false;
 
@@ -112,6 +112,8 @@ namespace ZeldaFullEditor
 		public DungeonMain()
 		{
 			InitializeComponent();
+
+			Text = $"{UIText.APPNAME} - {UIText.VERSION}";
 
 			comboBox2.Items.AddRange(DefaultEntities.ListOfDoorObjects);
 			tileTypeCombobox.Items.AddRange(DefaultEntities.ListOfTileTypes);
@@ -186,10 +188,11 @@ namespace ZeldaFullEditor
 		public void initialize_properties()
 		{
 			roomPropertyLayerMerge.DataSource = LayerMergeType.ListOf;
-			roomProperty_collision.DataSource = DefaultEntities.ListOfRoomCollisions;
-			roomProperty_effect.DataSource = DefaultEntities.ListOfRoomEffects;
+			roomProperty_collision.DataSource = LayerCollisionType.ListOf;
+			roomProperty_effect.DataSource = LayerEffectType.ListOf;
 			roomProperty_tag1.DataSource = DefaultEntities.ListOfRoomTags;
 			roomProperty_tag2.DataSource = DefaultEntities.ListOfRoomTags;
+			EntranceMusicBox.DataSource = DefaultEntities.ListOfUnderworldMusics;
 		}
 
 		private void AdjustContextMenuForSelectionChange()
@@ -525,12 +528,12 @@ namespace ZeldaFullEditor
 			Program.OverworldForm.InitOpen();
 			Program.TextForm.InitializeOnOpen();
 			screenEditor.Init();
+			Refresh();
 			//InitDungeonViewer();
 		}
 
 		private void InitDungeonViewer()
 		{
-			ZScreamer.ActiveUWScene.forPreview = true;
 			Bitmap b = new Bitmap(8192, 10752);
 
 			using (Graphics gb = Graphics.FromImage(b))
@@ -538,9 +541,7 @@ namespace ZeldaFullEditor
 				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
 					ZScreamer.ActiveUWScene.Room = ZScreamer.ActiveScreamer.all_rooms[i];
-					ZScreamer.ActiveUWScene.Room.reloadGfx();
-					ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
-					ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
+					
 					ZScreamer.ActiveUWScene.Refresh();
 
 					gb.DrawImage(ZScreamer.ActiveUWScene.tempBitmap, new Point((i % 16) * 512, (i / 16) * 512));
@@ -549,7 +550,6 @@ namespace ZeldaFullEditor
 			}
 
 			dungeonViewer.pictureBox1.Image = b;
-			ZScreamer.ActiveUWScene.forPreview = false;
 		}
 
 		private void OpenRecentProject(object sender, EventArgs e)
@@ -1053,8 +1053,10 @@ namespace ZeldaFullEditor
 			EntranceProperties_RoomID.HexValue = en.RoomID;
 			EntranceProperties_DungeonID.HexValue = en.Dungeon;
 			EntranceProperties_Blockset.HexValue = en.Blockset;
-			EntranceProperties_Music.HexValue = en.Music;
+			EntranceMusicBox.SelectedItem = en.Music;
+			EntranceProperties_Entrance.HexValue = en.AssociatedEntrance;
 
+			EntranceProperties_Entrance.Enabled = en.IsSpawnPoint;
 
 			EntranceProperties_PlayerX.HexValue = en.XPosition;
 			EntranceProperties_PlayerY.HexValue = en.YPosition;
@@ -1066,7 +1068,7 @@ namespace ZeldaFullEditor
 
 			EntranceProperties_FloorSel.SelectedIndex = FloorNumber.FindFloorIndex(en.Floor);
 
-			EntranceProperties_Exit.HexValue = en.Exit;
+			EntranceProperties_Entrance.HexValue = en.OverworldEntranceLocation;
 
 			if (en.Ladderbg.BitIsOn(0x10))
 			{
@@ -1076,14 +1078,6 @@ namespace ZeldaFullEditor
 			if (ZScreamer.ActiveUWScene.Room != null)
 			{
 				selectedEntrance = en;
-				if (!visibleEntranceGFX)
-				{
-					ZScreamer.ActiveUWScene.Room.reloadGfx(en.Blockset);
-				}
-				else
-				{
-					ZScreamer.ActiveUWScene.Room.reloadGfx();
-				}
 
 				ZScreamer.ActiveUWScene.HardRefresh();
 			}
@@ -1104,7 +1098,7 @@ namespace ZeldaFullEditor
 			EntranceProperty_BoundaryQE.HexValue = en.cameraBoundaryQE;
 			EntranceProperty_BoundaryFE.HexValue = en.cameraBoundaryFE;
 
-			int p = (en.Exit & 0x7FFF) >> 1;
+			int p = (en.OverworldEntranceLocation & 0x7FFF) >> 1;
 			doorxTextbox.Text = (p % 64).ToString("X2");
 			dooryTextbox.Text = (p >> 6).ToString("X2");
 
@@ -1315,18 +1309,6 @@ namespace ZeldaFullEditor
 				//objectsListbox.ClearSelected();
 				tabControl2.SelectedTab = tp;
 
-				if (!visibleEntranceGFX)
-				{
-					ZScreamer.ActiveUWScene.Room.reloadGfx(ZScreamer.ActiveScreamer.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
-				}
-				else
-				{
-					ZScreamer.ActiveUWScene.Room.reloadGfx();
-				}
-
-				ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
-				ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
-				Program.DungeonForm.SetPalettesBlack();
 				//paletteViewer.update();
 				ZScreamer.ActiveUWScene.HardRefresh();
 
@@ -1479,9 +1461,9 @@ namespace ZeldaFullEditor
 			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_cameray, selectedEntrance.CameraY);
 			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_cameraxtrigger, selectedEntrance.CameraTriggerX);
 			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_cameraytrigger, selectedEntrance.CameraTriggerY);
-			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_exit, selectedEntrance.Exit);
+			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_exit, selectedEntrance.OverworldEntranceLocation);
 			testrom[ZScreamer.ActiveScreamer.Offsets.startingentrance_blockset] = selectedEntrance.Blockset;
-			testrom[ZScreamer.ActiveScreamer.Offsets.startingentrance_music] = selectedEntrance.Music;
+			testrom[ZScreamer.ActiveScreamer.Offsets.startingentrance_music] = (byte) selectedEntrance.Music.ID;
 			testrom[ZScreamer.ActiveScreamer.Offsets.startingentrance_dungeon] = selectedEntrance.Dungeon;
 			testrom[ZScreamer.ActiveScreamer.Offsets.startingentrance_floor] = selectedEntrance.Floor;
 			testrom[ZScreamer.ActiveScreamer.Offsets.startingentrance_ladderbg] = selectedEntrance.Ladderbg;
@@ -1562,8 +1544,9 @@ namespace ZeldaFullEditor
 			roomPropertyLayerMerge.SelectedItem = room.LayerMerging;
 			roomProperty_tag1.SelectedIndex = room.Tag1;
 			roomProperty_tag2.SelectedIndex = room.Tag2;
-			roomProperty_effect.SelectedIndex = room.Layer2Mode;
-			roomProperty_collision.SelectedIndex = room.Layer2Behavior;
+			roomProperty_effect.SelectedItem = room.LayerEffect;
+			roomProperty_collision.SelectedItem = room.LayerCollision;
+			RoomProperty_IsDark.Checked = room.IsDark;
 
 			roomProperty_pit.Checked = room.HasDamagingPits;
 			roomProperty_sortsprite.Checked = room.MultiLayerOAM;
@@ -1595,54 +1578,45 @@ namespace ZeldaFullEditor
 		{
 			if (!propertiesChangedFromForm && ZScreamer.ActiveUWScene.Room != null)
 			{
-				ZScreamer.ActiveUWScene.Room.Layer2Mode = (byte) (roomProperty_effect.SelectedItem as RoomEffectName).ID;
-				ZScreamer.ActiveUWScene.Room.Tag1 = (byte) (roomProperty_tag1.SelectedItem as RoomTagName).ID;
-				ZScreamer.ActiveUWScene.Room.Tag2 = (byte) (roomProperty_tag2.SelectedItem as RoomTagName).ID;
-				ZScreamer.ActiveUWScene.Room.LayerMerging = (LayerMergeType) roomPropertyLayerMerge.SelectedItem; 
-				ZScreamer.ActiveUWScene.Room.Layer2Behavior = (byte) (roomProperty_collision.SelectedItem as RoomCollisionName).ID;
+				var room = ZScreamer.ActiveUWScene.Room;
 
-				ZScreamer.ActiveUWScene.Room.BackgroundTileset = (byte) RoomProperty_Blockset.HexValue;
-				ZScreamer.ActiveUWScene.Room.Floor1Graphics = (byte) RoomProperty_Floor1.HexValue;
-				ZScreamer.ActiveUWScene.Room.Floor2Graphics = (byte) RoomProperty_Floor2.HexValue;
-				ZScreamer.ActiveUWScene.Room.Layout = (byte) RoomProperty_Layout.HexValue;
+				room.LayerEffect = (LayerEffectType) roomProperty_effect.SelectedItem;
+				room.Tag1 = (byte) (roomProperty_tag1.SelectedItem as RoomTagName).ID;
+				room.Tag2 = (byte) (roomProperty_tag2.SelectedItem as RoomTagName).ID;
+				room.LayerMerging = (LayerMergeType) roomPropertyLayerMerge.SelectedItem; 
+				room.LayerCollision = (LayerCollisionType) roomProperty_collision.SelectedItem;
 
-				ZScreamer.ActiveUWScene.Room.MessageID = (ushort) RoomProperty_MessageID.HexValue;
-				ZScreamer.ActiveUWScene.Room.Palette = (byte) RoomProperty_Palette.HexValue;
+				room.BackgroundTileset = (byte) RoomProperty_Blockset.HexValue;
+				room.Floor1Graphics = (byte) RoomProperty_Floor1.HexValue;
+				room.Floor2Graphics = (byte) RoomProperty_Floor2.HexValue;
+				room.Layout = (byte) RoomProperty_Layout.HexValue;
 
-				ZScreamer.ActiveUWScene.Room.Pits.Target = (byte) RoomProperty_DestinationPit.HexValue;
-				ZScreamer.ActiveUWScene.Room.Stair1.Target = (byte) RoomProperty_DestinationStair1.HexValue;
-				ZScreamer.ActiveUWScene.Room.Stair2.Target = (byte) RoomProperty_DestinationStair2.HexValue;
-				ZScreamer.ActiveUWScene.Room.Stair3.Target = (byte) RoomProperty_DestinationStair3.HexValue;
-				ZScreamer.ActiveUWScene.Room.Stair4.Target = (byte) RoomProperty_DestinationStair4.HexValue;
+				room.MessageID = (ushort) RoomProperty_MessageID.HexValue;
+				room.Palette = (byte) RoomProperty_Palette.HexValue;
 
-				ZScreamer.ActiveUWScene.Room.Pits.TargetLayer = (byte) (bg2checkbox1.Checked ? 2 : 0);
-				ZScreamer.ActiveUWScene.Room.Stair1.TargetLayer = (byte) (bg2checkbox2.Checked ? 2 : 0);
-				ZScreamer.ActiveUWScene.Room.Stair2.TargetLayer = (byte) (bg2checkbox3.Checked ? 2 : 0);
-				ZScreamer.ActiveUWScene.Room.Stair3.TargetLayer = (byte) (bg2checkbox4.Checked ? 2 : 0);
-				ZScreamer.ActiveUWScene.Room.Stair4.TargetLayer = (byte) (bg2checkbox5.Checked ? 2 : 0);
+				room.Pits.Target = (byte) RoomProperty_DestinationPit.HexValue;
+				room.Stair1.Target = (byte) RoomProperty_DestinationStair1.HexValue;
+				room.Stair2.Target = (byte) RoomProperty_DestinationStair2.HexValue;
+				room.Stair3.Target = (byte) RoomProperty_DestinationStair3.HexValue;
+				room.Stair4.Target = (byte) RoomProperty_DestinationStair4.HexValue;
 
-				ZScreamer.ActiveUWScene.Room.HasDamagingPits = roomProperty_pit.Checked;
-				ZScreamer.ActiveUWScene.Room.MultiLayerOAM = roomProperty_sortsprite.Checked;
+				room.Pits.TargetLayer = (byte) (bg2checkbox1.Checked ? 2 : 0);
+				room.Stair1.TargetLayer = (byte) (bg2checkbox2.Checked ? 2 : 0);
+				room.Stair2.TargetLayer = (byte) (bg2checkbox3.Checked ? 2 : 0);
+				room.Stair3.TargetLayer = (byte) (bg2checkbox4.Checked ? 2 : 0);
+				room.Stair4.TargetLayer = (byte) (bg2checkbox5.Checked ? 2 : 0);
 
-				ZScreamer.ActiveUWScene.Room.SpriteTileset = (byte) RoomProperty_SpriteSet.HexValue;
+				room.HasDamagingPits = roomProperty_pit.Checked;
+				room.MultiLayerOAM = roomProperty_sortsprite.Checked;
+				room.IsDark = RoomProperty_IsDark.Checked;
 
-				if (!visibleEntranceGFX)
-				{
-					ZScreamer.ActiveUWScene.Room.reloadGfx(ZScreamer.ActiveScreamer.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
-				}
-				else
-				{
-					ZScreamer.ActiveUWScene.Room.reloadGfx();
-				}
+				room.SpriteTileset = (byte) RoomProperty_SpriteSet.HexValue;
 
 				/*
                 undoRoom[activeScene.room.index].Add((Room)activeScene.room.Clone());
                 redoRoom[activeScene.room.index].Clear();
                 */
 
-				ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
-				ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
-				Program.DungeonForm.SetPalettesBlack();
 				ZScreamer.ActiveUWScene.HardRefresh();
 				ZScreamer.ActiveUWScene.Room.HasUnsavedChanges = true;
 				checkAnyChanges();
@@ -1662,9 +1636,14 @@ namespace ZeldaFullEditor
 				}
 
 				selectedEntrance.Dungeon = (byte) EntranceProperties_DungeonID.HexValue;
-				selectedEntrance.Music = (byte) EntranceProperties_Music.HexValue;
+				selectedEntrance.Music = (MusicName) EntranceMusicBox.SelectedItem;
 
-				selectedEntrance.Exit = (byte) EntranceProperties_Exit.HexValue;
+				if (selectedEntrance.IsSpawnPoint)
+				{
+					selectedEntrance.AssociatedEntrance = (byte) EntranceProperties_Entrance.HexValue;
+				}				
+
+				selectedEntrance.OverworldEntranceLocation = (byte) EntranceProperties_Entrance.HexValue;
 
 				selectedEntrance.Ladderbg = (byte) (entranceProperty_bg.Checked ? 0x10 : 0x00);
 
@@ -1688,11 +1667,11 @@ namespace ZeldaFullEditor
 				if (int.TryParse(doorxTextbox.Text, NumberStyles.HexNumber, null, out int r) &&
 					int.TryParse(dooryTextbox.Text, NumberStyles.HexNumber, null, out int rr))
 				{
-					selectedEntrance.Exit = (ushort) (((rr << 6) + (r & 0x3F)) << 1);
+					selectedEntrance.OverworldEntranceLocation = (ushort) (((rr << 6) + (r & 0x3F)) << 1);
 				}
 				else
 				{
-					selectedEntrance.Exit = 0;
+					selectedEntrance.OverworldEntranceLocation = 0;
 				}
 
 				if (entranceProperty_quadbr.Checked)
@@ -1719,20 +1698,7 @@ namespace ZeldaFullEditor
 					bit5: entranceProperty_hscroll.Checked
 					);
 
-				ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
-				ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
-				Program.DungeonForm.SetPalettesBlack();
-
-				if (!visibleEntranceGFX)
-				{
-					ZScreamer.ActiveUWScene.Room.reloadGfx(ZScreamer.ActiveScreamer.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
-				}
-				else
-				{
-					ZScreamer.ActiveUWScene.Room.reloadGfx();
-				}
-
-				ZScreamer.ActiveUWScene.Refresh();
+				ZScreamer.ActiveUWScene.HardRefresh();
 				ZScreamer.ActiveUWScene.Room.HasUnsavedChanges = true;
 			}
 		}
@@ -1831,19 +1797,6 @@ namespace ZeldaFullEditor
 					redoToolStripMenuItem.Enabled = false;
 				}
 
-				if (!visibleEntranceGFX)
-				{
-					ZScreamer.ActiveUWScene.Room.reloadGfx(ZScreamer.ActiveScreamer.entrances[int.Parse(entrancetreeView.SelectedNode.Tag.ToString())].Blockset);
-				}
-				else
-				{
-					ZScreamer.ActiveUWScene.Room.reloadGfx();
-				}
-
-				ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
-				ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
-				Program.DungeonForm.SetPalettesBlack();
-
 				ZScreamer.ActiveUWScene.Refresh();
 				spritesView1.updateSize();
 				spritesView1.Refresh();
@@ -1921,8 +1874,6 @@ namespace ZeldaFullEditor
 			int lowerY = 16; // What we need to remove from the image to the right
 			int higherX = 0; // What we need to remove from the image to the left
 			int higherY = 0; // What we need to remove from the image to the right
-			DungeonRoom savedRoom = ZScreamer.ActiveUWScene.Room;
-			ZScreamer.ActiveUWScene.forPreview = true;
 
 			if (selectedMapPng.Count > 0)
 			{
@@ -1941,14 +1892,9 @@ namespace ZeldaFullEditor
 							if (cx > higherX) { higherX = cx; }
 							if (cy > higherY) { higherY = cy; }
 
-							ZScreamer.ActiveUWScene.Room = ZScreamer.ActiveScreamer.all_rooms[s];
-							ZScreamer.ActiveUWScene.Room.reloadGfx();
-							ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
-							ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
-							ZScreamer.ActiveUWScene.Refresh();
+							Program.RoomPreviewArtist.SetRoomAndDrawImmediately(ZScreamer.ActiveScreamer.all_rooms[s]);
 
-							gb.DrawImage(ZScreamer.ActiveUWScene.tempBitmap, new Point(cx * 512, cy * 512));
-							//activeScene.DrawToBitmap(b, new Rectangle(cx * 512, cy * 512, 512, 512));
+							gb.DrawImage(Program.RoomPreviewArtist.FinalOutput, new Point(cx * 512, cy * 512));
 						}
 					}
 				}
@@ -1975,13 +1921,6 @@ namespace ZeldaFullEditor
 				ZScreamer.ActiveUWScene.DrawToBitmap(b, Constants.Rect_0_0_512_512);
 				b.Save("singlemap.png");
 			}
-
-			ZScreamer.ActiveUWScene.forPreview = false;
-			ZScreamer.ActiveUWScene.Room = savedRoom;
-			ZScreamer.ActiveUWScene.Room.reloadGfx();
-			ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
-			ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
-			ZScreamer.ActiveUWScene.Refresh();
 		}
 
 		private void litCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -2037,7 +1976,7 @@ namespace ZeldaFullEditor
 				if (!ZScreamer.ActiveScreamer.all_rooms[i].IsEmpty)
 				{
 					e.Graphics.FillRectangle(
-						new SolidBrush(ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveScreamer.all_rooms[i].Palette)[4, 2]),
+						new SolidBrush(ZScreamer.ActivePaletteManager.LoadDungeonPalette(ZScreamer.ActiveScreamer.all_rooms[i].Palette)[4, 2]),
 						new Rectangle(xd * 16, (yd * 16) + yoff,
 						16,
 						16));
@@ -2467,17 +2406,7 @@ namespace ZeldaFullEditor
 					return;
 				}
 
-				previewRoom = ZScreamer.ActiveScreamer.all_rooms[roomId];
-				previewRoom.reloadGfx();
-				ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(previewRoom.Palette);
-				DrawRoom();
 				thumbnailBox.Refresh();
-
-				if (ZScreamer.ActiveUWScene.Room != null)
-				{
-					ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
-					ZScreamer.ActiveUWScene.Room.reloadGfx();
-				}
 			}
 		}
 
@@ -2491,19 +2420,6 @@ namespace ZeldaFullEditor
 				bg1data[i] = 0;
 				bg2data[i] = 0;
 			}
-		}
-
-		public void DrawRoom()
-		{
-			if (previewRoom == null)
-			{
-				return;
-			}
-
-			previewRoom.DrawEntireRoom();
-
-			ZScreamer.ActiveGraphicsManager.DrawBG1();
-			ZScreamer.ActiveGraphicsManager.DrawBG2();
 		}
 
 		public void SetPalettesTransparent()
@@ -2540,67 +2456,12 @@ namespace ZeldaFullEditor
 			ZScreamer.ActiveGraphicsManager.roomBgLayoutBitmap.Palette = palettes;
 		}
 
-		public void SetPalettesBlack()
-		{
-			int pindex = 0;
-			ColorPalette palettes = ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette;
-			for (int y = 0; y < ZScreamer.ActiveGraphicsManager.loadedPalettes.GetLength(1); y++)
-			{
-				for (int x = 0; x < ZScreamer.ActiveGraphicsManager.loadedPalettes.GetLength(0); x++)
-				{
-					palettes.Entries[pindex++] = ZScreamer.ActiveGraphicsManager.loadedPalettes[x, y];
-				}
-			}
-
-			Palettes.FillInHalfPaletteZeros(palettes.Entries, Color.Black);
-
-			ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette = palettes;
-			ZScreamer.ActiveGraphicsManager.roomBg2Bitmap.Palette = palettes;
-			ZScreamer.ActiveGraphicsManager.roomBgLayoutBitmap.Palette = palettes;
-		}
-
 		private void thumbnailBox_Paint(object sender, PaintEventArgs e)
 		{
 			e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
 			e.Graphics.Clear(Color.Black);
-			if (previewRoom.Layer2Mode != Constants.LayerMergeTranslucent || previewRoom.Layer2Mode != Constants.LayerMergeTransparent ||
-				previewRoom.Layer2Mode != Constants.LayerMergeOnTop || previewRoom.Layer2Mode != Constants.LayerMergeOff)
-			{
-				e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
-			}
 
-			//e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.roomBgLayoutBitmap,0,0);
-			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
-
-			if (previewRoom.Layer2Mode == Constants.LayerMergeTranslucent || previewRoom.Layer2Mode == Constants.LayerMergeTransparent)
-			{
-				float[][] matrixItems ={
-				   new float[] {1f, 0, 0, 0, 0},
-				   new float[] {0, 1f, 0, 0, 0},
-				   new float[] {0, 0, 1f, 0, 0},
-				   new float[] {0, 0, 0, 0.5f, 0},
-				   new float[] {0, 0, 0, 0, 1}
-				};
-
-				ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
-
-				// Create an ImageAttributes object and set its color matrix.
-				ImageAttributes imageAtt = new ImageAttributes();
-				imageAtt.SetColorMatrix(
-				   colorMatrix,
-				   ColorMatrixFlag.Default,
-				   ColorAdjustType.Bitmap
-				);
-
-				//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
-				e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
-			}
-			else if (previewRoom.Layer2Mode == Constants.LayerMergeOnTop)
-			{
-				e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
-			}
-
-			ZScreamer.ActiveUWScene.drawText(e.Graphics, 0, 0, "ROOM: " + previewRoom.RoomID.ToString());
+			Program.RoomPreviewArtist.DrawSelfToImage(e.Graphics);
 		}
 
 		private void mapPicturebox_MouseUp(object sender, MouseEventArgs e)
@@ -2633,24 +2494,10 @@ namespace ZeldaFullEditor
 					thumbnailBox.Visible = false;
 					return;
 				}
+				
+				previewRoom = ZScreamer.ActiveScreamer.all_rooms[roomId];
 
-				if (lastRoomID != roomId)
-				{
-					previewRoom = ZScreamer.ActiveScreamer.all_rooms[roomId];
-					previewRoom.reloadGfx();
-					ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(previewRoom.Palette);
-					DrawRoom();
-					thumbnailBox.Refresh();
-
-					if (ZScreamer.ActiveUWScene.Room != null)
-					{
-						ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
-						ZScreamer.ActiveUWScene.Room.reloadGfx();
-						ZScreamer.ActiveUWScene.Refresh();
-					}
-				}
-
-				lastRoomID = roomId;
+				Program.RoomPreviewArtist.SetRoomAndDrawImmediately(previewRoom);
 			}
 		}
 

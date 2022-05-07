@@ -92,11 +92,13 @@ namespace ZeldaFullEditor
 
 			Palette = (byte) ((v >> 10) & 0x07);
 		}
+
 		public byte[] GetByteData()
 		{
 			ushort s = ToUnsignedShort();
 			return new byte[] { (byte) s, (byte) (s >> 8) };
 		}
+
 		public ushort GetModifiedUnsignedShort(bool? hflip = null, bool? vflip = null, bool hox = false, bool vox = false)
 		{
 			ushort value = (ushort) (((Palette << 10) & 0x1C00) | (ID & Constants.TileNameMask));

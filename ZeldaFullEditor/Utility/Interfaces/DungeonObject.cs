@@ -5,6 +5,6 @@
 	/// </summary>
 	public interface IDungeonPlaceable : IMouseCollidable
 	{
-		void Draw(ZScreamer ZS);
+		void Draw(Artist art);
 	}
 }

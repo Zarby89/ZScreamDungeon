@@ -138,10 +138,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void refreshallGfx()
 		{
-			ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
-			ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
-			ZScreamer.ActiveUWScene.Room.reloadGfx();
-			ZScreamer.ActiveUWScene.Refresh();
+			ZScreamer.ActiveUWScene.HardRefresh();
 			palettePicturebox.Refresh();
 		}
 

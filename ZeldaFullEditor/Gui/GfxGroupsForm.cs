@@ -37,8 +37,10 @@ namespace ZeldaFullEditor.Gui
 				LoadTempGfx();
 				okButton_Click(null, e);
 				reloadGfx();
-				ZScreamer.ActiveUWScene.Room.reloadGfx();
-				ZScreamer.ActiveUWScene.Refresh();
+
+				Program.RoomPreviewArtist.HardRefresh();
+				Program.RoomEditingArtist.HardRefresh();
+				ZScreamer.ActiveUWScene.HardRefresh();
 			}
 		}
 
@@ -157,36 +159,37 @@ namespace ZeldaFullEditor.Gui
 
 		private void allBox_TextChanged(object sender, EventArgs e)
 		{
-			if (!editedFromForm)
-			{
-				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][0] = getTextBoxValue(main1Box);
-				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][1] = getTextBoxValue(main2Box);
-				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][2] = getTextBoxValue(main3Box);
-				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][3] = getTextBoxValue(main4Box);
-				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][4] = getTextBoxValue(main5Box);
-				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][5] = getTextBoxValue(main6Box);
-				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][6] = getTextBoxValue(main7Box);
-				ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][7] = getTextBoxValue(main8Box);
+			if (editedFromForm) return;
+			
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][0] = getTextBoxValue(main1Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][1] = getTextBoxValue(main2Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][2] = getTextBoxValue(main3Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][3] = getTextBoxValue(main4Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][4] = getTextBoxValue(main5Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][5] = getTextBoxValue(main6Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][6] = getTextBoxValue(main7Box);
+			ZScreamer.ActiveScreamer.GFXGroups.mainGfx[(int) mainBlocksetUpDown.Value][7] = getTextBoxValue(main8Box);
 
-				ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][0] = getTextBoxValue(room1Box);
-				ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][1] = getTextBoxValue(room2Box);
-				ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][2] = getTextBoxValue(room3Box);
-				ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][3] = getTextBoxValue(room4Box);
+			ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][0] = getTextBoxValue(room1Box);
+			ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][1] = getTextBoxValue(room2Box);
+			ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][2] = getTextBoxValue(room3Box);
+			ZScreamer.ActiveScreamer.GFXGroups.roomGfx[(int) roomUpDown.Value][3] = getTextBoxValue(room4Box);
 
-				ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][0] = getTextBoxValue(sprite1Box);
-				ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][1] = getTextBoxValue(sprite2Box);
-				ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][2] = getTextBoxValue(sprite3Box);
-				ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][3] = getTextBoxValue(sprite4Box);
+			ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][0] = getTextBoxValue(sprite1Box);
+			ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][1] = getTextBoxValue(sprite2Box);
+			ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][2] = getTextBoxValue(sprite3Box);
+			ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(int) spriteUpDown.Value][3] = getTextBoxValue(sprite4Box);
 
-				ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0] = getTextBoxValue(palette1Box);
-				ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1] = getTextBoxValue(palette2Box);
-				ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2] = getTextBoxValue(palette3Box);
-				ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3] = getTextBoxValue(palette4Box);
+			ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][0] = getTextBoxValue(palette1Box);
+			ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][1] = getTextBoxValue(palette2Box);
+			ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][2] = getTextBoxValue(palette3Box);
+			ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3] = getTextBoxValue(palette4Box);
 
-				ZScreamer.ActiveUWScene.Room.reloadGfx();
-				reloadGfx();
-				ZScreamer.ActiveUWScene.Refresh();
-			}
+			reloadGfx();
+			Program.RoomPreviewArtist.HardRefresh();
+			Program.RoomEditingArtist.HardRefresh();
+			ZScreamer.ActiveUWScene.Refresh();
+			
 		}
 
 		private void okButton_Click(object sender, EventArgs e)
@@ -351,7 +354,6 @@ namespace ZeldaFullEditor.Gui
 
 		private void createPalette()
 		{
-
 			for (int i = 0; i < 256; i++)
 			{
 				palettes[i] = Color.Black;
@@ -613,8 +615,8 @@ namespace ZeldaFullEditor.Gui
 			{
 				if (ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(byte) paletteUpDown.Value][0] % 2 == 0)
 				{
-					ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActiveGraphicsManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
-					ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActiveGraphicsManager.LoadSpritesPalette(ZScreamer.ActiveUWScene.Room.Palette);
+					ZScreamer.ActiveGraphicsManager.loadedPalettes = ZScreamer.ActivePaletteManager.LoadDungeonPalette(ZScreamer.ActiveUWScene.Room.Palette);
+					ZScreamer.ActiveGraphicsManager.loadedSprPalettes = ZScreamer.ActivePaletteManager.GetSpritePaletteSet(ZScreamer.ActiveUWScene.Room.Palette);
 				}
 			}
 		}

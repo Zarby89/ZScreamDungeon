@@ -84,8 +84,6 @@ namespace ZeldaFullEditor
 		/// Writes an arbitrary number of bytes to ROM,
 		/// while incrementing the address passed to it for continuous writes.
 		/// </summary>
-		/// <param name="addr"></param>
-		/// <param name="bytes"></param>
 		public void WriteContinuous(ref int addr, params byte[] bytes)
 		{
 			foreach (byte b in bytes)
@@ -104,7 +102,7 @@ namespace ZeldaFullEditor
 			return DATA[addr++] | (DATA[addr++] << 8) | (DATA[addr++] << 16);
 		}
 
-		public ushort Read16BE(int addr)
+		public ushort Read16BigEndian(int addr)
 		{
 			return (ushort) ((DATA[addr++] << 8) | DATA[addr++]);
 		}
@@ -137,7 +135,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public void Write16BE(int addr, params int[] words)
+		public void Write16BigEndian(int addr, params int[] words)
 		{
 			foreach (int i in words)
 			{
@@ -146,7 +144,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public void Write24BE(int addr, params int[] words)
+		public void Write24BigEndian(int addr, params int[] words)
 		{
 			foreach (int i in words)
 			{

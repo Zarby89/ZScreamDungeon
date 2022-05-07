@@ -130,7 +130,7 @@ namespace ZeldaFullEditor
 
 					g.DrawFilledRectangleWithOutline(e.SquareHitbox, outline, bgrBrush);
 
-					drawText(g, e.GlobalX + 3, e.GlobalY + 5, txt);
+					g.DrawText(e.GlobalX + 3, e.GlobalY + 5, txt);
 				}
 			}
 		}

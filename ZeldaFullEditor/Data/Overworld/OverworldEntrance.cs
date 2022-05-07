@@ -15,7 +15,7 @@ namespace ZeldaFullEditor
 		public bool IsPitEntrance { get; set; }
 
 		// TODO make this based on map position and make deleted map position consistent
-		public bool deleted { get; set; }
+		public bool Deleted => (GlobalX & GlobalY) == Constants.NullEntrance;
 
 		public OverworldEntrance(ushort x, ushort y, byte entranceId, byte mapId, ushort mapPos)
 		{

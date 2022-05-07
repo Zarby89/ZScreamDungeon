@@ -48,7 +48,6 @@ namespace ZeldaFullEditor
 						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
 					}
 
-					ZS.OverworldManager.allexits[i].Deleted = false;
 					ZS.OverworldManager.allexits[i].MapID = mid;
 					ZS.OverworldManager.allexits[i].GlobalX = (ushort) (mxRightclick & ~0xF);
 					ZS.OverworldManager.allexits[i].GlobalY = (ushort) (myRightclick & ~0xF);
@@ -108,40 +107,17 @@ namespace ZeldaFullEditor
 			//scene.owForm.thumbnailBox.Visible = true;
 			//scene.owForm.thumbnailBox.Size = new Size(256, 256);
 			int roomId = SelectedExit.TargetRoomID;
-			if (roomId >= Constants.NumberOfRooms)
-			{
-				//scene.owForm.thumbnailBox.Visible = false;
-				return;
-			}
+			if (roomId >= Constants.NumberOfRooms) return;
 
-			if (Program.DungeonForm.lastRoomID != roomId)
-			{
-				Program.DungeonForm.previewRoom = ZS.all_rooms[roomId];
-				Program.DungeonForm.previewRoom.reloadGfx();
-				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(Program.DungeonForm.previewRoom.Palette);
-				Program.DungeonForm.DrawRoom();
-				DrawTempExit();
-				entrancePreview = true;
-				//scene.Refresh();
-
-				if (ZS.UnderworldScene.Room != null)
-				{
-					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
-					ZS.UnderworldScene.Room.reloadGfx();
-					ZS.UnderworldScene.Refresh();
-				}
-			}
-
-			Program.DungeonForm.lastRoomID = roomId;	
+			Program.RoomPreviewArtist.SetRoomAndDrawImmediately(ZS.all_rooms[roomId]);
 		}
 
 		private void Delete_Exit() // Set exit data to 0
 		{
-			LastSelectedExit.GlobalX = 0xFFFF;
-			LastSelectedExit.GlobalY = 0xFFFF;
+			LastSelectedExit.GlobalX = Constants.NullEntrance;
+			LastSelectedExit.GlobalY = Constants.NullEntrance;
 			LastSelectedExit.MapID = 0;
 			LastSelectedExit.TargetRoomID = 0;
-			LastSelectedExit.Deleted = true;
 		}
 
 		private void OnMouseMove_Exit(MouseEventArgs e)
@@ -275,54 +251,9 @@ namespace ZeldaFullEditor
 
 					g.DrawFilledRectangleWithOutline(ex.SquareHitbox, outline, bgrBrush);
 
-					drawText(g, ex.GlobalX + 4, ex.GlobalY + 4, txt);
+					g.DrawText(ex.GlobalX + 4, ex.GlobalY + 4, txt);
 				}
 			}
-		}
-
-		// TODO move this dumb shit to the dungeon room class
-		public void DrawTempExit()
-		{
-			Graphics g = Graphics.FromImage(Program.OverworldForm.tmpPreviewBitmap);
-			g.InterpolationMode = InterpolationMode.Bilinear;
-			if (Program.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeTranslucent || Program.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeTransparent ||
-			 Program.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeOnTop || Program.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeOff)
-			{
-				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
-			}
-
-			g.DrawImage(ZS.GFXManager.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
-
-			if (Program.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeTranslucent || Program.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeTransparent)
-			{
-				float[][] matrixItems ={
-					new float[] {1f, 0, 0, 0, 0},
-					new float[] {0, 1f, 0, 0, 0},
-					new float[] {0, 0, 1f, 0, 0},
-					new float[] {0, 0, 0, 0.5f, 0},
-					new float[] {0, 0, 0, 0, 1}
-				};
-				ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
-
-				// Create an ImageAttributes object and set its color matrix.
-				ImageAttributes imageAtt = new ImageAttributes();
-				imageAtt.SetColorMatrix(
-				   colorMatrix,
-				   ColorMatrixFlag.Default,
-				   ColorAdjustType.Bitmap
-				);
-
-				//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
-				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
-			}
-			else if (Program.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeOnTop)
-			{
-				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
-			}
-
-			ZS.UnderworldScene.drawText(g, 0, 0, "ROOM : " + Program.DungeonForm.previewRoom.RoomID.ToString("X2"));
-			g.InterpolationMode = InterpolationMode.NearestNeighbor;
-			g.Dispose();
 		}
 	}
 }

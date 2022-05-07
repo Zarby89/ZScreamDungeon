@@ -71,7 +71,7 @@ namespace ZeldaFullEditor
 				selectedSprite = ZS.OverworldManager.allsprites[gs].Last();
 				selectedFormSprite = null;
 				MouseIsDown = true;
-				isLeftPress = true;
+				IsLeftPress = true;
 			}
 		}
 
@@ -190,7 +190,7 @@ namespace ZeldaFullEditor
 				selectedSprite = ZS.OverworldManager.allsprites[gs].Last();
 				selectedFormSprite = null;
 				MouseIsDown = true;
-				isLeftPress = true;
+				IsLeftPress = true;
 			}
 		}
 
@@ -209,7 +209,7 @@ namespace ZeldaFullEditor
 				selectedFormSprite.SnapToGrid();
 			}
 
-			if (isLeftPress && selectedSprite != null)
+			if (IsLeftPress && selectedSprite != null)
 			{
 				selectedSprite.GlobalX = (ushort) e.X;
 				selectedSprite.GlobalY = (ushort) e.Y;
@@ -282,7 +282,7 @@ namespace ZeldaFullEditor
 					}
 
 					g.DrawFilledRectangleWithOutline(spr.SquareHitbox, outline, bgrBrush);
-					drawText(g, spr.GlobalX + 4, spr.GlobalY + 4, txt);
+					g.DrawText(spr.GlobalX + 4, spr.GlobalY + 4, txt);
 				}
 			}
 		}

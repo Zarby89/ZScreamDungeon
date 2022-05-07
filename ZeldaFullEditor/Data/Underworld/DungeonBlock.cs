@@ -29,7 +29,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, 16, 16);
 
-		public void Draw(ZScreamer ZS)
+		public void Draw(Artist art)
 		{
 			throw new NotImplementedException();
 		}

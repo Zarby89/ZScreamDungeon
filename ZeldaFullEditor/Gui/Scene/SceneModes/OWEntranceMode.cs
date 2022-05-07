@@ -53,7 +53,7 @@ namespace ZeldaFullEditor
 
 			foreach (var e in list)
 			{
-				if (e.deleted)
+				if (e.Deleted)
 				{
 					found = e;
 					break;
@@ -78,7 +78,6 @@ namespace ZeldaFullEditor
 				mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
 			}
 
-			found.deleted = false;
 			found.MapID = mid;
 			found.GlobalX = (ushort) (mxRightclick & ~0x0F);
 			found.GlobalY = (ushort) (myRightclick & ~0x0F);
@@ -86,7 +85,7 @@ namespace ZeldaFullEditor
 
 			SelectedEntrance = found;
 			MouseIsDown = true;
-			isLeftPress = true;
+			IsLeftPress = true;
 
 			return found;
 		}
@@ -122,77 +121,55 @@ namespace ZeldaFullEditor
 			if (SelectedEntrance == null) return;
 
 			int roomId = ZS.entrances[SelectedEntrance.TargetEntranceID].RoomID;
-			if (roomId >= Constants.NumberOfRooms)
-			{
-				//ZS.OverworldManagerForm.thumbnailBox.Visible = false;
-				return;
-			}
+			if (roomId >= Constants.NumberOfRooms) return;
 
-			if (Program.DungeonForm.lastRoomID != roomId)
-			{
-				Program.DungeonForm.previewRoom = ZS.all_rooms[roomId];
-				Program.DungeonForm.previewRoom.reloadGfx();
-				ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(Program.DungeonForm.previewRoom.Palette);
-				Program.DungeonForm.DrawRoom();
-				DrawTempEntrance();
-				entrancePreview = true;
-				//scene.Refresh();
-
-				if (ZS.UnderworldScene.Room != null)
-				{
-					ZS.GFXManager.loadedPalettes = ZS.GFXManager.LoadDungeonPalette(ZS.UnderworldScene.Room.Palette);
-					ZS.UnderworldScene.Room.reloadGfx();
-					ZS.UnderworldScene.Refresh();
-				}
-			}
-
-			Program.DungeonForm.lastRoomID = roomId;
+			Program.RoomPreviewArtist.SetRoomAndDrawImmediately(ZS.all_rooms[roomId]);
 		}
 
 		public void DrawTempEntrance()
 		{
-			Graphics g = Graphics.FromImage(Program.OverworldForm.tmpPreviewBitmap);
-			g.InterpolationMode = InterpolationMode.Bilinear;
-			if (Program.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeTranslucent || Program.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeTransparent ||
-			 Program.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeOnTop || Program.DungeonForm.previewRoom.Layer2Mode != Constants.LayerMergeOff)
-			{
-				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
-			}
-
-			g.DrawImage(ZS.GFXManager.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
-
-			if (Program.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeTranslucent || Program.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeTransparent)
-			{
-				float[][] matrixItems ={
-					new float[] {1f, 0, 0, 0, 0},
-					new float[] {0, 1f, 0, 0, 0},
-					new float[] {0, 0, 1f, 0, 0},
-					new float[] {0, 0, 0, 0.5f, 0},
-					new float[] {0, 0, 0, 0, 1}
-				};
-				ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
-
-				// Create an ImageAttributes object and set its color matrix.
-				ImageAttributes imageAtt = new ImageAttributes();
-
-				imageAtt.SetColorMatrix
-				(
-				   colorMatrix,
-				   ColorMatrixFlag.Default,
-				   ColorAdjustType.Bitmap
-				);
-
-				//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
-				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
-			}
-			else if (Program.DungeonForm.previewRoom.Layer2Mode == Constants.LayerMergeOnTop)
-			{
-				g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
-			}
-
-			ZS.UnderworldScene.drawText(g, 0, 0, "ROOM : " + Program.DungeonForm.previewRoom.RoomID.ToString("X2"));
-			g.InterpolationMode = InterpolationMode.NearestNeighbor;
-			g.Dispose();
+			//Graphics g = Graphics.FromImage(Program.OverworldForm.tmpPreviewBitmap);
+			//g.InterpolationMode = InterpolationMode.Bilinear;
+			//if (Program.DungeonForm.previewRoom.LayerEffect != Constants.LayerMergeTranslucent || Program.DungeonForm.previewRoom.LayerEffect != Constants.LayerMergeTransparent ||
+			// Program.DungeonForm.previewRoom.LayerEffect != Constants.LayerMergeOnTop || Program.DungeonForm.previewRoom.LayerEffect != Constants.LayerMergeOff)
+			//{
+			//	g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
+			//}
+			//
+			//g.DrawImage(ZS.GFXManager.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
+			//
+			//if (Program.DungeonForm.previewRoom.LayerEffect == Constants.LayerMergeTranslucent || Program.DungeonForm.previewRoom.LayerEffect == Constants.LayerMergeTransparent)
+			//{
+			//	float[][] matrixItems ={
+			//		new float[] {1f, 0, 0, 0, 0},
+			//		new float[] {0, 1f, 0, 0, 0},
+			//		new float[] {0, 0, 1f, 0, 0},
+			//		new float[] {0, 0, 0, 0.5f, 0},
+			//		new float[] {0, 0, 0, 0, 1}
+			//	};
+			//	ColorMatrix colorMatrix = new ColorMatrix(matrixItems);
+			//
+			//	// Create an ImageAttributes object and set its color matrix.
+			//	ImageAttributes imageAtt = new ImageAttributes();
+			//
+			//	imageAtt.SetColorMatrix
+			//	(
+			//	   colorMatrix,
+			//	   ColorMatrixFlag.Default,
+			//	   ColorAdjustType.Bitmap
+			//	);
+			//
+			//	//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
+			//	g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
+			//}
+			//else if (Program.DungeonForm.previewRoom.LayerEffect == Constants.LayerMergeOnTop)
+			//{
+			//	g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
+			//}
+			//
+			//ZS.UnderworldScene.g.DrawText(0, 0, "ROOM : " + Program.DungeonForm.previewRoom.RoomID.ToString("X2"));
+			//g.InterpolationMode = InterpolationMode.NearestNeighbor;
+			//g.Dispose();
 		}
 
 		private void Delete_Entrance()
@@ -202,7 +179,6 @@ namespace ZeldaFullEditor
 			LastSelectedEntrance.MapID = 0;
 			LastSelectedEntrance.mapPos = 0xFFFF;
 			LastSelectedEntrance.TargetEntranceID = 0;
-			LastSelectedEntrance.deleted = true;
 		}
 
 		private void OnMouseMove_Entrance(MouseEventArgs e)
@@ -220,7 +196,7 @@ namespace ZeldaFullEditor
 				return;
 			}
 
-			if (isLeftPress && SelectedEntrance != null)
+			if (IsLeftPress && SelectedEntrance != null)
 			{
 				SelectedEntrance.GlobalX = (ushort) e.X;
 				SelectedEntrance.GlobalY = (ushort) e.Y;
@@ -317,29 +293,23 @@ namespace ZeldaFullEditor
 
 		private void insertEntrance_Click(object sender, EventArgs e)
 		{
-			bool found = false;
 			for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
 			{
-				if (ZS.OverworldManager.allentrances[i].deleted)
+				if (ZS.OverworldManager.allentrances[i].Deleted)
 				{
 					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
 					if (mid == 255)
 					{
 						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
 					}
-					ZS.OverworldManager.allentrances[i].deleted = false;
 					ZS.OverworldManager.allentrances[i].MapID = mid;
 					ZS.OverworldManager.allentrances[i].GlobalX = (ushort) (mxRightclick & ~0xF);
 					ZS.OverworldManager.allentrances[i].GlobalY = (ushort) (myRightclick & ~0xF);
-					found = true;
-					break;
+					return;
 				}
 			}
 
-			if (!found)
-			{
-				throw new ZeldaException("No space available for new entrances; Delete one first.");
-			}
+			throw new ZeldaException("No space available for new entrances; Delete one first.");
 		}
 
 		private void Delete_Click(object sender, EventArgs e)
@@ -419,7 +389,7 @@ namespace ZeldaFullEditor
 
 						g.DrawFilledRectangleWithOutline(ent.SquareHitbox, outline, bgrBrush);
 
-						drawText(g, ent.GlobalX, ent.GlobalY + 9, txt);
+						g.DrawText(ent.GlobalX, ent.GlobalY + 9, txt);
 						i++;
 					}
 				}

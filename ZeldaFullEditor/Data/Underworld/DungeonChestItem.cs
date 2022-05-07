@@ -25,7 +25,7 @@ namespace ZeldaFullEditor.Data.Underworld
 			ReceiptType = s;
 		}
 
-		public void Draw(ZScreamer ZS)
+		public void Draw(Artist art)
 		{
 
 		}

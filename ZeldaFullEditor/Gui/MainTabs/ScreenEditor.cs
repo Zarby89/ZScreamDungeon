@@ -1,27 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
-using System.IO;
-using ZeldaFullEditor.Properties;
 using System.Globalization;
-using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using ZeldaFullEditor.Data;
+using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor.Gui.MainTabs
 {
 	public partial class ScreenEditor : UserControl
 	{
-
-		public const ushort BossRoomNull = 0x000F;
+		private const ushort BossRoomNull = 0x000F;
 		private const int SomeThingZarbyNeedsToName = 492;
+
 		Point3D[] triforceVertices = new Point3D[6];
 		Point3D[] crystalVertices = new Point3D[6];
 		Point3D selectedVertex = null;
@@ -64,8 +58,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		List<MapIcon>[] allMapIcons = new List<MapIcon>[10];
 
-		int[] addresses = new int[] { 0x53de4, 0x53e2c, 0x53e08, 0x53e50, 0x53e74, 0x53e98, 0x53ebc };
-		int[] addressesgfx = new int[] { 0x53ee0, 0x53f04, 0x53ef2, 0x53f16, 0x53f28, 0x53f3a, 0x53f4c };
+		int[] addresses = new int[] { 0x53DE4, 0x53E2C, 0x53E08, 0x53E50, 0x53E74, 0x53E98, 0x53EBC };
+		int[] addressesgfx = new int[] { 0x53EE0, 0x53F04, 0x53EF2, 0x53F16, 0x53F28, 0x53F3A, 0x53F4C };
 
 		byte selectedMapTile = 0;
 
@@ -145,7 +139,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				ZScreamer.ActivePaletteManager.OverworldMain[5], ZScreamer.ActivePaletteManager.OverworldAnimated[0],
 				ZScreamer.ActivePaletteManager.OverworldAux[3], ZScreamer.ActivePaletteManager.OverworldAux[3],
 				ZScreamer.ActivePaletteManager.HUD[0],
-				Color.FromArgb(0, 0, 0, 0),
+				Color.FromArgb(0),
 				ZScreamer.ActivePaletteManager.SpriteAux1[1],
 				ZScreamer.ActivePaletteManager.SpriteAux1[1]
 			);
@@ -258,8 +252,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			int xLowest = 256;
 			for (int i = 0; i < 10; i++)
 			{
-				oamData[i] = new OAMTile(ZScreamer.ActiveROM[0x67E26 + i], (byte) (ZScreamer.ActiveROM[0x67E30 + (i * 2)] + 22),
-					ZScreamer.ActiveROM[0x67E1C + i], (byte) ((ZScreamer.ActiveROM[0x67E92] >> 1) & 0x07), uppersprCheckbox.Checked);
+				oamData[i] = new OAMTile(ZScreamer.ActiveROM[0x67E26 + i],
+					(byte) (ZScreamer.ActiveROM[0x67E30 + (i * 2)] + 22),
+					ZScreamer.ActiveROM[0x67E1C + i],
+					(byte) ((ZScreamer.ActiveROM[0x67E92] >> 1) & 0x07),
+					uppersprCheckbox.Checked);
 				if (ZScreamer.ActiveROM[0x67E26 + i] < xLowest)
 				{
 					xLowest = ZScreamer.ActiveROM[0x67E26 + i];
@@ -310,9 +307,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			while (!ZScreamer.ActiveROM[pos].BitIsOn(0x80))
 			{
 				//Console.WriteLine(ZScreamer.ActiveROM.DATA[pos].ToString("X2") + " "+ ZScreamer.ActiveROM.DATA[pos+1].ToString("X2") + " "+ ZScreamer.ActiveROM.DATA[pos+2].ToString("X2") + " "+ ZScreamer.ActiveROM.DATA[pos+3].ToString("X2") + " ");
-				ushort destAddr = ZScreamer.ActiveROM.Read16BE(pos); // $03 and $04
+				ushort destAddr = ZScreamer.ActiveROM.Read16BigEndian(pos); // $03 and $04
 				pos += 2;
-				ushort length = ZScreamer.ActiveROM.Read16BE(pos);
+				ushort length = ZScreamer.ActiveROM.Read16BigEndian(pos);
 				bool increment64 = length.BitIsOn(0x8000);
 				bool fixsource = length.BitIsOn(0x4000);
 				pos += 2;
@@ -423,7 +420,6 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				}
 			}
 		}
-
 
 		public unsafe void Buildtilesetmap()
 		{
@@ -547,17 +543,13 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		private unsafe void CopyTile(int x, int y, int xx, int yy, int id, byte p, bool v, bool h, byte* gfx16Pointer, byte* gfx8Pointer)
 		{
 			int mx = x;
-			int my = y;
+			int my = v ? 7 - y : y;
 			byte r = 0;
 
 			if (h)
 			{
 				mx = 3 - x;
 				r = 1;
-			}
-			if (v)
-			{
-				my = 7 - y;
 			}
 
 			int tx = ((id / 16) * 512) + ((id & 0xF) * 4);
@@ -572,17 +564,10 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		{
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 			e.Graphics.DrawImage(tiles8Bitmap, Constants.Rect_0_0_256_1024, Constants.Rect_0_0_128_512, GraphicsUnit.Pixel);
-			int sx = selectedTile % 16;
-			int sy = selectedTile / 16;
 
-			if (editsprRadio.Checked)
-			{
-				e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(sx * 16, sy * 16, 32, 32));
-			}
-			else
-			{
-				e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(sx * 16, sy * 16, 16, 16));
-			}
+			int size = editsprRadio.Checked ? 32 : 16;
+			e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(selectedTile % 16 * 16, selectedTile & ~0xF, size, size));
+
 		}
 
 		private void mirrorXCheckbox_CheckedChanged(object sender, EventArgs e)
@@ -696,12 +681,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 				e.Graphics.DrawImage(tilesBG1Bitmap, Constants.Rect_0_0_512_512, Constants.Rect_0_0_256_256, GraphicsUnit.Pixel);
 			}
 
-			if (editsprRadio.Checked)
+			if (editsprRadio.Checked && lastSelectedOamTile != null)
 			{
-				if (lastSelectedOamTile != null)
-				{
-					e.Graphics.DrawRectangle(Pens.LightGreen, new Rectangle((lastSelectedOamTile.x * 2), (lastSelectedOamTile.y * 2), 32, 32));
-				}
+				e.Graphics.DrawRectangle(Pens.LightGreen, new Rectangle((lastSelectedOamTile.x * 2), (lastSelectedOamTile.y * 2), 32, 32));
 			}
 		}
 
@@ -860,8 +842,8 @@ namespace ZeldaFullEditor.Gui.MainTabs
 					{
 						if (lockCheckbox.Checked)
 						{
-							selectedOamTile.x = (byte) ((xP / 8) * 8);
-							selectedOamTile.y = (byte) ((yP / 8) * 8);
+							selectedOamTile.x = (byte) (xP & ~0x7);
+							selectedOamTile.y = (byte) (yP & ~0x7);
 						}
 						else
 						{
@@ -1048,7 +1030,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		{
 			for (int i = 0; i < 256; i++)
 			{
-				e.Graphics.FillRectangle(new SolidBrush(currentPalette[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
+				e.Graphics.FillRectangle(new SolidBrush(currentPalette[i]), new Rectangle(i % 16 * 16, i & ~0xF, 16, 16));
 			}
 
 			e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(0, 16 * palSelected, 256, 16));
@@ -1076,7 +1058,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
 
 			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.overworldMapBitmap, Constants.Rect_0_0_256_256);
-			e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle((selectedMapTile % 16) * 16, (selectedMapTile / 16) * 16, 16, 16));
+			e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(selectedMapTile % 16 * 16, selectedMapTile & ~0xF, 16, 16));
 		}
 
 		public unsafe void DrawMapBG(IntPtr destPtr)
@@ -1201,13 +1183,14 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		{
 			for (int i = 0; i < 256; i++)
 			{
-				e.Graphics.FillRectangle(new SolidBrush(ZScreamer.ActiveGraphicsManager.overworldMapBitmap.Palette.Entries[i]), new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
+				e.Graphics.FillRectangle(new SolidBrush(ZScreamer.ActiveGraphicsManager.overworldMapBitmap.Palette.Entries[i]),
+					new Rectangle(i % 16 * 16, i & ~0xF, 16, 16));
 			}
 		}
 
 		private void owMapTilesBox_MouseDown(object sender, MouseEventArgs e)
 		{
-			selectedMapTile = (byte) ((e.X / 16) + ((e.Y / 16) * 16));
+			selectedMapTile = (byte) ((e.X / 16) + (e.Y & ~0xF));
 			owMapTilesBox.Refresh();
 		}
 

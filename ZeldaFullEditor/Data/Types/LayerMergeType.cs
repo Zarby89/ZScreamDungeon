@@ -33,7 +33,6 @@ namespace ZeldaFullEditor.Data
 		public static readonly LayerMergeType LayerMerge05 = new LayerMergeType(0x05, "Addition", true, true, true);
 		public static readonly LayerMergeType LayerMerge06 = new LayerMergeType(0x06, "Normal", true, false, false);
 		public static readonly LayerMergeType LayerMerge07 = new LayerMergeType(0x07, "Transparent", true, true, true);
-		public static readonly LayerMergeType LayerMerge08 = new LayerMergeType(0x08, "Dark room", true, true, true);
 
 		public static readonly LayerMergeType[] ListOf =
 		{
@@ -44,8 +43,7 @@ namespace ZeldaFullEditor.Data
 			LayerMerge04,
 			LayerMerge05,
 			LayerMerge06,
-			LayerMerge07,
-			LayerMerge08
+			LayerMerge07
 		};
 
 		public static LayerMergeType GetTypeFromID(int id)
@@ -60,7 +58,6 @@ namespace ZeldaFullEditor.Data
 				case 0x05: return LayerMerge05;
 				case 0x06: return LayerMerge06;
 				case 0x07: return LayerMerge07;
-				case 0x08: return LayerMerge08;
 			}
 			return null;
 		}

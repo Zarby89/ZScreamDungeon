@@ -575,9 +575,9 @@ namespace ZeldaFullEditor
 				int mid = ZS.OverworldManager.allmaps[CurrentMap].parent;
 				int msy = 512 * (((ZS.OverworldManager.allmaps[CurrentMap].parent - ZS.OverworldManager.WorldOffset) / 8));
 				int msx = 512 * ((ZS.OverworldManager.allmaps[CurrentMap].parent - ZS.OverworldManager.WorldOffset) - (msy * 8));
-				drawText(g, 0 + 4, 0 + 64, "Selected Map : " + CurrentMap.ToString());
-				drawText(g, 0 + 4, 0 + 80, "Selected Map PARENT : " + ZS.OverworldManager.allmaps[CurrentMap].parent.ToString());
-				drawText(g, msx + 4, msy + 4, "use ctrl key + click to delete overlay tiles");
+				g.DrawText(0 + 4, 0 + 64, "Selected Map : " + CurrentMap.ToString());
+				g.DrawText(0 + 4, 0 + 80, "Selected Map PARENT : " + ZS.OverworldManager.allmaps[CurrentMap].parent.ToString());
+				g.DrawText(msx + 4, msy + 4, "use ctrl key + click to delete overlay tiles");
 
 				for (int i = 0; i < ZS.OverworldManager.alloverlays[mid].tilesData.Count; i++)
 				{
@@ -616,8 +616,8 @@ namespace ZeldaFullEditor
 				g.DrawImage(tilesgfxBitmap,temp, 0, 0, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
 				g.DrawRectangle(Pens.LightGreen, temp);
 
-				drawText(g, 4, 24, globalmouseTileDownX.ToString());
-				drawText(g, 4, 48, globalmouseTileDownY.ToString());
+				g.DrawText(4, 24, globalmouseTileDownX.ToString());
+				g.DrawText(4, 48, globalmouseTileDownY.ToString());
 			}
 
 			if (Program.OverworldForm.gridDisplay != 0)

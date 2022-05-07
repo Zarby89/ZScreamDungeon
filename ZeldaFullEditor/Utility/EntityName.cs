@@ -81,9 +81,9 @@
 		public override string ToString() => Name;
 	}
 
-	public class Layer2TypeName : EntityName
+	public class MusicName : EntityName
 	{
-		public Layer2TypeName(int i, string n) : base(i, n) { }
+		public MusicName(int i, string n) : base(i, n) { }
 		public override string ToString() => Name;
 	}
 }

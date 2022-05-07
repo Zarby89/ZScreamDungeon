@@ -4,6 +4,9 @@ using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor
 {
+	/// <summary>
+	/// Creates a room's object save data with meta properties to help optimize saving.
+	/// </summary>
 	public class RoomSaveEntry
 	{
 		public ushort ID { get; }

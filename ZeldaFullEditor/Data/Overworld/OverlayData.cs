@@ -13,5 +13,10 @@ namespace ZeldaFullEditor
 		public OverlayData()
 		{
 		}
+
+		public void CleanUp()
+		{
+			tilesData.RemoveAll(o => o.IsGarbage);
+		}
 	}
 }

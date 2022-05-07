@@ -70,7 +70,7 @@ namespace ZeldaFullEditor
 					if (e == selectedGrave)
 					{
 						bgrBrush = Constants.MediumMint200Pen;
-						//scene.drawText(g, e.xTilePos + 8, e.yTilePos + 8, "ID : " + i.ToString("X2"));
+						//scene.g.DrawText(e.xTilePos + 8, e.yTilePos + 8, "ID : " + i.ToString("X2"));
 					}
 					else
 					{
@@ -79,17 +79,17 @@ namespace ZeldaFullEditor
 				}
 
 				g.DrawRectangle(bgrBrush, new Rectangle(e.xTilePos, e.yTilePos, 32, 32));
-				drawText(g, e.xTilePos + 8, e.yTilePos + 8, i.ToString("X2"));
+				g.DrawText(e.xTilePos + 8, e.yTilePos + 8, i.ToString("X2"));
 
-				//scene.drawText(g, e.xTilePos + 8, e.yTilePos + 40, e.tilemapPos.ToString("X4"));
+				//scene.g.DrawText(e.xTilePos + 8, e.yTilePos + 40, e.tilemapPos.ToString("X4"));
 				if (i == 0x0D) // Stairs
 				{
-					drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL STAIRS");
+					g.DrawText(e.xTilePos + 8, e.yTilePos + 16, "SPECIAL STAIRS");
 				}
 
 				if (i == 0x0E) // Hole
 				{
-					drawText(g, e.xTilePos + 8, e.yTilePos + 16, "SPECIAL HOLE");
+					g.DrawText(e.xTilePos + 8, e.yTilePos + 16, "SPECIAL HOLE");
 				}
 			}
 		}

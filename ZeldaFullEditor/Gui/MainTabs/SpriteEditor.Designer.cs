@@ -409,7 +409,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			this.PrizePackField.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 7);
 			this.PrizePackField.Size = new System.Drawing.Size(37, 20);
 			this.PrizePackField.TabIndex = 18;
-			this.PrizePackField.Text = "00";
+			this.PrizePackField.Text = "0";
 			this.PrizePackField.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.PrizePackField.TextChanged += new System.EventHandler(this.OnSpritePropertyChange);
 			// 
@@ -476,7 +476,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			this.PaletteField.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 7);
 			this.PaletteField.Size = new System.Drawing.Size(37, 20);
 			this.PaletteField.TabIndex = 12;
-			this.PaletteField.Text = "00";
+			this.PaletteField.Text = "0";
 			this.PaletteField.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.PaletteField.TextChanged += new System.EventHandler(this.OnSpritePropertyChange);
 			// 
@@ -516,9 +516,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			this.DamageClassField.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 			this.DamageClassField.HexValue = 0;
 			this.DamageClassField.Location = new System.Drawing.Point(91, 44);
-			this.DamageClassField.MaxLength = 2;
+			this.DamageClassField.MaxLength = 1;
 			this.DamageClassField.Name = "DamageClassField";
-			this.DamageClassField.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.DamageClassField.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 9);
 			this.DamageClassField.Size = new System.Drawing.Size(37, 20);
 			this.DamageClassField.TabIndex = 8;
 			this.DamageClassField.Text = "00";

@@ -43,6 +43,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			}
 		}
 
+		[Browsable(false)]
 		public int MaxValue
 		{
 			get => range.Max;
@@ -53,6 +54,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			//}
 		}
 
+		[Browsable(false)]
 		public int MinValue
 		{
 			get => range.Min;

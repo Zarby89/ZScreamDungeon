@@ -176,24 +176,24 @@ namespace ZeldaFullEditor
 		Layer2 = 1,
 		Layer3 = 2,
 		LayerAll = 3,
+		Doors,
 		Sprites,
 		Secrets,
 		Blocks,
 		Torches,
-		Doors,
+		Entrances,
 		CollisionMap,
-		Entrances
 	}
 
 	public enum OverworldEditMode
 	{
 		Tile16,
+		Overlay,
 		Sprites,
 		Secrets,
 		Entrances,
 		Exits,
 		Transports,
-		Overlay,
 		Gravestones,
 		Doors,
 	}

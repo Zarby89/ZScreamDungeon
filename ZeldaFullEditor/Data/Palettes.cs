@@ -346,5 +346,97 @@ namespace ZeldaFullEditor
 
 			return asmString;
 		}
+
+		private Color[,] lastDungeonPalette;
+
+		public Color[,] LoadDungeonPalette(byte id)
+		{
+			Color[,] palettes = new Color[16, 8];
+
+			// id = dungeon palette id
+			byte dungeon_palette_ptr = ZS.GFXGroups.paletteGfx[id][0];
+			int paletteid = ZS.ROM.Read16(0xDEC4B + dungeon_palette_ptr);
+			int pId = paletteid / 180;
+
+			int i = 0;
+
+			int j = 0;
+			for (int y = 0; y < 2; y++)
+			{
+				for (int x = 0; x < 16; x++)
+				{
+					palettes[x, y] = HUD[0][j++];
+				}
+			}
+
+			for (int y = 2; y < 8; y++)
+			{
+				for (int x = 0; x < 16; x++)
+				{
+					if (x == 0)
+					{
+						palettes[x, y] = Color.Black;
+						continue;
+					}
+
+					palettes[x, y] = UnderworldMain[pId][i];
+					if (x == 8)
+					{
+						palettes[x, y] = Color.Black;
+					}
+
+					i++;
+				}
+			}
+
+			lastDungeonPalette = palettes;
+			return palettes;
+		}
+
+
+		public Color[,] GetSpritePaletteSet(byte id)
+		{
+			var palettes = new Color[16, 8];
+			byte sprite1_palette_ptr = ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (id * 4) + 1];
+			byte sprite2_palette_ptr = (byte) (ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (id * 4) + 2] * 2);
+			byte sprite3_palette_ptr = (byte) (ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (id * 4) + 3] * 2);
+
+			ushort palette_pos1 = ZS.ROM[0xDEBC6 + sprite1_palette_ptr];
+			ushort palette_pos2 = ZS.ROM.Read16(0xDEBD6 + sprite2_palette_ptr);
+			ushort palette_pos3 = ZS.ROM.Read16(0xDEBD6 + sprite3_palette_ptr);
+
+			// ID = dungeon palette id
+			palettes[9, 5] = PlayerSword[0][0];
+			palettes[10, 5] = PlayerSword[0][1];
+			palettes[11, 5] = PlayerSword[0][2];
+			palettes[12, 5] = PlayerShield[0][0];
+			palettes[13, 5] = PlayerShield[0][1];
+			palettes[14, 5] = PlayerShield[0][2];
+			palettes[15, 5] = PlayerShield[0][3];
+
+			for (int x = 0; x < 15; x++)
+			{
+				if (x < 7)
+				{
+					palettes[x + 1, 0] = SpriteAux1[palette_pos1 / 14][x];
+					palettes[x + 1, 5] = SpriteAux3[palette_pos2 / 14][x];
+					palettes[x + 1, 6] = SpriteAux3[palette_pos3 / 14][x];
+				}
+				else
+				{
+					palettes[x + 1, 0] = lastDungeonPalette[x - 7, 2];
+					if (x < 14)
+					{
+						palettes[x + 2, 6] = SpriteAux2[10][x - 7];
+					}
+				}
+				palettes[x + 1, 1] = SpriteGlobal[0][x];
+				palettes[x + 1, 2] = SpriteGlobal[0][x + 15];
+				palettes[x + 1, 3] = SpriteGlobal[0][x + 30];
+				palettes[x + 1, 4] = SpriteGlobal[0][x + 45];
+			}
+
+			return palettes;
+		}
 	}
 }

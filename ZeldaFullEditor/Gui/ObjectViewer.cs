@@ -140,7 +140,7 @@ namespace ZeldaFullEditor
 					}
 				}
 
-				o.Draw(ZScreamer.ActiveScreamer);
+				o.Draw(Program.RoomEditingArtist);
 				if (palettes != null)
 				{
 					ZScreamer.ActiveGraphicsManager.previewObjectsBitmap[o.ID].Palette = palettes;

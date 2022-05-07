@@ -41,7 +41,7 @@ namespace ZeldaFullEditor
 			{
 				ZS.OverworldManager.allitems.Add(data);
 				LastSelectedSecret = SelectedSecret = data;
-				isLeftPress = true;
+				IsLeftPress = true;
 				MouseIsDown = true;
 			}
 		}
@@ -112,7 +112,7 @@ namespace ZeldaFullEditor
 			ZS.OverworldManager.allitems.Add(pitem);
 			SelectedSecret = pitem;
 			LastSelectedSecret = SelectedSecret;
-			isLeftPress = true;
+			IsLeftPress = true;
 			MouseIsDown = true;
 		}
 
@@ -124,7 +124,7 @@ namespace ZeldaFullEditor
 				return;
 			}
 
-			if (SelectedSecret != null && isLeftPress)
+			if (SelectedSecret != null && IsLeftPress)
 			{
 				SelectedSecret.GlobalX = (ushort) e.X;
 				SelectedSecret.GlobalY = (ushort) e.Y;
@@ -193,7 +193,7 @@ namespace ZeldaFullEditor
 
 					g.DrawFilledRectangleWithOutline(item.SquareHitbox, outline, bgrBrush);
 
-					drawText(g, item.GlobalX + 3, item.GlobalY + 5, txt);
+					g.DrawText(item.GlobalX + 3, item.GlobalY + 5, txt);
 				}
 			}
 		}

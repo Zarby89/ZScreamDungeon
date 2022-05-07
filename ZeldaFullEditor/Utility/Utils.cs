@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 
 namespace ZeldaFullEditor
@@ -76,5 +77,38 @@ namespace ZeldaFullEditor
 			g.FillRectangle(fill, r);
 			g.DrawRectangle(outline, r);
 		}
+
+
+		public static void DrawText(this Graphics g, int x, int y, string text, ImageAttributes ai = null, bool x2 = false)
+		{
+			text = text.ToUpper();
+			int cpos = 0;
+			int size = (ai == null && !x2) ? 8 : 16;
+			int spacingmult = x2 ? 2 : 1;
+
+			foreach (char c in text)
+			{
+				byte arrayPos = (byte) (c - 32);
+				if ((byte) c == 10)
+				{
+					y += 10;
+					cpos = 0;
+					continue;
+				}
+
+				g.DrawImage(ZScreamer.ActiveGraphicsManager.spriteFont,
+					new Rectangle(x + cpos, y, size, size), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
+
+				if (arrayPos >= Constants.FontSpacings.Length)
+				{
+					cpos += 8;
+					continue;
+				}
+
+				cpos += Constants.FontSpacings[arrayPos] * spacingmult;
+			}
+		}
+
+
 	}
 }

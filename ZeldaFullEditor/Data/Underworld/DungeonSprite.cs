@@ -116,9 +116,9 @@ namespace ZeldaFullEditor.Data.Underworld
 			return GridX == s.GridX && GridY == s.GridY && ID == s.ID && Subtype == s.Subtype;
 		}
 
-		public void Draw(ZScreamer ZS)
+		public void Draw(Artist art)
 		{
-			Species.Draw(ZS, this);
+			Species.Draw(art, this);
 
 			switch (KeyDrop)
 			{
@@ -126,15 +126,15 @@ namespace ZeldaFullEditor.Data.Underworld
 					return; // nothing
 
 				case 1:
-					SpriteType.SpriteDraw_SmallKeyDrop(ZS, this);
+					SpriteType.SpriteDraw_SmallKeyDrop(art, this);
 					break;
 
 				case 2:
-					SpriteType.SpriteDraw_BigKeyDrop(ZS, this);
+					SpriteType.SpriteDraw_BigKeyDrop(art, this);
 					break;
 
 				default:
-					SpriteType.SpriteDraw_GreenRupeeDrop(ZS, this);
+					SpriteType.SpriteDraw_GreenRupeeDrop(art, this);
 					break;
 			}
 		}
@@ -155,9 +155,9 @@ namespace ZeldaFullEditor.Data.Underworld
 			Species = type;
 		}
 
-		public void Draw(ZScreamer ZS)
+		public void Draw(Artist art)
 		{
-			Species.Draw(ZS, this);
+			Species.Draw(art, this);
 		}
 	}
 }

@@ -9,7 +9,7 @@ namespace ZeldaFullEditor.Data
 {
 	public class SecretItemType : IEntityType<SecretItemType>
 	{
-		public delegate void DrawSecret(ZScreamer ZS, IDrawableSprite s);
+		public delegate void DrawSecret(Artist art, IDrawableSprite s);
 
 		public byte ID { get; }
 		public string VanillaName { get; }
@@ -55,11 +55,11 @@ namespace ZeldaFullEditor.Data
 		public static readonly SecretItemType Secret88 = new SecretItemType(0x88, SecretDraw_Switch);
 
 
-		public static unsafe void DrawTiles(ZScreamer ZS, IDrawableSprite sec, params OAMDrawInfo[] instructions)
+		public static unsafe void DrawTiles(Artist art, IDrawableSprite sec, params OAMDrawInfo[] instructions)
 		{
-			var alltilesData = (byte*) ZS.GFXManager.currentOWgfx16Ptr.ToPointer();
+			var alltilesData = (byte*) art.LoadedGraphicsPointer.ToPointer();
 
-			byte* ptr = (byte*) ZS.GFXManager.roomBg1Ptr.ToPointer(); ;
+			var ptr = (byte*) art.SpriteCanvasPointer.ToPointer();
 
 			// TODO poorly copied and shit
 			foreach (OAMDrawInfo ti in instructions)
@@ -211,117 +211,117 @@ namespace ZeldaFullEditor.Data
 
 
 
-		private static void SecretDraw_Arrow(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Arrow(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Bee(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Bee(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_BlueRupee(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_BlueRupee(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_BlueSldier(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_BlueSldier(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Bomb(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Bomb(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Bombable(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Bombable(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_BushStal(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_BushStal(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Cucco(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Cucco(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Fairy(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Fairy(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_FullMagic(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_FullMagic(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_GreenRupee(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_GreenRupee(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_GreenSoldier(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_GreenSoldier(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_HealthPack(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_HealthPack(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Heart(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Heart(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Hoarder(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Hoarder(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Hole(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Hole(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Key(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Key(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Landmine(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Landmine(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Nothing(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Nothing(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_SmallMagic(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_SmallMagic(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Staircase(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Staircase(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Switch(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Switch(Artist art, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Warp(ZScreamer ZS, IDrawableSprite sec)
+		private static void SecretDraw_Warp(Artist art, IDrawableSprite sec)
 		{
 
 		}

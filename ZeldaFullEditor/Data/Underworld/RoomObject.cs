@@ -72,12 +72,12 @@ namespace ZeldaFullEditor.Data.Underworld
 		}
 
 
-		public void Draw(ZScreamer ZS)
+		public void Draw(Artist art)
 		{
 			Width = 8;
 			Height = 8;
 			CollisionPoints.Clear();
-			ObjectType.Draw(ZS, this);
+			ObjectType.Draw(art, this);
 		}
 
 		public bool DecreaseSize()

@@ -39,19 +39,19 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			UpdatingFromPicker = true;
 
 			DamageSFXBox.Checked = SelectedSprite.UseBossSFX;
-			IgnoreConveyorBox.Checked = SelectedSprite.IgnoreMovingFloors ;
-			OverworldPersistBox.Checked = SelectedSprite.PersistOnOverworld ;
-			IgnoreForKillBox.Checked = SelectedSprite.IgnoreKillRoom ;
-			HasShadowBox.Checked = SelectedSprite.DrawShadow ;
-			ImmuneToAttacksBox.Checked = SelectedSprite.Impervious ;
-			AllowWithBossesBox.Checked = SelectedSprite.AllowWithBoss ;
-			PowderImmuneBox.Checked = SelectedSprite.ImperviousToPowder ;
-			BeeBox.Checked = SelectedSprite.BeeTarget ;
-			IgnoreCollisionBox.Checked = SelectedSprite.IgnoreRecoilCollision ;
-			HarmlessBox.Checked = SelectedSprite.Harmless ;
-			ActiveOffscreenBox.Checked = SelectedSprite.ActiveOffScreen ;
-			NoPermaDeathBox.Checked = SelectedSprite.NoPermaDeath ;
-			DieOffScreenBox.Checked = SelectedSprite.DieOffScreen ;
+			IgnoreConveyorBox.Checked = SelectedSprite.IgnoreMovingFloors;
+			OverworldPersistBox.Checked = SelectedSprite.PersistOnOverworld;
+			IgnoreForKillBox.Checked = SelectedSprite.IgnoreKillRoom;
+			HasShadowBox.Checked = SelectedSprite.DrawShadow;
+			ImmuneToAttacksBox.Checked = SelectedSprite.Impervious;
+			AllowWithBossesBox.Checked = SelectedSprite.AllowWithBoss;
+			PowderImmuneBox.Checked = SelectedSprite.ImperviousToPowder;
+			BeeBox.Checked = SelectedSprite.BeeTarget;
+			IgnoreCollisionBox.Checked = SelectedSprite.IgnoreRecoilCollision;
+			HarmlessBox.Checked = SelectedSprite.Harmless;
+			ActiveOffscreenBox.Checked = SelectedSprite.ActiveOffScreen;
+			NoPermaDeathBox.Checked = SelectedSprite.NoPermaDeath;
+			DieOffScreenBox.Checked = SelectedSprite.DieOffScreen;
 			ImmuneToSwordBox.Checked = SelectedSprite.ImperviousToSword;
 
 			HealthField.HexValue = SelectedSprite.Health;

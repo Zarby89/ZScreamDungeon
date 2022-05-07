@@ -8,8 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace ZeldaFullEditor.Gui.ExtraForms
 {
-	[Serializable]
-	[TypeConverter(typeof(RangeConverter))]
+	[TypeConverter(typeof(ValueRangeConverter))]
 	[ComVisible(true)]
 	public struct ValueRange
 	{
@@ -23,7 +22,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 		}
 	}
 
-	public class RangeConverter : TypeConverter
+	public class ValueRangeConverter : TypeConverter
 	{
 		public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
 		{
@@ -117,7 +116,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 					});
 					if (constructor != null)
 					{
-						return new InstanceDescriptor(constructor, new object[2]
+						return new InstanceDescriptor(constructor, new int[2]
 						{
 							range2.Min,
 							range2.Max
@@ -166,7 +165,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			return true;
 		}
 
-		public RangeConverter()
+		public ValueRangeConverter()
 		{
 		}
 	}

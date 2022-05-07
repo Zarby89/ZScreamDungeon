@@ -12,8 +12,6 @@ namespace ZeldaFullEditor.Data.Underworld
 	{
 		public ushort RoomID { get; }
 
-		private readonly byte[] blocks = new byte[16];
-
 		public string Name { get; set; }
 
 		public DungeonObjectsList Layer1Objects { get; } = new DungeonObjectsList();
@@ -94,15 +92,17 @@ namespace ZeldaFullEditor.Data.Underworld
 		public ushort MessageID { get; set; }
 		public byte BackgroundTileset { get; set; }
 		public byte SpriteTileset { get; set; }
-		public byte Layer2Behavior { get; set; }
+		public LayerCollisionType LayerCollision { get; set; }
 		public byte Palette { get; set; }
 		public byte Floor1Graphics { get; set; }
 		public byte Floor2Graphics { get; set; }
-		public byte Layer2Mode { get; set; }
+		public LayerEffectType LayerEffect { get; set; }
 		public LayerMergeType LayerMerging { get; set; }
 		public byte Tag1 { get; set; }
 		public byte Tag2 { get; set; }
 		public bool IsDark { get; set; }
+
+		public byte PreferredEntrance { get; set; }
 
 		public DungeonDestination Pits { get; } = new DungeonDestination(0);
 		public DungeonDestination Stair1 { get; } = new DungeonDestination(1);
@@ -124,83 +124,6 @@ namespace ZeldaFullEditor.Data.Underworld
 			ChestList = new DungeonRoomChestsHandler(this);
 		}
 
-		public void reloadGfx(byte entrance_blockset = 0xFF)
-		{
-			for (int i = 0; i < 8; i++)
-			{
-				blocks[i] = ZS.GFXGroups.mainGfx[BackgroundTileset][i];
-				if (i >= 6 && i <= 6)
-				{
-					if (entrance_blockset != 0xFF) //3-6
-					{
-						// 6 is wrong for the entrance? -NOP need to fix that 
-						// TODO: Find why this is wrong - Thats because of the stairs need to find a workaround
-						if (ZS.GFXGroups.roomGfx[entrance_blockset][i - 3] != 0)
-						{
-							blocks[i] = ZS.GFXGroups.roomGfx[entrance_blockset][i - 3];
-						}
-					}
-				}
-			}
-
-			blocks[8] = 115 + 0; // Static Sprites Blocksets (fairy,pot,ect...)
-			blocks[9] = 115 + 10;
-			blocks[10] = 115 + 6;
-			blocks[11] = 115 + 7;
-			for (int i = 0; i < 4; i++)
-			{
-				blocks[12 + i] = (byte) (ZS.GFXGroups.spriteGfx[SpriteTileset + 64][i] + 115);
-			} // 12-16 sprites
-
-			unsafe
-			{
-				byte* newPdata = (byte*) ZS.GFXManager.allgfx16Ptr.ToPointer(); // Turn gfx16 (all 222 of them)
-				byte* sheetsData = (byte*) ZS.GFXManager.currentgfx16Ptr.ToPointer(); // Into "room gfx16" 16 of them
-				int sheetPos = 0;
-				for (int i = 0; i < 16; i++)
-				{
-					int d = 0;
-					int ioff = blocks[i] * 2048;
-					while (d < 2048)
-					{
-						// NOTE LOAD BLOCKSETS SOMEWHERE FIRST
-						byte mapByte = newPdata[d + ioff];
-						if (i < 4) //removed switch
-						{
-							mapByte += 0x88;
-						} // Last line of 6, first line of 7 ?
-
-						sheetsData[d + sheetPos] = mapByte;
-						d++;
-					}
-
-					sheetPos += 2048;
-				}
-
-				reloadAnimatedGfx();
-			}
-		}
-
-		private unsafe void reloadAnimatedGfx()
-		{
-			int gfxanimatedPointer = ZS.ROM.Read24(ZS.Offsets.gfx_animated_pointer).SNEStoPC();
-
-			byte* newPdata = (byte*) ZS.GFXManager.allgfx16Ptr.ToPointer(); // Turn gfx16 (all 222 of them)
-			byte* sheetsData = (byte*) ZS.GFXManager.currentgfx16Ptr.ToPointer(); // Into "room gfx16" 16 of them
-
-			int data = 0;
-			while (data < 512)
-			{
-				byte mapByte = newPdata[data + (92 * 2048) + (512 * ZS.GFXManager.animated_frame)];
-				sheetsData[data + (7 * 2048)] = mapByte;
-
-				mapByte = newPdata[data + (ZS.ROM[gfxanimatedPointer + BackgroundTileset] * 2048) + (512 * ZS.GFXManager.animated_frame)];
-				sheetsData[data + (7 * 2048) - 512] = mapByte;
-				data++;
-			}
-		}
-
-
 		public static DungeonRoom BuildRoomFromROM(ZScreamer Z, ushort id)
 		{
 			DungeonRoom ret = new DungeonRoom(Z, id);
@@ -218,15 +141,14 @@ namespace ZeldaFullEditor.Data.Underworld
 			byte b = ZS.ROM[hpos++];
 			// TODO verify merge versus behavor
 
-			Layer2Mode = (byte) (b >> 5);
-			LayerMerging = LayerMergeType.ListOf[(b & 0x0C) >> 2];
-			//Layer2Behavior = (byte) ((b & 0x0C) >> 2);
+			LayerMerging = LayerMergeType.ListOf[b >> 5];
+			LayerCollision = LayerCollisionType.ListOf[(b & 0x0C) >> 2];
 			IsDark = (b & 0x01) == 0x01;
 			Palette = ZS.ROM[hpos++];
 			BackgroundTileset = ZS.ROM[hpos++];
 			SpriteTileset = ZS.ROM[hpos++];
 			//LayerMerging = LayerMergeType.ListOf[ZS.ROM[hpos++]];
-			Layer2Behavior = ZS.ROM[hpos++];
+			LayerEffect = LayerEffectType.ListOf[ZS.ROM[hpos++]];
 			Tag1 = ZS.ROM[hpos++];
 			Tag2 = ZS.ROM[hpos++];
 
@@ -423,39 +345,6 @@ namespace ZeldaFullEditor.Data.Underworld
 				case RoomLayer.Layer3: return Layer3Objects;
 			}
 			return null;
-		}
-
-		public void DrawEntireRoom()
-		{
-			ZS.TileLister.CurrentFloor1 = Floor1Graphics;
-			ZS.TileLister.CurrentFloor2 = Floor2Graphics;
-
-			ZS.GFXManager.RestoreFloor1();
-			ZS.GFXManager.RestoreFloor2();
-
-			DrawEntireList(ZS.LayoutLister[Layout]);
-			DrawEntireList(Layer1Objects);
-			DrawEntireList(Layer2Objects);
-			DrawEntireList(Layer3Objects);
-			DrawEntireList(DoorsList);
-
-			//if (Layer2Mode != Constants.LayerMergeOff)
-			//{
-			//	Program.DungeonForm.SetPalettesTransparent();
-			//}
-			//else
-			//{
-			//	Program.DungeonForm.SetPalettesBlack();
-			//}
-
-			void DrawEntireList(IEnumerable<IDelegatedDraw> list)
-			{
-				foreach (var o in list)
-				{
-					o.Draw(ZS);
-				}
-			}
-
 		}
 
 		private RoomObject ParseRoomObject(byte b1, byte b2, byte b3)
@@ -1177,33 +1066,13 @@ namespace ZeldaFullEditor.Data.Underworld
 			return ret;
 		}
 
+		private List<RoomObject> FindAllObjects(Predicate<RoomObject> test)
+		{
+			return (List<RoomObject>) (Layer1Objects.FindAll(test).Concat(Layer2Objects.FindAll(test)).Concat(Layer3Objects.FindAll(test)));
+		}
 		private void ReassociateChestsAndItems()
 		{
-			var chests = new List<RoomObject>();
-
-			foreach (var r in Layer1Objects)
-			{
-				if (r.IsChest)
-				{
-					chests.Add(r);
-				}
-			}
-
-			foreach (var r in Layer2Objects)
-			{
-				if (r.IsChest)
-				{
-					chests.Add(r);
-				}
-			}
-
-			foreach (var r in Layer3Objects)
-			{
-				if (r.IsChest)
-				{
-					chests.Add(r);
-				}
-			}
+			var chests = FindAllObjects(o => o.IsChest);
 
 			int i = 0;
 			foreach (var c in ChestList)
@@ -1217,53 +1086,14 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		private void ReassociateStairsAndTargets()
 		{
-			var stairs = new List<RoomObject>();
-
-			foreach (var r in Layer1Objects)
-			{
-				if (r.IsStairs)
-				{
-					stairs.Add(r);
-				}
-			}
-
-			foreach (var r in Layer2Objects)
-			{
-				if (r.IsStairs)
-				{
-					stairs.Add(r);
-				}
-			}
-
-			foreach (var r in Layer3Objects)
-			{
-				if (r.IsStairs)
-				{
-					stairs.Add(r);
-				}
-			}
+			var stairs = FindAllObjects(o => o.IsStairs);
 
 			int count = stairs.Count();
 
-			if (count > 0)
-			{
-				Stair1.AssociatedObject = stairs[0];
-			}
-
-			if (count > 1)
-			{
-				Stair1.AssociatedObject = stairs[1];
-			}
-
-			if (count > 2)
-			{
-				Stair1.AssociatedObject = stairs[2];
-			}
-
-			if (count > 3)
-			{
-				Stair1.AssociatedObject = stairs[3];
-			}
+			Stair1.AssociatedObject = count > 0 ? stairs[0] : null;
+			Stair2.AssociatedObject = count > 1 ? stairs[1] : null;
+			Stair3.AssociatedObject = count > 2 ? stairs[2] : null;
+			Stair4.AssociatedObject = count > 3 ? stairs[3] : null;
 		}
 
 
@@ -1279,7 +1109,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		{
 			return new byte[]
 			{
-				(byte) ((Layer2Mode << 5) | (Layer2Behavior << 2) | (IsDark ? 1 : 0)),
+				(byte) ((LayerEffect.ID << 5) | (LayerCollision.ID << 2) | (IsDark ? 1 : 0)),
 				Palette,
 				BackgroundTileset,
 				SpriteTileset,

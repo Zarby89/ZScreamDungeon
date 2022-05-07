@@ -26,6 +26,8 @@ namespace ZeldaFullEditor.Data
 
 		public ImmutableArray<RoomObjectCategory> Categories { get; }
 
+		public bool IsCompletelyInvisible => Draw == RoomDraw_Nothing;
+
 		public ushort FullID { get; }
 
 		// every tileset is beautiful
@@ -659,12 +661,12 @@ namespace ZeldaFullEditor.Data
 			new byte[] { });
 
 		public static readonly RoomObjectType Object076 = new RoomObjectType(0x076,
-			RoomDraw_DownwardsDecor4x4spaced4_1to16, Vertical,
+			RoomDraw_DownwardsDecor3x4spaced4_1to16, Vertical,
 			new RoomObjectCategory[] { Collision, WallDecoration, WestSide, UpperLayer },
 			new byte[] { });
 
 		public static readonly RoomObjectType Object077 = new RoomObjectType(0x077,
-			RoomDraw_DownwardsDecor4x4spaced4_1to16, Vertical,
+			RoomDraw_DownwardsDecor3x4spaced4_1to16, Vertical,
 			new RoomObjectCategory[] { Collision, WallDecoration, EastSide, UpperLayer },
 			new byte[] { });
 
@@ -897,42 +899,50 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object0A5 = new RoomObjectType(0x0A5,
 			RoomDraw_DiagonalCeilingTopLeft, Both,
 			new RoomObjectCategory[] { Collision, Ceiling },
-			new byte[] { });
+			new byte[] { },
+			special: SpecialObjectType.LayerMask);
 
 		public static readonly RoomObjectType Object0A6 = new RoomObjectType(0x0A6,
 			RoomDraw_DiagonalCeilingBottomLeft, Both,
 			new RoomObjectCategory[] { Collision, Ceiling },
-			new byte[] { });
+			new byte[] { },
+			special: SpecialObjectType.LayerMask);
 
 		public static readonly RoomObjectType Object0A7 = new RoomObjectType(0x0A7,
 			RoomDraw_DiagonalCeilingTopRight, Both,
 			new RoomObjectCategory[] { Collision, Ceiling },
-			new byte[] { });
+			new byte[] { },
+			special: SpecialObjectType.LayerMask);
 
 		public static readonly RoomObjectType Object0A8 = new RoomObjectType(0x0A8,
 			RoomDraw_DiagonalCeilingBottomRight, Both,
 			new RoomObjectCategory[] { Collision, Ceiling },
-			new byte[] { });
+			new byte[] { },
+			special: SpecialObjectType.LayerMask);
 
 		public static readonly RoomObjectType Object0A9 = new RoomObjectType(0x0A9,
 			RoomDraw_DiagonalCeilingTopLeft, Both,
 			new RoomObjectCategory[] { Collision, Ceiling },
-			new byte[] { });
+			new byte[] { },
+			special: SpecialObjectType.LayerMask);
 
 		public static readonly RoomObjectType Object0AA = new RoomObjectType(0x0AA,
 			RoomDraw_DiagonalCeilingBottomLeft, Both,
 			new RoomObjectCategory[] { Collision, Ceiling },
-			new byte[] { });
+			new byte[] { },
+			special: SpecialObjectType.LayerMask);
 
 		public static readonly RoomObjectType Object0AB = new RoomObjectType(0x0AB,
 			RoomDraw_DiagonalCeilingTopRight, Both,
 			new RoomObjectCategory[] { Collision, Ceiling },
-			new byte[] { });
+			new byte[] { },
+			special: SpecialObjectType.LayerMask);
 
 		public static readonly RoomObjectType Object0AC = new RoomObjectType(0x0AC,
 			RoomDraw_DiagonalCeilingBottomRight, Both,
 			new RoomObjectCategory[] { Collision, Ceiling },
-			new byte[] { });
+			new byte[] { },
+			special: SpecialObjectType.LayerMask);
 
 		public static readonly RoomObjectType Object0AD = new RoomObjectType(0x0AD,
 			RoomDraw_Nothing, None,
@@ -1043,12 +1053,14 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object0C2 = new RoomObjectType(0x0C2,
 			RoomDraw_4x4BlocksIn4x4SuperSquare, Both,
 			new RoomObjectCategory[] { Pits, MetaLayer },
-			new byte[] { });
+			new byte[] { },
+			special: SpecialObjectType.LayerMask);
 
 		public static readonly RoomObjectType Object0C3 = new RoomObjectType(0x0C3,
 			RoomDraw_3x3FloorIn4x4SuperSquare, Both,
 			new RoomObjectCategory[] { Pits, MetaLayer },
-			new byte[] { });
+			new byte[] { },
+			special: SpecialObjectType.LayerMask);
 
 		public static readonly RoomObjectType Object0C4 = new RoomObjectType(0x0C4,
 			RoomDraw_4x4FloorOneIn4x4SuperSquare, Both,
@@ -1063,7 +1075,8 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object0C6 = new RoomObjectType(0x0C6,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new RoomObjectCategory[] { Pits, MetaLayer },
-			new byte[] { });
+			new byte[] { },
+			special: SpecialObjectType.LayerMask);
 
 		public static readonly RoomObjectType Object0C7 = new RoomObjectType(0x0C7,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
@@ -1147,8 +1160,9 @@ namespace ZeldaFullEditor.Data
 
 		public static readonly RoomObjectType Object0D7 = new RoomObjectType(0x0D7,
 			RoomDraw_3x3FloorIn4x4SuperSquare, Both,
-			new RoomObjectCategory[] { },
-			new byte[] { });
+			new RoomObjectCategory[] { MetaLayer },
+			new byte[] { },
+			special: SpecialObjectType.LayerMask);
 
 		public static readonly RoomObjectType Object0D8 = new RoomObjectType(0x0D8,
 			RoomDraw_WaterOverlay8x8_1to16, Both,
@@ -1157,8 +1171,9 @@ namespace ZeldaFullEditor.Data
 
 		public static readonly RoomObjectType Object0D9 = new RoomObjectType(0x0D9,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
-			new RoomObjectCategory[] { },
-			new byte[] { });
+			new RoomObjectCategory[] { MetaLayer },
+			new byte[] { },
+			special: SpecialObjectType.LayerMask);
 
 		public static readonly RoomObjectType Object0DA = new RoomObjectType(0x0DA,
 			RoomDraw_WaterOverlay8x8_1to16, Both,

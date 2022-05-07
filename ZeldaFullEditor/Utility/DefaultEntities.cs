@@ -1016,18 +1016,6 @@ namespace ZeldaFullEditor
 			//"??? Key(VT)"
 		};
 
-		public static readonly RoomEffectName[] ListOfRoomEffects =
-		{
-			new RoomEffectName(0x00, "Nothing"),
-			new RoomEffectName(0x01, "Nothing"),
-			new RoomEffectName(0x02, "Moving Floor"),
-			new RoomEffectName(0x03, "Moving Water"),
-			new RoomEffectName(0x04, "Trinexx Shell"),
-			new RoomEffectName(0x05, "Red Flashes"),
-			new RoomEffectName(0x06, "Light Torch to See Floor"),
-			new RoomEffectName(0x07, "Ganon's Darkness")
-		};
-
 		// TODO rename everything
 		public static readonly RoomTagName[] ListOfRoomTags =
 		{
@@ -1096,29 +1084,6 @@ namespace ZeldaFullEditor
 			new RoomTagName(0x3E, "Light Torches for Chest"),
 			new RoomTagName(0x3F, "Kill Boss Again")
 		};
-
-		public static readonly RoomCollisionName[] ListOfRoomCollisions =
-		{
-			new RoomCollisionName(0x00, "One"),
-			new RoomCollisionName(0x01, "Both"),
-			new RoomCollisionName(0x02, "Both with scroll"),
-			new RoomCollisionName(0x03, "Moving floor"),
-			new RoomCollisionName(0x04, "Moving water")
-		};
-
-		public static readonly Layer2TypeName[] ListOfLayer2Types =
-		{
-			new Layer2TypeName(Constants.LayerMergeOff, "Off"),
-			new Layer2TypeName(Constants.LayerMergeParallax, "Parallax"),
-			new Layer2TypeName(Constants.LayerMergeDark, "Dark"),
-			new Layer2TypeName(Constants.LayerMergeOnTop, "On top"),
-			new Layer2TypeName(Constants.LayerMergeTranslucent, "Translucent"),
-			new Layer2TypeName(Constants.LayerMergeAddition, "Addition"),
-			new Layer2TypeName(Constants.LayerMergeNormal, "Normal"),
-			new Layer2TypeName(Constants.LayerMergeTransparent, "Transparent"),
-			new Layer2TypeName(Constants.LayerMergeDarkRoom, "Dark room")
-		};
-
 
 		public static readonly RoomObjectName[] ListOfSubtype1RoomObjects =
 		{
@@ -1919,6 +1884,98 @@ namespace ZeldaFullEditor
 			new SecretsName(0x84, "Staircase"),
 			new SecretsName(0x86, "Bombable"),
 			new SecretsName(0x88, "Switch")
-		   };
+		};
+
+		private static readonly MusicName Music0x01 = new MusicName(0x01, "Triforce opening");
+		private static readonly MusicName Music0x02 = new MusicName(0x02, "Light world");
+		private static readonly MusicName Music0x03 = new MusicName(0x03, "Legend theme(rain state)");
+		private static readonly MusicName Music0x04 = new MusicName(0x04, "Bunny link");
+		private static readonly MusicName Music0x05 = new MusicName(0x05, "Lost woods");
+		private static readonly MusicName Music0x06 = new MusicName(0x06, "Legend theme(attract mode)");
+		private static readonly MusicName Music0x07 = new MusicName(0x07, "Kakariko village");
+		private static readonly MusicName Music0x08 = new MusicName(0x08, "Mirror warp");
+		private static readonly MusicName Music0x09 = new MusicName(0x09, "Dark world");
+		private static readonly MusicName Music0x0A = new MusicName(0x0A, "Restoring the master sword");
+		private static readonly MusicName Music0x0B = new MusicName(0x0B, "Faerie theme");
+		private static readonly MusicName Music0x0C = new MusicName(0x0C, "Chase theme");
+		private static readonly MusicName Music0x0D = new MusicName(0x0D, "Skull woods");
+		private static readonly MusicName Music0x0E = new MusicName(0x0E, "Game theme");
+		private static readonly MusicName Music0x0F = new MusicName(0x0F, "Intro no triforce");
+		private static readonly MusicName Music0x10 = new MusicName(0x10, "Hyrule castle");
+		private static readonly MusicName Music0x11 = new MusicName(0x11, "Pendant dungeon");
+		private static readonly MusicName Music0x12 = new MusicName(0x12, "Caves");
+		private static readonly MusicName Music0x13 = new MusicName(0x13, "Fanfare");
+		private static readonly MusicName Music0x14 = new MusicName(0x14, "Sanctuary");
+		private static readonly MusicName Music0x15 = new MusicName(0x15, "Boss theme");
+		private static readonly MusicName Music0x16 = new MusicName(0x16, "Dark world dungeon");
+		private static readonly MusicName Music0x17 = new MusicName(0x17, "Fortune teller");
+		private static readonly MusicName Music0x18 = new MusicName(0x18, "Caves");
+		private static readonly MusicName Music0x19 = new MusicName(0x19, "Zelda rescue");
+		private static readonly MusicName Music0x1A = new MusicName(0x1A, "Crystal theme");
+		private static readonly MusicName Music0x1B = new MusicName(0x1B, "Faerie theme w/ arpeggio");
+		private static readonly MusicName Music0x1C = new MusicName(0x1C, "Pre aga theme");
+		private static readonly MusicName Music0x1D = new MusicName(0x1D, "Agahnim escape");
+		private static readonly MusicName Music0x1E = new MusicName(0x1E, "Pre ganon theme");
+		private static readonly MusicName Music0x1F = new MusicName(0x1F, "Ganondorf the Thief");
+		private static readonly MusicName Music0xF2 = new MusicName(0xF2, "Half-volume");
+		private static readonly MusicName Music0xFF = new MusicName(0xFF, "Do nothing");
+
+
+
+		public static readonly MusicName[] ListOfOverworldMusics =
+		{
+			Music0x01,
+			Music0x02,
+			Music0x03,
+			Music0x04,
+			Music0x05,
+			Music0x06,
+			Music0x07,
+			Music0x08,
+			Music0x09,
+			Music0x0A,
+			Music0x0B,
+			Music0x0C,
+			Music0x0D,
+			Music0x0E,
+			Music0x0F,
+		};
+		
+		public static readonly MusicName[] ListOfUnderworldMusics =
+		{
+			Music0x01,
+			Music0x02,
+			Music0x03,
+			Music0x04,
+			Music0x05,
+			Music0x06,
+			Music0x07,
+			Music0x08,
+			Music0x09,
+			Music0x0A,
+			Music0x0B,
+			Music0x0C,
+			Music0x0D,
+			Music0x0E,
+			Music0x0F,
+			Music0x10,
+			Music0x11,
+			Music0x12,
+			Music0x13,
+			Music0x14,
+			Music0x15,
+			Music0x16,
+			Music0x17,
+			Music0x18,
+			Music0x19,
+			Music0x1A,
+			Music0x1B,
+			Music0x1C,
+			Music0x1D,
+			Music0x1E,
+			Music0x1F,
+			Music0xF2,
+			Music0xFF,
+		};
 	}
 }

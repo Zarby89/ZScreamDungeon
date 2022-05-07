@@ -9,7 +9,7 @@ namespace ZeldaFullEditor
 		public AboutBox1()
 		{
 			InitializeComponent();
-			this.AboutVersion.Text = string.Format("Version: {0}", UIText.VERSION);
+			AboutVersion.Text = $"Version: {UIText.VERSION}";
 		}
 
 		private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

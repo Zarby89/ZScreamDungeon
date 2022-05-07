@@ -306,19 +306,13 @@ namespace ZeldaFullEditor
 					highest = p2;
 				}
 
-				if (p1 <= lowest)
+				if (p1 <= lowest && p1 > 0x0F8000)
 				{
-					if (p1 > 0x0F8000)
-					{
-						lowest = p1;
-					}
+					lowest = p1;
 				}
-				if (p2 <= lowest)
+				if (p2 <= lowest && p2 > 0x0F8000)
 				{
-					if (p2 > 0x0F8000)
-					{
-						lowest = p2;
-					}
+					lowest = p2;
 				}
 
 				byte[] bytes = ZCompressLibrary.Decompress.ALTTPDecompressOverworld(ZS.ROM.DataStream, p2, 1000, ref compressedSize1);
@@ -458,10 +452,7 @@ namespace ZeldaFullEditor
 					ZS.ROM[ZS.Offsets.OWExitUnk2 + j],
 					ZS.ROM.Read16(ZS.Offsets.OWExitDoorType1 + j),
 					ZS.ROM.Read16(ZS.Offsets.OWExitDoorType2 + j)
-				)
-				{
-					Deleted = (px & py) == 0xFFFF
-				};
+				);
 			}
 		}
 
@@ -516,8 +507,6 @@ namespace ZeldaFullEditor
 					(byte) mapId,
 					mapPos
 				);
-
-				eo.deleted = eo.mapPos == 0xFFFF;
 
 				allentrances[i] = eo;
 			}
@@ -642,7 +631,7 @@ namespace ZeldaFullEditor
 			int v = t32Unique.Count;
 			for (int i = v; i < Constants.LimitOfMap32; i++)
 			{
-				t32Unique.Add(new Tile32(6666, 6666, 6666, 6666)); // create new tileunique
+				t32Unique.Add(Tile32.Empty);
 			}
 		}
 

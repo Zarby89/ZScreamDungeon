@@ -29,7 +29,7 @@ namespace ZeldaFullEditor.Gui
 			InitializeComponent();
 		}
 
-		private void pasteIndexed_Click(object sender, EventArgs e)
+		private unsafe void pasteIndexed_Click(object sender, EventArgs e)
 		{
 			byte[] data = ImgClipboard.GetImageData();
 			int nbrColor = 16;
@@ -40,8 +40,6 @@ namespace ZeldaFullEditor.Gui
 			}
 
 			int pos = data[0] + (nbrColor * 4); // Palette data useless for now
-			unsafe
-			{
 				byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
 				int spos = 0;
 				//byte* allgfx16Data2 = (byte*)allgfx16EDITPtr.ToPointer();
@@ -54,7 +52,6 @@ namespace ZeldaFullEditor.Gui
 						spos++;
 					}
 				}
-			}
 
 			allgfxPicturebox.Refresh();
 		}
@@ -73,7 +70,7 @@ namespace ZeldaFullEditor.Gui
 			e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(0, selectedSheet * 64, 256, 64));
 		}
 
-		private void button1_Click(object sender, EventArgs e)
+		private unsafe void button1_Click(object sender, EventArgs e)
 		{
 			int csize = 0;
 			SaveFileDialog sfd = new SaveFileDialog()
@@ -90,58 +87,51 @@ namespace ZeldaFullEditor.Gui
 			}
 
 			byte[] sdata = new byte[Constants.UncompressedSheetSize];
-
-			unsafe
+			byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
+			for (int i = 0; i < Constants.UncompressedSheetSize; i++)
 			{
-				byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
-				for (int i = 0; i < Constants.UncompressedSheetSize; i++)
-				{
-					sdata[i] = gdata[(selectedSheet * Constants.UncompressedSheetSize) + i];
-				}
+				sdata[i] = gdata[(selectedSheet * Constants.UncompressedSheetSize) + i];
 			}
 		}
 
-		public void SaveAllGfx()
+		public unsafe void SaveAllGfx()
 		{
 			for (int i = 0; i < Constants.NumberOfSheets; i++)
 			{
 				byte[] sdata = new byte[Constants.UncompressedSheetSize];
-				unsafe
+				byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
+				for (int j = 0; j < Constants.UncompressedSheetSize; j++)
 				{
-					byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
-					for (int j = 0; j < Constants.UncompressedSheetSize; j++)
-					{
-						sdata[j] = gdata[(i * Constants.UncompressedSheetSize) + j];
-					}
+					sdata[j] = gdata[(i * Constants.UncompressedSheetSize) + j];
+				}
 
-					if (ZScreamer.ActiveGraphicsManager.isbpp3[i])
+				if (ZScreamer.ActiveGraphicsManager.isbpp3[i])
+				{
+					if (modifiedSheets[i] != null)
 					{
-						if (modifiedSheets[i] != null)
-						{
-							gfxSheets3bpp[i] = modifiedSheets[i];
-							modifiedSheets[i] = null;
-						}
-						else
-						{
-							gfxSheets3bpp[i] = ZScreamer.ActiveGraphicsManager.pc4bppto3bppsnes(sdata);
-						}
+						gfxSheets3bpp[i] = modifiedSheets[i];
+						modifiedSheets[i] = null;
 					}
 					else
 					{
-						if (modifiedSheets[i] != null)
-						{
-							// Console.WriteLine(i.ToString() + " Sheet has been modified");
-							gfxSheets3bpp[i] = modifiedSheets[i];
-							modifiedSheets[i] = null;
-						}
-						else
-						{
-							int compressedSize = 0;
-							gfxSheets3bpp[i] = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(ZScreamer.ActiveROM.DataStream,
-								ZScreamer.ActiveGraphicsManager.GetPCGfxAddress((byte) i),
-								Constants.UncompressedSheetSize,
-								ref compressedSize);
-						}
+						gfxSheets3bpp[i] = ZScreamer.ActiveGraphicsManager.pc4bppto3bppsnes(sdata);
+					}
+				}
+				else
+				{
+					if (modifiedSheets[i] != null)
+					{
+						// Console.WriteLine(i.ToString() + " Sheet has been modified");
+						gfxSheets3bpp[i] = modifiedSheets[i];
+						modifiedSheets[i] = null;
+					}
+					else
+					{
+						int compressedSize = 0;
+						gfxSheets3bpp[i] = ZCompressLibrary.Decompress.ALTTPDecompressGraphics(ZScreamer.ActiveROM.DataStream,
+							ZScreamer.ActiveGraphicsManager.GetPCGfxAddress((byte) i),
+							Constants.UncompressedSheetSize,
+							ref compressedSize);
 					}
 				}
 			}
@@ -162,11 +152,7 @@ namespace ZeldaFullEditor.Gui
 			{
 				if (i < 115 || i > 126) // Not compressed
 				{
-					bpp2 = false;
-					if (!ZScreamer.ActiveGraphicsManager.isbpp3[i])
-					{
-						bpp2 = true;
-					}
+					bpp2 = !ZScreamer.ActiveGraphicsManager.isbpp3[i];
 
 					if (ZScreamer.ActiveROM[gfxPointer1 + i] <= 0x20)
 					{
@@ -174,35 +160,17 @@ namespace ZeldaFullEditor.Gui
 						ZScreamer.ActiveROM[gfxPointer3 + i] = (byte) saddr;
 						ZScreamer.ActiveROM[gfxPointer2 + i] = (byte) (saddr >> 8);
 						ZScreamer.ActiveROM[gfxPointer1 + i] = (byte) (saddr >> 16);
-						if (!bpp2)
-						{
-							byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, Constants.Uncompressed3BPPSize);
-							ZScreamer.ActiveROM.WriteContinuous(ref pos, cbytes);
-						}
-						else
-						{
-							byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, Constants.UncompressedSheetSize);
-							ZScreamer.ActiveROM.WriteContinuous(ref pos, cbytes);
-						}
+						byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0,
+							bpp2 ? Constants.UncompressedSheetSize : Constants.Uncompressed3BPPSize);
+						ZScreamer.ActiveROM.WriteContinuous(ref pos, cbytes);
 					}
 					else // Save it back in expanded data if it was already
 					{
-						if (!bpp2)
-						{
-							byte[] b = new byte[] { ZScreamer.ActiveROM[gfxPointer3 + i], ZScreamer.ActiveROM[gfxPointer2 + i], ZScreamer.ActiveROM[gfxPointer1 + i], 0 };
-							int addr = BitConverter.ToInt32(b, 0);
-							byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, Constants.Uncompressed3BPPSize);
-							ZScreamer.ActiveROM.Write(addr.SNEStoPC(), cbytes);
-							//pos += s;
-						}
-						else
-						{
-							byte[] b = new byte[] { ZScreamer.ActiveROM[gfxPointer3 + i], ZScreamer.ActiveROM[gfxPointer2 + i], ZScreamer.ActiveROM[gfxPointer1 + i], 0 };
-							int addr = BitConverter.ToInt32(b, 0);
-							byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0, Constants.UncompressedSheetSize);
-							ZScreamer.ActiveROM.Write(addr.SNEStoPC(), cbytes);
-							//pos += s;
-						}
+						byte[] b = new byte[] { ZScreamer.ActiveROM[gfxPointer3 + i], ZScreamer.ActiveROM[gfxPointer2 + i], ZScreamer.ActiveROM[gfxPointer1 + i], 0 };
+						int addr = BitConverter.ToInt32(b, 0);
+						byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0,
+							bpp2 ? Constants.UncompressedSheetSize : Constants.Uncompressed3BPPSize);
+						ZScreamer.ActiveROM.Write(addr.SNEStoPC(), cbytes);
 					}
 				}
 				else
@@ -258,6 +226,7 @@ namespace ZeldaFullEditor.Gui
 
 			ColorPalette cp = ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette;
 			Color[] cols = radioButton1.Checked ? ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette.Entries : ZScreamer.ActiveGraphicsManager.mapgfx16Bitmap.Palette.Entries;
+			
 			for (int i = 0; i < 16; i++)
 			{
 				cp.Entries[i] = cols[i + selectedPal * 16];
@@ -268,22 +237,15 @@ namespace ZeldaFullEditor.Gui
 			palettePicturebox.Refresh();
 		}
 
-		private void copyIndexed_Click(object sender, EventArgs e)
+		private unsafe void copyIndexed_Click(object sender, EventArgs e)
 		{
 			Clipboard.Clear();
 			byte[] sdata = new byte[Constants.UncompressedSheetSize];
-
-			unsafe
+			byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
+			for (int i = 0; i < Constants.UncompressedSheetSize; i++)
 			{
-				byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
-				for (int i = 0; i < Constants.UncompressedSheetSize; i++)
-				{
-					sdata[i] = gdata[(selectedSheet * Constants.UncompressedSheetSize) + i];
-				}
-
+				sdata[i] = gdata[(selectedSheet * Constants.UncompressedSheetSize) + i];
 			}
-
-
 
 			ImgClipboard.SetImageData(sdata, CopyPaletteData());
 		}
@@ -301,17 +263,13 @@ namespace ZeldaFullEditor.Gui
 			return pdata;
 		}
 
-		private void copy24bpp_Click(object sender, EventArgs e)
+		private unsafe void copy24bpp_Click(object sender, EventArgs e)
 		{
 			byte[] sdata = new byte[Constants.UncompressedSheetSize];
-			unsafe
+			byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
+			for (int i = 0; i < Constants.UncompressedSheetSize; i++)
 			{
-				byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
-				for (int i = 0; i < Constants.UncompressedSheetSize; i++)
-				{
-					sdata[i] = gdata[(selectedSheet * Constants.UncompressedSheetSize) + i];
-				}
-
+				sdata[i] = gdata[(selectedSheet * Constants.UncompressedSheetSize) + i];
 			}
 
 			ImgClipboard.SetImageDataWithPal(sdata, CopyPaletteData());
@@ -327,47 +285,41 @@ namespace ZeldaFullEditor.Gui
 			paste24bpp_Click(null, null);
 		}
 
-		private void paste24bpp_Click(object sender, EventArgs e)
+		private unsafe void paste24bpp_Click(object sender, EventArgs e)
 		{
-			if (Clipboard.ContainsImage())
+			if (!Clipboard.ContainsImage()) return;
+			Bitmap b = (Bitmap) Clipboard.GetImage();
+			BitmapData bd = b.LockBits(Constants.Rect_0_0_128_40, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+
+			byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
+			byte* data = (byte*) bd.Scan0.ToPointer();
+			// One line is 512 - palette (32 bytes per palettes)
+			for (int i = 0; i < 8; i++)
 			{
-				Bitmap b = (Bitmap) Clipboard.GetImage();
-				BitmapData bd = b.LockBits(Constants.Rect_0_0_128_40, ImageLockMode.ReadOnly, PixelFormat.Format32bppRgb);
+				palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x4800], data[(i * 32) + 1 - 0x4800], data[(i * 32) - 0x4800]);
+			}
 
-				unsafe
+			int pos = 0; // Should be line where data start inverted
+			for (int y = 0; y < 32; y++) // for each line
+			{
+				for (int x = 0; x < 64; x++) // Advance by 64 pixel but merge them together
 				{
-
-					byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
-					byte* data = (byte*) bd.Scan0.ToPointer();
-					// One line is 512 - palette (32 bytes per palettes)
-					for (int i = 0; i < 8; i++)
-					{
-						palettes[i] = Color.FromArgb(data[(i * 32) + 2 - 0x4800], data[(i * 32) + 1 - 0x4800], data[(i * 32) - 0x4800]);
-					}
-
-					int pos = 0; // Should be line where data start inverted
-					for (int y = 0; y < 32; y++) // for each line
-					{
-						for (int x = 0; x < 64; x++) // Advance by 64 pixel but merge them together
-						{
-							byte pix1 = matchPalette(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) - (y * 512)]));
-							byte pix2 = matchPalette(Color.FromArgb(data[(x * 8) + 6 - (y * 512)], data[(x * 8) + 5 - (y * 512)], data[(x * 8) + 4 - (y * 512)]));
-							byte mpix = (byte) ((pix1 << 4) + pix2);
-							gdata[pos + (selectedSheet * Constants.UncompressedSheetSize)] = mpix;
-							pos++;
-						}
-					}
+					byte pix1 = matchPalette(Color.FromArgb(data[(x * 8) + 2 - (y * 512)], data[(x * 8) + 1 - (y * 512)], data[(x * 8) - (y * 512)]));
+					byte pix2 = matchPalette(Color.FromArgb(data[(x * 8) + 6 - (y * 512)], data[(x * 8) + 5 - (y * 512)], data[(x * 8) + 4 - (y * 512)]));
+					byte mpix = (byte) ((pix1 << 4) + pix2);
+					gdata[pos + (selectedSheet * Constants.UncompressedSheetSize)] = mpix;
+					pos++;
 				}
+			}
 
-				b.UnlockBits(bd);
-				ZScreamer.ActiveUWScene.Room.reloadGfx();
-				ZScreamer.ActiveUWScene.Refresh();
-				allgfxPicturebox.Refresh();
+			b.UnlockBits(bd);
+			Program.RoomEditingArtist.HardRefresh();
+			Program.RoomPreviewArtist.HardRefresh();
+			allgfxPicturebox.Refresh();
 
-				for (int i = 0; i < 159; i++)
-				{
-					ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = true;
-				}
+			for (int i = 0; i < 159; i++)
+			{
+				ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = true;
 			}
 		}
 

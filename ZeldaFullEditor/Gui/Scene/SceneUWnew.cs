@@ -28,8 +28,6 @@ namespace ZeldaFullEditor
 
 		public DungeonEditMode CurrentMode => ZS.CurrentUWMode;
 
-		public bool forPreview = false;
-
 		bool resizing = false;
 		public bool showLayer1;
 		public bool showLayer2;
@@ -184,10 +182,9 @@ namespace ZeldaFullEditor
 			Program.DungeonForm.UpdateFormForSelectedObject(Room.OnlySelectedObject);
 
 			// TODO ROOM.DRAW()
-			Room.DrawEntireRoom();
 
-			ZS.GFXManager.DrawBG1();
-			ZS.GFXManager.DrawBG2();
+			Program.RoomEditingArtist.CurrentRoom = Room;
+			Program.RoomEditingArtist.HardRefresh();
 
 			Refresh();
 		}
@@ -251,16 +248,6 @@ namespace ZeldaFullEditor
 			throw new NotImplementedException();
 		}
 
-
-
-		private static readonly float[][] TranslucencyMatrix = {
-			new float[] { 1f, 0, 0, 0, 0 },
-			new float[] { 0, 1f, 0, 0, 0 },
-			new float[] { 0, 0, 1f, 0, 0 },
-			new float[] { 0, 0, 0, 0.5f, 0 },
-			new float[] { 0, 0, 0, 0, 1 }
-		};
-
 		private void SceneUW_Paint(object sender, PaintEventArgs e)
 		{
 			Graphics g = e.Graphics;
@@ -270,58 +257,8 @@ namespace ZeldaFullEditor
 				g.Clear(BackColor);
 				return;
 			}
-
-			// TODO ????
-			//if (Program.MainForm.x2zoom)
-			//{
-			//	e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-			//	e.Graphics.DrawImage(tempBitmap, Constants.Rect_0_0_1024_1024);
-			//}
-
-			if (Program.DungeonForm.x2zoom)
-			{
-				g = Graphics.FromImage(tempBitmap);
-			}
-
-			g.SetClip(Constants.Rect_0_0_512_512);
-			g.Clear(Color.Black);
-
-			ImageAttributes draw = null;
-
-			if (Room.LayerMerging.Layer2Translucent)
-			{
-				draw = new ImageAttributes();
-				draw.SetColorMatrix(
-					new ColorMatrix(TranslucencyMatrix),
-					ColorMatrixFlag.Default,
-					ColorAdjustType.Bitmap
-				);
-			}
-
-			Bitmap top;
-			Bitmap bottom;
-
-			if (Room.LayerMerging.Layer2Visible)
-			{
-				top = ZS.GFXManager.roomBg1Bitmap;
-				bottom = null;
-			}
-			else if (Room.LayerMerging.Layer2OnTop)
-			{
-				top = ZS.GFXManager.roomBg2Bitmap;
-				bottom = ZS.GFXManager.roomBg1Bitmap;
-			}
-			else
-			{
-				top = ZS.GFXManager.roomBg1Bitmap;
-				bottom = ZS.GFXManager.roomBg2Bitmap;
-			}
-
-			g.DrawImage(top, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, draw);
-			if (bottom != null)
-			{
-				g.DrawImage(bottom, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, draw);
-			}
+			
+			Program.RoomEditingArtist.DrawSelfToImage(g);
 
 			// Draw selection
 			Pen selectionColor = MouseIsDown ? Pens.LimeGreen : Pens.Green;
@@ -354,7 +291,7 @@ namespace ZeldaFullEditor
 					{
 						if (o.ObjectType.Specialness == SpecialObjectType.LayerMask)
 						{
-							drawText(g, o.RealX, o.RealY, "BG2 mask");
+							g.DrawText(o.RealX, o.RealY, "BG2 mask");
 						}
 					}
 				}
@@ -368,7 +305,7 @@ namespace ZeldaFullEditor
 				{
 					if (c.IsAssociated)
 					{
-						drawText(g, c.RealX + 6, c.RealY + 8, id.ToString());
+						g.DrawText(c.RealX + 6, c.RealY + 8, id.ToString());
 					}
 					id++;
 				}
@@ -381,19 +318,19 @@ namespace ZeldaFullEditor
 			{
 				foreach (var d in Room.DoorsList)
 				{
-					drawText(g, d.RealX + 12, d.RealY + 8, id.ToString());
+					g.DrawText(d.RealX + 12, d.RealY + 8, id.ToString());
 
 					if (d.DoorType.IsExit)
 					{
-						drawText(g, d.RealX + 6, d.RealY + 10, "Exit");
+						g.DrawText(d.RealX + 6, d.RealY + 10, "Exit");
 					}
 					else if (d.DoorType.Category == DoorCategory.LayerSwap)
 					{
-						drawText(g, d.RealX + 6, d.RealY + 10, "Layer swap");
+						g.DrawText(d.RealX + 6, d.RealY + 10, "Layer swap");
 					}
 					else if (d.DoorType.Category == DoorCategory.DungeonSwap)
 					{
-						drawText(g, d.RealX + 6, d.RealY + 10, "Dungeon swap");
+						g.DrawText(d.RealX + 6, d.RealY + 10, "Dungeon swap");
 					}
 
 					id++;
@@ -411,7 +348,7 @@ namespace ZeldaFullEditor
 			{
 				if (s.IsAssociated)
 				{
-					drawText(g, s.RealX, s.RealY + 18, s.ToString());
+					g.DrawText(s.RealX, s.RealY + 18, s.ToString());
 				}
 			}
 
@@ -420,7 +357,7 @@ namespace ZeldaFullEditor
 			{
 				foreach (var s in Room.SecretsList)
 				{
-					drawText(g, s.RealX, s.RealY, s.Name);
+					g.DrawText(s.RealX, s.RealY, s.Name);
 				}
 			}
 
@@ -429,7 +366,7 @@ namespace ZeldaFullEditor
 			{
 				foreach (var s in Room.SpritesList)
 				{
-					drawText(g, s.RealX, s.RealY, s.Name);
+					g.DrawText(s.RealX, s.RealY, s.Name);
 				}
 			}
 

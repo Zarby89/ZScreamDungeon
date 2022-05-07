@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
 using System.Drawing.Imaging;
+using System.IO;
+using System.Windows.Forms;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -17,8 +11,8 @@ namespace ZeldaFullEditor.Gui
 		public CGRamViewer()
 		{
 			InitializeComponent();
-			this.Paint += CGRamViewer_Paint;
-			this.MouseDown += CGRamViewer_MouseDown;
+			Paint += CGRamViewer_Paint;
+			MouseDown += CGRamViewer_MouseDown;
 		}
 
 		private void CGRamViewer_MouseDown(object sender, MouseEventArgs e)
@@ -34,6 +28,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void CGRamViewer_Click(object sender, EventArgs e)
 		{
+			// TODO UIText
 			SaveFileDialog sf = new SaveFileDialog
 			{
 				DefaultExt = ".pal"
@@ -60,7 +55,7 @@ namespace ZeldaFullEditor.Gui
 			for (int i = 0; i < 256; i++)
 			{
 				e.Graphics.FillRectangle(new SolidBrush(ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette.Entries[i]),
-					new Rectangle((i % 16) * 16, (i / 16) * 16, 16, 16));
+					new Rectangle((i % 16) * 16, i & ~0xF, 16, 16));
 			}
 		}
 	}

@@ -26,9 +26,9 @@ namespace ZeldaFullEditor.Data
 			MapID = screen;
 		}
 
-		public void Draw(ZScreamer ZS)
+		public void Draw(Artist art)
 		{
-			Species.Draw(ZS, this);
+			Species.Draw(art, this);
 		}
 
 		public byte[] GetByteData()

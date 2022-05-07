@@ -33,7 +33,7 @@ namespace ZeldaFullEditor
 			{
 				if (b != null)
 				{
-					drawText(g, (i % 64 * 16) + 4, i / 64 * 16 + 4, ((byte) b).ToString("X2"));
+					g.DrawText((i % 64 * 16) + 4, i / 64 * 16 + 4, ((byte) b).ToString("X2"));
 				}
 				i++;
 			}

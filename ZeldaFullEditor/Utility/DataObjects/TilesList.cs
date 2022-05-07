@@ -23,7 +23,7 @@ namespace ZeldaFullEditor
 			_list = list;
 		}
 
-		public static readonly TilesList EmptySet = new TilesList(new Tile[] { Tile.Empty, Tile.Empty, Tile.Empty, Tile.Empty });
+		public static readonly TilesList EmptySet = new TilesList(new Tile[16]);
 
 		public virtual ushort[] ToUnsignedShorts()
 		{
