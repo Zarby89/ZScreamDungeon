@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
 using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor
@@ -12,25 +10,19 @@ namespace ZeldaFullEditor
 		public DungeonRoom CurrentRoom { get; set; }
 
 		public override ushort[] Layer1TileMap { get; } = new ushort[Constants.TilesPerUnderworldRoom];
-		public override IntPtr Layer1Pointer { get; } = Marshal.AllocHGlobal(512 * 512);
-		public override Bitmap Layer1Bitmap { get; }
+		public override PointeredImage Layer1Canvas { get; } = new PointeredImage(512, 512);
 
 		public override ushort[] Layer2TileMap { get; } = new ushort[Constants.TilesPerUnderworldRoom];
-		public override IntPtr Layer2Pointer { get; } = Marshal.AllocHGlobal(512 * 512);
-		public override Bitmap Layer2Bitmap { get; }
+		public override PointeredImage Layer2Canvas { get; } = new PointeredImage(512, 512);
 
-		public override IntPtr SpriteCanvasPointer { get; } = Marshal.AllocHGlobal(512 * 512);
-		public override Bitmap SpriteCanvas { get; }
+		public override PointeredImage SpriteCanvas { get; } = new PointeredImage(512, 512);
 
 		public override Bitmap FinalOutput { get; } = new Bitmap(512, 512);
 
-		private bool drawid;
+		private readonly bool drawid;
 
 		public RoomArtist(bool includeRoomID) : base()
 		{
-			Layer1Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, Layer1Pointer);
-			Layer2Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, Layer2Pointer);
-			SpriteCanvas = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, SpriteCanvasPointer);
 			drawid = includeRoomID;
 		}
 
@@ -90,30 +82,34 @@ namespace ZeldaFullEditor
 				);
 			}
 
-			Bitmap top;
-			Bitmap bottom;
+			PointeredImage top;
+			PointeredImage bottom;
 
 			if (CurrentRoom.LayerMerging.Layer2Visible)
 			{
-				top = Layer1Bitmap;
+				top = Layer1Canvas;
 				bottom = null;
 			}
 			else if (CurrentRoom.LayerMerging.Layer2OnTop)
 			{
-				top = Layer2Bitmap;
-				bottom = Layer1Bitmap;
+				top = Layer2Canvas;
+				bottom = Layer1Canvas;
 			}
 			else
 			{
-				top = Layer1Bitmap;
-				bottom = Layer2Bitmap;
+				top = Layer1Canvas;
+				bottom = Layer2Canvas;
 			}
 
-			g.DrawImage(top, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, draw);
 			if (bottom != null)
 			{
-				g.DrawImage(bottom, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, draw);
+				g.DrawImage(bottom.Bitmap, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, draw);
 			}
+
+			g.DrawImage(top.Bitmap, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, draw);
+
+			g.DrawImage(SpriteCanvas.Bitmap, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, null);
+
 		}
 
 		public override void DrawSelfToImage(Graphics g)
@@ -145,7 +141,6 @@ namespace ZeldaFullEditor
 			SpriteTileset = CurrentRoom?.SpriteTileset ?? 0;
 
 			ReloadPalettes();
-			ReloadTileSetGraphics();
 			RebuildTileMap();
 			RebuildBitMap();
 		}
@@ -155,7 +150,7 @@ namespace ZeldaFullEditor
 			var copy = ZScreamer.ActivePaletteManager.LoadDungeonPalette(BackgroundPalette);
 
 			int pindex = 0;
-			ColorPalette palettes = Layer1Bitmap.Palette;
+			ColorPalette palettes = Layer1Canvas.Palette;
 
 			for (int y = 0; y < copy.GetLength(1); y++)
 			{
@@ -167,9 +162,8 @@ namespace ZeldaFullEditor
 
 			Palettes.FillInHalfPaletteZeros(palettes.Entries, Color.Black);
 
-			ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette = palettes;
-			ZScreamer.ActiveGraphicsManager.roomBg2Bitmap.Palette = palettes;
-			ZScreamer.ActiveGraphicsManager.roomBgLayoutBitmap.Palette = palettes;
+			Layer1Canvas.Palette = palettes;
+			Layer2Canvas.Palette = palettes;
 		}
 
 		private void FillTilemapWithFloorShort(ushort[] tilemap, ushort[] floor)
@@ -190,84 +184,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public unsafe override void ReloadTileSetGraphics()
-		{
-			byte[] blocks = new byte[16];
-			byte bgtiles = CurrentRoom?.BackgroundTileset ?? 0x00;
-			byte? entrance = // use entrance graphics only for non previews when using entrance graphics everywhere
-				(Program.DungeonForm.visibleEntranceGFX && !drawid)
-				? Program.DungeonForm.selectedEntrance?.Blockset
-				: CurrentRoom?.PreferredEntrance;
-			byte[] entGraphics = ZScreamer.ActiveScreamer.GFXGroups.roomGfx[entrance ?? 0x00];
-
-			for (int i = 0; i < 8; i++)
-			{
-				blocks[i] = ZScreamer.ActiveScreamer.GFXGroups.mainGfx[bgtiles][i];
-				if (i == 6 && entrance != null && entGraphics[i - 3] != 0)
-				{
-					blocks[i] = entGraphics[i - 3];
-				}
-			}
-
-			blocks[8] = 115 + 0; // Static Sprites Blocksets (fairy,pot,ect...)
-			blocks[9] = 115 + 10;
-			blocks[10] = 115 + 6;
-			blocks[11] = 115 + 7;
-			for (int i = 0; i < 4; i++)
-			{
-				blocks[12 + i] = (byte) (ZScreamer.ActiveScreamer.GFXGroups.spriteGfx[(CurrentRoom?.SpriteTileset ?? 0x00) + 64][i] + 115);
-			} // 12-16 sprites
-
-			byte* newPdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer(); // Turn gfx16 (all 222 of them)
-			byte* sheetsData = (byte*) ZScreamer.ActiveGraphicsManager.currentgfx16Ptr.ToPointer(); // Into "room gfx16" 16 of them
-			int sheetPos = 0;
-			for (int i = 0; i < 16; i++)
-			{
-				int d = 0;
-				int ioff = blocks[i] * 2048;
-				while (d < 2048)
-				{
-					// NOTE LOAD BLOCKSETS SOMEWHERE FIRST
-					byte mapByte = newPdata[d + ioff];
-					if (i < 4) //removed switch
-					{
-						mapByte += 0x88;
-					} // Last line of 6, first line of 7 ?
-
-					sheetsData[d + sheetPos] = mapByte;
-					d++;
-				}
-
-				sheetPos += 2048;
-			}
-
-			int gfxanimatedPointer = ZScreamer.ActiveScreamer.ROM.Read24(ZScreamer.ActiveScreamer.Offsets.gfx_animated_pointer).SNEStoPC();
-
-			for (int data = 0; data < 512; data++)
-			{
-				byte mapByte = newPdata[data + (92 * 2048) + (512 * ZScreamer.ActiveGraphicsManager.animated_frame)];
-				sheetsData[data + (7 * 2048)] = mapByte;
-
-				mapByte = newPdata[data + (ZScreamer.ActiveScreamer.ROM[gfxanimatedPointer + bgtiles] * 2048) +
-					(512 * ZScreamer.ActiveGraphicsManager.animated_frame)];
-				sheetsData[data + (7 * 2048) - 512] = mapByte;
-			}
-		}
-
-		protected unsafe override void DrawBackground(IntPtr pointer, ushort[] buffer)
-		{
-			byte* ptr = (byte*) pointer.ToPointer();
-
-			var alltilesData = (byte*) LoadedGraphicsPointer.ToPointer();
-
-			for (int y = 0; y < 64 * 64; y += 64)
-			{
-				for (int x = 0; x < 64; x++)
-				{
-					DrawTileToBuffer(new Tile(buffer[x + y]), x, y, ptr, alltilesData);
-				}
-			}
-		}
+		
 
 		public override void DrawTileForPreview(Tile t, int indexoff) { }
 	}

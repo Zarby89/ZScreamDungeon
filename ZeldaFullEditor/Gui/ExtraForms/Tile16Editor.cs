@@ -61,7 +61,7 @@ namespace ZeldaFullEditor.Gui
 				}
 			}
 
-			ZScreamer.ActiveGraphicsManager.editort16Bitmap.Palette = ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.CurrentMap].gfxBitmap.Palette;
+			ZScreamer.ActiveGraphicsManager.editort16Bitmap.Palette = ZScreamer.ActiveOWScene.CurrentScreen.MyArtist.Layer1Canvas.Palette;
 			pictureboxTile8.Refresh();
 		}
 
@@ -350,7 +350,7 @@ namespace ZeldaFullEditor.Gui
 				byte* allgfxData = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer(); // All gfx of the game pack of 2048 bytes (4bpp)
 				for (int i = 0, i4 = 0; i < 16; i++, i4 += 2048)
 				{
-					int i2 = ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.CurrentMap].staticgfx[i] * 2048;
+					int i2 = ZScreamer.ActiveOWScene.CurrentScreen.staticgfx[i] * 2048;
 					int i3;
 					switch (i)
 					{
@@ -392,8 +392,8 @@ namespace ZeldaFullEditor.Gui
 				ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = true;
 			}
 
-			ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.CurrentMap].BuildMap();
-			ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.CurrentMap].NeedsRefresh = false;
+			ZScreamer.ActiveOWScene.CurrentScreen.NeedsRefresh = false;
+			ZScreamer.ActiveOWScene.CurrentScreen.HardRefresh();
 
 			Close();
 		}
@@ -420,7 +420,7 @@ namespace ZeldaFullEditor.Gui
 		private void pictureboxTile8_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
 			Program.MainForm.editorsTabControl.SelectedIndex = 2;
-			Program.MainForm.gfxEditor.selectedSheet = ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.CurrentMap].staticgfx[(e.Y / 64)];
+			Program.MainForm.gfxEditor.selectedSheet = ZScreamer.ActiveOWScene.CurrentScreen.staticgfx[(e.Y / 64)];
 			Program.MainForm.gfxEditor.allgfxPicturebox.Refresh();
 			this.Close();
 		}

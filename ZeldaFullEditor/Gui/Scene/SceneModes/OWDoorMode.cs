@@ -70,7 +70,7 @@ namespace ZeldaFullEditor
 								break;
 							}
 
-							ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, selectedTile[i], temptilesgfxPtr, ZS.GFXManager.mapblockset16);
+							ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, selectedTile[i]);
 						}
 
 						x++;
@@ -86,7 +86,7 @@ namespace ZeldaFullEditor
 						return;
 					}
 
-					tilesgfxBitmap.Palette = ZS.OverworldManager.allmaps[mapId].gfxBitmap.Palette;
+					tilesgfxBitmap.Palette = ZS.OverworldManager.allmaps[mapId].MyArtist.Layer1Canvas.Palette;
 				}
 
 				lastTileHoverX = mouseTileX;

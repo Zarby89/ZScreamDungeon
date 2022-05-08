@@ -10,15 +10,8 @@ namespace ZeldaFullEditor.Data
 	{
 		public static unsafe void DrawTiles(Artist art, IDrawableSprite spr, params OAMDrawInfo[] instructions)
 		{
-			var alltilesData = (byte*) art.LoadedGraphicsPointer.ToPointer();
-
-			var ptr = (byte*) art.SpriteCanvasPointer.ToPointer();
-
-			int mult;
-			int maxIndex;
-
-			int xoff;
-			int yoff;
+			int mult, maxindex;
+			int xoff, yoff;
 
 			if (spr is SpritePreview)
 			{
@@ -26,7 +19,7 @@ namespace ZeldaFullEditor.Data
 				yoff = 16;
 
 				mult = 64;
-				maxIndex = 4096;
+				maxindex = 4096;
 			}
 			else
 			{
@@ -34,42 +27,10 @@ namespace ZeldaFullEditor.Data
 				xoff = 0;
 				yoff = 0;
 
-				maxIndex = 262144;
+				maxindex = 262144;
 			}
 
-			foreach (OAMDrawInfo ti in instructions)
-			{
-				int size = ti.RectSideSize;
-				byte r = (byte) (ti.HFlip ? 1 : 0);
-				int tx = (ti.TileIndex / 16 * 512) + ((ti.TileIndex & 0xF) << 2); // TODO verify
-				int indexoff = spr.RealX + ti.XOff + xoff + (mult * (spr.RealY + ti.YOff + yoff));
-				byte pal = (byte) (ti.Palette << 3);
-
-
-				for (int yl = 0, yl2 = tx; yl < size; yl++, yl2 += 64)
-				{
-					int my = (mult * (ti.VFlip ? size - 1 - yl : yl)) + indexoff; // this is alltilesData additive, so it can go here
-
-					for (int xl = 0, xl2 = yl2; xl < size; xl++, xl2++)
-					{
-						int mx = ti.HFlip ? size - 1 - xl : xl;
-						var pixel = alltilesData[xl2];
-						int index = (mx * 2) + my;
-
-						if (index >= 0 && index <= maxIndex)
-						{
-							if (pixel.BitIsOn(0x0F))
-							{
-								ptr[index + r ^ 1] = (byte) ((pixel & 0x0F) + 112 + pal);
-							}
-							if (pixel.BitIsOn(0xF0))
-							{
-								ptr[index + r] = (byte) ((pixel >> 4) + 112 + pal);
-							}
-						}
-					}
-				}
-			}
+			art.DrawSprite(spr, instructions, xoff: xoff, yoff: yoff, mult: mult, maxindex: maxindex, useGlobal: false);
 		}
 
 		//public void DrawKey(bool bigKey)

@@ -12,18 +12,12 @@ namespace ZeldaFullEditor
 		private const int SheetHeight = 1024;
 
 		public abstract ushort[] Layer1TileMap { get; }
-		public abstract IntPtr Layer1Pointer { get; }
-		public abstract Bitmap Layer1Bitmap { get; }
+		public abstract PointeredImage Layer1Canvas { get; }
 
 		public abstract ushort[] Layer2TileMap { get; }
-		public abstract IntPtr Layer2Pointer { get; }
-		public abstract Bitmap Layer2Bitmap { get; }
+		public abstract PointeredImage Layer2Canvas { get; }
 
-		public IntPtr LoadedGraphicsPointer { get; } = Marshal.AllocHGlobal(128 * SheetHeight);
-		public Bitmap LoadedGraphics { get; }
-
-		public abstract IntPtr SpriteCanvasPointer { get; }
-		public abstract Bitmap SpriteCanvas { get; }
+		public abstract PointeredImage SpriteCanvas { get; }
 
 		public abstract Bitmap FinalOutput { get; }
 
@@ -32,10 +26,9 @@ namespace ZeldaFullEditor
 		public byte BackgroundPalette { get; protected set; }
 		public byte SpritePalette { get; protected set; }
 
-		protected Artist()
-		{
-			LoadedGraphics = new Bitmap(128, SheetHeight, 128, PixelFormat.Format8bppIndexed, LoadedGraphicsPointer);
-		}
+		public GraphicsSet LoadedGraphics {get;set;}
+
+		protected Artist() { }
 
 
 
@@ -62,7 +55,14 @@ namespace ZeldaFullEditor
 			DrawTileToBuffer(in tile, x * 8 + y * 64, canvas, tiledata);
 		}
 
-		
+		public unsafe void ClearBgGfx()
+		{
+			for (int i = 0; i < 512 * 512; i++)
+			{
+				Layer1Canvas[i] = 0;
+				Layer2Canvas[i] = 0;
+			}
+		}
 
 
 		public static unsafe void DrawTileToBuffer(in Tile tile, int offset, byte* canvas, byte* tiledata)
@@ -91,24 +91,47 @@ namespace ZeldaFullEditor
 			}
 		}
 
-
-		public abstract void ReloadTileSetGraphics();
-
-
-
-
-		public void DrawBG1()
-		{
-			DrawBackground(Layer1Pointer, Layer1TileMap);
-		}
-
-		public void DrawBG2()
-		{
-			DrawBackground(Layer2Pointer, Layer2TileMap);
-		}
-
-
-		protected abstract void DrawBackground(IntPtr pointer, ushort[] buffer);
 		public abstract void DrawTileForPreview(Tile t, int indexoff);
+
+		public virtual unsafe void DrawSprite(IDrawableSprite spr, OAMDrawInfo[] instructions,
+			int xoff = 0, int yoff = 0, int mult = 512, int maxindex = 262144, bool useGlobal = false)
+		{
+			var graphics = LoadedGraphics;
+
+			// TODO poorly copied and shit
+			foreach (OAMDrawInfo ti in instructions)
+			{
+				int size = ti.RectSideSize;
+				byte r = (byte) (ti.HFlip ? 1 : 0);
+				int tx = (ti.TileIndex / 16 * 512) + ((ti.TileIndex & 0xF) << 2); // TODO verify
+				int indexoff = spr.RealX + ti.XOff + xoff + (mult * (spr.RealY + ti.YOff + yoff));
+				byte pal = (byte) (ti.Palette << 3);
+
+
+				for (int yl = 0, yl2 = tx; yl < size; yl++, yl2 += 64)
+				{
+					int my = (mult * (ti.VFlip ? size - 1 - yl : yl)) + indexoff; // this is alltilesData additive, so it can go here
+
+					for (int xl = 0, xl2 = yl2; xl < size; xl++, xl2++)
+					{
+						int mx = ti.HFlip ? size - 1 - xl : xl;
+						var pixel = graphics[xl2];
+						int index = (mx * 2) + my;
+
+						if (index >= 0 && index <= maxindex)
+						{
+							if (pixel.BitIsOn(0x0F))
+							{
+								SpriteCanvas[index + r ^ 1] = (byte) ((pixel & 0x0F) + 112 + pal);
+							}
+							if (pixel.BitIsOn(0xF0))
+							{
+								SpriteCanvas[index + r] = (byte) ((pixel >> 4) + 112 + pal);
+							}
+						}
+					}
+				}
+			}
+		}
 	}
 }

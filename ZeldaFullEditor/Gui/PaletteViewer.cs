@@ -56,7 +56,9 @@ namespace ZeldaFullEditor
 				{
 					for (int i = 0; i < 256; i++)
 					{
-						ColorPalette palettes = isDungeon ? ZS.GFXManager.roomBg1Bitmap.Palette : ZS.GFXManager.mapgfx16Bitmap.Palette;
+						ColorPalette palettes = isDungeon
+							? Program.RoomEditingArtist.Layer1Canvas.Palette
+							: ZS.GFXManager.mapgfx16Bitmap.Palette;
 
 						g.FillRectangle(new SolidBrush(palettes.Entries[i]), new Rectangle((i % 16) * 16, (i % 16) * 16, 16, 16));
 					}

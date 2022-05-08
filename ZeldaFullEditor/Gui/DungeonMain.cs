@@ -340,8 +340,8 @@ namespace ZeldaFullEditor
 				// 21
 				// 22
 
-				if (saveSettingsArr[23]) ZScreamer.ActiveScreamer.GFXGroups.SaveGroupsToROM();
-				if (saveSettingsArr[24]) ZScreamer.ActiveScreamer.PaletteManager.SavePalettesToROM();
+				if (saveSettingsArr[23]) ZScreamer.ActiveGraphicsManager.SaveGroupsToROM();
+				if (saveSettingsArr[24]) ZScreamer.ActivePaletteManager.SavePalettesToROM();
 				if (saveSettingsArr[25]) Program.TextForm.Save();
 
 				// 17
@@ -2410,52 +2410,6 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public unsafe void ClearBgGfx()
-		{
-			byte* bg1data = (byte*) ZScreamer.ActiveGraphicsManager.roomBg1Ptr.ToPointer();
-			byte* bg2data = (byte*) ZScreamer.ActiveGraphicsManager.roomBg2Ptr.ToPointer();
-
-			for (int i = 0; i < 512 * 512; i++)
-			{
-				bg1data[i] = 0;
-				bg2data[i] = 0;
-			}
-		}
-
-		public void SetPalettesTransparent()
-		{
-			int pindex = 0;
-			ColorPalette palettes = ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette;
-			for (int y = 0; y < ZScreamer.ActiveGraphicsManager.loadedPalettes.GetLength(1); y++)
-			{
-				for (int x = 0; x < ZScreamer.ActiveGraphicsManager.loadedPalettes.GetLength(0); x++)
-				{
-					palettes.Entries[pindex++] = ZScreamer.ActiveGraphicsManager.loadedPalettes[x, y];
-				}
-			}
-
-			for (int y = 0; y < ZScreamer.ActiveGraphicsManager.loadedSprPalettes.GetLength(1); y++)
-			{
-				for (int x = 0; x < ZScreamer.ActiveGraphicsManager.loadedSprPalettes.GetLength(0); x++)
-				{
-					if (pindex < 256)
-					{
-						palettes.Entries[pindex++] = ZScreamer.ActiveGraphicsManager.loadedSprPalettes[x, y];
-					}
-				}
-			}
-
-			for (int i = 0; i < 16 * 16; i += 16)
-			{
-				palettes.Entries[i] = Color.Transparent;
-				palettes.Entries[i + 8] = Color.Transparent;
-			}
-
-			ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette = palettes;
-			ZScreamer.ActiveGraphicsManager.roomBg2Bitmap.Palette = palettes;
-			ZScreamer.ActiveGraphicsManager.roomBgLayoutBitmap.Palette = palettes;
-		}
-
 		private void thumbnailBox_Paint(object sender, PaintEventArgs e)
 		{
 			e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
@@ -3448,7 +3402,7 @@ namespace ZeldaFullEditor
 
 		private void edit8x8palettebox_Paint(object sender, PaintEventArgs e)
 		{
-			ColorPalette cp = ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette;
+			ColorPalette cp = Program.RoomEditingArtist.Layer1Canvas.Palette;
 			for (int i = 0; i < 128; i++)
 			{
 				e.Graphics.FillRectangle(new SolidBrush(cp.Entries[i]), new Rectangle((i % 16) * 16, i & ~0xF, 16, 16));

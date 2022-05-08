@@ -159,18 +159,6 @@ namespace ZeldaFullEditor
 			//graphics.Clear(this.BackColor);
 		}
 
-		public unsafe void ClearBgGfx()
-		{
-			byte* bg1data = (byte*) ZS.GFXManager.roomBg1Ptr.ToPointer();
-			byte* bg2data = (byte*) ZS.GFXManager.roomBg2Ptr.ToPointer();
-
-			for (int i = 0; i < 512 * 512; i++)
-			{
-				bg1data[i] = 0;
-				bg2data[i] = 0;
-			}
-		}
-
 		public void HardRefresh()
 		{
 			RedrawRoom();

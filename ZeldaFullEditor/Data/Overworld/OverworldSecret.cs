@@ -20,7 +20,7 @@ namespace ZeldaFullEditor.Data
 
 		public void Draw(Artist art)
 		{
-			//throw new NotImplementedException();
+			SecretType.Draw(art, this);
 		}
 
 		public override bool PointIsInHitbox(int x, int y)

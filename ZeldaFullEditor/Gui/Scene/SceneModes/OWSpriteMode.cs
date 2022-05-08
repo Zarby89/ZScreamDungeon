@@ -54,7 +54,7 @@ namespace ZeldaFullEditor
 			if (data != -1)
 			{
 				selectedFormSprite = new OverworldSprite(SpriteType.Sprite00); // TODO
-				byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
+				byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 				if (mid == 255)
 				{
 					mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
@@ -80,7 +80,7 @@ namespace ZeldaFullEditor
 		{
 			if (e.Button == MouseButtons.Left)
 			{
-				byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
+				byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 				if (mid == 255)
 				{
 					mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
@@ -168,7 +168,7 @@ namespace ZeldaFullEditor
 					GlobalX = (ushort) MouseX,
 					GlobalY = (ushort) MouseY,
 				}; // TODO
-				byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
+				byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 
 				if (mid == 255)
 				{
@@ -238,7 +238,7 @@ namespace ZeldaFullEditor
 			{
 				var spr = ZS.OverworldManager.allsprites[ZS.OverworldManager.GameState][i];
 
-				if (lowEndMode && spr.MapID != ZS.OverworldManager.allmaps[CurrentMap].parent)
+				if (lowEndMode && spr.MapID != ZS.OverworldManager.allmaps[CurrentMap].ParentMapID)
 				{
 					continue;
 				}

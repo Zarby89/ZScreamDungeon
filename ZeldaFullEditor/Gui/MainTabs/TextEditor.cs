@@ -682,7 +682,7 @@ namespace ZeldaFullEditor
 				}
 				else
 				{
-					cp.Entries[i] = ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette.Entries[(DefaultTextColor * 4) + i];
+					cp.Entries[i] = Program.RoomPreviewArtist.Layer1Canvas.Palette.Entries[(DefaultTextColor * 4) + i];
 				}
 			}
 

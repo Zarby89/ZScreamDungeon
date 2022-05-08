@@ -37,7 +37,7 @@ namespace ZeldaFullEditor.Gui
 			if (sf.ShowDialog() == DialogResult.OK)
 			{
 				FileStream fs = new FileStream(sf.FileName, FileMode.Create, FileAccess.Write);
-				ColorPalette cp = ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette;
+				ColorPalette cp = Program.RoomEditingArtist.Layer1Canvas.Palette;
 
 				foreach (Color c in cp.Entries)
 				{
@@ -54,7 +54,8 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < 256; i++)
 			{
-				e.Graphics.FillRectangle(new SolidBrush(ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette.Entries[i]),
+				e.Graphics.FillRectangle(
+					new SolidBrush(Program.RoomEditingArtist.Layer1Canvas.Palette.Entries[i]),
 					new Rectangle((i % 16) * 16, i & ~0xF, 16, 16));
 			}
 		}

@@ -72,7 +72,7 @@ namespace ZeldaFullEditor
 				}
 			}
 
-			byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
+			byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 			if (mid == 255)
 			{
 				mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
@@ -213,7 +213,7 @@ namespace ZeldaFullEditor
 			{
 				if (SelectedEntrance != null)
 				{
-					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 					if (mid == 255)
 					{
 						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
@@ -297,7 +297,7 @@ namespace ZeldaFullEditor
 			{
 				if (ZS.OverworldManager.allentrances[i].Deleted)
 				{
-					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 					if (mid == 255)
 					{
 						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);

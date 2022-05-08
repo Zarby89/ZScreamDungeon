@@ -83,7 +83,7 @@ namespace ZeldaFullEditor
 			{
 				OverworldTransport e = ZS.OverworldManager.AllTransports[i];
 
-				if (lowEndMode && e.MapID != ZS.OverworldManager.allmaps[CurrentMap].parent)
+				if (lowEndMode && e.MapID != ZS.OverworldManager.allmaps[CurrentMap].ParentMapID)
 				{
 					continue;
 				}

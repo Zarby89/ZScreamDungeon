@@ -600,28 +600,27 @@ namespace ZeldaFullEditor
 
 		public void saveMapProperties()
 		{
-			for (int i = 0; i < 64; i++)
+			for (int i = 0; i < 128; i++)
 			{
-				ROM[Offsets.mapGfx + i] = OverworldManager.allmaps[i].gfx;
-				ROM[Offsets.overworldSpriteset + i] = OverworldManager.allmaps[i].sprgfx[0];
-				ROM[Offsets.overworldSpriteset + 64 + i] = OverworldManager.allmaps[i].sprgfx[1];
-				ROM[Offsets.overworldSpriteset + 128 + i] = OverworldManager.allmaps[i].sprgfx[2];
-				ROM[Offsets.overworldMapPalette + i] = OverworldManager.allmaps[i].palette;
-				ROM[Offsets.overworldSpritePalette + i] = OverworldManager.allmaps[i].sprpalette[0];
-				ROM[Offsets.overworldSpritePalette + 64 + i] = OverworldManager.allmaps[i].sprpalette[1];
-				ROM[Offsets.overworldSpritePalette + 128 + i] = OverworldManager.allmaps[i].sprpalette[2];
-			}
+				var map = OverworldManager.allmaps[i];
+				ROM[Offsets.mapGfx + i] = map.Tileset;
+				ROM[Offsets.overworldMapPalette + i] = map.ScreenPalette;
 
-			for (int i = 64; i < 128; i++)
-			{
-				ROM[Offsets.mapGfx + i] = OverworldManager.allmaps[i].gfx;
-				ROM[Offsets.overworldSpriteset + 128 + i] = OverworldManager.allmaps[i].sprgfx[0];
-				ROM[Offsets.overworldSpriteset + 128 + i] = OverworldManager.allmaps[i].sprgfx[1];
-				ROM[Offsets.overworldSpriteset + 128 + i] = OverworldManager.allmaps[i].sprgfx[2];
-				ROM[Offsets.overworldMapPalette + i] = OverworldManager.allmaps[i].palette;
-				ROM[Offsets.overworldSpritePalette + 128 + i] = OverworldManager.allmaps[i].sprpalette[0];
-				ROM[Offsets.overworldSpritePalette + 128 + i] = OverworldManager.allmaps[i].sprpalette[1];
-				ROM[Offsets.overworldSpritePalette + 128 + i] = OverworldManager.allmaps[i].sprpalette[2];
+				if (map.World == Worldiness.LightWorld)
+				{
+					ROM[Offsets.overworldSpriteset + i] = map.State0SpriteGraphics;
+					ROM[Offsets.overworldSpriteset + 64 + i] = map.State2SpriteGraphics;
+					ROM[Offsets.overworldSpriteset + 128 + i] = map.State3SpriteGraphics;
+
+					ROM[Offsets.overworldSpritePalette + i] = map.State0SpritePalette;
+					ROM[Offsets.overworldSpritePalette + 64 + i] = map.State2SpritePalette;
+					ROM[Offsets.overworldSpritePalette + 128 + i] = map.State3SpritePalette;
+				}
+				else
+				{
+					ROM[Offsets.overworldSpriteset + 128 + i] = map.State0SpriteGraphics;
+					ROM[Offsets.overworldSpritePalette + 128 + i] = map.State0SpritePalette;
+				}
 			}
 		}
 
@@ -730,7 +729,7 @@ namespace ZeldaFullEditor
 		{
 			for (int i = 0; i < 128; i++)
 			{
-				ROM.Write16(Offsets.overworldMessages + (i * 2), OverworldManager.allmaps[i].messageID);
+				ROM.Write16(Offsets.overworldMessages + (i * 2), OverworldManager.allmaps[i].MessageID);
 			}
 		}
 
@@ -911,11 +910,11 @@ namespace ZeldaFullEditor
 			{
 				int yPos = i / 8;
 				int xPos = i % 8;
-				int parentyPos = OverworldManager.allmaps[i].parent / 8;
-				int parentxPos = OverworldManager.allmaps[i].parent % 8;
+				int parentyPos = OverworldManager.allmaps[i].ParentMapID / 8;
+				int parentxPos = OverworldManager.allmaps[i].ParentMapID % 8;
 
 				// Always write the map parent since it should not matter
-				ROM[Offsets.overworldMapParentId + i] = OverworldManager.allmaps[i].parent;
+				ROM[Offsets.overworldMapParentId + i] = OverworldManager.allmaps[i].ParentMapID;
 				//parentMapLine += OverworldManager.allmaps[i].parent.ToString("X2").PadLeft(2, '0') + " ";
 
 				//if ((i + 1) % 8 == 0)
@@ -930,7 +929,7 @@ namespace ZeldaFullEditor
 					continue; // Ignore that map we already checked it
 				}
 
-				if (OverworldManager.allmaps[i].largeMap) // If it's large then save parent pos * 0x200 otherwise pos * 0x200
+				if (OverworldManager.allmaps[i].IsPartOfLargeMap) // If it's large then save parent pos * 0x200 otherwise pos * 0x200
 				{
 					// Check 1
 					ROM[Offsets.overworldMapSize + i] = 0x20;

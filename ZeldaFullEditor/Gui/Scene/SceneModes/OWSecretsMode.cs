@@ -52,7 +52,7 @@ namespace ZeldaFullEditor
 			{
 				if (SelectedSecret != null)
 				{
-					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 					if (mid == 255)
 					{
 						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
@@ -148,7 +148,7 @@ namespace ZeldaFullEditor
 			g.CompositingMode = CompositingMode.SourceOver;
 			foreach (var item in ZS.OverworldManager.allitems)
 			{
-				if (lowEndMode && item.MapID != ZS.OverworldManager.allmaps[CurrentMap].parent)
+				if (lowEndMode && item.MapID != ZS.OverworldManager.allmaps[CurrentMap].ParentMapID)
 				{
 					continue;
 				}

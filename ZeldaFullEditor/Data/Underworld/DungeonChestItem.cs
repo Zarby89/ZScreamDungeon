@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor.Data.Underworld
 {
-	public class DungeonChestItem : IDelegatedDraw, ITypeID
+	public class DungeonChestItem : IDelegatedDraw, ITypeID, IDrawableSprite
 	{
 		public ItemReceipt ReceiptType { get; set; }
 
@@ -27,7 +27,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public void Draw(Artist art)
 		{
-
+			ReceiptType.Draw(art, this);
 		}
 	}
 }

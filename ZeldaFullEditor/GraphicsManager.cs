@@ -17,13 +17,15 @@ namespace ZeldaFullEditor
 {
 	public class GraphicsManager
 	{
+		// TODO move to cosntants or something
+		public static Bitmap moveableBlock { get; } = new Bitmap(Resources.Mblock);
+		public static Bitmap spriteFont { get; } = new Bitmap(Resources.spriteFont);
+		public static Bitmap favStar1 { get; } = new Bitmap(Resources.starn);
+		public static Bitmap favStar2 { get; } = new Bitmap(Resources.starl);
+
+
 		public IntPtr allgfx16Ptr = Marshal.AllocHGlobal((128 * 7136) / 2);
 		public Bitmap allgfxBitmap;
-
-		/*
-        public IntPtr allgfx16EDITPtr = Marshal.AllocHGlobal((128 * 7136));
-        public Bitmap allgfxEDITBitmap;
-        */
 
 		public IntPtr currentgfx16Ptr = Marshal.AllocHGlobal((128 * 512) / 2);
 		public Bitmap currentgfx16Bitmap;
@@ -71,9 +73,6 @@ namespace ZeldaFullEditor
 
 		public byte[] gfxdata;
 
-		public IntPtr roomBgLayoutPtr = Marshal.AllocHGlobal(512 * 512);
-		public Bitmap roomBgLayoutBitmap;
-
 		public IntPtr[] previewObjectsPtr;
 		public Bitmap[] previewObjectsBitmap;
 
@@ -82,14 +81,6 @@ namespace ZeldaFullEditor
 
 		public IntPtr[] previewChestsPtr;
 		public Bitmap[] previewChestsBitmap;
-
-		public ushort[] tilesBg1Buffer = new ushort[Constants.TilesPerUnderworldRoom];
-		public IntPtr roomBg1Ptr = Marshal.AllocHGlobal(512 * 512);
-		public Bitmap roomBg1Bitmap;
-
-		public ushort[] tilesBg2Buffer = new ushort[Constants.TilesPerUnderworldRoom];
-		public IntPtr roomBg2Ptr = Marshal.AllocHGlobal(512 * 512);
-		public Bitmap roomBg2Bitmap;
 
 		public ushort[] tilesObjectsBuffer = new ushort[Constants.TilesPerUnderworldRoom];
 		public IntPtr roomObjectsPtr = Marshal.AllocHGlobal(512 * 512);
@@ -102,11 +93,6 @@ namespace ZeldaFullEditor
 		public int animation_timer = 0;
 
 		public bool useOverworldGFX = false;
-
-		public Bitmap spriteFont;
-		public Bitmap moveableBlock;
-		public Bitmap favStar1;
-		public Bitmap favStar2;
 
 		public Color[] palettes = new Color[Constants.TotalPaletteSize];
 
@@ -125,13 +111,11 @@ namespace ZeldaFullEditor
 		internal void OnROMLoad()
 		{
 			CreateAllGfxData();
+			LoadGfxGroups();
 		}
 
 		public void initGfx()
 		{
-			roomBgLayoutBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBgLayoutPtr);
-			roomBg1Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg1Ptr);
-			roomBg2Bitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomBg2Ptr);
 			allgfxBitmap = new Bitmap(128, 7104, 64, PixelFormat.Format4bppIndexed, allgfx16Ptr);
 			//allgfxEDITBitmap = new Bitmap(128, 7104, 128, PixelFormat.Format8bppIndexed, allgfx16EDITPtr);
 			currentgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentgfx16Ptr);
@@ -147,10 +131,7 @@ namespace ZeldaFullEditor
 			mapblockset16Bitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, mapblockset16);
 			scratchblockset16Bitmap = new Bitmap(256, 4096, 256, PixelFormat.Format8bppIndexed, scratchblockset16);
 
-			moveableBlock = new Bitmap(Resources.Mblock);
-			spriteFont = new Bitmap(Resources.spriteFont);
-			favStar1 = new Bitmap(Resources.starn);
-			favStar2 = new Bitmap(Resources.starl);
+
 
 			favStar1.MakeTransparent(Color.Fuchsia);
 			favStar2.MakeTransparent(Color.Fuchsia);
@@ -176,11 +157,6 @@ namespace ZeldaFullEditor
 			{
 				previewChestsPtr[i] = Marshal.AllocHGlobal(64 * 64);
 				previewChestsBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, previewChestsPtr[i]);
-			}
-			for (int i = 0; i < 4096; i++)
-			{
-				tilesBg1Buffer[i] = 0xFFFF;
-				tilesBg2Buffer[i] = 0xFFFF;
 			}
 		}
 
@@ -239,7 +215,7 @@ namespace ZeldaFullEditor
 		}
 
 		// TODO magic numbers
-		public byte[] CreateAllGfxDataRaw()
+		public byte[][] CreateAllGfxDataRaw()
 		{
 			// 0-112 -> compressed 3bpp bgr -> (decompressed each) 0x600 bytes
 			// 113-114 -> compressed 2bpp -> (decompressed each) 0x800 bytes
@@ -247,13 +223,14 @@ namespace ZeldaFullEditor
 			// 127-217 -> compressed 3bpp sprites -> (decompressed each) 0x600 bytes
 			// 218-222 -> compressed 2bpp -> (decompressed each) 0x800 bytes
 
-			byte[] buffer = new byte[0x54A00];
-			int bufferPos = 0;
-			byte[] data;
+			byte[][] buffer = new byte[256][];
 			int compressedSize = 0;
 
 			for (int i = 0; i < Constants.NumberOfSheets; i++)
 			{
+
+				byte[] data;
+
 				isbpp3[i] = (
 					(i >= 0 && i <= 112) || // Compressed 3bpp bg
 					(i >= 115 && i <= 126) || // Uncompressed 3bpp sprites
@@ -278,21 +255,26 @@ namespace ZeldaFullEditor
 						ref compressedSize);
 				}
 
-				for (int j = 0; j < data.Length; j++)
-				{
-					buffer[j + bufferPos] = data[j];
-				}
-
-				bufferPos += data.Length;
+				buffer[i] = data;
 			}
 
 			return buffer;
 		}
 
+
+
+
+
+
+
+
+
+		public GraphicsSheet[] AllSheets { get; } = new GraphicsSheet[256];
+
 		// TODO this can probably be heavily optimized
 		private void CreateAllGfxData()
 		{
-			byte[] data = CreateAllGfxDataRaw();
+			var sheets = CreateAllGfxDataRaw();
 			byte[] newData = new byte[0x6F800]; // NEED TO GET THE APPROPRIATE SIZE FOR THAT
 			byte[] mask = new byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
 			int sheetPosition = 0;
@@ -300,6 +282,7 @@ namespace ZeldaFullEditor
 			// 8x8 tile
 			for (int s = 0; s < Constants.NumberOfSheets; s++) // Per Sheet
 			{
+				byte[] data = sheets[s];
 				for (int j = 0; j < 4; j++) // Per Tile Line Y
 				{
 					for (int i = 0; i < 16; i++) // Per Tile Line X
@@ -350,31 +333,104 @@ namespace ZeldaFullEditor
 						}
 					}
 				}
+				AllSheets[s] = new GraphicsSheet((byte) s, newData, isbpp3[s] ? SNESPixelFormat.SNES3BPP : SNESPixelFormat.SNES2BPP);
+			}
+		}
 
-				if (isbpp3[s])
-				{
-					sheetPosition += Constants.Uncompressed3BPPSize;
-				}
-				else
-				{
-					sheetPosition += Constants.UncompressedSheetSize;
-				}
+		public GraphicsDoubleBlock[] EntranceGraphicsSets { get; } = new GraphicsDoubleBlock[37];
+		public GraphicsBlock[] RoomGraphicsSets { get; } = new GraphicsBlock[82];
+		public GraphicsBlock[] SpriteGraphicsBlocks { get; } = new GraphicsBlock[144];
+
+		public byte[][] paletteGfx = new byte[72][];
+
+		public void LoadGfxGroups()
+		{
+			int gfxPointer = ZS.ROM.Read16(ZS.Offsets.gfx_groups_pointer);
+			gfxPointer = gfxPointer.SNEStoPC();
+
+			for (int i = 0; i < 37; i++)
+			{
+				var ent = new GraphicsDoubleBlock();
+				EntranceGraphicsSets[i] = ent;
+
+				ent.Block1.Sheet1 = AllSheets[ZS.ROM[gfxPointer++]];
+				ent.Block1.Sheet2 = AllSheets[ZS.ROM[gfxPointer++]];
+				ent.Block1.Sheet3 = AllSheets[ZS.ROM[gfxPointer++]];
+				ent.Block1.Sheet4 = AllSheets[ZS.ROM[gfxPointer++]];
+				ent.Block2.Sheet1 = AllSheets[ZS.ROM[gfxPointer++]];
+				ent.Block2.Sheet2 = AllSheets[ZS.ROM[gfxPointer++]];
+				ent.Block2.Sheet3 = AllSheets[ZS.ROM[gfxPointer++]];
+				ent.Block2.Sheet4 = AllSheets[ZS.ROM[gfxPointer++]];
 			}
 
-			unsafe
+			gfxPointer = ZS.Offsets.overworldgfxGroups;
+			for (int i = 0; i < 82; i++)
 			{
-				byte* allgfx16Data = (byte*) allgfx16Ptr.ToPointer();
-				//byte* allgfx16Data2 = (byte*)allgfx16EDITPtr.ToPointer();
-
-				for (int i = 0; i < 0x6F800; i++)
+				RoomGraphicsSets[i] = new GraphicsBlock()
 				{
-					allgfx16Data[i] = newData[i];
+					Sheet1 = AllSheets[ZS.ROM[gfxPointer++]],
+					Sheet2 = AllSheets[ZS.ROM[gfxPointer++]],
+					Sheet3 = AllSheets[ZS.ROM[gfxPointer++]],
+					Sheet4 = AllSheets[ZS.ROM[gfxPointer++]],
+				};
+			}
 
-					//allgfx16Data2[(i*2)+1] = (byte)(newData[i] & 0x0F);
-					//allgfx16Data2[(i*2)] = (byte)((newData[i] & 0xF0) >> 4);
+			gfxPointer = ZS.Offsets.sprite_blockset_pointer;
+			for (int i = 0; i < 144; i++)
+			{
+				SpriteGraphicsBlocks[i] = new GraphicsBlock()
+				{
+					Sheet1 = AllSheets[ZS.ROM[gfxPointer++]],
+					Sheet2 = AllSheets[ZS.ROM[gfxPointer++]],
+					Sheet3 = AllSheets[ZS.ROM[gfxPointer++]],
+					Sheet4 = AllSheets[ZS.ROM[gfxPointer++]],
+				};
+			}
+
+			for (int i = 0; i < 72; i++)
+			{
+				paletteGfx[i] = new byte[4];
+				for (int j = 0; j < 4; j++)
+				{
+					paletteGfx[i][j] = ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (i * 4) + j];
 				}
 			}
 		}
+
+		public void SaveGroupsToROM()
+		{
+			int gfxPointer = SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_groups_pointer));
+
+			for (int i = 0; i < 37; i++)
+			{
+				ZS.ROM.WriteContinuous(ref gfxPointer, EntranceGraphicsSets[i].GetByteData());
+			}
+
+			gfxPointer = ZS.Offsets.overworldgfxGroups;
+			for (int i = 0; i < 82; i++)
+			{
+				ZS.ROM.WriteContinuous(ref gfxPointer, RoomGraphicsSets[i].GetByteData());
+			}
+
+			gfxPointer = ZS.Offsets.sprite_blockset_pointer;
+			for (int i = 0; i < 144; i++)
+			{
+				ZS.ROM.WriteContinuous(ref gfxPointer, SpriteGraphicsBlocks[i].GetByteData());
+			}
+
+			for (int i = 0; i < 72; i++)
+			{
+				for (int j = 0; j < 4; j++)
+				{
+					ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (i * 4) + j] = paletteGfx[i][j];
+				}
+			}
+		}
+
+
+
+
+
 
 		public int GetPCGfxAddress(byte id)
 		{

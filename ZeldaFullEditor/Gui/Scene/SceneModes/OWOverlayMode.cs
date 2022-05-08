@@ -22,16 +22,16 @@ namespace ZeldaFullEditor
 			globalmouseTileDownY = tileY;
 
 			CurrentMap = mapId + ZS.OverworldManager.WorldOffset;
-			CurrentMapParent = ZS.OverworldManager.allmaps[CurrentMap + ZS.OverworldManager.WorldOffset].parent;
+			CurrentMapParent = ZS.OverworldManager.allmaps[CurrentMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 
-			int mid = ZS.OverworldManager.allmaps[CurrentMap].parent;
+			int mid = ZS.OverworldManager.allmaps[CurrentMap].ParentMapID;
 			int superMX = mid % 8 * 32;
 			int superMY = mid / 8 * 32;
 
 			tileBitmapPtr = ZS.GFXManager.mapblockset16;
 			tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr)
 			{
-				Palette = ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[mapId].parent].gfxBitmap.Palette
+				Palette = ZS.OverworldManager.allmaps[mapId].MyArtist.Layer1Canvas.Palette
 			};
 
 			if (TriggerRefresh)
@@ -61,7 +61,7 @@ namespace ZeldaFullEditor
 						OverlayTile tp = new OverlayTile((byte) (globalmouseTileDownX + x - superMX), (byte) (globalmouseTileDownY + y - superMY), selectedTile[i]);
 						OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
 
-						if (ZS.OverworldManager.allmaps[CurrentMap].largeMap)
+						if (ZS.OverworldManager.allmaps[CurrentMap].IsPartOfLargeMap)
 						{
 							tp = new OverlayTile((byte) (globalmouseTileDownX + x - superMX), (byte) (globalmouseTileDownY + y - superMY), selectedTile[i]);
 							tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
@@ -113,7 +113,7 @@ namespace ZeldaFullEditor
 			int superX = tileX / 32;
 			int superY = tileY / 32;
 			int mapId = (superY * 8) + superX + ZS.OverworldManager.WorldOffset;
-			int mid = ZS.OverworldManager.allmaps[CurrentMap].parent;
+			int mid = ZS.OverworldManager.allmaps[CurrentMap].ParentMapID;
 			int superMX = mid % 8 * 32;
 			int superMY = mid / 8 * 32;
 
@@ -214,7 +214,7 @@ namespace ZeldaFullEditor
 						int mapId;
 						globalmouseTileDownX = tileX;
 						globalmouseTileDownY = tileY;
-						int mid = ZS.OverworldManager.allmaps[CurrentMap].parent;
+						int mid = ZS.OverworldManager.allmaps[CurrentMap].ParentMapID;
 						int superMX = mid % 8 * 32;
 						int superMY = mid / 8 * 32;
 
@@ -301,7 +301,7 @@ namespace ZeldaFullEditor
 
 							if (mapId <= 159)
 							{
-								ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, selectedTile[i], temptilesgfxPtr, ZS.GFXManager.mapblockset16);
+								ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16(x * 16, y * 16, selectedTile[i]);
 							}
 						}
 
@@ -320,7 +320,7 @@ namespace ZeldaFullEditor
 
 					if (mapId <= 159)
 					{
-						tilesgfxBitmap.Palette = ZS.OverworldManager.allmaps[mapId].gfxBitmap.Palette;
+						tilesgfxBitmap.Palette = ZS.OverworldManager.allmaps[mapId].MyArtist.Layer1Canvas.Palette;
 					}
 				}
 			}

@@ -42,7 +42,7 @@ namespace ZeldaFullEditor
 			{
 				if (ZS.OverworldManager.allexits[i].Deleted)
 				{
-					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].parent;
+					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 					if (mid == 255)
 					{
 						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
@@ -71,7 +71,7 @@ namespace ZeldaFullEditor
 						}
 					}
 
-					ZS.OverworldManager.allexits[i].UpdateMapProperties(ZScreamer.ActiveOW.allmaps[ZS.OverworldManager.allexits[i].MapID].largeMap);
+					ZS.OverworldManager.allexits[i].UpdateMapProperties(ZScreamer.ActiveOW.allmaps[ZS.OverworldManager.allexits[i].MapID].IsPartOfLargeMap);
 
 					found = i;
 					break;
@@ -202,7 +202,7 @@ namespace ZeldaFullEditor
 			{
 				OverworldExit ex = ZS.OverworldManager.allexits[i];
 
-				if (lowEndMode && ex.MapID != ZS.OverworldManager.allmaps[CurrentMap].parent)
+				if (lowEndMode && ex.MapID != ZS.OverworldManager.allmaps[CurrentMap].ParentMapID)
 				{
 					continue;
 				}

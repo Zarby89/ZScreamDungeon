@@ -231,6 +231,10 @@
     <Compile Include="Data\Types\LayerMergeType.cs" />
     <Compile Include="Data\Underworld\CollisionRectangle.cs" />
     <Compile Include="Gui\Drawing\Artist.cs" />
+    <Compile Include="Gui\Drawing\GraphicsSet.cs" />
+    <Compile Include="Gui\Drawing\GraphicsSheet.cs" />
+    <Compile Include="Gui\Drawing\PointerImage.cs" />
+    <Compile Include="Gui\Drawing\ScreenArtist.cs" />
     <Compile Include="Gui\ExtraForms\ValueRange.cs" />
     <Compile Include="Gui\MainTabs\TextEditorMessages.cs">
       <SubType>UserControl</SubType>
@@ -243,6 +247,7 @@
     <Compile Include="Hacks\asar.cs" />
     <Compile Include="Utility\DataObjects\DoorTilesList.cs" />
     <Compile Include="Utility\DefaultEntities.cs" />
+    <Compile Include="Utility\Enums\SNESPixelFormat.cs" />
     <Compile Include="Utility\Enums\DoorCategory.cs" />
     <Compile Include="Utility\Enums\DoorDirection.cs" />
     <Compile Include="Utility\Enums\DungeonLimits.cs" />
@@ -334,7 +339,6 @@
     <Compile Include="Data\Underworld\Entrance.cs" />
     <Compile Include="Data\Overworld\OverworldEntrance.cs" />
     <Compile Include="Data\Overworld\OverworldExit.cs" />
-    <Compile Include="GfxGroups.cs" />
     <Compile Include="Gui\ExtraForms\ExitEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -521,7 +525,7 @@
     <Compile Include="ImgClipboard.cs" />
     <Compile Include="Data\Overworld\OverlayData.cs" />
     <Compile Include="Data\Overworld\Overworld.cs" />
-    <Compile Include="Data\Misc\OverworldMap.cs" />
+    <Compile Include="Data\Misc\OverworldScreen.cs" />
     <Compile Include="Gui\Scene\SceneModes\ClipboardData\TileData.cs" />
     <Compile Include="Gui\Scene\SceneModes\OWDoorMode.cs">
       <SubType>Component</SubType>

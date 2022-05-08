@@ -205,7 +205,9 @@ namespace ZeldaFullEditor.Gui
 
 		private void palettePicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			Color[] cols = radioButton1.Checked ? ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette.Entries : ZScreamer.ActiveGraphicsManager.mapgfx16Bitmap.Palette.Entries;
+			Color[] cols = radioButton1.Checked
+				? Program.RoomEditingArtist.Layer1Canvas.Palette.Entries
+				: ZScreamer.ActiveGraphicsManager.mapgfx16Bitmap.Palette.Entries;
 
 			for (int i = 0; i < 256; i++)
 			{
@@ -225,7 +227,9 @@ namespace ZeldaFullEditor.Gui
 			selectedPal = (e.Y / 16);
 
 			ColorPalette cp = ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette;
-			Color[] cols = radioButton1.Checked ? ZScreamer.ActiveGraphicsManager.roomBg1Bitmap.Palette.Entries : ZScreamer.ActiveGraphicsManager.mapgfx16Bitmap.Palette.Entries;
+			Color[] cols = radioButton1.Checked
+				? Program.RoomEditingArtist.Layer1Canvas.Palette.Entries
+				: ZScreamer.ActiveGraphicsManager.mapgfx16Bitmap.Palette.Entries;
 			
 			for (int i = 0; i < 16; i++)
 			{

@@ -61,7 +61,6 @@ namespace ZeldaFullEditor
 			set => SetOverworldEditMode(value);
 		}
 
-		public GfxGroups GFXGroups;
 		public GraphicsManager GFXManager;
 
 		public ROMFile ROM { get; private set; }
@@ -81,7 +80,6 @@ namespace ZeldaFullEditor
 
 			Offsets = new AddressSet(SNESFunctions.ROMVersion.US);
 
-			GFXGroups = new GfxGroups(this);
 			GFXManager = new GraphicsManager(this);
 			OverworldScene = new SceneOW(this);
 			OverworldManager = new Overworld(this);
@@ -101,7 +99,6 @@ namespace ZeldaFullEditor
 			TileLister = RoomObjectTileLister.CreateTileListingsFromROM(this);
 			LayoutLister = RoomLayoutLister.CreateLayoutsFromROM(this);
 
-			GFXGroups.LoadGfxGroups();
 			GFXManager.OnROMLoad();
 
 			OverworldManager.Init();

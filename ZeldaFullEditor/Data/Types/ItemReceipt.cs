@@ -9,7 +9,7 @@ namespace ZeldaFullEditor.Data
 {
 	public class ItemReceipt : IEntityType<ItemReceipt>
 	{
-		public delegate void DrawReceipt(ZScreamer ZS, DungeonChestItem s);
+		public delegate void DrawReceipt(Artist art, DungeonChestItem s);
 
 		public byte ID { get; }
 		public string VanillaName { get; }
@@ -22,6 +22,7 @@ namespace ZeldaFullEditor.Data
 			VanillaName = DefaultEntities.ListOfItemReceipts.GetNameFromVanillaList(id);
 			Draw = d;
 		}
+
 
 		public static readonly ItemReceipt Receipt00 = new ItemReceipt(0x00, ItemReceiptDraw00);
 		public static readonly ItemReceipt Receipt01 = new ItemReceipt(0x01, ItemReceiptDraw01);
@@ -184,45 +185,23 @@ namespace ZeldaFullEditor.Data
 			return null;
 		}
 
-		public static unsafe void DrawTiles(ZScreamer ZS, DungeonChestItem sec, params OAMDrawInfo[] instructions)
+		public static unsafe void DrawTiles(Artist art, DungeonChestItem sec, params OAMDrawInfo[] instructions)
 		{
-			var alltilesData = (byte*) ZS.GFXManager.currentOWgfx16Ptr.ToPointer();
+			int xoff, yoff;
 
-			byte* ptr = (byte*) ZS.GFXManager.roomBg1Ptr.ToPointer(); ;
-
-			// TODO poorly copied and shit
-			foreach (OAMDrawInfo ti in instructions)
+			// TODO
+			if (sec.AssociatedChest.IsBigChest)
 			{
-				int size = ti.RectSideSize;
-				byte r = (byte) (ti.HFlip ? 1 : 0);
-				int tx = (ti.TileIndex / 16 * 512) + ((ti.TileIndex & 0xF) << 2); // TODO verify
-
-				// TODO add stuff for automatic chest positioning
-				int indexoff = sec.RealX + ti.XOff + (512 * (sec.RealY + ti.YOff));
-				byte pal = (byte) (ti.Palette << 3);
-
-
-				for (int yl = 0, yl2 = tx; yl < size; yl++, yl2 += 64)
-				{
-					int my = (512 * (ti.VFlip ? size - 1 - yl : yl)) + indexoff; // this is alltilesData additive, so it can go here
-
-					for (int xl = 0, xl2 = yl2; xl < size; xl++, xl2++)
-					{
-						int mx = ti.HFlip ? size - 1 - xl : xl;
-						var pixel = alltilesData[xl2];
-						int index = (mx * 2) + my;
-
-						if (pixel.BitIsOn(0x0F))
-						{
-							ptr[index + r ^ 1] = (byte) ((pixel & 0x0F) + 112 + pal);
-						}
-						if (pixel.BitIsOn(0xF0))
-						{
-							ptr[index + r] = (byte) ((pixel >> 4) + 112 + pal);
-						}
-					}
-				}
+				xoff = 0;
+				yoff = 0;
 			}
+			else
+			{
+				xoff = 0;
+				yoff = 0;
+			}
+
+			art.DrawSprite(sec, instructions, xoff: xoff, yoff: yoff, useGlobal: true);
 		}
 
 
@@ -545,384 +524,384 @@ namespace ZeldaFullEditor.Data
 
 
 
-		public static void ItemReceiptDraw00(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw00(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw01(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw01(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw02(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw02(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw03(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw03(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw04(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw04(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw05(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw05(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw06(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw06(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw07(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw07(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw08(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw08(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw09(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw09(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw0A(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw0A(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw0B(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw0B(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw0C(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw0C(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw0D(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw0D(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw0E(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw0E(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw0F(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw0F(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw10(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw10(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw11(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw11(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw12(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw12(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw13(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw13(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw14(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw14(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw15(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw15(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw16(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw16(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw17(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw17(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw18(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw18(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw19(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw19(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw1A(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw1A(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw1B(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw1B(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw1C(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw1C(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw1D(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw1D(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw1E(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw1E(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw1F(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw1F(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw20(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw20(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw21(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw21(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw22(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw22(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw23(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw23(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw24(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw24(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw25(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw25(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw26(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw26(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw27(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw27(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw28(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw28(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw29(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw29(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw2A(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw2A(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw2B(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw2B(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw2C(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw2C(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw2D(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw2D(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw2E(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw2E(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw2F(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw2F(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw30(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw30(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw31(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw31(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw32(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw32(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw33(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw33(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw34(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw34(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw35(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw35(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw36(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw36(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw37(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw37(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw38(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw38(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw39(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw39(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw3A(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw3A(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw3B(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw3B(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw3C(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw3C(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw3D(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw3D(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw3E(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw3E(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw3F(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw3F(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw40(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw40(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw41(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw41(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw42(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw42(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw43(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw43(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw44(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw44(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw45(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw45(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw46(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw46(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw47(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw47(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw48(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw48(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw49(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw49(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw4A(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw4A(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw4B(ZScreamer ZS, DungeonChestItem d)
+		public static void ItemReceiptDraw4B(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(ZS, d, new OAMDrawInfo());
+			DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 	}

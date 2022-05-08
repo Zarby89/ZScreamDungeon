@@ -42,7 +42,7 @@ namespace ZeldaFullEditor
 		public ushort[,] allmapsTilesLW = new ushort[512, 512]; //64 maps * (32*32 tiles)
 		public ushort[,] allmapsTilesDW = new ushort[512, 512]; //64 maps * (32*32 tiles)
 		public ushort[,] allmapsTilesSP = new ushort[512, 512]; //32 maps * (32*32 tiles)
-		public OverworldMap[] allmaps = new OverworldMap[Constants.NumberOfOWMaps];
+		public OverworldScreen[] allmaps = new OverworldScreen[Constants.NumberOfOWMaps];
 		public OverworldEntrance[] allentrances = new OverworldEntrance[129];
 		public OverworldEntrance[] allholes = new OverworldEntrance[0x13];
 		public List<OverworldSecret> allitems = new List<OverworldSecret>();
@@ -60,8 +60,6 @@ namespace ZeldaFullEditor
 		public List<OverworldTransport> allBirds = new List<OverworldTransport>();
 
 		public byte GameState { get; set; } = 1;
-
-		public byte[] mapParent = new byte[Constants.NumberOfOWMaps];
 
 		public bool isLoaded = false;
 
@@ -98,12 +96,137 @@ namespace ZeldaFullEditor
 			loadTilesTypes();
 			LoadGravestoneData();
 
-			// Map Initialization :
+			// initialize as objects first to avoid null pointers
 			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
-				allmaps[i] = new OverworldMap((byte) i, ZS);
+				allmaps[i] = new OverworldScreen((byte) i);
 			}
-			getLargeMaps();
+
+			foreach (var map in allmaps)
+			{
+				map.MessageID = ZS.ROM.Read16(ZS.Offsets.overworldMessages + (map.MapID * 2));
+
+				if (map.MapID != 0x80)
+				{
+					if (map.MapID <= 128)
+					{
+						map.IsPartOfLargeMap = ZS.ROM[ZS.Offsets.overworldMapSize + map.VirtualMapID] != 0;
+					}
+					else
+					{
+						map.IsPartOfLargeMap = map.MapID == 129 || map.MapID == 130 || map.MapID == 137 || map.MapID == 138;
+					}
+				}
+
+				if (map.IsPartOfLargeMap && map.IsOwnParent) // this should properly hit the top left corner first always
+				{
+					allmaps[map.MapID + 1].ParentMap = map;
+					allmaps[map.MapID + 8].ParentMap = map;
+					allmaps[map.MapID + 9].ParentMap = map;
+				}
+
+				if (map.MapID < 64)
+				{
+					map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID];
+					map.State2SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 64];
+					map.State3SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
+					map.Tileset = ZS.ROM[ZS.Offsets.mapGfx + map.MapID];
+					map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
+					map.State0SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID];
+					map.State2SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 64];
+					map.State3SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
+					map.musics[0] = ZS.ROM[ZS.Offsets.overworldMusicBegining + map.MapID];
+					map.musics[1] = ZS.ROM[ZS.Offsets.overworldMusicZelda + map.MapID];
+					map.musics[2] = ZS.ROM[ZS.Offsets.overworldMusicMasterSword + map.MapID];
+					map.musics[3] = ZS.ROM[ZS.Offsets.overworldMusicAgahim + map.MapID];
+				}
+				else if (map.MapID < 128)
+				{
+					map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
+					map.State2SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
+					map.State3SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
+					map.Tileset = ZS.ROM[ZS.Offsets.mapGfx + map.MapID];
+					map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
+					map.State0SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
+					map.State2SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
+					map.State3SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
+					map.musics[0] = ZS.ROM[ZS.Offsets.overworldMusicDW + map.VirtualMapID];
+				}
+				else
+				{
+					switch (map.MapID)
+					{
+						case 0x94:
+							map.ParentMap = allmaps[0x80];
+							break;
+
+						case 0x95:
+							map.ParentMap = allmaps[0x03];
+							break;
+
+						case 0x96:
+							map.ParentMap = allmaps[0x5B];
+							break;
+
+						case 0x97:
+							map.ParentMap = allmaps[0x00];
+							break;
+
+						case 0x9C:
+							map.ParentMap = allmaps[0x43];
+							break;
+
+						case 0x9D:
+							map.ParentMap = allmaps[0x00];
+							break;
+
+						case 0x9E:
+							map.ParentMap = allmaps[0x00];
+							break;
+
+						case 0x9F:
+							map.ParentMap = allmaps[0x2C];
+							break;
+
+						case 0x88: // necessary?
+							map.ParentMap = allmaps[0x88];
+							break;
+
+						case 0x81:
+						case 0x82:
+						case 0x89:
+						case 0x8A:
+							map.ParentMap = allmaps[0x81];
+							break;
+					}
+
+					map.MessageID = ZS.ROM[ZS.Offsets.overworldMessages + map.MapID];
+					map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
+					map.State2SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
+					map.State3SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
+					map.State0SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
+					map.State2SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
+					map.State3SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
+
+					map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + map.VirtualMapID];
+
+					if (map.MapID == 0x88)
+					{
+						map.Tileset = 81;
+						map.ScreenPalette = 0;
+					}
+					else if ((map.MapID >= 0x80 && map.MapID <= 0x8A) || map.MapID == 0x94)
+					{
+						map.Tileset = ZS.ROM[ZS.Offsets.overworldSpecialGFXGroup + map.VirtualMapID];
+						map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + 1];
+					}
+					else // Pyramid bg use 0x5B map
+					{
+						map.Tileset = ZS.ROM[ZS.Offsets.mapGfx + map.MapID];
+						map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
+					}
+				}
+			}
 
 			LoadOverworldExitsFromROM();
 			LoadOverworldEntrancesFromROM();
@@ -117,7 +240,7 @@ namespace ZeldaFullEditor
 				Thread.CurrentThread.IsBackground = true;
 				for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 				{
-					allmaps[i].BuildMap();
+					allmaps[i].HardRefresh();
 				}
 			}).Start();
 
@@ -141,76 +264,6 @@ namespace ZeldaFullEditor
 				ushort gfx = ZS.ROM.Read16(ZS.Offsets.GravesGFX + j);
 				ushort tilemap = ZS.ROM.Read16(ZS.Offsets.GravesTilemapPos + j);
 				graves[i] = new Gravestone(x, y, tilemap, gfx);
-			}
-		}
-
-		public void getLargeMaps()
-		{
-			for (int i = 128; i < 145; i++)
-			{
-				mapParent[i] = 0;
-			}
-
-			mapParent[128] = 128;
-			mapParent[129] = 129;
-			mapParent[130] = 129;
-			mapParent[137] = 129;
-			mapParent[138] = 129;
-			mapParent[136] = 136;
-			allmaps[136].largeMap = false;
-
-			bool[] mapChecked = new bool[64];
-			for (int i = 0; i < 64; i++)
-			{
-				mapChecked[i] = false;
-			}
-
-			int xx = 0;
-			int yy = 0;
-			while (true)
-			{
-				byte i = (byte) (xx + (yy << 3));
-				byte j = (byte) (i + 64);
-				if (!mapChecked[i])
-				{
-					if (allmaps[i].largeMap)
-					{
-						mapChecked[i] = true;
-						mapParent[i] = i;
-						mapParent[j] = j;
-
-						mapChecked[i + 1] = true;
-						mapParent[i + 1] = i;
-						mapParent[j + 1] = j;
-
-						mapChecked[i + 8] = true;
-						mapParent[i + 8] = i;
-						mapParent[j + 8] = j;
-
-						mapChecked[i + 9] = true;
-						mapParent[i + 9] = i;
-						mapParent[j + 9] = j;
-						xx++;
-					}
-					else
-					{
-						mapParent[i] = i;
-						mapParent[j] = j;
-						mapChecked[i] = true;
-					}
-				}
-
-				xx++;
-				if (xx >= 8)
-				{
-					xx = 0;
-					yy++;
-
-					if (yy >= 8)
-					{
-						break;
-					}
-				}
 			}
 		}
 
@@ -456,7 +509,30 @@ namespace ZeldaFullEditor
 			}
 		}
 
+		public void UpdateChildrenOfTheMap(OverworldScreen map)
+		{
+			map.NeedsRefresh = true;
+			map.HardRefresh();
 
+			if (!map.IsPartOfLargeMap) return;
+
+			var a = new OverworldScreen[] { allmaps[map.ParentMapID + 1], allmaps[map.ParentMapID + 8], allmaps[map.ParentMapID + 9] };
+
+			foreach (var m in a)
+			{
+				m.Tileset = map.Tileset;
+				m.MessageID = map.MessageID;
+				m.ScreenPalette = map.ScreenPalette;
+				m.State0SpriteGraphics = map.State0SpriteGraphics;
+				m.State2SpriteGraphics = map.State2SpriteGraphics;
+				m.State3SpriteGraphics = map.State3SpriteGraphics;
+				m.State0SpritePalette = map.State0SpritePalette;
+				m.State2SpritePalette = map.State2SpritePalette;
+				m.State3SpritePalette = map.State3SpritePalette;
+				m.NeedsRefresh = true;
+				m.HardRefresh();
+			}
+		}
 		public void LoadOverworldTransportsFromROM()
 		{
 			for (int i = 0, j = 0; i < 0x11; i++, j += 2)
@@ -704,7 +780,7 @@ namespace ZeldaFullEditor
 				}
 
 				bw.Close();
-				allmaps[i].BuildMap();
+				allmaps[i].HardRefresh();
 			}
 		}
 
@@ -878,12 +954,9 @@ namespace ZeldaFullEditor
 			{
 				int addr = ((ptr & 0xFF0000) | ZS.ROM.Read16(ptrpc + (i * 2))).SNEStoPC();
 
-				if (allmaps[i].largeMap)
+				if (!allmaps[i].IsOwnParent)
 				{
-					if (mapParent[i] != (byte) i)
-					{
-						continue;
-					}
+					continue;
 				}
 
 				while (true)
@@ -1086,7 +1159,7 @@ namespace ZeldaFullEditor
 		{
 			for (byte i = 0; i < 144; i++)
 			{
-				if (mapParent[i] == i)
+				if (allmaps[i].IsOwnParent)
 				{
 					if (i < 64)
 					{

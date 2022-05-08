@@ -1920,8 +1920,6 @@ namespace ZeldaFullEditor
 		private static readonly MusicName Music0xF2 = new MusicName(0xF2, "Half-volume");
 		private static readonly MusicName Music0xFF = new MusicName(0xFF, "Do nothing");
 
-
-
 		public static readonly MusicName[] ListOfOverworldMusics =
 		{
 			Music0x01,
