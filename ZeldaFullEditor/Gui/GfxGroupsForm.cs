@@ -303,7 +303,7 @@ namespace ZeldaFullEditor.Gui
 				ZScreamer.ActiveGraphicsManager.currentEditingfx16Bitmap.Palette = cp;
 			}
 
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.currentEditingfx16Bitmap, 0, 0);
 		}
 
@@ -311,7 +311,7 @@ namespace ZeldaFullEditor.Gui
 		{
 			createPalette();
 
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			for (int i = 0; i < 256; i++)
 			{
 				e.Graphics.FillRectangle(new SolidBrush(palettes[i]), new Rectangle(((i % 16) * 8), (i / 16) * 8, 8, 8));

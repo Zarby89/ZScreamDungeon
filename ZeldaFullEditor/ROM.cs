@@ -66,7 +66,7 @@ namespace ZeldaFullEditor
 
 			if (!AsarCLR.Asar.patch(path, ref DATA))
 			{
-				System.Windows.Forms.MessageBox.Show("Error patching");
+				MessageBox.Show("Error patching");
 			}
 
 			AsarCLR.Asar.close();

@@ -73,7 +73,7 @@ namespace ZeldaFullEditor
 				ret.Append(s);
 				if (--i > 0)
 				{
-					ret.Append(System.IO.Path.DirectorySeparatorChar);
+					ret.Append(Path.DirectorySeparatorChar);
 				}
 			}
 			return ret.ToString();

@@ -36,9 +36,9 @@ namespace ZeldaFullEditor.Gui
 			mainscreenPicturebox.Height = 7136 * zoomLevel;
 
 			//pictureBox1.Image = GFX.allgfxBitmap;
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.CompositingMode = System.Drawing.Drawing2D.CompositingMode.SourceCopy;
-			e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			e.Graphics.CompositingMode = CompositingMode.SourceCopy;
+			e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
 			//e.Graphics.DrawImage(GFX.allgfxEDITBitmap, new Rectangle(4, 4, 128 * zoomLevel, 7136*zoomLevel),new Rectangle(0,0,128, 7136),GraphicsUnit.Pixel);
 		}
 
@@ -180,7 +180,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void mainpalettePicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			for (int i = 0; i < selectedPalette.Length; i++)
 			{
 				if (selectedPalette[i] != null)

@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Globalization;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using ZeldaFullEditor.Data;
-using ZeldaFullEditor.Properties;
-
-namespace ZeldaFullEditor.Gui.MainTabs
+﻿namespace ZeldaFullEditor.Gui.MainTabs
 {
 	public partial class ScreenEditor : UserControl
 	{
@@ -562,7 +551,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		private void pictureBox2_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			e.Graphics.DrawImage(tiles8Bitmap, Constants.Rect_0_0_256_1024, Constants.Rect_0_0_128_512, GraphicsUnit.Pixel);
 
 			int size = editsprRadio.Checked ? 32 : 16;
@@ -656,7 +645,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			ClearBG(oamBGPtr);
 			DrawSpr(oamBGPtr);
 
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 
 			if (bg2Checkbox.Checked)
 			{
@@ -1055,7 +1044,7 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		private void owMapTilesBox_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 
 			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.overworldMapBitmap, Constants.Rect_0_0_256_256);
 			e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(selectedMapTile % 16 * 16, selectedMapTile & ~0xF, 16, 16));
@@ -1135,9 +1124,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		private void mapPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			e.Graphics.SmoothingMode = SmoothingMode.None;
+			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 
 			DrawMapBG(ZScreamer.ActiveGraphicsManager.owactualMapPointer);
 			/*
@@ -1470,9 +1459,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 		// DUNGEON MAP START
 		private void dungmapPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			e.Graphics.SmoothingMode = SmoothingMode.None;
+			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 
 			// TODO magic numbers
 			Color r1 = ZScreamer.ActiveROM.Read16(0x0DE56E).ToColor();
@@ -1628,9 +1617,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			};
 		private void floorselectorPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			e.Graphics.SmoothingMode = SmoothingMode.None;
+			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 
 
 
@@ -1800,9 +1789,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		private void dungmaptilesPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			e.Graphics.SmoothingMode = SmoothingMode.None;
+			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			e.Graphics.DrawImage(dungmaptiles8Bitmap, Constants.Rect_0_0_256_256, Constants.Rect_0_0_128_128, GraphicsUnit.Pixel);
 		}
 
@@ -1826,9 +1815,9 @@ namespace ZeldaFullEditor.Gui.MainTabs
 
 		private void dungmaproomgfxPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
-			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			e.Graphics.SmoothingMode = SmoothingMode.None;
+			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			e.Graphics.DrawImage(dungmaptiles16Bitmap, Constants.Rect_0_0_512_384, Constants.Rect_0_0_256_192, GraphicsUnit.Pixel);
 
 			for (int i = 0; i < 16 * 32; i += 32)
@@ -2275,22 +2264,22 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			{
 				if (mouseDown)
 				{
-					ContextMenu cm;
+					ContextMenuStrip cm;
 					if (selectedMapIcon != null)
 					{
-						cm = new ContextMenu(
-							new MenuItem[]
-							{
-								new MenuItem("Remove Map Icon",deleteMapIcon)
-						});
+						//cm = new ContextMenuStrip(
+						//	new ToolStripMenuItem[]
+						//	{
+						//		new ToolStripMenuItem("Remove Map Icon",deleteMapIcon)
+						//});
 					}
 					else
 					{
-						cm = new ContextMenu(
-							new MenuItem[]
-							{
-								new MenuItem("Insert Map Icon",insertMapIcon)
-						});
+						//cm = new ContextMenuStrip(
+						//	new ToolStripMenuItem[]
+						//	{
+						//		new ToolStripMenuItem("Insert Map Icon",insertMapIcon)
+						//});
 					}
 
 					mouseDown = false;

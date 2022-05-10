@@ -24,9 +24,6 @@ namespace ZeldaFullEditor
 
 		public bool isAutomatic = true;
 
-		// TODO make this based on map position and make deleted map position consistent
-		public bool Deleted { get; set; }
-
 		public OverworldExit(ushort roomId, byte mapId, ushort vramLocation,
 			ushort yScroll, ushort xScroll, ushort playerY, ushort playerX,
 			ushort cameraY, ushort cameraX, byte unk1, byte unk2, ushort doorType1, ushort doorType2)

@@ -19,7 +19,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void pictureBox1_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.currentgfx16Bitmap, Constants.Rect_0_0_256_1024, 0, 0, 128, 512, GraphicsUnit.Pixel);
 		}
 

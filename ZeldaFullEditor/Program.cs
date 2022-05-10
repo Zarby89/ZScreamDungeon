@@ -1,10 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Runtime.InteropServices;
-using ZeldaFullEditor.Gui;
+﻿global using System;
+global using System.Collections.Generic;
+global using System.ComponentModel;
+global using System.Drawing;
+global using System.Data;
+global using System.Linq;
+global using System.Text;
+global using System.Windows.Forms;
+global using System.IO;
+global using System.Drawing.Imaging;
+global using System.Runtime.InteropServices;
+global using System.Threading;
+global using ZeldaFullEditor.Gui;
+global using System.Globalization;
+global using ZeldaFullEditor.Data;
+global using ZeldaFullEditor.Properties;
+global using System.Drawing.Drawing2D;
+global using ZeldaFullEditor.Data.Underworld;
+global using ZeldaFullEditor.Gui.MainTabs;
 
 namespace ZeldaFullEditor
 {
@@ -36,6 +48,7 @@ namespace ZeldaFullEditor
 		static void Main(string[] args)
 		{
 			Application.EnableVisualStyles();
+			Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.SetCompatibleTextRenderingDefault(false);
 
 			// Look for Command Line Arguments

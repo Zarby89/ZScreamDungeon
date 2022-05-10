@@ -1,21 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Drawing.Imaging;
-using ZeldaFullEditor.Data.Underworld;
-using ZeldaFullEditor.Data;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public partial class SpritesView : UserControl
 	{
-		public List<SpritePreview> items = new List<SpritePreview>();
+		public List<SpritePreview> items = new();
 		ColorPalette palettes = null;
 
 		public int selectedIndex = -1;

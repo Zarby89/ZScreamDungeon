@@ -64,8 +64,8 @@ namespace ZeldaFullEditor.Gui
 
 		private void allgfxPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
 			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.allgfxBitmap, Constants.Rect_0_0_256_14272, Constants.Rect_0_0_128_7136, GraphicsUnit.Pixel);
 			e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(0, selectedSheet * 64, 256, 64));
 		}

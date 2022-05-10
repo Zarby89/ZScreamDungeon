@@ -1,27 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
-using System.Diagnostics;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
-using ZeldaFullEditor.Properties;
-using System.Runtime.InteropServices;
-using System.Threading;
-using ZeldaFullEditor.Gui;
-using ZeldaFullEditor.Gui.MainTabs;
-using System.Globalization;
-using ZeldaFullEditor.Data;
-using ZeldaFullEditor.Data.Underworld;
-
-
-// Main 
+﻿// Main 
 namespace ZeldaFullEditor
 {
 	public partial class DungeonMain : Form

@@ -628,8 +628,8 @@ namespace ZeldaFullEditor
 		private static readonly Pen GridHilite = new Pen(Color.FromArgb(0x77CCCCCC), 2);
 		private void pictureBox2_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.fontgfxBitmap, Constants.Rect_0_0_256_256);
 
 			if (fontGridBox.Checked)
@@ -648,8 +648,8 @@ namespace ZeldaFullEditor
 
 		private void pictureBox3_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.fontgfxBitmap,
 				Constants.Rect_0_0_64_128,
 				new Rectangle((selectedTile - (selectedTile & 0xF0)) * 8, selectedTile & 0xF0, 8, 16),
@@ -671,7 +671,7 @@ namespace ZeldaFullEditor
 
 		private void pictureBox1_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.PixelOffsetMode = System.Drawing.Drawing2D.PixelOffsetMode.Half;
+			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			ColorPalette cp = ZScreamer.ActiveGraphicsManager.currentfontgfx16Bitmap.Palette;
 
 			for (int i = 0; i < 4; i++)
@@ -688,7 +688,7 @@ namespace ZeldaFullEditor
 
 			ZScreamer.ActiveGraphicsManager.currentfontgfx16Bitmap.Palette = cp;
 
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			e.Graphics.DrawImage(
 				ZScreamer.ActiveGraphicsManager.currentfontgfx16Bitmap,
 				new Rectangle(0, 0, 340, pictureBox2.Height),

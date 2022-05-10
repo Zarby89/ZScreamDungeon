@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace ZeldaFullEditor.Gui.ExtraForms
+﻿namespace ZeldaFullEditor.Gui.ExtraForms
 {
 	public class Hexbox : TextBox
 	{
@@ -145,7 +135,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
 		protected override void OnTextChanged(EventArgs e)
 		{
-			errorValue = !int.TryParse(Text, System.Globalization.NumberStyles.HexNumber, null, out hexValue);
+			errorValue = !int.TryParse(Text, NumberStyles.HexNumber, null, out hexValue);
 
 			EnforceRange();
 			UpdateText(false);

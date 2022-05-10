@@ -33,7 +33,7 @@ namespace ZeldaFullEditor.Gui
 		/// </summary>
 		public unsafe void updateTiles()
 		{
-			ushort.TryParse(tileUpDown.Text, System.Globalization.NumberStyles.HexNumber, null, out ushort tempTile);
+			ushort.TryParse(tileUpDown.Text, NumberStyles.HexNumber, null, out ushort tempTile);
 
 			tile8selected = tempTile;
 
@@ -92,8 +92,8 @@ namespace ZeldaFullEditor.Gui
 
 		private void pictureboxTile8_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			e.Graphics.CompositingQuality = CompositingQuality.HighSpeed;
 			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.editort16Bitmap, Constants.Rect_0_0_256_1024);
 
 			if (gridcheckBox.Checked)
@@ -137,8 +137,8 @@ namespace ZeldaFullEditor.Gui
 		private static readonly RectangleF RectF2 = new RectangleF(0, 0, 128, 8000);
 		private void pictureboxTile16_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
-			e.Graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.AssumeLinear;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			e.Graphics.CompositingQuality = CompositingQuality.AssumeLinear;
 			//e.Graphics.DrawImage(GFX.editortileBitmap, new Rectangle(0, 0, 64, 64));
 			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.mapblockset16Bitmap, RectF1, RectF2, GraphicsUnit.Pixel);
 			//e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8000f), new RectangleF(0, 4000, 128, 4000-192), GraphicsUnit.Pixel);
@@ -433,7 +433,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void button3_Click(object sender, EventArgs e)
 		{
-			ushort.TryParse(tile16searchTextbox.Text, System.Globalization.NumberStyles.HexNumber, null, out searchedTile);
+			ushort.TryParse(tile16searchTextbox.Text, NumberStyles.HexNumber, null, out searchedTile);
 			panel1.VerticalScroll.Value = searchedTile / 8 * 32;
 			panel1.PerformLayout();
 		}

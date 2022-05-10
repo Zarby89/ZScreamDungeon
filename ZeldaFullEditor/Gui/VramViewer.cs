@@ -27,7 +27,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void VramBox_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.NearestNeighbor;
+			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			using (Bitmap tempBitmap = (Bitmap) ZScreamer.ActiveGraphicsManager.currentgfx16Bitmap.Clone())
 			{
 				ColorPalette cp = tempBitmap.Palette;
