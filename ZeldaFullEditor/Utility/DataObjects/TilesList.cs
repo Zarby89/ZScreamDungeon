@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	/// <summary>
 	/// This class is essentially an immutable array of tiles with a more direct name.
@@ -77,7 +75,7 @@ namespace ZeldaFullEditor
 			}
 
 			return new TilesList(list);
-		}	
+		}
 
 	}
 

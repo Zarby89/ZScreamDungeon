@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public class ROMFile
 	{
@@ -157,9 +150,9 @@ namespace ZeldaFullEditor
 		public ROMFile Clone()
 		{
 			return new ROMFile()
-				{
-					DATA = DATA.DeepCopy()
-				};
+			{
+				DATA = DATA.DeepCopy()
+			};
 		}
 	}
 }

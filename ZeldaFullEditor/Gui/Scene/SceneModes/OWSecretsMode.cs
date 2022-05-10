@@ -1,10 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Windows.Forms;
-using ZeldaFullEditor.Data;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public partial class SceneOW
 	{

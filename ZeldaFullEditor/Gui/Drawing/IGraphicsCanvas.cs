@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System.Drawing.Imaging;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	internal interface IGraphicsCanvas
 	{

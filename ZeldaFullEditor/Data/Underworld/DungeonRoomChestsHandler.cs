@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace ZeldaFullEditor.Data.Underworld
+﻿namespace ZeldaFullEditor.Data.Underworld
 {
 	public class DungeonRoomChestsHandler : List<DungeonChestItem>, IByteable
 	{
@@ -18,7 +16,7 @@ namespace ZeldaFullEditor.Data.Underworld
 				c.AssociatedChest = null;
 			}
 		}
-		
+
 		public byte[] GetByteData()
 		{
 			bool[] arebigs = Room.GetBigChestListing(Count);

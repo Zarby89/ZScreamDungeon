@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public unsafe class GraphicsSheet : IGraphicsSheet
 	{
@@ -27,7 +18,7 @@ namespace ZeldaFullEditor
 				return Pointer[i];
 			}
 		}
-		
+
 		public byte this[int x, int y]
 		{
 			get
@@ -63,7 +54,7 @@ namespace ZeldaFullEditor
 			Bitmap = new Bitmap(Width, Height, Width, PixelFormat.Format8bppIndexed, ptr);
 
 			var draw = Pointer;
-			
+
 			for (int i = 0; i < data.Length; i++)
 			{
 				draw[i] = data[i];

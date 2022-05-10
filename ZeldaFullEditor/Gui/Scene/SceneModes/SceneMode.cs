@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-
-namespace ZeldaFullEditor.SceneModes
+﻿namespace ZeldaFullEditor.SceneModes
 {
 	/// <summary>
 	/// 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows.Forms;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	partial class AboutBox1 : Form
 	{

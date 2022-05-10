@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace ZeldaFullEditor.Gui
+﻿namespace ZeldaFullEditor.Gui
 {
 	public partial class Tile16Editor : Form
 	{
@@ -286,7 +276,7 @@ namespace ZeldaFullEditor.Gui
 		{
 			var gfx16Data = (byte*) ZScreamer.ActiveGraphicsManager.mapblockset16.ToPointer(); //(byte*)allgfx8Ptr.ToPointer();
 			var gfx8Data = (byte*) ZScreamer.ActiveGraphicsManager.currentOWgfx16Ptr.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
-			
+
 			int yy = 0;
 			int xx = 0;
 
@@ -329,7 +319,7 @@ namespace ZeldaFullEditor.Gui
 			var pixel = gfx8Pointer[tx + (y * 64) + x];
 
 			gfx16Pointer[index + tile.HFlipByte ^ 1] = (byte) ((pixel & 0x0F) | (tile.Palette << 4));
-			gfx16Pointer[index + tile.HFlipByte] = (byte) (((pixel >> 4)) |( tile.Palette << 4));
+			gfx16Pointer[index + tile.HFlipByte] = (byte) (((pixel >> 4)) | (tile.Palette << 4));
 		}
 
 		private void Tile16Editor_Load(object sender, EventArgs e)

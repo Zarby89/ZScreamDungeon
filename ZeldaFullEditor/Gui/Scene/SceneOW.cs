@@ -1,14 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Diagnostics;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
-using System.Runtime.InteropServices;
-using ZeldaFullEditor.SceneModes;
-using ZeldaFullEditor.Gui;
-using ZeldaFullEditor.Data;
-using System.Collections.Generic;
+﻿using ZeldaFullEditor.SceneModes;
 
 namespace ZeldaFullEditor
 {
@@ -361,7 +351,7 @@ namespace ZeldaFullEditor
 			ZS.OverworldManager.SaveMap16DefinitionsToROM();
 		}
 
-		private void MoveDestinationToMouse(OverworldDestination dest, MouseEventArgs e) 
+		private void MoveDestinationToMouse(OverworldDestination dest, MouseEventArgs e)
 		{
 			if (dest != null)
 			{
@@ -446,7 +436,7 @@ namespace ZeldaFullEditor
 				for (int i = ZS.OverworldManager.WorldOffset; i < ZS.OverworldManager.WorldOffsetEnd; i++)
 				{
 					if (i > 159) continue;
-					
+
 					if (Program.MainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
 					{
 						if ((i >= 0x03) && (i <= 0x07))
@@ -494,7 +484,7 @@ namespace ZeldaFullEditor
 						x = 0;
 						y += 512;
 					}
-					
+
 				}
 			}
 
@@ -512,7 +502,7 @@ namespace ZeldaFullEditor
 				int wid = selectedTileSizeX * 16;
 				int hei = selectedTile.Length / selectedTileSizeX * 16;
 				Rectangle temp = new Rectangle(MouseX & ~0xF, MouseY & ~0x0F, wid, hei);
-				g.DrawImage(tilesgfxBitmap, temp , 0, 0, wid, hei, GraphicsUnit.Pixel, ia);
+				g.DrawImage(tilesgfxBitmap, temp, 0, 0, wid, hei, GraphicsUnit.Pixel, ia);
 				g.DrawRectangle(Pens.LightGreen, temp);
 			}
 
@@ -615,7 +605,7 @@ namespace ZeldaFullEditor
 				}
 
 				Rectangle temp = new Rectangle(MouseX & ~0xF, MouseY & ~0x0F, selectedTileSizeX * 16, selectedTile.Length / selectedTileSizeX * 16);
-				g.DrawImage(tilesgfxBitmap,temp, 0, 0, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
+				g.DrawImage(tilesgfxBitmap, temp, 0, 0, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
 				g.DrawRectangle(Pens.LightGreen, temp);
 
 				g.DrawText(4, 24, globalmouseTileDownX.ToString());
@@ -650,7 +640,7 @@ namespace ZeldaFullEditor
 
 			g.CompositingMode = CompositingMode.SourceCopy;
 			//hideText = false;
-			
+
 		}
 
 		// 0 = none

@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ZeldaFullEditor.Data;
-using ZeldaFullEditor.Data.Underworld;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public partial class SceneUW
 	{
@@ -20,7 +10,7 @@ namespace ZeldaFullEditor
 
 		private void OnMouseUp_Door(MouseEventArgs e)
 		{
-			
+
 		}
 
 		private void OnMouseMove_Door(MouseEventArgs e)
@@ -48,7 +38,7 @@ namespace ZeldaFullEditor
 		{
 			Room.RemoveCurrentlySelectedObjectsFromList(Room.DoorsList);
 		}
-		
+
 		private void Insert_Door()
 		{
 			var d = new DungeonDoor(DungeonDoorDraw.North00, ZS.TileLister.GetDoorTileSet(0));

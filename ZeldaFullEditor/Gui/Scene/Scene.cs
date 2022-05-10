@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Drawing.Imaging;
-using ZeldaFullEditor.SceneModes;
+﻿using ZeldaFullEditor.SceneModes;
 
 namespace ZeldaFullEditor
 {
@@ -127,7 +118,7 @@ namespace ZeldaFullEditor
 
 		protected virtual void OnMouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			
+
 		}
 
 		public virtual void Undo() { }

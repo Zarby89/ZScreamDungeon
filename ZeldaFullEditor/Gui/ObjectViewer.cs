@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Drawing.Imaging;
-using ZeldaFullEditor.Properties;
-using ZeldaFullEditor.Data.Underworld;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public partial class ObjectViewer : UserControl
 	{
@@ -65,7 +52,7 @@ namespace ZeldaFullEditor
 
 				e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos, ypos, 64, 64));
 
-				e.Graphics.DrawString(showName ? o.ObjectType.ToString() : o.ID.ToString("X3"),						
+				e.Graphics.DrawString(showName ? o.ObjectType.ToString() : o.ID.ToString("X3"),
 						Font, Brushes.White, new Rectangle(xpos, ypos + 48, 64, 64));
 
 				xpos += 64;

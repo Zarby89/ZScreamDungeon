@@ -1,23 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.IO;
-using System.Diagnostics;
-using ZeldaFullEditor.Properties;
-using Microsoft.VisualBasic;
-using System.IO.Compression;
-using System.Drawing.Imaging;
-using System.Drawing.Drawing2D;
-using System.Threading.Tasks;
-using System.Globalization;
-
+﻿
 using ZeldaFullEditor.SceneModes;
-using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor
 {
@@ -245,7 +227,7 @@ namespace ZeldaFullEditor
 				g.Clear(BackColor);
 				return;
 			}
-			
+
 			Program.RoomEditingArtist.DrawSelfToImage(g);
 
 			// Draw selection

@@ -458,7 +458,7 @@
 					currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data
 				}
 			}
-			
+
 
 			ColorPalette cp = ZScreamer.ActiveGraphicsManager.overworldMapBitmap.Palette;
 			for (int i = 128; i < 256; i++)
@@ -1193,20 +1193,20 @@
 
 				if (uppersprCheckbox.Checked)
 				{
-					ZScreamer.ActiveROM[0x67E1C + i] = (byte)(oamData[i].tile - 512);
+					ZScreamer.ActiveROM[0x67E1C + i] = (byte) (oamData[i].tile - 512);
 				}
 				else
 				{
-					ZScreamer.ActiveROM[0x67E1C + i] = (byte)(oamData[i].tile - 768);
+					ZScreamer.ActiveROM[0x67E1C + i] = (byte) (oamData[i].tile - 768);
 				}
 			}
 
 			// New position //PC:108000 / S:218000
 			int titleScreenPosition = 0x108000; // In PC
 			int snestitleScreenPosition = titleScreenPosition.PCtoSNES();
-			ZScreamer.ActiveROM[0x138C + 3] =  (byte) (snestitleScreenPosition >> 16);
-			ZScreamer.ActiveROM[0x1383 + 3] =  (byte) (snestitleScreenPosition >> 8);
-			ZScreamer.ActiveROM[0x137A + 3] =  (byte) snestitleScreenPosition;
+			ZScreamer.ActiveROM[0x138C + 3] = (byte) (snestitleScreenPosition >> 16);
+			ZScreamer.ActiveROM[0x1383 + 3] = (byte) (snestitleScreenPosition >> 8);
+			ZScreamer.ActiveROM[0x137A + 3] = (byte) snestitleScreenPosition;
 
 			// Just do a full DMA of all tiles why not...
 			// Header bytes
@@ -1273,7 +1273,7 @@
 			{
 				FileStream fs = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
 				fs.Write(darkWorld ? dwmapdata : mapdata, 0, 64 * 64);
-	
+
 
 				fs.Close();
 				//label4.Text = ;
@@ -1367,7 +1367,7 @@
 					}
 					else
 					{
-						ZScreamer.ActiveROM[p2++] = mapdata[count] ;
+						ZScreamer.ActiveROM[p2++] = mapdata[count];
 
 						if (cSide >= 31)
 						{
@@ -1395,7 +1395,7 @@
 					}
 					else
 					{
-						ZScreamer.ActiveROM[p4++] =  mapdata[count];
+						ZScreamer.ActiveROM[p4++] = mapdata[count];
 						if (cSide >= 31)
 						{
 							cSide = 0;
@@ -1449,7 +1449,7 @@
 						ushort px = (ushort) (allMapIcons[e][i].x << 4);
 						ushort py = (ushort) (allMapIcons[e][i].y << 4);
 						ZScreamer.ActiveROM[0x53763 + i] = (byte) px;
-						ZScreamer.ActiveROM[0x5376B + i] = (byte) (px>>8);
+						ZScreamer.ActiveROM[0x5376B + i] = (byte) (px >> 8);
 
 						ZScreamer.ActiveROM[0x53773 + i] = (byte) py;
 						ZScreamer.ActiveROM[0x5377B + i] = (byte) (py >> 8);
@@ -1648,7 +1648,7 @@
 
 					ia.SetColorMatrix(colorMatrix);
 					e.Graphics.DrawImage(floorSelector,
-						new Rectangle(0, (7 + nbrBasement  - i)* 15, 24, 15), 0,
+						new Rectangle(0, (7 + nbrBasement - i) * 15, 24, 15), 0,
 						(7 + nbrBasement - i) * 15, 24,
 						15, GraphicsUnit.Pixel, ia);
 				}
@@ -1675,7 +1675,7 @@
 			// NEED TO BE EXECUTED AFTER THE TILESET ARE LOADED NOT BEFORE -_-
 			byte* currentmapgfx8Data = (byte*) ZScreamer.ActiveGraphicsManager.currentTileScreengfx16Ptr.ToPointer(); // Loaded gfx for the current map (empty at this point)
 			byte* allgfxData = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer(); // All gfx of the game pack of 2048 bytes (4bpp)
-			
+
 			for (int i = 0; i < 4; i++)
 			{
 				int i2 = i * 2048;
@@ -1943,7 +1943,7 @@
 				// 0x5677E
 
 				// TODO add to resources
-				string expAsm =	@"
+				string expAsm = @"
 					org $0AE652
 					JSR Load1
 					org $0AE6B6
@@ -2445,7 +2445,7 @@
 				if (triforceRadio.Checked)
 				{
 					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].z, 4, 4));
-					if (selectedVertex  == triforceVertices[i])
+					if (selectedVertex == triforceVertices[i])
 					{
 						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].z, 4, 4));
 					}

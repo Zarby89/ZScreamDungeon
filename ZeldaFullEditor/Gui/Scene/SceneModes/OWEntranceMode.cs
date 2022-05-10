@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Windows.Forms;
-using ZeldaFullEditor.Gui;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public partial class SceneOW
 	{
@@ -224,7 +215,7 @@ namespace ZeldaFullEditor
 			}
 
 			if (e.Button != MouseButtons.Right) return;
-			
+
 			ContextMenuStrip menu = new ContextMenuStrip();
 			for (int i = 0; i < ZS.OverworldManager.allentrances.Length; i++)
 			{
@@ -257,7 +248,7 @@ namespace ZeldaFullEditor
 				OverworldEntrance en = ZS.OverworldManager.allholes[i];
 				if (en.IsInThisWorld(ZS.OverworldManager.World) && en.MouseIsInHitbox(e))
 				{
-					
+
 					menu.Items.Add("Add Entrance");
 					menu.Items.Add("Entrance Properties");
 					menu.Items.Add("Delete Entrance");
@@ -275,7 +266,7 @@ namespace ZeldaFullEditor
 					menu.Items[2].Click += Delete_Click;
 					menu.Show(Cursor.Position);
 					return;
-					
+
 				}
 			}
 

@@ -123,7 +123,8 @@
 			return ret;
 		}
 
-		private void ReloadRoomFromROM() {
+		private void ReloadRoomFromROM()
+		{
 			// Load dungeon header
 			int headerPointer = ZS.ROM.Read24(ZS.Offsets.room_header_pointer).SNEStoPC();
 
@@ -151,7 +152,7 @@
 			Stair2.TargetLayer = (byte) ((b >> 4) & 0x03);
 			Stair3.TargetLayer = (byte) ((b >> 6) & 0x03);
 			Stair4.TargetLayer = (byte) (ZS.ROM[hpos++] & 0x03);
-			
+
 			Pits.Target = ZS.ROM[hpos++];
 			Stair1.Target = ZS.ROM[hpos++];
 			Stair2.Target = ZS.ROM[hpos++];
@@ -455,11 +456,11 @@
 							case 0:
 								currentList = Layer1Objects;
 								break;
-							
+
 							case 1:
 								currentList = Layer2Objects;
 								break;
-							
+
 							case 2:
 								currentList = Layer3Objects;
 								break;
@@ -680,7 +681,7 @@
 			HasUnsavedChanges = true;
 			return true;
 		}
-		
+
 		private int CountLimitedObjects(DungeonLimits type)
 		{
 			int count = 0;
@@ -738,7 +739,7 @@
 
 			HasUnsavedChanges = true;
 			return true;
-		}	
+		}
 
 		private bool AddDoor(DungeonDoor d)
 		{
@@ -981,7 +982,7 @@
 					continue;
 				}
 
-				if (CollisionMap[i+1] == null && CollisionMap[i+64] == null)
+				if (CollisionMap[i + 1] == null && CollisionMap[i + 64] == null)
 				{
 					freespace[i] = true;
 					ret.Add(new CollisionRectangle(1, 1, i, (byte) check));
@@ -996,7 +997,7 @@
 					rectumw++;
 				}
 
-				while  (((i + rectumh) < Constants.TilesPerTilemap)
+				while (((i + rectumh) < Constants.TilesPerTilemap)
 						&& CollisionMap[i + rectumh] != null)
 				{
 					rectumh += 64;
@@ -1024,7 +1025,7 @@
 
 			ReassociateChestsAndItems();
 		}
-		
+
 		// TODO
 		public void DeleteChest()
 		{
@@ -1168,7 +1169,7 @@
 
 		public void ClearCustomCollision()
 		{
-			for(int i = 0; i < CollisionMap.Length; i++)
+			for (int i = 0; i < CollisionMap.Length; i++)
 			{
 				CollisionMap[i] = null;
 			}

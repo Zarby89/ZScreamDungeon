@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor.Data.Underworld
+﻿namespace ZeldaFullEditor.Data.Underworld
 {
 	// TODO new way to handle objects that change with the floor settings
 	[Serializable]

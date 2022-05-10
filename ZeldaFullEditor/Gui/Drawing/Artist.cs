@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using ZeldaFullEditor.Data.Underworld;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public abstract class Artist
 	{
@@ -26,7 +19,7 @@ namespace ZeldaFullEditor
 		public byte BackgroundPalette { get; protected set; }
 		public byte SpritePalette { get; protected set; }
 
-		public GraphicsSet LoadedGraphics {get;set;}
+		public GraphicsSet LoadedGraphics { get; set; }
 
 		protected Artist() { }
 

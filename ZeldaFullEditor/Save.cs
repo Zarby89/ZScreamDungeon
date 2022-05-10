@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using ZeldaFullEditor.Data;
-using ZeldaFullEditor.Data.Underworld;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public partial class ZScreamer
 	{
@@ -63,8 +56,8 @@ namespace ZeldaFullEditor
 				foreach (DungeonBlock b in all_rooms[i].BlocksList)
 				{
 					int xy = ((b.GridY * 64) + b.GridX) << 1;
-					
-					ROM.WriteContinuous(ref pos, 
+
+					ROM.WriteContinuous(ref pos,
 						(byte) i,
 						(byte) (i >> 8),
 						(byte) xy,
@@ -853,7 +846,7 @@ namespace ZeldaFullEditor
 				{
 					snesPos = mapPointers1[mapPointers1id[i]];
 				}
-				
+
 				ROM.Write24(Offsets.compressedAllMap32PointersLow + (3 * i), snesPos);
 
 				if ((pos + b.Length) >= 0x5FE70 && (pos + b.Length) <= 0x60000)
@@ -949,10 +942,10 @@ namespace ZeldaFullEditor
 
 					ROM[Offsets.overworldScreenSize + i + 1] = 0x00;
 					ROM[Offsets.overworldScreenSize + i + 1 + 64] = 0x00;
-						  
+
 					ROM[Offsets.overworldScreenSize + i + 8] = 0x00;
 					ROM[Offsets.overworldScreenSize + i + 8 + 64] = 0x00;
-						  
+
 					ROM[Offsets.overworldScreenSize + i + 9] = 0x00;
 					ROM[Offsets.overworldScreenSize + i + 9 + 64] = 0x00;
 
@@ -1028,10 +1021,10 @@ namespace ZeldaFullEditor
 				{
 					ROM[Offsets.overworldMapSize + i] = 0x00;
 					ROM[Offsets.overworldMapSizeHighByte + i] = 0x01;
-						  
+
 					ROM[Offsets.overworldScreenSize + i] = 0x01;
 					ROM[Offsets.overworldScreenSize + i + 64] = 0x01;
-						  
+
 					ROM[Offsets.OverworldScreenSizeForLoading + i] = 0x02;
 					ROM[Offsets.OverworldScreenSizeForLoading + i + 64] = 0x02;
 					ROM[Offsets.OverworldScreenSizeForLoading + i + 128] = 0x02;

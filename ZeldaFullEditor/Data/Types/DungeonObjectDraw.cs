@@ -1285,9 +1285,9 @@
 				new DrawInfo(00, sizex2 + 64, sizey2),
 				new DrawInfo(03, sizex2 + 72, sizey2),
 				new DrawInfo(06, sizex2 + 80, sizey2),
-				new DrawInfo(01, sizex2 + 64, sizey2 + 8), 
-				new DrawInfo(04, sizex2 + 72, sizey2 + 8), 
-				new DrawInfo(07, sizex2 + 80, sizey2 + 8), 
+				new DrawInfo(01, sizex2 + 64, sizey2 + 8),
+				new DrawInfo(04, sizex2 + 72, sizey2 + 8),
+				new DrawInfo(07, sizex2 + 80, sizey2 + 8),
 				new DrawInfo(02, sizex2 + 64, sizey2 + 16),
 				new DrawInfo(05, sizex2 + 72, sizey2 + 16),
 				new DrawInfo(08, sizex2 + 80, sizey2 + 16),
@@ -1459,7 +1459,7 @@
 
 		private static void RoomDraw_Rightwards1x2_1to16_plus2(Artist art, RoomObject obj)
 		{
-			for (int s = 0; s <= (obj.Size  * 16); s += 16)
+			for (int s = 0; s <= (obj.Size * 16); s += 16)
 			{
 				DrawTiles(art, obj, false,
 					new DrawInfo(3, s + 8, 0),
@@ -1580,9 +1580,9 @@
 					new DrawInfo(7, s, 8),
 					new DrawInfo(8, s, 16),
 
-					new DrawInfo(9, s+ 8, 0),
-					new DrawInfo(10, s+ 8, 8),
-					new DrawInfo(11, s+ 8, 16)
+					new DrawInfo(9, s + 8, 0),
+					new DrawInfo(10, s + 8, 8),
+					new DrawInfo(11, s + 8, 16)
 				);
 			}
 
@@ -1911,7 +1911,7 @@
 					new DrawInfo(14, x + 8, sizey)
 				);
 			}
-			
+
 			for (int y = 8; y < sizey; y += 16)
 			{
 				DrawTiles(art, obj, false,

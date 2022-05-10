@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Windows.Forms;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public static class Utils
 	{
@@ -71,7 +66,7 @@ namespace ZeldaFullEditor
 			g.FillRectangle(fill, r);
 			g.DrawRectangle(outline, r);
 		}
-		
+
 		public static void DrawFilledRectangleWithOutline(this Graphics g, Rectangle r, Pen outline, Brush fill)
 		{
 			g.FillRectangle(fill, r);

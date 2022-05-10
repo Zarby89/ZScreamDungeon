@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.ComponentModel;
+﻿using System.Collections;
 using System.ComponentModel.Design.Serialization;
-using System.Globalization;
 using System.Reflection;
-using System.Runtime.InteropServices;
 
 namespace ZeldaFullEditor.Gui.ExtraForms
 {
@@ -44,7 +40,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			return base.CanConvertTo(context, destinationType);
 		}
 
-	
+
 		public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
 			if (value is string text)

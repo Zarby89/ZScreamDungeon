@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-using ZeldaFullEditor.Data.Underworld;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public class RoomArtist : Artist
 	{
@@ -184,7 +179,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		
+
 
 		public override void DrawTileForPreview(Tile t, int indexoff) { }
 	}

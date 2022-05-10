@@ -1,6 +1,4 @@
-﻿using System.Drawing;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public static class UIColors
 	{

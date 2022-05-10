@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using System.Windows.Forms;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	/// <summary>
 	/// Contains methods for objects to communicate collision with user control.

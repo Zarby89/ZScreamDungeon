@@ -1,10 +1,4 @@
-﻿using System;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Windows.Forms;
-using ZeldaFullEditor.Data;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public partial class SceneOW
 	{
@@ -14,7 +8,7 @@ namespace ZeldaFullEditor
 		private void OnMouseDown_Graves(MouseEventArgs e)
 		{
 			if (e.Button != MouseButtons.Left) return;
-			
+
 			for (int i = 0; i < 0x0F; i++)
 			{
 				// TODO IMouseCollidable
@@ -25,7 +19,7 @@ namespace ZeldaFullEditor
 					lastselectedGrave = en;
 				}
 			}
-			
+
 		}
 
 		private void OnMouseMove_Graves(MouseEventArgs e)

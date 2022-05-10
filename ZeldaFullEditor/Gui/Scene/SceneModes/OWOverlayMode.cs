@@ -98,7 +98,7 @@
 		}
 
 		private void OnMouseUp_Overlay(MouseEventArgs e)
-		{			
+		{
 			int tileX = e.X / 16;
 			int tileY = e.Y / 16;
 			int superX = tileX / 32;
@@ -315,7 +315,7 @@
 					}
 				}
 			}
-			
+
 		}
 
 		// TODO

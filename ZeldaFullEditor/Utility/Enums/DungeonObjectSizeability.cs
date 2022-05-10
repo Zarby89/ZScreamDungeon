@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	[Flags]
 	public enum DungeonObjectSizeability

@@ -1,16 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Threading;
-using System.Drawing.Drawing2D;
-using ZeldaFullEditor.Gui.ExtraForms;
-using ZeldaFullEditor.Data;
+﻿using ZeldaFullEditor.Gui.ExtraForms;
 
 namespace ZeldaFullEditor.Gui
 {
@@ -88,7 +76,7 @@ namespace ZeldaFullEditor.Gui
 			int t = 0;
 			for (ushort x = 0; x < 225; x++)
 			{
-				for (ushort y = 0; y < 16; y++, t+=2)
+				for (ushort y = 0; y < 16; y++, t += 2)
 				{
 					scratchPadTiles[y, x] = (ushort) (fromFile ? (file[t] << 8) | file[t + 1] : 0);
 				}
@@ -1032,12 +1020,12 @@ namespace ZeldaFullEditor.Gui
 		}
 
 
-		private static void UpdateEntireListForBigMap(IEnumerable<OverworldEntity> l, int map) 
+		private static void UpdateEntireListForBigMap(IEnumerable<OverworldEntity> l, int map)
 		{
 			foreach (var o in l)
 			{
 				if (o.MapID != map) continue;
-				
+
 				if (o.MapX < 32)
 				{
 					if (o.MapY < 32)
@@ -1065,7 +1053,7 @@ namespace ZeldaFullEditor.Gui
 				{
 					d.UpdateMapProperties(ZScreamer.ActiveOW.allmaps[o.MapID].IsPartOfLargeMap);
 				}
-				
+
 			}
 		}
 

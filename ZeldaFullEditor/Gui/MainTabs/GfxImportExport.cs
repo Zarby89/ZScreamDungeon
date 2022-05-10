@@ -1,18 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
-using System.Drawing.Imaging;
-using System.Runtime.InteropServices;
-using System.Threading;
-
-namespace ZeldaFullEditor.Gui
+﻿namespace ZeldaFullEditor.Gui
 {
 	public partial class GfxImportExport : UserControl
 	{
@@ -40,18 +26,18 @@ namespace ZeldaFullEditor.Gui
 			}
 
 			int pos = data[0] + (nbrColor * 4); // Palette data useless for now
-				byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
-				int spos = 0;
-				//byte* allgfx16Data2 = (byte*)allgfx16EDITPtr.ToPointer();
+			byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
+			int spos = 0;
+			//byte* allgfx16Data2 = (byte*)allgfx16EDITPtr.ToPointer();
 
-				for (int y = 31; y >= 0; y--)
+			for (int y = 31; y >= 0; y--)
+			{
+				for (int x = 0; x < 64; x++)
 				{
-					for (int x = 0; x < 64; x++)
-					{
-						gdata[spos + (selectedSheet * Constants.UncompressedSheetSize)] = data[pos + (x + (y * 64))];
-						spos++;
-					}
+					gdata[spos + (selectedSheet * Constants.UncompressedSheetSize)] = data[pos + (x + (y * 64))];
+					spos++;
 				}
+			}
 
 			allgfxPicturebox.Refresh();
 		}
@@ -230,7 +216,7 @@ namespace ZeldaFullEditor.Gui
 			Color[] cols = radioButton1.Checked
 				? Program.RoomEditingArtist.Layer1Canvas.Palette.Entries
 				: ZScreamer.ActiveGraphicsManager.mapgfx16Bitmap.Palette.Entries;
-			
+
 			for (int i = 0; i < 16; i++)
 			{
 				cp.Entries[i] = cols[i + selectedPal * 16];

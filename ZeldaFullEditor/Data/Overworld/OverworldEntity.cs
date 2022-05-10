@@ -1,7 +1,4 @@
-﻿using System;
-using System.Drawing;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public abstract class OverworldEntity : IMouseCollidable, IFreelyPlaceable
 	{
@@ -10,7 +7,8 @@ namespace ZeldaFullEditor
 
 		public Rectangle SquareHitbox => new(GlobalX, GlobalY, 16, 16);
 
-		public ushort GlobalX {
+		public ushort GlobalX
+		{
 			get => globalx;
 			set
 			{
@@ -19,7 +17,8 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public ushort GlobalY {
+		public ushort GlobalY
+		{
 			get => globaly;
 			set
 			{
@@ -28,7 +27,8 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public byte MapX {
+		public byte MapX
+		{
 			get => mapx;
 			set
 			{
@@ -36,8 +36,9 @@ namespace ZeldaFullEditor
 				RecalculateGlobalFromLocal();
 			}
 		}
-		
-		public byte MapY {
+
+		public byte MapY
+		{
 			get => mapy;
 			set
 			{
@@ -58,7 +59,8 @@ namespace ZeldaFullEditor
 		}
 
 		private byte mapid;
-		public byte MapID {
+		public byte MapID
+		{
 			get => mapid;
 			set
 			{
@@ -67,11 +69,13 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public byte GridX {
+		public byte GridX
+		{
 			get => MapX;
 			set => MapX = value;
 		}
-		public byte GridY {
+		public byte GridY
+		{
 			get => MapY;
 			set => MapY = value;
 		}

@@ -82,7 +82,7 @@
 		{
 			return (ulong) a << 48 | ((ulong) b << 32) | ((ulong) c << 16) | d;
 		}
-		
+
 		public byte[] GetByteData()
 		{
 			byte[] b0 = Tile0.GetByteData();

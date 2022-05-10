@@ -1,7 +1,4 @@
-﻿using ZeldaFullEditor.Data;
-using ZeldaFullEditor.Data.Underworld;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	/// <summary>
 	/// Handles everything ever

@@ -58,7 +58,7 @@
 		protected override void ReloadPalettes()
 		{
 			var copy = ZScreamer.ActivePaletteManager.LoadDungeonPalette(BackgroundPalette);
-			
+
 			int pindex = 0;
 			ColorPalette palettes = Layer1Canvas.Palette;
 
@@ -167,10 +167,10 @@
 			//sw.Start();
 			byte* gfx16Data = (byte*) ZScreamer.ActiveGraphicsManager.mapblockset16.ToPointer(); //(byte*)allgfx8Ptr.ToPointer();
 			byte* gfx8Data = (byte*) ZScreamer.ActiveGraphicsManager.currentOWgfx16Ptr.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
-			
+
 			int yy = 0;
 			int xx = 0;
-			
+
 			for (int i = 0; i < ZScreamer.ActiveOW.Tile16List.ListOf.Count; i++) // Number of tiles16 3748?
 			{
 				// 8x8 tile draw
@@ -258,7 +258,7 @@
 			}
 			else
 			{
-				
+
 				aux1 = ZScreamer.ActivePaletteManager.OverworldAux[0];
 			}
 
@@ -282,7 +282,7 @@
 
 			if (pal3 == 255)
 			{
-				pal3 =ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.overworldMapPaletteGroup + (previousPalId * 4) + 2];
+				pal3 = ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.overworldMapPaletteGroup + (previousPalId * 4) + 2];
 			}
 
 			if (ParentMapID < 0x40)
@@ -355,7 +355,7 @@
 			hud = ZScreamer.ActivePaletteManager.HUD[0];
 			if (pal4 == 255)
 			{
-				pal4 =ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.overworldSpritePaletteGroup + (previousSprPalId * 2)]; // spr3
+				pal4 = ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.overworldSpritePaletteGroup + (previousSprPalId * 2)]; // spr3
 
 			}
 
@@ -371,7 +371,7 @@
 
 			if (pal5 == 255)
 			{
-				pal5 =ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.overworldSpritePaletteGroup + (previousSprPalId * 2) + 1]; // spr3
+				pal5 = ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.overworldSpritePaletteGroup + (previousSprPalId * 2) + 1]; // spr3
 			}
 
 			if (pal5 == 255)

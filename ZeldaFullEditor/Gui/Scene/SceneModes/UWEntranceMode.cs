@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public partial class SceneUW
 	{
@@ -36,8 +29,8 @@ namespace ZeldaFullEditor
 
 			if (Program.DungeonForm.gridEntranceCheckbox.Checked)
 			{
-				 MX &= ~0x7;
-				 MY &= ~0x7;
+				MX &= ~0x7;
+				MY &= ~0x7;
 			}
 
 			sel.XPosition = (ushort) (MX + (ex * 512));

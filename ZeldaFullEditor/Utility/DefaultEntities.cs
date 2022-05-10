@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public static class DefaultEntities
 	{
@@ -8,7 +6,7 @@ namespace ZeldaFullEditor
 		{
 			return GetObjectFromVanillaList(list, id).Name;
 		}
-		
+
 		public static T GetObjectFromVanillaList<T>(this T[] list, int id) where T : EntityName
 		{
 			int b = Array.FindIndex(list, s => s.ID == id);
@@ -1592,7 +1590,7 @@ namespace ZeldaFullEditor
 			new(0x64, "Unusable glitchy/stairs up (lower layer)"),
 			new(0x66, "Unusable glitchy/stairs down (lower layer)")
 		};
-		
+
 		public static readonly TileTypeName[] ListOfTileTypes =
 		{
 			new(0x00, "Nothing (standard floor)"),
@@ -1938,7 +1936,7 @@ namespace ZeldaFullEditor
 			Music0x0E,
 			Music0x0F,
 		};
-		
+
 		public static readonly MusicName[] ListOfUnderworldMusics =
 		{
 			Music0x01,

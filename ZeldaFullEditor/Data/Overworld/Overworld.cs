@@ -1,19 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Threading;
-using ZeldaFullEditor.Data;
-using ZeldaFullEditor.Data.Underworld;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public class Overworld
 	{
@@ -449,10 +434,10 @@ namespace ZeldaFullEditor
 						t32Unique[j].Tile1 == map16tiles[i].Tile1 &&
 						t32Unique[j].Tile2 == map16tiles[i].Tile2 &&
 						t32Unique[j].Tile3 == map16tiles[i].Tile3)
-						{
-							foundIndex = (ushort) j;
-							break;
-						}
+					{
+						foundIndex = (ushort) j;
+						break;
+					}
 				}
 
 				if (foundIndex == null)

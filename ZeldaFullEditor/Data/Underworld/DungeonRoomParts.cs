@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor.Data.Underworld
+﻿namespace ZeldaFullEditor.Data.Underworld
 {
 	public abstract class DungeonListing<T> : List<T>, IList<T> where T : IDungeonPlaceable
 	{

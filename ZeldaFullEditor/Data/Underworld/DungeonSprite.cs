@@ -61,7 +61,7 @@
 
 		public byte KeyDrop { get; set; } = 0;
 
-	
+
 
 		public DungeonSprite(SpriteType type)
 		{

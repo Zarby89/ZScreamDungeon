@@ -1,7 +1,4 @@
-﻿using System;
-using System.Reflection;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public class AddressSet
 	{

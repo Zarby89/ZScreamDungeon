@@ -1,17 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.IO;
-using System.Diagnostics;
-using System.Drawing.Imaging;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	class PaletteViewer
 	{
@@ -151,7 +138,7 @@ namespace ZeldaFullEditor
 		public void randomizePalette(byte palette)
 		{
 			dungeon_palette_id = ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (palette * 4)]; // ID of the 1st group of 4
-																							   //randomize_wall(dungeon_palette_id);
+																							  //randomize_wall(dungeon_palette_id);
 			randomize_castle_palette();
 			//randomize_floors();
 			update();

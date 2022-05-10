@@ -1,14 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public partial class SceneOW
 	{
@@ -103,7 +93,7 @@ namespace ZeldaFullEditor
 			}
 
 			if (SelectedExit == null) return;
-			
+
 			//scene.owForm.thumbnailBox.Visible = true;
 			//scene.owForm.thumbnailBox.Size = new Size(256, 256);
 			int roomId = SelectedExit.TargetRoomID;
@@ -141,7 +131,7 @@ namespace ZeldaFullEditor
 			}
 
 			if (e.Button != MouseButtons.Right) return;
-			
+
 			bool clickedon = false;
 			ContextMenuStrip menu = new ContextMenuStrip();
 
@@ -153,7 +143,7 @@ namespace ZeldaFullEditor
 				menu.Items[0].Click += insertExit_Click;
 				menu.Show(Cursor.Position);
 			}
-			
+
 		}
 
 		public void insertExit_Click(object sender, EventArgs e)

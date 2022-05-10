@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor.SceneModes.ClipboardData
+﻿namespace ZeldaFullEditor.SceneModes.ClipboardData
 {
 	[Serializable]
 	public class TileData

@@ -1,10 +1,5 @@
-﻿using static ZeldaFullEditor.RoomObjectCategory;
-using static ZeldaFullEditor.DungeonObjectSizeability;
-
-using System.Linq;
-using System.Collections.Generic;
-using ZeldaFullEditor.Data.Underworld;
-using System.Collections.Immutable;
+﻿using static ZeldaFullEditor.DungeonObjectSizeability;
+using static ZeldaFullEditor.RoomObjectCategory;
 
 namespace ZeldaFullEditor.Data
 {
@@ -600,7 +595,7 @@ namespace ZeldaFullEditor.Data
 
 		public static readonly RoomObjectType Object06A = new(0x06A,
 			RoomDraw_DownwardsEdge1x1_1to16, Horizontal,
-			new RoomObjectCategory[] { Pits, WestPerimeter},
+			new RoomObjectCategory[] { Pits, WestPerimeter },
 			new byte[] { });
 
 		public static readonly RoomObjectType Object06B = new(0x06B,
@@ -2188,7 +2183,7 @@ namespace ZeldaFullEditor.Data
 
 		public static readonly RoomObjectType Object269 = new(0x269,
 			RoomDraw_SolidWallDecor3x4, None,
-			new RoomObjectCategory[] { Collision, WallDecoration, WestSide, UpperLayer},
+			new RoomObjectCategory[] { Collision, WallDecoration, WestSide, UpperLayer },
 			new byte[] { });
 
 		public static readonly RoomObjectType Object26A = new(0x26A,

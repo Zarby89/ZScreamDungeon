@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	/// <summary>
 	/// For errors that we should catch, distinguished from other badder errors

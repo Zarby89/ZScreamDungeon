@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	/// <summary>
 	/// Represents a background tile as used by the SNES PPU.
@@ -118,7 +116,7 @@ namespace ZeldaFullEditor
 
 			return value;
 		}
-		
+
 		/// <summary>
 		/// Returns a copy of this tile with the specified properties changed.
 		/// Properties set to <see langword="null"/> are left alone.

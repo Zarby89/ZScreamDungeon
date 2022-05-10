@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using System.Text.RegularExpressions;
 
 namespace ZeldaFullEditor
 {
@@ -36,16 +30,16 @@ namespace ZeldaFullEditor
 
 		public const string ExportedRoomDataExtension = ".zrd";
 		public const string ExportedRoomDataType = "ZScream Room Data|*" + ExportedRoomDataExtension;
-		
+
 		public const string ExportedSpriteDataExtension = ".zsd";
 		public const string ExportedSpriteDataType = "ZScream Sprite Data|*" + ExportedSpriteDataExtension;
-		
+
 		public const string ExportedOWMapDataExtension = ".zmd";
 		public const string ExportedOWMapDataType = "ZScream Map Data|*" + ExportedOWMapDataExtension;
-		
+
 		public const string ExportedTileDataExtension = ".ztd";
 		public const string ExportedTileDataType = "ZScream Tile Data|*" + ExportedTileDataExtension;
-		
+
 		public const string ExportedPaletteDataExtension = ".zpd";
 		public const string ExportedPaletteDataType = "ZScream Palette Data|*" + ExportedPaletteDataExtension;
 
@@ -95,7 +89,7 @@ namespace ZeldaFullEditor
 					MessageBoxIcon.Warning
 				);
 		}
-		
+
 		public static void GeneralWarning(string message)
 		{
 			MessageBox.Show(

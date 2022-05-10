@@ -1,5 +1,6 @@
 ﻿global using System;
 global using System.Collections.Generic;
+global using System.Collections.Immutable;
 global using System.ComponentModel;
 global using System.Data;
 global using System.Diagnostics;
@@ -18,7 +19,6 @@ global using ZeldaFullEditor.Data.Underworld;
 global using ZeldaFullEditor.Gui;
 global using ZeldaFullEditor.Gui.MainTabs;
 global using ZeldaFullEditor.Properties;
-global using System.Collections.Immutable;
 
 namespace ZeldaFullEditor
 {

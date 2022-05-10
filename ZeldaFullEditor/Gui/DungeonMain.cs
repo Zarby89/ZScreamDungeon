@@ -470,8 +470,8 @@ namespace ZeldaFullEditor
 			roomHeaderPanel.Enabled = true;
 
 			// Initialize the map draw
-			
-			
+
+
 			initObjectsList();
 			spritesView1.items.Clear();
 			spritesView1.items.AddRange(listofspritesobjects);
@@ -526,7 +526,7 @@ namespace ZeldaFullEditor
 				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
 					ZScreamer.ActiveUWScene.Room = ZScreamer.ActiveScreamer.all_rooms[i];
-					
+
 					ZScreamer.ActiveUWScene.Refresh();
 
 					gb.DrawImage(ZScreamer.ActiveUWScene.tempBitmap, new Point((i % 16) * 512, (i / 16) * 512));
@@ -577,7 +577,7 @@ namespace ZeldaFullEditor
 			{
 				ZScreamer.ActiveScreamer.entrances[i] = new Entrance(ZScreamer.ActiveScreamer, (byte) i, false);
 				string tname = $"[{i:X2}] > {DefaultEntities.ListOfRoomNames[ZScreamer.ActiveScreamer.entrances[i].RoomID]:X3}";
-				
+
 				entrancetreeView.Nodes[0].Nodes.Add(
 					new TreeNode(tname)
 					{
@@ -975,7 +975,7 @@ namespace ZeldaFullEditor
 			if (anychange || (ZScreamer.ActiveOWScene?.HasUnsavedChanges ?? false))
 			{
 				anychange = false;
-				
+
 				switch (UIText.WarnAboutSaving())
 				{
 					case DialogResult.Yes:
@@ -1327,7 +1327,7 @@ namespace ZeldaFullEditor
 
 		private void mapPicturebox_MouseDoubleClick_1(object sender, MouseEventArgs e)
 		{
-			
+
 			if (e.Y >= 256 && e.Y <= 264)
 			{
 				return;
@@ -1568,7 +1568,7 @@ namespace ZeldaFullEditor
 				room.LayerEffect = (LayerEffectType) roomProperty_effect.SelectedItem;
 				room.Tag1 = (byte) (roomProperty_tag1.SelectedItem as RoomTagName).ID;
 				room.Tag2 = (byte) (roomProperty_tag2.SelectedItem as RoomTagName).ID;
-				room.LayerMerging = (LayerMergeType) roomPropertyLayerMerge.SelectedItem; 
+				room.LayerMerging = (LayerMergeType) roomPropertyLayerMerge.SelectedItem;
 				room.LayerCollision = (LayerCollisionType) roomProperty_collision.SelectedItem;
 
 				room.BackgroundTileset = (byte) RoomProperty_Blockset.HexValue;
@@ -1626,7 +1626,7 @@ namespace ZeldaFullEditor
 				if (selectedEntrance.IsSpawnPoint)
 				{
 					selectedEntrance.AssociatedEntrance = (byte) EntranceProperties_Entrance.HexValue;
-				}				
+				}
 
 				selectedEntrance.OverworldEntranceLocation = (byte) EntranceProperties_Entrance.HexValue;
 
@@ -2048,7 +2048,7 @@ namespace ZeldaFullEditor
 		// TODO remove
 		private void printRoomObjectsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-		
+
 		}
 
 		private void removeMasksObjectsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2431,7 +2431,7 @@ namespace ZeldaFullEditor
 					thumbnailBox.Visible = false;
 					return;
 				}
-				
+
 				previewRoom = ZScreamer.ActiveScreamer.all_rooms[roomId];
 
 				Program.RoomPreviewArtist.SetRoomAndDrawImmediately(previewRoom);
@@ -3326,7 +3326,7 @@ namespace ZeldaFullEditor
 				fs.Write(ZScreamer.ActiveScreamer.ROM.DataStream, 0, ZScreamer.ActiveScreamer.ROM.Length);
 				fs.Close();
 			}
-			catch(ZeldaException a)
+			catch (ZeldaException a)
 			{
 				UIText.CryAboutSaving(a.Message);
 			}
@@ -3485,23 +3485,23 @@ namespace ZeldaFullEditor
 			//	}
 			//
 			//	/*
-            //    if (rm.checkBox3.Checked)
-            //    {
-            //        if (ZScreamer.ActiveScreamer.saveBlocks2())//There is a protection - Tested
-            //        {
-            //            UIText.CryAboutSaving("there are too many pushable blocks");
-            //            return;
-            //        }
-            //    }
-            //    if (rm.checkBox4.Checked)
-            //    {
-            //        if (ZScreamer.ActiveScreamer.saveTorches2())//There is a protection Tested
-            //        {
-            //            UIText.CryAboutSaving("there are too many torches");
-            //            return;
-            //        }
-            //    }
-            //    */
+			//    if (rm.checkBox3.Checked)
+			//    {
+			//        if (ZScreamer.ActiveScreamer.saveBlocks2())//There is a protection - Tested
+			//        {
+			//            UIText.CryAboutSaving("there are too many pushable blocks");
+			//            return;
+			//        }
+			//    }
+			//    if (rm.checkBox4.Checked)
+			//    {
+			//        if (ZScreamer.ActiveScreamer.saveTorches2())//There is a protection Tested
+			//        {
+			//            UIText.CryAboutSaving("there are too many torches");
+			//            return;
+			//        }
+			//    }
+			//    */
 			//
 			//	fs = new FileStream(rm.textBox1.Text, FileMode.Open, FileAccess.Write);
 			//	fs.Write(ZScreamer.ActiveScreamer.ROM.DATA2, 0, Constants.ROMSize);
