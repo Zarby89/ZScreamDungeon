@@ -28,7 +28,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
 		public bool Lit { get; set; } = false;
 
-		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, 16, 16);
+		public Rectangle SquareHitbox => new(RealX, RealY, 16, 16);
 
 		public DungeonTorch()
 		{

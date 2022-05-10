@@ -22,8 +22,8 @@ namespace ZeldaFullEditor.Gui
 		private const int Tile16RowWidth = 8 * Tile16EntryWidth;
 
 		public bool propertiesChangedFromForm = false;
-		public Bitmap tmpPreviewBitmap = new Bitmap(256, 256);
-		public Bitmap scratchPadBitmap = new Bitmap(256, 3600);
+		public Bitmap tmpPreviewBitmap = new(256, 256);
+		public Bitmap scratchPadBitmap = new(256, 3600);
 		public ushort[,] scratchPadTiles = new ushort[16, 225];
 		public byte gridDisplay = 0;
 
@@ -44,7 +44,7 @@ namespace ZeldaFullEditor.Gui
 
 		private TabControl.TabPageCollection AuxTabs;
 
-		readonly ColorDialog cd = new ColorDialog();
+		readonly ColorDialog cd = new();
 		public OverworldEditor()
 		{
 			InitializeComponent();
@@ -79,12 +79,10 @@ namespace ZeldaFullEditor.Gui
 
 			if (File.Exists("ScratchPad.dat"))
 			{
-				using (FileStream fs = new FileStream("ScratchPad.dat", FileMode.Open, FileAccess.Read))
-				{
-					fs.Read(file, 0, (int) fs.Length);
-					fs.Close();
-					fromFile = true;
-				}
+				using FileStream fs = new("ScratchPad.dat", FileMode.Open, FileAccess.Read);
+				fs.Read(file, 0, (int) fs.Length);
+				fs.Close();
+				fromFile = true;
 			}
 
 			int t = 0;
@@ -115,11 +113,9 @@ namespace ZeldaFullEditor.Gui
 				}
 			}
 
-			using (FileStream fs = new FileStream("ScratchPad.dat", FileMode.OpenOrCreate, FileAccess.Write))
-			{
-				fs.Write(file, 0, (int) fs.Length);
-				fs.Close();
-			}
+			using FileStream fs = new FileStream("ScratchPad.dat", FileMode.OpenOrCreate, FileAccess.Write);
+			fs.Write(file, 0, (int) fs.Length);
+			fs.Close();
 		}
 
 		public void UpdateGUIProperties(OverworldScreen m, int gamestate = 0)
@@ -297,7 +293,7 @@ namespace ZeldaFullEditor.Gui
 		}
 
 		private static readonly RectangleF TileRect =
-			new RectangleF(8 * Tile16EntryWidth, 213 * Tile16EntryWidth, 8 * Tile16EntryWidth, 43 * Tile16EntryWidth);
+			new(8 * Tile16EntryWidth, 213 * Tile16EntryWidth, 8 * Tile16EntryWidth, 43 * Tile16EntryWidth);
 
 		private void tilePictureBox_Paint(object sender, PaintEventArgs e)
 		{
@@ -1036,7 +1032,7 @@ namespace ZeldaFullEditor.Gui
 		}
 
 
-		private void UpdateEntireListForBigMap(IEnumerable<OverworldEntity> l, int map) 
+		private static void UpdateEntireListForBigMap(IEnumerable<OverworldEntity> l, int map) 
 		{
 			foreach (var o in l)
 			{
@@ -1252,7 +1248,7 @@ namespace ZeldaFullEditor.Gui
 		}
 
 		private static readonly Predicate<OverworldEntity> removeFromMap =
-			new Predicate<OverworldEntity>(o => o.MapID == ZScreamer.ActiveOWScene.CurrentMapParent);
+			new(o => o.MapID == ZScreamer.ActiveOWScene.CurrentMapParent);
 
 		/// <summary>
 		/// Clears all overworld sprites of the selected stage (beginning, 1st, and 2nd phase)

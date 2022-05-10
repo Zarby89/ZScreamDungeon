@@ -1,22 +1,23 @@
 ﻿global using System;
 global using System.Collections.Generic;
 global using System.ComponentModel;
-global using System.Drawing;
 global using System.Data;
-global using System.Linq;
-global using System.Text;
-global using System.Windows.Forms;
-global using System.IO;
-global using System.Drawing.Imaging;
-global using System.Runtime.InteropServices;
-global using System.Threading;
-global using ZeldaFullEditor.Gui;
-global using System.Globalization;
-global using ZeldaFullEditor.Data;
-global using ZeldaFullEditor.Properties;
+global using System.Diagnostics;
+global using System.Drawing;
 global using System.Drawing.Drawing2D;
+global using System.Drawing.Imaging;
+global using System.Globalization;
+global using System.IO;
+global using System.Linq;
+global using System.Runtime.InteropServices;
+global using System.Text;
+global using System.Threading;
+global using System.Windows.Forms;
+global using ZeldaFullEditor.Data;
 global using ZeldaFullEditor.Data.Underworld;
+global using ZeldaFullEditor.Gui;
 global using ZeldaFullEditor.Gui.MainTabs;
+global using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor
 {

@@ -40,115 +40,112 @@ namespace ZeldaFullEditor.Data
 
 		public static DungeonDoorDraw GetDirectionFromToken(byte b)
 		{
-			switch (b)
+			return b switch
 			{
-				case (0x00 << 3) | 0x00: return North00;
-				case (0x02 << 3) | 0x00: return North02;
-				case (0x04 << 3) | 0x00: return North04;
-				case (0x06 << 3) | 0x00: return North06;
-				case (0x08 << 3) | 0x00: return North08;
-				case (0x0A << 3) | 0x00: return North0A;
-				case (0x0C << 3) | 0x00: return North0C;
-				case (0x0E << 3) | 0x00: return North0E;
-				case (0x10 << 3) | 0x00: return North10;
-				case (0x12 << 3) | 0x00: return North12;
-				case (0x14 << 3) | 0x00: return North14;
-				case (0x16 << 3) | 0x00: return North16;
-
-				case (0x00 << 3) | 0x01: return South00;
-				case (0x02 << 3) | 0x01: return South02;
-				case (0x04 << 3) | 0x01: return South04;
-				case (0x06 << 3) | 0x01: return South06;
-				case (0x08 << 3) | 0x01: return South08;
-				case (0x0A << 3) | 0x01: return South0A;
-				case (0x0C << 3) | 0x01: return South0C;
-				case (0x0E << 3) | 0x01: return South0E;
-				case (0x10 << 3) | 0x01: return South10;
-				case (0x12 << 3) | 0x01: return South12;
-				case (0x14 << 3) | 0x01: return South14;
-				case (0x16 << 3) | 0x01: return South16;
-
-				case (0x00 << 3) | 0x02: return West00;
-				case (0x02 << 3) | 0x02: return West02;
-				case (0x04 << 3) | 0x02: return West04;
-				case (0x06 << 3) | 0x02: return West06;
-				case (0x08 << 3) | 0x02: return West08;
-				case (0x0A << 3) | 0x02: return West0A;
-				case (0x0C << 3) | 0x02: return West0C;
-				case (0x0E << 3) | 0x02: return West0E;
-				case (0x10 << 3) | 0x02: return West10;
-				case (0x12 << 3) | 0x02: return West12;
-				case (0x14 << 3) | 0x02: return West14;
-				case (0x16 << 3) | 0x02: return West16;
-
-				case (0x00 << 3) | 0x03: return East00;
-				case (0x02 << 3) | 0x03: return East02;
-				case (0x04 << 3) | 0x03: return East04;
-				case (0x06 << 3) | 0x03: return East06;
-				case (0x08 << 3) | 0x03: return East08;
-				case (0x0A << 3) | 0x03: return East0A;
-				case (0x0C << 3) | 0x03: return East0C;
-				case (0x0E << 3) | 0x03: return East0E;
-				case (0x10 << 3) | 0x03: return East10;
-				case (0x12 << 3) | 0x03: return East12;
-				case (0x14 << 3) | 0x03: return East14;
-				case (0x16 << 3) | 0x03: return East16;
-			}
-			return null;
+				(0x00 << 3) | 0x00 => North00,
+				(0x02 << 3) | 0x00 => North02,
+				(0x04 << 3) | 0x00 => North04,
+				(0x06 << 3) | 0x00 => North06,
+				(0x08 << 3) | 0x00 => North08,
+				(0x0A << 3) | 0x00 => North0A,
+				(0x0C << 3) | 0x00 => North0C,
+				(0x0E << 3) | 0x00 => North0E,
+				(0x10 << 3) | 0x00 => North10,
+				(0x12 << 3) | 0x00 => North12,
+				(0x14 << 3) | 0x00 => North14,
+				(0x16 << 3) | 0x00 => North16,
+				(0x00 << 3) | 0x01 => South00,
+				(0x02 << 3) | 0x01 => South02,
+				(0x04 << 3) | 0x01 => South04,
+				(0x06 << 3) | 0x01 => South06,
+				(0x08 << 3) | 0x01 => South08,
+				(0x0A << 3) | 0x01 => South0A,
+				(0x0C << 3) | 0x01 => South0C,
+				(0x0E << 3) | 0x01 => South0E,
+				(0x10 << 3) | 0x01 => South10,
+				(0x12 << 3) | 0x01 => South12,
+				(0x14 << 3) | 0x01 => South14,
+				(0x16 << 3) | 0x01 => South16,
+				(0x00 << 3) | 0x02 => West00,
+				(0x02 << 3) | 0x02 => West02,
+				(0x04 << 3) | 0x02 => West04,
+				(0x06 << 3) | 0x02 => West06,
+				(0x08 << 3) | 0x02 => West08,
+				(0x0A << 3) | 0x02 => West0A,
+				(0x0C << 3) | 0x02 => West0C,
+				(0x0E << 3) | 0x02 => West0E,
+				(0x10 << 3) | 0x02 => West10,
+				(0x12 << 3) | 0x02 => West12,
+				(0x14 << 3) | 0x02 => West14,
+				(0x16 << 3) | 0x02 => West16,
+				(0x00 << 3) | 0x03 => East00,
+				(0x02 << 3) | 0x03 => East02,
+				(0x04 << 3) | 0x03 => East04,
+				(0x06 << 3) | 0x03 => East06,
+				(0x08 << 3) | 0x03 => East08,
+				(0x0A << 3) | 0x03 => East0A,
+				(0x0C << 3) | 0x03 => East0C,
+				(0x0E << 3) | 0x03 => East0E,
+				(0x10 << 3) | 0x03 => East10,
+				(0x12 << 3) | 0x03 => East12,
+				(0x14 << 3) | 0x03 => East14,
+				(0x16 << 3) | 0x03 => East16,
+				_ => null,
+			};
 		}
 
 
-		public static readonly DungeonDoorDraw North00 = new DungeonDoorDraw(North, 0x00, DrawNorth00, DrawNothing);
-		public static readonly DungeonDoorDraw North02 = new DungeonDoorDraw(North, 0x02, DrawNorth02, DrawNothing);
-		public static readonly DungeonDoorDraw North04 = new DungeonDoorDraw(North, 0x04, DrawNorth04, DrawNothing);
-		public static readonly DungeonDoorDraw North06 = new DungeonDoorDraw(North, 0x06, DrawNorth06, DrawNothing);
-		public static readonly DungeonDoorDraw North08 = new DungeonDoorDraw(North, 0x08, DrawNorth08, DrawNothing);
-		public static readonly DungeonDoorDraw North0A = new DungeonDoorDraw(North, 0x0A, DrawNorth0A, DrawNothing);
-		public static readonly DungeonDoorDraw North0C = new DungeonDoorDraw(North, 0x0C, DrawNorth0C, DrawNothing);
-		public static readonly DungeonDoorDraw North0E = new DungeonDoorDraw(North, 0x0E, DrawNorth0E, DrawNothing);
-		public static readonly DungeonDoorDraw North10 = new DungeonDoorDraw(North, 0x10, DrawNorth10, DrawNothing);
-		public static readonly DungeonDoorDraw North12 = new DungeonDoorDraw(North, 0x12, DrawNorth12, DrawNothing);
-		public static readonly DungeonDoorDraw North14 = new DungeonDoorDraw(North, 0x14, DrawNorth14, DrawNothing);
-		public static readonly DungeonDoorDraw North16 = new DungeonDoorDraw(North, 0x16, DrawNorth16, DrawNothing);
+		public static readonly DungeonDoorDraw North00 = new(North, 0x00, DrawNorth00, DrawNothing);
+		public static readonly DungeonDoorDraw North02 = new(North, 0x02, DrawNorth02, DrawNothing);
+		public static readonly DungeonDoorDraw North04 = new(North, 0x04, DrawNorth04, DrawNothing);
+		public static readonly DungeonDoorDraw North06 = new(North, 0x06, DrawNorth06, DrawNothing);
+		public static readonly DungeonDoorDraw North08 = new(North, 0x08, DrawNorth08, DrawNothing);
+		public static readonly DungeonDoorDraw North0A = new(North, 0x0A, DrawNorth0A, DrawNothing);
+		public static readonly DungeonDoorDraw North0C = new(North, 0x0C, DrawNorth0C, DrawNothing);
+		public static readonly DungeonDoorDraw North0E = new(North, 0x0E, DrawNorth0E, DrawNothing);
+		public static readonly DungeonDoorDraw North10 = new(North, 0x10, DrawNorth10, DrawNothing);
+		public static readonly DungeonDoorDraw North12 = new(North, 0x12, DrawNorth12, DrawNothing);
+		public static readonly DungeonDoorDraw North14 = new(North, 0x14, DrawNorth14, DrawNothing);
+		public static readonly DungeonDoorDraw North16 = new(North, 0x16, DrawNorth16, DrawNothing);
 
-		public static readonly DungeonDoorDraw South00 = new DungeonDoorDraw(South, 0x00, DrawSouth00, DrawNothing);
-		public static readonly DungeonDoorDraw South02 = new DungeonDoorDraw(South, 0x02, DrawSouth02, DrawNothing);
-		public static readonly DungeonDoorDraw South04 = new DungeonDoorDraw(South, 0x04, DrawSouth04, DrawNothing);
-		public static readonly DungeonDoorDraw South06 = new DungeonDoorDraw(South, 0x06, DrawSouth06, DrawNothing);
-		public static readonly DungeonDoorDraw South08 = new DungeonDoorDraw(South, 0x08, DrawSouth08, DrawNothing);
-		public static readonly DungeonDoorDraw South0A = new DungeonDoorDraw(South, 0x0A, DrawSouth0A, DrawNothing);
-		public static readonly DungeonDoorDraw South0C = new DungeonDoorDraw(South, 0x0C, DrawSouth0C, DrawNothing);
-		public static readonly DungeonDoorDraw South0E = new DungeonDoorDraw(South, 0x0E, DrawSouth0E, DrawNothing);
-		public static readonly DungeonDoorDraw South10 = new DungeonDoorDraw(South, 0x10, DrawSouth10, DrawNothing);
-		public static readonly DungeonDoorDraw South12 = new DungeonDoorDraw(South, 0x12, DrawSouth12, DrawNothing);
-		public static readonly DungeonDoorDraw South14 = new DungeonDoorDraw(South, 0x14, DrawSouth14, DrawNothing);
-		public static readonly DungeonDoorDraw South16 = new DungeonDoorDraw(South, 0x16, DrawSouth16, DrawNothing);
+		public static readonly DungeonDoorDraw South00 = new(South, 0x00, DrawSouth00, DrawNothing);
+		public static readonly DungeonDoorDraw South02 = new(South, 0x02, DrawSouth02, DrawNothing);
+		public static readonly DungeonDoorDraw South04 = new(South, 0x04, DrawSouth04, DrawNothing);
+		public static readonly DungeonDoorDraw South06 = new(South, 0x06, DrawSouth06, DrawNothing);
+		public static readonly DungeonDoorDraw South08 = new(South, 0x08, DrawSouth08, DrawNothing);
+		public static readonly DungeonDoorDraw South0A = new(South, 0x0A, DrawSouth0A, DrawNothing);
+		public static readonly DungeonDoorDraw South0C = new(South, 0x0C, DrawSouth0C, DrawNothing);
+		public static readonly DungeonDoorDraw South0E = new(South, 0x0E, DrawSouth0E, DrawNothing);
+		public static readonly DungeonDoorDraw South10 = new(South, 0x10, DrawSouth10, DrawNothing);
+		public static readonly DungeonDoorDraw South12 = new(South, 0x12, DrawSouth12, DrawNothing);
+		public static readonly DungeonDoorDraw South14 = new(South, 0x14, DrawSouth14, DrawNothing);
+		public static readonly DungeonDoorDraw South16 = new(South, 0x16, DrawSouth16, DrawNothing);
 
-		public static readonly DungeonDoorDraw West00 = new DungeonDoorDraw(West, 0x00, DrawWest00, DrawNothing);
-		public static readonly DungeonDoorDraw West02 = new DungeonDoorDraw(West, 0x02, DrawWest02, DrawNothing);
-		public static readonly DungeonDoorDraw West04 = new DungeonDoorDraw(West, 0x04, DrawWest04, DrawNothing);
-		public static readonly DungeonDoorDraw West06 = new DungeonDoorDraw(West, 0x06, DrawWest06, DrawNothing);
-		public static readonly DungeonDoorDraw West08 = new DungeonDoorDraw(West, 0x08, DrawWest08, DrawNothing);
-		public static readonly DungeonDoorDraw West0A = new DungeonDoorDraw(West, 0x0A, DrawWest0A, DrawNothing);
-		public static readonly DungeonDoorDraw West0C = new DungeonDoorDraw(West, 0x0C, DrawWest0C, DrawNothing);
-		public static readonly DungeonDoorDraw West0E = new DungeonDoorDraw(West, 0x0E, DrawWest0E, DrawNothing);
-		public static readonly DungeonDoorDraw West10 = new DungeonDoorDraw(West, 0x10, DrawWest10, DrawNothing);
-		public static readonly DungeonDoorDraw West12 = new DungeonDoorDraw(West, 0x12, DrawWest12, DrawNothing);
-		public static readonly DungeonDoorDraw West14 = new DungeonDoorDraw(West, 0x14, DrawWest14, DrawNothing);
-		public static readonly DungeonDoorDraw West16 = new DungeonDoorDraw(West, 0x16, DrawWest16, DrawNothing);
+		public static readonly DungeonDoorDraw West00 = new(West, 0x00, DrawWest00, DrawNothing);
+		public static readonly DungeonDoorDraw West02 = new(West, 0x02, DrawWest02, DrawNothing);
+		public static readonly DungeonDoorDraw West04 = new(West, 0x04, DrawWest04, DrawNothing);
+		public static readonly DungeonDoorDraw West06 = new(West, 0x06, DrawWest06, DrawNothing);
+		public static readonly DungeonDoorDraw West08 = new(West, 0x08, DrawWest08, DrawNothing);
+		public static readonly DungeonDoorDraw West0A = new(West, 0x0A, DrawWest0A, DrawNothing);
+		public static readonly DungeonDoorDraw West0C = new(West, 0x0C, DrawWest0C, DrawNothing);
+		public static readonly DungeonDoorDraw West0E = new(West, 0x0E, DrawWest0E, DrawNothing);
+		public static readonly DungeonDoorDraw West10 = new(West, 0x10, DrawWest10, DrawNothing);
+		public static readonly DungeonDoorDraw West12 = new(West, 0x12, DrawWest12, DrawNothing);
+		public static readonly DungeonDoorDraw West14 = new(West, 0x14, DrawWest14, DrawNothing);
+		public static readonly DungeonDoorDraw West16 = new(West, 0x16, DrawWest16, DrawNothing);
 
-		public static readonly DungeonDoorDraw East00 = new DungeonDoorDraw(East, 0x00, DrawEast00, DrawNothing);
-		public static readonly DungeonDoorDraw East02 = new DungeonDoorDraw(East, 0x02, DrawEast02, DrawNothing);
-		public static readonly DungeonDoorDraw East04 = new DungeonDoorDraw(East, 0x04, DrawEast04, DrawNothing);
-		public static readonly DungeonDoorDraw East06 = new DungeonDoorDraw(East, 0x06, DrawEast06, DrawNothing);
-		public static readonly DungeonDoorDraw East08 = new DungeonDoorDraw(East, 0x08, DrawEast08, DrawNothing);
-		public static readonly DungeonDoorDraw East0A = new DungeonDoorDraw(East, 0x0A, DrawEast0A, DrawNothing);
-		public static readonly DungeonDoorDraw East0C = new DungeonDoorDraw(East, 0x0C, DrawEast0C, DrawNothing);
-		public static readonly DungeonDoorDraw East0E = new DungeonDoorDraw(East, 0x0E, DrawEast0E, DrawNothing);
-		public static readonly DungeonDoorDraw East10 = new DungeonDoorDraw(East, 0x10, DrawEast10, DrawNothing);
-		public static readonly DungeonDoorDraw East12 = new DungeonDoorDraw(East, 0x12, DrawEast12, DrawNothing);
-		public static readonly DungeonDoorDraw East14 = new DungeonDoorDraw(East, 0x14, DrawEast14, DrawNothing);
-		public static readonly DungeonDoorDraw East16 = new DungeonDoorDraw(East, 0x16, DrawEast16, DrawNothing);
+		public static readonly DungeonDoorDraw East00 = new(East, 0x00, DrawEast00, DrawNothing);
+		public static readonly DungeonDoorDraw East02 = new(East, 0x02, DrawEast02, DrawNothing);
+		public static readonly DungeonDoorDraw East04 = new(East, 0x04, DrawEast04, DrawNothing);
+		public static readonly DungeonDoorDraw East06 = new(East, 0x06, DrawEast06, DrawNothing);
+		public static readonly DungeonDoorDraw East08 = new(East, 0x08, DrawEast08, DrawNothing);
+		public static readonly DungeonDoorDraw East0A = new(East, 0x0A, DrawEast0A, DrawNothing);
+		public static readonly DungeonDoorDraw East0C = new(East, 0x0C, DrawEast0C, DrawNothing);
+		public static readonly DungeonDoorDraw East0E = new(East, 0x0E, DrawEast0E, DrawNothing);
+		public static readonly DungeonDoorDraw East10 = new(East, 0x10, DrawEast10, DrawNothing);
+		public static readonly DungeonDoorDraw East12 = new(East, 0x12, DrawEast12, DrawNothing);
+		public static readonly DungeonDoorDraw East14 = new(East, 0x14, DrawEast14, DrawNothing);
+		public static readonly DungeonDoorDraw East16 = new(East, 0x16, DrawEast16, DrawNothing);
 
 
 		private static void DrawNothing(Artist art, DungeonDoor door) { } // THIS PAGE LEFT INTENTIONALLY BLANK

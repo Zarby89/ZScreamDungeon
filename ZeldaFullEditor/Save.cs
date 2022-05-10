@@ -548,7 +548,7 @@ namespace ZeldaFullEditor
 		}
 
 		// TODO is probably bad and we should probably use IComparable to sort the lists firsts
-		public bool CompareOverworldArrays<T>(List<T> list1, List<T> list2) where T : IEquatable<T>
+		public static bool CompareOverworldArrays<T>(List<T> list1, List<T> list2) where T : IEquatable<T>
 		{
 			if (list1.Count != list2.Count)
 			{
@@ -745,7 +745,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public bool compareArray(byte[] array1, byte[] array2)
+		public static bool CompareByteArray(byte[] array1, byte[] array2)
 		{
 			if (array1.Length != array2.Length)
 			{
@@ -825,11 +825,11 @@ namespace ZeldaFullEditor
 
 				for (int j = 0; j < i; j++)
 				{
-					if (compareArray(a, mapDatap1[j]))
+					if (CompareByteArray(a, mapDatap1[j]))
 					{
 						mapPointers1id[i] = j;
 					}
-					if (compareArray(b, mapDatap2[j]))
+					if (CompareByteArray(b, mapDatap2[j]))
 					{
 						mapPointers2id[i] = j;
 					}

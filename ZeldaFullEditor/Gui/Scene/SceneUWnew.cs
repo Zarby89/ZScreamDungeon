@@ -23,7 +23,7 @@ namespace ZeldaFullEditor
 {
 	public partial class SceneUW : Scene
 	{
-		public Bitmap tempBitmap = new Bitmap(512, 512);
+		public Bitmap tempBitmap = new(512, 512);
 		Rectangle lastSelectedRectangle;
 
 		public DungeonEditMode CurrentMode => ZS.CurrentUWMode;

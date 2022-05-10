@@ -133,8 +133,8 @@ namespace ZeldaFullEditor.Gui
 			}
 		}
 
-		private static readonly RectangleF RectF1 = new RectangleF(0f, 0f, 256.5f, 16000f);
-		private static readonly RectangleF RectF2 = new RectangleF(0, 0, 128, 8000);
+		private static readonly RectangleF RectF1 = new(0f, 0f, 256.5f, 16000f);
+		private static readonly RectangleF RectF2 = new(0, 0, 128, 8000);
 		private void pictureboxTile16_Paint(object sender, PaintEventArgs e)
 		{
 			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -351,21 +351,11 @@ namespace ZeldaFullEditor.Gui
 				for (int i = 0, i4 = 0; i < 16; i++, i4 += 2048)
 				{
 					int i2 = ZScreamer.ActiveOWScene.CurrentScreen.staticgfx[i] * 2048;
-					int i3;
-					switch (i)
+					var i3 = i switch
 					{
-						case 0:
-						case 3:
-						case 4:
-						case 5:
-							i3 = 0x88;
-							break;
-
-						default:
-							i3 = 0;
-							break;
-					}
-
+						0 or 3 or 4 or 5 => 0x88,
+						_ => 0,
+					};
 					for (int j = 0; j < 2048; j++)
 					{
 						byte mapByte = (byte) (allgfxData[j + i2] + i3);

@@ -15,7 +15,7 @@ namespace ZeldaFullEditor
 {
 	public partial class ObjectViewer : UserControl
 	{
-		public List<RoomObjectPreview> items = new List<RoomObjectPreview>();
+		public List<RoomObjectPreview> items = new();
 
 		ColorPalette palettes = null;
 		public bool showName = false;

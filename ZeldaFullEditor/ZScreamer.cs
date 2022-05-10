@@ -123,20 +123,12 @@ namespace ZeldaFullEditor
 		{
 			curtab = st;
 			Program.MainForm.editorsTabControl.SelectTab((int) st);
-			switch (st)
+			active = st switch
 			{
-				case TabSelection.DungeonEditor:
-					active = UnderworldScene;
-					break;
-
-				case TabSelection.OverworldEditor:
-					active = OverworldScene;
-					break;
-
-				default:
-					active = null;
-					break;
-			}
+				TabSelection.DungeonEditor => UnderworldScene,
+				TabSelection.OverworldEditor => OverworldScene,
+				_ => null,
+			};
 		}
 
 		public void SetDungeonEditMode(DungeonEditMode em)

@@ -29,7 +29,7 @@ namespace ZeldaFullEditor.Gui
 		Color tempColor;
 		int tempIndex = -1;
 
-		ColorDialog cd = new ColorDialog();
+		ColorDialog cd = new();
 
 		Color[] selectedPalette = null;
 		int selectedX = 16;
@@ -618,37 +618,33 @@ namespace ZeldaFullEditor.Gui
 		// Is called when the export palettes button is clicked, writes a .zpd file with all the palette colors.
 		private void exportAllPalettes(object sender, EventArgs e)
 		{
-			
-			using (SaveFileDialog sfd = new SaveFileDialog())
+
+			using SaveFileDialog sfd = new SaveFileDialog();
+			sfd.Filter = UIText.ExportedPaletteDataType;
+			if (sfd.ShowDialog() == DialogResult.OK)
 			{
-				sfd.Filter = UIText.ExportedPaletteDataType;
-				if (sfd.ShowDialog() == DialogResult.OK)
-				{
-					byte[] colorArrayData = new byte[Constants.NumberOfColors * 3];
-					ImportOrExportAllPalettes(export: true, colorArrayData);
+				byte[] colorArrayData = new byte[Constants.NumberOfColors * 3];
+				ImportOrExportAllPalettes(export: true, colorArrayData);
 
-					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+				FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
 
-					fileStreamMap.Write(colorArrayData, 0, colorArrayData.Length);
-					fileStreamMap.Close();
-				}
+				fileStreamMap.Write(colorArrayData, 0, colorArrayData.Length);
+				fileStreamMap.Close();
 			}
 		}
 
 		private void importAllPalettes(object sender, EventArgs e)
 		{
-			using (OpenFileDialog sfd = new OpenFileDialog())
+			using OpenFileDialog sfd = new OpenFileDialog();
+			sfd.Filter = UIText.ExportedPaletteDataType;
+			if (sfd.ShowDialog() == DialogResult.OK)
 			{
-				sfd.Filter = UIText.ExportedPaletteDataType;
-				if (sfd.ShowDialog() == DialogResult.OK)
-				{
-					byte[] colorArrayData = new byte[Constants.NumberOfColors * 3];
+				byte[] colorArrayData = new byte[Constants.NumberOfColors * 3];
 
-					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
-					fileStreamMap.Read(colorArrayData, 0, colorArrayData.Length);
+				FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
+				fileStreamMap.Read(colorArrayData, 0, colorArrayData.Length);
 
-					ImportOrExportAllPalettes(export: false, colorArrayData);
-				}
+				ImportOrExportAllPalettes(export: false, colorArrayData);
 			}
 		}
 

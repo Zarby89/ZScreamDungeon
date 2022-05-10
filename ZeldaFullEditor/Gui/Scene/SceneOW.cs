@@ -327,9 +327,9 @@ namespace ZeldaFullEditor
 		{
 			if (undoList.Count > 0)
 			{
-				undoList[undoList.Count - 1].Restore(ZS.OverworldManager);
-				TileUndo tundo = (TileUndo) undoList[undoList.Count - 1].Clone();
-				tundo.usedTiles = undoList[undoList.Count - 1].usedTiles;
+				undoList[^1].Restore(ZS.OverworldManager);
+				TileUndo tundo = (TileUndo) undoList[^1].Clone();
+				tundo.usedTiles = undoList[^1].usedTiles;
 				redoList.Add(tundo);
 				undoList.RemoveAt(undoList.Count - 1);
 			}
@@ -341,9 +341,9 @@ namespace ZeldaFullEditor
 		{
 			if (redoList.Count > 0)
 			{
-				redoList[redoList.Count - 1].RestoreRedo(ZS.OverworldManager);
-				TileUndo tundo = (TileUndo) redoList[redoList.Count - 1].Clone();
-				tundo.usedTiles = redoList[redoList.Count - 1].usedTiles;
+				redoList[^1].RestoreRedo(ZS.OverworldManager);
+				TileUndo tundo = (TileUndo) redoList[^1].Clone();
+				tundo.usedTiles = redoList[^1].usedTiles;
 				undoList.Add(tundo);
 				redoList.RemoveAt(redoList.Count - 1);
 			}

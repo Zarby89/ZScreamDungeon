@@ -18,7 +18,7 @@ namespace ZeldaFullEditor
 		private OverworldSprite lastselectedSprite;
 
 
-		Gui.AddSprite addspr = new Gui.AddSprite();
+		Gui.AddSprite addspr = new();
 
 		private void OnMouseDown_Sprites(MouseEventArgs e)
 		{

@@ -22,18 +22,18 @@ namespace ZeldaFullEditor.Data.Underworld
 		{
 			get
 			{
-				switch (i)
+				return i switch
 				{
-					case 0 : return lay0;
-					case 1 : return lay1;
-					case 2 : return lay2;
-					case 3 : return lay3;
-					case 4 : return lay4;
-					case 5 : return lay5;
-					case 6 : return lay6;
-					case 7 : return lay7;
-				}
-				return lay0;
+					0 => lay0,
+					1 => lay1,
+					2 => lay2,
+					3 => lay3,
+					4 => lay4,
+					5 => lay5,
+					6 => lay6,
+					7 => lay7,
+					_ => lay0,
+				};
 			}
 		}
 

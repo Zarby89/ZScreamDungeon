@@ -25,14 +25,14 @@ namespace ZeldaFullEditor.Data
 
 		public override string ToString() => Name;
 
-		public static readonly LayerMergeType LayerMerge00 = new LayerMergeType(0x00, "Off", true, false, false);
-		public static readonly LayerMergeType LayerMerge01 = new LayerMergeType(0x01, "Parallax", true, false, false);
-		public static readonly LayerMergeType LayerMerge02 = new LayerMergeType(0x02, "Dark", true, true, true);
-		public static readonly LayerMergeType LayerMerge03 = new LayerMergeType(0x03, "On top", true, true, false);
-		public static readonly LayerMergeType LayerMerge04 = new LayerMergeType(0x04, "Translucent", true, true, true);
-		public static readonly LayerMergeType LayerMerge05 = new LayerMergeType(0x05, "Addition", true, true, true);
-		public static readonly LayerMergeType LayerMerge06 = new LayerMergeType(0x06, "Normal", true, false, false);
-		public static readonly LayerMergeType LayerMerge07 = new LayerMergeType(0x07, "Transparent", true, true, true);
+		public static readonly LayerMergeType LayerMerge00 = new(0x00, "Off", true, false, false);
+		public static readonly LayerMergeType LayerMerge01 = new(0x01, "Parallax", true, false, false);
+		public static readonly LayerMergeType LayerMerge02 = new(0x02, "Dark", true, true, true);
+		public static readonly LayerMergeType LayerMerge03 = new(0x03, "On top", true, true, false);
+		public static readonly LayerMergeType LayerMerge04 = new(0x04, "Translucent", true, true, true);
+		public static readonly LayerMergeType LayerMerge05 = new(0x05, "Addition", true, true, true);
+		public static readonly LayerMergeType LayerMerge06 = new(0x06, "Normal", true, false, false);
+		public static readonly LayerMergeType LayerMerge07 = new(0x07, "Transparent", true, true, true);
 
 		public static readonly LayerMergeType[] ListOf =
 		{
@@ -48,18 +48,18 @@ namespace ZeldaFullEditor.Data
 
 		public static LayerMergeType GetTypeFromID(int id)
 		{
-			switch (id)
+			return id switch
 			{
-				case 0x00: return LayerMerge00;
-				case 0x01: return LayerMerge01;
-				case 0x02: return LayerMerge02;
-				case 0x03: return LayerMerge03;
-				case 0x04: return LayerMerge04;
-				case 0x05: return LayerMerge05;
-				case 0x06: return LayerMerge06;
-				case 0x07: return LayerMerge07;
-			}
-			return null;
+				0x00 => LayerMerge00,
+				0x01 => LayerMerge01,
+				0x02 => LayerMerge02,
+				0x03 => LayerMerge03,
+				0x04 => LayerMerge04,
+				0x05 => LayerMerge05,
+				0x06 => LayerMerge06,
+				0x07 => LayerMerge07,
+				_ => null,
+			};
 		}
 	}
 }

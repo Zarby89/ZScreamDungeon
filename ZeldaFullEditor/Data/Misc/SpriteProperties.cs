@@ -111,7 +111,7 @@
 		private SpriteProperties() { }
 
 
-		public static readonly SpriteProperties Empty = new SpriteProperties();
+		public static readonly SpriteProperties Empty = new();
 
 		public static SpriteProperties[] MakeNewSpriteListFromROM(ZScreamer zs)
 		{

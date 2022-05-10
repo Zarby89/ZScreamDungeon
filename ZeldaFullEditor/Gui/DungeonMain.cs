@@ -3,7 +3,7 @@ namespace ZeldaFullEditor
 {
 	public partial class DungeonMain : Form
 	{
-		private static readonly Bitmap xTabButton = new Bitmap(Resources.xbutton);
+		private static readonly Bitmap xTabButton = new(Resources.xbutton);
 
 		// Registers a hot key with Windows.
 		[DllImport("user32.dll")]
@@ -21,8 +21,8 @@ namespace ZeldaFullEditor
 		private string projectFilename = "";
 		private bool projectLoaded = false;
 		private bool anychange = false;
-		private readonly List<DungeonRoom> opened_rooms = new List<DungeonRoom>();
-		private readonly List<ushort> selectedMapPng = new List<ushort>();
+		private readonly List<DungeonRoom> opened_rooms = new();
+		private readonly List<ushort> selectedMapPng = new();
 		public ChestPicker chestPicker;
 		public Entrance selectedEntrance = null;
 		private PaletteEditor paletteForm;
@@ -30,8 +30,8 @@ namespace ZeldaFullEditor
 		public ScreenEditor screenEditor;
 		public string loadFromExported = "";
 
-		private readonly List<RoomObjectPreview> listoftilesobjects = new List<RoomObjectPreview>();
-		private readonly List<SpritePreview> listofspritesobjects = new List<SpritePreview>();
+		private readonly List<RoomObjectPreview> listoftilesobjects = new();
+		private readonly List<SpritePreview> listofspritesobjects = new();
 
 		// Groups of options for the Scene
 		public bool ShowSprites => showSpritesToolStripMenuItem.Checked;
@@ -421,7 +421,7 @@ namespace ZeldaFullEditor
 				if ((p.Tag as DungeonRoom).HasUnsavedChanges)
 				{
 					anychange = true;
-					if (!p.Text.Contains("*"))
+					if (!p.Text.Contains('*'))
 					{
 						p.Text += "*";
 					}
@@ -621,7 +621,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		private readonly AboutBox1 aboutBox = new AboutBox1();
+		private readonly AboutBox1 aboutBox = new();
 		private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			aboutBox.ShowDialog();
@@ -2100,16 +2100,14 @@ namespace ZeldaFullEditor
 
 		private void exportAsASMToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			using (SaveFileDialog sf = new SaveFileDialog())
+			using SaveFileDialog sf = new SaveFileDialog();
+			sf.Filter = UIText.ExportedRoomDataType;
+			if (sf.ShowDialog() == DialogResult.OK)
 			{
-				sf.Filter = UIText.ExportedRoomDataType;
-				if (sf.ShowDialog() == DialogResult.OK)
-				{
-					FileStream fs = new FileStream(sf.FileName, FileMode.OpenOrCreate, FileAccess.Write);
-					byte[] roomdata = new RoomSaveEntry(ZScreamer.ActiveUWScene.Room).Data;
-					fs.Write(roomdata, 0, roomdata.Length);
-					fs.Close();
-				}
+				FileStream fs = new FileStream(sf.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+				byte[] roomdata = new RoomSaveEntry(ZScreamer.ActiveUWScene.Room).Data;
+				fs.Write(roomdata, 0, roomdata.Length);
+				fs.Close();
 			}
 		}
 
@@ -2759,11 +2757,9 @@ namespace ZeldaFullEditor
 				{
 					// TODO system specific path separators
 					byte[] roomBytes = new RoomSaveEntry(ZScreamer.ActiveScreamer.all_rooms[i]).Data;
-					using (FileStream fs = new FileStream(path + "//ExportedRooms//room" + i.ToString("D3") + ".zrd", FileMode.OpenOrCreate, FileAccess.Write))
-					{
-						fs.Write(roomBytes, 0, roomBytes.Length);
-						fs.Close();
-					}
+					using FileStream fs = new FileStream(path + "//ExportedRooms//room" + i.ToString("D3") + ".zrd", FileMode.OpenOrCreate, FileAccess.Write);
+					fs.Write(roomBytes, 0, roomBytes.Length);
+					fs.Close();
 				}
 
 				/*
@@ -3032,15 +3028,13 @@ namespace ZeldaFullEditor
 
 			sprdata.CopyTo(sprites_buffer, 1);
 
-			using (SaveFileDialog ofd = new SaveFileDialog())
+			using SaveFileDialog ofd = new SaveFileDialog();
+			ofd.Filter = UIText.ExportedSpriteDataType;
+			if (ofd.ShowDialog() == DialogResult.OK)
 			{
-				ofd.Filter = UIText.ExportedSpriteDataType;
-				if (ofd.ShowDialog() == DialogResult.OK)
-				{
-					FileStream fs = new FileStream(ofd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
-					fs.Write(sprites_buffer, 0, sprites_buffer.Length);
-					fs.Close();
-				}
+				FileStream fs = new FileStream(ofd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+				fs.Write(sprites_buffer, 0, sprites_buffer.Length);
+				fs.Close();
 			}
 		}
 
@@ -3051,42 +3045,40 @@ namespace ZeldaFullEditor
 			int p = 0;
 
 			byte[] mapArrayData = new byte[0x50000];
-			using (SaveFileDialog sfd = new SaveFileDialog())
+			using SaveFileDialog sfd = new SaveFileDialog();
+			sfd.Filter = UIText.ExportedOWMapDataType;
+			if (sfd.ShowDialog() == DialogResult.OK)
 			{
-				sfd.Filter = UIText.ExportedOWMapDataType;
-				if (sfd.ShowDialog() == DialogResult.OK)
+				FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+				for (int i = 0; i < 64; i++)
 				{
-					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
-					for (int i = 0; i < 64; i++)
+					for (int y = 0; y < 32; y += 1)
 					{
-						for (int y = 0; y < 32; y += 1)
+						for (int x = 0; x < 32; x += 1)
 						{
-							for (int x = 0; x < 32; x += 1)
+							mapArrayData[p++] = (byte) (ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] & 0xFF);
+							mapArrayData[p++] = (byte) ((ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
+							mapArrayData[p++] = (byte) (ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] & 0xFF);
+							mapArrayData[p++] = (byte) ((ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
+
+							if (i < 32)
 							{
-								mapArrayData[p++] = (byte) (ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] & 0xFF);
-								mapArrayData[p++] = (byte) ((ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
-								mapArrayData[p++] = (byte) (ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] & 0xFF);
-								mapArrayData[p++] = (byte) ((ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
-
-								if (i < 32)
-								{
-									mapArrayData[p++] = (byte) (ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] & 0xFF);
-									mapArrayData[p++] = (byte) ((ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
-								}
+								mapArrayData[p++] = (byte) (ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] & 0xFF);
+								mapArrayData[p++] = (byte) ((ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
 							}
-						}
-
-						sx++;
-						if (sx >= 8)
-						{
-							sy++;
-							sx = 0;
 						}
 					}
 
-					fileStreamMap.Write(mapArrayData, 0, mapArrayData.Length);
-					fileStreamMap.Close();
+					sx++;
+					if (sx >= 8)
+					{
+						sy++;
+						sx = 0;
+					}
 				}
+
+				fileStreamMap.Write(mapArrayData, 0, mapArrayData.Length);
+				fileStreamMap.Close();
 			}
 		}
 
@@ -3097,44 +3089,42 @@ namespace ZeldaFullEditor
 			int p = 0;
 
 			byte[] mapArrayData = new byte[0x50000];
-			using (OpenFileDialog sfd = new OpenFileDialog())
+			using OpenFileDialog sfd = new OpenFileDialog();
+			sfd.Filter = UIText.ExportedOWMapDataType;
+			if (sfd.ShowDialog() == DialogResult.OK)
 			{
-				sfd.Filter = UIText.ExportedOWMapDataType;
-				if (sfd.ShowDialog() == DialogResult.OK)
+				FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
+				fileStreamMap.Read(mapArrayData, 0, mapArrayData.Length);
+
+				for (int i = 0; i < 64; i++)
 				{
-					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
-					fileStreamMap.Read(mapArrayData, 0, mapArrayData.Length);
-
-					for (int i = 0; i < 64; i++)
+					for (int y = 0; y < 32; y += 1)
 					{
-						for (int y = 0; y < 32; y += 1)
+						for (int x = 0; x < 32; x += 1)
 						{
-							for (int x = 0; x < 32; x += 1)
+							ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData[p + 1] << 8) + mapArrayData[p]);
+							p += 2;
+
+							ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData[p + 1] << 8) + mapArrayData[p]);
+							p += 2;
+
+							if (i < 32)
 							{
-								ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData[p + 1] << 8) + mapArrayData[p]);
+								ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData[p + 1] << 8) + mapArrayData[p]);
 								p += 2;
-
-								ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData[p + 1] << 8) + mapArrayData[p]);
-								p += 2;
-
-								if (i < 32)
-								{
-									ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData[p + 1] << 8) + mapArrayData[p]);
-									p += 2;
-								}
 							}
-						}
-
-						sx++;
-						if (sx >= 8)
-						{
-							sy++;
-							sx = 0;
 						}
 					}
 
-					fileStreamMap.Close();
+					sx++;
+					if (sx >= 8)
+					{
+						sy++;
+						sx = 0;
+					}
 				}
+
+				fileStreamMap.Close();
 			}
 		}
 
@@ -3142,27 +3132,25 @@ namespace ZeldaFullEditor
 		{
 			int p = 0;
 			byte[] mapArrayData = new byte[0x8000]; // Real amount: 0x7540
-			using (SaveFileDialog sfd = new SaveFileDialog())
+			using SaveFileDialog sfd = new SaveFileDialog();
+			sfd.Filter = UIText.ExportedTileDataType;
+			if (sfd.ShowDialog() == DialogResult.OK)
 			{
-				sfd.Filter = UIText.ExportedTileDataType;
-				if (sfd.ShowDialog() == DialogResult.OK)
+				FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+
+				for (int i = 0; i < 3752; i++) // 3600
 				{
-					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+					ulong v = ZScreamer.ActiveScreamer.OverworldManager.Tile16List.ListOf[i].getLongValue();
 
-					for (int i = 0; i < 3752; i++) // 3600
+					for (int j = 0; j < 8; j++)
 					{
-						ulong v = ZScreamer.ActiveScreamer.OverworldManager.Tile16List.ListOf[i].getLongValue();
-
-						for (int j = 0; j < 8; j++)
-						{
-							mapArrayData[p++] = (byte) v;
-							v >>= 8;
-						}
+						mapArrayData[p++] = (byte) v;
+						v >>= 8;
 					}
-
-					fileStreamMap.Write(mapArrayData, 0, mapArrayData.Length);
-					fileStreamMap.Close();
 				}
+
+				fileStreamMap.Write(mapArrayData, 0, mapArrayData.Length);
+				fileStreamMap.Close();
 			}
 		}
 
@@ -3170,52 +3158,50 @@ namespace ZeldaFullEditor
 		{
 			int p = 0;
 			byte[] mapArrayData = new byte[0x8000]; // Real amount: 0x7540
-			using (OpenFileDialog sfd = new OpenFileDialog())
+			using OpenFileDialog sfd = new OpenFileDialog();
+			sfd.Filter = UIText.ExportedTileDataType;
+			if (sfd.ShowDialog() == DialogResult.OK)
 			{
-				sfd.Filter = UIText.ExportedTileDataType;
-				if (sfd.ShowDialog() == DialogResult.OK)
+				FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
+				fileStreamMap.Read(mapArrayData, 0, mapArrayData.Length);
+
+				ZScreamer.ActiveScreamer.OverworldManager.Tile16List.ListOf.Clear();
+				for (int i = 0; i < Constants.NumberOfMap16; i++)
 				{
-					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
-					fileStreamMap.Read(mapArrayData, 0, mapArrayData.Length);
 
-					ZScreamer.ActiveScreamer.OverworldManager.Tile16List.ListOf.Clear();
-					for (int i = 0; i < Constants.NumberOfMap16; i++)
-					{
+					// Tile 0
+					ushort t0 = (ushort) (
+						(mapArrayData[p + 1] << 8) |
+						(mapArrayData[p + 0])
+					);
 
-						// Tile 0
-						ushort t0 = (ushort) (
-							(mapArrayData[p + 1] << 8) |
-							(mapArrayData[p + 0])
-						);
+					// Tile 1
+					ushort t1 = (ushort)
+					(
+						(mapArrayData[p + 3] << 8) |
+						(mapArrayData[p + 2])
+					);
 
-						// Tile 1
-						ushort t1 = (ushort)
-						(
-							(mapArrayData[p + 3] << 8) |
-							(mapArrayData[p + 2])
-						);
+					// Tile 2
+					ushort t2 = (ushort)
+					(
+						(mapArrayData[p + 5] << 8) |
+						(mapArrayData[p + 4])
+					);
 
-						// Tile 2
-						ushort t2 = (ushort)
-						(
-							(mapArrayData[p + 5] << 8) |
-							(mapArrayData[p + 4])
-						);
+					// Tile 3
+					ushort t3 = (ushort)
+					(
+						(mapArrayData[p + 7] << 8) |
+						(mapArrayData[p + 6])
+					);
 
-						// Tile 3
-						ushort t3 = (ushort)
-						(
-							(mapArrayData[p + 7] << 8) |
-							(mapArrayData[p + 6])
-						);
+					ZScreamer.ActiveScreamer.OverworldManager.Tile16List.ListOf.Add(new Tile16(t0, t1, t2, t3));
 
-						ZScreamer.ActiveScreamer.OverworldManager.Tile16List.ListOf.Add(new Tile16(t0, t1, t2, t3));
-
-						p += 8;
-					}
-
-					fileStreamMap.Close();
+					p += 8;
 				}
+
+				fileStreamMap.Close();
 			}
 		}
 

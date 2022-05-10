@@ -13,8 +13,8 @@ namespace ZeldaFullEditor
 {
 	public partial class SceneOW
 	{
-		private readonly List<TileUndo> undoList = new List<TileUndo>();
-		private readonly List<TileUndo> redoList = new List<TileUndo>();
+		private readonly List<TileUndo> undoList = new();
+		private readonly List<TileUndo> redoList = new();
 
 		int globalmouseTileDownXLOCK = 0;
 		int globalmouseTileDownYLOCK = 0;

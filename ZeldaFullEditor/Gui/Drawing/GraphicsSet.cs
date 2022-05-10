@@ -32,15 +32,14 @@ namespace ZeldaFullEditor
 				int sheet = i / (128 * 32);
 				int pixel = i % (128 * 32);
 
-				switch (sheet)
+				return sheet switch
 				{
-					case 0x0: return Sheet1[pixel];
-					case 0x1: return Sheet2[pixel];
-					case 0x2: return Sheet3[pixel];
-					case 0x3: return Sheet4[pixel];
-				}
-
-				return 0x00;
+					0x0 => Sheet1[pixel],
+					0x1 => Sheet2[pixel],
+					0x2 => Sheet3[pixel],
+					0x3 => Sheet4[pixel],
+					_ => 0x00,
+				};
 			}
 		}
 
@@ -67,16 +66,14 @@ namespace ZeldaFullEditor
 				int sheet = i / (128 * 32 * 4);
 				int pixel = i % (128 * 32 * 4);
 
-				switch (sheet)
+				return sheet switch
 				{
-					case 0x0: return BackgroundBlock1[pixel];
-					case 0x1: return BackgroundBlock2[pixel];
-
-					case 0x2: return SpriteBlock1[pixel];
-					case 0x3: return SpriteBlock2[pixel];
-				}
-
-				return 0x00;
+					0x0 => BackgroundBlock1[pixel],
+					0x1 => BackgroundBlock2[pixel],
+					0x2 => SpriteBlock1[pixel],
+					0x3 => SpriteBlock2[pixel],
+					_ => 0x00,
+				};
 			}
 		}
 

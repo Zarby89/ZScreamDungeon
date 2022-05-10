@@ -23,7 +23,7 @@ namespace ZeldaFullEditor
 
 		public object selectedObject = null;
 
-		public List<object> items = new List<object>();
+		public List<object> items = new();
 
 		public Chestviewer()
 		{

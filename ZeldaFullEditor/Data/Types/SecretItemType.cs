@@ -25,34 +25,34 @@ namespace ZeldaFullEditor.Data
 
 
 
-		public static readonly SecretItemType Secret00 = new SecretItemType(0x00, SecretDraw_Nothing);
-		public static readonly SecretItemType Secret01 = new SecretItemType(0x01, SecretDraw_GreenRupee);
-		public static readonly SecretItemType Secret02 = new SecretItemType(0x02, SecretDraw_Hoarder);
-		public static readonly SecretItemType Secret03 = new SecretItemType(0x03, SecretDraw_Bee);
-		public static readonly SecretItemType Secret04 = new SecretItemType(0x04, SecretDraw_HealthPack);
-		public static readonly SecretItemType Secret05 = new SecretItemType(0x05, SecretDraw_Bomb);
-		public static readonly SecretItemType Secret06 = new SecretItemType(0x06, SecretDraw_Heart);
-		public static readonly SecretItemType Secret07 = new SecretItemType(0x07, SecretDraw_BlueRupee);
-		public static readonly SecretItemType Secret08 = new SecretItemType(0x08, SecretDraw_Key);
-		public static readonly SecretItemType Secret09 = new SecretItemType(0x09, SecretDraw_Arrow);
-		public static readonly SecretItemType Secret0A = new SecretItemType(0x0A, SecretDraw_Bomb);
-		public static readonly SecretItemType Secret0B = new SecretItemType(0x0B, SecretDraw_Heart);
-		public static readonly SecretItemType Secret0C = new SecretItemType(0x0C, SecretDraw_SmallMagic);
-		public static readonly SecretItemType Secret0D = new SecretItemType(0x0D, SecretDraw_FullMagic);
-		public static readonly SecretItemType Secret0E = new SecretItemType(0x0E, SecretDraw_Cucco);
-		public static readonly SecretItemType Secret0F = new SecretItemType(0x0F, SecretDraw_GreenSoldier);
-		public static readonly SecretItemType Secret10 = new SecretItemType(0x10, SecretDraw_BushStal);
-		public static readonly SecretItemType Secret11 = new SecretItemType(0x11, SecretDraw_BlueSldier);
-		public static readonly SecretItemType Secret12 = new SecretItemType(0x12, SecretDraw_Landmine);
-		public static readonly SecretItemType Secret13 = new SecretItemType(0x13, SecretDraw_Heart);
-		public static readonly SecretItemType Secret14 = new SecretItemType(0x14, SecretDraw_Fairy);
-		public static readonly SecretItemType Secret15 = new SecretItemType(0x15, SecretDraw_Heart);
-		public static readonly SecretItemType Secret16 = new SecretItemType(0x16, SecretDraw_Nothing);
-		public static readonly SecretItemType Secret80 = new SecretItemType(0x80, SecretDraw_Hole);
-		public static readonly SecretItemType Secret82 = new SecretItemType(0x82, SecretDraw_Warp);
-		public static readonly SecretItemType Secret84 = new SecretItemType(0x84, SecretDraw_Staircase);
-		public static readonly SecretItemType Secret86 = new SecretItemType(0x86, SecretDraw_Bombable);
-		public static readonly SecretItemType Secret88 = new SecretItemType(0x88, SecretDraw_Switch);
+		public static readonly SecretItemType Secret00 = new(0x00, SecretDraw_Nothing);
+		public static readonly SecretItemType Secret01 = new(0x01, SecretDraw_GreenRupee);
+		public static readonly SecretItemType Secret02 = new(0x02, SecretDraw_Hoarder);
+		public static readonly SecretItemType Secret03 = new(0x03, SecretDraw_Bee);
+		public static readonly SecretItemType Secret04 = new(0x04, SecretDraw_HealthPack);
+		public static readonly SecretItemType Secret05 = new(0x05, SecretDraw_Bomb);
+		public static readonly SecretItemType Secret06 = new(0x06, SecretDraw_Heart);
+		public static readonly SecretItemType Secret07 = new(0x07, SecretDraw_BlueRupee);
+		public static readonly SecretItemType Secret08 = new(0x08, SecretDraw_Key);
+		public static readonly SecretItemType Secret09 = new(0x09, SecretDraw_Arrow);
+		public static readonly SecretItemType Secret0A = new(0x0A, SecretDraw_Bomb);
+		public static readonly SecretItemType Secret0B = new(0x0B, SecretDraw_Heart);
+		public static readonly SecretItemType Secret0C = new(0x0C, SecretDraw_SmallMagic);
+		public static readonly SecretItemType Secret0D = new(0x0D, SecretDraw_FullMagic);
+		public static readonly SecretItemType Secret0E = new(0x0E, SecretDraw_Cucco);
+		public static readonly SecretItemType Secret0F = new(0x0F, SecretDraw_GreenSoldier);
+		public static readonly SecretItemType Secret10 = new(0x10, SecretDraw_BushStal);
+		public static readonly SecretItemType Secret11 = new(0x11, SecretDraw_BlueSldier);
+		public static readonly SecretItemType Secret12 = new(0x12, SecretDraw_Landmine);
+		public static readonly SecretItemType Secret13 = new(0x13, SecretDraw_Heart);
+		public static readonly SecretItemType Secret14 = new(0x14, SecretDraw_Fairy);
+		public static readonly SecretItemType Secret15 = new(0x15, SecretDraw_Heart);
+		public static readonly SecretItemType Secret16 = new(0x16, SecretDraw_Nothing);
+		public static readonly SecretItemType Secret80 = new(0x80, SecretDraw_Hole);
+		public static readonly SecretItemType Secret82 = new(0x82, SecretDraw_Warp);
+		public static readonly SecretItemType Secret84 = new(0x84, SecretDraw_Staircase);
+		public static readonly SecretItemType Secret86 = new(0x86, SecretDraw_Bombable);
+		public static readonly SecretItemType Secret88 = new(0x88, SecretDraw_Switch);
 
 
 		public static unsafe void DrawTiles(Artist art, IDrawableSprite sec, params OAMDrawInfo[] instructions)
@@ -295,38 +295,38 @@ namespace ZeldaFullEditor.Data
 
 		public static SecretItemType GetTypeFromID(int id)
 		{
-			switch (id)
+			return id switch
 			{
-				case 0x00: return Secret00;
-				case 0x01: return Secret01;
-				case 0x02: return Secret02;
-				case 0x03: return Secret03;
-				case 0x04: return Secret04;
-				case 0x05: return Secret05;
-				case 0x06: return Secret06;
-				case 0x07: return Secret07;
-				case 0x08: return Secret08;
-				case 0x09: return Secret09;
-				case 0x0A: return Secret0A;
-				case 0x0B: return Secret0B;
-				case 0x0C: return Secret0C;
-				case 0x0D: return Secret0D;
-				case 0x0E: return Secret0E;
-				case 0x0F: return Secret0F;
-				case 0x10: return Secret10;
-				case 0x11: return Secret11;
-				case 0x12: return Secret12;
-				case 0x13: return Secret13;
-				case 0x14: return Secret14;
-				case 0x15: return Secret15;
-				case 0x16: return Secret16;
-				case 0x80: return Secret80;
-				case 0x82: return Secret82;
-				case 0x84: return Secret84;
-				case 0x86: return Secret86;
-				case 0x88: return Secret88;
-			}
-			return Secret00;
+				0x00 => Secret00,
+				0x01 => Secret01,
+				0x02 => Secret02,
+				0x03 => Secret03,
+				0x04 => Secret04,
+				0x05 => Secret05,
+				0x06 => Secret06,
+				0x07 => Secret07,
+				0x08 => Secret08,
+				0x09 => Secret09,
+				0x0A => Secret0A,
+				0x0B => Secret0B,
+				0x0C => Secret0C,
+				0x0D => Secret0D,
+				0x0E => Secret0E,
+				0x0F => Secret0F,
+				0x10 => Secret10,
+				0x11 => Secret11,
+				0x12 => Secret12,
+				0x13 => Secret13,
+				0x14 => Secret14,
+				0x15 => Secret15,
+				0x16 => Secret16,
+				0x80 => Secret80,
+				0x82 => Secret82,
+				0x84 => Secret84,
+				0x86 => Secret86,
+				0x88 => Secret88,
+				_ => Secret00,
+			};
 		}
 	}
 }

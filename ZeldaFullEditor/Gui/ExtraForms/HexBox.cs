@@ -8,7 +8,7 @@
 
 		public new bool Multiline = false;
 
-		private ValueRange range = new ValueRange(0x00, 0xFF);
+		private ValueRange range = new(0x00, 0xFF);
 		[Description("ValueRange"), Category("Data")]
 		public ValueRange Range
 		{

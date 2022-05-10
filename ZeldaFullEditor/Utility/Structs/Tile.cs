@@ -43,7 +43,7 @@ namespace ZeldaFullEditor
 		public byte Palette { get; }
 
 
-		public static readonly Tile Empty = new Tile(0);
+		public static readonly Tile Empty = new(0);
 
 		public Tile(byte b1, byte b2) // Tile from game data
 		{

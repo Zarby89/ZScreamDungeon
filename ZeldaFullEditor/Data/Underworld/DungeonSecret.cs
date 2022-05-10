@@ -30,7 +30,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		public byte ID => SecretType.ID;
 		public int TypeID => SecretType.ID;
 
-		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, 16, 16);
+		public Rectangle SquareHitbox => new(RealX, RealY, 16, 16);
 
 		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
 

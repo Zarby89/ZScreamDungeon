@@ -21,8 +21,8 @@ namespace ZeldaFullEditor
 		Random rand;
 		byte dungeon_palette_id;
 		public int xSize = 0;
-		public Color[] colorpalettes = new Color[0];
-		public Color[] tempColor = new Color[0];
+		public Color[] colorpalettes;
+		public Color[] tempColor;
 		public bool changed = false;
 
 		int mousePal = 0;

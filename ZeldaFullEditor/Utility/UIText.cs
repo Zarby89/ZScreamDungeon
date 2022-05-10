@@ -123,19 +123,14 @@ namespace ZeldaFullEditor
 		{
 			return string.Join(" ", Regex.Split(b.ToString(), @"[A-Z]", RegexOptions.None));
 		}
-		
-		public static string ToLayerString(this RoomLayer l)
-		{
-			switch (l)
-			{
-				default:
-				case RoomLayer.None: return "None";
-				case RoomLayer.Layer1: return "Layer 1";
-				case RoomLayer.Layer2: return "Layer 2";
-				case RoomLayer.Layer3: return "Mask layer";
 
-			}
-		}
+		public static string ToLayerString(this RoomLayer l) => l switch
+		{
+			RoomLayer.Layer1 => "Layer 1",
+			RoomLayer.Layer2 => "Layer 2",
+			RoomLayer.Layer3 => "Mask layer",
+			_ => "None",
+		};
 
 		public static string ToSimpleListing(this byte[] bl)
 		{
@@ -146,7 +141,7 @@ namespace ZeldaFullEditor
 				ret.Append(b.ToString("X2"));
 				if (--i > 0)
 				{
-					ret.Append(" ");
+					ret.Append(' ');
 				}
 			}
 			return ret.ToString();

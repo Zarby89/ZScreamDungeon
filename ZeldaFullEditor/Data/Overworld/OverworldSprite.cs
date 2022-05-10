@@ -41,9 +41,12 @@ namespace ZeldaFullEditor.Data
 			return base.PointIsInHitbox(x, y);
 		}
 
-		public bool Equals(OverworldSprite s)
+		public bool Equals(OverworldSprite s) => s switch
 		{
-			return MapX == s.MapX && MapY == s.MapY && ID == s.ID;
-		}
+			null => false,
+			not null => MapX == s.MapX && MapY == s.MapY && ID == s.ID,
+		};
+
+		public override bool Equals(object obj) => Equals(obj as OverworldSprite);
 	}
 }

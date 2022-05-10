@@ -8,7 +8,7 @@ namespace ZeldaFullEditor
 		private ushort globalx, globaly;
 		private byte mapx, mapy;
 
-		public Rectangle SquareHitbox => new Rectangle(GlobalX, GlobalY, 16, 16);
+		public Rectangle SquareHitbox => new(GlobalX, GlobalY, 16, 16);
 
 		public ushort GlobalX {
 			get => globalx;

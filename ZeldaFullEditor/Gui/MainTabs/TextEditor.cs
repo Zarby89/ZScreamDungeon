@@ -19,8 +19,8 @@ namespace ZeldaFullEditor
 		private const int DefaultTextColor = 6;
 		readonly string romname = "";
 
-		private readonly List<MessageData> listOfTexts = new List<MessageData>();
-		private readonly List<MessageData> DisplayedMessages = new List<MessageData>();
+		private readonly List<MessageData> listOfTexts = new();
+		private readonly List<MessageData> DisplayedMessages = new();
 		private MessageData CurrentMessage;
 
 		private int textPos = 0;
@@ -305,7 +305,7 @@ namespace ZeldaFullEditor
 				AllDicts.Add(new DictionaryEntry((byte) i, s.ToString()));
 			}
 
-			AllDicts.OrderByDescending(dic => dic.Length);
+			AllDicts = AllDicts.OrderByDescending(dic => dic.Length);
 		}
 
 		public static byte[] ParseMessageToData(string fullString)
@@ -624,8 +624,8 @@ namespace ZeldaFullEditor
 			textListbox.EndUpdate();
 		}
 
-		private static readonly Pen CharHilite = new Pen(Brushes.HotPink, 2);
-		private static readonly Pen GridHilite = new Pen(Color.FromArgb(0x77CCCCCC), 2);
+		private static readonly Pen CharHilite = new(Brushes.HotPink, 2);
+		private static readonly Pen GridHilite = new(Color.FromArgb(0x77CCCCCC), 2);
 		private void pictureBox2_Paint(object sender, PaintEventArgs e)
 		{
 			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
@@ -701,52 +701,46 @@ namespace ZeldaFullEditor
 
 		private void button2_Click(object sender, EventArgs e)
 		{
-			using (var sf = new SaveFileDialog())
+			using var sf = new SaveFileDialog();
+			if (sf.ShowDialog() == DialogResult.OK)
 			{
-				if (sf.ShowDialog() == DialogResult.OK)
+				byte[] data = new byte[0x1000];
+				for (int i = 0; i < 0x1000; i++)
 				{
-					byte[] data = new byte[0x1000];
-					for (int i = 0; i < 0x1000; i++)
-					{
-						data[i] = ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.gfx_font + i];
-					}
-
-					using (var fs = new FileStream(sf.FileName, FileMode.OpenOrCreate, FileAccess.Write))
-					{
-						fs.Write(data, 0, 0x1000);
-						fs.Write(widthArray, 0, 100);
-						fs.Close();
-					}
+					data[i] = ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.gfx_font + i];
 				}
+
+				using var fs = new FileStream(sf.FileName, FileMode.OpenOrCreate, FileAccess.Write);
+				fs.Write(data, 0, 0x1000);
+				fs.Write(widthArray, 0, 100);
+				fs.Close();
 			}
 		}
 
 		private void button3_Click(object sender, EventArgs e)
 		{
-			using (var of = new OpenFileDialog())
+			using var of = new OpenFileDialog();
+			if (of.ShowDialog() == DialogResult.OK)
 			{
-				if (of.ShowDialog() == DialogResult.OK)
+				byte[] data = new byte[0x1000 + 100];
+				using (var fs = new FileStream(of.FileName, FileMode.Open, FileAccess.Read))
 				{
-					byte[] data = new byte[0x1000 + 100];
-					using (var fs = new FileStream(of.FileName, FileMode.Open, FileAccess.Read))
-					{
-						fs.Read(data, 0, 0x1000 + 100);
-						fs.Close();
-					}
-
-					for (int i = 0; i < 0x1000; i++)
-					{
-						ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.gfx_font + i] = data[i];
-					}
-
-					for (int i = 0; i < 100; i++)
-					{
-						ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.characters_width + i] = data[i + 0x1000];
-					}
-
-					ZScreamer.ActiveGraphicsManager.CreateFontGfxData();
-					pictureBox2.Refresh();
+					fs.Read(data, 0, 0x1000 + 100);
+					fs.Close();
 				}
+
+				for (int i = 0; i < 0x1000; i++)
+				{
+					ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.gfx_font + i] = data[i];
+				}
+
+				for (int i = 0; i < 100; i++)
+				{
+					ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.characters_width + i] = data[i + 0x1000];
+				}
+
+				ZScreamer.ActiveGraphicsManager.CreateFontGfxData();
+				pictureBox2.Refresh();
 			}
 		}
 
@@ -942,11 +936,9 @@ namespace ZeldaFullEditor
 		{
 			ZScreamer.ActiveROM.Write(ZScreamer.ActiveOffsets.characters_width, widthArray);
 
-			using (var fs = new FileStream(romname, FileMode.OpenOrCreate, FileAccess.Write))
-			{
-				fs.Write(ZScreamer.ActiveROM.DataStream, 0, ZScreamer.ActiveROM.Length);
-				fs.Close();
-			}
+			using var fs = new FileStream(romname, FileMode.OpenOrCreate, FileAccess.Write);
+			fs.Write(ZScreamer.ActiveROM.DataStream, 0, ZScreamer.ActiveROM.Length);
+			fs.Close();
 		}
 
 		// TODO needs a rewrite
@@ -974,19 +966,17 @@ namespace ZeldaFullEditor
 
 		private void toolStripButton1_Click(object sender, EventArgs e)
 		{
-			using (SaveFileDialog sf = new SaveFileDialog())
+			using SaveFileDialog sf = new SaveFileDialog();
+			sf.DefaultExt = ".txt";
+			if (sf.ShowDialog() == DialogResult.OK)
 			{
-				sf.DefaultExt = ".txt";
-				if (sf.ShowDialog() == DialogResult.OK)
+				string[] alltexts = new string[listOfTexts.Count];
+				for (int i = 0; i < listOfTexts.Count; i++)
 				{
-					string[] alltexts = new string[listOfTexts.Count];
-					for (int i = 0; i < listOfTexts.Count; i++)
-					{
-						alltexts[i] = i.ToString("X3") + " : " + listOfTexts[i].ContentsParsed + "\r\n\r\n";
-					}
-
-					File.WriteAllLines(sf.FileName, alltexts);
+					alltexts[i] = i.ToString("X3") + " : " + listOfTexts[i].ContentsParsed + "\r\n\r\n";
 				}
+
+				File.WriteAllLines(sf.FileName, alltexts);
 			}
 		}
 
@@ -1063,7 +1053,7 @@ namespace ZeldaFullEditor
 			ParamsBox.Enabled = TCommands[TextCommandList.SelectedIndex].HasArgument;
 		}
 
-		readonly MessageAsBytes byter = new MessageAsBytes();
+		readonly MessageAsBytes byter = new();
 		private void BytesDDD_Click(object sender, EventArgs e)
 		{
 			if (textListbox.SelectedIndex < 0)

@@ -137,7 +137,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
 			object obj = propertyValues["Min"];
 			object obj2 = propertyValues["Max"];
-			if (obj == null || obj2 == null || !(obj is int) || !(obj2 is int))
+			if (obj == null || obj2 == null || obj is not int || obj2 is not int)
 			{
 				throw new ArgumentException("Shit.");
 			}

@@ -41,7 +41,7 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public int Width { get; set; } = 8;
 		public int Height { get; set; } = 8;
-		public Rectangle SquareHitbox => new Rectangle(RealX, RealY, Width, Height);
+		public Rectangle SquareHitbox => new(RealX, RealY, Width, Height);
 
 		public bool DiagonalFix { get; set; }
 
@@ -115,35 +115,28 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public byte[] GetByteData()
 		{
-			switch (ObjectType.ObjectSet)
+			return ObjectType.ObjectSet switch
 			{
-				case DungeonObjectSet.Subtype1:
-					return new byte[]
-					{
+				DungeonObjectSet.Subtype1 => new byte[]
+									{
 						(byte) ((GridX << 2) | ((Size & 0x0C) >> 2)),
 						(byte) ((GridY << 2) | (Size & 0x03)),
 						(byte) ID
-					};
-
-				case DungeonObjectSet.Subtype2:
-					return new byte[]
-					{
+									},
+				DungeonObjectSet.Subtype2 => new byte[]
+			  {
 						(byte) (0xFC | (GridX >> 4)),
 						(byte) ((GridX << 4) | ((GridY & 0x3C) >> 2)),
 						(byte) ((GridY << 6) | (ID & 0x3F))
-					};
-
-				case DungeonObjectSet.Subtype3:
-					return new byte[]
-					{
+			  },
+				DungeonObjectSet.Subtype3 => new byte[]
+			  {
 						(byte) ((GridX << 2) | (ID & 0x03)),
 						(byte) ((GridY << 2) | ((ID & 0x0C) >> 2)),
 						(byte) (0xF8 | ((ID & 0x70) >> 4))
-					};
-
-				default:
-					return new byte[0];
-			}
+			  },
+				_ => Array.Empty<byte>(),
+			};
 		}
 	}
 

@@ -20,14 +20,14 @@ namespace ZeldaFullEditor
 		{
 			get
 			{
-				switch (d)
+				return d switch
 				{
-					case DoorDirection.North: return North[i];
-					case DoorDirection.South: return South[i];
-					case DoorDirection.West: return West[i];
-					case DoorDirection.East: return East[i];
-				}
-				return Tile.Empty;
+					DoorDirection.North => North[i],
+					DoorDirection.South => South[i],
+					DoorDirection.West => West[i],
+					DoorDirection.East => East[i],
+					_ => Tile.Empty,
+				};
 			}
 		}
 
@@ -35,19 +35,19 @@ namespace ZeldaFullEditor
 		{
 			get
 			{
-				switch (d)
+				return d switch
 				{
-					case DoorDirection.North: return North;
-					case DoorDirection.South: return South;
-					case DoorDirection.West: return West;
-					case DoorDirection.East: return East;
-				}
-				return null;
+					DoorDirection.North => North,
+					DoorDirection.South => South,
+					DoorDirection.West => West,
+					DoorDirection.East => East,
+					_ => null,
+				};
 			}
 		}
 
 		public static readonly DoorTilesList EmptySet =
-			new DoorTilesList(TilesList.EmptySet, TilesList.EmptySet, TilesList.EmptySet, TilesList.EmptySet);
+			new(TilesList.EmptySet, TilesList.EmptySet, TilesList.EmptySet, TilesList.EmptySet);
 
 
 		private DoorTilesList(TilesList north, TilesList south, TilesList west, TilesList east)

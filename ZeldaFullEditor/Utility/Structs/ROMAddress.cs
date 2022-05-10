@@ -54,40 +54,40 @@ namespace ZeldaFullEditor
 
 		public int GetAddressForVersion(ROMVersion v)
 		{
-			switch (v)
+			return v switch
 			{
-				case ROMVersion.JP: return JPAddress;
-				case ROMVersion.US: return USAddress;
-			}
-			return 0;
+				ROMVersion.JP => JPAddress,
+				ROMVersion.US => USAddress,
+				_ => 0,
+			};
 		}
 
 		public int GetOffsetForVersion(ROMVersion v)
 		{
-			switch (v)
+			return v switch
 			{
-				case ROMVersion.JP: return JPOffset;
-				case ROMVersion.US: return USOffset;
-			}
-			return 0;
+				ROMVersion.JP => JPOffset,
+				ROMVersion.US => USOffset,
+				_ => 0,
+			};
 		}
 
-		public static ROMAddress operator +(ROMAddress r, int offset) => new ROMAddress(r.JPAddress + offset, r.USAddress + offset);
-		public static ROMAddress operator -(ROMAddress r, int offset) => new ROMAddress(r.JPAddress - offset, r.USAddress - offset);
+		public static ROMAddress operator +(ROMAddress r, int offset) => new(r.JPAddress + offset, r.USAddress + offset);
+		public static ROMAddress operator -(ROMAddress r, int offset) => new(r.JPAddress - offset, r.USAddress - offset);
 
-		public static implicit operator ROMAddress(int jp) => new ROMAddress(jp);
+		public static implicit operator ROMAddress(int jp) => new(jp);
 
 		/// <summary>
 		/// Inspects the given address to confirm they are valid ROM addresses.s
 		/// </summary>
 		public bool CheckIfValidROMAddress(ROMVersion? version = null)
 		{
-			switch (version)
+			return version switch
 			{
-				case ROMVersion.JP: return (JPAddress & 0xFFFF) >= 0x8000;
-				case ROMVersion.US: return (USAddress & 0xFFFF) >= 0x8000;
-				default: return ((JPAddress & 0xFFFF) >= 0x8000) && ((USAddress & 0xFFFF) >= 0x8000);
-			}
+				ROMVersion.JP => (JPAddress & 0xFFFF) >= 0x8000,
+				ROMVersion.US => (USAddress & 0xFFFF) >= 0x8000,
+				_ => ((JPAddress & 0xFFFF) >= 0x8000) && ((USAddress & 0xFFFF) >= 0x8000),
+			};
 		}
 
 		/// <summary>
@@ -95,12 +95,12 @@ namespace ZeldaFullEditor
 		/// </summary>
 		public bool CheckIfFastROM(ROMVersion? version = null)
 		{
-			switch (version)
+			return version switch
 			{
-				case ROMVersion.JP: return (JPAddress & 0x800000) == 0x800000;
-				case ROMVersion.US: return (USAddress & 0x800000) == 0x800000;
-				default: return ((JPAddress & 0x800000) >= 0x800000) && ((USAddress & 0x800000) == 0x800000);
-			}
+				ROMVersion.JP => (JPAddress & 0x800000) == 0x800000,
+				ROMVersion.US => (USAddress & 0x800000) == 0x800000,
+				_ => ((JPAddress & 0x800000) >= 0x800000) && ((USAddress & 0x800000) == 0x800000),
+			};
 		}
 
 		/// <summary>

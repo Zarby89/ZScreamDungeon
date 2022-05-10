@@ -25,7 +25,7 @@ namespace ZeldaFullEditor.SceneModes
 			SelectAll = selectall ?? NoAct;
 		}
 
-		public static readonly ModeActions Nothing = new ModeActions(null, null, null, null, null, null, null, null, null);
+		public static readonly ModeActions Nothing = new(null, null, null, null, null, null, null, null, null);
 
 		private static void NoMouse(MouseEventArgs e) { }
 		private static void NoAct() { }

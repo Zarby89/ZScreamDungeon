@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor.Data.Underworld
+﻿namespace ZeldaFullEditor.Data.Underworld
 {
 	public class DungeonRoom
 	{
@@ -14,20 +6,20 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public string Name { get; set; }
 
-		public DungeonObjectsList Layer1Objects { get; } = new DungeonObjectsList();
-		public DungeonObjectsList Layer2Objects { get; } = new DungeonObjectsList();
-		public DungeonObjectsList Layer3Objects { get; } = new DungeonObjectsList();
+		public DungeonObjectsList Layer1Objects { get; } = new();
+		public DungeonObjectsList Layer2Objects { get; } = new();
+		public DungeonObjectsList Layer3Objects { get; } = new();
 
 		public DungeonObjectsList[] AllObjects =>
 			new DungeonObjectsList[] { Layer1Objects, Layer2Objects, Layer3Objects };
 
-		public DungeonDoorsList DoorsList { get; } = new DungeonDoorsList();
+		public DungeonDoorsList DoorsList { get; } = new();
 		public DungeonRoomChestsHandler ChestList { get; }
-		public DungeonSecretsList SecretsList { get; } = new DungeonSecretsList();
-		public DungeonSpritesList SpritesList { get; } = new DungeonSpritesList();
-		public DungeonBlocksList BlocksList { get; } = new DungeonBlocksList();
-		public DungeonTorchList TorchList { get; } = new DungeonTorchList();
-		public List<IDungeonPlaceable> SelectedObjects { get; } = new List<IDungeonPlaceable>();
+		public DungeonSecretsList SecretsList { get; } = new();
+		public DungeonSpritesList SpritesList { get; } = new();
+		public DungeonBlocksList BlocksList { get; } = new();
+		public DungeonTorchList TorchList { get; } = new();
+		public List<IDungeonPlaceable> SelectedObjects { get; } = new();
 
 		/// <summary>
 		/// Returns an object if it is the only member of selected objects; otherwise, <see langword="null"/>.
@@ -338,13 +330,13 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public DungeonObjectsList GetLayerList(RoomLayer layer)
 		{
-			switch (layer)
+			return layer switch
 			{
-				case RoomLayer.Layer1: return Layer1Objects;
-				case RoomLayer.Layer2: return Layer2Objects;
-				case RoomLayer.Layer3: return Layer3Objects;
-			}
-			return null;
+				RoomLayer.Layer1 => Layer1Objects,
+				RoomLayer.Layer2 => Layer2Objects,
+				RoomLayer.Layer3 => Layer3Objects,
+				_ => null,
+			};
 		}
 
 		private RoomObject ParseRoomObject(byte b1, byte b2, byte b3)
@@ -599,24 +591,24 @@ namespace ZeldaFullEditor.Data.Underworld
 				case DungeonEditMode.Layer3:
 					var l = GetLayerList((RoomLayer) m);
 					if (l == null) return false;
-					if (!(o is RoomObject ro)) return false;
+					if (o is not RoomObject ro) return false;
 
 					return AddRoomObject(ro, l);
 
 				case DungeonEditMode.Doors:
-					if (!(o is DungeonDoor dr)) return false;
+					if (o is not DungeonDoor dr) return false;
 					return AddDoor(dr);
 
 				case DungeonEditMode.Sprites:
-					if (!(o is DungeonSprite so)) return false;
+					if (o is not DungeonSprite so) return false;
 					return AddSprite(so);
 
 				case DungeonEditMode.Blocks:
-					if (!(o is DungeonBlock bo)) return false;
+					if (o is not DungeonBlock bo) return false;
 					return AddBlock(bo);
 
 				case DungeonEditMode.Torches:
-					if (!(o is DungeonTorch to)) return false;
+					if (o is not DungeonTorch to) return false;
 					return AddTorch(to);
 
 				default:
@@ -780,19 +772,19 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		private IList<IDungeonPlaceable> FindRelevantListForMode(DungeonEditMode em)
 		{
-			switch (em)
+			return em switch
 			{
-				case DungeonEditMode.Layer1: return (IList<IDungeonPlaceable>) Layer1Objects;
-				case DungeonEditMode.Layer2: return (IList<IDungeonPlaceable>) Layer2Objects;
-				case DungeonEditMode.Layer3: return (IList<IDungeonPlaceable>) Layer3Objects;
-				case DungeonEditMode.LayerAll: return (IList<IDungeonPlaceable>) Layer1Objects.Concat(Layer2Objects).Concat(Layer3Objects);
-				case DungeonEditMode.Sprites: return (IList<IDungeonPlaceable>) SpritesList;
-				case DungeonEditMode.Secrets: return (IList<IDungeonPlaceable>) SecretsList;
-				case DungeonEditMode.Blocks: return (IList<IDungeonPlaceable>) BlocksList;
-				case DungeonEditMode.Torches: return (IList<IDungeonPlaceable>) TorchList;
-				case DungeonEditMode.Doors: return (IList<IDungeonPlaceable>) DoorsList;
-				default: return null;
-			}
+				DungeonEditMode.Layer1 => (IList<IDungeonPlaceable>) Layer1Objects,
+				DungeonEditMode.Layer2 => (IList<IDungeonPlaceable>) Layer2Objects,
+				DungeonEditMode.Layer3 => (IList<IDungeonPlaceable>) Layer3Objects,
+				DungeonEditMode.LayerAll => (IList<IDungeonPlaceable>) Layer1Objects.Concat(Layer2Objects).Concat(Layer3Objects),
+				DungeonEditMode.Sprites => (IList<IDungeonPlaceable>) SpritesList,
+				DungeonEditMode.Secrets => (IList<IDungeonPlaceable>) SecretsList,
+				DungeonEditMode.Blocks => (IList<IDungeonPlaceable>) BlocksList,
+				DungeonEditMode.Torches => (IList<IDungeonPlaceable>) TorchList,
+				DungeonEditMode.Doors => (IList<IDungeonPlaceable>) DoorsList,
+				_ => null,
+			};
 		}
 
 
@@ -1088,7 +1080,7 @@ namespace ZeldaFullEditor.Data.Underworld
 		{
 			var stairs = FindAllObjects(o => o.IsStairs);
 
-			int count = stairs.Count();
+			int count = stairs.Count;
 
 			Stair1.AssociatedObject = count > 0 ? stairs[0] : null;
 			Stair2.AssociatedObject = count > 1 ? stairs[1] : null;
@@ -1129,9 +1121,10 @@ namespace ZeldaFullEditor.Data.Underworld
 
 		public byte[] GetTorchesData()
 		{
-			var ret = new List<byte>();
-
-			ret.Add(RoomID);
+			var ret = new List<byte>
+			{
+				RoomID
+			};
 
 			ret.AddRange(TorchList.GetByteData());
 
@@ -1165,7 +1158,7 @@ namespace ZeldaFullEditor.Data.Underworld
 				ret.AddRange(rectum.TileData);
 			}
 
-			if (ret.Count() > 0)
+			if (ret.Count > 0)
 			{
 				ret.Add(Constants.ObjectSentinel);
 			}

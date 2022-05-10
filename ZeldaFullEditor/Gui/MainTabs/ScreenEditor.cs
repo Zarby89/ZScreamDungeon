@@ -1162,7 +1162,7 @@
 
 				e.Graphics.DrawFilledRectangleWithOutline(xpos, ypos, 24, 24, Constants.BlackPen2, brush);
 
-				ZScreamer.ActiveGraphicsManager.drawText(e.Graphics, xpos + 6, ypos + 4, (i + 1).ToString(), null, true);
+				e.Graphics.DrawText(xpos + 6, ypos + 4, (i + 1).ToString(), null, true);
 			}
 
 			//}
@@ -1210,12 +1210,14 @@
 
 			// Just do a full DMA of all tiles why not...
 			// Header bytes
-			List<byte> allData = new List<byte>();
-			allData.Add(0x10);
-			allData.Add(0x00); // pos
+			List<byte> allData = new List<byte>
+			{
+				0x10,
+				0x00, // pos
 
-			allData.Add(0x07); // length
-			allData.Add(0xFF);
+				0x07, // length
+				0xFF
+			};
 
 			for (int i = 0; i < 1024; i++)
 			{
@@ -1496,7 +1498,7 @@
 
 						if (roomidshowCheckbox.Checked)
 						{
-							ZScreamer.ActiveGraphicsManager.drawText(e.Graphics, 16 + ((i % 5) * 32), 20 + ((i / 5) * 32), currentFloorRooms[currentFloor][i].ToString("X2"), null, true);
+							e.Graphics.DrawText(16 + ((i % 5) * 32), 20 + ((i / 5) * 32), currentFloorRooms[currentFloor][i].ToString("X2"), null, true);
 						}
 					}
 

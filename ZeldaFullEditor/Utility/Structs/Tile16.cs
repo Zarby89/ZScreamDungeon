@@ -26,14 +26,14 @@
 		{
 			get
 			{
-				switch (i)
+				return i switch
 				{
-					case 0: return Tile0;
-					case 1: return Tile1;
-					case 2: return Tile2;
-					case 3: return Tile3;
-				}
-				return Tile0;
+					0 => Tile0,
+					1 => Tile1,
+					2 => Tile2,
+					3 => Tile3,
+					_ => Tile0,
+				};
 			}
 		}
 

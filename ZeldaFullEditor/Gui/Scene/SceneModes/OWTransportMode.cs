@@ -90,7 +90,6 @@ namespace ZeldaFullEditor
 
 				if (e.IsInThisWorld(ZS.OverworldManager.World))
 				{
-					string txt;
 					if (SelectedTransport == e)
 					{
 						bgrBrush = UIColors.TransportSelectedBrush;
@@ -107,27 +106,11 @@ namespace ZeldaFullEditor
 						outline = UIColors.OutlinePen;
 					}
 
-					switch (TransportTextView)
+					var txt = TransportTextView switch
 					{
 						// TODO might add more stuff in the future
-						default:
-						case TextView.NeverShowName:
-							txt = $"{i:X2}";
-							break;
-
-					//case TextView.AlwaysShowName:
-					//	txt = $"{e.ID} - {Transport.Name}";
-					//	break;
-					//
-					//default:
-					//case TextView.ShowNameOnHover:
-					//	if (item == SelectedSecret || item == hoveredEntity)
-					//	{
-					//		goto case TextView.AlwaysShowName;
-					//	}
-					//	goto case TextView.NeverShowName;
-					}
-
+						_ => $"{i:X2}",
+					};
 					g.DrawFilledRectangleWithOutline(e.SquareHitbox, outline, bgrBrush);
 
 					g.DrawText(e.GlobalX + 3, e.GlobalY + 5, txt);

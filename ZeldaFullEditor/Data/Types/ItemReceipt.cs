@@ -24,165 +24,165 @@ namespace ZeldaFullEditor.Data
 		}
 
 
-		public static readonly ItemReceipt Receipt00 = new ItemReceipt(0x00, ItemReceiptDraw00);
-		public static readonly ItemReceipt Receipt01 = new ItemReceipt(0x01, ItemReceiptDraw01);
-		public static readonly ItemReceipt Receipt02 = new ItemReceipt(0x02, ItemReceiptDraw02);
-		public static readonly ItemReceipt Receipt03 = new ItemReceipt(0x03, ItemReceiptDraw03);
-		public static readonly ItemReceipt Receipt04 = new ItemReceipt(0x04, ItemReceiptDraw04);
-		public static readonly ItemReceipt Receipt05 = new ItemReceipt(0x05, ItemReceiptDraw05);
-		public static readonly ItemReceipt Receipt06 = new ItemReceipt(0x06, ItemReceiptDraw06);
-		public static readonly ItemReceipt Receipt07 = new ItemReceipt(0x07, ItemReceiptDraw07);
-		public static readonly ItemReceipt Receipt08 = new ItemReceipt(0x08, ItemReceiptDraw08);
-		public static readonly ItemReceipt Receipt09 = new ItemReceipt(0x09, ItemReceiptDraw09);
-		public static readonly ItemReceipt Receipt0A = new ItemReceipt(0x0A, ItemReceiptDraw0A);
-		public static readonly ItemReceipt Receipt0B = new ItemReceipt(0x0B, ItemReceiptDraw0B);
-		public static readonly ItemReceipt Receipt0C = new ItemReceipt(0x0C, ItemReceiptDraw0C);
-		public static readonly ItemReceipt Receipt0D = new ItemReceipt(0x0D, ItemReceiptDraw0D);
-		public static readonly ItemReceipt Receipt0E = new ItemReceipt(0x0E, ItemReceiptDraw0E);
-		public static readonly ItemReceipt Receipt0F = new ItemReceipt(0x0F, ItemReceiptDraw0F);
-		public static readonly ItemReceipt Receipt10 = new ItemReceipt(0x10, ItemReceiptDraw10);
-		public static readonly ItemReceipt Receipt11 = new ItemReceipt(0x11, ItemReceiptDraw11);
-		public static readonly ItemReceipt Receipt12 = new ItemReceipt(0x12, ItemReceiptDraw12);
-		public static readonly ItemReceipt Receipt13 = new ItemReceipt(0x13, ItemReceiptDraw13);
-		public static readonly ItemReceipt Receipt14 = new ItemReceipt(0x14, ItemReceiptDraw14);
-		public static readonly ItemReceipt Receipt15 = new ItemReceipt(0x15, ItemReceiptDraw15);
-		public static readonly ItemReceipt Receipt16 = new ItemReceipt(0x16, ItemReceiptDraw16);
-		public static readonly ItemReceipt Receipt17 = new ItemReceipt(0x17, ItemReceiptDraw17);
-		public static readonly ItemReceipt Receipt18 = new ItemReceipt(0x18, ItemReceiptDraw18);
-		public static readonly ItemReceipt Receipt19 = new ItemReceipt(0x19, ItemReceiptDraw19);
-		public static readonly ItemReceipt Receipt1A = new ItemReceipt(0x1A, ItemReceiptDraw1A);
-		public static readonly ItemReceipt Receipt1B = new ItemReceipt(0x1B, ItemReceiptDraw1B);
-		public static readonly ItemReceipt Receipt1C = new ItemReceipt(0x1C, ItemReceiptDraw1C);
-		public static readonly ItemReceipt Receipt1D = new ItemReceipt(0x1D, ItemReceiptDraw1D);
-		public static readonly ItemReceipt Receipt1E = new ItemReceipt(0x1E, ItemReceiptDraw1E);
-		public static readonly ItemReceipt Receipt1F = new ItemReceipt(0x1F, ItemReceiptDraw1F);
-		public static readonly ItemReceipt Receipt20 = new ItemReceipt(0x20, ItemReceiptDraw20);
-		public static readonly ItemReceipt Receipt21 = new ItemReceipt(0x21, ItemReceiptDraw21);
-		public static readonly ItemReceipt Receipt22 = new ItemReceipt(0x22, ItemReceiptDraw22);
-		public static readonly ItemReceipt Receipt23 = new ItemReceipt(0x23, ItemReceiptDraw23);
-		public static readonly ItemReceipt Receipt24 = new ItemReceipt(0x24, ItemReceiptDraw24);
-		public static readonly ItemReceipt Receipt25 = new ItemReceipt(0x25, ItemReceiptDraw25);
-		public static readonly ItemReceipt Receipt26 = new ItemReceipt(0x26, ItemReceiptDraw26);
-		public static readonly ItemReceipt Receipt27 = new ItemReceipt(0x27, ItemReceiptDraw27);
-		public static readonly ItemReceipt Receipt28 = new ItemReceipt(0x28, ItemReceiptDraw28);
-		public static readonly ItemReceipt Receipt29 = new ItemReceipt(0x29, ItemReceiptDraw29);
-		public static readonly ItemReceipt Receipt2A = new ItemReceipt(0x2A, ItemReceiptDraw2A);
-		public static readonly ItemReceipt Receipt2B = new ItemReceipt(0x2B, ItemReceiptDraw2B);
-		public static readonly ItemReceipt Receipt2C = new ItemReceipt(0x2C, ItemReceiptDraw2C);
-		public static readonly ItemReceipt Receipt2D = new ItemReceipt(0x2D, ItemReceiptDraw2D);
-		public static readonly ItemReceipt Receipt2E = new ItemReceipt(0x2E, ItemReceiptDraw2E);
-		public static readonly ItemReceipt Receipt2F = new ItemReceipt(0x2F, ItemReceiptDraw2F);
-		public static readonly ItemReceipt Receipt30 = new ItemReceipt(0x30, ItemReceiptDraw30);
-		public static readonly ItemReceipt Receipt31 = new ItemReceipt(0x31, ItemReceiptDraw31);
-		public static readonly ItemReceipt Receipt32 = new ItemReceipt(0x32, ItemReceiptDraw32);
-		public static readonly ItemReceipt Receipt33 = new ItemReceipt(0x33, ItemReceiptDraw33);
-		public static readonly ItemReceipt Receipt34 = new ItemReceipt(0x34, ItemReceiptDraw34);
-		public static readonly ItemReceipt Receipt35 = new ItemReceipt(0x35, ItemReceiptDraw35);
-		public static readonly ItemReceipt Receipt36 = new ItemReceipt(0x36, ItemReceiptDraw36);
-		public static readonly ItemReceipt Receipt37 = new ItemReceipt(0x37, ItemReceiptDraw37);
-		public static readonly ItemReceipt Receipt38 = new ItemReceipt(0x38, ItemReceiptDraw38);
-		public static readonly ItemReceipt Receipt39 = new ItemReceipt(0x39, ItemReceiptDraw39);
-		public static readonly ItemReceipt Receipt3A = new ItemReceipt(0x3A, ItemReceiptDraw3A);
-		public static readonly ItemReceipt Receipt3B = new ItemReceipt(0x3B, ItemReceiptDraw3B);
-		public static readonly ItemReceipt Receipt3C = new ItemReceipt(0x3C, ItemReceiptDraw3C);
-		public static readonly ItemReceipt Receipt3D = new ItemReceipt(0x3D, ItemReceiptDraw3D);
-		public static readonly ItemReceipt Receipt3E = new ItemReceipt(0x3E, ItemReceiptDraw3E);
-		public static readonly ItemReceipt Receipt3F = new ItemReceipt(0x3F, ItemReceiptDraw3F);
-		public static readonly ItemReceipt Receipt40 = new ItemReceipt(0x40, ItemReceiptDraw40);
-		public static readonly ItemReceipt Receipt41 = new ItemReceipt(0x41, ItemReceiptDraw41);
-		public static readonly ItemReceipt Receipt42 = new ItemReceipt(0x42, ItemReceiptDraw42);
-		public static readonly ItemReceipt Receipt43 = new ItemReceipt(0x43, ItemReceiptDraw43);
-		public static readonly ItemReceipt Receipt44 = new ItemReceipt(0x44, ItemReceiptDraw44);
-		public static readonly ItemReceipt Receipt45 = new ItemReceipt(0x45, ItemReceiptDraw45);
-		public static readonly ItemReceipt Receipt46 = new ItemReceipt(0x46, ItemReceiptDraw46);
-		public static readonly ItemReceipt Receipt47 = new ItemReceipt(0x47, ItemReceiptDraw47);
-		public static readonly ItemReceipt Receipt48 = new ItemReceipt(0x48, ItemReceiptDraw48);
-		public static readonly ItemReceipt Receipt49 = new ItemReceipt(0x49, ItemReceiptDraw49);
-		public static readonly ItemReceipt Receipt4A = new ItemReceipt(0x4A, ItemReceiptDraw4A);
-		public static readonly ItemReceipt Receipt4B = new ItemReceipt(0x4B, ItemReceiptDraw4B);
+		public static readonly ItemReceipt Receipt00 = new(0x00, ItemReceiptDraw00);
+		public static readonly ItemReceipt Receipt01 = new(0x01, ItemReceiptDraw01);
+		public static readonly ItemReceipt Receipt02 = new(0x02, ItemReceiptDraw02);
+		public static readonly ItemReceipt Receipt03 = new(0x03, ItemReceiptDraw03);
+		public static readonly ItemReceipt Receipt04 = new(0x04, ItemReceiptDraw04);
+		public static readonly ItemReceipt Receipt05 = new(0x05, ItemReceiptDraw05);
+		public static readonly ItemReceipt Receipt06 = new(0x06, ItemReceiptDraw06);
+		public static readonly ItemReceipt Receipt07 = new(0x07, ItemReceiptDraw07);
+		public static readonly ItemReceipt Receipt08 = new(0x08, ItemReceiptDraw08);
+		public static readonly ItemReceipt Receipt09 = new(0x09, ItemReceiptDraw09);
+		public static readonly ItemReceipt Receipt0A = new(0x0A, ItemReceiptDraw0A);
+		public static readonly ItemReceipt Receipt0B = new(0x0B, ItemReceiptDraw0B);
+		public static readonly ItemReceipt Receipt0C = new(0x0C, ItemReceiptDraw0C);
+		public static readonly ItemReceipt Receipt0D = new(0x0D, ItemReceiptDraw0D);
+		public static readonly ItemReceipt Receipt0E = new(0x0E, ItemReceiptDraw0E);
+		public static readonly ItemReceipt Receipt0F = new(0x0F, ItemReceiptDraw0F);
+		public static readonly ItemReceipt Receipt10 = new(0x10, ItemReceiptDraw10);
+		public static readonly ItemReceipt Receipt11 = new(0x11, ItemReceiptDraw11);
+		public static readonly ItemReceipt Receipt12 = new(0x12, ItemReceiptDraw12);
+		public static readonly ItemReceipt Receipt13 = new(0x13, ItemReceiptDraw13);
+		public static readonly ItemReceipt Receipt14 = new(0x14, ItemReceiptDraw14);
+		public static readonly ItemReceipt Receipt15 = new(0x15, ItemReceiptDraw15);
+		public static readonly ItemReceipt Receipt16 = new(0x16, ItemReceiptDraw16);
+		public static readonly ItemReceipt Receipt17 = new(0x17, ItemReceiptDraw17);
+		public static readonly ItemReceipt Receipt18 = new(0x18, ItemReceiptDraw18);
+		public static readonly ItemReceipt Receipt19 = new(0x19, ItemReceiptDraw19);
+		public static readonly ItemReceipt Receipt1A = new(0x1A, ItemReceiptDraw1A);
+		public static readonly ItemReceipt Receipt1B = new(0x1B, ItemReceiptDraw1B);
+		public static readonly ItemReceipt Receipt1C = new(0x1C, ItemReceiptDraw1C);
+		public static readonly ItemReceipt Receipt1D = new(0x1D, ItemReceiptDraw1D);
+		public static readonly ItemReceipt Receipt1E = new(0x1E, ItemReceiptDraw1E);
+		public static readonly ItemReceipt Receipt1F = new(0x1F, ItemReceiptDraw1F);
+		public static readonly ItemReceipt Receipt20 = new(0x20, ItemReceiptDraw20);
+		public static readonly ItemReceipt Receipt21 = new(0x21, ItemReceiptDraw21);
+		public static readonly ItemReceipt Receipt22 = new(0x22, ItemReceiptDraw22);
+		public static readonly ItemReceipt Receipt23 = new(0x23, ItemReceiptDraw23);
+		public static readonly ItemReceipt Receipt24 = new(0x24, ItemReceiptDraw24);
+		public static readonly ItemReceipt Receipt25 = new(0x25, ItemReceiptDraw25);
+		public static readonly ItemReceipt Receipt26 = new(0x26, ItemReceiptDraw26);
+		public static readonly ItemReceipt Receipt27 = new(0x27, ItemReceiptDraw27);
+		public static readonly ItemReceipt Receipt28 = new(0x28, ItemReceiptDraw28);
+		public static readonly ItemReceipt Receipt29 = new(0x29, ItemReceiptDraw29);
+		public static readonly ItemReceipt Receipt2A = new(0x2A, ItemReceiptDraw2A);
+		public static readonly ItemReceipt Receipt2B = new(0x2B, ItemReceiptDraw2B);
+		public static readonly ItemReceipt Receipt2C = new(0x2C, ItemReceiptDraw2C);
+		public static readonly ItemReceipt Receipt2D = new(0x2D, ItemReceiptDraw2D);
+		public static readonly ItemReceipt Receipt2E = new(0x2E, ItemReceiptDraw2E);
+		public static readonly ItemReceipt Receipt2F = new(0x2F, ItemReceiptDraw2F);
+		public static readonly ItemReceipt Receipt30 = new(0x30, ItemReceiptDraw30);
+		public static readonly ItemReceipt Receipt31 = new(0x31, ItemReceiptDraw31);
+		public static readonly ItemReceipt Receipt32 = new(0x32, ItemReceiptDraw32);
+		public static readonly ItemReceipt Receipt33 = new(0x33, ItemReceiptDraw33);
+		public static readonly ItemReceipt Receipt34 = new(0x34, ItemReceiptDraw34);
+		public static readonly ItemReceipt Receipt35 = new(0x35, ItemReceiptDraw35);
+		public static readonly ItemReceipt Receipt36 = new(0x36, ItemReceiptDraw36);
+		public static readonly ItemReceipt Receipt37 = new(0x37, ItemReceiptDraw37);
+		public static readonly ItemReceipt Receipt38 = new(0x38, ItemReceiptDraw38);
+		public static readonly ItemReceipt Receipt39 = new(0x39, ItemReceiptDraw39);
+		public static readonly ItemReceipt Receipt3A = new(0x3A, ItemReceiptDraw3A);
+		public static readonly ItemReceipt Receipt3B = new(0x3B, ItemReceiptDraw3B);
+		public static readonly ItemReceipt Receipt3C = new(0x3C, ItemReceiptDraw3C);
+		public static readonly ItemReceipt Receipt3D = new(0x3D, ItemReceiptDraw3D);
+		public static readonly ItemReceipt Receipt3E = new(0x3E, ItemReceiptDraw3E);
+		public static readonly ItemReceipt Receipt3F = new(0x3F, ItemReceiptDraw3F);
+		public static readonly ItemReceipt Receipt40 = new(0x40, ItemReceiptDraw40);
+		public static readonly ItemReceipt Receipt41 = new(0x41, ItemReceiptDraw41);
+		public static readonly ItemReceipt Receipt42 = new(0x42, ItemReceiptDraw42);
+		public static readonly ItemReceipt Receipt43 = new(0x43, ItemReceiptDraw43);
+		public static readonly ItemReceipt Receipt44 = new(0x44, ItemReceiptDraw44);
+		public static readonly ItemReceipt Receipt45 = new(0x45, ItemReceiptDraw45);
+		public static readonly ItemReceipt Receipt46 = new(0x46, ItemReceiptDraw46);
+		public static readonly ItemReceipt Receipt47 = new(0x47, ItemReceiptDraw47);
+		public static readonly ItemReceipt Receipt48 = new(0x48, ItemReceiptDraw48);
+		public static readonly ItemReceipt Receipt49 = new(0x49, ItemReceiptDraw49);
+		public static readonly ItemReceipt Receipt4A = new(0x4A, ItemReceiptDraw4A);
+		public static readonly ItemReceipt Receipt4B = new(0x4B, ItemReceiptDraw4B);
 
 		public static ItemReceipt GetTypeFromID(int id)
 		{
-			switch (id)
+			return id switch
 			{
-				case 0x00: return Receipt00;
-				case 0x01: return Receipt01;
-				case 0x02: return Receipt02;
-				case 0x03: return Receipt03;
-				case 0x04: return Receipt04;
-				case 0x05: return Receipt05;
-				case 0x06: return Receipt06;
-				case 0x07: return Receipt07;
-				case 0x08: return Receipt08;
-				case 0x09: return Receipt09;
-				case 0x0A: return Receipt0A;
-				case 0x0B: return Receipt0B;
-				case 0x0C: return Receipt0C;
-				case 0x0D: return Receipt0D;
-				case 0x0E: return Receipt0E;
-				case 0x0F: return Receipt0F;
-				case 0x10: return Receipt10;
-				case 0x11: return Receipt11;
-				case 0x12: return Receipt12;
-				case 0x13: return Receipt13;
-				case 0x14: return Receipt14;
-				case 0x15: return Receipt15;
-				case 0x16: return Receipt16;
-				case 0x17: return Receipt17;
-				case 0x18: return Receipt18;
-				case 0x19: return Receipt19;
-				case 0x1A: return Receipt1A;
-				case 0x1B: return Receipt1B;
-				case 0x1C: return Receipt1C;
-				case 0x1D: return Receipt1D;
-				case 0x1E: return Receipt1E;
-				case 0x1F: return Receipt1F;
-				case 0x20: return Receipt20;
-				case 0x21: return Receipt21;
-				case 0x22: return Receipt22;
-				case 0x23: return Receipt23;
-				case 0x24: return Receipt24;
-				case 0x25: return Receipt25;
-				case 0x26: return Receipt26;
-				case 0x27: return Receipt27;
-				case 0x28: return Receipt28;
-				case 0x29: return Receipt29;
-				case 0x2A: return Receipt2A;
-				case 0x2B: return Receipt2B;
-				case 0x2C: return Receipt2C;
-				case 0x2D: return Receipt2D;
-				case 0x2E: return Receipt2E;
-				case 0x2F: return Receipt2F;
-				case 0x30: return Receipt30;
-				case 0x31: return Receipt31;
-				case 0x32: return Receipt32;
-				case 0x33: return Receipt33;
-				case 0x34: return Receipt34;
-				case 0x35: return Receipt35;
-				case 0x36: return Receipt36;
-				case 0x37: return Receipt37;
-				case 0x38: return Receipt38;
-				case 0x39: return Receipt39;
-				case 0x3A: return Receipt3A;
-				case 0x3B: return Receipt3B;
-				case 0x3C: return Receipt3C;
-				case 0x3D: return Receipt3D;
-				case 0x3E: return Receipt3E;
-				case 0x3F: return Receipt3F;
-				case 0x40: return Receipt40;
-				case 0x41: return Receipt41;
-				case 0x42: return Receipt42;
-				case 0x43: return Receipt43;
-				case 0x44: return Receipt44;
-				case 0x45: return Receipt45;
-				case 0x46: return Receipt46;
-				case 0x47: return Receipt47;
-				case 0x48: return Receipt48;
-				case 0x49: return Receipt49;
-				case 0x4A: return Receipt4A;
-				case 0x4B: return Receipt4B;
-			}
-			return null;
+				0x00 => Receipt00,
+				0x01 => Receipt01,
+				0x02 => Receipt02,
+				0x03 => Receipt03,
+				0x04 => Receipt04,
+				0x05 => Receipt05,
+				0x06 => Receipt06,
+				0x07 => Receipt07,
+				0x08 => Receipt08,
+				0x09 => Receipt09,
+				0x0A => Receipt0A,
+				0x0B => Receipt0B,
+				0x0C => Receipt0C,
+				0x0D => Receipt0D,
+				0x0E => Receipt0E,
+				0x0F => Receipt0F,
+				0x10 => Receipt10,
+				0x11 => Receipt11,
+				0x12 => Receipt12,
+				0x13 => Receipt13,
+				0x14 => Receipt14,
+				0x15 => Receipt15,
+				0x16 => Receipt16,
+				0x17 => Receipt17,
+				0x18 => Receipt18,
+				0x19 => Receipt19,
+				0x1A => Receipt1A,
+				0x1B => Receipt1B,
+				0x1C => Receipt1C,
+				0x1D => Receipt1D,
+				0x1E => Receipt1E,
+				0x1F => Receipt1F,
+				0x20 => Receipt20,
+				0x21 => Receipt21,
+				0x22 => Receipt22,
+				0x23 => Receipt23,
+				0x24 => Receipt24,
+				0x25 => Receipt25,
+				0x26 => Receipt26,
+				0x27 => Receipt27,
+				0x28 => Receipt28,
+				0x29 => Receipt29,
+				0x2A => Receipt2A,
+				0x2B => Receipt2B,
+				0x2C => Receipt2C,
+				0x2D => Receipt2D,
+				0x2E => Receipt2E,
+				0x2F => Receipt2F,
+				0x30 => Receipt30,
+				0x31 => Receipt31,
+				0x32 => Receipt32,
+				0x33 => Receipt33,
+				0x34 => Receipt34,
+				0x35 => Receipt35,
+				0x36 => Receipt36,
+				0x37 => Receipt37,
+				0x38 => Receipt38,
+				0x39 => Receipt39,
+				0x3A => Receipt3A,
+				0x3B => Receipt3B,
+				0x3C => Receipt3C,
+				0x3D => Receipt3D,
+				0x3E => Receipt3E,
+				0x3F => Receipt3F,
+				0x40 => Receipt40,
+				0x41 => Receipt41,
+				0x42 => Receipt42,
+				0x43 => Receipt43,
+				0x44 => Receipt44,
+				0x45 => Receipt45,
+				0x46 => Receipt46,
+				0x47 => Receipt47,
+				0x48 => Receipt48,
+				0x49 => Receipt49,
+				0x4A => Receipt4A,
+				0x4B => Receipt4B,
+				_ => null,
+			};
 		}
 
 		public static unsafe void DrawTiles(Artist art, DungeonChestItem sec, params OAMDrawInfo[] instructions)

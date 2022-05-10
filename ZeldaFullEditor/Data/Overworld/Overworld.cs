@@ -29,7 +29,7 @@ namespace ZeldaFullEditor
 		public Tile[,] tempTiles8_DW = new Tile[512, 512]; //all maps tiles8
 		public Tile[,] tempTiles8_SP = new Tile[512, 512]; //all maps tiles8
 
-		public List<Tile32> t32Unique = new List<Tile32>();
+		public List<Tile32> t32Unique = new();
 		public List<ushort> t32;
 
 		public OverworldExit[] allexits = new OverworldExit[Constants.NumberOfOverworldExits];
@@ -45,7 +45,7 @@ namespace ZeldaFullEditor
 		public OverworldScreen[] allmaps = new OverworldScreen[Constants.NumberOfOWMaps];
 		public OverworldEntrance[] allentrances = new OverworldEntrance[129];
 		public OverworldEntrance[] allholes = new OverworldEntrance[0x13];
-		public List<OverworldSecret> allitems = new List<OverworldSecret>();
+		public List<OverworldSecret> allitems = new();
 		public OverlayData[] alloverlays = new OverlayData[128];
 
 		public List<OverworldSprite>[] allsprites = new List<OverworldSprite>[3];
@@ -56,8 +56,8 @@ namespace ZeldaFullEditor
 		public int WorldOffsetEnd => WorldOffset + 64;
 
 		// TODO : Fix Whirlpool on large maps
-		public List<OverworldTransport> AllTransports = new List<OverworldTransport>();
-		public List<OverworldTransport> allBirds = new List<OverworldTransport>();
+		public List<OverworldTransport> AllTransports = new();
+		public List<OverworldTransport> allBirds = new();
 
 		public byte GameState { get; set; } = 1;
 
@@ -67,8 +67,8 @@ namespace ZeldaFullEditor
 
 		public int tiles32count = 0;
 
-		private readonly List<Tile16> t16Unique = new List<Tile16>();
-		private readonly List<ushort> t16 = new List<ushort>();
+		private readonly List<Tile16> t16Unique = new();
+		private readonly List<ushort> t16 = new();
 
 		public ZScreamer ZS { get; }
 

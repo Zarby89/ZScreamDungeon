@@ -43,6 +43,6 @@
 			return (ulong) Tile3 << 48 | ((ulong) Tile2 << 32) | ((ulong) Tile1 << 16) | Tile0;
 		}
 
-		public static readonly Tile32 Empty = new Tile32(0, 0, 0, 0);
+		public static readonly Tile32 Empty = new(0, 0, 0, 0);
 	}
 }

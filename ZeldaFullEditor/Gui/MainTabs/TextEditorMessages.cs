@@ -18,7 +18,7 @@ namespace ZeldaFullEditor
 		private const string BANKToken = "BANK";
 		private const byte BANKID = 0x80;
 
-		private static readonly TextElement DictionaryElement = new TextElement(0x80, DictionaryToken, true, "Dictionary");
+		private static readonly TextElement DictionaryElement = new(0x80, DictionaryToken, true, "Dictionary");
 
 		private static readonly TextElement[] TCommands = new TextElement[] {
 			new TextElement(0x6B, "W", true, "Window border"),
@@ -70,7 +70,8 @@ namespace ZeldaFullEditor
 
 		};
 
-		private static readonly Dictionary<byte, char> CharEncoder = new Dictionary<byte, char> {
+		private static readonly Dictionary<byte, char> CharEncoder = new()
+		{
 				{ 0x00, 'A' },
 				{ 0x01, 'B' },
 				{ 0x02, 'C' },
@@ -279,7 +280,7 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		private static readonly List<DictionaryEntry> AllDicts = new List<DictionaryEntry>();
+		private static readonly List<DictionaryEntry> AllDicts = new();
 
 		public class DictionaryEntry
 		{

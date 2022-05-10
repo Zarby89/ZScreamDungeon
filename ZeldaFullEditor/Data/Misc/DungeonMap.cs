@@ -11,8 +11,8 @@ namespace ZeldaFullEditor
 		public ushort bossRoom = 0xFFFF;
 		public byte nbrOfFloor = 0;
 		public byte nbrOfBasement = 0;
-		public List<byte[]> FloorRooms = new List<byte[]>();
-		public List<byte[]> FloorGfx = new List<byte[]>();
+		public List<byte[]> FloorRooms = new();
+		public List<byte[]> FloorGfx = new();
 
 		public DungeonMap(ushort bossRoom, byte nbrOfFloor, byte nbrOfBasement, List<byte[]> FloorRooms, List<byte[]> FloorGfx)
 		{

@@ -139,24 +139,24 @@ namespace ZeldaFullEditor
 
 		public byte GetSpriteGraphicsForGameState(int gamestate)
 		{
-			switch (gamestate)
+			return gamestate switch
 			{
-				case 0: return State0SpriteGraphics;
-				case 1: return State2SpriteGraphics;
-				case 2: return State3SpriteGraphics;
-			}
-			return 0x00;
+				0 => State0SpriteGraphics,
+				1 => State2SpriteGraphics,
+				2 => State3SpriteGraphics,
+				_ => 0x00,
+			};
 		}
 
 		public byte GetSpritePaletteForGameState(int gamestate)
 		{
-			switch (gamestate)
+			return gamestate switch
 			{
-				case 0: return State0SpritePalette;
-				case 1: return State2SpritePalette;
-				case 2: return State3SpritePalette;
-			}
-			return 0x00;
+				0 => State0SpritePalette,
+				1 => State2SpritePalette,
+				2 => State3SpritePalette,
+				_ => 0x00,
+			};
 		}
 
 
