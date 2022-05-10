@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static ZeldaFullEditor.DoorCategory;
+﻿using static ZeldaFullEditor.DoorCategory;
 
 namespace ZeldaFullEditor.Data
 {
@@ -17,7 +12,7 @@ namespace ZeldaFullEditor.Data
 		{
 			ID = id;
 			Category = category;
-			IsExit = false;
+			IsExit = exit;
 		}
 
 		public static readonly DungeonDoorType DoorType00 = new(0x00, Unspecial);
@@ -73,64 +68,61 @@ namespace ZeldaFullEditor.Data
 		public static readonly DungeonDoorType DoorType64 = new(0x64, Garbage);
 		public static readonly DungeonDoorType DoorType66 = new(0x66, Garbage);
 
-		public static DungeonDoorType GetTypeFromID(int b)
+		public static DungeonDoorType GetTypeFromID(int b) => b switch
 		{
-			return b switch
-			{
-				0x00 => DoorType00,
-				0x02 => DoorType02,
-				0x04 => DoorType04,
-				0x06 => DoorType06,
-				0x08 => DoorType08,
-				0x0A => DoorType0A,
-				0x0C => DoorType0C,
-				0x0E => DoorType0E,
-				0x10 => DoorType10,
-				0x12 => DoorType12,
-				0x14 => DoorType14,
-				0x16 => DoorType16,
-				0x18 => DoorType18,
-				0x1A => DoorType1A,
-				0x1C => DoorType1C,
-				0x1E => DoorType1E,
-				0x20 => DoorType20,
-				0x22 => DoorType22,
-				0x24 => DoorType24,
-				0x26 => DoorType26,
-				0x28 => DoorType28,
-				0x2A => DoorType2A,
-				0x2C => DoorType2C,
-				0x2E => DoorType2E,
-				0x30 => DoorType30,
-				0x32 => DoorType32,
-				0x34 => DoorType34,
-				0x36 => DoorType36,
-				0x38 => DoorType38,
-				0x3A => DoorType3A,
-				0x3C => DoorType3C,
-				0x3E => DoorType3E,
-				0x40 => DoorType40,
-				0x42 => DoorType42,
-				0x44 => DoorType44,
-				0x46 => DoorType46,
-				0x48 => DoorType48,
-				0x4A => DoorType4A,
-				0x4C => DoorType4C,
-				0x4E => DoorType4E,
-				0x50 => DoorType50,
-				0x52 => DoorType52,
-				0x54 => DoorType54,
-				0x56 => DoorType56,
-				0x58 => DoorType58,
-				0x5A => DoorType5A,
-				0x5C => DoorType5C,
-				0x5E => DoorType5E,
-				0x60 => DoorType60,
-				0x62 => DoorType62,
-				0x64 => DoorType64,
-				0x66 => DoorType66,
-				_ => null,
-			};
-		}
+			0x00 => DoorType00,
+			0x02 => DoorType02,
+			0x04 => DoorType04,
+			0x06 => DoorType06,
+			0x08 => DoorType08,
+			0x0A => DoorType0A,
+			0x0C => DoorType0C,
+			0x0E => DoorType0E,
+			0x10 => DoorType10,
+			0x12 => DoorType12,
+			0x14 => DoorType14,
+			0x16 => DoorType16,
+			0x18 => DoorType18,
+			0x1A => DoorType1A,
+			0x1C => DoorType1C,
+			0x1E => DoorType1E,
+			0x20 => DoorType20,
+			0x22 => DoorType22,
+			0x24 => DoorType24,
+			0x26 => DoorType26,
+			0x28 => DoorType28,
+			0x2A => DoorType2A,
+			0x2C => DoorType2C,
+			0x2E => DoorType2E,
+			0x30 => DoorType30,
+			0x32 => DoorType32,
+			0x34 => DoorType34,
+			0x36 => DoorType36,
+			0x38 => DoorType38,
+			0x3A => DoorType3A,
+			0x3C => DoorType3C,
+			0x3E => DoorType3E,
+			0x40 => DoorType40,
+			0x42 => DoorType42,
+			0x44 => DoorType44,
+			0x46 => DoorType46,
+			0x48 => DoorType48,
+			0x4A => DoorType4A,
+			0x4C => DoorType4C,
+			0x4E => DoorType4E,
+			0x50 => DoorType50,
+			0x52 => DoorType52,
+			0x54 => DoorType54,
+			0x56 => DoorType56,
+			0x58 => DoorType58,
+			0x5A => DoorType5A,
+			0x5C => DoorType5C,
+			0x5E => DoorType5E,
+			0x60 => DoorType60,
+			0x62 => DoorType62,
+			0x64 => DoorType64,
+			0x66 => DoorType66,
+			_ => null,
+		};
 	}
 }

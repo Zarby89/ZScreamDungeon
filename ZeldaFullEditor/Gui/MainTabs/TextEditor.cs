@@ -1,15 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Drawing.Imaging;
-using System.IO;
-using ZeldaFullEditor.Gui;
-using System.Text.RegularExpressions;
-using System.Globalization;
+﻿using System.Text.RegularExpressions;
 
 namespace ZeldaFullEditor
 {
@@ -305,7 +294,7 @@ namespace ZeldaFullEditor
 				AllDicts.Add(new DictionaryEntry((byte) i, s.ToString()));
 			}
 
-			AllDicts = AllDicts.OrderByDescending(dic => dic.Length);
+			AllDicts = (List<DictionaryEntry>) AllDicts.OrderByDescending(dic => dic.Length);
 		}
 
 		public static byte[] ParseMessageToData(string fullString)

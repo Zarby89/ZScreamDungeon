@@ -15,6 +15,7 @@ namespace ZeldaFullEditor.Data
 		public DungeonObjectSizeability Resizeability { get; }
 
 		public DrawObject Draw { get; }
+
 		public SpecialObjectType Specialness { get; }
 
 		public DungeonLimits LimitClass { get; }
@@ -32,26 +33,19 @@ namespace ZeldaFullEditor.Data
 
 		// every tileset is beautiful
 		public static byte[] AllTileSets = { 0 };
-		protected RoomObjectType(ushort objectid, DrawObject drawfunc, DungeonObjectSizeability resizing, RoomObjectCategory[] categories, byte[] gsets,
+		private RoomObjectType(ushort objectid, DrawObject drawfunc, DungeonObjectSizeability resizing, RoomObjectCategory[] categories, byte[] gsets,
 			SpecialObjectType special = SpecialObjectType.None, DungeonLimits limit = DungeonLimits.None)
 		{
-			string name = "PROBLEM";
-
 			ObjectSet = (DungeonObjectSet) (objectid >> 8);
 			FullID = objectid;
 
-			switch (ObjectSet)
+			string name = ObjectSet switch
 			{
-				case DungeonObjectSet.Subtype1:
-					name = DefaultEntities.ListOfSubtype1RoomObjects[(byte) objectid].Name;
-					break;
-				case DungeonObjectSet.Subtype2:
-					name = DefaultEntities.ListOfSubtype2RoomObjects[(byte) objectid].Name;
-					break;
-				case DungeonObjectSet.Subtype3:
-					name = DefaultEntities.ListOfSubtype3RoomObjects[(byte) objectid].Name;
-					break;
-			}
+				DungeonObjectSet.Subtype1 => DefaultEntities.ListOfSubtype1RoomObjects[(byte) objectid].Name,
+				DungeonObjectSet.Subtype2 => DefaultEntities.ListOfSubtype2RoomObjects[(byte) objectid].Name,
+				DungeonObjectSet.Subtype3 => DefaultEntities.ListOfSubtype3RoomObjects[(byte) objectid].Name,
+				_ => "PROBLEM",
+			};
 
 			VanillaName = name;
 			Resizeability = resizing;

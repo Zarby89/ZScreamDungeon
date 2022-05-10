@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZeldaFullEditor.Data.Underworld;
-using static ZeldaFullEditor.DoorDirection;
+﻿using static ZeldaFullEditor.DoorDirection;
 
 namespace ZeldaFullEditor.Data
 {
@@ -38,61 +32,58 @@ namespace ZeldaFullEditor.Data
 			drawopp(art, door);
 		}
 
-		public static DungeonDoorDraw GetDirectionFromToken(byte b)
+		public static DungeonDoorDraw GetDirectionFromToken(byte b) => b switch
 		{
-			return b switch
-			{
-				(0x00 << 3) | 0x00 => North00,
-				(0x02 << 3) | 0x00 => North02,
-				(0x04 << 3) | 0x00 => North04,
-				(0x06 << 3) | 0x00 => North06,
-				(0x08 << 3) | 0x00 => North08,
-				(0x0A << 3) | 0x00 => North0A,
-				(0x0C << 3) | 0x00 => North0C,
-				(0x0E << 3) | 0x00 => North0E,
-				(0x10 << 3) | 0x00 => North10,
-				(0x12 << 3) | 0x00 => North12,
-				(0x14 << 3) | 0x00 => North14,
-				(0x16 << 3) | 0x00 => North16,
-				(0x00 << 3) | 0x01 => South00,
-				(0x02 << 3) | 0x01 => South02,
-				(0x04 << 3) | 0x01 => South04,
-				(0x06 << 3) | 0x01 => South06,
-				(0x08 << 3) | 0x01 => South08,
-				(0x0A << 3) | 0x01 => South0A,
-				(0x0C << 3) | 0x01 => South0C,
-				(0x0E << 3) | 0x01 => South0E,
-				(0x10 << 3) | 0x01 => South10,
-				(0x12 << 3) | 0x01 => South12,
-				(0x14 << 3) | 0x01 => South14,
-				(0x16 << 3) | 0x01 => South16,
-				(0x00 << 3) | 0x02 => West00,
-				(0x02 << 3) | 0x02 => West02,
-				(0x04 << 3) | 0x02 => West04,
-				(0x06 << 3) | 0x02 => West06,
-				(0x08 << 3) | 0x02 => West08,
-				(0x0A << 3) | 0x02 => West0A,
-				(0x0C << 3) | 0x02 => West0C,
-				(0x0E << 3) | 0x02 => West0E,
-				(0x10 << 3) | 0x02 => West10,
-				(0x12 << 3) | 0x02 => West12,
-				(0x14 << 3) | 0x02 => West14,
-				(0x16 << 3) | 0x02 => West16,
-				(0x00 << 3) | 0x03 => East00,
-				(0x02 << 3) | 0x03 => East02,
-				(0x04 << 3) | 0x03 => East04,
-				(0x06 << 3) | 0x03 => East06,
-				(0x08 << 3) | 0x03 => East08,
-				(0x0A << 3) | 0x03 => East0A,
-				(0x0C << 3) | 0x03 => East0C,
-				(0x0E << 3) | 0x03 => East0E,
-				(0x10 << 3) | 0x03 => East10,
-				(0x12 << 3) | 0x03 => East12,
-				(0x14 << 3) | 0x03 => East14,
-				(0x16 << 3) | 0x03 => East16,
-				_ => null,
-			};
-		}
+			(0x00 << 3) | 0x00 => North00,
+			(0x02 << 3) | 0x00 => North02,
+			(0x04 << 3) | 0x00 => North04,
+			(0x06 << 3) | 0x00 => North06,
+			(0x08 << 3) | 0x00 => North08,
+			(0x0A << 3) | 0x00 => North0A,
+			(0x0C << 3) | 0x00 => North0C,
+			(0x0E << 3) | 0x00 => North0E,
+			(0x10 << 3) | 0x00 => North10,
+			(0x12 << 3) | 0x00 => North12,
+			(0x14 << 3) | 0x00 => North14,
+			(0x16 << 3) | 0x00 => North16,
+			(0x00 << 3) | 0x01 => South00,
+			(0x02 << 3) | 0x01 => South02,
+			(0x04 << 3) | 0x01 => South04,
+			(0x06 << 3) | 0x01 => South06,
+			(0x08 << 3) | 0x01 => South08,
+			(0x0A << 3) | 0x01 => South0A,
+			(0x0C << 3) | 0x01 => South0C,
+			(0x0E << 3) | 0x01 => South0E,
+			(0x10 << 3) | 0x01 => South10,
+			(0x12 << 3) | 0x01 => South12,
+			(0x14 << 3) | 0x01 => South14,
+			(0x16 << 3) | 0x01 => South16,
+			(0x00 << 3) | 0x02 => West00,
+			(0x02 << 3) | 0x02 => West02,
+			(0x04 << 3) | 0x02 => West04,
+			(0x06 << 3) | 0x02 => West06,
+			(0x08 << 3) | 0x02 => West08,
+			(0x0A << 3) | 0x02 => West0A,
+			(0x0C << 3) | 0x02 => West0C,
+			(0x0E << 3) | 0x02 => West0E,
+			(0x10 << 3) | 0x02 => West10,
+			(0x12 << 3) | 0x02 => West12,
+			(0x14 << 3) | 0x02 => West14,
+			(0x16 << 3) | 0x02 => West16,
+			(0x00 << 3) | 0x03 => East00,
+			(0x02 << 3) | 0x03 => East02,
+			(0x04 << 3) | 0x03 => East04,
+			(0x06 << 3) | 0x03 => East06,
+			(0x08 << 3) | 0x03 => East08,
+			(0x0A << 3) | 0x03 => East0A,
+			(0x0C << 3) | 0x03 => East0C,
+			(0x0E << 3) | 0x03 => East0E,
+			(0x10 << 3) | 0x03 => East10,
+			(0x12 << 3) | 0x03 => East12,
+			(0x14 << 3) | 0x03 => East14,
+			(0x16 << 3) | 0x03 => East16,
+			_ => null,
+		};
 
 
 		public static readonly DungeonDoorDraw North00 = new(North, 0x00, DrawNorth00, DrawNothing);

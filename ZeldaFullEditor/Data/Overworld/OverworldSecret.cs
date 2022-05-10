@@ -28,9 +28,18 @@ namespace ZeldaFullEditor.Data
 			return base.PointIsInHitbox(x, y);
 		}
 
-		public bool Equals(OverworldSecret other)
+		public bool Equals(OverworldSecret other) => other switch
 		{
-			return ID == other.ID && MapX == other.MapX && MapY == other.MapY;
+			null => false,
+			not null => ID == other.ID && MapX == other.MapX && MapY == other.MapY,
+		};
+
+		public override bool Equals(object obj) => Equals(obj as OverworldSecret);
+
+
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
 		}
 
 		public byte[] GetByteData()

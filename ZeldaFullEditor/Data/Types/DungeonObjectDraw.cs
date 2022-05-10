@@ -1,10 +1,6 @@
-﻿using System.Drawing;
-using ZeldaFullEditor.Data.Underworld;
-
-namespace ZeldaFullEditor.Data
+﻿namespace ZeldaFullEditor.Data
 {
 	public delegate void DrawObject(Artist art, RoomObject obj);
-
 	public partial class RoomObjectType
 	{
 		/// <summary>
@@ -14,7 +10,7 @@ namespace ZeldaFullEditor.Data
 		/// <param name="obj">Object being drawn</param>
 		/// <param name="allbg">Whether this routines draws to all backgrounds or just the object's background</param>
 		/// <param name="instructions">A list of <see cref="DrawInfo">DrawInfo</see> instructions for which tiles to draw.</param>
-		public static void DrawTiles(Artist art, RoomObject obj, bool allbg, params DrawInfo[] instructions)
+		private static void DrawTiles(Artist art, RoomObject obj, bool allbg, params DrawInfo[] instructions)
 		{
 			if (obj is RoomObjectPreview pre)
 			{
@@ -233,7 +229,7 @@ namespace ZeldaFullEditor.Data
 		//=======================================================================================================
 		// Main routines
 		//=======================================================================================================
-		public static void RoomDraw_3x3FloorIn4x4SuperSquare(Artist art, RoomObject obj)
+		private static void RoomDraw_3x3FloorIn4x4SuperSquare(Artist art, RoomObject obj)
 		{
 			int sizex = 24 * (1 + ((obj.Size >> 2) & 0x03));
 			int sizey = 24 * (1 + ((obj.Size) & 0x03));
@@ -259,7 +255,7 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_4x4BlocksIn4x4SuperSquare(Artist art, RoomObject obj)
+		private static void RoomDraw_4x4BlocksIn4x4SuperSquare(Artist art, RoomObject obj)
 		{
 			int sizex = 32 * (1 + ((obj.Size >> 2) & 0x03));
 			int sizey = 32 * (1 + ((obj.Size) & 0x03));
@@ -293,32 +289,32 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_4x4Corner_BothBG(Artist art, RoomObject obj)
+		private static void RoomDraw_4x4Corner_BothBG(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 4, bothbg: true);
 		}
 
-		public static void RoomDraw_4x4FloorIn4x4SuperSquare(Artist art, RoomObject obj)
+		private static void RoomDraw_4x4FloorIn4x4SuperSquare(Artist art, RoomObject obj)
 		{
 			RoomDraw_Arbtrary4x4in4x4SuperSquares(art, obj);
 		}
 
-		public static void RoomDraw_4x4FloorOneIn4x4SuperSquare(Artist art, RoomObject obj)
+		private static void RoomDraw_4x4FloorOneIn4x4SuperSquare(Artist art, RoomObject obj)
 		{
 			RoomDraw_Arbtrary4x4in4x4SuperSquares(art, obj);
 		}
 
-		public static void RoomDraw_4x4FloorTwoIn4x4SuperSquare(Artist art, RoomObject obj)
+		private static void RoomDraw_4x4FloorTwoIn4x4SuperSquare(Artist art, RoomObject obj)
 		{
 			RoomDraw_Arbtrary4x4in4x4SuperSquares(art, obj);
 		}
 
-		public static void RoomDraw_4x4Object(Artist art, RoomObject obj)
+		private static void RoomDraw_4x4Object(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 4);
 		}
 
-		public static void RoomDraw_AgahnimsAltar(Artist art, RoomObject obj)
+		private static void RoomDraw_AgahnimsAltar(Artist art, RoomObject obj)
 		{
 			int tid = 0;
 			for (int y = 0; y < 14 * 8; y += 8)
@@ -344,7 +340,7 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_AgahnimsWindows(Artist art, RoomObject obj)
+		private static void RoomDraw_AgahnimsWindows(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryYByX(art, obj, sizex: 6, sizey: 4, xstart: 7, ystart: 4, tilestart: 0);
 			RoomDraw_ArbitraryYByX(art, obj, sizex: 6, sizey: 4, xstart: 13, ystart: 4, tilestart: 0);
@@ -447,7 +443,7 @@ namespace ZeldaFullEditor.Data
 			//}
 		}
 
-		public static void RoomDraw_ArcheryGameTargetDoor(Artist art, RoomObject obj)
+		private static void RoomDraw_ArcheryGameTargetDoor(Artist art, RoomObject obj)
 		{
 			int tid = 0;
 			for (int x = 0; x < 3 * 8; x += 8)
@@ -465,17 +461,17 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_AutoStairsMerged(Artist art, RoomObject obj)
+		private static void RoomDraw_AutoStairsMerged(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 4);
 		}
 
-		public static void RoomDraw_AutoStairs(Artist art, RoomObject obj)
+		private static void RoomDraw_AutoStairs(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 4, bothbg: true);
 		}
 
-		public static void RoomDraw_BG2MaskFull(Artist art, RoomObject obj)
+		private static void RoomDraw_BG2MaskFull(Artist art, RoomObject obj)
 		{
 			DrawTiles(art, obj, false,
 				new DrawInfo(0, 0, 0),
@@ -500,23 +496,23 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_Bed4x5(Artist art, RoomObject obj)
+		private static void RoomDraw_Bed4x5(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 5);
 		}
 
-		public static void RoomDraw_YBed4x5(Artist art, RoomObject obj)
+		private static void RoomDraw_YBed4x5(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryYByX(art, obj, sizex: 4, sizey: 5);
 		}
 
-		public static void RoomDraw_BigGrayRock(Artist art, RoomObject obj)
+		private static void RoomDraw_BigGrayRock(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 2);
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 2, ystart: 2, tilestart: 8);
 		}
 
-		public static void RoomDraw_BigHole4x4_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_BigHole4x4_1to16(Artist art, RoomObject obj)
 		{
 			int size = (obj.Size + 3) * 8;
 
@@ -551,7 +547,7 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_BigLightBeamOnFloor(Artist art, RoomObject obj)
+		private static void RoomDraw_BigLightBeamOnFloor(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 8, sizey: 4);
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 8, sizey: 4, ystart: 4, tilestart: 32);
@@ -572,12 +568,12 @@ namespace ZeldaFullEditor.Data
 			//}
 		}
 
-		public static void RoomDraw_BigWallDecor(Artist art, RoomObject obj)
+		private static void RoomDraw_BigWallDecor(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 8, sizey: 3);
 		}
 
-		public static void RoomDraw_BombableFloor(Artist art, RoomObject obj)
+		private static void RoomDraw_BombableFloor(Artist art, RoomObject obj)
 		{
 			// 00 04 02 06
 			// 08 12 10 14
@@ -603,17 +599,17 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_CheckIfWallIsMoved(Artist art, RoomObject obj)
+		private static void RoomDraw_CheckIfWallIsMoved(Artist art, RoomObject obj)
 		{
 			// Nothing
 		}
 
-		public static void RoomDraw_ChestPlatformVerticalWall(Artist art, RoomObject obj)
+		private static void RoomDraw_ChestPlatformVerticalWall(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 2, sizey: 3);
 		}
 
-		public static void RoomDraw_ClosedChestPlatform(Artist art, RoomObject obj)
+		private static void RoomDraw_ClosedChestPlatform(Artist art, RoomObject obj)
 		{
 
 			int sizex = (obj.Size >> 2) & 0x03;
@@ -698,22 +694,22 @@ namespace ZeldaFullEditor.Data
 
 		}
 
-		public static void RoomDraw_DamFloodGate(Artist art, RoomObject obj)
+		private static void RoomDraw_DamFloodGate(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 10, sizey: 4);
 		}
 
-		public static void RoomDraw_DiagonalAcute_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DiagonalAcute_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryDiagonalAcute_1to16(art, obj, false);
 		}
 
-		public static void RoomDraw_DiagonalAcute_1to16_BothBG(Artist art, RoomObject obj)
+		private static void RoomDraw_DiagonalAcute_1to16_BothBG(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryDiagonalAcute_1to16(art, obj, true);
 		}
 
-		public static void RoomDraw_DiagonalCeilingBottomLeft(Artist art, RoomObject obj)
+		private static void RoomDraw_DiagonalCeilingBottomLeft(Artist art, RoomObject obj)
 		{
 			int length = 8 * (obj.Size + 4);
 			int size = length;
@@ -729,7 +725,7 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_DiagonalCeilingBottomRight(Artist art, RoomObject obj)
+		private static void RoomDraw_DiagonalCeilingBottomRight(Artist art, RoomObject obj)
 		{
 			int size = 8 * (obj.Size + 4);
 
@@ -742,7 +738,7 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_DiagonalCeilingTopLeft(Artist art, RoomObject obj)
+		private static void RoomDraw_DiagonalCeilingTopLeft(Artist art, RoomObject obj)
 		{
 			int length = 8 * (obj.Size + 4);
 			int size = length;
@@ -758,7 +754,7 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_DiagonalCeilingTopRight(Artist art, RoomObject obj)
+		private static void RoomDraw_DiagonalCeilingTopRight(Artist art, RoomObject obj)
 		{
 			int size = 8 * (obj.Size + 4);
 
@@ -771,7 +767,7 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_DiagonalGrave_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DiagonalGrave_1to16(Artist art, RoomObject obj)
 		{
 			obj.Height = (obj.Size + 10) * 8;
 			obj.Width = (obj.Size + 6) * 8;
@@ -788,7 +784,7 @@ namespace ZeldaFullEditor.Data
 				);
 			}
 		}
-		public static void RoomDraw_DiagonalGrave_1to16_BothBG(Artist art, RoomObject obj)
+		private static void RoomDraw_DiagonalGrave_1to16_BothBG(Artist art, RoomObject obj)
 		{
 			obj.Height = (obj.Size + 10) * 8;
 			obj.Width = (obj.Size + 6) * 8;
@@ -806,12 +802,12 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_DoorSwitcherer(Artist art, RoomObject obj)
+		private static void RoomDraw_DoorSwitcherer(Artist art, RoomObject obj)
 		{
 			// TODO ROOM DRAW
 		}
 
-		public static void RoomDraw_Downwards1x1Solid_1to16_plus3(Artist art, RoomObject obj)
+		private static void RoomDraw_Downwards1x1Solid_1to16_plus3(Artist art, RoomObject obj)
 		{
 			for (int s = 0; s < (obj.Size + 4) * 8; s += 8)
 			{
@@ -819,18 +815,18 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_Downwards2x2_1to15or32(Artist art, RoomObject obj)
+		private static void RoomDraw_Downwards2x2_1to15or32(Artist art, RoomObject obj)
 		{
 			int size = obj.Size == 0 ? 32 : obj.Size;
 			RoomDraw_DownwardsXbyY(art, obj, size, sizex: 2, sizey: 2);
 		}
 
-		public static void RoomDraw_Downwards2x2_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_Downwards2x2_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_DownwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 2);
 		}
 
-		public static void RoomDraw_Downwards4x2_1to15or26(Artist art, RoomObject obj)
+		private static void RoomDraw_Downwards4x2_1to15or26(Artist art, RoomObject obj)
 		{
 			int size = obj.Size == 0 ? 26 : obj.Size;
 
@@ -850,7 +846,7 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_Downwards4x2_1to16_BothBG(Artist art, RoomObject obj)
+		private static void RoomDraw_Downwards4x2_1to16_BothBG(Artist art, RoomObject obj)
 		{
 			for (int s = 0; s < ((obj.Size + 1) * 16); s += 16)
 			{
@@ -868,7 +864,7 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_DownwardsBar2x5_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsBar2x5_1to16(Artist art, RoomObject obj)
 		{
 			int size = (obj.Size + 2) * 16;
 
@@ -887,7 +883,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_DownwardsBigRail3x1_1to16plus5(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsBigRail3x1_1to16plus5(Artist art, RoomObject obj)
 		{
 			int size1 = (obj.Size + 2) * 16;
 
@@ -917,12 +913,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_DownwardsBlock2x2spaced2_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsBlock2x2spaced2_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_DownwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 2, spacing: 2);
 		}
 
-		public static void RoomDraw_DownwardsCannonHole3x4_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsCannonHole3x4_1to16(Artist art, RoomObject obj)
 		{
 			int size = (obj.Size + 1) * 16;
 
@@ -958,37 +954,37 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_DownwardsDecor2x2spaced12_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsDecor2x2spaced12_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_DownwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 2, spacing: 12);
 		}
 
-		public static void RoomDraw_DownwardsDecor3x4spaced2_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsDecor3x4spaced2_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_DownwardsXbyY(art, obj, obj.Size + 1, sizex: 3, sizey: 4, spacing: 2);
 		}
 
-		public static void RoomDraw_DownwardsDecor2x4spaced8_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsDecor2x4spaced8_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_DownwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 4, spacing: 8);
 		}
 
-		public static void RoomDraw_DownwardsDecor4x2spaced4_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsDecor4x2spaced4_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_DownwardsXbyY(art, obj, obj.Size + 1, sizex: 4, sizey: 2, spacing: 4);
 		}
 
-		public static void RoomDraw_DownwardsDecor4x4spaced2_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsDecor4x4spaced2_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_DownwardsXbyY(art, obj, obj.Size + 1, sizex: 4, sizey: 4, spacing: 2);
 		}
 
-		public static void RoomDraw_DownwardsDecor3x4spaced4_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsDecor3x4spaced4_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_DownwardsXbyY(art, obj, obj.Size + 1, sizex: 3, sizey: 4, spacing: 4);
 		}
 
-		public static void RoomDraw_DownwardsEdge1x1_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsEdge1x1_1to16(Artist art, RoomObject obj)
 		{
 			for (int s = 0; s <= obj.Size * 8; s += 8)
 			{
@@ -996,7 +992,7 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_DownwardsEdge1x1_1to16plus7(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsEdge1x1_1to16plus7(Artist art, RoomObject obj)
 		{
 			for (int s = 0; s < (obj.Size + 8) * 8; s += 8)
 			{
@@ -1004,12 +1000,12 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_DownwardsFloor4x4_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsFloor4x4_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_DownwardsXbyY(art, obj, obj.Size + 1, sizex: 4, sizey: 4);
 		}
 
-		public static void RoomDraw_DownwardsHasEdge1x1_1to16_plus23(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsHasEdge1x1_1to16_plus23(Artist art, RoomObject obj)
 		{
 			for (int s = 8; s < ((obj.Size + 22) * 8); s += 8)
 			{
@@ -1022,7 +1018,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_DownwardsHasEdge1x1_1to16_plus3(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsHasEdge1x1_1to16_plus3(Artist art, RoomObject obj)
 		{
 			for (int s = 8; s <= ((obj.Size + 1) * 8); s += 8)
 			{
@@ -1035,7 +1031,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_DownwardsLine1x1_1to16plus1(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsLine1x1_1to16plus1(Artist art, RoomObject obj)
 		{
 			for (int s = 0; s < ((obj.Size + 2) * 8); s += 8)
 			{
@@ -1043,12 +1039,12 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_DownwardsPillar2x4spaced2_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsPillar2x4spaced2_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_DownwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 4, spacing: 2);
 		}
 
-		public static void RoomDraw_DownwardsWithCorners2x1_1to16_plus12(Artist art, RoomObject obj)
+		private static void RoomDraw_DownwardsWithCorners2x1_1to16_plus12(Artist art, RoomObject obj)
 		{
 			int size = (obj.Size + 12) * 8;
 
@@ -1068,22 +1064,22 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_DrawRightwards3x6(Artist art, RoomObject obj)
+		private static void RoomDraw_DrawRightwards3x6(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 6, sizey: 3);
 		}
 
-		public static void RoomDraw_DrenchingWaterFace(Artist art, RoomObject obj)
+		private static void RoomDraw_DrenchingWaterFace(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryYByX(art, obj, sizex: 4, sizey: 7);
 		}
 
-		public static void RoomDraw_EmptyWaterFace(Artist art, RoomObject obj)
+		private static void RoomDraw_EmptyWaterFace(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryYByX(art, obj, sizex: 4, sizey: 3);
 		}
 
-		public static void RoomDraw_FloorLight(Artist art, RoomObject obj)
+		private static void RoomDraw_FloorLight(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 8, sizey: 4);
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 8, sizey: 4, ystart: 4, tilestart: 32);
@@ -1102,7 +1098,7 @@ namespace ZeldaFullEditor.Data
 		}
 
 		// TODO wrong
-		public static void RoomDraw_FortuneTellerRoom(Artist art, RoomObject obj)
+		private static void RoomDraw_FortuneTellerRoom(Artist art, RoomObject obj)
 		{
 			for (int x = 8; x < (13 * 8); x += 8)
 			{
@@ -1157,34 +1153,34 @@ namespace ZeldaFullEditor.Data
 
 		}
 
-		public static void RoomDraw_GanonTriforceFloorDecor(Artist art, RoomObject obj)
+		private static void RoomDraw_GanonTriforceFloorDecor(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 4);
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 4, xstart: -2, ystart: 4, tilestart: 16);
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 4, xstart: +2, ystart: 4, tilestart: 16);
 		}
 
-		public static void RoomDraw_HorizontalTurtleRockPipe(Artist art, RoomObject obj)
+		private static void RoomDraw_HorizontalTurtleRockPipe(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 6, sizey: 4);
 		}
 
-		public static void RoomDraw_InterRoomFatStairs(Artist art, RoomObject obj)
+		private static void RoomDraw_InterRoomFatStairs(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 4);
 		}
 
-		public static void RoomDraw_KholdstareShell(Artist art, RoomObject obj)
+		private static void RoomDraw_KholdstareShell(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryYByX(art, obj, sizex: 10, sizey: 8);
 		}
 
-		public static void RoomDraw_LampCones(Artist art, RoomObject obj)
+		private static void RoomDraw_LampCones(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 4);
 		}
 
-		public static void RoomDraw_LightBeamOnFloor(Artist art, RoomObject obj)
+		private static void RoomDraw_LightBeamOnFloor(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 4);
 
@@ -1215,12 +1211,12 @@ namespace ZeldaFullEditor.Data
 
 		}
 
-		public static void RoomDraw_MagicBatAltar(Artist art, RoomObject obj)
+		private static void RoomDraw_MagicBatAltar(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 8, sizey: 7);
 		}
 
-		public static void RoomDraw_MovingWallEast(Artist art, RoomObject obj)
+		private static void RoomDraw_MovingWallEast(Artist art, RoomObject obj)
 		{
 			int sizey = (obj.Size >> 2) & 0x03;
 			int sizex = 64 * (1 + (obj.Size & 0x03));
@@ -1276,7 +1272,7 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_MovingWallWest(Artist art, RoomObject obj)
+		private static void RoomDraw_MovingWallWest(Artist art, RoomObject obj)
 		{
 			const int offsetx = 64;
 			int sizey = (obj.Size >> 2) & 0x03;
@@ -1332,17 +1328,17 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_Nothing(Artist art, RoomObject obj)
+		private static void RoomDraw_Nothing(Artist art, RoomObject obj)
 		{
 			// Nothing
 		}
 
-		public static void RoomDraw_Rightwards2x4spaced4_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_Rightwards2x4spaced4_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 4, spacing: 4);
 		}
 
-		public static void RoomDraw_OpenChestPlatform(Artist art, RoomObject obj)
+		private static void RoomDraw_OpenChestPlatform(Artist art, RoomObject obj)
 		{
 			int sizex = (obj.Size >> 2) & 0x03;
 			int sizey = obj.Size & 0x03;
@@ -1425,12 +1421,12 @@ namespace ZeldaFullEditor.Data
 
 		}
 
-		public static void RoomDraw_PortraitOfMario(Artist art, RoomObject obj)
+		private static void RoomDraw_PortraitOfMario(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryYByX(art, obj, sizex: 4, sizey: 2);
 		}
 
-		public static void RoomDraw_PrisonCell(Artist art, RoomObject obj)
+		private static void RoomDraw_PrisonCell(Artist art, RoomObject obj)
 		{
 			DrawTiles(art, obj, false,
 				new DrawInfo(0, 0, 0),
@@ -1456,12 +1452,12 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_Rightwards1x1Solid_1to16_plus3(Artist art, RoomObject obj)
+		private static void RoomDraw_Rightwards1x1Solid_1to16_plus3(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 4, sizex: 1, sizey: 1);
 		}
 
-		public static void RoomDraw_Rightwards1x2_1to16_plus2(Artist art, RoomObject obj)
+		private static void RoomDraw_Rightwards1x2_1to16_plus2(Artist art, RoomObject obj)
 		{
 			for (int s = 0; s <= (obj.Size  * 16); s += 16)
 			{
@@ -1485,36 +1481,36 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_Rightwards2x2_1to15or32(Artist art, RoomObject obj)
+		private static void RoomDraw_Rightwards2x2_1to15or32(Artist art, RoomObject obj)
 		{
 			int size = obj.Size == 0 ? 32 : obj.Size;
 
 			RoomDraw_RightwardsXbyY(art, obj, size, sizex: 2, sizey: 2);
 		}
 
-		public static void RoomDraw_Rightwards2x2_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_Rightwards2x2_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 2);
 		}
 
-		public static void RoomDraw_Rightwards2x4spaced4_1to16_BothBG(Artist art, RoomObject obj)
+		private static void RoomDraw_Rightwards2x4spaced4_1to16_BothBG(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 4, bothbg: true);
 		}
 
-		public static void RoomDraw_Rightwards2x4_1to15or26(Artist art, RoomObject obj)
+		private static void RoomDraw_Rightwards2x4_1to15or26(Artist art, RoomObject obj)
 		{
 			int size = obj.Size == 0 ? 26 : obj.Size;
 
 			RoomDraw_RightwardsXbyY(art, obj, size, sizex: 2, sizey: 4);
 		}
 
-		public static void RoomDraw_Rightwards4x4_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_Rightwards4x4_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 4, sizey: 4);
 		}
 
-		public static void RoomDraw_RightwardsBar4x3_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsBar4x3_1to16(Artist art, RoomObject obj)
 		{
 			int size = (obj.Size + 1) * 16;
 
@@ -1540,7 +1536,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_RightwardsBigRail1x3_1to16plus5(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsBigRail1x3_1to16plus5(Artist art, RoomObject obj)
 		{
 			int size = obj.Size * 8;
 
@@ -1568,12 +1564,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_RightwardsBlock2x2spaced2_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsBlock2x2spaced2_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 2, spacing: 2);
 		}
 
-		public static void RoomDraw_RightwardsCannonHole4x3_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsCannonHole4x3_1to16(Artist art, RoomObject obj)
 		{
 			int size = (obj.Size + 1) * 16;
 
@@ -1609,27 +1605,27 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_RightwardsDecor2x2spaced12_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsDecor2x2spaced12_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 2, spacing: 12);
 		}
 
-		public static void RoomDraw_RightwardsDecor4x2spaced8_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsDecor4x2spaced8_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 4, sizey: 2, spacing: 8);
 		}
 
-		public static void RoomDraw_RightwardsDecor4x3spaced4_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsDecor4x3spaced4_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 4, sizey: 3, spacing: 4);
 		}
 
-		public static void RoomDraw_RightwardsDecor4x4spaced2_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsDecor4x4spaced2_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 4, sizey: 4, spacing: 2);
 		}
 
-		public static void RoomDraw_RightwardsDoubled2x2spaced2_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsDoubled2x2spaced2_1to16(Artist art, RoomObject obj)
 		{
 			int size = obj.Size * 32;
 
@@ -1649,27 +1645,27 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_RightwardsEdge1x1_1to16plus7(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsEdge1x1_1to16plus7(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 8, sizex: 1, sizey: 1);
 		}
 
-		public static void RoomDraw_RightwardsFakePots2x2_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsFakePots2x2_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 2);
 		}
 
-		public static void RoomDraw_RightwardsFloorTile4x2_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsFloorTile4x2_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 4, sizey: 2);
 		}
 
-		public static void RoomDraw_RightwardsHammerPegs2x2_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsHammerPegs2x2_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 2);
 		}
 
-		public static void RoomDraw_RightwardsHasEdge1x1_1to16_plus2(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsHasEdge1x1_1to16_plus2(Artist art, RoomObject obj)
 		{
 			for (int s = 8; s <= ((obj.Size + 1) * 8); s += 8)
 			{
@@ -1682,7 +1678,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_RightwardsHasEdge1x1_1to16_plus23(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsHasEdge1x1_1to16_plus23(Artist art, RoomObject obj)
 		{
 			for (int s = 8; s < ((obj.Size + 22) * 8); s += 8)
 			{
@@ -1695,7 +1691,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_RightwardsHasEdge1x1_1to16_plus3(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsHasEdge1x1_1to16_plus3(Artist art, RoomObject obj)
 		{
 			for (int s = 8; s <= ((obj.Size + 2) * 8); s += 8)
 			{
@@ -1708,17 +1704,17 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_RightwardsLine1x1_1to16plus1(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsLine1x1_1to16plus1(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 1, sizey: 1);
 		}
 
-		public static void RoomDraw_RightwardsPillar2x4spaced4_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsPillar2x4spaced4_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 4, spacing: 4);
 		}
 
-		public static void RoomDraw_RightwardsShelf4x4_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsShelf4x4_1to16(Artist art, RoomObject obj)
 		{
 			int size = (obj.Size + 1) * 16;
 
@@ -1750,12 +1746,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_RightwardsStatue2x3spaced2_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsStatue2x3spaced2_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 3, spacing: 2);
 		}
 
-		public static void RoomDraw_RightwardsWithCorners1x2_1to16_plus13(Artist art, RoomObject obj)
+		private static void RoomDraw_RightwardsWithCorners1x2_1to16_plus13(Artist art, RoomObject obj)
 		{
 			int size = (obj.Size + 12) * 8;
 			for (int s = 8; s < size; s += 8)
@@ -1774,7 +1770,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_RupeeFloor(Artist art, RoomObject obj)
+		private static void RoomDraw_RupeeFloor(Artist art, RoomObject obj)
 		{
 			for (int y = 0; y < 3 * 24; y += 24)
 			{
@@ -1788,7 +1784,7 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_SanctuaryWall(Artist art, RoomObject obj)
+		private static void RoomDraw_SanctuaryWall(Artist art, RoomObject obj)
 		{
 			for (int i = 0; i < (2 * 14 * 8); i += (14 * 8))
 			{
@@ -1814,7 +1810,7 @@ namespace ZeldaFullEditor.Data
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 3, xstart: 10, tilestart: 12);
 		}
 
-		public static void RoomDraw_Single2x2(Artist art, RoomObject obj)
+		private static void RoomDraw_Single2x2(Artist art, RoomObject obj)
 		{
 			DrawTiles(art, obj, false,
 				new DrawInfo(0, 0, 0),
@@ -1824,27 +1820,27 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_Single2x3Pillar(Artist art, RoomObject obj)
+		private static void RoomDraw_Single2x3Pillar(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 2, sizey: 3);
 		}
 
-		public static void RoomDraw_SmithyFurnace(Artist art, RoomObject obj)
+		private static void RoomDraw_SmithyFurnace(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryYByX(art, obj, sizex: 6, sizey: 8);
 		}
 
-		public static void RoomDraw_SolidWallDecor3x4(Artist art, RoomObject obj)
+		private static void RoomDraw_SolidWallDecor3x4(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 3, sizey: 4);
 		}
 
-		public static void RoomDraw_SomariaLine(Artist art, RoomObject obj)
+		private static void RoomDraw_SomariaLine(Artist art, RoomObject obj)
 		{
 			DrawTiles(art, obj, false, new DrawInfo(0, 0, 0));
 		}
 
-		public static void RoomDraw_Spike2x2In4x4SuperSquare(Artist art, RoomObject obj)
+		private static void RoomDraw_Spike2x2In4x4SuperSquare(Artist art, RoomObject obj)
 		{
 			int sizex = 16 * (1 + ((obj.Size >> 2) & 0x03));
 			int sizey = 16 * (1 + ((obj.Size) & 0x03));
@@ -1863,32 +1859,32 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_SpiralStairs(Artist art, RoomObject obj)
+		private static void RoomDraw_SpiralStairs(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 3);
 		}
 
-		public static void RoomDraw_SpittingWaterFace(Artist art, RoomObject obj)
+		private static void RoomDraw_SpittingWaterFace(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryYByX(art, obj, sizex: 4, sizey: 5);
 		}
 
-		public static void RoomDraw_StraightInterroomStairs(Artist art, RoomObject obj)
+		private static void RoomDraw_StraightInterroomStairs(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 4);
 		}
 
-		public static void RoomDraw_TableBowl(Artist art, RoomObject obj)
+		private static void RoomDraw_TableBowl(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryYByX(art, obj, sizex: 4, sizey: 2);
 		}
 
-		public static void RoomDraw_4x3OneLayer(Artist art, RoomObject obj)
+		private static void RoomDraw_4x3OneLayer(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 3);
 		}
 
-		public static void RoomDraw_TableRock4x4_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_TableRock4x4_1to16(Artist art, RoomObject obj)
 		{
 			int sizex = (obj.Size >> 2) & 0x03;
 			int sizey = obj.Size & 0x03;
@@ -1934,22 +1930,22 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_TrinexxShell(Artist art, RoomObject obj)
+		private static void RoomDraw_TrinexxShell(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryYByX(art, obj, sizex: 10, sizey: 8);
 		}
 
-		public static void RoomDraw_Utility3x5(Artist art, RoomObject obj)
+		private static void RoomDraw_Utility3x5(Artist art, RoomObject obj)
 		{
 			// TODO Zarby's routines seem wrong
 		}
 
-		public static void RoomDraw_Utility6x3(Artist art, RoomObject obj)
+		private static void RoomDraw_Utility6x3(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 6, sizey: 3);
 		}
 
-		public static void RoomDraw_VerticalTurtleRockPipe(Artist art, RoomObject obj)
+		private static void RoomDraw_VerticalTurtleRockPipe(Artist art, RoomObject obj)
 		{
 			DrawTiles(art, obj, false,
 				new DrawInfo(0, 0, 0),
@@ -1987,7 +1983,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void RoomDraw_VitreousGooDamage(Artist art, RoomObject obj)
+		private static void RoomDraw_VitreousGooDamage(Artist art, RoomObject obj)
 		{
 			for (int x = 0; x < 5 * 64; x += 32)
 			{
@@ -2015,47 +2011,47 @@ namespace ZeldaFullEditor.Data
 			}
 		}
 
-		public static void RoomDraw_VitreousGooGraphics(Artist art, RoomObject obj)
+		private static void RoomDraw_VitreousGooGraphics(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 22, sizey: 11);
 		}
 
-		public static void RoomDraw_WaterHopStairs_A(Artist art, RoomObject obj)
+		private static void RoomDraw_WaterHopStairs_A(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryYByX(art, obj, sizex: 4, sizey: 2);
 		}
 
-		public static void RoomDraw_WaterHopStairs_B(Artist art, RoomObject obj)
+		private static void RoomDraw_WaterHopStairs_B(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryYByX(art, obj, sizex: 4, sizey: 2, bothbg: true);
 		}
 
-		public static void RoomDraw_WaterOverlay8x8_1to16(Artist art, RoomObject obj)
+		private static void RoomDraw_WaterOverlay8x8_1to16(Artist art, RoomObject obj)
 		{
 			RoomDraw_Arbtrary4x4in4x4SuperSquares(art, obj, sizebonus: 2);
 		}
 
-		public static void RoomDraw_Waterfall47(Artist art, RoomObject obj)
+		private static void RoomDraw_Waterfall47(Artist art, RoomObject obj)
 		{
 			// TODO ROOM DRAW
 		}
 
-		public static void RoomDraw_Waterfall48(Artist art, RoomObject obj)
+		private static void RoomDraw_Waterfall48(Artist art, RoomObject obj)
 		{
 			// TODO ROOM DRAW
 		}
 
-		public static void RoomDraw_Weird2x4_1_to_16(Artist art, RoomObject obj)
+		private static void RoomDraw_Weird2x4_1_to_16(Artist art, RoomObject obj)
 		{
 			RoomDraw_RightwardsXbyY(art, obj, obj.Size + 1, sizex: 2, sizey: 4);
 		}
 
-		public static void RoomDraw_WeirdCornerBottom_BothBG(Artist art, RoomObject obj)
+		private static void RoomDraw_WeirdCornerBottom_BothBG(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 3, sizey: 4, bothbg: true);
 		}
 
-		public static void RoomDraw_WeirdCornerTop_BothBG(Artist art, RoomObject obj)
+		private static void RoomDraw_WeirdCornerTop_BothBG(Artist art, RoomObject obj)
 		{
 			RoomDraw_ArbitraryXByY(art, obj, sizex: 4, sizey: 3, bothbg: true);
 		}

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor.Data
+﻿namespace ZeldaFullEditor.Data
 {
 	public class LayerCollisionType : IEntityType<LayerCollisionType>
 	{
@@ -34,17 +28,14 @@ namespace ZeldaFullEditor.Data
 			LayerCollision04
 		};
 
-		public static LayerCollisionType GetTypeFromID(int id)
+		public static LayerCollisionType GetTypeFromID(int id) => id switch
 		{
-			return id switch
-			{
-				0x00 => LayerCollision00,
-				0x01 => LayerCollision01,
-				0x02 => LayerCollision02,
-				0x03 => LayerCollision03,
-				0x04 => LayerCollision04,
-				_ => null,
-			};
-		}
+			0x00 => LayerCollision00,
+			0x01 => LayerCollision01,
+			0x02 => LayerCollision02,
+			0x03 => LayerCollision03,
+			0x04 => LayerCollision04,
+			_ => null,
+		};
 	}
 }

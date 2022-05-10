@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public class ScreenArtist : Artist
 	{

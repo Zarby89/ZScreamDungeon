@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZeldaFullEditor.Data.Underworld;
-
-namespace ZeldaFullEditor.Data
+﻿namespace ZeldaFullEditor.Data
 {
 	public class OverworldSprite : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IEquatable<OverworldSprite>
 	{
@@ -48,5 +40,10 @@ namespace ZeldaFullEditor.Data
 		};
 
 		public override bool Equals(object obj) => Equals(obj as OverworldSprite);
+
+		public override int GetHashCode()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

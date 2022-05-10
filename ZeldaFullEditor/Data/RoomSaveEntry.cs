@@ -1,8 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using ZeldaFullEditor.Data.Underworld;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	/// <summary>
 	/// Creates a room's object save data with meta properties to help optimize saving.
@@ -41,7 +37,7 @@ namespace ZeldaFullEditor
 			}
 			else
 			{
-				DoorOffset = ret.Count();
+				DoorOffset = ret.Count;
 			}
 
 			ret.Add(Constants.ObjectSentinel);

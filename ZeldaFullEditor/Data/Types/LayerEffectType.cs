@@ -34,20 +34,17 @@
 			LayerEffect07
 		};
 
-		public static LayerEffectType GetTypeFromID(int id)
+		public static LayerEffectType GetTypeFromID(int id) => id switch
 		{
-			return id switch
-			{
-				0x00 => LayerEffect00,
-				0x01 => LayerEffect01,
-				0x02 => LayerEffect02,
-				0x03 => LayerEffect03,
-				0x04 => LayerEffect04,
-				0x05 => LayerEffect05,
-				0x06 => LayerEffect06,
-				0x07 => LayerEffect07,
-				_ => null,
-			};
-		}
+			0x00 => LayerEffect00,
+			0x01 => LayerEffect01,
+			0x02 => LayerEffect02,
+			0x03 => LayerEffect03,
+			0x04 => LayerEffect04,
+			0x05 => LayerEffect05,
+			0x06 => LayerEffect06,
+			0x07 => LayerEffect07,
+			_ => null,
+		};
 	}
 }

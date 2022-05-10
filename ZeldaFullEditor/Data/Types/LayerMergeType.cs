@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ZeldaFullEditor.Data
+﻿namespace ZeldaFullEditor.Data
 {
 	public class LayerMergeType : IEntityType<LayerMergeType>
 	{
@@ -46,20 +40,17 @@ namespace ZeldaFullEditor.Data
 			LayerMerge07
 		};
 
-		public static LayerMergeType GetTypeFromID(int id)
+		public static LayerMergeType GetTypeFromID(int id) => id switch
 		{
-			return id switch
-			{
-				0x00 => LayerMerge00,
-				0x01 => LayerMerge01,
-				0x02 => LayerMerge02,
-				0x03 => LayerMerge03,
-				0x04 => LayerMerge04,
-				0x05 => LayerMerge05,
-				0x06 => LayerMerge06,
-				0x07 => LayerMerge07,
-				_ => null,
-			};
-		}
+			0x00 => LayerMerge00,
+			0x01 => LayerMerge01,
+			0x02 => LayerMerge02,
+			0x03 => LayerMerge03,
+			0x04 => LayerMerge04,
+			0x05 => LayerMerge05,
+			0x06 => LayerMerge06,
+			0x07 => LayerMerge07,
+			_ => null,
+		};
 	}
 }

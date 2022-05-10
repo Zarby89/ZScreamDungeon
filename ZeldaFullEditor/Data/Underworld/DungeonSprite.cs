@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-
-namespace ZeldaFullEditor.Data.Underworld
+﻿namespace ZeldaFullEditor.Data.Underworld
 {
 	[Serializable]
 	public class DungeonSprite : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID

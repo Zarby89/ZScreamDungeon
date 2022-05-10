@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ZeldaFullEditor.Data.Underworld;
-
-namespace ZeldaFullEditor.Data
+﻿namespace ZeldaFullEditor.Data
 {
 	public class SecretItemType : IEntityType<SecretItemType>
 	{
@@ -293,40 +286,37 @@ namespace ZeldaFullEditor.Data
 		}
 
 
-		public static SecretItemType GetTypeFromID(int id)
+		public static SecretItemType GetTypeFromID(int id) => id switch
 		{
-			return id switch
-			{
-				0x00 => Secret00,
-				0x01 => Secret01,
-				0x02 => Secret02,
-				0x03 => Secret03,
-				0x04 => Secret04,
-				0x05 => Secret05,
-				0x06 => Secret06,
-				0x07 => Secret07,
-				0x08 => Secret08,
-				0x09 => Secret09,
-				0x0A => Secret0A,
-				0x0B => Secret0B,
-				0x0C => Secret0C,
-				0x0D => Secret0D,
-				0x0E => Secret0E,
-				0x0F => Secret0F,
-				0x10 => Secret10,
-				0x11 => Secret11,
-				0x12 => Secret12,
-				0x13 => Secret13,
-				0x14 => Secret14,
-				0x15 => Secret15,
-				0x16 => Secret16,
-				0x80 => Secret80,
-				0x82 => Secret82,
-				0x84 => Secret84,
-				0x86 => Secret86,
-				0x88 => Secret88,
-				_ => Secret00,
-			};
-		}
+			0x00 => Secret00,
+			0x01 => Secret01,
+			0x02 => Secret02,
+			0x03 => Secret03,
+			0x04 => Secret04,
+			0x05 => Secret05,
+			0x06 => Secret06,
+			0x07 => Secret07,
+			0x08 => Secret08,
+			0x09 => Secret09,
+			0x0A => Secret0A,
+			0x0B => Secret0B,
+			0x0C => Secret0C,
+			0x0D => Secret0D,
+			0x0E => Secret0E,
+			0x0F => Secret0F,
+			0x10 => Secret10,
+			0x11 => Secret11,
+			0x12 => Secret12,
+			0x13 => Secret13,
+			0x14 => Secret14,
+			0x15 => Secret15,
+			0x16 => Secret16,
+			0x80 => Secret80,
+			0x82 => Secret82,
+			0x84 => Secret84,
+			0x86 => Secret86,
+			0x88 => Secret88,
+			_ => Secret00,
+		};
 	}
 }

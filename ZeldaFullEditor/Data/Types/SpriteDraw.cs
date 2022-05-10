@@ -1,14 +1,11 @@
-﻿using System;
-using ZeldaFullEditor.Data.Underworld;
-
-namespace ZeldaFullEditor.Data
+﻿namespace ZeldaFullEditor.Data
 {
 	public delegate void DrawSprite(Artist art, IDrawableSprite spr);
 
 	// NOTE: consts in these draw functions indicate a global offset from the sprite's ROM coordinates that occurs when the game runs
 	public partial class SpriteType
 	{
-		public static unsafe void DrawTiles(Artist art, IDrawableSprite spr, params OAMDrawInfo[] instructions)
+		protected static void DrawTiles(Artist art, IDrawableSprite spr, params OAMDrawInfo[] instructions)
 		{
 			int mult, maxindex;
 			int xoff, yoff;
@@ -72,7 +69,7 @@ namespace ZeldaFullEditor.Data
 
 
 
-		public static void SpriteDraw_Sprite00(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite00(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, -32, -22, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -80,7 +77,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite01(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite01(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -89,7 +86,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite02(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite02(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -97,7 +94,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite03(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite03(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -105,7 +102,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite04(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite04(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1CE, 0, 0, pal: 0x00, vflip: false, hflip: false, big: true),
@@ -113,7 +110,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite05(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite05(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1D2, -4, -3, pal: 0x00, vflip: false, hflip: true, big: false),
@@ -124,7 +121,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite06(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite06(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1CE, 0, 0, pal: 0x00, vflip: false, hflip: false, big: true),
@@ -132,7 +129,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite07(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite07(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1A2, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -140,7 +137,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite08(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite08(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -149,7 +146,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite09(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite09(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x18C, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -171,7 +168,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite0A(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite0A(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -180,7 +177,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite0B(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite0B(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -188,14 +185,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite0C(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite0C(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x184, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite0D(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite0D(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -205,7 +202,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite0E(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite0E(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -216,7 +213,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite0F(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite0F(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -227,7 +224,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite10(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite10(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x038, 0, 3, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -235,7 +232,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite11(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite11(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -246,7 +243,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite12(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite12(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -257,7 +254,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite13(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite13(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -265,14 +262,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite14(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite14(Artist art, IDrawableSprite spr)
 		{
 			//const int y = -8;
 
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite15(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite15(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1E3, 4, 7, pal: 0x01, vflip: false, hflip: false, big: false),
@@ -283,7 +280,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite16(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite16(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -292,7 +289,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite17(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite17(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x046, 0, 0, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -300,7 +297,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite18(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite18(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x15D, 4, 4, pal: 0x03, vflip: false, hflip: false, big: false),
@@ -311,7 +308,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite19(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite19(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -320,7 +317,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite1A(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite1A(Artist art, IDrawableSprite spr)
 		{
 			//const int x = 2, y = -3; // TODO only applies in light world
 
@@ -331,7 +328,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite1B(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite1B(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x03A, -8, 0, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -339,7 +336,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite1C(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite1C(Artist art, IDrawableSprite spr)
 		{
 			const int y = 7;
 
@@ -350,19 +347,19 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite1D(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite1D(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite1E(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite1E(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1E4, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite1F(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite1F(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x10A, 8, 14, pal: 0x06, vflip: true, hflip: true, big: true),
@@ -374,7 +371,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite20(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite20(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -382,7 +379,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite21(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite21(Artist art, IDrawableSprite spr)
 		{
 			const int y = 5;
 
@@ -395,7 +392,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite22(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite22(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -405,7 +402,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite23(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite23(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -416,7 +413,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite24(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite24(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -427,13 +424,13 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite25(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite25(Artist art, IDrawableSprite spr)
 		{
 			//const int x = -8;
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite26(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite26(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -442,7 +439,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite27(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite27(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -450,7 +447,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite28(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite28(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -458,7 +455,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite29(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite29(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -467,7 +464,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite2A(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite2A(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -476,7 +473,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite2B(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite2B(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1A7, 3, 3, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -486,7 +483,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite2C(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite2C(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8;
 
@@ -505,7 +502,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite2D(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite2D(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -515,7 +512,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite2E(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite2E(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8; // is 7 in light world but whatever
 
@@ -526,7 +523,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite2F(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite2F(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -535,7 +532,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite30(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite30(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -544,7 +541,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite31(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite31(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8, y = 8;
 
@@ -555,7 +552,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite32(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite32(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -564,14 +561,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite33(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite33(Artist art, IDrawableSprite spr)
 		{
 			//const int x = -8;
 
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite34(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite34(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -580,7 +577,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite35(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite35(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -589,7 +586,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite36(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite36(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x184, 0, 4, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -601,17 +598,17 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite37(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite37(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite38(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite38(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite39(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite39(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -620,14 +617,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite3A(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite3A(Artist art, IDrawableSprite spr)
 		{
 			//const int x = 8;
 
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite3B(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite3B(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -636,7 +633,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite3C(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite3C(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -645,7 +642,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite3D(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite3D(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -654,7 +651,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite3E(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite3E(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x044, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -662,7 +659,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite3F(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite3F(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -674,7 +671,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite40(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite40(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8, y = -4;
 
@@ -691,7 +688,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite41(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite41(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -705,7 +702,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite42(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite42(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -719,7 +716,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite43(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite43(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -733,7 +730,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite44(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite44(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -746,7 +743,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite45(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite45(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -761,7 +758,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite46(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite46(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -776,7 +773,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite47(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite47(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x120, 0, 8, pal: 0x05, vflip: false, hflip: false, big: true),
@@ -784,7 +781,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite48(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite48(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -797,7 +794,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite49(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite49(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x120, 0, 8, pal: 0x03, vflip: false, hflip: false, big: true),
@@ -805,7 +802,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite4A(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite4A(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -818,7 +815,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite4B(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite4B(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -827,19 +824,19 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite4C(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite4C(Artist art, IDrawableSprite spr)
 		{
 			//const int x = 8;
 
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite4D(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite4D(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite4E(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite4E(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -847,7 +844,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite4F(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite4F(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -855,14 +852,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite50(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite50(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x180, 0, 0, pal: 0x04, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite51(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite51(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -871,12 +868,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite52(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite52(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite53(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite53(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8, y = 8;
 			DrawTiles(art, spr,
@@ -889,7 +886,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite54(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite54(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 176, pal: 0x02, vflip: false, hflip: false, big: true),
@@ -911,19 +908,19 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite55(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite55(Artist art, IDrawableSprite spr)
 		{
 			//const int x = 8;
 
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite56(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite56(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite57(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite57(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8, y = 8;
 
@@ -935,7 +932,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite58(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite58(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -944,7 +941,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite59(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite59(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -952,7 +949,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite5A(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite5A(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -960,21 +957,21 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite5B(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite5B(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x128, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite5C(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite5C(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x128, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite5D(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite5D(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x188, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -984,7 +981,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite5E(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite5E(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x188, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -994,7 +991,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite5F(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite5F(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x18E, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -1008,7 +1005,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite60(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite60(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x18E, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -1022,7 +1019,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite61(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite61(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x148, 0, -16, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -1030,7 +1027,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite62(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite62(Artist art, IDrawableSprite spr)
 		{
 			const int x = 6, y = 6;
 
@@ -1044,17 +1041,17 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite63(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite63(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite64(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite64(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite65(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite65(Artist art, IDrawableSprite spr)
 		{
 			const int y = -8;
 
@@ -1066,35 +1063,35 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite66(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite66(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x10E, 0, 0, pal: 0x06, vflip: false, hflip: true, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite67(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite67(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x10E, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite68(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite68(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x10C, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite69(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite69(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x10C, 0, 0, pal: 0x06, vflip: true, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite6A(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite6A(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 12, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1110,7 +1107,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite6B(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite6B(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x14E, -4, 0, pal: 0x04, vflip: false, hflip: true, big: true),
@@ -1121,52 +1118,52 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite6C(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite6C(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x04C, 0, 0, pal: 0x02, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite6D(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite6D(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x186, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite6E(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite6E(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1A4, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite6F(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite6F(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x184, 0, 0, pal: 0x04, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite70(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite70(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1CC, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite71(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite71(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite72(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite72(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite73(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite73(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x120, 8, -19, pal: 0x05, vflip: false, hflip: true, big: true),
@@ -1177,7 +1174,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite74(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite74(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1186,7 +1183,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite75(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite75(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1195,7 +1192,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite76(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite76(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x022, 1, 3, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1203,7 +1200,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite77(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite77(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1E3, 4, 7, pal: 0x01, vflip: false, hflip: false, big: false),
@@ -1214,7 +1211,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite78(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite78(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8, y = 8;
 
@@ -1224,12 +1221,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite79(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite79(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite7A(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite7A(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8, y = 8;
 
@@ -1242,14 +1239,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite7B(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite7B(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1C6, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite7C(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite7C(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1257,7 +1254,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite7D(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite7D(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8, y = 8;
 
@@ -1269,7 +1266,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite7E(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite7E(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x128, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true),
@@ -1279,7 +1276,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite7F(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite7F(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x128, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true),
@@ -1289,21 +1286,21 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite80(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite80(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x128, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite81(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite81(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x184, 0, 0, pal: 0x05, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite82(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite82(Artist art, IDrawableSprite spr)
 		{
 			const int x = -10;
 
@@ -1316,7 +1313,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite83(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite83(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 14, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1327,7 +1324,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite84(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite84(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 14, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1338,7 +1335,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite85(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite85(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1348,7 +1345,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite86(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite86(Artist art, IDrawableSprite spr)
 		{
 			const int x = -5, y = 4;
 
@@ -1358,14 +1355,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite87(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite87(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x18C, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite88(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite88(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 16, pal: 0x02, vflip: false, hflip: false, big: true),
@@ -1388,14 +1385,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite89(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite89(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1AA, 0, 0, pal: 0x01, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite8A(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite8A(Artist art, IDrawableSprite spr)
 		{
 			const int y = -1;
 
@@ -1404,7 +1401,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite8B(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite8B(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1413,7 +1410,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite8C(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite8C(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 6, 19, pal: 0x02, vflip: false, hflip: false, big: true),
@@ -1427,14 +1424,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite8D(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite8D(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1A6, 0, 0, pal: 0x06, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_Sprite8E(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite8E(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1442,12 +1439,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite8F(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite8F(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite90(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite90(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 6, 19, pal: 0x01, vflip: false, hflip: false, big: true),
@@ -1460,12 +1457,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite91(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite91(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite92(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite92(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1A4, -28, -12, pal: 0x05, vflip: false, hflip: false, big: true),
@@ -1524,7 +1521,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite93(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite93(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8, y = 8;
 
@@ -1536,14 +1533,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite94(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite94(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x187, 4, 4, pal: 0x06, vflip: false, hflip: false, big: false)
 			);
 		}
 
-		public static void SpriteDraw_Sprite95(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite95(Artist art, IDrawableSprite spr)
 		{
 			// TODO offsets here are too fucking annoying
 			DrawTiles(art, spr,
@@ -1553,7 +1550,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite96(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite96(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1C8, 0, 12, pal: 0x00, vflip: true, hflip: false, big: false),
@@ -1562,7 +1559,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite97(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite97(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1C6, 12, 8, pal: 0x00, vflip: false, hflip: true, big: false),
@@ -1571,7 +1568,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite98(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite98(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1C6, 12, 0, pal: 0x00, vflip: true, hflip: true, big: false),
@@ -1580,7 +1577,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite99(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite99(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1589,29 +1586,29 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite9A(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite9A(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite9B(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite9B(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite9C(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite9C(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite9D(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite9D(Artist art, IDrawableSprite spr)
 		{
 			//const int y = 8;
 
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_Sprite9E(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite9E(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 18, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1622,7 +1619,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_Sprite9F(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Sprite9F(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1630,7 +1627,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA0(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteA0(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1638,7 +1635,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA1(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteA1(Artist art, IDrawableSprite spr)
 		{
 			const int yoff = 8;
 
@@ -1650,7 +1647,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA2(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteA2(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8, y = 8;
 
@@ -1663,19 +1660,19 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA3(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteA3(Artist art, IDrawableSprite spr)
 		{
 			//const int x = 8, y = 8;
 
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteA4(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteA4(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteA5(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteA5(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1685,7 +1682,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA6(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteA6(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1695,7 +1692,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA7(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteA7(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1705,7 +1702,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA8(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteA8(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1714,7 +1711,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteA9(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteA9(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1723,7 +1720,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteAA(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteAA(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1732,17 +1729,17 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteAB(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteAB(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteAC(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteAC(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteAD(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteAD(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x022, 0, 8, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1750,7 +1747,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteAE(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteAE(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x022, 0, 8, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1758,7 +1755,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteAF(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteAF(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x022, 0, 8, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1766,7 +1763,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB0(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteB0(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x022, 0, 8, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1774,7 +1771,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB1(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteB1(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x022, 0, 8, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1782,19 +1779,19 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB2(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteB2(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteB3(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteB3(Artist art, IDrawableSprite spr)
 		{
 			//const int x = 7; // only moves right in desert
 
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteB4(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteB4(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1802,7 +1799,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB5(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteB5(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1810,12 +1807,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB6(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteB6(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteB7(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteB7(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x022, 1, 3, pal: 0x07, vflip: false, hflip: false, big: true),
@@ -1823,7 +1820,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB8(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteB8(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -1832,7 +1829,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteB9(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteB9(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1840,12 +1837,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteBA(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteBA(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteBB(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteBB(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1854,7 +1851,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteBC(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteBC(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1864,7 +1861,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteBD(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteBD(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8, y = -8;
 
@@ -1876,28 +1873,28 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteBE(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteBE(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1E6, 1, 0, pal: 0x05, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_SpriteBF(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteBF(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1CC, 0, 0, pal: 0x00, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_SpriteC0(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteC0(Artist art, IDrawableSprite spr)
 		{
 			//const int x = 8, y = -4;
 
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteC1(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteC1(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 18, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1908,14 +1905,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteC2(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteC2(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x048, 0, 0, pal: 0x00, vflip: false, hflip: false, big: false)
 			);
 		}
 
-		public static void SpriteDraw_SpriteC3(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteC3(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x18C, -4, -12, pal: 0x05, vflip: false, hflip: true, big: true),
@@ -1927,7 +1924,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteC4(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteC4(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1936,17 +1933,17 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteC5(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteC5(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteC6(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteC6(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteC7(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteC7(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1957,7 +1954,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteC8(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteC8(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8, z = 24;
 			const int y = 8 + z;
@@ -1971,7 +1968,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteC9(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteC9(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1980,7 +1977,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteCA(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteCA(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -1994,7 +1991,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteCB(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteCB(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x12A, 36, 20, pal: 0x00, vflip: false, hflip: true, big: true),
@@ -2013,7 +2010,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteCC(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteCC(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x10A, -14, -30, pal: 0x05, vflip: false, hflip: false, big: true),
@@ -2024,7 +2021,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteCD(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteCD(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x10A, 13, -30, pal: 0x06, vflip: false, hflip: false, big: true),
@@ -2035,7 +2032,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteCE(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteCE(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1A6, 19, 3, pal: 0x05, vflip: false, hflip: true, big: true),
@@ -2048,12 +2045,12 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteCF(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteCF(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteD0(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteD0(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2063,31 +2060,31 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteD1(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteD1(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteD2(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteD2(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteD3(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteD3(Artist art, IDrawableSprite spr)
 		{
 			//const int y = -1;
 
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteD4(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteD4(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x070, 8, 4, pal: 0x02, vflip: false, hflip: true, big: false)
 			);
 		}
 
-		public static void SpriteDraw_SpriteD5(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteD5(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2097,17 +2094,17 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteD6(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteD6(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteD7(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteD7(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteD8(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteD8(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x038, 0, 3, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2115,7 +2112,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteD9(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteD9(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2124,7 +2121,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteDA(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteDA(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2133,7 +2130,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteDB(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteDB(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2142,7 +2139,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteDC(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteDC(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2152,7 +2149,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteDD(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteDD(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2162,7 +2159,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteDE(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteDE(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2172,7 +2169,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteDF(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteDF(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x038, 0, 3, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2180,7 +2177,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE0(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteE0(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2189,7 +2186,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE1(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteE1(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2199,7 +2196,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE2(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteE2(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2209,7 +2206,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE3(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteE3(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2217,7 +2214,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE4(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteE4(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x038, 0, 11, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2226,7 +2223,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE5(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteE5(Artist art, IDrawableSprite spr)
 		{
 			const int x = 8;
 			DrawTiles(art, spr,
@@ -2235,7 +2232,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE6(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteE6(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2243,14 +2240,14 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE7(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteE7(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x024, 0, 0, pal: 0x04, vflip: false, hflip: false, big: true)
 			);
 		}
 
-		public static void SpriteDraw_SpriteE8(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteE8(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x1F5, 4, 8, pal: 0x04, vflip: false, hflip: false, big: false),
@@ -2258,7 +2255,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteE9(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteE9(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2267,7 +2264,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteEA(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteEA(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2275,7 +2272,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteEB(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteEB(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2283,7 +2280,7 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteEC(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteEC(Artist art, IDrawableSprite spr)
 		{
 			DrawTiles(art, spr,
 				new OAMDrawInfo(0x06C, 0, 10, pal: 0x04, vflip: false, hflip: false, big: true),
@@ -2291,34 +2288,34 @@ namespace ZeldaFullEditor.Data
 			);
 		}
 
-		public static void SpriteDraw_SpriteED(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteED(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteEE(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteEE(Artist art, IDrawableSprite spr)
 		{
 			//const int x = 8, y = 3;
 
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteEF(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteEF(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteF0(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteF0(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteF1(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteF1(Artist art, IDrawableSprite spr)
 		{
 			//DrawTiles(art, spr,
 		}
 
-		public static void SpriteDraw_SpriteF2(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_SpriteF2(Artist art, IDrawableSprite spr)
 		{
 			//const int x = 8; // but only if not ether tablet
 
@@ -2326,64 +2323,60 @@ namespace ZeldaFullEditor.Data
 		}
 
 
-
-#pragma warning disable IDE0060 // Remove unused parameter
-		public static void SpriteDraw_Overlord01(Artist art, IDrawableSprite spr)
+		protected static void SpriteDraw_Overlord01(Artist art, IDrawableSprite spr)
 		{
 			throw new NotImplementedException();
 		}
 
-		public static void SpriteDraw_Overlord02(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord02(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord03(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord03(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord04(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord04(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord05(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord05(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord06(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord06(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord07(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord07(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord08(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord08(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord09(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord09(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord0A(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord0A(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord0B(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord0B(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord0C(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord0C(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord0D(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord0D(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord0E(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord0E(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord0F(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord0F(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord10(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord10(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord11(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord11(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord12(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord12(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord13(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord13(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord14(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord14(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord15(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord15(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord16(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord16(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord17(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord17(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord18(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord18(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord19(Artist art, IDrawableSprite spr) { }
+		protected static void SpriteDraw_Overlord19(Artist art, IDrawableSprite spr) { }
 
-		public static void SpriteDraw_Overlord1A(Artist art, IDrawableSprite spr) { }
-
-#pragma warning restore IDE0060 // Remove unused parameter
+		protected static void SpriteDraw_Overlord1A(Artist art, IDrawableSprite spr) { }
 
 	}
 }
