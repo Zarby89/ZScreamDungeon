@@ -26,7 +26,7 @@
 
 
 
-		protected abstract void ReloadPalettes();
+		public abstract void ReloadPalettes();
 
 
 		protected static readonly float[][] TranslucencyMatrix = {

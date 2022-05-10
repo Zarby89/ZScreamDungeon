@@ -48,10 +48,7 @@
 			// Dungeons Palettes
 			for (int i = 0; i < bigPalettes.Length; i++)
 			{
-				if (bigPalettes[i] != null)
-				{
-					e.Graphics.FillRectangle(new SolidBrush(bigPalettes[i]), new Rectangle((i % 16) * 8, (i / 16) * 8, 8, 8));
-				}
+				e.Graphics.FillRectangle(new SolidBrush(bigPalettes[i]), new Rectangle((i % 16) * 8, (i / 16) * 8, 8, 8));
 			}
 
 			e.Graphics.DrawRectangle(Pens.Red, new Rectangle(0, selectedPal * 8, 128, 8));
@@ -172,10 +169,7 @@
 			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			for (int i = 0; i < selectedPalette.Length; i++)
 			{
-				if (selectedPalette[i] != null)
-				{
-					e.Graphics.FillRectangle(new SolidBrush(selectedPalette[i]), new Rectangle(i * 32, 0, 32, 32));
-				}
+				e.Graphics.FillRectangle(new SolidBrush(selectedPalette[i]), new Rectangle(i * 32, 0, 32, 32));
 			}
 
 			e.Graphics.DrawRectangle(Constants.LimeGreenPen2, new Rectangle((32 * selectedColor) + 1, 1, 31, 31));

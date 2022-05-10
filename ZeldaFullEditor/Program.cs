@@ -50,7 +50,7 @@ namespace ZeldaFullEditor
 		static void Main(string[] args)
 		{
 			Application.EnableVisualStyles();
-			Application.SetHighDpiMode(HighDpiMode.SystemAware);
+			//Application.SetHighDpiMode(HighDpiMode.SystemAware);
 			Application.SetCompatibleTextRenderingDefault(false);
 
 			// Look for Command Line Arguments

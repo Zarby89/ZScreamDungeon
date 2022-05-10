@@ -80,7 +80,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 		{
 			if (destinationType == null)
 			{
-				throw new ArgumentNullException("destinationType");
+				throw new ArgumentNullException(nameof(destinationType));
 			}
 
 			if (value is ValueRange range)
@@ -128,7 +128,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 		{
 			if (propertyValues == null)
 			{
-				throw new ArgumentNullException("propertyValues");
+				throw new ArgumentNullException(nameof(propertyValues));
 			}
 
 			object obj = propertyValues["Min"];

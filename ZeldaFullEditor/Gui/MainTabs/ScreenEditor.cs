@@ -2266,7 +2266,7 @@
 			{
 				if (mouseDown)
 				{
-					ContextMenuStrip cm;
+					ContextMenuStrip cm = null;
 					if (selectedMapIcon != null)
 					{
 						//cm = new ContextMenuStrip(

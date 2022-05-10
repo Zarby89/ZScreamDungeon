@@ -18,11 +18,9 @@
 			comboBox1.Items.Clear();
 			if (tileRadio.Checked)
 			{
-				var list = new List<RoomObjectName>();
-				list.Concat(DefaultEntities.ListOfSubtype1RoomObjects);
-				list.Concat(DefaultEntities.ListOfSubtype2RoomObjects);
-				list.Concat(DefaultEntities.ListOfSubtype3RoomObjects);
-				comboBox1.DataSource = list;
+				comboBox1.DataSource = DefaultEntities.ListOfSubtype1RoomObjects
+					.Concat(DefaultEntities.ListOfSubtype2RoomObjects)
+					.Concat(DefaultEntities.ListOfSubtype3RoomObjects);
 			}
 			else if (spriteRadio.Checked)
 			{

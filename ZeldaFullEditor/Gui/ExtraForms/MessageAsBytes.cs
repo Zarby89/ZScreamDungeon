@@ -50,7 +50,7 @@
 						break;
 
 					case 2:
-						s.Append("$");
+						s.Append('$');
 						break;
 				}
 
@@ -62,7 +62,7 @@
 						break;
 
 					case 1:
-						s.Append(" ");
+						s.Append(' ');
 						break;
 
 					case 2:

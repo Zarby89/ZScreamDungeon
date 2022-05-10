@@ -152,7 +152,7 @@
 
 		public void CopyTile8bpp16(int x, int y, int tile)
 		{
-			MyArtist.CopyTile8bpp16(x, y, tile);
+			//MyArtist.CopyTile8bpp16(x, y, tile);
 		}
 	}
 }

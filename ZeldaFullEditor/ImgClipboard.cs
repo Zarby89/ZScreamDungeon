@@ -35,7 +35,7 @@
 
 		public static byte[] GetImageData()
 		{
-			byte[] buff = new byte[0];
+			byte[] buff = Array.Empty<byte>();
 			if (!OpenClipboard(IntPtr.Zero))
 				return null;
 

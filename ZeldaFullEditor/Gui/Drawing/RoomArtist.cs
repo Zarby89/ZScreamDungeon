@@ -140,7 +140,7 @@
 			RebuildBitMap();
 		}
 
-		protected override void ReloadPalettes()
+		public override void ReloadPalettes()
 		{
 			var copy = ZScreamer.ActivePaletteManager.LoadDungeonPalette(BackgroundPalette);
 
