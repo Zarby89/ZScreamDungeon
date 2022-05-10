@@ -96,7 +96,7 @@ namespace ZeldaFullEditor
 					continue;
 				}
 
-				g.DrawImage(ZScreamer.ActiveGraphicsManager.spriteFont,
+				g.DrawImage(GraphicsManager.spriteFont,
 					new Rectangle(x + cpos, y, size, size), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
 
 				if (arrayPos >= Constants.FontSpacings.Length)

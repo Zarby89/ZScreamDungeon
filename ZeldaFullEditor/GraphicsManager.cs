@@ -24,6 +24,7 @@ namespace ZeldaFullEditor
 		public static Bitmap favStar2 { get; } = new Bitmap(Resources.starl);
 
 
+
 		public IntPtr allgfx16Ptr = Marshal.AllocHGlobal((128 * 7136) / 2);
 		public Bitmap allgfxBitmap;
 

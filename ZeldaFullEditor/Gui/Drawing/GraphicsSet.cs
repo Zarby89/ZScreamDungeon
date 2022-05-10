@@ -18,7 +18,7 @@ namespace ZeldaFullEditor
 	}
 
 
-	public class GraphicsBlock : IByteable
+	public class GraphicsBlock : IByteable, IGraphicsSheet
 	{
 		public GraphicsSheet Sheet1 { get; set; }
 		public GraphicsSheet Sheet2 { get; set; }
@@ -53,7 +53,7 @@ namespace ZeldaFullEditor
 	}
 
 
-	public unsafe class GraphicsSet
+	public unsafe class GraphicsSet : IGraphicsSheet
 	{
 		public GraphicsBlock BackgroundBlock1 { get; set; }
 		public GraphicsBlock BackgroundBlock2 { get; set; }

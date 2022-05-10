@@ -9,11 +9,15 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-	public unsafe class PointeredImage : IGraphicsCanvas
+	public unsafe class Map16MasterSheet : IGraphicsCanvas, IGraphicsSheet, IByteable
 	{
-
 		private readonly IntPtr ptr;
 		private byte* Pointer => (byte*) ptr.ToPointer();
+
+		public List<Tile16> ListOf { get; private set; } = new List<Tile16>();
+
+		public GraphicsSet Graphics { get; set; }
+
 
 		public Bitmap Bitmap { get; }
 
@@ -29,10 +33,22 @@ namespace ZeldaFullEditor
 			set => Bitmap.Palette = value;
 		}
 
-		public PointeredImage(int width, int height)
+		public Map16MasterSheet()
 		{
-			ptr = Marshal.AllocHGlobal(width * height);
-			Bitmap = new Bitmap(width, height, width, PixelFormat.Format8bppIndexed, ptr);
+			ptr = Marshal.AllocHGlobal(128 * 7136 / 2);
+			Bitmap = new Bitmap(128, 7136, 64, PixelFormat.Format4bppIndexed, ptr);
+		}
+
+		public byte[] GetByteData()
+		{
+			var ret = new List<byte>();
+
+			foreach (var tile in ListOf)
+			{
+				ret.AddRange(tile.GetByteData());
+			}
+
+			return ret.ToArray();
 		}
 	}
 }

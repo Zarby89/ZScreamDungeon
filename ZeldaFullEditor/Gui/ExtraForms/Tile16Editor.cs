@@ -341,7 +341,7 @@ namespace ZeldaFullEditor.Gui
 				tempTiletype[i] = ZScreamer.ActiveOW.allTilesTypes[i];
 			}
 
-			ZScreamer.ActiveOW.Tile16List.CopyTo(allTiles);
+			ZScreamer.ActiveOW.Tile16List.ListOf.CopyTo(allTiles);
 
 			unsafe
 			{
@@ -379,7 +379,7 @@ namespace ZeldaFullEditor.Gui
 		{
 			for (int i = 0; i < Constants.NumberOfMap16; i++)
 			{
-				ZScreamer.ActiveOW.Tile16List[i] = allTiles[i];
+				ZScreamer.ActiveOW.Tile16List.ListOf[i] = allTiles[i];
 			}
 
 			for (int i = 0; i < 0x200; i++)

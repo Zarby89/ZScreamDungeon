@@ -17,8 +17,8 @@ namespace ZeldaFullEditor
 {
 	public class Overworld
 	{
-		public List<Tile16> Tile16List;
 		public List<Tile32> Tile32List;
+		public Map16MasterSheet Tile16List { get; } = new Map16MasterSheet();
 
 		private int[] map32address;
 
@@ -75,7 +75,6 @@ namespace ZeldaFullEditor
 		public Overworld(ZScreamer zs)
 		{
 			ZS = zs;
-			Tile16List = new List<Tile16>();
 			Tile32List = new List<Tile32>();
 
 			map16tiles = new Tile32[Constants.NumberOfMap32];
@@ -277,17 +276,13 @@ namespace ZeldaFullEditor
 				Tile t2 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
 				Tile t3 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
 
-				Tile16List.Add(new Tile16(t0, t1, t2, t3));
+				Tile16List.ListOf.Add(new Tile16(t0, t1, t2, t3));
 			}
 		}
 
 		public void SaveMap16DefinitionsToROM()
 		{
-			int tpos = ZS.Offsets.map16Tiles;
-			for (int i = 0; i < Constants.NumberOfMap16; i++)
-			{
-				ZS.ROM.WriteContinuous(ref tpos, Tile16List[i].GetByteData());
-			}
+			ZS.ROM.Write(ZS.Offsets.map16Tiles, Tile16List.GetByteData());
 		}
 
 		public void AssembleMap32Tiles()
@@ -1263,10 +1258,10 @@ namespace ZeldaFullEditor
 				return true;
 			}
 
-			Tile16List.Clear();
+			Tile16List.ListOf.Clear();
 			foreach (Tile16 t16 in t16Unique)
 			{
-				Tile16List.Add(t16.Clone());
+				Tile16List.ListOf.Add(t16.Clone());
 			}
 
 			alltiles8.Clear();

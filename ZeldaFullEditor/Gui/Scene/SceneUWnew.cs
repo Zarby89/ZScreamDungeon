@@ -328,7 +328,7 @@ namespace ZeldaFullEditor
 			// Draw blocks with Ms
 			foreach (var b in Room.BlocksList)
 			{
-				g.DrawImage(ZS.GFXManager.moveableBlock, b.RealX, b.RealY);
+				g.DrawImage(GraphicsManager.moveableBlock, b.RealX, b.RealY);
 			}
 
 			// Draw staircase targets

@@ -195,7 +195,7 @@ namespace ZeldaFullEditor
 			EntranceMusicBox.DataSource = DefaultEntities.ListOfUnderworldMusics;
 		}
 
-		private void AdjustContextMenuForSelectionChange()
+		public void AdjustContextMenuForSelectionChange()
 		{
 			bool theresASelection = ZScreamer.ActiveUWScene.Room.SelectedObjects.Count > 0;
 
@@ -213,7 +213,7 @@ namespace ZeldaFullEditor
 			UWContextSelectNone.Enabled = theresASelection;
 		}
 
-		private void AdjustContextMenu()
+		public void AdjustContextMenu()
 		{
 			var mode = ZScreamer.ActiveUWMode;
 			switch (mode)
@@ -245,6 +245,15 @@ namespace ZeldaFullEditor
 					UWContextSendToFront.Visible = true;
 					UWContextSendToLayer1.Visible = true;
 					UWContextSendToLayer2.Visible = true;
+					UWContextSendToLayer3.Visible = false;
+					break;
+
+				case DungeonEditMode.CollisionMap:
+					UWContextInsert.Visible = false;
+					UWContextSendToBack.Visible = false;
+					UWContextSendToFront.Visible = false;
+					UWContextSendToLayer1.Visible = false;
+					UWContextSendToLayer2.Visible = false;
 					UWContextSendToLayer3.Visible = false;
 					break;
 
@@ -427,7 +436,6 @@ namespace ZeldaFullEditor
 				//recentROMToolStripMenuItem.Enabled = false;
 			}
 		}
-
 
 		public void checkAnyChanges()
 		{
@@ -3166,7 +3174,7 @@ namespace ZeldaFullEditor
 
 					for (int i = 0; i < 3752; i++) // 3600
 					{
-						ulong v = ZScreamer.ActiveScreamer.OverworldManager.Tile16List[i].getLongValue();
+						ulong v = ZScreamer.ActiveScreamer.OverworldManager.Tile16List.ListOf[i].getLongValue();
 
 						for (int j = 0; j < 8; j++)
 						{
@@ -3193,7 +3201,7 @@ namespace ZeldaFullEditor
 					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
 					fileStreamMap.Read(mapArrayData, 0, mapArrayData.Length);
 
-					ZScreamer.ActiveScreamer.OverworldManager.Tile16List.Clear();
+					ZScreamer.ActiveScreamer.OverworldManager.Tile16List.ListOf.Clear();
 					for (int i = 0; i < Constants.NumberOfMap16; i++)
 					{
 
@@ -3224,7 +3232,7 @@ namespace ZeldaFullEditor
 							(mapArrayData[p + 6])
 						);
 
-						ZScreamer.ActiveScreamer.OverworldManager.Tile16List.Add(new Tile16(t0, t1, t2, t3));
+						ZScreamer.ActiveScreamer.OverworldManager.Tile16List.ListOf.Add(new Tile16(t0, t1, t2, t3));
 
 						p += 8;
 					}

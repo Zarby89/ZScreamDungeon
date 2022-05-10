@@ -354,7 +354,7 @@ namespace ZeldaFullEditor
 			Color[,] palettes = new Color[16, 8];
 
 			// id = dungeon palette id
-			byte dungeon_palette_ptr = ZS.GFXGroups.paletteGfx[id][0];
+			byte dungeon_palette_ptr = ZS.GFXManager.paletteGfx[id][0];
 			int paletteid = ZS.ROM.Read16(0xDEC4B + dungeon_palette_ptr);
 			int pId = paletteid / 180;
 

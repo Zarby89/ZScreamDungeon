@@ -545,7 +545,7 @@ namespace ZeldaFullEditor.Gui
 
 					for (int i = 0; i < 159; i++)
 					{
-						ZScreamer.ActiveOW.allmaps[i].ReloadPalettes();
+						ZScreamer.ActiveOW.allmaps[i].MyArtist.ReloadPalettes();
 
 					}
 
@@ -562,7 +562,7 @@ namespace ZeldaFullEditor.Gui
 				selectedPalette[tempIndex] = tempColor;
 				for (int i = 0; i < 159; i++)
 				{
-					ZScreamer.ActiveOW.allmaps[i].ReloadPalettes();
+					ZScreamer.ActiveOW.allmaps[i].MyArtist.ReloadPalettes();
 
 				}
 
@@ -590,7 +590,7 @@ namespace ZeldaFullEditor.Gui
 
 				for (int i = 0; i < 159; i++)
 				{
-					ZScreamer.ActiveOW.allmaps[i].ReloadPalettes();
+					ZScreamer.ActiveOW.allmaps[i].MyArtist.ReloadPalettes();
 				}
 
 				refreshallGfx();

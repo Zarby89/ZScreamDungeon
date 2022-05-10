@@ -826,7 +826,7 @@ namespace ZeldaFullEditor.Gui
 			tile8selected = 0;
 			byte* destPtr = (byte*) ZScreamer.ActiveGraphicsManager.editingtile16.ToPointer();
 			byte* srcPtr = (byte*) ZScreamer.ActiveGraphicsManager.currentOWgfx16Ptr.ToPointer();
-			Tile16 t = ZScreamer.ActiveOW.Tile16List[ZScreamer.ActiveOWScene.selectedTile[0]];
+			Tile16 t = ZScreamer.ActiveOW.Tile16List.ListOf[ZScreamer.ActiveOWScene.selectedTile[0]];
 
 			for (int y = 0; y < 8; y++)
 			{

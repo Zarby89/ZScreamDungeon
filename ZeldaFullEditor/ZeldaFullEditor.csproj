@@ -233,6 +233,9 @@
     <Compile Include="Gui\Drawing\Artist.cs" />
     <Compile Include="Gui\Drawing\GraphicsSet.cs" />
     <Compile Include="Gui\Drawing\GraphicsSheet.cs" />
+    <Compile Include="Gui\Drawing\IGraphicsCanvas.cs" />
+    <Compile Include="Gui\Drawing\IGraphicsSheet.cs" />
+    <Compile Include="Gui\Drawing\Map16MasterSheet.cs" />
     <Compile Include="Gui\Drawing\PointerImage.cs" />
     <Compile Include="Gui\Drawing\ScreenArtist.cs" />
     <Compile Include="Gui\ExtraForms\ValueRange.cs" />

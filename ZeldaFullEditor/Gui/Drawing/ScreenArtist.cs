@@ -49,11 +49,11 @@ namespace ZeldaFullEditor
 
 		public override void HardRefresh()
 		{
-			BackgroundPalette = CurrentRoom?.Palette ?? 0;
-			SpritePalette = CurrentRoom?.Palette ?? 0;
+			BackgroundPalette = MyScreen?.ScreenPalette ?? 0;
+			SpritePalette = MyScreen?.GetSpritePaletteForGameState(ZScreamer.ActiveOW.GameState) ?? 0;
 
-			BackgroundTileset = CurrentRoom?.BackgroundTileset ?? 0;
-			SpriteTileset = CurrentRoom?.SpriteTileset ?? 0;
+			BackgroundTileset = MyScreen?.Tileset ?? 0;
+			SpriteTileset = MyScreen?.GetSpriteGraphicsForGameState(ZScreamer.ActiveOW.GameState) ?? 0;
 
 			ReloadPalettes();
 			RebuildTileMap();
@@ -176,7 +176,7 @@ namespace ZeldaFullEditor
 			int yy = 0;
 			int xx = 0;
 			
-			for (int i = 0; i < ZScreamer.ActiveOW.Tile16List.Count; i++) // Number of tiles16 3748?
+			for (int i = 0; i < ZScreamer.ActiveOW.Tile16List.ListOf.Count; i++) // Number of tiles16 3748?
 			{
 				// 8x8 tile draw
 				// gfx8 = 4bpp so everyting is /2
@@ -184,7 +184,7 @@ namespace ZeldaFullEditor
 
 				for (int tile = 0; tile < 4; tile++)
 				{
-					Tile info = ZScreamer.ActiveOW.Tile16List[i][tile];
+					Tile info = ZScreamer.ActiveOW.Tile16List.ListOf[i][tile];
 					int offset = TileOffsetsIDK[tile];
 
 					for (int y = 0; y < 8; y++)

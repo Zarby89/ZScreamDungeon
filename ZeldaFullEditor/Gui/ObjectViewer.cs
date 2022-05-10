@@ -54,7 +54,7 @@ namespace ZeldaFullEditor
 
 				e.Graphics.DrawImage(
 					Settings.Default.favoriteObjects[o.ID] == "true" ?
-					ZScreamer.ActiveGraphicsManager.favStar2 : ZScreamer.ActiveGraphicsManager.favStar1,
+					GraphicsManager.favStar2 : GraphicsManager.favStar1,
 					new Rectangle(xpos + 40, ypos + 40, 16, 16)
 				);
 

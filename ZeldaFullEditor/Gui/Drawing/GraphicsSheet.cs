@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-	public unsafe class GraphicsSheet
+	public unsafe class GraphicsSheet : IGraphicsSheet
 	{
 		private readonly IntPtr ptr;
 		public byte* Pointer => (byte*) ptr.ToPointer();
