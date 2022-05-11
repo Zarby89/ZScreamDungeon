@@ -51,10 +51,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 					return null;
 				}
 
-				if (culture == null)
-				{
-					culture = CultureInfo.CurrentCulture;
-				}
+				culture ??= CultureInfo.CurrentCulture;
 
 				char c = culture.TextInfo.ListSeparator[0];
 				string[] array = text2.Split(c);
@@ -87,10 +84,7 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			{
 				if (destinationType == typeof(string))
 				{
-					if (culture == null)
-					{
-						culture = CultureInfo.CurrentCulture;
-					}
+					culture ??= CultureInfo.CurrentCulture;
 
 					string separator = culture.TextInfo.ListSeparator + " ";
 					TypeConverter converter = TypeDescriptor.GetConverter(typeof(int));
@@ -133,7 +127,8 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 
 			object obj = propertyValues["Min"];
 			object obj2 = propertyValues["Max"];
-			if (obj == null || obj2 == null || obj is not int || obj2 is not int)
+
+			if (obj is null or not int || obj2 is null or not int)
 			{
 				throw new ArgumentException("Shit.");
 			}

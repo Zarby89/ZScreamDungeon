@@ -8,6 +8,6 @@
 		/// <summary>
 		/// Returns a stream of bytes representing the object in its current state.
 		/// </summary>
-		byte[] GetByteData();
+		public byte[] GetByteData();
 	}
 }

@@ -5,6 +5,6 @@
 	/// </summary>
 	public interface ITypeID
 	{
-		int TypeID { get; }
+		public int TypeID { get; }
 	}
 }

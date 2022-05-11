@@ -18,6 +18,8 @@
 			set => GridY = (byte) (value / Scale);
 		}
 
+		public string Name => "Push block";
+
 		public RoomLayer Layer { get; set; }
 
 		public Rectangle SquareHitbox => new(RealX, RealY, 16, 16);

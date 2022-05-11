@@ -1357,7 +1357,7 @@ namespace ZeldaFullEditor
 					}
 				}
 
-				if (alreadyIn == null)
+				if (alreadyIn != null)
 				{
 					selectedMapPng.Remove((ushort) alreadyIn);
 				}

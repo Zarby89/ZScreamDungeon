@@ -48,7 +48,7 @@
 			DrawTileToBuffer(in tile, x * 8 + y * 64, canvas, tiledata);
 		}
 
-		public unsafe void ClearBgGfx()
+		public void ClearBgGfx()
 		{
 			for (int i = 0; i < 512 * 512; i++)
 			{

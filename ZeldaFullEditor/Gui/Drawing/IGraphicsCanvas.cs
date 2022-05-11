@@ -2,10 +2,10 @@
 {
 	internal interface IGraphicsCanvas
 	{
-		byte this[int i] { get; set; }
+		public byte this[int i] { get; set; }
 
-		Bitmap Bitmap { get; }
+		public Bitmap Bitmap { get; }
 
-		ColorPalette Palette { get; set; }
+		public ColorPalette Palette { get; set; }
 	}
 }

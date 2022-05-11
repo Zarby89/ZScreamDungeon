@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Represents a set of instructions for how to draw a new sprite object.
 	/// </summary>
-	public readonly struct OAMDrawInfo
+	public readonly record struct OAMDrawInfo
 	{
 		/// <summary>
 		/// Index into the object's tile listing to use

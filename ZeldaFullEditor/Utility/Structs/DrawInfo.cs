@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Represents a set of instructions for how to draw a new tile to the background.
 	/// </summary>
-	public readonly struct DrawInfo
+	public readonly record struct DrawInfo
 	{
 		/// <summary>
 		/// Index into the object's tile listing to use
@@ -54,6 +54,7 @@
 		/// <param name="hflip">Forces the horizontal flip of the tile; set to <see langword="null"/> to leave it unchanged.</param>
 		/// <param name="vflip">Forces the vertical flip of the tile; set to <see langword="null"/> to leave it unchanged.</param>
 		/// <param name="under">The data this tile is forbidden to overwrite.</param>
+		
 		public DrawInfo(int i, int x, int y, bool? hflip = null, bool? vflip = null, ushort? under = null, bool hox = false, bool vox = false)
 		{
 			TileIndex = i;

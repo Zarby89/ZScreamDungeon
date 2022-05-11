@@ -608,52 +608,5 @@ namespace ZeldaFullEditor
 			overworldMapBitmap.Palette = cp;
 			owactualMapBitmap.Palette = cp;
 		}
-
-		public void drawText(Graphics g, int x, int y, string text, ImageAttributes ai = null, bool x2 = false)
-		{
-			text = text.ToUpper();
-			int cpos = 0;
-			for (int i = 0; i < text.Length; i++)
-			{
-				byte arrayPos = (byte) (text[i] - 32);
-				if ((byte) text[i] == 10)
-				{
-					y += 10;
-					cpos = 0;
-					continue;
-				}
-
-				if (ai == null)
-				{
-					if (x2)
-					{
-						g.DrawImage(spriteFont, new Rectangle(x + cpos, y, 16, 16), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
-					}
-					else
-					{
-						g.DrawImage(spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel);
-					}
-				}
-				else
-				{
-					g.DrawImage(spriteFont, new Rectangle(x + cpos, y, 8, 8), arrayPos * 8, 0, 8, 8, GraphicsUnit.Pixel, ai);
-				}
-
-				if (arrayPos > Constants.FontSpacings.Length - 1)
-				{
-					cpos += 8;
-					continue;
-				}
-
-				if (x2)
-				{
-					cpos += Constants.FontSpacings[arrayPos] * 2;
-				}
-				else
-				{
-					cpos += Constants.FontSpacings[arrayPos];
-				}
-			}
-		}
 	}
 }

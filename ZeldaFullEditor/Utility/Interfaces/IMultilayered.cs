@@ -5,7 +5,7 @@
 	/// </summary>
 	public interface IMultilayered
 	{
-		RoomLayer Layer { get; set; }
+		public RoomLayer Layer { get; set; }
 	}
 
 	public enum RoomLayer

@@ -30,5 +30,6 @@
 		{
 			return base.PointIsInHitbox(x, y);
 		}
+
 	}
 }

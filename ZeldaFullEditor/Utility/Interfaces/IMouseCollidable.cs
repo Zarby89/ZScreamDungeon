@@ -5,15 +5,15 @@
 	/// </summary>
 	public interface IMouseCollidable
 	{
-		int RealX { get; }
-		int RealY { get; }
+		public int RealX { get; }
+		public int RealY { get; }
 
-		Rectangle SquareHitbox { get; }
+		public Rectangle SquareHitbox { get; }
 
-		bool PointIsInHitbox(int x, int y);
+		public bool PointIsInHitbox(int x, int y);
 	}
 
-	public static class MouseExtensions
+	public static class MouseCollidableExtensions
 	{
 		public static bool IsCapturedByRectangle(this IMouseCollidable me, Rectangle cap)
 		{
