@@ -167,7 +167,7 @@
 			this.tabPage1.Controls.Add(this.screenBox);
 			this.tabPage1.Location = new System.Drawing.Point(4, 22);
 			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+			this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
 			this.tabPage1.Size = new System.Drawing.Size(1072, 774);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Titlescreen";
@@ -426,9 +426,9 @@
 			this.tabPage2.Controls.Add(this.overworldPanel);
 			this.tabPage2.Controls.Add(this.owMapTilesBox);
 			this.tabPage2.Controls.Add(this.mapPalettePicturebox);
-			this.tabPage2.Location = new System.Drawing.Point(4, 22);
+			this.tabPage2.Location = new System.Drawing.Point(4, 24);
 			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Size = new System.Drawing.Size(1072, 774);
+			this.tabPage2.Size = new System.Drawing.Size(1072, 772);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Overworld Map";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -642,9 +642,9 @@
 			this.tabPage3.Controls.Add(this.dungmapListbox);
 			this.tabPage3.Controls.Add(this.label5);
 			this.tabPage3.Controls.Add(this.dungmapPicturebox);
-			this.tabPage3.Location = new System.Drawing.Point(4, 22);
+			this.tabPage3.Location = new System.Drawing.Point(4, 24);
 			this.tabPage3.Name = "tabPage3";
-			this.tabPage3.Size = new System.Drawing.Size(1072, 774);
+			this.tabPage3.Size = new System.Drawing.Size(1072, 772);
 			this.tabPage3.TabIndex = 2;
 			this.tabPage3.Text = "Dungeon Map";
 			this.tabPage3.UseVisualStyleBackColor = true;
@@ -751,7 +751,7 @@
 			// 
 			this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.label10.AutoSize = true;
-			this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
 			this.label10.Location = new System.Drawing.Point(5, 731);
 			this.label10.Name = "label10";
 			this.label10.Size = new System.Drawing.Size(264, 32);
@@ -930,9 +930,9 @@
 			this.tabPage4.Controls.Add(this.triforcebox2);
 			this.tabPage4.Controls.Add(this.triforceLabel1);
 			this.tabPage4.Controls.Add(this.triforcebox1);
-			this.tabPage4.Location = new System.Drawing.Point(4, 22);
+			this.tabPage4.Location = new System.Drawing.Point(4, 24);
 			this.tabPage4.Name = "tabPage4";
-			this.tabPage4.Size = new System.Drawing.Size(1072, 774);
+			this.tabPage4.Size = new System.Drawing.Size(1072, 772);
 			this.tabPage4.TabIndex = 3;
 			this.tabPage4.Text = "Triforce/Crystal Editor";
 			this.tabPage4.UseVisualStyleBackColor = true;
@@ -1032,6 +1032,7 @@
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.Controls.Add(this.tabControl1);
+			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.Name = "ScreenEditor";
 			this.Size = new System.Drawing.Size(1080, 800);
 			this.tabControl1.ResumeLayout(false);

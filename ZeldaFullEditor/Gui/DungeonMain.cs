@@ -2726,11 +2726,11 @@ namespace ZeldaFullEditor
 			}
 
 
-			SelectedObjectDataX.Text = objx?.ToString("X2") ?? UIText.NullField;
-			SelectedObjectDataY.Text = objy?.ToString("X2") ?? UIText.NullField;
-			SelectedObjectDataSize.Text = objs?.ToString("X2") ?? UIText.NullField;
-			SelectedObjectDataLayer.Text = objl?.ToLayerString() ?? UIText.NullField;
-			SelectedObjectDataHEX.Text = objdata?.ToSimpleListing() ?? UIText.NullField;
+			//SelectedObjectDataX.Text = objx?.ToString("X2") ?? UIText.NullField;
+			//SelectedObjectDataY.Text = objy?.ToString("X2") ?? UIText.NullField;
+			//SelectedObjectDataSize.Text = objs?.ToString("X2") ?? UIText.NullField;
+			//SelectedObjectDataLayer.Text = objl?.ToLayerString() ?? UIText.NullField;
+			//SelectedObjectDataHEX.Text = objdata?.ToSimpleListing() ?? UIText.NullField;
 		}
 
 
@@ -3981,6 +3981,11 @@ namespace ZeldaFullEditor
 		public void UWSendSelectedToLayer3(object sender, EventArgs e)
 		{
 			ZScreamer.ActiveUWScene.Room.SendAllSelectedToLayer(RoomLayer.Layer3);
+		}
+
+		private void toolStripLabel1_Click(object sender, EventArgs e)
+		{
+
 		}
 	}
 }

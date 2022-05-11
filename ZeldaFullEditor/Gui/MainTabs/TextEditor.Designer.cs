@@ -165,7 +165,7 @@
 			this.ParamsBox.Location = new System.Drawing.Point(483, 153);
 			this.ParamsBox.MaxLength = 2;
 			this.ParamsBox.Name = "ParamsBox";
-			this.ParamsBox.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(((ushort)(0)), ((ushort)(255)));
+			this.ParamsBox.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
 			this.ParamsBox.Size = new System.Drawing.Size(32, 20);
 			this.ParamsBox.TabIndex = 35;
 			this.ParamsBox.Text = "00";
@@ -240,7 +240,7 @@
 			// 
 			// textBox1
 			// 
-			this.textBox1.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.textBox1.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.textBox1.Location = new System.Drawing.Point(6, 17);
 			this.textBox1.Multiline = true;
 			this.textBox1.Name = "textBox1";
@@ -474,6 +474,7 @@
 			this.Controls.Add(this.toolStrip1);
 			this.Controls.Add(this.panel1);
 			this.Controls.Add(this.panel2);
+			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.Name = "TextEditor";
 			this.Size = new System.Drawing.Size(981, 758);
 			this.Load += new System.EventHandler(this.TextEditor_Load);

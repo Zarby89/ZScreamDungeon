@@ -28,15 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // CustomTabControl
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "CustomTabControl";
-            this.Size = new System.Drawing.Size(382, 31);
-            this.ResumeLayout(false);
+			this.SuspendLayout();
+			// 
+			// CustomTabControl
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.Name = "CustomTabControl";
+			this.Size = new System.Drawing.Size(382, 31);
+			this.ResumeLayout(false);
 
         }
 

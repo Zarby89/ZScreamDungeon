@@ -223,7 +223,6 @@
 				if (en.IsInThisWorld(ZS.OverworldManager.World) && en.MouseIsInHitbox(e))
 				{
 					menu.Items.Add("Add Entrance");
-					menu.Items.Add("Entrance Properties");
 					menu.Items.Add("Delete Entrance");
 					LastSelectedEntrance = en;
 					SelectedEntrance = null;
@@ -231,12 +230,10 @@
 					if (LastSelectedEntrance == null)
 					{
 						menu.Items[1].Enabled = false;
-						menu.Items[2].Enabled = false;
 					}
 
 					menu.Items[0].Click += entranceAdd_Click;
-					menu.Items[1].Click += entranceProperty_Click;
-					menu.Items[2].Click += Delete_Click;
+					menu.Items[1].Click += Delete_Click;
 					menu.Show(Cursor.Position);
 					return;
 				}
@@ -250,7 +247,6 @@
 				{
 
 					menu.Items.Add("Add Entrance");
-					menu.Items.Add("Entrance Properties");
 					menu.Items.Add("Delete Entrance");
 					LastSelectedEntrance = en;
 					SelectedEntrance = null;
@@ -258,12 +254,10 @@
 					if (LastSelectedEntrance == null)
 					{
 						menu.Items[1].Enabled = false;
-						menu.Items[2].Enabled = false;
 					}
 
 					menu.Items[0].Click += entranceAdd_Click;
-					menu.Items[1].Click += entranceProperty_Click;
-					menu.Items[2].Click += Delete_Click;
+					menu.Items[1].Click += Delete_Click;
 					menu.Show(Cursor.Position);
 					return;
 
@@ -306,28 +300,6 @@
 		private void Delete_Click(object sender, EventArgs e)
 		{
 			Delete_Exit();
-		}
-
-		private void entranceProperty_Click(object sender, EventArgs e)
-		{
-			EntranceForm ef = new EntranceForm
-			{
-				entranceId = LastSelectedEntrance.TargetEntranceID,
-				mapId = LastSelectedEntrance.MapID,
-				mapPos = LastSelectedEntrance.mapPos,
-				x = LastSelectedEntrance.GlobalX,
-				y = LastSelectedEntrance.GlobalY,
-				isHole = LastSelectedEntrance.IsPitEntrance
-			};
-
-			if (ef.ShowDialog() == DialogResult.OK)
-			{
-				LastSelectedEntrance.TargetEntranceID = ef.entranceId;
-				LastSelectedEntrance.MapID = (byte) ef.mapId;
-				LastSelectedEntrance.GlobalX = ef.x;
-				LastSelectedEntrance.GlobalY = ef.y;
-
-			}
 		}
 
 		private void Draw_Entrance(Graphics g)

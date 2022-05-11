@@ -29,29 +29,30 @@ namespace ZeldaFullEditor.Gui.ExtraForms
         /// </summary>
         private void InitializeComponent()
         {
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.SuspendLayout();
-            // 
-            // textBox1
-            // 
-            this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.textBox1.Location = new System.Drawing.Point(0, 0);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(385, 490);
-            this.textBox1.TabIndex = 0;
-            // 
-            // SearchTilesForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(385, 490);
-            this.Controls.Add(this.textBox1);
-            this.Name = "SearchTilesForm";
-            this.Text = "SearchTilesForm";
-            this.ResumeLayout(false);
-            this.PerformLayout();
+			this.textBox1 = new System.Windows.Forms.TextBox();
+			this.SuspendLayout();
+			// 
+			// textBox1
+			// 
+			this.textBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.textBox1.Location = new System.Drawing.Point(0, 0);
+			this.textBox1.Multiline = true;
+			this.textBox1.Name = "textBox1";
+			this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+			this.textBox1.Size = new System.Drawing.Size(385, 490);
+			this.textBox1.TabIndex = 0;
+			// 
+			// SearchTilesForm
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.ClientSize = new System.Drawing.Size(385, 490);
+			this.Controls.Add(this.textBox1);
+			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.Name = "SearchTilesForm";
+			this.Text = "SearchTilesForm";
+			this.ResumeLayout(false);
+			this.PerformLayout();
 
         }
 

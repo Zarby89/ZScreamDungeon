@@ -28,19 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.SuspendLayout();
-            // 
-            // SpritesView
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.DoubleBuffered = true;
-            this.Name = "SpritesView";
-            this.Size = new System.Drawing.Size(271, 374);
-            this.Load += new System.EventHandler(this.SpritesView_Load);
-            this.SizeChanged += new System.EventHandler(this.ObjectViewer_SizeChanged);
-            this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ObjectViewer_MouseClick);
-            this.ResumeLayout(false);
+			this.SuspendLayout();
+			// 
+			// SpritesView
+			// 
+			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			this.DoubleBuffered = true;
+			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.Name = "SpritesView";
+			this.Size = new System.Drawing.Size(271, 374);
+			this.Load += new System.EventHandler(this.SpritesView_Load);
+			this.SizeChanged += new System.EventHandler(this.ObjectViewer_SizeChanged);
+			this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ObjectViewer_MouseClick);
+			this.ResumeLayout(false);
 
         }
 
