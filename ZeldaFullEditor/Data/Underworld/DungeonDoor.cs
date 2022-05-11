@@ -63,6 +63,8 @@
 
 		public TilesList Tiles { get; private set; }
 
+		public string Name => DoorType.Name;
+
 		public DungeonDoor(DungeonDoorDraw position, DoorTilesList tiles)
 		{
 			this.position = position;

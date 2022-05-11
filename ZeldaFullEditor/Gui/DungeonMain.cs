@@ -92,9 +92,9 @@ namespace ZeldaFullEditor
 
 			Text = $"{UIText.APPNAME} - {UIText.VERSION}";
 
-			comboBox2.Items.AddRange(DefaultEntities.ListOfDoorObjects);
-			tileTypeCombobox.Items.AddRange(DefaultEntities.ListOfTileTypes);
-			EntranceProperties_FloorSel.Items.AddRange(FloorNumber.floors);
+			DoorTypeComboBox.DataSource = DungeonDoorType.ListOf;
+			tileTypeCombobox.DataSource = DefaultEntities.ListOfTileTypes;
+			EntranceProperties_FloorSel.DataSource = FloorNumber.floors;
 
 			objDesigner = new Object_Designer();
 			objectViewer1 = new ObjectViewer();
@@ -1407,11 +1407,11 @@ namespace ZeldaFullEditor
 		private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			// Doors
-			if (comboBox2.SelectedIndex > 0 && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is DungeonDoor d)
+			if (DoorTypeComboBox.SelectedIndex > 0 && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is DungeonDoor d)
 			{
-				byte b = (byte) (comboBox2.SelectedItem as DoorObjectName).ID;
-				d.DoorTiles = ZScreamer.ActiveScreamer.TileLister.GetDoorTileSet(b);
-				d.DoorType = DungeonDoorType.GetTypeFromID(b);
+				var door = (DungeonDoorType) DoorTypeComboBox.SelectedItem;
+				d.DoorTiles = ZScreamer.ActiveScreamer.TileLister.GetDoorTileSet(door.ID);
+				d.DoorType = door;
 				ZScreamer.ActiveUWScene.Room.HasUnsavedChanges = true;
 				ZScreamer.ActiveUWScene.HardRefresh();
 			}
@@ -2694,26 +2694,60 @@ namespace ZeldaFullEditor
 
 		public void UpdateFormForSelectedObject(IDungeonPlaceable o)
 		{
-			int? objx = null;
-			int? objy = null;
-			int? objs = null;
-			RoomLayer? objl = null;
-			byte[] objdata = null;
+			if (o is null)
+			{
+				SelectedObjectNameLabel.Visible = true;
+				SelectedObjectNameLabel.Text = "No selection";
+			}
+			else
+			{
+				SelectedObjectNameLabel.Visible = true;
+				SelectedObjectNameLabel.Text = o.Name;
+			}
+
 
 			if (o is IFreelyPlaceable f)
 			{
-				objx = f.GridX;
-				objy = f.GridY;
+				SelectedObjectXLabel.Visible = true;
+				SelectedObjectYLabel.Visible = true;
+
+				SelectedObjectXLabel.Text = $"X: {f.GridX:X2}";
+				SelectedObjectYLabel.Text = $"X: {f.GridY:X2}";
+			}
+			else
+			{
+				SelectedObjectXLabel.Visible = false;
+				SelectedObjectYLabel.Visible = false;
 			}
 
 			if (o is IMultilayered l)
 			{
-				objl = l.Layer;
+				SelectedObjectLayerLabel.Visible = true;
+				SelectedObjectLayerLabel.Text = $"Layer: {l.Layer.ToLayerString()}";
+			}
+			else
+			{
+				SelectedObjectLayerLabel.Visible = false;
+			}
+
+			if (o is RoomObject r && r.Resizable)
+			{
+				SelectedObjectSizeLabel.Visible = true;
+				SelectedObjectSizeLabel.Text = $"Size: {r.Size}";
+			}
+			else
+			{
+				SelectedObjectSizeLabel.Visible = false;
 			}
 
 			if (o is IByteable b)
 			{
-				objdata = b.GetByteData();
+				SelectedObjectDataLabel.Visible = true;
+				SelectedObjectDataLabel.Text = $"Data: {b.GetByteData().ToSimpleListing()}";
+			}
+			else
+			{
+				SelectedObjectDataLabel.Visible = false;
 			}
 
 			if (o is DungeonSprite s)
@@ -2724,13 +2758,6 @@ namespace ZeldaFullEditor
 
 				ZScreamer.ActiveUWScene.Refresh();
 			}
-
-
-			//SelectedObjectDataX.Text = objx?.ToString("X2") ?? UIText.NullField;
-			//SelectedObjectDataY.Text = objy?.ToString("X2") ?? UIText.NullField;
-			//SelectedObjectDataSize.Text = objs?.ToString("X2") ?? UIText.NullField;
-			//SelectedObjectDataLayer.Text = objl?.ToLayerString() ?? UIText.NullField;
-			//SelectedObjectDataHEX.Text = objdata?.ToSimpleListing() ?? UIText.NullField;
 		}
 
 

@@ -58,10 +58,6 @@
 		public override string ToString() => $"{ID:X3} {Name}";
 
 	}
-	public class DoorObjectName : EntityName
-	{
-		public DoorObjectName(int i, string n) : base(i, n) { }
-	}
 
 	public class RoomTagName : EntityName
 	{

@@ -8,65 +8,127 @@ namespace ZeldaFullEditor.Data
 
 		public DoorCategory Category { get; }
 		public bool IsExit { get; }
-		private DungeonDoorType(byte id, DoorCategory category, bool exit = false)
+
+		public string Name { get; }
+		private DungeonDoorType(byte id, string name, DoorCategory category, bool exit = false)
 		{
 			ID = id;
+			Name = name;
 			Category = category;
 			IsExit = exit;
 		}
 
-		public static readonly DungeonDoorType DoorType00 = new(0x00, Unspecial);
-		public static readonly DungeonDoorType DoorType02 = new(0x02, Unspecial);
-		public static readonly DungeonDoorType DoorType04 = new(0x04, Unspecial, exit: true);
-		public static readonly DungeonDoorType DoorType06 = new(0x06, Unspecial, exit: true);
-		public static readonly DungeonDoorType DoorType08 = new(0x08, Unspecial);
-		public static readonly DungeonDoorType DoorType0A = new(0x0A, Unspecial, exit: true);
-		public static readonly DungeonDoorType DoorType0C = new(0x0C, Unspecial, exit: true);
-		public static readonly DungeonDoorType DoorType0E = new(0x0E, Unspecial, exit: true);
-		public static readonly DungeonDoorType DoorType10 = new(0x10, Unspecial, exit: true);
-		public static readonly DungeonDoorType DoorType12 = new(0x12, Meta, exit: true);
-		public static readonly DungeonDoorType DoorType14 = new(0x14, DungeonSwap);
-		public static readonly DungeonDoorType DoorType16 = new(0x16, LayerSwap);
-		public static readonly DungeonDoorType DoorType18 = new(0x18, Shutter);
-		public static readonly DungeonDoorType DoorType1A = new(0x1A, Shutter);
-		public static readonly DungeonDoorType DoorType1C = new(0x1C, Openable);
-		public static readonly DungeonDoorType DoorType1E = new(0x1E, Openable);
-		public static readonly DungeonDoorType DoorType20 = new(0x20, Openable);
-		public static readonly DungeonDoorType DoorType22 = new(0x22, Openable);
-		public static readonly DungeonDoorType DoorType24 = new(0x24, Openable);
-		public static readonly DungeonDoorType DoorType26 = new(0x26, Openable);
-		public static readonly DungeonDoorType DoorType28 = new(0x28, Openable);
-		public static readonly DungeonDoorType DoorType2A = new(0x2A, Openable, exit: true);
-		public static readonly DungeonDoorType DoorType2C = new(0x2C, Garbage);
-		public static readonly DungeonDoorType DoorType2E = new(0x2E, Openable);
-		public static readonly DungeonDoorType DoorType30 = new(0x30, Openable);
-		public static readonly DungeonDoorType DoorType32 = new(0x32, Openable);
-		public static readonly DungeonDoorType DoorType34 = new(0x34, Garbage);
-		public static readonly DungeonDoorType DoorType36 = new(0x36, Shutter);
-		public static readonly DungeonDoorType DoorType38 = new(0x38, Shutter);
-		public static readonly DungeonDoorType DoorType3A = new(0x3A, Garbage);
-		public static readonly DungeonDoorType DoorType3C = new(0x3C, Garbage);
-		public static readonly DungeonDoorType DoorType3E = new(0x3E, Garbage);
-		public static readonly DungeonDoorType DoorType40 = new(0x40, Unspecial);
-		public static readonly DungeonDoorType DoorType42 = new(0x42, Shutter);
-		public static readonly DungeonDoorType DoorType44 = new(0x44, Shutter);
-		public static readonly DungeonDoorType DoorType46 = new(0x46, Meta);
-		public static readonly DungeonDoorType DoorType48 = new(0x48, Shutter);
-		public static readonly DungeonDoorType DoorType4A = new(0x4A, Shutter);
-		public static readonly DungeonDoorType DoorType4C = new(0x4C, Garbage);
-		public static readonly DungeonDoorType DoorType4E = new(0x4E, Garbage);
-		public static readonly DungeonDoorType DoorType50 = new(0x50, Garbage);
-		public static readonly DungeonDoorType DoorType52 = new(0x52, Garbage);
-		public static readonly DungeonDoorType DoorType54 = new(0x54, Garbage);
-		public static readonly DungeonDoorType DoorType56 = new(0x56, Garbage);
-		public static readonly DungeonDoorType DoorType58 = new(0x58, Garbage);
-		public static readonly DungeonDoorType DoorType5A = new(0x5A, Garbage);
-		public static readonly DungeonDoorType DoorType5C = new(0x5C, Garbage);
-		public static readonly DungeonDoorType DoorType5E = new(0x5E, Garbage);
-		public static readonly DungeonDoorType DoorType60 = new(0x60, Garbage);
-		public static readonly DungeonDoorType DoorType62 = new(0x62, Garbage);
-		public static readonly DungeonDoorType DoorType64 = new(0x64, Garbage);
-		public static readonly DungeonDoorType DoorType66 = new(0x66, Garbage);
+		public override string ToString() => $"{ID:X2} - {Name}";
+
+		public static readonly DungeonDoorType DoorType00 = new(0x00, "Normal door", Unspecial);
+		public static readonly DungeonDoorType DoorType02 = new(0x02, "Normal door (lower layer)", Unspecial);
+		public static readonly DungeonDoorType DoorType04 = new(0x04, "Exit (lower layer)", Unspecial, exit: true);
+		public static readonly DungeonDoorType DoorType06 = new(0x06, "Unused cave exit (lower layer)", Unspecial, exit: true);
+		public static readonly DungeonDoorType DoorType08 = new(0x08, "Waterfall door", Unspecial);
+		public static readonly DungeonDoorType DoorType0A = new(0x0A, "Fancy dungeon exit", Unspecial, exit: true);
+		public static readonly DungeonDoorType DoorType0C = new(0x0C, "Fancy dungeon exit (lower layer)", Unspecial, exit: true);
+		public static readonly DungeonDoorType DoorType0E = new(0x0E, "Cave exit", Unspecial, exit: true);
+		public static readonly DungeonDoorType DoorType10 = new(0x10, "Lit cave exit (lower layer)", Unspecial, exit: true);
+		public static readonly DungeonDoorType DoorType12 = new(0x12, "Exit marker", Meta, exit: true);
+		public static readonly DungeonDoorType DoorType14 = new(0x14, "Dungeon swap marker", DungeonSwap);
+		public static readonly DungeonDoorType DoorType16 = new(0x16, "Layer swap marker", LayerSwap);
+		public static readonly DungeonDoorType DoorType18 = new(0x18, "Double sided shutter door", Shutter);
+		public static readonly DungeonDoorType DoorType1A = new(0x1A, "Eye watch door", Shutter);
+		public static readonly DungeonDoorType DoorType1C = new(0x1C, "Small key door", Openable);
+		public static readonly DungeonDoorType DoorType1E = new(0x1E, "Big key door", Openable);
+		public static readonly DungeonDoorType DoorType20 = new(0x20, "Small key stairs (upwards)", Openable);
+		public static readonly DungeonDoorType DoorType22 = new(0x22, "Small key stairs (downwards)", Openable);
+		public static readonly DungeonDoorType DoorType24 = new(0x24, "Small key stairs (lower layer; upwards)", Openable);
+		public static readonly DungeonDoorType DoorType26 = new(0x26, "Small key stairs (lower layer; downwards)", Openable);
+		public static readonly DungeonDoorType DoorType28 = new(0x28, "Dash wall", Openable);
+		public static readonly DungeonDoorType DoorType2A = new(0x2A, "Bombable cave exit", Openable, exit: true);
+		public static readonly DungeonDoorType DoorType2C = new(0x2C, "Unopenable, double-sided big key door", Garbage);
+		public static readonly DungeonDoorType DoorType2E = new(0x2E, "Bombable door", Openable);
+		public static readonly DungeonDoorType DoorType30 = new(0x30, "Exploding wall", Openable);
+		public static readonly DungeonDoorType DoorType32 = new(0x32, "Curtain door", Openable);
+		public static readonly DungeonDoorType DoorType34 = new(0x34, "Unusable bottom-sided shutter door", Garbage);
+		public static readonly DungeonDoorType DoorType36 = new(0x36, "Bottom-sided shutter door", Shutter);
+		public static readonly DungeonDoorType DoorType38 = new(0x38, "Top-sided shutter door", Shutter);
+		public static readonly DungeonDoorType DoorType3A = new(0x3A, "Unusable normal door (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType3C = new(0x3C, "Unusable normal door (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType3E = new(0x3E, "Unusable normal door (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType40 = new(0x40, "Normal door (lower layer; used with one-sided shutters)", Unspecial);
+		public static readonly DungeonDoorType DoorType42 = new(0x42, "Unused double-sided shutter", Shutter);
+		public static readonly DungeonDoorType DoorType44 = new(0x44, "Double-sided shutter (lower layer)", Shutter);
+		public static readonly DungeonDoorType DoorType46 = new(0x46, "Explicit room door", Meta);
+		public static readonly DungeonDoorType DoorType48 = new(0x48, "Bottom-sided shutter door (lower layer)", Shutter);
+		public static readonly DungeonDoorType DoorType4A = new(0x4A, "Top-sided shutter door (lower layer)", Shutter);
+		public static readonly DungeonDoorType DoorType4C = new(0x4C, "Unusable normal door (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType4E = new(0x4E, "Unusable normal door (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType50 = new(0x50, "Unusable normal door (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType52 = new(0x52, "Unusable bombed-open door (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType54 = new(0x54, "Unusable glitchy door (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType56 = new(0x56, "Unusable glitchy door (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType58 = new(0x58, "Unusable normal door (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType5A = new(0x5A, "Unusable glitchy/stairs up (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType5C = new(0x5C, "Unusable glitchy/stairs up (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType5E = new(0x5E, "Unusable glitchy/stairs up (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType60 = new(0x60, "Unusable glitchy/stairs up (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType62 = new(0x62, "Unusable glitchy/stairs down (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType64 = new(0x64, "Unusable glitchy/stairs up (lower layer)", Garbage);
+		public static readonly DungeonDoorType DoorType66 = new(0x66, "Unusable glitchy/stairs down (lower layer)", Garbage);
+
+		public static readonly DungeonDoorType[] ListOf =
+		{
+			DoorType00,
+			DoorType02,
+			DoorType04,
+			DoorType06,
+			DoorType08,
+			DoorType0A,
+			DoorType0C,
+			DoorType0E,
+			DoorType10,
+			DoorType12,
+			DoorType14,
+			DoorType16,
+			DoorType18,
+			DoorType1A,
+			DoorType1C,
+			DoorType1E,
+			DoorType20,
+			DoorType22,
+			DoorType24,
+			DoorType26,
+			DoorType28,
+			DoorType2A,
+			DoorType2C,
+			DoorType2E,
+			DoorType30,
+			DoorType32,
+			DoorType34,
+			DoorType36,
+			DoorType38,
+			DoorType3A,
+			DoorType3C,
+			DoorType3E,
+			DoorType40,
+			DoorType42,
+			DoorType44,
+			DoorType46,
+			DoorType48,
+			DoorType4A,
+			DoorType4C,
+			DoorType4E,
+			DoorType50,
+			DoorType52,
+			DoorType54,
+			DoorType56,
+			DoorType58,
+			DoorType5A,
+			DoorType5C,
+			DoorType5E,
+			DoorType60,
+			DoorType62,
+			DoorType64,
+			DoorType66,
+		};
+
 
 		public static DungeonDoorType GetTypeFromID(int b) => b switch
 		{

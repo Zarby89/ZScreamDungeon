@@ -12,6 +12,8 @@
 		public bool IsStairs => ObjectType.Specialness == SpecialObjectType.InterroomStairs;
 		public DungeonLimits LimitClass => ObjectType.LimitClass;
 
+		public bool Resizable => ObjectType.Resizeability != DungeonObjectSizeability.None;
+
 		private const int Scale = 8;
 		public byte GridX { get; set; }
 		public byte GridY { get; set; }

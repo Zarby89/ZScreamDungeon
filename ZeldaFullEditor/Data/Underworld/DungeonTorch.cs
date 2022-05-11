@@ -23,6 +23,9 @@
 
 		public Rectangle SquareHitbox => new(RealX, RealY, 16, 16);
 
+
+		public string Name => "Torch";
+		
 		public DungeonTorch()
 		{
 
