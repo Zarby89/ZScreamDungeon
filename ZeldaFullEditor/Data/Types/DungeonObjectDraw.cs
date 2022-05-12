@@ -1,6 +1,7 @@
 ﻿namespace ZeldaFullEditor.Data
 {
 	public delegate void DrawObject(Artist art, RoomObject obj);
+
 	public partial class RoomObjectType
 	{
 		/// <summary>
@@ -17,7 +18,7 @@
 
 				foreach (DrawInfo d in instructions)
 				{
-					if (d.XOff > 56 || d.YOff > 56 || d.XOff < 0 || d.YOff < 0) continue;
+					if (d.XOff is > 56 or < 0 || d.YOff is > 56 or < 0) continue;
 
 					Tile t = obj.Tiles[d.TileIndex].CloneModified(hflip: d.HFlip, vflip: d.VFlip, hox: d.HXOR, vox: d.VXOR);
 
@@ -328,13 +329,13 @@
 					new DrawInfo(tid + 56, 40, y),
 					new DrawInfo(tid + 70, 48, y),
 
-					new DrawInfo(tid + 70, 56, y, hox: true),
-					new DrawInfo(tid + 56, 64, y, hox: true),
-					new DrawInfo(tid + 42, 72, y, hox: true),
-					new DrawInfo(tid + 28, 80, y, hox: true),
-					new DrawInfo(tid + 14, 88, y, hox: true),
-					new DrawInfo(tid + 14, 96, y, hox: true),
-					new DrawInfo(tid, 104, y, hflip: true)
+					new DrawInfo(tid + 70, 56, y) { HXOR = true },
+					new DrawInfo(tid + 56, 64, y) { HXOR = true },
+					new DrawInfo(tid + 42, 72, y) { HXOR = true },
+					new DrawInfo(tid + 28, 80, y) { HXOR = true },
+					new DrawInfo(tid + 14, 88, y) { HXOR = true },
+					new DrawInfo(tid + 14, 96, y) { HXOR = true },
+					new DrawInfo(tid, 104, y) { HXOR = true }
 				);
 				tid++;
 			}
@@ -365,17 +366,17 @@
 			for (int x = 0; x < 7 * 8; x += 8)
 			{
 				DrawTiles(art, obj, false,
-					new DrawInfo(24, 64 - x, 32 + x, hflip: false),
-					new DrawInfo(25, 64 - x, 40 + x, hflip: false),
-					new DrawInfo(26, 64 - x, 48 + x, hflip: false),
-					new DrawInfo(27, 64 - x, 56 + x, hflip: false),
-					new DrawInfo(28, 64 - x, 64 + x, hflip: false),
+					new DrawInfo(24, 64 - x, 32 + x) { HFlip = false },
+					new DrawInfo(25, 64 - x, 40 + x) { HFlip = false },
+					new DrawInfo(26, 64 - x, 48 + x) { HFlip = false },
+					new DrawInfo(27, 64 - x, 56 + x) { HFlip = false },
+					new DrawInfo(28, 64 - x, 64 + x) { HFlip = false },
 
-					new DrawInfo(24, 184 + x, 32 + x, hflip: true),
-					new DrawInfo(25, 184 + x, 40 + x, hflip: true),
-					new DrawInfo(26, 184 + x, 48 + x, hflip: true),
-					new DrawInfo(27, 184 + x, 56 + x, hflip: true),
-					new DrawInfo(28, 184 + x, 64 + x, hflip: true)
+					new DrawInfo(24, 184 + x, 32 + x) { HFlip = true },
+					new DrawInfo(25, 184 + x, 40 + x) { HFlip = true },
+					new DrawInfo(26, 184 + x, 48 + x) { HFlip = true },
+					new DrawInfo(27, 184 + x, 56 + x) { HFlip = true },
+					new DrawInfo(28, 184 + x, 64 + x) { HFlip = true }
 				);
 			}
 
@@ -386,17 +387,17 @@
 				for (int y = 0; y < 6 * 8; y += 8)
 				{
 					DrawTiles(art, obj, false,
-						new DrawInfo(tid, 16, y + i, hflip: false),
-						new DrawInfo(tid++, 216, y + i, hflip: true),
+						new DrawInfo(tid, 16, y + i) { HFlip = false },
+						new DrawInfo(tid++, 216, y + i) { HFlip = true },
 
-						new DrawInfo(tid, 24, y + i, hflip: false),
-						new DrawInfo(tid++, 208, y + i, hflip: true),
+						new DrawInfo(tid, 24, y + i) { HFlip = false },
+						new DrawInfo(tid++, 208, y + i) { HFlip = true },
 
-						new DrawInfo(tid, 32, y + i, hflip: false),
-						new DrawInfo(tid++, 200, y + i, hflip: true),
+						new DrawInfo(tid, 32, y + i) { HFlip = false },
+						new DrawInfo(tid++, 200, y + i) { HFlip = true },
 
-						new DrawInfo(tid, 40, y + i, hflip: false),
-						new DrawInfo(tid++, 192, y + i, hflip: true)
+						new DrawInfo(tid, 40, y + i) { HFlip = false },
+						new DrawInfo(tid++, 192, y + i) { HFlip = true }
 					);
 				}
 			}
@@ -1026,7 +1027,7 @@
 			}
 
 			DrawTiles(art, obj, false,
-				new DrawInfo(0, 0, 0, under: obj.Tiles[1].ToUnsignedShort()),
+				new DrawInfo(0, 0, 0) { TileUnder = obj.Tiles[1].ToUnsignedShort() },
 				new DrawInfo(2, 0, (obj.Size * 8) + 16)
 			);
 		}
@@ -1114,13 +1115,13 @@
 			{
 				DrawTiles(art, obj, false,
 					new DrawInfo(2, x, 24),
-					new DrawInfo(2, x + 8, 24, hox: true),
+					new DrawInfo(2, x + 8, 24) { HXOR = true },
 
 					new DrawInfo(3, x, 32),
-					new DrawInfo(3, x + 8, 32, hox: true),
+					new DrawInfo(3, x + 8, 32) { HXOR = true },
 
 					new DrawInfo(4, x, 40),
-					new DrawInfo(4, x + 8, 40, hox: true)
+					new DrawInfo(4, x + 8, 40) { HXOR = true }
 				);
 			}
 
@@ -1430,24 +1431,24 @@
 		{
 			DrawTiles(art, obj, false,
 				new DrawInfo(0, 0, 0),
-				new DrawInfo(0, 120, 0, hflip: true),
+				new DrawInfo(0, 120, 0) { HFlip = true },
 				new DrawInfo(1, 8, 0),
-				new DrawInfo(1, 112, 0, hflip: true),
+				new DrawInfo(1, 112, 0) { HFlip = true },
 				new DrawInfo(3, 8, 16),
-				new DrawInfo(3, 112, 16, hflip: true)
+				new DrawInfo(3, 112, 16) { HFlip = true }
 			);
 
 			for (int x = 16; x < 56; x += 8)
 			{
 				DrawTiles(art, obj, false,
 					new DrawInfo(1, x, 0),
-					new DrawInfo(1, x + 56, 0, hflip: true),
+					new DrawInfo(1, x + 56, 0) { HFlip = true },
 					new DrawInfo(2, x, 8),
-					new DrawInfo(2, x + 56, 8, hflip: true),
+					new DrawInfo(2, x + 56, 8) { HFlip = true },
 					new DrawInfo(4, x, 16),
-					new DrawInfo(4, x, 16, hflip: true),
+					new DrawInfo(4, x, 16) { HFlip = true },
 					new DrawInfo(5, x + 56, 24),
-					new DrawInfo(5, x, 24, hflip: true)
+					new DrawInfo(5, x, 24) { HFlip = true }
 				);
 			}
 		}
@@ -1673,7 +1674,7 @@
 			}
 
 			DrawTiles(art, obj, false,
-				new DrawInfo(0, 0, 0, under: obj.Tiles[1].ToUnsignedShort()),
+				new DrawInfo(0, 0, 0) { TileUnder = obj.Tiles[1].ToUnsignedShort() },
 				new DrawInfo(2, (obj.Size * 8) + 16, 0)
 			);
 		}
@@ -1699,7 +1700,7 @@
 			}
 
 			DrawTiles(art, obj, false,
-				new DrawInfo(0, 0, 0, under: obj.Tiles[1].ToUnsignedShort()),
+				new DrawInfo(0, 0, 0) { TileUnder = obj.Tiles[1].ToUnsignedShort() },
 				new DrawInfo(2, (obj.Size * 8) + 24, 0)
 			);
 		}

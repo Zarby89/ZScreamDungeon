@@ -46,7 +46,7 @@
 		// TODO zarby stop making magic numbers
 		public const int IDKZarby = 0x54727;
 
-		public static byte[] FontSpacings = new byte[] {
+		public static readonly byte[] FontSpacings = new byte[] {
 			4, 3, 5, 7, 5, 6, 5, 3, 4, 4, 5, 5, 3, 5, 3, 5,
 			5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 3, 3, 5, 5, 5, 5,
 			5, 5, 5, 5, 5, 5, 5, 6, 5, 5, 6, 5, 5, 7, 6, 5,

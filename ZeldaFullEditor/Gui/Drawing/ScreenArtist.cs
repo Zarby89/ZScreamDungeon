@@ -14,7 +14,7 @@
 
 		public override Bitmap FinalOutput { get; } = new Bitmap(512, 512);
 
-		private bool drawid;
+		private readonly bool drawid;
 
 		public ScreenArtist(OverworldScreen screen) : base()
 		{

@@ -27,7 +27,8 @@ namespace ZeldaFullEditor.Data
 		public ushort FullID { get; }
 
 		// every tileset is beautiful
-		public static byte[] AllTileSets = { 0 };
+		public static readonly byte[] AllTileSets = { 0 };
+
 		private RoomObjectType(ushort objectid, DrawObject drawfunc, DungeonObjectSizeability resizing, RoomObjectCategory[] categories, byte[] gsets,
 			SpecialObjectType special = SpecialObjectType.None, DungeonLimits limit = DungeonLimits.None)
 		{

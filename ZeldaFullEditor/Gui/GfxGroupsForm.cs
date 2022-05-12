@@ -105,12 +105,6 @@
 			// TODO: Add something here?
 		}
 
-		private byte getTextBoxValue(TextBox tb) // Changed to hex
-		{
-			byte.TryParse(tb.Text, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out byte r);
-			return r;
-		}
-
 		private void allBox_TextChanged(object sender, EventArgs e)
 		{
 			if (editedFromForm) return;

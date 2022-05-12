@@ -6,26 +6,7 @@
 		public byte[] musics = new byte[4];
 		bool fromForm = false;
 
-		// TODO move to DefaultEntities
-		string[] musicNames = new string[]
-		{
-			"0x00 None",
-			"0x01 Title",
-			"0x02 World Map",
-			"0x03 Beginning",
-			"0x04 Rabbit",
-			"0x05 Forest",
-			"0x06 Intro",
-			"0x07 Town",
-			"0x08 Warp",
-			"0x09 Dark World",
-			"0x0A Mastersword",
-			"0x0B File Select",
-			"0x0C Soldier",
-			"0x0D Mountain",
-			"0x0E Shop",
-			"0x0F Fanfare"
-		};
+		// TODO move to default entities
 
 		string[] ambientNames = new string[]
 		{
@@ -71,10 +52,10 @@
 
 		private void OWMusicForm_Load(object sender, EventArgs e)
 		{
-			music1Box.Items.AddRange(musicNames);
-			music2Box.Items.AddRange(musicNames);
-			music3Box.Items.AddRange(musicNames);
-			music4Box.Items.AddRange(musicNames);
+			music1Box.DataSource = DefaultEntities.ListOfOverworldMusics;
+			music2Box.DataSource = DefaultEntities.ListOfOverworldMusics;
+			music3Box.DataSource = DefaultEntities.ListOfOverworldMusics;
+			music4Box.DataSource = DefaultEntities.ListOfOverworldMusics;
 
 			ambient1Box.Items.AddRange(ambientNames);
 			ambient2Box.Items.AddRange(ambientNames);

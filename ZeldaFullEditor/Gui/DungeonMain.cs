@@ -53,11 +53,6 @@ namespace ZeldaFullEditor
 
 
 
-
-
-
-
-
 		OverworldEditor oweditor2;
 		private VramViewer vramViewer;
 		private CGRamViewer cgramViewer;
@@ -2544,7 +2539,6 @@ namespace ZeldaFullEditor
 			{
 				toolStrip1.Visible = true;
 				panel1.Visible = true;
-				toolboxPanel.Visible = true;
 				customPanel3.Visible = true;
 				headerGroupbox.Visible = true;
 				tabControl2.Visible = true;
@@ -2569,7 +2563,6 @@ namespace ZeldaFullEditor
 			{
 				toolStrip1.Visible = false;
 				panel1.Visible = false;
-				toolboxPanel.Visible = false;
 				customPanel3.Visible = false;
 				headerGroupbox.Visible = false;
 				tabControl2.Visible = false;

@@ -15,6 +15,6 @@
 			Map16Value = tileId;
 		}
 
-		public static OverlayTile GarbageTile = new(0xFF, 0xFF, 0xFFFF);
+		public static readonly OverlayTile GarbageTile = new(0xFF, 0xFF, 0xFFFF);
 	}
 }
