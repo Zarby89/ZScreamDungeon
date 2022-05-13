@@ -2,7 +2,7 @@
 
 namespace ZeldaFullEditor
 {
-	public partial class TextEditor
+	public partial class DungeonMain
 	{
 		private const string BANKToken = "BANK";
 		private const byte BANKID = 0x80;

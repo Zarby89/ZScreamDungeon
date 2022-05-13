@@ -119,7 +119,7 @@
 		public void SelectTab(TabSelection st)
 		{
 			curtab = st;
-			Program.MainForm.editorsTabControl.SelectTab((int) st);
+			MainForm.editorsTabControl.SelectTab((int) st);
 			active = st switch
 			{
 				TabSelection.DungeonEditor => UnderworldScene,
@@ -131,21 +131,21 @@
 		public void SetDungeonEditMode(DungeonEditMode em)
 		{
 			uwmode = em;
-			Program.DungeonForm.UpdateUnderworldMode(em);
+			MainForm.UpdateUnderworldMode(em);
 			UnderworldScene.UpdateForMode(em);
 		}
 
 		private void SetOverworldEditMode(OverworldEditMode om)
 		{
 			owmode = om;
-			Program.OverworldForm.UpdateForMode(om);
+			MainForm.UpdateOverworldMode(om);
 			OverworldScene.UpdateForMode(om);
 		}
 
 		public void SetSelectedMessageID(int id)
 		{
-			Program.TextForm.SelectMessageID(id);
-			Program.TextForm.Refresh();
+			MainForm.SelectMessageID(id);
+			MainForm.Refresh();
 		}
 	}
 
@@ -153,6 +153,7 @@
 	{
 		DungeonEditor = 0,
 		OverworldEditor = 1,
+		GraphicsEditor = 2,
 		TextEditor = 3,
 	}
 

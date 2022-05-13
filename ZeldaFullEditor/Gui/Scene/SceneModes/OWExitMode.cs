@@ -20,7 +20,7 @@
 			{
 				if (lastexit == value) return;
 
-				Program.OverworldForm.SetSelectedExit(value);
+				MainForm.SetSelectedExit(value);
 				lastexit = value;
 			}
 		}

@@ -61,7 +61,7 @@
 			saveArr[39] = checkBox40.Checked; //misc triforce
 			saveArr[40] = checkBox41.Checked; //overworld message IDs
 
-			Program.MainForm.saveSettingsArr = saveArr;
+			MainForm.saveSettingsArr = saveArr;
 
 			this.Close();
 		}
@@ -78,7 +78,7 @@
 
 		public void LoadSaveSettings()
 		{
-			saveArr = Program.MainForm.saveSettingsArr;
+			saveArr = MainForm.saveSettingsArr;
 
 			checkBox1.Checked = saveArr[0];   //save dungeon sprites
 			checkBox2.Checked = saveArr[1];   //save dungeon pot items

@@ -1,8 +1,8 @@
 ﻿namespace ZeldaFullEditor.Data
 {
-	public class OverworldSprite : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IEquatable<OverworldSprite>
+	public class OverworldSprite : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IHaveInfo, IEquatable<OverworldSprite>
 	{
-		public string Name => Species.VanillaName;
+		public override string Name => Species.VanillaName;
 		public byte ID => Species.ID;
 		public bool IsCurrentlyOverlord => ID > 0xF2;
 

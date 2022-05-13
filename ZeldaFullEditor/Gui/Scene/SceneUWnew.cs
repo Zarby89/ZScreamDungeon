@@ -149,7 +149,7 @@ namespace ZeldaFullEditor
 
 		private void RedrawRoom()
 		{
-			Program.DungeonForm.UpdateFormForSelectedObject(Room.OnlySelectedObject);
+			MainForm.UpdateFormForSelectedObject(Room.OnlySelectedObject);
 
 			// TODO ROOM.DRAW()
 
@@ -161,7 +161,7 @@ namespace ZeldaFullEditor
 
 		public override void Refresh()
 		{
-			Program.DungeonForm.UpdateUIForRoom(Room, true);
+			MainForm.UpdateUIForRoom(Room, true);
 			Invalidate();
 			base.Refresh();
 		}
@@ -196,7 +196,7 @@ namespace ZeldaFullEditor
 
 		public bool isMouseCollidingWith(IMouseCollidable o, MouseEventArgs e)
 		{
-			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+			MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 
 			// TODO
 
@@ -238,7 +238,7 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw BG2 outlines
-			if (Program.DungeonForm.ShowBG2Outline)
+			if (MainForm.ShowBG2Outline)
 			{
 				foreach (var l in Room.AllObjects)
 				{
@@ -253,7 +253,7 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw BG2 annotations
-			if (Program.DungeonForm.invisibleObjectsTextToolStripMenuItem.Checked)
+			if (MainForm.invisibleObjectsTextToolStripMenuItem.Checked)
 			{
 				foreach (var l in Room.AllObjects)
 				{
@@ -269,7 +269,7 @@ namespace ZeldaFullEditor
 
 			// Draw chest numbers
 			int id = 0;
-			if (Program.DungeonForm.showChestIDs)
+			if (MainForm.showChestIDs)
 			{
 				foreach (var c in Room.ChestList)
 				{
@@ -284,7 +284,7 @@ namespace ZeldaFullEditor
 			// TODO deal with overlapping shit
 			// Draw door text
 			id = 0;
-			if (Program.DungeonForm.showDoorsIDs)
+			if (MainForm.showDoorsIDs)
 			{
 				foreach (var d in Room.DoorsList)
 				{
@@ -323,7 +323,7 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw secret item names
-			if (Program.MainForm.showItemsText)
+			if (MainForm.showItemsText)
 			{
 				foreach (var s in Room.SecretsList)
 				{
@@ -332,7 +332,7 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw sprite names
-			if (Program.MainForm.showSpriteText)
+			if (MainForm.showSpriteText)
 			{
 				foreach (var s in Room.SpritesList)
 				{
@@ -341,9 +341,9 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw selected entrance position
-			if (Program.MainForm.selectedEntrance != null && Program.MainForm.entrancePositionToolStripMenuItem.Checked)
+			if (MainForm.selectedEntrance != null && MainForm.entrancePositionToolStripMenuItem.Checked)
 			{
-				var n = Program.MainForm.selectedEntrance;
+				var n = MainForm.selectedEntrance;
 				if (n.RoomID == Room.RoomID)
 				{
 					g.DrawRectangle(Pens.Orange, n.CameraTriggerX - 128, n.CameraTriggerY - 116, 256, 224);
@@ -356,9 +356,9 @@ namespace ZeldaFullEditor
 
 			// TODO add back with proper stuff
 			// Draw grid
-			//int wh = (512 / Program.MainForm.gridSize) + 1;
+			//int wh = (512 / MainForm.gridSize) + 1;
 			//
-			//for (int x = 0, l = 0; x < wh; x++, l += Program.MainForm.gridSize)
+			//for (int x = 0, l = 0; x < wh; x++, l += MainForm.gridSize)
 			//{
 			//	g.DrawLine(Constants.HalfWhitePen, l, 0, l, 512);
 			//	g.DrawLine(Constants.HalfWhitePen, 0, l, 512, l);

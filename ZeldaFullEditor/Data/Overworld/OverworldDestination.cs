@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor
 {
-	public abstract class OverworldDestination : OverworldEntity, IMouseCollidable, IFreelyPlaceable
+	public abstract class OverworldDestination : OverworldEntity, IMouseCollidable, IFreelyPlaceable, IHaveInfo
 	{
 		public ushort ScrollX { get; set; }
 		public ushort ScrollY { get; set; }

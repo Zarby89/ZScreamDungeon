@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor
 {
-	public class OverworldTransport : OverworldDestination, IMouseCollidable, IFreelyPlaceable
+	public class OverworldTransport : OverworldDestination, IMouseCollidable, IFreelyPlaceable, IHaveInfo
 	{
 		public ushort whirlpoolPos { get; set; }
 
@@ -8,6 +8,8 @@
 		public byte unk2 { get; set; }
 
 		public bool isAutomatic = true;
+
+		public override string Name => "Transport";
 
 		public OverworldTransport(byte mapId, ushort vramLocation, ushort yScroll, ushort xScroll,
 			ushort playerY, ushort playerX, ushort cameraY, ushort cameraX,

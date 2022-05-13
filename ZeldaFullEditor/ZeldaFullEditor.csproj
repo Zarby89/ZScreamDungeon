@@ -96,9 +96,7 @@
     <Compile Update="Gui\MainTabs\ObjectDesigner.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Gui\MainTabs\OverworldEditor.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Update="Gui\MainTabs\OverworldEditor.cs" />
     <Compile Update="Gui\MainTabs\ScreenEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>

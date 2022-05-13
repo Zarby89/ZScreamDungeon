@@ -18,11 +18,11 @@
 	//		// TODO: FIND PROBLEM THAT IS INCREASING SAVE TIME!!
 	//		private void OnMouseMove(object sender, MouseEventArgs e)
 	//		{
-	//			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+	//			MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 	//
 	//			if (!colliding_chest)
 	//			{
-	//				Program.MainForm.toolTip1.Hide(this);
+	//				MainForm.toolTip1.Hide(this);
 	//			}
 	//
 	//			if (mouse_down) // Slowdown problem in save caused by something here
@@ -112,7 +112,7 @@
 	//				return;
 	//			}
 	//
-	//			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+	//			MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 	//
 	//			//this.Focus();
 	//
@@ -430,7 +430,7 @@
 	//						int px = e.X / 16;
 	//						int py = e.Y / 16;
 	//
-	//						room.collisionMap[px + (py * 64)] = (byte) Program.MainForm.tileTypeCombobox.SelectedIndex;
+	//						room.collisionMap[px + (py * 64)] = (byte) MainForm.tileTypeCombobox.SelectedIndex;
 	//					}
 	//				}
 	//
@@ -632,20 +632,20 @@
 	//			{
 	//				ZS.GFXManager.DrawBG2();
 	//			}
-	//			if (Program.MainForm.showSprite)
+	//			if (MainForm.showSprite)
 	//			{
 	//				room.drawSprites();
 	//			}
-	//			if (Program.MainForm.showChest)
+	//			if (MainForm.showChest)
 	//			{
 	//				drawChests();
 	//			}
-	//			if (Program.MainForm.showItems)
+	//			if (MainForm.showItems)
 	//			{
 	//				room.drawPotsItems();
 	//			}
 	//
-	//			Program.MainForm.cgramViewer.Refresh();
+	//			MainForm.cgramViewer.Refresh();
 	//		}
 	//
 	//		public void drawChests()
@@ -873,7 +873,7 @@
 	//		// TODO switch statements and no casting the selected mode
 	//		public void setMouseSizeMode(MouseEventArgs e)
 	//		{
-	//			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+	//			MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 	//
 	//			switch (ZS.CurrentUWMode)
 	//			{

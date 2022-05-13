@@ -1,7 +1,7 @@
 ﻿namespace ZeldaFullEditor.Data.Underworld
 {
 	[Serializable]
-	public class DungeonSprite : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID
+	public class DungeonSprite : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID, IHaveInfo
 	{
 		private const int Scale = 16;
 		public byte GridX { get; set; }

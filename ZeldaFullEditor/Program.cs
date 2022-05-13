@@ -1,4 +1,6 @@
-﻿global using System;
+﻿global using static ZeldaFullEditor.TheGUI;
+
+global using System;
 global using System.Collections.Generic;
 global using System.Collections.Immutable;
 global using System.ComponentModel;
@@ -20,8 +22,15 @@ global using ZeldaFullEditor.Gui;
 global using ZeldaFullEditor.Gui.MainTabs;
 global using ZeldaFullEditor.Properties;
 
+
 namespace ZeldaFullEditor
 {
+	internal static class TheGUI
+	{
+		public static DungeonMain MainForm { get; set; }
+	}
+
+
 	static class Program
 	{
 		// var to keep track whether to show the console or not
@@ -34,11 +43,6 @@ namespace ZeldaFullEditor
 
 		[DllImport("user32.dll")]
 		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-		public static DungeonMain DungeonForm { get; private set; }
-		public static DungeonMain MainForm { get; private set; }
-		public static OverworldEditor OverworldForm { get; private set; }
-		public static TextEditor TextForm { get; private set; }
 
 		public static RoomArtist RoomEditingArtist { get; } = new RoomArtist(false);
 		public static RoomArtist RoomPreviewArtist { get; } = new RoomArtist(true);
@@ -83,10 +87,7 @@ namespace ZeldaFullEditor
 			ZScreamer ZS = new ZScreamer();
 			ZS.SetAsActiveScreamer();
 
-			DungeonForm = new DungeonMain();
-			MainForm = DungeonForm;
-			OverworldForm = new OverworldEditor();
-			TextForm = new TextEditor();
+			MainForm = new DungeonMain();
 
 			Application.Run(MainForm);
 		}

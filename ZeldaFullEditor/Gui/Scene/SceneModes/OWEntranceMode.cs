@@ -20,7 +20,7 @@
 			{
 				if (lastentrance == value) return;
 
-				Program.OverworldForm.SetSelectedEntrance(lastentrance);
+				MainForm.SetSelectedEntrance(lastentrance);
 				lastentrance = value;
 			}
 		}

@@ -16,7 +16,7 @@
 			PrefixChoose.SelectedIndex = pre;
 		}
 
-		internal void ShowBytes(TextEditor.MessageData a)
+		internal void ShowBytes(DungeonMain.MessageData a)
 		{
 			datar = a.Data;
 			datap = a.DataParsed;

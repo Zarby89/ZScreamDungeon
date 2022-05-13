@@ -1,7 +1,7 @@
 ﻿namespace ZeldaFullEditor.Data.Underworld
 {
 	[Serializable]
-	public class DungeonDoor : IDungeonPlaceable, IByteable, IDelegatedDraw
+	public class DungeonDoor : IDungeonPlaceable, IByteable, IDelegatedDraw, IHaveInfo
 	{
 		public byte ID => DoorType.ID;
 

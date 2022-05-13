@@ -153,8 +153,8 @@ namespace ZeldaFullEditor
 		protected override void OnMouseWheel(object sender, MouseEventArgs e)
 		{
 			((HandledMouseEventArgs) e).Handled = true;
-			int xPos = Program.OverworldForm.splitContainer1.Panel2.HorizontalScroll.Value;
-			int yPos = Program.OverworldForm.splitContainer1.Panel2.VerticalScroll.Value;
+			int xPos = MainForm.OverworldSplitContainer.Panel2.HorizontalScroll.Value;
+			int yPos = MainForm.OverworldSplitContainer.Panel2.VerticalScroll.Value;
 
 			if (ModifierKeys == Keys.Shift)
 			{
@@ -165,7 +165,7 @@ namespace ZeldaFullEditor
 				e.ScrollByValue(ref yPos, -48);
 			}
 
-			Program.OverworldForm.splitContainer1.Panel2.AutoScrollPosition = new Point(xPos, yPos);
+			MainForm.OverworldSplitContainer.Panel2.AutoScrollPosition = new Point(xPos, yPos);
 			//e.Delta
 			//base.OnMouseWheel(sender, e);
 		}
@@ -174,7 +174,7 @@ namespace ZeldaFullEditor
 		{
 			if (CurrentMap + ZS.OverworldManager.WorldOffset <= 159)
 			{
-				Program.OverworldForm.propertiesChangedFromForm = true;
+				MainForm.propertiesChangedFromForm = true;
 				OverworldScreen map = ZS.OverworldManager.allmaps[CurrentMap + ZS.OverworldManager.WorldOffset];
 
 				if (map.NeedsRefresh)
@@ -183,23 +183,23 @@ namespace ZeldaFullEditor
 					map.NeedsRefresh = false;
 				}
 
-				Program.OverworldForm.mapGroupbox.Text = string.Format(
-					Program.MainForm.showMapIndexInHexToolStripMenuItem.Checked ? "Selected map: {0}" : "Selected map: {0}",
+				MainForm.mapGroupbox.Text = string.Format(
+					MainForm.showMapIndexInHexToolStripMenuItem.Checked ? "Selected map: {0}" : "Selected map: {0}",
 					map.ParentMapID
 					);
 
-				Program.OverworldForm.OWProperty_MessageID.HexValue = ZS.OverworldManager.allmaps[map.ParentMapID].MessageID;
+				MainForm.OWProperty_MessageID.HexValue = ZS.OverworldManager.allmaps[map.ParentMapID].MessageID;
 
-				Program.OverworldForm.UpdateGUIProperties(ZS.OverworldManager.allmaps[map.ParentMapID], ZS.OverworldManager.WorldOffset >= 64 ? 0 : ZS.OverworldManager.GameState);
+				MainForm.UpdateGUIProperties(ZS.OverworldManager.allmaps[map.ParentMapID], ZS.OverworldManager.WorldOffset >= 64 ? 0 : ZS.OverworldManager.GameState);
 
-				Program.OverworldForm.propertiesChangedFromForm = false;
-				Program.OverworldForm.tilePictureBox.Refresh();
+				MainForm.propertiesChangedFromForm = false;
+				MainForm.tilePictureBox.Refresh();
 
-				Program.OverworldForm.areaBGColorPictureBox.Refresh();
+				MainForm.areaBGColorPictureBox.Refresh();
 			}
 
-			Program.OverworldForm.BuildScratchTilesGfx();
-			Program.OverworldForm.scratchPicturebox.Refresh();
+			MainForm.BuildScratchTilesGfx();
+			MainForm.scratchPicturebox.Refresh();
 		}
 
 		protected override void OnMouseDown(MouseEventArgs e)
@@ -218,9 +218,9 @@ namespace ZeldaFullEditor
 
 				CurrentMapParent = ZS.OverworldManager.allmaps[CurrentMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 
-				Program.OverworldForm.previewTextPicturebox.Visible = false;
+				MainForm.previewTextPicturebox.Visible = false;
 				updateMapGfx();
-				Program.OverworldForm.updateTiles();
+				MainForm.updateTiles();
 
 				base.OnMouseDown(e);
 
@@ -258,8 +258,8 @@ namespace ZeldaFullEditor
 		{
 			selecting = false;
 
-			Program.OverworldForm.objCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedSprite;
-			Program.OverworldForm.objCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedItem;
+			MainForm.OverworldObjectCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedSprite;
+			MainForm.OverworldObjectCombobox.SelectedIndexChanged -= ObjCombobox_SelectedIndexChangedItem;
 
 			base.OnMouseUp(sender, e);
 
@@ -269,7 +269,7 @@ namespace ZeldaFullEditor
 
 		private void ObjCombobox_SelectedIndexChangedSprite(object sender, EventArgs e)
 		{
-			byte id = (byte) (Program.OverworldForm.objCombobox.SelectedItem as SpriteName).ID;
+			byte id = (byte) (MainForm.OverworldObjectCombobox.SelectedItem as SpriteName).ID;
 			lastselectedSprite.Species = SpriteType.GetTypeFromID(id);
 
 			InvalidateHighEnd();
@@ -293,17 +293,17 @@ namespace ZeldaFullEditor
 			else
 			{
 				Invalidate(new Rectangle(
-					Program.OverworldForm.splitContainer1.Panel2.HorizontalScroll.Value,
-					Program.OverworldForm.splitContainer1.Panel2.VerticalScroll.Value,
-					Program.OverworldForm.splitContainer1.Panel2.Width,
-					Program.OverworldForm.splitContainer1.Panel2.Height
+					MainForm.OverworldSplitContainer.Panel2.HorizontalScroll.Value,
+					MainForm.OverworldSplitContainer.Panel2.VerticalScroll.Value,
+					MainForm.OverworldSplitContainer.Panel2.Width,
+					MainForm.OverworldSplitContainer.Panel2.Height
 				));
 			}
 		}
 
 		private void ObjCombobox_SelectedIndexChangedItem(object sender, EventArgs e)
 		{
-			byte id = (byte) (Program.OverworldForm.objCombobox.SelectedItem as SecretsName).ID;
+			byte id = (byte) (MainForm.OverworldObjectCombobox.SelectedItem as SecretsName).ID;
 			LastSelectedSecret.SecretType = SecretItemType.GetTypeFromID(id);
 			InvalidateHighEnd();
 		}
@@ -437,7 +437,7 @@ namespace ZeldaFullEditor
 				{
 					if (i > 159) continue;
 
-					if (Program.MainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
+					if (MainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
 					{
 						if ((i >= 0x03) && (i <= 0x07))
 						{
@@ -468,7 +468,7 @@ namespace ZeldaFullEditor
 
 					g.DrawImage(ZS.OverworldManager.allmaps[i].gfxBitmap, new PointF(x, y));
 
-					if (Program.MainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
+					if (MainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
 					{
 						// TODO bad hardcoded
 						//if (i == 0 || i == 1 || i == 8 || i == 9)
@@ -519,17 +519,17 @@ namespace ZeldaFullEditor
 
 			g.CompositingMode = CompositingMode.SourceOver;
 
-			if (Program.MainForm.showExits)
+			if (MainForm.showExits)
 			{
 				Draw_Exit(g);
 			}
 
-			if (Program.MainForm.showEntrances)
+			if (MainForm.showEntrances)
 			{
 				Draw_Entrance(g);
 			}
 
-			if (Program.MainForm.showItems)
+			if (MainForm.showItems)
 			{
 				Draw_Secrets(g);
 			}
@@ -537,12 +537,12 @@ namespace ZeldaFullEditor
 			Draw_Graves(g);
 
 
-			if (Program.MainForm.showFlute)
+			if (MainForm.showFlute)
 			{
 				Draw_Transports(g);
 			}
 
-			if (Program.MainForm.ShowSprites)
+			if (MainForm.ShowSprites)
 			{
 				Draw_Sprites(g);
 			}
@@ -554,11 +554,11 @@ namespace ZeldaFullEditor
 			{
 				if (SelectedEntrance != null)
 				{
-					g.DrawImage(Program.OverworldForm.tmpPreviewBitmap, SelectedEntrance.GlobalX + 16, SelectedEntrance.GlobalY + 16);
+					g.DrawImage(MainForm.tmpPreviewBitmap, SelectedEntrance.GlobalX + 16, SelectedEntrance.GlobalY + 16);
 				}
 				if (SelectedExit != null)
 				{
-					g.DrawImage(Program.OverworldForm.tmpPreviewBitmap, SelectedExit.GlobalX + 16, SelectedExit.GlobalY + 16);
+					g.DrawImage(MainForm.tmpPreviewBitmap, SelectedExit.GlobalX + 16, SelectedExit.GlobalY + 16);
 				}
 			}
 
@@ -612,7 +612,7 @@ namespace ZeldaFullEditor
 				g.DrawText(4, 48, globalmouseTileDownY.ToString());
 			}
 
-			if (Program.OverworldForm.gridDisplay != 0)
+			if (MainForm.OverworldGridSize != 0)
 			{
 				int gridsize = 512;
 				if (ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[CurrentMap].ParentMapID].IsPartOfLargeMap)
@@ -623,18 +623,18 @@ namespace ZeldaFullEditor
 				int x = 512 * (ZS.OverworldManager.allmaps[CurrentMap].ParentMapID % 8);
 				int y = 512 * (ZS.OverworldManager.allmaps[CurrentMap].ParentMapID / 8);
 
-				for (int gx = 0; gx < (gridsize / Program.OverworldForm.gridDisplay); gx++)
+				for (int gx = 0; gx < (gridsize / MainForm.OverworldGridSize); gx++)
 				{
 					g.DrawLine(Constants.ThirdWhitePen1,
-						new Point(x + gx * Program.OverworldForm.gridDisplay, y),
-						new Point(x + gx * Program.OverworldForm.gridDisplay, y + gridsize));
+						new Point(x + gx * MainForm.OverworldGridSize, y),
+						new Point(x + gx * MainForm.OverworldGridSize, y + gridsize));
 				}
 
-				for (int gy = 0; gy < (gridsize / Program.OverworldForm.gridDisplay); gy++)
+				for (int gy = 0; gy < (gridsize / MainForm.OverworldGridSize); gy++)
 				{
 					g.DrawLine(Constants.ThirdWhitePen1,
-						new Point(x, y + (gy * Program.OverworldForm.gridDisplay)),
-						new Point(x + gridsize, y + (gy * Program.OverworldForm.gridDisplay)));
+						new Point(x, y + (gy * MainForm.OverworldGridSize)),
+						new Point(x + gridsize, y + (gy * MainForm.OverworldGridSize)));
 				}
 			}
 

@@ -6,7 +6,7 @@
 	public interface IByteable
 	{
 		/// <summary>
-		/// Returns a stream of bytes representing the object in its current state.
+		/// Creates and returns a stream of bytes representing the object in its current state.
 		/// </summary>
 		public byte[] GetByteData();
 	}

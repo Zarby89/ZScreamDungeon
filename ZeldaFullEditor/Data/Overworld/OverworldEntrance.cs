@@ -1,11 +1,13 @@
 ﻿namespace ZeldaFullEditor
 {
 	[Serializable]
-	public class OverworldEntrance : OverworldEntity, IFreelyPlaceable, IMouseCollidable
+	public class OverworldEntrance : OverworldEntity, IFreelyPlaceable, IMouseCollidable, IHaveInfo
 	{
 		public ushort mapPos { get; set; }
 		public byte TargetEntranceID { get; set; }
 		public bool IsPitEntrance { get; set; }
+
+		public override string Name => "Entrance";
 
 		// TODO make this based on map position and make deleted map position consistent
 		public bool Deleted => (GlobalX & GlobalY) == Constants.NullEntrance;

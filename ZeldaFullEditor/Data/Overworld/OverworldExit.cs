@@ -1,7 +1,7 @@
 ﻿namespace ZeldaFullEditor
 {
 	[Serializable]
-	public class OverworldExit : OverworldDestination, IMouseCollidable, IFreelyPlaceable
+	public class OverworldExit : OverworldDestination, IMouseCollidable, IFreelyPlaceable, IHaveInfo
 	{
 		public byte unk1 { get; set; }
 		public byte unk2 { get; set; }
@@ -12,6 +12,7 @@
 
 		public ushort TargetRoomID { get; set; }
 
+		public override string Name => "Exit";
 		public ushort doorType1 { get; set; }
 		public ushort doorType2 { get; set; }
 

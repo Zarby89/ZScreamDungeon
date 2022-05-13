@@ -1,9 +1,11 @@
 ﻿namespace ZeldaFullEditor
 {
-	public abstract class OverworldEntity : IMouseCollidable, IFreelyPlaceable
+	public abstract class OverworldEntity : IMouseCollidable, IFreelyPlaceable, IHaveInfo
 	{
 		private ushort globalx, globaly;
 		private byte mapx, mapy;
+		
+		public abstract string Name { get; }
 
 		public Rectangle SquareHitbox => new(GlobalX, GlobalY, 16, 16);
 
