@@ -13,6 +13,11 @@
 			get => Pointer[i];
 			set => Pointer[i] = value;
 		}
+		public byte this[int x, int y]
+		{
+			get => throw new NotImplementedException();
+			set => throw new NotImplementedException();
+		}
 
 		public ColorPalette Palette
 		{

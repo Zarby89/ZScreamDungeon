@@ -138,8 +138,8 @@
 	{
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
-		public int RealX => 0;
-		public int RealY => 0;
+		public int RealX => 16;
+		public int RealY => 16;
 		public byte ID => Species.ID;
 		public SpriteType Species { get; }
 		public string Name => Species.VanillaName;

@@ -91,80 +91,36 @@
 			}
 		}
 
-
-		public unsafe void DrawTileToBuffer(in Tile tile, int offset, IGraphicsCanvas canvas)
-		{
-			var gfx = LoadedGraphics[tile.ID];
-			byte palnibble = (byte) (tile.Palette << 4);
-			byte r = tile.HFlipByte;
-
-			for (int yl = 0; yl < 8; yl++)
-			{
-				int my = offset + (8 * 64 * (tile.VFlip ? 7 - yl : yl));
-
-				for (int xl = 0; xl < 7; xl++)
-				{
-					int index = my + 2 * (tile.HFlip ? 7 - xl : xl);
-
-					byte pixel1 = gfx[xl + r ^ 1, yl];
-					byte pixel2 = gfx[xl + r, yl];
-
-					canvas[index] = (byte) ((pixel1 & 0x0F) | palnibble);
-				}
-			}
-		}
-
 		public abstract void DrawTileForPreview(Tile t, int indexoff);
 
-		public virtual unsafe void DrawSprite(IDrawableSprite spr, OAMDrawInfo[] instructions,
-			int xoff = 0, int yoff = 0, int mult = 512, int maxindex = 262144, bool useGlobal = false)
+		public virtual void DrawSprite(IDrawableSprite spr, OAMDrawInfo[] instructions,
+			int xoff = 0, int yoff = 0, bool useGlobal = false)
 		{
 			var graphics = LoadedGraphics;
-
 			foreach (var ti in instructions)
 			{
 				int size = ti.RectSideSize;
-				byte r = (byte) (ti.HFlip ? 1 : 0);
-				int indexoff = spr.RealX + ti.XOff + xoff + (mult * (spr.RealY + ti.YOff + yoff));
-				byte pal = (byte) (ti.Palette << 3);
+				byte pal = (byte) (ti.Palette << 4);
 
+				int x = spr.RealX + ti.XOff + xoff;
+				int y = spr.RealY + ti.YOff + yoff;
 
-			}
+				IGraphicsTile gfx;
 
-
-
-
-			// TODO poorly copied and shit
-			foreach (OAMDrawInfo ti in instructions)
-			{
-				int size = ti.RectSideSize;
-				byte r = (byte) (ti.HFlip ? 1 : 0);
-				int tx = (ti.TileIndex / 16 * 512) + ((ti.TileIndex & 0xF) << 2); // TODO verify
-				int indexoff = spr.RealX + ti.XOff + xoff + (mult * (spr.RealY + ti.YOff + yoff));
-				byte pal = (byte) (ti.Palette << 3);
-
-
-				for (int yl = 0, yl2 = tx; yl < size; yl++, yl2 += 64)
+				if (ti.IsBig)
 				{
-					int my = (mult * (ti.VFlip ? size - 1 - yl : yl)) + indexoff; // this is alltilesData additive, so it can go here
+					gfx = new BigSpriteTile(graphics[ti.TileIndex], graphics[ti.TileIndex + 1], graphics[ti.TileIndex + 16], graphics[ti.TileIndex + 17]);
+				}
+				else
+				{
+					gfx = graphics[ti.TileIndex];
+				}
 
-					for (int xl = 0, xl2 = yl2; xl < size; xl++, xl2++)
+				for (int yl = 0; yl < size; yl++)
+				{
+					for (int xl = 0; xl < size; xl++)
 					{
-						int mx = ti.HFlip ? size - 1 - xl : xl;
-						var pixel = graphics[xl2];
-						int index = (mx * 2) + my;
-
-						if (index >= 0 && index <= maxindex)
-						{
-							if (pixel.BitIsOn(0x0F))
-							{
-								SpriteCanvas[index + r ^ 1] = (byte) ((pixel & 0x0F) + 112 + pal);
-							}
-							if (pixel.BitIsOn(0xF0))
-							{
-								SpriteCanvas[index + r] = (byte) ((pixel >> 4) + 112 + pal);
-							}
-						}
+						SpriteCanvas[x + xl, y + yl] = (byte) (gfx.GetPixelAt(x, y, ti.HFlip, ti.VFlip) | pal);
 					}
 				}
 			}

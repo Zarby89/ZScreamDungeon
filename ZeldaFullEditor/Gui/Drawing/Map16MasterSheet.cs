@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor
 {
-	public unsafe class Tile16MasterSheet : IGraphicsCanvas, IGraphicsSheet, IByteable
+	public unsafe class Tile16MasterSheet : IByteable
 	{
 		private readonly IntPtr ptr;
 		private byte* Pointer => (byte*) ptr.ToPointer();

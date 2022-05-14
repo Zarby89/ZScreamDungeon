@@ -2421,18 +2421,18 @@
 			{
 				if (triforceRadio.Checked)
 				{
-					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].y, 4, 4));
+					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].X, 126 + triforceVertices[i].Y, 4, 4));
 					if (selectedVertex == triforceVertices[i])
 					{
-						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].y, 4, 4));
+						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].X, 126 + triforceVertices[i].Y, 4, 4));
 					}
 				}
 				else
 				{
-					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].x, 126 + crystalVertices[i].y, 4, 4));
+					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].X, 126 + crystalVertices[i].Y, 4, 4));
 					if (selectedVertex == crystalVertices[i])
 					{
-						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].x, 126 + crystalVertices[i].y, 4, 4));
+						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].X, 126 + crystalVertices[i].Y, 4, 4));
 					}
 				}
 			}
@@ -2444,18 +2444,18 @@
 			{
 				if (triforceRadio.Checked)
 				{
-					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].z, 4, 4));
+					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].X, 126 + triforceVertices[i].Z, 4, 4));
 					if (selectedVertex == triforceVertices[i])
 					{
-						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].x, 126 + triforceVertices[i].z, 4, 4));
+						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].X, 126 + triforceVertices[i].Z, 4, 4));
 					}
 				}
 				else
 				{
-					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].x, 126 + crystalVertices[i].z, 4, 4));
+					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].X, 126 + crystalVertices[i].Z, 4, 4));
 					if (selectedVertex == crystalVertices[i])
 					{
-						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].x, 126 + crystalVertices[i].z, 4, 4));
+						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].X, 126 + crystalVertices[i].Z, 4, 4));
 					}
 				}
 			}
@@ -2467,20 +2467,20 @@
 			{
 				if (triforceRadio.Checked)
 				{
-					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
+					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].Z, 126 + triforceVertices[i].Y, 4, 4));
 
 					if (selectedVertex == triforceVertices[i])
 					{
-						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
+						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + triforceVertices[i].Z, 126 + triforceVertices[i].Y, 4, 4));
 					}
 				}
 				else
 				{
-					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].z, 126 + crystalVertices[i].y, 4, 4));
+					e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + crystalVertices[i].Z, 126 + crystalVertices[i].Y, 4, 4));
 
 					if (selectedVertex == crystalVertices[i])
 					{
-						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].z, 126 + crystalVertices[i].y, 4, 4));
+						e.Graphics.DrawRectangle(Pens.Blue, new Rectangle(126 + crystalVertices[i].Z, 126 + crystalVertices[i].Y, 4, 4));
 					}
 				}
 			}
@@ -2494,9 +2494,9 @@
 				{
 					//e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
 
-					if (e.X >= triforceVertices[i].x + 124 && e.X <= triforceVertices[i].x + 130)
+					if (e.X >= triforceVertices[i].X + 124 && e.X <= triforceVertices[i].X + 130)
 					{
-						if (e.Y >= triforceVertices[i].y + 124 && e.Y <= triforceVertices[i].y + 130)
+						if (e.Y >= triforceVertices[i].Y + 124 && e.Y <= triforceVertices[i].Y + 130)
 						{
 							selectedVertex = triforceVertices[i];
 						}
@@ -2506,9 +2506,9 @@
 				{
 					//e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
 
-					if (e.X >= crystalVertices[i].x + 124 && e.X <= crystalVertices[i].x + 130)
+					if (e.X >= crystalVertices[i].X + 124 && e.X <= crystalVertices[i].X + 130)
 					{
-						if (e.Y >= crystalVertices[i].y + 124 && e.Y <= crystalVertices[i].y + 130)
+						if (e.Y >= crystalVertices[i].Y + 124 && e.Y <= crystalVertices[i].Y + 130)
 						{
 							selectedVertex = crystalVertices[i];
 						}
@@ -2526,8 +2526,8 @@
 		{
 			if (mdown)
 			{
-				selectedVertex.x = (sbyte) (e.X - 128);
-				selectedVertex.y = (sbyte) (e.Y - 128);
+				selectedVertex.X = (sbyte) (e.X - 128);
+				selectedVertex.Y = (sbyte) (e.Y - 128);
 				triforcebox1.Refresh();
 				triforcebox2.Refresh();
 				triforcebox3.Refresh();
@@ -2547,9 +2547,9 @@
 				{
 					//e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
 
-					if (e.X >= triforceVertices[i].x + 124 && e.X <= triforceVertices[i].x + 130)
+					if (e.X >= triforceVertices[i].X + 124 && e.X <= triforceVertices[i].X + 130)
 					{
-						if (e.Y >= triforceVertices[i].z + 124 && e.Y <= triforceVertices[i].z + 130)
+						if (e.Y >= triforceVertices[i].Z + 124 && e.Y <= triforceVertices[i].Z + 130)
 						{
 							selectedVertex = triforceVertices[i];
 						}
@@ -2562,9 +2562,9 @@
 				{
 					//e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
 
-					if (e.X >= crystalVertices[i].x + 124 && e.X <= crystalVertices[i].x + 130)
+					if (e.X >= crystalVertices[i].X + 124 && e.X <= crystalVertices[i].X + 130)
 					{
-						if (e.Y >= crystalVertices[i].z + 124 && e.Y <= crystalVertices[i].z + 130)
+						if (e.Y >= crystalVertices[i].Z + 124 && e.Y <= crystalVertices[i].Z + 130)
 						{
 							selectedVertex = crystalVertices[i];
 						}
@@ -2586,9 +2586,9 @@
 				{
 					//e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
 
-					if (e.X >= triforceVertices[i].z + 124 && e.X <= triforceVertices[i].z + 130)
+					if (e.X >= triforceVertices[i].Z + 124 && e.X <= triforceVertices[i].Z + 130)
 					{
-						if (e.Y >= triforceVertices[i].y + 124 && e.Y <= triforceVertices[i].y + 130)
+						if (e.Y >= triforceVertices[i].Y + 124 && e.Y <= triforceVertices[i].Y + 130)
 						{
 							selectedVertex = triforceVertices[i];
 						}
@@ -2598,9 +2598,9 @@
 				{
 					//e.Graphics.DrawRectangle(Pens.Yellow, new Rectangle(126 + triforceVertices[i].z, 126 + triforceVertices[i].y, 4, 4));
 
-					if (e.X >= crystalVertices[i].z + 124 && e.X <= crystalVertices[i].z + 130)
+					if (e.X >= crystalVertices[i].Z + 124 && e.X <= crystalVertices[i].Z + 130)
 					{
-						if (e.Y >= crystalVertices[i].y + 124 && e.Y <= crystalVertices[i].y + 130)
+						if (e.Y >= crystalVertices[i].Y + 124 && e.Y <= crystalVertices[i].Y + 130)
 						{
 							selectedVertex = crystalVertices[i];
 						}
@@ -2629,8 +2629,8 @@
 		{
 			if (mdown)
 			{
-				selectedVertex.x = (sbyte) (e.X - 128);
-				selectedVertex.z = (sbyte) (e.Y - 128);
+				selectedVertex.X = (sbyte) (e.X - 128);
+				selectedVertex.Z = (sbyte) (e.Y - 128);
 				triforcebox1.Refresh();
 				triforcebox2.Refresh();
 				triforcebox3.Refresh();
@@ -2641,8 +2641,8 @@
 		{
 			if (mdown)
 			{
-				selectedVertex.z = (sbyte) (e.X - 128);
-				selectedVertex.y = (sbyte) (e.Y - 128);
+				selectedVertex.Z = (sbyte) (e.X - 128);
+				selectedVertex.Y = (sbyte) (e.Y - 128);
 				triforcebox1.Refresh();
 				triforcebox2.Refresh();
 				triforcebox3.Refresh();
@@ -2654,15 +2654,15 @@
 			for (int i = 0; i < 6; i++)
 			{
 				ZScreamer.ActiveROM.Write(ZScreamer.ActiveOffsets.triforceVertices + (i * 3),
-					(byte) triforceVertices[i].x,
-					(byte) triforceVertices[i].y,
-					(byte) triforceVertices[i].z
+					(byte) triforceVertices[i].X,
+					(byte) triforceVertices[i].Y,
+					(byte) triforceVertices[i].Z
 				);
 
 				ZScreamer.ActiveROM.Write(ZScreamer.ActiveOffsets.crystalVertices + (i * 3),
-					(byte) crystalVertices[i].x,
-					(byte) crystalVertices[i].y,
-					(byte) crystalVertices[i].z
+					(byte) crystalVertices[i].X,
+					(byte) crystalVertices[i].Y,
+					(byte) crystalVertices[i].Z
 				);
 			}
 		}

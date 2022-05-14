@@ -37,6 +37,13 @@
 					TileCount = 4 * 16;
 					break;
 
+				case SNESPixelFormat.SNES4BPP:
+				case SNESPixelFormat.SNES4BPPCompressed:
+					Width = 128;
+					Height = 32;
+					TileCount = 4 * 16;
+					break;
+
 				default:
 					throw new NotImplementedException();
 			}
