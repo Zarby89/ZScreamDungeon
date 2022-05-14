@@ -350,7 +350,7 @@
 								goto case TextView.NeverShowName;
 						}
 
-						g.DrawFilledRectangleWithOutline(ent.SquareHitbox, outline, bgrBrush);
+						g.DrawFilledRectangleWithOutline(ent.BoundingBox, outline, bgrBrush);
 
 						g.DrawText(ent.GlobalX, ent.GlobalY + 9, txt);
 						i++;

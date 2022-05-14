@@ -3,11 +3,10 @@
 	public class Overworld
 	{
 		public List<Tile32> Tile32List;
-		public Map16MasterSheet Tile16List { get; } = new Map16MasterSheet();
+		public Tile16MasterSheet Tile16Sheet { get; } = new Tile16MasterSheet();
 
 		private int[] map32address;
 
-		public Tile32[] map16tiles;
 		public List<Size> posSize;
 
 		public Tile[,] tempTiles8_LW = new Tile[512, 512]; //all maps tiles8
@@ -62,7 +61,6 @@
 			ZS = zs;
 			Tile32List = new List<Tile32>();
 
-			map16tiles = new Tile32[Constants.NumberOfMap32];
 			posSize = new List<Size>();
 
 			t32 = new List<ushort>();
@@ -73,8 +71,8 @@
 		}
 		public void Init()
 		{
-			AssembleMap32Tiles();
-			AssembleMap16Tiles();
+			AssembleTile32Definitions();
+			AssembleTile16Definitions();
 			DecompressAllMapTiles();
 			loadOverlays();
 			loadTilesTypes();
@@ -251,26 +249,26 @@
 			}
 		}
 
-		public void AssembleMap16Tiles()
+		public void AssembleTile16Definitions()
 		{
-			int tpos = ZS.Offsets.map16Tiles;
-			for (int i = 0; i < Constants.NumberOfMap16; i += 1)
+			int tpos = ZS.Offsets.Map16DefinitionAddress;
+			for (ushort i = 0; i < Constants.NumberOfUniqueTile16Definitions; i += 1)
 			{
 				Tile t0 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
 				Tile t1 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
 				Tile t2 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
 				Tile t3 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
 
-				Tile16List.ListOf.Add(new Tile16(t0, t1, t2, t3));
+				Tile16Sheet.SetTile16At(i, new Tile16(t0, t1, t2, t3));
 			}
 		}
 
-		public void SaveMap16DefinitionsToROM()
+		public void SaveTile16DefinitionsToROM()
 		{
-			ZS.ROM.Write(ZS.Offsets.map16Tiles, Tile16List.GetByteData());
+			ZS.ROM.Write(ZS.Offsets.Map16DefinitionAddress, Tile16Sheet.GetByteData());
 		}
 
-		public void AssembleMap32Tiles()
+		public void AssembleTile32Definitions()
 		{
 			map32address = new int[]
 			{
@@ -420,20 +418,22 @@
 			}
 		}
 
-		public void createMap32TilesFrom16()
+		public void CreateMap32Definitions()
 		{
 			t32.Clear();
 			tiles32count = 0;
 
-			for (int i = 0; i < Constants.NumberOfMap32; i++)
+			var creating = new Tile32[Constants.NumberOfTile32Total];
+
+			for (int i = 0; i < Constants.NumberOfTile32Total; i++)
 			{
 				ushort? foundIndex = null;
 				for (int j = 0; j < tiles32count; j++)
 				{
-					if (t32Unique[j].Tile0 == map16tiles[i].Tile0 &&
-						t32Unique[j].Tile1 == map16tiles[i].Tile1 &&
-						t32Unique[j].Tile2 == map16tiles[i].Tile2 &&
-						t32Unique[j].Tile3 == map16tiles[i].Tile3)
+					if (t32Unique[j].Tile0 == creating[i].Tile0 &&
+						t32Unique[j].Tile1 == creating[i].Tile1 &&
+						t32Unique[j].Tile2 == creating[i].Tile2 &&
+						t32Unique[j].Tile3 == creating[i].Tile3)
 					{
 						foundIndex = (ushort) j;
 						break;
@@ -442,7 +442,7 @@
 
 				if (foundIndex == null)
 				{
-					t32Unique[tiles32count] = new Tile32(map16tiles[i].Tile0, map16tiles[i].Tile1, map16tiles[i].Tile2, map16tiles[i].Tile3);
+					t32Unique[tiles32count] = new Tile32(creating[i].Tile0, creating[i].Tile1, creating[i].Tile2, creating[i].Tile3);
 					t32.Add((ushort) tiles32count);
 					tiles32count++;
 				}
@@ -586,7 +586,7 @@
 		}
 
 
-		public void createMap32Tilesmap()
+		public void CreateTile32Maps()
 		{
 			t32Unique.Clear();
 			t32.Clear();
@@ -655,7 +655,7 @@
 				alltilesIndexed.Add(tiles[i], (ushort) i); // index the uniques tiles with a dictionary
 			}
 
-			for (int i = 0; i < Constants.NumberOfMap32; i++)
+			for (int i = 0; i < Constants.NumberOfTile32Total; i++)
 			{
 				t32.Add(alltilesIndexed[alltiles16[i]]); //add all tiles32 from all maps
 														 // convert all tiles32 non-unique ids into unique array of ids
@@ -671,10 +671,10 @@
 				t32Unique.Add(new Tile32(0));
 			}
 
-			if (t32Unique.Count > Constants.LimitOfMap32)
+			if (t32Unique.Count > Constants.MaximumNumberOfTile32)
 			{
 				if (MessageBox.Show("Unique Tile32 count exceed the limit in the rom\n    ====== " + t32Unique.Count +
-					" Used out of " + Constants.LimitOfMap32 + " ======    \nThe ROM will NOT be saved, would you like to export map data?",
+					" Used out of " + Constants.MaximumNumberOfTile32 + " ======    \nThe ROM will NOT be saved, would you like to export map data?",
 					"Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
 				{
 					ExportMaps();
@@ -685,7 +685,7 @@
 			alltiles16.Clear();
 
 			int v = t32Unique.Count;
-			for (int i = v; i < Constants.LimitOfMap32; i++)
+			for (int i = v; i < Constants.MaximumNumberOfTile32; i++)
 			{
 				t32Unique.Add(Tile32.Empty);
 			}
@@ -835,7 +835,7 @@
 			}
 		}
 
-		public void SaveMap32DefinitionsToROM()
+		public void SaveTile32DefinitionsToROM()
 		{
 			int index = 0;
 			int c = t32Unique.Count;
@@ -1151,107 +1151,108 @@
 			}
 		}
 
-		public bool createMap16Tilesmap()
+		public bool CreateMap16Maps()
 		{
-			t16Unique.Clear();
-			t16.Clear();
-
-			// Create tile32 from tiles16
-			List<ulong> alltiles8 = new List<ulong>();
-
-			int sx = 0;
-			int sy = 0;
-			int c = 0;
-			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
-			{
-				Tile[,] tilesused;
-				if (i < 64)
-				{
-					tilesused = tempTiles8_LW;
-				}
-				else if (i >= 128)
-				{
-					tilesused = tempTiles8_SP;
-				}
-				else
-				{
-					tilesused = tempTiles8_DW;
-				}
-
-				for (int y = 0; y < 64; y += 2)
-				{
-					for (int x = 0; x < 64; x += 2)
-					{
-						ushort tf00 = tilesused[x + (sx * 64), y + (sy * 64)].ToUnsignedShort();
-						ushort tf01 = tilesused[x + 1 + (sx * 64), y + (sy * 64)].ToUnsignedShort();
-						ushort tf02 = tilesused[x + (sx * 64), y + 1 + (sy * 64)].ToUnsignedShort();
-						ushort tf03 = tilesused[x + 1 + (sx * 64), y + 1 + (sy * 64)].ToUnsignedShort();
-
-						alltiles8.Add(Tile16.CreateLongValue(tf00, tf01, tf02, tf03));
-					}
-				}
-
-				sx++;
-				if (sx >= 8)
-				{
-					sy++;
-					sx = 0;
-				}
-
-				c++;
-				if (c >= 64)
-				{
-					sx = 0;
-					sy = 0;
-					c = 0;
-				}
-			}
-
-			List<ulong> tiles = alltiles8.Distinct().ToList(); // that get rid of duplicated tiles using linq
-															   // alltiles16 = all tiles32...
-															   // tiles = all tiles32 that are uniques double are removed
-			Dictionary<ulong, ushort> alltilesIndexed = new Dictionary<ulong, ushort>();
-
-			for (int i = 0; i < tiles.Count; i++)
-			{
-				alltilesIndexed.Add(tiles[i], (ushort) i); // index the uniques tiles with a dictionary
-			}
-
-			for (int i = 0; i < Constants.NumberOfOWMaps * 32 * 32; i++) // 163840 = numbers of 16x16 tiles (160 * (32*32))
-			{
-				t16.Add(alltilesIndexed[alltiles8[i]]); // add all tiles32 from all maps
-														// convert all tiles32 non-unique ids into unique array of ids
-			}
-
-			foreach (ulong tt in tiles) // for each uniques tile32
-			{
-				t16Unique.Add(new Tile16(tt)); // create new tileunique
-			}
-
-			while (t16Unique.Count % 4 != 0) // prevent a bug if tilecount is not a multiple of 4
-			{
-				t16Unique.Add(new Tile16(0));
-			}
-
-			if (t16Unique.Count > Constants.LimitOfMap32)
-			{
-				if (MessageBox.Show("Unique Tiles16 count exceed the limit in the rom\nTiles data won't be saved would you like to export map data?", "Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
-				{
-					// TODO: add something here?
-				}
-
-				return true;
-			}
-
-			Tile16List.ListOf.Clear();
-			foreach (Tile16 t16 in t16Unique)
-			{
-				Tile16List.ListOf.Add(t16.Clone());
-			}
-
-			alltiles8.Clear();
-
-			return false;
+			throw new NotImplementedException();
+			//t16Unique.Clear();
+			//t16.Clear();
+			//
+			//// Create tile32 from tiles16
+			//List<ulong> alltiles8 = new List<ulong>();
+			//
+			//int sx = 0;
+			//int sy = 0;
+			//int c = 0;
+			//for (int i = 0; i < Constants.NumberOfOWMaps; i++)
+			//{
+			//	Tile[,] tilesused;
+			//	if (i < 64)
+			//	{
+			//		tilesused = tempTiles8_LW;
+			//	}
+			//	else if (i >= 128)
+			//	{
+			//		tilesused = tempTiles8_SP;
+			//	}
+			//	else
+			//	{
+			//		tilesused = tempTiles8_DW;
+			//	}
+			//
+			//	for (int y = 0; y < 64; y += 2)
+			//	{
+			//		for (int x = 0; x < 64; x += 2)
+			//		{
+			//			ushort tf00 = tilesused[x + (sx * 64), y + (sy * 64)].ToUnsignedShort();
+			//			ushort tf01 = tilesused[x + 1 + (sx * 64), y + (sy * 64)].ToUnsignedShort();
+			//			ushort tf02 = tilesused[x + (sx * 64), y + 1 + (sy * 64)].ToUnsignedShort();
+			//			ushort tf03 = tilesused[x + 1 + (sx * 64), y + 1 + (sy * 64)].ToUnsignedShort();
+			//
+			//			alltiles8.Add(Tile16.CreateLongValue(tf00, tf01, tf02, tf03));
+			//		}
+			//	}
+			//
+			//	sx++;
+			//	if (sx >= 8)
+			//	{
+			//		sy++;
+			//		sx = 0;
+			//	}
+			//
+			//	c++;
+			//	if (c >= 64)
+			//	{
+			//		sx = 0;
+			//		sy = 0;
+			//		c = 0;
+			//	}
+			//}
+			//
+			//List<ulong> tiles = alltiles8.Distinct().ToList(); // that get rid of duplicated tiles using linq
+			//												   // alltiles16 = all tiles32...
+			//												   // tiles = all tiles32 that are uniques double are removed
+			//Dictionary<ulong, ushort> alltilesIndexed = new Dictionary<ulong, ushort>();
+			//
+			//for (int i = 0; i < tiles.Count; i++)
+			//{
+			//	alltilesIndexed.Add(tiles[i], (ushort) i); // index the uniques tiles with a dictionary
+			//}
+			//
+			//for (int i = 0; i < Constants.NumberOfOWMaps * 32 * 32; i++) // 163840 = numbers of 16x16 tiles (160 * (32*32))
+			//{
+			//	t16.Add(alltilesIndexed[alltiles8[i]]); // add all tiles32 from all maps
+			//											// convert all tiles32 non-unique ids into unique array of ids
+			//}
+			//
+			//foreach (ulong tt in tiles) // for each uniques tile32
+			//{
+			//	t16Unique.Add(new Tile16(tt)); // create new tileunique
+			//}
+			//
+			//while (t16Unique.Count % 4 != 0) // prevent a bug if tilecount is not a multiple of 4
+			//{
+			//	t16Unique.Add(new Tile16(0));
+			//}
+			//
+			//if (t16Unique.Count > Constants.LimitOfMap32)
+			//{
+			//	if (MessageBox.Show("Unique Tiles16 count exceed the limit in the rom\nTiles data won't be saved would you like to export map data?", "Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
+			//	{
+			//		// TODO: add something here?
+			//	}
+			//
+			//	return true;
+			//}
+			//
+			//Tile16List.ListOf.Clear();
+			//foreach (Tile16 t16 in t16Unique)
+			//{
+			//	Tile16List.ListOf.Add(t16.Clone());
+			//}
+			//
+			//alltiles8.Clear();
+			//
+			//return false;
 		}
 	}
 }

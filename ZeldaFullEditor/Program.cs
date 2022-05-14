@@ -19,6 +19,7 @@ global using System.Windows.Forms;
 global using ZeldaFullEditor.Data;
 global using ZeldaFullEditor.Data.Underworld;
 global using ZeldaFullEditor.Gui;
+global using ZeldaFullEditor.Gui.Drawing;
 global using ZeldaFullEditor.Gui.MainTabs;
 global using ZeldaFullEditor.Properties;
 
@@ -37,6 +38,7 @@ namespace ZeldaFullEditor
 		// 0 = dont show
 		// 5 = show
 		private static int showConsole = 0;
+
 
 		[DllImport("kernel32.dll")]
 		static extern IntPtr GetConsoleWindow();

@@ -237,12 +237,6 @@ namespace ZeldaFullEditor
 			this.pictureBox2 = new System.Windows.Forms.PictureBox();
 			this.owPropertyPanel = new System.Windows.Forms.Panel();
 			this.objectGroupbox = new System.Windows.Forms.GroupBox();
-			this.SelectedObjectY = new System.Windows.Forms.Label();
-			this.SelectedObjectX = new System.Windows.Forms.Label();
-			this.SelectedObjectID = new System.Windows.Forms.Label();
-			this.label17 = new System.Windows.Forms.Label();
-			this.label47 = new System.Windows.Forms.Label();
-			this.label48 = new System.Windows.Forms.Label();
 			this.OverworldObjectCombobox = new System.Windows.Forms.ComboBox();
 			this.mapGroupbox = new System.Windows.Forms.GroupBox();
 			this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
@@ -647,10 +641,10 @@ namespace ZeldaFullEditor
 			// 
 			// editorsTabControl
 			// 
+			this.editorsTabControl.Alignment = System.Windows.Forms.TabAlignment.Bottom;
 			this.editorsTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.editorsTabControl.Appearance = System.Windows.Forms.TabAppearance.FlatButtons;
 			this.editorsTabControl.Controls.Add(this.dungeonPage);
 			this.editorsTabControl.Controls.Add(this.overworldPage);
 			this.editorsTabControl.Controls.Add(this.GfxEditorPage);
@@ -669,17 +663,17 @@ namespace ZeldaFullEditor
 			// 
 			// dungeonPage
 			// 
+			this.dungeonPage.BackColor = System.Drawing.SystemColors.Control;
 			this.dungeonPage.Controls.Add(this.tabControl1);
 			this.dungeonPage.Controls.Add(this.splitContainer1);
 			this.dungeonPage.Controls.Add(this.headerGroupbox);
-			this.dungeonPage.Location = new System.Drawing.Point(4, 25);
+			this.dungeonPage.Location = new System.Drawing.Point(4, 4);
 			this.dungeonPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.dungeonPage.Name = "dungeonPage";
 			this.dungeonPage.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.dungeonPage.Size = new System.Drawing.Size(1150, 739);
+			this.dungeonPage.Size = new System.Drawing.Size(1150, 742);
 			this.dungeonPage.TabIndex = 0;
 			this.dungeonPage.Text = "Dungeon Editor";
-			this.dungeonPage.UseVisualStyleBackColor = true;
 			// 
 			// tabControl1
 			// 
@@ -694,7 +688,7 @@ namespace ZeldaFullEditor
 			this.tabControl1.Multiline = true;
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(298, 727);
+			this.tabControl1.Size = new System.Drawing.Size(298, 740);
 			this.tabControl1.TabIndex = 26;
 			// 
 			// entrancetabPage
@@ -743,7 +737,7 @@ namespace ZeldaFullEditor
 			this.entrancetabPage.Location = new System.Drawing.Point(4, 22);
 			this.entrancetabPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entrancetabPage.Name = "entrancetabPage";
-			this.entrancetabPage.Size = new System.Drawing.Size(290, 701);
+			this.entrancetabPage.Size = new System.Drawing.Size(290, 714);
 			this.entrancetabPage.TabIndex = 5;
 			this.entrancetabPage.Text = "Rooms";
 			this.entrancetabPage.UseVisualStyleBackColor = true;
@@ -1422,7 +1416,7 @@ namespace ZeldaFullEditor
 			this.objectstabPage.Location = new System.Drawing.Point(4, 24);
 			this.objectstabPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.objectstabPage.Name = "objectstabPage";
-			this.objectstabPage.Size = new System.Drawing.Size(290, 699);
+			this.objectstabPage.Size = new System.Drawing.Size(290, 710);
 			this.objectstabPage.TabIndex = 4;
 			this.objectstabPage.Text = "Objects";
 			this.objectstabPage.UseVisualStyleBackColor = true;
@@ -1474,7 +1468,7 @@ namespace ZeldaFullEditor
 			this.tabPage4.Location = new System.Drawing.Point(4, 24);
 			this.tabPage4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.tabPage4.Name = "tabPage4";
-			this.tabPage4.Size = new System.Drawing.Size(290, 699);
+			this.tabPage4.Size = new System.Drawing.Size(290, 710);
 			this.tabPage4.TabIndex = 10;
 			this.tabPage4.Text = "Sprites";
 			this.tabPage4.UseVisualStyleBackColor = true;
@@ -1505,7 +1499,7 @@ namespace ZeldaFullEditor
 			this.edit8x8.Location = new System.Drawing.Point(4, 24);
 			this.edit8x8.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.edit8x8.Name = "edit8x8";
-			this.edit8x8.Size = new System.Drawing.Size(290, 699);
+			this.edit8x8.Size = new System.Drawing.Size(290, 710);
 			this.edit8x8.TabIndex = 11;
 			this.edit8x8.Text = "8x8 tiles";
 			this.edit8x8.UseVisualStyleBackColor = true;
@@ -1518,7 +1512,7 @@ namespace ZeldaFullEditor
 			this.edit8x8Panel.Location = new System.Drawing.Point(0, 0);
 			this.edit8x8Panel.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.edit8x8Panel.Name = "edit8x8Panel";
-			this.edit8x8Panel.Size = new System.Drawing.Size(290, 494);
+			this.edit8x8Panel.Size = new System.Drawing.Size(290, 924);
 			this.edit8x8Panel.TabIndex = 2;
 			// 
 			// editBox8x8
@@ -1536,8 +1530,7 @@ namespace ZeldaFullEditor
 			this.groupBox1.Controls.Add(this.edit8x8palettebox);
 			this.groupBox1.Controls.Add(this.edit8x8myCheckbox);
 			this.groupBox1.Controls.Add(this.edit8x8mxCheckbox);
-			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-			this.groupBox1.Location = new System.Drawing.Point(0, 494);
+			this.groupBox1.Location = new System.Drawing.Point(0, 719);
 			this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -2576,16 +2569,16 @@ namespace ZeldaFullEditor
 			// 
 			// overworldPage
 			// 
+			this.overworldPage.BackColor = System.Drawing.SystemColors.Control;
 			this.overworldPage.Controls.Add(this.OverworldSplitContainer);
 			this.overworldPage.Controls.Add(this.owPropertyPanel);
-			this.overworldPage.Location = new System.Drawing.Point(4, 27);
+			this.overworldPage.Location = new System.Drawing.Point(4, 4);
 			this.overworldPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.overworldPage.Name = "overworldPage";
 			this.overworldPage.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.overworldPage.Size = new System.Drawing.Size(1150, 737);
+			this.overworldPage.Size = new System.Drawing.Size(1150, 742);
 			this.overworldPage.TabIndex = 1;
 			this.overworldPage.Text = "Overworld Editor";
-			this.overworldPage.UseVisualStyleBackColor = true;
 			// 
 			// OverworldSplitContainer
 			// 
@@ -2604,7 +2597,7 @@ namespace ZeldaFullEditor
 			// 
 			this.OverworldSplitContainer.Panel2.AutoScroll = true;
 			this.OverworldSplitContainer.Panel2.Controls.Add(this.pictureBox2);
-			this.OverworldSplitContainer.Size = new System.Drawing.Size(1146, 656);
+			this.OverworldSplitContainer.Size = new System.Drawing.Size(1146, 661);
 			this.OverworldSplitContainer.SplitterDistance = 288;
 			this.OverworldSplitContainer.TabIndex = 3;
 			// 
@@ -2621,7 +2614,7 @@ namespace ZeldaFullEditor
 			this.OverworldAuxSideTabs.Multiline = true;
 			this.OverworldAuxSideTabs.Name = "OverworldAuxSideTabs";
 			this.OverworldAuxSideTabs.SelectedIndex = 0;
-			this.OverworldAuxSideTabs.Size = new System.Drawing.Size(288, 656);
+			this.OverworldAuxSideTabs.Size = new System.Drawing.Size(288, 661);
 			this.OverworldAuxSideTabs.TabIndex = 1;
 			this.OverworldAuxSideTabs.SelectedIndexChanged += new System.EventHandler(this.UnderWorldTabControlChanged);
 			// 
@@ -2632,7 +2625,7 @@ namespace ZeldaFullEditor
 			this.tabPage1.Location = new System.Drawing.Point(4, 40);
 			this.tabPage1.Name = "tabPage1";
 			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(280, 612);
+			this.tabPage1.Size = new System.Drawing.Size(280, 617);
 			this.tabPage1.TabIndex = 0;
 			this.tabPage1.Text = "Tile 16";
 			this.tabPage1.UseVisualStyleBackColor = true;
@@ -2656,7 +2649,7 @@ namespace ZeldaFullEditor
 			this.tabPage2.Location = new System.Drawing.Point(4, 44);
 			this.tabPage2.Name = "tabPage2";
 			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(280, 608);
+			this.tabPage2.Size = new System.Drawing.Size(280, 611);
 			this.tabPage2.TabIndex = 1;
 			this.tabPage2.Text = "Tile 16 scratchpad";
 			this.tabPage2.UseVisualStyleBackColor = true;
@@ -2679,7 +2672,7 @@ namespace ZeldaFullEditor
 			this.Tiles8.Controls.Add(this.panel4);
 			this.Tiles8.Location = new System.Drawing.Point(4, 44);
 			this.Tiles8.Name = "Tiles8";
-			this.Tiles8.Size = new System.Drawing.Size(280, 608);
+			this.Tiles8.Size = new System.Drawing.Size(280, 611);
 			this.Tiles8.TabIndex = 2;
 			this.Tiles8.Text = "Tile 8";
 			this.Tiles8.UseVisualStyleBackColor = true;
@@ -2691,7 +2684,7 @@ namespace ZeldaFullEditor
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.panel2.Location = new System.Drawing.Point(0, 217);
 			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(280, 391);
+			this.panel2.Size = new System.Drawing.Size(280, 394);
 			this.panel2.TabIndex = 3;
 			// 
 			// Tile8PicBox
@@ -2774,7 +2767,7 @@ namespace ZeldaFullEditor
 			this.OWTabExitProps.Controls.Add(this.OWExitPanel);
 			this.OWTabExitProps.Location = new System.Drawing.Point(4, 44);
 			this.OWTabExitProps.Name = "OWTabExitProps";
-			this.OWTabExitProps.Size = new System.Drawing.Size(280, 608);
+			this.OWTabExitProps.Size = new System.Drawing.Size(280, 611);
 			this.OWTabExitProps.TabIndex = 3;
 			this.OWTabExitProps.Text = "Exit";
 			this.OWTabExitProps.UseVisualStyleBackColor = true;
@@ -2873,7 +2866,7 @@ namespace ZeldaFullEditor
 			this.OWTabEntranceProps.Controls.Add(this.OWEntrancePanel);
 			this.OWTabEntranceProps.Location = new System.Drawing.Point(4, 44);
 			this.OWTabEntranceProps.Name = "OWTabEntranceProps";
-			this.OWTabEntranceProps.Size = new System.Drawing.Size(280, 608);
+			this.OWTabEntranceProps.Size = new System.Drawing.Size(280, 611);
 			this.OWTabEntranceProps.TabIndex = 4;
 			this.OWTabEntranceProps.Text = "Entrance";
 			this.OWTabEntranceProps.UseVisualStyleBackColor = true;
@@ -2972,7 +2965,7 @@ namespace ZeldaFullEditor
 			this.OWTabTransportProps.Controls.Add(this.OWTransportPanel);
 			this.OWTabTransportProps.Location = new System.Drawing.Point(4, 44);
 			this.OWTabTransportProps.Name = "OWTabTransportProps";
-			this.OWTabTransportProps.Size = new System.Drawing.Size(280, 608);
+			this.OWTabTransportProps.Size = new System.Drawing.Size(280, 611);
 			this.OWTabTransportProps.TabIndex = 5;
 			this.OWTabTransportProps.Text = "Transport";
 			this.OWTabTransportProps.UseVisualStyleBackColor = true;
@@ -3088,12 +3081,6 @@ namespace ZeldaFullEditor
 			// 
 			// objectGroupbox
 			// 
-			this.objectGroupbox.Controls.Add(this.SelectedObjectY);
-			this.objectGroupbox.Controls.Add(this.SelectedObjectX);
-			this.objectGroupbox.Controls.Add(this.SelectedObjectID);
-			this.objectGroupbox.Controls.Add(this.label17);
-			this.objectGroupbox.Controls.Add(this.label47);
-			this.objectGroupbox.Controls.Add(this.label48);
 			this.objectGroupbox.Controls.Add(this.OverworldObjectCombobox);
 			this.objectGroupbox.Location = new System.Drawing.Point(631, 3);
 			this.objectGroupbox.Name = "objectGroupbox";
@@ -3102,64 +3089,10 @@ namespace ZeldaFullEditor
 			this.objectGroupbox.TabStop = false;
 			this.objectGroupbox.Text = "Selected object";
 			// 
-			// SelectedObjectY
-			// 
-			this.SelectedObjectY.AutoSize = true;
-			this.SelectedObjectY.Location = new System.Drawing.Point(33, 44);
-			this.SelectedObjectY.Name = "SelectedObjectY";
-			this.SelectedObjectY.Size = new System.Drawing.Size(10, 13);
-			this.SelectedObjectY.TabIndex = 7;
-			this.SelectedObjectY.Text = "-";
-			// 
-			// SelectedObjectX
-			// 
-			this.SelectedObjectX.AutoSize = true;
-			this.SelectedObjectX.Location = new System.Drawing.Point(33, 31);
-			this.SelectedObjectX.Name = "SelectedObjectX";
-			this.SelectedObjectX.Size = new System.Drawing.Size(10, 13);
-			this.SelectedObjectX.TabIndex = 6;
-			this.SelectedObjectX.Text = "-";
-			// 
-			// SelectedObjectID
-			// 
-			this.SelectedObjectID.AutoSize = true;
-			this.SelectedObjectID.Location = new System.Drawing.Point(33, 16);
-			this.SelectedObjectID.Name = "SelectedObjectID";
-			this.SelectedObjectID.Size = new System.Drawing.Size(10, 13);
-			this.SelectedObjectID.TabIndex = 5;
-			this.SelectedObjectID.Text = "-";
-			// 
-			// label17
-			// 
-			this.label17.AutoSize = true;
-			this.label17.Location = new System.Drawing.Point(10, 44);
-			this.label17.Name = "label17";
-			this.label17.Size = new System.Drawing.Size(17, 13);
-			this.label17.TabIndex = 4;
-			this.label17.Text = "Y:";
-			// 
-			// label47
-			// 
-			this.label47.AutoSize = true;
-			this.label47.Location = new System.Drawing.Point(10, 31);
-			this.label47.Name = "label47";
-			this.label47.Size = new System.Drawing.Size(17, 13);
-			this.label47.TabIndex = 3;
-			this.label47.Text = "X:";
-			// 
-			// label48
-			// 
-			this.label48.AutoSize = true;
-			this.label48.Location = new System.Drawing.Point(6, 16);
-			this.label48.Name = "label48";
-			this.label48.Size = new System.Drawing.Size(21, 13);
-			this.label48.TabIndex = 2;
-			this.label48.Text = "ID:";
-			// 
 			// OverworldObjectCombobox
 			// 
 			this.OverworldObjectCombobox.FormattingEnabled = true;
-			this.OverworldObjectCombobox.Location = new System.Drawing.Point(111, 13);
+			this.OverworldObjectCombobox.Location = new System.Drawing.Point(6, 28);
 			this.OverworldObjectCombobox.Name = "OverworldObjectCombobox";
 			this.OverworldObjectCombobox.Size = new System.Drawing.Size(156, 21);
 			this.OverworldObjectCombobox.TabIndex = 1;
@@ -3413,10 +3346,10 @@ namespace ZeldaFullEditor
 			// 
 			// GfxEditorPage
 			// 
-			this.GfxEditorPage.Location = new System.Drawing.Point(4, 27);
+			this.GfxEditorPage.Location = new System.Drawing.Point(4, 4);
 			this.GfxEditorPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.GfxEditorPage.Name = "GfxEditorPage";
-			this.GfxEditorPage.Size = new System.Drawing.Size(1150, 737);
+			this.GfxEditorPage.Size = new System.Drawing.Size(1150, 742);
 			this.GfxEditorPage.TabIndex = 2;
 			this.GfxEditorPage.Text = "Graphics Manager";
 			this.GfxEditorPage.UseVisualStyleBackColor = true;
@@ -3425,26 +3358,23 @@ namespace ZeldaFullEditor
 			// 
 			this.textPage.Controls.Add(this.panel5);
 			this.textPage.Controls.Add(this.panel6);
-			this.textPage.Location = new System.Drawing.Point(4, 27);
+			this.textPage.Location = new System.Drawing.Point(4, 4);
 			this.textPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.textPage.Name = "textPage";
-			this.textPage.Size = new System.Drawing.Size(1150, 737);
+			this.textPage.Size = new System.Drawing.Size(1150, 742);
 			this.textPage.TabIndex = 4;
 			this.textPage.Text = "Text Editor";
 			this.textPage.UseVisualStyleBackColor = true;
 			// 
 			// panel5
 			// 
-			this.panel5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.panel5.Controls.Add(this.textListbox);
 			this.panel5.Controls.Add(this.label65);
 			this.panel5.Controls.Add(this.TextSearchTextbox);
 			this.panel5.Controls.Add(this.label66);
 			this.panel5.Location = new System.Drawing.Point(8, 3);
 			this.panel5.Name = "panel5";
-			this.panel5.Size = new System.Drawing.Size(433, 750);
+			this.panel5.Size = new System.Drawing.Size(433, 736);
 			this.panel5.TabIndex = 24;
 			// 
 			// textListbox
@@ -3453,7 +3383,8 @@ namespace ZeldaFullEditor
 			this.textListbox.FormattingEnabled = true;
 			this.textListbox.Location = new System.Drawing.Point(0, 46);
 			this.textListbox.Name = "textListbox";
-			this.textListbox.Size = new System.Drawing.Size(433, 704);
+			this.textListbox.ScrollAlwaysVisible = true;
+			this.textListbox.Size = new System.Drawing.Size(433, 690);
 			this.textListbox.TabIndex = 1;
 			this.textListbox.SelectedIndexChanged += new System.EventHandler(this.textListbox_SelectedIndexChanged);
 			// 
@@ -3512,7 +3443,7 @@ namespace ZeldaFullEditor
 			this.panel6.Controls.Add(this.MessagePreviewBox);
 			this.panel6.Location = new System.Drawing.Point(447, 2);
 			this.panel6.Name = "panel6";
-			this.panel6.Size = new System.Drawing.Size(520, 751);
+			this.panel6.Size = new System.Drawing.Size(520, 739);
 			this.panel6.TabIndex = 25;
 			// 
 			// ParamsBox
@@ -3792,20 +3723,20 @@ namespace ZeldaFullEditor
 			// 
 			// ScreenEditor
 			// 
-			this.ScreenEditor.Location = new System.Drawing.Point(4, 27);
+			this.ScreenEditor.Location = new System.Drawing.Point(4, 4);
 			this.ScreenEditor.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.ScreenEditor.Name = "ScreenEditor";
-			this.ScreenEditor.Size = new System.Drawing.Size(1150, 737);
+			this.ScreenEditor.Size = new System.Drawing.Size(1150, 742);
 			this.ScreenEditor.TabIndex = 5;
 			this.ScreenEditor.Text = "Screen Editor";
 			this.ScreenEditor.UseVisualStyleBackColor = true;
 			// 
 			// spritesPage
 			// 
-			this.spritesPage.Location = new System.Drawing.Point(4, 27);
+			this.spritesPage.Location = new System.Drawing.Point(4, 4);
 			this.spritesPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.spritesPage.Name = "spritesPage";
-			this.spritesPage.Size = new System.Drawing.Size(1150, 737);
+			this.spritesPage.Size = new System.Drawing.Size(1150, 742);
 			this.spritesPage.TabIndex = 6;
 			this.spritesPage.Text = "Sprites Editor";
 			this.spritesPage.UseVisualStyleBackColor = true;
@@ -3857,7 +3788,7 @@ namespace ZeldaFullEditor
 			this.toolStrip1.Location = new System.Drawing.Point(4, 24);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Padding = new System.Windows.Forms.Padding(10, 0, 1, 0);
-			this.toolStrip1.Size = new System.Drawing.Size(984, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(888, 25);
 			this.toolStrip1.Stretch = true;
 			this.toolStrip1.TabIndex = 10;
 			this.toolStrip1.Text = "toolStrip1";
@@ -3930,7 +3861,6 @@ namespace ZeldaFullEditor
 			// 
 			this.allbgsButton.CheckOnClick = true;
 			this.allbgsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.allbgsButton.Enabled = false;
 			this.allbgsButton.Image = ((System.Drawing.Image)(resources.GetObject("allbgsButton.Image")));
 			this.allbgsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.allbgsButton.Name = "allbgsButton";
@@ -3945,7 +3875,6 @@ namespace ZeldaFullEditor
 			this.bg1modeButton.CheckOnClick = true;
 			this.bg1modeButton.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.bg1modeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.bg1modeButton.Enabled = false;
 			this.bg1modeButton.Image = ((System.Drawing.Image)(resources.GetObject("bg1modeButton.Image")));
 			this.bg1modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bg1modeButton.Name = "bg1modeButton";
@@ -3958,7 +3887,6 @@ namespace ZeldaFullEditor
 			// 
 			this.bg2modeButton.CheckOnClick = true;
 			this.bg2modeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.bg2modeButton.Enabled = false;
 			this.bg2modeButton.Image = ((System.Drawing.Image)(resources.GetObject("bg2modeButton.Image")));
 			this.bg2modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bg2modeButton.Name = "bg2modeButton";
@@ -3971,7 +3899,6 @@ namespace ZeldaFullEditor
 			// 
 			this.bg3modeButton.CheckOnClick = true;
 			this.bg3modeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.bg3modeButton.Enabled = false;
 			this.bg3modeButton.Image = ((System.Drawing.Image)(resources.GetObject("bg3modeButton.Image")));
 			this.bg3modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bg3modeButton.Name = "bg3modeButton";
@@ -3984,7 +3911,6 @@ namespace ZeldaFullEditor
 			// 
 			this.underworldSpriteModeButton.CheckOnClick = true;
 			this.underworldSpriteModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.underworldSpriteModeButton.Enabled = false;
 			this.underworldSpriteModeButton.Image = ((System.Drawing.Image)(resources.GetObject("underworldSpriteModeButton.Image")));
 			this.underworldSpriteModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.underworldSpriteModeButton.Name = "underworldSpriteModeButton";
@@ -3997,7 +3923,6 @@ namespace ZeldaFullEditor
 			// 
 			this.blockmodeButton.CheckOnClick = true;
 			this.blockmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.blockmodeButton.Enabled = false;
 			this.blockmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("blockmodeButton.Image")));
 			this.blockmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.blockmodeButton.Name = "blockmodeButton";
@@ -4010,7 +3935,6 @@ namespace ZeldaFullEditor
 			// 
 			this.torchmodeButton.CheckOnClick = true;
 			this.torchmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.torchmodeButton.Enabled = false;
 			this.torchmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("torchmodeButton.Image")));
 			this.torchmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.torchmodeButton.Name = "torchmodeButton";
@@ -4023,7 +3947,6 @@ namespace ZeldaFullEditor
 			// 
 			this.potmodeButton.CheckOnClick = true;
 			this.potmodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.potmodeButton.Enabled = false;
 			this.potmodeButton.Image = ((System.Drawing.Image)(resources.GetObject("potmodeButton.Image")));
 			this.potmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.potmodeButton.Name = "potmodeButton";
@@ -4036,7 +3959,6 @@ namespace ZeldaFullEditor
 			// 
 			this.doormodeButton.CheckOnClick = true;
 			this.doormodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.doormodeButton.Enabled = false;
 			this.doormodeButton.Image = ((System.Drawing.Image)(resources.GetObject("doormodeButton.Image")));
 			this.doormodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.doormodeButton.Name = "doormodeButton";
@@ -4049,7 +3971,6 @@ namespace ZeldaFullEditor
 			// 
 			this.collisionModeButton.CheckOnClick = true;
 			this.collisionModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.collisionModeButton.Enabled = false;
 			this.collisionModeButton.Image = ((System.Drawing.Image)(resources.GetObject("collisionModeButton.Image")));
 			this.collisionModeButton.ImageTransparentColor = System.Drawing.Color.White;
 			this.collisionModeButton.Name = "collisionModeButton";
@@ -4066,7 +3987,6 @@ namespace ZeldaFullEditor
 			// saveLayoutButton
 			// 
 			this.saveLayoutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.saveLayoutButton.Enabled = false;
 			this.saveLayoutButton.Image = ((System.Drawing.Image)(resources.GetObject("saveLayoutButton.Image")));
 			this.saveLayoutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.saveLayoutButton.Name = "saveLayoutButton";
@@ -4076,7 +3996,6 @@ namespace ZeldaFullEditor
 			// loadlayoutButton
 			// 
 			this.loadlayoutButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.loadlayoutButton.Enabled = false;
 			this.loadlayoutButton.Image = ((System.Drawing.Image)(resources.GetObject("loadlayoutButton.Image")));
 			this.loadlayoutButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.loadlayoutButton.Name = "loadlayoutButton";
@@ -4086,7 +4005,6 @@ namespace ZeldaFullEditor
 			// searchButton
 			// 
 			this.searchButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.searchButton.Enabled = false;
 			this.searchButton.Image = ((System.Drawing.Image)(resources.GetObject("searchButton.Image")));
 			this.searchButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.searchButton.Name = "searchButton";
@@ -4096,7 +4014,6 @@ namespace ZeldaFullEditor
 			// exportuwmapStripButton1
 			// 
 			this.exportuwmapStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.exportuwmapStripButton1.Enabled = false;
 			this.exportuwmapStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("exportuwmapStripButton1.Image")));
 			this.exportuwmapStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.exportuwmapStripButton1.Name = "exportuwmapStripButton1";
@@ -4109,7 +4026,6 @@ namespace ZeldaFullEditor
 			// debugToolStripButton
 			// 
 			this.debugToolStripButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.debugToolStripButton.Enabled = false;
 			this.debugToolStripButton.Image = ((System.Drawing.Image)(resources.GetObject("debugToolStripButton.Image")));
 			this.debugToolStripButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.debugToolStripButton.Name = "debugToolStripButton";
@@ -4282,6 +4198,8 @@ namespace ZeldaFullEditor
 			// 
 			// statusStrip1
 			// 
+			this.statusStrip1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
 			this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.statusStrip1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -5846,7 +5764,6 @@ namespace ZeldaFullEditor
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
 			this.owPropertyPanel.ResumeLayout(false);
 			this.objectGroupbox.ResumeLayout(false);
-			this.objectGroupbox.PerformLayout();
 			this.mapGroupbox.ResumeLayout(false);
 			this.mapGroupbox.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).EndInit();
@@ -6151,12 +6068,6 @@ namespace ZeldaFullEditor
 		private ToolStripButton debugToolStripButton;
 		private Panel owPropertyPanel;
 		public GroupBox objectGroupbox;
-		private Label SelectedObjectY;
-		private Label SelectedObjectX;
-		private Label SelectedObjectID;
-		private Label label17;
-		private Label label47;
-		private Label label48;
 		public ComboBox OverworldObjectCombobox;
 		public GroupBox mapGroupbox;
 		public Gui.ExtraForms.Hexbox OWProperty_MessageID;
@@ -6222,7 +6133,6 @@ namespace ZeldaFullEditor
 		private Label label64;
 		public PictureBox pictureBox2;
 		public PictureBox previewTextPicturebox;
-		private ToolStripButton clearmapbutton;
 		public TabControl tabControl1;
 		private TabPage entrancetabPage;
 		public TreeView entrancetreeView;
@@ -6357,6 +6267,7 @@ namespace ZeldaFullEditor
 		private OverworldToolStripButton spButton;
 		private OverworldToolStripButton dwButton;
 		private OverworldToolStripButton lwButton;
+		private OverworldToolStripButton clearmapbutton;
 	}
 }
 

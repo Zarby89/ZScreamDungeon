@@ -127,7 +127,7 @@
 					}
 					else
 					{
-						selectedTile = new ushort[1] { tf.Map16Value };
+						selectedTile = new ushort[1] { tf.Tile16ID };
 						selectedTileSizeX = 1;
 					}
 				}

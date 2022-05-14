@@ -1,11 +1,11 @@
 ﻿namespace ZeldaFullEditor
 {
-	public unsafe class Map16MasterSheet : IGraphicsCanvas, IGraphicsSheet, IByteable
+	public unsafe class Tile16MasterSheet : IGraphicsCanvas, IGraphicsSheet, IByteable
 	{
 		private readonly IntPtr ptr;
 		private byte* Pointer => (byte*) ptr.ToPointer();
 
-		public List<Tile16> ListOf { get; private set; } = new List<Tile16>();
+		private readonly Tile16[] ListOf = new Tile16[Constants.NumberOfUniqueTile16Definitions];
 
 		public GraphicsSet Graphics { get; set; }
 
@@ -24,11 +24,32 @@
 			set => Bitmap.Palette = value;
 		}
 
-		public Map16MasterSheet()
+		public Tile16MasterSheet()
 		{
 			ptr = Marshal.AllocHGlobal(128 * 7136 / 2);
 			Bitmap = new Bitmap(128, 7136, 64, PixelFormat.Format4bppIndexed, ptr);
 		}
+
+		public void RedrawImageForGraphicsSet()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void RedrawImageForPaletteChange()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void SetTile16At(int id, Tile16 t)
+		{
+			throw new NotImplementedException();
+		}
+
+		public Tile16 GetTile16At(int id)
+		{
+			throw new NotImplementedException();
+		}
+
 
 		public byte[] GetByteData()
 		{

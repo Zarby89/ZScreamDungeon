@@ -11,10 +11,7 @@
 			ByteValue = v;
 		}
 
-		public override string ToString()
-		{
-			return Name;
-		}
+		public override string ToString() => Name;
 
 		public static int FindFloorIndex(byte b)
 		{
@@ -33,22 +30,22 @@
 
 		public static readonly FloorNumber[] floors =
 		{
-			new FloorNumber("B8", 0xF8),
-			new FloorNumber("B7", 0xF9),
-			new FloorNumber("B6", 0xFA),
-			new FloorNumber("B5", 0xFB),
-			new FloorNumber("B4", 0xFC),
-			new FloorNumber("B3", 0xFD),
-			new FloorNumber("B2", 0xFE),
-			new FloorNumber("B1", 0xFF),
-			new FloorNumber("1F", 0x00),
-			new FloorNumber("2F", 0x01),
-			new FloorNumber("3F", 0x02),
-			new FloorNumber("4F", 0x03),
-			new FloorNumber("5F", 0x04),
-			new FloorNumber("6F", 0x05),
-			new FloorNumber("7F", 0x06),
-			new FloorNumber("8F", 0x07)
+			new("B8", 0xF8),
+			new("B7", 0xF9),
+			new("B6", 0xFA),
+			new("B5", 0xFB),
+			new("B4", 0xFC),
+			new("B3", 0xFD),
+			new("B2", 0xFE),
+			new("B1", 0xFF),
+			new("1F", 0x00),
+			new("2F", 0x01),
+			new("3F", 0x02),
+			new("4F", 0x03),
+			new("5F", 0x04),
+			new("6F", 0x05),
+			new("7F", 0x06),
+			new("8F", 0x07)
 		};
 	}
 }

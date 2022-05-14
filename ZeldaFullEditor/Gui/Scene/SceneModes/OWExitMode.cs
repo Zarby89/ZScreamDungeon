@@ -239,7 +239,7 @@
 							goto case TextView.NeverShowName;
 					}
 
-					g.DrawFilledRectangleWithOutline(ex.SquareHitbox, outline, bgrBrush);
+					g.DrawFilledRectangleWithOutline(ex.BoundingBox, outline, bgrBrush);
 
 					g.DrawText(ex.GlobalX + 4, ex.GlobalY + 4, txt);
 				}

@@ -2,7 +2,7 @@
 
 namespace ZeldaFullEditor
 {
-	public partial class DungeonMain
+	public partial class DungeonMain : System.Windows.Forms.Form
 	{
 		// TODO move to Constants
 		private const int ScratchPadSize = 225 * 16 * 2;
@@ -125,7 +125,7 @@ namespace ZeldaFullEditor
 			}
 
 			(sender as ToolStripButton).Checked = true;
-			ZScreamer.ActiveScreamer.CurrentOWMode = (OverworldEditMode) (sender as ToolStripButton).Tag;
+			ZScreamer.ActiveScreamer.CurrentOWMode = (OverworldEditMode) (sender as OverworldToolStripButton).Tag;
 		}
 
 		public void UpdateOverworldMode(OverworldEditMode m)
@@ -780,27 +780,12 @@ namespace ZeldaFullEditor
 			}
 		}
 
-		public unsafe void updateSelectedTile16()
+		public void updateSelectedTile16()
 		{
 			byte p = palSelected;
 			tile8selected = 0;
-			byte* destPtr = (byte*) ZScreamer.ActiveGraphicsManager.editingtile16.ToPointer();
-			byte* srcPtr = (byte*) ZScreamer.ActiveGraphicsManager.currentOWgfx16Ptr.ToPointer();
-			Tile16 t = ZScreamer.ActiveOW.Tile16List.ListOf[ZScreamer.ActiveOWScene.selectedTile[0]];
-
-			for (int y = 0; y < 8; y++)
-			{
-				for (int x = 0; x < 4; x++)
-				{
-					CopyTile(x, y, 0, 0, t.Tile0.ID, p, destPtr, srcPtr, 16);
-					CopyTile(x, y, 8, 0, t.Tile1.ID, p, destPtr, srcPtr, 16);
-					CopyTile(x, y, 0, 8, t.Tile2.ID, p, destPtr, srcPtr, 16);
-					CopyTile(x, y, 8, 8, t.Tile3.ID, p, destPtr, srcPtr, 16);
-				}
-			}
-
-			//Bitmap b = new Bitmap(128, 512, 64, System.Drawing.Imaging.PixelFormat.Format4bppIndexed, ZScreamer.ActiveGraphicsManager.currentOWgfx16Ptr);
-			ZScreamer.ActiveGraphicsManager.editort16Bitmap.Palette = ZScreamer.ActiveOWScene.CurrentScreen.MyArtist.Layer1Canvas.Palette;
+			throw new NotImplementedException();
+			//ZScreamer.ActiveOW.Tile16List.SetTile16At(ZScreamer.ActiveOWScene.selectedTile[0], null);
 		}
 
 		public unsafe void updateTiles()
@@ -912,12 +897,12 @@ namespace ZeldaFullEditor
 
 				foreach (OverlayTile t in ZScreamer.ActiveOW.alloverlays[i].tilesData)
 				{
-					alltilesIndexed[t.Map16Value]++;
+					alltilesIndexed[t.Tile16ID]++;
 				}
 
 				foreach (OverlayTile t in ZScreamer.ActiveOW.alloverlays[i + 64].tilesData)
 				{
-					alltilesIndexed[t.Map16Value]++;
+					alltilesIndexed[t.Tile16ID]++;
 				}
 
 				sx++;
@@ -1242,7 +1227,7 @@ namespace ZeldaFullEditor
 				{
 					entrance.GlobalX = Constants.NullEntrance;
 					entrance.GlobalY = Constants.NullEntrance;
-					entrance.MapID = 0;
+					entrance.MapID = 0xFF;
 					entrance.mapPos = Constants.NullEntrance;
 					entrance.TargetEntranceID = 0;
 				}
@@ -1258,7 +1243,7 @@ namespace ZeldaFullEditor
 			{
 				if (hole.MapID == ZScreamer.ActiveOWScene.CurrentMapParent)
 				{
-					hole.MapID = 0;
+					hole.MapID = 0xFF;
 					hole.GlobalX = Constants.NullEntrance;
 					hole.GlobalY = Constants.NullEntrance;
 					hole.mapPos = Constants.NullEntrance;
@@ -1276,7 +1261,7 @@ namespace ZeldaFullEditor
 			{
 				if (exit.MapID == ZScreamer.ActiveOWScene.CurrentMapParent)
 				{
-					exit.MapID = 0;
+					exit.MapID = 0xFF;
 					exit.GlobalX = Constants.NullEntrance;
 					exit.GlobalY = Constants.NullEntrance;
 					exit.TargetRoomID = 0;

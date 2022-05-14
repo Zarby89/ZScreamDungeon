@@ -102,7 +102,7 @@
 						// TODO might add more stuff in the future
 						_ => $"{i:X2}",
 					};
-					g.DrawFilledRectangleWithOutline(e.SquareHitbox, outline, bgrBrush);
+					g.DrawFilledRectangleWithOutline(e.BoundingBox, outline, bgrBrush);
 
 					g.DrawText(e.GlobalX + 3, e.GlobalY + 5, txt);
 				}

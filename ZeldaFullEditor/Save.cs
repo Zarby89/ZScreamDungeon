@@ -673,7 +673,7 @@
 
 					// LDA :
 					ROM[pos++] = 0xA9;
-					ROM.Write16(pos, OverworldManager.alloverlays[i].tilesData[t].Map16Value);
+					ROM.Write16(pos, OverworldManager.alloverlays[i].tilesData[t].Tile16ID);
 					pos += 2;
 
 					// STA : 

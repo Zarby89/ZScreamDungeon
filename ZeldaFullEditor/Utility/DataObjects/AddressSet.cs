@@ -16,7 +16,7 @@
 		public int compressedAllMap32PointersHigh => new ROMAddress(0x02F6B1, 0x02F94D).GetOffsetForVersion(Version);
 		public int compressedAllMap32PointersLow => new ROMAddress(0x02F891, 0x02FB2D).GetOffsetForVersion(Version);
 		public int overworldgfxGroups => new ROMAddress(0x00DDD7, 0x00DD97).GetOffsetForVersion(Version);
-		public int map16Tiles => new ROMAddress(0x0F8000, 0x0F8000).GetOffsetForVersion(Version);
+		public int Map16DefinitionAddress => new ROMAddress(0x0F8000, 0x0F8000).GetOffsetForVersion(Version);
 		public int Map32DefinitionsTL => new ROMAddress(0x038000, 0x038000).GetOffsetForVersion(Version);
 		public int Map32DefinitionsTR => new ROMAddress(0x03B3C0, 0x03B400).GetOffsetForVersion(Version);
 		public int Map32DefinitionsBL => new ROMAddress(0x048000, 0x048000).GetOffsetForVersion(Version);

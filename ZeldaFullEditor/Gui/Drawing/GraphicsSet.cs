@@ -3,6 +3,7 @@
 	public class GraphicsDoubleBlock : IByteable
 	{
 		public GraphicsBlock Block1 { get; set; }
+
 		public GraphicsBlock Block2 { get; set; }
 
 		public byte[] GetByteData()
@@ -19,23 +20,14 @@
 		public GraphicsSheet Sheet3 { get; set; }
 		public GraphicsSheet Sheet4 { get; set; }
 
-		public byte this[int i]
+		public GraphicsTile this[int i] => i switch
 		{
-			get
-			{
-				int sheet = i / (128 * 32);
-				int pixel = i % (128 * 32);
-
-				return sheet switch
-				{
-					0x0 => Sheet1[pixel],
-					0x1 => Sheet2[pixel],
-					0x2 => Sheet3[pixel],
-					0x3 => Sheet4[pixel],
-					_ => 0x00,
-				};
-			}
-		}
+			< 0x040 => Sheet1[i & 0x3F],
+			< 0x080 => Sheet2[i & 0x3F],
+			< 0x0C0 => Sheet3[i & 0x3F],
+			< 0x100 => Sheet4[i & 0x3F],
+			_ => throw new IndexOutOfRangeException($"Cannot access tile with ID of {i:X3}")
+		};
 
 		public GraphicsBlock() { }
 
@@ -53,23 +45,22 @@
 		public GraphicsBlock SpriteBlock1 { get; set; }
 		public GraphicsBlock SpriteBlock2 { get; set; }
 
-		public byte this[int i]
+		public GraphicsTile this[int i] => i switch
 		{
-			get
-			{
-				int sheet = i / (128 * 32 * 4);
-				int pixel = i % (128 * 32 * 4);
+			< 0x100 => BackgroundBlock1[i & 0xFF],
+			< 0x200 => BackgroundBlock2[i & 0xFF],
+			< 0x300 => SpriteBlock1[i & 0xFF],
+			< 0x400 => SpriteBlock2[i & 0xFF],
+			_ => throw new IndexOutOfRangeException($"Cannot access tile with ID of {i:X3}")
+		};
 
-				return sheet switch
-				{
-					0x0 => BackgroundBlock1[pixel],
-					0x1 => BackgroundBlock2[pixel],
-					0x2 => SpriteBlock1[pixel],
-					0x3 => SpriteBlock2[pixel],
-					_ => 0x00,
-				};
-			}
-		}
+		public GraphicsTile GetBackgroundGraphicsTile(int id) => this[id];
 
+		public GraphicsTile GetSpriteGraphicsTile(int id) => id switch
+		{
+			< 0x100 => SpriteBlock1[id & 0xFF],
+			< 0x200 => SpriteBlock2[id & 0xFF],
+			_ => throw new IndexOutOfRangeException($"Cannot access sprite tile with ID of {id:X3}")
+		};
 	}
 }

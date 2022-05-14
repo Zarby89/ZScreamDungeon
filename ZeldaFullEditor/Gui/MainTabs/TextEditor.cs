@@ -2,7 +2,7 @@
 
 namespace ZeldaFullEditor
 {
-	public partial class DungeonMain
+	public partial class DungeonMain : System.Windows.Forms.Form
 	{
 		readonly byte[] widthArray = new byte[100];
 		private const int DefaultTextColor = 6;

@@ -346,9 +346,9 @@ namespace ZeldaFullEditor
 		/// </summary>
 		public void SaveTiles()
 		{
-			ZS.OverworldManager.createMap32Tilesmap();
-			ZS.OverworldManager.SaveMap32DefinitionsToROM();
-			ZS.OverworldManager.SaveMap16DefinitionsToROM();
+			ZS.OverworldManager.CreateTile32Maps();
+			ZS.OverworldManager.SaveTile32DefinitionsToROM();
+			ZS.OverworldManager.SaveTile16DefinitionsToROM();
 		}
 
 		private void MoveDestinationToMouse(OverworldDestination dest, MouseEventArgs e)
@@ -575,7 +575,7 @@ namespace ZeldaFullEditor
 				{
 					int xo = ZS.OverworldManager.alloverlays[mid].tilesData[i].MapX * 16;
 					int yo = ZS.OverworldManager.alloverlays[mid].tilesData[i].MapY * 16;
-					int to = ZS.OverworldManager.alloverlays[mid].tilesData[i].Map16Value;
+					int to = ZS.OverworldManager.alloverlays[mid].tilesData[i].Tile16ID;
 					int toy = (to / 8) * 16;
 					int tox = (to % 8) * 16;
 					g.DrawImage(ZS.GFXManager.mapblockset16Bitmap, new Rectangle(msx + xo, msy + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);

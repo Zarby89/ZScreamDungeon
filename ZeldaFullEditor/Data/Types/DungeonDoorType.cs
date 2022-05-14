@@ -25,8 +25,8 @@ namespace ZeldaFullEditor.Data
 		public static readonly DungeonDoorType DoorType04 = new(0x04, "Exit (lower layer)", Unspecial, exit: true);
 		public static readonly DungeonDoorType DoorType06 = new(0x06, "Unused cave exit (lower layer)", Unspecial, exit: true);
 		public static readonly DungeonDoorType DoorType08 = new(0x08, "Waterfall door", Unspecial);
-		public static readonly DungeonDoorType DoorType0A = new(0x0A, "Fancy dungeon exit", Unspecial, exit: true);
-		public static readonly DungeonDoorType DoorType0C = new(0x0C, "Fancy dungeon exit (lower layer)", Unspecial, exit: true);
+		public static readonly DungeonDoorType DoorType0A = new(0x0A, "Fancy dungeon exit", Fancy, exit: true);
+		public static readonly DungeonDoorType DoorType0C = new(0x0C, "Fancy dungeon exit (lower layer)", Fancy, exit: true);
 		public static readonly DungeonDoorType DoorType0E = new(0x0E, "Cave exit", Unspecial, exit: true);
 		public static readonly DungeonDoorType DoorType10 = new(0x10, "Lit cave exit (lower layer)", Unspecial, exit: true);
 		public static readonly DungeonDoorType DoorType12 = new(0x12, "Exit marker", Meta, exit: true);

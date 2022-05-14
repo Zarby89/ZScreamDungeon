@@ -1,6 +1,5 @@
 ﻿namespace ZeldaFullEditor.Data.Underworld
 {
-	// TODO new way to handle objects that change with the floor settings
 	[Serializable]
 	public class RoomObject : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, ITypeID
 	{
@@ -36,7 +35,7 @@
 
 		public int Width { get; set; } = 8;
 		public int Height { get; set; } = 8;
-		public Rectangle SquareHitbox => new(RealX, RealY, Width, Height);
+		public Rectangle BoundingBox => new(RealX, RealY, Width, Height);
 
 		public bool DiagonalFix { get; set; }
 
@@ -44,7 +43,7 @@
 
 		public TilesList Tiles { get; }
 
-		public List<Point> CollisionPoints { get; } = new List<Point>();
+		public List<Rectangle> CollisionRectangles { get; } = new List<Rectangle>();
 
 		public RoomObject(RoomObjectType type, TilesList tiles)
 		{
@@ -71,7 +70,7 @@
 		{
 			Width = 8;
 			Height = 8;
-			CollisionPoints.Clear();
+			CollisionRectangles.Clear();
 			ObjectType.Draw(art, this);
 		}
 
@@ -119,17 +118,17 @@
 						(byte) ID
 									},
 				DungeonObjectSet.Subtype2 => new byte[]
-			  {
+				{
 						(byte) (0xFC | (GridX >> 4)),
 						(byte) ((GridX << 4) | ((GridY & 0x3C) >> 2)),
 						(byte) ((GridY << 6) | (ID & 0x3F))
-			  },
+				},
 				DungeonObjectSet.Subtype3 => new byte[]
-			  {
+				{
 						(byte) ((GridX << 2) | (ID & 0x03)),
 						(byte) ((GridY << 2) | ((ID & 0x0C) >> 2)),
 						(byte) (0xF8 | ((ID & 0x70) >> 4))
-			  },
+				},
 				_ => Array.Empty<byte>(),
 			};
 		}

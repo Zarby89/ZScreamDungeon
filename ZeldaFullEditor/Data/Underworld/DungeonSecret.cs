@@ -23,7 +23,7 @@
 		public byte ID => SecretType.ID;
 		public int TypeID => SecretType.ID;
 
-		public Rectangle SquareHitbox => new(RealX, RealY, 16, 16);
+		public Rectangle BoundingBox => new(RealX, RealY, 16, 16);
 
 		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
 

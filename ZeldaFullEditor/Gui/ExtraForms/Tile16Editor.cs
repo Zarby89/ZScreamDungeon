@@ -6,7 +6,7 @@
 		private bool fromForm = false;
 		private readonly byte[] tempTiletype = new byte[0x200];
 
-		private readonly Tile16[] allTiles = new Tile16[Constants.NumberOfMap16];
+		private readonly Tile16[] allTiles = new Tile16[Constants.NumberOfUniqueTile16Definitions];
 
 		private ushort searchedTile = 0xFFFF;
 
@@ -280,7 +280,7 @@
 			int yy = 0;
 			int xx = 0;
 
-			for (int i = 0; i < Constants.NumberOfMap16; i++) // Number of tiles16 3748? // its 3752
+			for (int i = 0; i < Constants.NumberOfUniqueTile16Definitions; i++) // Number of tiles16 3748? // its 3752
 			{
 				// 8x8 tile draw
 				// gfx8 = 4bpp so everyting is /2
@@ -324,6 +324,7 @@
 
 		private void Tile16Editor_Load(object sender, EventArgs e)
 		{
+			throw new NotImplementedException();
 			tileTypeBox.DataSource = DefaultEntities.ListOfTileTypes;
 
 			for (int i = 0; i < 0x200; i++)
@@ -331,7 +332,7 @@
 				tempTiletype[i] = ZScreamer.ActiveOW.allTilesTypes[i];
 			}
 
-			ZScreamer.ActiveOW.Tile16List.ListOf.CopyTo(allTiles);
+			//ZScreamer.ActiveOW.Tile16List.ListOf.CopyTo(allTiles);
 
 			unsafe
 			{
@@ -357,20 +358,21 @@
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			for (int i = 0; i < Constants.NumberOfMap16; i++)
-			{
-				ZScreamer.ActiveOW.Tile16List.ListOf[i] = allTiles[i];
-			}
-
-			for (int i = 0; i < 0x200; i++)
-			{
-				ZScreamer.ActiveOW.allTilesTypes[i] = tempTiletype[i];
-			}
-
-			for (int i = 0; i < 159; i++)
-			{
-				ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = true;
-			}
+			throw new NotImplementedException();
+			//for (int i = 0; i < Constants.NumberOfMap16; i++)
+			//{
+			//	ZScreamer.ActiveOW.Tile16List.ListOf[i] = allTiles[i];
+			//}
+			//
+			//for (int i = 0; i < 0x200; i++)
+			//{
+			//	ZScreamer.ActiveOW.allTilesTypes[i] = tempTiletype[i];
+			//}
+			//
+			//for (int i = 0; i < 159; i++)
+			//{
+			//	ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = true;
+			//}
 
 			ZScreamer.ActiveOWScene.CurrentScreen.NeedsRefresh = false;
 			ZScreamer.ActiveOWScene.CurrentScreen.HardRefresh();

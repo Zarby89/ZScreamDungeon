@@ -21,7 +21,7 @@
 
 		public ushort RoomID { get; set; } = 0;
 
-		public Rectangle SquareHitbox => new(RealX, RealY, 16, 16); // TODO
+		public Rectangle BoundingBox => new(RealX, RealY, 16, 16); // TODO
 
 		public string Name => Species.VanillaName;
 		public byte ID => Species.ID;

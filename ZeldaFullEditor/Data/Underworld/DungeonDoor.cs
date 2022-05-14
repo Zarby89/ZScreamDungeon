@@ -11,7 +11,7 @@
 		public byte Grid { get; set; }
 		public byte GridY { get; set; }
 
-		public Rectangle SquareHitbox
+		public Rectangle BoundingBox
 		{
 			get
 			{

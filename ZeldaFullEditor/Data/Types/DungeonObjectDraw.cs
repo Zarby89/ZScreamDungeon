@@ -46,7 +46,7 @@
 					{
 						ushort td = obj.Tiles[d.TileIndex].GetModifiedUnsignedShort(hflip: d.HFlip, vflip: d.VFlip, hox: d.HXOR, vox: d.VXOR);
 
-						obj.CollisionPoints.Add(new Point(d.XOff + obj.RealX, d.YOff + obj.RealY));
+						obj.CollisionRectangles.Add(new(d.XOff + obj.RealX, d.YOff + obj.RealY, 8, 8));
 
 						if (obj.Layer == RoomLayer.Layer1 || obj.Layer == RoomLayer.Layer3 || allbg)
 						{

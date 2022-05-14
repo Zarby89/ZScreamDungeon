@@ -14,13 +14,16 @@
 		public const int UncompressedSheetSize = 0x0800;
 
 		public const int NumberOfSheets = 223;
-		public const int LimitOfMap32 = 8864;
 		public const int NumberOfRooms = 296;
 
 		public const int NumberOfOWMaps = 160;
-		public const int Map32PerScreen = 256;
-		public const int NumberOfMap16 = 3752; // 4096
-		public const int NumberOfMap32 = Map32PerScreen * NumberOfOWMaps;
+
+		public const int MaximumNumberOfTile32 = 8864;
+		public const int NumberofTile32PerScreen = 256;
+		public const int NumberOfTile16PerStrip = 32;
+		public const int NumberOfTile16PerScreen = NumberOfTile16PerStrip * NumberOfTile16PerStrip;
+		public const int NumberOfUniqueTile16Definitions = 3752; // 4096
+		public const int NumberOfTile32Total = NumberofTile32PerScreen * NumberOfOWMaps;
 		public const int NumberOfOWSprites = 352;
 		public const int NumberOfColors = 3143;
 

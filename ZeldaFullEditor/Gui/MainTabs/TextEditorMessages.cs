@@ -2,7 +2,7 @@
 
 namespace ZeldaFullEditor
 {
-	public partial class DungeonMain
+	public partial class DungeonMain : System.Windows.Forms.Form
 	{
 		private const string BANKToken = "BANK";
 		private const byte BANKID = 0x80;

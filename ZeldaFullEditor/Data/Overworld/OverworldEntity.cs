@@ -7,7 +7,7 @@
 		
 		public abstract string Name { get; }
 
-		public Rectangle SquareHitbox => new(GlobalX, GlobalY, 16, 16);
+		public Rectangle BoundingBox => new(GlobalX, GlobalY, 16, 16);
 
 		public ushort GlobalX
 		{

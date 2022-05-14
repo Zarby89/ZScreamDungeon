@@ -447,7 +447,7 @@ namespace ZeldaFullEditor
 			projectLoaded = true;
 
 			//tabControl2_SelectedIndexChanged(tabControl2.TabPages[0], new EventArgs());
-			enableProjectButtons();
+
 			foreach (ToolStripMenuItem mi in menuStrip1.Items)
 			{
 				mi.Enabled = true;
@@ -574,19 +574,6 @@ namespace ZeldaFullEditor
 
 			entrancetreeView.SelectedNode = entrancetreeView.Nodes[0].Nodes[0];
 			selectedEntrance = ZScreamer.ActiveScreamer.entrances[0];
-		}
-
-		public void enableProjectButtons()
-		{
-			toolStrip1.Enabled = true;
-
-			foreach (var it in editToolStripMenuItem.DropDownItems)
-			{
-				if (it is ToolStripDropDownItem tt)
-				{
-					tt.Enabled = true;
-				}
-			}
 		}
 
 		private readonly AboutBox1 aboutBox = new();
@@ -2473,7 +2460,7 @@ namespace ZeldaFullEditor
 		// TODO :cry:
 		private void editorsTabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			foreach (var o in editorsTabControl.TabPages)
+			foreach (var o in toolStrip1.Items)
 			{
 				if (o is DungeonToolStripButton ub)
 				{
@@ -2974,7 +2961,7 @@ namespace ZeldaFullEditor
 
 				for (int i = 0; i < 3752; i++) // 3600
 				{
-					ulong v = ZScreamer.ActiveScreamer.OverworldManager.Tile16List.ListOf[i].getLongValue();
+					ulong v = ZScreamer.ActiveScreamer.OverworldManager.Tile16Sheet.GetTile16At(i).getLongValue();
 
 					for (int j = 0; j < 8; j++)
 					{
@@ -2999,8 +2986,7 @@ namespace ZeldaFullEditor
 				FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
 				fileStreamMap.Read(mapArrayData, 0, mapArrayData.Length);
 
-				ZScreamer.ActiveScreamer.OverworldManager.Tile16List.ListOf.Clear();
-				for (int i = 0; i < Constants.NumberOfMap16; i++)
+				for (int i = 0; i < Constants.NumberOfUniqueTile16Definitions; i++)
 				{
 
 					// Tile 0
@@ -3030,7 +3016,7 @@ namespace ZeldaFullEditor
 						(mapArrayData[p + 6])
 					);
 
-					ZScreamer.ActiveScreamer.OverworldManager.Tile16List.ListOf.Add(new Tile16(t0, t1, t2, t3));
+					ZScreamer.ActiveScreamer.OverworldManager.Tile16Sheet.SetTile16At(i, new Tile16(t0, t1, t2, t3));
 
 					p += 8;
 				}

@@ -234,7 +234,7 @@ namespace ZeldaFullEditor
 			Pen selectionColor = MouseIsDown ? Pens.LimeGreen : Pens.Green;
 			foreach (var o in Room.SelectedObjects)
 			{
-				g.DrawRectangle(selectionColor, o.SquareHitbox);
+				g.DrawRectangle(selectionColor, o.BoundingBox);
 			}
 
 			// Draw BG2 outlines
@@ -246,7 +246,7 @@ namespace ZeldaFullEditor
 					{
 						if (o.ObjectType.Specialness == SpecialObjectType.LayerMask)
 						{
-							g.DrawRectangle(Pens.DarkCyan, o.SquareHitbox);
+							g.DrawRectangle(Pens.DarkCyan, o.BoundingBox);
 						}
 					}
 				}

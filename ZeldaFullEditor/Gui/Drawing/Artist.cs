@@ -14,9 +14,28 @@
 
 		public abstract Bitmap FinalOutput { get; }
 
+
+		protected virtual bool HasUnsavedChanges
+		{
+			get => BackgroundTileset != bgtilesflushed ||
+				SpriteTileset != sprtilesflushed ||
+				BackgroundPalette != bgpalflushed ||
+				SpritePalette != sprpalflushed;
+
+		}
+
+		private byte bgtilesflushed = 0xFF;
 		public byte BackgroundTileset { get; protected set; }
+
+
+		private byte sprtilesflushed = 0xFF;
 		public byte SpriteTileset { get; protected set; }
+
+
+		private byte bgpalflushed = 0xFF;
 		public byte BackgroundPalette { get; protected set; }
+
+		private byte sprpalflushed = 0xFF;
 		public byte SpritePalette { get; protected set; }
 
 		public GraphicsSet LoadedGraphics { get; set; }
@@ -37,15 +56,30 @@
 			new float[] { 0, 0, 0, 0, 1 }
 		};
 
-		public abstract void HardRefresh();
+		public virtual void HardRefresh()
+		{
+			bgtilesflushed = BackgroundTileset;
+			sprtilesflushed = SpriteTileset;
+			bgpalflushed = BackgroundPalette;
+			sprpalflushed = SpritePalette;
+		}
 
 		public abstract void RebuildBitMap();
 
 		public abstract void DrawSelfToImage(Graphics g);
 
-		public static unsafe void DrawTileToBuffer(in Tile tile, int x, int y, byte* canvas, byte* tiledata)
+		public unsafe void DrawTileToBuffer(in Tile tile, int x, int y, IGraphicsCanvas canvas)
 		{
-			DrawTileToBuffer(in tile, x * 8 + y * 64, canvas, tiledata);
+			var gfx = LoadedGraphics[tile.ID];
+			byte palnibble = (byte) (tile.Palette << 4);
+
+			for (int yl = 0; yl < 8; yl++)
+			{
+				for (int xl = 0; xl < 8; xl++)
+				{
+					canvas[x + xl, y + yl] = (byte) (gfx.GetPixelAt(x, y, tile.HFlip, tile.VFlip) | palnibble);
+				}
+			}
 		}
 
 		public void ClearBgGfx()
@@ -58,28 +92,24 @@
 		}
 
 
-		public static unsafe void DrawTileToBuffer(in Tile tile, int offset, byte* canvas, byte* tiledata)
+		public unsafe void DrawTileToBuffer(in Tile tile, int offset, IGraphicsCanvas canvas)
 		{
-			//int tx = ((tile.ID & ~0xF) << 5) | ((tile.ID & 0xF) << 2);
-			int tx = (tile.ID / 16 * 512) | ((tile.ID & 0xF) << 2);
+			var gfx = LoadedGraphics[tile.ID];
 			byte palnibble = (byte) (tile.Palette << 4);
 			byte r = tile.HFlipByte;
 
-			for (int yl = 0; yl < 8 * 64; yl += 64)
+			for (int yl = 0; yl < 8; yl++)
 			{
-				// 448 = 64 * 7
-				// instead of 64 * (7 - yl)
-				// everything with index is additive, so we can add offset in here
-				int my = offset + (8 * (tile.VFlip ? 448 - yl : yl));
+				int my = offset + (8 * 64 * (tile.VFlip ? 7 - yl : yl));
 
-				for (int xl = 0; xl < 4; xl++)
+				for (int xl = 0; xl < 7; xl++)
 				{
-					int index = my + 2 * (tile.HFlip ? 3 - xl : xl);
+					int index = my + 2 * (tile.HFlip ? 7 - xl : xl);
 
-					byte pixel = tiledata[tx + yl + xl];
+					byte pixel1 = gfx[xl + r ^ 1, yl];
+					byte pixel2 = gfx[xl + r, yl];
 
-					canvas[index + r ^ 1] = (byte) ((pixel & 0x0F) | palnibble);
-					canvas[index + r] = (byte) ((pixel >> 4) | palnibble);
+					canvas[index] = (byte) ((pixel1 & 0x0F) | palnibble);
 				}
 			}
 		}
@@ -90,6 +120,19 @@
 			int xoff = 0, int yoff = 0, int mult = 512, int maxindex = 262144, bool useGlobal = false)
 		{
 			var graphics = LoadedGraphics;
+
+			foreach (var ti in instructions)
+			{
+				int size = ti.RectSideSize;
+				byte r = (byte) (ti.HFlip ? 1 : 0);
+				int indexoff = spr.RealX + ti.XOff + xoff + (mult * (spr.RealY + ti.YOff + yoff));
+				byte pal = (byte) (ti.Palette << 3);
+
+
+			}
+
+
+
 
 			// TODO poorly copied and shit
 			foreach (OAMDrawInfo ti in instructions)

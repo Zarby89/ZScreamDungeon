@@ -14,8 +14,6 @@
 
 		public override Bitmap FinalOutput { get; } = new Bitmap(512, 512);
 
-		private readonly bool drawid;
-
 		public ScreenArtist(OverworldScreen screen) : base()
 		{
 			MyScreen = screen;
@@ -50,9 +48,14 @@
 			BackgroundTileset = MyScreen?.Tileset ?? 0;
 			SpriteTileset = MyScreen?.GetSpriteGraphicsForGameState(ZScreamer.ActiveOW.GameState) ?? 0;
 
-			ReloadPalettes();
-			RebuildTileMap();
-			RebuildBitMap();
+			if (HasUnsavedChanges)
+			{
+				ReloadPalettes();
+				RebuildTileMap();
+				RebuildBitMap();
+			}
+
+			base.HardRefresh();
 		}
 
 		public override void ReloadPalettes()
@@ -86,64 +89,39 @@
 
 
 
+		public void RebuidMap()
+		{
+			int x = 0, y = 0;
+			foreach(var i in MyScreen.Tile16Map)
+			{
+				var t = ZScreamer.ActiveOW.Tile16Sheet.GetTile16At(i);
 
+				CopyTile16ToCanvas(t, x, y);
 
+				x++;
+				if (x == 16)
+				{
+					y++;
+					x = 0;
+				}
 
+			}
+		}
 
+		private void CopyTile16ToCanvas(Tile16 t, int x, int y)
+		{
+			x *= 2;
+			y *= 2;
+			CopyTile8ToCanvas(t.Tile0, x, y);
+			CopyTile8ToCanvas(t.Tile1, x + 1, y);
+			CopyTile8ToCanvas(t.Tile2, x, y + 1);
+			CopyTile8ToCanvas(t.Tile3, x + 1, y + 1);
 
+		}
 
+		private void CopyTile8ToCanvas(Tile t, int x, int y)
+		{
 
-
-
-
-
-
-
-
-//	ushort[,] tilesUsed;
-//	public void BuildMap()
-//	{
-//		BuildTiles16Gfx(); // Build on GFX.mapgfx16Ptr
-//		ReloadPalettes();
-//
-//		if (MyScreen.World == Worldiness.LightWorld)
-//		{
-//			tilesUsed = ZScreamer.ActiveOW.allmapsTilesLW;
-//		}
-//		else if (MyScreen.World == Worldiness.DarkWorld)
-//		{
-//			tilesUsed = ZScreamer.ActiveOW.allmapsTilesDW;
-//		}
-//		else
-//		{
-//			tilesUsed = ZScreamer.ActiveOW.allmapsTilesSP;
-//		}
-//
-//		int superY = MyScreen.VirtualMapID / 8 * 32;
-//		int superX = 32 * (MyScreen.MapID & 0x7);
-//
-//		for (int y = 0; y < 32; y++)
-//		{
-//			for (int x = 0; x < 32; x++)
-//			{
-//				CopyTile8bpp16(x * 16, y * 16, tilesUsed[x + superX, y + superY], gfxPtr, ZScreamer.ActiveGraphicsManager.mapblockset16);
-//			}
-//		}
-//
-//		// 8x8 CODE NEW
-//		/*
-//        for (int y = 0; y < 32; y++)
-//        {
-//            for (int x = 0; x < 32; x++)
-//            {
-//                CopyTile8bpp16From8((x*16), (y*16), tilesUsed[x + (superX * 32), y + (superY * 32)], gfxPtr, GFX.currentOWgfx16Ptr);
-//            }
-//        }
-//        */
-//	}
-//
-//	public unsafe void CopyTile8bpp16(int x, int y, int tile, IntPtr destbmpPtr, IntPtr sourcebmpPtr)
-//	{
 //		int sourcePtrPos = ((tile & 0x7) << 4) + ((tile / 8) * 2048); //(sourceX * 16) + (sourceY * 128);
 //		byte* sourcePtr = (byte*) sourcebmpPtr.ToPointer();
 //
@@ -157,52 +135,12 @@
 //				destPtr[destPtrPos + xstrip + (ystrip * 512)] = sourcePtr[sourcePtrPos + xstrip + (ystrip * 128)];
 //			}
 //		}
-//	}
-//
-//	private static readonly int[] TileOffsetsIDK = { 0, 8, 1024, 1032 };
-//
-//	private unsafe void BuildTiles16Gfx()
-//	{
-//		//Stopwatch sw = new Stopwatch();
-//		//sw.Start();
-//		byte* gfx16Data = (byte*) ZScreamer.ActiveGraphicsManager.mapblockset16.ToPointer(); //(byte*)allgfx8Ptr.ToPointer();
-//		byte* gfx8Data = (byte*) ZScreamer.ActiveGraphicsManager.currentOWgfx16Ptr.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
-//
-//		int yy = 0;
-//		int xx = 0;
-//
-//		for (int i = 0; i < ZScreamer.ActiveOW.Tile16List.ListOf.Count; i++) // Number of tiles16 3748?
-//		{
-//			// 8x8 tile draw
-//			// gfx8 = 4bpp so everyting is /2
-//			// Var tiles = ow.tiles16[i];
-//
-//			for (int tile = 0; tile < 4; tile++)
-//			{
-//				Tile info = ZScreamer.ActiveOW.Tile16List.ListOf[i][tile];
-//				int offset = TileOffsetsIDK[tile];
-//
-//				for (int y = 0; y < 8; y++)
-//				{
-//					for (int x = 0; x < 4; x++)
-//					{
-//						CopyTile(x, y, xx, yy, offset, info, gfx16Data, gfx8Data);
-//					}
-//				}
-//			}
-//
-//			xx += 16;
-//			if (xx >= 128)
-//			{
-//				yy += 2048;
-//				xx = 0;
-//			}
-//		}
-//
-//		//sw.Stop();
-//		//Console.WriteLine("Map Tileset16 Generated in : " + sw.ElapsedMilliseconds);
-//	}
-//
+
+
+
+			throw new NotImplementedException();
+		}
+
 //	private unsafe void CopyTile(int x, int y, int xx, int yy, int offset, in Tile tile, byte* gfx16Pointer, byte* gfx8Pointer) // map,current
 //	{
 //		int mx = tile.HFlip ? 3 - x : x;

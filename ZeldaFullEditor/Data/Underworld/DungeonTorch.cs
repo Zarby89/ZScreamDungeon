@@ -21,7 +21,7 @@
 		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
 		public bool Lit { get; set; } = false;
 
-		public Rectangle SquareHitbox => new(RealX, RealY, 16, 16);
+		public Rectangle BoundingBox => new(RealX, RealY, 16, 16);
 
 
 		public string Name => "Torch";

@@ -5,27 +5,18 @@
 		private readonly IntPtr ptr;
 		public byte* Pointer => (byte*) ptr.ToPointer();
 
+		private readonly GraphicsTile[] tiles;
+
 		public byte ID { get; }
 		public int Width { get; }
 		public int Height { get; }
+		public int TileCount { get; }
+
+		public int TileMask => TileCount - 1;
 
 		public Bitmap Bitmap { get; }
 
-		public byte this[int i]
-		{
-			get
-			{
-				return Pointer[i];
-			}
-		}
-
-		public byte this[int x, int y]
-		{
-			get
-			{
-				return Pointer[x + Width * y];
-			}
-		}
+		public GraphicsTile this[int i] => tiles[i];
 
 		// TODO add grayscale palette for the image
 		public GraphicsSheet(byte id, byte[] data, SNESPixelFormat format)
@@ -36,12 +27,14 @@
 				case SNESPixelFormat.SNES2BPPCompressed:
 					Width = 128;
 					Height = 64;
+					TileCount = 8 * 16;
 					break;
 
 				case SNESPixelFormat.SNES3BPP:
 				case SNESPixelFormat.SNES3BPPCompressed:
 					Width = 128;
 					Height = 32;
+					TileCount = 4 * 16;
 					break;
 
 				default:
@@ -49,7 +42,7 @@
 			}
 
 			ID = id;
-
+			tiles = new GraphicsTile[TileCount];
 			ptr = Marshal.AllocHGlobal(Width * Height);
 			Bitmap = new Bitmap(Width, Height, Width, PixelFormat.Format8bppIndexed, ptr);
 

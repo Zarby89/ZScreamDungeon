@@ -135,9 +135,14 @@
 			BackgroundTileset = CurrentRoom?.BackgroundTileset ?? 0;
 			SpriteTileset = CurrentRoom?.SpriteTileset ?? 0;
 
-			ReloadPalettes();
-			RebuildTileMap();
-			RebuildBitMap();
+			if (HasUnsavedChanges)
+			{
+				ReloadPalettes();
+				RebuildTileMap();
+				RebuildBitMap();
+			}
+
+			base.HardRefresh();
 		}
 
 		public override void ReloadPalettes()

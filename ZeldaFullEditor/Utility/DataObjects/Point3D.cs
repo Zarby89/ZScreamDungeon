@@ -2,13 +2,15 @@
 {
 	public class Point3D
 	{
-		public sbyte x, y, z = 0;
+		public sbyte X { get; set; }
+		public sbyte Y { get; set; }
+		public sbyte Z { get; set; }
 
 		public Point3D(sbyte x, sbyte y, sbyte z)
 		{
-			this.x = x;
-			this.y = y;
-			this.z = z;
+			X = x;
+			Y = y;
+			Z = z;
 		}
 	}
 }
