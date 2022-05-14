@@ -35,6 +35,7 @@
 
 		public int Width { get; set; } = 8;
 		public int Height { get; set; } = 8;
+
 		public Rectangle BoundingBox => new(RealX, RealY, Width, Height);
 
 		public bool DiagonalFix { get; set; }
@@ -101,10 +102,20 @@
 
 		public bool PointIsInHitbox(int x, int y)
 		{
-			int yfix = DiagonalFix
-					? -(6 + Size)
-					: 0;
-			throw new NotImplementedException();
+			if (CollisionRectangles.Count == 0)
+			{
+				return this.PointIsInBoundingBox(x, y);
+			}
+
+			foreach (var v in CollisionRectangles)
+			{
+				if (v.Contains(x, y))
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		public byte[] GetByteData()
@@ -112,23 +123,26 @@
 			return ObjectType.ObjectSet switch
 			{
 				DungeonObjectSet.Subtype1 => new byte[]
-									{
+				{
 						(byte) ((GridX << 2) | ((Size & 0x0C) >> 2)),
 						(byte) ((GridY << 2) | (Size & 0x03)),
 						(byte) ID
-									},
+				},
+
 				DungeonObjectSet.Subtype2 => new byte[]
 				{
 						(byte) (0xFC | (GridX >> 4)),
 						(byte) ((GridX << 4) | ((GridY & 0x3C) >> 2)),
 						(byte) ((GridY << 6) | (ID & 0x3F))
 				},
+
 				DungeonObjectSet.Subtype3 => new byte[]
 				{
 						(byte) ((GridX << 2) | (ID & 0x03)),
 						(byte) ((GridY << 2) | ((ID & 0x0C) >> 2)),
 						(byte) (0xF8 | ((ID & 0x70) >> 4))
 				},
+
 				_ => Array.Empty<byte>(),
 			};
 		}

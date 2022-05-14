@@ -318,8 +318,8 @@
 			var index = xx + yy + offset + (mx * 2) + (my * 128);
 			var pixel = gfx8Pointer[tx + (y * 64) + x];
 
-			gfx16Pointer[index + tile.HFlipByte ^ 1] = (byte) ((pixel & 0x0F) | (tile.Palette << 4));
-			gfx16Pointer[index + tile.HFlipByte] = (byte) (((pixel >> 4)) | (tile.Palette << 4));
+			//gfx16Pointer[index + tile.HFlipByte ^ 1] = (byte) ((pixel & 0x0F) | (tile.Palette << 4));
+			//gfx16Pointer[index + tile.HFlipByte] = (byte) (((pixel >> 4)) | (tile.Palette << 4));
 		}
 
 		private void Tile16Editor_Load(object sender, EventArgs e)
@@ -374,7 +374,6 @@
 			//	ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = true;
 			//}
 
-			ZScreamer.ActiveOWScene.CurrentScreen.NeedsRefresh = false;
 			ZScreamer.ActiveOWScene.CurrentScreen.HardRefresh();
 
 			Close();

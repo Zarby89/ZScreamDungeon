@@ -5,8 +5,6 @@ namespace ZeldaFullEditor
 	public class Scene : PictureBox
 	{
 		public readonly ZScreamer ZS;
-
-		public bool IsActive => ZS.ActiveScene == this;
 		public bool IsUpdating { get; set; }
 		public bool MouseIsDown { get; set; }
 

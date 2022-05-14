@@ -177,11 +177,7 @@ namespace ZeldaFullEditor
 				MainForm.propertiesChangedFromForm = true;
 				OverworldScreen map = ZS.OverworldManager.allmaps[CurrentMap + ZS.OverworldManager.WorldOffset];
 
-				if (map.NeedsRefresh)
-				{
-					map.HardRefresh();
-					map.NeedsRefresh = false;
-				}
+				map.HardRefresh();
 
 				MainForm.mapGroupbox.Text = string.Format(
 					MainForm.showMapIndexInHexToolStripMenuItem.Checked ? "Selected map: {0}" : "Selected map: {0}",
@@ -412,7 +408,7 @@ namespace ZeldaFullEditor
 				else
 				{
 					g.FillRectangle(new SolidBrush(ZS.PaletteManager.OverworldGrass[0]), new RectangleF(x * 512, y * 512, 512, 512));
-					g.DrawImage(ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[CurrentMap].ParentMapID].gfxBitmap, new PointF(x * 512, y * 512));
+					g.DrawImage(ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[CurrentMap].ParentMapID].MyArtist.Layer1Canvas.Bitmap, new PointF(x * 512, y * 512));
 				}
 			}
 			else
@@ -442,12 +438,12 @@ namespace ZeldaFullEditor
 						if ((i >= 0x03) && (i <= 0x07))
 						{
 							g.CompositingMode = CompositingMode.SourceOver;
-							g.DrawImage(ZS.OverworldManager.allmaps[149].gfxBitmap, new PointF(x, y));
+							g.DrawImage(ZS.OverworldManager.allmaps[149].MyArtist.Layer1Canvas.Bitmap, new PointF(x, y));
 						}
 						else if (i == 91 || i == 92)
 						{
 							g.CompositingMode = CompositingMode.SourceOver;
-							g.DrawImage(ZS.OverworldManager.allmaps[150].gfxBitmap, new PointF(x, y));
+							g.DrawImage(ZS.OverworldManager.allmaps[150].MyArtist.Layer1Canvas.Bitmap, new PointF(x, y));
 						}
 					}
 					else
@@ -466,7 +462,7 @@ namespace ZeldaFullEditor
 						g.DrawRectangle(new Pen(ZS.PaletteManager.OverworldGrass[grass]), new Rectangle(x, y, 512, 512));
 					}
 
-					g.DrawImage(ZS.OverworldManager.allmaps[i].gfxBitmap, new PointF(x, y));
+					g.DrawImage(ZS.OverworldManager.allmaps[i].MyArtist.Layer1Canvas.Bitmap, new PointF(x, y));
 
 					if (MainForm.overworldOverlayVisibleToolStripMenuItem.Checked)
 					{

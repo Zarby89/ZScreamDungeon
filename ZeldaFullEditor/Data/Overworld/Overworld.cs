@@ -491,7 +491,6 @@
 
 		public void UpdateChildrenOfTheMap(OverworldScreen map)
 		{
-			map.NeedsRefresh = true;
 			map.HardRefresh();
 
 			if (!map.IsPartOfLargeMap) return;
@@ -509,7 +508,6 @@
 				m.State0SpritePalette = map.State0SpritePalette;
 				m.State2SpritePalette = map.State2SpritePalette;
 				m.State3SpritePalette = map.State3SpritePalette;
-				m.NeedsRefresh = true;
 				m.HardRefresh();
 			}
 		}

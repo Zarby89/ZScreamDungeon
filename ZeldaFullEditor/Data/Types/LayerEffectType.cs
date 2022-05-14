@@ -13,14 +13,14 @@
 
 		public override string ToString() => Name;
 
-		public static readonly LayerEffectType LayerEffect00 = new(0x00, "Nothing");
-		public static readonly LayerEffectType LayerEffect01 = new(0x01, "Nothing");
-		public static readonly LayerEffectType LayerEffect02 = new(0x02, "Moving Floor");
-		public static readonly LayerEffectType LayerEffect03 = new(0x03, "Moving Water");
-		public static readonly LayerEffectType LayerEffect04 = new(0x04, "Trinexx Shell");
-		public static readonly LayerEffectType LayerEffect05 = new(0x05, "Red Flashes");
-		public static readonly LayerEffectType LayerEffect06 = new(0x06, "Light Torch to See Floor");
-		public static readonly LayerEffectType LayerEffect07 = new(0x07, "Ganon's Darkness");
+		public static LayerEffectType LayerEffect00 { get; } = new(0x00, "Nothing");
+		public static LayerEffectType LayerEffect01 { get; } = new(0x01, "Nothing");
+		public static LayerEffectType LayerEffect02 { get; } = new(0x02, "Moving Floor");
+		public static LayerEffectType LayerEffect03 { get; } = new(0x03, "Moving Water");
+		public static LayerEffectType LayerEffect04 { get; } = new(0x04, "Trinexx Shell");
+		public static LayerEffectType LayerEffect05 { get; } = new(0x05, "Red Flashes");
+		public static LayerEffectType LayerEffect06 { get; } = new(0x06, "Light Torch to See Floor");
+		public static LayerEffectType LayerEffect07 { get; } = new(0x07, "Ganon's Darkness");
 
 		public static readonly LayerEffectType[] ListOf =
 		{

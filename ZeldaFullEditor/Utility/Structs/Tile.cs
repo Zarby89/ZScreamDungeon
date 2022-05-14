@@ -6,6 +6,8 @@
 	[Serializable]
 	public readonly struct Tile : IByteable
 	{
+		public ushort ID { get; }
+
 		/// <summary>
 		/// <see langword="true"/> if high priority
 		/// </summary>
@@ -21,25 +23,7 @@
 		/// </summary>
 		public bool VFlip { get; }
 
-		/// <summary>
-		/// 0x01 if high priority
-		/// </summary>
-		public byte PriorityByte { get; }
-
-		/// <summary>
-		/// 0x01 if flipped horizontally across the Y axis
-		/// </summary>
-		public byte HFlipByte { get; }
-
-		/// <summary>
-		/// 0x01 if flipped vertically across the X axis
-		/// </summary>
-		public byte VFlipByte { get; }
-
-		public ushort ID { get; }
-
 		public byte Palette { get; }
-
 
 		public static readonly Tile Empty = new(0);
 
@@ -48,13 +32,10 @@
 			ID = (ushort) (((b2 & 0x01) << 8) | b1);
 
 			VFlip = (b2 & 0x80) == 0x80;
-			VFlipByte = (byte) (VFlip ? 1 : 0);
 
 			HFlip = (b2 & 0x40) == 0x40;
-			HFlipByte = (byte) (HFlip ? 1 : 0);
 
 			Priority = (b2 & 0x20) == 0x20;
-			PriorityByte = (byte) (Priority ? 1 : 0);
 
 			Palette = (byte) ((b2 >> 2) & 0x07);
 		}
@@ -64,14 +45,8 @@
 			ID = (ushort) (id & Constants.TileNameMask);
 
 			HFlip = hflip;
-			HFlipByte = (byte) (HFlip ? 1 : 0);
-
 			VFlip = vflip;
-			VFlipByte = (byte) (VFlip ? 1 : 0);
-
 			Priority = priority;
-			PriorityByte = (byte) (Priority ? 1 : 0);
-
 			Palette = palette;
 		}
 
@@ -80,13 +55,10 @@
 			ID = (ushort) (v & Constants.TileNameMask);
 
 			VFlip = v.BitIsOn(Constants.TileVFlipBit);
-			VFlipByte = (byte) (VFlip ? 1 : 0);
 
 			HFlip = v.BitIsOn(Constants.TileHFlipBit);
-			HFlipByte = (byte) (HFlip ? 1 : 0);
 
 			Priority = v.BitIsOn(Constants.TilePriorityBit);
-			PriorityByte = (byte) (Priority ? 1 : 0);
 
 			Palette = (byte) ((v >> 10) & 0x07);
 		}
@@ -97,18 +69,38 @@
 			return new byte[] { (byte) s, (byte) (s >> 8) };
 		}
 
-		public ushort GetModifiedUnsignedShort(bool? hflip = null, bool? vflip = null, bool hox = false, bool vox = false)
+		public ushort GetModifiedUnsignedShort(
+			FlipBehavior hflip = FlipBehavior.LeaveAlone,
+			FlipBehavior vflip = FlipBehavior.LeaveAlone)
 		{
 			ushort value = (ushort) (((Palette << 10) & 0x1C00) | (ID & Constants.TileNameMask));
 
-			if (hflip ?? (HFlip ^ hox))
+			bool fliph = hflip switch
+			{
+				FlipBehavior.ForcedToFalse => false,
+				FlipBehavior.ForcedToTrue => true,
+				FlipBehavior.InvertFlip => !HFlip,
+				_ => HFlip
+			};
+
+			if (fliph)
 			{
 				value |= Constants.TileHFlipBit;
 			}
-			if (vflip ?? (VFlip ^ vox))
+
+			bool flipv = vflip switch
 			{
-				value |= Constants.TileVFlipBit;
+				FlipBehavior.ForcedToFalse => false,
+				FlipBehavior.ForcedToTrue => true,
+				FlipBehavior.InvertFlip => !VFlip,
+				_ => VFlip
+			};
+
+			if (flipv)
+			{
+				value |= Constants.TileHFlipBit;
 			}
+
 			if (Priority)
 			{
 				value |= Constants.TilePriorityBit;
@@ -121,9 +113,27 @@
 		/// Returns a copy of this tile with the specified properties changed.
 		/// Properties set to <see langword="null"/> are left alone.
 		/// </summary>
-		public Tile CloneModified(bool? hflip = null, bool? vflip = null, bool hox = false, bool vox = false)
+		public Tile CloneModified(FlipBehavior hflip = FlipBehavior.LeaveAlone,
+			FlipBehavior vflip = FlipBehavior.LeaveAlone)
 		{
-			return new Tile(ID, Palette, Priority, hflip ?? (HFlip ^ hox), vflip ?? (VFlip ^ vox));
+
+			bool fliph = hflip switch
+			{
+				FlipBehavior.ForcedToFalse => false,
+				FlipBehavior.ForcedToTrue => true,
+				FlipBehavior.InvertFlip => !HFlip,
+				_ => HFlip
+			};
+
+			bool flipv = vflip switch
+			{
+				FlipBehavior.ForcedToFalse => false,
+				FlipBehavior.ForcedToTrue => true,
+				FlipBehavior.InvertFlip => !VFlip,
+				_ => VFlip
+			};
+
+			return new Tile(ID, Palette, Priority, fliph, flipv);
 		}
 
 		public ushort ToUnsignedShort()

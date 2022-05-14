@@ -516,92 +516,92 @@
 
 		public static void ItemReceiptDraw00(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw01(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw02(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw03(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw04(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw05(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw06(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw07(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw08(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw09(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw0A(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw0B(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw0C(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw0D(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw0E(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw0F(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw10(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw11(Artist art, DungeonChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(art, d, new OAMDrawInfo());
 		}
 
 		public static void ItemReceiptDraw12(Artist art, DungeonChestItem d)

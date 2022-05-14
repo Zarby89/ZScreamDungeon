@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.Gui
 {
-	public partial class GfxImportExport : UserControl
+	public unsafe partial class GfxImportExport : UserControl
 	{
 		public int selectedSheet = 0;
 
@@ -15,7 +15,7 @@
 			InitializeComponent();
 		}
 
-		private unsafe void pasteIndexed_Click(object sender, EventArgs e)
+		private void pasteIndexed_Click(object sender, EventArgs e)
 		{
 			byte[] data = ImgClipboard.GetImageData();
 			int nbrColor = 16;
@@ -56,7 +56,7 @@
 			e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(0, selectedSheet * 64, 256, 64));
 		}
 
-		private unsafe void button1_Click(object sender, EventArgs e)
+		private void button1_Click(object sender, EventArgs e)
 		{
 			int csize = 0;
 			SaveFileDialog sfd = new SaveFileDialog()
@@ -80,7 +80,7 @@
 			}
 		}
 
-		public unsafe void SaveAllGfx()
+		public void SaveAllGfx()
 		{
 			for (int i = 0; i < Constants.NumberOfSheets; i++)
 			{
@@ -227,7 +227,7 @@
 			palettePicturebox.Refresh();
 		}
 
-		private unsafe void copyIndexed_Click(object sender, EventArgs e)
+		private void copyIndexed_Click(object sender, EventArgs e)
 		{
 			Clipboard.Clear();
 			byte[] sdata = new byte[Constants.UncompressedSheetSize];
@@ -253,7 +253,12 @@
 			return pdata;
 		}
 
-		private unsafe void copy24bpp_Click(object sender, EventArgs e)
+		private void copy24bpp_Click(object sender, EventArgs e)
+		{
+			copy();
+		}
+
+		public void copy()
 		{
 			byte[] sdata = new byte[Constants.UncompressedSheetSize];
 			byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
@@ -265,17 +270,7 @@
 			ImgClipboard.SetImageDataWithPal(sdata, CopyPaletteData());
 		}
 
-		public void copy()
-		{
-			copy24bpp_Click(null, null);
-		}
-
 		public void paste()
-		{
-			paste24bpp_Click(null, null);
-		}
-
-		private unsafe void paste24bpp_Click(object sender, EventArgs e)
 		{
 			if (!Clipboard.ContainsImage()) return;
 			Bitmap b = (Bitmap) Clipboard.GetImage();
@@ -309,8 +304,13 @@
 
 			for (int i = 0; i < 159; i++)
 			{
-				ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = true;
+				ZScreamer.ActiveOW.allmaps[i].HardRefresh();
 			}
+		}
+
+		private void paste24bpp_Click(object sender, EventArgs e)
+		{
+			paste();
 		}
 
 		public byte matchPalette(Color c)

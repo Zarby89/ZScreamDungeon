@@ -6,8 +6,8 @@
 	/// </summary>
 	public interface IDrawableSprite
 	{
-		byte ID { get; }
-		int RealX { get; }
-		int RealY { get; }
+		public byte ID { get; }
+		public int RealX { get; }
+		public int RealY { get; }
 	}
 }

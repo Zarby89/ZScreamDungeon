@@ -1,4 +1,6 @@
-﻿namespace ZeldaFullEditor.Data
+﻿using static ZeldaFullEditor.FlipBehavior;
+
+namespace ZeldaFullEditor.Data
 {
 	public delegate void DrawObject(Artist art, RoomObject obj);
 
@@ -7,7 +9,7 @@
 		/// <summary>
 		/// Draws a specified tile or set of tiles of an object
 		/// </summary>
-		/// <param name="ZS">Handler for graphics where object is being drawn.</param>
+		/// <param name="art">Handler for graphics where object is being drawn.</param>
 		/// <param name="obj">Object being drawn</param>
 		/// <param name="allbg">Whether this routines draws to all backgrounds or just the object's background</param>
 		/// <param name="instructions">A list of <see cref="DrawInfo">DrawInfo</see> instructions for which tiles to draw.</param>
@@ -20,7 +22,7 @@
 				{
 					if (d.XOff is > 56 or < 0 || d.YOff is > 56 or < 0) continue;
 
-					Tile t = obj.Tiles[d.TileIndex].CloneModified(hflip: d.HFlip, vflip: d.VFlip, hox: d.HXOR, vox: d.VXOR);
+					Tile t = obj.Tiles[d.TileIndex].CloneModified(hflip: d.HFlip, vflip: d.VFlip);
 
 					int indexoff = (d.XOff & ~0x7) + ((d.YOff & ~0x7) << 6);
 					art.DrawTileForPreview(t, indexoff);
@@ -44,7 +46,7 @@
 
 					if (tm < Constants.TilesPerUnderworldRoom && tm >= 0)
 					{
-						ushort td = obj.Tiles[d.TileIndex].GetModifiedUnsignedShort(hflip: d.HFlip, vflip: d.VFlip, hox: d.HXOR, vox: d.VXOR);
+						ushort td = obj.Tiles[d.TileIndex].GetModifiedUnsignedShort(hflip: d.HFlip, vflip: d.VFlip);
 
 						obj.CollisionRectangles.Add(new(d.XOff + obj.RealX, d.YOff + obj.RealY, 8, 8));
 
@@ -329,13 +331,13 @@
 					new DrawInfo(tid + 56, 40, y),
 					new DrawInfo(tid + 70, 48, y),
 
-					new DrawInfo(tid + 70, 56, y) { HXOR = true },
-					new DrawInfo(tid + 56, 64, y) { HXOR = true },
-					new DrawInfo(tid + 42, 72, y) { HXOR = true },
-					new DrawInfo(tid + 28, 80, y) { HXOR = true },
-					new DrawInfo(tid + 14, 88, y) { HXOR = true },
-					new DrawInfo(tid + 14, 96, y) { HXOR = true },
-					new DrawInfo(tid, 104, y) { HXOR = true }
+					new DrawInfo(tid + 70, 56, y) { HFlip = InvertFlip },
+					new DrawInfo(tid + 56, 64, y) { HFlip = InvertFlip },
+					new DrawInfo(tid + 42, 72, y) { HFlip = InvertFlip },
+					new DrawInfo(tid + 28, 80, y) { HFlip = InvertFlip },
+					new DrawInfo(tid + 14, 88, y) { HFlip = InvertFlip },
+					new DrawInfo(tid + 14, 96, y) { HFlip = InvertFlip },
+					new DrawInfo(tid, 104, y) { HFlip = InvertFlip }
 				);
 				tid++;
 			}
@@ -366,17 +368,17 @@
 			for (int x = 0; x < 7 * 8; x += 8)
 			{
 				DrawTiles(art, obj, false,
-					new DrawInfo(24, 64 - x, 32 + x) { HFlip = false },
-					new DrawInfo(25, 64 - x, 40 + x) { HFlip = false },
-					new DrawInfo(26, 64 - x, 48 + x) { HFlip = false },
-					new DrawInfo(27, 64 - x, 56 + x) { HFlip = false },
-					new DrawInfo(28, 64 - x, 64 + x) { HFlip = false },
+					new DrawInfo(24, 64 - x, 32 + x) { HFlip = ForcedToFalse },
+					new DrawInfo(25, 64 - x, 40 + x) { HFlip = ForcedToFalse },
+					new DrawInfo(26, 64 - x, 48 + x) { HFlip = ForcedToFalse },
+					new DrawInfo(27, 64 - x, 56 + x) { HFlip = ForcedToFalse },
+					new DrawInfo(28, 64 - x, 64 + x) { HFlip = ForcedToFalse },
 
-					new DrawInfo(24, 184 + x, 32 + x) { HFlip = true },
-					new DrawInfo(25, 184 + x, 40 + x) { HFlip = true },
-					new DrawInfo(26, 184 + x, 48 + x) { HFlip = true },
-					new DrawInfo(27, 184 + x, 56 + x) { HFlip = true },
-					new DrawInfo(28, 184 + x, 64 + x) { HFlip = true }
+					new DrawInfo(24, 184 + x, 32 + x) { HFlip = ForcedToTrue },
+					new DrawInfo(25, 184 + x, 40 + x) { HFlip = ForcedToTrue },
+					new DrawInfo(26, 184 + x, 48 + x) { HFlip = ForcedToTrue },
+					new DrawInfo(27, 184 + x, 56 + x) { HFlip = ForcedToTrue },
+					new DrawInfo(28, 184 + x, 64 + x) { HFlip = ForcedToTrue }
 				);
 			}
 
@@ -387,17 +389,17 @@
 				for (int y = 0; y < 6 * 8; y += 8)
 				{
 					DrawTiles(art, obj, false,
-						new DrawInfo(tid, 16, y + i) { HFlip = false },
-						new DrawInfo(tid++, 216, y + i) { HFlip = true },
+						new DrawInfo(tid, 16, y + i) { HFlip = ForcedToFalse },
+						new DrawInfo(tid++, 216, y + i) { HFlip = ForcedToTrue },
 
-						new DrawInfo(tid, 24, y + i) { HFlip = false },
-						new DrawInfo(tid++, 208, y + i) { HFlip = true },
+						new DrawInfo(tid, 24, y + i) { HFlip = ForcedToFalse },
+						new DrawInfo(tid++, 208, y + i) { HFlip = ForcedToTrue },
 
-						new DrawInfo(tid, 32, y + i) { HFlip = false },
-						new DrawInfo(tid++, 200, y + i) { HFlip = true },
+						new DrawInfo(tid, 32, y + i) { HFlip = ForcedToFalse },
+						new DrawInfo(tid++, 200, y + i) { HFlip = ForcedToTrue },
 
-						new DrawInfo(tid, 40, y + i) { HFlip = false },
-						new DrawInfo(tid++, 192, y + i) { HFlip = true }
+						new DrawInfo(tid, 40, y + i) { HFlip = ForcedToFalse },
+						new DrawInfo(tid++, 192, y + i) { HFlip = ForcedToTrue }
 					);
 				}
 			}
@@ -1115,13 +1117,13 @@
 			{
 				DrawTiles(art, obj, false,
 					new DrawInfo(2, x, 24),
-					new DrawInfo(2, x + 8, 24) { HXOR = true },
+					new DrawInfo(2, x + 8, 24) { HFlip = InvertFlip },
 
 					new DrawInfo(3, x, 32),
-					new DrawInfo(3, x + 8, 32) { HXOR = true },
+					new DrawInfo(3, x + 8, 32) { HFlip = InvertFlip },
 
 					new DrawInfo(4, x, 40),
-					new DrawInfo(4, x + 8, 40) { HXOR = true }
+					new DrawInfo(4, x + 8, 40) { HFlip = InvertFlip }
 				);
 			}
 
@@ -1431,24 +1433,25 @@
 		{
 			DrawTiles(art, obj, false,
 				new DrawInfo(0, 0, 0),
-				new DrawInfo(0, 120, 0) { HFlip = true },
+				new DrawInfo(0, 120, 0) { HFlip = ForcedToTrue },
 				new DrawInfo(1, 8, 0),
-				new DrawInfo(1, 112, 0) { HFlip = true },
+				new DrawInfo(1, 112, 0) { HFlip = ForcedToTrue },
 				new DrawInfo(3, 8, 16),
-				new DrawInfo(3, 112, 16) { HFlip = true }
+				new DrawInfo(3, 112, 16) { HFlip = ForcedToTrue }
 			);
 
 			for (int x = 16; x < 56; x += 8)
 			{
+				
 				DrawTiles(art, obj, false,
 					new DrawInfo(1, x, 0),
-					new DrawInfo(1, x + 56, 0) { HFlip = true },
+					new DrawInfo(1, x + 56, 0) { HFlip = ForcedToTrue },
 					new DrawInfo(2, x, 8),
-					new DrawInfo(2, x + 56, 8) { HFlip = true },
+					new DrawInfo(2, x + 56, 8) { HFlip = ForcedToTrue },
 					new DrawInfo(4, x, 16),
-					new DrawInfo(4, x, 16) { HFlip = true },
+					new DrawInfo(4, x, 16) { HFlip = ForcedToTrue },
 					new DrawInfo(5, x + 56, 24),
-					new DrawInfo(5, x, 24) { HFlip = true }
+					new DrawInfo(5, x, 24) { HFlip = ForcedToTrue }
 				);
 			}
 		}

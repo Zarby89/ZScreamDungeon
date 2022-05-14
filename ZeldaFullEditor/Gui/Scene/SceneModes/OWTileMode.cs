@@ -56,7 +56,7 @@ namespace ZeldaFullEditor
 			tileBitmapPtr = ZS.GFXManager.mapblockset16;
 			tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr)
 			{
-				Palette = ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[mapId].ParentMapID].gfxBitmap.Palette
+				Palette = ZS.OverworldManager.allmaps[mapId].ParentMap.MyArtist.Layer1Canvas.Palette
 			};
 
 			if (CurrentMap >= 160)
@@ -98,13 +98,10 @@ namespace ZeldaFullEditor
 							}
 						}
 					}
-					else
+					else if (ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY] == 52)
 					{
-						if (ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY] == 52)
-						{
-							ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY] = selectedTile[0];
-							ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16((tileX * 16) - (superX * 512), (tileY * 16) - (superY * 512), selectedTile[0]);
-						}
+						ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY] = selectedTile[0];
+						ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16((tileX * 16) - (superX * 512), (tileY * 16) - (superY * 512), selectedTile[0]);
 					}
 				}
 				else

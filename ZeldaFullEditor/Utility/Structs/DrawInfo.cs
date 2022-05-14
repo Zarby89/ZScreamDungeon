@@ -14,23 +14,13 @@
 		public ushort? TileUnder { get; init; } = null;
 
 		/// <summary>
-		/// Forces the horizontal flip of the tile if not <see langword="null"/>
+		/// Forces the horizontal flip of the tile.
 		/// </summary>
-		public bool? HFlip { get; init; } = null;
+		public FlipBehavior HFlip { get; init; } = FlipBehavior.LeaveAlone;
 
 		/// <summary>
-		/// Forces the vertical flip of the tile if not <see langword="null"/>
+		/// Forces the vertical flip of the tile.
 		/// </summary>
-		public bool? VFlip { get; init; } = null;
-
-		/// <summary>
-		/// Inverts HFlip of target tile if <see langword="true"/>
-		/// </summary>
-		public bool HXOR { get; init; } = false;
-
-		/// <summary>
-		/// Inverts VFlip of target tile if <see langword="true"/>
-		/// </summary>
-		public bool VXOR { get; init; } = false;
+		public FlipBehavior VFlip { get; init; } = FlipBehavior.LeaveAlone;
 	}
 }

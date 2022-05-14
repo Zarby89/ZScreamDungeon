@@ -19,26 +19,12 @@
 
 		//----------------------------------------------------------------------------------------//
 
-		private Scene active;
-		public Scene ActiveScene
-		{
-			get => active;
-			set => SetActiveScene(value);
-		}
-
 		public AddressSet Offsets { get; }
 		public RoomObjectTileLister TileLister { get; private set; }
 		public RoomLayoutLister LayoutLister { get; private set; }
 
 		public Overworld OverworldManager { get; }
 		public PaletteHandler PaletteManager { get; }
-
-		private TabSelection curtab;
-		public TabSelection CurrentTab
-		{
-			get => curtab;
-			set => SelectTab(value);
-		}
 
 		public SceneUW UnderworldScene { get; }
 
@@ -108,24 +94,6 @@
 				//DungeonsData.undoRoom[i] = new List<Room>();
 				//DungeonsData.redoRoom[i] = new List<Room>();
 			}
-		}
-
-
-		public void SetActiveScene(Scene s)
-		{
-			active = s;
-		}
-
-		public void SelectTab(TabSelection st)
-		{
-			curtab = st;
-			MainForm.editorsTabControl.SelectTab((int) st);
-			active = st switch
-			{
-				TabSelection.DungeonEditor => UnderworldScene,
-				TabSelection.OverworldEditor => OverworldScene,
-				_ => null,
-			};
 		}
 
 		public void SetDungeonEditMode(DungeonEditMode em)

@@ -94,17 +94,19 @@
 			// Triforce
 			for (int i = 0; i < 6; i++)
 			{
-				triforceVertices[i] = new Point3D(
-					(sbyte) ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.triforceVertices + 0 + (i * 3)],
-					(sbyte) ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.triforceVertices + 1 + (i * 3)],
-					(sbyte) ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.triforceVertices + 2 + (i * 3)]
-				);
+				triforceVertices[i] = new()
+				{
+					X = (sbyte) ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.triforceVertices + 0 + (i * 3)],
+					Y = (sbyte) ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.triforceVertices + 1 + (i * 3)],
+					Z = (sbyte) ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.triforceVertices + 2 + (i * 3)]
+				};
 
-				crystalVertices[i] = new Point3D(
-					(sbyte) ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.crystalVertices + 0 + (i * 3)],
-					(sbyte) ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.crystalVertices + 1 + (i * 3)],
-					(sbyte) ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.crystalVertices + 2 + (i * 3)]
-				);
+				crystalVertices[i] = new()
+				{
+					X = (sbyte) ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.crystalVertices + 0 + (i * 3)],
+					Y = (sbyte) ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.crystalVertices + 1 + (i * 3)],
+					Z = (sbyte) ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.crystalVertices + 2 + (i * 3)]
+				};
 			}
 
 			tiles8Bitmap = new Bitmap(128, 512, 128, PixelFormat.Format8bppIndexed, tiles8Ptr);
@@ -570,37 +572,38 @@
 			var alltilesData = (byte*) ZScreamer.ActiveGraphicsManager.currentTileScreengfx16Ptr.ToPointer();
 			byte* ptr = (byte*) destPtr.ToPointer();
 
-			for (int yy = 0; yy < 32; yy++) // for each tile on the tile buffer
-			{
-				for (int xx = 0; xx < 32; xx++)
-				{
-					if (tilesBgBuffer[xx + (yy * 32)] != 0xFFFF) // Prevent draw if tile == 0xFFFF since it 0 indexed
-					{
-						Tile t = new Tile(tilesBgBuffer[xx + (yy * 32)]);
-						if (onlyPrior && !t.Priority)
-						{
-							continue;
-						}
-
-						for (var yl = 0; yl < 8; yl++)
-						{
-							for (var xl = 0; xl < 4; xl++)
-							{
-								int mx = xl * (1 - t.HFlipByte) + (3 - xl) * (t.HFlipByte);
-								int my = yl * (1 - t.VFlipByte) + (7 - yl) * (t.VFlipByte);
-
-								int ty = (t.ID / 16) * 512;
-								int tx = (t.ID % 16) * 4;
-								var pixel = alltilesData[(tx + ty) + (yl * 64) + xl];
-
-								int index = (xx * 8) + (yy * 2048) + ((mx * 2) + (my * 256));
-								ptr[index + t.HFlipByte ^ 1] = (byte) ((pixel & 0x0F) + t.Palette * 16);
-								ptr[index + t.HFlipByte] = (byte) (((pixel >> 4) & 0x0F) + t.Palette * 16);
-							}
-						}
-					}
-				}
-			}
+			throw new NotImplementedException();
+			// for (int yy = 0; yy < 32; yy++) // for each tile on the tile buffer
+			// {
+			// 	for (int xx = 0; xx < 32; xx++)
+			// 	{
+			// 		if (tilesBgBuffer[xx + (yy * 32)] != 0xFFFF) // Prevent draw if tile == 0xFFFF since it 0 indexed
+			// 		{
+			// 			Tile t = new Tile(tilesBgBuffer[xx + (yy * 32)]);
+			// 			if (onlyPrior && !t.Priority)
+			// 			{
+			// 				continue;
+			// 			}
+			// 
+			// 			for (var yl = 0; yl < 8; yl++)
+			// 			{
+			// 				for (var xl = 0; xl < 4; xl++)
+			// 				{
+			// 					int mx = xl * (1 - t.HFlipByte) + (3 - xl) * (t.HFlipByte);
+			// 					int my = yl * (1 - t.VFlipByte) + (7 - yl) * (t.VFlipByte);
+			// 
+			// 					int ty = (t.ID / 16) * 512;
+			// 					int tx = (t.ID % 16) * 4;
+			// 					var pixel = alltilesData[(tx + ty) + (yl * 64) + xl];
+			// 
+			// 					int index = (xx * 8) + (yy * 2048) + ((mx * 2) + (my * 256));
+			// 					ptr[index + t.HFlipByte ^ 1] = (byte) ((pixel & 0x0F) + t.Palette * 16);
+			// 					ptr[index + t.HFlipByte] = (byte) (((pixel >> 4) & 0x0F) + t.Palette * 16);
+			// 				}
+			// 			}
+			// 		}
+			// 	}
+			// }
 		}
 
 		// TODO :cry:

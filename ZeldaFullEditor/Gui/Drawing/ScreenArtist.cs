@@ -4,10 +4,11 @@
 	{
 		public OverworldScreen MyScreen { get; }
 
-		public override ushort[] Layer1TileMap { get; } = null;
+		public override ushort[] Layer1TileMap => MyScreen.Tile16Map;
+
 		public override PointeredImage Layer1Canvas { get; } = new PointeredImage(512, 512);
 
-		public override ushort[] Layer2TileMap { get; } = null;
+		public override ushort[] Layer2TileMap { get; } = new ushort[Constants.NumberOfTile16PerScreen];
 		public override PointeredImage Layer2Canvas { get; } = new PointeredImage(512, 512);
 
 		public override PointeredImage SpriteCanvas { get; } = new PointeredImage(512, 512);

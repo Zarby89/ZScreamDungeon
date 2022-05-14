@@ -107,7 +107,7 @@ namespace ZeldaFullEditor
 			OWProperty_BGGFX.HexValue = m.Tileset;
 			OWProperty_BGPalette.HexValue = m.ScreenPalette;
 			OWProperty_SPRGFX.HexValue = m.GetSpriteGraphicsForGameState(gamestate);
-			OWProperty_SPRPalette.HexValue = m.sprpalette[gamestate];
+			OWProperty_SPRPalette.HexValue = m.GetSpritePaletteForGameState(gamestate);
 
 			largemapCheckbox.Checked = m.IsPartOfLargeMap;
 			BGColorToUpdate = m.ParentMapID;
@@ -366,11 +366,7 @@ namespace ZeldaFullEditor
 			Thread.CurrentThread.IsBackground = true;
 			for (int i = 0; i < 159; i++)
 			{
-				if (ZScreamer.ActiveOW.allmaps[i].NeedsRefresh)
-				{
-					ZScreamer.ActiveOW.allmaps[i].HardRefresh();
-					ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = false;
-				}
+				ZScreamer.ActiveOW.allmaps[i].HardRefresh();
 			}
 		}
 
@@ -412,7 +408,7 @@ namespace ZeldaFullEditor
 		private void OverworldTextButton_Click(object sender, EventArgs e)
 		{
 			ZScreamer.ActiveScreamer.SetSelectedMessageID(OWProperty_MessageID.HexValue);
-			ZScreamer.ActiveScreamer.SelectTab(TabSelection.TextEditor);
+			editorsTabControl.SelectedIndex = (int) TabSelection.TextEditor;
 		}
 
 		private void previewTextPicturebox_Paint(object sender, PaintEventArgs e)

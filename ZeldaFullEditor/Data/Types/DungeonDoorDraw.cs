@@ -216,7 +216,7 @@ namespace ZeldaFullEditor.Data
 					}
 					else
 					{
-						art.Layer2TileMap[tm] = td;
+						art.Layer1TileMap[tm] = td;
 					}
 				}
 			}

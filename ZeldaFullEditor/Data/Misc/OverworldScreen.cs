@@ -20,10 +20,8 @@
 
 		public byte ScreenPalette { get; set; }
 
-
 		private byte state2gfx, state3gfx;
 		private byte state2pal, state3pal;
-
 		public byte State0SpriteGraphics { get; set; }
 		public byte State2SpriteGraphics
 		{
@@ -87,21 +85,15 @@
 				}
 			}
 		}
-		public byte[] sprpalette = new byte[3];
-		public byte[] musics = new byte[4];
+
+		public byte[] musics { get; } = new byte[4];
+
 		public ushort MessageID { get; set; }
 
 		public bool IsPartOfLargeMap { get; set; }
 
-		public IntPtr gfxPtr = Marshal.AllocHGlobal(512 * 512); // Needs to be removed
-																//public IntPtr blockset16 = Marshal.AllocHGlobal(1048576); // Needs to be removed
-																//public Bitmap blocksetBitmap; // Needs to be removed
-		public Bitmap gfxBitmap; // Needs to be removed
-
 		public byte[] staticgfx = new byte[16]; // Need to be used to display map and not pre render it!
 		public ushort[,] tilesUsed;
-
-		public bool NeedsRefresh { get; set; }
 
 
 		public OverworldScreen(byte index)
@@ -109,49 +101,44 @@
 			MyArtist = new ScreenArtist(this);
 
 			MapID = index;
-			if (MapID < 64)
+
+			World = MapID switch
 			{
-				World = Worldiness.LightWorld;
-			}
-			else if (MapID < 128)
-			{
-				World = Worldiness.DarkWorld;
-			}
-			else
-			{
-				World = Worldiness.SpecialWorld;
-			}
+				< 64 => Worldiness.LightWorld,
+				>= 64 and < 128 => Worldiness.DarkWorld,
+				_ => Worldiness.SpecialWorld
+			};
 
 			ParentMap = this;
 		}
 
 		public void HardRefresh()
 		{
+			MyArtist.HardRefresh();
 			throw new NotImplementedException();
 		}
 
-		public byte GetSpriteGraphicsForGameState(int gamestate)
+		public byte GetSpriteGraphicsForGameState(int gamestate) => gamestate switch
 		{
-			return gamestate switch
-			{
-				0 => State0SpriteGraphics,
-				1 => State2SpriteGraphics,
-				2 => State3SpriteGraphics,
-				_ => 0x00,
-			};
-		}
+			0 => State0SpriteGraphics,
+			1 => State2SpriteGraphics,
+			2 => State3SpriteGraphics,
+			_ => 0x00,
+		};
 
-		public byte GetSpritePaletteForGameState(int gamestate)
+		public byte GetSpritePaletteForGameState(int gamestate) => gamestate switch
 		{
-			return gamestate switch
-			{
-				0 => State0SpritePalette,
-				1 => State2SpritePalette,
-				2 => State3SpritePalette,
-				_ => 0x00,
-			};
-		}
+			0 => State0SpritePalette,
+			1 => State2SpritePalette,
+			2 => State3SpritePalette,
+			_ => 0x00,
+		};
 
+
+		public void SetTile16At(ushort tile, int x, int y)
+		{
+			Tile16Map[x + y * Constants.NumberOfTile16PerStrip] = tile;
+		}
 
 		public void CopyTile8bpp16(int x, int y, int tile)
 		{

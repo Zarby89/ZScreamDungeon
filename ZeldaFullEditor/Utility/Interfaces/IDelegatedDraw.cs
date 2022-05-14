@@ -5,6 +5,6 @@
 	/// </summary>
 	public interface IDelegatedDraw
 	{
-		void Draw(Artist ZS);
+		public void Draw(Artist ZS);
 	}
 }
