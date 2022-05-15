@@ -5,7 +5,12 @@
 	/// </summary>
 	public partial class ZScreamer
 	{
-		public static ZScreamer ActiveScreamer { get; private set; } = new ZScreamer(1);
+		private static readonly ZScreamer dummy = new(1);
+
+		public static ZScreamer ActiveScreamer { get; private set; } = dummy;
+
+		public static bool Active => ActiveScreamer != dummy;
+
 		public static ROMFile ActiveROM => ActiveScreamer.ROM;
 		public static AddressSet ActiveOffsets => ActiveScreamer.Offsets;
 		public static GraphicsManager ActiveGraphicsManager => ActiveScreamer.GFXManager;
@@ -99,6 +104,7 @@
 		public void SetDungeonEditMode(DungeonEditMode em)
 		{
 			uwmode = em;
+			Program.MainForm.AdjustContextMenu();
 			Program.DungeonForm.UpdateUnderworldMode(em);
 			UnderworldScene.UpdateForMode(em);
 		}

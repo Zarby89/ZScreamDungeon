@@ -47,15 +47,6 @@ namespace ZeldaFullEditor.Gui
 			ZScreamer.ActiveOWScene.CreateScene();
 			ZScreamer.ActiveOWScene.initialized = true;
 			ZScreamer.ActiveOWScene.Refresh();
-			penModeButton.Tag = OverworldEditMode.Tile16;
-			fillModeButton.Tag = OverworldEditMode.Tile16;
-			entranceModeButton.Tag = OverworldEditMode.Entrances;
-			exitModeButton.Tag = OverworldEditMode.Exits;
-			itemModeButton.Tag = OverworldEditMode.Secrets;
-			spriteModeButton.Tag = OverworldEditMode.Sprites;
-			transportModeButton.Tag = OverworldEditMode.Transports;
-			overlayButton.Tag = OverworldEditMode.Overlay;
-			gravestoneButton.Tag = OverworldEditMode.Gravestones;
 			stateCombobox.SelectedIndex = 1;
 			scratchPicturebox.Image = scratchPadBitmap;
 			AuxTabs = OverworldAuxSideTabs.TabPages;
@@ -116,20 +107,6 @@ namespace ZeldaFullEditor.Gui
 			largemapCheckbox.Checked = m.IsPartOfLargeMap;
 			BGColorToUpdate = m.ParentMapID;
 
-		}
-
-		private void ModeButton_Click(object sender, EventArgs e)
-		{
-			for (int i = 0; i < owToolStrip.Items.Count; i++) // Uncheck all the other modes.
-			{
-				if (owToolStrip.Items[i] is ToolStripButton tt)
-				{
-					tt.Checked = false;
-				}
-			}
-
-			(sender as ToolStripButton).Checked = true;
-			ZScreamer.ActiveScreamer.CurrentOWMode = (OverworldEditMode) (sender as OverworldToolStripButton).Tag;
 		}
 
 		public void UpdateForMode(OverworldEditMode m)
@@ -285,7 +262,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void tilePictureBox_Paint(object sender, PaintEventArgs e)
 		{
-			if (ZScreamer.ActiveGraphicsManager.mapblockset16Bitmap != null)
+			if (ZScreamer.ActiveGraphicsManager?.mapblockset16Bitmap != null)
 			{
 				e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 				e.Graphics.CompositingMode = CompositingMode.SourceOver;
@@ -320,6 +297,8 @@ namespace ZeldaFullEditor.Gui
 
 		private void tilePictureBox_MouseClick(object sender, MouseEventArgs e)
 		{
+			if (!ZScreamer.Active) return;
+
 			ZScreamer.ActiveOWScene.selectedTileSizeX = 1;
 			if (e.X > 128)
 			{
@@ -432,11 +411,13 @@ namespace ZeldaFullEditor.Gui
 		private void button1_Click(object sender, EventArgs e)
 		{
 			ZScreamer.ActiveScreamer.SetSelectedMessageID(OWProperty_MessageID.HexValue);
-			editorsTabControl.SelectedIndex = (int) TabSelection.TextEditor;
+			Program.MainForm.editorsTabControl.SelectedIndex = (int) TabSelection.TextEditor;
 		}
 
 		private void previewTextPicturebox_Paint(object sender, PaintEventArgs e)
 		{
+			if (!ZScreamer.Active) return;
+
 			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			ColorPalette cp = ZScreamer.ActiveGraphicsManager.currentfontgfx16Bitmap.Palette;
 			int defaultColor = 6;
@@ -637,7 +618,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void scratchPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			if (ZScreamer.ActiveGraphicsManager.mapblockset16Bitmap != null)
+			if (ZScreamer.ActiveGraphicsManager?.mapblockset16Bitmap != null)
 			{
 				// USE mapblockset16 to draw tiles on this !! :GRIMACING:
 				//public static IntPtr mapblockset16 = Marshal.AllocHGlobal(1048576);
@@ -712,6 +693,8 @@ namespace ZeldaFullEditor.Gui
 
 		private void pictureBox1_Paint(object sender, PaintEventArgs e)
 		{
+			if (!ZScreamer.Active) return;
+
 			e.Graphics.SmoothingMode = SmoothingMode.None;
 			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			//e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.currentOWgfx16Bitmap,new Rectangle(0,0,512,1024), new Rectangle(0,0,256,512),GraphicsUnit.Pixel);
@@ -873,6 +856,8 @@ namespace ZeldaFullEditor.Gui
 
 		private void palette8Box_Paint(object sender, PaintEventArgs e)
 		{
+			if (!ZScreamer.Active) return;
+
 			for (int i = 0; i < 128; i++)
 			{
 				Color c = ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.CurrentMap].MyArtist.Layer1Canvas.Palette.Entries[i];
@@ -994,6 +979,8 @@ namespace ZeldaFullEditor.Gui
 
 		private void currentTile8Box_Paint(object sender, PaintEventArgs e)
 		{
+			if (!ZScreamer.Active) return;
+
 			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			e.Graphics.CompositingMode = CompositingMode.SourceOver;
 			updateSelectedTile16();
@@ -1315,7 +1302,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void AreaBGColorPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			if (BGColorToUpdate < ZScreamer.ActivePaletteManager.OverworldBackground.Length)
+			if (BGColorToUpdate < (ZScreamer.ActivePaletteManager?.OverworldBackground.Length ?? -999999999))
 			{
 				e.Graphics.FillRectangle(new SolidBrush(ZScreamer.ActivePaletteManager.OverworldBackground[BGColorToUpdate]), Constants.Rect_0_0_24_24);
 			}

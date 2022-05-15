@@ -617,6 +617,8 @@ namespace ZeldaFullEditor
 		private static readonly Pen GridHilite = new(Color.FromArgb(0x77CCCCCC), 2);
 		private void pictureBox2_Paint(object sender, PaintEventArgs e)
 		{
+			if (!ZScreamer.Active) return;
+
 			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.fontgfxBitmap, Constants.Rect_0_0_256_256);
@@ -637,6 +639,8 @@ namespace ZeldaFullEditor
 
 		private void pictureBox3_Paint(object sender, PaintEventArgs e)
 		{
+			if (!ZScreamer.Active) return;
+
 			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.fontgfxBitmap,
@@ -660,6 +664,8 @@ namespace ZeldaFullEditor
 
 		private void pictureBox1_Paint(object sender, PaintEventArgs e)
 		{
+			if (!ZScreamer.Active) return;
+
 			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			ColorPalette cp = ZScreamer.ActiveGraphicsManager.currentfontgfx16Bitmap.Palette;
 
@@ -824,6 +830,8 @@ namespace ZeldaFullEditor
 
 		private void pictureBox2_MouseDown(object sender, MouseEventArgs e)
 		{
+			if (!ZScreamer.Active) return;
+
 			selectedTile = (e.X / 16) + (e.Y / 32 * 16);
 
 			if (selectedTile >= 98)

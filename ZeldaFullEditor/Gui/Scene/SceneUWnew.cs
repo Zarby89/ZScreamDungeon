@@ -238,7 +238,7 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw BG2 outlines
-			if (Program.DungeonForm.ShowBG2Outline)
+			if (Program.MainForm.ShowBG2Outline)
 			{
 				foreach (var l in Room.AllObjects)
 				{
@@ -253,7 +253,7 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw BG2 annotations
-			if (Program.DungeonForm.invisibleObjectsTextToolStripMenuItem.Checked)
+			if (Program.MainForm.invisibleObjectsTextToolStripMenuItem.Checked)
 			{
 				foreach (var l in Room.AllObjects)
 				{
@@ -269,7 +269,7 @@ namespace ZeldaFullEditor
 
 			// Draw chest numbers
 			int id = 0;
-			if (Program.DungeonForm.showChestIDs)
+			if (Program.MainForm.showChestIDs)
 			{
 				foreach (var c in Room.ChestList)
 				{
@@ -284,7 +284,7 @@ namespace ZeldaFullEditor
 			// TODO deal with overlapping shit
 			// Draw door text
 			id = 0;
-			if (Program.DungeonForm.showDoorsIDs)
+			if (Program.MainForm.showDoorsIDs)
 			{
 				foreach (var d in Room.DoorsList)
 				{
@@ -341,9 +341,9 @@ namespace ZeldaFullEditor
 			}
 
 			// Draw selected entrance position
-			if (Program.MainForm.selectedEntrance != null && Program.MainForm.entrancePositionToolStripMenuItem.Checked)
+			if (Program.DungeonForm.selectedEntrance != null && Program.MainForm.entrancePositionToolStripMenuItem.Checked)
 			{
-				var n = Program.MainForm.selectedEntrance;
+				var n = Program.DungeonForm.selectedEntrance;
 				if (n.RoomID == Room.RoomID)
 				{
 					g.DrawRectangle(Pens.Orange, n.CameraTriggerX - 128, n.CameraTriggerY - 116, 256, 224);

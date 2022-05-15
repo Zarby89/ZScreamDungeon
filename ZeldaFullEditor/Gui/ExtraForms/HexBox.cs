@@ -1,5 +1,6 @@
 ﻿namespace ZeldaFullEditor.Gui.ExtraForms
 {
+	[DefaultEvent(nameof(HexValueChanged))]
 	public class Hexbox : TextBox
 	{
 		private int hexValue;
@@ -20,15 +21,35 @@
 			}
 		}
 
+		private static readonly object s_valueEvent = new();
+
+		[Browsable(true)]
+		public event EventHandler HexValueChanged
+		{
+			add => Events.AddHandler(s_valueEvent, value);
+			remove => Events.RemoveHandler(s_valueEvent, value);
+		}
+
+		protected virtual void OnValueChanged(EventArgs e)
+		{
+			((EventHandler) Events[s_valueEvent])?.Invoke(this, e);
+		}
+
+
 		[Description("HexValue"), Category("Data")]
 		public int HexValue
 		{
 			get => hexValue;
 			set
 			{
+				if (hexValue == value) return;
+
 				hexValue = value;
 
 				EnforceRange();
+
+				OnValueChanged(new());
+
 				UpdateText(false);
 			}
 		}
