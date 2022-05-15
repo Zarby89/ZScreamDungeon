@@ -400,9 +400,9 @@
 
 		private void pictureboxTile8_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
-			MainForm.editorsTabControl.SelectedIndex = (int) TabSelection.GraphicsEditor;
-			MainForm.gfxEditor.selectedSheet = ZScreamer.ActiveOWScene.CurrentScreen.staticgfx[(e.Y / 64)];
-			MainForm.gfxEditor.allgfxPicturebox.Refresh();
+			Program.MainForm.editorsTabControl.SelectedIndex = 2;
+			Program.MainForm.gfxEditor.selectedSheet = ZScreamer.ActiveOWScene.CurrentScreen.staticgfx[(e.Y / 64)];
+			Program.MainForm.gfxEditor.allgfxPicturebox.Refresh();
 			this.Close();
 		}
 

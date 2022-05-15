@@ -1,4 +1,4 @@
-﻿global using static ZeldaFullEditor.TheGUI;
+﻿﻿global using static ZeldaFullEditor.TheGUI;
 
 global using System;
 global using System.Collections.Generic;
@@ -23,15 +23,15 @@ global using ZeldaFullEditor.Gui.Drawing;
 global using ZeldaFullEditor.Gui.MainTabs;
 global using ZeldaFullEditor.Properties;
 
-
 namespace ZeldaFullEditor
 {
-	internal static class TheGUI
-	{
+	internal static class TheGUI{
+		public static DungeonMain DungeonForm { get; set; }
 		public static DungeonMain MainForm { get; set; }
+		public static OverworldEditor OverworldForm { get; set; }
+		public static TextEditor TextForm { get; set; }
 	}
-
-
+	
 	static class Program
 	{
 		// var to keep track whether to show the console or not
@@ -89,7 +89,10 @@ namespace ZeldaFullEditor
 			ZScreamer ZS = new ZScreamer();
 			ZS.SetAsActiveScreamer();
 
-			MainForm = new DungeonMain();
+			DungeonForm = new DungeonMain();
+			MainForm = DungeonForm;
+			OverworldForm = new OverworldEditor();
+			TextForm = new TextEditor();
 
 			Application.Run(MainForm);
 		}

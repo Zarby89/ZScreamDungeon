@@ -122,15 +122,18 @@
 				menu.Show(Cursor.Position);
 			}
 
-			MainForm.objectGroupbox.Text = "Selected sprite";
+			Program.OverworldForm.objectGroupbox.Text = "Selected sprite";
 
 			if (lastselectedSprite != null)
 			{
-				MainForm.UpdateFormForSelectedObject(lastselectedSprite);
-				MainForm.OverworldObjectCombobox.DataSource = DefaultEntities.ListOfTileTypes;
-				MainForm.OverworldObjectCombobox.SelectedIndex = lastselectedSprite.ID;
+				Program.OverworldForm.SetSelectedObjectLabels(
+					lastselectedSprite.ID,
+					lastselectedSprite.MapX,
+					lastselectedSprite.MapY);
+				Program.OverworldForm.objCombobox.DataSource = DefaultEntities.ListOfTileTypes;
+				Program.OverworldForm.objCombobox.SelectedIndex = lastselectedSprite.ID;
 
-				MainForm.OverworldObjectCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedSprite;
+				Program.OverworldForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedSprite;
 			}
 		}
 

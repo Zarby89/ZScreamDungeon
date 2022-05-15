@@ -3,34 +3,34 @@ using System.Linq;
 
 namespace ZeldaFullEditor
 {
-    partial class DungeonMain : System.Windows.Forms.Form
+	partial class DungeonMain
 	{
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
-        private System.ComponentModel.IContainer components = null;
+		/// <summary>
+		/// Required designer variable.
+		/// </summary>
+		private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing && (components != null))
-            {
-                components.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+		/// <summary>
+		/// Clean up any resources being used.
+		/// </summary>
+		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+		protected override void Dispose(bool disposing)
+		{
+			if (disposing && (components != null))
+			{
+				components.Dispose();
+			}
+			base.Dispose(disposing);
+		}
 
-        #region Windows Form Designer generated code
+		#region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
-        private void InitializeComponent()
-        {
+		/// <summary>
+		/// Required method for Designer support - do not modify
+		/// the contents of this method with the code editor.
+		/// </summary>
+		private void InitializeComponent()
+		{
 			this.components = new System.ComponentModel.Container();
 			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
 			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
@@ -122,7 +122,7 @@ namespace ZeldaFullEditor
 			this.edit8x8mxCheckbox = new System.Windows.Forms.CheckBox();
 			this.splitContainer1 = new System.Windows.Forms.SplitContainer();
 			this.customPanel3 = new ZeldaFullEditor.CustomPanel();
-			this.RoomTabControl = new System.Windows.Forms.TabControl();
+			this.tabControl2 = new System.Windows.Forms.TabControl();
 			this.panel3 = new System.Windows.Forms.Panel();
 			this.mapPicturebox = new System.Windows.Forms.PictureBox();
 			this.maphoverCheckbox = new System.Windows.Forms.CheckBox();
@@ -191,112 +191,8 @@ namespace ZeldaFullEditor
 			this.label31 = new System.Windows.Forms.Label();
 			this.comboBox1 = new System.Windows.Forms.ComboBox();
 			this.label23 = new System.Windows.Forms.Label();
-			this.overworldPage = new System.Windows.Forms.TabPage();
-			this.OverworldSplitContainer = new System.Windows.Forms.SplitContainer();
-			this.OverworldAuxSideTabs = new System.Windows.Forms.TabControl();
-			this.tabPage1 = new System.Windows.Forms.TabPage();
-			this.tilePictureBox = new System.Windows.Forms.PictureBox();
-			this.tabPage2 = new System.Windows.Forms.TabPage();
-			this.scratchPicturebox = new System.Windows.Forms.PictureBox();
-			this.Tiles8 = new System.Windows.Forms.TabPage();
-			this.panel2 = new System.Windows.Forms.Panel();
-			this.Tile8PicBox = new System.Windows.Forms.PictureBox();
-			this.panel4 = new System.Windows.Forms.Panel();
-			this.priorityCheckbox = new System.Windows.Forms.CheckBox();
-			this.currentTile8Box = new System.Windows.Forms.PictureBox();
-			this.mirrorYCheckbox = new System.Windows.Forms.CheckBox();
-			this.palette8Box = new System.Windows.Forms.PictureBox();
-			this.mirrorXCheckbox = new System.Windows.Forms.CheckBox();
-			this.OWTabExitProps = new System.Windows.Forms.TabPage();
-			this.OWExitPanel = new System.Windows.Forms.Panel();
-			this.OWExitDisabled = new System.Windows.Forms.Label();
-			this.OWExitPropY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.OWExitPropX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.OWExitPropID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.label56 = new System.Windows.Forms.Label();
-			this.label57 = new System.Windows.Forms.Label();
-			this.label58 = new System.Windows.Forms.Label();
-			this.OWTabEntranceProps = new System.Windows.Forms.TabPage();
-			this.OWEntrancePanel = new System.Windows.Forms.Panel();
-			this.OWEntranceDisabled = new System.Windows.Forms.Label();
-			this.OWEntrancePropY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.OWEntrancePropX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.OWEntrancePropID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.label59 = new System.Windows.Forms.Label();
-			this.label60 = new System.Windows.Forms.Label();
-			this.label61 = new System.Windows.Forms.Label();
-			this.OWTabTransportProps = new System.Windows.Forms.TabPage();
-			this.OWTransportPanel = new System.Windows.Forms.Panel();
-			this.OWTransportDisabled = new System.Windows.Forms.Label();
-			this.OWTransportPropY = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.OWTransportPropX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.OWTransportPropID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.label62 = new System.Windows.Forms.Label();
-			this.label63 = new System.Windows.Forms.Label();
-			this.label64 = new System.Windows.Forms.Label();
-			this.pictureBox2 = new System.Windows.Forms.PictureBox();
-			this.owPropertyPanel = new System.Windows.Forms.Panel();
-			this.objectGroupbox = new System.Windows.Forms.GroupBox();
-			this.OverworldObjectCombobox = new System.Windows.Forms.ComboBox();
-			this.mapGroupbox = new System.Windows.Forms.GroupBox();
-			this.previewTextPicturebox = new System.Windows.Forms.PictureBox();
-			this.OWProperty_MessageID = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.OWProperty_SPRPalette = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.OWProperty_SPRGFX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.OWProperty_BGPalette = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.OWProperty_BGGFX = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.areaBGColorPictureBox = new System.Windows.Forms.PictureBox();
-			this.label49 = new System.Windows.Forms.Label();
-			this.largemapCheckbox = new System.Windows.Forms.CheckBox();
-			this.OverworldTextButton = new System.Windows.Forms.Button();
-			this.musicButton = new System.Windows.Forms.Button();
-			this.label50 = new System.Windows.Forms.Label();
-			this.label51 = new System.Windows.Forms.Label();
-			this.label52 = new System.Windows.Forms.Label();
-			this.label53 = new System.Windows.Forms.Label();
-			this.label54 = new System.Windows.Forms.Label();
-			this.groupBox3 = new System.Windows.Forms.GroupBox();
-			this.selectedTileLabel = new System.Windows.Forms.Label();
-			this.label55 = new System.Windows.Forms.Label();
-			this.stateCombobox = new System.Windows.Forms.ComboBox();
-			this.GfxEditorPage = new System.Windows.Forms.TabPage();
-			this.textPage = new System.Windows.Forms.TabPage();
-			this.panel5 = new System.Windows.Forms.Panel();
-			this.textListbox = new System.Windows.Forms.ListBox();
-			this.label65 = new System.Windows.Forms.Label();
-			this.TextSearchTextbox = new System.Windows.Forms.TextBox();
-			this.label66 = new System.Windows.Forms.Label();
-			this.panel6 = new System.Windows.Forms.Panel();
-			this.ParamsBox = new ZeldaFullEditor.Gui.ExtraForms.Hexbox();
-			this.fontGridBox = new System.Windows.Forms.CheckBox();
-			this.BytesDDD = new System.Windows.Forms.Button();
-			this.label67 = new System.Windows.Forms.Label();
-			this.label68 = new System.Windows.Forms.Label();
-			this.label69 = new System.Windows.Forms.Label();
-			this.TextCommandList = new System.Windows.Forms.ListBox();
-			this.label70 = new System.Windows.Forms.Label();
-			this.MessageTextEntry = new System.Windows.Forms.TextBox();
-			this.label71 = new System.Windows.Forms.Label();
-			this.button5 = new System.Windows.Forms.Button();
-			this.button6 = new System.Windows.Forms.Button();
-			this.SpecialsList = new System.Windows.Forms.ListBox();
-			this.groupBox4 = new System.Windows.Forms.GroupBox();
-			this.BigCharPreviewBox = new System.Windows.Forms.PictureBox();
-			this.SelectedTileASCII = new System.Windows.Forms.Label();
-			this.SelectedTileID = new System.Windows.Forms.Label();
-			this.FontWidthUpDown = new System.Windows.Forms.NumericUpDown();
-			this.label72 = new System.Windows.Forms.Label();
-			this.label73 = new System.Windows.Forms.Label();
-			this.label74 = new System.Windows.Forms.Label();
-			this.ListDictionaryButton = new System.Windows.Forms.Button();
-			this.ImportFontGraphicsButton = new System.Windows.Forms.Button();
-			this.ExportFontGraphicsButton = new System.Windows.Forms.Button();
-			this.label75 = new System.Windows.Forms.Label();
-			this.FontPreviewBox = new System.Windows.Forms.PictureBox();
-			this.MessagePreviewBox = new System.Windows.Forms.PictureBox();
-			this.ScreenEditor = new System.Windows.Forms.TabPage();
-			this.spritesPage = new System.Windows.Forms.TabPage();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+			this.openfileButton = new System.Windows.Forms.ToolStripButton();
 			this.saveButton = new System.Windows.Forms.ToolStripButton();
 			this.debugtestButton = new System.Windows.Forms.ToolStripButton();
 			this.runtestButton = new System.Windows.Forms.ToolStripButton();
@@ -304,37 +200,27 @@ namespace ZeldaFullEditor
 			this.undoButton = new System.Windows.Forms.ToolStripButton();
 			this.redoButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-			this.allbgsButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.bg1modeButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.bg2modeButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.bg3modeButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.underworldSpriteModeButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.blockmodeButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.torchmodeButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.potmodeButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.doormodeButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.collisionModeButton = new ZeldaFullEditor.DungeonToolStripButton();
+			this.allbgsButton = new System.Windows.Forms.ToolStripButton();
+			this.bg1modeButton = new System.Windows.Forms.ToolStripButton();
+			this.bg2modeButton = new System.Windows.Forms.ToolStripButton();
+			this.bg3modeButton = new System.Windows.Forms.ToolStripButton();
+			this.spritemodeButton = new System.Windows.Forms.ToolStripButton();
+			this.blockmodeButton = new System.Windows.Forms.ToolStripButton();
+			this.torchmodeButton = new System.Windows.Forms.ToolStripButton();
+			this.potmodeButton = new System.Windows.Forms.ToolStripButton();
+			this.doormodeButton = new System.Windows.Forms.ToolStripButton();
+			this.collisionModeButton = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-			this.saveLayoutButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.loadlayoutButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.searchButton = new ZeldaFullEditor.DungeonToolStripButton();
-			this.exportuwmapStripButton1 = new ZeldaFullEditor.DungeonToolStripButton();
+			this.saveLayoutButton = new System.Windows.Forms.ToolStripButton();
+			this.loadlayoutButton = new System.Windows.Forms.ToolStripButton();
+			this.searchButton = new System.Windows.Forms.ToolStripButton();
+			this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
 			this.debugToolStripButton = new System.Windows.Forms.ToolStripButton();
-			this.entranceModeButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.exitModeButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.itemModeButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.owSpriteModeButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.transportModeButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.overlayButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.gravestoneButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.searchtilesButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.refreshToolStrip = new ZeldaFullEditor.OverworldToolStripButton();
-			this.clearmapbutton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.fillModeButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.penModeButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.spButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.dwButton = new ZeldaFullEditor.OverworldToolStripButton();
-			this.lwButton = new ZeldaFullEditor.OverworldToolStripButton();
+			this.overworldPage = new System.Windows.Forms.TabPage();
+			this.GfxEditorPage = new System.Windows.Forms.TabPage();
+			this.textPage = new System.Windows.Forms.TabPage();
+			this.ScreenEditor = new System.Windows.Forms.TabPage();
+			this.spritesPage = new System.Windows.Forms.TabPage();
 			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
 			this.SelectedObjectNameLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.SelectedObjectXLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -531,43 +417,6 @@ namespace ZeldaFullEditor
 			this.collisionMapPanel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).BeginInit();
 			this.potitemobjectPanel.SuspendLayout();
-			this.overworldPage.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.OverworldSplitContainer)).BeginInit();
-			this.OverworldSplitContainer.Panel1.SuspendLayout();
-			this.OverworldSplitContainer.Panel2.SuspendLayout();
-			this.OverworldSplitContainer.SuspendLayout();
-			this.OverworldAuxSideTabs.SuspendLayout();
-			this.tabPage1.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).BeginInit();
-			this.tabPage2.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).BeginInit();
-			this.Tiles8.SuspendLayout();
-			this.panel2.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.Tile8PicBox)).BeginInit();
-			this.panel4.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.palette8Box)).BeginInit();
-			this.OWTabExitProps.SuspendLayout();
-			this.OWExitPanel.SuspendLayout();
-			this.OWTabEntranceProps.SuspendLayout();
-			this.OWEntrancePanel.SuspendLayout();
-			this.OWTabTransportProps.SuspendLayout();
-			this.OWTransportPanel.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-			this.owPropertyPanel.SuspendLayout();
-			this.objectGroupbox.SuspendLayout();
-			this.mapGroupbox.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).BeginInit();
-			this.groupBox3.SuspendLayout();
-			this.textPage.SuspendLayout();
-			this.panel5.SuspendLayout();
-			this.panel6.SuspendLayout();
-			this.groupBox4.SuspendLayout();
-			((System.ComponentModel.ISupportInitialize)(this.BigCharPreviewBox)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.FontWidthUpDown)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.FontPreviewBox)).BeginInit();
-			((System.ComponentModel.ISupportInitialize)(this.MessagePreviewBox)).BeginInit();
 			this.toolStrip1.SuspendLayout();
 			this.statusStrip1.SuspendLayout();
 			this.menuStrip1.SuspendLayout();
@@ -583,10 +432,10 @@ namespace ZeldaFullEditor
 			// nothingselectedcontextMenu
 			// 
 			this.nothingselectedcontextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.insertToolStripMenuItem1,
-            this.pasteToolStripMenuItem3,
-            this.deleteToolStripMenuItem2,
-            this.clearAllToolStripMenuItem});
+			this.insertToolStripMenuItem1,
+			this.pasteToolStripMenuItem3,
+			this.deleteToolStripMenuItem2,
+			this.clearAllToolStripMenuItem});
 			this.nothingselectedcontextMenu.Name = "nothingselectedcontextMenu";
 			this.nothingselectedcontextMenu.Size = new System.Drawing.Size(125, 92);
 			// 
@@ -602,7 +451,7 @@ namespace ZeldaFullEditor
 			this.pasteToolStripMenuItem3.Name = "pasteToolStripMenuItem3";
 			this.pasteToolStripMenuItem3.Size = new System.Drawing.Size(124, 22);
 			this.pasteToolStripMenuItem3.Text = "Paste";
-			this.pasteToolStripMenuItem3.Click += new System.EventHandler(this.PerformPaste);
+			this.pasteToolStripMenuItem3.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
 			// 
 			// deleteToolStripMenuItem2
 			// 
@@ -635,28 +484,28 @@ namespace ZeldaFullEditor
 			this.roomProperty_sortsprite.TabIndex = 52;
 			this.roomProperty_sortsprite.Text = "Layered OAM";
 			this.toolTip1.SetToolTip(this.roomProperty_sortsprite, "Must be used in rooms with bridges where sprites can be on top or under bridges\r\n" +
-        "also called Sort Sprites in HM");
+		"also called Sort Sprites in HM");
 			this.roomProperty_sortsprite.UseVisualStyleBackColor = true;
-			this.roomProperty_sortsprite.CheckedChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// editorsTabControl
 			// 
 			this.editorsTabControl.Alignment = System.Windows.Forms.TabAlignment.Bottom;
 			this.editorsTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.editorsTabControl.Controls.Add(this.dungeonPage);
 			this.editorsTabControl.Controls.Add(this.overworldPage);
 			this.editorsTabControl.Controls.Add(this.GfxEditorPage);
 			this.editorsTabControl.Controls.Add(this.textPage);
 			this.editorsTabControl.Controls.Add(this.ScreenEditor);
 			this.editorsTabControl.Controls.Add(this.spritesPage);
-			this.editorsTabControl.Location = new System.Drawing.Point(0, 52);
+			this.editorsTabControl.Enabled = false;
+			this.editorsTabControl.Location = new System.Drawing.Point(0, 27);
 			this.editorsTabControl.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.editorsTabControl.Multiline = true;
 			this.editorsTabControl.Name = "editorsTabControl";
 			this.editorsTabControl.SelectedIndex = 0;
-			this.editorsTabControl.Size = new System.Drawing.Size(1158, 768);
+			this.editorsTabControl.Size = new System.Drawing.Size(1158, 747);
 			this.editorsTabControl.TabIndex = 22;
 			this.editorsTabControl.TabStop = false;
 			this.editorsTabControl.SelectedIndexChanged += new System.EventHandler(this.editorsTabControl_SelectedIndexChanged);
@@ -667,28 +516,28 @@ namespace ZeldaFullEditor
 			this.dungeonPage.Controls.Add(this.tabControl1);
 			this.dungeonPage.Controls.Add(this.splitContainer1);
 			this.dungeonPage.Controls.Add(this.headerGroupbox);
-			this.dungeonPage.Location = new System.Drawing.Point(4, 4);
+			this.dungeonPage.Controls.Add(this.toolStrip1);
+			this.dungeonPage.Location = new System.Drawing.Point(4, 25);
 			this.dungeonPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.dungeonPage.Name = "dungeonPage";
 			this.dungeonPage.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.dungeonPage.Size = new System.Drawing.Size(1150, 742);
+			this.dungeonPage.Size = new System.Drawing.Size(1150, 718);
 			this.dungeonPage.TabIndex = 0;
 			this.dungeonPage.Text = "Dungeon Editor";
 			// 
 			// tabControl1
 			// 
-			this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+			this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) | System.Windows.Forms.AnchorStyles.Left)));
 			this.tabControl1.Controls.Add(this.entrancetabPage);
 			this.tabControl1.Controls.Add(this.objectstabPage);
 			this.tabControl1.Controls.Add(this.tabPage4);
 			this.tabControl1.Controls.Add(this.edit8x8);
-			this.tabControl1.Location = new System.Drawing.Point(2, 6);
+			this.tabControl1.Location = new System.Drawing.Point(2, 31);
 			this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.tabControl1.Multiline = true;
 			this.tabControl1.Name = "tabControl1";
 			this.tabControl1.SelectedIndex = 0;
-			this.tabControl1.Size = new System.Drawing.Size(298, 740);
+			this.tabControl1.Size = new System.Drawing.Size(298, 1399);
 			this.tabControl1.TabIndex = 26;
 			// 
 			// entrancetabPage
@@ -737,17 +586,17 @@ namespace ZeldaFullEditor
 			this.entrancetabPage.Location = new System.Drawing.Point(4, 22);
 			this.entrancetabPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entrancetabPage.Name = "entrancetabPage";
-			this.entrancetabPage.Size = new System.Drawing.Size(290, 714);
+			this.entrancetabPage.Size = new System.Drawing.Size(290, 1373);
 			this.entrancetabPage.TabIndex = 5;
 			this.entrancetabPage.Text = "Rooms";
 			this.entrancetabPage.UseVisualStyleBackColor = true;
 			// 
 			// entrancetreeView
 			// 
-			this.entrancetreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.entrancetreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.entrancetreeView.HideSelection = false;
-			this.entrancetreeView.Location = new System.Drawing.Point(2, 372);
+			this.entrancetreeView.Location = new System.Drawing.Point(2, 1738);
 			this.entrancetreeView.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entrancetreeView.Name = "entrancetreeView";
 			treeNode3.Name = "EntranceNode";
@@ -755,8 +604,8 @@ namespace ZeldaFullEditor
 			treeNode4.Name = "StartingEntranceNode";
 			treeNode4.Text = "Spawn points";
 			this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+			treeNode3,
+			treeNode4});
 			this.entrancetreeView.Size = new System.Drawing.Size(282, 285);
 			this.entrancetreeView.TabIndex = 0;
 			this.entrancetreeView.TabStop = false;
@@ -1001,7 +850,7 @@ namespace ZeldaFullEditor
 			// groupBox2
 			// 
 			this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.groupBox2.Controls.Add(this.EntranceProperty_BoundaryFE);
 			this.groupBox2.Controls.Add(this.EntranceProperty_BoundaryFW);
 			this.groupBox2.Controls.Add(this.EntranceProperty_BoundaryQE);
@@ -1413,10 +1262,10 @@ namespace ZeldaFullEditor
 			this.objectstabPage.Controls.Add(this.showNameObjectCheckbox);
 			this.objectstabPage.Controls.Add(this.panel1);
 			this.objectstabPage.Controls.Add(this.searchTextbox);
-			this.objectstabPage.Location = new System.Drawing.Point(4, 24);
+			this.objectstabPage.Location = new System.Drawing.Point(4, 22);
 			this.objectstabPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.objectstabPage.Name = "objectstabPage";
-			this.objectstabPage.Size = new System.Drawing.Size(290, 710);
+			this.objectstabPage.Size = new System.Drawing.Size(290, 1373);
 			this.objectstabPage.TabIndex = 4;
 			this.objectstabPage.Text = "Objects";
 			this.objectstabPage.UseVisualStyleBackColor = true;
@@ -1449,7 +1298,7 @@ namespace ZeldaFullEditor
 			// 
 			this.panel1.Location = new System.Drawing.Point(0, 20);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(292, 600);
+			this.panel1.Size = new System.Drawing.Size(292, 1996);
 			this.panel1.TabIndex = 1;
 			// 
 			// searchTextbox
@@ -1465,10 +1314,10 @@ namespace ZeldaFullEditor
 			// 
 			this.tabPage4.Controls.Add(this.customPanel1);
 			this.tabPage4.Controls.Add(this.searchspriteTextbox);
-			this.tabPage4.Location = new System.Drawing.Point(4, 24);
+			this.tabPage4.Location = new System.Drawing.Point(4, 22);
 			this.tabPage4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.tabPage4.Name = "tabPage4";
-			this.tabPage4.Size = new System.Drawing.Size(290, 710);
+			this.tabPage4.Size = new System.Drawing.Size(290, 1373);
 			this.tabPage4.TabIndex = 10;
 			this.tabPage4.Text = "Sprites";
 			this.tabPage4.UseVisualStyleBackColor = true;
@@ -1479,7 +1328,7 @@ namespace ZeldaFullEditor
 			this.customPanel1.Location = new System.Drawing.Point(0, 20);
 			this.customPanel1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.customPanel1.Name = "customPanel1";
-			this.customPanel1.Size = new System.Drawing.Size(292, 600);
+			this.customPanel1.Size = new System.Drawing.Size(292, 1996);
 			this.customPanel1.TabIndex = 2;
 			// 
 			// searchspriteTextbox
@@ -1496,10 +1345,10 @@ namespace ZeldaFullEditor
 			this.edit8x8.AutoScroll = true;
 			this.edit8x8.Controls.Add(this.edit8x8Panel);
 			this.edit8x8.Controls.Add(this.groupBox1);
-			this.edit8x8.Location = new System.Drawing.Point(4, 24);
+			this.edit8x8.Location = new System.Drawing.Point(4, 22);
 			this.edit8x8.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.edit8x8.Name = "edit8x8";
-			this.edit8x8.Size = new System.Drawing.Size(290, 710);
+			this.edit8x8.Size = new System.Drawing.Size(290, 1373);
 			this.edit8x8.TabIndex = 11;
 			this.edit8x8.Text = "8x8 tiles";
 			this.edit8x8.UseVisualStyleBackColor = true;
@@ -1512,7 +1361,7 @@ namespace ZeldaFullEditor
 			this.edit8x8Panel.Location = new System.Drawing.Point(0, 0);
 			this.edit8x8Panel.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.edit8x8Panel.Name = "edit8x8Panel";
-			this.edit8x8Panel.Size = new System.Drawing.Size(290, 924);
+			this.edit8x8Panel.Size = new System.Drawing.Size(290, 1168);
 			this.edit8x8Panel.TabIndex = 2;
 			// 
 			// editBox8x8
@@ -1530,7 +1379,8 @@ namespace ZeldaFullEditor
 			this.groupBox1.Controls.Add(this.edit8x8palettebox);
 			this.groupBox1.Controls.Add(this.edit8x8myCheckbox);
 			this.groupBox1.Controls.Add(this.edit8x8mxCheckbox);
-			this.groupBox1.Location = new System.Drawing.Point(0, 719);
+			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+			this.groupBox1.Location = new System.Drawing.Point(0, 1168);
 			this.groupBox1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.groupBox1.Name = "groupBox1";
 			this.groupBox1.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -1583,14 +1433,14 @@ namespace ZeldaFullEditor
 			// 
 			// splitContainer1
 			// 
-			this.splitContainer1.Location = new System.Drawing.Point(302, 149);
+			this.splitContainer1.Location = new System.Drawing.Point(302, 174);
 			this.splitContainer1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.splitContainer1.Name = "splitContainer1";
 			// 
 			// splitContainer1.Panel1
 			// 
 			this.splitContainer1.Panel1.Controls.Add(this.customPanel3);
-			this.splitContainer1.Panel1.Controls.Add(this.RoomTabControl);
+			this.splitContainer1.Panel1.Controls.Add(this.tabControl2);
 			// 
 			// splitContainer1.Panel2
 			// 
@@ -1611,27 +1461,25 @@ namespace ZeldaFullEditor
 			this.customPanel3.Size = new System.Drawing.Size(512, 512);
 			this.customPanel3.TabIndex = 19;
 			// 
-			// RoomTabControl
+			// tabControl2
 			// 
-			this.RoomTabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
-			this.RoomTabControl.HotTrack = true;
-			this.RoomTabControl.ItemSize = new System.Drawing.Size(48, 18);
-			this.RoomTabControl.Location = new System.Drawing.Point(14, 0);
-			this.RoomTabControl.Margin = new System.Windows.Forms.Padding(0);
-			this.RoomTabControl.Name = "RoomTabControl";
-			this.RoomTabControl.Padding = new System.Drawing.Point(3, 3);
-			this.RoomTabControl.SelectedIndex = 0;
-			this.RoomTabControl.Size = new System.Drawing.Size(522, 21);
-			this.RoomTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
-			this.RoomTabControl.TabIndex = 17;
-			this.RoomTabControl.SelectedIndexChanged += new System.EventHandler(this.RoomTabControl_SelectedIndexChanged);
-			this.RoomTabControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.RoomTabControl_MouseClick);
+			this.tabControl2.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
+			this.tabControl2.HotTrack = true;
+			this.tabControl2.ItemSize = new System.Drawing.Size(48, 18);
+			this.tabControl2.Location = new System.Drawing.Point(14, 0);
+			this.tabControl2.Margin = new System.Windows.Forms.Padding(0);
+			this.tabControl2.Name = "tabControl2";
+			this.tabControl2.Padding = new System.Drawing.Point(3, 3);
+			this.tabControl2.SelectedIndex = 0;
+			this.tabControl2.Size = new System.Drawing.Size(522, 21);
+			this.tabControl2.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
+			this.tabControl2.TabIndex = 17;
 			// 
 			// panel3
 			// 
 			this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.panel3.BackColor = System.Drawing.SystemColors.Control;
 			this.panel3.Controls.Add(this.mapPicturebox);
 			this.panel3.Controls.Add(this.maphoverCheckbox);
@@ -1651,12 +1499,6 @@ namespace ZeldaFullEditor
 			this.mapPicturebox.Size = new System.Drawing.Size(256, 312);
 			this.mapPicturebox.TabIndex = 61;
 			this.mapPicturebox.TabStop = false;
-			this.mapPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.mapPicturebox_Paint);
-			this.mapPicturebox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.mapPicturebox_MouseDoubleClick);
-			this.mapPicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mapPicturebox_MouseDown);
-			this.mapPicturebox.MouseLeave += new System.EventHandler(this.mapPicturebox_MouseLeave);
-			this.mapPicturebox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mapPicturebox_MouseMove);
-			this.mapPicturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mapPicturebox_MouseUp);
 			// 
 			// maphoverCheckbox
 			// 
@@ -1695,8 +1537,7 @@ namespace ZeldaFullEditor
 			// 
 			// headerGroupbox
 			// 
-			this.headerGroupbox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			this.headerGroupbox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
 			this.headerGroupbox.BackColor = System.Drawing.SystemColors.Control;
 			this.headerGroupbox.Controls.Add(this.roomHeaderPanel);
 			this.headerGroupbox.Controls.Add(this.DoorTypeComboBox);
@@ -1706,7 +1547,7 @@ namespace ZeldaFullEditor
 			this.headerGroupbox.Controls.Add(this.comboBox1);
 			this.headerGroupbox.Controls.Add(this.label23);
 			this.headerGroupbox.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.headerGroupbox.Location = new System.Drawing.Point(301, 6);
+			this.headerGroupbox.Location = new System.Drawing.Point(304, 28);
 			this.headerGroupbox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.headerGroupbox.Name = "headerGroupbox";
 			this.headerGroupbox.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -1794,7 +1635,6 @@ namespace ZeldaFullEditor
 			this.RoomProperties_PreferredEntrance.TabIndex = 99;
 			this.RoomProperties_PreferredEntrance.Text = "00";
 			this.RoomProperties_PreferredEntrance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperties_PreferredEntrance.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// RoomProperty_IsDark
 			// 
@@ -1806,7 +1646,6 @@ namespace ZeldaFullEditor
 			this.RoomProperty_IsDark.TabIndex = 98;
 			this.RoomProperty_IsDark.Text = "Dark room";
 			this.RoomProperty_IsDark.UseVisualStyleBackColor = true;
-			this.RoomProperty_IsDark.CheckedChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// RoomProperty_DestinationStair4
 			// 
@@ -1821,7 +1660,6 @@ namespace ZeldaFullEditor
 			this.RoomProperty_DestinationStair4.TabIndex = 97;
 			this.RoomProperty_DestinationStair4.Text = "00";
 			this.RoomProperty_DestinationStair4.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_DestinationStair4.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// RoomProperty_DestinationStair3
 			// 
@@ -1836,7 +1674,6 @@ namespace ZeldaFullEditor
 			this.RoomProperty_DestinationStair3.TabIndex = 96;
 			this.RoomProperty_DestinationStair3.Text = "00";
 			this.RoomProperty_DestinationStair3.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_DestinationStair3.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// RoomProperty_DestinationStair2
 			// 
@@ -1852,7 +1689,6 @@ namespace ZeldaFullEditor
 			this.RoomProperty_DestinationStair2.TabIndex = 95;
 			this.RoomProperty_DestinationStair2.Text = "00";
 			this.RoomProperty_DestinationStair2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_DestinationStair2.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// label20
 			// 
@@ -1889,7 +1725,6 @@ namespace ZeldaFullEditor
 			this.RoomProperty_DestinationStair1.TabIndex = 94;
 			this.RoomProperty_DestinationStair1.Text = "00";
 			this.RoomProperty_DestinationStair1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_DestinationStair1.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// RoomProperty_DestinationPit
 			// 
@@ -1904,7 +1739,6 @@ namespace ZeldaFullEditor
 			this.RoomProperty_DestinationPit.TabIndex = 93;
 			this.RoomProperty_DestinationPit.Text = "00";
 			this.RoomProperty_DestinationPit.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_DestinationPit.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// RoomProperty_MessageID
 			// 
@@ -1919,7 +1753,6 @@ namespace ZeldaFullEditor
 			this.RoomProperty_MessageID.TabIndex = 92;
 			this.RoomProperty_MessageID.Text = "000";
 			this.RoomProperty_MessageID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_MessageID.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// RoomProperty_SpriteSet
 			// 
@@ -1934,7 +1767,6 @@ namespace ZeldaFullEditor
 			this.RoomProperty_SpriteSet.TabIndex = 91;
 			this.RoomProperty_SpriteSet.Text = "00";
 			this.RoomProperty_SpriteSet.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_SpriteSet.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// RoomProperty_Palette
 			// 
@@ -1949,7 +1781,6 @@ namespace ZeldaFullEditor
 			this.RoomProperty_Palette.TabIndex = 90;
 			this.RoomProperty_Palette.Text = "00";
 			this.RoomProperty_Palette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_Palette.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// RoomProperty_Floor2
 			// 
@@ -1964,7 +1795,6 @@ namespace ZeldaFullEditor
 			this.RoomProperty_Floor2.TabIndex = 89;
 			this.RoomProperty_Floor2.Text = "0";
 			this.RoomProperty_Floor2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_Floor2.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// RoomProperty_Floor1
 			// 
@@ -1979,7 +1809,6 @@ namespace ZeldaFullEditor
 			this.RoomProperty_Floor1.TabIndex = 88;
 			this.RoomProperty_Floor1.Text = "0";
 			this.RoomProperty_Floor1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_Floor1.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// RoomProperty_Blockset
 			// 
@@ -1994,7 +1823,6 @@ namespace ZeldaFullEditor
 			this.RoomProperty_Blockset.TabIndex = 87;
 			this.RoomProperty_Blockset.Text = "00";
 			this.RoomProperty_Blockset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_Blockset.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// RoomProperty_Layout
 			// 
@@ -2009,7 +1837,6 @@ namespace ZeldaFullEditor
 			this.RoomProperty_Layout.TabIndex = 86;
 			this.RoomProperty_Layout.Text = "0";
 			this.RoomProperty_Layout.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_Layout.TextChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// label16
 			// 
@@ -2062,7 +1889,6 @@ namespace ZeldaFullEditor
 			this.bg2checkbox5.Size = new System.Drawing.Size(15, 14);
 			this.bg2checkbox5.TabIndex = 78;
 			this.bg2checkbox5.UseVisualStyleBackColor = true;
-			this.bg2checkbox5.CheckedChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// label33
 			// 
@@ -2103,7 +1929,6 @@ namespace ZeldaFullEditor
 			this.bg2checkbox4.Size = new System.Drawing.Size(15, 14);
 			this.bg2checkbox4.TabIndex = 77;
 			this.bg2checkbox4.UseVisualStyleBackColor = true;
-			this.bg2checkbox4.CheckedChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// bg2checkbox3
 			// 
@@ -2114,7 +1939,6 @@ namespace ZeldaFullEditor
 			this.bg2checkbox3.Size = new System.Drawing.Size(15, 14);
 			this.bg2checkbox3.TabIndex = 76;
 			this.bg2checkbox3.UseVisualStyleBackColor = true;
-			this.bg2checkbox3.CheckedChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// bg2checkbox2
 			// 
@@ -2125,7 +1949,6 @@ namespace ZeldaFullEditor
 			this.bg2checkbox2.Size = new System.Drawing.Size(15, 14);
 			this.bg2checkbox2.TabIndex = 75;
 			this.bg2checkbox2.UseVisualStyleBackColor = true;
-			this.bg2checkbox2.CheckedChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// bg2checkbox1
 			// 
@@ -2136,7 +1959,6 @@ namespace ZeldaFullEditor
 			this.bg2checkbox1.Size = new System.Drawing.Size(15, 14);
 			this.bg2checkbox1.TabIndex = 74;
 			this.bg2checkbox1.UseVisualStyleBackColor = true;
-			this.bg2checkbox1.CheckedChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// label11
 			// 
@@ -2160,7 +1982,6 @@ namespace ZeldaFullEditor
 			this.roomProperty_effect.Name = "roomProperty_effect";
 			this.roomProperty_effect.Size = new System.Drawing.Size(124, 21);
 			this.roomProperty_effect.TabIndex = 18;
-			this.roomProperty_effect.SelectedIndexChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// label2
 			// 
@@ -2184,7 +2005,6 @@ namespace ZeldaFullEditor
 			this.roomPropertyLayerMerge.Name = "roomPropertyLayerMerge";
 			this.roomPropertyLayerMerge.Size = new System.Drawing.Size(124, 21);
 			this.roomPropertyLayerMerge.TabIndex = 2;
-			this.roomPropertyLayerMerge.SelectedIndexChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// label3
 			// 
@@ -2208,7 +2028,6 @@ namespace ZeldaFullEditor
 			this.roomProperty_collision.Name = "roomProperty_collision";
 			this.roomProperty_collision.Size = new System.Drawing.Size(124, 21);
 			this.roomProperty_collision.TabIndex = 4;
-			this.roomProperty_collision.SelectedIndexChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// label9
 			// 
@@ -2232,7 +2051,6 @@ namespace ZeldaFullEditor
 			this.roomProperty_pit.TabIndex = 28;
 			this.roomProperty_pit.Text = "Pit damage";
 			this.roomProperty_pit.UseVisualStyleBackColor = true;
-			this.roomProperty_pit.CheckedChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// label10
 			// 
@@ -2301,7 +2119,6 @@ namespace ZeldaFullEditor
 			this.roomProperty_tag1.Name = "roomProperty_tag1";
 			this.roomProperty_tag1.Size = new System.Drawing.Size(105, 21);
 			this.roomProperty_tag1.TabIndex = 20;
-			this.roomProperty_tag1.SelectedIndexChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// label12
 			// 
@@ -2326,12 +2143,11 @@ namespace ZeldaFullEditor
 			this.roomProperty_tag2.Name = "roomProperty_tag2";
 			this.roomProperty_tag2.Size = new System.Drawing.Size(105, 21);
 			this.roomProperty_tag2.TabIndex = 22;
-			this.roomProperty_tag2.SelectedIndexChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// DoorTypeComboBox
 			// 
 			this.DoorTypeComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.DoorTypeComboBox.BackColor = System.Drawing.SystemColors.Window;
 			this.DoorTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.DoorTypeComboBox.FormattingEnabled = true;
@@ -2344,7 +2160,7 @@ namespace ZeldaFullEditor
 			// spritepropertyPanel
 			// 
 			this.spritepropertyPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.spritepropertyPanel.Controls.Add(this.spriteoverlordCheckbox);
 			this.spritepropertyPanel.Controls.Add(this.label26);
 			this.spritepropertyPanel.Controls.Add(this.doorselectPanel);
@@ -2380,7 +2196,7 @@ namespace ZeldaFullEditor
 			// doorselectPanel
 			// 
 			this.doorselectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.doorselectPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.doorselectPanel.Controls.Add(this.collisionMapPanel);
 			this.doorselectPanel.Controls.Add(this.label25);
@@ -2395,7 +2211,7 @@ namespace ZeldaFullEditor
 			// collisionMapPanel
 			// 
 			this.collisionMapPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.collisionMapPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.collisionMapPanel.Controls.Add(this.tileTypeCombobox);
 			this.collisionMapPanel.Controls.Add(this.collisionMapLabel);
@@ -2411,7 +2227,7 @@ namespace ZeldaFullEditor
 			// tileTypeCombobox
 			// 
 			this.tileTypeCombobox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.tileTypeCombobox.BackColor = System.Drawing.SystemColors.Window;
 			this.tileTypeCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.tileTypeCombobox.FormattingEnabled = true;
@@ -2424,7 +2240,7 @@ namespace ZeldaFullEditor
 			// collisionMapLabel
 			// 
 			this.collisionMapLabel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.collisionMapLabel.AutoSize = true;
 			this.collisionMapLabel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.collisionMapLabel.Location = new System.Drawing.Point(2, 9);
@@ -2449,7 +2265,7 @@ namespace ZeldaFullEditor
 			// label25
 			// 
 			this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.label25.AutoSize = true;
 			this.label25.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.label25.Location = new System.Drawing.Point(2, 9);
@@ -2464,10 +2280,10 @@ namespace ZeldaFullEditor
 			this.spritesubtypeUpDown.Location = new System.Drawing.Point(586, 107);
 			this.spritesubtypeUpDown.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.spritesubtypeUpDown.Maximum = new decimal(new int[] {
-            31,
-            0,
-            0,
-            0});
+			31,
+			0,
+			0,
+			0});
 			this.spritesubtypeUpDown.Name = "spritesubtypeUpDown";
 			this.spritesubtypeUpDown.Size = new System.Drawing.Size(58, 20);
 			this.spritesubtypeUpDown.TabIndex = 14;
@@ -2475,7 +2291,7 @@ namespace ZeldaFullEditor
 			// potitemobjectPanel
 			// 
 			this.potitemobjectPanel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.potitemobjectPanel.Controls.Add(this.selecteditemobjectCombobox);
 			this.potitemobjectPanel.Controls.Add(this.label31);
 			this.potitemobjectPanel.Location = new System.Drawing.Point(509, 16);
@@ -2488,38 +2304,38 @@ namespace ZeldaFullEditor
 			// selecteditemobjectCombobox
 			// 
 			this.selecteditemobjectCombobox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.selecteditemobjectCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.selecteditemobjectCombobox.FormattingEnabled = true;
 			this.selecteditemobjectCombobox.Items.AddRange(new object[] {
-            "Nothing",
-            "Green Rupee",
-            "Rock hoarder",
-            "Bee",
-            "Health pack",
-            "Bomb",
-            "Heart ",
-            "Blue Rupee",
-            "Key",
-            "Arrow",
-            "Bomb",
-            "Heart",
-            "Magic",
-            "Full Magic",
-            "Cucco",
-            "Green Soldier",
-            "Bush Stal",
-            "Blue Soldier",
-            "Landmine",
-            "Heart",
-            "Fairy",
-            "Heart",
-            "Nothing ",
-            "Hole",
-            "Warp",
-            "Staircase",
-            "Bombable",
-            "Switch"});
+			"Nothing",
+			"Green Rupee",
+			"Rock hoarder",
+			"Bee",
+			"Health pack",
+			"Bomb",
+			"Heart ",
+			"Blue Rupee",
+			"Key",
+			"Arrow",
+			"Bomb",
+			"Heart",
+			"Magic",
+			"Full Magic",
+			"Cucco",
+			"Green Soldier",
+			"Bush Stal",
+			"Blue Soldier",
+			"Landmine",
+			"Heart",
+			"Fairy",
+			"Heart",
+			"Nothing ",
+			"Hole",
+			"Warp",
+			"Staircase",
+			"Bombable",
+			"Switch"});
 			this.selecteditemobjectCombobox.Location = new System.Drawing.Point(6, 26);
 			this.selecteditemobjectCombobox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.selecteditemobjectCombobox.Name = "selecteditemobjectCombobox";
@@ -2529,7 +2345,7 @@ namespace ZeldaFullEditor
 			// label31
 			// 
 			this.label31.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.label31.AutoSize = true;
 			this.label31.Location = new System.Drawing.Point(2, 10);
 			this.label31.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
@@ -2541,13 +2357,13 @@ namespace ZeldaFullEditor
 			// comboBox1
 			// 
 			this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.comboBox1.Enabled = false;
 			this.comboBox1.FormattingEnabled = true;
 			this.comboBox1.Items.AddRange(new object[] {
-            "None",
-            "Small key",
-            "Big key"});
+			"None",
+			"Small key",
+			"Big key"});
 			this.comboBox1.Location = new System.Drawing.Point(562, 94);
 			this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.comboBox1.Name = "comboBox1";
@@ -2558,7 +2374,7 @@ namespace ZeldaFullEditor
 			// label23
 			// 
 			this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.label23.AutoSize = true;
 			this.label23.Location = new System.Drawing.Point(509, 97);
 			this.label23.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
@@ -2567,1231 +2383,53 @@ namespace ZeldaFullEditor
 			this.label23.TabIndex = 9;
 			this.label23.Text = "Key drop";
 			// 
-			// overworldPage
-			// 
-			this.overworldPage.BackColor = System.Drawing.SystemColors.Control;
-			this.overworldPage.Controls.Add(this.OverworldSplitContainer);
-			this.overworldPage.Controls.Add(this.owPropertyPanel);
-			this.overworldPage.Location = new System.Drawing.Point(4, 4);
-			this.overworldPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.overworldPage.Name = "overworldPage";
-			this.overworldPage.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.overworldPage.Size = new System.Drawing.Size(1150, 742);
-			this.overworldPage.TabIndex = 1;
-			this.overworldPage.Text = "Overworld Editor";
-			// 
-			// OverworldSplitContainer
-			// 
-			this.OverworldSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.OverworldSplitContainer.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-			this.OverworldSplitContainer.IsSplitterFixed = true;
-			this.OverworldSplitContainer.Location = new System.Drawing.Point(2, 78);
-			this.OverworldSplitContainer.Name = "OverworldSplitContainer";
-			// 
-			// OverworldSplitContainer.Panel1
-			// 
-			this.OverworldSplitContainer.Panel1.AutoScroll = true;
-			this.OverworldSplitContainer.Panel1.Controls.Add(this.OverworldAuxSideTabs);
-			// 
-			// OverworldSplitContainer.Panel2
-			// 
-			this.OverworldSplitContainer.Panel2.AutoScroll = true;
-			this.OverworldSplitContainer.Panel2.Controls.Add(this.pictureBox2);
-			this.OverworldSplitContainer.Size = new System.Drawing.Size(1146, 661);
-			this.OverworldSplitContainer.SplitterDistance = 288;
-			this.OverworldSplitContainer.TabIndex = 3;
-			// 
-			// OverworldAuxSideTabs
-			// 
-			this.OverworldAuxSideTabs.Controls.Add(this.tabPage1);
-			this.OverworldAuxSideTabs.Controls.Add(this.tabPage2);
-			this.OverworldAuxSideTabs.Controls.Add(this.Tiles8);
-			this.OverworldAuxSideTabs.Controls.Add(this.OWTabExitProps);
-			this.OverworldAuxSideTabs.Controls.Add(this.OWTabEntranceProps);
-			this.OverworldAuxSideTabs.Controls.Add(this.OWTabTransportProps);
-			this.OverworldAuxSideTabs.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.OverworldAuxSideTabs.Location = new System.Drawing.Point(0, 0);
-			this.OverworldAuxSideTabs.Multiline = true;
-			this.OverworldAuxSideTabs.Name = "OverworldAuxSideTabs";
-			this.OverworldAuxSideTabs.SelectedIndex = 0;
-			this.OverworldAuxSideTabs.Size = new System.Drawing.Size(288, 661);
-			this.OverworldAuxSideTabs.TabIndex = 1;
-			this.OverworldAuxSideTabs.SelectedIndexChanged += new System.EventHandler(this.UnderWorldTabControlChanged);
-			// 
-			// tabPage1
-			// 
-			this.tabPage1.AutoScroll = true;
-			this.tabPage1.Controls.Add(this.tilePictureBox);
-			this.tabPage1.Location = new System.Drawing.Point(4, 40);
-			this.tabPage1.Name = "tabPage1";
-			this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage1.Size = new System.Drawing.Size(280, 617);
-			this.tabPage1.TabIndex = 0;
-			this.tabPage1.Text = "Tile 16";
-			this.tabPage1.UseVisualStyleBackColor = true;
-			// 
-			// tilePictureBox
-			// 
-			this.tilePictureBox.Location = new System.Drawing.Point(3, 3);
-			this.tilePictureBox.Name = "tilePictureBox";
-			this.tilePictureBox.Size = new System.Drawing.Size(256, 4096);
-			this.tilePictureBox.TabIndex = 0;
-			this.tilePictureBox.TabStop = false;
-			this.tilePictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.tilePictureBox_Paint);
-			this.tilePictureBox.DoubleClick += new System.EventHandler(this.tilePictureBox_DoubleClick);
-			this.tilePictureBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tilePictureBox_MouseClick);
-			this.tilePictureBox.MouseEnter += new System.EventHandler(this.tilePictureBox_MouseEnter);
-			// 
-			// tabPage2
-			// 
-			this.tabPage2.AutoScroll = true;
-			this.tabPage2.Controls.Add(this.scratchPicturebox);
-			this.tabPage2.Location = new System.Drawing.Point(4, 44);
-			this.tabPage2.Name = "tabPage2";
-			this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-			this.tabPage2.Size = new System.Drawing.Size(280, 611);
-			this.tabPage2.TabIndex = 1;
-			this.tabPage2.Text = "Tile 16 scratchpad";
-			this.tabPage2.UseVisualStyleBackColor = true;
-			// 
-			// scratchPicturebox
-			// 
-			this.scratchPicturebox.Location = new System.Drawing.Point(3, 3);
-			this.scratchPicturebox.Name = "scratchPicturebox";
-			this.scratchPicturebox.Size = new System.Drawing.Size(256, 3600);
-			this.scratchPicturebox.TabIndex = 1;
-			this.scratchPicturebox.TabStop = false;
-			this.scratchPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.scratchPicturebox_Paint);
-			this.scratchPicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseDown);
-			this.scratchPicturebox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseMove);
-			this.scratchPicturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.scratchPicturebox_MouseUp);
-			// 
-			// Tiles8
-			// 
-			this.Tiles8.Controls.Add(this.panel2);
-			this.Tiles8.Controls.Add(this.panel4);
-			this.Tiles8.Location = new System.Drawing.Point(4, 44);
-			this.Tiles8.Name = "Tiles8";
-			this.Tiles8.Size = new System.Drawing.Size(280, 611);
-			this.Tiles8.TabIndex = 2;
-			this.Tiles8.Text = "Tile 8";
-			this.Tiles8.UseVisualStyleBackColor = true;
-			// 
-			// panel2
-			// 
-			this.panel2.AutoScroll = true;
-			this.panel2.Controls.Add(this.Tile8PicBox);
-			this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.panel2.Location = new System.Drawing.Point(0, 217);
-			this.panel2.Name = "panel2";
-			this.panel2.Size = new System.Drawing.Size(280, 394);
-			this.panel2.TabIndex = 3;
-			// 
-			// Tile8PicBox
-			// 
-			this.Tile8PicBox.Location = new System.Drawing.Point(3, 3);
-			this.Tile8PicBox.Name = "Tile8PicBox";
-			this.Tile8PicBox.Size = new System.Drawing.Size(256, 1024);
-			this.Tile8PicBox.TabIndex = 1;
-			this.Tile8PicBox.TabStop = false;
-			this.Tile8PicBox.Paint += new System.Windows.Forms.PaintEventHandler(this.Tile8PicBox_Paint);
-			this.Tile8PicBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Tile8PicBox_MouseDown);
-			// 
-			// panel4
-			// 
-			this.panel4.Controls.Add(this.priorityCheckbox);
-			this.panel4.Controls.Add(this.currentTile8Box);
-			this.panel4.Controls.Add(this.mirrorYCheckbox);
-			this.panel4.Controls.Add(this.palette8Box);
-			this.panel4.Controls.Add(this.mirrorXCheckbox);
-			this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-			this.panel4.Location = new System.Drawing.Point(0, 0);
-			this.panel4.Name = "panel4";
-			this.panel4.Size = new System.Drawing.Size(280, 217);
-			this.panel4.TabIndex = 2;
-			// 
-			// priorityCheckbox
-			// 
-			this.priorityCheckbox.AutoSize = true;
-			this.priorityCheckbox.Location = new System.Drawing.Point(75, 59);
-			this.priorityCheckbox.Name = "priorityCheckbox";
-			this.priorityCheckbox.Size = new System.Drawing.Size(57, 17);
-			this.priorityCheckbox.TabIndex = 5;
-			this.priorityCheckbox.Text = "Priority";
-			this.priorityCheckbox.UseVisualStyleBackColor = true;
-			this.priorityCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
-			// 
-			// currentTile8Box
-			// 
-			this.currentTile8Box.Location = new System.Drawing.Point(5, 13);
-			this.currentTile8Box.Name = "currentTile8Box";
-			this.currentTile8Box.Size = new System.Drawing.Size(64, 64);
-			this.currentTile8Box.TabIndex = 3;
-			this.currentTile8Box.TabStop = false;
-			this.currentTile8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.currentTile8Box_Paint);
-			// 
-			// mirrorYCheckbox
-			// 
-			this.mirrorYCheckbox.AutoSize = true;
-			this.mirrorYCheckbox.Location = new System.Drawing.Point(75, 36);
-			this.mirrorYCheckbox.Name = "mirrorYCheckbox";
-			this.mirrorYCheckbox.Size = new System.Drawing.Size(52, 17);
-			this.mirrorYCheckbox.TabIndex = 4;
-			this.mirrorYCheckbox.Text = "Flip Y";
-			this.mirrorYCheckbox.UseVisualStyleBackColor = true;
-			this.mirrorYCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
-			// 
-			// palette8Box
-			// 
-			this.palette8Box.Location = new System.Drawing.Point(3, 83);
-			this.palette8Box.Name = "palette8Box";
-			this.palette8Box.Size = new System.Drawing.Size(256, 128);
-			this.palette8Box.TabIndex = 2;
-			this.palette8Box.TabStop = false;
-			this.palette8Box.Paint += new System.Windows.Forms.PaintEventHandler(this.palette8Box_Paint);
-			this.palette8Box.MouseDown += new System.Windows.Forms.MouseEventHandler(this.palette8Box_MouseDown);
-			// 
-			// mirrorXCheckbox
-			// 
-			this.mirrorXCheckbox.AutoSize = true;
-			this.mirrorXCheckbox.Location = new System.Drawing.Point(75, 13);
-			this.mirrorXCheckbox.Name = "mirrorXCheckbox";
-			this.mirrorXCheckbox.Size = new System.Drawing.Size(52, 17);
-			this.mirrorXCheckbox.TabIndex = 3;
-			this.mirrorXCheckbox.Text = "Flip X";
-			this.mirrorXCheckbox.UseVisualStyleBackColor = true;
-			this.mirrorXCheckbox.CheckedChanged += new System.EventHandler(this.mirrorXCheckbox_CheckedChanged);
-			// 
-			// OWTabExitProps
-			// 
-			this.OWTabExitProps.Controls.Add(this.OWExitPanel);
-			this.OWTabExitProps.Location = new System.Drawing.Point(4, 44);
-			this.OWTabExitProps.Name = "OWTabExitProps";
-			this.OWTabExitProps.Size = new System.Drawing.Size(280, 611);
-			this.OWTabExitProps.TabIndex = 3;
-			this.OWTabExitProps.Text = "Exit";
-			this.OWTabExitProps.UseVisualStyleBackColor = true;
-			// 
-			// OWExitPanel
-			// 
-			this.OWExitPanel.Controls.Add(this.OWExitDisabled);
-			this.OWExitPanel.Controls.Add(this.OWExitPropY);
-			this.OWExitPanel.Controls.Add(this.OWExitPropX);
-			this.OWExitPanel.Controls.Add(this.OWExitPropID);
-			this.OWExitPanel.Controls.Add(this.label56);
-			this.OWExitPanel.Controls.Add(this.label57);
-			this.OWExitPanel.Controls.Add(this.label58);
-			this.OWExitPanel.Location = new System.Drawing.Point(17, 4);
-			this.OWExitPanel.Name = "OWExitPanel";
-			this.OWExitPanel.Size = new System.Drawing.Size(205, 220);
-			this.OWExitPanel.TabIndex = 9;
-			// 
-			// OWExitDisabled
-			// 
-			this.OWExitDisabled.AutoSize = true;
-			this.OWExitDisabled.Location = new System.Drawing.Point(8, 7);
-			this.OWExitDisabled.Name = "OWExitDisabled";
-			this.OWExitDisabled.Size = new System.Drawing.Size(83, 13);
-			this.OWExitDisabled.TabIndex = 8;
-			this.OWExitDisabled.Text = "No exit selected";
-			// 
-			// OWExitPropY
-			// 
-			this.OWExitPropY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWExitPropY.HexValue = 0;
-			this.OWExitPropY.Location = new System.Drawing.Point(55, 78);
-			this.OWExitPropY.MaxLength = 2;
-			this.OWExitPropY.Name = "OWExitPropY";
-			this.OWExitPropY.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWExitPropY.Size = new System.Drawing.Size(56, 20);
-			this.OWExitPropY.TabIndex = 7;
-			this.OWExitPropY.Text = "00";
-			this.OWExitPropY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// OWExitPropX
-			// 
-			this.OWExitPropX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWExitPropX.HexValue = 0;
-			this.OWExitPropX.Location = new System.Drawing.Point(55, 52);
-			this.OWExitPropX.MaxLength = 2;
-			this.OWExitPropX.Name = "OWExitPropX";
-			this.OWExitPropX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWExitPropX.Size = new System.Drawing.Size(55, 20);
-			this.OWExitPropX.TabIndex = 6;
-			this.OWExitPropX.Text = "00";
-			this.OWExitPropX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// OWExitPropID
-			// 
-			this.OWExitPropID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWExitPropID.HexValue = 0;
-			this.OWExitPropID.Location = new System.Drawing.Point(55, 26);
-			this.OWExitPropID.MaxLength = 2;
-			this.OWExitPropID.Name = "OWExitPropID";
-			this.OWExitPropID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWExitPropID.Size = new System.Drawing.Size(55, 20);
-			this.OWExitPropID.TabIndex = 5;
-			this.OWExitPropID.Text = "00";
-			this.OWExitPropID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// label56
-			// 
-			this.label56.AutoSize = true;
-			this.label56.Location = new System.Drawing.Point(35, 81);
-			this.label56.Name = "label56";
-			this.label56.Size = new System.Drawing.Size(14, 13);
-			this.label56.TabIndex = 4;
-			this.label56.Text = "Y";
-			// 
-			// label57
-			// 
-			this.label57.AutoSize = true;
-			this.label57.Location = new System.Drawing.Point(35, 55);
-			this.label57.Name = "label57";
-			this.label57.Size = new System.Drawing.Size(14, 13);
-			this.label57.TabIndex = 2;
-			this.label57.Text = "X";
-			// 
-			// label58
-			// 
-			this.label58.AutoSize = true;
-			this.label58.Location = new System.Drawing.Point(11, 29);
-			this.label58.Name = "label58";
-			this.label58.Size = new System.Drawing.Size(38, 13);
-			this.label58.TabIndex = 0;
-			this.label58.Text = "Exit ID";
-			// 
-			// OWTabEntranceProps
-			// 
-			this.OWTabEntranceProps.Controls.Add(this.OWEntrancePanel);
-			this.OWTabEntranceProps.Location = new System.Drawing.Point(4, 44);
-			this.OWTabEntranceProps.Name = "OWTabEntranceProps";
-			this.OWTabEntranceProps.Size = new System.Drawing.Size(280, 611);
-			this.OWTabEntranceProps.TabIndex = 4;
-			this.OWTabEntranceProps.Text = "Entrance";
-			this.OWTabEntranceProps.UseVisualStyleBackColor = true;
-			// 
-			// OWEntrancePanel
-			// 
-			this.OWEntrancePanel.Controls.Add(this.OWEntranceDisabled);
-			this.OWEntrancePanel.Controls.Add(this.OWEntrancePropY);
-			this.OWEntrancePanel.Controls.Add(this.OWEntrancePropX);
-			this.OWEntrancePanel.Controls.Add(this.OWEntrancePropID);
-			this.OWEntrancePanel.Controls.Add(this.label59);
-			this.OWEntrancePanel.Controls.Add(this.label60);
-			this.OWEntrancePanel.Controls.Add(this.label61);
-			this.OWEntrancePanel.Location = new System.Drawing.Point(17, 18);
-			this.OWEntrancePanel.Name = "OWEntrancePanel";
-			this.OWEntrancePanel.Size = new System.Drawing.Size(205, 220);
-			this.OWEntrancePanel.TabIndex = 10;
-			// 
-			// OWEntranceDisabled
-			// 
-			this.OWEntranceDisabled.AutoSize = true;
-			this.OWEntranceDisabled.Location = new System.Drawing.Point(8, 7);
-			this.OWEntranceDisabled.Name = "OWEntranceDisabled";
-			this.OWEntranceDisabled.Size = new System.Drawing.Size(109, 13);
-			this.OWEntranceDisabled.TabIndex = 8;
-			this.OWEntranceDisabled.Text = "No entrance selected";
-			// 
-			// OWEntrancePropY
-			// 
-			this.OWEntrancePropY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWEntrancePropY.HexValue = 0;
-			this.OWEntrancePropY.Location = new System.Drawing.Point(55, 78);
-			this.OWEntrancePropY.MaxLength = 2;
-			this.OWEntrancePropY.Name = "OWEntrancePropY";
-			this.OWEntrancePropY.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWEntrancePropY.Size = new System.Drawing.Size(56, 20);
-			this.OWEntrancePropY.TabIndex = 7;
-			this.OWEntrancePropY.Text = "00";
-			this.OWEntrancePropY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// OWEntrancePropX
-			// 
-			this.OWEntrancePropX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWEntrancePropX.HexValue = 0;
-			this.OWEntrancePropX.Location = new System.Drawing.Point(55, 52);
-			this.OWEntrancePropX.MaxLength = 2;
-			this.OWEntrancePropX.Name = "OWEntrancePropX";
-			this.OWEntrancePropX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWEntrancePropX.Size = new System.Drawing.Size(55, 20);
-			this.OWEntrancePropX.TabIndex = 6;
-			this.OWEntrancePropX.Text = "00";
-			this.OWEntrancePropX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// OWEntrancePropID
-			// 
-			this.OWEntrancePropID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWEntrancePropID.HexValue = 0;
-			this.OWEntrancePropID.Location = new System.Drawing.Point(55, 26);
-			this.OWEntrancePropID.MaxLength = 2;
-			this.OWEntrancePropID.Name = "OWEntrancePropID";
-			this.OWEntrancePropID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWEntrancePropID.Size = new System.Drawing.Size(55, 20);
-			this.OWEntrancePropID.TabIndex = 5;
-			this.OWEntrancePropID.Text = "00";
-			this.OWEntrancePropID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// label59
-			// 
-			this.label59.AutoSize = true;
-			this.label59.Location = new System.Drawing.Point(35, 81);
-			this.label59.Name = "label59";
-			this.label59.Size = new System.Drawing.Size(14, 13);
-			this.label59.TabIndex = 4;
-			this.label59.Text = "Y";
-			// 
-			// label60
-			// 
-			this.label60.AutoSize = true;
-			this.label60.Location = new System.Drawing.Point(35, 55);
-			this.label60.Name = "label60";
-			this.label60.Size = new System.Drawing.Size(14, 13);
-			this.label60.TabIndex = 2;
-			this.label60.Text = "X";
-			// 
-			// label61
-			// 
-			this.label61.AutoSize = true;
-			this.label61.Location = new System.Drawing.Point(31, 29);
-			this.label61.Name = "label61";
-			this.label61.Size = new System.Drawing.Size(18, 13);
-			this.label61.TabIndex = 0;
-			this.label61.Text = "ID";
-			// 
-			// OWTabTransportProps
-			// 
-			this.OWTabTransportProps.Controls.Add(this.OWTransportPanel);
-			this.OWTabTransportProps.Location = new System.Drawing.Point(4, 44);
-			this.OWTabTransportProps.Name = "OWTabTransportProps";
-			this.OWTabTransportProps.Size = new System.Drawing.Size(280, 611);
-			this.OWTabTransportProps.TabIndex = 5;
-			this.OWTabTransportProps.Text = "Transport";
-			this.OWTabTransportProps.UseVisualStyleBackColor = true;
-			// 
-			// OWTransportPanel
-			// 
-			this.OWTransportPanel.Controls.Add(this.OWTransportDisabled);
-			this.OWTransportPanel.Controls.Add(this.OWTransportPropY);
-			this.OWTransportPanel.Controls.Add(this.OWTransportPropX);
-			this.OWTransportPanel.Controls.Add(this.OWTransportPropID);
-			this.OWTransportPanel.Controls.Add(this.label62);
-			this.OWTransportPanel.Controls.Add(this.label63);
-			this.OWTransportPanel.Controls.Add(this.label64);
-			this.OWTransportPanel.Location = new System.Drawing.Point(17, 18);
-			this.OWTransportPanel.Name = "OWTransportPanel";
-			this.OWTransportPanel.Size = new System.Drawing.Size(205, 220);
-			this.OWTransportPanel.TabIndex = 10;
-			// 
-			// OWTransportDisabled
-			// 
-			this.OWTransportDisabled.AutoSize = true;
-			this.OWTransportDisabled.Location = new System.Drawing.Point(8, 7);
-			this.OWTransportDisabled.Name = "OWTransportDisabled";
-			this.OWTransportDisabled.Size = new System.Drawing.Size(108, 13);
-			this.OWTransportDisabled.TabIndex = 8;
-			this.OWTransportDisabled.Text = "No transport selected";
-			// 
-			// OWTransportPropY
-			// 
-			this.OWTransportPropY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWTransportPropY.HexValue = 0;
-			this.OWTransportPropY.Location = new System.Drawing.Point(55, 78);
-			this.OWTransportPropY.MaxLength = 2;
-			this.OWTransportPropY.Name = "OWTransportPropY";
-			this.OWTransportPropY.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWTransportPropY.Size = new System.Drawing.Size(56, 20);
-			this.OWTransportPropY.TabIndex = 7;
-			this.OWTransportPropY.Text = "00";
-			this.OWTransportPropY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// OWTransportPropX
-			// 
-			this.OWTransportPropX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWTransportPropX.HexValue = 0;
-			this.OWTransportPropX.Location = new System.Drawing.Point(55, 52);
-			this.OWTransportPropX.MaxLength = 2;
-			this.OWTransportPropX.Name = "OWTransportPropX";
-			this.OWTransportPropX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWTransportPropX.Size = new System.Drawing.Size(55, 20);
-			this.OWTransportPropX.TabIndex = 6;
-			this.OWTransportPropX.Text = "00";
-			this.OWTransportPropX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// OWTransportPropID
-			// 
-			this.OWTransportPropID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWTransportPropID.HexValue = 0;
-			this.OWTransportPropID.Location = new System.Drawing.Point(55, 26);
-			this.OWTransportPropID.MaxLength = 2;
-			this.OWTransportPropID.Name = "OWTransportPropID";
-			this.OWTransportPropID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWTransportPropID.Size = new System.Drawing.Size(55, 20);
-			this.OWTransportPropID.TabIndex = 5;
-			this.OWTransportPropID.Text = "00";
-			this.OWTransportPropID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// label62
-			// 
-			this.label62.AutoSize = true;
-			this.label62.Location = new System.Drawing.Point(35, 81);
-			this.label62.Name = "label62";
-			this.label62.Size = new System.Drawing.Size(14, 13);
-			this.label62.TabIndex = 4;
-			this.label62.Text = "Y";
-			// 
-			// label63
-			// 
-			this.label63.AutoSize = true;
-			this.label63.Location = new System.Drawing.Point(35, 55);
-			this.label63.Name = "label63";
-			this.label63.Size = new System.Drawing.Size(14, 13);
-			this.label63.TabIndex = 2;
-			this.label63.Text = "X";
-			// 
-			// label64
-			// 
-			this.label64.AutoSize = true;
-			this.label64.Location = new System.Drawing.Point(31, 29);
-			this.label64.Name = "label64";
-			this.label64.Size = new System.Drawing.Size(18, 13);
-			this.label64.TabIndex = 0;
-			this.label64.Text = "ID";
-			// 
-			// pictureBox2
-			// 
-			this.pictureBox2.Location = new System.Drawing.Point(3, 3);
-			this.pictureBox2.Name = "pictureBox2";
-			this.pictureBox2.Size = new System.Drawing.Size(24, 24);
-			this.pictureBox2.TabIndex = 22;
-			this.pictureBox2.TabStop = false;
-			this.pictureBox2.Visible = false;
-			// 
-			// owPropertyPanel
-			// 
-			this.owPropertyPanel.Controls.Add(this.objectGroupbox);
-			this.owPropertyPanel.Controls.Add(this.mapGroupbox);
-			this.owPropertyPanel.Controls.Add(this.groupBox3);
-			this.owPropertyPanel.Dock = System.Windows.Forms.DockStyle.Top;
-			this.owPropertyPanel.Location = new System.Drawing.Point(2, 3);
-			this.owPropertyPanel.Name = "owPropertyPanel";
-			this.owPropertyPanel.Size = new System.Drawing.Size(1146, 75);
-			this.owPropertyPanel.TabIndex = 2;
-			// 
-			// objectGroupbox
-			// 
-			this.objectGroupbox.Controls.Add(this.OverworldObjectCombobox);
-			this.objectGroupbox.Location = new System.Drawing.Point(631, 3);
-			this.objectGroupbox.Name = "objectGroupbox";
-			this.objectGroupbox.Size = new System.Drawing.Size(273, 66);
-			this.objectGroupbox.TabIndex = 10;
-			this.objectGroupbox.TabStop = false;
-			this.objectGroupbox.Text = "Selected object";
-			// 
-			// OverworldObjectCombobox
-			// 
-			this.OverworldObjectCombobox.FormattingEnabled = true;
-			this.OverworldObjectCombobox.Location = new System.Drawing.Point(6, 28);
-			this.OverworldObjectCombobox.Name = "OverworldObjectCombobox";
-			this.OverworldObjectCombobox.Size = new System.Drawing.Size(156, 21);
-			this.OverworldObjectCombobox.TabIndex = 1;
-			// 
-			// mapGroupbox
-			// 
-			this.mapGroupbox.Controls.Add(this.previewTextPicturebox);
-			this.mapGroupbox.Controls.Add(this.OWProperty_MessageID);
-			this.mapGroupbox.Controls.Add(this.OWProperty_SPRPalette);
-			this.mapGroupbox.Controls.Add(this.OWProperty_SPRGFX);
-			this.mapGroupbox.Controls.Add(this.OWProperty_BGPalette);
-			this.mapGroupbox.Controls.Add(this.OWProperty_BGGFX);
-			this.mapGroupbox.Controls.Add(this.areaBGColorPictureBox);
-			this.mapGroupbox.Controls.Add(this.label49);
-			this.mapGroupbox.Controls.Add(this.largemapCheckbox);
-			this.mapGroupbox.Controls.Add(this.OverworldTextButton);
-			this.mapGroupbox.Controls.Add(this.musicButton);
-			this.mapGroupbox.Controls.Add(this.label50);
-			this.mapGroupbox.Controls.Add(this.label51);
-			this.mapGroupbox.Controls.Add(this.label52);
-			this.mapGroupbox.Controls.Add(this.label53);
-			this.mapGroupbox.Controls.Add(this.label54);
-			this.mapGroupbox.Location = new System.Drawing.Point(160, 3);
-			this.mapGroupbox.Name = "mapGroupbox";
-			this.mapGroupbox.Size = new System.Drawing.Size(465, 66);
-			this.mapGroupbox.TabIndex = 1;
-			this.mapGroupbox.TabStop = false;
-			this.mapGroupbox.Text = "Selected map";
-			// 
-			// previewTextPicturebox
-			// 
-			this.previewTextPicturebox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-			this.previewTextPicturebox.Location = new System.Drawing.Point(328, 41);
-			this.previewTextPicturebox.Name = "previewTextPicturebox";
-			this.previewTextPicturebox.Size = new System.Drawing.Size(16, 16);
-			this.previewTextPicturebox.TabIndex = 4;
-			this.previewTextPicturebox.TabStop = false;
-			this.previewTextPicturebox.Visible = false;
-			this.previewTextPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.previewTextPicturebox_Paint);
-			// 
-			// OWProperty_MessageID
-			// 
-			this.OWProperty_MessageID.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWProperty_MessageID.HexValue = 0;
-			this.OWProperty_MessageID.Location = new System.Drawing.Point(270, 32);
-			this.OWProperty_MessageID.MaxLength = 3;
-			this.OWProperty_MessageID.Name = "OWProperty_MessageID";
-			this.OWProperty_MessageID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 4095);
-			this.OWProperty_MessageID.Size = new System.Drawing.Size(45, 20);
-			this.OWProperty_MessageID.TabIndex = 28;
-			this.OWProperty_MessageID.Text = "000";
-			this.OWProperty_MessageID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// OWProperty_SPRPalette
-			// 
-			this.OWProperty_SPRPalette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWProperty_SPRPalette.HexValue = 0;
-			this.OWProperty_SPRPalette.Location = new System.Drawing.Point(204, 32);
-			this.OWProperty_SPRPalette.MaxLength = 2;
-			this.OWProperty_SPRPalette.Name = "OWProperty_SPRPalette";
-			this.OWProperty_SPRPalette.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWProperty_SPRPalette.Size = new System.Drawing.Size(60, 20);
-			this.OWProperty_SPRPalette.TabIndex = 27;
-			this.OWProperty_SPRPalette.Text = "00";
-			this.OWProperty_SPRPalette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.OWProperty_SPRPalette.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
-			// 
-			// OWProperty_SPRGFX
-			// 
-			this.OWProperty_SPRGFX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWProperty_SPRGFX.HexValue = 0;
-			this.OWProperty_SPRGFX.Location = new System.Drawing.Point(138, 32);
-			this.OWProperty_SPRGFX.MaxLength = 2;
-			this.OWProperty_SPRGFX.Name = "OWProperty_SPRGFX";
-			this.OWProperty_SPRGFX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWProperty_SPRGFX.Size = new System.Drawing.Size(60, 20);
-			this.OWProperty_SPRGFX.TabIndex = 26;
-			this.OWProperty_SPRGFX.Text = "00";
-			this.OWProperty_SPRGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.OWProperty_SPRGFX.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
-			// 
-			// OWProperty_BGPalette
-			// 
-			this.OWProperty_BGPalette.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWProperty_BGPalette.HexValue = 0;
-			this.OWProperty_BGPalette.Location = new System.Drawing.Point(72, 32);
-			this.OWProperty_BGPalette.MaxLength = 2;
-			this.OWProperty_BGPalette.Name = "OWProperty_BGPalette";
-			this.OWProperty_BGPalette.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWProperty_BGPalette.Size = new System.Drawing.Size(60, 20);
-			this.OWProperty_BGPalette.TabIndex = 25;
-			this.OWProperty_BGPalette.Text = "00";
-			this.OWProperty_BGPalette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.OWProperty_BGPalette.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
-			// 
-			// OWProperty_BGGFX
-			// 
-			this.OWProperty_BGGFX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.OWProperty_BGGFX.HexValue = 0;
-			this.OWProperty_BGGFX.Location = new System.Drawing.Point(6, 32);
-			this.OWProperty_BGGFX.MaxLength = 2;
-			this.OWProperty_BGGFX.Name = "OWProperty_BGGFX";
-			this.OWProperty_BGGFX.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.OWProperty_BGGFX.Size = new System.Drawing.Size(60, 20);
-			this.OWProperty_BGGFX.TabIndex = 24;
-			this.OWProperty_BGGFX.Text = "00";
-			this.OWProperty_BGGFX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.OWProperty_BGGFX.TextChanged += new System.EventHandler(this.gfxTextbox_TextChanged);
-			// 
-			// areaBGColorPictureBox
-			// 
-			this.areaBGColorPictureBox.Location = new System.Drawing.Point(426, 28);
-			this.areaBGColorPictureBox.Name = "areaBGColorPictureBox";
-			this.areaBGColorPictureBox.Size = new System.Drawing.Size(24, 24);
-			this.areaBGColorPictureBox.TabIndex = 23;
-			this.areaBGColorPictureBox.TabStop = false;
-			this.areaBGColorPictureBox.Visible = false;
-			this.areaBGColorPictureBox.Click += new System.EventHandler(this.AreaBGColorPicturebox_MouseDoubleClick);
-			this.areaBGColorPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.AreaBGColorPicturebox_Paint);
-			// 
-			// label49
-			// 
-			this.label49.AutoSize = true;
-			this.label49.Location = new System.Drawing.Point(415, 9);
-			this.label49.Name = "label49";
-			this.label49.Size = new System.Drawing.Size(48, 13);
-			this.label49.TabIndex = 15;
-			this.label49.Text = "BG color";
-			this.label49.Visible = false;
-			// 
-			// largemapCheckbox
-			// 
-			this.largemapCheckbox.AutoSize = true;
-			this.largemapCheckbox.Location = new System.Drawing.Point(335, 8);
-			this.largemapCheckbox.Name = "largemapCheckbox";
-			this.largemapCheckbox.Size = new System.Drawing.Size(76, 17);
-			this.largemapCheckbox.TabIndex = 14;
-			this.largemapCheckbox.Text = "Large map";
-			this.largemapCheckbox.UseVisualStyleBackColor = true;
-			this.largemapCheckbox.Click += new System.EventHandler(this.largemapCheckbox_Clicked);
-			// 
-			// OverworldTextButton
-			// 
-			this.OverworldTextButton.Image = ((System.Drawing.Image)(resources.GetObject("OverworldTextButton.Image")));
-			this.OverworldTextButton.Location = new System.Drawing.Point(321, 31);
-			this.OverworldTextButton.Name = "OverworldTextButton";
-			this.OverworldTextButton.Size = new System.Drawing.Size(23, 23);
-			this.OverworldTextButton.TabIndex = 13;
-			this.OverworldTextButton.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
-			this.OverworldTextButton.UseVisualStyleBackColor = true;
-			this.OverworldTextButton.Click += new System.EventHandler(this.OverworldTextButton_Click);
-			// 
-			// musicButton
-			// 
-			this.musicButton.Location = new System.Drawing.Point(350, 31);
-			this.musicButton.Name = "musicButton";
-			this.musicButton.Size = new System.Drawing.Size(61, 23);
-			this.musicButton.TabIndex = 12;
-			this.musicButton.Text = "Music";
-			this.musicButton.UseVisualStyleBackColor = true;
-			this.musicButton.Click += new System.EventHandler(this.musicButton_Click);
-			// 
-			// label50
-			// 
-			this.label50.AutoSize = true;
-			this.label50.Location = new System.Drawing.Point(270, 16);
-			this.label50.Name = "label50";
-			this.label50.Size = new System.Drawing.Size(64, 13);
-			this.label50.TabIndex = 11;
-			this.label50.Text = "Message ID";
-			// 
-			// label51
-			// 
-			this.label51.AutoSize = true;
-			this.label51.Location = new System.Drawing.Point(201, 16);
-			this.label51.Name = "label51";
-			this.label51.Size = new System.Drawing.Size(61, 13);
-			this.label51.TabIndex = 9;
-			this.label51.Text = "Spr. palette";
-			// 
-			// label52
-			// 
-			this.label52.AutoSize = true;
-			this.label52.Location = new System.Drawing.Point(69, 16);
-			this.label52.Name = "label52";
-			this.label52.Size = new System.Drawing.Size(40, 13);
-			this.label52.TabIndex = 6;
-			this.label52.Text = "Palette";
-			// 
-			// label53
-			// 
-			this.label53.AutoSize = true;
-			this.label53.Location = new System.Drawing.Point(135, 16);
-			this.label53.Name = "label53";
-			this.label53.Size = new System.Drawing.Size(50, 13);
-			this.label53.TabIndex = 4;
-			this.label53.Text = "Spr. GFX";
-			// 
-			// label54
-			// 
-			this.label54.AutoSize = true;
-			this.label54.Location = new System.Drawing.Point(3, 16);
-			this.label54.Name = "label54";
-			this.label54.Size = new System.Drawing.Size(28, 13);
-			this.label54.TabIndex = 2;
-			this.label54.Text = "GFX";
-			// 
-			// groupBox3
-			// 
-			this.groupBox3.Controls.Add(this.selectedTileLabel);
-			this.groupBox3.Controls.Add(this.label55);
-			this.groupBox3.Controls.Add(this.stateCombobox);
-			this.groupBox3.Location = new System.Drawing.Point(3, 3);
-			this.groupBox3.Name = "groupBox3";
-			this.groupBox3.Size = new System.Drawing.Size(151, 66);
-			this.groupBox3.TabIndex = 0;
-			this.groupBox3.TabStop = false;
-			this.groupBox3.Text = "Global settings";
-			// 
-			// selectedTileLabel
-			// 
-			this.selectedTileLabel.AutoSize = true;
-			this.selectedTileLabel.Location = new System.Drawing.Point(3, 55);
-			this.selectedTileLabel.Name = "selectedTileLabel";
-			this.selectedTileLabel.Size = new System.Drawing.Size(65, 13);
-			this.selectedTileLabel.TabIndex = 2;
-			this.selectedTileLabel.Text = "Selected tile";
-			// 
-			// label55
-			// 
-			this.label55.AutoSize = true;
-			this.label55.Location = new System.Drawing.Point(6, 16);
-			this.label55.Name = "label55";
-			this.label55.Size = new System.Drawing.Size(61, 13);
-			this.label55.TabIndex = 1;
-			this.label55.Text = "Game state";
-			// 
-			// stateCombobox
-			// 
-			this.stateCombobox.FormattingEnabled = true;
-			this.stateCombobox.Items.AddRange(new object[] {
-            "0,1 Rescue Zelda",
-            "2 Zelda rescued",
-            "3 Agahnim defeated"});
-			this.stateCombobox.Location = new System.Drawing.Point(6, 31);
-			this.stateCombobox.Name = "stateCombobox";
-			this.stateCombobox.Size = new System.Drawing.Size(138, 21);
-			this.stateCombobox.TabIndex = 1;
-			this.stateCombobox.Text = "0,1 Rescue Zelda";
-			this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
-			// 
-			// GfxEditorPage
-			// 
-			this.GfxEditorPage.Location = new System.Drawing.Point(4, 4);
-			this.GfxEditorPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.GfxEditorPage.Name = "GfxEditorPage";
-			this.GfxEditorPage.Size = new System.Drawing.Size(1150, 742);
-			this.GfxEditorPage.TabIndex = 2;
-			this.GfxEditorPage.Text = "Graphics Manager";
-			this.GfxEditorPage.UseVisualStyleBackColor = true;
-			// 
-			// textPage
-			// 
-			this.textPage.Controls.Add(this.panel5);
-			this.textPage.Controls.Add(this.panel6);
-			this.textPage.Location = new System.Drawing.Point(4, 4);
-			this.textPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.textPage.Name = "textPage";
-			this.textPage.Size = new System.Drawing.Size(1150, 742);
-			this.textPage.TabIndex = 4;
-			this.textPage.Text = "Text Editor";
-			this.textPage.UseVisualStyleBackColor = true;
-			// 
-			// panel5
-			// 
-			this.panel5.Controls.Add(this.textListbox);
-			this.panel5.Controls.Add(this.label65);
-			this.panel5.Controls.Add(this.TextSearchTextbox);
-			this.panel5.Controls.Add(this.label66);
-			this.panel5.Location = new System.Drawing.Point(8, 3);
-			this.panel5.Name = "panel5";
-			this.panel5.Size = new System.Drawing.Size(433, 736);
-			this.panel5.TabIndex = 24;
-			// 
-			// textListbox
-			// 
-			this.textListbox.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.textListbox.FormattingEnabled = true;
-			this.textListbox.Location = new System.Drawing.Point(0, 46);
-			this.textListbox.Name = "textListbox";
-			this.textListbox.ScrollAlwaysVisible = true;
-			this.textListbox.Size = new System.Drawing.Size(433, 690);
-			this.textListbox.TabIndex = 1;
-			this.textListbox.SelectedIndexChanged += new System.EventHandler(this.textListbox_SelectedIndexChanged);
-			// 
-			// label65
-			// 
-			this.label65.AutoSize = true;
-			this.label65.Dock = System.Windows.Forms.DockStyle.Top;
-			this.label65.Location = new System.Drawing.Point(0, 33);
-			this.label65.Name = "label65";
-			this.label65.Size = new System.Drawing.Size(86, 13);
-			this.label65.TabIndex = 2;
-			this.label65.Text = "Available dialogs";
-			// 
-			// TextSearchTextbox
-			// 
-			this.TextSearchTextbox.Dock = System.Windows.Forms.DockStyle.Top;
-			this.TextSearchTextbox.Location = new System.Drawing.Point(0, 13);
-			this.TextSearchTextbox.Name = "TextSearchTextbox";
-			this.TextSearchTextbox.Size = new System.Drawing.Size(433, 20);
-			this.TextSearchTextbox.TabIndex = 9;
-			this.TextSearchTextbox.TextChanged += new System.EventHandler(this.TextSearchTextbox_TextChanged);
-			// 
-			// label66
-			// 
-			this.label66.AutoSize = true;
-			this.label66.Dock = System.Windows.Forms.DockStyle.Top;
-			this.label66.Location = new System.Drawing.Point(0, 0);
-			this.label66.Name = "label66";
-			this.label66.Size = new System.Drawing.Size(76, 13);
-			this.label66.TabIndex = 10;
-			this.label66.Text = "Search for text";
-			// 
-			// panel6
-			// 
-			this.panel6.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.panel6.Controls.Add(this.ParamsBox);
-			this.panel6.Controls.Add(this.fontGridBox);
-			this.panel6.Controls.Add(this.BytesDDD);
-			this.panel6.Controls.Add(this.label67);
-			this.panel6.Controls.Add(this.label68);
-			this.panel6.Controls.Add(this.label69);
-			this.panel6.Controls.Add(this.TextCommandList);
-			this.panel6.Controls.Add(this.label70);
-			this.panel6.Controls.Add(this.MessageTextEntry);
-			this.panel6.Controls.Add(this.label71);
-			this.panel6.Controls.Add(this.button5);
-			this.panel6.Controls.Add(this.button6);
-			this.panel6.Controls.Add(this.SpecialsList);
-			this.panel6.Controls.Add(this.groupBox4);
-			this.panel6.Controls.Add(this.ListDictionaryButton);
-			this.panel6.Controls.Add(this.ImportFontGraphicsButton);
-			this.panel6.Controls.Add(this.ExportFontGraphicsButton);
-			this.panel6.Controls.Add(this.label75);
-			this.panel6.Controls.Add(this.FontPreviewBox);
-			this.panel6.Controls.Add(this.MessagePreviewBox);
-			this.panel6.Location = new System.Drawing.Point(447, 2);
-			this.panel6.Name = "panel6";
-			this.panel6.Size = new System.Drawing.Size(520, 739);
-			this.panel6.TabIndex = 25;
-			// 
-			// ParamsBox
-			// 
-			this.ParamsBox.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
-			this.ParamsBox.HexValue = 0;
-			this.ParamsBox.Location = new System.Drawing.Point(483, 153);
-			this.ParamsBox.MaxLength = 2;
-			this.ParamsBox.Name = "ParamsBox";
-			this.ParamsBox.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
-			this.ParamsBox.Size = new System.Drawing.Size(32, 20);
-			this.ParamsBox.TabIndex = 35;
-			this.ParamsBox.Text = "00";
-			this.ParamsBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// fontGridBox
-			// 
-			this.fontGridBox.AutoSize = true;
-			this.fontGridBox.Location = new System.Drawing.Point(411, 596);
-			this.fontGridBox.Name = "fontGridBox";
-			this.fontGridBox.Size = new System.Drawing.Size(73, 17);
-			this.fontGridBox.TabIndex = 34;
-			this.fontGridBox.Text = "Show grid";
-			this.fontGridBox.UseVisualStyleBackColor = true;
-			this.fontGridBox.CheckedChanged += new System.EventHandler(this.fontGridBox_CheckedChanged);
-			// 
-			// BytesDDD
-			// 
-			this.BytesDDD.Location = new System.Drawing.Point(408, 413);
-			this.BytesDDD.Name = "BytesDDD";
-			this.BytesDDD.Size = new System.Drawing.Size(105, 28);
-			this.BytesDDD.TabIndex = 33;
-			this.BytesDDD.Text = "View text data";
-			this.BytesDDD.UseVisualStyleBackColor = true;
-			// 
-			// label67
-			// 
-			this.label67.AutoSize = true;
-			this.label67.Location = new System.Drawing.Point(398, 156);
-			this.label67.Name = "label67";
-			this.label67.Size = new System.Drawing.Size(86, 13);
-			this.label67.TabIndex = 32;
-			this.label67.Text = "Parameter (HEX)";
-			// 
-			// label68
-			// 
-			this.label68.AutoSize = true;
-			this.label68.Location = new System.Drawing.Point(349, 1);
-			this.label68.Name = "label68";
-			this.label68.Size = new System.Drawing.Size(82, 13);
-			this.label68.TabIndex = 24;
-			this.label68.Text = "Text commands";
-			// 
-			// label69
-			// 
-			this.label69.AutoSize = true;
-			this.label69.Location = new System.Drawing.Point(3, 1);
-			this.label69.Name = "label69";
-			this.label69.Size = new System.Drawing.Size(94, 13);
-			this.label69.TabIndex = 4;
-			this.label69.Text = "Message contents";
-			// 
-			// TextCommandList
-			// 
-			this.TextCommandList.FormattingEnabled = true;
-			this.TextCommandList.Location = new System.Drawing.Point(352, 17);
-			this.TextCommandList.Name = "TextCommandList";
-			this.TextCommandList.Size = new System.Drawing.Size(163, 134);
-			this.TextCommandList.TabIndex = 25;
-			this.TextCommandList.SelectedIndexChanged += new System.EventHandler(this.TextCommandList_SelectedIndexChanged);
-			this.TextCommandList.DoubleClick += new System.EventHandler(this.InsertCommandButton_Click);
-			// 
-			// label70
-			// 
-			this.label70.AutoSize = true;
-			this.label70.Location = new System.Drawing.Point(3, 177);
-			this.label70.Name = "label70";
-			this.label70.Size = new System.Drawing.Size(45, 13);
-			this.label70.TabIndex = 5;
-			this.label70.Text = "Preview";
-			// 
-			// MessageTextEntry
-			// 
-			this.MessageTextEntry.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			this.MessageTextEntry.Location = new System.Drawing.Point(6, 17);
-			this.MessageTextEntry.Multiline = true;
-			this.MessageTextEntry.Name = "MessageTextEntry";
-			this.MessageTextEntry.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-			this.MessageTextEntry.Size = new System.Drawing.Size(340, 152);
-			this.MessageTextEntry.TabIndex = 20;
-			this.MessageTextEntry.TextChanged += new System.EventHandler(this.MessageTextEntry_TextChanged);
-			// 
-			// label71
-			// 
-			this.label71.AutoSize = true;
-			this.label71.Location = new System.Drawing.Point(349, 183);
-			this.label71.Name = "label71";
-			this.label71.Size = new System.Drawing.Size(118, 13);
-			this.label71.TabIndex = 30;
-			this.label71.Text = "Hard-to-type characters";
-			// 
-			// button5
-			// 
-			this.button5.Location = new System.Drawing.Point(411, 648);
-			this.button5.Name = "button5";
-			this.button5.Size = new System.Drawing.Size(104, 23);
-			this.button5.TabIndex = 17;
-			this.button5.Text = "Save VWF font";
-			this.button5.UseVisualStyleBackColor = true;
-			// 
-			// button6
-			// 
-			this.button6.Location = new System.Drawing.Point(411, 619);
-			this.button6.Name = "button6";
-			this.button6.Size = new System.Drawing.Size(104, 23);
-			this.button6.TabIndex = 4;
-			this.button6.Text = "Auto width";
-			this.button6.UseVisualStyleBackColor = true;
-			// 
-			// SpecialsList
-			// 
-			this.SpecialsList.FormattingEnabled = true;
-			this.SpecialsList.Location = new System.Drawing.Point(352, 199);
-			this.SpecialsList.Name = "SpecialsList";
-			this.SpecialsList.Size = new System.Drawing.Size(163, 186);
-			this.SpecialsList.TabIndex = 29;
-			this.SpecialsList.DoubleClick += new System.EventHandler(this.InsertSpecialButton_Click);
-			// 
-			// groupBox4
-			// 
-			this.groupBox4.Controls.Add(this.BigCharPreviewBox);
-			this.groupBox4.Controls.Add(this.SelectedTileASCII);
-			this.groupBox4.Controls.Add(this.SelectedTileID);
-			this.groupBox4.Controls.Add(this.FontWidthUpDown);
-			this.groupBox4.Controls.Add(this.label72);
-			this.groupBox4.Controls.Add(this.label73);
-			this.groupBox4.Controls.Add(this.label74);
-			this.groupBox4.Location = new System.Drawing.Point(265, 407);
-			this.groupBox4.Name = "groupBox4";
-			this.groupBox4.Size = new System.Drawing.Size(137, 206);
-			this.groupBox4.TabIndex = 14;
-			this.groupBox4.TabStop = false;
-			this.groupBox4.Text = "Selected tile";
-			// 
-			// BigCharPreviewBox
-			// 
-			this.BigCharPreviewBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.BigCharPreviewBox.Location = new System.Drawing.Point(35, 70);
-			this.BigCharPreviewBox.MaximumSize = new System.Drawing.Size(64, 128);
-			this.BigCharPreviewBox.MinimumSize = new System.Drawing.Size(64, 128);
-			this.BigCharPreviewBox.Name = "BigCharPreviewBox";
-			this.BigCharPreviewBox.Size = new System.Drawing.Size(64, 128);
-			this.BigCharPreviewBox.TabIndex = 6;
-			this.BigCharPreviewBox.TabStop = false;
-			this.BigCharPreviewBox.Paint += new System.Windows.Forms.PaintEventHandler(this.BigCharPreviewBox_Paint);
-			// 
-			// SelectedTileASCII
-			// 
-			this.SelectedTileASCII.AutoSize = true;
-			this.SelectedTileASCII.Location = new System.Drawing.Point(57, 29);
-			this.SelectedTileASCII.Name = "SelectedTileASCII";
-			this.SelectedTileASCII.Size = new System.Drawing.Size(0, 13);
-			this.SelectedTileASCII.TabIndex = 5;
-			// 
-			// SelectedTileID
-			// 
-			this.SelectedTileID.AutoSize = true;
-			this.SelectedTileID.Location = new System.Drawing.Point(57, 16);
-			this.SelectedTileID.Name = "SelectedTileID";
-			this.SelectedTileID.Size = new System.Drawing.Size(0, 13);
-			this.SelectedTileID.TabIndex = 4;
-			// 
-			// FontWidthUpDown
-			// 
-			this.FontWidthUpDown.Location = new System.Drawing.Point(87, 45);
-			this.FontWidthUpDown.Maximum = new decimal(new int[] {
-            8,
-            0,
-            0,
-            0});
-			this.FontWidthUpDown.Name = "FontWidthUpDown";
-			this.FontWidthUpDown.Size = new System.Drawing.Size(44, 20);
-			this.FontWidthUpDown.TabIndex = 3;
-			this.FontWidthUpDown.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.FontWidthUpDown.ValueChanged += new System.EventHandler(this.FontWidthUpDown_ValueChanged);
-			// 
-			// label72
-			// 
-			this.label72.AutoSize = true;
-			this.label72.Location = new System.Drawing.Point(6, 47);
-			this.label72.Name = "label72";
-			this.label72.Size = new System.Drawing.Size(35, 13);
-			this.label72.TabIndex = 2;
-			this.label72.Text = "Width";
-			// 
-			// label73
-			// 
-			this.label73.AutoSize = true;
-			this.label73.Location = new System.Drawing.Point(6, 29);
-			this.label73.Name = "label73";
-			this.label73.Size = new System.Drawing.Size(34, 13);
-			this.label73.TabIndex = 1;
-			this.label73.Text = "ASCII";
-			// 
-			// label74
-			// 
-			this.label74.AutoSize = true;
-			this.label74.Location = new System.Drawing.Point(6, 16);
-			this.label74.Name = "label74";
-			this.label74.Size = new System.Drawing.Size(18, 13);
-			this.label74.TabIndex = 0;
-			this.label74.Text = "ID";
-			// 
-			// ListDictionaryButton
-			// 
-			this.ListDictionaryButton.Location = new System.Drawing.Point(408, 447);
-			this.ListDictionaryButton.Name = "ListDictionaryButton";
-			this.ListDictionaryButton.Size = new System.Drawing.Size(105, 28);
-			this.ListDictionaryButton.TabIndex = 21;
-			this.ListDictionaryButton.Text = "Dictionary entries";
-			this.ListDictionaryButton.UseVisualStyleBackColor = true;
-			this.ListDictionaryButton.Click += new System.EventHandler(this.ListDictionaryButton_Click);
-			// 
-			// ImportFontGraphicsButton
-			// 
-			this.ImportFontGraphicsButton.Location = new System.Drawing.Point(265, 619);
-			this.ImportFontGraphicsButton.Name = "ImportFontGraphicsButton";
-			this.ImportFontGraphicsButton.Size = new System.Drawing.Size(140, 23);
-			this.ImportFontGraphicsButton.TabIndex = 16;
-			this.ImportFontGraphicsButton.Text = "Import GFX+Width (2BPP)";
-			this.ImportFontGraphicsButton.UseVisualStyleBackColor = true;
-			this.ImportFontGraphicsButton.Click += new System.EventHandler(this.ImportFontGraphicsButton_Click);
-			// 
-			// ExportFontGraphicsButton
-			// 
-			this.ExportFontGraphicsButton.Location = new System.Drawing.Point(265, 648);
-			this.ExportFontGraphicsButton.Name = "ExportFontGraphicsButton";
-			this.ExportFontGraphicsButton.Size = new System.Drawing.Size(140, 23);
-			this.ExportFontGraphicsButton.TabIndex = 15;
-			this.ExportFontGraphicsButton.Text = "Export GFX+Width (2BPP)";
-			this.ExportFontGraphicsButton.UseVisualStyleBackColor = true;
-			this.ExportFontGraphicsButton.Click += new System.EventHandler(this.ExportFontGraphicsButton_Click);
-			// 
-			// label75
-			// 
-			this.label75.AutoSize = true;
-			this.label75.Location = new System.Drawing.Point(3, 397);
-			this.label75.Name = "label75";
-			this.label75.Size = new System.Drawing.Size(71, 13);
-			this.label75.TabIndex = 10;
-			this.label75.Text = "Font graphics";
-			// 
-			// FontPreviewBox
-			// 
-			this.FontPreviewBox.Location = new System.Drawing.Point(6, 413);
-			this.FontPreviewBox.MinimumSize = new System.Drawing.Size(256, 244);
-			this.FontPreviewBox.Name = "FontPreviewBox";
-			this.FontPreviewBox.Size = new System.Drawing.Size(256, 258);
-			this.FontPreviewBox.TabIndex = 11;
-			this.FontPreviewBox.TabStop = false;
-			this.FontPreviewBox.Paint += new System.Windows.Forms.PaintEventHandler(this.FontPreviewBox_Paint);
-			this.FontPreviewBox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.FontPreviewBox_MouseDown);
-			// 
-			// MessagePreviewBox
-			// 
-			this.MessagePreviewBox.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-			this.MessagePreviewBox.Location = new System.Drawing.Point(6, 193);
-			this.MessagePreviewBox.MaximumSize = new System.Drawing.Size(340, 192);
-			this.MessagePreviewBox.MinimumSize = new System.Drawing.Size(0, 96);
-			this.MessagePreviewBox.Name = "MessagePreviewBox";
-			this.MessagePreviewBox.Size = new System.Drawing.Size(340, 192);
-			this.MessagePreviewBox.TabIndex = 6;
-			this.MessagePreviewBox.TabStop = false;
-			this.MessagePreviewBox.Paint += new System.Windows.Forms.PaintEventHandler(this.MessagePreviewBox_Paint);
-			// 
-			// ScreenEditor
-			// 
-			this.ScreenEditor.Location = new System.Drawing.Point(4, 4);
-			this.ScreenEditor.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.ScreenEditor.Name = "ScreenEditor";
-			this.ScreenEditor.Size = new System.Drawing.Size(1150, 742);
-			this.ScreenEditor.TabIndex = 5;
-			this.ScreenEditor.Text = "Screen Editor";
-			this.ScreenEditor.UseVisualStyleBackColor = true;
-			// 
-			// spritesPage
-			// 
-			this.spritesPage.Location = new System.Drawing.Point(4, 4);
-			this.spritesPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.spritesPage.Name = "spritesPage";
-			this.spritesPage.Size = new System.Drawing.Size(1150, 742);
-			this.spritesPage.TabIndex = 6;
-			this.spritesPage.Text = "Sprites Editor";
-			this.spritesPage.UseVisualStyleBackColor = true;
-			// 
 			// toolStrip1
 			// 
+			this.toolStrip1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.toolStrip1.BackColor = System.Drawing.SystemColors.Control;
 			this.toolStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
 			this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveButton,
-            this.debugtestButton,
-            this.runtestButton,
-            this.toolStripSeparator1,
-            this.undoButton,
-            this.redoButton,
-            this.toolStripSeparator2,
-            this.allbgsButton,
-            this.bg1modeButton,
-            this.bg2modeButton,
-            this.bg3modeButton,
-            this.underworldSpriteModeButton,
-            this.blockmodeButton,
-            this.torchmodeButton,
-            this.potmodeButton,
-            this.doormodeButton,
-            this.collisionModeButton,
-            this.toolStripSeparator3,
-            this.saveLayoutButton,
-            this.loadlayoutButton,
-            this.searchButton,
-            this.exportuwmapStripButton1,
-            this.debugToolStripButton,
-            this.entranceModeButton,
-            this.exitModeButton,
-            this.itemModeButton,
-            this.owSpriteModeButton,
-            this.transportModeButton,
-            this.overlayButton,
-            this.gravestoneButton,
-            this.searchtilesButton,
-            this.refreshToolStrip,
-            this.clearmapbutton,
-            this.fillModeButton,
-            this.penModeButton,
-            this.spButton,
-            this.dwButton,
-            this.lwButton});
-			this.toolStrip1.Location = new System.Drawing.Point(4, 24);
+			this.openfileButton,
+			this.saveButton,
+			this.debugtestButton,
+			this.runtestButton,
+			this.toolStripSeparator1,
+			this.undoButton,
+			this.redoButton,
+			this.toolStripSeparator2,
+			this.allbgsButton,
+			this.bg1modeButton,
+			this.bg2modeButton,
+			this.bg3modeButton,
+			this.spritemodeButton,
+			this.blockmodeButton,
+			this.torchmodeButton,
+			this.potmodeButton,
+			this.doormodeButton,
+			this.collisionModeButton,
+			this.toolStripSeparator3,
+			this.saveLayoutButton,
+			this.loadlayoutButton,
+			this.searchButton,
+			this.toolStripButton1,
+			this.debugToolStripButton});
+			this.toolStrip1.Location = new System.Drawing.Point(5, 3);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Padding = new System.Windows.Forms.Padding(10, 0, 1, 0);
-			this.toolStrip1.Size = new System.Drawing.Size(888, 25);
-			this.toolStrip1.Stretch = true;
+			this.toolStrip1.Size = new System.Drawing.Size(514, 25);
 			this.toolStrip1.TabIndex = 10;
 			this.toolStrip1.Text = "toolStrip1";
+			// 
+			// openfileButton
+			// 
+			this.openfileButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.openfileButton.Image = ((System.Drawing.Image)(resources.GetObject("openfileButton.Image")));
+			this.openfileButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.openfileButton.Name = "openfileButton";
+			this.openfileButton.Size = new System.Drawing.Size(23, 22);
+			this.openfileButton.Text = "Open ROM…";
 			// 
 			// saveButton
 			// 
@@ -3802,7 +2440,6 @@ namespace ZeldaFullEditor
 			this.saveButton.Name = "saveButton";
 			this.saveButton.Size = new System.Drawing.Size(23, 22);
 			this.saveButton.Text = "Save ROM";
-			this.saveButton.Click += new System.EventHandler(this.PerformSave);
 			// 
 			// debugtestButton
 			// 
@@ -3823,7 +2460,6 @@ namespace ZeldaFullEditor
 			this.runtestButton.Name = "runtestButton";
 			this.runtestButton.Size = new System.Drawing.Size(23, 22);
 			this.runtestButton.Text = "Save and Run in Emulator";
-			this.runtestButton.Click += new System.EventHandler(this.runtestButton_Click);
 			// 
 			// toolStripSeparator1
 			// 
@@ -3839,7 +2475,6 @@ namespace ZeldaFullEditor
 			this.undoButton.Name = "undoButton";
 			this.undoButton.Size = new System.Drawing.Size(23, 22);
 			this.undoButton.Text = "Undo";
-			this.undoButton.Click += new System.EventHandler(this.PerformUndo);
 			// 
 			// redoButton
 			// 
@@ -3850,7 +2485,6 @@ namespace ZeldaFullEditor
 			this.redoButton.Name = "redoButton";
 			this.redoButton.Size = new System.Drawing.Size(23, 22);
 			this.redoButton.Text = "Redo";
-			this.redoButton.Click += new System.EventHandler(this.PerformRedo);
 			// 
 			// toolStripSeparator2
 			// 
@@ -3867,7 +2501,6 @@ namespace ZeldaFullEditor
 			this.allbgsButton.Size = new System.Drawing.Size(23, 22);
 			this.allbgsButton.Tag = ZeldaFullEditor.DungeonEditMode.LayerAll;
 			this.allbgsButton.Text = "All Layers";
-			this.allbgsButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// bg1modeButton
 			// 
@@ -3881,7 +2514,6 @@ namespace ZeldaFullEditor
 			this.bg1modeButton.Size = new System.Drawing.Size(23, 22);
 			this.bg1modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer1;
 			this.bg1modeButton.Text = "Layer 1";
-			this.bg1modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// bg2modeButton
 			// 
@@ -3893,7 +2525,6 @@ namespace ZeldaFullEditor
 			this.bg2modeButton.Size = new System.Drawing.Size(23, 22);
 			this.bg2modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer2;
 			this.bg2modeButton.Text = "Layer 2";
-			this.bg2modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// bg3modeButton
 			// 
@@ -3905,19 +2536,18 @@ namespace ZeldaFullEditor
 			this.bg3modeButton.Size = new System.Drawing.Size(23, 22);
 			this.bg3modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer3;
 			this.bg3modeButton.Text = "Layer 3";
-			this.bg3modeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
-			// underworldSpriteModeButton
+			// spritemodeButton
 			// 
-			this.underworldSpriteModeButton.CheckOnClick = true;
-			this.underworldSpriteModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.underworldSpriteModeButton.Image = ((System.Drawing.Image)(resources.GetObject("underworldSpriteModeButton.Image")));
-			this.underworldSpriteModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.underworldSpriteModeButton.Name = "underworldSpriteModeButton";
-			this.underworldSpriteModeButton.Size = new System.Drawing.Size(23, 22);
-			this.underworldSpriteModeButton.Tag = ZeldaFullEditor.DungeonEditMode.Sprites;
-			this.underworldSpriteModeButton.Text = "Object Mode";
-			this.underworldSpriteModeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
+			this.spritemodeButton.CheckOnClick = true;
+			this.spritemodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.spritemodeButton.Enabled = false;
+			this.spritemodeButton.Image = ((System.Drawing.Image)(resources.GetObject("spritemodeButton.Image")));
+			this.spritemodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.spritemodeButton.Name = "spritemodeButton";
+			this.spritemodeButton.Size = new System.Drawing.Size(23, 22);
+			this.spritemodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Sprites;
+			this.spritemodeButton.Text = "Object Mode";
 			// 
 			// blockmodeButton
 			// 
@@ -3929,7 +2559,6 @@ namespace ZeldaFullEditor
 			this.blockmodeButton.Size = new System.Drawing.Size(23, 22);
 			this.blockmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Blocks;
 			this.blockmodeButton.Text = "Block Mode";
-			this.blockmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// torchmodeButton
 			// 
@@ -3941,7 +2570,6 @@ namespace ZeldaFullEditor
 			this.torchmodeButton.Size = new System.Drawing.Size(23, 22);
 			this.torchmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Torches;
 			this.torchmodeButton.Text = "Torch Mode";
-			this.torchmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// potmodeButton
 			// 
@@ -3953,7 +2581,6 @@ namespace ZeldaFullEditor
 			this.potmodeButton.Size = new System.Drawing.Size(23, 22);
 			this.potmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Secrets;
 			this.potmodeButton.Text = "Secrets Mode";
-			this.potmodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// doormodeButton
 			// 
@@ -3965,7 +2592,6 @@ namespace ZeldaFullEditor
 			this.doormodeButton.Size = new System.Drawing.Size(23, 22);
 			this.doormodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Doors;
 			this.doormodeButton.Text = "Door Mode";
-			this.doormodeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// collisionModeButton
 			// 
@@ -3977,7 +2603,6 @@ namespace ZeldaFullEditor
 			this.collisionModeButton.Size = new System.Drawing.Size(23, 22);
 			this.collisionModeButton.Tag = ZeldaFullEditor.DungeonEditMode.CollisionMap;
 			this.collisionModeButton.Text = "Collision Mode";
-			this.collisionModeButton.Click += new System.EventHandler(this.UpdateUnderworldMode);
 			// 
 			// toolStripSeparator3
 			// 
@@ -4011,17 +2636,16 @@ namespace ZeldaFullEditor
 			this.searchButton.Size = new System.Drawing.Size(23, 22);
 			this.searchButton.Text = "toolStripButton2";
 			// 
-			// exportuwmapStripButton1
+			// toolStripButton1
 			// 
-			this.exportuwmapStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.exportuwmapStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("exportuwmapStripButton1.Image")));
-			this.exportuwmapStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.exportuwmapStripButton1.Name = "exportuwmapStripButton1";
-			this.exportuwmapStripButton1.Size = new System.Drawing.Size(23, 22);
-			this.exportuwmapStripButton1.Text = "Export Selected Rooms as PNG";
-			this.exportuwmapStripButton1.ToolTipText = "Export map as png; Hold control and double click on the rooms you want to export." +
-    "";
-			this.exportuwmapStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click_1);
+			this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+			this.toolStripButton1.Enabled = false;
+			this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+			this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.toolStripButton1.Name = "toolStripButton1";
+			this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+			this.toolStripButton1.Text = "Export Selected Rooms as PNG";
+			this.toolStripButton1.ToolTipText = "Export map as png; Hold control and double click on the rooms you want to export.";
 			// 
 			// debugToolStripButton
 			// 
@@ -4032,185 +2656,72 @@ namespace ZeldaFullEditor
 			this.debugToolStripButton.Size = new System.Drawing.Size(23, 22);
 			this.debugToolStripButton.Text = "Debug";
 			// 
-			// entranceModeButton
+			// overworldPage
 			// 
-			this.entranceModeButton.CheckOnClick = true;
-			this.entranceModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.entranceModeButton.Image = ((System.Drawing.Image)(resources.GetObject("entranceModeButton.Image")));
-			this.entranceModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.entranceModeButton.Name = "entranceModeButton";
-			this.entranceModeButton.Size = new System.Drawing.Size(23, 22);
-			this.entranceModeButton.Text = "Entrance mode";
-			this.entranceModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+			this.overworldPage.Location = new System.Drawing.Point(4, 27);
+			this.overworldPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.overworldPage.Name = "overworldPage";
+			this.overworldPage.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.overworldPage.Size = new System.Drawing.Size(1150, 716);
+			this.overworldPage.TabIndex = 1;
+			this.overworldPage.Text = "Overworld Editor";
+			this.overworldPage.UseVisualStyleBackColor = true;
 			// 
-			// exitModeButton
+			// GfxEditorPage
 			// 
-			this.exitModeButton.CheckOnClick = true;
-			this.exitModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.exitModeButton.Image = ((System.Drawing.Image)(resources.GetObject("exitModeButton.Image")));
-			this.exitModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.exitModeButton.Name = "exitModeButton";
-			this.exitModeButton.Size = new System.Drawing.Size(23, 22);
-			this.exitModeButton.Text = "Exit mode";
-			this.exitModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+			this.GfxEditorPage.Location = new System.Drawing.Point(4, 27);
+			this.GfxEditorPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.GfxEditorPage.Name = "GfxEditorPage";
+			this.GfxEditorPage.Size = new System.Drawing.Size(1150, 716);
+			this.GfxEditorPage.TabIndex = 2;
+			this.GfxEditorPage.Text = "Graphics Manager";
+			this.GfxEditorPage.UseVisualStyleBackColor = true;
 			// 
-			// itemModeButton
+			// textPage
 			// 
-			this.itemModeButton.CheckOnClick = true;
-			this.itemModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.itemModeButton.Image = ((System.Drawing.Image)(resources.GetObject("itemModeButton.Image")));
-			this.itemModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.itemModeButton.Name = "itemModeButton";
-			this.itemModeButton.Size = new System.Drawing.Size(23, 22);
-			this.itemModeButton.Text = "Item mode";
-			this.itemModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+			this.textPage.Location = new System.Drawing.Point(4, 27);
+			this.textPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.textPage.Name = "textPage";
+			this.textPage.Size = new System.Drawing.Size(1150, 716);
+			this.textPage.TabIndex = 4;
+			this.textPage.Text = "Text Editor";
+			this.textPage.UseVisualStyleBackColor = true;
 			// 
-			// owSpriteModeButton
+			// ScreenEditor
 			// 
-			this.owSpriteModeButton.CheckOnClick = true;
-			this.owSpriteModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.owSpriteModeButton.Image = ((System.Drawing.Image)(resources.GetObject("owSpriteModeButton.Image")));
-			this.owSpriteModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.owSpriteModeButton.Name = "owSpriteModeButton";
-			this.owSpriteModeButton.Size = new System.Drawing.Size(23, 22);
-			this.owSpriteModeButton.Text = "Sprite mode";
-			this.owSpriteModeButton.Click += new System.EventHandler(this.ModeButton_Click);
+			this.ScreenEditor.Location = new System.Drawing.Point(4, 27);
+			this.ScreenEditor.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.ScreenEditor.Name = "ScreenEditor";
+			this.ScreenEditor.Size = new System.Drawing.Size(1150, 716);
+			this.ScreenEditor.TabIndex = 5;
+			this.ScreenEditor.Text = "Screen Editor";
+			this.ScreenEditor.UseVisualStyleBackColor = true;
 			// 
-			// transportModeButton
+			// spritesPage
 			// 
-			this.transportModeButton.CheckOnClick = true;
-			this.transportModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.transportModeButton.Image = ((System.Drawing.Image)(resources.GetObject("transportModeButton.Image")));
-			this.transportModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.transportModeButton.Name = "transportModeButton";
-			this.transportModeButton.Size = new System.Drawing.Size(23, 22);
-			this.transportModeButton.Text = "Transport mode";
-			this.transportModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-			// 
-			// overlayButton
-			// 
-			this.overlayButton.CheckOnClick = true;
-			this.overlayButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.overlayButton.Image = ((System.Drawing.Image)(resources.GetObject("overlayButton.Image")));
-			this.overlayButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.overlayButton.Name = "overlayButton";
-			this.overlayButton.Size = new System.Drawing.Size(23, 22);
-			this.overlayButton.Text = "Overlay";
-			this.overlayButton.Click += new System.EventHandler(this.ModeButton_Click);
-			// 
-			// gravestoneButton
-			// 
-			this.gravestoneButton.CheckOnClick = true;
-			this.gravestoneButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.gravestoneButton.Image = ((System.Drawing.Image)(resources.GetObject("gravestoneButton.Image")));
-			this.gravestoneButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.gravestoneButton.Name = "gravestoneButton";
-			this.gravestoneButton.Size = new System.Drawing.Size(23, 22);
-			this.gravestoneButton.Text = "Overlay";
-			this.gravestoneButton.Click += new System.EventHandler(this.ModeButton_Click);
-			// 
-			// searchtilesButton
-			// 
-			this.searchtilesButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.searchtilesButton.Image = ((System.Drawing.Image)(resources.GetObject("searchtilesButton.Image")));
-			this.searchtilesButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.searchtilesButton.Name = "searchtilesButton";
-			this.searchtilesButton.Size = new System.Drawing.Size(23, 22);
-			this.searchtilesButton.Text = "Search for tiles";
-			this.searchtilesButton.Click += new System.EventHandler(this.searchtilesButton_Click);
-			// 
-			// refreshToolStrip
-			// 
-			this.refreshToolStrip.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.refreshToolStrip.Image = ((System.Drawing.Image)(resources.GetObject("refreshToolStrip.Image")));
-			this.refreshToolStrip.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.refreshToolStrip.Name = "refreshToolStrip";
-			this.refreshToolStrip.Size = new System.Drawing.Size(82, 22);
-			this.refreshToolStrip.Text = "Refresh maps";
-			this.refreshToolStrip.Click += new System.EventHandler(this.refreshToolStrip_Click);
-			// 
-			// clearmapbutton
-			// 
-			this.clearmapbutton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.clearmapbutton.Image = ((System.Drawing.Image)(resources.GetObject("clearmapbutton.Image")));
-			this.clearmapbutton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.clearmapbutton.Name = "clearmapbutton";
-			this.clearmapbutton.Size = new System.Drawing.Size(65, 22);
-			this.clearmapbutton.Text = "Clear map";
-			this.clearmapbutton.Visible = false;
-			// 
-			// fillModeButton
-			// 
-			this.fillModeButton.CheckOnClick = true;
-			this.fillModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.fillModeButton.Image = ((System.Drawing.Image)(resources.GetObject("fillModeButton.Image")));
-			this.fillModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.fillModeButton.Name = "fillModeButton";
-			this.fillModeButton.Size = new System.Drawing.Size(23, 22);
-			this.fillModeButton.Text = "Fill mode";
-			this.fillModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-			// 
-			// penModeButton
-			// 
-			this.penModeButton.Checked = true;
-			this.penModeButton.CheckOnClick = true;
-			this.penModeButton.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.penModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.penModeButton.Image = ((System.Drawing.Image)(resources.GetObject("penModeButton.Image")));
-			this.penModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.penModeButton.Name = "penModeButton";
-			this.penModeButton.Size = new System.Drawing.Size(23, 22);
-			this.penModeButton.Text = "Tile mode";
-			this.penModeButton.Click += new System.EventHandler(this.ModeButton_Click);
-			// 
-			// spButton
-			// 
-			this.spButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-			this.spButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.spButton.Image = ((System.Drawing.Image)(resources.GetObject("spButton.Image")));
-			this.spButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.spButton.Name = "spButton";
-			this.spButton.Size = new System.Drawing.Size(28, 22);
-			this.spButton.Text = "SW";
-			this.spButton.Click += new System.EventHandler(this.spButton_Click);
-			// 
-			// dwButton
-			// 
-			this.dwButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-			this.dwButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.dwButton.Image = ((System.Drawing.Image)(resources.GetObject("dwButton.Image")));
-			this.dwButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.dwButton.Name = "dwButton";
-			this.dwButton.Size = new System.Drawing.Size(30, 22);
-			this.dwButton.Text = "DW";
-			this.dwButton.Click += new System.EventHandler(this.dwButton_Click);
-			// 
-			// lwButton
-			// 
-			this.lwButton.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-			this.lwButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.lwButton.Image = ((System.Drawing.Image)(resources.GetObject("lwButton.Image")));
-			this.lwButton.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.lwButton.Name = "lwButton";
-			this.lwButton.Size = new System.Drawing.Size(27, 22);
-			this.lwButton.Text = "LW";
-			this.lwButton.Click += new System.EventHandler(this.lwButton_Click);
+			this.spritesPage.Location = new System.Drawing.Point(4, 27);
+			this.spritesPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.spritesPage.Name = "spritesPage";
+			this.spritesPage.Size = new System.Drawing.Size(1150, 716);
+			this.spritesPage.TabIndex = 6;
+			this.spritesPage.Text = "Sprites Editor";
+			this.spritesPage.UseVisualStyleBackColor = true;
 			// 
 			// statusStrip1
 			// 
 			this.statusStrip1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+			| System.Windows.Forms.AnchorStyles.Left)));
 			this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.statusStrip1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.SelectedObjectNameLabel,
-            this.SelectedObjectXLabel,
-            this.SelectedObjectYLabel,
-            this.SelectedObjectLayerLabel,
-            this.SelectedObjectSizeLabel,
-            this.SelectedObjectDataLabel});
+			this.SelectedObjectNameLabel,
+			this.SelectedObjectXLabel,
+			this.SelectedObjectYLabel,
+			this.SelectedObjectLayerLabel,
+			this.SelectedObjectSizeLabel,
+			this.SelectedObjectDataLabel});
 			this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-			this.statusStrip1.Location = new System.Drawing.Point(306, 823);
+			this.statusStrip1.Location = new System.Drawing.Point(308, 777);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(93, 18);
 			this.statusStrip1.SizingGrip = false;
@@ -4276,40 +2787,39 @@ namespace ZeldaFullEditor
 			// menuStrip1
 			// 
 			this.menuStrip1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+			| System.Windows.Forms.AnchorStyles.Right)));
 			this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
 			this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2);
 			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.editToolStripMenuItem,
-            this.projectToolStripMenuItem,
-            this.testToolStripMenuItem,
-            this.roomToolStripMenuItem,
-            this.dungeonViewToolStripMenuItem,
-            this.overworldToolStripMenuItem,
-            this.areaToolStripMenuItem,
-            this.overworldViewToolStripMenuItem,
-            this.naviguateToolStripMenuItem,
-            this.windowToolStripMenuItem,
-            this.jPDebugToolStripMenuItem,
-            this.ExperimentalToolStripMenuItem1,
-            this.helpToolStripMenuItem,
-            this.discordToolStripMenuItem});
+			this.fileToolStripMenuItem,
+			this.editToolStripMenuItem,
+			this.projectToolStripMenuItem,
+			this.testToolStripMenuItem,
+			this.roomToolStripMenuItem,
+			this.dungeonViewToolStripMenuItem,
+			this.overworldToolStripMenuItem,
+			this.areaToolStripMenuItem,
+			this.overworldViewToolStripMenuItem,
+			this.naviguateToolStripMenuItem,
+			this.windowToolStripMenuItem,
+			this.jPDebugToolStripMenuItem,
+			this.ExperimentalToolStripMenuItem1,
+			this.helpToolStripMenuItem,
+			this.discordToolStripMenuItem});
 			this.menuStrip1.Location = new System.Drawing.Point(0, 0);
 			this.menuStrip1.Name = "menuStrip1";
 			this.menuStrip1.Size = new System.Drawing.Size(523, 24);
 			this.menuStrip1.TabIndex = 0;
 			this.menuStrip1.Text = "menuStrip1";
-			this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
 			// 
 			// fileToolStripMenuItem
 			// 
 			this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem,
-            this.recentROMToolStripMenuItem,
-            this.saveToolStripMenuItem,
-            this.saveasToolStripMenuItem});
+			this.openToolStripMenuItem,
+			this.recentROMToolStripMenuItem,
+			this.saveToolStripMenuItem,
+			this.saveasToolStripMenuItem});
 			this.fileToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
@@ -4336,7 +2846,7 @@ namespace ZeldaFullEditor
 			this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
 			this.saveToolStripMenuItem.Size = new System.Drawing.Size(185, 22);
 			this.saveToolStripMenuItem.Text = "Save ROM";
-			this.saveToolStripMenuItem.Click += new System.EventHandler(this.PerformSave);
+			this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
 			// saveasToolStripMenuItem
 			// 
@@ -4349,26 +2859,26 @@ namespace ZeldaFullEditor
 			// editToolStripMenuItem
 			// 
 			this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.undoToolStripMenuItem,
-            this.redoToolStripMenuItem,
-            this.toolStripSeparator4,
-            this.cutToolStripMenuItem,
-            this.copyToolStripMenuItem,
-            this.pasteToolStripMenuItem,
-            this.deleteToolStripMenuItem,
-            this.toolStripSeparator5,
-            this.selectAllToolStripMenuItem,
-            this.toolStripSeparator6,
-            this.moveFrontToolStripMenuItem,
-            this.bringToBackToolStripMenuItem,
-            this.toolStripSeparator7,
-            this.decreaseObjectSizeToolStripMenuItem,
-            this.increaseObjectSizeToolStripMenuItem,
-            this.toolStripSeparator9,
-            this.selectAllRoomsForExportToolStripMenuItem,
-            this.deselectedAllRoomsForExportToolStripMenuItem,
-            this.toolStripSeparator10,
-            this.lockoverworldToolStripItem});
+			this.undoToolStripMenuItem,
+			this.redoToolStripMenuItem,
+			this.toolStripSeparator4,
+			this.cutToolStripMenuItem,
+			this.copyToolStripMenuItem,
+			this.pasteToolStripMenuItem,
+			this.deleteToolStripMenuItem,
+			this.toolStripSeparator5,
+			this.selectAllToolStripMenuItem,
+			this.toolStripSeparator6,
+			this.moveFrontToolStripMenuItem,
+			this.bringToBackToolStripMenuItem,
+			this.toolStripSeparator7,
+			this.decreaseObjectSizeToolStripMenuItem,
+			this.increaseObjectSizeToolStripMenuItem,
+			this.toolStripSeparator9,
+			this.selectAllRoomsForExportToolStripMenuItem,
+			this.deselectedAllRoomsForExportToolStripMenuItem,
+			this.toolStripSeparator10,
+			this.lockoverworldToolStripItem});
 			this.editToolStripMenuItem.Enabled = false;
 			this.editToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.editToolStripMenuItem.Name = "editToolStripMenuItem";
@@ -4381,7 +2891,7 @@ namespace ZeldaFullEditor
 			this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
 			this.undoToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
 			this.undoToolStripMenuItem.Text = "Undo";
-			this.undoToolStripMenuItem.Click += new System.EventHandler(this.PerformUndo);
+			this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
 			// 
 			// redoToolStripMenuItem
 			// 
@@ -4389,7 +2899,7 @@ namespace ZeldaFullEditor
 			this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
 			this.redoToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
 			this.redoToolStripMenuItem.Text = "Redo";
-			this.redoToolStripMenuItem.Click += new System.EventHandler(this.PerformRedo);
+			this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator4
 			// 
@@ -4403,7 +2913,7 @@ namespace ZeldaFullEditor
 			this.cutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
 			this.cutToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
 			this.cutToolStripMenuItem.Text = "Cut";
-			this.cutToolStripMenuItem.Click += new System.EventHandler(this.PerformCut);
+			this.cutToolStripMenuItem.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
 			// 
 			// copyToolStripMenuItem
 			// 
@@ -4412,7 +2922,7 @@ namespace ZeldaFullEditor
 			this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
 			this.copyToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
 			this.copyToolStripMenuItem.Text = "Copy";
-			this.copyToolStripMenuItem.Click += new System.EventHandler(this.PerformCopy);
+			this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
 			// 
 			// pasteToolStripMenuItem
 			// 
@@ -4421,7 +2931,7 @@ namespace ZeldaFullEditor
 			this.pasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
 			this.pasteToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
 			this.pasteToolStripMenuItem.Text = "Paste";
-			this.pasteToolStripMenuItem.Click += new System.EventHandler(this.PerformPaste);
+			this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
 			// 
 			// deleteToolStripMenuItem
 			// 
@@ -4430,7 +2940,7 @@ namespace ZeldaFullEditor
 			this.deleteToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
 			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
 			this.deleteToolStripMenuItem.Text = "Delete";
-			this.deleteToolStripMenuItem.Click += new System.EventHandler(this.PerformDelete);
+			this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator5
 			// 
@@ -4444,7 +2954,7 @@ namespace ZeldaFullEditor
 			this.selectAllToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
 			this.selectAllToolStripMenuItem.Size = new System.Drawing.Size(235, 22);
 			this.selectAllToolStripMenuItem.Text = "Select All";
-			this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.PerformSelectAll);
+			this.selectAllToolStripMenuItem.Click += new System.EventHandler(this.selectAllToolStripMenuItem_Click);
 			// 
 			// toolStripSeparator6
 			// 
@@ -4524,9 +3034,9 @@ namespace ZeldaFullEditor
 			// projectToolStripMenuItem
 			// 
 			this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveSettingsToolStripMenuItem,
-            this.loadNamesFileToolStripMenuItem,
-            this.memoryManagementToolStripMenuItem});
+			this.saveSettingsToolStripMenuItem,
+			this.loadNamesFileToolStripMenuItem,
+			this.memoryManagementToolStripMenuItem});
 			this.projectToolStripMenuItem.Enabled = false;
 			this.projectToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
@@ -4557,8 +3067,8 @@ namespace ZeldaFullEditor
 			// testToolStripMenuItem
 			// 
 			this.testToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.runToolStripMenuItem,
-            this.debugRunToolStripMenuItem});
+			this.runToolStripMenuItem,
+			this.debugRunToolStripMenuItem});
 			this.testToolStripMenuItem.Enabled = false;
 			this.testToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.testToolStripMenuItem.Name = "testToolStripMenuItem";
@@ -4583,20 +3093,20 @@ namespace ZeldaFullEditor
 			// roomToolStripMenuItem
 			// 
 			this.roomToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gotoRoomToolStripMenuItem,
-            this.toolStripMenuItem2,
-            this.toolStripMenuItem1,
-            this.removeMaskObjectsToolStripMenuItem,
-            this.printRoomObjectsToolStripMenuItem1,
-            this.clearSelectedRoomToolStripMenuItem,
-            this.clearAllRoomsToolStripMenuItem,
-            this.exportAsASMToolStripMenuItem,
-            this.exportAllRoomsToolStripMenuItem,
-            this.exportSpritesAsBinaryToolStripMenuItem,
-            this.importRoomToolStripMenuItem,
-            this.showRoomsInHexToolStripMenuItem,
-            this.selectedObjectInHexToolStripMenuItem,
-            this.autoDoorsToolStripMenuItem});
+			this.gotoRoomToolStripMenuItem,
+			this.toolStripMenuItem2,
+			this.toolStripMenuItem1,
+			this.removeMaskObjectsToolStripMenuItem,
+			this.printRoomObjectsToolStripMenuItem1,
+			this.clearSelectedRoomToolStripMenuItem,
+			this.clearAllRoomsToolStripMenuItem,
+			this.exportAsASMToolStripMenuItem,
+			this.exportAllRoomsToolStripMenuItem,
+			this.exportSpritesAsBinaryToolStripMenuItem,
+			this.importRoomToolStripMenuItem,
+			this.showRoomsInHexToolStripMenuItem,
+			this.selectedObjectInHexToolStripMenuItem,
+			this.autoDoorsToolStripMenuItem});
 			this.roomToolStripMenuItem.Enabled = false;
 			this.roomToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.roomToolStripMenuItem.Name = "roomToolStripMenuItem";
@@ -4705,27 +3215,27 @@ namespace ZeldaFullEditor
 			// dungeonViewToolStripMenuItem
 			// 
 			this.dungeonViewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.textSpriteToolStripMenuItem,
-            this.textChestItemToolStripMenuItem,
-            this.textPotItemToolStripMenuItem,
-            this.toolStripSeparator11,
-            this.showGridToolStripMenuItem,
-            this.showBG2ToolStripMenuItem,
-            this.showBG1ToolStripMenuItem,
-            this.unselectedBGTransparentToolStripMenuItem,
-            this.darkThemeToolStripMenuItem,
-            this.toolStripSeparator12,
-            this.hideSpritesToolStripMenuItem,
-            this.hideItemsToolStripMenuItem,
-            this.hideChestItemsToolStripMenuItem,
-            this.showDoorIDsToolStripMenuItem,
-            this.showChestsIDsToolStripMenuItem,
-            this.disableEntranceGFXToolStripMenuItem,
-            this.xScreenToolStripMenuItem,
-            this.showBG2MaskOutlineToolStripMenuItem,
-            this.entrancePositionToolStripMenuItem,
-            this.invisibleObjectsTextToolStripMenuItem,
-            this.showMapIndexInHexToolStripMenuItem});
+			this.textSpriteToolStripMenuItem,
+			this.textChestItemToolStripMenuItem,
+			this.textPotItemToolStripMenuItem,
+			this.toolStripSeparator11,
+			this.showGridToolStripMenuItem,
+			this.showBG2ToolStripMenuItem,
+			this.showBG1ToolStripMenuItem,
+			this.unselectedBGTransparentToolStripMenuItem,
+			this.darkThemeToolStripMenuItem,
+			this.toolStripSeparator12,
+			this.hideSpritesToolStripMenuItem,
+			this.hideItemsToolStripMenuItem,
+			this.hideChestItemsToolStripMenuItem,
+			this.showDoorIDsToolStripMenuItem,
+			this.showChestsIDsToolStripMenuItem,
+			this.disableEntranceGFXToolStripMenuItem,
+			this.xScreenToolStripMenuItem,
+			this.showBG2MaskOutlineToolStripMenuItem,
+			this.entrancePositionToolStripMenuItem,
+			this.invisibleObjectsTextToolStripMenuItem,
+			this.showMapIndexInHexToolStripMenuItem});
 			this.dungeonViewToolStripMenuItem.Enabled = false;
 			this.dungeonViewToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.dungeonViewToolStripMenuItem.Name = "dungeonViewToolStripMenuItem";
@@ -4765,11 +3275,11 @@ namespace ZeldaFullEditor
 			// 
 			this.showGridToolStripMenuItem.CheckOnClick = true;
 			this.showGridToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.x8ToolStripMenuItem,
-            this.x16ToolStripMenuItem,
-            this.x32ToolStripMenuItem,
-            this.x64ToolStripMenuItem,
-            this.x256ToolStripMenuItem});
+			this.x8ToolStripMenuItem,
+			this.x16ToolStripMenuItem,
+			this.x32ToolStripMenuItem,
+			this.x64ToolStripMenuItem,
+			this.x256ToolStripMenuItem});
 			this.showGridToolStripMenuItem.Name = "showGridToolStripMenuItem";
 			this.showGridToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
 			this.showGridToolStripMenuItem.Text = "Show Grid";
@@ -4968,17 +3478,17 @@ namespace ZeldaFullEditor
 			// overworldToolStripMenuItem
 			// 
 			this.overworldToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clearSpritesToolStripMenuItem,
-            this.clearItemsToolStripMenuItem,
-            this.clearEntrancesToolStripMenuItem,
-            this.clearAllHolesToolStripMenuItem,
-            this.clearExitsToolStripMenuItem,
-            this.clearAllOverlaysToolStripMenuItem,
-            this.toolStripMenuItem6,
-            this.toolStripMenuItem5,
-            this.toolStripMenuItem9,
-            this.toolStripMenuItem10,
-            this.toolStripMenuItem7});
+			this.clearSpritesToolStripMenuItem,
+			this.clearItemsToolStripMenuItem,
+			this.clearEntrancesToolStripMenuItem,
+			this.clearAllHolesToolStripMenuItem,
+			this.clearExitsToolStripMenuItem,
+			this.clearAllOverlaysToolStripMenuItem,
+			this.toolStripMenuItem6,
+			this.toolStripMenuItem5,
+			this.toolStripMenuItem9,
+			this.toolStripMenuItem10,
+			this.toolStripMenuItem7});
 			this.overworldToolStripMenuItem.Enabled = false;
 			this.overworldToolStripMenuItem.Name = "overworldToolStripMenuItem";
 			this.overworldToolStripMenuItem.Size = new System.Drawing.Size(74, 20);
@@ -4988,9 +3498,9 @@ namespace ZeldaFullEditor
 			// clearSpritesToolStripMenuItem
 			// 
 			this.clearSpritesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveZeldaToolStripMenuItem,
-            this.zeldaSavedToolStripMenuItem,
-            this.agahDeadToolStripMenuItem});
+			this.saveZeldaToolStripMenuItem,
+			this.zeldaSavedToolStripMenuItem,
+			this.agahDeadToolStripMenuItem});
 			this.clearSpritesToolStripMenuItem.Name = "clearSpritesToolStripMenuItem";
 			this.clearSpritesToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
 			this.clearSpritesToolStripMenuItem.Text = "Clear All Sprites";
@@ -5089,12 +3599,12 @@ namespace ZeldaFullEditor
 			// areaToolStripMenuItem
 			// 
 			this.areaToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.clearSpritesToolStripMenuItem1,
-            this.clearItemsToolStripMenuItem1,
-            this.clearEntrancesToolStripMenuItem1,
-            this.clearHolesToolStripMenuItem,
-            this.clearExitsToolStripMenuItem1,
-            this.clearOverlaysToolStripMenuItem});
+			this.clearSpritesToolStripMenuItem1,
+			this.clearItemsToolStripMenuItem1,
+			this.clearEntrancesToolStripMenuItem1,
+			this.clearHolesToolStripMenuItem,
+			this.clearExitsToolStripMenuItem1,
+			this.clearOverlaysToolStripMenuItem});
 			this.areaToolStripMenuItem.Enabled = false;
 			this.areaToolStripMenuItem.Name = "areaToolStripMenuItem";
 			this.areaToolStripMenuItem.Size = new System.Drawing.Size(43, 20);
@@ -5104,9 +3614,9 @@ namespace ZeldaFullEditor
 			// clearSpritesToolStripMenuItem1
 			// 
 			this.clearSpritesToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveZeldaToolStripMenuItem1,
-            this.zeldaSavedToolStripMenuItem1,
-            this.agahDeadToolStripMenuItem1});
+			this.saveZeldaToolStripMenuItem1,
+			this.zeldaSavedToolStripMenuItem1,
+			this.agahDeadToolStripMenuItem1});
 			this.clearSpritesToolStripMenuItem1.Name = "clearSpritesToolStripMenuItem1";
 			this.clearSpritesToolStripMenuItem1.Size = new System.Drawing.Size(182, 22);
 			this.clearSpritesToolStripMenuItem1.Text = "Clear Area Sprites";
@@ -5170,14 +3680,14 @@ namespace ZeldaFullEditor
 			// overworldViewToolStripMenuItem
 			// 
 			this.overworldViewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.showSpritesToolStripMenuItem,
-            this.showEntrancesToolStripMenuItem,
-            this.showExitsToolStripMenuItem,
-            this.showTransportsToolStripMenuItem,
-            this.showItemsToolStripMenuItem,
-            this.showEntranceExitPreviewToolStripMenuItem,
-            this.overworldOverlayVisibleToolStripMenuItem,
-            this.showGridToolStripMenuItem1});
+			this.showSpritesToolStripMenuItem,
+			this.showEntrancesToolStripMenuItem,
+			this.showExitsToolStripMenuItem,
+			this.showTransportsToolStripMenuItem,
+			this.showItemsToolStripMenuItem,
+			this.showEntranceExitPreviewToolStripMenuItem,
+			this.overworldOverlayVisibleToolStripMenuItem,
+			this.showGridToolStripMenuItem1});
 			this.overworldViewToolStripMenuItem.Enabled = false;
 			this.overworldViewToolStripMenuItem.Name = "overworldViewToolStripMenuItem";
 			this.overworldViewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -5254,10 +3764,10 @@ namespace ZeldaFullEditor
 			// showGridToolStripMenuItem1
 			// 
 			this.showGridToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.x8ToolStripMenuItem1,
-            this.x16ToolStripMenuItem1,
-            this.x32ToolStripMenuItem1,
-            this.noneToolStripMenuItem});
+			this.x8ToolStripMenuItem1,
+			this.x16ToolStripMenuItem1,
+			this.x32ToolStripMenuItem1,
+			this.noneToolStripMenuItem});
 			this.showGridToolStripMenuItem1.Name = "showGridToolStripMenuItem1";
 			this.showGridToolStripMenuItem1.Size = new System.Drawing.Size(244, 22);
 			this.showGridToolStripMenuItem1.Text = "Show Grid";
@@ -5295,15 +3805,15 @@ namespace ZeldaFullEditor
 			// naviguateToolStripMenuItem
 			// 
 			this.naviguateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.moveToRightToolStripMenuItem,
-            this.moveToLeftToolStripMenuItem,
-            this.moveToUpToolStripMenuItem,
-            this.moveToDownToolStripMenuItem,
-            this.toolStripSeparator8,
-            this.openRightRoomToolStripMenuItem,
-            this.openLeftRoomToolStripMenuItem,
-            this.openUpRoomToolStripMenuItem,
-            this.openDownRoomToolStripMenuItem});
+			this.moveToRightToolStripMenuItem,
+			this.moveToLeftToolStripMenuItem,
+			this.moveToUpToolStripMenuItem,
+			this.moveToDownToolStripMenuItem,
+			this.toolStripSeparator8,
+			this.openRightRoomToolStripMenuItem,
+			this.openLeftRoomToolStripMenuItem,
+			this.openUpRoomToolStripMenuItem,
+			this.openDownRoomToolStripMenuItem});
 			this.naviguateToolStripMenuItem.Enabled = false;
 			this.naviguateToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.naviguateToolStripMenuItem.Name = "naviguateToolStripMenuItem";
@@ -5382,10 +3892,10 @@ namespace ZeldaFullEditor
 			// windowToolStripMenuItem
 			// 
 			this.windowToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.vramViewerToolStripMenuItem,
-            this.cGramViewerToolStripMenuItem,
-            this.gfxGroupsetsToolStripMenuItem,
-            this.palettesEditorToolStripMenuItem});
+			this.vramViewerToolStripMenuItem,
+			this.cGramViewerToolStripMenuItem,
+			this.gfxGroupsetsToolStripMenuItem,
+			this.palettesEditorToolStripMenuItem});
 			this.windowToolStripMenuItem.Enabled = false;
 			this.windowToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.windowToolStripMenuItem.Name = "windowToolStripMenuItem";
@@ -5423,9 +3933,9 @@ namespace ZeldaFullEditor
 			// jPDebugToolStripMenuItem
 			// 
 			this.jPDebugToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.mapDataFromJPdoNotUseToolStripMenuItem1,
-            this.captureMapJPdoNotUseToolStripMenuItem1,
-            this.exportMapJPdoNotUseToolStripMenuItem1});
+			this.mapDataFromJPdoNotUseToolStripMenuItem1,
+			this.captureMapJPdoNotUseToolStripMenuItem1,
+			this.exportMapJPdoNotUseToolStripMenuItem1});
 			this.jPDebugToolStripMenuItem.Enabled = false;
 			this.jPDebugToolStripMenuItem.Name = "jPDebugToolStripMenuItem";
 			this.jPDebugToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
@@ -5456,10 +3966,10 @@ namespace ZeldaFullEditor
 			// ExperimentalToolStripMenuItem1
 			// 
 			this.ExperimentalToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.flipMapHorizontallyToolStripMenuItem,
-            this.saveMapsOnlyToolStripMenuItem,
-            this.saveVRAMAsPngToolStripMenuItem,
-            this.moveRoomsToOtherROMToolStripMenuItem});
+			this.flipMapHorizontallyToolStripMenuItem,
+			this.saveMapsOnlyToolStripMenuItem,
+			this.saveVRAMAsPngToolStripMenuItem,
+			this.moveRoomsToOtherROMToolStripMenuItem});
 			this.ExperimentalToolStripMenuItem1.Enabled = false;
 			this.ExperimentalToolStripMenuItem1.Name = "ExperimentalToolStripMenuItem1";
 			this.ExperimentalToolStripMenuItem1.Size = new System.Drawing.Size(135, 20);
@@ -5497,9 +4007,9 @@ namespace ZeldaFullEditor
 			// helpToolStripMenuItem
 			// 
 			this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.howToUseToolStripMenuItem,
-            this.patchNotesToolStripMenuItem,
-            this.aboutToolStripMenuItem});
+			this.howToUseToolStripMenuItem,
+			this.patchNotesToolStripMenuItem,
+			this.aboutToolStripMenuItem});
 			this.helpToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
 			this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
@@ -5536,23 +4046,23 @@ namespace ZeldaFullEditor
 			// UWContextMenu
 			// 
 			this.UWContextMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.UWContextInsert,
-            this.UWContextDelete,
-            this.toolStripSeparator13,
-            this.UWContextCopy,
-            this.UWContextCut,
-            this.UWContextPaste,
-            this.toolStripSeparator14,
-            this.UWContextAddToSelection,
-            this.UWContextSelectAll,
-            this.UWContextSelectNone,
-            this.toolStripSeparator15,
-            this.UWContextSendToFront,
-            this.UWContextSendToBack,
-            this.toolStripSeparator16,
-            this.UWContextSendToLayer1,
-            this.UWContextSendToLayer2,
-            this.UWContextSendToLayer3});
+			this.UWContextInsert,
+			this.UWContextDelete,
+			this.toolStripSeparator13,
+			this.UWContextCopy,
+			this.UWContextCut,
+			this.UWContextPaste,
+			this.toolStripSeparator14,
+			this.UWContextAddToSelection,
+			this.UWContextSelectAll,
+			this.UWContextSelectNone,
+			this.toolStripSeparator15,
+			this.UWContextSendToFront,
+			this.UWContextSendToBack,
+			this.toolStripSeparator16,
+			this.UWContextSendToLayer1,
+			this.UWContextSendToLayer2,
+			this.UWContextSendToLayer3});
 			this.UWContextMenu.Name = "UWContextMenu";
 			this.UWContextMenu.Size = new System.Drawing.Size(162, 314);
 			// 
@@ -5681,9 +4191,8 @@ namespace ZeldaFullEditor
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(1157, 846);
+			this.ClientSize = new System.Drawing.Size(1157, 800);
 			this.Controls.Add(this.editorsTabControl);
-			this.Controls.Add(this.toolStrip1);
 			this.Controls.Add(this.statusStrip1);
 			this.Controls.Add(this.menuStrip1);
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
@@ -5699,6 +4208,7 @@ namespace ZeldaFullEditor
 			this.nothingselectedcontextMenu.ResumeLayout(false);
 			this.editorsTabControl.ResumeLayout(false);
 			this.dungeonPage.ResumeLayout(false);
+			this.dungeonPage.PerformLayout();
 			this.tabControl1.ResumeLayout(false);
 			this.entrancetabPage.ResumeLayout(false);
 			this.entrancetabPage.PerformLayout();
@@ -5735,52 +4245,6 @@ namespace ZeldaFullEditor
 			((System.ComponentModel.ISupportInitialize)(this.spritesubtypeUpDown)).EndInit();
 			this.potitemobjectPanel.ResumeLayout(false);
 			this.potitemobjectPanel.PerformLayout();
-			this.overworldPage.ResumeLayout(false);
-			this.OverworldSplitContainer.Panel1.ResumeLayout(false);
-			this.OverworldSplitContainer.Panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.OverworldSplitContainer)).EndInit();
-			this.OverworldSplitContainer.ResumeLayout(false);
-			this.OverworldAuxSideTabs.ResumeLayout(false);
-			this.tabPage1.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.tilePictureBox)).EndInit();
-			this.tabPage2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.scratchPicturebox)).EndInit();
-			this.Tiles8.ResumeLayout(false);
-			this.panel2.ResumeLayout(false);
-			((System.ComponentModel.ISupportInitialize)(this.Tile8PicBox)).EndInit();
-			this.panel4.ResumeLayout(false);
-			this.panel4.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.currentTile8Box)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.palette8Box)).EndInit();
-			this.OWTabExitProps.ResumeLayout(false);
-			this.OWExitPanel.ResumeLayout(false);
-			this.OWExitPanel.PerformLayout();
-			this.OWTabEntranceProps.ResumeLayout(false);
-			this.OWEntrancePanel.ResumeLayout(false);
-			this.OWEntrancePanel.PerformLayout();
-			this.OWTabTransportProps.ResumeLayout(false);
-			this.OWTransportPanel.ResumeLayout(false);
-			this.OWTransportPanel.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-			this.owPropertyPanel.ResumeLayout(false);
-			this.objectGroupbox.ResumeLayout(false);
-			this.mapGroupbox.ResumeLayout(false);
-			this.mapGroupbox.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.previewTextPicturebox)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.areaBGColorPictureBox)).EndInit();
-			this.groupBox3.ResumeLayout(false);
-			this.groupBox3.PerformLayout();
-			this.textPage.ResumeLayout(false);
-			this.panel5.ResumeLayout(false);
-			this.panel5.PerformLayout();
-			this.panel6.ResumeLayout(false);
-			this.panel6.PerformLayout();
-			this.groupBox4.ResumeLayout(false);
-			this.groupBox4.PerformLayout();
-			((System.ComponentModel.ISupportInitialize)(this.BigCharPreviewBox)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.FontWidthUpDown)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.FontPreviewBox)).EndInit();
-			((System.ComponentModel.ISupportInitialize)(this.MessagePreviewBox)).EndInit();
 			this.toolStrip1.ResumeLayout(false);
 			this.toolStrip1.PerformLayout();
 			this.statusStrip1.ResumeLayout(false);
@@ -5791,169 +4255,169 @@ namespace ZeldaFullEditor
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
-        }
+		}
 
-        #endregion
+		#endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
-        private System.Windows.Forms.Timer updateTimer;
-        private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem dungeonViewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem textSpriteToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem textChestItemToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem textPotItemToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showGridToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showBG2ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showBG1ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem howToUseToolStripMenuItem;
-        private System.Windows.Forms.ImageList spriteImageList;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        private System.Windows.Forms.ToolStripMenuItem cutToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
-        private System.Windows.Forms.ToolStripMenuItem moveFrontToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem bringToBackToolStripMenuItem;
-        private System.Windows.Forms.ColorDialog colorDialog1;
-        private System.Windows.Forms.ToolStripMenuItem unselectedBGTransparentToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem3;
-        public System.Windows.Forms.ContextMenuStrip nothingselectedcontextMenu;
-        public System.Windows.Forms.ToolTip toolTip1;
-        private System.Windows.Forms.ToolStripMenuItem darkThemeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveasToolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem hideSpritesToolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem hideItemsToolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem hideChestItemsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.ToolStripMenuItem selectAllRoomsForExportToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deselectedAllRoomsForExportToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem x8ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem x16ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem x32ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem x64ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem x256ToolStripMenuItem;
-        public ObjectViewer objectViewer1;
-        public SpritesView spritesView1;
-        private System.Windows.Forms.ToolStripMenuItem patchNotesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showDoorIDsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showChestsIDsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem disableEntranceGFXToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem xScreenToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem roomToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem gotoRoomToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem removeMaskObjectsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem printRoomObjectsToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem clearSelectedRoomToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clearAllRoomsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportAsASMToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem windowToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem vramViewerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem cGramViewerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showBG2MaskOutlineToolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem entrancePositionToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadNamesFileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem recentROMToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem gfxGroupsetsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem palettesEditorToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem naviguateToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moveToRightToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moveToLeftToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moveToUpToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moveToDownToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
-        private System.Windows.Forms.ToolStripMenuItem openRightRoomToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openLeftRoomToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openUpRoomToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openDownRoomToolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
-        private System.Windows.Forms.TabPage dungeonPage;
-        private System.Windows.Forms.TabPage overworldPage;
-        private System.Windows.Forms.TabPage GfxEditorPage;
-        private System.Windows.Forms.TabPage textPage;
-        private System.Windows.Forms.ToolStripMenuItem saveSettingsToolStripMenuItem;
-        public System.Windows.Forms.TabControl editorsTabControl;
-        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem debugRunToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exportAllRoomsToolStripMenuItem;
-        private System.Windows.Forms.TabPage ScreenEditor;
-        private System.Windows.Forms.ToolStripMenuItem exportSpritesAsBinaryToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ExperimentalToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem flipMapHorizontallyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem jPDebugToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem mapDataFromJPdoNotUseToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem captureMapJPdoNotUseToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem exportMapJPdoNotUseToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem saveMapsOnlyToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem importRoomToolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem invisibleObjectsTextToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showRoomsInHexToolStripMenuItem;
-        public System.Windows.Forms.ToolStripMenuItem showMapIndexInHexToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveVRAMAsPngToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem moveRoomsToOtherROMToolStripMenuItem;
-        private System.Windows.Forms.TabPage spritesPage;
-        private System.Windows.Forms.ToolStripMenuItem selectedObjectInHexToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem overworldViewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showSpritesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showEntrancesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showExitsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showTransportsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showItemsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showEntranceExitPreviewToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
-        private System.Windows.Forms.ToolStripMenuItem increaseObjectSizeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem decreaseObjectSizeToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem showGridToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem x8ToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem x16ToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem x32ToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
-        private System.Windows.Forms.ToolStripMenuItem lockoverworldToolStripItem;
-        private System.Windows.Forms.ToolStripMenuItem memoryManagementToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem clearAllToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem overworldToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clearSpritesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem zeldaSavedToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem agahDeadToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveZeldaToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clearItemsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clearEntrancesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clearExitsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clearAllHolesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clearAllOverlaysToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem areaToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clearSpritesToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem saveZeldaToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem zeldaSavedToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem agahDeadToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem clearItemsToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem clearEntrancesToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem clearHolesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem clearExitsToolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem clearOverlaysToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
-        private System.Windows.Forms.ToolStripMenuItem exportAllTilesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem importAllTilesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem9;
-        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem10;
-        private System.Windows.Forms.ToolStripMenuItem autoDoorsToolStripMenuItem;
+		private System.Windows.Forms.MenuStrip menuStrip1;
+		private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
+		private System.Windows.Forms.Timer updateTimer;
+		private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem dungeonViewToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem textSpriteToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem textChestItemToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem textPotItemToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showGridToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showBG2ToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showBG1ToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem howToUseToolStripMenuItem;
+		private System.Windows.Forms.ImageList spriteImageList;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+		private System.Windows.Forms.ToolStripMenuItem cutToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+		private System.Windows.Forms.ToolStripMenuItem selectAllToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+		private System.Windows.Forms.ToolStripMenuItem moveFrontToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem bringToBackToolStripMenuItem;
+		private System.Windows.Forms.ColorDialog colorDialog1;
+		private System.Windows.Forms.ToolStripMenuItem unselectedBGTransparentToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem3;
+		public System.Windows.Forms.ContextMenuStrip nothingselectedcontextMenu;
+		public System.Windows.Forms.ToolTip toolTip1;
+		private System.Windows.Forms.ToolStripMenuItem darkThemeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem saveasToolStripMenuItem;
+		public System.Windows.Forms.ToolStripMenuItem hideSpritesToolStripMenuItem;
+		public System.Windows.Forms.ToolStripMenuItem hideItemsToolStripMenuItem;
+		public System.Windows.Forms.ToolStripMenuItem hideChestItemsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+		private System.Windows.Forms.ToolStripMenuItem selectAllRoomsForExportToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem deselectedAllRoomsForExportToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem x8ToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem x16ToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem x32ToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem x64ToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem x256ToolStripMenuItem;
+		public ObjectViewer objectViewer1;
+		public SpritesView spritesView1;
+		private System.Windows.Forms.ToolStripMenuItem patchNotesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showDoorIDsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showChestsIDsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem disableEntranceGFXToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem xScreenToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem roomToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem gotoRoomToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem removeMaskObjectsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem printRoomObjectsToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem clearSelectedRoomToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem clearAllRoomsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem exportAsASMToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem windowToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem vramViewerToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem cGramViewerToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showBG2MaskOutlineToolStripMenuItem;
+		public System.Windows.Forms.ToolStripMenuItem entrancePositionToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem loadNamesFileToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem recentROMToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem gfxGroupsetsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem insertToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem palettesEditorToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem naviguateToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem moveToRightToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem moveToLeftToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem moveToUpToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem moveToDownToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+		private System.Windows.Forms.ToolStripMenuItem openRightRoomToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem openLeftRoomToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem openUpRoomToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem openDownRoomToolStripMenuItem;
+		public System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
+		public System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
+		private System.Windows.Forms.TabPage dungeonPage;
+		private System.Windows.Forms.TabPage overworldPage;
+		private System.Windows.Forms.TabPage GfxEditorPage;
+		private System.Windows.Forms.TabPage textPage;
+		private System.Windows.Forms.ToolStripMenuItem saveSettingsToolStripMenuItem;
+		public System.Windows.Forms.TabControl editorsTabControl;
+		private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem runToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem debugRunToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem exportAllRoomsToolStripMenuItem;
+		private System.Windows.Forms.TabPage ScreenEditor;
+		private System.Windows.Forms.ToolStripMenuItem exportSpritesAsBinaryToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem ExperimentalToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem flipMapHorizontallyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem jPDebugToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem mapDataFromJPdoNotUseToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem captureMapJPdoNotUseToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem exportMapJPdoNotUseToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem saveMapsOnlyToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem importRoomToolStripMenuItem;
+		public System.Windows.Forms.ToolStripMenuItem invisibleObjectsTextToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showRoomsInHexToolStripMenuItem;
+		public System.Windows.Forms.ToolStripMenuItem showMapIndexInHexToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem saveVRAMAsPngToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem moveRoomsToOtherROMToolStripMenuItem;
+		private System.Windows.Forms.TabPage spritesPage;
+		private System.Windows.Forms.ToolStripMenuItem selectedObjectInHexToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem overworldViewToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showSpritesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showEntrancesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showExitsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showTransportsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showItemsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showEntranceExitPreviewToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+		private System.Windows.Forms.ToolStripMenuItem increaseObjectSizeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem decreaseObjectSizeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem showGridToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem x8ToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem x16ToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem x32ToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem noneToolStripMenuItem;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+		private System.Windows.Forms.ToolStripMenuItem lockoverworldToolStripItem;
+		private System.Windows.Forms.ToolStripMenuItem memoryManagementToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem2;
+		private System.Windows.Forms.ToolStripMenuItem clearAllToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem overworldToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem clearSpritesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem zeldaSavedToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem agahDeadToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem saveZeldaToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem clearItemsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem clearEntrancesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem clearExitsToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem clearAllHolesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem clearAllOverlaysToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem areaToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem clearSpritesToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem saveZeldaToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem zeldaSavedToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem agahDeadToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem clearItemsToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem clearEntrancesToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem clearHolesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem clearExitsToolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem clearOverlaysToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem7;
+		private System.Windows.Forms.ToolStripMenuItem exportAllTilesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem importAllTilesToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem9;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem10;
+		private System.Windows.Forms.ToolStripMenuItem autoDoorsToolStripMenuItem;
 		public System.Windows.Forms.ToolStripMenuItem overworldOverlayVisibleToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem discordToolStripMenuItem;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
@@ -5979,7 +4443,7 @@ namespace ZeldaFullEditor
 		public System.Windows.Forms.ComboBox roomProperty_bg2;
 		private SplitContainer splitContainer1;
 		private CustomPanel customPanel3;
-		private TabControl RoomTabControl;
+		private TabControl tabControl2;
 		private Panel panel3;
 		public PictureBox mapPicturebox;
 		private CheckBox maphoverCheckbox;
@@ -6057,6 +4521,7 @@ namespace ZeldaFullEditor
 		public ComboBox selecteditemobjectCombobox;
 		public Label label31;
 		private ToolStrip toolStrip1;
+		private ToolStripButton openfileButton;
 		private ToolStripButton saveButton;
 		private ToolStripButton debugtestButton;
 		private ToolStripButton runtestButton;
@@ -6064,78 +4529,25 @@ namespace ZeldaFullEditor
 		public ToolStripButton undoButton;
 		public ToolStripButton redoButton;
 		private ToolStripSeparator toolStripSeparator2;
+		public ToolStripButton allbgsButton;
+		public ToolStripButton bg1modeButton;
+		public ToolStripButton bg2modeButton;
+		public ToolStripButton bg3modeButton;
+		public ToolStripButton spritemodeButton;
+		public ToolStripButton blockmodeButton;
+		public ToolStripButton torchmodeButton;
+		public ToolStripButton potmodeButton;
+		public ToolStripButton doormodeButton;
+		public ToolStripButton collisionModeButton;
 		private ToolStripSeparator toolStripSeparator3;
+		private ToolStripButton saveLayoutButton;
+		private ToolStripButton loadlayoutButton;
+		private ToolStripButton searchButton;
+		private ToolStripButton toolStripButton1;
 		private ToolStripButton debugToolStripButton;
-		private Panel owPropertyPanel;
-		public GroupBox objectGroupbox;
-		public ComboBox OverworldObjectCombobox;
-		public GroupBox mapGroupbox;
-		public Gui.ExtraForms.Hexbox OWProperty_MessageID;
-		private Gui.ExtraForms.Hexbox OWProperty_SPRPalette;
-		private Gui.ExtraForms.Hexbox OWProperty_SPRGFX;
-		private Gui.ExtraForms.Hexbox OWProperty_BGPalette;
-		private Gui.ExtraForms.Hexbox OWProperty_BGGFX;
-		public PictureBox areaBGColorPictureBox;
-		private Label label49;
-		public CheckBox largemapCheckbox;
-		private Button OverworldTextButton;
-		private Button musicButton;
-		private Label label50;
-		private Label label51;
-		private Label label52;
-		private Label label53;
-		private Label label54;
-		private GroupBox groupBox3;
-		public Label selectedTileLabel;
-		private Label label55;
-		private ComboBox stateCombobox;
-		public SplitContainer OverworldSplitContainer;
-		private TabControl OverworldAuxSideTabs;
-		private TabPage tabPage1;
-		public PictureBox tilePictureBox;
-		private TabPage tabPage2;
-		public PictureBox scratchPicturebox;
-		private TabPage Tiles8;
-		private Panel panel2;
-		public PictureBox Tile8PicBox;
-		private Panel panel4;
-		private CheckBox priorityCheckbox;
-		private PictureBox currentTile8Box;
-		private CheckBox mirrorYCheckbox;
-		private PictureBox palette8Box;
-		private CheckBox mirrorXCheckbox;
-		private TabPage OWTabExitProps;
-		private Panel OWExitPanel;
-		private Label OWExitDisabled;
-		private Gui.ExtraForms.Hexbox OWExitPropY;
-		private Gui.ExtraForms.Hexbox OWExitPropX;
-		private Gui.ExtraForms.Hexbox OWExitPropID;
-		private Label label56;
-		private Label label57;
-		private Label label58;
-		private TabPage OWTabEntranceProps;
-		private Panel OWEntrancePanel;
-		private Label OWEntranceDisabled;
-		private Gui.ExtraForms.Hexbox OWEntrancePropY;
-		private Gui.ExtraForms.Hexbox OWEntrancePropX;
-		private Gui.ExtraForms.Hexbox OWEntrancePropID;
-		private Label label59;
-		private Label label60;
-		private Label label61;
-		private TabPage OWTabTransportProps;
-		private Panel OWTransportPanel;
-		private Label OWTransportDisabled;
-		private Gui.ExtraForms.Hexbox OWTransportPropY;
-		private Gui.ExtraForms.Hexbox OWTransportPropX;
-		private Gui.ExtraForms.Hexbox OWTransportPropID;
-		private Label label62;
-		private Label label63;
-		private Label label64;
-		public PictureBox pictureBox2;
-		public PictureBox previewTextPicturebox;
+		public TreeView entrancetreeView;
 		public TabControl tabControl1;
 		private TabPage entrancetabPage;
-		public TreeView entrancetreeView;
 		private Button mouseEntranceButton;
 		public CheckBox gridEntranceCheckbox;
 		private ComboBox EntranceMusicBox;
@@ -6206,68 +4618,6 @@ namespace ZeldaFullEditor
 		private PictureBox edit8x8palettebox;
 		private CheckBox edit8x8myCheckbox;
 		private CheckBox edit8x8mxCheckbox;
-		private Panel panel5;
-		public ListBox textListbox;
-		private Label label65;
-		private TextBox TextSearchTextbox;
-		private Label label66;
-		private Panel panel6;
-		private Gui.ExtraForms.Hexbox ParamsBox;
-		private CheckBox fontGridBox;
-		private Button BytesDDD;
-		private Label label67;
-		private Label label68;
-		private Label label69;
-		private ListBox TextCommandList;
-		private Label label70;
-		private TextBox MessageTextEntry;
-		private Label label71;
-		private Button button5;
-		private Button button6;
-		private ListBox SpecialsList;
-		private GroupBox groupBox4;
-		private PictureBox BigCharPreviewBox;
-		private Label SelectedTileASCII;
-		private Label SelectedTileID;
-		private NumericUpDown FontWidthUpDown;
-		private Label label72;
-		private Label label73;
-		private Label label74;
-		private Button ListDictionaryButton;
-		private Button ImportFontGraphicsButton;
-		private Button ExportFontGraphicsButton;
-		private Label label75;
-		private PictureBox FontPreviewBox;
-		public PictureBox MessagePreviewBox;
-		public DungeonToolStripButton allbgsButton;
-		public DungeonToolStripButton bg1modeButton;
-		public DungeonToolStripButton bg2modeButton;
-		public DungeonToolStripButton bg3modeButton;
-		public DungeonToolStripButton underworldSpriteModeButton;
-		public DungeonToolStripButton blockmodeButton;
-		public DungeonToolStripButton torchmodeButton;
-		public DungeonToolStripButton potmodeButton;
-		public DungeonToolStripButton doormodeButton;
-		public DungeonToolStripButton collisionModeButton;
-		private DungeonToolStripButton saveLayoutButton;
-		private DungeonToolStripButton loadlayoutButton;
-		private DungeonToolStripButton searchButton;
-		private DungeonToolStripButton exportuwmapStripButton1;
-		private OverworldToolStripButton entranceModeButton;
-		private OverworldToolStripButton exitModeButton;
-		private OverworldToolStripButton itemModeButton;
-		private OverworldToolStripButton owSpriteModeButton;
-		private OverworldToolStripButton transportModeButton;
-		private OverworldToolStripButton overlayButton;
-		private OverworldToolStripButton gravestoneButton;
-		private OverworldToolStripButton searchtilesButton;
-		private OverworldToolStripButton refreshToolStrip;
-		private OverworldToolStripButton fillModeButton;
-		private OverworldToolStripButton penModeButton;
-		private OverworldToolStripButton spButton;
-		private OverworldToolStripButton dwButton;
-		private OverworldToolStripButton lwButton;
-		private OverworldToolStripButton clearmapbutton;
 	}
 }
 

@@ -4,7 +4,7 @@
 	{
 		private void OnMouseDown_Entrance(MouseEventArgs e)
 		{
-			MainForm.entrancetreeView_AfterSelect(null, null);
+			Program.DungeonForm.entrancetreeView_AfterSelect(null, null);
 			ZS.CurrentUWMode = DungeonEditMode.LayerAll;
 		}
 
@@ -16,7 +16,7 @@
 		private void OnMouseMove_Entrance(MouseEventArgs e)
 		{
 
-			Entrance sel = MainForm.selectedEntrance;
+			Entrance sel = Program.DungeonForm.selectedEntrance;
 
 			if (sel == null) return;
 
@@ -27,7 +27,7 @@
 			int MX = MouseX;
 			int MY = MouseY;
 
-			if (MainForm.gridEntranceCheckbox.Checked)
+			if (Program.DungeonForm.gridEntranceCheckbox.Checked)
 			{
 				MX &= ~0x7;
 				MY &= ~0x7;

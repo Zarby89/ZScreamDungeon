@@ -99,21 +99,21 @@
 		public void SetDungeonEditMode(DungeonEditMode em)
 		{
 			uwmode = em;
-			MainForm.UpdateUnderworldMode(em);
+			Program.DungeonForm.UpdateUnderworldMode(em);
 			UnderworldScene.UpdateForMode(em);
 		}
 
 		private void SetOverworldEditMode(OverworldEditMode om)
 		{
 			owmode = om;
-			MainForm.UpdateOverworldMode(om);
+			Program.OverworldForm.UpdateForMode(om);
 			OverworldScene.UpdateForMode(om);
 		}
 
 		public void SetSelectedMessageID(int id)
 		{
-			MainForm.SelectMessageID(id);
-			MainForm.Refresh();
+			Program.TextForm.SelectMessageID(id);
+			Program.TextForm.Refresh();
 		}
 	}
 
@@ -121,7 +121,6 @@
 	{
 		DungeonEditor = 0,
 		OverworldEditor = 1,
-		GraphicsEditor = 2,
 		TextEditor = 3,
 	}
 

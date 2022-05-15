@@ -332,7 +332,7 @@
 			//{
 			//	Location = Constants.Point_0_0,
 			//};
-			panel2.Controls.Add(MainForm.gfxGroupsForm);
+			panel2.Controls.Add(Program.MainForm.gfxGroupsForm);
 
 			panel2.Controls.Add(
 				new PaletteEditor()

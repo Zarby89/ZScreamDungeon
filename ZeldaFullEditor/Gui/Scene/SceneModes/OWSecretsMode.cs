@@ -77,18 +77,21 @@
 				menu.Show(Cursor.Position);
 			}
 
-			MainForm.objectGroupbox.Text = "Selected secret";
+			Program.OverworldForm.objectGroupbox.Text = "Selected secret";
 
 			if (LastSelectedSecret != null)
 			{
-				MainForm.UpdateFormForSelectedObject(LastSelectedSecret);
+				Program.OverworldForm.SetSelectedObjectLabels(
+					LastSelectedSecret.ID,
+					LastSelectedSecret.MapX,
+					LastSelectedSecret.MapY);
 
-				MainForm.OverworldObjectCombobox.DataSource = DefaultEntities.ListOfSecrets;
-				
+				Program.OverworldForm.objCombobox.DataSource = DefaultEntities.ListOfSecrets;
+
 				// TODO
-				//MainForm.OverworldObjectCombobox.SelectedItem = 
+				//Program.OverworldForm.objCombobox.SelectedItem = 
 
-				MainForm.OverworldObjectCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedItem;
+				Program.OverworldForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedItem;
 			}
 		}
 

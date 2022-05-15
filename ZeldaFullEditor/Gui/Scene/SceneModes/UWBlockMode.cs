@@ -4,7 +4,7 @@
 	{
 		private void OnMouseDown_Blocks(MouseEventArgs e)
 		{
-			MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 		}
 
 		private void OnMouseUp_Blocks(MouseEventArgs e)

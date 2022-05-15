@@ -20,7 +20,7 @@
 			{
 				if (lastbird == value) return;
 
-				MainForm.SetSelectedTransport(lastbird);
+				Program.OverworldForm.SetSelectedTransport(lastbird);
 				lastbird = value;
 			}
 		}

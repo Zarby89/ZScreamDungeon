@@ -144,7 +144,7 @@ namespace ZeldaFullEditor
 			else if (e.Button == MouseButtons.Right)
 			{
 				selecting = true;
-				MainForm.selectedTileLabel.Text = "Selected Tile : " + selectedTile[0].ToString("X4");
+				Program.OverworldForm.selectedTileLabel.Text = "Selected Tile : " + selectedTile[0].ToString("X4");
 			}
 		}
 
@@ -200,16 +200,16 @@ namespace ZeldaFullEditor
 				if (selectedTile.Length > 0)
 				{
 					int scrollpos = selectedTile[0] / 8 * 16;
-					if (scrollpos >= MainForm.OverworldSplitContainer.Panel1.VerticalScroll.Maximum)
+					if (scrollpos >= Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Maximum)
 					{
-						MainForm.OverworldSplitContainer.Panel1.VerticalScroll.Value = MainForm.OverworldSplitContainer.Panel1.VerticalScroll.Maximum;
+						Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Value = Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Maximum;
 					}
 					else
 					{
-						MainForm.OverworldSplitContainer.Panel1.VerticalScroll.Value = scrollpos;
+						Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Value = scrollpos;
 					}
 
-					MainForm.tilePictureBox.Refresh();
+					Program.OverworldForm.tilePictureBox.Refresh();
 				}
 			}
 

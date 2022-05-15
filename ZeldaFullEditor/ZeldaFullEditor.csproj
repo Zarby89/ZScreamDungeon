@@ -65,42 +65,117 @@
     <Compile Update="Gui\MainTabs\TextEditorMessages.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="Gui\Scene\SceneModes\UWCollisionMode.cs" />
-    <Compile Update="Gui\ExtraForms\Chestviewer.cs" />
-    <Compile Update="Gui\CustomPanel.cs" />
-    <Compile Update="Gui\CGRamViewer.cs" />
-    <Compile Update="Gui\ExtraForms\HexBox.cs" />
-    <Compile Update="Gui\MainTabs\DungeonViewer.cs" />
-    <Compile Update="Gui\MainTabs\GfxEditor.cs" />
-    <Compile Update="Gui\GfxGroupsForm.cs" />
-    <Compile Update="Gui\MainTabs\GfxImportExport.cs" />
-    <Compile Update="Gui\MainTabs\ObjectDesigner.cs" />
-    <Compile Update="Gui\MainTabs\OverworldEditor.cs" />
-    <Compile Update="Gui\MainTabs\ScreenEditor.cs" />
-    <Compile Update="Gui\MainTabs\SpriteEditor.cs" />
-    <Compile Update="Gui\PaletteEditor.cs" />
-    <Compile Update="Gui\Scene\Scene.cs" />
-    <Compile Update="Gui\Scene\SceneUWnew.cs" />
-    <Compile Update="Gui\VramViewer.cs" />
-    <Compile Update="Gui\WindowPanel.cs" />
-    <Compile Update="Gui\Scene\SceneModes\OWDoorMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\OWEntranceMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\OWExitMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\OWSecretsMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\UWLayerMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\OWSpriteMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\OWOverlayMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\OWTileMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\OWGravesMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\OWTransportMode.cs" />
-    <Compile Update="Gui\ObjectViewer.cs" />
-    <Compile Update="Gui\Scene\SceneOW.cs" />
-    <Compile Update="Gui\Scene\SceneModes\UWBlockMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\UWDoorMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\UWEntranceMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\UWSecretsMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\UWSpriteMode.cs" />
-    <Compile Update="Gui\Scene\SceneModes\UWTorchMode.cs" />
+    <Compile Update="Gui\Scene\SceneModes\UWCollisionMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\ExtraForms\Chestviewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\CustomPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\CustomTabControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\CGRamViewer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\ExtraForms\HexBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\DungeonViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\GfxEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\GfxGroupsForm.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\GfxImportExport.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\ObjectDesigner.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\OverworldEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\ScreenEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\MainTabs\SpriteEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\PaletteEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\Scene.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneUWnew.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\VramViewer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\WindowPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\OWDoorMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\OWEntranceMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\OWExitMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\OWSecretsMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\UWLayerMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\OWSpriteMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\OWOverlayMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\OWTileMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\OWGravesMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\OWTransportMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\ObjectViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneOW.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\UWBlockMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\UWDoorMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\UWEntranceMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\UWSecretsMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\UWSpriteMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Update="Gui\Scene\SceneModes\UWTorchMode.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
