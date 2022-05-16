@@ -47,12 +47,14 @@
 			DoorTypeComboBox.DataSource = DungeonDoorType.ListOf;
 			tileTypeCombobox.DataSource = DefaultEntities.ListOfTileTypes;
 			EntranceProperties_FloorSel.DataSource = FloorNumber.floors;
+			selecteditemobjectCombobox.DataSource = DefaultEntities.ListOfSecrets;
 		}
 
 		public void OnProjectLoad()
 		{
 
 			initEntrancesList();
+			UnderWorldSceneHolder.Controls.Clear();
 			UnderWorldSceneHolder.Controls.Add(ZScreamer.ActiveUWScene);
 			addRoomTab(0x0104);
 
@@ -67,13 +69,9 @@
 			objectViewer1.items.Clear();
 			objectViewer1.items.AddRange(listoftilesobjects);
 
-			selecteditemobjectCombobox.DataSource = DefaultEntities.ListOfSecrets;
 
 			objectViewer1.updateSize();
 			spritesView1.updateSize();
-
-			UnderWorldSceneHolder.Controls.Clear();
-			UnderWorldSceneHolder.Controls.Add(ZScreamer.ActiveUWScene);
 
 			ZScreamer.ActiveUWScene.Refresh();
 		}
@@ -96,7 +94,7 @@
 
 			for (int i = 0; i < Constants.NumberOfEntrances; i++)
 			{
-				ZScreamer.ActiveScreamer.entrances[i] = new Entrance(ZScreamer.ActiveScreamer, (byte) i, false);
+				ZScreamer.ActiveScreamer.entrances[i] = new(ZScreamer.ActiveScreamer, (byte) i, false);
 				string tname = $"[{i:X2}] > {DefaultEntities.ListOfRoomNames[ZScreamer.ActiveScreamer.entrances[i].RoomID]:X3}";
 
 				entrancetreeView.Nodes[0].Nodes.Add(
@@ -130,7 +128,7 @@
 			{
 				spritesubtypeUpDown.Value = s.Subtype;
 				spriteoverlordCheckbox.Checked = s.IsCurrentlyOverlord;
-				comboBox1.SelectedIndex = s.KeyDrop;
+				KeyDropComboBox.SelectedIndex = s.KeyDrop;
 
 				ZScreamer.ActiveUWScene.Refresh();
 			}
@@ -274,7 +272,7 @@
 
 				if (EntranceProperties_FloorSel.SelectedIndex >= 0)
 				{
-					selectedEntrance.Floor = (EntranceProperties_FloorSel.SelectedItem as FloorNumber).ByteValue;
+					selectedEntrance.Floor = (EntranceProperties_FloorSel.SelectedItem as FloorNumber).Value;
 				}
 
 				selectedEntrance.Dungeon = (byte) EntranceProperties_DungeonID.HexValue;
@@ -361,8 +359,8 @@
 		public void entrancetreeView_AfterSelect(object sender, TreeViewEventArgs e)
 		{
 			propertiesChangedFromForm = true;
-			Entrance en = selectedEntrance;
-			if (e?.Node.Tag != null)
+			var en = selectedEntrance;
+			if (e?.Node?.Tag is not null)
 			{
 				// TODO gross
 				en = ZScreamer.ActiveScreamer.entrances[(int) e.Node.Tag];
@@ -400,7 +398,7 @@
 				entranceProperty_bg.Checked = true;
 			}
 
-			if (ZScreamer.ActiveUWScene.Room != null)
+			if (ZScreamer.ActiveUWScene.Room is not null)
 			{
 				selectedEntrance = en;
 
@@ -518,9 +516,9 @@
 
 			if (selectedMapPng.Count > 0)
 			{
-				Bitmap b = new Bitmap(8192, 10752);
+				var b = new Bitmap(8192, 10752);
 
-				using (Graphics gb = Graphics.FromImage(b))
+				using (var gb = Graphics.FromImage(b))
 				{
 					foreach (ushort s in selectedMapPng)
 					{
@@ -533,9 +531,9 @@
 							if (cx > higherX) { higherX = cx; }
 							if (cy > higherY) { higherY = cy; }
 
-							TheGUI.RoomPreviewArtist.SetRoomAndDrawImmediately(ZScreamer.ActiveScreamer.all_rooms[s]);
+							RoomPreviewArtist.SetRoomAndDrawImmediately(ZScreamer.ActiveScreamer.all_rooms[s]);
 
-							gb.DrawImage(TheGUI.RoomPreviewArtist.FinalOutput, new Point(cx * 512, cy * 512));
+							gb.DrawImage(RoomPreviewArtist.FinalOutput, new Point(cx * 512, cy * 512));
 						}
 					}
 				}
@@ -558,8 +556,8 @@
 			}
 			else
 			{
-				Bitmap b = new Bitmap(512, 512);
-				ZScreamer.ActiveUWScene.DrawToBitmap(b, Constants.Rect_0_0_512_512);
+				var b = new Bitmap(512, 512);
+				ZScreamer.ActiveUWScene.DrawToBitmap(b, Constants.ScreenSizedRectangle);
 				b.Save("singlemap.png");
 			}
 		}
@@ -705,22 +703,22 @@
 		{
 			for (ushort i = 0; i < 0x300; i++)
 			{
-				RoomObjectType o = RoomObjectType.GetTypeFromID(i);
-				if (o != null)
+				var o = RoomObjectType.GetTypeFromID(i);
+				if (o is not null)
 				{
-					listoftilesobjects.Add(new RoomObjectPreview(o, ZScreamer.ActiveScreamer.TileLister[i]));
+					listoftilesobjects.Add(new(o, ZScreamer.ActiveScreamer.TileLister[i]));
 				}
 			}
 
 			// TODO previews for sprites and overlords
 			for (byte i = 0; i < 0xF2; i++)
 			{
-				listofspritesobjects.Add(new SpritePreview(SpriteType.GetTypeFromID(i)));
+				listofspritesobjects.Add(new(SpriteType.GetTypeFromID(i)));
 			}
 
 			for (byte i = 1; i < 0x1B; i++)
 			{
-				listofspritesobjects.Add(new SpritePreview(OverlordType.GetTypeFromID(i)));
+				listofspritesobjects.Add(new(OverlordType.GetTypeFromID(i)));
 			}
 
 			//sortObject();
@@ -756,20 +754,20 @@
 
 		private void litCheckbox_CheckedChanged(object sender, EventArgs e)
 		{
-			if (ZScreamer.ActiveUWScene.IsUpdating && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is DungeonTorch torch)
+			if (!ZScreamer.ActiveUWScene.IsUpdating && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is DungeonTorch torch)
 			{
 				torch.Lit = litCheckbox.Checked;
 			}
 		}
 		private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
 		{
-			if (comboBox1.SelectedIndex > 0 && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is DungeonSprite s)
+			if (KeyDropComboBox.SelectedIndex > 0 && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is DungeonSprite s)
 			{
-				foreach (DungeonSprite spr in ZScreamer.ActiveUWScene.Room.SpritesList)
+				foreach (var spr in ZScreamer.ActiveUWScene.Room.SpritesList)
 				{
 					spr.KeyDrop = 0;
 				}
-				s.KeyDrop = (byte) comboBox1.SelectedIndex;
+				s.KeyDrop = (byte) KeyDropComboBox.SelectedIndex;
 				ZScreamer.ActiveUWScene.Refresh();
 			}
 		}
@@ -816,7 +814,7 @@
 					{
 						if (s == i)
 						{
-							e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(xd * 16, (yd * 16) + yoff, 16, 16));
+							e.Graphics.DrawRectangle(Constants.AquaPen2, new(xd * 16, (yd * 16) + yoff, 16, 16));
 						}
 					}
 				}
@@ -872,11 +870,11 @@
 
 				if (tpHotTrackedToClose == e.Index)
 				{
-					g.DrawImage(xTabButton, new Rectangle(e.Bounds.X + 30, e.Bounds.Y, 16, 16), 16, 0, 16, 16, GraphicsUnit.Pixel);
+					g.DrawImage(xTabButton, new(e.Bounds.X + 30, e.Bounds.Y, 16, 16), 16, 0, 16, 16, GraphicsUnit.Pixel);
 				}
 				else
 				{
-					g.DrawImage(xTabButton, new Rectangle(e.Bounds.X + 30, e.Bounds.Y, 16, 16), 0, 0, 16, 16, GraphicsUnit.Pixel);
+					g.DrawImage(xTabButton, new(e.Bounds.X + 30, e.Bounds.Y, 16, 16), 0, 0, 16, 16, GraphicsUnit.Pixel);
 				}
 
 				//g.DrawString("000", font, Brushes.Blue, new Rectangle(e.Bounds.X, e.Bounds.Y + 4, 64, 24));
@@ -896,11 +894,11 @@
 			tpHotTrackedToClose = -1;
 			for (int i = 0; i < RoomTabControl.TabPages.Count; i++)
 			{
-				Rectangle itemRect = RoomTabControl.GetTabRect(i);
+				var itemRect = RoomTabControl.GetTabRect(i);
 
 				if (itemRect.Contains(e.Location))
 				{
-					Rectangle xRect = RoomTabControl.GetTabRect(i);
+					var xRect = RoomTabControl.GetTabRect(i);
 					xRect.X += 30;
 					xRect.Width = 16;
 
@@ -1010,7 +1008,7 @@
 			e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
 			e.Graphics.Clear(Color.Black);
 
-			TheGUI.RoomPreviewArtist.DrawSelfToImage(e.Graphics);
+			RoomPreviewArtist.DrawSelfToImage(e.Graphics);
 		}
 
 		private void mapPicturebox_MouseUp(object sender, MouseEventArgs e)
@@ -1029,11 +1027,7 @@
 				}
 
 				thumbnailBox.Visible = true;
-				int yc = 0;
-				if (e.Y >= 256)
-				{
-					yc = 8;
-				}
+				int yc = e.Y >= 256 ? 8 : 0;
 
 				int x = (e.X / 16);
 				int y = ((e.Y - yc) / 16);
@@ -1046,7 +1040,7 @@
 
 				previewRoom = ZScreamer.ActiveScreamer.all_rooms[roomId];
 
-				TheGUI.RoomPreviewArtist.SetRoomAndDrawImmediately(previewRoom);
+				RoomPreviewArtist.SetRoomAndDrawImmediately(previewRoom);
 			}
 		}
 

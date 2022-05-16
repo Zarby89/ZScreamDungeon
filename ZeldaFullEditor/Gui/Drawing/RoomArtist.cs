@@ -5,14 +5,14 @@
 		public DungeonRoom CurrentRoom { get; set; }
 
 		public override ushort[] Layer1TileMap { get; } = new ushort[Constants.TilesPerUnderworldRoom];
-		public override PointeredImage Layer1Canvas { get; } = new PointeredImage(512, 512);
+		public override PointeredImage Layer1Canvas { get; } = new(512, 512);
 
 		public override ushort[] Layer2TileMap { get; } = new ushort[Constants.TilesPerUnderworldRoom];
-		public override PointeredImage Layer2Canvas { get; } = new PointeredImage(512, 512);
+		public override PointeredImage Layer2Canvas { get; } = new(512, 512);
 
-		public override PointeredImage SpriteCanvas { get; } = new PointeredImage(512, 512);
+		public override PointeredImage SpriteCanvas { get; } = new(512, 512);
 
-		public override Bitmap FinalOutput { get; } = new Bitmap(512, 512);
+		public override Bitmap FinalOutput { get; } = new(512, 512);
 
 		private readonly bool drawid;
 
@@ -62,7 +62,7 @@
 
 			Graphics g = Graphics.FromImage(FinalOutput);
 
-			g.SetClip(Constants.Rect_0_0_512_512);
+			g.SetClip(Constants.ScreenSizedRectangle);
 			g.Clear(Color.Black);
 
 			ImageAttributes draw = null;
@@ -98,12 +98,12 @@
 
 			if (bottom != null)
 			{
-				g.DrawImage(bottom.Bitmap, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, draw);
+				g.DrawScreen(bottom.Bitmap);
 			}
 
-			g.DrawImage(top.Bitmap, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, draw);
+			g.DrawScreen(top.Bitmap, draw);
 
-			g.DrawImage(SpriteCanvas.Bitmap, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, null);
+			g.DrawScreen(SpriteCanvas.Bitmap, null);
 
 		}
 

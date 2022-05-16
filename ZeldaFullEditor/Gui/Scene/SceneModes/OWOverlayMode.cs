@@ -12,12 +12,8 @@
 			globalmouseTileDownX = tileX;
 			globalmouseTileDownY = tileY;
 
-			CurrentMap = mapId + ZS.OverworldManager.WorldOffset;
-			CurrentMapParent = ZS.OverworldManager.allmaps[CurrentMap + ZS.OverworldManager.WorldOffset].ParentMapID;
-
-			int mid = ZS.OverworldManager.allmaps[CurrentMap].ParentMapID;
-			int superMX = mid % 8 * 32;
-			int superMY = mid / 8 * 32;
+			int superMX = CurrentParentMapID % 8 * 32;
+			int superMY = CurrentParentMapID / 8 * 32;
 
 			tileBitmapPtr = ZS.GFXManager.mapblockset16;
 			tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr)
@@ -48,17 +44,17 @@
 					*/
 
 					OverlayTile tp = new OverlayTile((byte) (globalmouseTileDownX + x - superMX), (byte) (globalmouseTileDownY + y - superMY), selectedTile[i]);
-					OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
+					OverlayTile tf = CompareTilePosButZarbyGaveThisADumbName(tp, ZS.OverworldManager.alloverlays[CurrentParentMapID].tilesData.ToArray());
 
-					if (ZS.OverworldManager.allmaps[CurrentMap].IsPartOfLargeMap)
+					if (CurrentMap.IsPartOfLargeMap)
 					{
 						tp = new OverlayTile((byte) (globalmouseTileDownX + x - superMX), (byte) (globalmouseTileDownY + y - superMY), selectedTile[i]);
-						tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
+						tf = CompareTilePosButZarbyGaveThisADumbName(tp, ZS.OverworldManager.alloverlays[CurrentParentMapID].tilesData.ToArray());
 					}
 
 					if (ModifierKeys == Keys.Control)
 					{
-						ZS.OverworldManager.alloverlays[mid].tilesData.Remove(tf);
+						ZS.OverworldManager.alloverlays[CurrentParentMapID].tilesData.Remove(tf);
 						x++;
 						if (x >= selectedTileSizeX)
 						{
@@ -71,12 +67,12 @@
 
 					if (tf.IsGarbage)
 					{
-						ZS.OverworldManager.alloverlays[mid].tilesData.Add(tp);
+						ZS.OverworldManager.alloverlays[CurrentParentMapID].tilesData.Add(tp);
 					}
 					else
 					{
-						ZS.OverworldManager.alloverlays[mid].tilesData.Remove(tf);
-						ZS.OverworldManager.alloverlays[mid].tilesData.Add(tp);
+						ZS.OverworldManager.alloverlays[CurrentParentMapID].tilesData.Remove(tf);
+						ZS.OverworldManager.alloverlays[CurrentParentMapID].tilesData.Add(tp);
 					}
 
 					x++;
@@ -101,16 +97,15 @@
 			int superX = tileX / 32;
 			int superY = tileY / 32;
 			int mapId = (superY * 8) + superX + ZS.OverworldManager.WorldOffset;
-			int mid = ZS.OverworldManager.allmaps[CurrentMap].ParentMapID;
-			int superMX = mid % 8 * 32;
-			int superMY = mid / 8 * 32;
+			int superMX = CurrentParentMapID % 8 * 32;
+			int superMY = CurrentParentMapID / 8 * 32;
 
 			if (e.Button == MouseButtons.Right)
 			{
 				if (tileX == globalmouseTileDownX && tileY == globalmouseTileDownY)
 				{
 					OverlayTile tp = new OverlayTile((byte) (tileX - superMX), (byte) (tileY - superMY), 0);
-					OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
+					OverlayTile tf = CompareTilePosButZarbyGaveThisADumbName(tp, ZS.OverworldManager.alloverlays[CurrentParentMapID].tilesData.ToArray());
 
 					if (tf.IsGarbage)
 					{
@@ -199,9 +194,8 @@
 					int mapId;
 					globalmouseTileDownX = tileX;
 					globalmouseTileDownY = tileY;
-					int mid = ZS.OverworldManager.allmaps[CurrentMap].ParentMapID;
-					int superMX = mid % 8 * 32;
-					int superMY = mid / 8 * 32;
+					int superMX = CurrentParentMapID % 8 * 32;
+					int superMY = CurrentParentMapID / 8 * 32;
 
 					if (selectedTile.Length >= 1)
 					{
@@ -223,10 +217,10 @@
 								*/
 
 								OverlayTile tp = new OverlayTile((byte) (tileX - superMX + x), (byte) (tileY - superMY + y), selectedTile[i]);
-								OverlayTile tf = compareTilePosT(tp, ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
+								OverlayTile tf = CompareTilePosButZarbyGaveThisADumbName(tp, ZS.OverworldManager.alloverlays[CurrentParentMapID].tilesData.ToArray());
 								if (ModifierKeys == Keys.Control)
 								{
-									ZS.OverworldManager.alloverlays[mid].tilesData.Remove(tf);
+									ZS.OverworldManager.alloverlays[CurrentParentMapID].tilesData.Remove(tf);
 									x++;
 									if (x >= selectedTileSizeX)
 									{
@@ -239,12 +233,12 @@
 
 								if (tf.IsGarbage)
 								{
-									ZS.OverworldManager.alloverlays[mid].tilesData.Add(tp);
+									ZS.OverworldManager.alloverlays[CurrentParentMapID].tilesData.Add(tp);
 								}
 								else
 								{
-									ZS.OverworldManager.alloverlays[mid].tilesData.Remove(tf);
-									ZS.OverworldManager.alloverlays[mid].tilesData.Add(tp);
+									ZS.OverworldManager.alloverlays[CurrentParentMapID].tilesData.Remove(tf);
+									ZS.OverworldManager.alloverlays[CurrentParentMapID].tilesData.Add(tp);
 								}
 							}
 

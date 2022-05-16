@@ -6,14 +6,14 @@
 
 		public override ushort[] Layer1TileMap => MyScreen.Tile16Map;
 
-		public override PointeredImage Layer1Canvas { get; } = new PointeredImage(512, 512);
+		public override PointeredImage Layer1Canvas { get; } = new(512, 512);
 
 		public override ushort[] Layer2TileMap { get; } = new ushort[Constants.NumberOfTile16PerScreen];
-		public override PointeredImage Layer2Canvas { get; } = new PointeredImage(512, 512);
+		public override PointeredImage Layer2Canvas { get; } = new(512, 512);
 
-		public override PointeredImage SpriteCanvas { get; } = new PointeredImage(512, 512);
+		public override PointeredImage SpriteCanvas { get; } = new(512, 512);
 
-		public override Bitmap FinalOutput { get; } = new Bitmap(512, 512);
+		public override Bitmap FinalOutput { get; } = new(512, 512);
 
 		public ScreenArtist(OverworldScreen screen) : base()
 		{
@@ -27,13 +27,13 @@
 
 		public override void RebuildBitMap()
 		{
-			Graphics g = Graphics.FromImage(FinalOutput);
+			var g = Graphics.FromImage(FinalOutput);
 
-			g.SetClip(Constants.Rect_0_0_512_512);
+			g.SetClip(Constants.ScreenSizedRectangle);
 			g.Clear(Color.Black);
 
-			g.DrawImage(Layer1Canvas.Bitmap, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, null);
-			g.DrawImage(SpriteCanvas.Bitmap, Constants.Rect_0_0_512_512, 0, 0, 512, 512, GraphicsUnit.Pixel, null);
+			g.DrawScreen(Layer1Canvas.Bitmap, null);
+			g.DrawScreen(SpriteCanvas.Bitmap, null);
 		}
 
 		public override void DrawSelfToImage(Graphics g)

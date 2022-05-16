@@ -175,7 +175,6 @@ namespace ZeldaFullEditor
 			this.showBG2MaskOutlineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.entrancePositionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.invisibleObjectsTextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.showMapIndexInHexToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.overworldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.clearSpritesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.saveZeldaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -497,7 +496,7 @@ namespace ZeldaFullEditor
 			this.toolStrip1.Location = new System.Drawing.Point(4, 24);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Padding = new System.Windows.Forms.Padding(10, 0, 1, 0);
-			this.toolStrip1.Size = new System.Drawing.Size(1007, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(911, 25);
 			this.toolStrip1.Stretch = true;
 			this.toolStrip1.TabIndex = 10;
 			this.toolStrip1.Text = "toolStrip1";
@@ -1432,8 +1431,7 @@ namespace ZeldaFullEditor
             this.xScreenToolStripMenuItem,
             this.showBG2MaskOutlineToolStripMenuItem,
             this.entrancePositionToolStripMenuItem,
-            this.invisibleObjectsTextToolStripMenuItem,
-            this.showMapIndexInHexToolStripMenuItem});
+            this.invisibleObjectsTextToolStripMenuItem});
 			this.dungeonViewToolStripMenuItem.Enabled = false;
 			this.dungeonViewToolStripMenuItem.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.dungeonViewToolStripMenuItem.Name = "dungeonViewToolStripMenuItem";
@@ -1661,17 +1659,6 @@ namespace ZeldaFullEditor
 			this.invisibleObjectsTextToolStripMenuItem.Name = "invisibleObjectsTextToolStripMenuItem";
 			this.invisibleObjectsTextToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
 			this.invisibleObjectsTextToolStripMenuItem.Text = "Show Text for Invisible Objects";
-			// 
-			// showMapIndexInHexToolStripMenuItem
-			// 
-			this.showMapIndexInHexToolStripMenuItem.Checked = true;
-			this.showMapIndexInHexToolStripMenuItem.CheckOnClick = true;
-			this.showMapIndexInHexToolStripMenuItem.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.showMapIndexInHexToolStripMenuItem.Enabled = false;
-			this.showMapIndexInHexToolStripMenuItem.Name = "showMapIndexInHexToolStripMenuItem";
-			this.showMapIndexInHexToolStripMenuItem.Size = new System.Drawing.Size(276, 22);
-			this.showMapIndexInHexToolStripMenuItem.Text = "Display Map ID in Hexadecimal";
-			this.showMapIndexInHexToolStripMenuItem.Click += new System.EventHandler(this.showMapIndexInHexToolStripMenuItem_Click);
 			// 
 			// overworldToolStripMenuItem
 			// 
@@ -2521,7 +2508,6 @@ namespace ZeldaFullEditor
 		private System.Windows.Forms.ToolStripMenuItem importRoomToolStripMenuItem;
 		public System.Windows.Forms.ToolStripMenuItem invisibleObjectsTextToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem showRoomsInHexToolStripMenuItem;
-		public System.Windows.Forms.ToolStripMenuItem showMapIndexInHexToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem saveVRAMAsPngToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem moveRoomsToOtherROMToolStripMenuItem;
 		private System.Windows.Forms.TabPage spritesPage;

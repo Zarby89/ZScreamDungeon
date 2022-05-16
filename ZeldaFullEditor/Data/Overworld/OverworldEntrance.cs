@@ -3,7 +3,7 @@
 	[Serializable]
 	public class OverworldEntrance : OverworldEntity, IFreelyPlaceable, IMouseCollidable, IHaveInfo
 	{
-		public ushort mapPos { get; set; }
+		public ushort Map16Index { get; set; }
 		public byte TargetEntranceID { get; set; }
 		public bool IsPitEntrance { get; set; }
 
@@ -18,7 +18,7 @@
 			GlobalX = x;
 			GlobalY = y;
 			TargetEntranceID = entranceId;
-			this.mapPos = mapPos;
+			Map16Index = mapPos;
 		}
 
 		public override bool PointIsInHitbox(int x, int y)

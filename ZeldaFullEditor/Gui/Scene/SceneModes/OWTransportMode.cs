@@ -2,16 +2,9 @@
 {
 	public partial class SceneOW
 	{
-		private OverworldTransport selbird, lastbird;
+		private OverworldTransport lastbird;
 
-		public OverworldTransport SelectedTransport
-		{
-			get => selbird;
-			set
-			{
-				selbird = value;
-			}
-		}
+		public OverworldTransport SelectedTransport { get; set; }
 
 		public OverworldTransport LastSelectedTransport
 		{
@@ -20,8 +13,9 @@
 			{
 				if (lastbird == value) return;
 
-				ZGUI.OverworldEditor.SetSelectedTransport(lastbird);
 				lastbird = value;
+				ZGUI.OverworldEditor.SetSelectedTransport(lastbird);
+				ZGUI.UpdateFormForSelectedObject(lastbird);
 			}
 		}
 
@@ -74,38 +68,38 @@
 			{
 				OverworldTransport e = ZS.OverworldManager.AllTransports[i];
 
-				if (lowEndMode && e.MapID != ZS.OverworldManager.allmaps[CurrentMap].ParentMapID)
+				if (lowEndMode && e.MapID != CurrentParentMapID)
 				{
 					continue;
 				}
 
-				if (e.IsInThisWorld(ZS.OverworldManager.World))
+				if (!e.IsInThisWorld(ZS.OverworldManager.World)) continue;
+				
+				if (SelectedTransport == e)
 				{
-					if (SelectedTransport == e)
-					{
-						bgrBrush = UIColors.TransportSelectedBrush;
-						outline = UIColors.OutlineSelectedPen;
-					}
-					else if (hoveredEntity == e)
-					{
-						bgrBrush = UIColors.TransportBrush;
-						outline = UIColors.OutlineHoverPen;
-					}
-					else
-					{
-						bgrBrush = UIColors.TransportBrush;
-						outline = UIColors.OutlinePen;
-					}
-
-					var txt = TransportTextView switch
-					{
-						// TODO might add more stuff in the future
-						_ => $"{i:X2}",
-					};
-					g.DrawFilledRectangleWithOutline(e.BoundingBox, outline, bgrBrush);
-
-					g.DrawText(e.GlobalX + 3, e.GlobalY + 5, txt);
+					bgrBrush = UIColors.TransportSelectedBrush;
+					outline = UIColors.OutlineSelectedPen;
 				}
+				else if (hoveredEntity == e)
+				{
+					bgrBrush = UIColors.TransportBrush;
+					outline = UIColors.OutlineHoverPen;
+				}
+				else
+				{
+					bgrBrush = UIColors.TransportBrush;
+					outline = UIColors.OutlinePen;
+				}
+
+				var txt = TransportTextView switch
+				{
+					// TODO might add more stuff in the future
+					_ => $"{i:X2}",
+				};
+
+				g.DrawFilledRectangleWithOutline(e.BoundingBox, outline, bgrBrush);
+
+				g.DrawText(e.GlobalX + 3, e.GlobalY + 5, txt);
 			}
 		}
 	}

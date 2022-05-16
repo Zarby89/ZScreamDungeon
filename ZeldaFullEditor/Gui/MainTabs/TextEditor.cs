@@ -392,7 +392,7 @@ namespace ZeldaFullEditor
 			Color.DarkOrange
 		};
 
-		public void InitializeOnOpen()
+		public void OnProjectLoad()
 		{
 			panel1.Enabled = true;
 			for (int i = 0; i < 100; i++)
@@ -484,63 +484,68 @@ namespace ZeldaFullEditor
 					continue;
 				}
 
-				if (b < 100)
+				switch (b)
 				{
-					if (textPos >= 170)
-					{
+					case < 100:
+						if (textPos >= 170)
+						{
+							textPos = 0;
+							textLine++;
+						}
+
+						DrawTileToPreview(textPos, textLine * 16, b & 0xF, b / 16);
+						textPos += widthArray[b];
+						break;
+
+					case 0x74:
+						textPos = 0;
+						textLine = 0;
+						break;
+
+					case 0x73:
 						textPos = 0;
 						textLine++;
-					}
+						break;
 
-					DrawTileToPreview(textPos, textLine * 16, b & 0xF, b / 16);
-					textPos += widthArray[b];
-				}
-				else if (b == 0x74)
-				{
-					textPos = 0;
-					textLine = 0;
-				}
-				else if (b == 0x73)
-				{
-					textPos = 0;
-					textLine++;
-				}
-				else if (b == 0x75)
-				{
-					textPos = 0;
-					textLine = 1;
-				}
-				else if (b == 0x76)
-				{
-					textPos = 0;
-					textLine = 2;
-				}
-				else if (b == 0x6B || b == 0x6D || b == 0x6E || b == 0x77 || b == 0x78 || b == 0x79 || b == 0x7A)
-				{
-					skipNext = true;
-					continue;
-				}
-				else if (b == 0x6C) // BCD numbers
-				{
-					DrawCharacterToPreview('0');
-					skipNext = true;
-					continue;
-				}
-				else if (b == 0x6A)
-				{
-					DrawStringToPreview(NAMEPreview);
-				}
-				else if (b >= DictionaryBaseValue && b < (DictionaryBaseValue + 97))
-				{
-					DictionaryEntry d = GetDictionaryFromID((byte) (b - DictionaryBaseValue));
-					if (d != null)
-					{
-						DrawCharacterToPreview(d.Data);
-					}
-				}
-				else if (b == MessageTerminator)
-				{
-					return;
+					case 0x75:
+						textPos = 0;
+						textLine = 1;
+						break;
+
+					case 0x76:
+						textPos = 0;
+						textLine = 2;
+						break;
+
+					case 0x6B:
+					case 0x6D:
+					case 0x6E:
+					case 0x77:
+					case 0x78:
+					case 0x79:
+					case 0x7A:
+						skipNext = true;
+						continue;
+
+					case 0x6C:
+						DrawCharacterToPreview('0');
+						skipNext = true;
+						continue;
+
+					case 0x6A:
+						DrawStringToPreview(NAMEPreview);
+						break;
+
+					case >= DictionaryBaseValue when b < (DictionaryBaseValue + 97):
+							DictionaryEntry d = GetDictionaryFromID((byte) (b - DictionaryBaseValue));
+						if (d != null)
+						{
+							DrawCharacterToPreview(d.Data);
+						}
+						break;
+
+					case MessageTerminator:
+						return;
 				}
 			}
 		}
@@ -621,7 +626,7 @@ namespace ZeldaFullEditor
 
 			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.fontgfxBitmap, Constants.Rect_0_0_256_256);
+			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.fontgfxBitmap, Constants.RoomSizedRectangle);
 
 			if (fontGridBox.Checked)
 			{
@@ -677,7 +682,7 @@ namespace ZeldaFullEditor
 				}
 				else
 				{
-					cp.Entries[i] = TheGUI.RoomPreviewArtist.Layer1Canvas.Palette.Entries[(DefaultTextColor * 4) + i];
+					cp.Entries[i] = RoomPreviewArtist.Layer1Canvas.Palette.Entries[(DefaultTextColor * 4) + i];
 				}
 			}
 

@@ -10,6 +10,8 @@
 		public const ushort TileVFlipBit = 0x8000;
 		public const ushort TileNameMask = 0x03FF;
 
+		public const int DimensionOfRoom = 512;
+
 		public const int Uncompressed3BPPSize = 0x0600;
 		public const int UncompressedSheetSize = 0x0800;
 
@@ -77,15 +79,6 @@
 
 		public const byte SpriteSentinel = 0xFF;
 
-		public const byte LayerMergeOff = 0x00;
-		public const byte LayerMergeParallax = 0x01;
-		public const byte LayerMergeDark = 0x02;
-		public const byte LayerMergeOnTop = 0x03;
-		public const byte LayerMergeTranslucent = 0x04;
-		public const byte LayerMergeAddition = 0x05;
-		public const byte LayerMergeNormal = 0x06;
-		public const byte LayerMergeTransparent = 0x07;
-
 		public const ushort Floor1ObjectID = 0xC4;
 		public const ushort Floor2ObjectID = 0xDB;
 
@@ -106,7 +99,7 @@
 		//===========================================================================================
 		// Geometry - for consistency and we should probably give them better names
 		//===========================================================================================
-		public static readonly Point Point_0_0 = new(0, 0);
+		public static readonly Point OriginPoint = new(0, 0);
 		public static readonly Point Point_512_0 = new(512, 0);
 
 		public static readonly Rectangle Rect_0_0_24_24 = new(0, 0, 24, 24);
@@ -116,11 +109,11 @@
 		public static readonly Rectangle Rect_0_0_128_512 = new(0, 0, 128, 512);
 		public static readonly Rectangle Rect_0_0_128_4096 = new(0, 0, 128, 4096);
 		public static readonly Rectangle Rect_0_0_256_192 = new(0, 0, 256, 192);
-		public static readonly Rectangle Rect_0_0_256_256 = new(0, 0, 256, 256);
+		public static readonly Rectangle RoomSizedRectangle = new(0, 0, 256, 256);
 		public static readonly Rectangle Rect_0_0_256_1024 = new(0, 0, 256, 1024);
 		public static readonly Rectangle Rect_0_0_1024_1024 = new(0, 0, 1024, 1024);
 		public static readonly Rectangle Rect_0_0_512_384 = new(0, 0, 512, 384);
-		public static readonly Rectangle Rect_0_0_512_512 = new(0, 0, 512, 512);
+		public static readonly Rectangle ScreenSizedRectangle = new(0, 0, DimensionOfRoom, DimensionOfRoom);
 		public static readonly Rectangle Rect_0_0_128_40 = new(0, 0, 128, 40);
 		public static readonly Rectangle Rect_0_0_256_14272 = new(0, 0, 256, 14272);
 		public static readonly Rectangle Rect_0_0_128_7136 = new(0, 0, 128, 7136);
@@ -137,9 +130,9 @@
 		public static readonly Rectangle Rect_0_0_24_240 = new(0, 0, 24, 240);
 
 		public static readonly Size Size340x102 = new(340, 102);
-		public static readonly Size Size512x512 = new(512, 512);
+		public static readonly Size SupertileSize = new(DimensionOfRoom, DimensionOfRoom);
 		public static readonly Size Size1024x1024 = new(1024, 1024);
-		public static readonly Size Size4096x4096 = new(4096, 4096);
+		public static readonly Size FullOverworldSize = new(4096, 4096);
 
 		//===========================================================================================
 		// Fonts

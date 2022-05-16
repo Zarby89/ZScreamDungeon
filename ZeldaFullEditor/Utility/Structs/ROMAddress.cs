@@ -52,25 +52,19 @@ namespace ZeldaFullEditor
 			USOffset = JPOffset = (addr & 0x7FFF) | ((addr & 0x7F0000) >> 1);
 		}
 
-		public int GetAddressForVersion(ROMVersion v)
+		public int GetAddressForVersion(ROMVersion v) =>  v switch
 		{
-			return v switch
-			{
-				ROMVersion.JP => JPAddress,
-				ROMVersion.US => USAddress,
-				_ => 0,
-			};
-		}
+			ROMVersion.JP => JPAddress,
+			ROMVersion.US => USAddress,
+			_ => 0,
+		};
 
-		public int GetOffsetForVersion(ROMVersion v)
+		public int GetOffsetForVersion(ROMVersion v) =>  v switch
 		{
-			return v switch
-			{
-				ROMVersion.JP => JPOffset,
-				ROMVersion.US => USOffset,
-				_ => 0,
-			};
-		}
+			ROMVersion.JP => JPOffset,
+			ROMVersion.US => USOffset,
+			_ => 0,
+		};
 
 		public static ROMAddress operator +(ROMAddress r, int offset) => new(r.JPAddress + offset, r.USAddress + offset);
 		public static ROMAddress operator -(ROMAddress r, int offset) => new(r.JPAddress - offset, r.USAddress - offset);
@@ -80,28 +74,22 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// Inspects the given address to confirm they are valid ROM addresses.s
 		/// </summary>
-		public bool CheckIfValidROMAddress(ROMVersion? version = null)
+		public bool CheckIfValidROMAddress(ROMVersion? version = null) => version switch
 		{
-			return version switch
-			{
-				ROMVersion.JP => (JPAddress & 0xFFFF) >= 0x8000,
-				ROMVersion.US => (USAddress & 0xFFFF) >= 0x8000,
-				_ => ((JPAddress & 0xFFFF) >= 0x8000) && ((USAddress & 0xFFFF) >= 0x8000),
-			};
-		}
+			ROMVersion.JP => (JPAddress & 0xFFFF) >= 0x8000,
+			ROMVersion.US => (USAddress & 0xFFFF) >= 0x8000,
+			_ => ((JPAddress & 0xFFFF) >= 0x8000) && ((USAddress & 0xFFFF) >= 0x8000),
+		};
 
 		/// <summary>
 		/// Inspects the given address for being in a fast ROM bank.
 		/// </summary>
-		public bool CheckIfFastROM(ROMVersion? version = null)
+		public bool CheckIfFastROM(ROMVersion? version = null) => version switch
 		{
-			return version switch
-			{
-				ROMVersion.JP => (JPAddress & 0x800000) == 0x800000,
-				ROMVersion.US => (USAddress & 0x800000) == 0x800000,
-				_ => ((JPAddress & 0x800000) >= 0x800000) && ((USAddress & 0x800000) == 0x800000),
-			};
-		}
+			ROMVersion.JP => (JPAddress & 0x800000) == 0x800000,
+			ROMVersion.US => (USAddress & 0x800000) == 0x800000,
+			_ => ((JPAddress & 0x800000) >= 0x800000) && ((USAddress & 0x800000) == 0x800000),
+		};
 
 		/// <summary>
 		/// Returns <see langword="true"/> if the addresses between versions differ.

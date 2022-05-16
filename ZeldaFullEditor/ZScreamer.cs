@@ -11,7 +11,7 @@
 
 		public static bool Active => ActiveScreamer != dummy;
 
-		public static ROMFile ActiveROM => ActiveScreamer.ROM;
+		public static ROMFile ActiveROM => ActiveROM;
 		public static AddressSet ActiveOffsets => ActiveScreamer.Offsets;
 		public static GraphicsManager ActiveGraphicsManager => ActiveScreamer.GFXManager;
 		public static SceneOW ActiveOWScene => ActiveScreamer.OverworldScene;
@@ -33,7 +33,7 @@
 
 		public SceneUW UnderworldScene { get; }
 
-		private DungeonEditMode uwmode;
+		private DungeonEditMode uwmode = DungeonEditMode.LayerAll;
 		public DungeonEditMode CurrentUWMode
 		{
 			get => uwmode;
@@ -41,7 +41,7 @@
 		}
 
 		public SceneOW OverworldScene { get; }
-		private OverworldEditMode owmode;
+		private OverworldEditMode owmode = OverworldEditMode.Tile16;
 
 		public OverworldEditMode CurrentOWMode
 		{
@@ -49,7 +49,7 @@
 			set => SetOverworldEditMode(value);
 		}
 
-		public GraphicsManager GFXManager;
+		public GraphicsManager GFXManager { get; }
 
 		public ROMFile ROM { get; private set; }
 
@@ -64,20 +64,19 @@
 		// TODO things needs to be split from Dungeon main
 		public ZScreamer()
 		{
-			ROM = new ROMFile();
+			ROM = new();
 
-			Offsets = new AddressSet(SNESFunctions.ROMVersion.US);
-
-			GFXManager = new GraphicsManager(this);
-			OverworldScene = new SceneOW(this);
-			OverworldManager = new Overworld(this);
-			UnderworldScene = new SceneUW(this);
-			PaletteManager = new PaletteHandler(this);
+			Offsets = new(SNESFunctions.ROMVersion.US);
+			GFXManager = new(this);
+			OverworldScene = new(this);
+			OverworldManager = new(this);
+			UnderworldScene = new(this);
+			PaletteManager = new(this);
 		}
 
 		public void LoadNewROM(string filename)
 		{
-			ROM = new ROMFile(filename);
+			ROM = new(filename);
 			OnROMLoad();
 		}
 
@@ -148,6 +147,7 @@
 	public enum OverworldEditMode
 	{
 		Tile16,
+		Tile16Fill,
 		Overlay,
 		Sprites,
 		Secrets,

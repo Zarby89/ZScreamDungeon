@@ -2,15 +2,15 @@
 {
 	public class OverworldScreen
 	{
-		public byte ParentMapID => ParentMap.MapID;
-
 		public ushort[] Tile16Map { get; } = new ushort[Constants.NumberOfTile16PerScreen];
 
 		public ScreenArtist MyArtist { get; }
+
 		public OverworldScreen ParentMap { get; set; }
+		public bool IsOwnParent => ParentMap == this;
+		public byte ParentMapID => ParentMap.MapID;
 
 		public Worldiness World { get; }
-		public bool IsOwnParent => ParentMap == this;
 
 		public byte MapID { get; }
 
@@ -22,6 +22,7 @@
 
 		private byte state2gfx, state3gfx;
 		private byte state2pal, state3pal;
+
 		public byte State0SpriteGraphics { get; set; }
 		public byte State2SpriteGraphics
 		{

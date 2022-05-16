@@ -192,7 +192,7 @@
 		private void palettePicturebox_Paint(object sender, PaintEventArgs e)
 		{
 			Color[] cols = radioButton1.Checked
-				? TheGUI.RoomEditingArtist.Layer1Canvas.Palette.Entries
+				? RoomEditingArtist.Layer1Canvas.Palette.Entries
 				: ZScreamer.ActiveGraphicsManager.mapgfx16Bitmap.Palette.Entries;
 
 			for (int i = 0; i < 256; i++)
@@ -214,7 +214,7 @@
 
 			ColorPalette cp = ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette;
 			Color[] cols = radioButton1.Checked
-				? TheGUI.RoomEditingArtist.Layer1Canvas.Palette.Entries
+				? RoomEditingArtist.Layer1Canvas.Palette.Entries
 				: ZScreamer.ActiveGraphicsManager.mapgfx16Bitmap.Palette.Entries;
 
 			for (int i = 0; i < 16; i++)
@@ -298,8 +298,8 @@
 			}
 
 			b.UnlockBits(bd);
-			TheGUI.RoomEditingArtist.HardRefresh();
-			TheGUI.RoomPreviewArtist.HardRefresh();
+			RoomEditingArtist.HardRefresh();
+			RoomPreviewArtist.HardRefresh();
 			allgfxPicturebox.Refresh();
 
 			for (int i = 0; i < 159; i++)

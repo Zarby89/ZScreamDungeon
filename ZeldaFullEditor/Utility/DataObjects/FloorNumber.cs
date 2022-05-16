@@ -3,12 +3,12 @@
 	public class FloorNumber
 	{
 		public string Name { get; }
-		public byte ByteValue { get; }
+		public byte Value { get; }
 
 		private FloorNumber(string n, byte v)
 		{
 			Name = n;
-			ByteValue = v;
+			Value = v;
 		}
 
 		public override string ToString() => Name;
@@ -20,7 +20,7 @@
 
 			for (int i = 0; i < floors.Length; i++)
 			{
-				if (b == floors[i].ByteValue)
+				if (b == floors[i].Value)
 				{
 					return i;
 				}

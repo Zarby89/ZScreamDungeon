@@ -42,7 +42,7 @@
 					}
 				}
 
-				o.Draw(TheGUI.RoomEditingArtist);
+				o.Draw(RoomEditingArtist);
 
 				e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.previewSpritesBitmap[o.ID], new Point((xpos * 64) + (xpos * 4), (ypos * 64) + (ypos * 4)));
 

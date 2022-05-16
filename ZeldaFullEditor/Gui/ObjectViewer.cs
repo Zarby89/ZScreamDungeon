@@ -127,7 +127,7 @@
 					}
 				}
 
-				o.Draw(TheGUI.RoomEditingArtist);
+				o.Draw(RoomEditingArtist);
 				if (palettes != null)
 				{
 					ZScreamer.ActiveGraphicsManager.previewObjectsBitmap[o.ID].Palette = palettes;

@@ -8,7 +8,7 @@
 		private OverworldSprite lastselectedSprite;
 
 
-		Gui.AddSprite addspr = new();
+		AddSprite addspr = new();
 
 		private void OnMouseDown_Sprites(MouseEventArgs e)
 		{
@@ -43,16 +43,13 @@
 			int data = (int) Clipboard.GetData(Constants.OverworldSpriteClipboardData);
 			if (data != -1)
 			{
-				selectedFormSprite = new OverworldSprite(SpriteType.Sprite00); // TODO
-				byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
-				if (mid == 255)
+				selectedFormSprite = new(SpriteType.Sprite00)
 				{
-					mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
-				}
+					MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID
+				}; // TODO
 
-				selectedFormSprite.MapID = mid;
 				int gs = ZS.OverworldManager.GameState;
-				if (mid >= 64 && gs == 0)
+				if (selectedFormSprite.MapID >= 64 && gs == 0)
 				{
 					throw new ZeldaException(NotInTheRain);
 				}
@@ -71,10 +68,6 @@
 			if (e.Button == MouseButtons.Left)
 			{
 				byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
-				if (mid == 255)
-				{
-					mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
-				}
 
 				if (selectedFormSprite != null)
 				{
@@ -160,20 +153,12 @@
 				}; // TODO
 				byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 
-				if (mid == 255)
-				{
-					mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
-				}
-
 				selectedFormSprite.MapID = mid;
 				int gs = ZS.OverworldManager.GameState;
 
-				if (mid >= 64)
+				if (mid >= 64 && gs == 0)
 				{
-					if (gs == 0)
-					{
-						throw new ZeldaException(NotInTheRain);
-					}
+					throw new ZeldaException(NotInTheRain);
 				}
 
 				ZS.OverworldManager.allsprites[gs].Add(selectedFormSprite);
@@ -228,7 +213,7 @@
 			{
 				var spr = ZS.OverworldManager.allsprites[ZS.OverworldManager.GameState][i];
 
-				if (lowEndMode && spr.MapID != ZS.OverworldManager.allmaps[CurrentMap].ParentMapID)
+				if (lowEndMode && spr.MapID != CurrentParentMapID)
 				{
 					continue;
 				}
@@ -259,15 +244,12 @@
 							break;
 
 						case TextView.AlwaysShowName:
+						case TextView.ShowNameOnHover when spr == selectedSprite || spr == hoveredEntity:
 							txt = $"{spr.ID:X2} - {spr.Name}";
 							break;
 
 						default:
 						case TextView.ShowNameOnHover:
-							if (spr == selectedSprite || spr == hoveredEntity)
-							{
-								goto case TextView.AlwaysShowName;
-							}
 							goto case TextView.NeverShowName;
 					}
 

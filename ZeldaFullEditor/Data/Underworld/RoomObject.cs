@@ -44,7 +44,7 @@
 
 		public TilesList Tiles { get; }
 
-		public List<Rectangle> CollisionRectangles { get; } = new List<Rectangle>();
+		public List<Rectangle> CollisionRectangles { get; } = new();
 
 		public RoomObject(RoomObjectType type, TilesList tiles)
 		{
@@ -118,34 +118,31 @@
 			return false;
 		}
 
-		public byte[] GetByteData()
+		public byte[] GetByteData() => ObjectType.ObjectSet switch
 		{
-			return ObjectType.ObjectSet switch
+			DungeonObjectSet.Subtype1 => new[]
 			{
-				DungeonObjectSet.Subtype1 => new byte[]
-				{
-						(byte) ((GridX << 2) | ((Size & 0x0C) >> 2)),
-						(byte) ((GridY << 2) | (Size & 0x03)),
-						(byte) ID
-				},
+					(byte) ((GridX << 2) | ((Size & 0x0C) >> 2)),
+					(byte) ((GridY << 2) | (Size & 0x03)),
+					(byte) ID
+			},
 
-				DungeonObjectSet.Subtype2 => new byte[]
-				{
-						(byte) (0xFC | (GridX >> 4)),
-						(byte) ((GridX << 4) | ((GridY & 0x3C) >> 2)),
-						(byte) ((GridY << 6) | (ID & 0x3F))
-				},
+			DungeonObjectSet.Subtype2 => new[]
+			{
+					(byte) (0xFC | (GridX >> 4)),
+					(byte) ((GridX << 4) | ((GridY & 0x3C) >> 2)),
+					(byte) ((GridY << 6) | (ID & 0x3F))
+			},
 
-				DungeonObjectSet.Subtype3 => new byte[]
-				{
-						(byte) ((GridX << 2) | (ID & 0x03)),
-						(byte) ((GridY << 2) | ((ID & 0x0C) >> 2)),
-						(byte) (0xF8 | ((ID & 0x70) >> 4))
-				},
+			DungeonObjectSet.Subtype3 => new[]
+			{
+					(byte) ((GridX << 2) | (ID & 0x03)),
+					(byte) ((GridY << 2) | ((ID & 0x0C) >> 2)),
+					(byte) (0xF8 | ((ID & 0x70) >> 4))
+			},
 
-				_ => Array.Empty<byte>(),
-			};
-		}
+			_ => Array.Empty<byte>(),
+		};
 	}
 
 	/// <summary>

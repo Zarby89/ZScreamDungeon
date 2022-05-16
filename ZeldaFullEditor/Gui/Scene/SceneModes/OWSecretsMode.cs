@@ -2,8 +2,19 @@
 {
 	public partial class SceneOW
 	{
-		public OverworldSecret SelectedSecret;
-		public OverworldSecret LastSelectedSecret;
+		private OverworldSecret lastsecret;
+
+		public OverworldSecret SelectedSecret { get; set; }
+		public OverworldSecret LastSelectedSecret {
+			get => lastsecret;
+			set
+			{
+				if (lastsecret == value) return;
+
+				lastsecret = value;
+				ZGUI.UpdateFormForSelectedObject(lastsecret);
+			}
+		}
 
 		private void OnMouseDown_Secrets(MouseEventArgs e)
 		{
@@ -46,12 +57,7 @@
 			{
 				if (SelectedSecret != null)
 				{
-					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
-					if (mid == 255)
-					{
-						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
-					}
-					SelectedSecret.MapID = mid;
+					SelectedSecret.MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 					LastSelectedSecret = SelectedSecret;
 					SelectedSecret = null;
 				}
@@ -142,7 +148,7 @@
 			g.CompositingMode = CompositingMode.SourceOver;
 			foreach (var item in ZS.OverworldManager.allitems)
 			{
-				if (lowEndMode && item.MapID != ZS.OverworldManager.allmaps[CurrentMap].ParentMapID)
+				if (lowEndMode && item.MapID != CurrentParentMapID)
 				{
 					continue;
 				}
@@ -173,15 +179,12 @@
 							break;
 
 						case TextView.AlwaysShowName:
+						case TextView.ShowNameOnHover when item == SelectedSecret || item == hoveredEntity:
 							txt = $"{item.ID:X2} - {item.Name}";
 							break;
 
 						default:
 						case TextView.ShowNameOnHover:
-							if (item == SelectedSecret || item == hoveredEntity)
-							{
-								goto case TextView.AlwaysShowName;
-							}
 							goto case TextView.NeverShowName;
 					}
 

@@ -115,25 +115,27 @@
 				range = new ValueRange(MaxValue, MinValue);
 			}
 
-			if (MaxValue < 0x10)
+			switch (MaxValue)
 			{
-				digitsFormat = Format1;
-				MaxLength = 1;
-			}
-			else if (MaxValue < 0x100)
-			{
-				digitsFormat = Format2;
-				MaxLength = 2;
-			}
-			else if (MaxValue < 0x1000)
-			{
-				digitsFormat = Format3;
-				MaxLength = 3;
-			}
-			else
-			{
-				digitsFormat = Format4;
-				MaxLength = 4;
+				case < 0x10:
+					digitsFormat = Format1;
+					MaxLength = 1;
+					break;
+
+				case < 0x100:
+					digitsFormat = Format2;
+					MaxLength = 2;
+					break;
+
+				case < 0x1000:
+					digitsFormat = Format3;
+					MaxLength = 3;
+					break;
+
+				default:
+					digitsFormat = Format4;
+					MaxLength = 4;
+					break;
 			}
 
 			EnforceRange();

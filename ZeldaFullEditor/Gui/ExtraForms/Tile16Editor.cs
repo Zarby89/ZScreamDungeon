@@ -51,7 +51,7 @@
 				}
 			}
 
-			ZScreamer.ActiveGraphicsManager.editort16Bitmap.Palette = ZScreamer.ActiveOWScene.CurrentScreen.MyArtist.Layer1Canvas.Palette;
+			ZScreamer.ActiveGraphicsManager.editort16Bitmap.Palette = ZScreamer.ActiveOWScene.CurrentMap.MyArtist.Layer1Canvas.Palette;
 			pictureboxTile8.Refresh();
 		}
 
@@ -91,8 +91,8 @@
 				for (int xs = 0; xs < 16 * 16; xs += 16)
 				{
 					e.Graphics.DrawLine(Constants.ThirdWhitePen1, xs, 0, xs, 1024);
-
 				}
+
 				for (int ys = 0; ys < 256 * 16; ys += 16)
 				{
 					e.Graphics.DrawLine(Constants.ThirdWhitePen1, 0, ys, 256, ys);
@@ -140,6 +140,7 @@
 					e.Graphics.DrawLine(Constants.White100Pen1, x, 0, x, 16000);
 
 				}
+
 				for (int y = 0; y < 512 * 32; y += 32)
 				{
 					e.Graphics.DrawLine(Constants.White100Pen1, 0, y, 256, y);
@@ -189,8 +190,8 @@
 			int offset = (e.X < 256) ? 0 : 1992;
 
 			int t16 = offset + (e.X / 32) + ((e.Y / 32) * 8);
-			int t8x = (e.X / 16) & 0x01;
-			int t8y = (e.Y / 16) & 0x01;
+			bool t8x = ((e.X / 16) & 0x01) == 0x01;
+			bool t8y = ((e.Y / 16) & 0x01) == 0x01;
 
 			// When left clicked, draw the tile 8 selected in the corrisponding quadrant of the tile 16
 			if (e.Button == MouseButtons.Left)
@@ -202,28 +203,13 @@
 					mirrorXCheckbox.Checked,
 					mirrorYCheckbox.Checked);
 
-				if (t8x == 0)
+				allTiles[t16] = (t8x, t8y) switch
 				{
-					if (t8y == 0)
-					{
-						allTiles[t16] = allTiles[t16].ChangeTiles(tile0: t);
-					}
-					else
-					{
-						allTiles[t16] = allTiles[t16].ChangeTiles(tile2: t);
-					}
-				}
-				else
-				{
-					if (t8y == 0)
-					{
-						allTiles[t16] = allTiles[t16].ChangeTiles(tile1: t);
-					}
-					else
-					{
-						allTiles[t16] = allTiles[t16].ChangeTiles(tile3: t);
-					}
-				}
+					(false, false) => allTiles[t16].ChangeTiles(tile0: t),
+					(false, true) => allTiles[t16].ChangeTiles(tile2: t),
+					(true, false) => allTiles[t16].ChangeTiles(tile1: t),
+					(true, true) => allTiles[t16].ChangeTiles(tile3: t),
+				};
 
 				BuildTiles16Gfx();
 				pictureboxTile16.Refresh();
@@ -231,28 +217,13 @@
 			// When right clicked, get the select the tile 8 from the corrisponding quadrant of the tile 16
 			else
 			{
-				if (t8x == 0)
+				updateTileInfoFrom16((t8x, t8y) switch
 				{
-					if (t8y == 0)
-					{
-						updateTileInfoFrom16(allTiles[t16].Tile0);
-					}
-					else
-					{
-						updateTileInfoFrom16(allTiles[t16].Tile2);
-					}
-				}
-				else
-				{
-					if (t8y == 0)
-					{
-						updateTileInfoFrom16(allTiles[t16].Tile1);
-					}
-					else
-					{
-						updateTileInfoFrom16(allTiles[t16].Tile3);
-					}
-				}
+					(false, false) => allTiles[t16].Tile0,
+					(false, true) => allTiles[t16].Tile2,
+					(true, false) => allTiles[t16].Tile1,
+					(true, true) => allTiles[t16].Tile3,
+				});
 			}
 		}
 
@@ -341,7 +312,7 @@
 				byte* allgfxData = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer(); // All gfx of the game pack of 2048 bytes (4bpp)
 				for (int i = 0, i4 = 0; i < 16; i++, i4 += 2048)
 				{
-					int i2 = ZScreamer.ActiveOWScene.CurrentScreen.staticgfx[i] * 2048;
+					int i2 = ZScreamer.ActiveOWScene.CurrentMap.staticgfx[i] * 2048;
 					var i3 = i switch
 					{
 						0 or 3 or 4 or 5 => 0x88,
@@ -374,7 +345,7 @@
 			//	ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = true;
 			//}
 
-			ZScreamer.ActiveOWScene.CurrentScreen.HardRefresh();
+			ZScreamer.ActiveOWScene.CurrentMap.HardRefresh();
 
 			Close();
 		}
@@ -401,9 +372,9 @@
 		private void pictureboxTile8_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
 			ZGUI.editorsTabControl.SelectedIndex = 2;
-			ZGUI.gfxEditor.selectedSheet = ZScreamer.ActiveOWScene.CurrentScreen.staticgfx[(e.Y / 64)];
+			ZGUI.gfxEditor.selectedSheet = ZScreamer.ActiveOWScene.CurrentMap.staticgfx[(e.Y / 64)];
 			ZGUI.gfxEditor.allgfxPicturebox.Refresh();
-			this.Close();
+			Close();
 		}
 
 		private void Tile16Editor_Shown(object sender, EventArgs e)

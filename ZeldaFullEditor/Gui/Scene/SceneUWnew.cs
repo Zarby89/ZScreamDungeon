@@ -1,18 +1,12 @@
-﻿
-using ZeldaFullEditor.SceneModes;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public partial class SceneUW : Scene
 	{
-		public Bitmap tempBitmap = new(512, 512);
 		Rectangle lastSelectedRectangle;
 
 		public DungeonEditMode CurrentMode => ZS.CurrentUWMode;
 
 		bool resizing = false;
-		public bool showLayer1;
-		public bool showLayer2;
 
 		private readonly ModeActions layer1Mode;
 		private readonly ModeActions layer2Mode;
@@ -42,6 +36,8 @@ namespace ZeldaFullEditor
 		private readonly Rectangle[] DoorRectangles;
 		public SceneUW(ZScreamer zs) : base(zs)
 		{
+			Size = Constants.SupertileSize;
+
 			DoorRectangles = BuildDoorRectangles();
 
 			layer1Mode = layer2Mode = layer3Mode =
@@ -76,49 +72,29 @@ namespace ZeldaFullEditor
 
 		public void UpdateForMode(DungeonEditMode e)
 		{
-			Layer = RoomLayer.None;
-			switch (e)
+			ActiveMode = e switch
 			{
-				case DungeonEditMode.Layer1:
-					ActiveMode = layer1Mode;
-					Layer = RoomLayer.Layer1;
-					break;
-				case DungeonEditMode.Layer2:
-					ActiveMode = layer2Mode;
-					Layer = RoomLayer.Layer2;
-					break;
-				case DungeonEditMode.Layer3:
-					ActiveMode = layer3Mode;
-					Layer = RoomLayer.Layer3;
-					break;
-				case DungeonEditMode.LayerAll:
-					ActiveMode = layerAllMode;
-					break;
-				case DungeonEditMode.Sprites:
-					ActiveMode = spriteMode;
-					break;
-				case DungeonEditMode.Secrets:
-					ActiveMode = secretsMode;
-					break;
-				case DungeonEditMode.Blocks:
-					ActiveMode = blockMode;
-					break;
-				case DungeonEditMode.Torches:
-					ActiveMode = torchMode;
-					break;
-				case DungeonEditMode.Doors:
-					ActiveMode = doorMode;
-					break;
-				case DungeonEditMode.CollisionMap:
-					ActiveMode = collisionMode;
-					break;
-				case DungeonEditMode.Entrances:
-					ActiveMode = entranceMode;
-					break;
-			}
+				DungeonEditMode.Layer1 => layer1Mode,
+				DungeonEditMode.Layer2 => layer2Mode,
+				DungeonEditMode.Layer3 => layer3Mode,
+				DungeonEditMode.LayerAll => layerAllMode,
+				DungeonEditMode.Sprites => spriteMode,
+				DungeonEditMode.Secrets => secretsMode,
+				DungeonEditMode.Blocks => blockMode,
+				DungeonEditMode.Torches => torchMode,
+				DungeonEditMode.Doors => doorMode,
+				DungeonEditMode.CollisionMap => collisionMode,
+				DungeonEditMode.Entrances => entranceMode,
+				_ => ModeActions.Nothing
+			};
 
-			// Room.update();
-			// TriggerRefresh = true;
+			Layer = e switch
+			{
+				DungeonEditMode.Layer1 => RoomLayer.Layer1,
+				DungeonEditMode.Layer2 => RoomLayer.Layer2,
+				DungeonEditMode.Layer3 => RoomLayer.Layer3,
+				_ => RoomLayer.None
+			};
 		}
 
 		public void MoveSelectedObjects()
@@ -153,8 +129,8 @@ namespace ZeldaFullEditor
 
 			// TODO ROOM.DRAW()
 
-			TheGUI.RoomEditingArtist.CurrentRoom = Room;
-			TheGUI.RoomEditingArtist.HardRefresh();
+			RoomEditingArtist.CurrentRoom = Room;
+			RoomEditingArtist.HardRefresh();
 
 			Refresh();
 		}
@@ -169,10 +145,7 @@ namespace ZeldaFullEditor
 
 		protected override void OnMouseDown(object sender, MouseEventArgs e)
 		{
-			if (Room == null)
-			{
-				return;
-			}
+			if (Room is null) return;
 
 			base.OnMouseDown(sender, e);
 		}
@@ -192,15 +165,6 @@ namespace ZeldaFullEditor
 		public void clearCustomCollisionMap()
 		{
 			throw new NotImplementedException();
-		}
-
-		public bool isMouseCollidingWith(IMouseCollidable o, MouseEventArgs e)
-		{
-			ZGUI.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
-
-			// TODO
-
-			return o.PointIsInHitbox(MX, MY);
 		}
 
 		public void getObjectsRectangle()
@@ -228,7 +192,7 @@ namespace ZeldaFullEditor
 				return;
 			}
 
-			TheGUI.RoomEditingArtist.DrawSelfToImage(g);
+			RoomEditingArtist.DrawSelfToImage(g);
 
 			// Draw selection
 			Pen selectionColor = MouseIsDown ? Pens.LimeGreen : Pens.Green;

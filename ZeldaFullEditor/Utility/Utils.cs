@@ -7,11 +7,11 @@
 			return (addr1 << 16) | (addr2 << 8) | addr3;
 		}
 
-		public static byte[] DeepCopy(this byte[] a)
+		public static T[] DeepCopy<T>(this T[] a) where T : struct
 		{
-			byte[] ret = new byte[a.Length];
+			T[] ret = new T[a.Length];
 			int i = 0;
-			foreach (byte b in a)
+			foreach (var b in a)
 			{
 				ret[i++] = b;
 			}
@@ -62,7 +62,7 @@
 
 		public static void DrawFilledRectangleWithOutline(this Graphics g, int x, int y, int w, int h, Pen outline, Brush fill)
 		{
-			Rectangle r = new Rectangle(x, y, w, h);
+			var r = new Rectangle(x, y, w, h);
 			g.FillRectangle(fill, r);
 			g.DrawRectangle(outline, r);
 		}
@@ -72,6 +72,17 @@
 			g.FillRectangle(fill, r);
 			g.DrawRectangle(outline, r);
 		}
+
+		/// <summary>
+		/// Specific 
+		/// <see cref="Graphics.DrawImage(Image, Rectangle, int, int, int, int, GraphicsUnit, ImageAttributes?)">Graphics.DrawImage</see>
+		/// call for a 512 by 512 screen with <see cref="GraphicsUnit.Pixel"/>
+		/// </summary>
+		public static void DrawScreen(this Graphics g, Image image, ImageAttributes? imageAttr = null)
+		{
+			g.DrawImage(image, Constants.ScreenSizedRectangle, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAttr);
+		}
+
 
 
 		public static void DrawText(this Graphics g, int x, int y, string text, ImageAttributes ai = null, bool x2 = false)

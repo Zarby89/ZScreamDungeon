@@ -36,20 +36,17 @@ namespace ZeldaFullEditor.Gui
 		public OverworldEditor()
 		{
 			InitializeComponent();
+			AuxTabs = OverworldAuxSideTabs.TabPages;
 		}
-		public void InitOpen()
+		public void OnProjectLoad()
 		{
 			//scene = new SceneOW(this, mainForm);
-			ZScreamer.ActiveOWScene.Location = Constants.Point_0_0;
-			ZScreamer.ActiveOWScene.Size = Constants.Size4096x4096;
 			splitContainer1.Panel2.Controls.Clear();
 			splitContainer1.Panel2.Controls.Add(ZScreamer.ActiveOWScene);
 			ZScreamer.ActiveOWScene.CreateScene();
-			ZScreamer.ActiveOWScene.initialized = true;
 			ZScreamer.ActiveOWScene.Refresh();
 			stateCombobox.SelectedIndex = 1;
 			scratchPicturebox.Image = scratchPadBitmap;
-			AuxTabs = OverworldAuxSideTabs.TabPages;
 			SwapInAuxTab(null);
 			AuxTabs.Remove(Tiles8);
 			//setTilesGfx();
@@ -73,7 +70,7 @@ namespace ZeldaFullEditor.Gui
 				}
 			}
 
-			ZScreamer.ActiveGraphicsManager.editort16Bitmap.Palette = ZScreamer.ActiveOWScene.CurrentScreen.MyArtist.Layer1Canvas.Palette;
+			ZScreamer.ActiveGraphicsManager.editort16Bitmap.Palette = ZScreamer.ActiveOWScene.CurrentMap.MyArtist.Layer1Canvas.Palette;
 			updateTiles();
 			pictureBox1.Refresh();
 		}
@@ -111,25 +108,15 @@ namespace ZeldaFullEditor.Gui
 
 		public void UpdateForMode(OverworldEditMode m)
 		{
-			switch (m)
+			var s = m switch
 			{
-				case OverworldEditMode.Entrances:
-					SwapInAuxTab(OWTabEntranceProps);
-					break;
+				OverworldEditMode.Entrances => OWTabEntranceProps,
+				OverworldEditMode.Exits => OWTabExitProps,
+				OverworldEditMode.Transports => OWTabTransportProps,
+				_ => null
+			};
 
-				case OverworldEditMode.Exits:
-					SwapInAuxTab(OWTabExitProps);
-					break;
-
-				case OverworldEditMode.Transports:
-					SwapInAuxTab(OWTabTransportProps);
-					break;
-
-				default:
-					SwapInAuxTab(null);
-					break;
-
-			}
+			SwapInAuxTab(s);
 		}
 		private void SwapInAuxTab(TabPage t)
 		{
@@ -228,7 +215,7 @@ namespace ZeldaFullEditor.Gui
 		{
 			if (!propertiesChangedFromForm)
 			{
-				OverworldScreen screen = ZScreamer.ActiveOWScene.CurrentScreen.ParentMap;
+				OverworldScreen screen = ZScreamer.ActiveOWScene.CurrentMap.ParentMap;
 
 				screen.ScreenPalette = (byte) OWProperty_BGPalette.HexValue;
 				screen.Tileset = (byte) OWProperty_BGGFX.HexValue;
@@ -344,8 +331,7 @@ namespace ZeldaFullEditor.Gui
 		private void SelectMapOffset(Worldiness o)
 		{
 			ZScreamer.ActiveOW.World = o;
-			ZScreamer.ActiveOWScene.CurrentMap = (int) o;
-			ZScreamer.ActiveOWScene.CurrentMapParent = ZScreamer.ActiveOW.allmaps[(int) o].ParentMapID;
+			ZScreamer.ActiveOWScene.CurrentMapID = (int) o;
 			ZScreamer.ActiveOWScene.Refresh();
 		}
 
@@ -392,19 +378,19 @@ namespace ZeldaFullEditor.Gui
 		{
 			OWMusicForm owmf = new OWMusicForm
 			{
-				mapIndex = (byte) ZScreamer.ActiveOWScene.CurrentMap
+				mapIndex = (byte) ZScreamer.ActiveOWScene.CurrentMapID
 			};
-			owmf.musics[0] = ZScreamer.ActiveOWScene.CurrentScreen.musics[0];
-			owmf.musics[1] = ZScreamer.ActiveOWScene.CurrentScreen.musics[1];
-			owmf.musics[2] = ZScreamer.ActiveOWScene.CurrentScreen.musics[2];
-			owmf.musics[3] = ZScreamer.ActiveOWScene.CurrentScreen.musics[3];
+			owmf.musics[0] = ZScreamer.ActiveOWScene.CurrentMap.musics[0];
+			owmf.musics[1] = ZScreamer.ActiveOWScene.CurrentMap.musics[1];
+			owmf.musics[2] = ZScreamer.ActiveOWScene.CurrentMap.musics[2];
+			owmf.musics[3] = ZScreamer.ActiveOWScene.CurrentMap.musics[3];
 
 			if (owmf.ShowDialog() == DialogResult.OK)
 			{
-				ZScreamer.ActiveOWScene.CurrentScreen.musics[0] = owmf.musics[0];
-				ZScreamer.ActiveOWScene.CurrentScreen.musics[1] = owmf.musics[1];
-				ZScreamer.ActiveOWScene.CurrentScreen.musics[2] = owmf.musics[2];
-				ZScreamer.ActiveOWScene.CurrentScreen.musics[3] = owmf.musics[3];
+				ZScreamer.ActiveOWScene.CurrentMap.musics[0] = owmf.musics[0];
+				ZScreamer.ActiveOWScene.CurrentMap.musics[1] = owmf.musics[1];
+				ZScreamer.ActiveOWScene.CurrentMap.musics[2] = owmf.musics[2];
+				ZScreamer.ActiveOWScene.CurrentMap.musics[3] = owmf.musics[3];
 			}
 		}
 
@@ -430,7 +416,7 @@ namespace ZeldaFullEditor.Gui
 				}
 				else
 				{
-					cp.Entries[i] = TheGUI.RoomEditingArtist.Layer1Canvas.Palette.Entries[(defaultColor * 4) + i];
+					cp.Entries[i] = RoomEditingArtist.Layer1Canvas.Palette.Entries[(defaultColor * 4) + i];
 				}
 			}
 
@@ -819,7 +805,7 @@ namespace ZeldaFullEditor.Gui
 			}
 
 			//Bitmap b = new Bitmap(128, 512, 64, System.Drawing.Imaging.PixelFormat.Format4bppIndexed, ZScreamer.ActiveGraphicsManager.currentOWgfx16Ptr);
-			ZScreamer.ActiveGraphicsManager.editort16Bitmap.Palette = ZScreamer.ActiveOWScene.CurrentScreen.MyArtist.Layer1Canvas.Palette;
+			ZScreamer.ActiveGraphicsManager.editort16Bitmap.Palette = ZScreamer.ActiveOWScene.CurrentMap.MyArtist.Layer1Canvas.Palette;
 			pictureBox1.Refresh();
 			palette8Box.Refresh();
 		}
@@ -860,7 +846,7 @@ namespace ZeldaFullEditor.Gui
 
 			for (int i = 0; i < 128; i++)
 			{
-				Color c = ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.CurrentMap].MyArtist.Layer1Canvas.Palette.Entries[i];
+				Color c = ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.CurrentMapID].MyArtist.Layer1Canvas.Palette.Entries[i];
 				e.Graphics.FillRectangle(new SolidBrush(c), new Rectangle(i % 16 * 16, i & ~0xF, 16, 16));
 			}
 
@@ -934,14 +920,7 @@ namespace ZeldaFullEditor.Gui
 		{
 			if (!propertiesChangedFromForm)
 			{
-				OverworldScreen mapParent = ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.CurrentMap].ParentMapID];
-
-				if (ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.CurrentMap].ParentMapID == 255)
-				{
-					mapParent = ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.CurrentMap];
-				}
-
-				ZScreamer.ActiveOWScene.CurrentScreen.MessageID = (ushort) OWProperty_MessageID.HexValue;
+				ZScreamer.ActiveOWScene.CurrentMap.MessageID = (ushort) OWProperty_MessageID.HexValue;
 
 				ZScreamer.ActiveScreamer.SetSelectedMessageID(OWProperty_MessageID.HexValue);
 				previewTextPicturebox.Size = new Size(340, 102);
@@ -956,7 +935,7 @@ namespace ZeldaFullEditor.Gui
 			{
 				for (int x = 0; x < 32; x++)
 				{
-					ZScreamer.ActiveOWScene.CurrentScreen.tilesUsed[x, y] = 0052;
+					ZScreamer.ActiveOWScene.CurrentMap.tilesUsed[x, y] = 0052;
 
 					//overworld.allmapsTilesLW[x, y] = 0052;
 				}
@@ -967,7 +946,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void tilePictureBox_MouseEnter(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveOWScene.CurrentScreen.HardRefresh();
+			ZScreamer.ActiveOWScene.CurrentMap.HardRefresh();
 			tilePictureBox.Refresh();
 		}
 
@@ -1033,47 +1012,50 @@ namespace ZeldaFullEditor.Gui
 		{
 			if (propertiesChangedFromForm) return;
 
-			byte sel = ZScreamer.ActiveOWScene.CurrentScreen.ParentMapID;
+			byte sel = ZScreamer.ActiveOWScene.CurrentMap.ParentMapID;
 
-			// Prevent big maps on the edges
-			if (((sel & 0x3F) > 0x37) || sel.BitsAllSet(0x07))
+			if (largemapCheckbox.Checked)
 			{
-				UIText.GeneralWarning("Maps on the edge of the screen cannot be made the origin of a large map.");
-
-				largemapCheckbox.Checked = false;
-				return;
-			}
-
-			// Search for adjacent maps already being large
-			bool big1 = ZScreamer.ActiveOW.allmaps[sel + 1].IsPartOfLargeMap;
-			bool big2 = ZScreamer.ActiveOW.allmaps[sel + 8].IsPartOfLargeMap;
-			bool big3 = ZScreamer.ActiveOW.allmaps[sel + 9].IsPartOfLargeMap;
-
-			if (big1 || big2 || big3)
-			{
-				StringBuilder no = new StringBuilder(4);
-				no.Append($"Unable to make map {sel:X2} large because the following large maps are overlapping it:\n");
-
-				if (big1)
+				// Prevent big maps on the edges
+				if (((sel & 0x3F) > 0x37) || sel.BitsAllSet(0x07))
 				{
-					no.Append($"{sel + 1:X2} ");
+					UIText.GeneralWarning("Maps on the edge of the screen cannot be made the origin of a large map.");
+
+					largemapCheckbox.Checked = false;
+					return;
 				}
 
-				if (big2)
+				// Search for adjacent maps already being large
+				bool big1 = ZScreamer.ActiveOW.allmaps[sel + 1].IsPartOfLargeMap;
+				bool big2 = ZScreamer.ActiveOW.allmaps[sel + 8].IsPartOfLargeMap;
+				bool big3 = ZScreamer.ActiveOW.allmaps[sel + 9].IsPartOfLargeMap;
+
+				if (big1 || big2 || big3)
 				{
-					no.Append($"{sel + 8:X2} ");
+					StringBuilder no = new StringBuilder(4);
+					no.Append($"Unable to make map {sel:X2} large because the following large maps are overlapping it:\n");
+
+					if (big1)
+					{
+						no.Append($"{sel + 1:X2} ");
+					}
+
+					if (big2)
+					{
+						no.Append($"{sel + 8:X2} ");
+					}
+
+					if (big3)
+					{
+						no.Append($"{sel + 9:X2}");
+					}
+
+					UIText.GeneralWarning(no.ToString());
+
+					largemapCheckbox.Checked = false;
+					return;
 				}
-
-				if (big3)
-				{
-					no.Append($"{sel + 9:X2}");
-				}
-
-				UIText.GeneralWarning(no.ToString());
-
-				largemapCheckbox.Checked = false;
-				return;
-			}
+			} // End of failure to make map big
 
 			bool big = largemapCheckbox.Checked;
 			byte sel2 = (byte) (sel ^ 64);
@@ -1204,7 +1186,7 @@ namespace ZeldaFullEditor.Gui
 		}
 
 		private static readonly Predicate<OverworldEntity> removeFromMap =
-			new(o => o.MapID == ZScreamer.ActiveOWScene.CurrentMapParent);
+			new(o => o.MapID == ZScreamer.ActiveOWScene.CurrentParentMapID);
 
 		/// <summary>
 		/// Clears all overworld sprites of the selected stage (beginning, 1st, and 2nd phase)
@@ -1230,12 +1212,12 @@ namespace ZeldaFullEditor.Gui
 		{
 			foreach (OverworldEntrance entrance in ZScreamer.ActiveOW.allentrances)
 			{
-				if (entrance.MapID == ZScreamer.ActiveOWScene.CurrentMapParent)
+				if (entrance.MapID == ZScreamer.ActiveOWScene.CurrentParentMapID)
 				{
 					entrance.GlobalX = Constants.NullEntrance;
 					entrance.GlobalY = Constants.NullEntrance;
 					entrance.MapID = 0xFF;
-					entrance.mapPos = Constants.NullEntrance;
+					entrance.Map16Index = Constants.NullEntrance;
 					entrance.TargetEntranceID = 0;
 				}
 			}
@@ -1248,12 +1230,12 @@ namespace ZeldaFullEditor.Gui
 		{
 			foreach (var hole in ZScreamer.ActiveOW.allholes)
 			{
-				if (hole.MapID == ZScreamer.ActiveOWScene.CurrentMapParent)
+				if (hole.MapID == ZScreamer.ActiveOWScene.CurrentParentMapID)
 				{
 					hole.MapID = 0xFF;
 					hole.GlobalX = Constants.NullEntrance;
 					hole.GlobalY = Constants.NullEntrance;
-					hole.mapPos = Constants.NullEntrance;
+					hole.Map16Index = Constants.NullEntrance;
 					hole.TargetEntranceID = 0;
 				}
 			}
@@ -1266,7 +1248,7 @@ namespace ZeldaFullEditor.Gui
 		{
 			foreach (var exit in ZScreamer.ActiveOW.allexits)
 			{
-				if (exit.MapID == ZScreamer.ActiveOWScene.CurrentMapParent)
+				if (exit.MapID == ZScreamer.ActiveOWScene.CurrentParentMapID)
 				{
 					exit.MapID = 0xFF;
 					exit.GlobalX = Constants.NullEntrance;
@@ -1281,7 +1263,7 @@ namespace ZeldaFullEditor.Gui
 		/// </summary>
 		public void clearAreaOverlays()
 		{
-			ZScreamer.ActiveOW.alloverlays[ZScreamer.ActiveOWScene.CurrentMapParent].tilesData.Clear();
+			ZScreamer.ActiveOW.alloverlays[ZScreamer.ActiveOWScene.CurrentParentMapID].tilesData.Clear();
 			ZScreamer.ActiveOWScene.Refresh();
 		}
 
@@ -1297,7 +1279,7 @@ namespace ZeldaFullEditor.Gui
 				areaBGColorPictureBox.Refresh();
 			}
 
-			ZScreamer.ActiveOWScene.CurrentScreen.MyArtist.ReloadPalettes();
+			ZScreamer.ActiveOWScene.CurrentMap.MyArtist.ReloadPalettes();
 		}
 
 		private void AreaBGColorPicturebox_Paint(object sender, PaintEventArgs e)

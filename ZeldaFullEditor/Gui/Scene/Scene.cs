@@ -1,24 +1,22 @@
-﻿using ZeldaFullEditor.SceneModes;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public class Scene : PictureBox
 	{
-		public readonly ZScreamer ZS;
+		protected ZScreamer ZS { get; }
 		public bool IsUpdating { get; set; }
 		public bool MouseIsDown { get; set; }
 
-		protected int MouseX;
-		protected int MouseY;
-		protected int MoveX;
-		protected int MoveY;
-		protected int LastX;
-		protected int LastY;
+		protected int MouseX { get; set; }
+		protected int MouseY { get; set; }
+		protected int MoveX { get; set; }
+		protected int MoveY { get; set; }
+		protected int LastX { get; set; }
+		protected int LastY { get; set; }
 
-		protected int RightClickedXAt;
-		protected int RightClickedYAt;
+		protected int RightClickedXAt { get; set; }
+		protected int RightClickedYAt { get; set; }
 
-		protected bool IsLeftPress = false;
+		protected bool IsLeftPress { get; set; } = false;
 
 		protected ModeActions ActiveMode { get; set; } = ModeActions.Nothing;
 

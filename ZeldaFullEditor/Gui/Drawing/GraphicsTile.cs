@@ -25,7 +25,6 @@
 
 		public byte GetPixelAt(int x, int y, bool hflip, bool vflip)
 		{
-
 			return _data[(hflip ? 7 - x : x) + (8 * (vflip ? 7 - y : y))];
 		}
 	}
@@ -50,7 +49,7 @@
 			x = hflip ? 15 - x : x;
 			y = vflip ? 15 - y : y;
 
-			throw new NotImplementedException("Hello BhaaLseN");
+			throw new NotImplementedException();
 
 			return (x, y) switch
 			{

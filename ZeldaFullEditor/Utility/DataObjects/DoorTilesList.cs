@@ -10,35 +10,23 @@
 
 		private const int TilesPerDoor = 24;
 
-		public Tile this[DoorDirection d, int i]
+		public Tile this[DoorDirection d, int i] => d switch
 		{
-			get
-			{
-				return d switch
-				{
-					DoorDirection.North => North[i],
-					DoorDirection.South => South[i],
-					DoorDirection.West => West[i],
-					DoorDirection.East => East[i],
-					_ => Tile.Empty,
-				};
-			}
-		}
+			DoorDirection.North => North[i],
+			DoorDirection.South => South[i],
+			DoorDirection.West => West[i],
+			DoorDirection.East => East[i],
+			_ => Tile.Empty,
+		};
 
-		public TilesList this[DoorDirection d]
+		public TilesList this[DoorDirection d] => d switch
 		{
-			get
-			{
-				return d switch
-				{
-					DoorDirection.North => North,
-					DoorDirection.South => South,
-					DoorDirection.West => West,
-					DoorDirection.East => East,
-					_ => null,
-				};
-			}
-		}
+			DoorDirection.North => North,
+			DoorDirection.South => South,
+			DoorDirection.West => West,
+			DoorDirection.East => East,
+			_ => null,
+		};
 
 		public static readonly DoorTilesList EmptySet =
 			new(TilesList.EmptySet, TilesList.EmptySet, TilesList.EmptySet, TilesList.EmptySet);

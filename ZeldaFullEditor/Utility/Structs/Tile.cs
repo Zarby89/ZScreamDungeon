@@ -6,6 +6,9 @@
 	[Serializable]
 	public readonly struct Tile : IByteable
 	{
+		/// <summary>
+		/// 10-bit tile name
+		/// </summary>
 		public ushort ID { get; }
 
 		/// <summary>
@@ -27,20 +30,7 @@
 
 		public static readonly Tile Empty = new(0);
 
-		public Tile(byte b1, byte b2) // Tile from game data
-		{
-			ID = (ushort) (((b2 & 0x01) << 8) | b1);
-
-			VFlip = (b2 & 0x80) == 0x80;
-
-			HFlip = (b2 & 0x40) == 0x40;
-
-			Priority = (b2 & 0x20) == 0x20;
-
-			Palette = (byte) ((b2 >> 2) & 0x07);
-		}
-
-		public Tile(ushort id, byte palette, bool priority, bool hflip, bool vflip) // Custom tile
+		public Tile(ushort id, byte palette, bool priority, bool hflip, bool vflip)
 		{
 			ID = (ushort) (id & Constants.TileNameMask);
 

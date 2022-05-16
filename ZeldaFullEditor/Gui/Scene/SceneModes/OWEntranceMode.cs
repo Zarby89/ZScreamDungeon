@@ -2,16 +2,9 @@
 {
 	public partial class SceneOW
 	{
-		private OverworldEntrance selentrance, lastentrance;
+		private OverworldEntrance lastentrance;
 
-		public OverworldEntrance SelectedEntrance
-		{
-			get => selentrance;
-			set
-			{
-				selentrance = value;
-			}
-		}
+		public OverworldEntrance SelectedEntrance { get; set; }
 
 		public OverworldEntrance LastSelectedEntrance
 		{
@@ -20,8 +13,9 @@
 			{
 				if (lastentrance == value) return;
 
-				ZGUI.OverworldEditor.SetSelectedEntrance(lastentrance);
 				lastentrance = value;
+				ZGUI.OverworldEditor.SetSelectedEntrance(lastentrance);
+				ZGUI.UpdateFormForSelectedObject(lastentrance);
 			}
 		}
 
@@ -31,7 +25,7 @@
 			bool ishole = false;
 			if (clipboard)
 			{
-				OverworldEntrance data = (OverworldEntrance) Clipboard.GetData(Constants.OverworldEntranceClipboardData);
+				var data = (OverworldEntrance) Clipboard.GetData(Constants.OverworldEntranceClipboardData);
 				if (data != null)
 				{
 					entranceID = data.TargetEntranceID;
@@ -39,7 +33,7 @@
 				}
 			}
 
-			OverworldEntrance[] list = ishole ? ZS.OverworldManager.allholes : ZS.OverworldManager.allentrances;
+			var list = ishole ? ZS.OverworldManager.allholes : ZS.OverworldManager.allentrances;
 			OverworldEntrance found = null;
 
 			foreach (var e in list)
@@ -51,7 +45,7 @@
 				}
 			}
 
-			if (found == null)
+			if (found is null)
 			{
 				if (ishole)
 				{
@@ -63,13 +57,7 @@
 				}
 			}
 
-			byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
-			if (mid == 255)
-			{
-				mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
-			}
-
-			found.MapID = mid;
+			found.MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 			found.GlobalX = (ushort) (mxRightclick & ~0x0F);
 			found.GlobalY = (ushort) (myRightclick & ~0x0F);
 			found.TargetEntranceID = entranceID;
@@ -83,20 +71,8 @@
 
 		private void OnMouseDown_Entrance(MouseEventArgs e)
 		{
-			var f = new Func<OverworldEntrance[], OverworldEntrance>(list =>
-			{
-				foreach (var en in list)
-				{
-					if (en.IsInThisWorld(ZS.OverworldManager.World) && en.MouseIsInHitbox(e))
-					{
-						return en;
-					}
-				}
 
-				return null;
-			});
-
-			LastSelectedEntrance = f(ZS.OverworldManager.allentrances) ?? f(ZS.OverworldManager.allholes);
+			LastSelectedEntrance = GetEntrance(ZS.OverworldManager.allentrances) ?? GetEntrance(ZS.OverworldManager.allholes);
 
 			if (e.Button == MouseButtons.Left)
 			{
@@ -114,7 +90,20 @@
 			int roomId = ZS.entrances[SelectedEntrance.TargetEntranceID].RoomID;
 			if (roomId >= Constants.NumberOfRooms) return;
 
-			TheGUI.RoomPreviewArtist.SetRoomAndDrawImmediately(ZS.all_rooms[roomId]);
+			RoomPreviewArtist.SetRoomAndDrawImmediately(ZS.all_rooms[roomId]);
+
+			OverworldEntrance GetEntrance(OverworldEntrance[] list)
+			{
+				foreach (var en in list)
+				{
+					if (en.IsInThisWorld(ZS.OverworldManager.World) && en.MouseIsInHitbox(e))
+					{
+						return en;
+					}
+				}
+
+				return null;
+			}
 		}
 
 		public void DrawTempEntrance()
@@ -165,10 +154,9 @@
 
 		private void Delete_Entrance()
 		{
-			LastSelectedEntrance.GlobalX = 0xFFFF;
-			LastSelectedEntrance.GlobalY = 0xFFFF;
+			LastSelectedEntrance.GlobalX = Constants.NullEntrance;
+			LastSelectedEntrance.GlobalY = Constants.NullEntrance;
 			LastSelectedEntrance.MapID = 0;
-			LastSelectedEntrance.mapPos = 0xFFFF;
 			LastSelectedEntrance.TargetEntranceID = 0;
 		}
 
@@ -204,12 +192,7 @@
 			{
 				if (SelectedEntrance != null)
 				{
-					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
-					if (mid == 255)
-					{
-						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
-					}
-					SelectedEntrance.MapID = mid;
+					SelectedEntrance.MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 					SelectedEntrance = null;
 				}
 			}
@@ -282,12 +265,7 @@
 			{
 				if (ZS.OverworldManager.allentrances[i].Deleted)
 				{
-					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
-					if (mid == 255)
-					{
-						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
-					}
-					ZS.OverworldManager.allentrances[i].MapID = mid;
+					ZS.OverworldManager.allentrances[i].MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 					ZS.OverworldManager.allentrances[i].GlobalX = (ushort) (mxRightclick & ~0xF);
 					ZS.OverworldManager.allentrances[i].GlobalY = (ushort) (myRightclick & ~0xF);
 					return;
@@ -307,7 +285,10 @@
 			Brush bgrBrush;
 			Pen outline;
 
-			var draw = new Action<IEnumerable<OverworldEntrance>, SolidBrush, SolidBrush>((list, col, sel) =>
+			DrawEntranceList(ZS.OverworldManager.allentrances, UIColors.EntranceBrush, UIColors.EntranceSelectedBrush);
+			DrawEntranceList(ZS.OverworldManager.allholes, UIColors.HoleEntranceBrush, UIColors.HoleEntranceSelectedBrush);
+
+			void DrawEntranceList(IEnumerable<OverworldEntrance> list, SolidBrush col, SolidBrush sel)
 			{
 				int i = 0;
 				foreach (var ent in list)
@@ -338,15 +319,12 @@
 								break;
 
 							case TextView.AlwaysShowName:
+							case TextView.ShowNameOnHover when ent == SelectedEntrance || ent == hoveredEntity:
 								txt = $"{i:X2} is {ent.TargetEntranceID:X2} to {ZS.all_rooms[ZS.entrances[ent.TargetEntranceID].RoomID].Name}";
 								break;
 
 							default:
 							case TextView.ShowNameOnHover:
-								if (ent == SelectedEntrance || ent == hoveredEntity)
-								{
-									goto case TextView.AlwaysShowName;
-								}
 								goto case TextView.NeverShowName;
 						}
 
@@ -356,10 +334,7 @@
 						i++;
 					}
 				}
-			}); // end draw Action
-
-			draw(ZS.OverworldManager.allentrances, UIColors.EntranceBrush, UIColors.EntranceSelectedBrush);
-			draw(ZS.OverworldManager.allholes, UIColors.HoleEntranceBrush, UIColors.HoleEntranceSelectedBrush);
+			}; // end draw Action
 		}
 	}
 }

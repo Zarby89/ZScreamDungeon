@@ -15,7 +15,7 @@ namespace ZeldaFullEditor
 		private void Copy_Tiles()
 		{
 			Clipboard.Clear();
-			TileData td = new TileData((ushort[]) selectedTile.Clone(), selectedTileSizeX);
+			var td = new TileData((ushort[]) selectedTile.Clone(), selectedTileSizeX);
 			Clipboard.SetData(Constants.OverworldTilesClipboardData, td);
 		}
 
@@ -26,7 +26,7 @@ namespace ZeldaFullEditor
 
 		private void Paste_Tiles()
 		{
-			TileData data = (TileData) Clipboard.GetData(Constants.OverworldTilesClipboardData);
+			var data = (TileData) Clipboard.GetData(Constants.OverworldTilesClipboardData);
 
 			if (data != null)
 			{
@@ -49,8 +49,6 @@ namespace ZeldaFullEditor
 			globalmouseTileDownXLOCK = tileX;
 			globalmouseTileDownYLOCK = tileY;
 
-			CurrentMap = mapId + ZS.OverworldManager.WorldOffset;
-			CurrentMapParent = ZS.OverworldManager.allmaps[CurrentMap].ParentMapID;
 			//ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.worldOffset].BuildMap();
 
 			tileBitmapPtr = ZS.GFXManager.mapblockset16;
@@ -59,7 +57,7 @@ namespace ZeldaFullEditor
 				Palette = ZS.OverworldManager.allmaps[mapId].ParentMap.MyArtist.Layer1Canvas.Palette
 			};
 
-			if (CurrentMap >= 160)
+			if (CurrentMapID >= 160)
 			{
 				return;
 			}
@@ -110,7 +108,7 @@ namespace ZeldaFullEditor
 					{
 						int y = 0;
 						int x = 0;
-						ushort[] undotiles = new ushort[selectedTile.Length];
+						var undotiles = new ushort[selectedTile.Length];
 
 						for (int i = 0; i < selectedTile.Length; i++)
 						{

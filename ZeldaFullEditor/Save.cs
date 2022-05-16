@@ -365,14 +365,14 @@
 			for (int i = 0, j = 0; i < OverworldManager.allentrances.Length; i++, j += 2)
 			{
 				ROM.Write16(Offsets.OWEntranceMap + j, OverworldManager.allentrances[i].MapID);
-				ROM.Write16(Offsets.OWEntrancePos + j, OverworldManager.allentrances[i].mapPos);
+				ROM.Write16(Offsets.OWEntrancePos + j, OverworldManager.allentrances[i].Map16Index);
 				ROM[Offsets.OWEntranceEntranceId + i] = OverworldManager.allentrances[i].TargetEntranceID;
 			}
 
 			for (int i = 0, j = 0; i < OverworldManager.allholes.Length; i++, j += 2)
 			{
 				ROM.Write16(Offsets.OWHoleArea + j, OverworldManager.allholes[i].MapID);
-				ROM.Write16(Offsets.OWHolePos + j, OverworldManager.allholes[i].mapPos - 0x400);
+				ROM.Write16(Offsets.OWHolePos + j, OverworldManager.allholes[i].Map16Index - 0x400);
 				ROM[Offsets.OWHoleEntrance + i] = OverworldManager.allholes[i].TargetEntranceID;
 			}
 		}
@@ -463,26 +463,17 @@
 
 			for (int i = 0; i < Constants.NumberOfOWSprites; i++) // For each pointers
 			{
-				if (i < 64) // LW[0]
+				IEnumerable<OverworldSprite> temp = i switch
 				{
-					var sprArray = OverworldManager.allsprites[0].Where(s => s.MapID == i).ToArray();
-					foreach (var spr in sprArray)
-					{
-						allspr[i].Add(spr);
-					}
-				}
-				else if (i < 208) // LW & DW[1]
+					< 64 => OverworldManager.allsprites[0].Where(s => s.MapID == i),
+					>= 64 and < 208 => OverworldManager.allsprites[1].Where(s => s.MapID == (i - 64)),
+					>= 208 and < Constants.NumberOfOWSprites => OverworldManager.allsprites[2].Where(s => s.MapID == (i - 208)),
+					_ => null
+				};
+
+				if (temp is not null)
 				{
-					var sprArray = OverworldManager.allsprites[1].Where(s => s.MapID == (i - 64)).ToArray();
-					foreach (var spr in sprArray)
-					{
-						allspr[i].Add(spr);
-					}
-				}
-				else if (i < Constants.NumberOfOWSprites) // LW[2]
-				{
-					var sprArray = OverworldManager.allsprites[2].Where(s => s.MapID == (i - 208)).ToArray();
-					foreach (var spr in sprArray)
+					foreach (var spr in temp)
 					{
 						allspr[i].Add(spr);
 					}
@@ -619,24 +610,25 @@
 
 		public void saveMapOverlays()
 		{
+			// TODO fucking stupid, make this an asm file
 			byte[] newOverlayCode = new byte[]
 			{
 				0xC2, 0x30, // REP #$30
-                0xA5, 0x8A, // LDA $8A
-                0x0A, 0x18, // ASL : CLC
-                0x65, 0x8A, // ADC $8A
-                0xAA, // TAX
-                0xBF, 0x00, 0x00, 0x00, // LDA, X 
-                0x85, 0x00, // STA $00
-                0xBF, 0x00, 0x00, 0x00, // LDA, X +2
-                0x85, 0x02, // STA $02
-                0x4B, // PHK
-                0xF4, 0x00, 0x00, // This position +3 ?
-                0xDC, 0x00, 0x00, // JML [$00 00]
-                0xE2, 0x30, // SEP #$30
-                0xAB, // PLB
-                0x6B // RTL
-            };
+				0xA5, 0x8A, // LDA $8A
+				0x0A, 0x18, // ASL : CLC
+				0x65, 0x8A, // ADC $8A
+				0xAA, // TAX
+				0xBF, 0x00, 0x00, 0x00, // LDA, X 
+				0x85, 0x00, // STA $00
+				0xBF, 0x00, 0x00, 0x00, // LDA, X +2
+				0x85, 0x02, // STA $02
+				0x4B, // PHK
+				0xF4, 0x00, 0x00, // This position +3 ?
+				0xDC, 0x00, 0x00, // JML [$00 00]
+				0xE2, 0x30, // SEP #$30
+				0xAB, // PLB
+				0x6B // RTL
+			};
 
 			// Pointers
 
@@ -759,14 +751,14 @@
 		public void SaveOverworldScreens()
 		{
 
-			int[] mapPointers1 = new int[Constants.NumberOfOWMaps];
-			int[] mapPointers2 = new int[Constants.NumberOfOWMaps];
+			var mapPointers1 = new int[Constants.NumberOfOWMaps];
+			var mapPointers2 = new int[Constants.NumberOfOWMaps];
 
-			int[] mapPointers1id = new int[Constants.NumberOfOWMaps];
-			int[] mapPointers2id = new int[Constants.NumberOfOWMaps];
+			var mapPointers1id = new int[Constants.NumberOfOWMaps];
+			var mapPointers2id = new int[Constants.NumberOfOWMaps];
 
-			byte[][] mapDatap1 = new byte[Constants.NumberOfOWMaps][];
-			byte[][] mapDatap2 = new byte[Constants.NumberOfOWMaps][];
+			var mapDatap1 = new byte[Constants.NumberOfOWMaps][];
+			var mapDatap2 = new byte[Constants.NumberOfOWMaps][];
 
 			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
@@ -836,11 +828,7 @@
 					snesPos = pos.PCtoSNES();
 					mapPointers1[i] = snesPos;
 
-					ROM.Write(pos, a);
-					for (int j = 0; j < a.Length; j++)
-					{
-						pos += 1;
-					}
+					ROM.WriteContinuous(ref pos, a);
 				}
 				else
 				{
@@ -865,13 +853,7 @@
 					snesPos = pos.PCtoSNES();
 					mapPointers2[i] = snesPos;
 
-					ROM.Write(pos, b);
-
-					for (int j = 0; j < b.Length; j++)
-					{
-						//ROM.DATA[pos] = b[j];
-						pos += 1;
-					}
+					ROM.WriteContinuous(ref pos, b);
 				}
 				else
 				{

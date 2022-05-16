@@ -26,8 +26,8 @@
 				okButton_Click(null, e);
 				reloadGfx();
 
-				TheGUI.RoomPreviewArtist.HardRefresh();
-				TheGUI.RoomEditingArtist.HardRefresh();
+				RoomPreviewArtist.HardRefresh();
+				RoomEditingArtist.HardRefresh();
 				ZScreamer.ActiveUWScene.HardRefresh();
 			}
 		}
@@ -134,8 +134,8 @@
 			//ZScreamer.ActiveScreamer.GFXGroups.paletteGfx[(int) paletteUpDown.Value][3] = getTextBoxValue(palette4Box);
 
 			reloadGfx();
-			TheGUI.RoomPreviewArtist.HardRefresh();
-			TheGUI.RoomEditingArtist.HardRefresh();
+			RoomPreviewArtist.HardRefresh();
+			RoomEditingArtist.HardRefresh();
 			ZScreamer.ActiveUWScene.Refresh();
 
 		}

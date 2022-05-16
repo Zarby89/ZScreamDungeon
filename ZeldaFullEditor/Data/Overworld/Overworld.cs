@@ -136,51 +136,20 @@
 				}
 				else
 				{
-					switch (map.MapID)
+					// TODO dumb hardcoded shit, needs to read from ROM
+					map.ParentMap = map.MapID switch
 					{
-						case 0x94:
-							map.ParentMap = allmaps[0x80];
-							break;
-
-						case 0x95:
-							map.ParentMap = allmaps[0x03];
-							break;
-
-						case 0x96:
-							map.ParentMap = allmaps[0x5B];
-							break;
-
-						case 0x97:
-							map.ParentMap = allmaps[0x00];
-							break;
-
-						case 0x9C:
-							map.ParentMap = allmaps[0x43];
-							break;
-
-						case 0x9D:
-							map.ParentMap = allmaps[0x00];
-							break;
-
-						case 0x9E:
-							map.ParentMap = allmaps[0x00];
-							break;
-
-						case 0x9F:
-							map.ParentMap = allmaps[0x2C];
-							break;
-
-						case 0x88: // necessary?
-							map.ParentMap = allmaps[0x88];
-							break;
-
-						case 0x81:
-						case 0x82:
-						case 0x89:
-						case 0x8A:
-							map.ParentMap = allmaps[0x81];
-							break;
-					}
+						0x94 => allmaps[0x80],
+						0x95 => allmaps[0x03],
+						0x96 => allmaps[0x5B],
+						0x97 => allmaps[0x00],
+						0x9C => allmaps[0x43],
+						0x9D => allmaps[0x00],
+						0x9E => allmaps[0x00],
+						0x9F => allmaps[0x2C],
+						0x81 or 0x82 or 0x89 or 0x8A => allmaps[0x81],
+						_ => map
+					};
 
 					map.MessageID = ZS.ROM[ZS.Offsets.overworldMessages + map.MapID];
 					map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
@@ -197,7 +166,7 @@
 						map.Tileset = 81;
 						map.ScreenPalette = 0;
 					}
-					else if ((map.MapID >= 0x80 && map.MapID <= 0x8A) || map.MapID == 0x94)
+					else if (map.MapID is (>= 0x80 and <= 0x8A) or 0x94)
 					{
 						map.Tileset = ZS.ROM[ZS.Offsets.overworldSpecialGFXGroup + map.VirtualMapID];
 						map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + 1];
@@ -245,7 +214,7 @@
 				ushort y = ZS.ROM.Read16(ZS.Offsets.GravesYTilePos + j);
 				ushort gfx = ZS.ROM.Read16(ZS.Offsets.GravesGFX + j);
 				ushort tilemap = ZS.ROM.Read16(ZS.Offsets.GravesTilemapPos + j);
-				graves[i] = new Gravestone(x, y, tilemap, gfx);
+				graves[i] = new(x, y, tilemap, gfx);
 			}
 		}
 
@@ -254,12 +223,16 @@
 			int tpos = ZS.Offsets.Map16DefinitionAddress;
 			for (ushort i = 0; i < Constants.NumberOfUniqueTile16Definitions; i += 1)
 			{
-				Tile t0 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
-				Tile t1 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
-				Tile t2 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
-				Tile t3 = new Tile(ZS.ROM[tpos++], ZS.ROM[tpos++]);
+				Tile t0 = new(ZS.ROM.Read16(tpos));
+				tpos += 2;
+				Tile t1 = new(ZS.ROM.Read16(tpos));
+				tpos += 2;
+				Tile t2 = new(ZS.ROM.Read16(tpos));
+				tpos += 2;
+				Tile t3 = new(ZS.ROM.Read16(tpos));
+				tpos += 2;
 
-				Tile16Sheet.SetTile16At(i, new Tile16(t0, t1, t2, t3));
+				Tile16Sheet.SetTile16At(i, new(t0, t1, t2, t3));
 			}
 		}
 
@@ -346,8 +319,8 @@
 					lowest = p2;
 				}
 
-				byte[] bytes = ZCompressLibrary.Decompress.ALTTPDecompressOverworld(ZS.ROM.DataStream, p2, 1000, ref compressedSize1);
-				byte[] bytes2 = ZCompressLibrary.Decompress.ALTTPDecompressOverworld(ZS.ROM.DataStream, p1, 1000, ref compressedSize2);
+				byte[] bytes = Decompress.ALTTPDecompressOverworld(ZS.ROM.DataStream, p2, 1000, ref compressedSize1);
+				byte[] bytes2 = Decompress.ALTTPDecompressOverworld(ZS.ROM.DataStream, p1, 1000, ref compressedSize2);
 
 				/* if (p1 > furthestPtr)
 				 {
@@ -362,20 +335,12 @@
 				 {
 					 Console.WriteLine(furthestPtr.ToString("X6") + " Length " + bytes.Length.ToString("X4"));
 				 }*/
-				ushort[,] buffer;
-
-				if (i < 64)
+				var buffer = i switch
 				{
-					buffer = allmapsTilesLW;
-				}
-				else if (i < 128)
-				{
-					buffer = allmapsTilesDW;
-				}
-				else
-				{
-					buffer = allmapsTilesSP;
-				}
+					< 64 => allmapsTilesLW,
+					>= 128 => allmapsTilesSP,
+					_ => allmapsTilesDW,
+				};
 
 				int sx2 = sx << 5;
 				int sy2 = sy << 5;
@@ -495,7 +460,11 @@
 
 			if (!map.IsPartOfLargeMap) return;
 
-			var a = new OverworldScreen[] { allmaps[map.ParentMapID + 1], allmaps[map.ParentMapID + 8], allmaps[map.ParentMapID + 9] };
+			var a = new OverworldScreen[] {
+				allmaps[map.ParentMapID + 1],
+				allmaps[map.ParentMapID + 8],
+				allmaps[map.ParentMapID + 9]
+			};
 
 			foreach (var m in a)
 			{
@@ -589,26 +558,19 @@
 			t32Unique.Clear();
 			t32.Clear();
 			// Create tile32 from tiles16
-			List<ulong> alltiles16 = new List<ulong>();
+			var alltiles16 = new List<ulong>();
 
 			int sx = 0;
 			int sy = 0;
 			int c = 0;
 			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
-				ushort[,] tilesused;
-				if (i < 64)
+				var tilesused = i switch
 				{
-					tilesused = allmapsTilesLW;
-				}
-				else if (i >= 128)
-				{
-					tilesused = allmapsTilesSP;
-				}
-				else
-				{
-					tilesused = allmapsTilesDW;
-				}
+					< 64 => allmapsTilesLW,
+					>= 128 => allmapsTilesSP,
+					_ => allmapsTilesDW,
+				};
 
 				int sx2 = sx << 5;
 				int sy2 = sy << 5;
@@ -692,7 +654,7 @@
 		public void ImportMaps()
 		{
 			string path = "";
-			using (FolderBrowserDialog fd = new FolderBrowserDialog())
+			using (FolderBrowserDialog fd = new())
 			{
 				if (fd.ShowDialog() == DialogResult.OK)
 				{
@@ -714,20 +676,13 @@
 
 			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
-				BinaryReader bw = new BinaryReader(new FileStream(path + "\\map" + i.ToString(), FileMode.Open, FileAccess.Read));
-				ushort[,] tilesused;
-				if (i < 64)
+				var bw = new BinaryReader(new FileStream(path + "\\map" + i.ToString(), FileMode.Open, FileAccess.Read));
+				var tilesused = i switch
 				{
-					tilesused = allmapsTilesLW;
-				}
-				else if (i >= 128)
-				{
-					tilesused = allmapsTilesSP;
-				}
-				else
-				{
-					tilesused = allmapsTilesDW;
-				}
+					< 64 => allmapsTilesLW,
+					>= 128 => allmapsTilesSP,
+					_ => allmapsTilesDW,
+				};
 
 				int sx2 = sx << 5;
 				int sy2 = sy << 5;
@@ -765,7 +720,7 @@
 		public void ExportMaps()
 		{
 			string path = "";
-			using (FolderBrowserDialog fd = new FolderBrowserDialog())
+			using (FolderBrowserDialog fd = new())
 			{
 				if (fd.ShowDialog() == DialogResult.OK)
 				{
@@ -786,20 +741,13 @@
 			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
 				// TODO file name in UIText
-				BinaryWriter bw = new BinaryWriter(new FileStream(path + "\\map" + i.ToString(), FileMode.Create, FileAccess.Write));
-				ushort[,] tilesused;
-				if (i < 64)
+				var bw = new BinaryWriter(new FileStream(path + "\\map" + i.ToString(), FileMode.Create, FileAccess.Write));
+				var tilesused = i switch
 				{
-					tilesused = allmapsTilesLW;
-				}
-				else if (i >= 128)
-				{
-					tilesused = allmapsTilesSP;
-				}
-				else
-				{
-					tilesused = allmapsTilesDW;
-				}
+					< 64 => allmapsTilesLW,
+					>= 128 => allmapsTilesSP,
+					_ => allmapsTilesDW,
+				};
 
 				int sx2 = sx << 5;
 				int sy2 = sy << 5;
@@ -951,7 +899,7 @@
 
 					int p = (((b2 & 0x1F) << 8) | b1) >> 1;
 
-					allitems.Add(new OverworldSecret(SecretItemType.GetTypeFromID(b3))
+					allitems.Add(new(SecretItemType.GetTypeFromID(b3))
 					{
 						MapID = (byte) i,
 						MapX = (byte) (p & 0x3F),
@@ -971,7 +919,7 @@
 
 			for (int index = 0; index < 128; index++)
 			{
-				alloverlays[index] = new OverlayData();
+				alloverlays[index] = new();
 				// OverlayPointers
 
 				int addr = ZS.Offsets.overlayPointersBank.PCtoSNES() | ZS.ROM.Read16(ZS.Offsets.overlayPointers + (index * 2));
@@ -1078,24 +1026,14 @@
 
 		private void LoadScreenOfSprites(int gamestate, byte screen)
 		{
-			int spriteAddress;
-			switch (gamestate)
-			{
-				case 0:
-					spriteAddress = ZS.Offsets.OverworldSpritesTableState0 + (screen * 2);
-					break;
-
-				case 1:
-					spriteAddress = ZS.Offsets.OverworldSpritesTableState2 + (screen * 2);
-					break;
-
-				case 2:
-					spriteAddress = ZS.Offsets.OverworldSpritesTableState3 + (screen * 2);
-					break;
-
-				default:
-					return;
-			}
+			int spriteAddress = (screen * 2) +
+				gamestate switch
+				{
+					0 => ZS.Offsets.OverworldSpritesTableState0,
+					1 => ZS.Offsets.OverworldSpritesTableState2,
+					2 => ZS.Offsets.OverworldSpritesTableState3,
+					_ => throw new ZeldaException("That's a bad gamestate")
+				};
 
 			spriteAddress = SNESFunctions.SNEStoPC(Constants.OverworldSpritePointers | ZS.ROM.Read16(spriteAddress));
 
@@ -1123,7 +1061,7 @@
 					st = SpriteType.GetTypeFromID(b3);
 				}
 
-				allsprites[gamestate].Add(new OverworldSprite(st)
+				allsprites[gamestate].Add(new(st)
 				{
 					MapID = screen,
 					MapX = b2,

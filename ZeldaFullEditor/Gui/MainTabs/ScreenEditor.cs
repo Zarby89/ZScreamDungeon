@@ -89,7 +89,7 @@
 			overworldCombobox.SelectedIndex = 0;
 		}
 
-		public void Init()
+		public void OnProjectLoad()
 		{
 			// Triforce
 			for (int i = 0; i < 6; i++)
@@ -397,15 +397,12 @@
 				for (int j = 0; j < 2048; j++)
 				{
 					byte mapByte = allgfxData[j + (staticgfx[i] * 2048)];
-					switch (i)
+
+					mapByte += i switch
 					{
-						case 0:
-						case 3:
-						case 4:
-						case 5:
-							mapByte += 0x88;
-							break;
-					}
+						0 or 3 or 4 or 5 => 0x88,
+						_ => 0
+					};
 
 					currentmapgfx8Data[(i * 2048) + j] = mapByte; // Upload used gfx data
 				}
@@ -652,17 +649,17 @@
 
 			if (bg2Checkbox.Checked)
 			{
-				e.Graphics.DrawImage(tilesBG2Bitmap, Constants.Rect_0_0_512_512, Constants.Rect_0_0_256_256, GraphicsUnit.Pixel);
+				e.Graphics.DrawImage(tilesBG2Bitmap, Constants.ScreenSizedRectangle, Constants.RoomSizedRectangle, GraphicsUnit.Pixel);
 			}
 
 			if (bg1checkbox.Checked)
 			{
-				e.Graphics.DrawImage(tilesBG1Bitmap, Constants.Rect_0_0_512_512, Constants.Rect_0_0_256_256, GraphicsUnit.Pixel);
+				e.Graphics.DrawImage(tilesBG1Bitmap, Constants.ScreenSizedRectangle, Constants.RoomSizedRectangle, GraphicsUnit.Pixel);
 			}
 
 			if (oambgCheckbox.Checked)
 			{
-				e.Graphics.DrawImage(oamBGBitmap, Constants.Rect_0_0_512_512, Constants.Rect_0_0_256_256, GraphicsUnit.Pixel);
+				e.Graphics.DrawImage(oamBGBitmap, Constants.ScreenSizedRectangle, Constants.RoomSizedRectangle, GraphicsUnit.Pixel);
 			}
 
 			ClearBG(tilesBG1Ptr);
@@ -670,7 +667,7 @@
 
 			if (bg1checkbox.Checked)
 			{
-				e.Graphics.DrawImage(tilesBG1Bitmap, Constants.Rect_0_0_512_512, Constants.Rect_0_0_256_256, GraphicsUnit.Pixel);
+				e.Graphics.DrawImage(tilesBG1Bitmap, Constants.ScreenSizedRectangle, Constants.RoomSizedRectangle, GraphicsUnit.Pixel);
 			}
 
 			if (editsprRadio.Checked && lastSelectedOamTile != null)
@@ -730,7 +727,7 @@
 			}
 			else if (e.Button == MouseButtons.Right)
 			{
-				Tile t = new Tile(0, 0);
+				Tile t = new Tile(0);
 				if (bg1Radio.Checked)
 				{
 					t = new Tile(tilesBG1Buffer[lastX + (lastY * 32)]);
@@ -1049,7 +1046,7 @@
 		{
 			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 
-			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.overworldMapBitmap, Constants.Rect_0_0_256_256);
+			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.overworldMapBitmap, Constants.RoomSizedRectangle);
 			e.Graphics.DrawRectangle(Pens.LimeGreen, new Rectangle(selectedMapTile % 16 * 16, selectedMapTile & ~0xF, 16, 16));
 		}
 
@@ -1143,7 +1140,7 @@
             byte xData = (byte)(xData1 + xData2);
             */
 
-			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.owactualMapBitmap, Constants.Rect_0_0_1024_1024, Constants.Rect_0_0_512_512, GraphicsUnit.Pixel);
+			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.owactualMapBitmap, Constants.Rect_0_0_1024_1024, Constants.ScreenSizedRectangle, GraphicsUnit.Pixel);
 
 			//for (int i = 0; i < 8; i++)
 			//{
@@ -1797,7 +1794,7 @@
 			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			e.Graphics.SmoothingMode = SmoothingMode.None;
 			e.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
-			e.Graphics.DrawImage(dungmaptiles8Bitmap, Constants.Rect_0_0_256_256, Constants.Rect_0_0_128_128, GraphicsUnit.Pixel);
+			e.Graphics.DrawImage(dungmaptiles8Bitmap, Constants.RoomSizedRectangle, Constants.Rect_0_0_128_128, GraphicsUnit.Pixel);
 		}
 
 		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)

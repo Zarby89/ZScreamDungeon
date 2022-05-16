@@ -22,20 +22,14 @@
 		/// </summary>
 		public Tile Tile3 { get; }
 
-		public Tile this[int i]
+		public Tile this[int i] => i switch
 		{
-			get
-			{
-				return i switch
-				{
-					0 => Tile0,
-					1 => Tile1,
-					2 => Tile2,
-					3 => Tile3,
-					_ => Tile0,
-				};
-			}
-		}
+			0 => Tile0,
+			1 => Tile1,
+			2 => Tile2,
+			3 => Tile3,
+			_ => Tile0,
+		};
 
 
 		public Tile16(Tile tile0, Tile tile1, Tile tile2, Tile tile3)

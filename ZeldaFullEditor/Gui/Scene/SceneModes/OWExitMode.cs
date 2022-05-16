@@ -2,16 +2,9 @@
 {
 	public partial class SceneOW
 	{
-		private OverworldExit selexit, lastexit;
+		private OverworldExit lastexit;
 
-		public OverworldExit SelectedExit
-		{
-			get => selexit;
-			set
-			{
-				selexit = value;
-			}
-		}
+		public OverworldExit SelectedExit { get; set; }
 
 		public OverworldExit LastSelectedExit
 		{
@@ -32,13 +25,7 @@
 			{
 				if (ZS.OverworldManager.allexits[i].Deleted)
 				{
-					byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
-					if (mid == 255)
-					{
-						mid = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
-					}
-
-					ZS.OverworldManager.allexits[i].MapID = mid;
+					ZS.OverworldManager.allexits[i].MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 					ZS.OverworldManager.allexits[i].GlobalX = (ushort) (mxRightclick & ~0xF);
 					ZS.OverworldManager.allexits[i].GlobalY = (ushort) (myRightclick & ~0xF);
 
@@ -99,7 +86,7 @@
 			int roomId = SelectedExit.TargetRoomID;
 			if (roomId >= Constants.NumberOfRooms) return;
 
-			TheGUI.RoomPreviewArtist.SetRoomAndDrawImmediately(ZS.all_rooms[roomId]);
+			RoomPreviewArtist.SetRoomAndDrawImmediately(ZS.all_rooms[roomId]);
 		}
 
 		private void Delete_Exit() // Set exit data to 0
@@ -192,7 +179,7 @@
 			{
 				OverworldExit ex = ZS.OverworldManager.allexits[i];
 
-				if (lowEndMode && ex.MapID != ZS.OverworldManager.allmaps[CurrentMap].ParentMapID)
+				if (lowEndMode && ex.MapID != CurrentParentMapID)
 				{
 					continue;
 				}
@@ -227,15 +214,12 @@
 							break;
 
 						case TextView.AlwaysShowName:
+						case TextView.ShowNameOnHover when ex == SelectedExit || ex == hoveredEntity:
 							txt = $"{i:X2} from {ex.TargetRoomID:X3}";
 							break;
 
 						default:
 						case TextView.ShowNameOnHover:
-							if (ex == SelectedExit || ex == hoveredEntity)
-							{
-								goto case TextView.AlwaysShowName;
-							}
 							goto case TextView.NeverShowName;
 					}
 

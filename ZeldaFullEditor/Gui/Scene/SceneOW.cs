@@ -1,15 +1,20 @@
-﻿using ZeldaFullEditor.SceneModes;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public partial class SceneOW : Scene
 	{
 		//public IntPtr allgfx8array = Marshal.AllocHGlobal(32768);
 
 		//int selectedIndex = 0;
-		public int CurrentMap { get; set; }
-		public OverworldScreen CurrentScreen => ZScreamer.ActiveOW.allmaps[CurrentMap];
-		public int CurrentMapParent { get; set; }
+		public int CurrentMapID {
+			get => CurrentMap.MapID;
+			set => CurrentMap = ZScreamer.ActiveOW.allmaps[value];
+		}
+
+		public OverworldScreen CurrentMap { get; set; }
+		public OverworldScreen CurrentParentMap => CurrentMap.ParentMap;
+		public int CurrentParentMapID => CurrentMap.ParentMapID;
+		public int CurrentParentVirtualMapID => CurrentMap.ParentMap.VirtualMapID;
+
 		//public int lockedMap = -1;
 		//must load all current map gfx
 		public bool initialized = false;
@@ -50,12 +55,6 @@ namespace ZeldaFullEditor
 		public TextView ExitTextView { get; set; } = TextView.ShowNameOnHover;
 		public TextView TransportTextView { get; set; } = TextView.ShowNameOnHover;
 
-
-
-
-
-
-
 		private bool entrancePreview = false;
 
 		public bool lowEndMode = false;
@@ -63,6 +62,9 @@ namespace ZeldaFullEditor
 
 		public SceneOW(ZScreamer zs) : base(zs)
 		{
+
+			Size = Constants.FullOverworldSize;
+
 			//graphics = Graphics.FromImage(scene_bitmap);
 			//this.Image = new Bitmap(4096, 4096);
 			tilesgfxBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, temptilesgfxPtr);
@@ -103,44 +105,20 @@ namespace ZeldaFullEditor
 
 		public void UpdateForMode(OverworldEditMode e)
 		{
-			switch (e)
+			ActiveMode = e switch
 			{
-				case OverworldEditMode.Tile16:
-					ActiveMode = tilemode;
-					break;
-
-				case OverworldEditMode.Sprites:
-					ActiveMode = spriteMode;
-					break;
-
-				case OverworldEditMode.Secrets:
-					ActiveMode = itemMode;
-					break;
-
-				case OverworldEditMode.Entrances:
-					ActiveMode = entranceMode;
-					break;
-
-				case OverworldEditMode.Exits:
-					ActiveMode = exitmode;
-					break;
-
-				case OverworldEditMode.Transports:
-					ActiveMode = transportMode;
-					break;
-
-				case OverworldEditMode.Overlay:
-					ActiveMode = overlayMode;
-					break;
-
-				case OverworldEditMode.Gravestones:
-					ActiveMode = gravestoneMode;
-					break;
-
-				case OverworldEditMode.Doors:
-					ActiveMode = doorMode;
-					break;
-			}
+				OverworldEditMode.Tile16 => tilemode,
+				OverworldEditMode.Tile16Fill => tilemode,
+				OverworldEditMode.Sprites => spriteMode,
+				OverworldEditMode.Secrets => itemMode,
+				OverworldEditMode.Entrances => entranceMode,
+				OverworldEditMode.Exits => exitmode,
+				OverworldEditMode.Transports => transportMode,
+				OverworldEditMode.Overlay => overlayMode,
+				OverworldEditMode.Gravestones => gravestoneMode,
+				OverworldEditMode.Doors => doorMode,
+				_ => ModeActions.Nothing
+			};
 		}
 
 
@@ -172,21 +150,17 @@ namespace ZeldaFullEditor
 
 		public void updateMapGfx()
 		{
-			if (CurrentMap + ZS.OverworldManager.WorldOffset <= 159)
+			if (CurrentMapID <= 159)
 			{
 				ZGUI.OverworldEditor.propertiesChangedFromForm = true;
-				OverworldScreen map = ZS.OverworldManager.allmaps[CurrentMap + ZS.OverworldManager.WorldOffset];
 
-				map.HardRefresh();
+				CurrentMap.HardRefresh();
 
-				ZGUI.OverworldEditor.mapGroupbox.Text = string.Format(
-					ZGUI.showMapIndexInHexToolStripMenuItem.Checked ? "Selected map: {0}" : "Selected map: {0}",
-					map.ParentMapID
-					);
+				ZGUI.OverworldEditor.mapGroupbox.Text = $"Selected map: {CurrentParentMapID:X2}";
 
-				ZGUI.OverworldEditor.OWProperty_MessageID.HexValue = ZS.OverworldManager.allmaps[map.ParentMapID].MessageID;
+				ZGUI.OverworldEditor.OWProperty_MessageID.HexValue = CurrentMap.MessageID;
 
-				ZGUI.OverworldEditor.UpdateGUIProperties(ZS.OverworldManager.allmaps[map.ParentMapID], ZS.OverworldManager.WorldOffset >= 64 ? 0 : ZS.OverworldManager.GameState);
+				ZGUI.OverworldEditor.UpdateGUIProperties(CurrentParentMap, ZS.OverworldManager.WorldOffset >= 64 ? 0 : ZS.OverworldManager.GameState);
 
 				ZGUI.OverworldEditor.propertiesChangedFromForm = false;
 				ZGUI.OverworldEditor.tilePictureBox.Refresh();
@@ -204,15 +178,13 @@ namespace ZeldaFullEditor
 			int tileY = e.Y / 16;
 			int mapId = (tileY / 32 * 8) + (tileX / 32);
 
-			if (mapId + ZS.OverworldManager.WorldOffset < ZS.OverworldManager.allmaps.Length)
+			if (mapId < ZS.OverworldManager.allmaps.Length)
 			{
 				globalmouseTileDownX = tileX;
 				globalmouseTileDownY = tileY;
 
 				HasUnsavedChanges = true;
-				CurrentMap = mapId;
-
-				CurrentMapParent = ZS.OverworldManager.allmaps[CurrentMap + ZS.OverworldManager.WorldOffset].ParentMapID;
+				CurrentMapID = mapId + ZS.OverworldManager.WorldOffset;
 
 				ZGUI.OverworldEditor.previewTextPicturebox.Visible = false;
 				updateMapGfx();
@@ -275,9 +247,9 @@ namespace ZeldaFullEditor
 		{
 			if (lowEndMode)
 			{
-				int x = 512 * (ZS.OverworldManager.allmaps[CurrentMap].ParentMapID % 8);
-				int y = 512 * (ZS.OverworldManager.allmaps[CurrentMap].ParentMapID / 8);
-				if (ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[CurrentMap].ParentMapID].IsPartOfLargeMap)
+				int x = 512 * (ZS.OverworldManager.allmaps[CurrentMapID].ParentMapID % 8);
+				int y = 512 * (ZS.OverworldManager.allmaps[CurrentMapID].ParentMapID / 8);
+				if (CurrentMap.IsPartOfLargeMap)
 				{
 					Invalidate(new Rectangle(x, y, 1024, 1024));
 				}
@@ -351,16 +323,7 @@ namespace ZeldaFullEditor
 		{
 			if (dest != null)
 			{
-				byte m2 = (byte) (hoveredMap + ZS.OverworldManager.WorldOffset);
-
-				byte mid = ZS.OverworldManager.allmaps[m2].ParentMapID;
-
-				if (mid == 255)
-				{
-					mid = m2;
-				}
-
-				dest.MapID = mid;
+				dest.MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 
 				dest.GlobalX = (ushort) e.X;
 				dest.GlobalY = (ushort) e.Y;
@@ -394,21 +357,21 @@ namespace ZeldaFullEditor
 
 			if (lowEndMode)
 			{
-				int x = ZS.OverworldManager.allmaps[CurrentMap].ParentMapID % 8;
-				int y = ZS.OverworldManager.allmaps[CurrentMap].ParentMapID / 8;
+				int x = CurrentParentMapID % 8;
+				int y = CurrentParentMapID / 8;
 
-				if (ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[CurrentMap].ParentMapID].IsPartOfLargeMap)
+				if (CurrentMap.IsPartOfLargeMap)
 				{
 					g.FillRectangle(new SolidBrush(ZS.PaletteManager.OverworldGrass[0]), new RectangleF(x * 512, y * 512, 1024, 1024));
-					g.DrawImage(ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[CurrentMap].ParentMapID].MyArtist.Layer1Canvas.Bitmap, new PointF(x * 512, y * 512));
-					g.DrawImage(ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[CurrentMap].ParentMapID + 1].MyArtist.Layer1Canvas.Bitmap, new PointF((x + 1) * 512, y * 512));
-					g.DrawImage(ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[CurrentMap].ParentMapID + 8].MyArtist.Layer1Canvas.Bitmap, new PointF(x * 512, (y + 1) * 512));
-					g.DrawImage(ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[CurrentMap].ParentMapID + 9].MyArtist.Layer1Canvas.Bitmap, new PointF((x + 1) * 512, (y + 1) * 512));
+					g.DrawImage(ZS.OverworldManager.allmaps[CurrentParentMapID].MyArtist.Layer1Canvas.Bitmap, new PointF(x * 512, y * 512));
+					g.DrawImage(ZS.OverworldManager.allmaps[CurrentParentMapID + 1].MyArtist.Layer1Canvas.Bitmap, new PointF((x + 1) * 512, y * 512));
+					g.DrawImage(ZS.OverworldManager.allmaps[CurrentParentMapID + 8].MyArtist.Layer1Canvas.Bitmap, new PointF(x * 512, (y + 1) * 512));
+					g.DrawImage(ZS.OverworldManager.allmaps[CurrentParentMapID + 9].MyArtist.Layer1Canvas.Bitmap, new PointF((x + 1) * 512, (y + 1) * 512));
 				}
 				else
 				{
 					g.FillRectangle(new SolidBrush(ZS.PaletteManager.OverworldGrass[0]), new RectangleF(x * 512, y * 512, 512, 512));
-					g.DrawImage(ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[CurrentMap].ParentMapID].MyArtist.Layer1Canvas.Bitmap, new PointF(x * 512, y * 512));
+					g.DrawImage(CurrentParentMap.MyArtist.Layer1Canvas.Bitmap, new PointF(x * 512, y * 512));
 				}
 			}
 			else
@@ -448,16 +411,11 @@ namespace ZeldaFullEditor
 					}
 					else
 					{
-						int grass = 1;
-
-						if (i > 127)
-						{
-							grass = 2;
-						}
-						else if (i < 64)
-						{
-							grass = 1;
-						}
+						int grass = i switch {
+							> 127 => 2,
+							< 64 => 1,
+							_ => 1,
+						};
 						g.CompositingMode = CompositingMode.SourceOver;
 						g.DrawRectangle(new Pen(ZS.PaletteManager.OverworldGrass[grass]), new Rectangle(x, y, 512, 512));
 					}
@@ -502,7 +460,7 @@ namespace ZeldaFullEditor
 				g.DrawRectangle(Pens.LightGreen, temp);
 			}
 
-			int offset = (CurrentMap >= 128) ? 128 : 0;
+			int offset = (CurrentMapID >= 128) ? 128 : 0;
 
 			if ((hoveredMap + offset) < ZS.OverworldManager.allmaps.Length)
 			{
@@ -560,11 +518,13 @@ namespace ZeldaFullEditor
 
 			if (ZS.CurrentOWMode == OverworldEditMode.Overlay)
 			{
-				int mid = ZS.OverworldManager.allmaps[CurrentMap].ParentMapID;
-				int msy = 512 * (((ZS.OverworldManager.allmaps[CurrentMap].ParentMapID - ZS.OverworldManager.WorldOffset) / 8));
-				int msx = 512 * ((ZS.OverworldManager.allmaps[CurrentMap].ParentMapID - ZS.OverworldManager.WorldOffset) - (msy * 8));
-				g.DrawText(0 + 4, 0 + 64, "Selected Map : " + CurrentMap.ToString());
-				g.DrawText(0 + 4, 0 + 80, "Selected Map PARENT : " + ZS.OverworldManager.allmaps[CurrentMap].ParentMapID.ToString());
+				int mid = ZS.OverworldManager.allmaps[CurrentMapID].ParentMapID;
+				int msy = 512 * (CurrentParentVirtualMapID / 8);
+				int msx = 512 * (CurrentParentVirtualMapID - (msy * 8));
+			
+				// TODO ugh wtf COPY	
+				g.DrawText(0 + 4, 0 + 64, "Selected Map : " + CurrentMapID.ToString());
+				g.DrawText(0 + 4, 0 + 80, "Selected Map PARENT : " + CurrentParentMapID.ToString());
 				g.DrawText(msx + 4, msy + 4, "use ctrl key + click to delete overlay tiles");
 
 				for (int i = 0; i < ZS.OverworldManager.alloverlays[mid].tilesData.Count; i++)
@@ -576,7 +536,7 @@ namespace ZeldaFullEditor
 					int tox = (to % 8) * 16;
 					g.DrawImage(ZS.GFXManager.mapblockset16Bitmap, new Rectangle(msx + xo, msy + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
 					//g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
-					byte detect = compareTilePos(ZS.OverworldManager.alloverlays[mid].tilesData[i], ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
+					byte detect = CompareTilePos(ZS.OverworldManager.alloverlays[mid].tilesData[i], ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
 
 					if (detect == 0)
 					{
@@ -600,7 +560,7 @@ namespace ZeldaFullEditor
 					}
 				}
 
-				Rectangle temp = new Rectangle(MouseX & ~0xF, MouseY & ~0x0F, selectedTileSizeX * 16, selectedTile.Length / selectedTileSizeX * 16);
+				var temp = new Rectangle(MouseX & ~0xF, MouseY & ~0x0F, selectedTileSizeX * 16, selectedTile.Length / selectedTileSizeX * 16);
 				g.DrawImage(tilesgfxBitmap, temp, 0, 0, selectedTileSizeX * 16, (selectedTile.Length / selectedTileSizeX) * 16, GraphicsUnit.Pixel, ia);
 				g.DrawRectangle(Pens.LightGreen, temp);
 
@@ -610,14 +570,10 @@ namespace ZeldaFullEditor
 
 			if (ZGUI.OverworldEditor.gridDisplay != 0)
 			{
-				int gridsize = 512;
-				if (ZS.OverworldManager.allmaps[ZS.OverworldManager.allmaps[CurrentMap].ParentMapID].IsPartOfLargeMap)
-				{
-					gridsize = 1024;
-				}
+				int gridsize = CurrentMap.IsPartOfLargeMap ? 1024 : 512;
 
-				int x = 512 * (ZS.OverworldManager.allmaps[CurrentMap].ParentMapID % 8);
-				int y = 512 * (ZS.OverworldManager.allmaps[CurrentMap].ParentMapID / 8);
+				int x = 512 * (CurrentParentMapID % 8);
+				int y = 512 * (CurrentParentMapID / 8);
 
 				for (int gx = 0; gx < (gridsize / ZGUI.OverworldEditor.gridDisplay); gx++)
 				{
@@ -645,7 +601,7 @@ namespace ZeldaFullEditor
 		// 4 = right
 		// 8 = bottom
 
-		public byte compareTilePos(OverlayTile tpc, OverlayTile[] tpa)
+		private static byte CompareTilePos(OverlayTile tpc, OverlayTile[] tpa)
 		{
 			byte detected = 0;
 			foreach (OverlayTile t in tpa)
@@ -675,7 +631,7 @@ namespace ZeldaFullEditor
 			return detected;
 		}
 
-		public OverlayTile compareTilePosT(OverlayTile tpc, OverlayTile[] tpa)
+		private static OverlayTile CompareTilePosButZarbyGaveThisADumbName(OverlayTile tpc, OverlayTile[] tpa)
 		{
 			foreach (OverlayTile t in tpa)
 			{

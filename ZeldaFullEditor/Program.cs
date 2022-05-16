@@ -23,6 +23,8 @@ global using ZeldaFullEditor.Gui.Drawing;
 global using ZeldaFullEditor.Gui.MainTabs;
 global using ZeldaFullEditor.Gui.ExtraForms;
 global using ZeldaFullEditor.Properties;
+global using ZeldaFullEditor.SceneModes;
+global using ZCompressLibrary;
 
 namespace ZeldaFullEditor
 {

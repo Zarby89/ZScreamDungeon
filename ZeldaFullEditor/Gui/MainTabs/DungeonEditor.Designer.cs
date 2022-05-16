@@ -28,8 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
+			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
+			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.entrancetabPage = new System.Windows.Forms.TabPage();
 			this.entrancetreeView = new System.Windows.Forms.TreeView();
@@ -156,7 +156,7 @@
 			this.label26 = new System.Windows.Forms.Label();
 			this.spritesubtypeUpDown = new System.Windows.Forms.NumericUpDown();
 			this.label23 = new System.Windows.Forms.Label();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
+			this.KeyDropComboBox = new System.Windows.Forms.ComboBox();
 			this.doorselectPanel = new System.Windows.Forms.Panel();
 			this.label25 = new System.Windows.Forms.Label();
 			this.collisionMapPanel = new System.Windows.Forms.Panel();
@@ -269,13 +269,13 @@
 			this.entrancetreeView.Location = new System.Drawing.Point(4, 395);
 			this.entrancetreeView.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entrancetreeView.Name = "entrancetreeView";
-			treeNode1.Name = "EntranceNode";
-			treeNode1.Text = "Entrances";
-			treeNode2.Name = "StartingEntranceNode";
-			treeNode2.Text = "Spawn points";
+			treeNode3.Name = "EntranceNode";
+			treeNode3.Text = "Entrances";
+			treeNode4.Name = "StartingEntranceNode";
+			treeNode4.Text = "Spawn points";
 			this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
 			this.entrancetreeView.Size = new System.Drawing.Size(272, 271);
 			this.entrancetreeView.TabIndex = 0;
 			this.entrancetreeView.TabStop = false;
@@ -1743,6 +1743,7 @@
 			this.DoorTypeComboBox.Name = "DoorTypeComboBox";
 			this.DoorTypeComboBox.Size = new System.Drawing.Size(82, 21);
 			this.DoorTypeComboBox.TabIndex = 8;
+			this.DoorTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.DoorTypeComboBox_SelectedIndexChanged);
 			// 
 			// spritepropertyPanel
 			// 
@@ -1751,7 +1752,7 @@
 			this.spritepropertyPanel.Controls.Add(this.label26);
 			this.spritepropertyPanel.Controls.Add(this.spritesubtypeUpDown);
 			this.spritepropertyPanel.Controls.Add(this.label23);
-			this.spritepropertyPanel.Controls.Add(this.comboBox1);
+			this.spritepropertyPanel.Controls.Add(this.KeyDropComboBox);
 			this.spritepropertyPanel.Location = new System.Drawing.Point(11, 121);
 			this.spritepropertyPanel.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.spritepropertyPanel.Name = "spritepropertyPanel";
@@ -1806,22 +1807,22 @@
 			this.label23.TabIndex = 9;
 			this.label23.Text = "Key drop";
 			// 
-			// comboBox1
+			// KeyDropComboBox
 			// 
-			this.comboBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+			this.KeyDropComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.comboBox1.Enabled = false;
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Items.AddRange(new object[] {
+			this.KeyDropComboBox.Enabled = false;
+			this.KeyDropComboBox.FormattingEnabled = true;
+			this.KeyDropComboBox.Items.AddRange(new object[] {
             "None",
             "Small key",
             "Big key"});
-			this.comboBox1.Location = new System.Drawing.Point(55, 31);
-			this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(178, 21);
-			this.comboBox1.TabIndex = 8;
-			this.comboBox1.Text = "None";
+			this.KeyDropComboBox.Location = new System.Drawing.Point(55, 31);
+			this.KeyDropComboBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.KeyDropComboBox.Name = "KeyDropComboBox";
+			this.KeyDropComboBox.Size = new System.Drawing.Size(178, 21);
+			this.KeyDropComboBox.TabIndex = 8;
+			this.KeyDropComboBox.Text = "None";
 			// 
 			// doorselectPanel
 			// 
@@ -1921,35 +1922,6 @@
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.selecteditemobjectCombobox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.selecteditemobjectCombobox.FormattingEnabled = true;
-			this.selecteditemobjectCombobox.Items.AddRange(new object[] {
-            "Nothing",
-            "Green Rupee",
-            "Rock hoarder",
-            "Bee",
-            "Health pack",
-            "Bomb",
-            "Heart ",
-            "Blue Rupee",
-            "Key",
-            "Arrow",
-            "Bomb",
-            "Heart",
-            "Magic",
-            "Full Magic",
-            "Cucco",
-            "Green Soldier",
-            "Bush Stal",
-            "Blue Soldier",
-            "Landmine",
-            "Heart",
-            "Fairy",
-            "Heart",
-            "Nothing ",
-            "Hole",
-            "Warp",
-            "Staircase",
-            "Bombable",
-            "Switch"});
 			this.selecteditemobjectCombobox.Location = new System.Drawing.Point(6, 26);
 			this.selecteditemobjectCombobox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.selecteditemobjectCombobox.Name = "selecteditemobjectCombobox";
@@ -2196,7 +2168,7 @@
 		public Panel potitemobjectPanel;
 		public ComboBox selecteditemobjectCombobox;
 		public Label label31;
-		public ComboBox comboBox1;
+		public ComboBox KeyDropComboBox;
 		public Label label23;
 		private Label label43;
 		private ExtraForms.Hexbox RoomProperties_PreferredEntrance;

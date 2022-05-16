@@ -11,21 +11,18 @@
 		private readonly ImmutableArray<RoomObject> lay6;
 		private readonly ImmutableArray<RoomObject> lay7;
 
-		public ImmutableArray<RoomObject> this[int i]
+		public ImmutableArray<RoomObject> this[int i] => i switch
 		{
-			get => i switch
-			{
-				0 => lay0,
-				1 => lay1,
-				2 => lay2,
-				3 => lay3,
-				4 => lay4,
-				5 => lay5,
-				6 => lay6,
-				7 => lay7,
-				_ => lay0,
-			};
-		}
+			0 => lay0,
+			1 => lay1,
+			2 => lay2,
+			3 => lay3,
+			4 => lay4,
+			5 => lay5,
+			6 => lay6,
+			7 => lay7,
+			_ => lay0,
+		};
 
 		private RoomLayoutLister(List<RoomObject> _0, List<RoomObject> _1, List<RoomObject> _2, List<RoomObject> _3,
 			List<RoomObject> _4, List<RoomObject> _5, List<RoomObject> _6, List<RoomObject> _7)

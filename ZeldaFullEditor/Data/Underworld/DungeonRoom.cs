@@ -329,16 +329,13 @@
 			}
 		}
 
-		public DungeonObjectsList GetLayerList(RoomLayer layer)
+		public DungeonObjectsList GetLayerList(RoomLayer layer) => layer switch
 		{
-			return layer switch
-			{
-				RoomLayer.Layer1 => Layer1Objects,
-				RoomLayer.Layer2 => Layer2Objects,
-				RoomLayer.Layer3 => Layer3Objects,
-				_ => null,
-			};
-		}
+			RoomLayer.Layer1 => Layer1Objects,
+			RoomLayer.Layer2 => Layer2Objects,
+			RoomLayer.Layer3 => Layer3Objects,
+			_ => null,
+		};
 
 		private RoomObject ParseRoomObject(byte b1, byte b2, byte b3)
 		{
@@ -438,9 +435,8 @@
 			byte b1, b2, b3;
 			byte layer = 0;
 			bool door = false;
-			bool ended = false;
 
-			while (!ended)
+			while (true)
 			{
 				b1 = data[offset++];
 				b2 = data[offset++];
@@ -449,26 +445,19 @@
 				{
 					if (b1 == 0xFF)
 					{
-						layer++;
 						door = false;
-						switch (layer)
+
+						layer++;
+
+						currentList = layer switch
 						{
-							case 0:
-								currentList = Layer1Objects;
-								break;
+							(byte) RoomLayer.Layer1 => Layer1Objects,
+							(byte) RoomLayer.Layer2 => Layer2Objects,
+							(byte) RoomLayer.Layer3 => Layer3Objects,
+							_ => null,
+						};
 
-							case 1:
-								currentList = Layer2Objects;
-								break;
-
-							case 2:
-								currentList = Layer3Objects;
-								break;
-
-							default:
-								ended = true;
-								break;
-						}
+						if (currentList is null) break;
 
 						continue;
 					}
@@ -543,7 +532,7 @@
 					t = SpriteType.GetTypeFromID(b3);
 				}
 
-				last = new DungeonSprite(t)
+				last = new(t)
 				{
 					RoomID = RoomID,
 					GridX = (byte) (b2 & 0x1F),
@@ -765,7 +754,7 @@
 		private IDungeonPlaceable FindRelevantEntityUnderMouseForMode(DungeonEditMode em, int x, int y)
 		{
 			var l = FindRelevantListForMode(em);
-			if (l == null) return null;
+			if (l is null) return null;
 
 			return FindEntityUnderMouseInList(l, x, y);
 		}
@@ -977,12 +966,12 @@
 			{
 				byte? check = CollisionMap[i];
 
-				if (check == null || !freespace[i])
+				if (check is null || !freespace[i])
 				{
 					continue;
 				}
 
-				if (CollisionMap[i + 1] == null && CollisionMap[i + 64] == null)
+				if (CollisionMap[i + 1] is null && CollisionMap[i + 64] is null)
 				{
 					freespace[i] = true;
 					ret.Add(new CollisionRectangle(1, 1, i, (byte) check));
@@ -1063,6 +1052,7 @@
 		{
 			return (List<RoomObject>) (Layer1Objects.FindAll(test).Concat(Layer2Objects.FindAll(test)).Concat(Layer3Objects.FindAll(test)));
 		}
+
 		private void ReassociateChestsAndItems()
 		{
 			var chests = FindAllObjects(o => o.IsChest);

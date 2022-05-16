@@ -27,7 +27,7 @@
 		public Tile16MasterSheet()
 		{
 			ptr = Marshal.AllocHGlobal(128 * 7136 / 2);
-			Bitmap = new Bitmap(128, 7136, 64, PixelFormat.Format4bppIndexed, ptr);
+			Bitmap = new Bitmap(128, 7136, 64, PixelFormat.Format8bppIndexed, ptr);
 		}
 
 		public void RedrawImageForGraphicsSet()

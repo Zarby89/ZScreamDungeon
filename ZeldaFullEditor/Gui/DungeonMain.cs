@@ -42,13 +42,17 @@ namespace ZeldaFullEditor
 		public bool showExits => showExitsToolStripMenuItem.Checked;
 		public bool showFlute => showTransportsToolStripMenuItem.Checked;
 
+		public bool ShowLayer1 => showBG1ToolStripMenuItem.Checked;
+		public bool ShowLayer2 => showBG2ToolStripMenuItem.Checked;
+
+
 		public GfxGroupsForm gfxGroupsForm;
 
 		// TODO move this?
 		public int lastRoomID = -1;
 
 		// TODO: save this in a config file and load the values into this array on startup
-		public bool[] saveSettingsArr = new bool[]
+		public bool[] saveSettingsArr = new[]
 		{
 			true, true, true, true, true, true, true, true, true, true,
 			true, true, true, true, true, true, true, true, true, true,
@@ -80,7 +84,7 @@ namespace ZeldaFullEditor
 			collisionModeButton.Tag = DungeonEditMode.CollisionMap;
 
 			penModeButton.Tag = OverworldEditMode.Tile16;
-			fillModeButton.Tag = OverworldEditMode.Tile16;
+			fillModeButton.Tag = OverworldEditMode.Tile16Fill;
 			entranceModeButton.Tag = OverworldEditMode.Entrances;
 			exitModeButton.Tag = OverworldEditMode.Exits;
 			itemModeButton.Tag = OverworldEditMode.Secrets;
@@ -156,9 +160,9 @@ namespace ZeldaFullEditor
 		{
 			foreach (var o in toolStrip1.Items)
 			{
-				if (o is DungeonToolStripButton d)
+				if (o is DungeonToolStripButton d && d.Tag is DungeonEditMode m)
 				{
-					d.Checked = (DungeonEditMode) d.Tag == ZScreamer.ActiveUWMode;
+					d.Checked = m == ZScreamer.ActiveUWMode;
 				}
 			}
 		}
@@ -167,16 +171,16 @@ namespace ZeldaFullEditor
 		{
 			foreach (var o in toolStrip1.Items)
 			{
-				if (o is DungeonToolStripButton d)
+				if (o is OverworldToolStripButton d && d.Tag is OverworldEditMode m)
 				{
-					d.Checked = (OverworldEditMode) d.Tag == ZScreamer.ActiveOWMode;
+					d.Checked = m == ZScreamer.ActiveOWMode;
 				}
 			}
 		}
 
 		public void AdjustContextMenuForSelectionChange()
 		{
-			bool theresASelection = ZScreamer.ActiveUWScene.Room.SelectedObjects.Count > 0;
+			bool theresASelection = (ZScreamer.ActiveUWScene?.Room?.SelectedObjects.Count ?? 0) > 0;
 
 			var mode = ZScreamer.ActiveUWMode;
 
@@ -260,7 +264,7 @@ namespace ZeldaFullEditor
 			//sw.Reset();
 			//sw.Start();
 
-			ZGUI.DungeonEditor.SaveRooms();
+			DungeonEditor.SaveRooms();
 
 			anychange = false;
 			//tabControl2.Refresh();
@@ -269,7 +273,7 @@ namespace ZeldaFullEditor
 
 			//sw.Reset();
 			//sw.Start();
-			byte[] romBackup = ZScreamer.ActiveScreamer.ROM.DataStream.DeepCopy();
+			byte[] romBackup = ZScreamer.ActiveROM.DataStream.DeepCopy();
 
 			// TODO move to ZS
 			//sw.Stop();
@@ -338,30 +342,30 @@ namespace ZeldaFullEditor
 				if (saveSettingsArr[39]) ZScreamer.ActiveScreamer.SaveTriforce();
 				if (saveSettingsArr[40]) ZScreamer.ActiveScreamer.SaveOverworldMessageIDs();
 
-				ZScreamer.ActiveScreamer.ROM[0x5D4E] = 0x00;
+				ZScreamer.ActiveROM[0x5D4E] = 0x00;
 
 				gfxEditor.SaveAllGfx();
 
 				//sw.Stop();
 				//Console.WriteLine("Saved Overworld- " + sw.ElapsedMilliseconds.ToString() + "ms");
-				//Console.WriteLine("ROMDATA[" + (ZScreamer.ActiveScreamer.Offsets.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[ZScreamer.ActiveScreamer.Offsets.overworldMapPalette + 2]);
+				//Console.WriteLine("ROMDATA[" + (ZScreamer.ActiveOffsets.overworldMapPalette + 2).ToString("X6") + "]" + " : " + ROM.DATA[ZScreamer.ActiveOffsets.overworldMapPalette + 2]);
 				//AsarCLR.Asar.init();
 				//AsarCLR.Asar.patch("titlescreen.asm", ref ROM.DATA);
-				//ZScreamer.ActiveScreamer.OverworldManager.SaveMap16Tiles();
+				//ZScreamer.ActiveOW.SaveMap16Tiles();
 
 				OverworldEditor.saveScratchPad();
 
 				anychange = false;
 
 				//ROMStructure.saveProjectFile(version, projectFilename);
-				//ZScreamer.ActiveScreamer.ROM.SaveLogs();
+				//ZScreamer.ActiveROM.SaveLogs();
 
 				FileStream fs = null;
 
 				try
 				{
 					fs = new FileStream(projectFilename, FileMode.OpenOrCreate, FileAccess.Write);
-					fs.Write(ZScreamer.ActiveScreamer.ROM.DataStream, 0, ZScreamer.ActiveScreamer.ROM.Length);
+					fs.Write(ZScreamer.ActiveROM.DataStream, 0, ZScreamer.ActiveROM.Length);
 				}
 				catch (Exception)
 				{
@@ -377,13 +381,13 @@ namespace ZeldaFullEditor
 			{
 				UIText.CryAboutSaving(z.Message);
 			}
-			catch (Exception)
+			catch (Exception) // TODO bad
 			{
 				UIText.CryAboutSaving("Something wrong with your file");
 			}
 			finally
 			{
-				ZScreamer.ActiveScreamer.ROM.OhShitLastResortBackup(romBackup);
+				ZScreamer.ActiveROM.OhShitLastResortBackup(romBackup);
 			}
 		}
 
@@ -417,25 +421,21 @@ namespace ZeldaFullEditor
 
 			ZScreamer.ActiveScreamer.LoadNewROM(filename);
 
-			ZScreamer.ActiveUWScene.Location = Constants.Point_0_0;
-			ZScreamer.ActiveUWScene.Size = Constants.Size512x512;
-
 			if (loadFromExported != "")
 			{
 				loadFromExported = Path.GetDirectoryName(projectFilename);
 			}
 
-			initProject();
+			OnProjectLoad();
 
 			Text = $"{filename} - {UIText.APPNAME}";
 		}
 
-		public void initProject()
+		public void OnProjectLoad()
 		{
 			projectLoaded = true;
 
 			editorsTabControl.Enabled = true;
-			ZGUI.DungeonEditor.OnProjectLoad();
 
 			undoButton.Enabled = true;
 			redoButton.Enabled = true;
@@ -454,16 +454,18 @@ namespace ZeldaFullEditor
 
 			gfxGroupsForm = new GfxGroupsForm();
 			gfxGroupsForm.CreateTempGfx();
-			gfxGroupsForm.Location = Constants.Point_0_0;
+			gfxGroupsForm.Location = Constants.OriginPoint;
 
 			paletteForm = new PaletteEditor
 			{
-				Location = Constants.Point_0_0
+				Location = Constants.OriginPoint
 			};
 			refreshRecentsFiles();
-			OverworldEditor.InitOpen();
-			TextEditor.InitializeOnOpen();
-			screenEditor.Init();
+
+			DungeonEditor.OnProjectLoad();
+			OverworldEditor.OnProjectLoad();
+			TextEditor.OnProjectLoad();
+			screenEditor.OnProjectLoad();
 			Refresh();
 			//InitDungeonViewer();
 		}
@@ -476,11 +478,11 @@ namespace ZeldaFullEditor
 			{
 				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
-					ZScreamer.ActiveUWScene.Room = ZScreamer.ActiveScreamer.all_rooms[i];
-
-					ZScreamer.ActiveUWScene.Refresh();
-
-					gb.DrawImage(ZScreamer.ActiveUWScene.tempBitmap, new Point((i % 16) * 512, (i / 16) * 512));
+					//ZScreamer.ActiveUWScene.Room = ZScreamer.ActiveScreamer.all_rooms[i];
+					//
+					//ZScreamer.ActiveUWScene.Refresh();
+					//
+					//gb.DrawImage(ZScreamer.ActiveUWScene.tempBitmap, new Point((i % 16) * 512, (i / 16) * 512));
 					//activeScene.DrawToBitmap(b, new Rectangle(cx * 512, cy * 512, 512, 512));
 				}
 			}
@@ -668,7 +670,6 @@ namespace ZeldaFullEditor
 		{
 			if (editorsTabControl.SelectedIndex == 0) // Dungeon editor
 			{
-				ZScreamer.ActiveUWScene.showLayer1 = showBG1ToolStripMenuItem.Checked;
 				ZScreamer.ActiveUWScene.Refresh();
 			}
 		}
@@ -847,7 +848,6 @@ namespace ZeldaFullEditor
 
 		private void showBG2ToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveUWScene.showLayer2 = showBG2ToolStripMenuItem.Checked;
 			ZScreamer.ActiveUWScene.Refresh();
 		}
 		//private void exportProjectAsROMToolStripMenuItem_Click(object sender, EventArgs e)
@@ -859,7 +859,7 @@ namespace ZeldaFullEditor
 		//	if (saveFile.ShowDialog() == DialogResult.OK)
 		//	{
 		//		FileStream fs = new FileStream(saveFile.FileName, FileMode.OpenOrCreate, FileAccess.Write);
-		//		fs.Write(ZScreamer.ActiveScreamer.ROM.DATA, 0, ZScreamer.ActiveScreamer.ROM.DATA.Length);
+		//		fs.Write(ZScreamer.ActiveROM.DATA, 0, ZScreamer.ActiveROM.DATA.Length);
 		//		fs.Close();
 		//	}
 		//}
@@ -879,14 +879,14 @@ namespace ZeldaFullEditor
             }
 
             FileStream brom = new FileStream(baseROM, FileMode.Open, FileAccess.Read);
-            brom.Read(ZScreamer.ActiveScreamer.ROM.DATA, 0, (int)brom.Length);
+            brom.Read(ZScreamer.ActiveROM.DATA, 0, (int)brom.Length);
             brom.Close();
 
             saveToolStripMenuItem_Click(sender, e);
             
             FileStream fs = new FileStream("temp.sfc", FileMode.CreateNew, FileAccess.Write);
 
-            fs.Write(ZScreamer.ActiveScreamer.ROM.DATA, 0, ROM.DATA.Length);
+            fs.Write(ZScreamer.ActiveROM.DATA, 0, ROM.DATA.Length);
             fs.Close();
             Process p = Process.Start("temp.sfc");
             */
@@ -903,7 +903,7 @@ namespace ZeldaFullEditor
 
 			//Console.WriteLine(Path.GetDirectoryName(projectFilename));
 			//return;
-			ROMFile testrom = ZScreamer.ActiveScreamer.ROM.Clone();
+			ROMFile testrom = ZScreamer.ActiveROM.Clone();
 			saveToolStripMenuItem_Click(sender, e);
 
 			if (File.Exists(Path.GetDirectoryName(projectFilename) + "\\Main.asm"))
@@ -918,23 +918,23 @@ namespace ZeldaFullEditor
 
 			var selectedEntrance = ZGUI.DungeonEditor.selectedEntrance;
 
-			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_room, selectedEntrance.RoomID);
-			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_yposition, selectedEntrance.YPosition);
-			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_xposition, selectedEntrance.XPosition);
-			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_camerax, selectedEntrance.CameraX);
-			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_cameray, selectedEntrance.CameraY);
-			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_cameraxtrigger, selectedEntrance.CameraTriggerX);
-			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_cameraytrigger, selectedEntrance.CameraTriggerY);
-			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_exit, selectedEntrance.OverworldEntranceLocation);
-			testrom[ZScreamer.ActiveScreamer.Offsets.startingentrance_blockset] = selectedEntrance.Blockset;
-			testrom[ZScreamer.ActiveScreamer.Offsets.startingentrance_music] = (byte) selectedEntrance.Music.ID;
-			testrom[ZScreamer.ActiveScreamer.Offsets.startingentrance_dungeon] = selectedEntrance.Dungeon;
-			testrom[ZScreamer.ActiveScreamer.Offsets.startingentrance_floor] = selectedEntrance.Floor;
-			testrom[ZScreamer.ActiveScreamer.Offsets.startingentrance_ladderbg] = selectedEntrance.Ladderbg;
-			testrom[ZScreamer.ActiveScreamer.Offsets.startingentrance_scrolling] = selectedEntrance.Scrolling;
-			testrom[ZScreamer.ActiveScreamer.Offsets.startingentrance_scrollquadrant] = selectedEntrance.Scrollquadrant;
+			testrom.Write16(ZScreamer.ActiveOffsets.startingentrance_room, selectedEntrance.RoomID);
+			testrom.Write16(ZScreamer.ActiveOffsets.startingentrance_yposition, selectedEntrance.YPosition);
+			testrom.Write16(ZScreamer.ActiveOffsets.startingentrance_xposition, selectedEntrance.XPosition);
+			testrom.Write16(ZScreamer.ActiveOffsets.startingentrance_camerax, selectedEntrance.CameraX);
+			testrom.Write16(ZScreamer.ActiveOffsets.startingentrance_cameray, selectedEntrance.CameraY);
+			testrom.Write16(ZScreamer.ActiveOffsets.startingentrance_cameraxtrigger, selectedEntrance.CameraTriggerX);
+			testrom.Write16(ZScreamer.ActiveOffsets.startingentrance_cameraytrigger, selectedEntrance.CameraTriggerY);
+			testrom.Write16(ZScreamer.ActiveOffsets.startingentrance_exit, selectedEntrance.OverworldEntranceLocation);
+			testrom[ZScreamer.ActiveOffsets.startingentrance_blockset] = selectedEntrance.Blockset;
+			testrom[ZScreamer.ActiveOffsets.startingentrance_music] = (byte) selectedEntrance.Music.ID;
+			testrom[ZScreamer.ActiveOffsets.startingentrance_dungeon] = selectedEntrance.Dungeon;
+			testrom[ZScreamer.ActiveOffsets.startingentrance_floor] = selectedEntrance.Floor;
+			testrom[ZScreamer.ActiveOffsets.startingentrance_ladderbg] = selectedEntrance.Ladderbg;
+			testrom[ZScreamer.ActiveOffsets.startingentrance_scrolling] = selectedEntrance.Scrolling;
+			testrom[ZScreamer.ActiveOffsets.startingentrance_scrollquadrant] = selectedEntrance.Scrollquadrant;
 
-			testrom.Write(ZScreamer.ActiveScreamer.Offsets.startingentrance_scrolledge,
+			testrom.Write(ZScreamer.ActiveOffsets.startingentrance_scrolledge,
 				selectedEntrance.cameraBoundaryQN, selectedEntrance.cameraBoundaryFN,
 				selectedEntrance.cameraBoundaryQS, selectedEntrance.cameraBoundaryFS,
 				selectedEntrance.cameraBoundaryQW, selectedEntrance.cameraBoundaryFW,
@@ -1253,11 +1253,11 @@ namespace ZeldaFullEditor
 				int id = ZScreamer.ActiveUWScene.Room.RoomID + 1;
 				if (id < Constants.NumberOfRooms)
 				{
-					ZGUI.DungeonEditor.addRoomTab((ushort) id);
+					DungeonEditor.addRoomTab((ushort) id);
 				}
 				else
 				{
-					ZGUI.DungeonEditor.addRoomTab(0);
+					DungeonEditor.addRoomTab(0);
 				}
 			}
 		}
@@ -1269,11 +1269,11 @@ namespace ZeldaFullEditor
 				int id = ZScreamer.ActiveUWScene.Room.RoomID - 1;
 				if (id >= 0)
 				{
-					ZGUI.DungeonEditor.addRoomTab((ushort) id);
+					DungeonEditor.addRoomTab((ushort) id);
 				}
 				else
 				{
-					ZGUI.DungeonEditor.addRoomTab(295);
+					DungeonEditor.addRoomTab(295);
 				}
 			}
 		}
@@ -1285,17 +1285,17 @@ namespace ZeldaFullEditor
 				int id = (ZScreamer.ActiveUWScene.Room.RoomID - 16);
 				if (id >= 0)
 				{
-					ZGUI.DungeonEditor.addRoomTab((ushort) id);
+					DungeonEditor.addRoomTab((ushort) id);
 				}
 				else
 				{
 					if (304 + id > 295)
 					{
-						ZGUI.DungeonEditor.addRoomTab(295);
+						DungeonEditor.addRoomTab(295);
 					}
 					else
 					{
-						ZGUI.DungeonEditor.addRoomTab((ushort) (304 + id));
+						DungeonEditor.addRoomTab((ushort) (304 + id));
 					}
 				}
 			}
@@ -1308,17 +1308,17 @@ namespace ZeldaFullEditor
 				int id = ZScreamer.ActiveUWScene.Room.RoomID + 16;
 				if (id < Constants.NumberOfRooms)
 				{
-					ZGUI.DungeonEditor.addRoomTab((ushort) id);
+					DungeonEditor.addRoomTab((ushort) id);
 				}
 				else
 				{
 					if (id > 304)
 					{
-						ZGUI.DungeonEditor.addRoomTab((ushort) (id - 304));
+						DungeonEditor.addRoomTab((ushort) (id - 304));
 					}
 					else
 					{
-						ZGUI.DungeonEditor.addRoomTab((ushort) (id - 288));
+						DungeonEditor.addRoomTab((ushort) (id - 288));
 					}
 				}
 			}
@@ -1329,10 +1329,8 @@ namespace ZeldaFullEditor
 			Refresh();
 		}
 
-		// TODO :cry:
 		private void editorsTabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			//copyToolStripMenuItem
 			foreach (var o in toolStrip1.Items)
 			{
 				if (o is DungeonToolStripButton ub)
@@ -1515,11 +1513,11 @@ namespace ZeldaFullEditor
 			{
 				FileStream fs = new FileStream(projectFile.FileName, FileMode.Open, FileAccess.Read);
 				ROM.TEMPDATA = new byte[ROM.DATA.Length];
-				ROM.DATA.CopyTo(ZScreamer.ActiveScreamer.ROM.TEMPDATA, 0);
+				ROM.DATA.CopyTo(ZScreamer.ActiveROM.TEMPDATA, 0);
 				byte[] data = new byte[ROM.DATA.Length];
 				ROM.DATA = new byte[ROM.DATA.Length];
 				fs.Read(data, 0, (int) fs.Length);
-				data.CopyTo(ZScreamer.ActiveScreamer.ROM.DATA, 0x00);
+				data.CopyTo(ZScreamer.ActiveROM.DATA, 0x00);
 				oweditor2 = new OverworldEditor();
 				oweditor2.InitOpen(this);
 				overworldEditor.Visible = false;
@@ -1529,7 +1527,7 @@ namespace ZeldaFullEditor
 				oweditor2.BringToFront();
 				oweditor2.Visible = true;
 				overworldEditor.splitContainer1.Panel2.AutoScroll = true;
-				//ROM.TEMPDATA.CopyTo(ZScreamer.ActiveScreamer.ROM.DATA, 0x00);
+				//ROM.TEMPDATA.CopyTo(ZScreamer.ActiveROM.DATA, 0x00);
 
 				fs.Close();
 			}
@@ -1724,27 +1722,27 @@ namespace ZeldaFullEditor
 				FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.OpenOrCreate, FileAccess.Write);
 				for (int i = 0; i < 64; i++)
 				{
-					for (int y = 0; y < 32; y += 1)
+					for (int y = 0; y < 32; y++)
 					{
-						for (int x = 0; x < 32; x += 1)
+						for (int x = 0; x < 32; x ++)
 						{
-							mapArrayData[p++] = (byte) (ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] & 0xFF);
-							mapArrayData[p++] = (byte) ((ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
-							mapArrayData[p++] = (byte) (ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] & 0xFF);
-							mapArrayData[p++] = (byte) ((ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
+							mapArrayData[p++] = (byte) ZScreamer.ActiveOW.allmapsTilesLW[x + sx, y + sy];
+							mapArrayData[p++] = (byte) (ZScreamer.ActiveOW.allmapsTilesLW[x + sx, y + sy] >> 8);
+							mapArrayData[p++] = (byte) ZScreamer.ActiveOW.allmapsTilesDW[x + sx, y + sy];
+							mapArrayData[p++] = (byte) (ZScreamer.ActiveOW.allmapsTilesDW[x + sx, y + sy] >> 8);
 
 							if (i < 32)
 							{
-								mapArrayData[p++] = (byte) (ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] & 0xFF);
-								mapArrayData[p++] = (byte) ((ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] >> 8) & 0xFF);
+								mapArrayData[p++] = (byte) ZScreamer.ActiveOW.allmapsTilesSP[x + sx, y + sy];
+								mapArrayData[p++] = (byte) (ZScreamer.ActiveOW.allmapsTilesSP[x + sx, y + sy] >> 8);
 							}
 						}
 					}
 
-					sx++;
-					if (sx >= 8)
+					sx += 32;
+					if (sx >= (8 * 32))
 					{
-						sy++;
+						sy += 32;
 						sx = 0;
 					}
 				}
@@ -1774,24 +1772,24 @@ namespace ZeldaFullEditor
 					{
 						for (int x = 0; x < 32; x += 1)
 						{
-							ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData[p + 1] << 8) + mapArrayData[p]);
+							ZScreamer.ActiveOW.allmapsTilesLW[x + sx, y + sy] = (ushort) ((mapArrayData[p + 1] << 8) | mapArrayData[p]);
 							p += 2;
 
-							ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData[p + 1] << 8) + mapArrayData[p]);
+							ZScreamer.ActiveOW.allmapsTilesDW[x + sx, y + sy] = (ushort) ((mapArrayData[p + 1] << 8) | mapArrayData[p]);
 							p += 2;
 
 							if (i < 32)
 							{
-								ZScreamer.ActiveScreamer.OverworldManager.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData[p + 1] << 8) + mapArrayData[p]);
+								ZScreamer.ActiveOW.allmapsTilesSP[x + sx, y + sy] = (ushort) ((mapArrayData[p + 1] << 8) | mapArrayData[p]);
 								p += 2;
 							}
 						}
 					}
 
-					sx++;
-					if (sx >= 8)
+					sx += 32;
+					if (sx >= (8 * 32))
 					{
-						sy++;
+						sy += 32;
 						sx = 0;
 					}
 				}
@@ -1812,7 +1810,7 @@ namespace ZeldaFullEditor
 
 				for (int i = 0; i < 3752; i++) // 3600
 				{
-					ulong v = ZScreamer.ActiveScreamer.OverworldManager.Tile16Sheet.GetTile16At(i).getLongValue();
+					ulong v = ZScreamer.ActiveOW.Tile16Sheet.GetTile16At(i).getLongValue();
 
 					for (int j = 0; j < 8; j++)
 					{
@@ -1867,7 +1865,7 @@ namespace ZeldaFullEditor
 						(mapArrayData[p + 6])
 					);
 
-					ZScreamer.ActiveScreamer.OverworldManager.Tile16Sheet.SetTile16At(i, new Tile16(t0, t1, t2, t3));
+					ZScreamer.ActiveOW.Tile16Sheet.SetTile16At(i, new Tile16(t0, t1, t2, t3));
 
 					p += 8;
 				}
@@ -1886,40 +1884,40 @@ namespace ZeldaFullEditor
 			{
 				for (int y = 0; y < 32; y++)
 				{
-					if (!tile8ids.Contains(ZScreamer.ActiveScreamer.OverworldManager.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]))
+					if (!tile8ids.Contains(ZScreamer.ActiveOW.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]))
 					{
-						tile8ids.Add(ZScreamer.ActiveScreamer.OverworldManager.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]);
+						tile8ids.Add(ZScreamer.ActiveOW.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)]);
 					}
-					map16[x, y] = ZScreamer.ActiveScreamer.OverworldManager.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)];
+					map16[x, y] = ZScreamer.ActiveOW.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)];
 				}
 			}
 
 			for (int i = 0; i < tile8ids.Count; i++)
 			{
 
-				//ZScreamer.ActiveScreamer.OverworldManager.Tile16List[tile8ids[i]].tile0.HFlip ^= true;
-				//ZScreamer.ActiveScreamer.OverworldManager.Tile16List[tile8ids[i]].tile1.HFlip ^= true;
-				//ZScreamer.ActiveScreamer.OverworldManager.Tile16List[tile8ids[i]].tile2.HFlip ^= true;
-				//ZScreamer.ActiveScreamer.OverworldManager.Tile16List[tile8ids[i]].tile3.HFlip ^= true;
+				//ZScreamer.ActiveOW.Tile16List[tile8ids[i]].tile0.HFlip ^= true;
+				//ZScreamer.ActiveOW.Tile16List[tile8ids[i]].tile1.HFlip ^= true;
+				//ZScreamer.ActiveOW.Tile16List[tile8ids[i]].tile2.HFlip ^= true;
+				//ZScreamer.ActiveOW.Tile16List[tile8ids[i]].tile3.HFlip ^= true;
 				//
-				//ushort t0 = ZScreamer.ActiveScreamer.OverworldManager.Tile16List[i].tile0.ID;
-				//ushort t2 = ZScreamer.ActiveScreamer.OverworldManager.Tile16List[i].tile2.ID;
+				//ushort t0 = ZScreamer.ActiveOW.Tile16List[i].tile0.ID;
+				//ushort t2 = ZScreamer.ActiveOW.Tile16List[i].tile2.ID;
 				//
-				//ZScreamer.ActiveScreamer.OverworldManager.Tile16List[i].tile0.ID = ZScreamer.ActiveScreamer.OverworldManager.Tile16List[i].tile1.ID;
-				//ZScreamer.ActiveScreamer.OverworldManager.Tile16List[i].tile1.ID = t0;
-				//ZScreamer.ActiveScreamer.OverworldManager.Tile16List[i].tile2.ID = ZScreamer.ActiveScreamer.OverworldManager.Tile16List[i].tile3.ID;
-				//ZScreamer.ActiveScreamer.OverworldManager.Tile16List[i].tile3.ID = t2;
+				//ZScreamer.ActiveOW.Tile16List[i].tile0.ID = ZScreamer.ActiveOW.Tile16List[i].tile1.ID;
+				//ZScreamer.ActiveOW.Tile16List[i].tile1.ID = t0;
+				//ZScreamer.ActiveOW.Tile16List[i].tile2.ID = ZScreamer.ActiveOW.Tile16List[i].tile3.ID;
+				//ZScreamer.ActiveOW.Tile16List[i].tile3.ID = t2;
 
 				for (int x = 0, mx = 31; x < 32; x++, mx--)
 				{
 					for (int y = 0; y < 32; y++)
 					{
-						ZScreamer.ActiveScreamer.OverworldManager.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)] = map16[mx, y];
+						ZScreamer.ActiveOW.allmaps[44].tilesUsed[x + (4 * 32), y + (5 * 32)] = map16[mx, y];
 					}
 				}
 			}
 
-			// ZScreamer.ActiveScreamer.OverworldManager.allmaps[44].BuildMap();
+			// ZScreamer.ActiveOW.allmaps[44].BuildMap();
 		}
 
 		// TODO magic string
@@ -1994,7 +1992,7 @@ namespace ZeldaFullEditor
 				ZScreamer.ActiveScreamer.SaveOverworldScreens();
 
 				FileStream fs = new FileStream(projectFilename, FileMode.OpenOrCreate, FileAccess.Write);
-				fs.Write(ZScreamer.ActiveScreamer.ROM.DataStream, 0, ZScreamer.ActiveScreamer.ROM.Length);
+				fs.Write(ZScreamer.ActiveROM.DataStream, 0, ZScreamer.ActiveROM.Length);
 				fs.Close();
 			}
 			catch (ZeldaException a)
@@ -2028,13 +2026,6 @@ namespace ZeldaFullEditor
 			//{
 			//	tp.Text = (tp.Tag as DungeonRoom).RoomID.ToString(dotFormat);
 			//}
-		}
-
-		private void showMapIndexInHexToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			OverworldEditor.mapGroupbox.Text = "Selected Map - " +
-				ZScreamer.ActiveOWScene.CurrentMapParent.ToString(showMapIndexInHexToolStripMenuItem.Checked ? "X2" : "D3")
-				+ " Properties : ";
 		}
 
 		private void saveVRAMAsPngToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2074,26 +2065,26 @@ namespace ZeldaFullEditor
 			//		size = Constants.ROMSize;
 			//	}
 			//
-			//	ZScreamer.ActiveScreamer.ROM.DATA2 = new byte[size];
+			//	ZScreamer.ActiveROM.DATA2 = new byte[size];
 			//	if ((fs.Length & Constants.ROMHeaderSize) == Constants.ROMHeaderSize)
 			//	{
 			//		size = (int) (fs.Length - Constants.ROMHeaderSize);
 			//		byte[] tempRomData = new byte[fs.Length];
 			//		fs.Read(tempRomData, 0, (int) fs.Length);
-			//		Array.Copy(tempRomData, Constants.ROMHeaderSize, ZScreamer.ActiveScreamer.ROM.DATA2, 0, size);
+			//		Array.Copy(tempRomData, Constants.ROMHeaderSize, ZScreamer.ActiveROM.DATA2, 0, size);
 			//	}
 			//	else
 			//	{
-			//		fs.Read(ZScreamer.ActiveScreamer.ROM.DATA2, 0, (int) fs.Length);
+			//		fs.Read(ZScreamer.ActiveROM.DATA2, 0, (int) fs.Length);
 			//	}
 			//
 			//	fs.Close();
 			//
-			//	ZScreamer.ActiveScreamer.ROM.TEMPDATA = new byte[Constants.ROMSize];
+			//	ZScreamer.ActiveROM.TEMPDATA = new byte[Constants.ROMSize];
 			//	for (int i = 0; i < Constants.ROMSize; i++)
 			//	{
-			//		ZScreamer.ActiveScreamer.ROM.TEMPDATA[i] = ZScreamer.ActiveScreamer.ROM.DATA[i];
-			//		ZScreamer.ActiveScreamer.ROM.DATA[i] = ZScreamer.ActiveScreamer.ROM.DATA2[i];
+			//		ZScreamer.ActiveROM.TEMPDATA[i] = ZScreamer.ActiveROM.DATA[i];
+			//		ZScreamer.ActiveROM.DATA[i] = ZScreamer.ActiveROM.DATA2[i];
 			//	}
 			//
 			//	for (int i = 0; i < Constants.NumberOfRooms; i++)
@@ -2101,11 +2092,11 @@ namespace ZeldaFullEditor
 			//		DungeonsData.all_rooms_moved[i] = new Room(ZS, i);
 			//	}
 			//
-			//	ZScreamer.ActiveScreamer.ROM.TEMPDATA = new byte[Constants.ROMSize];
+			//	ZScreamer.ActiveROM.TEMPDATA = new byte[Constants.ROMSize];
 			//	for (int i = 0; i < Constants.ROMSize; i++)
 			//	{
-			//		ZScreamer.ActiveScreamer.ROM.DATA2[i] = ZScreamer.ActiveScreamer.ROM.DATA[i];
-			//		ZScreamer.ActiveScreamer.ROM.DATA[i] = ZScreamer.ActiveScreamer.ROM.TEMPDATA[i]; // Restore to original rom
+			//		ZScreamer.ActiveROM.DATA2[i] = ZScreamer.ActiveROM.DATA[i];
+			//		ZScreamer.ActiveROM.DATA[i] = ZScreamer.ActiveROM.TEMPDATA[i]; // Restore to original rom
 			//	}
 			//
 			//	Save save = new Save(ZS, DungeonsData.all_rooms);
@@ -2175,7 +2166,7 @@ namespace ZeldaFullEditor
 			//    */
 			//
 			//	fs = new FileStream(rm.textBox1.Text, FileMode.Open, FileAccess.Write);
-			//	fs.Write(ZScreamer.ActiveScreamer.ROM.DATA2, 0, Constants.ROMSize);
+			//	fs.Write(ZScreamer.ActiveROM.DATA2, 0, Constants.ROMSize);
 			//
 			//	fs.Close();
 			//
@@ -2205,7 +2196,7 @@ namespace ZeldaFullEditor
 		}
 
 		// TODO Magic colors
-		// make a ThemeZScreamer.ActiveScreamer.Offsets.cs file?
+		// make a ThemeZScreamer.ActiveOffsets.cs file?
 		public void ChangeTheme(Control.ControlCollection container)
 		{
 			foreach (Control component in container)
@@ -2269,7 +2260,7 @@ namespace ZeldaFullEditor
 		{
 			if (ZScreamer.ActiveUWScene.Room.AutoSortDoors())
 			{
-				UIText.GeneralWarning("The count of openable doors and shutter doors is too high and may result in weird behaviot");
+				UIText.GeneralWarning("The count of openable doors and shutter doors is too high and may result in weird behavior.");
 			}
 
 			ZScreamer.ActiveUWScene.Refresh();
@@ -2305,8 +2296,6 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// is triggered when the clear all custom collision button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void clearAllToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ZScreamer.ActiveUWScene.clearCustomCollisionMap();
@@ -2315,99 +2304,83 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// is triggered when the clear all overworld sprites phase 1 button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void clearPhase1OWSpritesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletion("overworld sprites for phase 1 (Rescue Zelda)"))
 			{
-				ZGUI.OverworldEditor.clearOverworldSprites(0);
+				OverworldEditor.clearOverworldSprites(0);
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld sprites phase 2 button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void clearPhase2OWSpritesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletion("overworld sprites for phase 2 (Zelda rescued)"))
 			{
-				ZGUI.OverworldEditor.clearOverworldSprites(1);
+				OverworldEditor.clearOverworldSprites(1);
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld sprites phase 3 button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void clearPhase3OWSpritesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletion("overworld sprites for phase 3 (Agahnim defeated)"))
 			{
-				ZGUI.OverworldEditor.clearOverworldSprites(2);
+				OverworldEditor.clearOverworldSprites(2);
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld items button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		public void clearAllOWItemsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletion("overworld items"))
 			{
-				ZGUI.OverworldEditor.clearOverworldItems();
+				OverworldEditor.clearOverworldItems();
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld entrances button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		public void clearAllOWEntrancesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletion("overworld entrances"))
 			{
-				ZGUI.OverworldEditor.clearOverworldEntrances();
+				OverworldEditor.clearOverworldEntrances();
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld holes button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		public void clearAllOWHolesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletion("hole entrances"))
 			{
-				ZGUI.OverworldEditor.clearOverworldHoles();
+				OverworldEditor.clearOverworldHoles();
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld exits button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		public void clearAllOWExitsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletion("overworld exits"))
 			{
-				ZGUI.OverworldEditor.clearOverworldExits();
+				OverworldEditor.clearOverworldExits();
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld overlays button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		public void clearAllOverworldOverlaysToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletion("overworld overlays"))
@@ -2418,7 +2391,7 @@ namespace ZeldaFullEditor
 
 		private void selectAllRoomsForExportToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			ZGUI.DungeonEditor.SelectAllRooms();
+			DungeonEditor.SelectAllRooms();
 
 			//loadRoomList(Constants.NumberOfRooms);
 		}
@@ -2433,112 +2406,94 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// is triggered when the clear all overworld sprites phase 1 button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void clearPhase1AreaSpritesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletionOWArea("sprites for phase 1 (Rescue Zelda)"))
 			{
-				ZGUI.OverworldEditor.clearAreaSprites(0);
+				OverworldEditor.clearAreaSprites(0);
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld sprites phase 2 button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void clearPhase2AreaSpritesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletionOWArea("sprites for phase 2 (Zelda rescued)"))
 			{
-				ZGUI.OverworldEditor.clearAreaSprites(1);
+				OverworldEditor.clearAreaSprites(1);
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld sprites phase 3 button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void clearPhase3AreaSpritesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletionOWArea("sprites for phase 3 (Agahnim defeated)"))
 			{
-				ZGUI.OverworldEditor.clearAreaSprites(2);
+				OverworldEditor.clearAreaSprites(2);
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld items button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		public void clearAllAreaItemsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletionOWArea("secret items"))
 			{
-				ZGUI.OverworldEditor.clearAreaItems();
+				OverworldEditor.clearAreaItems();
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld entrances button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		public void clearAllAreaEntrancesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletionOWArea("entrances"))
 			{
-				ZGUI.OverworldEditor.clearAreaEntrances();
+				OverworldEditor.clearAreaEntrances();
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld holes button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		public void clearAllAreaHolesToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletionOWArea("hole entrances"))
 			{
-				ZGUI.OverworldEditor.clearAreaHoles();
+				OverworldEditor.clearAreaHoles();
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld exits button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		public void clearAllAreaExitsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletionOWArea("exits"))
 			{
-				ZGUI.OverworldEditor.clearAreaExits();
+				OverworldEditor.clearAreaExits();
 			}
 		}
 
 		/// <summary>
 		/// is triggered when the clear all overworld overlays button is pressed
 		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		public void clearAllAreaOverlaysToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			if (ConfirmDeletionOWArea("overlay tiles"))
 			{
-				ZGUI.OverworldEditor.clearAreaOverlays();
+				OverworldEditor.clearAreaOverlays();
 			}
 		}
 
 		/// <summary>
 		/// Gives a message box saying "You wanna delete <paramref name="w"/>?"
 		/// </summary>
-		/// <param name="w"></param>
-		/// <returns>true if yes</returns>
 		private bool ConfirmDeletion(string w)
 		{
 			return MessageBox.Show(
@@ -2550,11 +2505,9 @@ namespace ZeldaFullEditor
 		/// <summary>
 		/// Gives a message box saying "You wanna delete <paramref name="w"/> from OW screen X?"
 		/// </summary>
-		/// <param name="w"></param>
-		/// <returns>true if yes</returns>
 		private bool ConfirmDeletionOWArea(string w)
 		{
-			return ConfirmDeletion($"{w} from OW screen {ZScreamer.ActiveOWScene.CurrentMapParent:X2}");
+			return ConfirmDeletion($"{w} from OW screen {ZScreamer.ActiveOWScene.CurrentParentMapID:X2}");
 		}
 
 		private void discordToolStripMenuItem_Click(object sender, EventArgs e)
