@@ -168,16 +168,16 @@
 				if (selectedTile.Length > 0)
 				{
 					int scrollpos = selectedTile[0] / 8 * 16;
-					if (scrollpos >= Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Maximum)
+					if (scrollpos >= ZGUI.OverworldEditor.splitContainer1.Panel1.VerticalScroll.Maximum)
 					{
-						Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Value = Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Maximum;
+						ZGUI.OverworldEditor.splitContainer1.Panel1.VerticalScroll.Value = ZGUI.OverworldEditor.splitContainer1.Panel1.VerticalScroll.Maximum;
 					}
 					else
 					{
-						Program.OverworldForm.splitContainer1.Panel1.VerticalScroll.Value = scrollpos;
+						ZGUI.OverworldEditor.splitContainer1.Panel1.VerticalScroll.Value = scrollpos;
 					}
 
-					Program.OverworldForm.tilePictureBox.Refresh();
+					ZGUI.OverworldEditor.tilePictureBox.Refresh();
 				}
 			}
 		}

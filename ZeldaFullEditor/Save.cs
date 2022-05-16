@@ -1067,22 +1067,22 @@
 		// TODO these should all be elsewhere
 		public void SaveTitleScreen()
 		{
-			Program.MainForm.screenEditor.Save();
+			ZGUI.screenEditor.Save();
 		}
 
 		public void SaveDungeonMaps()
 		{
-			Program.MainForm.screenEditor.dungmapSaveAllCurrentDungeon();
+			ZGUI.screenEditor.dungmapSaveAllCurrentDungeon();
 		}
 
 		public void SaveOverworldMiniMap()
 		{
-			Program.MainForm.screenEditor.saveOverworldMap();
+			ZGUI.screenEditor.saveOverworldMap();
 		}
 
 		public void SaveTriforce()
 		{
-			Program.MainForm.screenEditor.saveTriforce();
+			ZGUI.screenEditor.saveTriforce();
 		}
 
 		// TODO : OW Message Load/Save

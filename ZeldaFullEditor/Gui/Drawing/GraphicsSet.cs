@@ -12,7 +12,6 @@
 		}
 	}
 
-
 	public class GraphicsBlock : IByteable, IGraphicsSheet
 	{
 		public GraphicsSheet Sheet1 { get; set; }
@@ -33,7 +32,25 @@
 
 		public byte[] GetByteData()
 		{
-			return new byte[] { Sheet1.ID, Sheet2.ID, Sheet3.ID, Sheet4.ID };
+			return new[] { Sheet1.ID, Sheet2.ID, Sheet3.ID, Sheet4.ID };
+		}
+
+		public bool ContainsExpectedSheets(RequiredGraphicsSheets set, bool latter)
+		{
+			if (latter)
+			{
+				return (set.Sheet4?.Contains(Sheet1.ID) ?? true) &&
+					(set.Sheet5?.Contains(Sheet2.ID) ?? true) &&
+					(set.Sheet6?.Contains(Sheet3.ID) ?? true) &&
+					(set.Sheet7?.Contains(Sheet4.ID) ?? true);
+			}
+			else
+			{
+				return (set.Sheet0?.Contains(Sheet1.ID) ?? true) &&
+					(set.Sheet1?.Contains(Sheet2.ID) ?? true) &&
+					(set.Sheet2?.Contains(Sheet3.ID) ?? true) &&
+					(set.Sheet3?.Contains(Sheet4.ID) ?? true);
+			}
 		}
 	}
 
@@ -55,6 +72,19 @@
 		};
 
 		public GraphicsTile GetBackgroundGraphicsTile(int id) => this[id];
+
+		public bool CheckIfSpriteWillLookGood(SpriteType t)
+		{
+			return SpriteBlock1.ContainsExpectedSheets(t.RequiredSheets, false) &&
+				SpriteBlock2.ContainsExpectedSheets(t.RequiredSheets, true);
+		}
+
+		public bool CheckIfObjectWillLookGood(RoomObjectType t)
+		{
+			return BackgroundBlock1.ContainsExpectedSheets(t.RequiredSheets, false) &&
+				BackgroundBlock2.ContainsExpectedSheets(t.RequiredSheets, true);
+		}
+
 
 		public GraphicsTile GetSpriteGraphicsTile(int id) => id switch
 		{

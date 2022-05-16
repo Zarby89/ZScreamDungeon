@@ -135,7 +135,7 @@
 				ZScreamer.ActiveUWScene.Refresh();
 			}
 
-			Program.MainForm.UpdateFormForSelectedObject(o);
+			ZGUI.UpdateFormForSelectedObject(o);
 		}
 
 
@@ -187,7 +187,7 @@
 			{
 				if ((p.Tag as DungeonRoom).HasUnsavedChanges)
 				{
-					Program.MainForm.anychange = true;
+					ZGUI.anychange = true;
 					if (!p.Text.Contains('*'))
 					{
 						p.Text += "*";
@@ -200,8 +200,8 @@
 		{
 			ZScreamer.ActiveScreamer.CurrentUWMode = DungeonEditMode.CollisionMap;
 
-			//Program.MainForm.xScreenToolStripMenuItem.Checked = true;
-			Program.MainForm.RefreshOnZoom();
+			//ZGUI.xScreenToolStripMenuItem.Checked = true;
+			ZGUI.RefreshOnZoom();
 			tileTypeCombobox.SelectedIndex = 0;
 			collisionMapPanel.Visible = true;
 		}
@@ -533,9 +533,9 @@
 							if (cx > higherX) { higherX = cx; }
 							if (cy > higherY) { higherY = cy; }
 
-							Program.RoomPreviewArtist.SetRoomAndDrawImmediately(ZScreamer.ActiveScreamer.all_rooms[s]);
+							TheGUI.RoomPreviewArtist.SetRoomAndDrawImmediately(ZScreamer.ActiveScreamer.all_rooms[s]);
 
-							gb.DrawImage(Program.RoomPreviewArtist.FinalOutput, new Point(cx * 512, cy * 512));
+							gb.DrawImage(TheGUI.RoomPreviewArtist.FinalOutput, new Point(cx * 512, cy * 512));
 						}
 					}
 				}
@@ -793,7 +793,7 @@
 
 		private void mapPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			if (!Program.MainForm.projectLoaded)
+			if (!ZGUI.projectLoaded)
 			{
 				return;
 			}
@@ -1010,7 +1010,7 @@
 			e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
 			e.Graphics.Clear(Color.Black);
 
-			Program.RoomPreviewArtist.DrawSelfToImage(e.Graphics);
+			TheGUI.RoomPreviewArtist.DrawSelfToImage(e.Graphics);
 		}
 
 		private void mapPicturebox_MouseUp(object sender, MouseEventArgs e)
@@ -1046,7 +1046,7 @@
 
 				previewRoom = ZScreamer.ActiveScreamer.all_rooms[roomId];
 
-				Program.RoomPreviewArtist.SetRoomAndDrawImmediately(previewRoom);
+				TheGUI.RoomPreviewArtist.SetRoomAndDrawImmediately(previewRoom);
 			}
 		}
 

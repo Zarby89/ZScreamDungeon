@@ -114,23 +114,16 @@ namespace ZeldaFullEditor
 			ZScreamer.ActiveGraphicsManager.initGfx();
 
 			refreshRecentsFiles();
-			Program.TextForm.Visible = false;
-			Program.OverworldForm.Visible = false;
 			objDesigner.Visible = false;
 			gfxEditor.Visible = false;
 			dungeonViewer.Visible = false;
 			screenEditor.Visible = false;
 
 			objDesigner.Dock = DockStyle.Fill;
-			Program.TextForm.Dock = DockStyle.Fill;
 			gfxEditor.Dock = DockStyle.Fill;
 			dungeonViewer.Dock = DockStyle.Fill;
 			screenEditor.Dock = DockStyle.Fill;
 
-			overworldPage.Controls.Add(Program.OverworldForm);
-			Program.OverworldForm.Dock = DockStyle.Fill;
-
-			Controls.Add(Program.TextForm);
 			Controls.Add(objDesigner);
 			Controls.Add(gfxEditor);
 			Controls.Add(dungeonViewer);
@@ -145,34 +138,41 @@ namespace ZeldaFullEditor
 
 		private void ModeButton_Click(object sender, EventArgs e)
 		{
-			switch (editorsTabControl.SelectedIndex)
+			switch (sender)
 			{
-				case (int) TabSelection.DungeonEditor:
-					foreach (var o in toolStrip1.Items)
-					{
-						if (o is DungeonToolStripButton d)
-						{
-							d.Checked = d == sender;
-						}
-					}
-
-					ZScreamer.ActiveScreamer.CurrentUWMode = (DungeonEditMode) (sender as DungeonToolStripButton).Tag;
+				case DungeonToolStripButton d:
+					ZScreamer.ActiveScreamer.CurrentUWMode = (DungeonEditMode) d.Tag;
+					UpdateEverythingForUnderworldMode();
 					break;
 
-				case (int) TabSelection.OverworldEditor:
-					foreach (var o in toolStrip1.Items)
-					{
-						if (o is OverworldToolStripButton d)
-						{
-							d.Checked = d == sender;
-						}
-					}
-					ZScreamer.ActiveScreamer.CurrentOWMode = (OverworldEditMode) (sender as OverworldToolStripButton).Tag;
+				case OverworldToolStripButton d:
+					ZScreamer.ActiveScreamer.CurrentOWMode = (OverworldEditMode) d.Tag;
+					UpdateEverythingForOverworldMode();
 					break;
-			}			
+			}
 		}
 
+		public void UpdateEverythingForUnderworldMode()
+		{
+			foreach (var o in toolStrip1.Items)
+			{
+				if (o is DungeonToolStripButton d)
+				{
+					d.Checked = (DungeonEditMode) d.Tag == ZScreamer.ActiveUWMode;
+				}
+			}
+		}
 
+		public void UpdateEverythingForOverworldMode()
+		{
+			foreach (var o in toolStrip1.Items)
+			{
+				if (o is DungeonToolStripButton d)
+				{
+					d.Checked = (OverworldEditMode) d.Tag == ZScreamer.ActiveOWMode;
+				}
+			}
+		}
 
 		public void AdjustContextMenuForSelectionChange()
 		{
@@ -260,7 +260,7 @@ namespace ZeldaFullEditor
 			//sw.Reset();
 			//sw.Start();
 
-			Program.DungeonForm.SaveRooms();
+			ZGUI.DungeonEditor.SaveRooms();
 
 			anychange = false;
 			//tabControl2.Refresh();
@@ -322,7 +322,7 @@ namespace ZeldaFullEditor
 
 				if (saveSettingsArr[23]) ZScreamer.ActiveGraphicsManager.SaveGroupsToROM();
 				if (saveSettingsArr[24]) ZScreamer.ActivePaletteManager.SavePalettesToROM();
-				if (saveSettingsArr[25]) Program.TextForm.Save();
+				if (saveSettingsArr[25]) TextEditor.Save();
 
 				// 17
 
@@ -349,7 +349,7 @@ namespace ZeldaFullEditor
 				//AsarCLR.Asar.patch("titlescreen.asm", ref ROM.DATA);
 				//ZScreamer.ActiveScreamer.OverworldManager.SaveMap16Tiles();
 
-				Program.OverworldForm.saveScratchPad();
+				OverworldEditor.saveScratchPad();
 
 				anychange = false;
 
@@ -435,7 +435,7 @@ namespace ZeldaFullEditor
 			projectLoaded = true;
 
 			editorsTabControl.Enabled = true;
-			Program.DungeonForm.OnProjectLoad();
+			ZGUI.DungeonEditor.OnProjectLoad();
 
 			undoButton.Enabled = true;
 			redoButton.Enabled = true;
@@ -461,8 +461,8 @@ namespace ZeldaFullEditor
 				Location = Constants.Point_0_0
 			};
 			refreshRecentsFiles();
-			Program.OverworldForm.InitOpen();
-			Program.TextForm.InitializeOnOpen();
+			OverworldEditor.InitOpen();
+			TextEditor.InitializeOnOpen();
 			screenEditor.Init();
 			Refresh();
 			//InitDungeonViewer();
@@ -536,7 +536,7 @@ namespace ZeldaFullEditor
 			}
 			else if (editorsTabControl.SelectedIndex == 3) // Text editor
 			{
-				Program.TextForm.delete();
+				TextEditor.delete();
 			}
 		}
 
@@ -552,7 +552,7 @@ namespace ZeldaFullEditor
 			}
 			else if (editorsTabControl.SelectedIndex == 3) // Text editor
 			{
-				Program.TextForm.selectAll();
+				TextEditor.selectAll();
 			}
 		}
 
@@ -568,7 +568,7 @@ namespace ZeldaFullEditor
 			}
 			else if (editorsTabControl.SelectedIndex == 3) // Text editor
 			{
-				Program.TextForm.cut();
+				TextEditor.cut();
 			}
 		}
 
@@ -588,7 +588,7 @@ namespace ZeldaFullEditor
 			}
 			else if (editorsTabControl.SelectedIndex == 3) // Text editor
 			{
-				Program.TextForm.paste();
+				TextEditor.paste();
 			}
 		}
 
@@ -608,7 +608,7 @@ namespace ZeldaFullEditor
 			}
 			else if (editorsTabControl.SelectedIndex == 3) // Text editor
 			{
-				Program.TextForm.copy();
+				TextEditor.copy();
 			}
 		}
 
@@ -648,7 +648,7 @@ namespace ZeldaFullEditor
 			}
 			else if (editorsTabControl.SelectedIndex == 3) // Text editor
 			{
-				Program.TextForm.undo();
+				TextEditor.undo();
 			}
 		}
 
@@ -916,7 +916,7 @@ namespace ZeldaFullEditor
 				Console.WriteLine(error.Fullerrdata.ToString());
 			}
 
-			var selectedEntrance = Program.DungeonForm.selectedEntrance;
+			var selectedEntrance = ZGUI.DungeonEditor.selectedEntrance;
 
 			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_room, selectedEntrance.RoomID);
 			testrom.Write16(ZScreamer.ActiveScreamer.Offsets.startingentrance_yposition, selectedEntrance.YPosition);
@@ -998,7 +998,7 @@ namespace ZeldaFullEditor
 
 		private void toolStripButton1_Click(object sender, EventArgs e)
 		{
-			Program.DungeonForm.ExportMaps();
+			ZGUI.DungeonEditor.ExportMaps();
 		}
 
 		// TODO move to constants
@@ -1077,7 +1077,7 @@ namespace ZeldaFullEditor
 			GotoRoom gotoRoom = new GotoRoom();
 			if (gotoRoom.ShowDialog() == DialogResult.OK)
 			{
-				Program.DungeonForm.addRoomTab((ushort) gotoRoom.SelectedRoom);
+				ZGUI.DungeonEditor.addRoomTab((ushort) gotoRoom.SelectedRoom);
 			}
 		}
 
@@ -1195,7 +1195,7 @@ namespace ZeldaFullEditor
 			//	};
 			//	wp.containerPanel.Controls.Add(new GfxGroupsForm());
 			//	wp.Size = new Size(gfxGroupsForm.Size.Width + 2, gfxGroupsForm.Size.Height + 26);
-			//	Program.OverworldForm.splitContainer1.Panel2.Controls.Add(wp);
+			//	ZGUI.OverworldEditor.splitContainer1.Panel2.Controls.Add(wp);
 			//	wp.BringToFront();
 			//}
 		}
@@ -1232,7 +1232,7 @@ namespace ZeldaFullEditor
 			//	else
 			//	{
 			//		wp.containerPanel.Controls.Add(new PaletteEditor());
-			//		Program.OverworldForm.splitContainer1.Panel2.Controls.Add(wp);
+			//		ZGUI.OverworldEditor.splitContainer1.Panel2.Controls.Add(wp);
 			//	}
 			//
 			//	paletteForm.BringToFront();
@@ -1253,11 +1253,11 @@ namespace ZeldaFullEditor
 				int id = ZScreamer.ActiveUWScene.Room.RoomID + 1;
 				if (id < Constants.NumberOfRooms)
 				{
-					Program.DungeonForm.addRoomTab((ushort) id);
+					ZGUI.DungeonEditor.addRoomTab((ushort) id);
 				}
 				else
 				{
-					Program.DungeonForm.addRoomTab(0);
+					ZGUI.DungeonEditor.addRoomTab(0);
 				}
 			}
 		}
@@ -1269,11 +1269,11 @@ namespace ZeldaFullEditor
 				int id = ZScreamer.ActiveUWScene.Room.RoomID - 1;
 				if (id >= 0)
 				{
-					Program.DungeonForm.addRoomTab((ushort) id);
+					ZGUI.DungeonEditor.addRoomTab((ushort) id);
 				}
 				else
 				{
-					Program.DungeonForm.addRoomTab(295);
+					ZGUI.DungeonEditor.addRoomTab(295);
 				}
 			}
 		}
@@ -1285,17 +1285,17 @@ namespace ZeldaFullEditor
 				int id = (ZScreamer.ActiveUWScene.Room.RoomID - 16);
 				if (id >= 0)
 				{
-					Program.DungeonForm.addRoomTab((ushort) id);
+					ZGUI.DungeonEditor.addRoomTab((ushort) id);
 				}
 				else
 				{
 					if (304 + id > 295)
 					{
-						Program.DungeonForm.addRoomTab(295);
+						ZGUI.DungeonEditor.addRoomTab(295);
 					}
 					else
 					{
-						Program.DungeonForm.addRoomTab((ushort) (304 + id));
+						ZGUI.DungeonEditor.addRoomTab((ushort) (304 + id));
 					}
 				}
 			}
@@ -1308,17 +1308,17 @@ namespace ZeldaFullEditor
 				int id = ZScreamer.ActiveUWScene.Room.RoomID + 16;
 				if (id < Constants.NumberOfRooms)
 				{
-					Program.DungeonForm.addRoomTab((ushort) id);
+					ZGUI.DungeonEditor.addRoomTab((ushort) id);
 				}
 				else
 				{
 					if (id > 304)
 					{
-						Program.DungeonForm.addRoomTab((ushort) (id - 304));
+						ZGUI.DungeonEditor.addRoomTab((ushort) (id - 304));
 					}
 					else
 					{
-						Program.DungeonForm.addRoomTab((ushort) (id - 288));
+						ZGUI.DungeonEditor.addRoomTab((ushort) (id - 288));
 					}
 				}
 			}
@@ -2032,7 +2032,7 @@ namespace ZeldaFullEditor
 
 		private void showMapIndexInHexToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			Program.OverworldForm.mapGroupbox.Text = "Selected Map - " +
+			OverworldEditor.mapGroupbox.Text = "Selected Map - " +
 				ZScreamer.ActiveOWScene.CurrentMapParent.ToString(showMapIndexInHexToolStripMenuItem.Checked ? "X2" : "D3")
 				+ " Properties : ";
 		}
@@ -2044,7 +2044,7 @@ namespace ZeldaFullEditor
 
 		private void edit8x8palettebox_Paint(object sender, PaintEventArgs e)
 		{
-			ColorPalette cp = Program.RoomEditingArtist.Layer1Canvas.Palette;
+			ColorPalette cp = RoomEditingArtist.Layer1Canvas.Palette;
 			for (int i = 0; i < 128; i++)
 			{
 				e.Graphics.FillRectangle(new SolidBrush(cp.Entries[i]), new Rectangle((i % 16) * 16, i & ~0xF, 16, 16));
@@ -2186,7 +2186,7 @@ namespace ZeldaFullEditor
 
 		private void showSpritesToolStripMenuItem_CheckedChanged(object sender, EventArgs e)
 		{
-			Program.OverworldForm.Refresh();
+			OverworldEditor.Refresh();
 		}
 
 		private void increaseObjectSizeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2244,22 +2244,22 @@ namespace ZeldaFullEditor
 			if (sender == x8ToolStripMenuItem1)
 			{
 				x8ToolStripMenuItem1.Checked = true;
-				Program.OverworldForm.gridDisplay = 8;
+				OverworldEditor.gridDisplay = 8;
 			}
 			else if (sender == x16ToolStripMenuItem1)
 			{
 				x16ToolStripMenuItem1.Checked = true;
-				Program.OverworldForm.gridDisplay = 16;
+				OverworldEditor.gridDisplay = 16;
 			}
 			else if (sender == x32ToolStripMenuItem1)
 			{
 				x32ToolStripMenuItem1.Checked = true;
-				Program.OverworldForm.gridDisplay = 32;
+				OverworldEditor.gridDisplay = 32;
 			}
 			else
 			{
 				noneToolStripMenuItem.Checked = true;
-				Program.OverworldForm.gridDisplay = 0;
+				OverworldEditor.gridDisplay = 0;
 			}
 
 			ZScreamer.ActiveOWScene.Refresh();
@@ -2321,7 +2321,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletion("overworld sprites for phase 1 (Rescue Zelda)"))
 			{
-				Program.OverworldForm.clearOverworldSprites(0);
+				ZGUI.OverworldEditor.clearOverworldSprites(0);
 			}
 		}
 
@@ -2334,7 +2334,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletion("overworld sprites for phase 2 (Zelda rescued)"))
 			{
-				Program.OverworldForm.clearOverworldSprites(1);
+				ZGUI.OverworldEditor.clearOverworldSprites(1);
 			}
 		}
 
@@ -2347,7 +2347,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletion("overworld sprites for phase 3 (Agahnim defeated)"))
 			{
-				Program.OverworldForm.clearOverworldSprites(2);
+				ZGUI.OverworldEditor.clearOverworldSprites(2);
 			}
 		}
 
@@ -2360,7 +2360,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletion("overworld items"))
 			{
-				Program.OverworldForm.clearOverworldItems();
+				ZGUI.OverworldEditor.clearOverworldItems();
 			}
 		}
 
@@ -2373,7 +2373,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletion("overworld entrances"))
 			{
-				Program.OverworldForm.clearOverworldEntrances();
+				ZGUI.OverworldEditor.clearOverworldEntrances();
 			}
 		}
 
@@ -2386,7 +2386,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletion("hole entrances"))
 			{
-				Program.OverworldForm.clearOverworldHoles();
+				ZGUI.OverworldEditor.clearOverworldHoles();
 			}
 		}
 
@@ -2399,7 +2399,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletion("overworld exits"))
 			{
-				Program.OverworldForm.clearOverworldExits();
+				ZGUI.OverworldEditor.clearOverworldExits();
 			}
 		}
 
@@ -2412,20 +2412,20 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletion("overworld overlays"))
 			{
-				Program.OverworldForm.clearOverworldOverlays();
+				ZGUI.OverworldEditor.clearOverworldOverlays();
 			}
 		}
 
 		private void selectAllRoomsForExportToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			Program.DungeonForm.SelectAllRooms();
+			ZGUI.DungeonEditor.SelectAllRooms();
 
 			//loadRoomList(Constants.NumberOfRooms);
 		}
 
 		private void deselectedAllRoomsForExportToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			Program.DungeonForm.DeselectAllRooms();
+			ZGUI.DungeonEditor.DeselectAllRooms();
 
 			//loadRoomList(Constants.NumberOfRooms);
 		}
@@ -2439,7 +2439,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletionOWArea("sprites for phase 1 (Rescue Zelda)"))
 			{
-				Program.OverworldForm.clearAreaSprites(0);
+				ZGUI.OverworldEditor.clearAreaSprites(0);
 			}
 		}
 
@@ -2452,7 +2452,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletionOWArea("sprites for phase 2 (Zelda rescued)"))
 			{
-				Program.OverworldForm.clearAreaSprites(1);
+				ZGUI.OverworldEditor.clearAreaSprites(1);
 			}
 		}
 
@@ -2465,7 +2465,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletionOWArea("sprites for phase 3 (Agahnim defeated)"))
 			{
-				Program.OverworldForm.clearAreaSprites(2);
+				ZGUI.OverworldEditor.clearAreaSprites(2);
 			}
 		}
 
@@ -2478,7 +2478,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletionOWArea("secret items"))
 			{
-				Program.OverworldForm.clearAreaItems();
+				ZGUI.OverworldEditor.clearAreaItems();
 			}
 		}
 
@@ -2491,7 +2491,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletionOWArea("entrances"))
 			{
-				Program.OverworldForm.clearAreaEntrances();
+				ZGUI.OverworldEditor.clearAreaEntrances();
 			}
 		}
 
@@ -2504,7 +2504,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletionOWArea("hole entrances"))
 			{
-				Program.OverworldForm.clearAreaHoles();
+				ZGUI.OverworldEditor.clearAreaHoles();
 			}
 		}
 
@@ -2517,7 +2517,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletionOWArea("exits"))
 			{
-				Program.OverworldForm.clearAreaExits();
+				ZGUI.OverworldEditor.clearAreaExits();
 			}
 		}
 
@@ -2530,7 +2530,7 @@ namespace ZeldaFullEditor
 		{
 			if (ConfirmDeletionOWArea("overlay tiles"))
 			{
-				Program.OverworldForm.clearAreaOverlays();
+				ZGUI.OverworldEditor.clearAreaOverlays();
 			}
 		}
 

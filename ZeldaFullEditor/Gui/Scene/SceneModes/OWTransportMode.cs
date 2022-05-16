@@ -20,7 +20,7 @@
 			{
 				if (lastbird == value) return;
 
-				Program.OverworldForm.SetSelectedTransport(lastbird);
+				ZGUI.OverworldEditor.SetSelectedTransport(lastbird);
 				lastbird = value;
 			}
 		}

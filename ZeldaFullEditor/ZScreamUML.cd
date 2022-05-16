@@ -399,7 +399,7 @@
     <Position X="34" Y="6.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADABgAAA=</HashCode>
-      <FileName>Program.cs</FileName>
+      <FileName>TheGUI.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="ZeldaFullEditor.Project" Collapsed="true">

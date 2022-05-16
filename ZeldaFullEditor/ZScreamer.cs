@@ -104,22 +104,22 @@
 		public void SetDungeonEditMode(DungeonEditMode em)
 		{
 			uwmode = em;
-			Program.MainForm.AdjustContextMenu();
-			Program.DungeonForm.UpdateUnderworldMode(em);
+			ZGUI.AdjustContextMenu();
+			ZGUI.DungeonEditor.UpdateUnderworldMode(em);
 			UnderworldScene.UpdateForMode(em);
 		}
 
 		private void SetOverworldEditMode(OverworldEditMode om)
 		{
 			owmode = om;
-			Program.OverworldForm.UpdateForMode(om);
+			ZGUI.OverworldEditor.UpdateForMode(om);
 			OverworldScene.UpdateForMode(om);
 		}
 
 		public void SetSelectedMessageID(int id)
 		{
-			Program.TextForm.SelectMessageID(id);
-			Program.TextForm.Refresh();
+			ZGUI.TextEditor.SelectMessageID(id);
+			ZGUI.TextEditor.Refresh();
 		}
 	}
 

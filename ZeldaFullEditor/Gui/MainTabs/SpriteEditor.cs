@@ -15,7 +15,7 @@
 			var s = (SpriteName) SpritePropChooser.SelectedItem;
 			byte id = (byte) s.ID;
 
-			var spr = ZScreamer.ActiveScreamer.SpriteProps[id];
+			var spr = ZScreamer.ActiveScreamer?.SpriteProps?[id] ?? SpriteProperties.Empty;
 
 			JustRefreshEverything();
 		}

@@ -40,11 +40,11 @@
 
 			//if (Layer2Mode != Constants.LayerMergeOff)
 			//{
-			//	Program.DungeonForm.SetPalettesTransparent();
+			//	ZGUI.DungeonEditor.SetPalettesTransparent();
 			//}
 			//else
 			//{
-			//	Program.DungeonForm.SetPalettesBlack();
+			//	ZGUI.DungeonEditor.SetPalettesBlack();
 			//}
 
 			void DrawEntireList(IEnumerable<IDelegatedDraw> list)

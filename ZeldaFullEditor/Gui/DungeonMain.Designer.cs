@@ -44,14 +44,15 @@ namespace ZeldaFullEditor
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.editorsTabControl = new System.Windows.Forms.TabControl();
 			this.dungeonPage = new System.Windows.Forms.TabPage();
-			this.dungeonEditor1 = new ZeldaFullEditor.Gui.MainTabs.DungeonEditor();
+			this.DungeonEditor = new ZeldaFullEditor.Gui.MainTabs.DungeonEditor();
 			this.overworldPage = new System.Windows.Forms.TabPage();
-			this.overworldEditor1 = new ZeldaFullEditor.Gui.OverworldEditor();
+			this.OverworldEditor = new ZeldaFullEditor.Gui.OverworldEditor();
 			this.GfxEditorPage = new System.Windows.Forms.TabPage();
 			this.textPage = new System.Windows.Forms.TabPage();
-			this.textEditor1 = new ZeldaFullEditor.TextEditor();
+			this.TextEditor = new ZeldaFullEditor.TextEditor();
 			this.ScreenEditor = new System.Windows.Forms.TabPage();
 			this.spritesPage = new System.Windows.Forms.TabPage();
+			this.SpriteEditor = new ZeldaFullEditor.Gui.MainTabs.SpriteEditor();
 			this.toolStrip1 = new System.Windows.Forms.ToolStrip();
 			this.openfileButton = new System.Windows.Forms.ToolStripButton();
 			this.saveButton = new System.Windows.Forms.ToolStripButton();
@@ -261,7 +262,6 @@ namespace ZeldaFullEditor
 			this.UWContextSendToLayer2 = new System.Windows.Forms.ToolStripMenuItem();
 			this.UWContextSendToLayer3 = new System.Windows.Forms.ToolStripMenuItem();
 			this.roomProperty_bg2 = new System.Windows.Forms.ComboBox();
-			this.spriteEditor1 = new ZeldaFullEditor.Gui.MainTabs.SpriteEditor();
 			this.nothingselectedcontextMenu.SuspendLayout();
 			this.editorsTabControl.SuspendLayout();
 			this.dungeonPage.SuspendLayout();
@@ -350,7 +350,7 @@ namespace ZeldaFullEditor
 			// dungeonPage
 			// 
 			this.dungeonPage.BackColor = System.Drawing.SystemColors.Control;
-			this.dungeonPage.Controls.Add(this.dungeonEditor1);
+			this.dungeonPage.Controls.Add(this.DungeonEditor);
 			this.dungeonPage.Location = new System.Drawing.Point(4, 4);
 			this.dungeonPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.dungeonPage.Name = "dungeonPage";
@@ -359,86 +359,95 @@ namespace ZeldaFullEditor
 			this.dungeonPage.TabIndex = 0;
 			this.dungeonPage.Text = "Dungeon Editor";
 			// 
-			// dungeonEditor1
+			// DungeonEditor
 			// 
-			this.dungeonEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.dungeonEditor1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			this.dungeonEditor1.Location = new System.Drawing.Point(2, 3);
-			this.dungeonEditor1.Name = "dungeonEditor1";
-			this.dungeonEditor1.Size = new System.Drawing.Size(1146, 690);
-			this.dungeonEditor1.TabIndex = 0;
+			this.DungeonEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.DungeonEditor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.DungeonEditor.Location = new System.Drawing.Point(2, 3);
+			this.DungeonEditor.Name = "DungeonEditor";
+			this.DungeonEditor.Size = new System.Drawing.Size(1146, 690);
+			this.DungeonEditor.TabIndex = 0;
 			// 
 			// overworldPage
 			// 
-			this.overworldPage.Controls.Add(this.overworldEditor1);
+			this.overworldPage.Controls.Add(this.OverworldEditor);
 			this.overworldPage.Location = new System.Drawing.Point(4, 4);
 			this.overworldPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.overworldPage.Name = "overworldPage";
 			this.overworldPage.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.overworldPage.Size = new System.Drawing.Size(1150, 696);
+			this.overworldPage.Size = new System.Drawing.Size(1150, 694);
 			this.overworldPage.TabIndex = 1;
 			this.overworldPage.Text = "Overworld Editor";
 			this.overworldPage.UseVisualStyleBackColor = true;
 			// 
-			// overworldEditor1
+			// OverworldEditor
 			// 
-			this.overworldEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.overworldEditor1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			this.overworldEditor1.Location = new System.Drawing.Point(2, 3);
-			this.overworldEditor1.Name = "overworldEditor1";
-			this.overworldEditor1.Size = new System.Drawing.Size(1146, 690);
-			this.overworldEditor1.TabIndex = 0;
+			this.OverworldEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.OverworldEditor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.OverworldEditor.Location = new System.Drawing.Point(2, 3);
+			this.OverworldEditor.Name = "OverworldEditor";
+			this.OverworldEditor.Size = new System.Drawing.Size(1146, 688);
+			this.OverworldEditor.TabIndex = 0;
 			// 
 			// GfxEditorPage
 			// 
 			this.GfxEditorPage.Location = new System.Drawing.Point(4, 4);
 			this.GfxEditorPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.GfxEditorPage.Name = "GfxEditorPage";
-			this.GfxEditorPage.Size = new System.Drawing.Size(1150, 696);
+			this.GfxEditorPage.Size = new System.Drawing.Size(1150, 694);
 			this.GfxEditorPage.TabIndex = 2;
 			this.GfxEditorPage.Text = "Graphics Manager";
 			this.GfxEditorPage.UseVisualStyleBackColor = true;
 			// 
 			// textPage
 			// 
-			this.textPage.Controls.Add(this.textEditor1);
+			this.textPage.Controls.Add(this.TextEditor);
 			this.textPage.Location = new System.Drawing.Point(4, 4);
 			this.textPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.textPage.Name = "textPage";
-			this.textPage.Size = new System.Drawing.Size(1150, 696);
+			this.textPage.Size = new System.Drawing.Size(1150, 694);
 			this.textPage.TabIndex = 4;
 			this.textPage.Text = "Text Editor";
 			this.textPage.UseVisualStyleBackColor = true;
 			// 
-			// textEditor1
+			// TextEditor
 			// 
-			this.textEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.textEditor1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-			this.textEditor1.Location = new System.Drawing.Point(0, 0);
-			this.textEditor1.Name = "textEditor1";
-			this.textEditor1.Size = new System.Drawing.Size(1150, 696);
-			this.textEditor1.TabIndex = 0;
+			this.TextEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.TextEditor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.TextEditor.Location = new System.Drawing.Point(0, 0);
+			this.TextEditor.Name = "TextEditor";
+			this.TextEditor.Size = new System.Drawing.Size(1150, 694);
+			this.TextEditor.TabIndex = 0;
 			// 
 			// ScreenEditor
 			// 
 			this.ScreenEditor.Location = new System.Drawing.Point(4, 4);
 			this.ScreenEditor.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.ScreenEditor.Name = "ScreenEditor";
-			this.ScreenEditor.Size = new System.Drawing.Size(1150, 696);
+			this.ScreenEditor.Size = new System.Drawing.Size(1150, 694);
 			this.ScreenEditor.TabIndex = 5;
 			this.ScreenEditor.Text = "Screen Editor";
 			this.ScreenEditor.UseVisualStyleBackColor = true;
 			// 
 			// spritesPage
 			// 
-			this.spritesPage.Controls.Add(this.spriteEditor1);
+			this.spritesPage.Controls.Add(this.SpriteEditor);
 			this.spritesPage.Location = new System.Drawing.Point(4, 4);
 			this.spritesPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.spritesPage.Name = "spritesPage";
-			this.spritesPage.Size = new System.Drawing.Size(1150, 696);
+			this.spritesPage.Size = new System.Drawing.Size(1150, 694);
 			this.spritesPage.TabIndex = 6;
 			this.spritesPage.Text = "Sprites Editor";
 			this.spritesPage.UseVisualStyleBackColor = true;
+			// 
+			// SpriteEditor
+			// 
+			this.SpriteEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.SpriteEditor.Location = new System.Drawing.Point(0, 0);
+			this.SpriteEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
+			this.SpriteEditor.Name = "SpriteEditor";
+			this.SpriteEditor.Size = new System.Drawing.Size(1150, 694);
+			this.SpriteEditor.TabIndex = 0;
 			// 
 			// toolStrip1
 			// 
@@ -488,7 +497,7 @@ namespace ZeldaFullEditor
 			this.toolStrip1.Location = new System.Drawing.Point(4, 24);
 			this.toolStrip1.Name = "toolStrip1";
 			this.toolStrip1.Padding = new System.Windows.Forms.Padding(10, 0, 1, 0);
-			this.toolStrip1.Size = new System.Drawing.Size(911, 25);
+			this.toolStrip1.Size = new System.Drawing.Size(1007, 25);
 			this.toolStrip1.Stretch = true;
 			this.toolStrip1.TabIndex = 10;
 			this.toolStrip1.Text = "toolStrip1";
@@ -572,6 +581,7 @@ namespace ZeldaFullEditor
 			this.allbgsButton.Size = new System.Drawing.Size(23, 22);
 			this.allbgsButton.Tag = ZeldaFullEditor.DungeonEditMode.LayerAll;
 			this.allbgsButton.Text = "All Layers";
+			this.allbgsButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// bg1modeButton
 			// 
@@ -585,6 +595,7 @@ namespace ZeldaFullEditor
 			this.bg1modeButton.Size = new System.Drawing.Size(23, 22);
 			this.bg1modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer1;
 			this.bg1modeButton.Text = "Layer 1";
+			this.bg1modeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// bg2modeButton
 			// 
@@ -596,6 +607,7 @@ namespace ZeldaFullEditor
 			this.bg2modeButton.Size = new System.Drawing.Size(23, 22);
 			this.bg2modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer2;
 			this.bg2modeButton.Text = "Layer 2";
+			this.bg2modeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// bg3modeButton
 			// 
@@ -607,18 +619,19 @@ namespace ZeldaFullEditor
 			this.bg3modeButton.Size = new System.Drawing.Size(23, 22);
 			this.bg3modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer3;
 			this.bg3modeButton.Text = "Layer 3";
+			this.bg3modeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// spritemodeButton
 			// 
 			this.spritemodeButton.CheckOnClick = true;
 			this.spritemodeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-			this.spritemodeButton.Enabled = false;
 			this.spritemodeButton.Image = ((System.Drawing.Image)(resources.GetObject("spritemodeButton.Image")));
 			this.spritemodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.spritemodeButton.Name = "spritemodeButton";
 			this.spritemodeButton.Size = new System.Drawing.Size(23, 22);
 			this.spritemodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Sprites;
 			this.spritemodeButton.Text = "Object Mode";
+			this.spritemodeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// blockmodeButton
 			// 
@@ -630,6 +643,7 @@ namespace ZeldaFullEditor
 			this.blockmodeButton.Size = new System.Drawing.Size(23, 22);
 			this.blockmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Blocks;
 			this.blockmodeButton.Text = "Block Mode";
+			this.blockmodeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// torchmodeButton
 			// 
@@ -641,6 +655,7 @@ namespace ZeldaFullEditor
 			this.torchmodeButton.Size = new System.Drawing.Size(23, 22);
 			this.torchmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Torches;
 			this.torchmodeButton.Text = "Torch Mode";
+			this.torchmodeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// potmodeButton
 			// 
@@ -652,6 +667,7 @@ namespace ZeldaFullEditor
 			this.potmodeButton.Size = new System.Drawing.Size(23, 22);
 			this.potmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Secrets;
 			this.potmodeButton.Text = "Secrets Mode";
+			this.potmodeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// doormodeButton
 			// 
@@ -663,6 +679,7 @@ namespace ZeldaFullEditor
 			this.doormodeButton.Size = new System.Drawing.Size(23, 22);
 			this.doormodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Doors;
 			this.doormodeButton.Text = "Door Mode";
+			this.doormodeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// collisionModeButton
 			// 
@@ -674,6 +691,7 @@ namespace ZeldaFullEditor
 			this.collisionModeButton.Size = new System.Drawing.Size(23, 22);
 			this.collisionModeButton.Tag = ZeldaFullEditor.DungeonEditMode.CollisionMap;
 			this.collisionModeButton.Text = "Collision Mode";
+			this.collisionModeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// penModeButton
 			// 
@@ -686,6 +704,7 @@ namespace ZeldaFullEditor
 			this.penModeButton.Name = "penModeButton";
 			this.penModeButton.Size = new System.Drawing.Size(23, 22);
 			this.penModeButton.Text = "Tile mode";
+			this.penModeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// fillModeButton
 			// 
@@ -696,6 +715,7 @@ namespace ZeldaFullEditor
 			this.fillModeButton.Name = "fillModeButton";
 			this.fillModeButton.Size = new System.Drawing.Size(23, 22);
 			this.fillModeButton.Text = "Fill mode";
+			this.fillModeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// entranceModeButton
 			// 
@@ -706,6 +726,7 @@ namespace ZeldaFullEditor
 			this.entranceModeButton.Name = "entranceModeButton";
 			this.entranceModeButton.Size = new System.Drawing.Size(23, 22);
 			this.entranceModeButton.Text = "Entrance mode";
+			this.entranceModeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// exitModeButton
 			// 
@@ -716,6 +737,7 @@ namespace ZeldaFullEditor
 			this.exitModeButton.Name = "exitModeButton";
 			this.exitModeButton.Size = new System.Drawing.Size(23, 22);
 			this.exitModeButton.Text = "Exit mode";
+			this.exitModeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// itemModeButton
 			// 
@@ -726,6 +748,7 @@ namespace ZeldaFullEditor
 			this.itemModeButton.Name = "itemModeButton";
 			this.itemModeButton.Size = new System.Drawing.Size(23, 22);
 			this.itemModeButton.Text = "Item mode";
+			this.itemModeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// owSpriteModeButton
 			// 
@@ -736,6 +759,7 @@ namespace ZeldaFullEditor
 			this.owSpriteModeButton.Name = "owSpriteModeButton";
 			this.owSpriteModeButton.Size = new System.Drawing.Size(23, 22);
 			this.owSpriteModeButton.Text = "Sprite mode";
+			this.owSpriteModeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// transportModeButton
 			// 
@@ -746,6 +770,7 @@ namespace ZeldaFullEditor
 			this.transportModeButton.Name = "transportModeButton";
 			this.transportModeButton.Size = new System.Drawing.Size(23, 22);
 			this.transportModeButton.Text = "Transport mode";
+			this.transportModeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// overlayButton
 			// 
@@ -756,6 +781,7 @@ namespace ZeldaFullEditor
 			this.overlayButton.Name = "overlayButton";
 			this.overlayButton.Size = new System.Drawing.Size(23, 22);
 			this.overlayButton.Text = "Overlay";
+			this.overlayButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// gravestoneButton
 			// 
@@ -766,6 +792,7 @@ namespace ZeldaFullEditor
 			this.gravestoneButton.Name = "gravestoneButton";
 			this.gravestoneButton.Size = new System.Drawing.Size(23, 22);
 			this.gravestoneButton.Text = "Overlay";
+			this.gravestoneButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
 			// toolStripSeparator3
 			// 
@@ -2352,14 +2379,6 @@ namespace ZeldaFullEditor
 			this.roomProperty_bg2.Size = new System.Drawing.Size(121, 23);
 			this.roomProperty_bg2.TabIndex = 0;
 			// 
-			// spriteEditor1
-			// 
-			this.spriteEditor1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.spriteEditor1.Location = new System.Drawing.Point(0, 0);
-			this.spriteEditor1.Name = "spriteEditor1";
-			this.spriteEditor1.Size = new System.Drawing.Size(1150, 696);
-			this.spriteEditor1.TabIndex = 0;
-			// 
 			// DungeonMain
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2627,10 +2646,10 @@ namespace ZeldaFullEditor
 		private OverworldToolStripButton lwButton;
 		private OverworldToolStripButton dwButton;
 		private OverworldToolStripButton spButton;
-		private DungeonEditor dungeonEditor1;
-		private OverworldEditor overworldEditor1;
-		private TextEditor textEditor1;
-		private SpriteEditor spriteEditor1;
+		internal OverworldEditor OverworldEditor;
+		internal TextEditor TextEditor;
+		internal DungeonEditor DungeonEditor;
+		internal SpriteEditor SpriteEditor;
 	}
 }
 

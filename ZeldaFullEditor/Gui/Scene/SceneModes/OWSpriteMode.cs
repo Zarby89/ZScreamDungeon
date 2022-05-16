@@ -122,18 +122,18 @@
 				menu.Show(Cursor.Position);
 			}
 
-			Program.OverworldForm.objectGroupbox.Text = "Selected sprite";
+			ZGUI.OverworldEditor.objectGroupbox.Text = "Selected sprite";
 
 			if (lastselectedSprite != null)
 			{
-				Program.OverworldForm.SetSelectedObjectLabels(
+				ZGUI.OverworldEditor.SetSelectedObjectLabels(
 					lastselectedSprite.ID,
 					lastselectedSprite.MapX,
 					lastselectedSprite.MapY);
-				Program.OverworldForm.objCombobox.DataSource = DefaultEntities.ListOfTileTypes;
-				Program.OverworldForm.objCombobox.SelectedIndex = lastselectedSprite.ID;
+				ZGUI.OverworldEditor.objCombobox.DataSource = DefaultEntities.ListOfTileTypes;
+				ZGUI.OverworldEditor.objCombobox.SelectedIndex = lastselectedSprite.ID;
 
-				Program.OverworldForm.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedSprite;
+				ZGUI.OverworldEditor.objCombobox.SelectedIndexChanged += ObjCombobox_SelectedIndexChangedSprite;
 			}
 		}
 

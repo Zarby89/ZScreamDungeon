@@ -677,7 +677,7 @@ namespace ZeldaFullEditor
 				}
 				else
 				{
-					cp.Entries[i] = Program.RoomPreviewArtist.Layer1Canvas.Palette.Entries[(DefaultTextColor * 4) + i];
+					cp.Entries[i] = TheGUI.RoomPreviewArtist.Layer1Canvas.Palette.Entries[(DefaultTextColor * 4) + i];
 				}
 			}
 

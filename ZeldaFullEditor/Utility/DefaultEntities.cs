@@ -841,6 +841,37 @@
 			new(0xF4, "Boulders (OW)")
 		};
 
+		public static readonly SpriteName[] ListOfOverlords =
+{
+			new(0x00, "Nothing"),
+			new(0x01, "Position target"),
+			new(0x02, "Full room cannons"),
+			new(0x03, "Vertical cannon"),
+			new(0x04, "Stalfos spawner"),
+			new(0x05, "Falling stalfos"),
+			new(0x06, "Bad switch snake"),
+			new(0x07, "Moving floor"),
+			new(0x08, "Blob spawner"),
+			new(0x09, "Wallmaster"),
+			new(0x0A, "Falling square"),
+			new(0x0B, "Falling bridge"),
+			new(0x0C, "Falling tiles west to easth"),
+			new(0x0D, "Falling tiles north to south"),
+			new(0x0E, "Falling tiles east to west"),
+			new(0x0F, "Falling tiles south to north"),
+			new(0x10, "Pirogusu spawner left"),
+			new(0x11, "Pirogusu spawner right"),
+			new(0x12, "Pirogusu spawner top"),
+			new(0x13, "Pirogusu spawner bottom"),
+			new(0x14, "Tile room"),
+			new(0x15, "Wizzrobe spawner"),
+			new(0x16, "Zoro spawner"),
+			new(0x17, "Pot trap"),
+			new(0x18, "Invisible stalfos"),
+			new(0x19, "Armos coordinator"),
+			new(0x1A, "Bad switch bomb"),
+		};
+
 		public static readonly ItemReceiptName[] ListOfItemReceipts =
 		{
 			new(0x00, "Fighter sword"),

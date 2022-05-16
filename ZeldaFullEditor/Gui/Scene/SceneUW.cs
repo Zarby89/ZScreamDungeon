@@ -18,11 +18,11 @@
 	//		// TODO: FIND PROBLEM THAT IS INCREASING SAVE TIME!!
 	//		private void OnMouseMove(object sender, MouseEventArgs e)
 	//		{
-	//			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+	//			ZGUI.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 	//
 	//			if (!colliding_chest)
 	//			{
-	//				Program.MainForm.toolTip1.Hide(this);
+	//				ZGUI.toolTip1.Hide(this);
 	//			}
 	//
 	//			if (mouse_down) // Slowdown problem in save caused by something here
@@ -42,7 +42,7 @@
 	//							room.has_changed = true;
 	//							last_mx = mx;
 	//							last_my = my;
-	//							Program.DungeonForm.UpdateFormForSelectedObject((room.selectedObject[0]);
+	//							ZGUI.DungeonEditor.UpdateFormForSelectedObject((room.selectedObject[0]);
 	//						}
 	//
 	//					}
@@ -112,12 +112,12 @@
 	//				return;
 	//			}
 	//
-	//			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+	//			ZGUI.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 	//
 	//			//this.Focus();
 	//
 	//			room.has_changed = true;
-	//			Program.DungeonForm.checkAnyChanges();
+	//			ZGUI.DungeonEditor.checkAnyChanges();
 	//
 	//			switch (ZS.CurrentUWMode)
 	//			{
@@ -137,7 +137,7 @@
 	//					break;
 	//			}
 	//
-	//			if (Program.DungeonForm.tabControl1.SelectedIndex == 1) // If we are on object tab
+	//			if (ZGUI.DungeonEditor.tabControl1.SelectedIndex == 1) // If we are on object tab
 	//			{
 	//				switch (ZS.CurrentUWMode)
 	//				{
@@ -178,8 +178,8 @@
 	//							room.has_changed = true;
 	//							mouse_down = true;
 	//							selectedDragObject = null;
-	//							Program.DungeonForm.objectViewer1.selectedObject = null;
-	//							Program.DungeonForm.objectViewer1.Refresh();
+	//							ZGUI.DungeonEditor.objectViewer1.selectedObject = null;
+	//							ZGUI.DungeonEditor.objectViewer1.Refresh();
 	//						}
 	//						break;
 	//
@@ -187,9 +187,9 @@
 	//						if (selectedDragObject != null) // If there's an object selected
 	//						{
 	//							selectedDragObject = null; // Set the object null
-	//							Program.DungeonForm.objectViewer1.selectedIndex = -1;
-	//							Program.DungeonForm.objectViewer1.selectedObject = null;
-	//							Program.DungeonForm.objectViewer1.Refresh();
+	//							ZGUI.DungeonEditor.objectViewer1.selectedIndex = -1;
+	//							ZGUI.DungeonEditor.objectViewer1.selectedObject = null;
+	//							ZGUI.DungeonEditor.objectViewer1.Refresh();
 	//							mouse_down = false;
 	//
 	//							MessageBox.Show("Objects can only be placed while working on backgrounds 1, 2, or 3.");
@@ -198,7 +198,7 @@
 	//						break;
 	//				}
 	//			}
-	//			else if (Program.DungeonForm.tabControl1.SelectedIndex == 2)
+	//			else if (ZGUI.DungeonEditor.tabControl1.SelectedIndex == 2)
 	//			{
 	//				if (selectedDragSprite != null)
 	//				{
@@ -208,7 +208,7 @@
 	//
 	//					if (spr != null)
 	//					{
-	//						Program.DungeonForm.UpdateUnderworldMode(DungeonEditMode.Sprites);
+	//						ZGUI.DungeonEditor.UpdateUnderworldMode(DungeonEditMode.Sprites);
 	//						room.selectedObject.Add(spr);
 	//						dragx = 0;
 	//						dragy = 0;
@@ -220,8 +220,8 @@
 	//					selectedDragObject = null;
 	//					selectedDragSprite = null;
 	//
-	//					Program.DungeonForm.spritesView1.selectedObject = null;
-	//					Program.DungeonForm.spritesView1.Refresh();
+	//					ZGUI.DungeonEditor.spritesView1.selectedObject = null;
+	//					ZGUI.DungeonEditor.spritesView1.Refresh();
 	//				}
 	//			}
 	//
@@ -430,7 +430,7 @@
 	//						int px = e.X / 16;
 	//						int py = e.Y / 16;
 	//
-	//						room.collisionMap[px + (py * 64)] = (byte) Program.MainForm.tileTypeCombobox.SelectedIndex;
+	//						room.collisionMap[px + (py * 64)] = (byte) ZGUI.tileTypeCombobox.SelectedIndex;
 	//					}
 	//				}
 	//
@@ -443,23 +443,23 @@
 	//				last_my = my;
 	//			} end of mouse down
 	//
-	//			Program.DungeonForm.spritepropertyPanel.Visible = false;
-	//			Program.DungeonForm.potitemobjectPanel.Visible = false;
-	//			Program.DungeonForm.doorselectPanel.Visible = false;
-	//			Program.DungeonForm.litCheckbox.Visible = false;
+	//			ZGUI.DungeonEditor.spritepropertyPanel.Visible = false;
+	//			ZGUI.DungeonEditor.potitemobjectPanel.Visible = false;
+	//			ZGUI.DungeonEditor.doorselectPanel.Visible = false;
+	//			ZGUI.DungeonEditor.litCheckbox.Visible = false;
 	//			updating_info = false;
 	//
 	//			if (room.selectedObject.Count > 0)
 	//			{
 	//				if (room.selectedObject[0] is Room_Object oo)
 	//				{
-	//					Program.DungeonForm.selectedGroupbox.Text = UIText.FormatSelectedObject(oo);
+	//					ZGUI.DungeonEditor.selectedGroupbox.Text = UIText.FormatSelectedObject(oo);
 	//
 	//					if (oo.options == ObjectOption.Door)
 	//					{
-	//						Program.DungeonForm.comboBox1.Enabled = false;
-	//						Program.DungeonForm.doorselectPanel.Visible = true;
-	//						int[] aposes = Program.DungeonForm.door_index.Select(
+	//						ZGUI.DungeonEditor.comboBox1.Enabled = false;
+	//						ZGUI.DungeonEditor.doorselectPanel.Visible = true;
+	//						int[] aposes = ZGUI.DungeonEditor.door_index.Select(
 	//							(s, i) => new { s, i })
 	//							.Where(x => x.s == (oo as object_door).door_type)
 	//							.Select(x => x.i)
@@ -471,7 +471,7 @@
 	//							apos = aposes[0];
 	//						}
 	//
-	//						Program.DungeonForm.comboBox2.SelectedIndex = apos;
+	//						ZGUI.DungeonEditor.comboBox2.SelectedIndex = apos;
 	//						for (int i = 0; i < room.tilesObjects.Count; i++)
 	//						{
 	//							if (room.tilesObjects[i] == oo)
@@ -485,13 +485,13 @@
 	//					}
 	//					else if (oo.options == ObjectOption.Torch)
 	//					{
-	//						Program.DungeonForm.litCheckbox.Visible = true;
-	//						Program.DungeonForm.litCheckbox.Checked = oo.lit;
+	//						ZGUI.DungeonEditor.litCheckbox.Visible = true;
+	//						ZGUI.DungeonEditor.litCheckbox.Checked = oo.lit;
 	//						updateSelectionObject(oo);
 	//					}
 	//					else
 	//					{
-	//						Program.DungeonForm.comboBox1.Enabled = false;
+	//						ZGUI.DungeonEditor.comboBox1.Enabled = false;
 	//
 	//						for (int i = 0; i < room.tilesObjects.Count; i++)
 	//						{
@@ -507,7 +507,7 @@
 	//				}
 	//				else if (room.selectedObject[0] is Sprite sp)
 	//				{
-	//					Program.DungeonForm.spritepropertyPanel.Visible = true;
+	//					ZGUI.DungeonEditor.spritepropertyPanel.Visible = true;
 	//					string name = null;
 	//					if (sp.subtype.BitsAllSet(0x07))
 	//					{
@@ -516,22 +516,22 @@
 	//							name = Sprites_Names.overlordnames[sp.id - 1];
 	//						}
 	//
-	//						Program.DungeonForm.spriteoverlordCheckbox.Checked = true;
+	//						ZGUI.DungeonEditor.spriteoverlordCheckbox.Checked = true;
 	//					}
 	//					else
 	//					{
-	//						Program.DungeonForm.spriteoverlordCheckbox.Checked = false;
+	//						ZGUI.DungeonEditor.spriteoverlordCheckbox.Checked = false;
 	//					}
 	//
 	//					name = name ?? Sprites_Names.name[sp.id];
 	//
-	//					Program.DungeonForm.selectedGroupbox.Text = UIText.FormatSelectedSprite(sp, name);
-	//					Program.DungeonForm.comboBox1.Enabled = true;
+	//					ZGUI.DungeonEditor.selectedGroupbox.Text = UIText.FormatSelectedSprite(sp, name);
+	//					ZGUI.DungeonEditor.comboBox1.Enabled = true;
 	//					updateSelectionObject(sp);
 	//				}
 	//				else if (room.selectedObject[0] is PotItem pp)
 	//				{
-	//					Program.DungeonForm.potitemobjectPanel.Visible = true; // oO why this is not appearing
+	//					ZGUI.DungeonEditor.potitemobjectPanel.Visible = true; // oO why this is not appearing
 	//					int dropboxid = pp.id.BitIsOn(0x80)
 	//						? ((pp.id - 0x80) / 2) + 0x17
 	//						: pp.id;
@@ -542,8 +542,8 @@
 	//						dropboxid = 27; // Prevent crash :yay:
 	//					}
 	//
-	//					Program.DungeonForm.selectedGroupbox.Text = UIText.FormatSelectedPotItem(pp, ItemsNames.name[dropboxid]);
-	//					Program.DungeonForm.selecteditemobjectCombobox.SelectedIndex = dropboxid;
+	//					ZGUI.DungeonEditor.selectedGroupbox.Text = UIText.FormatSelectedPotItem(pp, ItemsNames.name[dropboxid]);
+	//					ZGUI.DungeonEditor.selecteditemobjectCombobox.SelectedIndex = dropboxid;
 	//					updateSelectionObject(pp);
 	//				}
 	//			}
@@ -632,20 +632,20 @@
 	//			{
 	//				ZS.GFXManager.DrawBG2();
 	//			}
-	//			if (Program.MainForm.showSprite)
+	//			if (ZGUI.showSprite)
 	//			{
 	//				room.drawSprites();
 	//			}
-	//			if (Program.MainForm.showChest)
+	//			if (ZGUI.showChest)
 	//			{
 	//				drawChests();
 	//			}
-	//			if (Program.MainForm.showItems)
+	//			if (ZGUI.showItems)
 	//			{
 	//				room.drawPotsItems();
 	//			}
 	//
-	//			Program.MainForm.cgramViewer.Refresh();
+	//			ZGUI.cgramViewer.Refresh();
 	//		}
 	//
 	//		public void drawChests()
@@ -713,12 +713,12 @@
 	//				{
 	//					rmx = e.X;
 	//					rmy = e.Y;
-	//					Program.DungeonForm.nothingselectedcontextMenu.Items[0].Enabled = true;
-	//					Program.DungeonForm.singleselectedcontextMenu.Items[0].Enabled = true;
-	//					Program.DungeonForm.groupselectedcontextMenu.Items[0].Enabled = true;
-	//					Program.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = true;
-	//					Program.DungeonForm.singleselectedcontextMenu.Items[0].Visible = true;
-	//					Program.DungeonForm.groupselectedcontextMenu.Items[0].Visible = true;
+	//					ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[0].Enabled = true;
+	//					ZGUI.DungeonEditor.singleselectedcontextMenu.Items[0].Enabled = true;
+	//					ZGUI.DungeonEditor.groupselectedcontextMenu.Items[0].Enabled = true;
+	//					ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[0].Visible = true;
+	//					ZGUI.DungeonEditor.singleselectedcontextMenu.Items[0].Visible = true;
+	//					ZGUI.DungeonEditor.groupselectedcontextMenu.Items[0].Visible = true;
 	//					string nname = null;
 	//
 	//					// TODO copy
@@ -726,8 +726,8 @@
 	//					{
 	//						case DungeonEditMode.Chests:
 	//							nname = "chest item";
-	//							Program.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = true;
-	//							Program.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = false;
+	//							ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[2].Visible = true;
+	//							ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[3].Visible = false;
 	//							break;
 	//
 	//						case DungeonEditMode.Secrets:
@@ -748,29 +748,29 @@
 	//
 	//						case DungeonEditMode.CollisionMap:
 	//							nname = "custom collision map";
-	//							Program.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = false;
-	//							Program.DungeonForm.nothingselectedcontextMenu.Items[1].Visible = false;
-	//							Program.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = true;
-	//							Program.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = true;
+	//							ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[0].Visible = false;
+	//							ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[1].Visible = false;
+	//							ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[2].Visible = true;
+	//							ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[3].Visible = true;
 	//							break;
 	//
 	//						case DungeonEditMode.Sprites:
-	//							Program.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = false;
-	//							Program.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = false;
-	//							Program.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = false;
-	//							Program.DungeonForm.singleselectedcontextMenu.Items[0].Visible = false;
-	//							Program.DungeonForm.groupselectedcontextMenu.Items[0].Visible = false;
+	//							ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[0].Visible = false;
+	//							ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[2].Visible = false;
+	//							ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[3].Visible = false;
+	//							ZGUI.DungeonEditor.singleselectedcontextMenu.Items[0].Visible = false;
+	//							ZGUI.DungeonEditor.groupselectedcontextMenu.Items[0].Visible = false;
 	//							break;
 	//
 	//						case DungeonEditMode.Layer1:
 	//						case DungeonEditMode.Layer2:
 	//						case DungeonEditMode.Layer3:
 	//						case DungeonEditMode.LayerAll:
-	//							Program.DungeonForm.nothingselectedcontextMenu.Items[0].Visible = false;
-	//							Program.DungeonForm.nothingselectedcontextMenu.Items[2].Visible = false;
-	//							Program.DungeonForm.nothingselectedcontextMenu.Items[3].Visible = false;
-	//							Program.DungeonForm.singleselectedcontextMenu.Items[0].Visible = false;
-	//							Program.DungeonForm.groupselectedcontextMenu.Items[0].Visible = false;
+	//							ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[0].Visible = false;
+	//							ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[2].Visible = false;
+	//							ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[3].Visible = false;
+	//							ZGUI.DungeonEditor.singleselectedcontextMenu.Items[0].Visible = false;
+	//							ZGUI.DungeonEditor.groupselectedcontextMenu.Items[0].Visible = false;
 	//							break;
 	//					}
 	//
@@ -778,22 +778,22 @@
 	//					if (nname != null)
 	//					{
 	//						string s = string.Format("Insert new {0}", nname);
-	//						Program.DungeonForm.nothingselectedcontextMenu.Items[0].Text = s;
-	//						Program.DungeonForm.singleselectedcontextMenu.Items[0].Text = s;
-	//						Program.DungeonForm.groupselectedcontextMenu.Items[0].Text = s;
+	//						ZGUI.DungeonEditor.nothingselectedcontextMenu.Items[0].Text = s;
+	//						ZGUI.DungeonEditor.singleselectedcontextMenu.Items[0].Text = s;
+	//						ZGUI.DungeonEditor.groupselectedcontextMenu.Items[0].Text = s;
 	//					}
 	//
 	//					if (room.selectedObject.Count == 0)
 	//					{
-	//						Program.DungeonForm.nothingselectedcontextMenu.Show(Cursor.Position);
+	//						ZGUI.DungeonEditor.nothingselectedcontextMenu.Show(Cursor.Position);
 	//					}
 	//					else if (room.selectedObject.Count == 1)
 	//					{
-	//						Program.DungeonForm.singleselectedcontextMenu.Show(Cursor.Position);
+	//						ZGUI.DungeonEditor.singleselectedcontextMenu.Show(Cursor.Position);
 	//					}
 	//					else if (room.selectedObject.Count > 1)
 	//					{
-	//						Program.DungeonForm.groupselectedcontextMenu.Show(Cursor.Position);
+	//						ZGUI.DungeonEditor.groupselectedcontextMenu.Show(Cursor.Position);
 	//					}
 	//
 	//					mouse_down = false;
@@ -873,7 +873,7 @@
 	//		// TODO switch statements and no casting the selected mode
 	//		public void setMouseSizeMode(MouseEventArgs e)
 	//		{
-	//			Program.MainForm.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
+	//			ZGUI.GetXYMouseBasedOnZoom(e, out int MX, out int MY);
 	//
 	//			switch (ZS.CurrentUWMode)
 	//			{

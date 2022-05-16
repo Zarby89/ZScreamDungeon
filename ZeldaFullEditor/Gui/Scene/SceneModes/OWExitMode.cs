@@ -20,7 +20,7 @@
 			{
 				if (lastexit == value) return;
 
-				Program.OverworldForm.SetSelectedExit(value);
+				ZGUI.OverworldEditor.SetSelectedExit(value);
 				lastexit = value;
 			}
 		}
@@ -99,7 +99,7 @@
 			int roomId = SelectedExit.TargetRoomID;
 			if (roomId >= Constants.NumberOfRooms) return;
 
-			Program.RoomPreviewArtist.SetRoomAndDrawImmediately(ZS.all_rooms[roomId]);
+			TheGUI.RoomPreviewArtist.SetRoomAndDrawImmediately(ZS.all_rooms[roomId]);
 		}
 
 		private void Delete_Exit() // Set exit data to 0

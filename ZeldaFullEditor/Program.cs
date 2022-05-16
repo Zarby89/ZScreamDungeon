@@ -1,4 +1,4 @@
-﻿﻿//global using static ZeldaFullEditor.TheGUI;
+﻿﻿global using static ZeldaFullEditor.TheGUI;
 
 global using System;
 global using System.Collections.Generic;
@@ -21,15 +21,16 @@ global using ZeldaFullEditor.Data.Underworld;
 global using ZeldaFullEditor.Gui;
 global using ZeldaFullEditor.Gui.Drawing;
 global using ZeldaFullEditor.Gui.MainTabs;
+global using ZeldaFullEditor.Gui.ExtraForms;
 global using ZeldaFullEditor.Properties;
 
 namespace ZeldaFullEditor
 {
-	internal static class TheGUI{
-		//public static DungeonMain DungeonForm { get; set; }
-		//public static DungeonMain MainForm { get; set; }
-		//public static OverworldEditor OverworldForm { get; set; }
-		//public static TextEditor TextForm { get; set; }
+	internal static class TheGUI {
+		public static RoomArtist RoomEditingArtist { get; } = new RoomArtist(false);
+		public static RoomArtist RoomPreviewArtist { get; } = new RoomArtist(true);
+
+		public static DungeonMain ZGUI = new();
 	}
 	
 	static class Program
@@ -45,14 +46,6 @@ namespace ZeldaFullEditor
 
 		[DllImport("user32.dll")]
 		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-		public static RoomArtist RoomEditingArtist { get; } = new RoomArtist(false);
-		public static RoomArtist RoomPreviewArtist { get; } = new RoomArtist(true);
-
-		public static DungeonEditor DungeonForm { get; set; }
-		public static DungeonMain MainForm { get; set; }
-		public static OverworldEditor OverworldForm { get; set; }
-		public static TextEditor TextForm { get; set; }
 
 
 		/// <summary>
@@ -95,12 +88,7 @@ namespace ZeldaFullEditor
 			ZScreamer ZS = new ZScreamer();
 			ZS.SetAsActiveScreamer();
 
-			DungeonForm = new();
-			MainForm = new DungeonMain();
-			OverworldForm = new OverworldEditor();
-			TextForm = new TextEditor();
-
-			Application.Run(MainForm);
+			Application.Run(ZGUI);
 		}
 	}
 }

@@ -221,7 +221,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void saveButton_Click(object sender, EventArgs e)
 		{
-			Program.MainForm.saveToolStripMenuItem_Click(sender, e);
+			ZGUI.saveToolStripMenuItem_Click(sender, e);
 		}
 
 		private void gfxTextbox_TextChanged(object sender, EventArgs e)
@@ -351,7 +351,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void runtestButton_Click(object sender, EventArgs e)
 		{
-			Program.MainForm.runtestButton_Click(sender, e);
+			ZGUI.runtestButton_Click(sender, e);
 		}
 
 		private void RefreshAllMaps()
@@ -411,7 +411,7 @@ namespace ZeldaFullEditor.Gui
 		private void button1_Click(object sender, EventArgs e)
 		{
 			ZScreamer.ActiveScreamer.SetSelectedMessageID(OWProperty_MessageID.HexValue);
-			Program.MainForm.editorsTabControl.SelectedIndex = (int) TabSelection.TextEditor;
+			ZGUI.editorsTabControl.SelectedIndex = (int) TabSelection.TextEditor;
 		}
 
 		private void previewTextPicturebox_Paint(object sender, PaintEventArgs e)
@@ -430,7 +430,7 @@ namespace ZeldaFullEditor.Gui
 				}
 				else
 				{
-					cp.Entries[i] = Program.RoomEditingArtist.Layer1Canvas.Palette.Entries[(defaultColor * 4) + i];
+					cp.Entries[i] = TheGUI.RoomEditingArtist.Layer1Canvas.Palette.Entries[(defaultColor * 4) + i];
 				}
 			}
 

@@ -20,7 +20,7 @@
 			{
 				if (lastentrance == value) return;
 
-				Program.OverworldForm.SetSelectedEntrance(lastentrance);
+				ZGUI.OverworldEditor.SetSelectedEntrance(lastentrance);
 				lastentrance = value;
 			}
 		}
@@ -114,22 +114,22 @@
 			int roomId = ZS.entrances[SelectedEntrance.TargetEntranceID].RoomID;
 			if (roomId >= Constants.NumberOfRooms) return;
 
-			Program.RoomPreviewArtist.SetRoomAndDrawImmediately(ZS.all_rooms[roomId]);
+			TheGUI.RoomPreviewArtist.SetRoomAndDrawImmediately(ZS.all_rooms[roomId]);
 		}
 
 		public void DrawTempEntrance()
 		{
-			//Graphics g = Graphics.FromImage(Program.OverworldForm.tmpPreviewBitmap);
+			//Graphics g = Graphics.FromImage(ZGUI.OverworldEditor.tmpPreviewBitmap);
 			//g.InterpolationMode = InterpolationMode.Bilinear;
-			//if (Program.DungeonForm.previewRoom.LayerEffect != Constants.LayerMergeTranslucent || Program.DungeonForm.previewRoom.LayerEffect != Constants.LayerMergeTransparent ||
-			// Program.DungeonForm.previewRoom.LayerEffect != Constants.LayerMergeOnTop || Program.DungeonForm.previewRoom.LayerEffect != Constants.LayerMergeOff)
+			//if (ZGUI.DungeonEditor.previewRoom.LayerEffect != Constants.LayerMergeTranslucent || ZGUI.DungeonEditor.previewRoom.LayerEffect != Constants.LayerMergeTransparent ||
+			// ZGUI.DungeonEditor.previewRoom.LayerEffect != Constants.LayerMergeOnTop || ZGUI.DungeonEditor.previewRoom.LayerEffect != Constants.LayerMergeOff)
 			//{
 			//	g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			//}
 			//
 			//g.DrawImage(ZS.GFXManager.roomBg1Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			//
-			//if (Program.DungeonForm.previewRoom.LayerEffect == Constants.LayerMergeTranslucent || Program.DungeonForm.previewRoom.LayerEffect == Constants.LayerMergeTransparent)
+			//if (ZGUI.DungeonEditor.previewRoom.LayerEffect == Constants.LayerMergeTranslucent || ZGUI.DungeonEditor.previewRoom.LayerEffect == Constants.LayerMergeTransparent)
 			//{
 			//	float[][] matrixItems ={
 			//		new float[] {1f, 0, 0, 0, 0},
@@ -153,12 +153,12 @@
 			//	//GFX.roomBg2Bitmap.MakeTransparent(Color.Black);
 			//	g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAtt);
 			//}
-			//else if (Program.DungeonForm.previewRoom.LayerEffect == Constants.LayerMergeOnTop)
+			//else if (ZGUI.DungeonEditor.previewRoom.LayerEffect == Constants.LayerMergeOnTop)
 			//{
 			//	g.DrawImage(ZS.GFXManager.roomBg2Bitmap, Constants.Rect_0_0_256_256, 0, 0, 512, 512, GraphicsUnit.Pixel);
 			//}
 			//
-			//ZS.UnderworldScene.g.DrawText(0, 0, "ROOM : " + Program.DungeonForm.previewRoom.RoomID.ToString("X2"));
+			//ZS.UnderworldScene.g.DrawText(0, 0, "ROOM : " + ZGUI.DungeonEditor.previewRoom.RoomID.ToString("X2"));
 			//g.InterpolationMode = InterpolationMode.NearestNeighbor;
 			//g.Dispose();
 		}

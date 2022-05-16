@@ -31,7 +31,7 @@
 			if (sf.ShowDialog() == DialogResult.OK)
 			{
 				FileStream fs = new FileStream(sf.FileName, FileMode.Create, FileAccess.Write);
-				ColorPalette cp = Program.RoomEditingArtist.Layer1Canvas.Palette;
+				ColorPalette cp = TheGUI.RoomEditingArtist.Layer1Canvas.Palette;
 
 				foreach (Color c in cp.Entries)
 				{
@@ -49,7 +49,7 @@
 			for (int i = 0; i < 256; i++)
 			{
 				e.Graphics.FillRectangle(
-					new SolidBrush(Program.RoomEditingArtist.Layer1Canvas.Palette.Entries[i]),
+					new SolidBrush(TheGUI.RoomEditingArtist.Layer1Canvas.Palette.Entries[i]),
 					new Rectangle((i % 16) * 16, i & ~0xF, 16, 16));
 			}
 		}
