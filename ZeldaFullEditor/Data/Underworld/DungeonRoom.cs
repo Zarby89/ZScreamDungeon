@@ -606,6 +606,15 @@
 			}
 		}
 
+		private static void WarnIfTooMany(string entity, int count, int limit)
+		{
+			if (count > limit)
+			{
+				UIText.TooMuchStuffInRoomWarning($"There are too many {entity}.", limit);
+			}
+		}
+
+
 		// TODO logic for too many of certain things
 		private bool AddRoomObject(RoomObject o, DungeonObjectsList l)
 		{
@@ -623,10 +632,7 @@
 				switch (lim)
 				{
 					case DungeonLimits.StarTiles:
-						if (count > 16)
-						{
-							throw new ZeldaException("Too many star tiles!!!");
-						}
+						WarnIfTooMany("star tiles", count, 16);
 						break;
 
 				}
@@ -655,15 +661,8 @@
 				}
 			}
 
-			if (overlords > 7)
-			{
-				throw new ZeldaException("There are too many overlords. Only 8 may be placed in a single room.");
-			}
-
-			if (sprites > 16)
-			{
-				throw new ZeldaException("There are too many non-overlord sprites. Only 16 may be placed in a single room.");
-			}
+			WarnIfTooMany("overlord sprites", overlords, 8);
+			WarnIfTooMany("non-overlord sprites", sprites, 16);
 
 			SpritesList.Add(s);
 
@@ -713,10 +712,7 @@
 
 		private void ValidateManipulables()
 		{
-			if (CountManipulables() > 16)
-			{
-				throw new ZeldaException("Too many manipulable objects!");
-			}
+			WarnIfTooMany("manipulable objects", CountManipulables(), 16);
 		}
 
 
@@ -740,10 +736,7 @@
 
 		private bool AddTorch(DungeonTorch t)
 		{
-			if (TorchList.Count >= 16)
-			{
-				throw new ZeldaException("You cannot place more than 16 torches in a room.");
-			}
+			WarnIfTooMany("torches", TorchList.Count, 16);
 
 			TorchList.Add(t);
 
@@ -921,7 +914,7 @@
 		/// <summary>
 		/// Returns <see langword="true"/> if too many doors of a certain type.
 		/// </summary>
-		public bool AutoSortDoors()
+		public void AutoSortDoors()
 		{
 			var openabledoors = new List<DungeonDoor>();
 			var shutterdoors = new List<DungeonDoor>();
@@ -951,8 +944,7 @@
 			DoorsList.AddRange(otherdoors);
 
 			ResyncAllLists();
-
-			return (openabledoors.Count + shutterdoors.Count) > 4;
+			WarnIfTooMany("openable + shutter doors", openabledoors.Count + shutterdoors.Count, 4);
 		}
 
 

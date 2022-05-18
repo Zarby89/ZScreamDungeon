@@ -91,7 +91,7 @@
 					sdata[j] = gdata[(i * Constants.UncompressedSheetSize) + j];
 				}
 
-				if (ZScreamer.ActiveGraphicsManager.isbpp3[i])
+				if (GFXSheetMeta.ListOf[i].BitDepth == SNESPixelFormat.SNES3BPP)
 				{
 					if (modifiedSheets[i] != null)
 					{
@@ -138,15 +138,14 @@
 			{
 				if (i < 115 || i > 126) // Not compressed
 				{
-					bpp2 = !ZScreamer.ActiveGraphicsManager.isbpp3[i];
-
+					bpp2 = GFXSheetMeta.ListOf[i].BitDepth == SNESPixelFormat.SNES2BPP;
 					if (ZScreamer.ActiveROM[gfxPointer1 + i] <= 0x20)
 					{
 						int saddr = pos.PCtoSNES();
 						ZScreamer.ActiveROM[gfxPointer3 + i] = (byte) saddr;
 						ZScreamer.ActiveROM[gfxPointer2 + i] = (byte) (saddr >> 8);
 						ZScreamer.ActiveROM[gfxPointer1 + i] = (byte) (saddr >> 16);
-						byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0,
+						byte[] cbytes = Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0,
 							bpp2 ? Constants.UncompressedSheetSize : Constants.Uncompressed3BPPSize);
 						ZScreamer.ActiveROM.WriteContinuous(ref pos, cbytes);
 					}
@@ -154,7 +153,7 @@
 					{
 						byte[] b = new byte[] { ZScreamer.ActiveROM[gfxPointer3 + i], ZScreamer.ActiveROM[gfxPointer2 + i], ZScreamer.ActiveROM[gfxPointer1 + i], 0 };
 						int addr = BitConverter.ToInt32(b, 0);
-						byte[] cbytes = ZCompressLibrary.Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0,
+						byte[] cbytes = Compress.ALTTPCompressGraphics(gfxSheets3bpp[i], 0,
 							bpp2 ? Constants.UncompressedSheetSize : Constants.Uncompressed3BPPSize);
 						ZScreamer.ActiveROM.Write(addr.SNEStoPC(), cbytes);
 					}

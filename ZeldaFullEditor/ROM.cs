@@ -85,6 +85,11 @@
 			}
 		}
 
+		public byte[] Read8Many(int addr, int count)
+		{
+			return DATA[addr..(addr + count)];
+		}
+
 		public ushort Read16(int addr)
 		{
 			return (ushort) (DATA[addr++] | (DATA[addr++] << 8));

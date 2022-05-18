@@ -39,15 +39,6 @@
 			Tile2 = tile2;
 			Tile3 = tile3;
 		}
-
-		public Tile16(ulong tiles)
-		{
-			Tile0 = new Tile((ushort) tiles);
-			Tile1 = new Tile((ushort) (tiles >> 16));
-			Tile2 = new Tile((ushort) (tiles >> 32));
-			Tile3 = new Tile((ushort) (tiles >> 48));
-		}
-
 		public Tile16(ushort a, ushort b, ushort c, ushort d)
 		{
 			Tile0 = new Tile(a);

@@ -2,10 +2,10 @@
 
 namespace ZeldaFullEditor.Data
 {
+	internal delegate void DoorDrawFunction(Artist art, DungeonDoor door);
+
 	public class DungeonDoorDraw
 	{
-		private delegate void DoorDrawFunction(Artist art, DungeonDoor door);
-
 		public byte Position { get; }
 		public DoorDirection Direction { get; }
 
@@ -139,7 +139,7 @@ namespace ZeldaFullEditor.Data
 		public static readonly DungeonDoorDraw East16 = new(East, 0x16, DrawEast16, DrawNothing);
 
 
-		private static void DrawNothing(Artist art, DungeonDoor door) { } // THIS PAGE LEFT INTENTIONALLY BLANK
+		internal static void DrawNothing(Artist art, DungeonDoor door) { } // THIS PAGE LEFT INTENTIONALLY BLANK
 
 		private static void DrawNorth00(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x021C, false); }
 		private static void DrawNorth02(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x023C, false); }
@@ -220,6 +220,26 @@ namespace ZeldaFullEditor.Data
 					}
 				}
 			}
+		}
+
+		internal static void DrawFancyEntrance(Artist art, DungeonDoor door)
+		{
+			throw new NotImplementedException();
+		}
+
+		internal static void DrawExplodingWall(Artist art, DungeonDoor door)
+		{
+			throw new NotImplementedException();
+		}
+
+		internal static void DrawKeyStairsUp(Artist art, DungeonDoor door)
+		{
+			throw new NotImplementedException();
+		}
+
+		internal static void DrawKeyStairsDown(Artist art, DungeonDoor door)
+		{
+			throw new NotImplementedException();
 		}
 
 

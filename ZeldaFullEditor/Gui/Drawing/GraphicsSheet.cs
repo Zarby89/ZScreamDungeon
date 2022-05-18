@@ -7,6 +7,8 @@
 
 		private readonly GraphicsTile[] tiles;
 
+		public GFXSheetMeta Info { get; init; } = null;
+
 		public byte ID { get; }
 		public int Width { get; }
 		public int Height { get; }

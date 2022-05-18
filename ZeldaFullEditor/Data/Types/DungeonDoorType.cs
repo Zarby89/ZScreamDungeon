@@ -10,12 +10,20 @@ namespace ZeldaFullEditor.Data
 		public bool IsExit { get; }
 
 		public string Name { get; }
-		private DungeonDoorType(byte id, string name, DoorCategory category, bool exit = false)
+
+		internal DoorDrawFunction SpecialDraw { get; }
+
+		internal DungeonDoorType OppositeDoor { get; }
+
+		// TODO not sure how to handle doors anymore
+		private DungeonDoorType(byte id, string name, DoorCategory category, bool exit = false, DoorDrawFunction spdraw = null, DungeonDoorType opp = null)
 		{
 			ID = id;
 			Name = name;
 			Category = category;
 			IsExit = exit;
+			SpecialDraw = spdraw;
+			OppositeDoor = opp ?? this;
 		}
 
 		public override string ToString() => $"{ID:X2} - {Name}";
@@ -25,26 +33,26 @@ namespace ZeldaFullEditor.Data
 		public static readonly DungeonDoorType DoorType04 = new(0x04, "Exit (lower layer)", Unspecial, exit: true);
 		public static readonly DungeonDoorType DoorType06 = new(0x06, "Unused cave exit (lower layer)", Unspecial, exit: true);
 		public static readonly DungeonDoorType DoorType08 = new(0x08, "Waterfall door", Unspecial);
-		public static readonly DungeonDoorType DoorType0A = new(0x0A, "Fancy dungeon exit", Fancy, exit: true);
-		public static readonly DungeonDoorType DoorType0C = new(0x0C, "Fancy dungeon exit (lower layer)", Fancy, exit: true);
+		public static readonly DungeonDoorType DoorType0A = new(0x0A, "Fancy dungeon exit", Fancy, exit: true, spdraw: DungeonDoorDraw.DrawFancyEntrance);
+		public static readonly DungeonDoorType DoorType0C = new(0x0C, "Fancy dungeon exit (lower layer)", Fancy, exit: true, spdraw: DungeonDoorDraw.DrawFancyEntrance);
 		public static readonly DungeonDoorType DoorType0E = new(0x0E, "Cave exit", Unspecial, exit: true);
 		public static readonly DungeonDoorType DoorType10 = new(0x10, "Lit cave exit (lower layer)", Unspecial, exit: true);
-		public static readonly DungeonDoorType DoorType12 = new(0x12, "Exit marker", Meta, exit: true);
-		public static readonly DungeonDoorType DoorType14 = new(0x14, "Dungeon swap marker", DungeonSwap);
-		public static readonly DungeonDoorType DoorType16 = new(0x16, "Layer swap marker", LayerSwap);
+		public static readonly DungeonDoorType DoorType12 = new(0x12, "Exit marker", Meta, exit: true, spdraw: DungeonDoorDraw.DrawNothing);
+		public static readonly DungeonDoorType DoorType14 = new(0x14, "Dungeon swap marker", DungeonSwap, spdraw: DungeonDoorDraw.DrawNothing);
+		public static readonly DungeonDoorType DoorType16 = new(0x16, "Layer swap marker", LayerSwap, spdraw: DungeonDoorDraw.DrawNothing);
 		public static readonly DungeonDoorType DoorType18 = new(0x18, "Double sided shutter door", Shutter);
 		public static readonly DungeonDoorType DoorType1A = new(0x1A, "Eye watch door", Shutter);
 		public static readonly DungeonDoorType DoorType1C = new(0x1C, "Small key door", Openable);
-		public static readonly DungeonDoorType DoorType1E = new(0x1E, "Big key door", Openable);
-		public static readonly DungeonDoorType DoorType20 = new(0x20, "Small key stairs (upwards)", Openable);
-		public static readonly DungeonDoorType DoorType22 = new(0x22, "Small key stairs (downwards)", Openable);
-		public static readonly DungeonDoorType DoorType24 = new(0x24, "Small key stairs (lower layer; upwards)", Openable);
-		public static readonly DungeonDoorType DoorType26 = new(0x26, "Small key stairs (lower layer; downwards)", Openable);
+		public static readonly DungeonDoorType DoorType1E = new(0x1E, "Big key door", Openable, opp: DoorType00);
+		public static readonly DungeonDoorType DoorType20 = new(0x20, "Small key stairs (upwards)", Openable, spdraw: DungeonDoorDraw.DrawKeyStairsUp);
+		public static readonly DungeonDoorType DoorType22 = new(0x22, "Small key stairs (downwards)", Openable, spdraw: DungeonDoorDraw.DrawKeyStairsDown);
+		public static readonly DungeonDoorType DoorType24 = new(0x24, "Small key stairs (lower layer; upwards)", Openable, spdraw: DungeonDoorDraw.DrawKeyStairsUp);
+		public static readonly DungeonDoorType DoorType26 = new(0x26, "Small key stairs (lower layer; downwards)", Openable, spdraw: DungeonDoorDraw.DrawKeyStairsDown);
 		public static readonly DungeonDoorType DoorType28 = new(0x28, "Dash wall", Openable);
 		public static readonly DungeonDoorType DoorType2A = new(0x2A, "Bombable cave exit", Openable, exit: true);
 		public static readonly DungeonDoorType DoorType2C = new(0x2C, "Unopenable, double-sided big key door", Garbage);
 		public static readonly DungeonDoorType DoorType2E = new(0x2E, "Bombable door", Openable);
-		public static readonly DungeonDoorType DoorType30 = new(0x30, "Exploding wall", Openable);
+		public static readonly DungeonDoorType DoorType30 = new(0x30, "Exploding wall", Openable, spdraw: DungeonDoorDraw.DrawExplodingWall);
 		public static readonly DungeonDoorType DoorType32 = new(0x32, "Curtain door", Openable);
 		public static readonly DungeonDoorType DoorType34 = new(0x34, "Unusable bottom-sided shutter door", Garbage);
 		public static readonly DungeonDoorType DoorType36 = new(0x36, "Bottom-sided shutter door", Shutter);

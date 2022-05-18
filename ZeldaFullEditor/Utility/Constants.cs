@@ -15,7 +15,7 @@
 		public const int Uncompressed3BPPSize = 0x0600;
 		public const int UncompressedSheetSize = 0x0800;
 
-		public const int NumberOfSheets = 223;
+		public const int NumberOfSheets = 0xDF;
 		public const int NumberOfRooms = 296;
 
 		public const int NumberOfOWMaps = 160;

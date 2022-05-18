@@ -1,7 +1,6 @@
-﻿// Main 
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
-	public partial class DungeonMain : Form
+	public partial class ZScreamForm : Form
 	{
 		// Registers a hot key with Windows.
 		[DllImport("user32.dll")]
@@ -61,7 +60,7 @@ namespace ZeldaFullEditor
 			true
 		};
 
-		public DungeonMain()
+		public ZScreamForm()
 		{
 			InitializeComponent();
 
@@ -2258,10 +2257,7 @@ namespace ZeldaFullEditor
 
 		private void autodoorButton_Click_1(object sender, EventArgs e)
 		{
-			if (ZScreamer.ActiveUWScene.Room.AutoSortDoors())
-			{
-				UIText.GeneralWarning("The count of openable doors and shutter doors is too high and may result in weird behavior.");
-			}
+			ZScreamer.ActiveUWScene.Room.AutoSortDoors();
 
 			ZScreamer.ActiveUWScene.Refresh();
 		}

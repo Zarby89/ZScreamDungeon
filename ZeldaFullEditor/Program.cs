@@ -32,7 +32,7 @@ namespace ZeldaFullEditor
 		public static RoomArtist RoomEditingArtist { get; } = new RoomArtist(false);
 		public static RoomArtist RoomPreviewArtist { get; } = new RoomArtist(true);
 
-		public static DungeonMain ZGUI = new();
+		public static ZScreamForm ZGUI = new();
 	}
 	
 	static class Program

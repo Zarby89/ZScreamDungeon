@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace ZeldaFullEditor
 {
-	partial class DungeonMain
+	partial class ZScreamForm
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -32,7 +32,7 @@ namespace ZeldaFullEditor
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DungeonMain));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ZScreamForm));
 			this.updateTimer = new System.Windows.Forms.Timer(this.components);
 			this.spriteImageList = new System.Windows.Forms.ImageList(this.components);
 			this.colorDialog1 = new System.Windows.Forms.ColorDialog();

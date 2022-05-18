@@ -73,6 +73,11 @@
 
 		public void Draw(Artist art)
 		{
+			if (DoorType.SpecialDraw != null)
+			{
+				DoorType.SpecialDraw(art, this);
+				return;
+			}
 			DoorPosition.Draw(art, this);
 		}
 
