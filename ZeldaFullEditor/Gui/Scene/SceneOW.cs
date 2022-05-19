@@ -168,6 +168,7 @@
 				ZGUI.OverworldEditor.areaBGColorPictureBox.Refresh();
 			}
 
+			ZS.OverworldManager.Tile16Sheet.UpdateToMatchScreen(CurrentParentMap);
 			ZGUI.OverworldEditor.BuildScratchTilesGfx();
 			ZGUI.OverworldEditor.scratchPicturebox.Refresh();
 		}
@@ -534,7 +535,7 @@
 					int to = ZS.OverworldManager.alloverlays[mid].tilesData[i].Tile16ID;
 					int toy = (to / 8) * 16;
 					int tox = (to % 8) * 16;
-					g.DrawImage(ZS.GFXManager.mapblockset16Bitmap, new Rectangle(msx + xo, msy + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
+					g.DrawImage(ZScreamer.ActiveOW.Tile16Sheet.PreviewCanvas.Bitmap, new Rectangle(msx + xo, msy + yo, 16, 16), new Rectangle(tox, toy, 16, 16), GraphicsUnit.Pixel);
 					//g.DrawImage(GFX.currentOWgfx16Bitmap, new Rectangle(0, 0, 64, 64), new Rectangle(0, 0, 64, 64), GraphicsUnit.Pixel);
 					byte detect = CompareTilePos(ZS.OverworldManager.alloverlays[mid].tilesData[i], ZS.OverworldManager.alloverlays[mid].tilesData.ToArray());
 

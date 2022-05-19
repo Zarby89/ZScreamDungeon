@@ -78,7 +78,7 @@
 		/// <see cref="Graphics.DrawImage(Image, Rectangle, int, int, int, int, GraphicsUnit, ImageAttributes?)">Graphics.DrawImage</see>
 		/// call for a 512 by 512 screen with <see cref="GraphicsUnit.Pixel"/>
 		/// </summary>
-		public static void DrawScreen(this Graphics g, Image image, ImageAttributes? imageAttr = null)
+		public static void DrawScreen(this Graphics g, Image image, ImageAttributes imageAttr = null)
 		{
 			g.DrawImage(image, Constants.ScreenSizedRectangle, 0, 0, 512, 512, GraphicsUnit.Pixel, imageAttr);
 		}

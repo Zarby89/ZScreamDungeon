@@ -100,16 +100,6 @@ namespace ZeldaFullEditor
 			);
 		}
 
-		public static void TooMuchStuffInRoomWarning(string message, int count)
-		{
-			MessageBox.Show(
-				$"{message}\nOnly {count} may be placed in a single room.\nYou may continue working, but be aware that staying in this state will likely cause corruption.",
-				"Warning",
-				MessageBoxButtons.OK,
-				MessageBoxIcon.Warning
-			);
-		}
-
 		public static void CryAboutSaving(string message = "OHNO")
 		{
 			MessageBox.Show

@@ -111,12 +111,18 @@
 			};
 
 			ParentMap = this;
+			NotifyArtistOfChange();
 		}
 
 		public void HardRefresh()
 		{
 			MyArtist.HardRefresh();
 			throw new NotImplementedException();
+		}
+
+		public void NotifyArtistOfChange()
+		{
+
 		}
 
 		public byte GetSpriteGraphicsForGameState(int gamestate) => gamestate switch

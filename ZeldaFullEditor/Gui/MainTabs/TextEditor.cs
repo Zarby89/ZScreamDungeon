@@ -2,6 +2,7 @@
 
 namespace ZeldaFullEditor
 {
+	// TODO make a text handler, separate from the UserControl
 	public partial class TextEditor : UserControl
 	{
 		readonly byte[] widthArray = new byte[100];

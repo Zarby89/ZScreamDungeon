@@ -42,7 +42,6 @@ namespace ZeldaFullEditor
 		// 5 = show
 		private static int showConsole = 0;
 
-
 		[DllImport("kernel32.dll")]
 		static extern IntPtr GetConsoleWindow();
 

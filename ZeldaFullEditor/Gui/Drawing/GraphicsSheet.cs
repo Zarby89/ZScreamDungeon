@@ -3,7 +3,7 @@
 	public unsafe class GraphicsSheet : IGraphicsSheet
 	{
 		private readonly IntPtr ptr;
-		public byte* Pointer => (byte*) ptr.ToPointer();
+		private byte* Pointer => (byte*) ptr.ToPointer();
 
 		private readonly GraphicsTile[] tiles;
 
@@ -19,6 +19,8 @@
 		public Bitmap Bitmap { get; }
 
 		public GraphicsTile this[int i] => tiles[i];
+
+		public GraphicsTile this[int x, int y] => tiles[x + 16 * y];
 
 		// TODO add grayscale palette for the image
 		public GraphicsSheet(byte id, byte[] data, SNESPixelFormat format)
@@ -57,10 +59,18 @@
 
 			var draw = Pointer;
 
-			for (int i = 0; i < data.Length; i++)
+			for (int i = 0, t = 0; i < data.Length; t++)
 			{
-				draw[i] = data[i];
+				byte[] tiledata = new byte[64];
+				for (int j = 0; j < 64; j++, i++)
+				{
+					draw[i] = data[i];
+					tiledata[j] = data[i];
+				}
+				tiles[t] = new(tiledata);
 			}
 		}
+
+		public static readonly GraphicsSheet Empty = new(0xFF, new byte[Constants.Uncompressed3BPPSize], SNESPixelFormat.SNES3BPP);
 	}
 }

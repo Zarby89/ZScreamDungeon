@@ -15,7 +15,7 @@
 		public int maxGfx => new ROMAddress(0x18BFB5, 0x18BFB5).GetOffsetForVersion(Version);
 		public int compressedAllMap32PointersHigh => new ROMAddress(0x02F6B1, 0x02F94D).GetOffsetForVersion(Version);
 		public int compressedAllMap32PointersLow => new ROMAddress(0x02F891, 0x02FB2D).GetOffsetForVersion(Version);
-		public int overworldgfxGroups => new ROMAddress(0x00DDD7, 0x00DD97).GetOffsetForVersion(Version);
+		public int GraphicsAA2Tables => new ROMAddress(0x00DDD7, 0x00DD97).GetOffsetForVersion(Version);
 		public int Map16DefinitionAddress => new ROMAddress(0x0F8000, 0x0F8000).GetOffsetForVersion(Version);
 		public int Map32DefinitionsTL => new ROMAddress(0x038000, 0x038000).GetOffsetForVersion(Version);
 		public int Map32DefinitionsTR => new ROMAddress(0x03B3C0, 0x03B400).GetOffsetForVersion(Version);
@@ -38,7 +38,7 @@
 		public int overworldItemsAddress => new ROMAddress(0x1BC8B9, 0x1BC8B9).GetOffsetForVersion(Version);
 		public int overworldItemsBank => new ROMAddress(0x1BC8BF, 0x1BC8BF).GetOffsetForVersion(Version);
 		public int overworldItemsEndData => new ROMAddress(0x1BC89C, 0x1BC89C).GetOffsetForVersion(Version);
-		public int mapGfx => new ROMAddress(0x00FC9C, 0x00FC9C).GetOffsetForVersion(Version);
+		public int OverworldIDToMainGFXSet => new ROMAddress(0x00FC9C, 0x00FC9C).GetOffsetForVersion(Version);
 		public int overlayPointers => new ROMAddress(0x07FAF4, 0x0EF664).GetOffsetForVersion(Version);
 		public int overlayPointersBank => new ROMAddress(0x070000, 0x0E0000).GetOffsetForVersion(Version);
 		public int overworldTilesType => new ROMAddress(0x0FFD94, 0x0E9459).GetOffsetForVersion(Version);

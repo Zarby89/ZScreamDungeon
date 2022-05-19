@@ -2,32 +2,33 @@
 {
 	public unsafe class Tile16MasterSheet : IByteable
 	{
-		private readonly IntPtr ptr;
-		private byte* Pointer => (byte*) ptr.ToPointer();
+		private const int TileSpan = 16;
+		private const int TilesPerRow = 8;
+		private const int TilesPerColumn = 0xE1;
+		private const int TilesPerBlock = TilesPerRow * TilesPerColumn;
+		private const int ImageWidth = TilesPerRow * TileSpan;
+		private const int ImageHeight = TilesPerColumn * TileSpan * 2;
 
 		private readonly Tile16[] ListOf = new Tile16[Constants.NumberOfUniqueTile16Definitions];
 
 		public GraphicsSet Graphics { get; set; }
 
-
-		public Bitmap Bitmap { get; }
-
-		public byte this[int i]
-		{
-			get => Pointer[i];
-			set => Pointer[i] = value;
-		}
+		public PointeredImage PreviewCanvas { get; }
 
 		public ColorPalette Palette
 		{
-			get => Bitmap.Palette;
-			set => Bitmap.Palette = value;
+			get => PreviewCanvas.Palette;
+			set => PreviewCanvas.Palette = value;
 		}
 
 		public Tile16MasterSheet()
 		{
-			ptr = Marshal.AllocHGlobal(128 * 7136 / 2);
-			Bitmap = new Bitmap(128, 7136, 64, PixelFormat.Format8bppIndexed, ptr);
+			PreviewCanvas = new PointeredImage(ImageWidth, ImageHeight);
+		}
+
+		public void UpdateToMatchScreen(OverworldScreen screen)
+		{
+			throw new NotImplementedException();
 		}
 
 		public void RedrawImageForGraphicsSet()
@@ -40,16 +41,57 @@
 			throw new NotImplementedException();
 		}
 
-		public void SetTile16At(int id, Tile16 t)
+		private static int GetIndexFromXY(int x, int y)
 		{
-			throw new NotImplementedException();
+			int X = x / TileSpan / TilesPerRow;
+			int block = X / TilesPerBlock * TilesPerBlock;
+			X %= TilesPerBlock;
+			int Y = TilesPerRow * (y / TileSpan / TilesPerColumn);
+			return block + X + Y;
 		}
 
-		public Tile16 GetTile16At(int id)
+		public void SetTile16At(int id, Tile16 t) => ListOf[id] = t;
+		public void SetTile16At(MouseEventArgs e, Tile16 t) => ListOf[GetIndexFromXY(e.X, e.Y)] = t;
+		public void SetTile16At(int x, int y, Tile16 t) => ListOf[GetIndexFromXY(x, y)] = t;
+		public Tile16 GetTile16At(int id) => ListOf[id];
+		public Tile16 SetTile16At(MouseEventArgs e) => ListOf[GetIndexFromXY(e.X, e.Y)];
+		public Tile16 GetTile16At(int x, int y) => ListOf[GetIndexFromXY(x, y)];
+
+		public void RefreshGraphicsSheet()
 		{
-			throw new NotImplementedException();
+			int x = 0;
+			int y = 0;
+
+			foreach(var t in ListOf)
+			{
+				DrawTile16ToCanvas(PreviewCanvas, x, y, t);
+
+				x += TileSpan;
+
+				if (x >= (TileSpan * TilesPerRow))
+				{
+					x = 0;
+					y += TileSpan;
+				}
+			}
 		}
 
+		public void DrawTile16ToCanvas(IGraphicsCanvas canvas, int x, int y, Tile16 t16)
+		{
+			Graphics[t16.Tile0.ID].DrawToCanvas(canvas, x, y, t16.Tile0);
+			Graphics[t16.Tile1.ID].DrawToCanvas(canvas, x + 8, y, t16.Tile1);
+			Graphics[t16.Tile2.ID].DrawToCanvas(canvas, x, y + 8, t16.Tile2);
+			Graphics[t16.Tile3.ID].DrawToCanvas(canvas, x + 8, y + 8, t16.Tile3);
+		}
+
+		public void DrawTile16ToCanvas(IGraphicsCanvas canvas, int x, int y, ushort t16)
+		{
+			var t16x = ListOf[t16];
+			Graphics[t16x.Tile0.ID].DrawToCanvas(canvas, x, y, t16x.Tile0);
+			Graphics[t16x.Tile1.ID].DrawToCanvas(canvas, x + 8, y, t16x.Tile1);
+			Graphics[t16x.Tile2.ID].DrawToCanvas(canvas, x, y + 8, t16x.Tile2);
+			Graphics[t16x.Tile3.ID].DrawToCanvas(canvas, x + 8, y + 8, t16x.Tile3);
+		}
 
 		public byte[] GetByteData()
 		{

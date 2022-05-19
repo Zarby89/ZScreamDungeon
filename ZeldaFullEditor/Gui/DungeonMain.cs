@@ -98,8 +98,6 @@
 		{
 			ZScreamer.ActiveGraphicsManager.fontgfx16Ptr = Marshal.AllocHGlobal((256 * 256));
 			ZScreamer.ActiveGraphicsManager.currentfontgfx16Ptr = Marshal.AllocHGlobal(172 * 20000);
-			ZScreamer.ActiveGraphicsManager.mapblockset16 = Marshal.AllocHGlobal(1048576);
-			ZScreamer.ActiveGraphicsManager.scratchblockset16 = Marshal.AllocHGlobal(1048576);
 			ZScreamer.ActiveGraphicsManager.overworldMapPointer = Marshal.AllocHGlobal(0x40000);
 			ZScreamer.ActiveGraphicsManager.owactualMapPointer = Marshal.AllocHGlobal(0x40000);
 

@@ -36,9 +36,6 @@ namespace ZeldaFullEditor
 		public IntPtr editort16Ptr = Marshal.AllocHGlobal((128 * 512));
 		public Bitmap editort16Bitmap;
 
-		public IntPtr editortilePtr = Marshal.AllocHGlobal((256));
-		public Bitmap editortileBitmap;
-
 		public IntPtr mapgfx16Ptr = Marshal.AllocHGlobal(1048576);
 		public Bitmap mapgfx16Bitmap;
 
@@ -48,11 +45,7 @@ namespace ZeldaFullEditor
 		public IntPtr currentfontgfx16Ptr; // = Marshal.AllocHGlobal(172 * 20000);
 		public Bitmap currentfontgfx16Bitmap;
 
-		public IntPtr mapblockset16; // = Marshal.AllocHGlobal(1048576);
-		public Bitmap mapblockset16Bitmap;
-
-		public IntPtr scratchblockset16; // = Marshal.AllocHGlobal(1048576);
-		public Bitmap scratchblockset16Bitmap;
+		public PointeredImage OverworldScratchPadder { get; init; } = new PointeredImage(256, 4096);
 
 		public IntPtr overworldMapPointer; // = Marshal.AllocHGlobal(0x4000);
 		public Bitmap overworldMapBitmap;
@@ -80,6 +73,7 @@ namespace ZeldaFullEditor
 		public Color[,] loadedSprPalettes = new Color[1, 1];
 
 		private readonly ZScreamer ZS;
+
 		public GraphicsManager(ZScreamer zs)
 		{
 			ZS = zs;
@@ -103,9 +97,6 @@ namespace ZeldaFullEditor
 			previewgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, previewgfx16Ptr);
 			mapgfx16Bitmap = new Bitmap(128, 7520, 128, PixelFormat.Format8bppIndexed, mapgfx16Ptr);
 			editort16Bitmap = new Bitmap(128, 512, 128, PixelFormat.Format8bppIndexed, editort16Ptr);
-			editortileBitmap = new Bitmap(16, 16, 16, PixelFormat.Format8bppIndexed, editortilePtr);
-			mapblockset16Bitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, mapblockset16);
-			scratchblockset16Bitmap = new Bitmap(256, 4096, 256, PixelFormat.Format8bppIndexed, scratchblockset16);
 
 
 			previewObjectsPtr = new IntPtr[0x300];
@@ -190,6 +181,9 @@ namespace ZeldaFullEditor
 
 		public GraphicsSheet[] AllSheets { get; } = new GraphicsSheet[256];
 
+		/// <summary>
+		/// Creates every <see cref="GraphicsSheet"/> based on ROM data
+		/// </summary>
 		private void CreateAllGfxData()
 		{
 			byte[] mask = new byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
@@ -283,15 +277,18 @@ namespace ZeldaFullEditor
 		}
 
 		public GraphicsDoubleBlock[] EntranceGraphicsSets { get; } = new GraphicsDoubleBlock[37];
-		public GraphicsBlock[] RoomGraphicsSets { get; } = new GraphicsBlock[82];
+		public GraphicsBlock[] GraphicsAA2Sheets { get; } = new GraphicsBlock[82];
 		public GraphicsBlock[] SpriteGraphicsBlocks { get; } = new GraphicsBlock[144];
 
 		public byte[][] paletteGfx { get; } = new byte[72][];
 
-		public void LoadGfxGroups()
+		/// <summary>
+		/// Loads up the graphics groups from ROM
+		/// </summary>
+		private void LoadGfxGroups()
 		{
 			int gfxPointer = ZS.ROM.Read16(ZS.Offsets.gfx_groups_pointer);
-			gfxPointer = gfxPointer.SNEStoPC();
+			gfxPointer = (0x00_0000 | gfxPointer).SNEStoPC(); // explicitly declare bank 00
 
 			for (int i = 0; i < 37; i++)
 			{
@@ -308,10 +305,10 @@ namespace ZeldaFullEditor
 				ent.Block2.Sheet4 = AllSheets[ZS.ROM[gfxPointer++]];
 			}
 
-			gfxPointer = ZS.Offsets.overworldgfxGroups;
+			gfxPointer = ZS.Offsets.GraphicsAA2Tables;
 			for (int i = 0; i < 82; i++)
 			{
-				RoomGraphicsSets[i] = new GraphicsBlock()
+				GraphicsAA2Sheets[i] = new GraphicsBlock()
 				{
 					Sheet1 = AllSheets[ZS.ROM[gfxPointer++]],
 					Sheet2 = AllSheets[ZS.ROM[gfxPointer++]],
@@ -351,10 +348,10 @@ namespace ZeldaFullEditor
 				ZS.ROM.WriteContinuous(ref gfxPointer, EntranceGraphicsSets[i].GetByteData());
 			}
 
-			gfxPointer = ZS.Offsets.overworldgfxGroups;
+			gfxPointer = ZS.Offsets.GraphicsAA2Tables;
 			for (int i = 0; i < 82; i++)
 			{
-				ZS.ROM.WriteContinuous(ref gfxPointer, RoomGraphicsSets[i].GetByteData());
+				ZS.ROM.WriteContinuous(ref gfxPointer, GraphicsAA2Sheets[i].GetByteData());
 			}
 
 			gfxPointer = ZS.Offsets.sprite_blockset_pointer;
@@ -390,6 +387,7 @@ namespace ZeldaFullEditor
 			return Utils.AddressFromBytes(gfxGamePointer1, gfxGamePointer2, gfxGamePointer3).SNEStoPC();
 		}
 
+		// TODO fix these to do 8bpp (since that's what we're doing)
 		public byte[] pc4bppto3bppsnes(byte[] sheetData)
 		{
 			// [r0, bp1], [r0, bp2], [r1, bp1], [r1, bp2], [r2, bp1], [r2, bp2], [r3, bp1], [r3, bp2]
@@ -516,28 +514,25 @@ namespace ZeldaFullEditor
 		}
 
 		// TODO magic numbers
-		public void loadOverworldMap()
+		public unsafe void loadOverworldMap()
 		{
 			overworldMapBitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, overworldMapPointer);
 			owactualMapBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, owactualMapPointer);
 
 			// Mode 7
-			unsafe
-			{
-				byte* ptr = (byte*) overworldMapPointer.ToPointer();
+			byte* ptr = (byte*) overworldMapPointer.ToPointer();
 
-				int pos = 0;
-				for (int sy = 0; sy < 16 * 1024; sy += 1024)
+			int pos = 0;
+			for (int sy = 0; sy < 16 * 1024; sy += 1024)
+			{
+				for (int sx = 0; sx < 16 * 8; sx += 8)
 				{
-					for (int sx = 0; sx < 16 * 8; sx += 8)
+					for (int y = 0; y < 8 * 128; y += 128)
 					{
-						for (int y = 0; y < 8 * 128; y += 128)
+						for (int x = 0; x < 8; x++)
 						{
-							for (int x = 0; x < 8; x++)
-							{
-								ptr[x + sx + y + sy] = ZS.ROM[0x0C4000 + pos];
-								pos++;
-							}
+							ptr[x + sx + y + sy] = ZS.ROM[0x0C4000 + pos];
+							pos++;
 						}
 					}
 				}

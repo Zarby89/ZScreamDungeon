@@ -51,12 +51,6 @@ namespace ZeldaFullEditor
 
 			//ZS.OverworldManager.allmaps[mapHover + ZS.OverworldManager.worldOffset].BuildMap();
 
-			tileBitmapPtr = ZS.GFXManager.mapblockset16;
-			tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr)
-			{
-				Palette = ZS.OverworldManager.allmaps[mapId].ParentMap.MyArtist.Layer1Canvas.Palette
-			};
-
 			if (CurrentMapID >= 160)
 			{
 				return;

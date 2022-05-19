@@ -15,7 +15,7 @@
 		public abstract Bitmap FinalOutput { get; }
 
 
-		protected virtual bool HasUnsavedChanges
+		protected virtual bool HasUnacknowledgedChanges
 		{
 			get => BackgroundTileset != bgtilesflushed ||
 				SpriteTileset != sprtilesflushed ||
@@ -38,7 +38,7 @@
 		private byte sprpalflushed = 0xFF;
 		public byte SpritePalette { get; protected set; }
 
-		public GraphicsSet LoadedGraphics { get; set; }
+		public GraphicsSet LoadedGraphics { get; } = new();
 
 		protected Artist() { }
 
@@ -49,12 +49,14 @@
 
 
 		protected static readonly float[][] TranslucencyMatrix = {
-			new float[] { 1f, 0, 0, 0, 0 },
-			new float[] { 0, 1f, 0, 0, 0 },
-			new float[] { 0, 0, 1f, 0, 0 },
-			new float[] { 0, 0, 0, 0.5f, 0 },
-			new float[] { 0, 0, 0, 0, 1 }
+			new[] { 1f, 0, 0, 0, 0 },
+			new[] { 0, 1f, 0, 0, 0 },
+			new[] { 0, 0, 1f, 0, 0 },
+			new[] { 0, 0, 0, 0.5f, 0 },
+			new[] { 0, 0, 0, 0, 1f }
 		};
+
+		public abstract Tile GetDrawnTileAt(int x, int y, RoomLayer l);
 
 		public virtual void HardRefresh()
 		{
@@ -65,6 +67,21 @@
 		}
 
 		public abstract void RebuildBitMap();
+
+		public virtual void RebuildLayers()
+		{
+			for (int y = 0; y < 64; y++)
+			{
+				for (int x = 0; x < 64; x++)
+				{
+					var t = GetDrawnTileAt(x, y, RoomLayer.Layer1);
+					LoadedGraphics[t.ID].DrawToCanvas(Layer1Canvas, x * 8, y * 8, t);
+
+					t = GetDrawnTileAt(x, y, RoomLayer.Layer2);
+					LoadedGraphics[t.ID].DrawToCanvas(Layer2Canvas, x * 8, y * 8, t);
+				}
+			}
+		}
 
 		public abstract void DrawSelfToImage(Graphics g);
 
@@ -99,29 +116,19 @@
 			var graphics = LoadedGraphics;
 			foreach (var ti in instructions)
 			{
-				int size = ti.RectSideSize;
-				byte pal = (byte) (ti.Palette << 4);
-
 				int x = spr.RealX + ti.XOff + xoff;
 				int y = spr.RealY + ti.YOff + yoff;
 
-				IGraphicsTile gfx;
-
 				if (ti.IsBig)
 				{
-					gfx = new BigSpriteTile(graphics[ti.TileIndex], graphics[ti.TileIndex + 1], graphics[ti.TileIndex + 16], graphics[ti.TileIndex + 17]);
+					graphics[ti.TileIndex].DrawToCanvas(SpriteCanvas, ti.HFlip ? x : x + 8, ti.VFlip ? y : y + 8, ti);
+					graphics[ti.TileIndex + 1].DrawToCanvas(SpriteCanvas, ti.HFlip ? x + 8 : x, ti.VFlip ? y : y + 8, ti);
+					graphics[ti.TileIndex + 16].DrawToCanvas(SpriteCanvas, ti.HFlip ? x : x + 8, ti.VFlip ? y + 8 : y, ti);
+					graphics[ti.TileIndex + 17].DrawToCanvas(SpriteCanvas, ti.HFlip ? x + 8: x, ti.VFlip ? y + 8 : y, ti);
 				}
 				else
 				{
-					gfx = graphics[ti.TileIndex];
-				}
-
-				for (int yl = 0; yl < size; yl++)
-				{
-					for (int xl = 0; xl < size; xl++)
-					{
-						SpriteCanvas[x + xl, y + yl] = (byte) (gfx.GetPixelAt(x, y, ti.HFlip, ti.VFlip) | pal);
-					}
+					graphics[ti.TileIndex].DrawToCanvas(SpriteCanvas, x, y, ti);
 				}
 			}
 		}

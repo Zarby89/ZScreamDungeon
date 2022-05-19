@@ -130,7 +130,7 @@
 			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 			e.Graphics.CompositingQuality = CompositingQuality.AssumeLinear;
 			//e.Graphics.DrawImage(GFX.editortileBitmap, new Rectangle(0, 0, 64, 64));
-			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.mapblockset16Bitmap, RectF1, RectF2, GraphicsUnit.Pixel);
+			e.Graphics.DrawImage(ZScreamer.ActiveOW.Tile16Sheet.PreviewCanvas.Bitmap, RectF1, RectF2, GraphicsUnit.Pixel);
 			//e.Graphics.DrawImage(GFX.mapblockset16Bitmap, new RectangleF(256f, 0f, 256.5f, 8000f), new RectangleF(0, 4000, 128, 4000-192), GraphicsUnit.Pixel);
 
 			if (gridcheckBox.Checked)
@@ -245,39 +245,41 @@
 
 		private unsafe void BuildTiles16Gfx()
 		{
-			var gfx16Data = (byte*) ZScreamer.ActiveGraphicsManager.mapblockset16.ToPointer(); //(byte*)allgfx8Ptr.ToPointer();
-			var gfx8Data = (byte*) ZScreamer.ActiveGraphicsManager.currentOWgfx16Ptr.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
-
-			int yy = 0;
-			int xx = 0;
-
-			for (int i = 0; i < Constants.NumberOfUniqueTile16Definitions; i++) // Number of tiles16 3748? // its 3752
-			{
-				// 8x8 tile draw
-				// gfx8 = 4bpp so everyting is /2
-				var tiles = allTiles[i];
-
-				for (int tile = 0; tile < 4; tile++)
-				{
-					Tile info = tiles[tile];
-					int offset = m16offsets[tile];
-
-					for (int y = 0; y < 8; y++)
-					{
-						for (int x = 0; x < 4; x++)
-						{
-							CopyTile16(x, y, xx, yy, offset, info, gfx16Data, gfx8Data);
-						}
-					}
-				}
-
-				xx += 16;
-				if (xx >= 128)
-				{
-					yy += 2048;
-					xx = 0;
-				}
-			}
+			// TODO replace with Map16MasterSheet?
+			throw new NotImplementedException();
+			//var gfx16Data = (byte*) ZScreamer.ActiveGraphicsManager.mapblockset16.ToPointer(); //(byte*)allgfx8Ptr.ToPointer();
+			//var gfx8Data = (byte*) ZScreamer.ActiveGraphicsManager.currentOWgfx16Ptr.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
+			//
+			//int yy = 0;
+			//int xx = 0;
+			//
+			//for (int i = 0; i < Constants.NumberOfUniqueTile16Definitions; i++) // Number of tiles16 3748? // its 3752
+			//{
+			//	// 8x8 tile draw
+			//	// gfx8 = 4bpp so everyting is /2
+			//	var tiles = allTiles[i];
+			//
+			//	for (int tile = 0; tile < 4; tile++)
+			//	{
+			//		Tile info = tiles[tile];
+			//		int offset = m16offsets[tile];
+			//
+			//		for (int y = 0; y < 8; y++)
+			//		{
+			//			for (int x = 0; x < 4; x++)
+			//			{
+			//				CopyTile16(x, y, xx, yy, offset, info, gfx16Data, gfx8Data);
+			//			}
+			//		}
+			//	}
+			//
+			//	xx += 16;
+			//	if (xx >= 128)
+			//	{
+			//		yy += 2048;
+			//		xx = 0;
+			//	}
+			//}
 		}
 
 		private unsafe void CopyTile16(int x, int y, int xx, int yy, int offset, in Tile tile, byte* gfx16Pointer, byte* gfx8Pointer) // map,current

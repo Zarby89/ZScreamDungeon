@@ -4,7 +4,7 @@
 	/// Represents a background tile as used by the SNES PPU.
 	/// </summary>
 	[Serializable]
-	public readonly struct Tile : IByteable
+	public readonly struct Tile : IByteable, IPaletteFlip
 	{
 		/// <summary>
 		/// 10-bit tile name

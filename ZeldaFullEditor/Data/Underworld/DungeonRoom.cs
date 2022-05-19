@@ -387,8 +387,7 @@
 				size = 0;
 			}
 
-			return
-				new RoomObject(rtype, defn)
+			return new(rtype, defn)
 				{
 					GridX = posX,
 					GridY = posY,
@@ -610,7 +609,11 @@
 		{
 			if (count > limit)
 			{
-				UIText.TooMuchStuffInRoomWarning($"There are too many {entity}.", limit);
+				UIText.GeneralWarning(
+				$"There are too many {entity}." +
+				$"\nOnly {limit} may be placed in a single room." +
+				$"\nYou may continue working, but be aware that staying in this state will likely cause corruption."
+				);
 			}
 		}
 

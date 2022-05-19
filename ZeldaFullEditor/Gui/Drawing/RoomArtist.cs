@@ -56,6 +56,20 @@
 			}
 		}
 
+		public override Tile GetDrawnTileAt(int x, int y, RoomLayer l) => l switch
+		{
+			RoomLayer.Layer1 => new(Layer1TileMap[x + 64 * y]),
+			RoomLayer.Layer2 => new(Layer2TileMap[x + 64 * y]),
+			_ => Tile.Empty
+		};
+
+		public override void RebuildLayers()
+		{
+			if (CurrentRoom == null) return;
+
+			base.RebuildLayers();
+		}
+
 		public override void RebuildBitMap()
 		{
 			if (CurrentRoom == null) return;
@@ -135,8 +149,11 @@
 			BackgroundTileset = CurrentRoom?.BackgroundTileset ?? 0;
 			SpriteTileset = CurrentRoom?.SpriteTileset ?? 0;
 
-			if (HasUnsavedChanges)
+			if (HasUnacknowledgedChanges)
 			{
+				// TODO LOAD GRAPHICS
+				//LoadedGraphics.BackgroundBlock1.CopyBlock(ZScreamer.ActiveGraphicsManager.GraphicsAA2Sheets[BackgroundTileset]);
+				//LoadedGraphics.BackgroundBlock2.CopyBlock(ZScreamer.ActiveGraphicsManager.GraphicsAA2Sheets[BackgroundTileset]);
 				ReloadPalettes();
 				RebuildTileMap();
 				RebuildBitMap();
@@ -166,7 +183,7 @@
 			Layer2Canvas.Palette = palettes;
 		}
 
-		private void FillTilemapWithFloorShort(ushort[] tilemap, ushort[] floor)
+		private static void FillTilemapWithFloorShort(ushort[] tilemap, ushort[] floor)
 		{
 			for (int x = 0; x < 16 * 4; x += 4)
 			{

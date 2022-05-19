@@ -25,6 +25,27 @@
 
 		}
 
+		public override Tile GetDrawnTileAt(int x, int y, RoomLayer l)
+		{
+			int t16index = l switch
+			{
+				RoomLayer.Layer1 => Layer1TileMap[(x / 2) + (y / 2) * 32],
+				RoomLayer.Layer2 => Layer2TileMap[(x / 2) + (y / 2) * 32],
+				_ => 0
+			};
+
+			var t16 = ZScreamer.ActiveOW.Tile16Sheet.GetTile16At(t16index);
+
+			return (x % 2, y % 2) switch
+			{
+				(0, 0) => t16.Tile0,
+				(1, 0) => t16.Tile1,
+				(0, 1) => t16.Tile2,
+				(1, 1) => t16.Tile0,
+				_ => Tile.Empty // No, actually it does handle every case
+			};
+	}
+	
 		public override void RebuildBitMap()
 		{
 			var g = Graphics.FromImage(FinalOutput);
@@ -49,7 +70,7 @@
 			BackgroundTileset = MyScreen?.Tileset ?? 0;
 			SpriteTileset = MyScreen?.GetSpriteGraphicsForGameState(ZScreamer.ActiveOW.GameState) ?? 0;
 
-			if (HasUnsavedChanges)
+			if (HasUnacknowledgedChanges)
 			{
 				ReloadPalettes();
 				RebuildTileMap();

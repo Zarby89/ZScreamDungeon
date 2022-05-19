@@ -2,15 +2,14 @@
 {
 	public static class DefaultEntities
 	{
-		public static string GetNameFromVanillaList<T>(this T[] list, int id) where T : EntityName
+		public static string GetNameFromVanillaList(this EntityName[] list, int id)
 		{
 			return GetObjectFromVanillaList(list, id).Name;
 		}
 
 		public static T GetObjectFromVanillaList<T>(this T[] list, int id) where T : EntityName
 		{
-			int b = Array.FindIndex(list, s => s.ID == id);
-			return list[b];
+			return Array.Find(list, s => s.ID == id);
 		}
 
 		public static readonly DungeonName[] ListOfDungeons =
@@ -842,7 +841,7 @@
 		};
 
 		public static readonly SpriteName[] ListOfOverlords =
-{
+		{
 			new(0x00, "Nothing"),
 			new(0x01, "Position target"),
 			new(0x02, "Full room cannons"),
@@ -1861,10 +1860,10 @@
 
 		private static readonly MusicName Music0x01 = new(0x01, "Triforce opening");
 		private static readonly MusicName Music0x02 = new(0x02, "Light world");
-		private static readonly MusicName Music0x03 = new(0x03, "Legend theme(rain state)");
+		private static readonly MusicName Music0x03 = new(0x03, "Legend theme (rain state)");
 		private static readonly MusicName Music0x04 = new(0x04, "Bunny link");
 		private static readonly MusicName Music0x05 = new(0x05, "Lost woods");
-		private static readonly MusicName Music0x06 = new(0x06, "Legend theme(attract mode)");
+		private static readonly MusicName Music0x06 = new(0x06, "Legend theme (attract mode)");
 		private static readonly MusicName Music0x07 = new(0x07, "Kakariko village");
 		private static readonly MusicName Music0x08 = new(0x08, "Mirror warp");
 		private static readonly MusicName Music0x09 = new(0x09, "Dark world");
@@ -1888,7 +1887,7 @@
 		private static readonly MusicName Music0x1B = new(0x1B, "Faerie theme w/ arpeggio");
 		private static readonly MusicName Music0x1C = new(0x1C, "Pre aga theme");
 		private static readonly MusicName Music0x1D = new(0x1D, "Agahnim escape");
-		private static readonly MusicName Music0x1E = new(0x1E, "Pre ganon theme");
+		private static readonly MusicName Music0x1E = new(0x1E, "Pre-Ganon theme");
 		private static readonly MusicName Music0x1F = new(0x1F, "Ganondorf the Thief");
 		private static readonly MusicName Music0xF2 = new(0xF2, "Half-volume");
 		private static readonly MusicName Music0xFF = new(0xFF, "Do nothing");

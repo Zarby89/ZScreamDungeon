@@ -587,7 +587,7 @@
 			for (int i = 0; i < 128; i++)
 			{
 				var map = OverworldManager.allmaps[i];
-				ROM[Offsets.mapGfx + i] = map.Tileset;
+				ROM[Offsets.OverworldIDToMainGFXSet + i] = map.Tileset;
 				ROM[Offsets.overworldMapPalette + i] = map.ScreenPalette;
 
 				if (map.World == Worldiness.LightWorld)

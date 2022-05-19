@@ -65,18 +65,6 @@
 		public override string ToString() => Name;
 	}
 
-	public class RoomEffectName : EntityName
-	{
-		public RoomEffectName(int i, string n) : base(i, n) { }
-		public override string ToString() => Name;
-	}
-
-	public class RoomCollisionName : EntityName
-	{
-		public RoomCollisionName(int i, string n) : base(i, n) { }
-		public override string ToString() => Name;
-	}
-
 	public class MusicName : EntityName
 	{
 		public MusicName(int i, string n) : base(i, n) { }

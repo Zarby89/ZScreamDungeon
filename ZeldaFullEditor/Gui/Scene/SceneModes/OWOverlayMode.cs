@@ -15,12 +15,6 @@
 			int superMX = CurrentParentMapID % 8 * 32;
 			int superMY = CurrentParentMapID / 8 * 32;
 
-			tileBitmapPtr = ZS.GFXManager.mapblockset16;
-			tileBitmap = new Bitmap(128, 8192, 128, PixelFormat.Format8bppIndexed, tileBitmapPtr)
-			{
-				Palette = ZS.OverworldManager.allmaps[mapId].MyArtist.Layer1Canvas.Palette
-			};
-
 			if (TriggerRefresh)
 			{
 				TriggerRefresh = false;

@@ -30,14 +30,13 @@ namespace ZeldaFullEditor.Gui
 
 		public int BGColorToUpdate = 0;
 
-		private TabControl.TabPageCollection AuxTabs;
-
 		readonly ColorDialog cd = new();
+
 		public OverworldEditor()
 		{
 			InitializeComponent();
-			AuxTabs = OverworldAuxSideTabs.TabPages;
 		}
+
 		public void OnProjectLoad()
 		{
 			//scene = new SceneOW(this, mainForm);
@@ -48,7 +47,7 @@ namespace ZeldaFullEditor.Gui
 			stateCombobox.SelectedIndex = 1;
 			scratchPicturebox.Image = scratchPadBitmap;
 			SwapInAuxTab(null);
-			AuxTabs.Remove(Tiles8);
+			OverworldAuxSideTabs.TabPages.Remove(Tiles8);
 			//setTilesGfx();
 			bool fromFile = false;
 			byte[] file = new byte[ScratchPadSize];
@@ -118,11 +117,12 @@ namespace ZeldaFullEditor.Gui
 
 			SwapInAuxTab(s);
 		}
+
 		private void SwapInAuxTab(TabPage t)
 		{
 			if (t != OWTabEntranceProps)
 			{
-				AuxTabs.Remove(OWTabEntranceProps);
+				OverworldAuxSideTabs.TabPages.Remove(OWTabEntranceProps);
 			}
 			else
 			{
@@ -131,7 +131,7 @@ namespace ZeldaFullEditor.Gui
 
 			if (t != OWTabExitProps)
 			{
-				AuxTabs.Remove(OWTabExitProps);
+				OverworldAuxSideTabs.TabPages.Remove(OWTabExitProps);
 			}
 			else
 			{
@@ -140,7 +140,7 @@ namespace ZeldaFullEditor.Gui
 
 			if (t != OWTabTransportProps)
 			{
-				AuxTabs.Remove(OWTabTransportProps);
+				OverworldAuxSideTabs.TabPages.Remove(OWTabTransportProps);
 			}
 			else
 			{
@@ -152,7 +152,7 @@ namespace ZeldaFullEditor.Gui
 				return;
 			}
 
-			AuxTabs.Add(t);
+			OverworldAuxSideTabs.TabPages.Add(t);
 			OverworldAuxSideTabs.SelectedTab = t;
 		}
 
@@ -249,15 +249,15 @@ namespace ZeldaFullEditor.Gui
 
 		private void tilePictureBox_Paint(object sender, PaintEventArgs e)
 		{
-			if (ZScreamer.ActiveGraphicsManager?.mapblockset16Bitmap != null)
+			if (ZScreamer.ActiveOW?.Tile16Sheet != null)
 			{
 				e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 				e.Graphics.CompositingMode = CompositingMode.SourceOver;
-				e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.mapblockset16Bitmap,
+				e.Graphics.DrawImage(ZScreamer.ActiveOW.Tile16Sheet.PreviewCanvas.Bitmap,
 					Constants.Rect_0_0_128_4096,
 					Constants.Rect_0_0_128_4096,
 					GraphicsUnit.Pixel);
-				e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.mapblockset16Bitmap,
+				e.Graphics.DrawImage(ZScreamer.ActiveOW.Tile16Sheet.PreviewCanvas.Bitmap,
 					Constants.Rect_128_0_128_4096,
 					Constants.Rect_0_4096_128_4096,
 					GraphicsUnit.Pixel);
@@ -604,7 +604,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void scratchPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			if (ZScreamer.ActiveGraphicsManager?.mapblockset16Bitmap != null)
+			if (ZScreamer.ActiveOW?.Tile16Sheet != null)
 			{
 				// USE mapblockset16 to draw tiles on this !! :GRIMACING:
 				//public static IntPtr mapblockset16 = Marshal.AllocHGlobal(1048576);
@@ -620,7 +620,7 @@ namespace ZeldaFullEditor.Gui
 				g.CompositingQuality = CompositingQuality.HighSpeed;
 				g.InterpolationMode = InterpolationMode.NearestNeighbor;
 
-				g.DrawImage(ZScreamer.ActiveGraphicsManager.scratchblockset16Bitmap, 0, 0);
+				g.DrawImage(ZScreamer.ActiveGraphicsManager.OverworldScratchPadder.Bitmap, 0, 0);
 
 				// DRAW ALL THE TILES 16x225
 
@@ -645,34 +645,26 @@ namespace ZeldaFullEditor.Gui
 
 		public unsafe void BuildScratchTilesGfx()
 		{
-			ZScreamer.ActiveGraphicsManager.scratchblockset16Bitmap.Palette = ZScreamer.ActiveGraphicsManager.mapblockset16Bitmap.Palette;
-			var gfx16Data = (byte*) ZScreamer.ActiveGraphicsManager.mapblockset16.ToPointer(); //(byte*)allgfx8Ptr.ToPointer();
-			var gfx16DataScratch = (byte*) ZScreamer.ActiveGraphicsManager.scratchblockset16.ToPointer(); //(byte*)allgfx16Ptr.ToPointer();
 			int ytile = 0;
 			int xtile = 0;
-
-			for (var i = 0; i < 3500; i++)
+			int x = 0;
+			int y = 0;
+			var canvas = ZScreamer.ActiveGraphicsManager.OverworldScratchPadder;
+			canvas.Palette = ZScreamer.ActiveOW.Tile16Sheet.Palette;
+			for (int i = 0; i < 3500; i++)
 			{
 				ushort srcTile = scratchPadTiles[xtile, ytile];
-				//Console.WriteLine(srcTile);
-				int srcTileY = srcTile / 8;
-				int srcTileX = srcTile - (srcTileY * 8);
-				int tPos = (xtile * Tile16EntryWidth) + (ytile * 256 * Tile16EntryWidth);
-				int srctPos = (srcTileX * 16) + (srcTileY * 2048);
 
-				for (int y = 0; y < 16; y++)
-				{
-					for (int x = 0; x < 16; x++)
-					{
-						gfx16DataScratch[tPos + x + (y * 256)] = gfx16Data[srctPos + x + (y * 128)];
-					}
-				}
+				ZScreamer.ActiveOW.Tile16Sheet.DrawTile16ToCanvas(canvas, x, y, srcTile);
 
 				xtile++;
+				x += 16;
 				if (xtile >= 16)
 				{
 					xtile = 0;
+					x = 0;
 					ytile++;
+					y += 16;
 				}
 			}
 		}

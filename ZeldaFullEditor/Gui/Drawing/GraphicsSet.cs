@@ -2,9 +2,9 @@
 {
 	public class GraphicsDoubleBlock : IByteable
 	{
-		public GraphicsBlock Block1 { get; set; }
+		public GraphicsBlock Block1 { get; set; } = GraphicsBlock.Empty;
 
-		public GraphicsBlock Block2 { get; set; }
+		public GraphicsBlock Block2 { get; set; } = GraphicsBlock.Empty;
 
 		public byte[] GetByteData()
 		{
@@ -14,10 +14,10 @@
 
 	public class GraphicsBlock : IByteable, IGraphicsSheet
 	{
-		public GraphicsSheet Sheet1 { get; set; }
-		public GraphicsSheet Sheet2 { get; set; }
-		public GraphicsSheet Sheet3 { get; set; }
-		public GraphicsSheet Sheet4 { get; set; }
+		public GraphicsSheet Sheet1 { get; set; } = GraphicsSheet.Empty;
+		public GraphicsSheet Sheet2 { get; set; } = GraphicsSheet.Empty;
+		public GraphicsSheet Sheet3 { get; set; } = GraphicsSheet.Empty;
+		public GraphicsSheet Sheet4 { get; set; } = GraphicsSheet.Empty;
 
 		public GraphicsTile this[int i] => i switch
 		{
@@ -29,6 +29,33 @@
 		};
 
 		public GraphicsBlock() { }
+
+		public void CopyBlock(GraphicsBlock b)
+		{
+			Sheet1 = b.Sheet1;
+			Sheet2 = b.Sheet2;
+			Sheet3 = b.Sheet3;
+			Sheet4 = b.Sheet4;
+		}
+		public void CopyBlockCautiously(GraphicsBlock b)
+		{
+			if (b.Sheet1.ID != 0x00)
+			{
+				Sheet1 = b.Sheet1;
+			}
+			if (b.Sheet2.ID != 0x00)
+			{
+				Sheet2 = b.Sheet2;
+			}
+			if (b.Sheet3.ID != 0x00)
+			{
+				Sheet3 = b.Sheet3;
+			}
+			if (b.Sheet4.ID != 0x00)
+			{
+				Sheet4 = b.Sheet4;
+			}
+		}
 
 		public byte[] GetByteData()
 		{
@@ -52,15 +79,17 @@
 					(set.Sheet3?.Contains(Sheet4.ID) ?? true);
 			}
 		}
+
+		public static GraphicsBlock Empty => new();
 	}
 
 
 	public unsafe class GraphicsSet : IGraphicsSheet
 	{
-		public GraphicsBlock BackgroundBlock1 { get; set; }
-		public GraphicsBlock BackgroundBlock2 { get; set; }
-		public GraphicsBlock SpriteBlock1 { get; set; }
-		public GraphicsBlock SpriteBlock2 { get; set; }
+		public GraphicsBlock BackgroundBlock1 { get; set; } = GraphicsBlock.Empty;
+		public GraphicsBlock BackgroundBlock2 { get; set; } = GraphicsBlock.Empty;
+		public GraphicsBlock SpriteBlock1 { get; set; } = GraphicsBlock.Empty;
+		public GraphicsBlock SpriteBlock2 { get; set; } = GraphicsBlock.Empty;
 
 		public GraphicsTile this[int i] => i switch
 		{
@@ -83,6 +112,26 @@
 		{
 			return BackgroundBlock1.ContainsExpectedSheets(t.RequiredSheets, false) &&
 				BackgroundBlock2.ContainsExpectedSheets(t.RequiredSheets, true);
+		}
+
+		public void SetBackgroundGraphicsBlock1(GraphicsBlock b)
+		{
+			BackgroundBlock1.CopyBlock(b);
+		}
+
+		public void SetBackgroundGraphicsBlock2(GraphicsBlock b)
+		{
+			BackgroundBlock2.CopyBlock(b);
+		}
+
+		public void SeSpriteGraphicsBlock1(GraphicsBlock b)
+		{
+			SpriteBlock1.CopyBlock(b);
+		}
+
+		public void SeSpriteGraphicsBlock2(GraphicsBlock b)
+		{
+			SpriteBlock2.CopyBlock(b);
 		}
 
 

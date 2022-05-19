@@ -8,6 +8,9 @@
 
 		public Bitmap Bitmap { get; }
 
+		public int Width => Bitmap.Width;
+		public int Height => Bitmap.Height;
+
 		public byte this[int i]
 		{
 			get => Pointer[i];

@@ -112,7 +112,7 @@
 					map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID];
 					map.State2SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 64];
 					map.State3SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
-					map.Tileset = ZS.ROM[ZS.Offsets.mapGfx + map.MapID];
+					map.Tileset = ZS.ROM[ZS.Offsets.OverworldIDToMainGFXSet + map.MapID];
 					map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
 					map.State0SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID];
 					map.State2SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 64];
@@ -127,7 +127,7 @@
 					map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
 					map.State2SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
 					map.State3SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
-					map.Tileset = ZS.ROM[ZS.Offsets.mapGfx + map.MapID];
+					map.Tileset = ZS.ROM[ZS.Offsets.OverworldIDToMainGFXSet + map.MapID];
 					map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
 					map.State0SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
 					map.State2SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
@@ -173,7 +173,7 @@
 					}
 					else // Pyramid bg use 0x5B map
 					{
-						map.Tileset = ZS.ROM[ZS.Offsets.mapGfx + map.MapID];
+						map.Tileset = ZS.ROM[ZS.Offsets.OverworldIDToMainGFXSet + map.MapID];
 						map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
 					}
 				}

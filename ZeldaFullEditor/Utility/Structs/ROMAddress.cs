@@ -46,11 +46,7 @@ namespace ZeldaFullEditor
 		/// with the assumption that the address is the same for both versions.<br/>
 		/// The input parameters are under SNES mapping.
 		/// </summary>
-		public ROMAddress(int addr)
-		{
-			USAddress = JPAddress = addr & 0xFFFFFF;
-			USOffset = JPOffset = (addr & 0x7FFF) | ((addr & 0x7F0000) >> 1);
-		}
+		public ROMAddress(int addr) : this(addr, addr) { }
 
 		public int GetAddressForVersion(ROMVersion v) =>  v switch
 		{
