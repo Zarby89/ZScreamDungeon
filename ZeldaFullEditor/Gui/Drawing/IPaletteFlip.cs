@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor.Gui.Drawing
 {
 	public interface IPaletteFlip
 	{

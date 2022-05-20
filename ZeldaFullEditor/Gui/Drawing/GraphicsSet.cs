@@ -84,7 +84,7 @@
 	}
 
 
-	public unsafe class GraphicsSet : IGraphicsSheet
+	public unsafe class GraphicsSet : IGraphicsSheet, IPowerfulGraphicsSheet
 	{
 		public GraphicsBlock BackgroundBlock1 { get; set; } = GraphicsBlock.Empty;
 		public GraphicsBlock BackgroundBlock2 { get; set; } = GraphicsBlock.Empty;

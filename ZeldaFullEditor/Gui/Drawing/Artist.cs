@@ -56,7 +56,8 @@
 			new[] { 0, 0, 0, 0, 1f }
 		};
 
-		public abstract Tile GetDrawnTileAt(int x, int y, RoomLayer l);
+		public abstract Tile GetLayer1TileAt(int x, int y);
+		public abstract Tile GetLayer2TileAt(int x, int y);
 
 		public virtual void HardRefresh()
 		{
@@ -74,10 +75,10 @@
 			{
 				for (int x = 0; x < 64; x++)
 				{
-					var t = GetDrawnTileAt(x, y, RoomLayer.Layer1);
+					var t = GetLayer1TileAt(x, y);
 					LoadedGraphics[t.ID].DrawToCanvas(Layer1Canvas, x * 8, y * 8, t);
 
-					t = GetDrawnTileAt(x, y, RoomLayer.Layer2);
+					t = GetLayer2TileAt(x, y);
 					LoadedGraphics[t.ID].DrawToCanvas(Layer2Canvas, x * 8, y * 8, t);
 				}
 			}

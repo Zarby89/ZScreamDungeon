@@ -56,12 +56,8 @@
 			}
 		}
 
-		public override Tile GetDrawnTileAt(int x, int y, RoomLayer l) => l switch
-		{
-			RoomLayer.Layer1 => new(Layer1TileMap[x + 64 * y]),
-			RoomLayer.Layer2 => new(Layer2TileMap[x + 64 * y]),
-			_ => Tile.Empty
-		};
+		public override Tile GetLayer1TileAt(int x, int y) => new(Layer1TileMap[x + 64 * y]);
+		public override Tile GetLayer2TileAt(int x, int y) => new(Layer2TileMap[x + 64 * y]);
 
 		public override void RebuildLayers()
 		{

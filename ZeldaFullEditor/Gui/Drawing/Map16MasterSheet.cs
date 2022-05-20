@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor
 {
-	public unsafe class Tile16MasterSheet : IByteable
+	public unsafe class Tile16MasterSheet : IByteable, IPowerfulGraphicsSheet
 	{
 		private const int TileSpan = 16;
 		private const int TilesPerRow = 8;
