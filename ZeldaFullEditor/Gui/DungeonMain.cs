@@ -1,4 +1,9 @@
-﻿namespace ZeldaFullEditor
+﻿using ZeldaFullEditor.Handler;
+using ZeldaFullEditor.Modeling;
+using ZeldaFullEditor.Modeling.Underworld;
+using ZeldaFullEditor.View.UserInterface;
+
+namespace ZeldaFullEditor
 {
 	public partial class ZScreamForm : Form
 	{

@@ -1,4 +1,7 @@
-﻿namespace ZeldaFullEditor.Gui.MainTabs
+﻿using ZeldaFullEditor.Modeling;
+using ZeldaFullEditor.Modeling.GameData.GraphicsData;
+
+namespace ZeldaFullEditor.Gui.MainTabs
 {
 	public partial class ScreenEditor : UserControl
 	{

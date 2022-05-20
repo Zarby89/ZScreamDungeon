@@ -1,6 +1,4 @@
-﻿﻿global using static ZeldaFullEditor.TheGUI;
-
-global using System;
+﻿global using System;
 global using System.Collections.Generic;
 global using System.Collections.Immutable;
 global using System.ComponentModel;
@@ -16,15 +14,30 @@ global using System.Runtime.InteropServices;
 global using System.Text;
 global using System.Threading;
 global using System.Windows.Forms;
-global using ZeldaFullEditor.Data;
-global using ZeldaFullEditor.Data.Underworld;
-global using ZeldaFullEditor.Gui;
-global using ZeldaFullEditor.Gui.Drawing;
-global using ZeldaFullEditor.Gui.MainTabs;
-global using ZeldaFullEditor.Gui.ExtraForms;
-global using ZeldaFullEditor.Properties;
-global using ZeldaFullEditor.SceneModes;
+
 global using ZCompressLibrary;
+
+global using ZeldaFullEditor.Data;
+global using ZeldaFullEditor.Gui;
+global using ZeldaFullEditor.Gui.ExtraForms;
+global using ZeldaFullEditor.Gui.MainTabs;
+global using ZeldaFullEditor.Handler;
+global using ZeldaFullEditor.Modeling;
+global using ZeldaFullEditor.Modeling.GameData;
+global using ZeldaFullEditor.Modeling.GameData.Defaults;
+global using ZeldaFullEditor.Modeling.GameData.GraphicsData;
+global using ZeldaFullEditor.Modeling.Overworld;
+global using ZeldaFullEditor.Modeling.Underworld;
+global using ZeldaFullEditor.Properties;
+global using ZeldaFullEditor.View.Drawing;
+global using ZeldaFullEditor.View.Drawing.Artists;
+global using ZeldaFullEditor.View.Drawing.SNESGraphics;
+global using ZeldaFullEditor.View.GeneralControls;
+global using ZeldaFullEditor.View.PrimaryEditors;
+global using ZeldaFullEditor.View.UserInterface;
+global using ZeldaFullEditor.View.UserInterface.Scene;
+
+global using static ZeldaFullEditor.TheGUI;
 
 namespace ZeldaFullEditor
 {

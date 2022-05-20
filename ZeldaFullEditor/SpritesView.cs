@@ -1,4 +1,6 @@
-﻿namespace ZeldaFullEditor
+﻿using ZeldaFullEditor.Modeling.Underworld;
+
+namespace ZeldaFullEditor
 {
 	public partial class SpritesView : UserControl
 	{

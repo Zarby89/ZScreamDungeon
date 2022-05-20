@@ -1,4 +1,6 @@
-﻿namespace ZeldaFullEditor.Gui
+﻿using ZeldaFullEditor.Data.Defaults;
+
+namespace ZeldaFullEditor.Gui
 {
 	public partial class AdvancedChestEditorForm : Form
 	{

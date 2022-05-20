@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	partial class ZScreamForm
 	{
@@ -44,7 +41,7 @@ namespace ZeldaFullEditor
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.editorsTabControl = new System.Windows.Forms.TabControl();
 			this.dungeonPage = new System.Windows.Forms.TabPage();
-			this.DungeonEditor = new ZeldaFullEditor.Gui.MainTabs.DungeonEditor();
+			this.DungeonEditor = new ZeldaFullEditor.View.PrimaryEditors.DungeonEditor();
 			this.overworldPage = new System.Windows.Forms.TabPage();
 			this.OverworldEditor = new ZeldaFullEditor.Gui.OverworldEditor();
 			this.GfxEditorPage = new System.Windows.Forms.TabPage();

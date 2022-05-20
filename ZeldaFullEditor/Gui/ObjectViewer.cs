@@ -1,4 +1,7 @@
-﻿namespace ZeldaFullEditor
+﻿using ZeldaFullEditor.Handler;
+using ZeldaFullEditor.Modeling.Underworld;
+
+namespace ZeldaFullEditor
 {
 	public partial class ObjectViewer : UserControl
 	{

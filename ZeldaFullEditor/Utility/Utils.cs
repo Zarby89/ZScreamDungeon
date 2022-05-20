@@ -1,4 +1,6 @@
-﻿namespace ZeldaFullEditor
+﻿using ZeldaFullEditor.Handler;
+
+namespace ZeldaFullEditor
 {
 	public static class Utils
 	{

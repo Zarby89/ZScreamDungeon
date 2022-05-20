@@ -1,4 +1,6 @@
-﻿namespace ZeldaFullEditor
+﻿using ZeldaFullEditor.Modeling.Overworld;
+
+namespace ZeldaFullEditor
 {
 	public partial class ExitEditorForm : Form
 	{
