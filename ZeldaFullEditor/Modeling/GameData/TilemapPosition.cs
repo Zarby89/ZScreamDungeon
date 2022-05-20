@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor.Modeling.GameData
 {
 	public readonly struct UWTilemapPosition
 	{

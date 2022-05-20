@@ -7,12 +7,6 @@
 
 		private int[] map32address;
 
-		public List<Size> posSize;
-
-		public Tile[,] tempTiles8_LW = new Tile[512, 512]; //all maps tiles8
-		public Tile[,] tempTiles8_DW = new Tile[512, 512]; //all maps tiles8
-		public Tile[,] tempTiles8_SP = new Tile[512, 512]; //all maps tiles8
-
 		public List<Tile32> t32Unique = new();
 		public List<ushort> t32;
 
@@ -20,7 +14,6 @@
 
 		public byte[] allTilesTypes = new byte[0x200];
 
-		public bool showSprites = true;
 
 		// That must stay global - that's a problem
 		public ushort[,] allmapsTilesLW = new ushort[512, 512]; //64 maps * (32*32 tiles)
@@ -45,14 +38,9 @@
 
 		public byte GameState { get; set; } = 1;
 
-		public bool isLoaded = false;
-
 		public Gravestone[] graves = new Gravestone[Constants.NumberOfOverworldGraves];
 
 		public int tiles32count = 0;
-
-		private readonly List<Tile16> t16Unique = new();
-		private readonly List<ushort> t16 = new();
 
 		public ZScreamer ZS { get; }
 
@@ -60,8 +48,6 @@
 		{
 			ZS = zs;
 			Tile32List = new List<Tile32>();
-
-			posSize = new List<Size>();
 
 			t32 = new List<ushort>();
 
@@ -79,26 +65,23 @@
 			LoadGravestoneData();
 
 			// initialize as objects first to avoid null pointers
-			for (var i = 0; i < Constants.NumberOfOWMaps; i++)
+			for (byte i = 0; i < Constants.NumberOfOWMaps; i++)
 			{
-				allmaps[i] = new OverworldScreen((byte) i);
+				allmaps[i] = new OverworldScreen(i);
 			}
 
 			foreach (var map in allmaps)
 			{
 				map.MessageID = ZS.ROM.Read16(ZS.Offsets.overworldMessages + map.MapID * 2);
 
-				if (map.MapID != 0x80)
+				if (map.MapID < 0x80)
 				{
-					if (map.MapID <= 128)
-					{
-						map.IsPartOfLargeMap = ZS.ROM[ZS.Offsets.overworldMapSize + map.VirtualMapID] != 0;
-					}
-					else
-					{
-						map.IsPartOfLargeMap = map.MapID == 129 || map.MapID == 130 || map.MapID == 137 || map.MapID == 138;
-					}
+					map.IsPartOfLargeMap = ZS.ROM[ZS.Offsets.overworldMapSize + map.VirtualMapID] != 0;
 				}
+				else if (map.MapID > 0x80)
+				{
+					map.IsPartOfLargeMap = map.MapID == 129 || map.MapID == 130 || map.MapID == 137 || map.MapID == 138;
+				} // nothing for exactly 128
 
 				if (map.IsPartOfLargeMap && map.IsOwnParent) // this should properly hit the top left corner first always
 				{
@@ -194,8 +177,6 @@
 					allmaps[i].HardRefresh();
 				}
 			}).Start();
-
-			isLoaded = true;
 		}
 
 		public void loadTilesTypes()

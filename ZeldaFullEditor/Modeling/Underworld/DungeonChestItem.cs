@@ -1,7 +1,4 @@
-﻿using ZeldaFullEditor.View.Drawing;
-using ZeldaFullEditor.View.Drawing.Artists;
-
-namespace ZeldaFullEditor.Modeling.Underworld
+﻿namespace ZeldaFullEditor.Modeling.Underworld
 {
 	public class DungeonChestItem : IDelegatedDraw, ITypeID, IDrawableSprite
 	{

@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.Modeling.Underworld;
-
-namespace ZeldaFullEditor.Modeling.GameData.GraphicsData
+﻿namespace ZeldaFullEditor.Modeling.GameData.GraphicsData
 {
 	[Serializable]
 	public class DoorTilesList

@@ -1,9 +1,4 @@
-﻿using ZeldaFullEditor.Data.Defaults;
-using ZeldaFullEditor.Modeling.GameData.GraphicsData;
-using ZeldaFullEditor.Modeling.Underworld;
-using ZeldaFullEditor.View.Drawing.Artists;
-
-namespace ZeldaFullEditor.Modeling.GameData
+﻿namespace ZeldaFullEditor.Modeling.GameData
 {
 	public class ItemReceipt : IEntityType<ItemReceipt>
 	{

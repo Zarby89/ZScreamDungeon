@@ -1,8 +1,4 @@
-﻿using ZeldaFullEditor.Modeling.GameData.GraphicsData;
-using ZeldaFullEditor.Modeling.Overworld;
-using ZeldaFullEditor.Modeling.Underworld;
-
-namespace ZeldaFullEditor.View.Drawing.Artists
+﻿namespace ZeldaFullEditor.View.Drawing.Artists
 {
 	public class ScreenArtist : Artist
 	{
@@ -32,7 +28,7 @@ namespace ZeldaFullEditor.View.Drawing.Artists
 		public override Tile GetLayer1TileAt(int x, int y) => GetDrawnTileAt(x, y, Layer1TileMap);
 		public override Tile GetLayer2TileAt(int x, int y) => GetDrawnTileAt(x, y, Layer2TileMap);
 
-		private Tile GetDrawnTileAt(int x, int y, ushort[] list)
+		private static Tile GetDrawnTileAt(int x, int y, ushort[] list)
 		{
 			var t16index = list[x / 2 + y / 2 * 32];
 

@@ -1,7 +1,4 @@
-﻿using ZeldaFullEditor.View.Drawing;
-using ZeldaFullEditor.View.UserInterface;
-
-namespace ZeldaFullEditor.Modeling.Underworld
+﻿namespace ZeldaFullEditor.Modeling.Underworld
 {
 	[Serializable]
 	public class DungeonSecret : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, IDrawableSprite, ITypeID, IHaveInfo

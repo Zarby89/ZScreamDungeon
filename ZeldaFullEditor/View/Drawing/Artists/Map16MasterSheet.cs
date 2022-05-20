@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.View.Drawing.Artists
 {
-	public unsafe class Tile16MasterSheet : IByteable, IPowerfulGraphicsSheet
+	public unsafe class Tile16MasterSheet : IByteable
 	{
 		private const int TileSpan = 16;
 		private const int TilesPerRow = 8;
@@ -78,19 +78,20 @@
 
 		public void DrawTile16ToCanvas(IGraphicsCanvas canvas, int x, int y, Tile16 t16)
 		{
-			Graphics[t16.Tile0.ID].DrawToCanvas(canvas, x, y, t16.Tile0);
-			Graphics[t16.Tile1.ID].DrawToCanvas(canvas, x + 8, y, t16.Tile1);
-			Graphics[t16.Tile2.ID].DrawToCanvas(canvas, x, y + 8, t16.Tile2);
-			Graphics[t16.Tile3.ID].DrawToCanvas(canvas, x + 8, y + 8, t16.Tile3);
+			var (tnw, pnw) = Graphics.GetBackgroundTileWithPalette(t16.Tile0);
+			var (tne, pne) = Graphics.GetBackgroundTileWithPalette(t16.Tile1);
+			var (tsw, psw) = Graphics.GetBackgroundTileWithPalette(t16.Tile2);
+			var (tse, pse) = Graphics.GetBackgroundTileWithPalette(t16.Tile3);
+
+			tnw.DrawToCanvas(canvas, x, y, (byte) pnw, t16.Tile0.HFlip, t16.Tile0.VFlip);
+			tne.DrawToCanvas(canvas, x + 8, y, (byte) pne, t16.Tile1.HFlip, t16.Tile1.VFlip);
+			tsw.DrawToCanvas(canvas, x, y + 8, (byte) psw, t16.Tile2.HFlip, t16.Tile2.VFlip);
+			tse.DrawToCanvas(canvas, x + 8, y + 8, (byte) pse, t16.Tile3.HFlip, t16.Tile3.VFlip);
 		}
 
 		public void DrawTile16ToCanvas(IGraphicsCanvas canvas, int x, int y, ushort t16)
 		{
-			var t16x = ListOf[t16];
-			Graphics[t16x.Tile0.ID].DrawToCanvas(canvas, x, y, t16x.Tile0);
-			Graphics[t16x.Tile1.ID].DrawToCanvas(canvas, x + 8, y, t16x.Tile1);
-			Graphics[t16x.Tile2.ID].DrawToCanvas(canvas, x, y + 8, t16x.Tile2);
-			Graphics[t16x.Tile3.ID].DrawToCanvas(canvas, x + 8, y + 8, t16x.Tile3);
+			DrawTile16ToCanvas(canvas, x, y, ListOf[t16]);
 		}
 
 		public byte[] GetByteData()

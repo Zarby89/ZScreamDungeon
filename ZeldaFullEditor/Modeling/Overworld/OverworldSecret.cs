@@ -1,7 +1,4 @@
-﻿using ZeldaFullEditor.View.Drawing;
-using ZeldaFullEditor.View.UserInterface;
-
-namespace ZeldaFullEditor.Modeling.Overworld
+﻿namespace ZeldaFullEditor.Modeling.Overworld
 {
 	public class OverworldSecret : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IEquatable<OverworldSecret>, IHaveInfo
 	{

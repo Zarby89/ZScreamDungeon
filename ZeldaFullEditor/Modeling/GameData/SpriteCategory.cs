@@ -1,5 +1,8 @@
 ﻿namespace ZeldaFullEditor.Modeling.GameData
 {
+	/// <summary>
+	/// Specifies a category of broad usability under which sprites may fall.
+	/// </summary>
 	public enum SpriteCategory
 	{
 		/// <summary>
@@ -33,7 +36,7 @@
 		Boss,
 
 		/// <summary>
-		/// Sprites that are common for puzzles
+		/// Sprites that are commonly used as elements for puzzles
 		/// </summary>
 		Puzzle,
 
@@ -43,7 +46,7 @@
 		EnemyFactory,
 
 		/// <summary>
-		/// Sprites that are dependent on the existent of another sprite or overlord to behave properly
+		/// Sprites that are dependent on the existence of another sprite or overlord to behave properly
 		/// </summary>
 		EntityDependent,
 
@@ -53,7 +56,7 @@
 		LocationDependent,
 
 		/// <summary>
-		/// Sprites that are 
+		/// Sprites that are abstractly eaten by Link
 		/// </summary>
 		Collectible,
 
@@ -68,7 +71,7 @@
 		UnderworldOnly,
 
 		/// <summary>
-		/// Sprites that are expected to obey a specific quote or exist in specific slots
+		/// Sprites that are expected to obey a specific quota or exist in specific slots
 		/// </summary>
 		PlacementLimited,
 

@@ -29,6 +29,7 @@ global using ZeldaFullEditor.Modeling.GameData.GraphicsData;
 global using ZeldaFullEditor.Modeling.Overworld;
 global using ZeldaFullEditor.Modeling.Underworld;
 global using ZeldaFullEditor.Properties;
+global using ZeldaFullEditor.Utility;
 global using ZeldaFullEditor.View.Drawing;
 global using ZeldaFullEditor.View.Drawing.Artists;
 global using ZeldaFullEditor.View.Drawing.SNESGraphics;

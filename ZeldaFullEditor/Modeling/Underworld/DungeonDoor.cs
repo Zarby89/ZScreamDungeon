@@ -1,7 +1,4 @@
-﻿using ZeldaFullEditor.View.Drawing;
-using ZeldaFullEditor.View.UserInterface;
-
-namespace ZeldaFullEditor.Modeling.Underworld
+﻿namespace ZeldaFullEditor.Modeling.Underworld
 {
 	[Serializable]
 	public class DungeonDoor : IDungeonPlaceable, IByteable, IDelegatedDraw, IHaveInfo

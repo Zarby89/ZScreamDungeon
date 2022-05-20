@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor.Utility
 {
 	public static partial class Constants
 	{

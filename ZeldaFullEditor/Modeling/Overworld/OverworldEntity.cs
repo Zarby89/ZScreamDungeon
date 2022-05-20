@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.View.UserInterface;
-
-namespace ZeldaFullEditor.Modeling.Overworld
+﻿namespace ZeldaFullEditor.Modeling.Overworld
 {
 	public abstract class OverworldEntity : IMouseCollidable, IFreelyPlaceable, IHaveInfo
 	{

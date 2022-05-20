@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.Modeling.Overworld;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor.View.UserInterface.Scene
 {
 	public partial class SceneOW
 	{

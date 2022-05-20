@@ -1,5 +1,4 @@
-﻿using ZeldaFullEditor.Modeling.GameData;
-using static ZeldaFullEditor.Modeling.Underworld.DoorDirection;
+﻿using static ZeldaFullEditor.Modeling.Underworld.DoorDirection;
 
 namespace ZeldaFullEditor.Modeling.Underworld
 {

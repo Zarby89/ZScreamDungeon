@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor.View.UserInterface.Scene
 {
 	public partial class SceneOW
 	{
@@ -7,7 +7,7 @@
 			if (e.Button == MouseButtons.Left)
 			{
 				int mapy = LastSelectedExit.MapID / 8;
-				int mapx = LastSelectedExit.MapID - (mapy * 8);
+				int mapx = LastSelectedExit.MapID & 0x7;
 				int mouse_tile_x_down = ((e.X / 16)) - (mapx * 32);
 				int mouse_tile_y_down = ((e.Y / 16)) - (mapy * 32);
 

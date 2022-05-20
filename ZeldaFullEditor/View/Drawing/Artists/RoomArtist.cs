@@ -1,7 +1,4 @@
-﻿using ZeldaFullEditor.Modeling.GameData;
-using ZeldaFullEditor.Modeling.Underworld;
-
-namespace ZeldaFullEditor.View.Drawing.Artists
+﻿namespace ZeldaFullEditor.View.Drawing.Artists
 {
 	public class RoomArtist : Artist
 	{

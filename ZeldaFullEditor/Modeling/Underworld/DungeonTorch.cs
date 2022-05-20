@@ -1,7 +1,4 @@
-﻿using ZeldaFullEditor.View.Drawing.Artists;
-using ZeldaFullEditor.View.UserInterface;
-
-namespace ZeldaFullEditor.Modeling.Underworld
+﻿namespace ZeldaFullEditor.Modeling.Underworld
 {
 	public class DungeonTorch : IDungeonPlaceable, IFreelyPlaceable, IMouseCollidable, IMultilayered, IByteable, IHaveInfo
 	{

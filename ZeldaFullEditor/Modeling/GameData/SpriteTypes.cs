@@ -1,6 +1,6 @@
 ﻿using static ZeldaFullEditor.Modeling.GameData.SpriteCategory;
 
-namespace ZeldaFullEditor.Data
+namespace ZeldaFullEditor.Modeling.GameData
 {
 	public partial class SpriteType : IEntityType<SpriteType>
 	{
@@ -11,7 +11,6 @@ namespace ZeldaFullEditor.Data
 		public DrawSprite Draw { get; }
 		public ImmutableArray<SpriteCategory> Categories { get; }
 		public RequiredGraphicsSheets RequiredSheets { get; }
-
 
 		protected SpriteType(byte id, DrawSprite d, SpriteCategory[] categories, RequiredGraphicsSheets gsets, bool overlord = false)
 		{

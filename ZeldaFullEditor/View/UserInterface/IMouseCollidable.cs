@@ -8,8 +8,18 @@
 		public int RealX { get; }
 		public int RealY { get; }
 
+		/// <summary>
+		/// Gets a dynamically created <see cref="Rectangle"/> structure that forms a naively simple hitbox of this entity.
+		/// </summary>
+		/// <returns>
+		/// Returns the smallest <see cref="Rectangle"/> that perfectly captures this entity.
+		/// </returns>
 		public Rectangle BoundingBox { get; }
 
+		/// <summary>
+		/// Checks the dynamically calculated hitbox specific to this entity in its current state for the specified coordinates.
+		/// </summary>
+		/// <returns><see langword="true"/> if the point falls within the entity's hitbox.</returns>
 		public bool PointIsInHitbox(int x, int y);
 	}
 

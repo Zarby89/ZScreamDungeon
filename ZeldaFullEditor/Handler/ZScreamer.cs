@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor.Handler
 {
 	/// <summary>
 	/// Handles everything ever
@@ -120,41 +120,5 @@
 			ZGUI.TextEditor.SelectMessageID(id);
 			ZGUI.TextEditor.Refresh();
 		}
-	}
-
-	public enum TabSelection
-	{
-		DungeonEditor = 0,
-		OverworldEditor = 1,
-		TextEditor = 3,
-	}
-
-	public enum DungeonEditMode
-	{
-		Layer1 = 0,
-		Layer2 = 1,
-		Layer3 = 2,
-		LayerAll = 3,
-		Doors,
-		Sprites,
-		Secrets,
-		Blocks,
-		Torches,
-		Entrances,
-		CollisionMap,
-	}
-
-	public enum OverworldEditMode
-	{
-		Tile16,
-		Tile16Fill,
-		Overlay,
-		Sprites,
-		Secrets,
-		Entrances,
-		Exits,
-		Transports,
-		Gravestones,
-		Doors,
 	}
 }

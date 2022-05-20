@@ -1,6 +1,6 @@
-﻿using static ZeldaFullEditor.SNESFunctions;
+﻿using static ZeldaFullEditor.Utility.SNESFunctions;
 
-namespace ZeldaFullEditor
+namespace ZeldaFullEditor.Modeling.GameData
 {
 	/// <summary>
 	/// Represents a location in code or data that contains a precalculated conversion from lorom SNES addressing to file offset.

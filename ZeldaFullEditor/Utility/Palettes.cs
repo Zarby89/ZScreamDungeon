@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor.Utility
 {
 	public static class Palettes
 	{
@@ -12,6 +12,12 @@
 			return (ushort) (((c.B & 0xF8) << 7) | ((c.G & 0xF8) << 2) | (c.R >> 3));
 		}
 
+		/// <summary>
+		/// Returns a new copy of this color with the alpha channel forced to 255.
+		/// </summary>
+		/// <returns>
+		/// I don't know if this is even necessary, but I don't feel like debugging Zarby's palette code yet.
+		/// </returns>
 		public static Color NewCopy(this Color col)
 		{
 			return Color.FromArgb(255, col);

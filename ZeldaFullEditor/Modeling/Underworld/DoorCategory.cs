@@ -1,5 +1,8 @@
 ﻿namespace ZeldaFullEditor.Modeling.Underworld
 {
+	/// <summary>
+	/// Specifies the unique classification of behavior a <see cref="DungeonDoorType"/> falls under
+	/// </summary>
 	public enum DoorCategory
 	{
 		/// <summary>

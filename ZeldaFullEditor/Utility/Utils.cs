@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.Handler;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor.Utility
 {
 	public static class Utils
 	{

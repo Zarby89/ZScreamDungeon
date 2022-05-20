@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.Gui.ExtraForms;
-
-namespace ZeldaFullEditor.Gui
+﻿namespace ZeldaFullEditor.Gui
 {
 	public partial class OverworldEditor : UserControl
 	{

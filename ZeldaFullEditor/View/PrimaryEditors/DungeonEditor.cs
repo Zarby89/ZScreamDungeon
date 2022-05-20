@@ -46,7 +46,7 @@
 
 			DoorTypeComboBox.DataSource = DungeonDoorType.ListOf;
 			tileTypeCombobox.DataSource = DefaultEntities.ListOfTileTypes;
-			EntranceProperties_FloorSel.DataSource = FloorNumber.floors;
+			EntranceProperties_FloorSel.DataSource = FloorNumber.ListOf;
 			selecteditemobjectCombobox.DataSource = DefaultEntities.ListOfSecrets;
 		}
 
@@ -389,7 +389,7 @@
 			EntranceProperties_CameraTriggerY.HexValue = en.CameraTriggerY;
 
 
-			EntranceProperties_FloorSel.SelectedIndex = FloorNumber.FindFloorIndex(en.Floor);
+			EntranceProperties_FloorSel.SelectedItem = FloorNumber.FindFloor(en.Floor);
 
 			EntranceProperties_Entrance.HexValue = en.OverworldEntranceLocation;
 

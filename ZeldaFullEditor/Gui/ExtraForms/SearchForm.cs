@@ -1,7 +1,4 @@
-﻿using ZeldaFullEditor.Data.Defaults;
-using ZeldaFullEditor.Modeling;
-
-namespace ZeldaFullEditor.Gui
+﻿namespace ZeldaFullEditor.Gui
 {
 	public partial class SearchForm : Form
 	{

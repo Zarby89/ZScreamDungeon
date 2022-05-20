@@ -65,9 +65,7 @@
     <Compile Update="Gui\MainTabs\TextEditorMessages.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="View\UserInterface\Scene\UWCollisionMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="View\UserInterface\Scene\UWCollisionMode.cs" />
     <Compile Update="Gui\ExtraForms\Chestviewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -122,60 +120,28 @@
     <Compile Update="Gui\WindowPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="View\UserInterface\Scene\OWDoorMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\UserInterface\Scene\OWEntranceMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\UserInterface\Scene\OWExitMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\UserInterface\Scene\OWSecretsMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\UserInterface\Scene\UWLayerMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\UserInterface\Scene\OWSpriteMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\UserInterface\Scene\OWOverlayMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\UserInterface\Scene\OWTileMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\UserInterface\Scene\OWGravesMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\UserInterface\Scene\OWTransportMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="View\UserInterface\Scene\OWDoorMode.cs" />
+    <Compile Update="View\UserInterface\Scene\OWEntranceMode.cs" />
+    <Compile Update="View\UserInterface\Scene\OWExitMode.cs" />
+    <Compile Update="View\UserInterface\Scene\OWSecretsMode.cs" />
+    <Compile Update="View\UserInterface\Scene\UWLayerMode.cs" />
+    <Compile Update="View\UserInterface\Scene\OWSpriteMode.cs" />
+    <Compile Update="View\UserInterface\Scene\OWOverlayMode.cs" />
+    <Compile Update="View\UserInterface\Scene\OWTileMode.cs" />
+    <Compile Update="View\UserInterface\Scene\OWGravesMode.cs" />
+    <Compile Update="View\UserInterface\Scene\OWTransportMode.cs" />
     <Compile Update="Gui\ObjectViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="View\UserInterface\Scene\SceneOW.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\UserInterface\Scene\UWBlockMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="View\UserInterface\Scene\SceneOW.cs" />
+    <Compile Update="View\UserInterface\Scene\UWBlockMode.cs" />
     <Compile Update="View\UserInterface\Scene\UWDoorMode.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="View\UserInterface\Scene\UWEntranceMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\UserInterface\Scene\UWSecretsMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\UserInterface\Scene\UWSpriteMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Update="View\UserInterface\Scene\UWTorchMode.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Update="View\UserInterface\Scene\UWEntranceMode.cs" />
+    <Compile Update="View\UserInterface\Scene\UWSecretsMode.cs" />
+    <Compile Update="View\UserInterface\Scene\UWSpriteMode.cs" />
+    <Compile Update="View\UserInterface\Scene\UWTorchMode.cs" />
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>
@@ -216,10 +182,5 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Gui\Drawing\" />
-    <Folder Include="Gui\Scene\SceneModes\ClipboardData\" />
-    <Folder Include="Utility\DataObjects\" />
   </ItemGroup>
 </Project>

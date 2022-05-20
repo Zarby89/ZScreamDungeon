@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.Modeling.GameData.GraphicsData;
-
-namespace ZeldaFullEditor.Handler
+﻿namespace ZeldaFullEditor.Handler
 {
 	public class RoomObjectTileLister
 	{

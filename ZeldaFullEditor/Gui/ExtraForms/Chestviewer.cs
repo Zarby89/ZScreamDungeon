@@ -5,7 +5,7 @@
 		ColorPalette palettes = null;
 		public bool showName = false;
 
-		public int selectedIndex = 0; // Setted on 0 by default
+		public int selectedIndex { get; set; } = 0;
 		public event EventHandler SelectedIndexChanged;
 
 		public object selectedObject = null;

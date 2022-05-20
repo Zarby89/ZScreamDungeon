@@ -2,21 +2,21 @@
 {
 	public class PaletteHandler
 	{
-		public Color[][] HUD = new Color[2][]; // 32 (0,0)
-		public Color[][] OverworldMain = new Color[6][]; // 35 colors each, 7x5 (0,2 on grid)
-		public Color[][] OverworldAux = new Color[20][]; // 21 colors each, 7x3 (8,2 and 8,5 on grid)
-		public Color[][] OverworldAnimated = new Color[14][]; // 7 colors each 7x1 (0,7 on grid)
-		public Color[] OverworldGrass = new Color[3]; // 3 hardcoded grass colors
-		public Color[][] PlayerMail = new Color[5][]; // 15
-		public Color[][] PlayerSword = new Color[4][]; // 3
-		public Color[][] PlayerShield = new Color[3][]; // 4
-		public Color[][] SpriteGlobal = new Color[2][]; // 60 (1,9) 
-		public Color[][] SpriteAux1 = new Color[12][]; // 7
-		public Color[][] SpriteAux2 = new Color[11][]; // 7
-		public Color[][] SpriteAux3 = new Color[24][]; // 7
-		public Color[][] UnderworldMain = new Color[20][]; // 15*6
-		public Color[][] Polyhedral = new Color[2][]; // 15*6
-		public Color[] OverworldBackground = new Color[Constants.NumberOfOWMaps]; // 8*20
+		public Color[][] HUD { get; set; } = new Color[2][]; // 32 (0,0)
+		public Color[][] OverworldMain { get; set; } = new Color[6][]; // 35 colors each, 7x5 (0,2 on grid)
+		public Color[][] OverworldAux { get; set; } = new Color[20][]; // 21 colors each, 7x3 (8,2 and 8,5 on grid)
+		public Color[][] OverworldAnimated { get; set; } = new Color[14][]; // 7 colors each 7x1 (0,7 on grid)
+		public Color[] OverworldGrass { get; set; } = new Color[3]; // 3 hardcoded grass colors
+		public Color[][] PlayerMail { get; set; } = new Color[5][]; // 15
+		public Color[][] PlayerSword { get; set; } = new Color[4][]; // 3
+		public Color[][] PlayerShield { get; set; } = new Color[3][]; // 4
+		public Color[][] SpriteGlobal { get; set; } = new Color[2][]; // 60 (1,9) 
+		public Color[][] SpriteAux1 { get; set; } = new Color[12][]; // 7
+		public Color[][] SpriteAux2 { get; set; } = new Color[11][]; // 7
+		public Color[][] SpriteAux3 { get; set; } = new Color[24][]; // 7
+		public Color[][] UnderworldMain { get; set; } = new Color[20][]; // 15*6
+		public Color[][] Polyhedral { get; set; } = new Color[2][]; // 15*6
+		public Color[] OverworldBackground { get; set; } = new Color[Constants.NumberOfOWMaps]; // 8*20
 
 		private string asmString = "";
 

@@ -1,5 +1,4 @@
-﻿
-using static ZeldaFullEditor.Modeling.Underworld.DungeonObjectSizeability;
+﻿using static ZeldaFullEditor.Modeling.Underworld.DungeonObjectSizeability;
 using static ZeldaFullEditor.Modeling.Underworld.RoomObjectCategory;
 
 namespace ZeldaFullEditor.Data

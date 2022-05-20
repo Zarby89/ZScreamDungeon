@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.Handler;
-
-namespace ZeldaFullEditor.View.UserInterface.Scene
+﻿namespace ZeldaFullEditor.View.UserInterface.Scene
 {
 	public class Scene : PictureBox
 	{

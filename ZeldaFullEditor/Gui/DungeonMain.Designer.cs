@@ -575,7 +575,7 @@
 			this.allbgsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.allbgsButton.Name = "allbgsButton";
 			this.allbgsButton.Size = new System.Drawing.Size(23, 22);
-			this.allbgsButton.Tag = ZeldaFullEditor.DungeonEditMode.LayerAll;
+			this.allbgsButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.LayerAll;
 			this.allbgsButton.Text = "All Layers";
 			this.allbgsButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
@@ -589,7 +589,7 @@
 			this.bg1modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bg1modeButton.Name = "bg1modeButton";
 			this.bg1modeButton.Size = new System.Drawing.Size(23, 22);
-			this.bg1modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer1;
+			this.bg1modeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Layer1;
 			this.bg1modeButton.Text = "Layer 1";
 			this.bg1modeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
@@ -601,7 +601,7 @@
 			this.bg2modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bg2modeButton.Name = "bg2modeButton";
 			this.bg2modeButton.Size = new System.Drawing.Size(23, 22);
-			this.bg2modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer2;
+			this.bg2modeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Layer2;
 			this.bg2modeButton.Text = "Layer 2";
 			this.bg2modeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
@@ -613,7 +613,7 @@
 			this.bg3modeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.bg3modeButton.Name = "bg3modeButton";
 			this.bg3modeButton.Size = new System.Drawing.Size(23, 22);
-			this.bg3modeButton.Tag = ZeldaFullEditor.DungeonEditMode.Layer3;
+			this.bg3modeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Layer3;
 			this.bg3modeButton.Text = "Layer 3";
 			this.bg3modeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
@@ -625,7 +625,7 @@
 			this.spritemodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.spritemodeButton.Name = "spritemodeButton";
 			this.spritemodeButton.Size = new System.Drawing.Size(23, 22);
-			this.spritemodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Sprites;
+			this.spritemodeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Sprites;
 			this.spritemodeButton.Text = "Object Mode";
 			this.spritemodeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
@@ -637,7 +637,7 @@
 			this.blockmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.blockmodeButton.Name = "blockmodeButton";
 			this.blockmodeButton.Size = new System.Drawing.Size(23, 22);
-			this.blockmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Blocks;
+			this.blockmodeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Blocks;
 			this.blockmodeButton.Text = "Block Mode";
 			this.blockmodeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
@@ -649,7 +649,7 @@
 			this.torchmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.torchmodeButton.Name = "torchmodeButton";
 			this.torchmodeButton.Size = new System.Drawing.Size(23, 22);
-			this.torchmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Torches;
+			this.torchmodeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Torches;
 			this.torchmodeButton.Text = "Torch Mode";
 			this.torchmodeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
@@ -661,7 +661,7 @@
 			this.potmodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.potmodeButton.Name = "potmodeButton";
 			this.potmodeButton.Size = new System.Drawing.Size(23, 22);
-			this.potmodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Secrets;
+			this.potmodeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Secrets;
 			this.potmodeButton.Text = "Secrets Mode";
 			this.potmodeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
@@ -673,7 +673,7 @@
 			this.doormodeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
 			this.doormodeButton.Name = "doormodeButton";
 			this.doormodeButton.Size = new System.Drawing.Size(23, 22);
-			this.doormodeButton.Tag = ZeldaFullEditor.DungeonEditMode.Doors;
+			this.doormodeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.Doors;
 			this.doormodeButton.Text = "Door Mode";
 			this.doormodeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 
@@ -685,7 +685,7 @@
 			this.collisionModeButton.ImageTransparentColor = System.Drawing.Color.White;
 			this.collisionModeButton.Name = "collisionModeButton";
 			this.collisionModeButton.Size = new System.Drawing.Size(23, 22);
-			this.collisionModeButton.Tag = ZeldaFullEditor.DungeonEditMode.CollisionMap;
+			this.collisionModeButton.Tag = ZeldaFullEditor.Handler.DungeonEditMode.CollisionMap;
 			this.collisionModeButton.Text = "Collision Mode";
 			this.collisionModeButton.Click += new System.EventHandler(this.ModeButton_Click);
 			// 

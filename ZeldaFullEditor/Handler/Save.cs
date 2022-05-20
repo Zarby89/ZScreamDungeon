@@ -1,7 +1,4 @@
-﻿using ZeldaFullEditor.Handler;
-using ZeldaFullEditor.Modeling.Underworld;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor.Handler
 {
 	public partial class ZScreamer
 	{

@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.View.UserInterface;
-
-namespace ZeldaFullEditor.Modeling.Underworld
+﻿namespace ZeldaFullEditor.Modeling.Underworld
 {
 	/// <summary>
 	/// Represents any object which can be placed inside a dungeon.

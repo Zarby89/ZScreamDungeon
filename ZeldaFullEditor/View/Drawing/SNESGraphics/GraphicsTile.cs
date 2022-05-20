@@ -1,5 +1,10 @@
 ﻿namespace ZeldaFullEditor.View.Drawing.SNESGraphics
 {
+	/// <summary>
+	/// Represents the smallest possible graphical unit on the SNES: an 8-by-8 square pixel tile.
+	/// This class treats its indices as 256 bits per pixel, but any lower bit depth may be represented
+	/// by simply not using higher indices.
+	/// </summary>
 	public class GraphicsTile
 	{
 		private readonly byte[] _data;
@@ -30,11 +35,6 @@
 		public void DrawToCanvas(IGraphicsCanvas canvas, int x, int y, byte pal)
 		{
 			DrawToCanvas(canvas, x, y, pal, false, false);
-		}
-
-		public void DrawToCanvas(IGraphicsCanvas canvas, int x, int y, IPaletteFlip t)
-		{
-			DrawToCanvas(canvas, x, y, t.Palette, t.HFlip, t.VFlip);
 		}
 	}
 }

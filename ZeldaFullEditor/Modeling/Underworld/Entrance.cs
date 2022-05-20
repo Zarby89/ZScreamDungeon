@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.Data.Defaults;
-
-namespace ZeldaFullEditor.Modeling.Underworld
+﻿namespace ZeldaFullEditor.Modeling.Underworld
 {
 	public class Entrance
 	{

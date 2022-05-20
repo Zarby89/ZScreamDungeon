@@ -1,8 +1,10 @@
 ﻿namespace ZeldaFullEditor.View.Drawing
 {
+	/// <summary>
+	/// Encapsulates a bitmap and its related pointer for <see langword="unsafe"/> zarby drawing
+	/// </summary>
 	public unsafe class PointeredImage : IGraphicsCanvas
 	{
-
 		private readonly IntPtr ptr;
 		private byte* Pointer => (byte*) ptr.ToPointer();
 
@@ -16,6 +18,7 @@
 			get => Pointer[i];
 			set => Pointer[i] = value;
 		}
+
 		public byte this[int x, int y]
 		{
 			get => throw new NotImplementedException();

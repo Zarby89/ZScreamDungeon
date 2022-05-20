@@ -1,11 +1,7 @@
-﻿using ZeldaFullEditor.Modeling.GameData;
-
-namespace ZeldaFullEditor.View.Drawing.Artists
+﻿namespace ZeldaFullEditor.View.Drawing.Artists
 {
 	public abstract class Artist
 	{
-		private const int SheetHeight = 1024;
-
 		public abstract ushort[] Layer1TileMap { get; }
 		public abstract PointeredImage Layer1Canvas { get; }
 
@@ -16,14 +12,13 @@ namespace ZeldaFullEditor.View.Drawing.Artists
 
 		public abstract Bitmap FinalOutput { get; }
 
-
+		// TODO remove most HardRefresh calls in favor of this property which will be called upon draw
 		protected virtual bool HasUnacknowledgedChanges
 		{
 			get => BackgroundTileset != bgtilesflushed ||
 				SpriteTileset != sprtilesflushed ||
 				BackgroundPalette != bgpalflushed ||
 				SpritePalette != sprpalflushed;
-
 		}
 
 		private byte bgtilesflushed = 0xFF;
@@ -78,28 +73,31 @@ namespace ZeldaFullEditor.View.Drawing.Artists
 				for (var x = 0; x < 64; x++)
 				{
 					var t = GetLayer1TileAt(x, y);
-					LoadedGraphics[t.ID].DrawToCanvas(Layer1Canvas, x * 8, y * 8, t);
+					DrawTileToBuffer(t, x * 8, y * 8, Layer1Canvas);
 
 					t = GetLayer2TileAt(x, y);
-					LoadedGraphics[t.ID].DrawToCanvas(Layer2Canvas, x * 8, y * 8, t);
+					DrawTileToBuffer(t, x * 8, y * 8, Layer2Canvas);
 				}
 			}
 		}
 
 		public abstract void DrawSelfToImage(Graphics g);
 
-		public unsafe void DrawTileToBuffer(in Tile tile, int x, int y, IGraphicsCanvas canvas)
+		public void DrawTileToBuffer(in Tile tile, int x, int y, IGraphicsCanvas canvas)
 		{
-			var gfx = LoadedGraphics[tile.ID];
-			var palnibble = (byte) (tile.Palette << 4);
+			var (til, pal) = LoadedGraphics.GetBackgroundTileWithPalette(tile);
+			til.DrawToCanvas(canvas, x, y, (byte) pal, tile.HFlip, tile.VFlip);
 
-			for (var yl = 0; yl < 8; yl++)
-			{
-				for (var xl = 0; xl < 8; xl++)
-				{
-					canvas[x + xl, y + yl] = (byte) (gfx.GetPixelAt(x, y, tile.HFlip, tile.VFlip) | palnibble);
-				}
-			}
+
+			//var gfx = LoadedGraphics[tile.ID];
+			//var palnibble = (byte) (tile.Palette << 4);
+			//for (var yl = 0; yl < 8; yl++)
+			//{
+			//	for (var xl = 0; xl < 8; xl++)
+			//	{
+			//		canvas[x + xl, y + yl] = (byte) (gfx.GetPixelAt(x, y, tile.HFlip, tile.VFlip) | palnibble);
+			//	}
+			//}
 		}
 
 		public void ClearBgGfx()
@@ -122,16 +120,22 @@ namespace ZeldaFullEditor.View.Drawing.Artists
 				var x = spr.RealX + ti.XOff + xoff;
 				var y = spr.RealY + ti.YOff + yoff;
 
+				var (tnw, pnw) = graphics.GetSpriteTileWithPalette(ti);
+
 				if (ti.IsBig)
 				{
-					graphics[ti.TileIndex].DrawToCanvas(SpriteCanvas, ti.HFlip ? x : x + 8, ti.VFlip ? y : y + 8, ti);
-					graphics[ti.TileIndex + 1].DrawToCanvas(SpriteCanvas, ti.HFlip ? x + 8 : x, ti.VFlip ? y : y + 8, ti);
-					graphics[ti.TileIndex + 16].DrawToCanvas(SpriteCanvas, ti.HFlip ? x : x + 8, ti.VFlip ? y + 8 : y, ti);
-					graphics[ti.TileIndex + 17].DrawToCanvas(SpriteCanvas, ti.HFlip ? x + 8 : x, ti.VFlip ? y + 8 : y, ti);
+					var (tne, pne) = graphics.GetSpriteTileWithPalette((ushort) (ti.TileIndex + 1), ti.Palette);
+					var (tsw, psw) = graphics.GetSpriteTileWithPalette((ushort) (ti.TileIndex + 16), ti.Palette);
+					var (tse, pse) = graphics.GetSpriteTileWithPalette((ushort) (ti.TileIndex + 17), ti.Palette);
+
+					tnw.DrawToCanvas(SpriteCanvas, ti.HFlip ? x : x + 8, ti.VFlip ? y : y + 8, (byte) pnw, ti.HFlip, ti.VFlip);
+					tne.DrawToCanvas(SpriteCanvas, ti.HFlip ? x + 8 : x, ti.VFlip ? y : y + 8, (byte) pne, ti.HFlip, ti.VFlip);
+					tsw.DrawToCanvas(SpriteCanvas, ti.HFlip ? x : x + 8, ti.VFlip ? y + 8 : y, (byte) psw, ti.HFlip, ti.VFlip);
+					tse.DrawToCanvas(SpriteCanvas, ti.HFlip ? x + 8 : x, ti.VFlip ? y + 8 : y, (byte) pse, ti.HFlip, ti.VFlip);
 				}
 				else
 				{
-					graphics[ti.TileIndex].DrawToCanvas(SpriteCanvas, x, y, ti);
+					tnw.DrawToCanvas(SpriteCanvas, x, y, (byte) pnw, ti.HFlip, ti.VFlip);
 				}
 			}
 		}

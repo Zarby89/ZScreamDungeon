@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor.Data
+﻿namespace ZeldaFullEditor.Modeling.GameData
 {
 	public delegate void DrawSprite(Artist art, IDrawableSprite spr);
 

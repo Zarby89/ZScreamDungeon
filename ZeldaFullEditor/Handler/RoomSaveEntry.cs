@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.Modeling.Underworld;
-
-namespace ZeldaFullEditor.Handler
+﻿namespace ZeldaFullEditor.Handler
 {
 	/// <summary>
 	/// Creates a room's object save data with meta properties to help optimize saving.

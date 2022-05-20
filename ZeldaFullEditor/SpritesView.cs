@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.Modeling.Underworld;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public partial class SpritesView : UserControl
 	{

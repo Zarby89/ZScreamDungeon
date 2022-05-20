@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.View.Drawing.Artists;
-
-namespace ZeldaFullEditor.Modeling.Overworld
+﻿namespace ZeldaFullEditor.Modeling.Overworld
 {
 	public class OverworldScreen
 	{

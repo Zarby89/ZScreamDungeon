@@ -1,6 +1,6 @@
 ﻿using System.Text.RegularExpressions;
 
-namespace ZeldaFullEditor
+namespace ZeldaFullEditor.Utility
 {
 	/// <summary>
 	/// Class for consistency with text that is visible to the user.

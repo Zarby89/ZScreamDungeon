@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.Modeling.Overworld;
-
-namespace ZeldaFullEditor.Handler
+﻿namespace ZeldaFullEditor.Handler
 {
 	class TileUndo : ICloneable
 	{

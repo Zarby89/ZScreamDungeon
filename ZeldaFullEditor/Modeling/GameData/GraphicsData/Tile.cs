@@ -1,10 +1,12 @@
-﻿namespace ZeldaFullEditor.Modeling.GameData.GraphicsData
+﻿using static ZeldaFullEditor.View.Drawing.SNESGraphics.FlipBehavior;
+
+namespace ZeldaFullEditor.Modeling.GameData.GraphicsData
 {
 	/// <summary>
 	/// Represents a background tile as used by the SNES PPU.
 	/// </summary>
 	[Serializable]
-	public readonly struct Tile : IByteable, IPaletteFlip
+	public readonly struct Tile : IByteable
 	{
 		/// <summary>
 		/// 10-bit tile name
@@ -17,17 +19,23 @@
 		public bool Priority { get; }
 
 		/// <summary>
-		/// <see langword="true"/> if flipped horizontally across the Y axis
+		/// <see langword="true"/> if flipped horizontally across the Y-axis
 		/// </summary>
 		public bool HFlip { get; }
 
 		/// <summary>
-		/// <see langword="true"/> if flipped vertically across the X axis
+		/// <see langword="true"/> if flipped vertically across the X-axis
 		/// </summary>
 		public bool VFlip { get; }
 
+		/// <summary>
+		/// 3-bit palette index
+		/// </summary>
 		public byte Palette { get; }
 
+		/// <summary>
+		/// Represents an empty tile.
+		/// </summary>
 		public static readonly Tile Empty = new(0);
 
 		public Tile(ushort id, byte palette, bool priority, bool hflip, bool vflip)
@@ -50,7 +58,7 @@
 
 			Priority = v.BitIsOn(Constants.TilePriorityBit);
 
-			Palette = (byte) (v >> 10 & 0x07);
+			Palette = (byte) ((v >> 10) & 0x07);
 		}
 
 		public byte[] GetByteData()
@@ -59,17 +67,15 @@
 			return new byte[] { (byte) s, (byte) (s >> 8) };
 		}
 
-		public ushort GetModifiedUnsignedShort(
-			FlipBehavior hflip = FlipBehavior.LeaveAlone,
-			FlipBehavior vflip = FlipBehavior.LeaveAlone)
+		public ushort GetModifiedUnsignedShort(FlipBehavior hflip = LeaveAlone, FlipBehavior vflip = LeaveAlone)
 		{
-			var value = (ushort) (Palette << 10 & 0x1C00 | ID & Constants.TileNameMask);
+			int value = (ID & Constants.TileNameMask) | ((Palette << 10) & 0x1C00);
 
 			var fliph = hflip switch
 			{
-				FlipBehavior.ForcedToFalse => false,
-				FlipBehavior.ForcedToTrue => true,
-				FlipBehavior.InvertFlip => !HFlip,
+				ForcedToFalse => false,
+				ForcedToTrue => true,
+				InvertFlip => !HFlip,
 				_ => HFlip
 			};
 
@@ -80,9 +86,9 @@
 
 			var flipv = vflip switch
 			{
-				FlipBehavior.ForcedToFalse => false,
-				FlipBehavior.ForcedToTrue => true,
-				FlipBehavior.InvertFlip => !VFlip,
+				ForcedToFalse => false,
+				ForcedToTrue => true,
+				InvertFlip => !VFlip,
 				_ => VFlip
 			};
 
@@ -96,30 +102,28 @@
 				value |= Constants.TilePriorityBit;
 			}
 
-			return value;
+			return (ushort) value;
 		}
 
 		/// <summary>
 		/// Returns a copy of this tile with the specified properties changed.
 		/// Properties set to <see langword="null"/> are left alone.
 		/// </summary>
-		public Tile CloneModified(FlipBehavior hflip = FlipBehavior.LeaveAlone,
-			FlipBehavior vflip = FlipBehavior.LeaveAlone)
+		public Tile CloneModified(FlipBehavior hflip = LeaveAlone, FlipBehavior vflip = LeaveAlone)
 		{
-
 			var fliph = hflip switch
 			{
-				FlipBehavior.ForcedToFalse => false,
-				FlipBehavior.ForcedToTrue => true,
-				FlipBehavior.InvertFlip => !HFlip,
+				ForcedToFalse => false,
+				ForcedToTrue => true,
+				InvertFlip => !HFlip,
 				_ => HFlip
 			};
 
 			var flipv = vflip switch
 			{
-				FlipBehavior.ForcedToFalse => false,
-				FlipBehavior.ForcedToTrue => true,
-				FlipBehavior.InvertFlip => !VFlip,
+				ForcedToFalse => false,
+				ForcedToTrue => true,
+				InvertFlip => !VFlip,
 				_ => VFlip
 			};
 
@@ -128,14 +132,24 @@
 
 		public ushort ToUnsignedShort()
 		{
-			ushort value = 0;
-			// vhopppcc cccccccc
-			if (Priority) { value |= Constants.TilePriorityBit; };
-			if (HFlip) { value |= Constants.TileHFlipBit; };
-			if (VFlip) { value |= Constants.TileVFlipBit; };
-			value |= (ushort) (Palette << 10 & 0x1C00);
-			value |= (ushort) (ID & Constants.TileNameMask);
-			return value;
+			int value = (ID & Constants.TileNameMask) | ((Palette << 10) & 0x1C00);
+
+			if (Priority)
+			{
+				value |= Constants.TilePriorityBit;
+			}
+
+			if (HFlip)
+			{
+				value |= Constants.TileHFlipBit;
+			}
+
+			if (VFlip)
+			{
+				value |= Constants.TileVFlipBit;
+			}
+
+			return (ushort) value;
 		}
 	}
 }

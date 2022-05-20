@@ -1,6 +1,4 @@
-﻿using ZeldaFullEditor.Modeling.Underworld;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor.View.UserInterface.Scene
 {
 	public partial class SceneUW
 	{
