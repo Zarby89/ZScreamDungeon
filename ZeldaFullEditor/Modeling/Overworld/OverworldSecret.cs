@@ -4,7 +4,7 @@
 	{
 		public byte ID => SecretType?.ID ?? 0;
 		public SecretItemType SecretType { get; set; }
-		public override string Name => SecretType?.VanillaName ?? "Secret";
+		public override string Name => SecretType?.Name ?? "Secret";
 
 		public OverworldSecret(SecretItemType s)
 		{

@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.Modeling.Underworld
 {
-	public class DungeonChestItem : IDelegatedDraw, ITypeID, IDrawableSprite
+	public class ChestItem : IDelegatedDraw, ITypeID, IDrawableSprite
 	{
 		public ItemReceipt ReceiptType { get; set; }
 
@@ -14,7 +14,7 @@
 
 		public RoomObject AssociatedChest { get; set; }
 
-		public DungeonChestItem(ItemReceipt s)
+		public ChestItem(ItemReceipt s)
 		{
 			ReceiptType = s;
 		}

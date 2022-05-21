@@ -1,7 +1,7 @@
 ﻿namespace ZeldaFullEditor.View.Drawing.SNESGraphics
 {
 	/// <summary>
-	/// Specifies the pixel format for graphics data
+	/// Specifies the pixel format for graphics data.
 	/// </summary>
 	public enum SNESPixelFormat
 	{

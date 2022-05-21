@@ -5,18 +5,18 @@
 		public delegate void DrawSecret(Artist art, IDrawableSprite s);
 
 		public byte ID { get; }
-		public string VanillaName { get; }
+		public string Name { get; init; }
 
 		public DrawSecret Draw { get; }
 
 		private SecretItemType(byte id, DrawSecret d)
 		{
 			ID = id;
-			VanillaName = DefaultEntities.ListOfSecrets.GetNameFromVanillaList(id);
+			Name = DefaultEntities.ListOfSecrets.GetNameFromEntityList(id);
 			Draw = d;
 		}
 
-
+		public override string ToString() => Name;
 
 		public static readonly SecretItemType Secret00 = new(0x00, SecretDraw_Nothing);
 		public static readonly SecretItemType Secret01 = new(0x01, SecretDraw_GreenRupee);

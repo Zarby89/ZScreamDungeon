@@ -1,5 +1,13 @@
 ﻿namespace ZeldaFullEditor.Handler
 {
+	/// <summary>
+	/// <para>
+	/// Contains and provides functionality for distributing room object tile tables.
+	/// </para>
+	/// <para>
+	/// This class should be instantiated once per <see cref="ZScreamer"/>, after its ROM is loaded.
+	/// </para>
+	/// </summary>
 	public class RoomObjectTileLister
 	{
 		private readonly TilesList[] _list;
@@ -37,6 +45,11 @@
 			return _doors[id];
 		}
 
+		/// <summary>
+		/// Parses the ROM file for the given <see cref="ZScreamer"/>,
+		/// using the respective offsets found in that Screamer.
+		/// </summary>
+		/// <returns>A new <see cref="RoomObjectTileLister"/> containing data for all existing room objects.</returns>
 		public static RoomObjectTileLister CreateTileListingsFromROM(ZScreamer ZS)
 		{
 			var list = new TilesList[0x300];

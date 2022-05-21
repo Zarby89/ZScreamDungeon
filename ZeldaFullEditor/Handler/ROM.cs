@@ -1,18 +1,31 @@
 ﻿namespace ZeldaFullEditor.Handler
 {
+	/// <summary>
+	/// Provides a container and methods for manipulating a SNES ROM binary.
+	/// </summary>
 	public class ROMFile
 	{
 		private byte[] DATA;
 
-		public byte[] DataStream => DATA;
+		public byte[] DataStream
+		{
+			get => DATA;
+			init => DATA = value.DeepCopy();
+		}
 
 		public int Length => DATA.Length;
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ROMFile"/> with an empty 2Mb data stream.
+		/// </summary>
 		public ROMFile()
 		{
 			DATA = new byte[Constants.ROMSize];
 		}
 
+		/// <summary>
+		/// Creates a new ROM with the lorom mapping from the binary data found at <paramref name="path"/>.
+		/// </summary>
 		public ROMFile(string path)
 		{
 			var fs = new FileStream(path, FileMode.Open, FileAccess.Read);
@@ -65,90 +78,129 @@
 			AsarCLR.Asar.close();
 		}
 
-		public void Write(int addr, params byte[] bytes)
+		/// <summary>
+		/// Writes an arbitrary number of <see langword="bytes"/> to ROM,
+		/// consecutively starting at the given <paramref name="address"/>
+		/// </summary>.
+		/// <param name="address">Start address</param>
+		public void Write(int address, params byte[] bytes)
 		{
 			foreach (var b in bytes)
 			{
-				DATA[addr++] = b;
+				DATA[address++] = b;
 			}
 		}
 
 		/// <summary>
-		/// Writes an arbitrary number of bytes to ROM,
-		/// while incrementing the address passed to it for continuous writes.
-		/// </summary>
-		public void WriteContinuous(ref int addr, params byte[] bytes)
+		/// <para>
+		/// Writes an arbitrary number of <see langword="bytes"/> to ROM,
+		/// consecutively starting at the given <paramref name="address"/>.
+		/// </para>
+		/// <para>
+		/// Passing <paramref name="address"/> with the <see langword="ref"/> keyword
+		/// allows this method to take care of incrementation.
+		/// </para>
+		/// </summary>.
+		/// <param name="address">Start address</param>
+		public void WriteContinuous(ref int address, params byte[] bytes)
 		{
 			foreach (var b in bytes)
 			{
-				DATA[addr++] = b;
+				DATA[address++] = b;
 			}
 		}
 
-		public byte[] Read8Many(int addr, int count)
+		/// <summary>
+		/// Returns an array of <paramref name="count"/> consecutive <see langword="bytes"/>
+		/// beginning at <paramref name="address"/>.
+		/// </summary>
+		public byte[] Read8Many(int address, int count)
 		{
-			return DATA[addr..(addr + count)];
+			return DATA[address..(address + count)];
 		}
 
-		public ushort Read16(int addr)
+		/// <summary>
+		/// Gets the 16-bit word at the given <paramref name="address"/> in little endian.
+		/// </summary>
+		/// <returns>A <see langword="ushort"/> representing the <see langword="bytes"/> at
+		/// <paramref name="address"/> and <paramref name="address"/>+1 when interpreted as
+		/// a single, little-endian, 16-bit word.</returns>
+		public ushort Read16(int address)
 		{
-			return (ushort) (DATA[addr++] | DATA[addr++] << 8);
+			return (ushort) (DATA[address++] | DATA[address++] << 8);
 		}
 
-		public int Read24(int addr)
+		/// <summary>
+		/// Gets the 24-bit word at the given <paramref name="address"/> in little endian.
+		/// </summary>
+		/// <returns>An <see langword="int"/> representing the <see langword="bytes"/> at
+		/// <paramref name="address"/>, <paramref name="address"/>+1, and <paramref name="address"/>+2,
+		/// when interpreted as a single, little-endian, 24-bit word.</returns>
+		public int Read24(int address)
 		{
-			return DATA[addr++] | DATA[addr++] << 8 | DATA[addr++] << 16;
+			return DATA[address++] | DATA[address++] << 8 | DATA[address++] << 16;
 		}
 
-		public ushort Read16BigEndian(int addr)
+		/// <summary>
+		/// Gets the 16-bit word at the given <paramref name="address"/> in big endian.
+		/// </summary>
+		/// <returns>A <see langword="ushort"/> representing the <see langword="bytes"/> at
+		/// <paramref name="address"/> and <paramref name="address"/>+1 when interpreted as
+		/// a single, big-endian, 16-bit word.</returns>
+		public ushort Read16BigEndian(int address)
 		{
-			return (ushort) (DATA[addr++] << 8 | DATA[addr++]);
+			return (ushort) (DATA[address++] << 8 | DATA[address++]);
 		}
 
-		public void Write16(int addr, params int[] words)
+		/// <summary>
+		/// Writes an arbitrary number of <see langword="ushorts"/> to ROM,
+		/// consecutively starting at the given <paramref name="address"/>,
+		/// splitting the constituent <see langword="bytes"/> and writing them
+		/// in little-endian order.
+		/// </summary>.
+		public void Write16(int address, params int[] words)
 		{
 			foreach (var i in words)
 			{
-				DATA[addr++] = (byte) i;
-				DATA[addr++] = (byte) (i >> 8);
+				DATA[address++] = (byte) i;
+				DATA[address++] = (byte) (i >> 8);
 			}
 		}
 
-		public void Write16Continuous(ref int addr, params int[] words)
+		/// <summary>
+		/// <para>
+		/// Writes an arbitrary number of <see langword="ushorts"/> to ROM,
+		/// consecutively starting at the given <paramref name="address"/>,
+		/// splitting the constituent <see langword="bytes"/> and writing them
+		/// in little-endian order.
+		/// </para>
+		/// <para>
+		/// Passing <paramref name="address"/> with the <see langword="ref"/> keyword
+		/// allows this method to take care of incrementation.
+		/// </para>
+		/// </summary>.
+		public void Write16Continuous(ref int address, params int[] words)
 		{
 			foreach (var i in words)
 			{
-				DATA[addr++] = (byte) i;
-				DATA[addr++] = (byte) (i >> 8);
+				DATA[address++] = (byte) i;
+				DATA[address++] = (byte) (i >> 8);
 			}
 		}
 
-		public void Write24(int addr, params int[] words)
+		/// <summary>
+		/// Writes an arbitrary number of 24-bit values passed as <see langword="ints"/> to ROM,
+		/// consecutively starting at the given <paramref name="address"/>,
+		/// splitting the constituent <see langword="bytes"/> and writing them
+		/// in little-endian order.
+		/// </summary>.
+		public void Write24(int address, params int[] words)
 		{
 			foreach (var i in words)
 			{
-				DATA[addr++] = (byte) i;
-				DATA[addr++] = (byte) (i >> 8);
-				DATA[addr++] = (byte) (i >> 16);
-			}
-		}
-
-		public void Write16BigEndian(int addr, params int[] words)
-		{
-			foreach (var i in words)
-			{
-				DATA[addr++] = (byte) (i >> 8);
-				DATA[addr++] = (byte) i;
-			}
-		}
-
-		public void Write24BigEndian(int addr, params int[] words)
-		{
-			foreach (var i in words)
-			{
-				DATA[addr++] = (byte) (i >> 16);
-				DATA[addr++] = (byte) (i >> 8);
-				DATA[addr++] = (byte) i;
+				DATA[address++] = (byte) i;
+				DATA[address++] = (byte) (i >> 8);
+				DATA[address++] = (byte) (i >> 16);
 			}
 		}
 

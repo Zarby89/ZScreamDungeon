@@ -65,24 +65,24 @@ namespace ZeldaFullEditor.View.Drawing.SNESGraphics
 
 		public byte[] GetByteData()
 		{
-			return new[] { Sheet1.ID, Sheet2.ID, Sheet3.ID, Sheet4.ID };
+			return new[] { Sheet1.ID ?? 0xFF, Sheet2.ID ?? 0xFF, Sheet3.ID ?? 0xFF, Sheet4.ID ?? 0xFF };
 		}
 
 		public bool ContainsExpectedSheets(RequiredGraphicsSheets set, bool latter)
 		{
 			if (latter)
 			{
-				return (set.Sheet4?.Contains(Sheet1.ID) ?? true) &&
-					(set.Sheet5?.Contains(Sheet2.ID) ?? true) &&
-					(set.Sheet6?.Contains(Sheet3.ID) ?? true) &&
-					(set.Sheet7?.Contains(Sheet4.ID) ?? true);
+				return (set.Sheet4?.Contains(Sheet1.ID ?? 0xFF) ?? true) &&
+					(set.Sheet5?.Contains(Sheet2.ID ?? 0xFF) ?? true) &&
+					(set.Sheet6?.Contains(Sheet3.ID ?? 0xFF) ?? true) &&
+					(set.Sheet7?.Contains(Sheet4.ID ?? 0xFF) ?? true);
 			}
 			else
 			{
-				return (set.Sheet0?.Contains(Sheet1.ID) ?? true) &&
-					(set.Sheet1?.Contains(Sheet2.ID) ?? true) &&
-					(set.Sheet2?.Contains(Sheet3.ID) ?? true) &&
-					(set.Sheet3?.Contains(Sheet4.ID) ?? true);
+				return (set.Sheet0?.Contains(Sheet1.ID ?? 0xFF) ?? true) &&
+					(set.Sheet1?.Contains(Sheet2.ID ?? 0xFF) ?? true) &&
+					(set.Sheet2?.Contains(Sheet3.ID ?? 0xFF) ?? true) &&
+					(set.Sheet3?.Contains(Sheet4.ID ?? 0xFF) ?? true);
 			}
 		}
 

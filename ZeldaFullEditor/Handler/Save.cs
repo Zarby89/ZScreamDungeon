@@ -2,11 +2,11 @@
 {
 	public partial class ZScreamer
 	{
-		public DungeonRoom[] all_rooms = new DungeonRoom[Constants.NumberOfRooms];
-		public Entrance[] entrances = new Entrance[Constants.NumberOfEntrances];
-		public Entrance[] starting_entrances = new Entrance[0x07];
-		public List<DungeonRoom>[] undoRoom = new List<DungeonRoom>[Constants.NumberOfRooms];
-		public List<DungeonRoom>[] redoRoom = new List<DungeonRoom>[Constants.NumberOfRooms];
+		public Room[] all_rooms = new Room[Constants.NumberOfRooms];
+		public UnderworldEntrance[] entrances = new UnderworldEntrance[Constants.NumberOfEntrances];
+		public UnderworldEntrance[] starting_entrances = new UnderworldEntrance[0x07];
+		public List<Room>[] undoRoom = new List<Room>[Constants.NumberOfRooms];
+		public List<Room>[] redoRoom = new List<Room>[Constants.NumberOfRooms];
 
 		public void saveEntrances()
 		{
@@ -53,7 +53,7 @@
 
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
 			{
-				foreach (DungeonBlock b in all_rooms[i].BlocksList)
+				foreach (PushableBlock b in all_rooms[i].BlocksList)
 				{
 					int xy = ((b.GridY * 64) + b.GridX) << 1;
 
@@ -97,7 +97,7 @@
 			int room_pointer = 0x128090; // @zarby: save all 320 rooms pointers to 0x128000
 			int data_pointer = 0x128450; // @zarby: the actual data at 0x1283C0
 
-			foreach (DungeonRoom room in all_rooms)
+			foreach (Room room in all_rooms)
 			{
 				// @zarby: for each room -> ROM.WriteLong(0x100000), Utils.PcToSnes(ptrsCounter))
 				//         write pointers where data start + previous room data length
@@ -137,7 +137,7 @@
 			int pos = Offsets.torch_data;
 			int end = pos + ROM.Read16(Offsets.torches_length_pointer);
 
-			foreach (DungeonRoom r in all_rooms)
+			foreach (Room r in all_rooms)
 			{
 				if (r.TorchList.Count > 0)
 				{

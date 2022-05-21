@@ -9,7 +9,7 @@ namespace ZeldaFullEditor.Modeling.Underworld
 		public DoorCategory Category { get; }
 		public bool IsExit { get; }
 
-		public string Name { get; }
+		public string Name { get; init; }
 
 		internal DoorDrawFunction SpecialDraw { get; }
 

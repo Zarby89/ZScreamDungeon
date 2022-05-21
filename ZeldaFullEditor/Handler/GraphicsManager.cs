@@ -270,7 +270,7 @@ namespace ZeldaFullEditor.Handler
 						}
 					}
 				}
-				AllSheets[s] = new GraphicsSheet((byte) s, sheetdata, sheetinfo.BitDepth)
+				AllSheets[s] = new GraphicsSheet(sheetdata, sheetinfo.BitDepth)
 				{
 					Info = sheetinfo
 				};
@@ -300,6 +300,7 @@ namespace ZeldaFullEditor.Handler
 				ent.Block1.Sheet2 = AllSheets[ZS.ROM[gfxPointer++]];
 				ent.Block1.Sheet3 = AllSheets[ZS.ROM[gfxPointer++]];
 				ent.Block1.Sheet4 = AllSheets[ZS.ROM[gfxPointer++]];
+
 				ent.Block2.Sheet1 = AllSheets[ZS.ROM[gfxPointer++]];
 				ent.Block2.Sheet2 = AllSheets[ZS.ROM[gfxPointer++]];
 				ent.Block2.Sheet3 = AllSheets[ZS.ROM[gfxPointer++]];

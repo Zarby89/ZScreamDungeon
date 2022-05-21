@@ -3,7 +3,7 @@
 	public class LayerCollisionType : IEntityType<LayerCollisionType>
 	{
 		public byte ID { get; }
-		public string Name { get; }
+		public string Name { get; init; }
 
 		private LayerCollisionType(byte id, string name)
 		{

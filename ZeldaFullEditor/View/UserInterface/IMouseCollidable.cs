@@ -1,7 +1,7 @@
 ﻿namespace ZeldaFullEditor.View.UserInterface
 {
 	/// <summary>
-	/// Contains methods for objects to communicate collision with user control.
+	/// Defines functionality for objects to communicate collision with user control.
 	/// </summary>
 	public interface IMouseCollidable
 	{

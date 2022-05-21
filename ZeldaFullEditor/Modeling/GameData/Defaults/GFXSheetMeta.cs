@@ -3,20 +3,54 @@ using static ZeldaFullEditor.Modeling.GameData.Defaults.SheetType;
 
 namespace ZeldaFullEditor.Modeling.GameData.Defaults
 {
+	/// <summary>
+	/// Encapsulates information related to the usage and interpretation of a <see cref="GraphicsSheet"/>.
+	/// </summary>
 	public class GFXSheetMeta
 	{
-		public byte ID { get; init; } = 0xFF;
+		/// <summary>
+		/// Gets the ID of the graphics sheet..
+		/// </summary>
+		public byte? ID { get; init; } = 0xFF;
+
+		/// <summary>
+		/// Gets which of the standard SNES graphical formats this sheet should be interpreted as.
+		/// </summary>
 		public SNESPixelFormat BitDepth { get; init; }
+
+		/// <summary>
+		/// Gets the intended or expected usage of the graphics within this sheet.
+		/// </summary>
 		public SheetType GFXType { get; init; }
+
+		/// <summary>
+		/// Gets whether or not this sheet's data is expected to be compressed when read or written to ROM.
+		/// </summary>
 		public bool IsCompressed { get; init; }
+
+		/// <summary>
+		/// Gets the most preferred index this sheet should occupy in VRAM given its expected usage.
+		/// </summary>
 		public byte? PreferredIndex { get; init; }
 
 		/// <summary>
-		/// Only applies to 3BPP sheets
+		/// Whether this sheet should be forced to use the latter 7 colors when converted from 3BPP to 4BPP.
+		/// Only applies to 3BPP sheets.
 		/// </summary>
 		public bool? UsesBackPalette { get; init; }
 
-		public GFXSheetMeta(byte id, SheetType type, SNESPixelFormat depth, byte? index = null, bool backpal = false)
+		/// <summary>
+		/// <para>
+		/// Creates a new <see cref="GFXSheetMeta"/> with the given properties.
+		/// </para>
+		/// <para>
+		/// The <paramref name="depth"/> parameter should include both
+		/// the sheet's expeted bit depth and its expected compression (<see cref="SNESPixelFormat.Compressed"/>),
+		/// from which the <see cref="BitDepth">BitDepth</see> and <see cref="IsCompressed">IsCompressed</see> properties
+		/// will be derived.
+		/// </para>
+		/// </summary>
+		public GFXSheetMeta(byte? id, SheetType type, SNESPixelFormat depth, byte? index = null, bool backpal = false)
 		{
 			ID = id;
 			BitDepth = depth & ~Compressed;
@@ -26,7 +60,10 @@ namespace ZeldaFullEditor.Modeling.GameData.Defaults
 			GFXType = type;
 		}
 
-		public static readonly GFXSheetMeta MiscSheet = new(0xFF, None, SNES3BPP);
+		/// <summary>
+		/// Represents a nonspecial, placeholder sheet.
+		/// </summary>
+		public static readonly GFXSheetMeta MiscSheet = new(null, None, SNES3BPP);
 
 
 		public static readonly GFXSheetMeta GFXSheet00 = new(0x00, UnderworldTile, SNES3BPPCompressed);

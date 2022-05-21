@@ -1,5 +1,10 @@
 ﻿namespace ZeldaFullEditor.View.Drawing.SNESGraphics
 {
+	/// <summary>
+	/// Specifies which palette a graphic should use.
+	/// When cast to a numeric value, the value may be logically OR'd with a bare index to get a full
+	/// 8-bits-per-pixel index.
+	/// </summary>
 	public enum PaletteID
 	{
 		BackgroundPalette0Left = 0 << 4,
@@ -18,6 +23,7 @@
 		BackgroundPalette6Right = BackgroundPalette6Left | 8,
 		BackgroundPalette7Left = 7 << 4,
 		BackgroundPalette7Right = BackgroundPalette7Left | 8,
+
 		SpritePalette0Left = 0 << 4 | 0x80,
 		SpritePalette0Right = SpritePalette0Left | 8,
 		SpritePalette1Left = 1 << 4 | 0x80,

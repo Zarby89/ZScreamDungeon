@@ -3,7 +3,8 @@
 namespace ZeldaFullEditor.Modeling.GameData
 {
 	/// <summary>
-	/// Represents a location in code or data that contains a precalculated conversion from lorom SNES addressing to file offset.
+	/// Represents a location in code or data for both primary versions of ALTTP (JP1.0 and US)
+	/// and contains a precalculated conversion from SNES lorom addressing to binary file offset.
 	/// </summary>
 	public readonly struct ROMAddress
 	{

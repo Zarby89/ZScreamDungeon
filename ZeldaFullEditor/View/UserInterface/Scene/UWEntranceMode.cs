@@ -16,7 +16,7 @@
 		private void OnMouseMove_Entrance(MouseEventArgs e)
 		{
 
-			Entrance sel = ZGUI.DungeonEditor.selectedEntrance;
+			UnderworldEntrance sel = ZGUI.DungeonEditor.selectedEntrance;
 
 			if (sel == null) return;
 

@@ -13,6 +13,15 @@
 
 		public byte this[int x, int y] => _data[x + 8 * y];
 
+		/// <summary>
+		/// <para>
+		/// Initializes a new instance of the <see cref="GraphicsTile"/> class with the specified data stream.
+		/// </para>
+		/// <para>
+		/// If <paramref name="data"/> is not exactly 64 bytes in length, an <see cref="ArgumentException"/> will be thrown.
+		/// </para>
+		/// </summary>
+		/// <exception cref="ArgumentException"></exception>
 		public GraphicsTile(byte[] data)
 		{
 			if (data.Length != 64)

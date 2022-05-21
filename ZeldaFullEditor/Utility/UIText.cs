@@ -3,7 +3,7 @@
 namespace ZeldaFullEditor.Utility
 {
 	/// <summary>
-	/// Class for consistency with text that is visible to the user.
+	/// Contains methods and fields for consistency with text that is visible to the user.
 	/// </summary>
 	public static class UIText
 	{
@@ -24,7 +24,7 @@ namespace ZeldaFullEditor.Utility
 		public const string USROMType = "ALTTP US ROM Image|*.sfc;*.smc";
 		public const string SNESROMType = "SNES ROM Image|*" + ROMExtension;
 
-		public const string TestROM = "temp" + ROMExtension;
+		public const string TestROM = $"temp{ROMExtension}";
 
 		public const string LayoutFolder = "Layout";
 
@@ -80,6 +80,11 @@ namespace ZeldaFullEditor.Utility
 		public const string RoomWarning = "You have unsaved room changes that will be lost by closing this tab.";
 		public const string CloseROMWarning = "Closing this ROM will result in all unsaved changes being lost.";
 
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="message"></param>
+		/// <returns>A <see cref="DialogResult"/> specifying the user's selection.</returns>
 		public static DialogResult WarnAboutSaving(string message = DefaultWarning)
 		{
 			return MessageBox.Show(

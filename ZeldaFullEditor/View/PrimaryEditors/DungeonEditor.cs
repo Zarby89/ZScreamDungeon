@@ -6,14 +6,14 @@
 
 		private bool propertiesChangedFromForm;
 
-		private readonly List<DungeonRoom> opened_rooms = new();
+		private readonly List<Room> opened_rooms = new();
 		private readonly List<ushort> selectedMapPng = new();
-		public Entrance selectedEntrance = null;
+		public UnderworldEntrance selectedEntrance = null;
 
 		private readonly List<RoomObjectPreview> listoftilesobjects = new();
 		private readonly List<SpritePreview> listofspritesobjects = new();
 
-		private DungeonRoom previewRoom;
+		private Room previewRoom;
 
 		int tpHotTracked = -1;
 		int tpHotTrackedToClose = -1;
@@ -81,7 +81,7 @@
 			// Entrances
 			for (int i = 0; i < 0x07; i++)
 			{
-				ZScreamer.ActiveScreamer.starting_entrances[i] = new Entrance(ZScreamer.ActiveScreamer, (byte) i, true);
+				ZScreamer.ActiveScreamer.starting_entrances[i] = new UnderworldEntrance(ZScreamer.ActiveScreamer, (byte) i, true);
 				string tname = $"[{i:X2}] > {DefaultEntities.ListOfRoomNames[ZScreamer.ActiveScreamer.starting_entrances[i].RoomID]:X3}";
 
 				entrancetreeView.Nodes[1].Nodes.Add(
@@ -116,7 +116,7 @@
 				tp.Text = tp.Text.Trim('*');
 			}
 
-			foreach (DungeonRoom r in opened_rooms)
+			foreach (Room r in opened_rooms)
 			{
 				r.FlushChanges();
 			}
@@ -137,7 +137,7 @@
 		}
 
 
-		public void UpdateUIForRoom(DungeonRoom room, bool prevent = true)
+		public void UpdateUIForRoom(Room room, bool prevent = true)
 		{
 			if (room == null)
 			{
@@ -183,7 +183,7 @@
 		{
 			foreach (TabPage p in RoomTabControl.TabPages)
 			{
-				if ((p.Tag as DungeonRoom).HasUnsavedChanges)
+				if ((p.Tag as Room).HasUnsavedChanges)
 				{
 					ZGUI.anychange = true;
 					if (!p.Text.Contains('*'))
@@ -208,7 +208,7 @@
 		{
 			collisionMapPanel.Visible = m == DungeonEditMode.CollisionMap;
 
-			foreach (DungeonRoom room in opened_rooms)
+			foreach (Room room in opened_rooms)
 			{
 				room.ClearSelectedList(); // TODO necessary?
 			}
@@ -602,7 +602,7 @@
 
 		private void CloseTab(int i)
 		{
-			var room = (DungeonRoom) RoomTabControl.TabPages[i].Tag;
+			var room = (Room) RoomTabControl.TabPages[i].Tag;
 
 			bool close;
 
@@ -656,7 +656,7 @@
 		{
 			if (RoomTabControl.TabPages.Count > 0)
 			{
-				ZScreamer.ActiveUWScene.Room = RoomTabControl.TabPages[RoomTabControl.SelectedIndex].Tag as DungeonRoom;
+				ZScreamer.ActiveUWScene.Room = RoomTabControl.TabPages[RoomTabControl.SelectedIndex].Tag as Room;
 
 				// TODO
 				//if (ZScreamer.ActiveScreamer.undoRoom[ZScreamer.ActiveUWScene.Room.RoomID].Count > 0)
@@ -754,7 +754,7 @@
 
 		private void litCheckbox_CheckedChanged(object sender, EventArgs e)
 		{
-			if (!ZScreamer.ActiveUWScene.IsUpdating && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is DungeonTorch torch)
+			if (!ZScreamer.ActiveUWScene.IsUpdating && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is LightableTorch torch)
 			{
 				torch.Lit = litCheckbox.Checked;
 			}
@@ -846,7 +846,7 @@
 
 				foreach (TabPage tp in RoomTabControl.TabPages)
 				{
-					if ((tp.Tag as DungeonRoom).RoomID == (ushort) i)
+					if ((tp.Tag as Room).RoomID == (ushort) i)
 					{
 						e.Graphics.DrawRectangle(
 								new Pen((RoomTabControl.SelectedTab == tp) ? Color.YellowGreen : Color.DarkGreen, 2),
@@ -1092,7 +1092,7 @@
 		public void addRoomTab(ushort roomId)
 		{
 			bool alreadyFound = false;
-			foreach (DungeonRoom room in opened_rooms)
+			foreach (Room room in opened_rooms)
 			{
 				if (room.RoomID == roomId)
 				{
@@ -1107,7 +1107,7 @@
 				//MessageBox.Show("That room is already opened !");
 				foreach (TabPage tp in RoomTabControl.TabPages)
 				{
-					if ((tp.Tag as DungeonRoom).RoomID == roomId)
+					if ((tp.Tag as Room).RoomID == roomId)
 					{
 						RoomTabControl.SelectTab(tp);
 						break;

@@ -4,7 +4,7 @@
 	/// Specifies the resizability of dungeon objects in the subtype 1 class.
 	/// </summary>
 	[Flags]
-	public enum DungeonObjectSizeability
+	public enum ObjectResizability
 	{
 		/// <summary>
 		/// Objects that cannot be resized

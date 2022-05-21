@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Specifies extra-important properties of a <see cref="RoomObjectType"/>
 	/// </summary>
-	public enum SpecialObjectType
+	public enum ObjectSpecialType
 	{
 		/// <summary>
 		/// Object is not noteworthy whatsoever

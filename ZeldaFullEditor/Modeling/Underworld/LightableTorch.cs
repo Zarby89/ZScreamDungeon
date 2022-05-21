@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.Modeling.Underworld
 {
-	public class DungeonTorch : IDungeonPlaceable, IFreelyPlaceable, IMouseCollidable, IMultilayered, IByteable, IHaveInfo
+	public class LightableTorch : IDungeonPlaceable, IFreelyPlaceable, IMouseCollidable, IMultilayered, IByteable, IHaveInfo
 	{
 		private const int Scale = 8;
 		public byte GridX { get; set; }
@@ -26,7 +26,7 @@
 
 		public string Name => "Torch";
 
-		public DungeonTorch()
+		public LightableTorch()
 		{
 
 		}

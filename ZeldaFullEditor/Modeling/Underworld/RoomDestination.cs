@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.Modeling.Underworld
 {
-	public class DungeonDestination
+	public class RoomDestination
 	{
 		public byte Index { get; }
 		public byte Target { get; set; } = 0;
@@ -12,7 +12,7 @@
 		public int RealX => AssociatedObject?.RealX ?? 0;
 		public int RealY => AssociatedObject?.RealY ?? 0;
 
-		public DungeonDestination(byte i)
+		public RoomDestination(byte i)
 		{
 			Index = i;
 		}

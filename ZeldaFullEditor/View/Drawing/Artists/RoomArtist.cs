@@ -2,7 +2,7 @@
 {
 	public class RoomArtist : Artist
 	{
-		public DungeonRoom CurrentRoom { get; set; }
+		public Room CurrentRoom { get; set; }
 
 		public override ushort[] Layer1TileMap { get; } = new ushort[Constants.TilesPerUnderworldRoom];
 		public override PointeredImage Layer1Canvas { get; } = new(512, 512);
@@ -129,7 +129,7 @@
 			}
 		}
 
-		public void SetRoomAndDrawImmediately(DungeonRoom room)
+		public void SetRoomAndDrawImmediately(Room room)
 		{
 			if (CurrentRoom == room) return;
 

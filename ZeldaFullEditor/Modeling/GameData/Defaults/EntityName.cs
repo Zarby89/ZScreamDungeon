@@ -1,73 +1,42 @@
 ﻿namespace ZeldaFullEditor.Modeling.GameData.Defaults
 {
 	/// <summary>
-	/// General class for defining names and properties of objects
+	/// Base class for defining names and IDs of reusable entities and concepts.
 	/// </summary>
-	public abstract class EntityName
+	public abstract record EntityName(int ID, string Name)
 	{
-		public int ID { get; }
-		public string Name { get; }
-
-		public EntityName(int id, string name)
-		{
-			ID = id;
-			Name = name;
-		}
-
 		public override string ToString() => $"{ID:X2} {Name}";
 	}
 
-	public class DungeonName : EntityName
-	{
-		public DungeonName(int i, string n) : base(i, n) { }
-	}
-	public class OverworldScreenName : EntityName
-	{
-		public OverworldScreenName(int i, string n) : base(i, n) { }
-	}
+	public record DungeonName(int ID, string Name) : EntityName(ID, Name);
 
-	public class RoomName : EntityName
+	public record OverworldScreenName(int ID, string Name) : EntityName(ID, Name);
+
+	public record RoomName(int ID, string Name) : EntityName(ID, Name)
 	{
-		public RoomName(int i, string n) : base(i, n) { }
 		public override string ToString() => $"{ID:X3} {Name}";
 	}
 
-	public class SpriteName : EntityName
-	{
-		public SpriteName(int i, string n) : base(i, n) { }
-	}
+	public record SpriteName(int ID, string Name) : EntityName(ID, Name);
 
-	public class TileTypeName : EntityName
-	{
-		public TileTypeName(int i, string n) : base(i, n) { }
-	}
+	public record TileTypeName(int ID, string Name) : EntityName(ID, Name);
 
-	public class ItemReceiptName : EntityName
-	{
-		public ItemReceiptName(int i, string n) : base(i, n) { }
-	}
+	public record ItemReceiptName(int ID, string Name) : EntityName(ID, Name);
 
-	public class SecretsName : EntityName
-	{
-		public SecretsName(int i, string n) : base(i, n) { }
-	}
+	public record SecretsName(int ID, string Name) : EntityName(ID, Name);
 
-	public class RoomObjectName : EntityName
+	public record RoomObjectName(int ID, string Name) : EntityName(ID, Name)
 	{
-		public RoomObjectName(int i, string n) : base(i, n) { }
 		public override string ToString() => $"{ID:X3} {Name}";
-
 	}
 
-	public class RoomTagName : EntityName
-	{
-		public RoomTagName(int i, string n) : base(i, n) { }
+	public record RoomTagName(int ID, string Name) : EntityName(ID, Name)
+{
 		public override string ToString() => Name;
 	}
 
-	public class MusicName : EntityName
-	{
-		public MusicName(int i, string n) : base(i, n) { }
+	public record MusicName(int ID, string Name) : EntityName(ID, Name)
+{
 		public override string ToString() => Name;
 	}
 }

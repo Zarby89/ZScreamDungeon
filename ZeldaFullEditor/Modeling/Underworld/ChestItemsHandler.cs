@@ -1,10 +1,10 @@
 ﻿namespace ZeldaFullEditor.Modeling.Underworld
 {
-	public class DungeonRoomChestsHandler : List<DungeonChestItem>, IByteable
+	public class ChestItemsHandler : List<ChestItem>, IByteable
 	{
-		public DungeonRoom Room { get; }
+		public Room Room { get; }
 
-		public DungeonRoomChestsHandler(DungeonRoom room)
+		public ChestItemsHandler(Room room)
 		{
 			Room = room;
 		}

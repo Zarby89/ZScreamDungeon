@@ -1,5 +1,8 @@
 ﻿namespace ZeldaFullEditor.Modeling.Overworld
 {
+	/// <summary>
+	/// Provides a base class for 
+	/// </summary>
 	public abstract class OverworldDestination : OverworldEntity, IMouseCollidable, IFreelyPlaceable, IHaveInfo
 	{
 		public ushort ScrollX { get; set; }

@@ -4,7 +4,7 @@ namespace ZeldaFullEditor.Modeling.GameData
 {
 	public partial class SpriteType : IEntityType<SpriteType>
 	{
-		public string VanillaName { get; }
+		public string Name { get; init; }
 		public byte ID { get; }
 		public bool IsOverlord { get; }
 
@@ -22,10 +22,12 @@ namespace ZeldaFullEditor.Modeling.GameData
 			RequiredSheets = gsets;
 
 			// intentionally doing this stupid shit because it looks funny
-			VanillaName = (IsOverlord = overlord)
+			Name = (IsOverlord = overlord)
 				? DefaultEntities.ListOfOverlords[id].Name
 				: DefaultEntities.ListOfSprites[id].Name;
 		}
+
+		public override string ToString() => Name;
 
 		public static readonly SpriteType Sprite00 = new(0x00, SpriteDraw_Sprite00,
 			new[] { Enemy },

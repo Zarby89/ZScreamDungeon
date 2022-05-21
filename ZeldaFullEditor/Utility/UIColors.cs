@@ -1,5 +1,8 @@
 ﻿namespace ZeldaFullEditor.Utility
 {
+	/// <summary>
+	/// Contains fields for consistency with colors across the user interface.
+	/// </summary>
 	public static class UIColors
 	{
 		public const int EntityAlpha = 200;

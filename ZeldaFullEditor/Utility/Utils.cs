@@ -1,5 +1,8 @@
 ﻿namespace ZeldaFullEditor.Utility
 {
+	/// <summary>
+	/// Contains methods for general purpose operations.
+	/// </summary>
 	public static class Utils
 	{
 		public static int AddressFromBytes(byte addr1, byte addr2, byte addr3)
@@ -7,6 +10,9 @@
 			return (addr1 << 16) | (addr2 << 8) | addr3;
 		}
 
+		/// <summary>
+		/// Creates a new copy of this structure array.
+		/// </summary>
 		public static T[] DeepCopy<T>(this T[] a) where T : struct
 		{
 			T[] ret = new T[a.Length];

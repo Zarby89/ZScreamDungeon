@@ -1,7 +1,7 @@
 ﻿namespace ZeldaFullEditor.View.UserInterface
 {
 	/// <summary>
-	/// Contains properties common to objects that can be moved around freely with the mouse.
+	/// Defines properties common to objects that can be moved around freely with the mouse.
 	/// </summary>
 	public interface IFreelyPlaceable
 	{

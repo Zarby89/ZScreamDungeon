@@ -9,7 +9,8 @@
 
 		public GFXSheetMeta Info { get; init; } = null;
 
-		public byte ID { get; }
+		public byte? ID => Info.ID ?? 0x00;
+
 		public int Width { get; }
 		public int Height { get; }
 		public int TileCount { get; }
@@ -23,7 +24,7 @@
 		public GraphicsTile this[int x, int y] => tiles[x + 16 * y];
 
 		// TODO add grayscale palette for the image
-		public GraphicsSheet(byte id, byte[] data, SNESPixelFormat format)
+		public GraphicsSheet(byte[] data, SNESPixelFormat format)
 		{
 			switch (format)
 			{
@@ -52,7 +53,6 @@
 					throw new NotImplementedException();
 			}
 
-			ID = id;
 			tiles = new GraphicsTile[TileCount];
 			ptr = Marshal.AllocHGlobal(Width * Height);
 			Bitmap = new Bitmap(Width, Height, Width, PixelFormat.Format8bppIndexed, ptr);
@@ -71,6 +71,6 @@
 			}
 		}
 
-		public static readonly GraphicsSheet Empty = new(0xFF, new byte[Constants.Uncompressed3BPPSize], SNESPixelFormat.SNES3BPP);
+		public static readonly GraphicsSheet Empty = new(new byte[Constants.Uncompressed3BPPSize], SNESPixelFormat.SNES3BPP);
 	}
 }

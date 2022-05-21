@@ -1,7 +1,7 @@
 ﻿namespace ZeldaFullEditor.View.Drawing.SNESGraphics
 {
 	/// <summary>
-	/// Specifies changes in binary properties to apply to a <see cref="Tile"/>
+	/// Specifies changes in binary properties to apply to a <see cref="Tile"/>.
 	/// </summary>
 	public enum FlipBehavior : byte
 	{

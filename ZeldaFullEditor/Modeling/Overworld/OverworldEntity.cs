@@ -1,5 +1,8 @@
 ﻿namespace ZeldaFullEditor.Modeling.Overworld
 {
+	/// <summary>
+	/// Provides a base class containing properties and methods common to all entities that appear on the overworld.
+	/// </summary>
 	public abstract class OverworldEntity : IMouseCollidable, IFreelyPlaceable, IHaveInfo
 	{
 		private ushort globalx, globaly;
@@ -48,6 +51,7 @@
 				RecalculateGlobalFromLocal();
 			}
 		}
+
 		public int RealX
 		{
 			get => GlobalX;
@@ -76,6 +80,7 @@
 			get => MapX;
 			set => MapX = value;
 		}
+
 		public byte GridY
 		{
 			get => MapY;

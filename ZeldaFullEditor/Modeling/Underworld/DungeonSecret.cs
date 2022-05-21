@@ -28,7 +28,7 @@
 		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
 
 		public SecretItemType SecretType { get; set; }
-		public string Name => SecretType.VanillaName;
+		public string Name => SecretType.Name;
 
 		public DungeonSecret(SecretItemType s)
 		{

@@ -2,7 +2,7 @@
 {
 	public class OverworldSprite : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IHaveInfo, IEquatable<OverworldSprite>
 	{
-		public override string Name => Species.VanillaName;
+		public override string Name => Species.Name;
 		public byte ID => Species.ID;
 		public bool IsCurrentlyOverlord => ID > 0xF2;
 

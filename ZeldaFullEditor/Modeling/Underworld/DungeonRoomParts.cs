@@ -28,6 +28,6 @@
 	public class DungeonDoorsList : DungeonLister<DungeonDoor>, IByteable { }
 	public class DungeonSecretsList : DungeonLister<DungeonSecret>, IByteable { }
 	public class DungeonSpritesList : DungeonLister<DungeonSprite>, IByteable { }
-	public class DungeonBlocksList : DungeonListing<DungeonBlock> { }
-	public class DungeonTorchList : DungeonLister<DungeonTorch>, IByteable { }
+	public class DungeonBlocksList : DungeonListing<PushableBlock> { }
+	public class DungeonTorchList : DungeonLister<LightableTorch>, IByteable { }
 }

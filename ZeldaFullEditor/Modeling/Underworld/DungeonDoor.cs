@@ -1,5 +1,8 @@
 ﻿namespace ZeldaFullEditor.Modeling.Underworld
 {
+	/// <summary>
+	/// Represents a door or door modifier that controls transitions in and out of dungeon rooms.
+	/// </summary>
 	[Serializable]
 	public class DungeonDoor : IDungeonPlaceable, IByteable, IDelegatedDraw, IHaveInfo
 	{
@@ -11,6 +14,7 @@
 		public byte Grid { get; set; }
 		public byte GridY { get; set; }
 
+		// TODO need a way to change shape for the special door draws
 		public Rectangle BoundingBox
 		{
 			get

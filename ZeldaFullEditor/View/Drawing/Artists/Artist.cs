@@ -10,6 +10,9 @@
 
 		public abstract PointeredImage SpriteCanvas { get; }
 
+		/// <summary>
+		/// The final, fully-processed and fully-drawn <see cref="Bitmap"/> image produced by this artist.
+		/// </summary>
 		public abstract Bitmap FinalOutput { get; }
 
 		// TODO remove most HardRefresh calls in favor of this property which will be called upon draw

@@ -1,5 +1,8 @@
 ﻿namespace ZeldaFullEditor.Modeling.GameData
 {
+	/// <summary>
+	/// Provides a container for all tabulated properties of a sprite.
+	/// </summary>
 	public class SpriteProperties
 	{
 		// OAMHarm

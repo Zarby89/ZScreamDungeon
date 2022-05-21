@@ -1,5 +1,8 @@
 ﻿namespace ZeldaFullEditor.Utility
 {
+	/// <summary>
+	/// Zarby! Stop making magic numbers.
+	/// </summary>
 	public static partial class Constants
 	{
 		//===========================================================================================

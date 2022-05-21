@@ -2,8 +2,8 @@
 {
 	public class LayerMergeType : IEntityType<LayerMergeType>
 	{
-		public byte ID { get; }
-		public string Name { get; }
+		public byte ID { get; init; }
+		public string Name { get; init; }
 		public bool Layer2OnTop { get; }
 		public bool Layer2Translucent { get; }
 		public bool Layer2Visible { get; }

@@ -23,7 +23,7 @@
 
 		public Rectangle BoundingBox => new(RealX, RealY, 16, 16); // TODO
 
-		public string Name => Species.VanillaName;
+		public string Name => Species.Name;
 		public byte ID => Species.ID;
 		public int TypeID => Species.ID;
 
@@ -142,7 +142,7 @@
 		public int RealY => 16;
 		public byte ID => Species.ID;
 		public SpriteType Species { get; }
-		public string Name => Species.VanillaName;
+		public string Name => Species.Name;
 
 		public SpritePreview(SpriteType type)
 		{

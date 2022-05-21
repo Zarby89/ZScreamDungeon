@@ -1,17 +1,21 @@
 ﻿namespace ZeldaFullEditor.Modeling.Underworld
 {
+	/// <summary>
+	/// Represents a room object; i.e. a dungeon entity that constitutes the physical make up of a room and is not
+	/// a door, lightable torch or pushable block object.
+	/// </summary>
 	[Serializable]
 	public class RoomObject : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, ITypeID
 	{
 		public ushort ID => ObjectType.FullID;
 		public int TypeID => ObjectType.FullID;
-		public string Name => ObjectType.VanillaName;
-		public bool IsChest => ObjectType.Specialness == SpecialObjectType.Chest || IsBigChest;
-		public bool IsBigChest => ObjectType.Specialness == SpecialObjectType.BigChest;
-		public bool IsStairs => ObjectType.Specialness == SpecialObjectType.InterroomStairs;
+		public string Name => ObjectType.Name;
+		public bool IsChest => ObjectType.Specialness == ObjectSpecialType.Chest || IsBigChest;
+		public bool IsBigChest => ObjectType.Specialness == ObjectSpecialType.BigChest;
+		public bool IsStairs => ObjectType.Specialness == ObjectSpecialType.InterroomStairs;
 		public DungeonLimits LimitClass => ObjectType.LimitClass;
 
-		public bool Resizable => ObjectType.Resizeability != DungeonObjectSizeability.None;
+		public bool Resizable => ObjectType.Resizeability != ObjectResizability.None;
 
 		private const int Scale = 8;
 		public byte GridX { get; set; }
@@ -78,7 +82,7 @@
 		public bool DecreaseSize()
 		{
 			// Size > 0 will short circuit faster for unresizable objects
-			if (Size > 0 && ObjectType.Resizeability != DungeonObjectSizeability.None)
+			if (Size > 0 && ObjectType.Resizeability != ObjectResizability.None)
 			{
 				Size--;
 				return true;
@@ -92,7 +96,7 @@
 		/// <returns><see langword="true"/> when successful</returns>
 		public bool IncreaseSize()
 		{
-			if (ObjectType.Resizeability != DungeonObjectSizeability.None && Size < 15)
+			if (ObjectType.Resizeability != ObjectResizability.None && Size < 15)
 			{
 				Size++;
 				return true;
@@ -120,21 +124,21 @@
 
 		public byte[] GetByteData() => ObjectType.ObjectSet switch
 		{
-			DungeonObjectSet.Subtype1 => new[]
+			ObjectSubtype.Subtype1 => new[]
 			{
 					(byte) (GridX << 2 | (Size & 0x0C) >> 2),
 					(byte) (GridY << 2 | Size & 0x03),
 					(byte) ID
 			},
 
-			DungeonObjectSet.Subtype2 => new[]
+			ObjectSubtype.Subtype2 => new[]
 			{
 					(byte) (0xFC | GridX >> 4),
 					(byte) (GridX << 4 | (GridY & 0x3C) >> 2),
 					(byte) (GridY << 6 | ID & 0x3F)
 			},
 
-			DungeonObjectSet.Subtype3 => new[]
+			ObjectSubtype.Subtype3 => new[]
 			{
 					(byte) (GridX << 2 | ID & 0x03),
 					(byte) (GridY << 2 | (ID & 0x0C) >> 2),

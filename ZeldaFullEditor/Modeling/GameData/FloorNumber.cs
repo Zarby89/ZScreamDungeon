@@ -7,7 +7,7 @@
 	{
 		/// <summary>
 		/// This floor's 2-letter indicator, where
-		/// #F represents floor # above ground and
+		/// #F represents floor # above ground, and
 		/// B# represents basement floor # below ground.
 		/// </summary>
 		public string Name { get; }
@@ -127,6 +127,7 @@
 			FloorB3,
 			FloorB2,
 			FloorB1,
+
 			Floor1F,
 			Floor2F,
 			Floor3F,

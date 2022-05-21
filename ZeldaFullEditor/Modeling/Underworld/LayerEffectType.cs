@@ -3,15 +3,15 @@
 	public class LayerEffectType : IEntityType<LayerEffectType>
 	{
 		public byte ID { get; }
-		public string Name { get; }
+		public string Name { get; init; }
 
 		private LayerEffectType(byte id, string name)
 		{
 			ID = id;
 			Name = name;
 		}
-
 		public override string ToString() => Name;
+
 
 		public static LayerEffectType LayerEffect00 { get; } = new(0x00, "Nothing");
 		public static LayerEffectType LayerEffect01 { get; } = new(0x01, "Nothing");

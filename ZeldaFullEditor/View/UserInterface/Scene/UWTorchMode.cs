@@ -34,7 +34,7 @@
 
 		private void Insert_Torch()
 		{
-			var b = new DungeonTorch()
+			var b = new LightableTorch()
 			{
 				GridX = (byte) MouseX,
 				GridY = (byte) MouseY,

@@ -4,17 +4,51 @@
 	{
 		public ushort[] Tile16Map { get; } = new ushort[Constants.NumberOfTile16PerScreen];
 
-		public ScreenArtist MyArtist { get; }
-
-		public OverworldScreen ParentMap { get; set; }
-		public bool IsOwnParent => ParentMap == this;
-		public byte ParentMapID => ParentMap.MapID;
-
-		public Worldiness World { get; }
-
+		/// <summary>
+		/// Gets the in-game value of this screen's ID.
+		/// </summary>
 		public byte MapID { get; }
 
+		/// <summary>
+		/// Gets the world this screen appears in, as determined by its <see cref="MapID">MapID</see>.
+		/// </summary>
+		public Worldiness World { get; }
+
+		/// <summary>
+		/// Gets the lower 6 bits of this screen's <see cref="MapID">MapID</see>.
+		/// </summary>
 		public byte VirtualMapID => (byte) (MapID & 0x3F);
+
+		/// <summary>
+		/// Gets his screen's corresponding <see cref="ScreenArtist"/>, which handles the graphical display of the screen.
+		/// </summary>
+		public ScreenArtist MyArtist { get; }
+
+		/// <summary>
+		/// The <see cref="OverworldScreen"/> from which this screen should derive its graphics, sprites, and others properties.
+		/// In essence, this is a reference to the screen which is the north-west corner of the containing screen when this
+		/// map is part of a larger screen. When this screen is a normal sized screen, then this property should be a reference
+		/// back to <see langword="this"/> screen.
+		/// </summary>
+		public OverworldScreen ParentMap { get; set; }
+
+		/// <summary>
+		/// Whether or not this screen's <see cref="ParentMap">ParentMap</see> is
+		/// a reference back to <see langword="this"/> screen.
+		/// Note that this property being <see langword="true"/> is not the same as this map screen being part
+		/// of a larger screen (<see cref="IsPartOfLargeMap">IsPartOfLargeMap</see>).
+		/// </summary>
+		public bool IsOwnParent => ParentMap == this;
+
+		/// <summary>
+		/// The map ID of this screen's <see cref="ParentMap">ParentMap</see>.
+		/// </summary>
+		public byte ParentMapID => ParentMap.MapID;
+
+		/// <summary>
+		/// Whether or not this screen is a smaller constituent of a larger screen.
+		/// </summary>
+		public bool IsPartOfLargeMap { get; set; }
 
 		public byte Tileset { get; set; }
 
@@ -90,8 +124,6 @@
 		public byte[] musics { get; } = new byte[4];
 
 		public ushort MessageID { get; set; }
-
-		public bool IsPartOfLargeMap { get; set; }
 
 		public byte[] staticgfx = new byte[16]; // Need to be used to display map and not pre render it!
 		public ushort[,] tilesUsed;

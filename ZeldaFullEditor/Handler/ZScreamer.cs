@@ -1,7 +1,7 @@
 ﻿namespace ZeldaFullEditor.Handler
 {
 	/// <summary>
-	/// Handles everything ever
+	/// Handles everything ever.
 	/// </summary>
 	public partial class ZScreamer
 	{
@@ -9,6 +9,9 @@
 
 		public static ZScreamer ActiveScreamer { get; private set; } = dummy;
 
+		/// <summary>
+		/// Returns <see langword="true"/> if an actual, usable <see cref="ZScreamer"/> is active.
+		/// </summary>
 		public static bool Active => ActiveScreamer != dummy;
 
 		public static ROMFile ActiveROM => ActiveROM;
@@ -94,7 +97,7 @@
 
 			for (ushort i = 0; i < Constants.NumberOfRooms; i++)
 			{
-				all_rooms[i] = DungeonRoom.BuildRoomFromROM(this, i);
+				all_rooms[i] = Room.BuildRoomFromROM(this, i);
 				//DungeonsData.undoRoom[i] = new List<Room>();
 				//DungeonsData.redoRoom[i] = new List<Room>();
 			}

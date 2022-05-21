@@ -22,8 +22,8 @@
 
 		public IDungeonPlaceable ObjectToPlace { get; set; }
 
-		private DungeonRoom room;
-		public DungeonRoom Room
+		private Room room;
+		public Room Room
 		{
 			get => room;
 			set
@@ -208,7 +208,7 @@
 				{
 					foreach (var o in l)
 					{
-						if (o.ObjectType.Specialness == SpecialObjectType.LayerMask)
+						if (o.ObjectType.Specialness == ObjectSpecialType.LayerMask)
 						{
 							g.DrawRectangle(Pens.DarkCyan, o.BoundingBox);
 						}
@@ -223,7 +223,7 @@
 				{
 					foreach (var o in l)
 					{
-						if (o.ObjectType.Specialness == SpecialObjectType.LayerMask)
+						if (o.ObjectType.Specialness == ObjectSpecialType.LayerMask)
 						{
 							g.DrawText(o.RealX, o.RealY, "BG2 mask");
 						}
@@ -361,11 +361,11 @@
 			{
 				spaghetti = new ZeldaException("Objects can only be placed while working on backgrounds 1, 2, or 3.");
 			}
-			else if (ObjectToPlace is DungeonTorch && ZS.CurrentUWMode != DungeonEditMode.Torches)
+			else if (ObjectToPlace is LightableTorch && ZS.CurrentUWMode != DungeonEditMode.Torches)
 			{
 				spaghetti = new ZeldaException("TORCHES");
 			}
-			else if (ObjectToPlace is DungeonBlock && ZS.CurrentUWMode != DungeonEditMode.Blocks)
+			else if (ObjectToPlace is PushableBlock && ZS.CurrentUWMode != DungeonEditMode.Blocks)
 			{
 				spaghetti = new ZeldaException("BLOCKS");
 			}

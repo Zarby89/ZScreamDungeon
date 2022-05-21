@@ -1,5 +1,8 @@
 ﻿namespace ZeldaFullEditor.View.Drawing.SNESGraphics
 {
+	/// <summary>
+	/// Supports treating an object as an indexed image to which <see cref="GraphicsTile"/> objects may be drawn.
+	/// </summary>
 	public interface IGraphicsCanvas
 	{
 		public byte this[int i] { get; set; }

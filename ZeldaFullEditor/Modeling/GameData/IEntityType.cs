@@ -5,6 +5,10 @@
 	/// </summary>
 	internal interface IEntityType<T>
 	{
-		//static virtual T GetTypeFromID(int id);
+		public string Name { get; init; }
+		//public static virtual T GetTypeFromID(int id);
+		//public static T[] ListOf { get; }
+
+		public string ToString() => Name;
 	}
 }

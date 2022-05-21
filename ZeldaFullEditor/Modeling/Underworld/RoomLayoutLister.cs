@@ -70,7 +70,7 @@
 
 				b3 = ZS.ROM[pos++];
 
-				var r = DungeonRoom.ParseRoomObject(ZS, b1, b2, b3);
+				var r = Room.ParseRoomObject(ZS, b1, b2, b3);
 
 				if (r != null)
 				{

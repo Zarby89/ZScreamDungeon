@@ -1061,7 +1061,7 @@
 			{
 				foreach (RoomObject r in list)
 				{
-					if (r.ObjectType.Specialness == SpecialObjectType.LayerMask)
+					if (r.ObjectType.Specialness == ObjectSpecialType.LayerMask)
 					{
 						list.Remove(r);
 					}

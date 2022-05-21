@@ -1,5 +1,8 @@
 ﻿namespace ZeldaFullEditor.Utility
 {
+	/// <summary>
+	/// Provides extended functionality for simple operations on integer value types.
+	/// </summary>
 	public static class IntFunctions
 	{
 		public static bool BitIsOn(this byte b, byte test) => (b & test) != 0;

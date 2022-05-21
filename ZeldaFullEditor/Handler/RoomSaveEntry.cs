@@ -11,7 +11,7 @@
 		public byte[] Data { get; }
 		public int Length => Data.Length;
 
-		public RoomSaveEntry(DungeonRoom room)
+		public RoomSaveEntry(Room room)
 		{
 			var ret = new List<byte>();
 

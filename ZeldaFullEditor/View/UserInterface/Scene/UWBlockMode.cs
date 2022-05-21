@@ -34,7 +34,7 @@
 
 		private void Insert_Blocks()
 		{
-			var b = new DungeonBlock()
+			var b = new PushableBlock()
 			{
 				GridX = (byte) MouseX,
 				GridY = (byte) MouseY,
