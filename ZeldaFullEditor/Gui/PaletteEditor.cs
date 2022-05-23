@@ -18,13 +18,15 @@
 		Color tempColor;
 		int tempIndex = -1;
 
-		ColorDialog cd = new();
+		private readonly ColorDialog cd = new();
 
-		Color[] selectedPalette = null;
+		private PartialPalette selectedPalette = null;
 		int selectedX = 16;
 
 		public PaletteEditor()
 		{
+
+			BackColor = Color.FromKnownColor(KnownColor.Control);
 			InitializeComponent();
 
 			CreateTempPalettes();
@@ -90,11 +92,6 @@
 			}
 		}
 
-		private void PaletteEditor_VisibleChanged(object sender, EventArgs e)
-		{
-			this.BackColor = Color.FromKnownColor(KnownColor.Control);
-		}
-
 		private void applyButton_Click(object sender, EventArgs e)
 		{
 			CreateTempPalettes();
@@ -110,6 +107,7 @@
 		private void restoreallButton_Click(object sender, EventArgs e)
 		{
 			// Restore temp of all palettes
+			
 			if (MessageBox.Show("Are you sure you want to restore all palettes " +
 				"to the last applied values?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
 			{
@@ -120,12 +118,23 @@
 		private void restoreselButton_Click(object sender, EventArgs e)
 		{
 			restoreSelected();
-			refreshallGfx();
+			RefreshUnderworldGraphics();
 
 			// Restore the temp selected palette only
 		}
 
-		private void refreshallGfx()
+		private static void RefreshOverworld()
+		{
+			foreach (var s in ZScreamer.ActiveOW.allmaps)
+			{
+				s.MyArtist.ReloadPalettes();
+				s.MyArtist.Invalidate();
+			}
+
+			ZScreamer.ActiveOWScene.Refresh();
+		}
+
+		private void RefreshUnderworldGraphics()
 		{
 			ZScreamer.ActiveUWScene.HardRefresh();
 			palettePicturebox.Refresh();
@@ -133,159 +142,25 @@
 
 		private void palettesTreeView_AfterSelect(object sender, TreeViewEventArgs e)
 		{
-			if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["HudPal"])
-			{
-				selectedPalette = ZScreamer.ActivePaletteManager.HUD[palettesTreeView.SelectedNode.Index];
-				selectedX = 16;
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldMainPal"])
-			{
-				selectedPalette = ZScreamer.ActivePaletteManager.OverworldMain[palettesTreeView.SelectedNode.Index];
-				selectedX = 7;
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldAuxPal"])
-			{
-				selectedPalette = ZScreamer.ActivePaletteManager.OverworldAux[palettesTreeView.SelectedNode.Index];
-				selectedX = 7;
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldAnimatedPal"])
-			{
-				selectedPalette = ZScreamer.ActivePaletteManager.OverworldAnimated[palettesTreeView.SelectedNode.Index];
-				selectedX = 7;
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["DungeonMainPal"])
-			{
-				selectedPalette = ZScreamer.ActivePaletteManager.UnderworldMain[palettesTreeView.SelectedNode.Index];
-				selectedX = 15;
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["GlobalSpritesPal"])
-			{
-				selectedPalette = ZScreamer.ActivePaletteManager.SpriteGlobal[palettesTreeView.SelectedNode.Index];
-				selectedX = 15;
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux1Pal"])
-			{
-				selectedPalette = ZScreamer.ActivePaletteManager.SpriteAux1[palettesTreeView.SelectedNode.Index];
-				selectedX = 7;
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux2Pal"])
-			{
-				selectedPalette = ZScreamer.ActivePaletteManager.SpriteAux2[palettesTreeView.SelectedNode.Index];
-				selectedX = 7;
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux3Pal"])
-			{
-				selectedPalette = ZScreamer.ActivePaletteManager.SpriteAux3[palettesTreeView.SelectedNode.Index];
-				selectedX = 7;
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["ShieldsPal"])
-			{
-				selectedPalette = ZScreamer.ActivePaletteManager.PlayerShield[palettesTreeView.SelectedNode.Index];
-				selectedX = 4;
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SwordsPal"])
-			{
-				selectedPalette = ZScreamer.ActivePaletteManager.PlayerSword[palettesTreeView.SelectedNode.Index];
-				selectedX = 3;
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["ArmorsPal"])
-			{
-				selectedPalette = ZScreamer.ActivePaletteManager.PlayerMail[palettesTreeView.SelectedNode.Index];
-				selectedX = 15;
-			}
-			else
-			{
-				selectedPalette = null;
-			}
+			var parent = palettesTreeView.SelectedNode.Parent;
+			var type = (PaletteType) parent.Tag;
+			selectedPalette = ZScreamer.ActivePaletteManager.GetPaletteAt(type, palettesTreeView.SelectedNode.Index);
+
+			selectedX = type.GetRealWidth();
 
 			palettePicturebox.Refresh();
 		}
 
 		private void restoreSelected()
 		{
-			if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["HudPal"])
+			var parent = palettesTreeView.SelectedNode.Parent;
+			var pal = ZScreamer.ActivePaletteManager.GetPaletteAt((PaletteType) parent.Tag, palettesTreeView.SelectedNode.Index);
+
+			throw new NotImplementedException();
+			// need to write better back up system
+			for (int i = 0; i < pal.RealSize; i++)
 			{
-				for (int i = 0; i < ZScreamer.ActivePaletteManager.HUD[palettesTreeView.SelectedNode.Index].Length; i++)
-				{
-					ZScreamer.ActivePaletteManager.HUD[palettesTreeView.SelectedNode.Index][i] = HudPal[palettesTreeView.SelectedNode.Index][i].NewCopy();
-				}
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldMainPal"])
-			{
-				for (int i = 0; i < ZScreamer.ActivePaletteManager.OverworldMain[palettesTreeView.SelectedNode.Index].Length; i++)
-				{
-					ZScreamer.ActivePaletteManager.OverworldMain[palettesTreeView.SelectedNode.Index][i] = OverworldMainPal[palettesTreeView.SelectedNode.Index][i].NewCopy();
-				}
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldAuxPal"])
-			{
-				for (int i = 0; i < ZScreamer.ActivePaletteManager.OverworldAux[palettesTreeView.SelectedNode.Index].Length; i++)
-				{
-					ZScreamer.ActivePaletteManager.OverworldAux[palettesTreeView.SelectedNode.Index][i] = OverworldAuxPal[palettesTreeView.SelectedNode.Index][i].NewCopy();
-				}
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["OverworldAnimatedPal"])
-			{
-				for (int i = 0; i < ZScreamer.ActivePaletteManager.OverworldAnimated[palettesTreeView.SelectedNode.Index].Length; i++)
-				{
-					ZScreamer.ActivePaletteManager.OverworldAnimated[palettesTreeView.SelectedNode.Index][i] = OverworldAnimatedPal[palettesTreeView.SelectedNode.Index][i].NewCopy();
-				}
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["DungeonMainPal"])
-			{
-				for (int i = 0; i < ZScreamer.ActivePaletteManager.UnderworldMain[palettesTreeView.SelectedNode.Index].Length; i++)
-				{
-					ZScreamer.ActivePaletteManager.UnderworldMain[palettesTreeView.SelectedNode.Index][i] = DungeonMainPal[palettesTreeView.SelectedNode.Index][i].NewCopy();
-				}
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["GlobalSpritesPal"])
-			{
-				for (int i = 0; i < ZScreamer.ActivePaletteManager.SpriteGlobal[palettesTreeView.SelectedNode.Index].Length; i++)
-				{
-					ZScreamer.ActivePaletteManager.SpriteGlobal[palettesTreeView.SelectedNode.Index][i] = GlobalSpritesPal[palettesTreeView.SelectedNode.Index][i].NewCopy();
-				}
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux1Pal"])
-			{
-				for (int i = 0; i < ZScreamer.ActivePaletteManager.SpriteAux1[palettesTreeView.SelectedNode.Index].Length; i++)
-				{
-					ZScreamer.ActivePaletteManager.SpriteAux1[palettesTreeView.SelectedNode.Index][i] = SpritesAux1Pal[palettesTreeView.SelectedNode.Index][i].NewCopy();
-				}
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux2Pal"])
-			{
-				for (int i = 0; i < ZScreamer.ActivePaletteManager.SpriteAux2[palettesTreeView.SelectedNode.Index].Length; i++)
-				{
-					ZScreamer.ActivePaletteManager.SpriteAux2[palettesTreeView.SelectedNode.Index][i] = SpritesAux2Pal[palettesTreeView.SelectedNode.Index][i].NewCopy();
-				}
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SpritesAux3Pal"])
-			{
-				for (int i = 0; i < ZScreamer.ActivePaletteManager.SpriteAux3[palettesTreeView.SelectedNode.Index].Length; i++)
-				{
-					ZScreamer.ActivePaletteManager.SpriteAux3[palettesTreeView.SelectedNode.Index][i] = SpritesAux3Pal[palettesTreeView.SelectedNode.Index][i].NewCopy();
-				}
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["ShieldsPal"])
-			{
-				for (int i = 0; i < ZScreamer.ActivePaletteManager.PlayerShield[palettesTreeView.SelectedNode.Index].Length; i++)
-				{
-					ZScreamer.ActivePaletteManager.PlayerShield[palettesTreeView.SelectedNode.Index][i] = ShieldsPal[palettesTreeView.SelectedNode.Index][i].NewCopy();
-				}
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["SwordsPal"])
-			{
-				for (int i = 0; i < ZScreamer.ActivePaletteManager.PlayerSword[palettesTreeView.SelectedNode.Index].Length; i++)
-				{
-					ZScreamer.ActivePaletteManager.PlayerSword[palettesTreeView.SelectedNode.Index][i] = SwordsPal[palettesTreeView.SelectedNode.Index][i].NewCopy();
-				}
-			}
-			else if (palettesTreeView.SelectedNode.Parent == palettesTreeView.Nodes["ArmorsPal"])
-			{
-				for (int i = 0; i < ZScreamer.ActivePaletteManager.PlayerMail[palettesTreeView.SelectedNode.Index].Length; i++)
-				{
-					ZScreamer.ActivePaletteManager.PlayerMail[palettesTreeView.SelectedNode.Index][i] = ArmorsPal[palettesTreeView.SelectedNode.Index][i].NewCopy();
-				}
+				// pal.SetColorAt(i, )
 			}
 
 			palettePicturebox.Refresh();
@@ -293,16 +168,22 @@
 
 		private void palettePicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			if (selectedPalette != null)
+			if (selectedPalette is null)
 			{
-				for (int i = 0; i < selectedPalette.Length; i++)
-				{
-					e.Graphics.FillRectangle(new SolidBrush(selectedPalette[i]), new Rectangle(((i % selectedX) * 16), (i / selectedX) * 16, 16, 16));
-				}
+				e.Graphics.Clear(Color.FromKnownColor(KnownColor.Control));
+
 			}
 			else
 			{
-				e.Graphics.Clear(Color.FromKnownColor(KnownColor.Control));
+				int i = 0;
+				foreach (var c in selectedPalette.GetNextColor())
+				{
+					if (c is not null) {
+						e.Graphics.FillRectangle(
+							new SolidBrush(((SNESColor) c).RealColor),
+							new(i % 16 * 16, (i & ~0xF) * 16, 16, 16));
+					}
+				}
 			}
 		}
 
@@ -518,19 +399,19 @@
 				}
 			}
 
-			refreshallGfx();
+			RefreshUnderworldGraphics();
 		}
 
 		private void palettePicturebox_MouseDown(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Right)
 			{
-				if ((e.X / 16) < selectedX && ((e.Y / 16) * selectedX) < selectedPalette.Length)
+				if ((e.X / 16) < selectedX && ((e.Y / 16) * selectedX) < selectedPalette.RealSize)
 				{
 					int cindex = (e.X / 16) + ((e.Y / 16) * selectedX);
 					tempIndex = cindex;
-					tempColor = selectedPalette[cindex];
-					selectedPalette[cindex] = Color.Fuchsia;
+					tempColor = selectedPalette.GetRealColorAt(cindex);
+					// selectedPalette[cindex] = Color.Fuchsia;
 
 					for (int i = 0; i < 159; i++)
 					{
@@ -538,8 +419,8 @@
 
 					}
 
-					ZScreamer.ActiveOWScene.Refresh();
-					refreshallGfx();
+					RefreshOverworld();
+					RefreshUnderworldGraphics();
 				}
 			}
 		}
@@ -548,15 +429,14 @@
 		{
 			if (tempIndex != -1)
 			{
-				selectedPalette[tempIndex] = tempColor;
+				selectedPalette.SetColorAt(tempIndex, tempColor);
 				for (int i = 0; i < 159; i++)
 				{
 					ZScreamer.ActiveOW.allmaps[i].MyArtist.ReloadPalettes();
-
 				}
 
-				ZScreamer.ActiveOWScene.Refresh();
-				refreshallGfx();
+				RefreshOverworld();
+				RefreshUnderworldGraphics();
 				tempIndex = -1;
 			}
 		}
@@ -564,25 +444,21 @@
 		private void palettePicturebox_MouseDoubleClick(object sender, MouseEventArgs e)
 		{
 			int cindex = -1;
-			if ((e.X / 16) < selectedX && ((e.Y / 16) * selectedX) < selectedPalette.Length)
+			if ((e.X / 16) < selectedX && ((e.Y / 16) * selectedX) < selectedPalette.RealSize)
 			{
 				cindex = (e.X / 16) + ((e.Y / 16) * selectedX);
 			}
 
 			if (cindex != -1)
 			{
-				cd.Color = selectedPalette[cindex];
+				cd.Color = selectedPalette.GetRealColorAt(cindex);
 				if (cd.ShowDialog() == DialogResult.OK)
 				{
-					selectedPalette[cindex] = cd.Color;
+					selectedPalette.SetColorAt(cindex, cd.Color);
 				}
 
-				for (int i = 0; i < 159; i++)
-				{
-					ZScreamer.ActiveOW.allmaps[i].MyArtist.ReloadPalettes();
-				}
-
-				refreshallGfx();
+				RefreshOverworld();
+				RefreshUnderworldGraphics();
 			}
 		}
 

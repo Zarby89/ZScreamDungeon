@@ -343,7 +343,7 @@
 			Thread.CurrentThread.IsBackground = true;
 			for (int i = 0; i < 159; i++)
 			{
-				ZScreamer.ActiveOW.allmaps[i].HardRefresh();
+				ZScreamer.ActiveOW.allmaps[i].NotifyArtist();
 			}
 		}
 
@@ -936,7 +936,7 @@
 
 		private void tilePictureBox_MouseEnter(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveOWScene.CurrentMap.HardRefresh();
+			ZScreamer.ActiveOWScene.CurrentMap.NotifyArtist();
 			tilePictureBox.Refresh();
 		}
 

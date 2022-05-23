@@ -174,7 +174,7 @@
 				Thread.CurrentThread.IsBackground = true;
 				for (var i = 0; i < Constants.NumberOfOWMaps; i++)
 				{
-					allmaps[i].HardRefresh();
+					allmaps[i].NotifyArtist();
 				}
 			}).Start();
 		}
@@ -435,32 +435,6 @@
 			}
 		}
 
-		public void UpdateChildrenOfTheMap(OverworldScreen map)
-		{
-			map.HardRefresh();
-
-			if (!map.IsPartOfLargeMap) return;
-
-			var a = new OverworldScreen[] {
-				allmaps[map.ParentMapID + 1],
-				allmaps[map.ParentMapID + 8],
-				allmaps[map.ParentMapID + 9]
-			};
-
-			foreach (var m in a)
-			{
-				m.Tileset = map.Tileset;
-				m.MessageID = map.MessageID;
-				m.ScreenPalette = map.ScreenPalette;
-				m.State0SpriteGraphics = map.State0SpriteGraphics;
-				m.State2SpriteGraphics = map.State2SpriteGraphics;
-				m.State3SpriteGraphics = map.State3SpriteGraphics;
-				m.State0SpritePalette = map.State0SpritePalette;
-				m.State2SpritePalette = map.State2SpritePalette;
-				m.State3SpritePalette = map.State3SpritePalette;
-				m.HardRefresh();
-			}
-		}
 		public void LoadOverworldTransportsFromROM()
 		{
 			for (int i = 0, j = 0; i < 0x11; i++, j += 2)
@@ -694,7 +668,7 @@
 				}
 
 				bw.Close();
-				allmaps[i].HardRefresh();
+				allmaps[i].NotifyArtist();
 			}
 		}
 

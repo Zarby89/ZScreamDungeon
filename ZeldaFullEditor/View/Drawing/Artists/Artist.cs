@@ -24,6 +24,9 @@
 				SpritePalette != sprpalflushed;
 		}
 
+		public bool Valid { get; private set; }
+
+
 		private byte bgtilesflushed = 0xFF;
 		public byte BackgroundTileset { get; protected set; }
 
@@ -59,8 +62,23 @@
 		public abstract Tile GetLayer1TileAt(int x, int y);
 		public abstract Tile GetLayer2TileAt(int x, int y);
 
-		public virtual void HardRefresh()
+		public void Invalidate()
 		{
+			Valid = false;
+		}
+
+		protected void Revalidate()
+		{
+			Valid = true;
+		}
+
+		public virtual void AcknowledgeChanges()
+		{
+			if (HasUnacknowledgedChanges)
+			{
+				Invalidate();
+			}
+
 			bgtilesflushed = BackgroundTileset;
 			sprtilesflushed = SpriteTileset;
 			bgpalflushed = BackgroundPalette;

@@ -81,9 +81,14 @@ namespace ZeldaFullEditor.Utility
 		public const string CloseROMWarning = "Closing this ROM will result in all unsaved changes being lost.";
 
 		/// <summary>
-		/// 
+		/// Prompts the user to verify an action that will result in the loss of unsaved changes
+		/// with the following behavior expected to be taken after the user responds:
+		/// <list type="bullet">
+		/// <item>Yes will perform the action after saving the changes.</item>
+		/// <item>No will perform the action after discarding the changes.</item>
+		/// <item>Cancel will abort the action and leave the changes unsaved.</item>
+		/// </list>
 		/// </summary>
-		/// <param name="message"></param>
 		/// <returns>A <see cref="DialogResult"/> specifying the user's selection.</returns>
 		public static DialogResult WarnAboutSaving(string message = DefaultWarning)
 		{
@@ -105,11 +110,27 @@ namespace ZeldaFullEditor.Utility
 			);
 		}
 
+		/// <summary>
+		/// Prompts users to verify a drastic change.
+		/// </summary>
+		/// <returns>
+		/// Returns <see langword="true"/> if the user selects "Yes" and
+		/// <see langword="false"/> if the use selects "No".
+		/// </returns>
+		public static bool VerifyWarning(string message)
+		{
+			return MessageBox.Show(
+				$"{message}\nAre you sure you wish to perform this action?",
+				"Confirm action",
+				MessageBoxButtons.YesNo,
+				MessageBoxIcon.Warning
+			) == DialogResult.Yes;
+		}
 		public static void CryAboutSaving(string message = "OHNO")
 		{
 			MessageBox.Show
 			(
-				"Failed to save;\n" + message,
+				"Failed to save:\n" + message,
 				"Bad Error",
 				MessageBoxButtons.OK
 			);
@@ -131,10 +152,17 @@ namespace ZeldaFullEditor.Utility
 			_ => "None",
 		};
 
+		/// <summary>
+		/// Formats an array of <see langword="byte"/> values as unqualified hexadecimal values
+		/// delimited by a single space.
+		/// </summary>
+		/// <returns>A <see langword="string"/> representing the data within this array.</returns>
 		public static string ToSimpleListing(this byte[] bl)
 		{
 			StringBuilder ret = new StringBuilder(bl.Length * 2 - 1);
+
 			int i = bl.Length;
+
 			foreach (byte b in bl)
 			{
 				ret.Append(b.ToString("X2"));
@@ -143,6 +171,7 @@ namespace ZeldaFullEditor.Utility
 					ret.Append(' ');
 				}
 			}
+
 			return ret.ToString();
 		}
 	}

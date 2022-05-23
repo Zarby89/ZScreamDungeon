@@ -129,6 +129,21 @@
 		{
 			return (ushort) (DATA[address++] | DATA[address++] << 8);
 		}
+		
+		/// <summary>
+		/// Gets an array of 16-bit words at the given <paramref name="address"/> in little endian.
+		/// </summary>
+		public ushort[] Read16Many(int address, int count)
+		{
+			var ret = new ushort[count];
+
+			for (int i = 0; i < count; i++)
+			{
+				ret[i] = (ushort) (DATA[address++] | DATA[address++] << 8);
+			}
+
+			return ret;
+		}
 
 		/// <summary>
 		/// Gets the 24-bit word at the given <paramref name="address"/> in little endian.

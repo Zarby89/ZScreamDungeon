@@ -6,13 +6,14 @@
 	/// </summary>
 	internal static class DefaultEntities
 	{
+
 		/// <summary>
 		/// Finds an entity with the specified <paramref name="id"/> in the given list and returns its name.
 		/// </summary>
 		/// <returns>
-		/// A <see langword="string"/> containing the entity's name
-		/// or <see langword="null"/> if no entity in the list has the ID requested.
+		/// A <see langword="string"/> containing the entity's name.
 		/// </returns>
+		/// <exception cref="KeyNotFoundException"></exception>
 		public static string GetNameFromEntityList(this EntityName[] list, int id)
 		{
 			return list.GetObjectFromEntityList(id)?.Name ??

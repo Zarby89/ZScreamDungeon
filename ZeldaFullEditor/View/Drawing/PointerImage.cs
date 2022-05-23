@@ -21,8 +21,8 @@
 
 		public byte this[int x, int y]
 		{
-			get => throw new NotImplementedException();
-			set => throw new NotImplementedException();
+			get => Pointer[x + y * Height];
+			set => Pointer[x + y * Height] = value;
 		}
 
 		public ColorPalette Palette

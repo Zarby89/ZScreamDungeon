@@ -2,14 +2,12 @@
 {
 	/// <summary>
 	/// Represents the smallest possible graphical unit on the SNES: an 8-by-8 square pixel tile.
-	/// This class treats its indices as 256 bits per pixel, but any lower bit depth may be represented
+	/// This class treats its indices as 8 bits per pixel, but any lower bit depth may be represented
 	/// by simply not using higher indices.
 	/// </summary>
 	public class GraphicsTile
 	{
 		private readonly byte[] _data;
-
-		public byte this[int i] => _data[i];
 
 		public byte this[int x, int y] => _data[x + 8 * y];
 
@@ -31,19 +29,31 @@
 			_data = data.DeepCopy();
 		}
 
-		public byte GetPixelAt(int x, int y, bool hflip, bool vflip)
-		{
-			return this[hflip ? 7 - x : x, vflip ? 7 - y : y];
-		}
-
 		public void DrawToCanvas(IGraphicsCanvas canvas, int x, int y, byte pal, bool hflip, bool vflip)
 		{
-			throw new NotImplementedException();
+			for (int yo = 0; yo < 7; yo++)
+			{
+				for (int xo = 0; xo < 7; xo++)
+				{
+					var p = this[hflip ? 7 - xo : xo, vflip ? 7 - yo : yo];
+					// 0 is always transparency, so skip the palette
+					if (p != 0)
+					{
+						p |= pal;
+					}
+					canvas[x + xo, y + yo] = p;
+				}
+			}
 		}
 
 		public void DrawToCanvas(IGraphicsCanvas canvas, int x, int y, byte pal)
 		{
 			DrawToCanvas(canvas, x, y, pal, false, false);
+		}
+
+		public void DrawToCanvas(IGraphicsCanvas canvas, int x, int y)
+		{
+			DrawToCanvas(canvas, x, y, 0, false, false);
 		}
 	}
 }

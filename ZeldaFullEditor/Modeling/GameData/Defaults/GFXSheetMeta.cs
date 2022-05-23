@@ -9,7 +9,7 @@ namespace ZeldaFullEditor.Modeling.GameData.Defaults
 	public class GFXSheetMeta
 	{
 		/// <summary>
-		/// Gets the ID of the graphics sheet..
+		/// Gets the ID of the graphics sheet.
 		/// </summary>
 		public byte? ID { get; init; } = 0xFF;
 

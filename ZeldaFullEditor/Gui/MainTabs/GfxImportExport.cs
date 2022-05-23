@@ -297,13 +297,13 @@
 			}
 
 			b.UnlockBits(bd);
-			RoomEditingArtist.HardRefresh();
-			RoomPreviewArtist.HardRefresh();
+			RoomEditingArtist.Invalidate();
+			RoomPreviewArtist.Invalidate();
 			allgfxPicturebox.Refresh();
 
 			for (int i = 0; i < 159; i++)
 			{
-				ZScreamer.ActiveOW.allmaps[i].HardRefresh();
+				ZScreamer.ActiveOW.allmaps[i].NotifyArtist();
 			}
 		}
 

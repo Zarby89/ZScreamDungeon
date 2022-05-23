@@ -12,9 +12,9 @@
 		public int RealX => AssociatedObject?.RealX ?? 0;
 		public int RealY => AssociatedObject?.RealY ?? 0;
 
-		public RoomDestination(byte i)
+		public RoomDestination(byte index)
 		{
-			Index = i;
+			Index = index;
 		}
 
 		public void Reset()

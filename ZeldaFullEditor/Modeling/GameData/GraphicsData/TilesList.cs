@@ -54,7 +54,7 @@
 
 			foreach (var s in sources)
 			{
-				count += s.Item2;
+				count += s.count;
 			}
 
 			if (count <= 0)
@@ -68,9 +68,9 @@
 
 			foreach (var s in sources)
 			{
-				for (var j = 0; j < s.Item2; j++, i++)
+				for (var j = 0; j < s.count; j++, i++)
 				{
-					list[i] = new Tile(ZS.ROM.Read16(s.Item1 + i * 2));
+					list[i] = new Tile(ZS.ROM.Read16(s.address + i * 2));
 				}
 			}
 

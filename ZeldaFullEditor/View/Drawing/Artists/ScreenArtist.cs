@@ -60,7 +60,7 @@
 			g.DrawImage(FinalOutput, 0, 0);
 		}
 
-		public override void HardRefresh()
+		public override void AcknowledgeChanges()
 		{
 			BackgroundPalette = MyScreen?.ScreenPalette ?? 0;
 			SpritePalette = MyScreen?.GetSpritePaletteForGameState(ZScreamer.ActiveOW.GameState) ?? 0;
@@ -75,7 +75,7 @@
 				RebuildBitMap();
 			}
 
-			base.HardRefresh();
+			base.AcknowledgeChanges();
 		}
 
 		public override void ReloadPalettes()

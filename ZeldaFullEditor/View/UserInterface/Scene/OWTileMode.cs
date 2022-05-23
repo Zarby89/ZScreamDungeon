@@ -217,7 +217,7 @@
 
 			if (lastHover != hoveredMap)
 			{
-				ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].HardRefresh();
+				ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].NotifyArtist();
 				lastHover = hoveredMap;
 			}
 

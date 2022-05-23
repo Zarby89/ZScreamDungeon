@@ -2,7 +2,17 @@
 {
 	public class RoomArtist : Artist
 	{
-		public Room CurrentRoom { get; set; }
+		private Room curroom;
+		public Room CurrentRoom
+		{
+			get => curroom;
+			set
+			{
+				if (curroom == value) return;
+				curroom = value;
+				Invalidate();
+			}
+		}
 
 		public override ushort[] Layer1TileMap { get; } = new ushort[Constants.TilesPerUnderworldRoom];
 		public override PointeredImage Layer1Canvas { get; } = new(512, 512);
@@ -134,10 +144,10 @@
 			if (CurrentRoom == room) return;
 
 			CurrentRoom = room;
-			HardRefresh();
+			AcknowledgeChanges();
 		}
 
-		public override void HardRefresh()
+		public override void AcknowledgeChanges()
 		{
 			BackgroundPalette = CurrentRoom?.Palette ?? 0;
 			SpritePalette = CurrentRoom?.Palette ?? 0;
@@ -155,7 +165,7 @@
 				RebuildBitMap();
 			}
 
-			base.HardRefresh();
+			base.AcknowledgeChanges();
 		}
 
 		public override void ReloadPalettes()

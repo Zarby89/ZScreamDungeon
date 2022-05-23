@@ -8,12 +8,14 @@
 		Point3D[] triforceVertices = new Point3D[6];
 		Point3D[] crystalVertices = new Point3D[6];
 		Point3D selectedVertex = null;
-		OAMTile[] oamData = new OAMTile[10];
-		OAMTile selectedOamTile = null;
-		OAMTile lastSelectedOamTile = null;
+		OAMDrawInfo[] oamData = new OAMDrawInfo[10];
+		OAMDrawInfo selectedOAMDrawInfo = dummy;
+		OAMDrawInfo lastSelectedOAMDrawInfo = dummy;
 		byte[] mapdata = new byte[64 * 64];
 		byte[] dwmapdata = new byte[64 * 64];
 		int swordX = 0;
+
+		private static readonly OAMDrawInfo dummy = new();
 
 		public IntPtr dungmaptiles8Ptr = Marshal.AllocHGlobal(0x8000);
 		public Bitmap dungmaptiles8Bitmap;
@@ -237,17 +239,16 @@
 			// byte 2 and 3 = Tile Count in Big Endian if 8XXX this is the last index
 			// 11 0B    00 19
 
-			// TODO magic numbers
-			uppersprCheckbox.Checked = (ZScreamer.ActiveROM[0x67E92] & 0x01) == 0;
-
 			int xLowest = 256;
 			for (int i = 0; i < 10; i++)
 			{
-				oamData[i] = new OAMTile(ZScreamer.ActiveROM[0x67E26 + i],
-					(byte) (ZScreamer.ActiveROM[0x67E30 + (i * 2)] + 22),
-					ZScreamer.ActiveROM[0x67E1C + i],
+				oamData[i] = new OAMDrawInfo(
+					(ushort) (ZScreamer.ActiveROM[0x67E1C + i] | ((ZScreamer.ActiveROM[0x67E92] & 0x01) << 8)),
+					ZScreamer.ActiveROM[0x67E26 + i],
+					(ZScreamer.ActiveROM[0x67E30 + (i * 2)] + 22),
 					(byte) ((ZScreamer.ActiveROM[0x67E92] >> 1) & 0x07),
-					uppersprCheckbox.Checked);
+					false, false, false
+					);
 				if (ZScreamer.ActiveROM[0x67E26 + i] < xLowest)
 				{
 					xLowest = ZScreamer.ActiveROM[0x67E26 + i];
@@ -258,15 +259,15 @@
 			//swordXPos = ZScreamer.ActiveROM.DATA[0x67E26];
 
 			/*
-            oamData[1] = new OAMTile(64, 54, 02, 00);
-            oamData[2] = new OAMTile(48  ,62  ,32, 00);
-            oamData[3] = new OAMTile(80  ,62  ,34, 00);
-            oamData[4] = new OAMTile(64  ,70  ,04, 00);
-            oamData[5] = new OAMTile(64  ,86  ,06, 00);
-            oamData[6] = new OAMTile(64  ,102 ,08, 00);
-            oamData[7] = new OAMTile(64  ,118 ,10, 00);
-            oamData[8] = new OAMTile(64  ,134 ,12, 00);
-            oamData[9] = new OAMTile(64  ,150 ,14, 00);
+            oamData[1] = new OAMDrawInfo(64, 54, 02, 00);
+            oamData[2] = new OAMDrawInfo(48  ,62  ,32, 00);
+            oamData[3] = new OAMDrawInfo(80  ,62  ,34, 00);
+            oamData[4] = new OAMDrawInfo(64  ,70  ,04, 00);
+            oamData[5] = new OAMDrawInfo(64  ,86  ,06, 00);
+            oamData[6] = new OAMDrawInfo(64  ,102 ,08, 00);
+            oamData[7] = new OAMDrawInfo(64  ,118 ,10, 00);
+            oamData[8] = new OAMDrawInfo(64  ,134 ,12, 00);
+            oamData[9] = new OAMDrawInfo(64  ,150 ,14, 00);
             */
 
 			LoadTitleScreen();
@@ -609,20 +610,20 @@
 			var alltilesData = (byte*) ZScreamer.ActiveGraphicsManager.currentTileScreengfx16Ptr.ToPointer();
 			byte* ptr = (byte*) destPtr.ToPointer();
 
-			foreach (OAMTile t in oamData) // Prevent draw if tile == 0xFFFF since it 0 indexed
+			foreach (OAMDrawInfo t in oamData) // Prevent draw if tile == 0xFFFF since it 0 indexed
 			{
 				for (var yl = 0; yl < 16; yl++)
 				{
 					for (var xl = 0; xl < 8; xl++)
 					{
-						int ty = (t.tile / 16) * 512;
-						int tx = (t.tile % 16) * 4;
+						int ty = (t.TileIndex / 16) * 512;
+						int tx = (t.TileIndex % 16) * 4;
 						var pixel = alltilesData[(tx + ty) + (yl * 64) + xl];
 
-						int index = (t.x + (xl * 2)) + (t.y * 256) + (yl * 256); // + ((mx * 2) + (my * 256));
+						int index = (t.XOff + (xl * 2)) + (t.YOff * 256) + (yl * 256); // + ((mx * 2) + (my * 256));
 
-						ptr[index + 1] = (byte) ((pixel & 0x0F) + (t.pal + 8) * 16);
-						ptr[index] = (byte) (((pixel >> 4) & 0x0F) + (t.pal + 8) * 16);
+						ptr[index + 1] = (byte) ((pixel & 0x0F) + (t.Palette + 8) * 16);
+						ptr[index] = (byte) (((pixel >> 4) & 0x0F) + (t.Palette + 8) * 16);
 					}
 				}
 			}
@@ -670,9 +671,11 @@
 				e.Graphics.DrawImage(tilesBG1Bitmap, Constants.ScreenSizedRectangle, Constants.RoomSizedRectangle, GraphicsUnit.Pixel);
 			}
 
-			if (editsprRadio.Checked && lastSelectedOamTile != null)
+			if (editsprRadio.Checked && lastSelectedOAMDrawInfo != dummy)
 			{
-				e.Graphics.DrawRectangle(Pens.LightGreen, new Rectangle((lastSelectedOamTile.x * 2), (lastSelectedOamTile.y * 2), 32, 32));
+				e.Graphics.DrawRectangle(Pens.LightGreen,
+					new Rectangle(lastSelectedOAMDrawInfo.XOff * 2,
+					lastSelectedOAMDrawInfo.YOff * 2, 32, 32));
 			}
 		}
 
@@ -686,9 +689,9 @@
 			selectedTile = (ushort) ((e.X / 16) + (e.Y & ~0xF));
 			tilesBox.Refresh();
 
-			if (editsprRadio.Checked && lastSelectedOamTile != null)
+			if (editsprRadio.Checked && lastSelectedOAMDrawInfo != dummy)
 			{
-				lastSelectedOamTile.tile = selectedTile;
+				lastSelectedOAMDrawInfo.TileIndex = selectedTile;
 				screenBox.Refresh();
 			}
 		}
@@ -727,7 +730,7 @@
 			}
 			else if (e.Button == MouseButtons.Right)
 			{
-				Tile t = new Tile(0);
+				Tile t = Tile.Empty;
 				if (bg1Radio.Checked)
 				{
 					t = new Tile(tilesBG1Buffer[lastX + (lastY * 32)]);
@@ -754,10 +757,10 @@
 				int yP = e.Y / 2;
 				for (int i = 0; i < 10; i++)
 				{
-					if (xP >= oamData[i].x && xP <= (oamData[i].x + 16) &&
-						yP >= oamData[i].y && yP <= (oamData[i].y + 16))
+					if (xP >= oamData[i].XOff && xP <= (oamData[i].XOff + 16) &&
+						yP >= oamData[i].YOff && yP <= (oamData[i].YOff + 16))
 					{
-						selectedOamTile = oamData[i];
+						selectedOAMDrawInfo = oamData[i];
 						break;
 					}
 				}
@@ -800,7 +803,7 @@
 					for (int i = 0; i < 10; i++)
 					{
 						// TODO magic number
-						oamData[i].x = (byte) (ZScreamer.ActiveROM[0x67E26 + i] + (e.X / 2) - swordX);
+						oamData[i].XOff = (byte) (ZScreamer.ActiveROM[0x67E26 + i] + (e.X / 2) - swordX);
 
 						screenBox.Refresh();
 					}
@@ -819,25 +822,25 @@
 
 					for (int i = 0; i < 10; i++)
 					{
-						if (xP >= oamData[i].x && xP <= (oamData[i].x + 16) &&
-							yP >= oamData[i].y && yP <= (oamData[i].y + 16))
+						if (xP >= oamData[i].XOff && xP <= (oamData[i].XOff + 16) &&
+							yP >= oamData[i].YOff && yP <= (oamData[i].YOff + 16))
 						{
-							selectedOamTile = oamData[i];
+							selectedOAMDrawInfo = oamData[i];
 							break;
 						}
 					}
 
-					if (selectedOamTile != null)
+					if (selectedOAMDrawInfo != dummy)
 					{
 						if (lockCheckbox.Checked)
 						{
-							selectedOamTile.x = (byte) (xP & ~0x7);
-							selectedOamTile.y = (byte) (yP & ~0x7);
+							selectedOAMDrawInfo.XOff = (byte) (xP & ~0x7);
+							selectedOAMDrawInfo.YOff = (byte) (yP & ~0x7);
 						}
 						else
 						{
-							selectedOamTile.x = (byte) xP;
-							selectedOamTile.y = (byte) yP;
+							selectedOAMDrawInfo.XOff = (byte) xP;
+							selectedOAMDrawInfo.YOff = (byte) yP;
 						}
 					}
 
@@ -845,26 +848,26 @@
 				}
 			}
 
-			// SelectedOamTile
+			// SelectedOAMDrawInfo
 		}
 
 		private void screenBox_MouseUp(object sender, MouseEventArgs e)
 		{
 			mDown = false;
-			if (selectedOamTile != null)
+			if (selectedOAMDrawInfo != dummy)
 			{
-				lastSelectedOamTile = selectedOamTile;
-				selectedTile = lastSelectedOamTile.tile;
-				palSelected = (byte) (lastSelectedOamTile.pal + 8);
-				mirrorXCheckbox.Checked = lastSelectedOamTile.mx == 1;
-				mirrorYCheckbox.Checked = lastSelectedOamTile.my == 1;
+				lastSelectedOAMDrawInfo = selectedOAMDrawInfo;
+				selectedTile = lastSelectedOAMDrawInfo.TileIndex;
+				palSelected = (byte) (lastSelectedOAMDrawInfo.Palette + 8);
+				mirrorXCheckbox.Checked = lastSelectedOAMDrawInfo.HFlip;
+				mirrorYCheckbox.Checked = lastSelectedOAMDrawInfo.VFlip;
 				updateTiles();
 				paletteBox.Refresh();
 				tilesBox.Refresh();
 			}
 
 			screenBox.Refresh();
-			selectedOamTile = null;
+			selectedOAMDrawInfo = dummy;
 		}
 
 
@@ -1035,7 +1038,7 @@
 			{
 				for (int i = 0; i < 10; i++)
 				{
-					oamData[i].pal = (byte) (palSelected - 8);
+					oamData[i].Palette = (byte) (palSelected - 8);
 				}
 			}
 
@@ -1188,16 +1191,16 @@
 		{
 			for (int i = 0; i < 10; i++)
 			{
-				ZScreamer.ActiveROM[0x67E26 + i] = oamData[i].x;
-				ZScreamer.ActiveROM[0x67E30 + (i * 2)] = (byte) (oamData[i].y - 22);
+				ZScreamer.ActiveROM[0x67E26 + i] = (byte) oamData[i].XOff;
+				ZScreamer.ActiveROM[0x67E30 + (i * 2)] = (byte) (oamData[i].YOff - 22);
 
 				if (uppersprCheckbox.Checked)
 				{
-					ZScreamer.ActiveROM[0x67E1C + i] = (byte) (oamData[i].tile - 512);
+					ZScreamer.ActiveROM[0x67E1C + i] = (byte) (oamData[i].TileIndex - 512);
 				}
 				else
 				{
-					ZScreamer.ActiveROM[0x67E1C + i] = (byte) (oamData[i].tile - 768);
+					ZScreamer.ActiveROM[0x67E1C + i] = (byte) (oamData[i].TileIndex - 768);
 				}
 			}
 
@@ -1243,11 +1246,11 @@
 
 			if (uppersprCheckbox.Checked)
 			{
-				ZScreamer.ActiveROM[0x67E92] = (byte) (0x20 + (oamData[0].pal << 1));
+				ZScreamer.ActiveROM[0x67E92] = (byte) (0x20 + (oamData[0].Palette << 1));
 			}
 			else
 			{
-				ZScreamer.ActiveROM[0x67E92] = (byte) (0x21 + (oamData[0].pal << 1));
+				ZScreamer.ActiveROM[0x67E92] = (byte) (0x21 + (oamData[0].Palette << 1));
 			}
 
 			ZScreamer.ActiveROM.Write(titleScreenPosition, allData.ToArray());

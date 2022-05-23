@@ -347,7 +347,7 @@
 			//	ZScreamer.ActiveOW.allmaps[i].NeedsRefresh = true;
 			//}
 
-			ZScreamer.ActiveOWScene.CurrentMap.HardRefresh();
+			ZScreamer.ActiveOWScene.CurrentMap.NotifyArtist();
 
 			Close();
 		}

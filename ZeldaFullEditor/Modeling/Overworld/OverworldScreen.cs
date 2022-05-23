@@ -24,13 +24,31 @@
 		/// </summary>
 		public ScreenArtist MyArtist { get; }
 
+		private OverworldScreen parent;
 		/// <summary>
 		/// The <see cref="OverworldScreen"/> from which this screen should derive its graphics, sprites, and others properties.
 		/// In essence, this is a reference to the screen which is the north-west corner of the containing screen when this
 		/// map is part of a larger screen. When this screen is a normal sized screen, then this property should be a reference
 		/// back to <see langword="this"/> screen.
 		/// </summary>
-		public OverworldScreen ParentMap { get; set; }
+		public OverworldScreen ParentMap
+		{
+			get => parent;
+			set
+			{
+				parent = value;
+				if (IsOwnParent) return;
+				Tileset = parent.Tileset;
+				MessageID = parent.MessageID;
+				ScreenPalette = parent.ScreenPalette;
+				State0SpriteGraphics = parent.State0SpriteGraphics;
+				State2SpriteGraphics = parent.State2SpriteGraphics;
+				State3SpriteGraphics = parent.State3SpriteGraphics;
+				State0SpritePalette = parent.State0SpritePalette;
+				State2SpritePalette = parent.State2SpritePalette;
+				State3SpritePalette = parent.State3SpritePalette;
+			}
+		}
 
 		/// <summary>
 		/// Whether or not this screen's <see cref="ParentMap">ParentMap</see> is
@@ -143,18 +161,13 @@
 			};
 
 			ParentMap = this;
-			NotifyArtistOfChange();
+			NotifyArtist();
 		}
 
-		public void HardRefresh()
+		public void NotifyArtist()
 		{
-			MyArtist.HardRefresh();
+			MyArtist.AcknowledgeChanges();
 			throw new NotImplementedException();
-		}
-
-		public void NotifyArtistOfChange()
-		{
-
 		}
 
 		public byte GetSpriteGraphicsForGameState(int gamestate) => gamestate switch

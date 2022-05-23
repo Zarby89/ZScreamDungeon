@@ -12,7 +12,7 @@ namespace ZeldaFullEditor.Data
 		/// <param name="art">Handler for graphics where object is being drawn.</param>
 		/// <param name="obj">Object being drawn</param>
 		/// <param name="allbg">Whether this routines draws to all backgrounds or just the object's background</param>
-		/// <param name="instructions">A list of <see cref="DrawInfo">DrawInfo</see> instructions for which tiles to draw.</param>
+		/// <param name="instructions">A list of <see cref="DrawInfo"/> instructions for which tiles to draw.</param>
 		private static void DrawTiles(Artist art, RoomObject obj, bool allbg, params DrawInfo[] instructions)
 		{
 			if (obj is RoomObjectPreview pre)

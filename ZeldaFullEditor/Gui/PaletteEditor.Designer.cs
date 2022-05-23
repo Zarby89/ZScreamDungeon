@@ -28,18 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Hud");
-			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Overworld Main");
-			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Overworld Aux");
-			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Overworld Animated");
-			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Dungeon Main");
-			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Global Sprites");
-			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Sprites Aux1");
-			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Sprites Aux2");
-			System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Sprites Aux3");
-			System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Shields");
-			System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Swords");
-			System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Armors");
+			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("HUD");
+			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Overworld");
+			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Overworld aux");
+			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Overworld animated");
+			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Dungeon");
+			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Sprite");
+			System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Sprite aux 1");
+			System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Sprite aux 2");
+			System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Sprite aux 3");
+			System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Shield");
+			System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Sword");
+			System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Mail");
 			this.palettesTreeView = new System.Windows.Forms.TreeView();
 			this.applyButton = new System.Windows.Forms.Button();
 			this.restoreallButton = new System.Windows.Forms.Button();
@@ -56,29 +56,41 @@
 			this.palettesTreeView.Location = new System.Drawing.Point(0, 0);
 			this.palettesTreeView.Name = "palettesTreeView";
 			treeNode1.Name = "HudPal";
-			treeNode1.Text = "Hud";
+			treeNode1.Text = "HUD";
+			treeNode1.Tag = ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes.PaletteType.HUDPalette;
 			treeNode2.Name = "OverworldMainPal";
-			treeNode2.Text = "Overworld Main";
+			treeNode2.Text = "Overworld";
+			treeNode2.Tag = ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes.PaletteType.OWMain;
 			treeNode3.Name = "OverworldAuxPal";
-			treeNode3.Text = "Overworld Aux";
+			treeNode3.Text = "Overworld aux";
+			treeNode3.Tag = ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes.PaletteType.OWAux;
 			treeNode4.Name = "OverworldAnimatedPal";
-			treeNode4.Text = "Overworld Animated";
+			treeNode4.Text = "Overworld animated";
+			treeNode4.Tag = ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes.PaletteType.OWAnim;
 			treeNode5.Name = "DungeonMainPal";
-			treeNode5.Text = "Dungeon Main";
+			treeNode5.Text = "Dungeon";
+			treeNode5.Tag = ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes.PaletteType.DungeonPalette;
 			treeNode6.Name = "GlobalSpritesPal";
-			treeNode6.Text = "Global Sprites";
+			treeNode6.Text = "Sprite";
+			treeNode6.Tag = ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes.PaletteType.FullSpritePalette;
 			treeNode7.Name = "SpritesAux1Pal";
-			treeNode7.Text = "Sprites Aux1";
+			treeNode7.Text = "Sprite aux 1";
+			treeNode7.Tag = ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes.PaletteType.SpriteAux1Palette;
 			treeNode8.Name = "SpritesAux2Pal";
-			treeNode8.Text = "Sprites Aux2";
+			treeNode8.Text = "Sprite aux 2";
+			treeNode8.Tag = ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes.PaletteType.SpriteAux2Palette;
 			treeNode9.Name = "SpritesAux3Pal";
-			treeNode9.Text = "Sprites Aux3";
+			treeNode9.Text = "Sprite aux 3";
+			treeNode9.Tag = ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes.PaletteType.SpriteAux3Palette;
 			treeNode10.Name = "ShieldsPal";
-			treeNode10.Text = "Shields";
+			treeNode10.Text = "Shield";
+			treeNode10.Tag = ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes.PaletteType.ShieldPalette;
 			treeNode11.Name = "SwordsPal";
-			treeNode11.Text = "Swords";
+			treeNode11.Text = "Sword";
+			treeNode11.Tag = ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes.PaletteType.SwordPalette;
 			treeNode12.Name = "ArmorsPal";
-			treeNode12.Text = "Armors";
+			treeNode12.Text = "Mail";
+			treeNode12.Tag = ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes.PaletteType.MailPalette;
 			this.palettesTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
@@ -174,7 +186,6 @@
 			this.Name = "PaletteEditor";
 			this.Size = new System.Drawing.Size(468, 324);
 			this.Load += new System.EventHandler(this.PaletteEditor_Load);
-			this.VisibleChanged += new System.EventHandler(this.PaletteEditor_VisibleChanged);
 			((System.ComponentModel.ISupportInitialize)(this.palettePicturebox)).EndInit();
 			this.ResumeLayout(false);
 

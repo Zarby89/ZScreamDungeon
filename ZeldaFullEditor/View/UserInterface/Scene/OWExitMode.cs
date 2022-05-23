@@ -94,7 +94,6 @@
 			LastSelectedExit.GlobalX = Constants.NullEntrance;
 			LastSelectedExit.GlobalY = Constants.NullEntrance;
 			LastSelectedExit.MapID = 0;
-			LastSelectedExit.TargetRoomID = 0;
 		}
 
 		private void OnMouseMove_Exit(MouseEventArgs e)

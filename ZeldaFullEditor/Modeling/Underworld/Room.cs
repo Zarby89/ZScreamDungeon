@@ -1045,7 +1045,11 @@
 
 		private List<RoomObject> FindAllObjects(Predicate<RoomObject> test)
 		{
-			return (List<RoomObject>) Layer1Objects.FindAll(test).Concat(Layer2Objects.FindAll(test)).Concat(Layer3Objects.FindAll(test));
+			List<RoomObject> ret = Layer1Objects.FindAll(test);
+			ret.AddRange(Layer2Objects.FindAll(test));
+			ret.AddRange(Layer3Objects.FindAll(test));
+
+			return ret;
 		}
 
 		private void ReassociateChestsAndItems()

@@ -154,7 +154,7 @@
 			{
 				ZGUI.OverworldEditor.propertiesChangedFromForm = true;
 
-				CurrentMap.HardRefresh();
+				CurrentMap.NotifyArtist();
 
 				ZGUI.OverworldEditor.mapGroupbox.Text = $"Selected map: {CurrentParentMapID:X2}";
 

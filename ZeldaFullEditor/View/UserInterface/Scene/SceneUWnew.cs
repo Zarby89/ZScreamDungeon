@@ -130,7 +130,6 @@
 			// TODO ROOM.DRAW()
 
 			RoomEditingArtist.CurrentRoom = Room;
-			RoomEditingArtist.HardRefresh();
 
 			Refresh();
 		}

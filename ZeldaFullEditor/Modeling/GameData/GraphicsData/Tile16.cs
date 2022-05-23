@@ -31,7 +31,6 @@
 			_ => Tile0,
 		};
 
-
 		public Tile16(Tile tile0, Tile tile1, Tile tile2, Tile tile3)
 		{
 			Tile0 = tile0;
@@ -39,6 +38,7 @@
 			Tile2 = tile2;
 			Tile3 = tile3;
 		}
+
 		public Tile16(ushort a, ushort b, ushort c, ushort d)
 		{
 			Tile0 = new Tile(a);
