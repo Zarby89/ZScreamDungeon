@@ -6,19 +6,26 @@
 
 		public SNESColor this[int i] => Palette[i];
 
-		public SNESColor this[int palette, int index]
+		/// <summary>
+		/// 
+		/// </summary>
+		/// <param name="palette"></param>
+		/// <param name="color"></param>
+		/// <returns></returns>
+		/// <exception cref="ArgumentOutOfRangeException"></exception>
+		public SNESColor this[int palette, int color]
 		{
 			get {
 				if (palette is > 15 or < 0)
 				{
 					throw new ArgumentOutOfRangeException(nameof(palette), "Palette id may not exceed 15.");
 				}
-				else if (index is > 15 or < 0)
+				else if (color is > 15 or < 0)
 				{
-					throw new ArgumentOutOfRangeException(nameof(index), "Palette index may not exceed 15.");
+					throw new ArgumentOutOfRangeException(nameof(color), "Palette index may not exceed 15.");
 				}
 
-				return Palette[palette * 16 + index];
+				return Palette[palette * 16 + color];
 			}
 		}
 
@@ -29,20 +36,25 @@
 
 		public void AddPartialPalette(PartialPalette p, int index)
 		{
-			int i = 0;
 			foreach (var c in p.GetNextColor())
 			{
 				if (c is not null)
 				{
-					Palette[i] = (SNESColor) c;
+					Palette[index] = (SNESColor) c;
 				}
-				i++;
+				index++;
 			}
 		}
 
+		public void DuplicateHalfPalette(int source, int destination)
+		{
+			for (int i = 1; i < 8; i++)
+			{
+				Palette[destination + i] = Palette[source + i];
+			}
+		}
 
-
-		public Color[] GetFullPalette()
+		public Color[] ToColorArray()
 		{
 			var ret = new Color[Constants.TotalPaletteSize];
 
@@ -50,6 +62,8 @@
 			{
 				ret[i] = Palette[i].RealColor;
 			}
+
+			ret[0] = Color.Transparent;
 
 			return ret;
 		}

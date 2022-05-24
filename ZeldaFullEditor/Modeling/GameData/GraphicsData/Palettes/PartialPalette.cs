@@ -48,7 +48,7 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 		/// If <paramref name="colors"/> is not of the correct length, an <see cref="ArgumentException"/> error will be thrown.
 		/// </para>
 		/// </summary>
-		/// <param name="colors">An array of <see langword="ushort"/> values that </param>
+		/// <param name="colors">An array of <see langword="ushort"/> values that represents the raw ROM data of each color.</param>
 		/// <param name="info">A <see cref="PaletteInfo"/> record detailing the palette type and ROM location.</param>
 		/// <exception cref="ArgumentException"></exception>
 		public PartialPalette(ushort[] colors, PaletteInfo info)
@@ -56,9 +56,9 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 			NextColor = (Info = info).Type switch
 			{
 				DungeonPalette => GetNextColorTrans0,
-				SpriteAux1Palette  => GetNextColorNormal,
-				SpriteAux2Palette => GetNextColorNormal,
-				SpriteAux3Palette => GetNextColorNormal,
+				SpritePal0  => GetNextColorNormal,
+				SpriteEnvironment => GetNextColorNormal,
+				SpriteAux => GetNextColorNormal,
 				FullSpritePalette => GetNextColorTrans0,
 				MailPalette => GetNextColorNormal,
 				SwordPalette => GetNextColorNormal,
@@ -71,7 +71,7 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 				OWMain => GetNextColorBigHalves,
 				OWAux => GetNextColorBigHalves,
 				UWMapSpritePalette => GetNextColorBigHalves,
-				_ => throw new ArgumentException($"Unrecognized {typeof(PaletteType).Name}: {Info.Type}"),
+				_ => throw new ArgumentException($"Unrecognized {nameof(PaletteType)}: {Info.Type}"),
 			};
 
 			if (colors.Length != RealSize)
@@ -139,7 +139,36 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 
 		private SNESColor? GetNextColorNormal(int virtualindex, ref int realindex)
 		{
-			return Palette[virtualindex++];
+			return Palette[realindex++];
+		}
+
+		public PartialPalette Clone()
+		{
+			var ret = new ushort[Palette.Length];
+
+			for (int i = 0; i < Palette.Length; i++)
+			{
+				ret[i] = Palette[i].CGRAMValue;
+			}
+
+			return new(ret, Info);
+		}
+
+
+		public void CopyColors(PartialPalette other)
+		{
+			if (Info.Type != other.Info.Type)
+			{
+				throw new FormatException($"The palette type of {nameof(other)} ({other.Info.Type}) does not match" +
+					$"the type of the caller ({Info.Type}).");
+			}
+
+			for (int i = 0; i < Palette.Length; i++)
+			{
+				var c = other.Palette[i];
+				SetColorAt(i, c.R, c.G, c.B);
+			}
+
 		}
 
 		public byte[] GetByteData()

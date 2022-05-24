@@ -65,7 +65,7 @@
     <Compile Update="Gui\MainTabs\TextEditorMessages.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="View\UserInterface\Scene\UWCollisionMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneUW.CollisionMode.cs" />
     <Compile Update="Gui\ExtraForms\Chestviewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -111,7 +111,7 @@
     <Compile Update="View\UserInterface\Scene\Scene.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="View\UserInterface\Scene\SceneUWnew.cs">
+    <Compile Update="View\UserInterface\Scene\SceneUW.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Update="Gui\VramViewer.cs">
@@ -120,28 +120,28 @@
     <Compile Update="Gui\WindowPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Update="View\UserInterface\Scene\OWDoorMode.cs" />
-    <Compile Update="View\UserInterface\Scene\OWEntranceMode.cs" />
-    <Compile Update="View\UserInterface\Scene\OWExitMode.cs" />
-    <Compile Update="View\UserInterface\Scene\OWSecretsMode.cs" />
-    <Compile Update="View\UserInterface\Scene\UWLayerMode.cs" />
-    <Compile Update="View\UserInterface\Scene\OWSpriteMode.cs" />
-    <Compile Update="View\UserInterface\Scene\OWOverlayMode.cs" />
-    <Compile Update="View\UserInterface\Scene\OWTileMode.cs" />
-    <Compile Update="View\UserInterface\Scene\OWGravesMode.cs" />
-    <Compile Update="View\UserInterface\Scene\OWTransportMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneOW.DoorMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneOW.EntranceMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneOW.ExitMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneOW.SecretsMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneUW.LayerMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneOW.SpriteMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneOW.OverlayMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneOW.TileMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneOW.GravesMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneOW.TransportMode.cs" />
     <Compile Update="Gui\ObjectViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Update="View\UserInterface\Scene\SceneOW.cs" />
-    <Compile Update="View\UserInterface\Scene\UWBlockMode.cs" />
-    <Compile Update="View\UserInterface\Scene\UWDoorMode.cs">
+    <Compile Update="View\UserInterface\Scene\SceneUW.BlockMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneUW.DoorMode.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Update="View\UserInterface\Scene\UWEntranceMode.cs" />
-    <Compile Update="View\UserInterface\Scene\UWSecretsMode.cs" />
-    <Compile Update="View\UserInterface\Scene\UWSpriteMode.cs" />
-    <Compile Update="View\UserInterface\Scene\UWTorchMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneUW.EntranceMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneUW.SecretsMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneUW.SpriteMode.cs" />
+    <Compile Update="View\UserInterface\Scene\SceneUW.TorchMode.cs" />
     <Compile Update="Properties\Settings.Designer.cs">
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <AutoGen>True</AutoGen>

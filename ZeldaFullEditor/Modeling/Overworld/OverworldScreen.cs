@@ -19,6 +19,8 @@
 		/// </summary>
 		public byte VirtualMapID => (byte) (MapID & 0x3F);
 
+		public GraphicsSet LoadedGraphics { get; private set; }
+
 		/// <summary>
 		/// Gets his screen's corresponding <see cref="ScreenArtist"/>, which handles the graphical display of the screen.
 		/// </summary>
@@ -68,14 +70,45 @@
 		/// </summary>
 		public bool IsPartOfLargeMap { get; set; }
 
-		public byte Tileset { get; set; }
+		private byte tileset;
+		public byte Tileset
+		{
+			get => tileset;
+			set
+			{
+				if (tileset == value) return;
+				tileset = value;
+				RefreshTileset();
+			}
+		}
 
-		public byte ScreenPalette { get; set; }
+		private byte screenpal;
+		public byte ScreenPalette
+		{
+			get => screenpal;
+			set
+			{
+				if (screenpal == value) return;
+				screenpal = value;
+				RefreshPalette();
+			}
+		}
 
 		private byte state2gfx, state3gfx;
 		private byte state2pal, state3pal;
 
-		public byte State0SpriteGraphics { get; set; }
+		private byte state0gfx;
+		public byte State0SpriteGraphics
+		{
+			get => state0gfx;
+			set
+			{
+				if (state0gfx == value) return;
+				state0gfx = value;
+				RefreshTileset();
+			}
+		}
+
 		public byte State2SpriteGraphics
 		{
 			get => World == Worldiness.LightWorld ? state2gfx : State0SpriteGraphics;
@@ -83,7 +116,9 @@
 			{
 				if (World == Worldiness.LightWorld)
 				{
+					if (state2gfx == value) return;
 					state2gfx = value;
+					RefreshTileset();
 				}
 				else
 				{
@@ -98,7 +133,9 @@
 			{
 				if (World == Worldiness.LightWorld)
 				{
+					if (state3gfx == value) return;
 					state3gfx = value;
+					RefreshTileset();
 				}
 				else
 				{
@@ -107,7 +144,19 @@
 			}
 		}
 
-		public byte State0SpritePalette { get; set; }
+		private byte st0pal;
+
+		public byte State0SpritePalette
+		{
+			get => st0pal;
+			set
+			{
+				if (st0pal == value) return;
+				st0pal = value;
+				CGPaletteState0 = ZScreamer.ActivePaletteManager.CreateOverworldPalette(ScreenPalette, State0SpritePalette, World);
+				NotifyArtist();
+			}
+		}
 		public byte State2SpritePalette
 		{
 			get => World == Worldiness.LightWorld ? state2pal : State0SpritePalette;
@@ -115,7 +164,10 @@
 			{
 				if (World == Worldiness.LightWorld)
 				{
+					if (state2pal == value) return;
 					state2pal = value;
+					CGPaletteState2 = ZScreamer.ActivePaletteManager.CreateOverworldPalette(ScreenPalette, State2SpritePalette, World);
+					NotifyArtist();
 				}
 				else
 				{
@@ -130,7 +182,10 @@
 			{
 				if (World == Worldiness.LightWorld)
 				{
+					if (state3pal == value) return;
 					state3pal = value;
+					CGPaletteState3 = ZScreamer.ActivePaletteManager.CreateOverworldPalette(ScreenPalette, State3SpritePalette, World);
+					NotifyArtist();
 				}
 				else
 				{
@@ -146,6 +201,10 @@
 		public byte[] staticgfx = new byte[16]; // Need to be used to display map and not pre render it!
 		public ushort[,] tilesUsed;
 
+
+		public FullPalette CGPaletteState0 { get; private set; }
+		public FullPalette CGPaletteState2 { get; private set; }
+		public FullPalette CGPaletteState3 { get; private set; }
 
 		public OverworldScreen(byte index)
 		{
@@ -164,10 +223,32 @@
 			NotifyArtist();
 		}
 
+		public void RefreshPalette()
+		{
+			
+			CGPaletteState0 = ZScreamer.ActivePaletteManager.CreateOverworldPalette(ScreenPalette, State0SpritePalette, World);
+			CGPaletteState2 = ZScreamer.ActivePaletteManager.CreateOverworldPalette(ScreenPalette, State2SpritePalette, World);
+			CGPaletteState3 = ZScreamer.ActivePaletteManager.CreateOverworldPalette(ScreenPalette, State3SpritePalette, World);
+			NotifyArtist();
+		}
+
+		public void RefreshTileset()
+		{
+
+			NotifyArtist();
+		}
+
+		public FullPalette GetPaletteForGameState(int gamestate) => gamestate switch
+		{
+			0 => CGPaletteState0,
+			1 => CGPaletteState2,
+			2 => CGPaletteState3,
+			_ => throw new ArgumentOutOfRangeException(nameof(gamestate), "BAD GAME STATE")
+		};
+
 		public void NotifyArtist()
 		{
-			MyArtist.AcknowledgeChanges();
-			throw new NotImplementedException();
+			MyArtist.Invalidate();
 		}
 
 		public byte GetSpriteGraphicsForGameState(int gamestate) => gamestate switch

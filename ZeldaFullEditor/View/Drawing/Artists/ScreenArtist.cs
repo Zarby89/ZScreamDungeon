@@ -13,6 +13,8 @@
 
 		public override PointeredImage SpriteCanvas { get; } = new(512, 512);
 
+		protected override GraphicsSet LoadedGraphics => MyScreen.LoadedGraphics;
+
 		public override Bitmap FinalOutput { get; } = new(512, 512);
 
 		public ScreenArtist(OverworldScreen screen) : base()
@@ -60,54 +62,14 @@
 			g.DrawImage(FinalOutput, 0, 0);
 		}
 
-		public override void AcknowledgeChanges()
-		{
-			BackgroundPalette = MyScreen?.ScreenPalette ?? 0;
-			SpritePalette = MyScreen?.GetSpritePaletteForGameState(ZScreamer.ActiveOW.GameState) ?? 0;
-
-			BackgroundTileset = MyScreen?.Tileset ?? 0;
-			SpriteTileset = MyScreen?.GetSpriteGraphicsForGameState(ZScreamer.ActiveOW.GameState) ?? 0;
-
-			if (HasUnacknowledgedChanges)
-			{
-				ReloadPalettes();
-				RebuildTileMap();
-				RebuildBitMap();
-			}
-
-			base.AcknowledgeChanges();
-		}
-
 		public override void ReloadPalettes()
 		{
-			var copy = ZScreamer.ActivePaletteManager.LoadDungeonPalette(BackgroundPalette);
+			var copy = MyScreen?.GetPaletteForGameState(ZScreamer.ActiveOW.GameState);
 
-			var pindex = 0;
-			var palettes = Layer1Canvas.Palette;
-
-			for (var y = 0; y < copy.GetLength(1); y++)
-			{
-				for (var x = 0; x < copy.GetLength(0); x++)
-				{
-					palettes.Entries[pindex++] = copy[x, y];
-				}
-			}
-
-			Palettes.FillInHalfPaletteZeros(palettes.Entries, Color.Black);
-
-			Layer1Canvas.Palette = palettes;
-			Layer2Canvas.Palette = palettes;
+			RefreshPalettesFrom(copy);
 		}
 
 		public override void DrawTileForPreview(Tile t, int indexoff) { }
-
-
-
-
-
-
-
-
 
 		public void RebuidMap()
 		{

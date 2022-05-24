@@ -21,6 +21,10 @@
 		public DungeonTorchList TorchList { get; } = new();
 		public List<IDungeonPlaceable> SelectedObjects { get; } = new();
 
+		public FullPalette CGPalette { get; private set; }
+
+		public GraphicsSet LoadedGraphics { get; private set; } = new GraphicsSet();
+
 		/// <summary>
 		/// Returns an object if it is the only member of selected objects; otherwise, <see langword="null"/>.
 		/// </summary>
@@ -82,10 +86,43 @@
 
 		// TODO implement and rename
 		public ushort MessageID { get; set; }
-		public byte BackgroundTileset { get; set; }
-		public byte SpriteTileset { get; set; }
+
+		private byte bgtiles;
+		public byte BackgroundTileset {
+			get => bgtiles;
+			set
+			{
+				if (bgtiles == value) return;
+				bgtiles = value;
+				RefreshTileset();
+			}
+		}
+
+		private byte sprtiles;
+		public byte SpriteTileset
+		{
+			get => sprtiles;
+			set
+			{
+				if (sprtiles == value) return;
+				sprtiles = value;
+				RefreshTileset();
+			}
+		}
+
 		public LayerCollisionType LayerCollision { get; set; }
-		public byte Palette { get; set; }
+
+		private byte pal;
+		public byte Palette {
+			get => pal;
+			set
+			{
+				if (pal == value) return;
+				pal = value;
+				RefreshPalette();
+			}
+		}
+
 		public byte Floor1Graphics { get; set; }
 		public byte Floor2Graphics { get; set; }
 		public LayerEffectType LayerEffect { get; set; }
@@ -181,7 +218,15 @@
 			ResyncAllLists();
 		}
 
+		public void RefreshTileset()
+		{
+			LoadedGraphics.BackgroundBlock1 = null;
+		}
 
+		public void RefreshPalette()
+		{
+			CGPalette = ZS.PaletteManager.CreateDungeonPalette(Palette);
+		}
 
 		// TODO this is where we'll flush temporary edits to the new listing
 		/// <summary>

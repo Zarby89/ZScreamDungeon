@@ -463,6 +463,7 @@
 			OverworldEditor.OnProjectLoad();
 			TextEditor.OnProjectLoad();
 			screenEditor.OnProjectLoad();
+			paletteForm.OnProjectLoad();
 			Refresh();
 			//InitDungeonViewer();
 		}

@@ -281,8 +281,6 @@ namespace ZeldaFullEditor.Handler
 		public GraphicsBlock[] GraphicsAA2Sheets { get; } = new GraphicsBlock[82];
 		public GraphicsBlock[] SpriteGraphicsBlocks { get; } = new GraphicsBlock[144];
 
-		public byte[][] paletteGfx { get; } = new byte[72][];
-
 		/// <summary>
 		/// Loads up the graphics groups from ROM
 		/// </summary>
@@ -330,15 +328,6 @@ namespace ZeldaFullEditor.Handler
 					Sheet4 = AllSheets[ZS.ROM[gfxPointer++]],
 				};
 			}
-
-			for (var i = 0; i < 72; i++)
-			{
-				paletteGfx[i] = new byte[4];
-				for (var j = 0; j < 4; j++)
-				{
-					paletteGfx[i][j] = ZS.ROM[ZS.Offsets.dungeons_palettes_groups + i * 4 + j];
-				}
-			}
 		}
 
 		public void SaveGroupsToROM()
@@ -360,14 +349,6 @@ namespace ZeldaFullEditor.Handler
 			for (var i = 0; i < 144; i++)
 			{
 				ZS.ROM.WriteContinuous(ref gfxPointer, SpriteGraphicsBlocks[i].GetByteData());
-			}
-
-			for (var i = 0; i < 72; i++)
-			{
-				for (var j = 0; j < 4; j++)
-				{
-					ZS.ROM[ZS.Offsets.dungeons_palettes_groups + i * 4 + j] = paletteGfx[i][j];
-				}
 			}
 		}
 

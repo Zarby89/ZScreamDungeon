@@ -56,7 +56,7 @@ namespace ZeldaFullEditor.Modeling.GameData.Defaults
 			BitDepth = depth & ~Compressed;
 			IsCompressed = (depth & Compressed) == Compressed;
 			PreferredIndex = index;
-			UsesBackPalette = backpal & depth == SNES3BPP;
+			UsesBackPalette = backpal & BitDepth == SNES3BPP;
 			GFXType = type;
 		}
 

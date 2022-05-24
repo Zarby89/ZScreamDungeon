@@ -1,8 +1,7 @@
 ﻿namespace ZeldaFullEditor.View.UserInterface.Scene
 {
 	/// <summary>
-	/// Provides a container for quickly switching between mouse, copy/cut/paste, etc. methods as
-	/// the edit mode changes.
+	/// Provides a container for quickly switching between mouse, copy/cut/paste, etc. methods as the edit mode changes.
 	/// </summary>
 	public class ModeActions
 	{

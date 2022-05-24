@@ -802,10 +802,11 @@
 			e.Graphics.Clear(Color.Black);
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
 			{
-				if (!ZScreamer.ActiveScreamer.all_rooms[i].IsEmpty)
+				var room = ZScreamer.ActiveScreamer.all_rooms[i];
+				if (!room.IsEmpty)
 				{
 					e.Graphics.FillRectangle(
-						new SolidBrush(ZScreamer.ActivePaletteManager.LoadDungeonPalette(ZScreamer.ActiveScreamer.all_rooms[i].Palette)[4, 2]),
+						new SolidBrush(room.CGPalette[4, 2].RealColor),
 						new Rectangle(xd * 16, (yd * 16) + yoff,
 						16,
 						16));

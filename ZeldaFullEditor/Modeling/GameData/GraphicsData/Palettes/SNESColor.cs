@@ -27,14 +27,6 @@
 		/// </summary>
 		public Color RealColor { get; private init; }
 
-		private readonly bool IsTransparent { get; init; } = false;
-
-		public static readonly SNESColor Transparent = new(0, 0, 0)
-		{
-			RealColor = Color.Transparent,
-			IsTransparent = true,
-		};
-
 
 		public SNESColor(byte r, byte g, byte b)
 		{
@@ -74,7 +66,7 @@
 
 		public override int GetHashCode()
 		{
-			return CGRAMValue | (IsTransparent ? 0x8000 : 0x0000);
+			return CGRAMValue;
 		}
 	}
 }

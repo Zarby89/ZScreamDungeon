@@ -5,9 +5,9 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 	public enum PaletteType
 	{
 		DungeonPalette,
-		SpriteAux1Palette,
-		SpriteAux2Palette,
-		SpriteAux3Palette,
+		SpritePal0,
+		SpriteEnvironment,
+		SpriteAux,
 		FullSpritePalette,
 		MailPalette,
 		SwordPalette,
@@ -27,9 +27,9 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 		public static int GetRealSize(this PaletteType type) => type switch
 		{
 			DungeonPalette => 6 * 15,
-			SpriteAux1Palette => 7,
-			SpriteAux2Palette => 7,
-			SpriteAux3Palette => 7,
+			SpritePal0 => 7,
+			SpriteEnvironment => 7,
+			SpriteAux => 7,
 			MailPalette => 15,
 			FullSpritePalette => 4 * 15,
 			SwordPalette => 3,
@@ -48,9 +48,9 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 		public static int GetVirtualSize(this PaletteType type) => type switch
 		{
 			DungeonPalette => 6 * 16,
-			SpriteAux1Palette => 7,
-			SpriteAux2Palette => 7,
-			SpriteAux3Palette => 7,
+			SpritePal0 => 7,
+			SpriteEnvironment => 7,
+			SpriteAux => 7,
 			MailPalette => 15,
 			FullSpritePalette => 4 * 16,
 			SwordPalette => 3,
@@ -70,9 +70,9 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 		public static int GetRealWidth(this PaletteType type) => type switch
 		{
 			DungeonPalette => 15,
-			SpriteAux1Palette => 7,
-			SpriteAux2Palette => 7,
-			SpriteAux3Palette => 7,
+			SpritePal0 => 7,
+			SpriteEnvironment => 7,
+			SpriteAux => 7,
 			MailPalette => 15,
 			FullSpritePalette => 15,
 			SwordPalette => 3,

@@ -14,6 +14,8 @@
 			}
 		}
 
+		protected override GraphicsSet LoadedGraphics => CurrentRoom.LoadedGraphics;
+
 		public override ushort[] Layer1TileMap { get; } = new ushort[Constants.TilesPerUnderworldRoom];
 		public override PointeredImage Layer1Canvas { get; } = new(512, 512);
 
@@ -124,7 +126,6 @@
 			g.DrawScreen(top.Bitmap, draw);
 
 			g.DrawScreen(SpriteCanvas.Bitmap, null);
-
 		}
 
 		public override void DrawSelfToImage(Graphics g)
@@ -144,49 +145,12 @@
 			if (CurrentRoom == room) return;
 
 			CurrentRoom = room;
-			AcknowledgeChanges();
-		}
-
-		public override void AcknowledgeChanges()
-		{
-			BackgroundPalette = CurrentRoom?.Palette ?? 0;
-			SpritePalette = CurrentRoom?.Palette ?? 0;
-
-			BackgroundTileset = CurrentRoom?.BackgroundTileset ?? 0;
-			SpriteTileset = CurrentRoom?.SpriteTileset ?? 0;
-
-			if (HasUnacknowledgedChanges)
-			{
-				// TODO LOAD GRAPHICS
-				//LoadedGraphics.BackgroundBlock1.CopyBlock(ZScreamer.ActiveGraphicsManager.GraphicsAA2Sheets[BackgroundTileset]);
-				//LoadedGraphics.BackgroundBlock2.CopyBlock(ZScreamer.ActiveGraphicsManager.GraphicsAA2Sheets[BackgroundTileset]);
-				ReloadPalettes();
-				RebuildTileMap();
-				RebuildBitMap();
-			}
-
-			base.AcknowledgeChanges();
+			Invalidate();
 		}
 
 		public override void ReloadPalettes()
 		{
-			var copy = ZScreamer.ActivePaletteManager.LoadDungeonPalette(BackgroundPalette);
-
-			var pindex = 0;
-			var palettes = Layer1Canvas.Palette;
-
-			for (var y = 0; y < copy.GetLength(1); y++)
-			{
-				for (var x = 0; x < copy.GetLength(0); x++)
-				{
-					palettes.Entries[pindex++] = copy[x, y];
-				}
-			}
-
-			Palettes.FillInHalfPaletteZeros(palettes.Entries, Color.Black);
-
-			Layer1Canvas.Palette = palettes;
-			Layer2Canvas.Palette = palettes;
+			RefreshPalettesFrom(CurrentRoom.CGPalette);
 		}
 
 		private static void FillTilemapWithFloorShort(ushort[] tilemap, ushort[] floor)

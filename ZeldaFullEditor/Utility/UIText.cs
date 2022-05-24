@@ -152,6 +152,12 @@ namespace ZeldaFullEditor.Utility
 			_ => "None",
 		};
 
+		public static string SpaceOutString(this string s)
+		{
+			return string.Join(" ", Regex.Split(s.ToString(), @"[A-Z]", RegexOptions.None));
+		}
+
+
 		/// <summary>
 		/// Formats an array of <see langword="byte"/> values as unqualified hexadecimal values
 		/// delimited by a single space.

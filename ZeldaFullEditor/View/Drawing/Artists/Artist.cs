@@ -15,33 +15,9 @@
 		/// </summary>
 		public abstract Bitmap FinalOutput { get; }
 
-		// TODO remove most HardRefresh calls in favor of this property which will be called upon draw
-		protected virtual bool HasUnacknowledgedChanges
-		{
-			get => BackgroundTileset != bgtilesflushed ||
-				SpriteTileset != sprtilesflushed ||
-				BackgroundPalette != bgpalflushed ||
-				SpritePalette != sprpalflushed;
-		}
-
 		public bool Valid { get; private set; }
 
-
-		private byte bgtilesflushed = 0xFF;
-		public byte BackgroundTileset { get; protected set; }
-
-
-		private byte sprtilesflushed = 0xFF;
-		public byte SpriteTileset { get; protected set; }
-
-
-		private byte bgpalflushed = 0xFF;
-		public byte BackgroundPalette { get; protected set; }
-
-		private byte sprpalflushed = 0xFF;
-		public byte SpritePalette { get; protected set; }
-
-		public GraphicsSet LoadedGraphics { get; } = new();
+		protected abstract GraphicsSet LoadedGraphics { get; }
 
 		protected Artist() { }
 
@@ -50,6 +26,19 @@
 
 		public abstract void ReloadPalettes();
 
+		protected void RefreshPalettesFrom(FullPalette pal)
+		{
+			var copy = pal.ToColorArray();
+			var palettes = Layer1Canvas.Palette;
+
+			for (int i = 0; i < copy.Length; i++)
+			{
+				palettes.Entries[i] = copy[i];
+			}
+
+			Layer1Canvas.Palette = palettes;
+			Layer2Canvas.Palette = palettes;
+		}
 
 		protected static readonly float[][] TranslucencyMatrix = {
 			new[] { 1f, 0, 0, 0, 0 },
@@ -69,20 +58,12 @@
 
 		protected void Revalidate()
 		{
+			if (Valid) return;
+
+			ReloadPalettes();
+			RebuildBitMap();
+
 			Valid = true;
-		}
-
-		public virtual void AcknowledgeChanges()
-		{
-			if (HasUnacknowledgedChanges)
-			{
-				Invalidate();
-			}
-
-			bgtilesflushed = BackgroundTileset;
-			sprtilesflushed = SpriteTileset;
-			bgpalflushed = BackgroundPalette;
-			sprpalflushed = SpritePalette;
 		}
 
 		public abstract void RebuildBitMap();
