@@ -38,6 +38,7 @@ global using ZeldaFullEditor.View.GeneralControls;
 global using ZeldaFullEditor.View.PrimaryEditors;
 global using ZeldaFullEditor.View.UserInterface;
 global using ZeldaFullEditor.View.UserInterface.Scene;
+global using ZeldaFullEditor.Modeling.GameData.GraphicsData.GraphicsTiles;
 
 global using static ZeldaFullEditor.TheGUI;
 

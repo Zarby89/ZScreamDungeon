@@ -25,7 +25,7 @@
 		/// <summary>
 		/// Gets the color as a <see cref="Color"/> structure with 8-bit color components and 255 alpha.
 		/// </summary>
-		public Color RealColor { get; private init; }
+		public Color RealColor { get; }
 
 
 		public SNESColor(byte r, byte g, byte b)
@@ -34,13 +34,13 @@
 			G = (byte) (g & 0x1F);
 			B = (byte) (b & 0x1F);
 			RealColor = Color.FromArgb(From5BitTo8Bit(R), From5BitTo8Bit(G), From5BitTo8Bit(B));
+
+			static int From5BitTo8Bit(byte v) => (v << 3) | (v >> 2);
 		}
 
-		public SNESColor(ushort col) : this((byte) (col & 0x1F), (byte) ((col >> 5) & 0x1F), (byte) ((col >> 10) & 0x1F)) { }
-
-		private static byte From5BitTo8Bit(byte b)
+		public static SNESColor FromColor(Color color)
 		{
-			return (byte) ((b << 3) | (b >> 2));
+			return new SNESColor((byte) (color.R >> 3), (byte) (color.G >> 3), (byte) (color.B >> 3));
 		}
 
 		public static bool operator ==(SNESColor a, SNESColor b)
@@ -53,8 +53,6 @@
 			return a.R != b.R || a.G != b.G || a.B != b.B;
 		}
 
-		public static explicit operator ushort(SNESColor c) => c.CGRAMValue;
-
 		public override bool Equals(object obj)
 		{
 			if (obj is SNESColor b)
@@ -66,7 +64,7 @@
 
 		public override int GetHashCode()
 		{
-			return CGRAMValue;
+			return (R << 16) | (G << 8) | B;
 		}
 	}
 }

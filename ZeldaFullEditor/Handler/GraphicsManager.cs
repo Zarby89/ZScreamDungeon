@@ -277,9 +277,9 @@ namespace ZeldaFullEditor.Handler
 			}
 		}
 
-		public GraphicsDoubleBlock[] EntranceGraphicsSets { get; } = new GraphicsDoubleBlock[37];
-		public GraphicsBlock[] GraphicsAA2Sheets { get; } = new GraphicsBlock[82];
-		public GraphicsBlock[] SpriteGraphicsBlocks { get; } = new GraphicsBlock[144];
+		public BackgroundSet[] EntranceGraphicsSets { get; } = new BackgroundSet[37];
+		public SheetSet[] GraphicsAA2Sheets { get; } = new SheetSet[82];
+		public SheetSet[] SpriteGraphicsBlocks { get; } = new SheetSet[144];
 
 		/// <summary>
 		/// Loads up the graphics groups from ROM
@@ -291,41 +291,41 @@ namespace ZeldaFullEditor.Handler
 
 			for (var i = 0; i < 37; i++)
 			{
-				var ent = new GraphicsDoubleBlock();
-				EntranceGraphicsSets[i] = ent;
+				EntranceGraphicsSets[i] = new()
+				{
+					Sheet0 = AllSheets[ZS.ROM[gfxPointer++]],
+					Sheet1 = AllSheets[ZS.ROM[gfxPointer++]],
+					Sheet2 = AllSheets[ZS.ROM[gfxPointer++]],
+					Sheet3 = AllSheets[ZS.ROM[gfxPointer++]],
 
-				ent.Block1.Sheet1 = AllSheets[ZS.ROM[gfxPointer++]];
-				ent.Block1.Sheet2 = AllSheets[ZS.ROM[gfxPointer++]];
-				ent.Block1.Sheet3 = AllSheets[ZS.ROM[gfxPointer++]];
-				ent.Block1.Sheet4 = AllSheets[ZS.ROM[gfxPointer++]];
-
-				ent.Block2.Sheet1 = AllSheets[ZS.ROM[gfxPointer++]];
-				ent.Block2.Sheet2 = AllSheets[ZS.ROM[gfxPointer++]];
-				ent.Block2.Sheet3 = AllSheets[ZS.ROM[gfxPointer++]];
-				ent.Block2.Sheet4 = AllSheets[ZS.ROM[gfxPointer++]];
+					Sheet4 = AllSheets[ZS.ROM[gfxPointer++]],
+					Sheet5 = AllSheets[ZS.ROM[gfxPointer++]],
+					Sheet6 = AllSheets[ZS.ROM[gfxPointer++]],
+					Sheet7 = AllSheets[ZS.ROM[gfxPointer++]]
+				};
 			}
 
 			gfxPointer = ZS.Offsets.GraphicsAA2Tables;
 			for (var i = 0; i < 82; i++)
 			{
-				GraphicsAA2Sheets[i] = new GraphicsBlock()
+				GraphicsAA2Sheets[i] = new()
 				{
+					Sheet0 = AllSheets[ZS.ROM[gfxPointer++]],
 					Sheet1 = AllSheets[ZS.ROM[gfxPointer++]],
 					Sheet2 = AllSheets[ZS.ROM[gfxPointer++]],
 					Sheet3 = AllSheets[ZS.ROM[gfxPointer++]],
-					Sheet4 = AllSheets[ZS.ROM[gfxPointer++]],
 				};
 			}
 
 			gfxPointer = ZS.Offsets.sprite_blockset_pointer;
 			for (var i = 0; i < 144; i++)
 			{
-				SpriteGraphicsBlocks[i] = new GraphicsBlock()
+				SpriteGraphicsBlocks[i] = new()
 				{
+					Sheet0 = AllSheets[ZS.ROM[gfxPointer++]],
 					Sheet1 = AllSheets[ZS.ROM[gfxPointer++]],
 					Sheet2 = AllSheets[ZS.ROM[gfxPointer++]],
 					Sheet3 = AllSheets[ZS.ROM[gfxPointer++]],
-					Sheet4 = AllSheets[ZS.ROM[gfxPointer++]],
 				};
 			}
 		}
@@ -353,6 +353,69 @@ namespace ZeldaFullEditor.Handler
 		}
 
 
+		public GraphicsSet CreateUnderworldGraphicsSet(byte tileset, byte spriteset, byte entranceset)
+		{
+			var entset = EntranceGraphicsSets[entranceset];
+			var bgset = EntranceGraphicsSets[tileset];
+			var sprset = SpriteGraphicsBlocks[spriteset];
+
+			return new()
+			{
+				BGSheet0 = new(entset.Sheet0, true),
+				BGSheet1 = new(entset.Sheet1, true),
+				BGSheet2 = new(entset.Sheet2, true),
+				BGSheet3 = new(bgset.Sheet3, true),
+
+				BGSheet4 = new(bgset.Sheet4, false),
+				BGSheet5 = new(bgset.Sheet5, false),
+				BGSheet6 = new(bgset.Sheet6, false),
+				BGSheet7 = new(bgset.Sheet7, false),
+
+				SPRSheet0 = CreateRecordForSpriteSheet(AllSheets[0x73]),
+				SPRSheet1 = CreateRecordForSpriteSheet(AllSheets[0x7D]),
+				SPRSheet2 = CreateRecordForSpriteSheet(AllSheets[0x79]),
+				SPRSheet3 = CreateRecordForSpriteSheet(AllSheets[0x7A]),
+
+				SPRSheet4 = CreateRecordForSpriteSheet(sprset.Sheet0),
+				SPRSheet5 = CreateRecordForSpriteSheet(sprset.Sheet1),
+				SPRSheet6 = CreateRecordForSpriteSheet(sprset.Sheet2),
+				SPRSheet7 = CreateRecordForSpriteSheet(sprset.Sheet3),
+			};
+		}
+
+		public GraphicsSet CreateOverworldGraphicsSet(byte tileset, byte spriteset, bool darkworld)
+		{
+			var bgset = EntranceGraphicsSets[tileset];
+			var sprset = SpriteGraphicsBlocks[spriteset];
+
+			return new()
+			{
+				BGSheet0 = new(bgset.Sheet0, true),
+				BGSheet1 = new(bgset.Sheet1, false),
+				BGSheet2 = new(bgset.Sheet2, false),
+				BGSheet3 = new(bgset.Sheet3, true),
+
+				BGSheet4 = new(bgset.Sheet4, true),
+				BGSheet5 = new(bgset.Sheet5, true),
+				BGSheet6 = new(bgset.Sheet6, false),
+				BGSheet7 = new(bgset.Sheet7, false),
+
+				SPRSheet0 = CreateRecordForSpriteSheet(AllSheets[0x73]),
+				SPRSheet1 = CreateRecordForSpriteSheet(AllSheets[darkworld ? 0x7E : 0x74]),
+				SPRSheet2 = CreateRecordForSpriteSheet(AllSheets[0x79]),
+				SPRSheet3 = CreateRecordForSpriteSheet(AllSheets[0x7A]),
+
+				SPRSheet4 = CreateRecordForSpriteSheet(sprset.Sheet0),
+				SPRSheet5 = CreateRecordForSpriteSheet(sprset.Sheet1),
+				SPRSheet6 = CreateRecordForSpriteSheet(sprset.Sheet2),
+				SPRSheet7 = CreateRecordForSpriteSheet(sprset.Sheet3),
+			};
+		}
+
+		private static SlottedSheet CreateRecordForSpriteSheet(GraphicsSheet sheet)
+		{
+			return new(sheet, sheet.Info.UsesBackPalette ?? false);
+		}
 
 
 

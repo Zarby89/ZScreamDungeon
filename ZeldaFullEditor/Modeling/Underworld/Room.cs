@@ -2,6 +2,9 @@
 {
 	public class Room
 	{
+		private const ushort CollisionSinglesMarker = 0xF0F0;
+
+
 		public ushort RoomID { get; }
 
 		public string Name { get; set; }
@@ -48,6 +51,9 @@
 
 		public bool HasUnsavedChanges { get; internal set; }
 
+		public bool NeedsRedrawing { get; internal set; }
+
+
 		private byte layout;
 		public byte Layout
 		{
@@ -55,7 +61,10 @@
 			set
 			{
 				value &= 0x07;
+				if (layout == value) return;
+
 				layout = value;
+				NeedsRedrawing = true;
 			}
 		}
 
@@ -123,15 +132,54 @@
 			}
 		}
 
-		public byte Floor1Graphics { get; set; }
-		public byte Floor2Graphics { get; set; }
+
+		private byte f1gfx, f2gfx;
+		public byte Floor1Graphics {
+			get => f1gfx;
+			set
+			{
+				if (f1gfx == value) return;
+				f1gfx = value;
+				NeedsRedrawing = true;
+			}
+		}
+		
+		public byte Floor2Graphics {
+			get => f2gfx;
+			set
+			{
+				if (f2gfx == value) return;
+				f2gfx = value;
+				NeedsRedrawing = true;
+			}
+		}
+
 		public LayerEffectType LayerEffect { get; set; }
-		public LayerMergeType LayerMerging { get; set; }
+
+		private LayerMergeType merging;
+		public LayerMergeType LayerMerging {
+			get => merging;
+			set
+			{
+				if (merging == value) return;
+				merging = value;
+				NeedsRedrawing = true;
+			}
+		}
 		public byte Tag1 { get; set; }
 		public byte Tag2 { get; set; }
 		public bool IsDark { get; set; }
 
-		public byte PreferredEntrance { get; set; }
+		private byte entrancegfx;
+		public byte PreferredEntrance {
+			get => entrancegfx;
+			set
+			{
+				if (entrancegfx == value) return;
+				entrancegfx = value;
+				RefreshTileset();
+			}
+		}
 
 		public RoomDestination Pits { get; } = new RoomDestination(0);
 		public RoomDestination Stair1 { get; } = new RoomDestination(1);
@@ -216,16 +264,21 @@
 			LoadTorches();
 			LoadSecrets();
 			ResyncAllLists();
+
+			LoadCustomCollisionFromRom();
 		}
 
 		public void RefreshTileset()
 		{
-			LoadedGraphics.BackgroundBlock1 = null;
+			LoadedGraphics = ZS.GFXManager.CreateUnderworldGraphicsSet(BackgroundTileset, SpriteTileset, BackgroundTileset);
+			NeedsRedrawing = true;
 		}
 
 		public void RefreshPalette()
 		{
 			CGPalette = ZS.PaletteManager.CreateDungeonPalette(Palette);
+
+			NeedsRedrawing = true;
 		}
 
 		// TODO this is where we'll flush temporary edits to the new listing
@@ -292,8 +345,7 @@
 
 				if (room != RoomID) continue;
 
-				UWTilemapPosition.CreateXYZFromTileMap(ZS.ROM[pos3 + i], (byte) (ZS.ROM[pos4 + i] & 0x3F),
-					out var x, out var y, out var layer);
+				var (x, y, layer) = UWTilemapPosition.CreateXYZFromTileMap(ZS.ROM[pos3 + i], (byte) (ZS.ROM[pos4 + i] & 0x3F));
 				BlocksList.Add(
 					new PushableBlock()
 					{
@@ -327,7 +379,7 @@
 
 					if (correctRoom && tpos != Constants.ObjectSentinel)
 					{
-						UWTilemapPosition.CreateXYZFromTileMap(tpos, out var x, out var y, out var layer);
+						var (x, y, layer) = UWTilemapPosition.CreateXYZFromTileMap(tpos);
 						TorchList.Add(
 							new LightableTorch()
 							{
@@ -360,7 +412,7 @@
 
 				var b3 = ZS.ROM[secpos++];
 
-				UWTilemapPosition.CreateXYZFromTileMap(b1, b2, out var x, out var y, out var layer);
+				var (x, y, layer) = UWTilemapPosition.CreateXYZFromTileMap(b1, b2);
 
 				SecretsList.Add(
 					new DungeonSecret(SecretItemType.GetTypeFromID(b3))
@@ -448,6 +500,47 @@
 		internal void LoadCollisionLayout(bool v)
 		{
 			throw new NotImplementedException();
+		}
+
+		private void LoadCustomCollisionFromRom()
+		{
+			int offset = ZS.ROM.Read24(ZS.Offsets.CustomCollisionTable + (3 * RoomID));
+
+			if (offset == 0) return;
+
+			offset = offset.SNEStoPC();
+
+			ushort next = ZS.ROM.Read16Continuous(ref offset);
+
+			while (next is not Constants.ObjectSentinel or CollisionSinglesMarker )
+			{
+				var (x0, y0, _) = UWTilemapPosition.CreateXYZFromTileMap(next);
+
+				byte w = ZS.ROM[offset++];
+				byte h = ZS.ROM[offset++];
+
+				for (int y = y0; y < y0 + h; y++)
+				{
+					for (int x = x0; x < x0 + w; x++)
+					{
+						CollisionMap[x + y * 64] = ZS.ROM[offset++];
+					}
+				}
+
+				next = ZS.ROM.Read16Continuous(ref offset);
+			}
+
+			if (next is Constants.ObjectSentinel) return;
+
+			next = ZS.ROM.Read16Continuous(ref offset);
+
+			while (next != Constants.ObjectSentinel)
+			{
+				byte tile = ZS.ROM[offset++];
+				CollisionMap[next / 2] = tile;
+
+				next = ZS.ROM.Read16Continuous(ref offset);
+			}
 		}
 
 		private DungeonDoor ParseDoorObject(byte b1, byte b2)
@@ -819,7 +912,7 @@
 		}
 
 
-		private IDungeonPlaceable FindEntityUnderMouseInList(IList<IDungeonPlaceable> l, int x, int y)
+		private static IDungeonPlaceable FindEntityUnderMouseInList(IList<IDungeonPlaceable> l, int x, int y)
 		{
 			for (var i = l.Count - 1; i >= 0; i--) // count down because the objects on top are the most visible
 			{

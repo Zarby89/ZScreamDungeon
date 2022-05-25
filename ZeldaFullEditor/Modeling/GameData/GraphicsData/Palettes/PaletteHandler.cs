@@ -319,14 +319,14 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 
 			for (var i = 0; i < max; i++)
 			{
-				ZS.ROM.Write16(address, colors[i].To555Short());
+				ZS.ROM.Write16(address, SNESColor.FromColor(colors[i]).CGRAMValue);
 				address += 2;
 			}
 		}
 
 		public void WriteSinglePalette(int address, Color col)
 		{
-			ZS.ROM.Write16(address, col.To555Short());
+			ZS.ROM.Write16(address, SNESColor.FromColor(col).CGRAMValue);
 		}
 
 		public void SavePalettesToROM()

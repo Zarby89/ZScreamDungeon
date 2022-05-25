@@ -111,8 +111,6 @@
 						}
 					}
 				}
-
-				Palettes.FillInHalfPaletteZeros(palettes.Entries, Color.Transparent);
 			}
 
 			foreach (RoomObject o in items)

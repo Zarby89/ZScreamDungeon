@@ -465,9 +465,9 @@
 			{
 				IEnumerable<OverworldSprite> temp = i switch
 				{
-					< 64 => OverworldManager.allsprites[0].Where(s => s.MapID == i),
-					>= 64 and < 208 => OverworldManager.allsprites[1].Where(s => s.MapID == (i - 64)),
-					>= 208 and < Constants.NumberOfOWSprites => OverworldManager.allsprites[2].Where(s => s.MapID == (i - 208)),
+					< 64 => OverworldManager.RainStateSprites.Where(s => s.MapID == i),
+					>= 64 and < 208 => OverworldManager.RescueStateSprites.Where(s => s.MapID == (i - 64)),
+					>= 208 and < Constants.NumberOfOWSprites => OverworldManager.AgaStateSprites.Where(s => s.MapID == (i - 208)),
 					_ => null
 				};
 

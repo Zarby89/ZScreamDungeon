@@ -1849,7 +1849,7 @@
 			this.label25.Name = "label25";
 			this.label25.Size = new System.Drawing.Size(66, 13);
 			this.label25.TabIndex = 9;
-			this.label25.Text = "Door Type : ";
+			this.label25.Text = "Door type";
 			// 
 			// collisionMapPanel
 			// 

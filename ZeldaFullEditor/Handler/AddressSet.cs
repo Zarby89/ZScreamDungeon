@@ -244,6 +244,8 @@
 
 
 
+		public int CustomCollisionTable => new ROMAddress(0x258090).GetOffsetForVersion(Version);
+
 
 
 		public SNESFunctions.ROMVersion Version { get; }

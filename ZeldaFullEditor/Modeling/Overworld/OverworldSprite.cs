@@ -25,7 +25,7 @@
 
 		public byte[] GetByteData()
 		{
-			throw new NotImplementedException();
+			return new byte[] { MapY, MapX, ID };
 		}
 
 		public override bool PointIsInHitbox(int x, int y)

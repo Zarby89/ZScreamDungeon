@@ -51,10 +51,9 @@
 			fs.Close();
 		}
 
-		public bool OhShitLastResortBackup(byte[] uhoh)
+		public void OhShitLastResortBackup(byte[] uhoh)
 		{
-			DATA = (byte[]) uhoh.Clone();
-			return true;
+			DATA = uhoh.DeepCopy();
 		}
 
 		/// <summary>
@@ -80,7 +79,7 @@
 
 		/// <summary>
 		/// Writes an arbitrary number of <see langword="bytes"/> to ROM,
-		/// consecutively starting at the given <paramref name="address"/>
+		/// consecutively starting at the given <paramref name="address"/>.
 		/// </summary>.
 		/// <param name="address">Start address</param>
 		public void Write(int address, params byte[] bytes)
@@ -127,9 +126,15 @@
 		/// a single, little-endian, 16-bit word.</returns>
 		public ushort Read16(int address)
 		{
-			return (ushort) (DATA[address++] | DATA[address++] << 8);
+			return (ushort) (DATA[address++] | DATA[address] << 8);
 		}
 		
+		public ushort Read16Continuous(ref int address)
+		{
+			return (ushort) (DATA[address++] | DATA[address++] << 8);
+		}
+
+
 		/// <summary>
 		/// Gets an array of 16-bit words at the given <paramref name="address"/> in little endian.
 		/// </summary>
@@ -153,7 +158,7 @@
 		/// when interpreted as a single, little-endian, 24-bit word.</returns>
 		public int Read24(int address)
 		{
-			return DATA[address++] | DATA[address++] << 8 | DATA[address++] << 16;
+			return DATA[address++] | (DATA[address++] << 8) | (DATA[address] << 16);
 		}
 
 		/// <summary>
@@ -164,7 +169,7 @@
 		/// a single, big-endian, 16-bit word.</returns>
 		public ushort Read16BigEndian(int address)
 		{
-			return (ushort) (DATA[address++] << 8 | DATA[address++]);
+			return (ushort) ((DATA[address++] << 8) | DATA[address]);
 		}
 
 		/// <summary>

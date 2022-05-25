@@ -16,6 +16,12 @@
 
 		public static byte GetBankAsByte(this int addr) => (byte) ((addr & 0xFF0000) >> 16);
 
+
+		public static Color ToColor(this ushort c)
+		{
+			return Color.FromArgb((c & 0x1F) << 3, (c >> 2) & 0xF8, (c >> 7) & 0xF8);
+		}
+
 		public enum ROMVersion
 		{
 			/// <summary>

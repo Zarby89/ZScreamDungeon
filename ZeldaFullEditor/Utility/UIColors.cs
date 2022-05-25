@@ -40,5 +40,6 @@
 
 
 		public static readonly Pen GridPen = new(Color.FromArgb(150, 255, 255, 255));
+
 	}
 }

@@ -5,24 +5,27 @@
 	/// </summary>
 	public static class UWTilemapPosition
 	{
-		public static void CreateLowAndHighBytesFromXYZ(byte x, byte y, byte layer, out byte low, out byte high)
+		public static (byte low, byte high) CreateLowAndHighBytesFromXYZ(byte x, byte y, byte layer)
 		{
 			int manip = (layer << 14) | (y << 7) | (x << 1);
-			low = (byte) manip;
-			high = (byte) (manip >> 8);
+			byte low = (byte) manip;
+			byte high = (byte) (manip >> 8);
+			return (low, high);
 		}
 
-		public static void CreateXYZFromTileMap(byte low, byte high, out byte x, out byte y, out byte layer)
+		public static (byte x, byte y, byte layer) CreateXYZFromTileMap(byte low, byte high)
 		{
 			int manip = (high & 0x1F) << 7 | (low >> 1);
-			x = (byte) (manip % 64);
-			y = (byte) (manip >> 6);
-			layer = (byte) (high >> 5);
+			byte x = (byte) (manip % 64);
+			byte y = (byte) (manip >> 6);
+			byte layer = (byte) (high >> 5);
+
+			return (x, y, layer);
 		}
 
-		public static void CreateXYZFromTileMap(ushort tmap, out byte x, out byte y, out byte layer)
+		public static (byte x, byte y, byte layer) CreateXYZFromTileMap(ushort tmap)
 		{
-			CreateXYZFromTileMap((byte) tmap, (byte) (tmap >> 8), out x, out y, out layer);
+			return CreateXYZFromTileMap((byte) tmap, (byte) (tmap >> 8));
 		}
 	}
 }

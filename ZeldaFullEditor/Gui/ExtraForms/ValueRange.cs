@@ -16,6 +16,30 @@ namespace ZeldaFullEditor.Gui.ExtraForms
 			Min = min;
 			Max = max;
 		}
+
+		public static bool operator ==(ValueRange a, ValueRange b)
+		{
+			return a.Min == b.Min && a.Max == b.Max;
+		}
+
+		public static bool operator !=(ValueRange a, ValueRange b)
+		{
+			return a.Min != b.Min || a.Max != b.Max;
+		}
+
+		public override bool Equals(object obj)
+		{
+			if (obj is ValueRange b)
+			{
+				return Min == b.Min && Max == b.Max;
+			}
+			return false;
+		}
+
+		public override int GetHashCode()
+		{
+			return Min << 16 | Max;
+		}
 	}
 
 	public class ValueRangeConverter : TypeConverter

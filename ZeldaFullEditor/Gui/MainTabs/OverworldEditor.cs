@@ -33,6 +33,8 @@
 		public OverworldEditor()
 		{
 			InitializeComponent();
+
+			stateCombobox.DataSource = GameStateInfo.ListOf;
 		}
 
 		public void OnProjectLoad()
@@ -91,7 +93,7 @@
 			fs.Close();
 		}
 
-		public void UpdateGUIProperties(OverworldScreen m, int gamestate = 0)
+		public void UpdateGUIProperties(OverworldScreen m, GameState gamestate = GameState.RainState)
 		{
 			OWProperty_BGGFX.HexValue = m.Tileset;
 			OWProperty_BGPalette.HexValue = m.ScreenPalette;
@@ -201,7 +203,7 @@
 
 		private void stateCombobox_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveOW.GameState = (byte) stateCombobox.SelectedIndex;
+			ZScreamer.ActiveOW.ActiveGameState = ((GameStateInfo) stateCombobox.SelectedItem).State;
 		}
 
 		private void saveButton_Click(object sender, EventArgs e)
@@ -218,7 +220,7 @@
 				screen.ScreenPalette = (byte) OWProperty_BGPalette.HexValue;
 				screen.Tileset = (byte) OWProperty_BGGFX.HexValue;
 
-				switch (ZScreamer.ActiveOW.GameState)
+				switch (ZScreamer.ActiveOW.ActiveGameStateIndex)
 				{
 					case 0:
 						screen.State0SpriteGraphics = (byte) OWProperty_SPRGFX.HexValue;
@@ -1106,18 +1108,18 @@
 				UpdateEntireListForBigMap(ZScreamer.ActiveOW.allBirds, m);
 				UpdateEntireListForBigMap(ZScreamer.ActiveOW.AllTransports, m);
 				UpdateEntireListForBigMap(ZScreamer.ActiveOW.allexits, m);
-				UpdateEntireListForBigMap(ZScreamer.ActiveOW.allsprites[0], m);
-				UpdateEntireListForBigMap(ZScreamer.ActiveOW.allsprites[1], m);
-				UpdateEntireListForBigMap(ZScreamer.ActiveOW.allsprites[2], m);
+				UpdateEntireListForBigMap(ZScreamer.ActiveOW.RainStateSprites, m);
+				UpdateEntireListForBigMap(ZScreamer.ActiveOW.RescueStateSprites, m);
+				UpdateEntireListForBigMap(ZScreamer.ActiveOW.AgaStateSprites, m);
 			}
 		}
 
 		/// <summary>
-		/// Clears all overworld sprites of the selected stage (beginning, 1st, and 2nd phase)
+		/// Clears all overworld sprites of the selected
 		/// </summary>
-		public void clearOverworldSprites(int phase)
+		public void clearOverworldSprites(GameState state)
 		{
-			ZScreamer.ActiveOW.allsprites[phase].Clear();
+			ZScreamer.ActiveOW.GetSpritesForState(state).Clear();
 		}
 
 		/// <summary>
@@ -1179,12 +1181,11 @@
 			new(o => o.MapID == ZScreamer.ActiveOWScene.CurrentParentMapID);
 
 		/// <summary>
-		/// Clears all overworld sprites of the selected stage (beginning, 1st, and 2nd phase)
+		/// Clears all overworld sprites of the selected state
 		/// </summary>
-		/// <param name="phase"></param>
-		public void clearAreaSprites(int phase)
+		public void clearAreaSprites(GameState state)
 		{
-			ZScreamer.ActiveOW.allsprites[phase].RemoveAll(removeFromMap);
+			ZScreamer.ActiveOW.GetSpritesForState(state).RemoveAll(removeFromMap);
 		}
 
 		/// <summary>

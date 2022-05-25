@@ -89,9 +89,9 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 			Palette[index] = new(r, g, b);
 		}
 
-		public void SetColorAt(int index, Color c)
+		public void SetColorAt(int index, Color color)
 		{
-			Palette[index] = new(c.To555Short());
+			Palette[index] = SNESColor.FromColor(color);
 		}
 
 		public Color GetRealColorAt(int index)

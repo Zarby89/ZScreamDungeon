@@ -160,7 +160,7 @@
 
 				ZGUI.OverworldEditor.OWProperty_MessageID.HexValue = CurrentMap.MessageID;
 
-				ZGUI.OverworldEditor.UpdateGUIProperties(CurrentParentMap, ZS.OverworldManager.WorldOffset >= 64 ? 0 : ZS.OverworldManager.GameState);
+				ZGUI.OverworldEditor.UpdateGUIProperties(CurrentParentMap, ZS.OverworldManager.WorldOffset >= 64 ? 0 : ZS.OverworldManager.ActiveGameState);
 
 				ZGUI.OverworldEditor.propertiesChangedFromForm = false;
 				ZGUI.OverworldEditor.tilePictureBox.Refresh();

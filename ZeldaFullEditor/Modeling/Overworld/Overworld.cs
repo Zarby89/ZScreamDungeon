@@ -25,7 +25,20 @@
 		public List<OverworldSecret> allitems = new();
 		public OverlayData[] alloverlays = new OverlayData[128];
 
-		public List<OverworldSprite>[] allsprites = new List<OverworldSprite>[3];
+		public List<OverworldSprite> RainStateSprites { get; set; } = new();
+		public List<OverworldSprite> RescueStateSprites { get; set; } = new();
+		public List<OverworldSprite> AgaStateSprites { get; set; } = new();
+
+		public List<OverworldSprite> CurrentStateSprites => GetSpritesForState(ActiveGameState);
+
+		public List<OverworldSprite> GetSpritesForState(GameState state) => state switch {
+			GameState.RainState => RainStateSprites,
+			GameState.UncleState => RainStateSprites,
+			GameState.RescueState => RescueStateSprites,
+			GameState.AgaState => AgaStateSprites,
+			_ => throw new ArgumentOutOfRangeException($"Invalid {nameof(GameState)}")
+		};
+
 
 		// TOGO ugh
 		public Worldiness World { get; set; } = Worldiness.LightWorld;
@@ -36,7 +49,8 @@
 		public List<OverworldTransport> AllTransports = new();
 		public List<OverworldTransport> allBirds = new();
 
-		public byte GameState { get; set; } = 1;
+		public GameState ActiveGameState { get; set; } = GameState.RescueState;
+		public byte ActiveGameStateIndex => (byte) ActiveGameState;
 
 		public Gravestone[] graves = new Gravestone[Constants.NumberOfOverworldGraves];
 
@@ -50,11 +64,8 @@
 			Tile32List = new List<Tile32>();
 
 			t32 = new List<ushort>();
-
-			allsprites[0] = new List<OverworldSprite>();
-			allsprites[1] = new List<OverworldSprite>();
-			allsprites[2] = new List<OverworldSprite>();
 		}
+
 		public void Init()
 		{
 			AssembleTile32Definitions();
@@ -979,14 +990,15 @@
 			}
 		}
 
-		private void LoadScreenOfSprites(int gamestate, byte screen)
+		private void LoadScreenOfSprites(GameState gamestate, byte screen)
 		{
 			var spriteAddress = screen * 2 +
 				gamestate switch
 				{
-					0 => ZS.Offsets.OverworldSpritesTableState0,
-					1 => ZS.Offsets.OverworldSpritesTableState2,
-					2 => ZS.Offsets.OverworldSpritesTableState3,
+					GameState.RainState => ZS.Offsets.OverworldSpritesTableState0,
+					GameState.UncleState => ZS.Offsets.OverworldSpritesTableState0,
+					GameState.RescueState => ZS.Offsets.OverworldSpritesTableState2,
+					GameState.AgaState => ZS.Offsets.OverworldSpritesTableState3,
 					_ => throw new ZeldaException("That's a bad gamestate")
 				};
 
@@ -1016,7 +1028,7 @@
 					st = SpriteType.GetTypeFromID(b3);
 				}
 
-				allsprites[gamestate].Add(new(st)
+				GetSpritesForState(gamestate).Add(new(st)
 				{
 					MapID = screen,
 					MapX = b2,
@@ -1034,10 +1046,10 @@
 				{
 					if (i < 64)
 					{
-						LoadScreenOfSprites(0, i);
+						LoadScreenOfSprites(GameState.RainState, i);
 					}
-					LoadScreenOfSprites(1, i);
-					LoadScreenOfSprites(2, i);
+					LoadScreenOfSprites(GameState.RescueState, i);
+					LoadScreenOfSprites(GameState.AgaState, i);
 				}
 			}
 		}

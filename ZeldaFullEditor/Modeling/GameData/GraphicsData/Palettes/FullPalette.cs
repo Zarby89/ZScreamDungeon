@@ -2,7 +2,7 @@
 {
 	public class FullPalette
 	{
-		private readonly SNESColor[] Palette;
+		private readonly SNESColor[] Palette = new SNESColor[Constants.TotalPaletteSize];
 
 		public SNESColor this[int i] => Palette[i];
 

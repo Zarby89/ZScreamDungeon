@@ -234,15 +234,16 @@
 
 		public void RefreshTileset()
 		{
-
+			LoadedGraphics = ZScreamer.ActiveGraphicsManager.CreateOverworldGraphicsSet(Tileset, State0SpriteGraphics, World == Worldiness.DarkWorld);
 			NotifyArtist();
 		}
 
-		public FullPalette GetPaletteForGameState(int gamestate) => gamestate switch
+		public FullPalette GetPaletteForGameState(GameState gamestate) => gamestate switch
 		{
-			0 => CGPaletteState0,
-			1 => CGPaletteState2,
-			2 => CGPaletteState3,
+			GameState.RainState => CGPaletteState0,
+			GameState.UncleState => CGPaletteState0,
+			GameState.RescueState => CGPaletteState2,
+			GameState.AgaState => CGPaletteState3,
 			_ => throw new ArgumentOutOfRangeException(nameof(gamestate), "BAD GAME STATE")
 		};
 
@@ -251,19 +252,21 @@
 			MyArtist.Invalidate();
 		}
 
-		public byte GetSpriteGraphicsForGameState(int gamestate) => gamestate switch
+		public byte GetSpriteGraphicsForGameState(GameState gamestate) => gamestate switch
 		{
-			0 => State0SpriteGraphics,
-			1 => State2SpriteGraphics,
-			2 => State3SpriteGraphics,
+			GameState.RainState => State0SpriteGraphics,
+			GameState.UncleState => State0SpriteGraphics,
+			GameState.RescueState => State2SpriteGraphics,
+			GameState.AgaState => State3SpriteGraphics,
 			_ => 0x00,
 		};
 
-		public byte GetSpritePaletteForGameState(int gamestate) => gamestate switch
+		public byte GetSpritePaletteForGameState(GameState gamestate) => gamestate switch
 		{
-			0 => State0SpritePalette,
-			1 => State2SpritePalette,
-			2 => State3SpritePalette,
+			GameState.RainState => State0SpritePalette,
+			GameState.UncleState => State0SpritePalette,
+			GameState.RescueState => State2SpritePalette,
+			GameState.AgaState => State3SpritePalette,
 			_ => 0x00,
 		};
 

@@ -934,15 +934,10 @@
 			// stateCombobox
 			// 
 			this.stateCombobox.FormattingEnabled = true;
-			this.stateCombobox.Items.AddRange(new object[] {
-            "0,1 Rescue Zelda",
-            "2 Zelda rescued",
-            "3 Agahnim defeated"});
 			this.stateCombobox.Location = new System.Drawing.Point(6, 31);
 			this.stateCombobox.Name = "stateCombobox";
 			this.stateCombobox.Size = new System.Drawing.Size(138, 21);
 			this.stateCombobox.TabIndex = 1;
-			this.stateCombobox.Text = "0,1 Rescue Zelda";
 			this.stateCombobox.SelectedIndexChanged += new System.EventHandler(this.stateCombobox_SelectedIndexChanged);
 			// 
 			// previewTextPicturebox

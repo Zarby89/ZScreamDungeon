@@ -16,6 +16,7 @@
 			get => range;
 			set
 			{
+				if (range == value) return;
 				range = value;
 				EnforceRangeAndBoundaries();
 			}

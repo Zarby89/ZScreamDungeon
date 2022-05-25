@@ -64,7 +64,7 @@
 
 		public override void ReloadPalettes()
 		{
-			var copy = MyScreen?.GetPaletteForGameState(ZScreamer.ActiveOW.GameState);
+			var copy = MyScreen?.GetPaletteForGameState(ZScreamer.ActiveOW.ActiveGameState);
 
 			RefreshPalettesFrom(copy);
 		}

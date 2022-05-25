@@ -468,7 +468,7 @@
 
 			for (int i = 0; i < 80; i++)
 			{
-				cp.Entries[i + 32] = Palettes.ToColor(ZScreamer.ActiveROM.Read16(0xDE544 + (i * 2)));
+				cp.Entries[i + 32] = SNESFunctions.ToColor(ZScreamer.ActiveROM.Read16(0xDE544 + (i * 2)));
 				if ((i % 16) == 0)
 				{
 					cp.Entries[i + 32] = Color.Transparent;

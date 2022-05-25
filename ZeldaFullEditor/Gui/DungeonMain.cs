@@ -2303,7 +2303,7 @@
 		{
 			if (ConfirmDeletion("overworld sprites for phase 1 (Rescue Zelda)"))
 			{
-				OverworldEditor.clearOverworldSprites(0);
+				OverworldEditor.clearOverworldSprites(GameState.RainState);
 			}
 		}
 
@@ -2314,7 +2314,7 @@
 		{
 			if (ConfirmDeletion("overworld sprites for phase 2 (Zelda rescued)"))
 			{
-				OverworldEditor.clearOverworldSprites(1);
+				OverworldEditor.clearOverworldSprites(GameState.RescueState);
 			}
 		}
 
@@ -2325,7 +2325,7 @@
 		{
 			if (ConfirmDeletion("overworld sprites for phase 3 (Agahnim defeated)"))
 			{
-				OverworldEditor.clearOverworldSprites(2);
+				OverworldEditor.clearOverworldSprites(GameState.AgaState);
 			}
 		}
 
@@ -2405,7 +2405,7 @@
 		{
 			if (ConfirmDeletionOWArea("sprites for phase 1 (Rescue Zelda)"))
 			{
-				OverworldEditor.clearAreaSprites(0);
+				OverworldEditor.clearAreaSprites(GameState.RainState);
 			}
 		}
 
@@ -2416,7 +2416,7 @@
 		{
 			if (ConfirmDeletionOWArea("sprites for phase 2 (Zelda rescued)"))
 			{
-				OverworldEditor.clearAreaSprites(1);
+				OverworldEditor.clearAreaSprites(GameState.RescueState);
 			}
 		}
 
@@ -2427,7 +2427,7 @@
 		{
 			if (ConfirmDeletionOWArea("sprites for phase 3 (Agahnim defeated)"))
 			{
-				OverworldEditor.clearAreaSprites(2);
+				OverworldEditor.clearAreaSprites(GameState.AgaState);
 			}
 		}
 
@@ -2491,10 +2491,7 @@
 		/// </summary>
 		private bool ConfirmDeletion(string w)
 		{
-			return MessageBox.Show(
-				$"You are about to delete all {w}.\nDo you wish to continue?",
-				"Warning",
-				MessageBoxButtons.YesNo) == DialogResult.Yes;
+			return UIText.VerifyWarning($"You are about to delete all {w}");
 		}
 
 		/// <summary>
@@ -2510,18 +2507,14 @@
 			Process.Start(UIText.DISCORD);
 		}
 
-		public void GetXYMouseBasedOnZoom(MouseEventArgs e, out int x, out int y)
+		public (int x, int y) GetXYMouseBasedOnZoom(MouseEventArgs e)
 		{
 			if (x2zoom)
 			{
-				x = e.X / 2;
-				y = e.Y / 2;
+				return (e.X / 2, e.Y / 2);
 			}
-			else
-			{
-				x = e.X;
-				y = e.Y;
-			}
+
+			return (e.X, e.Y);
 		}
 
 		private void UWInsert(object sender, EventArgs e)

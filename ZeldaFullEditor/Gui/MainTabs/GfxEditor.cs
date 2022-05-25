@@ -68,14 +68,14 @@
 
 						for (int j = 0; j < 7; j++)
 						{
-							bigPalettes[ColorPos++] = ZScreamer.ActivePaletteManager.UnderworldMain[i][j + (k * 15)];
+							//bigPalettes[ColorPos++] = ZScreamer.ActivePaletteManager.UnderworldMain[i][j + (k * 15)];
 						}
 
 						ColorPos += 8;
 
 						for (int j = 0; j < 8; j++)
 						{
-							bigPalettes[ColorPos++] = ZScreamer.ActivePaletteManager.UnderworldMain[i][j + (k * 15) + 7];
+							//bigPalettes[ColorPos++] = ZScreamer.ActivePaletteManager.UnderworldMain[i][j + (k * 15) + 7];
 						}
 
 						ColorPos += 8;

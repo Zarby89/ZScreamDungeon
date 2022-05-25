@@ -19,8 +19,7 @@
 					break;
 				}
 
-				int gs = ZS.OverworldManager.GameState;
-				foreach (var spr in ZS.OverworldManager.allsprites[gs]) // TODO : Check if that need to be changed to LINQ mapid == maphover
+				foreach (var spr in ZS.OverworldManager.CurrentStateSprites) // TODO : Check if that need to be changed to LINQ mapid == maphover
 				{
 					if (spr.MouseIsInHitbox(e))
 					{
@@ -48,14 +47,13 @@
 					MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID
 				}; // TODO
 
-				int gs = ZS.OverworldManager.GameState;
-				if (selectedFormSprite.MapID >= 64 && gs == 0)
+				if (selectedFormSprite.MapID >= 64 && ZS.OverworldManager.ActiveGameState < GameState.RescueState)
 				{
 					throw new ZeldaException(NotInTheRain);
 				}
 
-				ZS.OverworldManager.allsprites[gs].Add(selectedFormSprite);
-				selectedSprite = ZS.OverworldManager.allsprites[gs].Last();
+				ZS.OverworldManager.CurrentStateSprites.Add(selectedFormSprite);
+				selectedSprite = selectedFormSprite;
 				selectedFormSprite = null;
 				MouseIsDown = true;
 				IsLeftPress = true;
@@ -72,17 +70,13 @@
 				if (selectedFormSprite != null)
 				{
 					selectedFormSprite.MapID = mid;
-					int gs = ZS.OverworldManager.GameState;
 
-					if (mid >= 64)
+					if (mid >= 64 && ZS.OverworldManager.ActiveGameState < GameState.RescueState)
 					{
-						if (gs == 0)
-						{
 							throw new ZeldaException(NotInTheRain);
-						}
 					}
 
-					ZS.OverworldManager.allsprites[gs].Add(selectedFormSprite);
+					ZS.OverworldManager.CurrentStateSprites.Add(selectedFormSprite);
 					selectedFormSprite = null;
 				}
 				if (selectedSprite != null)
@@ -154,15 +148,14 @@
 				byte mid = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
 
 				selectedFormSprite.MapID = mid;
-				int gs = ZS.OverworldManager.GameState;
 
-				if (mid >= 64 && gs == 0)
+				if (mid >= 64 && ZS.OverworldManager.ActiveGameState < GameState.RescueState)
 				{
 					throw new ZeldaException(NotInTheRain);
 				}
 
-				ZS.OverworldManager.allsprites[gs].Add(selectedFormSprite);
-				selectedSprite = ZS.OverworldManager.allsprites[gs].Last();
+				ZS.OverworldManager.CurrentStateSprites.Add(selectedFormSprite);
+				selectedSprite = selectedFormSprite;
 				selectedFormSprite = null;
 				MouseIsDown = true;
 				IsLeftPress = true;
@@ -173,7 +166,7 @@
 		{
 			if (!MouseIsDown)
 			{
-				FindHoveredEntity(ZS.OverworldManager.allsprites[ZS.OverworldManager.GameState], e);
+				FindHoveredEntity(ZS.OverworldManager.CurrentStateSprites, e);
 				return;
 			}
 
@@ -198,7 +191,7 @@
 
 			for (int i = ZS.OverworldManager.WorldOffset; i < ZS.OverworldManager.WorldOffsetEnd; i++)
 			{
-				ZS.OverworldManager.allsprites[ZS.OverworldManager.GameState].Remove(lastselectedSprite);
+				ZS.OverworldManager.CurrentStateSprites.Remove(lastselectedSprite);
 			}
 
 			lastselectedSprite = null;
@@ -209,9 +202,9 @@
 			Brush bgrBrush;
 			Pen outline;
 
-			for (int i = 0; i < ZS.OverworldManager.allsprites[ZS.OverworldManager.GameState].Count; i++)
+			for (int i = 0; i < ZS.OverworldManager.CurrentStateSprites.Count; i++)
 			{
-				var spr = ZS.OverworldManager.allsprites[ZS.OverworldManager.GameState][i];
+				var spr = ZS.OverworldManager.CurrentStateSprites[i];
 
 				if (lowEndMode && spr.MapID != CurrentParentMapID)
 				{

@@ -19,10 +19,10 @@
 		}
 
 		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
+
 		public bool Lit { get; set; } = false;
 
 		public Rectangle BoundingBox => new(RealX, RealY, 16, 16);
-
 
 		public string Name => "Torch";
 
@@ -33,7 +33,7 @@
 
 		public void Draw(Artist art)
 		{
-
+			throw new NotImplementedException();
 		}
 
 		public bool PointIsInHitbox(int x, int y)
@@ -43,7 +43,7 @@
 
 		public byte[] GetByteData()
 		{
-			UWTilemapPosition.CreateLowAndHighBytesFromXYZ(GridX, GridY, (byte) Layer, out var low, out var high);
+			var (low, high) = UWTilemapPosition.CreateLowAndHighBytesFromXYZ(GridX, GridY, (byte) Layer);
 			return new byte[] { low, high };
 		}
 	}

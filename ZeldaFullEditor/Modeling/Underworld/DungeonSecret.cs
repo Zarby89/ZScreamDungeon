@@ -53,7 +53,7 @@
 
 		public byte[] GetByteData()
 		{
-			UWTilemapPosition.CreateLowAndHighBytesFromXYZ(GridX, GridY, (byte) Layer, out var low, out var high);
+			var (low, high) = UWTilemapPosition.CreateLowAndHighBytesFromXYZ(GridX, GridY, (byte) Layer);
 			return new byte[] { low, high, SecretType.ID };
 			//ushort xy = (ushort) ((Y << 6) | (X << 1) | (Layer << 13));
 			//return new byte[]

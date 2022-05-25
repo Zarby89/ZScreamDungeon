@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor.Modeling.GameData.GraphicsData
+﻿namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.GraphicsTiles
 {
 	public record RequiredGraphicsSheets(
 		byte[] Sheet0 = null, byte[] Sheet1 = null, byte[] Sheet2 = null, byte[] Sheet3 = null,
