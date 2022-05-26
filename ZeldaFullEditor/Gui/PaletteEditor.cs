@@ -28,7 +28,7 @@
 			foreach (var (type, list) in pals)
 			{
 				// create UI element
-				var text = type.ToString().SpaceOutString();
+				var text = type.ToString().Replace("Palette", String.Empty).SpaceOutString();
 				var nodex = new TreeNode(text)
 				{
 					Name = type.ToString(),
@@ -38,7 +38,7 @@
 				int i = 0;
 				foreach (var p in list)
 				{
-					CachedPalettes[p] = p.Clone();
+					CachedPalettes[p] = new(p);
 					nodex.Nodes.Add($"{text} {i++:X2}");
 				}
 			}
@@ -95,33 +95,17 @@
 
 		private void RefreshEveryone()
 		{
-			RefreshUnderworldGraphics();
-			RefreshOverworld();
-			palettePicturebox.Refresh();
-		}
-
-		private static void RefreshOverworld()
-		{
-			foreach (var s in ZScreamer.ActiveOW.allmaps)
-			{
-				s.MyArtist.ReloadPalettes();
-				s.MyArtist.Invalidate();
-			}
-
-			ZScreamer.ActiveOWScene.Refresh();
-		}
-
-		private void RefreshUnderworldGraphics()
-		{
 			foreach (var s in ZScreamer.ActiveScreamer.all_rooms)
 			{
 				s.RefreshPalette();
 			}
 
 			ZScreamer.ActiveUWScene.HardRefresh();
+
+			ZScreamer.ActiveOW.ForAllScreens(map => map.RefreshPalette());
+			ZScreamer.ActiveOWScene.Refresh();
+
 			palettePicturebox.Refresh();
-
-
 		}
 
 		private void palettesTreeView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -167,12 +151,6 @@
 					tempColor = selectedPalette.GetRealColorAt(cindex);
 					// selectedPalette[cindex] = Color.Fuchsia;
 
-					for (int i = 0; i < 159; i++)
-					{
-						ZScreamer.ActiveOW.allmaps[i].MyArtist.ReloadPalettes();
-
-					}
-
 					RefreshEveryone();
 				}
 			}
@@ -183,13 +161,7 @@
 			if (tempIndex != -1)
 			{
 				selectedPalette.SetColorAt(tempIndex, tempColor);
-				for (int i = 0; i < 159; i++)
-				{
-					ZScreamer.ActiveOW.allmaps[i].MyArtist.ReloadPalettes();
-				}
-
-				RefreshOverworld();
-				RefreshUnderworldGraphics();
+				RefreshEveryone();
 				tempIndex = -1;
 			}
 		}
@@ -210,8 +182,7 @@
 					selectedPalette.SetColorAt(cindex, cd.Color);
 				}
 
-				RefreshOverworld();
-				RefreshUnderworldGraphics();
+				RefreshEveryone();
 			}
 		}
 

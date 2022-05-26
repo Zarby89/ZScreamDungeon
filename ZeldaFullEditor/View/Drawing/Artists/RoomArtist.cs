@@ -50,15 +50,6 @@
 			DrawEntireList(CurrentRoom.Layer3Objects);
 			DrawEntireList(CurrentRoom.DoorsList);
 
-			//if (Layer2Mode != Constants.LayerMergeOff)
-			//{
-			//	ZGUI.DungeonEditor.SetPalettesTransparent();
-			//}
-			//else
-			//{
-			//	ZGUI.DungeonEditor.SetPalettesBlack();
-			//}
-
 			void DrawEntireList(IEnumerable<IDelegatedDraw> list)
 			{
 				foreach (var o in list)
@@ -89,7 +80,7 @@
 
 			ImageAttributes draw = null;
 
-			if (CurrentRoom.LayerMerging.Layer2Translucent)
+			if (CurrentRoom.LayerCoupling.Layer2Translucent)
 			{
 				draw = new ImageAttributes();
 				draw.SetColorMatrix(
@@ -102,12 +93,12 @@
 			PointeredImage top;
 			PointeredImage bottom;
 
-			if (CurrentRoom.LayerMerging.Layer2Visible)
+			if (CurrentRoom.LayerCoupling.Layer2Visible)
 			{
 				top = Layer1Canvas;
 				bottom = null;
 			}
-			else if (CurrentRoom.LayerMerging.Layer2OnTop)
+			else if (CurrentRoom.LayerCoupling.Layer2OnTop)
 			{
 				top = Layer2Canvas;
 				bottom = Layer1Canvas;

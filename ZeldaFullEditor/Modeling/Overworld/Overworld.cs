@@ -145,31 +145,33 @@
 						_ => map
 					};
 
-					map.MessageID = ZS.ROM[ZS.Offsets.overworldMessages + map.MapID];
-					map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
-					map.State2SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
-					map.State3SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
-					map.State0SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
-					map.State2SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
-					map.State3SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
-
-					map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + map.VirtualMapID];
-
-					if (map.MapID == 0x88)
-					{
-						map.Tileset = 81;
-						map.ScreenPalette = 0;
-					}
-					else if (map.MapID is >= 0x80 and <= 0x8A or 0x94)
-					{
-						map.Tileset = ZS.ROM[ZS.Offsets.overworldSpecialGFXGroup + map.VirtualMapID];
-						map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + 1];
-					}
-					else // Pyramid bg use 0x5B map
-					{
-						map.Tileset = ZS.ROM[ZS.Offsets.OverworldIDToMainGFXSet + map.MapID];
-						map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
-					}
+					//map.MessageID = ZS.ROM[ZS.Offsets.overworldMessages + map.MapID];
+					//
+					//// TODO verify this shit
+					//map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID];
+					//map.State2SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID];
+					//map.State3SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID];
+					//map.State0SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID];
+					//map.State2SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID];
+					//map.State3SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID];
+					//
+					//map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + map.VirtualMapID];
+					//
+					//if (map.MapID == 0x88)
+					//{
+					//	map.Tileset = 81;
+					//	map.ScreenPalette = 0;
+					//}
+					//else if (map.MapID is >= 0x80 and <= 0x8A or 0x94)
+					//{
+					//	map.Tileset = ZS.ROM[ZS.Offsets.overworldSpecialGFXGroup + map.VirtualMapID];
+					//	map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + 1];
+					//}
+					//else // Pyramid bg use 0x5B map
+					//{
+					//	map.Tileset = ZS.ROM[ZS.Offsets.OverworldIDToMainGFXSet + map.MapID];
+					//	map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
+					//}
 				}
 			}
 
@@ -183,10 +185,7 @@
 			new Thread(() =>
 			{
 				Thread.CurrentThread.IsBackground = true;
-				for (var i = 0; i < Constants.NumberOfOWMaps; i++)
-				{
-					allmaps[i].NotifyArtist();
-				}
+				ForAllScreens(map => map.InvalidateArtist());
 			}).Start();
 		}
 
@@ -197,6 +196,30 @@
 				allTilesTypes[i] = ZS.ROM[ZS.Offsets.overworldTilesType + i];
 			}
 		}
+
+		/// <summary>
+		/// Performs some action on screen IDs 0x00 to 0x7F
+		/// </summary>
+		public void ForAllMainScreens(Action<OverworldScreen> action)
+		{
+			for (int i = 0; i < 128; i++)
+			{
+				action(allmaps[i]);
+			}
+		}
+
+		/// <summary>
+		/// Performs some action on every screen
+		/// </summary>
+		public void ForAllScreens(Action<OverworldScreen> action)
+		{
+			foreach(var map in allmaps)
+			{
+				action(map);
+			}
+		}
+
+
 
 		public void LoadGravestoneData()
 		{
@@ -679,7 +702,7 @@
 				}
 
 				bw.Close();
-				allmaps[i].NotifyArtist();
+				allmaps[i].InvalidateArtist();
 			}
 		}
 
@@ -842,24 +865,19 @@
 		{
 			var ptr = ZS.ROM.Read24(ZS.Offsets.overworldItemsAddress);
 			var ptrpc = ptr.SNEStoPC(); // 1BC2F9 -> 0DC2F9
-			for (var i = 0; i < 128; i++)
-			{
-				var addr = (ptr & 0xFF0000 | ZS.ROM.Read16(ptrpc + i * 2)).SNEStoPC();
 
-				if (!allmaps[i].IsOwnParent)
-				{
-					continue;
-				}
+			ForAllMainScreens(map =>
+			{
+				if (!map.IsOwnParent) return;
+
+				var addr = (ptr & 0xFF0000 | ZS.ROM.Read16(ptrpc + map.MapID * 2)).SNEStoPC();
 
 				while (true)
 				{
 					var b1 = ZS.ROM[addr++];
 					var b2 = ZS.ROM[addr++];
 
-					if ((b1 & b2) == 0xFF) // checks for both being 0xFF
-					{
-						break;
-					}
+					if ((b1 & b2) == 0xFF) return;
 
 					var b3 = ZS.ROM[addr++];
 
@@ -867,13 +885,13 @@
 
 					allitems.Add(new(SecretItemType.GetTypeFromID(b3))
 					{
-						MapID = (byte) i,
+						MapID = map.MapID,
 						MapX = (byte) (p & 0x3F),
 						MapY = (byte) (p >> 6),
 
 					});
 				}
-			}
+			});
 		}
 
 		public void loadOverlays()

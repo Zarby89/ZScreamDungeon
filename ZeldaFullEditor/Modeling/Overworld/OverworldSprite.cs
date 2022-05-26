@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.Modeling.Overworld
 {
-	public class OverworldSprite : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IHaveInfo, IEquatable<OverworldSprite>
+	public class OverworldSprite : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IHaveInfo, IComparable<OverworldSprite>
 	{
 		public override string Name => Species.Name;
 		public byte ID => Species.ID;
@@ -32,18 +32,21 @@
 		{
 			return base.PointIsInHitbox(x, y);
 		}
-
-		public bool Equals(OverworldSprite s) => s switch
+		public int CompareTo(OverworldSprite other)
 		{
-			null => false,
-			not null => MapX == s.MapX && MapY == s.MapY && ID == s.ID,
-		};
+			int ret = ID - other.ID;
+			if (ret != 0)
+			{
+				return ret;
+			}
 
-		public override bool Equals(object obj) => Equals(obj as OverworldSprite);
+			ret = MapX - other.MapX;
+			if (ret != 0)
+			{
+				return ret;
+			}
 
-		public override int GetHashCode()
-		{
-			throw new NotImplementedException();
+			return MapY - other.MapY;
 		}
 	}
 }

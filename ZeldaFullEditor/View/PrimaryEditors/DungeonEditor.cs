@@ -34,7 +34,7 @@
 			vramViewer = new VramViewer();
 			cgramViewer = new CGRamViewer();
 
-			roomPropertyLayerMerge.DataSource = LayerMergeType.ListOf;
+			roomPropertyLayerCoupling.DataSource = LayerCouplingType.ListOf;
 			roomProperty_collision.DataSource = LayerCollisionType.ListOf;
 			roomProperty_effect.DataSource = LayerEffectType.ListOf;
 			roomProperty_tag1.DataSource = DefaultEntities.ListOfRoomTags;
@@ -124,13 +124,21 @@
 
 		public void UpdateFormForSelectedObject(IHaveInfo o)
 		{
-			if (o is DungeonSprite s)
+			switch (o)
 			{
-				spritesubtypeUpDown.Value = s.Subtype;
-				spriteoverlordCheckbox.Checked = s.IsCurrentlyOverlord;
-				KeyDropComboBox.SelectedIndex = s.KeyDrop;
+				case DungeonSprite s:
+					spritesubtypeUpDown.Value = s.Subtype;
+					spriteoverlordCheckbox.Checked = s.IsCurrentlyOverlord;
+					KeyDropComboBox.SelectedIndex = s.KeyDrop;
 
-				ZScreamer.ActiveUWScene.Refresh();
+					ZScreamer.ActiveUWScene.Refresh();
+					break;
+
+				case DungeonDoor d:
+					throw new NotImplementedException();
+
+				case DungeonSecret x:
+					throw new NotImplementedException();
 			}
 
 			ZGUI.UpdateFormForSelectedObject(o);
@@ -146,7 +154,7 @@
 
 			propertiesChangedFromForm = prevent;
 
-			roomPropertyLayerMerge.SelectedItem = room.LayerMerging;
+			roomPropertyLayerCoupling.SelectedItem = room.LayerCoupling;
 			roomProperty_tag1.SelectedIndex = room.Tag1;
 			roomProperty_tag2.SelectedIndex = room.Tag2;
 			roomProperty_effect.SelectedItem = room.LayerEffect;
@@ -223,7 +231,7 @@
 				room.LayerEffect = (LayerEffectType) roomProperty_effect.SelectedItem;
 				room.Tag1 = (byte) (roomProperty_tag1.SelectedItem as RoomTagName).ID;
 				room.Tag2 = (byte) (roomProperty_tag2.SelectedItem as RoomTagName).ID;
-				room.LayerMerging = (LayerMergeType) roomPropertyLayerMerge.SelectedItem;
+				room.LayerCoupling = (LayerCouplingType) roomPropertyLayerCoupling.SelectedItem;
 				room.LayerCollision = (LayerCollisionType) roomProperty_collision.SelectedItem;
 
 				room.BackgroundTileset = (byte) RoomProperty_Blockset.HexValue;
@@ -278,10 +286,7 @@
 				selectedEntrance.Dungeon = (byte) EntranceProperties_DungeonID.HexValue;
 				selectedEntrance.Music = (MusicName) EntranceMusicBox.SelectedItem;
 
-				if (selectedEntrance.IsSpawnPoint)
-				{
-					selectedEntrance.AssociatedEntrance = (byte) EntranceProperties_Entrance.HexValue;
-				}
+				selectedEntrance.AssociatedEntrance = (byte) EntranceProperties_Entrance.HexValue;
 
 				selectedEntrance.OverworldEntranceLocation = (byte) EntranceProperties_Entrance.HexValue;
 
@@ -847,7 +852,7 @@
 
 				foreach (TabPage tp in RoomTabControl.TabPages)
 				{
-					if ((tp.Tag as Room).RoomID == (ushort) i)
+					if ((tp.Tag as Room).RoomID == i)
 					{
 						e.Graphics.DrawRectangle(
 								new Pen((RoomTabControl.SelectedTab == tp) ? Color.YellowGreen : Color.DarkGreen, 2),
@@ -861,33 +866,17 @@
 		{
 			Graphics g = e.Graphics;
 			Font font = (sender as TabControl).Font;
-			SolidBrush b = new SolidBrush(Color.FromKnownColor(KnownColor.Control));
-			SolidBrush bs = new SolidBrush(Color.FromKnownColor(KnownColor.ControlLight));
+
+			Brush brr = Brushes.Black;
 
 			if (tpHotTracked == e.Index || e.State == DrawItemState.Selected)
 			{
-				g.FillRectangle(bs, e.Bounds);
-				g.DrawString(RoomTabControl.TabPages[e.Index].Text, font, Brushes.Blue, new Rectangle(e.Bounds.X, e.Bounds.Y + 2, 64, 24));
-
-				if (tpHotTrackedToClose == e.Index)
-				{
-					g.DrawImage(xTabButton, new(e.Bounds.X + 30, e.Bounds.Y, 16, 16), 16, 0, 16, 16, GraphicsUnit.Pixel);
-				}
-				else
-				{
-					g.DrawImage(xTabButton, new(e.Bounds.X + 30, e.Bounds.Y, 16, 16), 0, 0, 16, 16, GraphicsUnit.Pixel);
-				}
-
-				//g.DrawString("000", font, Brushes.Blue, new Rectangle(e.Bounds.X, e.Bounds.Y + 4, 64, 24));
+				int off = (tpHotTrackedToClose == e.Index) ? 16 : 0;
+				g.DrawImage(xTabButton, new(e.Bounds.X + 30, e.Bounds.Y, 16, 16), off, 0, 16, 16, GraphicsUnit.Pixel);
+				brr = Brushes.Blue;
 			}
-			else
-			{
-				g.FillRectangle(b, e.Bounds);
-				g.DrawString(RoomTabControl.TabPages[e.Index].Text, font, Brushes.Black, new Rectangle(e.Bounds.X, e.Bounds.Y + 2, 64, 24));
-			}
-
-			b.Dispose();
-			bs.Dispose();
+			g.FillRectangle(new SolidBrush(Color.FromKnownColor(KnownColor.ControlLight)), e.Bounds);
+			g.DrawString(RoomTabControl.TabPages[e.Index].Text, font, brr, new Rectangle(e.Bounds.X, e.Bounds.Y + 2, 64, 24));
 		}
 
 		private void tabControl2_MouseMove(object sender, MouseEventArgs e)
@@ -1190,14 +1179,10 @@
 		{
 			if (e.Node.Tag != null)
 			{
-				if (e.Node.Parent == entrancetreeView.Nodes[0])
-				{
-					addRoomTab(ZScreamer.ActiveScreamer.entrances[(int) e.Node.Tag].RoomID);
-				}
-				else
-				{
-					addRoomTab(ZScreamer.ActiveScreamer.starting_entrances[(int) e.Node.Tag].RoomID);
-				}
+				var list = (e.Node.Parent == entrancetreeView.Nodes[0])
+					? ZScreamer.ActiveScreamer.entrances
+					: ZScreamer.ActiveScreamer.starting_entrances;
+				addRoomTab(list[(int) e.Node.Tag].RoomID);
 			}
 		}
 

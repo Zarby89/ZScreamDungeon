@@ -301,10 +301,7 @@
 			RoomPreviewArtist.Invalidate();
 			allgfxPicturebox.Refresh();
 
-			for (int i = 0; i < 159; i++)
-			{
-				ZScreamer.ActiveOW.allmaps[i].NotifyArtist();
-			}
+			ZScreamer.ActiveOW.ForAllScreens(map => map.InvalidateArtist());
 		}
 
 		private void paste24bpp_Click(object sender, EventArgs e)
@@ -354,7 +351,8 @@
 				FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read);
 				if (fs.Length > Constants.UncompressedSheetSize)
 				{
-					if (MessageBox.Show("This graphic file seems to be bigger than expected do you still want to proceed?", "Warning", MessageBoxButtons.YesNo) == DialogResult.No)
+					
+					if (!UIText.VerifyWarning("You are trying to import a sheet that appears to be too large."))
 					{
 						fs.Close();
 						return;

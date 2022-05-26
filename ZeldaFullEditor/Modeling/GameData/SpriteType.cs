@@ -1,5 +1,4 @@
-﻿using ZeldaFullEditor.Modeling.GameData.GraphicsData.GraphicsTiles;
-using static ZeldaFullEditor.Modeling.GameData.SpriteCategory;
+﻿using static ZeldaFullEditor.Modeling.GameData.SpriteCategory;
 
 namespace ZeldaFullEditor.Modeling.GameData
 {

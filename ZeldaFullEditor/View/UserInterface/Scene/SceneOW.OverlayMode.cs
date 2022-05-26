@@ -225,7 +225,7 @@
 									continue;
 								}
 
-								if (tf.IsGarbage)
+								if (!tf.IsGarbage)
 								{
 									ZS.OverworldManager.alloverlays[CurrentParentMapID].tilesData.Add(tp);
 								}

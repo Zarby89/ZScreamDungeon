@@ -26,6 +26,7 @@ global using ZeldaFullEditor.Modeling;
 global using ZeldaFullEditor.Modeling.GameData;
 global using ZeldaFullEditor.Modeling.GameData.Defaults;
 global using ZeldaFullEditor.Modeling.GameData.GraphicsData;
+global using ZeldaFullEditor.Modeling.GameData.GraphicsData.GraphicsTiles;
 global using ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes;
 global using ZeldaFullEditor.Modeling.Overworld;
 global using ZeldaFullEditor.Modeling.Underworld;
@@ -38,7 +39,6 @@ global using ZeldaFullEditor.View.GeneralControls;
 global using ZeldaFullEditor.View.PrimaryEditors;
 global using ZeldaFullEditor.View.UserInterface;
 global using ZeldaFullEditor.View.UserInterface.Scene;
-global using ZeldaFullEditor.Modeling.GameData.GraphicsData.GraphicsTiles;
 
 global using static ZeldaFullEditor.TheGUI;
 

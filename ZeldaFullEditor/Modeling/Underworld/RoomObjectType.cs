@@ -1,5 +1,4 @@
-﻿using ZeldaFullEditor.Modeling.GameData.GraphicsData.GraphicsTiles;
-using static ZeldaFullEditor.Modeling.Underworld.ObjectResizability;
+﻿using static ZeldaFullEditor.Modeling.Underworld.ObjectResizability;
 using static ZeldaFullEditor.Modeling.Underworld.RoomObjectCategory;
 
 namespace ZeldaFullEditor.Data

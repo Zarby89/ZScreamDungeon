@@ -343,10 +343,7 @@
 		private void RefreshAllMaps()
 		{
 			Thread.CurrentThread.IsBackground = true;
-			for (int i = 0; i < 159; i++)
-			{
-				ZScreamer.ActiveOW.allmaps[i].NotifyArtist();
-			}
+			ZScreamer.ActiveOW.ForAllScreens(map => map.InvalidateArtist());
 		}
 
 
@@ -836,10 +833,11 @@
 		{
 			if (!ZScreamer.Active) return;
 
+			var pal = ZScreamer.ActiveOWScene.CurrentMap.MyArtist.Layer1Canvas.Palette.Entries;
+
 			for (int i = 0; i < 128; i++)
 			{
-				Color c = ZScreamer.ActiveOW.allmaps[ZScreamer.ActiveOWScene.CurrentMapID].MyArtist.Layer1Canvas.Palette.Entries[i];
-				e.Graphics.FillRectangle(new SolidBrush(c), new Rectangle(i % 16 * 16, i & ~0xF, 16, 16));
+				e.Graphics.FillRectangle(new SolidBrush(pal[i]), new Rectangle(i % 16 * 16, i & ~0xF, 16, 16));
 			}
 
 			e.Graphics.DrawRectangle(Pens.GreenYellow, new Rectangle(0, palSelected * 16, 256, 16));
@@ -938,7 +936,7 @@
 
 		private void tilePictureBox_MouseEnter(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveOWScene.CurrentMap.NotifyArtist();
+			ZScreamer.ActiveOWScene.CurrentMap.InvalidateArtist();
 			tilePictureBox.Refresh();
 		}
 
@@ -965,28 +963,15 @@
 			{
 				if (o.MapID != map) continue;
 
-				if (o.MapX < 32)
+				byte copyOff = (o.MapX, o.MapY) switch
 				{
-					if (o.MapY < 32)
-					{
-						o.MapID = ZScreamer.ActiveOW.allmaps[o.MapID].MapID;
-					}
-					else
-					{
-						o.MapID = ZScreamer.ActiveOW.allmaps[o.MapID + 8].MapID;
-					}
-				}
-				else
-				{
-					if (o.MapY < 32)
-					{
-						o.MapID = ZScreamer.ActiveOW.allmaps[o.MapID + 1].MapID;
-					}
-					else
-					{
-						o.MapID = ZScreamer.ActiveOW.allmaps[o.MapID + 9].MapID;
-					}
-				}
+					(< 32, < 32) => 0,
+					(< 32, _   ) => 8,
+					(_   , < 32) => 1,
+					(_   , _   ) => 9,
+				};
+
+				o.MapID = ZScreamer.ActiveOW.allmaps[o.MapID + copyOff].MapID;
 
 				if (o is OverworldDestination d)
 				{
@@ -996,7 +981,7 @@
 			}
 		}
 
-
+		// TODO maybe move to Overworld.cs?
 		/// <summary>
 		/// Updates world layout and sprites within the respective maps
 		/// </summary>
@@ -1114,6 +1099,7 @@
 			}
 		}
 
+		// TODO move to Overworld.cs and maybe make more generic
 		/// <summary>
 		/// Clears all overworld sprites of the selected
 		/// </summary>
@@ -1201,7 +1187,7 @@
 		/// </summary>
 		public void clearAreaEntrances()
 		{
-			foreach (OverworldEntrance entrance in ZScreamer.ActiveOW.allentrances)
+			foreach (var entrance in ZScreamer.ActiveOW.allentrances)
 			{
 				if (entrance.MapID == ZScreamer.ActiveOWScene.CurrentParentMapID)
 				{

@@ -49,11 +49,11 @@
 			{
 				if (ishole)
 				{
-					throw new ZeldaException("No space available for new hole. Delete one first.");
+					throw new ZeldaException("No space available for a new hole. Delete one first.");
 				}
 				else
 				{
-					throw new ZeldaException("No space available for new entrance. Delete one first.");
+					throw new ZeldaException("No space available for a new entrance. Delete one first.");
 				}
 			}
 

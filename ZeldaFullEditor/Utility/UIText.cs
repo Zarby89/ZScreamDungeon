@@ -139,11 +139,6 @@ namespace ZeldaFullEditor.Utility
 		//===========================================================================================
 		// Extension functions
 		//===========================================================================================
-		public static string ToFormattedString(this RoomObjectCategory b)
-		{
-			return string.Join(" ", Regex.Split(b.ToString(), @"[A-Z]", RegexOptions.None));
-		}
-
 		public static string ToLayerString(this RoomLayer l) => l switch
 		{
 			RoomLayer.Layer1 => "Layer 1",
@@ -154,7 +149,7 @@ namespace ZeldaFullEditor.Utility
 
 		public static string SpaceOutString(this string s)
 		{
-			return string.Join(" ", Regex.Split(s.ToString(), @"[A-Z]", RegexOptions.None));
+			return string.Join(" ", Regex.Split(s.ToString(), @"(?=[A-Z]|\d+)", RegexOptions.None));
 		}
 
 

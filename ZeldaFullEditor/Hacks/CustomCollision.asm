@@ -6,11 +6,11 @@
 
 ; Format:
 ; dw <offset> : db width, height
-; dw <tile data>, ...
+; db <tile data>, ...
 ;
 ; if <offset> == $F0F0, start doing single tiles
 ; format:
-; dw <offset> : db <data>
+; dw <offset> : db <data>, ...
 ;
 ; if <offset> == $FFFF, stop
 

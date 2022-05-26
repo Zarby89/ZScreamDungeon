@@ -51,7 +51,7 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 		/// <param name="colors">An array of <see langword="ushort"/> values that represents the raw ROM data of each color.</param>
 		/// <param name="info">A <see cref="PaletteInfo"/> record detailing the palette type and ROM location.</param>
 		/// <exception cref="ArgumentException"></exception>
-		public PartialPalette(ushort[] colors, PaletteInfo info)
+		public PartialPalette(SNESColor[] colors, PaletteInfo info)
 		{
 			NextColor = (Info = info).Type switch
 			{
@@ -74,19 +74,26 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 				_ => throw new ArgumentException($"Unrecognized {nameof(PaletteType)}: {Info.Type}"),
 			};
 
+			RealSize = Info.Type.GetRealSize();
+
 			if (colors.Length != RealSize)
 			{
 				throw new ArgumentException($"The {nameof(colors)} argument must be of exactly length {RealSize} for palette type {Info.Type}.");
 			}
 
-			RealSize = Info.Type.GetRealSize();
 			VirtualSize = Info.Type.GetVirtualSize();
-			Palette = new SNESColor[RealSize];
+			Palette = colors.DeepCopy();
 		}
 
-		public void SetColorAt(int index, byte r, byte g, byte b)
+		/// <summary>
+		/// Unfancy copy constructor
+		/// </summary>
+		/// <param name="copy">Copy this, yo.</param>
+		public PartialPalette(PartialPalette copy) : this(copy.Palette, copy.Info) { }
+
+		public void SetColorAt(int index, SNESColor color)
 		{
-			Palette[index] = new(r, g, b);
+			Palette[index] = color;
 		}
 
 		public void SetColorAt(int index, Color color)
@@ -98,7 +105,6 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 		{
 			return Palette[index].RealColor;
 		}
-
 
 		/// <summary>
 		/// Creates an enumerator that delivers values with the following criteria:
@@ -132,7 +138,7 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 		{
 			return (virtualindex % 16) switch
 			{
-				0 or > 8 => null,
+				0 or > 7 => null,
 				_ => Palette[realindex++],
 			};
 		}
@@ -144,14 +150,7 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 
 		public PartialPalette Clone()
 		{
-			var ret = new ushort[Palette.Length];
-
-			for (int i = 0; i < Palette.Length; i++)
-			{
-				ret[i] = Palette[i].CGRAMValue;
-			}
-
-			return new(ret, Info);
+			return new(Palette, Info);
 		}
 
 
@@ -166,7 +165,7 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 			for (int i = 0; i < Palette.Length; i++)
 			{
 				var c = other.Palette[i];
-				SetColorAt(i, c.R, c.G, c.B);
+				SetColorAt(i, c);
 			}
 
 		}

@@ -14,13 +14,12 @@
 		public GfxGroupsForm()
 		{
 			InitializeComponent();
-			this.BackColor = Color.FromKnownColor(KnownColor.Control);
+			BackColor = Color.FromKnownColor(KnownColor.Control);
 		}
 
 		private void cancelButton_Click(object sender, EventArgs e)
 		{
-			if (MessageBox.Show("This will restore groups to the previously applied changes\r\n" +
-				"Are you sure you want to restore Gfx Groups?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+			if (UIText.VerifyWarning("You are about to completely revert all GFX group changes."))
 			{
 				LoadTempGfx();
 				okButton_Click(null, e);

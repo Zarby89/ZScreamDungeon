@@ -23,32 +23,33 @@
 			int found = -1;
 			for (int i = 0; i < ZS.OverworldManager.allexits.Length; i++)
 			{
-				if (ZS.OverworldManager.allexits[i].Deleted)
+				var exit = ZS.OverworldManager.allexits[i];
+				if (exit.Deleted)
 				{
-					ZS.OverworldManager.allexits[i].MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
-					ZS.OverworldManager.allexits[i].GlobalX = (ushort) (mxRightclick & ~0xF);
-					ZS.OverworldManager.allexits[i].GlobalY = (ushort) (myRightclick & ~0xF);
+					exit.MapID = ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].ParentMapID;
+					exit.GlobalX = (ushort) (mxRightclick & ~0xF);
+					exit.GlobalY = (ushort) (myRightclick & ~0xF);
 
 					if (clipboard)
 					{
 						OverworldExit data = (OverworldExit) Clipboard.GetData(Constants.OverworldExitClipboardData);
 						if (data != null)
 						{
-							ZS.OverworldManager.allexits[i].CameraX = data.CameraX;
-							ZS.OverworldManager.allexits[i].CameraY = data.CameraY;
-							ZS.OverworldManager.allexits[i].ScrollX = data.ScrollX;
-							ZS.OverworldManager.allexits[i].ScrollY = data.ScrollY;
-							ZS.OverworldManager.allexits[i].unk1 = data.unk1;
-							ZS.OverworldManager.allexits[i].unk2 = data.unk2;
-							ZS.OverworldManager.allexits[i].TargetRoomID = data.TargetRoomID;
-							ZS.OverworldManager.allexits[i].doorType1 = data.doorType1;
-							ZS.OverworldManager.allexits[i].doorType2 = data.doorType2;
-							ZS.OverworldManager.allexits[i].doorXEditor = data.doorXEditor;
-							ZS.OverworldManager.allexits[i].doorYEditor = data.doorYEditor;
+							exit.CameraX = data.CameraX;
+							exit.CameraY = data.CameraY;
+							exit.ScrollX = data.ScrollX;
+							exit.ScrollY = data.ScrollY;
+							exit.unk1 = data.unk1;
+							exit.unk2 = data.unk2;
+							exit.TargetRoomID = data.TargetRoomID;
+							exit.doorType1 = data.doorType1;
+							exit.doorType2 = data.doorType2;
+							exit.doorXEditor = data.doorXEditor;
+							exit.doorYEditor = data.doorYEditor;
 						}
 					}
 
-					ZS.OverworldManager.allexits[i].UpdateMapProperties(ZScreamer.ActiveOW.allmaps[ZS.OverworldManager.allexits[i].MapID].IsPartOfLargeMap);
+					exit.UpdateMapProperties(ZScreamer.ActiveOW.allmaps[exit.MapID].IsPartOfLargeMap);
 
 					found = i;
 					break;
@@ -119,7 +120,7 @@
 			if (e.Button != MouseButtons.Right) return;
 
 			bool clickedon = false;
-			ContextMenuStrip menu = new ContextMenuStrip();
+			var menu = new ContextMenuStrip();
 
 			if (!clickedon)
 			{

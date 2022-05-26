@@ -99,6 +99,7 @@
 		public int room_header_pointer => new ROMAddress(0x01B5DD, 0x01B5DD).GetOffsetForVersion(Version);
 		public int room_header_pointers_bank => new ROMAddress(0x01B5E7, 0x01B5E7).GetOffsetForVersion(Version);
 		public int gfx_groups_pointer => new ROMAddress(0x00E277, 0x00E237).GetOffsetForVersion(Version);
+		public int gfx_groups_environment => new ROMAddress(0x00D934, 0x00D8F4).GetOffsetForVersion(Version);
 		public int room_object_layout_pointer => new ROMAddress(0x01882D, 0x01882D).GetOffsetForVersion(Version);
 		public int room_object_pointer => new ROMAddress(0x01874C, 0x01874C).GetOffsetForVersion(Version);
 		public int chests_length_pointer => new ROMAddress(0x01EBF4, 0x01EBF6).GetOffsetForVersion(Version);

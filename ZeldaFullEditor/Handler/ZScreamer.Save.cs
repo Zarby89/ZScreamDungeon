@@ -121,9 +121,9 @@
 			ROM.DataStream.CopyTo(data, 0);
 
 			// TODO handle differently in projects
-			if (File.Exists("CustomCollision.asm"))
+			if (File.Exists("Hacks/CustomCollision.asm"))
 			{
-				ROM.ApplyPatch("CustomCollision.asm");
+				ROM.ApplyPatch("Hacks/CustomCollision.asm");
 			}
 
 			foreach (AsarCLR.Asarerror error in AsarCLR.Asar.geterrors())
@@ -531,29 +531,22 @@
 			}
 		}
 
-		// TODO is probably bad and we should probably use IComparable to sort the lists firsts
-		public static bool CompareOverworldArrays<T>(List<T> list1, List<T> list2) where T : IEquatable<T>
+		private static bool CompareOverworldArrays<T>(List<T> list1, List<T> list2) where T : IComparable<T>
 		{
 			if (list1.Count != list2.Count)
 			{
 				return false;
 			}
 
-			bool match;
+			var l1 = list1.ToList();
+			var l2 = list2.ToList();
 
-			foreach (var i in list1)
+			l1.Sort();
+			l2.Sort();
+
+			for (int i = 0; i < l1.Count; i++)
 			{
-				match = false;
-
-				foreach (var j in list2)
-				{
-					if (i.Equals(j))
-					{
-						match = true;
-						break;
-					}
-				}
-				if (!match)
+				if (list1[i].CompareTo(list2[i]) != 0)
 				{
 					return false;
 				}
@@ -584,9 +577,9 @@
 
 		public void saveMapProperties()
 		{
-			for (int i = 0; i < 128; i++)
+			OverworldManager.ForAllMainScreens(map =>
 			{
-				var map = OverworldManager.allmaps[i];
+				int i = map.MapID;
 				ROM[Offsets.OverworldIDToMainGFXSet + i] = map.Tileset;
 				ROM[Offsets.overworldMapPalette + i] = map.ScreenPalette;
 
@@ -605,7 +598,7 @@
 					ROM[Offsets.overworldSpriteset + 128 + i] = map.State0SpriteGraphics;
 					ROM[Offsets.overworldSpritePalette + 128 + i] = map.State0SpritePalette;
 				}
-			}
+			});
 		}
 
 		public void saveMapOverlays()
@@ -712,10 +705,7 @@
 
 		public void SaveOverworldMessageIDs()
 		{
-			for (int i = 0; i < 128; i++)
-			{
-				ROM.Write16(Offsets.overworldMessages + (i * 2), OverworldManager.allmaps[i].MessageID);
-			}
+			OverworldManager.ForAllMainScreens(map => ROM.Write16(Offsets.overworldMessages + (map.MapID * 2), map.MessageID));
 		}
 
 		public void saveOverworldMusics()

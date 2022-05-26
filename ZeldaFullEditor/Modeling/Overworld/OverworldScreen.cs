@@ -153,10 +153,11 @@
 			{
 				if (st0pal == value) return;
 				st0pal = value;
-				CGPaletteState0 = ZScreamer.ActivePaletteManager.CreateOverworldPalette(ScreenPalette, State0SpritePalette, World);
-				NotifyArtist();
+				CGPaletteState0 = CreatePaletteWithSpritePal(State0SpritePalette);
+				InvalidateArtist();
 			}
 		}
+
 		public byte State2SpritePalette
 		{
 			get => World == Worldiness.LightWorld ? state2pal : State0SpritePalette;
@@ -166,8 +167,8 @@
 				{
 					if (state2pal == value) return;
 					state2pal = value;
-					CGPaletteState2 = ZScreamer.ActivePaletteManager.CreateOverworldPalette(ScreenPalette, State2SpritePalette, World);
-					NotifyArtist();
+					CGPaletteState2 = CreatePaletteWithSpritePal(State2SpritePalette);
+					InvalidateArtist();
 				}
 				else
 				{
@@ -184,8 +185,8 @@
 				{
 					if (state3pal == value) return;
 					state3pal = value;
-					CGPaletteState3 = ZScreamer.ActivePaletteManager.CreateOverworldPalette(ScreenPalette, State3SpritePalette, World);
-					NotifyArtist();
+					CGPaletteState3 = CreatePaletteWithSpritePal(State3SpritePalette);
+					InvalidateArtist();
 				}
 				else
 				{
@@ -220,22 +221,35 @@
 			};
 
 			ParentMap = this;
-			NotifyArtist();
+			InvalidateArtist();
 		}
 
 		public void RefreshPalette()
 		{
-			
-			CGPaletteState0 = ZScreamer.ActivePaletteManager.CreateOverworldPalette(ScreenPalette, State0SpritePalette, World);
-			CGPaletteState2 = ZScreamer.ActivePaletteManager.CreateOverworldPalette(ScreenPalette, State2SpritePalette, World);
-			CGPaletteState3 = ZScreamer.ActivePaletteManager.CreateOverworldPalette(ScreenPalette, State3SpritePalette, World);
-			NotifyArtist();
+			CGPaletteState0 = CreatePaletteWithSpritePal(State0SpritePalette);
+			CGPaletteState2 = CreatePaletteWithSpritePal(State2SpritePalette);
+			CGPaletteState3 = CreatePaletteWithSpritePal(State3SpritePalette);
+			InvalidateArtist();
+		}
+
+
+		private FullPalette CreatePaletteWithSpritePal(byte spr)
+		{
+			// TODO make code for changing main background palette
+			byte scr = MapID switch
+			{
+				0x03 or 0x05 or 0x07 => 0x02,
+				0x43 or 0x45 or 0x47 => 0x03,
+				< 0x40 => 0x00,
+				_ => 0x01
+			};
+			return ZScreamer.ActivePaletteManager.CreateOverworldPalette(scr, ScreenPalette, spr, World);
 		}
 
 		public void RefreshTileset()
 		{
 			LoadedGraphics = ZScreamer.ActiveGraphicsManager.CreateOverworldGraphicsSet(Tileset, State0SpriteGraphics, World == Worldiness.DarkWorld);
-			NotifyArtist();
+			InvalidateArtist();
 		}
 
 		public FullPalette GetPaletteForGameState(GameState gamestate) => gamestate switch
@@ -247,7 +261,7 @@
 			_ => throw new ArgumentOutOfRangeException(nameof(gamestate), "BAD GAME STATE")
 		};
 
-		public void NotifyArtist()
+		public void InvalidateArtist()
 		{
 			MyArtist.Invalidate();
 		}

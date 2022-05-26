@@ -250,9 +250,7 @@
 			AdjustContextMenuForSelectionChange();
 		}
 
-		//Stopwatch sw = new Stopwatch();
 		// TODO : Move that to the save class
-		// TODO move saves to ZScreamer.cs
 		public void saveToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			// Save Functions
@@ -423,13 +421,8 @@
 				loadFromExported = Path.GetDirectoryName(projectFilename);
 			}
 
-			OnProjectLoad();
-
 			Text = $"{filename} - {UIText.APPNAME}";
-		}
 
-		public void OnProjectLoad()
-		{
 			projectLoaded = true;
 
 			editorsTabControl.Enabled = true;
@@ -1087,7 +1080,8 @@
 
 		private void clearAllRoomsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			if (MessageBox.Show("Are you sure you want to clear every room's data?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+			
+			if (UIText.VerifyWarning("You are about to completely erase every room's data."))
 			{
 				foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
 				{
@@ -2489,7 +2483,7 @@
 		/// <summary>
 		/// Gives a message box saying "You wanna delete <paramref name="w"/>?"
 		/// </summary>
-		private bool ConfirmDeletion(string w)
+		private static bool ConfirmDeletion(string w)
 		{
 			return UIText.VerifyWarning($"You are about to delete all {w}");
 		}
@@ -2497,7 +2491,7 @@
 		/// <summary>
 		/// Gives a message box saying "You wanna delete <paramref name="w"/> from OW screen X?"
 		/// </summary>
-		private bool ConfirmDeletionOWArea(string w)
+		private static bool ConfirmDeletionOWArea(string w)
 		{
 			return ConfirmDeletion($"{w} from OW screen {ZScreamer.ActiveOWScene.CurrentParentMapID:X2}");
 		}

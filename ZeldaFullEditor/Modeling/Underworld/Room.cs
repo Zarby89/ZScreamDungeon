@@ -156,13 +156,13 @@
 
 		public LayerEffectType LayerEffect { get; set; }
 
-		private LayerMergeType merging;
-		public LayerMergeType LayerMerging {
-			get => merging;
+		private LayerCouplingType coupling;
+		public LayerCouplingType LayerCoupling {
+			get => coupling;
 			set
 			{
-				if (merging == value) return;
-				merging = value;
+				if (coupling == value) return;
+				coupling = value;
 				NeedsRedrawing = true;
 			}
 		}
@@ -219,7 +219,7 @@
 			var b = ZS.ROM[hpos++];
 			// TODO verify merge versus behavor
 
-			LayerMerging = LayerMergeType.ListOf[b >> 5];
+			LayerCoupling = LayerCouplingType.ListOf[b >> 5];
 			LayerCollision = LayerCollisionType.ListOf[(b & 0x0C) >> 2];
 			IsDark = (b & 0x01) == 0x01;
 			Palette = ZS.ROM[hpos++];
@@ -1233,7 +1233,7 @@
 				Palette,
 				BackgroundTileset,
 				SpriteTileset,
-				LayerMerging.ID,
+				LayerCoupling.ID,
 				Tag1,
 				Tag2,
 				(byte) (Pits.TargetLayer | Stair1.TargetLayer << 2

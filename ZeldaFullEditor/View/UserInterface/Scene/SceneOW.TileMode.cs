@@ -124,7 +124,9 @@
 					}
 					else
 					{
-						undoList.Add(new TileUndo(globalmouseTileDownX, globalmouseTileDownY, 1, new ushort[] { ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY] }, (ushort[]) selectedTile.Clone(), ref ZS.OverworldManager.allmaps[mapId].tilesUsed));
+						undoList.Add(new TileUndo(globalmouseTileDownX, globalmouseTileDownY, 1, new ushort[] {
+							ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY]
+						}, (ushort[]) selectedTile.Clone(), ref ZS.OverworldManager.allmaps[mapId].tilesUsed));
 						redoList.Clear();
 						ZS.OverworldManager.allmaps[mapId].tilesUsed[globalmouseTileDownX, globalmouseTileDownY] = selectedTile[0];
 						ZS.OverworldManager.allmaps[mapId].CopyTile8bpp16((tileX * 16) - (superX * 512), (tileY * 16) - (superY * 512), selectedTile[0]);
@@ -217,7 +219,7 @@
 
 			if (lastHover != hoveredMap)
 			{
-				ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].NotifyArtist();
+				ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].InvalidateArtist();
 				lastHover = hoveredMap;
 			}
 

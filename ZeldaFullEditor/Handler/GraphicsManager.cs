@@ -4,17 +4,34 @@ namespace ZeldaFullEditor.Handler
 {
 	public class GraphicsManager
 	{
+		private const int SpriteSheetOffset = 0x73;
+
+
 		// TODO move to cosntants or something
 		public static Bitmap moveableBlock { get; } = new Bitmap(Resources.Mblock);
 		public static Bitmap spriteFont { get; } = new Bitmap(Resources.spriteFont);
 		public static Bitmap favStar1 { get; } = new Bitmap(Resources.starn);
 		public static Bitmap favStar2 { get; } = new Bitmap(Resources.starl);
 
+
+
+
 		static GraphicsManager()
 		{
 			favStar1.MakeTransparent(Color.Fuchsia);
 			favStar2.MakeTransparent(Color.Fuchsia);
 		}
+
+
+
+		public BackgroundSet[] EntranceGraphicsSets { get; } = new BackgroundSet[37];
+		public SheetSet[] LocalGraphicsSets { get; } = new SheetSet[82];
+		public SheetSet[] SpriteGraphicsBlocks { get; } = new SheetSet[144];
+
+		public GraphicsSheet[] EnvironmentSpriteSheets { get; } = new GraphicsSheet[10];
+
+
+
 
 		public IntPtr allgfx16Ptr = Marshal.AllocHGlobal(128 * 7136 / 2);
 		public Bitmap allgfxBitmap;
@@ -277,10 +294,6 @@ namespace ZeldaFullEditor.Handler
 			}
 		}
 
-		public BackgroundSet[] EntranceGraphicsSets { get; } = new BackgroundSet[37];
-		public SheetSet[] GraphicsAA2Sheets { get; } = new SheetSet[82];
-		public SheetSet[] SpriteGraphicsBlocks { get; } = new SheetSet[144];
-
 		/// <summary>
 		/// Loads up the graphics groups from ROM
 		/// </summary>
@@ -308,7 +321,7 @@ namespace ZeldaFullEditor.Handler
 			gfxPointer = ZS.Offsets.GraphicsAA2Tables;
 			for (var i = 0; i < 82; i++)
 			{
-				GraphicsAA2Sheets[i] = new()
+				LocalGraphicsSets[i] = new()
 				{
 					Sheet0 = AllSheets[ZS.ROM[gfxPointer++]],
 					Sheet1 = AllSheets[ZS.ROM[gfxPointer++]],
@@ -322,12 +335,19 @@ namespace ZeldaFullEditor.Handler
 			{
 				SpriteGraphicsBlocks[i] = new()
 				{
-					Sheet0 = AllSheets[ZS.ROM[gfxPointer++]],
-					Sheet1 = AllSheets[ZS.ROM[gfxPointer++]],
-					Sheet2 = AllSheets[ZS.ROM[gfxPointer++]],
-					Sheet3 = AllSheets[ZS.ROM[gfxPointer++]],
+					Sheet0 = AllSheets[ZS.ROM[gfxPointer++] + SpriteSheetOffset],
+					Sheet1 = AllSheets[ZS.ROM[gfxPointer++] + SpriteSheetOffset],
+					Sheet2 = AllSheets[ZS.ROM[gfxPointer++] + SpriteSheetOffset],
+					Sheet3 = AllSheets[ZS.ROM[gfxPointer++] + SpriteSheetOffset],
 				};
 			}
+
+			gfxPointer = ZS.Offsets.gfx_groups_environment;
+			for (var i = 0; i < 10; i++)
+			{
+				EnvironmentSpriteSheets[i] = AllSheets[ZS.ROM[gfxPointer++] + SpriteSheetOffset];
+			}
+
 		}
 
 		public void SaveGroupsToROM()
@@ -342,21 +362,31 @@ namespace ZeldaFullEditor.Handler
 			gfxPointer = ZS.Offsets.GraphicsAA2Tables;
 			for (var i = 0; i < 82; i++)
 			{
-				ZS.ROM.WriteContinuous(ref gfxPointer, GraphicsAA2Sheets[i].GetByteData());
+				ZS.ROM.WriteContinuous(ref gfxPointer, LocalGraphicsSets[i].GetByteData());
 			}
 
 			gfxPointer = ZS.Offsets.sprite_blockset_pointer;
 			for (var i = 0; i < 144; i++)
 			{
-				ZS.ROM.WriteContinuous(ref gfxPointer, SpriteGraphicsBlocks[i].GetByteData());
+				var set = SpriteGraphicsBlocks[i];
+				ZS.ROM[gfxPointer++] = (byte) ((set.Sheet0.ID ?? 0x00) - SpriteSheetOffset);
+				ZS.ROM[gfxPointer++] = (byte) ((set.Sheet1.ID ?? 0x00) - SpriteSheetOffset);
+				ZS.ROM[gfxPointer++] = (byte) ((set.Sheet2.ID ?? 0x00) - SpriteSheetOffset);
+				ZS.ROM[gfxPointer++] = (byte) ((set.Sheet3.ID ?? 0x00) - SpriteSheetOffset);
 			}
+
+			gfxPointer = ZS.Offsets.gfx_groups_environment;
+			for (var i = 0; i < 10; i++)
+			{
+				ZS.ROM[gfxPointer++] = (byte) ((EnvironmentSpriteSheets[i].ID ?? 0x00) - SpriteSheetOffset);
+		}
 		}
 
 
 		public GraphicsSet CreateUnderworldGraphicsSet(byte tileset, byte spriteset, byte entranceset)
 		{
 			var entset = EntranceGraphicsSets[entranceset];
-			var bgset = EntranceGraphicsSets[tileset];
+			var bgset = LocalGraphicsSets[tileset];
 			var sprset = SpriteGraphicsBlocks[spriteset];
 
 			return new()
@@ -364,12 +394,11 @@ namespace ZeldaFullEditor.Handler
 				BGSheet0 = new(entset.Sheet0, true),
 				BGSheet1 = new(entset.Sheet1, true),
 				BGSheet2 = new(entset.Sheet2, true),
-				BGSheet3 = new(bgset.Sheet3, true),
-
-				BGSheet4 = new(bgset.Sheet4, false),
-				BGSheet5 = new(bgset.Sheet5, false),
-				BGSheet6 = new(bgset.Sheet6, false),
-				BGSheet7 = new(bgset.Sheet7, false),
+				BGSheet3 = new(GetLocalSheetIfNonzero(entset.Sheet3, bgset.Sheet0), true),
+				BGSheet4 = new(GetLocalSheetIfNonzero(entset.Sheet4, bgset.Sheet1), false),
+				BGSheet5 = new(GetLocalSheetIfNonzero(entset.Sheet5, bgset.Sheet2), false),
+				BGSheet6 = new(GetLocalSheetIfNonzero(entset.Sheet6, bgset.Sheet3), false),
+				BGSheet7 = new(entset.Sheet7, false),
 
 				SPRSheet0 = CreateRecordForSpriteSheet(AllSheets[0x73]),
 				SPRSheet1 = CreateRecordForSpriteSheet(AllSheets[0x7D]),
@@ -385,23 +414,24 @@ namespace ZeldaFullEditor.Handler
 
 		public GraphicsSet CreateOverworldGraphicsSet(byte tileset, byte spriteset, bool darkworld)
 		{
-			var bgset = EntranceGraphicsSets[tileset];
+			var worldset = EntranceGraphicsSets[darkworld ? 0x21 : 0x20];
+			var bgset = LocalGraphicsSets[tileset];
 			var sprset = SpriteGraphicsBlocks[spriteset];
 
 			return new()
 			{
-				BGSheet0 = new(bgset.Sheet0, true),
-				BGSheet1 = new(bgset.Sheet1, false),
-				BGSheet2 = new(bgset.Sheet2, false),
-				BGSheet3 = new(bgset.Sheet3, true),
+				BGSheet0 = new(worldset.Sheet0, true),
+				BGSheet1 = new(worldset.Sheet1, false),
+				BGSheet2 = new(worldset.Sheet2, false),
+				BGSheet3 = new(GetLocalSheetIfNonzero(worldset.Sheet3, bgset.Sheet0), true),
 
-				BGSheet4 = new(bgset.Sheet4, true),
-				BGSheet5 = new(bgset.Sheet5, true),
-				BGSheet6 = new(bgset.Sheet6, false),
-				BGSheet7 = new(bgset.Sheet7, false),
+				BGSheet4 = new(GetLocalSheetIfNonzero(worldset.Sheet4, bgset.Sheet1), true),
+				BGSheet5 = new(GetLocalSheetIfNonzero(worldset.Sheet5, bgset.Sheet2), true),
+				BGSheet6 = new(GetLocalSheetIfNonzero(worldset.Sheet6, bgset.Sheet3), false),
+				BGSheet7 = new(worldset.Sheet7, false),
 
 				SPRSheet0 = CreateRecordForSpriteSheet(AllSheets[0x73]),
-				SPRSheet1 = CreateRecordForSpriteSheet(AllSheets[darkworld ? 0x7E : 0x74]),
+				SPRSheet1 = CreateRecordForSpriteSheet(EnvironmentSpriteSheets[darkworld ? 0x08 : 0x00]),
 				SPRSheet2 = CreateRecordForSpriteSheet(AllSheets[0x79]),
 				SPRSheet3 = CreateRecordForSpriteSheet(AllSheets[0x7A]),
 
@@ -417,7 +447,10 @@ namespace ZeldaFullEditor.Handler
 			return new(sheet, sheet.Info.UsesBackPalette ?? false);
 		}
 
-
+		private static GraphicsSheet GetLocalSheetIfNonzero(GraphicsSheet globalSheet, GraphicsSheet localSheet)
+		{
+			return localSheet.ID == 0x00 ? globalSheet : localSheet;
+		}
 
 
 		public int GetPCGfxAddress(byte id)

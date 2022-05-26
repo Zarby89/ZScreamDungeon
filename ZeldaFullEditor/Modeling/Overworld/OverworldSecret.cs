@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.Modeling.Overworld
 {
-	public class OverworldSecret : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IEquatable<OverworldSecret>, IHaveInfo
+	public class OverworldSecret : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IHaveInfo, IComparable<OverworldSecret>
 	{
 		public byte ID => SecretType?.ID ?? 0;
 		public SecretItemType SecretType { get; set; }
@@ -21,20 +21,6 @@
 			return base.PointIsInHitbox(x, y);
 		}
 
-		public bool Equals(OverworldSecret other) => other switch
-		{
-			null => false,
-			not null => ID == other.ID && MapX == other.MapX && MapY == other.MapY,
-		};
-
-		public override bool Equals(object obj) => Equals(obj as OverworldSecret);
-
-
-		public override int GetHashCode()
-		{
-			throw new NotImplementedException();
-		}
-
 		public byte[] GetByteData()
 		{
 			throw new NotImplementedException();
@@ -43,6 +29,23 @@
 		internal object Clone()
 		{
 			return new OverworldSecret(SecretType);
+		}
+
+		public int CompareTo(OverworldSecret other)
+		{
+			int ret = ID - other.ID;
+			if (ret != 0)
+			{
+				return ret;
+			}
+
+			ret = MapX - other.MapX;
+			if (ret != 0)
+			{
+				return ret;
+			}
+
+			return MapY - other.MapY;
 		}
 	}
 }

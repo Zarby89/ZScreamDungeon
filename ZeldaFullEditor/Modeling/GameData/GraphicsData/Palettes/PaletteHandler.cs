@@ -21,8 +21,7 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 		private const int SPRPalIndex6 = 14 * 16;
 		private const int SPRPalIndex7 = 15 * 16;
 
-
-		private static readonly ImmutableArray<PaletteInfo> AllPalettesMeta = new()
+		private static readonly ImmutableArray<PaletteInfo> AllPalettesMeta = new PaletteInfo[]
 		{
 			new(0x1BD308, MailPalette),
 			new(0x1BD326, MailPalette),
@@ -198,7 +197,7 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 
 			new(0x0ADB27, OWMapPalette), // JP : 0x0ADB39
 			new(0x0ADC47, OWMapPalette), // JP : 0x0ADC39
-		};
+		}.ToImmutableArray();
 
 		public Dictionary<PaletteType, List<PartialPalette>> AllPalettes { get; } = new();
 
@@ -240,9 +239,17 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 				// Create new list for this type, if necessary
 				var pset = AllPalettes.GetOrMakeListForKey(i.Type);
 
-				var coldata = ZS.ROM.Read16Many(i.Address.SNEStoPC(), i.Type.GetRealSize());
+				int size = i.Type.GetRealSize();
+				var coldata = ZS.ROM.Read16Many(i.Address.SNEStoPC(), size);
 
-				pset.Add(new(coldata, i));
+				var parsed = new SNESColor[size];
+
+				for (int a = 0; a < size; a++)
+				{
+					parsed[a] = SNESColor.FromUnsignedShort(coldata[a]);
+				}
+
+				pset.Add(new(parsed, i));
 
 			}
 
@@ -347,23 +354,29 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 			}
 
 			foreach (var s in OWSpritePaletteSets)
+			{
+				ZS.ROM[offset++] = s.Palette0;
+				ZS.ROM[offset++] = s.Palette1;
+			}
 
 			WriteSinglePalette(ZS.Offsets.hardcodedGrassLW, OverworldGrass[0]);
 			WriteSinglePalette(ZS.Offsets.hardcodedGrassDW, OverworldGrass[1]);
 			WriteSinglePalette(ZS.Offsets.hardcodedGrassSpecial, OverworldGrass[2]);
 		}
 
-		public FullPalette CreateOverworldPalette(byte bgid, byte sprid, Worldiness w)
+		public FullPalette CreateOverworldPalette(byte mainid, byte bgid, byte sprid, Worldiness w)
 		{
 			// TODO where is animated from
 			FullPalette ret = new();
 
-			var bgpal = AllPaletteSets[bgid + 40];
+			var bgpal = AllPaletteSets[bgid + 41];
 			var sprpal = OWSpritePaletteSets[sprid];
 
-			AddPartialPaletteToFullPalette(ret, OWMain, bgpal.Palette0, BGPalIndex2);
-			AddPartialPaletteToFullPalette(ret, OWAux, bgpal.Palette1, BGPalIndex2 + 9);
-			AddPartialPaletteToFullPalette(ret, OWAux, bgpal.Palette2, BGPalIndex5 + 9);
+			AddPartialPaletteToFullPalette(ret, OWMain, mainid, BGPalIndex2);
+
+			AddPartialPaletteToFullPalette(ret, OWAux, bgpal.Palette0, BGPalIndex2 + 9);
+			AddPartialPaletteToFullPalette(ret, OWAux, bgpal.Palette1, BGPalIndex5 + 9);
+			AddPartialPaletteToFullPalette(ret, OWAnim, bgpal.Palette2, BGPalIndex7 + 1);
 
 			AddPartialPaletteToFullPalette(ret, SpriteAux, sprpal.Palette0, SPRPalIndex5 + 1);
 			AddPartialPaletteToFullPalette(ret, SpriteAux, sprpal.Palette1, SPRPalIndex6 + 1);
@@ -401,6 +414,9 @@ namespace ZeldaFullEditor.Modeling.GameData.GraphicsData.Palettes
 
 		private void AddPartialPaletteToFullPalette(FullPalette fullpal, PaletteType type, int paletteid, int index)
 		{
+			// TODO
+			if (paletteid == 0xFF) return;
+			
 			fullpal.AddPartialPalette(GetPaletteAt(type, paletteid), index);
 		}
 

@@ -130,7 +130,7 @@
 			this.RoomProperty_Palette = new ZeldaFullEditor.View.GeneralControls.Hexbox();
 			this.label3 = new System.Windows.Forms.Label();
 			this.RoomProperty_Floor2 = new ZeldaFullEditor.View.GeneralControls.Hexbox();
-			this.roomPropertyLayerMerge = new System.Windows.Forms.ComboBox();
+			this.roomPropertyLayerCoupling = new System.Windows.Forms.ComboBox();
 			this.RoomProperty_Floor1 = new ZeldaFullEditor.View.GeneralControls.Hexbox();
 			this.label2 = new System.Windows.Forms.Label();
 			this.RoomProperty_Blockset = new ZeldaFullEditor.View.GeneralControls.Hexbox();
@@ -932,10 +932,10 @@
 			this.objectstabPage.Controls.Add(this.showNameObjectCheckbox);
 			this.objectstabPage.Controls.Add(this.panel1);
 			this.objectstabPage.Controls.Add(this.searchTextbox);
-			this.objectstabPage.Location = new System.Drawing.Point(4, 24);
+			this.objectstabPage.Location = new System.Drawing.Point(4, 22);
 			this.objectstabPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.objectstabPage.Name = "objectstabPage";
-			this.objectstabPage.Size = new System.Drawing.Size(278, 667);
+			this.objectstabPage.Size = new System.Drawing.Size(278, 669);
 			this.objectstabPage.TabIndex = 4;
 			this.objectstabPage.Text = "Objects";
 			this.objectstabPage.UseVisualStyleBackColor = true;
@@ -943,6 +943,8 @@
 			// favoriteCheckbox
 			// 
 			this.favoriteCheckbox.AutoSize = true;
+			this.favoriteCheckbox.Checked = true;
+			this.favoriteCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.favoriteCheckbox.Dock = System.Windows.Forms.DockStyle.Top;
 			this.favoriteCheckbox.Location = new System.Drawing.Point(0, 37);
 			this.favoriteCheckbox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -955,6 +957,8 @@
 			// showNameObjectCheckbox
 			// 
 			this.showNameObjectCheckbox.AutoSize = true;
+			this.showNameObjectCheckbox.Checked = true;
+			this.showNameObjectCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.showNameObjectCheckbox.Dock = System.Windows.Forms.DockStyle.Top;
 			this.showNameObjectCheckbox.Location = new System.Drawing.Point(0, 20);
 			this.showNameObjectCheckbox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -966,7 +970,7 @@
 			// 
 			// panel1
 			// 
-			this.panel1.Location = new System.Drawing.Point(0, 17);
+			this.panel1.Location = new System.Drawing.Point(3, 20);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(250, 1730);
 			this.panel1.TabIndex = 1;
@@ -984,10 +988,10 @@
 			// 
 			this.tabPage4.Controls.Add(this.customPanel1);
 			this.tabPage4.Controls.Add(this.searchspriteTextbox);
-			this.tabPage4.Location = new System.Drawing.Point(4, 24);
+			this.tabPage4.Location = new System.Drawing.Point(4, 22);
 			this.tabPage4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.tabPage4.Name = "tabPage4";
-			this.tabPage4.Size = new System.Drawing.Size(278, 667);
+			this.tabPage4.Size = new System.Drawing.Size(278, 669);
 			this.tabPage4.TabIndex = 10;
 			this.tabPage4.Text = "Sprites";
 			this.tabPage4.UseVisualStyleBackColor = true;
@@ -1131,7 +1135,7 @@
 			this.headerGroupbox.Controls.Add(this.RoomProperty_Palette);
 			this.headerGroupbox.Controls.Add(this.label3);
 			this.headerGroupbox.Controls.Add(this.RoomProperty_Floor2);
-			this.headerGroupbox.Controls.Add(this.roomPropertyLayerMerge);
+			this.headerGroupbox.Controls.Add(this.roomPropertyLayerCoupling);
 			this.headerGroupbox.Controls.Add(this.RoomProperty_Floor1);
 			this.headerGroupbox.Controls.Add(this.label2);
 			this.headerGroupbox.Controls.Add(this.RoomProperty_Blockset);
@@ -1450,10 +1454,10 @@
 			this.roomProperty_collision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.roomProperty_collision.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.roomProperty_collision.FormattingEnabled = true;
-			this.roomProperty_collision.Location = new System.Drawing.Point(18, 111);
+			this.roomProperty_collision.Location = new System.Drawing.Point(4, 111);
 			this.roomProperty_collision.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.roomProperty_collision.Name = "roomProperty_collision";
-			this.roomProperty_collision.Size = new System.Drawing.Size(124, 21);
+			this.roomProperty_collision.Size = new System.Drawing.Size(138, 21);
 			this.roomProperty_collision.TabIndex = 104;
 			this.roomProperty_collision.SelectedValueChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
@@ -1476,7 +1480,7 @@
 			// 
 			this.label3.AutoSize = true;
 			this.label3.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.label3.Location = new System.Drawing.Point(14, 96);
+			this.label3.Location = new System.Drawing.Point(3, 95);
 			this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(45, 13);
@@ -1498,18 +1502,18 @@
 			this.RoomProperty_Floor2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.RoomProperty_Floor2.HexValueChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
-			// roomPropertyLayerMerge
+			// roomPropertyLayerCoupling
 			// 
-			this.roomPropertyLayerMerge.BackColor = System.Drawing.SystemColors.Window;
-			this.roomPropertyLayerMerge.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.roomPropertyLayerMerge.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.roomPropertyLayerMerge.FormattingEnabled = true;
-			this.roomPropertyLayerMerge.Location = new System.Drawing.Point(18, 33);
-			this.roomPropertyLayerMerge.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.roomPropertyLayerMerge.Name = "roomPropertyLayerMerge";
-			this.roomPropertyLayerMerge.Size = new System.Drawing.Size(124, 21);
-			this.roomPropertyLayerMerge.TabIndex = 102;
-			this.roomPropertyLayerMerge.SelectedValueChanged += new System.EventHandler(this.RoomPropertyChanged);
+			this.roomPropertyLayerCoupling.BackColor = System.Drawing.SystemColors.Window;
+			this.roomPropertyLayerCoupling.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.roomPropertyLayerCoupling.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+			this.roomPropertyLayerCoupling.FormattingEnabled = true;
+			this.roomPropertyLayerCoupling.Location = new System.Drawing.Point(4, 33);
+			this.roomPropertyLayerCoupling.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.roomPropertyLayerCoupling.Name = "roomPropertyLayerCoupling";
+			this.roomPropertyLayerCoupling.Size = new System.Drawing.Size(138, 21);
+			this.roomPropertyLayerCoupling.TabIndex = 102;
+			this.roomPropertyLayerCoupling.SelectedValueChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// RoomProperty_Floor1
 			// 
@@ -1530,12 +1534,12 @@
 			// 
 			this.label2.AutoSize = true;
 			this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.label2.Location = new System.Drawing.Point(18, 15);
+			this.label2.Location = new System.Drawing.Point(4, 15);
 			this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label2.Name = "label2";
-			this.label2.Size = new System.Drawing.Size(74, 13);
+			this.label2.Size = new System.Drawing.Size(76, 13);
 			this.label2.TabIndex = 101;
-			this.label2.Text = "Layer 2 merge";
+			this.label2.Text = "Layer coupling";
 			// 
 			// RoomProperty_Blockset
 			// 
@@ -1586,10 +1590,10 @@
 			this.roomProperty_effect.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.roomProperty_effect.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
 			this.roomProperty_effect.FormattingEnabled = true;
-			this.roomProperty_effect.Location = new System.Drawing.Point(18, 72);
+			this.roomProperty_effect.Location = new System.Drawing.Point(4, 72);
 			this.roomProperty_effect.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.roomProperty_effect.Name = "roomProperty_effect";
-			this.roomProperty_effect.Size = new System.Drawing.Size(124, 21);
+			this.roomProperty_effect.Size = new System.Drawing.Size(138, 21);
 			this.roomProperty_effect.TabIndex = 112;
 			this.roomProperty_effect.SelectedValueChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
@@ -1608,12 +1612,12 @@
 			// 
 			this.label11.AutoSize = true;
 			this.label11.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.label11.Location = new System.Drawing.Point(14, 57);
+			this.label11.Location = new System.Drawing.Point(3, 58);
 			this.label11.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label11.Name = "label11";
-			this.label11.Size = new System.Drawing.Size(71, 13);
+			this.label11.Size = new System.Drawing.Size(72, 13);
 			this.label11.TabIndex = 111;
-			this.label11.Text = "Layer 2 mode";
+			this.label11.Text = "Layer 2 effect";
 			// 
 			// label15
 			// 
@@ -1847,7 +1851,7 @@
 			this.label25.Location = new System.Drawing.Point(2, 9);
 			this.label25.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label25.Name = "label25";
-			this.label25.Size = new System.Drawing.Size(66, 13);
+			this.label25.Size = new System.Drawing.Size(53, 13);
 			this.label25.TabIndex = 9;
 			this.label25.Text = "Door type";
 			// 
@@ -2196,7 +2200,7 @@
 		private View.GeneralControls.Hexbox RoomProperty_Palette;
 		private Label label3;
 		private View.GeneralControls.Hexbox RoomProperty_Floor2;
-		public ComboBox roomPropertyLayerMerge;
+		public ComboBox roomPropertyLayerCoupling;
 		private View.GeneralControls.Hexbox RoomProperty_Floor1;
 		private Label label2;
 		private View.GeneralControls.Hexbox RoomProperty_Blockset;

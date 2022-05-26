@@ -1,5 +1,5 @@
-  lorom
-  
+lorom
+
 !ADD = "CLC : ADC"
 !SUB = "SEC : SBC"
 !BLT = "BCC"

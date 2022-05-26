@@ -154,7 +154,7 @@
 			{
 				ZGUI.OverworldEditor.propertiesChangedFromForm = true;
 
-				CurrentMap.NotifyArtist();
+				CurrentMap.InvalidateArtist();
 
 				ZGUI.OverworldEditor.mapGroupbox.Text = $"Selected map: {CurrentParentMapID:X2}";
 
@@ -248,8 +248,8 @@
 		{
 			if (lowEndMode)
 			{
-				int x = 512 * (ZS.OverworldManager.allmaps[CurrentMapID].ParentMapID % 8);
-				int y = 512 * (ZS.OverworldManager.allmaps[CurrentMapID].ParentMapID / 8);
+				int x = 512 * (CurrentParentMapID % 8);
+				int y = 512 * (CurrentParentMapID / 8);
 				if (CurrentMap.IsPartOfLargeMap)
 				{
 					Invalidate(new Rectangle(x, y, 1024, 1024));
@@ -519,7 +519,7 @@
 
 			if (ZS.CurrentOWMode == OverworldEditMode.Overlay)
 			{
-				int mid = ZS.OverworldManager.allmaps[CurrentMapID].ParentMapID;
+				int mid = CurrentParentMapID;
 				int msy = 512 * (CurrentParentVirtualMapID / 8);
 				int msx = 512 * (CurrentParentVirtualMapID - (msy * 8));
 			
