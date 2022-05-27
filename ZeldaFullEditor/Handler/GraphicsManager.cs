@@ -595,6 +595,9 @@ namespace ZeldaFullEditor.Handler
 		// TODO magic numbers
 		public unsafe void loadOverworldMap()
 		{
+			return;
+
+			throw new NotImplementedException();
 			overworldMapBitmap = new Bitmap(128, 128, 128, PixelFormat.Format8bppIndexed, overworldMapPointer);
 			owactualMapBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, owactualMapPointer);
 

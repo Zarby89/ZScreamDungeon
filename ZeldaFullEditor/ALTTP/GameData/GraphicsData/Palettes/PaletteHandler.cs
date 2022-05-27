@@ -206,7 +206,13 @@ namespace ZeldaFullEditor.ALTTP.GameData.GraphicsData.Palettes
 
 		public PartialPalette GetPaletteAt(PaletteType type, int index)
 		{
-			return AllPalettes[type][index];
+			int i = type switch
+			{
+				DungeonPalette => index / 2,
+				_ => index,
+			};
+
+			return AllPalettes[type][i];
 		}
 
 
@@ -369,6 +375,7 @@ namespace ZeldaFullEditor.ALTTP.GameData.GraphicsData.Palettes
 			// TODO where is animated from
 			FullPalette ret = new();
 
+			if (bgid > 31) return ret;
 			var bgpal = AllPaletteSets[bgid + 41];
 			var sprpal = OWSpritePaletteSets[sprid];
 

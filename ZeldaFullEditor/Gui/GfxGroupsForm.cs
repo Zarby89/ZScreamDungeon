@@ -38,6 +38,7 @@
 
 		public void CreateTempGfx()
 		{
+			return;
 			throw new NotImplementedException();
 		}
 

@@ -79,10 +79,14 @@
 			ObjectType.Draw(art, this);
 		}
 
+		/// <summary>
+		/// Decreases the object's size by 1.
+		/// </summary>
+		/// <returns><see langword="true"/> when successful</returns>
 		public bool DecreaseSize()
 		{
 			// Size > 0 will short circuit faster for unresizable objects
-			if (Size > 0 && ObjectType.Resizeability != ObjectResizability.None)
+			if (ObjectType.Resizeability != ObjectResizability.None && Size > 0)
 			{
 				Size--;
 				return true;

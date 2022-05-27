@@ -93,6 +93,8 @@
 
 			OverworldManager.Init();
 
+			OverworldScene.CurrentMapID = 0;
+
 			SpriteProps = SpriteProperties.MakeNewSpriteListFromROM(this);
 
 			for (ushort i = 0; i < Constants.NumberOfRooms; i++)

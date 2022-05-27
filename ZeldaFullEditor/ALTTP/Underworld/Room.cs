@@ -222,9 +222,9 @@
 			LayerCoupling = LayerCouplingType.ListOf[b >> 5];
 			LayerCollision = LayerCollisionType.ListOf[(b & 0x0C) >> 2];
 			IsDark = (b & 0x01) == 0x01;
-			Palette = ZS.ROM[hpos++];
-			BackgroundTileset = ZS.ROM[hpos++];
-			SpriteTileset = ZS.ROM[hpos++];
+			pal = ZS.ROM[hpos++];
+			bgtiles = ZS.ROM[hpos++];
+			sprtiles = ZS.ROM[hpos++];
 			//LayerMerging = LayerMergeType.ListOf[ZS.ROM[hpos++]];
 			LayerEffect = LayerEffectType.ListOf[ZS.ROM[hpos++]];
 			Tag1 = RoomTagType.GetTypeFromID(ZS.ROM[hpos++]);
@@ -266,6 +266,8 @@
 			ResyncAllLists();
 
 			LoadCustomCollisionFromRom();
+			RefreshPalette();
+			RefreshTileset();
 		}
 
 		public void RefreshTileset()

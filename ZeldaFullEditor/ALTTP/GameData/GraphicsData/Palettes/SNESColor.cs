@@ -31,7 +31,7 @@
 		public Color RealColor { get; }
 
 		/// <summary>
-		/// 
+		/// snes color
 		/// </summary>
 		private SNESColor(int r, int g, int b)
 		{
