@@ -19,7 +19,7 @@ namespace ZeldaFullEditor
 			new(0x74, "1", false, "Line 1"),
 			new(0x75, "2", false, "Line 2"),
 			new(0x76, "3", false, "Line 3"),
-			new(0x7B, "K", false, "Wait for key"),
+			new(0x7E, "K", false, "Wait for key"),
 			new(0x73, "V", false, "Scroll text"),
 			new(0x78, "WT", true, "Delay X"),
 			new(0x6C, "N", true, "BCD number"),

@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace ZeldaFullEditor.Utility
+﻿namespace ZeldaFullEditor.Utility
 {
 	/// <summary>
 	/// Contains methods and fields for consistency with text that is visible to the user.
@@ -58,7 +56,7 @@ namespace ZeldaFullEditor.Utility
 		/// <summary>
 		/// Returns a path with system-specific path separators, where each argument is a different segment of the file path.
 		/// </summary>
-		public static string GetFileName(params string[] p)
+		public static string CreateFilePath(params string[] p)
 		{
 			StringBuilder ret = new StringBuilder((p.Length * 2) - 1);
 			int i = p.Length;
@@ -147,11 +145,13 @@ namespace ZeldaFullEditor.Utility
 			_ => "None",
 		};
 
+		/// <summary>
+		/// Splits a PascalCase string into individual words by adding spaces between capital letters and numbers.
+		/// </summary>
 		public static string SpaceOutString(this string s)
 		{
 			return string.Join(" ", Regex.Split(s.ToString(), @"(?=[A-Z]|\d+)", RegexOptions.None));
 		}
-
 
 		/// <summary>
 		/// Formats an array of <see langword="byte"/> values as unqualified hexadecimal values

@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	// TODO make a text handler, separate from the UserControl
 	public partial class TextEditor : UserControl
@@ -133,7 +131,7 @@ namespace ZeldaFullEditor
 			return null;
 		}
 
-		private int FindDictionaryEntry(byte b)
+		private static int FindDictionaryEntry(byte b)
 		{
 			if (b < DictionaryBaseValue || b == 0xFF)
 			{
@@ -143,7 +141,7 @@ namespace ZeldaFullEditor
 			return b - DictionaryBaseValue;
 		}
 
-		public DictionaryEntry GetDictionaryFromID(byte b)
+		public static DictionaryEntry GetDictionaryFromID(byte b)
 		{
 			return AllDicts.First(ddd => ddd.ID == b);
 		}
@@ -275,7 +273,7 @@ namespace ZeldaFullEditor
 			//00074703
 		}
 
-		public void BuildDictionaryEntriesFromROM()
+		public static void BuildDictionaryEntriesFromROM()
 		{
 			for (int i = 0; i < 97; i++)
 			{
@@ -354,7 +352,7 @@ namespace ZeldaFullEditor
 			return bytes.ToArray();
 		}
 
-		public string ParseTextDataByte(byte b)
+		public static string ParseTextDataByte(byte b)
 		{
 			if (CharEncoder.ContainsKey(b))
 			{

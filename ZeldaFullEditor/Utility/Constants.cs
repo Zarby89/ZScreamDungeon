@@ -22,6 +22,8 @@
 		public const int NumberOfRooms = 296;
 
 		public const int NumberOfOWMaps = 160;
+		public const int NumberOfRealOWMaps = 136;
+		public const int NumberOfMainOWMaps = 128;
 
 		public const int MaximumNumberOfTile32 = 8864;
 		public const int NumberofTile32PerScreen = 256;

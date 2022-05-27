@@ -82,7 +82,7 @@
 		/// <summary>
 		/// Specific 
 		/// <see cref="Graphics.DrawImage(Image, Rectangle, int, int, int, int, GraphicsUnit, ImageAttributes?)">Graphics.DrawImage</see>
-		/// call for a 512 by 512 screen with <see cref="GraphicsUnit.Pixel"/>
+		/// call for a 512 by 512 screen with <see cref="GraphicsUnit.Pixel"/> as the graphics unit.
 		/// </summary>
 		public static void DrawScreen(this Graphics g, Image image, ImageAttributes imageAttr = null)
 		{
@@ -131,6 +131,58 @@
 
 			d[key] = new();
 			return d[key];
+		}
+
+		public static ImmutableArray<T> GetListOfPredefinedFields<T>() where T : class
+		{
+			return CreateListOfFields<T>().ToImmutableArray();
+		}
+
+		internal static ImmutableArray<T> GetSortedListOfPredefinedFields<T>() where T : class, IEntityType<T>
+		{
+			return GetSortedListOfPredefinedFields<T>((o, p) => o.ListID - p.ListID);
+		}
+
+		public static ImmutableArray<T> GetSortedListOfPredefinedFields<T>(Comparison<T> sort) where T : class
+		{
+			var ret = CreateListOfFields<T>();
+			ret.Sort(sort);
+			return ret.ToImmutableArray();
+		}
+
+		private static List<T> CreateListOfFields<T>() where T : class
+		{
+			List<T> ret = new();
+
+			var t = typeof(T);
+
+			var list = t.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.ExactBinding);
+
+			foreach (var o in list)
+			{
+				if (o.GetCustomAttribute(typeof(PredefinedInstanceAttribute)) is not null)
+				{
+					if (o.FieldType == t)
+					{
+						ret.Add(o.GetValue(null) as T);
+					}
+				}
+			}
+
+			return ret;
+		}
+
+		internal static List<T> GetAllObjectsFromListByName<T>(this ICollection<T> list, string match) where T : IEntityType<T>
+		{
+			var ret = list.Where(s => s.Name.Contains(match, StringComparison.CurrentCultureIgnoreCase)).ToList();
+			ret.Sort((o, p) => o.ListID - p.ListID);
+			return ret;
+		}
+
+
+		internal static T GetTypeFromID<T>(this ICollection<T> list, int id) where T : IEntityType<T>
+		{
+			return list.FirstOrDefault(o => o.ListID == id);
 		}
 	}
 }

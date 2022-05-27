@@ -101,77 +101,67 @@
 					allmaps[map.MapID + 9].ParentMap = map;
 				}
 
-				if (map.MapID < 64)
+				switch (map.World)
 				{
-					map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID];
-					map.State2SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 64];
-					map.State3SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
-					map.Tileset = ZS.ROM[ZS.Offsets.OverworldIDToMainGFXSet + map.MapID];
-					map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
-					map.State0SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID];
-					map.State2SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 64];
-					map.State3SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
-					map.musics[0] = ZS.ROM[ZS.Offsets.overworldMusicBegining + map.MapID];
-					map.musics[1] = ZS.ROM[ZS.Offsets.overworldMusicZelda + map.MapID];
-					map.musics[2] = ZS.ROM[ZS.Offsets.overworldMusicMasterSword + map.MapID];
-					map.musics[3] = ZS.ROM[ZS.Offsets.overworldMusicAgahim + map.MapID];
-				}
-				else if (map.MapID < 128)
-				{
-					map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
-					map.State2SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
-					map.State3SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
-					map.Tileset = ZS.ROM[ZS.Offsets.OverworldIDToMainGFXSet + map.MapID];
-					map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
-					map.State0SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
-					map.State2SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
-					map.State3SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
-					map.musics[0] = ZS.ROM[ZS.Offsets.overworldMusicDW + map.VirtualMapID];
-				}
-				else
-				{
-					// TODO dumb hardcoded shit, needs to read from ROM
-					map.ParentMap = map.MapID switch
-					{
-						0x94 => allmaps[0x80],
-						0x95 => allmaps[0x03],
-						0x96 => allmaps[0x5B],
-						0x97 => allmaps[0x00],
-						0x9C => allmaps[0x43],
-						0x9D => allmaps[0x00],
-						0x9E => allmaps[0x00],
-						0x9F => allmaps[0x2C],
-						0x81 or 0x82 or 0x89 or 0x8A => allmaps[0x81],
-						_ => map
-					};
+					case Worldiness.LightWorld:
+						map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID];
+						map.State2SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 64];
+						map.State3SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
+						map.Tileset = ZS.ROM[ZS.Offsets.OverworldIDToMainGFXSet + map.MapID];
+						map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
+						map.State0SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID];
+						map.State2SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 64];
+						map.State3SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
+						map.musics[0] = ZS.ROM[ZS.Offsets.overworldMusicBegining + map.MapID];
+						map.musics[1] = ZS.ROM[ZS.Offsets.overworldMusicZelda + map.MapID];
+						map.musics[2] = ZS.ROM[ZS.Offsets.overworldMusicMasterSword + map.MapID];
+						map.musics[3] = ZS.ROM[ZS.Offsets.overworldMusicAgahim + map.MapID];
+						break;
 
-					//map.MessageID = ZS.ROM[ZS.Offsets.overworldMessages + map.MapID];
-					//
-					//// TODO verify this shit
-					//map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID];
-					//map.State2SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID];
-					//map.State3SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID];
-					//map.State0SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID];
-					//map.State2SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID];
-					//map.State3SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID];
-					//
-					//map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + map.VirtualMapID];
-					//
-					//if (map.MapID == 0x88)
-					//{
-					//	map.Tileset = 81;
-					//	map.ScreenPalette = 0;
-					//}
-					//else if (map.MapID is >= 0x80 and <= 0x8A or 0x94)
-					//{
-					//	map.Tileset = ZS.ROM[ZS.Offsets.overworldSpecialGFXGroup + map.VirtualMapID];
-					//	map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + 1];
-					//}
-					//else // Pyramid bg use 0x5B map
-					//{
-					//	map.Tileset = ZS.ROM[ZS.Offsets.OverworldIDToMainGFXSet + map.MapID];
-					//	map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
-					//}
+					case Worldiness.DarkWorld:
+						map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
+						map.State2SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
+						map.State3SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID + 128];
+						map.Tileset = ZS.ROM[ZS.Offsets.OverworldIDToMainGFXSet + map.MapID];
+						map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
+						map.State0SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
+						map.State2SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
+						map.State3SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID + 128];
+						map.musics[0] = ZS.ROM[ZS.Offsets.overworldMusicDW + map.VirtualMapID];
+						break;
+
+					case Worldiness.SpecialWorld when map.MapID < Constants.NumberOfRealOWMaps:
+						// TODO prevent message IDs?
+						map.MessageID = ZS.ROM[ZS.Offsets.overworldMessages + map.MapID];
+
+						// TODO verify this
+						map.State0SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID];
+						map.State2SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID];
+						map.State3SpriteGraphics = ZS.ROM[ZS.Offsets.overworldSpriteset + map.MapID];
+						map.State0SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID];
+						map.State2SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID];
+						map.State3SpritePalette = ZS.ROM[ZS.Offsets.overworldSpritePalette + map.MapID];
+
+						map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + map.VirtualMapID];
+						break;
+
+					default:
+						if (map.MapID == 0x88)
+						{
+							map.Tileset = 81;
+							map.ScreenPalette = 0;
+						}
+						else if (map.MapID is >= 0x80 and <= 0x8A or 0x94)
+						{
+							map.Tileset = ZS.ROM[ZS.Offsets.overworldSpecialGFXGroup + map.VirtualMapID];
+							map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldSpecialPALGroup + 1];
+						}
+						else // Pyramid bg use 0x5B map
+						{
+							map.Tileset = ZS.ROM[ZS.Offsets.OverworldIDToMainGFXSet + map.MapID];
+							map.ScreenPalette = ZS.ROM[ZS.Offsets.overworldMapPalette + map.MapID];
+						}
+						break;
 				}
 			}
 
