@@ -41,7 +41,7 @@
 			this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
 			this.editorsTabControl = new System.Windows.Forms.TabControl();
 			this.dungeonPage = new System.Windows.Forms.TabPage();
-			this.DungeonEditor = new ZeldaFullEditor.View.PrimaryEditors.DungeonEditor();
+			this.DungeonEditor = new ZeldaFullEditor.UserInterface.PrimaryEditors.DungeonEditor();
 			this.overworldPage = new System.Windows.Forms.TabPage();
 			this.OverworldEditor = new ZeldaFullEditor.Gui.OverworldEditor();
 			this.GfxEditorPage = new System.Windows.Forms.TabPage();

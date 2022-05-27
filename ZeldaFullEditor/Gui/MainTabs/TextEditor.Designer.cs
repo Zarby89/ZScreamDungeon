@@ -35,7 +35,7 @@
 			this.searchTextbox = new System.Windows.Forms.TextBox();
 			this.label4 = new System.Windows.Forms.Label();
 			this.panel2 = new System.Windows.Forms.Panel();
-			this.ParamsBox = new ZeldaFullEditor.View.GeneralControls.Hexbox();
+			this.ParamsBox = new ZeldaFullEditor.UserInterface.GeneralControls.Hexbox();
 			this.fontGridBox = new System.Windows.Forms.CheckBox();
 			this.BytesDDD = new System.Windows.Forms.Button();
 			this.label11 = new System.Windows.Forms.Label();
@@ -532,6 +532,6 @@
 		private System.Windows.Forms.Button BytesDDD;
 		private System.Windows.Forms.PictureBox pictureBox3;
 		private System.Windows.Forms.CheckBox fontGridBox;
-		private View.GeneralControls.Hexbox ParamsBox;
+		private UserInterface.GeneralControls.Hexbox ParamsBox;
 	}
 }

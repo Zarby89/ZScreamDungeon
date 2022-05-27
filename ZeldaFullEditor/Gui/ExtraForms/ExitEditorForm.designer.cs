@@ -56,7 +56,7 @@
             this.automaticcheckBox = new System.Windows.Forms.CheckBox();
             this.bombdoorradioButton = new System.Windows.Forms.RadioButton();
             this.castledoorradioButton = new System.Windows.Forms.RadioButton();
-            this.roomUpDown = new ZeldaFullEditor.View.GeneralControls.Hexbox();
+            this.roomUpDown = new ZeldaFullEditor.UserInterface.GeneralControls.Hexbox();
             ((System.ComponentModel.ISupportInitialize)(this.mapUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xPosUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.xCameraUpDown)).BeginInit();
@@ -501,6 +501,6 @@
         private System.Windows.Forms.CheckBox automaticcheckBox;
         private System.Windows.Forms.RadioButton bombdoorradioButton;
         private System.Windows.Forms.RadioButton castledoorradioButton;
-		private View.GeneralControls.Hexbox roomUpDown;
+		private UserInterface.GeneralControls.Hexbox roomUpDown;
 	}
 }
