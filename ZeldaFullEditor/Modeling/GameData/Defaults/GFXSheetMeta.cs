@@ -70,7 +70,14 @@ namespace ZeldaFullEditor.Modeling.GameData.Defaults
 			};
 		}
 
-		public static readonly ImmutableArray<GFXSheetMeta> ListOf = Utils.GetSortedListOfPredefinedFields<GFXSheetMeta>();
+		public static ImmutableArray<GFXSheetMeta> ListOf { get; }
+
+		// Need to use static constructor for reflection to work properly
+		static GFXSheetMeta()
+		{
+			ListOf = Utils.GetSortedListOfPredefinedFields<GFXSheetMeta>();
+		}
+
 		public static GFXSheetMeta GetTypeFromID(int id) => ListOf.GetTypeFromID(id);
 
 

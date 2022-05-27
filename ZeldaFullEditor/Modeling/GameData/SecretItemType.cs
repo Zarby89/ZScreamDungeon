@@ -19,7 +19,14 @@
 
 		public override string ToString() => Name;
 
-		public static readonly ImmutableArray<SecretItemType> ListOf = Utils.GetSortedListOfPredefinedFields<SecretItemType>();
+		public static ImmutableArray<SecretItemType> ListOf { get; }
+
+		// Need to use static constructor for reflection to work properly
+		static SecretItemType()
+		{
+			ListOf = Utils.GetSortedListOfPredefinedFields<SecretItemType>();
+		}
+
 		public static SecretItemType GetTypeFromID(int id) => ListOf.GetTypeFromID(id);
 
 		[PredefinedInstance] public static readonly SecretItemType Secret00 = new(0x00, SecretDraw_Nothing);

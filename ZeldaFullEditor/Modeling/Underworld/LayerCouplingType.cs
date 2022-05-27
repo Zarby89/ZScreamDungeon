@@ -20,7 +20,14 @@
 
 		public override string ToString() => Name;
 
-		public static readonly ImmutableArray<LayerCouplingType> ListOf = Utils.GetSortedListOfPredefinedFields<LayerCouplingType>();
+		public static ImmutableArray<LayerCouplingType> ListOf { get; }
+
+		// Need to use static constructor for reflection to work properly
+		static LayerCouplingType()
+		{
+			ListOf = Utils.GetSortedListOfPredefinedFields<LayerCouplingType>();
+		}
+
 		public static LayerCouplingType GetTypeFromID(byte id) => ListOf.GetTypeFromID(id);
 
 		[PredefinedInstance] public static readonly LayerCouplingType LayerCoupling00 = new(0x00, "Layer 2 off", true, false, false);

@@ -29,7 +29,13 @@ namespace ZeldaFullEditor.Modeling.Underworld
 
 		public override string ToString() => $"{ID:X2} - {Name}";
 
-		public static readonly ImmutableArray<DungeonDoorType> ListOf = Utils.GetSortedListOfPredefinedFields<DungeonDoorType>();
+		public static ImmutableArray<DungeonDoorType> ListOf { get; }
+
+		// Need to use static constructor for reflection to work properly
+		static DungeonDoorType()
+		{
+			ListOf = Utils.GetSortedListOfPredefinedFields<DungeonDoorType>();
+		}
 
 		public static DungeonDoorType GetTypeFromID(byte id) => ListOf.GetTypeFromID(id);
 

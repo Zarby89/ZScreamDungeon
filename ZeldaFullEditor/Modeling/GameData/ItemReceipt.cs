@@ -23,7 +23,13 @@
 
 		public override string ToString() => $"{ID:X2} - {Name}";
 
-		public static readonly ImmutableArray<ItemReceipt> ListOf = Utils.GetSortedListOfPredefinedFields<ItemReceipt>();
+		public static ImmutableArray<ItemReceipt> ListOf { get; }
+
+		// Need to use static constructor for reflection to work properly
+		static ItemReceipt()
+		{
+			ListOf = Utils.GetSortedListOfPredefinedFields<ItemReceipt>();
+		}
 		public static ItemReceipt GetTypeFromID(int id) => ListOf.GetTypeFromID(id);
 
 		[PredefinedInstance] public static readonly ItemReceipt Receipt00 = new(0x00, ItemReceiptDraw00);

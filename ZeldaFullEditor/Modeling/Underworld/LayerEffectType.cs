@@ -13,7 +13,13 @@
 		}
 		public override string ToString() => Name;
 
-		public static readonly ImmutableArray<LayerEffectType> ListOf = Utils.GetSortedListOfPredefinedFields<LayerEffectType>();
+		public static ImmutableArray<LayerEffectType> ListOf { get; }
+
+		// Need to use static constructor for reflection to work properly
+		static LayerEffectType()
+		{
+			ListOf = Utils.GetSortedListOfPredefinedFields<LayerEffectType>();
+		}
 		public static LayerEffectType GetTypeFromID(byte id) => ListOf.GetTypeFromID(id);
 
 		[PredefinedInstance] public static readonly LayerEffectType LayerEffect00 = new(0x00, "Nothing");

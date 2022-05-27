@@ -32,8 +32,14 @@
 		/// <returns>The correct floor; or <see cref="Floor1F"/>, if nothing is found.</returns>
 		public static FloorNumber FindFloor(byte b) => ListOf.FirstOrDefault(floor => floor.Value == b) ?? Floor1F;
 
-		public static readonly ImmutableArray<FloorNumber> ListOf =
-			Utils.GetSortedListOfPredefinedFields<FloorNumber>((f1, f2) => (f1.Value + 16) - (f2.Value + 16));
+
+		public static ImmutableArray<FloorNumber> ListOf { get; }
+
+		// Need to use static constructor for reflection to work properly
+		static FloorNumber()
+		{
+			ListOf = Utils.GetSortedListOfPredefinedFields<FloorNumber>((f1, f2) => (f1.Value + 16) - (f2.Value + 16));
+		}
 
 		[PredefinedInstance] public static readonly FloorNumber FloorB8 = new("B8", 0xF8);
 		[PredefinedInstance] public static readonly FloorNumber FloorB7 = new("B7", 0xF9);

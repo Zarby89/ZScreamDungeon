@@ -31,7 +31,14 @@ namespace ZeldaFullEditor.Modeling.GameData
 
 		public override string ToString() => Name;
 
-		public static readonly ImmutableArray<SpriteType> ListOf = Utils.GetSortedListOfPredefinedFields<SpriteType>();
+		public static ImmutableArray<SpriteType> ListOf { get; }
+
+		// Need to use static constructor for reflection to work properly
+		static SpriteType()
+		{
+			ListOf = Utils.GetSortedListOfPredefinedFields<SpriteType>();
+		}
+
 		public static SpriteType GetTypeFromID(int b) => ListOf.GetTypeFromID(b);
 
 		[PredefinedInstance]
@@ -1262,7 +1269,14 @@ namespace ZeldaFullEditor.Modeling.GameData
 			: base(id, d, categories, gsets, true) { }
 
 
-		public static readonly new ImmutableArray<OverlordType> ListOf = Utils.GetSortedListOfPredefinedFields<OverlordType>();
+		public static new ImmutableArray<OverlordType> ListOf { get; }
+
+		// Need to use static constructor for reflection to work properly
+		static OverlordType()
+		{
+			ListOf = Utils.GetSortedListOfPredefinedFields<OverlordType>();
+		}
+
 		public static new OverlordType GetTypeFromID(int b) => ListOf.GetTypeFromID(b);
 
 		[PredefinedInstance]

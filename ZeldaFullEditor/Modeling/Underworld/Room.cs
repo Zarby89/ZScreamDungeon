@@ -166,8 +166,8 @@
 				NeedsRedrawing = true;
 			}
 		}
-		public byte Tag1 { get; set; }
-		public byte Tag2 { get; set; }
+		public RoomTagType Tag1 { get; set; }
+		public RoomTagType Tag2 { get; set; }
 		public bool IsDark { get; set; }
 
 		private byte entrancegfx;
@@ -227,8 +227,8 @@
 			SpriteTileset = ZS.ROM[hpos++];
 			//LayerMerging = LayerMergeType.ListOf[ZS.ROM[hpos++]];
 			LayerEffect = LayerEffectType.ListOf[ZS.ROM[hpos++]];
-			Tag1 = ZS.ROM[hpos++];
-			Tag2 = ZS.ROM[hpos++];
+			Tag1 = RoomTagType.GetTypeFromID(ZS.ROM[hpos++]);
+			Tag2 = RoomTagType.GetTypeFromID(ZS.ROM[hpos++]);
 
 			b = ZS.ROM[hpos++];
 
@@ -1234,8 +1234,8 @@
 				BackgroundTileset,
 				SpriteTileset,
 				LayerCoupling.ID,
-				Tag1,
-				Tag2,
+				Tag1.ID,
+				Tag2.ID,
 				(byte) (Pits.TargetLayer | Stair1.TargetLayer << 2
 					| Stair2.TargetLayer << 4 | Stair3.TargetLayer << 6),
 				Stair4.TargetLayer,

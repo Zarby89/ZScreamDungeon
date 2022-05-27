@@ -30,11 +30,6 @@
 		public override string ToString() => $"{ID:X3} {Name}";
 	}
 
-	public record RoomTagName(int ID, string Name) : EntityName(ID, Name)
-{
-		public override string ToString() => Name;
-	}
-
 	public record MusicName(int ID, string Name) : EntityName(ID, Name)
 {
 		public override string ToString() => Name;

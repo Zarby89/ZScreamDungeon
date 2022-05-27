@@ -14,7 +14,13 @@
 
 		public override string ToString() => Name;
 
-		public static readonly ImmutableArray<LayerCollisionType> ListOf = Utils.GetSortedListOfPredefinedFields<LayerCollisionType>();
+		public static ImmutableArray<LayerCollisionType> ListOf { get; }
+
+		// Need to use static constructor for reflection to work properly
+		static LayerCollisionType()
+		{
+			ListOf = Utils.GetSortedListOfPredefinedFields<LayerCollisionType>();
+		}
 		public static LayerCollisionType GetTypeFromID(byte id) => ListOf.GetTypeFromID(id);
 
 		[PredefinedInstance] public static readonly LayerCollisionType LayerCollision00 = new(0x00, "One");

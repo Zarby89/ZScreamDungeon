@@ -53,7 +53,14 @@ namespace ZeldaFullEditor.Data
 
 		public override string ToString() => $"{FullID:X3} {Name}";
 
-		public static readonly ImmutableArray<RoomObjectType> ListOf = Utils.GetSortedListOfPredefinedFields<RoomObjectType>();
+		public static ImmutableArray<RoomObjectType> ListOf { get; }
+
+		// Need to use static constructor for reflection to work properly
+		static RoomObjectType()
+		{
+			ListOf = Utils.GetSortedListOfPredefinedFields<RoomObjectType>();
+		}
+
 		public static RoomObjectType GetTypeFromID(int id) => ListOf.GetTypeFromID(id);
 
 #pragma warning disable CA1825 // Avoid zero-length array allocations

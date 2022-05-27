@@ -37,8 +37,8 @@
 			roomPropertyLayerCoupling.DataSource = LayerCouplingType.ListOf;
 			roomProperty_collision.DataSource = LayerCollisionType.ListOf;
 			roomProperty_effect.DataSource = LayerEffectType.ListOf;
-			roomProperty_tag1.DataSource = DefaultEntities.ListOfRoomTags;
-			roomProperty_tag2.DataSource = DefaultEntities.ListOfRoomTags;
+			roomProperty_tag1.DataSource = RoomTagType.ListOf;
+			roomProperty_tag2.DataSource = RoomTagType.ListOf;
 			EntranceMusicBox.DataSource = DefaultEntities.ListOfUnderworldMusics;
 
 			mapPicturebox.Image = new Bitmap(256, 304);
@@ -155,8 +155,8 @@
 			propertiesChangedFromForm = prevent;
 
 			roomPropertyLayerCoupling.SelectedItem = room.LayerCoupling;
-			roomProperty_tag1.SelectedIndex = room.Tag1;
-			roomProperty_tag2.SelectedIndex = room.Tag2;
+			roomProperty_tag1.SelectedItem = room.Tag1;
+			roomProperty_tag2.SelectedItem = room.Tag2;
 			roomProperty_effect.SelectedItem = room.LayerEffect;
 			roomProperty_collision.SelectedItem = room.LayerCollision;
 			RoomProperty_IsDark.Checked = room.IsDark;
@@ -229,8 +229,8 @@
 				var room = ZScreamer.ActiveUWScene.Room;
 
 				room.LayerEffect = (LayerEffectType) roomProperty_effect.SelectedItem;
-				room.Tag1 = (byte) (roomProperty_tag1.SelectedItem as RoomTagName).ID;
-				room.Tag2 = (byte) (roomProperty_tag2.SelectedItem as RoomTagName).ID;
+				room.Tag1 = (RoomTagType) roomProperty_tag1.SelectedItem;
+				room.Tag2 = (RoomTagType) roomProperty_tag2.SelectedItem;
 				room.LayerCoupling = (LayerCouplingType) roomPropertyLayerCoupling.SelectedItem;
 				room.LayerCollision = (LayerCollisionType) roomProperty_collision.SelectedItem;
 
