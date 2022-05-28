@@ -8,7 +8,7 @@
 		AgaState = 3,
 	}
 
-	public class GameStateInfo
+	public sealed class GameStateInfo
 	{
 		public string Name { get; }
 		public GameState State { get; }

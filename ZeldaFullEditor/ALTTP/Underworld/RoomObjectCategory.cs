@@ -1,6 +1,4 @@
-﻿using System.Reflection;
-
-namespace ZeldaFullEditor.ALTTP.Underworld
+﻿namespace ZeldaFullEditor.ALTTP.Underworld
 {
 	public sealed class RoomObjectCategory
 	{
@@ -9,7 +7,7 @@ namespace ZeldaFullEditor.ALTTP.Underworld
 		public string Name { get; private init; } = "Name";
 		public string Description { get; private init; } = "Description";
 
-		public int ID { get; }
+		private int ID { get; }
 
 		private RoomObjectCategory()
 		{
@@ -18,12 +16,12 @@ namespace ZeldaFullEditor.ALTTP.Underworld
 
 		public override string ToString() => Name;
 
-		public static readonly RoomObjectCategory[] ListOf;
+		public static ImmutableArray<RoomObjectCategory> ListOf { get; }
 
-
+		// Need to use static constructor for reflection to work properly
 		static RoomObjectCategory()
 		{
-
+			ListOf = Utils.GetSortedListOfPredefinedFields<RoomObjectCategory>((t1, t2) => t1.ID - t2.ID);
 		}
 
 

@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor.UserInterface.UserControl.Scene
+﻿namespace ZeldaFullEditor.UserInterface.UIControl.Scene
 {
 	/// <summary>
 	/// Provides a container for quickly switching between mouse, copy/cut/paste, etc. methods as the edit mode changes.

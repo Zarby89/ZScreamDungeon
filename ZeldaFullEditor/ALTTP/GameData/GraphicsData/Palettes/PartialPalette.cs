@@ -48,7 +48,7 @@ namespace ZeldaFullEditor.ALTTP.GameData.GraphicsData.Palettes
 		/// If <paramref name="colors"/> is not of the correct length, an <see cref="ArgumentException"/> error will be thrown.
 		/// </para>
 		/// </summary>
-		/// <param name="colors">An array of <see langword="ushort"/> values that represents the raw ROM data of each color.</param>
+		/// <param name="colors">An array of <see cref="SNESColor"/> structures containing the real entries in this palette.</param>
 		/// <param name="info">A <see cref="PaletteInfo"/> record detailing the palette type and ROM location.</param>
 		/// <exception cref="ArgumentException"></exception>
 		public PartialPalette(SNESColor[] colors, PaletteInfo info)

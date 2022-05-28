@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor.UserInterface.UserControl
+﻿namespace ZeldaFullEditor.UserInterface.UIControl
 {
 	/// <summary>
 	/// Defines functionality for objects to communicate collision with user control.

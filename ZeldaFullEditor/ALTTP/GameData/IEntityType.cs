@@ -6,7 +6,7 @@
 	internal interface IEntityType<T>
 	{
 		/// <summary>
-		/// This entity type's internal ID that should be used for sorting a 
+		/// This entity type's internal ID that should be used for sorting a publicly viewable list.
 		/// </summary>
 		public int ListID { get; }
 

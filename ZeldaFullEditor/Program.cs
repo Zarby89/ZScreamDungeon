@@ -40,8 +40,8 @@ global using ZeldaFullEditor.UserInterface.Drawing.Artists;
 global using ZeldaFullEditor.UserInterface.Drawing.SNESGraphics;
 global using ZeldaFullEditor.UserInterface.GeneralControls;
 global using ZeldaFullEditor.UserInterface.PrimaryEditors;
-global using ZeldaFullEditor.UserInterface.UserControl;
-global using ZeldaFullEditor.UserInterface.UserControl.Scene;
+global using ZeldaFullEditor.UserInterface.UIControl;
+global using ZeldaFullEditor.UserInterface.UIControl.Scene;
 
 global using static ZeldaFullEditor.TheGUI;
 

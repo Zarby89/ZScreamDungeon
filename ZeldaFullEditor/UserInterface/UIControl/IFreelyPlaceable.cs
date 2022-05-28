@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor.UserInterface.UserControl
+﻿namespace ZeldaFullEditor.UserInterface.UIControl
 {
 	/// <summary>
 	/// Defines properties common to objects that can be moved around freely with the mouse.

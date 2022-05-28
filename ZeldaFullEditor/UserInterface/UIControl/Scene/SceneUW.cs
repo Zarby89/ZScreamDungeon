@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor.UserInterface.UserControl.Scene
+﻿namespace ZeldaFullEditor.UserInterface.UIControl.Scene
 {
 	public partial class SceneUW : Scene
 	{

@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor.UserInterface.UserControl
+﻿namespace ZeldaFullEditor.UserInterface.UIControl
 {
 	/// <summary>
 	/// Defines useful-to-know properties for the end-user to read on the user interface

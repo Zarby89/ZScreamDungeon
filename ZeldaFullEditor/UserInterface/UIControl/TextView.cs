@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor.UserInterface.UserControl
+﻿namespace ZeldaFullEditor.UserInterface.UIControl
 {
 	/// <summary>
 	/// Specifies how UI elements should display text representations of themselves

@@ -22,7 +22,7 @@
 		public GraphicsSet LoadedGraphics { get; private set; }
 
 		/// <summary>
-		/// Gets his screen's corresponding <see cref="ScreenArtist"/>, which handles the graphical display of the screen.
+		/// Gets this screen's corresponding <see cref="ScreenArtist"/>, which handles the graphical display of the screen.
 		/// </summary>
 		public ScreenArtist MyArtist { get; }
 
@@ -56,7 +56,7 @@
 		/// Whether or not this screen's <see cref="ParentMap">ParentMap</see> is
 		/// a reference back to <see langword="this"/> screen.
 		/// Note that this property being <see langword="true"/> is not the same as this map screen being part
-		/// of a larger screen (<see cref="IsPartOfLargeMap">IsPartOfLargeMap</see>).
+		/// of a larger screen (see: <see cref="IsPartOfLargeMap">IsPartOfLargeMap</see>).
 		/// </summary>
 		public bool IsOwnParent => ParentMap == this;
 

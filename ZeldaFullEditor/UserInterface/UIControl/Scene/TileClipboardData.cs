@@ -1,4 +1,4 @@
-﻿namespace ZeldaFullEditor.UserInterface.UserControl.Scene
+﻿namespace ZeldaFullEditor.UserInterface.UIControl.Scene
 {
 	[Serializable]
 	public class TileClipboardData

@@ -36,7 +36,7 @@
 			GameState.UncleState => RainStateSprites,
 			GameState.RescueState => RescueStateSprites,
 			GameState.AgaState => AgaStateSprites,
-			_ => throw new ArgumentOutOfRangeException($"Invalid {nameof(GameState)}")
+			_ => throw new ArgumentOutOfRangeException(nameof(state), $"Invalid {nameof(GameState)}")
 		};
 
 
