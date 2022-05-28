@@ -197,6 +197,8 @@
 
 		public byte[] musics { get; } = new byte[4];
 
+		public NeedsNewArt Redrawing { get; internal set; }
+
 		public ushort MessageID { get; set; }
 
 		public byte[] staticgfx = new byte[16]; // Need to be used to display map and not pre render it!
@@ -260,6 +262,12 @@
 			GameState.AgaState => CGPaletteState3,
 			_ => throw new ArgumentOutOfRangeException(nameof(gamestate), "BAD GAME STATE")
 		};
+
+		public void InvalidateTilemaps()
+		{
+			Redrawing |= NeedsNewArt.UpdatedAllTilemaps;
+			MyArtist.Invalidate();
+		}
 
 		public void InvalidateArtist()
 		{

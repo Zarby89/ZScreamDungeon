@@ -10,11 +10,13 @@
 			{
 				if (curroom == value) return;
 				curroom = value;
+				curroom.Redrawing |= NeedsNewArt.LiterallyEverything;
 				Invalidate();
 			}
 		}
 
 		protected override GraphicsSet LoadedGraphics => CurrentRoom.LoadedGraphics;
+		protected override NeedsNewArt Redrawing => CurrentRoom.Redrawing;
 
 		public override ushort[] Layer1TileMap { get; } = new ushort[Constants.TilesPerUnderworldRoom];
 		public override PointeredImage Layer1Canvas { get; } = new(512, 512);
@@ -26,11 +28,9 @@
 
 		public override Bitmap FinalOutput { get; } = new(512, 512);
 
-		private readonly bool drawid;
-
-		public RoomArtist(bool includeRoomID) : base()
+		public RoomArtist() : base()
 		{
-			drawid = includeRoomID;
+
 		}
 
 		public void RebuildTileMap()
@@ -62,11 +62,30 @@
 		public override Tile GetLayer1TileAt(int x, int y) => new(Layer1TileMap[x + 64 * y]);
 		public override Tile GetLayer2TileAt(int x, int y) => new(Layer2TileMap[x + 64 * y]);
 
-		public override void RebuildLayers()
+		protected override void RebuildLayer1()
 		{
 			if (CurrentRoom == null) return;
 
-			base.RebuildLayers();
+			RebuildTileMap();
+
+			base.RebuildLayer1();
+			base.RebuildLayer2();
+		}
+
+		// because of how things work with the room artist
+		protected override void RebuildLayer2()
+		{
+			if (CurrentRoom == null) return;
+
+			//RebuildTileMap();
+			//base.RebuildLayer2();
+		}
+
+		protected override void ClearNeedForRedraw()
+		{
+			if (CurrentRoom == null) return;
+
+			CurrentRoom.Redrawing = NeedsNewArt.Nothing;
 		}
 
 		public override void RebuildBitMap()
@@ -93,7 +112,7 @@
 			PointeredImage top;
 			PointeredImage bottom;
 
-			if (CurrentRoom.LayerCoupling.Layer2Visible)
+			if (!CurrentRoom.LayerCoupling.Layer2Visible)
 			{
 				top = Layer1Canvas;
 				bottom = null;
@@ -123,12 +142,14 @@
 		{
 			if (CurrentRoom == null) return;
 
-			g.DrawImage(FinalOutput, 0, 0);
+			Revalidate();
 
-			if (drawid)
-			{
-				g.DrawText(0, 0, $"ROOM: {CurrentRoom.RoomID:X3}");
-			}
+			g.DrawImage(FinalOutput, 0, 0);
+		}
+
+		public void DrawIDToImage(Graphics g)
+		{
+			g.DrawText(0, 0, $"ROOM: {CurrentRoom.RoomID:X3}");
 		}
 
 		public void SetRoomAndDrawImmediately(Room room)

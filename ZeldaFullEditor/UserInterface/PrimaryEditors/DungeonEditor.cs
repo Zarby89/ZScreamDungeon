@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.UserInterface.PrimaryEditors
 {
-	public partial class DungeonEditor : System.Windows.Forms.UserControl
+	public partial class DungeonEditor : UserControl
 	{
 		private static readonly Bitmap xTabButton = new(Resources.xbutton);
 
@@ -52,23 +52,19 @@
 
 		public void OnProjectLoad()
 		{
-
 			initEntrancesList();
+
 			UnderWorldSceneHolder.Controls.Clear();
 			UnderWorldSceneHolder.Controls.Add(ZScreamer.ActiveUWScene);
 			addRoomTab(0x0104);
 
 			//tabControl2_SelectedIndexChanged(tabControl2.TabPages[0], new EventArgs());
 
+
+
 			// Initialize the map draw
 
 			initObjectsList();
-			spritesView1.items.Clear();
-			spritesView1.items.AddRange(listofspritesobjects);
-
-			objectViewer1.items.Clear();
-			objectViewer1.items.AddRange(listoftilesobjects);
-
 
 			objectViewer1.updateSize();
 			spritesView1.updateSize();
@@ -726,6 +722,9 @@
 				listofspritesobjects.Add(new(OverlordType.GetTypeFromID(i)));
 			}
 
+			objectViewer1 = new(listoftilesobjects);
+			spritesView1 = new(listofspritesobjects);
+
 			//sortObject();
 		}
 
@@ -999,6 +998,8 @@
 			e.Graphics.Clear(Color.Black);
 
 			RoomPreviewArtist.DrawSelfToImage(e.Graphics);
+			RoomPreviewArtist.DrawIDToImage(e.Graphics);
+
 		}
 
 		private void mapPicturebox_MouseUp(object sender, MouseEventArgs e)

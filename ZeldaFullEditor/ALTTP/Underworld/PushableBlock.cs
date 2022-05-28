@@ -31,7 +31,7 @@
 
 		public bool PointIsInHitbox(int x, int y)
 		{
-			throw new NotImplementedException();
+			return this.PointIsInBoundingBox(x, y);
 		}
 	}
 }

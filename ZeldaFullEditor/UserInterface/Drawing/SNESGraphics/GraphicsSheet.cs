@@ -50,7 +50,7 @@
 					break;
 
 				default:
-					throw new NotImplementedException();
+					throw new ArgumentException(@$"I was not expecting that {nameof(SNESPixelFormat)}! - {format}");
 			}
 
 			tiles = new GraphicsTile[TileCount];

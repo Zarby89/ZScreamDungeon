@@ -2258,15 +2258,8 @@
 		// TODO magic points and merge identical functions
 		private void DungeonMain_SizeChanged(object sender, EventArgs e)
 		{
+			if (true) return; // not sure if we need this method
 			throw new NotImplementedException();
-			//if (x2zoom)
-			//{
-			//	panel3.Location = new Point(1032, -1);
-			//}
-			//else
-			//{
-			//	panel3.Location = new Point(520, -1);
-			//}
 		}
 
 		private void memoryManagementToolStripMenuItem_Click(object sender, EventArgs e)

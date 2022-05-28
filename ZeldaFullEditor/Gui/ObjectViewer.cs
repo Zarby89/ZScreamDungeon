@@ -2,7 +2,8 @@
 {
 	public partial class ObjectViewer : UserControl
 	{
-		public List<RoomObjectPreview> items = new();
+		private readonly ImmutableList<RoomObjectPreview> items;
+		private ImmutableList<RoomObjectPreview> displayeditems;
 
 		ColorPalette palettes = null;
 		public bool showName = false;
@@ -12,10 +13,58 @@
 
 		public RoomObjectPreview selectedObject = null;
 
+
+		private string text = null;
+		public string SearchedText
+		{
+			get => text;
+			set
+			{
+				if (text == value) return;
+				text = value;
+				Refilter();
+			}
+		}
+
+		private GraphicsSet gfx = null;
+		public GraphicsSet SearchedGFX
+		{
+			get => gfx;
+			set
+			{
+				if (gfx == value) return;
+				gfx = value;
+				Refilter();
+			}
+		}
+
+		private List<RoomObjectCategory> cats = null;
+		public List<RoomObjectCategory> SearchedCategories
+		{
+			get => cats;
+			set
+			{
+				if (cats == value) return;
+				cats = value;
+				Refilter();
+			}
+		}
+
+
+
 		public ObjectViewer()
 		{
 			InitializeComponent();
 		}
+
+		public ObjectViewer(ICollection<RoomObjectPreview> list)
+		{
+			items = list.ToImmutableList();
+			displayeditems = items;
+			InitializeComponent();
+		}
+
+
 
 		public RoomObject CreateSelectedObject()
 		{
@@ -28,6 +77,39 @@
 			// TODO: Add something here?
 		}
 
+		private void Refilter()
+		{
+			displayeditems = items.FindAll(obj =>
+			{
+				if (SearchedText != null && !obj.Name.Contains(SearchedText, StringComparison.CurrentCultureIgnoreCase))
+				{
+					return false;
+				}
+
+				if (SearchedGFX?.CheckIfObjectWillLookGood(obj.ObjectType) ?? false)
+				{
+					return false;
+				}
+
+				if (SearchedCategories is not null)
+				{
+					foreach (var cat in cats)
+					{
+						if (obj.ObjectType.Categories.Contains(cat))
+						{
+							return true;
+						}
+					}
+
+					return false;
+				}
+
+				return true;
+			});
+		}
+
+
+
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			e.Graphics.Clear(Color.Black);
@@ -35,7 +117,7 @@
 			int xpos = 0;
 			int ypos = 0;
 
-			foreach (RoomObject o in items)
+			foreach (RoomObject o in displayeditems)
 			{
 				e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.previewObjectsBitmap[o.ID], new Point(xpos, ypos));
 
@@ -84,12 +166,12 @@
 		public void updateSize()
 		{
 			int w = Size.Width / 64;
-			int h = ((items.Count / w) + 1) * 64;
+			int h = ((displayeditems.Count / w) + 1) * 64;
 			Size = new Size(Size.Width, h);
 
-			if (items.Count > 0)
+			if (displayeditems.Count > 0)
 			{
-				palettes = ZScreamer.ActiveGraphicsManager.previewObjectsBitmap[items[0].ID].Palette;
+				palettes = ZScreamer.ActiveGraphicsManager.previewObjectsBitmap[displayeditems[0].ID].Palette;
 
 				int pindex = 0;
 				for (int y = 0; y < ZScreamer.ActiveGraphicsManager.loadedPalettes.GetLength(1); y++)
@@ -113,7 +195,7 @@
 				}
 			}
 
-			foreach (RoomObject o in items)
+			foreach (RoomObject o in displayeditems)
 			{
 				o.Size = 5;
 				unsafe
@@ -141,14 +223,14 @@
 		private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
 		{
 			int w = (this.Size.Width / 64);
-			int h = (((items.Count / w) + 1) * 64);
+			int h = (((displayeditems.Count / w) + 1) * 64);
 			int xpos = 0;
 			int ypos = 0;
 			int index = 0;
 			this.Size = new Size(this.Size.Width, h);
-			foreach (RoomObjectPreview o in items)
+			foreach (RoomObjectPreview o in displayeditems)
 			{
-				if (index < items.Count)
+				if (index < displayeditems.Count)
 				{
 					Rectangle itemRect = new Rectangle(xpos * 64, ypos * 64, 64, 64);
 					Rectangle itemstarRect = new Rectangle((xpos * 64) + 44, (ypos * 64) + 44, 16, 16);

@@ -2,8 +2,47 @@
 {
 	public partial class SpritesView : UserControl
 	{
-		public List<SpritePreview> items = new();
+		private readonly ImmutableList<SpritePreview> items;
+		private ImmutableList<SpritePreview> displayeditems;
+
 		ColorPalette palettes = null;
+
+		private string text = null;
+		public string SearchedText
+		{
+			get => text;
+			set
+			{
+				if (text == value) return;
+				text = value;
+				Refilter();
+			}
+		}
+
+		private GraphicsSet gfx = null;
+		public GraphicsSet SearchedGFX
+		{
+			get => gfx;
+			set
+			{
+				if (gfx == value) return;
+				gfx = value;
+				Refilter();
+			}
+		}
+
+		private List<SpriteCategory> cats = null;
+		public List<SpriteCategory> SearchedCategories
+		{
+			get => cats;
+			set
+			{
+				if (cats == value) return;
+				cats = value;
+				Refilter();
+			}
+		}
+
 
 		public int selectedIndex = -1;
 		public event EventHandler SelectedIndexChanged;
@@ -12,6 +51,12 @@
 
 		public SpritesView()
 		{
+		}
+
+		public SpritesView(ICollection<SpritePreview> list)
+		{
+			items = list.ToImmutableList();
+			displayeditems = items;
 			InitializeComponent();
 		}
 
@@ -23,15 +68,47 @@
 			};
 		}
 
+		private void Refilter()
+		{
+			displayeditems = items.FindAll(sprite =>
+			{
+				if (SearchedText != null && !sprite.Name.Contains(SearchedText, StringComparison.CurrentCultureIgnoreCase))
+				{
+					return false;
+				}
+
+				if (SearchedGFX?.CheckIfSpriteWillLookGood(sprite.Species) ?? false)
+				{
+					return false;
+				}
+
+				if (SearchedCategories is not null)
+				{
+					foreach (var cat in cats)
+					{
+						if (sprite.Species.Categories.Contains(cat))
+						{
+							return true;
+						}
+					}
+
+					return false;
+				}
+
+				return true;
+			});
+		}
+
+
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			e.Graphics.Clear(Color.FromArgb(48, 48, 48));
 			int w = Size.Width / 68;
-			int h = ((items.Count / w) + 1) * 68;
+			int h = ((displayeditems.Count / w) + 1) * 68;
 			int xpos = 0;
 			int ypos = 0;
 
-			foreach (var o in items)
+			foreach (var o in displayeditems)
 			{
 				unsafe
 				{
@@ -83,12 +160,12 @@
 		public void updateSize()
 		{
 			int w = (this.Size.Width / 64);
-			int h = (((items.Count / w) + 1) * 64);
+			int h = (((displayeditems.Count / w) + 1) * 64);
 			this.Size = new Size(this.Size.Width, h);
 
-			if (items.Count > 0)
+			if (displayeditems.Count > 0)
 			{
-				palettes = ZScreamer.ActiveGraphicsManager.previewSpritesBitmap[items[0].ID].Palette;
+				palettes = ZScreamer.ActiveGraphicsManager.previewSpritesBitmap[displayeditems[0].ID].Palette;
 
 				if (palettes == null) return;
 
@@ -118,7 +195,7 @@
 					palettes.Entries[(i * 16) + 8] = Color.Transparent;
 				}
 
-				foreach (var o in items)
+				foreach (var o in displayeditems)
 				{
 					ZScreamer.ActiveGraphicsManager.previewSpritesBitmap[o.ID].Palette = palettes;
 				}
@@ -135,15 +212,15 @@
 		private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
 		{
 			int w = (this.Size.Width / 64);
-			int h = (((items.Count / w) + 1) * 64);
+			int h = (((displayeditems.Count / w) + 1) * 64);
 			int xpos = 0;
 			int ypos = 0;
 			int index = 0;
 			this.Size = new Size(this.Size.Width, h);
 
-			foreach (var o in items)
+			foreach (var o in displayeditems)
 			{
-				if (index < items.Count)
+				if (index < displayeditems.Count)
 				{
 					Rectangle itemRect = new Rectangle(xpos * 64 + (xpos * 4), ypos * 64 + (ypos * 4), 64, 64);
 					if (itemRect.Contains(new Point(e.X, e.Y)))

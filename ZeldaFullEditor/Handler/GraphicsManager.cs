@@ -248,13 +248,13 @@ namespace ZeldaFullEditor.Handler
 									byte pixdata = 0;
 									byte pixdata2 = 0;
 
-									if ((lineBits0 & mask[x * 2]) == mask[x * 2]) { pixdata += 1; }
-									if ((lineBits1 & mask[x * 2]) == mask[x * 2]) { pixdata += 2; }
-									if ((lineBits2 & mask[x * 2]) == mask[x * 2]) { pixdata += 4; }
+									if (lineBits0.BitsAllSet(mask[x * 2])) { pixdata |= 1; }
+									if (lineBits1.BitsAllSet(mask[x * 2])) { pixdata |= 2; }
+									if (lineBits2.BitsAllSet(mask[x * 2])) { pixdata |= 4; }
 
-									if ((lineBits0 & mask[x * 2 + 1]) == mask[x * 2 + 1]) { pixdata2 += 1; }
-									if ((lineBits1 & mask[x * 2 + 1]) == mask[x * 2 + 1]) { pixdata2 += 2; }
-									if ((lineBits2 & mask[x * 2 + 1]) == mask[x * 2 + 1]) { pixdata2 += 4; }
+									if (lineBits0.BitsAllSet(mask[x * 2 + 1])) { pixdata2 |= 1; }
+									if (lineBits1.BitsAllSet(mask[x * 2 + 1])) { pixdata2 |= 2; }
+									if (lineBits2.BitsAllSet(mask[x * 2 + 1])) { pixdata2 |= 4; }
 
 									var a = 2 * (y * 64 + x + i * 4 + j * 512);
 									sheetdata[a] = pixdata2;

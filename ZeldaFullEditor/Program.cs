@@ -13,10 +13,9 @@ global using System.Linq;
 global using System.Reflection;
 global using System.Runtime.InteropServices;
 global using System.Text;
+global using System.Text.RegularExpressions;
 global using System.Threading;
 global using System.Windows.Forms;
-
-global using System.Text.RegularExpressions;
 
 global using ZCompressLibrary;
 
@@ -48,8 +47,8 @@ global using static ZeldaFullEditor.TheGUI;
 namespace ZeldaFullEditor
 {
 	internal static class TheGUI {
-		public static RoomArtist RoomEditingArtist { get; } = new RoomArtist(false);
-		public static RoomArtist RoomPreviewArtist { get; } = new RoomArtist(true);
+		public static RoomArtist RoomEditingArtist { get; } = new();
+		public static RoomArtist RoomPreviewArtist { get; } = new();
 
 		public static ZScreamForm ZGUI = new();
 	}

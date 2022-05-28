@@ -15,6 +15,8 @@
 
 		protected override GraphicsSet LoadedGraphics => MyScreen.LoadedGraphics;
 
+		protected override NeedsNewArt Redrawing => MyScreen.Redrawing;
+
 		public override Bitmap FinalOutput { get; } = new(512, 512);
 
 		public ScreenArtist(OverworldScreen screen) : base()
@@ -22,9 +24,9 @@
 			MyScreen = screen;
 		}
 
-		public void RebuildTileMap()
+		protected override void ClearNeedForRedraw()
 		{
-
+			MyScreen.Redrawing = NeedsNewArt.Nothing;
 		}
 
 		public override Tile GetLayer1TileAt(int x, int y) => GetDrawnTileAt(x, y, Layer1TileMap);
@@ -59,6 +61,8 @@
 
 		public override void DrawSelfToImage(Graphics g)
 		{
+			Revalidate();
+
 			g.DrawImage(FinalOutput, 0, 0);
 		}
 
@@ -78,49 +82,16 @@
 			{
 				var t = ZScreamer.ActiveOW.Tile16Sheet.GetTile16At(i);
 
-				CopyTile16ToCanvas(t, x, y);
+				ZScreamer.ActiveOW.Tile16Sheet.DrawTile16ToCanvas(Layer1Canvas, x, y, i);
 
-				x++;
-				if (x == 16)
+				x += 16;
+				if (x == 16 * Constants.NumberOfTile16PerStrip)
 				{
-					y++;
+					y += 16;
 					x = 0;
 				}
 
 			}
-		}
-
-		private void CopyTile16ToCanvas(Tile16 t, int x, int y)
-		{
-			x *= 2;
-			y *= 2;
-			CopyTile8ToCanvas(t.Tile0, x, y);
-			CopyTile8ToCanvas(t.Tile1, x + 1, y);
-			CopyTile8ToCanvas(t.Tile2, x, y + 1);
-			CopyTile8ToCanvas(t.Tile3, x + 1, y + 1);
-
-		}
-
-		private void CopyTile8ToCanvas(Tile t, int x, int y)
-		{
-
-			//		int sourcePtrPos = ((tile & 0x7) << 4) + ((tile / 8) * 2048); //(sourceX * 16) + (sourceY * 128);
-			//		byte* sourcePtr = (byte*) sourcebmpPtr.ToPointer();
-			//
-			//		int destPtrPos = (x + (y * 512));
-			//		byte* destPtr = (byte*) destbmpPtr.ToPointer();
-			//
-			//		for (int ystrip = 0; ystrip < 16; ystrip++)
-			//		{
-			//			for (int xstrip = 0; xstrip < 16; xstrip++)
-			//			{
-			//				destPtr[destPtrPos + xstrip + (ystrip * 512)] = sourcePtr[sourcePtrPos + xstrip + (ystrip * 128)];
-			//			}
-			//		}
-
-
-
-			throw new NotImplementedException();
 		}
 	}
 }

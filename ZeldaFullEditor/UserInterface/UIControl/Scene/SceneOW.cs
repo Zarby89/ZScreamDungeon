@@ -193,7 +193,7 @@
 
 				base.OnMouseDown(e);
 
-				InvalidateHighEnd();
+				InvalidateScreens();
 			}
 			else
 			{
@@ -232,7 +232,7 @@
 
 			base.OnMouseUp(sender, e);
 
-			InvalidateHighEnd();
+			InvalidateScreens();
 		}
 
 
@@ -241,40 +241,25 @@
 			byte id = (byte) (ZGUI.OverworldEditor.objCombobox.SelectedItem as SpriteName).ID;
 			lastselectedSprite.Species = SpriteType.GetTypeFromID(id);
 
-			InvalidateHighEnd();
+			InvalidateScreens();
 		}
 
-		private void InvalidateHighEnd()
+		private void InvalidateScreens()
 		{
-			if (lowEndMode)
+			ZS.OverworldManager.ForAllMainScreens(map =>
 			{
-				int x = 512 * (CurrentParentMapID % 8);
-				int y = 512 * (CurrentParentMapID / 8);
-				if (CurrentMap.IsPartOfLargeMap)
+				if (map.ParentMap == CurrentParentMap)
 				{
-					Invalidate(new Rectangle(x, y, 1024, 1024));
+					map.InvalidateArtist();
 				}
-				else
-				{
-					Invalidate(new Rectangle(x, y, 512, 512));
-				}
-			}
-			else
-			{
-				Invalidate(new Rectangle(
-					ZGUI.OverworldEditor.splitContainer1.Panel2.HorizontalScroll.Value,
-					ZGUI.OverworldEditor.splitContainer1.Panel2.VerticalScroll.Value,
-					ZGUI.OverworldEditor.splitContainer1.Panel2.Width,
-					ZGUI.OverworldEditor.splitContainer1.Panel2.Height
-				));
-			}
+			});
 		}
 
 		private void ObjCombobox_SelectedIndexChangedItem(object sender, EventArgs e)
 		{
 			byte id = (byte) (ZGUI.OverworldEditor.objCombobox.SelectedItem as SecretsName).ID;
 			LastSelectedSecret.SecretType = SecretItemType.GetTypeFromID(id);
-			InvalidateHighEnd();
+			InvalidateScreens();
 		}
 
 		protected override void OnMouseMove(object sender, MouseEventArgs e)
@@ -646,7 +631,7 @@
 
 		public override void Refresh()
 		{
-			InvalidateHighEnd();
+			InvalidateScreens();
 			base.Refresh();
 		}
 	}

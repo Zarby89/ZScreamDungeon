@@ -38,6 +38,7 @@
 		public const int NumberOfOverworldExits = 0x4F;
 		public const int NumberOfOverworldGraves = 0x0F;
 		public const int NumberOfEntrances = 0x85;
+		public const int NumberOfSpawnPoints = 0x07;
 		public const int NumberOfChests = 168;
 
 

@@ -14,7 +14,6 @@
 
 		public PaletteEditor()
 		{
-
 			BackColor = Color.FromKnownColor(KnownColor.Control);
 			InitializeComponent();
 		}

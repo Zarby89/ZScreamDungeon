@@ -108,7 +108,7 @@
 				}
 			}
 
-			RedrawRoom();
+			InvalidateRoomTilemapAndArtist();
 		}
 
 		public void Clear()
@@ -119,7 +119,7 @@
 
 		public void HardRefresh()
 		{
-			RedrawRoom();
+			InvalidateRoomTilemapAndArtist();
 			Refresh();
 		}
 
@@ -149,6 +149,12 @@
 			base.OnMouseDown(sender, e);
 		}
 
+		private void InvalidateRoomTilemapAndArtist()
+		{
+			Room.InvalidateTilemaps();
+			RoomEditingArtist.Invalidate();
+		}
+
 		protected override void OnMouseMove(object sender, MouseEventArgs e)
 		{
 			if (MouseIsDown)
@@ -158,7 +164,7 @@
 					MoveSelectedObjects();
 				}
 			}
-			base.OnMouseDown(sender, e);
+			base.OnMouseMove(sender, e);
 		}
 
 		public void clearCustomCollisionMap()
@@ -173,12 +179,12 @@
 
 		public override void Undo()
 		{
-			throw new NotImplementedException();
+			Room.Undo();
 		}
 
 		public override void Redo()
 		{
-			throw new NotImplementedException();
+			Room.Redo();
 		}
 
 		private void SceneUW_Paint(object sender, PaintEventArgs e)

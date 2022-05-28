@@ -18,6 +18,8 @@
 		public bool Valid { get; private set; }
 
 		protected abstract GraphicsSet LoadedGraphics { get; }
+		protected abstract NeedsNewArt Redrawing { get; }
+
 
 		protected Artist() { }
 
@@ -58,17 +60,53 @@
 
 		protected void Revalidate()
 		{
-			if (Valid) return;
+			if (Redrawing == NeedsNewArt.Nothing || Valid) return;
 
-			ReloadPalettes();
+			if ((Redrawing & NeedsNewArt.UpdatedAllPalettes) != NeedsNewArt.Nothing)
+			{
+				ReloadPalettes();
+			}
+			
+			if ((Redrawing & NeedsNewArt.UpdatedLayer1Tilemap) != NeedsNewArt.Nothing)
+			{
+				RebuildLayer1();
+			}
+
+			if ((Redrawing & NeedsNewArt.UpdatedLayer2Tilemap) != NeedsNewArt.Nothing)
+			{
+				RebuildLayer2();
+			}
+			
 			RebuildBitMap();
 
 			Valid = true;
+			ClearNeedForRedraw();
+		}
+
+		protected abstract void ClearNeedForRedraw();
+
+		protected void HardRevalidate()
+		{
+			ReloadPalettes();
+			RebuildLayer1();
+			RebuildLayer2();
+			RebuildBitMap();
+
+			Valid = true;
+			ClearNeedForRedraw();
+		}
+
+		public void Refresh()
+		{
+			
 		}
 
 		public abstract void RebuildBitMap();
 
-		public virtual void RebuildLayers()
+
+
+
+		protected virtual void RebuildLayer1()
 		{
 			for (var y = 0; y < 64; y++)
 			{
@@ -76,8 +114,17 @@
 				{
 					var t = GetLayer1TileAt(x, y);
 					DrawTileToBuffer(t, x * 8, y * 8, Layer1Canvas);
-
-					t = GetLayer2TileAt(x, y);
+				}
+			}
+		}
+		
+		protected virtual void RebuildLayer2()
+		{
+			for (var y = 0; y < 64; y++)
+			{
+				for (var x = 0; x < 64; x++)
+				{
+					var t = GetLayer2TileAt(x, y);
 					DrawTileToBuffer(t, x * 8, y * 8, Layer2Canvas);
 				}
 			}

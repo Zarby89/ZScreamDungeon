@@ -13,8 +13,7 @@
 		public DungeonObjectsList Layer2Objects { get; } = new();
 		public DungeonObjectsList Layer3Objects { get; } = new();
 
-		public DungeonObjectsList[] AllObjects =>
-			new DungeonObjectsList[] { Layer1Objects, Layer2Objects, Layer3Objects };
+		public DungeonObjectsList[] AllObjects => new[] { Layer1Objects, Layer2Objects, Layer3Objects };
 
 		public DungeonDoorsList DoorsList { get; } = new();
 		public ChestItemsHandler ChestList { get; }
@@ -51,7 +50,7 @@
 
 		public bool HasUnsavedChanges { get; internal set; }
 
-		public bool NeedsRedrawing { get; internal set; }
+		public NeedsNewArt Redrawing { get; internal set; }
 
 
 		private byte layout;
@@ -64,11 +63,11 @@
 				if (layout == value) return;
 
 				layout = value;
-				NeedsRedrawing = true;
+				Redrawing |= NeedsNewArt.UpdatedLayer1Tilemap;
 			}
 		}
 
-		public byte?[] CollisionMap { get; } = new byte?[Constants.TilesPerTilemap];
+		public byte?[] CollisionMap { get; private set; } = new byte?[Constants.TilesPerTilemap];
 
 		private bool moam = false;
 		public bool MultiLayerOAM
@@ -93,7 +92,6 @@
 					TorchList.Count == 0;
 		}
 
-		// TODO implement and rename
 		public ushort MessageID { get; set; }
 
 		private byte bgtiles;
@@ -140,7 +138,7 @@
 			{
 				if (f1gfx == value) return;
 				f1gfx = value;
-				NeedsRedrawing = true;
+				Redrawing = NeedsNewArt.UpdatedAllTilemaps;
 			}
 		}
 		
@@ -150,7 +148,7 @@
 			{
 				if (f2gfx == value) return;
 				f2gfx = value;
-				NeedsRedrawing = true;
+				Redrawing = NeedsNewArt.UpdatedAllTilemaps;
 			}
 		}
 
@@ -163,11 +161,12 @@
 			{
 				if (coupling == value) return;
 				coupling = value;
-				NeedsRedrawing = true;
+				Redrawing = NeedsNewArt.UpdatedLayering;
 			}
 		}
 		public RoomTagType Tag1 { get; set; }
 		public RoomTagType Tag2 { get; set; }
+
 		public bool IsDark { get; set; }
 
 		private byte entrancegfx;
@@ -187,8 +186,7 @@
 		public RoomDestination Stair3 { get; } = new RoomDestination(3);
 		public RoomDestination Stair4 { get; } = new RoomDestination(4);
 
-		public RoomDestination[] AllStairs =>
-			new RoomDestination[] { Stair1, Stair2, Stair3, Stair4 };
+		public RoomDestination[] AllStairs => new [] { Stair1, Stair2, Stair3, Stair4 };
 
 		public bool HasDamagingPits { get; set; }
 
@@ -270,17 +268,22 @@
 			RefreshTileset();
 		}
 
+		public void InvalidateTilemaps()
+		{
+			Redrawing |= NeedsNewArt.UpdatedAllTilemaps;
+		}
+
 		public void RefreshTileset()
 		{
 			LoadedGraphics = ZS.GFXManager.CreateUnderworldGraphicsSet(BackgroundTileset, SpriteTileset, BackgroundTileset);
-			NeedsRedrawing = true;
+			Redrawing |= NeedsNewArt.UpdatedAllTilesets;
 		}
 
 		public void RefreshPalette()
 		{
 			CGPalette = ZS.PaletteManager.CreateDungeonPalette(Palette);
 
-			NeedsRedrawing = true;
+			Redrawing |= NeedsNewArt.UpdatedAllPalettes;
 		}
 
 		// TODO this is where we'll flush temporary edits to the new listing
@@ -312,6 +315,18 @@
 			throw new NotImplementedException();
 		}
 
+		public void Undo()
+		{
+			throw new NotImplementedException();
+			HasUnsavedChanges = true;
+		}
+
+		public void Redo()
+		{
+			throw new NotImplementedException();
+			HasUnsavedChanges = true;
+		}
+
 		private void LoadChests()
 		{
 			ChestList.Clear();
@@ -327,7 +342,7 @@
 
 				if (roomid == RoomID)
 				{
-					ChestList.Add(new ChestItem(ItemReceipt.GetTypeFromID(item)));
+					ChestList.Add(new(ItemReceipt.GetTypeFromID(item)));
 				}
 			}
 		}
@@ -496,12 +511,7 @@
 
 		internal void ClearCollisionLayout()
 		{
-			throw new NotImplementedException();
-		}
-
-		internal void LoadCollisionLayout(bool v)
-		{
-			throw new NotImplementedException();
+			CollisionMap = new byte?[Constants.TilesPerTilemap];
 		}
 
 		private void LoadCustomCollisionFromRom()
@@ -623,7 +633,7 @@
 					}
 					else
 					{
-						throw new Exception("Shit that's a bad room object.");
+						throw new NullReferenceException("Shit that's a bad room object.");
 					}
 				}
 
@@ -710,40 +720,17 @@
 			return false;
 		}
 
-
-		private bool AttemptToAddEntity(IDungeonPlaceable o, DungeonEditMode m)
+		private bool AttemptToAddEntity(IDungeonPlaceable o, DungeonEditMode m) => (m, o) switch
 		{
-			switch (m)
-			{
-				case DungeonEditMode.Layer1:
-				case DungeonEditMode.Layer2:
-				case DungeonEditMode.Layer3:
-					var l = GetLayerList((RoomLayer) m);
-					if (l == null) return false;
-					if (o is not RoomObject ro) return false;
-
-					return AddRoomObject(ro, l);
-
-				case DungeonEditMode.Doors:
-					if (o is not DungeonDoor dr) return false;
-					return AddDoor(dr);
-
-				case DungeonEditMode.Sprites:
-					if (o is not DungeonSprite so) return false;
-					return AddSprite(so);
-
-				case DungeonEditMode.Blocks:
-					if (o is not PushableBlock bo) return false;
-					return AddBlock(bo);
-
-				case DungeonEditMode.Torches:
-					if (o is not LightableTorch to) return false;
-					return AddTorch(to);
-
-				default:
-					return false;
-			}
-		}
+			(DungeonEditMode.Layer1, RoomObject ro1) => AddRoomObject(ro1, Layer1Objects),
+			(DungeonEditMode.Layer2, RoomObject ro2) => AddRoomObject(ro2, Layer2Objects),
+			(DungeonEditMode.Layer3, RoomObject ro3) => AddRoomObject(ro3, Layer3Objects),
+			(DungeonEditMode.Doors, DungeonDoor dr) => AddDoor(dr),
+			(DungeonEditMode.Sprites, DungeonSprite so) => AddSprite(so),
+			(DungeonEditMode.Blocks, PushableBlock bo) => AddBlock(bo),
+			(DungeonEditMode.Torches, LightableTorch to) => AddTorch(to),
+			(_, _) => false
+		};
 
 		private static void WarnIfTooMany(string entity, int count, int limit)
 		{
@@ -858,7 +845,6 @@
 			WarnIfTooMany("manipulable objects", CountManipulables(), 16);
 		}
 
-
 		private bool AddBlock(PushableBlock b)
 		{
 			ValidateManipulables();
@@ -896,22 +882,19 @@
 		}
 
 
-		private IList<IDungeonPlaceable> FindRelevantListForMode(DungeonEditMode em)
+		private IList<IDungeonPlaceable> FindRelevantListForMode(DungeonEditMode em) => em switch
 		{
-			return em switch
-			{
-				DungeonEditMode.Layer1 => (IList<IDungeonPlaceable>) Layer1Objects,
-				DungeonEditMode.Layer2 => (IList<IDungeonPlaceable>) Layer2Objects,
-				DungeonEditMode.Layer3 => (IList<IDungeonPlaceable>) Layer3Objects,
-				DungeonEditMode.LayerAll => (IList<IDungeonPlaceable>) Layer1Objects.Concat(Layer2Objects).Concat(Layer3Objects),
-				DungeonEditMode.Sprites => (IList<IDungeonPlaceable>) SpritesList,
-				DungeonEditMode.Secrets => (IList<IDungeonPlaceable>) SecretsList,
-				DungeonEditMode.Blocks => (IList<IDungeonPlaceable>) BlocksList,
-				DungeonEditMode.Torches => (IList<IDungeonPlaceable>) TorchList,
-				DungeonEditMode.Doors => (IList<IDungeonPlaceable>) DoorsList,
-				_ => null,
-			};
-		}
+			DungeonEditMode.Layer1 => (IList<IDungeonPlaceable>) Layer1Objects,
+			DungeonEditMode.Layer2 => (IList<IDungeonPlaceable>) Layer2Objects,
+			DungeonEditMode.Layer3 => (IList<IDungeonPlaceable>) Layer3Objects,
+			DungeonEditMode.LayerAll => (IList<IDungeonPlaceable>) Layer1Objects.Concat(Layer2Objects).Concat(Layer3Objects),
+			DungeonEditMode.Sprites => (IList<IDungeonPlaceable>) SpritesList,
+			DungeonEditMode.Secrets => (IList<IDungeonPlaceable>) SecretsList,
+			DungeonEditMode.Blocks => (IList<IDungeonPlaceable>) BlocksList,
+			DungeonEditMode.Torches => (IList<IDungeonPlaceable>) TorchList,
+			DungeonEditMode.Doors => (IList<IDungeonPlaceable>) DoorsList,
+			_ => null,
+		};
 
 
 		private static IDungeonPlaceable FindEntityUnderMouseInList(IList<IDungeonPlaceable> l, int x, int y)
@@ -1055,7 +1038,7 @@
 		}
 
 		/// <summary>
-		/// Returns <see langword="true"/> if too many doors of a certain type.
+		/// Reorders doors with openable doors first, followed by shutter doors, then everything else.
 		/// </summary>
 		public void AutoSortDoors()
 		{
@@ -1090,70 +1073,16 @@
 			WarnIfTooMany("openable + shutter doors", openabledoors.Count + shutterdoors.Count, 4);
 		}
 
-
-		// @author: scawful
-		private List<CollisionRectangle> LoadCollisionLayout()
-		{
-			var ret = new List<CollisionRectangle>();
-			var freespace = new bool[CollisionMap.Length];
-
-			for (ushort i = 0; i < CollisionMap.Length; i++)
-			{
-				var check = CollisionMap[i];
-
-				if (check is null || !freespace[i])
-				{
-					continue;
-				}
-
-				if (CollisionMap[i + 1] is null && CollisionMap[i + 64] is null)
-				{
-					freespace[i] = true;
-					ret.Add(new CollisionRectangle(1, 1, i, (byte) check));
-					continue;
-				}
-
-				var rectumw = 1;
-				var rectumh = 64;
-
-				while (CollisionMap[i + rectumw] != null)
-				{
-					rectumw++;
-				}
-
-				while (i + rectumh < Constants.TilesPerTilemap
-						&& CollisionMap[i + rectumh] != null)
-				{
-					rectumh += 64;
-				}
-
-				var rectumadd = new List<byte>();
-				for (var y = 0; y < rectumh; y += 64)
-				{
-					for (var x = 0; x < rectumw; x++)
-					{
-						rectumadd.Add((byte) CollisionMap[i + x + y]);
-					}
-				}
-
-				ret.Add(new CollisionRectangle((byte) rectumw, (byte) (rectumh / 64), i, rectumadd.ToArray()));
-			}
-
-			return ret;
-		}
-
-		// TODO
 		public void AddChest()
 		{
-
+			throw new NotImplementedException();
 
 			ReassociateChestsAndItems();
 		}
 
-		// TODO
 		public void DeleteChest()
 		{
-
+			throw new NotImplementedException();
 
 			ReassociateChestsAndItems();
 		}
@@ -1172,10 +1101,7 @@
 					if (r.IsChest)
 					{
 						ret[cur++] = r.IsBigChest;
-						if (cur == count)
-						{
-							break;
-						}
+						if (cur == count) break;
 					}
 				}
 			}
@@ -1204,6 +1130,8 @@
 
 				c.AssociatedChest = chests[i++];
 			}
+
+			HasUnsavedChanges = true;
 		}
 
 		private void ReassociateStairsAndTargets()
@@ -1216,6 +1144,8 @@
 			Stair2.AssociatedObject = count > 1 ? stairs[1] : null;
 			Stair3.AssociatedObject = count > 2 ? stairs[2] : null;
 			Stair4.AssociatedObject = count > 3 ? stairs[3] : null;
+
+			HasUnsavedChanges = true;
 		}
 
 
@@ -1278,14 +1208,27 @@
 		public byte[] GetCollisionData()
 		{
 			var ret = new List<byte>();
-			var red = LoadCollisionLayout();
+
+			// all rectangles for collision
+			var red = new List<Rectangle>();
+
+			throw new NotImplementedException();
 
 			foreach (var rectum in red)
 			{
-				ret.Add(rectum.Position);
-				ret.Add(rectum.Width);
-				ret.Add(rectum.Height);
-				ret.AddRange(rectum.TileData);
+				var (l, h) = UWTilemapPosition.CreateLowAndHighBytesFromXYZ((byte) rectum.X, (byte) rectum.Y, 0);
+				ret.Add(l);
+				ret.Add(h);
+				ret.Add((byte) rectum.Width);
+				ret.Add((byte) rectum.Height);
+
+				for (int y = rectum.Y; y < rectum.Y + rectum.Height; y++)
+				{
+					for (int x = rectum.X; x < rectum.X + rectum.Width; x++)
+					{
+						ret.Add(CollisionMap[x + 32 * y] ?? 0x00);
+					}
+				}
 			}
 
 			if (ret.Count > 0)
@@ -1294,15 +1237,6 @@
 			}
 
 			return ret.ToArray();
-		}
-
-		public void ClearCustomCollision()
-		{
-			for (var i = 0; i < CollisionMap.Length; i++)
-			{
-				CollisionMap[i] = null;
-			}
-			HasUnsavedChanges = true;
 		}
 	}
 }

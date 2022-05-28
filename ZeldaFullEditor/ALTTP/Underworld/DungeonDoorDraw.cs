@@ -15,6 +15,7 @@ namespace ZeldaFullEditor.ALTTP.Underworld
 
 		private readonly DoorDrawFunction draw;
 		private readonly DoorDrawFunction drawopp;
+
 		private DungeonDoorDraw(DoorDirection dir, byte pos,
 			DoorDrawFunction drawMain, DoorDrawFunction drawOpposing)
 		{

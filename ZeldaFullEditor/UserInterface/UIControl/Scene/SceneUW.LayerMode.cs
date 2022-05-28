@@ -12,6 +12,7 @@
 			CheckIfObjectIsInvalidForPlacement();
 
 			Room.AttemptToAddEntityAsSelected(ObjectToPlace, CurrentMode);
+			InvalidateRoomTilemapAndArtist();
 
 			ResetPlacementProperties();
 		}
@@ -24,6 +25,9 @@
 		private void OnMouseMove_Layer(MouseEventArgs e)
 		{
 
+
+
+			InvalidateRoomTilemapAndArtist();
 		}
 
 
@@ -31,7 +35,7 @@
 		{
 			if (Room?.OnlySelectedObject is RoomObject r && r.IncreaseSize())
 			{
-				RedrawRoom();
+				InvalidateRoomTilemapAndArtist();
 			}
 		}
 
@@ -39,7 +43,7 @@
 		{
 			if (Room?.OnlySelectedObject is RoomObject r && r.DecreaseSize())
 			{
-				RedrawRoom();
+				InvalidateRoomTilemapAndArtist();
 			}
 		}
 
