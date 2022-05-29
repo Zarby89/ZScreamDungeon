@@ -79,11 +79,15 @@ namespace ZeldaFullEditor.OWSceneModes
 				scene.selectedTileSizeX = data.length;
 			}*/
 			string c = Clipboard.GetText();
+			if (c.Length < 5)
+			{
+				return;
+			}
 			if (c.Substring(0, 4) == "ZSTD")
 			{
 				int p = 8;
 				scene.selectedTileSizeX = int.Parse(c.Substring(4, 4), NumberStyles.HexNumber);
-				scene.selectedTile = new ushort[((c.Length - 4) / 4)];
+				scene.selectedTile = new ushort[((c.Length - 8) / 4)];
 				for (int i = 0; i < ((c.Length - 8) / 4); i++)
 				{
 					scene.selectedTile[i] = ushort.Parse(c.Substring(p, 4), NumberStyles.HexNumber);
