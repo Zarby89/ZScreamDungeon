@@ -338,7 +338,7 @@
 			this.editorsTabControl.Multiline = true;
 			this.editorsTabControl.Name = "editorsTabControl";
 			this.editorsTabControl.SelectedIndex = 0;
-			this.editorsTabControl.Size = new System.Drawing.Size(1158, 722);
+			this.editorsTabControl.Size = new System.Drawing.Size(1158, 748);
 			this.editorsTabControl.TabIndex = 22;
 			this.editorsTabControl.TabStop = false;
 			this.editorsTabControl.SelectedIndexChanged += new System.EventHandler(this.editorsTabControl_SelectedIndexChanged);
@@ -351,7 +351,7 @@
 			this.dungeonPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.dungeonPage.Name = "dungeonPage";
 			this.dungeonPage.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.dungeonPage.Size = new System.Drawing.Size(1150, 696);
+			this.dungeonPage.Size = new System.Drawing.Size(1150, 722);
 			this.dungeonPage.TabIndex = 0;
 			this.dungeonPage.Text = "Dungeon Editor";
 			// 
@@ -361,7 +361,7 @@
 			this.DungeonEditor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.DungeonEditor.Location = new System.Drawing.Point(2, 3);
 			this.DungeonEditor.Name = "DungeonEditor";
-			this.DungeonEditor.Size = new System.Drawing.Size(1146, 690);
+			this.DungeonEditor.Size = new System.Drawing.Size(1146, 716);
 			this.DungeonEditor.TabIndex = 0;
 			// 
 			// overworldPage
@@ -903,8 +903,7 @@
 			// 
 			// statusStrip1
 			// 
-			this.statusStrip1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+			this.statusStrip1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
 			this.statusStrip1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -915,7 +914,7 @@
             this.SelectedObjectSizeLabel,
             this.SelectedObjectDataLabel});
 			this.statusStrip1.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.Flow;
-			this.statusStrip1.Location = new System.Drawing.Point(308, 777);
+			this.statusStrip1.Location = new System.Drawing.Point(308, 804);
 			this.statusStrip1.Name = "statusStrip1";
 			this.statusStrip1.Size = new System.Drawing.Size(93, 18);
 			this.statusStrip1.SizingGrip = false;
@@ -2363,12 +2362,12 @@
 			this.roomProperty_bg2.Size = new System.Drawing.Size(121, 23);
 			this.roomProperty_bg2.TabIndex = 0;
 			// 
-			// DungeonMain
+			// ZScreamForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.SystemColors.Control;
-			this.ClientSize = new System.Drawing.Size(1157, 800);
+			this.ClientSize = new System.Drawing.Size(1157, 826);
 			this.Controls.Add(this.toolStrip1);
 			this.Controls.Add(this.editorsTabControl);
 			this.Controls.Add(this.statusStrip1);
@@ -2377,7 +2376,7 @@
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MainMenuStrip = this.menuStrip1;
 			this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.Name = "DungeonMain";
+			this.Name = "ZScreamForm";
 			this.Text = "ZScream";
 			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.zscreamForm_FormClosing_1);
 			this.Load += new System.EventHandler(this.Form1_Load);

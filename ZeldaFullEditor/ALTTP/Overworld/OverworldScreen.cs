@@ -212,7 +212,6 @@
 		public OverworldScreen(byte index)
 		{
 			MyArtist = new ScreenArtist(this);
-
 			MapID = index;
 
 			World = MapID switch

@@ -293,7 +293,7 @@
 				AllDicts.Add(new DictionaryEntry((byte) i, s.ToString()));
 			}
 
-			AllDicts = (List<DictionaryEntry>) AllDicts.OrderByDescending(dic => dic.Length);
+			AllDicts = AllDicts.OrderByDescending(dic => dic.Length).ToList();
 		}
 
 		public static byte[] ParseMessageToData(string fullString)
@@ -681,7 +681,8 @@
 				}
 				else
 				{
-					cp.Entries[i] = RoomPreviewArtist.Layer1Canvas.Palette.Entries[(DefaultTextColor * 4) + i];
+					//cp.Entries[i] = RoomPreviewArtist.Layer1Canvas.Palette.Entries[(DefaultTextColor * 4) + i];
+					cp.Entries[i] = previewColors[i];
 				}
 			}
 
@@ -908,14 +909,10 @@
 			DictionariesForm df = new DictionariesForm();
 			df.listBox1.Items.Clear();
 
-			foreach (DictionaryEntry d in AllDicts)
+			foreach (DictionaryEntry d in AllDicts.OrderByDescending(d => d.Length))
 			{
-				df.listBox1.Items.Insert(
-					d.ID,
-					string.Format("{0:X2} [{1:X2}] - {2}",
-					d.ID,
-					d.ID + DictionaryBaseValue,
-					d.Contents.Replace(" ", "_")));
+				df.listBox1.Items.Add(
+					string.Format($"{d.ID:X2} [{d.ID + DictionaryBaseValue:X2}] - {d.Contents.Replace(" ", "_")}"));
 			}
 
 			df.ShowDialog();

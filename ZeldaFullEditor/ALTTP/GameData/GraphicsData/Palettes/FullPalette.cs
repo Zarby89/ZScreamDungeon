@@ -63,7 +63,7 @@
 				ret[i] = Palette[i].RealColor;
 			}
 
-			ret[0] = Color.Transparent;
+			ret[0] = Color.FromArgb(0, Palette[0].RealColor);
 
 			return ret;
 		}

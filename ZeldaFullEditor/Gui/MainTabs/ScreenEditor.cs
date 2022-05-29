@@ -873,6 +873,8 @@
 
 		private void SetColorsPalette(Color[] main, Color[] animated, Color[] aux1, Color[] aux2, Color[] hud, Color bgrcolor, Color[] spr, Color[] spr2)
 		{
+			return;
+			throw new NotImplementedException();
 			// Palettes infos, color 0 of a palette is always transparent (the arrays contains 7 colors width wide)
 			// There is 16 color per line so 16*Y
 

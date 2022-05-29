@@ -53,17 +53,10 @@
 			var g = Graphics.FromImage(FinalOutput);
 
 			g.SetClip(Constants.ScreenSizedRectangle);
-			g.Clear(Color.Black);
+			g.Clear(Color.FromArgb(255, Layer1Canvas.Palette.Entries[0]));
 
 			g.DrawScreen(Layer1Canvas.Bitmap, null);
 			g.DrawScreen(SpriteCanvas.Bitmap, null);
-		}
-
-		public override void DrawSelfToImage(Graphics g)
-		{
-			Revalidate();
-
-			g.DrawImage(FinalOutput, 0, 0);
 		}
 
 		public override void ReloadPalettes()

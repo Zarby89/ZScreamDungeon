@@ -227,7 +227,11 @@ namespace ZeldaFullEditor.Handler
 					data = ZS.ROM.Read8Many(start, Constants.Uncompressed3BPPSize);
 				}
 
-				var sheetdata = Array.Empty<byte>();
+				var sheetdata = sheetinfo.BitDepth switch
+				{
+					SNESPixelFormat.SNES3BPP => new byte[4 * 16 * 8 * 8],
+					_ => new byte[8 * 16 * 8 * 8],
+				};
 
 				for (var j = 0; j < 4; j++) // Per Tile Line Y
 				{
@@ -237,8 +241,6 @@ namespace ZeldaFullEditor.Handler
 						{
 							if (sheetinfo.BitDepth == SNESPixelFormat.SNES3BPP)
 							{
-								sheetdata = new byte[4 * 16 * 8 * 8];
-
 								var lineBits0 = data[y * 2 + i * 24 + j * 384 + sheetPosition];
 								var lineBits1 = data[y * 2 + i * 24 + j * 384 + 1 + sheetPosition];
 								var lineBits2 = data[y + i * 24 + j * 384 + 16 + sheetPosition];
@@ -263,8 +265,6 @@ namespace ZeldaFullEditor.Handler
 							}
 							else
 							{
-								sheetdata = new byte[8 * 16 * 8 * 8];
-
 								var lineBits0 = data[y * 2 + i * 16 + j * 256 + sheetPosition];
 								var lineBits1 = data[y * 2 + i * 16 + j * 256 + 1 + sheetPosition];
 
@@ -273,17 +273,19 @@ namespace ZeldaFullEditor.Handler
 									byte pixdata = 0;
 									byte pixdata2 = 0;
 
-									if ((lineBits0 & mask[x * 2]) == mask[x * 2]) { pixdata += 1; }
-									if ((lineBits1 & mask[x * 2]) == mask[x * 2]) { pixdata += 2; }
+									if ((lineBits0 & mask[x * 2]) == mask[x * 2]) { pixdata |= 1; }
+									if ((lineBits1 & mask[x * 2]) == mask[x * 2]) { pixdata |= 2; }
 
-									if ((lineBits0 & mask[x * 2 + 1]) == mask[x * 2 + 1]) { pixdata2 += 1; }
-									if ((lineBits1 & mask[x * 2 + 1]) == mask[x * 2 + 1]) { pixdata2 += 2; }
+									if ((lineBits0 & mask[x * 2 + 1]) == mask[x * 2 + 1]) { pixdata2 |= 1; }
+									if ((lineBits1 & mask[x * 2 + 1]) == mask[x * 2 + 1]) { pixdata2 |= 2; }
 
 									var a = 2 * (y * 64 + x + i * 4 + j * 512);
 									sheetdata[a] = pixdata2;
 									sheetdata[a + 1] = pixdata;
 								}
 							}
+
+
 						}
 					}
 				}

@@ -29,8 +29,8 @@
 		{
 			InitializeComponent();
 
-			objectViewer1 = new ObjectViewer();
-			spritesView1 = new SpritesView();
+			objectViewer1 = new ObjectViewer(Array.Empty<RoomObjectPreview>());
+			spritesView1 = new SpritesView(Array.Empty<SpritePreview>());
 			vramViewer = new VramViewer();
 			cgramViewer = new CGRamViewer();
 
@@ -269,7 +269,7 @@
 
 		public void updateEntranceInfos()
 		{
-			if (!propertiesChangedFromForm)
+			if (!propertiesChangedFromForm && selectedEntrance != null)
 			{
 				selectedEntrance.Blockset = (byte) EntranceProperties_Blockset.HexValue;
 				selectedEntrance.RoomID = (ushort) EntranceProperties_RoomID.HexValue;

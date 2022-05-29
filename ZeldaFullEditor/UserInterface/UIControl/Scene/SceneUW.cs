@@ -29,7 +29,12 @@
 			set
 			{
 				room = value;
-				RedrawRoom();
+
+				RoomEditingArtist.CurrentRoom = Room;
+
+				ZGUI.DungeonEditor.UpdateFormForSelectedObject(Room.OnlySelectedObject);
+
+				Refresh();
 			}
 		}
 
@@ -120,17 +125,6 @@
 		public void HardRefresh()
 		{
 			InvalidateRoomTilemapAndArtist();
-			Refresh();
-		}
-
-		private void RedrawRoom()
-		{
-			ZGUI.DungeonEditor.UpdateFormForSelectedObject(Room.OnlySelectedObject);
-
-			// TODO ROOM.DRAW()
-
-			RoomEditingArtist.CurrentRoom = Room;
-
 			Refresh();
 		}
 

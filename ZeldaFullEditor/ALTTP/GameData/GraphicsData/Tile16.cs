@@ -5,31 +5,22 @@
 		/// <summary>
 		/// The <see cref="Tile"/> in the top-left corner
 		/// </summary>
-		public Tile Tile0 { get; }
+		public Tile Tile0 { get; init; }
 
 		/// <summary>
 		/// The <see cref="Tile"/> in the top-right corner
 		/// </summary>
-		public Tile Tile1 { get; }
+		public Tile Tile1 { get; init; }
 
 		/// <summary>
 		/// The <see cref="Tile"/> in the bottom-left corner
 		/// </summary>
-		public Tile Tile2 { get; }
+		public Tile Tile2 { get; init; }
 
 		/// <summary>
 		/// The <see cref="Tile"/> in the bottom-right corner
 		/// </summary>
-		public Tile Tile3 { get; }
-
-		public Tile this[int i] => i switch
-		{
-			0 => Tile0,
-			1 => Tile1,
-			2 => Tile2,
-			3 => Tile3,
-			_ => Tile0,
-		};
+		public Tile Tile3 { get; init; }
 
 		public Tile16(Tile tile0, Tile tile1, Tile tile2, Tile tile3)
 		{
@@ -47,14 +38,15 @@
 			Tile3 = new Tile(d);
 		}
 
-		public Tile16 Clone()
-		{
-			return new Tile16(Tile0, Tile1, Tile2, Tile3);
-		}
-
 		public Tile16 ChangeTiles(Tile? tile0 = null, Tile? tile1 = null, Tile? tile2 = null, Tile? tile3 = null)
 		{
-			return new Tile16(tile0 ?? Tile0, tile1 ?? Tile1, tile2 ?? Tile2, tile3 ?? Tile3);
+			return this with
+			{
+				Tile0 = tile0 ?? Tile0,
+				Tile1 = tile1 ?? Tile1,
+				Tile2 = tile2 ?? Tile2,
+				Tile3 = tile3 ?? Tile3,
+			};
 		}
 
 

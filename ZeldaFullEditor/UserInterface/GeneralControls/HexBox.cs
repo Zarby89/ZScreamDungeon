@@ -22,18 +22,18 @@
 			}
 		}
 
-		private static readonly object s_valueEvent = new();
+		private EventHandler _valueChanged;
 
 		[Browsable(true)]
 		public event EventHandler HexValueChanged
 		{
-			add => Events.AddHandler(s_valueEvent, value);
-			remove => Events.RemoveHandler(s_valueEvent, value);
+			add => _valueChanged += value;
+			remove => _valueChanged -= value;
 		}
 
 		protected virtual void OnValueChanged(EventArgs e)
 		{
-			((EventHandler) Events[s_valueEvent])?.Invoke(this, e);
+			_valueChanged.Invoke(this, e);
 		}
 
 
@@ -87,7 +87,6 @@
 
 		protected override void InitLayout()
 		{
-			EnforceRangeAndBoundaries();
 			EnforceRangeAndBoundaries();
 			UpdateText(true);
 
@@ -149,20 +148,18 @@
 		{
 			if (hexValue < MinValue)
 			{
-				hexValue = MinValue;
+				HexValue = MinValue;
 			}
 			else if (hexValue > MaxValue)
 			{
-				hexValue = MaxValue;
+				HexValue = MaxValue;
 			}
 		}
 
 		protected override void OnTextChanged(EventArgs e)
 		{
-			errorValue = !int.TryParse(Text, NumberStyles.HexNumber, null, out hexValue);
-
-			EnforceRange();
-			UpdateText(false);
+			errorValue = !int.TryParse(Text, NumberStyles.HexNumber, null, out int n);
+			HexValue = n;
 
 			base.OnTextChanged(e);
 		}
@@ -175,7 +172,7 @@
 
 		protected override void OnMouseWheel(MouseEventArgs e)
 		{
-			hexValue = e.ScrollByValue(hexValue, 1);
+			HexValue = e.ScrollByValue(hexValue, 1);
 
 			StandardizeText();
 			base.OnMouseWheel(e);
@@ -185,7 +182,7 @@
 		{
 			if (errorValue)
 			{
-				hexValue = MinValue;
+				HexValue = MinValue;
 			}
 
 			StandardizeText();
@@ -196,7 +193,7 @@
 		{
 			if (errorValue)
 			{
-				hexValue = MinValue;
+				HexValue = MinValue;
 			}
 			StandardizeText();
 			base.OnLostFocus(e);

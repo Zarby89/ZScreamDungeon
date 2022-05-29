@@ -28,8 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
-			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
+			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
+			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.entrancetabPage = new System.Windows.Forms.TabPage();
 			this.entrancetreeView = new System.Windows.Forms.TreeView();
@@ -266,25 +266,26 @@
 			this.entrancetreeView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.entrancetreeView.HideSelection = false;
-			this.entrancetreeView.Location = new System.Drawing.Point(4, 395);
+			this.entrancetreeView.Location = new System.Drawing.Point(4, 318);
 			this.entrancetreeView.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entrancetreeView.Name = "entrancetreeView";
-			treeNode3.Name = "EntranceNode";
-			treeNode3.Text = "Entrances";
-			treeNode4.Name = "StartingEntranceNode";
-			treeNode4.Text = "Spawn points";
+			treeNode1.Name = "EntranceNode";
+			treeNode1.Text = "Entrances";
+			treeNode2.Name = "StartingEntranceNode";
+			treeNode2.Text = "Spawn points";
 			this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
-			this.entrancetreeView.Size = new System.Drawing.Size(272, 271);
+            treeNode1,
+            treeNode2});
+			this.entrancetreeView.Size = new System.Drawing.Size(272, 348);
 			this.entrancetreeView.TabIndex = 0;
 			this.entrancetreeView.TabStop = false;
+			this.entrancetreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.entrancetreeView_NodeMouseDoubleClick);
 			// 
 			// mouseEntranceButton
 			// 
-			this.mouseEntranceButton.Location = new System.Drawing.Point(60, 197);
+			this.mouseEntranceButton.Location = new System.Drawing.Point(60, 202);
 			this.mouseEntranceButton.Name = "mouseEntranceButton";
-			this.mouseEntranceButton.Size = new System.Drawing.Size(114, 20);
+			this.mouseEntranceButton.Size = new System.Drawing.Size(114, 23);
 			this.mouseEntranceButton.TabIndex = 134;
 			this.mouseEntranceButton.Text = "Position with mouse";
 			this.mouseEntranceButton.UseVisualStyleBackColor = true;
@@ -292,7 +293,7 @@
 			// gridEntranceCheckbox
 			// 
 			this.gridEntranceCheckbox.AutoSize = true;
-			this.gridEntranceCheckbox.Location = new System.Drawing.Point(184, 200);
+			this.gridEntranceCheckbox.Location = new System.Drawing.Point(184, 205);
 			this.gridEntranceCheckbox.Name = "gridEntranceCheckbox";
 			this.gridEntranceCheckbox.Size = new System.Drawing.Size(83, 17);
 			this.gridEntranceCheckbox.TabIndex = 179;
@@ -303,11 +304,12 @@
 			// 
 			this.EntranceMusicBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.EntranceMusicBox.FormattingEnabled = true;
-			this.EntranceMusicBox.Location = new System.Drawing.Point(60, 173);
+			this.EntranceMusicBox.Location = new System.Drawing.Point(60, 178);
 			this.EntranceMusicBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.EntranceMusicBox.Name = "EntranceMusicBox";
 			this.EntranceMusicBox.Size = new System.Drawing.Size(189, 21);
 			this.EntranceMusicBox.TabIndex = 178;
+			this.EntranceMusicBox.SelectedValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperties_FloorSel
 			// 
@@ -318,6 +320,7 @@
 			this.EntranceProperties_FloorSel.Name = "EntranceProperties_FloorSel";
 			this.EntranceProperties_FloorSel.Size = new System.Drawing.Size(47, 21);
 			this.EntranceProperties_FloorSel.TabIndex = 177;
+			this.EntranceProperties_FloorSel.SelectedValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperties_Blockset
 			// 
@@ -332,6 +335,7 @@
 			this.EntranceProperties_Blockset.TabIndex = 176;
 			this.EntranceProperties_Blockset.Text = "00";
 			this.EntranceProperties_Blockset.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperties_Blockset.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperties_DungeonID
 			// 
@@ -346,6 +350,7 @@
 			this.EntranceProperties_DungeonID.TabIndex = 175;
 			this.EntranceProperties_DungeonID.Text = "00";
 			this.EntranceProperties_DungeonID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperties_DungeonID.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperties_Entrance
 			// 
@@ -360,12 +365,13 @@
 			this.EntranceProperties_Entrance.TabIndex = 174;
 			this.EntranceProperties_Entrance.Text = "00";
 			this.EntranceProperties_Entrance.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperties_Entrance.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperties_CameraTriggerY
 			// 
 			this.EntranceProperties_CameraTriggerY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 			this.EntranceProperties_CameraTriggerY.HexValue = 0;
-			this.EntranceProperties_CameraTriggerY.Location = new System.Drawing.Point(116, 109);
+			this.EntranceProperties_CameraTriggerY.Location = new System.Drawing.Point(116, 114);
 			this.EntranceProperties_CameraTriggerY.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.EntranceProperties_CameraTriggerY.MaxLength = 4;
 			this.EntranceProperties_CameraTriggerY.Name = "EntranceProperties_CameraTriggerY";
@@ -374,12 +380,13 @@
 			this.EntranceProperties_CameraTriggerY.TabIndex = 173;
 			this.EntranceProperties_CameraTriggerY.Text = "0000";
 			this.EntranceProperties_CameraTriggerY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperties_CameraTriggerY.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperties_CameraTriggerX
 			// 
 			this.EntranceProperties_CameraTriggerX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 			this.EntranceProperties_CameraTriggerX.HexValue = 0;
-			this.EntranceProperties_CameraTriggerX.Location = new System.Drawing.Point(62, 109);
+			this.EntranceProperties_CameraTriggerX.Location = new System.Drawing.Point(62, 114);
 			this.EntranceProperties_CameraTriggerX.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.EntranceProperties_CameraTriggerX.MaxLength = 4;
 			this.EntranceProperties_CameraTriggerX.Name = "EntranceProperties_CameraTriggerX";
@@ -388,12 +395,13 @@
 			this.EntranceProperties_CameraTriggerX.TabIndex = 172;
 			this.EntranceProperties_CameraTriggerX.Text = "0000";
 			this.EntranceProperties_CameraTriggerX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperties_CameraTriggerX.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperties_CameraY
 			// 
 			this.EntranceProperties_CameraY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 			this.EntranceProperties_CameraY.HexValue = 0;
-			this.EntranceProperties_CameraY.Location = new System.Drawing.Point(116, 87);
+			this.EntranceProperties_CameraY.Location = new System.Drawing.Point(116, 92);
 			this.EntranceProperties_CameraY.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.EntranceProperties_CameraY.MaxLength = 4;
 			this.EntranceProperties_CameraY.Name = "EntranceProperties_CameraY";
@@ -402,12 +410,13 @@
 			this.EntranceProperties_CameraY.TabIndex = 169;
 			this.EntranceProperties_CameraY.Text = "0000";
 			this.EntranceProperties_CameraY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperties_CameraY.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperties_CameraX
 			// 
 			this.EntranceProperties_CameraX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 			this.EntranceProperties_CameraX.HexValue = 0;
-			this.EntranceProperties_CameraX.Location = new System.Drawing.Point(62, 87);
+			this.EntranceProperties_CameraX.Location = new System.Drawing.Point(62, 92);
 			this.EntranceProperties_CameraX.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.EntranceProperties_CameraX.MaxLength = 4;
 			this.EntranceProperties_CameraX.Name = "EntranceProperties_CameraX";
@@ -416,12 +425,13 @@
 			this.EntranceProperties_CameraX.TabIndex = 168;
 			this.EntranceProperties_CameraX.Text = "0000";
 			this.EntranceProperties_CameraX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperties_CameraX.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperties_PlayerY
 			// 
 			this.EntranceProperties_PlayerY.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 			this.EntranceProperties_PlayerY.HexValue = 0;
-			this.EntranceProperties_PlayerY.Location = new System.Drawing.Point(116, 66);
+			this.EntranceProperties_PlayerY.Location = new System.Drawing.Point(116, 71);
 			this.EntranceProperties_PlayerY.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.EntranceProperties_PlayerY.MaxLength = 4;
 			this.EntranceProperties_PlayerY.Name = "EntranceProperties_PlayerY";
@@ -430,12 +440,13 @@
 			this.EntranceProperties_PlayerY.TabIndex = 167;
 			this.EntranceProperties_PlayerY.Text = "0000";
 			this.EntranceProperties_PlayerY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperties_PlayerY.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperties_PlayerX
 			// 
 			this.EntranceProperties_PlayerX.CharacterCasing = System.Windows.Forms.CharacterCasing.Upper;
 			this.EntranceProperties_PlayerX.HexValue = 0;
-			this.EntranceProperties_PlayerX.Location = new System.Drawing.Point(62, 66);
+			this.EntranceProperties_PlayerX.Location = new System.Drawing.Point(62, 71);
 			this.EntranceProperties_PlayerX.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.EntranceProperties_PlayerX.MaxLength = 4;
 			this.EntranceProperties_PlayerX.Name = "EntranceProperties_PlayerX";
@@ -444,6 +455,7 @@
 			this.EntranceProperties_PlayerX.TabIndex = 166;
 			this.EntranceProperties_PlayerX.Text = "0000";
 			this.EntranceProperties_PlayerX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperties_PlayerX.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperties_RoomID
 			// 
@@ -458,10 +470,11 @@
 			this.EntranceProperties_RoomID.TabIndex = 163;
 			this.EntranceProperties_RoomID.Text = "00";
 			this.EntranceProperties_RoomID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperties_RoomID.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// dooryTextbox
 			// 
-			this.dooryTextbox.Location = new System.Drawing.Point(116, 151);
+			this.dooryTextbox.Location = new System.Drawing.Point(116, 156);
 			this.dooryTextbox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.dooryTextbox.Name = "dooryTextbox";
 			this.dooryTextbox.Size = new System.Drawing.Size(38, 20);
@@ -470,7 +483,7 @@
 			// 
 			// doorxTextbox
 			// 
-			this.doorxTextbox.Location = new System.Drawing.Point(62, 151);
+			this.doorxTextbox.Location = new System.Drawing.Point(62, 156);
 			this.doorxTextbox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.doorxTextbox.Name = "doorxTextbox";
 			this.doorxTextbox.Size = new System.Drawing.Size(38, 20);
@@ -480,7 +493,7 @@
 			// label46
 			// 
 			this.label46.AutoSize = true;
-			this.label46.Location = new System.Drawing.Point(15, 91);
+			this.label46.Location = new System.Drawing.Point(15, 96);
 			this.label46.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label46.Name = "label46";
 			this.label46.Size = new System.Drawing.Size(43, 13);
@@ -490,7 +503,7 @@
 			// label45
 			// 
 			this.label45.AutoSize = true;
-			this.label45.Location = new System.Drawing.Point(21, 73);
+			this.label45.Location = new System.Drawing.Point(21, 78);
 			this.label45.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label45.Name = "label45";
 			this.label45.Size = new System.Drawing.Size(36, 13);
@@ -500,7 +513,7 @@
 			// label41
 			// 
 			this.label41.AutoSize = true;
-			this.label41.Location = new System.Drawing.Point(128, 52);
+			this.label41.Location = new System.Drawing.Point(128, 57);
 			this.label41.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label41.Name = "label41";
 			this.label41.Size = new System.Drawing.Size(14, 13);
@@ -510,7 +523,7 @@
 			// label38
 			// 
 			this.label38.AutoSize = true;
-			this.label38.Location = new System.Drawing.Point(76, 52);
+			this.label38.Location = new System.Drawing.Point(76, 57);
 			this.label38.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label38.Name = "label38";
 			this.label38.Size = new System.Drawing.Size(14, 13);
@@ -557,6 +570,7 @@
 			this.EntranceProperty_BoundaryFE.TabIndex = 133;
 			this.EntranceProperty_BoundaryFE.Text = "00";
 			this.EntranceProperty_BoundaryFE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperty_BoundaryFE.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperty_BoundaryFW
 			// 
@@ -571,6 +585,7 @@
 			this.EntranceProperty_BoundaryFW.TabIndex = 132;
 			this.EntranceProperty_BoundaryFW.Text = "00";
 			this.EntranceProperty_BoundaryFW.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperty_BoundaryFW.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperty_BoundaryQE
 			// 
@@ -585,6 +600,7 @@
 			this.EntranceProperty_BoundaryQE.TabIndex = 131;
 			this.EntranceProperty_BoundaryQE.Text = "00";
 			this.EntranceProperty_BoundaryQE.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperty_BoundaryQE.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperty_BoundaryQW
 			// 
@@ -599,6 +615,7 @@
 			this.EntranceProperty_BoundaryQW.TabIndex = 130;
 			this.EntranceProperty_BoundaryQW.Text = "00";
 			this.EntranceProperty_BoundaryQW.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperty_BoundaryQW.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperty_BoundaryFS
 			// 
@@ -613,6 +630,7 @@
 			this.EntranceProperty_BoundaryFS.TabIndex = 129;
 			this.EntranceProperty_BoundaryFS.Text = "00";
 			this.EntranceProperty_BoundaryFS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperty_BoundaryFS.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperty_BoundaryFN
 			// 
@@ -627,6 +645,7 @@
 			this.EntranceProperty_BoundaryFN.TabIndex = 128;
 			this.EntranceProperty_BoundaryFN.Text = "00";
 			this.EntranceProperty_BoundaryFN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperty_BoundaryFN.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperty_BoundaryQS
 			// 
@@ -641,6 +660,7 @@
 			this.EntranceProperty_BoundaryQS.TabIndex = 127;
 			this.EntranceProperty_BoundaryQS.Text = "00";
 			this.EntranceProperty_BoundaryQS.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperty_BoundaryQS.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// EntranceProperty_BoundaryQN
 			// 
@@ -655,6 +675,7 @@
 			this.EntranceProperty_BoundaryQN.TabIndex = 126;
 			this.EntranceProperty_BoundaryQN.Text = "00";
 			this.EntranceProperty_BoundaryQN.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			this.EntranceProperty_BoundaryQN.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// label37
 			// 
@@ -719,7 +740,7 @@
 			// label30
 			// 
 			this.label30.AutoSize = true;
-			this.label30.Location = new System.Drawing.Point(11, 134);
+			this.label30.Location = new System.Drawing.Point(11, 139);
 			this.label30.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label30.Name = "label30";
 			this.label30.Size = new System.Drawing.Size(47, 13);
@@ -729,18 +750,19 @@
 			// doorCheckbox
 			// 
 			this.doorCheckbox.AutoSize = true;
-			this.doorCheckbox.Location = new System.Drawing.Point(169, 153);
+			this.doorCheckbox.Location = new System.Drawing.Point(169, 158);
 			this.doorCheckbox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.doorCheckbox.Name = "doorCheckbox";
 			this.doorCheckbox.Size = new System.Drawing.Size(69, 17);
 			this.doorCheckbox.TabIndex = 160;
 			this.doorCheckbox.Text = "Use door";
 			this.doorCheckbox.UseVisualStyleBackColor = true;
+			this.doorCheckbox.CheckedChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// label27
 			// 
 			this.label27.AutoSize = true;
-			this.label27.Location = new System.Drawing.Point(9, 156);
+			this.label27.Location = new System.Drawing.Point(9, 161);
 			this.label27.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label27.Name = "label27";
 			this.label27.Size = new System.Drawing.Size(50, 13);
@@ -751,7 +773,7 @@
 			// 
 			this.entranceProperty_quadbr.AutoSize = true;
 			this.entranceProperty_quadbr.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-			this.entranceProperty_quadbr.Location = new System.Drawing.Point(212, 127);
+			this.entranceProperty_quadbr.Location = new System.Drawing.Point(212, 132);
 			this.entranceProperty_quadbr.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entranceProperty_quadbr.Name = "entranceProperty_quadbr";
 			this.entranceProperty_quadbr.Size = new System.Drawing.Size(42, 28);
@@ -759,12 +781,13 @@
 			this.entranceProperty_quadbr.TabStop = true;
 			this.entranceProperty_quadbr.Text = "◲";
 			this.entranceProperty_quadbr.UseVisualStyleBackColor = true;
+			this.entranceProperty_quadbr.CheckedChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// entranceProperty_quadtr
 			// 
 			this.entranceProperty_quadtr.AutoSize = true;
 			this.entranceProperty_quadtr.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-			this.entranceProperty_quadtr.Location = new System.Drawing.Point(212, 106);
+			this.entranceProperty_quadtr.Location = new System.Drawing.Point(212, 111);
 			this.entranceProperty_quadtr.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entranceProperty_quadtr.Name = "entranceProperty_quadtr";
 			this.entranceProperty_quadtr.Size = new System.Drawing.Size(42, 28);
@@ -772,13 +795,14 @@
 			this.entranceProperty_quadtr.TabStop = true;
 			this.entranceProperty_quadtr.Text = "◳";
 			this.entranceProperty_quadtr.UseVisualStyleBackColor = true;
+			this.entranceProperty_quadtr.CheckedChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// entranceProperty_quadbl
 			// 
 			this.entranceProperty_quadbl.AutoSize = true;
 			this.entranceProperty_quadbl.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.entranceProperty_quadbl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-			this.entranceProperty_quadbl.Location = new System.Drawing.Point(164, 127);
+			this.entranceProperty_quadbl.Location = new System.Drawing.Point(164, 132);
 			this.entranceProperty_quadbl.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entranceProperty_quadbl.Name = "entranceProperty_quadbl";
 			this.entranceProperty_quadbl.Size = new System.Drawing.Size(42, 28);
@@ -787,13 +811,14 @@
 			this.entranceProperty_quadbl.Text = "◱";
 			this.entranceProperty_quadbl.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.entranceProperty_quadbl.UseVisualStyleBackColor = true;
+			this.entranceProperty_quadbl.CheckedChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// entranceProperty_quadtl
 			// 
 			this.entranceProperty_quadtl.AutoSize = true;
 			this.entranceProperty_quadtl.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
 			this.entranceProperty_quadtl.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-			this.entranceProperty_quadtl.Location = new System.Drawing.Point(164, 106);
+			this.entranceProperty_quadtl.Location = new System.Drawing.Point(164, 111);
 			this.entranceProperty_quadtl.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entranceProperty_quadtl.Name = "entranceProperty_quadtl";
 			this.entranceProperty_quadtl.Size = new System.Drawing.Size(42, 28);
@@ -801,11 +826,12 @@
 			this.entranceProperty_quadtl.TabStop = true;
 			this.entranceProperty_quadtl.Text = "◰";
 			this.entranceProperty_quadtl.UseVisualStyleBackColor = true;
+			this.entranceProperty_quadtl.CheckedChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// label42
 			// 
 			this.label42.AutoSize = true;
-			this.label42.Location = new System.Drawing.Point(184, 93);
+			this.label42.Location = new System.Drawing.Point(184, 98);
 			this.label42.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label42.Name = "label42";
 			this.label42.Size = new System.Drawing.Size(51, 13);
@@ -815,29 +841,31 @@
 			// entranceProperty_vscroll
 			// 
 			this.entranceProperty_vscroll.AutoSize = true;
-			this.entranceProperty_vscroll.Location = new System.Drawing.Point(116, 131);
+			this.entranceProperty_vscroll.Location = new System.Drawing.Point(116, 136);
 			this.entranceProperty_vscroll.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entranceProperty_vscroll.Name = "entranceProperty_vscroll";
 			this.entranceProperty_vscroll.Size = new System.Drawing.Size(54, 17);
 			this.entranceProperty_vscroll.TabIndex = 151;
 			this.entranceProperty_vscroll.Text = "Y-axis";
 			this.entranceProperty_vscroll.UseVisualStyleBackColor = true;
+			this.entranceProperty_vscroll.CheckedChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// entranceProperty_hscroll
 			// 
 			this.entranceProperty_hscroll.AutoSize = true;
-			this.entranceProperty_hscroll.Location = new System.Drawing.Point(62, 131);
+			this.entranceProperty_hscroll.Location = new System.Drawing.Point(62, 136);
 			this.entranceProperty_hscroll.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entranceProperty_hscroll.Name = "entranceProperty_hscroll";
 			this.entranceProperty_hscroll.Size = new System.Drawing.Size(54, 17);
 			this.entranceProperty_hscroll.TabIndex = 150;
 			this.entranceProperty_hscroll.Text = "X-axis";
 			this.entranceProperty_hscroll.UseVisualStyleBackColor = true;
+			this.entranceProperty_hscroll.CheckedChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// label44
 			// 
 			this.label44.AutoSize = true;
-			this.label44.Location = new System.Drawing.Point(13, 113);
+			this.label44.Location = new System.Drawing.Point(13, 118);
 			this.label44.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label44.Name = "label44";
 			this.label44.Size = new System.Drawing.Size(45, 13);
@@ -878,13 +906,14 @@
 			// entranceProperty_bg
 			// 
 			this.entranceProperty_bg.AutoSize = true;
-			this.entranceProperty_bg.Location = new System.Drawing.Point(188, 58);
+			this.entranceProperty_bg.Location = new System.Drawing.Point(188, 63);
 			this.entranceProperty_bg.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entranceProperty_bg.Name = "entranceProperty_bg";
 			this.entranceProperty_bg.Size = new System.Drawing.Size(61, 17);
 			this.entranceProperty_bg.TabIndex = 148;
 			this.entranceProperty_bg.Text = "Layer 2";
 			this.entranceProperty_bg.UseVisualStyleBackColor = true;
+			this.entranceProperty_bg.CheckedChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
 			// label39
 			// 
@@ -919,7 +948,7 @@
 			// label24
 			// 
 			this.label24.AutoSize = true;
-			this.label24.Location = new System.Drawing.Point(18, 178);
+			this.label24.Location = new System.Drawing.Point(18, 183);
 			this.label24.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label24.Name = "label24";
 			this.label24.Size = new System.Drawing.Size(35, 13);
@@ -932,10 +961,10 @@
 			this.objectstabPage.Controls.Add(this.showNameObjectCheckbox);
 			this.objectstabPage.Controls.Add(this.panel1);
 			this.objectstabPage.Controls.Add(this.searchTextbox);
-			this.objectstabPage.Location = new System.Drawing.Point(4, 22);
+			this.objectstabPage.Location = new System.Drawing.Point(4, 24);
 			this.objectstabPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.objectstabPage.Name = "objectstabPage";
-			this.objectstabPage.Size = new System.Drawing.Size(278, 669);
+			this.objectstabPage.Size = new System.Drawing.Size(278, 667);
 			this.objectstabPage.TabIndex = 4;
 			this.objectstabPage.Text = "Objects";
 			this.objectstabPage.UseVisualStyleBackColor = true;
@@ -988,10 +1017,10 @@
 			// 
 			this.tabPage4.Controls.Add(this.customPanel1);
 			this.tabPage4.Controls.Add(this.searchspriteTextbox);
-			this.tabPage4.Location = new System.Drawing.Point(4, 22);
+			this.tabPage4.Location = new System.Drawing.Point(4, 24);
 			this.tabPage4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.tabPage4.Name = "tabPage4";
-			this.tabPage4.Size = new System.Drawing.Size(278, 669);
+			this.tabPage4.Size = new System.Drawing.Size(278, 667);
 			this.tabPage4.TabIndex = 10;
 			this.tabPage4.Text = "Sprites";
 			this.tabPage4.UseVisualStyleBackColor = true;
@@ -1156,7 +1185,7 @@
 			this.headerGroupbox.Controls.Add(this.label28);
 			this.headerGroupbox.Controls.Add(this.label14);
 			this.headerGroupbox.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.headerGroupbox.Location = new System.Drawing.Point(292, 9);
+			this.headerGroupbox.Location = new System.Drawing.Point(292, 3);
 			this.headerGroupbox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.headerGroupbox.Name = "headerGroupbox";
 			this.headerGroupbox.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -1474,7 +1503,7 @@
 			this.RoomProperty_Palette.TabIndex = 136;
 			this.RoomProperty_Palette.Text = "00";
 			this.RoomProperty_Palette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_Palette.HexValueChanged += new System.EventHandler(this.RoomPropertyChanged);
+			this.RoomProperty_Palette.HexValueChanged += new System.EventHandler(this.mapPicturebox_MouseLeave);
 			// 
 			// label3
 			// 
@@ -1534,7 +1563,7 @@
 			// 
 			this.label2.AutoSize = true;
 			this.label2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.label2.Location = new System.Drawing.Point(4, 15);
+			this.label2.Location = new System.Drawing.Point(4, 17);
 			this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(76, 13);
@@ -1949,7 +1978,7 @@
 			this.RoomTabControl.DrawMode = System.Windows.Forms.TabDrawMode.OwnerDrawFixed;
 			this.RoomTabControl.HotTrack = true;
 			this.RoomTabControl.ItemSize = new System.Drawing.Size(48, 18);
-			this.RoomTabControl.Location = new System.Drawing.Point(292, 152);
+			this.RoomTabControl.Location = new System.Drawing.Point(289, 144);
 			this.RoomTabControl.Margin = new System.Windows.Forms.Padding(0);
 			this.RoomTabControl.Name = "RoomTabControl";
 			this.RoomTabControl.Padding = new System.Drawing.Point(3, 3);
@@ -1966,8 +1995,10 @@
 			this.UnderWorldSceneHolder.AutoScroll = true;
 			this.UnderWorldSceneHolder.BackColor = System.Drawing.SystemColors.ControlDarkDark;
 			this.UnderWorldSceneHolder.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
-			this.UnderWorldSceneHolder.Location = new System.Drawing.Point(295, 175);
+			this.UnderWorldSceneHolder.Location = new System.Drawing.Point(294, 167);
 			this.UnderWorldSceneHolder.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.UnderWorldSceneHolder.MaximumSize = new System.Drawing.Size(512, 512);
+			this.UnderWorldSceneHolder.MinimumSize = new System.Drawing.Size(512, 512);
 			this.UnderWorldSceneHolder.Name = "UnderWorldSceneHolder";
 			this.UnderWorldSceneHolder.Size = new System.Drawing.Size(512, 512);
 			this.UnderWorldSceneHolder.TabIndex = 182;

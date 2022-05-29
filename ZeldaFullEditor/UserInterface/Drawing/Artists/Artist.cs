@@ -130,7 +130,12 @@
 			}
 		}
 
-		public abstract void DrawSelfToImage(Graphics g);
+		public virtual void DrawSelfToImage(Graphics g)
+		{
+			Revalidate();
+
+			g.DrawImage(FinalOutput, 0, 0);
+		}
 
 		public void DrawTileToBuffer(in Tile tile, int x, int y, IGraphicsCanvas canvas)
 		{

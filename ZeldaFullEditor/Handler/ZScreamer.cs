@@ -14,7 +14,7 @@
 		/// </summary>
 		public static bool Active => ActiveScreamer != dummy;
 
-		public static ROMFile ActiveROM => ActiveROM;
+		public static ROMFile ActiveROM => ActiveScreamer.ROM;
 		public static AddressSet ActiveOffsets => ActiveScreamer.Offsets;
 		public static GraphicsManager ActiveGraphicsManager => ActiveScreamer.GFXManager;
 		public static SceneOW ActiveOWScene => ActiveScreamer.OverworldScene;

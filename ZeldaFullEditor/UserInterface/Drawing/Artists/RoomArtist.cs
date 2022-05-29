@@ -95,7 +95,7 @@
 			var g = Graphics.FromImage(FinalOutput);
 
 			g.SetClip(Constants.ScreenSizedRectangle);
-			g.Clear(Color.Black);
+			g.Clear(Color.FromArgb(255, Layer1Canvas.Palette.Entries[0]));
 
 			ImageAttributes draw = null;
 
@@ -142,9 +142,7 @@
 		{
 			if (CurrentRoom == null) return;
 
-			Revalidate();
-
-			g.DrawImage(FinalOutput, 0, 0);
+			base.DrawSelfToImage(g);
 		}
 
 		public void DrawIDToImage(Graphics g)

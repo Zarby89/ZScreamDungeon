@@ -248,43 +248,33 @@
 
 		public void AssembleTile32Definitions()
 		{
-			map32address = new int[]
-			{
-				ZS.Offsets.Map32DefinitionsTL,
-				ZS.Offsets.Map32DefinitionsTR,
-				ZS.Offsets.Map32DefinitionsBL,
-				ZS.Offsets.Map32DefinitionsBR
-			};
-
 			// TODO magic number
 			for (var i = 0; i < 0x33F0; i += 6)
 			{
-				ushort tl, tr, bl, br;
+				var tl = ZS.ROM.Read8Many(ZS.Offsets.Map32DefinitionsTL, 6);
+				var tr = ZS.ROM.Read8Many(ZS.Offsets.Map32DefinitionsTR, 6);
+				var bl = ZS.ROM.Read8Many(ZS.Offsets.Map32DefinitionsBL, 6);
+				var br = ZS.ROM.Read8Many(ZS.Offsets.Map32DefinitionsBR, 6);
 
-				for (var k = 0; k < 4; k++)
+				for (var t = 0; t < 4; t++)
 				{
-					tl = generate(i, k, (int) Dimension.Map32DefinitionsTL);
-					tr = generate(i, k, (int) Dimension.Map32DefinitionsTR);
-					bl = generate(i, k, (int) Dimension.Map32DefinitionsBL);
-					br = generate(i, k, (int) Dimension.Map32DefinitionsBR);
-					Tile32List.Add(new Tile32(tl, tr, bl, br));
+					Tile32List.Add(new(
+						GetComponent(tl),
+						GetComponent(tr),
+						GetComponent(bl),
+						GetComponent(br)
+					));
+
+					ushort GetComponent(byte[] comp) => t switch
+					{
+						0 => (ushort) (comp[0] | ((comp[4] & 0x0F) << 8)),
+						1 => (ushort) (comp[1] | ((comp[4] & 0xF0) << 4)),
+						2 => (ushort) (comp[2] | ((comp[5] & 0x0F) << 8)),
+						3 => (ushort) (comp[3] | ((comp[5] & 0xF0) << 4)),
+						_ => 0
+					};
 				}
 			}
-		}
-
-		private enum Dimension
-		{
-			Map32DefinitionsTL = 0,
-			Map32DefinitionsTR = 1,
-			Map32DefinitionsBL = 2,
-			Map32DefinitionsBR = 3
-		}
-
-		// this is fucking stupid and needs to be destroyed what the fuck
-		private ushort generate(int i, int k, int dimension)
-		{
-			return (ushort) (ZS.ROM[map32address[dimension] + k + i]
-				+ (ZS.ROM[map32address[dimension] + i + (k <= 1 ? 4 : 5)] >> (k % 2 == 0 ? 4 : 0) & 0x0F) * 256);
 		}
 
 		public void DecompressAllMapTiles()
