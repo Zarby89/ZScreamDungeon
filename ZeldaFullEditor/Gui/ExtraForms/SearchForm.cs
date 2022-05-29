@@ -7,15 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ZeldaFullEditor.Data.Underworld;
 
 namespace ZeldaFullEditor.Gui
 {
 	public partial class SearchForm : Form
 	{
+		DungeonMain mainForm;
 
-		public SearchForm()
+		public SearchForm(DungeonMain mainForm)
 		{
+			this.mainForm = mainForm;
 			InitializeComponent();
 		}
 
@@ -29,75 +30,68 @@ namespace ZeldaFullEditor.Gui
 			comboBox1.Items.Clear();
 			if (tileRadio.Checked)
 			{
-				var list = new List<RoomObjectName>();
-				list.Concat(DefaultEntities.ListOfSet0RoomObjects);
-				list.Concat(DefaultEntities.ListOfSet1RoomObjects);
-				list.Concat(DefaultEntities.ListOfSet2RoomObjects);
-				comboBox1.DataSource = list;
+				for (int i = 0; i < mainForm.listoftilesobjects.Count; i++)
+				{
+					comboBox1.Items.Add(mainForm.listoftilesobjects[i].id.ToString("X4") + " " + mainForm.listoftilesobjects[i].name);
+				}
 			}
 			else if (spriteRadio.Checked)
 			{
-				comboBox1.DataSource = DefaultEntities.ListOfSprites;
+				comboBox1.Items.AddRange(Sprites_Names.name);
 			}
 			else if (itemRadio.Checked)
 			{
-				comboBox1.DataSource = DefaultEntities.ListOfSecrets;
+				comboBox1.Items.AddRange(ItemsNames.name);
 			}
 			else if (chestRadio.Checked)
 			{
-				comboBox1.DataSource = DefaultEntities.ListOfItemReceipts;
+				comboBox1.Items.AddRange(ChestItems_Name.name);
 			}
 		}
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			var v = (EntityName) comboBox1.SelectedItem;
-
-			var f = new Func<ITypeID, bool>(o => o.TypeID == v.ID);
-
 			if (tileRadio.Checked)
 			{
-				foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
+				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
-					int l = r.Layer1Objects.Count(f);
-					l += r.Layer2Objects.Count(f);
-					l += r.Layer3Objects.Count(f);
+					int l = DungeonsData.all_rooms[i].tilesObjects.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
 					if (l > 0)
 					{
-						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x object {v.ID:X3}\r\n");
+						richTextBox1.AppendText("Tile Object ID : " + mainForm.listoftilesobjects[comboBox1.SelectedIndex].id.ToString("X4") + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");
 					}
 				}
 			}
 			else if (spriteRadio.Checked)
 			{
-				foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
+				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
-					int l = r.SpritesList.Count(f);
+					int l = DungeonsData.all_rooms[i].sprites.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
 					if (l > 0)
 					{
-						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x sprite {v.ID:X2}\r\n");
+						richTextBox1.AppendText("Sprite ID : " + Sprites_Names.name[comboBox1.SelectedIndex] + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");
 					}
 				}
 			}
 			else if (itemRadio.Checked)
 			{
-				foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
+				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
-					int l = r.SecretsList.Count(f);
+					int l = DungeonsData.all_rooms[i].pot_items.Where(o => o.id == comboBox1.SelectedIndex).ToArray().Length;
 					if (l > 0)
 					{
-						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x secret {v.ID:X2}\r\n");
+						richTextBox1.AppendText("Item ID : " + ItemsNames.name[comboBox1.SelectedIndex] + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");
 					}
 				}
 			}
 			else if (chestRadio.Checked)
 			{
-				foreach (var r in ZScreamer.ActiveScreamer.all_rooms)
+				for (int i = 0; i < Constants.NumberOfRooms; i++)
 				{
-					int l = r.ChestList.Count(f);
+					int l = DungeonsData.all_rooms[i].chest_list.Where(o => o.item == comboBox1.SelectedIndex).ToArray().Length;
 					if (l > 0)
 					{
-						richTextBox1.AppendText($"Found in room {r.RoomID:X4} : {l} x item receipt {v.ID:X2}\r\n");
+						richTextBox1.AppendText("Chest Items : " + ChestItems_Name.name[comboBox1.SelectedIndex] + " Found in room id " + i + " Count : " + l.ToString() + "\r\n");
 					}
 				}
 			}

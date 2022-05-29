@@ -8,56 +8,46 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing.Imaging;
-using ZeldaFullEditor.Data.Underworld;
-using ZeldaFullEditor.Data;
 
 namespace ZeldaFullEditor
 {
 	public partial class SpritesView : UserControl
 	{
-		public List<SpritePreview> items = new List<SpritePreview>();
+		public List<Sprite> items = new List<Sprite>();
 		ColorPalette palettes = null;
 
 		public int selectedIndex = -1;
 		public event EventHandler SelectedIndexChanged;
 
-		public SpritePreview selectedObject = null;
+		public Sprite selectedObject = null;
 
 		public SpritesView()
 		{
 			InitializeComponent();
 		}
 
-		public DungeonSprite CreateSelectedSprite()
-		{
-			return new DungeonSprite(selectedObject.Species)
-			{
-				RoomID = ZScreamer.ActiveUWScene.Room.RoomID,
-			};
-		}
-
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			e.Graphics.Clear(Color.FromArgb(48, 48, 48));
-			int w = Size.Width / 68;
-			int h = ((items.Count / w) + 1) * 68;
+			int w = (this.Size.Width / 68);
+			int h = (((items.Count / w) + 1) * 68);
 			int xpos = 0;
 			int ypos = 0;
 
-			foreach (var o in items)
+			foreach (Sprite o in items)
 			{
 				unsafe
 				{
-					byte* ptr = (byte*) ZScreamer.ActiveGraphicsManager.previewSpritesPtr[o.ID].ToPointer();
+					byte* ptr = (byte*) GFX.previewSpritesPtr[o.id].ToPointer();
 					for (int i = 0; i < (64 * 64); i++)
 					{
 						ptr[i] = 0;
 					}
 				}
 
-				o.Draw(ZScreamer.ActiveScreamer);
+				o.Draw();
 
-				e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.previewSpritesBitmap[o.ID], new Point((xpos * 64) + (xpos * 4), (ypos * 64) + (ypos * 4)));
+				e.Graphics.DrawImage(GFX.previewSpritesBitmap[o.id], new Point((xpos * 64) + (xpos * 4), (ypos * 64) + (ypos * 4)));
 
 				if (selectedObject == o)
 				{
@@ -65,7 +55,17 @@ namespace ZeldaFullEditor
 				}
 
 				e.Graphics.DrawRectangle(Pens.LightGray, new Rectangle(xpos * 64 + (xpos * 4), ypos * 64 + (ypos * 4), 64, 64));
-				e.Graphics.DrawString(o.Name, Constants.Arial7, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4) + 40, 64, 24));
+				if (o.subtype == 0)
+				{
+					e.Graphics.DrawString(Sprites_Names.name[o.id], Constants.Arial7, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4) + 40, 64, 24));
+					//e.Graphics.DrawString(Sprites_Names.name[o.id].Substring(0, 2), this.Font, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4), 64, 24));
+
+				}
+				else
+				{
+					e.Graphics.DrawString((o.id - 1).ToString("X2"), this.Font, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + (ypos * 4), 64, 24));
+					e.Graphics.DrawString(Sprites_Names.overlordnames[o.id - 1], Constants.Arial7, Brushes.White, new Rectangle(xpos * 64 + (xpos * 4), (ypos * 64) + 40 + (ypos * 4), 64, 24));
+				}
 
 				xpos++;
 				if (xpos >= w)
@@ -101,26 +101,26 @@ namespace ZeldaFullEditor
 
 			if (items.Count > 0)
 			{
-				palettes = ZScreamer.ActiveGraphicsManager.previewSpritesBitmap[items[0].ID].Palette;
-
-				if (palettes == null) return;
+				palettes = GFX.previewSpritesBitmap[items[0].id].Palette;
 
 				int pindex = 0;
-				for (int y = 0; y < ZScreamer.ActiveGraphicsManager.loadedPalettes.GetLength(1); y++)
+				for (int y = 0; y < GFX.loadedPalettes.GetLength(1); y++)
 				{
-					for (int x = 0; x < ZScreamer.ActiveGraphicsManager.loadedPalettes.GetLength(0); x++)
+					for (int x = 0; x < GFX.loadedPalettes.GetLength(0); x++)
 					{
-						palettes.Entries[pindex++] = ZScreamer.ActiveGraphicsManager.loadedPalettes[x, y];
+						palettes.Entries[pindex] = GFX.loadedPalettes[x, y];
+						pindex++;
 					}
 				}
 
-				for (int y = 0; y < ZScreamer.ActiveGraphicsManager.loadedSprPalettes.GetLength(1); y++)
+				for (int y = 0; y < GFX.loadedSprPalettes.GetLength(1); y++)
 				{
-					for (int x = 0; x < ZScreamer.ActiveGraphicsManager.loadedSprPalettes.GetLength(0); x++)
+					for (int x = 0; x < GFX.loadedSprPalettes.GetLength(0); x++)
 					{
 						if (pindex < 256)
 						{
-							palettes.Entries[pindex++] = ZScreamer.ActiveGraphicsManager.loadedSprPalettes[x, y];
+							palettes.Entries[pindex] = GFX.loadedSprPalettes[x, y];
+							pindex++;
 						}
 					}
 				}
@@ -131,13 +131,16 @@ namespace ZeldaFullEditor
 					palettes.Entries[(i * 16) + 8] = Color.Transparent;
 				}
 
-				foreach (var o in items)
+				foreach (Sprite o in items)
 				{
-					ZScreamer.ActiveGraphicsManager.previewSpritesBitmap[o.ID].Palette = palettes;
+					if (palettes != null)
+					{
+						GFX.previewSpritesBitmap[o.id].Palette = palettes;
+					}
 				}
 			}
 
-			Refresh();
+			this.Refresh();
 		}
 
 		private void ObjectViewer_Load(object sender, EventArgs e)
@@ -154,7 +157,7 @@ namespace ZeldaFullEditor
 			int index = 0;
 			this.Size = new Size(this.Size.Width, h);
 
-			foreach (var o in items)
+			foreach (Sprite o in items)
 			{
 				if (index < items.Count)
 				{

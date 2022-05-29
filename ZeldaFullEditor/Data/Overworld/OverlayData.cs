@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
+<<<<<<< Updated upstream:ZeldaFullEditor/Data/Overworld/OverlayData.cs
 	public class OverlayData
 	{
 		public List<OverlayTile> tilesData = new List<OverlayTile>();
@@ -13,5 +14,10 @@ namespace ZeldaFullEditor
 		public OverlayData()
 		{
 		}
+=======
+	public enum DragMode
+	{
+		left, top, right, down, none
+>>>>>>> Stashed changes:ZeldaFullEditor/Data/DragMode.cs
 	}
 }

@@ -6,30 +6,24 @@ using System.Threading.Tasks;
 
 namespace ZeldaFullEditor
 {
-	public class GfxGroups
+	public static class GfxGroups
 	{
-		public byte[][] mainGfx = new byte[37][];
-		public byte[][] roomGfx = new byte[82][];
-		public byte[][] spriteGfx = new byte[144][];
-		public byte[][] paletteGfx = new byte[72][];
+		public static byte[][] mainGfx = new byte[37][];
+		public static byte[][] roomGfx = new byte[82][];
+		public static byte[][] spriteGfx = new byte[144][];
+		public static byte[][] paletteGfx = new byte[72][];
 
-		private readonly ZScreamer ZS;
-		public GfxGroups(ZScreamer zs)
+		public static void LoadGfxGroups()
 		{
-			ZS = zs;
-		}
-
-		public void LoadGfxGroups()
-		{
-			int gfxPointer = ZS.ROM.Read16(ZS.Offsets.gfx_groups_pointer);
-			gfxPointer = gfxPointer.SNEStoPC();
+			int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer + 1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
+			gfxPointer = Utils.SnesToPc(gfxPointer);
 
 			for (int i = 0; i < 37; i++)
 			{
 				mainGfx[i] = new byte[8];
 				for (int j = 0; j < 8; j++)
 				{
-					mainGfx[i][j] = ZS.ROM[gfxPointer + (i * 8) + j];
+					mainGfx[i][j] = ROM.DATA[gfxPointer + (i * 8) + j];
 				}
 			}
 
@@ -38,7 +32,7 @@ namespace ZeldaFullEditor
 				roomGfx[i] = new byte[4];
 				for (int j = 0; j < 4; j++)
 				{
-					roomGfx[i][j] = ZS.ROM[ZS.Offsets.overworldgfxGroups + (i * 4) + j];
+					roomGfx[i][j] = ROM.DATA[Constants.entrance_gfx_group + (i * 4) + j];
 				}
 			}
 
@@ -47,7 +41,7 @@ namespace ZeldaFullEditor
 				spriteGfx[i] = new byte[4];
 				for (int j = 0; j < 4; j++)
 				{
-					spriteGfx[i][j] = ZS.ROM[ZS.Offsets.sprite_blockset_pointer + (i * 4) + j];
+					spriteGfx[i][j] = ROM.DATA[Constants.sprite_blockset_pointer + (i * 4) + j];
 				}
 			}
 
@@ -56,20 +50,21 @@ namespace ZeldaFullEditor
 				paletteGfx[i] = new byte[4];
 				for (int j = 0; j < 4; j++)
 				{
-					paletteGfx[i][j] = ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (i * 4) + j];
+					paletteGfx[i][j] = ROM.DATA[Constants.dungeons_palettes_groups + (i * 4) + j];
 				}
 			}
 		}
 
-		public void SaveGroupsToROM()
+		public static bool SaveGroupsToROM()
 		{
-			int gfxPointer = SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_groups_pointer));
+			int gfxPointer = (ROM.DATA[Constants.gfx_groups_pointer + 1] << 8) + ROM.DATA[Constants.gfx_groups_pointer];
+			gfxPointer = Utils.SnesToPc(gfxPointer);
 
 			for (int i = 0; i < 37; i++)
 			{
 				for (int j = 0; j < 8; j++)
 				{
-					ZS.ROM[gfxPointer + (i * 8) + j] = mainGfx[i][j];
+					ROM.Write(gfxPointer + (i * 8) + j, mainGfx[i][j], true, "Gfx Groups");
 				}
 			}
 
@@ -77,7 +72,7 @@ namespace ZeldaFullEditor
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					ZS.ROM[ZS.Offsets.overworldgfxGroups + (i * 4) + j] = roomGfx[i][j];
+					ROM.Write(Constants.entrance_gfx_group + (i * 4) + j, roomGfx[i][j], true, "Gfx Groups");
 				}
 			}
 
@@ -85,7 +80,7 @@ namespace ZeldaFullEditor
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					ZS.ROM[ZS.Offsets.sprite_blockset_pointer + (i * 4) + j] = spriteGfx[i][j];
+					ROM.Write(Constants.sprite_blockset_pointer + (i * 4) + j, spriteGfx[i][j], true, "sprGfx Groups");
 				}
 			}
 
@@ -93,9 +88,11 @@ namespace ZeldaFullEditor
 			{
 				for (int j = 0; j < 4; j++)
 				{
-					ZS.ROM[ZS.Offsets.dungeons_palettes_groups + (i * 4) + j] = paletteGfx[i][j];
+					ROM.Write(Constants.dungeons_palettes_groups + (i * 4) + j, paletteGfx[i][j], true, "palGfx Groups");
 				}
 			}
+
+			return false;
 		}
 	}
 }

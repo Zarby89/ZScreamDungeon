@@ -17,12 +17,12 @@ namespace ZeldaFullEditor.Gui
 			InitializeComponent();
 		}
 
-		public ushort x;
-		public ushort y;
+		public int x;
+		public int y;
 		public ushort mapPos;
 		public byte entranceId;
-		public ushort mapId;
-		public bool isHole = false;
+		public short mapId;
+		public bool isHole;
 
 		private void EntranceForm_Load(object sender, EventArgs e)
 		{
@@ -36,7 +36,7 @@ namespace ZeldaFullEditor.Gui
 
 		private void button1_Click(object sender, EventArgs e)
 		{
-			int v;
+			int v = 0;
 			v = textBox1.HexValue; // Entrance ID
 			if (v > 132 || v < 0)
 			{
@@ -54,8 +54,8 @@ namespace ZeldaFullEditor.Gui
 				return;
 			}
 
-			mapId = (ushort) v;
-			int.TryParse(textBox3.Text, out _); // Map Pos (read only)
+			mapId = (short) v;
+			int.TryParse(textBox3.Text, out v); // Map Pos (read only)
 
 			int.TryParse(textBox4.Text, out v); // X
 			if (v > 4096 || v < 0)
@@ -64,7 +64,7 @@ namespace ZeldaFullEditor.Gui
 				return;
 			}
 
-			x = (ushort) v;
+			x = (short) v;
 			int.TryParse(textBox5.Text, out v); // Y
 			if (v > 4096 || v < 0)
 			{
@@ -72,7 +72,7 @@ namespace ZeldaFullEditor.Gui
 				return;
 			}
 
-			y = (ushort) v;
+			y = (short) v;
 
 			this.Close();
 		}

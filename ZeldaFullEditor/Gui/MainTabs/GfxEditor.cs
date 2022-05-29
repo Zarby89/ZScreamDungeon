@@ -23,7 +23,7 @@ namespace ZeldaFullEditor.Gui
 
 		bool mDown = false;
 
-		//string[] palettesGroups = new string[3] { "Dungeons BG", "Overworld BG", "Sprites" };
+		string[] palettesGroups = new string[3] { "Dungeons BG", "Overworld BG", "Sprites" };
 
 		public GfxEditor()
 		{
@@ -82,14 +82,14 @@ namespace ZeldaFullEditor.Gui
 
 						for (int j = 0; j < 7; j++)
 						{
-							bigPalettes[ColorPos++] = ZScreamer.ActivePaletteManager.UnderworldMain[i][j + (k * 15)];
+							bigPalettes[ColorPos++] = Palettes.dungeonsMain_Palettes[i][j + (k * 15)];
 						}
 
 						ColorPos += 8;
 
 						for (int j = 0; j < 8; j++)
 						{
-							bigPalettes[ColorPos++] = ZScreamer.ActivePaletteManager.UnderworldMain[i][j + (k * 15) + 7];
+							bigPalettes[ColorPos++] = Palettes.dungeonsMain_Palettes[i][j + (k * 15) + 7];
 						}
 
 						ColorPos += 8;
@@ -104,11 +104,11 @@ namespace ZeldaFullEditor.Gui
 					for (int k = 0; k < 5; k++) // 6 lines per pack
 					{
 						// Black default + // read7 + read8
-						bigPalettes[ColorPos++] = ZScreamer.ActivePaletteManager.OverworldGrass[0]; // Color0
+						bigPalettes[ColorPos++] = Palettes.overworld_GrassPalettes[0]; // Color0
 
 						for (int j = 0; j < 7; j++)
 						{
-							bigPalettes[ColorPos++] = ZScreamer.ActivePaletteManager.OverworldMain[i][j + (k * 7)];
+							bigPalettes[ColorPos++] = Palettes.overworld_MainPalettes[i][j + (k * 7)];
 						}
 
 						ColorPos += 8;
@@ -120,11 +120,11 @@ namespace ZeldaFullEditor.Gui
 					for (int k = 0; k < 3; k++) //6 lines per pack
 					{
 						// black default + // read7 + read8
-						bigPalettes[ColorPos++] = ZScreamer.ActivePaletteManager.OverworldGrass[0]; // Color0
+						bigPalettes[ColorPos++] = Palettes.overworld_GrassPalettes[0]; // Color0
 
 						for (int j = 0; j < 7; j++)
 						{
-							bigPalettes[ColorPos++] = ZScreamer.ActivePaletteManager.OverworldAux[i][j + (k * 7)];
+							bigPalettes[ColorPos++] = Palettes.overworld_AuxPalettes[i][j + (k * 7)];
 						}
 
 						ColorPos += 8;
@@ -143,14 +143,14 @@ namespace ZeldaFullEditor.Gui
 
 						for (int j = 0; j < 7; j++)
 						{
-							bigPalettes[ColorPos++] = ZScreamer.ActivePaletteManager.SpriteGlobal[i][j + (k * 15)];
+							bigPalettes[ColorPos++] = Palettes.globalSprite_Palettes[i][j + (k * 15)];
 						}
 
 						ColorPos += 8;
 
 						for (int j = 0; j < 8; j++)
 						{
-							bigPalettes[ColorPos++] = ZScreamer.ActivePaletteManager.SpriteGlobal[i][j + (k * 15) + 7];
+							bigPalettes[ColorPos++] = Palettes.globalSprite_Palettes[i][j + (k * 15) + 7];
 						}
 
 						ColorPos += 8;
@@ -198,16 +198,18 @@ namespace ZeldaFullEditor.Gui
 			mainpalettePicturebox.Refresh();
 		}
 
-		private unsafe void mainscreenPicturebox_MouseMove(object sender, MouseEventArgs e) // ??
+		private void mainscreenPicturebox_MouseMove(object sender, MouseEventArgs e)
 		{
 			if (mDown)
 			{
-				//byte* allgfx16Data = (byte*)GFX.allgfx16EDITPtr.ToPointer();
-				//int index = (e.X / zoomLevel) + (e.Y / zoomLevel * 128);
-				//allgfx16Data[index] = (byte)(0x04);
+				unsafe
+				{
+					//byte* allgfx16Data = (byte*)GFX.allgfx16EDITPtr.ToPointer();
+					int index = ((e.X) / zoomLevel) + ((e.Y / zoomLevel) * 128);
+					//allgfx16Data[index] = (byte)(0x04);
+				}
 
-				mainscreenPicturebox.Invalidate();
-				//(new Rectangle(panel2.VerticalScroll.Value, panel2.HorizontalScroll.Value, panel2.Width, panel2.Height));
+				mainscreenPicturebox.Invalidate(); //(new Rectangle(panel2.VerticalScroll.Value, panel2.HorizontalScroll.Value, panel2.Width, panel2.Height));
 			}
 		}
 

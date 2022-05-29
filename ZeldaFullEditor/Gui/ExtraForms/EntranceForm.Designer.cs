@@ -146,9 +146,9 @@
             this.checkBox1.Enabled = false;
             this.checkBox1.Location = new System.Drawing.Point(123, 64);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(83, 17);
+            this.checkBox1.Size = new System.Drawing.Size(48, 17);
             this.checkBox1.TabIndex = 12;
-            this.checkBox1.Text = "Pit entrance";
+            this.checkBox1.Text = "Hole";
             this.checkBox1.UseVisualStyleBackColor = true;
             // 
             // textBox1

@@ -108,11 +108,11 @@ namespace ZeldaFullEditor
 				}
 
 				int spos = 0;
-				for (int y = 31 * 63; y >= 0; y -= 64)
+				for (int y = 31; y >= 0; y--)
 				{
 					for (int x = 0; x < 64; x++)
 					{
-						imgdata[104 + spos] = idata[x + y];
+						imgdata[104 + (spos)] = idata[(x + (y * 64))];
 						spos++;
 					}
 				}
@@ -156,43 +156,49 @@ namespace ZeldaFullEditor
 				{
 					imgdata[i] = headerData[i];
 				}
-				for (int i = 0; i < 8 * 4; i += 4) // Colors Palettes
+				for (int i = 0; i < 8; i++) // Colors Palettes
 				{
-					pals[i] = Color.FromArgb(palData[i + 2], palData[i + 1], palData[i]);
+					pals[i] = Color.FromArgb(palData[(i * 4) + 2], palData[(i * 4) + 1], palData[(i * 4)]);
 				}
 
-				int spos = 0x1028; // 0x1000 + 0d40
-				for (int y = 31 * 64; y >= 0; y -= 64)
+				int spos = 0x1000;
+				for (int y = 31; y >= 0; y--)
 				{
 					for (int x = 0; x < 64; x++)
 					{
-						byte b1 = (byte) (idata[x + y] >> 4);
-						byte b2 = (byte) (idata[x + y] & 0x0F);
-						imgdata[spos++] = pals[b1].B;
-						imgdata[spos++] = pals[b1].G;
-						imgdata[spos++] = pals[b1].R;
-						imgdata[spos++] = 255;
-						imgdata[spos++] = pals[b2].B;
-						imgdata[spos++] = pals[b2].G;
-						imgdata[spos++] = pals[b2].R;
-						imgdata[spos++] = 255;
+						byte b1 = (byte) ((idata[(x + (y * 64))] >> 4) & 0x0F);
+						byte b2 = (byte) ((idata[(x + (y * 64))]) & 0x0F);
+						imgdata[40 + (spos)] = pals[b1].B;
+						imgdata[40 + (spos) + 1] = pals[b1].G;
+						imgdata[40 + (spos) + 2] = pals[b1].R;
+						imgdata[40 + (spos) + 3] = 255;
+
+						imgdata[40 + (spos) + 4] = pals[b2].B;
+						imgdata[40 + (spos) + 5] = pals[b2].G;
+						imgdata[40 + (spos) + 6] = pals[b2].R;
+						imgdata[40 + (spos) + 7] = 255;
+						spos += 8;
 					}
 				}
 
 				int v = 0;
-				for (int p = 0, p2 = 0; p < 16; p++, p2 += 32) // each color
+				for (int p = 0; p < 16; p++) // each color
 				{
-					for (int i = 0; i < 8 * 512; i += 512) // each lines
+					for (int i = 0; i < 8; i++) // each lines
 					{
-						for (int j = 0; j < 8 * 4; j += 4) // each pixels
+						for (int j = 0; j < 8; j++) // each pixels
 						{
-							v = p % 8;
+							v = p;
+							if (p >= 8)
+							{
+								v = p - 8;
+							}
 
 							// 1 pixel
-							imgdata[40 + j + p2 + i] = pals[v].B;
-							imgdata[41 + j + p2 + i] = pals[v].G;
-							imgdata[42 + j + p2 + i] = pals[v].R;
-							imgdata[43 + j + p2 + i] = 255;
+							imgdata[40 + (j * 4) + (p * 32) + 0 + (i * 512)] = pals[v].B;
+							imgdata[40 + (j * 4) + (p * 32) + 1 + (i * 512)] = pals[v].G;
+							imgdata[40 + (j * 4) + (p * 32) + 2 + (i * 512)] = pals[v].R;
+							imgdata[40 + (j * 4) + (p * 32) + 3 + (i * 512)] = 255;
 						}
 					}
 				}

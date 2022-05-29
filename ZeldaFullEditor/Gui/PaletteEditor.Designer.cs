@@ -28,18 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode37 = new System.Windows.Forms.TreeNode("Hud");
-            System.Windows.Forms.TreeNode treeNode38 = new System.Windows.Forms.TreeNode("Overworld Main");
-            System.Windows.Forms.TreeNode treeNode39 = new System.Windows.Forms.TreeNode("Overworld Aux");
-            System.Windows.Forms.TreeNode treeNode40 = new System.Windows.Forms.TreeNode("Overworld Animated");
-            System.Windows.Forms.TreeNode treeNode41 = new System.Windows.Forms.TreeNode("Dungeon Main");
-            System.Windows.Forms.TreeNode treeNode42 = new System.Windows.Forms.TreeNode("Global Sprites");
-            System.Windows.Forms.TreeNode treeNode43 = new System.Windows.Forms.TreeNode("Sprites Aux1");
-            System.Windows.Forms.TreeNode treeNode44 = new System.Windows.Forms.TreeNode("Sprites Aux2");
-            System.Windows.Forms.TreeNode treeNode45 = new System.Windows.Forms.TreeNode("Sprites Aux3");
-            System.Windows.Forms.TreeNode treeNode46 = new System.Windows.Forms.TreeNode("Shields");
-            System.Windows.Forms.TreeNode treeNode47 = new System.Windows.Forms.TreeNode("Swords");
-            System.Windows.Forms.TreeNode treeNode48 = new System.Windows.Forms.TreeNode("Armors");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Hud");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Overworld Main");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Overworld Aux");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Overworld Animated");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Dungeon Main");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Global Sprites");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Sprites Aux1");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Sprites Aux2");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("Sprites Aux3");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Shields");
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("Swords");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("Armors");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Overworld Grass");
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("3D Objects");
+            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("OverworldMaps");
             this.palettesTreeView = new System.Windows.Forms.TreeView();
             this.applyButton = new System.Windows.Forms.Button();
             this.restoreallButton = new System.Windows.Forms.Button();
@@ -55,43 +58,52 @@
             this.palettesTreeView.Dock = System.Windows.Forms.DockStyle.Left;
             this.palettesTreeView.Location = new System.Drawing.Point(0, 0);
             this.palettesTreeView.Name = "palettesTreeView";
-            treeNode37.Name = "HudPal";
-            treeNode37.Text = "Hud";
-            treeNode38.Name = "OverworldMainPal";
-            treeNode38.Text = "Overworld Main";
-            treeNode39.Name = "OverworldAuxPal";
-            treeNode39.Text = "Overworld Aux";
-            treeNode40.Name = "OverworldAnimatedPal";
-            treeNode40.Text = "Overworld Animated";
-            treeNode41.Name = "DungeonMainPal";
-            treeNode41.Text = "Dungeon Main";
-            treeNode42.Name = "GlobalSpritesPal";
-            treeNode42.Text = "Global Sprites";
-            treeNode43.Name = "SpritesAux1Pal";
-            treeNode43.Text = "Sprites Aux1";
-            treeNode44.Name = "SpritesAux2Pal";
-            treeNode44.Text = "Sprites Aux2";
-            treeNode45.Name = "SpritesAux3Pal";
-            treeNode45.Text = "Sprites Aux3";
-            treeNode46.Name = "ShieldsPal";
-            treeNode46.Text = "Shields";
-            treeNode47.Name = "SwordsPal";
-            treeNode47.Text = "Swords";
-            treeNode48.Name = "ArmorsPal";
-            treeNode48.Text = "Armors";
+            treeNode1.Name = "HudPal";
+            treeNode1.Text = "Hud";
+            treeNode2.Name = "OverworldMainPal";
+            treeNode2.Text = "Overworld Main";
+            treeNode3.Name = "OverworldAuxPal";
+            treeNode3.Text = "Overworld Aux";
+            treeNode4.Name = "OverworldAnimatedPal";
+            treeNode4.Text = "Overworld Animated";
+            treeNode5.Name = "DungeonMainPal";
+            treeNode5.Text = "Dungeon Main";
+            treeNode6.Name = "GlobalSpritesPal";
+            treeNode6.Text = "Global Sprites";
+            treeNode7.Name = "SpritesAux1Pal";
+            treeNode7.Text = "Sprites Aux1";
+            treeNode8.Name = "SpritesAux2Pal";
+            treeNode8.Text = "Sprites Aux2";
+            treeNode9.Name = "SpritesAux3Pal";
+            treeNode9.Text = "Sprites Aux3";
+            treeNode10.Name = "ShieldsPal";
+            treeNode10.Text = "Shields";
+            treeNode11.Name = "SwordsPal";
+            treeNode11.Text = "Swords";
+            treeNode12.Name = "ArmorsPal";
+            treeNode12.Text = "Armors";
+            treeNode13.Name = "OverworldGrassPal";
+            treeNode13.Text = "Overworld Grass";
+            treeNode14.Name = "Objects3DPal";
+            treeNode14.Text = "3D Objects";
+            treeNode15.Name = "OverworldMapsPal";
+            treeNode15.Text = "OverworldMaps";
             this.palettesTreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode37,
-            treeNode38,
-            treeNode39,
-            treeNode40,
-            treeNode41,
-            treeNode42,
-            treeNode43,
-            treeNode44,
-            treeNode45,
-            treeNode46,
-            treeNode47,
-            treeNode48});
+            treeNode1,
+            treeNode2,
+            treeNode3,
+            treeNode4,
+            treeNode5,
+            treeNode6,
+            treeNode7,
+            treeNode8,
+            treeNode9,
+            treeNode10,
+            treeNode11,
+            treeNode12,
+            treeNode13,
+            treeNode14,
+            treeNode15});
             this.palettesTreeView.Size = new System.Drawing.Size(200, 324);
             this.palettesTreeView.TabIndex = 0;
             this.palettesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.palettesTreeView_AfterSelect);

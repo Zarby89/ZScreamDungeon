@@ -45,7 +45,7 @@
             this.button1.TabIndex = 1;
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
-            //this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -77,7 +77,7 @@
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(170, 558);
             this.listBox1.TabIndex = 4;
-            //this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
+            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // tabPage1
             // 
@@ -102,7 +102,7 @@
             this.MaximizeBox = false;
             this.Name = "RoomLayout";
             this.Text = "RoomLayout";
-            //this.Load += new System.EventHandler(this.RoomLayout_Load);
+            this.Load += new System.EventHandler(this.RoomLayout_Load);
             this.tabControl1.ResumeLayout(false);
             this.ResumeLayout(false);
 

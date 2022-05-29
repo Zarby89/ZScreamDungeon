@@ -25,6 +25,174 @@ namespace ZeldaFullEditor.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool spriteText {
+            get {
+                return ((bool)(this["spriteText"]));
+            }
+            set {
+                this["spriteText"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool chestText {
+            get {
+                return ((bool)(this["chestText"]));
+            }
+            set {
+                this["chestText"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool itemText {
+            get {
+                return ((bool)(this["itemText"]));
+            }
+            set {
+                this["itemText"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool transparentBG {
+            get {
+                return ((bool)(this["transparentBG"]));
+            }
+            set {
+                this["transparentBG"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool rightToolbox {
+            get {
+                return ((bool)(this["rightToolbox"]));
+            }
+            set {
+                this["rightToolbox"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool spriteShow {
+            get {
+                return ((bool)(this["spriteShow"]));
+            }
+            set {
+                this["spriteShow"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool itemsShow {
+            get {
+                return ((bool)(this["itemsShow"]));
+            }
+            set {
+                this["itemsShow"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool chestitemShow {
+            get {
+                return ((bool)(this["chestitemShow"]));
+            }
+            set {
+                this["chestitemShow"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool dooridShow {
+            get {
+                return ((bool)(this["dooridShow"]));
+            }
+            set {
+                this["dooridShow"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool chestidShow {
+            get {
+                return ((bool)(this["chestidShow"]));
+            }
+            set {
+                this["chestidShow"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool disableentranceGfx {
+            get {
+                return ((bool)(this["disableentranceGfx"]));
+            }
+            set {
+                this["disableentranceGfx"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool bg2maskShow {
+            get {
+                return ((bool)(this["bg2maskShow"]));
+            }
+            set {
+                this["bg2maskShow"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool entranceCamera {
+            get {
+                return ((bool)(this["entranceCamera"]));
+            }
+            set {
+                this["entranceCamera"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool entrancePos {
+            get {
+                return ((bool)(this["entrancePos"]));
+            }
+            set {
+                this["entrancePos"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfString xmlns:xsd=\"http://www.w3." +
             "org/2001/XMLSchema\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" />")]
         public global::System.Collections.Specialized.StringCollection recentFiles {
@@ -46,18 +214,6 @@ namespace ZeldaFullEditor.Properties {
             }
             set {
                 this["favoriteObjects"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool UpdateRequired {
-            get {
-                return ((bool)(this["UpdateRequired"]));
-            }
-            set {
-                this["UpdateRequired"] = value;
             }
         }
     }

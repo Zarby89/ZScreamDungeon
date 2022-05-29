@@ -81,7 +81,7 @@ namespace ZCompressLibrary
 						{
 							//std_nintendo_decompression_error = my_asprintf("A copy command exceed the available data %d > %d (max_length specified)\n", c_data_pos + 1 + length, max_offset);
 							//goto error;
-							throw new Exception(string.Format("A copy command exceed the available data {0} > {1} (max_length specified)\n", c_data_pos + 1 + length, max_offset));
+							throw new Exception(String.Format("A copy command exceed the available data {0} > {1} (max_length specified)\n", c_data_pos + 1 + length, max_offset));
 						}
 
 						//memcpy(u_data + u_data_pos, c_data + c_data_pos + 1, length);
@@ -138,7 +138,7 @@ namespace ZCompressLibrary
 						{
 							//std_nintendo_decompression_error = my_asprintf("Offset for command copy existing is larger than the current position (Offset : 0x%04X | Pos : 0x%06X\n", offset, u_data_pos);
 							//goto error;
-							throw new Exception(string.Format("Offset for command copy existing is larger than the current position (Offset : {0} | Pos : {1}\n", offset.ToString("X4"), u_data_pos.ToString("X6")));
+							throw new Exception(String.Format("Offset for command copy existing is larger than the current position (Offset : {0} | Pos : {1}\n", offset.ToString("X4"), u_data_pos.ToString("X6")));
 						}
 						if (u_data_pos + length + 1 > allocated_memory) // Adjust allocated memory
 						{

@@ -126,7 +126,7 @@
   </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="btnOK.Location" type="System.Drawing.Point, System.Drawing">
-    <value>327, 339</value>
+    <value>327, 344</value>
   </data>
   <data name="btnOK.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -382,7 +382,7 @@
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
   <data name="label9.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 200</value>
+    <value>9, 173</value>
   </data>
   <data name="label9.Size" type="System.Drawing.Size, System.Drawing">
     <value>91, 13</value>
@@ -409,7 +409,7 @@
     <value>True</value>
   </data>
   <data name="label10.Location" type="System.Drawing.Point, System.Drawing">
-    <value>27, 213</value>
+    <value>27, 186</value>
   </data>
   <data name="label10.Size" type="System.Drawing.Size, System.Drawing">
     <value>225, 13</value>
@@ -436,7 +436,7 @@
     <value>True</value>
   </data>
   <data name="label11.Location" type="System.Drawing.Point, System.Drawing">
-    <value>27, 226</value>
+    <value>27, 199</value>
   </data>
   <data name="label11.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 13</value>
@@ -463,7 +463,7 @@
     <value>True</value>
   </data>
   <data name="label12.Location" type="System.Drawing.Point, System.Drawing">
-    <value>27, 239</value>
+    <value>27, 212</value>
   </data>
   <data name="label12.Size" type="System.Drawing.Size, System.Drawing">
     <value>251, 13</value>
@@ -493,7 +493,7 @@
     <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
   </data>
   <data name="label13.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 294</value>
+    <value>9, 242</value>
   </data>
   <data name="label13.Size" type="System.Drawing.Size, System.Drawing">
     <value>37, 13</value>
@@ -520,7 +520,7 @@
     <value>True</value>
   </data>
   <data name="linkLabel1.Location" type="System.Drawing.Point, System.Drawing">
-    <value>27, 307</value>
+    <value>27, 255</value>
   </data>
   <data name="linkLabel1.Size" type="System.Drawing.Size, System.Drawing">
     <value>68, 13</value>
@@ -547,7 +547,7 @@
     <value>True</value>
   </data>
   <data name="linkLabel2.Location" type="System.Drawing.Point, System.Drawing">
-    <value>27, 330</value>
+    <value>27, 278</value>
   </data>
   <data name="linkLabel2.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 13</value>
@@ -600,17 +600,23 @@
   <data name="label14.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
+  <data name="label14.Font" type="System.Drawing.Font, System.Drawing">
+    <value>Microsoft Sans Serif, 8.25pt, style=Bold</value>
+  </data>
+  <data name="label14.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <data name="label14.Location" type="System.Drawing.Point, System.Drawing">
-    <value>27, 153</value>
+    <value>12, 310</value>
   </data>
   <data name="label14.Size" type="System.Drawing.Size, System.Drawing">
-    <value>153, 13</value>
+    <value>117, 13</value>
   </data>
   <data name="label14.TabIndex" type="System.Int32, mscorlib">
     <value>47</value>
   </data>
   <data name="label14.Text" xml:space="preserve">
-    <value>Josh Neta - compression library</value>
+    <value>External Resources</value>
   </data>
   <data name="&gt;&gt;label14.Name" xml:space="preserve">
     <value>label14</value>
@@ -624,31 +630,34 @@
   <data name="&gt;&gt;label14.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="label15.AutoSize" type="System.Boolean, mscorlib">
+  <data name="linkLabel3.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
   </data>
-  <data name="label15.Location" type="System.Drawing.Point, System.Drawing">
-    <value>27, 252</value>
+  <data name="linkLabel3.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
   </data>
-  <data name="label15.Size" type="System.Drawing.Size, System.Drawing">
-    <value>134, 13</value>
+  <data name="linkLabel3.Location" type="System.Drawing.Point, System.Drawing">
+    <value>27, 323</value>
   </data>
-  <data name="label15.TabIndex" type="System.Int32, mscorlib">
+  <data name="linkLabel3.Size" type="System.Drawing.Size, System.Drawing">
+    <value>111, 13</value>
+  </data>
+  <data name="linkLabel3.TabIndex" type="System.Int32, mscorlib">
     <value>48</value>
   </data>
-  <data name="label15.Text" xml:space="preserve">
-    <value>Asar team - Asar assembler</value>
+  <data name="linkLabel3.Text" xml:space="preserve">
+    <value>Asar SNES Assembler</value>
   </data>
-  <data name="&gt;&gt;label15.Name" xml:space="preserve">
-    <value>label15</value>
+  <data name="&gt;&gt;linkLabel3.Name" xml:space="preserve">
+    <value>linkLabel3</value>
   </data>
-  <data name="&gt;&gt;label15.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="&gt;&gt;linkLabel3.Type" xml:space="preserve">
+    <value>System.Windows.Forms.LinkLabel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;label15.Parent" xml:space="preserve">
+  <data name="&gt;&gt;linkLabel3.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
-  <data name="&gt;&gt;label15.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;linkLabel3.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
   <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
@@ -658,7 +667,7 @@
     <value>6, 13</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>405, 365</value>
+    <value>405, 370</value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
