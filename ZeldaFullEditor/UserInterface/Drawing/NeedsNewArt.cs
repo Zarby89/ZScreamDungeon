@@ -18,6 +18,7 @@
 
 		UpdatedLayer1Tilemap = 1 << 8,
 		UpdatedLayer2Tilemap = 1 << 9,
+		UpdatedSpritesLayer = 1 << 10,
 		UpdatedAllTilemaps = UpdatedLayer1Tilemap | UpdatedLayer2Tilemap,
 
 		UpdatedLayering = 1 << 12,

@@ -616,11 +616,11 @@
 				{
 					for (var xl = 0; xl < 8; xl++)
 					{
-						int ty = (t.TileIndex / 16) * 512;
-						int tx = (t.TileIndex % 16) * 4;
+						int ty = (t.ID / 16) * 512;
+						int tx = (t.ID % 16) * 4;
 						var pixel = alltilesData[(tx + ty) + (yl * 64) + xl];
 
-						int index = (t.XOff + (xl * 2)) + (t.YOff * 256) + (yl * 256); // + ((mx * 2) + (my * 256));
+						int index = (t.X + (xl * 2)) + (t.Y * 256) + (yl * 256); // + ((mx * 2) + (my * 256));
 
 						ptr[index + 1] = (byte) ((pixel & 0x0F) + (t.Palette + 8) * 16);
 						ptr[index] = (byte) (((pixel >> 4) & 0x0F) + (t.Palette + 8) * 16);
@@ -674,8 +674,8 @@
 			if (editsprRadio.Checked && lastSelectedOAMDrawInfo != dummy)
 			{
 				e.Graphics.DrawRectangle(Pens.LightGreen,
-					new Rectangle(lastSelectedOAMDrawInfo.XOff * 2,
-					lastSelectedOAMDrawInfo.YOff * 2, 32, 32));
+					new Rectangle(lastSelectedOAMDrawInfo.X * 2,
+					lastSelectedOAMDrawInfo.Y * 2, 32, 32));
 			}
 		}
 
@@ -691,7 +691,7 @@
 
 			if (editsprRadio.Checked && lastSelectedOAMDrawInfo != dummy)
 			{
-				lastSelectedOAMDrawInfo.TileIndex = selectedTile;
+				lastSelectedOAMDrawInfo.ID = selectedTile;
 				screenBox.Refresh();
 			}
 		}
@@ -757,8 +757,8 @@
 				int yP = e.Y / 2;
 				for (int i = 0; i < 10; i++)
 				{
-					if (xP >= oamData[i].XOff && xP <= (oamData[i].XOff + 16) &&
-						yP >= oamData[i].YOff && yP <= (oamData[i].YOff + 16))
+					if (xP >= oamData[i].X && xP <= (oamData[i].X + 16) &&
+						yP >= oamData[i].Y && yP <= (oamData[i].Y + 16))
 					{
 						selectedOAMDrawInfo = oamData[i];
 						break;
@@ -803,7 +803,7 @@
 					for (int i = 0; i < 10; i++)
 					{
 						// TODO magic number
-						oamData[i].XOff = (byte) (ZScreamer.ActiveROM[0x67E26 + i] + (e.X / 2) - swordX);
+						oamData[i].X = (byte) (ZScreamer.ActiveROM[0x67E26 + i] + (e.X / 2) - swordX);
 
 						screenBox.Refresh();
 					}
@@ -822,8 +822,8 @@
 
 					for (int i = 0; i < 10; i++)
 					{
-						if (xP >= oamData[i].XOff && xP <= (oamData[i].XOff + 16) &&
-							yP >= oamData[i].YOff && yP <= (oamData[i].YOff + 16))
+						if (xP >= oamData[i].X && xP <= (oamData[i].X + 16) &&
+							yP >= oamData[i].Y && yP <= (oamData[i].Y + 16))
 						{
 							selectedOAMDrawInfo = oamData[i];
 							break;
@@ -834,13 +834,13 @@
 					{
 						if (lockCheckbox.Checked)
 						{
-							selectedOAMDrawInfo.XOff = (byte) (xP & ~0x7);
-							selectedOAMDrawInfo.YOff = (byte) (yP & ~0x7);
+							selectedOAMDrawInfo.X = (byte) (xP & ~0x7);
+							selectedOAMDrawInfo.Y = (byte) (yP & ~0x7);
 						}
 						else
 						{
-							selectedOAMDrawInfo.XOff = (byte) xP;
-							selectedOAMDrawInfo.YOff = (byte) yP;
+							selectedOAMDrawInfo.X = (byte) xP;
+							selectedOAMDrawInfo.Y = (byte) yP;
 						}
 					}
 
@@ -857,7 +857,7 @@
 			if (selectedOAMDrawInfo != dummy)
 			{
 				lastSelectedOAMDrawInfo = selectedOAMDrawInfo;
-				selectedTile = lastSelectedOAMDrawInfo.TileIndex;
+				selectedTile = lastSelectedOAMDrawInfo.ID;
 				palSelected = (byte) (lastSelectedOAMDrawInfo.Palette + 8);
 				mirrorXCheckbox.Checked = lastSelectedOAMDrawInfo.HFlip;
 				mirrorYCheckbox.Checked = lastSelectedOAMDrawInfo.VFlip;
@@ -1193,16 +1193,16 @@
 		{
 			for (int i = 0; i < 10; i++)
 			{
-				ZScreamer.ActiveROM[0x67E26 + i] = (byte) oamData[i].XOff;
-				ZScreamer.ActiveROM[0x67E30 + (i * 2)] = (byte) (oamData[i].YOff - 22);
+				ZScreamer.ActiveROM[0x67E26 + i] = (byte) oamData[i].X;
+				ZScreamer.ActiveROM[0x67E30 + (i * 2)] = (byte) (oamData[i].Y - 22);
 
 				if (uppersprCheckbox.Checked)
 				{
-					ZScreamer.ActiveROM[0x67E1C + i] = (byte) (oamData[i].TileIndex - 512);
+					ZScreamer.ActiveROM[0x67E1C + i] = (byte) (oamData[i].ID - 512);
 				}
 				else
 				{
-					ZScreamer.ActiveROM[0x67E1C + i] = (byte) (oamData[i].TileIndex - 768);
+					ZScreamer.ActiveROM[0x67E1C + i] = (byte) (oamData[i].ID - 768);
 				}
 			}
 
@@ -1226,7 +1226,7 @@
 
 			for (int i = 0; i < 1024; i++)
 			{
-				allData.Add(tilesBG1Buffer[i]);
+				allData.Add16(tilesBG1Buffer[i]);
 			}
 
 			allData.Add(0x00);
@@ -1237,7 +1237,7 @@
 
 			for (int i = 0; i < 1024; i++)
 			{
-				allData.Add(tilesBG2Buffer[i]);
+				allData.Add16(tilesBG2Buffer[i]);
 			}
 
 			allData.Add(0xFF);

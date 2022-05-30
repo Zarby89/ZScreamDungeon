@@ -21,16 +21,16 @@
 			ret.Add((byte) (room.Layout << 2));
 
 			ret.AddRange(room.Layer1Objects.GetByteData());
-			ret.Add(Constants.ObjectSentinel);
+			ret.Add16(Constants.ObjectSentinel);
 
 			ret.AddRange(room.Layer2Objects.GetByteData());
-			ret.Add(Constants.ObjectSentinel);
+			ret.Add16(Constants.ObjectSentinel);
 
 			ret.AddRange(room.Layer3Objects.GetByteData());
 
 			if (room.DoorsList.Count > 0)
 			{
-				ret.Add(0xFFF0);
+				ret.Add16(0xFFF0);
 				DoorOffset = ret.Count;
 
 				ret.AddRange(room.DoorsList.GetByteData());
@@ -40,7 +40,7 @@
 				DoorOffset = ret.Count;
 			}
 
-			ret.Add(Constants.ObjectSentinel);
+			ret.Add16(Constants.ObjectSentinel);
 
 			Data = ret.ToArray();
 		}

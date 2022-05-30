@@ -87,6 +87,7 @@
 			return (r1.Sheet[tile & 0x1F], (PaletteID) r2);
 		}
 
+
 		public (GraphicsTile, PaletteID) GetSpriteTileWithPalette(ushort tile, byte pal)
 		{
 			tile |= 0x200;
@@ -100,7 +101,13 @@
 
 		public (GraphicsTile, PaletteID) GetSpriteTileWithPalette(OAMDrawInfo tile)
 		{
-			return GetSpriteTileWithPalette(tile.TileIndex, tile.Palette);
+			return GetSpriteTileWithPalette(tile.ID, tile.Palette);
+		}
+
+		public void DrawSpriteTileToCanvas(IGraphicsCanvas canvas, OAMDrawInfo tile)
+		{
+			var (gfx, pal) = GetSpriteTileWithPalette(tile);
+			gfx.DrawToCanvas(canvas, tile.X, tile.Y, (byte) pal, tile.HFlip, tile.VFlip);
 		}
 	}
 }

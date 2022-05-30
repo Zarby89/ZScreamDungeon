@@ -101,7 +101,7 @@
 			{
 				if (bgtiles == value) return;
 				bgtiles = value;
-				RefreshTileset();
+				RefreshTilesets();
 			}
 		}
 
@@ -113,7 +113,7 @@
 			{
 				if (sprtiles == value) return;
 				sprtiles = value;
-				RefreshTileset();
+				RefreshTilesets();
 			}
 		}
 
@@ -176,7 +176,7 @@
 			{
 				if (entrancegfx == value) return;
 				entrancegfx = value;
-				RefreshTileset();
+				RefreshTilesets();
 			}
 		}
 
@@ -265,7 +265,7 @@
 
 			LoadCustomCollisionFromRom();
 			RefreshPalette();
-			RefreshTileset();
+			RefreshTilesets();
 		}
 
 		public void InvalidateTilemaps()
@@ -273,10 +273,11 @@
 			Redrawing |= NeedsNewArt.UpdatedAllTilemaps;
 		}
 
-		public void RefreshTileset()
+		public void RefreshTilesets()
 		{
 			LoadedGraphics = ZS.GFXManager.CreateUnderworldGraphicsSet(BackgroundTileset, SpriteTileset, BackgroundTileset);
 			Redrawing |= NeedsNewArt.UpdatedAllTilesets;
+			Redrawing |= NeedsNewArt.UpdatedSpriteTileset;
 		}
 
 		public void RefreshPalette()
@@ -1181,14 +1182,13 @@
 
 		public byte[] GetTorchesData()
 		{
-			var ret = new List<byte>
-			{
-				RoomID
-			};
+			var ret = new List<byte>();
+
+			ret.Add16(RoomID);
 
 			ret.AddRange(TorchList.GetByteData());
 
-			ret.Add(Constants.ObjectSentinel);
+			ret.Add16(Constants.ObjectSentinel);
 
 			return ret.ToArray();
 		}
@@ -1233,7 +1233,7 @@
 
 			if (ret.Count > 0)
 			{
-				ret.Add(Constants.ObjectSentinel);
+				ret.Add16(Constants.ObjectSentinel);
 			}
 
 			return ret.ToArray();

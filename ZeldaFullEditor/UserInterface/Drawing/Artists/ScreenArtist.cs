@@ -48,11 +48,19 @@
 			};
 		}
 
+		protected override void RedrawSpriteLayer()
+		{
+			// TODO how to do this?
+			//DrawEntireList(CurrentRoom.SpritesList);
+			//DrawEntireList(CurrentRoom.SecretsList);
+		}
+
 		public override void RebuildBitMap()
 		{
 			var g = Graphics.FromImage(FinalOutput);
 
 			g.SetClip(Constants.ScreenSizedRectangle);
+
 			g.Clear(Color.FromArgb(255, Layer1Canvas.Palette.Entries[0]));
 
 			g.DrawScreen(Layer1Canvas.Bitmap, null);

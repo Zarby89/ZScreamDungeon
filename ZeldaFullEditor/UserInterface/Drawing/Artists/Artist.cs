@@ -15,6 +15,8 @@
 		/// </summary>
 		public abstract Bitmap FinalOutput { get; }
 
+		protected List<(OAMDrawInfo t, bool g)> SpriteDrawInstructions { get; } = new();
+
 		public bool Valid { get; private set; }
 
 		protected abstract GraphicsSet LoadedGraphics { get; }
@@ -40,6 +42,7 @@
 
 			Layer1Canvas.Palette = palettes;
 			Layer2Canvas.Palette = palettes;
+			SpriteCanvas.Palette = palettes;
 		}
 
 		protected static readonly float[][] TranslucencyMatrix = {
@@ -62,21 +65,26 @@
 		{
 			if (Redrawing == NeedsNewArt.Nothing || Valid) return;
 
-			if ((Redrawing & NeedsNewArt.UpdatedAllPalettes) != NeedsNewArt.Nothing)
+			if (Redrawing.HasFlag(NeedsNewArt.UpdatedAllPalettes))
 			{
 				ReloadPalettes();
 			}
 			
-			if ((Redrawing & NeedsNewArt.UpdatedLayer1Tilemap) != NeedsNewArt.Nothing)
+			if (Redrawing.HasFlag(NeedsNewArt.UpdatedLayer1Tilemap))
 			{
 				RebuildLayer1();
 			}
 
-			if ((Redrawing & NeedsNewArt.UpdatedLayer2Tilemap) != NeedsNewArt.Nothing)
+			if (Redrawing.HasFlag(NeedsNewArt.UpdatedLayer2Tilemap))
 			{
 				RebuildLayer2();
 			}
-			
+
+			if (Redrawing.HasFlag(NeedsNewArt.UpdatedSpritesLayer))
+			{
+				RedrawSpriteLayer();
+			}
+
 			RebuildBitMap();
 
 			Valid = true;
@@ -104,7 +112,10 @@
 		public abstract void RebuildBitMap();
 
 
-
+		public void ResetSpritesList()
+		{
+			SpriteDrawInstructions.Clear();
+		}
 
 		protected virtual void RebuildLayer1()
 		{
@@ -137,7 +148,7 @@
 			g.DrawImage(FinalOutput, 0, 0);
 		}
 
-		public void DrawTileToBuffer(in Tile tile, int x, int y, IGraphicsCanvas canvas)
+		private void DrawTileToBuffer(in Tile tile, int x, int y, IGraphicsCanvas canvas)
 		{
 			var (til, pal) = LoadedGraphics.GetBackgroundTileWithPalette(tile);
 			til.DrawToCanvas(canvas, x, y, (byte) pal, tile.HFlip, tile.VFlip);
@@ -154,42 +165,88 @@
 			//}
 		}
 
-		public void ClearBgGfx()
+		public abstract void DrawTileForPreview(Tile t, int indexoff);
+
+
+		protected virtual void RedrawSpriteLayer()
 		{
-			for (var i = 0; i < 512 * 512; i++)
+			SpriteCanvas.ClearBitmap();
+
+			foreach (var (tile, global) in SpriteDrawInstructions)
 			{
-				Layer1Canvas[i] = 0;
-				Layer2Canvas[i] = 0;
+				var graphics = global ? LoadedGraphics : LoadedGraphics;
+
+				graphics.DrawSpriteTileToCanvas(SpriteCanvas, tile);
 			}
 		}
 
-		public abstract void DrawTileForPreview(Tile t, int indexoff);
+		protected void DrawEntireList(IEnumerable<IDelegatedDraw> list)
+		{
+			foreach (var o in list)
+			{
+				o.Draw(this);
+			}
+		}
+
+
+
 
 		public virtual void DrawSprite(IDrawableSprite spr, OAMDrawInfo[] instructions,
 			int xoff = 0, int yoff = 0, bool useGlobal = false)
 		{
-			var graphics = LoadedGraphics;
 			foreach (var ti in instructions)
 			{
-				var x = spr.RealX + ti.XOff + xoff;
-				var y = spr.RealY + ti.YOff + yoff;
-
-				var (tnw, pnw) = graphics.GetSpriteTileWithPalette(ti);
+				var x = spr.RealX + ti.X + xoff;
+				var y = spr.RealY + ti.Y + yoff;
 
 				if (ti.IsBig)
 				{
-					var (tne, pne) = graphics.GetSpriteTileWithPalette((ushort) (ti.TileIndex + 1), ti.Palette);
-					var (tsw, psw) = graphics.GetSpriteTileWithPalette((ushort) (ti.TileIndex + 16), ti.Palette);
-					var (tse, pse) = graphics.GetSpriteTileWithPalette((ushort) (ti.TileIndex + 17), ti.Palette);
+					SpriteDrawInstructions.Add(
+						(ti with
+						{
+							X = ti.HFlip ? x : x + 8,
+							Y = ti.VFlip ? y : y + 8,
+							HFlip = ti.HFlip,
+							VFlip = ti.VFlip,
+							IsBig = false,
+						}, useGlobal));
 
-					tnw.DrawToCanvas(SpriteCanvas, ti.HFlip ? x : x + 8, ti.VFlip ? y : y + 8, (byte) pnw, ti.HFlip, ti.VFlip);
-					tne.DrawToCanvas(SpriteCanvas, ti.HFlip ? x + 8 : x, ti.VFlip ? y : y + 8, (byte) pne, ti.HFlip, ti.VFlip);
-					tsw.DrawToCanvas(SpriteCanvas, ti.HFlip ? x : x + 8, ti.VFlip ? y + 8 : y, (byte) psw, ti.HFlip, ti.VFlip);
-					tse.DrawToCanvas(SpriteCanvas, ti.HFlip ? x + 8 : x, ti.VFlip ? y + 8 : y, (byte) pse, ti.HFlip, ti.VFlip);
+					SpriteDrawInstructions.Add(
+						(ti with
+						{
+							ID = (ushort) (ti.ID + 1),
+							X = ti.HFlip ? x + 8 : x,
+							Y = ti.VFlip ? y : y + 8,
+							HFlip = ti.HFlip,
+							VFlip = ti.VFlip,
+							IsBig = false,
+						}, useGlobal));
+
+					SpriteDrawInstructions.Add(
+						(ti with
+						{
+							ID = (ushort) (ti.ID + 16),
+							X = ti.HFlip ? x + 8 : x,
+							Y = ti.VFlip ? y + 8 : y,
+							HFlip = ti.HFlip,
+							VFlip = ti.VFlip,
+							IsBig = false,
+						}, useGlobal));
+
+					SpriteDrawInstructions.Add(
+						(ti with
+						{
+							ID = (ushort) (ti.ID + 17),
+							X = ti.HFlip ? x + 8 : x,
+							Y = ti.VFlip ? y + 8 : y,
+							HFlip = ti.HFlip,
+							VFlip = ti.VFlip,
+							IsBig = false,
+						}, useGlobal));
 				}
 				else
 				{
-					tnw.DrawToCanvas(SpriteCanvas, x, y, (byte) pnw, ti.HFlip, ti.VFlip);
+					SpriteDrawInstructions.Add((ti, useGlobal));
 				}
 			}
 		}

@@ -28,7 +28,7 @@
 		/// <summary>
 		/// Adds a little-endian short to the list as individual bytes.
 		/// </summary>
-		public static void Add(this List<byte> me, ushort val)
+		public static void Add16(this List<byte> me, ushort val)
 		{
 			me.Add((byte) val);
 			me.Add((byte) (val >> 8));

@@ -27,7 +27,7 @@
 			foreach (var (type, list) in pals)
 			{
 				// create UI element
-				var text = type.ToString().Replace("Palette", String.Empty).SpaceOutString();
+				var text = type.ToString().Replace("Palette", string.Empty).SpaceOutString();
 				var nodex = new TreeNode(text)
 				{
 					Name = type.ToString(),

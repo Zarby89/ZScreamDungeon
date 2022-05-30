@@ -5,6 +5,8 @@
 	/// </summary>
 	public enum SNESPixelFormat
 	{
+		None = 0,
+
 		Compressed = 0b0000_0001,
 
 		SNES2BPP = 0b0000_0010,

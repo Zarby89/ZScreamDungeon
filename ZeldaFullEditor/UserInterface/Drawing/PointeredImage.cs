@@ -21,8 +21,8 @@
 
 		public byte this[int x, int y]
 		{
-			get => Pointer[x + y * Height];
-			set => Pointer[x + y * Height] = value;
+			get => Pointer[x + y * Width];
+			set => Pointer[x + y * Width] = value;
 		}
 
 		public ColorPalette Palette
@@ -35,6 +35,15 @@
 		{
 			ptr = Marshal.AllocHGlobal(width * height);
 			Bitmap = new Bitmap(width, height, width, PixelFormat.Format8bppIndexed, ptr);
+		}
+
+		public void ClearBitmap()
+		{
+			var a = Pointer;
+			for (int i = 0; i < 512 * 512; i++)
+			{
+				a[i] = 0;
+			}
 		}
 	}
 }

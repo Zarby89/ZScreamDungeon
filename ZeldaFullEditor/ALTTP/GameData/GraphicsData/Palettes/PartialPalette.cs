@@ -176,7 +176,7 @@ namespace ZeldaFullEditor.ALTTP.GameData.GraphicsData.Palettes
 
 			foreach (var c in Palette)
 			{
-				ret.Add(c.CGRAMValue);
+				ret.Add16(c.CGRAMValue);
 			}
 
 			return ret.ToArray();

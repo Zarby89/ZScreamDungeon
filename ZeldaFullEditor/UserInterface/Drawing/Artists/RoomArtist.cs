@@ -33,7 +33,7 @@
 
 		}
 
-		public void RebuildTileMap()
+		private void RebuildTileMap()
 		{
 			ZScreamer.ActiveScreamer.TileLister.CurrentFloor1 = CurrentRoom.Floor1Graphics;
 			ZScreamer.ActiveScreamer.TileLister.CurrentFloor2 = CurrentRoom.Floor2Graphics;
@@ -49,14 +49,15 @@
 			DrawEntireList(CurrentRoom.Layer2Objects);
 			DrawEntireList(CurrentRoom.Layer3Objects);
 			DrawEntireList(CurrentRoom.DoorsList);
+		}
 
-			void DrawEntireList(IEnumerable<IDelegatedDraw> list)
-			{
-				foreach (var o in list)
-				{
-					o.Draw(this);
-				}
-			}
+
+		protected override void RedrawSpriteLayer()
+		{
+			if (CurrentRoom == null) return;
+
+			DrawEntireList(CurrentRoom.SpritesList);
+			DrawEntireList(CurrentRoom.SecretsList);
 		}
 
 		public override Tile GetLayer1TileAt(int x, int y) => new(Layer1TileMap[x + 64 * y]);
@@ -109,8 +110,7 @@
 				);
 			}
 
-			PointeredImage top;
-			PointeredImage bottom;
+			PointeredImage top, bottom;
 
 			if (!CurrentRoom.LayerCoupling.Layer2Visible)
 			{
