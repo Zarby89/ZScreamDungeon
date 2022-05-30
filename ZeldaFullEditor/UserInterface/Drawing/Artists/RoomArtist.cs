@@ -58,6 +58,7 @@
 
 			DrawEntireList(CurrentRoom.SpritesList);
 			DrawEntireList(CurrentRoom.SecretsList);
+			DrawEntireList(CurrentRoom.ChestList);
 		}
 
 		public override Tile GetLayer1TileAt(int x, int y) => new(Layer1TileMap[x + 64 * y]);

@@ -5,7 +5,7 @@
 	/// </summary>
 	public enum SNESPixelFormat
 	{
-		None = 0,
+		NoImageType = 0,
 
 		Compressed = 0b0000_0001,
 

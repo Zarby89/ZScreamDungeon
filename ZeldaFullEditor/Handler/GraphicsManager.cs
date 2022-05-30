@@ -205,7 +205,7 @@ namespace ZeldaFullEditor.Handler
 		private void CreateAllGfxData()
 		{
 			var mask = new byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
-			var sheetPosition = 0;
+
 			var _ = 0;
 			// 8x8 tile
 			for (var s = 0; s < Constants.NumberOfSheets; s++) // Per Sheet
@@ -233,6 +233,7 @@ namespace ZeldaFullEditor.Handler
 					_ => new byte[8 * 16 * 8 * 8],
 				};
 
+				int index = 0;
 				for (var j = 0; j < 4; j++) // Per Tile Line Y
 				{
 					for (var i = 0; i < 16; i++) // Per Tile Line X
@@ -241,9 +242,9 @@ namespace ZeldaFullEditor.Handler
 						{
 							if (sheetinfo.BitDepth == SNESPixelFormat.SNES3BPP)
 							{
-								var lineBits0 = data[y * 2 + i * 24 + j * 384 + sheetPosition];
-								var lineBits1 = data[y * 2 + i * 24 + j * 384 + 1 + sheetPosition];
-								var lineBits2 = data[y + i * 24 + j * 384 + 16 + sheetPosition];
+								var lineBits0 = data[y * 2 + i * 24 + j * 384];
+								var lineBits1 = data[y * 2 + i * 24 + j * 384 + 1];
+								var lineBits2 = data[y + i * 24 + j * 384 + 16];
 
 								for (var x = 0; x < 4; x++) // Per Pixel X
 								{
@@ -258,30 +259,28 @@ namespace ZeldaFullEditor.Handler
 									if (lineBits1.BitsAllSet(mask[x * 2 + 1])) { pixdata2 |= 2; }
 									if (lineBits2.BitsAllSet(mask[x * 2 + 1])) { pixdata2 |= 4; }
 
-									var a = 2 * (y * 64 + x + i * 4 + j * 512);
-									sheetdata[a] = pixdata2;
-									sheetdata[a + 1] = pixdata;
+									sheetdata[index++] = pixdata2;
+									sheetdata[index++] = pixdata;
 								}
 							}
 							else
 							{
-								var lineBits0 = data[y * 2 + i * 16 + j * 256 + sheetPosition];
-								var lineBits1 = data[y * 2 + i * 16 + j * 256 + 1 + sheetPosition];
+								var lineBits0 = data[y * 2 + i * 16 + j * 256];
+								var lineBits1 = data[y * 2 + i * 16 + j * 256 + 1];
 
 								for (var x = 0; x < 4; x++) // Per Pixel X
 								{
 									byte pixdata = 0;
 									byte pixdata2 = 0;
 
-									if ((lineBits0 & mask[x * 2]) == mask[x * 2]) { pixdata |= 1; }
-									if ((lineBits1 & mask[x * 2]) == mask[x * 2]) { pixdata |= 2; }
+									if (lineBits0.BitsAllSet(mask[x * 2])) { pixdata |= 1; }
+									if (lineBits1.BitsAllSet(mask[x * 2])) { pixdata |= 2; }
 
-									if ((lineBits0 & mask[x * 2 + 1]) == mask[x * 2 + 1]) { pixdata2 |= 1; }
-									if ((lineBits1 & mask[x * 2 + 1]) == mask[x * 2 + 1]) { pixdata2 |= 2; }
+									if (lineBits0.BitsAllSet(mask[x * 2 + 1])) { pixdata2 |= 1; }
+									if (lineBits1.BitsAllSet(mask[x * 2 + 1])) { pixdata2 |= 2; }
 
-									var a = 2 * (y * 64 + x + i * 4 + j * 512);
-									sheetdata[a] = pixdata2;
-									sheetdata[a + 1] = pixdata;
+									sheetdata[index++] = pixdata2;
+									sheetdata[index++] = pixdata;
 								}
 							}
 

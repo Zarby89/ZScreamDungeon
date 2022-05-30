@@ -31,9 +31,9 @@
 
 		public void DrawToCanvas(IGraphicsCanvas canvas, int x, int y, byte pal, bool hflip, bool vflip)
 		{
-			for (int yo = 0; yo < 7; yo++)
+			for (int yo = 0; yo < 8; yo++)
 			{
-				for (int xo = 0; xo < 7; xo++)
+				for (int xo = 0; xo < 8; xo++)
 				{
 					var p = this[hflip ? 7 - xo : xo, vflip ? 7 - yo : yo];
 					// 0 is always transparency, so skip the palette

@@ -152,17 +152,6 @@
 		{
 			var (til, pal) = LoadedGraphics.GetBackgroundTileWithPalette(tile);
 			til.DrawToCanvas(canvas, x, y, (byte) pal, tile.HFlip, tile.VFlip);
-
-
-			//var gfx = LoadedGraphics[tile.ID];
-			//var palnibble = (byte) (tile.Palette << 4);
-			//for (var yl = 0; yl < 8; yl++)
-			//{
-			//	for (var xl = 0; xl < 8; xl++)
-			//	{
-			//		canvas[x + xl, y + yl] = (byte) (gfx.GetPixelAt(x, y, tile.HFlip, tile.VFlip) | palnibble);
-			//	}
-			//}
 		}
 
 		public abstract void DrawTileForPreview(Tile t, int indexoff);
