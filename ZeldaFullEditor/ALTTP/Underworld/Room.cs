@@ -275,7 +275,10 @@
 
 		public void RefreshTilesets()
 		{
-			LoadedGraphics = ZS.GFXManager.CreateUnderworldGraphicsSet(BackgroundTileset, SpriteTileset, BackgroundTileset);
+			LoadedGraphics = ZS.GFXManager.CreateUnderworldGraphicsSet(
+				BackgroundTileset,
+				SpriteTileset,
+				BackgroundTileset);
 			Redrawing |= NeedsNewArt.UpdatedAllTilesets;
 			Redrawing |= NeedsNewArt.UpdatedSpriteTileset;
 		}

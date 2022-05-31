@@ -12,6 +12,8 @@
 		public SlottedSheet BGSheet6 { get; init; } = new(GraphicsSheet.Empty, false);
 		public SlottedSheet BGSheet7 { get; init; } = new(GraphicsSheet.Empty, false);
 
+		public SlottedSheet BGSheetA { get; init; } = null;
+
 		public SlottedSheet SPRSheet0 { get; init; } = new(GraphicsSheet.Empty, false);
 		public SlottedSheet SPRSheet1 { get; init; } = new(GraphicsSheet.Empty, false);
 		public SlottedSheet SPRSheet2 { get; init; } = new(GraphicsSheet.Empty, false);
@@ -37,7 +39,10 @@
 			0x04 => BGSheet4,
 			0x05 => BGSheet5,
 			0x06 => BGSheet6,
-			0x07 => BGSheet7,
+
+			// account for animated sheet, when it exists
+			0x07 when (id & 0x3F) is >= 0x10 => BGSheet7,
+			0x07 when (id & 0x3F) is < 0x10 => BGSheetA ?? BGSheet7,
 
 			0x08 => SPRSheet0,
 			0x09 => SPRSheet1,
@@ -50,7 +55,6 @@
 
 			_ => null
 		};
-
 
 		public GraphicsTile GetBackgroundGraphicsTile(int id) => this[id];
 
@@ -86,7 +90,6 @@
 			var r2 = (r1.RightSide ? 0x08 : 0x00) | (pal << 4);
 			return (r1.Sheet[tile & 0x1F], (PaletteID) r2);
 		}
-
 
 		public (GraphicsTile, PaletteID) GetSpriteTileWithPalette(ushort tile, byte pal)
 		{

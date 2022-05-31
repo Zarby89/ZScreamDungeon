@@ -10,8 +10,7 @@
 			{
 				if (curroom == value) return;
 				curroom = value;
-				curroom.Redrawing |= NeedsNewArt.LiterallyEverything;
-				Invalidate();
+				HardRevalidate();
 			}
 		}
 
@@ -56,9 +55,13 @@
 		{
 			if (CurrentRoom == null) return;
 
+			ResetSpritesList();
+
 			DrawEntireList(CurrentRoom.SpritesList);
 			DrawEntireList(CurrentRoom.SecretsList);
 			DrawEntireList(CurrentRoom.ChestList);
+
+			base.RedrawSpriteLayer();
 		}
 
 		public override Tile GetLayer1TileAt(int x, int y) => new(Layer1TileMap[x + 64 * y]);
@@ -148,6 +151,8 @@
 
 		public void DrawIDToImage(Graphics g)
 		{
+			if (CurrentRoom == null) return;
+
 			g.DrawText(0, 0, $"ROOM: {CurrentRoom.RoomID:X3}");
 		}
 

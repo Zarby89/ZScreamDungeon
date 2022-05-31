@@ -23,6 +23,8 @@
 
 		UpdatedLayering = 1 << 12,
 
+		BitmapRepaint = 1 << 15,
+
 		LiterallyEverything = 0xFFFF
 	}
 }

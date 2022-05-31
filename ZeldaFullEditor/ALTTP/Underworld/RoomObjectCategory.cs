@@ -101,6 +101,13 @@
 		// ================================================================================
 
 		[PredefinedInstance]
+		public static readonly RoomObjectCategory TilesetDependent = new()
+		{
+			Name = "Tileset dependent",
+			Description = "Objects whose behavior changes based on the tileset.",
+		};
+
+		[PredefinedInstance]
 		public static readonly RoomObjectCategory RoomTransition = new()
 		{
 			Name = "Room transition",
@@ -117,7 +124,7 @@
 		[PredefinedInstance]
 		public static readonly RoomObjectCategory Pit = new()
 		{
-			Name = "Pits",
+			Name = "Pit",
 			Description = "Objects that behave as pits.",
 		};
 

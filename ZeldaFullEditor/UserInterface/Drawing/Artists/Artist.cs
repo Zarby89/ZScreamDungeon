@@ -104,11 +104,6 @@
 			ClearNeedForRedraw();
 		}
 
-		public void Refresh()
-		{
-			
-		}
-
 		public abstract void RebuildBitMap();
 
 

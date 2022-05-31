@@ -28,8 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Entrances");
-			System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Spawn points");
+			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
+			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.entrancetabPage = new System.Windows.Forms.TabPage();
 			this.entrancetreeView = new System.Windows.Forms.TreeView();
@@ -269,13 +269,13 @@
 			this.entrancetreeView.Location = new System.Drawing.Point(4, 318);
 			this.entrancetreeView.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entrancetreeView.Name = "entrancetreeView";
-			treeNode1.Name = "EntranceNode";
-			treeNode1.Text = "Entrances";
-			treeNode2.Name = "StartingEntranceNode";
-			treeNode2.Text = "Spawn points";
+			treeNode3.Name = "EntranceNode";
+			treeNode3.Text = "Entrances";
+			treeNode4.Name = "StartingEntranceNode";
+			treeNode4.Text = "Spawn points";
 			this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
+            treeNode3,
+            treeNode4});
 			this.entrancetreeView.Size = new System.Drawing.Size(272, 348);
 			this.entrancetreeView.TabIndex = 0;
 			this.entrancetreeView.TabStop = false;
@@ -330,7 +330,7 @@
 			this.EntranceProperties_Blockset.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.EntranceProperties_Blockset.MaxLength = 2;
 			this.EntranceProperties_Blockset.Name = "EntranceProperties_Blockset";
-			this.EntranceProperties_Blockset.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperties_Blockset.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 17);
 			this.EntranceProperties_Blockset.Size = new System.Drawing.Size(43, 20);
 			this.EntranceProperties_Blockset.TabIndex = 176;
 			this.EntranceProperties_Blockset.Text = "00";
@@ -463,9 +463,9 @@
 			this.EntranceProperties_RoomID.HexValue = 0;
 			this.EntranceProperties_RoomID.Location = new System.Drawing.Point(4, 33);
 			this.EntranceProperties_RoomID.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.EntranceProperties_RoomID.MaxLength = 2;
+			this.EntranceProperties_RoomID.MaxLength = 3;
 			this.EntranceProperties_RoomID.Name = "EntranceProperties_RoomID";
-			this.EntranceProperties_RoomID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.EntranceProperties_RoomID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 303);
 			this.EntranceProperties_RoomID.Size = new System.Drawing.Size(43, 20);
 			this.EntranceProperties_RoomID.TabIndex = 163;
 			this.EntranceProperties_RoomID.Text = "00";
@@ -1470,7 +1470,7 @@
 			this.RoomProperty_SpriteSet.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.RoomProperty_SpriteSet.MaxLength = 2;
 			this.RoomProperty_SpriteSet.Name = "RoomProperty_SpriteSet";
-			this.RoomProperty_SpriteSet.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.RoomProperty_SpriteSet.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 125);
 			this.RoomProperty_SpriteSet.Size = new System.Drawing.Size(38, 20);
 			this.RoomProperty_SpriteSet.TabIndex = 137;
 			this.RoomProperty_SpriteSet.Text = "00";
@@ -1498,7 +1498,7 @@
 			this.RoomProperty_Palette.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.RoomProperty_Palette.MaxLength = 2;
 			this.RoomProperty_Palette.Name = "RoomProperty_Palette";
-			this.RoomProperty_Palette.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.RoomProperty_Palette.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 40);
 			this.RoomProperty_Palette.Size = new System.Drawing.Size(38, 20);
 			this.RoomProperty_Palette.TabIndex = 136;
 			this.RoomProperty_Palette.Text = "00";
@@ -1578,7 +1578,7 @@
 			this.RoomProperty_Blockset.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.RoomProperty_Blockset.MaxLength = 2;
 			this.RoomProperty_Blockset.Name = "RoomProperty_Blockset";
-			this.RoomProperty_Blockset.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 255);
+			this.RoomProperty_Blockset.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 31);
 			this.RoomProperty_Blockset.Size = new System.Drawing.Size(38, 20);
 			this.RoomProperty_Blockset.TabIndex = 133;
 			this.RoomProperty_Blockset.Text = "00";

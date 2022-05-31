@@ -30,7 +30,7 @@ namespace ZeldaFullEditor.Handler
 
 		public GraphicsSheet[] EnvironmentSpriteSheets { get; } = new GraphicsSheet[10];
 
-
+		public GraphicsSheet[] AnimatedGraphicsSheetsUW { get; } = new GraphicsSheet[24];
 
 
 		public IntPtr allgfx16Ptr = Marshal.AllocHGlobal(128 * 7136 / 2);
@@ -204,13 +204,12 @@ namespace ZeldaFullEditor.Handler
 		/// </summary>
 		private void CreateAllGfxData()
 		{
-			var mask = new byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
+			//var mask = new byte[] { 0x80, 0x40, 0x20, 0x10, 0x08, 0x04, 0x02, 0x01 };
 
 			var _ = 0;
 			// 8x8 tile
 			for (var s = 0; s < Constants.NumberOfSheets; s++) // Per Sheet
 			{
-
 				var sheetinfo = GFXSheetMeta.ListOf[s];
 
 				byte[] data;
@@ -234,11 +233,11 @@ namespace ZeldaFullEditor.Handler
 				};
 
 				int index = 0;
-				for (var j = 0; j < 4; j++) // Per Tile Line Y
+				for (int j = 0; j < 4; j++) // Per Tile Line Y
 				{
-					for (var i = 0; i < 16; i++) // Per Tile Line X
+					for (int i = 0; i < 16; i++) // Per Tile Line X
 					{
-						for (var y = 0; y < 8; y++) // Per Pixel Line
+						for (int y = 0; y < 8; y++) // Per Pixel Line
 						{
 							if (sheetinfo.BitDepth == SNESPixelFormat.SNES3BPP)
 							{
@@ -246,20 +245,14 @@ namespace ZeldaFullEditor.Handler
 								var lineBits1 = data[y * 2 + i * 24 + j * 384 + 1];
 								var lineBits2 = data[y + i * 24 + j * 384 + 16];
 
-								for (var x = 0; x < 4; x++) // Per Pixel X
+								for (byte mask = 0x80; mask > 0; mask >>= 1) // Per Pixel X
 								{
 									byte pixdata = 0;
-									byte pixdata2 = 0;
 
-									if (lineBits0.BitsAllSet(mask[x * 2])) { pixdata |= 1; }
-									if (lineBits1.BitsAllSet(mask[x * 2])) { pixdata |= 2; }
-									if (lineBits2.BitsAllSet(mask[x * 2])) { pixdata |= 4; }
+									if (lineBits0.BitsAllSet(mask)) { pixdata |= 1; }
+									if (lineBits1.BitsAllSet(mask)) { pixdata |= 2; }
+									if (lineBits2.BitsAllSet(mask)) { pixdata |= 4; }
 
-									if (lineBits0.BitsAllSet(mask[x * 2 + 1])) { pixdata2 |= 1; }
-									if (lineBits1.BitsAllSet(mask[x * 2 + 1])) { pixdata2 |= 2; }
-									if (lineBits2.BitsAllSet(mask[x * 2 + 1])) { pixdata2 |= 4; }
-
-									sheetdata[index++] = pixdata2;
 									sheetdata[index++] = pixdata;
 								}
 							}
@@ -268,18 +261,13 @@ namespace ZeldaFullEditor.Handler
 								var lineBits0 = data[y * 2 + i * 16 + j * 256];
 								var lineBits1 = data[y * 2 + i * 16 + j * 256 + 1];
 
-								for (var x = 0; x < 4; x++) // Per Pixel X
+								for (byte mask = 0x80; mask > 0; mask >>= 1) // Per Pixel X
 								{
 									byte pixdata = 0;
-									byte pixdata2 = 0;
 
-									if (lineBits0.BitsAllSet(mask[x * 2])) { pixdata |= 1; }
-									if (lineBits1.BitsAllSet(mask[x * 2])) { pixdata |= 2; }
+									if (lineBits0.BitsAllSet(mask)) { pixdata |= 1; }
+									if (lineBits1.BitsAllSet(mask)) { pixdata |= 2; }
 
-									if (lineBits0.BitsAllSet(mask[x * 2 + 1])) { pixdata2 |= 1; }
-									if (lineBits1.BitsAllSet(mask[x * 2 + 1])) { pixdata2 |= 2; }
-
-									sheetdata[index++] = pixdata2;
 									sheetdata[index++] = pixdata;
 								}
 							}
@@ -349,6 +337,11 @@ namespace ZeldaFullEditor.Handler
 				EnvironmentSpriteSheets[i] = AllSheets[ZS.ROM[gfxPointer++] + SpriteSheetOffset];
 			}
 
+			gfxPointer = ZS.Offsets.gfx_anim_sheets;
+			for (var i = 0; i < 24; i++)
+			{
+				AnimatedGraphicsSheetsUW[i] = AllSheets[ZS.ROM[gfxPointer++]];
+			}
 		}
 
 		public void SaveGroupsToROM()
@@ -400,6 +393,8 @@ namespace ZeldaFullEditor.Handler
 				BGSheet5 = new(GetLocalSheetIfNonzero(entset.Sheet5, bgset.Sheet2), false),
 				BGSheet6 = new(GetLocalSheetIfNonzero(entset.Sheet6, bgset.Sheet3), false),
 				BGSheet7 = new(entset.Sheet7, false),
+
+				BGSheetA = new(AnimatedGraphicsSheetsUW[entranceset], false),
 
 				SPRSheet0 = CreateRecordForSpriteSheet(AllSheets[0x73]),
 				SPRSheet1 = CreateRecordForSpriteSheet(AllSheets[0x7D]),
@@ -456,13 +451,9 @@ namespace ZeldaFullEditor.Handler
 
 		public int GetPCGfxAddress(byte id)
 		{
-			var gfxPointer1 = SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_1_pointer));
-			var gfxPointer2 = SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_2_pointer));
-			var gfxPointer3 = SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_3_pointer));
-
-			var gfxGamePointer1 = ZS.ROM[gfxPointer1 + id];
-			var gfxGamePointer2 = ZS.ROM[gfxPointer2 + id];
-			var gfxGamePointer3 = ZS.ROM[gfxPointer3 + id];
+			var gfxGamePointer1 = ZS.ROM[SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_1_pointer)) + id];
+			var gfxGamePointer2 = ZS.ROM[SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_2_pointer)) + id];
+			var gfxGamePointer3 = ZS.ROM[SNESFunctions.SNEStoPC(ZS.ROM.Read16(ZS.Offsets.gfx_3_pointer)) + id];
 
 			return Utils.AddressFromBytes(gfxGamePointer1, gfxGamePointer2, gfxGamePointer3).SNEStoPC();
 		}

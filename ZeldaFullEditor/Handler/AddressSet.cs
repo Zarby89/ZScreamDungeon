@@ -12,6 +12,7 @@
 		public int gfx_1_pointer => new ROMAddress(0x00E7D0, 0x00E790).GetOffsetForVersion(Version);
 		public int gfx_2_pointer => new ROMAddress(0x00E7D5, 0x00E795).GetOffsetForVersion(Version);
 		public int gfx_3_pointer => new ROMAddress(0x00E7DA, 0x00E79A).GetOffsetForVersion(Version);
+		public int gfx_anim_sheets => new ROMAddress(0x02802E, 0x02811E).GetAddressForVersion(Version);
 		public int maxGfx => new ROMAddress(0x18BFB5, 0x18BFB5).GetOffsetForVersion(Version);
 		public int compressedAllMap32PointersHigh => new ROMAddress(0x02F6B1, 0x02F94D).GetOffsetForVersion(Version);
 		public int compressedAllMap32PointersLow => new ROMAddress(0x02F891, 0x02FB2D).GetOffsetForVersion(Version);
