@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace ZeldaFullEditor
+﻿namespace ZeldaFullEditor
 {
 	public partial class TextEditor
 	{
@@ -9,7 +7,7 @@ namespace ZeldaFullEditor
 
 		private static readonly TextElement DictionaryElement = new(0x80, DictionaryToken, true, "Dictionary");
 
-		private static readonly TextElement[] TCommands = new TextElement[] {
+		private static readonly TextElement[] TCommands = {
 			new(0x6B, "W", true, "Window border"),
 			new(0x6D, "P", true, "Window position"),
 			new(0x6E, "SPD", true, "Scroll speed"),
@@ -34,7 +32,7 @@ namespace ZeldaFullEditor
 			new(0x70, "NONO", false, "Crash"),
 		};
 
-		private static readonly TextElement[] SpecialChars = new TextElement[] {
+		private static readonly TextElement[] SpecialChars = {
 			new(0x43, "...", false, "Ellipsis …"),
 			new(0x4D, "UP", false, "Arrow ↑"),
 			new(0x4E, "DOWN", false, "Arrow ↓"),
@@ -181,7 +179,7 @@ namespace ZeldaFullEditor
 
 			public string GetReadableDumpedContents()
 			{
-				StringBuilder d = new StringBuilder(Data.Length * 2 + 1);
+				StringBuilder d = new (Data.Length * 2 + 1);
 				foreach (byte b in Data)
 				{
 					d.Append(b.ToString("X2"));
@@ -233,17 +231,11 @@ namespace ZeldaFullEditor
 			private const string TokenWithParam = "[{0}:{1:X2}]";
 			private const string TokenWithoutParam = "[{0}]";
 
-			public string GetParameterizedToken(byte b = 0)
+			public string GetParameterizedToken(byte b = 0) => HasArgument switch
 			{
-				if (HasArgument)
-				{
-					return string.Format(TokenWithParam, Token, b);
-				}
-				else
-				{
-					return string.Format(TokenWithoutParam, Token);
-				}
-			}
+				true => string.Format(TokenWithParam, Token, b),
+				false => string.Format(TokenWithoutParam, Token)
+			};
 
 			public override string ToString()
 			{
@@ -373,38 +365,12 @@ namespace ZeldaFullEditor
 		}
 		private static TextElement FindMatchingCommand(byte b)
 		{
-			foreach (TextElement t in TCommands)
-			{
-				if (t.ID == b)
-				{
-					return t;
-				}
-			}
-
-			return null;
+			return TCommands.First(t => t.ID == b);
 		}
 
 		private static TextElement FindMatchingSpecial(byte b)
 		{
-			foreach (TextElement t in SpecialChars)
-			{
-				if (t.ID == b)
-				{
-					return t;
-				}
-			}
-
-			return null;
-		}
-
-		private static int FindDictionaryEntry(byte b)
-		{
-			if (b < DictionaryBaseValue || b == 0xFF)
-			{
-				return -1;
-			}
-
-			return b - DictionaryBaseValue;
+			return SpecialChars.First(t => t.ID == b);
 		}
 
 		public static DictionaryEntry GetDictionaryFromID(byte b)
@@ -412,17 +378,16 @@ namespace ZeldaFullEditor
 			return AllDicts.First(ddd => ddd.ID == b);
 		}
 
+		private static int FindDictionaryEntry(byte b) => b switch
+		{
+			< DictionaryBaseValue => -1,
+			0xFF => -1,
+			_ => b - DictionaryBaseValue
+		};
+
 		public static byte FindMatchingCharacter(char c)
 		{
-			foreach (KeyValuePair<byte, char> kt in CharEncoder)
-			{
-				if (kt.Value == c)
-				{
-					return kt.Key;
-				}
-			}
-
-			return 0xFF;
+			return CharEncoder.FirstOrDefault(kt => kt.Value == c, new(0xFF, '?')).Key;
 		}
 	}
 }

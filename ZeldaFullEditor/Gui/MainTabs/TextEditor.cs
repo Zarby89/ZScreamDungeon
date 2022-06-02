@@ -7,7 +7,7 @@
 		private const int DefaultTextColor = 6;
 		readonly string romname = "";
 
-		private readonly List<MessageData> listOfTexts = new();
+		private readonly List<MessageData> AllMessages = new();
 		private readonly List<MessageData> DisplayedMessages = new();
 		private MessageData CurrentMessage;
 
@@ -32,8 +32,6 @@
 			SpecialsList.Items.AddRange(SpecialChars);
 			pictureBox1.MouseWheel += new MouseEventHandler(pictureBox1_MouseWheel);
 		}
-
-		
 
 		public bool SelectMessageID(int i)
 		{
@@ -64,7 +62,7 @@
 				if (b == MessageTerminator)
 				{
 					tempBytesParsed.Add(b);
-					listOfTexts.Add(new MessageData(tt++,
+					AllMessages.Add(new MessageData(tt++,
 						currentMessageRaw.ToString(),
 						tempBytesRaw.ToArray(),
 						currentMessageParsed.ToString(),
@@ -141,7 +139,6 @@
 					tempBytesParsed.Add(b);
 				}
 			}
-			//00074703
 		}
 
 		public static void BuildDictionaryEntriesFromROM()
@@ -213,9 +210,11 @@
 					byte bb = FindMatchingCharacter(s[pos++]);
 
 					if (bb != 0xFF)
-					{ // TODO handle badness
+					{
 						bytes.Add(bb);
+						continue;
 					}
+					// TODO handle badness
 				}
 			}
 
@@ -230,16 +229,11 @@
 				return CharEncoder[b].ToString();
 			}
 
-			TextElement t;
+			;
 
-			// check for command
-			if ((t = FindMatchingCommand(b)) != null)
-			{
-				return t.GenericToken;
-			}
-
-			// check for special characters
-			if ((t = FindMatchingSpecial(b)) != null)
+			// check for command or special character
+			TextElement t = FindMatchingCommand(b) ?? FindMatchingSpecial(b);
+			if (t != null)
 			{
 				return t.GenericToken;
 			}
@@ -282,7 +276,7 @@
 			BuildDictionaryEntriesFromROM();
 			ReadAllTextDataFromROM();
 
-			foreach (MessageData s in listOfTexts)
+			foreach (MessageData s in AllMessages)
 			{
 				DisplayedMessages.Add(s);
 			}
@@ -473,7 +467,7 @@
 			DisplayedMessages.Clear();
 			string searchText = searchTextbox.Text.ToLower();
 
-			foreach (MessageData s in listOfTexts)
+			foreach (MessageData s in AllMessages)
 			{
 				if (s.ContentsParsed.ToLower().Contains(searchText))
 				{
@@ -624,7 +618,7 @@
 			int pos = ZScreamer.ActiveOffsets.text_data;
 			bool expandedRegion = false;
 
-			foreach (MessageData m in listOfTexts)
+			foreach (MessageData m in AllMessages)
 			{
 				for (int i = 0; i < m.Data.Length;)
 				{
@@ -648,7 +642,7 @@
 						{
 							int spaceused = 0;
 
-							foreach (MessageData m2 in listOfTexts)
+							foreach (MessageData m2 in AllMessages)
 							{
 								spaceused += m2.Data.Length;
 							}
@@ -776,10 +770,10 @@
 
 		private void button4_Click(object sender, EventArgs e)
 		{
-			DictionariesForm df = new DictionariesForm();
+			var df = new DictionariesForm();
 			df.listBox1.Items.Clear();
 
-			foreach (DictionaryEntry d in AllDicts.OrderByDescending(d => d.Length))
+			foreach (var d in AllDicts.OrderByDescending(d => d.Length))
 			{
 				df.listBox1.Items.Add(
 					string.Format($"{d.ID:X2} [{d.ID + DictionaryBaseValue:X2}] - {d.Contents.Replace(" ", "_")}"));
@@ -791,7 +785,7 @@
 		private void button5_Click(object sender, EventArgs e)
 		{
 			ZScreamer.ActiveROM.Write(ZScreamer.ActiveOffsets.characters_width, widthArray);
-
+			// TODO what is this romname?
 			using var fs = new FileStream(romname, FileMode.OpenOrCreate, FileAccess.Write);
 			fs.Write(ZScreamer.ActiveROM.DataStream, 0, ZScreamer.ActiveROM.Length);
 			fs.Close();
@@ -817,11 +811,11 @@
 					if (alltexts[i].Length > 3)
 					{
 						int id = int.Parse(alltexts[i][..3]);
-						listOfTexts[id].SetMessage(alltexts[i][5..]);
+						AllMessages[id].SetMessage(alltexts[i][5..]);
 					}
 				}
 
-				textListbox.DataSource = listOfTexts;
+				textListbox.DataSource = AllMessages;
 				textListbox.EndUpdate();
 			}
 		}
@@ -834,8 +828,8 @@
 			};
 			if (sf.ShowDialog() == DialogResult.OK)
 			{
-				List<string> alltexts = new(listOfTexts.Count);
-				foreach (MessageData m in listOfTexts)
+				List<string> alltexts = new(AllMessages.Count);
+				foreach (MessageData m in AllMessages)
 				{
 					alltexts.Add(m.GetDumpedContents());
 				}
