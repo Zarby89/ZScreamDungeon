@@ -87,7 +87,7 @@
 			int roomId = SelectedExit.TargetRoomID;
 			if (roomId >= Constants.NumberOfRooms) return;
 
-			RoomPreviewArtist.SetRoomAndDrawImmediately(ZS.all_rooms[roomId]);
+			RoomPreviewArtist.CurrentRoom = ZS.all_rooms[roomId];
 		}
 
 		private void Delete_Exit() // Set exit data to 0

@@ -90,7 +90,7 @@
 			int roomId = ZS.entrances[SelectedEntrance.TargetEntranceID].RoomID;
 			if (roomId >= Constants.NumberOfRooms) return;
 
-			RoomPreviewArtist.SetRoomAndDrawImmediately(ZS.all_rooms[roomId]);
+			RoomPreviewArtist.CurrentRoom = ZS.all_rooms[roomId];
 
 			OverworldEntrance GetEntrance(OverworldEntrance[] list)
 			{

@@ -190,6 +190,8 @@
 
 		public bool HasDamagingPits { get; set; }
 
+		public Color RoomColor => CGPalette[2, 4].RealColor;
+
 		private readonly ZScreamer ZS;
 		private Room(ZScreamer zs, ushort id)
 		{

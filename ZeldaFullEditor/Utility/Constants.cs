@@ -108,6 +108,11 @@
 		public static readonly Point OriginPoint = new(0, 0);
 		public static readonly Point Point_512_0 = new(512, 0);
 
+
+		public static readonly Rectangle GraphicsSheet2X = new(0, 0, 128 * 2, 32 * 2);
+		public static readonly Rectangle GraphicsSheet4X = new(0, 0, 128 * 4, 32 * 4);
+
+		
 		public static readonly Rectangle Rect_0_0_24_24 = new(0, 0, 24, 24);
 		public static readonly Rectangle Rect_0_0_64_64 = new(0, 0, 64, 64);
 		public static readonly Rectangle Rect_0_0_64_128 = new(0, 0, 64, 128);

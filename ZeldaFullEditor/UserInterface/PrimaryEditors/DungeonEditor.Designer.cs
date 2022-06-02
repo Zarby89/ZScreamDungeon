@@ -28,8 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
-			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
+			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Entrances");
+			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Spawn points");
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.entrancetabPage = new System.Windows.Forms.TabPage();
 			this.entrancetreeView = new System.Windows.Forms.TreeView();
@@ -269,13 +269,13 @@
 			this.entrancetreeView.Location = new System.Drawing.Point(4, 318);
 			this.entrancetreeView.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entrancetreeView.Name = "entrancetreeView";
-			treeNode3.Name = "EntranceNode";
-			treeNode3.Text = "Entrances";
-			treeNode4.Name = "StartingEntranceNode";
-			treeNode4.Text = "Spawn points";
+			treeNode5.Name = "EntranceNode";
+			treeNode5.Text = "Entrances";
+			treeNode6.Name = "StartingEntranceNode";
+			treeNode6.Text = "Spawn points";
 			this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode5,
+            treeNode6});
 			this.entrancetreeView.Size = new System.Drawing.Size(272, 348);
 			this.entrancetreeView.TabIndex = 0;
 			this.entrancetreeView.TabStop = false;
@@ -468,7 +468,7 @@
 			this.EntranceProperties_RoomID.Range = new ZeldaFullEditor.Gui.ExtraForms.ValueRange(0, 303);
 			this.EntranceProperties_RoomID.Size = new System.Drawing.Size(43, 20);
 			this.EntranceProperties_RoomID.TabIndex = 163;
-			this.EntranceProperties_RoomID.Text = "00";
+			this.EntranceProperties_RoomID.Text = "000";
 			this.EntranceProperties_RoomID.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			this.EntranceProperties_RoomID.HexValueChanged += new System.EventHandler(this.EntrancePropertyChanged);
 			// 
@@ -1503,7 +1503,7 @@
 			this.RoomProperty_Palette.TabIndex = 136;
 			this.RoomProperty_Palette.Text = "00";
 			this.RoomProperty_Palette.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			this.RoomProperty_Palette.HexValueChanged += new System.EventHandler(this.mapPicturebox_MouseLeave);
+			this.RoomProperty_Palette.HexValueChanged += new System.EventHandler(this.RoomPropertyChanged);
 			// 
 			// label3
 			// 
@@ -1771,10 +1771,10 @@
 			this.DoorTypeComboBox.BackColor = System.Drawing.SystemColors.Window;
 			this.DoorTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.DoorTypeComboBox.FormattingEnabled = true;
-			this.DoorTypeComboBox.Location = new System.Drawing.Point(60, 25);
+			this.DoorTypeComboBox.Location = new System.Drawing.Point(59, 7);
 			this.DoorTypeComboBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.DoorTypeComboBox.Name = "DoorTypeComboBox";
-			this.DoorTypeComboBox.Size = new System.Drawing.Size(82, 21);
+			this.DoorTypeComboBox.Size = new System.Drawing.Size(159, 21);
 			this.DoorTypeComboBox.TabIndex = 8;
 			this.DoorTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.DoorTypeComboBox_SelectedIndexChanged);
 			// 
@@ -1786,7 +1786,7 @@
 			this.spritepropertyPanel.Controls.Add(this.spritesubtypeUpDown);
 			this.spritepropertyPanel.Controls.Add(this.label23);
 			this.spritepropertyPanel.Controls.Add(this.KeyDropComboBox);
-			this.spritepropertyPanel.Location = new System.Drawing.Point(11, 121);
+			this.spritepropertyPanel.Location = new System.Drawing.Point(5, 55);
 			this.spritepropertyPanel.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.spritepropertyPanel.Name = "spritepropertyPanel";
 			this.spritepropertyPanel.Size = new System.Drawing.Size(252, 50);
@@ -1863,11 +1863,12 @@
 			this.doorselectPanel.BackColor = System.Drawing.SystemColors.Control;
 			this.doorselectPanel.Controls.Add(this.label25);
 			this.doorselectPanel.Controls.Add(this.DoorTypeComboBox);
+			this.doorselectPanel.Controls.Add(this.collisionMapPanel);
 			this.doorselectPanel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.doorselectPanel.Location = new System.Drawing.Point(0, 33);
+			this.doorselectPanel.Location = new System.Drawing.Point(3, 3);
 			this.doorselectPanel.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.doorselectPanel.Name = "doorselectPanel";
-			this.doorselectPanel.Size = new System.Drawing.Size(196, 50);
+			this.doorselectPanel.Size = new System.Drawing.Size(273, 37);
 			this.doorselectPanel.TabIndex = 18;
 			this.doorselectPanel.Visible = false;
 			// 
@@ -1892,10 +1893,10 @@
 			this.collisionMapPanel.Controls.Add(this.litCheckbox);
 			this.collisionMapPanel.Controls.Add(this.tileTypeCombobox);
 			this.collisionMapPanel.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-			this.collisionMapPanel.Location = new System.Drawing.Point(11, 186);
+			this.collisionMapPanel.Location = new System.Drawing.Point(0, 36);
 			this.collisionMapPanel.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.collisionMapPanel.Name = "collisionMapPanel";
-			this.collisionMapPanel.Size = new System.Drawing.Size(265, 50);
+			this.collisionMapPanel.Size = new System.Drawing.Size(265, 35);
 			this.collisionMapPanel.TabIndex = 19;
 			this.collisionMapPanel.Visible = false;
 			// 
@@ -1915,7 +1916,7 @@
 			// litCheckbox
 			// 
 			this.litCheckbox.AutoSize = true;
-			this.litCheckbox.Location = new System.Drawing.Point(151, 27);
+			this.litCheckbox.Location = new System.Drawing.Point(191, 8);
 			this.litCheckbox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.litCheckbox.Name = "litCheckbox";
 			this.litCheckbox.Size = new System.Drawing.Size(61, 17);
@@ -1986,6 +1987,11 @@
 			this.RoomTabControl.Size = new System.Drawing.Size(518, 21);
 			this.RoomTabControl.SizeMode = System.Windows.Forms.TabSizeMode.Fixed;
 			this.RoomTabControl.TabIndex = 181;
+			this.RoomTabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl2_SelectedIndexChanged);
+			this.RoomTabControl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tabControl2_MouseDown);
+			this.RoomTabControl.MouseEnter += new System.EventHandler(this.tabControl2_MouseEnter);
+			this.RoomTabControl.MouseLeave += new System.EventHandler(this.tabControl2_MouseLeave);
+			this.RoomTabControl.MouseMove += new System.Windows.Forms.MouseEventHandler(this.tabControl2_MouseMove);
 			// 
 			// UnderWorldSceneHolder
 			// 
@@ -2006,12 +2012,17 @@
 			// mapPicturebox
 			// 
 			this.mapPicturebox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.mapPicturebox.Location = new System.Drawing.Point(20, 329);
-			this.mapPicturebox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.mapPicturebox.Location = new System.Drawing.Point(7, 114);
+			this.mapPicturebox.Margin = new System.Windows.Forms.Padding(0);
 			this.mapPicturebox.Name = "mapPicturebox";
-			this.mapPicturebox.Size = new System.Drawing.Size(256, 312);
+			this.mapPicturebox.Size = new System.Drawing.Size(257, 313);
 			this.mapPicturebox.TabIndex = 183;
 			this.mapPicturebox.TabStop = false;
+			this.mapPicturebox.Paint += new System.Windows.Forms.PaintEventHandler(this.mapPicturebox_Paint);
+			this.mapPicturebox.MouseDown += new System.Windows.Forms.MouseEventHandler(this.mapPicturebox_MouseDown);
+			this.mapPicturebox.MouseLeave += new System.EventHandler(this.mapPicturebox_MouseLeave);
+			this.mapPicturebox.MouseMove += new System.Windows.Forms.MouseEventHandler(this.mapPicturebox_MouseMove);
+			this.mapPicturebox.MouseUp += new System.Windows.Forms.MouseEventHandler(this.mapPicturebox_MouseUp);
 			// 
 			// maphoverCheckbox
 			// 
@@ -2020,7 +2031,7 @@
 			this.maphoverCheckbox.Checked = true;
 			this.maphoverCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
 			this.maphoverCheckbox.ForeColor = System.Drawing.Color.Black;
-			this.maphoverCheckbox.Location = new System.Drawing.Point(59, 649);
+			this.maphoverCheckbox.Location = new System.Drawing.Point(57, 432);
 			this.maphoverCheckbox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.maphoverCheckbox.Name = "maphoverCheckbox";
 			this.maphoverCheckbox.Size = new System.Drawing.Size(164, 17);
@@ -2033,7 +2044,7 @@
 			this.mapInfosLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this.mapInfosLabel.AutoSize = true;
 			this.mapInfosLabel.ForeColor = System.Drawing.Color.Black;
-			this.mapInfosLabel.Location = new System.Drawing.Point(26, 669);
+			this.mapInfosLabel.Location = new System.Drawing.Point(26, 452);
 			this.mapInfosLabel.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
 			this.mapInfosLabel.Name = "mapInfosLabel";
 			this.mapInfosLabel.Size = new System.Drawing.Size(237, 13);
@@ -2043,13 +2054,14 @@
 			// thumbnailBox
 			// 
 			this.thumbnailBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.thumbnailBox.Location = new System.Drawing.Point(8, 254);
-			this.thumbnailBox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.thumbnailBox.Location = new System.Drawing.Point(7, 432);
+			this.thumbnailBox.Margin = new System.Windows.Forms.Padding(0);
 			this.thumbnailBox.Name = "thumbnailBox";
-			this.thumbnailBox.Size = new System.Drawing.Size(24, 24);
+			this.thumbnailBox.Size = new System.Drawing.Size(256, 256);
 			this.thumbnailBox.TabIndex = 186;
 			this.thumbnailBox.TabStop = false;
 			this.thumbnailBox.Visible = false;
+			this.thumbnailBox.Paint += new System.Windows.Forms.PaintEventHandler(this.thumbnailBox_Paint);
 			// 
 			// panel2
 			// 
@@ -2057,7 +2069,6 @@
 			this.panel2.Controls.Add(this.mapInfosLabel);
 			this.panel2.Controls.Add(this.maphoverCheckbox);
 			this.panel2.Controls.Add(this.mapPicturebox);
-			this.panel2.Controls.Add(this.collisionMapPanel);
 			this.panel2.Controls.Add(this.spritepropertyPanel);
 			this.panel2.Controls.Add(this.doorselectPanel);
 			this.panel2.Dock = System.Windows.Forms.DockStyle.Right;

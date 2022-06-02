@@ -94,7 +94,7 @@ namespace ZeldaFullEditor.ALTTP.GameData.GraphicsData
 
 			if (flipv)
 			{
-				value |= Constants.TileHFlipBit;
+				value |= Constants.TileVFlipBit;
 			}
 
 			if (Priority)

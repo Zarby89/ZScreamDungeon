@@ -88,7 +88,7 @@
 		{
 			var r1 = GetSheetForID(tile);
 			var r2 = (r1.RightSide ? 0x08 : 0x00) | (pal << 4);
-			return (r1.Sheet[tile & 0x1F], (PaletteID) r2);
+			return (r1.Sheet[tile & 0x3F], (PaletteID) r2);
 		}
 
 		public (GraphicsTile, PaletteID) GetSpriteTileWithPalette(ushort tile, byte pal)

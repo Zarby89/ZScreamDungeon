@@ -45,6 +45,7 @@
 			this.overworldPage = new System.Windows.Forms.TabPage();
 			this.OverworldEditor = new ZeldaFullEditor.Gui.OverworldEditor();
 			this.GfxEditorPage = new System.Windows.Forms.TabPage();
+			this.graphicsManagerForm1 = new ZeldaFullEditor.UserInterface.PrimaryEditors.GraphicsManagerForm();
 			this.textPage = new System.Windows.Forms.TabPage();
 			this.TextEditor = new ZeldaFullEditor.TextEditor();
 			this.ScreenEditor = new System.Windows.Forms.TabPage();
@@ -262,6 +263,7 @@
 			this.editorsTabControl.SuspendLayout();
 			this.dungeonPage.SuspendLayout();
 			this.overworldPage.SuspendLayout();
+			this.GfxEditorPage.SuspendLayout();
 			this.textPage.SuspendLayout();
 			this.spritesPage.SuspendLayout();
 			this.toolStrip1.SuspendLayout();
@@ -334,7 +336,7 @@
 			this.editorsTabControl.Controls.Add(this.spritesPage);
 			this.editorsTabControl.Enabled = false;
 			this.editorsTabControl.Location = new System.Drawing.Point(0, 52);
-			this.editorsTabControl.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.editorsTabControl.Margin = new System.Windows.Forms.Padding(0);
 			this.editorsTabControl.Multiline = true;
 			this.editorsTabControl.Name = "editorsTabControl";
 			this.editorsTabControl.SelectedIndex = 0;
@@ -360,6 +362,7 @@
 			this.DungeonEditor.Dock = System.Windows.Forms.DockStyle.Fill;
 			this.DungeonEditor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.DungeonEditor.Location = new System.Drawing.Point(2, 3);
+			this.DungeonEditor.Margin = new System.Windows.Forms.Padding(0);
 			this.DungeonEditor.Name = "DungeonEditor";
 			this.DungeonEditor.Size = new System.Drawing.Size(1146, 716);
 			this.DungeonEditor.TabIndex = 0;
@@ -371,7 +374,7 @@
 			this.overworldPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.overworldPage.Name = "overworldPage";
 			this.overworldPage.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.overworldPage.Size = new System.Drawing.Size(1150, 694);
+			this.overworldPage.Size = new System.Drawing.Size(1150, 720);
 			this.overworldPage.TabIndex = 1;
 			this.overworldPage.Text = "Overworld Editor";
 			this.overworldPage.UseVisualStyleBackColor = true;
@@ -382,18 +385,28 @@
 			this.OverworldEditor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.OverworldEditor.Location = new System.Drawing.Point(2, 3);
 			this.OverworldEditor.Name = "OverworldEditor";
-			this.OverworldEditor.Size = new System.Drawing.Size(1146, 688);
+			this.OverworldEditor.Size = new System.Drawing.Size(1146, 714);
 			this.OverworldEditor.TabIndex = 0;
 			// 
 			// GfxEditorPage
 			// 
+			this.GfxEditorPage.Controls.Add(this.graphicsManagerForm1);
 			this.GfxEditorPage.Location = new System.Drawing.Point(4, 4);
 			this.GfxEditorPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.GfxEditorPage.Name = "GfxEditorPage";
-			this.GfxEditorPage.Size = new System.Drawing.Size(1150, 694);
+			this.GfxEditorPage.Size = new System.Drawing.Size(1150, 722);
 			this.GfxEditorPage.TabIndex = 2;
 			this.GfxEditorPage.Text = "Graphics Manager";
 			this.GfxEditorPage.UseVisualStyleBackColor = true;
+			// 
+			// graphicsManagerForm1
+			// 
+			this.graphicsManagerForm1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.graphicsManagerForm1.Location = new System.Drawing.Point(0, 0);
+			this.graphicsManagerForm1.Margin = new System.Windows.Forms.Padding(0);
+			this.graphicsManagerForm1.Name = "graphicsManagerForm1";
+			this.graphicsManagerForm1.Size = new System.Drawing.Size(1150, 722);
+			this.graphicsManagerForm1.TabIndex = 0;
 			// 
 			// textPage
 			// 
@@ -401,7 +414,7 @@
 			this.textPage.Location = new System.Drawing.Point(4, 4);
 			this.textPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.textPage.Name = "textPage";
-			this.textPage.Size = new System.Drawing.Size(1150, 694);
+			this.textPage.Size = new System.Drawing.Size(1150, 720);
 			this.textPage.TabIndex = 4;
 			this.textPage.Text = "Text Editor";
 			this.textPage.UseVisualStyleBackColor = true;
@@ -412,7 +425,7 @@
 			this.TextEditor.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.TextEditor.Location = new System.Drawing.Point(0, 0);
 			this.TextEditor.Name = "TextEditor";
-			this.TextEditor.Size = new System.Drawing.Size(1150, 694);
+			this.TextEditor.Size = new System.Drawing.Size(1150, 720);
 			this.TextEditor.TabIndex = 0;
 			// 
 			// ScreenEditor
@@ -420,7 +433,7 @@
 			this.ScreenEditor.Location = new System.Drawing.Point(4, 4);
 			this.ScreenEditor.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.ScreenEditor.Name = "ScreenEditor";
-			this.ScreenEditor.Size = new System.Drawing.Size(1150, 694);
+			this.ScreenEditor.Size = new System.Drawing.Size(1150, 720);
 			this.ScreenEditor.TabIndex = 5;
 			this.ScreenEditor.Text = "Screen Editor";
 			this.ScreenEditor.UseVisualStyleBackColor = true;
@@ -431,7 +444,7 @@
 			this.spritesPage.Location = new System.Drawing.Point(4, 4);
 			this.spritesPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.spritesPage.Name = "spritesPage";
-			this.spritesPage.Size = new System.Drawing.Size(1150, 694);
+			this.spritesPage.Size = new System.Drawing.Size(1150, 720);
 			this.spritesPage.TabIndex = 6;
 			this.spritesPage.Text = "Sprites Editor";
 			this.spritesPage.UseVisualStyleBackColor = true;
@@ -442,7 +455,7 @@
 			this.SpriteEditor.Location = new System.Drawing.Point(0, 0);
 			this.SpriteEditor.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
 			this.SpriteEditor.Name = "SpriteEditor";
-			this.SpriteEditor.Size = new System.Drawing.Size(1150, 694);
+			this.SpriteEditor.Size = new System.Drawing.Size(1150, 720);
 			this.SpriteEditor.TabIndex = 0;
 			// 
 			// toolStrip1
@@ -2386,6 +2399,7 @@
 			this.editorsTabControl.ResumeLayout(false);
 			this.dungeonPage.ResumeLayout(false);
 			this.overworldPage.ResumeLayout(false);
+			this.GfxEditorPage.ResumeLayout(false);
 			this.textPage.ResumeLayout(false);
 			this.spritesPage.ResumeLayout(false);
 			this.toolStrip1.ResumeLayout(false);
@@ -2632,6 +2646,7 @@
 		internal TextEditor TextEditor;
 		internal DungeonEditor DungeonEditor;
 		internal SpriteEditor SpriteEditor;
+		private GraphicsManagerForm graphicsManagerForm1;
 	}
 }
 

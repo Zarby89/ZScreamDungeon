@@ -143,6 +143,15 @@
 			g.DrawImage(FinalOutput, 0, 0);
 		}
 
+		public virtual void DrawSelfToImageSmall(Graphics g)
+		{
+			Revalidate();
+
+			g.InterpolationMode = InterpolationMode.Bilinear;
+
+			g.DrawImage(FinalOutput, 0, 0, 256, 256);
+		}
+
 		private void DrawTileToBuffer(in Tile tile, int x, int y, IGraphicsCanvas canvas)
 		{
 			var (til, pal) = LoadedGraphics.GetBackgroundTileWithPalette(tile);

@@ -197,7 +197,7 @@ namespace ZeldaFullEditor.Handler
 
 		// TODO magic numbers
 
-		public GraphicsSheet[] AllSheets { get; } = new GraphicsSheet[256];
+		public GraphicsSheet[] AllSheets { get; } = new GraphicsSheet[Constants.NumberOfSheets];
 
 		/// <summary>
 		/// Creates every <see cref="GraphicsSheet"/> based on ROM data

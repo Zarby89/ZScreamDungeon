@@ -149,19 +149,18 @@
 			base.DrawSelfToImage(g);
 		}
 
+		public override void DrawSelfToImageSmall(Graphics g)
+		{
+			if (CurrentRoom == null) return;
+
+			base.DrawSelfToImageSmall(g);
+		}
+
 		public void DrawIDToImage(Graphics g)
 		{
 			if (CurrentRoom == null) return;
 
 			g.DrawText(0, 0, $"ROOM: {CurrentRoom.RoomID:X3}");
-		}
-
-		public void SetRoomAndDrawImmediately(Room room)
-		{
-			if (CurrentRoom == room) return;
-
-			CurrentRoom = room;
-			Invalidate();
 		}
 
 		public override void ReloadPalettes()

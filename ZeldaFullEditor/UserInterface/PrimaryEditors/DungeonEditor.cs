@@ -13,8 +13,6 @@
 		private readonly List<RoomObjectPreview> listoftilesobjects = new();
 		private readonly List<SpritePreview> listofspritesobjects = new();
 
-		private Room previewRoom;
-
 		int tpHotTracked = -1;
 		int tpHotTrackedToClose = -1;
 		int tpHotTrackedToCloseLast = -2;
@@ -531,8 +529,7 @@
 							if (cy < lowerY) { lowerY = cy; }
 							if (cx > higherX) { higherX = cx; }
 							if (cy > higherY) { higherY = cy; }
-
-							RoomPreviewArtist.SetRoomAndDrawImmediately(ZScreamer.ActiveScreamer.all_rooms[s]);
+							RoomPreviewArtist.CurrentRoom = ZScreamer.ActiveScreamer.all_rooms[s];
 
 							gb.DrawImage(RoomPreviewArtist.FinalOutput, new Point(cx * 512, cy * 512));
 						}
@@ -763,6 +760,7 @@
 				torch.Lit = litCheckbox.Checked;
 			}
 		}
+
 		private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
 		{
 			if (KeyDropComboBox.SelectedIndex > 0 && ZScreamer.ActiveUWScene.Room?.OnlySelectedObject is DungeonSprite s)
@@ -803,62 +801,87 @@
 			int xd = 0;
 			int yd = 0;
 			int yoff = 0;
-			e.Graphics.Clear(Color.Black);
+			e.Graphics.Clear(SystemColors.ScrollBar);
+
+
+			List<Room> opened = new();
+
+			foreach (TabPage tp in RoomTabControl.TabPages)
+			{
+				opened.Add(tp.Tag as Room);
+			}
+
+			object selroom = RoomTabControl?.SelectedTab?.Tag;
+
 			for (int i = 0; i < Constants.NumberOfRooms; i++)
 			{
 				var room = ZScreamer.ActiveScreamer.all_rooms[i];
-				if (!room.IsEmpty)
-				{
-					e.Graphics.FillRectangle(
-						new SolidBrush(room.CGPalette[4, 2].RealColor),
-						new Rectangle(xd * 16, (yd * 16) + yoff,
-						16,
-						16));
 
-					foreach (ushort s in selectedMapPng)
-					{
-						if (s == i)
-						{
-							e.Graphics.DrawRectangle(Constants.AquaPen2, new(xd * 16, (yd * 16) + yoff, 16, 16));
-						}
-					}
+				int alpha = opened.Contains(room) ? 255 : (HoveredRoom == i) ? 210 : 140;
+
+				e.Graphics.DrawFilledRectangleWithOutline(xd, yd + yoff, 16, 16,
+					Pens.LightSlateGray,
+					new SolidBrush(Color.FromArgb(alpha, room.IsEmpty ? Color.Black : room.RoomColor))
+				);
+
+				Pen outline = (selroom == room, opened.Contains(room), selectedMapPng.Contains((ushort) i)) switch
+				{
+					(true, _, _) => UIColors.SelectedRoomOutline, // selected tab
+					(false, true, false) => UIColors.OpenedRoomOutline, // opened tab
+					(false, true, true) => UIColors.OpenedExportedRoomOutline, // opened and exported
+					(false, false, true) => UIColors.ExportedRoomOutline, // opened and not exported
+
+					_ => null
+				};
+
+				if (outline is not null)
+				{
+					e.Graphics.DrawRectangle(outline, xd + 1, yd + yoff + 1, 14, 14);
 				}
 
-				xd++;
-				if (xd == 16)
+
+
+
+
+				xd += 16;
+				if (xd == 16 * 16)
 				{
-					yd++;
-					yoff = (yd > 15) ? 8 : 0;
+					yd += 16;
+					yoff = (yd > 15 * 16) ? 8 : 0;
 					xd = 0;
 				}
 			}
 
-			for (int i = 0; i < 16 * 16; i += 16)
-			{
-				e.Graphics.DrawLine(Pens.White, 0, i, 256, i);
-				e.Graphics.DrawLine(Pens.White, i, 0, i, 256);
-				e.Graphics.DrawLine(Pens.White, i, 264, i, 312);
-			}
-
-			e.Graphics.DrawLine(Pens.White, 0, 264 + 00, 256, 264 + 00);
-			e.Graphics.DrawLine(Pens.White, 0, 264 + 16, 256, 264 + 16);
-			e.Graphics.DrawLine(Pens.White, 0, 264 + 32, 256, 264 + 32);
-
-
-			for (int i = 0; i < Constants.NumberOfRooms; i++)
-			{
-				yoff = (i > 255) ? 8 : 0;
-
-				foreach (TabPage tp in RoomTabControl.TabPages)
-				{
-					if ((tp.Tag as Room).RoomID == i)
-					{
-						e.Graphics.DrawRectangle(
-								new Pen((RoomTabControl.SelectedTab == tp) ? Color.YellowGreen : Color.DarkGreen, 2),
-								new Rectangle((i % 16) * 16, (i & ~0xF) + yoff, 16, 16));
-					}
-				}
-			}
+			//xd = 0;
+			//yd = 0;
+			//yoff = 0;
+			//for (int i = 0; i < Constants.NumberOfRooms; i++)
+			//{
+			//	var room = ZScreamer.ActiveScreamer.all_rooms[i];
+			//
+			//	Pen outline = (selroom == room, opened.Contains(room), selectedMapPng.Contains((ushort) i)) switch
+			//	{
+			//		(true, _, _) => UIColors.SelectedRoomOutline, // selected tab
+			//		(false, true, false) => UIColors.OpenedRoomOutline, // opened tab
+			//		(false, true, true) => UIColors.OpenedExportedRoomOutline, // opened and exported
+			//		(false, false, true) => UIColors.ExportedRoomOutline, // opened and not exported
+			//
+			//		_ => null
+			//	};
+			//
+			//	if (outline is not null)
+			//	{
+			//		e.Graphics.DrawRectangle(outline, xd + 1, yd + yoff + 1, 14, 14);
+			//	}
+			//
+			//	xd += 16;
+			//	if (xd == 16 * 16)
+			//	{
+			//		yd += 16;
+			//		yoff = (yd > 15 * 16) ? 8 : 0;
+			//		xd = 0;
+			//	}
+			//}
 		}
 
 		private void DrawOnTab(object sender, DrawItemEventArgs e)
@@ -964,6 +987,8 @@
 			}
 		}
 
+		private int HoveredRoom = -1;
+
 		private void mapPicturebox_MouseDown(object sender, MouseEventArgs e)
 		{
 			if (e.Button == MouseButtons.Right)
@@ -974,16 +999,8 @@
 				}
 
 				thumbnailBox.Visible = true;
-				int yc = e.Y;
-				if (e.Y > 256)
-				{
-					yc -= 8;
-				}
-
-				int x = (e.X / 16);
-				int y = (yc / 16);
-				int roomId = x + (y * 16);
-				if (roomId > 295)
+				
+				if (HoveredRoom > 295)
 				{
 					return;
 				}
@@ -994,10 +1011,9 @@
 
 		private void thumbnailBox_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = InterpolationMode.Bilinear;
 			e.Graphics.Clear(Color.Black);
 
-			RoomPreviewArtist.DrawSelfToImage(e.Graphics);
+			RoomPreviewArtist.DrawSelfToImageSmall(e.Graphics);
 			RoomPreviewArtist.DrawIDToImage(e.Graphics);
 
 		}
@@ -1014,24 +1030,29 @@
 				if (e.Y >= 256 && e.Y <= 264)
 				{
 					thumbnailBox.Visible = false;
+					HoveredRoom = -1;
 					return;
 				}
 
 				thumbnailBox.Visible = true;
-				int yc = e.Y >= 256 ? 8 : 0;
 
-				int x = (e.X / 16);
-				int y = ((e.Y - yc) / 16);
-				int roomId = x + (y * 16);
-				if (roomId >= Constants.NumberOfRooms)
+				int yc = e.Y;
+				if (e.Y > 256)
 				{
+					yc -= 8;
+				}
+				HoveredRoom = (e.X / 16) + (yc & ~0xF);
+
+				if (HoveredRoom >= Constants.NumberOfRooms)
+				{
+					HoveredRoom = -1;
 					thumbnailBox.Visible = false;
 					return;
 				}
 
-				previewRoom = ZScreamer.ActiveScreamer.all_rooms[roomId];
-
-				RoomPreviewArtist.SetRoomAndDrawImmediately(previewRoom);
+				RoomPreviewArtist.CurrentRoom = ZScreamer.ActiveScreamer.all_rooms[HoveredRoom];
+				mapPicturebox.Refresh();
+				thumbnailBox.Refresh();
 			}
 		}
 
@@ -1044,6 +1065,7 @@
 		private void mapPicturebox_MouseLeave(object sender, EventArgs e)
 		{
 			thumbnailBox.Visible = false;
+			HoveredRoom = -1;
 		}
 
 		private void objectViewer1_SelectedIndexChanged(object sender, EventArgs e)

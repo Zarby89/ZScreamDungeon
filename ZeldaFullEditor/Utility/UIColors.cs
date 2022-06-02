@@ -8,6 +8,22 @@
 		public const int EntityAlpha = 200;
 		public const int EntitySelectedAlpha = 230;
 
+
+		public static readonly Pen GridPen = new(Color.FromArgb(150, 255, 255, 255));
+
+		//========================================================================================================================
+		// Underworld editor
+		//========================================================================================================================
+		public const int RoomClosedAlpha = 150;
+
+		public static readonly Pen SelectedRoomOutline = new(Color.Lime, 2);
+		public static readonly Pen OpenedRoomOutline = new(Color.LimeGreen, 2);
+		public static readonly Pen ExportedRoomOutline = new(Color.DarkTurquoise, 2);
+		public static readonly Pen OpenedExportedRoomOutline = new(Color.SeaGreen, 2);
+
+		//========================================================================================================================
+		// Overworld editor
+		//========================================================================================================================
 		public static readonly SolidBrush SelectedBrush = new(Color.FromArgb(EntitySelectedAlpha, Color.Azure));
 
 		public static readonly Pen OutlinePen = new(Color.FromArgb(EntitySelectedAlpha, Color.Black));
@@ -37,9 +53,6 @@
 		public static readonly Color TransportColor = Color.FromArgb(50, 175, 175);
 		public static readonly SolidBrush TransportBrush = new(Color.FromArgb(EntityAlpha, TransportColor));
 		public static readonly SolidBrush TransportSelectedBrush = new(Color.FromArgb(EntitySelectedAlpha, TransportColor));
-
-
-		public static readonly Pen GridPen = new(Color.FromArgb(150, 255, 255, 255));
 
 	}
 }
