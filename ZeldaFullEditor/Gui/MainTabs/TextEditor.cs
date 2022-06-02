@@ -33,131 +33,7 @@
 			pictureBox1.MouseWheel += new MouseEventHandler(pictureBox1_MouseWheel);
 		}
 
-		private static string OptimizeMessageForDictionary(string str)
-		{
-			const char CHEESE = '\uBEBE'; // inserted into commands to protect them from dictionary replacements
-
-			// build a new copy of the string where commands have their characters padded with a protective character
-			// this way, we can't accidentally replace anything as we do the dictionary stuff
-			StringBuilder protons = new StringBuilder();
-			bool cmd = false;
-			foreach (char c in str)
-			{
-				if (c == '[')
-				{
-					cmd = true;
-				}
-				else if (c == ']')
-				{
-					cmd = false;
-				}
-
-				protons.Append(c);
-
-				if (cmd)
-				{
-					protons.Append(CHEESE);
-				}
-			}
-			return ReplaceAllDictionaryWords(protons.ToString()).Replace(CHEESE.ToString(), string.Empty);
-		}
-
-		private static string ReplaceAllDictionaryWords(string s)
-		{
-			string ret = s;
-			foreach (DictionaryEntry w in AllDicts)
-			{
-				if (w.ContainedInString(ret))
-				{
-					ret = w.ReplaceInstancesOfIn(ret);
-				}
-			}
-			return ret;
-		}
-
-		private static ParsedElement FindMatchingElement(string s)
-		{
-			Match g;
-			foreach (TextElement t in TCommands.Concat(SpecialChars))
-			{
-				g = t.MatchMe(s);
-				if (g.Success)
-				{
-					if (t.HasArgument)
-					{
-						return new ParsedElement(t, byte.Parse(g.Groups[1].Value, NumberStyles.HexNumber));
-					}
-					else
-					{
-						return new ParsedElement(t, 0);
-					}
-				}
-			}
-
-			// see if dictionary entry
-			g = DictionaryElement.MatchMe(s);
-			if (g.Success)
-			{
-				return new ParsedElement(DictionaryElement,
-					(byte) (DictionaryBaseValue + byte.Parse(g.Groups[1].Value, NumberStyles.HexNumber)
-				));
-			}
-
-			return null;
-		}
-		private static TextElement FindMatchingCommand(byte b)
-		{
-			foreach (TextElement t in TCommands)
-			{
-				if (t.ID == b)
-				{
-					return t;
-				}
-			}
-
-			return null;
-		}
-
-		private static TextElement FindMatchingSpecial(byte b)
-		{
-			foreach (TextElement t in SpecialChars)
-			{
-				if (t.ID == b)
-				{
-					return t;
-				}
-			}
-
-			return null;
-		}
-
-		private static int FindDictionaryEntry(byte b)
-		{
-			if (b < DictionaryBaseValue || b == 0xFF)
-			{
-				return -1;
-			}
-
-			return b - DictionaryBaseValue;
-		}
-
-		public static DictionaryEntry GetDictionaryFromID(byte b)
-		{
-			return AllDicts.First(ddd => ddd.ID == b);
-		}
-
-		public static byte FindMatchingCharacter(char c)
-		{
-			foreach (KeyValuePair<byte, char> kt in CharEncoder)
-			{
-				if (kt.Value == c)
-				{
-					return kt.Key;
-				}
-			}
-
-			return 0xFF;
-		}
+		
 
 		public bool SelectMessageID(int i)
 		{
@@ -167,11 +43,6 @@
 				return true;
 			}
 			return false;
-		}
-
-		private void TextEditor_Load(object sender, EventArgs e)
-		{
-			//TODO: Add something here?
 		}
 
 		public void ReadAllTextDataFromROM()
@@ -393,7 +264,6 @@
 
 		public void OnProjectLoad()
 		{
-			panel1.Enabled = true;
 			for (int i = 0; i < 100; i++)
 			{
 				widthArray[i] = ZScreamer.ActiveROM[ZScreamer.ActiveOffsets.characters_width + i];
@@ -471,7 +341,7 @@
 		/// <summary>
 		/// Includes parentheses to be longer, since player names can be up to 6 characters.
 		/// </summary>
-		private static readonly string NAMEPreview = "(NAME)";
+		private const string NAMEPreview = "(NAME)";
 
 		private void DrawCharacterToPreview(params byte[] text)
 		{
@@ -536,7 +406,7 @@
 						break;
 
 					case >= DictionaryBaseValue when b < (DictionaryBaseValue + 97):
-							DictionaryEntry d = GetDictionaryFromID((byte) (b - DictionaryBaseValue));
+						DictionaryEntry d = GetDictionaryFromID((byte) (b - DictionaryBaseValue));
 						if (d != null)
 						{
 							DrawCharacterToPreview(d.Data);
@@ -918,18 +788,6 @@
 			df.ShowDialog();
 		}
 
-		private void dumpTextsToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			string[] alltexts = new string[listOfTexts.Count];
-			int i = 0;
-			foreach (MessageData m in listOfTexts)
-			{
-				alltexts[i++] = m.GetDumpedContents();
-			}
-
-			File.WriteAllLines("dump.txt", alltexts);
-		}
-
 		private void button5_Click(object sender, EventArgs e)
 		{
 			ZScreamer.ActiveROM.Write(ZScreamer.ActiveOffsets.characters_width, widthArray);
@@ -942,45 +800,47 @@
 		// TODO needs a rewrite
 		private void toolStripButton2_Click(object sender, EventArgs e)
 		{
-			//using (OpenFileDialog of = new OpenFileDialog()) 
-			//{
-			//    of.DefaultExt = ".txt";
-			//    if (of.ShowDialog() == DialogResult.OK) 
-			//    {
-			//        string[] alltexts = File.ReadAllLines(of.FileName);
-			//        for (int i = 0; i < alltexts.Length; i++)
-			//        {
-			//            if (alltexts[i].Length > 3)
-			//            {
-			//                int id = int.Parse(alltexts[i].Substring(0, 3));
-			//                listOfTexts[id] = new StringKey(alltexts[i].Substring(5, alltexts[i].Length - 5), new byte[] { });
-			//            }
-			//        }
-			//
-			//        sortText();
-			//    }
-			//}
-		}
-
-		private void toolStripButton1_Click(object sender, EventArgs e)
-		{
-			using SaveFileDialog sf = new SaveFileDialog();
-			sf.DefaultExt = ".txt";
-			if (sf.ShowDialog() == DialogResult.OK)
+			using OpenFileDialog of = new()
 			{
-				string[] alltexts = new string[listOfTexts.Count];
-				for (int i = 0; i < listOfTexts.Count; i++)
+				DefaultExt = ".txt"
+			};
+
+			if (of.ShowDialog() == DialogResult.OK)
+			{
+				textListbox.SelectedIndex = -1;
+				textListbox.BeginUpdate();
+				textListbox.DataSource = null;
+
+				string[] alltexts = File.ReadAllLines(of.FileName);
+				for (int i = 0; i < alltexts.Length; i++)
 				{
-					alltexts[i] = i.ToString("X3") + " : " + listOfTexts[i].ContentsParsed + "\r\n\r\n";
+					if (alltexts[i].Length > 3)
+					{
+						int id = int.Parse(alltexts[i][..3]);
+						listOfTexts[id].SetMessage(alltexts[i][5..]);
+					}
 				}
 
-				File.WriteAllLines(sf.FileName, alltexts);
+				textListbox.DataSource = listOfTexts;
+				textListbox.EndUpdate();
 			}
 		}
 
-		private void toolStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+		private void dumpTextsToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-			//TODO: Add something here?
+			using SaveFileDialog sf = new SaveFileDialog()
+			{
+				DefaultExt = ".txt"
+			};
+			if (sf.ShowDialog() == DialogResult.OK)
+			{
+				List<string> alltexts = new(listOfTexts.Count);
+				foreach (MessageData m in listOfTexts)
+				{
+					alltexts.Add(m.GetDumpedContents());
+				}
+				File.WriteAllLines("dump.txt", alltexts);
+			}
 		}
 
 		public void delete()

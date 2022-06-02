@@ -84,7 +84,7 @@
 			this.panel1.Controls.Add(this.label1);
 			this.panel1.Controls.Add(this.searchTextbox);
 			this.panel1.Controls.Add(this.label4);
-			this.panel1.Enabled = false;
+			this.panel1.Enabled = true;
 			this.panel1.Location = new System.Drawing.Point(3, 29);
 			this.panel1.Name = "panel1";
 			this.panel1.Size = new System.Drawing.Size(433, 714);
@@ -445,7 +445,6 @@
 			this.toolStrip1.Size = new System.Drawing.Size(981, 25);
 			this.toolStrip1.TabIndex = 24;
 			this.toolStrip1.Text = "toolStrip1";
-			this.toolStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolStrip1_ItemClicked);
 			// 
 			// toolStripButton1
 			// 
@@ -455,7 +454,7 @@
 			this.toolStripButton1.Name = "toolStripButton1";
 			this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
 			this.toolStripButton1.Text = "Export text";
-			this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+			this.toolStripButton1.Click += new System.EventHandler(this.dumpTextsToolStripMenuItem_Click);
 			// 
 			// toolStripButton2
 			// 
@@ -477,7 +476,6 @@
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.Name = "TextEditor";
 			this.Size = new System.Drawing.Size(981, 758);
-			this.Load += new System.EventHandler(this.TextEditor_Load);
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
 			this.panel2.ResumeLayout(false);
