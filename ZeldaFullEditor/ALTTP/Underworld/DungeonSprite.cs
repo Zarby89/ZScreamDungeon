@@ -110,7 +110,7 @@
 			return GridX == s.GridX && GridY == s.GridY && ID == s.ID && Subtype == s.Subtype;
 		}
 
-		public void Draw(Artist art)
+		public void Draw(IDrawArt art)
 		{
 			Species.Draw(art, this);
 
@@ -134,13 +134,14 @@
 		}
 	}
 
-	public class SpritePreview : IDelegatedDraw, IDrawableSprite
+	public class SpritePreview : IDelegatedDraw, IDrawableSprite, ITypeID
 	{
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
 		public int RealX => 16;
 		public int RealY => 16;
 		public byte ID => Species.ID;
+		public int TypeID => Species.ID;
 		public SpriteType Species { get; }
 		public string Name => Species.Name;
 
@@ -149,7 +150,7 @@
 			Species = type;
 		}
 
-		public void Draw(Artist art)
+		public void Draw(IDrawArt art)
 		{
 			Species.Draw(art, this);
 		}

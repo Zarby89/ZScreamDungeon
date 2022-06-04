@@ -1,10 +1,11 @@
 ﻿namespace ZeldaFullEditor.ALTTP.Overworld
 {
-	public class OverworldSprite : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IHaveInfo, IComparable<OverworldSprite>
+	public class OverworldSprite : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, ITypeID, IHaveInfo, IComparable<OverworldSprite>
 	{
 		public override string Name => Species.Name;
 		public byte ID => Species.ID;
 		public bool IsCurrentlyOverlord => ID > 0xF2;
+		public int TypeID => ID;
 
 		/// <summary>
 		/// The intended type of the sprite or overlord.
@@ -18,7 +19,7 @@
 			MapID = screen;
 		}
 
-		public void Draw(Artist art)
+		public void Draw(IDrawArt art)
 		{
 			Species.Draw(art, this);
 		}

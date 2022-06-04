@@ -2,7 +2,7 @@
 {
 	public class SecretItemType : IEntityType<SecretItemType>
 	{
-		public delegate void DrawSecret(Artist art, IDrawableSprite s);
+		public delegate void DrawSecret(IDrawArt art, IDrawableSprite s);
 
 		public byte ID { get; }
 		public int ListID => ID;
@@ -59,9 +59,16 @@
 		[PredefinedInstance] public static readonly SecretItemType Secret88 = new(0x88, SecretDraw_Switch);
 
 
-		public static unsafe void DrawTiles(Artist art, IDrawableSprite sec, params OAMDrawInfo[] instructions)
+		public static unsafe void DrawTiles(IDrawArt artist, IDrawableSprite sec, params OAMDrawInfo[] instructions)
 		{
-			art.DrawSprite(sec, instructions);
+			if (artist is PreviewArtist prvart && sec is ITypeID spr)
+			{
+				prvart.AddToObjectsPreview(spr, instructions);
+			}
+			else if (artist is TilemapArtist art)
+			{
+				art.DrawSprite(sec, instructions);
+			}
 		}
 
 		/*
@@ -181,117 +188,117 @@
 
 
 
-		private static void SecretDraw_Arrow(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Arrow(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Bee(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Bee(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_BlueRupee(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_BlueRupee(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_BlueSldier(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_BlueSldier(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Bomb(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Bomb(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Bombable(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Bombable(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_BushStal(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_BushStal(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Cucco(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Cucco(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Fairy(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Fairy(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_FullMagic(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_FullMagic(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_GreenRupee(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_GreenRupee(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_GreenSoldier(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_GreenSoldier(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_HealthPack(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_HealthPack(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Heart(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Heart(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Hoarder(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Hoarder(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Hole(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Hole(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Key(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Key(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Landmine(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Landmine(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Nothing(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Nothing(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_SmallMagic(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_SmallMagic(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Staircase(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Staircase(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Switch(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Switch(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}
 
-		private static void SecretDraw_Warp(Artist art, IDrawableSprite sec)
+		private static void SecretDraw_Warp(IDrawArt artist, IDrawableSprite sec)
 		{
 
 		}

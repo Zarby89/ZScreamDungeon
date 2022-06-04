@@ -35,7 +35,7 @@
 
 		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
 
-		public byte Size { get; set; }
+		public virtual byte Size { get; set; }
 
 		public int Width { get; set; } = 8;
 		public int Height { get; set; } = 8;
@@ -71,7 +71,7 @@
 		}
 
 
-		public void Draw(Artist art)
+		public void Draw(IDrawArt art)
 		{
 			Width = 8;
 			Height = 8;
@@ -158,9 +158,13 @@
 	/// </summary>
 	public class RoomObjectPreview : RoomObject
 	{
+		public override byte Size
+		{
+			get => 4;
+			set { }
+		}
 		public RoomObjectPreview(RoomObjectType type, TilesList tiles) : base(type, tiles)
 		{
-			Size = 4;
 		}
 	}
 }

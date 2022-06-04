@@ -35,7 +35,7 @@
 			SecretType = s;
 		}
 
-		public void Draw(Artist art)
+		public void Draw(IDrawArt art)
 		{
 			SecretType.Draw(art, this);
 		}

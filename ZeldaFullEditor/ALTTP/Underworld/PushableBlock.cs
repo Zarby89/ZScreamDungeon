@@ -24,7 +24,7 @@
 
 		public Rectangle BoundingBox => new(RealX, RealY, 16, 16);
 
-		public void Draw(Artist art)
+		public void Draw(IDrawArt art)
 		{
 			throw new NotImplementedException();
 		}

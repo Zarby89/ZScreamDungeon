@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.UserInterface.Drawing.Artists
 {
-	public abstract class Artist
+	public abstract class TilemapArtist : IDrawArt
 	{
 		public abstract ushort[] Layer1TileMap { get; }
 		public abstract PointeredImage Layer1Canvas { get; }
@@ -19,11 +19,12 @@
 
 		public bool Valid { get; private set; }
 
-		protected abstract GraphicsSet LoadedGraphics { get; }
-		protected abstract NeedsNewArt Redrawing { get; }
+		public abstract GraphicsSet LoadedGraphics { get; }
+
+		public abstract NeedsNewArt Redrawing { get; }
 
 
-		protected Artist() { }
+		protected TilemapArtist() { }
 
 
 

@@ -1,17 +1,19 @@
 ﻿namespace ZeldaFullEditor.ALTTP.Overworld
 {
-	public class OverworldSecret : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IHaveInfo, IComparable<OverworldSecret>
+	public class OverworldSecret : OverworldEntity, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IDrawableSprite, IHaveInfo, ITypeID, IComparable<OverworldSecret>
 	{
 		public byte ID => SecretType?.ID ?? 0;
 		public SecretItemType SecretType { get; set; }
 		public override string Name => SecretType?.Name ?? "Secret";
+
+		public int TypeID => ID;
 
 		public OverworldSecret(SecretItemType s)
 		{
 			SecretType = s;
 		}
 
-		public void Draw(Artist art)
+		public void Draw(IDrawArt art)
 		{
 			SecretType.Draw(art, this);
 		}

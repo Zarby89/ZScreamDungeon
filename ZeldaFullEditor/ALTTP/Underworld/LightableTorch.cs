@@ -31,7 +31,7 @@
 
 		}
 
-		public void Draw(Artist art)
+		public void Draw(IDrawArt art)
 		{
 			throw new NotImplementedException();
 		}

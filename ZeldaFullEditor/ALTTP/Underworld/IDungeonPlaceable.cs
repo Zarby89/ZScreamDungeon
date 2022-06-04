@@ -5,6 +5,6 @@
 	/// </summary>
 	public interface IDungeonPlaceable : IMouseCollidable, IHaveInfo
 	{
-		public void Draw(Artist art);
+		public void Draw(IDrawArt art);
 	}
 }

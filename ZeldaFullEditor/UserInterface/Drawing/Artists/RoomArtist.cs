@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.UserInterface.Drawing.Artists
 {
-	public class RoomArtist : Artist
+	public class RoomArtist : TilemapArtist
 	{
 		private Room curroom;
 		public Room CurrentRoom
@@ -14,8 +14,8 @@
 			}
 		}
 
-		protected override GraphicsSet LoadedGraphics => CurrentRoom.LoadedGraphics;
-		protected override NeedsNewArt Redrawing => CurrentRoom.Redrawing;
+		public override GraphicsSet LoadedGraphics => CurrentRoom.LoadedGraphics;
+		public override NeedsNewArt Redrawing => CurrentRoom.Redrawing;
 
 		public override ushort[] Layer1TileMap { get; } = new ushort[Constants.TilesPerUnderworldRoom];
 		public override PointeredImage Layer1Canvas { get; } = new(512, 512);

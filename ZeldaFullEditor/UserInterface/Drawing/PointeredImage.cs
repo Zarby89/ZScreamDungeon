@@ -13,16 +13,14 @@
 		public int Width => Bitmap.Width;
 		public int Height => Bitmap.Height;
 
-		public byte this[int i]
-		{
-			get => Pointer[i];
-			set => Pointer[i] = value;
-		}
-
 		public byte this[int x, int y]
 		{
 			get => Pointer[x + y * Width];
-			set => Pointer[x + y * Width] = value;
+			set
+			{
+				if (x < 0 || x >= Width || y < 0 || y >= Height) return;
+				Pointer[x + y * Width] = value;
+			}
 		}
 
 		public ColorPalette Palette

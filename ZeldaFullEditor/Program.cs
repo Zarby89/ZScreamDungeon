@@ -49,6 +49,7 @@ namespace ZeldaFullEditor
 	internal static class TheGUI {
 		public static RoomArtist RoomEditingArtist { get; } = new();
 		public static RoomArtist RoomPreviewArtist { get; } = new();
+		public static PreviewArtist UXPreviewArtist { get; } = new();
 
 		public static ZScreamForm ZGUI = new();
 	}

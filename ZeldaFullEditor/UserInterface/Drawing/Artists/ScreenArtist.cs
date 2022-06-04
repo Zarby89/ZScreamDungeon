@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor.UserInterface.Drawing.Artists
 {
-	public class ScreenArtist : Artist
+	public class ScreenArtist : TilemapArtist
 	{
 		public OverworldScreen MyScreen { get; }
 
@@ -13,9 +13,9 @@
 
 		public override PointeredImage SpriteCanvas { get; } = new(512, 512);
 
-		protected override GraphicsSet LoadedGraphics => MyScreen.LoadedGraphics;
+		public override GraphicsSet LoadedGraphics => MyScreen.LoadedGraphics;
 
-		protected override NeedsNewArt Redrawing => MyScreen.Redrawing;
+		public override NeedsNewArt Redrawing => MyScreen.Redrawing;
 
 		public override Bitmap FinalOutput { get; } = new(512, 512);
 

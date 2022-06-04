@@ -365,17 +365,17 @@
 		}
 		private static TextElement FindMatchingCommand(byte b)
 		{
-			return TCommands.First(t => t.ID == b);
+			return TCommands.FirstOrDefault(t => t.ID == b);
 		}
 
 		private static TextElement FindMatchingSpecial(byte b)
 		{
-			return SpecialChars.First(t => t.ID == b);
+			return SpecialChars.FirstOrDefault(t => t.ID == b);
 		}
 
 		public static DictionaryEntry GetDictionaryFromID(byte b)
 		{
-			return AllDicts.First(ddd => ddd.ID == b);
+			return AllDicts.FirstOrDefault(ddd => ddd.ID == b);
 		}
 
 		private static int FindDictionaryEntry(byte b) => b switch

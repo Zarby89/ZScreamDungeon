@@ -8,6 +8,6 @@
 		/// <summary>
 		/// Draw this object using the specified artist.
 		/// </summary>
-		public void Draw(Artist art);
+		public void Draw(IDrawArt art);
 	}
 }

@@ -19,7 +19,7 @@
 			ReceiptType = s;
 		}
 
-		public void Draw(Artist art)
+		public void Draw(IDrawArt art)
 		{
 			ReceiptType.Draw(art, this);
 		}

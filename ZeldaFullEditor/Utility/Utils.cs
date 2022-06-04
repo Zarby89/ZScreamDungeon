@@ -121,7 +121,7 @@
 			}
 		}
 
-		public static List<TList> GetOrMakeListForKey<TKey, TList>(this Dictionary<TKey, List<TList>> d, TKey key)
+		public static TOut GetOrMakeListForKey<TKey, TOut>(this Dictionary<TKey, TOut> d, TKey key) where TOut : new()
 		{
 			if (d.ContainsKey(key))
 			{
@@ -179,7 +179,7 @@
 		}
 
 
-		internal static T GetTypeFromID<T>(this ICollection<T> list, int id) where T : IEntityType<T>
+		internal static T GetTypeFromID<T>(this IEnumerable<T> list, int id) where T : IEntityType<T>
 		{
 			return list.FirstOrDefault(o => o.ListID == id);
 		}

@@ -2,7 +2,7 @@
 
 namespace ZeldaFullEditor.ALTTP.Underworld
 {
-	internal delegate void DoorDrawFunction(Artist art, DungeonDoor door);
+	internal delegate void DoorDrawFunction(TilemapArtist art, DungeonDoor door);
 
 	public class DungeonDoorDraw
 	{
@@ -27,7 +27,7 @@ namespace ZeldaFullEditor.ALTTP.Underworld
 			IsHorizontal = dir == West || dir == East;
 		}
 
-		public void Draw(Artist art, DungeonDoor door)
+		public void Draw(TilemapArtist art, DungeonDoor door)
 		{
 			draw(art, door);
 			drawopp(art, door);
@@ -140,59 +140,59 @@ namespace ZeldaFullEditor.ALTTP.Underworld
 		public static readonly DungeonDoorDraw East16 = new(East, 0x16, DrawEast16, DrawNothing);
 
 
-		internal static void DrawNothing(Artist art, DungeonDoor door) { } // THIS PAGE LEFT INTENTIONALLY BLANK
+		internal static void DrawNothing(TilemapArtist art, DungeonDoor door) { } // THIS PAGE LEFT INTENTIONALLY BLANK
 
-		private static void DrawNorth00(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x021C, false); }
-		private static void DrawNorth02(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x023C, false); }
-		private static void DrawNorth04(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x025C, false); }
-		private static void DrawNorth06(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x039C, false); }
-		private static void DrawNorth08(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x03BC, false); }
-		private static void DrawNorth0A(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x03DC, false); }
-		private static void DrawNorth0C(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x121C, false); }
-		private static void DrawNorth0E(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x123C, false); }
-		private static void DrawNorth10(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x125C, false); }
-		private static void DrawNorth12(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x139C, false); }
-		private static void DrawNorth14(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x13BC, false); }
-		private static void DrawNorth16(Artist art, DungeonDoor door) { DrawNorth(art, door, 0x13DC, false); }
+		private static void DrawNorth00(TilemapArtist art, DungeonDoor door) { DrawNorth(art, door, 0x021C, false); }
+		private static void DrawNorth02(TilemapArtist art, DungeonDoor door) { DrawNorth(art, door, 0x023C, false); }
+		private static void DrawNorth04(TilemapArtist art, DungeonDoor door) { DrawNorth(art, door, 0x025C, false); }
+		private static void DrawNorth06(TilemapArtist art, DungeonDoor door) { DrawNorth(art, door, 0x039C, false); }
+		private static void DrawNorth08(TilemapArtist art, DungeonDoor door) { DrawNorth(art, door, 0x03BC, false); }
+		private static void DrawNorth0A(TilemapArtist art, DungeonDoor door) { DrawNorth(art, door, 0x03DC, false); }
+		private static void DrawNorth0C(TilemapArtist art, DungeonDoor door) { DrawNorth(art, door, 0x121C, false); }
+		private static void DrawNorth0E(TilemapArtist art, DungeonDoor door) { DrawNorth(art, door, 0x123C, false); }
+		private static void DrawNorth10(TilemapArtist art, DungeonDoor door) { DrawNorth(art, door, 0x125C, false); }
+		private static void DrawNorth12(TilemapArtist art, DungeonDoor door) { DrawNorth(art, door, 0x139C, false); }
+		private static void DrawNorth14(TilemapArtist art, DungeonDoor door) { DrawNorth(art, door, 0x13BC, false); }
+		private static void DrawNorth16(TilemapArtist art, DungeonDoor door) { DrawNorth(art, door, 0x13DC, false); }
 
-		private static void DrawSouth00(Artist art, DungeonDoor door) { DrawSouth(art, door, 0x0D1C, false); }
-		private static void DrawSouth02(Artist art, DungeonDoor door) { DrawSouth(art, door, 0x0D3C, false); }
-		private static void DrawSouth04(Artist art, DungeonDoor door) { DrawSouth(art, door, 0x0D5C, false); }
-		private static void DrawSouth06(Artist art, DungeonDoor door) { DrawSouth(art, door, 0x0B9C, false); }
-		private static void DrawSouth08(Artist art, DungeonDoor door) { DrawSouth(art, door, 0x0BBC, false); }
-		private static void DrawSouth0A(Artist art, DungeonDoor door) { DrawSouth(art, door, 0x0BDC, false); }
-		private static void DrawSouth0C(Artist art, DungeonDoor door) { DrawSouth(art, door, 0x1D1C, false); }
-		private static void DrawSouth0E(Artist art, DungeonDoor door) { DrawSouth(art, door, 0x1D3C, false); }
-		private static void DrawSouth10(Artist art, DungeonDoor door) { DrawSouth(art, door, 0x1D5C, false); }
-		private static void DrawSouth12(Artist art, DungeonDoor door) { DrawSouth(art, door, 0x1B9C, false); }
-		private static void DrawSouth14(Artist art, DungeonDoor door) { DrawSouth(art, door, 0x1BBC, false); }
-		private static void DrawSouth16(Artist art, DungeonDoor door) { DrawSouth(art, door, 0x1BDC, false); }
+		private static void DrawSouth00(TilemapArtist art, DungeonDoor door) { DrawSouth(art, door, 0x0D1C, false); }
+		private static void DrawSouth02(TilemapArtist art, DungeonDoor door) { DrawSouth(art, door, 0x0D3C, false); }
+		private static void DrawSouth04(TilemapArtist art, DungeonDoor door) { DrawSouth(art, door, 0x0D5C, false); }
+		private static void DrawSouth06(TilemapArtist art, DungeonDoor door) { DrawSouth(art, door, 0x0B9C, false); }
+		private static void DrawSouth08(TilemapArtist art, DungeonDoor door) { DrawSouth(art, door, 0x0BBC, false); }
+		private static void DrawSouth0A(TilemapArtist art, DungeonDoor door) { DrawSouth(art, door, 0x0BDC, false); }
+		private static void DrawSouth0C(TilemapArtist art, DungeonDoor door) { DrawSouth(art, door, 0x1D1C, false); }
+		private static void DrawSouth0E(TilemapArtist art, DungeonDoor door) { DrawSouth(art, door, 0x1D3C, false); }
+		private static void DrawSouth10(TilemapArtist art, DungeonDoor door) { DrawSouth(art, door, 0x1D5C, false); }
+		private static void DrawSouth12(TilemapArtist art, DungeonDoor door) { DrawSouth(art, door, 0x1B9C, false); }
+		private static void DrawSouth14(TilemapArtist art, DungeonDoor door) { DrawSouth(art, door, 0x1BBC, false); }
+		private static void DrawSouth16(TilemapArtist art, DungeonDoor door) { DrawSouth(art, door, 0x1BDC, false); }
 
-		private static void DrawWest00(Artist art, DungeonDoor door) { DrawWest(art, door, 0x0784, false); }
-		private static void DrawWest02(Artist art, DungeonDoor door) { DrawWest(art, door, 0x0F84, false); }
-		private static void DrawWest04(Artist art, DungeonDoor door) { DrawWest(art, door, 0x1784, false); }
-		private static void DrawWest06(Artist art, DungeonDoor door) { DrawWest(art, door, 0x078A, false); }
-		private static void DrawWest08(Artist art, DungeonDoor door) { DrawWest(art, door, 0x0F8A, false); }
-		private static void DrawWest0A(Artist art, DungeonDoor door) { DrawWest(art, door, 0x178A, false); }
-		private static void DrawWest0C(Artist art, DungeonDoor door) { DrawWest(art, door, 0x07C4, false); }
-		private static void DrawWest0E(Artist art, DungeonDoor door) { DrawWest(art, door, 0x0FC4, false); }
-		private static void DrawWest10(Artist art, DungeonDoor door) { DrawWest(art, door, 0x17C4, false); }
-		private static void DrawWest12(Artist art, DungeonDoor door) { DrawWest(art, door, 0x07CA, false); }
-		private static void DrawWest14(Artist art, DungeonDoor door) { DrawWest(art, door, 0x0FCA, false); }
-		private static void DrawWest16(Artist art, DungeonDoor door) { DrawWest(art, door, 0x17CA, false); }
+		private static void DrawWest00(TilemapArtist art, DungeonDoor door) { DrawWest(art, door, 0x0784, false); }
+		private static void DrawWest02(TilemapArtist art, DungeonDoor door) { DrawWest(art, door, 0x0F84, false); }
+		private static void DrawWest04(TilemapArtist art, DungeonDoor door) { DrawWest(art, door, 0x1784, false); }
+		private static void DrawWest06(TilemapArtist art, DungeonDoor door) { DrawWest(art, door, 0x078A, false); }
+		private static void DrawWest08(TilemapArtist art, DungeonDoor door) { DrawWest(art, door, 0x0F8A, false); }
+		private static void DrawWest0A(TilemapArtist art, DungeonDoor door) { DrawWest(art, door, 0x178A, false); }
+		private static void DrawWest0C(TilemapArtist art, DungeonDoor door) { DrawWest(art, door, 0x07C4, false); }
+		private static void DrawWest0E(TilemapArtist art, DungeonDoor door) { DrawWest(art, door, 0x0FC4, false); }
+		private static void DrawWest10(TilemapArtist art, DungeonDoor door) { DrawWest(art, door, 0x17C4, false); }
+		private static void DrawWest12(TilemapArtist art, DungeonDoor door) { DrawWest(art, door, 0x07CA, false); }
+		private static void DrawWest14(TilemapArtist art, DungeonDoor door) { DrawWest(art, door, 0x0FCA, false); }
+		private static void DrawWest16(TilemapArtist art, DungeonDoor door) { DrawWest(art, door, 0x17CA, false); }
 
-		private static void DrawEast00(Artist art, DungeonDoor door) { DrawEast(art, door, 0x07B4, false); }
-		private static void DrawEast02(Artist art, DungeonDoor door) { DrawEast(art, door, 0x0FB4, false); }
-		private static void DrawEast04(Artist art, DungeonDoor door) { DrawEast(art, door, 0x17B4, false); }
-		private static void DrawEast06(Artist art, DungeonDoor door) { DrawEast(art, door, 0x07AE, false); }
-		private static void DrawEast08(Artist art, DungeonDoor door) { DrawEast(art, door, 0x0FAE, false); }
-		private static void DrawEast0A(Artist art, DungeonDoor door) { DrawEast(art, door, 0x17AE, false); }
-		private static void DrawEast0C(Artist art, DungeonDoor door) { DrawEast(art, door, 0x07F4, false); }
-		private static void DrawEast0E(Artist art, DungeonDoor door) { DrawEast(art, door, 0x0FF4, false); }
-		private static void DrawEast10(Artist art, DungeonDoor door) { DrawEast(art, door, 0x17F4, false); }
-		private static void DrawEast12(Artist art, DungeonDoor door) { DrawEast(art, door, 0x07EE, false); }
-		private static void DrawEast14(Artist art, DungeonDoor door) { DrawEast(art, door, 0x0FEE, false); }
-		private static void DrawEast16(Artist art, DungeonDoor door) { DrawEast(art, door, 0x17EE, false); }
+		private static void DrawEast00(TilemapArtist art, DungeonDoor door) { DrawEast(art, door, 0x07B4, false); }
+		private static void DrawEast02(TilemapArtist art, DungeonDoor door) { DrawEast(art, door, 0x0FB4, false); }
+		private static void DrawEast04(TilemapArtist art, DungeonDoor door) { DrawEast(art, door, 0x17B4, false); }
+		private static void DrawEast06(TilemapArtist art, DungeonDoor door) { DrawEast(art, door, 0x07AE, false); }
+		private static void DrawEast08(TilemapArtist art, DungeonDoor door) { DrawEast(art, door, 0x0FAE, false); }
+		private static void DrawEast0A(TilemapArtist art, DungeonDoor door) { DrawEast(art, door, 0x17AE, false); }
+		private static void DrawEast0C(TilemapArtist art, DungeonDoor door) { DrawEast(art, door, 0x07F4, false); }
+		private static void DrawEast0E(TilemapArtist art, DungeonDoor door) { DrawEast(art, door, 0x0FF4, false); }
+		private static void DrawEast10(TilemapArtist art, DungeonDoor door) { DrawEast(art, door, 0x17F4, false); }
+		private static void DrawEast12(TilemapArtist art, DungeonDoor door) { DrawEast(art, door, 0x07EE, false); }
+		private static void DrawEast14(TilemapArtist art, DungeonDoor door) { DrawEast(art, door, 0x0FEE, false); }
+		private static void DrawEast16(TilemapArtist art, DungeonDoor door) { DrawEast(art, door, 0x17EE, false); }
 
 
 		// ???
@@ -201,7 +201,7 @@ namespace ZeldaFullEditor.ALTTP.Underworld
 		// x = (byte) n;
 		// y = (byte) (posxy / 64);
 
-		public static void DrawTiles(Artist art, DungeonDoor obj, bool bg2, ushort tmap, params DrawInfo[] instructions)
+		public static void DrawTiles(TilemapArtist art, DungeonDoor obj, bool bg2, ushort tmap, params DrawInfo[] instructions)
 		{
 			foreach (var d in instructions)
 			{
@@ -223,28 +223,28 @@ namespace ZeldaFullEditor.ALTTP.Underworld
 			}
 		}
 
-		internal static void DrawFancyEntrance(Artist art, DungeonDoor door)
+		internal static void DrawFancyEntrance(TilemapArtist art, DungeonDoor door)
 		{
 			throw new NotImplementedException();
 		}
 
-		internal static void DrawExplodingWall(Artist art, DungeonDoor door)
+		internal static void DrawExplodingWall(TilemapArtist art, DungeonDoor door)
 		{
 			throw new NotImplementedException();
 		}
 
-		internal static void DrawKeyStairsUp(Artist art, DungeonDoor door)
+		internal static void DrawKeyStairsUp(TilemapArtist art, DungeonDoor door)
 		{
 			throw new NotImplementedException();
 		}
 
-		internal static void DrawKeyStairsDown(Artist art, DungeonDoor door)
+		internal static void DrawKeyStairsDown(TilemapArtist art, DungeonDoor door)
 		{
 			throw new NotImplementedException();
 		}
 
 
-		private static void DrawNorth(Artist art, DungeonDoor door, ushort tmap, bool bg2)
+		private static void DrawNorth(TilemapArtist art, DungeonDoor door, ushort tmap, bool bg2)
 		{
 			tmap /= 2;
 			// trim always goes on top
@@ -268,7 +268,7 @@ namespace ZeldaFullEditor.ALTTP.Underworld
 			);
 		}
 
-		private static void DrawSouth(Artist art, DungeonDoor door, ushort tmap, bool bg2)
+		private static void DrawSouth(TilemapArtist art, DungeonDoor door, ushort tmap, bool bg2)
 		{
 			tmap /= 2;
 			// trim always goes on top
@@ -293,7 +293,7 @@ namespace ZeldaFullEditor.ALTTP.Underworld
 			);
 		}
 
-		private static void DrawWest(Artist art, DungeonDoor door, ushort tmap, bool bg2)
+		private static void DrawWest(TilemapArtist art, DungeonDoor door, ushort tmap, bool bg2)
 		{
 			tmap /= 2;
 			// trim always goes on top
@@ -317,7 +317,7 @@ namespace ZeldaFullEditor.ALTTP.Underworld
 			);
 		}
 
-		private static void DrawEast(Artist art, DungeonDoor door, ushort tmap, bool bg2)
+		private static void DrawEast(TilemapArtist art, DungeonDoor door, ushort tmap, bool bg2)
 		{
 			tmap /= 2;
 			// trim always goes on top

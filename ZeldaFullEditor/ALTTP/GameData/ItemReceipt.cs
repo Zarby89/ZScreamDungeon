@@ -4,12 +4,14 @@
 	/// Represents an item received from a chest, sprite, etc. that updates Link's inventory and is
 	/// brandished visibly either by Link or by itself.
 	/// </summary>
-	public class ItemReceipt : IEntityType<ItemReceipt>
+	public class ItemReceipt : IEntityType<ItemReceipt>, ITypeID
 	{
-		public delegate void DrawReceipt(Artist art, ChestItem s);
+		public delegate void DrawReceipt(IDrawArt artist, ChestItem s);
 
 		public byte ID { get; init; }
 		public int ListID => ID;
+		public int TypeID => ID;
+
 		public string Name { get; init; }
 
 		public DrawReceipt Draw { get; }
@@ -109,23 +111,30 @@
 		[PredefinedInstance] public static readonly ItemReceipt Receipt4A = new(0x4A, ItemReceiptDraw4A);
 		[PredefinedInstance] public static readonly ItemReceipt Receipt4B = new(0x4B, ItemReceiptDraw4B);
 
-		public static unsafe void DrawTiles(Artist art, ChestItem sec, params OAMDrawInfo[] instructions)
+		public static unsafe void DrawTiles(IDrawArt artist, ChestItem sec, params OAMDrawInfo[] instructions)
 		{
-			int xoff, yoff;
-
-			// TODO
-			if (sec.AssociatedChest.IsBigChest)
+			if (artist is PreviewArtist prvart)
 			{
-				xoff = 0;
-				yoff = 0;
+				prvart.AddToObjectsPreview(sec, instructions);
 			}
-			else
+			else if (artist is TilemapArtist art)
 			{
-				xoff = 0;
-				yoff = 0;
-			}
+				int xoff, yoff;
 
-			art.DrawSprite(sec, instructions, xoff: xoff, yoff: yoff, useGlobal: true);
+				// TODO
+				if (sec.AssociatedChest.IsBigChest)
+				{
+					xoff = 0;
+					yoff = 0;
+				}
+				else
+				{
+					xoff = 0;
+					yoff = 0;
+				}
+
+				art.DrawSprite(sec, instructions, xoff: xoff, yoff: yoff, useGlobal: true);
+			}
 		}
 
 
@@ -448,384 +457,384 @@
 
 
 
-		public static void ItemReceiptDraw00(Artist art, ChestItem d)
+		public static void ItemReceiptDraw00(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw01(Artist art, ChestItem d)
+		public static void ItemReceiptDraw01(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw02(Artist art, ChestItem d)
+		public static void ItemReceiptDraw02(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw03(Artist art, ChestItem d)
+		public static void ItemReceiptDraw03(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw04(Artist art, ChestItem d)
+		public static void ItemReceiptDraw04(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw05(Artist art, ChestItem d)
+		public static void ItemReceiptDraw05(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw06(Artist art, ChestItem d)
+		public static void ItemReceiptDraw06(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw07(Artist art, ChestItem d)
+		public static void ItemReceiptDraw07(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw08(Artist art, ChestItem d)
+		public static void ItemReceiptDraw08(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw09(Artist art, ChestItem d)
+		public static void ItemReceiptDraw09(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw0A(Artist art, ChestItem d)
+		public static void ItemReceiptDraw0A(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw0B(Artist art, ChestItem d)
+		public static void ItemReceiptDraw0B(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw0C(Artist art, ChestItem d)
+		public static void ItemReceiptDraw0C(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw0D(Artist art, ChestItem d)
+		public static void ItemReceiptDraw0D(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw0E(Artist art, ChestItem d)
+		public static void ItemReceiptDraw0E(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw0F(Artist art, ChestItem d)
+		public static void ItemReceiptDraw0F(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw10(Artist art, ChestItem d)
+		public static void ItemReceiptDraw10(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw11(Artist art, ChestItem d)
+		public static void ItemReceiptDraw11(IDrawArt artist, ChestItem d)
 		{
-			//DrawTiles(art, d, new OAMDrawInfo());
+			//DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw12(Artist art, ChestItem d)
+		public static void ItemReceiptDraw12(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw13(Artist art, ChestItem d)
+		public static void ItemReceiptDraw13(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw14(Artist art, ChestItem d)
+		public static void ItemReceiptDraw14(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw15(Artist art, ChestItem d)
+		public static void ItemReceiptDraw15(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw16(Artist art, ChestItem d)
+		public static void ItemReceiptDraw16(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw17(Artist art, ChestItem d)
+		public static void ItemReceiptDraw17(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw18(Artist art, ChestItem d)
+		public static void ItemReceiptDraw18(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw19(Artist art, ChestItem d)
+		public static void ItemReceiptDraw19(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw1A(Artist art, ChestItem d)
+		public static void ItemReceiptDraw1A(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw1B(Artist art, ChestItem d)
+		public static void ItemReceiptDraw1B(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw1C(Artist art, ChestItem d)
+		public static void ItemReceiptDraw1C(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw1D(Artist art, ChestItem d)
+		public static void ItemReceiptDraw1D(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw1E(Artist art, ChestItem d)
+		public static void ItemReceiptDraw1E(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw1F(Artist art, ChestItem d)
+		public static void ItemReceiptDraw1F(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw20(Artist art, ChestItem d)
+		public static void ItemReceiptDraw20(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw21(Artist art, ChestItem d)
+		public static void ItemReceiptDraw21(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw22(Artist art, ChestItem d)
+		public static void ItemReceiptDraw22(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw23(Artist art, ChestItem d)
+		public static void ItemReceiptDraw23(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw24(Artist art, ChestItem d)
+		public static void ItemReceiptDraw24(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw25(Artist art, ChestItem d)
+		public static void ItemReceiptDraw25(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw26(Artist art, ChestItem d)
+		public static void ItemReceiptDraw26(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw27(Artist art, ChestItem d)
+		public static void ItemReceiptDraw27(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw28(Artist art, ChestItem d)
+		public static void ItemReceiptDraw28(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw29(Artist art, ChestItem d)
+		public static void ItemReceiptDraw29(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw2A(Artist art, ChestItem d)
+		public static void ItemReceiptDraw2A(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw2B(Artist art, ChestItem d)
+		public static void ItemReceiptDraw2B(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw2C(Artist art, ChestItem d)
+		public static void ItemReceiptDraw2C(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw2D(Artist art, ChestItem d)
+		public static void ItemReceiptDraw2D(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw2E(Artist art, ChestItem d)
+		public static void ItemReceiptDraw2E(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw2F(Artist art, ChestItem d)
+		public static void ItemReceiptDraw2F(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw30(Artist art, ChestItem d)
+		public static void ItemReceiptDraw30(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw31(Artist art, ChestItem d)
+		public static void ItemReceiptDraw31(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw32(Artist art, ChestItem d)
+		public static void ItemReceiptDraw32(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw33(Artist art, ChestItem d)
+		public static void ItemReceiptDraw33(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw34(Artist art, ChestItem d)
+		public static void ItemReceiptDraw34(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw35(Artist art, ChestItem d)
+		public static void ItemReceiptDraw35(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw36(Artist art, ChestItem d)
+		public static void ItemReceiptDraw36(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw37(Artist art, ChestItem d)
+		public static void ItemReceiptDraw37(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw38(Artist art, ChestItem d)
+		public static void ItemReceiptDraw38(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw39(Artist art, ChestItem d)
+		public static void ItemReceiptDraw39(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw3A(Artist art, ChestItem d)
+		public static void ItemReceiptDraw3A(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw3B(Artist art, ChestItem d)
+		public static void ItemReceiptDraw3B(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw3C(Artist art, ChestItem d)
+		public static void ItemReceiptDraw3C(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw3D(Artist art, ChestItem d)
+		public static void ItemReceiptDraw3D(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw3E(Artist art, ChestItem d)
+		public static void ItemReceiptDraw3E(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw3F(Artist art, ChestItem d)
+		public static void ItemReceiptDraw3F(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw40(Artist art, ChestItem d)
+		public static void ItemReceiptDraw40(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw41(Artist art, ChestItem d)
+		public static void ItemReceiptDraw41(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw42(Artist art, ChestItem d)
+		public static void ItemReceiptDraw42(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw43(Artist art, ChestItem d)
+		public static void ItemReceiptDraw43(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw44(Artist art, ChestItem d)
+		public static void ItemReceiptDraw44(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw45(Artist art, ChestItem d)
+		public static void ItemReceiptDraw45(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw46(Artist art, ChestItem d)
+		public static void ItemReceiptDraw46(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw47(Artist art, ChestItem d)
+		public static void ItemReceiptDraw47(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw48(Artist art, ChestItem d)
+		public static void ItemReceiptDraw48(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw49(Artist art, ChestItem d)
+		public static void ItemReceiptDraw49(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw4A(Artist art, ChestItem d)
+		public static void ItemReceiptDraw4A(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
-		public static void ItemReceiptDraw4B(Artist art, ChestItem d)
+		public static void ItemReceiptDraw4B(IDrawArt artist, ChestItem d)
 		{
-			DrawTiles(art, d, new OAMDrawInfo());
+			DrawTiles(artist, d, new OAMDrawInfo());
 		}
 
 	}

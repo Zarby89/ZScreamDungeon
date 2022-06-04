@@ -75,8 +75,11 @@
 			DoorTiles = tiles;
 		}
 
-		public void Draw(Artist art)
+		public void Draw(IDrawArt artist)
 		{
+			var art = (TilemapArtist) artist;
+			if (art is null) return;
+
 			if (DoorType.SpecialDraw != null)
 			{
 				DoorType.SpecialDraw(art, this);

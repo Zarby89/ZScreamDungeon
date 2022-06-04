@@ -112,5 +112,11 @@
 			var (gfx, pal) = GetSpriteTileWithPalette(tile);
 			gfx.DrawToCanvas(canvas, tile.X, tile.Y, (byte) pal, tile.HFlip, tile.VFlip);
 		}
+
+		public void DrawPreviewTileToCanvas(IGraphicsCanvas canvas, PreviewInfo tile)
+		{
+			var (gfx, pal) = GetBackgroundTileWithPalette(tile.ID, tile.Palette);
+			gfx.DrawToCanvas(canvas, tile.X, tile.Y, (byte) pal, tile.HFlip, tile.VFlip);
+		}
 	}
 }
