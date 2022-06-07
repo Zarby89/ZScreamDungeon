@@ -27,10 +27,7 @@
 
 		public override Bitmap FinalOutput { get; } = new(512, 512);
 
-		public RoomArtist() : base()
-		{
-
-		}
+		public RoomArtist() : base() { }
 
 		private void RebuildTileMap()
 		{
@@ -149,11 +146,11 @@
 			base.DrawSelfToImage(g);
 		}
 
-		public override void DrawSelfToImageSmall(Graphics g)
+		public override void DrawSelfToImageSmall(Graphics g, int x, int y)
 		{
 			if (CurrentRoom == null) return;
 
-			base.DrawSelfToImageSmall(g);
+			base.DrawSelfToImageSmall(g, x, y);
 		}
 
 		public void DrawIDToImage(Graphics g)
@@ -186,8 +183,83 @@
 			}
 		}
 
-
-
 		public override void DrawTileForPreview(Tile t, int indexoff) { }
+
+		public void AddTilesToTilemap(RoomObject obj)
+		{
+			var t = obj.ObjectType;
+			var instructions = t.GetDrawingForSize(obj.Size);
+
+			// declare these now so they can be captured by our dumb delegate idea
+			int tm = 0;
+			ushort td = 0;
+			ushort? tileUnder = null;
+
+			Action draw = null;
+			
+			if (t.BothBG || obj.Layer is RoomLayer.Layer1 or RoomLayer.Layer3)
+			{
+				draw += DrawToLayer1;
+			}
+			
+			if (t.BothBG || obj.Layer is RoomLayer.Layer2)
+			{
+				draw += DrawToLayer2;
+			}
+
+			foreach (DrawInfo d in instructions)
+			{
+				// TODO move this to the RoomObjectType class and calc them all from the start
+				if (obj.Width < d.XOff + 8)
+				{
+					obj.Width = d.XOff + 8;
+				}
+				if (obj.Height < d.YOff + 8)
+				{
+					obj.Height = d.YOff + 8;
+				}
+
+				tm = (d.XOff / 8) + obj.GridX + ((obj.GridY + (d.YOff / 8)) * 64);
+
+				if (tm is <Constants.TilesPerUnderworldRoom and >= 0)
+				{
+					td = obj.Tiles[d.TileIndex].GetModifiedUnsignedShort(hflip: d.HFlip, vflip: d.VFlip);
+
+					obj.CollisionRectangles.Add(new(d.XOff + obj.RealX, d.YOff + obj.RealY, 8, 8));
+
+					tileUnder = d.TileUnder switch
+					{
+						not null => obj.Tiles[(int) d.TileUnder].ToUnsignedShort(),
+						null => null,
+					};
+
+					draw();
+				}
+			}
+
+			// Local functions so we can use fewer ifs
+			void DrawToLayer1()
+			{
+				if (tileUnder == Layer1TileMap[tm])
+				{
+					return;
+				}
+
+				Layer1TileMap[tm] = td;
+			}
+
+			void DrawToLayer2()
+			{
+				if (tileUnder == Layer2TileMap[tm])
+				{
+					return;
+				}
+
+				Layer2TileMap[tm] = td;
+			}
+
+		}
+
+
 	}
 }

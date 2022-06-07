@@ -1013,7 +1013,7 @@
 		{
 			e.Graphics.Clear(Color.Black);
 
-			RoomPreviewArtist.DrawSelfToImageSmall(e.Graphics);
+			RoomPreviewArtist.DrawSelfToImageSmall(e.Graphics, 0, 0);
 			RoomPreviewArtist.DrawIDToImage(e.Graphics);
 
 		}

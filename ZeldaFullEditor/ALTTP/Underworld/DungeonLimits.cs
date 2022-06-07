@@ -11,6 +11,11 @@
 		None,
 
 		/// <summary>
+		/// Applies to chests, big chests, etc.
+		/// </summary>
+		Chest,
+
+		/// <summary>
 		/// Applies only to star tiles which are active upon room load.
 		/// </summary>
 		StarTiles,

@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Creates a room's object save data with meta properties to help optimize saving.
 	/// </summary>
-	public class RoomSaveEntry
+	internal class RoomSaveEntry
 	{
 		public ushort ID { get; }
 		public int TableIndex => ID * 3;
@@ -20,29 +20,27 @@
 			ret.Add((byte) ((room.Floor1Graphics & 0x0F) << 4 | room.Floor2Graphics & 0x0F));
 			ret.Add((byte) (room.Layout << 2));
 
-			ret.AddRange(room.Layer1Objects.GetByteData());
+			AddBytesIfNotEmpty(room.Layer1Objects);
 			ret.Add16(Constants.ObjectSentinel);
 
-			ret.AddRange(room.Layer2Objects.GetByteData());
+			AddBytesIfNotEmpty(room.Layer2Objects);
 			ret.Add16(Constants.ObjectSentinel);
 
-			ret.AddRange(room.Layer3Objects.GetByteData());
+			AddBytesIfNotEmpty(room.Layer3Objects);
+			ret.Add16(0xFFF0);
 
-			if (room.DoorsList.Count > 0)
-			{
-				ret.Add16(0xFFF0);
-				DoorOffset = ret.Count;
+			DoorOffset = ret.Count;
 
-				ret.AddRange(room.DoorsList.GetByteData());
-			}
-			else
-			{
-				DoorOffset = ret.Count;
-			}
-
+			AddBytesIfNotEmpty(room.DoorsList);
 			ret.Add16(Constants.ObjectSentinel);
 
 			Data = ret.ToArray();
+
+			void AddBytesIfNotEmpty<T>(DungeonLister<T> list) where T : IDungeonPlaceable, IByteable
+			{
+				if (list.Count == 0) return;
+				ret.AddRange(list.GetByteData());
+			}
 		}
 	}
 }

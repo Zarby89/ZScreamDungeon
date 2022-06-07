@@ -321,6 +321,32 @@
 			throw new NotImplementedException();
 		}
 
+
+		public void DoForAllRoomObjects(Action<RoomObject> act)
+		{
+			foreach (var r in Layer1Objects)
+			{
+				act(r);
+			}
+
+			foreach (var r in Layer2Objects)
+			{
+				act(r);
+			}
+
+			foreach (var r in Layer3Objects)
+			{
+				act(r);
+			}
+		}
+
+
+
+
+
+
+
+
 		public void Undo()
 		{
 			throw new NotImplementedException();
@@ -810,16 +836,13 @@
 		{
 			var count = 0;
 
-			foreach (var l in AllObjects)
+			DoForAllRoomObjects(o =>
 			{
-				foreach (var o in l)
+				if (o.LimitClass == type)
 				{
-					if (o.LimitClass == type)
-					{
-						count++;
-					}
+					count++;
 				}
-			}
+			});
 
 			return count;
 		}
@@ -828,20 +851,17 @@
 		{
 			var count = BlocksList.Count;
 
-			foreach (var l in AllObjects)
+			DoForAllRoomObjects(o =>
 			{
-				foreach (var o in l)
+				if (o.LimitClass == DungeonLimits.GeneralManipulable)
 				{
-					if (o.LimitClass == DungeonLimits.GeneralManipulable)
-					{
-						count += o.Size + 1;
-					}
-					else if (o.LimitClass == DungeonLimits.GeneralManipulable4x)
-					{
-						count += 4;
-					}
+					count += o.Size + 1;
 				}
-			}
+				else if (o.LimitClass == DungeonLimits.GeneralManipulable4x)
+				{
+					count += 4;
+				}
+			});
 
 			return count;
 		}
@@ -1107,7 +1127,10 @@
 					if (r.IsChest)
 					{
 						ret[cur++] = r.IsBigChest;
-						if (cur == count) break;
+						if (cur == count)
+						{
+							return ret;
+						}
 					}
 				}
 			}
@@ -1174,8 +1197,7 @@
 				LayerCoupling.ID,
 				Tag1.ID,
 				Tag2.ID,
-				(byte) (Pits.TargetLayer | Stair1.TargetLayer << 2
-					| Stair2.TargetLayer << 4 | Stair3.TargetLayer << 6),
+				(byte) (Pits.TargetLayer | Stair1.TargetLayer << 2 | Stair2.TargetLayer << 4 | Stair3.TargetLayer << 6),
 				Stair4.TargetLayer,
 				Pits.Target,
 				Stair1.Target,
@@ -1198,7 +1220,7 @@
 			return ret.ToArray();
 		}
 
-		public bool CheckForNonemptyCollision()
+		public bool HasNonemptyCustomCollision()
 		{
 			foreach (var b in CollisionMap)
 			{

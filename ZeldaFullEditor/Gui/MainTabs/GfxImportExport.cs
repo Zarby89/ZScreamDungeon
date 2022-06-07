@@ -50,10 +50,10 @@
 
 		private void allgfxPicturebox_Paint(object sender, PaintEventArgs e)
 		{
-			e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-			e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
-			e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.allgfxBitmap, Constants.Rect_0_0_256_14272, Constants.Rect_0_0_128_7136, GraphicsUnit.Pixel);
-			e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(0, selectedSheet * 64, 256, 64));
+			//e.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
+			//e.Graphics.SmoothingMode = SmoothingMode.HighSpeed;
+			//e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.allgfxBitmap, Constants.Rect_0_0_256_14272, Constants.Rect_0_0_128_7136, GraphicsUnit.Pixel);
+			//e.Graphics.DrawRectangle(Constants.AquaPen2, new Rectangle(0, selectedSheet * 64, 256, 64));
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -192,7 +192,7 @@
 		{
 			Color[] cols = radioButton1.Checked
 				? RoomEditingArtist.Layer1Canvas.Palette.Entries
-				: ZScreamer.ActiveGraphicsManager.mapgfx16Bitmap.Palette.Entries;
+				: ZScreamer.ActiveOWScene.CurrentParentMap.MyArtist.Layer1Canvas.Palette.Entries;
 
 			for (int i = 0; i < 256; i++)
 			{
@@ -209,46 +209,46 @@
 
 		private void palettePicturebox_MouseDown(object sender, MouseEventArgs e)
 		{
-			selectedPal = (e.Y / 16);
-
-			ColorPalette cp = ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette;
-			Color[] cols = radioButton1.Checked
-				? RoomEditingArtist.Layer1Canvas.Palette.Entries
-				: ZScreamer.ActiveGraphicsManager.mapgfx16Bitmap.Palette.Entries;
-
-			for (int i = 0; i < 16; i++)
-			{
-				cp.Entries[i] = cols[i + selectedPal * 16];
-			}
-
-			ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette = cp;
-			allgfxPicturebox.Refresh();
-			palettePicturebox.Refresh();
+			//selectedPal = e.Y / 16;
+			//
+			//ColorPalette cp = ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette;
+			//Color[] cols = radioButton1.Checked
+			//	? RoomEditingArtist.Layer1Canvas.Palette.Entries
+			//	: ZScreamer.ActiveOWScene.CurrentParentMap.MyArtist.Layer1Canvas.Palette.Entries;
+			//
+			//for (int i = 0; i < 16; i++)
+			//{
+			//	cp.Entries[i] = cols[i + selectedPal * 16];
+			//}
+			//
+			//ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette = cp;
+			//allgfxPicturebox.Refresh();
+			//palettePicturebox.Refresh();
 		}
 
 		private void copyIndexed_Click(object sender, EventArgs e)
 		{
-			Clipboard.Clear();
-			byte[] sdata = new byte[Constants.UncompressedSheetSize];
-			byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
-			for (int i = 0; i < Constants.UncompressedSheetSize; i++)
-			{
-				sdata[i] = gdata[(selectedSheet * Constants.UncompressedSheetSize) + i];
-			}
-
-			ImgClipboard.SetImageData(sdata, CopyPaletteData());
+			//Clipboard.Clear();
+			//byte[] sdata = new byte[Constants.UncompressedSheetSize];
+			//byte* gdata = (byte*) ZScreamer.ActiveGraphicsManager.allgfx16Ptr.ToPointer();
+			//for (int i = 0; i < Constants.UncompressedSheetSize; i++)
+			//{
+			//	sdata[i] = gdata[(selectedSheet * Constants.UncompressedSheetSize) + i];
+			//}
+			//
+			//ImgClipboard.SetImageData(sdata, CopyPaletteData());
 		}
 
 		private byte[] CopyPaletteData()
 		{
 			byte[] pdata = new byte[64];
-			for (int i = 0; i < 16 * 4; i += 4)
-			{
-				pdata[i + 0] = ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette.Entries[i].B;
-				pdata[i + 1] = ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette.Entries[i].G;
-				pdata[i + 2] = ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette.Entries[i].R;
-				pdata[i + 3] = ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette.Entries[i].A;
-			}
+			//for (int i = 0; i < 16 * 4; i += 4)
+			//{
+			//	pdata[i + 0] = ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette.Entries[i].B;
+			//	pdata[i + 1] = ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette.Entries[i].G;
+			//	pdata[i + 2] = ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette.Entries[i].R;
+			//	pdata[i + 3] = ZScreamer.ActiveGraphicsManager.allgfxBitmap.Palette.Entries[i].A;
+			//}
 			return pdata;
 		}
 

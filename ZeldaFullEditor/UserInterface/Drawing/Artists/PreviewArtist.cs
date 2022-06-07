@@ -6,8 +6,8 @@
 
 		private class ListImage
 		{
-			private readonly List<PreviewInfo> _list = new();
-			private readonly PointeredImage _img = new(PreviewDimensions, PreviewDimensions);
+			internal readonly List<PreviewInfo> _list = new();
+			internal readonly PointeredImage _img = new(PreviewDimensions, PreviewDimensions);
 
 			public ListImage() { }
 
@@ -29,7 +29,21 @@
 			AllPreviews.Clear();
 		}
 
+		public PointeredImage GetImageForEntry<TType>(TType item) where TType : ITypeID
+		{
+			if (!AllPreviews.ContainsKey(typeof(TType)))
+			{
+				return new(PreviewDimensions, PreviewDimensions);
+			}
 
+			var entry = AllPreviews[typeof(TType)];
+			if (entry.ContainsKey(item.TypeID))
+			{
+				return new(PreviewDimensions, PreviewDimensions);
+			}
+
+			return entry[item.TypeID]._img;
+		}
 
 		public void AddToObjectsPreview<TType, TDraw>(TType item, IEnumerable<TDraw> info, bool global = false) where TType : ITypeID
 		{

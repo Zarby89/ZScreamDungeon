@@ -9,11 +9,13 @@ namespace ZeldaFullEditor.Data
 		public ObjectSubtype ObjectSet { get; }
 		public ObjectResizability Resizeability { get; }
 
-		public DrawObject Draw { get; }
+		private DrawObject Draw { get; }
 
-		public ObjectSpecialType Specialness { get; }
+		public ObjectSpecialType Specialness { get; init; } = ObjectSpecialType.None;
 
-		public DungeonLimits LimitClass { get; }
+		public DungeonLimits LimitClass { get; init; } = DungeonLimits.None;
+
+		public bool BothBG { get; init; } = false;
 
 		/// <summary>
 		/// What tile sets this object doesn't look like garbage in
@@ -27,9 +29,10 @@ namespace ZeldaFullEditor.Data
 		public ushort FullID { get; init; }
 		public int ListID => FullID;
 
+		private readonly TilesBySizeLister lister;
 
-		private RoomObjectType(ushort objectid, DrawObject drawfunc, ObjectResizability resizing, RoomObjectCategory[] categories, RequiredGraphicsSheets gsets,
-			ObjectSpecialType special = ObjectSpecialType.None, DungeonLimits limit = DungeonLimits.None)
+
+		private RoomObjectType(ushort objectid, DrawObject drawfunc, ObjectResizability resizing, RoomObjectCategory[] categories, RequiredGraphicsSheets gsets)
 		{
 			ObjectSet = (ObjectSubtype) (objectid >> 8);
 			FullID = objectid;
@@ -44,11 +47,23 @@ namespace ZeldaFullEditor.Data
 
 			Name = name;
 			Resizeability = resizing;
-			Specialness = special;
 			Categories = categories.ToImmutableArray();
 			RequiredSheets = gsets;
-			LimitClass = limit;
 			Draw = drawfunc;
+
+			// precalc all the drawing tiles
+			int count = Resizeability == None ? 1 : 16;
+
+			List<DrawInfo>[] listfiller = new List<DrawInfo>[count];
+			//(int width, int height)[] dimensionfiller = new (int, int)[count];
+
+			for (int i = 0; i < count; i++)
+			{
+				listfiller[i] = new();
+				Draw(listfiller[i], i);
+			}
+
+			lister = new(resizing != None, listfiller);
 		}
 
 		public override string ToString() => $"{FullID:X3} {Name}";
@@ -62,6 +77,47 @@ namespace ZeldaFullEditor.Data
 		}
 
 		public static RoomObjectType GetTypeFromID(int id) => ListOf.GetTypeFromID(id);
+
+
+		public ImmutableArray<DrawInfo> GetDrawingForSize(int size)
+		{
+			return lister.GetDrawingForSize(size);
+		}
+
+		private class TilesBySizeLister
+		{
+			internal bool Resizable { get; }
+			private ImmutableArray<DrawInfo>[] Tiles { get; }
+
+
+
+			internal int[] Widths { get; }
+			internal int[] Heights { get; }
+
+			internal TilesBySizeLister(bool resize, List<DrawInfo>[] listfiller)
+			{
+				Resizable = resize;
+				int count = listfiller.Length;
+				Tiles = new ImmutableArray<DrawInfo>[count];
+
+				for (int i = 0; i < count; i++)
+				{
+					Tiles[i] = listfiller[i].ToImmutableArray();
+				}
+
+			}
+
+			public ImmutableArray<DrawInfo> GetDrawingForSize(int size) => Resizable switch
+			{
+				true => Tiles[size],
+				false => Tiles[0],
+			};
+
+		}
+
+
+
+
 
 #pragma warning disable CA1825 // Avoid zero-length array allocations
 
@@ -199,73 +255,109 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object015 = new(0x015,
 			RoomDraw_DiagonalAcute_1to16_BothBG, Horizontal,
 			new[] { DiagonalCollision, Wall, NorthSide, WestSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object016 = new(0x016,
 			RoomDraw_DiagonalGrave_1to16_BothBG, Horizontal,
 			new[] { DiagonalCollision, Wall, SouthSide, WestSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
-		[PredefinedInstance]
+	[PredefinedInstance]
 		public static readonly RoomObjectType Object017 = new(0x017,
 			RoomDraw_DiagonalGrave_1to16_BothBG, Horizontal,
 			new[] { DiagonalCollision, Wall, NorthSide, EastSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object018 = new(0x018,
 			RoomDraw_DiagonalAcute_1to16_BothBG, Horizontal,
 			new[] { DiagonalCollision, Wall, SouthSide, EastSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object019 = new(0x019,
 			RoomDraw_DiagonalAcute_1to16_BothBG, Horizontal,
 			new[] { DiagonalCollision, Wall, NorthSide, WestSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object01A = new(0x01A,
 			RoomDraw_DiagonalGrave_1to16_BothBG, Horizontal,
 			new[] { DiagonalCollision, Wall, SouthSide, WestSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object01B = new(0x01B,
 			RoomDraw_DiagonalGrave_1to16_BothBG, Horizontal,
 			new[] { DiagonalCollision, Wall, NorthSide, EastSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object01C = new(0x01C,
 			RoomDraw_DiagonalAcute_1to16_BothBG, Horizontal,
 			new[] { DiagonalCollision, Wall, SouthSide, EastSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object01D = new(0x01D,
 			RoomDraw_DiagonalAcute_1to16_BothBG, Horizontal,
 			new[] { DiagonalCollision, Wall, NorthSide, WestSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object01E = new(0x01E,
 			RoomDraw_DiagonalGrave_1to16_BothBG, Horizontal,
 			new[] { DiagonalCollision, Wall, SouthSide, WestSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object01F = new(0x01F,
 			RoomDraw_DiagonalGrave_1to16_BothBG, Horizontal,
 			new[] { DiagonalCollision, Wall, NorthSide, EastSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object020 = new(0x020,
 			RoomDraw_DiagonalAcute_1to16_BothBG, Horizontal,
 			new[] { DiagonalCollision, Wall, SouthSide, EastSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object021 = new(0x021,
@@ -667,13 +759,19 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object063 = new(0x063,
 			RoomDraw_Downwards4x2_1to16_BothBG, Horizontal,
 			new[] { Collision, Wall, WestSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object064 = new(0x064,
 			RoomDraw_Downwards4x2_1to16_BothBG, Horizontal,
 			new[] { Collision, Wall, EastSide, LowerLayer },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object065 = new(0x065,
@@ -973,8 +1071,10 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object096 = new(0x096,
 			RoomDraw_Downwards2x2_1to16, Vertical,
 			new[] { Collision, PuzzlePegs, Hookshottable, Mutable },
-			new(),
-			limit: DungeonLimits.GeneralManipulable);
+			new())
+		{
+			LimitClass = DungeonLimits.GeneralManipulable
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object097 = new(0x097,
@@ -1064,57 +1164,73 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object0A5 = new(0x0A5,
 			RoomDraw_DiagonalCeilingTopLeft, Both,
 			new[] { Collision, Ceiling },
-			new(),
-			special: ObjectSpecialType.LayerMask);
+			new())
+		{
+			Specialness = ObjectSpecialType.LayerMask
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0A6 = new(0x0A6,
 			RoomDraw_DiagonalCeilingBottomLeft, Both,
 			new[] { Collision, Ceiling },
-			new(),
-			special: ObjectSpecialType.LayerMask);
+			new())
+		{
+			Specialness = ObjectSpecialType.LayerMask
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0A7 = new(0x0A7,
 			RoomDraw_DiagonalCeilingTopRight, Both,
 			new[] { Collision, Ceiling },
-			new(),
-			special: ObjectSpecialType.LayerMask);
+			new())
+		{
+			Specialness = ObjectSpecialType.LayerMask
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0A8 = new(0x0A8,
 			RoomDraw_DiagonalCeilingBottomRight, Both,
 			new[] { Collision, Ceiling },
-			new(),
-			special: ObjectSpecialType.LayerMask);
+			new())
+		{
+			Specialness = ObjectSpecialType.LayerMask
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0A9 = new(0x0A9,
 			RoomDraw_DiagonalCeilingTopLeft, Both,
 			new[] { Collision, Ceiling },
-			new(),
-			special: ObjectSpecialType.LayerMask);
+			new())
+		{
+			Specialness = ObjectSpecialType.LayerMask
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0AA = new(0x0AA,
 			RoomDraw_DiagonalCeilingBottomLeft, Both,
 			new[] { Collision, Ceiling },
-			new(),
-			special: ObjectSpecialType.LayerMask);
+			new())
+		{
+			Specialness = ObjectSpecialType.LayerMask
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0AB = new(0x0AB,
 			RoomDraw_DiagonalCeilingTopRight, Both,
 			new[] { Collision, Ceiling },
-			new(),
-			special: ObjectSpecialType.LayerMask);
+			new())
+		{
+			Specialness = ObjectSpecialType.LayerMask
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0AC = new(0x0AC,
 			RoomDraw_DiagonalCeilingBottomRight, Both,
 			new[] { Collision, Ceiling },
-			new(),
-			special: ObjectSpecialType.LayerMask);
+			new())
+		{
+			Specialness = ObjectSpecialType.LayerMask
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0AD = new(0x0AD,
@@ -1216,8 +1332,10 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object0BD = new(0x0BD,
 			RoomDraw_RightwardsHammerPegs2x2_1to16, Horizontal,
 			new[] { Collision, PuzzlePegs, Hookshottable, Mutable },
-			new(),
-			limit: DungeonLimits.GeneralManipulable);
+			new())
+		{
+			LimitClass = DungeonLimits.GeneralManipulable
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0BE = new(0x0BE,
@@ -1247,15 +1365,19 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object0C2 = new(0x0C2,
 			RoomDraw_4x4BlocksIn4x4SuperSquare, Both,
 			new[] { Pit, MetaLayer },
-			new(),
-			special: ObjectSpecialType.LayerMask);
+			new())
+		{
+			Specialness = ObjectSpecialType.LayerMask
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0C3 = new(0x0C3,
 			RoomDraw_3x3FloorIn4x4SuperSquare, Both,
 			new[] { Pit, MetaLayer },
-			new(),
-			special: ObjectSpecialType.LayerMask);
+			new())
+		{
+			Specialness = ObjectSpecialType.LayerMask
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0C4 = new(0x0C4,
@@ -1273,8 +1395,10 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object0C6 = new(0x0C6,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new[] { Pit, MetaLayer },
-			new(),
-			special: ObjectSpecialType.LayerMask);
+			new())
+		{
+			Specialness = ObjectSpecialType.LayerMask
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0C7 = new(0x0C7,
@@ -1376,8 +1500,10 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object0D7 = new(0x0D7,
 			RoomDraw_3x3FloorIn4x4SuperSquare, Both,
 			new[] { MetaLayer },
-			new(),
-			special: ObjectSpecialType.LayerMask);
+			new())
+		{
+			Specialness = ObjectSpecialType.LayerMask
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0D8 = new(0x0D8,
@@ -1389,8 +1515,10 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object0D9 = new(0x0D9,
 			RoomDraw_4x4FloorIn4x4SuperSquare, Both,
 			new[] { MetaLayer },
-			new(),
-			special: ObjectSpecialType.LayerMask);
+			new())
+		{
+			Specialness = ObjectSpecialType.LayerMask
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object0DA = new(0x0DA,
@@ -1627,97 +1755,145 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object108 = new(0x108,
 			RoomDraw_4x4Corner_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object109 = new(0x109,
 			RoomDraw_4x4Corner_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object10A = new(0x10A,
 			RoomDraw_4x4Corner_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object10B = new(0x10B,
 			RoomDraw_4x4Corner_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object10C = new(0x10C,
 			RoomDraw_4x4Corner_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object10D = new(0x10D,
 			RoomDraw_4x4Corner_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object10E = new(0x10E,
 			RoomDraw_4x4Corner_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object10F = new(0x10F,
 			RoomDraw_4x4Corner_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object110 = new(0x110,
 			RoomDraw_WeirdCornerBottom_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object111 = new(0x111,
 			RoomDraw_WeirdCornerBottom_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object112 = new(0x112,
 			RoomDraw_WeirdCornerBottom_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object113 = new(0x113,
 			RoomDraw_WeirdCornerBottom_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object114 = new(0x114,
 			RoomDraw_WeirdCornerTop_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object115 = new(0x115,
 			RoomDraw_WeirdCornerTop_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object116 = new(0x116,
 			RoomDraw_WeirdCornerTop_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object117 = new(0x117,
 			RoomDraw_WeirdCornerTop_BothBG, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object118 = new(0x118,
@@ -1849,33 +2025,46 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object12D = new(0x12D,
 			RoomDraw_InterRoomFatStairs, None,
 			new[] { Stairs },
-			new(),
-			special: ObjectSpecialType.InterroomStairs);
+			new())
+		{
+			Specialness = ObjectSpecialType.InterroomStairs,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object12E = new(0x12E,
 			RoomDraw_InterRoomFatStairs, None,
 			new[] { Stairs, RoomTransition },
-			new(),
-			special: ObjectSpecialType.InterroomStairs);
+			new())
+		{
+			Specialness = ObjectSpecialType.InterroomStairs,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object12F = new(0x12F,
 			RoomDraw_InterRoomFatStairs, None,
 			new[] { Stairs, RoomTransition },
-			new());
+			new())
+		{
+			Specialness = ObjectSpecialType.InterroomStairs,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object130 = new(0x130,
 			RoomDraw_AutoStairs, None,
 			new[] { Stairs },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object131 = new(0x131,
 			RoomDraw_AutoStairs, None,
 			new[] { Stairs },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object132 = new(0x132,
@@ -1905,7 +2094,10 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object136 = new(0x136,
 			RoomDraw_WaterHopStairs_B, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object137 = new(0x137,
@@ -1917,15 +2109,19 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object138 = new(0x138,
 			RoomDraw_SpiralStairs, None,
 			new[] { Stairs, RoomTransition },
-			new(),
-			special: ObjectSpecialType.InterroomStairs);
+			new())
+		{
+			Specialness = ObjectSpecialType.InterroomStairs,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object139 = new(0x139,
 			RoomDraw_SpiralStairs, None,
 			new[] { Stairs, RoomTransition },
-			new(),
-			special: ObjectSpecialType.InterroomStairs);
+			new())
+		{
+			Specialness = ObjectSpecialType.InterroomStairs,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object13A = new(0x13A,
@@ -1937,8 +2133,10 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object13B = new(0x13B,
 			RoomDraw_SpiralStairs, None,
 			new[] { Stairs, RoomTransition },
-			new(),
-			special: ObjectSpecialType.InterroomStairs);
+			new())
+		{
+			Specialness = ObjectSpecialType.InterroomStairs,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object13C = new(0x13C,
@@ -2103,8 +2301,10 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object216 = new(0x216,
 			RoomDraw_Single2x2, None,
 			new[] { Collision, PuzzlePegs, Hookshottable, Mutable },
-			new(),
-			limit: DungeonLimits.GeneralManipulable);
+			new())
+		{
+			LimitClass = DungeonLimits.GeneralManipulable
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object217 = new(0x217,
@@ -2116,15 +2316,21 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object218 = new(0x218,
 			RoomDraw_Single2x2, None,
 			new RoomObjectCategory[] { },
-			new(),
-			special: ObjectSpecialType.BigChest);
+			new())
+		{
+			Specialness = ObjectSpecialType.BigChest,
+			LimitClass = DungeonLimits.Chest
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object219 = new(0x219,
 			RoomDraw_Single2x2, None,
 			new[] { Collision, RoomDecoration, Secrets, Hookshottable },
-			new(),
-			special: ObjectSpecialType.Chest);
+			new())
+		{
+			Specialness = ObjectSpecialType.Chest,
+			LimitClass = DungeonLimits.Chest
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object21A = new(0x21A,
@@ -2136,19 +2342,28 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object21B = new(0x21B,
 			RoomDraw_AutoStairs, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object21C = new(0x21C,
 			RoomDraw_AutoStairs, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object21D = new(0x21D,
 			RoomDraw_AutoStairs, None,
 			new RoomObjectCategory[] { },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object21E = new(0x21E,
@@ -2238,8 +2453,10 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object22C = new(0x22C,
 			RoomDraw_BigGrayRock, None,
 			new[] { Collision, RoomDecoration, Secrets, Mutable, Hookshottable },
-			new(),
-			limit: DungeonLimits.GeneralManipulable4x);
+			new())
+		{
+			LimitClass = DungeonLimits.GeneralManipulable4x
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object22D = new(0x22D,
@@ -2257,8 +2474,10 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object22F = new(0x22F,
 			RoomDraw_Single2x2, None,
 			new[] { Collision, RoomDecoration, Secrets, Mutable, Hookshottable },
-			new(),
-			limit: DungeonLimits.GeneralManipulable);
+			new())
+		{
+			LimitClass = DungeonLimits.GeneralManipulable
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object230 = new(0x230,
@@ -2270,8 +2489,11 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object231 = new(0x231,
 			RoomDraw_4x3OneLayer, None,
 			new[] { Collision, RoomDecoration, Secrets, Hookshottable },
-			new(),
-			special: ObjectSpecialType.BigChest);
+			new())
+		{
+			Specialness = ObjectSpecialType.BigChest,
+			LimitClass = DungeonLimits.Chest
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object232 = new(0x232,
@@ -2283,7 +2505,10 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object233 = new(0x233,
 			RoomDraw_AutoStairs, None,
 			new[] { Stairs },
-			new());
+			new())
+		{
+			BothBG = true,
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object234 = new(0x234,
@@ -2403,8 +2628,10 @@ namespace ZeldaFullEditor.Data
 		public static readonly RoomObjectType Object247 = new(0x247,
 			RoomDraw_BombableFloor, None,
 			new[] { NoCollision, Floor, Pit, Mutable },
-			new(),
-			limit: DungeonLimits.GeneralManipulable4x);
+			new())
+		{
+			LimitClass = DungeonLimits.GeneralManipulable4x
+		};
 
 		[PredefinedInstance]
 		public static readonly RoomObjectType Object248 = new(0x248,

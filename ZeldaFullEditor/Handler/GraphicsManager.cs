@@ -48,14 +48,8 @@ namespace ZeldaFullEditor.Handler
 		public IntPtr currentOWgfx16Ptr = Marshal.AllocHGlobal(128 * 512 / 2);
 		public Bitmap currentOWgfx16Bitmap;
 
-		public IntPtr previewgfx16Ptr = Marshal.AllocHGlobal(128 * 512 / 2);
-		public Bitmap previewgfx16Bitmap;
-
 		public IntPtr editort16Ptr = Marshal.AllocHGlobal(128 * 512);
 		public Bitmap editort16Bitmap;
-
-		public IntPtr mapgfx16Ptr = Marshal.AllocHGlobal(1048576);
-		public Bitmap mapgfx16Bitmap;
 
 		public IntPtr fontgfx16Ptr; // = Marshal.AllocHGlobal((256 * 256));
 		public Bitmap fontgfxBitmap;
@@ -71,24 +65,11 @@ namespace ZeldaFullEditor.Handler
 		public IntPtr owactualMapPointer; // = Marshal.AllocHGlobal(0x40000);
 		public Bitmap owactualMapBitmap;
 
-		public IntPtr[] previewObjectsPtr;
-		public Bitmap[] previewObjectsBitmap;
-
-		public IntPtr[] previewSpritesPtr;
-		public Bitmap[] previewSpritesBitmap;
-
 		public IntPtr[] previewChestsPtr;
 		public Bitmap[] previewChestsBitmap;
 
-		public IntPtr roomObjectsPtr = Marshal.AllocHGlobal(512 * 512);
-		public Bitmap roomObjectsBitmap;
-
 		public IntPtr editingtile16 = Marshal.AllocHGlobal(16 * 16);
 		public Bitmap editingtile16Bitmap;
-
-		public Color[,] loadedPalettes = new Color[1, 1];
-
-		public Color[,] loadedSprPalettes = new Color[1, 1];
 
 		private readonly ZScreamer ZS;
 
@@ -109,31 +90,13 @@ namespace ZeldaFullEditor.Handler
 			currentgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentgfx16Ptr);
 			currentEditingfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentEditinggfx16Ptr);
 			currentTileScreengfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentEditinggfx16Ptr);
-			roomObjectsBitmap = new Bitmap(512, 512, 512, PixelFormat.Format8bppIndexed, roomObjectsPtr);
-			editingtile16Bitmap = new Bitmap(16, 16, 16, PixelFormat.Format8bppIndexed, roomObjectsPtr);
+			editingtile16Bitmap = new Bitmap(16, 16, 16, PixelFormat.Format8bppIndexed, editingtile16);
 			currentOWgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, currentOWgfx16Ptr);
-			previewgfx16Bitmap = new Bitmap(128, 512, 64, PixelFormat.Format4bppIndexed, previewgfx16Ptr);
-			mapgfx16Bitmap = new Bitmap(128, 7520, 128, PixelFormat.Format8bppIndexed, mapgfx16Ptr);
 			editort16Bitmap = new Bitmap(128, 512, 128, PixelFormat.Format8bppIndexed, editort16Ptr);
 
-
-			previewObjectsPtr = new IntPtr[0x300];
-			previewObjectsBitmap = new Bitmap[0x300];
-			previewSpritesPtr = new IntPtr[256];
-			previewSpritesBitmap = new Bitmap[256];
 			previewChestsPtr = new IntPtr[76];
 			previewChestsBitmap = new Bitmap[76];
 
-			for (var i = 0; i < 0x300; i++)
-			{
-				previewObjectsPtr[i] = Marshal.AllocHGlobal(64 * 64);
-				previewObjectsBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, previewObjectsPtr[i]);
-			}
-			for (var i = 0; i < 256; i++)
-			{
-				previewSpritesPtr[i] = Marshal.AllocHGlobal(64 * 64);
-				previewSpritesBitmap[i] = new Bitmap(64, 64, 64, PixelFormat.Format8bppIndexed, previewSpritesPtr[i]);
-			}
 			for (var i = 0; i < 76; i++)
 			{
 				previewChestsPtr[i] = Marshal.AllocHGlobal(64 * 64);

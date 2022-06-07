@@ -35,7 +35,7 @@
 
 		public RoomLayer Layer { get; set; } = RoomLayer.Layer1;
 
-		public virtual byte Size { get; set; }
+		public byte Size { get; set; }
 
 		public int Width { get; set; } = 8;
 		public int Height { get; set; } = 8;
@@ -71,12 +71,12 @@
 		}
 
 
-		public void Draw(IDrawArt art)
+		public virtual void Draw(IDrawArt art)
 		{
 			Width = 8;
 			Height = 8;
 			CollisionRectangles.Clear();
-			ObjectType.Draw(art, this);
+			((RoomArtist) art)?.AddTilesToTilemap(this);
 		}
 
 		/// <summary>
@@ -158,13 +158,26 @@
 	/// </summary>
 	public class RoomObjectPreview : RoomObject
 	{
-		public override byte Size
-		{
-			get => 4;
-			set { }
-		}
 		public RoomObjectPreview(RoomObjectType type, TilesList tiles) : base(type, tiles)
 		{
+		}
+
+		public override void Draw(IDrawArt art)
+		{
+			var prv = (PreviewArtist) art;
+
+			if (prv is null) return;
+
+			var instructions = ObjectType.GetDrawingForSize(4);
+
+			List<PreviewInfo> addooo = new(instructions.Length);
+
+			foreach (DrawInfo d in instructions)
+			{
+				Tile t = Tiles[d.TileIndex].CloneModified(hflip: d.HFlip, vflip: d.VFlip);
+				addooo.Add(new(t.ID, d.XOff, d.YOff, t.Palette, t.HFlip, t.VFlip));
+			}
+			prv.AddToObjectsPreview(this, addooo);
 		}
 	}
 }

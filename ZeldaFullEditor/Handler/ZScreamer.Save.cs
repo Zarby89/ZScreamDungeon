@@ -103,7 +103,7 @@
 				//         write pointers where data start + previous room data length
 
 				// If there is triangle in the room, write the room pointer, otherwise wrtie 000000
-				if (room.CheckForNonemptyCollision())
+				if (room.HasNonemptyCustomCollision())
 				{
 					ROM.Write24(room_pointer, data_pointer.PCtoSNES());
 					ROM.WriteContinuous(ref data_pointer, room.GetCollisionData());
@@ -114,7 +114,6 @@
 				}
 
 				room_pointer += 3;
-
 			}
 
 			byte[] data = new byte[ROM.Length];

@@ -183,5 +183,11 @@
 		{
 			return list.FirstOrDefault(o => o.ListID == id);
 		}
+
+
+		public static void AddMany<T>(this List<T> list, params T[] add)
+		{
+			list.AddRange(add);
+		}
 	}
 }

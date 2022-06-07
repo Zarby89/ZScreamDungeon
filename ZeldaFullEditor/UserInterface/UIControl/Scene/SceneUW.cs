@@ -8,6 +8,8 @@
 
 		bool resizing = false;
 
+		private IDungeonPlaceable hoveredEntity = null;
+
 		private readonly ModeActions layer1Mode;
 		private readonly ModeActions layer2Mode;
 		private readonly ModeActions layer3Mode;
@@ -102,6 +104,20 @@
 			};
 		}
 
+		private void FindHoveredEntity<T>(IEnumerable<T> list, MouseEventArgs e) where T : IDungeonPlaceable
+		{
+			foreach (var o in list)
+			{
+				if (o.MouseIsInHitbox(e))
+				{
+					hoveredEntity = o;
+					return;
+				}
+			}
+			hoveredEntity = null;
+		}
+
+
 		public void MoveSelectedObjects()
 		{
 			foreach (var o in Room.SelectedObjects)
@@ -119,7 +135,6 @@
 		public void Clear()
 		{
 			// TODO: Add something here?
-			//graphics.Clear(this.BackColor);
 		}
 
 		public void HardRefresh()
@@ -200,34 +215,34 @@
 				g.DrawRectangle(selectionColor, o.BoundingBox);
 			}
 
-			// Draw BG2 outlines
+			// Draw BG2 outlines / annotations
+			Action<RoomObject> invisibles = null;
+
 			if (ZGUI.ShowBG2Outline)
 			{
-				foreach (var l in Room.AllObjects)
+				invisibles += o =>
 				{
-					foreach (var o in l)
+					if (o.ObjectType.Specialness == ObjectSpecialType.LayerMask)
 					{
-						if (o.ObjectType.Specialness == ObjectSpecialType.LayerMask)
-						{
-							g.DrawRectangle(Pens.DarkCyan, o.BoundingBox);
-						}
+						g.DrawRectangle(Pens.DarkCyan, o.BoundingBox);
 					}
-				}
+				};
 			}
 
-			// Draw BG2 annotations
 			if (ZGUI.invisibleObjectsTextToolStripMenuItem.Checked)
 			{
-				foreach (var l in Room.AllObjects)
+				invisibles += o =>
 				{
-					foreach (var o in l)
+					if (o.ObjectType.Specialness == ObjectSpecialType.LayerMask)
 					{
-						if (o.ObjectType.Specialness == ObjectSpecialType.LayerMask)
-						{
-							g.DrawText(o.RealX, o.RealY, "BG2 mask");
-						}
+						g.DrawText(o.RealX, o.RealY, "BG2 mask");
 					}
-				}
+				};
+			}
+
+			if (invisibles is not null)
+			{
+				Room.DoForAllRoomObjects(invisibles);
 			}
 
 			// Draw chest numbers

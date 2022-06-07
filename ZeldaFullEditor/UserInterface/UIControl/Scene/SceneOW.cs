@@ -212,6 +212,7 @@
 					return;
 				}
 			}
+			hoveredEntity = null;
 		}
 
 		protected override void OnMouseMove(MouseEventArgs e)
@@ -362,22 +363,10 @@
 			}
 			else
 			{
-				if (ZS.OverworldManager.World == Worldiness.DarkWorld)
-				{
-					g.Clear(ZS.PaletteManager.OverworldGrass[1]);
-				}
-				else if (ZS.OverworldManager.World == Worldiness.SpecialWorld)
-				{
-					g.Clear(ZS.PaletteManager.OverworldGrass[2]);
-				}
-				else
-				{
-					g.Clear(ZS.PaletteManager.OverworldGrass[0]);
-				}
-
 				// TODO make a single PointF and Rectangle variable to reuse
 				int x = 0;
 				int y = 0;
+				g.CompositingMode = CompositingMode.SourceOver;
 				for (int i = ZS.OverworldManager.WorldOffset; i < ZS.OverworldManager.WorldOffsetEnd; i++)
 				{
 					if (i > 159) continue;
@@ -386,12 +375,10 @@
 					{
 						if ((i >= 0x03) && (i <= 0x07))
 						{
-							g.CompositingMode = CompositingMode.SourceOver;
 							g.DrawImage(ZS.OverworldManager.allmaps[149].MyArtist.Layer1Canvas.Bitmap, new PointF(x, y));
 						}
 						else if (i == 91 || i == 92)
 						{
-							g.CompositingMode = CompositingMode.SourceOver;
 							g.DrawImage(ZS.OverworldManager.allmaps[150].MyArtist.Layer1Canvas.Bitmap, new PointF(x, y));
 						}
 					}
@@ -402,7 +389,6 @@
 							< 64 => 1,
 							_ => 1,
 						};
-						g.CompositingMode = CompositingMode.SourceOver;
 						g.DrawRectangle(new Pen(ZS.PaletteManager.OverworldGrass[grass]), new Rectangle(x, y, 512, 512));
 					}
 
@@ -427,8 +413,6 @@
 
 				}
 			}
-
-			g.CompositingMode = CompositingMode.SourceOver;
 
 			if (selecting)
 			{
@@ -456,8 +440,6 @@
 				int rectumsize = ZS.OverworldManager.allmaps[hoveredMap + offset].IsPartOfLargeMap ? 1024 : 512;
 				g.DrawRectangle(Pens.Orange, new Rectangle(mx * 512, my * 512, rectumsize, rectumsize));
 			}
-
-			g.CompositingMode = CompositingMode.SourceOver;
 
 			if (ZGUI.showExits)
 			{
@@ -492,13 +474,11 @@
 
 			if (entrancePreview)
 			{
-				if (SelectedEntrance != null)
+				OverworldEntity prev = (OverworldEntity)SelectedEntrance ?? SelectedExit;
+
+				if (prev != null)
 				{
-					g.DrawImage(ZGUI.OverworldEditor.tmpPreviewBitmap, SelectedEntrance.GlobalX + 16, SelectedEntrance.GlobalY + 16);
-				}
-				if (SelectedExit != null)
-				{
-					g.DrawImage(ZGUI.OverworldEditor.tmpPreviewBitmap, SelectedExit.GlobalX + 16, SelectedExit.GlobalY + 16);
+					RoomPreviewArtist.DrawSelfToImageSmall(g, prev.GlobalX + 16, prev.GlobalY + 16);
 				}
 			}
 

@@ -5,7 +5,6 @@
 		private readonly ImmutableList<RoomObjectPreview> items;
 		private ImmutableList<RoomObjectPreview> displayeditems;
 
-		ColorPalette palettes = null;
 		public bool showName = false;
 
 		public int selectedIndex = -1;
@@ -71,12 +70,6 @@
 			return new RoomObject(selectedObject.ObjectType, ZScreamer.ActiveScreamer.TileLister[selectedObject.ID]);
 		}
 
-
-		private void ObjectViewer_Paint(object sender, PaintEventArgs e)
-		{
-			// TODO: Add something here?
-		}
-
 		private void Refilter()
 		{
 			displayeditems = items.FindAll(obj =>
@@ -109,7 +102,6 @@
 		}
 
 
-
 		protected override void OnPaint(PaintEventArgs e)
 		{
 			e.Graphics.Clear(Color.Black);
@@ -117,9 +109,9 @@
 			int xpos = 0;
 			int ypos = 0;
 
-			foreach (RoomObject o in displayeditems)
+			foreach (var o in displayeditems)
 			{
-				e.Graphics.DrawImage(ZScreamer.ActiveGraphicsManager.previewObjectsBitmap[o.ID], new Point(xpos, ypos));
+				e.Graphics.DrawImage(UXPreviewArtist.GetImageForEntry(o).Bitmap, new Point(xpos, ypos));
 
 				e.Graphics.DrawImage(
 					Settings.Default.favoriteObjects[o.ID] == "true" ?
@@ -153,11 +145,6 @@
 			SelectedIndexChanged?.Invoke(this, e);
 		}
 
-		public override void Refresh()
-		{
-			base.Refresh();
-		}
-
 		private void ObjectViewer_SizeChanged(object sender, EventArgs e)
 		{
 			Refresh();
@@ -168,66 +155,16 @@
 			int w = Size.Width / 64;
 			int h = ((displayeditems.Count / w) + 1) * 64;
 			Size = new Size(Size.Width, h);
-
-			if (displayeditems.Count > 0)
-			{
-				palettes = ZScreamer.ActiveGraphicsManager.previewObjectsBitmap[displayeditems[0].ID].Palette;
-
-				int pindex = 0;
-				for (int y = 0; y < ZScreamer.ActiveGraphicsManager.loadedPalettes.GetLength(1); y++)
-				{
-					for (int x = 0; x < ZScreamer.ActiveGraphicsManager.loadedPalettes.GetLength(0); x++)
-					{
-						palettes.Entries[pindex] = ZScreamer.ActiveGraphicsManager.loadedPalettes[x, y];
-						pindex++;
-					}
-				}
-
-				for (int y = 0; y < ZScreamer.ActiveGraphicsManager.loadedSprPalettes.GetLength(1); y++)
-				{
-					for (int x = 0; x < ZScreamer.ActiveGraphicsManager.loadedSprPalettes.GetLength(0); x++)
-					{
-						if (pindex < Constants.TotalPaletteSize)
-						{
-							palettes.Entries[pindex++] = ZScreamer.ActiveGraphicsManager.loadedSprPalettes[x, y];
-						}
-					}
-				}
-			}
-
-			foreach (RoomObject o in displayeditems)
-			{
-				o.Size = 5;
-				unsafe
-				{
-					byte* ptr = (byte*) ZScreamer.ActiveGraphicsManager.previewObjectsPtr[o.ID].ToPointer();
-					for (int i = 0; i < (64 * 64); i++)
-					{
-						ptr[i] = 0;
-					}
-				}
-
-				o.Draw(RoomEditingArtist);
-				if (palettes != null)
-				{
-					ZScreamer.ActiveGraphicsManager.previewObjectsBitmap[o.ID].Palette = palettes;
-				}
-			}
-		}
-
-		private void ObjectViewer_Load(object sender, EventArgs e)
-		{
-			// TODO: Add something here?
 		}
 
 		private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
 		{
-			int w = (this.Size.Width / 64);
+			int w = (Size.Width / 64);
 			int h = (((displayeditems.Count / w) + 1) * 64);
 			int xpos = 0;
 			int ypos = 0;
 			int index = 0;
-			this.Size = new Size(this.Size.Width, h);
+			Size = new Size(Size.Width, h);
 			foreach (RoomObjectPreview o in displayeditems)
 			{
 				if (index < displayeditems.Count)

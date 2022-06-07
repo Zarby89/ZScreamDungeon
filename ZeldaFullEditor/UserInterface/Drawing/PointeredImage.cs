@@ -38,7 +38,7 @@
 		public void ClearBitmap()
 		{
 			var a = Pointer;
-			for (int i = 0; i < 512 * 512; i++)
+			for (int i = 0; i < Width * Height; i++)
 			{
 				a[i] = 0;
 			}

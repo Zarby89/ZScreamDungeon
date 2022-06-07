@@ -144,13 +144,13 @@
 			g.DrawImage(FinalOutput, 0, 0);
 		}
 
-		public virtual void DrawSelfToImageSmall(Graphics g)
+		public virtual void DrawSelfToImageSmall(Graphics g, int x, int y)
 		{
 			Revalidate();
 
 			g.InterpolationMode = InterpolationMode.Bilinear;
 
-			g.DrawImage(FinalOutput, 0, 0, 256, 256);
+			g.DrawImage(FinalOutput, x, y, 256, 256);
 		}
 
 		private void DrawTileToBuffer(in Tile tile, int x, int y, IGraphicsCanvas canvas)
@@ -160,7 +160,6 @@
 		}
 
 		public abstract void DrawTileForPreview(Tile t, int indexoff);
-
 
 		protected virtual void RedrawSpriteLayer()
 		{

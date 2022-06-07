@@ -8,7 +8,6 @@
 		private const int Tile16RowWidth = 8 * Tile16EntryWidth;
 
 		public bool propertiesChangedFromForm = false;
-		public Bitmap tmpPreviewBitmap = new(256, 256);
 		public Bitmap scratchPadBitmap = new(256, 3600);
 		public ushort[,] scratchPadTiles = new ushort[16, 225];
 		public byte gridDisplay = 0;

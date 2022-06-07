@@ -38,9 +38,8 @@
 			this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
 			this.Name = "SpritesView";
 			this.Size = new System.Drawing.Size(271, 374);
-			this.Load += new System.EventHandler(this.SpritesView_Load);
-			this.SizeChanged += new System.EventHandler(this.ObjectViewer_SizeChanged);
-			this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ObjectViewer_MouseClick);
+			this.SizeChanged += new System.EventHandler(this.SpritesView_SizeChanged);
+			this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SpritesView_MouseClick);
 			this.ResumeLayout(false);
 
         }

@@ -9,9 +9,9 @@
 		public override PointeredImage Layer1Canvas { get; } = new(512, 512);
 
 		public override ushort[] Layer2TileMap { get; } = new ushort[Constants.NumberOfTile16PerScreen];
-		public override PointeredImage Layer2Canvas { get; } = new(512, 512);
+		public override PointeredImage Layer2Canvas { get; } = new(16, 16); // new(512, 512);
 
-		public override PointeredImage SpriteCanvas { get; } = new(512, 512);
+		public override PointeredImage SpriteCanvas { get; } = new(16, 16); // new(512, 512);
 
 		public override GraphicsSet LoadedGraphics => MyScreen.LoadedGraphics;
 

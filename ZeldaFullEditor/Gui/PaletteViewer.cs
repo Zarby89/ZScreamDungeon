@@ -45,7 +45,7 @@
 					{
 						ColorPalette palettes = isDungeon
 							? RoomEditingArtist.Layer1Canvas.Palette
-							: ZS.GFXManager.mapgfx16Bitmap.Palette;
+							: ZScreamer.ActiveOWScene.CurrentParentMap.MyArtist.Layer1Canvas.Palette;
 
 						g.FillRectangle(new SolidBrush(palettes.Entries[i]), new Rectangle((i % 16) * 16, (i % 16) * 16, 16, 16));
 					}
