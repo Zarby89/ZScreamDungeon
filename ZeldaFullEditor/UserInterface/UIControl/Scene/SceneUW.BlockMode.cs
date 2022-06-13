@@ -4,7 +4,13 @@
 	{
 		private void OnMouseDown_Blocks(MouseEventArgs e)
 		{
-			var (MX, MY) = ZGUI.GetXYMouseBasedOnZoom(e);
+			if (ObjectToPlace == null)
+			{
+				FindHoveredEntity(Room.BlocksList, e);
+				HandleSelectingHoveredObject();
+			}
+
+			// TODO
 		}
 
 		private void OnMouseUp_Blocks(MouseEventArgs e)

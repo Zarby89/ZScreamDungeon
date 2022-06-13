@@ -4,7 +4,11 @@
 	{
 		private void OnMouseDown_Sprites(MouseEventArgs e)
 		{
-			if (ObjectToPlace == null) return;
+			if (ObjectToPlace == null)
+			{
+				FindHoveredEntity(Room.SpritesList, e);
+				HandleSelectingHoveredObject();
+			}
 
 			CheckIfObjectIsInvalidForPlacement();
 

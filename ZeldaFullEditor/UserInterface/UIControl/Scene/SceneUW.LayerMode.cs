@@ -7,8 +7,7 @@
 			if (ObjectToPlace == null)
 			{
 				FindHoveredEntity(Room.GetLayerList(Layer), e);
-
-				return;
+				HandleSelectingHoveredObject();
 			}
 
 			CheckIfObjectIsInvalidForPlacement();

@@ -103,6 +103,9 @@
 				//DungeonsData.undoRoom[i] = new List<Room>();
 				//DungeonsData.redoRoom[i] = new List<Room>();
 			}
+
+			CurrentOWMode = OverworldEditMode.Tile16;
+			CurrentUWMode = DungeonEditMode.Layer1;
 		}
 
 		public void SetDungeonEditMode(DungeonEditMode em)

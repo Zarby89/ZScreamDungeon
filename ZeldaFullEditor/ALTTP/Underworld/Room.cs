@@ -41,7 +41,7 @@
 				return null;
 			}
 
-			private set
+			internal set
 			{
 				SelectedObjects.Clear();
 				SelectedObjects.Add(value);
@@ -321,7 +321,15 @@
 			throw new NotImplementedException();
 		}
 
-
+		public void RemoveIfThereOrAddToSelectedObjects(IDungeonPlaceable d)
+		{
+			if (SelectedObjects.Contains(d))
+			{
+				SelectedObjects.Remove(d);
+				return;
+			}
+			SelectedObjects.Add(d);
+		}
 		public void DoForAllRoomObjects(Action<RoomObject> act)
 		{
 			foreach (var r in Layer1Objects)

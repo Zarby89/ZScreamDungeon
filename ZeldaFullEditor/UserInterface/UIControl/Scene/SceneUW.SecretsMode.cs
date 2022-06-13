@@ -4,7 +4,13 @@
 	{
 		private void OnMouseDown_Secrets(MouseEventArgs e)
 		{
+			if (ObjectToPlace == null)
+			{
+				FindHoveredEntity(Room.SecretsList, e);
+				HandleSelectingHoveredObject();
+			}
 
+			// TODO
 		}
 
 		private void OnMouseUp_Secrets(MouseEventArgs e)

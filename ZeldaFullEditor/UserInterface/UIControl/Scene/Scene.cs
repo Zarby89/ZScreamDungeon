@@ -63,6 +63,8 @@
 			{
 				RightClickedXAt = e.X;
 				RightClickedYAt = e.Y;
+				// TODO context menu
+				return;
 			}
 
 			try

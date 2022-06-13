@@ -117,6 +117,27 @@
 			hoveredEntity = null;
 		}
 
+		private void HandleSelectingHoveredObject()
+		{
+			
+			if (ModifierKeys == Keys.Control)
+			{
+				if (hoveredEntity is null)
+				{
+					return;
+				}
+				Room.RemoveIfThereOrAddToSelectedObjects(hoveredEntity);
+			}
+			else
+			{
+				if (hoveredEntity is null)
+				{
+					Room.ClearSelectedList();
+					return;
+				}
+				Room.OnlySelectedObject = hoveredEntity;
+			}
+		}
 
 		public void MoveSelectedObjects()
 		{
@@ -124,8 +145,8 @@
 			{
 				if (o is IFreelyPlaceable gg)
 				{
-					gg.RealX = (byte) (gg.GridX + MoveX).Clamp(0, 80);
-					gg.RealY = (byte) (gg.GridY + MoveY).Clamp(0, 80);
+					gg.RealX = MouseX;
+					gg.RealY = MouseY;
 				}
 			}
 
@@ -207,13 +228,6 @@
 			}
 
 			RoomEditingArtist.DrawSelfToImage(g);
-
-			// Draw selection
-			Pen selectionColor = MouseIsDown ? Pens.LimeGreen : Pens.Green;
-			foreach (var o in Room.SelectedObjects)
-			{
-				g.DrawRectangle(selectionColor, o.BoundingBox);
-			}
 
 			// Draw BG2 outlines / annotations
 			Action<RoomObject> invisibles = null;
@@ -351,6 +365,14 @@
 			{
 				Draw_Collision(g);
 			}
+
+			// Draw selected objects
+			Pen selectionColor = MouseIsDown ? Pens.LimeGreen : Pens.Green;
+			foreach (var o in Room.SelectedObjects)
+			{
+				g.DrawRectangle(selectionColor, o.BoundingBox);
+			}
+
 
 		} // End Paint();
 

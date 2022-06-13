@@ -5,6 +5,13 @@
 		private void OnMouseDown_Torch(MouseEventArgs e)
 		{
 
+			if (ObjectToPlace == null)
+			{
+				FindHoveredEntity(Room.TorchList, e);
+				HandleSelectingHoveredObject();
+			}
+
+			// TODO
 		}
 
 		private void OnMouseUp_Torch(MouseEventArgs e)
