@@ -1,6 +1,6 @@
 ﻿namespace ZeldaFullEditor
 {
-	partial class ObjectViewer
+	partial class ObjectViewer<TPreview>
 	{
 		/// <summary> 
 		/// Variable nécessaire au concepteur.
@@ -31,9 +31,7 @@
 			this.SuspendLayout();
 			// 
 			// ObjectViewer
-			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+			//
 			this.DoubleBuffered = true;
 			this.MinimumSize = new System.Drawing.Size(0, 180);
 			this.Name = "ObjectViewer";
@@ -41,7 +39,7 @@
 			this.SizeChanged += new System.EventHandler(this.ObjectViewer_SizeChanged);
 			this.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ObjectViewer_MouseClick);
 			this.ResumeLayout(false);
-
+			this.Dock = DockStyle.Fill;
 		}
 
 		#endregion

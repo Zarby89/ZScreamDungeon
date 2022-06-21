@@ -33,7 +33,6 @@
 				room = value;
 
 				RoomEditingArtist.CurrentRoom = Room;
-
 				ZGUI.DungeonEditor.UpdateFormForSelectedObject(Room.OnlySelectedObject);
 
 				Refresh();

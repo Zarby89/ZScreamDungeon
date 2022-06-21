@@ -134,8 +134,11 @@
 		}
 	}
 
-	public class SpritePreview : IDelegatedDraw, IDrawableSprite, ITypeID
+	public class SpritePreview : IDelegatedDraw, IDrawableSprite, ITypeID, IPreview
 	{
+		public ImmutableArray<SearchCategory> Categories => Species.Categories;
+		public object EntityType => Species;
+
 		public byte X { get; set; } = 0;
 		public byte Y { get; set; } = 0;
 		public int RealX => 16;

@@ -156,12 +156,14 @@
 	/// <summary>
 	/// Just a version of room objects for UI preview.
 	/// </summary>
-	public class RoomObjectPreview : RoomObject
+	public class RoomObjectPreview : RoomObject, IPreview
 	{
+		public ImmutableArray<SearchCategory> Categories => ObjectType.Categories;
+		public object EntityType => ObjectType;
+
 		public RoomObjectPreview(RoomObjectType type, TilesList tiles) : base(type, tiles)
 		{
 		}
-
 		public override void Draw(IDrawArt art)
 		{
 			var prv = (PreviewArtist) art;

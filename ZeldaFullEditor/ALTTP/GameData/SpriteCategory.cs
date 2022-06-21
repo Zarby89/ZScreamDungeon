@@ -3,19 +3,13 @@
 	/// <summary>
 	/// Specifies a category of broad usability under which sprites may fall.
 	/// </summary>
-	/// 
-	public class SpriteCategory
+	public class SpriteCategory : SearchCategory
 	{
-		private static int id = 0;
+		public override string Name { get; protected init; } = "Name";
+		public override string Description { get; protected init; } = "Description";
 
-		public string Name { get; private init; } = "Name";
-		public string Description { get; private init; } = "Description";
-
-		private int ID { get; }
-
-		private SpriteCategory()
+		private SpriteCategory() : base()
 		{
-			ID = id++;
 		}
 
 		public override string ToString() => Name;

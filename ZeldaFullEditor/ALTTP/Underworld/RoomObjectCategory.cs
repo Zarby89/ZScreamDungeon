@@ -1,17 +1,12 @@
 ﻿namespace ZeldaFullEditor.ALTTP.Underworld
 {
-	public sealed class RoomObjectCategory
+	public sealed class RoomObjectCategory : SearchCategory
 	{
-		private static int id = 0;
+		public override string Name { get; protected init; } = "Name";
+		public override string Description { get; protected init; } = "Description";
 
-		public string Name { get; private init; } = "Name";
-		public string Description { get; private init; } = "Description";
-
-		private int ID { get; }
-
-		private RoomObjectCategory()
+		private RoomObjectCategory() : base()
 		{
-			ID = id++;
 		}
 
 		public override string ToString() => Name;

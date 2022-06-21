@@ -1,16 +1,56 @@
 ﻿namespace ZeldaFullEditor
 {
-	public partial class ObjectViewer : UserControl
+	public partial class ObjectViewer<TPreview> : FlowLayoutPanel where TPreview : IPreview, ITypeID
 	{
-		private readonly ImmutableList<RoomObjectPreview> items;
-		private ImmutableList<RoomObjectPreview> displayeditems;
+		private readonly Selectable[] items;
 
 		public bool showName = false;
 
-		public int selectedIndex = -1;
-		public event EventHandler SelectedIndexChanged;
+		private Selectable selectedCell;
 
-		public RoomObjectPreview selectedObject = null;
+		private class Selectable : UserControl
+		{
+			// TODO move this to dungeonmain
+			bool showName = true;
+
+			internal TPreview guy { get; init; }
+			internal bool Selected { get; set; }
+
+			private static readonly Font FF = new("Microsoft Sans Serif", 8F, FontStyle.Regular, GraphicsUnit.Point);
+			private static readonly Font Smaller = new("Microsoft Sans Serif", 7F, FontStyle.Regular, GraphicsUnit.Point);
+
+			private const int DimensionL = 56;
+			public Selectable()
+			{
+				Width = DimensionL;
+				Height = DimensionL;
+				Margin = new(0, 0, 1, 1);
+				Font = FF;
+				
+			}
+
+			protected override void OnPaint(PaintEventArgs e)
+			{
+				e.Graphics.Clear(Color.Black);
+				e.Graphics.DrawImage(UXPreviewArtist.GetImageForEntry(guy).Bitmap, new Point(0, 0));
+
+				if (Selected)
+				{
+					e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(0, 0, DimensionL, DimensionL));
+				}
+
+				e.Graphics.DrawString(guy.TypeID.ToString("X2"), Font, Brushes.White, new PointF(2F, 2F));
+				if (showName)
+				{
+					e.Graphics.DrawString(guy.Name, Smaller, Brushes.White,
+						new RectangleF(2F, 30F, (float) (DimensionL - 4), 30));
+				}
+				//e.Graphics.DrawString(showName ? guy.EntityType.ToString() : guy.TypeID.ToString("X2"),
+				//		Font, Brushes.White, new Rectangle(0, 48, 64, 64));
+
+				base.OnPaint(e);
+			}
+		}
 
 
 		private string text = null;
@@ -37,8 +77,8 @@
 			}
 		}
 
-		private List<RoomObjectCategory> cats = null;
-		public List<RoomObjectCategory> SearchedCategories
+		private List<SearchCategory> cats = null;
+		public List<SearchCategory> SearchedCategories
 		{
 			get => cats;
 			set
@@ -56,30 +96,62 @@
 			InitializeComponent();
 		}
 
-		public ObjectViewer(ICollection<RoomObjectPreview> list)
+		public ObjectViewer(ICollection<TPreview> list)
 		{
-			items = list.ToImmutableList();
-			displayeditems = items;
+			List<Selectable> nlist = new(list.Count);
+			foreach (var p in list)
+			{
+				Selectable add = new()
+				{
+					guy = p
+				};
+				nlist.Add(add);
+
+				ZGUI.toolTip1.SetToolTip(add, p.Name);
+				add.MouseClick += new((sender, e) =>
+				{
+					var ssss = (Selectable) sender;
+					if (ssss is null) return;
+					if (selectedCell is not null)
+					{
+						selectedCell.Selected = false;
+					}
+					ssss.Selected = true;
+					selectedCell = ssss;
+					ssss.Refresh();
+				});
+			}
+
+
+			items = nlist.ToArray();
 			InitializeComponent();
+			AutoScroll = true;
+			Controls.Clear();
+			Controls.AddRange(items);
 		}
 
-
-
-		public RoomObject CreateSelectedObject()
+		private void Add_MouseClick(object sender, MouseEventArgs e)
 		{
-			return new RoomObject(selectedObject.ObjectType, ZScreamer.ActiveScreamer.TileLister[selectedObject.ID]);
+			throw new NotImplementedException();
+		}
+
+		public object CreateSelectedObject()
+		{
+			return selectedCell.guy;
 		}
 
 		private void Refilter()
 		{
-			displayeditems = items.FindAll(obj =>
+			Controls.Clear();
+			selectedCell.Selected = false;
+			Controls.AddRange(Array.FindAll(items, sel =>
 			{
-				if (SearchedText != null && !obj.Name.Contains(SearchedText, StringComparison.CurrentCultureIgnoreCase))
+				if (SearchedText != null && !sel.Name.Contains(SearchedText, StringComparison.CurrentCultureIgnoreCase))
 				{
 					return false;
 				}
 
-				if (SearchedGFX?.CheckIfObjectWillLookGood(obj.ObjectType) ?? false)
+				if (SearchedGFX?.CheckIfEntityWillLookGood(sel.guy.EntityType) ?? false)
 				{
 					return false;
 				}
@@ -88,7 +160,7 @@
 				{
 					foreach (var cat in cats)
 					{
-						if (obj.ObjectType.Categories.Contains(cat))
+						if (sel.guy.Categories.Contains(cat))
 						{
 							return true;
 						}
@@ -98,51 +170,7 @@
 				}
 
 				return true;
-			});
-		}
-
-
-		protected override void OnPaint(PaintEventArgs e)
-		{
-			e.Graphics.Clear(Color.Black);
-			int w = Size.Width & ~0x3F;
-			int xpos = 0;
-			int ypos = 0;
-
-			foreach (var o in displayeditems)
-			{
-				e.Graphics.DrawImage(UXPreviewArtist.GetImageForEntry(o).Bitmap, new Point(xpos, ypos));
-
-				e.Graphics.DrawImage(
-					Settings.Default.favoriteObjects[o.ID] == "true" ?
-					GraphicsManager.favStar2 : GraphicsManager.favStar1,
-					new Rectangle(xpos + 40, ypos + 40, 16, 16)
-				);
-
-				if (selectedObject == o)
-				{
-					e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(xpos, ypos, 64, 64));
-				}
-
-				e.Graphics.DrawRectangle(Pens.DarkGray, new Rectangle(xpos, ypos, 64, 64));
-
-				e.Graphics.DrawString(showName ? o.ObjectType.ToString() : o.ID.ToString("X3"),
-						Font, Brushes.White, new Rectangle(xpos, ypos + 48, 64, 64));
-
-				xpos += 64;
-				if (xpos >= w)
-				{
-					xpos = 0;
-					ypos += 64;
-				}
-			}
-
-			base.OnPaint(e);
-		}
-
-		protected virtual void OnValueChanged(EventArgs e)
-		{
-			SelectedIndexChanged?.Invoke(this, e);
+			}));
 		}
 
 		private void ObjectViewer_SizeChanged(object sender, EventArgs e)
@@ -150,60 +178,52 @@
 			Refresh();
 		}
 
-		public void updateSize()
-		{
-			int w = Size.Width / 64;
-			int h = ((displayeditems.Count / w) + 1) * 64;
-			Size = new Size(Size.Width, h);
-		}
-
 		private void ObjectViewer_MouseClick(object sender, MouseEventArgs e)
 		{
-			int w = (Size.Width / 64);
-			int h = (((displayeditems.Count / w) + 1) * 64);
-			int xpos = 0;
-			int ypos = 0;
-			int index = 0;
-			Size = new Size(Size.Width, h);
-			foreach (RoomObjectPreview o in displayeditems)
-			{
-				if (index < displayeditems.Count)
-				{
-					Rectangle itemRect = new Rectangle(xpos * 64, ypos * 64, 64, 64);
-					Rectangle itemstarRect = new Rectangle((xpos * 64) + 44, (ypos * 64) + 44, 16, 16);
-					if (itemRect.Contains(new Point(e.X, e.Y)))
-					{
-						selectedIndex = index;
-						selectedObject = o;
-						if (itemstarRect.Contains((new Point(e.X, e.Y))))
-						{
-							// Make Favourite or not
-							if (Settings.Default.favoriteObjects[o.ID] == "true")
-							{
-								Settings.Default.favoriteObjects[o.ID] = "false";
-							}
-							else
-							{
-								Settings.Default.favoriteObjects[o.ID] = "true";
-							}
-						}
-
-						OnValueChanged(new EventArgs());
-						Refresh();
-						return;
-					}
-
-					xpos++;
-					if (xpos >= w)
-					{
-						xpos = 0;
-						ypos++;
-
-					}
-
-					index++;
-				}
-			}
+			//int w = (Size.Width / 64);
+			//int h = (((displayeditems.Count / w) + 1) * 64);
+			//int xpos = 0;
+			//int ypos = 0;
+			//int index = 0;
+			//Size = new Size(Size.Width, h);
+			//foreach (var o in displayeditems)
+			//{
+			//	if (index < displayeditems.Count)
+			//	{
+			//		Rectangle itemRect = new Rectangle(xpos * 64, ypos * 64, 64, 64);
+			//		Rectangle itemstarRect = new Rectangle((xpos * 64) + 44, (ypos * 64) + 44, 16, 16);
+			//		if (itemRect.Contains(new Point(e.X, e.Y)))
+			//		{
+			//			selectedIndex = index;
+			//			selectedObject = o;
+			//			if (itemstarRect.Contains((new Point(e.X, e.Y))))
+			//			{
+			//				// Make Favourite or not
+			//				if (Settings.Default.favoriteObjects[o.ID] == "true")
+			//				{
+			//					Settings.Default.favoriteObjects[o.ID] = "false";
+			//				}
+			//				else
+			//				{
+			//					Settings.Default.favoriteObjects[o.ID] = "true";
+			//				}
+			//			}
+			//
+			//			Refresh();
+			//			return;
+			//		}
+			//
+			//		xpos++;
+			//		if (xpos >= w)
+			//		{
+			//			xpos = 0;
+			//			ypos++;
+			//
+			//		}
+			//
+			//		index++;
+			//	}
+			//}
 		}
 	}
 }

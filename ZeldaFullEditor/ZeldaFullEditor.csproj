@@ -130,9 +130,7 @@
     <Compile Update="UserInterface\UIControl\Scene\SceneOW.TileMode.cs" />
     <Compile Update="UserInterface\UIControl\Scene\SceneOW.GravesMode.cs" />
     <Compile Update="UserInterface\UIControl\Scene\SceneOW.TransportMode.cs" />
-    <Compile Update="Gui\ObjectViewer.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
+    <Compile Update="Gui\ObjectViewer.cs" />
     <Compile Update="UserInterface\UIControl\Scene\SceneOW.cs" />
     <Compile Update="UserInterface\UIControl\Scene\SceneUW.BlockMode.cs" />
     <Compile Update="UserInterface\UIControl\Scene\SceneUW.DoorMode.cs" />

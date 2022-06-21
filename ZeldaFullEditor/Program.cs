@@ -34,6 +34,7 @@ global using ZeldaFullEditor.ALTTP.Overworld;
 global using ZeldaFullEditor.ALTTP.Underworld;
 global using ZeldaFullEditor.Properties;
 global using ZeldaFullEditor.Utility;
+global using ZeldaFullEditor.UserInterface;
 global using ZeldaFullEditor.UserInterface.Drawing;
 global using ZeldaFullEditor.UserInterface.Drawing.Artists;
 global using ZeldaFullEditor.UserInterface.Drawing.SNESGraphics;

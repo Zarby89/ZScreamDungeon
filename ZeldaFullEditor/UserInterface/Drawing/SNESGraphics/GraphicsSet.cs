@@ -58,6 +58,14 @@
 
 		public GraphicsTile GetBackgroundGraphicsTile(int id) => this[id];
 
+		public bool CheckIfEntityWillLookGood(object t) => t switch
+		{
+			SpriteType s => CheckIfSpriteWillLookGood(s),
+			RoomObjectType r => CheckIfObjectWillLookGood(r),
+			_ => true
+		};
+
+
 		public bool CheckIfSpriteWillLookGood(SpriteType t)
 		{
 			return

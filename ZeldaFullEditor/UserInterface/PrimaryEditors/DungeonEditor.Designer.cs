@@ -28,8 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Entrances");
-			System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Spawn points");
+			System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Entrances");
+			System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Spawn points");
 			this.tabControl1 = new System.Windows.Forms.TabControl();
 			this.entrancetabPage = new System.Windows.Forms.TabPage();
 			this.entrancetreeView = new System.Windows.Forms.TreeView();
@@ -89,11 +89,8 @@
 			this.label24 = new System.Windows.Forms.Label();
 			this.objectstabPage = new System.Windows.Forms.TabPage();
 			this.favoriteCheckbox = new System.Windows.Forms.CheckBox();
-			this.showNameObjectCheckbox = new System.Windows.Forms.CheckBox();
-			this.panel1 = new ZeldaFullEditor.CustomPanel();
 			this.searchTextbox = new System.Windows.Forms.TextBox();
-			this.tabPage4 = new System.Windows.Forms.TabPage();
-			this.customPanel1 = new ZeldaFullEditor.CustomPanel();
+			this.SpritesTabPage = new System.Windows.Forms.TabPage();
 			this.searchspriteTextbox = new System.Windows.Forms.TextBox();
 			this.edit8x8 = new System.Windows.Forms.TabPage();
 			this.edit8x8Panel = new System.Windows.Forms.Panel();
@@ -173,11 +170,13 @@
 			this.mapInfosLabel = new System.Windows.Forms.Label();
 			this.thumbnailBox = new System.Windows.Forms.PictureBox();
 			this.panel2 = new System.Windows.Forms.Panel();
+			this.ObjectSearchPanel = new System.Windows.Forms.Panel();
+			this.SpriteSearchPanel = new System.Windows.Forms.Panel();
 			this.tabControl1.SuspendLayout();
 			this.entrancetabPage.SuspendLayout();
 			this.groupBox2.SuspendLayout();
 			this.objectstabPage.SuspendLayout();
-			this.tabPage4.SuspendLayout();
+			this.SpritesTabPage.SuspendLayout();
 			this.edit8x8.SuspendLayout();
 			this.edit8x8Panel.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.editBox8x8)).BeginInit();
@@ -192,6 +191,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.mapPicturebox)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).BeginInit();
 			this.panel2.SuspendLayout();
+			this.ObjectSearchPanel.SuspendLayout();
+			this.SpriteSearchPanel.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// tabControl1
@@ -200,7 +201,7 @@
             | System.Windows.Forms.AnchorStyles.Left)));
 			this.tabControl1.Controls.Add(this.entrancetabPage);
 			this.tabControl1.Controls.Add(this.objectstabPage);
-			this.tabControl1.Controls.Add(this.tabPage4);
+			this.tabControl1.Controls.Add(this.SpritesTabPage);
 			this.tabControl1.Controls.Add(this.edit8x8);
 			this.tabControl1.Location = new System.Drawing.Point(2, 3);
 			this.tabControl1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
@@ -269,13 +270,13 @@
 			this.entrancetreeView.Location = new System.Drawing.Point(4, 318);
 			this.entrancetreeView.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.entrancetreeView.Name = "entrancetreeView";
-			treeNode5.Name = "EntranceNode";
-			treeNode5.Text = "Entrances";
-			treeNode6.Name = "StartingEntranceNode";
-			treeNode6.Text = "Spawn points";
+			treeNode3.Name = "EntranceNode";
+			treeNode3.Text = "Entrances";
+			treeNode4.Name = "StartingEntranceNode";
+			treeNode4.Text = "Spawn points";
 			this.entrancetreeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode5,
-            treeNode6});
+            treeNode3,
+            treeNode4});
 			this.entrancetreeView.Size = new System.Drawing.Size(272, 348);
 			this.entrancetreeView.TabIndex = 0;
 			this.entrancetreeView.TabStop = false;
@@ -957,14 +958,11 @@
 			// 
 			// objectstabPage
 			// 
-			this.objectstabPage.Controls.Add(this.favoriteCheckbox);
-			this.objectstabPage.Controls.Add(this.showNameObjectCheckbox);
-			this.objectstabPage.Controls.Add(this.panel1);
-			this.objectstabPage.Controls.Add(this.searchTextbox);
-			this.objectstabPage.Location = new System.Drawing.Point(4, 24);
+			this.objectstabPage.Controls.Add(this.ObjectSearchPanel);
+			this.objectstabPage.Location = new System.Drawing.Point(4, 22);
 			this.objectstabPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.objectstabPage.Name = "objectstabPage";
-			this.objectstabPage.Size = new System.Drawing.Size(278, 667);
+			this.objectstabPage.Size = new System.Drawing.Size(278, 669);
 			this.objectstabPage.TabIndex = 4;
 			this.objectstabPage.Text = "Objects";
 			this.objectstabPage.UseVisualStyleBackColor = true;
@@ -974,35 +972,13 @@
 			this.favoriteCheckbox.AutoSize = true;
 			this.favoriteCheckbox.Checked = true;
 			this.favoriteCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.favoriteCheckbox.Dock = System.Windows.Forms.DockStyle.Top;
-			this.favoriteCheckbox.Location = new System.Drawing.Point(0, 37);
+			this.favoriteCheckbox.Location = new System.Drawing.Point(2, 26);
 			this.favoriteCheckbox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
 			this.favoriteCheckbox.Name = "favoriteCheckbox";
-			this.favoriteCheckbox.Size = new System.Drawing.Size(278, 17);
+			this.favoriteCheckbox.Size = new System.Drawing.Size(96, 17);
 			this.favoriteCheckbox.TabIndex = 2;
 			this.favoriteCheckbox.Text = "Show favorites";
 			this.favoriteCheckbox.UseVisualStyleBackColor = true;
-			// 
-			// showNameObjectCheckbox
-			// 
-			this.showNameObjectCheckbox.AutoSize = true;
-			this.showNameObjectCheckbox.Checked = true;
-			this.showNameObjectCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.showNameObjectCheckbox.Dock = System.Windows.Forms.DockStyle.Top;
-			this.showNameObjectCheckbox.Location = new System.Drawing.Point(0, 20);
-			this.showNameObjectCheckbox.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.showNameObjectCheckbox.Name = "showNameObjectCheckbox";
-			this.showNameObjectCheckbox.Size = new System.Drawing.Size(278, 17);
-			this.showNameObjectCheckbox.TabIndex = 1;
-			this.showNameObjectCheckbox.Text = "Show names";
-			this.showNameObjectCheckbox.UseVisualStyleBackColor = true;
-			// 
-			// panel1
-			// 
-			this.panel1.Location = new System.Drawing.Point(3, 20);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(250, 1730);
-			this.panel1.TabIndex = 1;
 			// 
 			// searchTextbox
 			// 
@@ -1013,26 +989,16 @@
 			this.searchTextbox.Size = new System.Drawing.Size(278, 20);
 			this.searchTextbox.TabIndex = 0;
 			// 
-			// tabPage4
+			// SpritesTabPage
 			// 
-			this.tabPage4.Controls.Add(this.customPanel1);
-			this.tabPage4.Controls.Add(this.searchspriteTextbox);
-			this.tabPage4.Location = new System.Drawing.Point(4, 24);
-			this.tabPage4.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.tabPage4.Name = "tabPage4";
-			this.tabPage4.Size = new System.Drawing.Size(278, 667);
-			this.tabPage4.TabIndex = 10;
-			this.tabPage4.Text = "Sprites";
-			this.tabPage4.UseVisualStyleBackColor = true;
-			// 
-			// customPanel1
-			// 
-			this.customPanel1.AutoScroll = true;
-			this.customPanel1.Location = new System.Drawing.Point(0, 17);
-			this.customPanel1.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-			this.customPanel1.Name = "customPanel1";
-			this.customPanel1.Size = new System.Drawing.Size(250, 1730);
-			this.customPanel1.TabIndex = 2;
+			this.SpritesTabPage.Controls.Add(this.SpriteSearchPanel);
+			this.SpritesTabPage.Location = new System.Drawing.Point(4, 22);
+			this.SpritesTabPage.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+			this.SpritesTabPage.Name = "SpritesTabPage";
+			this.SpritesTabPage.Size = new System.Drawing.Size(278, 669);
+			this.SpritesTabPage.TabIndex = 10;
+			this.SpritesTabPage.Text = "Sprites";
+			this.SpritesTabPage.UseVisualStyleBackColor = true;
 			// 
 			// searchspriteTextbox
 			// 
@@ -2077,6 +2043,25 @@
 			this.panel2.Size = new System.Drawing.Size(283, 700);
 			this.panel2.TabIndex = 187;
 			// 
+			// ObjectSearchPanel
+			// 
+			this.ObjectSearchPanel.Controls.Add(this.favoriteCheckbox);
+			this.ObjectSearchPanel.Controls.Add(this.searchTextbox);
+			this.ObjectSearchPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.ObjectSearchPanel.Location = new System.Drawing.Point(0, 0);
+			this.ObjectSearchPanel.Name = "ObjectSearchPanel";
+			this.ObjectSearchPanel.Size = new System.Drawing.Size(278, 50);
+			this.ObjectSearchPanel.TabIndex = 4;
+			// 
+			// SpriteSearchPanel
+			// 
+			this.SpriteSearchPanel.Controls.Add(this.searchspriteTextbox);
+			this.SpriteSearchPanel.Dock = System.Windows.Forms.DockStyle.Top;
+			this.SpriteSearchPanel.Location = new System.Drawing.Point(0, 0);
+			this.SpriteSearchPanel.Name = "SpriteSearchPanel";
+			this.SpriteSearchPanel.Size = new System.Drawing.Size(278, 71);
+			this.SpriteSearchPanel.TabIndex = 2;
+			// 
 			// DungeonEditor
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2096,9 +2081,7 @@
 			this.groupBox2.ResumeLayout(false);
 			this.groupBox2.PerformLayout();
 			this.objectstabPage.ResumeLayout(false);
-			this.objectstabPage.PerformLayout();
-			this.tabPage4.ResumeLayout(false);
-			this.tabPage4.PerformLayout();
+			this.SpritesTabPage.ResumeLayout(false);
 			this.edit8x8.ResumeLayout(false);
 			this.edit8x8Panel.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.editBox8x8)).EndInit();
@@ -2120,6 +2103,10 @@
 			((System.ComponentModel.ISupportInitialize)(this.thumbnailBox)).EndInit();
 			this.panel2.ResumeLayout(false);
 			this.panel2.PerformLayout();
+			this.ObjectSearchPanel.ResumeLayout(false);
+			this.ObjectSearchPanel.PerformLayout();
+			this.SpriteSearchPanel.ResumeLayout(false);
+			this.SpriteSearchPanel.PerformLayout();
 			this.ResumeLayout(false);
 
 		}
@@ -2185,11 +2172,8 @@
 		private Label label24;
 		private TabPage objectstabPage;
 		private CheckBox favoriteCheckbox;
-		private CheckBox showNameObjectCheckbox;
-		private CustomPanel panel1;
 		private TextBox searchTextbox;
-		private TabPage tabPage4;
-		private CustomPanel customPanel1;
+		private TabPage SpritesTabPage;
 		private TextBox searchspriteTextbox;
 		private TabPage edit8x8;
 		private Panel edit8x8Panel;
@@ -2269,5 +2253,7 @@
 		private Label mapInfosLabel;
 		private PictureBox thumbnailBox;
 		private Panel panel2;
+		private Panel ObjectSearchPanel;
+		private Panel SpriteSearchPanel;
 	}
 }

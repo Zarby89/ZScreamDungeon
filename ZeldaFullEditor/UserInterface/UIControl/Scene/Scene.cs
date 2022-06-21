@@ -109,7 +109,7 @@
 			}
 			finally
 			{
-				Refresh();
+				//Refresh();
 			}
 		}
 

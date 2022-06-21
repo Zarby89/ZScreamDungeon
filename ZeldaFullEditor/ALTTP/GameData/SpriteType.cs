@@ -11,10 +11,10 @@ namespace ZeldaFullEditor.ALTTP.GameData
 		public bool IsOverlord { get; }
 
 		public DrawSprite Draw { get; }
-		public ImmutableArray<SpriteCategory> Categories { get; }
+		public ImmutableArray<SearchCategory> Categories { get; }
 		public RequiredGraphicsSheets RequiredSheets { get; }
 
-		protected SpriteType(byte id, DrawSprite d, SpriteCategory[] categories, RequiredGraphicsSheets gsets, bool overlord = false)
+		protected SpriteType(byte id, DrawSprite d, SearchCategory[] categories, RequiredGraphicsSheets gsets, bool overlord = false)
 		{
 			Draw = d;
 			ID = id;

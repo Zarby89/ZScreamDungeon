@@ -18,7 +18,11 @@
 			}
 		}
 
-		public GraphicsSet LoadedGraphics { get; set; }
+		public GraphicsSet LoadedGraphics
+		{
+			get => ZScreamer.ActiveUWScene?.Room?.LoadedGraphics;
+		}
+
 		public NeedsNewArt Redrawing { get; private set; }
 
 		private const int PreviewDimensions = 56;

@@ -18,8 +18,8 @@
 		int tpHotTrackedToCloseLast = -2;
 		int lasttpHotTracked = -2;
 
-		public ObjectViewer objectViewer1;
-		public SpritesView spritesView1;
+		public ObjectViewer<RoomObjectPreview> objectViewer1;
+		public ObjectViewer<SpritePreview> spritesView1;
 		private VramViewer vramViewer;
 		private CGRamViewer cgramViewer;
 
@@ -27,8 +27,8 @@
 		{
 			InitializeComponent();
 
-			objectViewer1 = new ObjectViewer(Array.Empty<RoomObjectPreview>());
-			spritesView1 = new SpritesView(Array.Empty<SpritePreview>());
+			objectViewer1 = new(Array.Empty<RoomObjectPreview>());
+			spritesView1 = new(Array.Empty<SpritePreview>());
 			vramViewer = new VramViewer();
 			cgramViewer = new CGRamViewer();
 
@@ -63,9 +63,6 @@
 			// Initialize the map draw
 
 			initObjectsList();
-
-			objectViewer1.updateSize();
-			spritesView1.updateSize();
 
 			ZScreamer.ActiveUWScene.Refresh();
 		}
@@ -562,40 +559,12 @@
 
 		private void searchTextbox_TextChanged(object sender, EventArgs e)
 		{
-			sortObject();
-			objectViewer1.updateSize();
+			objectViewer1.SearchedText = searchTextbox.Text;
 		}
 
 		private void searchspriteTextbox_TextChanged(object sender, EventArgs e)
 		{
-			sortSprite();
-		}
-
-		public void sortSprite()
-		{
-			throw new NotImplementedException();
-			//spritesView1.items.Clear();
-			//string searchText = searchspriteTextbox.Text.ToLower();
-			//
-			//spritesView1.items.AddRange(listofspritesobjects
-			//	.Where(x => x != null)
-			//	.Where(x => (x.name.ToLower().Contains(searchText)))
-			//	.OrderBy(x => x.id)
-			//	.Select(x => x) // ?
-			//	.ToArray());
-			//
-			//customPanel1.VerticalScroll.Value = 0;
-			//
-			//if (searchText == "")
-			//{
-			//	spritesView1.items.Clear();
-			//	foreach (Sprite o in listofspritesobjects)
-			//	{
-			//		spritesView1.items.Add((o));
-			//	}
-			//}
-			//
-			//spritesView1.Refresh();
+			spritesView1.SearchedText = searchspriteTextbox.Text;
 		}
 
 		private void CloseTab(int i)
@@ -681,10 +650,6 @@
 				//}
 
 				ZScreamer.ActiveUWScene.Refresh();
-				spritesView1.updateSize();
-				spritesView1.Refresh();
-				objectViewer1.updateSize();
-				objectViewer1.Refresh();
 			}
 			else
 			{
@@ -719,33 +684,20 @@
 				listofspritesobjects.Add(new(OverlordType.GetTypeFromID(i)));
 			}
 
-			objectViewer1 = new(listoftilesobjects);
-			spritesView1 = new(listofspritesobjects);
+			objectViewer1 = new(listoftilesobjects)
+			{
+				Dock = DockStyle.Bottom,
+				Height = 500,
+			};
 
-			//sortObject();
-		}
+			spritesView1 = new(listofspritesobjects)
+			{
+				Dock = DockStyle.Bottom,
+				Height = 500,
+			};
 
-
-
-
-
-
-
-
-
-
-
-		private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
-		{
-			objectViewer1.updateSize();
-			spritesView1.updateSize();
-		}
-
-		private void checkBox1_CheckedChanged(object sender, EventArgs e)
-		{
-			objectViewer1.showName = showNameObjectCheckbox.Checked;
-			objectViewer1.updateSize();
-			objectViewer1.Refresh();
+			objectstabPage.Controls.Add(objectViewer1);
+			SpritesTabPage.Controls.Add(spritesView1);
 		}
 
 		private void EntrancePropertyChanged(object sender, EventArgs e)
@@ -1070,13 +1022,13 @@
 
 		private void objectViewer1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveUWScene.ObjectToPlace = objectViewer1.CreateSelectedObject();
+			ZScreamer.ActiveUWScene.ObjectToPlace = (IDungeonPlaceable) objectViewer1.CreateSelectedObject();
 		}
 
 
 		private void spritesView1_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveUWScene.ObjectToPlace = spritesView1.CreateSelectedSprite();
+			ZScreamer.ActiveUWScene.ObjectToPlace = (IDungeonPlaceable) spritesView1.CreateSelectedObject();
 		}
 
 		private void selecteditemobjectCombobox_SelectedIndexChanged(object sender, EventArgs e)
@@ -1184,9 +1136,6 @@
 
 				//paletteViewer.update();
 				ZScreamer.ActiveUWScene.HardRefresh();
-
-				objectViewer1.updateSize();
-				spritesView1.updateSize();
 			}
 
 			if (RoomTabControl.TabPages.Count > 0)
