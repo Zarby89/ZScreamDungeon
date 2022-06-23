@@ -41,7 +41,7 @@
 			}
 
 			var entry = AllPreviews[typeof(TType)];
-			if (entry.ContainsKey(item.TypeID))
+			if (!entry.ContainsKey(item.TypeID))
 			{
 				return new(PreviewDimensions, PreviewDimensions);
 			}

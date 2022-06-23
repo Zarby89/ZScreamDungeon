@@ -544,58 +544,58 @@
 
 		private void scratchPicturebox_MouseMove(object sender, MouseEventArgs e)
 		{
-			if (ZScreamer.ActiveOWScene.initialized)
+			if (ZScreamer.ActiveOWScene == null) return;
+			
+			mouseX_Real = e.X;
+			mouseY_Real = e.Y;
+			int mouseTileX = e.X / Tile16EntryWidth;
+			int mouseTileY = e.Y / Tile16EntryWidth;
+
+			if (lastTileHoverX != mouseTileX || lastTileHoverY != mouseTileY)
 			{
-				mouseX_Real = e.X;
-				mouseY_Real = e.Y;
-				int mouseTileX = e.X / Tile16EntryWidth;
-				int mouseTileY = e.Y / Tile16EntryWidth;
-
-				if (lastTileHoverX != mouseTileX || lastTileHoverY != mouseTileY)
+				if (MouseIsDown)
 				{
-					if (MouseIsDown)
+					if (e.Button == MouseButtons.Left)
 					{
-						if (e.Button == MouseButtons.Left)
+						int tileX = e.X / Tile16EntryWidth;
+						int tileY = e.Y / Tile16EntryWidth;
+						if (tileX <= 0) { tileX = 0; }
+						if (tileY <= 0) { tileY = 0; }
+						if (tileX > 16) { tileX = 16; }
+						if (tileY > 225) { tileY = 225; }
+						globalmouseTileDownX = tileX;
+						globalmouseTileDownY = tileY;
+
+						if (ZScreamer.ActiveOWScene.selectedTile.Length >= 1)
 						{
-							int tileX = e.X / Tile16EntryWidth;
-							int tileY = e.Y / Tile16EntryWidth;
-							if (tileX <= 0) { tileX = 0; }
-							if (tileY <= 0) { tileY = 0; }
-							if (tileX > 16) { tileX = 16; }
-							if (tileY > 225) { tileY = 225; }
-							globalmouseTileDownX = tileX;
-							globalmouseTileDownY = tileY;
-
-							if (ZScreamer.ActiveOWScene.selectedTile.Length >= 1)
+							int y = 0;
+							int x = 0;
+							for (int i = 0; i < ZScreamer.ActiveOWScene.selectedTile.Length; i++)
 							{
-								int y = 0;
-								int x = 0;
-								for (int i = 0; i < ZScreamer.ActiveOWScene.selectedTile.Length; i++)
+								if (globalmouseTileDownX + x < 16 && globalmouseTileDownY + y < 225)
 								{
-									if (globalmouseTileDownX + x < 16 && globalmouseTileDownY + y < 225)
-									{
-										scratchPadTiles[globalmouseTileDownX + x, globalmouseTileDownY + y] = ZScreamer.ActiveOWScene.selectedTile[i];
-									}
+									scratchPadTiles[globalmouseTileDownX + x, globalmouseTileDownY + y] = ZScreamer.ActiveOWScene.selectedTile[i];
+								}
 
-									x++;
+								x++;
 
-									if (x >= ZScreamer.ActiveOWScene.selectedTileSizeX)
-									{
-										y++;
-										x = 0;
-									}
+								if (x >= ZScreamer.ActiveOWScene.selectedTileSizeX)
+								{
+									y++;
+									x = 0;
 								}
 							}
 						}
-
-						BuildScratchTilesGfx();
 					}
 
-					scratchPicturebox.Refresh();
-					lastTileHoverX = mouseTileX;
-					lastTileHoverY = mouseTileY;
+					BuildScratchTilesGfx();
 				}
+
+				scratchPicturebox.Refresh();
+				lastTileHoverX = mouseTileX;
+				lastTileHoverY = mouseTileY;
 			}
+			
 		}
 
 		private void scratchPicturebox_Paint(object sender, PaintEventArgs e)

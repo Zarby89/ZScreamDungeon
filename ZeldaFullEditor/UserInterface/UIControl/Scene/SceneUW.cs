@@ -33,7 +33,7 @@
 				room = value;
 
 				RoomEditingArtist.CurrentRoom = Room;
-				ZGUI.DungeonEditor.UpdateFormForSelectedObject(Room.OnlySelectedObject);
+				UpdateDungeonForm();
 
 				Refresh();
 			}
@@ -105,8 +105,17 @@
 
 		private void FindHoveredEntity<T>(IEnumerable<T> list, MouseEventArgs e) where T : IDungeonPlaceable
 		{
-			foreach (var o in list)
+			//foreach (var o in list)
+			//{
+			//	if (o.MouseIsInHitbox(e))
+			//	{
+			//		hoveredEntity = o;
+			//		return;
+			//	}
+			//}
+			for (int i = list.Count() - 1; i >= 0; i--)
 			{
+				var o = list.ElementAt(i);
 				if (o.MouseIsInHitbox(e))
 				{
 					hoveredEntity = o;
@@ -114,6 +123,16 @@
 				}
 			}
 			hoveredEntity = null;
+		}
+
+		private void UpdateDungeonForm()
+		{
+			if (Room.SelectedObjects.Count > 1)
+			{
+				ZGUI.DungeonEditor.UpdateFormForManySelectedObjects(Room.SelectedObjects);
+				return;
+			}
+			ZGUI.DungeonEditor.UpdateFormForSelectedObject(Room.OnlySelectedObject);
 		}
 
 		private void HandleSelectingHoveredObject()
@@ -132,10 +151,13 @@
 				if (hoveredEntity is null)
 				{
 					Room.ClearSelectedList();
-					return;
 				}
-				Room.OnlySelectedObject = hoveredEntity;
+				else
+				{
+					Room.OnlySelectedObject = hoveredEntity;
+				}
 			}
+			UpdateDungeonForm();
 		}
 
 		public void MoveSelectedObjects()
@@ -148,6 +170,8 @@
 					gg.RealY = MouseY;
 				}
 			}
+
+			UpdateDungeonForm();
 
 			InvalidateRoomTilemapAndArtist();
 		}
@@ -165,8 +189,8 @@
 
 		public override void Refresh()
 		{
+			if (!CanIRefresh()) return;
 			ZGUI.DungeonEditor.UpdateUIForRoom(Room, true);
-			Invalidate();
 			base.Refresh();
 		}
 
@@ -366,12 +390,16 @@
 			}
 
 			// Draw selected objects
-			Pen selectionColor = MouseIsDown ? Pens.LimeGreen : Pens.Green;
+			Pen selectionColor = MouseIsDown ? Pens.Yellow : Pens.GhostWhite;
 			foreach (var o in Room.SelectedObjects)
 			{
 				g.DrawRectangle(selectionColor, o.BoundingBox);
 			}
 
+			if (hoveredEntity is not null)
+			{
+				g.DrawRectangle(Pens.Aqua, hoveredEntity.BoundingBox);
+			}
 
 		} // End Paint();
 

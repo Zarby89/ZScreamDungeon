@@ -2,7 +2,7 @@
 {
 	/// <summary>
 	/// Represents a room object; i.e. a dungeon entity that constitutes the physical make up of a room and is not
-	/// a door, lightable torch or pushable block object.
+	/// a door, lightable torch, or pushable block object.
 	/// </summary>
 	[Serializable]
 	public class RoomObject : IDungeonPlaceable, IByteable, IFreelyPlaceable, IDelegatedDraw, IMouseCollidable, IMultilayered, ITypeID
@@ -164,6 +164,7 @@
 		public RoomObjectPreview(RoomObjectType type, TilesList tiles) : base(type, tiles)
 		{
 		}
+
 		public override void Draw(IDrawArt art)
 		{
 			var prv = (PreviewArtist) art;

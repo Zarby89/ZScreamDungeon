@@ -38,6 +38,7 @@
 			get => parent;
 			set
 			{
+				if (parent == value) return;
 				parent = value;
 				if (IsOwnParent) return;
 				Tileset = parent.Tileset;

@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Contains methods for general purpose operations.
 	/// </summary>
-	public static class Utils
+	internal static class Utils
 	{
 		public static int AddressFromBytes(byte addr1, byte addr2, byte addr3)
 		{

@@ -8,6 +8,7 @@
 			{
 				FindHoveredEntity(Room.GetLayerList(Layer), e);
 				HandleSelectingHoveredObject();
+				return;
 			}
 
 			CheckIfObjectIsInvalidForPlacement();
@@ -25,7 +26,10 @@
 
 		private void OnMouseMove_Layer(MouseEventArgs e)
 		{
-
+			if (!MouseIsDown)
+			{
+				FindHoveredEntity(Room.GetLayerList(Layer), e);
+			}
 
 
 			InvalidateRoomTilemapAndArtist();

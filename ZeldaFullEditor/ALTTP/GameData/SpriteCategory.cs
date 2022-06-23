@@ -5,14 +5,9 @@
 	/// </summary>
 	public class SpriteCategory : SearchCategory
 	{
-		public override string Name { get; protected init; } = "Name";
-		public override string Description { get; protected init; } = "Description";
-
 		private SpriteCategory() : base()
 		{
 		}
-
-		public override string ToString() => Name;
 
 		public static ImmutableArray<SpriteCategory> ListOf { get; }
 

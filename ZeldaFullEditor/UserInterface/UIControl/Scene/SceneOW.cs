@@ -17,7 +17,6 @@
 
 		//public int lockedMap = -1;
 		//must load all current map gfx
-		public bool initialized = false;
 		public ushort[] selectedTile = new ushort[] { 0 };
 		public int selectedTileSizeX = 1;
 		public int globalmouseTileDownX = 0;
@@ -329,8 +328,6 @@
 		{
 			base.OnPaint(e);
 
-			if (!initialized) return;
-
 			Graphics g = e.Graphics;
 
 			ColorMatrix cm = new ColorMatrix();
@@ -611,6 +608,7 @@
 
 		public override void Refresh()
 		{
+			if (!CanIRefresh()) return;
 			InvalidateScreens();
 			base.Refresh();
 		}

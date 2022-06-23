@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Zarby! Stop making magic numbers.
 	/// </summary>
-	public static partial class Constants
+	internal static partial class Constants
 	{
 		//===========================================================================================
 		// Magic numbers
@@ -175,9 +175,6 @@
 
 		public static readonly Color QuarterWhite = Color.FromArgb(60, 255, 255, 255);
 		public static readonly Pen QuarterWhitePen = new(QuarterWhite);
-
-		public static readonly Color FifthBlue = Color.FromArgb(50, 0, 0, 255);
-		public static readonly Brush FifthBlueBrush = new SolidBrush(FifthBlue);
 
 		public static readonly Pen Orange220Pen1 = new(Color.FromArgb(220, Color.Orange), 1);
 		public static readonly Pen Red220Pen1 = new(Color.FromArgb(220, Color.Red), 1);

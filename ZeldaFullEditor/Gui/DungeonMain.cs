@@ -1133,11 +1133,6 @@
 			ZScreamer.ActiveUWScene.Refresh();
 		}
 
-		private void entranceCameraToolStripMenuItem_Click(object sender, EventArgs e)
-		{
-			ZScreamer.ActiveUWScene.Refresh();
-		}
-
 		private void entrancePositionToolStripMenuItem_Click(object sender, EventArgs e)
 		{
 			ZScreamer.ActiveUWScene.Refresh();
@@ -1400,6 +1395,18 @@
 			{
 				SelectedObjectDataLabel.Visible = false;
 			}
+		}
+
+		public void UpdateFormForManySelectedObjects<T>(IEnumerable<T> l) where T : IHaveInfo
+		{
+			SelectedObjectNameLabel.Visible = true;
+			// SelectedObjectNameLabel.Text = $"{l.Count()} {typeof(T).Name} selected";
+			SelectedObjectNameLabel.Text = $"{l.Count()} objects selected";
+			SelectedObjectXLabel.Visible = false;
+			SelectedObjectYLabel.Visible = false;
+			SelectedObjectLayerLabel.Visible = false;
+			SelectedObjectDataLabel.Visible = false;
+			SelectedObjectSizeLabel.Visible = false;
 		}
 
 

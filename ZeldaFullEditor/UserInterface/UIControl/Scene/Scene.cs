@@ -22,7 +22,10 @@
 
 		public bool TriggerRefresh { get; set; }
 
-		protected Scene() { }
+		protected Scene()
+		{
+			DoubleBuffered = true;
+		}
 
 		protected Scene(ZScreamer zs)
 		{
@@ -35,10 +38,15 @@
 			MouseWheel += new MouseEventHandler(OnMouseWheel);
 		}
 
+		private DateTimeOffset _canrefresh = DateTimeOffset.Now;
 		public override void Refresh()
 		{
+			if (!CanIRefresh()) return;
+			_canrefresh = DateTimeOffset.Now.AddMilliseconds(100);
 			base.Refresh();
 		}
+
+		protected bool CanIRefresh() => _canrefresh < DateTimeOffset.Now;
 
 		protected virtual void OnMouseWheel(object o, MouseEventArgs e)
 		{
@@ -109,7 +117,7 @@
 			}
 			finally
 			{
-				//Refresh();
+				Refresh();
 			}
 		}
 

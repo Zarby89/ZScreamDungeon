@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Contains fields for consistency with colors across the user interface.
 	/// </summary>
-	public static class UIColors
+	internal static class UIColors
 	{
 		public const int EntityAlpha = 200;
 		public const int EntitySelectedAlpha = 230;

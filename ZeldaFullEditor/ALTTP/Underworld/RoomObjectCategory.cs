@@ -2,14 +2,9 @@
 {
 	public sealed class RoomObjectCategory : SearchCategory
 	{
-		public override string Name { get; protected init; } = "Name";
-		public override string Description { get; protected init; } = "Description";
-
 		private RoomObjectCategory() : base()
 		{
 		}
-
-		public override string ToString() => Name;
 
 		public static ImmutableArray<RoomObjectCategory> ListOf { get; }
 
@@ -183,7 +178,7 @@
 		public static readonly RoomObjectCategory Mutable = new()
 		{
 			Name = "Is mutable",
-			Description = "Objects that can changed by player interaction in some form.",
+			Description = "Objects that can change by player interaction in some form.",
 		};
 
 		[PredefinedInstance]

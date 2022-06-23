@@ -6,13 +6,13 @@ namespace ZeldaFullEditor.Data
 
 	public partial class RoomObjectType
 	{
-		/// <summary>
-		/// Draws a specified tile or set of tiles of an object
-		/// </summary>
-		/// <param name="art">Handler for graphics where object is being drawn.</param>
-		/// <param name="obj">Object being drawn</param>
-		/// <param name="allbg">Whether this routines draws to all backgrounds or just the object's background</param>
-		/// <param name="instructions">A list of <see cref="DrawInfo"/> instructions for which tiles to draw.</param>
+		// <summary>
+		// Draws a specified tile or set of tiles of an object
+		// </summary>
+		// <param name="art">Handler for graphics where object is being drawn.</param>
+		// <param name="obj">Object being drawn</param>
+		// <param name="allbg">Whether this routines draws to all backgrounds or just the object's background</param>
+		// <param name="instructions">A list of <see cref="DrawInfo"/> instructions for which tiles to draw.</param>
 		//private static void DrawTiles(IDrawArt artist, RoomObject obj , bool allbg, params DrawInfo[] instructions)
 		//{
 		//	if (artist is PreviewArtist prvart)

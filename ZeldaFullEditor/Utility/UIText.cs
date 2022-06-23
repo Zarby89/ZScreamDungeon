@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Contains methods and fields for consistency with text that is visible to the user.
 	/// </summary>
-	public static class UIText
+	internal static class UIText
 	{
 		//===========================================================================================
 		// META

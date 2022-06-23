@@ -27,8 +27,6 @@
 		{
 			InitializeComponent();
 
-			objectViewer1 = new(Array.Empty<RoomObjectPreview>());
-			spritesView1 = new(Array.Empty<SpritePreview>());
 			vramViewer = new VramViewer();
 			cgramViewer = new CGRamViewer();
 
@@ -73,7 +71,7 @@
 			for (int i = 0; i < 0x07; i++)
 			{
 				ZScreamer.ActiveScreamer.starting_entrances[i] = new UnderworldEntrance(ZScreamer.ActiveScreamer, (byte) i, true);
-				string tname = $"[{i:X2}] > {DefaultEntities.ListOfRoomNames[ZScreamer.ActiveScreamer.starting_entrances[i].RoomID]:X3}";
+				string tname = $"[{i:X2}] - {DefaultEntities.ListOfRoomNames[ZScreamer.ActiveScreamer.starting_entrances[i].RoomID]:X3}";
 
 				entrancetreeView.Nodes[1].Nodes.Add(
 					new TreeNode(tname)
@@ -86,7 +84,7 @@
 			for (int i = 0; i < Constants.NumberOfEntrances; i++)
 			{
 				ZScreamer.ActiveScreamer.entrances[i] = new(ZScreamer.ActiveScreamer, (byte) i, false);
-				string tname = $"[{i:X2}] > {DefaultEntities.ListOfRoomNames[ZScreamer.ActiveScreamer.entrances[i].RoomID]:X3}";
+				string tname = $"[{i:X2}] - {DefaultEntities.ListOfRoomNames[ZScreamer.ActiveScreamer.entrances[i].RoomID]:X3}";
 
 				entrancetreeView.Nodes[0].Nodes.Add(
 					new TreeNode(tname)
@@ -121,8 +119,6 @@
 					spritesubtypeUpDown.Value = s.Subtype;
 					spriteoverlordCheckbox.Checked = s.IsCurrentlyOverlord;
 					KeyDropComboBox.SelectedIndex = s.KeyDrop;
-
-					ZScreamer.ActiveUWScene.Refresh();
 					break;
 
 				case DungeonDoor d:
@@ -135,6 +131,10 @@
 			ZGUI.UpdateFormForSelectedObject(o);
 		}
 
+		public void UpdateFormForManySelectedObjects<T>(IEnumerable<T> l) where T : IHaveInfo
+		{
+			ZGUI.UpdateFormForManySelectedObjects(l);
+		}
 
 		public void UpdateUIForRoom(Room room, bool prevent = true)
 		{
@@ -343,8 +343,10 @@
 		{
 			for (int j = 0; j < opened_rooms.Count; j++)
 			{
-				if (opened_rooms[j].RoomID == index)
+				var room = opened_rooms[j];
+				if (room.RoomID == index)
 				{
+					room.ClearSelectedList();
 					opened_rooms.RemoveAt(j);
 					return;
 				}
@@ -441,52 +443,6 @@
 			propertiesChangedFromForm = false;
 		}
 
-		public void sortObject()
-		{
-			throw new NotImplementedException();
-			//objectViewer1.BeginUpdate();
-			//objectViewer1.items.Clear();
-			//
-			//if (favoriteCheckbox.Checked)
-			//{
-			//	// Sorting sort;
-			//	string searchText = searchTextbox.Text.ToLower();
-			//
-			//	// ListView1
-			//	objectViewer1.items.AddRange(listoftilesobjects
-			//		.Where(x => x != null)
-			//		.Where(x => x.name.ToLower().Contains(searchText))
-			//		.Where(x => Settings.Default.favoriteObjects[x.id] == "true")
-			//		.OrderBy(x => x.id)
-			//		.Select(x => x) // ?
-			//		.ToArray());
-			//
-			//	panel1.VerticalScroll.Value = 0;
-			//	objectViewer1.Refresh();
-			//}
-			//else
-			//{
-			//	// Sorting sort;
-			//	string searchText = searchTextbox.Text.ToLower();
-			//
-			//	// ListView1
-			//	objectViewer1.items.AddRange(listoftilesobjects
-			//		.Where(x => x != null)
-			//		.Where(x => (x.name.ToLower().Contains(searchText)))
-			//		.OrderBy(x => x.id)
-			//		.Select(x => x) // ?
-			//		.ToArray());
-			//	objectViewer1.updateSize();
-			//	panel1.VerticalScroll.Value = 0;
-			//	objectViewer1.Refresh();
-			//}
-		}
-
-		private void favoriteCheckbox_CheckedChanged(object sender, EventArgs e)
-		{
-			sortObject();
-		}
-
 		public void SelectAllRooms()
 		{
 			for (ushort i = 0; i < Constants.NumberOfRooms; i++)
@@ -494,6 +450,7 @@
 				selectedMapPng.Add(i);
 			}
 		}
+
 		public void DeselectAllRooms()
 		{
 			selectedMapPng.Clear();
@@ -664,40 +621,41 @@
 
 		public void initObjectsList()
 		{
-			for (ushort i = 0; i < 0x300; i++)
+			ObjectListPanel.Controls.Clear();
+			SpriteListPanel.Controls.Clear();
+
+			foreach (var o in RoomObjectType.ListOf)
 			{
-				var o = RoomObjectType.GetTypeFromID(i);
-				if (o is not null)
-				{
-					listoftilesobjects.Add(new(o, ZScreamer.ActiveScreamer.TileLister[i]));
-				}
+				RoomObjectPreview p = new(o, ZScreamer.ActiveScreamer.TileLister[o.FullID]);
+				listoftilesobjects.Add(p);
+				p.Draw(UXPreviewArtist);
 			}
 
-			// TODO previews for sprites and overlords
-			for (byte i = 0; i < 0xF2; i++)
+			foreach (var o in SpriteType.ListOf)
 			{
-				listofspritesobjects.Add(new(SpriteType.GetTypeFromID(i)));
+				listofspritesobjects.Add(new(o));
 			}
 
-			for (byte i = 1; i < 0x1B; i++)
+			foreach (var o in OverlordType.ListOf)
 			{
-				listofspritesobjects.Add(new(OverlordType.GetTypeFromID(i)));
+				listofspritesobjects.Add(new(o));
 			}
 
 			objectViewer1 = new(listoftilesobjects)
 			{
-				Dock = DockStyle.Bottom,
-				Height = 500,
+				Dock = DockStyle.Fill,
 			};
 
 			spritesView1 = new(listofspritesobjects)
 			{
-				Dock = DockStyle.Bottom,
-				Height = 500,
+				Dock = DockStyle.Fill,
 			};
 
-			objectstabPage.Controls.Add(objectViewer1);
-			SpritesTabPage.Controls.Add(spritesView1);
+			UXPreviewArtist.RefreshPalettesFrom(ZScreamer.ActiveUWScene.Room.CGPalette);
+			UXPreviewArtist.RedrawAllPreviews();
+
+			ObjectListPanel.Controls.Add(objectViewer1);
+			SpriteListPanel.Controls.Add(spritesView1);
 		}
 
 		private void EntrancePropertyChanged(object sender, EventArgs e)

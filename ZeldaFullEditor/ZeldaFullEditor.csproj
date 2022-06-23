@@ -143,7 +143,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Update="SpritesView.cs" />
     <Compile Update="Gui\MainTabs\TextEditor.cs">
       <SubType>UserControl</SubType>
     </Compile>

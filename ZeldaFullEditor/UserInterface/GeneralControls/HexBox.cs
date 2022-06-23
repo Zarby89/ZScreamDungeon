@@ -33,7 +33,7 @@
 
 		protected virtual void OnValueChanged(EventArgs e)
 		{
-			_valueChanged.Invoke(this, e);
+			_valueChanged?.Invoke(this, e);
 		}
 
 

@@ -8,6 +8,7 @@
 
 		private Selectable selectedCell;
 
+		private static readonly Brush SelectedObject = new SolidBrush(Color.FromArgb(150, 0, 50, 200));
 		private class Selectable : UserControl
 		{
 			// TODO move this to dungeonmain
@@ -36,14 +37,14 @@
 
 				if (Selected)
 				{
-					e.Graphics.FillRectangle(Constants.FifthBlueBrush, new Rectangle(0, 0, DimensionL, DimensionL));
+					e.Graphics.FillRectangle(SelectedObject, new Rectangle(0, 0, DimensionL, DimensionL));
 				}
 
 				e.Graphics.DrawString(guy.TypeID.ToString("X2"), Font, Brushes.White, new PointF(2F, 2F));
 				if (showName)
 				{
 					e.Graphics.DrawString(guy.Name, Smaller, Brushes.White,
-						new RectangleF(2F, 30F, (float) (DimensionL - 4), 30));
+						new RectangleF(2F, 30F, DimensionL - 4, 30F));
 				}
 				//e.Graphics.DrawString(showName ? guy.EntityType.ToString() : guy.TypeID.ToString("X2"),
 				//		Font, Brushes.White, new Rectangle(0, 48, 64, 64));
@@ -107,7 +108,8 @@
 				};
 				nlist.Add(add);
 
-				ZGUI.toolTip1.SetToolTip(add, p.Name);
+				ZGUI.toolTip1.SetToolTip(add, $"{p.TypeID:X2} - {p.Name}");
+
 				add.MouseClick += new((sender, e) =>
 				{
 					var ssss = (Selectable) sender;
@@ -115,6 +117,7 @@
 					if (selectedCell is not null)
 					{
 						selectedCell.Selected = false;
+						selectedCell.Invalidate();
 					}
 					ssss.Selected = true;
 					selectedCell = ssss;

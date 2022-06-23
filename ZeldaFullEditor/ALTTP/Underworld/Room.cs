@@ -330,6 +330,7 @@
 			}
 			SelectedObjects.Add(d);
 		}
+
 		public void DoForAllRoomObjects(Action<RoomObject> act)
 		{
 			foreach (var r in Layer1Objects)
@@ -347,13 +348,6 @@
 				act(r);
 			}
 		}
-
-
-
-
-
-
-
 
 		public void Undo()
 		{
