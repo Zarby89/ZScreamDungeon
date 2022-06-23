@@ -52,6 +52,9 @@
 			}
 		}
 
+		public int LockedX { get; set; }
+		public int LockedY { get; set; }
+
 		public int RealX
 		{
 			get => GlobalX;

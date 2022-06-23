@@ -32,7 +32,7 @@
 			}
 
 
-			InvalidateRoomTilemapAndArtist();
+			//InvalidateRoomTilemapAndArtist();
 		}
 
 

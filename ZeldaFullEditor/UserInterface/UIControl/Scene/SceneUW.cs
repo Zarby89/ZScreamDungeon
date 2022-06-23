@@ -105,24 +105,7 @@
 
 		private void FindHoveredEntity<T>(IEnumerable<T> list, MouseEventArgs e) where T : IDungeonPlaceable
 		{
-			//foreach (var o in list)
-			//{
-			//	if (o.MouseIsInHitbox(e))
-			//	{
-			//		hoveredEntity = o;
-			//		return;
-			//	}
-			//}
-			for (int i = list.Count() - 1; i >= 0; i--)
-			{
-				var o = list.ElementAt(i);
-				if (o.MouseIsInHitbox(e))
-				{
-					hoveredEntity = o;
-					return;
-				}
-			}
-			hoveredEntity = null;
+			hoveredEntity = list.LastOrDefault(o => o.MouseIsInHitbox(e));
 		}
 
 		private void UpdateDungeonForm()
@@ -137,7 +120,11 @@
 
 		private void HandleSelectingHoveredObject()
 		{
-			
+			if (hoveredEntity is IFreelyPlaceable f)
+			{
+				f.LockPosition();
+			}
+
 			if (ModifierKeys == Keys.Control)
 			{
 				if (hoveredEntity is null)
@@ -151,6 +138,10 @@
 				if (hoveredEntity is null)
 				{
 					Room.ClearSelectedList();
+				}
+				else if (Room.SelectedObjects.Contains(hoveredEntity))
+				{
+					return;
 				}
 				else
 				{
@@ -166,8 +157,7 @@
 			{
 				if (o is IFreelyPlaceable gg)
 				{
-					gg.RealX = MouseX;
-					gg.RealY = MouseY;
+					gg.MoveByDelta(MoveX, MoveY);
 				}
 			}
 
@@ -200,6 +190,21 @@
 			if (Room is null) return;
 
 			base.OnMouseDown(sender, e);
+		}
+
+		protected override void OnMouseUp(object sender, MouseEventArgs e)
+		{
+			if (Room is null) return;
+
+			foreach (var o in Room.SelectedObjects)
+			{
+				if (o is IFreelyPlaceable f)
+				{
+					f.LockPosition();
+				}
+			}
+
+			base.OnMouseUp(sender, e);
 		}
 
 		private void InvalidateRoomTilemapAndArtist()

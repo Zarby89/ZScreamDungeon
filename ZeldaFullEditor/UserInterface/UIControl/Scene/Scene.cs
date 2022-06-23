@@ -67,12 +67,18 @@
 				IsLeftPress = e.Button == MouseButtons.Left;
 			}
 
-			if (e.Button == MouseButtons.Right)
+			switch (e.Button)
 			{
-				RightClickedXAt = e.X;
-				RightClickedYAt = e.Y;
-				// TODO context menu
-				return;
+				case MouseButtons.Right:
+					RightClickedXAt = e.X;
+					RightClickedYAt = e.Y;
+					// TODO context menu
+					return;
+
+				case MouseButtons.Left:
+					LastX = e.X;
+					LastY = e.Y;
+					break;
 			}
 
 			try
@@ -106,6 +112,9 @@
 		{
 			MouseX = e.X;
 			MouseY = e.Y;
+
+			MoveX = MouseX - LastX;
+			MoveY = MouseY - LastY;
 
 			try
 			{

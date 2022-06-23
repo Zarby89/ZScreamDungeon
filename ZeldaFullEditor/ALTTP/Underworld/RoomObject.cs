@@ -21,6 +21,9 @@
 		public byte GridX { get; set; }
 		public byte GridY { get; set; }
 
+		public int LockedX { get; set; }
+		public int LockedY { get; set; }
+
 		public int RealX
 		{
 			get => GridX * Scale;
