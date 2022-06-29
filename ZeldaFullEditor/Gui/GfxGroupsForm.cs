@@ -29,6 +29,11 @@ namespace ZeldaFullEditor.Gui
 			InitializeComponent();
 			this.mainForm = mainForm;
 			this.BackColor = Color.FromKnownColor(KnownColor.Control);
+			numericUpDown1.Hexadecimal = true;
+			paletteUpDown.Hexadecimal = true;
+			mainBlocksetUpDown.Hexadecimal = true;
+			spriteUpDown.Hexadecimal = true;
+			roomUpDown.Hexadecimal = true;
 		}
 
 		private void cancelButton_Click(object sender, EventArgs e)

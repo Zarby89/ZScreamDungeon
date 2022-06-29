@@ -1153,7 +1153,7 @@ namespace ZeldaFullEditor
 			}
 			else if (id == 0xE4) // Key
 			{
-				drawSpriteTile((x * 16), (y * 16), 11, 22, 11, false, false, 1, 2);
+				drawSpriteTile((x * 16), (y * 16), 11, 06, 11, false, false, 1, 2);
 			}
 			else if (id == 0xE7) // Mushroom
 			{

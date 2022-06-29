@@ -493,9 +493,9 @@ namespace ZeldaFullEditor
 			{
 				projectFilename = projectFile.FileName;
 				LoadProject(projectFile.FileName);
-				//openToolStripMenuItem.Enabled = false;
-				//openfileButton.Enabled = false;
-				//recentROMToolStripMenuItem.Enabled = false;
+				openToolStripMenuItem.Enabled = false;
+				openfileButton.Enabled = false;
+				recentROMToolStripMenuItem.Enabled = false;
 			}
 		}
 
@@ -4113,42 +4113,66 @@ namespace ZeldaFullEditor
 			int sy = 0;
 			int p = 0;
 
-			byte[] mapArrayData = new byte[0x50000];
+			byte[] mapArrayData1 = new byte[0x5000];
+			byte[] mapArrayData2 = new byte[0x5000];
+			byte[] mapArrayData3 = new byte[0x5000];
+			byte[] mapArrayData4 = new byte[0x5000];
 			using (OpenFileDialog sfd = new OpenFileDialog())
 			{
 				sfd.Filter = UIText.ExportedOWMapDataType;
 				if (sfd.ShowDialog() == DialogResult.OK)
 				{
 					FileStream fileStreamMap = new FileStream(sfd.FileName, FileMode.Open, FileAccess.Read);
-					fileStreamMap.Read(mapArrayData, 0, mapArrayData.Length);
+					fileStreamMap.Read(mapArrayData1, 0, (int)fileStreamMap.Length);
+					fileStreamMap.Close();
+					fileStreamMap = new FileStream(sfd.FileName+"1", FileMode.Open, FileAccess.Read);
+					fileStreamMap.Read(mapArrayData2, 0, (int) fileStreamMap.Length);
+					fileStreamMap.Close();
+					fileStreamMap = new FileStream(sfd.FileName+"2", FileMode.Open, FileAccess.Read);
+					fileStreamMap.Read(mapArrayData3, 0, (int) fileStreamMap.Length);
+					fileStreamMap.Close();
+					fileStreamMap = new FileStream(sfd.FileName+"3", FileMode.Open, FileAccess.Read);
+					fileStreamMap.Read(mapArrayData4, 0, (int) fileStreamMap.Length);
+					fileStreamMap.Close();
 
-					for (int i = 0; i < 64; i++)
-					{
-						for (int y = 0; y < 32; y += 1)
+					//for (int i = 0; i < 64; i++)
+					//{
+					for (int y = 0; y < 32; y += 1)
 						{
 							for (int x = 0; x < 32; x += 1)
 							{
-								overworldEditor.overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData[p + 1] << 8) + mapArrayData[p]);
+								overworldEditor.overworld.allmapsTilesLW[x+(32*5), y] = (ushort) ((mapArrayData1[p + 1] << 8) + mapArrayData1[p]);
 								p += 2;
-
-								overworldEditor.overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData[p + 1] << 8) + mapArrayData[p]);
-								p += 2;
-
-								if (i < 32)
-								{
-									overworldEditor.overworld.allmapsTilesSP[x + (sx * 32), y + (sy * 32)] = (ushort) ((mapArrayData[p + 1] << 8) + mapArrayData[p]);
-									p += 2;
-								}
 							}
 						}
-
-						sx++;
-						if (sx >= 8)
+					p = 0;
+					for (int y = 0; y < 32; y += 1)
+					{
+						for (int x = 0; x < 32; x += 1)
 						{
-							sy++;
-							sx = 0;
+							overworldEditor.overworld.allmapsTilesLW[x + (32 * 6), y] = (ushort) ((mapArrayData2[p + 1] << 8) + mapArrayData2[p]);
+							p += 2;
 						}
 					}
+					p = 0;
+					for (int y = 0; y < 32; y += 1)
+					{
+						for (int x = 0; x < 32; x += 1)
+						{
+							overworldEditor.overworld.allmapsTilesLW[x + (32 * 5), y+32] = (ushort) ((mapArrayData3[p + 1] << 8) + mapArrayData3[p]);
+							p += 2;
+						}
+					}
+					p = 0;
+					for (int y = 0; y < 32; y += 1)
+					{
+						for (int x = 0; x < 32; x += 1)
+						{
+							overworldEditor.overworld.allmapsTilesLW[x + (32 * 6), y+32] = (ushort) ((mapArrayData4[p + 1] << 8) + mapArrayData4[p]);
+							p += 2;
+						}
+					}
+					//}
 
 					fileStreamMap.Close();
 				}
@@ -5071,6 +5095,66 @@ namespace ZeldaFullEditor
 				x = e.X;
 				y = e.Y;
 			}
+		}
+
+		private void clearDWTilesToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+
+			if (MessageBox.Show("Are you sure you want to clear all tiles of the Dark World?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+			{
+				int sx = 0;
+				int sy = 0;
+
+				for (int i = 0; i < 64; i++)
+				{
+					for (int y = 0; y < 32; y += 1)
+					{
+						for (int x = 0; x < 32; x += 1)
+						{
+							overworldEditor.overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] = 0x34;
+						}
+					}
+
+					sx++;
+					if (sx >= 8)
+					{
+						sy++;
+						sx = 0;
+					}
+				}
+			}
+		}
+
+		private void copyLWToDWToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			if (MessageBox.Show("Are you sure you want to copy Light World tiles to the Dark World?", "Warning", MessageBoxButtons.YesNo) == DialogResult.Yes)
+			{
+				int sx = 0;
+				int sy = 0;
+
+				for (int i = 0; i < 64; i++)
+				{
+					for (int y = 0; y < 32; y += 1)
+					{
+						for (int x = 0; x < 32; x += 1)
+						{
+							overworldEditor.overworld.allmapsTilesDW[x + (sx * 32), y + (sy * 32)] = overworldEditor.overworld.allmapsTilesLW[x + (sx * 32), y + (sy * 32)];
+						}
+					}
+
+					sx++;
+					if (sx >= 8)
+					{
+						sy++;
+						sx = 0;
+					}
+				}
+			}
+		}
+
+		private void showTiles32CountToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			overworldEditor.overworld.showTile32Count();
 		}
 	}
 }

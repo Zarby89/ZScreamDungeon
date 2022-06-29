@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,19 +56,45 @@ namespace ZeldaFullEditor.OWSceneModes
 		public void Copy()
 		{
 			Clipboard.Clear();
-			TileData td = new TileData((ushort[]) scene.selectedTile.Clone(), scene.selectedTileSizeX);
-			Clipboard.SetData("owtiles", td);
+			//TileData td = new TileData((ushort[]) scene.selectedTile.Clone(), scene.selectedTileSizeX);
+			//Clipboard.SetData("owtiles", td);
+			string c = "ZSTD";
+			c += scene.selectedTileSizeX.ToString("X4");
+
+			for (int i = 0;i<scene.selectedTile.Length;i++)
+			{
+				c += scene.selectedTile[i].ToString("X4");
+			}
+
+			Clipboard.SetText(c);
 		}
 
 		public void Paste()
 		{
-			TileData data = (TileData) Clipboard.GetData("owtiles");
+			/*TileData data = (TileData) Clipboard.GetData("owtiles");
 			Console.WriteLine("Paste ! " + data);
 			if (data != null)
 			{
 				scene.selectedTile = data.tiles;
 				scene.selectedTileSizeX = data.length;
+			}*/
+			string c = Clipboard.GetText();
+			if (c.Length < 5)
+			{
+				return;
 			}
+			if (c.Substring(0, 4) == "ZSTD")
+			{
+				int p = 8;
+				scene.selectedTileSizeX = int.Parse(c.Substring(4, 4), NumberStyles.HexNumber);
+				scene.selectedTile = new ushort[((c.Length - 8) / 4)];
+				for (int i = 0; i < ((c.Length - 8) / 4); i++)
+				{
+					scene.selectedTile[i] = ushort.Parse(c.Substring(p, 4), NumberStyles.HexNumber);
+					p += 4;
+				}
+			}
+
 		}
 
 		public void OnMouseDown(MouseEventArgs e)

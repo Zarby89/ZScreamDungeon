@@ -299,6 +299,11 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			extraTilesNumBox.Value = titleScreenExtraTilesGFX;
 			spritesNumBox.Value = titleScreenSpritesGFX;
 			extraSpritesNumBox.Value = titleScreenExtraSpritesGFX;
+
+			extraSpritesNumBox.Hexadecimal = true;
+			extraTilesNumBox.Hexadecimal = true;
+			spritesNumBox.Hexadecimal = true;
+			tilesNumBox.Hexadecimal = true;
 			stupidEventTrigger = true;
 
 			LoadTitleScreen();
@@ -469,6 +474,28 @@ namespace ZeldaFullEditor.Gui.MainTabs
 			titleScreenExtraTilesGFX = (int) extraTilesNumBox.Value;
 			titleScreenSpritesGFX = (int) spritesNumBox.Value;
 			titleScreenExtraSpritesGFX = (int) extraSpritesNumBox.Value;
+
+			Buildtileset();
+			updateTiles();
+			screenBox.Refresh();
+		}
+
+		private void gfxGroupChanged(object sender, EventArgs e)
+		{
+			if (stupidEventTrigger)
+			{
+				updateGFXGroup();
+			}
+		}
+
+		public void updateGFXGroup()
+		{
+
+			titleScreenTilesGFX = (int) tilesNumBox.Value;
+			titleScreenExtraTilesGFX = (int) extraTilesNumBox.Value;
+			titleScreenSpritesGFX = (int) spritesNumBox.Value;
+			titleScreenExtraSpritesGFX = (int) extraSpritesNumBox.Value;
+
 
 			Buildtileset();
 			updateTiles();

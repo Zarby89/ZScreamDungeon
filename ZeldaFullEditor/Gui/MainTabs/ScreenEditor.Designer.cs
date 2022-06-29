@@ -204,6 +204,7 @@
             // 
             // extraSpritesNumBox
             // 
+            this.extraSpritesNumBox.Hexadecimal = true;
             this.extraSpritesNumBox.Location = new System.Drawing.Point(708, 513);
             this.extraSpritesNumBox.Maximum = new decimal(new int[] {
             72,
@@ -226,6 +227,7 @@
             // 
             // extraTilesNumBox
             // 
+            this.extraTilesNumBox.Hexadecimal = true;
             this.extraTilesNumBox.Location = new System.Drawing.Point(582, 513);
             this.extraTilesNumBox.Maximum = new decimal(new int[] {
             82,
@@ -248,9 +250,10 @@
             // 
             // spritesNumBox
             // 
+            this.spritesNumBox.Hexadecimal = true;
             this.spritesNumBox.Location = new System.Drawing.Point(645, 513);
             this.spritesNumBox.Maximum = new decimal(new int[] {
-            144,
+            143,
             0,
             0,
             0});
@@ -270,9 +273,10 @@
             // 
             // tilesNumBox
             // 
+            this.tilesNumBox.Hexadecimal = true;
             this.tilesNumBox.Location = new System.Drawing.Point(519, 513);
             this.tilesNumBox.Maximum = new decimal(new int[] {
-            37,
+            36,
             0,
             0,
             0});

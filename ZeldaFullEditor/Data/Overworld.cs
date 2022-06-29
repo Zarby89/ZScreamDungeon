@@ -560,6 +560,94 @@ namespace ZeldaFullEditor
 			}
 		}
 
+		public void showTile32Count()
+		{
+			t32Unique.Clear();
+			t32.Clear();
+			// Create tile32 from tiles16
+			List<ulong> alltiles16 = new List<ulong>();
+
+			int sx = 0;
+			int sy = 0;
+			int c = 0;
+			for (int i = 0; i < Constants.NumberOfOWMaps; i++)
+			{
+				ushort[,] tilesused = allmapsTilesLW;
+				if (i < 64)
+				{
+					tilesused = allmapsTilesLW;
+				}
+				else if (i < 128 && i >= 64)
+				{
+					tilesused = allmapsTilesDW;
+				}
+				else
+				{
+					tilesused = allmapsTilesSP;
+				}
+
+				for (int y = 0; y < 32; y += 2)
+				{
+					for (int x = 0; x < 32; x += 2)
+					{
+						alltiles16.Add(new Tile32(tilesused[x + (sx * 32), y + (sy * 32)], tilesused[x + 1 + (sx * 32), y + (sy * 32)],
+						tilesused[x + (sx * 32), y + 1 + (sy * 32)], tilesused[x + 1 + (sx * 32), y + 1 + (sy * 32)]).getLongValue());
+					}
+				}
+
+				sx++;
+				if (sx >= 8)
+				{
+					sy++;
+					sx = 0;
+				}
+
+				c++;
+				if (c >= 64)
+				{
+					sx = 0;
+					sy = 0;
+					c = 0;
+				}
+			}
+
+			List<ulong> tiles = alltiles16.Distinct().ToList(); // that get rid of duplicated tiles using linq
+																// alltiles16 = all tiles32...
+																// tiles = all tiles32 that are uniques double are removed
+			Dictionary<ulong, ushort> alltilesIndexed = new Dictionary<ulong, ushort>();
+
+			for (int i = 0; i < tiles.Count; i++)
+			{
+				alltilesIndexed.Add(tiles[i], (ushort) i); // index the uniques tiles with a dictionary
+			}
+
+			for (int i = 0; i < Constants.NumberOfMap32; i++)
+			{
+				t32.Add(alltilesIndexed[alltiles16[i]]); //add all tiles32 from all maps
+														 // convert all tiles32 non-unique ids into unique array of ids
+			}
+
+			for (int i = 0; i < tiles.Count; i++) // for each uniques tile32
+			{
+				t32Unique.Add(new Tile32(tiles[i])); // create new tileunique
+			}
+
+			while (t32Unique.Count % 4 != 0) // prevent a bug if tilecount is not a multiple of 4
+			{
+				t32Unique.Add(new Tile32(0));
+			}
+
+			MessageBox.Show("Number of unique Tiles32: " + tiles.Count + " Out of: " + Constants.LimitOfMap32);
+
+			alltiles16.Clear();
+
+			Console.WriteLine("Number of unique Tiles32: " + tiles.Count + " Saved:" + t32Unique.Count + " Out of: " + Constants.LimitOfMap32);
+			int v = t32Unique.Count;
+			for (int i = v; i < Constants.LimitOfMap32; i++)
+			{
+				t32Unique.Add(new Tile32(666, 666, 666, 666)); // create new tileunique
+			}
+		}
 
 		public bool createMap32Tilesmap()
 		{
@@ -638,19 +726,15 @@ namespace ZeldaFullEditor
 				t32Unique.Add(new Tile32(0));
 			}
 
+			alltiles16.Clear();
+
 			if (t32Unique.Count > Constants.LimitOfMap32)
 			{
-				if (MessageBox.Show("Unique Tile32 count exceed the limit in the rom\n    ====== " + t32Unique.Count +
-					" Used out of " + Constants.LimitOfMap32 + " ======    \nThe ROM will NOT be saved, would you like to export map data?",
-					"Error", MessageBoxButtons.YesNo) == DialogResult.Yes)
-				{
-					ExportMaps();
-				}
-
+				MessageBox.Show("Number of unique Tiles32: " + tiles.Count + " Out of: " + Constants.LimitOfMap32 + "\r\nUnique Tile32 count exceed the limit\r\nThe ROM Has not been saved\r\nYou can fill maps with grass tiles to free some space\r\nOr use the option Clear DW Tiles in the Overworld Menu");
 				return true;
 			}
 
-			alltiles16.Clear();
+			
 
 			Console.WriteLine("Number of unique Tiles32: " + tiles.Count + " Saved:" + t32Unique.Count + " Out of: " + Constants.LimitOfMap32);
 			int v = t32Unique.Count;
