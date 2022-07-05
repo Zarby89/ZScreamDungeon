@@ -58,6 +58,10 @@
 			{
 				UIText.GeneralWarning(ze.Message);
 			}
+			finally
+			{
+				Refresh();
+			}
 		}
 
 		protected virtual void OnMouseDown(object sender, MouseEventArgs e)
@@ -90,6 +94,10 @@
 			{
 				MouseIsDown = false;
 				UIText.GeneralWarning(ze.Message);
+			}
+			finally
+			{
+				Refresh();
 			}
 		}
 

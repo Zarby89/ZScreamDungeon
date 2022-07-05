@@ -219,7 +219,7 @@
 
 			if (lastHover != hoveredMap)
 			{
-				ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].InvalidateArtist();
+				//ZS.OverworldManager.allmaps[hoveredMap + ZS.OverworldManager.WorldOffset].InvalidateArtist();
 				lastHover = hoveredMap;
 			}
 

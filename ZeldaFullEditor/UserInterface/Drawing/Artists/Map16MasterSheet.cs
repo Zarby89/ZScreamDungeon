@@ -28,17 +28,18 @@
 
 		public void UpdateToMatchScreen(OverworldScreen screen)
 		{
-			throw new NotImplementedException();
+			Graphics = screen.LoadedGraphics;
+			RedrawImageForGraphicsSet();
 		}
 
 		public void RedrawImageForGraphicsSet()
 		{
-			throw new NotImplementedException();
+			RefreshGraphicsSheet();
 		}
 
 		public void RedrawImageForPaletteChange()
 		{
-			throw new NotImplementedException();
+			RefreshGraphicsSheet();
 		}
 
 		private static int GetIndexFromXY(int x, int y)

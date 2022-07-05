@@ -153,8 +153,6 @@
 			{
 				ZGUI.OverworldEditor.propertiesChangedFromForm = true;
 
-				CurrentMap.InvalidateArtist();
-
 				ZGUI.OverworldEditor.mapGroupbox.Text = $"Selected map: {CurrentParentMapID:X2}";
 
 				ZGUI.OverworldEditor.OWProperty_MessageID.HexValue = CurrentMap.MessageID;
@@ -192,7 +190,7 @@
 
 				base.OnMouseDown(e);
 
-				InvalidateScreens();
+				//InvalidateScreens();
 			}
 			else
 			{
@@ -232,7 +230,7 @@
 
 			base.OnMouseUp(sender, e);
 
-			InvalidateScreens();
+			//InvalidateScreens();
 		}
 
 
@@ -241,7 +239,7 @@
 			byte id = (byte) (ZGUI.OverworldEditor.objCombobox.SelectedItem as SpriteName).ID;
 			lastselectedSprite.Species = SpriteType.GetTypeFromID(id);
 
-			InvalidateScreens();
+			//InvalidateScreens();
 		}
 
 		private void InvalidateScreens()
@@ -250,7 +248,7 @@
 			{
 				if (map.ParentMap == CurrentParentMap)
 				{
-					map.InvalidateArtist();
+					map.InvalidateArt();
 				}
 			});
 		}
@@ -259,7 +257,7 @@
 		{
 			byte id = (byte) (ZGUI.OverworldEditor.objCombobox.SelectedItem as SecretsName).ID;
 			LastSelectedSecret.SecretType = SecretItemType.GetTypeFromID(id);
-			InvalidateScreens();
+			//InvalidateScreens();
 		}
 
 		protected override void OnMouseMove(object sender, MouseEventArgs e)
@@ -370,11 +368,11 @@
 
 					if (ZGUI.overworldOverlayVisibleToolStripMenuItem.Checked)
 					{
-						if ((i >= 0x03) && (i <= 0x07))
+						if (i is >= 0x03 and <= 0x07)
 						{
 							g.DrawImage(ZS.OverworldManager.allmaps[149].MyArtist.Layer1Canvas.Bitmap, new PointF(x, y));
 						}
-						else if (i == 91 || i == 92)
+						else if (i is 91 or 92)
 						{
 							g.DrawImage(ZS.OverworldManager.allmaps[150].MyArtist.Layer1Canvas.Bitmap, new PointF(x, y));
 						}
@@ -388,8 +386,7 @@
 						};
 						g.DrawRectangle(new Pen(ZS.PaletteManager.OverworldGrass[grass]), new Rectangle(x, y, 512, 512));
 					}
-
-					g.DrawImage(ZS.OverworldManager.allmaps[i].MyArtist.Layer1Canvas.Bitmap, new PointF(x, y));
+					ZS.OverworldManager.allmaps[i].MyArtist.DrawSelfToImage(g, new PointF(x, y));
 
 					if (ZGUI.overworldOverlayVisibleToolStripMenuItem.Checked)
 					{
@@ -609,7 +606,7 @@
 		public override void Refresh()
 		{
 			if (!CanIRefresh()) return;
-			InvalidateScreens();
+			//InvalidateScreens();
 			base.Refresh();
 		}
 	}

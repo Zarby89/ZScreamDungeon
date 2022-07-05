@@ -33,6 +33,8 @@
 
 		protected void RefreshPalettesFrom(FullPalette pal)
 		{
+			if (pal is null) return;
+
 			var copy = pal.ToColorArray();
 			var palettes = Layer1Canvas.Palette;
 
@@ -144,6 +146,13 @@
 			g.DrawImage(FinalOutput, 0, 0);
 		}
 
+		public virtual void DrawSelfToImage(Graphics g, PointF location)
+		{
+			Revalidate();
+
+			g.DrawImage(FinalOutput, location);
+		}
+
 		public virtual void DrawSelfToImageSmall(Graphics g, int x, int y)
 		{
 			Revalidate();
@@ -153,7 +162,7 @@
 			g.DrawImage(FinalOutput, x, y, 256, 256);
 		}
 
-		private void DrawTileToBuffer(in Tile tile, int x, int y, IGraphicsCanvas canvas)
+		protected void DrawTileToBuffer(in Tile tile, int x, int y, IGraphicsCanvas canvas)
 		{
 			var (til, pal) = LoadedGraphics.GetBackgroundTileWithPalette(tile);
 			til.DrawToCanvas(canvas, x, y, (byte) pal, tile.HFlip, tile.VFlip);

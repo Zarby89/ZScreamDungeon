@@ -10,8 +10,8 @@
 
 		public Bitmap Bitmap { get; }
 
-		public int Width => Bitmap.Width;
-		public int Height => Bitmap.Height;
+		public int Width { get; }
+		public int Height { get; }
 
 		public byte this[int x, int y]
 		{
@@ -32,6 +32,8 @@
 		public PointeredImage(int width, int height)
 		{
 			ptr = Marshal.AllocHGlobal(width * height);
+			Width = width;
+			Height = height;
 			Bitmap = new Bitmap(width, height, width, PixelFormat.Format8bppIndexed, ptr);
 		}
 

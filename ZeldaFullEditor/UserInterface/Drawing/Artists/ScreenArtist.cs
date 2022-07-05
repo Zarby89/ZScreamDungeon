@@ -48,6 +48,18 @@
 			};
 		}
 
+		protected override void RebuildLayer1()
+		{
+			for (var y = 0; y < 64; y++)
+			{
+				for (var x = 0; x < 64; x++)
+				{
+					var t = GetLayer1TileAt(x, y);
+					DrawTileToBuffer(t, x * 8, y * 8, Layer1Canvas);
+				}
+			}
+		}
+
 		protected override void RedrawSpriteLayer()
 		{
 			// TODO how to do this?
@@ -64,7 +76,7 @@
 			g.Clear(Color.FromArgb(255, Layer1Canvas.Palette.Entries[0]));
 
 			g.DrawScreen(Layer1Canvas.Bitmap, null);
-			g.DrawScreen(SpriteCanvas.Bitmap, null);
+			//g.DrawScreen(SpriteCanvas.Bitmap, null);
 		}
 
 		public override void ReloadPalettes()
@@ -83,6 +95,7 @@
 			{
 				var t = ZScreamer.ActiveOW.Tile16Sheet.GetTile16At(i);
 
+				
 				ZScreamer.ActiveOW.Tile16Sheet.DrawTile16ToCanvas(Layer1Canvas, x, y, i);
 
 				x += 16;

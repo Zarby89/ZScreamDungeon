@@ -155,7 +155,7 @@
 				if (st0pal == value) return;
 				st0pal = value;
 				CGPaletteState0 = CreatePaletteWithSpritePal(State0SpritePalette);
-				InvalidateArtist();
+				Redrawing |= NeedsNewArt.UpdatedAllPalettes;
 			}
 		}
 
@@ -169,7 +169,7 @@
 					if (state2pal == value) return;
 					state2pal = value;
 					CGPaletteState2 = CreatePaletteWithSpritePal(State2SpritePalette);
-					InvalidateArtist();
+					Redrawing |= NeedsNewArt.UpdatedAllPalettes;
 				}
 				else
 				{
@@ -187,7 +187,7 @@
 					if (state3pal == value) return;
 					state3pal = value;
 					CGPaletteState3 = CreatePaletteWithSpritePal(State3SpritePalette);
-					InvalidateArtist();
+					Redrawing |= NeedsNewArt.UpdatedAllPalettes;
 				}
 				else
 				{
@@ -198,7 +198,8 @@
 
 		public byte[] musics { get; } = new byte[4];
 
-		public NeedsNewArt Redrawing { get; internal set; }
+		public NeedsNewArt Redrawing { get;
+			internal set; }
 
 		public ushort MessageID { get; set; }
 
@@ -223,7 +224,6 @@
 			};
 
 			ParentMap = this;
-			InvalidateArtist();
 		}
 
 		public void RefreshPalette()
@@ -231,9 +231,13 @@
 			CGPaletteState0 = CreatePaletteWithSpritePal(State0SpritePalette);
 			CGPaletteState2 = CreatePaletteWithSpritePal(State2SpritePalette);
 			CGPaletteState3 = CreatePaletteWithSpritePal(State3SpritePalette);
-			InvalidateArtist();
+			Redrawing |= NeedsNewArt.UpdatedAllPalettes;
 		}
 
+		public void InvalidateArt()
+		{
+			Redrawing |= NeedsNewArt.LiterallyEverything;
+		}
 
 		private FullPalette CreatePaletteWithSpritePal(byte spr)
 		{
@@ -251,7 +255,7 @@
 		public void RefreshTileset()
 		{
 			LoadedGraphics = ZScreamer.ActiveGraphicsManager.CreateOverworldGraphicsSet(Tileset, State0SpriteGraphics, World == Worldiness.DarkWorld);
-			InvalidateArtist();
+			Redrawing |= NeedsNewArt.UpdatedAllTilesets;
 		}
 
 		public FullPalette GetPaletteForGameState(GameState gamestate) => gamestate switch
@@ -262,17 +266,6 @@
 			GameState.AgaState => CGPaletteState3,
 			_ => throw new ArgumentOutOfRangeException(nameof(gamestate), "BAD GAME STATE")
 		};
-
-		public void InvalidateTilemaps()
-		{
-			Redrawing |= NeedsNewArt.UpdatedAllTilemaps;
-			MyArtist.Invalidate();
-		}
-
-		public void InvalidateArtist()
-		{
-			MyArtist.Invalidate();
-		}
 
 		public byte GetSpriteGraphicsForGameState(GameState gamestate) => gamestate switch
 		{
@@ -292,10 +285,10 @@
 			_ => 0x00,
 		};
 
-
 		public void SetTile16At(ushort tile, int x, int y)
 		{
 			Tile16Map[x + y * Constants.NumberOfTile16PerStrip] = tile;
+			Redrawing |= NeedsNewArt.UpdatedLayer1Tilemap;
 		}
 
 		public void CopyTile8bpp16(int x, int y, int tile)

@@ -30,9 +30,6 @@
 			{
 				FindHoveredEntity(Room.GetLayerList(Layer), e);
 			}
-
-
-			//InvalidateRoomTilemapAndArtist();
 		}
 
 
@@ -40,6 +37,7 @@
 		{
 			if (Room?.OnlySelectedObject is RoomObject r && r.IncreaseSize())
 			{
+				UpdateDungeonForm();
 				InvalidateRoomTilemapAndArtist();
 			}
 		}
@@ -48,6 +46,7 @@
 		{
 			if (Room?.OnlySelectedObject is RoomObject r && r.DecreaseSize())
 			{
+				UpdateDungeonForm();
 				InvalidateRoomTilemapAndArtist();
 			}
 		}

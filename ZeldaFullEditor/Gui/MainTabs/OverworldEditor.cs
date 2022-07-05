@@ -342,7 +342,7 @@
 		private void RefreshAllMaps()
 		{
 			Thread.CurrentThread.IsBackground = true;
-			ZScreamer.ActiveOW.ForAllScreens(map => map.InvalidateArtist());
+			ZScreamer.ActiveOW.ForAllScreens(map => map.InvalidateArt());
 		}
 
 
@@ -935,7 +935,6 @@
 
 		private void tilePictureBox_MouseEnter(object sender, EventArgs e)
 		{
-			ZScreamer.ActiveOWScene.CurrentMap.InvalidateArtist();
 			tilePictureBox.Refresh();
 		}
 

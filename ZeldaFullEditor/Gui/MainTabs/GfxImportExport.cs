@@ -301,7 +301,7 @@
 			RoomPreviewArtist.Invalidate();
 			allgfxPicturebox.Refresh();
 
-			ZScreamer.ActiveOW.ForAllScreens(map => map.InvalidateArtist());
+			//ZScreamer.ActiveOW.ForAllScreens(map => map.InvalidateArtist());
 		}
 
 		private void paste24bpp_Click(object sender, EventArgs e)

@@ -13,17 +13,6 @@ namespace ZeldaFullEditor.Handler
 		public static Bitmap favStar1 { get; } = new Bitmap(Resources.starn);
 		public static Bitmap favStar2 { get; } = new Bitmap(Resources.starl);
 
-
-
-
-		static GraphicsManager()
-		{
-			favStar1.MakeTransparent(Color.Fuchsia);
-			favStar2.MakeTransparent(Color.Fuchsia);
-		}
-
-
-
 		public BackgroundSet[] EntranceGraphicsSets { get; } = new BackgroundSet[37];
 		public SheetSet[] LocalGraphicsSets { get; } = new SheetSet[82];
 		public SheetSet[] SpriteGraphicsBlocks { get; } = new SheetSet[144];

@@ -91,7 +91,7 @@
 				}
 				else if (map.MapID > 0x80)
 				{
-					map.IsPartOfLargeMap = map.MapID == 129 || map.MapID == 130 || map.MapID == 137 || map.MapID == 138;
+					map.IsPartOfLargeMap = map.MapID is 129 or 130 or 137 or 138;
 				} // nothing for exactly 128
 
 				if (map.IsPartOfLargeMap && map.IsOwnParent) // this should properly hit the top left corner first always
@@ -163,7 +163,29 @@
 						}
 						break;
 				}
+
+				// TODO UGH
+				int superY = 32 * (map.VirtualMapID / 8);
+				int superX = 32 * (map.VirtualMapID & 0x7);
+
+				var tilesused = map.World switch
+				{
+					Worldiness.LightWorld => allmapsTilesLW,
+					Worldiness.DarkWorld => allmapsTilesDW,
+					Worldiness.SpecialWorld => allmapsTilesSP,
+					_ => null,
+				};
+
+				for (int yy = 0; yy < 32; yy++)
+				{
+					for (int xx = 0; xx < 32; xx++)
+					{
+						map.SetTile16At(tilesused[xx + superX, yy + superY], xx, yy);
+					}
+				}
 			}
+
+
 
 			LoadOverworldExitsFromROM();
 			LoadOverworldEntrancesFromROM();
@@ -171,12 +193,6 @@
 			LoadOverworldTransportsFromROM();
 			LoadOverworldSpritesFromROM();
 			ZS.GFXManager.loadOverworldMap();
-
-			new Thread(() =>
-			{
-				Thread.CurrentThread.IsBackground = true;
-				ForAllScreens(map => map.InvalidateArtist());
-			}).Start();
 		}
 
 		public void loadTilesTypes()
@@ -251,10 +267,10 @@
 			// TODO magic number
 			for (var i = 0; i < 0x33F0; i += 6)
 			{
-				var tl = ZS.ROM.Read8Many(ZS.Offsets.Map32DefinitionsTL, 6);
-				var tr = ZS.ROM.Read8Many(ZS.Offsets.Map32DefinitionsTR, 6);
-				var bl = ZS.ROM.Read8Many(ZS.Offsets.Map32DefinitionsBL, 6);
-				var br = ZS.ROM.Read8Many(ZS.Offsets.Map32DefinitionsBR, 6);
+				var tl = ZS.ROM.Read8Many(ZS.Offsets.Map32DefinitionsTL + i, 6);
+				var tr = ZS.ROM.Read8Many(ZS.Offsets.Map32DefinitionsTR + i, 6);
+				var bl = ZS.ROM.Read8Many(ZS.Offsets.Map32DefinitionsBL + i, 6);
+				var br = ZS.ROM.Read8Many(ZS.Offsets.Map32DefinitionsBR + i, 6);
 
 				for (var t = 0; t < 4; t++)
 				{
@@ -348,7 +364,6 @@
 						if (tpos < Tile32List.Count)
 						{
 							//map16tiles[npos] = new Tile32(tiles32[tpos].tile0, tiles32[tpos].tile1, tiles32[tpos].tile2, tiles32[tpos].tile3);
-
 
 							buffer[x, y] = Tile32List[tpos].Tile0;
 							buffer[x + 1, y] = Tile32List[tpos].Tile1;
@@ -682,7 +697,7 @@
 				}
 
 				bw.Close();
-				allmaps[i].InvalidateArtist();
+				allmaps[i].Redrawing |= NeedsNewArt.UpdatedAllTilemaps;
 			}
 		}
 
